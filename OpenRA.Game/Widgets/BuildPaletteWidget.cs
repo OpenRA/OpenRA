@@ -226,7 +226,7 @@ namespace OpenRA.Widgets
 
 				var firstOfThis = queue.AllItems(queueName).FirstOrDefault(a => a.Item == item.Name);
 
-				if (rect.Contains(Widget.LastMousePos.ToPoint()))
+				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 					tooltipItem = item.Name;
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
@@ -424,7 +424,7 @@ namespace OpenRA.Widgets
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(groupName, world)));
 
-				if (rect.Contains(Widget.LastMousePos.ToPoint()))
+				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 				{
 					var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
 					var sz = Game.Renderer.BoldFont.Measure(text);

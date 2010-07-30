@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -38,7 +39,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
-				Game.viewport.Scroll(Widget.LastMousePos - mi.Location);
+				Game.viewport.Scroll(Viewport.LastMousePos - mi.Location);
 				return true;
 			}
 			return false;
@@ -94,13 +95,13 @@ namespace OpenRA.Widgets
 			if (Game.Settings.ViewportEdgeScroll)
 			{
 				// Check for edge-scroll
-				if (Widget.LastMousePos.X < EdgeScrollThreshold)
+				if (Viewport.LastMousePos.X < EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Left, true);
-				if (Widget.LastMousePos.Y < EdgeScrollThreshold)
+				if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Up, true);
-				if (Widget.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
+				if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Right, true);
-				if (Widget.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
+				if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Down, true);
 			}
 			var scroll = new float2(0,0);

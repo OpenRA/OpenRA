@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 					var drawPos = new float2(rectBounds.X + 5, y);
 					var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
 
-					if (rect.Contains(Widget.LastMousePos.ToPoint()))
+					if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 					{
 						var pos = drawPos.ToInt2();					
 						var tl = new int2(pos.X-3,pos.Y-3);

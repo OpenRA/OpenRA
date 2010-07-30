@@ -203,8 +203,6 @@ namespace OpenRA.Widgets
 		
 		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough; }
 		
-		public static int TicksSinceLastMove = 0;
-		public static int2 LastMousePos;
 		public static bool HandleInput(World world, MouseInput mi)
 		{
 			bool handled = false;
@@ -216,8 +214,8 @@ namespace OpenRA.Widgets
 
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				LastMousePos = mi.Location;
-				TicksSinceLastMove = 0;
+				Viewport.LastMousePos = mi.Location;
+				Viewport.TicksSinceLastMove = 0;
 			}
 			return handled;
 		}
@@ -344,7 +342,7 @@ namespace OpenRA.Widgets
 			
 			if (!world.GameHasStarted) return;
 			if (world.LocalPlayer == null) return;
-			++TicksSinceLastMove;
+			++Viewport.TicksSinceLastMove;
 		}
 		
 		public static void DoDraw(World world)

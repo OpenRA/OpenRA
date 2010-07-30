@@ -55,7 +55,7 @@ namespace OpenRA
 
 		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
 		{
-			var position = Game.viewport.ViewToWorld(Widget.LastMousePos).ToInt2();
+			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
 			
 			// Linebuild for walls.

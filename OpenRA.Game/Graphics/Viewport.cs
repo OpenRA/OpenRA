@@ -30,6 +30,9 @@ namespace OpenRA.Graphics
 
 		float cursorFrame = 0f;
 
+		public static int TicksSinceLastMove = 0;
+		public static int2 LastMousePos;
+
 		public void Scroll(float2 delta)
 		{
 			scrollPosition = scrollPosition + delta;
@@ -60,9 +63,9 @@ namespace OpenRA.Graphics
 			Widget.DoDraw(world);
 			Timer.Time( "widgets: {0}" );
 
-			var cursorName = Widget.RootWidget.GetCursorOuter(Widget.LastMousePos) ?? "default";
+			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);
-			c.Draw((int)cursorFrame, Widget.LastMousePos + Location); 
+			c.Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
 			Timer.Time( "cursors: {0}" );
 
 			renderer.RgbaSpriteRenderer.Flush();

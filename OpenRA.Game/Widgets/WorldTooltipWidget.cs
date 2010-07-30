@@ -22,10 +22,10 @@ namespace OpenRA.Widgets
 		public WorldTooltipWidget() : base() { }
 		public override void DrawInner(World world)
 		{
-			if (Widget.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)
+			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)
 				return;
 
-			var cell = Game.viewport.ViewToWorld(Widget.LastMousePos).ToInt2();
+			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			if (!world.Map.IsInMap(cell)) return;
 			
 			if (!world.LocalPlayer.Shroud.IsExplored(cell))
@@ -34,16 +34,16 @@ namespace OpenRA.Widgets
 				var usz = Game.Renderer.BoldFont.Measure(utext) + new int2(20, 24);
 				
 				WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
-					Widget.LastMousePos.X + 20, Widget.LastMousePos.Y + 20,
-					Widget.LastMousePos.X + usz.X + 20, Widget.LastMousePos.Y + usz.Y + 20));
+					Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
+					Viewport.LastMousePos.X + usz.X + 20, Viewport.LastMousePos.Y + usz.Y + 20));
 	
 				Game.Renderer.BoldFont.DrawText(utext,
-					new float2(Widget.LastMousePos.X + 30, Widget.LastMousePos.Y + 30), Color.White);
+					new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
 					
 				return;
 			}
 			
-			var actor = world.FindUnitsAtMouse(Widget.LastMousePos).FirstOrDefault();
+			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
 			if (actor == null || !actor.IsVisible())
 				return;
 		
@@ -67,23 +67,23 @@ namespace OpenRA.Widgets
 			sz.Y += 24;
 
 			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
-				Widget.LastMousePos.X + 20, Widget.LastMousePos.Y + 20,
-				Widget.LastMousePos.X + sz.X + 20, Widget.LastMousePos.Y + sz.Y + 20));
+				Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
+				Viewport.LastMousePos.X + sz.X + 20, Viewport.LastMousePos.Y + sz.Y + 20));
 
 			Game.Renderer.BoldFont.DrawText(text,
-				new float2(Widget.LastMousePos.X + 30, Widget.LastMousePos.Y + 30), Color.White);
+				new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
 			
 			if (text2 != "")
 			{
 				Game.Renderer.RegularFont.DrawText(text2,
-					new float2(Widget.LastMousePos.X + 65, Widget.LastMousePos.Y + 50), actor.Owner.Color);
+					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.Color);
 				
 				Game.Renderer.RegularFont.DrawText(text3,
-					new float2(Widget.LastMousePos.X + 65 + sz2.X, Widget.LastMousePos.Y + 50), Color.White);
+					new float2(Viewport.LastMousePos.X + 65 + sz2.X, Viewport.LastMousePos.Y + 50), Color.White);
 
 				WidgetUtils.DrawRGBA(
 					ChromeProvider.GetImage("flags", actor.Owner.Country.Race),
-					new float2(Widget.LastMousePos.X + 30, Widget.LastMousePos.Y + 50));
+					new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 50));
 			}
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
