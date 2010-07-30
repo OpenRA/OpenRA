@@ -114,7 +114,7 @@ namespace OpenRA.Traits
 				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
 				if (!CanEnterCell(underCursor.Location, null, true)) return null;
 			}
-			if (MovementSpeedForCell(self, self.Location) == 0) return null;		/* allow disabling move orders from modifiers */
+			if (MovementSpeedForCell(self, toCell) == 0) return null;		/* allow disabling move orders from modifiers */
 			if (xy == toCell) return null;
 			
 			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
@@ -222,7 +222,7 @@ namespace OpenRA.Traits
 		
 		public virtual void FinishedMoving(Actor self)
 		{
-			var crushable = uim.GetUnitsAt(self.Location).Where(a => a != self && a.traits.Contains<ICrushable>());
+			var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.traits.Contains<ICrushable>());
 			foreach (var a in crushable)
 			{
 				var crushActions = a.traits.WithInterface<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
@@ -287,11 +287,11 @@ namespace OpenRA.Traits
 			for( var i = -1; i < 2; i++ )
 				for (var j = -1; j < 2; j++)
 				{
-					var p = self.Location + new int2(i, j);
+					var p = toCell + new int2(i, j);
 					if (CanEnterCell(p))
 						availCells.Add(p);
 					else
-						if (p != nudger.Location && p != self.Location)
+						if (p != nudger.Location && p != toCell)
 							notStupidCells.Add(p);
 				}
 

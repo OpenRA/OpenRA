@@ -22,7 +22,7 @@ namespace OpenRA.Traits.Activities
 		int2? destination;
 		int nearEnough;
 		public List<int2> path;
-		Func<Actor, List<int2>> getPath;
+		Func<Actor, Mobile, List<int2>> getPath;
 		public Actor ignoreBuilding;
 
 		MovePart move;
@@ -40,8 +40,8 @@ namespace OpenRA.Traits.Activities
 		public Move( int2 destination, int nearEnough ) 
 			: this()
 		{
-			this.getPath = self => self.World.PathFinder.FindUnitPath(
-				self.Location, destination, self );
+			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPath(
+				mobile.toCell, destination, self );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -49,10 +49,10 @@ namespace OpenRA.Traits.Activities
 		public Move(int2 destination, Actor ignoreBuilding)
 			: this()
 		{
-			this.getPath = self => 
+			this.getPath = (self,mobile) => 
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self, self.Location, destination, false )
-					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( self.Location, 4, self ))
+					PathSearch.FromPoint( self, mobile.toCell, destination, false )
+					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( mobile.toCell, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;
@@ -63,8 +63,8 @@ namespace OpenRA.Traits.Activities
 		public Move( Actor target, int range )
 			: this()
 		{
-			this.getPath = self => self.World.PathFinder.FindUnitPathToRange(
-				self.Location, target.Location,
+			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
+				mobile.toCell, target.Location,
 				range, self );
 			this.destination = null;
 			this.nearEnough = range;
@@ -73,8 +73,8 @@ namespace OpenRA.Traits.Activities
 		public Move(Target target, int range)
 			: this()
 		{
-			this.getPath = self => self.World.PathFinder.FindUnitPathToRange(
-				self.Location, Util.CellContaining(target.CenterLocation),
+			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
+				mobile.toCell, Util.CellContaining(target.CenterLocation),
 				range, self);
 			this.destination = null;
 			this.nearEnough = range;
@@ -83,7 +83,7 @@ namespace OpenRA.Traits.Activities
 		public Move(Func<List<int2>> getPath)
 			: this()
 		{
-			this.getPath = _ => getPath();
+			this.getPath = (_1,_2) => getPath();
 			this.destination = null;
 			this.nearEnough = 0;
 		}
@@ -99,7 +99,7 @@ namespace OpenRA.Traits.Activities
 				return this;
 			}
 
-			if (destination == self.Location)
+			if (destination == mobile.toCell)
 				return NextActivity;
 
 			if( path == null )
@@ -110,7 +110,7 @@ namespace OpenRA.Traits.Activities
 					return this;
 				}
 
-				path = getPath( self ).TakeWhile( a => a != self.Location ).ToList();
+				path = getPath( self, mobile ).TakeWhile( a => a != mobile.toCell ).ToList();
 				SanityCheckPath( mobile );
 			}
 			
@@ -202,13 +202,10 @@ namespace OpenRA.Traits.Activities
 				if (--waitTicksRemaining >= 0)
 					return null;
 
-				
-				//self.World.WorldActor.traits.Get<UnitInfluence>().Remove( self, mobile );
 				mobile.RemoveInfluence();
-				var newPath = getPath(self).TakeWhile(a => a != self.Location).ToList();
-
-				//self.World.WorldActor.traits.Get<UnitInfluence>().Add( self, mobile );
+				var newPath = getPath( self, mobile ).TakeWhile(a => a != mobile.toCell).ToList();
 				mobile.AddInfluence();
+
 				if (newPath.Count != 0)
 					path = newPath;
 
@@ -245,7 +242,7 @@ namespace OpenRA.Traits.Activities
 
 			public void TickMove( Actor self, Mobile mobile, Move parent )
 			{
-				moveFraction += (int)mobile.MovementSpeedForCell(self, self.Location);
+				moveFraction += (int)mobile.MovementSpeedForCell(self, mobile.toCell);
 				if( moveFraction >= moveFractionTotal )
 					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );
