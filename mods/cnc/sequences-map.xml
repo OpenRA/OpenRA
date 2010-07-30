@@ -133,187 +133,187 @@
   <unit name="v01">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v25">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v02">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v20">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v03">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v21">
     <sequence name="idle" start="0" length="3" />
     <sequence name="damaged-idle" start="3" length="3" />
-    <sequence name="critical-idle" start="6" length="1" />
+    <sequence name="dead" start="6" length="1" />
   </unit>
 
   <unit name="v04">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v24">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v05">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v22">
     <sequence name="idle" start="0" length="3" />
     <sequence name="damaged-idle" start="3" length="3" />
-    <sequence name="critical-idle" start="6" length="1" />
+    <sequence name="dead" start="6" length="1" />
   </unit>
 
   <unit name="v06">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v26">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v07">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="2" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v30">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="2" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v08">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v23">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v09">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v27">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v10">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v28">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v11">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v29">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v12">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v34">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
   <unit name="v13">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v35">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
 <!-- Buildings that can't be mapped from tem into desert (Fields) -->
   <unit name="v14">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v15">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v16">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v17">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v18">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 
 <!-- Buildings that can't be mapped from desert into tem -->
    <unit name="v31">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v32">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
   <unit name="v33">
     <sequence name="idle" start="0" length="1" />
     <sequence name="damaged-idle" start="1" length="1" />
-    <sequence name="critical-idle" start="2" length="1" />
+    <sequence name="dead" start="2" length="1" />
   </unit>
 </sequences>

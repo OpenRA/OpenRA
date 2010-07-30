@@ -131,7 +131,6 @@
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
-		DamageStates: 2
 	GivesExperience:
 
 ^CivBuilding:

@@ -868,7 +868,7 @@
   </unit>
   <unit name="brik">
     <sequence name="idle" start="0" length="16" />
-    <sequence name="minor-damaged-idle" start="16" length="16" />
+    <sequence name="scratched-idle" start="16" length="16" />
     <sequence name="damaged-idle" start="32" length="16" />
     <sequence name="critical-idle" start="48" length="16" />
   </unit>

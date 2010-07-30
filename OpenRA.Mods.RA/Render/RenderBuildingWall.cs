@@ -15,7 +15,6 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
-		public readonly int DamageStates = 2;
 		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init.self); }
 	}
 
@@ -33,30 +32,25 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void Damaged(Actor self, AttackInfo e)
 		{
-			var numStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
-
 			if (!e.DamageStateChanged) return;
 
-			switch (e.DamageState)
+			var bi = self.Info.Traits.Get<BuildingInfo>();
+
+			if (e.DamageState == DamageState.Medium && anim.HasSequence("scratched-idle"))
+				seqName = "scratched-idle";
+			else if (e.DamageState <= DamageState.Medium)
+				seqName = "idle";
+			else if (e.DamageState == DamageState.Critical && anim.HasSequence("critical-idle"))
 			{
-				case DamageState.Light:
-					seqName = "idle";
-					break;
-				case DamageState.Medium:
-					if (numStates >= 4)
-						seqName = "minor-damaged-idle";
-					break;
-				case DamageState.Heavy:
-					seqName = "damaged-idle";
-					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
-					break;
-				case DamageState.Critical:
-					if (numStates >= 3)
-					{
-						seqName = "critical-idle";
-						Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
-					}
-					break;
+				seqName = "critical-idle";
+				if (e.DamageState > e.PreviousDamageState)
+					Sound.Play(bi.DamagedSound, self.CenterLocation);
+			}
+			else if (e.DamageState <= DamageState.Critical)
+			{
+				seqName = "damaged-idle";
+				if (e.DamageState > e.PreviousDamageState)
+					Sound.Play(bi.DamagedSound, self.CenterLocation);
 			}
 
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);

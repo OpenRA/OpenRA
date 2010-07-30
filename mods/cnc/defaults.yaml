@@ -107,7 +107,7 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	RenderBuilding:
-	CriticalBuildingState:
+	DeadBuildingState:
 	EmitInfantryOnSell:
 		ActorTypes: c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e1,e1,e1,e1,e1,e1,e1
 	MustBeDestroyed:
@@ -121,6 +121,8 @@
 
 ^CivBuilding:
 	Inherits: ^Building
+	DeadBuildingState:
+		Zombie: true
 	Health:
 		HP: 400
 		Armor: wood
@@ -132,6 +134,8 @@
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
+	DeadBuildingState:
+		Zombie: true
 	Valued:
 		Description: Field
 	RenderBuilding:
@@ -158,7 +162,6 @@
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
-		DamageStates: 2
 	GivesExperience:
 
 ^Tree:

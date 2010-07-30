@@ -442,8 +442,6 @@ CYCL:
 	Health:
 		HP: 300
 		Armor: none
-	RenderBuildingWall:
-		DamageStates: 3
 
 SBAG:
 	Category: Defense
@@ -474,8 +472,6 @@ BRIK:
 	Health:
 		HP: 1000
 		Armor: heavy
-	RenderBuildingWall:
-		DamageStates: 4
 	Wall:
 		CrushClasses: heavywall
 		
@@ -505,6 +501,7 @@ GUN:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
 	-RenderBuilding:
+	-DeadBuildingState:
 	RenderRangeCircle:
 
 SAM:
@@ -535,6 +532,7 @@ SAM:
 		PrimaryWeapon: Nike
 	AutoTarget:
 	-RenderBuilding:
+	-DeadBuildingState:
 	RenderRangeCircle:
 	
 GTWR:

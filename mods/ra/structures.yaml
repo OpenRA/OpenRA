@@ -946,8 +946,6 @@ BRIK:
 	Health:
 		HP: 1500
 		Armor: none
-	RenderBuildingWall:
-		DamageStates: 4
 	Wall:
 		CrushClasses: heavywall
 CYCL:
@@ -955,8 +953,6 @@ CYCL:
 	Health:
 		HP: 100
 		Armor: none
-	RenderBuildingWall:
-		DamageStates: 3
 		
 BARB:
 	Inherits: ^Wall
