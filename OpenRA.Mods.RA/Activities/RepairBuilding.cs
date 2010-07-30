@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (target == null || target.IsDead()) return NextActivity;
 			var health = target.traits.Get<Health>();
-			if (health.ExtendedDamageState == ExtendedDamageState.Undamaged)
+			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
 			
 			target.InflictDamage(self, -health.MaxHP, null);			

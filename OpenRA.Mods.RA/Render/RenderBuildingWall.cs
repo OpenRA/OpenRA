@@ -35,22 +35,22 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var numStates = self.Info.Traits.Get<RenderBuildingWallInfo>().DamageStates;
 
-			if (!e.ExtendedDamageStateChanged) return;
+			if (!e.DamageStateChanged) return;
 
-			switch (e.ExtendedDamageState)
+			switch (e.DamageState)
 			{
-				case ExtendedDamageState.Normal:
+				case DamageState.Normal:
 					seqName = "idle";
 					break;
-				case ExtendedDamageState.ThreeQuarter:
+				case DamageState.ThreeQuarter:
 					if (numStates >= 4)
 						seqName = "minor-damaged-idle";
 					break;
-				case ExtendedDamageState.Half:
+				case DamageState.Half:
 					seqName = "damaged-idle";
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
-				case ExtendedDamageState.Quarter:
+				case DamageState.Quarter:
 					if (numStates >= 3)
 					{
 						seqName = "critical-idle";

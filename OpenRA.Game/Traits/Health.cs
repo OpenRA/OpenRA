@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum ExtendedDamageState { Dead, Quarter, Half, ThreeQuarter, Normal, Undamaged };
+	public enum DamageState { Dead, Quarter, Half, ThreeQuarter, Normal, Undamaged };
 	
 	public class Health
 	{
@@ -53,26 +53,26 @@ namespace OpenRA.Traits
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
 				
-		public ExtendedDamageState ExtendedDamageState
+		public DamageState DamageState
 		{
 			get 
 			{
 				if (hp <= 0)
-					return ExtendedDamageState.Dead;
+					return DamageState.Dead;
 	
 				if (hp < MaxHP * 0.25f)
-					return ExtendedDamageState.Quarter;
+					return DamageState.Quarter;
 	
 				if (hp < MaxHP * 0.5f)
-					return ExtendedDamageState.Half;
+					return DamageState.Half;
 	
 				if (hp < MaxHP * 0.75f)
-					return ExtendedDamageState.ThreeQuarter;
+					return DamageState.ThreeQuarter;
 				
 				if (hp == MaxHP)
-					return ExtendedDamageState.Undamaged;
+					return DamageState.Undamaged;
 				
-				return ExtendedDamageState.Normal;
+				return DamageState.Normal;
 			}
 		}
 		
@@ -80,7 +80,7 @@ namespace OpenRA.Traits
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
-			var oldExtendedState = this.ExtendedDamageState;
+			var oldState = this.DamageState;
 			
 			/* apply the damage modifiers, if we have any. */
 			var modifier = (float)self.traits.WithInterface<IDamageModifier>()
@@ -109,8 +109,8 @@ namespace OpenRA.Traits
 				{
 					Attacker = attacker,
 					Damage = damage,
-					ExtendedDamageState = this.ExtendedDamageState,
-					ExtendedDamageStateChanged = this.ExtendedDamageState != oldExtendedState,
+					DamageState = this.DamageState,
+					DamageStateChanged = this.DamageState != oldState,
 					Warhead = warhead
 				});
 		}
@@ -124,10 +124,10 @@ namespace OpenRA.Traits
 			return (health == null) ? true : health.IsDead;
 		}
 				
-		public static ExtendedDamageState GetExtendedDamageState(this Actor self)
+		public static DamageState GetDamageState(this Actor self)
 		{
 			var health = self.traits.GetOrDefault<Health>();
-			return (health == null) ? ExtendedDamageState.Undamaged : health.ExtendedDamageState;
+			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 		
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, WarheadInfo warhead)

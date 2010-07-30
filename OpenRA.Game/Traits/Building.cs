@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 			{
 				self.World.WorldActor.traits.Get<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
 				Sound.Play(Info.DestroyedSound, self.CenterLocation);

@@ -25,8 +25,8 @@ namespace OpenRA.Traits
 		public Actor Attacker;
 		public WarheadInfo Warhead;
 		public int Damage;
-		public ExtendedDamageState ExtendedDamageState;
-		public bool ExtendedDamageStateChanged;
+		public DamageState DamageState;
+		public bool DamageStateChanged;
 	}
 
 	public interface ITick { void Tick(Actor self); }

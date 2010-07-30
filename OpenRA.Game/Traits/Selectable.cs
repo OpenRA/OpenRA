@@ -69,8 +69,8 @@ namespace OpenRA.Traits
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
-			var healthColor = (health.ExtendedDamageState == ExtendedDamageState.Quarter) ? Color.Red :
-							  (health.ExtendedDamageState == ExtendedDamageState.Half) ? Color.Yellow : Color.LimeGreen;
+			var healthColor = (health.DamageState == DamageState.Quarter) ? Color.Red :
+							  (health.DamageState == DamageState.Half) ? Color.Yellow : Color.LimeGreen;
 				
 			var healthColor2 = Color.FromArgb(
 				255,

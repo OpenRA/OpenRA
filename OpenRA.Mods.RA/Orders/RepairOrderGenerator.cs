@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Orders
 					yield break;
 				
 				if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>()
-				    && underCursor.GetExtendedDamageState() < ExtendedDamageState.Undamaged)
+				    && underCursor.GetDamageState() < DamageState.Undamaged)
 					yield return new Order("Repair", underCursor);
 			}
 		}

@@ -58,19 +58,19 @@ namespace OpenRA.Mods.RA.Render
 
 		public virtual void Damaged(Actor self, AttackInfo e)
 		{
-			if (!e.ExtendedDamageStateChanged)
+			if (!e.DamageStateChanged)
 				return;
 			
-			switch( e.ExtendedDamageState )
+			switch( e.DamageState )
 			{
-				case ExtendedDamageState.ThreeQuarter: case ExtendedDamageState.Normal: case ExtendedDamageState.Undamaged:
+				case DamageState.ThreeQuarter: case DamageState.Normal: case DamageState.Undamaged:
 					anim.ReplaceAnim("idle");
 					break;
-				case ExtendedDamageState.Half: case ExtendedDamageState.Quarter:
+				case DamageState.Half: case DamageState.Quarter:
 					anim.ReplaceAnim("damaged-idle");
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
-				case ExtendedDamageState.Dead:
+				case DamageState.Dead:
 					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), "building", false)));
 					break;
 			}

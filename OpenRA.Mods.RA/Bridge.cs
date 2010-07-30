@@ -160,18 +160,18 @@ namespace OpenRA.Mods.RA
 		void UpdateState()
 		{						
 			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
-			if (Info.Long && Health.ExtendedDamageState != ExtendedDamageState.Dead &&
+			if (Info.Long && Health.DamageState != DamageState.Dead &&
 			    ((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
 				(northNeighbour != null && Info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
 			{
 				self.Kill(self); // this changes the damagestate
 			}
 
-			var ds = Health.ExtendedDamageState;
-			currentTemplate = (ds == ExtendedDamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
-							  (ds == ExtendedDamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
+			var ds = Health.DamageState;
+			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
+							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
 
-			if (Info.Long && ds == ExtendedDamageState.Dead)
+			if (Info.Long && ds == DamageState.Dead)
 			{
 				// Long bridges have custom art for multiple segments being destroyed
 				bool waterToSouth = !IsIntact(southNeighbour);
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.RA
 					currentTemplate = Info.DestroyedPlusSouthTemplate;
 			}
 
-			if (ds == ExtendedDamageState.Dead && !dead)
+			if (ds == DamageState.Dead && !dead)
 			{
 				dead = true;
 				KillUnitsOnBridge();
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageStateChanged)
+			if (e.DamageStateChanged)
 			{
 				UpdateState();
 				if (northNeighbour != null) northNeighbour.UpdateState();

@@ -68,7 +68,7 @@ namespace OpenRA.Traits
 
 				self.World.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
 				self.InflictDamage(self, -hpToRepair, null);
-				if (Health.ExtendedDamageState == ExtendedDamageState.Undamaged)
+				if (Health.DamageState == DamageState.Undamaged)
 				{
 					isRepairing = false;
 					return;

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 			{
 				var death = e.Warhead != null ? e.Warhead.InfDeath : 0;
 				Sound.PlayVoice("Die", self);

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 				self.World.AddFrameEndTask(w =>
 					{
 						var info = self.Info.Traits.Get<LeavesHuskInfo>();

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		// Fire primary on death
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 				Detonate(self, e.Attacker);
 		}
 

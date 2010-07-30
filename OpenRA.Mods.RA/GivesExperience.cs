@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 			{	
 				// Prevent TK from giving exp
 				if (e.Attacker == null || e.Attacker.Owner.Stances[ self.Owner ] == Stance.Ally )

@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner.Stances[underCursor.Owner] != Stance.Ally && !forceFire) return null;
 				
 				// don't allow healing of fully-healed stuff!
-				if (underCursor.GetExtendedDamageState() == ExtendedDamageState.Undamaged) return null;
+				if (underCursor.GetDamageState() == DamageState.Undamaged) return null;
 			}
 			else
 			{

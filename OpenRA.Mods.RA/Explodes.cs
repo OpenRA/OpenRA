@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
+			if (e.DamageState == DamageState.Dead)
 			{
 				var weapon = ChooseWeaponForExplosion(self);
 				if (weapon != null)

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 				return true;	// wandered off faster than we could follow
 			
 			if (attack.target.IsActor
-			    && attack.target.Actor.GetExtendedDamageState() == ExtendedDamageState.Undamaged)
+			    && attack.target.Actor.GetDamageState() == DamageState.Undamaged)
 				return true;	// fully healed
 
 			return false;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 			return inRange
 				.Where(a => a != self && self.Owner.Stances[ a.Owner ] == Stance.Ally)
 				.Where(a => !a.IsDead())
-				.Where(a => a.traits.Contains<Health>() && a.GetExtendedDamageState() < ExtendedDamageState.Undamaged)
+				.Where(a => a.traits.Contains<Health>() && a.GetDamageState() < DamageState.Undamaged)
 				.Where(a => Combat.HasAnyValidWeapons(self, Target.FromActor(a)))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();

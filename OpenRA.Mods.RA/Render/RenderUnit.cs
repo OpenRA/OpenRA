@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.ExtendedDamageState > ExtendedDamageState.Half) return;
+			if (e.DamageState > DamageState.Half) return;
 			if (isSmoking) return;
 
 			isSmoking = true;

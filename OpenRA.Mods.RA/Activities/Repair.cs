@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 				}
 
 				self.InflictDamage(self, -hpToRepair, null);
-				if (health.ExtendedDamageState == ExtendedDamageState.Undamaged)
+				if (health.DamageState == DamageState.Undamaged)
 					return NextActivity;
 
 				if (host != null)
