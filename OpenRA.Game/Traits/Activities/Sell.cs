@@ -27,7 +27,6 @@ namespace OpenRA.Traits.Activities
 			var refundFraction = self.Info.Traits.Get<BuildingInfo>().RefundPercent * (health == null ? 1f : health.HPFraction);
 
 			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)(refundFraction * cost));
-			self.Kill(self);
 			
 			foreach (var ns in self.traits.WithInterface<INotifySold>())
 				ns.Sold(self);
