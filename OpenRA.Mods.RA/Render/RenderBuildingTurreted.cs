@@ -33,12 +33,12 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (!e.DamageStateChanged) return;
 
-			if (e.DamageState >= DamageState.Heavy)
+			if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 			{
 				anim.ReplaceAnim("damaged-idle");
 				Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 			}
-			else
+			else if (e.DamageState < DamageState.Heavy)
 				anim.ReplaceAnim("idle");
 		}
 	}

@@ -110,6 +110,7 @@ namespace OpenRA.Traits
 					Attacker = attacker,
 					Damage = damage,
 					DamageState = this.DamageState,
+					PreviousDamageState = oldState,
 					DamageStateChanged = this.DamageState != oldState,
 					Warhead = warhead
 				});

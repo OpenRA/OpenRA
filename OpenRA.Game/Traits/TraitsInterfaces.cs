@@ -26,6 +26,7 @@ namespace OpenRA.Traits
 		public WarheadInfo Warhead;
 		public int Damage;
 		public DamageState DamageState;
+		public DamageState PreviousDamageState;
 		public bool DamageStateChanged;
 	}
 

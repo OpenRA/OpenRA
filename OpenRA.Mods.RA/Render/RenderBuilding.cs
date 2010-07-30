@@ -63,12 +63,12 @@ namespace OpenRA.Mods.RA.Render
 			
 			if (e.DamageState == DamageState.Dead)	
 				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), "building", false)));
-			else if (e.DamageState >= DamageState.Heavy)
+			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 			{
 				anim.ReplaceAnim("damaged-idle");
 				Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 			}
-			else
+			else if (e.DamageState < DamageState.Heavy)
 				anim.ReplaceAnim("idle");
 		}
 
