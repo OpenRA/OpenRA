@@ -255,6 +255,7 @@ CAMERA:
 		Range: 10
 
 FLARE:
+	Aircraft:
 	Unit:
 	Health:
 		HP:1000

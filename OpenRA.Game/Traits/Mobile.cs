@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 			TerrainSpeed = new Dictionary<string, float>();
 			
 			if (info.TerrainTypes.Count() != info.TerrainSpeeds.Count())
-				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length missmatch");
+				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length mismatch");
 			
 			for (int i = 0; i < info.TerrainTypes.Count(); i++)
 			{
