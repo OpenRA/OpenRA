@@ -153,6 +153,8 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Adjacent: 7
+	Targetable:
+		TargetTypes: Ground
 	Wall:
 		CrushClasses: wall
 	LineBuild:

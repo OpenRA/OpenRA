@@ -51,6 +51,8 @@ namespace OpenRA.Mods.RA
 			this.self = init.self;
 			this.Location = init.location;
 			this.Info = info;
+			
+			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
