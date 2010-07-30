@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 			
 			if (underCursor.Owner == self.Owner &&
 				self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( underCursor.Info.Name ) &&
-				self.GetDamageState() < DamageState.Undamaged)
+				self.GetDamageState() > DamageState.Undamaged)
 				return new Order("Enter", self, underCursor);
 
 			return null;

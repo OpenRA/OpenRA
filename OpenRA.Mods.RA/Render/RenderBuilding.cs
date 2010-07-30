@@ -61,19 +61,15 @@ namespace OpenRA.Mods.RA.Render
 			if (!e.DamageStateChanged)
 				return;
 			
-			switch( e.DamageState )
+			if (e.DamageState == DamageState.Dead)	
+				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), "building", false)));
+			else if (e.DamageState >= DamageState.Heavy)
 			{
-				case DamageState.Medium: case DamageState.Light: case DamageState.Undamaged:
-					anim.ReplaceAnim("idle");
-					break;
-				case DamageState.Heavy: case DamageState.Critical:
-					anim.ReplaceAnim("damaged-idle");
-					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
-					break;
-				case DamageState.Dead:
-					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), "building", false)));
-					break;
+				anim.ReplaceAnim("damaged-idle");
+				Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 			}
+			else
+				anim.ReplaceAnim("idle");
 		}
 
 		public void Selling( Actor self )

@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum DamageState { Dead, Critical, Heavy, Medium, Light, Undamaged };
+	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead };
 	
 	public class Health
 	{
