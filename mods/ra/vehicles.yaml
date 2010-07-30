@@ -807,7 +807,7 @@ TTNK:
 	Health:
 		HP: 110
 		Armor: light
-	Unit:
+	Mobile:
 		Speed: 8
 	RevealsShroud:
 		Range: 7

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	class TransformsInfo : ITraitInfo
 	{
 		[ActorReference]
-		public readonly string IntoActor;
+		public readonly string IntoActor = null;
 		public readonly int2 Offset = int2.Zero;
 		public readonly int Facing = 96;
 		public readonly string[] TransformSounds = {};

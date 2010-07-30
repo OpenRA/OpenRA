@@ -502,7 +502,6 @@ C17:
 	Health:
 		HP: 25
 		Armor: light
-	Plane:
 	RenderUnit:
 	WithShadow:
 	Cargo:
@@ -521,7 +520,6 @@ A10:
 	Health:
 		HP: 60
 		Armor: light
-	Plane:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
