@@ -52,21 +52,7 @@ namespace OpenRA.Traits
 		
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
-		
-		public DamageState DamageState
-		{
-			get
-			{
-				if (hp <= 0)
-					return DamageState.Dead;
 				
-				if (hp < MaxHP * 0.5f)
-					return DamageState.Half;
-	
-				return DamageState.Normal;
-			}
-		}
-		
 		public ExtendedDamageState ExtendedDamageState
 		{
 			get 
@@ -94,7 +80,6 @@ namespace OpenRA.Traits
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
-			var oldState = this.DamageState;
 			var oldExtendedState = this.ExtendedDamageState;
 			
 			/* apply the damage modifiers, if we have any. */
@@ -124,9 +109,7 @@ namespace OpenRA.Traits
 				{
 					Attacker = attacker,
 					Damage = damage,
-					DamageState = this.DamageState,
 					ExtendedDamageState = this.ExtendedDamageState,
-					DamageStateChanged = this.DamageState != oldState,
 					ExtendedDamageStateChanged = this.ExtendedDamageState != oldExtendedState,
 					Warhead = warhead
 				});

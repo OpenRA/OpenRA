@@ -53,13 +53,14 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
-			switch (e.DamageState)
+			if (!e.ExtendedDamageStateChanged) return;
+			
+			switch( e.ExtendedDamageState )
 			{
-				case DamageState.Normal:
+				case ExtendedDamageState.ThreeQuarter: case ExtendedDamageState.Normal: case ExtendedDamageState.Undamaged:
 					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
 					break;
-				case DamageState.Half:
+				case ExtendedDamageState.Half: case ExtendedDamageState.Quarter:
 					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
 					break;
 			}

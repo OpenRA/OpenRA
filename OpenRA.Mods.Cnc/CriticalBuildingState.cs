@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
+			if (e.ExtendedDamageStateChanged && e.ExtendedDamageState == ExtendedDamageState.Dead)
 			{
 				self.traits.Get<RenderSimple>().anim.PlayRepeating("critical-idle");
 				self.World.AddFrameEndTask(

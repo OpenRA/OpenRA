@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged (Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
+			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
 				foreach (var harv in LinkedHarv)
 					harv.traits.Get<Harvester> ().UnlinkProc(harv, self);
 		}

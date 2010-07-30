@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
+			if (e.ExtendedDamageStateChanged && e.ExtendedDamageState == ExtendedDamageState.Dead)
 				Emit(self);
 		}
 	}

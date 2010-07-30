@@ -15,8 +15,6 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public enum DamageState { Normal, Half, Dead };
-	
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray };
 	public enum TagType { None, Fake, Primary };
@@ -27,9 +25,7 @@ namespace OpenRA.Traits
 		public Actor Attacker;
 		public WarheadInfo Warhead;
 		public int Damage;
-		public DamageState DamageState;
 		public ExtendedDamageState ExtendedDamageState;
-		public bool DamageStateChanged;
 		public bool ExtendedDamageStateChanged;
 	}
 

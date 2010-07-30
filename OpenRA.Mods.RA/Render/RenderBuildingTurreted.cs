@@ -31,15 +31,15 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void Damaged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
+			if (!e.ExtendedDamageStateChanged) return;
 
-			switch (e.DamageState)
+			switch( e.ExtendedDamageState )
 			{
-				case DamageState.Normal:
-					anim.Play( "idle" );
+				case ExtendedDamageState.ThreeQuarter: case ExtendedDamageState.Normal: case ExtendedDamageState.Undamaged:
+					anim.ReplaceAnim("idle");
 					break;
-				case DamageState.Half:
-					anim.Play( "damaged-idle" );
+				case ExtendedDamageState.Half: case ExtendedDamageState.Quarter:
+					anim.ReplaceAnim("damaged-idle");
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
 			}

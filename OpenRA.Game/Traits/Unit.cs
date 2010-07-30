@@ -32,7 +32,7 @@ namespace OpenRA.Traits
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
+			if (e.ExtendedDamageState == ExtendedDamageState.Dead)
 				if (self.Owner == self.World.LocalPlayer)
 					Sound.PlayVoice("Lost", self);
 		}
