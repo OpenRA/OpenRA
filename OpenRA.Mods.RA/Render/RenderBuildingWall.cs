@@ -39,18 +39,18 @@ namespace OpenRA.Mods.RA.Render
 
 			switch (e.DamageState)
 			{
-				case DamageState.Normal:
+				case DamageState.Light:
 					seqName = "idle";
 					break;
-				case DamageState.ThreeQuarter:
+				case DamageState.Medium:
 					if (numStates >= 4)
 						seqName = "minor-damaged-idle";
 					break;
-				case DamageState.Half:
+				case DamageState.Heavy:
 					seqName = "damaged-idle";
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
-				case DamageState.Quarter:
+				case DamageState.Critical:
 					if (numStates >= 3)
 					{
 						seqName = "critical-idle";

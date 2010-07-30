@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var ds = Health.DamageState;
-			currentTemplate = (ds == DamageState.Half && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
+			currentTemplate = (ds == DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate :
 							  (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate : Info.Template;
 
 			if (Info.Long && ds == DamageState.Dead)

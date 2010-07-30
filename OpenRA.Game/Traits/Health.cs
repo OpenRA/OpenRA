@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum DamageState { Dead, Quarter, Half, ThreeQuarter, Normal, Undamaged };
+	public enum DamageState { Dead, Critical, Heavy, Medium, Light, Undamaged };
 	
 	public class Health
 	{
@@ -61,18 +61,18 @@ namespace OpenRA.Traits
 					return DamageState.Dead;
 	
 				if (hp < MaxHP * 0.25f)
-					return DamageState.Quarter;
+					return DamageState.Critical;
 	
 				if (hp < MaxHP * 0.5f)
-					return DamageState.Half;
+					return DamageState.Heavy;
 	
 				if (hp < MaxHP * 0.75f)
-					return DamageState.ThreeQuarter;
+					return DamageState.Medium;
 				
 				if (hp == MaxHP)
 					return DamageState.Undamaged;
 				
-				return DamageState.Normal;
+				return DamageState.Light;
 			}
 		}
 		

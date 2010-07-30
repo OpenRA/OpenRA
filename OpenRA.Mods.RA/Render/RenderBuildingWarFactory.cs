@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 
 		string GetPrefix(Actor self)
 		{
-			return self.GetDamageState() <= DamageState.Half ? "damaged-" : "";
+			return self.GetDamageState() <= DamageState.Heavy ? "damaged-" : "";
 		}
 
 		public RenderWarFactory(Actor self)
@@ -57,10 +57,10 @@ namespace OpenRA.Mods.RA.Render
 			
 			switch( e.DamageState )
 			{
-				case DamageState.ThreeQuarter: case DamageState.Normal: case DamageState.Undamaged:
+				case DamageState.Medium: case DamageState.Light: case DamageState.Undamaged:
 					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
 					break;
-				case DamageState.Half: case DamageState.Quarter:
+				case DamageState.Heavy: case DamageState.Critical:
 					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
 					break;
 			}

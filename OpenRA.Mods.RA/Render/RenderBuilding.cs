@@ -63,10 +63,10 @@ namespace OpenRA.Mods.RA.Render
 			
 			switch( e.DamageState )
 			{
-				case DamageState.ThreeQuarter: case DamageState.Normal: case DamageState.Undamaged:
+				case DamageState.Medium: case DamageState.Light: case DamageState.Undamaged:
 					anim.ReplaceAnim("idle");
 					break;
-				case DamageState.Half: case DamageState.Quarter:
+				case DamageState.Heavy: case DamageState.Critical:
 					anim.ReplaceAnim("damaged-idle");
 					Sound.Play(self.Info.Traits.Get<BuildingInfo>().DamagedSound, self.CenterLocation);
 					break;
