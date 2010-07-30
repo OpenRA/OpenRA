@@ -220,7 +220,7 @@ CRATE:
 		SelectionShares: 50
 		Effect: dollar
 	LevelUpCrateAction:
-		SelectionShares: 50
+		SelectionShares: 40
 #	FirepowerUpgradeCrateAction:
 #		Multiplier: 2.0
 #		SelectionShares: 10

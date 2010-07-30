@@ -257,6 +257,7 @@ SHOK:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
+	Unit:
 	Mobile:
 		Speed: 3
 	RevealsShroud:
