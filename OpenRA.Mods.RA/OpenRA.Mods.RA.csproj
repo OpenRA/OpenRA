@@ -74,12 +74,10 @@
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Activities\UndeployMcv.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="Combat.cs" />
-    <Compile Include="ConstructionYard.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Explosion.cs" />
@@ -218,7 +216,6 @@
     <Compile Include="Activities\Drag.cs" />
     <Compile Include="ProducesHelicopters.cs" />
     <Compile Include="StoresOre.cs" />
-    <Compile Include="Activities\TransformIntoActor.cs" />
     <Compile Include="PaletteFromCurrentTheatre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
@@ -233,6 +230,7 @@
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
     <Compile Include="World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Transforms.cs" />
+    <Compile Include="Activities\Transform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -17,8 +17,11 @@ FACT:
 	AllowsBuildingRepair:
 	Production:
 		Produces: Building,Defense
-	ConstructionYard:
-
+		EnablePrimary: false
+	Transforms:
+		IntoActor: mcv
+		Offset:1,1
+		Facing: 96
 NUKE:
 	Inherits: ^Building
 	Buildable:

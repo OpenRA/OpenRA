@@ -20,6 +20,7 @@ namespace OpenRA.Traits
 		public readonly int[] SpawnOffset = null;
 		public readonly int[] ProductionOffset = null;
 		public readonly int[] ExitOffset = null;
+		public readonly bool EnablePrimary = true;
 		public readonly string[] Produces = { };
 	}
 
@@ -111,20 +112,20 @@ namespace OpenRA.Traits
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("Deploy", self);
+		{			
+			if (mi.Button == MouseButton.Right && underCursor == self && self.Info.Traits.Get<ProductionInfo>().EnablePrimary)
+				return new Order("PrimaryProducer", self);
 			return null;
 		}
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Deploy") ? "deploy" : null;
+			return (order.OrderString == "PrimaryProducer") ? "deploy" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Deploy")
+			if (order.OrderString == "PrimaryProducer")
 				SetPrimaryProducer(self, !isPrimary);
 		}
 		

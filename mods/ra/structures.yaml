@@ -461,7 +461,7 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
-	ConstructionYard:
+		EnablePrimary: false
 	IronCurtainable: 
 	Valued:
 		Cost: 2500
@@ -470,7 +470,10 @@ FACT:
 		Value: 2500
 	BaseBuilding:
 	AllowsBuildingRepair:
-
+	Transforms:
+		IntoActor: mcv
+		Offset:1,1
+		Facing: 96
 PROC:
 	Inherits: ^Building
 	Buildable:

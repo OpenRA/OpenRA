@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 				if (self.traits.Contains<Unit>())
 					self.QueueActivity(new Turn(Info.Facing));
 				
-				self.QueueActivity(new TransformIntoActor(Info.IntoActor, Info.Offset, Info.TransformSounds));
+				self.QueueActivity(new Transform(self, Info.IntoActor, Info.Offset, Info.Facing, Info.TransformSounds));
 			}
 		}
 		

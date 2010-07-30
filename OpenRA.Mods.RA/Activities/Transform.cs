@@ -12,29 +12,33 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class TransformIntoActor : IActivity
+	class Transform : IActivity
 	{
 		string actor = null;
 		int2 offset;
 		string[] sounds = null;		
 		bool isCanceled;
+		int facing;
 		
-		public TransformIntoActor(string actor, int2 offset, string[] sounds)
+		RenderBuilding rb;
+		public Transform(Actor self, string toActor, int2 offset, int facing, string[] sounds)
 		{
-			this.actor = actor;
+			this.actor = toActor;
 			this.offset = offset;
 			this.sounds = sounds;
+			this.facing = facing;
+			rb = self.traits.GetOrDefault<RenderBuilding>();
 		}
 		
 		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick( Actor self )
+		
+		void DoTransform(Actor self)
 		{
-			if (isCanceled) return NextActivity;
-
 			self.World.AddFrameEndTask(w =>
 			{
 				var selected = w.Selection.Contains(self);
@@ -48,10 +52,33 @@ namespace OpenRA.Mods.RA.Activities
 				var newHealth = a.traits.GetOrDefault<Health>();
 				if (oldHealth != null && newHealth != null)
 					newHealth.HPFraction = oldHealth.HPFraction;
-								
+				
+				var unit = a.traits.GetOrDefault<Unit>();
+				if (unit != null)
+					unit.Facing = facing;
+				
 				if (selected)
 					w.Selection.Add(w, a);
 			});
+		}
+		
+		bool started = false;
+		public IActivity Tick( Actor self )
+		{
+			if (isCanceled) return NextActivity;
+			if (started) return this;
+			
+			if (rb == null)
+				DoTransform(self);
+			else
+			{
+				rb.PlayCustomAnimBackwards(self, "make", () => DoTransform(self));
+				
+				foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
+					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
+				
+				started = true;	
+			}
 			return this;
 		}
 		
