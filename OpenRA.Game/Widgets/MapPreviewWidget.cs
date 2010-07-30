@@ -70,6 +70,7 @@ namespace OpenRA.Widgets
 		float PreviewScale = 0;
 		static Sprite UnownedSpawn = null;
 		static Sprite OwnedSpawn = null;
+
 		public override void DrawInner( World world )
 		{
 			if (UnownedSpawn == null)
@@ -104,6 +105,8 @@ namespace OpenRA.Widgets
 				new float2(MapRect.Location),
 				"chrome",
 				new float2( MapRect.Size ) );
+
+			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 			// Overlay spawnpoints
 			var colors = SpawnColors();
