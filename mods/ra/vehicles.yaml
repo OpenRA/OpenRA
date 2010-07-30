@@ -795,3 +795,22 @@ U2:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+
+TTNK:
+	Inherits: ^Tank
+	Buildable:
+		Prerequisites: stek
+		Owner: soviet
+		Cost: 1800
+		Description: Tesla Tank
+		LongDesc: TODO
+	Health:
+		HP: 110
+		Armor: light
+	Unit:
+		Speed: 8
+	RevealsShroud:
+		Range: 7
+	AttackBase:
+		PrimaryWeapon: TTankZap
+	RenderUnitSpinner:

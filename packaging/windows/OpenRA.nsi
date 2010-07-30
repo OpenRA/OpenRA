@@ -98,6 +98,7 @@ SectionGroup /e "Mods"
 			File "..\..\mods\ra\*.*"
 			File /r "..\..\mods\ra\maps"
 			File /r "..\..\mods\ra\chrome"
+			File /r "..\..\mods\ra\extras"
 		SectionEnd
 		Section "Download content" RA_Content
 			AddSize 10137

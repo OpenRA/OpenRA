@@ -735,3 +735,27 @@ Demolish:
 		Verses: 100%,100%,100%,100%,100%
 		ImpactSound: kaboom25
 		Explosion: building
+
+PortaTesla:
+	ROF: 70
+	Range: 3.5
+	Report: SHKTROP1
+	Charges: yes
+	TeslaZap:
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 5
+		Damage: 45
+
+TTankZap:
+	ROF: 120
+	Range: 7
+	Report: TESLA1
+	Charges: yes
+	TeslaZap:
+	Warhead:
+		Spread: 1
+		Verses: 100%,100%,100%,100%,100%
+		InfDeath: 5
+		Damage: 100
