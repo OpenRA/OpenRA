@@ -90,9 +90,9 @@ namespace OpenRA.Mods.RA
 		{
 			currentTemplate = template;
 			if (template == Info.DamagedTemplate)
-				Health.InflictDamage(self, self, Health.MaxHP/2, null);
+				Health.HPFraction = .5f;
 			else if (template != Info.Template)
-				Health.InflictDamage(self, self, Health.MaxHP, null);
+				Health.HPFraction = 0f;
 				
 			// Create a new cache to store the tile data
 			if (cachedTileset != self.World.Map.Tileset)

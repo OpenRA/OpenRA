@@ -44,7 +44,11 @@ namespace OpenRA.Traits
 		
 		public int HP { get { return hp; } }
 		public readonly int MaxHP;
-		public float HPFraction { get { return hp*1f/MaxHP; } }
+		public float HPFraction
+		{
+			get { return hp * 1f / MaxHP; }
+			set { hp = (int)(value * MaxHP); }
+		}
 		
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
