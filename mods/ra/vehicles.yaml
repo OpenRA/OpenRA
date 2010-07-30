@@ -107,7 +107,7 @@ V2RL:
 		Armor: heavy
 	Unit:
 	Mobile:
-		Speed: 8
+		Speed: 7
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -137,7 +137,7 @@ V2RL:
 		Armor: heavy
 	Unit:
 	Mobile:
-		Speed: 6
+		Speed: 5
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -799,7 +799,7 @@ U2:
 TTNK:
 	Inherits: ^Tank
 	Buildable:
-		Prerequisites: stek
+		Prerequisites: stek,tsla
 		Owner: soviet
 		Cost: 1800
 		Description: Tesla Tank
@@ -814,3 +814,5 @@ TTNK:
 	AttackBase:
 		PrimaryWeapon: TTankZap
 	RenderUnitSpinner:
+	Selectable:
+		Bounds: 28,28,0,0
