@@ -242,6 +242,7 @@ CRATE:
 		Power: AirstrikePower
 		SelectionShares: 5
 		Effect: parabombs
+	Unit:
 	RenderUnit:
 	BelowUnits:
 
