@@ -19,17 +19,14 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		string actor = null;
 		int2 offset;
-		string[] sounds = null;
-		bool transferPercentage;
-		
+		string[] sounds = null;		
 		bool isCanceled;
 		
-		public TransformIntoActor(string actor, int2 offset, bool transferHealthPercentage, string[] sounds)
+		public TransformIntoActor(string actor, int2 offset, string[] sounds)
 		{
 			this.actor = actor;
 			this.offset = offset;
 			this.sounds = sounds;
-			this.transferPercentage = transferHealthPercentage;
 		}
 		
 		public IActivity NextActivity { get; set; }
@@ -47,11 +44,10 @@ namespace OpenRA.Mods.RA.Activities
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
 				var a = w.CreateActor(actor, self.Location + offset, self.Owner);
-				var health = a.traits.GetOrDefault<Health>();
-				if (health != null)
-				{
-					health.TransferHPFromActor(a, self, transferPercentage);
-				}
+				var oldHealth = self.traits.GetOrDefault<Health>();
+				var newHealth = a.traits.GetOrDefault<Health>();
+				if (oldHealth != null && newHealth != null)
+					newHealth.HPFraction = oldHealth.HPFraction;
 								
 				if (selected)
 					w.Selection.Add(w, a);

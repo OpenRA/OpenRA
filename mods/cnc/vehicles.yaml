@@ -17,10 +17,10 @@ MCV:
 		Armor: light
 	RevealsShroud:
 		Range: 4
-	TransformsOnDeploy:
-		TransformsInto: fact
+	Transforms:
+		IntoActor: fact
 		Offset:-1,-1
-		DeployDirections: 96
+		Facing: 96
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformSounds: deploy1.aud
 	RenderUnit:

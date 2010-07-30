@@ -25,11 +25,10 @@ namespace OpenRA.Mods.RA.Activities
 			
 			var mcv = w.CreateActor("mcv", self.Location + new int2(1, 1), self.Owner);
 			
-			var health = mcv.traits.GetOrDefault<Health>();
-			if (health != null)
-			{
-				health.TransferHPFromActor(mcv, self, true);
-			}
+			var oldHealth = self.traits.GetOrDefault<Health>();
+			var newHealth = mcv.traits.GetOrDefault<Health>();
+			if (oldHealth != null && newHealth != null)
+				newHealth.HPFraction = oldHealth.HPFraction;
 			
 			mcv.traits.Get<Unit>().Facing = 96;
 			

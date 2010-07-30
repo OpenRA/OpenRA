@@ -249,10 +249,10 @@ MCV:
 		Speed: 6
 	RevealsShroud:
 		Range: 4
-	TransformsOnDeploy:
-		TransformsInto: fact
+	Transforms:
+		IntoActor: fact
 		Offset:-1,-1
-		DeployDirections: 96
+		Facing: 96
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:

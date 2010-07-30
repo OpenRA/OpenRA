@@ -131,15 +131,6 @@ namespace OpenRA.Traits
 					Warhead = warhead
 				});
 		}
-
-		public void TransferHPFromActor(Actor self, Actor from, bool transferPercentage)
-		{
-			var fromHealth = from.traits.GetOrDefault<Health>();
-			if (fromHealth == null)
-				return;
-						
-			hp = (transferPercentage) ? (int)(fromHealth.HPFraction*MaxHP) : Math.Min(fromHealth.HP, MaxHP);
-		}
 	}
 	
 	public static class HealthExts
