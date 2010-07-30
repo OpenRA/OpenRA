@@ -110,6 +110,8 @@ namespace OpenRA.Traits
 		float MovementCostForCell(Actor self, int2 cell);
 		float MovementSpeedForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
+		int ROT(Actor self);
+		int InitialFacing(Actor self);
 	}
 	
 	public interface IOffsetCenterLocation { float2 CenterOffset { get; } }

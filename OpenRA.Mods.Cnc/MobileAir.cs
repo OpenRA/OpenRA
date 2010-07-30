@@ -59,15 +59,11 @@ namespace OpenRA.Traits
 
 		public override float MovementSpeedForCell(Actor self, int2 cell)
 		{		
-			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
-			if( unitInfo == null )
-			   return 0f;
-			
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return unitInfo.Speed * modifier;
+			return Info.Speed * modifier;
 		}
 		
 		public override IEnumerable<int2> OccupiedCells()

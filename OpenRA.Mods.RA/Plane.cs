@@ -19,14 +19,14 @@ namespace OpenRA.Mods.RA
 {
 	public class PlaneInfo : AircraftInfo
 	{
-		public override object Create( ActorInitializer init ) { return new Plane( init ); }
+		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
 	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, ITick
 	{
 		public IDisposable reservation;
 
-		public Plane( ActorInitializer init ) : base( init ) { }
+		public Plane( ActorInitializer init, PlaneInfo info ) : base( init, info ) { }
 
 		bool firstTick = true;
 		public void Tick(Actor self)

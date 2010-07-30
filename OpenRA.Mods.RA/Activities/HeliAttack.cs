@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<AircraftInfo>().ROT);
 
 			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
 			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);

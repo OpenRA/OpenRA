@@ -24,6 +24,9 @@ namespace OpenRA.Traits
 		public readonly string[] Crushes;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
+		public readonly int InitialFacing = 128;
+		public readonly int ROT = 255;
+		public readonly int Speed = 1;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
@@ -59,7 +62,6 @@ namespace OpenRA.Traits
 
 		Shroud shroud;
 		UnitInfluence uim;
-		UnitInfo unitInfo;
 		BuildingInfluence bim;
 		bool canShareCell;
 		
@@ -72,7 +74,6 @@ namespace OpenRA.Traits
 			shroud = self.World.WorldActor.traits.Get<Shroud>();
 			uim = self.World.WorldActor.traits.Get<UnitInfluence>();
 			bim = self.World.WorldActor.traits.Get<BuildingInfluence>();
-			unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
 			canShareCell = self.traits.Contains<SharesCell>();
 			
 			AddInfluence();
@@ -89,6 +90,10 @@ namespace OpenRA.Traits
 				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
 			}
 		}
+		
+		public int ROT(Actor self){ return Info.ROT; }
+		
+		public int InitialFacing(Actor self){ return Info.InitialFacing; }
 
 		public void SetPosition(Actor self, int2 cell)
 		{
@@ -236,17 +241,14 @@ namespace OpenRA.Traits
 		}
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)
-		{		
-			if( unitInfo == null )
-			   return 0f;
-
+		{
 			var type = self.World.GetTerrainType(cell);
 
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return unitInfo.Speed * TerrainSpeed[type] * modifier;
+			return Info.Speed * TerrainSpeed[type] * modifier;
 		}
 		
 		public IEnumerable<float2> GetCurrentPath(Actor self)

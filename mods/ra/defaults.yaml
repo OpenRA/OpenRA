@@ -1,11 +1,11 @@
 ^Vehicle:
 	Category: Vehicle
-	Unit:
-		ROT: 5
+	Unit:	
 	Mobile:
 		Crushes: atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 90%, 40%, 0%
+		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
 	Targetable:
@@ -21,12 +21,12 @@
 
 ^Tank:
 	Category: Vehicle
-	Unit:
-		ROT: 5
+	Unit:	
 	Mobile:
 		Crushes: wall, atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 90%, 70%, 0%
+		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
 	Targetable:
@@ -42,6 +42,7 @@
 
 ^Infantry:
 	Category: Infantry
+	Unit:
 	Health:
 		Armor: none
 	RevealsShroud:
@@ -163,8 +164,6 @@
 ^Husk:
 	Category: Vehicle
 	Unit:
-		ROT: 0
-		Speed: 0
 	Health:
 		HP: 140
 		Armor: Heavy

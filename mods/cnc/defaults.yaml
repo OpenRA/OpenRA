@@ -1,11 +1,11 @@
 ^Vehicle:
 	Category: Vehicle
 	Unit:
-		ROT: 5
 	Mobile:
 		Crushes: crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 50%, 40%, 0%
+		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
 	Targetable:
@@ -22,11 +22,11 @@
 ^Tank:
 	Category: Vehicle
 	Unit:
-		ROT: 5
 	Mobile:
 		Crushes: wall, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 70%, 70%, 0%
+		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
 	Targetable:
@@ -192,6 +192,7 @@
 ^Husk:
 	Category: Vehicle
 	Unit:
+	Mobile:
 		ROT: 0
 		Speed: 0
 	Health:

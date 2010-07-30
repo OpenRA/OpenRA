@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
 			if (unit.Altitude == cruiseAltitude)
 				Util.TickFacing(ref unit.Facing, desiredFacing, 
-					self.Info.Traits.Get<UnitInfo>().ROT);
+					self.Info.Traits.Get<AircraftInfo>().ROT);
 
 			if (unit.Altitude < cruiseAltitude)
 				++unit.Altitude;

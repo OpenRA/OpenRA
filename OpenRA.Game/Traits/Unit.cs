@@ -16,10 +16,6 @@ namespace OpenRA.Traits
 {
 	public class UnitInfo : ITraitInfo
 	{
-		public readonly int InitialFacing = 128;
-		public readonly int ROT = 255;
-		public readonly int Speed = 1;
-
 		public object Create( ActorInitializer init ) { return new Unit(); }
 	}
 

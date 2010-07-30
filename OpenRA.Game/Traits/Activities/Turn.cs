@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Traits.Activities
 {
 	public class Turn : IActivity
@@ -24,11 +26,13 @@ namespace OpenRA.Traits.Activities
 		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
+			var ROT = self.traits.WithInterface<IMove>().FirstOrDefault().ROT(self);
 
 			if( desiredFacing == unit.Facing )
 				return NextActivity;
 
-			Util.TickFacing( ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT );
+			Util.TickFacing(ref unit.Facing, desiredFacing, ROT);
+
 			return this;
 		}
 

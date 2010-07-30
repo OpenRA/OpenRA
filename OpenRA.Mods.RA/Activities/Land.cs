@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 				--unit.Altitude;
 
 			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<UnitInfo>().ROT);
+			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<AircraftInfo>().ROT);
 			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
 			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			var angle = unit.Facing / 128f * Math.PI;

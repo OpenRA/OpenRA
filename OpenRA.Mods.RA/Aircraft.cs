@@ -21,24 +21,33 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RepairBuildings = { "fix" };
 		[ActorReference]
 		public readonly string[] RearmBuildings = { "hpad", "afld" };
+		public readonly int InitialFacing = 128;
+		public readonly int ROT = 255;
+		public readonly int Speed = 1;
 
-		public virtual object Create( ActorInitializer init ) { return new Aircraft( init ); }
+		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
 
 	public class Aircraft : IMove, IOccupySpace
 	{
 		[Sync]
 		public int2 Location;
+		AircraftInfo Info;
 
-		public Aircraft( ActorInitializer init )
+		public Aircraft( ActorInitializer init , AircraftInfo info)
 		{
 			this.Location = init.location;
+			Info = info;
 		}
 
 		public int2 TopLeft
 		{
 			get { return Location; }
 		}
+		
+		public int ROT(Actor self){ return Info.ROT; }
+		
+		public int InitialFacing(Actor self){ return Info.InitialFacing; }
 
 		public void SetPosition(Actor self, int2 cell)
 		{
@@ -48,9 +57,8 @@ namespace OpenRA.Mods.RA
 		
 		public bool AircraftCanEnter(Actor self, Actor a)
 		{
-			var aircraft = self.Info.Traits.Get<AircraftInfo>();
-			return aircraft.RearmBuildings.Contains( a.Info.Name )
-				|| aircraft.RepairBuildings.Contains( a.Info.Name );
+			return Info.RearmBuildings.Contains( a.Info.Name )
+				|| Info.RepairBuildings.Contains( a.Info.Name );
 		}
 
 		public virtual IEnumerable<float2> GetCurrentPath(Actor self)
@@ -67,15 +75,11 @@ namespace OpenRA.Mods.RA
 		
 		public float MovementSpeedForCell(Actor self, int2 cell)
 		{		
-			var unitInfo = self.Info.Traits.GetOrDefault<UnitInfo>();
-			if( unitInfo == null)
-			   return 0f;
-			
 			var modifier = self.traits
 				.WithInterface<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return unitInfo.Speed * modifier;
+			return Info.Speed * modifier;
 		}
 		
 		int2[] noCells = new int2[] { };

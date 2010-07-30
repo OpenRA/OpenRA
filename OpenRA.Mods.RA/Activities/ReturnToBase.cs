@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			
 			var approachStart = landPos - new float2(unit.Altitude * speed, 0);
-			var turnRadius = (128f / self.Info.Traits.Get<UnitInfo>().ROT) * speed / (float)Math.PI;
+			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;
 
 			/* work out the center points */
 			var fwd = -float2.FromAngle(unit.Facing / 128f * (float)Math.PI);

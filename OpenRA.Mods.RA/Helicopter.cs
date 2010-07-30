@@ -26,14 +26,18 @@ namespace OpenRA.Mods.RA
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
 
-		public override object Create( ActorInitializer init ) { return new Helicopter( init ); }
+		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
 	}
 
 	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public IDisposable reservation;
+		HelicopterInfo Info;
 
-		public Helicopter( ActorInitializer init ) : base( init ) { }
+		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info ) 
+		{
+			Info = info;
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
@@ -86,9 +90,9 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
 				
-				if (self.Info.Traits.Get<HelicopterInfo>().LandWhenIdle)
+				if (Info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
+					self.QueueActivity(new Turn(Info.InitialFacing));
 					self.QueueActivity(new HeliLand(true));
 				}
 			}
@@ -115,9 +119,9 @@ namespace OpenRA.Mods.RA
 				
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
-				self.QueueActivity(new Turn(self.Info.Traits.GetOrDefault<UnitInfo>().InitialFacing));
+				self.QueueActivity(new Turn(Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
-				self.QueueActivity(self.Info.Traits.Get<HelicopterInfo>().RearmBuildings.Contains(order.TargetActor.Info.Name)
+				self.QueueActivity(Info.RearmBuildings.Contains(order.TargetActor.Info.Name)
 					? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
 		}
@@ -129,7 +133,6 @@ namespace OpenRA.Mods.RA
 			if (unit.Altitude <= 0)
 				return;
 			
-			var Info = self.Info.Traits.Get<HelicopterInfo>();
 			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
 			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
@@ -158,7 +161,7 @@ namespace OpenRA.Mods.RA
 				return float2.Zero;
 			var d = self.CenterLocation - h.CenterLocation;
 			
-			if (d.Length > self.Info.Traits.Get<HelicopterInfo>().IdealSeparation)
+			if (d.Length > Info.IdealSeparation)
 				return float2.Zero;
 
 			if (d.LengthSquared < Epsilon)

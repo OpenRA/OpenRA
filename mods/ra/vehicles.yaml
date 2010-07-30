@@ -6,9 +6,9 @@ BADR:
 		HP: 60
 		Armor: light
 	Unit:
+	Plane:
 		ROT: 5
 		Speed: 16
-	Plane:
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
@@ -26,9 +26,9 @@ BADR.bomber:
 		HP: 60
 		Armor: light
 	Unit:
+	Plane:
 		ROT: 5
 		Speed: 16
-	Plane:
 	LimitedAmmo:
 		Ammo: 7
 	RenderUnit:
@@ -51,6 +51,7 @@ V2RL:
 		HP: 150
 		Armor: light
 	Unit:
+	Mobile:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
@@ -75,6 +76,7 @@ V2RL:
 		HP: 300
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 9
 	RevealsShroud:
 		Range: 4
@@ -104,6 +106,7 @@ V2RL:
 		HP: 400
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 8
 	RevealsShroud:
 		Range: 5
@@ -133,6 +136,7 @@ V2RL:
 		HP: 550
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 6
 	RevealsShroud:
 		Range: 5
@@ -162,6 +166,7 @@ V2RL:
 		HP: 750
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 3
 	RevealsShroud:
 		Range: 6
@@ -198,6 +203,7 @@ ARTY:
 		HP: 75
 		Armor: light
 	Unit:
+	Mobile:
 		ROT: 2
 		Speed: 6
 	RevealsShroud:
@@ -226,6 +232,7 @@ HARV:
 		HP: 600
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 6
 	RevealsShroud:
 		Range: 4
@@ -246,6 +253,7 @@ MCV:
 		HP: 600
 		Armor: light
 	Unit:
+	Mobile:
 		Speed: 6
 	RevealsShroud:
 		Range: 4
@@ -272,6 +280,7 @@ JEEP:
 		HP: 150
 		Armor: light
 	Unit:
+	Mobile:
 		ROT: 10
 		Speed: 12
 	RevealsShroud:
@@ -298,6 +307,7 @@ APC:
 		HP: 200
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 10
 	RevealsShroud:
 		Range: 5
@@ -327,6 +337,7 @@ MNLY.AP:
 		HP: 100
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 9
 	RevealsShroud:
 		Range: 5
@@ -352,6 +363,7 @@ MNLY.AT:
 		HP: 100
 		Armor: heavy
 	Unit:
+	Mobile:
 		Speed: 9
 	RevealsShroud:
 		Range: 5
@@ -369,6 +381,7 @@ TRUK:
 		HP: 110
 		Armor: light
 	Unit:
+	Mobile:
 		Speed: 10
 	RevealsShroud:
 		Range: 3
@@ -388,6 +401,7 @@ SS:
 		HP: 120
 		Armor: light
 	Unit:
+	Mobile:
 		ROT: 4
 		Speed: 5
 	RevealsShroud:
@@ -420,6 +434,7 @@ MSUB:
 		HP: 200
 		Armor: light
 	Unit:
+	Mobile:
 		ROT: 3
 		Speed: 3
 	RevealsShroud:
@@ -451,6 +466,7 @@ DD:
 		HP: 400
 		Armor: heavy
 	Unit:
+	Mobile:
 		ROT: 7
 		Speed: 6
 	RevealsShroud:
@@ -481,6 +497,7 @@ CA:
 		HP: 800
 		Armor: heavy
 	Unit:
+	Mobile:
 		ROT: 2
 		Speed: 2
 	RevealsShroud:
@@ -513,6 +530,7 @@ LST:
 		HP: 350
 		Armor: heavy
 	Unit:
+	Mobile:
 		ROT: 10
 		Speed: 14
 	RevealsShroud:
@@ -538,6 +556,7 @@ PT:
 		HP: 200
 		Armor: heavy
 	Unit:
+	Mobile:
 		ROT: 7
 		Speed: 9
 	RevealsShroud:
@@ -568,9 +587,6 @@ MIG:
 		HP: 70
 		Armor: light
 	Unit:
-		InitialFacing: 192
-		ROT: 5
-		Speed: 20
 	RevealsShroud:
 		Range: 12
 	AttackPlane:
@@ -579,6 +595,9 @@ MIG:
 		PrimaryLocalOffset: -15,0,-10,-12,0,6
 		SecondaryLocalOffset: 15,0,10,12,0,6
 	Plane:
+		InitialFacing: 192
+		ROT: 5
+		Speed: 20
 		RearmBuildings: afld
 	RenderUnit:
 	WithShadow:
@@ -601,9 +620,6 @@ YAK:
 		HP: 60
 		Armor: light
 	Unit:
-		InitialFacing: 192
-		ROT: 5
-		Speed: 16
 	RevealsShroud:
 		Range: 10
 	AttackPlane:
@@ -611,6 +627,9 @@ YAK:
 		SecondaryWeapon: ChainGun
 	Plane:
 		RearmBuildings: afld
+		InitialFacing: 192
+		ROT: 5
+		Speed: 16
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -633,13 +652,13 @@ TRAN:
 		HP: 90
 		Armor: light
 	Unit:
-		InitialFacing: 20
-		ROT: 5
-		Speed: 12
 	RevealsShroud:
 		Range: 12
 	Helicopter:
 		RearmBuildings: hpad
+		InitialFacing: 20
+		ROT: 5
+		Speed: 12
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-4
 		SecondaryOffset: 0,-14,0,-2
@@ -663,9 +682,6 @@ HELI:
 		HP: 120
 		Armor: light
 	Unit:
-		InitialFacing: 20
-		ROT: 4
-		Speed: 16
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
@@ -675,6 +691,9 @@ HELI:
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		RearmBuildings: hpad
+		InitialFacing: 20
+		ROT: 4
+		Speed: 16
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -696,9 +715,6 @@ HIND:
 		HP: 120
 		Armor: light
 	Unit:
-		InitialFacing: 20
-		ROT: 4
-		Speed: 12
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
@@ -707,6 +723,9 @@ HIND:
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		RearmBuildings: hpad
+		InitialFacing: 20
+		ROT: 4
+		Speed: 12
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:
@@ -719,6 +738,7 @@ U2:
 		HP: 2000
 		Armor: heavy
 	Unit:
+	Mobile:
 		ROT: 7
 		Speed: 40
 	Plane:

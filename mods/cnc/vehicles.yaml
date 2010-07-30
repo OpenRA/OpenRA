@@ -11,6 +11,7 @@ MCV:
 	Selectable:
 		Priority: 3
 	Unit:
+	Mobile:
 		Speed: 6
 	Health:
 		HP: 600
@@ -44,6 +45,7 @@ HARV:
 		PipColor: Green
 		Capacity: 28
 	Unit:
+	Mobile:
 		Speed: 6
 	Health:
 		HP: 600
@@ -63,6 +65,7 @@ APC:
 		Description: Armored Personnel Carrier
 		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		ROT: 5
 		Speed: 15
 	Health:
@@ -93,6 +96,7 @@ ARTY:
 		Description: Artillery
 		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		ROT: 2
 		Speed: 6
 	Health:
@@ -117,6 +121,7 @@ FTNK:
 		Description: Flame Tank
 		LongDesc: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Unit:
+	Mobile:
 		ROT: 5
 		Speed: 9
 	Health:
@@ -142,6 +147,7 @@ BGGY:
 		Description: Nod Buggy
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		ROT: 10
 		Speed: 18
 	Health:
@@ -169,6 +175,7 @@ BIKE:
 		Description: Recon Bike
 		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Unit:
+	Mobile:
 		ROT: 10
 		Speed: 20
 	Health:
@@ -197,6 +204,7 @@ JEEP:
 		Description: Hum-Vee
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		ROT: 10
 		Speed: 15
 	Health:
@@ -224,6 +232,7 @@ LTNK:
 		Description: Light Tank
 		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		Speed: 9
 	Health:
 		HP: 300
@@ -254,6 +263,7 @@ MTNK:
 		Description: Medium Tank
 		LongDesc: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Unit:
+	Mobile:
 		Speed: 9
 	Health:
 		HP: 400
@@ -284,6 +294,8 @@ HTNK:
 		Description: Mammoth Tank
 		LongDesc: Heavily armored GDI Tank.\n  Strong vs Everything
 	Unit:
+	Mobile:
+		Crushes: wall, heavywall
 		Speed: 3
 	Health:
 		HP: 600
@@ -306,8 +318,6 @@ HTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Mobile:
-		Crushes: wall, heavywall
 
 MSAM:
 	Inherits: ^Tank
@@ -320,6 +330,7 @@ MSAM:
 		Description: Rocket Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		Speed: 6
 	Health:
 		HP: 120
@@ -349,6 +360,7 @@ MLRS:
 		Description: SSM Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 	Unit:
+	Mobile:
 		Speed: 6
 	Health:
 		HP: 120
@@ -374,6 +386,7 @@ STNK:
 		Description: Stealth Tank
 		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Unit:
+	Mobile:
 		Speed: 15
 	Health:
 		HP: 110
@@ -402,6 +415,7 @@ TRAN:
 		Description: Chinook Transport
 		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
 	Unit:
+	MobileAir:
 		InitialFacing: 20
 		ROT: 5
 		Speed: 15
@@ -430,6 +444,7 @@ HELI:
 		Description: Apache Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
+	MobileAir:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 20
@@ -459,6 +474,7 @@ ORCA:
 		Description: Orca
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Unit:
+	MobileAir:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 20
@@ -480,6 +496,7 @@ C17:
 		LZRange: 1
 	Inherits: ^Plane
 	Unit:
+	Plane:
 		ROT: 5
 		Speed: 25
 	Health:
@@ -498,6 +515,7 @@ C17:
 A10:
 	Inherits: ^Plane
 	Unit:
+	Plane:
 		ROT: 4
 		Speed: 25
 	Health:

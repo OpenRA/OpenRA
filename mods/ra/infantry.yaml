@@ -13,7 +13,7 @@ DOG:
 		Bounds: 12,17,-1,-4
 	Health:
 		HP: 12
-	Unit:
+	Mobile:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
@@ -35,7 +35,7 @@ E1:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
-	Unit:
+	Mobile:
 		Speed: 4
 	AttackBase:
 		PrimaryWeapon: M1Carbine
@@ -55,7 +55,7 @@ E2:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 50
-	Unit:
+	Mobile:
 		Speed: 5
 	AttackBase:
 		PrimaryWeapon: Grenade
@@ -77,7 +77,7 @@ E3:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 45
-	Unit:
+	Mobile:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: RedEye
@@ -99,7 +99,7 @@ E4:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 40
-	Unit:
+	Mobile:
 		Speed: 3
 	AttackBase:
 		PrimaryWeapon: Flamer
@@ -122,7 +122,7 @@ E6:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
-	Unit:
+	Mobile:
 		Speed: 4
 	Passenger:
 		ColorOfCargoPip: Yellow
@@ -146,7 +146,7 @@ SPY:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
-	Unit:
+	Mobile:
 		Speed: 4
 	RevealsShroud:
 		Range: 5
@@ -173,7 +173,7 @@ E7:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 100
-	Unit:
+	Mobile:
 		Speed: 5
 	RevealsShroud:
 		Range: 6
@@ -199,7 +199,7 @@ MEDI:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 80
-	Unit:
+	Mobile:
 		Speed: 4
 	RevealsShroud:
 		Range: 3
@@ -221,7 +221,7 @@ C1:
 		Description: Technician
 	Health:
 		HP: 20
-	Unit:
+	Mobile:
 		Speed: 4
 	RevealsShroud:
 		Range: 2
@@ -238,7 +238,7 @@ C2:
 		Description: Technician
 	Health:
 		HP: 20
-	Unit:
+	Mobile:
 		Speed: 4
 	RevealsShroud:
 		Range: 2
