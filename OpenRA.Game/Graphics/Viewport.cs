@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Graphics
 {
-	class Viewport
+	public class Viewport
 	{
 		readonly float2 screenSize;
 		float2 scrollPosition;

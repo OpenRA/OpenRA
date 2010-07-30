@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	static class ChromeProvider
+	public static class ChromeProvider
 	{
 		static Dictionary<string, Dictionary<string, MappedImage>> collections;
 		static Dictionary<string, Sheet> cachedSheets;

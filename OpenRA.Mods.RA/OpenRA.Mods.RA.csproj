@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -200,6 +200,7 @@
     <Compile Include="DefaultShellmapScript.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
+    <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />
     <Compile Include="NukePaletteEffect.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Cloak.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
+    <Compile Include="World\ChoosePaletteOnSelect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

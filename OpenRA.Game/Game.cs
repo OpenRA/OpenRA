@@ -36,7 +36,7 @@ namespace OpenRA
 		public static readonly int CellSize = 24;
 
 		public static World world;
-		internal static Viewport viewport;
+		public static Viewport viewport;
 		internal static UserSettings Settings;
 
 		internal static OrderManager orderManager;

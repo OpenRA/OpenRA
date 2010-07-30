@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -125,7 +125,6 @@
     <Compile Include="Sync.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\World\SpatialBins.cs" />
-    <Compile Include="Traits\World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Cursor.cs" />
@@ -206,7 +205,6 @@
     <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
-    <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
@@ -266,7 +264,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Traits\" />
-  </ItemGroup>
 </Project>

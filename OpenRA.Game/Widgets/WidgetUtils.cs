@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	static class WidgetUtils
+	public static class WidgetUtils
 	{
 		public static Sprite GetChromeImage(World world, string name)
 		{

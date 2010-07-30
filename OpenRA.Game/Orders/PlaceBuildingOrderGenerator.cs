@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
-	class PlaceBuildingOrderGenerator : IOrderGenerator
+	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		readonly Actor Producer;
 		readonly string Building;

@@ -13,7 +13,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	static class SpriteSheetBuilder
+	public static class SpriteSheetBuilder
 	{
 		public static void Initialize( TileSet tileset )
 		{

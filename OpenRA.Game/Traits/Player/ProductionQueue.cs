@@ -15,14 +15,14 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class ProductionQueueInfo : ITraitInfo
+	public class ProductionQueueInfo : ITraitInfo
 	{
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
 		public object Create(ActorInitializer init) { return new ProductionQueue(init.self); }
 	}
 
-	class ProductionQueue : IResolveOrder, ITick
+	public class ProductionQueue : IResolveOrder, ITick
 	{
 		Actor self;
 
@@ -200,7 +200,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	class ProductionItem
+	public class ProductionItem
 	{
 		public readonly string Item;
 		
