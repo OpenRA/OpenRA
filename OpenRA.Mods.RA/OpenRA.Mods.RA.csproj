@@ -78,6 +78,7 @@
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="Crates\GiveMcvCrateAction.cs" />
     <Compile Include="Crates\GiveUnitCrateAction.cs" />
     <Compile Include="DetectCloaked.cs" />
     <Compile Include="Effects\Bullet.cs" />

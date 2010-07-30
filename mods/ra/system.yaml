@@ -242,6 +242,31 @@ CRATE:
 		Power: AirstrikePower
 		SelectionShares: 5
 		Effect: parabombs
+	GiveMcvCrateAction:
+		SelectionShares: 1000
+		Unit: mcv
+	GiveUnitCrateAction@jeep:
+		SelectionShares: 5
+		Unit: jeep
+	GiveUnitCrateAction@arty:
+		SelectionShares: 5
+		Unit: arty
+	GiveUnitCrateAction@v2rl:
+		SelectionShares: 5
+		Unit: v2rl
+	GiveUnitCrateAction@1tnk:
+		SelectionShares: 5
+		Unit: 1tnk
+	GiveUnitCrateAction@2tnk:
+		SelectionShares: 5
+		Unit: 2tnk
+	GiveUnitCrateAction@3tnk:
+		SelectionShares: 5
+		Unit: 3tnk
+	GiveUnitCrateAction@4tnk:
+		SelectionShares: 5
+		Unit: 4tnk
+		
 	Unit:
 	RenderUnit:
 	BelowUnits:

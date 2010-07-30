@@ -11,6 +11,6 @@
 namespace OpenRA.Traits
 {
 	/* tag trait for "bases": mcv/fact */
-	class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
-	class BaseBuilding { }
+	public class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
+	public class BaseBuilding { }
 }
