@@ -135,25 +135,6 @@ SectionGroup /e "Mods"
 			done:
 		SectionEnd
 	SectionGroupEnd
-	SectionGroup "Red Alert: Aftermath" Aftermath
-		Section "-AM_Core"
-			SetOutPath "$INSTDIR\mods\aftermath"
-			File "..\..\mods\aftermath\*.*"
-		SectionEnd
-		Section "Download content" AM_Content
-			AddSize 5941
-			IfFileExists "$INSTDIR\mods\aftermath\packages\hires1.mix" done dlcontent
-			dlcontent:
-				SetOutPath "$OUTDIR\packages"
-				NSISdl::download http://open-ra.org/packages/aftermath-packages.zip aftermath-packages.zip
-				Pop $R0
-				StrCmp $R0 "success" +2
-					Abort
-				ZipDLL::extractall "aftermath-packages.zip" "$OUTDIR"
-				Delete aftermath-packages.zip
-			done:
-		SectionEnd
-	SectionGroupEnd
 SectionGroupEnd
 
 ;***************************
@@ -271,13 +252,11 @@ SectionEnd
 LangString DESC_Client ${LANG_ENGLISH} "OpenRA client and dependencies"
 LangString DESC_RA ${LANG_ENGLISH} "Base Red Alert mod"
 LangString DESC_CNC ${LANG_ENGLISH} "Base Command and Conquer mod"
-LangString DESC_Aftermath ${LANG_ENGLISH} "Red Alert: Aftermath expansion mod (depends on base Red Alert mod)"
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${Client} $(DESC_Client)
 	!insertmacro MUI_DESCRIPTION_TEXT ${RA} $(DESC_RA)
 	!insertmacro MUI_DESCRIPTION_TEXT ${CNC} $(DESC_CNC)
-	!insertmacro MUI_DESCRIPTION_TEXT ${Aftermath} $(DESC_Aftermath)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;***************************
