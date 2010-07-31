@@ -18,6 +18,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
 
 ^Tank:
 	Category: Vehicle
@@ -39,6 +41,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
 
 ^Helicopter:
 	Category: Plane
@@ -54,6 +58,8 @@
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
 		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
 
 ^Infantry:
 	Category: Infantry
@@ -79,6 +85,29 @@
 	GivesExperience:
 #	SharesCell:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
+
+^CivInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+		Description: Civilian
+	Unit:
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 20
+	RevealsShroud:
+		Range: 2
+	AttackBase:
+		PrimaryWeapon: Pistol
+#	ActorLostNotification:
+#		Notification: civdead1.aud
+#		NotifyAll: true
 
 ^Plane:
 	Category: Plane
@@ -91,6 +120,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
 
 ^Building:
 	Category: Building
@@ -118,6 +149,8 @@
 	CaptureNotification@NOD:
 		Race: nod
 		Notification: nodcapt1.aud
+	ActorLostNotification:
+		Notification: strclost.aud
 
 ^CivBuilding:
 	Inherits: ^Building

@@ -18,6 +18,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlst1.aud
 
 ^Tank:
 	Category: Vehicle
@@ -39,6 +41,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlst1.aud
 
 ^Infantry:
 	Category: Infantry
@@ -63,6 +67,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlst1.aud
 
 ^Ship:
 	Category: Ship
@@ -79,6 +85,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: navylst1.aud
 
 ^Plane:
 	Category: Plane
@@ -91,6 +99,8 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: aunitl1.aud
 
 ^Building:
 	Category: Building
@@ -110,6 +120,7 @@
 	FrozenUnderFog:
 	CaptureNotification:
 		Notification: strucap1.aud
+
 ^Wall:
 	Category: Building
 	Building:

@@ -232,6 +232,7 @@
     <Compile Include="World\ChoosePaletteOnSelect.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Activities\Transform.cs" />
+    <Compile Include="ActorLostNotification.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

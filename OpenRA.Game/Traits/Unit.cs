@@ -19,15 +19,8 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new Unit(); }
 	}
 
-	public class Unit : INotifyDamage, IRadarSignature
-	{		
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (e.DamageState == DamageState.Dead)
-				if (self.Owner == self.World.LocalPlayer)
-					Sound.PlayVoice("Lost", self);
-		}
-		
+	public class Unit : IRadarSignature
+	{
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
 		{	
 			yield return self.Location;

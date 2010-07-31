@@ -192,3 +192,52 @@ BRIDGE4:
 	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
+
+C1:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+
+
+C2:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+C3:
+	Inherits: ^CivInfantry
+
+C4:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	
+C5:
+	Inherits: ^CivInfantry
+
+C6:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	
+C7:
+	Inherits: ^CivInfantry
+
+C8:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	
+C9:
+	Inherits: ^CivInfantry
+
+C10:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+		Bounds: 12,17,0,-9
+	
