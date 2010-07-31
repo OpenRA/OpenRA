@@ -143,9 +143,7 @@
     <Compile Include="OreRefinery.cs" />
     <Compile Include="ChronoshiftPaletteEffect.cs" />
     <Compile Include="SupportPowers\ChronoshiftPower.cs" />
-    <Compile Include="Crates\ArmorUpgradeCrateAction.cs" />
     <Compile Include="Crates\ExplodeCrateAction.cs" />
-    <Compile Include="Crates\FirepowerUpgradeCrateAction.cs" />
     <Compile Include="Crates\GiveCashCrateAction.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\InvulnEffect.cs" />
@@ -180,7 +178,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render\RenderSpy.cs" />
     <Compile Include="RepairableNear.cs" />
-    <Compile Include="Crates\SpeedUpgradeCrateAction.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ReturnOnIdle.cs" />
     <Compile Include="SeedsResource.cs" />
