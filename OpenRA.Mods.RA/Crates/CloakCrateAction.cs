@@ -39,7 +39,12 @@ namespace OpenRA.Mods.RA.Crates
 
 			var cloak = cloakInfo.Create(new ActorInitializer(collector, collector.Location));
 
-			collector.World.AddFrameEndTask(w => collector.traits.Add(cloak));
+			collector.World.AddFrameEndTask(w =>
+				{
+					w.Remove(collector);
+					collector.traits.Add(cloak);
+					w.Add(collector);
+				});
 
 			base.Activate(collector);
 		}

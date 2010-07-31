@@ -157,6 +157,11 @@ CRATE:
 		SelectionShares: 5
 		Effect: hide-map
 	CloakCrateAction:
-		SelectionShares: 1000
+		SelectionShares: 5
+		InitialDelay: .4
+		CloakDelay: 2.0
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		Effect: stealth
 	RenderUnit:
 	BelowUnits:
