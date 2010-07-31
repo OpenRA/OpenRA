@@ -197,6 +197,7 @@
     <Compile Include="DefaultShellmapScript.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
+    <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
