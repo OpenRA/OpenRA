@@ -37,22 +37,33 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class Barrel { public int2 Position; public int Facing; /* relative to turret */ }
+	public class Turret
+	{
+		public float Recoil = 0.0f;			// remaining recoil fraction
+		public int2 UnitSpacePosition;		// where, in the unit's local space.
+		public int2 ScreenSpacePosition;	// screen-space hack to make things line up good.
+
+		public Turret(int[] offset)
+		{
+			ScreenSpacePosition = offset.AbsOffset().ToInt2();
+			UnitSpacePosition = offset.RelOffset().ToInt2();
+		}
+	}
 
 	public class Weapon
 	{
 		public WeaponInfo Info;
 		public int FireDelay = 0;			// time (in frames) until the weapon can fire again
 		public int Burst = 0;				// burst counter
-		public float Recoil = 0.0f;			// remaining recoil fraction
 
-		public int[] Offset;
-		public Barrel[] Barrels;
+		public Barrel[] Barrels;			// where projectiles are spawned, in local turret space.
+		public Turret Turret;				// where this weapon is mounted
 
-		public Weapon(string weaponName, int[] offset, int[] localOffset)
+		public Weapon(string weaponName, Turret turret, int[] localOffset)
 		{
 			Info = Rules.Weapons[weaponName.ToLowerInvariant()];
 			Burst = Info.Burst;
-			Offset = offset;
+			Turret = turret;
 
 			var barrels = new List<Barrel>();
 			for (var i = 0; i < localOffset.Length / 3; i++)
@@ -74,12 +85,25 @@ namespace OpenRA.Mods.RA
 		public void Tick()
 		{
 			if (FireDelay > 0) --FireDelay;
-			Recoil = Math.Max(0f, Recoil - .2f);
+			Turret.Recoil = Math.Max(0f, Turret.Recoil - .2f);
 		}
 
 		public bool IsValidAgainst(Target target)
 		{
 			return Combat.WeaponValidForTarget(Info, target);
+		}
+
+		public void FiredShot()
+		{
+			Turret.Recoil = 1;
+
+			if (--Burst > 0)
+				FireDelay = Info.BurstDelay;
+			else
+			{
+				FireDelay = Info.ROF;
+				Burst = Info.Burst;
+			}
 		}
 	}
 
@@ -88,18 +112,23 @@ namespace OpenRA.Mods.RA
 		public Target target;
 
 		public List<Weapon> Weapons = new List<Weapon>();
+		public List<Turret> Turrets = new List<Turret>();
 
 		public AttackBase(Actor self)
 		{
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
+			Turrets.Add(new Turret(info.PrimaryOffset));
+			if (info.SecondaryOffset != null)
+				Turrets.Add(new Turret(info.SecondaryOffset));
+
 			if (info.PrimaryWeapon != null)
 				Weapons.Add(new Weapon(info.PrimaryWeapon, 
-					info.PrimaryOffset, info.PrimaryLocalOffset));
+					Turrets[0], info.PrimaryLocalOffset));
 
 			if (info.SecondaryWeapon != null)
 				Weapons.Add(new Weapon(info.SecondaryWeapon, 
-					info.SecondaryOffset ?? info.PrimaryOffset, info.SecondaryLocalOffset));
+					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset));
 		}
 
 		protected virtual bool CanAttack(Actor self)
@@ -149,7 +178,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var w in Weapons)
 				if (CheckFire(self, unit, w))
-					w.Recoil = 1;
+					w.FiredShot();
 		}
 
 		bool CheckFire(Actor self, Unit unit, Weapon w)
@@ -168,18 +197,10 @@ namespace OpenRA.Mods.RA
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
 		
 			var fireOffset = new[] { 
-				w.Offset.ElementAtOrDefault(0) + barrel.Position.X,
-				w.Offset.ElementAtOrDefault(1) + barrel.Position.Y,
-				w.Offset.ElementAtOrDefault(2),
-				w.Offset.ElementAtOrDefault(3) };
-
-			if (--w.Burst > 0)
-				w.FireDelay = w.Info.BurstDelay;
-			else
-			{
-				w.FireDelay = w.Info.ROF;
-				w.Burst = w.Info.Burst;
-			}
+				w.Turret.UnitSpacePosition.X + barrel.Position.X,
+				w.Turret.UnitSpacePosition.Y + barrel.Position.Y,
+				w.Turret.ScreenSpacePosition.X,
+				w.Turret.ScreenSpacePosition.Y };		// todo: retardage.
 
 			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
 
@@ -309,10 +330,6 @@ namespace OpenRA.Mods.RA
 					Target.FromOrder(order), 
 					Math.Max(0, (int)weapon.Info.Range)));
 		}
-
-		/* temp hack */
-		public float GetPrimaryRecoil() { return Weapons.Count > 0 ? Weapons[0].Recoil : 0; }
-		public float GetSecondaryRecoil() { return Weapons.Count > 1 ? Weapons[1].Recoil : 0; }
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
