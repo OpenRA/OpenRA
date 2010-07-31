@@ -176,23 +176,6 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public static bool HasAnyValidWeapons(Actor self, Target target)
-		{
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			if (info.PrimaryWeapon != null &&
-				WeaponValidForTarget(self.GetPrimaryWeapon(), target)) return true;
-			if (info.SecondaryWeapon != null &&
-				WeaponValidForTarget(self.GetSecondaryWeapon(), target)) return true;
-
-			return false;
-		}
-
-		public static float GetMaximumRange(Actor self)
-		{
-			return new[] { self.GetPrimaryWeapon(), self.GetSecondaryWeapon() }
-				.Where(w => w != null).Max(w => w.Range);
-		}
-
 		public static WeaponInfo GetPrimaryWeapon(this Actor self)
 		{
 			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();

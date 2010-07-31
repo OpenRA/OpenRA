@@ -48,10 +48,10 @@ namespace OpenRA.Mods.RA
 		public int[] Offset;
 		public Barrel[] Barrels;
 
-		public Weapon(WeaponInfo info, int[] offset, int[] localOffset)
+		public Weapon(string weaponName, int[] offset, int[] localOffset)
 		{
-			Info = info;
-			Burst = info.Burst;
+			Info = Rules.Weapons[weaponName.ToLowerInvariant()];
+			Burst = Info.Burst;
 			Offset = offset;
 
 			var barrels = new List<Barrel>();
@@ -76,6 +76,11 @@ namespace OpenRA.Mods.RA
 			if (FireDelay > 0) --FireDelay;
 			Recoil = Math.Max(0f, Recoil - .2f);
 		}
+
+		public bool IsValidAgainst(Target target)
+		{
+			return Combat.WeaponValidForTarget(Info, target);
+		}
 	}
 
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor, IOrderVoice
@@ -88,12 +93,12 @@ namespace OpenRA.Mods.RA
 		{
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			if (self.GetPrimaryWeapon() != null)
-				Weapons.Add(new Weapon(self.GetPrimaryWeapon(), 
+			if (info.PrimaryWeapon != null)
+				Weapons.Add(new Weapon(info.PrimaryWeapon, 
 					info.PrimaryOffset, info.PrimaryLocalOffset));
 
 			if (self.GetSecondaryWeapon() != null)
-				Weapons.Add(new Weapon(self.GetSecondaryWeapon(), 
+				Weapons.Add(new Weapon(info.SecondaryWeapon, 
 					info.SecondaryOffset ?? info.PrimaryOffset, info.SecondaryLocalOffset));
 		}
 
@@ -158,7 +163,7 @@ namespace OpenRA.Mods.RA
 			if (w.Info.Range * w.Info.Range * Game.CellSize * Game.CellSize
 			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
 			
-			if (!Combat.WeaponValidForTarget(w.Info, target)) return false;
+			if (!w.IsValidAgainst(target)) return false;
 
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
 		
@@ -226,7 +231,7 @@ namespace OpenRA.Mods.RA
 
 			var target = underCursor == null ? Target.FromCell(xy) : Target.FromActor(underCursor);
 
-			var isHeal = self.GetPrimaryWeapon().Warheads.First().Damage < 0;
+			var isHeal = Weapons[0].Info.Warheads[0].Damage < 0;
 			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 
 			if (isHeal)
@@ -252,7 +257,7 @@ namespace OpenRA.Mods.RA
 					return null;
 			}
 			
-			if (!Combat.HasAnyValidWeapons(self, target)) return null;
+			if (!HasAnyValidWeapons(target)) return null;
 
 			return new Order(isHeal ? "Heal" : "Attack", self, underCursor);
 		}
@@ -308,5 +313,8 @@ namespace OpenRA.Mods.RA
 		/* temp hack */
 		public float GetPrimaryRecoil() { return Weapons.Count > 0 ? Weapons[0].Recoil : 0; }
 		public float GetSecondaryRecoil() { return Weapons.Count > 1 ? Weapons[1].Recoil : 0; }
+
+		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
+		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
 	}
 }
