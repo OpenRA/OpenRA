@@ -711,10 +711,9 @@ U2:
 	Health:
 		HP: 2000
 		Armor: heavy
-	Mobile:
+	Plane:
 		ROT: 7
 		Speed: 40
-	Plane:
 	RenderUnit:
 	WithShadow:
 	IronCurtainable:
