@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			if (info != null)
 			{
 				alt = 0;
-				pos = Combat.GetTurretPosition(self, self.traits.Get<Unit>(), info.Offset, 0);
+				pos = Combat.GetTurretPosition(self, self.traits.Get<Unit>(), new Turret(info.Offset));
 				var ru = self.traits.Get<RenderUnit>();
 
 				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();

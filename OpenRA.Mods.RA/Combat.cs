@@ -190,19 +190,6 @@ namespace OpenRA.Mods.RA
 			return Util.RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), facing, .7f);
 		}
 
-		public static float2 GetTurretPosition(Actor self, Unit unit, int[] offset, float recoil)
-		{
-			if( unit == null ) return offset.AbsOffset();	/* things that don't have a rotating base don't need the turrets repositioned */
-
-			var ru = self.traits.GetOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var bodyFacing = unit.Facing;
-			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
-
-			return (Util.RotateVectorByFacing(offset.RelOffset(), quantizedFacing, .7f) + GetRecoil(self, recoil))
-				+ offset.AbsOffset();
-		}
-
 		public static float2 GetTurretPosition(Actor self, Unit unit, Turret turret)
 		{
 			if (unit == null) return turret.ScreenSpacePosition;

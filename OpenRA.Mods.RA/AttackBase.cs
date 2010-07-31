@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA
 				firedBy = self,
 				target = this.target,
 
-				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, fireOffset, 0f).ToInt2(),
+				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, new Turret(fireOffset)).ToInt2(),
 				srcAltitude = unit != null ? unit.Altitude : 0,
 				dest = target.CenterLocation.ToInt2(),
 				destAltitude = destUnit != null ? destUnit.Altitude : 0,

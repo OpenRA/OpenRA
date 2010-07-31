@@ -21,18 +21,18 @@ namespace OpenRA.Mods.RA.Render
 
 	class RenderUnitSpinner : RenderUnit
 	{
-		public RenderUnitSpinner( Actor self )
+		public RenderUnitSpinner(Actor self)
 			: base(self)
 		{
 			var unit = self.traits.Get<Unit>();
 			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
-			var spinnerAnim = new Animation( GetImage(self) );
-			spinnerAnim.PlayRepeating( "spinner" );
-			anims.Add( "spinner", new AnimationWithOffset(
+			var spinnerAnim = new Animation(GetImage(self));
+			spinnerAnim.PlayRepeating("spinner");
+			anims.Add("spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Combat.GetTurretPosition( self, unit, info.Offset, 0 ),
-				null ) { ZOffset = 1 } );
+				() => Combat.GetTurretPosition(self, unit, new Turret(info.Offset)),
+				null) { ZOffset = 1 });
 		}
 	}
 }
