@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 				}
 				self.CancelActivity();
 				
-				if (self.traits.Contains<Unit>())
+				if (self.traits.Contains<IFacing>())
 					self.QueueActivity(new Turn(Info.Facing));
 				
 				self.QueueActivity(new Transform(self, Info.IntoActor, Info.Offset, Info.Facing, Info.TransformSounds));

@@ -255,7 +255,6 @@ namespace OpenRA.Traits.Activities
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
-				var unit = self.traits.Get<Unit>();
 				var frac = (float)moveFraction / moveFractionTotal;
 
 				self.CenterLocation = float2.Lerp( from, to, frac );
@@ -278,8 +277,6 @@ namespace OpenRA.Traits.Activities
 
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
-				var unit = self.traits.Get<Unit>();
-
 				var nextCell = parent.PopPath( self, mobile );
 				if( nextCell != null )
 				{
