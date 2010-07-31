@@ -36,6 +36,8 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
+	public class Barrel { public int2 Position; public int Facing; /* relative to turret */ }
+
 	public class Weapon
 	{
 		public WeaponInfo Info;
@@ -44,14 +46,27 @@ namespace OpenRA.Mods.RA
 		public float Recoil = 0.0f;			// remaining recoil fraction
 
 		public int[] Offset;
-		public int[] LocalOffset;
+		public Barrel[] Barrels;
 
 		public Weapon(WeaponInfo info, int[] offset, int[] localOffset)
 		{
 			Info = info;
 			Burst = info.Burst;
 			Offset = offset;
-			LocalOffset = localOffset;
+
+			var barrels = new List<Barrel>();
+			for (var i = 0; i < localOffset.Length / 3; i++)
+				barrels.Add(new Barrel
+				{
+					Position = new int2(localOffset[3 * i], localOffset[3 * i + 1]),
+					Facing = localOffset[3 * i + 2]
+				});
+
+			// if no barrels specified, the default is "turret position; turret facing".
+			if (barrels.Count == 0)
+				barrels.Add(new Barrel { Position = int2.Zero, Facing = 0 });
+
+			Barrels = barrels.ToArray();
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }
@@ -128,11 +143,11 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			foreach (var w in Weapons)
-				if (CheckFire(self, unit, w.Info, ref w.FireDelay, w.Offset, ref w.Burst, w.LocalOffset))
+				if (CheckFire(self, unit, w, w.Info, ref w.FireDelay, w.Offset, ref w.Burst))
 					w.Recoil = 1;
 		}
 
-		bool CheckFire(Actor self, Unit unit, WeaponInfo weapon, ref int fireDelay, int[] offset, ref int burst, int[] localOffset)
+		bool CheckFire(Actor self, Unit unit, Weapon w, WeaponInfo weapon, ref int fireDelay, int[] offset, ref int burst)
 		{
 			if (fireDelay > 0) return false;
 
@@ -145,14 +160,11 @@ namespace OpenRA.Mods.RA
 			
 			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
 
-			var numOffsets = (localOffset.Length + 2) / 3;
-			if (numOffsets == 0) numOffsets = 1;
-			var localOffsetForShot = burst % numOffsets;
-			var thisLocalOffset = localOffset.Skip(3 * localOffsetForShot).Take(3).ToArray();
-
+			var barrel = w.Barrels[burst % w.Barrels.Length];
+		
 			var fireOffset = new[] { 
-				offset.ElementAtOrDefault(0) + thisLocalOffset.ElementAtOrDefault(0), 
-				offset.ElementAtOrDefault(1) + thisLocalOffset.ElementAtOrDefault(1), 
+				offset.ElementAtOrDefault(0) + barrel.Position.X,
+				offset.ElementAtOrDefault(1) + barrel.Position.Y,
 				offset.ElementAtOrDefault(2),
 				offset.ElementAtOrDefault(3) };
 
@@ -178,7 +190,7 @@ namespace OpenRA.Mods.RA
 				dest = target.CenterLocation.ToInt2(),
 				destAltitude = destUnit != null ? destUnit.Altitude : 0,
 				
-				facing = thisLocalOffset.ElementAtOrDefault(2) +
+				facing = barrel.Facing + 
 					(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
 					unit != null ? unit.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 			};
