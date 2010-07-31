@@ -11,8 +11,6 @@
 using System;
 using OpenRA.Traits;
 
-// TODO: strip out this mechanism - it doesnt really work.
-
 namespace OpenRA.Mods.RA
 {
 	class ReservableInfo : TraitInfo<Reservable> { }
@@ -26,7 +24,8 @@ namespace OpenRA.Mods.RA
 			if (reservedFor == null) 
 				return;		/* nothing to do */
 
-			if (reservedFor.IsDead()) reservedFor = null;		/* not likely to arrive now. */
+			if (reservedFor.IsDead() || !reservedFor.IsInWorld)
+				reservedFor = null;		/* not likely to arrive now. */
 		}
 
 		public IDisposable Reserve(Actor forActor)
