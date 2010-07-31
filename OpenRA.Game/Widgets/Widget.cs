@@ -53,11 +53,10 @@ namespace OpenRA.Widgets
 			{ 
 				if (rootWidget == null)
 				{
-					var widgetYaml = Game.Manifest.ChromeLayout.Select(a => MiniYaml.FromFile(a)).Aggregate(MiniYaml.Merge);
-
 					rootWidget = new ContainerWidget();
-					foreach( var w in widgetYaml )
-						rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
+					foreach( var file in Game.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
+						foreach( var w in file )
+							rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
 					
 					rootWidget.Initialize();
 					rootWidget.InitDelegates();
