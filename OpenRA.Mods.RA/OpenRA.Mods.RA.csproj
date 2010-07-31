@@ -23,7 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="cp ${TargetPath} ../mods/ra" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ra" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="mono RALint.exe ra" workingdir="${ProjectDir}/../" />
       </CustomCommands>
     </CustomCommands>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-		<OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
