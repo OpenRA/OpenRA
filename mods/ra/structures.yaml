@@ -556,7 +556,7 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Bib:
-	Production:
+	ReservableProduction:
 		SpawnOffset: 0,-4
 		Produces: Plane
 	BelowUnits:
@@ -583,7 +583,7 @@ AFLD:
 		Armor: heavy
 	RevealsShroud:
 		Range: 7
-	Production:
+	ReservableProduction:
 		Produces: Plane
 	BelowUnits:
 	Reservable:
