@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA.Effects
 			var targetPosition = Args.target.CenterLocation + offset;
 
 			var targetAltitude = 0;
-			if (Args.target.IsActor && Args.target.Actor.traits.GetOrDefault<Unit>() != null)
-				targetAltitude =  Args.target.Actor.traits.GetOrDefault<Unit>().Altitude;
+			if (Args.target.IsActor && Args.target.Actor.traits.Contains<Unit>())
+				targetAltitude =  Args.target.Actor.traits.Get<Unit>().Altitude;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
 			Traits.Util.TickFacing(ref Facing,
