@@ -183,11 +183,14 @@ namespace OpenRA.Mods.RA
 		{
 			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (abInfo == null || abInfo.Recoil == 0) return float2.Zero;
+
 			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
 			var facing = self.traits.Get<Turreted>().turretFacing;
-			return Util.RotateVectorByFacing(new float2(0, recoil * self.Info.Traits.Get<AttackBaseInfo>().Recoil), facing, .7f);
+			var localRecoil = new float2(0, recoil * abInfo.Recoil);	// vector in turret-space.
+
+			return Util.RotateVectorByFacing(localRecoil, facing, .7f);
 		}
 
 		public static float2 GetTurretPosition(Actor self, Unit unit, Turret turret)
