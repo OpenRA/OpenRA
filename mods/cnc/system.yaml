@@ -156,6 +156,8 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
+	CloakCrateAction:
+		SelectionShares: 1000
 	Unit:
 	RenderUnit:
 	BelowUnits:

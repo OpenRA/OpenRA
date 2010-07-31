@@ -10,20 +10,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CloakInfo : ITraitInfo
+	public class CloakInfo : ITraitInfo
 	{
 		public readonly float InitialDelay = .4f;	// seconds
 		public readonly float CloakDelay = 1.2f; // Seconds
 		public readonly string CloakSound = "subshow1.aud";
 		public readonly string UncloakSound = "subshow1.aud";
 
-		public object Create(ActorInitializer init) { return new Cloak(init.self); }
+		public CloakInfo() { }		/* only because we have other ctors */
+		
+		/* for CloakCrateAction */
+		public CloakInfo(float initialDelay, float cloakDelay, string cloakSound, string uncloakSound)
+		{
+			InitialDelay = initialDelay;
+			CloakDelay = cloakDelay;
+			CloakSound = cloakSound;
+			UncloakSound = uncloakSound;
+		}
+
+		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
 	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IVisibilityModifier, IRadarColorModifier
@@ -32,10 +43,13 @@ namespace OpenRA.Mods.RA
 		int remainingTime;
 		
 		Actor self;
-		public Cloak(Actor self)
+		CloakInfo info;
+		public Cloak(Actor self, CloakInfo info)
 		{
-			remainingTime = (int)(self.Info.Traits.Get<CloakInfo>().InitialDelay * 25);
+			this.info = info;
 			this.self = self;
+
+			remainingTime = (int)(info.InitialDelay * 25);
 		}
 
 		void DoSurface()
@@ -43,7 +57,7 @@ namespace OpenRA.Mods.RA
 			if (remainingTime <= 0)
 				OnSurface();
 
-			remainingTime = Math.Max(remainingTime, (int)(self.Info.Traits.Get<CloakInfo>().CloakDelay * 25));
+			remainingTime = Math.Max(remainingTime, (int)(info.CloakDelay * 25));
 		}
 
 		public void Attacking(Actor self) { DoSurface(); }
@@ -70,12 +84,12 @@ namespace OpenRA.Mods.RA
 
 		void OnSurface()
 		{
-			Sound.Play(self.Info.Traits.Get<CloakInfo>().UncloakSound, self.CenterLocation);
+			Sound.Play(info.UncloakSound, self.CenterLocation);
 		}
 
 		void OnDive()
 		{
-			Sound.Play(self.Info.Traits.Get<CloakInfo>().CloakSound, self.CenterLocation);
+			Sound.Play(info.CloakSound, self.CenterLocation);
 		}
 
 		public bool Cloaked { get { return remainingTime == 0; } }
