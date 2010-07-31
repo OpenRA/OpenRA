@@ -132,6 +132,7 @@ namespace OpenRA.FileFormats
 			{
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
+					kv.Value.Nodes.Add( "Type", new MiniYaml( kv.Value.Value ) );
 					var a = new ActorReference(kv.Key, kv.Value);
 					Actors.Add(a.Id, a);
 				}

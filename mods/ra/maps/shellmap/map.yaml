@@ -37,1560 +37,1171 @@ Players:
 		OwnsWorld: False
 		NonCombatant: False
 Actors:
-	Actor0:
-		Type: brik
+	Actor0: brik
 		Location: 32,43
 		Owner: Neutral
-	Actor1:
-		Type: brik
+	Actor1: brik
 		Location: 33,43
 		Owner: Neutral
-	Actor2:
-		Type: brik
+	Actor2: brik
 		Location: 37,43
 		Owner: Neutral
-	Actor3:
-		Type: brik
+	Actor3: brik
 		Location: 38,43
 		Owner: Neutral
-	Actor4:
-		Type: brik
+	Actor4: brik
 		Location: 32,44
 		Owner: Neutral
-	Actor5:
-		Type: brik
+	Actor5: brik
 		Location: 33,44
 		Owner: Neutral
-	Actor6:
-		Type: brik
+	Actor6: brik
 		Location: 37,44
 		Owner: Neutral
-	Actor7:
-		Type: brik
+	Actor7: brik
 		Location: 38,44
 		Owner: Neutral
-	Actor8:
-		Type: brik
+	Actor8: brik
 		Location: 93,46
 		Owner: Neutral
-	Actor9:
-		Type: brik
+	Actor9: brik
 		Location: 94,46
 		Owner: Neutral
-	Actor10:
-		Type: brik
+	Actor10: brik
 		Location: 97,46
 		Owner: Neutral
-	Actor11:
-		Type: brik
+	Actor11: brik
 		Location: 98,46
 		Owner: Neutral
-	Actor12:
-		Type: brik
+	Actor12: brik
 		Location: 91,47
 		Owner: Neutral
-	Actor13:
-		Type: brik
+	Actor13: brik
 		Location: 92,47
 		Owner: Neutral
-	Actor14:
-		Type: brik
+	Actor14: brik
 		Location: 93,47
 		Owner: Neutral
-	Actor15:
-		Type: brik
+	Actor15: brik
 		Location: 94,47
 		Owner: Neutral
-	Actor16:
-		Type: brik
+	Actor16: brik
 		Location: 97,47
 		Owner: Neutral
-	Actor17:
-		Type: brik
+	Actor17: brik
 		Location: 98,47
 		Owner: Neutral
-	Actor18:
-		Type: brik
+	Actor18: brik
 		Location: 99,47
 		Owner: Neutral
-	Actor19:
-		Type: brik
+	Actor19: brik
 		Location: 90,48
 		Owner: Neutral
-	Actor20:
-		Type: brik
+	Actor20: brik
 		Location: 91,48
 		Owner: Neutral
-	Actor21:
-		Type: brik
+	Actor21: brik
 		Location: 99,48
 		Owner: Neutral
-	Actor22:
-		Type: brik
+	Actor22: brik
 		Location: 90,49
 		Owner: Neutral
-	Actor23:
-		Type: brik
+	Actor23: brik
 		Location: 91,49
 		Owner: Neutral
-	Actor24:
-		Type: brik
+	Actor24: brik
 		Location: 89,50
 		Owner: Neutral
-	Actor25:
-		Type: brik
+	Actor25: brik
 		Location: 90,50
 		Owner: Neutral
-	Actor26:
-		Type: brik
+	Actor26: brik
 		Location: 96,50
 		Owner: Neutral
-	Actor27:
-		Type: brik
+	Actor27: brik
 		Location: 97,50
 		Owner: Neutral
-	Actor28:
-		Type: brik
+	Actor28: brik
 		Location: 89,51
 		Owner: Neutral
-	Actor29:
-		Type: brik
+	Actor29: brik
 		Location: 90,51
 		Owner: Neutral
-	Actor30:
-		Type: brik
+	Actor30: brik
 		Location: 93,51
 		Owner: Neutral
-	Actor31:
-		Type: brik
+	Actor31: brik
 		Location: 94,51
 		Owner: Neutral
-	Actor32:
-		Type: brik
+	Actor32: brik
 		Location: 95,51
 		Owner: Neutral
-	Actor33:
-		Type: brik
+	Actor33: brik
 		Location: 96,51
 		Owner: Neutral
-	Actor34:
-		Type: brik
+	Actor34: brik
 		Location: 97,51
 		Owner: Neutral
-	Actor35:
-		Type: brik
+	Actor35: brik
 		Location: 93,52
 		Owner: Neutral
-	Actor36:
-		Type: brik
+	Actor36: brik
 		Location: 96,52
 		Owner: Neutral
-	Actor37:
-		Type: brik
+	Actor37: brik
 		Location: 97,52
 		Owner: Neutral
-	Actor38:
-		Type: brik
+	Actor38: brik
 		Location: 98,52
 		Owner: Neutral
-	Actor39:
-		Type: brik
+	Actor39: brik
 		Location: 93,53
 		Owner: Neutral
-	Actor40:
-		Type: brik
+	Actor40: brik
 		Location: 96,53
 		Owner: Neutral
-	Actor41:
-		Type: brik
+	Actor41: brik
 		Location: 97,53
 		Owner: Neutral
-	Actor42:
-		Type: brik
+	Actor42: brik
 		Location: 98,53
 		Owner: Neutral
-	Actor43:
-		Type: brik
+	Actor43: brik
 		Location: 89,54
 		Owner: Neutral
-	Actor44:
-		Type: brik
+	Actor44: brik
 		Location: 90,54
 		Owner: Neutral
-	Actor45:
-		Type: brik
+	Actor45: brik
 		Location: 93,54
 		Owner: Neutral
-	Actor46:
-		Type: brik
+	Actor46: brik
 		Location: 94,54
 		Owner: Neutral
-	Actor47:
-		Type: brik
+	Actor47: brik
 		Location: 95,54
 		Owner: Neutral
-	Actor48:
-		Type: brik
+	Actor48: brik
 		Location: 96,54
 		Owner: Neutral
-	Actor49:
-		Type: brik
+	Actor49: brik
 		Location: 97,54
 		Owner: Neutral
-	Actor50:
-		Type: brik
+	Actor50: brik
 		Location: 89,55
 		Owner: Neutral
-	Actor51:
-		Type: brik
+	Actor51: brik
 		Location: 90,55
 		Owner: Neutral
-	Actor52:
-		Type: brik
+	Actor52: brik
 		Location: 96,55
 		Owner: Neutral
-	Actor53:
-		Type: brik
+	Actor53: brik
 		Location: 97,55
 		Owner: Neutral
-	Actor54:
-		Type: brik
+	Actor54: brik
 		Location: 90,56
 		Owner: Neutral
-	Actor55:
-		Type: brik
+	Actor55: brik
 		Location: 91,56
 		Owner: Neutral
-	Actor56:
-		Type: brik
+	Actor56: brik
 		Location: 90,57
 		Owner: Neutral
-	Actor57:
-		Type: brik
+	Actor57: brik
 		Location: 91,57
 		Owner: Neutral
-	Actor58:
-		Type: brik
+	Actor58: brik
 		Location: 99,57
 		Owner: Neutral
-	Actor59:
-		Type: brik
+	Actor59: brik
 		Location: 91,58
 		Owner: Neutral
-	Actor60:
-		Type: brik
+	Actor60: brik
 		Location: 92,58
 		Owner: Neutral
-	Actor61:
-		Type: brik
+	Actor61: brik
 		Location: 93,58
 		Owner: Neutral
-	Actor62:
-		Type: brik
+	Actor62: brik
 		Location: 94,58
 		Owner: Neutral
-	Actor63:
-		Type: brik
+	Actor63: brik
 		Location: 97,58
 		Owner: Neutral
-	Actor64:
-		Type: brik
+	Actor64: brik
 		Location: 98,58
 		Owner: Neutral
-	Actor65:
-		Type: brik
+	Actor65: brik
 		Location: 99,58
 		Owner: Neutral
-	Actor66:
-		Type: brik
+	Actor66: brik
 		Location: 93,59
 		Owner: Neutral
-	Actor67:
-		Type: brik
+	Actor67: brik
 		Location: 94,59
 		Owner: Neutral
-	Actor68:
-		Type: brik
+	Actor68: brik
 		Location: 97,59
 		Owner: Neutral
-	Actor69:
-		Type: brik
+	Actor69: brik
 		Location: 98,59
 		Owner: Neutral
-	Actor70:
-		Type: wood
+	Actor70: wood
 		Location: 59,69
 		Owner: Neutral
-	Actor71:
-		Type: wood
+	Actor71: wood
 		Location: 60,69
 		Owner: Neutral
-	Actor72:
-		Type: wood
+	Actor72: wood
 		Location: 61,69
 		Owner: Neutral
-	Actor73:
-		Type: wood
+	Actor73: wood
 		Location: 62,69
 		Owner: Neutral
-	Actor74:
-		Type: wood
+	Actor74: wood
 		Location: 63,69
 		Owner: Neutral
-	Actor75:
-		Type: wood
+	Actor75: wood
 		Location: 64,69
 		Owner: Neutral
-	Actor76:
-		Type: wood
+	Actor76: wood
 		Location: 65,69
 		Owner: Neutral
-	Actor77:
-		Type: brik
+	Actor77: brik
 		Location: 77,74
 		Owner: Neutral
-	Actor78:
-		Type: brik
+	Actor78: brik
 		Location: 78,74
 		Owner: Neutral
-	Actor79:
-		Type: brik
+	Actor79: brik
 		Location: 77,75
 		Owner: Neutral
-	Actor80:
-		Type: brik
+	Actor80: brik
 		Location: 78,75
 		Owner: Neutral
-	Actor81:
-		Type: brik
+	Actor81: brik
 		Location: 77,76
 		Owner: Neutral
-	Actor82:
-		Type: brik
+	Actor82: brik
 		Location: 76,77
 		Owner: Neutral
-	Actor83:
-		Type: brik
+	Actor83: brik
 		Location: 77,77
 		Owner: Neutral
-	Actor84:
-		Type: brik
+	Actor84: brik
 		Location: 76,78
 		Owner: Neutral
-	Actor85:
-		Type: brik
+	Actor85: brik
 		Location: 77,78
 		Owner: Neutral
-	Actor86:
-		Type: brik
+	Actor86: brik
 		Location: 76,83
 		Owner: Neutral
-	Actor87:
-		Type: brik
+	Actor87: brik
 		Location: 77,83
 		Owner: Neutral
-	Actor88:
-		Type: brik
+	Actor88: brik
 		Location: 76,84
 		Owner: Neutral
-	Actor89:
-		Type: brik
+	Actor89: brik
 		Location: 77,84
 		Owner: Neutral
-	Actor90:
-		Type: brik
+	Actor90: brik
 		Location: 76,85
 		Owner: Neutral
-	Actor91:
-		Type: brik
+	Actor91: brik
 		Location: 76,86
 		Owner: Neutral
-	Actor92:
-		Type: brik
+	Actor92: brik
 		Location: 76,87
 		Owner: Neutral
-	Actor93:
-		Type: brik
+	Actor93: brik
 		Location: 77,87
 		Owner: Neutral
-	Actor94:
-		Type: wood
+	Actor94: wood
 		Location: 27,88
 		Owner: Neutral
-	Actor95:
-		Type: wood
+	Actor95: wood
 		Location: 28,88
 		Owner: Neutral
-	Actor96:
-		Type: wood
+	Actor96: wood
 		Location: 29,88
 		Owner: Neutral
-	Actor97:
-		Type: brik
+	Actor97: brik
 		Location: 76,88
 		Owner: Neutral
-	Actor98:
-		Type: brik
+	Actor98: brik
 		Location: 77,88
 		Owner: Neutral
-	Actor99:
-		Type: wood
+	Actor99: wood
 		Location: 29,89
 		Owner: Neutral
-	Actor100:
-		Type: wood
+	Actor100: wood
 		Location: 29,91
 		Owner: Neutral
-	Actor101:
-		Type: wood
+	Actor101: wood
 		Location: 28,92
 		Owner: Neutral
-	Actor102:
-		Type: wood
+	Actor102: wood
 		Location: 29,92
 		Owner: Neutral
-	Actor103:
-		Type: tc01
+	Actor103: tc01
 		Location: 71,73
 		Owner: Neutral
-	Actor104:
-		Type: tc04
+	Actor104: tc04
 		Location: 73,73
 		Owner: Neutral
-	Actor105:
-		Type: tc05
+	Actor105: tc05
 		Location: 74,74
 		Owner: Neutral
-	Actor106:
-		Type: t10
+	Actor106: t10
 		Location: 100,83
 		Owner: Neutral
-	Actor107:
-		Type: t08
+	Actor107: t08
 		Location: 110,78
 		Owner: Neutral
-	Actor108:
-		Type: t07
+	Actor108: t07
 		Location: 116,89
 		Owner: Neutral
-	Actor109:
-		Type: t06
+	Actor109: t06
 		Location: 113,86
 		Owner: Neutral
-	Actor110:
-		Type: t05
+	Actor110: t05
 		Location: 111,84
 		Owner: Neutral
-	Actor111:
-		Type: t02
+	Actor111: t02
 		Location: 110,87
 		Owner: Neutral
-	Actor112:
-		Type: t01
+	Actor112: t01
 		Location: 112,89
 		Owner: Neutral
-	Actor113:
-		Type: tc01
+	Actor113: tc01
 		Location: 76,58
 		Owner: Neutral
-	Actor114:
-		Type: t05
+	Actor114: t05
 		Location: 93,49
 		Owner: Neutral
-	Actor115:
-		Type: t03
+	Actor115: t03
 		Location: 93,47
 		Owner: Neutral
-	Actor116:
-		Type: t02
+	Actor116: t02
 		Location: 91,54
 		Owner: Neutral
-	Actor117:
-		Type: t01
+	Actor117: t01
 		Location: 105,73
 		Owner: Neutral
-	Actor118:
-		Type: tc02
+	Actor118: tc02
 		Location: 115,71
 		Owner: Neutral
-	Actor119:
-		Type: t17
+	Actor119: t17
 		Location: 117,70
 		Owner: Neutral
-	Actor120:
-		Type: tc01
+	Actor120: tc01
 		Location: 107,89
 		Owner: Neutral
-	Actor121:
-		Type: tc05
+	Actor121: tc05
 		Location: 96,90
 		Owner: Neutral
-	Actor122:
-		Type: tc04
+	Actor122: tc04
 		Location: 97,88
 		Owner: Neutral
-	Actor123:
-		Type: tc01
+	Actor123: tc01
 		Location: 95,91
 		Owner: Neutral
-	Actor124:
-		Type: tc01
+	Actor124: tc01
 		Location: 112,73
 		Owner: Neutral
-	Actor125:
-		Type: t17
+	Actor125: t17
 		Location: 105,82
 		Owner: Neutral
-	Actor126:
-		Type: t15
+	Actor126: t15
 		Location: 96,85
 		Owner: Neutral
-	Actor127:
-		Type: tc05
+	Actor127: tc05
 		Location: 60,51
 		Owner: Neutral
-	Actor128:
-		Type: tc03
+	Actor128: tc03
 		Location: 62,89
 		Owner: Neutral
-	Actor129:
-		Type: tc02
+	Actor129: tc02
 		Location: 47,85
 		Owner: Neutral
-	Actor130:
-		Type: t17
+	Actor130: t17
 		Location: 44,90
 		Owner: Neutral
-	Actor131:
-		Type: t15
+	Actor131: t15
 		Location: 55,80
 		Owner: Neutral
-	Actor132:
-		Type: t14
+	Actor132: t14
 		Location: 60,81
 		Owner: Neutral
-	Actor133:
-		Type: t13
+	Actor133: t13
 		Location: 53,85
 		Owner: Neutral
-	Actor134:
-		Type: t12
+	Actor134: t12
 		Location: 43,82
 		Owner: Neutral
-	Actor135:
-		Type: t11
+	Actor135: t11
 		Location: 47,90
 		Owner: Neutral
-	Actor136:
-		Type: t08
+	Actor136: t08
 		Location: 59,85
 		Owner: Neutral
-	Actor137:
-		Type: t07
+	Actor137: t07
 		Location: 51,82
 		Owner: Neutral
-	Actor138:
-		Type: t01
+	Actor138: t01
 		Location: 65,38
 		Owner: Neutral
-	Actor139:
-		Type: tc04
+	Actor139: tc04
 		Location: 62,39
 		Owner: Neutral
-	Actor140:
-		Type: tc03
+	Actor140: tc03
 		Location: 63,41
 		Owner: Neutral
-	Actor141:
-		Type: tc01
+	Actor141: tc01
 		Location: 55,77
 		Owner: Neutral
-	Actor142:
-		Type: tc05
+	Actor142: tc05
 		Location: 56,76
 		Owner: Neutral
-	Actor143:
-		Type: tc05
+	Actor143: tc05
 		Location: 65,67
 		Owner: Neutral
-	Actor144:
-		Type: tc04
+	Actor144: tc04
 		Location: 40,76
 		Owner: Neutral
-	Actor145:
-		Type: tc05
+	Actor145: tc05
 		Location: 56,67
 		Owner: Neutral
-	Actor146:
-		Type: tc04
+	Actor146: tc04
 		Location: 55,66
 		Owner: Neutral
-	Actor147:
-		Type: tc01
+	Actor147: tc01
 		Location: 54,68
 		Owner: Neutral
-	Actor148:
-		Type: tc02
+	Actor148: tc02
 		Location: 53,67
 		Owner: Neutral
-	Actor149:
-		Type: t02
+	Actor149: t02
 		Location: 101,88
 		Owner: Neutral
-	Actor150:
-		Type: tc03
+	Actor150: tc03
 		Location: 41,69
 		Owner: Neutral
-	Actor151:
-		Type: tc01
+	Actor151: tc01
 		Location: 45,69
 		Owner: Neutral
-	Actor152:
-		Type: t17
+	Actor152: t17
 		Location: 45,68
 		Owner: Neutral
-	Actor153:
-		Type: t16
+	Actor153: t16
 		Location: 45,70
 		Owner: Neutral
-	Actor154:
-		Type: tc04
+	Actor154: tc04
 		Location: 36,83
 		Owner: Neutral
-	Actor155:
-		Type: t01
+	Actor155: t01
 		Location: 41,87
 		Owner: Neutral
-	Actor156:
-		Type: tc03
+	Actor156: tc03
 		Location: 32,87
 		Owner: Neutral
-	Actor157:
-		Type: t11
+	Actor157: t11
 		Location: 38,70
 		Owner: Neutral
-	Actor158:
-		Type: t12
+	Actor158: t12
 		Location: 38,91
 		Owner: Neutral
-	Actor159:
-		Type: tc05
+	Actor159: tc05
 		Location: 29,82
 		Owner: Neutral
-	Actor160:
-		Type: tc04
+	Actor160: tc04
 		Location: 28,81
 		Owner: Neutral
-	Actor161:
-		Type: tc01
+	Actor161: tc01
 		Location: 37,73
 		Owner: Neutral
-	Actor162:
-		Type: t01
+	Actor162: t01
 		Location: 38,67
 		Owner: Neutral
-	Actor163:
-		Type: tc05
+	Actor163: tc05
 		Location: 28,75
 		Owner: Neutral
-	Actor164:
-		Type: tc02
+	Actor164: tc02
 		Location: 26,73
 		Owner: Neutral
-	Actor165:
-		Type: tc04
+	Actor165: tc04
 		Location: 41,35
 		Owner: Neutral
-	Actor166:
-		Type: tc01
+	Actor166: tc01
 		Location: 31,35
 		Owner: Neutral
-	Actor167:
-		Type: t02
+	Actor167: t02
 		Location: 29,40
 		Owner: Neutral
-	Actor168:
-		Type: tc05
+	Actor168: tc05
 		Location: 44,43
 		Owner: Neutral
-	Actor169:
-		Type: tc04
+	Actor169: tc04
 		Location: 41,44
 		Owner: Neutral
-	Actor170:
-		Type: tc03
+	Actor170: tc03
 		Location: 26,43
 		Owner: Neutral
-	Actor171:
-		Type: tc02
+	Actor171: tc02
 		Location: 26,36
 		Owner: Neutral
-	Actor172:
-		Type: tc02
+	Actor172: tc02
 		Location: 26,51
 		Owner: Neutral
-	Actor173:
-		Type: tc01
+	Actor173: tc01
 		Location: 97,42
 		Owner: Neutral
-	Actor174:
-		Type: t16
+	Actor174: t16
 		Location: 85,44
 		Owner: Neutral
-	Actor175:
-		Type: t13
+	Actor175: t13
 		Location: 82,61
 		Owner: Neutral
-	Actor176:
-		Type: t08
+	Actor176: t08
 		Location: 85,62
 		Owner: Neutral
-	Actor177:
-		Type: t01
+	Actor177: t01
 		Location: 66,55
 		Owner: Neutral
-	Actor178:
-		Type: t13
+	Actor178: t13
 		Location: 104,41
 		Owner: Neutral
-	Actor179:
-		Type: t12
+	Actor179: t12
 		Location: 104,42
 		Owner: Neutral
-	Actor180:
-		Type: tc02
+	Actor180: tc02
 		Location: 72,89
 		Owner: Neutral
-	Actor181:
-		Type: tc01
+	Actor181: tc01
 		Location: 69,89
 		Owner: Neutral
-	Actor182:
-		Type: t13
+	Actor182: t13
 		Location: 71,91
 		Owner: Neutral
-	Actor183:
-		Type: tc01
+	Actor183: tc01
 		Location: 77,91
 		Owner: Neutral
-	Actor184:
-		Type: t17
+	Actor184: t17
 		Location: 74,90
 		Owner: Neutral
-	Actor185:
-		Type: tc01
+	Actor185: tc01
 		Location: 84,74
 		Owner: Neutral
-	Actor186:
-		Type: t17
+	Actor186: t17
 		Location: 82,74
 		Owner: Neutral
-	Actor187:
-		Type: tc02
+	Actor187: tc02
 		Location: 109,74
 		Owner: Neutral
-	Actor188:
-		Type: tc02
+	Actor188: tc02
 		Location: 92,74
 		Owner: Neutral
-	Actor189:
-		Type: tc04
+	Actor189: tc04
 		Location: 26,68
 		Owner: Neutral
-	Actor190:
-		Type: t01
+	Actor190: t01
 		Location: 33,91
 		Owner: Neutral
-	Actor191:
-		Type: tc02
+	Actor191: tc02
 		Location: 39,38
 		Owner: Neutral
-	Actor192:
-		Type: tc01
+	Actor192: tc01
 		Location: 41,41
 		Owner: Neutral
-	Actor193:
-		Type: t01
+	Actor193: t01
 		Location: 31,43
 		Owner: Neutral
-	Actor194:
-		Type: t07
+	Actor194: t07
 		Location: 43,49
 		Owner: Neutral
-	Actor195:
-		Type: tc04
+	Actor195: tc04
 		Location: 30,57
 		Owner: Neutral
-	Actor196:
-		Type: tc03
+	Actor196: tc03
 		Location: 29,65
 		Owner: Neutral
-	Actor197:
-		Type: tc05
+	Actor197: tc05
 		Location: 38,61
 		Owner: Neutral
-	Actor198:
-		Type: t01
+	Actor198: t01
 		Location: 50,36
 		Owner: Neutral
-	Actor199:
-		Type: t07
+	Actor199: t07
 		Location: 57,42
 		Owner: Neutral
-	Actor200:
-		Type: t07
+	Actor200: t07
 		Location: 66,63
 		Owner: Neutral
-	Actor201:
-		Type: t11
+	Actor201: t11
 		Location: 62,59
 		Owner: Neutral
-	Actor202:
-		Type: tc01
+	Actor202: tc01
 		Location: 26,91
 		Owner: Neutral
-	Actor203:
-		Type: t17
+	Actor203: t17
 		Location: 26,87
 		Owner: Neutral
-	Actor204:
-		Type: t16
+	Actor204: t16
 		Location: 26,78
 		Owner: Neutral
-	Actor205:
-		Type: t16
+	Actor205: t16
 		Location: 44,68
 		Owner: Neutral
-	Actor206:
-		Type: t01
+	Actor206: t01
 		Location: 89,55
 		Owner: Neutral
-	Actor207:
-		Type: tc05
+	Actor207: tc05
 		Location: 83,57
 		Owner: Neutral
-	Actor208:
-		Type: tc04
+	Actor208: tc04
 		Location: 83,48
 		Owner: Neutral
-	Actor209:
-		Type: tc01
+	Actor209: tc01
 		Location: 83,54
 		Owner: Neutral
-	Actor210:
-		Type: t17
+	Actor210: t17
 		Location: 82,55
 		Owner: Neutral
-	Actor211:
-		Type: tc01
+	Actor211: tc01
 		Location: 86,46
 		Owner: Neutral
-	Actor212:
-		Type: tc03
+	Actor212: tc03
 		Location: 103,62
 		Owner: Neutral
-	Actor213:
-		Type: t03
+	Actor213: t03
 		Location: 99,58
 		Owner: Neutral
-	Actor214:
-		Type: t01
+	Actor214: t01
 		Location: 103,79
 		Owner: Neutral
-	Actor215:
-		Type: tc05
+	Actor215: tc05
 		Location: 95,80
 		Owner: Neutral
-	Actor216:
-		Type: tc04
+	Actor216: tc04
 		Location: 92,76
 		Owner: Neutral
-	Actor217:
-		Type: tc03
+	Actor217: tc03
 		Location: 92,83
 		Owner: Neutral
-	Actor218:
-		Type: t01
+	Actor218: t01
 		Location: 84,91
 		Owner: Neutral
-	Actor219:
-		Type: mine
+	Actor219: mine
 		Location: 52,39
 		Owner: Neutral
-	Actor220:
-		Type: mine
+	Actor220: mine
 		Location: 55,89
 		Owner: Neutral
-	Actor221:
-		Type: mine
+	Actor221: mine
 		Location: 54,56
 		Owner: Neutral
-	Actor222:
-		Type: mine
+	Actor222: mine
 		Location: 61,63
 		Owner: Neutral
-	Actor223:
-		Type: gap
+	Actor223: gap
 		Location: 85,82
 		Owner: Greece
-	Actor224:
-		Type: apwr
+	Actor224: apwr
 		Location: 89,86
 		Owner: Greece
-	Actor225:
-		Type: apwr
+	Actor225: apwr
 		Location: 91,89
 		Owner: Greece
-	Actor226:
-		Type: atek
+	Actor226: atek
 		Location: 95,45
 		Owner: GoodGuy
-	Actor227:
-		Type: agun
+	Actor227: agun
 		Location: 98,50
 		Owner: GoodGuy
-	Actor228:
-		Type: agun
+	Actor228: agun
 		Location: 98,53
 		Owner: GoodGuy
-	Actor229:
-		Type: atek
+	Actor229: atek
 		Location: 95,58
 		Owner: GoodGuy
-	Actor230:
-		Type: atek
+	Actor230: atek
 		Location: 89,52
 		Owner: GoodGuy
-	Actor231:
-		Type: gun
+	Actor231: gun
 		Location: 92,59
 		Owner: GoodGuy
-	Actor232:
-		Type: gun
+	Actor232: gun
 		Location: 92,46
 		Owner: GoodGuy
-	Actor234:
-		Type: agun
+	Actor234: agun
 		Location: 94,49
 		Owner: GoodGuy
-	Actor235:
-		Type: agun
+	Actor235: agun
 		Location: 94,54
 		Owner: GoodGuy
-	Actor236:
-		Type: gap
+	Actor236: gap
 		Location: 95,49
 		Owner: GoodGuy
-	Actor237:
-		Type: gap
+	Actor237: gap
 		Location: 95,54
 		Owner: GoodGuy
-	Actor238:
-		Type: apwr
+	Actor238: apwr
 		Location: 106,45
 		Owner: GoodGuy
-	Actor239:
-		Type: apwr
+	Actor239: apwr
 		Location: 103,45
 		Owner: GoodGuy
-	Actor240:
-		Type: weap
+	Actor240: weap
 		Location: 82,78
 		Owner: Greece
-	Actor241:
-		Type: dome
+	Actor241: dome
 		Location: 84,83
 		Owner: Greece
-	Actor242:
-		Type: gun
+	Actor242: gun
 		Location: 75,78
 		Owner: Greece
-	Actor243:
-		Type: gun
+	Actor243: gun
 		Location: 75,83
 		Owner: Greece
-	Actor244:
-		Type: fact
+	Actor244: fact
 		Location: 86,76
 		Owner: Greece
-	Actor245:
-		Type: apwr
+	Actor245: apwr
 		Location: 92,86
 		Owner: Greece
-	Actor246:
-		Type: apwr
+	Actor246: apwr
 		Location: 88,89
 		Owner: Greece
-	Actor247:
-		Type: tent
+	Actor247: tent
 		Location: 79,76
 		Owner: Greece
-	Actor248:
-		Type: tent
+	Actor248: tent
 		Location: 80,83
 		Owner: Greece
-	Actor249:
-		Type: gun
+	Actor249: gun
 		Location: 79,84
 		Owner: Greece
-	Actor250:
-		Type: gun
+	Actor250: gun
 		Location: 87,82
 		Owner: Greece
-	Actor251:
-		Type: gun
+	Actor251: gun
 		Location: 81,77
 		Owner: Greece
-	Actor252:
-		Type: hbox
+	Actor252: hbox
 		Location: 78,78
 		Owner: Greece
-	Actor253:
-		Type: hbox
+	Actor253: hbox
 		Location: 78,83
 		Owner: Greece
-	Actor254:
-		Type: hbox
+	Actor254: hbox
 		Location: 89,81
 		Owner: Greece
-	Actor255:
-		Type: agun
+	Actor255: agun
 		Location: 84,76
 		Owner: Greece
-	Actor256:
-		Type: agun
+	Actor256: agun
 		Location: 86,84
 		Owner: Greece
-	Actor257:
-		Type: apwr
+	Actor257: apwr
 		Location: 27,45
 		Owner: Greece
-	Actor258:
-		Type: tent
+	Actor258: tent
 		Location: 37,45
 		Owner: Greece
-	Actor259:
-		Type: domf
+	Actor259: domf
 		Location: 29,49
 		Owner: Greece
-	Actor260:
-		Type: gun
+	Actor260: gun
 		Location: 38,42
 		Owner: GoodGuy
-	Actor261:
-		Type: gun
+	Actor261: gun
 		Location: 32,42
 		Owner: Greece
-	Actor262:
-		Type: weap
+	Actor262: weap
 		Location: 37,48
 		Owner: Greece
-	Actor263:
-		Type: fact
+	Actor263: fact
 		Location: 31,45
 		Owner: Greece
-	Actor264:
-		Type: apwr
+	Actor264: apwr
 		Location: 32,49
 		Owner: Greece
-	Actor265:
-		Type: gun
+	Actor265: gun
 		Location: 40,54
 		Owner: Greece
-	Actor266:
-		Type: gun
+	Actor266: gun
 		Location: 34,56
 		Owner: Greece
-	Actor267:
-		Type: hbox
+	Actor267: hbox
 		Location: 94,45
 		Owner: GoodGuy
-	Actor268:
-		Type: hpad
+	Actor268: hpad
 		Location: 103,59
 		Owner: GoodGuy
-	Actor269:
-		Type: hpad
+	Actor269: hpad
 		Location: 86,57
 		Owner: GoodGuy
-	Actor270:
-		Type: hbox
+	Actor270: hbox
 		Location: 97,45
 		Owner: GoodGuy
-	Actor271:
-		Type: hbox
+	Actor271: hbox
 		Location: 99,51
 		Owner: GoodGuy
-	Actor272:
-		Type: apwr
+	Actor272: apwr
 		Location: 106,54
 		Owner: GoodGuy
-	Actor273:
-		Type: silo
+	Actor273: silo
 		Location: 86,87
 		Owner: Greece
-	Actor274:
-		Type: atek
+	Actor274: atek
 		Location: 27,89
 		Owner: Greece
-	Actor275:
-		Type: hbox
+	Actor275: hbox
 		Location: 94,60
 		Owner: GoodGuy
-	Actor276:
-		Type: hbox
+	Actor276: hbox
 		Location: 97,60
 		Owner: GoodGuy
-	Actor277:
-		Type: hbox
+	Actor277: hbox
 		Location: 88,51
 		Owner: GoodGuy
-	Actor278:
-		Type: hbox
+	Actor278: hbox
 		Location: 88,54
 		Owner: GoodGuy
-	Actor279:
-		Type: hbox
+	Actor279: hbox
 		Location: 99,54
 		Owner: GoodGuy
-	Actor280:
-		Type: apwr
+	Actor280: apwr
 		Location: 103,54
 		Owner: GoodGuy
-	Actor281:
-		Type: apwr
+	Actor281: apwr
 		Location: 107,48
 		Owner: GoodGuy
-	Actor282:
-		Type: apwr
+	Actor282: apwr
 		Location: 107,51
 		Owner: GoodGuy
-	Actor283:
-		Type: hpad
+	Actor283: hpad
 		Location: 102,42
 		Owner: GoodGuy
-	Actor284:
-		Type: fact
+	Actor284: fact
 		Location: 103,50
 		Owner: GoodGuy
-	Actor285:
-		Type: gun
+	Actor285: gun
 		Location: 100,48
 		Owner: GoodGuy
-	Actor286:
-		Type: gun
+	Actor286: gun
 		Location: 100,57
 		Owner: GoodGuy
-	Actor287:
-		Type: apwr
+	Actor287: apwr
 		Location: 83,50
 		Owner: GoodGuy
-	Actor288:
-		Type: apwr
+	Actor288: apwr
 		Location: 81,58
 		Owner: GoodGuy
-	Actor289:
-		Type: minv
+	Actor289: minv
 		Location: 59,76
 		Owner: GoodGuy
-	Actor290:
-		Type: minv
+	Actor290: minv
 		Location: 60,75
 		Owner: GoodGuy
-	Actor291:
-		Type: minv
+	Actor291: minv
 		Location: 61,76
 		Owner: GoodGuy
-	Actor292:
-		Type: minv
+	Actor292: minv
 		Location: 60,77
 		Owner: GoodGuy
-	Actor293:
-		Type: minv
+	Actor293: minv
 		Location: 58,75
 		Owner: GoodGuy
-	Actor294:
-		Type: minv
+	Actor294: minv
 		Location: 65,74
 		Owner: GoodGuy
-	Actor295:
-		Type: minv
+	Actor295: minv
 		Location: 67,72
 		Owner: GoodGuy
-	Actor296:
-		Type: minv
+	Actor296: minv
 		Location: 67,74
 		Owner: GoodGuy
-	Actor297:
-		Type: minv
+	Actor297: minv
 		Location: 66,73
 		Owner: GoodGuy
-	Actor298:
-		Type: minv
+	Actor298: minv
 		Location: 68,73
 		Owner: GoodGuy
-	Actor299:
-		Type: minv
+	Actor299: minv
 		Location: 65,72
 		Owner: GoodGuy
-	Actor300:
-		Type: silo
+	Actor300: silo
 		Location: 87,86
 		Owner: Greece
-	Actor301:
-		Type: silo
+	Actor301: silo
 		Location: 87,88
 		Owner: Greece
-	Actor302:
-		Type: syrd
+	Actor302: syrd
 		Location: 96,74
 		Owner: GoodGuy
-	Actor303:
-		Type: 2tnk
+	Actor303: 2tnk
 		Location: 55,75
 		Owner: GoodGuy
-	Actor304:
-		Type: 2tnk
+	Actor304: 2tnk
 		Location: 57,73
 		Owner: GoodGuy
-	Actor305:
-		Type: 2tnk
+	Actor305: 2tnk
 		Location: 69,88
 		Owner: GoodGuy
-	Actor306:
-		Type: 2tnk
+	Actor306: 2tnk
 		Location: 74,80
 		Owner: GoodGuy
-	Actor307:
-		Type: 2tnk
+	Actor307: 2tnk
 		Location: 49,85
 		Owner: GoodGuy
-	Actor308:
-		Type: 2tnk
+	Actor308: 2tnk
 		Location: 50,82
 		Owner: GoodGuy
-	Actor309:
-		Type: 2tnk
+	Actor309: 2tnk
 		Location: 37,51
 		Owner: Greece
-	Actor310:
-		Type: 2tnk
+	Actor310: 2tnk
 		Location: 30,52
 		Owner: Greece
-	Actor311:
-		Type: 2tnk
+	Actor311: 2tnk
 		Location: 33,48
 		Owner: Greece
-	Actor312:
-		Type: 1tnk
+	Actor312: 1tnk
 		Location: 32,72
 		Owner: GoodGuy
-	Actor313:
-		Type: 2tnk
+	Actor313: 2tnk
 		Location: 89,49
 		Owner: GoodGuy
-	Actor314:
-		Type: 2tnk
+	Actor314: 2tnk
 		Location: 96,43
 		Owner: GoodGuy
-	Actor315:
-		Type: 2tnk
+	Actor315: 2tnk
 		Location: 89,61
 		Owner: GoodGuy
-	Actor316:
-		Type: 2tnk
+	Actor316: 2tnk
 		Location: 106,49
 		Owner: GoodGuy
-	Actor317:
-		Type: 2tnk
+	Actor317: 2tnk
 		Location: 100,62
 		Owner: GoodGuy
-	Actor318:
-		Type: 2tnk
+	Actor318: 2tnk
 		Location: 99,52
 		Owner: GoodGuy
-	Actor319:
-		Type: 1tnk
+	Actor319: 1tnk
 		Location: 77,82
 		Owner: GoodGuy
-	Actor320:
-		Type: 2tnk
+	Actor320: 2tnk
 		Location: 82,80
 		Owner: GoodGuy
-	Actor321:
-		Type: 1tnk
+	Actor321: 1tnk
 		Location: 108,84
 		Owner: GoodGuy
-	Actor322:
-		Type: 1tnk
+	Actor322: 1tnk
 		Location: 33,72
 		Owner: GoodGuy
-	Actor323:
-		Type: 1tnk
+	Actor323: 1tnk
 		Location: 84,54
 		Owner: GoodGuy
-	Actor324:
-		Type: 1tnk
+	Actor324: 1tnk
 		Location: 84,62
 		Owner: GoodGuy
-	Actor325:
-		Type: 1tnk
+	Actor325: 1tnk
 		Location: 104,58
 		Owner: GoodGuy
-	Actor326:
-		Type: 1tnk
+	Actor326: 1tnk
 		Location: 99,46
 		Owner: GoodGuy
-	Actor327:
-		Type: e1
+	Actor327: e1
 		Location: 37,47
 		Owner: Greece
-	Actor328:
-		Type: e1
+	Actor328: e1
 		Location: 31,48
 		Owner: Greece
-	Actor329:
-		Type: e3
+	Actor329: e3
 		Location: 35,46
 		Owner: Greece
-	Actor330:
-		Type: e1
+	Actor330: e1
 		Location: 39,47
 		Owner: Greece
-	Actor331:
-		Type: e1
+	Actor331: e1
 		Location: 38,51
 		Owner: Greece
-	Actor332:
-		Type: e1
+	Actor332: e1
 		Location: 36,53
 		Owner: Greece
-	Actor333:
-		Type: e1
+	Actor333: e1
 		Location: 34,54
 		Owner: Greece
-	Actor334:
-		Type: e1
+	Actor334: e1
 		Location: 32,53
 		Owner: Greece
-	Actor335:
-		Type: e1
+	Actor335: e1
 		Location: 40,51
 		Owner: Greece
-	Actor336:
-		Type: e1
+	Actor336: e1
 		Location: 33,42
 		Owner: Greece
-	Actor337:
-		Type: e1
+	Actor337: e1
 		Location: 37,42
 		Owner: Greece
-	Actor338:
-		Type: e1
+	Actor338: e1
 		Location: 37,79
 		Owner: GoodGuy
-	Actor339:
-		Type: e1
+	Actor339: e1
 		Location: 36,80
 		Owner: GoodGuy
-	Actor340:
-		Type: e3
+	Actor340: e3
 		Location: 36,79
 		Owner: GoodGuy
-	Actor341:
-		Type: e3
+	Actor341: e3
 		Location: 37,79
 		Owner: GoodGuy
-	Actor342:
-		Type: e3
+	Actor342: e3
 		Location: 53,85
 		Owner: GoodGuy
-	Actor343:
-		Type: e3
+	Actor343: e3
 		Location: 48,83
 		Owner: GoodGuy
-	Actor344:
-		Type: e1
+	Actor344: e1
 		Location: 50,83
 		Owner: GoodGuy
-	Actor345:
-		Type: e1
+	Actor345: e1
 		Location: 49,87
 		Owner: GoodGuy
-	Actor346:
-		Type: e1
+	Actor346: e1
 		Location: 30,91
 		Owner: Greece
-	Actor347:
-		Type: e1
+	Actor347: e1
 		Location: 32,90
 		Owner: Greece
-	Actor348:
-		Type: e1
+	Actor348: e1
 		Location: 31,90
 		Owner: Greece
-	Actor349:
-		Type: e3
+	Actor349: e3
 		Location: 32,92
 		Owner: GoodGuy
-	Actor350:
-		Type: e3
+	Actor350: e3
 		Location: 31,88
 		Owner: GoodGuy
-	Actor351:
-		Type: e3
+	Actor351: e3
 		Location: 32,89
 		Owner: GoodGuy
-	Actor352:
-		Type: e3
+	Actor352: e3
 		Location: 31,91
 		Owner: GoodGuy
-	Actor353:
-		Type: e1
+	Actor353: e1
 		Location: 80,78
 		Owner: GoodGuy
-	Actor354:
-		Type: e1
+	Actor354: e1
 		Location: 80,85
 		Owner: GoodGuy
-	Actor355:
-		Type: e3
+	Actor355: e3
 		Location: 79,78
 		Owner: GoodGuy
-	Actor356:
-		Type: e3
+	Actor356: e3
 		Location: 82,82
 		Owner: GoodGuy
-	Actor357:
-		Type: e1
+	Actor357: e1
 		Location: 109,85
 		Owner: GoodGuy
-	Actor358:
-		Type: e1
+	Actor358: e1
 		Location: 109,82
 		Owner: GoodGuy
-	Actor359:
-		Type: e1
+	Actor359: e1
 		Location: 106,85
 		Owner: GoodGuy
-	Actor360:
-		Type: e1
+	Actor360: e1
 		Location: 96,61
 		Owner: GoodGuy
-	Actor361:
-		Type: e1
+	Actor361: e1
 		Location: 93,62
 		Owner: GoodGuy
-	Actor362:
-		Type: e1
+	Actor362: e1
 		Location: 90,43
 		Owner: GoodGuy
-	Actor363:
-		Type: e1
+	Actor363: e1
 		Location: 89,45
 		Owner: GoodGuy
-	Actor364:
-		Type: e3
+	Actor364: e3
 		Location: 93,43
 		Owner: GoodGuy
-	Actor365:
-		Type: e3
+	Actor365: e3
 		Location: 91,45
 		Owner: GoodGuy
-	Actor366:
-		Type: e1
+	Actor366: e1
 		Location: 95,63
 		Owner: GoodGuy
-	Actor367:
-		Type: e1
+	Actor367: e1
 		Location: 89,64
 		Owner: GoodGuy
-	Actor368:
-		Type: e1
+	Actor368: e1
 		Location: 87,55
 		Owner: GoodGuy
-	Actor369:
-		Type: e1
+	Actor369: e1
 		Location: 87,53
 		Owner: GoodGuy
-	Actor370:
-		Type: e1
+	Actor370: e1
 		Location: 101,52
 		Owner: GoodGuy
-	Actor371:
-		Type: e1
+	Actor371: e1
 		Location: 100,53
 		Owner: GoodGuy
-	Actor372:
-		Type: e1
+	Actor372: e1
 		Location: 92,64
 		Owner: GoodGuy
-	Actor373:
-		Type: e1
+	Actor373: e1
 		Location: 101,63
 		Owner: GoodGuy
-	Actor374:
-		Type: e3
+	Actor374: e3
 		Location: 91,63
 		Owner: GoodGuy
-	Actor375:
-		Type: e3
+	Actor375: e3
 		Location: 101,53
 		Owner: GoodGuy
-	Actor376:
-		Type: e3
+	Actor376: e3
 		Location: 102,49
 		Owner: GoodGuy
-	Actor377:
-		Type: e3
+	Actor377: e3
 		Location: 100,46
 		Owner: GoodGuy
-	Actor378:
-		Type: e3
+	Actor378: e3
 		Location: 86,54
 		Owner: GoodGuy
-	Actor379:
-		Type: e3
+	Actor379: e3
 		Location: 87,50
 		Owner: GoodGuy
-	Actor380:
-		Type: e3
+	Actor380: e3
 		Location: 97,63
 		Owner: GoodGuy
-	Actor381:
-		Type: e3
+	Actor381: e3
 		Location: 88,62
 		Owner: GoodGuy
-	Actor382:
-		Type: e3
+	Actor382: e3
 		Location: 86,60
 		Owner: GoodGuy
-	Actor383:
-		Type: e3
+	Actor383: e3
 		Location: 84,56
 		Owner: GoodGuy
-	pdox:
-		Type: pdox
+	pdox: pdox
 		Location: 94,52
 		Owner: GoodGuy
-	ca1:
-		Type: ca
+	ca1: ca
 		Location: 119,66
 		Owner: GoodGuy
-	ca2:
-		Type: ca
+	ca2: ca
 		Location: 120,66
 		Owner: GoodGuy
-	mslo1:
-		Type: mslo
+	mslo1: mslo
 		Location: 89,84
 		Owner: Greece
-	mslo2:
-		Type: mslo
+	mslo2: mslo
 		Location: 89,83
 		Owner: Greece
-	mslo3:
-		Type: mslo
+	mslo3: mslo
 		Location: 89,82
 		Owner: Greece
 

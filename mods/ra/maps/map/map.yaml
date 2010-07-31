@@ -27,68 +27,52 @@ Players:
 		NonCombatant: True
 
 Actors:
-	Actor0:
-		Type: mine
+	Actor0: mine
 		Location: 23,107
 		Owner: Neutral
-	Actor1:
-		Type: mine
+	Actor1: mine
 		Location: 20,105
 		Owner: Neutral
-	Actor4:
-		Type: mine
+	Actor4: mine
 		Location: 23,20
 		Owner: Neutral
-	Actor3:
-		Type: mine
+	Actor3: mine
 		Location: 20,23
 		Owner: Neutral
-	Actor5:
-		Type: mine
+	Actor5: mine
 		Location: 104,19
 		Owner: Neutral
-	Actor6:
-		Type: mine
+	Actor6: mine
 		Location: 108,22
 		Owner: Neutral
-	Actor7:
-		Type: mine
+	Actor7: mine
 		Location: 105,108
 		Owner: Neutral
-	Actor8:
-		Type: mine
+	Actor8: mine
 		Location: 108,105
 		Owner: Neutral
-	Actor2:
-		Type: mine
+	Actor2: mine
 		Location: 71,109
 		Owner: Neutral
-	Actor9:
-		Type: mine
+	Actor9: mine
 		Location: 75,109
 		Owner: Neutral
-	Actor10:
-		Type: mine
+	Actor10: mine
 		Location: 109,47
 		Owner: Neutral
-	Actor11:
-		Type: mine
+	Actor11: mine
 		Location: 109,44
 		Owner: Neutral
-	Actor12:
-		Type: mine
+	Actor12: mine
 		Location: 53,18
 		Owner: Neutral
-	Actor13:
-		Type: mine
+	Actor13: mine
 		Location: 49,18
 		Owner: Neutral
-	Actor14:
-		Type: mine
+	Actor14: mine
 		Location: 18,80
 		Owner: Neutral
-	Actor15:
-		Type: mine
+	Actor15: mine
 		Location: 18,75
 		Owner: Neutral
 
