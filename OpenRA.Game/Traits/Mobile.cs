@@ -17,7 +17,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
-	public class MobileInfo : ITraitInfo, ITraitPrerequisite<UnitInfo>
+	public class MobileInfo : ITraitInfo
 	{
 		public readonly string[] TerrainTypes;
 		public readonly float[] TerrainSpeeds;

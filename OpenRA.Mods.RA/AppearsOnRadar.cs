@@ -11,19 +11,20 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
-	public class UnitInfo : ITraitInfo
-	{
-		public object Create( ActorInitializer init ) { return new Unit(); }
-	}
+	public class AppearsOnRadarInfo : TraitInfo<AppearsOnRadar> {}
+	public class AppearsOnRadar : IRadarSignature
+	{		
+		IOccupySpace Space;
 
-	public class Unit : IRadarSignature
-	{
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
-		{	
-			yield return self.Location;
+		{
+			if (Space == null)
+				Space = self.traits.Get<IOccupySpace>();
+			return Space.OccupiedCells();
 		}
 		
 		public Color RadarSignatureColor(Actor self)

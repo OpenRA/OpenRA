@@ -1,6 +1,6 @@
 ^Vehicle:
 	Category: Vehicle
-	Unit:
+	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -23,7 +23,7 @@
 
 ^Tank:
 	Category: Vehicle
-	Unit:
+	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -46,7 +46,7 @@
 
 ^Helicopter:
 	Category: Plane
-	Unit:
+	AppearsOnRadar:
 	Targetable:
 		TargetTypes: Air
 	Selectable:
@@ -63,7 +63,7 @@
 
 ^Infantry:
 	Category: Infantry
-	Unit:
+	AppearsOnRadar:
 	Health:
 		Armor: none
 	RevealsShroud:
@@ -90,13 +90,13 @@
 
 ^CivInfantry:
 	Inherits: ^Infantry
+	AppearsOnRadar:
 	Selectable:
 		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
 		Description: Civilian
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -111,7 +111,7 @@
 
 ^Plane:
 	Category: Plane
-	Unit:
+	AppearsOnRadar:
 	Selectable:
 		Voice: GenericVoice
 	Targetable:
@@ -125,6 +125,7 @@
 
 ^Building:
 	Category: Building
+	AppearsOnRadar:
 	Selectable:
 		Priority: 3
 	Targetable:
@@ -177,6 +178,7 @@
 
 ^Wall:
 	Category: Building
+	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -208,6 +210,7 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
 ^Rock:
@@ -219,12 +222,12 @@
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
 
 ^Husk:
 	Category: Vehicle
-	Unit:
 	Mobile:
 		ROT: 0
 		Speed: 0
@@ -235,6 +238,7 @@
 	Selectable: 
 		Priority: -1
 	HiddenUnderFog:
+	AppearsOnRadar:
 	Burns:
 
 ^Bridge:
@@ -251,5 +255,3 @@
 		DestroyedSound: xplobig4.aud
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
-	RadarColorFromTerrain:
-		Terrain: Road

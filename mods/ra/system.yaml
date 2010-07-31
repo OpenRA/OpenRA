@@ -182,7 +182,6 @@ MINP:
 		Weapon: APMine
 		CrushClasses: apmine
 		AvoidFriendly: yes
-	Unit:
 	Health:
 		HP: 1
 	RenderUnit:
@@ -195,7 +194,6 @@ MINV:
 		Weapon: ATMine
 		CrushClasses: atmine
 		AvoidFriendly: yes
-	Unit:
 	Health:
 		HP: 1
 	RenderUnit:
@@ -253,14 +251,11 @@ CRATE:
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Unit: 4tnk
-		
-	Unit:
 	RenderUnit:
 	BelowUnits:
 
 CAMERA:
 	Aircraft:
-	Unit:
 	Health:
 		HP:1000
 	RevealsShroud:
@@ -268,7 +263,6 @@ CAMERA:
 
 FLARE:
 	Aircraft:
-	Unit:
 	Health:
 		HP:1000
 	RevealsShroud:

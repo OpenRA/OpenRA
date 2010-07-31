@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, IRenderModifier, IOccupySpace, IRadarSignature
+	public class Building : INotifyDamage, IResolveOrder, IRenderModifier, IOccupySpace
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -112,20 +112,6 @@ namespace OpenRA.Traits
 		public IEnumerable<int2> OccupiedCells()
 		{
 			return Footprint.UnpathableTiles( self.Info.Name, Info, TopLeft );
-		}
-		
-		public IEnumerable<int2> RadarSignatureCells(Actor self)
-		{				
-			return Footprint.Tiles(self);
-		}
-		
-		public Color RadarSignatureColor(Actor self)
-		{
-			var mod = self.traits.WithInterface<IRadarColorModifier>().FirstOrDefault();
-			if (mod != null)
-				return mod.RadarColorOverride(self);
-			
-			return self.Owner.Color;
 		}
 	}
 }

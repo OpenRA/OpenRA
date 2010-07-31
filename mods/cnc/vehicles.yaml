@@ -10,7 +10,6 @@ MCV:
 		LongDesc: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
-	Unit:
 	Mobile:
 		Speed: 6
 	Health:
@@ -44,7 +43,6 @@ HARV:
 		PipCount: 5
 		PipColor: Green
 		Capacity: 28
-	Unit:
 	Mobile:
 		Speed: 6
 	Health:
@@ -64,7 +62,6 @@ APC:
 		Cost: 700
 		Description: Armored Personnel Carrier
 		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		ROT: 5
 		Speed: 15
@@ -95,7 +92,6 @@ ARTY:
 		Cost: 600
 		Description: Artillery
 		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		ROT: 2
 		Speed: 6
@@ -120,7 +116,6 @@ FTNK:
 		Cost: 800
 		Description: Flame Tank
 		LongDesc: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
-	Unit:
 	Mobile:
 		ROT: 5
 		Speed: 9
@@ -146,7 +141,6 @@ BGGY:
 		Cost: 600
 		Description: Nod Buggy
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		ROT: 10
 		Speed: 18
@@ -174,7 +168,6 @@ BIKE:
 		Cost: 500
 		Description: Recon Bike
 		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
-	Unit:
 	Mobile:
 		ROT: 10
 		Speed: 20
@@ -203,7 +196,6 @@ JEEP:
 		Cost: 400
 		Description: Hum-Vee
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		ROT: 10
 		Speed: 15
@@ -231,7 +223,6 @@ LTNK:
 		Cost: 600
 		Description: Light Tank
 		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		Speed: 9
 	Health:
@@ -262,7 +253,6 @@ MTNK:
 		Cost: 800
 		Description: Medium Tank
 		LongDesc: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
-	Unit:
 	Mobile:
 		Speed: 9
 	Health:
@@ -293,7 +283,6 @@ HTNK:
 		Cost: 1500
 		Description: Mammoth Tank
 		LongDesc: Heavily armored GDI Tank.\n  Strong vs Everything
-	Unit:
 	Mobile:
 		Crushes: wall, heavywall
 		Speed: 3
@@ -329,7 +318,6 @@ MSAM:
 		Cost: 800
 		Description: Rocket Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		Speed: 6
 	Health:
@@ -359,7 +347,6 @@ MLRS:
 		Cost: 750
 		Description: SSM Launcher
 		LongDesc: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
-	Unit:
 	Mobile:
 		Speed: 6
 	Health:
@@ -385,7 +372,6 @@ STNK:
 		Cost: 900
 		Description: Stealth Tank
 		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
-	Unit:
 	Mobile:
 		Speed: 15
 	Health:
@@ -414,7 +400,6 @@ TRAN:
 		Cost: 1500
 		Description: Chinook Transport
 		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
-	Unit:
 	MobileAir:
 		InitialFacing: 20
 		ROT: 5
@@ -443,7 +428,6 @@ HELI:
 		Cost: 1200
 		Description: Apache Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
-	Unit:
 	MobileAir:
 		InitialFacing: 20
 		ROT: 4
@@ -473,7 +457,6 @@ ORCA:
 		Cost: 1200
 		Description: Orca
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
-	Unit:
 	MobileAir:
 		InitialFacing: 20
 		ROT: 4
@@ -495,7 +478,6 @@ C17:
 	ParaDrop:
 		LZRange: 1
 	Inherits: ^Plane
-	Unit:
 	Plane:
 		ROT: 5
 		Speed: 25
@@ -513,7 +495,6 @@ C17:
 
 A10:
 	Inherits: ^Plane
-	Unit:
 	Plane:
 		ROT: 4
 		Speed: 25

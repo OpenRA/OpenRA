@@ -1,6 +1,6 @@
 ^Vehicle:
 	Category: Vehicle
-	Unit:	
+	AppearsOnRadar:
 	Mobile:
 		Crushes: atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -23,7 +23,7 @@
 
 ^Tank:
 	Category: Vehicle
-	Unit:	
+	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, atmine, crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -46,7 +46,7 @@
 
 ^Infantry:
 	Category: Infantry
-	Unit:
+	AppearsOnRadar:
 	Health:
 		Armor: none
 	RevealsShroud:
@@ -72,7 +72,7 @@
 
 ^Ship:
 	Category: Ship
-	Unit:
+	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -90,7 +90,7 @@
 
 ^Plane:
 	Category: Plane
-	Unit:
+	AppearsOnRadar:
 	Selectable:
 		Voice: GenericVoice
 	Targetable:
@@ -104,6 +104,7 @@
 
 ^Building:
 	Category: Building
+	AppearsOnRadar:
 	Selectable:
 		Priority: 3
 	Targetable:
@@ -123,6 +124,7 @@
 
 ^Wall:
 	Category: Building
+	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -169,12 +171,12 @@
 	Building:
 		Footprint: x
 		Dimensions: 1,1
+	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
 
 ^Husk:
 	Category: Vehicle
-	Unit:
 	Health:
 		HP: 140
 		Armor: Heavy
@@ -182,6 +184,7 @@
 	Selectable: 
 		Priority: -1
 	HiddenUnderFog:
+	AppearsOnRadar:
 	Burns:
 
 ^Bridge:
@@ -196,5 +199,3 @@
 		Dimensions: 4,2
 	Health:
 		HP: 1000
-	RadarColorFromTerrain:
-		Terrain: Road

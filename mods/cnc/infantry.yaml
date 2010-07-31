@@ -9,7 +9,6 @@ E1:
 		Icon: e1icnh
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -30,7 +29,6 @@ E2:
 		Icon: e2icnh
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -52,7 +50,6 @@ E3:
 		Icon: e3icnh
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 3
 	Health:
@@ -75,7 +72,6 @@ E4:
 		Icon: e4icnh
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -101,7 +97,6 @@ E5:
 		Prerequisites: tmpl
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -127,7 +122,6 @@ E6:
 		Icon: e6icnh
 	Selectable:
 		Bounds: 12,17,0,-6
-	Unit:
 	Mobile:
 		Speed: 4
 	Health:
@@ -152,7 +146,6 @@ RMBO:
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice
-	Unit:
 	Mobile:
 		Speed: 5
 	Health:
