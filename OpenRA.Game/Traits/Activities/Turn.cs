@@ -26,7 +26,7 @@ namespace OpenRA.Traits.Activities
 		public IActivity Tick( Actor self )
 		{
 			var unit = self.traits.Get<Unit>();
-			var ROT = self.traits.WithInterface<IMove>().FirstOrDefault().ROT(self);
+			var ROT = self.traits.Get<IMove>().ROT;
 
 			if( desiredFacing == unit.Facing )
 				return NextActivity;

@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.traits.Get<IMove>().InitialFacing(newUnit);
+			return newUnit.traits.Get<IMove>().InitialFacing;
 		}
 
 		public virtual bool Produce( Actor self, ActorInfo producee )

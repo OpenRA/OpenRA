@@ -91,9 +91,8 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public int ROT(Actor self){ return Info.ROT; }
-		
-		public int InitialFacing(Actor self){ return Info.InitialFacing; }
+		public int ROT { get { return Info.ROT; } }
+		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		public void SetPosition(Actor self, int2 cell)
 		{
