@@ -40,10 +40,7 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask( w =>
 			{
 				Combat.DoExplosion(self, info.PrimaryWeapon, self.CenterLocation, altitude);
-				var report = self.GetPrimaryWeapon().Report;
-				if (report != null)
-					Sound.Play(report + ".aud", self.CenterLocation);
-				
+		
 				// Remove from world
 				self.Kill(self);
 				detonatedBy.Owner.Kills++;

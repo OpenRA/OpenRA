@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 			if (!target.IsValid) return;
 			if (self.GetCurrentActivity() is Leap) return;
 
-			var weapon = self.GetPrimaryWeapon();
+			var weapon = self.traits.Get<AttackBase>().Weapons[0].Info;
 			if (weapon.Range * Game.CellSize * weapon.Range * Game.CellSize
 			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return;
 

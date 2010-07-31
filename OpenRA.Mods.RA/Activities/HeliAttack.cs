@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 			}
 
-			var range = self.GetPrimaryWeapon().Range - 1;
+			var range = self.traits.Get<AttackBase>().GetMaximumRange() - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, unit.Facing);

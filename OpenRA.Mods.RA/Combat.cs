@@ -126,6 +126,9 @@ namespace OpenRA.Mods.RA
 				facing = 0
 			};
 
+			if (args.weapon.Report != null)
+				Sound.Play(args.weapon.Report + ".aud", pos);
+
 			DoImpacts(args);
 		}
 
@@ -174,17 +177,6 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			return true;
-		}
-
-		public static WeaponInfo GetPrimaryWeapon(this Actor self)
-		{
-			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
-			if (info == null) return null;
-			
-			var weapon = info.PrimaryWeapon;
-			if (weapon == null) return null;
-
-			return Rules.Weapons[weapon.ToLowerInvariant()];
 		}
 
 		static float2 GetRecoil(Actor self, float recoil)

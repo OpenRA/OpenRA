@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 			
 			self.World.WorldRenderer.DrawRangeCircle(
 				Color.FromArgb(128, Color.Yellow),
-				self.CenterLocation, (int)self.GetPrimaryWeapon().Range);
+				self.CenterLocation, (int)self.traits.Get<AttackBase>().GetMaximumRange());
 		}
 	}
 }
