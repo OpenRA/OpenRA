@@ -156,6 +156,8 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
+	LevelUpCrateAction:
+		SelectionShares: 40
 	CloakCrateAction:
 		SelectionShares: 5
 		InitialDelay: .4
