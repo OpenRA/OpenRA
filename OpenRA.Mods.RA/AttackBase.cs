@@ -143,13 +143,13 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			foreach (var w in Weapons)
-				if (CheckFire(self, unit, w, ref w.FireDelay, w.Offset, ref w.Burst))
+				if (CheckFire(self, unit, w))
 					w.Recoil = 1;
 		}
 
-		bool CheckFire(Actor self, Unit unit, Weapon w, ref int fireDelay, int[] offset, ref int burst)
+		bool CheckFire(Actor self, Unit unit, Weapon w)
 		{
-			if (fireDelay > 0) return false;
+			if (w.FireDelay > 0) return false;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
@@ -160,20 +160,20 @@ namespace OpenRA.Mods.RA
 			
 			if (!Combat.WeaponValidForTarget(w.Info, target)) return false;
 
-			var barrel = w.Barrels[burst % w.Barrels.Length];
+			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
 		
 			var fireOffset = new[] { 
-				offset.ElementAtOrDefault(0) + barrel.Position.X,
-				offset.ElementAtOrDefault(1) + barrel.Position.Y,
-				offset.ElementAtOrDefault(2),
-				offset.ElementAtOrDefault(3) };
+				w.Offset.ElementAtOrDefault(0) + barrel.Position.X,
+				w.Offset.ElementAtOrDefault(1) + barrel.Position.Y,
+				w.Offset.ElementAtOrDefault(2),
+				w.Offset.ElementAtOrDefault(3) };
 
-			if (--burst > 0)
-				fireDelay = w.Info.BurstDelay;
+			if (--w.Burst > 0)
+				w.FireDelay = w.Info.BurstDelay;
 			else
 			{
-				fireDelay = w.Info.ROF;
-				burst = w.Info.Burst;
+				w.FireDelay = w.Info.ROF;
+				w.Burst = w.Info.Burst;
 			}
 
 			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
