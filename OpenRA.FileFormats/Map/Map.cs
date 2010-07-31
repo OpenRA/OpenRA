@@ -132,7 +132,7 @@ namespace OpenRA.FileFormats
 			{
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
-					var a = new ActorReference(kv.Value);
+					var a = new ActorReference(kv.Key, kv.Value);
 					Actors.Add(a.Id, a);
 				}
 			}
@@ -172,7 +172,7 @@ namespace OpenRA.FileFormats
 
 			root.Add("Actors",
 				new MiniYaml(null, Actors.ToDictionary(
-					a => "ActorReference@{0}".F(a.Key),
+					a => "{0}".F(a.Key),
 					a => FieldSaver.Save(a.Value))));
 			
 			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));

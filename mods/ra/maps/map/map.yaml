@@ -27,83 +27,67 @@ Players:
 		NonCombatant: True
 
 Actors:
-	ActorReference@Actor0:
-		Id: Actor0
+	Actor0:
 		Type: mine
 		Location: 23,107
 		Owner: Neutral
-	ActorReference@Actor1:
-		Id: Actor1
+	Actor1:
 		Type: mine
 		Location: 20,105
 		Owner: Neutral
-	ActorReference@Actor4:
-		Id: Actor4
+	Actor4:
 		Type: mine
 		Location: 23,20
 		Owner: Neutral
-	ActorReference@Actor3:
-		Id: Actor3
+	Actor3:
 		Type: mine
 		Location: 20,23
 		Owner: Neutral
-	ActorReference@Actor5:
-		Id: Actor5
+	Actor5:
 		Type: mine
 		Location: 104,19
 		Owner: Neutral
-	ActorReference@Actor6:
-		Id: Actor6
+	Actor6:
 		Type: mine
 		Location: 108,22
 		Owner: Neutral
-	ActorReference@Actor7:
-		Id: Actor7
+	Actor7:
 		Type: mine
 		Location: 105,108
 		Owner: Neutral
-	ActorReference@Actor8:
-		Id: Actor8
+	Actor8:
 		Type: mine
 		Location: 108,105
 		Owner: Neutral
-	ActorReference@Actor2:
-		Id: Actor2
+	Actor2:
 		Type: mine
 		Location: 71,109
 		Owner: Neutral
-	ActorReference@Actor9:
-		Id: Actor9
+	Actor9:
 		Type: mine
 		Location: 75,109
 		Owner: Neutral
-	ActorReference@Actor10:
-		Id: Actor10
+	Actor10:
 		Type: mine
 		Location: 109,47
 		Owner: Neutral
-	ActorReference@Actor11:
-		Id: Actor11
+	Actor11:
 		Type: mine
 		Location: 109,44
 		Owner: Neutral
-	ActorReference@Actor12:
-		Id: Actor12
+	Actor12:
 		Type: mine
 		Location: 53,18
 		Owner: Neutral
-	ActorReference@Actor13:
-		Id: Actor13
+	Actor13:
 		Type: mine
 		Location: 49,18
 		Owner: Neutral
-	ActorReference@Actor14:
-		Id: Actor14
+	Actor14:
 		Type: mine
 		Location: 18,80
 		Owner: Neutral
-	ActorReference@Actor15:
-		Id: Actor15
+	Actor15:
 		Type: mine
 		Location: 18,75
 		Owner: Neutral

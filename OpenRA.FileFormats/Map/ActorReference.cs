@@ -12,13 +12,14 @@ namespace OpenRA.FileFormats
 {
 	public class ActorReference
 	{
-		public readonly string Id;
+		public string Id { get; private set; }
 		public readonly string Type;
 		public readonly int2 Location;
 		public readonly string Owner;
 		
-		public ActorReference(MiniYaml my)
+		public ActorReference( string id, MiniYaml my)
 		{
+			Id = id;
 			FieldLoader.Load(this, my);
 		}
 		
