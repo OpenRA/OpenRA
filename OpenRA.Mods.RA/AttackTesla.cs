@@ -45,22 +45,22 @@ namespace OpenRA.Mods.RA
 				foreach( var w in Weapons )
 					w.FireDelay = Math.Max( w.FireDelay, timeToRecharge );
 
-				sameTarget = null;
+				previousTarget = null;
 			}
 			base.Tick( self );
 		}
 
-		Actor sameTarget;
+		Actor previousTarget;
 		public override int FireDelay( Actor self, AttackBaseInfo info )
 		{
 			foreach( var w in Weapons )
 				w.FireDelay = 8;
-			timeToRecharge = self.GetPrimaryWeapon().ROF;
+			timeToRecharge = Weapons[0].Info.ROF;
 			--charges;
 
-			if( target.Actor != sameTarget )
+			if( target.Actor != previousTarget )
 			{
-				sameTarget = target.Actor;
+				previousTarget = target.Actor;
 				self.traits.Get<RenderBuildingCharge>().PlayCharge( self );
 				return base.FireDelay( self, info );
 			}
