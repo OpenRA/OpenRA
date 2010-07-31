@@ -187,17 +187,6 @@ namespace OpenRA.Mods.RA
 			return Rules.Weapons[weapon.ToLowerInvariant()];
 		}
 
-		public static WeaponInfo GetSecondaryWeapon(this Actor self)
-		{
-			var info = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
-			if (info == null) return null;
-
-			var weapon = info.SecondaryWeapon;
-			if (weapon == null) return null;
-
-			return Rules.Weapons[weapon.ToLowerInvariant()];
-		}
-
 		static float2 GetRecoil(Actor self, float recoil)
 		{
 			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();

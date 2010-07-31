@@ -50,13 +50,13 @@ namespace OpenRA.Mods.RA
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = order.Subject.GetPrimaryWeapon() ?? order.Subject.GetSecondaryWeapon();
+			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
 
 			target = Target.FromOrder(order);
 
 			if (self.traits.Contains<Mobile>())
 				self.QueueActivity( new Follow( target,
-					Math.Max( 0, (int)weapon.Range - RangeTolerance ) ) );
+					Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
 		}
 
 		bool buildComplete = false;

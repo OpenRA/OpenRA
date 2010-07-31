@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 				Weapons.Add(new Weapon(info.PrimaryWeapon, 
 					info.PrimaryOffset, info.PrimaryLocalOffset));
 
-			if (self.GetSecondaryWeapon() != null)
+			if (info.SecondaryWeapon != null)
 				Weapons.Add(new Weapon(info.SecondaryWeapon, 
 					info.SecondaryOffset ?? info.PrimaryOffset, info.SecondaryLocalOffset));
 		}
@@ -302,12 +302,12 @@ namespace OpenRA.Mods.RA
 		
 		protected virtual void QueueAttack(Actor self, Order order)
 		{
-			/* todo: choose the appropriate weapon, when only one works against this target */
-			var weapon = self.GetPrimaryWeapon() ?? self.GetSecondaryWeapon();
+			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
+
 			self.QueueActivity(
 				new Activities.Attack(
 					Target.FromOrder(order), 
-					Math.Max(0, (int)weapon.Range)));
+					Math.Max(0, (int)weapon.Info.Range)));
 		}
 
 		/* temp hack */
@@ -316,5 +316,7 @@ namespace OpenRA.Mods.RA
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
+
+		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.First(w => w.IsValidAgainst(t)); }
 	}
 }
