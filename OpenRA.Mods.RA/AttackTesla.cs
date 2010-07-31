@@ -42,8 +42,9 @@ namespace OpenRA.Mods.RA
 				charges = self.Info.Traits.Get<AttackTeslaInfo>().MaxCharges;
 			if( charges <= 0 )
 			{
-				primaryFireDelay = Math.Max( primaryFireDelay, timeToRecharge );
-				secondaryFireDelay = Math.Max( secondaryFireDelay, timeToRecharge );
+				foreach( var w in Weapons )
+					w.FireDelay = Math.Max( w.FireDelay, timeToRecharge );
+
 				sameTarget = null;
 			}
 			base.Tick( self );
@@ -52,7 +53,8 @@ namespace OpenRA.Mods.RA
 		Actor sameTarget;
 		public override int FireDelay( Actor self, AttackBaseInfo info )
 		{
-			primaryFireDelay = 8;
+			foreach( var w in Weapons )
+				w.FireDelay = 8;
 			timeToRecharge = self.GetPrimaryWeapon().ROF;
 			--charges;
 

@@ -34,24 +34,24 @@ namespace OpenRA.Mods.RA.Render
 			if( attackInfo.PrimaryOffset != null )
 				anims.Add("turret_1", new AnimationWithOffset(
 					turretAnim,
-					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
+					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.GetPrimaryRecoil()),
 					null) { ZOffset = 1 });
 
 			if (attackInfo.SecondaryOffset != null)
 				anims.Add("turret_2", new AnimationWithOffset(
 					turretAnim,
-					() => Combat.GetTurretPosition(self, unit, attackInfo.SecondaryOffset, attack.secondaryRecoil),
+					() => Combat.GetTurretPosition(self, unit, attackInfo.SecondaryOffset, attack.GetSecondaryRecoil()),
 					null) { ZOffset = 1 });
 
 			if( attackInfo.MuzzleFlash )
 			{
 				var muzzleFlash = new Animation( GetImage(self), () => self.traits.Get<Turreted>().turretFacing );
 				muzzleFlash.PlayFetchIndex( "muzzle",
-					() => (int)( attack.primaryRecoil * 5.9f ) ); /* hack: recoil can be 1.0f, but don't overflow into next anim */
+					() => (int)(attack.GetPrimaryRecoil() * 5.9f)); /* hack: recoil can be 1.0f, but don't overflow into next anim */
 				anims.Add( "muzzle_flash", new AnimationWithOffset(
 					muzzleFlash,
-					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.primaryRecoil),
-					() => attack.primaryRecoil <= 0 ) );
+					() => Combat.GetTurretPosition(self, unit, attackInfo.PrimaryOffset, attack.GetPrimaryRecoil()),
+					() => attack.GetPrimaryRecoil() <= 0));
 			}
 		}
 	}

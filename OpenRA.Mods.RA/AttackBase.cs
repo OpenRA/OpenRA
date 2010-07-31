@@ -36,34 +36,56 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
+	public class Weapon
+	{
+		public WeaponInfo Info;
+		public int FireDelay = 0;			// time (in frames) until the weapon can fire again
+		public int Burst = 0;				// burst counter
+		public float Recoil = 0.0f;			// remaining recoil fraction
+
+		public int[] Offset;
+		public int[] LocalOffset;
+
+		public Weapon(WeaponInfo info, int[] offset, int[] localOffset)
+		{
+			Info = info;
+			Burst = info.Burst;
+			Offset = offset;
+			LocalOffset = localOffset;
+		}
+
+		public bool IsReloading { get { return FireDelay > 0; } }
+
+		public void Tick()
+		{
+			if (FireDelay > 0) --FireDelay;
+			Recoil = Math.Max(0f, Recoil - .2f);
+		}
+	}
+
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor, IOrderVoice
 	{
 		public Target target;
 
-		// time (in frames) until each weapon can fire again.
-		[Sync]
-		protected int primaryFireDelay = 0;
-		[Sync]
-		protected int secondaryFireDelay = 0;
-
-		int primaryBurst;
-		int secondaryBurst;
-
-		public float primaryRecoil = 0.0f, secondaryRecoil = 0.0f;
+		public List<Weapon> Weapons = new List<Weapon>();
 
 		public AttackBase(Actor self)
 		{
-			var primaryWeapon = self.GetPrimaryWeapon();
-			var secondaryWeapon = self.GetSecondaryWeapon();
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			primaryBurst = primaryWeapon != null ? primaryWeapon.Burst : 1;
-			secondaryBurst = secondaryWeapon != null ? secondaryWeapon.Burst : 1;
+			if (self.GetPrimaryWeapon() != null)
+				Weapons.Add(new Weapon(self.GetPrimaryWeapon(), 
+					info.PrimaryOffset, info.PrimaryLocalOffset));
+
+			if (self.GetSecondaryWeapon() != null)
+				Weapons.Add(new Weapon(self.GetSecondaryWeapon(), 
+					info.SecondaryOffset ?? info.PrimaryOffset, info.SecondaryLocalOffset));
 		}
 
 		protected virtual bool CanAttack(Actor self)
 		{
 			if (!target.IsValid) return false;
-			if ((primaryFireDelay > 0) && (secondaryFireDelay > 0)) return false;
+			if (Weapons.All(w => w.IsReloading)) return false;
 			if (self.traits.WithInterface<IDisable>().Any(d => d.Disabled)) return false;
 
 			return true;
@@ -71,20 +93,14 @@ namespace OpenRA.Mods.RA
 
 		public bool ShouldExplode(Actor self) { return !IsReloading(); }
 
-		public bool IsReloading()
-		{
-			return (primaryFireDelay > 0) || (secondaryFireDelay > 0);
-		}
+		public bool IsReloading() { return Weapons.Any(w => w.IsReloading); }
 
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public virtual void Tick(Actor self)
 		{
-			if (primaryFireDelay > 0) --primaryFireDelay;
-			if (secondaryFireDelay > 0) --secondaryFireDelay;
-
-			primaryRecoil = Math.Max(0f, primaryRecoil - .2f);
-			secondaryRecoil = Math.Max(0f, secondaryRecoil - .2f);
+			foreach (var w in Weapons)
+				w.Tick();
 
 			for (var i = 0; i < delayedActions.Count; i++)
 			{
@@ -111,31 +127,18 @@ namespace OpenRA.Mods.RA
 			var unit = self.traits.GetOrDefault<Unit>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			if (info.PrimaryWeapon != null && CheckFire(self, unit, info.PrimaryWeapon, ref primaryFireDelay,
-				info.PrimaryOffset, ref primaryBurst, info.PrimaryLocalOffset))
-			{
-				primaryRecoil = 1;
-				return;
-			}
-
-			if (info.SecondaryWeapon != null && CheckFire(self, unit, info.SecondaryWeapon, ref secondaryFireDelay,
-				info.SecondaryOffset ?? info.PrimaryOffset, ref secondaryBurst, info.SecondaryLocalOffset))
-			{
-				if (info.SecondaryOffset != null) secondaryRecoil = 1;
-				else primaryRecoil = 1;
-				return;
-			}
+			foreach (var w in Weapons)
+				if (CheckFire(self, unit, w.Info, ref w.FireDelay, w.Offset, ref w.Burst, w.LocalOffset))
+					w.Recoil = 1;
 		}
 
-		bool CheckFire(Actor self, Unit unit, string weaponName, ref int fireDelay, int[] offset, ref int burst, int[] localOffset)
+		bool CheckFire(Actor self, Unit unit, WeaponInfo weapon, ref int fireDelay, int[] offset, ref int burst, int[] localOffset)
 		{
 			if (fireDelay > 0) return false;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return false;
-
-			var weapon = Rules.Weapons[weaponName.ToLowerInvariant()];
 
 			if (weapon.Range * weapon.Range * Game.CellSize * Game.CellSize
 			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
@@ -165,7 +168,7 @@ namespace OpenRA.Mods.RA
 
 			var args = new ProjectileArgs
 			{
-				weapon = Rules.Weapons[weaponName.ToLowerInvariant()],
+				weapon = weapon,
 
 				firedBy = self,
 				target = this.target,
@@ -289,5 +292,9 @@ namespace OpenRA.Mods.RA
 					Target.FromOrder(order), 
 					Math.Max(0, (int)weapon.Range)));
 		}
+
+		/* temp hack */
+		public float GetPrimaryRecoil() { return Weapons.Count > 0 ? Weapons[0].Recoil : 0; }
+		public float GetSecondaryRecoil() { return Weapons.Count > 1 ? Weapons[1].Recoil : 0; }
 	}
 }
