@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 		public Building(ActorInitializer init)
 		{
 			this.self = init.self;
-			this.topLeft = init.location;
+			this.topLeft = init.Get<LocationInit,int2>();
 			Info = self.Info.Traits.Get<BuildingInfo>();
 			self.CenterLocation = Game.CellSize 
 				* ((float2)topLeft + .5f * (float2)Info.Dimensions);

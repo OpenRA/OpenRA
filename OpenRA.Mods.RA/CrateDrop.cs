@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 
 				self.World.AddFrameEndTask(w =>
 					{
-						var crate = new Actor(w, "crate", new int2(0, 0), w.WorldActor.Owner);
+						var crate = w.CreateActor(false, "crate", new int2(0, 0), w.WorldActor.Owner);
 						crates.Add(crate);
 
 						var startPos = w.ChooseRandomEdgeCell();

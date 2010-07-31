@@ -15,8 +15,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using OpenRA.FileFormats;
 
-namespace OpenRA.FileFormats
+namespace OpenRA
 {
 	public class Map
 	{
@@ -122,10 +123,10 @@ namespace OpenRA.FileFormats
 				int actors = 0;
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
-					string[] vals = kv.Value.Value.Split(' ');
-					string[] loc = vals[2].Split(',');
-					var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
-					Actors.Add(a.Id, a);
+				    string[] vals = kv.Value.Value.Split(' ');
+				    string[] loc = vals[2].Split(',');
+				    var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
+				    Actors.Add(a.Id, a);
 				}
 			}
 			else
@@ -274,8 +275,8 @@ namespace OpenRA.FileFormats
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
 			// Read the relevant data into a buffer
-			var data = Exts.ReadAllBytes(Package.GetContent("map.yaml"))
-				.Concat(Exts.ReadAllBytes(Package.GetContent("map.bin"))).ToArray();
+			var data = Package.GetContent("map.yaml").ReadAllBytes()
+				.Concat(Package.GetContent("map.bin").ReadAllBytes()).ToArray();
 
 			// Take the SHA1
 			using (var csp = SHA1.Create())

@@ -76,7 +76,7 @@ namespace OpenRA.Traits
 		{
 			this.self = init.self;
 			this.Info = info;
-			this.__fromCell = this.__toCell = init.location;
+			this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
 			
 			shroud = self.World.WorldActor.traits.Get<Shroud>();
 			uim = self.World.WorldActor.traits.Get<UnitInfluence>();

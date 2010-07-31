@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 
 				var cargo = a.traits.Get<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, new Actor(owner.World, i.ToLowerInvariant(), 
+					cargo.Load(a, owner.World.CreateActor(false, i.ToLowerInvariant(), 
 						new int2(0,0), a.Owner));
 			});
 		}

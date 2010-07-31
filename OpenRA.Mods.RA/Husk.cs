@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		public Husk(ActorInitializer init)
 		{
 			this.self = init.self;
-			this.location = init.location;
+			this.location = init.Get<LocationInit,int2>();
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 

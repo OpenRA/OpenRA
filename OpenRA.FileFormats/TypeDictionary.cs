@@ -9,12 +9,13 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	public class TypeDictionary
+	public class TypeDictionary : IEnumerable
 	{
 		Dictionary<Type, object> dataSingular = new Dictionary<Type, object>();
 		Dictionary<Type, List<object>> dataMultiple = new Dictionary<Type, List<object>>();
@@ -85,7 +86,7 @@ namespace OpenRA.FileFormats
 				return new T[ 0 ];
 		}
 
-		public IEnumerator<object> GetEnumerator()
+		public IEnumerator GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();
 		}

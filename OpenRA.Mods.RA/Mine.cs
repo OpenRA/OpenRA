@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = init.self;
 			this.info = info;
-			this.location = init.location;
+			this.location = init.Get<LocationInit,int2>();
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 

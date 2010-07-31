@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Crates
 			var location = ChooseEmptyCellNear(collector);
 			if (location != null)
 				collector.World.AddFrameEndTask(
-					w => w.Add(new Actor(w, Info.Unit, location.Value, collector.Owner)));
+					w => w.CreateActor(Info.Unit, location.Value, collector.Owner));
 
 			base.Activate(collector);
 		}

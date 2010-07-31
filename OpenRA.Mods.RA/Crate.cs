@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
 			this.self = init.self;
-			this.Location = init.location;
+			this.Location = init.Get<LocationInit,int2>();
 			this.Info = info;
 			
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);

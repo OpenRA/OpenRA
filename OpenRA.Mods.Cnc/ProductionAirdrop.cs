@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc
 				a.traits.Get<IFacing>().Facing = 64;
 				a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
-				var newUnit = new Actor(self.World, producee.Name, new int2(0, 0), self.Owner);
+				var newUnit = self.World.CreateActor(false, producee.Name, new int2(0, 0), self.Owner);
 				cargo.Load(a, newUnit);
 				
 				a.CancelActivity();

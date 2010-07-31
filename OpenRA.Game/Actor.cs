@@ -35,13 +35,14 @@ namespace OpenRA
 		IActivity currentActivity;
 		public Group Group;
 
-		public Actor(World world, string name, int2 location, Player owner)
+		internal Actor(World world, string name, TypeDictionary initDict )
 		{
+			var init = new ActorInitializer( this, initDict );
+
 			World = world;
 			ActorID = world.NextAID();
-			Owner = owner;
-
-			var init = new ActorInitializer( this, location );
+			if( initDict.Contains<OwnerInit>() )
+				Owner = init.Get<OwnerInit,Player>();
 
 			if (name != null)
 			{
@@ -182,18 +183,10 @@ namespace OpenRA
 			var o = obj as Actor;
 			return ( o != null && o.ActorID == ActorID );
 		}
-	}
 
-	public class ActorInitializer
-	{
-		public readonly Actor self;
-		public World world { get { return self.World; } }
-		public readonly int2 location;
-
-		public ActorInitializer( Actor actor, int2 location )
+		public override string ToString()
 		{
-			this.self = actor;
-			this.location = location;
+			return "{0} {1}{2}".F( Info.Name, ActorID, IsInWorld ? "" : " (not in world)" );
 		}
 	}
 }

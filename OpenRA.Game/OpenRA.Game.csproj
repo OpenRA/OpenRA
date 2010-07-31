@@ -227,6 +227,8 @@
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
+    <Compile Include="ActorInitializer.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>

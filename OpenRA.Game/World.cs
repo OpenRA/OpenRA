@@ -90,8 +90,8 @@ namespace OpenRA
 
 			WorldRenderer = new WorldRenderer(this);
 			Timer.Time("renderer: {0}");
-			
-			WorldActor = CreateActor("World", new int2(int.MaxValue, int.MaxValue), null);
+
+			WorldActor = CreateActor( "World", new TypeDictionary() );
 			
 			// Add Map Players
 			int mapPlayerIndex = -1;
@@ -124,11 +124,32 @@ namespace OpenRA
 
 			Timer.Time( "----end World.ctor" );
 		}
-		
+
 		public Actor CreateActor( string name, int2 location, Player owner )
 		{
-			var a = new Actor( this, name, location, owner );
-			Add( a );
+			return CreateActor( true, name, location, owner );
+		}
+		
+		public Actor CreateActor( bool addToWorld, string name, int2 location, Player owner )
+		{
+			var initDict = new TypeDictionary
+			{
+				new LocationInit( location ),
+				new OwnerInit( owner ),
+			};
+			return CreateActor( addToWorld, name, initDict );
+		}
+
+		public Actor CreateActor( string name, TypeDictionary initDict )
+		{
+			return CreateActor( true, name, initDict );
+		}
+
+		public Actor CreateActor( bool addToWorld, string name, TypeDictionary initDict )
+		{
+			var a = new Actor( this, name, initDict );
+			if( addToWorld )
+				Add( a );
 			return a;
 		}
 		

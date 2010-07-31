@@ -152,6 +152,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
+					if( !info.Traits.Contains<RenderSimpleInfo>() ) continue;
 					var template = RenderActor(info, tileset, palette);
 					var ibox = new PictureBox
 					{

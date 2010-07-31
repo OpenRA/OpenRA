@@ -17,10 +17,10 @@ namespace OpenRA.FileFormats
 {
 	public class MapStub
 	{
-		public IFolder Package;
+		public readonly IFolder Package;
 		
 		// Yaml map data
-		public string Uid;
+		public readonly string Uid;
 		public bool Selectable;
 
 		public string Title;
@@ -35,7 +35,6 @@ namespace OpenRA.FileFormats
 		public int2 BottomRight;
 		public int Width { get { return BottomRight.X - TopLeft.X; } }
 		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
-		public Map Map { get { return new Map(Package); }}
 	
 		static List<string> Fields = new List<string>() {
 			"Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
