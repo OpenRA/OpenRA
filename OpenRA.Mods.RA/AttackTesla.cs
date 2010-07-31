@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.self); }
 	}
 
-	class AttackTesla : AttackOmni, ITick
+	class AttackTesla : AttackOmni, ITick, INotifyAttack
 	{
 		int charges;
 		int timeToRecharge;
@@ -51,21 +51,25 @@ namespace OpenRA.Mods.RA
 		}
 
 		Actor previousTarget;
+
 		public override int FireDelay( Actor self, AttackBaseInfo info )
 		{
-			foreach( var w in Weapons )
+			return target.Actor == previousTarget ? 3 : base.FireDelay(self, info);
+		}
+
+		public void Attacking(Actor self)
+		{
+			foreach (var w in Weapons)
 				w.FireDelay = 8;
+
 			timeToRecharge = Weapons[0].Info.ROF;
 			--charges;
 
-			if( target.Actor != previousTarget )
+			if (target.Actor != previousTarget)
 			{
 				previousTarget = target.Actor;
-				self.traits.Get<RenderBuildingCharge>().PlayCharge( self );
-				return base.FireDelay( self, info );
+				self.traits.Get<RenderBuildingCharge>().PlayCharge(self);
 			}
-			else
-				return 3;
 		}
 	}
 }
