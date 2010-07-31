@@ -90,7 +90,6 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var unit = self.traits.Get<Unit>();
 			var mobile = self.traits.Get<Mobile>();
 
 			if( move != null )
@@ -127,8 +126,8 @@ namespace OpenRA.Traits.Activities
 				return this;
 
 			int2 dir = nextCell.Value - mobile.fromCell;
-			var firstFacing = Util.GetFacing( dir, unit.Facing );
-			if( firstFacing != unit.Facing )
+			var firstFacing = Util.GetFacing( dir, mobile.Facing );
+			if( firstFacing != mobile.Facing )
 			{
 				path.Add( nextCell.Value );
 
@@ -140,8 +139,8 @@ namespace OpenRA.Traits.Activities
 				move = new MoveFirstHalf(
 					Util.CenterOfCell( mobile.fromCell ),
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
-					unit.Facing,
-					unit.Facing,
+					mobile.Facing,
+					mobile.Facing,
 					0 );
 
 				move.TickMove( self, mobile, this );
@@ -262,9 +261,9 @@ namespace OpenRA.Traits.Activities
 				self.CenterLocation = float2.Lerp( from, to, frac );
 
 				if( moveFraction >= moveFractionTotal )
-					unit.Facing = toFacing & 0xFF;
+					mobile.Facing = toFacing & 0xFF;
 				else
-					unit.Facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
+					mobile.Facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
 			}
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
@@ -289,8 +288,8 @@ namespace OpenRA.Traits.Activities
 						var ret = new MoveFirstHalf(
 							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 							Util.BetweenCells( mobile.toCell, nextCell.Value ),
-							unit.Facing,
-							Util.GetNearestFacing( unit.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, unit.Facing ) ),
+							mobile.Facing,
+							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
 						mobile.fromCell = mobile.toCell;
 						mobile.toCell = nextCell.Value;
@@ -302,8 +301,8 @@ namespace OpenRA.Traits.Activities
 				var ret2 = new MoveSecondHalf(
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					Util.CenterOfCell( mobile.toCell ),
-					unit.Facing,
-					unit.Facing,
+					mobile.Facing,
+					mobile.Facing,
 					moveFraction - moveFractionTotal );
 				mobile.fromCell = mobile.toCell;
 				return ret2;

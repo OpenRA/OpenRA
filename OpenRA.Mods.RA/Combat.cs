@@ -193,13 +193,13 @@ namespace OpenRA.Mods.RA
 			return Util.RotateVectorByFacing(localRecoil, facing, .7f);
 		}
 
-		public static float2 GetTurretPosition(Actor self, Unit unit, Turret turret)
+		public static float2 GetTurretPosition(Actor self, IMove move, Turret turret)
 		{
-			if (unit == null) return turret.ScreenSpacePosition;
+			if(move == null) return turret.ScreenSpacePosition;	/* things that don't have a rotating base don't need the turrets repositioned */
 
 			var ru = self.traits.GetOrDefault<RenderUnit>();
 			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var bodyFacing = unit.Facing;
+			var bodyFacing = move.Facing;
 			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
 			return (Util.RotateVectorByFacing(turret.UnitSpacePosition, quantizedFacing, .7f) 
@@ -208,14 +208,14 @@ namespace OpenRA.Mods.RA
 		}
 
 		// gets the screen-space position of a barrel.
-		public static float2 GetBarrelPosition(Actor self, Unit unit, Turret turret, Barrel barrel)
+		public static float2 GetBarrelPosition(Actor self, IMove move, Turret turret, Barrel barrel)
 		{
 			var turreted = self.traits.GetOrDefault<Turreted>();
 			
-			if (turreted == null && unit == null)
+			if (turreted == null && move == null)
 				return float2.Zero;
 
-			var turretFacing = turreted != null  ? turreted.turretFacing : unit.Facing;
+			var turretFacing = turreted != null  ? turreted.turretFacing : move.Facing;
 
 			return Util.RotateVectorByFacing(barrel.Position, turretFacing, .7f);
 		}

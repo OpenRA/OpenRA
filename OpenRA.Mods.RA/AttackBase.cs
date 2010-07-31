@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -102,15 +102,13 @@ namespace OpenRA.Mods.RA
 		{
 			if( !CanAttack( self ) ) return;
 
-			var unit = self.traits.GetOrDefault<Unit>();
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-
+			var move = self.traits.GetOrDefault<IMove>();
 			foreach (var w in Weapons)
-				if (CheckFire(self, unit, w))
+				if (CheckFire(self, move, w))
 					w.FiredShot();
 		}
 
-		bool CheckFire(Actor self, Unit unit, Weapon w)
+		bool CheckFire(Actor self, IMove move, Weapon w)
 		{
 			if (w.FireDelay > 0) return false;
 
@@ -124,8 +122,7 @@ namespace OpenRA.Mods.RA
 			if (!w.IsValidAgainst(target)) return false;
 
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
-
-			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
+			var destMove = target.IsActor ? target.Actor.traits.GetOrDefault<IMove>() : null;
 
 			var args = new ProjectileArgs
 			{
@@ -135,15 +132,15 @@ namespace OpenRA.Mods.RA
 				target = this.target,
 
 				src = (self.CenterLocation
-					+ Combat.GetTurretPosition(self, unit, w.Turret)
-					+ Combat.GetBarrelPosition(self, unit, w.Turret, barrel)).ToInt2(),
-				srcAltitude = unit != null ? unit.Altitude : 0,
+					+ Combat.GetTurretPosition(self, move, w.Turret)
+					+ Combat.GetBarrelPosition(self, move, w.Turret, barrel)).ToInt2(),
+				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation.ToInt2(),
-				destAltitude = destUnit != null ? destUnit.Altitude : 0,
+				destAltitude = destMove != null ? destMove.Altitude : 0,
 				
 				facing = barrel.Facing + 
 					(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
-					unit != null ? unit.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+					move != null ? move.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 			};
 			
 			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>

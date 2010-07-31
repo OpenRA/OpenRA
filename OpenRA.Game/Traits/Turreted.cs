@@ -10,12 +10,12 @@
 
 namespace OpenRA.Traits
 {
-	class TurretedInfo : ITraitInfo
+	public class TurretedInfo : ITraitInfo
 	{
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 
-		public object Create(ActorInitializer init) { return new Turreted(init.self); }
+		public object Create(ActorInitializer init) { return new Turreted(init.self, this); }
 	}
 
 	public class Turreted : ITick
@@ -23,16 +23,20 @@ namespace OpenRA.Traits
 		[Sync]
 		public int turretFacing = 0;
 		public int? desiredFacing;
-
-		public Turreted(Actor self)
+		TurretedInfo Info;
+		IMove Move;
+		
+		public Turreted(Actor self, TurretedInfo info)
 		{
-			turretFacing = self.Info.Traits.Get<TurretedInfo>().InitialFacing;
+			Info = info;
+			turretFacing = info.InitialFacing;
+			Move = self.traits.GetOrDefault<IMove>();
 		}
 
 		public void Tick( Actor self )
 		{
-			var df = desiredFacing ?? ( self.traits.Contains<Unit>() ? self.traits.Get<Unit>().Facing : turretFacing );
-			Util.TickFacing(ref turretFacing, df, self.Info.Traits.Get<TurretedInfo>().ROT);
+			var df = desiredFacing ?? ( Move != null ? Move.Facing : turretFacing );
+			turretFacing = Util.TickFacing(turretFacing, df, Info.ROT);
 		}
 	}
 }

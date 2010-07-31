@@ -84,17 +84,17 @@ namespace OpenRA.Traits
 		int offsetTicks = 0;
 		public void Tick(Actor self)
 		{
-			var unit = self.traits.Get<Unit>();
+			var move = self.traits.Get<IMove>();
 			//if (unit.Altitude <= 0)
 			//	return;
 			
-			if (unit.Altitude < AirInfo.CruiseAltitude)
-				unit.Altitude++;
+			if (move.Altitude < AirInfo.CruiseAltitude)
+				move.Altitude++;
 			
 			if (--offsetTicks <= 0)
 			{
 				self.CenterLocation += AirInfo.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
-				unit.Altitude += (int)(AirInfo.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
+				move.Altitude += (int)(AirInfo.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
 				offsetTicks = AirInfo.InstabilityTicks;
 			}
 		}

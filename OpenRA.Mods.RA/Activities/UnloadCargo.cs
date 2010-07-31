@@ -44,9 +44,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			// if we're a thing that can turn, turn to the
 			// right facing for the unload animation
-			var unit = self.traits.GetOrDefault<Unit>();
+			var move = self.traits.GetOrDefault<IMove>();
 			var unloadFacing = self.Info.Traits.Get<CargoInfo>().UnloadFacing;
-			if (unit != null && unit.Facing != unloadFacing)
+			if (move != null && move.Facing != unloadFacing)
 				return new Turn(unloadFacing) { NextActivity = this };
 
 			// todo: handle the BS of open/close sequences, which are inconsistent,

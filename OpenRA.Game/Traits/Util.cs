@@ -17,16 +17,16 @@ namespace OpenRA.Traits
 {
 	public static class Util
 	{
-		public static void TickFacing( ref int facing, int desiredFacing, int rot )
+		public static int TickFacing( int facing, int desiredFacing, int rot )
 		{
 			var leftTurn = ( facing - desiredFacing ) & 0xFF;
 			var rightTurn = ( desiredFacing - facing ) & 0xFF;
 			if( Math.Min( leftTurn, rightTurn ) < rot )
-				facing = desiredFacing & 0xFF;
+				return desiredFacing & 0xFF;
 			else if( rightTurn < leftTurn )
-				facing = ( facing + rot ) & 0xFF;
+				return ( facing + rot ) & 0xFF;
 			else
-				facing = ( facing - rot ) & 0xFF;
+				return ( facing - rot ) & 0xFF;
 		}
 
 		static float2[] fvecs = Graphics.Util.MakeArray<float2>( 32,

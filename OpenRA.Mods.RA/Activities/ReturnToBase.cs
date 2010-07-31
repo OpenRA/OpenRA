@@ -41,15 +41,15 @@ namespace OpenRA.Mods.RA.Activities
 				self.traits.Get<Plane>().reservation = res.Reserve(self);
 
 			var landPos = dest.CenterLocation;
-			var unit = self.traits.Get<Unit>();
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
+			var aircraft = self.traits.Get<Aircraft>();
+
+			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			
-			var approachStart = landPos - new float2(unit.Altitude * speed, 0);
+			var approachStart = landPos - new float2(aircraft.Altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;
 
 			/* work out the center points */
-			var fwd = -float2.FromAngle(unit.Facing / 128f * (float)Math.PI);
+			var fwd = -float2.FromAngle(aircraft.Facing / 128f * (float)Math.PI);
 			var side = new float2(-fwd.Y, fwd.X);		/* rotate */
 			var sideTowardBase = new[] { side, -side }
 				.OrderBy(a => float2.Dot(a, self.CenterLocation - approachStart))

@@ -39,17 +39,15 @@ namespace OpenRA.Mods.RA.Activities
 			if (d.LengthSquared < 50)		/* close enough */
 				return NextActivity;
 
-			var unit = self.traits.Get<Unit>();
 			var aircraft = self.traits.Get<Aircraft>();
 
-			if (unit.Altitude > 0)
-				--unit.Altitude;
+			if (aircraft.Altitude > 0)
+				--aircraft.Altitude;
 
-			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<AircraftInfo>().ROT);
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
-			var angle = unit.Facing / 128f * Math.PI;
+			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
+			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var angle = aircraft.Facing / 128f * Math.PI;
 
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			aircraft.Location = Util.CellContaining(self.CenterLocation);

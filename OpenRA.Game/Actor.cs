@@ -136,8 +136,8 @@ namespace OpenRA
 
 			if (useAltitude)
 			{
-				var unit = traits.GetOrDefault<Unit>();
-				if (unit != null) loc -= new float2(0, unit.Altitude);
+				var move = traits.GetOrDefault<IMove>();
+				if (move != null) loc -= new float2(0, move.Altitude);
 			}
 
 			return new RectangleF(loc.X, loc.Y, size.X, size.Y);

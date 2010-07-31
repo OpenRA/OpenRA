@@ -32,22 +32,21 @@ namespace OpenRA.Mods.RA.Activities
 				self.QueueActivity(new HeliReturn());
 				return NextActivity;
 			}
-			var unit = self.traits.Get<Unit>();
+			
+			var aircraft = self.traits.Get<Aircraft>();
 			var info = self.Info.Traits.Get<HelicopterInfo>();
-			if (unit.Altitude != info.CruiseAltitude)
+			if (aircraft.Altitude != info.CruiseAltitude)
 			{
-				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
+				aircraft.Altitude += Math.Sign(info.CruiseAltitude - aircraft.Altitude);
 				return this;
 			}
 
 			var range = self.traits.Get<AttackBase>().GetMaximumRange() - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
-			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, self.Info.Traits.Get<AircraftInfo>().ROT);
-
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);
+			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
+			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				self.CenterLocation += (rawSpeed / dist.Length) * dist;

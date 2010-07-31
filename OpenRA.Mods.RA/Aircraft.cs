@@ -32,6 +32,11 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync]
 		public int2 Location;
+		[Sync]
+		public int Facing { get; set; }
+		[Sync]
+		public int Altitude { get; set; }
+		
 		AircraftInfo Info;
 
 		public Aircraft( ActorInitializer init , AircraftInfo info)

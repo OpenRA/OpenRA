@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)
-			: base(self, () => self.traits.Get<Unit>().Facing)
+			: base(self, () => self.traits.Contains<IMove>() ? self.traits.Get<IMove>().Facing : 0)
 		{
 			anim.Play("idle");
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );

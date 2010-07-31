@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderUnitTurreted(Actor self)
 			: base(self)
 		{
-			var unit = self.traits.Get<Unit>();
+			var move = self.traits.Get<IMove>();
 			var turreted = self.traits.Get<Turreted>();
 			var attack = self.traits.GetOrDefault<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Render
 				var turret = attack.Turrets[i];
 				anims.Add( "turret_{0}".F(i), 
 					new AnimationWithOffset( turretAnim,
-						() => Combat.GetTurretPosition( self, unit, turret ),
+						() => Combat.GetTurretPosition( self, move, turret ),
 						null) { ZOffset = 1 });
 
 				if (attackInfo.MuzzleFlash)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 						() => (int)(turret.Recoil * 5.9f)); /* hack: dumb crap */
 					anims.Add("muzzle_flash_{0}".F(i),
 						new AnimationWithOffset(muzzleFlash,
-							() => Combat.GetTurretPosition(self, unit, turret),
+							() => Combat.GetTurretPosition(self, move, turret),
 							() => turret.Recoil <= 0));
 				}
 			}

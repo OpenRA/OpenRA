@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA
 				return false;
 			
 			// Cannot unload mid-air
-			var unit = self.traits.GetOrDefault<Unit>();
-			if (unit != null && unit.Altitude > 0)
+			var move = self.traits.GetOrDefault<IMove>();
+			if (move != null && move.Altitude > 0)
 				return false;
 			
 			// Todo: Check if there is a free tile to unload to

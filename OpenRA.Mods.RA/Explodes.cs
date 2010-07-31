@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA
 				var weapon = ChooseWeaponForExplosion(self);
 				if (weapon != null)
 				{
-					var unit = self.traits.GetOrDefault<Unit>();
-					var altitude = unit != null ? unit.Altitude : 0;
+					var move = self.traits.GetOrDefault<IMove>();
+					var altitude = move != null ? move.Altitude : 0;
 					Combat.DoExplosion(e.Attacker, weapon, self.CenterLocation, altitude);
 				}
 			}

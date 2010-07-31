@@ -58,9 +58,9 @@ namespace OpenRA.Mods.RA.Activities
 				if (oldHealth != null && newHealth != null)
 					newHealth.HPFraction = oldHealth.HPFraction;
 				
-				var unit = a.traits.GetOrDefault<Unit>();
-				if (unit != null)
-					unit.Facing = facing;
+				var move = a.traits.GetOrDefault<IMove>();
+				if (move != null)
+					move.Facing = facing;
 				
 				if (selected)
 					w.Selection.Add(w, a);

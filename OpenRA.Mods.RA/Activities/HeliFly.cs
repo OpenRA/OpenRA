@@ -30,13 +30,12 @@ namespace OpenRA.Mods.RA.Activities
 			if (isCanceled)
 				return NextActivity;
 
-			var unit = self.traits.Get<Unit>();
 			var info = self.Info.Traits.Get<HelicopterInfo>();
 			var aircraft = self.traits.Get<Aircraft>();
 
-			if (unit.Altitude != info.CruiseAltitude)
+			if (aircraft.Altitude != info.CruiseAltitude)
 			{
-				unit.Altitude += Math.Sign(info.CruiseAltitude - unit.Altitude);
+				aircraft.Altitude += Math.Sign(info.CruiseAltitude - aircraft.Altitude);
 				return this;
 			}
 			
@@ -48,12 +47,11 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 			}
 
-			var desiredFacing = Util.GetFacing(dist, unit.Facing);
-			Util.TickFacing(ref unit.Facing, desiredFacing, 
-				self.Info.Traits.Get<AircraftInfo>().ROT);
+			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, 
+				aircraft.ROT);
 
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);
+			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			self.CenterLocation += (rawSpeed / dist.Length) * dist;
 			aircraft.Location = Util.CellContaining(self.CenterLocation);
 

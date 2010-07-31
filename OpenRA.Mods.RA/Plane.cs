@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			if (firstTick)
 			{
 				firstTick = false;
-				if (self.traits.Get<Unit>().Altitude == 0)
+				if (self.traits.Get<IMove>().Altitude == 0)
 				{	
 					/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
 					var res = self.World.FindUnits(self.CenterLocation, self.CenterLocation)

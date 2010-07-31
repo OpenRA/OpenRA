@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void Idle(Actor self)
 		{
-			var altitude = self.traits.Get<Unit>().Altitude;
+			var altitude = self.traits.Get<Aircraft>().Altitude;
 			if (altitude == 0) return;	// we're on the ground, let's stay there.
 
 			var airfield = ReturnToBase.ChooseAirfield(self);

@@ -40,8 +40,9 @@ namespace OpenRA.Mods.Cnc
 			{
 				var a = w.CreateActor("C17", startPos, owner);
 				var cargo = a.traits.Get<Cargo>();
-				a.traits.Get<Unit>().Facing = 64;
-				a.traits.Get<Unit>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+				var aMove = a.traits.Get<IMove>();
+				aMove.Facing = 64;
+				aMove.Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
 				var newUnit = new Actor(self.World, producee.Name, new int2(0, 0), self.Owner);
 				cargo.Load(a, newUnit);
@@ -58,8 +59,8 @@ namespace OpenRA.Mods.Cnc
 					self.World.AddFrameEndTask(ww =>
 					{
 						ww.Add(actor);
-						actor.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(actor, self.Location + unloadOffset);
-						newUnit.traits.Get<Unit>().Facing = 192;
+						actor.traits.Get<IMove>().SetPosition(actor, self.Location + unloadOffset);
+						newUnit.traits.Get<IMove>().Facing = 192;
 						actor.CancelActivity();
 						actor.QueueActivity(new Move(self.Location + exitOffset, self));
 						actor.QueueActivity(new Move(rp.rallyPoint, 0));

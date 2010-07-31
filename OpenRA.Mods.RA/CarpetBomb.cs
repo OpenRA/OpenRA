@@ -43,13 +43,14 @@ namespace OpenRA.Mods.RA
 				var weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 				dropDelay = weapon.ROF;
 
+				var move = self.traits.Get<IMove>();
 				var args = new ProjectileArgs
 				{
-					srcAltitude = self.traits.Get<Unit>().Altitude,
+					srcAltitude = move.Altitude,
 					destAltitude = 0,
 					src = self.CenterLocation.ToInt2(),
 					dest = self.CenterLocation.ToInt2(),
-					facing = self.traits.Get<Unit>().Facing,
+					facing = move.Facing,
 					firedBy = self,
 					weapon = weapon
 				};

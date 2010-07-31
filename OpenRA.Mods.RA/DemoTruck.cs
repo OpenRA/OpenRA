@@ -33,9 +33,9 @@ namespace OpenRA.Mods.RA
 
 		public void Detonate(Actor self, Actor detonatedBy)
 		{
-			var unit = self.traits.GetOrDefault<Unit>();
+			var move = self.traits.GetOrDefault<IMove>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			var altitude = unit != null ? unit.Altitude : 0;
+			var altitude = move != null ? move.Altitude : 0;
 
 			self.World.AddFrameEndTask( w =>
 			{

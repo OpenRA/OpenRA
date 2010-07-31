@@ -129,12 +129,11 @@ namespace OpenRA.Mods.RA
 		int offsetTicks = 0;
 		public void Tick(Actor self)
 		{
-			var unit = self.traits.Get<Unit>();
-			if (unit.Altitude <= 0)
+			var aircraft = self.traits.Get<Aircraft>();
+			if (aircraft.Altitude <= 0)
 				return;
 			
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var rawSpeed = .2f * mobile.MovementSpeedForCell(self, self.Location);
+			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.traits.Contains<Helicopter>());
 
@@ -147,7 +146,7 @@ namespace OpenRA.Mods.RA
 			if (--offsetTicks <= 0)
 			{
 				self.CenterLocation += Info.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
-				unit.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
+				aircraft.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
 				offsetTicks = Info.InstabilityTicks;
 			}
 

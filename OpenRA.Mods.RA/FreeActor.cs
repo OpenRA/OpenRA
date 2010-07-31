@@ -33,10 +33,10 @@ namespace OpenRA.Mods.RA
 				{
 					var a = w.CreateActor(info.Actor, self.Location 
 						+ info.SpawnOffset, self.Owner);
-					var unit = a.traits.WithInterface<Unit>().FirstOrDefault();
-					
-					if (unit != null)
-						unit.Facing = info.Facing;
+				
+					var move = a.traits.GetOrDefault<IMove>();
+					if (move != null)
+						move.Facing = info.Facing;
 
 					if (info.InitialActivity != null)
 						a.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));

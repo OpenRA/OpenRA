@@ -23,14 +23,14 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			var unit = self.traits.Get<Unit>();
-			if (unit.Altitude == 0)
+			var aircraft = self.traits.Get<Aircraft>();
+			if (aircraft.Altitude == 0)
 				return NextActivity;
 
-			if (requireSpace && !self.traits.Get<IMove>().CanEnterCell(self.Location))
+			if (requireSpace && !aircraft.CanEnterCell(self.Location))
 				return this;
 			
-			--unit.Altitude;
+			--aircraft.Altitude;
 			return this;
 		}
 

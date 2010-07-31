@@ -34,15 +34,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (d.LengthSquared < 50)		/* close enough */
 				return NextActivity;
 
-			var unit = self.traits.Get<Unit>();
+			var aircraft = self.traits.Get<Aircraft>();
 
-			var desiredFacing = Util.GetFacing(d, unit.Facing);
-			if (unit.Altitude == cruiseAltitude)
-				Util.TickFacing(ref unit.Facing, desiredFacing, 
-					self.Info.Traits.Get<AircraftInfo>().ROT);
+			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
+			if (aircraft.Altitude == cruiseAltitude)
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
-			if (unit.Altitude < cruiseAltitude)
-				++unit.Altitude;
+			if (aircraft.Altitude < cruiseAltitude)
+				++aircraft.Altitude;
 
 			FlyUtil.Fly(self, cruiseAltitude);
 			return this;
@@ -55,16 +54,12 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		public static void Fly(Actor self, int desiredAltitude )
 		{
-			var unit = self.traits.Get<Unit>();
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
-			var speed = .2f * mobile.MovementSpeedForCell(self, self.Location);
-			var angle = unit.Facing / 128f * Math.PI;
 			var aircraft = self.traits.Get<Aircraft>();
-
+			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var angle = aircraft.Facing / 128f * Math.PI;
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);
 			aircraft.Location = Util.CellContaining(self.CenterLocation);
-
-			unit.Altitude += Math.Sign(desiredAltitude - unit.Altitude);
+			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}
 }

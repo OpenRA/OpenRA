@@ -156,11 +156,10 @@ namespace OpenRA.Traits
 		{
 			if (!Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().PathDebug) return;
 			
-			var mobile = self.traits.WithInterface<IMove>().FirstOrDefault();
+			var mobile = self.traits.GetOrDefault<IMove>();
 			if (mobile != null)
 			{
-				var unit = self.traits.Get<Unit>();
-				var alt = (unit != null)? new float2(0, -unit.Altitude) : float2.Zero;
+				var alt = new float2(0, -mobile.Altitude);
 				var path = mobile.GetCurrentPath(self);
 				var start = self.CenterLocation + alt;
 

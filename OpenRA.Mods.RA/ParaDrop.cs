@@ -57,10 +57,11 @@ namespace OpenRA.Mods.RA
 					var a = cargo.Unload(self);
 					var rs = a.traits.Get<RenderSimple>();
 
+					var aircraft = self.traits.Get<IMove>();
 					self.World.AddFrameEndTask(w => w.Add(
 						new Parachute(self.Owner, rs.anim.Name,
 							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
-							self.traits.Get<Unit>().Altitude, a)));
+							aircraft.Altitude, a)));
 
 					Sound.Play(info.ChuteSound, self.CenterLocation);
 				}

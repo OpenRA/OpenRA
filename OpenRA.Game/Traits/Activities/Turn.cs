@@ -25,22 +25,22 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var unit = self.traits.Get<Unit>();
+			var mobile = self.traits.Get<IMove>();
 			var ROT = self.traits.Get<IMove>().ROT;
 
-			if( desiredFacing == unit.Facing )
+			if( desiredFacing == mobile.Facing )
 				return NextActivity;
 
-			Util.TickFacing(ref unit.Facing, desiredFacing, ROT);
+			mobile.Facing = Util.TickFacing(mobile.Facing, desiredFacing, ROT);
 
 			return this;
 		}
 
 		public void Cancel( Actor self )
 		{
-			var unit = self.traits.Get<Unit>();
+			var mobile = self.traits.Get<IMove>();
 
-			desiredFacing = unit.Facing;
+			desiredFacing = mobile.Facing;
 			NextActivity = null;
 		}
 	}

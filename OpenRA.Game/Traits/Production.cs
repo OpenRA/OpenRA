@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 				return false;
 
 			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );
-			newUnit.traits.Get<Unit>().Facing = CreationFacing( self, newUnit ); ;
+			newUnit.traits.Get<IMove>().Facing = CreationFacing( self, newUnit ); ;
 
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();

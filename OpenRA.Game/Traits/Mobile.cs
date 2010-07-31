@@ -39,6 +39,13 @@ namespace OpenRA.Traits
 		public readonly Dictionary<string,float> TerrainSpeed;
 
 		[Sync]
+		public int Facing { get; set; }
+		[Sync]
+		public int Altitude { get; set; }
+		[Sync]
+		public int ROT { get { return Info.ROT; } }
+		public int InitialFacing { get { return Info.InitialFacing; } }
+		
 		int2 __fromCell, __toCell;
 		public int2 fromCell
 		{
@@ -90,9 +97,6 @@ namespace OpenRA.Traits
 				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
 			}
 		}
-		
-		public int ROT { get { return Info.ROT; } }
-		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		public void SetPosition(Actor self, int2 cell)
 		{

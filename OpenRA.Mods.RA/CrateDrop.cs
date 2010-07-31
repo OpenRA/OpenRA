@@ -72,7 +72,8 @@ namespace OpenRA.Mods.RA
 
 						var startPos = w.ChooseRandomEdgeCell();
 						var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
-						plane.traits.Get<Unit>().Facing = Util.GetFacing(p - startPos, 0);
+						var aircraft = plane.traits.Get<Aircraft>();
+						aircraft.Facing = Util.GetFacing(p - startPos, 0);
 						plane.CancelActivity();
 						plane.QueueActivity(new FlyCircle(p));
 						plane.traits.Get<ParaDrop>().SetLZ(p, null);

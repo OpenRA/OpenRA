@@ -20,12 +20,7 @@ namespace OpenRA.Traits
 	}
 
 	public class Unit : INotifyDamage, IRadarSignature
-	{
-		[Sync]
-		public int Facing;
-		[Sync]
-		public int Altitude;
-		
+	{		
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
