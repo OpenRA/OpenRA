@@ -61,9 +61,8 @@ namespace OpenRA.Mods.RA
 				var flare = flareType != null ? w.CreateActor(flareType, p, owner) : null;
 
 				var a = w.CreateActor((Info as ParatroopersPowerInfo).UnitType, startPos, owner);
-				var aMove = a.traits.Get<IMove>();
-				aMove.Facing = Util.GetFacing(p - startPos, 0);
-				aMove.Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+				a.traits.Get<IFacing>().Facing = Util.GetFacing(p - startPos, 0);
+				a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));

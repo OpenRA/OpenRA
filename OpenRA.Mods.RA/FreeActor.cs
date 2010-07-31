@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA
 					var a = w.CreateActor(info.Actor, self.Location 
 						+ info.SpawnOffset, self.Owner);
 				
-					var move = a.traits.GetOrDefault<IMove>();
-					if (move != null)
-						move.Facing = info.Facing;
+					var facing = a.traits.GetOrDefault<IFacing>();
+					if (facing != null)
+						facing.Facing = info.Facing;
 
 					if (info.InitialActivity != null)
 						a.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));

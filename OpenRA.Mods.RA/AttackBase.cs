@@ -103,13 +103,14 @@ namespace OpenRA.Mods.RA
 			if( !CanAttack( self ) ) return;
 
 			var move = self.traits.GetOrDefault<IMove>();
+			var facing = self.traits.GetOrDefault<IFacing>();
 			foreach (var w in Weapons)
-				if (CheckFire(self, move, w))
+				if (CheckFire(self, move, facing, w))
 					w.FiredShot();
 		}
 
-		bool CheckFire(Actor self, IMove move, Weapon w)
-		{
+		bool CheckFire(Actor self, IMove move, IFacing facing, Weapon w)
+		{		
 			if (w.FireDelay > 0) return false;
 
 			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
@@ -132,15 +133,15 @@ namespace OpenRA.Mods.RA
 				target = this.target,
 
 				src = (self.CenterLocation
-					+ Combat.GetTurretPosition(self, move, w.Turret)
-					+ Combat.GetBarrelPosition(self, move, w.Turret, barrel)).ToInt2(),
+					+ Combat.GetTurretPosition(self, facing, w.Turret)
+					+ Combat.GetBarrelPosition(self, facing, w.Turret, barrel)).ToInt2(),
 				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation.ToInt2(),
 				destAltitude = destMove != null ? destMove.Altitude : 0,
 				
 				facing = barrel.Facing + 
 					(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
-					move != null ? move.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 			};
 			
 			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>

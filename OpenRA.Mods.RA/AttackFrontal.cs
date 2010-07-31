@@ -26,10 +26,10 @@ namespace OpenRA.Mods.RA
 
 			if (!target.IsValid) return;
 
-			var move = self.traits.Get<IMove>();
-			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, move.Facing);
+			var facing = self.traits.Get<IFacing>().Facing;
+			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, facing);
 
-			if (Math.Abs(facingToTarget - move.Facing) % 256 < FacingTolerance)
+			if (Math.Abs(facingToTarget - facing) % 256 < FacingTolerance)
 				DoAttack(self);
 		}
 	}

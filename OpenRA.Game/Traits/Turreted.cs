@@ -23,20 +23,20 @@ namespace OpenRA.Traits
 		[Sync]
 		public int turretFacing = 0;
 		public int? desiredFacing;
-		TurretedInfo Info;
-		IMove Move;
+		TurretedInfo info;
+		IFacing facing;
 		
 		public Turreted(Actor self, TurretedInfo info)
 		{
-			Info = info;
+			this.info = info;
 			turretFacing = info.InitialFacing;
-			Move = self.traits.GetOrDefault<IMove>();
+			facing = self.traits.GetOrDefault<IFacing>();
 		}
 
 		public void Tick( Actor self )
 		{
-			var df = desiredFacing ?? ( Move != null ? Move.Facing : turretFacing );
-			turretFacing = Util.TickFacing(turretFacing, df, Info.ROT);
+			var df = desiredFacing ?? ( facing != null ? facing.Facing : turretFacing );
+			turretFacing = Util.TickFacing(turretFacing, df, info.ROT);
 		}
 	}
 }

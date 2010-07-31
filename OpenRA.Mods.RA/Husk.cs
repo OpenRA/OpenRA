@@ -18,11 +18,16 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Husk( init ); }
 	}
 
-	class Husk : IOccupySpace
+	class Husk : IOccupySpace, IFacing
 	{
 		Actor self;
 		[Sync]
 		int2 location;
+		
+		[Sync]
+		public int Facing { get; set; }
+		public int ROT { get { return 0; } }
+		public int InitialFacing { get { return 0; } }
 
 		public Husk(ActorInitializer init)
 		{

@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, INudge
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;

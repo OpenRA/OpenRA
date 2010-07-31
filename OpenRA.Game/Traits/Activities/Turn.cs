@@ -15,7 +15,6 @@ namespace OpenRA.Traits.Activities
 	public class Turn : IActivity
 	{
 		public IActivity NextActivity { get; set; }
-
 		int desiredFacing;
 
 		public Turn( int desiredFacing )
@@ -25,22 +24,18 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var mobile = self.traits.Get<IMove>();
-			var ROT = self.traits.Get<IMove>().ROT;
+			var facing = self.traits.Get<IFacing>();
 
-			if( desiredFacing == mobile.Facing )
+			if( desiredFacing == facing.Facing )
 				return NextActivity;
-
-			mobile.Facing = Util.TickFacing(mobile.Facing, desiredFacing, ROT);
+			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.ROT);
 
 			return this;
 		}
 
 		public void Cancel( Actor self )
 		{
-			var mobile = self.traits.Get<IMove>();
-
-			desiredFacing = mobile.Facing;
+			desiredFacing = self.traits.Get<IFacing>().Facing;
 			NextActivity = null;
 		}
 	}

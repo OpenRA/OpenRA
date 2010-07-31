@@ -48,8 +48,8 @@ namespace OpenRA.Mods.RA
 			if (info != null)
 			{
 				alt = 0;
-				var move = self.traits.Get<IMove>();
-				pos = Combat.GetTurretPosition(self, move, new Turret(info.Offset));
+				var ifacing = self.traits.Get<IFacing>();
+				pos = Combat.GetTurretPosition(self, ifacing, new Turret(info.Offset));
 				var ru = self.traits.Get<RenderUnit>();
 
 				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 				va = info.Speed;
 
 				if (!info.UseTurretFacing) InitialFacing = null;
-				facing = InitialFacing ?? move.Facing;
+				facing = InitialFacing ?? ifacing.Facing;
 
 				var anim = new Animation(ru.GetImage(self), () => (int)facing);
 				anim.PlayRepeating(info.Anim);

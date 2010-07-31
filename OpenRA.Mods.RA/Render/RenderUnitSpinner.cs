@@ -24,15 +24,14 @@ namespace OpenRA.Mods.RA.Render
 		public RenderUnitSpinner(Actor self)
 			: base(self)
 		{
-			var move = self.traits.Get<IMove>();
 			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
 			var spinnerAnim = new Animation(GetImage(self));
 			spinnerAnim.PlayRepeating("spinner");
 			anims.Add("spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Combat.GetTurretPosition(self, move, new Turret(info.Offset)),
-				null) { ZOffset = 1 });
+				() => Combat.GetTurretPosition( self, self.traits.Get<IFacing>(), new Turret(info.Offset)),
+				null ) { ZOffset = 1 } );
 		}
 	}
 }

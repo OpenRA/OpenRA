@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)
-			: base(self, () => self.traits.Get<IMove>().Facing)
+			: base(self, () => self.traits.Get<IFacing>().Facing)
 		{
 			anim.Play("stand");
 		}

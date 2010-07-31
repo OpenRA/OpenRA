@@ -48,9 +48,8 @@ namespace OpenRA.Mods.RA
 						var flare = flareType != null ? w.CreateActor(flareType, order.TargetLocation, Owner) : null;
 
 						var a = w.CreateActor((Info as AirstrikePowerInfo).UnitType, startPos, Owner);
-						var aMove = a.traits.Get<IMove>();
-						aMove.Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
-						aMove.Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+						a.traits.Get<IFacing>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
+						a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 						a.traits.Get<CarpetBomb>().SetTarget(order.TargetLocation);
 
 						a.CancelActivity();

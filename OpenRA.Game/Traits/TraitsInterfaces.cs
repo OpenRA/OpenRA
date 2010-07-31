@@ -110,8 +110,12 @@ namespace OpenRA.Traits
 		float MovementCostForCell(Actor self, int2 cell);
 		float MovementSpeedForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
-		int ROT { get; }
 		int Altitude { get; set; }
+	}
+	
+	public interface IFacing
+	{
+		int ROT { get; }
 		int Facing { get; set; }
 		int InitialFacing { get; }
 	}

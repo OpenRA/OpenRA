@@ -24,19 +24,18 @@ namespace OpenRA.Mods.RA.Render
 	class RenderUnitRotor : RenderUnit
 	{
 		public Animation rotorAnim, secondRotorAnim;
-		IMove move;
 
-		public RenderUnitRotor(Actor self)
+		public RenderUnitRotor( Actor self )
 			: base(self)
 		{
-			move = self.traits.Get<IMove>();
+			var facing = self.traits.Get<IFacing>();
 			var info = self.Info.Traits.Get<RenderUnitRotorInfo>();
 
 			rotorAnim = new Animation(GetImage(self));
 			rotorAnim.PlayRepeating("rotor");
 			anims.Add("rotor_1", new AnimationWithOffset(
 				rotorAnim,
-				() => Combat.GetTurretPosition( self, move, new Turret(info.PrimaryOffset)),
+				() => Combat.GetTurretPosition( self, facing, new Turret(info.PrimaryOffset)),
 				null ) { ZOffset = 1 } );
 
 			if (info.SecondaryOffset == null) return;
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.RA.Render
 			secondRotorAnim.PlayRepeating("rotor2");
 			anims.Add("rotor_2", new AnimationWithOffset(
 				secondRotorAnim,
-				() => Combat.GetTurretPosition(self, move, new Turret(info.SecondaryOffset)),
+				() => Combat.GetTurretPosition(self, facing, new Turret(info.SecondaryOffset)),
 				null) { ZOffset = 1 });
 		}
 
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			
-			var isFlying = move.Altitude > 0;
+			var isFlying = self.traits.Get<IMove>().Altitude > 0;
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;
 

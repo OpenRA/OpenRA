@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 		
 		public virtual int CreationFacing( Actor self, Actor newUnit )
 		{
-			return newUnit.traits.Get<IMove>().InitialFacing;
+			return newUnit.traits.Get<IFacing>().InitialFacing;
 		}
 
 		public virtual bool Produce( Actor self, ActorInfo producee )
@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 				return false;
 
 			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );
-			newUnit.traits.Get<IMove>().Facing = CreationFacing( self, newUnit ); ;
+			newUnit.traits.Get<IFacing>().Facing = CreationFacing( self, newUnit ); ;
 
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();

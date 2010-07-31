@@ -28,10 +28,7 @@ namespace OpenRA.Mods.RA
 						var info = self.Info.Traits.Get<LeavesHuskInfo>();
 						var husk = w.CreateActor(info.HuskActor, self.Location, self.Owner);
 						husk.CenterLocation = self.CenterLocation;
-						var move = self.traits.Get<IMove>();
-						var huskMove = husk.traits.Get<IMove>();
-						huskMove.Altitude = move.Altitude;
-						huskMove.Facing = move.Facing;
+						husk.traits.Get<IFacing>().Facing = self.traits.Get<IFacing>().Facing;
 
 						var turreted = self.traits.GetOrDefault<Turreted>();
 						if (turreted != null)

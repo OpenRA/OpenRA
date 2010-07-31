@@ -30,8 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var move = self.traits.Get<IMove>();
-
+			var facing = self.traits.Get<IFacing>();
 			if (!Target.IsValid)
 				return NextActivity;
 
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 			var numDirs = (renderUnit != null)
 				? renderUnit.anim.CurrentSequence.Facings : 8;
 
-			if (Util.QuantizeFacing(move.Facing, numDirs) 
+			if (Util.QuantizeFacing(facing.Facing, numDirs) 
 				!= Util.QuantizeFacing(desiredFacing, numDirs))
 			{
 				return new Turn( desiredFacing ) { NextActivity = this };

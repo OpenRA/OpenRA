@@ -24,10 +24,9 @@ namespace OpenRA.Mods.RA
 		Actor dockedHarv = null;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
-			var move = harv.traits.Get<IMove>();
 			var harvester = harv.traits.Get<Harvester>();
 
-			if (move.Facing != 64)
+			if (harv.traits.Get<IFacing>().Facing != 64)
 				harv.QueueActivity (new Turn (64));
 			
 			harv.QueueActivity (new CallFunc (() =>

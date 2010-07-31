@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
 
-	public class Aircraft : IMove, IOccupySpace
+	public class Aircraft : IMove, IFacing, IOccupySpace
 	{
 		[Sync]
 		public int2 Location;
