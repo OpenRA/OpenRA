@@ -13,25 +13,39 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ReservableInfo : TraitInfo<Reservable> { }
+	class ReservableInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new Reservable(init.self); }
+	}
 
 	public class Reservable : ITick
 	{
 		Actor reservedFor;
+		Actor self;
+
+		public Reservable(Actor self) { this.self = self; }
 
 		public void Tick(Actor self)
 		{
 			if (reservedFor == null) 
 				return;		/* nothing to do */
 
-			if (reservedFor.IsDead() || !reservedFor.IsInWorld)
+			if (reservedFor.IsDead() || !reservedFor.IsInWorld)	// todo: replace with Target.IsValid?
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
 		public IDisposable Reserve(Actor forActor)
 		{
 			reservedFor = forActor;
-			return new DisposableAction(() => reservedFor = null);
+			Game.Debug("#{0} {1} reserved by #{2} {3}".F(
+				self.ActorID, self.Info.Name, forActor.ActorID, forActor.Info.Name));
+
+			return new DisposableAction(() =>
+				{
+					Game.Debug("#{0} {1} unreserved".F(
+						self.ActorID, self.Info.Name));
+					reservedFor = null;
+				});
 		}
 
 		public static bool IsReserved(Actor a)
