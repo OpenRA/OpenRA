@@ -143,11 +143,11 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			foreach (var w in Weapons)
-				if (CheckFire(self, unit, w, w.Info, ref w.FireDelay, w.Offset, ref w.Burst))
+				if (CheckFire(self, unit, w, ref w.FireDelay, w.Offset, ref w.Burst))
 					w.Recoil = 1;
 		}
 
-		bool CheckFire(Actor self, Unit unit, Weapon w, WeaponInfo weapon, ref int fireDelay, int[] offset, ref int burst)
+		bool CheckFire(Actor self, Unit unit, Weapon w, ref int fireDelay, int[] offset, ref int burst)
 		{
 			if (fireDelay > 0) return false;
 
@@ -155,10 +155,10 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return false;
 
-			if (weapon.Range * weapon.Range * Game.CellSize * Game.CellSize
+			if (w.Info.Range * w.Info.Range * Game.CellSize * Game.CellSize
 			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
 			
-			if (!Combat.WeaponValidForTarget(weapon, target)) return false;
+			if (!Combat.WeaponValidForTarget(w.Info, target)) return false;
 
 			var barrel = w.Barrels[burst % w.Barrels.Length];
 		
@@ -169,18 +169,18 @@ namespace OpenRA.Mods.RA
 				offset.ElementAtOrDefault(3) };
 
 			if (--burst > 0)
-				fireDelay = weapon.BurstDelay;
+				fireDelay = w.Info.BurstDelay;
 			else
 			{
-				fireDelay = weapon.ROF;
-				burst = weapon.Burst;
+				fireDelay = w.Info.ROF;
+				burst = w.Info.Burst;
 			}
 
 			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
 
 			var args = new ProjectileArgs
 			{
-				weapon = weapon,
+				weapon = w.Info,
 
 				firedBy = self,
 				target = this.target,
