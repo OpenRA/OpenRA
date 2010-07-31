@@ -195,12 +195,6 @@ namespace OpenRA.Mods.RA
 			if (!w.IsValidAgainst(target)) return false;
 
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
-		
-			var fireOffset = new[] { 
-				w.Turret.UnitSpacePosition.X + barrel.Position.X,
-				w.Turret.UnitSpacePosition.Y + barrel.Position.Y,
-				w.Turret.ScreenSpacePosition.X,
-				w.Turret.ScreenSpacePosition.Y };		// todo: retardage.
 
 			var destUnit = target.IsActor ? target.Actor.traits.GetOrDefault<Unit>() : null;
 
@@ -211,7 +205,9 @@ namespace OpenRA.Mods.RA
 				firedBy = self,
 				target = this.target,
 
-				src = self.CenterLocation.ToInt2() + Combat.GetTurretPosition(self, unit, new Turret(fireOffset)).ToInt2(),
+				src = (self.CenterLocation
+					+ Combat.GetTurretPosition(self, unit, w.Turret)
+					+ Combat.GetBarrelPosition(self, unit, w.Turret, barrel)).ToInt2(),
 				srcAltitude = unit != null ? unit.Altitude : 0,
 				dest = target.CenterLocation.ToInt2(),
 				destAltitude = destUnit != null ? destUnit.Altitude : 0,

@@ -199,8 +199,22 @@ namespace OpenRA.Mods.RA
 			var bodyFacing = unit.Facing;
 			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
-			return (Util.RotateVectorByFacing(turret.UnitSpacePosition, quantizedFacing, .7f) + GetRecoil(self, turret.Recoil))
+			return (Util.RotateVectorByFacing(turret.UnitSpacePosition, quantizedFacing, .7f) 
+				+ GetRecoil(self, turret.Recoil))
 				+ turret.ScreenSpacePosition;
+		}
+
+		// gets the screen-space position of a barrel.
+		public static float2 GetBarrelPosition(Actor self, Unit unit, Turret turret, Barrel barrel)
+		{
+			var turreted = self.traits.GetOrDefault<Turreted>();
+			
+			if (turreted == null && unit == null)
+				return float2.Zero;
+
+			var turretFacing = turreted != null  ? turreted.turretFacing : unit.Facing;
+
+			return Util.RotateVectorByFacing(barrel.Position, turretFacing, .7f);
 		}
 	}
 }
