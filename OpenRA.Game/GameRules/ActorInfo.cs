@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA.GameRules
+namespace OpenRA
 {
 	public class ActorInfo
 	{

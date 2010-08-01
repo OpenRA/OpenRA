@@ -228,6 +228,7 @@
       <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
     <Compile Include="ActorInitializer.cs" />
+    <Compile Include="ActorReference.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>

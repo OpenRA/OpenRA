@@ -28,13 +28,15 @@ namespace OpenRA.FileFormats
 			throw new NotImplementedException( "FieldLoader: Missing field `{0}` on `{1}`".F( s, f.Name ) );
 		};
 
-		public static void Load(object self, MiniYaml my) { Load(self, my.Nodes); }
-
-		public static void Load(object self, Dictionary<string, MiniYaml> my)
+		public static void Load( object self, MiniYaml my )
 		{
-			foreach (var x in my)
+			foreach( var x in my.Nodes )
 				if (!x.Key.StartsWith("-"))
 					LoadField(self, x.Key, x.Value.Value);
+
+			foreach( var field in self.GetType().GetFields())
+				if( field.HasAttribute<FieldFromYamlKeyAttribute>() )
+					field.SetValue( self, GetValue( field.Name, field.FieldType, my.Value ) );
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -58,7 +60,9 @@ namespace OpenRA.FileFormats
 			var field = self.GetType().GetField( key.Trim() );
 
 			if( field == null )
-				UnknownFieldAction(key.Trim(), self.GetType());
+				UnknownFieldAction( key.Trim(), self.GetType() );
+			else if( field.HasAttribute<FieldFromYamlKeyAttribute>() )
+				return;
 			else
 				field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
 		}
@@ -150,10 +154,18 @@ namespace OpenRA.FileFormats
 	{
 		public static MiniYaml Save(object o)
 		{
-			return new MiniYaml(null, o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
-				.ToDictionary(
-					f => f.Name,
-					f => new MiniYaml(FormatValue(o, f))));
+			var dict = new Dictionary<string, MiniYaml>();
+			string root = null;
+
+			foreach( var f in o.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance ) )
+			{
+				if( f.HasAttribute<FieldFromYamlKeyAttribute>() )
+					root = FormatValue( o, f );
+				else
+					dict.Add( f.Name, new MiniYaml( FormatValue( o, f ) ) );
+			}
+
+			return new MiniYaml( root, dict );
 		}
 		
 		public static MiniYaml SaveDifferences(object o, object from)
@@ -187,4 +199,6 @@ namespace OpenRA.FileFormats
 				: v.ToString();
 		}
 	}
+
+	public class FieldFromYamlKeyAttribute : Attribute { }
 }

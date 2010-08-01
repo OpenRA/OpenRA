@@ -49,7 +49,10 @@ namespace OpenRA
 
 	public class LocationInit : IActorInit<int2>
 	{
+		[FieldFromYamlKey]
 		public readonly int2 value = int2.Zero;
+
+		public LocationInit() { }
 
 		public LocationInit( int2 init )
 		{
@@ -64,8 +67,16 @@ namespace OpenRA
 
 	public class OwnerInit : IActorInit<Player>
 	{
+		[FieldFromYamlKey]
 		public readonly string PlayerName = "Neutral";
 		Player player;
+
+		public OwnerInit() { }
+
+		public OwnerInit( string playerName )
+		{
+			this.PlayerName = playerName;
+		}
 
 		public OwnerInit( Player player )
 		{

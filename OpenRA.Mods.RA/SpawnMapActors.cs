@@ -25,8 +25,7 @@ namespace OpenRA.Mods.RA
 			Game.skipMakeAnims = true;		// rude hack
 
 			foreach (var actorReference in world.Map.Actors)
-				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, actorReference.Value.Location,
-					world.players.Values.FirstOrDefault(p => p.InternalName == actorReference.Value.Owner));
+				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, actorReference.Value.InitDict);
 
 			Game.skipMakeAnims = false;
 		}

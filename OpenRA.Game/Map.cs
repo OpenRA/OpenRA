@@ -123,20 +123,19 @@ namespace OpenRA
 				int actors = 0;
 				foreach (var kv in yaml["Actors"].Nodes)
 				{
-				    string[] vals = kv.Value.Value.Split(' ');
-				    string[] loc = vals[2].Split(',');
-				    var a = new ActorReference("Actor"+actors++, vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), "Neutral");
-				    Actors.Add(a.Id, a);
+					string[] vals = kv.Value.Value.Split(' ');
+					string[] loc = vals[2].Split(',');
+					Actors.Add( "Actor" + actors++, new ActorReference( vals[ 0 ] )
+					{
+						new LocationInit( new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) ),
+						new OwnerInit( "Neutral" ),
+					} );
 				}
 			}
 			else
 			{
-				foreach (var kv in yaml["Actors"].Nodes)
-				{
-					kv.Value.Nodes.Add( "Type", new MiniYaml( kv.Value.Value ) );
-					var a = new ActorReference(kv.Key, kv.Value);
-					Actors.Add(a.Id, a);
-				}
+				foreach( var kv in yaml[ "Actors" ].Nodes )
+					Actors.Add( kv.Key, new ActorReference( kv.Value.Value, kv.Value.Nodes ) );
 			}
 
 			// Smudges
@@ -173,10 +172,10 @@ namespace OpenRA
 					p => FieldSaver.Save(p.Value))));
 
 			root.Add("Actors",
-				new MiniYaml(null, Actors.ToDictionary(
-					a => "{0}".F(a.Key),
-					a => FieldSaver.Save(a.Value))));
-			
+				new MiniYaml( null, Actors.ToDictionary(
+					x => x.Key,
+					x => x.Value.Save() ) ) );
+
 			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));
 			root.Add("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges));
 			root.Add("Rules", new MiniYaml(null, Rules));
