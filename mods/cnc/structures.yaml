@@ -386,7 +386,7 @@ TMPL:
 		Power: -150
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
-		Capturable: false
+		Capturable: true
 	Health:
 		HP: 2000
 		Armor: light
