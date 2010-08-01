@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc seqed mapcvtr editor ralint filex tsbuild
+PROGRAMS	=fileformats gl game ra cnc seqed editor ralint filex tsbuild
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -60,12 +60,6 @@ editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
 editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources
 
-mapcvtr_SRCS		= $(shell find MapConverter/ -iname '*.cs')
-mapcvtr_TARGET		= MapConverter.exe
-mapcvtr_KIND		= winexe
-mapcvtr_DEPS		= $(fileformats_TARGET) $(game_TARGET)
-mapcvtr_LIBS		= $(COMMON_LIBS) $(mapcvtr_DEPS)
-
 ralint_SRCS		= $(shell find RALint/ -iname '*.cs')
 ralint_TARGET	= RALint.exe
 ralint_KIND		= winexe
@@ -88,7 +82,7 @@ tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed mapcvtr filex
+.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex
 
 game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
 
@@ -97,7 +91,7 @@ clean:
 
 distclean: clean
 
-CORE = fileformats gl game seqed mapcvtr
+CORE = fileformats gl game seqed
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -151,12 +145,11 @@ ralint: $(ralint_TARGET)
 seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
 SequenceEditor.Form1.resources:
 	resgen2 SequenceEditor/Form1.resx SequenceEditor.Form1.resources 1> /dev/null
-mapcvtr: $(mapcvtr_TARGET)
 filex: $(filex_TARGET)
 tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
 OpenRA.TilesetBuilder.Form1.resources:
 	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
-tools: editor ralint seqed mapcvtr filex tsbuild
+tools: editor ralint seqed filex tsbuild
 all: game tools
 
 define BUILD_ASSEMBLY
