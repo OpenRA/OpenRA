@@ -29,8 +29,8 @@ namespace MapConverter
 			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
-		
-		static Dictionary< string, Pair<byte,byte> > overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
+
+		static Dictionary<string, Pair<byte, byte>> overlayResourceMapping = new Dictionary<string, Pair<byte, byte>>()
 		{
 			// RA Gems, Gold
 			{ "gold01", new Pair<byte,byte>(1,0) },
@@ -57,8 +57,8 @@ namespace MapConverter
 			{ "ti11", new Pair<byte,byte>(1,10) },
 			{ "ti12", new Pair<byte,byte>(1,11) },
 		};
-		
-		static Dictionary<string, string> overlayActorMapping = new Dictionary<string,string>() {
+
+		static Dictionary<string, string> overlayActorMapping = new Dictionary<string, string>() {
 			// Fences
 			{"sbag","sbag"},
 			{"cycl","cycl"},
@@ -79,26 +79,24 @@ namespace MapConverter
 			{"wcrate","crate"},
 			{"scrate","crate"},
 		};
-		
+
 		int MapSize;
-		int ActorCount = 0; 
+		int ActorCount = 0;
 		Map Map = new Map();
 
-		public MapConverter(string[] args)
+		MapConverter(string filename)
 		{
-			if (args.Length != 3)
-			{
-				Console.WriteLine("usage: MapConverter mod[,mod]* input-map.ini output-map.yaml");
-				return;
-			}
+			ConvertIniMap(filename);
+		}
 
-			Game.InitializeEngineWithMods(args[0].Split(','));
-			ConvertIniMap(args[1]);
-			Save(args[2]);
+		public static Map Import(string filename)
+		{
+			var converter = new MapConverter(filename);
+			return converter.Map;
 		}
 
 		enum IniMapFormat { RedAlert = 3, /* otherwise, cnc (2 variants exist, we don't care to differentiate) */ };
-		
+
 		public void ConvertIniMap(string iniFile)
 		{
 			var file = new IniFile(FileSystem.Open(iniFile));
@@ -110,14 +108,14 @@ namespace MapConverter
 			var Width = int.Parse(map.GetValue("Width", "0"));
 			var Height = int.Parse(map.GetValue("Height", "0"));
 			MapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
-			
+
 			Map.Title = basic.GetValue("Name", "(null)");
 			Map.Author = "Westwood Studios";
 			Map.Tileset = Truncate(map.GetValue("Theater", "TEMPERAT"), 8);
 			Map.MapSize.X = MapSize;
 			Map.MapSize.Y = MapSize;
-			Map.TopLeft = new int2 (XOffset, YOffset);
-			Map.BottomRight = new int2(XOffset+Width,YOffset+Height);
+			Map.TopLeft = new int2(XOffset, YOffset);
+			Map.BottomRight = new int2(XOffset + Width, YOffset + Height);
 			Map.Selectable = true;
 
 			if (legacyMapFormat == IniMapFormat.RedAlert)
@@ -130,37 +128,37 @@ namespace MapConverter
 			}
 			else // CNC
 			{
-				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0,iniFile.Length-4)+".bin"));
+				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"));
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
-				
+
 				// TODO: Fixme
 				//tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("cnc",Map.Tileset)].First);
 			}
-			
+
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
-		
+
 			var wp = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
-					.Select(kv => Pair.New(int.Parse(kv.Key), 
-						LocationFromMapOffset( int.Parse( kv.Value ), MapSize )))
+					.Select(kv => Pair.New(int.Parse(kv.Key),
+						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.Where(a => a.First < 8)
 					.ToArray();
-			
+
 			Map.PlayerCount = wp.Count();
-			
+
 			foreach (var kv in wp)
-				Map.Waypoints.Add("spawn"+kv.First, kv.Second);
+				Map.Waypoints.Add("spawn" + kv.First, kv.Second);
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
 		{
 			return new int2(offset % mapSize, offset / mapSize);
 		}
-		
+
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -185,7 +183,8 @@ namespace MapConverter
 					byte[] dest = new byte[8192];
 					byte[] src = reader.ReadBytes((int)length);
 
-					/*int actualLength =*/ Format80.DecodeInto(src, dest);
+					/*int actualLength =*/
+					Format80.DecodeInto(src, dest);
 
 					chunks.Add(dest);
 				}
@@ -201,10 +200,10 @@ namespace MapConverter
 			return ms;
 		}
 
-		static byte ReadByte( Stream s )
+		static byte ReadByte(Stream s)
 		{
 			int ret = s.ReadByte();
-			if( ret == -1 )
+			if (ret == -1)
 				throw new NotImplementedException();
 			return (byte)ret;
 		}
@@ -217,147 +216,139 @@ namespace MapConverter
 			return ret;
 		}
 
-		void UnpackRATileData( MemoryStream ms )
+		void UnpackRATileData(MemoryStream ms)
 		{
-			Map.MapTiles = new TileReference<ushort, byte>[ MapSize, MapSize ];
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-					Map.MapTiles[i,j] = new TileReference<ushort,byte>();
-			
-			for( int j = 0 ; j < MapSize ; j++ )
-				for( int i = 0 ; i < MapSize ; i++ )
-					Map.MapTiles[i,j].type = ReadWord(ms);
+			Map.MapTiles = new TileReference<ushort, byte>[MapSize, MapSize];
+			for (int i = 0; i < MapSize; i++)
+				for (int j = 0; j < MapSize; j++)
+					Map.MapTiles[i, j] = new TileReference<ushort, byte>();
 
-			for( int j = 0 ; j < MapSize ; j++ )
-				for( int i = 0 ; i < MapSize ; i++ )
+			for (int j = 0; j < MapSize; j++)
+				for (int i = 0; i < MapSize; i++)
+					Map.MapTiles[i, j].type = ReadWord(ms);
+
+			for (int j = 0; j < MapSize; j++)
+				for (int i = 0; i < MapSize; i++)
 				{
-					Map.MapTiles[i,j].index = ReadByte(ms);
-					if( Map.MapTiles[i,j].type == 0xff || Map.MapTiles[i,j].type == 0xffff )
-						Map.MapTiles[i,j].index = byte.MaxValue;
+					Map.MapTiles[i, j].index = ReadByte(ms);
+					if (Map.MapTiles[i, j].type == 0xff || Map.MapTiles[i, j].type == 0xffff)
+						Map.MapTiles[i, j].index = byte.MaxValue;
 				}
 		}
-	
-		void UnpackRAOverlayData( MemoryStream ms )
+
+		void UnpackRAOverlayData(MemoryStream ms)
 		{
-			Map.MapResources = new TileReference<byte, byte>[ MapSize, MapSize ];		
-			for( int j = 0 ; j < MapSize ; j++ )
-				for( int i = 0 ; i < MapSize ; i++ )
+			Map.MapResources = new TileReference<byte, byte>[MapSize, MapSize];
+			for (int j = 0; j < MapSize; j++)
+				for (int i = 0; i < MapSize; i++)
 				{
-					byte o = ReadByte( ms );
-					var res = Pair.New((byte)0,(byte)0);
-					
+					byte o = ReadByte(ms);
+					var res = Pair.New((byte)0, (byte)0);
+
 					if (o != 255 && overlayResourceMapping.ContainsKey(raOverlayNames[o]))
 						res = overlayResourceMapping[raOverlayNames[o]];
-					
-					Map.MapResources[i,j] = new TileReference<byte,byte>(res.First, res.Second);
-				
+
+					Map.MapResources[i, j] = new TileReference<byte, byte>(res.First, res.Second);
+
 					if (o != 255 && overlayActorMapping.ContainsKey(raOverlayNames[o]))
-							Map.Actors.Add("Actor"+ActorCount, new ActorReference("Actor"+ActorCount++, overlayActorMapping[raOverlayNames[o]], new int2(i,j), "Neutral"));
+						Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, overlayActorMapping[raOverlayNames[o]], new int2(i, j), "Neutral"));
 				}
 		}
 
-		void ReadRATrees( IniFile file )
+		void ReadRATrees(IniFile file)
 		{
-			IniSection terrain = file.GetSection( "TERRAIN", true );
-			if( terrain == null )
-				return;
-			
-			foreach( KeyValuePair<string, string> kv in terrain )
-			{
-				var loc = int.Parse( kv.Key );
-				Map.Actors.Add("Actor"+ActorCount, new ActorReference("Actor"+ActorCount++,kv.Value.ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), "Neutral" ) );
-			}
-		}
-		
-		void UnpackCncTileData( Stream ms )
-		{		
-			Map.MapTiles = new TileReference<ushort, byte>[ MapSize, MapSize ];
-			for( int i = 0 ; i < MapSize ; i++ )
-				for( int j = 0 ; j < MapSize ; j++ )
-					Map.MapTiles[i,j] = new TileReference<ushort,byte>();
-			
-			for( int j = 0 ; j < MapSize ; j++ )
-				for( int i = 0 ; i < MapSize ; i++ )
-				{
-					Map.MapTiles[i,j].type = ReadByte(ms);
-					Map.MapTiles[i,j].index = ReadByte(ms);
-					
-					if( Map.MapTiles[i,j].type == 0xff )
-						Map.MapTiles[i,j].index = byte.MaxValue;
-				}			
-		}
-				
-		void ReadCncOverlay( IniFile file )
-		{
-			IniSection overlay = file.GetSection( "OVERLAY", true );
-			if( overlay == null )
-				return;
-		
-			Map.MapResources = new TileReference<byte, byte>[ MapSize, MapSize ];		
-			foreach( KeyValuePair<string, string> kv in overlay )
-			{
-				var loc = int.Parse( kv.Key );
-				int2 cell = new int2(loc % MapSize, loc / MapSize);
-				
-				var res = Pair.New((byte)0,(byte)0);
-				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
-						res = overlayResourceMapping[kv.Value.ToLower()];
-				
-				Map.MapResources[ cell.X, cell.Y ] = new TileReference<byte,byte>(res.First, res.Second);
-				
-				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
-					Map.Actors.Add("Actor"+ActorCount, new ActorReference("Actor"+ActorCount++, overlayActorMapping[kv.Value.ToLower()], new int2(cell.X,cell.Y), "Neutral"));
-			}
-		}
-		
-		
-		void ReadCncTrees( IniFile file )
-		{
-			IniSection terrain = file.GetSection( "TERRAIN", true );
-			if( terrain == null )
+			IniSection terrain = file.GetSection("TERRAIN", true);
+			if (terrain == null)
 				return;
 
-			foreach( KeyValuePair<string, string> kv in terrain )
+			foreach (KeyValuePair<string, string> kv in terrain)
 			{
-				var loc = int.Parse( kv.Key );
-				Map.Actors.Add("Actor"+ActorCount, new ActorReference("Actor"+ActorCount++, kv.Value.Split(',')[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize),"Neutral"));
+				var loc = int.Parse(kv.Key);
+				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, kv.Value.ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), "Neutral"));
 			}
 		}
-		
+
+		void UnpackCncTileData(Stream ms)
+		{
+			Map.MapTiles = new TileReference<ushort, byte>[MapSize, MapSize];
+			for (int i = 0; i < MapSize; i++)
+				for (int j = 0; j < MapSize; j++)
+					Map.MapTiles[i, j] = new TileReference<ushort, byte>();
+
+			for (int j = 0; j < MapSize; j++)
+				for (int i = 0; i < MapSize; i++)
+				{
+					Map.MapTiles[i, j].type = ReadByte(ms);
+					Map.MapTiles[i, j].index = ReadByte(ms);
+
+					if (Map.MapTiles[i, j].type == 0xff)
+						Map.MapTiles[i, j].index = byte.MaxValue;
+				}
+		}
+
+		void ReadCncOverlay(IniFile file)
+		{
+			IniSection overlay = file.GetSection("OVERLAY", true);
+			if (overlay == null)
+				return;
+
+			Map.MapResources = new TileReference<byte, byte>[MapSize, MapSize];
+			foreach (KeyValuePair<string, string> kv in overlay)
+			{
+				var loc = int.Parse(kv.Key);
+				int2 cell = new int2(loc % MapSize, loc / MapSize);
+
+				var res = Pair.New((byte)0, (byte)0);
+				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
+					res = overlayResourceMapping[kv.Value.ToLower()];
+
+				Map.MapResources[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
+
+				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
+					Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, overlayActorMapping[kv.Value.ToLower()], new int2(cell.X, cell.Y), "Neutral"));
+			}
+		}
+
+		void ReadCncTrees(IniFile file)
+		{
+			IniSection terrain = file.GetSection("TERRAIN", true);
+			if (terrain == null)
+				return;
+
+			foreach (KeyValuePair<string, string> kv in terrain)
+			{
+				var loc = int.Parse(kv.Key);
+				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, kv.Value.Split(',')[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), "Neutral"));
+			}
+		}
+
 		void LoadActors(IniFile file, string section)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
 				//num=owner,type,health,location,facing,...
-				var parts = s.Value.Split( ',' );
+				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[3]);
 				if (parts[0] == "")
 					parts[0] = "Neutral";
-				Map.Actors.Add("Actor"+ActorCount, new ActorReference("Actor"+ActorCount++, parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
+				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
 			}
 		}
-		
+
 		void LoadSmudges(IniFile file, string section)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
 				//loc=type,loc,depth
-				var parts = s.Value.Split( ',' );
+				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[1]);
-				Map.Smudges.Add(new SmudgeReference(parts[0].ToLowerInvariant(),new int2(loc % MapSize, loc / MapSize),int.Parse(parts[2])));
+				Map.Smudges.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), int.Parse(parts[2])));
 			}
 		}
-		static string Truncate( string s, int maxLength )
+
+		static string Truncate(string s, int maxLength)
 		{
-			return s.Length <= maxLength ? s : s.Substring(0,maxLength );
-		}
-				
-		public void Save(string filepath)
-		{
-			Directory.CreateDirectory(filepath);
-			
-			Map.Package = new Folder(filepath);
-			Map.Save(filepath);
+			return s.Length <= maxLength ? s : s.Substring(0, maxLength);
 		}
 	}
 }

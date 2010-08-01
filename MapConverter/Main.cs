@@ -10,6 +10,8 @@
 
 using System;
 using OpenRA.FileFormats;
+using OpenRA;
+using System.IO;
 
 namespace MapConverter
 {
@@ -17,7 +19,21 @@ namespace MapConverter
 	{
 		public static void Main (string[] args)
 		{
-			new MapConverter(args);
+			if (args.Length != 3)
+			{
+				Console.WriteLine("usage: MapConverter mod[,mod]* input-map.ini output-map.yaml");
+				return;
+			}
+
+			var mods = args[0].Split(',');
+			var inputFile = args[1];
+			var outputPath = args[2];
+
+			Game.InitializeEngineWithMods(mods);
+			var map = MapConverter.Import(inputFile);
+
+			Directory.CreateDirectory(outputPath);
+			map.Save(outputPath);
 		}
 	}
 }
