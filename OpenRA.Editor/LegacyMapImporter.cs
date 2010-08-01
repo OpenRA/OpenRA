@@ -251,7 +251,12 @@ namespace OpenRA.Editor
 					Map.MapResources[i, j] = new TileReference<byte, byte>(res.First, res.Second);
 
 					if (o != 255 && overlayActorMapping.ContainsKey(raOverlayNames[o]))
-						Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, overlayActorMapping[raOverlayNames[o]], new int2(i, j), "Neutral"));
+						Map.Actors.Add("Actor" + ActorCount,
+							new ActorReference(overlayActorMapping[raOverlayNames[o]]) 
+							{ 
+								new LocationInit( new int2(i, j) ),
+								new OwnerInit( "Neutral" ) 
+							});
 				}
 		}
 
@@ -264,7 +269,12 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
 				var loc = int.Parse(kv.Key);
-				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, kv.Value.ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), "Neutral"));
+				Map.Actors.Add("Actor" + ActorCount, 
+					new ActorReference(kv.Value.ToLowerInvariant())
+					{
+						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new OwnerInit("Neutral")
+					});
 			}
 		}
 
@@ -305,7 +315,12 @@ namespace OpenRA.Editor
 				Map.MapResources[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
 
 				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
-					Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, overlayActorMapping[kv.Value.ToLower()], new int2(cell.X, cell.Y), "Neutral"));
+					Map.Actors.Add("Actor" + ActorCount, 
+						new ActorReference(overlayActorMapping[kv.Value.ToLower()])
+						{
+							new LocationInit(cell),
+							new OwnerInit("Neutral")
+						});
 			}
 		}
 
@@ -318,7 +333,12 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
 				var loc = int.Parse(kv.Key);
-				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, kv.Value.Split(',')[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), "Neutral"));
+				Map.Actors.Add("Actor" + ActorCount,
+					new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
+					{
+						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new OwnerInit("Neutral")
+					});
 			}
 		}
 
@@ -331,7 +351,12 @@ namespace OpenRA.Editor
 				var loc = int.Parse(parts[3]);
 				if (parts[0] == "")
 					parts[0] = "Neutral";
-				Map.Actors.Add("Actor" + ActorCount, new ActorReference("Actor" + ActorCount++, parts[1].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), parts[0]));
+				Map.Actors.Add("Actor" + ActorCount,
+					new ActorReference(parts[1].ToLowerInvariant())
+					{
+						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new OwnerInit(parts[0])
+					});
 			}
 		}
 
