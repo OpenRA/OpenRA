@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -67,13 +68,17 @@ namespace OpenRA.Mods.RA
 
 				self.World.AddFrameEndTask(w =>
 					{
-						var crate = w.CreateActor(false, "crate", new int2(0, 0), w.WorldActor.Owner);
+						var crate = w.CreateActor(false, "crate", new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 						crates.Add(crate);
 
 						var startPos = w.ChooseRandomEdgeCell();
-						var plane = w.CreateActor("BADR", startPos, w.WorldActor.Owner);
-						var aircraft = plane.traits.Get<Aircraft>();
-						aircraft.Facing = Util.GetFacing(p - startPos, 0);
+						var plane = w.CreateActor("badr", new TypeDictionary
+					    {
+							new LocationInit( startPos ),
+							new OwnerInit( w.WorldActor.Owner),
+							new FacingInit( Util.GetFacing(p - startPos, 0) ),
+							new AltitudeInit( Rules.Info["badr"].Traits.Get<AircraftInfo>().CruiseAltitude ),
+						});
 						plane.CancelActivity();
 						plane.QueueActivity(new FlyCircle(p));
 						plane.traits.Get<ParaDrop>().SetLZ(p, null);

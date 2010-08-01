@@ -44,7 +44,7 @@ namespace OpenRA
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
 
-			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
+			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 			
 			Index = index;
 			Palette = "player"+index;
@@ -64,7 +64,7 @@ namespace OpenRA
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
 
-			PlayerActor = world.CreateActor("Player", new int2(int.MaxValue, int.MaxValue), this);
+			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 			
 			Index = client.Index;
 			Palette = "player"+client.Index;

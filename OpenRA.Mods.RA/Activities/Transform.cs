@@ -13,6 +13,7 @@ using System.Linq;
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Render;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -51,16 +52,17 @@ namespace OpenRA.Mods.RA.Activities
 				self.World.Remove(self);
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-
-				var a = w.CreateActor(actor, self.Location + offset, self.Owner);
+				
+				var a = w.CreateActor( actor, new TypeDictionary
+				{
+					new LocationInit( self.Location + offset ),
+					new OwnerInit( self.Owner ),
+					new FacingInit( facing ),
+				});
 				var oldHealth = self.traits.GetOrDefault<Health>();
 				var newHealth = a.traits.GetOrDefault<Health>();
 				if (oldHealth != null && newHealth != null)
 					newHealth.HPFraction = oldHealth.HPFraction;
-				
-				var ifacing = a.traits.GetOrDefault<IFacing>();
-				if (ifacing != null)
-					ifacing.Facing = facing;
 				
 				if (selected)
 					w.Selection.Add(w, a);

@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -49,7 +50,11 @@ namespace OpenRA.Mods.RA
 				eligibleLocations.Remove(loc);
 				dudesValue -= at.Cost;
 
-				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, loc, self.Owner));
+				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary                                             
+				{
+					new LocationInit( loc ),
+					new OwnerInit( self.Owner ),
+				}));
 			}
 		}
 

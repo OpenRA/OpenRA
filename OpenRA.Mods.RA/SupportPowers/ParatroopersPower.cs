@@ -59,7 +59,11 @@ namespace OpenRA.Mods.RA
 			owner.World.AddFrameEndTask(w =>
 			{
 				var info = (Info as ParatroopersPowerInfo);
-				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, p, owner) : null;
+				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
+				{
+					new LocationInit( p ),
+					new OwnerInit( owner ),
+				}) : null;
 
 				var a = w.CreateActor(info.UnitType, new TypeDictionary 
 				{
@@ -75,8 +79,7 @@ namespace OpenRA.Mods.RA
 
 				var cargo = a.traits.Get<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, owner.World.CreateActor(false, i.ToLowerInvariant(), 
-						new int2(0,0), a.Owner));
+					cargo.Load(a, owner.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( a.Owner ) }));
 			});
 		}
 	}

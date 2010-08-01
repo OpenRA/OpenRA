@@ -76,7 +76,9 @@ namespace OpenRA.Traits
 		{
 			this.self = init.self;
 			this.Info = info;
-			this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
+			if (init.Contains<LocationInit>())
+				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
+			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
 			

@@ -125,21 +125,6 @@ namespace OpenRA
 			Timer.Time( "----end World.ctor" );
 		}
 
-		public Actor CreateActor( string name, int2 location, Player owner )
-		{
-			return CreateActor( true, name, location, owner );
-		}
-		
-		public Actor CreateActor( bool addToWorld, string name, int2 location, Player owner )
-		{
-			var initDict = new TypeDictionary
-			{
-				new LocationInit( location ),
-				new OwnerInit( owner ),
-			};
-			return CreateActor( addToWorld, name, initDict );
-		}
-
 		public Actor CreateActor( string name, TypeDictionary initDict )
 		{
 			return CreateActor( true, name, initDict );

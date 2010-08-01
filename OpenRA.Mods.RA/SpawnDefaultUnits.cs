@@ -41,7 +41,11 @@ namespace OpenRA.Mods.RA
 
 		void SpawnUnitsForPlayer(Player p, int2 sp)
 		{
-			p.World.CreateActor("mcv", sp, p);
+			p.World.CreateActor("mcv", new TypeDictionary 
+			{ 
+				new LocationInit( sp ),
+				new OwnerInit( p ),
+			});
 
 			if (p == p.World.LocalPlayer || p.Stances[p.World.LocalPlayer] == Stance.Ally)
 				p.World.WorldActor.traits.Get<Shroud>().Explore(p.World, sp,

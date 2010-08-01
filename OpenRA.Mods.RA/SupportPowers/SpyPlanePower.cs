@@ -58,7 +58,12 @@ namespace OpenRA.Mods.RA
 				plane.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 				plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w => 
 					{
-						var camera = w.CreateActor("camera", order.TargetLocation, Owner);
+						var camera = w.CreateActor("camera", new TypeDictionary
+					    {
+							new LocationInit( order.TargetLocation ),
+							new OwnerInit( Owner ),
+						});
+
 						camera.QueueActivity(new Wait((int)(25 * 60 * (Info as SpyPlanePowerInfo).RevealTime)));
 						camera.QueueActivity(new RemoveSelf());
 					})));

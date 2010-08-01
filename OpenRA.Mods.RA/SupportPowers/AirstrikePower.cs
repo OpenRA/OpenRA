@@ -12,6 +12,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -44,12 +45,20 @@ namespace OpenRA.Mods.RA
 
 				Owner.World.AddFrameEndTask(w =>
 					{
-						var flareType = (Info as AirstrikePowerInfo).FlareType;
-						var flare = flareType != null ? w.CreateActor(flareType, order.TargetLocation, Owner) : null;
-
-						var a = w.CreateActor((Info as AirstrikePowerInfo).UnitType, startPos, Owner);
-						a.traits.Get<IFacing>().Facing = Util.GetFacing(order.TargetLocation - startPos, 0);
-						a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+						var info = (Info as AirstrikePowerInfo);
+						var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
+					    {
+							new LocationInit( order.TargetLocation ),
+							new OwnerInit( Owner ),
+						}) : null;
+					
+						var a = w.CreateActor(info.UnitType, new TypeDictionary
+					    {
+							new LocationInit( startPos ),
+							new OwnerInit( Owner ),
+							new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
+							new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
+						});
 						a.traits.Get<CarpetBomb>().SetTarget(order.TargetLocation);
 
 						a.CancelActivity();

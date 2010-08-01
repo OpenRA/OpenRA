@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -40,7 +41,12 @@ namespace OpenRA.Traits
 						bool playSounds = true;
 						foreach (var t in LineBuildUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
-							var building = w.CreateActor(order.TargetString, t, order.Player);
+							var building = w.CreateActor(order.TargetString, new TypeDictionary
+							{
+								new LocationInit( t ),
+								new OwnerInit( order.Player ),
+							});
+							                             
 							if (playSounds)
 								foreach (var s in buildingInfo.BuildSounds)
 									Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
@@ -49,7 +55,11 @@ namespace OpenRA.Traits
 					}
 					else
 					{
-						var building = w.CreateActor(order.TargetString, order.TargetLocation, order.Player);
+						var building = w.CreateActor(order.TargetString, new TypeDictionary
+						{
+							new LocationInit( order.TargetLocation ),
+							new OwnerInit( order.Player ),
+						});
 						foreach (var s in buildingInfo.BuildSounds)
 							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
 					}

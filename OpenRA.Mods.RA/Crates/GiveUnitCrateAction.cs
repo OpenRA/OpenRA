@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Crates
 {
@@ -41,7 +42,11 @@ namespace OpenRA.Mods.RA.Crates
 			var location = ChooseEmptyCellNear(collector);
 			if (location != null)
 				collector.World.AddFrameEndTask(
-					w => w.CreateActor(Info.Unit, location.Value, collector.Owner));
+					w => w.CreateActor(Info.Unit, new TypeDictionary
+				    {
+						new LocationInit( location.Value ),
+						new OwnerInit( collector.Owner )
+					}));
 
 			base.Activate(collector);
 		}

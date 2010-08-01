@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -73,8 +74,11 @@ namespace OpenRA.Mods.RA.Activities
 			if (limitedAmmo != null) limitedAmmo.Attacking(self);
 
 			self.World.AddFrameEndTask(
-				w => w.CreateActor(
-					self.Info.Traits.Get<MinelayerInfo>().Mine, self.Location, self.Owner));
+				w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, new TypeDictionary
+				{
+					new LocationInit( self.Location ),
+					new OwnerInit( self.Owner ),
+				}));
 		}
 
 		public void Cancel( Actor self ) { canceled = true; NextActivity = null; }

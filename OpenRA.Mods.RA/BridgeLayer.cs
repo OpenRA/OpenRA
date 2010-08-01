@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -80,7 +81,12 @@ namespace OpenRA.Mods.RA
 			var nj = j - image / template.Size.X;
 			
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(BridgeTypes[tile], new int2(ni, nj), w.WorldActor.Owner).traits.Get<Bridge>();
+			var bridge = w.CreateActor(BridgeTypes[tile], new TypeDictionary
+			{
+				new LocationInit( new int2(ni, nj) ),
+				new OwnerInit( w.WorldActor.Owner ),
+			}).traits.Get<Bridge>();
+			
 			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();
 			
 			// For each subtile in the template

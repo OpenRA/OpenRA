@@ -15,6 +15,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -38,12 +39,17 @@ namespace OpenRA.Mods.Cnc
 			var rp = self.traits.GetOrDefault<RallyPoint>();
 			owner.World.AddFrameEndTask(w =>
 			{
-				var a = w.CreateActor("C17", startPos, owner);
+				var a = w.CreateActor("C17", new TypeDictionary 
+				{
+					new LocationInit( startPos ),
+					new OwnerInit( owner ),
+					new FacingInit( 64 ),
+					new AltitudeInit( Rules.Info["c17"].Traits.Get<PlaneInfo>().CruiseAltitude ),
+				});
+				
 				var cargo = a.traits.Get<Cargo>();
-				a.traits.Get<IFacing>().Facing = 64;
-				a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
-				var newUnit = self.World.CreateActor(false, producee.Name, new int2(0, 0), self.Owner);
+				var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary{ new OwnerInit( self.Owner ) });
 				cargo.Load(a, newUnit);
 				
 				a.CancelActivity();

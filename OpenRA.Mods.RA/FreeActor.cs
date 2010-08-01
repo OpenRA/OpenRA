@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -31,12 +32,12 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(
 				w =>
 				{
-					var a = w.CreateActor(info.Actor, self.Location 
-						+ info.SpawnOffset, self.Owner);
-				
-					var facing = a.traits.GetOrDefault<IFacing>();
-					if (facing != null)
-						facing.Facing = info.Facing;
+					var a = w.CreateActor(info.Actor, new TypeDictionary
+				    {
+						new LocationInit( self.Location + info.SpawnOffset ),
+						new OwnerInit( self.Owner ),
+						new FacingInit( info.Facing ),
+					});
 
 					if (info.InitialActivity != null)
 						a.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));

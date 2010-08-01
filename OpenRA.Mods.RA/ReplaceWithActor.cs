@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -27,7 +28,11 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				w.Remove(self);
-				w.CreateActor(info.Actor, self.Location, self.Owner);
+				w.CreateActor(info.Actor, new TypeDictionary
+				{
+					new LocationInit( self.Location ),
+					new OwnerInit( self.Owner ),
+				});
 			});
 		}
 	}

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -65,7 +66,11 @@ namespace OpenRA.Mods.RA
 				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
 				self.World.AddFrameEndTask(
-						w => crates.Add(w.CreateActor("crate", p, self.World.WorldActor.Owner)));
+						w => crates.Add(w.CreateActor("crate", new TypeDictionary
+				        {
+							new LocationInit( p ),
+							new OwnerInit( self.World.WorldActor.Owner ),
+						})));
 				return;
 			}
 		}
