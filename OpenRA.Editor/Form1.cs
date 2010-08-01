@@ -43,11 +43,16 @@ namespace OpenRA.Editor
 
 			folderBrowser.SelectedPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
 				.Aggregate(Path.Combine);
+
+			surface1.AfterChange += MakeDirty;
 		}
+
+		void MakeDirty() { dirty = true; }
 
 		string loadedMapName;
 		string currentMod = "ra";
 		TileSet tileset;
+		bool dirty = false;
 
 		void LoadMap(string mapname)
 		{
@@ -68,6 +73,8 @@ namespace OpenRA.Editor
 			var map = new Map(new Folder(mapname));
 
 			PrepareMapResources(manifest, map);
+
+			dirty = false;
 		}
 
 		void NewMap(Map map)
@@ -86,6 +93,8 @@ namespace OpenRA.Editor
 			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			PrepareMapResources(manifest, map);
+
+			MakeDirty();
 		}
 
 		void PrepareMapResources(Manifest manifest, Map map)
@@ -328,6 +337,8 @@ namespace OpenRA.Editor
 				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
 				surface1.Map.Package = new Folder(loadedMapName);
 				surface1.Map.Save(loadedMapName);
+
+				dirty = false;
 			}
 		}
 
@@ -337,7 +348,6 @@ namespace OpenRA.Editor
 
 			if (DialogResult.OK == folderBrowser.ShowDialog())
 			{
-
 				loadedMapName = folderBrowser.SelectedPath;
 				SaveClicked(sender, e);
 			}
@@ -420,7 +430,21 @@ namespace OpenRA.Editor
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
 
 					Directory.Delete(savePath, true);
+					MakeDirty();
 				}
+		}
+
+		void OnFormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!dirty) return;
+
+			switch (MessageBox.Show("The map has been modified since it was last saved. Save changes now?",
+				"Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation))
+			{
+				case DialogResult.Yes: SaveClicked(null, EventArgs.Empty); break;
+				case DialogResult.No: break;
+				case DialogResult.Cancel: e.Cancel = true; break;
+			}
 		}
 	}
 }

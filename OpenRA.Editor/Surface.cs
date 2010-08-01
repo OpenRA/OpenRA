@@ -33,6 +33,7 @@ namespace OpenRA.Editor
 		WaypointTemplate Waypoint;
 
 		public bool IsPanning;
+		public event Action AfterChange = () => { };
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
@@ -131,6 +132,8 @@ namespace OpenRA.Editor
 			/* todo: optimize */
 			foreach (var ch in Chunks.Values) ch.Dispose();
 			Chunks.Clear();
+
+			AfterChange();
 		}
 
 		int2 FindEdge(int2 p, int2 d, TileReference<ushort, byte> replace)
@@ -180,6 +183,8 @@ namespace OpenRA.Editor
 						}
 					}
 				}
+
+			AfterChange();
 		}
 
 		int wpid;
@@ -199,6 +204,8 @@ namespace OpenRA.Editor
 			if (k.Key != null) Map.Waypoints.Remove(k.Key);
 
 			Map.Waypoints.Add(NextWpid(), GetBrushLocation());
+
+			AfterChange();
 		}
 
 		void Erase()
@@ -224,6 +231,8 @@ namespace OpenRA.Editor
 
 			var k = Map.Waypoints.FirstOrDefault(a => a.Value == GetBrushLocation());
 			if (k.Key != null) Map.Waypoints.Remove(k.Key);
+
+			AfterChange();
 		}
 
 		void Draw()
@@ -232,6 +241,8 @@ namespace OpenRA.Editor
 			if (Actor != null) DrawWithActor();
 			if (Resource != null) DrawWithResource();
 			if (Waypoint != null) DrawWithWaypoint();
+
+			AfterChange();
 		}
 
 		int id;
@@ -252,6 +263,8 @@ namespace OpenRA.Editor
 			var owner = "Neutral";
 			var id = NextActorName();
 			Map.Actors[id] = new ActorReference(id,Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
+
+			AfterChange();
 		}
 
 		System.Random r = new System.Random();
@@ -271,6 +284,8 @@ namespace OpenRA.Editor
 				Chunks[ch].Dispose();
 				Chunks.Remove(ch);
 			}
+
+			AfterChange();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)

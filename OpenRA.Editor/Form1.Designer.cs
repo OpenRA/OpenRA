@@ -39,7 +39,6 @@
 			this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
-			this.surface1 = new OpenRA.Editor.Surface();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +59,7 @@
 			this.spawnpointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+			this.surface1 = new OpenRA.Editor.Surface();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -182,16 +182,6 @@
 			this.resourcePalette.Name = "resourcePalette";
 			this.resourcePalette.Size = new System.Drawing.Size(190, 655);
 			this.resourcePalette.TabIndex = 3;
-			// 
-			// surface1
-			// 
-			this.surface1.BackColor = System.Drawing.Color.Black;
-			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.surface1.Location = new System.Drawing.Point(0, 0);
-			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(783, 681);
-			this.surface1.TabIndex = 5;
-			this.surface1.Text = "surface1";
 			// 
 			// menuStrip1
 			// 
@@ -343,6 +333,16 @@
 			// 
 			this.tt.ShowAlways = true;
 			// 
+			// surface1
+			// 
+			this.surface1.BackColor = System.Drawing.Color.Black;
+			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.surface1.Location = new System.Drawing.Point(0, 0);
+			this.surface1.Name = "surface1";
+			this.surface1.Size = new System.Drawing.Size(783, 681);
+			this.surface1.TabIndex = 5;
+			this.surface1.Text = "surface1";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -354,6 +354,7 @@
 			this.Name = "Form1";
 			this.Text = "OpenRA Editor";
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
