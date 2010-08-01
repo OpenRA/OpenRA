@@ -1,0 +1,217 @@
+Selectable: True
+
+MapFormat: 2
+
+Title: Eye of the Storm
+
+Description:
+
+Author: Westwood Studios
+
+PlayerCount: 7
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+TopLeft: 4,1
+
+BottomRight: 61,62
+
+Players:
+
+Actors:
+	ActorReference@Actor0:
+		Id: Actor0
+		Type: split3
+		Location: 54,2
+		Owner: Neutral
+	ActorReference@Actor1:
+		Id: Actor1
+		Type: split3
+		Location: 12,20
+		Owner: Neutral
+	ActorReference@Actor2:
+		Id: Actor2
+		Type: rock6
+		Location: 4,60
+		Owner: Neutral
+	ActorReference@Actor3:
+		Id: Actor3
+		Type: split3
+		Location: 46,35
+		Owner: Neutral
+	ActorReference@Actor4:
+		Id: Actor4
+		Type: split3
+		Location: 15,59
+		Owner: Neutral
+	ActorReference@Actor5:
+		Id: Actor5
+		Type: t18
+		Location: 6,60
+		Owner: Neutral
+	ActorReference@Actor6:
+		Id: Actor6
+		Type: t08
+		Location: 4,58
+		Owner: Neutral
+	ActorReference@Actor7:
+		Id: Actor7
+		Type: rock2
+		Location: 19,36
+		Owner: Neutral
+	ActorReference@Actor8:
+		Id: Actor8
+		Type: t08
+		Location: 42,54
+		Owner: Neutral
+	ActorReference@Actor9:
+		Id: Actor9
+		Type: t08
+		Location: 39,45
+		Owner: Neutral
+	ActorReference@Actor10:
+		Id: Actor10
+		Type: t08
+		Location: 16,41
+		Owner: Neutral
+	ActorReference@Actor11:
+		Id: Actor11
+		Type: t08
+		Location: 9,49
+		Owner: Neutral
+	ActorReference@Actor12:
+		Id: Actor12
+		Type: t09
+		Location: 21,49
+		Owner: Neutral
+	ActorReference@Actor13:
+		Id: Actor13
+		Type: rock1
+		Location: 22,56
+		Owner: Neutral
+	ActorReference@Actor14:
+		Id: Actor14
+		Type: rock2
+		Location: 47,55
+		Owner: Neutral
+	ActorReference@Actor15:
+		Id: Actor15
+		Type: rock4
+		Location: 25,28
+		Owner: Neutral
+	ActorReference@Actor16:
+		Id: Actor16
+		Type: rock6
+		Location: 17,7
+		Owner: Neutral
+	ActorReference@Actor17:
+		Id: Actor17
+		Type: rock7
+		Location: 16,57
+		Owner: Neutral
+	ActorReference@Actor18:
+		Id: Actor18
+		Type: rock5
+		Location: 26,59
+		Owner: Neutral
+	ActorReference@Actor19:
+		Id: Actor19
+		Type: t04
+		Location: 43,23
+		Owner: Neutral
+	ActorReference@Actor20:
+		Id: Actor20
+		Type: t04
+		Location: 40,44
+		Owner: Neutral
+	ActorReference@Actor21:
+		Id: Actor21
+		Type: t04
+		Location: 30,42
+		Owner: Neutral
+	ActorReference@Actor22:
+		Id: Actor22
+		Type: t04
+		Location: 9,39
+		Owner: Neutral
+	ActorReference@Actor23:
+		Id: Actor23
+		Type: t04
+		Location: 4,53
+		Owner: Neutral
+	ActorReference@Actor24:
+		Id: Actor24
+		Type: t04
+		Location: 4,59
+		Owner: Neutral
+	ActorReference@Actor25:
+		Id: Actor25
+		Type: t04
+		Location: 29,57
+		Owner: Neutral
+	ActorReference@Actor26:
+		Id: Actor26
+		Type: t09
+		Location: 24,60
+		Owner: Neutral
+	ActorReference@Actor27:
+		Id: Actor27
+		Type: t09
+		Location: 33,34
+		Owner: Neutral
+	ActorReference@Actor28:
+		Id: Actor28
+		Type: t09
+		Location: 19,17
+		Owner: Neutral
+	ActorReference@Actor29:
+		Id: Actor29
+		Type: t09
+		Location: 16,9
+		Owner: Neutral
+	ActorReference@Actor30:
+		Id: Actor30
+		Type: t09
+		Location: 17,3
+		Owner: Neutral
+	ActorReference@Actor31:
+		Id: Actor31
+		Type: t08
+		Location: 12,29
+		Owner: Neutral
+	ActorReference@Actor32:
+		Id: Actor32
+		Type: split3
+		Location: 8,2
+		Owner: Neutral
+	ActorReference@Actor33:
+		Id: Actor33
+		Type: split3
+		Location: 44,53
+		Owner: Neutral
+	ActorReference@Actor34:
+		Id: Actor34
+		Type: split3
+		Location: 51,23
+		Owner: Neutral
+	ActorReference@Actor35:
+		Id: Actor35
+		Type: split3
+		Location: 29,17
+		Owner: Neutral
+
+Waypoints:
+	spawn7: 7,10
+	spawn5: 57,39
+	spawn4: 47,4
+	spawn3: 7,52
+	spawn2: 57,59
+	spawn1: 55,18
+	spawn0: 14,26
+
+Smudges:
+
+Rules:
+
