@@ -4,8 +4,6 @@ MapFormat: 2
 
 Title: Marooned II
 
-Description:
-
 Author: Westwood Studios
 
 PlayerCount: 6
@@ -19,6 +17,14 @@ TopLeft: 16,16
 BottomRight: 112,112
 
 Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
 
 Actors:
 	ActorReference@Actor0:

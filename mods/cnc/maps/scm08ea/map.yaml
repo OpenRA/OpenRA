@@ -4,8 +4,6 @@ MapFormat: 2
 
 Title: Pitfall
 
-Description:
-
 Author: Westwood Studios
 
 PlayerCount: 8
@@ -19,6 +17,14 @@ TopLeft: 1,1
 BottomRight: 63,63
 
 Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
 
 Actors:
 	ActorReference@Actor0:
