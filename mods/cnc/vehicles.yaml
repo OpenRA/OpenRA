@@ -380,7 +380,7 @@ STNK:
 	RevealsShroud:
 		Range: 4
 	Cloak:
-		InitialDelay: .4
+		InitialDelay: 0
 		CloakDelay: 2.0
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud

@@ -392,7 +392,7 @@ SS:
 		Range: 6
 	RenderUnit:
 	Cloak:
-		InitialDelay: .4
+		InitialDelay: 0
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
@@ -424,7 +424,7 @@ MSUB:
 		Range: 6
 	RenderUnit:
 	Cloak:
-		InitialDelay: .4
+		InitialDelay: 0
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
