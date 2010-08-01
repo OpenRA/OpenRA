@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
 
-		void UnReserve()
+		public void UnReserve()
 		{
 			if (reservation != null)
 			{
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
 				self.QueueActivity(
@@ -130,7 +130,10 @@ namespace OpenRA.Mods.RA
 						? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
 			else
+			{
+				Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));
 				UnReserve();
+			}
 		}
 	}
 }

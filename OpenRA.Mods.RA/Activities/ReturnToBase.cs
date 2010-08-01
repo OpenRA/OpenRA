@@ -35,10 +35,17 @@ namespace OpenRA.Mods.RA.Activities
 
 		void Calculate(Actor self)
 		{
-			if (dest == null) dest = ChooseAirfield(self);
-			var res = dest.traits.GetOrDefault<Reservable>();
-			if (res != null)
-				self.traits.Get<Plane>().reservation = res.Reserve(self);
+			if (dest == null)
+			{
+				dest = ChooseAirfield(self);
+				var res = dest.traits.GetOrDefault<Reservable>();
+				if (res != null)
+				{
+					var plane = self.traits.Get<Plane>();
+					plane.UnReserve();
+					plane.reservation = res.Reserve(self);
+				}
+			}
 
 			var landPos = dest.CenterLocation;
 			var aircraft = self.traits.Get<Aircraft>();

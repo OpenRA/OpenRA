@@ -36,6 +36,10 @@ namespace OpenRA.Mods.RA
 
 		public IDisposable Reserve(Actor forActor)
 		{
+			if (reservedFor != null)
+				Game.Debug("BUG: #{0} {1} was already reserved (by #{2} {3})".F(
+					self.ActorID, self.Info.Name, reservedFor.ActorID, reservedFor.Info.Name));
+
 			reservedFor = forActor;
 			Game.Debug("#{0} {1} reserved by #{2} {3}".F(
 				self.ActorID, self.Info.Name, forActor.ActorID, forActor.Info.Name));
