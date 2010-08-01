@@ -1,10 +1,8 @@
 Selectable: True
 
-MapFormat: 1
+MapFormat: 3
 
 Title: Caffeinated
-
-Description:
 
 Author: Chris Forbes & Bob Pepperell
 
@@ -18,117 +16,347 @@ TopLeft: 16,16
 
 BottomRight: 112,112
 
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
 Actors:
-	Actor0: v13 42,92 42,92
-	Actor1: t01 97,52 97,52
-	Actor2: tc02 99,58 99,58
-	Actor3: tc02 52,91 52,91
-	Actor4: t01 42,104 42,104
-	Actor5: t01 41,105 41,105
-	Actor6: tc04 39,104 39,104
-	Actor7: tc05 37,100 37,100
-	Actor8: tc05 87,62 87,62
-	Actor9: t15 48,89 48,89
-	Actor10: tc04 36,88 36,88
-	Actor11: tc03 46,89 46,89
-	Actor12: tc02 44,91 44,91
-	Actor13: t16 64,46 64,46
-	Actor14: t16 66,47 66,47
-	Actor15: tc04 73,94 73,94
-	Actor16: tc02 71,95 71,95
-	Actor17: tc01 69,95 69,95
-	Actor18: t17 67,95 67,95
-	Actor19: t17 73,97 73,97
-	Actor20: t17 72,96 72,96
-	Actor21: tc01 60,90 60,90
-	Actor22: tc01 78,110 78,110
-	Actor23: t16 78,109 78,109
-	Actor24: t16 77,107 77,107
-	Actor25: t17 75,110 75,110
-	Actor26: t17 105,66 105,66
-	Actor27: t16 103,63 103,63
-	Actor28: t15 99,60 99,60
-	Actor29: t15 83,51 83,51
-	Actor30: tc04 79,49 79,49
-	Actor31: tc01 70,50 70,50
-	Actor32: tc05 99,43 99,43
-	Actor33: tc01 94,45 94,45
-	Actor34: tc01 93,44 93,44
-	Actor35: tc04 95,43 95,43
-	Actor36: t17 90,39 90,39
-	Actor37: t17 100,53 100,53
-	Actor38: t17 100,54 100,54
-	Actor39: tc04 98,56 98,56
-	Actor40: tc04 42,34 42,34
-	Actor41: tc04 20,60 20,60
-	Actor42: t16 49,61 49,61
-	Actor43: t17 62,67 62,67
-	Actor44: tc02 43,22 43,22
-	Actor45: mine 50,52 50,52
-	Actor46: mine 50,66 50,66
-	Actor47: mine 28,72 28,72
-	Actor48: mine 20,71 20,71
-	Actor49: mine 34,104 34,104
-	Actor50: mine 44,107 44,107
-	Actor51: mine 106,87 106,87
-	Actor52: mine 109,59 109,59
-	Actor53: mine 106,56 106,56
-	Actor54: mine 81,35 81,35
-	Actor55: mine 81,37 81,37
-	Actor56: mine 109,25 109,25
-	Actor57: mine 71,29 71,29
-	Actor58: mine 51,18 51,18
-	Actor59: mine 18,18 18,18
-	Actor60: t01 39,106 39,106
-	Actor61: t01 40,105 40,105
-	Actor62: t03 40,106 40,106
-	Actor63: t05 41,106 41,106
-	Actor64: t05 34,107 34,107
-	Actor65: t13 34,108 34,108
-	Actor66: t14 37,110 37,110
-	Actor67: tc04 34,109 34,109
-	Actor68: t17 36,110 36,110
-	Actor69: t17 35,110 35,110
-	Actor70: t02 41,107 41,107
-	Actor71: t02 41,108 41,108
-	Actor72: t08 41,110 41,110
-	Actor73: t08 42,109 42,109
-	Actor74: t05 42,107 42,107
-	Actor75: mine 61,81 61,81
-	Actor76: mine 17,54 17,54
-	Actor77: t05 97,26 97,26
-	Actor78: t10 96,28 96,28
-	Actor79: t08 98,30 98,30
-	Actor80: mine 92,20 92,20
-	Actor81: t08 74,28 74,28
-	Actor82: t05 74,26 74,26
-	Actor83: t10 75,25 75,25
-	Actor84: mine 57,101 57,101
-	Actor85: t13 88,88 88,88
-	Actor86: tc04 84,89 84,89
-	Actor87: tc01 86,88 86,88
-	Actor88: tc05 96,31 96,31
-	Actor89: tc01 96,30 96,30
-	Actor90: t16 96,29 96,29
-	Actor91: t16 97,29 97,29
-	Actor92: tc04 48,41 48,41
-	Actor93: tc01 46,37 46,37
-	Actor94: tc01 54,37 54,37
-	Actor95: tc01 53,38 53,38
-	Actor96: t17 55,39 55,39
-	Actor97: t16 48,34 48,34
-	Actor98: mine 90,110 90,110
-	Actor99: tc01 97,95 97,95
-	Actor100: mine 35,23 35,23
-	Actor101: t01 48,94 48,94
-	Actor102: t01 53,92 53,92
-	Actor103: t01 53,95 53,95
-	Actor104: t01 59,88 59,88
-	Actor105: t01 59,87 59,87
-	Actor106: t02 54,94 54,94
-	Actor107: t02 56,39 56,39
-	Actor108: t02 56,38 56,38
-	Actor109: t08 57,40 57,40
+	Actor0: v13
+		Location: 42,92
+		Owner: Neutral
+	Actor1: t01
+		Location: 97,52
+		Owner: Neutral
+	Actor2: tc02
+		Location: 99,58
+		Owner: Neutral
+	Actor3: tc02
+		Location: 52,91
+		Owner: Neutral
+	Actor4: t01
+		Location: 42,104
+		Owner: Neutral
+	Actor5: t01
+		Location: 41,105
+		Owner: Neutral
+	Actor6: tc04
+		Location: 39,104
+		Owner: Neutral
+	Actor7: tc05
+		Location: 37,100
+		Owner: Neutral
+	Actor8: tc05
+		Location: 87,62
+		Owner: Neutral
+	Actor9: t15
+		Location: 48,89
+		Owner: Neutral
+	Actor10: tc04
+		Location: 36,88
+		Owner: Neutral
+	Actor11: tc03
+		Location: 46,89
+		Owner: Neutral
+	Actor12: tc02
+		Location: 44,91
+		Owner: Neutral
+	Actor13: t16
+		Location: 64,46
+		Owner: Neutral
+	Actor14: t16
+		Location: 66,47
+		Owner: Neutral
+	Actor15: tc04
+		Location: 73,94
+		Owner: Neutral
+	Actor16: tc02
+		Location: 71,95
+		Owner: Neutral
+	Actor17: tc01
+		Location: 69,95
+		Owner: Neutral
+	Actor18: t17
+		Location: 67,95
+		Owner: Neutral
+	Actor19: t17
+		Location: 73,97
+		Owner: Neutral
+	Actor20: t17
+		Location: 72,96
+		Owner: Neutral
+	Actor21: tc01
+		Location: 60,90
+		Owner: Neutral
+	Actor22: tc01
+		Location: 78,110
+		Owner: Neutral
+	Actor23: t16
+		Location: 78,109
+		Owner: Neutral
+	Actor24: t16
+		Location: 77,107
+		Owner: Neutral
+	Actor25: t17
+		Location: 75,110
+		Owner: Neutral
+	Actor26: t17
+		Location: 105,66
+		Owner: Neutral
+	Actor27: t16
+		Location: 103,63
+		Owner: Neutral
+	Actor28: t15
+		Location: 99,60
+		Owner: Neutral
+	Actor29: t15
+		Location: 83,51
+		Owner: Neutral
+	Actor30: tc04
+		Location: 79,49
+		Owner: Neutral
+	Actor31: tc01
+		Location: 70,50
+		Owner: Neutral
+	Actor32: tc05
+		Location: 99,43
+		Owner: Neutral
+	Actor33: tc01
+		Location: 94,45
+		Owner: Neutral
+	Actor34: tc01
+		Location: 93,44
+		Owner: Neutral
+	Actor35: tc04
+		Location: 95,43
+		Owner: Neutral
+	Actor36: t17
+		Location: 90,39
+		Owner: Neutral
+	Actor37: t17
+		Location: 100,53
+		Owner: Neutral
+	Actor38: t17
+		Location: 100,54
+		Owner: Neutral
+	Actor39: tc04
+		Location: 98,56
+		Owner: Neutral
+	Actor40: tc04
+		Location: 42,34
+		Owner: Neutral
+	Actor41: tc04
+		Location: 20,60
+		Owner: Neutral
+	Actor42: t16
+		Location: 49,61
+		Owner: Neutral
+	Actor43: t17
+		Location: 62,67
+		Owner: Neutral
+	Actor44: tc02
+		Location: 43,22
+		Owner: Neutral
+	Actor45: mine
+		Location: 50,52
+		Owner: Neutral
+	Actor46: mine
+		Location: 50,66
+		Owner: Neutral
+	Actor47: mine
+		Location: 28,72
+		Owner: Neutral
+	Actor48: mine
+		Location: 20,71
+		Owner: Neutral
+	Actor49: mine
+		Location: 34,104
+		Owner: Neutral
+	Actor50: mine
+		Location: 44,107
+		Owner: Neutral
+	Actor51: mine
+		Location: 106,87
+		Owner: Neutral
+	Actor52: mine
+		Location: 109,59
+		Owner: Neutral
+	Actor53: mine
+		Location: 106,56
+		Owner: Neutral
+	Actor54: mine
+		Location: 81,35
+		Owner: Neutral
+	Actor55: mine
+		Location: 81,37
+		Owner: Neutral
+	Actor56: mine
+		Location: 109,25
+		Owner: Neutral
+	Actor57: mine
+		Location: 71,29
+		Owner: Neutral
+	Actor58: mine
+		Location: 51,18
+		Owner: Neutral
+	Actor59: mine
+		Location: 18,18
+		Owner: Neutral
+	Actor60: t01
+		Location: 39,106
+		Owner: Neutral
+	Actor61: t01
+		Location: 40,105
+		Owner: Neutral
+	Actor62: t03
+		Location: 40,106
+		Owner: Neutral
+	Actor63: t05
+		Location: 41,106
+		Owner: Neutral
+	Actor64: t05
+		Location: 34,107
+		Owner: Neutral
+	Actor65: t13
+		Location: 34,108
+		Owner: Neutral
+	Actor66: t14
+		Location: 37,110
+		Owner: Neutral
+	Actor67: tc04
+		Location: 34,109
+		Owner: Neutral
+	Actor68: t17
+		Location: 36,110
+		Owner: Neutral
+	Actor69: t17
+		Location: 35,110
+		Owner: Neutral
+	Actor70: t02
+		Location: 41,107
+		Owner: Neutral
+	Actor71: t02
+		Location: 41,108
+		Owner: Neutral
+	Actor72: t08
+		Location: 41,110
+		Owner: Neutral
+	Actor73: t08
+		Location: 42,109
+		Owner: Neutral
+	Actor74: t05
+		Location: 42,107
+		Owner: Neutral
+	Actor75: mine
+		Location: 61,81
+		Owner: Neutral
+	Actor76: mine
+		Location: 17,54
+		Owner: Neutral
+	Actor77: t05
+		Location: 97,26
+		Owner: Neutral
+	Actor78: t10
+		Location: 96,28
+		Owner: Neutral
+	Actor79: t08
+		Location: 98,30
+		Owner: Neutral
+	Actor80: mine
+		Location: 92,20
+		Owner: Neutral
+	Actor81: t08
+		Location: 74,28
+		Owner: Neutral
+	Actor82: t05
+		Location: 74,26
+		Owner: Neutral
+	Actor83: t10
+		Location: 75,25
+		Owner: Neutral
+	Actor84: mine
+		Location: 57,101
+		Owner: Neutral
+	Actor85: t13
+		Location: 88,88
+		Owner: Neutral
+	Actor86: tc04
+		Location: 84,89
+		Owner: Neutral
+	Actor87: tc01
+		Location: 86,88
+		Owner: Neutral
+	Actor88: tc05
+		Location: 96,31
+		Owner: Neutral
+	Actor89: tc01
+		Location: 96,30
+		Owner: Neutral
+	Actor90: t16
+		Location: 96,29
+		Owner: Neutral
+	Actor91: t16
+		Location: 97,29
+		Owner: Neutral
+	Actor92: tc04
+		Location: 48,41
+		Owner: Neutral
+	Actor93: tc01
+		Location: 46,37
+		Owner: Neutral
+	Actor94: tc01
+		Location: 54,37
+		Owner: Neutral
+	Actor95: tc01
+		Location: 53,38
+		Owner: Neutral
+	Actor96: t17
+		Location: 55,39
+		Owner: Neutral
+	Actor97: t16
+		Location: 48,34
+		Owner: Neutral
+	Actor98: mine
+		Location: 90,110
+		Owner: Neutral
+	Actor99: tc01
+		Location: 97,95
+		Owner: Neutral
+	Actor100: mine
+		Location: 35,23
+		Owner: Neutral
+	Actor101: t01
+		Location: 48,94
+		Owner: Neutral
+	Actor102: t01
+		Location: 53,92
+		Owner: Neutral
+	Actor103: t01
+		Location: 53,95
+		Owner: Neutral
+	Actor104: t01
+		Location: 59,88
+		Owner: Neutral
+	Actor105: t01
+		Location: 59,87
+		Owner: Neutral
+	Actor106: t02
+		Location: 54,94
+		Owner: Neutral
+	Actor107: t02
+		Location: 56,39
+		Owner: Neutral
+	Actor108: t02
+		Location: 56,38
+		Owner: Neutral
+	Actor109: t08
+		Location: 57,40
+		Owner: Neutral
 
 Waypoints:
 	spawn0: 29,18
