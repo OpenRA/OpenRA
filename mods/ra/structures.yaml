@@ -2,6 +2,7 @@ MSLO:
 	Category: Defense
 	NukeSilo:
 		MissileWeapon: atomic
+		SpawnOffset: 10,0
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 130

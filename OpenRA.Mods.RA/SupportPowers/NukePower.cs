@@ -60,15 +60,20 @@ namespace OpenRA.Mods.RA
 	{
 		[WeaponReference]
 		public readonly string MissileWeapon = "";
-		public object Create(ActorInitializer init) { return new NukeSilo(init.self); }
+		public readonly int2 SpawnOffset = int2.Zero;
+
+		public object Create(ActorInitializer init) { return new NukeSilo(init.self, this); }
 	}
 	
 	class NukeSilo
 	{
 		Actor self;
-		public NukeSilo(Actor self)
+		NukeSiloInfo info;
+
+		public NukeSilo(Actor self, NukeSiloInfo info)
 		{
 			this.self = self;
+			this.info = info;
 		}
 		
 		public void Attack(int2 targetLocation)
@@ -78,7 +83,7 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				//FIRE ZE MISSILES
-				w.Add(new NukeLaunch(self, self.Info.Traits.Get<NukeSiloInfo>().MissileWeapon, targetLocation));
+				w.Add(new NukeLaunch(self, info.MissileWeapon, info.SpawnOffset, targetLocation));
 			});
 		}
 	}

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		bool goingUp = true;
 		string weapon;
 
-		public NukeLaunch(Actor silo, string weapon, int2 targetLocation)
+		public NukeLaunch(Actor silo, string weapon, int2 spawnOffset, int2 targetLocation)
 		{
 			this.silo = silo;
 			this.targetLocation = targetLocation;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Effects
 				StartDescent(Game.world);
 			}
 			else
-				pos = silo.CenterLocation;
+				pos = silo.CenterLocation + spawnOffset;
 		}
 
 		void StartDescent(World world)
