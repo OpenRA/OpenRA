@@ -8,11 +8,11 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
+using System.Drawing;
 using OpenRA.Effects;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
-			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy) return null;
+			if (self.Owner.Stances[underCursor.Owner] == Stance.Ally) return null;
 			if (!underCursor.traits.Contains<Building>() || !underCursor.Info.Traits.Get<BuildingInfo>().Capturable) return null;
 
 			return new Order("CaptureBuilding", self, underCursor);
