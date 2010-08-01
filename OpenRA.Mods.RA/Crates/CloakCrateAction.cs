@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
+
 namespace OpenRA.Mods.RA.Crates
 {
 	class CloakCrateActionInfo : CrateActionInfo
@@ -37,7 +39,7 @@ namespace OpenRA.Mods.RA.Crates
 			var cloakInfo = new CloakInfo(Info.InitialDelay, Info.CloakDelay, 
 				Info.CloakSound, Info.UncloakSound);
 
-			var cloak = cloakInfo.Create(new ActorInitializer(collector, collector.Location));
+			var cloak = cloakInfo.Create(new ActorInitializer(collector, new TypeDictionary() ));
 
 			collector.World.AddFrameEndTask(w =>
 				{

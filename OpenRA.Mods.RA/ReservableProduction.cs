@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 
 	class ReservableProduction : Production
 	{
-		public override bool Produce(Actor self, OpenRA.GameRules.ActorInfo producee)
+		public override bool Produce(Actor self, ActorInfo producee)
 		{
 			if (Reservable.IsReserved(self))
 				return false;
