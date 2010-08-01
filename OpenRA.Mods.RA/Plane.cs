@@ -108,10 +108,6 @@ namespace OpenRA.Mods.RA
 
 				UnReserve();
 
-				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
-				if (res != null)
-					reservation = res.Reserve(self);
-
 				var info = self.Info.Traits.Get<PlaneInfo>();
 
 				if (self.Owner == self.World.LocalPlayer)

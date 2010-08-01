@@ -38,13 +38,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (dest == null)
 			{
 				dest = ChooseAirfield(self);
-				var res = dest.traits.GetOrDefault<Reservable>();
-				if (res != null)
-				{
-					var plane = self.traits.Get<Plane>();
-					plane.UnReserve();
-					plane.reservation = res.Reserve(self);
-				}
+			}
+
+			var res = dest.traits.GetOrDefault<Reservable>();
+			if (res != null)
+			{
+				var plane = self.traits.Get<Plane>();
+				plane.UnReserve();
+				plane.reservation = res.Reserve(self);
 			}
 
 			var landPos = dest.CenterLocation;
