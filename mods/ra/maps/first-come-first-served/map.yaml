@@ -1,0 +1,133 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: First Come, First Served
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 22,22
+
+BottomRight: 106,106
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: mine
+		Location: 40,92
+		Owner: Neutral
+	Actor1: mine
+		Location: 89,35
+		Owner: Neutral
+	Actor2: mine
+		Location: 64,64
+		Owner: Neutral
+	Actor3: tc05
+		Location: 43,87
+		Owner: Neutral
+	Actor4: tc04
+		Location: 42,75
+		Owner: Neutral
+	Actor5: tc02
+		Location: 57,75
+		Owner: Neutral
+	Actor6: tc02
+		Location: 62,86
+		Owner: Neutral
+	Actor7: tc04
+		Location: 64,38
+		Owner: Neutral
+	Actor8: tc04
+		Location: 84,29
+		Owner: Neutral
+	Actor9: tc02
+		Location: 96,40
+		Owner: Neutral
+	Actor10: tc03
+		Location: 66,79
+		Owner: Neutral
+	Actor11: tc02
+		Location: 54,88
+		Owner: Neutral
+	Actor12: tc01
+		Location: 41,80
+		Owner: Neutral
+	Actor13: tc04
+		Location: 52,29
+		Owner: Neutral
+	Actor14: tc03
+		Location: 94,30
+		Owner: Neutral
+	Actor15: tc05
+		Location: 39,95
+		Owner: Neutral
+	Actor16: t17
+		Location: 35,87
+		Owner: Neutral
+	Actor17: tc05
+		Location: 68,50
+		Owner: Neutral
+	Actor18: mine
+		Location: 74,45
+		Owner: Neutral
+	Actor19: mine
+		Location: 52,81
+		Owner: Neutral
+	Actor20: tc03
+		Location: 86,94
+		Owner: Neutral
+	Actor21: tc04
+		Location: 32,29
+		Owner: Neutral
+	Actor22: tc01
+		Location: 42,57
+		Owner: Neutral
+	Actor23: tc03
+		Location: 83,45
+		Owner: Neutral
+	Actor24: tc03
+		Location: 89,79
+		Owner: Neutral
+	Actor25: tc01
+		Location: 81,78
+		Owner: Neutral
+	Actor26: t16
+		Location: 37,45
+		Owner: Neutral
+	Actor27: tc04
+		Location: 64,30
+		Owner: Neutral
+	Actor28: tc01
+		Location: 77,39
+		Owner: Neutral
+	Actor29: t16
+		Location: 73,54
+		Owner: Neutral
+	Actor30: t16
+		Location: 37,90
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 40,67
+	spawn1: 89,61
+	spawn2: 54,39
+	spawn3: 70,89
+
+Smudges:
+
+Rules:
+

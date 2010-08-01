@@ -1,0 +1,144 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: East vs West
+
+Description: 2v2 Teamplay Map
+
+Author: Chris Forbes
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 96,56
+
+TopLeft: 8,8
+
+BottomRight: 88,48
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: tc01
+		Location: 26,25
+		Owner: Neutral
+	Actor1: tc04
+		Location: 25,27
+		Owner: Neutral
+	Actor2: t07
+		Location: 26,23
+		Owner: Neutral
+	Actor3: t06
+		Location: 26,22
+		Owner: Neutral
+	Actor4: t03
+		Location: 26,30
+		Owner: Neutral
+	Actor5: t01
+		Location: 27,30
+		Owner: Neutral
+	Actor6: t13
+		Location: 29,12
+		Owner: Neutral
+	Actor7: tc01
+		Location: 31,40
+		Owner: Neutral
+	Actor8: tc04
+		Location: 67,26
+		Owner: Neutral
+	Actor9: tc02
+		Location: 67,24
+		Owner: Neutral
+	Actor10: t14
+		Location: 68,22
+		Owner: Neutral
+	Actor11: t05
+		Location: 68,29
+		Owner: Neutral
+	Actor12: t08
+		Location: 67,21
+		Owner: Neutral
+	Actor13: tc01
+		Location: 64,12
+		Owner: Neutral
+	Actor14: tc02
+		Location: 64,40
+		Owner: Neutral
+	Actor15: mine
+		Location: 13,12
+		Owner: Neutral
+	Actor16: mine
+		Location: 19,12
+		Owner: Neutral
+	Actor17: mine
+		Location: 13,43
+		Owner: Neutral
+	Actor18: mine
+		Location: 19,43
+		Owner: Neutral
+	Actor19: mine
+		Location: 82,43
+		Owner: Neutral
+	Actor20: mine
+		Location: 76,43
+		Owner: Neutral
+	Actor21: mine
+		Location: 82,12
+		Owner: Neutral
+	Actor22: mine
+		Location: 76,12
+		Owner: Neutral
+	Actor23: mine
+		Location: 47,20
+		Owner: Neutral
+	Actor24: mine
+		Location: 48,20
+		Owner: Neutral
+	Actor25: mine
+		Location: 47,35
+		Owner: Neutral
+	Actor26: mine
+		Location: 48,35
+		Owner: Neutral
+	Actor27: tc04
+		Location: 45,9
+		Owner: Neutral
+	Actor28: tc04
+		Location: 48,42
+		Owner: Neutral
+	Actor29: tc05
+		Location: 45,42
+		Owner: Neutral
+	Actor30: tc02
+		Location: 48,10
+		Owner: Neutral
+	Actor31: tc05
+		Location: 46,11
+		Owner: Neutral
+	Actor32: tc02
+		Location: 48,44
+		Owner: Neutral
+	Actor33: t12
+		Location: 50,44
+		Owner: Neutral
+
+Waypoints:
+	wp0: 16,24
+	wp1: 16,29
+	wp2: 79,23
+	wp3: 79,28
+
+Smudges:
+
+Rules:
+

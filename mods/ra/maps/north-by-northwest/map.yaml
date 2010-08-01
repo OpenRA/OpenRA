@@ -1,0 +1,278 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: North by Northwest
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 16,15
+
+BottomRight: 112,111
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: mine
+		Location: 19,107
+		Owner: Neutral
+	Actor1: mine
+		Location: 108,107
+		Owner: Neutral
+	Actor2: mine
+		Location: 108,18
+		Owner: Neutral
+	Actor3: mine
+		Location: 19,18
+		Owner: Neutral
+	Actor4: tc04
+		Location: 37,61
+		Owner: Neutral
+	Actor5: tc03
+		Location: 34,62
+		Owner: Neutral
+	Actor6: tc03
+		Location: 63,87
+		Owner: Neutral
+	Actor7: tc02
+		Location: 63,90
+		Owner: Neutral
+	Actor8: tc02
+		Location: 88,62
+		Owner: Neutral
+	Actor9: tc01
+		Location: 92,61
+		Owner: Neutral
+	Actor10: t17
+		Location: 91,62
+		Owner: Neutral
+	Actor11: tc01
+		Location: 63,37
+		Owner: Neutral
+	Actor12: t16
+		Location: 63,34
+		Owner: Neutral
+	Actor13: tc02
+		Location: 63,32
+		Owner: Neutral
+	Actor14: t17
+		Location: 64,35
+		Owner: Neutral
+	Actor15: tc04
+		Location: 32,88
+		Owner: Neutral
+	Actor16: tc05
+		Location: 34,91
+		Owner: Neutral
+	Actor17: tc03
+		Location: 31,93
+		Owner: Neutral
+	Actor18: tc02
+		Location: 31,30
+		Owner: Neutral
+	Actor19: tc01
+		Location: 35,31
+		Owner: Neutral
+	Actor20: t14
+		Location: 32,33
+		Owner: Neutral
+	Actor21: t13
+		Location: 35,34
+		Owner: Neutral
+	Actor22: tc02
+		Location: 94,29
+		Owner: Neutral
+	Actor23: tc03
+		Location: 90,32
+		Owner: Neutral
+	Actor24: tc04
+		Location: 92,33
+		Owner: Neutral
+	Actor25: tc04
+		Location: 101,22
+		Owner: Neutral
+	Actor26: t16
+		Location: 100,24
+		Owner: Neutral
+	Actor27: tc02
+		Location: 102,101
+		Owner: Neutral
+	Actor28: t17
+		Location: 101,99
+		Owner: Neutral
+	Actor29: tc05
+		Location: 93,93
+		Owner: Neutral
+	Actor30: tc04
+		Location: 91,89
+		Owner: Neutral
+	Actor31: tc03
+		Location: 94,91
+		Owner: Neutral
+	Actor32: tc03
+		Location: 24,101
+		Owner: Neutral
+	Actor33: tc02
+		Location: 24,23
+		Owner: Neutral
+	Actor34: t17
+		Location: 26,24
+		Owner: Neutral
+	Actor35: mine
+		Location: 71,63
+		Owner: Neutral
+	Actor36: mine
+		Location: 64,56
+		Owner: Neutral
+	Actor37: mine
+		Location: 57,63
+		Owner: Neutral
+	Actor38: mine
+		Location: 64,70
+		Owner: Neutral
+	Actor39: t07
+		Location: 42,40
+		Owner: Neutral
+	Actor40: t07
+		Location: 85,40
+		Owner: Neutral
+	Actor41: t06
+		Location: 85,83
+		Owner: Neutral
+	Actor42: t01
+		Location: 42,83
+		Owner: Neutral
+	Actor43: t02
+		Location: 52,58
+		Owner: Neutral
+	Actor44: t03
+		Location: 58,67
+		Owner: Neutral
+	Actor45: t05
+		Location: 69,55
+		Owner: Neutral
+	Actor46: t06
+		Location: 75,61
+		Owner: Neutral
+	Actor47: t07
+		Location: 60,52
+		Owner: Neutral
+	Actor48: t08
+		Location: 53,65
+		Owner: Neutral
+	Actor49: t10
+		Location: 60,73
+		Owner: Neutral
+	Actor50: t12
+		Location: 70,66
+		Owner: Neutral
+	Actor51: t14
+		Location: 69,58
+		Owner: Neutral
+	Actor52: t16
+		Location: 50,61
+		Owner: Neutral
+	Actor53: t16
+		Location: 68,71
+		Owner: Neutral
+	Actor54: tc02
+		Location: 35,86
+		Owner: Neutral
+	Actor55: t17
+		Location: 39,89
+		Owner: Neutral
+	Actor56: tc01
+		Location: 90,86
+		Owner: Neutral
+	Actor57: t16
+		Location: 87,89
+		Owner: Neutral
+	Actor58: t15
+		Location: 87,34
+		Owner: Neutral
+	Actor59: t14
+		Location: 91,38
+		Owner: Neutral
+	Actor60: t14
+		Location: 28,27
+		Owner: Neutral
+	Actor61: t16
+		Location: 29,96
+		Owner: Neutral
+	Actor62: tc01
+		Location: 98,95
+		Owner: Neutral
+	Actor63: tc01
+		Location: 95,31
+		Owner: Neutral
+	Actor64: tc01
+		Location: 50,42
+		Owner: Neutral
+	Actor65: t17
+		Location: 44,51
+		Owner: Neutral
+	Actor66: t16
+		Location: 45,46
+		Owner: Neutral
+	Actor67: t15
+		Location: 50,47
+		Owner: Neutral
+	Actor68: t12
+		Location: 46,79
+		Owner: Neutral
+	Actor69: tc04
+		Location: 49,81
+		Owner: Neutral
+	Actor70: tc03
+		Location: 45,75
+		Owner: Neutral
+	Actor71: t17
+		Location: 42,70
+		Owner: Neutral
+	Actor72: tc03
+		Location: 82,75
+		Owner: Neutral
+	Actor73: tc05
+		Location: 75,80
+		Owner: Neutral
+	Actor74: tc03
+		Location: 83,49
+		Owner: Neutral
+	Actor75: tc01
+		Location: 72,40
+		Owner: Neutral
+	Actor76: t16
+		Location: 76,45
+		Owner: Neutral
+	Actor77: t14
+		Location: 79,42
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 47,23
+	spawn1: 80,102
+	spawn2: 103,46
+	spawn3: 24,79
+	spawn4: 24,46
+	spawn5: 103,79
+	spawn6: 79,23
+	spawn7: 47,102
+
+Smudges:
+
+Rules:
+

@@ -1,0 +1,257 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Raraku
+
+Author: Westwood Studios
+
+PlayerCount: 8
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 15,15
+
+BottomRight: 111,111
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: tc04
+		Location: 57,17
+		Owner: Neutral
+	Actor1: tc05
+		Location: 61,22
+		Owner: Neutral
+	Actor2: tc03
+		Location: 55,25
+		Owner: Neutral
+	Actor3: tc02
+		Location: 65,16
+		Owner: Neutral
+	Actor4: t17
+		Location: 62,18
+		Owner: Neutral
+	Actor5: tc04
+		Location: 51,14
+		Owner: Neutral
+	Actor6: tc03
+		Location: 68,29
+		Owner: Neutral
+	Actor7: tc01
+		Location: 58,29
+		Owner: Neutral
+	Actor8: tc05
+		Location: 50,38
+		Owner: Neutral
+	Actor9: tc02
+		Location: 45,30
+		Owner: Neutral
+	Actor10: tc05
+		Location: 97,16
+		Owner: Neutral
+	Actor11: tc04
+		Location: 96,15
+		Owner: Neutral
+	Actor12: tc03
+		Location: 96,24
+		Owner: Neutral
+	Actor13: tc05
+		Location: 26,30
+		Owner: Neutral
+	Actor14: tc04
+		Location: 15,28
+		Owner: Neutral
+	Actor15: tc05
+		Location: 16,29
+		Owner: Neutral
+	Actor16: tc03
+		Location: 25,32
+		Owner: Neutral
+	Actor17: tc04
+		Location: 23,92
+		Owner: Neutral
+	Actor18: tc05
+		Location: 24,93
+		Owner: Neutral
+	Actor19: tc03
+		Location: 96,90
+		Owner: Neutral
+	Actor20: tc05
+		Location: 96,76
+		Owner: Neutral
+	Actor21: tc01
+		Location: 86,77
+		Owner: Neutral
+	Actor22: t16
+		Location: 90,80
+		Owner: Neutral
+	Actor23: tc02
+		Location: 37,86
+		Owner: Neutral
+	Actor24: t17
+		Location: 80,56
+		Owner: Neutral
+	Actor25: tc02
+		Location: 76,66
+		Owner: Neutral
+	Actor26: tc04
+		Location: 56,61
+		Owner: Neutral
+	Actor27: tc05
+		Location: 52,59
+		Owner: Neutral
+	Actor28: tc03
+		Location: 30,49
+		Owner: Neutral
+	Actor29: tc02
+		Location: 25,69
+		Owner: Neutral
+	Actor30: t16
+		Location: 34,72
+		Owner: Neutral
+	Actor31: tc03
+		Location: 42,54
+		Owner: Neutral
+	Actor32: mine
+		Location: 73,79
+		Owner: Neutral
+	Actor33: mine
+		Location: 49,34
+		Owner: Neutral
+	Actor34: mine
+		Location: 105,22
+		Owner: Neutral
+	Actor35: mine
+		Location: 101,80
+		Owner: Neutral
+	Actor36: mine
+		Location: 43,107
+		Owner: Neutral
+	Actor37: mine
+		Location: 24,47
+		Owner: Neutral
+	Actor38: tc01
+		Location: 84,90
+		Owner: Neutral
+	Actor39: t16
+		Location: 83,91
+		Owner: Neutral
+	Actor40: tc02
+		Location: 18,101
+		Owner: Neutral
+	Actor41: tc01
+		Location: 17,107
+		Owner: Neutral
+	Actor42: t16
+		Location: 15,95
+		Owner: Neutral
+	Actor43: tc04
+		Location: 17,16
+		Owner: Neutral
+	Actor44: tc01
+		Location: 42,28
+		Owner: Neutral
+	Actor45: tc05
+		Location: 79,31
+		Owner: Neutral
+	Actor46: tc03
+		Location: 109,15
+		Owner: Neutral
+	Actor47: tc02
+		Location: 107,15
+		Owner: Neutral
+	Actor48: tc02
+		Location: 105,33
+		Owner: Neutral
+	Actor49: tc02
+		Location: 104,32
+		Owner: Neutral
+	Actor50: tc04
+		Location: 45,85
+		Owner: Neutral
+	Actor51: tc05
+		Location: 75,97
+		Owner: Neutral
+	Actor52: t16
+		Location: 76,99
+		Owner: Neutral
+	Actor53: tc01
+		Location: 88,89
+		Owner: Neutral
+	Actor54: tc02
+		Location: 35,91
+		Owner: Neutral
+	Actor55: tc01
+		Location: 39,31
+		Owner: Neutral
+	Actor56: tc03
+		Location: 14,59
+		Owner: Neutral
+	Actor57: tc02
+		Location: 15,57
+		Owner: Neutral
+	Actor58: tc01
+		Location: 21,14
+		Owner: Neutral
+	Actor59: mine
+		Location: 74,62
+		Owner: Neutral
+	Actor60: mine
+		Location: 43,21
+		Owner: Neutral
+	Actor61: tc02
+		Location: 36,109
+		Owner: Neutral
+	Actor62: tc01
+		Location: 109,44
+		Owner: Neutral
+	Actor63: tc02
+		Location: 98,38
+		Owner: Neutral
+	Actor64: tc03
+		Location: 72,69
+		Owner: Neutral
+	Actor65: tc01
+		Location: 89,14
+		Owner: Neutral
+	Actor66: tc04
+		Location: 81,47
+		Owner: Neutral
+	Actor67: tc01
+		Location: 100,94
+		Owner: Neutral
+	Actor68: tc02
+		Location: 102,86
+		Owner: Neutral
+	Actor69: tc05
+		Location: 89,54
+		Owner: Neutral
+	Actor70: tc01
+		Location: 89,53
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 26,102
+	spawn1: 88,24
+	spawn2: 90,97
+	spawn3: 26,23
+	spawn4: 63,88
+	spawn5: 59,53
+	spawn6: 29,61
+	spawn7: 104,51
+
+Smudges:
+
+Rules:
+

@@ -1,0 +1,202 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Crossing the River
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 32,32
+
+BottomRight: 96,96
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: v12
+		Location: 90,32
+		Owner: Neutral
+	Actor1: mine
+		Location: 41,71
+		Owner: Neutral
+	Actor2: mine
+		Location: 36,63
+		Owner: Neutral
+	Actor3: tc05
+		Location: 37,66
+		Owner: Neutral
+	Actor4: t15
+		Location: 41,65
+		Owner: Neutral
+	Actor5: tc04
+		Location: 87,64
+		Owner: Neutral
+	Actor6: tc01
+		Location: 91,66
+		Owner: Neutral
+	Actor7: t02
+		Location: 92,65
+		Owner: Neutral
+	Actor8: mine
+		Location: 92,63
+		Owner: Neutral
+	Actor9: mine
+		Location: 87,69
+		Owner: Neutral
+	Actor10: t03
+		Location: 38,91
+		Owner: Neutral
+	Actor11: t10
+		Location: 40,93
+		Owner: Neutral
+	Actor12: mine
+		Location: 36,83
+		Owner: Neutral
+	Actor13: mine
+		Location: 53,78
+		Owner: Neutral
+	Actor14: mine
+		Location: 48,88
+		Owner: Neutral
+	Actor15: t10
+		Location: 73,83
+		Owner: Neutral
+	Actor16: t03
+		Location: 72,82
+		Owner: Neutral
+	Actor17: t13
+		Location: 70,83
+		Owner: Neutral
+	Actor18: mine
+		Location: 34,34
+		Owner: Neutral
+	Actor19: mine
+		Location: 93,93
+		Owner: Neutral
+	Actor20: tc02
+		Location: 77,91
+		Owner: Neutral
+	Actor21: t01
+		Location: 80,92
+		Owner: Neutral
+	Actor22: t06
+		Location: 82,94
+		Owner: Neutral
+	Actor23: t06
+		Location: 83,93
+		Owner: Neutral
+	Actor24: tc03
+		Location: 49,32
+		Owner: Neutral
+	Actor25: t08
+		Location: 51,32
+		Owner: Neutral
+	Actor26: t08
+		Location: 48,33
+		Owner: Neutral
+	Actor27: t08
+		Location: 47,32
+		Owner: Neutral
+	Actor28: t05
+		Location: 46,32
+		Owner: Neutral
+	Actor29: t02
+		Location: 51,34
+		Owner: Neutral
+	Actor30: t10
+		Location: 39,42
+		Owner: Neutral
+	Actor31: t11
+		Location: 37,44
+		Owner: Neutral
+	Actor32: t12
+		Location: 37,42
+		Owner: Neutral
+	Actor33: t12
+		Location: 39,43
+		Owner: Neutral
+	Actor34: t13
+		Location: 43,41
+		Owner: Neutral
+	Actor35: t15
+		Location: 35,43
+		Owner: Neutral
+	Actor36: t03
+		Location: 34,44
+		Owner: Neutral
+	Actor37: t03
+		Location: 42,40
+		Owner: Neutral
+	Actor38: t13
+		Location: 88,34
+		Owner: Neutral
+	Actor39: mine
+		Location: 93,45
+		Owner: Neutral
+	Actor40: mine
+		Location: 75,46
+		Owner: Neutral
+	Actor41: mine
+		Location: 85,55
+		Owner: Neutral
+	Actor42: t13
+		Location: 86,43
+		Owner: Neutral
+	Actor43: t10
+		Location: 87,45
+		Owner: Neutral
+	Actor44: tc04
+		Location: 79,45
+		Owner: Neutral
+	Actor45: t07
+		Location: 81,49
+		Owner: Neutral
+	Actor46: t08
+		Location: 80,51
+		Owner: Neutral
+	Actor47: t08
+		Location: 78,52
+		Owner: Neutral
+	Actor48: tc02
+		Location: 72,51
+		Owner: Neutral
+	Actor49: tc01
+		Location: 48,75
+		Owner: Neutral
+	Actor50: t17
+		Location: 43,77
+		Owner: Neutral
+	Actor51: t03
+		Location: 45,75
+		Owner: Neutral
+	Actor52: t12
+		Location: 45,80
+		Owner: Neutral
+	Actor53: t12
+		Location: 47,81
+		Owner: Neutral
+
+Waypoints:
+	wp0: 44,55
+	spawn5: 91,76
+	wp2: 87,83
+	wp1: 46,48
+
+Smudges:
+
+Rules:
+

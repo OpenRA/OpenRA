@@ -1,6 +1,6 @@
 Selectable: True
 
-MapFormat: 2
+MapFormat: 3
 
 Title: Snowy Ridge
 
@@ -25,166 +25,104 @@ Players:
 		Race: allies
 		OwnsWorld: True
 		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
 
 Actors:
-	ActorReference@Actor0:
-		Id: Actor0
-		Type: tc02
+	Actor0: tc02
 		Location: 25,39
 		Owner: Neutral
-	ActorReference@Actor1:
-		Id: Actor1
-		Type: tc01
+	Actor1: tc01
 		Location: 26,40
 		Owner: Neutral
-	ActorReference@Actor2:
-		Id: Actor2
-		Type: tc01
+	Actor2: tc01
 		Location: 27,39
 		Owner: Neutral
-	ActorReference@Actor3:
-		Id: Actor3
-		Type: tc05
+	Actor3: tc05
 		Location: 30,40
 		Owner: Neutral
-	ActorReference@Actor4:
-		Id: Actor4
-		Type: tc04
+	Actor4: tc04
 		Location: 37,39
 		Owner: Neutral
-	ActorReference@Actor5:
-		Id: Actor5
-		Type: tc04
+	Actor5: tc04
 		Location: 39,37
 		Owner: Neutral
-	ActorReference@Actor6:
-		Id: Actor6
-		Type: tc04
+	Actor6: tc04
 		Location: 41,35
 		Owner: Neutral
-	ActorReference@Actor7:
-		Id: Actor7
-		Type: t01
+	Actor7: t01
 		Location: 42,33
 		Owner: Neutral
-	ActorReference@Actor8:
-		Id: Actor8
-		Type: t01
+	Actor8: t01
 		Location: 50,24
 		Owner: Neutral
-	ActorReference@Actor9:
-		Id: Actor9
-		Type: t05
+	Actor9: t05
 		Location: 49,25
 		Owner: Neutral
-	ActorReference@Actor10:
-		Id: Actor10
-		Type: t08
+	Actor10: t08
 		Location: 45,29
 		Owner: Neutral
-	ActorReference@Actor11:
-		Id: Actor11
-		Type: tc04
+	Actor11: tc04
 		Location: 43,49
 		Owner: Neutral
-	ActorReference@Actor12:
-		Id: Actor12
-		Type: tc01
+	Actor12: tc01
 		Location: 45,51
 		Owner: Neutral
-	ActorReference@Actor13:
-		Id: Actor13
-		Type: tc01
+	Actor13: tc01
 		Location: 48,52
 		Owner: Neutral
-	ActorReference@Actor14:
-		Id: Actor14
-		Type: t03
+	Actor14: t03
 		Location: 40,42
 		Owner: Neutral
-	ActorReference@Actor15:
-		Id: Actor15
-		Type: t03
+	Actor15: t03
 		Location: 35,40
 		Owner: Neutral
-	ActorReference@Actor16:
-		Id: Actor16
-		Type: tc04
+	Actor16: tc04
 		Location: 57,57
 		Owner: Neutral
-	ActorReference@Actor17:
-		Id: Actor17
-		Type: tc02
+	Actor17: tc02
 		Location: 58,19
 		Owner: Neutral
-	ActorReference@Actor18:
-		Id: Actor18
-		Type: tc01
+	Actor18: tc01
 		Location: 21,19
 		Owner: Neutral
-	ActorReference@Actor19:
-		Id: Actor19
-		Type: tc02
+	Actor19: tc02
 		Location: 19,20
 		Owner: Neutral
-	ActorReference@Actor20:
-		Id: Actor20
-		Type: t08
+	Actor20: t08
 		Location: 16,22
 		Owner: Neutral
-	ActorReference@Actor21:
-		Id: Actor21
-		Type: v12
+	Actor21: v12
 		Location: 18,22
 		Owner: Neutral
-	ActorReference@Actor22:
-		Id: Actor22
-		Type: t05
+	Actor22: t05
 		Location: 18,55
 		Owner: Neutral
-	ActorReference@Actor23:
-		Id: Actor23
-		Type: tc02
+	Actor23: tc02
 		Location: 16,54
 		Owner: Neutral
-	ActorReference@Actor24:
-		Id: Actor24
-		Type: t16
+	Actor24: t16
 		Location: 29,39
 		Owner: Neutral
-	ActorReference@Actor25:
-		Id: Actor25
-		Type: t16
+	Actor25: t16
 		Location: 21,56
 		Owner: Neutral
-	ActorReference@Actor26:
-		Id: Actor26
-		Type: mine
+	Actor26: mine
 		Location: 33,45
 		Owner: Neutral
-	ActorReference@Actor27:
-		Id: Actor27
-		Type: mine
+	Actor27: mine
 		Location: 36,45
 		Owner: Neutral
-	ActorReference@Actor28:
-		Id: Actor28
-		Type: mine
+	Actor28: mine
 		Location: 44,43
 		Owner: Neutral
-	ActorReference@Actor29:
-		Id: Actor29
-		Type: mine
+	Actor29: mine
 		Location: 45,40
 		Owner: Neutral
-	ActorReference@Actor30:
-		Id: Actor30
-		Type: mine
+	Actor30: mine
 		Location: 37,34
 		Owner: Neutral
-	ActorReference@Actor31:
-		Id: Actor31
-		Type: mine
+	Actor31: mine
 		Location: 35,37
 		Owner: Neutral
 

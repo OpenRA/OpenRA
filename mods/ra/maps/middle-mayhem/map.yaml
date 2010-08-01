@@ -1,0 +1,145 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Middle Mayhem
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 27,26
+
+BottomRight: 102,91
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: tc05
+		Location: 62,58
+		Owner: Neutral
+	Actor1: tc04
+		Location: 64,63
+		Owner: Neutral
+	Actor2: tc03
+		Location: 73,60
+		Owner: Neutral
+	Actor3: tc03
+		Location: 55,48
+		Owner: Neutral
+	Actor4: tc01
+		Location: 58,51
+		Owner: Neutral
+	Actor5: tc01
+		Location: 54,68
+		Owner: Neutral
+	Actor6: t17
+		Location: 60,68
+		Owner: Neutral
+	Actor7: tc02
+		Location: 48,57
+		Owner: Neutral
+	Actor8: tc05
+		Location: 68,63
+		Owner: Neutral
+	Actor9: t16
+		Location: 71,63
+		Owner: Neutral
+	Actor10: t16
+		Location: 70,55
+		Owner: Neutral
+	Actor11: tc01
+		Location: 83,57
+		Owner: Neutral
+	Actor12: tc02
+		Location: 62,54
+		Owner: Neutral
+	Actor13: t08
+		Location: 62,56
+		Owner: Neutral
+	Actor14: t01
+		Location: 49,80
+		Owner: Neutral
+	Actor15: tc04
+		Location: 50,81
+		Owner: Neutral
+	Actor16: t16
+		Location: 53,82
+		Owner: Neutral
+	Actor17: tc02
+		Location: 42,79
+		Owner: Neutral
+	Actor18: tc03
+		Location: 27,26
+		Owner: Neutral
+	Actor19: t01
+		Location: 29,48
+		Owner: Neutral
+	Actor20: t02
+		Location: 31,50
+		Owner: Neutral
+	Actor21: t03
+		Location: 32,59
+		Owner: Neutral
+	Actor22: tc05
+		Location: 56,88
+		Owner: Neutral
+	Actor23: tc03
+		Location: 54,89
+		Owner: Neutral
+	Actor24: t16
+		Location: 56,89
+		Owner: Neutral
+	Actor25: t15
+		Location: 52,89
+		Owner: Neutral
+	Actor26: t14
+		Location: 64,78
+		Owner: Neutral
+	Actor27: tc01
+		Location: 27,44
+		Owner: Neutral
+	Actor28: tc01
+		Location: 45,39
+		Owner: Neutral
+	Actor29: t17
+		Location: 76,26
+		Owner: Neutral
+	Actor30: mine
+		Location: 68,53
+		Owner: Neutral
+	Actor31: mine
+		Location: 54,57
+		Owner: Neutral
+	Actor32: mine
+		Location: 53,65
+		Owner: Neutral
+	Actor33: mine
+		Location: 65,68
+		Owner: Neutral
+	Actor34: mine
+		Location: 80,61
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 34,84
+	spawn1: 35,34
+	wp0: 95,34
+	wp1: 94,83
+
+Smudges:
+
+Rules:
+

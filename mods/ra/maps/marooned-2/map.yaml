@@ -1,0 +1,252 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Marooned II
+
+Author: Westwood Studios
+
+PlayerCount: 6
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: mine
+		Location: 63,74
+		Owner: Neutral
+	Actor1: mine
+		Location: 92,30
+		Owner: Neutral
+	Actor2: mine
+		Location: 81,25
+		Owner: Neutral
+	Actor3: mine
+		Location: 43,28
+		Owner: Neutral
+	Actor4: mine
+		Location: 40,72
+		Owner: Neutral
+	Actor5: mine
+		Location: 97,76
+		Owner: Neutral
+	Actor6: mine
+		Location: 26,63
+		Owner: Neutral
+	Actor7: mine
+		Location: 50,46
+		Owner: Neutral
+	Actor8: mine
+		Location: 64,90
+		Owner: Neutral
+	Actor9: mine
+		Location: 44,99
+		Owner: Neutral
+	Actor10: tc04
+		Location: 80,78
+		Owner: Neutral
+	Actor11: tc03
+		Location: 78,85
+		Owner: Neutral
+	Actor12: tc01
+		Location: 83,87
+		Owner: Neutral
+	Actor13: t17
+		Location: 66,88
+		Owner: Neutral
+	Actor14: t16
+		Location: 57,79
+		Owner: Neutral
+	Actor15: t15
+		Location: 60,69
+		Owner: Neutral
+	Actor16: t14
+		Location: 65,80
+		Owner: Neutral
+	Actor17: t13
+		Location: 62,92
+		Owner: Neutral
+	Actor18: t11
+		Location: 85,101
+		Owner: Neutral
+	Actor19: t08
+		Location: 87,100
+		Owner: Neutral
+	Actor20: t08
+		Location: 97,40
+		Owner: Neutral
+	Actor21: t11
+		Location: 98,39
+		Owner: Neutral
+	Actor22: t08
+		Location: 100,41
+		Owner: Neutral
+	Actor23: t07
+		Location: 96,35
+		Owner: Neutral
+	Actor24: t06
+		Location: 85,37
+		Owner: Neutral
+	Actor25: t02
+		Location: 83,47
+		Owner: Neutral
+	Actor26: t01
+		Location: 54,33
+		Owner: Neutral
+	Actor27: t03
+		Location: 43,47
+		Owner: Neutral
+	Actor28: tc02
+		Location: 51,28
+		Owner: Neutral
+	Actor29: tc01
+		Location: 37,25
+		Owner: Neutral
+	Actor30: t17
+		Location: 31,26
+		Owner: Neutral
+	Actor31: t15
+		Location: 32,65
+		Owner: Neutral
+	Actor32: t14
+		Location: 37,64
+		Owner: Neutral
+	Actor33: t13
+		Location: 62,83
+		Owner: Neutral
+	Actor34: t11
+		Location: 90,70
+		Owner: Neutral
+	Actor35: t10
+		Location: 74,65
+		Owner: Neutral
+	Actor36: tc01
+		Location: 81,21
+		Owner: Neutral
+	Actor37: t17
+		Location: 96,27
+		Owner: Neutral
+	Actor38: tc05
+		Location: 45,55
+		Owner: Neutral
+	Actor39: tc04
+		Location: 35,58
+		Owner: Neutral
+	Actor40: t16
+		Location: 46,61
+		Owner: Neutral
+	Actor41: t13
+		Location: 45,50
+		Owner: Neutral
+	Actor42: t12
+		Location: 43,39
+		Owner: Neutral
+	Actor43: tc02
+		Location: 68,36
+		Owner: Neutral
+	Actor44: t07
+		Location: 72,72
+		Owner: Neutral
+	Actor45: t06
+		Location: 42,58
+		Owner: Neutral
+	Actor46: t06
+		Location: 22,63
+		Owner: Neutral
+	Actor47: t10
+		Location: 22,56
+		Owner: Neutral
+	Actor48: t08
+		Location: 34,82
+		Owner: Neutral
+	Actor49: tc04
+		Location: 54,101
+		Owner: Neutral
+	Actor50: tc01
+		Location: 61,47
+		Owner: Neutral
+	Actor51: t17
+		Location: 57,32
+		Owner: Neutral
+	Actor52: tc01
+		Location: 81,36
+		Owner: Neutral
+	Actor53: t16
+		Location: 87,52
+		Owner: Neutral
+	Actor54: t16
+		Location: 102,48
+		Owner: Neutral
+	Actor55: t15
+		Location: 94,60
+		Owner: Neutral
+	Actor56: tc02
+		Location: 103,76
+		Owner: Neutral
+	Actor57: t16
+		Location: 96,85
+		Owner: Neutral
+	Actor58: tc04
+		Location: 95,84
+		Owner: Neutral
+	Actor59: tc05
+		Location: 86,39
+		Owner: Neutral
+	Actor60: tc04
+		Location: 49,21
+		Owner: Neutral
+	Actor61: tc01
+		Location: 45,40
+		Owner: Neutral
+	Actor62: t16
+		Location: 27,52
+		Owner: Neutral
+	Actor63: tc02
+		Location: 72,103
+		Owner: Neutral
+	Actor64: t16
+		Location: 81,102
+		Owner: Neutral
+	Actor65: t17
+		Location: 78,57
+		Owner: Neutral
+	Actor66: tc01
+		Location: 37,75
+		Owner: Neutral
+	Actor67: tc01
+		Location: 61,41
+		Owner: Neutral
+	Actor68: t16
+		Location: 79,42
+		Owner: Neutral
+	Actor69: tc04
+		Location: 98,56
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 94,47
+	spawn1: 81,94
+	spawn2: 36,42
+	spawn3: 35,92
+	spawn4: 64,27
+	spawn5: 80,72
+
+Smudges:
+
+Rules:
+

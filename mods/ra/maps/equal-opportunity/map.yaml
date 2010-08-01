@@ -1,0 +1,128 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Equal Opportunity
+
+Author: Westwood Studios
+
+PlayerCount: 5
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 28,26
+
+BottomRight: 99,97
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+
+Actors:
+	Actor0: sbag
+		Location: 61,96
+		Owner: Neutral
+	Actor1: tc03
+		Location: 38,66
+		Owner: Neutral
+	Actor2: tc03
+		Location: 55,35
+		Owner: Neutral
+	Actor3: tc02
+		Location: 45,37
+		Owner: Neutral
+	Actor4: tc03
+		Location: 71,71
+		Owner: Neutral
+	Actor5: tc02
+		Location: 72,72
+		Owner: Neutral
+	Actor6: t01
+		Location: 61,62
+		Owner: Neutral
+	Actor7: t03
+		Location: 67,77
+		Owner: Neutral
+	Actor8: t06
+		Location: 53,87
+		Owner: Neutral
+	Actor9: t10
+		Location: 62,70
+		Owner: Neutral
+	Actor10: t02
+		Location: 66,51
+		Owner: Neutral
+	Actor11: t05
+		Location: 71,57
+		Owner: Neutral
+	Actor12: tc01
+		Location: 76,47
+		Owner: Neutral
+	Actor13: t07
+		Location: 81,53
+		Owner: Neutral
+	Actor14: t12
+		Location: 73,54
+		Owner: Neutral
+	Actor15: t06
+		Location: 69,56
+		Owner: Neutral
+	Actor16: t11
+		Location: 39,84
+		Owner: Neutral
+	Actor17: t14
+		Location: 77,32
+		Owner: Neutral
+	Actor18: t12
+		Location: 69,43
+		Owner: Neutral
+	Actor19: tc02
+		Location: 62,52
+		Owner: Neutral
+	Actor20: tc03
+		Location: 74,86
+		Owner: Neutral
+	Actor21: tc05
+		Location: 76,62
+		Owner: Neutral
+	Actor22: tc04
+		Location: 48,62
+		Owner: Neutral
+	Actor23: mine
+		Location: 40,45
+		Owner: Neutral
+	Actor24: mine
+		Location: 89,85
+		Owner: Neutral
+	Actor25: mine
+		Location: 75,64
+		Owner: Neutral
+	Actor26: mine
+		Location: 46,64
+		Owner: Neutral
+	Actor27: mine
+		Location: 87,37
+		Owner: Neutral
+	Actor28: mine
+		Location: 49,87
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 46,43
+	spawn1: 80,80
+	spawn2: 77,39
+	spawn3: 47,81
+	spawn4: 47,81
+
+Smudges:
+
+Rules:
+
