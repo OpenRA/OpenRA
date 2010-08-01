@@ -425,6 +425,9 @@ namespace OpenRA.Editor
 
 					var map = LegacyMapImporter.Import(ofd.FileName);
 					map.Package = new Folder(savePath);
+					map.Players.Add("Neutral", new PlayerReference("Neutral", 
+						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+					
 					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
