@@ -15,6 +15,8 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Thirdparty;
+using System;
+using System.Diagnostics;
 
 namespace OpenRA.Editor
 {
@@ -252,7 +254,7 @@ namespace OpenRA.Editor
 			Map.Actors[id] = new ActorReference(id,Actor.Info.Name.ToLowerInvariant(), GetBrushLocation(), owner);
 		}
 
-		Random r = new Random();
+		System.Random r = new System.Random();
 		void DrawWithResource()
 		{
 			Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y]
@@ -288,10 +290,11 @@ namespace OpenRA.Editor
 
 		Bitmap RenderChunk(int u, int v)
 		{
+
 			var bitmap = new Bitmap(ChunkSize * 24, ChunkSize * 24);
 			bitmap.SetPixel(0, 0, Color.Green);
 
-			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), 
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
 			unsafe
@@ -308,7 +311,7 @@ namespace OpenRA.Editor
 						var rawImage = tile.TileBitmapBytes[index];
 						for (var x = 0; x < 24; x++)
 							for (var y = 0; y < 24; y++)
-								p[ (j * 24 + y) * stride + i * 24 + x ] = Palette.GetColor(rawImage[x + 24 * y]).ToArgb();
+								p[(j * 24 + y) * stride + i * 24 + x] = Palette.GetColor(rawImage[x + 24 * y]).ToArgb();
 
 						if (Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type != 0)
 						{

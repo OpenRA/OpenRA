@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -16,9 +16,9 @@ using System.Text;
 using OpenRA;
 using OpenRA.FileFormats;
 
-namespace MapConverter
+namespace OpenRA.Editor
 {
-	public class MapConverter
+	public class LegacyMapImporter
 	{
 		// Mapping from ra overlay index to type string
 		static string[] raOverlayNames =
@@ -84,14 +84,14 @@ namespace MapConverter
 		int ActorCount = 0;
 		Map Map = new Map();
 
-		MapConverter(string filename)
+		LegacyMapImporter(string filename)
 		{
 			ConvertIniMap(filename);
 		}
 
 		public static Map Import(string filename)
 		{
-			var converter = new MapConverter(filename);
+			var converter = new LegacyMapImporter(filename);
 			return converter.Map;
 		}
 

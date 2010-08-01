@@ -58,6 +58,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="LegacyMapImporter.cs" />
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>
     </Compile>

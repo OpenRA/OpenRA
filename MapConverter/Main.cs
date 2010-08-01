@@ -31,8 +31,9 @@ namespace MapConverter
 
 			Game.InitializeEngineWithMods(mods);
 			var map = MapConverter.Import(inputFile);
-
+			
 			Directory.CreateDirectory(outputPath);
+			map.Package = new Folder(outputPath);
 			map.Save(outputPath);
 		}
 	}
