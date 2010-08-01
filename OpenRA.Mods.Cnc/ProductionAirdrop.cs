@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Cnc
 				cargo.Load(a, newUnit);
 				
 				a.CancelActivity();
-				
-				a.QueueActivity(new Land(self));
+
+				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
 				{
 					if (self.IsDead())

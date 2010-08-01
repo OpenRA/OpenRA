@@ -16,26 +16,21 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Land : IActivity
 	{
-		readonly float2 Pos;
 		bool isCanceled;
-		Actor Structure;
-		
-		public Land(float2 pos) { Pos = pos; }
-		public Land(Actor structure) { Structure = structure; Pos = Structure.CenterLocation; }
+		Target Target;
+
+		public Land(Target t) { Target = t; }
 		
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (Structure != null && Structure.IsDead())
-			{
-				Structure = null;
-				isCanceled = true;
-			}
+			if (!Target.IsValid)
+				Cancel(self);
 			
 			if (isCanceled) return NextActivity;
 
-			var d = Pos - self.CenterLocation;
+			var d = Target.CenterLocation - self.CenterLocation;
 			if (d.LengthSquared < 50)		/* close enough */
 				return NextActivity;
 

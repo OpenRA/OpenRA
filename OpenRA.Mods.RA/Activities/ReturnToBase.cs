@@ -23,7 +23,6 @@ namespace OpenRA.Mods.RA.Activities
 		Actor dest;
 
 		float2 w1, w2, w3;	/* tangent points to turn circles */
-		float2 landPoint;
 
 		public static Actor ChooseAirfield(Actor self)
 		{
@@ -79,7 +78,6 @@ namespace OpenRA.Mods.RA.Activities
 			w1 = c1 + f;
 			w2 = c2 + f;
 			w3 = approachStart;
-			landPoint = landPos;
 
 			isCalculated = true;
 		}
@@ -99,7 +97,7 @@ namespace OpenRA.Mods.RA.Activities
 				new Fly(w1),
 				new Fly(w2),
 				new Fly(w3),
-				new Land(landPoint),
+				new Land(Target.FromActor(dest)),
 				NextActivity);
 		}
 
