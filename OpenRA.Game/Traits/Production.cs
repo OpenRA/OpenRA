@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using System.Drawing;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -55,8 +56,11 @@ namespace OpenRA.Traits
 			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
 				return false;
 
-			var newUnit = self.World.CreateActor( producee.Name, location.Value, self.Owner );
-			newUnit.traits.Get<IFacing>().Facing = CreationFacing( self, newUnit ); ;
+			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
+			{
+				new LocationInit( location.Value ),
+				new OwnerInit( self.Owner ),
+			});
 
 			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();

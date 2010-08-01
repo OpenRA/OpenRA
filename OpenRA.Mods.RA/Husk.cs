@@ -27,12 +27,13 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public int Facing { get; set; }
 		public int ROT { get { return 0; } }
-		public int InitialFacing { get { return 0; } }
+		public int InitialFacing { get { return 128; } }
 
 		public Husk(ActorInitializer init)
 		{
 			this.self = init.self;
 			this.location = init.Get<LocationInit,int2>();
+			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
 			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
 		}
 

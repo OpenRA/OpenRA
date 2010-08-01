@@ -42,6 +42,8 @@ namespace OpenRA.Mods.RA
 		public Aircraft( ActorInitializer init , AircraftInfo info)
 		{
 			this.Location = init.Get<LocationInit,int2>();
+			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
+			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
 			Info = info;
 		}
 

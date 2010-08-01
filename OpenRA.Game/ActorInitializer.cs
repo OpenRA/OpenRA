@@ -36,15 +36,55 @@ namespace OpenRA
 		{
 			return dict.Get<T>().Value( world );
 		}
+		
+		public bool Contains<T>()
+			where T : IActorInit
+		{
+			return dict.Contains<T>();
+		}
 	}
-
-	public interface IActorInit
-	{
-	}
+	
+	public interface IActorInit {}
 
 	public interface IActorInit<T> : IActorInit
 	{
 		T Value( World world );
+	}
+	
+	public class FacingInit : IActorInit<int>
+	{
+		[FieldFromYamlKey]
+		public readonly int value = 128;
+		
+		public FacingInit() { }
+		
+		public FacingInit( int init )
+		{
+			value = init;
+		}
+		
+		public int Value( World world )
+		{
+			return value;	
+		}
+	}
+	
+	public class AltitudeInit : IActorInit<int>
+	{
+		[FieldFromYamlKey]
+		public readonly int value = 0;
+		
+		public AltitudeInit() { }
+		
+		public AltitudeInit( int init )
+		{
+			value = init;
+		}
+		
+		public int Value( World world )
+		{
+			return value;	
+		}
 	}
 
 	public class LocationInit : IActorInit<int2>

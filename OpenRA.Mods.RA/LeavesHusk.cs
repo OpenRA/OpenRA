@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -26,10 +27,14 @@ namespace OpenRA.Mods.RA
 				self.World.AddFrameEndTask(w =>
 					{
 						var info = self.Info.Traits.Get<LeavesHuskInfo>();
-						var husk = w.CreateActor(info.HuskActor, self.Location, self.Owner);
-						husk.CenterLocation = self.CenterLocation;
-						husk.traits.Get<IFacing>().Facing = self.traits.Get<IFacing>().Facing;
 
+						var husk = w.CreateActor(info.HuskActor, new TypeDictionary 
+						{
+							new LocationInit( self.Location ),
+							new OwnerInit( self.Owner ),
+							new FacingInit( self.traits.Get<IFacing>().Facing ),
+						});
+	
 						var turreted = self.traits.GetOrDefault<Turreted>();
 						if (turreted != null)
 							foreach (var p in husk.traits.WithInterface<ThrowsParticle>())

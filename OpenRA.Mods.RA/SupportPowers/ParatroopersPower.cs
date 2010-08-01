@@ -11,6 +11,7 @@
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -57,13 +58,17 @@ namespace OpenRA.Mods.RA
 			var startPos = owner.World.ChooseRandomEdgeCell();
 			owner.World.AddFrameEndTask(w =>
 			{
-				var flareType = (Info as ParatroopersPowerInfo).FlareType;
-				var flare = flareType != null ? w.CreateActor(flareType, p, owner) : null;
+				var info = (Info as ParatroopersPowerInfo);
+				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, p, owner) : null;
 
-				var a = w.CreateActor((Info as ParatroopersPowerInfo).UnitType, startPos, owner);
-				a.traits.Get<IFacing>().Facing = Util.GetFacing(p - startPos, 0);
-				a.traits.Get<IMove>().Altitude = a.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-
+				var a = w.CreateActor(info.UnitType, new TypeDictionary 
+				{
+					new LocationInit( startPos ),
+					new OwnerInit( owner ),
+					new FacingInit( Util.GetFacing(p - startPos, 0) ),
+					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
+				});
+				
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));
 				a.traits.Get<ParaDrop>().SetLZ(p, flare);
