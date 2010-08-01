@@ -72,6 +72,12 @@ namespace OpenRA.Editor
 			// load the map
 			var map = new Map(new Folder(mapname));
 
+			// upgrade maps that have no player definitions. editor doesnt care,
+			// but this breaks the game pretty badly.
+			if (map.Players.Count == 0)
+				map.Players.Add("Neutral", new PlayerReference("Neutral",
+						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+
 			PrepareMapResources(manifest, map);
 
 			dirty = false;
