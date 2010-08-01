@@ -156,47 +156,39 @@ namespace OpenRA.Traits
 			production[group].Add(item);
 		}
 
+		static bool IsDisabledBuilding(Actor a)
+		{
+			var building = a.traits.GetOrDefault<Building>();
+			return building != null && building.Disabled;
+		}
+
 		void BuildUnit( string name )
 		{
 			var newUnitType = Rules.Info[ name ];
 			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
-			Actor producer = null;
 			
-			// Prioritise primary structure in build order
-			var primaryProducers = self.World.Queries.OwnedBy[self.Owner]
+			var producers = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<Production>()
-				.Where(x => producerTypes.Contains(x.Actor.Info)
-					&& x.Trait.IsPrimary);
-			
-			foreach (var p in primaryProducers)
+				.Where(x => producerTypes.Contains(x.Actor.Info))
+				.OrderByDescending(x => x.Trait.IsPrimary ? 1 : 0)	// prioritize the primary.
+				.ToArray();
+
+			if (producers.Length == 0)
 			{
-				// Ignore buildings that are disabled
-				if (p.Actor.traits.Contains<Building>() && p.Actor.traits.Get<Building>().Disabled)
-					continue;
-				producer = p.Actor;
-				break;
-			}
-			
-			// TODO: Be smart about disabled buildings. Units in progress should be paused(?)
-			// Ignore this for now
-			
-			// Pick the first available producer
-			if (producer == null)
-			{
-				producer = self.World.Queries.OwnedBy[self.Owner]
-					.Where( x => producerTypes.Contains( x.Info ) )
-					.FirstOrDefault();
-			}
-			
-			// Something went wrong somewhere...
-			if( producer == null )
-			{
-				CancelProduction( name );
+				CancelProduction(name);
 				return;
 			}
+			
+			foreach (var p in producers)
+			{
+				if (IsDisabledBuilding(p.Actor)) continue;
 
-			if( producer.traits.WithInterface<Production>().Any( p => p.Produce( producer, newUnitType ) ) )
-				FinishProduction( newUnitType.Category );
+				if (p.Trait.Produce(p.Actor, newUnitType))
+				{
+					FinishProduction(newUnitType.Category);
+					break;
+				}
+			}
 		}
 	}
 
