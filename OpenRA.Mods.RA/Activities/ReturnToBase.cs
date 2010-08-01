@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			return self.World.Queries.OwnedBy[self.Owner]
 				.Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Info.Name)
 					&& !Reservable.IsReserved(a))
+				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
 				.FirstOrDefault();
 		}
 
