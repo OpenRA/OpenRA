@@ -88,6 +88,14 @@ namespace OpenRA
 			Author = "Your name here";
 		}
 
+		class Format2ActorReference
+		{
+			public string Id;
+			public string Type;
+			public int2 Location;
+			public string Owner;
+		}
+
 		public Map(IFolder package)
 		{
 			Package = package;
@@ -102,40 +110,65 @@ namespace OpenRA
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
 			}
-			
-			// Players
-			if (MapFormat == 1)
+
+			// Players & Actors -- this has changed several times.
+			//	- Be backwards compatible wherever possible.
+			//	- Loading a map then saving it out upgrades to latest.
+			// Minimum criteria for dropping a format:
+			//	- There are no maps of this format left in tree
+
+			switch (MapFormat)
 			{
-				Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
-			}
-			else
-			{
-				foreach (var kv in yaml["Players"].Nodes)
-				{
-					var player = new PlayerReference(kv.Value);
-					Players.Add(player.Name, player);
-				}
-			}
-			
-			// Actors
-			if (MapFormat == 1)
-			{
-				int actors = 0;
-				foreach (var kv in yaml["Actors"].Nodes)
-				{
-					string[] vals = kv.Value.Value.Split(' ');
-					string[] loc = vals[2].Split(',');
-					Actors.Add( "Actor" + actors++, new ActorReference( vals[ 0 ] )
+				case 1:
 					{
-						new LocationInit( new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) ),
-						new OwnerInit( "Neutral" ),
-					} );
-				}
-			}
-			else
-			{
-				foreach( var kv in yaml[ "Actors" ].Nodes )
-					Actors.Add( kv.Key, new ActorReference( kv.Value.Value, kv.Value.Nodes ) );
+						Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
+
+						int actors = 0;
+						foreach (var kv in yaml["Actors"].Nodes)
+						{
+							string[] vals = kv.Value.Value.Split(' ');
+							string[] loc = vals[2].Split(',');
+							Actors.Add("Actor" + actors++, new ActorReference(vals[0])
+							{
+								new LocationInit( new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) ),
+								new OwnerInit( "Neutral" ),
+							});
+						}
+					} break;
+
+				case 2:
+					{
+						foreach (var kv in yaml["Players"].Nodes)
+						{
+							var player = new PlayerReference(kv.Value);
+							Players.Add(player.Name, player);
+						}
+
+						foreach (var kv in yaml["Actors"].Nodes)
+						{
+							var oldActorReference = FieldLoader.Load<Format2ActorReference>(kv.Value);
+							Actors.Add(oldActorReference.Id, new ActorReference(oldActorReference.Type)
+							{
+								new LocationInit( oldActorReference.Location ),
+								new OwnerInit( oldActorReference.Owner )
+							});
+						}
+					} break;
+
+				case 3:
+					{
+						foreach (var kv in yaml["Players"].Nodes)
+						{
+							var player = new PlayerReference(kv.Value);
+							Players.Add(player.Name, player);
+						}
+
+						foreach (var kv in yaml["Actors"].Nodes)
+							Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.Nodes));
+					} break;
+
+				default:
+					throw new InvalidDataException("Map format {0} is not supported.".F(MapFormat));
 			}
 
 			// Smudges
@@ -156,7 +189,7 @@ namespace OpenRA
 
 		public void Save(string filepath)
 		{
-			MapFormat = 2;
+			MapFormat = 3;
 			
 			var root = new Dictionary<string, MiniYaml>();
 			foreach (var field in SimpleFields)
