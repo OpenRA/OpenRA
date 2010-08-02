@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Render
 
 		bool ChooseMoveAnim(Actor self)
 		{
-			if (!(self.GetCurrentActivity() is Move))
+			if (!(self.GetCurrentActivity() is Move) && !(self.GetCurrentActivity() is Drag)) // A bit of a hack
 				return false;
 
 			var mobile = self.traits.Get<Mobile>();

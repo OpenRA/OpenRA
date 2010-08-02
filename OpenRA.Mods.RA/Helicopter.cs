@@ -104,9 +104,8 @@ namespace OpenRA.Mods.RA
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var productionInfo = order.TargetActor.Info.Traits.GetOrDefault<ProductionInfo>();
-				var offset = productionInfo != null ? productionInfo.SpawnOffset : null;
-				var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
+				var pi = order.TargetActor.traits.Get<Production>();
+				var offset = pi != null ? pi.Spawns.First().Key : float2.Zero;
 				
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -118,7 +117,7 @@ namespace OpenRA.Mods.RA
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offsetVec));
+				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offset));
 				self.QueueActivity(new Turn(Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(Info.RearmBuildings.Contains(order.TargetActor.Info.Name)

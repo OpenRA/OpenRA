@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Traits.Activities
 {
 	public class Drag : IActivity
 	{

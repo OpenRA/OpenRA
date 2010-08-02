@@ -16,86 +16,98 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class ProductionInfo : TraitInfo<Production>
+	public class ProductionInfo : ITraitInfo
 	{
-		public readonly int[] SpawnOffset = null;
-		public readonly int[] ProductionOffset = null;
-		public readonly int[] ExitOffset = null;
+		public readonly float[] SpawnOffsets; // in px relative to CenterLocation
+		public readonly int[] ExitCells; // in cells relative to TopLeft, supports a list for multiple exits
 		public readonly bool EnablePrimary = true;
 		public readonly string[] Produces = { };
+		
+		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
 
 	public class Production : IIssueOrder, IResolveOrder, ITags, IOrderCursor
 	{	
-		public virtual int2? CreationLocation( Actor self, ActorInfo producee )
+		public readonly Dictionary<float2, int2> Spawns = new Dictionary<float2, int2>();
+		public Production(ProductionInfo info)
 		{
-			var pos = Util.CellContaining(self.CenterLocation);
-			var pi = self.Info.Traits.Get<ProductionInfo>();
-			if (pi.ProductionOffset != null)
-				pos += pi.ProductionOffset.AsInt2();
-			return pos;
-		}
-
-		public virtual int2? ExitLocation(Actor self, ActorInfo producee)
-		{
-			var pos = Util.CellContaining(self.CenterLocation);
-			var pi = self.Info.Traits.Get<ProductionInfo>();
-			if (pi.ExitOffset != null)
-				pos += pi.ExitOffset.AsInt2();
-			return pos;
+			if (info.SpawnOffsets == null || info.ExitCells == null)
+				return;
+			
+			if (info.SpawnOffsets.Length != info.ExitCells.Length)
+				throw new System.InvalidOperationException("SpawnOffset, ExitCells length mismatch");
+			
+			for (int i = 0; i < info.ExitCells.Length; i+=2)
+				Spawns.Add(new float2(info.SpawnOffsets[i],info.SpawnOffsets[i+1]), new int2(info.ExitCells[i], info.ExitCells[i+1]));
 		}
 		
-		public virtual int CreationFacing( Actor self, Actor newUnit )
-		{
-			return newUnit.traits.Get<IFacing>().InitialFacing;
-		}
-
 		public virtual bool Produce( Actor self, ActorInfo producee )
-		{
-			var location = CreationLocation( self, producee );
-			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
-				return false;
-
-			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
+		{			
+			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
 			{
-				new LocationInit( location.Value ),
 				new OwnerInit( self.Owner ),
 			});
-
-			var pi = self.Info.Traits.Get<ProductionInfo>();
-			var rp = self.traits.GetOrDefault<RallyPoint>();
-			if (rp != null || pi.ExitOffset != null)
+			
+			// Todo: remove assumption on Mobile
+			var mobile = newUnit.traits.Get<Mobile>();
+	
+			// Pick an exit that we can move to
+			var exit = int2.Zero;
+			var spawn = float2.Zero;
+			var success = false;
+			
+			// Pick a spawn/exit point
+			// Todo: Reorder in a synced random way
+			foreach (var s in Spawns)
 			{
-				var mobile = newUnit.traits.GetOrDefault<Mobile>();
-				if (mobile != null)
+				exit = self.Location + s.Value;
+				spawn = self.CenterLocation + s.Key;
+				if (mobile.CanEnterCell(exit,self,true))
 				{
-					int2? target = null;
-					if (pi.ExitOffset != null)
-					{
-						target = ExitLocation(self, producee).Value;
-						newUnit.QueueActivity(new Activities.Move(target.Value, 1));
-					}
-
-					if (rp != null)
-					{
-						target = rp.rallyPoint;
-						newUnit.QueueActivity(new Activities.Move(target.Value, 1));
-					}
-					
-					if (target != null && newUnit.Owner == self.World.LocalPlayer)
-					{
-						self.World.AddFrameEndTask(w =>
-						{
-							var line = newUnit.traits.GetOrDefault<DrawLineToTarget>();
-							if (line != null)
-								line.SetTargetSilently(newUnit, Target.FromCell(target.Value), Color.Green);
-						});
-					}
+					success = true;
+					break;
 				}
 			}
+			
+			if (!success)
+			{
+				// Hack around mobile being a tard; remove from UIM (we shouldn't be there in the first place)
+				newUnit.traits.Get<Mobile>().RemoveInfluence();
+				return false;
+			}
+			
+			// Unit can be built; add to the world
+			self.World.Add(newUnit);
+			
+			// Set the physical position of the unit as the exit cell
+			mobile.SetPosition(newUnit,exit);
+			var to = Util.CenterOfCell(exit);
 
-			if (pi != null && pi.SpawnOffset != null)
-				newUnit.CenterLocation = self.CenterLocation + pi.SpawnOffset.AsInt2();
+			// Animate the spawn -> exit transition
+			newUnit.CenterLocation = spawn;
+			mobile.Facing = Util.GetFacing(to - spawn, mobile.Facing);
+			var speed = mobile.MovementSpeedForCell(self, exit);
+			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
+			newUnit.QueueActivity(new Activities.Drag(spawn, to, length));
+			
+			// For the target line
+			var target = exit;
+			var rp = self.traits.GetOrDefault<RallyPoint>();
+			if (rp != null)
+			{
+				target = rp.rallyPoint;
+				newUnit.QueueActivity(new Activities.Move(target, 1));
+			}
+			
+			if (newUnit.Owner == self.World.LocalPlayer)
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					var line = newUnit.traits.GetOrDefault<DrawLineToTarget>();
+					if (line != null)
+						line.SetTargetSilently(newUnit, Target.FromCell(target), Color.Green);
+				});
+			}
 
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
 				t.UnitProduced(self, newUnit);

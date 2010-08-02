@@ -158,6 +158,8 @@ PYLE:
 	RallyPoint:
 	Production:
 		Produces: Infantry
+		SpawnOffsets: -10,2, 7,7
+		ExitCells: 0,1, 1,1
 
 HAND:
 	Inherits: ^Building
@@ -184,6 +186,8 @@ HAND:
 	RallyPoint:
 	Production:
 		Produces: Infantry
+		SpawnOffsets: 12,24
+		ExitCells:1,2
 
 AFLD:
 	Inherits: ^Building
@@ -237,7 +241,7 @@ WEAP:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
-		ExitOffset:-1,1
+#		ExitOffset:-1,1
 		Produces: Vehicle
 HQ:
 	RequiresPower:
@@ -335,7 +339,7 @@ HPAD:
 		Range: 5
 	Bib:
 	ProducesHelicopters:
-		SpawnOffset: 0,-4
+		SpawnOffsets: 0,-4
 		Produces: Plane
 	BelowUnits:
 	Reservable:

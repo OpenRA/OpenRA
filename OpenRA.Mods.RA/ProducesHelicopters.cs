@@ -17,25 +17,29 @@ namespace OpenRA.Mods.RA
 {
 	public class ProducesHelicoptersInfo : ProductionInfo
 	{
-		public override object Create(ActorInitializer init) { return new ProducesHelicopters(); }
+		public override object Create(ActorInitializer init) { return new ProducesHelicopters(this); }
 	}
 	
 	class ProducesHelicopters : Production
 	{
+		public ProducesHelicopters(ProducesHelicoptersInfo info) : base(info) {}
+		
+		/*
 		// Hack around visibility bullshit in Production
 		public override bool Produce( Actor self, ActorInfo producee )
 		{
 			var location = CreationLocation( self, producee );
 			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
 				return false;
-
+			
+			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
 			{
 				new LocationInit( location.Value ),
 				new OwnerInit( self.Owner ),
+				new FacingInit( pi.ProductionFacing ),
 			});
 			                                     
-			var pi = self.Info.Traits.Get<ProductionInfo>();
 			var rp = self.traits.GetOrDefault<RallyPoint>();
 			if( rp != null || pi.ExitOffset != null)
 			{
@@ -60,5 +64,6 @@ namespace OpenRA.Mods.RA
 
 			return true;
 		}
+		*/
 	}
 }

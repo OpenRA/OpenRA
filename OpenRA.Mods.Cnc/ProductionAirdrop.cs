@@ -21,11 +21,13 @@ namespace OpenRA.Mods.Cnc
 {
 	public class ProductionAirdropInfo : ProductionInfo
 	{
-		public override object Create(ActorInitializer init) { return new ProductionAirdrop(); }
+		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this); }
 	}
 	
 	class ProductionAirdrop : Production
 	{
+		public ProductionAirdrop(ProductionAirdropInfo info) : base(info) {}
+
 		public override bool Produce( Actor self, ActorInfo producee )
 		{
 			var owner = self.Owner;

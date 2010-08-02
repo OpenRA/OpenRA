@@ -220,6 +220,7 @@
     <Compile Include="Traits\Targetable.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\RepairableBuilding.cs" />
+    <Compile Include="Traits\Activities\Drag.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

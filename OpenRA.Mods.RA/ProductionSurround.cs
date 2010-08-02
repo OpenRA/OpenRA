@@ -16,11 +16,13 @@ namespace OpenRA.Mods.RA
 {
 	class ProductionSurroundInfo : ProductionInfo
 	{
-		public override object Create(ActorInitializer init) { return new ProductionSurround(); }
+		public override object Create(ActorInitializer init) { return new ProductionSurround(this); }
 	}
 
 	class ProductionSurround : Production
 	{
+		public ProductionSurround(ProductionSurroundInfo info) : base(info) {}
+		
 		static int2? FindAdjacentTile(Actor self, bool waterBound)
 		{
 			var tiles = Footprint.Tiles(self);
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 			return null;
 		}
-
+		/*
 		public override int2? CreationLocation(Actor self, ActorInfo producee)
 		{
 			return FindAdjacentTile(self, self.Info.Traits.Get<BuildingInfo>().WaterBound);
@@ -44,5 +46,6 @@ namespace OpenRA.Mods.RA
 		{
 			return Util.GetFacing(newUnit.CenterLocation - self.CenterLocation, 128);
 		}
+		*/
 	}
 }

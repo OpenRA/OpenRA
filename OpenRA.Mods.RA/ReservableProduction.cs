@@ -17,11 +17,13 @@ namespace OpenRA.Mods.RA
 
 	public class ReservableProductionInfo : ProductionInfo, ITraitPrerequisite<ReservableInfo>
 	{
-		public override object Create(ActorInitializer init) { return new ReservableProduction(); }
+		public override object Create(ActorInitializer init) { return new ReservableProduction(this); }
 	}
 
 	class ReservableProduction : Production
 	{
+		public ReservableProduction(ReservableProductionInfo info) : base(info) {}
+
 		public override bool Produce(Actor self, ActorInfo producee)
 		{
 			if (Reservable.IsReserved(self))

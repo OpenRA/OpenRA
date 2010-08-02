@@ -44,12 +44,11 @@ namespace OpenRA.Mods.RA.Activities
 			if (res != null)
 				self.traits.Get<Helicopter>().reservation = res.Reserve(self);
 
-			var pi = dest.Info.Traits.GetOrDefault<ProductionInfo>();
-			var offset = pi != null ? pi.SpawnOffset : null;
-			var offsetVec = offset != null ? new float2(offset[0], offset[1]) : float2.Zero;
+			var pi = dest.traits.Get<Production>();
+			var offset = pi != null ? pi.Spawns.First().Key : float2.Zero;
 
 			return Util.SequenceActivities(
-				new HeliFly(dest.CenterLocation + offsetVec),
+				new HeliFly(dest.CenterLocation + offset),
 				new Turn(initialFacing),
 				new HeliLand(false),
 				new Rearm(),
