@@ -63,8 +63,6 @@ namespace OpenRA.Mods.Cnc
 				{
 					if (self.IsDead())
 						return;
-					
-					Game.Debug("Creating");
 					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit, spawn));
 				}));
 				a.QueueActivity(new Fly(endPos));

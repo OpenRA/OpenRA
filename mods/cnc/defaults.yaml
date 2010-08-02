@@ -229,9 +229,6 @@
 
 ^Husk:
 	Category: Vehicle
-	Mobile:
-		ROT: 0
-		Speed: 0
 	Health:
 		HP: 140
 		Armor: Heavy

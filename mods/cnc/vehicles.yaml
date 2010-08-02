@@ -336,6 +336,8 @@ MSAM:
 		Recoil: 0
 	RenderUnitTurreted:
 	AutoTarget:
+	LeavesHusk: 
+		HuskActor: MSAM.Husk
 
 MLRS:
 	Inherits: ^Tank
@@ -361,6 +363,8 @@ MLRS:
 		PrimaryOffset: 0,5,0,0
 	RenderUnitTurreted:
 	AutoTarget:
+	LeavesHusk: 
+		HuskActor: MLRS.Husk
 
 STNK:
 	Inherits: ^Vehicle
@@ -538,6 +542,30 @@ HTNK.Husk:
 		Description: Husk (Mammoth Tank)
 	RenderUnit:
 		Image: htnk
+	ThrowsParticle@turret:
+		Anim: turret
+		Spread: 3,3
+		Speed: 6
+		AnimKey: turret
+
+MSAM.Husk:
+	Inherits: ^Husk
+	Valued:
+		Description: Husk (Rocket Launcher)
+	RenderUnit:
+		Image: msam
+	ThrowsParticle@turret:
+		Anim: turret
+		Spread: 3,3
+		Speed: 6
+		AnimKey: turret
+
+MLRS.Husk:
+	Inherits: ^Husk
+	Valued:
+		Description: Husk (SSM Launcher)
+	RenderUnit:
+		Image: mlrs
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 3,3
