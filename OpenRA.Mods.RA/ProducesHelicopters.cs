@@ -24,39 +24,42 @@ namespace OpenRA.Mods.RA
 	{
 		public ProducesHelicopters(ProducesHelicoptersInfo info) : base(info) {}
 		
-		/*
+		
 		// Hack around visibility bullshit in Production
 		public override bool Produce( Actor self, ActorInfo producee )
 		{
-			var location = CreationLocation( self, producee );
-			if( location == null || self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( location.Value ).Any() )
-				return false;
+			// Pick an exit that we can move to
+			var exit = int2.Zero;
+			var spawn = float2.Zero;
+			var success = false;
 			
-			var pi = self.Info.Traits.Get<ProductionInfo>();
-			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
+			// Pick a spawn/exit point
+			// Todo: Reorder in a synced random way
+			foreach (var s in Spawns)
 			{
-				new LocationInit( location.Value ),
-				new OwnerInit( self.Owner ),
-				new FacingInit( pi.ProductionFacing ),
-			});
-			                                     
-			var rp = self.traits.GetOrDefault<RallyPoint>();
-			if( rp != null || pi.ExitOffset != null)
-			{
-				if( newUnit.traits.Contains<Helicopter>() )
+				exit = self.Location + s.Value;
+				spawn = self.CenterLocation + s.Key;
+				if (!self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( exit ).Any())
 				{
-					if (pi.ExitOffset != null)
-						newUnit.QueueActivity(new Activities.HeliFly(Util.CenterOfCell(ExitLocation( self, producee ).Value)));
-						
-					if (rp != null)
-						newUnit.QueueActivity( new Activities.HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
+					success = true;
+					break;
 				}
 			}
-			
-			if (pi != null && pi.SpawnOffset != null)
-				newUnit.CenterLocation = self.CenterLocation 
-					+ new float2(pi.SpawnOffset[0], pi.SpawnOffset[1]);
 
+			// Todo: Once Helicopter supports it, update UIM if its docked/landed
+			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
+			{
+				new LocationInit( exit ),
+				new OwnerInit( self.Owner ),
+			});
+			newUnit.CenterLocation = spawn;
+        	
+			var rp = self.traits.GetOrDefault<RallyPoint>();
+			if( rp != null )
+			{
+				newUnit.QueueActivity( new Activities.HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
+			}
+			
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
 				t.UnitProduced(self, newUnit);
 
@@ -64,6 +67,5 @@ namespace OpenRA.Mods.RA
 
 			return true;
 		}
-		*/
 	}
 }

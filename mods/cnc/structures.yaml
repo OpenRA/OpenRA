@@ -340,6 +340,7 @@ HPAD:
 	Bib:
 	ProducesHelicopters:
 		SpawnOffsets: 0,-4
+		ExitCells: 0,0
 		Produces: Plane
 	BelowUnits:
 	Reservable:
