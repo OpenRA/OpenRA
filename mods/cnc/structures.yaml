@@ -334,7 +334,7 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Bib:
-	Production:
+	ProducesHelicopters:
 		SpawnOffset: 0,-4
 		Produces: Plane
 	BelowUnits:

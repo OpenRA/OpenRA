@@ -47,7 +47,6 @@ World:
 #	WaterPaletteRotation:
 	BuildingInfluence:
 	UnitInfluence:
-	AircraftInfluence:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	PaletteFromCurrentTheatre:

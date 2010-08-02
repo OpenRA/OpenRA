@@ -205,7 +205,6 @@
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Traits\SharesCell.cs" />
-    <Compile Include="Traits\World\AircraftInfluence.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
     <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />

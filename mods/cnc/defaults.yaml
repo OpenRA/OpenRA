@@ -51,12 +51,13 @@
 		TargetTypes: Air
 	Selectable:
 		Voice: VehicleVoice
+	Helicopter:
+		RepairBuildings: hpad
+		RearmBuildings:
+		LandWhenIdle: false
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
-	MobileAir:
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud

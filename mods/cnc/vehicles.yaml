@@ -400,8 +400,8 @@ TRAN:
 		Cost: 1500
 		Description: Chinook Transport
 		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
-	MobileAir:
-		InitialFacing: 20
+	Helicopter:
+		LandWhenIdle: true
 		ROT: 5
 		Speed: 15
 	Health:
@@ -428,8 +428,7 @@ HELI:
 		Cost: 1200
 		Description: Apache Longbow
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
-	MobileAir:
-		InitialFacing: 20
+	Helicopter:
 		ROT: 4
 		Speed: 20
 	Health:
@@ -437,7 +436,7 @@ HELI:
 		Armor: heavy
 	RevealsShroud:
 		Range: 8
-	AttackBase:
+	AttackHeli:
 		PrimaryWeapon: HighV
 		SecondaryWeapon: HighV
 		PrimaryOffset: -5,0,0,2
@@ -457,8 +456,7 @@ ORCA:
 		Cost: 1200
 		Description: Orca
 		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
-	MobileAir:
-		InitialFacing: 20
+	Helicopter:
 		ROT: 4
 		Speed: 20
 	Health:
@@ -466,7 +464,7 @@ ORCA:
 		Armor: heavy
 	RevealsShroud:
 		Range: 8
-	AttackBase:
+	AttackHeli:
 		PrimaryWeapon: Rockets.Orca
 		SecondaryWeapon: Rockets.Orca
 		PrimaryOffset: -5,0,0,2

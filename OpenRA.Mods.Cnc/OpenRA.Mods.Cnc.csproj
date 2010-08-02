@@ -58,7 +58,6 @@
     <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TiberiumRefineryDockAction.cs" />
-    <Compile Include="MobileAir.cs" />
     <Compile Include="DeadBuildingState.cs" />
   </ItemGroup>
   <ItemGroup>
