@@ -41,44 +41,16 @@ namespace OpenRA.Traits
 				Spawns.Add(new float2(info.SpawnOffsets[i],info.SpawnOffsets[i+1]), new int2(info.ExitCells[i], info.ExitCells[i+1]));
 		}
 		
-		public virtual bool Produce( Actor self, ActorInfo producee )
-		{			
-			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
-			{
-				new OwnerInit( self.Owner ),
-			});
+		public void DoProduction(Actor self, Actor newUnit, int2 exit, float2 spawn)
+		{
+			Game.Debug("Creating actor {0}".F(newUnit.Info.Name));
 			
-			// Todo: remove assumption on Mobile
 			var mobile = newUnit.traits.Get<Mobile>();
-	
-			// Pick an exit that we can move to
-			var exit = int2.Zero;
-			var spawn = float2.Zero;
-			var success = false;
-			
-			// Pick a spawn/exit point
-			// Todo: Reorder in a synced random way
-			foreach (var s in Spawns)
-			{
-				exit = self.Location + s.Value;
-				spawn = self.CenterLocation + s.Key;
-				if (mobile.CanEnterCell(exit,self,true))
-				{
-					success = true;
-					break;
-				}
-			}
-			
-			if (!success)
-			{
-				// Hack around mobile being a tard; remove from UIM (we shouldn't be there in the first place)
-				newUnit.traits.Get<Mobile>().RemoveInfluence();
-				return false;
-			}
 			
 			// Unit can be built; add to the world
 			self.World.Add(newUnit);
-			
+			Game.Debug("Added to world");
+
 			// Set the physical position of the unit as the exit cell
 			mobile.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
@@ -113,7 +85,44 @@ namespace OpenRA.Traits
 				t.UnitProduced(self, newUnit);
 
 			Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
+		}
+		
+		public virtual bool Produce( Actor self, ActorInfo producee )
+		{			
+			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
+			{
+				new OwnerInit( self.Owner ),
+			});
+			
+			// Todo: remove assumption on Mobile
+			var mobile = newUnit.traits.Get<Mobile>();
+	
+			// Pick an exit that we can move to
+			var exit = int2.Zero;
+			var spawn = float2.Zero;
+			var success = false;
+			
+			// Pick a spawn/exit point
+			// Todo: Reorder in a synced random way
+			foreach (var s in Spawns)
+			{
+				exit = self.Location + s.Value;
+				spawn = self.CenterLocation + s.Key;
+				if (mobile.CanEnterCell(exit,self,true))
+				{
+					success = true;
+					break;
+				}
+			}
+			
+			if (!success)
+			{
+				// Hack around mobile being a tard; remove from UIM (we shouldn't be there in the first place)
+				newUnit.traits.Get<Mobile>().RemoveInfluence();
+				return false;
+			}
 
+			DoProduction(self, newUnit, exit, spawn);
 			return true;
 		}
 

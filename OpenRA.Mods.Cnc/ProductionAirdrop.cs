@@ -33,12 +33,14 @@ namespace OpenRA.Mods.Cnc
 			var owner = self.Owner;
 			
 			// Start and end beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
-			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width+15, self.Location.Y);
-			var endPos = new int2(owner.World.Map.XOffset-15, self.Location.Y);
-			var unloadOffset = new int2(1,1);
-			var exitOffset = new int2(3,1);
+			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width+5, self.Location.Y);
+			var endPos = new int2(owner.World.Map.XOffset-5, self.Location.Y);
 			
-			var rp = self.traits.GetOrDefault<RallyPoint>();
+			
+			// Assume a single exit point for simplicity
+			var spawn = self.CenterLocation + Spawns.First().Key;
+			var exit = self.Location + Spawns.First().Value;
+			
 			owner.World.AddFrameEndTask(w =>
 			{
 				var a = w.CreateActor("C17", new TypeDictionary 
@@ -50,37 +52,20 @@ namespace OpenRA.Mods.Cnc
 				});
 				
 				var cargo = a.traits.Get<Cargo>();
-
-				var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary{ new OwnerInit( self.Owner ) });
+				var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
+				{
+					new OwnerInit( self.Owner ),
+				});
 				cargo.Load(a, newUnit);
 				
-				a.CancelActivity();
-
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
 				{
 					if (self.IsDead())
 						return;
 					
-					var actor = cargo.Unload(self);
-					self.World.AddFrameEndTask(ww =>
-					{
-						ww.Add(actor);
-						actor.traits.Get<IMove>().SetPosition(actor, self.Location + unloadOffset);
-						newUnit.traits.Get<IFacing>().Facing = 192;
-						actor.CancelActivity();
-						actor.QueueActivity(new Move(self.Location + exitOffset, self));
-						actor.QueueActivity(new Move(rp.rallyPoint, 0));
-						if (actor.Owner == self.World.LocalPlayer)
-						{
-							var line = actor.traits.GetOrDefault<DrawLineToTarget>();
-							if (line != null)
-								line.SetTargetSilently(actor, Target.FromCell(rp.rallyPoint), Color.Green);	
-						}
-
-						foreach (var t in self.traits.WithInterface<INotifyProduction>())
-							t.UnitProduced(self, actor);
-					});
+					Game.Debug("Creating");
+					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit, spawn));
 				}));
 				a.QueueActivity(new Fly(endPos));
 				a.QueueActivity(new RemoveSelf());

@@ -45,6 +45,9 @@ namespace OpenRA.Mods.RA
 					break;
 				}
 			}
+			
+			if (!success)
+				return false;
 
 			// Todo: Once Helicopter supports it, update UIM if its docked/landed
 			var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
