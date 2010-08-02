@@ -76,19 +76,21 @@ namespace OpenRA.Traits
 		{
 			this.self = init.self;
 			this.Info = info;
-			if (init.Contains<LocationInit>())
-				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
-			
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
-			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
 			
 			shroud = self.World.WorldActor.traits.Get<Shroud>();
 			uim = self.World.WorldActor.traits.Get<UnitInfluence>();
 			bim = self.World.WorldActor.traits.Get<BuildingInfluence>();
 			canShareCell = self.traits.Contains<SharesCell>();
 			
-			AddInfluence();
+			if (init.Contains<LocationInit>())
+			{
+				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
+				AddInfluence();
+			}
 			
+			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
+			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
+
 			TerrainCost = new Dictionary<string, float>();
 			TerrainSpeed = new Dictionary<string, float>();
 			

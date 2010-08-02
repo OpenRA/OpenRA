@@ -43,22 +43,19 @@ namespace OpenRA.Traits
 		
 		public void DoProduction(Actor self, Actor newUnit, int2 exit, float2 spawn)
 		{
-			Game.Debug("Creating actor {0}".F(newUnit.Info.Name));
+			var move = newUnit.traits.Get<IMove>();
+			var facing = newUnit.traits.GetOrDefault<IFacing>();
 			
-			var mobile = newUnit.traits.Get<Mobile>();
-			
-			// Unit can be built; add to the world
-			self.World.Add(newUnit);
-			Game.Debug("Added to world");
-
 			// Set the physical position of the unit as the exit cell
-			mobile.SetPosition(newUnit,exit);
+			move.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
+			newUnit.CenterLocation = spawn;
+			if (facing != null)
+				facing.Facing = Util.GetFacing(to - spawn, facing.Facing);
+			self.World.Add(newUnit);
 
 			// Animate the spawn -> exit transition
-			newUnit.CenterLocation = spawn;
-			mobile.Facing = Util.GetFacing(to - spawn, mobile.Facing);
-			var speed = mobile.MovementSpeedForCell(self, exit);
+			var speed = move.MovementSpeedForCell(self, exit);
 			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
 			newUnit.QueueActivity(new Activities.Drag(spawn, to, length));
 			
@@ -68,6 +65,7 @@ namespace OpenRA.Traits
 			if (rp != null)
 			{
 				target = rp.rallyPoint;
+				// Todo: Move implies unit has Mobile
 				newUnit.QueueActivity(new Activities.Move(target, 1));
 			}
 			
@@ -82,7 +80,7 @@ namespace OpenRA.Traits
 			}
 
 			foreach (var t in self.traits.WithInterface<INotifyProduction>())
-				t.UnitProduced(self, newUnit);
+				t.UnitProduced(self, newUnit, exit);
 
 			Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
 		}
@@ -94,40 +92,26 @@ namespace OpenRA.Traits
 				new OwnerInit( self.Owner ),
 			});
 			
-			// Todo: remove assumption on Mobile
+			// Todo: remove assumption on Mobile; 
+			// required for 3-arg CanEnterCell
 			var mobile = newUnit.traits.Get<Mobile>();
 	
-			// Pick an exit that we can move to
-			var exit = int2.Zero;
-			var spawn = float2.Zero;
-			var success = false;
-			
-			// Pick a spawn/exit point
+			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
 			foreach (var s in Spawns)
 			{
-				exit = self.Location + s.Value;
-				spawn = self.CenterLocation + s.Key;
+				var exit = self.Location + s.Value;
+				var spawn = self.CenterLocation + s.Key;
 				if (mobile.CanEnterCell(exit,self,true))
 				{
-					success = true;
-					break;
+					DoProduction(self, newUnit, exit, spawn);
+					return true;
 				}
 			}
-			
-			if (!success)
-			{
-				// Hack around mobile being a tard; remove from UIM (we shouldn't be there in the first place)
-				newUnit.traits.Get<Mobile>().RemoveInfluence();
-				return false;
-			}
-
-			DoProduction(self, newUnit, exit, spawn);
-			return true;
+			return false;
 		}
 
 		// "primary building" crap - perhaps this should be split?
-
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
 

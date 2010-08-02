@@ -24,7 +24,9 @@ namespace OpenRA.Mods.RA.Render
 		public Animation roof;
 		[Sync]
 		bool isOpen;
-
+		[Sync]
+		int2 openExit;
+		
 		string GetPrefix(Actor self)
 		{
 			return self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
@@ -44,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 		public void Tick(Actor self)
 		{
 			if (isOpen && !self.World.WorldActor.traits.Get<UnitInfluence>()
-				.GetUnitsAt(((1f/Game.CellSize) * self.CenterLocation).ToInt2()).Any())
+				.GetUnitsAt(openExit).Any())
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(GetPrefix(self) + "build-top", () => roof.Play(GetPrefix(self) + "idle-top"));
@@ -61,9 +63,9 @@ namespace OpenRA.Mods.RA.Render
 				roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
 		}
 
-		public void UnitProduced(Actor self, Actor other)
+		public void UnitProduced(Actor self, Actor other, int2 exit)
 		{
-			roof.PlayThen(GetPrefix(self) + "build-top", () => isOpen = true);
+			roof.PlayThen(GetPrefix(self) + "build-top", () => {isOpen = true; openExit = exit;});
 		}
 
 		public void Selling( Actor self )

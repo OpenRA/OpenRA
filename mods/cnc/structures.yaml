@@ -212,6 +212,7 @@ AFLD:
 		Range: 7
 	Bib:
 	RallyPoint:
+		RallyPoint: 4,2
 	BelowUnits:
 	ProductionAirdrop:
 		Produces: Vehicle
@@ -241,9 +242,11 @@ WEAP:
 	Bib:
 	RenderWarFactory:
 	RallyPoint:
+		RallyPoint: 0,3
 	Production:
-#		ExitOffset:-1,1
 		Produces: Vehicle
+		SpawnOffsets: -8,-8
+		ExitCells: 0,2
 HQ:
 	RequiresPower:
 	CanPowerDown:
