@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly BridgeLayerInfo Info;
 		readonly World world;
-		Dictionary<ushort, string> BridgeTypes = new Dictionary<ushort, string>();
+		Dictionary<ushort, Pair<string, float>> BridgeTypes = new Dictionary<ushort, Pair<string,float>>();
 		Bridge[,] Bridges;
 		
 		public BridgeLayer(Actor self, BridgeLayerInfo Info)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 				var bi = Rules.Info[bridge].Traits.Get<BridgeInfo>();
 				foreach (var template in bi.Templates)
 				{
-					BridgeTypes.Add(template, bridge);
+					BridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
 					Log.Write("debug", "Adding template {0} for bridge {1}", template, bridge);
 				}
 			}
@@ -81,10 +81,11 @@ namespace OpenRA.Mods.RA
 			var nj = j - image / template.Size.X;
 			
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(BridgeTypes[tile], new TypeDictionary
+			var bridge = w.CreateActor(BridgeTypes[tile].First, new TypeDictionary
 			{
 				new LocationInit( new int2(ni, nj) ),
 				new OwnerInit( w.WorldActor.Owner ),
+				new HealthInit( BridgeTypes[tile].Second ),
 			}).traits.Get<Bridge>();
 			
 			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();

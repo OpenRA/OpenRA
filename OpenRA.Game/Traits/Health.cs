@@ -15,13 +15,13 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	public class HealthInfo : ITraitInfo
 	{
 		public readonly int HP = 0;
-		public readonly int InitialHP = 0;
 		public readonly ArmorType Armor = ArmorType.none;		
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 		{
 			Info = info;
 			MaxHP = info.HP;
-			hp = (info.InitialHP == 0) ? MaxHP : info.InitialHP;
+			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>()*MaxHP) : MaxHP;
 		}
 		
 		public int HP { get { return hp; } }
@@ -47,7 +47,6 @@ namespace OpenRA.Traits
 		public float HPFraction
 		{
 			get { return hp * 1f / MaxHP; }
-			set { hp = (int)(value * MaxHP); }
 		}
 		
 		public bool IsDead { get { return hp <= 0; } }
@@ -116,6 +115,26 @@ namespace OpenRA.Traits
 				});
 		}
 	}
+	
+	
+	public class HealthInit : IActorInit<float>
+	{
+		[FieldFromYamlKey]
+		public readonly float value = 1f;
+		
+		public HealthInit() { }
+		
+		public HealthInit( float init )
+		{
+			value = init;
+		}
+		
+		public float Value( World world )
+		{
+			return value;	
+		}
+	}
+	
 	
 	public static class HealthExts
 	{

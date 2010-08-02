@@ -37,27 +37,27 @@ namespace OpenRA.Mods.RA
 
 		public object Create(ActorInitializer init) { return new Bridge(init.self, this); }
 
-		public IEnumerable<ushort> Templates
+		public IEnumerable<Pair<ushort, float>> Templates
 		{
 			get
 			{
 				if (Template != 0)
-					yield return Template;
+					yield return Pair.New(Template, 1f);
 
 				if (DamagedTemplate != 0)
-					yield return DamagedTemplate;
+					yield return Pair.New(DamagedTemplate, .5f);
 
 				if (DestroyedTemplate != 0)
-					yield return DestroyedTemplate;
+					yield return Pair.New(DestroyedTemplate, 0f);
 
 				if (DestroyedPlusNorthTemplate != 0)
-					yield return DestroyedPlusNorthTemplate;
+					yield return Pair.New(DestroyedPlusNorthTemplate, 0f);
 
 				if (DestroyedPlusSouthTemplate != 0)
-					yield return DestroyedPlusSouthTemplate;
+					yield return Pair.New(DestroyedPlusSouthTemplate, 0f);
 
 				if (DestroyedPlusBothTemplate != 0)
-					yield return DestroyedPlusBothTemplate;
+					yield return Pair.New(DestroyedPlusBothTemplate, 0f);
 			}
 		}
 	}
@@ -89,10 +89,6 @@ namespace OpenRA.Mods.RA
 		public void Create(ushort template, Dictionary<int2, byte> subtiles)
 		{
 			currentTemplate = template;
-			if (template == Info.DamagedTemplate)
-				Health.HPFraction = .5f;
-			else if (template != Info.Template)
-				Health.HPFraction = 0f;
 				
 			// Create a new cache to store the tile data
 			if (cachedTileset != self.World.Map.Tileset)
@@ -106,10 +102,10 @@ namespace OpenRA.Mods.RA
 			// Cache templates and tiles for the different states
 			foreach (var t in Info.Templates)
 			{
-				Templates.Add(t,self.World.TileSet.Templates[t]);
-				TileSprites.Add(t,subtiles.ToDictionary(
+				Templates.Add(t.First,self.World.TileSet.Templates[t.First]);
+				TileSprites.Add(t.First,subtiles.ToDictionary(
 					a => a.Key,
-					a => sprites[new TileReference<ushort,byte>(t, (byte)a.Value)]));
+					a => sprites[new TileReference<ushort,byte>(t.First, (byte)a.Value)]));
 			}
 		}
 		

@@ -52,17 +52,17 @@ namespace OpenRA.Mods.RA.Activities
 				self.World.Remove(self);
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-				
-				var a = w.CreateActor( actor, new TypeDictionary
+								
+				var init = new TypeDictionary
 				{
 					new LocationInit( self.Location + offset ),
 					new OwnerInit( self.Owner ),
 					new FacingInit( facing ),
-				});
-				var oldHealth = self.traits.GetOrDefault<Health>();
-				var newHealth = a.traits.GetOrDefault<Health>();
-				if (oldHealth != null && newHealth != null)
-					newHealth.HPFraction = oldHealth.HPFraction;
+				};
+				if (self.traits.Contains<Health>())
+					init.Add( new HealthInit( self.traits.Get<Health>().HPFraction ));
+				
+				var a = w.CreateActor( actor, init );
 				
 				if (selected)
 					w.Selection.Add(w, a);
