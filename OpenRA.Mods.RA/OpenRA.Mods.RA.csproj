@@ -162,7 +162,6 @@
     <Compile Include="SupportPowers\ParatroopersPower.cs" />
     <Compile Include="Passenger.cs" />
     <Compile Include="Plane.cs" />
-    <Compile Include="ProductionSurround.cs" />
     <Compile Include="Render\RenderBuildingCharge.cs" />
     <Compile Include="Render\RenderBuildingOre.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Invulnerable.cs" />
     <Compile Include="ReplaceWithActor.cs" />
     <Compile Include="OreRefineryDockAction.cs" />
-    <Compile Include="ProducesHelicopters.cs" />
     <Compile Include="StoresOre.cs" />
     <Compile Include="PaletteFromCurrentTheatre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />

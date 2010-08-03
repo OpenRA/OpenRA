@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 
 	public class Production : IIssueOrder, IResolveOrder, ITags, IOrderCursor
 	{	
-		public readonly Dictionary<float2, int2> Spawns = new Dictionary<float2, int2>();
+		public readonly List<Pair<float2, int2>> Spawns = new List<Pair<float2, int2>>();
 		public Production(ProductionInfo info)
 		{
 			if (info.SpawnOffsets == null || info.ExitCells == null)
@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 				throw new System.InvalidOperationException("SpawnOffset, ExitCells length mismatch");
 			
 			for (int i = 0; i < info.ExitCells.Length; i+=2)
-				Spawns.Add(new float2(info.SpawnOffsets[i],info.SpawnOffsets[i+1]), new int2(info.ExitCells[i], info.ExitCells[i+1]));
+				Spawns.Add(Pair.New(new float2(info.SpawnOffsets[i],info.SpawnOffsets[i+1]), new int2(info.ExitCells[i], info.ExitCells[i+1])));
 		}
 		
 		public void DoProduction(Actor self, Actor newUnit, int2 exit, float2 spawn)
@@ -100,8 +100,8 @@ namespace OpenRA.Traits
 			// Todo: Reorder in a synced random way
 			foreach (var s in Spawns)
 			{
-				var exit = self.Location + s.Value;
-				var spawn = self.CenterLocation + s.Key;
+				var exit = self.Location + s.Second;
+				var spawn = self.CenterLocation + s.First;
 				if (mobile.CanEnterCell(exit,self,true))
 				{
 					DoProduction(self, newUnit, exit, spawn);

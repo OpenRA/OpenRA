@@ -10,6 +10,8 @@
 
 
 using OpenRA.Traits;
+using System.Linq;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -29,7 +31,35 @@ namespace OpenRA.Mods.RA
 			if (Reservable.IsReserved(self))
 				return false;
 
-			return base.Produce(self, producee);
+			// Pick a spawn/exit point
+			// Todo: Reorder in a synced random way
+			foreach (var s in Spawns)
+			{
+				var exit = self.Location + s.Second;
+				var spawn = self.CenterLocation + s.First;
+				if (!self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( exit ).Any())
+				{
+					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
+					{
+						new LocationInit( exit ),
+						new OwnerInit( self.Owner ),
+					});
+					newUnit.CenterLocation = spawn;
+		        	
+					var rp = self.traits.GetOrDefault<RallyPoint>();
+					if( rp != null )
+					{
+						newUnit.QueueActivity( new Activities.HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
+					}
+					
+					foreach (var t in self.traits.WithInterface<INotifyProduction>())
+						t.UnitProduced(self, newUnit, exit);
+		
+					Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

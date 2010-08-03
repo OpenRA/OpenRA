@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Cnc
 			
 			
 			// Assume a single exit point for simplicity
-			var spawn = self.CenterLocation + Spawns.First().Key;
-			var exit = self.Location + Spawns.First().Value;
+			var spawn = self.CenterLocation + Spawns.First().First;
+			var exit = self.Location + Spawns.First().Second;
 			
 			owner.World.AddFrameEndTask(w =>
 			{

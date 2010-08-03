@@ -77,7 +77,9 @@ SPEN:
 		Armor: light
 	RevealsShroud:
 		Range: 4
-	ProductionSurround:
+	Production:
+		SpawnOffsets: 0,-5, 0,-5, 0,0, 0,0
+		ExitCells: -1,2, 3,2, 0,0, 2,0
 		Produces: Ship
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -109,8 +111,10 @@ SYRD:
 		Armor: light
 	RevealsShroud:
 		Range: 4
-	ProductionSurround:
+	Production:
 		Produces: Ship
+		SpawnOffsets: -25,23, 26,23, -22,-25, 23,-25
+		ExitCells: 0,2, 2,2, 0,0, 2,0
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
@@ -444,6 +448,8 @@ WEAP:
 	RenderWarFactory:
 	RallyPoint:
 	Production:
+		SpawnOffsets: 5,0
+		ExitCells: 1,1
 		Produces: Vehicle
 	IronCurtainable:
 
@@ -558,7 +564,8 @@ HPAD:
 		Range: 5
 	Bib:
 	ReservableProduction:
-		SpawnOffset: 0,-4
+		SpawnOffsets: 0,-6
+		ExitCells: 0,0
 		Produces: Plane
 	BelowUnits:
 	Reservable:
@@ -586,6 +593,8 @@ AFLD:
 		Range: 7
 	ReservableProduction:
 		Produces: Plane
+		SpawnOffsets: 0,4
+		ExitCells: 1,1
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -685,6 +694,8 @@ BARR:
 	Bib:
 	RallyPoint:
 	Production:
+		SpawnOffsets: -4,19, -17,15
+		ExitCells: 0,2, 0,2
 		Produces: Infantry
 	IronCurtainable:
 
@@ -713,6 +724,8 @@ TENT:
 	RallyPoint:
 	Production:
 		Produces: Infantry
+		SpawnOffsets: -1,19, -17,15
+		ExitCells: 0,2, 0,2
 	IronCurtainable:
 
 KENN:
@@ -734,6 +747,8 @@ KENN:
 		Range: 4
 	RallyPoint:
 	Production:
+		SpawnOffsets: 0,0
+		ExitCells: 0,0
 		Produces: Infantry
 	IronCurtainable:
 	-EmitInfantryOnSell:
