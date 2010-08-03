@@ -149,7 +149,8 @@ namespace OpenRA.Network
 			GC.SuppressFinalize( this );
 
 			t.Abort();
-			socket.Client.Close();
+			if (socket != null)
+				socket.Client.Close();
 			using( new PerfSample( "Thread.Join" ))
 				t.Join();
 		}
