@@ -257,6 +257,6 @@ namespace OpenRA.Mods.RA
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
 
-		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.First(w => w.IsValidAgainst(t)); }
+		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(t)); }
 	}
 }

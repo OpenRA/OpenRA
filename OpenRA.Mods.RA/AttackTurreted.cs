@@ -51,6 +51,8 @@ namespace OpenRA.Mods.RA
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
 			/* todo: choose the appropriate weapon, when only one works against this target */
 			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
+			if (weapon == null)
+				return;
 
 			target = Target.FromOrder(order);
 
