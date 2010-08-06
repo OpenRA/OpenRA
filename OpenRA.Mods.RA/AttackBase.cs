@@ -248,10 +248,11 @@ namespace OpenRA.Mods.RA
 		{
 			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
 
-			self.QueueActivity(
-				new Activities.Attack(
-					Target.FromOrder(order), 
-					Math.Max(0, (int)weapon.Info.Range)));
+			if (weapon != null)
+				self.QueueActivity(
+					new Activities.Attack(
+						Target.FromOrder(order), 
+						Math.Max(0, (int)weapon.Info.Range)));
 		}
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
