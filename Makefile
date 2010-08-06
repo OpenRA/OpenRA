@@ -115,7 +115,7 @@ install: all
 	
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
-	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe SupportDir=.openra" >> openra
+	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe SupportDir=~/.openra" >> openra
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
