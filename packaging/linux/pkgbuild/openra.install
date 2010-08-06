@@ -9,8 +9,8 @@ install_ra_packages() {
 install_cnc_packages() {
     wget http://open-ra.org/packages/cnc-packages.zip
     mkdir -p $pkgdir/usr/share/openra/mods/cnc/packages
-    unzip ra-packages.zip -d $pkgdir/usr/share/openra/mods/cnc/packages
-    rm ra-packages.zip
+    unzip cnc-packages.zip -d $pkgdir/usr/share/openra/mods/cnc/packages
+    rm cnc-packages.zip
 }
 
 # arg 1:  the new package version
