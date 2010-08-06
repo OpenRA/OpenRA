@@ -8,20 +8,21 @@ then
     exit $E_BADARGS
 fi
 
-sed -i "s/%define version [0-9]\+/%define version $5/" openra.spec
+PKGVERSION=`echo $5 | sed "s/-/\\./g"`
+sed -i "s/%define version [0-9\\.]\+/%define version $PKGVERSION/" openra.spec
 cp openra.spec $6/SPECS/
 
 cd $6
-wget http://github.com/chrisforbes/OpenRA/tarball/playtest-$5 -O SOURCES/openra-$5.tar.gz
+wget http://github.com/chrisforbes/OpenRA/tarball/playtest-$5 -O SOURCES/openra-$PKGVERSION.tar.gz
 
-folder=`tar -ztf SOURCES/openra-$5.tar.gz | head -n 1 | grep -o -E [[:alnum:]-]+`
+folder=`tar -ztf SOURCES/openra-$PKGVERSION.tar.gz | head -n 1 | grep -o -E [[:alnum:]-]+`
 
 sed -i "s/%define folder [[:alnum:]-]\+/%define folder $folder/" SPECS/openra.spec
 
 rpmbuild --target noarch -bb SPECS/openra.spec
 
 cd RPMS/noarch/
-PACKAGEFILE=openra-$5-1.noarch.rpm
+PACKAGEFILE=openra-$PKGVERSION-1.noarch.rpm
 size=`stat -c "%s" $PACKAGEFILE`
 
 echo "$5,$size,$PACKAGEFILE" > /tmp/rpmlatest.txt

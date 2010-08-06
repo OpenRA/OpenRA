@@ -1,5 +1,5 @@
 %define name openra
-%define version 20100511
+%define version 20100801.2
 %define folder chrisforbes-openra-51b83e0
 Name: %{name}
 Version: %{version}
@@ -75,7 +75,6 @@ gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
 /usr/share/openra/*.exe
 /usr/share/openra/*.ttf
 /usr/share/openra/*.dll
-/usr/share/openra/*.ini
 /usr/share/openra/shaders/
 /usr/share/openra/mods/
 /usr/share/openra/thirdparty/

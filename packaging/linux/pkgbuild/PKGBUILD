@@ -1,6 +1,6 @@
 # Contributor: Matthew Bowra-Dean <matthew@ijw.co.nz>
 pkgname=openra-git
-pkgver=20100511
+pkgver=20100801.2
 pkgrel=1
 pkgdesc="Open Source rebuild of the Red Alert game engine using Mono/OpenGL."
 arch=(any)
@@ -41,7 +41,8 @@ build() {
   rm -rf "$srcdir/$_gitname-build"
   git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
   cd "$srcdir/$_gitname-build"
-  git checkout $_gittag
+  _fixedgittag=`echo $_gittag | sed "s/\\./-/g"`
+  git checkout $_fixedgittag
 
   #
   # BUILD HERE

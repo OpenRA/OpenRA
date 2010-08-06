@@ -8,11 +8,12 @@ then
     exit $E_BADARGS
 fi
 
-sed -i "s/pkgver=[0-9]\+/pkgver=$5/" PKGBUILD
+PKGVERSION=`echo $5 | sed "s/-/\\./g"`
+sed -i "s/pkgver=[0-9\\.]\+/pkgver=$PKGVERSION/" PKGBUILD
 
 makepkg --holdver
 
-PACKAGEFILE="openra-git-$5-1-any.pkg.tar.xz"
+PACKAGEFILE="openra-git-$PKGVERSION-1-any.pkg.tar.xz"
 
 size=`stat -c "%s" $PACKAGEFILE`
 
