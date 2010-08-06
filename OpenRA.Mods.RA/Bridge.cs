@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				foreach (var a in uim.GetUnitsAt(c))
-					if (!a.traits.Get<IMove>().CanEnterCell(c))
+					if (a.traits.Contains<IMove>() && !a.traits.Get<IMove>().CanEnterCell(c))
 						a.Kill(self);
 		}
 		
