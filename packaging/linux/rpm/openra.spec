@@ -39,10 +39,12 @@ do
     read -s -n1 -p "Download and install RA packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
+            pushd /tmp/
             wget http://open-ra.org/packages/ra-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
             unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
             rm ra-packages.zip
+            popd
             break;;
         n|N) break;;
         *) echo "Please enter y or n.";;
@@ -54,10 +56,12 @@ do
     read -s -n1 -p "Download and install C&C packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
+            pushd /tmp/
             wget http://open-ra.org/packages/cnc-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
             unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
             rm ra-packages.zip
+            popd
             break;;
         n|N) break;;
         *) echo "Please enter y or n.";;

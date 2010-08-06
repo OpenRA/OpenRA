@@ -19,8 +19,10 @@ post_install() {
     do
         read -s -n1 -p "Download and install RA packages? [Y/n]"
         case $REPLY in
-            y|Y|"") 
+            y|Y|"")
+                pushd /tmp/ 
                 install_ra_packages
+                popd
                 break;;
             n|N) break;;
             *) echo "Please enter y or n.";;
@@ -32,7 +34,9 @@ post_install() {
         read -s -n1 -p "Download and install C&C packages? [Y/n]"
         case $REPLY in
             y|Y|"") 
+                pushd /tmp/
                 install_cnc_packages
+                popd
                 break;;
             n|N) break;;
             *) echo "Please enter y or n.";;
@@ -40,8 +44,8 @@ post_install() {
     done
     
     gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Cg.dll
-	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
-	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
-	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
-	gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
+    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
+    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
+    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
+    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
 }
