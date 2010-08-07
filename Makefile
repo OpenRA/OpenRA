@@ -16,7 +16,7 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 fileformats_SRCS	=	$(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	=	OpenRA.FileFormats.dll
 fileformats_KIND	=	library
-fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll WindowsBase.dll
+fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll thirdparty/WindowsBase.dll
 
 gl_SRCS				= $(shell find OpenRA.Gl/ -iname '*.cs')
 gl_TARGET			= OpenRA.Gl.dll
@@ -113,7 +113,8 @@ install: all
 	
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
-	@cp -r thirdparty $(INSTALL_DIR)
+	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll thirdparty/WindowsBase.dll.mdb $(INSTALL_DIR)
 	
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
