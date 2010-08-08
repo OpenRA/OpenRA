@@ -114,7 +114,7 @@ install: all
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll thirdparty/WindowsBase.dll.mdb $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll $(INSTALL_DIR)
 	
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
