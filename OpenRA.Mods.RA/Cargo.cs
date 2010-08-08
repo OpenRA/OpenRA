@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	public class CargoInfo : TraitInfo<Cargo>
 	{
 		public readonly int Passengers = 0;
-		public readonly string[] PassengerTypes = { };
+		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 	}
 

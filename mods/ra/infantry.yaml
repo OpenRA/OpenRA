@@ -125,7 +125,7 @@ E6:
 	Mobile:
 		Speed: 4
 	Passenger:
-		ColorOfCargoPip: Yellow
+		PipType: Yellow
 	EngineerRepair:
 	EngineerCapture:
 	TakeCover:
@@ -151,7 +151,7 @@ SPY:
 	RevealsShroud:
 		Range: 5
 	Passenger:
-		ColorOfCargoPip: Yellow
+		PipType: Yellow
 	RenderSpy:
 	TakeCover:
 	Spy:
@@ -204,7 +204,7 @@ MEDI:
 	RevealsShroud:
 		Range: 3
 	Passenger:
-		ColorOfCargoPip: Yellow
+		PipType: Yellow
 	AutoHeal:
 	AttackBase:
 		PrimaryWeapon: Heal

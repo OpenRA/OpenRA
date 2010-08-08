@@ -78,7 +78,7 @@ APC:
 	WithMuzzleFlash:
 	AutoTarget:
 	Cargo:
-		PassengerTypes: Foot
+		Types: Infantry
 		Passengers: 5
 		UnloadFacing: 220
 
@@ -418,7 +418,7 @@ TRAN:
 		SecondaryOffset: 0,-14,0,-2
 	WithShadow:
 	Cargo:
-		PassengerTypes: Foot
+		Types: Infantry
 		Passengers: 5
 
 HELI:
@@ -489,6 +489,7 @@ C17:
 	RenderUnit:
 	WithShadow:
 	Cargo:
+		Types: Infantry, Vehicle
 		Passengers: 10
 	Invulnerable:
 	-Selectable:

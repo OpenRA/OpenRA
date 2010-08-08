@@ -13,34 +13,36 @@ using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
 	class PassengerInfo : TraitInfo<Passenger>
 	{
-		public readonly PipType ColorOfCargoPip = PipType.Green;
+		public readonly string CargoType = null;
+		public readonly PipType PipType = PipType.Green;
 	}
 
 	class Passenger : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			// Disable cargo support until someone fixes it
-			return null;
+		{		
+			if (mi.Button != MouseButton.Right) 
+			    return null;
+
+			if (underCursor == null || underCursor.Owner != self.Owner)
+			    return null;
+
+			var cargo = underCursor.traits.GetOrDefault<Cargo>();
+			if (cargo == null)
+			    return null;
 			
-			//if (mi.Button != MouseButton.Right) 
-			//    return null;
-
-			//if (underCursor == null || underCursor.Owner != self.Owner)
-			//    return null;
-
-			//var cargo = underCursor.traits.GetOrDefault<Cargo>();
-			//if (cargo == null)
-			//    return null;
-
-			//// Todo: Check if we can enter the transport
+			var pi = self.Info.Traits.Get<PassengerInfo>();
+			var ci = underCursor.Info.Traits.Get<CargoInfo>();
+			if (!ci.Types.Contains(pi.CargoType))
+				return null;
 			
-			//return new Order("EnterTransport", self, underCursor);
+			return new Order("EnterTransport", self, underCursor);
 		}
 		
 		bool CanEnter(Actor self, Actor a)
@@ -85,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 		public PipType ColorOfCargoPip( Actor self )
 		{
-			return self.Info.Traits.Get<PassengerInfo>().ColorOfCargoPip;
+			return self.Info.Traits.Get<PassengerInfo>().PipType;
 		}
 	}
 }

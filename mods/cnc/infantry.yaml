@@ -128,7 +128,7 @@ E6:
 		HP: 25
 	TakeCover:
 	Passenger:
-		ColorOfCargoPip: Yellow
+		PipType: Yellow
 	EngineerRepair:
 	EngineerCapture:
 	-AutoTarget:

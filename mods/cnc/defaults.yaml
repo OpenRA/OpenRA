@@ -13,6 +13,7 @@
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
+		CargoType: Vehicle
 	IronCurtainable: 
 	HiddenUnderFog:
 	GainsExperience:
@@ -36,6 +37,7 @@
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
+		CargoType: Vehicle
 	IronCurtainable: 
 	HiddenUnderFog:
 	GainsExperience:
@@ -80,6 +82,7 @@
 	RenderInfantry:
 	AutoTarget:
 	Passenger:
+		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
 	GainsExperience:

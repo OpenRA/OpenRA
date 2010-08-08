@@ -13,6 +13,7 @@ BADR:
 	IronCurtainable:
 	Cargo:
 		Passengers: 10
+		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
 
@@ -307,7 +308,7 @@ APC:
 	WithMuzzleFlash:
 	AutoTarget:
 	Cargo:
-		PassengerTypes: Foot
+		Types: Infantry
 		Passengers: 5
 		UnloadFacing: 220
 
@@ -517,7 +518,7 @@ LST:
 		Range: 6
 	RenderUnit:
 	Cargo:
-		PassengerTypes: Foot,Wheel,Track
+		Types: Infantry, Vehicle
 		Passengers: 5
 	IronCurtainable:
 	RepairableNear:
@@ -640,7 +641,7 @@ TRAN:
 		SecondaryOffset: 0,-14,0,-2
 	WithShadow:
 	Cargo:
-		PassengerTypes: Foot
+		Types: Infantry
 		Passengers: 5
 	IronCurtainable:
 
