@@ -31,7 +31,13 @@ namespace OpenRA.Mods.RA.Activities
 			var cargo = transport.traits.Get<Cargo>();
 			if (cargo.IsFull(transport)) 
 				return NextActivity;
-
+			
+			
+			// Todo: Queue a move order to the transport? need to be
+			// careful about units that can't path to the transport
+			if ((transport.Location - self.Location).Length > 1)
+				return NextActivity;
+			
 			cargo.Load(transport, self);
 			self.World.AddFrameEndTask(w => w.Remove(self));
 
