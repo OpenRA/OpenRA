@@ -98,10 +98,10 @@ M16:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,50%,25%,25%
-		InfDeath: 1
+		Verses: 100%,25%,30%,10%,10%
 		Explosion: 1
-		Damage: 25
+		InfDeath: 1
+		Damage: 15
 
 Rockets: 
 	ROF: 60
