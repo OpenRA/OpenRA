@@ -420,8 +420,6 @@ namespace OpenRA.Server
 
 		public static void DropClient(Connection toDrop, Exception e)
 		{
-			Log.Write("server", "Client dropped: {0}.", toDrop.socket.RemoteEndPoint);
-
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
 
