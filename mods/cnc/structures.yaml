@@ -17,7 +17,6 @@ FACT:
 	AllowsBuildingRepair:
 	Production:
 		Produces: Building,Defense
-		EnablePrimary: false
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
@@ -160,6 +159,7 @@ PYLE:
 		Produces: Infantry
 		SpawnOffsets: -10,2, 7,7
 		ExitCells: 0,1, 1,1
+	PrimaryBuilding:
 
 HAND:
 	Inherits: ^Building
@@ -188,6 +188,7 @@ HAND:
 		Produces: Infantry
 		SpawnOffsets: 12,24
 		ExitCells:1,2
+	PrimaryBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -218,6 +219,8 @@ AFLD:
 		Produces: Vehicle
 		SpawnOffsets: -24,0
 		ExitCells:3,1
+	PrimaryBuilding:
+	
 WEAP:
 	Inherits: ^Building
 	Buildable:
@@ -247,6 +250,8 @@ WEAP:
 		Produces: Vehicle
 		SpawnOffsets: -8,-8
 		ExitCells: 0,2
+	PrimaryBuilding:
+	
 HQ:
 	RequiresPower:
 	CanPowerDown:
@@ -346,6 +351,7 @@ HPAD:
 		SpawnOffsets: 0,-6
 		ExitCells: 0,0
 		Produces: Plane
+	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	RepairsUnits:

@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			var producers = self.World.Queries.OwnedBy[ self.Owner ].WithTrait<Production>()
 							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( unit.Category ) )
 							   .ToList();
-			var producer = producers.Where( x => x.Trait.IsPrimary ).Concat( producers )
+			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )
 				.FirstOrDefault();
 
 			if( producer.Actor != null )

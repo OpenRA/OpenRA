@@ -170,7 +170,7 @@ namespace OpenRA.Traits
 			var producers = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<Production>()
 				.Where(x => producerTypes.Contains(x.Actor.Info))
-				.OrderByDescending(x => x.Trait.IsPrimary ? 1 : 0)	// prioritize the primary.
+				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ) // prioritize the primary.
 				.ToArray();
 
 			if (producers.Length == 0)

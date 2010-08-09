@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -230,6 +230,7 @@
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="ActorReference.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Traits\PrimaryBuilding.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -260,7 +261,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Traits\" />
-  </ItemGroup>
 </Project>

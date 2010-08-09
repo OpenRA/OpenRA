@@ -81,6 +81,7 @@ SPEN:
 		SpawnOffsets: 0,-5, 0,-5, 0,0, 0,0
 		ExitCells: -1,2, 3,2, 0,0, 2,0
 		Produces: Ship
+	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
@@ -115,6 +116,7 @@ SYRD:
 		Produces: Ship
 		SpawnOffsets: -25,23, 26,23, -22,-25, 23,-25
 		ExitCells: 0,2, 2,2, 0,0, 2,0
+	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
@@ -451,6 +453,7 @@ WEAP:
 		SpawnOffsets: 5,0
 		ExitCells: 1,1
 		Produces: Vehicle
+	PrimaryBuilding:
 	IronCurtainable:
 
 FACT:
@@ -468,7 +471,6 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
-		EnablePrimary: false
 	IronCurtainable: 
 	Valued:
 		Cost: 2500
@@ -567,6 +569,7 @@ HPAD:
 		SpawnOffsets: 0,-6
 		ExitCells: 0,0
 		Produces: Plane
+	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -595,6 +598,7 @@ AFLD:
 		Produces: Plane
 		SpawnOffsets: 0,4
 		ExitCells: 1,1
+	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -697,6 +701,7 @@ BARR:
 		SpawnOffsets: -4,19, -17,15
 		ExitCells: 0,2, 0,2
 		Produces: Infantry
+	PrimaryBuilding:
 	IronCurtainable:
 
 TENT:
@@ -726,6 +731,7 @@ TENT:
 		Produces: Infantry
 		SpawnOffsets: -1,19, -17,15
 		ExitCells: 0,2, 0,2
+	PrimaryBuilding:
 	IronCurtainable:
 
 KENN:
@@ -750,6 +756,7 @@ KENN:
 		SpawnOffsets: 0,0
 		ExitCells: 0,0
 		Produces: Infantry
+	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 

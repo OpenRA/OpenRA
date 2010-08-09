@@ -20,13 +20,12 @@ namespace OpenRA.Traits
 	{
 		public readonly float[] SpawnOffsets; // in px relative to CenterLocation
 		public readonly int[] ExitCells; // in cells relative to TopLeft, supports a list for multiple exits
-		public readonly bool EnablePrimary = true;
 		public readonly string[] Produces = { };
 		
 		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
 
-	public class Production : IIssueOrder, IResolveOrder, ITags, IOrderCursor
+	public class Production
 	{	
 		public readonly List<Pair<float2, int2>> Spawns = new List<Pair<float2, int2>>();
 		public Production(ProductionInfo info)
@@ -111,56 +110,6 @@ namespace OpenRA.Traits
 			return false;
 		}
 
-		// "primary building" crap - perhaps this should be split?
-		bool isPrimary = false;
-		public bool IsPrimary { get { return isPrimary; } }
 
-		public IEnumerable<TagType> GetTags()
-		{
-			yield return (isPrimary) ? TagType.Primary : TagType.None;
-		}
-
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{			
-			if (mi.Button == MouseButton.Right && underCursor == self && self.Info.Traits.Get<ProductionInfo>().EnablePrimary)
-				return new Order("PrimaryProducer", self);
-			return null;
-		}
-		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "PrimaryProducer") ? "deploy" : null;
-		}
-		
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "PrimaryProducer")
-				SetPrimaryProducer(self, !isPrimary);
-		}
-		
-		public void SetPrimaryProducer(Actor self, bool state)
-		{
-			if (state == false)
-			{
-				isPrimary = false;
-				return;
-			}
-			
-			// Cancel existing primaries
-			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
-			{
-				foreach (var b in self.World.Queries.OwnedBy[self.Owner]
-					.WithTrait<Production>()
-					.Where(x => x.Trait.IsPrimary
-						&& (x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
-				{
-					b.Trait.SetPrimaryProducer(b.Actor, false);
-				}
-			}
-			isPrimary = true;
-			
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			Sound.PlayToPlayer(self.Owner,eva.PrimaryBuildingSelected);
-		}
 	}
 }
