@@ -18,10 +18,17 @@ namespace OpenRA.FileFormats
 {
 	public class VqaReader
 	{
+		Stream stream;
+		ushort flags;
+		ushort numFrames;
+		ushort width;
+		ushort height;
+		UInt32[] frames;
+		
 		public VqaReader( Stream stream )
 		{
+			this.stream = stream;
 			BinaryReader reader = new BinaryReader( stream );
-
 			// Decode FORM chunk
 			if (new String(reader.ReadChars(4)) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
@@ -33,10 +40,10 @@ namespace OpenRA.FileFormats
 			
 			var rStartPos = reader.ReadUInt32();
 			var version = reader.ReadUInt16();
-			var flags = reader.ReadUInt16();
-			var numFrames = reader.ReadUInt16();
-			var width = reader.ReadUInt16();
-			var height = reader.ReadUInt16();
+			flags = reader.ReadUInt16();
+			numFrames = reader.ReadUInt16();
+			width = reader.ReadUInt16();
+			height = reader.ReadUInt16();
 			
 			var blockWidth = reader.ReadByte();
 			var blockHeight = reader.ReadByte();
@@ -64,9 +71,55 @@ namespace OpenRA.FileFormats
 			Console.WriteLine("\tBlocksize: {0}x{1}",blockWidth,blockHeight);
 			Console.WriteLine("\tAudio: {0}hz, {1} channel(s), {2} bit",freq, channels, bits);
 
-			// The next section should be the first FINF chunk
+			// Decode FINF chunk
 			if (new String(reader.ReadChars(4)) != "FINF")
 				throw new InvalidDataException("Invalid vqa (invalid FINF section)");
+			
+			/*var offset = */reader.ReadUInt16();
+			/*var unknown4 = */reader.ReadUInt16();
+			
+			// Frame offsets
+			frames = new UInt32[numFrames];
+			for (int i = 0; i < numFrames; i++)
+			{
+				frames[i] = reader.ReadUInt32();
+				if (frames[i] > 0x40000000) frames[i] -= 0x40000000;
+				frames[i] <<= 1;
+			}
+						
+			while(true)
+			{
+				
+				// Chunks are aligned on even bytes; may be padded with a single null
+				if (reader.PeekChar() == 0) reader.ReadByte();
+				
+				var type = new String(reader.ReadChars(4));
+				
+				Console.WriteLine("Parsing chunk {0}@{1}",type, reader.BaseStream.Position-4);
+				switch(type)
+				{
+					case "SND2":
+						DecodeSND2(reader);
+					break;
+					case "VQFR":
+					return;
+					default: 
+						throw new InvalidDataException("Unknown section {0}".F(type));
+				}
+			}
 		}
+		
+		public void DecodeSND2(BinaryReader reader)
+		{
+			int chunkLength = (int)Swap(reader.ReadUInt32());
+			
+			// Don't do anything with this data (yet)
+			reader.ReadBytes(chunkLength);
+		}
+		
+		public UInt32 Swap(UInt32 orig)
+		{
+			return (UInt32)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
+		}		
 	}
 }
