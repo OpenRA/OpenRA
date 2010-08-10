@@ -21,8 +21,11 @@ namespace OpenRA.FileFormats
 		Stream stream;
 		ushort flags;
 		ushort numFrames;
+		ushort numColors;
 		ushort width;
 		ushort height;
+		byte cbParts;
+		int2 blocks;
 		UInt32[] frames;
 		
 		public VqaReader( Stream stream )
@@ -48,9 +51,10 @@ namespace OpenRA.FileFormats
 			var blockWidth = reader.ReadByte();
 			var blockHeight = reader.ReadByte();
 			var framerate = reader.ReadByte();
-			var cbParts = reader.ReadByte();
+			cbParts = reader.ReadByte();
+			blocks = new int2(width / blockWidth, height / blockHeight);
 			
-			var colors = reader.ReadUInt16();
+			numColors = reader.ReadUInt16();
 			var maxBlocks = reader.ReadUInt16();
 			/*var unknown1 = */reader.ReadUInt16();
 			/*var unknown2 = */reader.ReadUInt32();
@@ -86,7 +90,7 @@ namespace OpenRA.FileFormats
 				if (frames[i] > 0x40000000) frames[i] -= 0x40000000;
 				frames[i] <<= 1;
 			}
-						
+			
 			while(true)
 			{
 				if (reader.BaseStream.Position == reader.BaseStream.Length)
@@ -112,6 +116,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
+		// VQA Sound sample
 		public void DecodeSND2(BinaryReader reader)
 		{
 			int chunkLength = (int)Swap(reader.ReadUInt32());
@@ -120,14 +125,52 @@ namespace OpenRA.FileFormats
 			reader.ReadBytes(chunkLength);
 		}
 		
+		// VQA Frame
 		public void DecodeVQFR(BinaryReader reader)
 		{
 			int chunkLength = (int)Swap(reader.ReadUInt32());
 			
-			// Don't do anything with this data (yet)
-			reader.ReadBytes(chunkLength);
+			// Pixel table
+			byte[] cbf = new byte[8*blocks.X*blocks.Y];
+			
+			List<byte> newcbfFormat80 = new List<byte>();			
+			int cbpCount = 0;
+			
+			Color[] palette = new Color[numColors];
+			
+			while(true)
+			{			
+				var type = new String(reader.ReadChars(4));
+				int subchunkLength = (int)Swap(reader.ReadUInt32());
+
+				Console.WriteLine("Parsing VQRF sub-chunk {0}@{1}",type, reader.BaseStream.Position-4);
+				switch(type)
+				{
+					// Full compressed frame
+					case "CBFZ":
+						Format80.DecodeInto( reader.ReadBytes(subchunkLength), cbf );
+					break;
+					
+					// Partial compressed frame
+					case "CBPZ":
+						var bytes = reader.ReadBytes(subchunkLength);
+						foreach (var b in bytes) newcbfFormat80.Add(b);
+						if (++cbpCount == cbParts)
+							Format80.DecodeInto( newcbfFormat80.ToArray(), cbf );
+					break;
+					
+					// Palette
+					case "CPL0":
+						for (int i = 0; i < numColors; i++)
+							palette[i] = Color.FromArgb(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+					break;
+					default:
+						throw new InvalidDataException("Unknown sub-chunk {0}".F(type));
+				}
+			}
 		}
-				
+		
+		// Change endianness of a uint32
 		public UInt32 Swap(UInt32 orig)
 		{
 			return (UInt32)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
