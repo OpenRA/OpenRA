@@ -196,14 +196,16 @@ namespace OpenRA.FileFormats
 					
 					// Partial compressed frame-modifier
 					case "CBPZ":
-						var bytes = reader.ReadBytes(subchunkLength);
-						foreach (var b in bytes) newcbfFormat80.Add(b);
-						if (++cbpCount == cbParts) // Update the frame-modifier
+						// Partial buffer is full; dump and recreate
+						if (cbpCount == cbParts)
 						{
 							Format80.DecodeInto( newcbfFormat80.ToArray(), cbf );
 							cbpCount = 0;
 							newcbfFormat80.Clear();
 						}
+						var bytes = reader.ReadBytes(subchunkLength);
+						foreach (var b in bytes) newcbfFormat80.Add(b);
+						cbpCount++;
 					break;
 					
 					// Palette
