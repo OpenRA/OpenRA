@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System;
+using System.Drawing.Imaging;
 
 namespace OpenRA.FileFormats
 {
@@ -24,6 +25,8 @@ namespace OpenRA.FileFormats
 		ushort numColors;
 		ushort width;
 		ushort height;
+		ushort blockWidth;
+		ushort blockHeight;
 		byte cbParts;
 		int2 blocks;
 		UInt32[] frames;
@@ -48,8 +51,8 @@ namespace OpenRA.FileFormats
 			width = reader.ReadUInt16();
 			height = reader.ReadUInt16();
 			
-			var blockWidth = reader.ReadByte();
-			var blockHeight = reader.ReadByte();
+			blockWidth = reader.ReadByte();
+			blockHeight = reader.ReadByte();
 			var framerate = reader.ReadByte();
 			cbParts = reader.ReadByte();
 			blocks = new int2(width / blockWidth, height / blockHeight);
@@ -93,7 +96,7 @@ namespace OpenRA.FileFormats
 			
 			while(true)
 			{
-				if (reader.BaseStream.Position == reader.BaseStream.Length)
+				if (reader.BaseStream.Length - reader.BaseStream.Position < 4)
 					break;
 				
 				// Chunks are aligned on even bytes; may be padded with a single null
@@ -139,31 +142,75 @@ namespace OpenRA.FileFormats
 			Color[] palette = new Color[numColors];
 			
 			while(true)
-			{			
+			{				
+				// Chunks are aligned on even bytes; may be padded with a single null
+				if (reader.PeekChar() == 0) reader.ReadByte();
 				var type = new String(reader.ReadChars(4));
 				int subchunkLength = (int)Swap(reader.ReadUInt32());
 
 				Console.WriteLine("Parsing VQRF sub-chunk {0}@{1}",type, reader.BaseStream.Position-4);
 				switch(type)
 				{
-					// Full compressed frame
+					// Full compressed frame-modifier
 					case "CBFZ":
 						Format80.DecodeInto( reader.ReadBytes(subchunkLength), cbf );
 					break;
 					
-					// Partial compressed frame
+					// Partial compressed frame-modifier
 					case "CBPZ":
 						var bytes = reader.ReadBytes(subchunkLength);
 						foreach (var b in bytes) newcbfFormat80.Add(b);
-						if (++cbpCount == cbParts)
+						if (++cbpCount == cbParts) // Update the frame-modifier
 							Format80.DecodeInto( newcbfFormat80.ToArray(), cbf );
 					break;
 					
 					// Palette
 					case "CPL0":
+						Bitmap pal = new Bitmap(1,numColors);
 						for (int i = 0; i < numColors; i++)
-							palette[i] = Color.FromArgb(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+						{
+							byte r = reader.ReadByte();
+							byte g = reader.ReadByte();
+							byte b = reader.ReadByte();
+							palette[i] = Color.FromArgb(255,(r & 63) * 255 / 63, (g & 63) * 255 / 63, (b & 63) * 255 / 63);
+							var p = palette[i];
+							Console.WriteLine("{0} {1} {2}", p.R, p.G,p.B);
+							pal.SetPixel(1,i,palette[i]);	
+						}
+						pal.Save("palette.bmp");
 					break;
+					
+					// Frame data
+					case "VPTZ":
+						var framedata = new byte[2*blocks.X*blocks.Y];
+						Format80.DecodeInto( reader.ReadBytes(subchunkLength), framedata );
+						
+					
+						
+						
+						// Vomit the frame data to file
+						Bitmap foo = new Bitmap(width, height);
+						
+						var bitmapData = foo.LockBits(new Rectangle(0, 0, width, height),
+							ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+						
+						unsafe
+						{
+							int* c = (int*)bitmapData.Scan0;
+			
+							for (var x = 0; x < blocks.X; x++)
+								for (var y = 0; y < blocks.Y; y++)
+									if (framedata[x + y*blocks.X + blocks.Y*blocks.X] == 0x0f)
+										for (var xx = x*blockWidth; xx < (x+1)*blockWidth; xx++)
+											for (var yy = y*blockHeight; yy < (y+1)*blockHeight; yy++)
+												*(c + (yy * bitmapData.Stride >> 2) + xx) = palette[framedata[x + y*blocks.X]].ToArgb();
+								
+						}
+						foo.UnlockBits(bitmapData);
+						foo.Save("test.bmp");
+						throw new InvalidDataException("foo");
+						// This is the last subchunk
+						return;
 					default:
 						throw new InvalidDataException("Unknown sub-chunk {0}".F(type));
 				}
