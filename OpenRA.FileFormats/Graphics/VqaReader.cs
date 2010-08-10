@@ -166,28 +166,20 @@ namespace OpenRA.FileFormats
 					
 					// Palette
 					case "CPL0":
-						Bitmap pal = new Bitmap(1,numColors);
 						for (int i = 0; i < numColors; i++)
 						{
 							byte r = reader.ReadByte();
 							byte g = reader.ReadByte();
 							byte b = reader.ReadByte();
 							palette[i] = Color.FromArgb(255,(r & 63) * 255 / 63, (g & 63) * 255 / 63, (b & 63) * 255 / 63);
-							var p = palette[i];
-							Console.WriteLine("{0} {1} {2}", p.R, p.G,p.B);
-							pal.SetPixel(1,i,palette[i]);	
 						}
-						pal.Save("palette.bmp");
 					break;
 					
 					// Frame data
 					case "VPTZ":
 						var framedata = new byte[2*blocks.X*blocks.Y];
 						Format80.DecodeInto( reader.ReadBytes(subchunkLength), framedata );
-						
-					
-						
-						
+
 						// Vomit the frame data to file
 						Bitmap foo = new Bitmap(width, height);
 						
@@ -200,15 +192,21 @@ namespace OpenRA.FileFormats
 			
 							for (var x = 0; x < blocks.X; x++)
 								for (var y = 0; y < blocks.Y; y++)
-									if (framedata[x + y*blocks.X + blocks.Y*blocks.X] == 0x0f)
-										for (var xx = x*blockWidth; xx < (x+1)*blockWidth; xx++)
-											for (var yy = y*blockHeight; yy < (y+1)*blockHeight; yy++)
-												*(c + (yy * bitmapData.Stride >> 2) + xx) = palette[framedata[x + y*blocks.X]].ToArgb();
-								
+								{
+									var px = framedata[x + y*blocks.X];
+									var mod = framedata[x + y*blocks.X + blocks.Y*blocks.X];
+									for (var j = 0; j < blockHeight; j++)
+										for (var i = 0; i < blockWidth; i++)
+										{
+											byte color = (mod == 0x0f) ? px : cbf[(mod*256 + px)*8 + j*blockWidth + i];
+											*(c + ((y*blockHeight + j) * bitmapData.Stride >> 2) + x*blockWidth + i) = palette[color].ToArgb();
+										}
+								}
 						}
 						foo.UnlockBits(bitmapData);
 						foo.Save("test.bmp");
 						throw new InvalidDataException("foo");
+					
 						// This is the last subchunk
 						return;
 					default:
