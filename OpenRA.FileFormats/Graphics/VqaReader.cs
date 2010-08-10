@@ -39,12 +39,12 @@ namespace OpenRA.FileFormats
 			if (new String(reader.ReadChars(4)) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
 			
-			var fileBTF = reader.ReadUInt32();
+			/*var formlength = */ reader.ReadUInt32();
 			
 			if (new String(reader.ReadChars(8)) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
 			
-			var rStartPos = reader.ReadUInt32();
+			/* var len = */reader.ReadUInt32();
 			var version = reader.ReadUInt16();
 			flags = reader.ReadUInt16();
 			numFrames = reader.ReadUInt16();
@@ -58,7 +58,7 @@ namespace OpenRA.FileFormats
 			blocks = new int2(width / blockWidth, height / blockHeight);
 			
 			numColors = reader.ReadUInt16();
-			var maxBlocks = reader.ReadUInt16();
+			/*var maxBlocks = */reader.ReadUInt16();
 			/*var unknown1 = */reader.ReadUInt16();
 			/*var unknown2 = */reader.ReadUInt32();
 			
@@ -124,6 +124,8 @@ namespace OpenRA.FileFormats
 		{
 			int chunkLength = (int)Swap(reader.ReadUInt32());
 			
+			// first bit in flags is zero if there is no audio
+			
 			// Don't do anything with this data (yet)
 			reader.ReadBytes(chunkLength);
 		}
@@ -131,13 +133,15 @@ namespace OpenRA.FileFormats
 		// VQA Frame
 		public void DecodeVQFR(BinaryReader reader)
 		{
-			int chunkLength = (int)Swap(reader.ReadUInt32());
-			
-			// Pixel table
+			/* var chunkLength = Swap(*/reader.ReadUInt32();
+						
+			// Stores a list of subpixels, referenced by the VPTZ chunk
 			byte[] cbf = new byte[8*blocks.X*blocks.Y];
 			
+			// cbf array is updated every 8 frames
 			List<byte> newcbfFormat80 = new List<byte>();			
 			int cbpCount = 0;
+			
 			
 			Color[] palette = new Color[numColors];
 			
@@ -148,7 +152,7 @@ namespace OpenRA.FileFormats
 				var type = new String(reader.ReadChars(4));
 				int subchunkLength = (int)Swap(reader.ReadUInt32());
 
-				Console.WriteLine("Parsing VQRF sub-chunk {0}@{1}",type, reader.BaseStream.Position-4);
+				Console.WriteLine("Parsing VQFR sub-chunk {0}@{1}",type, reader.BaseStream.Position-4);
 				switch(type)
 				{
 					// Full compressed frame-modifier
@@ -171,7 +175,7 @@ namespace OpenRA.FileFormats
 							byte r = reader.ReadByte();
 							byte g = reader.ReadByte();
 							byte b = reader.ReadByte();
-							palette[i] = Color.FromArgb(255,(r & 63) * 255 / 63, (g & 63) * 255 / 63, (b & 63) * 255 / 63);
+							palette[i] = Color.FromArgb(255,ToColorByte(r),ToColorByte(b),ToColorByte(b));
 						}
 					break;
 					
@@ -190,15 +194,15 @@ namespace OpenRA.FileFormats
 						{
 							int* c = (int*)bitmapData.Scan0;
 			
-							for (var x = 0; x < blocks.X; x++)
-								for (var y = 0; y < blocks.Y; y++)
+							for (var y = 0; y < blocks.Y; y++)
+								for (var x = 0; x < blocks.X; x++)
 								{
 									var px = framedata[x + y*blocks.X];
-									var mod = framedata[x + y*blocks.X + blocks.Y*blocks.X];
+									var mod = framedata[x + (y + blocks.Y)*blocks.X];
 									for (var j = 0; j < blockHeight; j++)
 										for (var i = 0; i < blockWidth; i++)
 										{
-											byte color = (mod == 0x0f) ? px : cbf[(mod*256 + px)*8 + j*blockWidth + i];
+											byte color = (mod == 0x0f) ? px : cbf[(mod << 8 | px) << 3 + j*blockWidth + i];
 											*(c + ((y*blockHeight + j) * bitmapData.Stride >> 2) + x*blockWidth + i) = palette[color].ToArgb();
 										}
 								}
@@ -213,6 +217,11 @@ namespace OpenRA.FileFormats
 						throw new InvalidDataException("Unknown sub-chunk {0}".F(type));
 				}
 			}
+		}
+		
+		public byte ToColorByte(byte b)
+		{
+			return (byte)((b & 63) * 255 / 63);
 		}
 		
 		// Change endianness of a uint32
