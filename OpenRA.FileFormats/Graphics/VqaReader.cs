@@ -89,6 +89,8 @@ namespace OpenRA.FileFormats
 						
 			while(true)
 			{
+				if (reader.BaseStream.Position == reader.BaseStream.Length)
+					break;
 				
 				// Chunks are aligned on even bytes; may be padded with a single null
 				if (reader.PeekChar() == 0) reader.ReadByte();
@@ -102,9 +104,10 @@ namespace OpenRA.FileFormats
 						DecodeSND2(reader);
 					break;
 					case "VQFR":
-					return;
+						DecodeVQFR(reader);
+					break;
 					default: 
-						throw new InvalidDataException("Unknown section {0}".F(type));
+						throw new InvalidDataException("Unknown chunk {0}".F(type));
 				}
 			}
 		}
@@ -117,6 +120,14 @@ namespace OpenRA.FileFormats
 			reader.ReadBytes(chunkLength);
 		}
 		
+		public void DecodeVQFR(BinaryReader reader)
+		{
+			int chunkLength = (int)Swap(reader.ReadUInt32());
+			
+			// Don't do anything with this data (yet)
+			reader.ReadBytes(chunkLength);
+		}
+				
 		public UInt32 Swap(UInt32 orig)
 		{
 			return (UInt32)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
