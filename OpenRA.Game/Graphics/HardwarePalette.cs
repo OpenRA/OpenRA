@@ -23,8 +23,9 @@ namespace OpenRA.Graphics
 		
 		// We need to store the Palettes themselves for the remap palettes to work
 		// We should probably try to fix this somehow
-		static Dictionary<string, Palette> palettes;
-		static Dictionary<string, int> indices;
+		Dictionary<string, Palette> palettes;
+		Dictionary<string, int> indices;
+
 		public HardwarePalette(Map map)
 			: base(new Size(256, MaxPalettes))
 		{
