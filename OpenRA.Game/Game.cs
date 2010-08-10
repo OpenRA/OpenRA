@@ -504,7 +504,14 @@ namespace OpenRA
 			// Load the default mod to access required files
 			LoadModPackages();
 			
-			new VqaReader(FileSystem.Open("aagun.vqa"));
+			var video = new VqaReader(FileSystem.Open("aagun.vqa"));
+			video.FrameData().Save("test-0.bmp");
+			for (int i = 0; i < video.numFrames; i++)
+			{
+				video.AdvanceFrame();
+				video.FrameData().Save("test-{0}.bmp".F(i));
+			}
+			
 			Renderer.SheetSize = Settings.SheetSize;
 
 			var resolution = GetResolution(settings, Game.Settings.WindowMode);
