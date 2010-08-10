@@ -1,0 +1,350 @@
+.VQA files
+by Aaron Glover (arn@ibm.net)
+
+Each VQA has a 62-byte header, as follows:
+
+  VQAHeader: record
+    TextFORM: array[0..3] of Char; {Always 'FORM'}
+    FileBTF: LongInt; {Reverse - Bytes to follow}
+    TextWVQAVQHD: array[0..7] of Char; {Always 'WVQAVQHD'}
+    RStartPos: LongInt; {Reverse - Relative start position}
+    Unknown1: Word;
+    Unknown2: Word;
+    NumFrames: Word;
+    Width: Word;
+    Height: Word;
+    Unknown3: Word;
+    Unknown4: Word;
+    Unknown5: Word;
+    Unknown6: Word;
+    Unknown7: LongInt;
+    Unknown8: Word; {This changes}
+    Unknown9: Word;
+    Unknown10: Word;
+    Unknown11: array[0..13] of Char;
+  end;
+
+Following the header, there are a number of `sub-files' that each
+have a header of 8 bytes.  The first four are the name (or type) of
+the sub-file, the next four are a reverse LongInt that equals the
+number of sub-file data bytes to follow (sub-file size minus sub-file
+header size).
+
+By `reverse LongInt', I mean a 4-byte Integer value stored backwards.
+For example, take the the decimal value 77236.  In hexadecimal it's
+12DB4h, and would be stored in a binary file as the bytes B4 2D 01
+00.  As a reverse LongInt, it would be stored as 00 01 2D B4.  More
+human readable, but not how computers work.
+
+Some sub-file names seem to start with a null byte (00h).  There is a
+reason for this, which will become apparent later.  Just ignore the
+null byte and assume the next one is the start of the sub-file
+header.
+
+So, after the header, you should find the something like the
+following sub-files:
+FINF
+SND2
+SND2
+VQFR
+SND2
+VQFR
+SND2
+VQFR
+SND2
+VQFR
+...
+
+Each VQFR sub-file itself has sub-files.  If you treat each VQFR sub-
+file as if the `data bytes to follow' value was zero, you should get
+something like:
+FINF
+SND2
+SND2
+VQFR
+  CBF0
+  CBP0
+  CPL0
+  VPTZ
+SND2
+VQFR
+  CBP0
+  VPTZ
+SND2
+VQFR
+  CBP0
+  VPTZ
+SND2
+VQFR
+  CBP0
+  VPTZ
+...
+
+FINF sub-file type:
+
+First is a Word value that, if you multiply by two, gives the
+position of the first data sub-file (relative to the start of the
+VQA), then another Word value that seems to be always 4000h.
+
+Following that is an array of LongInt values that, when multiplied by
+two, give the position of each of the frame data sub-files (relative
+to the start of the VQA).  Each frame comprises of a SND2 sub-file
+and a VQFR sub-file that follows immediately after.
+
+This is why some of the sub-file names start with a null byte.  Since
+you have to multiply by two, each offset value must be even.  So if
+it would normally be odd, a null is inserted as the first byte to
+make the sub-file's name offset even.  Whew!  Try saying that five
+times fast!
+
+The number of elements in the array is FrameNum (from the VQA header)
+minus one.
+
+I've noticed some of the LongInt values in this array are 40000000h
+too large.  I don't know why this is, at the moment I subtract
+40000000h from values over 40000000h, it seems to work OK.
+
+SND2 sub-file type:
+
+I bet you've guessed this one.  Well, so did I.  Audio, right?  I've
+had a go at decoding them, and they seem to be in the same format as
+the .AUD files, but I can't work them out (yet).
+
+CBF0 sub-file type:
+
+An array of eight-byte (4x2 pixel) uncompressed screen graphics.
+I'll explain what they're used for when we get to the VPTZ sub-file
+type.  Just remember that it's an array of graphics that measure 4x2
+screen pixels.
+
+CBP0 sub-file type:
+
+Eight of these (in frame order) appended together make up a complete
+CBF0 sub-file that replaces the previous CBF0 sub-file information.
+After you've displayed each eighth frame, you need to replace the
+current CBF0 information with the new one you've made up from eight
+CBP0 sub-files.  Just do it, OK?  This will make more sense when we
+get to the VPTZ sub-file type.
+
+CPL0 sub-file type:
+
+The palette for the VQA file.  An array of Red, Green and Blue byte
+values (in that order).  Note that there are sometimes less than 256
+colours in the palette.
+
+VPTZ sub-file type:
+
+Well, here it is.  This is the heart of the VQA file, the graphics.
+Each VPTZ sub-file is compressed with the Format 80 method as
+described later in this document.
+
+When you decompress a VPTZ sub-file, you get an 80x156 graphic.  The
+top half (the first 78 lines) is the basis of the finished frame,
+while the bottom half is a modifier for the pixels in the top half.
+
+The final size of each VQA frame is 320x156.  With the top half
+(basis of the finished frame, remember) being 80x78, you can see that
+we need to multiply by four in the X (horizontal) direction, and by
+two in the Y (vertical) direction.  Imagine that each pixel in the
+top half in fact represents eight screen pixels, arranged in a 4x2
+format.
+
+I must distinguish between pixels and screen pixels.  By pixel, I
+mean one byte read from the decompressed VPTZ graphic, which, when
+displayed on screen, measures 4x2 screen pixels.
+
+Now, if you view a VQA, you can see that there is a higher resolution
+used than each pixel being 4x2 screen pixels.  This is where the
+bottom half and the CBF0 sub-file type comes in.
+
+The bottom half is an overlay of modifiers for the top half.  That
+is, the top-left pixel in the bottom half is a modifier for the top-
+left pixel in the top half.  The bottom half pixel values range from
+00h to 0Fh.
+
+0Fh means `no modifcation'.  The corresponding pixel value in the top
+half is copied eight times to produce the 4x2 screen pixel format.
+
+00-0Eh are modifiers.  If you treat these pixel values as the high
+byte in a Word value, and treat the corresponding pixel value in the
+top half as the low byte, you get the CBF0 array element number of
+the 4x2 screen graphic you should display for that pixel.  Make
+sense?  That is how the higher resolution is achieved.
+
+Perhaps I should clarify.  If TopByte is the top half pixel byte
+value, and BottomByte is the bottom half pixel byte value, then the
+4x2 screen pixel graphic is element number (BottomByte * 256 +
+TopByte) in the CBF0 array.
+
+Just display the frames in order, and presto!  You have a VQA movie.
+
+
+Format 80 compression method
+by Vladan Bato (bat22@geocities.com)
+
+----------
+ Format80
+----------
+
+There are several different commands, with different sizes : form 1 to 5
+bytes.
+The positions mentioned below always refer to the destination buffer (i.e.
+the uncompressed image). The relative positions are relative to the current
+position in the destination buffer, which is one byte beyond the last written
+byte.
+
+I will give some sample code at the end.
+
+(1) 1 byte
+      +---+---+---+---+---+---+---+---+
+      | 1 | 0 |   |   |   |   |   |   |
+      +---+---+---+---+---+---+---+---+
+              \_______________________/
+                         |
+                       Count
+
+      This one means : copy next Count bytes as is from Source to Dest.
+
+(2) 2 bytes
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+  | 0 |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+  +---+---+---+---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+      \___________/\__________________________________________________/
+            |                             |
+         Count-3                    Relative Pos.
+
+  This means copy Count bytes from Dest at Current Pos.-Rel. Pos. to
+  Current position.
+  Note that you have to add 3 to the number you find in the bits 4-6 of the
+  first byte to obtain the Count.
+  Note that if the Rel. Pos. is 1, that means repeat Count times the previous
+  byte.
+
+(3) 3 bytes
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+  | 1 | 1 |   |   |   |   |   |   |   |               |               |
+  +---+---+---+---+---+---+---+---+   +---------------+---------------+
+          \_______________________/                  Pos
+                     |
+                 Count-3
+
+  Copy Count bytes from Pos, where Pos is absolute from the start of the
+  destination buffer. (Pos is a word, that means that the images can't be
+  larger than 64K)
+
+(4) 4 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 |   |       |       |  |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+
+                                            Count          Color
+
+  Write Color Count times.
+  (Count is a word, color is a byte)
+
+(5) 5 bytes
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+  | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |   |       |       |  |       |       |
+  +---+---+---+---+---+---+---+---+   +-------+-------+  +-------+-------+
+                                            Count               Pos
+
+  Copy Count bytes from Dest. starting at Pos. Pos is absolute from the start
+  of the Destination buffer.
+  Both Count and Pos are words.
+
+These are all the commands I found out. Maybe there are other ones, but I
+haven't seen them yet.
+
+All the images end with a 80h command.
+
+To make things more clearer here's a piece of code that will uncompress the
+image.
+
+  DP = destination pointer
+  SP = source pointer
+  Source and Dest are the two buffers
+
+
+  SP:=0;
+  DP:=0;
+  repeat
+    Com:=Source[SP];
+    inc(SP);
+    b7:=Com shr 7;  {b7 is bit 7 of Com}
+    case b7 of
+      0 : begin  {copy command (2)}
+            {Count is bits 4-6 + 3}
+            Count:=(Com and $7F) shr 4 + 3;
+            {Position is bits 0-3, with bits 0-7 of next byte}
+            Posit:=(Com and $0F) shl 8+Source[SP];
+            Inc(SP);
+            {Starting pos=Cur pos. - calculated value}
+            Posit:=DP-Posit;
+            for i:=Posit to Posit+Count-1 do
+            begin
+              Dest[DP]:=Dest[i];
+              Inc(DP);
+            end;
+          end;
+      1 : begin
+            {Check bit 6 of Com}
+            b6:=(Com and $40) shr 6;
+            case b6 of
+              0 : begin  {Copy as is command (1)}
+                    Count:=Com and $3F;  {mask 2 topmost bits}
+                    if Count=0 then break; {EOF marker}
+                    for i:=1 to Count do
+                    begin
+                      Dest[DP]:=Source[SP];
+                      Inc(DP);
+                      Inc(SP);
+                    end;
+                  end;
+              1 : begin  {large copy, very large copy and fill commands}
+                    {Count = (bits 0-5 of Com) +3}
+                    {if Com=FEh then fill, if Com=FFh then very large copy}
+                    Count:=Com and $3F;
+                    if Count<$3E then {large copy (3)}
+                    begin
+                      Inc(Count,3);
+                      {Next word = pos. from start of image}
+                      Posit:=Word(Source[SP]);
+                      Inc(SP,2);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end
+                    else if Count=$3F then   {very large copy (5)}
+                    begin
+                      {next 2 words are Count and Pos}
+                      Count:=Word(Source[SP]);
+                      Posit:=Word(Source[SP+2]);
+                      Inc(SP,4);
+                      for i:=Posit to Posit+Count-1 do
+                      begin
+                        Dest[DP]:=Dest[i];
+                        Inc(DP);
+                      end;
+                    end else
+                    begin   {Count=$3E, fill (4)}
+                      {Next word is count, the byte after is color}
+                      Count:=Word(Source[SP]);
+                      Inc(SP,2);
+                      b:=Source[SP];
+                      Inc(SP);
+                      for i:=0 to Count-1 do
+                      begin
+                        Dest[DP]:=b;
+                        inc(DP);
+                      end;
+                    end;
+                  end;
+            end;
+          end;
+    end;
+  until false;
+
+Note that you won't be able to compile this code, because the typecasting
+won't work. (But I'm sure you'll be able to fix it).
+
