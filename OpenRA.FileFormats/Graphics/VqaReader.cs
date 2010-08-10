@@ -137,7 +137,11 @@ namespace OpenRA.FileFormats
 				if (reader.PeekChar() == 0) reader.ReadByte();
 			}
 			if (++currentFrame == numFrames)
+			{
 				currentFrame = 0;
+				cbpCount = 0;
+				newcbfFormat80.Clear();
+			}
 		}
 		
 		public void FrameData(ref Bitmap frame)
