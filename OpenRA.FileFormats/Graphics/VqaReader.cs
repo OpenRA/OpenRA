@@ -127,7 +127,6 @@ namespace OpenRA.FileFormats
 			{
 				var type = new String(reader.ReadChars(4));
 				var length = Swap(reader.ReadUInt32());
-				Console.WriteLine("Parsing chunk {0}@{1}",type, reader.BaseStream.Position-4);
 
 				switch(type)
 				{
@@ -186,12 +185,14 @@ namespace OpenRA.FileFormats
 				var type = new String(reader.ReadChars(4));
 				int subchunkLength = (int)Swap(reader.ReadUInt32());
 
-				Console.WriteLine("Parsing VQFR sub-chunk {0}@{1}",type, reader.BaseStream.Position-4);
 				switch(type)
 				{
 					// Full compressed frame-modifier
 					case "CBFZ":
 						Format80.DecodeInto( reader.ReadBytes(subchunkLength), cbf );
+					break;
+					case "CBF0":
+						cbf = reader.ReadBytes(subchunkLength);
 					break;
 					
 					// Partial compressed frame-modifier
@@ -207,7 +208,18 @@ namespace OpenRA.FileFormats
 						foreach (var b in bytes) newcbfFormat80.Add(b);
 						cbpCount++;
 					break;
-					
+					case "CBP0":
+						// Partial buffer is full; dump and recreate
+						if (cbpCount == cbParts)
+						{
+							cbf = newcbfFormat80.ToArray();
+							cbpCount = 0;
+							newcbfFormat80.Clear();
+						}
+						var bytes2 = reader.ReadBytes(subchunkLength);
+						foreach (var b in bytes2) newcbfFormat80.Add(b);
+						cbpCount++;
+					break;
 					// Palette
 					case "CPL0":
 						for (int i = 0; i < numColors; i++)
