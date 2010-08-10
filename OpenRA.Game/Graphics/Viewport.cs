@@ -50,9 +50,6 @@ namespace OpenRA.Graphics
 		{
 			Timer.Time( "DrawRegions start" );
 
-			world.WorldRenderer.palette.Update(
-				world.WorldActor.traits.WithInterface<IPaletteModifier>());
-
 			float2 r1 = new float2(2, -2) / screenSize;
 			float2 r2 = new float2(-1, 1);
 
@@ -79,6 +76,9 @@ namespace OpenRA.Graphics
 		public void Tick()
 		{
 			cursorFrame += 0.5f;
+
+			Game.world.WorldRenderer.palette.Update(
+				Game.world.WorldActor.traits.WithInterface<IPaletteModifier>());
 		}
 
 		public float2 ViewToWorld(int2 loc)
