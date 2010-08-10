@@ -503,15 +503,7 @@ namespace OpenRA
 
 			// Load the default mod to access required files
 			LoadModPackages();
-			
-			var video = new VqaReader(FileSystem.Open("crontest.vqa"));
-			video.FrameData().Save("test-0.bmp");
-			for (int i = 1; i < video.numFrames; i++)
-			{
-				video.AdvanceFrame();
-				video.FrameData().Save("test-{0}.bmp".F(i));
-			}
-			
+						
 			Renderer.SheetSize = Settings.SheetSize;
 
 			var resolution = GetResolution(settings, Game.Settings.WindowMode);

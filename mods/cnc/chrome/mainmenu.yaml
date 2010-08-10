@@ -1,5 +1,11 @@
 Container@ROOT:
 	Children:
+		VqaPlayer:
+			X:WINDOW_RIGHT - 400
+			Y:WINDOW_BOTTOM - 200
+			Width:200
+			Height:200
+			Video:obel.vqa
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:(WINDOW_RIGHT - WIDTH)/2

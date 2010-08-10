@@ -22,9 +22,10 @@ namespace OpenRA.FileFormats
 		Stream stream;
 		ushort flags;
 		public readonly ushort numFrames;
+		public readonly byte framerate;
 		ushort numColors;
-		ushort width;
-		ushort height;
+		public readonly ushort width;
+		public readonly ushort height;
 		ushort blockWidth;
 		ushort blockHeight;
 		byte cbParts;
@@ -51,12 +52,12 @@ namespace OpenRA.FileFormats
 			if (new String(reader.ReadChars(4)) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
 			
-			/*var formlength = */ reader.ReadUInt32();
+			/*var length = */ reader.ReadUInt32();
 			
 			if (new String(reader.ReadChars(8)) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
 			
-			/* var len = */reader.ReadUInt32();
+			/* var length = */reader.ReadUInt32();
 			var version = reader.ReadUInt16();
 			flags = reader.ReadUInt16();
 			numFrames = reader.ReadUInt16();
@@ -65,7 +66,7 @@ namespace OpenRA.FileFormats
 			
 			blockWidth = reader.ReadByte();
 			blockHeight = reader.ReadByte();
-			var framerate = reader.ReadByte();
+			framerate = reader.ReadByte();
 			cbParts = reader.ReadByte();
 			blocks = new int2(width / blockWidth, height / blockHeight);
 			
@@ -74,7 +75,7 @@ namespace OpenRA.FileFormats
 			/*var unknown1 = */reader.ReadUInt16();
 			/*var unknown2 = */reader.ReadUInt32();
 
-			cbf = new byte[8*blocks.X*blocks.Y];
+			cbf = new byte[width*height];
 			palette = new Color[numColors];
 			framedata = new byte[2*blocks.X*blocks.Y];
 			
@@ -86,15 +87,6 @@ namespace OpenRA.FileFormats
 			
 			/*var unknown3 = */reader.ReadChars(14);
 			
-			Console.WriteLine("FORM Info");
-			Console.WriteLine("\tVersion: {0}",version);
-			Console.WriteLine("\tFlags: {0}",flags);
-			Console.WriteLine("\tFrames: {0}",numFrames);
-			Console.WriteLine("\tFramerate: {0}",framerate);
-			Console.WriteLine("\tSize: {0}x{1}",width,height);
-			Console.WriteLine("\tBlocksize: {0}x{1}",blockWidth,blockHeight);
-			Console.WriteLine("\tAudio: {0}hz, {1} channel(s), {2} bit",freq, channels, bits);
-
 			// Decode FINF chunk
 			if (new String(reader.ReadChars(4)) != "FINF")
 				throw new InvalidDataException("Invalid vqa (invalid FINF section)");
@@ -117,7 +109,7 @@ namespace OpenRA.FileFormats
 		}
 		
 		public void AdvanceFrame()
-		{
+		{			
 			// Seek to the start of the frame
 			stream.Seek(frames[currentFrame], SeekOrigin.Begin);
 			BinaryReader reader = new BinaryReader(stream);
@@ -144,15 +136,14 @@ namespace OpenRA.FileFormats
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
 				if (reader.PeekChar() == 0) reader.ReadByte();
 			}
-			currentFrame++;
+			if (++currentFrame == numFrames)
+				currentFrame = 0;
 		}
 		
-		public Bitmap FrameData()
+		public void FrameData(ref Bitmap frame)
 		{
-			Bitmap frame = new Bitmap(width, height);
 			var bitmapData = frame.LockBits(new Rectangle(0, 0, width, height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -172,7 +163,6 @@ namespace OpenRA.FileFormats
 					}
 			}
 			frame.UnlockBits(bitmapData);
-			return frame;
 		}
 		
 		// VQA Frame
