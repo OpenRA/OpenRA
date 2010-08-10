@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 	{
 		public static bool IsPrimaryBuilding(this Actor a)
 		{
-			var pb = a.traits.Get<PrimaryBuilding>();
+			var pb = a.traits.GetOrDefault<PrimaryBuilding>();
 			return pb != null && pb.IsPrimary;
 		}
 	}
