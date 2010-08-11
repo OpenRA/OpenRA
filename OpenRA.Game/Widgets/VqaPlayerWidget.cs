@@ -7,13 +7,11 @@
  * see LICENSE.
  */
 #endregion
+
 using System;
 using System.Drawing;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Traits;
-using OpenRA.Widgets;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -39,17 +37,20 @@ namespace OpenRA.Widgets
 		public override void DrawInner(World world)
 		{
 			if (video == null)
+			{
 				LoadVideo(Video);
+				Sound.PlayRaw(video.AudioData);
+			}
 			
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			
 			if (advanceNext)
 			{
+				if (video.CurrentFrame == 0)
+					Sound.PlayRaw(video.AudioData);
 				advanceNext = false;
 				video.AdvanceFrame();
-
-				Sound.PlayRaw(video.AudioData);
 			}
 			
 			if (dt > timestep)

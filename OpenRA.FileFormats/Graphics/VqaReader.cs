@@ -8,12 +8,9 @@
  */
 #endregion
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Drawing;
 using System.IO;
-using System;
-using System.Drawing.Imaging;
 
 namespace OpenRA.FileFormats
 {
@@ -49,6 +46,7 @@ namespace OpenRA.FileFormats
 		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
 
 		public byte[] AudioData { get { return audioData; } }
+		public int CurrentFrame { get { return currentFrame; } }
 		
 		public VqaReader( Stream stream )
 		{
@@ -108,12 +106,48 @@ namespace OpenRA.FileFormats
 				if (offsets[i] > 0x40000000) offsets[i] -= 0x40000000;
 				offsets[i] <<= 1;
 			}
+
+			CollectAudioData();
 			
 			// Load the first frame
 			currentFrame = 0;
 			AdvanceFrame();
 		}
-		
+
+		void CollectAudioData()
+		{
+			var ms = new MemoryStream();
+			var adpcmIndex = 0;
+
+			for (var i = 0; i < Frames; i++)
+			{
+				stream.Seek(offsets[i], SeekOrigin.Begin);
+				BinaryReader reader = new BinaryReader(stream);
+				var end = (i < Frames - 1) ? offsets[i + 1] : stream.Length;
+
+				while (reader.BaseStream.Position < end)
+				{
+					var type = new String(reader.ReadChars(4));
+					var length = Swap(reader.ReadUInt32());
+
+					switch (type)
+					{
+						case "SND2":
+							var rawAudio = reader.ReadBytes((int)length);
+							ms.Write(rawAudio);
+							break;
+						default:
+							reader.ReadBytes((int)length);
+							break;
+					}
+
+					if (reader.PeekChar() == 0) reader.ReadByte();
+				}
+			}
+
+			audioData = AudLoader.LoadSound(ms.ToArray(), ref adpcmIndex);
+		}
+
 		public void AdvanceFrame()
 		{			
 			// Seek to the start of the frame
@@ -129,11 +163,8 @@ namespace OpenRA.FileFormats
 				switch(type)
 				{
 					case "SND2":
-						// Don't parse sound (yet); skip data
-						{
-							var rawAudio = reader.ReadBytes((int)length);
-							audioData = AudLoader.LoadSound(rawAudio, ref adpcmIndex);
-						}
+						// Don't parse sound here.
+						reader.ReadBytes((int)length);
 						break;
 					case "VQFR":
 						DecodeVQFR(reader);
@@ -148,8 +179,6 @@ namespace OpenRA.FileFormats
 			if (++currentFrame == Frames)
 				currentFrame = cbOffset = cbChunk = 0;
 		}
-
-		int adpcmIndex = 0;
 		
 		// VQA Frame
 		public void DecodeVQFR(BinaryReader reader)

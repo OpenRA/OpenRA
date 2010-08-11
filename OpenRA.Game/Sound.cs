@@ -48,10 +48,11 @@ namespace OpenRA
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
 
+		static ISoundSource rawSource;
 		public static void PlayRaw(byte[] raw)
 		{
-			var sound = LoadSoundRaw(raw);
-			soundEngine.Play2D(sound, false, true, float2.Zero, SoundVolume);
+			rawSource = LoadSoundRaw(raw);
+			soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
 		}
 
 		public static void Play(string name)
