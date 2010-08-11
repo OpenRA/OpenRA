@@ -25,6 +25,7 @@ log.txt
 *.exe
 OpenRA
 OpenRA.app
+*.vqa
 
 # backup files by various editors
 *~
