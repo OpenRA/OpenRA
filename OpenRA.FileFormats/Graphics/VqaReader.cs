@@ -109,11 +109,15 @@ namespace OpenRA.FileFormats
 
 			CollectAudioData();
 			
-			// Load the first frame
-			currentFrame = 0;
-			AdvanceFrame();
+			Reset();
 		}
 
+		public void Reset()
+		{
+			currentFrame = cbOffset = cbChunk = 0;
+			LoadFrame();
+		}
+		
 		void CollectAudioData()
 		{
 			var ms = new MemoryStream();
@@ -149,7 +153,16 @@ namespace OpenRA.FileFormats
 		}
 
 		public void AdvanceFrame()
+		{
+			currentFrame++;
+			LoadFrame();
+		}
+		
+		void LoadFrame()
 		{			
+			if (currentFrame >= Frames)
+				return;
+			
 			// Seek to the start of the frame
 			stream.Seek(offsets[currentFrame], SeekOrigin.Begin);
 			BinaryReader reader = new BinaryReader(stream);
@@ -176,8 +189,6 @@ namespace OpenRA.FileFormats
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
 				if (reader.PeekChar() == 0) reader.ReadByte();
 			}
-			if (++currentFrame == Frames)
-				currentFrame = cbOffset = cbChunk = 0;
 		}
 		
 		// VQA Frame
