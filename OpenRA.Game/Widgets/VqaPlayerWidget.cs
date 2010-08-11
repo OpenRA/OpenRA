@@ -29,17 +29,18 @@ namespace OpenRA.Widgets
 		public void LoadVideo(string filename)
 		{
 			video = new VqaReader(FileSystem.Open(filename));
-			timestep = 1e3f/video.framerate;
+			timestep = 1e3f/video.Framerate;
 			
-			var size = OpenRA.Graphics.Util.NextPowerOf2(Math.Max(video.width, video.height));
+			var size = OpenRA.Graphics.Util.NextPowerOf2(Math.Max(video.Width, video.Height));
 			videoFrame = new Bitmap(size,size);
 			video.FrameData(ref videoFrame);
 			
-			videoSprite = new Sprite(new Sheet(new Size(size,size)), new Rectangle( 0, 0, video.width, video.height ), TextureChannel.Alpha);
+			videoSprite = new Sprite(new Sheet(new Size(size,size)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
 			videoSprite.sheet.Texture.SetData(videoFrame);	
 		}
 
 		int lastTime;
+		bool advanceNext = false;
 		public override void DrawInner(World world)
 		{
 			if (video == null)
@@ -48,10 +49,16 @@ namespace OpenRA.Widgets
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			
+			if (advanceNext)
+			{
+				advanceNext = false;
+				video.AdvanceFrame();	
+			}
+			
 			if (dt > timestep)
 			{
 				lastTime = t;
-				video.AdvanceFrame();
+				advanceNext = true;
 				video.FrameData(ref videoFrame);
 				videoSprite.sheet.Texture.SetData(videoFrame);
 			}

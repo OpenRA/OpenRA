@@ -19,88 +19,88 @@ namespace OpenRA.FileFormats
 {
 	public class VqaReader
 	{
+		public readonly ushort Frames;
+		public readonly byte Framerate;
+		public readonly ushort Width;
+		public readonly ushort Height;
+		
 		Stream stream;
+		int currentFrame;
 		ushort flags;
-		public readonly ushort numFrames;
-		public readonly byte framerate;
 		ushort numColors;
-		public readonly ushort width;
-		public readonly ushort height;
 		ushort blockWidth;
 		ushort blockHeight;
 		byte cbParts;
 		int2 blocks;
-		UInt32[] frames;
-		int currentFrame;
-		
-		// Stores a list of subpixels, referenced by the VPTZ chunk
-		byte[] cbf; 
-		
-		// cbf array is updated every 8 frames
-		List<byte> newcbfFormat80 = new List<byte>();			
-		int cbpCount = 0;
+		UInt32[] offsets;
 		Color[] palette;
+
+		// Stores a list of subpixels, referenced by the VPTZ chunk
+		byte[] cbf;
+		byte[] cbp;			
+		int cbChunk = 0;
+		int cbOffset = 0;
 		
-		// Contains a listof palette indices for the current frame
+		// Top half contains block info, bottom half contains references to cbf array
 		byte[] framedata;
 
 		public VqaReader( Stream stream )
 		{
 			this.stream = stream;
 			BinaryReader reader = new BinaryReader( stream );
+			
 			// Decode FORM chunk
 			if (new String(reader.ReadChars(4)) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
-			
 			/*var length = */ reader.ReadUInt32();
 			
 			if (new String(reader.ReadChars(8)) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
-			
 			/* var length = */reader.ReadUInt32();
-			var version = reader.ReadUInt16();
+			
+			/*var version = */reader.ReadUInt16();
 			flags = reader.ReadUInt16();
-			numFrames = reader.ReadUInt16();
-			width = reader.ReadUInt16();
-			height = reader.ReadUInt16();
+			Frames = reader.ReadUInt16();
+			Width = reader.ReadUInt16();
+			Height = reader.ReadUInt16();
 			
 			blockWidth = reader.ReadByte();
 			blockHeight = reader.ReadByte();
-			framerate = reader.ReadByte();
+			Framerate = reader.ReadByte();
 			cbParts = reader.ReadByte();
-			blocks = new int2(width / blockWidth, height / blockHeight);
+			blocks = new int2(Width / blockWidth, Height / blockHeight);
 			
 			numColors = reader.ReadUInt16();
 			/*var maxBlocks = */reader.ReadUInt16();
 			/*var unknown1 = */reader.ReadUInt16();
 			/*var unknown2 = */reader.ReadUInt32();
-
-			cbf = new byte[width*height];
+			
+			// Audio
+			/*var freq = */reader.ReadUInt16();
+			/*var channels = */reader.ReadByte();
+			/*var bits = */reader.ReadByte();
+			/*var unknown3 = */reader.ReadChars(14);
+			
+			
+			cbf = new byte[Width*Height];
+			cbp = new byte[Width*Height];
 			palette = new Color[numColors];
 			framedata = new byte[2*blocks.X*blocks.Y];
 			
 			
-			// Audio?
-			var freq = reader.ReadUInt16();
-			var channels = reader.ReadByte();
-			var bits = reader.ReadByte();
-			
-			/*var unknown3 = */reader.ReadChars(14);
-			
 			// Decode FINF chunk
 			if (new String(reader.ReadChars(4)) != "FINF")
 				throw new InvalidDataException("Invalid vqa (invalid FINF section)");
-			
-			/*var offset = */reader.ReadUInt16();
+			/*var length = */reader.ReadUInt16();
 			/*var unknown4 = */reader.ReadUInt16();
 			
 			// Frame offsets
-			frames = new UInt32[numFrames];
-			for (int i = 0; i < numFrames; i++)
+			offsets = new UInt32[Frames];
+			for (int i = 0; i < Frames; i++)
 			{
-				frames[i] = reader.ReadUInt32();
-				if (frames[i] > 0x40000000) frames[i] -= 0x40000000;
-				frames[i] <<= 1;
+				offsets[i] = reader.ReadUInt32();
+				if (offsets[i] > 0x40000000) offsets[i] -= 0x40000000;
+				offsets[i] <<= 1;
 			}
 			
 			// Load the first frame
@@ -111,9 +111,9 @@ namespace OpenRA.FileFormats
 		public void AdvanceFrame()
 		{			
 			// Seek to the start of the frame
-			stream.Seek(frames[currentFrame], SeekOrigin.Begin);
+			stream.Seek(offsets[currentFrame], SeekOrigin.Begin);
 			BinaryReader reader = new BinaryReader(stream);
-			var end = (currentFrame < numFrames - 1) ? frames[currentFrame+1] : stream.Length;
+			var end = (currentFrame < Frames - 1) ? offsets[currentFrame+1] : stream.Length;
 	
 			while(reader.BaseStream.Position < end)
 			{
@@ -136,37 +136,8 @@ namespace OpenRA.FileFormats
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
 				if (reader.PeekChar() == 0) reader.ReadByte();
 			}
-			if (++currentFrame == numFrames)
-			{
-				currentFrame = 0;
-				cbpCount = 0;
-				newcbfFormat80.Clear();
-			}
-		}
-		
-		public void FrameData(ref Bitmap frame)
-		{
-			var bitmapData = frame.LockBits(new Rectangle(0, 0, width, height),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			unsafe
-			{
-				int* c = (int*)bitmapData.Scan0;
-
-				for (var y = 0; y < blocks.Y; y++)
-					for (var x = 0; x < blocks.X; x++)
-					{
-						var px = framedata[x + y*blocks.X];
-						var mod = framedata[x + (y + blocks.Y)*blocks.X];
-						for (var j = 0; j < blockHeight; j++)
-							for (var i = 0; i < blockWidth; i++)
-							{
-								var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-								byte color = (mod == 0x0f) ? px : cbf[cbfi];
-								*(c + ((y*blockHeight + j) * bitmapData.Stride >> 2) + x*blockWidth + i) = palette[color].ToArgb();
-							}
-					}
-			}
-			frame.UnlockBits(bitmapData);
+			if (++currentFrame == Frames)
+				currentFrame = cbOffset = cbChunk = 0;
 		}
 		
 		// VQA Frame
@@ -181,7 +152,7 @@ namespace OpenRA.FileFormats
 
 				switch(type)
 				{
-					// Full compressed frame-modifier
+					// Full frame-modifier
 					case "CBFZ":
 						Format80.DecodeInto( reader.ReadBytes(subchunkLength), cbf );
 					break;
@@ -189,31 +160,26 @@ namespace OpenRA.FileFormats
 						cbf = reader.ReadBytes(subchunkLength);
 					break;
 					
-					// Partial compressed frame-modifier
+					// frame-modifier chunk
+					case "CBP0":	
 					case "CBPZ":
 						// Partial buffer is full; dump and recreate
-						if (cbpCount == cbParts)
+						if (cbChunk == cbParts)
 						{
-							Format80.DecodeInto( newcbfFormat80.ToArray(), cbf );
-							cbpCount = 0;
-							newcbfFormat80.Clear();
+							if (type == "CBP0")
+								cbf = (byte[])cbp.Clone();
+							else
+								Format80.DecodeInto( cbp, cbf );
+							
+							cbOffset = cbChunk = 0;
 						}
+						
 						var bytes = reader.ReadBytes(subchunkLength);
-						foreach (var b in bytes) newcbfFormat80.Add(b);
-						cbpCount++;
+						bytes.CopyTo(cbp,cbOffset);
+						cbOffset += subchunkLength;
+						cbChunk++;
 					break;
-					case "CBP0":
-						// Partial buffer is full; dump and recreate
-						if (cbpCount == cbParts)
-						{
-							cbf = newcbfFormat80.ToArray();
-							cbpCount = 0;
-							newcbfFormat80.Clear();
-						}
-						var bytes2 = reader.ReadBytes(subchunkLength);
-						foreach (var b in bytes2) newcbfFormat80.Add(b);
-						cbpCount++;
-					break;
+					
 					// Palette
 					case "CPL0":
 						for (int i = 0; i < numColors; i++)
@@ -234,6 +200,31 @@ namespace OpenRA.FileFormats
 						throw new InvalidDataException("Unknown sub-chunk {0}".F(type));
 				}
 			}
+		}
+		
+		public void FrameData(ref Bitmap frame)
+		{
+			var bitmapData = frame.LockBits(new Rectangle(0, 0, Width, Height),
+				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			unsafe
+			{
+				int* c = (int*)bitmapData.Scan0;
+
+				for (var y = 0; y < blocks.Y; y++)
+					for (var x = 0; x < blocks.X; x++)
+					{
+						var px = framedata[x + y*blocks.X];
+						var mod = framedata[x + (y + blocks.Y)*blocks.X];
+						for (var j = 0; j < blockHeight; j++)
+							for (var i = 0; i < blockWidth; i++)
+							{
+								var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
+								byte color = (mod == 0x0f) ? px : cbf[cbfi];
+								*(c + ((y*blockHeight + j) * bitmapData.Stride >> 2) + x*blockWidth + i) = palette[color].ToArgb();
+							}
+					}
+			}
+			frame.UnlockBits(bitmapData);
 		}
 		
 		public byte ToColorByte(byte b)
