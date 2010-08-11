@@ -96,10 +96,12 @@ namespace OpenRA
 				request.Headers.Add("Channel", kvp.Key);
 			//	request.Headers.Add("Diff", kvp.Value.Diff ? "1" : "0");
 
-				using (var requestStream = request.GetRequestStream())
-					requestStream.Write(buffer, 0, buffer.Length);
-
-				//var response = (HttpWebResponse)request.GetResponse();
+				try
+				{
+					using (var requestStream = request.GetRequestStream())
+						requestStream.Write(buffer, 0, buffer.Length);
+				}
+				catch (Exception){}
 			}
 		}
 	}
