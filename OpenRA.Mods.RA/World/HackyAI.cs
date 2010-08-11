@@ -15,6 +15,7 @@ namespace OpenRA.Mods.RA
 		Player p;
 		ProductionQueue pq;
 		PlayerResources pr;
+		int2 baseCenter;
 
 		bool isBuildingStuff;
 
@@ -74,6 +75,17 @@ namespace OpenRA.Mods.RA
 
 		int2? ChooseBuildLocation(ProductionItem item)
 		{
+			var bi = Rules.Info[ item.Item ].Traits.Get<BuildingInfo>();
+
+			for( var i = -10; i < 10; i++ )		// fail distribution!
+				for (var j = -10; j < 10; j++)
+				{
+					var topleft = baseCenter + new int2(i,j);
+					if (Game.world.CanPlaceBuilding(item.Item, bi, topleft, null))
+						if (Game.world.IsCloseEnoughToBase(p, item.Item, bi, topleft))
+							return topleft;
+				}
+
 			return null;		// i don't know where to put it.
 		}
 
@@ -93,7 +105,10 @@ namespace OpenRA.Mods.RA
 					.FirstOrDefault(a => a.Info == Rules.Info["mcv"]);
 
 				if (mcv != null)
+				{
+					baseCenter = mcv.Location;
 					Game.IssueOrder(new Order("DeployTransform", mcv));
+				}
 				else
 					Game.Debug("AI: Can't find the MCV.");
 			}
@@ -136,8 +151,7 @@ namespace OpenRA.Mods.RA
 						}
 						else
 						{
-							// todo: place the building!
-							throw new NotImplementedException();
+							Game.IssueOrder(new Order("PlaceBuilding", p.PlayerActor, location.Value, currentBuilding.Item));
 						}
 					}
 					break;
