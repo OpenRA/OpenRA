@@ -123,6 +123,7 @@ namespace OpenRA.FileFormats
 			var ms = new MemoryStream();
 			var adpcmIndex = 0;
 
+			bool compressed = false;
 			for (var i = 0; i < Frames; i++)
 			{
 				stream.Seek(offsets[i], SeekOrigin.Begin);
@@ -136,9 +137,11 @@ namespace OpenRA.FileFormats
 
 					switch (type)
 					{
+						case "SND0":
 						case "SND2":
 							var rawAudio = reader.ReadBytes((int)length);
 							ms.Write(rawAudio);
+							compressed = (type == "SND2");
 							break;
 						default:
 							reader.ReadBytes((int)length);
@@ -149,7 +152,7 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			audioData = AudLoader.LoadSound(ms.ToArray(), ref adpcmIndex);
+			audioData = (compressed) ? AudLoader.LoadSound(ms.ToArray(), ref adpcmIndex) : ms.ToArray();
 		}
 
 		public void AdvanceFrame()
@@ -175,6 +178,7 @@ namespace OpenRA.FileFormats
 
 				switch(type)
 				{
+					case "SND0":
 					case "SND2":
 						// Don't parse sound here.
 						reader.ReadBytes((int)length);

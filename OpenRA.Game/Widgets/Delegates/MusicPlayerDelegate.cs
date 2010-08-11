@@ -20,7 +20,7 @@ namespace OpenRA.Widgets.Delegates
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
 				var foo = Widget.RootWidget.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
-				foo.Load("ally10.vqa");
+				foo.Load("ally1.vqa");
 				foo.Play();
 				/*
 				if (Sound.MusicStopped)
