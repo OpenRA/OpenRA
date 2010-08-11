@@ -14,6 +14,8 @@ namespace OpenRA.Mods.RA
 		int ticks;
 		Player p;
 		ProductionQueue pq;
+		PlayerResources pr;
+
 		bool isBuildingStuff;
 
 		enum BuildState
@@ -30,13 +32,43 @@ namespace OpenRA.Mods.RA
 		public void GameStarted(World w)
 		{
 			p = Game.world.LocalPlayer;
-			enabled = Game.IsHost && p != null; 
+			enabled = Game.IsHost && p != null;
 			if (enabled)
+			{
 				pq = p.PlayerActor.traits.Get<ProductionQueue>();
+				pr = p.PlayerActor.traits.Get<PlayerResources>();
+			}
+		}
+
+		int GetPowerProvidedBy(string building)
+		{
+			var bi = Rules.Info[building].Traits.GetOrDefault<BuildingInfo>();
+			if (bi == null) return 0;
+			return bi.Power;
 		}
 
 		string ChooseItemToBuild()
 		{
+			var buildableThings = Rules.TechTree.BuildableItems(p, "Building").ToArray();
+
+			if (pr.PowerProvided <= pr.PowerDrained * 1.2)	/* try to maintain 20% excess power */
+			{
+				/* find the best thing we can build which produces power */
+				var best = buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
+					.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
+
+				if (best != null)
+				{
+					Game.Debug("AI: Need more power, so {0} is best choice.".F(best));
+					return best;
+				}
+				else
+					Game.Debug("AI: Need more power, but can't build anything that produces it.");
+			}
+
+			else
+				Game.Debug("AI: Building some other random bits.");
+
 			return "powr";		// LOTS OF POWER
 		}
 
@@ -98,7 +130,10 @@ namespace OpenRA.Mods.RA
 						/* place the building */
 						var location = ChooseBuildLocation(currentBuilding);
 						if (location == null)
+						{
+							Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
 							Game.IssueOrder(Order.CancelProduction(p, currentBuilding.Item));
+						}
 						else
 						{
 							// todo: place the building!
