@@ -1,0 +1,276 @@
+
+           COMMAND & CONQUER GOLD AND C&C: RED ALERT *.VQP FILES
+                              
+                 by Gordan Ugarkovic (ugordan@yahoo.com)
+                 http://members.xoom.com/ugordan
+
+                 Revision 1.02
+
+ Command & Conquer is a trademark of Westwood Studios, Inc.
+ Command & Conquer is Copyright (C)1995 Westwood Studios, Inc.
+ Command & Conquer: Red Alert is a trademark of Westwood Studios, Inc.
+ Command & Conquer: Red Alert is Copyright (C)1995-1999 Westwood Studios, Inc.
+
+DESCRIPTION:
+ I used to think that viewing the Red Alert movies in SVGA gives you a higher
+ resolution, but recently I found out that this is not the case. The movie
+ resolution remains the same, you simply stretch a low-res movie (320x156 or
+ 320x200) to double its width (640 pixels) and between two adjacent
+ horizontal pixels you insert a third one that has a color which is the
+ average value of the 2 pixels' colors.
+ When I say average value, I don't mean averaging the indexes to palette,
+ that would be very easy but incorrect. I mean averaging the COLORS themselves
+ and finding a color in the palette that most closely matches the desired one.
+ This process of searching is very slow, so a different method needs to be
+ applied.
+ This is where a VQP file comes in. In order to be able to average
+ (interpolate) colors very fast, one needs a COLOR LOOKUP TABLE.
+ That is the basic purpose of VQP files: to provide you with the neccessary
+ color lookup tables.
+
+FILE FORMAT:
+ The VQP file format is actually very simple.
+ First there is a LONG INT (4 bytes) value which represents how many 
+ lookup tables for the corresponding VQA movie the VQP contains. 
+ Since every palette has a different color order, we obviously need a new
+ lookup table every time the palette changes.
+ After the value come the lookup tables themselves. Every lookup table is
+ exactly 32896 bytes long. I will explain why there are 32896 bytes in a
+ lookup table and not 65536 (256*256) as someone might suspect.
+ The reason for this is that some of the color values repeat, for example
+ if you have an interpolation value for [23][176], you don't have to write
+ the value [176][23] because the values will be the same. This saves space
+ needed by almost 50% !
+
+ Let's consider a palette which has 5 colors.
+ We would have to write the following combinations:
+
+  C1 C2   C1 C2   C1 C2   C1 C2   C1 C2
+ ------- ------- ------- ------- -------
+  0  0    1  0    2  0    3  0    4  0
+          1  1    2  1    3  1    4  1
+                  2  2    3  2    4  2
+                          3  3    4  3
+                                  4  4
+
+ Note that none of the combinations repeat.
+ The number of these combinations is [5+(5+1)]/2 = 15
+ Likewise, if we had 256 colors, we would have [256+(256+1)]/2 = 32896
+ different color combinations.
+
+ But enough of the math, here is some pseudo-code that will load
+ the lookup table and fill all the values (it will expand the 32896 bytes
+ to the full 65536 byte lookup table).
+ (The lookup table is a 2D array, each dimension having 256 elements):
+
+ for C1 = 0 to 255 do
+   for C2 = 0 to C1 do
+   begin
+     val = GetNextByte;
+     lookup[C1][C2] = val;
+     lookup[C2][C1] = val;
+   end;
+
+ The function GetNextByte should return the next byte from the file
+ or from the memory buffer.
+ Every time the palette changes you run that piece of code
+ to load the correct lookup table and you'll be fine.
+
+ Now, let's say that Left is the color of the left pixel, Right is the
+ color of the right pixel and Middle is the color we need. We would
+ get this color value by simply indexing into the lookup table:
+
+ Middle = lookup[Left][Right]; (or lookup[Right][Left], it's the same)
+
+ It is interesting to note that, with these lookup tables, it is
+ possible to do a full interpolation of the movies, that is, interpolate
+ in the vertical direction as well, unlike the Red Alert Win95 version
+ which only interpolates in the horizontal direction.
+
+ Having said that, one can wonder: Where are all the VQPs located?
+ For SIZZLE.VQA and SIZZLE2.VQA it was easy, but what's with all the
+ other movies?
+
+ So, I started looking and, well, you know those 8 MB of unknown data
+ located between the 640x400 VQA start movie and SPEECH.MIX in
+ REDALERT.MIX... :)))
+
+ Anyway, here goes...
+
+
+                    REDALERT.MIX OFFSETS OF *.VQP FILES
+                         FOR ALL RED ALERT MOVIES
+                     [ENGLISH RED ALERT VERSION ONLY]
+                      ~~~~~~~
+
+ Movie names are from FILENAME.TXT by Moritz Mertinkat.
+ Here is what he has to say about the document:
+
+ <These excerpts were taken from "The Red Alert Single Player Mission
+ Creation Guide" (Release 1.1), Copyright 1997 by Andrew Griffin and
+ C. F. Harkins (andrewg@light.iinet.net.au  and  cfhark@msn.com).
+ The latest version can be found at: www.geocities.com/TimesSquare/5458
+
+ The text above was slightly modified by Moritz Mertinkat for use in
+ RA-MIXer; i.e. I added some aspects and corrected some parts of the
+ text which provided wrong (or not enough) information.
+
+ Moritz Mertinkat (ramixer@gmx.net), 23-MAR-1998>
+
+ NOTE: Although the offsets given here are for the English version of
+       Red Alert, I assume the movie names are the same for all the
+       other language versions and so is the ordering of the VQPs in
+       REDALERT.MIX. In the English version, the VQPs follow immediately
+       after the 640x400 VQA. The first one is one of the copies of VQP
+       for the Lands of Lore 2 Sneak Peek (See note later in the document).
+       The next one is for AAGUN, so if you are able to find the VQP for it,
+       you will probably be able to find all the other offsets because
+       they are stored in succession, one after the other.
+
+ Movie name     Offset (from start of file, decimal)
+ -----------------------
+ AAGUN          16101380
+ AFTRMATH       16134280
+ AIRFIELD       20279388
+ ALLY1          16167180
+ ALLY2          16529060
+ ALLY4          16561960
+ ALLY5          16594860
+ ALLY6          16660656
+ ALLY8          16693556
+ ALLY9          16759352
+ ALLY10         16232976
+ ALLY10B        16265876
+ ALLY11         16298776
+ ALLY12         16463260
+ ALLY14         16496160
+ ALLYEND        16792252
+ ALLYMORF       16825152
+ APCESCPE       16858052
+ ASSESS         16890952
+ AVERTED        20410984
+
+ BATTLE         16923852
+ BEACHEAD       20443884
+ BINOC          16956752
+ BMAP           16989652
+ BOMBRUN        20509684
+ BRDGTILT       17022552
+
+ COUNTDWN       20542584
+ CRONFAIL       17088352
+ CRONTEST       17055452
+
+ DESTROYR       17121252
+ DOUBLE         20575484
+ DPTHCHRG       20608384
+ DUD            17154152
+
+ ELEVATOR       17187052
+ EXECUTE        20641284
+
+ FLARE          17219952
+ FROZEN         17252852
+
+ GRVESTNE       17285752
+
+ LANDING        20707084
+
+ MASASSLT       17351552
+ MCV            17384452
+ MCVBRDGE       20739984
+ MCV_LAND       17417352
+ MIG            20772884
+ MOVINGIN       21101848
+ MONTPASS       17450252
+ MTNKFACT       21134748
+
+ NUKESTOK       21167648
+
+ OILDRUM        17483152
+ ONTHPRWL       21200548
+ OVERRUN        17516052
+
+ PERISCOP       21233448
+ PROLOG         17548952 and 21266348
+
+ RADRRAID       21792688
+ REDINTRO       18075292 and 21825588 
+
+ SEARCH         21858488
+ SFROZEN        21891388
+ SHIPSINK       18108192
+ SHORBOMB       18173992
+ SHORBOM1       18141092
+ SHORBOM2       18173992
+ SITDUCK        21924288
+ SLNTSRVC       21957188
+ SNOWBOMB       18305584
+ SNSTRAFE       22022988
+ SOVBATL        22055888
+ SOVCEMET       22088788
+ SOVFINAL       22121688
+ SOVIET1        18338484
+ SOVIET2        22450676
+ SOVIET3        22483576
+ SOVIET4        22516476
+ SOVIET5        22549376
+ SOVIET6        22582276
+ SOVIET7        22615176
+ SOVIET8        22648076
+ SOVIET9        22746768
+ SOVIET10       22286176
+ SOVIET11       22319076
+ SOVIET12       22351976
+ SOVIET13       22384876
+ SOVIET14       22417776
+ SOVMCV         22812564
+ SOVTSTAR       18371384
+ SPOTTER        22878364
+ SPY            18404284
+ STRAFE         22911264
+
+ TAKE_OFF       22944164
+ TANYA1         18437184
+ TANYA2         18470084
+ TESLA          22977064
+ TOOFAR         18502984
+ TRINITY        18535884
+
+ V2ROCKET       23009964
+
+
+ As you can see, even the low-res version of REDINTRO contains a VQP.
+
+ At least 3 VQAs have 2 copies of VQP data (PROLOG, REDINTRO and LoL 2 SP).
+ I don't know why this is, but the copies appear to be the same.
+ Clearly a waste of disk space (Lands of Lore 2 SP VQPs are each 1,7 MB !)...
+
+ Apart from the movies listed above, MAIN.MIX also contains a slightly 
+ different version of Lands of Lore 2 Sneak Peek than in the root 
+ of the CDs. As I said, a VQP for this movie exists, and there are 2 copies
+ of it (offsets 14456576 and 18568784), but they don't contain
+ lookup data for all 52 palettes, so the last 2 palettes are messed up.
+
+ I don' know why the guys at Westwood even bothered to store this VQA
+ in MAIN.MIX, when there is one in the root of the CD, obviously
+ more disk space wasted... :(((
+
+ Also, the VQP for one of the Allied briefings (I think ALLY1) indicates
+ the corresponding VQA has more palettes than it actually has, but that
+ shouldn't present a problem.
+
+ If you want to include these offsets in your program, please ask for
+ my permission.
+ If you have any questions or comments, feel free e-mail me.
+
+                      --------------------------------
+
+Gordan Ugarkovic (ugordan@yahoo.com)
+27 July 1999.
+
+[END-OF-FILE]
+
+
+
+
