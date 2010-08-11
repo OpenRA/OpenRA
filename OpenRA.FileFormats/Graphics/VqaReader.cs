@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats
 		byte cbParts;
 		int2 blocks;
 		UInt32[] offsets;
-		Color[] palette;
+		int[] palette;
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
@@ -42,8 +42,11 @@ namespace OpenRA.FileFormats
 		int cbOffset = 0;
 		
 		// Top half contains block info, bottom half contains references to cbf array
-		byte[] framedata;
-
+		byte[] origData;
+		
+		// Final frame output
+		int[,] frameData;
+		
 		public VqaReader( Stream stream )
 		{
 			this.stream = stream;
@@ -81,12 +84,12 @@ namespace OpenRA.FileFormats
 			/*var bits = */reader.ReadByte();
 			/*var unknown3 = */reader.ReadChars(14);
 			
-			
+			var frameSize = NextPowerOf2(Math.Max(Width,Height));
 			cbf = new byte[Width*Height];
 			cbp = new byte[Width*Height];
-			palette = new Color[numColors];
-			framedata = new byte[2*blocks.X*blocks.Y];
-			
+			palette = new int[numColors];
+			origData = new byte[2*blocks.X*blocks.Y];
+			frameData = new int[frameSize,frameSize];
 			
 			// Decode FINF chunk
 			if (new String(reader.ReadChars(4)) != "FINF")
@@ -187,13 +190,13 @@ namespace OpenRA.FileFormats
 							byte r = reader.ReadByte();
 							byte g = reader.ReadByte();
 							byte b = reader.ReadByte();
-							palette[i] = Color.FromArgb(255,ToColorByte(r),ToColorByte(g),ToColorByte(b));
+							palette[i] = Color.FromArgb(255,ToColorByte(r),ToColorByte(g),ToColorByte(b)).ToArgb();
 						}
 					break;
 					
 					// Frame data
 					case "VPTZ":
-						Format80.DecodeInto( reader.ReadBytes(subchunkLength), framedata );
+						Format80.DecodeInto( reader.ReadBytes(subchunkLength), origData );
 						// This is the last subchunk
 						return;
 					default:
@@ -202,29 +205,33 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
-		public void FrameData(ref Bitmap frame)
+		public int[,] FrameData()
 		{
-			var bitmapData = frame.LockBits(new Rectangle(0, 0, Width, Height),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-			unsafe
-			{
-				int* c = (int*)bitmapData.Scan0;
-
-				for (var y = 0; y < blocks.Y; y++)
-					for (var x = 0; x < blocks.X; x++)
-					{
-						var px = framedata[x + y*blocks.X];
-						var mod = framedata[x + (y + blocks.Y)*blocks.X];
-						for (var j = 0; j < blockHeight; j++)
-							for (var i = 0; i < blockWidth; i++)
-							{
-								var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-								byte color = (mod == 0x0f) ? px : cbf[cbfi];
-								*(c + ((y*blockHeight + j) * bitmapData.Stride >> 2) + x*blockWidth + i) = palette[color].ToArgb();
-							}
-					}
-			}
-			frame.UnlockBits(bitmapData);
+			for (var y = 0; y < blocks.Y; y++)
+				for (var x = 0; x < blocks.X; x++)
+				{
+					var px = origData[x + y*blocks.X];
+					var mod = origData[x + (y + blocks.Y)*blocks.X];
+					for (var j = 0; j < blockHeight; j++)
+						for (var i = 0; i < blockWidth; i++)
+						{
+							var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
+							byte color = (mod == 0x0f) ? px : cbf[cbfi];
+							frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
+						}
+				}
+			return frameData;
+		}
+		
+		int NextPowerOf2(int v)
+		{
+			--v;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			++v;
+			return v;
 		}
 		
 		public byte ToColorByte(byte b)

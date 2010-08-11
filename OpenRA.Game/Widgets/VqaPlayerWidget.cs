@@ -23,7 +23,6 @@ namespace OpenRA.Widgets
 
 		float timestep;
 		Sprite videoSprite;
-		Bitmap videoFrame;
 		VqaReader video = null;
 		
 		public void LoadVideo(string filename)
@@ -32,11 +31,7 @@ namespace OpenRA.Widgets
 			timestep = 1e3f/video.Framerate;
 			
 			var size = OpenRA.Graphics.Util.NextPowerOf2(Math.Max(video.Width, video.Height));
-			videoFrame = new Bitmap(size,size);
-			video.FrameData(ref videoFrame);
-			
 			videoSprite = new Sprite(new Sheet(new Size(size,size)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
-			videoSprite.sheet.Texture.SetData(videoFrame);	
 		}
 
 		int lastTime;
@@ -59,8 +54,7 @@ namespace OpenRA.Widgets
 			{
 				lastTime = t;
 				advanceNext = true;
-				video.FrameData(ref videoFrame);
-				videoSprite.sheet.Texture.SetData(videoFrame);
+				videoSprite.sheet.Texture.SetData(video.FrameData());
 			}
 			
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, new int2(RenderBounds.X,RenderBounds.Y), "chrome");
