@@ -68,13 +68,13 @@ namespace OpenRA.Widgets
 			video.Reset();
 			videoSprite.sheet.Texture.SetData(video.FrameData);
 			sw.Reset();
-			Sound.PlayRaw(video.AudioData);
+			Sound.PlayVideoSoundtrack(video.AudioData);
 		}
 		
 		public void Stop()
 		{
 			playing = false;
-			// TODO: Stop audio
+			Sound.StopVideoSoundtrack();
 		}
 	}
 }

@@ -22,6 +22,7 @@ namespace OpenRA
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;
 		static ISound music;
+		static ISound video;
 		
 		static bool paused;
 		static bool stopped;
@@ -42,6 +43,7 @@ namespace OpenRA
 			soundEngine = new OpenAlSoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
+			video = null;
 			paused = false;
 			stopped = false;
 		}
@@ -49,10 +51,16 @@ namespace OpenRA
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
 
 		static ISoundSource rawSource;
-		public static void PlayRaw(byte[] raw)
+		public static void PlayVideoSoundtrack(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
-			soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
+			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
+		}
+		
+		public static void StopVideoSoundtrack()
+		{
+			if (video != null)
+				soundEngine.StopSound(video);
 		}
 
 		public static void Play(string name)
