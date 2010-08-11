@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using OpenRA.Traits;
 using System;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -17,8 +18,25 @@ namespace OpenRA.Mods.RA
 		PlayerResources pr;
 		int2 baseCenter;
 
-		bool isBuildingStuff;
-
+		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
+		{
+			{ "proc", .4f },
+			{ "barr", .05f },
+			{ "tent", .05f },
+			{ "weap", .05f },
+			{ "pbox", .1f },
+			{ "ftur", .1f },
+			{ "gun", .1f },
+			{ "atek", .01f },
+			{ "stek", .01f },
+			{ "silo", .15f },
+			{ "tsla", .1f },
+			{ "agun", .1f },
+			{ "hpad", .01f },
+			{ "afld", .01f },
+			{ "dome", .01f },
+		};
+		
 		enum BuildState
 		{
 			ChooseItem,
@@ -67,10 +85,15 @@ namespace OpenRA.Mods.RA
 					Game.Debug("AI: Need more power, but can't build anything that produces it.");
 			}
 
-			else
-				Game.Debug("AI: Building some other random bits.");
+			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
+				.Select( a => a.Actor.Info.Name ).ToArray();
 
-			return "powr";		// LOTS OF POWER
+			foreach (var frac in buildingFractions)
+				if (buildableThings.Contains(frac.Key))
+					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
+						return frac.Key;
+
+			return null;
 		}
 
 		int2? ChooseBuildLocation(ProductionItem item)
