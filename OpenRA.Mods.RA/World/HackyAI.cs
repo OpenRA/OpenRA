@@ -24,14 +24,10 @@ namespace OpenRA.Mods.RA
 			{ "barr", .05f },
 			{ "tent", .05f },
 			{ "weap", .05f },
-			{ "pbox", .1f },
-			{ "ftur", .1f },
-			{ "gun", .1f },
 			{ "atek", .01f },
 			{ "stek", .01f },
 			{ "silo", .05f },
-			{ "tsla", .1f },
-			{ "agun", .1f },
+			{ "fix", .01f },
 			{ "hpad", .01f },
 			{ "afld", .01f },
 			{ "dome", .01f },
@@ -45,6 +41,8 @@ namespace OpenRA.Mods.RA
 		}
 
 		int lastThinkTick = 0;
+
+		const int MaxBaseDistance = 15;
 
 		BuildState state = BuildState.WaitForFeedback;
 
@@ -98,16 +96,13 @@ namespace OpenRA.Mods.RA
 
 		int2? ChooseBuildLocation(ProductionItem item)
 		{
-			var bi = Rules.Info[ item.Item ].Traits.Get<BuildingInfo>();
+			var bi = Rules.Info[item.Item].Traits.Get<BuildingInfo>();
 
-			for( var i = -10; i < 10; i++ )		// fail distribution!
-				for (var j = -10; j < 10; j++)
-				{
-					var topleft = baseCenter + new int2(i,j);
-					if (Game.world.CanPlaceBuilding(item.Item, bi, topleft, null))
-						if (Game.world.IsCloseEnoughToBase(p, item.Item, bi, topleft))
-							return topleft;
-				}
+			for (var k = 0; k < MaxBaseDistance; k++)
+				foreach (var t in Game.world.FindTilesInCircle(baseCenter, k))
+					if (Game.world.CanPlaceBuilding(item.Item, bi, t, null))
+						if (Game.world.IsCloseEnoughToBase(p, item.Item, bi, t))
+							return t;
 
 			return null;		// i don't know where to put it.
 		}
