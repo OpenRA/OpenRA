@@ -46,6 +46,9 @@ namespace OpenRA.FileFormats
 		
 		// Final frame output
 		int[,] frameData;
+		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
+
+		public byte[] AudioData { get { return audioData; } }
 		
 		public VqaReader( Stream stream )
 		{
@@ -127,8 +130,11 @@ namespace OpenRA.FileFormats
 				{
 					case "SND2":
 						// Don't parse sound (yet); skip data
-						reader.ReadBytes((int)length);
-					break;
+						{
+							var rawAudio = reader.ReadBytes((int)length);
+							audioData = AudLoader.LoadSound(rawAudio);
+						}
+						break;
 					case "VQFR":
 						DecodeVQFR(reader);
 					break;

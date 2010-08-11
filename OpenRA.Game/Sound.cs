@@ -32,6 +32,11 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(data, 1, 16, 22050);
 		}
 
+		static ISoundSource LoadSoundRaw(byte[] rawData)
+		{
+			return soundEngine.AddSoundSourceFromMemory(rawData, 1, 16, 22050);
+		}
+
 		public static void Initialize()
 		{
 			soundEngine = new OpenAlSoundEngine();
@@ -42,6 +47,12 @@ namespace OpenRA
 		}
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
+
+		public static void PlayRaw(byte[] raw)
+		{
+			var sound = LoadSoundRaw(raw);
+			soundEngine.Play2D(sound, false, true, float2.Zero, SoundVolume);
+		}
 
 		public static void Play(string name)
 		{

@@ -76,6 +76,33 @@ namespace OpenRA.FileFormats
 			return (short)current;
 		}
 
+		public static byte[] LoadSound(byte[] raw)
+		{
+			var br = new BinaryReader(new MemoryStream(raw));
+			var dataSize = raw.Length;
+			var outputSize = raw.Length * 4;
+
+			var output = new byte[outputSize];
+			var offset = 0;
+			var index = 0;
+			var currentSample = 0;
+
+			while (dataSize-- > 0)
+			{
+				var b = br.ReadByte();
+
+				var t = DecodeSample(b, ref index, ref currentSample);
+				output[offset++] = (byte)t;
+				output[offset++] = (byte)(t >> 8);
+
+				t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
+				output[offset++] = (byte)t;
+				output[offset++] = (byte)(t >> 8);
+			}
+
+			return output;
+		}
+
 		public static byte[] LoadSound(Stream s)
 		{
 			var br = new BinaryReader(s);

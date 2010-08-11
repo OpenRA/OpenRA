@@ -47,7 +47,9 @@ namespace OpenRA.Widgets
 			if (advanceNext)
 			{
 				advanceNext = false;
-				video.AdvanceFrame();	
+				video.AdvanceFrame();
+
+				Sound.PlayRaw(video.AudioData);
 			}
 			
 			if (dt > timestep)
