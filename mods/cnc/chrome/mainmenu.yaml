@@ -1,11 +1,11 @@
 Container@ROOT:
 	Children:
-#		VqaPlayer:
-#			X:WINDOW_RIGHT - 400
-#			Y:WINDOW_BOTTOM - 200
-#			Width:200
-#			Height:200
-#			Video:obel.vqa
+		VqaPlayer:
+			Id:VIDEOPLAYER
+			X:WINDOW_RIGHT - 400
+			Y:WINDOW_BOTTOM - 250
+			Width:200
+			Height:200
 		Background@MAINMENU_BG:
 			Id:MAINMENU_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
@@ -98,7 +98,6 @@ Container@ROOT:
 			Children:
 				Button@BUTTON_PLAY:
 					Id:BUTTON_PLAY
-					Visible:false
 					X:50
 					Y:15
 					Width:25
@@ -112,21 +111,6 @@ Container@ROOT:
 							Height:25
 							ImageCollection:music
 							ImageName:play
-				Button@BUTTON_PAUSE:
-					Id:BUTTON_PAUSE
-					X:50
-					Y:15
-					Width:25
-					Height:25
-					Children:
-						Image@IMAGE_PAUSE:
-							Id:IMAGE_PAUSE
-							X:0
-							Y:0
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:pause
 				Button@BUTTON_STOP:
 					Id:BUTTON_STOP
 					X:85
@@ -142,33 +126,3 @@ Container@ROOT:
 							Height:25
 							ImageCollection:music
 							ImageName:stop
-				Button@BUTTON_NEXT:
-					Id:BUTTON_NEXT
-					X:120
-					Y:15
-					Width:25
-					Height:25
-					Children:
-						Image@IMAGE_NEXT:
-							Id:IMAGE_NEXT
-							X:0
-							Y:0
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:next
-				Button@BUTTON_PREV:
-					Id:BUTTON_PREV
-					X:15
-					Y:15
-					Width:25
-					Height:25
-					Children:
-						Image@IMAGE_PREV:
-							Id:IMAGE_PREV
-							X:0
-							Y:0
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:prev

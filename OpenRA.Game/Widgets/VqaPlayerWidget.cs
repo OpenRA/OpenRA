@@ -17,16 +17,18 @@ using OpenRA.Support;
 namespace OpenRA.Widgets
 {
 	public class VqaPlayerWidget : Widget
-	{		
-		public string Video = "";
-
+	{
 		float timestep;
 		Sprite videoSprite;
 		VqaReader video = null;
-		
+		string cachedVideo;
 		float invLength;
-		public void LoadVideo(string filename)
+		public void Load(string filename)
 		{
+			if (filename == cachedVideo)
+				return;
+			
+			cachedVideo = filename;
 			video = new VqaReader(FileSystem.Open(filename));
 			timestep = 1f/video.Framerate;
 			invLength = video.Framerate*1f/video.Frames;
@@ -34,25 +36,20 @@ namespace OpenRA.Widgets
 			var size = OpenRA.Graphics.Util.NextPowerOf2(Math.Max(video.Width, video.Height));
 			videoSprite = new Sprite(new Sheet(new Size(size,size)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
 		}
-
-		bool first = true;
-		bool advanceNext = false;
+		
+		bool playing = false;	
 		Stopwatch sw = new Stopwatch();
+		bool first;
 		public override void DrawInner(World world)
 		{
-			if (video == null)
-				LoadVideo(Video);
+			if (!playing)
+				return;
 						
 			var nextFrame = (int)float2.Lerp(0, video.Frames, (float)(sw.ElapsedTime()*invLength));
-			if (first || nextFrame > video.Frames)
+			if (nextFrame > video.Frames)
 			{
-				video.Reset();
-				sw.Reset();
-				Sound.PlayRaw(video.AudioData);
-				
-				nextFrame = 0;
-				videoSprite.sheet.Texture.SetData(video.FrameData);
-				first = false;
+				Stop();
+				return;
 			}
 			
 			while (nextFrame > video.CurrentFrame)
@@ -63,6 +60,21 @@ namespace OpenRA.Widgets
 			}
 			
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, new int2(RenderBounds.X,RenderBounds.Y), "chrome");
+		}
+		
+		public void Play()
+		{
+			playing = true;
+			video.Reset();
+			videoSprite.sheet.Texture.SetData(video.FrameData);
+			sw.Reset();
+			Sound.PlayRaw(video.AudioData);
+		}
+		
+		public void Stop()
+		{
+			playing = false;
+			// TODO: Stop audio
 		}
 	}
 }

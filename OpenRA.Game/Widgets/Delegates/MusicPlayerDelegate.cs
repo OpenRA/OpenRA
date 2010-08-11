@@ -19,15 +19,20 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
+				var foo = Widget.RootWidget.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
+				foo.Load("ally10.vqa");
+				foo.Play();
+				/*
 				if (Sound.MusicStopped)
 					Sound.PlayMusic(GetSong());
 				Sound.MusicStopped = false;
 				Sound.MusicPaused = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
+				*/
 				return true;
 			};
-
+			/*
 			bg.GetWidget("BUTTON_PAUSE").OnMouseUp = mi =>
 			{
 				Sound.MusicPaused = true;
@@ -35,15 +40,19 @@ namespace OpenRA.Widgets.Delegates
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
 				return true;
 			};
-
+			 */
 			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi =>
 			{
+				var foo = Widget.RootWidget.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
+				foo.Stop();
+				/*
 				Sound.MusicStopped = true;
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
+				*/
 				return true;
 			};
-
+			/*
 			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi =>
 			{
 				Sound.PlayMusic(GetNextSong());
@@ -63,6 +72,7 @@ namespace OpenRA.Widgets.Delegates
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 				return true;
 			};
+			*/
 		}
 
 		string GetNextSong()
