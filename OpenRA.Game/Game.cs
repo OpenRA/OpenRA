@@ -221,7 +221,7 @@ namespace OpenRA
 				throw new InvalidOperationException("Desync in DispatchMouseInput");
 		}
 
-		internal static bool IsHost
+		public static bool IsHost
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
