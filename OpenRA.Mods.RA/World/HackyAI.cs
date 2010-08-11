@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 
 		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
 		{
-			{ "proc", .4f },
+			{ "proc", .2f },
 			{ "barr", .05f },
 			{ "tent", .05f },
 			{ "weap", .05f },
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 			{ "gun", .1f },
 			{ "atek", .01f },
 			{ "stek", .01f },
-			{ "silo", .15f },
+			{ "silo", .05f },
 			{ "tsla", .1f },
 			{ "agun", .1f },
 			{ "hpad", .01f },
