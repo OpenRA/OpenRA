@@ -76,7 +76,7 @@ namespace OpenRA.FileFormats
 			return (short)current;
 		}
 
-		public static byte[] LoadSound(byte[] raw)
+		public static byte[] LoadSound(byte[] raw, ref int index)
 		{
 			var br = new BinaryReader(new MemoryStream(raw));
 			var dataSize = raw.Length;
@@ -84,7 +84,6 @@ namespace OpenRA.FileFormats
 
 			var output = new byte[outputSize];
 			var offset = 0;
-			var index = 0;
 			var currentSample = 0;
 
 			while (dataSize-- > 0)

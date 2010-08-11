@@ -132,7 +132,7 @@ namespace OpenRA.FileFormats
 						// Don't parse sound (yet); skip data
 						{
 							var rawAudio = reader.ReadBytes((int)length);
-							audioData = AudLoader.LoadSound(rawAudio);
+							audioData = AudLoader.LoadSound(rawAudio, ref adpcmIndex);
 						}
 						break;
 					case "VQFR":
@@ -148,6 +148,8 @@ namespace OpenRA.FileFormats
 			if (++currentFrame == Frames)
 				currentFrame = cbOffset = cbChunk = 0;
 		}
+
+		int adpcmIndex = 0;
 		
 		// VQA Frame
 		public void DecodeVQFR(BinaryReader reader)
