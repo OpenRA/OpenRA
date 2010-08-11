@@ -253,23 +253,28 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
-		public int[,] FrameData()
+		int cachedFrame;
+		public int[,] FrameData	{ get
 		{
-			for (var y = 0; y < blocks.Y; y++)
-				for (var x = 0; x < blocks.X; x++)
-				{
-					var px = origData[x + y*blocks.X];
-					var mod = origData[x + (y + blocks.Y)*blocks.X];
-					for (var j = 0; j < blockHeight; j++)
-						for (var i = 0; i < blockWidth; i++)
-						{
-							var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-							byte color = (mod == 0x0f) ? px : cbf[cbfi];
-							frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
-						}
-				}
+			if (cachedFrame != currentFrame)
+			{
+				cachedFrame = currentFrame;
+				for (var y = 0; y < blocks.Y; y++)
+					for (var x = 0; x < blocks.X; x++)
+					{
+						var px = origData[x + y*blocks.X];
+						var mod = origData[x + (y + blocks.Y)*blocks.X];
+						for (var j = 0; j < blockHeight; j++)
+							for (var i = 0; i < blockWidth; i++)
+							{
+								var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
+								byte color = (mod == 0x0f) ? px : cbf[cbfi];
+								frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
+							}
+					}
+			}
 			return frameData;
-		}
+		}}
 		
 		int NextPowerOf2(int v)
 		{

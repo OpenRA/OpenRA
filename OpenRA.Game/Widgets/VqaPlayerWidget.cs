@@ -51,7 +51,7 @@ namespace OpenRA.Widgets
 				Sound.PlayRaw(video.AudioData);
 				
 				nextFrame = 0;
-				videoSprite.sheet.Texture.SetData(video.FrameData());
+				videoSprite.sheet.Texture.SetData(video.FrameData);
 				first = false;
 			}
 			
@@ -59,7 +59,7 @@ namespace OpenRA.Widgets
 			{
 				video.AdvanceFrame();
 				if (nextFrame == video.CurrentFrame)
-					videoSprite.sheet.Texture.SetData(video.FrameData());
+					videoSprite.sheet.Texture.SetData(video.FrameData);
 			}
 			
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, new int2(RenderBounds.X,RenderBounds.Y), "chrome");
