@@ -73,12 +73,16 @@ namespace OpenRA.Graphics
 			Timer.Time( "endFrame: {0}" );
 		}
 
+		public void RefreshPalette()
+		{
+			Game.world.WorldRenderer.palette.Update(
+				Game.world.WorldActor.traits.WithInterface<IPaletteModifier>());
+		}
+
 		public void Tick()
 		{
 			cursorFrame += 0.5f;
-
-			Game.world.WorldRenderer.palette.Update(
-				Game.world.WorldActor.traits.WithInterface<IPaletteModifier>());
+			RefreshPalette();
 		}
 
 		public float2 ViewToWorld(int2 loc)

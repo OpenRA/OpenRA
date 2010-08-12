@@ -148,6 +148,7 @@ namespace OpenRA.Widgets.Delegates
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
 			{
 				colorChooser.IsVisible = () => false;
+				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				return true;
 			};
@@ -175,6 +176,7 @@ namespace OpenRA.Widgets.Delegates
 			var c1 = ColorFromHSL(hf, sf, lf);
 			var c2 = ColorFromHSL(hf, sf, r*lf);
 			Game.world.WorldRenderer.UpdatePalette("colorpicker", new Palette(BasePlayerPalette, new PlayerColorRemap(c1, c2, SplitPlayerPalette)));
+			Game.viewport.RefreshPalette();
 		}
 		
 		// hk is hue in the range [0,1] instead of [0,360]
