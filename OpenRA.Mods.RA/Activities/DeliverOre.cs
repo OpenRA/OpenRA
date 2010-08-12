@@ -25,11 +25,16 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if( NextActivity != null )
 				return NextActivity;
-			
-			var proc = self.traits.Get<Harvester>().LinkedProc;
-			
-			if (proc == null)
-				return new Wait(10) { NextActivity = this };
+
+			var harv = self.traits.Get<Harvester>();
+
+			if (harv.LinkedProc == null)
+				harv.ChooseNewProc(self, null);
+
+			if (harv.LinkedProc == null)
+				return new Wait(25) { NextActivity = this };
+
+			var proc = harv.LinkedProc;
 			
 			if( self.Location != proc.Location + proc.traits.Get<IAcceptOre>().DeliverOffset )
 			{

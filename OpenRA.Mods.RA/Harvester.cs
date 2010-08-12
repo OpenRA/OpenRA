@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
 		}
 		
-		void ChooseNewProc(Actor self, Actor ignore)
+		public void ChooseNewProc(Actor self, Actor ignore)
 		{
 			LinkedProc = ClosestProc(self, ignore);
 			if (LinkedProc != null)
