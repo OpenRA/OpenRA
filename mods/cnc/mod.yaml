@@ -15,6 +15,8 @@ Packages:
 	mods/cnc/packages/temperat.mix
 	mods/cnc/packages/winter.mix
 	mods/cnc/packages/desert.mix
+	~mods/cnc/packages/movies-gdi.mix
+	~mods/cnc/packages/movies-nod.mix
 
 Rules:
 	mods/cnc/defaults.yaml:		Basic stuff
@@ -49,6 +51,10 @@ ChromeLayout:
 
 Weapons:
 	mods/cnc/weapons.yaml:
+
+Movies:
+	mods/cnc/movies-gdi.yaml
+	mods/cnc/movies-nod.yaml
 	
 Voices:
 	mods/cnc/voices.yaml:
