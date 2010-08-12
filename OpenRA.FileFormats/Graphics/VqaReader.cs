@@ -257,7 +257,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 		
-		int cachedFrame;
+		int cachedFrame = -1;
 		public int[,] FrameData	{ get
 		{
 			if (cachedFrame != currentFrame)

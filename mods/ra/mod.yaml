@@ -20,6 +20,7 @@ Packages:
 	snow.mix
 	interior.mix
 	scores.mix
+	~movies1.mix
 
 Rules:
 	mods/ra/defaults.yaml
@@ -60,5 +61,8 @@ TileSets:
 
 Music:
 	mods/ra/music.yaml
+
+Movies:
+	mods/ra/movies1.yaml
 
 ShellmapUid:f78ab8d4d40ac3c263d1e404e5bf8233dce1f1a7

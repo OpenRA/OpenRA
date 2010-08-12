@@ -24,6 +24,7 @@ namespace OpenRA
 		public static Dictionary<string, WeaponInfo> Weapons;
 		public static Dictionary<string, VoiceInfo> Voices;
 		public static Dictionary<string, MusicInfo> Music;
+		public static Dictionary<string, string> Movies;
 		public static Dictionary<string, TileSet> TileSets;
 
 		public static void LoadRules(Manifest m, Map map)
@@ -32,6 +33,7 @@ namespace OpenRA
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
 			Music = LoadYamlRules(m.Music, map.Music, (k, _) => new MusicInfo(k.Value));
+			Movies = LoadYamlRules(m.Movies, new Dictionary<string,MiniYaml>(), (k, v) => k.Value.Value);
 			
 			TileSets = new Dictionary<string, TileSet>();
 			foreach (var file in m.TileSets)

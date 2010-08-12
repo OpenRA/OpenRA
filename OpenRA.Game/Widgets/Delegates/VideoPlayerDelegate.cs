@@ -16,17 +16,13 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class VideoPlayerDelegate : IWidgetDelegate
 	{
-		string Selected = null;
+		string Selected;
 		public VideoPlayerDelegate()
 		{
 			var bg = Widget.RootWidget.GetWidget("VIDEOPLAYER_MENU");
 			var player = bg.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
-				if (Selected == null)
-					return true;
-				
-				player.Load(Selected);
 				player.Play();
 				return true;
 			};
@@ -53,14 +49,11 @@ namespace OpenRA.Widgets.Delegates
 			var itemTemplate = vl.GetWidget<LabelWidget>("VIDEO_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			
-			// Todo: pull into per-mod yaml / Manifest
-			var tempVideos = new Dictionary<string,string>();
-			tempVideos.Add("obel.vqa", "Obelisk ZZZZAAAAAP");
-			tempVideos.Add("ally1.vqa", "Allies briefing #1");
-			tempVideos.Add("ally10.vqa", "Allies briefing #10");
+			Selected = Rules.Movies.Keys.FirstOrDefault();
+			if (Selected != null)
+				player.Load(Selected);
 			
-			Selected = tempVideos.Keys.FirstOrDefault();
-			foreach (var kv in tempVideos)
+			foreach (var kv in Rules.Movies)
 			{
 				var video = kv.Key;
 				var title = kv.Value;
@@ -73,10 +66,8 @@ namespace OpenRA.Widgets.Delegates
 				template.GetBackground = () => ((video == Selected) ? "dialog2" : null);
 				template.OnMouseDown = mi =>
 				{
-					if (Selected == video)
-						return true;
-					player.Stop();
 					Selected = video;
+					player.Load(video);
 					return true;
 				};
 				template.Parent = vl;
