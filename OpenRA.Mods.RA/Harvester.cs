@@ -24,11 +24,14 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
+		public readonly float FullyLoadedSpeed = .7f;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, IRenderModifier, IExplodeModifier, IOrderCursor, IOrderVoice
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, 
+		IRenderModifier, IExplodeModifier, IOrderCursor, IOrderVoice,
+		ISpeedModifier
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		
@@ -202,5 +205,11 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool ShouldExplode(Actor self) { return !IsEmpty; }
+
+		public float GetSpeedModifier()
+		{
+			return float2.Lerp(1f, Info.FullyLoadedSpeed,
+				contents.Values.Sum() / (float)Info.Capacity);
+		}
 	}
 }
