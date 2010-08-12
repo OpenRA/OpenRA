@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using OpenRA.FileFormats;
-using System.Drawing;
-using System.Linq;
 #region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
@@ -12,11 +8,15 @@ using System.Linq;
  */
 #endregion
 
+using System.Drawing;
+using OpenRA.FileFormats;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class VideoPlayerDelegate : IWidgetDelegate
 	{
 		string Selected;
+
 		public VideoPlayerDelegate()
 		{
 			var bg = Widget.RootWidget.GetWidget("VIDEOPLAYER_MENU");
@@ -49,16 +49,15 @@ namespace OpenRA.Widgets.Delegates
 			var itemTemplate = vl.GetWidget<LabelWidget>("VIDEO_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			
-			Selected = Rules.Movies.Keys.FirstOrDefault();
-			if (Selected != null)
-				player.Load(Selected);
-			
 			foreach (var kv in Rules.Movies)
 			{
 				var video = kv.Key;
 				var title = kv.Value;
 				if (!FileSystem.Exists(video))
 					continue;
+
+				if (Selected == null)
+					player.Load(Selected = video);
 
 				var template = itemTemplate.Clone() as LabelWidget;
 				template.Id = "VIDEO_{0}".F(video);
