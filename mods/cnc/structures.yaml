@@ -564,7 +564,7 @@ GTWR:
 	Building:
 		Power: -10
 	Health:
-		HP: 400
+		HP: 600
 		Armor: wood
 	RevealsShroud:
 		Range: 6
@@ -589,7 +589,7 @@ ATWR:
 	Building:
 		Power: -20
 	Health:
-		HP: 600
+		HP: 800
 		Armor: light
 	RevealsShroud:
 		Range: 8
