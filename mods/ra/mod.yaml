@@ -42,6 +42,7 @@ Assemblies:
 ChromeLayout:
 	mods/ra/chrome/ingame.yaml:	
 	mods/ra/chrome/mainmenu.yaml:
+	mods/ra/chrome/videoplayer.yaml:
 	mods/ra/chrome/settings.yaml:
 	mods/ra/chrome/gamelobby.yaml:
 	mods/ra/chrome/serverbrowser.yaml:

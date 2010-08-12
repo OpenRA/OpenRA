@@ -42,6 +42,7 @@ Assemblies:
 ChromeLayout:
 	mods/cnc/chrome/ingame.yaml:
 	mods/cnc/chrome/mainmenu.yaml:
+	mods/cnc/chrome/videoplayer.yaml:
 	mods/cnc/chrome/settings.yaml:
 	mods/cnc/chrome/gamelobby.yaml:
 	mods/cnc/chrome/serverbrowser.yaml:

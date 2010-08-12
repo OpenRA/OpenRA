@@ -222,6 +222,7 @@
     <Compile Include="Traits\RepairableBuilding.cs" />
     <Compile Include="Traits\Activities\Drag.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
+    <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -18,11 +18,11 @@ namespace OpenRA.Widgets
 {
 	public class VqaPlayerWidget : Widget
 	{
-		float timestep;
 		Sprite videoSprite;
 		VqaReader video = null;
 		string cachedVideo;
 		float invLength;
+		float2 videoOrigin, videoSize;
 		public void Load(string filename)
 		{
 			if (filename == cachedVideo)
@@ -30,16 +30,19 @@ namespace OpenRA.Widgets
 			
 			cachedVideo = filename;
 			video = new VqaReader(FileSystem.Open(filename));
-			timestep = 1f/video.Framerate;
 			invLength = video.Framerate*1f/video.Frames;
 
-			var size = OpenRA.Graphics.Util.NextPowerOf2(Math.Max(video.Width, video.Height));
-			videoSprite = new Sprite(new Sheet(new Size(size,size)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
+			var size = Math.Max(video.Width, video.Height);
+			var textureSize = OpenRA.Graphics.Util.NextPowerOf2(size);
+			videoSprite = new Sprite(new Sheet(new Size(textureSize,textureSize)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
+			
+			var scale = Math.Min(RenderBounds.Width / video.Width, RenderBounds.Height / video.Height);
+			videoOrigin = new float2(RenderBounds.X + (RenderBounds.Width - scale*video.Width)/2, RenderBounds.Y +  (RenderBounds.Height - scale*video.Height)/2);
+			videoSize = new float2(video.Width * scale, video.Height * scale);
 		}
 		
 		bool playing = false;	
 		Stopwatch sw = new Stopwatch();
-		bool first;
 		public override void DrawInner(World world)
 		{
 			if (!playing)
@@ -58,8 +61,7 @@ namespace OpenRA.Widgets
 				if (nextFrame == video.CurrentFrame)
 					videoSprite.sheet.Texture.SetData(video.FrameData);
 			}
-			
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, new int2(RenderBounds.X,RenderBounds.Y), "chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, videoOrigin, "chrome", videoSize);
 		}
 		
 		public void Play()

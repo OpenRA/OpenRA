@@ -9,7 +9,7 @@ Background@MAINMENU_BG:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:250
-	Height:250
+	Height:290
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Label@MAINMENU_LABEL_TITLE:
@@ -45,10 +45,18 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Settings
 			Bold:True
+		Button@MAINMENU_BUTTON_VIDEOPLAYER:
+			Id:MAINMENU_BUTTON_VIDEOPLAYER
+			X:45
+			Y:190
+			Width:160
+			Height:25
+			Text:Video Player
+			Bold:True
 		Button@MAINMENU_BUTTON_QUIT:
 			Id:MAINMENU_BUTTON_QUIT
 			X:45
-			Y:190
+			Y:230
 			Width:160
 			Height:25
 			Text:Quit
@@ -85,42 +93,3 @@ Background@PERF_BG:
 			Y:205
 			Width:170
 			Height:40
-Background@MUSIC_BG:
-	Id:MUSIC_BG
-	Delegate:MusicPlayerDelegate
-	X:WINDOW_RIGHT - 175
-	Y:WINDOW_BOTTOM - 95
-	Width: 160
-	Height: 55
-	Visible: true
-	Children:
-		Button@BUTTON_PLAY:
-			Id:BUTTON_PLAY
-			X:50
-			Y:15
-			Width:25
-			Height:25
-			Children:
-				Image@IMAGE_PLAY:
-					Id:IMAGE_PLAY
-					X:0
-					Y:0
-					Width:25
-					Height:25
-					ImageCollection:music
-					ImageName:play
-		Button@BUTTON_STOP:
-			Id:BUTTON_STOP
-			X:85
-			Y:15
-			Width:25
-			Height:25
-			Children:
-				Image@IMAGE_STOP:
-					Id:IMAGE_STOP
-					X:0
-					Y:0
-					Width:25
-					Height:25
-					ImageCollection:music
-					ImageName:stop
