@@ -21,6 +21,7 @@ Packages:
 	interior.mix
 	scores.mix
 	~movies1.mix
+	~movies2.mix
 
 Rules:
 	mods/ra/defaults.yaml
@@ -64,5 +65,6 @@ Music:
 
 Movies:
 	mods/ra/movies1.yaml
+	mods/ra/movies2.yaml
 
 ShellmapUid:f78ab8d4d40ac3c263d1e404e5bf8233dce1f1a7
