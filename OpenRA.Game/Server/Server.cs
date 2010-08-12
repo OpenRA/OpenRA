@@ -45,7 +45,8 @@ namespace OpenRA.Server
 		static string masterServerUrl;
 		static bool isInitialPing;
 
-		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, string[] mods, string map, bool cheats)
+		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, 
+			string[] mods, string map, bool cheats)
 		{
 			Log.AddChannel("server", "server.log", false, false);
 
@@ -86,7 +87,7 @@ namespace OpenRA.Server
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
 
-					Socket.Select( checkRead, null, null, MasterPingInterval * 1000000 );
+					Socket.Select( checkRead, null, null, MasterPingInterval * 10000 );
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
@@ -94,6 +95,10 @@ namespace OpenRA.Server
 
 					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
 						PingMasterServer();
+					else
+						lock (masterServerMessages)
+							while (masterServerMessages.Count > 0)
+								SendChat(null, masterServerMessages.Dequeue());
 					
 					if (conns.Count() == 0)
 					{
@@ -445,50 +450,57 @@ namespace OpenRA.Server
 			PingMasterServer();
 		}
 
+		static volatile bool isBusy;
+		static Queue<string> masterServerMessages = new Queue<string>();
 		static void PingMasterServer()
 		{
-			if (wc.IsBusy || !isInternetServer) return;
-
-			var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
-			wc.DownloadDataCompleted += PingMasterServerResponse;
-			if (isInitialPing)
-			{
-				url += "&new=1";
-				isInitialPing = false;
-			}
-			else
-				wc.DownloadDataCompleted -= PingMasterServerResponse;
-
-			wc.DownloadDataAsync(new Uri(
-				masterServerUrl + url.F(
-				ExternalPort, Uri.EscapeUriString(Name),
-				GameStarted ? 2 : 1,	// todo: post-game states, etc.
-				lobbyInfo.Clients.Count,
-				string.Join(",", lobbyInfo.GlobalSettings.Mods),
-				lobbyInfo.GlobalSettings.Map)));
+			if (isBusy || !isInternetServer) return;
 
 			lastPing = Environment.TickCount;
-		}
+			isBusy = true;
 
-		static void PingMasterServerResponse(object sender, DownloadDataCompletedEventArgs e)
-		{
-			if (e.Error != null)
-			{
-				Log.Write("server", "Error pinging Master Server; {0}", e.Error.Message);
-				return;
-			}
-			
-			if (e.Result.Length == 0)
-			{
-				Log.Write("server", "Error pinging Master Server; Empty Response");
-				return;
-			}
-			
-			string s = Encoding.UTF8.GetString(e.Result);
-			int gameId;
-			if (int.TryParse(s.Trim(), out gameId))
-				Game.SetGameId(gameId);
-			Log.Write("server", "Game ID: {0}", gameId);
+			Action a = () =>
+				{
+					try
+					{
+						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
+						if (isInitialPing) url += "&new=1";
+
+						using (var wc = new WebClient())
+						{
+							var result = wc.DownloadData(
+								masterServerUrl + url.F(
+								ExternalPort, Uri.EscapeUriString(Name),
+								GameStarted ? 2 : 1,	// todo: post-game states, etc.
+								lobbyInfo.Clients.Count,
+								string.Join(",", lobbyInfo.GlobalSettings.Mods),
+								lobbyInfo.GlobalSettings.Map));
+
+							if (isInitialPing)
+							{
+								isInitialPing = false;
+
+								var s = Encoding.UTF8.GetString(result);
+								int gameId;
+								if (int.TryParse(s.Trim(), out gameId))
+									Game.SetGameId(gameId);
+
+								lock (masterServerMessages)
+									masterServerMessages.Enqueue("Master server communication established. Game ID = {0}".F(gameId));
+							}
+						}
+					}
+					catch(Exception ex)
+					{
+						Log.Write("server", ex.ToString());
+						lock( masterServerMessages )
+							masterServerMessages.Enqueue( "Master server communication failed." );
+					}
+
+					isBusy = false;
+				};
+
+			a.BeginInvoke(null, null);
 		}
 	}
 }
