@@ -21,11 +21,10 @@ namespace OpenRA
 	{
 		static ISoundEngine soundEngine;
 		static Cache<string, ISoundSource> sounds;
+		static ISoundSource rawSource;
 		static ISound music;
 		static ISound video;
-		
-		static bool paused;
-		static bool stopped;
+		static string currentMusic;
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -43,25 +42,11 @@ namespace OpenRA
 			soundEngine = new OpenAlSoundEngine();
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
+			currentMusic = null;
 			video = null;
-			paused = false;
-			stopped = false;
 		}
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
-
-		static ISoundSource rawSource;
-		public static void PlayVideoSoundtrack(byte[] raw)
-		{
-			rawSource = LoadSoundRaw(raw);
-			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
-		}
-		
-		public static void StopVideoSoundtrack()
-		{
-			if (video != null)
-				soundEngine.StopSound(video);
-		}
 
 		public static void Play(string name)
 		{
@@ -93,36 +78,47 @@ namespace OpenRA
 				Play(name, pos);
 		}
 
+		public static void PlayVideoSoundtrack(byte[] raw)
+		{
+			rawSource = LoadSoundRaw(raw);
+			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
+		}
+		
+		public static void StopVideoSoundtrack()
+		{
+			if (video != null)
+				soundEngine.StopSound(video);
+		}
+		
 		public static void PlayMusic(string name)
 		{
 			if (name == "" || name == null)
 				return;
 
-			if (music != null)
-				soundEngine.StopSound(music);
+			if (name == currentMusic && music != null)
+			{
+				soundEngine.PauseSound(music, false);
+				return;
+			}
+			StopMusic();
 			
+			currentMusic = name;
 			var sound = sounds[name];
 			music = soundEngine.Play2D(sound, true, true, float2.Zero, MusicVolume);
 		}
 
-		public static bool MusicPaused
+		public static void StopMusic()
 		{
-		    get { return paused; }
-		    set { 
-				paused = value; 
-				if (music != null)
-					soundEngine.PauseSound(music, paused);
-			}
+			if (music != null)
+				soundEngine.StopSound(music);
+			
+			currentMusic = null;
 		}
 		
-		public static bool MusicStopped
+		public static void PauseMusic()
 		{
-		    get { return stopped; }
-		    set { 
-				stopped = value; 
-				if (music != null && stopped)
-					soundEngine.StopSound(music);
-			}
+			if (music != null)
+				soundEngine.PauseSound(music, true);
 		}
 
 		public static float GlobalVolume

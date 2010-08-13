@@ -1,3 +1,5 @@
+using System.Linq;
+using OpenRA.FileFormats;
 #region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
@@ -12,85 +14,86 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class MusicPlayerDelegate : IWidgetDelegate
 	{
+		string CurrentSong = null;
 		public MusicPlayerDelegate()
 		{
 			var bg = Widget.RootWidget.GetWidget("MUSIC_BG");
 			bg.Visible = Game.Settings.MusicPlayer;
+			CurrentSong = GetNextSong();
 
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
-				var foo = Widget.RootWidget.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
-				foo.Load("intro2.vqa");
-				foo.Play();
-				/*
-				if (Sound.MusicStopped)
-					Sound.PlayMusic(GetSong());
-				Sound.MusicStopped = false;
-				Sound.MusicPaused = false;
+				if (CurrentSong == null)
+					return true;
+				
+				Sound.PlayMusic(Rules.Music[CurrentSong].Filename);
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
-				*/
+
 				return true;
 			};
-			/*
+			
 			bg.GetWidget("BUTTON_PAUSE").OnMouseUp = mi =>
-			{
-				Sound.MusicPaused = true;
+			{				
+				Sound.PauseMusic();
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
 				return true;
 			};
-			 */
+			
 			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi =>
 			{
-				var foo = Widget.RootWidget.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
-				foo.Stop();
-				/*
-				Sound.MusicStopped = true;
+				Sound.StopMusic();
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
-				*/
+				
 				return true;
 			};
-			/*
+			
 			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi =>
 			{
-				Sound.PlayMusic(GetNextSong());
-				Sound.MusicStopped = false;
-				Sound.MusicPaused = false;
-				bg.GetWidget("BUTTON_PLAY").Visible = false;
-				bg.GetWidget("BUTTON_PAUSE").Visible = true;
-				return true;
+				CurrentSong = GetNextSong();
+				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
 
 			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi =>
 			{
-				Sound.PlayMusic(GetPrevSong());
-				Sound.MusicStopped = false;
-				Sound.MusicPaused = false;
-				bg.GetWidget("BUTTON_PLAY").Visible = false;
-				bg.GetWidget("BUTTON_PAUSE").Visible = true;
-				return true;
+				CurrentSong = GetPrevSong();
+				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
-			*/
 		}
-
+		
 		string GetNextSong()
 		{
-			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetNext();
+			var songs = Rules.Music.Select(a => a.Key)
+				.Where(a => FileSystem.Exists(Rules.Music[a].Filename));
+			
+			var nextSong = songs
+				.SkipWhile(m => m != CurrentSong)
+				.Skip(1)
+				.FirstOrDefault();
+			
+			if (nextSong == null)
+				nextSong = songs.FirstOrDefault();
+			
+			return nextSong;
 		}
 
 		string GetPrevSong()
 		{
-			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetPrev();
-		}
-
-		string GetSong()
-		{
-			if (!Rules.Music.ContainsKey("allmusic")) return null;
-			return Rules.Music["allmusic"].Pool.GetCurrent();
+			var songs = Rules.Music.Select(a => a.Key)
+				.Where(a => FileSystem.Exists(Rules.Music[a].Filename))
+				.Reverse();
+			
+			var nextSong = songs
+				.SkipWhile(m => m != CurrentSong)
+				.Skip(1)
+				.FirstOrDefault();
+			
+			if (nextSong == null)
+				nextSong = songs.FirstOrDefault();
+			
+			return nextSong;
 		}
 	}
 }

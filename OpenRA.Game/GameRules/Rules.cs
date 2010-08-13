@@ -32,7 +32,7 @@ namespace OpenRA
 			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
-			Music = LoadYamlRules(m.Music, map.Music, (k, _) => new MusicInfo(k.Value));
+			Music = LoadYamlRules(m.Music, map.Music, (k, _) => new MusicInfo(k.Key, k.Value));
 			Movies = LoadYamlRules(m.Movies, new Dictionary<string,MiniYaml>(), (k, v) => k.Value.Value);
 			
 			TileSets = new Dictionary<string, TileSet>();

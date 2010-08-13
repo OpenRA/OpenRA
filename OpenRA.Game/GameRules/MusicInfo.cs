@@ -14,37 +14,15 @@ namespace OpenRA.GameRules
 {
 	public class MusicInfo
 	{
-		public readonly MusicPool Pool;
-		public readonly string[] Music = { };
+		public readonly string Filename = null;
+		public readonly string Title = null;
+		public readonly float Length = 0; // seconds
 
-		public MusicInfo( MiniYaml y )
+		public MusicInfo( string key, MiniYaml value )
 		{
-			FieldLoader.Load(this, y);
-			Pool = new MusicPool(Music);
+			FieldLoader.Load(this, value);
+			if (Filename == null)
+				Filename = key+".aud";
 		}
-	}
-	
-	public class MusicPool
-	{
-		readonly string[] clips;
-		int playing = 0;
-
-		public MusicPool(params string[] clips)
-		{
-			this.clips = clips;
-		}
-
-		public string GetNext() 
-		{ 
-			playing = (playing + 1) % clips.Length;
-			return clips[playing]; 
-		}
-		public string GetPrev() 
-		{ 
-			playing = (playing + clips.Length - 1) % clips.Length;
-			return clips[playing]; 
-		}
-		public string GetCurrent(){ return clips[playing];}
-		
 	}
 }
