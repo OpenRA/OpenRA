@@ -25,7 +25,7 @@ InstallDir $PROGRAMFILES\OpenRA
 SetCompressor lzma
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "..\..\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
 !insertmacro MUI_PAGE_DIRECTORY
 
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
@@ -52,35 +52,35 @@ Var StartMenuFolder
 ;***************************
 Section "Client" Client
 	SetOutPath "$INSTDIR"
-	File "..\..\OpenRA.Game.exe"
-	File "..\..\OpenRA.FileFormats.dll"
-	File "..\..\OpenRA.Gl.dll"
-	File "..\..\COPYING"
-	File "..\..\HACKING"
-	File "..\..\INSTALL"
-	File "..\..\*.ttf"
+	File "${SRCDIR}\OpenRA.Game.exe"
+	File "${SRCDIR}\OpenRA.FileFormats.dll"
+	File "${SRCDIR}\OpenRA.Gl.dll"
+	File "${SRCDIR}\COPYING"
+	File "${SRCDIR}\HACKING"
+	File "${SRCDIR}\INSTALL"
+	File "${SRCDIR}\*.ttf"
 	
-	File "..\..\OpenRA.Game\OpenRA.ico"
+	File "${SRCDIR}\OpenRA.Game\OpenRA.ico"
 	
-	File "..\..\thirdparty\Tao\*.dll"
+	File "${SRCDIR}\thirdparty\Tao\*.dll"
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "InitialMods=ra" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "InitialMods=cnc" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\shaders"
-	File "..\..\shaders\*.fx"
+	File "${SRCDIR}\shaders\*.fx"
 	SetOutPath "$INSTDIR\maps"
-	File "..\..\maps\README"
+	File "${SRCDIR}\maps\README"
 SectionEnd
 
 Section "Editor" Editor
 	SetOutPath "$INSTDIR"
-	File "..\..\OpenRA.Editor.exe"
+	File "${SRCDIR}\OpenRA.Editor.exe"
 	
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -95,10 +95,10 @@ SectionGroup /e "Mods"
 	SectionGroup "Red Alert" RA
 		Section "-RA_Core"
 			SetOutPath "$INSTDIR\mods\ra"
-			File "..\..\mods\ra\*.*"
-			File /r "..\..\mods\ra\maps"
-			File /r "..\..\mods\ra\chrome"
-			File /r "..\..\mods\ra\extras"
+			File "${SRCDIR}\mods\ra\*.*"
+			File /r "${SRCDIR}\mods\ra\maps"
+			File /r "${SRCDIR}\mods\ra\chrome"
+			File /r "${SRCDIR}\mods\ra\extras"
 		SectionEnd
 		Section "Download content" RA_Content
 			AddSize 10137
@@ -117,9 +117,9 @@ SectionGroup /e "Mods"
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
 			SetOutPath "$INSTDIR\mods\cnc"
-			File "..\..\mods\cnc\*.*"
-			File /r "..\..\mods\cnc\maps"
-			File /r "..\..\mods\cnc\chrome"
+			File "${SRCDIR}\mods\cnc\*.*"
+			File /r "${SRCDIR}\mods\cnc\maps"
+			File /r "${SRCDIR}\mods\cnc\chrome"
 		SectionEnd
 		Section "Download content" CNC_Content
 			AddSize 9431
