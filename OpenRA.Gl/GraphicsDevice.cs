@@ -174,6 +174,7 @@ namespace OpenRA.GlRenderer
 
 			var mods = MakeModifiers(Sdl.SDL_GetModState());
 			Game.HandleModifierKeys(mods);
+            MouseEventArgs pendingMotion = null;
 
 			Sdl.SDL_Event e;
 			while (Sdl.SDL_PollEvent(out e) != 0)
@@ -186,6 +187,12 @@ namespace OpenRA.GlRenderer
 
 					case Sdl.SDL_MOUSEBUTTONDOWN:
 						{
+                            if (pendingMotion != null)
+                            {
+                                Game.DispatchMouseInput(MouseInputEvent.Move, pendingMotion, mods);
+                                pendingMotion = null;
+                            }
+
 							var button = MakeButton(e.button.button);
 							lastButtonBits |= button;
 
@@ -196,6 +203,12 @@ namespace OpenRA.GlRenderer
 
 					case Sdl.SDL_MOUSEBUTTONUP:
 						{
+                            if (pendingMotion != null)
+                            {
+                                Game.DispatchMouseInput(MouseInputEvent.Move, pendingMotion, mods);
+                                pendingMotion = null;
+                            }
+
 							var button = MakeButton(e.button.button);
 							lastButtonBits &= ~button;
 
@@ -206,9 +219,7 @@ namespace OpenRA.GlRenderer
 
 					case Sdl.SDL_MOUSEMOTION:
 						{
-							Game.DispatchMouseInput(MouseInputEvent.Move,
-								new MouseEventArgs(lastButtonBits, 0, e.motion.x, e.motion.y, 0),
-								mods);
+                            pendingMotion = new MouseEventArgs(lastButtonBits, 0, e.motion.x, e.motion.y, 0);
 						} break;
 
 					case Sdl.SDL_KEYDOWN:
@@ -241,6 +252,12 @@ namespace OpenRA.GlRenderer
 						} break;
 				}
 			}
+
+            if (pendingMotion != null)
+            {
+                Game.DispatchMouseInput(MouseInputEvent.Move, pendingMotion, mods);
+                pendingMotion = null;
+            }
 
 			CheckGlError();
 		}
