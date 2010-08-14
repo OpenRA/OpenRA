@@ -184,7 +184,6 @@ namespace OpenRA
 		// Returns true if it played a phrase
 		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
 		{
-			Console.WriteLine(" Foo: `{0}`", phrase);
 			if (voicedUnit == null) return false;
 			if (phrase == null) return false;
 
