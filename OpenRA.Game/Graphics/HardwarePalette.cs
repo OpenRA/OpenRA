@@ -14,6 +14,7 @@ using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.FileFormats.Graphics;
+using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -21,10 +22,8 @@ namespace OpenRA.Graphics
 	{
 		public const int MaxPalettes = 64;
 		int allocated = 0;
+		
 		ITexture texture;
-
-		// We need to store the Palettes themselves for the remap palettes to work
-		// We should probably try to fix this somehow
 		Dictionary<string, Palette> palettes;
 		Dictionary<string, int> indices;
 		
@@ -37,54 +36,41 @@ namespace OpenRA.Graphics
 		
 		public Palette GetPalette(string name)
 		{
-			try { return palettes[name]; }
-			catch (KeyNotFoundException)
-			{
-				throw new InvalidOperationException(
-					"Palette `{0}` does not exist".F(name));
-			}
+			Palette ret;
+			if (!palettes.TryGetValue(name,out ret))
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+			return ret;
 		}
 
 		public int GetPaletteIndex(string name)
 		{
-			try { return indices[name]; }
-			catch (KeyNotFoundException)
-			{
-				throw new InvalidOperationException(
-					"Palette `{0}` does not exist".F(name));
-			}
+			int ret;
+			if (!indices.TryGetValue(name,out ret))
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+			return ret;
 		}
 		
-		public int AddPalette(string name, Palette p)
+		public void AddPalette(string name, Palette p)
 		{
+			Console.WriteLine("Adding palette "+name);
 			palettes.Add(name, p);
-			indices.Add(name, allocated);
-			/*for (int i = 0; i < 256; i++)
-			{
-				this[new Point(i, allocated)] = p.GetColor(i);
-			}*/
-			return allocated++;
+			indices.Add(name, allocated++);
 		}
 		
 		public void UpdatePalette(string name, Palette p)	
 		{
 			palettes[name] = p;
-			var j = indices[name];
-			/*
-			for (int i = 0; i < 256; i++)
-			{
-				this[new Point(i, j)] = p.GetColor(i);
-			}*/
 		}
 		
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
 		{
-			//var b = new Bitmap(Bitmap);
-			//foreach (var mod in paletteMods)
-			//	mod.AdjustPalette(b);
+			var copy = palettes.ToDictionary(p => p.Key, p => new Palette(p.Value));
+			
+			foreach (var mod in paletteMods)
+				mod.AdjustPalette(copy);
 			
 			var data = new uint[MaxPalettes,256];
-			foreach (var pal in palettes)
+			foreach (var pal in copy)
 			{
 				var j = indices[pal.Key];
 				var c = pal.Value.Values;
@@ -94,16 +80,6 @@ namespace OpenRA.Graphics
 	        
 			// Doesn't work
 			texture.SetData(data);
-			/*
-			// Works
-			var foo = new Bitmap(256,MaxPalettes);
-			for (int j = 0; j < MaxPalettes; j++)
-				for (int i = 0; i < 256; i++)
-					foo.SetPixel(i,j,Color.FromArgb((int)data[i,j]));
-			
-			
-			Texture.SetData(foo);
-			*/
 			Game.Renderer.PaletteTexture = texture;
 		}
 	}

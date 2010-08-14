@@ -37,8 +37,8 @@ namespace OpenRA.GlRenderer
 		// An array of RGBA
 		public void SetData(uint[,] colors)
 		{
-			int width = colors.GetUpperBound(0) + 1;
-			int height = colors.GetUpperBound(1) + 1;
+			int width = colors.GetUpperBound(1) + 1;
+			int height = colors.GetUpperBound(0) + 1;
 			
 			if (!IsPowerOf2(width) || !IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width,height));

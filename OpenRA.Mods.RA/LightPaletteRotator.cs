@@ -10,6 +10,8 @@
 
 using System.Drawing;
 using OpenRA.Traits;
+using System.Collections.Generic;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -21,16 +23,21 @@ namespace OpenRA.Mods.RA
 		{
 			t += .5f;
 		}
-
-		public void AdjustPalette(Bitmap b)
+		
+		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
-			var rotate = (int)t % 18;
-			if (rotate > 9)
-				rotate = 18 - rotate;
-			
-			using (var bitmapCopy = new Bitmap(b))
-				for (int j = 0; j < b.Height; j++)
-					b.SetPixel(0x67, j, b.GetPixel(230+rotate, j));
+			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
+			foreach (var pal in palettes)
+			{
+				if (excludePalettes.Contains(pal.Key))
+					continue;
+				
+				var rotate = (int)t % 18;
+				if (rotate > 9)
+					rotate = 18 - rotate;
+				
+				pal.Value.SetColor(0x67, pal.Value.GetColor(230+rotate));
+			}
 		}
 	}
 }

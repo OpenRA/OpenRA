@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace OpenRA.FileFormats
 {
@@ -21,6 +22,16 @@ namespace OpenRA.FileFormats
 		public Color GetColor(int index)
 		{
 			return Color.FromArgb((int)colors[index]);
+		}
+		
+		public void SetColor(int index, Color color)
+		{
+			colors[index] = (uint)color.ToArgb();
+		}
+		
+		public void SetColor(int index, uint color)
+		{
+			colors[index] = (uint)color;
 		}
 				
 		public uint[] Values
@@ -43,21 +54,22 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			colors[0] = 0;//Color.FromArgb(0, 0, 0, 0);
-
+			colors[0] = 0;
 			if (remapTransparent)
 			{
-				colors[3] = (uint)178 << 24;//Color.FromArgb(178, 0, 0, 0);
-				colors[4] = (uint)140 << 24;//Color.FromArgb(140, 0, 0, 0);
+				colors[3] = (uint)178 << 24;
+				colors[4] = (uint)140 << 24;
 			}
 		}
 
 		public Palette(Palette p, IPaletteRemap r)
 		{
 			colors = p.colors;
-			
-			//for (int i = 0; i < 256; i++)
-			//	colors.Add(r.GetRemappedColor(p.GetColor(i), i));
+		}
+		
+		public Palette(Palette p)
+		{
+			colors = (uint[])p.colors.Clone();
 		}
 	}
 

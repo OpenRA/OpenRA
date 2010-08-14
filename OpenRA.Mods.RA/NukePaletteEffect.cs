@@ -10,6 +10,8 @@
 
 using System.Drawing;
 using OpenRA.Traits;
+using System.Collections.Generic;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -31,21 +33,26 @@ namespace OpenRA.Mods.RA
 				remainingFrames--;
 		}
 
-		public void AdjustPalette(Bitmap b)
+		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
 			if (remainingFrames == 0)
 				return;
 			
 			var frac = (float)remainingFrames / nukeEffectLength;
-
-			// TODO: Fix me to only affect "world" palettes
-			for( var y = 0; y < b.Height; y++ )
+			
+			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
+			foreach (var pal in palettes)
+			{
+				if (excludePalettes.Contains(pal.Key))
+					continue;
+				
 				for (var x = 0; x < 256; x++)
 				{
-					var orig = b.GetPixel(x, y);
+					var orig = pal.Value.GetColor(x);
 					var white = Color.FromArgb(orig.A, 255, 255, 255);
-					b.SetPixel(x, y, OpenRA.Graphics.Util.Lerp(frac, orig, white));
+					pal.Value.SetColor(x, OpenRA.Graphics.Util.Lerp(frac,orig,white));
 				}
+			}
 		}
 	}
 }

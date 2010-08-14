@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -95,7 +96,7 @@ namespace OpenRA.Traits
 	public interface ISpeedModifier { float GetSpeedModifier(); }
 	public interface IPowerModifier { float GetPowerModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
-	public interface IPaletteModifier { void AdjustPalette(Bitmap b); }
+	public interface IPaletteModifier { void AdjustPalette(Dictionary<string,Palette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 
