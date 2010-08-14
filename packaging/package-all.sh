@@ -33,8 +33,14 @@ make prefix=/usr DESTDIR=../built install
 popd
 popd
 
-cd linux/pkgbuild/
+pushd linux/pkgbuild/
 sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION"
+popd
 
-#cd ../rpm/
-#sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" "~/rpmbuild"
+pushd linux/rpm/
+sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" "~/rpmbuild"
+popd
+
+pushd osx/
+#todo
+popd

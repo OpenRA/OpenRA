@@ -23,11 +23,10 @@ and includes Command & Conquer as an official mod.
 %setup -n %{folder}
 
 %build
-make prefix="$RPM_BUILD_ROOT/usr"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make prefix="$RPM_BUILD_ROOT/usr" install
+cp -r ~/openra-package/built/usr/ $RPM_BUILD_ROOT 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
