@@ -21,12 +21,21 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var bg = Widget.RootWidget.GetWidget("VIDEOPLAYER_MENU");
 			var player = bg.GetWidget<VqaPlayerWidget>("VIDEOPLAYER");
-			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
+			
+			var pp = bg.GetWidget("BUTTON_PLAYPAUSE");
+			pp.OnMouseUp = mi =>
 			{
-				player.Play();
+				if (player.Paused)
+					player.Play();
+				else
+					player.Pause();
+				
 				return true;
 			};
 			
+			pp.GetWidget("PLAY").IsVisible = () => player.Paused;
+			pp.GetWidget("PAUSE").IsVisible = () => !player.Paused;
+
 			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi =>
 			{
 				player.Stop();

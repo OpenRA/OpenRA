@@ -38,21 +38,25 @@ Container@ROOT:
 							X:2
 							Y:0
 							Visible:false
-				Button@BUTTON_PLAY:
-					Id:BUTTON_PLAY
-					X:590 - WIDTH
+				Button@BUTTON_PLAYPAUSE:
+					Id:BUTTON_PLAYPAUSE
+					X:600 - WIDTH - 10
 					Y:460
 					Width:25
 					Height:25
 					Children:
-						Image@IMAGE_PLAY:
-							Id:IMAGE_PLAY
-							X:0
-							Y:0
+						Image@PLAY:
+							Id:PLAY
 							Width:25
 							Height:25
 							ImageCollection:music
 							ImageName:play
+						Image@PAUSE:
+							Id:PAUSE
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:pause
 				Button@BUTTON_STOP:
 					Id:BUTTON_STOP
 					X:610
@@ -60,10 +64,7 @@ Container@ROOT:
 					Width:25
 					Height:25
 					Children:
-						Image@IMAGE_STOP:
-							Id:IMAGE_STOP
-							X:0
-							Y:0
+						Image:
 							Width:25
 							Height:25
 							ImageCollection:music

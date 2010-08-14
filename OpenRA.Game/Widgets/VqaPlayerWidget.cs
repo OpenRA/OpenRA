@@ -24,21 +24,24 @@ namespace OpenRA.Widgets
 		float invLength;
 		float2 videoOrigin, videoSize;
 		int[,] overlay;
-		public bool DrawOverlay = true;
+		bool stopped;
+		bool paused;
 		
+		public bool Paused { get { return paused; } }
+		
+		public bool DrawOverlay = true;
 		public void Load(string filename)
 		{
 			if (filename == cachedVideo)
 				return;
 			
-			if (playing)
-			{
-				playing = false;
-				Sound.StopVideoSoundtrack();
-			}
-			
+			stopped = true;
+			paused = true;
+			Sound.StopVideo();
+
 			cachedVideo = filename;
 			video = new VqaReader(FileSystem.Open(filename));
+			
 			invLength = video.Framerate*1f/video.Frames;
 
 			var size = Math.Max(video.Width, video.Height);
@@ -63,16 +66,14 @@ namespace OpenRA.Widgets
 			overlaySprite.sheet.Texture.SetData(overlay);
 		}
 		
-		bool playing = false;	
-		Stopwatch sw = new Stopwatch();
 		public override void DrawInner(World world)
 		{
 			if (video == null)
 				return;
 			
-			if (playing)
+			if (!(stopped || paused))
 			{
-				var nextFrame = (int)float2.Lerp(0, video.Frames, (float)(sw.ElapsedTime()*invLength));
+				var nextFrame = (int)float2.Lerp(0, video.Frames, Sound.VideoSeekPosition*invLength);
 				if (nextFrame > video.Frames)
 				{
 					Stop();
@@ -86,6 +87,7 @@ namespace OpenRA.Widgets
 						videoSprite.sheet.Texture.SetData(video.FrameData);
 				}
 			}
+			
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, videoOrigin, "chrome", videoSize);
 			
 			if (DrawOverlay)
@@ -94,21 +96,34 @@ namespace OpenRA.Widgets
 		
 		public void Play()
 		{
-			if (playing || video == null)
+			if (video == null)
 				return;
 			
-			playing = true;
-			sw.Reset();
-			Sound.PlayVideoSoundtrack(video.AudioData);
+			if (stopped)
+				Sound.PlayVideo(video.AudioData);
+			else
+				Sound.PlayVideo();
+			
+			stopped = paused = false;
+		}
+		
+		public void Pause()
+		{
+			if (stopped || paused || video == null)
+				return;
+			
+			paused = true;
+			Sound.PauseVideo();
 		}
 		
 		public void Stop()
 		{
-			if (!playing || video == null)
+			if (stopped || video == null)
 				return;
 			
-			playing = false;
-			Sound.StopVideoSoundtrack();
+			stopped = true;
+			paused = true;
+			Sound.StopVideo();
 			video.Reset();
 			videoSprite.sheet.Texture.SetData(video.FrameData);
 		}

@@ -78,13 +78,25 @@ namespace OpenRA
 				Play(name, pos);
 		}
 
-		public static void PlayVideoSoundtrack(byte[] raw)
+		public static void PlayVideo(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
 			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
 		}
 		
-		public static void StopVideoSoundtrack()
+		public static void PlayVideo()
+		{
+			if (video != null)
+				soundEngine.PauseSound(video, false);
+		}
+		
+		public static void PauseVideo()
+		{
+			if (video != null)
+				soundEngine.PauseSound(video, true);
+		}
+		
+		public static void StopVideo()
 		{
 			if (video != null)
 				soundEngine.StopSound(video);
@@ -151,6 +163,11 @@ namespace OpenRA
 		public static float MusicSeekPosition
 		{
 			get { return (music != null)? music.SeekPosition : 0; }	
+		}
+		
+		public static float VideoSeekPosition
+		{
+			get { return (video != null)? video.SeekPosition : 0; }	
 		}
 		
 		// Returns true if it played a phrase
@@ -412,8 +429,8 @@ namespace OpenRA
 			get
 			{
 				float pos;
-				Al.alGetSourcef(source, Al.AL_SEC_OFFSET, out pos);
-				return pos; 
+				Al.alGetSourcef(source, Al.AL_SAMPLE_OFFSET, out pos);
+				return pos/22050f; 
 			}
 		}
 	}
