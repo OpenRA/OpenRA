@@ -1,7 +1,7 @@
 FACT:
 	Inherits: ^Building
 	Valued:
-		Cost: 5000
+		Cost: 2000
 		Description: Construction Yard
 	Building:
 		Power: 15

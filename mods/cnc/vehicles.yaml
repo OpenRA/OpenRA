@@ -5,7 +5,7 @@ MCV:
 		BuildPaletteOrder: 70
 		Prerequisites: fix
 		Owner: gdi,nod
-		Cost: 5000
+		Cost: 2000
 		Description: Mobile Construction Vehicle
 		LongDesc: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
