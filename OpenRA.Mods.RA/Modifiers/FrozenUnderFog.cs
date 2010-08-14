@@ -29,17 +29,17 @@ namespace OpenRA.Mods.RA
 			shroud = self.World.WorldActor.Trait<Shroud>();
 		}
 
-		public bool IsVisible(Actor self)
+		public bool IsVisible(Actor self, Player byPlayer)
 		{
 			return self.World.LocalPlayer == null
-				|| self.Owner == self.World.LocalPlayer
+				|| self.Owner == byPlayer
 				|| self.World.LocalPlayer.Shroud.Disabled
 				|| Shroud.GetVisOrigins(self).Any(o => self.World.Map.IsInMap(o) && shroud.visibleCells[o.X, o.Y] != 0);
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (IsVisible(self))
+			if (IsVisible(self, self.World.LocalPlayer))
 				cache = r.ToArray();
 
 			return cache;

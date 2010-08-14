@@ -18,9 +18,9 @@ namespace OpenRA.Mods.RA
 
 	class InvisibleToOthers : IRenderModifier, IVisibilityModifier, IRadarColorModifier
 	{
-		public bool IsVisible(Actor self)
+		public bool IsVisible(Actor self, Player byPlayer)
 		{
-			return self.Owner == self.World.LocalPlayer;
+			return self.Owner == byPlayer;
 		}
 		
 		public Color RadarColorOverride(Actor self)

@@ -122,7 +122,7 @@ namespace OpenRA.Graphics
 				
 				foreach (var t in world.Queries.WithTraitMultiple<IRadarSignature>())
 				{
-					if (!t.Actor.IsVisible())
+					if (!t.Actor.IsVisible(world.LocalPlayer))
 						continue;
 					
 					var color = t.Trait.RadarSignatureColor(t.Actor);

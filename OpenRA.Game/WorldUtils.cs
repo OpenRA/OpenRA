@@ -40,7 +40,7 @@ namespace OpenRA
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = mouseLocation + Game.viewport.Location;
-			return FindUnits(world, loc, loc).Where(a => a.IsVisible());
+			return FindUnits(world, loc, loc).Where(a => a.IsVisible(world.LocalPlayer));
 		}
 
 		public static IEnumerable<Actor> FindUnits(this World world, float2 a, float2 b)
@@ -101,7 +101,7 @@ namespace OpenRA
 					world.IsCellBuildable(t, building.WaterBound, toIgnore));
 		}
 
-		public static bool IsVisible(this Actor a)			/* must never be relied on in synced code! */
+		public static bool IsVisible(this Actor a, Player byPlayer)			/* must never be relied on in synced code! */
 		{
 			if (a.World.LocalPlayer != null && a.World.LocalPlayer.Shroud.Disabled)
 				return true;
@@ -110,7 +110,7 @@ namespace OpenRA
 			if (!Shroud.GetVisOrigins(a).Any(o => a.World.Map.IsInMap(o) && shroud.exploredCells[o.X, o.Y]))		// covered by shroud
 				return false;
 
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, byPlayer)))
 				return false;
 
 			return true;

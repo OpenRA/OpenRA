@@ -27,10 +27,10 @@ namespace OpenRA.Mods.RA
 			shroud = self.World.WorldActor.Trait<Shroud>();
 		}
 
-		public bool IsVisible(Actor self)
+		public bool IsVisible(Actor self, Player byPlayer)
 		{
 			return self.World.LocalPlayer == null
-				|| self.Owner == self.World.LocalPlayer
+				|| self.Owner == byPlayer
 				|| self.World.LocalPlayer.Shroud.Disabled
 				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
 		}
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		static Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return IsVisible(self) ? r : Nothing;
+			return IsVisible(self, self.World.LocalPlayer) ? r : Nothing;
 		}
 	}
 }

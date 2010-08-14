@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			}
 			
 			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
-			if (actor == null || !actor.IsVisible())
+			if (actor == null || !actor.IsVisible(world.LocalPlayer))
 				return;
 		
 			var text = actor.Info.Traits.Contains<ValuedInfo>()
