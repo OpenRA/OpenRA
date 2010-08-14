@@ -37,10 +37,12 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyAttack, ITick, INotifyDamage, IVisibilityModifier, IRadarColorModifier
+	public class Cloak : IRenderModifier, INotifyDamage, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier
 	{
 		[Sync]
 		int remainingTime;
+		[Sync]
+		bool canCloak = true;
 		
 		Actor self;
 		CloakInfo info;
@@ -52,16 +54,21 @@ namespace OpenRA.Mods.RA
 			remainingTime = (int)(info.InitialDelay * 25);
 		}
 
-		void DoSurface()
+		void DoUncloak()
 		{
 			if (remainingTime <= 0)
-				OnSurface();
+				OnCloak();
 
 			remainingTime = Math.Max(remainingTime, (int)(info.CloakDelay * 25));
 		}
 
-		public void Attacking(Actor self) { DoSurface(); }
-		public void Damaged(Actor self, AttackInfo e) { DoSurface(); }
+		public void Attacking(Actor self) { DoUncloak(); }
+		public void Damaged(Actor self, AttackInfo e)
+		{			
+			canCloak = (e.DamageState < DamageState.Critical);
+			if (Cloaked && !canCloak)
+				DoUncloak();
+		}
 
 		public IEnumerable<Renderable>
 			ModifyRender(Actor self, IEnumerable<Renderable> rs)
@@ -77,17 +84,17 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (remainingTime > 0)
+			if (remainingTime > 0 && canCloak)
 				if (--remainingTime <= 0)
-					OnDive();
+					OnCloak();
 		}
 
-		void OnSurface()
+		void OnUncloak()
 		{
 			Sound.Play(info.UncloakSound, self.CenterLocation);
 		}
 
-		void OnDive()
+		void OnCloak()
 		{
 			Sound.Play(info.CloakSound, self.CenterLocation);
 		}
@@ -117,7 +124,7 @@ namespace OpenRA.Mods.RA
 		
 		public void Decloak(int time)
 		{
-			DoSurface();
+			DoUncloak();
 			remainingTime = Math.Max(remainingTime, time);
 		}
 	}
