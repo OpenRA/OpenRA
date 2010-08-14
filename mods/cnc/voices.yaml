@@ -2,27 +2,33 @@ GenericVoice:
 	Variants:
 		nod: .v01,.v03
 		gdi: .v01,.v03
-	Select: await1,ready,report1,yessir1
-	Move: ackno,affirm1,noprob,ritaway,roger,ugotit
-	Die: nuyell1.aud,nuyell3.aud,nuyell4.aud,nuyell5.aud
+	Voices:
+		Select: await1,ready,report1,yessir1
+		Move: ackno,affirm1,noprob,ritaway,roger,ugotit
+		Die: nuyell1,nuyell3,nuyell4,nuyell5
+	DisableVariants: Die
 
 VehicleVoice: 
 	Variants:
 		nod: .v00,.v02
 		gdi: .v00,.v02
-	Select: vehic1,yessir1,report1,await1,unit1
-	Move: ackno,affirm1,movout1
+	Voices:
+		Select: vehic1,yessir1,report1,await1,unit1
+		Move: ackno,affirm1,movout1
 
 CivilianMaleVoice: 
-	Select: guyyeah1
-	Move: guyokay1
+	Voices:
+		Select: guyyeah1
+		Move: guyokay1
 
 CivilianFemaleVoice: 
-	Select: girlyeah
-	Move: girlokay
+	Voices:
+		Select: girlyeah
+		Move: girlokay
 
 CommandoVoice: 
-	Select: rokroll1,yeah1,yes1,yo1
-	Move: cmon1,onit1,gotit1
-	Attack: keepem1,laugh1,bombit1,lefty1
-	Die: ramyell1
+	Voices:
+		Select: rokroll1,yeah1,yes1,yo1
+		Move: cmon1,onit1,gotit1
+		Attack: keepem1,laugh1,bombit1,lefty1
+		Die: ramyell1

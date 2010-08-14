@@ -11,35 +11,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using System;
 
 namespace OpenRA.GameRules
 {
 	public class VoiceInfo
 	{
 		public readonly Dictionary<string,string[]> Variants;
+		public readonly Dictionary<string,string[]> Voices;
 		public readonly string DefaultVariant = ".aud" ;
-		public readonly string[] Select = { };
-		public readonly string[] Move = { };
-		public readonly string[] Attack = null;
-		public readonly string[] Die = { };
+		public readonly string[] DisableVariants = { };
+		
+		Func<MiniYaml, string, Dictionary<string, string[]>> Load = (y,name) => (y.Nodes.ContainsKey(name))? y.Nodes[name].Nodes.ToDictionary(a => a.Key, 
+			                           a => (string[])FieldLoader.GetValue( "(value)", typeof(string[]), a.Value.Value ))
+						: new Dictionary<string, string[]>(); 
 
 		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
 
 		public VoiceInfo( MiniYaml y )
 		{
-			FieldLoader.LoadFields(this, y.Nodes, new string[] { "Select", "Move", "Attack", "Die" });
-			Variants = (y.Nodes.ContainsKey("Variants"))? y.Nodes["Variants"].Nodes.ToDictionary(a => a.Key, 
-			                           a => (string[])FieldLoader.GetValue( "(value)", typeof(string[]), a.Value.Value ))
-						: new Dictionary<string, string[]>(); 
-
-			Pools = Lazy.New(() =>
-				new Dictionary<string, VoicePool>
-				{
-					{ "Select", new VoicePool(Select) },
-					{ "Move", new VoicePool(Move) },
-					{ "Attack", new VoicePool( Attack ?? Move ) },
-					{ "Die", new VoicePool(Die) },
-				});
+			FieldLoader.LoadFields(this, y.Nodes, new string[] { "DisableVariants" });
+			Variants = Load(y, "Variants"); 
+			Voices = Load(y, "Voices");
+			
+			if (!Voices.ContainsKey("Attack"))
+				Voices.Add("Attack", Voices["Move"]);
+			
+			Pools = Lazy.New(() => Voices.ToDictionary( a => a.Key, a => new VoicePool(a.Value) ));
 		}
 	}
 

@@ -4,73 +4,87 @@ GenericVoice:
 	Variants:
 		soviet: .r01,.r03
 		allies: .v01,.v03
-	Select: await1,ready,report1,yessir1
-	Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
-	Die: dedman1.aud,dedman2.aud,dedman3.aud,dedman4.aud,dedman5.aud,dedman6.aud,dedman7.aud,dedman8.aud,dedman10.aud
+	Voices:
+		Select: await1,ready,report1,yessir1
+		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	DisableVariants: Die
 
 VehicleVoice:
 	Variants:
 		soviet: .r00,.r02
 		allies: .v00,.v02
-	Select: vehic1,yessir1,report1,await1
-	Move: ackno,affirm1
+	Voices:
+		Select: vehic1,yessir1,report1,await1
+		Move: ackno,affirm1
 
 ShipVoice:
 	Variants:
 		soviet: .r00,.r02
 		allies: .v00,.v02
-	Select: vehic1,yessir1,report1,await1
-	Move: ackno,affirm1
+	Voices:
+		Select: vehic1,yessir1,report1,await1
+		Move: ackno,affirm1
 
 EngineerVoice:
-	Select: eengin1,eyessir1
-	Move: eaffirm1,emovout1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: eengin1,eyessir1
+		Move: eaffirm1,emovout1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 MedicVoice:
-	Select: mrespon1,myessir1
-	Move: maffirm1,mmovout1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: mrespon1,myessir1
+		Move: maffirm1,mmovout1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 TanyaVoice:
-	Select: yo1,yes1,yeah1
-	Move: rokroll1,onit1,cmon1
-	Attack: tuffguy1,bombit1,gotit1
-	Die: tandeth1
+	Voices:
+		Select: yo1,yes1,yeah1
+		Move: rokroll1,onit1,cmon1
+		Attack: tuffguy1,bombit1,gotit1
+		Die: tandeth1
 
 DogVoice:
-	Select: 
-	Move: dogy1
-	Attack: dogg5p,dogw3px
-	Die: dogw5,dogw6,dogw7
+	Voices:
+		Select: 
+		Move: dogy1
+		Attack: dogg5p,dogw3px
+		Die: dogw5,dogw6,dogw7
 
 SpyVoice:
-	Select: syessir1,scomnd1
-	Move: sonway1,sindeed1
-	Attack: sking1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: syessir1,scomnd1
+		Move: sonway1,sindeed1
+		Attack: sking1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 ThiefVoice:
-	Select: swhat1,syeah1
-	Move: saffirm1,smout1,sokay1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: swhat1,syeah1
+		Move: saffirm1,smout1,sokay1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 CivilianMaleVoice:
-	Select: guyyeah1
-	Move: guyokay1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: guyyeah1
+		Move: guyokay1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 CivilianFemaleVoice:
-	Select: girlyeah
-	Move: girlokay
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: girlyeah
+		Move: girlokay
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 EinsteinVoice:
-	Select: einah1,einok1,einyes1
-	Move: einah1,einok1,einyes1
-	Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+	Voices:
+		Select: einah1,einok1,einyes1
+		Move: einah1,einok1,einyes1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
 
 ShokVoice:
-	Select: jchrge1,jjuice1,jjump1,jpower1
-	Move: jdance1,jyes1
-	Attack: jburn1,jcrisp1,jshock1,jlight1
+	Voices:
+		Select: jchrge1,jjuice1,jjump1,jpower1
+		Move: jdance1,jyes1
+		Attack: jburn1,jcrisp1,jshock1,jlight1

@@ -184,6 +184,7 @@ namespace OpenRA
 		// Returns true if it played a phrase
 		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
 		{
+			Console.WriteLine(" Foo: `{0}`", phrase);
 			if (voicedUnit == null) return false;
 			if (phrase == null) return false;
 
@@ -196,20 +197,8 @@ namespace OpenRA
 			var clip = vi.Pools.Value[phrase].GetNext();
 			if (clip == null)
 				return false;
-
-			if (clip.Contains("."))		/* no variants! */
-			{
-				Play(clip);
-				return true;
-			}
 			
-			if (vi.Variants.Count == 0)
-			{
-				Play(clip + vi.DefaultVariant);
-				return true;
-			}
-
-			var variantext = vi.Variants.ContainsKey(variant)? 
+			var variantext = (vi.Variants.ContainsKey(variant) && !vi.DisableVariants.Contains(phrase))? 
 				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants.Count] : vi.DefaultVariant;
 			Play(clip + variantext);
 			return true;
