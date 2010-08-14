@@ -1,6 +1,5 @@
 %define name openra
 %define version 20100801.2
-%define folder chrisforbes-openra-51b83e0
 Name: %{name}
 Version: %{version}
 Release: 1
@@ -19,14 +18,11 @@ A multiplayer reimplementation of the Command & Conquer: Red Alert game
 engine in .NET/Mono, OpenGL, OpenAL and SDL. Has extensive modding support
 and includes Command & Conquer as an official mod.
 
-%prep
-%setup -n %{folder}
-
 %build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cp -r ~/openra-package/built/usr/ $RPM_BUILD_ROOT 
+cp -r ~/openra-package/built/ $RPM_BUILD_ROOT 
 
 %clean
 rm -rf $RPM_BUILD_ROOT

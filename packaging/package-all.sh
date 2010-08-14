@@ -38,7 +38,7 @@ sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSI
 popd
 
 pushd linux/rpm/
-sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" "~/rpmbuild"
+sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" ~/rpmbuild
 popd
 
 pushd osx/
