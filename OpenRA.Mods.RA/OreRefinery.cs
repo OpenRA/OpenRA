@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Capacity = 0;
 		public readonly int ProcessTick = 25;
 		public readonly int ProcessAmount = 50;
+		public readonly int LowPowerProcessTick = 50;
 
 		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
@@ -86,7 +87,8 @@ namespace OpenRA.Mods.RA
 					Ore -= amount;
 					Player.GiveOre (amount);
 				}
-				nextProcessTime = Info.ProcessTick;
+				nextProcessTime = (Player.GetPowerState() == PowerState.Normal)? 
+					Info.ProcessTick : Info.LowPowerProcessTick ;
 			}
 		}
 
