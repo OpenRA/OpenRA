@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 			if (remainingTime > 0)
 				return rs;
 
-			if (self.Owner == self.World.LocalPlayer)
+			if (Cloaked && IsVisible(self, self.World.LocalPlayer))
 				return rs.Select(a => a.WithPalette("shadow"));
 			else
 				return new Renderable[] { };
@@ -94,6 +94,13 @@ namespace OpenRA.Mods.RA
 
 		public bool Cloaked { get { return remainingTime == 0; } }
 
+		public bool IsVisible(Actor self, Player byPlayer)
+		{
+			if (!Cloaked || self.Owner.Stances[byPlayer] == Stance.Ally)
+				return true;
+			
+			return self.World.Queries.WithTrait<DetectCloaked>().Any(a => a.Actor.Owner == byPlayer && (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
+		}
 		
 		public bool IsVisible(Actor self)
 		{

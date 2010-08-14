@@ -234,6 +234,7 @@
     <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="ColorPickerPaletteModifier.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
+    <Compile Include="TargetableCloaked.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

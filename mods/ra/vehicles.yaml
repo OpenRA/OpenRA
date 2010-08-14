@@ -391,8 +391,10 @@ SS:
 		Speed: 5
 	RevealsShroud:
 		Range: 6
-	Targetable:
-		TargetTypes: Ground, Water, Underwater
+	-Targetable:
+	TargetableCloaked:
+		TargetTypes: Ground, Water
+		CloakedTargetTypes: Underwater
 	RenderUnit:
 	Cloak:
 		InitialDelay: 0
@@ -426,8 +428,10 @@ MSUB:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	Targetable:
-		TargetTypes: Ground, Water, Underwater
+	-Targetable:
+	TargetableCloaked:
+		TargetTypes: Ground, Water
+		CloakedTargetTypes: Underwater
 	Cloak:
 		InitialDelay: 0
 		CloakDelay: 2.0

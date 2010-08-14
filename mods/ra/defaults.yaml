@@ -84,6 +84,8 @@
 		Voice: ShipVoice
 	Targetable:
 		TargetTypes: Ground, Water
+	DetectCloaked:
+		Range: 3
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:

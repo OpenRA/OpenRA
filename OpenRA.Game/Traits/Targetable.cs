@@ -14,13 +14,23 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public class TargetableInfo : TraitInfo<Targetable>
+	public class TargetableInfo : ITraitInfo
 	{
 		public readonly string[] TargetTypes = {};
+		public object Create( ActorInitializer init ) { return new Targetable(this); }
 	}
 
-	public class Targetable
+	public class Targetable : ITargetable
 	{
+		TargetableInfo Info;
+		public Targetable(TargetableInfo info)
+		{
+			Info = info;
+		}
 		
+		public string[] TargetTypes
+		{
+			get { return Info.TargetTypes;}
+		}
 	}
 }
