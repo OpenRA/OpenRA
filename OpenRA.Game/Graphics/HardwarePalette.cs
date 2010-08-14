@@ -21,16 +21,18 @@ namespace OpenRA.Graphics
 	{
 		public const int MaxPalettes = 64;
 		int allocated = 0;
-		
+		ITexture texture;
+
 		// We need to store the Palettes themselves for the remap palettes to work
 		// We should probably try to fix this somehow
 		Dictionary<string, Palette> palettes;
 		Dictionary<string, int> indices;
-
+		
 		public HardwarePalette(Map map)
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();
+			texture = Game.Renderer.Device.CreateTexture();
 		}
 		
 		public Palette GetPalette(string name)
@@ -81,17 +83,17 @@ namespace OpenRA.Graphics
 			//foreach (var mod in paletteMods)
 			//	mod.AdjustPalette(b);
 			
-			var data = new uint[256,MaxPalettes];
+			var data = new uint[MaxPalettes,256];
 			foreach (var pal in palettes)
 			{
 				var j = indices[pal.Key];
 				var c = pal.Value.Values;
 				for (var i = 0; i < 256; i++)
-					data[i,j] = c[i];
+					data[j,i] = c[i];
 			}
 	        
 			// Doesn't work
-			Texture.SetData(data);
+			texture.SetData(data);
 			/*
 			// Works
 			var foo = new Bitmap(256,MaxPalettes);
@@ -102,19 +104,7 @@ namespace OpenRA.Graphics
 			
 			Texture.SetData(foo);
 			*/
-			Game.Renderer.PaletteTexture = Texture;
-		}
-		
-		ITexture texture;
-		public ITexture Texture
-		{
-			get
-			{
-				if (texture == null)
-					texture = Game.Renderer.Device.CreateTexture(new Bitmap(MaxPalettes, 256));
-
-				return texture;
-			}
+			Game.Renderer.PaletteTexture = texture;
 		}
 	}
 }

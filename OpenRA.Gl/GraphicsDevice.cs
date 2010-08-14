@@ -283,6 +283,7 @@ namespace OpenRA.GlRenderer
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(this, size); }
 		public IIndexBuffer CreateIndexBuffer(int size) { return new IndexBuffer(this, size); }
+		public ITexture CreateTexture() { return new Texture(this); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(this, bitmap); }
 		public IShader CreateShader(Stream stream) { return new Shader(this, stream); }
 	}

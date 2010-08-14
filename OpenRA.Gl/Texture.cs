@@ -20,7 +20,13 @@ namespace OpenRA.GlRenderer
 	public class Texture : ITexture
 	{
 		internal int texture;
-
+		
+		public Texture(GraphicsDevice dev)
+		{
+			Gl.glGenTextures(1, out texture);
+			GraphicsDevice.CheckGlError();
+		}
+		
 		public Texture(GraphicsDevice dev, Bitmap bitmap)
 		{
 			Gl.glGenTextures(1, out texture);

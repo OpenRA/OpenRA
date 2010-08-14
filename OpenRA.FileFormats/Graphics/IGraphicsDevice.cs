@@ -32,6 +32,7 @@ namespace OpenRA.FileFormats.Graphics
 		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
 		IIndexBuffer CreateIndexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
+		ITexture CreateTexture();
 		IShader CreateShader( Stream stream );
 
 		Size WindowSize { get; }
