@@ -145,7 +145,7 @@ namespace OpenRA
 			set
 			{
 				Game.Settings.SoundVolume = value;
-				soundEngine.SetSoundVolume(value, music);
+				soundEngine.SetSoundVolume(value, music, video);
 			}
 		}
 
@@ -157,6 +157,17 @@ namespace OpenRA
 				Game.Settings.MusicVolume = value;
 				if (music != null)
 					music.Volume = value;
+			}
+		}
+		
+		public static float VideoVolume
+		{
+			get { return Game.Settings.VideoVolume; }
+			set
+			{
+				Game.Settings.VideoVolume = value;
+				if (video != null)
+					video.Volume = value;
 			}
 		}
 		
@@ -213,7 +224,7 @@ namespace OpenRA
 		void SetAllSoundsPaused(bool paused);
 		void StopAllSounds();
 		void SetListenerPosition(float2 position);
-		void SetSoundVolume(float volume, ISound music);
+		void SetSoundVolume(float volume, ISound music, ISound video);
 	}
 
 	interface ISoundSource {}
@@ -327,14 +338,15 @@ namespace OpenRA
 			}
 		}
 					
-		public void SetSoundVolume(float volume, ISound music)
+		public void SetSoundVolume(float volume, ISound music, ISound video)
 		{
 			var sounds = sourcePool.Select(s => s.Key).Where( b => 
 			{ 
 				int state;
 				Al.alGetSourcei(b, Al.AL_SOURCE_STATE, out state);
 				return ((state == Al.AL_PLAYING || state == Al.AL_PAUSED) && 
-					   ((music != null)? b != ((OpenAlSound) music).source : true));
+					   ((music != null)? b != ((OpenAlSound) music).source : true) &&
+					   ((video != null)? b != ((OpenAlSound) video).source : true));
 			}).ToList();
 			foreach (var s in sounds)
 			{
@@ -410,7 +422,6 @@ namespace OpenRA
 			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 200);
 			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 1500);
 			Volume = volume;
-
 			Al.alSourcePlay(source);
 		}
 
