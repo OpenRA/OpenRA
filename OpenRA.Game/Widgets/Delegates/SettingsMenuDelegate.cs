@@ -140,14 +140,6 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			var devmode = debug.GetWidget<CheckboxWidget>("DEV_MODE_ENABLED");
-			devmode.Checked = () => Game.Settings.DeveloperMode;
-			devmode.OnMouseDown = mi =>
-			{
-				Game.Settings.DeveloperMode ^= true;
-				return true;
-			};
-			
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
 				Widget.RootWidget.CloseWindow();
