@@ -34,13 +34,15 @@ popd
 popd
 
 pushd linux/pkgbuild/
-sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION"
+#sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION"
 popd
 
 pushd linux/rpm/
-sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" ~/rpmbuild
+#sh buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" ~/rpmbuild
 popd
 
 pushd osx/
-#todo
+sh package-game.sh ~/openra-package/$_gitname-build "$VERSION"
 popd
+
+sh uploader.sh osx "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$2" "$3"

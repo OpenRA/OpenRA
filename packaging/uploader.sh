@@ -6,21 +6,22 @@
 PLATFORM=$1
 VERSION=$2
 FILENAME=$3
-FTP="ftp://openra@open-ra.org/httpdocs/releases/${PLATFORM}/"
+
+FTP="ftp://$4:$5@ftp.open-ra.org/httpdocs/releases/${PLATFORM}/"
 
 if [ ! -e "${FILENAME}" ]; then
 	echo "File not found: ${FILENAME}"
 	exit 1
 fi
 
-SIZE=`ls -lh "${FILENAME}" | awk '{ print $5 }'`B
-echo "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > version.json
-echo `basename ${FILENAME}` > latest.txt
+SIZE=`stat -c "%s" ${FILENAME}`B
+echo "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/version.json
+echo `basename ${FILENAME}` > /tmp/latest.txt
 
-ftp "${FTP}" <<EOT
-pwd
-put "${FILENAME}" "`basename ${FILENAME}`"
-put version.json
-put latest.txt
-quit
-EOT
+pushd `dirname ${FILENAME}`
+wput "${FTP}" "`basename ${FILENAME}`"
+popd
+pushd /tmp/
+wput "${FTP}" version.json
+wput "${FTP}" latest.txt
+popd
