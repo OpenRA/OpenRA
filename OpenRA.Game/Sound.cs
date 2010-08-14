@@ -182,7 +182,7 @@ namespace OpenRA
 		}
 		
 		// Returns true if it played a phrase
-		public static bool PlayVoice(string phrase, Actor voicedUnit)
+		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
 		{
 			if (voicedUnit == null) return false;
 			if (phrase == null) return false;
@@ -203,13 +203,8 @@ namespace OpenRA
 				return true;
 			}
 
-			// todo: fix this
-			var variants = (voicedUnit.Owner.Country.Race == "allies")
-				? vi.AlliedVariants : vi.SovietVariants;
-
-			var variant = variants[voicedUnit.ActorID % variants.Length];
-
-			Play(clip + variant);
+			var variantext = vi.Variants[variant][voicedUnit.ActorID % vi.Variants.Count];
+			Play(clip + variantext);
 			return true;
 		}
 	}

@@ -9,14 +9,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.GameRules
 {
 	public class VoiceInfo
 	{
-		public readonly string[] SovietVariants = { ".aud" };
-		public readonly string[] AlliedVariants = { ".aud" };
+		public readonly Dictionary<string,string[]> Variants;
 		public readonly string[] Select = { };
 		public readonly string[] Move = { };
 		public readonly string[] Attack = null;
@@ -26,7 +26,10 @@ namespace OpenRA.GameRules
 
 		public VoiceInfo( MiniYaml y )
 		{
-			FieldLoader.Load(this, y);
+			FieldLoader.LoadFields(this, y.Nodes, new string[] { "Select", "Move", "Attack", "Die" });
+			Variants = (y.Nodes.ContainsKey("Variants"))? y.Nodes["Variants"].Nodes.ToDictionary(a => a.Key, 
+			                           a => (string[])FieldLoader.GetValue( "(value)", typeof(string[]), a.Value.Value ))
+						: new Dictionary<string, string[]>(); 
 
 			Pools = Lazy.New(() =>
 				new Dictionary<string, VoicePool>

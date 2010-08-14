@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Render
 			if (e.DamageState == DamageState.Dead)
 			{
 				var death = e.Warhead != null ? e.Warhead.InfDeath : 0;
-				Sound.PlayVoice("Die", self);
+				Sound.PlayVoice("Die", self, self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new Corpse(self, death)));
 			}
 		}

@@ -42,7 +42,8 @@ namespace OpenRA
 				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
 
 			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasVoice());
-			Sound.PlayVoice("Select", voicedUnit);
+			if (voicedUnit != null)
+				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
 
 			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
 				ns.SelectionChanged();

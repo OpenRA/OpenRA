@@ -98,7 +98,7 @@ namespace OpenRA.Widgets
 			{
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
 				{
-					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject))
+					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject, o.Subject.Owner.Country.Race))
 					{
 						done = true;
 						break;
