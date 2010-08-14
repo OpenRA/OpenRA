@@ -1,12 +1,12 @@
 Selectable: True
 
-MapFormat: 2
+MapFormat: 3
 
 Title: Nowhere To Hide
 
 Author: Westwood Studios
 
-PlayerCount: 6
+PlayerCount: 4
 
 Tileset: WINTER
 
@@ -27,869 +27,507 @@ Players:
 		Color2: 255,44,28,24
 
 Actors:
-	ActorReference@Actor0:
-		Id: Actor0
-		Type: v12
+	Actor0: v12
 		Location: 17,54
 		Owner: Neutral
-	ActorReference@Actor1:
-		Id: Actor1
-		Type: v13
+	Actor1: v13
 		Location: 6,23
 		Owner: Neutral
-	ActorReference@Actor2:
-		Id: Actor2
-		Type: v12
+	Actor2: v12
 		Location: 22,4
 		Owner: Neutral
-	ActorReference@Actor3:
-		Id: Actor3
-		Type: split2
+	Actor3: split2
 		Location: 41,43
 		Owner: Neutral
-	ActorReference@Actor4:
-		Id: Actor4
-		Type: split2
+	Actor4: split2
 		Location: 42,11
 		Owner: Neutral
-	ActorReference@Actor5:
-		Id: Actor5
-		Type: split2
+	Actor5: split2
 		Location: 37,27
 		Owner: Neutral
-	ActorReference@Actor6:
-		Id: Actor6
-		Type: split2
+	Actor6: split2
 		Location: 56,15
 		Owner: Neutral
-	ActorReference@Actor7:
-		Id: Actor7
-		Type: split2
+	Actor7: split2
 		Location: 53,40
 		Owner: Neutral
-	ActorReference@Actor8:
-		Id: Actor8
-		Type: split2
+	Actor8: split2
 		Location: 56,54
 		Owner: Neutral
-	ActorReference@Actor9:
-		Id: Actor9
-		Type: split2
+	Actor9: split2
 		Location: 25,60
 		Owner: Neutral
-	ActorReference@Actor10:
-		Id: Actor10
-		Type: split2
+	Actor10: split2
 		Location: 4,42
 		Owner: Neutral
-	ActorReference@Actor11:
-		Id: Actor11
-		Type: split2
+	Actor11: split2
 		Location: 12,36
 		Owner: Neutral
-	ActorReference@Actor12:
-		Id: Actor12
-		Type: split2
+	Actor12: split2
 		Location: 14,25
 		Owner: Neutral
-	ActorReference@Actor13:
-		Id: Actor13
-		Type: split2
+	Actor13: split2
 		Location: 3,17
 		Owner: Neutral
-	ActorReference@Actor14:
-		Id: Actor14
-		Type: split2
+	Actor14: split2
 		Location: 28,7
 		Owner: Neutral
-	ActorReference@Actor15:
-		Id: Actor15
-		Type: split2
+	Actor15: split2
 		Location: 2,43
 		Owner: Neutral
-	ActorReference@Actor16:
-		Id: Actor16
-		Type: split2
+	Actor16: split2
 		Location: 40,36
 		Owner: Neutral
-	ActorReference@Actor17:
-		Id: Actor17
-		Type: split2
+	Actor17: split2
 		Location: 18,16
 		Owner: Neutral
-	ActorReference@Actor18:
-		Id: Actor18
-		Type: t01
+	Actor18: t01
 		Location: 9,13
 		Owner: Neutral
-	ActorReference@Actor19:
-		Id: Actor19
-		Type: t01
+	Actor19: t01
 		Location: 5,22
 		Owner: Neutral
-	ActorReference@Actor20:
-		Id: Actor20
-		Type: t01
+	Actor20: t01
 		Location: 21,29
 		Owner: Neutral
-	ActorReference@Actor21:
-		Id: Actor21
-		Type: t01
+	Actor21: t01
 		Location: 10,41
 		Owner: Neutral
-	ActorReference@Actor22:
-		Id: Actor22
-		Type: t01
+	Actor22: t01
 		Location: 19,46
 		Owner: Neutral
-	ActorReference@Actor23:
-		Id: Actor23
-		Type: t01
+	Actor23: t01
 		Location: 36,44
 		Owner: Neutral
-	ActorReference@Actor24:
-		Id: Actor24
-		Type: t01
+	Actor24: t01
 		Location: 32,35
 		Owner: Neutral
-	ActorReference@Actor25:
-		Id: Actor25
-		Type: t01
+	Actor25: t01
 		Location: 4,49
 		Owner: Neutral
-	ActorReference@Actor26:
-		Id: Actor26
-		Type: t01
+	Actor26: t01
 		Location: 12,57
 		Owner: Neutral
-	ActorReference@Actor27:
-		Id: Actor27
-		Type: t01
+	Actor27: t01
 		Location: 1,61
 		Owner: Neutral
-	ActorReference@Actor28:
-		Id: Actor28
-		Type: t01
+	Actor28: t01
 		Location: 18,59
 		Owner: Neutral
-	ActorReference@Actor29:
-		Id: Actor29
-		Type: t01
+	Actor29: t01
 		Location: 21,52
 		Owner: Neutral
-	ActorReference@Actor30:
-		Id: Actor30
-		Type: t01
+	Actor30: t01
 		Location: 31,57
 		Owner: Neutral
-	ActorReference@Actor31:
-		Id: Actor31
-		Type: t01
-		Location: 51,50
-		Owner: Neutral
-	ActorReference@Actor32:
-		Id: Actor32
-		Type: t01
+	Actor32: t01
 		Location: 61,38
 		Owner: Neutral
-	ActorReference@Actor33:
-		Id: Actor33
-		Type: t01
+	Actor33: t01
 		Location: 49,31
 		Owner: Neutral
-	ActorReference@Actor34:
-		Id: Actor34
-		Type: t01
+	Actor34: t01
 		Location: 35,28
 		Owner: Neutral
-	ActorReference@Actor35:
-		Id: Actor35
-		Type: t01
+	Actor35: t01
 		Location: 36,29
 		Owner: Neutral
-	ActorReference@Actor36:
-		Id: Actor36
-		Type: t01
+	Actor36: t01
 		Location: 55,22
 		Owner: Neutral
-	ActorReference@Actor37:
-		Id: Actor37
-		Type: t01
+	Actor37: t01
 		Location: 47,13
 		Owner: Neutral
-	ActorReference@Actor38:
-		Id: Actor38
-		Type: t01
+	Actor38: t01
 		Location: 17,14
 		Owner: Neutral
-	ActorReference@Actor39:
-		Id: Actor39
-		Type: t01
+	Actor39: t01
 		Location: 25,17
 		Owner: Neutral
-	ActorReference@Actor40:
-		Id: Actor40
-		Type: t01
+	Actor40: t01
 		Location: 22,25
 		Owner: Neutral
-	ActorReference@Actor41:
-		Id: Actor41
-		Type: t01
+	Actor41: t01
 		Location: 32,18
 		Owner: Neutral
-	ActorReference@Actor42:
-		Id: Actor42
-		Type: t01
+	Actor42: t01
 		Location: 40,4
 		Owner: Neutral
-	ActorReference@Actor43:
-		Id: Actor43
-		Type: t02
+	Actor43: t02
 		Location: 4,15
 		Owner: Neutral
-	ActorReference@Actor44:
-		Id: Actor44
-		Type: t02
+	Actor44: t02
 		Location: 12,24
 		Owner: Neutral
-	ActorReference@Actor45:
-		Id: Actor45
-		Type: t02
+	Actor45: t02
 		Location: 13,23
 		Owner: Neutral
-	ActorReference@Actor46:
-		Id: Actor46
-		Type: t02
+	Actor46: t02
 		Location: 23,3
 		Owner: Neutral
-	ActorReference@Actor47:
-		Id: Actor47
-		Type: t02
+	Actor47: t02
 		Location: 36,8
 		Owner: Neutral
-	ActorReference@Actor48:
-		Id: Actor48
-		Type: t02
+	Actor48: t02
 		Location: 40,2
 		Owner: Neutral
-	ActorReference@Actor49:
-		Id: Actor49
-		Type: t02
-		Location: 48,12
-		Owner: Neutral
-	ActorReference@Actor50:
-		Id: Actor50
-		Type: t02
+	Actor50: t02
 		Location: 36,28
 		Owner: Neutral
-	ActorReference@Actor51:
-		Id: Actor51
-		Type: t02
+	Actor51: t02
 		Location: 46,37
 		Owner: Neutral
-	ActorReference@Actor52:
-		Id: Actor52
-		Type: t02
+	Actor52: t02
 		Location: 37,52
 		Owner: Neutral
-	ActorReference@Actor53:
-		Id: Actor53
-		Type: t02
+	Actor53: t02
 		Location: 50,57
 		Owner: Neutral
-	ActorReference@Actor54:
-		Id: Actor54
-		Type: t02
+	Actor54: t02
 		Location: 42,61
 		Owner: Neutral
-	ActorReference@Actor55:
-		Id: Actor55
-		Type: t03
+	Actor55: t03
 		Location: 10,18
 		Owner: Neutral
-	ActorReference@Actor56:
-		Id: Actor56
-		Type: t03
+	Actor56: t03
 		Location: 19,23
 		Owner: Neutral
-	ActorReference@Actor57:
-		Id: Actor57
-		Type: t03
+	Actor57: t03
 		Location: 24,44
 		Owner: Neutral
-	ActorReference@Actor58:
-		Id: Actor58
-		Type: t03
+	Actor58: t03
 		Location: 23,34
 		Owner: Neutral
-	ActorReference@Actor59:
-		Id: Actor59
-		Type: t03
+	Actor59: t03
 		Location: 61,23
 		Owner: Neutral
-	ActorReference@Actor60:
-		Id: Actor60
-		Type: t03
+	Actor60: t03
 		Location: 60,60
 		Owner: Neutral
-	ActorReference@Actor61:
-		Id: Actor61
-		Type: t03
+	Actor61: t03
 		Location: 58,13
 		Owner: Neutral
-	ActorReference@Actor62:
-		Id: Actor62
-		Type: t05
+	Actor62: t05
 		Location: 26,19
 		Owner: Neutral
-	ActorReference@Actor63:
-		Id: Actor63
-		Type: t05
+	Actor63: t05
 		Location: 59,28
 		Owner: Neutral
-	ActorReference@Actor64:
-		Id: Actor64
-		Type: t05
+	Actor64: t05
 		Location: 38,40
 		Owner: Neutral
-	ActorReference@Actor65:
-		Id: Actor65
-		Type: t05
+	Actor65: t05
 		Location: 21,55
 		Owner: Neutral
-	ActorReference@Actor66:
-		Id: Actor66
-		Type: t05
+	Actor66: t05
 		Location: 5,56
 		Owner: Neutral
-	ActorReference@Actor67:
-		Id: Actor67
-		Type: t05
+	Actor67: t05
 		Location: 5,44
 		Owner: Neutral
-	ActorReference@Actor68:
-		Id: Actor68
-		Type: t05
+	Actor68: t05
 		Location: 33,25
 		Owner: Neutral
-	ActorReference@Actor69:
-		Id: Actor69
-		Type: t05
+	Actor69: t05
 		Location: 47,41
 		Owner: Neutral
-	ActorReference@Actor70:
-		Id: Actor70
-		Type: t05
+	Actor70: t05
 		Location: 54,55
 		Owner: Neutral
-	ActorReference@Actor71:
-		Id: Actor71
-		Type: t06
+	Actor71: t06
 		Location: 36,33
 		Owner: Neutral
-	ActorReference@Actor72:
-		Id: Actor72
-		Type: t06
+	Actor72: t06
 		Location: 35,9
 		Owner: Neutral
-	ActorReference@Actor73:
-		Id: Actor73
-		Type: t06
+	Actor73: t06
 		Location: 36,2
 		Owner: Neutral
-	ActorReference@Actor74:
-		Id: Actor74
-		Type: t06
+	Actor74: t06
 		Location: 15,19
 		Owner: Neutral
-	ActorReference@Actor75:
-		Id: Actor75
-		Type: t06
+	Actor75: t06
 		Location: 19,41
 		Owner: Neutral
-	ActorReference@Actor76:
-		Id: Actor76
-		Type: t08
+	Actor76: t08
 		Location: 7,60
 		Owner: Neutral
-	ActorReference@Actor77:
-		Id: Actor77
-		Type: t08
+	Actor77: t08
 		Location: 20,53
 		Owner: Neutral
-	ActorReference@Actor78:
-		Id: Actor78
-		Type: t08
-		Location: 15,44
-		Owner: Neutral
-	ActorReference@Actor79:
-		Id: Actor79
-		Type: t08
+	Actor79: t08
 		Location: 21,35
 		Owner: Neutral
-	ActorReference@Actor80:
-		Id: Actor80
-		Type: t08
+	Actor80: t08
 		Location: 16,20
 		Owner: Neutral
-	ActorReference@Actor81:
-		Id: Actor81
-		Type: t08
+	Actor81: t08
 		Location: 31,20
 		Owner: Neutral
-	ActorReference@Actor82:
-		Id: Actor82
-		Type: t08
+	Actor82: t08
 		Location: 31,21
 		Owner: Neutral
-	ActorReference@Actor83:
-		Id: Actor83
-		Type: t08
+	Actor83: t08
 		Location: 37,36
 		Owner: Neutral
-	ActorReference@Actor84:
-		Id: Actor84
-		Type: t08
+	Actor84: t08
 		Location: 45,52
 		Owner: Neutral
-	ActorReference@Actor85:
-		Id: Actor85
-		Type: t08
+	Actor85: t08
 		Location: 46,56
 		Owner: Neutral
-	ActorReference@Actor86:
-		Id: Actor86
-		Type: t08
+	Actor86: t08
 		Location: 31,61
 		Owner: Neutral
-	ActorReference@Actor87:
-		Id: Actor87
-		Type: t08
+	Actor87: t08
 		Location: 36,56
 		Owner: Neutral
-	ActorReference@Actor88:
-		Id: Actor88
-		Type: t08
+	Actor88: t08
 		Location: 23,47
 		Owner: Neutral
-	ActorReference@Actor89:
-		Id: Actor89
-		Type: t08
+	Actor89: t08
 		Location: 25,8
 		Owner: Neutral
-	ActorReference@Actor90:
-		Id: Actor90
-		Type: t10
+	Actor90: t10
 		Location: 24,8
 		Owner: Neutral
-	ActorReference@Actor91:
-		Id: Actor91
-		Type: t10
+	Actor91: t10
 		Location: 51,25
 		Owner: Neutral
-	ActorReference@Actor92:
-		Id: Actor92
-		Type: t10
+	Actor92: t10
 		Location: 32,32
 		Owner: Neutral
-	ActorReference@Actor93:
-		Id: Actor93
-		Type: t10
+	Actor93: t10
 		Location: 55,58
 		Owner: Neutral
-	ActorReference@Actor94:
-		Id: Actor94
-		Type: t10
+	Actor94: t10
 		Location: 29,60
 		Owner: Neutral
-	ActorReference@Actor95:
-		Id: Actor95
-		Type: t10
-		Location: 8,52
-		Owner: Neutral
-	ActorReference@Actor96:
-		Id: Actor96
-		Type: t10
+	Actor96: t10
 		Location: 14,38
 		Owner: Neutral
-	ActorReference@Actor97:
-		Id: Actor97
-		Type: t10
+	Actor97: t10
 		Location: 31,39
 		Owner: Neutral
-	ActorReference@Actor98:
-		Id: Actor98
-		Type: t11
+	Actor98: t11
 		Location: 33,18
 		Owner: Neutral
-	ActorReference@Actor99:
-		Id: Actor99
-		Type: t11
+	Actor99: t11
 		Location: 18,32
 		Owner: Neutral
-	ActorReference@Actor100:
-		Id: Actor100
-		Type: t11
+	Actor100: t11
 		Location: 37,48
 		Owner: Neutral
-	ActorReference@Actor101:
-		Id: Actor101
-		Type: t11
+	Actor101: t11
 		Location: 22,57
 		Owner: Neutral
-	ActorReference@Actor102:
-		Id: Actor102
-		Type: t11
+	Actor102: t11
 		Location: 21,18
 		Owner: Neutral
-	ActorReference@Actor103:
-		Id: Actor103
-		Type: t11
+	Actor103: t11
 		Location: 1,9
 		Owner: Neutral
-	ActorReference@Actor104:
-		Id: Actor104
-		Type: t13
+	Actor104: t13
 		Location: 39,3
 		Owner: Neutral
-	ActorReference@Actor105:
-		Id: Actor105
-		Type: t13
+	Actor105: t13
 		Location: 55,13
 		Owner: Neutral
-	ActorReference@Actor106:
-		Id: Actor106
-		Type: t13
+	Actor106: t13
 		Location: 45,36
 		Owner: Neutral
-	ActorReference@Actor107:
-		Id: Actor107
-		Type: t13
+	Actor107: t13
 		Location: 29,54
 		Owner: Neutral
-	ActorReference@Actor108:
-		Id: Actor108
-		Type: t13
+	Actor108: t13
 		Location: 27,36
 		Owner: Neutral
-	ActorReference@Actor109:
-		Id: Actor109
-		Type: t14
+	Actor109: t14
 		Location: 28,25
 		Owner: Neutral
-	ActorReference@Actor110:
-		Id: Actor110
-		Type: t14
+	Actor110: t14
 		Location: 29,1
 		Owner: Neutral
-	ActorReference@Actor111:
-		Id: Actor111
-		Type: t15
+	Actor111: t15
 		Location: 25,57
 		Owner: Neutral
-	ActorReference@Actor112:
-		Id: Actor112
-		Type: t15
+	Actor112: t15
 		Location: 15,34
 		Owner: Neutral
-	ActorReference@Actor113:
-		Id: Actor113
-		Type: tc01
+	Actor113: tc01
 		Location: 32,19
 		Owner: Neutral
-	ActorReference@Actor114:
-		Id: Actor114
-		Type: tc01
+	Actor114: tc01
 		Location: 32,30
 		Owner: Neutral
-	ActorReference@Actor115:
-		Id: Actor115
-		Type: tc01
+	Actor115: tc01
 		Location: 50,19
 		Owner: Neutral
-	ActorReference@Actor116:
-		Id: Actor116
-		Type: tc01
+	Actor116: tc01
 		Location: 56,13
 		Owner: Neutral
-	ActorReference@Actor117:
-		Id: Actor117
-		Type: tc01
+	Actor117: tc01
 		Location: 38,4
 		Owner: Neutral
-	ActorReference@Actor118:
-		Id: Actor118
-		Type: tc01
+	Actor118: tc01
 		Location: 30,44
 		Owner: Neutral
-	ActorReference@Actor119:
-		Id: Actor119
-		Type: tc01
-		Location: 7,47
-		Owner: Neutral
-	ActorReference@Actor120:
-		Id: Actor120
-		Type: tc01
+	Actor120: tc01
 		Location: 19,61
 		Owner: Neutral
-	ActorReference@Actor121:
-		Id: Actor121
-		Type: tc01
+	Actor121: tc01
 		Location: 39,55
 		Owner: Neutral
-	ActorReference@Actor122:
-		Id: Actor122
-		Type: tc01
+	Actor122: tc01
 		Location: 54,52
 		Owner: Neutral
-	ActorReference@Actor123:
-		Id: Actor123
-		Type: tc01
+	Actor123: tc01
 		Location: 48,34
 		Owner: Neutral
-	ActorReference@Actor124:
-		Id: Actor124
-		Type: tc01
+	Actor124: tc01
 		Location: 38,37
 		Owner: Neutral
-	ActorReference@Actor125:
-		Id: Actor125
-		Type: tc02
+	Actor125: tc02
 		Location: 40,3
 		Owner: Neutral
-	ActorReference@Actor126:
-		Id: Actor126
-		Type: tc02
+	Actor126: tc02
 		Location: 57,12
 		Owner: Neutral
-	ActorReference@Actor127:
-		Id: Actor127
-		Type: tc02
+	Actor127: tc02
 		Location: 60,26
 		Owner: Neutral
-	ActorReference@Actor128:
-		Id: Actor128
-		Type: tc02
+	Actor128: tc02
 		Location: 45,30
 		Owner: Neutral
-	ActorReference@Actor129:
-		Id: Actor129
-		Type: tc02
+	Actor129: tc02
 		Location: 32,43
 		Owner: Neutral
-	ActorReference@Actor130:
-		Id: Actor130
-		Type: tc02
+	Actor130: tc02
 		Location: 50,56
 		Owner: Neutral
-	ActorReference@Actor131:
-		Id: Actor131
-		Type: tc02
+	Actor131: tc02
 		Location: 10,61
 		Owner: Neutral
-	ActorReference@Actor132:
-		Id: Actor132
-		Type: tc02
+	Actor132: tc02
 		Location: 1,37
 		Owner: Neutral
-	ActorReference@Actor133:
-		Id: Actor133
-		Type: tc03
+	Actor133: tc03
 		Location: 9,10
 		Owner: Neutral
-	ActorReference@Actor134:
-		Id: Actor134
-		Type: tc03
+	Actor134: tc03
 		Location: 22,10
 		Owner: Neutral
-	ActorReference@Actor135:
-		Id: Actor135
-		Type: tc03
+	Actor135: tc03
 		Location: 32,17
 		Owner: Neutral
-	ActorReference@Actor136:
-		Id: Actor136
-		Type: tc03
+	Actor136: tc03
 		Location: 52,29
 		Owner: Neutral
-	ActorReference@Actor137:
-		Id: Actor137
-		Type: tc03
+	Actor137: tc03
 		Location: 42,51
 		Owner: Neutral
-	ActorReference@Actor138:
-		Id: Actor138
-		Type: tc03
+	Actor138: tc03
 		Location: 44,58
 		Owner: Neutral
-	ActorReference@Actor139:
-		Id: Actor139
-		Type: tc03
+	Actor139: tc03
 		Location: 22,39
 		Owner: Neutral
-	ActorReference@Actor140:
-		Id: Actor140
-		Type: tc04
+	Actor140: tc04
 		Location: 26,4
 		Owner: Neutral
-	ActorReference@Actor141:
-		Id: Actor141
-		Type: tc04
+	Actor141: tc04
 		Location: 59,13
 		Owner: Neutral
-	ActorReference@Actor142:
-		Id: Actor142
-		Type: tc04
+	Actor142: tc04
 		Location: 23,22
 		Owner: Neutral
-	ActorReference@Actor143:
-		Id: Actor143
-		Type: tc04
+	Actor143: tc04
 		Location: 45,34
 		Owner: Neutral
-	ActorReference@Actor144:
-		Id: Actor144
-		Type: tc04
+	Actor144: tc04
 		Location: 35,58
 		Owner: Neutral
-	ActorReference@Actor145:
-		Id: Actor145
-		Type: tc04
+	Actor145: tc04
 		Location: 25,49
 		Owner: Neutral
-	ActorReference@Actor146:
-		Id: Actor146
-		Type: tc04
-		Location: 14,52
-		Owner: Neutral
-	ActorReference@Actor147:
-		Id: Actor147
-		Type: tc04
+	Actor147: tc04
 		Location: 1,11
 		Owner: Neutral
-	ActorReference@Actor148:
-		Id: Actor148
-		Type: tc04
+	Actor148: tc04
 		Location: 60,1
 		Owner: Neutral
-	ActorReference@Actor149:
-		Id: Actor149
-		Type: tc04
+	Actor149: tc04
 		Location: 60,37
 		Owner: Neutral
-	ActorReference@Actor150:
-		Id: Actor150
-		Type: tc05
+	Actor150: tc05
 		Location: 32,46
 		Owner: Neutral
-	ActorReference@Actor151:
-		Id: Actor151
-		Type: tc05
+	Actor151: tc05
 		Location: 17,37
 		Owner: Neutral
-	ActorReference@Actor152:
-		Id: Actor152
-		Type: tc05
+	Actor152: tc05
 		Location: 14,27
 		Owner: Neutral
-	ActorReference@Actor153:
-		Id: Actor153
-		Type: tc05
+	Actor153: tc05
 		Location: 27,29
 		Owner: Neutral
-	ActorReference@Actor154:
-		Id: Actor154
-		Type: tc05
+	Actor154: tc05
 		Location: 35,18
 		Owner: Neutral
-	ActorReference@Actor155:
-		Id: Actor155
-		Type: tc05
+	Actor155: tc05
 		Location: 42,2
 		Owner: Neutral
-	ActorReference@Actor156:
-		Id: Actor156
-		Type: t12
+	Actor156: t12
 		Location: 27,19
 		Owner: Neutral
-	ActorReference@Actor157:
-		Id: Actor157
-		Type: t08
+	Actor157: t08
 		Location: 18,1
 		Owner: Neutral
-	ActorReference@Actor158:
-		Id: Actor158
-		Type: t08
+	Actor158: t08
 		Location: 17,11
 		Owner: Neutral
-	ActorReference@Actor159:
-		Id: Actor159
-		Type: t08
+	Actor159: t08
 		Location: 9,16
 		Owner: Neutral
-	ActorReference@Actor160:
-		Id: Actor160
-		Type: t08
+	Actor160: t08
 		Location: 12,21
 		Owner: Neutral
-	ActorReference@Actor161:
-		Id: Actor161
-		Type: t08
+	Actor161: t08
 		Location: 17,36
 		Owner: Neutral
-	ActorReference@Actor162:
-		Id: Actor162
-		Type: t08
+	Actor162: t08
 		Location: 4,40
 		Owner: Neutral
-	ActorReference@Actor163:
-		Id: Actor163
-		Type: t08
+	Actor163: t08
 		Location: 25,41
 		Owner: Neutral
-	ActorReference@Actor164:
-		Id: Actor164
-		Type: t08
+	Actor164: t08
 		Location: 29,33
 		Owner: Neutral
-	ActorReference@Actor165:
-		Id: Actor165
-		Type: t08
+	Actor165: t08
 		Location: 23,28
 		Owner: Neutral
-	ActorReference@Actor166:
-		Id: Actor166
-		Type: t08
+	Actor166: t08
 		Location: 45,38
 		Owner: Neutral
-	ActorReference@Actor167:
-		Id: Actor167
-		Type: t08
+	Actor167: t08
 		Location: 47,50
 		Owner: Neutral
-	ActorReference@Actor168:
-		Id: Actor168
-		Type: t08
+	Actor168: t08
 		Location: 49,44
 		Owner: Neutral
-	ActorReference@Actor169:
-		Id: Actor169
-		Type: t08
+	Actor169: t08
 		Location: 55,18
 		Owner: Neutral
-	ActorReference@Actor170:
-		Id: Actor170
-		Type: t08
+	Actor170: t08
 		Location: 42,4
 		Owner: Neutral
 
 Waypoints:
-	spawn5: 57,37
-	spawn4: 6,28
-	spawn3: 25,45
-	spawn2: 42,25
-	spawn1: 50,5
-	spawn0: 17,9
+	wp0: 55,48
+	wp3: 50,9
+	wp2: 10,6
+	wp1: 13,49
 
 Smudges:
 
