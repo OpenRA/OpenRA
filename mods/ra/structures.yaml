@@ -85,6 +85,7 @@ SPEN:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
+	RallyPoint:
 
 SYRD:
 	InfiltrateForSonarPulse:
@@ -120,6 +121,7 @@ SYRD:
 	IronCurtainable:
 	-EmitInfantryOnSell:
 	RepairsUnits:
+	RallyPoint:
 
 IRON:
 	Category: Defense
