@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
-		public readonly float FullyLoadedSpeed = .7f;
+		public readonly float FullyLoadedSpeed = .85f;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
