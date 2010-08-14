@@ -77,11 +77,20 @@ namespace OpenRA.Graphics
 		
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
 		{
-			var b = new Bitmap(Bitmap);
-			foreach (var mod in paletteMods)
-				mod.AdjustPalette(b);
-
-			Texture.SetData(b);
+			//var b = new Bitmap(Bitmap);
+			//foreach (var mod in paletteMods)
+			//	mod.AdjustPalette(b);
+			
+			var data = new uint[256,MaxPalettes];
+			foreach (var pal in palettes)
+			{
+				var j = indices[pal.Key];
+				var c = pal.Value.Values;
+				for (var i = 0; i < 256; i++)
+					data[i,j] = c[i];
+			}
+	        
+			Texture.SetData(data);
 			Game.Renderer.PaletteTexture = Texture;
 		}
 	}

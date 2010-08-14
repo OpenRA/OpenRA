@@ -11,20 +11,27 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
 	public class Palette
 	{
-		List<Color> colors = new List<Color>();
-
+		uint[] colors;
 		public Color GetColor(int index)
 		{
-			return colors[index];
+			return Color.FromArgb((int)colors[index]);
+		}
+				
+		public uint[] Values
+		{			
+			get { return colors; }
 		}
 
 		public Palette(Stream s, bool remapTransparent)
 		{
+			colors = new uint[256];
+			
 			using (BinaryReader reader = new BinaryReader(s))
 			{
 				for (int i = 0; i < 256; i++)
@@ -32,24 +39,26 @@ namespace OpenRA.FileFormats
 					byte r = (byte)(reader.ReadByte() << 2);
 					byte g = (byte)(reader.ReadByte() << 2);
 					byte b = (byte)(reader.ReadByte() << 2);
-
-					colors.Add(Color.FromArgb(r, g, b));
+					
+					colors[i] = (uint)Color.FromArgb(r,g,b).ToArgb();//(uint)(((byte)255 << 0) | (r << 16));// | (g << 8) | b);
 				}
 			}
 
-			colors[0] = Color.FromArgb(0, 0, 0, 0);
+			colors[0] = 0;//Color.FromArgb(0, 0, 0, 0);
 
 			if (remapTransparent)
 			{
-				colors[3] = Color.FromArgb(178, 0, 0, 0);
-				colors[4] = Color.FromArgb(140, 0, 0, 0);
+				colors[3] = (uint)178 << 24;//Color.FromArgb(178, 0, 0, 0);
+				colors[4] = (uint)140 << 24;//Color.FromArgb(140, 0, 0, 0);
 			}
 		}
 
 		public Palette(Palette p, IPaletteRemap r)
 		{
-			for (int i = 0; i < 256; i++)
-				colors.Add(r.GetRemappedColor(p.GetColor(i), i));
+			colors = p.colors;
+			
+			//for (int i = 0; i < 256; i++)
+			//	colors.Add(r.GetRemappedColor(p.GetColor(i), i));
 		}
 	}
 

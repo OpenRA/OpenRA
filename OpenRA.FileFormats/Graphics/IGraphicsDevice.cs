@@ -71,7 +71,7 @@ namespace OpenRA.FileFormats.Graphics
 	public interface ITexture
 	{
 		void SetData( Bitmap bitmap );
-		void SetData(int[,] colors);
+		void SetData(uint[,] colors);
 	}
 
 	public interface IFont

@@ -53,5 +53,11 @@ namespace OpenRA
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		public override string ToString() { return string.Format("{0},{1}", X, Y); }
+		
+		// Change endianness of a uint32
+		public static uint Swap(uint orig)
+		{
+			return (uint)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
+		}
 	}
 }

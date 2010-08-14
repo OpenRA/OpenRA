@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 
 namespace OpenRA.FileFormats
@@ -30,7 +29,7 @@ namespace OpenRA.FileFormats
 		byte cbParts;
 		int2 blocks;
 		UInt32[] offsets;
-		int[] palette;
+		uint[] palette;
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
@@ -42,7 +41,7 @@ namespace OpenRA.FileFormats
 		byte[] origData;
 		
 		// Final frame output
-		int[,] frameData;
+		uint[,] frameData;
 		byte[] audioData;		// audio for this frame: 22050Hz 16bit mono pcm, uncompressed.
 
 		public byte[] AudioData { get { return audioData; } }
@@ -89,9 +88,9 @@ namespace OpenRA.FileFormats
 			var frameSize = NextPowerOf2(Math.Max(Width,Height));
 			cbf = new byte[Width*Height];
 			cbp = new byte[Width*Height];
-			palette = new int[numColors];
+			palette = new uint[numColors];
 			origData = new byte[2*blocks.X*blocks.Y];
-			frameData = new int[frameSize,frameSize];
+			frameData = new uint[frameSize,frameSize];
 			
 			var type = new String(reader.ReadChars(4));
 			Console.WriteLine(type);
@@ -140,7 +139,7 @@ namespace OpenRA.FileFormats
 				while (reader.BaseStream.Position < end)
 				{
 					var type = new String(reader.ReadChars(4));
-					var length = Swap(reader.ReadUInt32());
+					var length = int2.Swap(reader.ReadUInt32());
 
 					switch (type)
 					{
@@ -181,14 +180,14 @@ namespace OpenRA.FileFormats
 			while(reader.BaseStream.Position < end)
 			{
 				var type = new String(reader.ReadChars(4));
-				var length = Swap(reader.ReadUInt32());
+				var length = int2.Swap(reader.ReadUInt32());
 
 				switch(type)
 				{
 					case "VQFR":
 						DecodeVQFR(reader);
 					break;
-					default: 
+					default:
 						// Don't parse sound here.
 						reader.ReadBytes((int)length);
 						break;
@@ -207,7 +206,7 @@ namespace OpenRA.FileFormats
 				// Chunks are aligned on even bytes; may be padded with a single null
 				if (reader.PeekChar() == 0) reader.ReadByte();
 				var type = new String(reader.ReadChars(4));
-				int subchunkLength = (int)Swap(reader.ReadUInt32());
+				int subchunkLength = (int)int2.Swap(reader.ReadUInt32());
 
 				switch(type)
 				{
@@ -243,10 +242,10 @@ namespace OpenRA.FileFormats
 					case "CPL0":
 						for (int i = 0; i < numColors; i++)
 						{
-							byte r = reader.ReadByte();
-							byte g = reader.ReadByte();
-							byte b = reader.ReadByte();
-							palette[i] = Color.FromArgb(255,ToColorByte(r),ToColorByte(g),ToColorByte(b)).ToArgb();
+							byte r = (byte)(reader.ReadByte() << 2);
+							byte g = (byte)(reader.ReadByte() << 2);
+							byte b = (byte)(reader.ReadByte() << 2);
+							palette[i] = (uint)(255 << 24 | (r << 16) | (g << 8) | b);
 						}
 					break;
 					
@@ -262,7 +261,7 @@ namespace OpenRA.FileFormats
 		}
 		
 		int cachedFrame = -1;
-		public int[,] FrameData	{ get
+		public uint[,] FrameData	{ get
 		{
 			if (cachedFrame != currentFrame)
 			{
@@ -294,16 +293,5 @@ namespace OpenRA.FileFormats
 			++v;
 			return v;
 		}
-		
-		public byte ToColorByte(byte b)
-		{
-			return (byte)((b & 63) * 255 / 63);
-		}
-		
-		// Change endianness of a uint32
-		public UInt32 Swap(UInt32 orig)
-		{
-			return (UInt32)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
-		}		
 	}
 }

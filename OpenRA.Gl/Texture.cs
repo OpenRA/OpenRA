@@ -28,8 +28,8 @@ namespace OpenRA.GlRenderer
 			SetData(bitmap);
 		}
 
-		// An array of Color.ToARGB()'s
-		public void SetData(int[,] colors)
+		// An array of RGBA
+		public void SetData(uint[,] colors)
 		{
 			int width = colors.GetUpperBound(0) + 1;
 			int height = colors.GetUpperBound(1) + 1;
@@ -37,22 +37,23 @@ namespace OpenRA.GlRenderer
 			if (!IsPowerOf2(width) || !IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width,height));
 			
-			IntPtr intPtr;
 			unsafe
 			{
-				fixed (int* ptr = colors)
-					intPtr = new IntPtr((void *) ptr);
-			}
-
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
-				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
-			GraphicsDevice.CheckGlError();
+				fixed (uint* ptr = colors)
+				{
+					IntPtr intPtr = new IntPtr((void *) ptr);
+					
+					Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+					GraphicsDevice.CheckGlError();
+					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
+					GraphicsDevice.CheckGlError();
+					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
+					GraphicsDevice.CheckGlError();
+					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
+						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
+					GraphicsDevice.CheckGlError();
+				}
+			}			
 		}
 		
 		public void SetData(Bitmap bitmap)
