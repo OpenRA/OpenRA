@@ -15,10 +15,8 @@ using OpenRA.Traits;
 
 /*
  * Crates left to implement:
-Cloak=0,STEALTH2                ; enable cloaking on nearby objects
 HealBase=1,INVUN                ; all buildings to full strength
 ICBM=1,MISSILE2                 ; nuke missile one time shot
-Reveal=1,EARTH                  ; reveal entire radar map
 Sonar=3,SONARBOX                ; one time sonar pulse
 Squad=20,NONE                   ; squad of random infantry
 Unit=20,NONE                    ; vehicle

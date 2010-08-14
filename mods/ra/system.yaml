@@ -224,6 +224,9 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
 	SupportPowerCrateAction@parabombs:
 		Power: AirstrikePower
 		SelectionShares: 5

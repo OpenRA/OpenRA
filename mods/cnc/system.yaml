@@ -154,6 +154,9 @@ CRATE:
 		Amount: 1000
 		SelectionShares: 50
 		Effect: dollar
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map

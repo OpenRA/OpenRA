@@ -233,6 +233,7 @@
     <Compile Include="ActorLostNotification.cs" />
     <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="ColorPickerPaletteModifier.cs" />
+    <Compile Include="Crates\RevealMapCrateAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

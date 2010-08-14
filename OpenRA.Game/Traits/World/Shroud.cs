@@ -170,6 +170,16 @@ namespace OpenRA.Traits
 
 			Dirty();
 		}
+		
+		public void ExploreAll(World world)
+		{
+			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+					exploredCells[i, j] = true;
+			exploredBounds = new Rectangle(world.Map.TopLeft.X,world.Map.TopLeft.Y,world.Map.Width,world.Map.Height);
+
+			Dirty();
+		}
 
 		public void ResetExploration()		// for `hide map` crate
 		{
