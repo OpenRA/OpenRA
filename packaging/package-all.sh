@@ -45,11 +45,12 @@ pushd osx/
 sh package-game.sh ~/openra-package/$_gitname-build "$VERSION"
 popd
 
-sh uploader.sh osx "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$2" "$3"
+./uploader.sh osx "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$2" "$3"
 
 pushd windows/
-makensis -DSRCDIR=~/openra-package/$_gitname-build OpenRA.nsi
+makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi
 mv OpenRA.exe OpenRA-$VERSION.exe
+../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe "$2" "$3"
 popd
 
-sh uploader.sh windows "$VERSION" windows/OpenRA-$VERSION.exe
+

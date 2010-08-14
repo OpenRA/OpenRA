@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # OpenRA Package uploader script
 # Usage: uploader.sh <platform> <version string> <package file>
 #    Will upload as user openra and prompt for a password if it's not defined in ~/.netrc
