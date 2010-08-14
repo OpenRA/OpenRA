@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA
 			this.self = init.self;
 			this.info = info;
 			this.location = init.Get<LocationInit,int2>();
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			self.World.WorldActor.Trait<UnitInfluence>().Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
 		{
-			if (crusher.traits.Contains<MineImmune>() && crusher.Owner == self.Owner)
+			if (crusher.HasTrait<MineImmune>() && crusher.Owner == self.Owner)
 				return;
 
 			var info = self.Info.Traits.Get<MineInfo>();

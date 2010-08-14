@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{		
 			buttons.Clear();
 			
-			var powers = world.LocalPlayer.PlayerActor.traits.WithInterface<SupportPower>();
+			var powers = world.LocalPlayer.PlayerActor.TraitsImplementing<SupportPower>();
 			var numPowers = powers.Count(p => p.IsAvailable);
 			if (numPowers == 0) return;
 			var rectBounds = RenderBounds;

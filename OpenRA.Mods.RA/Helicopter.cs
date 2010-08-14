@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button == MouseButton.Left) return null;
 
 			if (underCursor == null)
-				if (self.traits.GetOrDefault<IMove>().CanEnterCell(xy))
+				if (self.TraitOrDefault<IMove>().CanEnterCell(xy))
 					return new Order("Move", self, xy);
 
 			if (AircraftCanEnter(self, underCursor)
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
@@ -100,18 +100,18 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Enter")
 			{
 				if (Reservable.IsReserved(order.TargetActor)) return;
-				var res = order.TargetActor.traits.GetOrDefault<Reservable>();
+				var res = order.TargetActor.TraitOrDefault<Reservable>();
 				if (res != null)
 					reservation = res.Reserve(self);
 
-				var pi = order.TargetActor.traits.Get<Production>();
+				var pi = order.TargetActor.Trait<Production>();
 				var offset = pi != null ? pi.Spawns.First().First : float2.Zero;
 				
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
@@ -128,16 +128,16 @@ namespace OpenRA.Mods.RA
 		int offsetTicks = 0;
 		public void Tick(Actor self)
 		{
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude <= 0)
 				return;
 			
 			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
-				.Where(a => a.traits.Contains<Helicopter>());
+				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
-				.Select(h => self.traits.Get<Helicopter>().GetRepulseForce(self, h))
+				.Select(h => self.Trait<Helicopter>().GetRepulseForce(self, h))
 				.Aggregate(float2.Zero, (a, b) => a + b);
 
 			self.CenterLocation += rawSpeed * f;

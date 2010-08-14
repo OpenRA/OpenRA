@@ -116,7 +116,7 @@ namespace OpenRA
 
 			Timer.Time( "worldActor: {0}" );
 
-			foreach (var wlh in WorldActor.traits.WithInterface<ILoadWorldHook>())
+			foreach (var wlh in WorldActor.TraitsImplementing<ILoadWorldHook>())
 				wlh.WorldLoaded(this);
 
 			PathFinder = new PathFinder(this);
@@ -235,8 +235,8 @@ namespace OpenRA
 					return ret;
 				ret = new CachedView<Actor, TraitPair<T>>(
 					set,
-					x => x.traits.Contains<T>(),
-					x => new TraitPair<T> { Actor = x, Trait = x.traits.Get<T>() } );
+					x => x.HasTrait<T>(),
+					x => new TraitPair<T> { Actor = x, Trait = x.Trait<T>() } );
 				hasTrait.Add( ret );
 				return ret;
 			}
@@ -248,8 +248,8 @@ namespace OpenRA
 					return ret;
 				ret = new CachedView<Actor, TraitPair<T>>(
 					world.actors,
-					x => x.traits.Contains<T>(),
-					x => x.traits.WithInterface<T>().Select( t => new TraitPair<T> { Actor = x, Trait = t } ) );
+					x => x.HasTrait<T>(),
+					x => x.TraitsImplementing<T>().Select( t => new TraitPair<T> { Actor = x, Trait = t } ) );
 				hasTrait.Add( ret );
 				return ret;
 			}

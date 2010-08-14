@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (!target.IsValid) return false;
 			if (Weapons.All(w => w.IsReloading)) return false;
-			if (self.traits.WithInterface<IDisable>().Any(d => d.Disabled)) return false;
+			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) return false;
 
 			return true;
 		}
@@ -102,8 +102,8 @@ namespace OpenRA.Mods.RA
 		{
 			if( !CanAttack( self ) ) return;
 
-			var move = self.traits.GetOrDefault<IMove>();
-			var facing = self.traits.GetOrDefault<IFacing>();
+			var move = self.TraitOrDefault<IMove>();
+			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var w in Weapons)
 				if (CheckFire(self, move, facing, w))
 					w.FiredShot();
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA
 		{		
 			if (w.FireDelay > 0) return false;
 
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return false;
 
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
 			if (!w.IsValidAgainst(target)) return false;
 
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
-			var destMove = target.IsActor ? target.Actor.traits.GetOrDefault<IMove>() : null;
+			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
 
 			var args = new ProjectileArgs
 			{
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 				destAltitude = destMove != null ? destMove.Altitude : 0,
 				
 				facing = barrel.Facing + 
-					(self.traits.Contains<Turreted>() ? self.traits.Get<Turreted>().turretFacing :
+					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
 					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 			};
 			
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.RA
 				}
 			});
 
-			foreach (var na in self.traits.WithInterface<INotifyAttack>())
+			foreach (var na in self.TraitsImplementing<INotifyAttack>())
 				na.Attacking(self);
 
 			return true;
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA
 						if (order.TargetActor != null)
 							w.Add(new FlashTarget(order.TargetActor));
 						
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
 							else line.SetTarget(self, Target.FromOrder(order), Color.Red);

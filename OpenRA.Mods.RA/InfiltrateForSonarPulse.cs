@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public void OnInfiltrate(Actor self, Actor spy)
 		{
-			spy.Owner.PlayerActor.traits.Get<SonarPulsePower>().Give(1.0f);
+			spy.Owner.PlayerActor.Trait<SonarPulsePower>().Give(1.0f);
 		}
 	}
 }

@@ -38,16 +38,16 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "NuclearMissile")
 			{
 				var silo = self.World.Queries.OwnedBy[self.Owner]
-					.Where(a => a.traits.Contains<NukeSilo>())
+					.Where(a => a.HasTrait<NukeSilo>())
 					.FirstOrDefault();
 				if (silo != null)
-					silo.traits.Get<RenderBuilding>().PlayCustomAnim(silo, "active");
+					silo.Trait<RenderBuilding>().PlayCustomAnim(silo, "active");
 				
 				// Play to everyone but the current player
 				if (Owner != Owner.World.LocalPlayer)
 					Sound.Play(Info.LaunchSound);
 				
-				silo.traits.Get<NukeSilo>().Attack(order.TargetLocation);
+				silo.Trait<NukeSilo>().Attack(order.TargetLocation);
 				
 				self.World.CancelInputMode();
 				FinishActivate();
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 		
 		public void Attack(int2 targetLocation)
 		{
-			self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 			
 			self.World.AddFrameEndTask(w =>
 			{

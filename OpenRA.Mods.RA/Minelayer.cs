@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.CancelInputMode();
 
-				var movement = self.traits.Get<IMove>();
+				var movement = self.Trait<IMove>();
 
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
@@ -122,8 +122,8 @@ namespace OpenRA.Mods.RA
 			int2 lastMousePos;
 			public void RenderAfterWorld(World world)
 			{
-				var ml = minelayer.traits.Get<Minelayer>();
-				var movement = minelayer.traits.Get<IMove>();
+				var ml = minelayer.Trait<Minelayer>();
+				var movement = minelayer.Trait<IMove>();
 				var minefield = GetMinefieldCells(ml.minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 

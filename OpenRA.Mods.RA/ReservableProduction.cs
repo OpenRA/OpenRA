@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				var exit = self.Location + s.Second;
 				var spawn = self.CenterLocation + s.First;
-				if (!self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt( exit ).Any())
+				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any())
 				{
 					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
 					{
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.RA
 					});
 					newUnit.CenterLocation = spawn;
 		        	
-					var rp = self.traits.GetOrDefault<RallyPoint>();
+					var rp = self.TraitOrDefault<RallyPoint>();
 					if( rp != null )
 					{
 						newUnit.QueueActivity( new Activities.HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
 					}
 					
-					foreach (var t in self.traits.WithInterface<INotifyProduction>())
+					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 		
 					Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);

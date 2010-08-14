@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			return collector.traits.Contains<Cloak>() 
+			return collector.HasTrait<Cloak>() 
 				? 0 : base.GetSelectionShares(collector);
 		}
 
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Crates
 			collector.World.AddFrameEndTask(w =>
 				{
 					w.Remove(collector);
-					collector.traits.Add(cloak);
+					collector.AddTrait(cloak);
 					w.Add(collector);
 				});
 

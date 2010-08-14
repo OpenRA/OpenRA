@@ -84,8 +84,8 @@ namespace OpenRA.Mods.RA
 		
 		public float MovementSpeedForCell(Actor self, int2 cell)
 		{		
-			var modifier = self.traits
-				.WithInterface<ISpeedModifier>()
+			var modifier = self
+				.TraitsImplementing<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
 			return Info.Speed * modifier;

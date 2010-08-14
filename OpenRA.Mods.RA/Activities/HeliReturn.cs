@@ -40,11 +40,11 @@ namespace OpenRA.Mods.RA.Activities
 					new HeliLand(true),
 					NextActivity);
 
-			var res = dest.traits.GetOrDefault<Reservable>();
+			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
-				self.traits.Get<Helicopter>().reservation = res.Reserve(self);
+				self.Trait<Helicopter>().reservation = res.Reserve(self);
 
-			var pi = dest.traits.Get<Production>();
+			var pi = dest.Trait<Production>();
 			var offset = pi != null ? pi.Spawns.First().First : float2.Zero;
 
 			return Util.SequenceActivities(

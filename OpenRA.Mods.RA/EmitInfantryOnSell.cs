@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 			
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			var hpFraction = (health == null) ? 1f : health.HPFraction;
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
 			var eligibleLocations = Footprint.Tiles(self).ToList();

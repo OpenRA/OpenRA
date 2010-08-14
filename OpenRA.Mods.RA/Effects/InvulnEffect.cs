@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Effects
 		public InvulnEffect(Actor a)
 		{
 			this.a = a;
-			this.b = a.traits.Get<IronCurtainable>();
+			this.b = a.Trait<IronCurtainable>();
 		}
 
 		public void Tick( World world )

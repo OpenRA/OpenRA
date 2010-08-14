@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 		{
 			this.info = info;
 			turretFacing = info.InitialFacing;
-			facing = self.traits.GetOrDefault<IFacing>();
+			facing = self.TraitOrDefault<IFacing>();
 		}
 
 		public void Tick( Actor self )

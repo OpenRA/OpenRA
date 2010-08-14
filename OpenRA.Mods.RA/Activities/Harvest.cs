@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( isHarvesting ) return this;
 			if( NextActivity != null ) return NextActivity;
 
-			var harv = self.traits.Get<Harvester>();
+			var harv = self.Trait<Harvester>();
 			harv.LastHarvestedCell = self.Location;
 
 			if( harv.IsFull )
@@ -42,10 +42,10 @@ namespace OpenRA.Mods.RA.Activities
 
 		bool HarvestThisTile(Actor self)
 		{
-			var harv = self.traits.Get<Harvester>();
-			var renderUnit = self.traits.Get<RenderUnit>();	/* better have one of these! */
+			var harv = self.Trait<Harvester>();
+			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
 
-			var resource = self.World.WorldActor.traits.Get<ResourceLayer>().Harvest(self.Location);
+			var resource = self.World.WorldActor.Trait<ResourceLayer>().Harvest(self.Location);
 			if (resource == null)
 				return false;
 			
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		void FindMoreResource(Actor self)
 		{
-			var res = self.World.WorldActor.traits.Get<ResourceLayer>();
+			var res = self.World.WorldActor.Trait<ResourceLayer>();
 			var harv = self.Info.Traits.Get<HarvesterInfo>();
 
 			self.QueueActivity(new Move(

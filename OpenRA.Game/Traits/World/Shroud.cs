@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 
 		void AddActor(Actor a)
 		{
-			if (!a.traits.Contains<RevealsShroud>())
+			if (!a.HasTrait<RevealsShroud>())
 				return;
 						
 			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 
 			var v = new ActorVisibility
 			{
-				range = a.traits.Get<RevealsShroud>().RevealRange,
+				range = a.Trait<RevealsShroud>().RevealRange,
 				vis = GetVisOrigins(a).ToArray()
 			};
 
@@ -129,7 +129,7 @@ namespace OpenRA.Traits
 			}
 			else
 			{
-				var mobile = a.traits.GetOrDefault<Mobile>();
+				var mobile = a.TraitOrDefault<Mobile>();
 				if (mobile != null)
 					return new[] { mobile.fromCell, mobile.toCell };
 				else

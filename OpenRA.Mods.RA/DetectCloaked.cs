@@ -34,13 +34,13 @@ namespace OpenRA.Mods.RA
 				ticks = info.Interval;
 
 				var toDecloak = self.World.FindUnitsInCircle(self.CenterLocation, info.Range * Game.CellSize)
-					.Where(a => a.traits.Contains<Cloak>());
+					.Where(a => a.HasTrait<Cloak>());
 
 				if (!info.AffectOwnUnits)
 					toDecloak = toDecloak.Where(a => self.Owner.Stances[a.Owner] != Stance.Ally);
 
 				foreach (var a in toDecloak)
-					a.traits.Get<Cloak>().Decloak((int)(25 * info.DecloakTime));
+					a.Trait<Cloak>().Decloak((int)(25 * info.DecloakTime));
 			}
 		}
 	}

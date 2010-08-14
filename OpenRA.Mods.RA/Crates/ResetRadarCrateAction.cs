@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Activate(collector);
 			if (collector.Owner == collector.World.LocalPlayer)
-				collector.World.WorldActor.traits.Get<Shroud>().ResetExploration();
+				collector.World.WorldActor.Trait<Shroud>().ResetExploration();
 		}
 	}
 }

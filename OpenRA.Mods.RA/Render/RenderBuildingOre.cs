@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 		public void BuildingComplete( Actor self )
 		{
 			anim.PlayFetchIndex( "idle", 
-				() => (int)( 4.9 * self.Owner.PlayerActor.traits.Get<PlayerResources>().GetSiloFullness() ) );
+				() => (int)( 4.9 * self.Owner.PlayerActor.Trait<PlayerResources>().GetSiloFullness() ) );
 		}
 	}
 }

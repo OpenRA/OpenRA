@@ -33,7 +33,7 @@ namespace OpenRA
 			this.self = self;
 			world = self.World;
 			cellInfo = InitCellInfo();
-			mobile = self.traits.Get<Mobile>();
+			mobile = self.Trait<Mobile>();
 			queue = new PriorityQueue<PathDistance>();
 		}
 

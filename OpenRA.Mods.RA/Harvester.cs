@@ -55,22 +55,22 @@ namespace OpenRA.Mods.RA
 		{
 			LinkedProc = ClosestProc(self, ignore);
 			if (LinkedProc != null)
-				LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
+				LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
 		}
 		
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
 			var refs = self.World.Queries.OwnedBy[self.Owner]
-				.Where(x => x != ignore && x.traits.Contains<IAcceptOre>())
+				.Where(x => x != ignore && x.HasTrait<IAcceptOre>())
 				.ToList();
 			
 			var path = self.World.PathFinder.FindPath(PathSearch.FromPoints(self,
-			                                                                refs.Select(r => r.Location + r.traits.Get<IAcceptOre>().DeliverOffset),
+			                                                                refs.Select(r => r.Location + r.Trait<IAcceptOre>().DeliverOffset),
 			                                                                self.Location,
 			                                                                false));
 			path.Reverse();
 			if (path.Count != 0)
-				return refs.FirstOrDefault(x => x.Location + x.traits.Get<IAcceptOre>().DeliverOffset == path[0]);
+				return refs.FirstOrDefault(x => x.Location + x.Trait<IAcceptOre>().DeliverOffset == path[0]);
 			else
 				return null;
 		}
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 
 		public void Deliver(Actor self, Actor proc)
 		{
-			proc.traits.Get<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
+			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
 			contents.Clear();
 		}
 
@@ -96,11 +96,11 @@ namespace OpenRA.Mods.RA
 
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
-				&& underCursor.traits.Contains<IAcceptOre>())
+				&& underCursor.HasTrait<IAcceptOre>())
 			{
 				return new Order("Deliver", self, underCursor);
 			}
-			var res = self.World.WorldActor.traits.Get<ResourceLayer>().GetResource(xy);
+			var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(xy);
 			var info = self.Info.Traits.Get<HarvesterInfo>();
 
 			if (underCursor == null && res != null && info.Resources.Contains(res.info.Name) && !IsFull)
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
@@ -143,9 +143,9 @@ namespace OpenRA.Mods.RA
 				if (order.TargetActor != LinkedProc)
 				{
 					if (LinkedProc != null)
-						LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
+						LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 					LinkedProc = order.TargetActor;
-					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
+					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
 				}
 				
 				if (IsEmpty)
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (e.DamageState == DamageState.Dead)
 				if (LinkedProc != null)
-					LinkedProc.traits.WithInterface<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
+					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 		}
 		
 		public void LinkProc(Actor self, Actor proc)

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 		protected override bool CanAttack( Actor self )
 		{
-			var isBuilding = ( self.traits.Contains<Building>() && !buildComplete );
+			var isBuilding = ( self.HasTrait<Building>() && !buildComplete );
 			return base.CanAttack( self ) && !isBuilding;
 		}
 

@@ -38,21 +38,21 @@ namespace OpenRA.Orders
 		public void RenderBeforeWorld(World world)
 		{
 			foreach (var a in world.Selection.Actors)
-				foreach (var t in a.traits.WithInterface<IPreRenderSelection>())
+				foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
 					t.RenderBeforeWorld(a);
 		}
 
 		public void RenderAfterWorld( World world )
 		{
 			foreach (var a in world.Selection.Actors)
-				foreach (var t in a.traits.WithInterface<IPostRenderSelection>())
+				foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
 					t.RenderAfterWorld(a);
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )
 		{
 			var c = Order(world, xy, mi)
-				.Select(o => o.Subject.traits.WithInterface<IOrderCursor>()
+				.Select(o => o.Subject.TraitsImplementing<IOrderCursor>()
 					.Select(pc => pc.CursorForOrder(o.Subject, o)).FirstOrDefault(a => a != null))
 				.FirstOrDefault(a => a != null);
 

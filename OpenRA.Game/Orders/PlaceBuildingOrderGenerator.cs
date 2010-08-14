@@ -56,7 +56,7 @@ namespace OpenRA.Orders
 		
 		public void Tick( World world )
 		{
-			var producing = Producer.traits.Get<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
+			var producing = Producer.Trait<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
 			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
 				world.CancelInputMode();
 		}

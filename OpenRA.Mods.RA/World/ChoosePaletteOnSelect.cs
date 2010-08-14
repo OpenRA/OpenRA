@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public void SelectionChanged()
 		{
 			var firstItem = Game.world.Selection.Actors.FirstOrDefault(
-				a => a.World.LocalPlayer == a.Owner && a.traits.Contains<Production>());
+				a => a.World.LocalPlayer == a.Owner && a.HasTrait<Production>());
 
 			if (firstItem == null)
 				return;

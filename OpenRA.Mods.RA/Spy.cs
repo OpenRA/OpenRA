@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (underCursor.Owner == self.Owner) return null;
-			if (!underCursor.traits.Contains<IAcceptSpy>()) return null;
+			if (!underCursor.HasTrait<IAcceptSpy>()) return null;
 
 			return new Order("Infiltrate", self, underCursor);
 		}
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask( w =>
 					{
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTargetSilently(self, Target.FromActor(order.TargetActor), Color.Green);
 					});

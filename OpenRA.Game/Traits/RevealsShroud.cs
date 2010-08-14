@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 			if (!self.IsIdle && previousLocation != self.Location)
 			{
 				previousLocation = self.Location;
-				self.World.WorldActor.traits.Get<Shroud>().UpdateActor(self);
+				self.World.WorldActor.Trait<Shroud>().UpdateActor(self);
 			}
 		}
 		

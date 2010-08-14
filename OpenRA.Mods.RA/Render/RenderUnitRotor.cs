@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 		public RenderUnitRotor( Actor self )
 			: base(self)
 		{
-			var facing = self.traits.Get<IFacing>();
+			var facing = self.Trait<IFacing>();
 			var info = self.Info.Traits.Get<RenderUnitRotorInfo>();
 
 			rotorAnim = new Animation(GetImage(self));
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			
-			var isFlying = self.traits.Get<IMove>().Altitude > 0;
+			var isFlying = self.Trait<IMove>().Altitude > 0;
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;
 

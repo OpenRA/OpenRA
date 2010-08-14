@@ -24,7 +24,7 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var facing = self.traits.Get<IFacing>();
+			var facing = self.Trait<IFacing>();
 
 			if( desiredFacing == facing.Facing )
 				return NextActivity;
@@ -35,7 +35,7 @@ namespace OpenRA.Traits.Activities
 
 		public void Cancel( Actor self )
 		{
-			desiredFacing = self.traits.Get<IFacing>().Facing;
+			desiredFacing = self.Trait<IFacing>().Facing;
 			NextActivity = null;
 		}
 	}

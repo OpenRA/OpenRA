@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 							new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
 							new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 						});
-						a.traits.Get<CarpetBomb>().SetTarget(order.TargetLocation);
+						a.Trait<CarpetBomb>().SetTarget(order.TargetLocation);
 
 						a.CancelActivity();
 						a.QueueActivity(new Fly(order.TargetLocation));

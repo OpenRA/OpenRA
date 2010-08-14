@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			float2 startDock = harv.CenterLocation;
 			float2 endDock = self.CenterLocation + new float2(-15,8);
-			var harvester = harv.traits.Get<Harvester>();
+			var harvester = harv.Trait<Harvester>();
 
 			harv.QueueActivity( new Turn(112) );
 			harv.QueueActivity( new CallFunc( () =>
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc
 				if (!preventDock)
 				{
 					dockedHarv = harv;
-					self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+					self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 					
 					harv.QueueActivity( new Drag(startDock, endDock, 12) );
 					harv.QueueActivity( new CallFunc( () =>
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc
 						if (harv.Owner == self.World.LocalPlayer)
 							self.World.AddFrameEndTask( w =>
 							{
-								var line = harv.traits.GetOrDefault<DrawLineToTarget>();
+								var line = harv.TraitOrDefault<DrawLineToTarget>();
 								if (line != null)
 									line.SetTargetSilently(harv, Target.FromCell(harvester.LastHarvestedCell), Color.Green);                           
 							});
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc
 				return;
 			
 			// invisible harvester makes ceiling cat cry
-			harv.traits.Get<Harvester>().Visible = true;
+			harv.Trait<Harvester>().Visible = true;
 		}
 		
 		public void Selling (Actor self) { CancelDock(self, dockedHarv); }

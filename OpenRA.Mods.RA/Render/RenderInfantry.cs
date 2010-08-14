@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
 	{
 		public RenderInfantry(Actor self)
-			: base(self, () => self.traits.Get<IFacing>().Facing)
+			: base(self, () => self.Trait<IFacing>().Facing)
 		{
 			anim.Play("stand");
 		}
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			if (!(self.GetCurrentActivity() is Move) && !(self.GetCurrentActivity() is Drag)) // A bit of a hack
 				return false;
 
-			var mobile = self.traits.Get<Mobile>();
+			var mobile = self.Trait<Mobile>();
 			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
 
 			var seq = IsProne(self) ? "crawl" : "run";
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Render
 		bool inAttack = false;
 		bool IsProne(Actor self)
 		{
-			var takeCover = self.traits.GetOrDefault<TakeCover>();
+			var takeCover = self.TraitOrDefault<TakeCover>();
 			return takeCover != null && takeCover.IsProne;
 		}
 

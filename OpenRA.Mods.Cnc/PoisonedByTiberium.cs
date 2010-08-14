@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (--poisonTicks <= 0)
 			{
-				var rl = self.World.WorldActor.traits.Get<ResourceLayer>();
+				var rl = self.World.WorldActor.Trait<ResourceLayer>();
 				var r = rl.GetResource(self.Location);
 
 				if (r != null && info.Resources.Contains(r.info.Name))

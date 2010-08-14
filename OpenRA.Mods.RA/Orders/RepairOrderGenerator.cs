@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Owner == world.LocalPlayer && a.traits.Contains<RepairableBuilding>()).FirstOrDefault();
+					.Where(a => a.Owner == world.LocalPlayer && a.HasTrait<RepairableBuilding>()).FirstOrDefault();
 
 				if (underCursor == null)
 					yield break;

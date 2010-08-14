@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Effects
 						var loc = Traits.Util.CellContaining(location);
 						cargo.CancelActivity();
 						
-						var mobile = cargo.traits.GetOrDefault<ITeleportable>();
+						var mobile = cargo.TraitOrDefault<ITeleportable>();
 
 						if (mobile != null)
 							mobile.SetPosition(cargo, loc);
@@ -67,8 +67,8 @@ namespace OpenRA.Mods.RA.Effects
 						{
 							cargo.CenterLocation = Traits.Util.CenterOfCell(loc);
 
-							if (cargo.traits.Contains<IOccupySpace>())
-								world.WorldActor.traits.Get<UnitInfluence>().Add(cargo, cargo.traits.Get<IOccupySpace>());
+							if (cargo.HasTrait<IOccupySpace>())
+								world.WorldActor.Trait<UnitInfluence>().Add(cargo, cargo.Trait<IOccupySpace>());
 						}
 						w.Add(cargo);
 					});

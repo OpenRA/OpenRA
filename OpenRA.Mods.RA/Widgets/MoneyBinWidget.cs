@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void DrawInner(World world)
 		{
-			var playerResources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
+			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;

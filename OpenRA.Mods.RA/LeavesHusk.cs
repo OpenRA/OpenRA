@@ -32,12 +32,12 @@ namespace OpenRA.Mods.RA
 						{
 							new LocationInit( self.Location ),
 							new OwnerInit( self.Owner ),
-							new FacingInit( self.traits.Get<IFacing>().Facing ),
+							new FacingInit( self.Trait<IFacing>().Facing ),
 						});
 	
-						var turreted = self.traits.GetOrDefault<Turreted>();
+						var turreted = self.TraitOrDefault<Turreted>();
 						if (turreted != null)
-							foreach (var p in husk.traits.WithInterface<ThrowsParticle>())
+							foreach (var p in husk.TraitsImplementing<ThrowsParticle>())
 								p.InitialFacing = turreted.turretFacing;
 					});
 		}

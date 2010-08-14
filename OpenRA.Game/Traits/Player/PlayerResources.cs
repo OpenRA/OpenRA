@@ -57,7 +57,7 @@ namespace OpenRA.Traits
 		void TickOre(Actor self)
 		{
 			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<IStoreOre>()
-				.Sum(a => a.Actor.traits.WithInterface<IStoreOre>().Sum(b => b.Capacity));
+				.Sum(a => a.Actor.TraitsImplementing<IStoreOre>().Sum(b => b.Capacity));
 			
 			if (Ore > OreCapacity)
 				Ore = OreCapacity;

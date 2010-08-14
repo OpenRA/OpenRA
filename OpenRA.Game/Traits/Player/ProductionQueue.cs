@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 			{
 				while( p.Value.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, p.Key ).Contains( p.Value[ 0 ].Item ) )
 				{
-					self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(p.Value[0].TotalCost - p.Value[0].RemainingCost); // refund what's been paid so far.
+					self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(p.Value[0].TotalCost - p.Value[0].RemainingCost); // refund what's been paid so far.
 					FinishProduction(p.Key);
 				}
 				if( p.Value.Count > 0 )
@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 			
-			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.traits.Get<DeveloperMode>().FastBuild) return 0;
+			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastBuild) return 0;
 			var ui = unit.Traits.Get<BuildableInfo>();
 			var time = ui.Cost
 				* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
@@ -139,7 +139,7 @@ namespace OpenRA.Traits
 			else if( lastIndex == 0 )
 			{
 				var item = queue[0];
-				self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
 				FinishProduction(category);
 			}
 		}
@@ -158,7 +158,7 @@ namespace OpenRA.Traits
 
 		static bool IsDisabledBuilding(Actor a)
 		{
-			var building = a.traits.GetOrDefault<Building>();
+			var building = a.TraitOrDefault<Building>();
 			return building != null && building.Disabled;
 		}
 
@@ -227,7 +227,7 @@ namespace OpenRA.Traits
 
 			if (Paused) return;
 
-			if (player.PlayerActor.traits.Get<PlayerResources>().GetPowerState() != PowerState.Normal)
+			if (player.PlayerActor.Trait<PlayerResources>().GetPowerState() != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
 					slowdown = player.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown; 
@@ -236,7 +236,7 @@ namespace OpenRA.Traits
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !player.PlayerActor.traits.Get<PlayerResources>().TakeCash(costThisFrame)) return;
+			if (costThisFrame != 0 && !player.PlayerActor.Trait<PlayerResources>().TakeCash(costThisFrame)) return;
 			RemainingCost -= costThisFrame;
 			RemainingTime -= 1;
 			if (RemainingTime > 0) return;

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var facing = self.traits.Get<IFacing>();
+			var facing = self.Trait<IFacing>();
 			if (!Target.IsValid)
 				return NextActivity;
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 				return new Move( Target, Range ) { NextActivity = this };
 
 			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);
-			var renderUnit = self.traits.GetOrDefault<RenderUnit>();
+			var renderUnit = self.TraitOrDefault<RenderUnit>();
 			var numDirs = (renderUnit != null)
 				? renderUnit.anim.CurrentSequence.Facings : 8;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 				return new Turn( desiredFacing ) { NextActivity = this };
 			}
 
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			attack.target = Target;
 			attack.DoAttack(self);
 			return this;

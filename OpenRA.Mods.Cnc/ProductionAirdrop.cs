@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc
 					new AltitudeInit( Rules.Info["c17"].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 				
-				var cargo = a.traits.Get<Cargo>();
+				var cargo = a.Trait<Cargo>();
 				var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
 				{
 					new OwnerInit( self.Owner ),

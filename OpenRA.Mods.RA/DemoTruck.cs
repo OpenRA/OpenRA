@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		public void Detonate(Actor self, Actor detonatedBy)
 		{
-			var move = self.traits.GetOrDefault<IMove>();
+			var move = self.TraitOrDefault<IMove>();
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			var altitude = move != null ? move.Altitude : 0;
 

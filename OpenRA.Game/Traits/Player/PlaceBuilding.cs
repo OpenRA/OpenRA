@@ -27,7 +27,7 @@ namespace OpenRA.Traits
 				{
 					var prevItems = GetNumBuildables(self.Owner);
 
-					var queue = self.traits.Get<ProductionQueue>();
+					var queue = self.Trait<ProductionQueue>();
 					var unit = Rules.Info[order.TargetString];
 					var producing = queue.CurrentItem(unit.Category);
 
@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 
 			if( producer.Actor != null )
-				producer.Actor.traits.WithInterface<RenderSimple>().First().PlayCustomAnim( producer.Actor, "build" );
+				producer.Actor.TraitsImplementing<RenderSimple>().First().PlayCustomAnim( producer.Actor, "build" );
 		}
 
 		static int GetNumBuildables(Player p)

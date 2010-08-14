@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			if (underCursor == null || underCursor.Owner != self.Owner)
 			    return null;
 
-			var cargo = underCursor.traits.GetOrDefault<Cargo>();
+			var cargo = underCursor.TraitOrDefault<Cargo>();
 			if (cargo == null)
 			    return null;
 			
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 		
 		bool CanEnter(Actor self, Actor a)
 		{
-			var cargo = a.traits.GetOrDefault<Cargo>();
+			var cargo = a.TraitOrDefault<Cargo>();
 			return (cargo != null && !cargo.IsFull(a));
 		}
 		
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});

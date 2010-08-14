@@ -40,8 +40,8 @@ namespace OpenRA.Traits
 		
 		public void DoProduction(Actor self, Actor newUnit, int2 exit, float2 spawn)
 		{
-			var move = newUnit.traits.Get<IMove>();
-			var facing = newUnit.traits.GetOrDefault<IFacing>();
+			var move = newUnit.Trait<IMove>();
+			var facing = newUnit.TraitOrDefault<IFacing>();
 			
 			// Set the physical position of the unit as the exit cell
 			move.SetPosition(newUnit,exit);
@@ -58,7 +58,7 @@ namespace OpenRA.Traits
 			
 			// For the target line
 			var target = exit;
-			var rp = self.traits.GetOrDefault<RallyPoint>();
+			var rp = self.TraitOrDefault<RallyPoint>();
 			if (rp != null)
 			{
 				target = rp.rallyPoint;
@@ -70,13 +70,13 @@ namespace OpenRA.Traits
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					var line = newUnit.traits.GetOrDefault<DrawLineToTarget>();
+					var line = newUnit.TraitOrDefault<DrawLineToTarget>();
 					if (line != null)
 						line.SetTargetSilently(newUnit, Target.FromCell(target), Color.Green);
 				});
 			}
 
-			foreach (var t in self.traits.WithInterface<INotifyProduction>())
+			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);
 
 			Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
@@ -91,7 +91,7 @@ namespace OpenRA.Traits
 			
 			// Todo: remove assumption on Mobile; 
 			// required for 3-arg CanEnterCell
-			var mobile = newUnit.traits.Get<Mobile>();
+			var mobile = newUnit.Trait<Mobile>();
 	
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 					? info.Experience
 					: valued != null ? valued.Cost : 0;
 
-				var killer = e.Attacker.traits.GetOrDefault<GainsExperience>();
+				var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 				if (killer != null)
 					killer.GiveExperience(exp);
 			}

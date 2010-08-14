@@ -37,9 +37,9 @@ namespace OpenRA.Traits
 			bibSprites = info.BibTypes.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
 			
 			self.World.ActorAdded +=
-				a => { if (a.traits.Contains<Bib>()) DoBib(a,true); };
+				a => { if (a.HasTrait<Bib>()) DoBib(a,true); };
 			self.World.ActorRemoved +=
-				a => { if (a.traits.Contains<Bib>()) DoBib(a,false); };
+				a => { if (a.HasTrait<Bib>()) DoBib(a,false); };
 		}
 		
 		public void WorldLoaded(World w)

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (d.LengthSquared < 50)		/* close enough */
 				return NextActivity;
 
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 
 			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
 			if (aircraft.Altitude == cruiseAltitude)
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		public static void Fly(Actor self, int desiredAltitude )
 		{
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			var angle = aircraft.Facing / 128f * Math.PI;
 			self.CenterLocation += speed * -float2.FromAngle((float)angle);

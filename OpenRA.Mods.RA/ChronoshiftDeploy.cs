@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 				return;
 			}
 
-			var movement = self.traits.GetOrDefault<IMove>();
+			var movement = self.TraitOrDefault<IMove>();
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				if (self.Owner == self.World.LocalPlayer)

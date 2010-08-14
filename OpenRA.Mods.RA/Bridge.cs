@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
-			Health = self.traits.Get<Health>();
+			Health = self.Trait<Health>();
 			Health.RemoveOnDeath = false;
 			this.Info = info;
 			this.Type = self.Info.Name;
@@ -144,11 +144,11 @@ namespace OpenRA.Mods.RA
 
 		void KillUnitsOnBridge()
 		{
-			var uim = self.World.WorldActor.traits.Get<UnitInfluence>();
+			var uim = self.World.WorldActor.Trait<UnitInfluence>();
 
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				foreach (var a in uim.GetUnitsAt(c))
-					if (a.traits.Contains<IMove>() && !a.traits.Get<IMove>().CanEnterCell(c))
+					if (a.HasTrait<IMove>() && !a.Trait<IMove>().CanEnterCell(c))
 						a.Kill(self);
 		}
 		

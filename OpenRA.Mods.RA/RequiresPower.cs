@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public bool Disabled
 		{
-			get { return (self.Owner.PlayerActor.traits.Get<PlayerResources>().GetPowerState() != PowerState.Normal); }
+			get { return (self.Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() != PowerState.Normal); }
 		}
 	}
 }

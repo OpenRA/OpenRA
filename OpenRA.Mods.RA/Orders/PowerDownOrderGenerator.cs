@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Owner == world.LocalPlayer
-						&& a.traits.Contains<CanPowerDown>())
+						&& a.HasTrait<CanPowerDown>())
 						.FirstOrDefault();
 
 				if (underCursor != null)

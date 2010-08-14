@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 		void AttackTarget(Actor self, Actor target)
 		{
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target));
 		}
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 
 			if (--nextScanTime <= 0)
 			{
-				var attack = self.traits.Get<AttackBase>();
+				var attack = self.Trait<AttackBase>();
 				var range = attack.GetMaximumRange();
 
 				if (!attack.target.IsValid ||
@@ -53,12 +53,12 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, float range)
 		{
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 
 			return inRange
 				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.Where(a => !a.traits.Contains<Cloak>() || !a.traits.Get<Cloak>().Cloaked)
+				.Where(a => !a.HasTrait<Cloak>() || !a.Trait<Cloak>().Cloaked)
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			if (!self.IsIdle) return;
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker))) return;
 
 			// don't retaliate against own units force-firing on us. it's usually not what the player wanted.

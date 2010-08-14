@@ -70,7 +70,7 @@ namespace OpenRA.Network
 					order.Player.Stances[targetPlayer] = (Stance)order.TargetLocation.Y;
 					
 					if (targetPlayer == world.LocalPlayer)
-						world.WorldActor.traits.Get<Shroud>().UpdatePlayerStance(world, order.Player, oldStance, order.Player.Stances[targetPlayer]);
+						world.WorldActor.Trait<Shroud>().UpdatePlayerStance(world, order.Player, oldStance, order.Player.Stances[targetPlayer]);
 					
 					Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
 						order.Player.PlayerName, targetPlayer.PlayerName, order.Player.Stances[targetPlayer]));
@@ -79,7 +79,7 @@ namespace OpenRA.Network
 			default:
 				{
 					if( !order.IsImmediate )
-						foreach (var t in order.Subject.traits.WithInterface<IResolveOrder>())
+						foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
 							t.ResolveOrder(order.Subject, order);
 					break;
 				}

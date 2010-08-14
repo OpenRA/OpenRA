@@ -54,12 +54,12 @@ namespace OpenRA.Mods.RA
 			
 			this.Info = info;
 			
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			self.World.WorldActor.Trait<UnitInfluence>().Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)
 		{
-			var shares = self.traits.WithInterface<CrateAction>().Select(
+			var shares = self.TraitsImplementing<CrateAction>().Select(
 				a => Pair.New(a, a.GetSelectionShares(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, int2 cell)
 		{
-			var uim = self.World.WorldActor.traits.Get<UnitInfluence>();
+			var uim = self.World.WorldActor.Trait<UnitInfluence>();
 
 			uim.Remove(self, this);
 
@@ -102,8 +102,8 @@ namespace OpenRA.Mods.RA
 			self.CenterLocation = Util.CenterOfCell(cell);
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
-			if (seq != self.traits.Get<RenderSimple>().anim.CurrentSequence.Name)
-				self.traits.Get<RenderSimple>().anim.PlayRepeating(seq);
+			if (seq != self.Trait<RenderSimple>().anim.CurrentSequence.Name)
+				self.Trait<RenderSimple>().anim.PlayRepeating(seq);
 
 			uim.Add(self, this);
 		}

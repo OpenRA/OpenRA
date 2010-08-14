@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public IActivity Tick(Actor self)
 		{
-			self.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(self, destination);
+			self.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(self, destination);
 			return NextActivity;
 		}
 

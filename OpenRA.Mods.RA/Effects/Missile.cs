@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA.Effects
 			var targetPosition = Args.target.CenterLocation + offset;
 
 			var targetAltitude = 0;
-			if (Args.target.IsActor && Args.target.Actor.traits.Contains<IMove>())
-				targetAltitude =  Args.target.Actor.traits.Get<IMove>().Altitude;
+			if (Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
+				targetAltitude =  Args.target.Actor.Trait<IMove>().Altitude;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
 			Facing = Traits.Util.TickFacing(Facing,
@@ -107,8 +107,8 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				var cell = Traits.Util.CellContaining(Pos);
 
-				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
-					a => a.traits.Contains<IBlocksBullets>()))
+				if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any(
+					a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
 			}
 		}

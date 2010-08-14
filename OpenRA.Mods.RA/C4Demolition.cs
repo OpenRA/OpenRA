@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
-			if (!underCursor.traits.Contains<Building>()) return null;
+			if (!underCursor.HasTrait<Building>()) return null;
 
 			return new Order("C4", self, underCursor);
 		}
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});

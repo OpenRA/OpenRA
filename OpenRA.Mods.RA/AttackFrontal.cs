@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 			if (!target.IsValid) return;
 
-			var facing = self.traits.Get<IFacing>().Facing;
+			var facing = self.Trait<IFacing>().Facing;
 			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, facing);
 
 			if (Math.Abs(facingToTarget - facing) % 256 < FacingTolerance)

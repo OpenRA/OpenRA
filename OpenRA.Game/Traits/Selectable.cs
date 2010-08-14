@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 		
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			if (self.IsDead() || health == null)
 				return;
 			
@@ -107,7 +107,7 @@ namespace OpenRA.Traits
 			var pipxyBase = basePosition + new float2(-12, -7); // Correct for the offset in the shp file
 			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
 
-			foreach (var pips in self.traits.WithInterface<IPips>())
+			foreach (var pips in self.TraitsImplementing<IPips>())
 			{
 				foreach (var pip in pips.GetPips(self))
 				{
@@ -135,7 +135,7 @@ namespace OpenRA.Traits
 			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
 			var tagxyOffset = new float2(0, 0); // Correct for offset due to multiple rows
 
-			foreach (var tags in self.traits.WithInterface<ITags>())
+			foreach (var tags in self.TraitsImplementing<ITags>())
 			{
 				foreach (var tag in tags.GetTags())
 				{
@@ -154,9 +154,9 @@ namespace OpenRA.Traits
 		
 		void DrawUnitPath(Actor self)
 		{
-			if (!Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().PathDebug) return;
+			if (!Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
 			
-			var mobile = self.traits.GetOrDefault<IMove>();
+			var mobile = self.TraitOrDefault<IMove>();
 			if (mobile != null)
 			{
 				var alt = new float2(0, -mobile.Altitude);

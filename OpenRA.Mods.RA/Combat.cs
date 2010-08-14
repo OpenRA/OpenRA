@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 			
 			if (warhead.SmudgeType != null)
 			{
-				var smudgeLayer = world.WorldActor.traits.WithInterface<SmudgeLayer>()
+				var smudgeLayer = world.WorldActor.TraitsImplementing<SmudgeLayer>()
 					.FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
 				if (smudgeLayer == null)
 					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
@@ -68,10 +68,10 @@ namespace OpenRA.Mods.RA
 			}
 			
 			if (warhead.Ore)
-				world.WorldActor.traits.Get<ResourceLayer>().Destroy(targetTile);
+				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
 
-			var firepowerModifier = args.firedBy.traits
-				.WithInterface<IFirepowerModifier>()
+			var firepowerModifier = args.firedBy
+				.TraitsImplementing<IFirepowerModifier>()
 				.Select(a => a.GetFirepowerModifier())
 				.Product();
 
@@ -184,10 +184,10 @@ namespace OpenRA.Mods.RA
 			var abInfo = self.Info.Traits.GetOrDefault<AttackBaseInfo>();
 			if (abInfo == null || abInfo.Recoil == 0) return float2.Zero;
 
-			var rut = self.traits.GetOrDefault<RenderUnitTurreted>();
+			var rut = self.TraitOrDefault<RenderUnitTurreted>();
 			if (rut == null) return float2.Zero;
 
-			var facing = self.traits.Get<Turreted>().turretFacing;
+			var facing = self.Trait<Turreted>().turretFacing;
 			var localRecoil = new float2(0, recoil * abInfo.Recoil);	// vector in turret-space.
 
 			return Util.RotateVectorByFacing(localRecoil, facing, .7f);
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.RA
 		{
 			if(facing == null) return turret.ScreenSpacePosition;	/* things that don't have a rotating base don't need the turrets repositioned */
 
-			var ru = self.traits.GetOrDefault<RenderUnit>();
+			var ru = self.TraitOrDefault<RenderUnit>();
 			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
 			var bodyFacing = facing.Facing;
 			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.RA
 		// gets the screen-space position of a barrel.
 		public static float2 GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
-			var turreted = self.traits.GetOrDefault<Turreted>();
+			var turreted = self.TraitOrDefault<Turreted>();
 			
 			if (turreted == null && facing == null)
 				return float2.Zero;

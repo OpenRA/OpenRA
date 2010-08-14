@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var isAttacking = self.GetCurrentActivity() is Attack;
 
-			var attack = self.traits.GetOrDefault<AttackBase>();
+			var attack = self.TraitOrDefault<AttackBase>();
 
 			if (attack != null)
 				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")

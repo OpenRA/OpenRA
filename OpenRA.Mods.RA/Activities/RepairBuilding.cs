@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead()) return NextActivity;
-			var health = target.traits.Get<Health>();
+			var health = target.Trait<Health>();
 			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
 			

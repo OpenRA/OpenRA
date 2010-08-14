@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.offset = offset;
 			this.sounds = sounds;
 			this.facing = facing;
-			rb = self.traits.GetOrDefault<RenderBuilding>();
+			rb = self.TraitOrDefault<RenderBuilding>();
 		}
 		
 		public IActivity NextActivity { get; set; }
@@ -59,8 +59,8 @@ namespace OpenRA.Mods.RA.Activities
 					new OwnerInit( self.Owner ),
 					new FacingInit( facing ),
 				};
-				if (self.traits.Contains<Health>())
-					init.Add( new HealthInit( self.traits.Get<Health>().HPFraction ));
+				if (self.HasTrait<Health>())
+					init.Add( new HealthInit( self.Trait<Health>().HPFraction ));
 				
 				var a = w.CreateActor( actor, init );
 				

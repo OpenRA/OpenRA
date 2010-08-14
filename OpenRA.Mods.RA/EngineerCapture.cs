@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
 			if (self.Owner.Stances[underCursor.Owner] == Stance.Ally) return null;
-			if (!underCursor.traits.Contains<Building>() || !underCursor.Info.Traits.Get<BuildingInfo>().Capturable) return null;
+			if (!underCursor.HasTrait<Building>() || !underCursor.Info.Traits.Get<BuildingInfo>().Capturable) return null;
 
 			return new Order("CaptureBuilding", self, underCursor);
 		}
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 				var weapon = ChooseWeaponForExplosion(self);
 				if (weapon != null)
 				{
-					var move = self.traits.GetOrDefault<IMove>();
+					var move = self.TraitOrDefault<IMove>();
 					var altitude = move != null ? move.Altitude : 0;
 					Combat.DoExplosion(e.Attacker, weapon, self.CenterLocation, altitude);
 				}
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 
 		string ChooseWeaponForExplosion(Actor self)
 		{
-			var shouldExplode = self.traits.WithInterface<IExplodeModifier>().All(a => a.ShouldExplode(self));
+			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
 
 			var info = self.Info.Traits.Get<ExplodesInfo>();
 			return shouldExplode ? info.Weapon : info.EmptyWeapon;

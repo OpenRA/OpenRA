@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Render
 		void Complete( Actor self )
 		{
 			anim.PlayRepeating( GetPrefix(self) + "idle" );
-			foreach( var x in self.traits.WithInterface<INotifyBuildComplete>() )
+			foreach( var x in self.TraitsImplementing<INotifyBuildComplete>() )
 				x.BuildingComplete( self );
 		}
 

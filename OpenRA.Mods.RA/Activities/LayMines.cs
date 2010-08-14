@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (canceled) return NextActivity;
 
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
 			{
 				// rearm & repair at fix, then back out here to refill the minefield some more
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 					{ NextActivity = new Rearm() { NextActivity = new Repair(rearmTarget) { NextActivity = this } } };
 			}
 
-			var ml = self.traits.Get<Minelayer>();
+			var ml = self.Trait<Minelayer>();
 			if (ml.minefield.Contains(self.Location) &&
 				ShouldLayMine(self, self.Location))
 			{
@@ -64,13 +64,13 @@ namespace OpenRA.Mods.RA.Activities
 		bool ShouldLayMine(Actor self, int2 p)
 		{
 			// if there is no unit (other than me) here, we want to place a mine here
-			return !self.World.WorldActor.traits.Get<UnitInfluence>()
+			return !self.World.WorldActor.Trait<UnitInfluence>()
 				.GetUnitsAt(p).Any(a => a != self);
 		}
 
 		void LayMine(Actor self)
 		{
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null) limitedAmmo.Attacking(self);
 
 			self.World.AddFrameEndTask(

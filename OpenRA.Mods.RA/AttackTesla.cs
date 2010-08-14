@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			if (target.Actor != previousTarget)
 			{
 				previousTarget = target.Actor;
-				self.traits.Get<RenderBuildingCharge>().PlayCharge(self);
+				self.Trait<RenderBuildingCharge>().PlayCharge(self);
 			}
 		}
 	}

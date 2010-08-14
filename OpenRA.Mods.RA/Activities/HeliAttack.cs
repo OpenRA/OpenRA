@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (!target.IsValid)
 				return NextActivity;
 
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 			{	
 				self.QueueActivity(new HeliReturn());
 				return NextActivity;
 			}
 			
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 			var info = self.Info.Traits.Get<HelicopterInfo>();
 			if (aircraft.Altitude != info.CruiseAltitude)
 			{
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 			}
 
-			var range = self.traits.Get<AttackBase>().GetMaximumRange() - 1;
+			var range = self.Trait<AttackBase>().GetMaximumRange() - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);

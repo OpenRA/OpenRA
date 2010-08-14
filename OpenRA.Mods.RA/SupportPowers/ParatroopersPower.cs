@@ -75,9 +75,9 @@ namespace OpenRA.Mods.RA
 				
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(p));
-				a.traits.Get<ParaDrop>().SetLZ(p, flare);
+				a.Trait<ParaDrop>().SetLZ(p, flare);
 
-				var cargo = a.traits.Get<Cargo>();
+				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
 					cargo.Load(a, owner.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( a.Owner ) }));
 			});

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			});
 
 			if (p == p.World.LocalPlayer || p.Stances[p.World.LocalPlayer] == Stance.Ally)
-				p.World.WorldActor.traits.Get<Shroud>().Explore(p.World, sp,
+				p.World.WorldActor.Trait<Shroud>().Explore(p.World, sp,
 					p.World.WorldActor.Info.Traits.Get<SpawnDefaultUnitsInfo>().InitialExploreRange);
 		}
 

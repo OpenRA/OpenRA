@@ -46,11 +46,11 @@ namespace OpenRA.Mods.RA
 					.Where(a => a.Actor.Owner != null)
 					.FirstOrDefault().Actor;
 				if (curtain != null)
-					curtain.traits.Get<RenderBuilding>().PlayCustomAnim(curtain, "active");
+					curtain.Trait<RenderBuilding>().PlayCustomAnim(curtain, "active");
 
 				Sound.Play("ironcur9.aud", order.TargetActor.CenterLocation);
 				
-				order.TargetActor.traits.Get<IronCurtainable>().Activate(order.TargetActor,
+				order.TargetActor.Trait<IronCurtainable>().Activate(order.TargetActor,
 					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
 				
 				FinishActivate();
@@ -75,8 +75,8 @@ namespace OpenRA.Mods.RA
 				{
 					var underCursor = world.FindUnitsAtMouse(mi.Location)
 						.Where(a => a.Owner != null
-							&& a.traits.Contains<IronCurtainable>()
-							&& a.traits.Contains<Selectable>()).FirstOrDefault();
+							&& a.HasTrait<IronCurtainable>()
+							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 					if (underCursor != null)
 						yield return new Order("IronCurtain", underCursor.Owner.PlayerActor, underCursor);

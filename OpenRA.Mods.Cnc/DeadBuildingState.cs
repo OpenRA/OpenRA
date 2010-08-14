@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Cnc
 		public DeadBuildingState(Actor self, DeadBuildingStateInfo info)
 		{
 			this.info = info;
-			rs = self.traits.Get<RenderSimple>();
-			self.traits.Get<Health>().RemoveOnDeath = !rs.anim.HasSequence("dead");
+			rs = self.Trait<RenderSimple>();
+			self.Trait<Health>().RemoveOnDeath = !rs.anim.HasSequence("dead");
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

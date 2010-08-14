@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 			collector.World.AddFrameEndTask(w =>
 			{
 				var amount = (info as GiveCashCrateActionInfo).Amount;
-				collector.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash(amount);
+				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
 			});
 			base.Activate(collector);
 		}

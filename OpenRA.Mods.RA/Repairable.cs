@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		Health Health;
 		public Repairable(Actor self)
 		{
-			Health = self.traits.Get<Health>();
+			Health = self.Trait<Health>();
 		}
 		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 		
 		bool CanRepair(Actor self)
 		{
-			var li = self.traits.GetOrDefault<LimitedAmmo>();
+			var li = self.TraitOrDefault<LimitedAmmo>();
 			return (Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo()) );
 		}
 		
@@ -67,13 +67,13 @@ namespace OpenRA.Mods.RA
                 if (!CanRepair(self))
 					return;
 				
-				var rp = order.TargetActor.traits.GetOrDefault<RallyPoint>();
+				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});

@@ -24,15 +24,15 @@ namespace OpenRA.Mods.RA
 		Actor dockedHarv = null;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
-			var harvester = harv.traits.Get<Harvester>();
+			var harvester = harv.Trait<Harvester>();
 
-			if (harv.traits.Get<IFacing>().Facing != 64)
+			if (harv.Trait<IFacing>().Facing != 64)
 				harv.QueueActivity (new Turn (64));
 			
 			harv.QueueActivity (new CallFunc (() =>
 			{
 				dockedHarv = harv;
-				var renderUnit = harv.traits.Get<RenderUnit> ();
+				var renderUnit = harv.Trait<RenderUnit> ();
 				if (renderUnit.anim.CurrentSequence.Name != "empty")
 					renderUnit.PlayCustomAnimation (harv, "empty", () =>
 					{
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 							if (harv.Owner == self.World.LocalPlayer)
 								self.World.AddFrameEndTask( w =>
 								{
-									var line = harv.traits.GetOrDefault<DrawLineToTarget>();
+									var line = harv.TraitOrDefault<DrawLineToTarget>();
 									if (line != null)
 										line.SetTargetSilently(harv, Target.FromCell(harvester.LastHarvestedCell), Color.Green);
 								});

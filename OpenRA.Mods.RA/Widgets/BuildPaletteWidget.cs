@@ -200,7 +200,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder)
 				.ToArray();
 
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<ProductionQueue>();
+			var queue = world.LocalPlayer.PlayerActor.Trait<ProductionQueue>();
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
 			numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
@@ -338,7 +338,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
-			var queue = player.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = player.PlayerActor.Trait<Traits.ProductionQueue>();
 			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var producing = queue.AllItems(unit.Category).FirstOrDefault( a => a.Item == item );
 
@@ -408,7 +408,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var y = paletteOrigin.Y + 9;
 			
 			tabs.Clear();
-			var queue = world.LocalPlayer.PlayerActor.traits.Get<Traits.ProductionQueue>();
+			var queue = world.LocalPlayer.PlayerActor.Trait<Traits.ProductionQueue>();
 			
 			foreach (var q in tabImageNames)
 			{
@@ -471,7 +471,7 @@ namespace OpenRA.Mods.RA.Widgets
 				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
 
-			var resources = pl.PlayerActor.traits.Get<PlayerResources>();
+			var resources = pl.PlayerActor.Trait<PlayerResources>();
 
 			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5),
 				(resources.DisplayCash + resources.DisplayOre >= buildable.Cost ? Color.White : Color.Red ));

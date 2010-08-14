@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo == null) return NextActivity;
 
 			if (--remainingTicks == 0)
@@ -33,10 +33,10 @@ namespace OpenRA.Mods.RA.Activities
 				if (!limitedAmmo.GiveAmmo()) return NextActivity;
 
 				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-					.FirstOrDefault(a => a.traits.Contains<RenderBuilding>());
+					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
 
 				if (hostBuilding != null)
-					hostBuilding.traits.Get<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+					hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
 
 				remainingTicks = ticksPerPip;
 			}

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			Info = info;
-			Player = self.Owner.PlayerActor.traits.Get<PlayerResources> ();
+			Player = self.Owner.PlayerActor.Trait<PlayerResources> ();
 			LinkedHarv = new List<Actor> ();
 		}
 
@@ -94,13 +94,13 @@ namespace OpenRA.Mods.RA
 		{
 			if (e.DamageState == DamageState.Dead)
 				foreach (var harv in LinkedHarv)
-					harv.traits.Get<Harvester> ().UnlinkProc(harv, self);
+					harv.Trait<Harvester> ().UnlinkProc(harv, self);
 		}
 
 		public int2 DeliverOffset {get{ return Info.DockOffset; }}
 		public void OnDock (Actor harv, DeliverResources dockOrder)
 		{
-			self.traits.Get<IAcceptOreDockAction>().OnDock(self, harv, dockOrder);
+			self.Trait<IAcceptOreDockAction>().OnDock(self, harv, dockOrder);
 		}
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 			foreach (var harv in LinkedHarv)
 			{
 				if (harv.Owner == self.Owner)
-					harv.traits.Get<Harvester>().UnlinkProc (harv, self);
+					harv.Trait<Harvester>().UnlinkProc (harv, self);
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 		public void Sold (Actor self)
 		{
 			foreach (var harv in LinkedHarv)
-				harv.traits.Get<Harvester>().UnlinkProc (harv, self);
+				harv.Trait<Harvester>().UnlinkProc (harv, self);
 		}
 
 		public IEnumerable<PipType> GetPips (Actor self)

@@ -34,11 +34,11 @@ namespace OpenRA.Mods.RA
 			if (firstTick)
 			{
 				firstTick = false;
-				if (self.traits.Get<IMove>().Altitude == 0)
+				if (self.Trait<IMove>().Altitude == 0)
 				{	
 					/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
 					var res = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-						.Select( a => a.traits.GetOrDefault<Reservable>() ).FirstOrDefault( a => a != null );
+						.Select( a => a.TraitOrDefault<Reservable>() ).FirstOrDefault( a => a != null );
 
 					if (res != null)
 						reservation = res.Reserve(self);
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Green);
 					});

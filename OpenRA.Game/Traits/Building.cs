@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 
 		public bool Disabled
 		{
-			get	{ return self.traits.WithInterface<IDisable>().Any(t => t.Disabled); }
+			get	{ return self.TraitsImplementing<IDisable>().Any(t => t.Disabled); }
 		}
 
 		public Building(ActorInitializer init)
@@ -61,14 +61,14 @@ namespace OpenRA.Traits
 		
 		public int GetPowerUsage()
 		{
-			var modifier = self.traits
-				.WithInterface<IPowerModifier>()
+			var modifier = self
+				.TraitsImplementing<IPowerModifier>()
 				.Select(t => t.GetPowerModifier())
 				.Product();
 			
 			if (Info.Power > 0)
 			{
-				var health = self.traits.GetOrDefault<Health>();
+				var health = self.TraitOrDefault<Health>();
 				var healthFraction = (health == null) ? 1f : health.HPFraction;
 				return (int)(modifier * healthFraction * Info.Power);
 			}
@@ -80,7 +80,7 @@ namespace OpenRA.Traits
 		{
 			if (e.DamageState == DamageState.Dead)
 			{
-				self.World.WorldActor.traits.Get<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
+				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
 				Sound.Play(Info.DestroyedSound, self.CenterLocation);
 			}
 		}

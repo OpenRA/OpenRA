@@ -40,16 +40,16 @@ namespace OpenRA.Mods.RA.Activities
 				dest = ChooseAirfield(self);
 			}
 
-			var res = dest.traits.GetOrDefault<Reservable>();
+			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
 			{
-				var plane = self.traits.Get<Plane>();
+				var plane = self.Trait<Plane>();
 				plane.UnReserve();
 				plane.reservation = res.Reserve(self);
 			}
 
 			var landPos = dest.CenterLocation;
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 
 			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			

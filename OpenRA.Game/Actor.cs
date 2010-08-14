@@ -22,13 +22,13 @@ namespace OpenRA
 	public class Actor
 	{
 		[Sync]
-		public readonly TypeDictionary traits = new TypeDictionary();
+		readonly TypeDictionary traits = new TypeDictionary();
 		public readonly ActorInfo Info;
 
 		public readonly World World;
 		public readonly uint ActorID;
 
-		public int2 Location { get { return traits.Get<IOccupySpace>().TopLeft; } }
+		public int2 Location { get { return Trait<IOccupySpace>().TopLeft; } }
 		[Sync]
 		public Player Owner;
 
@@ -51,10 +51,10 @@ namespace OpenRA
 
 				Info = Rules.Info[name.ToLowerInvariant()];
 				foreach (var trait in Info.TraitsInConstructOrder())
-					traits.Add(trait.Create(init));
+					AddTrait(trait.Create(init));
 			}
 
-			if( CenterLocation == float2.Zero && traits.Contains<IOccupySpace>() )
+			if( CenterLocation == float2.Zero && HasTrait<IOccupySpace>() )
 				CenterLocation = Traits.Util.CenterOfCell(Location);
 
 			Size = Lazy.New(() =>
@@ -64,7 +64,7 @@ namespace OpenRA
 					return new float2(si.Bounds[0], si.Bounds[1]);
 
 				// auto size from render
-				var firstSprite = traits.WithInterface<IRender>().SelectMany(x => x.Render(this)).FirstOrDefault();
+				var firstSprite = TraitsImplementing<IRender>().SelectMany(x => x.Render(this)).FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
 				return firstSprite.Sprite.size;
 			});
@@ -83,7 +83,7 @@ namespace OpenRA
 				if (currentActivity is Idle)
 				{
 					if (!wasIdle)
-						foreach (var ni in traits.WithInterface<INotifyIdle>())
+						foreach (var ni in TraitsImplementing<INotifyIdle>())
 							ni.Idle(this);
 
 					break;
@@ -102,8 +102,8 @@ namespace OpenRA
 
 		public IEnumerable<Renderable> Render()
 		{
-			var mods = traits.WithInterface<IRenderModifier>();
-			var sprites = traits.WithInterface<IRender>().SelectMany(x => x.Render(this));
+			var mods = TraitsImplementing<IRenderModifier>();
+			var sprites = TraitsImplementing<IRender>().SelectMany(x => x.Render(this));
 			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
 		}
 
@@ -120,7 +120,7 @@ namespace OpenRA
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 				.FirstOrDefault();
 			
-			return traits.WithInterface<IIssueOrder>()
+			return TraitsImplementing<IIssueOrder>()
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}
@@ -137,7 +137,7 @@ namespace OpenRA
 
 			if (useAltitude)
 			{
-				var move = traits.GetOrDefault<IMove>();
+				var move = TraitOrDefault<IMove>();
 				if (move != null) loc -= new float2(0, move.Altitude);
 			}
 
@@ -187,6 +187,31 @@ namespace OpenRA
 		public override string ToString()
 		{
 			return "{0} {1}{2}".F( Info.Name, ActorID, IsInWorld ? "" : " (not in world)" );
+		}
+
+		public T Trait<T>()
+		{
+			return traits.Get<T>();
+		}
+
+		public T TraitOrDefault<T>()
+		{
+			return traits.GetOrDefault<T>();
+		}
+
+		public IEnumerable<T> TraitsImplementing<T>()
+		{
+			return traits.WithInterface<T>();
+		}
+
+		public bool HasTrait<T>()
+		{
+			return traits.Contains<T>();
+		}
+
+		public void AddTrait( object t )
+		{
+			traits.Add( t );
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (isCanceled) return NextActivity;
 			if (transport == null || !transport.IsInWorld) return NextActivity;
 
-			var cargo = transport.traits.Get<Cargo>();
+			var cargo = transport.Trait<Cargo>();
 			if (cargo.IsFull(transport)) 
 				return NextActivity;
 			

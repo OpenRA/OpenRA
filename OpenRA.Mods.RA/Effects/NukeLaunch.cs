@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 			Combat.DoExplosion(silo.Owner.PlayerActor, weapon, pos, 0);
-			world.WorldActor.traits.Get<ScreenShaker>().AddEffect(20, pos, 5);
+			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 
 		public IEnumerable<Renderable> Render()

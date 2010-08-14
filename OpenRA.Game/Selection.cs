@@ -21,7 +21,7 @@ namespace OpenRA
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
-			foreach (var ns in w.WorldActor.traits.WithInterface<INotifySelection>())
+			foreach (var ns in w.WorldActor.TraitsImplementing<INotifySelection>())
 				ns.SelectionChanged();
 		}
 		
@@ -44,7 +44,7 @@ namespace OpenRA
 			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasVoice());
 			Sound.PlayVoice("Select", voicedUnit);
 
-			foreach (var ns in world.WorldActor.traits.WithInterface<INotifySelection>())
+			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
 				ns.SelectionChanged();
 		}
 

@@ -28,7 +28,7 @@ namespace OpenRA
 
 		public ShroudRenderer(Player owner, Map map)
 		{
-			this.shroud = owner.World.WorldActor.traits.Get<Traits.Shroud>();
+			this.shroud = owner.World.WorldActor.Trait<Traits.Shroud>();
 			this.map = map;
 			
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];

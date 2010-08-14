@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 
 			if ((self.Location - lz).LengthSquared <= r * r && !droppedAt.Contains(self.Location))
 			{
-				var cargo = self.traits.Get<Cargo>();
+				var cargo = self.Trait<Cargo>();
 				if (cargo.IsEmpty(self))
 					FinishedDropping(self);
 				else
@@ -55,9 +55,9 @@ namespace OpenRA.Mods.RA
 					droppedAt.Add(self.Location);
 
 					var a = cargo.Unload(self);
-					var rs = a.traits.Get<RenderSimple>();
+					var rs = a.Trait<RenderSimple>();
 
-					var aircraft = self.traits.Get<IMove>();
+					var aircraft = self.Trait<IMove>();
 					self.World.AddFrameEndTask(w => w.Add(
 						new Parachute(self.Owner, rs.anim.Name,
 							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 
 		bool IsSuitableCell(Actor actorToDrop, int2 p)
 		{
-			return actorToDrop.traits.Get<ITeleportable>().CanEnterCell(p);
+			return actorToDrop.Trait<ITeleportable>().CanEnterCell(p);
 		}
 
 		void FinishedDropping(Actor self)

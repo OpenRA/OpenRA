@@ -48,9 +48,9 @@ namespace OpenRA.Mods.RA
 			if (info != null)
 			{
 				alt = 0;
-				var ifacing = self.traits.Get<IFacing>();
+				var ifacing = self.Trait<IFacing>();
 				pos = Combat.GetTurretPosition(self, ifacing, new Turret(info.Offset));
-				var ru = self.traits.Get<RenderUnit>();
+				var ru = self.Trait<RenderUnit>();
 
 				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
 				dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;

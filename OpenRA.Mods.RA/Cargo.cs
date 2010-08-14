@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				return false;
 			
 			// Cannot unload mid-air
-			var move = self.traits.GetOrDefault<IMove>();
+			var move = self.TraitOrDefault<IMove>();
 			if (move != null && move.Altitude > 0)
 				return false;
 			
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 
 		static PipType GetPipForPassenger(Actor a)
 		{
-			return a.traits.Get<Passenger>().ColorOfCargoPip( a );
+			return a.Trait<Passenger>().ColorOfCargoPip( a );
 		}
 
 		public void Load(Actor self, Actor a)

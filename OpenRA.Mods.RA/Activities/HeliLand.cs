@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude == 0)
 				return NextActivity;
 

@@ -34,14 +34,14 @@ namespace OpenRA.Mods.RA
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				var resourceType = self.World.WorldActor.traits
-					.WithInterface<ResourceType>()
+				var resourceType = self.World.WorldActor
+					.TraitsImplementing<ResourceType>()
 					.FirstOrDefault(t => t.info.Name == info.ResourceType);
 
 				if (resourceType == null)
 					throw new InvalidOperationException("No such resource type `{0}`".F(info.ResourceType));
 
-				var resLayer = self.World.WorldActor.traits.Get<ResourceLayer>();
+				var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 
 				var cell = RandomWalk(self.Location, self.World.SharedRandom)
 					.Take(info.MaxRange)
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 			if (--animationTicks <= 0)
 			{
 				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 				animationTicks = info.AnimationInterval;
 			}
 		}

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public static bool IsReserved(Actor a)
 		{
-			var res = a.traits.GetOrDefault<Reservable>();
+			var res = a.TraitOrDefault<Reservable>();
 			return res != null && res.reservedFor != null;
 		}
 	}

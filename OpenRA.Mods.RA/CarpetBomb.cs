@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			if ((self.Location - Target).LengthSquared > info.Range * info.Range)
 				return;
 
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
@@ -45,11 +45,11 @@ namespace OpenRA.Mods.RA
 
 				var args = new ProjectileArgs
 				{
-					srcAltitude = self.traits.Get<IMove>().Altitude,
+					srcAltitude = self.Trait<IMove>().Altitude,
 					destAltitude = 0,
 					src = self.CenterLocation.ToInt2(),
 					dest = self.CenterLocation.ToInt2(),
-					facing = self.traits.Get<IFacing>().Facing,
+					facing = self.Trait<IFacing>().Facing,
 					firedBy = self,
 					weapon = weapon
 				};

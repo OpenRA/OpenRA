@@ -34,18 +34,18 @@ namespace OpenRA.Mods.RA.Render
 
 		public RenderWarFactory(Actor self)
 		{
-			roof = new Animation(self.traits.Get<RenderSimple>().GetImage(self));
+			roof = new Animation(self.Trait<RenderSimple>().GetImage(self));
 		}
 
 		public void BuildingComplete( Actor self )
 		{
 			roof.Play( GetPrefix(self) + "idle-top" );
-			self.traits.Get<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 2 } );
+			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 2 } );
 		}
 
 		public void Tick(Actor self)
 		{
-			if (isOpen && !self.World.WorldActor.traits.Get<UnitInfluence>()
+			if (isOpen && !self.World.WorldActor.Trait<UnitInfluence>()
 				.GetUnitsAt(openExit).Any())
 			{
 				isOpen = false;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Selling( Actor self )
 		{
-			self.traits.Get<RenderSimple>().anims.Remove( "roof" );
+			self.Trait<RenderSimple>().anims.Remove( "roof" );
 		}
 
 		public void Sold( Actor self ) { }

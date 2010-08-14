@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 							ConvertBridgeToActor(w, i, j);
 			
 			// Link adjacent (long)-bridges so that artwork is updated correctly
-			foreach (var b in w.Actors.SelectMany(a => a.traits.WithInterface<Bridge>()))
+			foreach (var b in w.Actors.SelectMany(a => a.TraitsImplementing<Bridge>()))
 				b.LinkNeighbouringBridges(w,this);
 		}
 		
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 				new LocationInit( new int2(ni, nj) ),
 				new OwnerInit( w.WorldActor.Owner ),
 				new HealthInit( BridgeTypes[tile].Second ),
-			}).traits.Get<Bridge>();
+			}).Trait<Bridge>();
 			
 			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();
 			

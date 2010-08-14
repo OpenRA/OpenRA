@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Render
 	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
 		public RenderBuildingTurreted(Actor self)
-			: base(self, () => self.traits.Get<Turreted>().turretFacing)
+			: base(self, () => self.Trait<Turreted>().turretFacing)
 		{
 		}
 

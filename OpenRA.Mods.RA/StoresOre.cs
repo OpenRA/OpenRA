@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		PlayerResources Player;
 		public StoresOre(Actor self, StoresOreInfo info)
 		{
-			Player = self.Owner.PlayerActor.traits.Get<PlayerResources>();
+			Player = self.Owner.PlayerActor.Trait<PlayerResources>();
 			Info = info;
 		}
 		
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		{
 			var ore = Stored(self);
 			Player.TakeOre(ore);
-			Player = newOwner.PlayerActor.traits.Get<PlayerResources>();
+			Player = newOwner.PlayerActor.Trait<PlayerResources>();
 			Player.GiveOre(ore);
 		}
 		

@@ -23,13 +23,13 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
 		{
 			if (Space == null)
-				Space = self.traits.Get<IOccupySpace>();
+				Space = self.Trait<IOccupySpace>();
 			return Space.OccupiedCells();
 		}
 		
 		public Color RadarSignatureColor(Actor self)
 		{
-			var mod = self.traits.WithInterface<IRadarColorModifier>().FirstOrDefault();
+			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 			if (mod != null)
 				return mod.RadarColorOverride(self);
 			

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.target = target; 
 			initialLocation = self.CenterLocation;
 
-			self.traits.Get<RenderInfantry>().Attacking(self);
+			self.Trait<RenderInfantry>().Attacking(self);
 			Sound.Play("dogg5p.aud", self.CenterLocation);
 		}
 
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (t >= 1f)
 			{
-				self.traits.WithInterface<IMove>().FirstOrDefault()
+				self.TraitsImplementing<IMove>().FirstOrDefault()
 					.SetPosition(self, Util.CellContaining(target.CenterLocation));
 
 				if (target.IsActor)

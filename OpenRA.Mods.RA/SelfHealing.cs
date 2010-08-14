@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var info = self.Info.Traits.Get<SelfHealingInfo>();
-			if (self.traits.Get<Health>().HPFraction >= info.HealIfBelow)
+			if (self.Trait<Health>().HPFraction >= info.HealIfBelow)
 				return;
 
 			if (--ticks <= 0)

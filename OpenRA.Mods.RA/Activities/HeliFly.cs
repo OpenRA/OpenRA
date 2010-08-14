@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			var info = self.Info.Traits.Get<HelicopterInfo>();
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 
 			if (aircraft.Altitude != info.CruiseAltitude)
 			{

@@ -47,9 +47,9 @@ namespace OpenRA.Mods.RA
 			chronoshiftReturnTicks = duration;
 			
 			// Kill cargo
-			if (killCargo && self.traits.Contains<Cargo>())
+			if (killCargo && self.HasTrait<Cargo>())
 			{
-				var cargo = self.traits.Get<Cargo>();
+				var cargo = self.Trait<Cargo>();
 				while (!cargo.IsEmpty(self))
 				{
 					chronosphere.Owner.Kills++;

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (target == null || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
-			foreach (var t in target.traits.WithInterface<IAcceptSpy>())
+			foreach (var t in target.TraitsImplementing<IAcceptSpy>())
 				t.OnInfiltrate(target, self);
 
 			self.World.AddFrameEndTask(w => w.Remove(self));

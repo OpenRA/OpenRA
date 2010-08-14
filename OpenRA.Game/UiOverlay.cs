@@ -44,7 +44,7 @@ namespace OpenRA
 		{
 			if (Game.Settings.UnitDebug)
 			{
-				var uim = world.WorldActor.traits.Get<UnitInfluence>();
+				var uim = world.WorldActor.Trait<UnitInfluence>();
 				
 				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
 					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
@@ -68,7 +68,7 @@ namespace OpenRA
 			}
 			else
 			{
-				var res = world.WorldActor.traits.Get<ResourceLayer>();
+				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 				foreach (var t in Footprint.Tiles(name, bi, topLeft))
 					Game.Renderer.SpriteRenderer.DrawSprite((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null)

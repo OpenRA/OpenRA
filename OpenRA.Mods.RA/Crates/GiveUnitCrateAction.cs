@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Crates
 		int2? ChooseEmptyCellNear(Actor a)
 		{
 			// hack: use `a`'s movement capability.
-			var move = a.traits.Get<ITeleportable>();
+			var move = a.Trait<ITeleportable>();
 			var loc = a.Location;
 
 			for (var i = -1; i < 2; i++)

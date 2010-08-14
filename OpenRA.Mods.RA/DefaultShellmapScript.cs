@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 			// Sound.PlayMusic("hell226m.aud");
 			goodguy = w.players.Values.Where(x => x.InternalName == "GoodGuy").FirstOrDefault();
 			greece = w.players.Values.Where(x => x.InternalName == "Greece").FirstOrDefault();
-			MapActors = w.WorldActor.traits.Get<SpawnMapActors>().MapActors;
+			MapActors = w.WorldActor.Trait<SpawnMapActors>().MapActors;
 			
 			
 			goodguy.Stances[greece] = Stance.Enemy;
@@ -40,15 +40,15 @@ namespace OpenRA.Mods.RA
 		{
 			if (ticks == 250)
 			{
-				MapActors["pdox"].traits.Get<Chronosphere>().Teleport(MapActors["ca1"], new int2(90, 70));
-				MapActors["pdox"].traits.Get<Chronosphere>().Teleport(MapActors["ca2"], new int2(92, 71));
+				MapActors["pdox"].Trait<Chronosphere>().Teleport(MapActors["ca1"], new int2(90, 70));
+				MapActors["pdox"].Trait<Chronosphere>().Teleport(MapActors["ca2"], new int2(92, 71));
 			}
 			if (ticks == 100)
-				MapActors["mslo1"].traits.Get<NukeSilo>().Attack(new int2(96,53));
+				MapActors["mslo1"].Trait<NukeSilo>().Attack(new int2(96,53));
 			if (ticks == 110)
-				MapActors["mslo2"].traits.Get<NukeSilo>().Attack(new int2(92,53));
+				MapActors["mslo2"].Trait<NukeSilo>().Attack(new int2(92,53));
 			if (ticks == 120)
-				MapActors["mslo3"].traits.Get<NukeSilo>().Attack(new int2(94,50));
+				MapActors["mslo3"].Trait<NukeSilo>().Attack(new int2(94,50));
 			
 			ticks++;
 		}

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 
-			var resources = world.LocalPlayer.PlayerActor.traits.Get<PlayerResources>();
+			var resources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			// Nothing to draw
 			if (resources.PowerProvided == 0

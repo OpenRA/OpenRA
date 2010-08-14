@@ -79,10 +79,10 @@ namespace OpenRA.Traits
 			this.self = init.self;
 			this.Info = info;
 			
-			shroud = self.World.WorldActor.traits.Get<Shroud>();
-			uim = self.World.WorldActor.traits.Get<UnitInfluence>();
-			bim = self.World.WorldActor.traits.Get<BuildingInfluence>();
-			canShareCell = self.traits.Contains<SharesCell>();
+			shroud = self.World.WorldActor.Trait<Shroud>();
+			uim = self.World.WorldActor.Trait<UnitInfluence>();
+			bim = self.World.WorldActor.Trait<BuildingInfluence>();
+			canShareCell = self.HasTrait<SharesCell>();
 			
 			if (init.Contains<LocationInit>())
 			{
@@ -149,7 +149,7 @@ namespace OpenRA.Traits
 						self.World.AddFrameEndTask(w =>
 						{
 							w.Add(new MoveFlash(self.World, order.TargetLocation));
-							var line = self.traits.GetOrDefault<DrawLineToTarget>();
+							var line = self.TraitOrDefault<DrawLineToTarget>();
 							if (line != null)
 								line.SetTarget(self, Target.FromOrder(order), Color.Green);
 						});
@@ -203,7 +203,7 @@ namespace OpenRA.Traits
 				if (Info.Crushes == null)
 					return false;
 
-				var crushable = building.traits.WithInterface<ICrushable>();
+				var crushable = building.TraitsImplementing<ICrushable>();
 				if (crushable.Count() == 0)
 					return false;
 
@@ -215,11 +215,11 @@ namespace OpenRA.Traits
 			if (checkTransientActors && uim.AnyUnitsAt(cell))
 			{
 				var actors = uim.GetUnitsAt(cell).Where(a => a != self && a != ignoreActor).ToArray();
-				var nonshareable = canShareCell ? actors : actors.Where(a => !a.traits.Contains<SharesCell>()).ToArray();
+				var nonshareable = canShareCell ? actors : actors.Where(a => !a.HasTrait<SharesCell>()).ToArray();
 
 				if (canShareCell)
 				{
-					var shareable = actors.Where(a => a.traits.Contains<SharesCell>());
+					var shareable = actors.Where(a => a.HasTrait<SharesCell>());
 
 					// only allow 5 in a cell
 					if (shareable.Count() >= 5)
@@ -230,8 +230,8 @@ namespace OpenRA.Traits
 				if (Info.Crushes == null && nonshareable.Length > 0)
 					return false;
 
-				if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.traits.Contains<ICrushable>() &&
-											 a.traits.WithInterface<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
+				if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.HasTrait<ICrushable>() &&
+											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
 					return false;
 			}
 
@@ -241,10 +241,10 @@ namespace OpenRA.Traits
 		
 		public virtual void FinishedMoving(Actor self)
 		{
-			var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.traits.Contains<ICrushable>());
+			var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
 			foreach (var a in crushable)
 			{
-				var crushActions = a.traits.WithInterface<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
+				var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
 				foreach (var b in crushActions)
 					b.OnCrush(self);
 			}
@@ -263,8 +263,8 @@ namespace OpenRA.Traits
 		{
 			var type = self.World.GetTerrainType(cell);
 
-			var modifier = self.traits
-				.WithInterface<ISpeedModifier>()
+			var modifier = self
+				.TraitsImplementing<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
 			return Info.Speed * TerrainSpeed[type] * modifier;
@@ -323,7 +323,7 @@ namespace OpenRA.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTargetSilently(self, Target.FromCell(moveTo.Value), Color.Green);
 					});

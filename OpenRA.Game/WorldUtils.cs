@@ -28,8 +28,8 @@ namespace OpenRA
 		
 		public static bool IsCellBuildable(this World world, int2 a, bool waterBound, Actor toIgnore)
 		{
-			if (world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(a) != null) return false;
-			if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
+			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
+			if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 			
 			if (waterBound)
 				return world.Map.IsInMap(a.X,a.Y) && GetTerrainInfo(world,a).IsWater;
@@ -47,7 +47,7 @@ namespace OpenRA
 		{
 			var u = float2.Min(a, b).ToInt2();
 			var v = float2.Max(a, b).ToInt2();
-			return world.WorldActor.traits.Get<SpatialBins>().ActorsInBox(u,v);
+			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
 		}
 
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, float2 a, float r)
@@ -95,7 +95,7 @@ namespace OpenRA
 		
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
 		{
-			var res = world.WorldActor.traits.Get<ResourceLayer>();
+			var res = world.WorldActor.Trait<ResourceLayer>();
 			return Footprint.Tiles(name, building, topLeft).All(
 				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&
 					world.IsCellBuildable(t, building.WaterBound, toIgnore));
@@ -106,11 +106,11 @@ namespace OpenRA
 			if (a.World.LocalPlayer != null && a.World.LocalPlayer.Shroud.Disabled)
 				return true;
 
-			var shroud = a.World.WorldActor.traits.Get<Shroud>();
+			var shroud = a.World.WorldActor.Trait<Shroud>();
 			if (!Shroud.GetVisOrigins(a).Any(o => a.World.Map.IsInMap(o) && shroud.exploredCells[o.X, o.Y]))		// covered by shroud
 				return false;
 
-			if (a.traits.WithInterface<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
 
 			return true;
@@ -131,7 +131,7 @@ namespace OpenRA
 			{
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
-					var at = world.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
+					var at = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
 					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
 						nearnessCandidates.Add( new int2( x, y ) );
 				}

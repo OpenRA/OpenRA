@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Owner == world.LocalPlayer
-						&& a.traits.Contains<Building>()
-						&& a.traits.Contains<Selectable>()).FirstOrDefault();
+						&& a.HasTrait<Building>()
+						&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
 

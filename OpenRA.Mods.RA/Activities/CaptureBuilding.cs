@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 				target.Owner = self.Owner;
 				w.Add(target);
 				
-				foreach (var t in target.traits.WithInterface<INotifyCapture>())
+				foreach (var t in target.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(target, self, oldOwner, self.Owner);
 				
 				w.Remove(self);

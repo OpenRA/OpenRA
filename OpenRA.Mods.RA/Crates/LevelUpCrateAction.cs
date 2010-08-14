@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		{
 			collector.World.AddFrameEndTask(w =>
 			{
-				var gainsExperience = collector.traits.GetOrDefault<GainsExperience>();
+				var gainsExperience = collector.TraitOrDefault<GainsExperience>();
 				if (gainsExperience != null)
 					gainsExperience.GiveOneLevel();
 			});

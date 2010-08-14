@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		RepairableBuildingInfo Info;
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 		{
-			Health = self.traits.Get<Health>();
+			Health = self.Trait<Health>();
 			Info = info;
 		}
 		
@@ -60,7 +60,7 @@ namespace OpenRA.Traits
 				var costPerHp = (Info.RepairPercent * buildingValue) / Health.MaxHP;
 				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
 				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
-				if (!self.Owner.PlayerActor.traits.Get<PlayerResources>().TakeCash(cost))
+				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
 					return;

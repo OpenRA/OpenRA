@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		void AttackTarget(Actor self, Actor target)
 		{
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target));
 			else
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 
 		bool NeedsNewTarget(Actor self)
 		{
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			var range = attack.GetMaximumRange();
 
 			if (!attack.target.IsValid)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			var range = attack.GetMaximumRange();
 
 			if (NeedsNewTarget(self))
@@ -57,12 +57,12 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, float range)
 		{
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.traits.Get<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 
 			return inRange
 				.Where(a => a != self && self.Owner.Stances[a.Owner] == Stance.Ally)
 				.Where(a => !a.IsDead())
-				.Where(a => a.traits.Contains<Health>() && a.GetDamageState() > DamageState.Undamaged)
+				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();

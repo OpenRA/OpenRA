@@ -76,7 +76,7 @@ namespace OpenRA.Graphics
 		public void RefreshPalette()
 		{
 			Game.world.WorldRenderer.palette.Update(
-				Game.world.WorldActor.traits.WithInterface<IPaletteModifier>());
+				Game.world.WorldActor.TraitsImplementing<IPaletteModifier>());
 		}
 
 		public void Tick()

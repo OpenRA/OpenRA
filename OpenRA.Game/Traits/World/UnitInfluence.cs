@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 				for (int j = 0; j < world.Map.MapSize.Y; j++)
 					influence[ i, j ] = new List<Actor>();
 
-			world.ActorRemoved += a => Remove( a, a.traits.GetOrDefault<IOccupySpace>() );
+			world.ActorRemoved += a => Remove( a, a.TraitOrDefault<IOccupySpace>() );
 		}
 
 		public void Tick( Actor self )
@@ -49,7 +49,7 @@ namespace OpenRA.Traits
 				for( int y = 0 ; y < self.World.Map.MapSize.Y ; y++ )
 					if( influence[ x, y ] != null )
 						foreach (var a in influence[ x, y ])
-							if (!a.traits.Get<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
+							if (!a.Trait<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
 								throw new InvalidOperationException( "UIM: Sanity check failed A" );
 
 			foreach( var t in self.World.Queries.WithTraitMultiple<IOccupySpace>() )

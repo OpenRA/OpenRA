@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		
 		bool CanRepair(Actor self, Actor a)
 		{
-			if (!a.traits.Contains<Building>()) return false;			
+			if (!a.HasTrait<Building>()) return false;			
 			return (self.Owner.Stances[a.Owner] == Stance.Ally);
 		}
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.traits.GetOrDefault<DrawLineToTarget>();
+						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTarget(self, Target.FromOrder(order), Color.Yellow);
 					});

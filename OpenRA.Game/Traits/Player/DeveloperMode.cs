@@ -58,7 +58,7 @@ namespace OpenRA.Traits
 					}
 				case "DevGiveCash":
 					{
-						self.traits.Get<PlayerResources>().GiveCash(Info.Cash);
+						self.Trait<PlayerResources>().GiveCash(Info.Cash);
 						break;
 					}
 				case "DevShroud":

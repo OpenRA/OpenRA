@@ -32,11 +32,11 @@ namespace OpenRA.Traits
 			influence = new Actor[map.MapSize.X, map.MapSize.Y];
 			
 			world.ActorAdded +=
-				a => { if (a.traits.Contains<Building>()) 
-					ChangeInfluence(a, a.traits.Get<Building>(), true); };
+				a => { if (a.HasTrait<Building>()) 
+					ChangeInfluence(a, a.Trait<Building>(), true); };
 			world.ActorRemoved +=
-				a => { if (a.traits.Contains<Building>()) 
-					ChangeInfluence(a, a.traits.Get<Building>(), false); };
+				a => { if (a.HasTrait<Building>()) 
+					ChangeInfluence(a, a.Trait<Building>(), false); };
 		}
 
 		void ChangeInfluence( Actor a, Building building, bool isAdd )

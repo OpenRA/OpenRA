@@ -96,7 +96,7 @@ namespace OpenRA.Widgets
 			var done = false;
 			foreach (var o in orders)
 			{
-				foreach (var v in o.Subject.traits.WithInterface<IOrderVoice>())
+				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
 				{
 					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject))
 					{
@@ -174,7 +174,7 @@ namespace OpenRA.Widgets
 		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)
 		{
 			return world.FindUnits(a, b)
-				.Where( x => x.traits.Contains<Selectable>() && x.IsVisible() )
+				.Where( x => x.HasTrait<Selectable>() && x.IsVisible() )
 				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )

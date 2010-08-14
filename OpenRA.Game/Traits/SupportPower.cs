@@ -56,7 +56,7 @@ namespace OpenRA.Traits
 			RemainingTime = TotalTime;
 			Owner = self.Owner;
 
-			self.traits.Get<TechTreeCache>().Add( Info.Prerequisites.Select( a => Rules.Info[ a.ToLowerInvariant() ] ).ToList(), this );
+			self.Trait<TechTreeCache>().Add( Info.Prerequisites.Select( a => Rules.Info[ a.ToLowerInvariant() ] ).ToList(), this );
 		}
 
 		public void Tick(Actor self)
@@ -69,7 +69,7 @@ namespace OpenRA.Traits
 			
 			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
 			{
-				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.traits.Get<DeveloperMode>().FastCharge) RemainingTime = 0;
+				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastCharge) RemainingTime = 0;
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
 				{
@@ -96,10 +96,10 @@ namespace OpenRA.Traits
 				.Where(a => Rules.Info[a].Traits.Get<ValuedInfo>().Owner.Contains(Owner.Country.Race));
 
 			if (Info.Prerequisites.Count() == 0) 
-				return Owner.PlayerActor.traits.Get<PlayerResources>().GetPowerState() == PowerState.Normal;
+				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
 			
 			return effectivePrereq.Any() && 
-				effectivePrereq.All(a => buildings[a].Any(b => !b.traits.Get<Building>().Disabled));
+				effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
 		}
 
 		public void FinishActivate()

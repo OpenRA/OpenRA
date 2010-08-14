@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			var move = self.traits.Get<IMove>();
+			var move = self.Trait<IMove>();
 
 			var shadowSprites = r.Select(a => a.WithPalette("shadow"));
 			var flyingSprites = (move.Altitude <= 0) ? r 

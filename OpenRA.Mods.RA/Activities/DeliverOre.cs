@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( NextActivity != null )
 				return NextActivity;
 
-			var harv = self.traits.Get<Harvester>();
+			var harv = self.Trait<Harvester>();
 
 			if (harv.LinkedProc == null)
 				harv.ChooseNewProc(self, null);
@@ -36,14 +36,14 @@ namespace OpenRA.Mods.RA.Activities
 
 			var proc = harv.LinkedProc;
 			
-			if( self.Location != proc.Location + proc.traits.Get<IAcceptOre>().DeliverOffset )
+			if( self.Location != proc.Location + proc.Trait<IAcceptOre>().DeliverOffset )
 			{
-				return new Move(proc.Location + proc.traits.Get<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
+				return new Move(proc.Location + proc.Trait<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
 			}
 			else if (!isDocking)
 			{
 				isDocking = true;
-				proc.traits.Get<IAcceptOre>().OnDock(self, this);
+				proc.Trait<IAcceptOre>().OnDock(self, this);
 			}
 			return new Wait(10) { NextActivity = this };
 		}

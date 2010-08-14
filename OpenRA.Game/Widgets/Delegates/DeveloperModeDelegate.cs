@@ -41,7 +41,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().DisableShroud;
+				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().DisableShroud;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
 				Game.IssueOrder(new Order("DevShroud", Game.world.LocalPlayer.PlayerActor));
@@ -57,7 +57,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_PATHDEBUG").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().PathDebug;
+				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug;
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
 			{
 				Game.IssueOrder(new Order("DevPathDebug", Game.world.LocalPlayer.PlayerActor));
@@ -71,7 +71,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").Checked =
-				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastBuild;
+				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastBuild;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_BUILD_SPEED").OnMouseDown = mi =>
 			{
 				Game.IssueOrder(new Order("DevFastBuild", Game.world.LocalPlayer.PlayerActor));
@@ -79,7 +79,7 @@ namespace OpenRA.Widgets.Delegates
 			};	
 
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.traits.Get<DeveloperMode>().FastCharge;
+				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastCharge;
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHARGE_TIME").OnMouseDown = mi =>
 			{
 				Game.IssueOrder(new Order("DevFastCharge", Game.world.LocalPlayer.PlayerActor));

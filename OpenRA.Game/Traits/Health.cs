@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			var oldState = this.DamageState;
 			
 			/* apply the damage modifiers, if we have any. */
-			var modifier = (float)self.traits.WithInterface<IDamageModifier>()
+			var modifier = (float)self.TraitsImplementing<IDamageModifier>()
 				.Select(t => t.GetDamageModifier(warhead)).Product();
 
 			damage = (int)(damage * modifier);
@@ -103,7 +103,7 @@ namespace OpenRA.Traits
 
 			if (hp > MaxHP)	hp = MaxHP;
 
-			foreach (var nd in self.traits.WithInterface<INotifyDamage>())
+			foreach (var nd in self.TraitsImplementing<INotifyDamage>())
 				nd.Damaged(self, new AttackInfo
 				{
 					Attacker = attacker,
@@ -140,26 +140,26 @@ namespace OpenRA.Traits
 	{
 		public static bool IsDead(this Actor self)
 		{
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? true : health.IsDead;
 		}
 				
 		public static DamageState GetDamageState(this Actor self)
 		{
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 		
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, WarheadInfo warhead)
 		{
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead);
 		}
 		
 		public static void Kill(this Actor self, Actor attacker)
 		{
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, health.HP, null);
 		}

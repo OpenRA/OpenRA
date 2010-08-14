@@ -90,7 +90,7 @@ namespace OpenRA.Traits.Activities
 
 		public IActivity Tick( Actor self )
 		{
-			var mobile = self.traits.Get<Mobile>();
+			var mobile = self.Trait<Mobile>();
 
 			if( move != null )
 			{
@@ -165,10 +165,10 @@ namespace OpenRA.Traits.Activities
 
 		void NudgeBlocker(Actor self, int2 nextCell)
 		{
-			var blocker = self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(nextCell).FirstOrDefault();
+			var blocker = self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(nextCell).FirstOrDefault();
 			if (blocker == null) return;
 
-			var nudge = blocker.traits.GetOrDefault<INudge>();
+			var nudge = blocker.TraitOrDefault<INudge>();
 			if (nudge != null)
 				nudge.OnNudge(blocker, self);
 		}

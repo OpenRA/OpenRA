@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public Corpse(Actor fromActor, int death)
 		{
-			anim = new Animation(fromActor.traits.GetOrDefault<RenderSimple>().GetImage(fromActor));
+			anim = new Animation(fromActor.TraitOrDefault<RenderSimple>().GetImage(fromActor));
 			anim.PlayThen("die{0}".F(death + 1),
 				() => fromActor.World.AddFrameEndTask(w => w.Remove(this)));
 

@@ -26,9 +26,9 @@ namespace OpenRA.Mods.RA
 		public WithMuzzleFlash(Actor self)
 		{
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
-			var render = self.traits.Get<RenderSimple>();
+			var render = self.Trait<RenderSimple>();
 
-			muzzleFlash = new Animation(render.GetImage(self), () => self.traits.Get<IFacing>().Facing);
+			muzzleFlash = new Animation(render.GetImage(self), () => self.Trait<IFacing>().Facing);
 			muzzleFlash.Play("muzzle");
 
 			render.anims.Add("muzzle", new RenderSimple.AnimationWithOffset(

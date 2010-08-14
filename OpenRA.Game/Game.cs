@@ -384,7 +384,7 @@ namespace OpenRA
 			LoadMap(map);
 			world.Queries = new World.AllQueries(world);
 
-			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
+			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
 				gs.GameStarted(world);
 			orderManager.StartGame();
 		}
@@ -398,7 +398,7 @@ namespace OpenRA
 			
 			world.Queries = new World.AllQueries(world);
 
-			foreach (var gs in world.WorldActor.traits.WithInterface<IGameStarted>())
+			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
 				gs.GameStarted(world);
 
 			viewport.GoToStartLocation(world.LocalPlayer);

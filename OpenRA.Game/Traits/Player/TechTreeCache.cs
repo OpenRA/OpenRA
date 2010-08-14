@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 			{
 				var effectivePrereq = prerequisites.Where( a => a.Traits.Get<BuildableInfo>().Owner.Contains( owner.Country.Race ) );
 				var nowHasPrerequisites = effectivePrereq.Any() &&
-					effectivePrereq.All( a => buildings[ a.Name ].Any( b => !b.traits.Get<Building>().Disabled ) );
+					effectivePrereq.All( a => buildings[ a.Name ].Any( b => !b.Trait<Building>().Disabled ) );
 
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.Available();

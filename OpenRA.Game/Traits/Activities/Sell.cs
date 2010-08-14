@@ -23,12 +23,12 @@ namespace OpenRA.Traits.Activities
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
 			
-			var health = self.traits.GetOrDefault<Health>();
+			var health = self.TraitOrDefault<Health>();
 			var refundFraction = self.Info.Traits.Get<BuildingInfo>().RefundPercent * (health == null ? 1f : health.HPFraction);
 
-			self.Owner.PlayerActor.traits.Get<PlayerResources>().GiveCash((int)(refundFraction * cost));
+			self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash((int)(refundFraction * cost));
 			
-			foreach (var ns in self.traits.WithInterface<INotifySold>())
+			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
 			self.World.AddFrameEndTask( _ => self.World.Remove( self ) );
 		}
@@ -37,10 +37,10 @@ namespace OpenRA.Traits.Activities
 		{
 			if( !started )
 			{
-				framesRemaining = self.traits.Get<RenderSimple>().anim.HasSequence("make") 
-					? self.traits.Get<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
+				framesRemaining = self.Trait<RenderSimple>().anim.HasSequence("make") 
+					? self.Trait<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
 
-				foreach( var ns in self.traits.WithInterface<INotifySold>() )
+				foreach( var ns in self.TraitsImplementing<INotifySold>() )
 					ns.Selling( self );
 
 				started = true;

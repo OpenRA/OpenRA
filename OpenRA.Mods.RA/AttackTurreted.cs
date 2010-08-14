@@ -25,11 +25,11 @@ namespace OpenRA.Mods.RA
 
 		protected override bool CanAttack( Actor self )
 		{
-			if( self.traits.Contains<Building>() && !buildComplete )
+			if( self.HasTrait<Building>() && !buildComplete )
 				return false;
 
 			if (!target.IsValid) return false;
-			var turreted = self.traits.Get<Turreted>();
+			var turreted = self.Trait<Turreted>();
 			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
 			if( turreted.desiredFacing != turreted.turretFacing )
 				return false;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void QueueAttack( Actor self, Order order )
 		{
-			if (self.traits.Contains<Building>() && self.traits.Get<Building>().Disabled) 
+			if (self.HasTrait<Building>() && self.Trait<Building>().Disabled) 
 				return;
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 			target = Target.FromOrder(order);
 
-			if (self.traits.Contains<Mobile>())
+			if (self.HasTrait<Mobile>())
 				self.QueueActivity( new Follow( target,
 					Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
 		}

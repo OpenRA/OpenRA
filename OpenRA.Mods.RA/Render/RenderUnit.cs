@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderUnit : RenderSimple, INotifyDamage
 	{
 		public RenderUnit(Actor self)
-			: base(self, () => self.traits.Contains<IFacing>() ? self.traits.Get<IFacing>().Facing : 0)
+			: base(self, () => self.HasTrait<IFacing>() ? self.Trait<IFacing>().Facing : 0)
 		{
 			anim.Play("idle");
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );

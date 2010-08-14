@@ -24,10 +24,10 @@ namespace OpenRA.Mods.RA.Activities
 		int2? ChooseExitTile(Actor self, Actor cargo)
 		{
 			// is anyone still hogging this tile?
-			if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(self.Location).Count() > 1)
+			if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(self.Location).Count() > 1)
 				return null;
 			
-			var mobile = cargo.traits.Get<Mobile>();
+			var mobile = cargo.Trait<Mobile>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			// if we're a thing that can turn, turn to the
 			// right facing for the unload animation
-			var facing = self.traits.GetOrDefault<IFacing>();
+			var facing = self.TraitOrDefault<IFacing>();
 			var unloadFacing = self.Info.Traits.Get<CargoInfo>().UnloadFacing;
 			if (facing != null && facing.Facing != unloadFacing)
 				return new Turn(unloadFacing) { NextActivity = this };
@@ -52,11 +52,11 @@ namespace OpenRA.Mods.RA.Activities
 			// todo: handle the BS of open/close sequences, which are inconsistent,
 			//		for reasons that probably make good sense to the westwood guys.
 
-			var cargo = self.traits.Get<Cargo>();
+			var cargo = self.Trait<Cargo>();
 			if (cargo.IsEmpty(self))
 				return NextActivity;
 
-			var ru = self.traits.GetOrDefault<RenderUnit>();
+			var ru = self.TraitOrDefault<RenderUnit>();
 			if (ru != null)
 				ru.PlayCustomAnimation(self, "unload", null);
 
@@ -69,12 +69,12 @@ namespace OpenRA.Mods.RA.Activities
 			self.World.AddFrameEndTask(w =>
 			{
 				w.Add(actor);
-				actor.traits.WithInterface<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
+				actor.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
 				actor.CancelActivity();
 				actor.QueueActivity(new Move(exitTile.Value, 0));
 				if (actor.Owner == self.World.LocalPlayer)
 				{
-					var line = actor.traits.GetOrDefault<DrawLineToTarget>();
+					var line = actor.TraitOrDefault<DrawLineToTarget>();
 					if (line != null)
 						line.SetTargetSilently(self, Target.FromCell(exitTile.Value), Color.Green);
 				}

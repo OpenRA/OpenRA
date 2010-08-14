@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (d.LengthSquared < 50)		/* close enough */
 				return NextActivity;
 
-			var aircraft = self.traits.Get<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 
 			if (aircraft.Altitude > 0)
 				--aircraft.Altitude;

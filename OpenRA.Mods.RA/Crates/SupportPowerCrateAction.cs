@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			var p = collector.Owner.PlayerActor.traits.WithInterface<SupportPower>()
+			var p = collector.Owner.PlayerActor.TraitsImplementing<SupportPower>()
 				.FirstOrDefault(sp => sp.GetType().Name == (info as SupportPowerCrateActionInfo).Power);
 
 			if (p != null) p.Give(1);

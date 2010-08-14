@@ -62,8 +62,8 @@ namespace OpenRA.Mods.RA
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
 				
 				// Don't spawn on any actors
-				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;
-				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
+				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
+				if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
 				self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", new TypeDictionary

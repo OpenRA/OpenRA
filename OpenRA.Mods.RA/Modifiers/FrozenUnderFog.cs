@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 		public FrozenUnderFog(Actor self)
 		{
-			shroud = self.World.WorldActor.traits.Get<Shroud>();
+			shroud = self.World.WorldActor.Trait<Shroud>();
 		}
 
 		public bool IsVisible(Actor self)

@@ -23,9 +23,9 @@ namespace OpenRA.Mods.RA.Render
 		public RenderUnitTurreted(Actor self)
 			: base(self)
 		{
-			var facing = self.traits.Get<IFacing>();
-			var turreted = self.traits.Get<Turreted>();
-			var attack = self.traits.GetOrDefault<AttackBase>();
+			var facing = self.Trait<IFacing>();
+			var turreted = self.Trait<Turreted>();
+			var attack = self.TraitOrDefault<AttackBase>();
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
 			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );

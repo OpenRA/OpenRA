@@ -98,7 +98,7 @@ namespace OpenRA.Graphics
 					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
 					PrimitiveType.TriangleList, Game.Renderer.SpriteShader));
 
-			foreach (var r in world.WorldActor.traits.WithInterface<IRenderOverlay>())
+			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render();
 		}
 	}

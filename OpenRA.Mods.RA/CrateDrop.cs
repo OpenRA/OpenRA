@@ -63,8 +63,8 @@ namespace OpenRA.Mods.RA
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
 				
 				// Don't drop on any actors
-				if (self.World.WorldActor.traits.Get<BuildingInfluence>().GetBuildingAt(p) != null) continue;
-				if (self.World.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(p).Any()) continue;
+				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
+				if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(p).Any()) continue;
 
 				self.World.AddFrameEndTask(w =>
 					{
@@ -81,8 +81,8 @@ namespace OpenRA.Mods.RA
 						});
 						plane.CancelActivity();
 						plane.QueueActivity(new FlyCircle(p));
-						plane.traits.Get<ParaDrop>().SetLZ(p, null);
-						plane.traits.Get<Cargo>().Load(plane, crate);
+						plane.Trait<ParaDrop>().SetLZ(p, null);
+						plane.Trait<Cargo>().Load(plane, crate);
 					});
 				return;
 			}

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			this.self = init.self;
 			this.location = init.Get<LocationInit,int2>();
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
-			self.World.WorldActor.traits.Get<UnitInfluence>().Add(self, this);
+			self.World.WorldActor.Trait<UnitInfluence>().Add(self, this);
 		}
 
 		public int2 TopLeft { get { return location; } }

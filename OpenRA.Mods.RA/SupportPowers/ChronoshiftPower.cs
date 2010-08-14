@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 					self.World.CancelInputMode();
 				
 				// Ensure the target cell is valid for the unit
-				var movement = order.TargetActor.traits.GetOrDefault<IMove>();
+				var movement = order.TargetActor.TraitOrDefault<IMove>();
 				if (!movement.CanEnterCell(order.TargetLocation))
 					return;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 					.WithTrait<Chronosphere>()
 					.Select(x => x.Actor).FirstOrDefault();
 				
-				chronosphere.traits.Get<Chronosphere>().Teleport(order.TargetActor, order.TargetLocation);
+				chronosphere.Trait<Chronosphere>().Teleport(order.TargetActor, order.TargetLocation);
 
 				FinishActivate();
 			}
@@ -71,8 +71,8 @@ namespace OpenRA.Mods.RA
 				if (mi.Button == MouseButton.Left)
 				{
 					var underCursor = world.FindUnitsAtMouse(mi.Location)
-						.Where(a => a.Owner != null && a.traits.Contains<Chronoshiftable>()
-							&& a.traits.Contains<Selectable>()).FirstOrDefault();
+						.Where(a => a.Owner != null && a.HasTrait<Chronoshiftable>()
+							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 					if (underCursor != null)
 						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, underCursor);
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA
 				if (!world.LocalPlayer.Shroud.IsExplored(xy))
 					return "move-blocked";
 				
-				var movement = self.traits.GetOrDefault<IMove>();
+				var movement = self.TraitOrDefault<IMove>();
 				return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
 			}
 		}
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA
 		public void Teleport(Actor targetActor, int2 targetLocation)
 		{
 			var info = self.Info.Traits.Get<ChronosphereInfo>();
-			bool success = targetActor.traits.Get<Chronoshiftable>().Activate(targetActor, targetLocation, info.Duration * 25, info.KillCargo, self);
+			bool success = targetActor.Trait<Chronoshiftable>().Activate(targetActor, targetLocation, info.Duration * 25, info.KillCargo, self);
 			
 			if (success)
 			{
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA
 				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 
-				self.traits.Get<RenderBuilding>().PlayCustomAnim(self, "active");
+				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 			}
 		}
 	}

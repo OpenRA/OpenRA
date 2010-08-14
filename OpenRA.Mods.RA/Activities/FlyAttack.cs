@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValid)
 				return NextActivity;
 
-			var limitedAmmo = self.traits.GetOrDefault<LimitedAmmo>();
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return NextActivity;
 

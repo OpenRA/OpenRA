@@ -111,8 +111,8 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = float2.Lerp(Args.src, Args.dest, at);
 				var cell = Traits.Util.CellContaining(pos);
 
-				if (world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(cell).Any(
-					a => a.traits.Contains<IBlocksBullets>()))
+				if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any(
+					a => a.HasTrait<IBlocksBullets>()))
 				{
 					Args.dest = pos.ToInt2();
 					Explode(world);

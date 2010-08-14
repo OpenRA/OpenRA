@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (!world.LocalPlayer.Shroud.IsExplored(xy))
 				return "move-blocked";
 
-			var movement = self.traits.GetOrDefault<IMove>();
+			var movement = self.TraitOrDefault<IMove>();
 			return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
 		}
 	}

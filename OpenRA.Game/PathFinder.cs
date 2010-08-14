@@ -69,7 +69,7 @@ namespace OpenRA
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var mobile = self.traits.Get<Mobile>();
+				var mobile = self.Trait<Mobile>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
 					.Where( t => mobile.CanEnterCell(t));
 
@@ -86,7 +86,7 @@ namespace OpenRA
 			return q =>
 				p != q &&
 				((p - q).LengthSquared < dist * dist) &&
-				(world.WorldActor.traits.Get<UnitInfluence>().GetUnitsAt(q).Any(a => a.Group != self.Group));
+				(world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(q).Any(a => a.Group != self.Group));
 		}
 
 		public List<int2> FindPath( PathSearch search )

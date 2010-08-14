@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Render
 
 				foreach (var w in adjWalls)
 				{
-					w.traits.Get<RenderBuildingWall>().AddAdjacentWall(w.Location, self.Location);
+					w.Trait<RenderBuildingWall>().AddAdjacentWall(w.Location, self.Location);
 					AddAdjacentWall(self.Location, w.Location);
 				}
 				hasTicked = true;

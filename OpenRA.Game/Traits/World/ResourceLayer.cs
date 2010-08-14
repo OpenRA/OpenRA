@@ -55,7 +55,7 @@ namespace OpenRA.Traits
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
 
-			resourceTypes = w.WorldActor.traits.WithInterface<ResourceType>().ToArray();
+			resourceTypes = w.WorldActor.TraitsImplementing<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
 				rt.info.Sprites = rt.info.SpriteNames.Select(a => SpriteSheetBuilder.LoadAllSprites(a)).ToArray();
 
