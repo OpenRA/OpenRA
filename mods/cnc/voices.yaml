@@ -14,17 +14,19 @@ VehicleVoice:
 		gdi: .v00,.v02
 	Voices:
 		Select: vehic1,yessir1,report1,await1,unit1
-		Move: ackno,affirm1,movout1
+		Move: ackno,affirm1,movout1 
 
 CivilianMaleVoice: 
 	Voices:
 		Select: guyyeah1
 		Move: guyokay1
+		Die: nuyell1,nuyell3,nuyell4,nuyell5
 
 CivilianFemaleVoice: 
 	Voices:
 		Select: girlyeah
 		Move: girlokay
+		Die: nuyell1,nuyell3,nuyell4,nuyell5
 
 CommandoVoice: 
 	Voices:
