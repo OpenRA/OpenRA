@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				w.Remove(self);
+				self.Destroy();
 				w.CreateActor(info.Actor, new TypeDictionary
 				{
 					new LocationInit( self.Location ),

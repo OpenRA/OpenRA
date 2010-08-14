@@ -30,7 +30,7 @@ namespace OpenRA.Traits.Activities
 			
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
-			self.World.AddFrameEndTask( _ => self.World.Remove( self ) );
+			self.Destroy();
 		}
 
 		public IActivity Tick(Actor self)

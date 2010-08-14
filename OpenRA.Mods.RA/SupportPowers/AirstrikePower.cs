@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 						a.QueueActivity(new Fly(order.TargetLocation));
 
 						if (flare != null)
-							a.QueueActivity(new CallFunc(() => Owner.World.AddFrameEndTask(_w => _w.Remove(flare))));
+							a.QueueActivity(new CallFunc(() => flare.Destroy()));
 
 						a.QueueActivity(new FlyOffMap { Interruptible = false });
 						a.QueueActivity(new RemoveSelf());

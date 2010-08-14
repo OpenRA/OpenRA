@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 				self.Kill(self);
 				detonatedBy.Owner.Kills++;
 				self.Owner.Deaths++;
-				w.Remove(self);
+				self.Destroy();
 			} );
 		}
 	}

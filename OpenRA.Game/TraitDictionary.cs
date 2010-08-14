@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using System.Diagnostics;
 
 namespace OpenRA
 {
@@ -31,7 +30,7 @@ namespace OpenRA
 				.GetConstructor( new Type[ 0 ] ).Invoke( new object[ 0 ] );
 		}
 
-		public void Add( Actor actor, object val )
+		public void AddTrait( Actor actor, object val )
 		{
 			var t = val.GetType();
 
@@ -48,69 +47,99 @@ namespace OpenRA
 
 		public bool Contains<T>( Actor actor )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor ).Count() != 0;
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID ).Count() != 0;
 		}
 
 		public T Get<T>( Actor actor )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).Get( actor );
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).Get( actor.ActorID );
 		}
 
 		public T GetOrDefault<T>( Actor actor )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetOrDefault( actor );
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetOrDefault( actor.ActorID );
 		}
 
 		public IEnumerable<T> WithInterface<T>( Actor actor )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor );
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID );
+		}
+
+		public IEnumerable<TraitPair<T>> ActorsWithTraitMultiple<T>( World world )
+		{
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).All().Where( x => x.Actor.IsInWorld );
+		}
+
+		public void RemoveActor( Actor a )
+		{
+			foreach( var t in traits )
+				t.Value.RemoveActor( a.ActorID );
 		}
 
 		interface ITraitContainer
 		{
 			void Add( Actor actor, object trait );
+			void RemoveActor( uint actor );
 		}
 
 		class TraitContainer<T> : ITraitContainer
 		{
-			List<uint> actors = new List<uint>();
+			List<Actor> actors = new List<Actor>();
 			List<T> traits = new List<T>();
 
 			public void Add( Actor actor, object trait )
 			{
 				var insertIndex = actors.BinarySearchMany( actor.ActorID + 1 );
-				actors.Insert( insertIndex, actor.ActorID );
+				actors.Insert( insertIndex, actor );
 				traits.Insert( insertIndex, (T)trait );
 			}
 
-			public T Get( Actor actor )
+			public T Get( uint actor )
 			{
-				var index = actors.BinarySearchMany( actor.ActorID );
-				if( index >= actors.Count || actors[ index ] != actor.ActorID )
+				var index = actors.BinarySearchMany( actor );
+				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					throw new InvalidOperationException( string.Format( "TraitDictionary does not contain instance of type `{0}`", typeof( T ) ) );
-				else if( index + 1 < actors.Count && actors[ index + 1 ] == actor.ActorID )
+				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
 					throw new InvalidOperationException( string.Format( "TraitDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
 				else
 					return traits[ index ];
 			}
 
-			public T GetOrDefault( Actor actor )
+			public T GetOrDefault( uint actor )
 			{
-				var index = actors.BinarySearchMany( actor.ActorID );
-				if( index >= actors.Count || actors[ index ] != actor.ActorID )
+				var index = actors.BinarySearchMany( actor );
+				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					return default( T );
-				else if( index + 1 < actors.Count && actors[ index + 1 ] == actor.ActorID )
+				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
 					throw new InvalidOperationException( string.Format( "TraitDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
 				else return traits[ index ];
 			}
 
-			public IEnumerable<T> GetMultiple( Actor actor )
+			public IEnumerable<T> GetMultiple( uint actor )
 			{
-				var index = actors.BinarySearchMany( actor.ActorID );
-				while( index < actors.Count && actors[ index ] == actor.ActorID )
+				var index = actors.BinarySearchMany( actor );
+				while( index < actors.Count && actors[ index ].ActorID == actor )
 				{
 					yield return traits[ index ];
 					++index;
+				}
+			}
+
+			public IEnumerable<TraitPair<T>> All()
+			{
+				for( int i = 0 ; i < actors.Count ; i++ )
+					yield return new TraitPair<T> { Actor = actors[ i ], Trait = traits[ i ] };
+			}
+
+			public void RemoveActor( uint actor )
+			{
+				for( int i = actors.Count - 1 ; i >= 0 ; i-- )
+				{
+					if( actors[ i ].ActorID == actor )
+					{
+						actors.RemoveAt( i );
+						traits.RemoveAt( i );
+					}
 				}
 			}
 		}
@@ -118,8 +147,7 @@ namespace OpenRA
 
 	static class ListExts
 	{
-		public static int BinarySearchMany<T>( this List<T> list, T searchFor )
-			where T : IComparable<T>
+		public static int BinarySearchMany( this List<Actor> list, uint searchFor )
 		{
 			int start = 0;
 			int end = list.Count;
@@ -127,7 +155,7 @@ namespace OpenRA
 			while( start != end )
 			{
 				mid = ( start + end ) / 2;
-				var c = list[ mid ].CompareTo( searchFor );
+				var c = list[ mid ].ActorID.CompareTo( searchFor );
 				if( c < 0 )
 					start = mid + 1;
 				else

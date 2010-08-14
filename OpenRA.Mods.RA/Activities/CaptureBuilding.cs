@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA.Activities
 				
 				foreach (var t in target.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(target, self, oldOwner, self.Owner);
-				
-				w.Remove(self);
+
+				self.Destroy();
 			});
 			return NextActivity;
 		}

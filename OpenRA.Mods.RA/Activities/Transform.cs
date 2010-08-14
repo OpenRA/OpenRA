@@ -48,11 +48,11 @@ namespace OpenRA.Mods.RA.Activities
 			self.World.AddFrameEndTask(w =>
 			{
 				var selected = w.Selection.Contains(self);
-				
-				self.World.Remove(self);
+
+				self.Destroy();
 				foreach (var s in sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-								
+
 				var init = new TypeDictionary
 				{
 					new LocationInit( self.Location + offset ),

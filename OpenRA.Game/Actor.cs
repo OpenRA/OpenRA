@@ -142,7 +142,7 @@ namespace OpenRA
 			return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 		}
 
-		public bool IsInWorld { get; set; }
+		public bool IsInWorld { get; internal set; }
 
 		public void QueueActivity( IActivity nextActivity )
 		{
@@ -209,7 +209,17 @@ namespace OpenRA
 
 		public void AddTrait( object trait )
 		{
-			World.traitDict.Add( this, trait );
+			World.traitDict.AddTrait( this, trait );
+		}
+
+		public void Destroy()
+		{
+			World.AddFrameEndTask( w => World.Remove( this ) );
+		}
+
+		~Actor()
+		{
+			World.traitDict.RemoveActor( this );
 		}
 	}
 }

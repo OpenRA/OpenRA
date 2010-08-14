@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			self.Destroy();
 			foreach (var s in shares)
 				if (n < s.Second)
 				{
@@ -75,9 +75,9 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			
-			if (++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25)
-				self.World.AddFrameEndTask(w => w.Remove(self));			
+
+			if( ++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25 )
+				self.Destroy();
 		}
 
 		public int2 TopLeft { get { return Location; } }

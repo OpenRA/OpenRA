@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
 			
-			target.InflictDamage(self, -health.MaxHP, null);			
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			target.InflictDamage(self, -health.MaxHP, null);
+			self.Destroy();
 
 			return NextActivity;
 		}

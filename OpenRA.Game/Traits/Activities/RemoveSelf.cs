@@ -18,7 +18,7 @@ namespace OpenRA.Traits.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			self.Destroy();
 			return null;
 		}
 

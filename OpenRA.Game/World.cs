@@ -173,8 +173,9 @@ namespace OpenRA
 			Game.viewport.Tick();
 			Timer.Time("		viewport: {0:0.000}");
 
-			while( frameEndActions.Count != 0 )
-				frameEndActions.Dequeue()( this );
+			while (frameEndActions.Count != 0)
+				frameEndActions.Dequeue()(this);
+
 			Timer.Time("		frameEndActions: {0:0.000}");
 
 			WorldRenderer.Tick();
@@ -215,9 +216,9 @@ namespace OpenRA
 				OwnedBy = new Cache<Player, OwnedByCachedView>(p => new OwnedByCachedView(world, world.actors, x => x.Owner == p));
 			}
 
-			public CachedView<Actor, TraitPair<T>> WithTrait<T>()
+			public IEnumerable<TraitPair<T>> WithTrait<T>()
 			{
-				return WithTraitInner<T>( world.actors, hasTrait );
+				return world.traitDict.ActorsWithTraitMultiple<T>( world );
 			}
 
 			static CachedView<Actor, TraitPair<T>> WithTraitInner<T>( Set<Actor> set, TypeDictionary hasTrait )
@@ -233,28 +234,9 @@ namespace OpenRA
 				return ret;
 			}
 
-			public CachedView<Actor, TraitPair<T>> WithTraitMultiple<T>()
+			public IEnumerable<TraitPair<T>> WithTraitMultiple<T>()
 			{
-				var ret = hasTrait.GetOrDefault<CachedView<Actor, TraitPair<T>>>();
-				if( ret != null )
-					return ret;
-				ret = new CachedView<Actor, TraitPair<T>>(
-					world.actors,
-					x => x.HasTrait<T>(),
-					x => x.TraitsImplementing<T>().Select( t => new TraitPair<T> { Actor = x, Trait = t } ) );
-				hasTrait.Add( ret );
-				return ret;
-			}
-
-			public struct TraitPair<T>
-			{
-				public Actor Actor;
-				public T Trait;
-
-				public override string ToString()
-				{
-					return "{0}->{1}".F( Actor.Info.Name, Trait.GetType().Name );
-				}
+				return world.traitDict.ActorsWithTraitMultiple<T>( world );
 			}
 
 			public class OwnedByCachedView : CachedView<Actor, Actor>
@@ -274,5 +256,16 @@ namespace OpenRA
 		}
 
 		public AllQueries Queries;
+	}
+
+	public struct TraitPair<T>
+	{
+		public Actor Actor;
+		public T Trait;
+
+		public override string ToString()
+		{
+			return "{0}->{1}".F( Actor.Info.Name, Trait.GetType().Name );
+		}
 	}
 }

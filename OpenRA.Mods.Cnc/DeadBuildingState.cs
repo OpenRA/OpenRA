@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc
 					self.World.AddFrameEndTask(
 						w => w.Add(
 							new DelayedAction(info.LingerTime,
-								() => w.Remove(self))));
+								() => self.Destroy())));
 			}
 		}
 	}

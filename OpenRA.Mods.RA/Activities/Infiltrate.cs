@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 			foreach (var t in target.TraitsImplementing<IAcceptSpy>())
 				t.OnInfiltrate(target, self);
 
-			self.World.AddFrameEndTask(w => w.Remove(self));
+			self.Destroy();
 
 			return NextActivity;
 		}
