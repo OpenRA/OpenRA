@@ -84,6 +84,11 @@ namespace OpenRA.Widgets
 
 		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)ListOffset); } }
 
+		public override Rectangle GetEventBounds()
+		{
+			return EventBounds;
+		}
+		
 		public override void Tick (World world)
 		{
 			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;

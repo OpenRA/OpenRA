@@ -149,7 +149,7 @@ namespace OpenRA.Widgets
 		}
 		
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
-		public Rectangle GetEventBounds()
+		public virtual Rectangle GetEventBounds()
 		{
 			return Children
 				.Where(c => c.IsVisible())
