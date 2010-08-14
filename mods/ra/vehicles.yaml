@@ -384,7 +384,7 @@ SS:
 		Description: Submarine
 		LongDesc: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
-		HP: 120
+		HP: 250
 		Armor: light
 	Mobile:
 		ROT: 4
@@ -420,7 +420,7 @@ MSUB:
 		Description: Missile Submarine
 		LongDesc: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
-		HP: 200
+		HP: 400
 		Armor: light
 	Mobile:
 		ROT: 3

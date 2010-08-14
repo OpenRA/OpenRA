@@ -560,7 +560,7 @@ TorpTube:
 	ROF: 100
 	Range: 9
 	Report: TORPEDO1
-	ValidTargets: Water
+	ValidTargets: Water, Underwater
 	Underwater: yes
 	Burst: 2
 	BurstDelay: 1
