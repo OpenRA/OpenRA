@@ -408,6 +408,7 @@ TRAN:
 		LandWhenIdle: true
 		ROT: 5
 		Speed: 15
+		InitialFacing: 0
 	Health:
 		HP: 90
 		Armor: light
