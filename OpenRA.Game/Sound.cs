@@ -148,6 +148,11 @@ namespace OpenRA
 			}
 		}
 		
+		public static float MusicSeekPosition
+		{
+			get { return (music != null)? music.SeekPosition : 0; }	
+		}
+		
 		// Returns true if it played a phrase
 		public static bool PlayVoice(string phrase, Actor voicedUnit)
 		{
@@ -198,6 +203,7 @@ namespace OpenRA
 	interface ISound
 	{
 		float Volume { get; set; }
+		float SeekPosition { get; }
 	}
 
 	class OpenAlSoundEngine : ISoundEngine
@@ -398,6 +404,16 @@ namespace OpenRA
 			{
 				if (source != -1)
 					Al.alSourcef(source, Al.AL_GAIN, volume = value); 
+			}
+		}
+		
+		public float SeekPosition
+		{
+			get
+			{
+				float pos;
+				Al.alGetSourcef(source, Al.AL_SEC_OFFSET, out pos);
+				return pos; 
 			}
 		}
 	}
