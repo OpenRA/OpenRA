@@ -594,7 +594,7 @@ TorpTube:
 DepthCharge:
 	ROF: 60
 	Range: 5
-	ValidTargets: Ground
+	ValidTargets: Underwater
 	Bullet:
 		Speed: 5
 		Image: BOMB
