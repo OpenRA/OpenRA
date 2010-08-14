@@ -40,7 +40,7 @@ IonCannon:
 		Damage: 500
 		Spread: 6
 		Ore: true
-		Verses: 100%,100%,100%,100%,100%
+		Verses: 90%,100%,60%,25%,50%
 		InfDeath: 4
 	Warhead@area:
 		DamageModel: PerCell
@@ -48,7 +48,7 @@ IonCannon:
 		SmudgeType: Scorch
 		Size: 2,1
 		Ore: true
-		Verses: 100%,100%,100%,100%,100%
+		Verses: 90%,100%,60%,25%,50%
 		Delay: 3
 		InfDeath: 4
 

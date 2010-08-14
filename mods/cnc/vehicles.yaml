@@ -138,7 +138,7 @@ BGGY:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Owner: nod
-		Cost: 600
+		Cost: 300
 		Description: Nod Buggy
 		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Mobile:
@@ -165,7 +165,7 @@ BIKE:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Owner: nod
-		Cost: 500
+		Cost: 450
 		Description: Recon Bike
 		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
