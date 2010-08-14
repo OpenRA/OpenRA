@@ -14,8 +14,8 @@ if [ ! -e "${FILENAME}" ]; then
 	exit 1
 fi
 
-SIZE=`stat -c "%s" ${FILENAME}`B
-echo "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/version.json
+SIZE=`du -bh ${FILENAME} | cut -f1`B
+echo -e "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/version.json
 echo `basename ${FILENAME}` > /tmp/latest.txt
 
 pushd `dirname ${FILENAME}`

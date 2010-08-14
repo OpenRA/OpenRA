@@ -45,7 +45,7 @@ pushd osx/
 sh package-game.sh ~/openra-package/$_gitname-build "$VERSION"
 popd
 
-./uploader.sh osx "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$2" "$3"
+./uploader.sh mac "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$2" "$3"
 
 pushd windows/
 makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi
