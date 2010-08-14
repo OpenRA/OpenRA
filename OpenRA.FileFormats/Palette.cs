@@ -57,14 +57,16 @@ namespace OpenRA.FileFormats
 			colors[0] = 0;
 			if (remapTransparent)
 			{
-				colors[3] = (uint)178 << 24;
-				colors[4] = (uint)140 << 24;
+				colors[3] = 178u << 24;
+				colors[4] = 140u << 24;
 			}
 		}
 
 		public Palette(Palette p, IPaletteRemap r)
 		{
-			colors = p.colors;
+			colors = new uint[256];
+			for(int i = 0; i < 256; i++)
+				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)p.colors[i]),i).ToArgb();
 		}
 		
 		public Palette(Palette p)
