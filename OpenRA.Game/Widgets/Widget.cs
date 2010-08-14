@@ -318,7 +318,8 @@ namespace OpenRA.Widgets
 
 		public T GetWidget<T>(string id) where T : Widget
 		{
-			return (T)GetWidget(id);
+			var widget = GetWidget(id);
+			return (widget != null)? (T) widget : null;
 		}
 		
 		public void CloseWindow()
