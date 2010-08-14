@@ -13,10 +13,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> { }
+	class WaterPaletteRotationInfo : ITraitInfo
+	{
+		public readonly bool CncMode = false;
+		public object Create(ActorInitializer init) { return new WaterPaletteRotation(CncMode); }
+	}
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
+		bool cncmode = false;
+		public WaterPaletteRotation(bool cncmode)
+		{
+			this.cncmode = cncmode;
+		}
+		
 		float t = 0;
 		public void Tick(Actor self)
 		{
@@ -29,7 +39,12 @@ namespace OpenRA.Mods.RA
 			using (var bitmapCopy = new Bitmap(b))
 				for (int j = 0; j < b.Height; j++)
 					for (int i = 0; i < 7; i++)
-						b.SetPixel(0x60 + (rotate + i) % 7, j, bitmapCopy.GetPixel(0x60 + i, j));
+					{
+						if (cncmode)
+							b.SetPixel(0x20 + (rotate + i) % 7, j, bitmapCopy.GetPixel(0x20 + i, j));
+						else
+							b.SetPixel(0x60 + (rotate + i) % 7, j, bitmapCopy.GetPixel(0x60 + i, j));
+					}
 		}
 	}
 }
