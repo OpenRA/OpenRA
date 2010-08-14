@@ -1,21 +1,24 @@
 # Classic Red Alert Mod -- Package Manifest
 
 GenericVoice:
-	SovietVariants: .r01,.r03
-	AlliedVariants: .v01,.v03
+	Variants:
+		soviet: .r01,.r03
+		allies: .v01,.v03
 	Select: await1,ready,report1,yessir1
 	Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
 	Die: dedman1.aud,dedman2.aud,dedman3.aud,dedman4.aud,dedman5.aud,dedman6.aud,dedman7.aud,dedman8.aud,dedman10.aud
 
 VehicleVoice:
-	SovietVariants: .r00,.r02
-	AlliedVariants: .v00,.v02
+	Variants:
+		soviet: .r00,.r02
+		allies: .v00,.v02
 	Select: vehic1,yessir1,report1,await1
 	Move: ackno,affirm1
 
 ShipVoice:
-	SovietVariants: .r00,.r02
-	AlliedVariants: .v00,.v02
+	Variants:
+		soviet: .r00,.r02
+		allies: .v00,.v02
 	Select: vehic1,yessir1,report1,await1
 	Move: ackno,affirm1
 

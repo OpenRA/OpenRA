@@ -17,6 +17,7 @@ namespace OpenRA.GameRules
 	public class VoiceInfo
 	{
 		public readonly Dictionary<string,string[]> Variants;
+		public readonly string DefaultVariant = ".aud" ;
 		public readonly string[] Select = { };
 		public readonly string[] Move = { };
 		public readonly string[] Attack = null;

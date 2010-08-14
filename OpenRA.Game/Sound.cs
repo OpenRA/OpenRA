@@ -202,8 +202,15 @@ namespace OpenRA
 				Play(clip);
 				return true;
 			}
+			
+			if (vi.Variants.Count == 0)
+			{
+				Play(clip + vi.DefaultVariant);
+				return true;
+			}
 
-			var variantext = vi.Variants[variant][voicedUnit.ActorID % vi.Variants.Count];
+			var variantext = vi.Variants.ContainsKey(variant)? 
+				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants.Count] : vi.DefaultVariant;
 			Play(clip + variantext);
 			return true;
 		}
