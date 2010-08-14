@@ -83,7 +83,8 @@ namespace OpenRA.FileFormats
 			/*var freq = */reader.ReadUInt16();
 			/*var channels = */reader.ReadByte();
 			/*var bits = */reader.ReadByte();
-			/*var unknown3 = */reader.ReadChars(14);
+			var unknown3 = reader.ReadChars(14);
+			
 			
 			var frameSize = NextPowerOf2(Math.Max(Width,Height));
 			cbf = new byte[Width*Height];
@@ -92,9 +93,15 @@ namespace OpenRA.FileFormats
 			origData = new byte[2*blocks.X*blocks.Y];
 			frameData = new int[frameSize,frameSize];
 			
-			// Decode FINF chunk
-			if (new String(reader.ReadChars(4)) != "FINF")
-				throw new InvalidDataException("Invalid vqa (invalid FINF section)");
+			var type = new String(reader.ReadChars(4));
+			Console.WriteLine(type);
+			if (type != "FINF")
+			{
+				reader.ReadBytes(27);
+				type = new String(reader.ReadChars(4));
+			}
+			
+			Console.WriteLine(type);
 			/*var length = */reader.ReadUInt16();
 			/*var unknown4 = */reader.ReadUInt16();
 			
@@ -178,16 +185,13 @@ namespace OpenRA.FileFormats
 
 				switch(type)
 				{
-					case "SND0":
-					case "SND2":
-						// Don't parse sound here.
-						reader.ReadBytes((int)length);
-						break;
 					case "VQFR":
 						DecodeVQFR(reader);
 					break;
 					default: 
-						throw new InvalidDataException("Unknown chunk {0}".F(type));
+						// Don't parse sound here.
+						reader.ReadBytes((int)length);
+						break;
 				}
 				
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
