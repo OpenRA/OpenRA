@@ -64,7 +64,8 @@ namespace OpenRA.Widgets.Delegates
 				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
 			
-			bg.GetWidget<LabelWidget>("TIME").GetText = () => "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F(0,0,Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
+			bg.GetWidget<LabelWidget>("TIME").GetText = () => "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
+			                                                                                    Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
 
 			var ml = bg.GetWidget<ListBoxWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
