@@ -39,7 +39,7 @@ namespace OpenRA.GlRenderer
 			
 			unsafe
 			{
-				fixed (uint* ptr = colors)
+				fixed (uint* ptr = &colors[0,0])
 				{
 					IntPtr intPtr = new IntPtr((void *) ptr);
 					
@@ -71,7 +71,7 @@ namespace OpenRA.GlRenderer
 				new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadOnly,
 				PixelFormat.Format32bppArgb);
-
+			
 			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
 			GraphicsDevice.CheckGlError();
 			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);

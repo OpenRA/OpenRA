@@ -245,7 +245,7 @@ namespace OpenRA.FileFormats
 							byte r = (byte)(reader.ReadByte() << 2);
 							byte g = (byte)(reader.ReadByte() << 2);
 							byte b = (byte)(reader.ReadByte() << 2);
-							palette[i] = (uint)(255 << 24 | (r << 16) | (g << 8) | b);
+							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 						}
 					break;
 					
