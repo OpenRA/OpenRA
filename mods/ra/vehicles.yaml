@@ -667,6 +667,7 @@ HELI:
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		RearmBuildings: hpad
+		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 16
@@ -698,6 +699,7 @@ HIND:
 		SecondaryOffset: 5,0,0,2
 	Helicopter:
 		RearmBuildings: hpad
+		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 12
