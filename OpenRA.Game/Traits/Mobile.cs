@@ -21,6 +21,8 @@ namespace OpenRA.Traits
 	{
 		public readonly string[] TerrainTypes;
 		public readonly float[] TerrainSpeeds;
+		public readonly string[] TerrainCostOverrides;
+		public readonly float[] TerrainCosts;
 		public readonly string[] Crushes;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
@@ -97,9 +99,17 @@ namespace OpenRA.Traits
 			if (info.TerrainTypes.Count() != info.TerrainSpeeds.Count())
 				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length mismatch");
 			
+			if (info.TerrainCostOverrides != null)
+				for (int i = 0; i < info.TerrainCostOverrides.Count(); i++)
+				{		
+					TerrainCost.Add(info.TerrainCostOverrides[i], info.TerrainCosts[i]);
+				}
+			
 			for (int i = 0; i < info.TerrainTypes.Count(); i++)
-			{
-				TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
+			{		
+				if (!TerrainCost.ContainsKey(info.TerrainTypes[i]))
+					TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
+				
 				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
 			}
 		}
