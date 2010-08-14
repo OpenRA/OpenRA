@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	class HardwarePalette : Sheet
+	class HardwarePalette
 	{
 		public const int MaxPalettes = 64;
 		int allocated = 0;
@@ -27,7 +28,6 @@ namespace OpenRA.Graphics
 		Dictionary<string, int> indices;
 
 		public HardwarePalette(Map map)
-			: base(new Size(256, MaxPalettes))
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();
@@ -57,10 +57,10 @@ namespace OpenRA.Graphics
 		{
 			palettes.Add(name, p);
 			indices.Add(name, allocated);
-			for (int i = 0; i < 256; i++)
+			/*for (int i = 0; i < 256; i++)
 			{
 				this[new Point(i, allocated)] = p.GetColor(i);
-			}
+			}*/
 			return allocated++;
 		}
 		
@@ -68,11 +68,11 @@ namespace OpenRA.Graphics
 		{
 			palettes[name] = p;
 			var j = indices[name];
-			
+			/*
 			for (int i = 0; i < 256; i++)
 			{
 				this[new Point(i, j)] = p.GetColor(i);
-			}
+			}*/
 		}
 		
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
@@ -81,17 +81,40 @@ namespace OpenRA.Graphics
 			//foreach (var mod in paletteMods)
 			//	mod.AdjustPalette(b);
 			
-			var data = new uint[MaxPalettes,256];
+			var data = new uint[256,MaxPalettes];
 			foreach (var pal in palettes)
 			{
 				var j = indices[pal.Key];
 				var c = pal.Value.Values;
 				for (var i = 0; i < 256; i++)
-					data[j,i] = c[i];
+					data[i,j] = c[i];
 			}
 	        
+			// Doesn't work
 			Texture.SetData(data);
+			/*
+			// Works
+			var foo = new Bitmap(256,MaxPalettes);
+			for (int j = 0; j < MaxPalettes; j++)
+				for (int i = 0; i < 256; i++)
+					foo.SetPixel(i,j,Color.FromArgb((int)data[i,j]));
+			
+			
+			Texture.SetData(foo);
+			*/
 			Game.Renderer.PaletteTexture = Texture;
+		}
+		
+		ITexture texture;
+		public ITexture Texture
+		{
+			get
+			{
+				if (texture == null)
+					texture = Game.Renderer.Device.CreateTexture(new Bitmap(MaxPalettes, 256));
+
+				return texture;
+			}
 		}
 	}
 }
