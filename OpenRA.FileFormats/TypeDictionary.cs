@@ -92,7 +92,7 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-	static class TypeExts
+	public static class TypeExts
 	{
 		public static IEnumerable<Type> BaseTypes( this Type t )
 		{

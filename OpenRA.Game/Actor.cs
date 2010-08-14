@@ -21,8 +21,6 @@ namespace OpenRA
 {
 	public class Actor
 	{
-		[Sync]
-		readonly TypeDictionary traits = new TypeDictionary();
 		public readonly ActorInfo Info;
 
 		public readonly World World;
@@ -191,27 +189,27 @@ namespace OpenRA
 
 		public T Trait<T>()
 		{
-			return traits.Get<T>();
+			return World.traitDict.Get<T>( this );
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return traits.GetOrDefault<T>();
+			return World.traitDict.GetOrDefault<T>( this );
 		}
 
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
-			return traits.WithInterface<T>();
+			return World.traitDict.WithInterface<T>( this );
 		}
 
 		public bool HasTrait<T>()
 		{
-			return traits.Contains<T>();
+			return World.traitDict.Contains<T>( this );
 		}
 
-		public void AddTrait( object t )
+		public void AddTrait( object trait )
 		{
-			traits.Add( t );
+			World.traitDict.Add( this, trait );
 		}
 	}
 }

@@ -45,6 +45,7 @@ namespace OpenRA
 		static void Run( string[] args )
 		{
 			Game.Initialize( new Arguments(args) );
+			GC.Collect();
 			Game.Run();
 		}
 	}
