@@ -1,5 +1,7 @@
 using System.Linq;
 using OpenRA.FileFormats;
+using System.Drawing;
+using OpenRA.Support;
 #region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
@@ -61,6 +63,44 @@ namespace OpenRA.Widgets.Delegates
 				CurrentSong = GetPrevSong();
 				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
+			
+			bg.GetWidget<LabelWidget>("TIME").GetText = () => "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F(0,0,Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
+
+			var ml = bg.GetWidget<ListBoxWidget>("MUSIC_LIST");
+			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
+			int offset = itemTemplate.Bounds.Y;
+			
+			foreach (var kv in Rules.Music)
+			{
+				var song = kv.Key;
+				if (!FileSystem.Exists(Rules.Music[song].Filename))
+					continue;
+
+				if (CurrentSong == null)
+					CurrentSong = song;
+
+				var template = itemTemplate.Clone() as LabelWidget;
+				template.Id = "SONG_{0}".F(song);
+				template.GetBackground = () => ((song == CurrentSong) ? "dialog2" : null);
+				template.OnMouseDown = mi =>
+				{
+					CurrentSong = song;
+					bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
+					return true;
+				};
+				template.Parent = ml;
+
+				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
+				template.IsVisible = () => true;
+				
+				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + Rules.Music[song].Title;
+				template.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D2}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
+
+				ml.AddChild(template);
+
+				offset += template.Bounds.Height;
+				ml.ContentHeight += template.Bounds.Height;
+			}
 		}
 		
 		string GetNextSong()

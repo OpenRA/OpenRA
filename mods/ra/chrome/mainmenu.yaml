@@ -96,15 +96,14 @@ Background@PERF_BG:
 Background@MUSIC_BG:
 	Id:MUSIC_BG
 	Delegate:MusicPlayerDelegate
-	X:WINDOW_RIGHT - 175
-	Y:WINDOW_BOTTOM - 95
-	Width: 160
-	Height: 55
+	X:WINDOW_RIGHT - WIDTH - 20
+	Y:WINDOW_BOTTOM - HEIGHT - 20
+	Width: 300
+	Height: 210
 	Visible: true
 	Children:
 		Button@BUTTON_PLAY:
 			Id:BUTTON_PLAY
-			Visible:false
 			X:50
 			Y:15
 			Width:25
@@ -120,6 +119,7 @@ Background@MUSIC_BG:
 					ImageName:play
 		Button@BUTTON_PAUSE:
 			Id:BUTTON_PAUSE
+			Visible:false
 			X:50
 			Y:15
 			Width:25
@@ -178,3 +178,52 @@ Background@MUSIC_BG:
 					Height:25
 					ImageCollection:music
 					ImageName:prev
+		Label@TIME:
+			Id:TIME
+			X:PARENT_RIGHT - WIDTH - 20
+			Y:15
+			Width:100
+			Height:25
+			Align: Right
+		ListBox@MUSIC_LIST:
+			Id:MUSIC_LIST
+			X:10
+			Y:50
+			Width:280
+			Height:120
+			Children:
+				Label@MUSIC_TEMPLATE:
+					Id:MUSIC_TEMPLATE
+					Width:PARENT_RIGHT-28
+					Height:25
+					ClickThrough:false
+					X:2
+					Y:0
+					Visible:false
+					Children:
+						Label@TITLE:
+							Id:TITLE
+							X:5
+							Width:PARENT_RIGHT - 10
+							Height:PARENT_BOTTOM
+							Align: Left
+						Label@LENGTH:
+							Id:LENGTH
+							X:5
+							Width:PARENT_RIGHT - 10
+							Height:PARENT_BOTTOM
+							Align: Right
+		Checkbox@SHUFFLE:
+			Id:SHUFFLE
+			X:15
+			Y:175
+			Width:100
+			Height:20
+			Text:Shuffle
+		Checkbox@REPEAT:
+			Id:REPEAT
+			X:120
+			Y:175
+			Width:100
+			Height:20
+			Text:Repeat

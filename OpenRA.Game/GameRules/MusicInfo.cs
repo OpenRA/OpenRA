@@ -16,7 +16,7 @@ namespace OpenRA.GameRules
 	{
 		public readonly string Filename = null;
 		public readonly string Title = null;
-		public readonly float Length = 0; // seconds
+		public readonly int Length = 0; // seconds
 
 		public MusicInfo( string key, MiniYaml value )
 		{

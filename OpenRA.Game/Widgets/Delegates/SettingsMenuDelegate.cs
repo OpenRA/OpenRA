@@ -65,14 +65,6 @@ namespace OpenRA.Widgets.Delegates
 			musicslider.OnChange += x => { Sound.MusicVolume = x; };
 			musicslider.GetOffset = () => { return Sound.MusicVolume; };
 			
-			var music = audio.GetWidget<CheckboxWidget>("MUSICPLAYER_CHECKBOX");
-			music.Checked = () => { return Game.Settings.MusicPlayer; };
-			music.OnMouseDown = mi =>
-			{
-				Game.Settings.MusicPlayer ^= true;
-				Widget.RootWidget.GetWidget("MUSIC_BG").Visible = Game.Settings.MusicPlayer;
-				return true;
-			};
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
