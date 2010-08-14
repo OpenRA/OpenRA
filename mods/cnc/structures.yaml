@@ -49,7 +49,7 @@ PROC.proxy:
 		BuildPaletteOrder: 30
 		Prerequisites: nuke
 		Owner: gdi,nod
-		Cost: 2300
+		Cost: 2000
 		Description: Tiberium Refinery
 		LongDesc: Processes raw Tiberium into useable resources
 	Building:
@@ -68,7 +68,7 @@ PROC.proxy:
 PROC:
 	Inherits: ^Building
 	Valued:
-		Cost: 2000
+		Cost: 1700
 		Description: Tiberium Refinery
 		LongDesc: Processes raw Tiberium into useable resources
 	Building:
@@ -92,7 +92,7 @@ PROC:
 		ProcessAmount: 50
 	TiberiumRefineryDockAction:
 	CustomSellValue:
-		Value: 600
+		Value: 500
 	FreeActor:
 		Actor: HARV
 		InitialActivity: Harvest
