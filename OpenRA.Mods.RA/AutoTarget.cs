@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			return inRange
 				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.Where(a => !a.HasTrait<Cloak>() || !a.Trait<Cloak>().Cloaked)
+				.Where(a => !a.HasTrait<Cloak>() || a.Trait<Cloak>().IsVisible(a,self.Owner))
 				.OrderBy(a => (a.Location - self.Location).LengthSquared)
 				.FirstOrDefault();
 		}
