@@ -93,14 +93,12 @@ namespace OpenRA.FileFormats
 			frameData = new uint[frameSize,frameSize];
 			
 			var type = new String(reader.ReadChars(4));
-			Console.WriteLine(type);
 			if (type != "FINF")
 			{
 				reader.ReadBytes(27);
 				type = new String(reader.ReadChars(4));
 			}
 			
-			Console.WriteLine(type);
 			/*var length = */reader.ReadUInt16();
 			/*var unknown4 = */reader.ReadUInt16();
 			

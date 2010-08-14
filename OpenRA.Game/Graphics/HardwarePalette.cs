@@ -52,14 +52,8 @@ namespace OpenRA.Graphics
 		
 		public void AddPalette(string name, Palette p)
 		{
-			Console.WriteLine("Adding palette "+name);
 			palettes.Add(name, p);
 			indices.Add(name, allocated++);
-		}
-		
-		public void UpdatePalette(string name, Palette p)	
-		{
-			palettes[name] = p;
 		}
 		
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)

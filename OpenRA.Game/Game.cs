@@ -37,7 +37,7 @@ namespace OpenRA
 
 		public static World world;
 		public static Viewport viewport;
-		internal static UserSettings Settings;
+		public static UserSettings Settings;
 
 		internal static OrderManager orderManager;
 

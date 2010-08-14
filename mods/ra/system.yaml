@@ -87,6 +87,7 @@ Player:
 
 World:
 	ScreenShaker:
+	ColorPickerPaletteModifier:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
 	NukePaletteEffect:

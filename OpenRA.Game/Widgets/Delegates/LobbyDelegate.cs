@@ -20,18 +20,21 @@ namespace OpenRA.Widgets.Delegates
 	public class LobbyDelegate : IWidgetDelegate
 	{
 		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
-
+		
 		Dictionary<string, string> CountryNames;
-
 		string MapUid;
 		MapStub Map;
 		
-		bool SplitPlayerPalette = false;
-		Palette BasePlayerPalette = null;
+		public static Color CurrentColorPreview1;
+		public static Color CurrentColorPreview2;
+		
 		public LobbyDelegate()
 		{
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
+			
+			CurrentColorPreview1 = Game.Settings.PlayerColor1;
+			CurrentColorPreview2 = Game.Settings.PlayerColor2;
 
 			var r = Widget.RootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
@@ -152,12 +155,6 @@ namespace OpenRA.Widgets.Delegates
 				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				return true;
 			};
-			
-			// Copy the base palette for the colorpicker
-			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
-			BasePlayerPalette = Game.world.WorldRenderer.GetPalette(info.BasePalette);
-			SplitPlayerPalette = info.SplitRamp;
-			Game.world.WorldRenderer.AddPalette("colorpicker",BasePlayerPalette);
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
@@ -173,9 +170,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
-			var c1 = ColorFromHSL(hf, sf, lf);
-			var c2 = ColorFromHSL(hf, sf, r*lf);
-			Game.world.WorldRenderer.UpdatePalette("colorpicker", new Palette(BasePlayerPalette, new PlayerColorRemap(c1, c2, SplitPlayerPalette)));
+			CurrentColorPreview1 = ColorFromHSL(hf, sf, lf);
+			CurrentColorPreview2 = ColorFromHSL(hf, sf, r*lf);
 			Game.viewport.RefreshPalette();
 		}
 		
