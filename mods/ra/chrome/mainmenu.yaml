@@ -100,7 +100,7 @@ Background@MUSIC_BG:
 	Y:WINDOW_BOTTOM - HEIGHT - 20
 	Width: 300
 	Height: 210
-	Visible: true
+	Visible: false
 	Children:
 		Button@BUTTON_PLAY:
 			Id:BUTTON_PLAY

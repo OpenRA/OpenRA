@@ -20,7 +20,7 @@ namespace OpenRA.Widgets.Delegates
 		public MusicPlayerDelegate()
 		{
 			var bg = Widget.RootWidget.GetWidget("MUSIC_BG");
-			bg.Visible = Game.Settings.MusicPlayer;
+			//bg.Visible = Game.Settings.MusicPlayer;
 			CurrentSong = GetNextSong();
 
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
