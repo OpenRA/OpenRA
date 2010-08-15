@@ -16,6 +16,7 @@ using System.Text;
 using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Editor
 {
@@ -80,11 +81,26 @@ namespace OpenRA.Editor
 //			{"wcrate","crate"},
 //			{"scrate","crate"},
 		};
-
+		
+		static Dictionary<string,Pair<Color,Color>> namedColorMapping = new Dictionary<string, Pair<Color, Color>>()
+		{
+			{"gold",Pair.New(Color.FromArgb(246,214,121),Color.FromArgb(40,32,8))},
+			{"blue",Pair.New(Color.FromArgb(226,230,246),Color.FromArgb(8,20,52))},
+			{"red",Pair.New(Color.FromArgb(255,20,0),Color.FromArgb(56,0,0))},
+			{"neutral",Pair.New(Color.FromArgb(238,238,238),Color.FromArgb(44,28,24))},
+			{"orange",Pair.New(Color.FromArgb(255,230,149),Color.FromArgb(56,0,0))},
+			{"teal",Pair.New(Color.FromArgb(93,194,165),Color.FromArgb(0,32,32))},
+			{"salmon",Pair.New(Color.FromArgb(210,153,125),Color.FromArgb(56,0,0))},
+			{"green",Pair.New(Color.FromArgb(160,240,140),Color.FromArgb(20,20,20))},
+			{"white",Pair.New(Color.FromArgb(255,255,255),Color.FromArgb(75,75,75))},
+			{"black",Pair.New(Color.FromArgb(80,80,80),Color.FromArgb(5,5,5))},
+		};
+		
 		int MapSize;
 		int ActorCount = 0;
 		Map Map = new Map();
-
+		List<string> Players = new List<string>();
+		
 		LegacyMapImporter(string filename)
 		{
 			ConvertIniMap(filename);
@@ -97,7 +113,7 @@ namespace OpenRA.Editor
 		}
 
 		enum IniMapFormat { RedAlert = 3, /* otherwise, cnc (2 variants exist, we don't care to differentiate) */ };
-
+		
 		public void ConvertIniMap(string iniFile)
 		{
 			var file = new IniFile(FileSystem.Open(iniFile));
@@ -124,17 +140,12 @@ namespace OpenRA.Editor
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
 				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
 				ReadRATrees(file);
-				// TODO: Fixme
-				//tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("ra",Map.Tileset)].First);
 			}
 			else // CNC
 			{
 				UnpackCncTileData(FileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"));
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
-
-				// TODO: Fixme
-				//tileset = new TileSet("tileSet.til","templates.ini",fileMapping[Pair.New("cnc",Map.Tileset)].First);
 			}
 
 			LoadActors(file, "STRUCTURES");
@@ -142,6 +153,9 @@ namespace OpenRA.Editor
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
 
+			foreach (var p in Players)
+				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
+			
 			var wp = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key),
@@ -355,6 +369,10 @@ namespace OpenRA.Editor
 				if (parts[0] == "")
 					parts[0] = "Neutral";
 				
+				
+				if (!Players.Contains(parts[0]))
+					Players.Add(parts[0]);
+				
 				Map.Actors.Add("Actor" + ActorCount++,
 					new ActorReference(parts[1].ToLowerInvariant())
 					{
@@ -375,6 +393,42 @@ namespace OpenRA.Editor
 				var loc = int.Parse(parts[1]);
 				Map.Smudges.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), int.Parse(parts[2])));
 			}
+		}
+		
+		void LoadPlayer(IniFile file, string section, bool isRA)
+		{			
+			var c = (section == "BadGuy") ? "red" :
+						(isRA) ? "blue" : "gold";
+			
+			var color = namedColorMapping[c];
+			
+			var pr = new PlayerReference
+			{
+				Name = section,
+				OwnsWorld = (section == "Neutral"),
+				NonCombatant = (section == "Neutral"),
+				Race = (isRA) ? ((section == "BadGuy") ? "allies" : "soviet") : ((section == "BadGuy") ? "nod" : "gdi"),
+				Color = color.First,
+				Color2 = color.Second,
+			};
+			
+			var Neutral = new List<string>(){"Neutral"};
+			foreach (var s in file.GetSection(section, true))
+			{
+				Console.WriteLine(s.Key);
+				switch(s.Key)
+				{
+					case "Credits":
+						pr.InitialCash = int.Parse(s.Value);
+					break;
+					case "Allies":
+						pr.Allies = s.Value.Split(',').Intersect(Players).Except(Neutral).ToArray();
+						pr.Enemies = s.Value.Split(',').SymmetricDifference(Players).Except(Neutral).ToArray();
+					break;
+				}
+			}
+			
+			Map.Players.Add(section, pr);
 		}
 
 		static string Truncate(string s, int maxLength)

@@ -14,14 +14,19 @@ namespace OpenRA.FileFormats
 {
 	public class PlayerReference
 	{
-		public readonly string Name;
-		public readonly string Palette;
-		public readonly string Race;
-		public readonly bool OwnsWorld = false;
-		public readonly bool NonCombatant = false;
-		public readonly Color Color = Color.FromArgb(238,238,238);
-		public readonly Color Color2 = Color.FromArgb(44,28,24);
+		public string Name;
+		public string Palette;
+		public string Race;
+		public bool OwnsWorld = false;
+		public bool NonCombatant = false;
+		public Color Color = Color.FromArgb(238,238,238);
+		public Color Color2 = Color.FromArgb(44,28,24);
 		
+		public int InitialCash = 0;
+		public string[] Allies = null;
+		public string[] Enemies = null;
+		
+		public PlayerReference() {}
 		public PlayerReference(MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
