@@ -23,8 +23,8 @@ namespace OpenRA.FileFormats
 		public Color Color2 = Color.FromArgb(44,28,24);
 		
 		public int InitialCash = 0;
-		public string[] Allies = null;
-		public string[] Enemies = null;
+		public string[] Allies = {};
+		public string[] Enemies = {};
 		
 		public PlayerReference() {}
 		public PlayerReference(MiniYaml my)

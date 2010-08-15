@@ -18,21 +18,12 @@ namespace OpenRA.Mods.RA
 
 	class DefaultShellmapScript: ILoadWorldHook, ITick
 	{		
-		Player goodguy;
-		Player greece;
 		Dictionary<string, Actor> MapActors;
 		
 		public void WorldLoaded(World w)
 		{
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
-			// Sound.PlayMusic("hell226m.aud");
-			goodguy = w.players.Values.Where(x => x.InternalName == "GoodGuy").FirstOrDefault();
-			greece = w.players.Values.Where(x => x.InternalName == "Greece").FirstOrDefault();
 			MapActors = w.WorldActor.Trait<SpawnMapActors>().MapActors;
-			
-			
-			goodguy.Stances[greece] = Stance.Enemy;
-			greece.Stances[goodguy] = Stance.Enemy;
 		}
 		
 		int ticks = 0;

@@ -95,14 +95,25 @@ namespace OpenRA
 			
 			// Add Map Players
 			int mapPlayerIndex = -1;
+			Dictionary<string, Player> MapPlayers = new Dictionary<string, Player>();
+			
 			foreach (var kv in Map.Players)
 			{
 				var player = new Player(this, kv.Value, mapPlayerIndex--);
 				AddPlayer(player);
-				
+				MapPlayers.Add(kv.Key,player);
 				if (kv.Value.OwnsWorld)
 					WorldActor.Owner = player;
 			}
+			foreach(var p in MapPlayers)
+			{
+				foreach(var q in Map.Players[p.Key].Allies)
+					p.Value.Stances[MapPlayers[q]] = Stance.Ally;
+				
+				foreach(var q in Map.Players[p.Key].Enemies)
+					p.Value.Stances[MapPlayers[q]] = Stance.Enemy;
+			}
+			
 			
 			// Add real players
 			SetLocalPlayer(Game.orderManager.Connection.LocalClientId);
@@ -112,8 +123,11 @@ namespace OpenRA
 
 			foreach (var p in players.Values)
 				foreach (var q in players.Values)
-					p.Stances[q] = Game.ChooseInitialStance(p, q);
-
+				{
+					if (!p.Stances.ContainsKey(q))
+						p.Stances[q] = Game.ChooseInitialStance(p, q);
+				}
+			
 			Timer.Time( "worldActor: {0}" );
 
 			foreach (var wlh in WorldActor.TraitsImplementing<ILoadWorldHook>())

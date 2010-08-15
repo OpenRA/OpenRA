@@ -19,23 +19,38 @@ BottomRight: 118,93
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
+		Palette:
 		Race: allies
 		OwnsWorld: True
 		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Color: 85,130,204
-		Color2: 17,33,71
+		Palette:
 		Race: allies
 		OwnsWorld: False
 		NonCombatant: False
+		Color: 255,85,130,204
+		Color2: 255,17,33,71
+		InitialCash: 0
+		Allies:
+		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
-		Color: 255,20,0
-		Color2: 56,0,0
+		Palette:
 		Race: soviet
 		OwnsWorld: False
 		NonCombatant: False
+		Color: 255,255,20,0
+		Color2: 255,56,0,0
+		InitialCash: 0
+		Allies:
+		Enemies: GoodGuy
+
 Actors:
 	Actor0: brik
 		Location: 32,43
