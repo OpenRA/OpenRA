@@ -44,15 +44,23 @@ namespace OpenRA.Widgets.Delegates
 				else
 					Game.Settings.PlayerName = name.Text;
 			};
-			name.OnEnterKey = () => { name.LoseFocus(); return true; };
-			
-			var edgeScroll = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
-			edgeScroll.Checked = () => Game.Settings.ViewportEdgeScroll;
-			edgeScroll.OnMouseDown = mi =>
-			{
-				Game.Settings.ViewportEdgeScroll ^= true;
-				return true;
-			};
+            name.OnEnterKey = () => { name.LoseFocus(); return true; };
+
+            var edgeScroll = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
+            edgeScroll.Checked = () => Game.Settings.ViewportEdgeScroll;
+            edgeScroll.OnMouseDown = mi =>
+            {
+                Game.Settings.ViewportEdgeScroll ^= true;
+                return true;
+            };
+
+            var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
+            inverseScroll.Checked = () => Game.Settings.InverseDragScroll;
+            inverseScroll.OnMouseDown = mi =>
+            {
+                Game.Settings.InverseDragScroll ^= true;
+                return true;
+            };
 						
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");

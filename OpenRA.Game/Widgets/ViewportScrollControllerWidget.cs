@@ -39,7 +39,8 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
-				Game.viewport.Scroll(Viewport.LastMousePos - mi.Location);
+                int InverseScroll = Game.Settings.InverseDragScroll ? -1 : 1;
+                Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * InverseScroll);
 				return true;
 			}
 			return false;

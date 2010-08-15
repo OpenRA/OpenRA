@@ -19,8 +19,9 @@ namespace OpenRA.GameRules
 {
 	public class UserSettings
 	{
-		// Behaviour settings
-		public bool ViewportEdgeScroll = true;
+        // Behaviour settings
+        public bool ViewportEdgeScroll = true;
+        public bool InverseDragScroll = false;
 		
 		// Debug settings
 		public bool PerfDebug = false;
