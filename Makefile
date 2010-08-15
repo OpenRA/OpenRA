@@ -155,9 +155,12 @@ OpenRA.TilesetBuilder.Form1.resources:
 tools: editor ralint seqed filex tsbuild
 all: game tools
 
+fixheader: packaging/fixheader.cs
+	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
+
 define BUILD_ASSEMBLY
 
-$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
+$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) fixheader
 	@echo CSC $$(@)
 	@$(CSC) $$($(1)_LIBS:%=-r:%) \
 		-out:$$(@) $(CSFLAGS) $$($(1)_FLAGS) \
@@ -165,6 +168,7 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
 		-t:"$$($(1)_KIND)" \
 		$$($(1)_EXTRA) \
 		$$($(1)_SRCS)
+	@mono fixheader.exe $$(@)
 endef
 
 $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
