@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
 	}
 
-	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderCursor
+	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		Actor disguisedAs;
 
@@ -33,9 +33,9 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			if (disguisedAs != null)
-				anim.ChangeImage(self.Owner == self.World.LocalPlayer
-					? GetImage(self)
-					: disguisedAs.Trait<RenderSimple>().GetImage(disguisedAs));
+				anim.ChangeImage(disguisedAs.Trait<RenderSimple>().GetImage(disguisedAs));
+			else
+				anim.ChangeImage(GetImage(self));
 
 			base.Tick(self);
 		}
@@ -57,6 +57,11 @@ namespace OpenRA.Mods.RA.Render
 		public string CursorForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Disguise" ? "deploy" : null;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return order.OrderString == "Disguise" ? "Attack" : null;
 		}
 	}
 }
