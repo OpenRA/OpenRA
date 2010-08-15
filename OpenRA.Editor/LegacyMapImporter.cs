@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using OpenRA;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
@@ -346,16 +347,21 @@ namespace OpenRA.Editor
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
-				//num=owner,type,health,location,facing,...
+				//Structures: num=owner,type,health,location,turret-facing,trigger
+				//Units: num=owner,type,health,location,facing,action,trigger
+				//Infantry: num=owner,type,health,location,subcell,action,facing,trigger
 				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[3]);
 				if (parts[0] == "")
 					parts[0] = "Neutral";
+				
 				Map.Actors.Add("Actor" + ActorCount++,
 					new ActorReference(parts[1].ToLowerInvariant())
 					{
 						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
-						new OwnerInit(parts[0])
+						new OwnerInit(parts[0]),
+						new HealthInit(float.Parse(parts[2])/256),
+						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
 					});
 			}
 		}
