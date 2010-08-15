@@ -109,6 +109,8 @@
   </unit>
   <!-- Gunboat -->
   <unit name="boat">
+    <sequence name="idle" start="0" length="32" />
+    <sequence name="turret" start="0" length="32" />
     <sequence name="left" start="0" length="32" />
     <sequence name="left-damaged" start="32" length="32" />
     <sequence name="left-critical" start="64" length="32" />

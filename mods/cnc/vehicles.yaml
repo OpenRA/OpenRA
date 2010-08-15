@@ -517,24 +517,42 @@ A10:
 BOAT:
 	Inherits: ^Ship
 	Valued:
-		Cost: 500
+		Cost: 300
 		Description: Gunboat
 	Health:
-		HP: 200
+		HP: 700
 		Armor: heavy
 	Mobile:
-		ROT: 7
-		Speed: 9
+		InitialFacing:64
+		ROT: 0
+		Speed: 8
 	RevealsShroud:
 		Range: 7
 	Turreted:
 		ROT: 7
-#	AttackTurreted:
-#		PrimaryWeapon: 2Inch
-#		SecondaryWeapon: DepthCharge
-#		PrimaryOffset: 0,-6,0,-1
+	AttackTurreted:
+		PrimaryWeapon: BoatMissile
 	RenderUnitTurreted:
 	AutoTarget:
+
+LST:
+	Inherits: ^Ship
+	Valued:
+		Cost: 300
+		Description: Landing Craft
+	Health:
+		HP: 400
+		Armor: light
+	Mobile:
+		InitialFacing:0
+		ROT: 0
+		Speed: 30
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+	Cargo:
+		Types: Infantry, Vehicle
+		Passengers: 5
 
 LTNK.Husk:
 	Inherits: ^Husk
