@@ -9,7 +9,7 @@ FACT:
 		Dimensions: 3,3
 		Capturable: true
 	Health:
-		HP: 800
+		HP: 1400
 		Armor: wood
 	RevealsShroud:
 		Range: 5
