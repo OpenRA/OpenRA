@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Render
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Disguise")
-				disguisedAs = order.TargetActor;
+				disguisedAs = order.TargetActor == self ? null : order.TargetActor;
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
