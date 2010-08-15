@@ -33,6 +33,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool MuzzleFlash = false;
 		public readonly int FireDelay = 0;
 
+		public readonly bool AlignIdleTurrets = false;
+
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
@@ -218,7 +220,7 @@ namespace OpenRA.Mods.RA
 					{
 						if (order.TargetActor != null)
 							w.Add(new FlashTarget(order.TargetActor));
-						
+
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
@@ -226,7 +228,13 @@ namespace OpenRA.Mods.RA
 					});
 			}
 			else
+			{
 				target = Target.None;
+
+				/* hack */
+				if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
+					self.Trait<Turreted>().desiredFacing = null;
+			}
 		}
 
 		public string CursorForOrder(Actor self, Order order)

@@ -330,11 +330,12 @@ MSAM:
 	AttackTurreted:
 		PrimaryWeapon: 227mm
 		SecondaryWeapon: 227mm
-		PrimaryOffset: 0,5,0,-1
+		PrimaryOffset: 0,5,0,-2
 		PrimaryLocalOffset: -4,0,0
 		SecondaryLocalOffset: 4,0,0
 		Recoil: 0
-	RenderUnitTurreted:
+		AlignIdleTurrets: true
+	RenderUnitTurretedAim:
 	AutoTarget:
 	LeavesHusk: 
 		HuskActor: MSAM.Husk
