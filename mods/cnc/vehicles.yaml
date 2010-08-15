@@ -514,6 +514,28 @@ A10:
 		Range: 3
 	-GainsExperience:
 
+BOAT:
+	Inherits: ^Ship
+	Valued:
+		Cost: 500
+		Description: Gunboat
+	Health:
+		HP: 200
+		Armor: heavy
+	Mobile:
+		ROT: 7
+		Speed: 9
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 7
+#	AttackTurreted:
+#		PrimaryWeapon: 2Inch
+#		SecondaryWeapon: DepthCharge
+#		PrimaryOffset: 0,-6,0,-1
+	RenderUnitTurreted:
+	AutoTarget:
+
 LTNK.Husk:
 	Inherits: ^Husk
 	Valued:

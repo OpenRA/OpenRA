@@ -129,6 +129,24 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 
+^Ship:
+	Category: Ship
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
+	Selectable:
+		Voice: GenericVoice
+	Targetable:
+		TargetTypes: Ground, Water
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
+
 ^Building:
 	Category: Building
 	AppearsOnRadar:
