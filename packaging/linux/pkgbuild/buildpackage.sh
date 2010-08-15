@@ -12,6 +12,9 @@ PKGVERSION=`echo $5 | sed "s/-/\\./g"`
 sed -i "s/pkgver=[0-9\\.]\+/pkgver=$PKGVERSION/" PKGBUILD
 
 makepkg --holdver
+if [ $? -ne 0 ]; then
+  exit 1
+fi
 
 PACKAGEFILE="openra-git-$PKGVERSION-1-any.pkg.tar.xz"
 

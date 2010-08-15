@@ -15,6 +15,9 @@ cp openra.spec "$6/SPECS/"
 cd "$6"
 
 rpmbuild --target noarch -bb SPECS/openra.spec
+if [ $? -ne 0 ]; then
+  exit 1
+fi
 
 cd RPMS/noarch/
 PACKAGEFILE=openra-$PKGVERSION-1.noarch.rpm
