@@ -1,14 +1,14 @@
 Selectable: True
 
-MapFormat: 2
+MapFormat: 3
 
-Title: East vs West 2 (WIP)
+Title: East vs West 2
 
 Description: 2v2 Team Map
 
 Author: Paul Chote
 
-PlayerCount: 2
+PlayerCount: 4
 
 Tileset: WINTER
 
@@ -16,7 +16,7 @@ MapSize: 96,56
 
 TopLeft: 8,8
 
-BottomRight: 88,48
+BottomRight: 84,48
 
 Players:
 	PlayerReference@Neutral:
@@ -25,272 +25,325 @@ Players:
 		Race: gdi
 		OwnsWorld: True
 		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
 
 Actors:
-	ActorReference@Actor0:
-		Id: Actor0
-		Type: split3
-		Location: 13,11
+	Actor0: split3
+		Location: 15,11
 		Owner: Neutral
-	ActorReference@Actor1:
-		Id: Actor1
-		Type: split3
-		Location: 19,11
+	Actor1: split3
+		Location: 33,18
 		Owner: Neutral
-	ActorReference@Actor2:
-		Id: Actor2
-		Type: tc05
+	Actor2: tc05
 		Location: 41,9
 		Owner: Neutral
-	ActorReference@Actor3:
-		Id: Actor3
-		Type: tc04
+	Actor3: tc04
 		Location: 47,9
 		Owner: Neutral
-	ActorReference@Actor31:
-		Id: Actor31
-		Type: t07
-		Location: 42,24
-		Owner: Neutral
-	ActorReference@Actor15:
-		Id: Actor15
-		Type: v18
+	Actor15: v18
 		Location: 34,46
 		Owner: Neutral
-	ActorReference@Actor57:
-		Id: Actor57
-		Type: v01
+	Actor57: v01
 		Location: 51,41
 		Owner: Neutral
-	ActorReference@Actor5:
-		Id: Actor5
-		Type: v03
+	Actor5: v03
 		Location: 50,46
 		Owner: Neutral
-	ActorReference@Actor70:
-		Id: Actor70
-		Type: brik
-		Location: 45,35
+	Actor93: v14
+		Location: 47,33
 		Owner: Neutral
-	ActorReference@Actor69:
-		Id: Actor69
-		Type: brik
-		Location: 47,35
+	Actor112: wood
+		Location: 48,33
 		Owner: Neutral
-	ActorReference@Actor74:
-		Id: Actor74
-		Type: tmpl
-		Location: 44,38
-		Owner: Neutral
-	ActorReference@Actor56:
-		Id: Actor56
-		Type: v02
+	Actor56: v02
 		Location: 56,44
 		Owner: Neutral
-	ActorReference@Actor11:
-		Id: Actor11
-		Type: wood
+	Actor11: wood
 		Location: 38,26
 		Owner: Neutral
-	ActorReference@Actor10:
-		Id: Actor10
-		Type: v06
+	Actor10: v06
 		Location: 38,44
 		Owner: Neutral
-	ActorReference@Actor12:
-		Id: Actor12
-		Type: v14
+	Actor12: v14
 		Location: 34,44
 		Owner: Neutral
-	ActorReference@Actor14:
-		Id: Actor14
-		Type: v18
+	Actor14: v18
 		Location: 35,46
 		Owner: Neutral
-	ActorReference@Actor13:
-		Id: Actor13
-		Type: v14
+	Actor13: v14
 		Location: 35,44
 		Owner: Neutral
-	ActorReference@Actor19:
-		Id: Actor19
-		Type: v15
+	Actor19: v15
 		Location: 34,45
 		Owner: Neutral
-	ActorReference@Actor20:
-		Id: Actor20
-		Type: v15
+	Actor20: v15
 		Location: 35,45
 		Owner: Neutral
-	ActorReference@Actor21:
-		Id: Actor21
-		Type: wood
+	Actor21: wood
 		Location: 36,43
 		Owner: Neutral
-	ActorReference@Actor22:
-		Id: Actor22
-		Type: wood
-		Location: 35,43
+	Actor133: v05
+		Location: 43,36
 		Owner: Neutral
-	ActorReference@Actor23:
-		Id: Actor23
-		Type: wood
+	Actor23: wood
 		Location: 34,43
 		Owner: Neutral
-	ActorReference@Actor24:
-		Id: Actor24
-		Type: wood
+	Actor24: wood
 		Location: 33,43
 		Owner: Neutral
-	ActorReference@Actor25:
-		Id: Actor25
-		Type: wood
+	Actor25: wood
 		Location: 33,44
 		Owner: Neutral
-	ActorReference@Actor26:
-		Id: Actor26
-		Type: wood
+	Actor26: wood
 		Location: 33,45
 		Owner: Neutral
-	ActorReference@Actor27:
-		Id: Actor27
-		Type: wood
+	Actor27: wood
 		Location: 33,46
 		Owner: Neutral
-	ActorReference@Actor28:
-		Id: Actor28
-		Type: wood
+	Actor28: wood
 		Location: 33,47
 		Owner: Neutral
-	ActorReference@Actor29:
-		Id: Actor29
-		Type: wood
+	Actor29: wood
 		Location: 34,47
 		Owner: Neutral
-	ActorReference@Actor30:
-		Id: Actor30
-		Type: wood
+	Actor30: wood
 		Location: 35,47
 		Owner: Neutral
-	ActorReference@Actor32:
-		Id: Actor32
-		Type: wood
+	Actor32: wood
 		Location: 36,47
 		Owner: Neutral
-	ActorReference@Actor33:
-		Id: Actor33
-		Type: wood
+	Actor33: wood
 		Location: 36,46
 		Owner: Neutral
-	ActorReference@Actor34:
-		Id: Actor34
-		Type: wood
+	Actor34: wood
 		Location: 36,45
 		Owner: Neutral
-	ActorReference@Actor35:
-		Id: Actor35
-		Type: wood
+	Actor35: wood
 		Location: 36,44
 		Owner: Neutral
-	ActorReference@Actor36:
-		Id: Actor36
-		Type: t15
+	Actor36: t15
 		Location: 31,41
 		Owner: Neutral
-	ActorReference@Actor37:
-		Id: Actor37
-		Type: t02
+	Actor37: t02
 		Location: 31,44
 		Owner: Neutral
-	ActorReference@Actor38:
-		Id: Actor38
-		Type: t02
+	Actor38: t02
 		Location: 32,43
 		Owner: Neutral
-	ActorReference@Actor39:
-		Id: Actor39
-		Type: t11
+	Actor39: t11
 		Location: 31,46
 		Owner: Neutral
-	ActorReference@Actor68:
-		Id: Actor68
-		Type: brik
-		Location: 48,35
-		Owner: Neutral
-	ActorReference@Actor67:
-		Id: Actor67
-		Type: brik
-		Location: 49,36
-		Owner: Neutral
-	ActorReference@Actor66:
-		Id: Actor66
-		Type: brik
-		Location: 49,35
-		Owner: Neutral
-	ActorReference@Actor59:
-		Id: Actor59
-		Type: brik
-		Location: 41,35
-		Owner: Neutral
-	ActorReference@Actor60:
-		Id: Actor60
-		Type: brik
-		Location: 42,35
-		Owner: Neutral
-	ActorReference@Actor61:
-		Id: Actor61
-		Type: brik
-		Location: 44,35
-		Owner: Neutral
-	ActorReference@Actor63:
-		Id: Actor63
-		Type: brik
-		Location: 41,34
-		Owner: Neutral
-	ActorReference@Actor64:
-		Id: Actor64
-		Type: brik
-		Location: 41,36
-		Owner: Neutral
-	ActorReference@Actor65:
-		Id: Actor65
-		Type: brik
-		Location: 49,34
-		Owner: Neutral
-	ActorReference@Actor62:
-		Id: Actor62
-		Type: brik
-		Location: 43,35
-		Owner: Neutral
-	ActorReference@Actor54:
-		Id: Actor54
-		Type: split3
+	Actor49: v18
 		Location: 44,30
 		Owner: Neutral
-	ActorReference@Actor55:
-		Id: Actor55
-		Type: split3
-		Location: 46,29
+	Actor47: v18
+		Location: 44,28
 		Owner: Neutral
-	ActorReference@Actor71:
-		Id: Actor71
-		Type: brik
+	Actor48: v18
+		Location: 44,29
+		Owner: Neutral
+	Actor101: wood
+		Location: 43,27
+		Owner: Neutral
+	Actor91: v14
+		Location: 46,32
+		Owner: Neutral
+	Actor89: v14
+		Location: 44,32
+		Owner: Neutral
+	Actor102: wood
+		Location: 44,27
+		Owner: Neutral
+	Actor103: wood
+		Location: 45,27
+		Owner: Neutral
+	Actor116: wood
 		Location: 46,35
 		Owner: Neutral
-	ActorReference@Actor72:
-		Id: Actor72
-		Type: gtwr
-		Location: 42,40
+	Actor90: v14
+		Location: 45,32
 		Owner: Neutral
-	ActorReference@Actor73:
-		Id: Actor73
-		Type: gtwr
-		Location: 48,40
+	Actor99: v14
+		Location: 47,32
+		Owner: Neutral
+	Actor94: v14
+		Location: 46,34
+		Owner: Neutral
+	Actor98: v14
+		Location: 45,33
+		Owner: Neutral
+	Actor4: split3
+		Location: 57,17
+		Owner: Neutral
+	Actor6: split3
+		Location: 76,11
+		Owner: Neutral
+	Actor7: split3
+		Location: 14,41
+		Owner: Neutral
+	Actor8: split3
+		Location: 22,42
+		Owner: Neutral
+	Actor9: split3
+		Location: 68,41
+		Owner: Neutral
+	Actor16: split3
+		Location: 76,41
+		Owner: Neutral
+	Actor17: tc05
+		Location: 33,32
+		Owner: Neutral
+	Actor18: tc04
+		Location: 54,33
+		Owner: Neutral
+	Actor31: tc02
+		Location: 56,35
+		Owner: Neutral
+	Actor40: tc03
+		Location: 36,34
+		Owner: Neutral
+	Actor41: tc04
+		Location: 32,34
+		Owner: Neutral
+	Actor42: t06
+		Location: 9,17
+		Owner: Neutral
+	Actor43: t06
+		Location: 23,8
+		Owner: Neutral
+	Actor44: t05
+		Location: 82,17
+		Owner: Neutral
+	Actor45: t10
+		Location: 68,8
+		Owner: Neutral
+	Actor111: wood
+		Location: 48,32
+		Owner: Neutral
+	Actor64: v18
+		Location: 45,30
+		Owner: Neutral
+	Actor65: v18
+		Location: 45,29
+		Owner: Neutral
+	Actor66: v18
+		Location: 45,28
+		Owner: Neutral
+	Actor115: wood
+		Location: 47,35
+		Owner: Neutral
+	Actor68: v18
+		Location: 46,29
+		Owner: Neutral
+	Actor69: v18
+		Location: 46,30
+		Owner: Neutral
+	Actor110: wood
+		Location: 48,31
+		Owner: Neutral
+	Actor108: wood
+		Location: 48,29
+		Owner: Neutral
+	Actor95: v14
+		Location: 45,34
+		Owner: Neutral
+	Actor92: v14
+		Location: 46,33
+		Owner: Neutral
+	Actor105: wood
+		Location: 47,27
+		Owner: Neutral
+	Actor104: wood
+		Location: 46,27
+		Owner: Neutral
+	Actor100: v14
+		Location: 47,34
+		Owner: Neutral
+	Actor106: wood
+		Location: 48,27
+		Owner: Neutral
+	Actor107: wood
+		Location: 48,28
+		Owner: Neutral
+	Actor96: v14
+		Location: 44,34
+		Owner: Neutral
+	Actor97: v14
+		Location: 44,33
+		Owner: Neutral
+	Actor109: wood
+		Location: 48,30
+		Owner: Neutral
+	Actor82: v18
+		Location: 47,30
+		Owner: Neutral
+	Actor83: v18
+		Location: 47,29
+		Owner: Neutral
+	Actor84: v18
+		Location: 47,28
+		Owner: Neutral
+	Actor113: wood
+		Location: 48,34
+		Owner: Neutral
+	Actor117: wood
+		Location: 45,35
+		Owner: Neutral
+	Actor114: wood
+		Location: 48,35
+		Owner: Neutral
+	Actor88: v18
+		Location: 46,28
+		Owner: Neutral
+	Actor118: wood
+		Location: 44,35
+		Owner: Neutral
+	Actor119: wood
+		Location: 43,35
+		Owner: Neutral
+	Actor120: wood
+		Location: 43,34
+		Owner: Neutral
+	Actor121: wood
+		Location: 43,33
+		Owner: Neutral
+	Actor122: wood
+		Location: 43,32
+		Owner: Neutral
+	Actor123: wood
+		Location: 43,31
+		Owner: Neutral
+	Actor124: wood
+		Location: 43,30
+		Owner: Neutral
+	Actor125: wood
+		Location: 43,29
+		Owner: Neutral
+	Actor126: wood
+		Location: 43,28
+		Owner: Neutral
+	Actor127: wood
+		Location: 44,31
+		Owner: Neutral
+	Actor128: wood
+		Location: 45,31
+		Owner: Neutral
+	Actor129: wood
+		Location: 46,31
+		Owner: Neutral
+	Actor130: wood
+		Location: 47,31
+		Owner: Neutral
+	Actor131: v06
+		Location: 47,36
 		Owner: Neutral
 
 Waypoints:
-	wp3: 17,30
-	wp2: 17,22
+	wp7: 73,33
+	wp0: 17,20
+	wp1: 73,20
+	wp6: 17,33
 
 Smudges:
 
