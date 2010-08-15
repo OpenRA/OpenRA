@@ -19,22 +19,44 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
 	}
 
-	class RenderSpy : RenderInfantry, IRenderModifier
+	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderCursor
 	{
+		Actor disguisedAs;
+
 		public RenderSpy(Actor self) : base(self) { }
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (self.Owner == self.World.LocalPlayer)
-				return r;
-
-			return r.Select(a => a.WithPalette(self.World.LocalPlayer.Palette));
+			return disguisedAs != null ? r.Select(a => a.WithPalette(disguisedAs.Owner.Palette)) : r;
 		}
 
 		public override void Tick(Actor self)
 		{
-			anim.ChangeImage(self.Owner == self.World.LocalPlayer ? GetImage(self) : "e1");
+			if (disguisedAs != null)
+				anim.ChangeImage(self.Owner == self.World.LocalPlayer
+					? GetImage(self)
+					: disguisedAs.Trait<RenderSimple>().GetImage(disguisedAs));
+
 			base.Tick(self);
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Disguise")
+				disguisedAs = order.TargetActor;
+		}
+
+		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			if (underCursor != null && underCursor.HasTrait<RenderInfantry>())
+				return new Order("Disguise", self, underCursor);
+
+			return null;
+		}
+
+		public string CursorForOrder(Actor self, Order order)
+		{
+			return order.OrderString == "Disguise" ? "deploy" : null;
 		}
 	}
 }
