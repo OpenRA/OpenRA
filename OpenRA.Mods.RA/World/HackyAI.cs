@@ -60,8 +60,8 @@ namespace OpenRA.Mods.RA
 			enabled = Game.IsHost && p != null;
 			if (enabled)
 			{
-				pq = p.PlayerActor.traits.Get<ProductionQueue>();
-				pr = p.PlayerActor.traits.Get<PlayerResources>();
+				pq = p.PlayerActor.Trait<ProductionQueue>();
+				pr = p.PlayerActor.Trait<PlayerResources>();
 			}
 		}
 
