@@ -48,7 +48,15 @@ namespace OpenRA.Mods.RA
 
 		public void GameStarted(World w)
 		{
-			p = Game.world.LocalPlayer;
+            try
+            {
+                p = Game.world.players.First(c => c.Value.PlayerName.Equals("bot")).Value;
+            }
+            catch (Exception)
+            {
+                //Could not find a bot.
+            }
+			//p = Game.world.LocalPlayer;
 			enabled = Game.IsHost && p != null;
 			if (enabled)
 			{

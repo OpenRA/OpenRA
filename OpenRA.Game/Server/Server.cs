@@ -66,7 +66,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
 			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
-
+			
 			LoadMap();	// populates the Session's slots, too.
 			
 			Log.Write("server", "Initial mods: ");
@@ -113,6 +113,8 @@ namespace OpenRA.Server
 					}
 				}
 			} ) { IsBackground = true }.Start();
+
+
 		}
 
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
@@ -454,7 +456,7 @@ namespace OpenRA.Server
 							SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
-						lobbyInfo.GlobalSettings.Map = s;	
+						lobbyInfo.GlobalSettings.Map = s;			
 						LoadMap();
 
 						foreach(var client in lobbyInfo.Clients)
