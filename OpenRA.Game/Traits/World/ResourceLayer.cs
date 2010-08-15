@@ -64,6 +64,10 @@ namespace OpenRA.Traits
 			for (int x = map.XOffset; x < map.XOffset + map.Width; x++)
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
+					// Todo: Valid terrain should be specified in the resource
+					if (!w.IsCellBuildable(new int2(x,y), false))
+						continue;
+					
 					content[x, y].type = resourceTypes.FirstOrDefault(
 						r => r.info.ResourceType == w.Map.MapResources[x, y].type);
 					if (content[x, y].type != null)

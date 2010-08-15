@@ -48,6 +48,7 @@ namespace OpenRA.Mods.RA
 					.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
 					.Cast<int2?>().FirstOrDefault();
 
+				// Todo: Valid terrain should be specified in the resource
 				if (cell != null &&
 					(resLayer.GetResource(cell.Value) == resourceType || resLayer.GetResource(cell.Value) == null) &&
 					self.World.IsCellBuildable(cell.Value, false))
