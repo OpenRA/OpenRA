@@ -15,7 +15,7 @@ namespace OpenRA.Traits
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 
-		public object Create(ActorInitializer init) { return new Turreted(init.self, this); }
+		public object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
 	public class Turreted : ITick
@@ -26,11 +26,12 @@ namespace OpenRA.Traits
 		TurretedInfo info;
 		IFacing facing;
 		
-		public Turreted(Actor self, TurretedInfo info)
+		public Turreted(ActorInitializer init, TurretedInfo info)
 		{
 			this.info = info;
 			turretFacing = info.InitialFacing;
-			facing = self.TraitOrDefault<IFacing>();
+			turretFacing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
+			facing = init.self.TraitOrDefault<IFacing>();
 		}
 
 		public void Tick( Actor self )
