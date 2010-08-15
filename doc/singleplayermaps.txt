@@ -1,0 +1,855 @@
+Chapter II
+
+Editing the .ini file
+
+by mgP <parker@telis.org>
+
+
+******************************
+
+Introduction
+
+Now that you have finished making your map with CCMap, you may wish to learn
+some things about the .ini file.
+
+Oh yeah... I almost forgot. You are probably asking, `What is an .ini file?'.
+Well, every time you save your map to your hard drive in CCMap, it saves it
+in two files. One is a file with a .map extension, which is always at 8K
+(8192 bytes). This .map file contains information on the location and type of
+all the map tiles in your mission. The other file is the .ini file, and is
+probably much more important. It saves everything else you put on your map,
+such as Tiberium, structures, infantry, units, trees, concrete walls, etc.
+The .ini file can be edited through a text editor, such as MS-DOS Edit or
+Notepad. By adding new sections to the .ini file, your mission can become
+more advanced. The computer opponent(s) can create teams of units to attack
+you at time intervals, or drop a load of engineers on a Chinook every once
+in a while. Maybe they will fire an Ion Cannon at you once you attack their
+base, or maybe launch a nuke at you when you attack their Temple of Nod.
+
+That all sounds pretty cool, huh? Well there's more. You can change the
+environment your mission is in, the size of the map you play on, the video
+and text briefings you get, and many other things. All of this is done by
+editing the .ini file. In this chapter, I'll show you how to do just that,
+and give you some examples of other things. Another thing: there is one
+drawback to the .ini file. If it exceeds 16 or 17K, you'll start to miss
+some things from your mission. Maybe some triggers will disappear, then some
+Tiberium, then some units, then...
+
+I am now going to start. Each of the following chapters is a part of the .ini
+file, and the heading of each .ini file part is the chapter name. In each, I
+will give an example of what it might look like in your .ini file. In some,
+I will also give a syntax, the order the variables for the example.
+
+******************************
+
+ALSO, IF YOU HAVE ANY QUESTIONS ABOUT ANYTHING HERE, OR ANYTHING NOT
+LISTED HERE, DO NOT EMAIL ME. INSTEAD, ASK THEM AT OUR WEB BOARD AT
+http://www.io.org/~isarog/c-c/php.cgi/~isarog/c-c/wwwboard/wwwboard2.html
+
+******************************
+
+   Table of Contents 
+     1.  BASIC 
+     2.  MAP 
+     3.  WAYPOINTS 
+     4.  [GOODGUY], [BADGUY], [NEUTRAL], [SPECIAL], [MULTI1 - MULTI6] 
+     5.  TERRAIN 
+     6.  OVERLAY 
+     7.  SMUDGE 
+     8.  UNITS 
+     9.  INFANTRY 
+     10. STRUCTURES 
+     11. BASE 
+     12. CELLTRIGGERS 
+     13. TRIGGERS 
+     14. TEAMTYPES 
+     15. BRIEFING 
+
+     16. You're done!
+
+******************************
+
+1. BASIC
+
+The BASIC section is the first part of the .ini file. This tells of the
+videos played before and after the mission, what side the player is, the
+name of the mission, and some things which are unknown.
+
+Example:
+
+[BASIC] 
+CarryOverCap=-1                            1
+CarryOverMoney=35                          2
+Intro=X                                    3
+BuildLevel=13                              4
+Theme=No Theme                             5
+Percent=30                                 6
+Player=BadGuy                              7
+Action=X                                   8
+Lose=X                                     9
+Win=X                                      10
+Brief=X                                    11
+Name=Terrorists in the Village             12
+
+Definition:
+
+1.  CarryOverCap: Unknown. 
+2.  CarryOverMoney: The amount of credits carried over from the previous
+    mission divided by 100. So 35 equals 3500 credits. However, I have found
+    this not to be the case.. I think it is the percent of credits carried
+    over from the previous mission.
+3.  Intro: The introductory video played before the mission starts. See the
+    ccmovies.txt file for valid entries. Put an 'x' for no video.
+4.  BuildLevel: Changing this number does not really affect what you can build
+    in the game. The maximum value for this number is 99. A good way to be
+    able to build most things is replace a mission far in the game with your
+    mission.
+5.  Theme: What song is playing when the mission starts. Many to choose from.
+    See the ccsongs.txt file for valid entries.
+6.  Percent: Unknown. 
+7.  Player: This is the side you will play as in your mission: 
+       GoodGuy=GDI 
+       BadGuy=Nod 
+       Neutral=Civilians 
+       Special=GDI and Nod stuff can be built by this team 
+       Multi1-Multi6=Individual teams, multiplayer teams 
+8.  Action: A video played before the mission, but after the one in Intro.
+    See the ccmovies.txt file for valid entries. Put an 'x' for no video.
+9.  Lose: The video played if you lose the mission. See the ccmovies.txt file
+    for valid entries. Put an 'x' for no video.
+10. Win: The video played if you win the mission. See the ccmovies.txt file
+    for valid entries. Put an 'x' for no video.
+11. Brief: The briefing video... Many too choose from. See the ccmovies.txt
+    file for valid entries. Put an 'x' for no video.
+12. Name: This is for Covert Operations owners only. It will show up as this
+    name and it will show up in the `New Missions' list. Command & Conquer
+    owners without Covert Ops can put a name here also to specify the name
+    of their mission.
+
+******************************
+
+2. MAP
+
+The MAP section of the .ini file tells of how big the map is going to be,
+and the environment you will be in.
+
+Example:
+
+[MAP] 
+Height=35                      1
+Width=30                       2
+X=1                            3
+Y=1                            4
+Theater=Winter                 5
+
+Definition:
+
+1.  Height: Change this number to change the height of the map in your
+    mission. 64 is the maximum, but never go above 62. If you exceed 62,
+    Antanovs and A-10s will be stuck at the border of the map when they fly
+    in from the sides / top and bottom. Also, if you exceed 63, CCMap will
+    lock up.
+2.  Width: Change this number to change the width of the map in your mission.
+    64 is the maximum, but never go above 62. If you exceed 62, Antanovs and
+    A10s will be stuck at the border of the map when they fly in from the
+    sides / top and bottom. Also, if you exceed 63, CCMap will lock up.
+3.  X: The horizontal position of the top-left corner of the map. Values
+    range from 0 - 2. A value other than 1 lets you view the extra 1 cell
+    border on a 62x62 map.
+4.  Y: The vertical position of the top-left corner of the map. Values range
+    from 0 - 2. A value other than 1 lets you view the extra 1 cell border
+    on a 62x62 cell map.
+5.  Theater: The mission environment. Choose from Desert, Temperate, or
+    Winter.
+
+Note: It is best to change the Height and the Width values of your mission
+before you actually create the mission with CCMap. This will adjust the size
+map you are creating. It is also a good idea to change the Theater value
+before you make your map. Changing theater values in the middle, or after
+you create your mission, can mess up the map.
+
+******************************
+
+3. WAYPOINTS
+
+Waypoints are used in the TeamType section. All waypoints are actually cell
+numbers, but instead of using the actual cell number, C&C will look up the
+cell number in the appropriate waypoint. There are a total of 32 waypoints,
+from 0 through 31, which you can define as you wish (as cell numbers). Most
+missions have at least 27 waypoints. But three waypoints serve a specific
+purpose:
+
+-   Waypoint 25: The yellow flare is always lit at this waypoint if
+    designated.
+-   Waypoint 26: The cell at the top left corner of the screen when the
+    mission starts. This is so you don't end up with a black screen at the
+    start of the mission, and have to go searching around a dark map until
+    you find one of your units.
+-   Waypoint 27: This waypoint is the default drop cell for Chinooks and APCs
+    if no 'Unload' command is specified.
+
+If a waypoint has a value of '-1' it is unused. 
+
+Syntax: Waypoint=Cell number it represents
+
+Example:
+
+10=1377
+^^  ^^
+1    2
+
+Definition:
+1.  10: The waypoint # 10.
+2.  1377: The cell number waypoint 10 represents.
+
+******************************
+
+4. [GOODGUY], [BADGUY], [NEUTRAL], [SPECIAL], [MULTI1 - MULTI6]
+
+The sections GOODGUY, BADGUY, NEUTRAL, SPECIAL, MULTI1 - MULTI6 are very
+important. Each of these sections tells of each side, including their allies,
+starting credits, what edge of the map reinforcements come from, and some
+unknown things.
+
+Example:
+
+[BadGuy] 
+Flaghome=0                        1
+FlagLocation=0                    2
+MaxBuilding=70                    3
+MaxUnit=150                       4
+Allies=BadGuy, Special            5
+Edge=East                         6
+Credits=70                        7
+
+Definition:
+
+1.  Flaghome: Unknown. 
+2.  FlagLocation: Unknown. 
+3.  MaxBuilding: Unknown. 
+4.  MaxUnit: Unknown. 
+5.  Allies: This tells who your allies are. They won't attack you in your
+    mission. You can have multiple entries here.
+6.  Edge: Reinforcements by APC, and Chinook come from this side of the map.
+    Hovercraft always come from the south.
+7.  Credits: This number is the number of credits this side starts with,
+    divided by 100. So the 70 equals 7000 credits.
+
+******************************
+
+5. TERRAIN
+
+The TERRAIN section has the type and location of all the terrain tiles in
+your map. CCMap will handle all this for you. It is to complicated to put
+in these entries manually, and too complicated to explain.
+
+******************************
+
+6. OVERLAY
+
+This OVERLAY section has the type and location of all the overlay tiles in
+your map. They include Tiberium, crates, sandbag walls, chainlink fences,
+concrete walls, wooden fences, and barbed wire.
+
+Syntax: Cell number=Overlay 
+
+Example:
+
+541=TI12
+ ^   ^^
+ 1   2
+
+Definition:
+
+1.  541: The cell number this overlay tile is located in. 
+2.  TI12: Tiberium with a density rating of 12. 
+
+Other overlay entries go like this: 
+
+       WCRATE: Wooden crate containing 2000 Tiberium credits. 
+       SCRATE: A steel crate containing one of the three parts to the nuke.
+       TI1: Tiberium with a density rating of 1. 
+       TI2: Tiberium with a density rating of 2. 
+       TI3: Tiberium with a density rating of 3. 
+       TI4: Tiberium with a density rating of 4. 
+       TI5: Tiberium with a density rating of 5. 
+       TI6: Tiberium with a density rating of 6. 
+       TI7: Tiberium with a density rating of 7. 
+       TI8: Tiberium with a density rating of 8. 
+       TI9: Tiberium with a density rating of 9. 
+       TI10: Tiberium with a density rating of 10. 
+       TI11: Tiberium with a density rating of 11. 
+       TI12: Tiberium with a density rating of 12. 
+       BRIK: Concrete wall. 
+       SBAG: Sandbag wall. 
+       CYCL: Chainlink fence. 
+       BARB: Barbed wire. 
+       WOOD: Wooden fence. 
+
+******************************
+
+7. SMUDGE
+
+Entries in SMUDGE are bomb craters (like the ones Adv. Guard Tower missiles
+leave in the ground after they fire) and scorch marks (like the ones on the
+ground after a nuke has hit, or when a flame tank scorches the ground).
+These craters and scorch marks do not show up in CCMap, but will appear in
+the mission. You will have to add these manually.
+
+Syntax: Cell number=Smudge mark. 
+
+Example:
+
+964=SC4
+ ^   ^
+ 1   2
+
+Definition:
+
+1.  964: The cell number this smudge is in. 
+2.  SC4: The type of smudge mark. SC1 through SC6 are scorch-marks, and CR1
+    through CR6 are bomb craters.
+
+******************************
+
+8. UNITS
+
+The UNITS section has the entries for all of the units which are on the map
+when the mission starts.
+
+Syntax: Number on list=Owner,Type of Unit,Health,Cell number,Direction,
+Action,Associated Trigger.
+
+Example:
+
+006=GoodGuy,HTNK,256,512,96,Area Guard,att1
+ ^   ^^^^^   ^^   ^   ^  ^^   ^^^^^^    ^^
+ 1     2     3    4   5   6      7      8
+
+Definition:
+
+1.  006: The number on the list of units in the units section. 
+2.  GoodGuy: Owner of the unit. Possible teams are: 
+       GoodGuy=GDI 
+       BadGuy=Nod 
+       Neutral=Civilians 
+       Special=GDI and Nod stuff can be built by this team 
+       Multi1-Multi6=Individual teams, multiplayer teams 
+3.  HTNK: What type of unit it is: a Heavy Tank (Mammoth Tank). Choose from: 
+       VICE: Viceroid 
+       FTNK: Flame Tank 
+       STNK: Stealth Tank 
+       LTNK: Light Tank 
+       MTNK: Medium Tank 
+       HTNK: Heavy Tank (Mammoth Tank) 
+       MHQ: Mobile Headquarters 
+       LST: Hovercraft 
+       MRLS: Honest John Rocket Launcher 
+       ARTY: Mobile Artillery 
+       HARV: Harvester 
+       MCV: Mobile Construction Vehicle 
+       JEEP: Humm-Vee 
+       BGGY: Nod Buggy 
+       BIKE: Recon Bike 
+       MSAM: Mobile Rocket Launcher 
+       APC: Assault Personnel Carrier (APC) 
+       BOAT: Gunboat 
+       TRIC: Triceratops 
+       TREX: Tyrannosaurus Rex 
+       RAPT: Velociraptor 
+       STEG: Stegosaurus 
+4.  256: Health of the unit. 
+       256=Maximum health. 
+       1=Basicially dead. 
+5.  512: Cell number the unit is located at. 
+6.  96: Direction the unit is facing. Choose from: 
+       0=North 
+       32=North-East 
+       64=East 
+       96=South-East 
+       128=South 
+       160=South-West 
+       192=West 
+       224=North-West 
+7.  Area Guard: Action he undertakes during the mission. Choose from: 
+       Area Guard : Guard an area of a few cells around the infantry / unit. 
+       Attack Base : Attack the enemy base (give Engineers this command to
+        take over buildings).
+       Attack Civil. : Attack all civilians. 
+       Attack Tarcom : Unknown. 
+       Attack Units : Attack the enemy units and infantry. 
+       Defend Base : Unit / Infantry will defend it's base from enemy attacks. 
+       Guard : Unit will only guard a one cell radius, and will only attack
+        units which attack it.
+       Harvest : Gather Tiberium... Harvesters only. 
+       Hunt : Will seek out enemies as long as he is alive. 
+       None : No action undertaken by the unit / infantry. 
+       Rampage : Like Attack Units, but the unit will attack targets more
+        wisely.
+       Retreat : Unknown. Maybe it has something to do with when the units
+        are attacked, they will retreat to a waypoint?
+       Return : Unknown. Maybe the same action as retreat? 
+       Sticky : The unit will stay in it's starting cell, regardless of
+        anything.
+8.  Att1: The trigger associated with the unit. Put 'None' for no trigger to
+    be associated.
+
+******************************
+
+9. INFANTRY
+
+The INFANTRY section has the entries for all the infantry on the map when
+the mission starts.
+
+Syntax: Number on list=Owner,Type of Infantry,Health,Cell number,
+Sub-Cell number,Action,Direction,Associated Trigger.
+
+Example:
+
+011=GoodGuy,RMBO,256,950,3,Hunt,64,die7 
+ ^   ^^^^^   ^^   ^   ^  ^  ^^  ^^  ^^
+ 1     2     3    4   5  6   7   8  9
+
+Definition:
+
+1.  011: Number on the list. 
+2.  GoodGuy: Owner of the infantry. Possible teams are: 
+       GoodGuy=GDI 
+       BadGuy=Nod 
+       Neutral=Civilians 
+       Special=GDI and Nod stuff can be built by this team 
+       Multi1-Multi6=Individual teams, multiplayer teams 
+3.  RMBO: Type of infantry. Choose from: 
+       RMBO: Commando 
+       DELPHI: Agent Delphi 
+       C1-C10: Civilians 
+       E1: Minigunner 
+       E2: Grenadier 
+       E3: Bazooka Troop 
+       E4: Flame-thrower Troop 
+       E5: Chemical Warrior 
+       E6: Engineer 
+4.  256: Health of the infantry. 
+       256=Maximum health. 
+       1=Basicially dead. 
+5.  950: The cell number the infantry is located at. 
+6.  3: The sub-cell number the infantry is in. 5 infantry can be in one cell,
+    thus sub-cell number values of 0 - 4.
+7.  Hunt: Action he undertakes during the mission. 
+       Area Guard : Guard an area of a few cells around the infantry / unit. 
+       Attack Base : Attack the enemy base (give Engineers this command to
+        take over buildings).
+       Attack Civil. : Attack all civilians. 
+       Attack Tarcom : Unknown. 
+       Attack Units : Attack the enemy units and infantry. 
+       Defend Base : Unit / Infantry will defend it's base from enemy attacks. 
+       Guard : Unit will only guard a one cell radius, and will only attack
+        units which attack it.
+       Harvest : Gather Tiberium... Harvesters only. 
+       Hunt : Will seek out enemies as long as he is alive. 
+       None : No action undertaken by the unit / infantry. 
+       Rampage : Like Attack Units, but the unit will attack targets more
+        wisely.
+       Retreat : Unknown. Maybe it has something to do with when the units
+        are attacked, they will retreat to a waypoint?
+       Return : Unknown. Maybe the same action as retreat? 
+       Sticky : The unit will stay in it's starting cell, regardless of
+        anything.
+8.  64: Direction which the infantry is facing. 
+       0=North 
+       64=East 
+       128=South 
+       192=West 
+9.  die7: The trigger associated with the infantry. Put `None' for no trigger
+    to be associated.
+
+******************************
+
+10. STRUCTURES
+
+The STRUCTURES section of the .ini file has the data for all the structures,
+or buildings, in the mission.
+
+Syntax: Number on list=Owner,Structure type,Health,Cell number,Direction,
+Associated Trigger.
+
+Example:
+
+021=BadGuy,AFLD,256,1668,0,Atk1
+ ^   ^^^^   ^^   ^   ^^  ^  ^^
+ 1    2     3    4    5  6   7
+
+Definition:
+
+1.  021: It's number on the list of structures in the structure section. 
+2.  BadGuy: The owner of the structure. Possible teams are: 
+       GoodGuy=GDI 
+       BadGuy=Nod 
+       Neutral=Civilians 
+       Special=GDI and Nod stuff can be built by this team 
+       Multi1-Multi6=Individual teams, multiplayer teams 
+3.  AFLD: The type of structure: an Airfield. Choose from: 
+       TMPL: Temple of Nod 
+       EYE: Advanced Communications Center 
+       WEAP: Weapons Factory 
+       GTWR: Guard Tower 
+       ATWR: Advanced Guard Tower 
+       OBLI: Obelisk of Light 
+       GUN: Gun Turret 
+       FACT: Construction Yard 
+       PROC: Tiberium Refinery 
+       SILO: Tiberium Silo 
+       HPAD: Helipad (Nod Apaches and GDI Orca pads) 
+       HQ: Communications Center 
+       SAM: Sam Site 
+       AFLD: Airstrip 
+       NUKE: Power Plant 
+       NUK2: Advanced Power Plant 
+       HOSP: Hospital 
+       BIO: Biotech Lab 
+       PYLE: Barracks 
+       HNOD: Hand of Nod 
+       ARCO: Civilian Water Pump 
+       FIX: Repair Bay 
+       MISS: Technology Center / Prison 
+       V01 - V37: Civilian Buildings 
+4.  256: The health of the structure. 
+       256=Full Health 
+       1=Basicially Dead. 
+5.  1668: The cell number the structure is in. 
+6.  0: The direction the structure is facing. For structures, this is only
+    useful with Nod Gun Turrets. Here are possible values:
+       0=North 
+       32=North-East 
+       64=East 
+       96=South-East 
+       128=South 
+       160=South-West 
+       192=West 
+       224=North-West 
+7.  Atk1: A trigger associated with the structure. Put 'None' for no trigger
+    to be associated with the structure.
+
+******************************
+
+11. BASE
+
+The BASE section defines which structures the computer is to rebuild. This
+section of the .ini file is not done by CCMap, but by a utility called
+BaseIt. It is included with CCTools, but can be downloaded off the Internet
+as a single, separate utility.
+
+Syntax: Number on list=What to Rebuild,Number 
+
+Example:
+
+013=GUN,956312320
+ ^   ^    ^^^^^
+ 1   2      3
+
+Definition:
+
+1.  13: Number on the list. 
+2.  GUN: Type of structure to rebuild. 
+3.  956312320: A strange number which defines where to rebuild the structure. 
+
+******************************
+
+12. CELLTRIGGERS
+
+CELLTRIGGERS are very unique. When you cross a certain cell, the associated
+trigger is activated. With this, you can have reinforcements arrive when you
+cross bridges, a nuke hit your base when you enter their base, and many other
+things.
+
+Syntax: Cell number=Associated Trigger 
+
+Example:
+
+2054=drop
+ ^^   ^^
+ 1    2
+
+Definition:
+
+1.  2054: The cell which must be crossed for the associated trigger to
+    activate.
+2.  drop: The associated trigger. This is actually a shortcut to any of the
+    triggers in the trigger section.
+
+******************************
+
+13. TRIGGERS
+
+The TRIGGERS section is the part of the .ini file which is probably the most
+important. This tells when reinforcements to arrive, what the mission
+objectives are, etc. It basically tells what happens when. Some triggers may
+be associated with buildings, units, and infantry, but other triggers can
+activate upon a certain amount of time passing, if something is built, if
+something is attacked or destroyed, or many other things. Some trigger
+entries may be associated to TeamType entries.
+
+Syntax: Trigger Name=Why Activated,What Happens,Counter,Who Activates
+Trigger,Associated TeamType Entry,Loop
+
+Example:
+
+SPY=Discovered,Ion Cannon,0,BadGuy,dstry,0
+ ^    ^^^^^^    ^^^^^^^^  ^   ^^    ^^^  ^
+ 1      2           3     4   5      6   7
+
+Definition:
+
+1.  SPY: The name of the trigger. These can be anything you want... 
+2.  Discovered: This is why the trigger was activated. For example, this
+    trigger would be activated if a unit associated with trigger SPY was
+    discovered by the player. Others entries are:
+       # Bldgs Dstr. : Trigger activates when the number of buildings in the
+        counter section are destroyed for the associated side.
+       # Units Dstr. : Trigger activates when the number of units in the
+        counter section are destroyed for the associated side.
+       All Destr. : Trigger activates when everything of the associated side
+        is destroyed.
+       Any : Used in association with the Cap=Win/Des=Lose variable. 
+       Attacked : Trigger activates if the associated infantry / structure /
+        unit is attacked.
+       Bldgs Destr. : Trigger activates when all buildings of the associated
+        side have been destroyed.
+       Built It : Trigger is activated when the specified structure is built.
+        See the builtit.txt file on how to use this trigger.
+       Civ. Evac. : Trigger activates when all civilians are evacuated. 
+       Credits : Trigger activates when the number of credits have been
+        reached in the counter section (credits / 10).
+       Destroyed : Trigger activates if the associated infantry / structure /
+        unit has been destroyed.
+       Discovered: Trigger activates if the associated infantry / structure /
+        unit has been discovered.
+       House Discovered : Trigger activates if the associated house (side)
+        has been seen by the player.
+       No Factories : Trigger activates if all unit / infantry producing
+        buildings have been destroyed (Nod: Hand of Nod & Airstrip; GDI:
+        Barracks & Weapons Factory) for the associated side.
+       None : Nothing activates the trigger. 
+       Player Enters : Trigger activates when the player enters the cell
+        associated in the CellTriggers section.
+       Time : Trigger activates when a certain amount of time units has
+        passed.
+       Units Destr. : Trigger activates when all units of the associated
+        side have been destroyed.
+3.  Ion Cannon: This is what happened when the trigger is activated. Other
+    entries are:
+       Airsrike : A-10 Airstrike occurs. 
+       All to Hunt : When the Trigger is activated, the associated side's
+        units & infantry go hunting for you.
+       Allow Win : Even if the Win trigger has been activated, you can not
+        complete the mission until the Allow Win trigger has been activated.
+       Autocreate : When the Trigger is activated, the computer player
+        randomly creates a team from the TeamType section.
+       Cap=Win/Des=Lose : When the buildings is captured, the mission is won.
+        If destroyed, you lose the mission. 
+       Create Team : Create the associated TeamType entry (used only with the
+        1,0,0,1,0,15,1,0,0, combo).
+       Dstry Teams : Unknown. But in one .ini file for C&C, I did see a
+        Teams entry, but no teams were listed.
+       Dstry Trig 'XXXX' : Destroys the trigger called XXXX. 
+       Dstry Trig 'YYYY' : Destroys the trigger called YYYY. 
+       Dstry Trig 'ZZZZ' : Destroys the trigger called ZZZZ. 
+       DZ at 'Z' : This lights up the yellow flare at Waypoint 25. 
+       Ion Cannon : Ion Cannon is fired. 
+       Lose : You lose the mission when the trigger is activated. 
+       None : Nothing is activated. 
+       Nuclear Missile : Nuclear Missile is fired. 
+       Production : Reproduce destroyed buildings with using BaseIt, enables
+        the associated side to create teams.
+       Reinforce. : Reinforcements via A10s, APC, Chinook, Hovercraft, or
+        rolling off the side of the screen.
+       Win : You win the mission when the trigger is activated. 
+4.  0: This is a counter. Depending on your trigger action (entry 2,
+    Discovered) it can count credits, time, number of buildings destroyed,
+    and represent what structure is used with the Build It trigger.
+5.  BadGuy: Who activates the trigger. 
+6.  dstry: TeamType entry associated with the trigger. Put 'None' for no
+    association.
+7.  0: How many times the trigger is activated. 
+       0=Once. 
+       1 or 2=Trigger repeats once entry 4 (the counter) is reached again. 
+
+******************************
+
+14. TEAMTYPES
+
+TEAMTYPE entries are hard to understand... they are the entries which were
+associated at the end of the Trigger entries. They tell specifically what the
+Chinooks drop off, when the Chinooks come in, when APCs drop off, when APCs
+come in, when the computer opponent creates teams of units, when A-10
+Airstrikes arrive, and when reinforcements come in off the side of the
+screen.
+
+Syntax: TeamType Name=Team Owner,Number Combo,Number of Units,Units and
+Quantity,Number of Actions,Actions.
+
+Example:
+
+atck=GoodGuy,1,0,0,1,0,15,1,0,0,2,MTNK:2,RMBO:1,2,Move:5,Attack Base:80,0,0
+ ^^    ^^^   ^^^^^^^^^^^^^^^^^^ ^  ^^^^^^^^^^^  ^  ^^^^^^^^^^^^^^^^^^^
+ 1      2             3         4       5       6           7
+
+Definition:
+
+1.  atck: The TeamType name, as associated to the trigger entries. 
+2.  GoodGuy: The 'owner' of the team. Again, possible values are: 
+       GoodGuy=GDI 
+       BadGuy=Nod 
+       Neutral=Civilians 
+       Special=GDI and Nod stuff can be built by this team 
+       Multi1-Multi6=Individual teams, multiplayer teams 
+3.  1,0,0,1,0,15,1,0,0,: The number combo. This defines what will happen in
+    this TeamType entry. Use the following templates:
+       1,0,0,1,0,15,1,0,0, or 0,0,0,0,0,15,0,0,0,: Create a team of units. 
+       0,0,0,0,0,7,0,0,0,: Reinforce by hovercraft, APC, Chinook, or by
+        rolling off the side of the screen.
+       1,0,0,0,0,7,0,0,0,: Reinforce by A10 Airstrike, or by reinforcements
+        rolling off the side of the screen. See the text file on how to do
+        that.
+4.  2: Number of units / infantry types in the team (not the total quantity). 
+5.  MTNK:2,RMBO:1,: The units / infantry in the team and their quantity. We
+    know what the MTNK, and RMBO stand for (if you don't, see sections UNITS
+    and INFANTRY). Notice that each one is followed by a colon, then a
+    number. The number after the colon is the quantity of the preceding
+    unit / infantry in the TeamType. So this entry creates 2 Medium tanks and
+    1 Commando.
+6.  2: Number of actions which they will under take. Here they move to
+    waypoint 5 then attack your base for 80 time units. The last action
+    entry should end with ,0,0. Other actions are:
+       Move : The units / infantry go to the designated waypoint. The
+        waypoint is the number after the colon.
+       Loop : Used at the end of all the actions. It will make the actions
+        loop over and over. Use a 1 after the colon.
+       Unload : For Chinooks, APCs, and Hovercraft, this command will have
+        them unload their cargo at the waypoint they are at. First give them
+        a move command to a specific waypoint, then an unload command with
+        the waypoint (i.e. Move:7,Unload:7)
+       Attack Units : Attacks enemy units. The number after the colon is for
+        how long the units are to attack.
+       Attack Base : Attacks enemy base (use this command for engineers
+        unloading off of Chinooks, APCs of Hovercraft to have them attempt
+        to capture buildings. Commandos do not use their C4 when given this
+        command). The number after the colon is for how long the units are
+        to attack.
+
+******************************
+
+15. BRIEFING
+
+The BRIEFING section is for Covert Operations only. This is the text briefing
+given every time you choose a new mission from the New Missions menu, and
+the same text given when you Restate your mission objectives.
+
+Every mission briefing may contain 304 characters. You may split the 304
+characters into 4 lines (76 per line), or have many more lines, but with
+less characters per line.
+
+Here is an example of a BRIEFING section: 
+
+       [BRIEFING] 
+       1=This is an example mission briefing for this document. 
+       2=Don't put this briefing in your real mission or you're stupid. 
+       3=If you do, consult your psychiatrist immediately: you are insane. 
+       4=But don't worry, he can help you. 
+
+For those of you without Covert Ops, below is how you make your mission
+briefing. First, remember that set of letters and numbers which are the
+prefix to the .ini and .bin files of your mission? For example, say that
+mine were SCG12EA. Now, create a new file called MISSION.INI in the
+Command & Conquer directory. Edit it through a DOS text editor. I would put
+mine to look like this:
+
+       [SCG12EA] 
+       1=This is an example mission briefing for this document. 
+       2=Don't put this briefing in your real mission or you're stupid. 
+       3=If you do, consult your psychiatrist immediately: you are insane. 
+       4=But don't worry, he can help you. 
+
+Of course, your mission briefing may look (well, I hope it does) much
+different then this one. Most likely the text and the combo of letters and
+numbers at the top.
+
+******************************
+
+16. You're done!
+
+Hope this gives you a good idea how to edit your .ini file. If you still
+don't understand some things (or maybe a lot of things) visit our WebBoard
+and ask around. It's at
+http://www.io.org/~isarog/c-c/php.cgi/~isarog/c-c/wwwboard/wwwboard2.html.
+
+===============================================================================
+                Copyright (C) 1996 Mark Smeltzer aka WarZone
+==============================================================================
+                          Built It Trigger FAQ
+
+[1-1] Reasons why you would want to use it
+[1-2] A thorough explaination of how to use it
+[1-3] An advertisement of sorts for...The Ultimate C&C Startup Program!
+      *** Note: This is freeware! ***
+==============================================================================
+[1-1] Reasons why you would want to use the "Built It" trigger:
+
+* suppose you want the AI to be able to start production when the "player"
+  creates a specific building (ex. a comm. centre)
+* suppose that when a guard tower (etc.) is built you want a bunch of units
+  to attack
+* suppose you want reinforcements to come when the "player" build an
+  adavanced comm. center
+* suppose computer rebuilds its temple then the "player" gets reinforced
+* and there are hundreds more!
+==============================================================================
+[1-2] A thorough explaination of the "Built It" trigger:
+*** Note: this is the complicated part ***
+
+Here's the format:
+
+aaaa=Built It,bbbb,cccc,dddd,eeee,ffff
+ex.= rein=Built It,Reinforce.,0,GoodGuy,rein1,0
+
+aaaa= The name of the trigger (whatever you want here)
+bbbb= the action the will occur when the structure is built
+cccc= This is a number value that represents the sturcture to be rebuilt
+
+ Here are the values:
+ TMPL = 20
+ EYE  = 21
+ WEAP = 0
+ GTWR = 1
+ ATWR = 2
+ OBLI = 3
+ GUN  = 5
+ FACT = 6
+ PROC = 7
+ SILO = 8
+ HPAD = 9
+ HQ   = 4
+ SAM  = 10
+ AFLD = 11
+ NUKE = 12
+ NUK2 = 13
+ PYLE = 15
+ HAND = 19
+ FIX  = 17
+ Sandbag Wall    = 60 *
+ Chainlink Fence = 61 *
+ Concrete Wall   = 62 *
+ Barbed Wire     = 63 *
+ Wooden Fence    = 64 *
+ * I haven't tested these...but the numbers are right.
+
+dddd= which side builds the sturctures that activates the action
+      *** this can be the computer ***
+ Possible Values Are:
+ GoodGuy BadGuy Special Neutral Muilt1 - Muilt6
+eeee= the teamtype to build/reinforce id the action is Reinforce. or
+      Create Team
+ffff= specifies the trigger to loop
+ 0 = don't loop
+ < 0 = loop (1 to 9) * 
+ * not sure what the difference in behavior between these numbers's is
