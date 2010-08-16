@@ -257,3 +257,15 @@ Container@ROOT:
 							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Instant Charge Time (Special Powers)
+		Background@FMVPLAYER:
+			Id:FMVPLAYER
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+			Visible: false
+			Children:
+				VqaPlayer:
+					Id:PLAYER
+					X:(WINDOW_RIGHT - WIDTH)/2
+					Y:(WINDOW_BOTTOM - HEIGHT)/2
+					Width:640
+					Height:400

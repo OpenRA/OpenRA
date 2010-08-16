@@ -149,8 +149,13 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
+		// Will do bad things in multiplayer games
+		public bool DisableTick = false;
 		public void Tick()
 		{
+			if (DisableTick)
+				return;
+			
 			Timer.Time("----World Tick");
 
 			actors.DoTimed( x => x.Tick(), "expensive actor tick: {0} ({1:0.000})", 0.001 );

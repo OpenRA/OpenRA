@@ -27,6 +27,8 @@ namespace OpenRA.Widgets
 		bool stopped;
 		bool paused;
 		
+		Action OnComplete;
+		
 		public bool Paused { get { return paused; } }
 		
 		public bool DrawOverlay = true;
@@ -38,7 +40,8 @@ namespace OpenRA.Widgets
 			stopped = true;
 			paused = true;
 			Sound.StopVideo();
-
+			OnComplete = () => {};
+			
 			cachedVideo = filename;
 			video = new VqaReader(FileSystem.Open(filename));
 			
@@ -96,9 +99,15 @@ namespace OpenRA.Widgets
 		
 		public void Play()
 		{
+			PlayThen(() => {});	
+		}
+		
+		public void PlayThen(Action after)
+		{
 			if (video == null)
 				return;
 			
+			OnComplete = after;
 			if (stopped)
 				Sound.PlayVideo(video.AudioData);
 			else
@@ -126,6 +135,7 @@ namespace OpenRA.Widgets
 			Sound.StopVideo();
 			video.Reset();
 			videoSprite.sheet.Texture.SetData(video.FrameData);
+			OnComplete();
 		}
 	}
 }
