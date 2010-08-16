@@ -18,6 +18,10 @@ namespace OpenRA.Network
 	{
 		public static void ProcessOrder( World world, int clientId, Order order )
 		{
+			// Drop exploiting orders
+			if (order.Subject != null && order.Subject.Owner != world.players[clientId])
+				return;
+			
 			switch( order.OrderString )
 			{
 			case "Chat":
