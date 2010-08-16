@@ -97,6 +97,19 @@ namespace OpenRA.Widgets
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, "chrome", videoSize);
 		}
 		
+		public override bool HandleKeyPressInner(KeyInput e)
+		{
+			if (e.Event == KeyInputEvent.Down)
+			{
+				if (e.KeyChar == 27) // Escape
+				{
+					Stop();
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		public void Play()
 		{
 			PlayThen(() => {});	

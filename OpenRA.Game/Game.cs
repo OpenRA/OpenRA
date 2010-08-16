@@ -390,9 +390,11 @@ namespace OpenRA
 			orderManager.StartGame();
 		}
 
-		public static event Action OnGameStart = () => { };
+		public static event Action OnGameStart = () => {};
+		public static event Action BeforeGameStart = () => {};
 		internal static void StartGame()
 		{
+			BeforeGameStart();
 			LoadMap(LobbyInfo.GlobalSettings.Map);
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;

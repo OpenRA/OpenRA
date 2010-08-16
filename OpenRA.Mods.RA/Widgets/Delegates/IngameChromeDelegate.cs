@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
-			Game.OnGameStart += () => r.OpenWindow("INGAME_ROOT");
+			Game.BeforeGameStart += () => r.OpenWindow("INGAME_ROOT");
 			Game.OnGameStart += () => gameRoot.GetWidget<RadarBinWidget>("INGAME_RADAR_BIN").SetWorld(Game.world);
 
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
