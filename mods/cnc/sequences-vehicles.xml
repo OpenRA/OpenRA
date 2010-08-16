@@ -105,7 +105,7 @@
   </unit>
   <!-- Hovercraft -->
   <unit name="lst">
-    <sequence name="idle" start="0" facings="4" />
+    <sequence name="idle" start="0" facings="1" />
   </unit>
   <!-- Gunboat -->
   <unit name="boat">

@@ -525,8 +525,8 @@ BOAT:
 		Armor: heavy
 	Mobile:
 		InitialFacing:64
-		ROT: 0
-		Speed: 8
+		ROT: 4
+		Speed: 2
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -541,13 +541,16 @@ LST:
 	Valued:
 		Cost: 300
 		Description: Landing Craft
+	Mobile:
+		Crushes: crate
+		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
+		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
+		InitialFacing:0
+		ROT: 4
+		Speed: 30
 	Health:
 		HP: 400
 		Armor: light
-	Mobile:
-		InitialFacing:0
-		ROT: 0
-		Speed: 30
 	RevealsShroud:
 		Range: 7
 	RenderUnit:

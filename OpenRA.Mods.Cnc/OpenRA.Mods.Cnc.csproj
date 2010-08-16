@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TiberiumRefineryDockAction.cs" />
     <Compile Include="DeadBuildingState.cs" />
+    <Compile Include="Missions\Gdi01Script.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -91,4 +92,7 @@ copy "$(TargetPath)" "$(SolutionDir)mods/cnc/"
 cd "$(SolutionDir)"
 ralint cnc</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Missions\" />
+  </ItemGroup>
 </Project>

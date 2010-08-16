@@ -1,0 +1,415 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: GDI 01
+
+Description: Describe your map here
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+TopLeft: 35,39
+
+BottomRight: 62,62
+
+Players:
+	PlayerReference@BadGuy:
+		Name: BadGuy
+		Palette:
+		Race: nod
+		OwnsWorld: False
+		NonCombatant: False
+		Color: 255,255,20,0
+		Color2: 255,56,0,0
+		InitialCash: 0
+		Allies: BadGuy
+		Enemies: GoodGuy
+	PlayerReference@GoodGuy:
+		Name: GoodGuy
+		Palette:
+		Race: gdi
+		OwnsWorld: False
+		NonCombatant: False
+		Color: 255,246,214,121
+		Color2: 255,40,32,8
+		InitialCash: 20
+		Allies: GoodGuy
+		Enemies: BadGuy
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: sbag
+		Location: 48,55
+		Owner: Neutral
+	Actor1: sbag
+		Location: 47,55
+		Owner: Neutral
+	Actor2: sbag
+		Location: 49,54
+		Owner: Neutral
+	Actor3: sbag
+		Location: 48,54
+		Owner: Neutral
+	Actor4: sbag
+		Location: 60,37
+		Owner: Neutral
+	Actor5: sbag
+		Location: 59,37
+		Owner: Neutral
+	Actor6: sbag
+		Location: 58,37
+		Owner: Neutral
+	Actor7: sbag
+		Location: 57,37
+		Owner: Neutral
+	Actor8: sbag
+		Location: 53,37
+		Owner: Neutral
+	Actor9: sbag
+		Location: 52,37
+		Owner: Neutral
+	Actor10: sbag
+		Location: 51,37
+		Owner: Neutral
+	Actor11: sbag
+		Location: 50,37
+		Owner: Neutral
+	Actor12: sbag
+		Location: 49,37
+		Owner: Neutral
+	Actor13: sbag
+		Location: 48,37
+		Owner: Neutral
+	Actor14: sbag
+		Location: 47,37
+		Owner: Neutral
+	Actor15: sbag
+		Location: 45,37
+		Owner: Neutral
+	Actor16: sbag
+		Location: 44,37
+		Owner: Neutral
+	Actor17: sbag
+		Location: 43,37
+		Owner: Neutral
+	Actor18: sbag
+		Location: 42,37
+		Owner: Neutral
+	Actor19: sbag
+		Location: 60,36
+		Owner: Neutral
+	Actor20: sbag
+		Location: 47,36
+		Owner: Neutral
+	Actor21: sbag
+		Location: 42,36
+		Owner: Neutral
+	Actor22: sbag
+		Location: 60,35
+		Owner: Neutral
+	Actor23: sbag
+		Location: 60,34
+		Owner: Neutral
+	Actor24: sbag
+		Location: 47,34
+		Owner: Neutral
+	Actor25: sbag
+		Location: 60,33
+		Owner: Neutral
+	Actor26: sbag
+		Location: 47,33
+		Owner: Neutral
+	Actor27: sbag
+		Location: 60,32
+		Owner: Neutral
+	Actor28: sbag
+		Location: 47,32
+		Owner: Neutral
+	Actor29: sbag
+		Location: 60,31
+		Owner: Neutral
+	Actor30: sbag
+		Location: 59,31
+		Owner: Neutral
+	Actor31: sbag
+		Location: 58,31
+		Owner: Neutral
+	Actor32: sbag
+		Location: 57,31
+		Owner: Neutral
+	Actor33: sbag
+		Location: 56,31
+		Owner: Neutral
+	Actor34: sbag
+		Location: 55,31
+		Owner: Neutral
+	Actor35: sbag
+		Location: 54,31
+		Owner: Neutral
+	Actor36: sbag
+		Location: 52,31
+		Owner: Neutral
+	Actor37: sbag
+		Location: 51,31
+		Owner: Neutral
+	Actor38: sbag
+		Location: 50,31
+		Owner: Neutral
+	Actor39: sbag
+		Location: 49,31
+		Owner: Neutral
+	Actor40: sbag
+		Location: 48,31
+		Owner: Neutral
+	Actor41: sbag
+		Location: 47,31
+		Owner: Neutral
+	Actor42: tc01
+		Location: 59,39
+		Owner: Neutral
+	Actor43: tc05
+		Location: 31,47
+		Owner: Neutral
+	Actor44: tc02
+		Location: 31,44
+		Owner: Neutral
+	Actor45: tc02
+		Location: 33,31
+		Owner: Neutral
+	Actor46: t01
+		Location: 32,31
+		Owner: Neutral
+	Actor47: tc02
+		Location: 55,44
+		Owner: Neutral
+	Actor48: tc02
+		Location: 31,37
+		Owner: Neutral
+	Actor49: tc04
+		Location: 37,34
+		Owner: Neutral
+	Actor50: tc05
+		Location: 31,34
+		Owner: Neutral
+	Actor51: t05
+		Location: 46,31
+		Owner: Neutral
+	Actor52: t06
+		Location: 43,35
+		Owner: Neutral
+	Actor53: t06
+		Location: 40,37
+		Owner: Neutral
+	Actor54: t07
+		Location: 41,36
+		Owner: Neutral
+	Actor55: t07
+		Location: 59,35
+		Owner: Neutral
+	Actor56: t07
+		Location: 48,31
+		Owner: Neutral
+	Actor57: t16
+		Location: 49,32
+		Owner: Neutral
+	Actor58: t17
+		Location: 49,31
+		Owner: Neutral
+	Actor59: tc01
+		Location: 58,31
+		Owner: Neutral
+	Actor60: tc01
+		Location: 60,37
+		Owner: Neutral
+	Actor61: tc02
+		Location: 48,39
+		Owner: Neutral
+	Actor62: t01
+		Location: 48,37
+		Owner: Neutral
+	Actor63: t06
+		Location: 41,52
+		Owner: Neutral
+	Actor64: t06
+		Location: 40,54
+		Owner: Neutral
+	Actor65: tc01
+		Location: 46,50
+		Owner: Neutral
+	Actor66: tc01
+		Location: 42,41
+		Owner: Neutral
+	Actor67: tc05
+		Location: 45,40
+		Owner: Neutral
+	Actor68: tc04
+		Location: 42,43
+		Owner: Neutral
+	Actor69: tc02
+		Location: 44,47
+		Owner: Neutral
+	Actor70: t02
+		Location: 45,44
+		Owner: Neutral
+	Actor71: t01
+		Location: 44,46
+		Owner: Neutral
+	Actor72: t07
+		Location: 44,44
+		Owner: Neutral
+	Actor73: t01
+		Location: 47,46
+		Owner: Neutral
+	Actor74: t16
+		Location: 45,50
+		Owner: Neutral
+	Actor75: tc02
+		Location: 48,47
+		Owner: Neutral
+	Actor76: t01
+		Location: 49,48
+		Owner: Neutral
+	Actor77: t01
+		Location: 56,45
+		Owner: Neutral
+	Actor78: tc05
+		Location: 56,41
+		Owner: Neutral
+	Actor79: tc04
+		Location: 58,45
+		Owner: Neutral
+	Actor80: t16
+		Location: 57,45
+		Owner: Neutral
+	Actor81: t01
+		Location: 39,51
+		Owner: Neutral
+	Actor82: t02
+		Location: 39,48
+		Owner: Neutral
+	Actor83: gun
+		Location: 46,55
+		Owner: BadGuy
+		Health: 0.5
+		Facing: 160
+	Actor84: gun
+		Location: 41,55
+		Owner: BadGuy
+		Health: 0.5
+		Facing: 160
+	Actor85: gun
+		Location: 49,55
+		Owner: BadGuy
+		Health: 0.1875
+		Facing: 160
+	Actor86: mcv
+		Location: 56,52
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	gunboat: boat
+		Location: 53,59
+		Owner: GoodGuy
+		Health: 1
+		Facing: 64
+	Actor88: e1
+		Location: 56,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor89: e1
+		Location: 56,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor90: e1
+		Location: 56,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor91: e1
+		Location: 56,55
+		Owner: GoodGuy
+		Health: 1
+		Facing: 0
+	Actor92: e1
+		Location: 57,45
+		Owner: BadGuy
+		Health: 1
+		Facing: 160
+	Actor93: e1
+		Location: 56,41
+		Owner: BadGuy
+		Health: 1
+		Facing: 192
+	Actor94: e1
+		Location: 48,41
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+	Actor95: e1
+		Location: 59,45
+		Owner: BadGuy
+		Health: 1
+		Facing: 160
+	Actor96: e1
+		Location: 46,50
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+	Actor97: e1
+		Location: 48,47
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+	Actor98: e1
+		Location: 38,43
+		Owner: BadGuy
+		Health: 1
+		Facing: 128
+	Actor99: e1
+		Location: 38,43
+		Owner: BadGuy
+		Health: 1
+		Facing: 128
+	Actor100: e1
+		Location: 48,41
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+	Actor101: e1
+		Location: 41,39
+		Owner: BadGuy
+		Health: 1
+		Facing: 96
+
+Waypoints:
+	spawn3: 58,53
+	spawn2: 52,55
+	spawn1: 38,55
+	spawn0: 37,46
+
+Smudges:
+
+Rules:
+	World:
+		LocalPlayerFromMap:
+		-CreateMPPlayers:
+		-SpawnMPUnits:
+		Gdi01Script:

@@ -17,6 +17,7 @@ Packages:
 	mods/cnc/packages/desert.mix
 	~mods/cnc/packages/movies-gdi.mix
 	~mods/cnc/packages/movies-nod.mix
+	~mods/cnc/packages/scores.mix
 
 Rules:
 	mods/cnc/defaults.yaml:		Basic stuff
@@ -58,6 +59,9 @@ Movies:
 	
 Voices:
 	mods/cnc/voices.yaml:
+
+Music:
+	mods/cnc/music.yaml
 
 TileSets:
 	mods/cnc/tileset-des.yaml: Desert
