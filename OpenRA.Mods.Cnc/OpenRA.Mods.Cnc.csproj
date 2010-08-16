@@ -60,6 +60,7 @@
     <Compile Include="TiberiumRefineryDockAction.cs" />
     <Compile Include="DeadBuildingState.cs" />
     <Compile Include="Missions\Gdi01Script.cs" />
+    <Compile Include="RenderGunboat.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

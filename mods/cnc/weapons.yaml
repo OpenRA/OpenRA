@@ -382,6 +382,8 @@ MachineGun:
 BoatMissile: 
 	ROF: 35
 	Range: 8
+	Burst: 6
+	BurstDelay: 7
 	Report: ROCKET2
 	Missile:
 		Arm: 5
@@ -401,7 +403,7 @@ BoatMissile:
 		Explosion: 5
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 10
 
 Tomahawk: 
 	ROF: 40
