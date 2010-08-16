@@ -18,14 +18,14 @@ namespace OpenRA.Mods.RA
 
 	public class SpawnMapActors : IGameStarted
 	{
-		public Dictionary<string, Actor> MapActors = new Dictionary<string, Actor>();
+		public Dictionary<string, Actor> Actors = new Dictionary<string, Actor>();
 
 		public void GameStarted(World world)
 		{
 			Game.skipMakeAnims = true;		// rude hack
 
 			foreach (var actorReference in world.Map.Actors)
-				MapActors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, actorReference.Value.InitDict);
+				Actors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, actorReference.Value.InitDict);
 
 			Game.skipMakeAnims = false;
 		}

@@ -18,12 +18,12 @@ namespace OpenRA.Mods.RA
 
 	class DefaultShellmapScript: ILoadWorldHook, ITick
 	{		
-		Dictionary<string, Actor> MapActors;
+		Dictionary<string, Actor> Actors;
 		
 		public void WorldLoaded(World w)
 		{
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
-			MapActors = w.WorldActor.Trait<SpawnMapActors>().MapActors;
+			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 		}
 		
 		int ticks = 0;
@@ -31,15 +31,15 @@ namespace OpenRA.Mods.RA
 		{
 			if (ticks == 250)
 			{
-				MapActors["pdox"].Trait<Chronosphere>().Teleport(MapActors["ca1"], new int2(90, 70));
-				MapActors["pdox"].Trait<Chronosphere>().Teleport(MapActors["ca2"], new int2(92, 71));
+				Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca1"], new int2(90, 70));
+				Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca2"], new int2(92, 71));
 			}
 			if (ticks == 100)
-				MapActors["mslo1"].Trait<NukeSilo>().Attack(new int2(96,53));
+				Actors["mslo1"].Trait<NukeSilo>().Attack(new int2(96,53));
 			if (ticks == 110)
-				MapActors["mslo2"].Trait<NukeSilo>().Attack(new int2(92,53));
+				Actors["mslo2"].Trait<NukeSilo>().Attack(new int2(92,53));
 			if (ticks == 120)
-				MapActors["mslo3"].Trait<NukeSilo>().Attack(new int2(94,50));
+				Actors["mslo3"].Trait<NukeSilo>().Attack(new int2(94,50));
 			
 			ticks++;
 		}

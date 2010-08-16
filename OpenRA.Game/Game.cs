@@ -250,6 +250,7 @@ namespace OpenRA
 
 		public static event Action ConnectionStateChanged = () => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
+		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 		
 		static void Tick()
 		{

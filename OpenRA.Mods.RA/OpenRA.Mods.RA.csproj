@@ -185,7 +185,6 @@
     <Compile Include="SelfHealing.cs" />
     <Compile Include="ShroudPalette.cs" />
     <Compile Include="SupportPowers\SonarPulsePower.cs" />
-    <Compile Include="SpawnDefaultUnits.cs" />
     <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Spy.cs" />
     <Compile Include="SupportPowers\SpyPlanePower.cs" />
@@ -235,6 +234,10 @@
     <Compile Include="ColorPickerPaletteModifier.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="TargetableCloaked.cs" />
+    <Compile Include="SpawnMPUnits.cs" />
+    <Compile Include="CreateMapPlayers.cs" />
+    <Compile Include="CreateMPPlayers.cs" />
+    <Compile Include="LocalPlayerFromMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

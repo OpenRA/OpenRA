@@ -161,7 +161,8 @@ namespace OpenRA.Traits
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface ILoadWorldHook { void WorldLoaded(World w); }
 	public interface IGameStarted { void GameStarted(World w); }
-
+	public interface ICreatePlayers { void CreatePlayers(World w); }
+	
 	public interface IActivity
 	{
 		IActivity NextActivity { get; set; }

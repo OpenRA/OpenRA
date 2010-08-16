@@ -1235,4 +1235,5 @@ Smudges:
 Rules:
 	World:
 		DefaultShellmapScript:
-
+		-CreateMPPlayers:
+		-SpawnMPUnits:

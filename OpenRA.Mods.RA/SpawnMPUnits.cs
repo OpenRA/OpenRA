@@ -16,12 +16,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SpawnDefaultUnitsInfo : TraitInfo<SpawnDefaultUnits>
+	class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>
 	{
 		public readonly int InitialExploreRange = 5;
 	}
 
-	class SpawnDefaultUnits : IGameStarted
+	class SpawnMPUnits : IGameStarted
 	{
 		public void GameStarted(World world)
 		{
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 
 			if (p == p.World.LocalPlayer || p.Stances[p.World.LocalPlayer] == Stance.Ally)
 				p.World.WorldActor.Trait<Shroud>().Explore(p.World, sp,
-					p.World.WorldActor.Info.Traits.Get<SpawnDefaultUnitsInfo>().InitialExploreRange);
+					p.World.WorldActor.Info.Traits.Get<SpawnMPUnitsInfo>().InitialExploreRange);
 		}
 
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)

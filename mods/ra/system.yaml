@@ -171,8 +171,10 @@ World:
 		Type:Crater
 		Types:cr1,cr2,cr3,cr4,cr5,cr6
 		Depths:5,5,5,5,5,5
+	CreateMapPlayers:
 	SpawnMapActors:
-	SpawnDefaultUnits:
+	CreateMPPlayers:
+	SpawnMPUnits:
 	EvaAlerts:
 	SpatialBins:
 		BinSize: 4
