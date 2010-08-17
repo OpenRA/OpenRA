@@ -2,13 +2,13 @@ Selectable: True
 
 MapFormat: 3
 
-Title: GDI 01
+Title: (null)
 
 Description: Describe your map here
 
 Author: Westwood Studios
 
-PlayerCount: 4
+PlayerCount: 6
 
 Tileset: TEMPERAT
 
@@ -308,98 +308,133 @@ Actors:
 		Owner: BadGuy
 		Health: 0.5
 		Facing: 160
+		ActorStance: None
 	Actor84: gun
 		Location: 41,55
 		Owner: BadGuy
 		Health: 0.5
 		Facing: 160
+		ActorStance: None
 	Actor85: gun
 		Location: 49,55
 		Owner: BadGuy
 		Health: 0.1875
 		Facing: 160
+		ActorStance: None
 	Actor86: mcv
-		Location: 56,52
+		Location: 56,53
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
-	gunboat: boat
+		ActorStance: Guard
+	Actor87: boat
 		Location: 53,59
 		Owner: GoodGuy
 		Health: 1
-		Facing: 64
+		Facing: 192
+		ActorStance: Hunt
 	Actor88: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
+		ActorStance: Guard
+		Subcell: 2
 	Actor89: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
+		ActorStance: Guard
+		Subcell: 4
 	Actor90: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
+		ActorStance: Guard
+		Subcell: 3
 	Actor91: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
+		ActorStance: Guard
+		Subcell: 1
 	Actor92: e1
 		Location: 57,45
 		Owner: BadGuy
 		Health: 1
 		Facing: 160
+		ActorStance: Guard
+		Subcell: 2
 	Actor93: e1
 		Location: 56,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 192
+		ActorStance: Guard
+		Subcell: 2
 	Actor94: e1
 		Location: 48,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
+		ActorStance: Guard
+		Subcell: 3
 	Actor95: e1
 		Location: 59,45
 		Owner: BadGuy
 		Health: 1
 		Facing: 160
+		ActorStance: Guard
+		Subcell: 1
 	Actor96: e1
 		Location: 46,50
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
+		ActorStance: Guard
+		Subcell: 3
 	Actor97: e1
 		Location: 48,47
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
+		ActorStance: Guard
+		Subcell: 1
 	Actor98: e1
 		Location: 38,43
 		Owner: BadGuy
 		Health: 1
 		Facing: 128
+		ActorStance: Guard
+		Subcell: 4
 	Actor99: e1
 		Location: 38,43
 		Owner: BadGuy
 		Health: 1
 		Facing: 128
+		ActorStance: Guard
+		Subcell: 1
 	Actor100: e1
 		Location: 48,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
+		ActorStance: Guard
+		Subcell: 2
 	Actor101: e1
 		Location: 41,39
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
+		ActorStance: Hunt
+		Subcell: 4
 
 Waypoints:
+	spawn27: 51,47
+	spawn26: 48,52
 	spawn3: 58,53
 	spawn2: 52,55
 	spawn1: 38,55

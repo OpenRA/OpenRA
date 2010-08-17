@@ -58,24 +58,12 @@ namespace OpenRA.Mods.RA
 			
 			if (ticks == 0)
 			{
-				Actors["gunboat"].QueueActivity(new Move(new int2(50,59),1));
+				Actors["Actor87"].QueueActivity(new Move(new int2(50,59),1)); // Gunboat
 			}
 			ticks++;
 			
 			if (ticks == 25*5)
 			{
-				Sound.PlayToPlayer(self.World.LocalPlayer,"reinfor1.aud");
-				
-				// Pathfinder does stupid crap, so hardcode the path we want
-				var path = new List<int2>()
-				{
-					new int2(53,61),
-					new int2(53,60),
-					new int2(53,59),
-					new int2(53,58),
-					new int2(53,57),
-				};
-				
 				DoReinforcements(self.World, new int2(54,61),new int2(54,57), new int2(53,53), new string[] {"e1","e1","e1"});
 			}
 		}
@@ -84,6 +72,8 @@ namespace OpenRA.Mods.RA
 		{
 			world.AddFrameEndTask(w =>
 			{
+				Sound.PlayToPlayer(w.LocalPlayer,"reinfor1.aud");				
+
 				var a = w.CreateActor("lst", new TypeDictionary 
 				{
 					new LocationInit( startPos ),

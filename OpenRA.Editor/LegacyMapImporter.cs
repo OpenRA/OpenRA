@@ -160,7 +160,6 @@ namespace OpenRA.Editor
 					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key),
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
-					.Where(a => a.First < 8)
 					.ToArray();
 
 			Map.PlayerCount = wp.Count();
@@ -373,14 +372,45 @@ namespace OpenRA.Editor
 				if (!Players.Contains(parts[0]))
 					Players.Add(parts[0]);
 				
-				Map.Actors.Add("Actor" + ActorCount++,
-					new ActorReference(parts[1].ToLowerInvariant())
-					{
-						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
-						new OwnerInit(parts[0]),
-						new HealthInit(float.Parse(parts[2])/256),
-						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
-					});
+				var stance = ActorStance.Stance.None;
+				switch(parts[5])
+				{
+					case "Area Guard":
+					case "Guard":
+						stance = ActorStance.Stance.Guard;
+					break;
+					case "Defend Base":
+						stance = ActorStance.Stance.Defend;
+					break;
+					case "Hunt":
+					case "Rampage":
+					case "Attack Base":
+					case "Attack Units":
+					case "Attack Civil.":
+					case "Attack Tarcom":
+						stance = ActorStance.Stance.Hunt;
+					break;
+					case "Retreat":
+					case "Return":
+						stance = ActorStance.Stance.Retreat;
+					break;
+					// do we care about `Harvest' and `Sticky'?
+				}
+				
+				var actor = new ActorReference(parts[1].ToLowerInvariant())
+				{
+					new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+					new OwnerInit(parts[0]),
+					new HealthInit(float.Parse(parts[2])/256),
+					new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
+					new ActorStanceInit(stance),
+				};
+				
+				if (section == "INFANTRY")
+					actor.Add(new SubcellInit(int.Parse(parts[4])));
+				
+				Map.Actors.Add("Actor" + ActorCount++,actor);
+					
 			}
 		}
 
@@ -407,7 +437,7 @@ namespace OpenRA.Editor
 				Name = section,
 				OwnsWorld = (section == "Neutral"),
 				NonCombatant = (section == "Neutral"),
-				Race = (isRA) ? ((section == "BadGuy") ? "allies" : "soviet") : ((section == "BadGuy") ? "nod" : "gdi"),
+				Race = (isRA) ? ((section == "BadGuy") ? "soviet" : "allies") : ((section == "BadGuy") ? "nod" : "gdi"),
 				Color = color.First,
 				Color2 = color.Second,
 			};

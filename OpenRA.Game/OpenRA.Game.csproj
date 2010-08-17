@@ -224,6 +224,7 @@
     <Compile Include="Traits\MPStartLocations.cs" />
     <Compile Include="GameRules\Settings.cs" />
     <Compile Include="Support\Arguments.cs" />
+    <Compile Include="Traits\ActorStance.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
