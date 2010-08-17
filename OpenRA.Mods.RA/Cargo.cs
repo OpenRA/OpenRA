@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
 		List<Actor> cargo = new List<Actor>();
+		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

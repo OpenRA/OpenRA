@@ -447,4 +447,5 @@ Rules:
 		LocalPlayerFromMap:
 		-CreateMPPlayers:
 		-SpawnMPUnits:
+		-ConquestVictoryConditions:
 		Gdi01Script:

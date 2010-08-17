@@ -556,6 +556,8 @@ LST:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
+	BelowUnits:
+	RenderCargo:
 	Cargo:
 		Types: Infantry, Vehicle
 		Passengers: 5
