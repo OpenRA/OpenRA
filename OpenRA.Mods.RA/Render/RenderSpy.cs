@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public string CursorForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Disguise" ? "activity" : null;
+			return order.OrderString == "Disguise" ? "ability" : null;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
