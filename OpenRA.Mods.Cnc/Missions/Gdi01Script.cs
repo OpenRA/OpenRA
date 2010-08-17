@@ -24,9 +24,10 @@ namespace OpenRA.Mods.RA
 	{		
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;
-		
+		Map Map;
 		public void WorldLoaded(World w)
 		{
+			Map = w.Map;
 			Players = w.WorldActor.Trait<CreateMapPlayers>().Players;
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
@@ -57,18 +58,56 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			if (ticks == 0)
-			{
-				Actors["Actor87"].QueueActivity(new Move(new int2(50,59),1)); // Gunboat
-			}
-			ticks++;
+				SetGunboatPath();
+			
 			
 			if (ticks == 25*5)
 			{
-				DoReinforcements(self.World, new int2(54,61),new int2(54,57), new int2(53,53), new string[] {"e1","e1","e1"});
+				ReinforceFromSea(self.World, 
+				                 Map.Waypoints["lstStart"],
+				                 Map.Waypoints["lstEnd"],
+				                 new int2(53,53),
+				                 new string[] {"e1","e1","e1"});
 			}
+			
+			if (ticks == 25*15)
+			{
+				ReinforceFromSea(self.World, 
+				                 Map.Waypoints["lstStart"],
+				                 Map.Waypoints["lstEnd"],
+				                 new int2(53,53),
+				                 new string[] {"e1","e1","e1"});
+			}
+			
+			if (ticks == 25*30)
+			{
+				ReinforceFromSea(self.World, 
+				                 Map.Waypoints["lstStart"],
+				                 Map.Waypoints["lstEnd"],
+				                 new int2(53,53),
+				                 new string[] {"jeep"});
+			}
+			
+			if (ticks == 25*60)
+			{
+				ReinforceFromSea(self.World, 
+				                 Map.Waypoints["lstStart"],
+				                 Map.Waypoints["lstEnd"],
+				                 new int2(53,53),
+				                 new string[] {"jeep"});
+			}
+			
+			ticks++;
 		}
 		
-		void DoReinforcements(World world, int2 startPos, int2 endPos, int2 unload, string[] items)
+		void SetGunboatPath()
+		{
+			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"],1));
+			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatLeft"],1));
+			Actors["Gunboat"].QueueActivity(new CallFunc(() => SetGunboatPath()));
+		}
+		
+		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items)
 		{
 			world.AddFrameEndTask(w =>
 			{

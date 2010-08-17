@@ -549,7 +549,7 @@ LST:
 		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
 		InitialFacing:0
 		ROT: 4
-		Speed: 30
+		Speed: 10
 	Health:
 		HP: 400
 		Armor: light
@@ -558,6 +558,7 @@ LST:
 	RenderUnit:
 	BelowUnits:
 	RenderCargo:
+	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
 		Passengers: 5

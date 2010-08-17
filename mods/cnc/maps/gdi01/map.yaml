@@ -8,7 +8,7 @@ Description: Describe your map here
 
 Author: Westwood Studios
 
-PlayerCount: 6
+PlayerCount: 9
 
 Tileset: TEMPERAT
 
@@ -327,7 +327,7 @@ Actors:
 		Health: 1
 		Facing: 0
 		ActorStance: Guard
-	Actor87: boat
+	Gunboat: boat
 		Location: 53,59
 		Owner: GoodGuy
 		Health: 1
@@ -436,16 +436,21 @@ Waypoints:
 	spawn27: 51,47
 	spawn26: 48,52
 	spawn3: 58,53
-	spawn2: 52,55
 	spawn1: 38,55
 	spawn0: 37,46
+	gunboatRight: 61,59
+	gunboatLeft: 35,59
+	lstStart: 54,61
+	lstEnd: 54,56
 
 Smudges:
 
 Rules:
 	World:
-		LocalPlayerFromMap:
 		-CreateMPPlayers:
 		-SpawnMPUnits:
 		-ConquestVictoryConditions:
+		-CrateSpawner:
+		LocalPlayerFromMap:
 		Gdi01Script:
+
