@@ -140,11 +140,16 @@ namespace OpenRA
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
+			
+			Rules.LoadRules(Manifest,map);
+			Timer.Time( "load rules: {0}" );
+			
+			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
+			SequenceProvider.Initialize(Manifest.Sequences);
+			Timer.Time("SeqProv: {0}");
+			
 			world = new World(Manifest, map);
 			Timer.Time("world: {0}");
-
-			SequenceProvider.Initialize(Manifest.Sequences);
-			Timer.Time("ChromeProv, SeqProv: {0}");
 
 			Timer.Time("----end LoadMap");
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));

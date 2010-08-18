@@ -80,11 +80,7 @@ namespace OpenRA
 			Timer.Time( "----World.ctor" );
 			Map = map;
 			
-			Rules.LoadRules(manifest,Map);
-			Timer.Time( "load rules: {0}" );
-
 			TileSet = Rules.TileSets[Map.Tileset];
-			SpriteSheetBuilder.Initialize( TileSet );
 			TileSet.LoadTiles();
 			Timer.Time( "Tileset: {0}" );
 
