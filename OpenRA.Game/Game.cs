@@ -380,22 +380,13 @@ namespace OpenRA
 
 		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
 
-		static void LoadShellMap(string map)
-		{
-			LoadMap(map);
-			world.Queries = new World.AllQueries(world);
-
-			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
-				gs.GameStarted(world);
-			orderManager.StartGame();
-		}
 
 		public static event Action AfterGameStart = () => {};
 		public static event Action BeforeGameStart = () => {};
-		internal static void StartGame()
+		internal static void StartGame(string map)
 		{
 			BeforeGameStart();
-			LoadMap(LobbyInfo.GlobalSettings.Map);
+			LoadMap(map);
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;
 			
@@ -527,7 +518,7 @@ namespace OpenRA
 			else
 				JoinLocal();
 
-			LoadShellMap(Manifest.ShellmapUid);
+			StartGame(Manifest.ShellmapUid);
 
 			ResetTimer();
 
@@ -559,7 +550,7 @@ namespace OpenRA
 			LobbyInfo = new Session();
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			JoinLocal();
-			LoadShellMap(shellmap);
+			StartGame(shellmap);
 
 			Widget.RootWidget.CloseWindow();
 			Widget.RootWidget.OpenWindow("MAINMENU_BG");

@@ -59,7 +59,7 @@ namespace OpenRA.Network
 			case "StartGame":
 				{
 					Game.AddChatLine(Color.White, "Server", "The game has started.");
-					Game.StartGame();
+					Game.StartGame(Game.LobbyInfo.GlobalSettings.Map);
 					break;
 				}
 			case "SyncInfo":
