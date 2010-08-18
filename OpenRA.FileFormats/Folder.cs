@@ -30,5 +30,10 @@ namespace OpenRA.FileFormats
 			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
 				yield return PackageEntry.HashFilename( filename );
 		}
+		
+		public bool Exists(string filename)
+		{
+			return File.Exists(Path.Combine(path,filename));
+		}
 	}
 }

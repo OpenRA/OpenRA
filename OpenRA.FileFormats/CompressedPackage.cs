@@ -36,5 +36,10 @@ namespace OpenRA.FileFormats
 		}
 
 		public IEnumerable<uint> AllFileHashes() { return hashes; }
+		
+		public bool Exists(string filename)
+		{
+			return hashes.Contains(PackageEntry.HashFilename(filename));
+		}
 	}
 }

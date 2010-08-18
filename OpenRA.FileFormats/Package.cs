@@ -18,6 +18,7 @@ namespace OpenRA.FileFormats
 	public interface IFolder
 	{
 		Stream GetContent(string filename);
+		bool Exists(string filename);
 		IEnumerable<uint> AllFileHashes();
 	}
 
@@ -142,6 +143,11 @@ namespace OpenRA.FileFormats
 		public IEnumerable<uint> AllFileHashes()
 		{
 			return index.Keys;
+		}
+		
+		public bool Exists(string filename)
+		{
+			return index.ContainsKey(PackageEntry.HashFilename(filename));
 		}
 	}
 

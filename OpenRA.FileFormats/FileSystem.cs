@@ -122,15 +122,8 @@ namespace OpenRA.FileFormats
 		public static bool Exists(string filename)
 		{
 			foreach (var folder in mountedFolders)
-			{
-				var s = folder.GetContent(filename);
-				if (s != null)
-				{
-					s.Dispose();
-					return true;
-				}
-			}
-
+				if (folder.Exists(filename))
+				    return true;
 			return false;
 		}
 
