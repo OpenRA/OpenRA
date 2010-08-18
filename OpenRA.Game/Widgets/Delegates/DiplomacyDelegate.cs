@@ -34,7 +34,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			Game.OnGameStart += () => validPlayers = Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.NonCombatant).Count();
+			Game.AfterGameStart += () => validPlayers = Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
 

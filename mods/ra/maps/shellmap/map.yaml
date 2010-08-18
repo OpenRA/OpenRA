@@ -1237,3 +1237,4 @@ Rules:
 		DefaultShellmapScript:
 		-CreateMPPlayers:
 		-SpawnMPUnits:
+		-MPStartLocations:

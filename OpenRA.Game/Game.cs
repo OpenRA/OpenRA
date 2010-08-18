@@ -390,7 +390,7 @@ namespace OpenRA
 			orderManager.StartGame();
 		}
 
-		public static event Action OnGameStart = () => {};
+		public static event Action AfterGameStart = () => {};
 		public static event Action BeforeGameStart = () => {};
 		internal static void StartGame()
 		{
@@ -404,9 +404,8 @@ namespace OpenRA
 			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
 				gs.GameStarted(world);
 
-			viewport.GoToStartLocation(world.LocalPlayer);
 			orderManager.StartGame();
-			OnGameStart();
+			AfterGameStart();
 		}
 
 		public static Stance ChooseInitialStance(Player p, Player q)

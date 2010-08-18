@@ -110,11 +110,6 @@ namespace OpenRA.Graphics
 			scrollPosition = (avgPos - .5f * new float2(Width, Height)).ToInt2();
 		}
 
-		public void GoToStartLocation( Player player )
-		{
-			Center( player.World.Queries.OwnedBy[ player ].WithTrait<Selectable>().Select( a => a.Actor ) );
-		}
-
 		public Rectangle? ShroudBounds()
 		{
 			var localPlayer = Game.world.LocalPlayer;

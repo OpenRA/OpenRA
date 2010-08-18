@@ -223,6 +223,7 @@
     <Compile Include="Traits\Activities\Drag.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
+    <Compile Include="Traits\MPStartLocations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
