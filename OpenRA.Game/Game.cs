@@ -119,6 +119,7 @@ namespace OpenRA
 			SheetBuilder.Initialize();
 			LoadModPackages();
 			Timer.Time("load assemblies, packages: {0}");
+			ChromeProvider.Initialize(Manifest.Chrome);
 			packageChangePending = false;
 		}
 		
@@ -138,8 +139,7 @@ namespace OpenRA
 
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
-			ChromeProvider.Initialize(Manifest.Chrome);
-			Timer.Time("viewport, ChromeProvider: {0}");
+			Timer.Time("viewport: {0}");
 			world = new World(Manifest, map);
 			Timer.Time("world: {0}");
 
