@@ -262,10 +262,11 @@ Container@ROOT:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 			Visible: false
+			Background:dialog4
 			Children:
 				VqaPlayer:
 					Id:PLAYER
-					X:(WINDOW_RIGHT - WIDTH)/2
-					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:640
-					Height:400
+					X:0
+					Y:0
+					Width:WINDOW_RIGHT
+					Height:WINDOW_BOTTOM
