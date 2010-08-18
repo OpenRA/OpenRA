@@ -27,7 +27,6 @@ namespace OpenRA.GameRules
 		public bool PerfDebug = false;
 		public bool RecordSyncReports = true;
 		public bool ShowGameTimer = true;
-		public bool DeveloperMode = false;
 		public bool UnitDebug = false;
 		
 		// Window settings

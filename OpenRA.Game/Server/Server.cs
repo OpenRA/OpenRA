@@ -48,7 +48,7 @@ namespace OpenRA.Server
 		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, 
 			string[] mods, string map, bool cheats)
 		{
-			Log.AddChannel("server", "server.log", false, false);
+			Log.AddChannel("server", "server.log");
 
 			isInitialPing = true;
 			Server.masterServerUrl = masterServerUrl;
@@ -479,14 +479,8 @@ namespace OpenRA.Server
 							if (isInitialPing)
 							{
 								isInitialPing = false;
-
-								var s = Encoding.UTF8.GetString(result);
-								int gameId;
-								if (int.TryParse(s.Trim(), out gameId))
-									Game.SetGameId(gameId);
-
 								lock (masterServerMessages)
-									masterServerMessages.Enqueue("Master server communication established. Game ID = {0}".F(gameId));
+									masterServerMessages.Enqueue("Master server communication established.");
 							}
 						}
 					}

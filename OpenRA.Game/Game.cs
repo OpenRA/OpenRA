@@ -497,9 +497,9 @@ namespace OpenRA
 			Settings = new UserSettings(settings);
 			
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
-			Log.AddChannel("perf", "perf.log", false, false);
-			Log.AddChannel("debug", "debug.log", false, false);
-			Log.AddChannel("sync", "syncreport.log", true, true);
+			Log.AddChannel("perf", "perf.log");
+			Log.AddChannel("debug", "debug.log");
+			Log.AddChannel("sync", "syncreport.log");
 
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
@@ -583,29 +583,7 @@ namespace OpenRA
 			}
 			get {return baseSupportDir;}
 		}
-
-
-		internal static int GetGameId()
-		{
-			try
-			{
-				string s = File.ReadAllText(SupportDir + "currentgameid");
-				return int.Parse(s);
-			}
-			catch (Exception)
-			{
-				return 0;
-			}
-		}
-
-		internal static void SetGameId(int id)
-		{
-			var file = File.CreateText(SupportDir + "currentgameid");
-			file.Write(id);
-			file.Flush();
-			file.Close();
-		}
-
+		
 		public static void InitializeEngineWithMods(string[] mods)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;

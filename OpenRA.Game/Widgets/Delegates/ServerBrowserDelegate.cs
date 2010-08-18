@@ -121,7 +121,6 @@ namespace OpenRA.Widgets.Delegates
 
 				r.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
-				Game.SetGameId(currentServer.Id);
 				return true;
 			};
 

@@ -36,10 +36,8 @@ namespace OpenRA
 			}
 			catch( Exception e )
 			{
-				Log.AddChannel("exception", "openra.exception.txt", true, false);
+				Log.AddChannel("exception", "exception.log");
 				Log.Write("exception", "{0}", e.ToString());
-				if (!Game.Settings.DeveloperMode || ( Game.Settings.DeveloperMode && Game.GetGameId() != 0) )
-					Log.Upload(Game.GetGameId());
 				throw;
 			}
 		}

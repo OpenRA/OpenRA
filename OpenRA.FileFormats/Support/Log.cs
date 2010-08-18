@@ -19,10 +19,8 @@ namespace OpenRA
 {
 	public struct ChannelInfo
 	{
-		public bool Upload;
 		public string Filename;
 		public StreamWriter Writer;
-		public bool Diff;
 	}
 
 	public static class Log
@@ -41,7 +39,7 @@ namespace OpenRA
 			}
 		}
 		
-		public static void AddChannel(string channelName, string filename, bool upload, bool diff)
+		public static void AddChannel(string channelName, string filename)
 		{
 			if (channels.ContainsKey(channelName)) return;
 			
@@ -52,7 +50,7 @@ namespace OpenRA
 				{
 					StreamWriter writer = File.CreateText(LogPathPrefix + filename);
 					writer.AutoFlush = true;
-					channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = writer, Diff = diff });
+					channels.Add(channelName, new ChannelInfo() { Filename = filename, Writer = writer });
 					return;
 				}
 				catch (IOException) { filename = f + ".{0}".F(++i); }
@@ -60,7 +58,7 @@ namespace OpenRA
 			//if no logs exist, just make it
 			StreamWriter w = File.CreateText(LogPathPrefix + filename);
 			w.AutoFlush = true;
-			channels.Add(channelName, new ChannelInfo() { Upload = upload, Filename = filename, Writer = w, Diff = diff });
+			channels.Add(channelName, new ChannelInfo() { Filename = filename, Writer = w });
 			
 		}
 
@@ -71,38 +69,6 @@ namespace OpenRA
 				throw new Exception("Tried logging to non-existant channel " + channel);
 
 			info.Writer.WriteLine(format, args);
-		}
-
-		public static void Upload(int gameId)
-		{
-			foreach (var kvp in channels.Where(x => x.Value.Upload))
-			{
-				kvp.Value.Writer.Close();
-				var logfile = File.OpenRead(Log.LogPathPrefix + kvp.Value.Filename);
-				byte[] fileContents = logfile.ReadAllBytes();
-				var ms = new MemoryStream();
-
-				using (var gzip = new GZipStream(ms, CompressionMode.Compress, true))
-					gzip.Write(fileContents, 0, fileContents.Length);
-
-				ms.Position = 0;
-				byte[] buffer = ms.ReadAllBytes();
-
-				WebRequest request = WebRequest.Create("http://open-ra.org/logs/upload.php");
-				request.ContentType = "application/x-gzip";
-				request.ContentLength = buffer.Length;
-				request.Method = "POST";
-				request.Headers.Add("Game-ID", gameId.ToString());
-				request.Headers.Add("Channel", kvp.Key);
-			//	request.Headers.Add("Diff", kvp.Value.Diff ? "1" : "0");
-
-				try
-				{
-					using (var requestStream = request.GetRequestStream())
-						requestStream.Write(buffer, 0, buffer.Length);
-				}
-				catch (Exception){}
-			}
 		}
 	}
 }
