@@ -1,20 +1,9 @@
 #!/bin/bash
-# Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, Paul Chote, Alli Witheford.
-# This file is part of OpenRA.
-# 
-#  OpenRA is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-# 
-#  OpenRA is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-# 
-#  You should have received a copy of the GNU General Public License
-#  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
-#
+# Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+# This file is part of OpenRA, which is free software. It is made 
+# available to you under the terms of the GNU General Public License
+# as published by the Free Software Foundation. For more information,
+# see LICENSE.
 
 # Internal options
 APP_PATH=`echo $0 | awk '{split($0,patharr,"/"); idx=1; while(patharr[idx+3] != "") { if (patharr[idx] != "/") {printf("%s/", patharr[idx]); idx++ }} }'`
@@ -36,7 +25,7 @@ RA_URL="http://open-ra.org/packages/ra-packages.zip"
 CNC_PACKAGE="cnc-packages.zip"
 CNC_URL="http://open-ra.org/packages/cnc-packages.zip"
 
-cd $EXE_PATH
+cd "$EXE_PATH"
 
 # Download and install game dependencies if needed
 if [[ ! -e "mono" ]]; then
@@ -86,10 +75,10 @@ fi
 
 # Run the game
 cd "${GAME_PATH}"
-${EXE_PATH}mono --debug "OpenRA.Game.exe" InitialMods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
+"${EXE_PATH}"mono --debug "OpenRA.Game.exe" InitialMods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
 
 # Did we crash?
 STATUS=$?
 if [ "$STATUS" != "0" ]; then
-	$EXE_PATH/display_error "OpenRA Crashed" "Sorry about that!\nA crash log has been saved to your home folder and sent to our server."
+	"$EXE_PATH"/display_error "OpenRA Crashed" "Sorry about that!\nA crash log has been saved to ~/Library/Application Support/OpenRA/Logs."
 fi
