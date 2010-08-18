@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly float ScanTimeAverage = 2f;
 		public readonly float ScanTimeSpread = .5f;
+		public readonly bool AllowMovement = true;
 	}
 
 	class AutoTarget : ITick, INotifyDamage
@@ -28,7 +29,12 @@ namespace OpenRA.Mods.RA
 		{
 			var attack = self.Trait<AttackBase>();
 			if (target != null)
-				attack.ResolveOrder(self, new Order("Attack", self, target));
+			{
+				if (self.Info.Traits.Get<AutoTargetInfo>().AllowMovement)
+					attack.ResolveOrder(self, new Order("Attack", self, target));
+				else
+					attack.target = Target.FromActor(target);	// for turreted things on rails.
+			}
 		}
 
 		public void Tick(Actor self)
