@@ -67,11 +67,8 @@ namespace OpenRA.FileFormats
 		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
 		{
 			foreach( var folder in index[ PackageEntry.HashFilename( filename ) ] )
-			{
-				Stream s = folder.GetContent(filename);
-				if( s != null )
-					return s;
-			}
+				if (folder.Exists(filename))
+					return folder.GetContent(filename);
 			return null;
 		}
 
@@ -86,9 +83,8 @@ namespace OpenRA.FileFormats
 
 			foreach( IFolder folder in mountedFolders )
 			{
-				Stream s = folder.GetContent(filename);
-				if( s != null )
-					return s;
+				if (folder.Exists(filename))
+					return folder.GetContent(filename);
 			}
 
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
@@ -109,11 +105,8 @@ namespace OpenRA.FileFormats
 			foreach( var ext in exts )
 			{
 				foreach( IFolder folder in mountedFolders )
-				{
-					Stream s = folder.GetContent( filename + ext );
-					if( s != null )
-						return s;
-				}
+					if (folder.Exists(filename + ext))
+						return folder.GetContent( filename + ext );
 			}
 
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
