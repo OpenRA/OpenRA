@@ -16,18 +16,21 @@ namespace OpenRA.Graphics
 {
 	public class Sheet
 	{
-		protected readonly Bitmap bitmap;
+		Bitmap bitmap;
 		ITexture texture;
 		bool dirty;
+		byte[] data;
+		public readonly Size Size;
 
 		public Sheet(Size size)
 		{
-			this.bitmap = new Bitmap(size.Width, size.Height);
+			Size = size;
 		}
 
 		internal Sheet(string filename)
 		{
-			this.bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
+			bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
+			Size = bitmap.Size;
 		}
 
 		public ITexture Texture
@@ -35,27 +38,31 @@ namespace OpenRA.Graphics
 			get
 			{
 				if (texture == null)
-					texture = Game.Renderer.Device.CreateTexture(bitmap);
+				{
+					texture = Game.Renderer.Device.CreateTexture();
+					dirty = true;
+				}
 
 				if (dirty)
 				{
-					texture.SetData(bitmap);
-					dirty = false;
+					if (data != null)
+					{
+						texture.SetData(data, Size.Width, Size.Height);
+						dirty = false;
+					}
+					else if (bitmap != null)
+					{
+						texture.SetData(Bitmap);
+						dirty = false;
+					}
 				}
 
 				return texture;
 			}
 		}
 
-		public Size Size { get { return bitmap.Size; } }
-
-		protected Color this[Point p]
-		{
-			get { return bitmap.GetPixel(p.X, p.Y); }
-			set { bitmap.SetPixel(p.X, p.Y, value); }
-		}
-
-		public Bitmap Bitmap { get { return bitmap; } }	// for perf
+		public Bitmap Bitmap { get { if (bitmap == null) bitmap = new Bitmap(Size.Width, Size.Height); return bitmap; } }
+		public byte[] Data { get { if (data == null) data = new byte[4 * Size.Width * Size.Height]; return data; } }
 
 		public void MakeDirty() { dirty = true; }
 	}

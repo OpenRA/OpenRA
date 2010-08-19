@@ -71,15 +71,9 @@ namespace OpenRA.FileFormats.Graphics
 
 	public interface ITexture
 	{
-		void SetData( Bitmap bitmap );
+		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
-	}
-
-	public interface IFont
-	{
-		void DrawText( string text, int2 pos, Color c );
-
-		int2 Measure( string text );
+		void SetData(byte[] colors, int width, int height);
 	}
 
     public enum PrimitiveType
