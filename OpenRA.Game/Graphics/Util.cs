@@ -65,42 +65,23 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
-			var bitmap = dest.sheet.Bitmap;
-			BitmapData bits = null;
-			uint[] channelMasks = { 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 };
-			int[] shifts = { 16, 8, 0, 24 };
+			var masks = new int[] { 2, 1, 0, 3 };	// hack, our channel order is nuts.
+			var data = dest.sheet.Data;
+			var srcStride = dest.bounds.Width;
+			var destStride = dest.sheet.Size.Width * 4;
+			var destOffset = destStride * dest.bounds.Top + dest.bounds.Left * 4 + masks[(int)dest.channel];
+			var destSkip = destStride - 4 * srcStride;
+			var height = dest.bounds.Height;
 
-			uint mask = channelMasks[(int)dest.channel];
-			int shift = shifts[(int)dest.channel];
-
-			try
+			var srcOffset = 0;
+			for (var j = 0; j < height; j++)
 			{
-				bits = bitmap.LockBits(dest.bounds, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-				int width = dest.bounds.Width;
-				int height = dest.bounds.Height;
-
-				unsafe
+				for (int i = 0; i < srcStride; i++, srcOffset++)
 				{
-					fixed (byte* srcbase = &src[0])
-					{
-						byte* s = srcbase;
-						uint* t = (uint*)bits.Scan0.ToPointer();
-						int stride = bits.Stride >> 2;
-
-						for (int j = 0; j < height; j++)
-						{
-							uint* p = t;
-							for (int i = 0; i < width; i++, p++)
-								*p = (*p & ~mask) | ((mask & ((uint)*s++) << shift));
-							t += stride;
-						}
-					}
+					data[destOffset] = src[srcOffset];
+					destOffset += 4;
 				}
-			}
-			finally
-			{
-				bitmap.UnlockBits(bits);
+				destOffset += destSkip;
 			}
 		}
 

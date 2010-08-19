@@ -68,8 +68,6 @@ namespace OpenRA.Graphics
 					"chrome");
 				p.X += g.Advance;
 			}
-
-		//	r.Flush();
 		}
 
 		public int2 Measure(string text)
@@ -100,13 +98,20 @@ namespace OpenRA.Graphics
 			unsafe
 			{
 				var p = (byte*)_glyph.bitmap.buffer;
+				var dest = s.sheet.Data;
+				var destStride = s.sheet.Size.Width * 4;
 
 				for (var j = 0; j < s.size.Y; j++)
 				{
 					for (var i = 0; i < s.size.X; i++)
 						if (p[i] != 0)
-							s.sheet.Bitmap.SetPixel(i + s.bounds.Left, j + s.bounds.Top,
-								Color.FromArgb(p[i], c.Second.R, c.Second.G, c.Second.B));
+						{
+							var q = destStride * (j + s.bounds.Top) + 4 * (i + s.bounds.Left);
+							dest[q] = c.Second.B;
+							dest[q + 1] = c.Second.G;
+							dest[q + 2] = c.Second.R;
+							dest[q + 3] = p[i];
+						}
 
 					p += _glyph.bitmap.pitch;
 				}

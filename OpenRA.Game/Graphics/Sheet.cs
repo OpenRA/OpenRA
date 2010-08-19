@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 					}
 					else if (bitmap != null)
 					{
-						texture.SetData(Bitmap);
+						texture.SetData(bitmap);
 						dirty = false;
 					}
 				}
@@ -61,9 +61,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public Bitmap Bitmap { get { if (bitmap == null) bitmap = new Bitmap(Size.Width, Size.Height); return bitmap; } }
 		public byte[] Data { get { if (data == null) data = new byte[4 * Size.Width * Size.Height]; return data; } }
-
 		public void MakeDirty() { dirty = true; }
 	}
 }
