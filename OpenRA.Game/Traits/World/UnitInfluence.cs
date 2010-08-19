@@ -21,66 +21,59 @@ namespace OpenRA.Traits
 		public object Create( ActorInitializer init ) { return new UnitInfluence( init.world ); }
 	}
 
-	public class UnitInfluence : ITick
+	public class UnitInfluence
 	{
-		List<Actor>[,] influence;
+		class InfluenceNode
+		{
+			public InfluenceNode next;
+			public Actor actor;
+		}
+
+		InfluenceNode[,] influence;
 		Map map;
 
 		public UnitInfluence( World world )
 		{
 			map = world.Map;
-			influence = new List<Actor>[world.Map.MapSize.X, world.Map.MapSize.Y];
-			for (int i = 0; i < world.Map.MapSize.X; i++)
-				for (int j = 0; j < world.Map.MapSize.Y; j++)
-					influence[ i, j ] = new List<Actor>();
+			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];
 
 			world.ActorRemoved += a => Remove( a, a.TraitOrDefault<IOccupySpace>() );
 		}
 
-		public void Tick( Actor self )
-		{
-			SanityCheck( self );
-		}
-
-		[Conditional( "SANITY_CHECKS" )]
-		void SanityCheck( Actor self )
-		{
-			for( int x = 0 ; x < self.World.Map.MapSize.X ; x++ )
-				for( int y = 0 ; y < self.World.Map.MapSize.Y ; y++ )
-					if( influence[ x, y ] != null )
-						foreach (var a in influence[ x, y ])
-							if (!a.Trait<IOccupySpace>().OccupiedCells().Contains( new int2( x, y ) ) )
-								throw new InvalidOperationException( "UIM: Sanity check failed A" );
-
-			foreach( var t in self.World.Queries.WithTraitMultiple<IOccupySpace>() )
-				foreach( var cell in t.Trait.OccupiedCells() )
-					if (!influence[cell.X, cell.Y].Contains(t.Actor))
-						throw new InvalidOperationException( "UIM: Sanity check failed B" );
-		}
-
-		Actor[] noActors = { };
 		public IEnumerable<Actor> GetUnitsAt( int2 a )
 		{
-			if (!map.IsInMap(a)) return noActors;
-			return influence[ a.X, a.Y ];
+			if (!map.IsInMap(a)) yield break;
+
+			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
+				yield return i.actor;
 		}
 
 		public bool AnyUnitsAt(int2 a)
 		{
-			return /*map.IsInMap(a) && */influence[a.X, a.Y].Count > 0;
+			return /*map.IsInMap(a) && */influence[ a.X, a.Y ] != null;
 		}
 
 		public void Add( Actor self, IOccupySpace unit )
 		{
 			foreach( var c in unit.OccupiedCells() )
-				influence[c.X, c.Y].Add(self);
+				influence[ c.X, c.Y ] = new InfluenceNode { next = influence[ c.X, c.Y ], actor = self };
 		}
 
 		public void Remove( Actor self, IOccupySpace unit )
 		{
 			if (unit != null)
 				foreach (var c in unit.OccupiedCells())
-					influence[c.X, c.Y].Remove(self);
+					RemoveInner( ref influence[ c.X, c.Y ], self );
+		}
+
+		void RemoveInner( ref InfluenceNode influenceNode, Actor toRemove )
+		{
+			if( influenceNode == null )
+				return;
+			else if( influenceNode.actor == toRemove )
+				influenceNode = influenceNode.next;
+			else
+				RemoveInner( ref influenceNode.next, toRemove );
 		}
 
 		public void Update(Actor self, IOccupySpace unit)
