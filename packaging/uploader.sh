@@ -19,9 +19,9 @@ echo -e "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/ver
 echo `basename ${FILENAME}` > /tmp/latest.txt
 
 pushd `dirname ${FILENAME}`
-wput "${FTP}" "`basename ${FILENAME}`"
+wput -u "${FTP}" "`basename ${FILENAME}`"
 popd
 pushd /tmp/
-wput "${FTP}" version.json
-wput "${FTP}" latest.txt
+wput -u "${FTP}" version.json
+wput -u "${FTP}" latest.txt
 popd
