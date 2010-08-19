@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.FileFormats;
-using OpenRA.Traits;
-using OpenRA.FileFormats.Graphics;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
