@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (!self.IsIdle) return;
+			if (!self.IsIdle && self.Info.Traits.Get<AutoTargetInfo>().AllowMovement) return;
 
 			if (--nextScanTime <= 0)
 			{

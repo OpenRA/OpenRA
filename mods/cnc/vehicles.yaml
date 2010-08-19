@@ -537,6 +537,7 @@ BOAT:
 		PrimaryLocalOffset: -3,-5,0,3,-5,0,0,-5,0
 	RenderGunboat:
 	AutoTarget:
+		AllowMovement: false
 
 LST:
 	Inherits: ^Ship

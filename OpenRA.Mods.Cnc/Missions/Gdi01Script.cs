@@ -102,8 +102,8 @@ namespace OpenRA.Mods.RA
 		
 		void SetGunboatPath()
 		{
-			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"],1));
 			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatLeft"],1));
+			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"],1));
 			Actors["Gunboat"].QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		

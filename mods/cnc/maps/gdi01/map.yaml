@@ -331,7 +331,7 @@ Actors:
 		Location: 53,59
 		Owner: GoodGuy
 		Health: 1
-		Facing: 192
+		Facing: 64
 		ActorStance: Hunt
 	Actor88: e1
 		Location: 56,55
