@@ -40,6 +40,8 @@ namespace OpenRA.Orders
 			foreach (var a in world.Selection.Actors)
 				foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
 					t.RenderBeforeWorld(a);
+
+			Game.Renderer.Flush();
 		}
 
 		public void RenderAfterWorld( World world )
@@ -47,6 +49,8 @@ namespace OpenRA.Orders
 			foreach (var a in world.Selection.Actors)
 				foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
 					t.RenderAfterWorld(a);
+
+			Game.Renderer.Flush();
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )

@@ -63,7 +63,6 @@ namespace OpenRA.Traits
 				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
 				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
 			}
-			Game.Renderer.LineRenderer.Flush();
 		}
 	}
 }
