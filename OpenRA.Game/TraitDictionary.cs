@@ -47,27 +47,35 @@ namespace OpenRA
 
 		public bool Contains<T>( Actor actor )
 		{
+			if( actor.Destroyed )
+				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID ).Count() != 0;
 		}
 
 		public T Get<T>( Actor actor )
 		{
+			if( actor.Destroyed )
+				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).Get( actor.ActorID );
 		}
 
 		public T GetOrDefault<T>( Actor actor )
 		{
+			if( actor.Destroyed )
+				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetOrDefault( actor.ActorID );
 		}
 
 		public IEnumerable<T> WithInterface<T>( Actor actor )
 		{
+			if( actor.Destroyed )
+				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID );
 		}
 
 		public IEnumerable<TraitPair<T>> ActorsWithTraitMultiple<T>( World world )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).All().Where( x => x.Actor.IsInWorld );
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).All();//.Where( x => x.Actor.IsInWorld );
 		}
 
 		public void RemoveActor( Actor a )

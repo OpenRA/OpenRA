@@ -79,7 +79,7 @@ namespace OpenRA.Traits
 
 			return ActorsInBins(a.X / scale, b.X / scale, a.Y / scale, b.Y / scale)
 				.Distinct()
-				.Where(u => u.GetBounds(true).IntersectsWith(r));
+				.Where(u => u.IsInWorld && u.GetBounds(true).IntersectsWith(r));
 		}
 	}
 }

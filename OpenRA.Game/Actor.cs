@@ -212,14 +212,16 @@ namespace OpenRA
 			World.traitDict.AddTrait( this, trait );
 		}
 
+		public bool Destroyed { get; private set; }
+
 		public void Destroy()
 		{
-			World.AddFrameEndTask( w => World.Remove( this ) );
-		}
-
-		~Actor()
-		{
-			World.traitDict.RemoveActor( this );
+			World.AddFrameEndTask( w =>
+			{
+				World.Remove( this );
+				World.traitDict.RemoveActor( this );
+				Destroyed = true;
+			} );
 		}
 	}
 }

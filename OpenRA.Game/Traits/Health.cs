@@ -88,20 +88,6 @@ namespace OpenRA.Traits
 			damage = (int)(damage * modifier);
 
 			hp -= damage;
-			if (hp <= 0)
-			{
-				hp = 0;
-
-				attacker.Owner.Kills++;
-				self.Owner.Deaths++;
-
-				if (RemoveOnDeath)
-					self.World.AddFrameEndTask(w => w.Remove(self));
-
-				Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
-			}
-
-			if (hp > MaxHP)	hp = MaxHP;
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamage>())
 				nd.Damaged(self, new AttackInfo
@@ -113,6 +99,21 @@ namespace OpenRA.Traits
 					DamageStateChanged = this.DamageState != oldState,
 					Warhead = warhead
 				});
+
+			if (hp <= 0)
+			{
+				hp = 0;
+
+				attacker.Owner.Kills++;
+				self.Owner.Deaths++;
+
+				if( RemoveOnDeath )
+					self.Destroy();
+
+				Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
+			}
+
+			if (hp > MaxHP)	hp = MaxHP;
 		}
 	}
 	
