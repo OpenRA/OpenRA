@@ -224,6 +224,7 @@ namespace OpenRA
 				gs.GameStarted(world);
 
 			orderManager.StartGame();
+			viewport.RefreshPalette();
 			AfterGameStart();
 		}
 
