@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "spypln1.aud"); }
 		protected override void OnActivate()
 		{
-			Game.world.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
+			Self.World.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
 			Sound.Play("slcttgt1.aud");
 		}
 

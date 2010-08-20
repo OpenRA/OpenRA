@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.world.OrderGenerator = 
+			Self.World.OrderGenerator = 
 				new GenericSelectTarget( Owner.PlayerActor, "ParatroopersActivate", "ability" );
 		}
 

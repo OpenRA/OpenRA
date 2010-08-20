@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA
 				var minefield = GetMinefieldCells(ml.minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
-				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+				world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
 			}
 
 			public void RenderBeforeWorld(World world) { }
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			if (minefield != null)
-				Game.world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+				self.World.WorldRenderer.DrawLocus(Color.Cyan, minefield);
 		}
 	}
 }

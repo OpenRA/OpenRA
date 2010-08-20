@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Effects
 			
 			if (silo == null)
 			{
-				altitude = Game.world.Map.Height*Game.CellSize;
-				StartDescent(Game.world);
+				altitude = silo.World.Map.Height*Game.CellSize;
+				StartDescent(silo.World);
 			}
 			else
 				pos = silo.CenterLocation + spawnOffset;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (altitude <= 0)
 				{
 					// Trigger screen desaturate effect
-					foreach (var a in Game.world.Queries.WithTrait<NukePaletteEffect>())
+					foreach (var a in world.Queries.WithTrait<NukePaletteEffect>())
 						a.Trait.Enable();
 					
 					Explode(world);

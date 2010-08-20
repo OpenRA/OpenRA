@@ -45,7 +45,9 @@ namespace OpenRA.Traits
 		public bool IsUsed;
 		public bool IsAvailable;
 		public bool IsReady { get { return IsAvailable && RemainingTime == 0; } }
-		public readonly Player Owner;
+
+		protected readonly Actor Self;
+		protected readonly Player Owner;
 
 		bool notifiedCharging;
 		bool notifiedReady;
@@ -54,6 +56,7 @@ namespace OpenRA.Traits
 		{
 			Info = info;
 			RemainingTime = TotalTime;
+			Self = self;
 			Owner = self.Owner;
 
 			self.Trait<TechTreeCache>().Add( Info.Prerequisites.Select( a => Rules.Info[ a.ToLowerInvariant() ] ).ToList(), this );

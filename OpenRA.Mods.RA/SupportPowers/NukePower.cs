@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 	
 		protected override void OnActivate()
 		{
-			Game.world.OrderGenerator =
+			Self.World.OrderGenerator =
 				new GenericSelectTargetWithBuilding<NukeSilo>(Owner.PlayerActor, "NuclearMissile", "nuke");
 		}
 

@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 			foreach (var r in rs)
 				yield return r;
 
-			if (self.Owner == Game.world.LocalPlayer && Level > 0)
+			if (self.Owner == self.World.LocalPlayer && Level > 0)
 			{
 				RankAnim.Tick();	// hack
 				var bounds = self.GetBounds(true);

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.world.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
+			Self.World.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
 		}
 
 		public void ResolveOrder(Actor self, Order order)

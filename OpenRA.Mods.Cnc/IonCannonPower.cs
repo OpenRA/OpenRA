@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc
 
 		protected override void OnActivate()
 		{
-			Game.world.OrderGenerator =
+			Self.World.OrderGenerator =
 				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
 		}
 	}

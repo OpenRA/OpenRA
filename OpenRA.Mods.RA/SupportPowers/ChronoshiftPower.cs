@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	class ChronoshiftPower : SupportPower, IResolveOrder
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnActivate() { Game.world.OrderGenerator = new SelectTarget(); }
+		protected override void OnActivate() { Self.World.OrderGenerator = new SelectTarget(); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
