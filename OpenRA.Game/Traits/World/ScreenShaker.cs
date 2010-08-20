@@ -23,7 +23,7 @@ namespace OpenRA.Traits
 		
 		public void Tick (Actor self)
 		{
-			Game.viewport.Scroll(getScrollOffset());
+			Game.viewport.Scroll(GetScrollOffset());
 			shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
 			ticks++;
 		}
@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity });
 		}
 		
-		public float2 getScrollOffset()
+		float2 GetScrollOffset()
 		{
 			int xFreq = 4;
 			int yFreq = 5;
@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 				(float) Math.Cos((ticks*2*Math.PI)/yFreq));
 		}
 		
-		public float GetIntensity()
+		float GetIntensity()
 		{
 			var cp = Game.viewport.Location 
 				+ .5f * new float2(Game.viewport.Width, Game.viewport.Height);
