@@ -14,13 +14,13 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingOreInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init); }
 	}
 
 	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete
 	{
-		public RenderBuildingOre(Actor self)
-			: base(self)
+		public RenderBuildingOre( ActorInitializer init )
+			: base(init)
 		{
 		}
 

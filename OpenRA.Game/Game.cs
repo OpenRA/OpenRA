@@ -41,8 +41,6 @@ namespace OpenRA
 
 		internal static OrderManager orderManager;
 
-		public static bool skipMakeAnims = true;
-
 		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
 		public static Renderer Renderer;

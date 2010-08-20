@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init); }
 	}
 
 	class RenderBuildingWall : RenderBuilding
@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA.Render
 		string seqName;
 		int adjacentWalls = 0;
 		
-		public RenderBuildingWall(Actor self)
-			: base(self)
+		public RenderBuildingWall( ActorInitializer init )
+			: base(init)
 		{
 			seqName = "idle";
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);

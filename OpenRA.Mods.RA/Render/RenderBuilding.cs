@@ -17,20 +17,21 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{
 		public readonly bool HasMakeAnimation = true;
-		public override object Create(ActorInitializer init) { return new RenderBuilding(init.self);}
+		public override object Create(ActorInitializer init) { return new RenderBuilding(init);}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
 	{
-		public RenderBuilding( Actor self )
-			: this( self, () => 0 )
+		public RenderBuilding( ActorInitializer init )
+			: this( init, () => 0 )
 		{
 		}
 
-		public RenderBuilding(Actor self, Func<int> baseFacing)
-			: base(self, baseFacing)
-		{		
-			if( Game.skipMakeAnims || !self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
+		public RenderBuilding( ActorInitializer init, Func<int> baseFacing )
+			: base(init.self, baseFacing)
+		{
+			var self = init.self;
+			if( init.Contains<SkipMakeAnimsInit>() || !self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
 				anim.PlayThen( "idle", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
 			else
 				anim.PlayThen( "make", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Selling( Actor self )
 		{
-			if( !Game.skipMakeAnims && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
+			if( self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
 				anim.PlayBackwardsThen( "make", null );
 			
 			foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)

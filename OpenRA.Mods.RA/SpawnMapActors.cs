@@ -22,12 +22,16 @@ namespace OpenRA.Mods.RA
 
 		public void GameStarted(World world)
 		{
-			Game.skipMakeAnims = true;		// rude hack
-
-			foreach (var actorReference in world.Map.Actors)
-				Actors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, actorReference.Value.InitDict);
-
-			Game.skipMakeAnims = false;
+			foreach( var actorReference in world.Map.Actors )
+			{
+				var initDict = actorReference.Value.InitDict;
+				initDict.Add( new SkipMakeAnimsInit() );
+				Actors[ actorReference.Key ] = world.CreateActor( actorReference.Value.Type, initDict );
+			}
 		}
+	}
+
+	public class SkipMakeAnimsInit : IActorInit
+	{
 	}
 }
