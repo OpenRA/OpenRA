@@ -361,21 +361,6 @@ namespace OpenRA
 		public static Modifiers GetModifierKeys() { return modifiers; }
 		public static void HandleModifierKeys(Modifiers mods) {	modifiers = mods; }
 
-		static Size GetResolution(Settings settings, WindowMode windowmode)
-		{
-			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-			var customSize = (windowmode == WindowMode.Windowed) ? Settings.WindowedSize : Settings.FullscreenSize;
-			
-			if (customSize.X > 0 && customSize.Y > 0)
-			{
-				desktopResolution.Width = customSize.X;
-				desktopResolution.Height = customSize.Y;
-			}
-			return new Size(
-				desktopResolution.Width,
-				desktopResolution.Height);
-		}
-
 		internal static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
@@ -396,10 +381,7 @@ namespace OpenRA
 						
 			Renderer.SheetSize = Settings.SheetSize;
 
-			var resolution = GetResolution(settings, Game.Settings.WindowMode);
-			Renderer = new Renderer(resolution, Game.Settings.WindowMode);
-			resolution = Renderer.Resolution;
-			clientSize = new int2(resolution);
+			Renderer.Initialize( settings, Game.Settings.WindowMode );
 
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -409,6 +391,9 @@ namespace OpenRA
 			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 
 			ChangeMods();
+
+			Renderer = new Renderer();
+			clientSize = new int2(Renderer.Resolution);
 
 			if (Settings.Replay != null)
 				orderManager = new OrderManager(new ReplayConnection(Settings.Replay));

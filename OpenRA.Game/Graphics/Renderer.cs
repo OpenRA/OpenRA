@@ -15,14 +15,13 @@ using System.Reflection;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
+using System.Windows.Forms;
 
 namespace OpenRA.Graphics
 {
 	public class Renderer
 	{
 		internal static int SheetSize;
-
-		readonly IGraphicsDevice device;
 
 		public IShader SpriteShader { get; private set; }    /* note: shared shader params */
 		public IShader LineShader { get; private set; }
@@ -38,12 +37,8 @@ namespace OpenRA.Graphics
 
 		public readonly SpriteFont RegularFont, BoldFont, TitleFont;
 
-		public Size Resolution { get { return device.WindowSize; } }
-
-		public Renderer(Size resolution, OpenRA.FileFormats.Graphics.WindowMode windowMode)
+		public Renderer()
 		{
-			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowMode, false );
-
 			SpriteShader = device.CreateShader(FileSystem.Open("shaders/world-shp.fx"));
 			LineShader = device.CreateShader(FileSystem.Open("shaders/line.fx"));
 			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
@@ -57,16 +52,6 @@ namespace OpenRA.Graphics
 			RegularFont = new SpriteFont("FreeSans.ttf", 14);
 			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
 			TitleFont = new SpriteFont("titles.ttf", 48);
-		}
-
-		IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
-		{
-			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
-			{
-				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) } )
-					.Invoke( new object[] { width, height, window, vsync } );
-			}
-			throw new NotImplementedException();
 		}
 
 		public IGraphicsDevice Device { get { return device; } }
@@ -126,6 +111,45 @@ namespace OpenRA.Graphics
 			WorldSpriteRenderer.Flush();
 			RgbaSpriteRenderer.Flush();
 			LineRenderer.Flush();
+		}
+
+
+
+
+
+		static IGraphicsDevice device;
+
+		public static Size Resolution { get { return device.WindowSize; } }
+
+		internal static void Initialize( Settings settings, OpenRA.FileFormats.Graphics.WindowMode windowMode )
+		{
+			var resolution = GetResolution( settings, windowMode );
+			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowMode, false );
+		}
+
+		static Size GetResolution(Settings settings, WindowMode windowmode)
+		{
+			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
+			var customSize = (windowmode == WindowMode.Windowed) ? Game.Settings.WindowedSize : Game.Settings.FullscreenSize;
+			
+			if (customSize.X > 0 && customSize.Y > 0)
+			{
+				desktopResolution.Width = customSize.X;
+				desktopResolution.Height = customSize.Y;
+			}
+			return new Size(
+				desktopResolution.Width,
+				desktopResolution.Height);
+		}
+
+		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
+		{
+			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
+			{
+				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) } )
+					.Invoke( new object[] { width, height, window, vsync } );
+			}
+			throw new NotImplementedException();
 		}
 	}
 }
