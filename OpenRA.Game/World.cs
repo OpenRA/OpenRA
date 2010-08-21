@@ -27,7 +27,7 @@ namespace OpenRA
 	{
 		Set<Actor> actors = new Set<Actor>();
 		List<IEffect> effects = new List<IEffect>();
-		List<Action<World>> frameEndActions = new List<Action<World>>();
+		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
 		public XRandom SharedRandom = new XRandom(0);
 
@@ -140,7 +140,7 @@ namespace OpenRA
 		public void Add(IEffect b) { effects.Add(b); }
 		public void Remove(IEffect b) { effects.Remove(b); }
 
-		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Add( a ); }
+		public void AddFrameEndTask( Action<World> a ) { frameEndActions.Enqueue( a ); }
 
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
@@ -170,9 +170,8 @@ namespace OpenRA
 			Game.viewport.Tick();
 			Timer.Time("		viewport: {0:0.000}");
 
-			var acts = frameEndActions;
-			frameEndActions = new List<Action<World>>();
-			foreach (var a in acts) a(this);
+			while( frameEndActions.Count != 0 )
+				frameEndActions.Dequeue()( this );
 			Timer.Time("		frameEndActions: {0:0.000}");
 
 			WorldRenderer.Tick();
