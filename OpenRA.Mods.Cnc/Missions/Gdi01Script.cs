@@ -15,6 +15,7 @@ using OpenRA.Widgets;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using System;
 
 namespace OpenRA.Mods.RA
 {
@@ -25,6 +26,29 @@ namespace OpenRA.Mods.RA
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;
 		Map Map;
+				
+		public static void PlayFullscreenFMVThen(World w, string movie, Action then)
+		{
+			var playerRoot = Widget.RootWidget.OpenWindow("FMVPLAYER");
+			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
+			w.DisableTick = true;
+			player.Load(movie);	
+			
+			// Stop music while fmv plays
+			var music = Sound.MusicPlaying;
+			if (music)
+				Sound.PauseMusic();
+			
+			player.PlayThen(() =>
+			{
+				if (music)
+					Sound.PlayMusic();
+				
+				Widget.RootWidget.CloseWindow();
+				w.DisableTick = false;
+				then();
+			});
+		}
 		
 		public void WorldLoaded(World w)
 		{
@@ -33,68 +57,41 @@ namespace OpenRA.Mods.RA
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
 			
-			var playerRoot = Widget.RootWidget.OpenWindow("FMVPLAYER");
-			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
-			w.DisableTick = true;
-			
-			player.Load("gdi1.vqa");
-			player.PlayThen(() =>
+			PlayFullscreenFMVThen(w, "gdi1.vqa", () => PlayFullscreenFMVThen(w, "landing.vqa", () =>
 			{
-				player.Load("landing.vqa");
-				player.PlayThen(() =>
-				{
-					Widget.RootWidget.CloseWindow();
-					w.DisableTick = false;
-					Sound.PlayMusic(Rules.Music["aoi"].Filename);
-					started = true;
-				});
-			});
+				Sound.PlayMusic(Rules.Music["aoi"].Filename);
+				started = true;
+			}));
 		}
 		
 		public void OnVictory(World w)
 		{
 			started = false;
-			Sound.PlayToPlayer(w.LocalPlayer, "accom1.aud");
-			w.LocalPlayer.WinState = WinState.Won;
+			Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
+			Players["GoodGuy"].WinState = WinState.Won;
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => 
+			w.WorldActor.QueueActivity(new CallFunc(() => PlayFullscreenFMVThen(w, "consyard.vqa", () =>
 			{
 				Sound.StopMusic();
-				w.DisableTick = true;
-				var player = Widget.RootWidget.OpenWindow("FMVPLAYER").GetWidget<VqaPlayerWidget>("PLAYER");
-				player.Load("consyard.vqa");
-				player.PlayThen(() =>
-				{
-					Widget.RootWidget.CloseWindow();
-					w.DisableTick = false;
-					Game.Disconnect();
-				});
-			}));
+				Game.Disconnect();
+			})));
 		}
 		
 		public void OnLose(World w)
 		{
 			started = false;
-			Sound.PlayToPlayer(w.LocalPlayer, "fail1.aud");
-			w.LocalPlayer.WinState = WinState.Lost;
+			Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
+			Players["GoodGuy"].WinState = WinState.Lost;
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => 
+			w.WorldActor.QueueActivity(new CallFunc(() => PlayFullscreenFMVThen(w, "gameover.vqa", () =>
 			{
 				Sound.StopMusic();
-				w.DisableTick = true;
-				var player = Widget.RootWidget.OpenWindow("FMVPLAYER").GetWidget<VqaPlayerWidget>("PLAYER");
-				player.Load("gameover.vqa");
-				player.PlayThen(() =>
-				{
-					Widget.RootWidget.CloseWindow();
-					w.DisableTick = false;
-					Game.Disconnect();
-				});
-			}));
+				Game.Disconnect();
+			})));
 		}
 		
 		int ticks = 0;

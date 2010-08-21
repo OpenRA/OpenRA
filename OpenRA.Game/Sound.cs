@@ -102,6 +102,7 @@ namespace OpenRA
 				soundEngine.StopSound(video);
 		}
 		
+		public static bool MusicPlaying { get; private set; }
 		public static void PlayMusic(string name)
 		{
 			if (name == "" || name == null)
@@ -115,8 +116,17 @@ namespace OpenRA
 			StopMusic();
 			
 			currentMusic = name;
+			MusicPlaying = true;
 			var sound = sounds[name];
 			music = soundEngine.Play2D(sound, true, true, float2.Zero, MusicVolume);
+		}
+		
+		public static void PlayMusic()
+		{
+			if (music == null)
+				return;
+			MusicPlaying = true;
+			soundEngine.PauseSound(music, false);
 		}
 
 		public static void StopMusic()
@@ -124,13 +134,17 @@ namespace OpenRA
 			if (music != null)
 				soundEngine.StopSound(music);
 			
+			MusicPlaying = false;
 			currentMusic = null;
 		}
 		
 		public static void PauseMusic()
 		{
-			if (music != null)
-				soundEngine.PauseSound(music, true);
+			if (music == null)
+				return;
+			
+			MusicPlaying = false;
+			soundEngine.PauseSound(music, true);
 		}
 
 		public static float GlobalVolume
