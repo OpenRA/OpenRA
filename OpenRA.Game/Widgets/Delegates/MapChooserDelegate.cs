@@ -45,7 +45,7 @@ namespace OpenRA.Widgets.Delegates
 
 			var itemTemplate = ml.GetWidget<LabelWidget>("MAP_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
-			foreach (var kv in Game.AvailableMaps)
+			foreach (var kv in Game.modData.AvailableMaps)
 			{
 				var map = kv.Value;
 				if (!map.Selectable)
@@ -72,9 +72,9 @@ namespace OpenRA.Widgets.Delegates
 			// Set the default selected map
 			var uid = uidobj as string;
 			if (uid != null)
-				Map = Game.AvailableMaps[uid];
+				Map = Game.modData.AvailableMaps[uid];
 			else
-				Map = Game.AvailableMaps.FirstOrDefault().Value;
+				Map = Game.modData.AvailableMaps.FirstOrDefault().Value;
 		}
 	}
 }

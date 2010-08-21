@@ -209,7 +209,7 @@ namespace OpenRA.Widgets.Delegates
 		{
 			if (MapUid == Game.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = Game.LobbyInfo.GlobalSettings.Map;
-			Map = Game.AvailableMaps[MapUid];
+			Map = Game.modData.AvailableMaps[MapUid];
 		}
 
 		

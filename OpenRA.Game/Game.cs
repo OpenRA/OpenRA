@@ -48,29 +48,7 @@ namespace OpenRA
 		static int2 clientSize;
 		static string mapName;
 		public static Session LobbyInfo = new Session();
-		static bool packageChangePending;
 		static bool mapChangePending;
-
-		public static Dictionary<string, MapStub> AvailableMaps;
-
-		// TODO: Do this nicer
-		static Dictionary<string, MapStub> FindMaps(string[] mods)
-		{
-			var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
-				.Where(p => Directory.Exists(p))
-				.SelectMany(p => Directory.GetDirectories(p)).ToList();
-
-			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
-		}
-
-		static void ChangeMods()
-		{
-			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-
-			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
-
-			ChromeProvider.Initialize( modData.Manifest.Chrome );
-		}
 
 		static void LoadMap(string mapName)
 		{
@@ -78,10 +56,10 @@ namespace OpenRA
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 			Timer.Time("manifest: {0}");
 
-			if (!Game.AvailableMaps.ContainsKey(mapName))
+			if (!modData.AvailableMaps.ContainsKey(mapName))
 				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapName));
 
-			var map = new Map(Game.AvailableMaps[mapName].Package);
+			var map = new Map(modData.AvailableMaps[mapName].Package);
 
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
@@ -153,14 +131,6 @@ namespace OpenRA
 
 		static void Tick()
 		{
-			if (packageChangePending)
-			{
-				// TODO: Only do this on mod change
-				ChangeMods();
-				packageChangePending = false;
-				return;
-			}
-
 			if (mapChangePending)
 			{
 				mapName = LobbyInfo.GlobalSettings.Map;
@@ -224,8 +194,6 @@ namespace OpenRA
 
 		internal static void SyncLobbyInfo(string data)
 		{
-			var oldLobbyInfo = LobbyInfo;
-
 			var session = new Session();
 			session.GlobalSettings.Mods = Settings.InitialMods;
 
@@ -264,13 +232,6 @@ namespace OpenRA
 
 			if (mapName != LobbyInfo.GlobalSettings.Map)
 				mapChangePending = true;
-
-			if (string.Join(",", oldLobbyInfo.GlobalSettings.Mods)
-				!= string.Join(",", LobbyInfo.GlobalSettings.Mods))
-			{
-				Debug("Mods list changed, reloading: {0}".F(string.Join(",", LobbyInfo.GlobalSettings.Mods)));
-				packageChangePending = true;
-			}
 
 			LobbyInfoChanged();
 		}
@@ -385,8 +346,6 @@ namespace OpenRA
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
 			PerfHistory.items["cursor"].hasNormalTick = false;
-
-			ChangeMods();
 
 			Renderer = new Renderer();
 			clientSize = new int2(Renderer.Resolution);

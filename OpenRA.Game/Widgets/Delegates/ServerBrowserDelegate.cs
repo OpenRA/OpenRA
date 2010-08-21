@@ -150,8 +150,8 @@ namespace OpenRA.Widgets.Delegates
 
 		MapStub CurrentMap()
 		{
-			return (currentServer == null || !Game.AvailableMaps.ContainsKey(currentServer.Map))
-				? null : Game.AvailableMaps[currentServer.Map];
+			return (currentServer == null || !Game.modData.AvailableMaps.ContainsKey(currentServer.Map))
+				? null : Game.modData.AvailableMaps[currentServer.Map];
 		}
 
 		void RefreshServerList(IEnumerable<GameServer> games)

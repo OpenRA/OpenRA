@@ -33,10 +33,10 @@ namespace OpenRA.Widgets.Delegates
 				r.OpenWindow("SERVER_LOBBY");
 				
 				// TODO: Get this from a map chooser
-				string map = Game.AvailableMaps.Keys.FirstOrDefault();
+				string map = Game.modData.AvailableMaps.Keys.FirstOrDefault();
 				
 				// TODO: Get this from a mod chooser
-				var mods = Game.Settings.InitialMods;
+				var mods = Game.LobbyInfo.GlobalSettings.Mods;
 				
 				Game.Settings.LastServerTitle = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				Game.Settings.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
