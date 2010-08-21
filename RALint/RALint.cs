@@ -39,7 +39,9 @@ namespace RALint
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
-				Game.InitializeEngineWithMods(args);
+				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
+				Game.modData = new ModData( args );
+				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				// all the @something names which actually EXIST.
 				var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)

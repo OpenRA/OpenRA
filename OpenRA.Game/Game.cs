@@ -72,7 +72,7 @@ namespace OpenRA
 			packageChangePending = false;
 			Timer.Time( "load assemblies, packages: {0}" );
 		}
-		
+
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
@@ -87,21 +87,21 @@ namespace OpenRA
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
-			
+
 			Rules.LoadRules(modData.Manifest,map);
 			Timer.Time( "load rules: {0}" );
-			
+
 			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
 			SequenceProvider.Initialize(modData.Manifest.Sequences);
 			Timer.Time("SeqProv: {0}");
-			
+
 			world = new World(modData.Manifest, map);
 			Timer.Time("world: {0}");
 
 			Timer.Time("----end LoadMap");
 			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
-					
+
 		public static void MoveViewport(int2 loc)
 		{
 			viewport.Center(loc);
@@ -119,7 +119,7 @@ namespace OpenRA
 
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged();
-			
+
 			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
 		}
 
@@ -132,7 +132,7 @@ namespace OpenRA
 		{
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged();
-			
+
 			if (orderManager != null) orderManager.Dispose();
 			orderManager = new OrderManager(new EchoConnection());
 		}
@@ -151,7 +151,7 @@ namespace OpenRA
 		public static event Action ConnectionStateChanged = () => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
-		
+
 		static void Tick()
 		{
 			if (packageChangePending)
@@ -170,13 +170,13 @@ namespace OpenRA
 				mapChangePending = false;
 				return;
 			}
-			
+
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
 				lastConnectionState = orderManager.Connection.ConnectionState;
 				ConnectionStateChanged();
 			}
-			
+
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
 			if (dt >= Settings.Timestep)
@@ -289,7 +289,7 @@ namespace OpenRA
 			LoadMap(map);
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;
-			
+
 			world.Queries = new World.AllQueries(world);
 
 			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
@@ -331,7 +331,7 @@ namespace OpenRA
 				Modifiers = modifierKeys,
 			};
 			Widget.HandleInput(world, mi);
-			
+
 			if (sync != world.SyncHash() && world == initialWorld)
 				throw new InvalidOperationException("Desync in DispatchMouseInput");
 		}
@@ -349,7 +349,7 @@ namespace OpenRA
 		public static void HandleKeyEvent(KeyInput e)
 		{
 			int sync = world.SyncHash();
-			
+
 			if (Widget.HandleKeyPress(e))
 				return;
 
@@ -364,13 +364,13 @@ namespace OpenRA
 		internal static void Initialize(Settings settings)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			
+
 			var defaultSupport = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 												+ Path.DirectorySeparatorChar + "OpenRA";
-			
+
 			SupportDir = settings.GetValue("SupportDir", defaultSupport);
 			Settings = new UserSettings(settings);
-			
+
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
@@ -378,7 +378,7 @@ namespace OpenRA
 
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
-						
+
 			Renderer.SheetSize = Settings.SheetSize;
 
 			Renderer.Initialize( settings, Game.Settings.WindowMode );
@@ -395,15 +395,10 @@ namespace OpenRA
 			Renderer = new Renderer();
 			clientSize = new int2(Renderer.Resolution);
 
-			if (Settings.Replay != null)
-				orderManager = new OrderManager(new ReplayConnection(Settings.Replay));
-			else
-				JoinLocal();
-
+			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
 			ResetTimer();
-
 		}
 
 		static bool quit;
@@ -417,10 +412,10 @@ namespace OpenRA
 		}
 
 		public static void Exit() { quit = true; }
-		
+
 		public static Action<Color,string,string> AddChatLine = (c,n,s) => {};
 
-		public static void Debug(string s) 	
+		public static void Debug(string s)
 		{
 			AddChatLine(Color.White, "Debug", s); 
 		}
@@ -437,30 +432,24 @@ namespace OpenRA
 			Widget.RootWidget.CloseWindow();
 			Widget.RootWidget.OpenWindow("MAINMENU_BG");
 		}
-		
+
 		static string baseSupportDir = null;
 		public static string SupportDir
 		{
-			set {
+			set
+			{
 				var dir = value;
-				
+
 				// Expand paths relative to the personal directory
 				if (dir.ElementAt(0) == '~')
 					dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + dir.Substring(1);
-				
+
 				if (!Directory.Exists(dir))
 					Directory.CreateDirectory(dir);
-				
+
 				baseSupportDir = dir + Path.DirectorySeparatorChar;
 			}
-			get {return baseSupportDir;}
-		}
-		
-		public static void InitializeEngineWithMods(string[] mods)
-		{
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			modData = new ModData( mods );
-			Rules.LoadRules(modData.Manifest, new Map());
+			get { return baseSupportDir; }
 		}
 
 		public static T CreateObject<T>( string name )
