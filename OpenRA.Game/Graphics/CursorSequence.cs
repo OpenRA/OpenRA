@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 
 		public CursorSequence(string cursorSrc, string palette, XmlElement e)
 		{
-			sprites = CursorSheetBuilder.LoadAllSprites(cursorSrc);
+			sprites = Game.modData.CursorSheetBuilder.LoadAllSprites(cursorSrc);
 
 			start = int.Parse(e.GetAttribute("start"));
 			this.palette = palette;
