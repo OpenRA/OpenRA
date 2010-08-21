@@ -70,7 +70,6 @@ namespace OpenRA
 			Timer.Time("manifest: {0}");
 			modData = new ModData( manifest );
 			SheetBuilder.Initialize();
-			FileSystem.LoadFromManifest( manifest );
 			Timer.Time("load assemblies, packages: {0}");
 			ChromeProvider.Initialize(manifest.Chrome);
 			packageChangePending = false;
@@ -451,9 +450,6 @@ namespace OpenRA
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			modData = new ModData( manifest );
-
-			// Load the default mod to access required files
-			FileSystem.LoadFromManifest( manifest );
 						
 			Renderer.SheetSize = Settings.SheetSize;
 
@@ -537,7 +533,6 @@ namespace OpenRA
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			var manifest = new Manifest(mods);
 			modData = new ModData( manifest );
-			FileSystem.LoadFromManifest( manifest );
 
 			Rules.LoadRules(manifest, new Map());
 		}

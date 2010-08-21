@@ -15,6 +15,7 @@ namespace OpenRA
 		{
 			Manifest = manifest;
 			ObjectCreator = new ObjectCreator( manifest );
+			FileSystem.LoadFromManifest( manifest );
 		}
 	}
 }

@@ -34,7 +34,6 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-			FileSystem.LoadFromManifest( manifest );
 
 			Rules.LoadRules(manifest, new Map());
 
@@ -61,7 +60,6 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-			FileSystem.LoadFromManifest( manifest );
 
 			// load the map
 			var map = new Map(new Folder(mapname));
@@ -87,7 +85,6 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-			FileSystem.LoadFromManifest( manifest );
 
 			PrepareMapResources(manifest, map);
 
