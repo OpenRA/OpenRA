@@ -18,6 +18,8 @@ namespace OpenRA.Network
 {
 	class OrderManager : IDisposable
 	{
+		SyncReport syncReport = new SyncReport();
+
 		public int FrameNumber { get; private set; }
 
 		public int FramesAhead = 0;
@@ -109,7 +111,7 @@ namespace OpenRA.Network
 			{
 				if (packet.Length != existingSync.Length)
 				{
-					Game.DumpSyncReport(frame);
+					syncReport.DumpSyncReport(frame);
 					OutOfSync(frame);
 				}
 				else
@@ -118,7 +120,7 @@ namespace OpenRA.Network
 					{
 						if (packet[i] != existingSync[i])
 						{
-							Game.DumpSyncReport(frame);
+							syncReport.DumpSyncReport(frame);
 
 							if (i < SyncHeaderSize)
 								OutOfSync(frame, "Tick");
@@ -189,7 +191,7 @@ namespace OpenRA.Network
 			Connection.Send( ss );
 			WriteToReplay( frameData, ss );
 
-			Game.UpdateSyncReport();
+			syncReport.UpdateSyncReport();
 
 			CheckSync( ss );
 

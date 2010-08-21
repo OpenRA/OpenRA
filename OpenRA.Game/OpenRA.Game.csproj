@@ -235,6 +235,7 @@
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="ObjectCreator.cs" />
+    <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Traits\PrimaryBuilding.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>
