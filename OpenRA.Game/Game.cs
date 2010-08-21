@@ -65,20 +65,18 @@ namespace OpenRA
 
 		static void ChangeMods()
 		{
-			Timer.Time("----ChangeMods");
-			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
-			Timer.Time("manifest: {0}");
-			modData = new ModData( manifest );
-			Timer.Time("load assemblies, packages: {0}");
-			ChromeProvider.Initialize(manifest.Chrome);
+			Timer.Time( "----ChangeMods" );
+			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
+
+			ChromeProvider.Initialize( modData.Manifest.Chrome );
 			packageChangePending = false;
+			Timer.Time( "load assemblies, packages: {0}" );
 		}
 		
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
-			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
-			modData = new ModData( manifest );
+			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 			Timer.Time("manifest: {0}");
 
 			if (!Game.AvailableMaps.ContainsKey(mapName))
@@ -90,14 +88,14 @@ namespace OpenRA
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
 			
-			Rules.LoadRules(manifest,map);
+			Rules.LoadRules(modData.Manifest,map);
 			Timer.Time( "load rules: {0}" );
 			
 			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
-			SequenceProvider.Initialize(manifest.Sequences);
+			SequenceProvider.Initialize(modData.Manifest.Sequences);
 			Timer.Time("SeqProv: {0}");
 			
-			world = new World(manifest, map);
+			world = new World(modData.Manifest, map);
 			Timer.Time("world: {0}");
 
 			Timer.Time("----end LoadMap");
@@ -394,8 +392,7 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log");
 
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
-			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
-			modData = new ModData( manifest );
+			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 						
 			Renderer.SheetSize = Settings.SheetSize;
 
@@ -418,7 +415,7 @@ namespace OpenRA
 			else
 				JoinLocal();
 
-			StartGame(manifest.ShellmapUid);
+			StartGame(modData.Manifest.ShellmapUid);
 
 			ResetTimer();
 
@@ -477,10 +474,8 @@ namespace OpenRA
 		public static void InitializeEngineWithMods(string[] mods)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			var manifest = new Manifest(mods);
-			modData = new ModData( manifest );
-
-			Rules.LoadRules(manifest, new Map());
+			modData = new ModData( mods );
+			Rules.LoadRules(modData.Manifest, new Map());
 		}
 
 		public static T CreateObject<T>( string name )

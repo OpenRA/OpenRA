@@ -32,10 +32,9 @@ namespace OpenRA.Editor
 
 			Text = "OpenRA Editor (mod:{0})".F(currentMod);
 
-			var manifest = new Manifest(new[] { currentMod });
-			Game.modData = new ModData( manifest );
+			Game.modData = new ModData( currentMod );
 
-			Rules.LoadRules(manifest, new Map());
+			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			folderBrowser.SelectedPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
 				.Aggregate(Path.Combine);
@@ -58,8 +57,7 @@ namespace OpenRA.Editor
 
 			loadedMapName = mapname;
 
-			var manifest = new Manifest(new[] { currentMod });
-			Game.modData = new ModData( manifest );
+			Game.modData = new ModData( currentMod );
 
 			// load the map
 			var map = new Map(new Folder(mapname));
@@ -70,7 +68,7 @@ namespace OpenRA.Editor
 				map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 
-			PrepareMapResources(manifest, map);
+			PrepareMapResources(Game.modData.Manifest, map);
 
 			dirty = false;
 		}
@@ -83,10 +81,9 @@ namespace OpenRA.Editor
 
 			loadedMapName = null;
 
-			var manifest = new Manifest(new[] { currentMod });
-			Game.modData = new ModData( manifest );
+			Game.modData = new ModData( currentMod );
 
-			PrepareMapResources(manifest, map);
+			PrepareMapResources(Game.modData.Manifest, map);
 
 			MakeDirty();
 		}
