@@ -51,17 +51,6 @@ namespace OpenRA
 		static bool packageChangePending;
 		static bool mapChangePending;
 
-		static void LoadModPackages( Manifest manifest )
-		{
-			FileSystem.UnmountAll();
-			Timer.Time("reset: {0}");
-
-			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
-
-			Timer.Time("mount temporary packages: {0}");
-		}
-
 		public static Dictionary<string, MapStub> AvailableMaps;
 
 		// TODO: Do this nicer
@@ -81,7 +70,7 @@ namespace OpenRA
 			Timer.Time("manifest: {0}");
 			modData = new ModData( manifest );
 			SheetBuilder.Initialize();
-			LoadModPackages( manifest );
+			FileSystem.LoadFromManifest( manifest );
 			Timer.Time("load assemblies, packages: {0}");
 			ChromeProvider.Initialize(manifest.Chrome);
 			packageChangePending = false;
@@ -464,7 +453,7 @@ namespace OpenRA
 			modData = new ModData( manifest );
 
 			// Load the default mod to access required files
-			LoadModPackages( manifest );
+			FileSystem.LoadFromManifest( manifest );
 						
 			Renderer.SheetSize = Settings.SheetSize;
 
@@ -548,10 +537,7 @@ namespace OpenRA
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 			var manifest = new Manifest(mods);
 			modData = new ModData( manifest );
-
-			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			FileSystem.LoadFromManifest( manifest );
 
 			Rules.LoadRules(manifest, new Map());
 		}

@@ -64,6 +64,13 @@ namespace OpenRA.FileFormats
 			allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 		}
 
+		public static void LoadFromManifest( Manifest manifest )
+		{
+			UnmountAll();
+			foreach (var dir in manifest.Folders) Mount(dir);
+			foreach (var pkg in manifest.Packages) Mount(pkg);
+		}
+
 		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
 		{
 			foreach( var folder in index[ PackageEntry.HashFilename( filename ) ] )

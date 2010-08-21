@@ -34,10 +34,7 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-
-			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			FileSystem.LoadFromManifest( manifest );
 
 			Rules.LoadRules(manifest, new Map());
 
@@ -64,10 +61,7 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-
-			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			FileSystem.LoadFromManifest( manifest );
 
 			// load the map
 			var map = new Map(new Folder(mapname));
@@ -93,10 +87,7 @@ namespace OpenRA.Editor
 
 			var manifest = new Manifest(new[] { currentMod });
 			Game.modData = new ModData( manifest );
-
-			FileSystem.UnmountAll();
-			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
+			FileSystem.LoadFromManifest( manifest );
 
 			PrepareMapResources(manifest, map);
 
