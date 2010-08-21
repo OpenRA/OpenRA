@@ -449,8 +449,9 @@ Rules:
 	World:
 		-CreateMPPlayers:
 		-SpawnMPUnits:
-		-ConquestVictoryConditions:
+		-MPStartLocations:
 		-CrateSpawner:
 		LocalPlayerFromMap:
 		Gdi01Script:
-
+	Player:
+		-ConquestVictoryConditions:
