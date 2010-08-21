@@ -50,28 +50,13 @@ namespace OpenRA
 		public static Session LobbyInfo = new Session();
 		static bool mapChangePending;
 
-		static void LoadMap(string mapName)
+		static void LoadMap(string uid)
 		{
-			Timer.Time("----LoadMap");
-			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
-			Timer.Time("manifest: {0}");
-
-			if (!modData.AvailableMaps.ContainsKey(mapName))
-				throw new InvalidDataException("Cannot find map with Uid {0}".F(mapName));
-
-			var map = new Map(modData.AvailableMaps[mapName].Package);
-
+			var map = modData.PrepareMap(uid);
+			
 			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
-
-			Rules.LoadRules(modData.Manifest,map);
-			Timer.Time( "load rules: {0}" );
-
-			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
-			SequenceProvider.Initialize(modData.Manifest.Sequences);
-			Timer.Time("SeqProv: {0}");
-
 			world = new World(modData.Manifest, map);
 			Timer.Time("world: {0}");
 

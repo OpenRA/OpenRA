@@ -5,6 +5,7 @@ using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using System.IO;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -30,13 +31,32 @@ namespace OpenRA
 		}
 		
 		// TODO: Do this nicer
-		static Dictionary<string, MapStub> FindMaps(string[] mods)
+		Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
 			var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
 				.Where(p => Directory.Exists(p))
 				.SelectMany(p => Directory.GetDirectories(p)).ToList();
 
 			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
+		}
+		
+		public Map PrepareMap(string uid)
+		{
+			Timer.Time("----PrepareMap");
+			var map = new Map(AvailableMaps[uid].Package);
+			Timer.Time( "Map: {0}" );
+
+			if (!AvailableMaps.ContainsKey(uid))
+				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
+			
+			Rules.LoadRules(Manifest, map);
+			Timer.Time( "Rules: {0}" );
+
+			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
+			SequenceProvider.Initialize(Manifest.Sequences);
+			Timer.Time("SSB, SeqProv: {0}");
+			
+			return map;
 		}
 	}
 }
