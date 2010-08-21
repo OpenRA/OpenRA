@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		static Sprite[] LoadSprites(string filename)
 		{
 			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-			return shp.Select(a => SheetBuilder.SharedInstance.Add(a.Image, shp.Size)).ToArray();
+			return shp.Select(a => Game.modData.SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
 		public static Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }

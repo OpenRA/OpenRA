@@ -37,7 +37,7 @@ namespace OpenRA
 				for (int j = 0; j < Game.CellSize; j++)
 					data[i * Game.CellSize + j] = ((i + j) % 4 < 2) ? (byte)0 : paletteIndex;
 
-			return SheetBuilder.SharedInstance.Add(data, new Size(Game.CellSize, Game.CellSize));
+			return Game.modData.SheetBuilder.Add(data, new Size(Game.CellSize, Game.CellSize));
 		}
 
 		public void Draw( World world )

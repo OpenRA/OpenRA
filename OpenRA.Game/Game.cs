@@ -69,7 +69,6 @@ namespace OpenRA
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
 			modData = new ModData( manifest );
-			SheetBuilder.Initialize();
 			Timer.Time("load assemblies, packages: {0}");
 			ChromeProvider.Initialize(manifest.Chrome);
 			packageChangePending = false;
@@ -78,7 +77,6 @@ namespace OpenRA
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
-			SheetBuilder.Initialize();
 			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			modData = new ModData( manifest );
 			Timer.Time("manifest: {0}");

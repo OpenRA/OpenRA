@@ -11,14 +11,15 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
+		public readonly SheetBuilder SheetBuilder;
 		public readonly CursorSheetBuilder CursorSheetBuilder;
-		public SheetBuilder SheetBuilder { get { return SheetBuilder.SharedInstance; } }
 
 		public ModData( Manifest manifest )
 		{
 			Manifest = manifest;
 			ObjectCreator = new ObjectCreator( manifest );
 			FileSystem.LoadFromManifest( manifest );
+			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 		}
 	}

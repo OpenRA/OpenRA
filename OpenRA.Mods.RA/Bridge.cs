@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 			{
 				cachedTileset = self.World.Map.Tileset;
 				sprites = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => SheetBuilder.SharedInstance.Add(self.World.TileSet.GetBytes(x),
+				x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));
 			}
 			

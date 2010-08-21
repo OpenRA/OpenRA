@@ -14,12 +14,6 @@ namespace OpenRA.Graphics
 {
 	public class SheetBuilder
 	{
-		public static SheetBuilder SharedInstance;
-		internal static void Initialize()
-		{
-			SharedInstance = new SheetBuilder(TextureChannel.Red);
-		}
-
 		internal SheetBuilder(TextureChannel ch)
 		{
 			current = null;
