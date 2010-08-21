@@ -46,10 +46,8 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		static int2 clientSize;
-		static string mapName;
 		public static Session LobbyInfo = new Session();
-		static bool mapChangePending;
-
+		
 		static void LoadMap(string uid)
 		{
 			var map = modData.PrepareMap(uid);
@@ -59,9 +57,6 @@ namespace OpenRA
 			Timer.Time("viewport: {0}");
 			world = new World(modData.Manifest, map);
 			Timer.Time("world: {0}");
-
-			Timer.Time("----end LoadMap");
-			Debug("Map change {0} -> {1}".F(Game.mapName, mapName));
 		}
 
 		public static void MoveViewport(int2 loc)
@@ -116,13 +111,6 @@ namespace OpenRA
 
 		static void Tick()
 		{
-			if (mapChangePending)
-			{
-				mapName = LobbyInfo.GlobalSettings.Map;
-				mapChangePending = false;
-				return;
-			}
-
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
 				lastConnectionState = orderManager.Connection.ConnectionState;
@@ -214,9 +202,6 @@ namespace OpenRA
 				orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
 				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
 			}
-
-			if (mapName != LobbyInfo.GlobalSettings.Map)
-				mapChangePending = true;
 
 			LobbyInfoChanged();
 		}
