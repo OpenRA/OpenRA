@@ -8,7 +8,7 @@ Description: Describe your map here
 
 Author: Westwood Studios
 
-PlayerCount: 9
+PlayerCount: 10
 
 Tileset: TEMPERAT
 
@@ -434,10 +434,10 @@ Actors:
 
 Waypoints:
 	spawn27: 51,47
-	spawn26: 48,52
-	spawn3: 58,53
-	spawn1: 38,55
-	spawn0: 37,46
+	nod0: 36,39
+	nod1: 37,46
+	nod2: 38,55
+	nod3: 52,52
 	gunboatRight: 61,59
 	gunboatLeft: 35,59
 	lstStart: 54,61
@@ -455,3 +455,4 @@ Rules:
 		Gdi01Script:
 	Player:
 		-ConquestVictoryConditions:
+

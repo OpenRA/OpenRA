@@ -107,8 +107,26 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			if (ticks == 0)
+			{
 				SetGunboatPath();
-		
+				self.World.AddFrameEndTask(w =>
+				{
+					//Initial Nod reinforcements
+					foreach (var i in new[]{ "e1", "e1" })
+					{
+						var a = self.World.CreateActor(i.ToLowerInvariant(), new TypeDictionary
+						{
+							new OwnerInit( Players["BadGuy"] ),
+							new FacingInit( 0 ),
+							new LocationInit ( Map.Waypoints["nod0"] ),
+						});
+						a.QueueActivity( new Move( Map.Waypoints["nod1"], 2 ) );
+						a.QueueActivity( new Move( Map.Waypoints["nod2"], 2 ) );
+						a.QueueActivity( new Move( Map.Waypoints["nod3"], 2 ) );
+						// Todo: Queue hunt order
+					}
+				});
+			}
 			// GoodGuy win conditions
 			// BadGuy is dead
 			int badcount = self.World.Queries.OwnedBy[Players["BadGuy"]].Count(a => a.IsInWorld && !a.IsDead());
