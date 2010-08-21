@@ -65,12 +65,11 @@ namespace OpenRA
 
 		static void ChangeMods()
 		{
-			Timer.Time( "----ChangeMods" );
+			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
+
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 
 			ChromeProvider.Initialize( modData.Manifest.Chrome );
-			packageChangePending = false;
-			Timer.Time( "load assemblies, packages: {0}" );
 		}
 
 		static void LoadMap(string mapName)
@@ -157,10 +156,8 @@ namespace OpenRA
 			if (packageChangePending)
 			{
 				// TODO: Only do this on mod change
-				Timer.Time("----begin maplist");
-				AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
-				Timer.Time("maplist: {0}");
 				ChangeMods();
+				packageChangePending = false;
 				return;
 			}
 
@@ -388,7 +385,6 @@ namespace OpenRA
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
 			PerfHistory.items["cursor"].hasNormalTick = false;
-			AvailableMaps = FindMaps(LobbyInfo.GlobalSettings.Mods);
 
 			ChangeMods();
 
