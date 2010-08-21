@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 			target = Target.FromOrder(order);
 
-			if (self.HasTrait<Mobile>())
+			if (self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
 				self.QueueActivity( new Follow( target,
 					Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
 		}

@@ -29,6 +29,7 @@ namespace OpenRA.Traits
 		public readonly int InitialFacing = 128;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
+		public readonly bool OnRails = false;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 	}
@@ -122,6 +123,8 @@ namespace OpenRA.Traits
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
+			if (Info.OnRails) return null;
+			
 			if (mi.Button == MouseButton.Left) return null;
 
 			// force-fire should *always* take precedence over move.

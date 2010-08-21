@@ -527,6 +527,7 @@ BOAT:
 		InitialFacing:64
 		ROT: 4
 		Speed: 2
+		OnRails: true
 	RevealsShroud:
 		Range: 7
 	Turreted:

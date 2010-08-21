@@ -24,7 +24,8 @@ namespace OpenRA.Traits.Activities
 		public List<int2> path;
 		Func<Actor, Mobile, List<int2>> getPath;
 		public Actor ignoreBuilding;
-
+		bool cancellable = true;
+		
 		MovePart move;
 		int ticksBeforePathing;
 
@@ -48,6 +49,7 @@ namespace OpenRA.Traits.Activities
 					.WithoutLaneBias());
 			this.destination = destination;
 			this.nearEnough = 0;
+			this.cancellable = false;
 		}
 
 		public Move( int2 destination, int nearEnough ) 
@@ -231,6 +233,8 @@ namespace OpenRA.Traits.Activities
 
 		public void Cancel( Actor self )
 		{
+			if (!cancellable) return;
+			
 			path = new List<int2>();
 			NextActivity = null;
 		}
