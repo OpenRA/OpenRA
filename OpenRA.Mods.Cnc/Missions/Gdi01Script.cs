@@ -64,7 +64,30 @@ namespace OpenRA.Mods.RA
 				Sound.StopMusic();
 				w.DisableTick = true;
 				var player = Widget.RootWidget.OpenWindow("FMVPLAYER").GetWidget<VqaPlayerWidget>("PLAYER");
-				player.Load("gunboat.vqa");
+				player.Load("consyard.vqa");
+				player.PlayThen(() =>
+				{
+					Widget.RootWidget.CloseWindow();
+					w.DisableTick = false;
+					Game.Disconnect();
+				});
+			}));
+		}
+		
+		public void OnLose(World w)
+		{
+			started = false;
+			Sound.PlayToPlayer(w.LocalPlayer, "fail1.aud");
+			w.LocalPlayer.WinState = WinState.Lost;
+			
+			w.WorldActor.CancelActivity();
+			w.WorldActor.QueueActivity(new Wait(125));
+			w.WorldActor.QueueActivity(new CallFunc(() => 
+			{
+				Sound.StopMusic();
+				w.DisableTick = true;
+				var player = Widget.RootWidget.OpenWindow("FMVPLAYER").GetWidget<VqaPlayerWidget>("PLAYER");
+				player.Load("gameover.vqa");
 				player.PlayThen(() =>
 				{
 					Widget.RootWidget.CloseWindow();
@@ -96,7 +119,11 @@ namespace OpenRA.Mods.RA
 				
 				if (badcount == 0)
 					OnVictory(self.World);
-			}			
+			}
+			
+			//GoodGuy lose conditions
+			if (self.World.Queries.OwnedBy[Players["GoodGuy"]].Count( a => a.IsInWorld && !a.IsDead()) == 0)
+				OnLose(self.World);
 			
 			// GoodGuy reinforcements
 			if (ticks == 25*5)
