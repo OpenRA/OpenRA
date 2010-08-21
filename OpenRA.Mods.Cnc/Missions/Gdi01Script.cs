@@ -102,8 +102,8 @@ namespace OpenRA.Mods.RA
 		
 		void SetGunboatPath()
 		{
-			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatLeft"],1));
-			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"],1));
+			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatLeft"] ));
+			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"] ));
 			Actors["Gunboat"].QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		
@@ -122,10 +122,14 @@ namespace OpenRA.Mods.RA
 				
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, world.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( Players["GoodGuy"] ) }));
+					cargo.Load(a, world.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary
+					{
+						new OwnerInit( Players["GoodGuy"] ),
+						new FacingInit( 0 ),
+					}));
 				
 				a.CancelActivity();
-				a.QueueActivity(new Move(endPos, 0));
+				a.QueueActivity(new Move(endPos));
 				a.QueueActivity(new CallFunc(() =>
 				{
 					while (!cargo.IsEmpty(a))
@@ -140,7 +144,7 @@ namespace OpenRA.Mods.RA
 					}
 				}));
 				a.QueueActivity(new Wait(25));
-				a.QueueActivity(new Move(startPos,0));
+				a.QueueActivity(new Move(startPos));
 				a.QueueActivity(new RemoveSelf());
 			});
 		}

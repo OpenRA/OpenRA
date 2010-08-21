@@ -37,6 +37,19 @@ namespace OpenRA.Traits.Activities
 				Game.world.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
 		}
 
+		// Scriptable move order
+		// Ignores lane bias and nearby units
+		public Move( int2 destination ) 
+			: this()
+		{
+			this.getPath = (self,mobile) =>
+				self.World.PathFinder.FindPath(
+					PathSearch.FromPoint( self, mobile.toCell, destination, false )
+					.WithoutLaneBias());
+			this.destination = destination;
+			this.nearEnough = 0;
+		}
+
 		public Move( int2 destination, int nearEnough ) 
 			: this()
 		{
@@ -45,7 +58,7 @@ namespace OpenRA.Traits.Activities
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
-
+		
 		public Move(int2 destination, Actor ignoreBuilding)
 			: this()
 		{

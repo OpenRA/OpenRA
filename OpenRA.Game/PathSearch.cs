@@ -61,13 +61,19 @@ namespace OpenRA
 			return this;
 		}
 		
+		public PathSearch WithoutLaneBias()
+		{
+			LaneBias = 0f;
+			return this;
+		}
+		
 		public PathSearch FromPoint(int2 from)
 		{
 			AddInitialCell( self.World, from );
 			return this;
 		}
 		
-		const float LaneBias = .5f;
+		float LaneBias = .5f;
 
 		public int2 Expand( World world )
 		{
