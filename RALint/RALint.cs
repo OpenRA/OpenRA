@@ -36,7 +36,7 @@ namespace RALint
 			try
 			{
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
-				Game.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
+				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				Game.InitializeEngineWithMods(args);

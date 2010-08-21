@@ -35,6 +35,7 @@ namespace OpenRA
 	{
 		public static readonly int CellSize = 24;
 
+		public static ModData modData;
 		public static World world;
 		public static Viewport viewport;
 		public static UserSettings Settings;
@@ -49,51 +50,16 @@ namespace OpenRA
 		public static Session LobbyInfo = new Session();
 		static bool packageChangePending;
 		static bool mapChangePending;
-		static Pair<Assembly, string>[] ModAssemblies;
 
-		static void LoadModPackages()
+		static void LoadModPackages( Manifest manifest )
 		{
 			FileSystem.UnmountAll();
 			Timer.Time("reset: {0}");
 
-			foreach (var dir in Manifest.Folders) FileSystem.Mount(dir);
-			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
+			foreach (var dir in manifest.Folders) FileSystem.Mount(dir);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
 			Timer.Time("mount temporary packages: {0}");
-		}
-
-		public static void LoadModAssemblies(Manifest m)
-		{
-			// All the core namespaces
-			var asms = typeof(Game).Assembly.GetNamespaces()
-				.Select(c => Pair.New(typeof(Game).Assembly, c))
-				.ToList();
-
-			// Namespaces from each mod assembly
-			foreach (var a in m.Assemblies)
-			{
-				var asm = Assembly.LoadFile(Path.GetFullPath(a));
-				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
-			}
-
-			ModAssemblies = asms.ToArray();
-		}
-
-		public static Action<string> MissingTypeAction = 
-			s => { throw new InvalidOperationException("Cannot locate type: {0}".F(s)); };
-
-		public static T CreateObject<T>(string classname)
-		{
-			foreach (var mod in ModAssemblies)
-			{
-				var fullTypeName = mod.Second + "." + classname;
-				var obj = mod.First.CreateInstance(fullTypeName);
-				if (obj != null)
-					return (T)obj;
-			}
-
-			MissingTypeAction(classname);
-			return default(T);
 		}
 
 		public static Dictionary<string, MapStub> AvailableMaps;
@@ -111,23 +77,22 @@ namespace OpenRA
 		static void ChangeMods()
 		{
 			Timer.Time("----ChangeMods");
-			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
 			Timer.Time("manifest: {0}");
-			LoadModAssemblies(Manifest);
+			modData = new ModData( manifest );
 			SheetBuilder.Initialize();
-			LoadModPackages();
+			LoadModPackages( manifest );
 			Timer.Time("load assemblies, packages: {0}");
-			ChromeProvider.Initialize(Manifest.Chrome);
+			ChromeProvider.Initialize(manifest.Chrome);
 			packageChangePending = false;
 		}
-		
-		public static Manifest Manifest;
 		
 		static void LoadMap(string mapName)
 		{
 			Timer.Time("----LoadMap");
 			SheetBuilder.Initialize();
-			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			modData = new ModData( manifest );
 			Timer.Time("manifest: {0}");
 
 			if (!Game.AvailableMaps.ContainsKey(mapName))
@@ -139,14 +104,14 @@ namespace OpenRA
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
 			
-			Rules.LoadRules(Manifest,map);
+			Rules.LoadRules(manifest,map);
 			Timer.Time( "load rules: {0}" );
 			
 			SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
-			SequenceProvider.Initialize(Manifest.Sequences);
+			SequenceProvider.Initialize(manifest.Sequences);
 			Timer.Time("SeqProv: {0}");
 			
-			world = new World(Manifest, map);
+			world = new World(manifest, map);
 			Timer.Time("world: {0}");
 
 			Timer.Time("----end LoadMap");
@@ -355,8 +320,8 @@ namespace OpenRA
 
 			LobbyInfo = session;
 
-			if (!world.GameHasStarted)
-				world.SharedRandom = new OpenRA.Thirdparty.Random(LobbyInfo.GlobalSettings.RandomSeed);
+			if( !world.GameHasStarted )
+				world.SharedRandom = new OpenRA.Thirdparty.Random( LobbyInfo.GlobalSettings.RandomSeed );
 
 			if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
 				world.SetLocalPlayer(orderManager.Connection.LocalClientId);
@@ -495,10 +460,11 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log");
 
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
-			Manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			var manifest = new Manifest(LobbyInfo.GlobalSettings.Mods);
+			modData = new ModData( manifest );
 
 			// Load the default mod to access required files
-			LoadModPackages();
+			LoadModPackages( manifest );
 						
 			Renderer.SheetSize = Settings.SheetSize;
 
@@ -521,7 +487,7 @@ namespace OpenRA
 			else
 				JoinLocal();
 
-			StartGame(Manifest.ShellmapUid);
+			StartGame(manifest.ShellmapUid);
 
 			ResetTimer();
 
@@ -549,7 +515,7 @@ namespace OpenRA
 		public static void Disconnect()
 		{
 			orderManager.Dispose();
-			var shellmap = Manifest.ShellmapUid;
+			var shellmap = modData.Manifest.ShellmapUid;
 			LobbyInfo = new Session();
 			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
 			JoinLocal();
@@ -580,14 +546,19 @@ namespace OpenRA
 		public static void InitializeEngineWithMods(string[] mods)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			Manifest = new Manifest(mods);
-			LoadModAssemblies(Manifest);
+			var manifest = new Manifest(mods);
+			modData = new ModData( manifest );
 
 			FileSystem.UnmountAll();
-			foreach (var folder in Manifest.Folders) FileSystem.Mount(folder);
-			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
+			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
+			foreach (var pkg in manifest.Packages) FileSystem.Mount(pkg);
 
-			Rules.LoadRules(Manifest, new Map());
+			Rules.LoadRules(manifest, new Map());
+		}
+
+		public static T CreateObject<T>( string name )
+		{
+			return modData.ObjectCreator.CreateObject<T>( name );
 		}
 	}
 }

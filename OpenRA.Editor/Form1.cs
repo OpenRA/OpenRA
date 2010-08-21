@@ -33,7 +33,7 @@ namespace OpenRA.Editor
 			Text = "OpenRA Editor (mod:{0})".F(currentMod);
 
 			var manifest = new Manifest(new[] { currentMod });
-			Game.LoadModAssemblies(manifest);
+			Game.modData = new ModData( manifest );
 
 			FileSystem.UnmountAll();
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
@@ -63,7 +63,7 @@ namespace OpenRA.Editor
 			loadedMapName = mapname;
 
 			var manifest = new Manifest(new[] { currentMod });
-			Game.LoadModAssemblies(manifest);
+			Game.modData = new ModData( manifest );
 
 			FileSystem.UnmountAll();
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);
@@ -92,7 +92,7 @@ namespace OpenRA.Editor
 			loadedMapName = null;
 
 			var manifest = new Manifest(new[] { currentMod });
-			Game.LoadModAssemblies(manifest);
+			Game.modData = new ModData( manifest );
 
 			FileSystem.UnmountAll();
 			foreach (var folder in manifest.Folders) FileSystem.Mount(folder);

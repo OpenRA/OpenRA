@@ -54,7 +54,7 @@ namespace OpenRA.Widgets
 				if (rootWidget == null)
 				{
 					rootWidget = new ContainerWidget();
-					foreach( var file in Game.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
+					foreach( var file in Game.modData.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
 						foreach( var w in file )
 							rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
 					
