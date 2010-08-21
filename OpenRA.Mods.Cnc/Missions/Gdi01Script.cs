@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;
 		Map Map;
+		
 		public void WorldLoaded(World w)
 		{
 			Map = w.Map;
@@ -50,8 +51,33 @@ namespace OpenRA.Mods.RA
 			});
 		}
 		
+		public void OnVictory(World w)
+		{
+			started = false;
+			Sound.PlayToPlayer(w.LocalPlayer, "accom1.aud");
+			w.LocalPlayer.WinState = WinState.Won;
+			
+			w.WorldActor.CancelActivity();
+			w.WorldActor.QueueActivity(new Wait(125));
+			w.WorldActor.QueueActivity(new CallFunc(() => 
+			{
+				Sound.StopMusic();
+				w.DisableTick = true;
+				var player = Widget.RootWidget.OpenWindow("FMVPLAYER").GetWidget<VqaPlayerWidget>("PLAYER");
+				player.Load("gunboat.vqa");
+				player.PlayThen(() =>
+				{
+					Widget.RootWidget.CloseWindow();
+					w.DisableTick = false;
+					Game.Disconnect();
+				});
+			}));
+		}
+		
 		int ticks = 0;
 		bool started = false;
+		
+		int lastBadCount = -1;
 		public void Tick(Actor self)
 		{
 			if (!started)
@@ -59,8 +85,20 @@ namespace OpenRA.Mods.RA
 			
 			if (ticks == 0)
 				SetGunboatPath();
+		
+			// GoodGuy win conditions
+			// BadGuy is dead
+			int badcount = self.World.Queries.OwnedBy[Players["BadGuy"]].Count(a => a.IsInWorld && !a.IsDead());
+			if (badcount != lastBadCount)
+			{
+				Game.Debug("{0} badguys remain".F(badcount));
+				lastBadCount = badcount;
+				
+				if (badcount == 0)
+					OnVictory(self.World);
+			}			
 			
-			
+			// GoodGuy reinforcements
 			if (ticks == 25*5)
 			{
 				ReinforceFromSea(self.World, 
