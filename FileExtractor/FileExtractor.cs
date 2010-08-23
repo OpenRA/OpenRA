@@ -1,6 +1,6 @@
 using System;
-using OpenRA.FileFormats;
 using System.IO;
+using OpenRA.FileFormats;
 
 namespace FileExtractor
 {

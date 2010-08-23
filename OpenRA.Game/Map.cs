@@ -90,10 +90,10 @@ namespace OpenRA
 
 		class Format2ActorReference
 		{
-			public string Id;
-			public string Type;
-			public int2 Location;
-			public string Owner;
+			public string Id = null;
+			public string Type = null;
+			public int2 Location = int2.Zero;
+			public string Owner = null;
 		}
 
 		public Map(IFolder package)
