@@ -136,6 +136,22 @@ namespace OpenRA.Server
 				.ToList();
 		}
 
+		/* lobby rework todo: 
+		 * 
+		 *	- auto-assign players to slots
+		 *	- show all the slots in the lobby ui.
+		 *	- rework the game start so we actually use the slots.
+		 *	- all players should be able to click an empty slot to move to it
+		 *	- host should be able to choose whether a slot is open/closed/bot, with
+		 *		potentially more than one choice of bot class.
+		 *	- host should be able to kick a client from the lobby by closing its slot.
+		 *	- change lobby commands so the host can configure bots, rather than
+		 *		just configuring itself.
+		 *	- "teams together" option for team games -- will eliminate most need
+		 *		for manual spawnpoint choosing.
+		 *	- pick sensible non-conflicting colors for bots.
+		 */
+
 		static int ChooseFreePlayerIndex()
 		{
 			for (var i = 0; i < 8; i++)
