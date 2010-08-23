@@ -18,6 +18,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 
 namespace OpenRA.Server
 {
@@ -46,25 +47,24 @@ namespace OpenRA.Server
 		static ModData ModData;
 		static Map Map;
 
-		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, 
-			string[] mods, string map, bool cheats, ModData modData)
+		public static void ServerMain(ModData modData, UserSettings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
 
 			isInitialPing = true;
-			Server.masterServerUrl = masterServerUrl;
-			isInternetServer = internetServer;
-			listener = new TcpListener(IPAddress.Any, port);
-			Name = name;
-			ExternalPort = extport;
+			Server.masterServerUrl = settings.MasterServer;
+			isInternetServer = settings.AdvertiseOnline;
+			listener = new TcpListener(IPAddress.Any, settings.ListenPort);
+			Name = settings.LastServerTitle;
+			ExternalPort = settings.ExternalPort;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
 			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = mods;
+			lobbyInfo.GlobalSettings.Mods = settings.InitialMods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
-			lobbyInfo.GlobalSettings.AllowCheats = cheats;
+			lobbyInfo.GlobalSettings.AllowCheats = settings.AllowCheats;
 
 			LoadMap();	// populates the Session's slots, too.
 			
@@ -73,8 +73,6 @@ namespace OpenRA.Server
 				Log.Write("server","- {0}", m);
 			
 			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
-
-
 			
 			try
 			{
