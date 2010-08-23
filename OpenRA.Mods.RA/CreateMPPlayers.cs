@@ -19,8 +19,6 @@ namespace OpenRA.Mods.RA
 
 	public class CreateMPPlayers : ICreatePlayers
 	{
-		public Dictionary<string, Player> Players = new Dictionary<string, Player>();
-
 		public void CreatePlayers(World w)
 		{
 			// Add real players
