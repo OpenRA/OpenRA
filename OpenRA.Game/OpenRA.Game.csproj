@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -100,7 +100,6 @@
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\TechTree.cs" />
-    <Compile Include="GameRules\UserSettings.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Graphics\ChromeProvider.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Support\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Graphics\Renderer.cs" />
-    <Compile Include="Support\Settings.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
@@ -224,6 +222,8 @@
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
     <Compile Include="Traits\MPStartLocations.cs" />
+    <Compile Include="GameRules\Settings.cs" />
+    <Compile Include="Support\Arguments.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

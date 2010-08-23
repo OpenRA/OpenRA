@@ -48,7 +48,7 @@ namespace OpenRA.Server
 		static ModData ModData;
 		static Map Map;
 
-		public static void ServerMain(ModData modData, UserSettings settings, string map)
+		public static void ServerMain(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -151,7 +151,7 @@ namespace OpenRA.Server
 				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
 				conns.Add(newConn);
 
-				var defaults = new GameRules.UserSettings();
+				var defaults = new GameRules.Settings();
 				lobbyInfo.Clients.Add(
 					new Session.Client()
 					{

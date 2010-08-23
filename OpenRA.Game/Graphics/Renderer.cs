@@ -121,13 +121,13 @@ namespace OpenRA.Graphics
 
 		public static Size Resolution { get { return device.WindowSize; } }
 
-		internal static void Initialize( Settings settings, OpenRA.FileFormats.Graphics.WindowMode windowMode )
+		internal static void Initialize( OpenRA.FileFormats.Graphics.WindowMode windowMode )
 		{
-			var resolution = GetResolution( settings, windowMode );
+			var resolution = GetResolution( windowMode );
 			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowMode, false );
 		}
 
-		static Size GetResolution(Settings settings, WindowMode windowmode)
+		static Size GetResolution(WindowMode windowmode)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
 			var customSize = (windowmode == WindowMode.Windowed) ? Game.Settings.WindowedSize : Game.Settings.FullscreenSize;

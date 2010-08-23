@@ -13,11 +13,11 @@ using System.Text.RegularExpressions;
 
 namespace OpenRA
 {
-	public class Settings
+	public class Arguments
 	{
-		Dictionary<string, string> settings = new Dictionary<string, string>();
+		Dictionary<string, string> args = new Dictionary<string, string>();
 
-		public Settings(IEnumerable<string> src)
+		public Arguments(IEnumerable<string> src)
 		{
 			Regex regex = new Regex("([^=]+)=(.*)");
 			foreach (string s in src)
@@ -26,13 +26,13 @@ namespace OpenRA
 				if (m == null || !m.Success)
 					continue;
 
-				settings.Add(m.Groups[1].Value, m.Groups[2].Value);
+				args.Add(m.Groups[1].Value, m.Groups[2].Value);
 			}
 		}
 
-		public bool Contains(string key) { return settings.ContainsKey(key); }
+		public bool Contains(string key) { return args.ContainsKey(key); }
 
-		public string GetValue(string key, string defaultValue) { return Contains(key) ? settings[key] : defaultValue; }
+		public string GetValue(string key, string defaultValue) { return Contains(key) ? args[key] : defaultValue; }
 
 		public int GetValue(string key, int defaultValue)
 		{

@@ -17,7 +17,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.GameRules
 {
-	public class UserSettings
+	public class Settings
 	{
         // Behaviour settings
         public bool ViewportEdgeScroll = true;
@@ -33,7 +33,7 @@ namespace OpenRA.GameRules
 		public WindowMode WindowMode = WindowMode.PseudoFullscreen;
 		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width,Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024,768);
-		public readonly static int2 MinResolution = new int2(800, 600);
+		public readonly int2 MinResolution = new int2(800, 600);
 		
 		//Sound Settings
 		public float SoundVolume = 0.5f;
@@ -62,12 +62,12 @@ namespace OpenRA.GameRules
 		public bool AllowCheats = false;
 		
 		string SettingsFile;
-		UserSettings defaults;
+		Settings defaults;
 		
-		public UserSettings() {}
-		public UserSettings(Settings args)
+		public Settings() {}
+		public Settings(Arguments args)
 		{			
-			defaults = new UserSettings();
+			defaults = new Settings();
 			SettingsFile = Game.SupportDir + "settings.yaml";
 
 			// Override settings loading to not crash

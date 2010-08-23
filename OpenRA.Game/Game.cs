@@ -34,7 +34,7 @@ namespace OpenRA
 		public static ModData modData;
 		public static World world;
 		public static Viewport viewport;
-		public static UserSettings Settings;
+		public static Settings Settings;
 
 		internal static OrderManager orderManager;
 
@@ -246,15 +246,15 @@ namespace OpenRA
 		public static Modifiers GetModifierKeys() { return modifiers; }
 		public static void HandleModifierKeys(Modifiers mods) {	modifiers = mods; }
 
-		internal static void Initialize(Settings settings)
+		internal static void Initialize(Arguments args)
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
 			var defaultSupport = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 												+ Path.DirectorySeparatorChar + "OpenRA";
 
-			SupportDir = settings.GetValue("SupportDir", defaultSupport);
-			Settings = new UserSettings(settings);
+			SupportDir = args.GetValue("SupportDir", defaultSupport);
+			Settings = new Settings(args);
 
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
@@ -266,7 +266,7 @@ namespace OpenRA
 
 			Renderer.SheetSize = Settings.SheetSize;
 
-			Renderer.Initialize( settings, Game.Settings.WindowMode );
+			Renderer.Initialize( Game.Settings.WindowMode );
 
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
