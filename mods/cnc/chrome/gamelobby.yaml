@@ -155,6 +155,21 @@ Container@ROOT:
 									Y:2
 									Width:20
 									Height:20
+						Container@TEMPLATE_EMPTY:
+							Id:TEMPLATE_EMPTY
+							X:0
+							Y:0
+							Width:500
+							Height:30
+							Visible:false
+							Children:
+								Label@NAME:
+									Id:NAME
+									Text:Name
+									Width:139
+									Height:25
+									X:0
+									Y:0
 				Container@LABEL_CONTAINER:
 					X:30
 					Y:45

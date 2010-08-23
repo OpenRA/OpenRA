@@ -12,14 +12,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
 using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
+		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate;
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -41,7 +40,7 @@ namespace OpenRA.Widgets.Delegates
 			Players = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
-
+			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;
@@ -235,6 +234,11 @@ namespace OpenRA.Widgets.Delegates
 			if (Game.orderManager.Connection.ConnectionState == ConnectionState.PreConnecting)
 				hasJoined = false;
 		}
+
+		static Session.Client GetClientInSlot(Session.Slot slot)
+		{
+			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+		}
 		
 		void UpdatePlayerList()
 		{
@@ -243,12 +247,18 @@ namespace OpenRA.Widgets.Delegates
 			Players.Children.Clear();
 
 			int offset = 0;
-			foreach (var client in Game.LobbyInfo.Clients)
+			foreach (var slot in Game.LobbyInfo.Slots)
 			{
-				var c = client;
+				var s = slot;
+				var c = GetClientInSlot(s);
 				Widget template;
 
-				if (client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
+				template = EmptySlotTemplate.Clone();	// FIXME
+
+				var name = template.GetWidget<LabelWidget>("NAME");
+				name.Text = s.Bot ?? (s.Closed ? "Closed" : c != null ? c.Name : "Open");
+
+				/*if (client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
@@ -331,8 +341,9 @@ namespace OpenRA.Widgets.Delegates
 					status.Checked = () => c.State == Session.ClientState.Ready;
 					if (client.Index == Game.LocalClient.Index) status.OnMouseDown = CycleReady;
 				}
+				 * */
 
-				template.Id = "PLAYER_{0}".F(c.Index);
+				template.Id = "SLOT_{0}".F(s.Index);
 				template.Parent = Players;
 
 				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
