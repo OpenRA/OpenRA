@@ -171,6 +171,17 @@ namespace OpenRA
 					throw new InvalidDataException("Map format {0} is not supported.".F(MapFormat));
 			}
 
+			/* hack: make some slots. */
+			if (!Players.Any(p => p.Value.Playable))
+			{
+				int index = 0;
+				foreach (var wp in Waypoints)
+				{
+					var p = new PlayerReference("Multi{0}".F(index++), "Random", false, false) { Playable = true };
+					Players.Add(p.Name, p);
+				}
+			}
+
 			// Smudges
 			foreach (var kv in yaml["Smudges"].Nodes)
 			{

@@ -36,6 +36,7 @@ namespace OpenRA.Network
 			public string Name;
 			public ClientState State;
 			public int Team;
+			public int Slot;	//	which slot we're in, or -1 for `observer`.
 		}
 
 		public class Slot
