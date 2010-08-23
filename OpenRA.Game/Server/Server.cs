@@ -43,9 +43,11 @@ namespace OpenRA.Server
 		static bool isInternetServer;
 		static string masterServerUrl;
 		static bool isInitialPing;
+		static ModData ModData;
+		static Map Map;
 
 		public static void ServerMain(bool internetServer, string masterServerUrl, string name, int port, int extport, 
-			string[] mods, string map, bool cheats)
+			string[] mods, string map, bool cheats, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -56,18 +58,23 @@ namespace OpenRA.Server
 			Name = name;
 			ExternalPort = extport;
 			randomSeed = (int)DateTime.Now.ToBinary();
+			ModData = modData;
 
 			lobbyInfo = new Session();
 			lobbyInfo.GlobalSettings.Mods = mods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
 			lobbyInfo.GlobalSettings.AllowCheats = cheats;
+
+			LoadMap();	// populates the Session's slots, too.
 			
 			Log.Write("server", "Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Log.Write("server","- {0}", m);
 			
 			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
+
+
 			
 			try
 			{
@@ -107,6 +114,11 @@ namespace OpenRA.Server
 					}
 				}
 			} ) { IsBackground = true }.Start();
+		}
+
+		static void LoadMap()
+		{
+			Map = new Map(ModData.AvailableMaps[lobbyInfo.GlobalSettings.Map].Package);
 		}
 
 		static int ChooseFreePlayerIndex()
@@ -337,7 +349,9 @@ namespace OpenRA.Server
 							SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
-						lobbyInfo.GlobalSettings.Map = s;			
+						lobbyInfo.GlobalSettings.Map = s;	
+						LoadMap();
+
 						foreach(var client in lobbyInfo.Clients)
 						{
 							client.SpawnPoint = 0;
