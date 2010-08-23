@@ -72,7 +72,6 @@
     <Compile Include="Primitives\DisposableAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thirdparty\Random.cs" />
-    <Compile Include="Session.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\Timer.cs" />

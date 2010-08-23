@@ -19,6 +19,7 @@ using System.Net.Sockets;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using OpenRA.Network;
 
 namespace OpenRA.Server
 {

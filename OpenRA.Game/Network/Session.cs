@@ -9,9 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Network
 {
 	// todo: ship most of this back to the Game assembly;
 	// it was only in FileFormats due to the original server model,
@@ -31,8 +31,8 @@ namespace OpenRA.FileFormats
 		public class Client
 		{
 			public int Index;
-			public System.Drawing.Color Color1;
-			public System.Drawing.Color Color2;
+			public Color Color1;
+			public Color Color2;
 			public string Country;
 			public int SpawnPoint;
 			public string Name;
