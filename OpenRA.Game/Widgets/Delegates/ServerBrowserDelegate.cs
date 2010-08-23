@@ -41,7 +41,7 @@ namespace OpenRA.Widgets.Delegates
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
 
-				MasterServerQuery.Refresh(Game.Settings.MasterServer);
+				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
 
 				return true;
 			};
@@ -76,7 +76,7 @@ namespace OpenRA.Widgets.Delegates
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
 
-				MasterServerQuery.Refresh(Game.Settings.MasterServer);
+				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
 
 				return true;
 			};
@@ -91,7 +91,7 @@ namespace OpenRA.Widgets.Delegates
 			{
 				r.CloseWindow();
 
-				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.LastServer;
+				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.General.LastServer;
 				r.OpenWindow("DIRECTCONNECT_BG");
 				return true;
 			};
@@ -133,7 +133,7 @@ namespace OpenRA.Widgets.Delegates
 				if (cpts.Length != 2)
 					return true;
 
-				Game.Settings.LastServer = address;
+				Game.Settings.General.LastServer = address;
 				Game.Settings.Save();
 
 				r.CloseWindow();

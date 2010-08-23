@@ -13,7 +13,7 @@ namespace OpenRA.Network
 
 		internal void UpdateSyncReport()
 		{
-			if (!Game.Settings.RecordSyncReports)
+			if (!Game.Settings.Debug.RecordSyncReports)
 				return;
 
 			while (syncReports.Count >= numSyncReports) syncReports.Dequeue();

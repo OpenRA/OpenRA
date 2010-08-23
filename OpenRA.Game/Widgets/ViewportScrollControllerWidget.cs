@@ -39,7 +39,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
-                int InverseScroll = Game.Settings.InverseDragScroll ? -1 : 1;
+                int InverseScroll = Game.Settings.General.InverseDragScroll ? -1 : 1;
                 Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * InverseScroll);
 				return true;
 			}
@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 		
 		public override string GetCursor(int2 pos)
 		{
-			if (!Game.Settings.ViewportEdgeScroll)
+			if (!Game.Settings.General.ViewportEdgeScroll)
 				return null;
 			
 			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Left))
@@ -93,7 +93,7 @@ namespace OpenRA.Widgets
 		public override void Tick(World world)
 		{
 			Edge = ScrollDirection.None;
-			if (Game.Settings.ViewportEdgeScroll)
+			if (Game.Settings.General.ViewportEdgeScroll)
 			{
 				// Check for edge-scroll
 				if (Viewport.LastMousePos.X < EdgeScrollThreshold)

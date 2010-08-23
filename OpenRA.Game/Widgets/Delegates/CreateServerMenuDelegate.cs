@@ -36,29 +36,29 @@ namespace OpenRA.Widgets.Delegates
 				
 				var map = Game.modData.AvailableMaps.Keys.FirstOrDefault();
 				
-				settings.LastServerTitle = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
-				settings.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
-				settings.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
+				settings.Server.LastServerTitle = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
+				settings.Server.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
 				settings.Save();
 
 				Server.Server.ServerMain(Game.modData, settings, map);
 
-				Game.JoinServer(IPAddress.Loopback.ToString(), settings.ListenPort);
+				Game.JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
 				return true;
 			};
 			
-			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.LastServerTitle;
-			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.ListenPort.ToString();
-			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.ExternalPort.ToString();
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => settings.AdvertiseOnline;
+			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.LastServerTitle;
+			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
+			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => settings.Server.AdvertiseOnline;
 			cs.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
-				settings.AdvertiseOnline ^= true;
+				settings.Server.AdvertiseOnline ^= true;
 				settings.Save();
 				return true;	
 			};
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Checked = () => settings.AllowCheats;
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Checked = () => settings.Server.AllowCheats;
 			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").OnMouseDown = mi => {
-				settings.AllowCheats ^=true;
+				settings.Server.AllowCheats ^=true;
 				settings.Save();
 				return true;
 			};

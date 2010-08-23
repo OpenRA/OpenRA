@@ -79,7 +79,7 @@ namespace OpenRA.Traits
 				case "DevUnitDebug":
 					{
 						if (self.World.LocalPlayer == self.Owner)
-							Game.Settings.UnitDebug ^= true;
+							Game.Settings.Debug.UnitDebug ^= true;
 						break;
 					}
 			}

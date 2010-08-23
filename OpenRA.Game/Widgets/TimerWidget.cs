@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 		
 		public TimerWidget ()
 		{
-			IsVisible = () => Game.Settings.ShowGameTimer;
+			IsVisible = () => Game.Settings.Debug.ShowGameTimer;
 		}
 
 		public override void DrawInner(World world)

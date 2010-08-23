@@ -75,7 +75,7 @@ namespace OpenRA.Network
 		public static Session Deserialize(string data)
 		{
 			var session = new Session();
-			session.GlobalSettings.Mods = Game.Settings.InitialMods;
+			session.GlobalSettings.Mods = Game.Settings.General.InitialMods;
 
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)

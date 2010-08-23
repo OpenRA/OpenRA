@@ -141,20 +141,20 @@ namespace OpenRA
 		
 		public static float SoundVolume
 		{
-			get { return Game.Settings.SoundVolume; }
+			get { return Game.Settings.Sound.SoundVolume; }
 			set
 			{
-				Game.Settings.SoundVolume = value;
+				Game.Settings.Sound.SoundVolume = value;
 				soundEngine.SetSoundVolume(value, music, video);
 			}
 		}
 
 		public static float MusicVolume
 		{
-			get { return Game.Settings.MusicVolume; }
+			get { return Game.Settings.Sound.MusicVolume; }
 			set
 			{
-				Game.Settings.MusicVolume = value;
+				Game.Settings.Sound.MusicVolume = value;
 				if (music != null)
 					music.Volume = value;
 			}
@@ -162,10 +162,10 @@ namespace OpenRA
 		
 		public static float VideoVolume
 		{
-			get { return Game.Settings.VideoVolume; }
+			get { return Game.Settings.Sound.VideoVolume; }
 			set
 			{
-				Game.Settings.VideoVolume = value;
+				Game.Settings.Sound.VideoVolume = value;
 				if (video != null)
 					video.Volume = value;
 			}

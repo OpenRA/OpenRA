@@ -34,31 +34,31 @@ namespace OpenRA.Widgets.Delegates
 			var general = bg.GetWidget("GENERAL_PANE");
 			
 			var name = general.GetWidget<TextFieldWidget>("NAME");
-			name.Text = Game.Settings.PlayerName;
+			name.Text = Game.Settings.Player.PlayerName;
 			name.OnLoseFocus = () =>
 			{
 				name.Text = name.Text.Trim();
 		
 				if (name.Text.Length == 0)
-					name.Text = Game.Settings.PlayerName;
+					name.Text = Game.Settings.Player.PlayerName;
 				else
-					Game.Settings.PlayerName = name.Text;
+					Game.Settings.Player.PlayerName = name.Text;
 			};
             name.OnEnterKey = () => { name.LoseFocus(); return true; };
 
             var edgeScroll = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
-            edgeScroll.Checked = () => Game.Settings.ViewportEdgeScroll;
+            edgeScroll.Checked = () => Game.Settings.General.ViewportEdgeScroll;
             edgeScroll.OnMouseDown = mi =>
             {
-                Game.Settings.ViewportEdgeScroll ^= true;
+                Game.Settings.General.ViewportEdgeScroll ^= true;
                 return true;
             };
 
             var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
-            inverseScroll.Checked = () => Game.Settings.InverseDragScroll;
+            inverseScroll.Checked = () => Game.Settings.General.InverseDragScroll;
             inverseScroll.OnMouseDown = mi =>
             {
-                Game.Settings.InverseDragScroll ^= true;
+                Game.Settings.General.InverseDragScroll ^= true;
                 return true;
             };
 						
@@ -77,47 +77,47 @@ namespace OpenRA.Widgets.Delegates
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
 			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
-			fullscreen.Checked = () => {return Game.Settings.WindowMode != WindowMode.Windowed;};
+			fullscreen.Checked = () => {return Game.Settings.Graphics.WindowMode != WindowMode.Windowed;};
 			fullscreen.OnMouseDown = mi =>
 			{
-				Game.Settings.WindowMode = (Game.Settings.WindowMode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+				Game.Settings.Graphics.WindowMode = (Game.Settings.Graphics.WindowMode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
 				return true;
 			};
 			
 			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
-			Game.Settings.WindowedSize.X = (Game.Settings.WindowedSize.X < Game.Settings.MinResolution.X)?
-				Game.Settings.MinResolution.X : Game.Settings.WindowedSize.X;
-			width.Text = Game.Settings.WindowedSize.X.ToString();
+			Game.Settings.Graphics.WindowedSize.X = (Game.Settings.Graphics.WindowedSize.X < Game.Settings.Graphics.MinResolution.X)?
+				Game.Settings.Graphics.MinResolution.X : Game.Settings.Graphics.WindowedSize.X;
+			width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
 			width.OnLoseFocus = () =>
 			{
 				try {
 					var w = int.Parse(width.Text);
-					if (w > Game.Settings.MinResolution.X && w <= Screen.PrimaryScreen.Bounds.Size.Width)
-						Game.Settings.WindowedSize = new int2(w, Game.Settings.WindowedSize.Y);
+					if (w > Game.Settings.Graphics.MinResolution.X && w <= Screen.PrimaryScreen.Bounds.Size.Width)
+						Game.Settings.Graphics.WindowedSize = new int2(w, Game.Settings.Graphics.WindowedSize.Y);
 					else
-						width.Text = Game.Settings.WindowedSize.X.ToString();
+						width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
 				}
 				catch (FormatException) {
-					width.Text = Game.Settings.WindowedSize.X.ToString();
+					width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
 				}
 			};
 			width.OnEnterKey = () => { width.LoseFocus(); return true; };
 			
 			var height = display.GetWidget<TextFieldWidget>("SCREEN_HEIGHT");
-			Game.Settings.WindowedSize.Y = (Game.Settings.WindowedSize.Y < Game.Settings.MinResolution.Y)?
-				Game.Settings.MinResolution.Y : Game.Settings.WindowedSize.Y;
-			height.Text = Game.Settings.WindowedSize.Y.ToString();
+			Game.Settings.Graphics.WindowedSize.Y = (Game.Settings.Graphics.WindowedSize.Y < Game.Settings.Graphics.MinResolution.Y)?
+				Game.Settings.Graphics.MinResolution.Y : Game.Settings.Graphics.WindowedSize.Y;
+			height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
 			height.OnLoseFocus = () =>
 			{
 				try {
 					var h = int.Parse(height.Text);
-					if (h > Game.Settings.MinResolution.Y  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
-						Game.Settings.WindowedSize = new int2(Game.Settings.WindowedSize.X, h);	
+					if (h > Game.Settings.Graphics.MinResolution.Y  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
+						Game.Settings.Graphics.WindowedSize = new int2(Game.Settings.Graphics.WindowedSize.X, h);	
 					else 
-						height.Text = Game.Settings.WindowedSize.Y.ToString();
+						height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
 				}
 				catch (FormatException) {
-					height.Text = Game.Settings.WindowedSize.Y.ToString();
+					height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
 				}
 			};
 			height.OnEnterKey = () => { height.LoseFocus(); return true; };
@@ -125,26 +125,26 @@ namespace OpenRA.Widgets.Delegates
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
 			var perfdebug = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
-			perfdebug.Checked = () => {return Game.Settings.PerfDebug;};
+			perfdebug.Checked = () => {return Game.Settings.Debug.PerfDebug;};
 			perfdebug.OnMouseDown = mi =>
 			{
-				Game.Settings.PerfDebug ^= true;
+				Game.Settings.Debug.PerfDebug ^= true;
 				return true;
 			};
 			
 			var syncreports = debug.GetWidget<CheckboxWidget>("SYNCREPORTS_CHECKBOX");
-			syncreports.Checked = () => { return Game.Settings.RecordSyncReports; };
+			syncreports.Checked = () => { return Game.Settings.Debug.RecordSyncReports; };
 			syncreports.OnMouseDown = mi =>
 			{
-				Game.Settings.RecordSyncReports ^= true;
+				Game.Settings.Debug.RecordSyncReports ^= true;
 				return true;
 			};
 			
 			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
-			timedebug.Checked = () => {return Game.Settings.ShowGameTimer;};
+			timedebug.Checked = () => {return Game.Settings.Debug.ShowGameTimer;};
 			timedebug.OnMouseDown = mi => 
 			{
-				Game.Settings.ShowGameTimer ^= true;
+				Game.Settings.Debug.ShowGameTimer ^= true;
 				return true;
 			};
 			

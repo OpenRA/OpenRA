@@ -130,7 +130,7 @@ namespace OpenRA.Graphics
 		static Size GetResolution(WindowMode windowmode)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-			var customSize = (windowmode == WindowMode.Windowed) ? Game.Settings.WindowedSize : Game.Settings.FullscreenSize;
+			var customSize = (windowmode == WindowMode.Windowed) ? Game.Settings.Graphics.WindowedSize : Game.Settings.Graphics.FullscreenSize;
 			
 			if (customSize.X > 0 && customSize.Y > 0)
 			{

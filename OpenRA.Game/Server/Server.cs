@@ -53,19 +53,19 @@ namespace OpenRA.Server
 			Log.AddChannel("server", "server.log");
 
 			isInitialPing = true;
-			Server.masterServerUrl = settings.MasterServer;
-			isInternetServer = settings.AdvertiseOnline;
-			listener = new TcpListener(IPAddress.Any, settings.ListenPort);
-			Name = settings.LastServerTitle;
-			ExternalPort = settings.ExternalPort;
+			Server.masterServerUrl = settings.Server.MasterServer;
+			isInternetServer = settings.Server.AdvertiseOnline;
+			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
+			Name = settings.Server.LastServerTitle;
+			ExternalPort = settings.Server.ExternalPort;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
 			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = settings.InitialMods;
+			lobbyInfo.GlobalSettings.Mods = settings.General.InitialMods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
-			lobbyInfo.GlobalSettings.AllowCheats = settings.AllowCheats;
+			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
 
 			LoadMap();	// populates the Session's slots, too.
 			
@@ -151,7 +151,7 @@ namespace OpenRA.Server
 				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
 				conns.Add(newConn);
 
-				var defaults = new GameRules.Settings();
+				var defaults = new GameRules.PlayerSettings();
 				lobbyInfo.Clients.Add(
 					new Session.Client()
 					{

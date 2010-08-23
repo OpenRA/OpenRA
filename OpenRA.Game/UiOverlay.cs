@@ -42,7 +42,7 @@ namespace OpenRA
 
 		public void Draw( World world )
 		{
-			if (Game.Settings.UnitDebug)
+			if (Game.Settings.Debug.UnitDebug)
 			{
 				var uim = world.WorldActor.Trait<UnitInfluence>();
 				

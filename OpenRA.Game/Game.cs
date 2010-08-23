@@ -115,11 +115,11 @@ namespace OpenRA
 
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
-			if (dt >= Settings.Timestep)
+			if (dt >= Settings.General.Timestep)
 			{
 				using (new PerfSample("tick_time"))
 				{
-					lastTime += Settings.Timestep;
+					lastTime += Settings.General.Timestep;
 					Widget.DoTick(world);
 
 					orderManager.TickImmediate(world);
@@ -261,12 +261,12 @@ namespace OpenRA
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
 
-			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
+			LobbyInfo.GlobalSettings.Mods = Settings.General.InitialMods;
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 
-			Renderer.SheetSize = Settings.SheetSize;
+			Renderer.SheetSize = Settings.General.SheetSize;
 
-			Renderer.Initialize( Game.Settings.WindowMode );
+			Renderer.Initialize( Game.Settings.Graphics.WindowMode );
 
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -307,7 +307,7 @@ namespace OpenRA
 			orderManager.Dispose();
 			var shellmap = modData.Manifest.ShellmapUid;
 			LobbyInfo = new Session();
-			LobbyInfo.GlobalSettings.Mods = Settings.InitialMods;
+			LobbyInfo.GlobalSettings.Mods = Settings.General.InitialMods;
 			JoinLocal();
 			StartGame(shellmap);
 

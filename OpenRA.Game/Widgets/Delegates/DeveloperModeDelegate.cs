@@ -49,7 +49,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("SETTINGS_CHECKBOX_UNITDEBUG").Checked = 
-				() => Game.Settings.UnitDebug;
+				() => Game.Settings.Debug.UnitDebug;
 			devmodeBG.GetWidget("SETTINGS_CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
 			{
 				Game.IssueOrder(new Order("DevUnitDebug", Game.world.LocalPlayer.PlayerActor));
