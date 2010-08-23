@@ -43,6 +43,7 @@ namespace OpenRA.Network
 			public int Index;
 			public string Bot;	// trait name of the bot to initialize in this slot, or null otherwise.
 			public bool Closed;	// host has explicitly closed this slot.
+			public string MapPlayer;	// playerReference to bind against.
 			
 			// todo: more stuff?
 		}

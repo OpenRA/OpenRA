@@ -115,9 +115,25 @@ namespace OpenRA.Server
 			} ) { IsBackground = true }.Start();
 		}
 
+		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
+		{
+			if (!pr.Playable) return null;
+			return new Session.Slot
+			{
+				MapPlayer = pr.Name,
+				Bot = null,	/* todo: allow the map to specify a bot class? */
+				Closed = false,
+			};
+		}
+
 		static void LoadMap()
 		{
 			Map = new Map(ModData.AvailableMaps[lobbyInfo.GlobalSettings.Map].Package);
+			lobbyInfo.Slots = Map.Players
+				.Select(p => MakeSlotFromPlayerReference(p.Value))
+				.Where(s => s != null)
+				.Select((s, i) => { s.Index = i; return s; })
+				.ToList();
 		}
 
 		static int ChooseFreePlayerIndex()
@@ -423,7 +439,9 @@ namespace OpenRA.Server
 					};
 				}
 				break;
-				case "Chat": case "TeamChat":
+
+				case "Chat": 
+				case "TeamChat":
 					foreach (var c in conns.Except(conn).ToArray())
 						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
 				break;

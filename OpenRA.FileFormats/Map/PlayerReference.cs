@@ -19,6 +19,7 @@ namespace OpenRA.FileFormats
 		public string Race;
 		public bool OwnsWorld = false;
 		public bool NonCombatant = false;
+		public bool Playable = false;
 		public Color Color = Color.FromArgb(238,238,238);
 		public Color Color2 = Color.FromArgb(44,28,24);
 		
