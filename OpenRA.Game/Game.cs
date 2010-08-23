@@ -163,28 +163,7 @@ namespace OpenRA
 
 		internal static void SyncLobbyInfo(string data)
 		{
-			var session = new Session();
-			session.GlobalSettings.Mods = Settings.InitialMods;
-
-			var ys = MiniYaml.FromString(data);
-			foreach (var y in ys)
-			{
-				if (y.Key == "GlobalSettings")
-				{
-					FieldLoader.Load(session.GlobalSettings, y.Value);
-					continue;
-				}
-
-				int index;
-				if (!int.TryParse(y.Key, out index))
-					continue;	// not a player.
-
-				var client = new Session.Client();
-				FieldLoader.Load(client, y.Value);
-				session.Clients.Add(client);
-			}
-
-			LobbyInfo = session;
+			LobbyInfo = Session.Deserialize(data);
 
 			if( !world.GameHasStarted )
 				world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );

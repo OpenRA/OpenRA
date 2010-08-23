@@ -10,16 +10,14 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-	// todo: ship most of this back to the Game assembly;
-	// it was only in FileFormats due to the original server model,
-	// in a sep. process.
-
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
+		public List<Slot> Slots = new List<Slot>();
 		public Global GlobalSettings = new Global();
 
 		public enum ClientState
@@ -40,6 +38,15 @@ namespace OpenRA.Network
 			public int Team;
 		}
 
+		public class Slot
+		{
+			public int Index;
+			public string Bot;	// trait name of the bot to initialize in this slot, or null otherwise.
+			public bool Closed;	// host has explicitly closed this slot.
+			
+			// todo: more stuff?
+		}
+
 		public class Global
 		{
 			public string Map;
@@ -48,6 +55,50 @@ namespace OpenRA.Network
 			public int RandomSeed = 0;
 			public bool LockTeams = false;	// don't allow team changes after game start.
 			public bool AllowCheats = false;
+		}
+
+		public string Serialize()
+		{
+			var clientData = new Dictionary<string, MiniYaml>();
+
+			foreach (var client in Clients)
+				clientData["Client@{0}".F(client.Index)] = FieldSaver.Save(client);
+
+			foreach (var slot in Slots)
+				clientData["Slot@{0}".F(slot.Index)] = FieldSaver.Save(slot);
+
+			clientData["GlobalSettings"] = FieldSaver.Save(GlobalSettings);
+
+			return clientData.WriteToString();
+		}
+
+		public static Session Deserialize(string data)
+		{
+			var session = new Session();
+			session.GlobalSettings.Mods = Game.Settings.InitialMods;
+
+			var ys = MiniYaml.FromString(data);
+			foreach (var y in ys)
+			{
+				var yy = y.Key.Split('@');
+
+				switch( yy[0] )
+				{
+					case "GlobalSettings":
+						FieldLoader.Load(session.GlobalSettings, y.Value);
+						break;
+
+					case "Client":
+						session.Clients.Add(FieldLoader.Load<Session.Client>(y.Value));
+						break;
+
+					case "Slot":
+						session.Slots.Add(FieldLoader.Load<Session.Slot>(y.Value ));
+						break;
+				}
+			}
+
+			return session;
 		}
 	}
 }

@@ -450,14 +450,8 @@ namespace OpenRA.Server
 
 		static void SyncLobbyInfo()
 		{
-			var clientData = lobbyInfo.Clients.ToDictionary(
-				a => a.Index.ToString(),
-				a => FieldSaver.Save(a));
-
-			clientData["GlobalSettings"] = FieldSaver.Save(lobbyInfo.GlobalSettings);
-
 			DispatchOrders(null, 0,
-				new ServerOrder("SyncInfo", clientData.WriteToString()).Serialize());
+				new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
 
 			PingMasterServer();
 		}
