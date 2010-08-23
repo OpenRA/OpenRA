@@ -14,16 +14,16 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-	class ChoosePaletteOnSelectInfo : ITraitInfo
+	class ChooseBuildTabOnSelectInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new ChoosePaletteOnSelect( init ); }
+		public object Create( ActorInitializer init ) { return new ChooseBuildTabOnSelect( init ); }
 	}
 
-	class ChoosePaletteOnSelect : INotifySelection
+	class ChooseBuildTabOnSelect : INotifySelection
 	{
 		readonly World world;
 
-		public ChoosePaletteOnSelect( ActorInitializer init )
+		public ChooseBuildTabOnSelect( ActorInitializer init )
 		{
 			world = init.world;
 		}

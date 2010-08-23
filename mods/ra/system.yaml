@@ -94,7 +94,7 @@ World:
 	LightPaletteRotator:
 	BuildingInfluence:
 	UnitInfluence:
-	ChoosePaletteOnSelect:
+	ChooseBuildTabOnSelect:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3
 	CrateDrop:

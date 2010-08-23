@@ -29,6 +29,7 @@ namespace OpenRA
 		{
 			return actors.AsEnumerable().Contains(a);
 		}
+
 		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
 			var oldSelection = actors.AsEnumerable();
