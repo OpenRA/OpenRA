@@ -256,7 +256,7 @@ namespace OpenRA.Widgets.Delegates
 				template = EmptySlotTemplate.Clone();	// FIXME
 
 				var name = template.GetWidget<LabelWidget>("NAME");
-				name.Text = s.Bot ?? (s.Closed ? "Closed" : c != null ? c.Name : "Open");
+				name.GetText = () => s.Bot ?? (s.Closed ? "Closed" : c != null ? c.Name : "Open");
 
 				/*if (client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
