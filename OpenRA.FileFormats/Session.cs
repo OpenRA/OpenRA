@@ -50,41 +50,4 @@ namespace OpenRA.FileFormats
 			public bool AllowCheats = false;
 		}
 	}
-
-	public class Manifest
-	{
-		public readonly string[] 
-			Folders, Packages, Rules, 
-			Sequences, Chrome, Assemblies, ChromeLayout, 
-			Weapons, Voices, Music, Movies, TileSets;
-		
-		public readonly string ShellmapUid;
-
-		public Manifest(string[] mods)
-		{
-			var yaml = mods
-				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
-				.Aggregate(MiniYaml.Merge);
-				
-			Folders = YamlList(yaml, "Folders");
-			Packages = YamlList(yaml, "Packages");
-			Rules = YamlList(yaml, "Rules");
-			Sequences = YamlList(yaml, "Sequences");
-			Chrome = YamlList(yaml, "Chrome");
-			Assemblies = YamlList(yaml, "Assemblies");
-			ChromeLayout = YamlList(yaml, "ChromeLayout");
-			Weapons = YamlList(yaml, "Weapons");
-			Voices = YamlList(yaml, "Voices");
-			Music = YamlList(yaml, "Music");
-			Movies = YamlList(yaml, "Movies");
-			TileSets = YamlList(yaml, "TileSets");
-						
-			ShellmapUid = yaml["ShellmapUid"].Value;
-		}
-
-		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key)
-		{
-			return ys.ContainsKey(key) ? ys[key].Nodes.Keys.ToArray() : new string[] { };
-		}
-	}
 }
