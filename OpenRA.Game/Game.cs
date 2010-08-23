@@ -224,25 +224,6 @@ namespace OpenRA
 			AfterGameStart();
 		}
 
-		public static Stance ChooseInitialStance(Player p, Player q)
-		{
-			if (p == q) return Stance.Ally;
-
-			// Hack: All map players are neutral wrt everyone else
-			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;
-
-			var pc = GetClientForPlayer(p);
-			var qc = GetClientForPlayer(q);
-
-			return pc.Team != 0 && pc.Team == qc.Team
-				? Stance.Ally : Stance.Enemy;
-		}
-
-		static Session.Client GetClientForPlayer(Player p)
-		{
-			return LobbyInfo.Clients.Single(c => c.Index == p.Index);
-		}
-
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
 			int sync = world.SyncHash();

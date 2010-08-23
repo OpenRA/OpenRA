@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -32,8 +33,27 @@ namespace OpenRA.Mods.RA
 				foreach (var q in w.players.Values)
 				{
 					if (!p.Stances.ContainsKey(q))
-						p.Stances[q] = Game.ChooseInitialStance(p, q);
+						p.Stances[q] = ChooseInitialStance(p, q);
 				}
+		}
+
+		static Stance ChooseInitialStance(Player p, Player q)
+		{
+			if (p == q) return Stance.Ally;
+
+			// Hack: All map players are neutral wrt everyone else
+			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;
+
+			var pc = GetClientForPlayer(p);
+			var qc = GetClientForPlayer(q);
+
+			return pc.Team != 0 && pc.Team == qc.Team
+				? Stance.Ally : Stance.Enemy;
+		}
+
+		static Session.Client GetClientForPlayer(Player p)
+		{
+			return Game.LobbyInfo.Clients.Single(c => c.Index == p.Index);
 		}
 	}
 }
