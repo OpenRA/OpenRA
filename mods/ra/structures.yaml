@@ -52,7 +52,8 @@ GAP:
 	IronCurtainable:
 
 SPEN:
-	InfiltrateForSonarPulse:
+	InfiltrateForSupportPower:
+		Power: SonarPulsePower
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 30
@@ -88,7 +89,8 @@ SPEN:
 	RallyPoint:
 
 SYRD:
-	InfiltrateForSonarPulse:
+	InfiltrateForSupportPower:
+		Power: SonarPulsePower
 	Inherits: ^Building
 	Buildable:
 		BuildPaletteOrder: 40

@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Crates
 {
 	class SupportPowerCrateActionInfo : CrateActionInfo
 	{
-		public string Power = null;
+		public readonly string Power = null;
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.self, this); }
 	}
 

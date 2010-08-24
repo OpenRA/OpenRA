@@ -153,7 +153,7 @@
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="EngineerCapture.cs" />
     <Compile Include="SupportPowers\GpsPower.cs" />
-    <Compile Include="InfiltrateForSonarPulse.cs" />
+    <Compile Include="InfiltrateForSupportPower.cs" />
     <Compile Include="IronCurtainable.cs" />
     <Compile Include="SupportPowers\IronCurtainPower.cs" />
     <Compile Include="PaletteFromFile.cs" />
