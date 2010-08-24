@@ -378,6 +378,11 @@ namespace OpenRA.Server
 						int slot;
 						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
 
+						var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null || slotData.Closed || slotData.Bot != null 
+							|| lobbyInfo.Clients.Any( c => c.Slot == slot ))
+							return false;
+
 						GetClient(conn).Slot = slot;
 						SyncLobbyInfo();
 						return true;
