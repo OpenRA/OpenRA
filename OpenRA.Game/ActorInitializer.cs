@@ -128,7 +128,7 @@ namespace OpenRA
 		{
 			if( player != null )
 				return player;
-			return world.players.First( x => x.Value.InternalName == PlayerName ).Value;
+			return world.players.Values.First( x => x.InternalName == PlayerName );
 		}
 	}
 }
