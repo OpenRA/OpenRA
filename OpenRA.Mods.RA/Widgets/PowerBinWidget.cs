@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel, "chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel);
 			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}

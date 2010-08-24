@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Widgets
 					Game.Renderer.RegularFont.DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
 			}
 			
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y), "chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y));
 		}
 	}
 }

@@ -103,7 +103,6 @@ namespace OpenRA.Widgets
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
 				new float2(MapRect.Location),
-				"chrome",
 				new float2( MapRect.Size ) );
 
 			Game.Renderer.RgbaSpriteRenderer.Flush();
@@ -123,7 +122,7 @@ namespace OpenRA.Widgets
 					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
 					Game.Renderer.LineRenderer.Flush();
 				}
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset, "chrome");
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
 			}
 
 			Game.Renderer.Flush();

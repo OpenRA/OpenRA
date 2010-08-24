@@ -24,12 +24,12 @@ namespace OpenRA.Widgets
 		
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos,"chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos);
 		}
 		
 		public static void DrawSHP(Sprite s, float2 pos)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos,"chrome");
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos);
 		}
 
 		public static void DrawPanel(string collection, Rectangle Bounds)

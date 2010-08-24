@@ -123,20 +123,20 @@ namespace OpenRA.Mods.RA.Widgets
 		{			
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin, "chrome");
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0), "chrome");
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192), "chrome");
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0), "chrome");
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0));
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192));
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0));
 			
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
 				var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2);
 				var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(terrainSprite, o, "chrome", s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, "chrome", s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, "chrome", s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, "chrome", s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(terrainSprite, o, s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, s);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, s);
 				Game.Renderer.RgbaSpriteRenderer.Flush();
 
 				// Draw viewport rect

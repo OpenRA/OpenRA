@@ -64,8 +64,7 @@ namespace OpenRA.Graphics
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
 					new float2(
 						(int)Math.Round(p.X + g.Offset.X, 0),
-						p.Y + g.Offset.Y), 
-					"chrome");
+						p.Y + g.Offset.Y));
 				p.X += g.Advance;
 			}
 		}

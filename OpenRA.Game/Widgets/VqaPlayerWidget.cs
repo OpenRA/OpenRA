@@ -91,10 +91,10 @@ namespace OpenRA.Widgets
 				}
 			}
 			
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, videoOrigin, "chrome", videoSize);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(videoSprite, videoOrigin, videoSize);
 			
 			if (DrawOverlay)
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, "chrome", videoSize);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
 		}
 		
 		public override bool HandleKeyPressInner(KeyInput e)

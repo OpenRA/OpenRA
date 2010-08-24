@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
 				ChromeProvider.GetImage(chromeCollection, "moneybin"),
-				new float2(Bounds.Left, 0), "chrome");
+				new float2(Bounds.Left, 0));
 
 			// Cash
 			var cashDigits = (SplitOreAndCash ? playerResources.DisplayCash
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(
 					ChromeProvider.GetImage(digitCollection, (d - '0').ToString()),
-					new float2(x, 6), "chrome");
+					new float2(x, 6));
 				x -= 14;
 			}
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(
 						ChromeProvider.GetImage( digitCollection, (d - '0').ToString()),
-						new float2(x, 6), "chrome");
+						new float2(x, 6));
 					x -= 14;
 				}
 			}
