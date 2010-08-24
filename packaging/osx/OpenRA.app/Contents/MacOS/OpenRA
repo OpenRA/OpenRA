@@ -75,7 +75,7 @@ fi
 
 # Run the game
 cd "${GAME_PATH}"
-"${EXE_PATH}"mono --debug "OpenRA.Game.exe" InitialMods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
+"${EXE_PATH}"mono --debug "OpenRA.Game.exe" Game.Mods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
 
 # Did we crash?
 STATUS=$?
