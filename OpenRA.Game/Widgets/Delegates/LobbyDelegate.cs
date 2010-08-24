@@ -18,7 +18,7 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate;
+		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -41,6 +41,7 @@ namespace OpenRA.Widgets.Delegates
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
+			EmptySlotTemplateHost = Players.GetWidget("TEMPLATE_EMPTY_HOST");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;
@@ -253,12 +254,26 @@ namespace OpenRA.Widgets.Delegates
 				var c = GetClientInSlot(s);
 				Widget template;
 
-				template = EmptySlotTemplate.Clone();	// FIXME
+				if (c == null)
+				{
+					if (Game.IsHost)
+					{
+						template = EmptySlotTemplateHost.Clone();
+						var name = template.GetWidget<ButtonWidget>("NAME");
+						name.GetText = () => s.Closed ? "Closed" : "Open";
+					}
+					else
+					{
+						template = EmptySlotTemplate.Clone();
+						var name = template.GetWidget<ButtonWidget>("NAME");
+						name.GetText = () => s.Closed ? "Closed" : "Open";
+					}
 
-				var name = template.GetWidget<LabelWidget>("NAME");
-				name.GetText = () => s.Bot ?? (s.Closed ? "Closed" : c != null ? c.Name : "Open");
-
-				/*if (client.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
+					var join = template.GetWidget<ButtonWidget>("JOIN");
+					if (join != null)
+						join.OnMouseUp = _ => { Game.IssueOrder(Order.Command("slot " + s.Index)); return true; };
+				}
+				else if (c.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
@@ -339,9 +354,8 @@ namespace OpenRA.Widgets.Delegates
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.Checked = () => c.State == Session.ClientState.Ready;
-					if (client.Index == Game.LocalClient.Index) status.OnMouseDown = CycleReady;
+					if (c.Index == Game.LocalClient.Index) status.OnMouseDown = CycleReady;
 				}
-				 * */
 
 				template.Id = "SLOT_{0}".F(s.Index);
 				template.Parent = Players;

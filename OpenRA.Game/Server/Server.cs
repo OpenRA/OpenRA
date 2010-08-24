@@ -372,6 +372,16 @@ namespace OpenRA.Server
 						SyncLobbyInfo();		
 						return true;
 					}},
+				{ "slot",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						GetClient(conn).Slot = slot;
+						SyncLobbyInfo();
+						return true;
+					}},
 				{ "map",
 					s =>
 					{

@@ -32,7 +32,7 @@ Container@ROOT:
 							Height:244
 				Container@PLAYERS:
 					Id:PLAYERS
-					X:30
+					X:20
 					Y:75
 					Width:500
 					Height:200
@@ -169,6 +169,35 @@ Container@ROOT:
 									Width:139
 									Height:25
 									X:0
+									Y:0
+								Button@JOIN:
+									Id:JOIN
+									Text:Play in this slot
+									Width:PARENT_RIGHT - 160
+									Height:25
+									X:160
+									Y:0
+						Container@TEMPLATE_EMPTY_HOST:
+							Id:TEMPLATE_EMPTY_HOST
+							X:0
+							Y:0
+							Width:500
+							Height:30
+							Visible:false
+							Children:
+								Button@NAME:		-- TODO: replace with dropdown
+									Id:NAME
+									Text:Name
+									Width:155
+									Height:25
+									X:0
+									Y:0
+								Button@JOIN:
+									Id:JOIN
+									Text:Play in this slot
+									Width:PARENT_RIGHT - 160
+									Height:25
+									X:160
 									Y:0
 				Container@LABEL_CONTAINER:
 					X:30
