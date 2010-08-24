@@ -261,7 +261,7 @@ Container@ROOT:
 					Id:CHAT_DISPLAY
 					Visible:true
 					X:20
-					Notification: beepy2.aud
+					Notification: rabeep1.aud
 					Height:230
 					Y:PARENT_BOTTOM - 289
 					Width:PARENT_RIGHT - 200
