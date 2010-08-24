@@ -54,10 +54,11 @@ namespace OpenRA.Traits
 		const float displayCashFracPerFrame = .07f;
 		const int displayCashDeltaPerFrame = 37;
 		int nextSiloAdviceTime = 0;
+
 		void TickOre(Actor self)
 		{
 			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<IStoreOre>()
-				.Sum(a => a.Actor.TraitsImplementing<IStoreOre>().Sum(b => b.Capacity));
+				.Sum(a => a.Trait.Capacity);
 			
 			if (Ore > OreCapacity)
 				Ore = OreCapacity;
