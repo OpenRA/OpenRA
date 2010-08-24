@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 		{
 			Timer.Time( "DrawRegions start" );
 
-			renderer.BeginFrame(scrollPosition.ToInt2());
+			renderer.BeginFrame(scrollPosition);
 			world.WorldRenderer.Draw();
 			Timer.Time( "worldRenderer: {0}" );
 
@@ -93,7 +93,7 @@ namespace OpenRA.Graphics
 		
 		public void Center(int2 loc)
 		{
-			scrollPosition = (Game.CellSize*loc - .5f * new float2(Width, Height)).ToInt2();
+			scrollPosition = (Game.CellSize*loc - .5f * new float2(Width, Height));
 		}
 
 		public void Center(IEnumerable<Actor> actors)
@@ -104,7 +104,7 @@ namespace OpenRA.Graphics
 				.Select(a => a.CenterLocation)
 				.Aggregate((a, b) => a + b);
 
-			scrollPosition = (avgPos - .5f * new float2(Width, Height)).ToInt2();
+			scrollPosition = (avgPos - .5f * new float2(Width, Height));
 		}
 
 		public Rectangle? ShroudBounds()
