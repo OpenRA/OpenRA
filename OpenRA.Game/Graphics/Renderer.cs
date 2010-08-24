@@ -56,10 +56,13 @@ namespace OpenRA.Graphics
 
 		public IGraphicsDevice Device { get { return device; } }
 
-		public void BeginFrame(float2 r1, float2 r2, float2 scroll)
+		public void BeginFrame(float2 scroll)
 		{
 			device.Begin();
 			device.Clear(Color.Black);
+
+			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);
+			float2 r2 = new float2(-1, 1);
 
 			SetShaderParams( SpriteShader, r1, r2, scroll );
 			SetShaderParams( LineShader, r1, r2, scroll );

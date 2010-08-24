@@ -41,14 +41,13 @@ namespace OpenRA
 		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
 		public static Renderer Renderer;
-		static int2 clientSize;
 		public static Session LobbyInfo = new Session();
 		
 		static void LoadMap(string uid)
 		{
 			var map = modData.PrepareMap(uid);
 			
-			viewport = new Viewport(clientSize, map.TopLeft, map.BottomRight, Renderer);
+			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
 			Timer.Time("viewport: {0}");
 			world = new World(modData.Manifest, map);
@@ -268,7 +267,6 @@ namespace OpenRA
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 
 			Renderer.SheetSize = Settings.Game.SheetSize;
-
 			Renderer.Initialize( Game.Settings.Graphics.Mode );
 
 			Sound.Initialize();
@@ -278,7 +276,6 @@ namespace OpenRA
 			PerfHistory.items["cursor"].hasNormalTick = false;
 
 			Renderer = new Renderer();
-			clientSize = new int2(Renderer.Resolution);
 
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
