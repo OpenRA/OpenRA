@@ -205,6 +205,9 @@ namespace OpenRA
 
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
+			if (world == null)
+				return;
+			
 			int sync = world.SyncHash();
 			var initialWorld = world;
 
