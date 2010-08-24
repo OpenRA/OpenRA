@@ -16,6 +16,17 @@ namespace OpenRA.Network
 {
 	static class UnitOrders
 	{
+		static Session.Client FindClientById(int id)
+		{
+			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == id);
+		}
+
+		static Player FindPlayerByClientId(int id)
+		{
+			/* todo: find the interactive player. */
+			return Game.world.players.Values.FirstOrDefault(p => p.ClientIndex == id);
+		}
+
 		public static void ProcessOrder( World world, int clientId, Order order )
 		{
 			// Drop exploiting orders
@@ -29,10 +40,10 @@ namespace OpenRA.Network
 			{
 			case "Chat":
 				{
-					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
+					var client = FindClientById(clientId);
 					if (client != null)
 					{
-						var player = world.players.Values.FirstOrDefault(p => p.Index == client.Index);
+						var player = FindPlayerByClientId(clientId);
 						if (player != null && player.WinState == WinState.Lost)
 							Game.AddChatLine(client.Color1, client.Name + " (Dead)", order.TargetString);
 						else
@@ -42,10 +53,10 @@ namespace OpenRA.Network
 				}
 			case "TeamChat":
 				{
-					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == clientId);
+					var client = FindClientById(clientId);
 					if (client != null)
 					{
-						var player = world.players.Values.FirstOrDefault(p => p.Index == client.Index);
+						var player = FindPlayerByClientId(clientId);
 						var display = (world.GameHasStarted) ? 
 							player != null && (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
 								|| player.WinState == WinState.Lost) :
