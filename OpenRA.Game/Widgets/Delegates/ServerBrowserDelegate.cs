@@ -91,7 +91,7 @@ namespace OpenRA.Widgets.Delegates
 			{
 				r.CloseWindow();
 
-				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.General.LastServer;
+				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
 				r.OpenWindow("DIRECTCONNECT_BG");
 				return true;
 			};
@@ -133,7 +133,7 @@ namespace OpenRA.Widgets.Delegates
 				if (cpts.Length != 2)
 					return true;
 
-				Game.Settings.General.LastServer = address;
+				Game.Settings.Player.LastServer = address;
 				Game.Settings.Save();
 
 				r.CloseWindow();

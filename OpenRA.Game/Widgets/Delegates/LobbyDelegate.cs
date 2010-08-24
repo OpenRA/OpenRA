@@ -33,8 +33,8 @@ namespace OpenRA.Widgets.Delegates
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
 			
-			CurrentColorPreview1 = Game.Settings.Player.PlayerColor1;
-			CurrentColorPreview2 = Game.Settings.Player.PlayerColor2;
+			CurrentColorPreview1 = Game.Settings.Player.Color1;
+			CurrentColorPreview2 = Game.Settings.Player.Color2;
 
 			var r = Widget.RootWidget;
 			var lobby = r.GetWidget("SERVER_LOBBY");
@@ -162,8 +162,8 @@ namespace OpenRA.Widgets.Delegates
 			var c1 = ColorFromHSL(hf, sf, lf);
 			var c2 = ColorFromHSL(hf, sf, r*lf);
 			
-			Game.Settings.Player.PlayerColor1 = c1;
-			Game.Settings.Player.PlayerColor2 = c2;
+			Game.Settings.Player.Color1 = c1;
+			Game.Settings.Player.Color2 = c2;
 			Game.Settings.Save();
 			Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
@@ -220,11 +220,11 @@ namespace OpenRA.Widgets.Delegates
 				return;
 			hasJoined = true;
 			
-			if (Game.LocalClient.Name != Game.Settings.Player.PlayerName)
-				Game.IssueOrder(Order.Command("name " + Game.Settings.Player.PlayerName));
+			if (Game.LocalClient.Name != Game.Settings.Player.Name)
+				Game.IssueOrder(Order.Command("name " + Game.Settings.Player.Name));
 			
-			var c1 = Game.Settings.Player.PlayerColor1;
-			var c2 = Game.Settings.Player.PlayerColor2;
+			var c1 = Game.Settings.Player.Color1;
+			var c2 = Game.Settings.Player.Color2;
 			
 			if (Game.LocalClient.Color1 != c1 || Game.LocalClient.Color2 != c2)			
 				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
@@ -264,7 +264,7 @@ namespace OpenRA.Widgets.Delegates
 							return true;
 
 						Game.IssueOrder(Order.Command("name " + name.Text));
-						Game.Settings.Player.PlayerName = name.Text;
+						Game.Settings.Player.Name = name.Text;
 						Game.Settings.Save();
 						return true;
 					};

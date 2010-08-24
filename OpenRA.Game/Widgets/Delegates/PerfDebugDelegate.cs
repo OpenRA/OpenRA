@@ -18,7 +18,7 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Widget.RootWidget;
 			var perfRoot = r.GetWidget("PERF_BG");
-			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.Debug.PerfDebug;
+			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.Debug.PerfGraph;
 
 			// Perf text
 			var perfText = perfRoot.GetWidget<LabelWidget>("TEXT");

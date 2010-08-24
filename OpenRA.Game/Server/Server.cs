@@ -56,13 +56,13 @@ namespace OpenRA.Server
 			Server.masterServerUrl = settings.Server.MasterServer;
 			isInternetServer = settings.Server.AdvertiseOnline;
 			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
-			Name = settings.Server.LastServerTitle;
+			Name = settings.Server.Name;
 			ExternalPort = settings.Server.ExternalPort;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
 			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = settings.General.InitialMods;
+			lobbyInfo.GlobalSettings.Mods = settings.Game.Mods;
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
 			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
@@ -156,9 +156,9 @@ namespace OpenRA.Server
 					new Session.Client()
 					{
 						Index = newConn.PlayerIndex,
-						Color1 = defaults.PlayerColor1,
-						Color2 = defaults.PlayerColor2,
-						Name = defaults.PlayerName,
+						Color1 = defaults.Color1,
+						Color2 = defaults.Color2,
+						Name = defaults.Name,
 						Country = "random",
 						State = Session.ClientState.NotReady,
 						SpawnPoint = 0,

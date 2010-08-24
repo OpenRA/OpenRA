@@ -34,31 +34,31 @@ namespace OpenRA.Widgets.Delegates
 			var general = bg.GetWidget("GENERAL_PANE");
 			
 			var name = general.GetWidget<TextFieldWidget>("NAME");
-			name.Text = Game.Settings.Player.PlayerName;
+			name.Text = Game.Settings.Player.Name;
 			name.OnLoseFocus = () =>
 			{
 				name.Text = name.Text.Trim();
 		
 				if (name.Text.Length == 0)
-					name.Text = Game.Settings.Player.PlayerName;
+					name.Text = Game.Settings.Player.Name;
 				else
-					Game.Settings.Player.PlayerName = name.Text;
+					Game.Settings.Player.Name = name.Text;
 			};
             name.OnEnterKey = () => { name.LoseFocus(); return true; };
 
             var edgeScroll = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
-            edgeScroll.Checked = () => Game.Settings.General.ViewportEdgeScroll;
+            edgeScroll.Checked = () => Game.Settings.Game.ViewportEdgeScroll;
             edgeScroll.OnMouseDown = mi =>
             {
-                Game.Settings.General.ViewportEdgeScroll ^= true;
+                Game.Settings.Game.ViewportEdgeScroll ^= true;
                 return true;
             };
 
             var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
-            inverseScroll.Checked = () => Game.Settings.General.InverseDragScroll;
+            inverseScroll.Checked = () => Game.Settings.Game.InverseDragScroll;
             inverseScroll.OnMouseDown = mi =>
             {
-                Game.Settings.General.InverseDragScroll ^= true;
+                Game.Settings.Game.InverseDragScroll ^= true;
                 return true;
             };
 						
@@ -77,10 +77,10 @@ namespace OpenRA.Widgets.Delegates
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
 			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
-			fullscreen.Checked = () => {return Game.Settings.Graphics.WindowMode != WindowMode.Windowed;};
+			fullscreen.Checked = () => {return Game.Settings.Graphics.Mode != WindowMode.Windowed;};
 			fullscreen.OnMouseDown = mi =>
 			{
-				Game.Settings.Graphics.WindowMode = (Game.Settings.Graphics.WindowMode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+				Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
 				return true;
 			};
 			
@@ -125,10 +125,10 @@ namespace OpenRA.Widgets.Delegates
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
 			var perfdebug = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
-			perfdebug.Checked = () => {return Game.Settings.Debug.PerfDebug;};
+			perfdebug.Checked = () => {return Game.Settings.Debug.PerfGraph;};
 			perfdebug.OnMouseDown = mi =>
 			{
-				Game.Settings.Debug.PerfDebug ^= true;
+				Game.Settings.Debug.PerfGraph ^= true;
 				return true;
 			};
 			
@@ -141,10 +141,10 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
-			timedebug.Checked = () => {return Game.Settings.Debug.ShowGameTimer;};
+			timedebug.Checked = () => {return Game.Settings.Game.MatchTimer;};
 			timedebug.OnMouseDown = mi => 
 			{
-				Game.Settings.Debug.ShowGameTimer ^= true;
+				Game.Settings.Game.MatchTimer ^= true;
 				return true;
 			};
 			

@@ -115,11 +115,11 @@ namespace OpenRA
 
 			int t = Environment.TickCount;
 			int dt = t - lastTime;
-			if (dt >= Settings.General.Timestep)
+			if (dt >= Settings.Game.Timestep)
 			{
 				using (new PerfSample("tick_time"))
 				{
-					lastTime += Settings.General.Timestep;
+					lastTime += Settings.Game.Timestep;
 					Widget.DoTick(world);
 
 					orderManager.TickImmediate(world);
@@ -254,19 +254,19 @@ namespace OpenRA
 												+ Path.DirectorySeparatorChar + "OpenRA";
 
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
-			Settings = new Settings(args);
+			Settings = new Settings(SupportDir + "settings.yaml", args);
 
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
 
-			LobbyInfo.GlobalSettings.Mods = Settings.General.InitialMods;
+			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods;
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 
-			Renderer.SheetSize = Settings.General.SheetSize;
+			Renderer.SheetSize = Settings.Game.SheetSize;
 
-			Renderer.Initialize( Game.Settings.Graphics.WindowMode );
+			Renderer.Initialize( Game.Settings.Graphics.Mode );
 
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -307,7 +307,7 @@ namespace OpenRA
 			orderManager.Dispose();
 			var shellmap = modData.Manifest.ShellmapUid;
 			LobbyInfo = new Session();
-			LobbyInfo.GlobalSettings.Mods = Settings.General.InitialMods;
+			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods;
 			JoinLocal();
 			StartGame(shellmap);
 

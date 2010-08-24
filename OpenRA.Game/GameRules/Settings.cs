@@ -20,7 +20,7 @@ namespace OpenRA.GameRules
 {
 	public class ServerSettings
 	{
-		public string LastServerTitle = "OpenRA Game";
+		public string Name = "OpenRA Game";
 		public int ListenPort = 1234;
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
@@ -30,15 +30,14 @@ namespace OpenRA.GameRules
 	
 	public class DebugSettings
 	{
-		public bool PerfDebug = false;
+		public bool PerfGraph = false;
 		public bool RecordSyncReports = true;
-		public bool ShowGameTimer = true;
-		public bool UnitDebug = false;
+		public bool ShowCollisions = false;
 	}
 	
 	public class GraphicSettings
 	{
-		public WindowMode WindowMode = WindowMode.PseudoFullscreen;
+		public WindowMode Mode = WindowMode.PseudoFullscreen;
 		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width,Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024,768);
 		public readonly int2 MinResolution = new int2(800, 600);
@@ -49,30 +48,28 @@ namespace OpenRA.GameRules
 		public float SoundVolume = 0.5f;
 		public float MusicVolume = 0.5f;
 		public float VideoVolume = 0.5f;
-		public bool MusicPlayer = false;
 	}
 	
 	public class PlayerSettings
 	{
-		public string PlayerName = "Newbie";
-		public Color PlayerColor1 = Color.FromArgb(255,160,238);
-		public Color PlayerColor2 = Color.FromArgb(68,0,56);
+		public string Name = "Newbie";
+		public Color Color1 = Color.FromArgb(255,160,238);
+		public Color Color2 = Color.FromArgb(68,0,56);
+		public string LastServer = "localhost:1234";
 	}
 	
-	public class GeneralSettings
+	public class GameSettings
 	{
+		public string[] Mods = { "ra" };
+		public bool MatchTimer = true;
+		
 		// Behaviour settings
         public bool ViewportEdgeScroll = true;
         public bool InverseDragScroll = false;
-		
+
 		// Internal game settings
 		public int Timestep = 40;
 		public int SheetSize = 2048;
-		
-		// External game settings
-		public string LastServer = "localhost:1234";
-
-		public string[] InitialMods = { "ra" };
 	}
 	
 	public class Settings
@@ -80,20 +77,20 @@ namespace OpenRA.GameRules
 		string SettingsFile;
 		
 		public PlayerSettings Player = new PlayerSettings();
-		public GeneralSettings General = new GeneralSettings();
+		public GameSettings Game = new GameSettings();
 		public SoundSettings Sound = new SoundSettings();
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
 		
 		Dictionary<string, object> Sections;
-		public Settings(Arguments args)
+		public Settings(string file, Arguments args)
 		{			
-			SettingsFile = Game.SupportDir + "settings.yaml";
+			SettingsFile = file;
 			Sections = new Dictionary<string, object>()
 			{
 				{"Player", Player},
-				{"General", General},
+				{"Game", Game},
 				{"Sound", Sound},
 				{"Graphics", Graphics},
 				{"Server", Server},
@@ -115,7 +112,8 @@ namespace OpenRA.GameRules
 				var yaml = MiniYaml.FromFile(SettingsFile);
 				
 				foreach (var kv in Sections)
-					LoadSectionYaml(yaml[kv.Key], kv.Value);
+					if (yaml.ContainsKey(kv.Key))
+						LoadSectionYaml(yaml[kv.Key], kv.Value);
 			}
 			
 			// Override with commandline args

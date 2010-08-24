@@ -36,7 +36,7 @@ namespace OpenRA.Widgets.Delegates
 				
 				var map = Game.modData.AvailableMaps.Keys.FirstOrDefault();
 				
-				settings.Server.LastServerTitle = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 				settings.Server.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
 				settings.Save();
@@ -47,7 +47,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.LastServerTitle;
+			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name;
 			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
 			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => settings.Server.AdvertiseOnline;
