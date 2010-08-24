@@ -174,10 +174,9 @@ namespace OpenRA
 			/* hack: make some slots. */
 			if (!Players.Any(p => p.Value.Playable))
 			{
-				int index = 0;
-				foreach (var wp in Waypoints)
+				for (int index = 0; index < Waypoints.Count; index++)
 				{
-					var p = new PlayerReference("Multi{0}".F(index++), "Random", false, false) { Playable = true };
+					var p = new PlayerReference("Multi{0}".F(index), "Random", false, false) { Playable = true };
 					Players.Add(p.Name, p);
 				}
 			}

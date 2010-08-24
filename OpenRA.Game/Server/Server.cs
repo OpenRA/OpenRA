@@ -32,7 +32,6 @@ namespace OpenRA.Server
 		static Session lobbyInfo;
 		static bool GameStarted = false;
 		static string Name;
-		static WebClient wc = new WebClient();
 		static int ExternalPort;
 		static int randomSeed;
 
@@ -584,7 +583,7 @@ namespace OpenRA.Server
 
 						using (var wc = new WebClient())
 						{
-							var result = wc.DownloadData(
+							 wc.DownloadData(
 								masterServerUrl + url.F(
 								ExternalPort, Uri.EscapeUriString(Name),
 								GameStarted ? 2 : 1,	// todo: post-game states, etc.

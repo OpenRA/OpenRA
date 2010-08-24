@@ -22,7 +22,6 @@ namespace OpenRA.FileFormats
 		
 		Stream stream;
 		int currentFrame;
-		ushort flags;
 		ushort numColors;
 		ushort blockWidth;
 		ushort blockHeight;
@@ -62,7 +61,7 @@ namespace OpenRA.FileFormats
 			/* var length = */reader.ReadUInt32();
 			
 			/*var version = */reader.ReadUInt16();
-			flags = reader.ReadUInt16();
+			/*var flags = */reader.ReadUInt16();
 			Frames = reader.ReadUInt16();
 			Width = reader.ReadUInt16();
 			Height = reader.ReadUInt16();
@@ -82,7 +81,7 @@ namespace OpenRA.FileFormats
 			/*var freq = */reader.ReadUInt16();
 			/*var channels = */reader.ReadByte();
 			/*var bits = */reader.ReadByte();
-			var unknown3 = reader.ReadChars(14);
+			/*var unknown3 = */reader.ReadChars(14);
 			
 			
 			var frameSize = NextPowerOf2(Math.Max(Width,Height));

@@ -227,7 +227,6 @@ namespace OpenRA.Mods.RA
             foreach (var a in newProdBuildings)
             {
                 activeProductionBuildings.Add(a);
-                var rp = self.TraitOrDefault<RallyPoint>();
                 int2 newRallyPoint = ChooseRallyLocationNear(a.Location);
                 Game.IssueOrder(new Order("SetRallyPoint", a, newRallyPoint));
             }
