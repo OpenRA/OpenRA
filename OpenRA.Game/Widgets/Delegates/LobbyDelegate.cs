@@ -260,11 +260,21 @@ namespace OpenRA.Widgets.Delegates
 					{
 						template = EmptySlotTemplateHost.Clone();
 						var name = template.GetWidget<ButtonWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : "Open";
+						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null)? "Open" : "Bot: " + s.Bot;
 						name.OnMouseUp = _ =>
 						{
-							Game.IssueOrder(
-								Order.Command((s.Closed ? "slot_open " : "slot_close ") + s.Index));
+							if (s.Closed)
+							{
+								s.Bot = null;
+								Game.IssueOrder(Order.Command("slot_open " + s.Index));
+							}
+							else
+							{
+								if (s.Bot == null)
+									s.Bot = "HackyAI";
+								else
+									Game.IssueOrder(Order.Command("slot_close " + s.Index));
+							}
 							return true;
 						};
 					}
@@ -279,7 +289,7 @@ namespace OpenRA.Widgets.Delegates
 					if (join != null)
 					{
 						join.OnMouseUp = _ => { Game.IssueOrder(Order.Command("slot " + s.Index)); return true; };
-						join.IsVisible = () => !s.Closed;
+						join.IsVisible = () => !s.Closed && s.Bot == null;
 					}
 				}
 				else if (c.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
