@@ -387,6 +387,59 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
+				{ "slot_close",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Closed = true;
+						slotData.Bot = null;
+
+						/* kick any player that's in the slot */
+						var occupant = lobbyInfo.Clients.FirstOrDefault( c => c.Slot == slotData.Index );
+						if (occupant != null)
+						{
+							var occupantConn = conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
+							if (occupantConn != null)
+								DropClient( occupantConn, new Exception() );
+						}
+
+						SyncLobbyInfo();
+						return true;
+					}},
+				{ "slot_open",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Closed = false;
+						slotData.Bot = null;
+
+						SyncLobbyInfo();
+						return true;
+					}},
 				{ "map",
 					s =>
 					{
