@@ -161,6 +161,11 @@ namespace OpenRA.Server
 			throw new InvalidOperationException("Already got 8 players");
 		}
 
+		static int ChooseFreeSlot()
+		{
+			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null).Index;
+		}
+
 		static void AcceptConnection()
 		{
 			var newConn = new Connection { socket = listener.AcceptSocket() };
@@ -195,6 +200,7 @@ namespace OpenRA.Server
 						State = Session.ClientState.NotReady,
 						SpawnPoint = 0,
 						Team = 0,
+						Slot = ChooseFreeSlot(),
 					});
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
