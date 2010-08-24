@@ -28,13 +28,14 @@ namespace OpenRA
 		public ModData( params string[] mods )
 		{
 			Manifest = new Manifest( mods );
-			ObjectCreator = new ObjectCreator( Manifest );
 			FileSystem.LoadFromManifest( Manifest );
-			SheetBuilder = new SheetBuilder( TextureChannel.Red );
-			CursorSheetBuilder = new CursorSheetBuilder( this );
-			
 			ChromeProvider.Initialize( Manifest.Chrome );
 			
+			Viewport.DrawLoadScreen(Game.Renderer, 0f);
+			
+			ObjectCreator = new ObjectCreator( Manifest );
+			SheetBuilder = new SheetBuilder( TextureChannel.Red );
+			CursorSheetBuilder = new CursorSheetBuilder( this );
 			AvailableMaps = FindMaps( mods );
 		}
 		
@@ -51,6 +52,8 @@ namespace OpenRA
 		string cachedTheatre = null;
 		public Map PrepareMap(string uid)
 		{
+			Viewport.DrawLoadScreen(Game.Renderer, 0f);
+
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			

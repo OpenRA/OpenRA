@@ -263,20 +263,20 @@ namespace OpenRA
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
 
+			FileSystem.Mount("."); // Needed to access shaders
+			Renderer.Initialize( Game.Settings.Graphics.Mode );
+			Renderer.SheetSize = Settings.Game.SheetSize;
+			Renderer = new Renderer();
+			
 			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods;
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
-
-			Renderer.SheetSize = Settings.Game.SheetSize;
-			Renderer.Initialize( Game.Settings.Graphics.Mode );
-
+			
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
-			PerfHistory.items["cursor"].hasNormalTick = false;
-
-			Renderer = new Renderer();
-
+			PerfHistory.items["cursor"].hasNormalTick = false;
+			
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 

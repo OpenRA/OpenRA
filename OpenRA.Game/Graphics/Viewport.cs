@@ -70,6 +70,16 @@ namespace OpenRA.Graphics
 			Timer.Time( "endFrame: {0}" );
 		}
 
+		public static void DrawLoadScreen( Renderer r, float loadFraction )
+		{
+			r.BeginFrame(float2.Zero);
+			
+			// Do stuff
+			
+			r.RgbaSpriteRenderer.Flush();
+			r.EndFrame();
+		}
+		
 		public void RefreshPalette()
 		{
 			Game.world.WorldRenderer.palette.Update(
