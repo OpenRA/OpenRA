@@ -36,6 +36,7 @@ namespace OpenRA
 		public readonly CountryInfo Country;
 		public readonly int Index;
 		public readonly bool NonCombatant = false;
+		public readonly int ClientIndex;
 		
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
@@ -51,6 +52,7 @@ namespace OpenRA
 			Palette = "player"+index;
 			Color = pr.Color;
 			Color2 = pr.Color2;
+			ClientIndex = 0;		/* it's a map player, "owned" by host */
 			
 			PlayerName = InternalName = pr.Name;
 			NonCombatant = pr.NonCombatant;
@@ -76,6 +78,8 @@ namespace OpenRA
 			Country = world.GetCountries()
 				.FirstOrDefault(c => client != null && client.Country == c.Race)
 				?? world.GetCountries().Random(world.SharedRandom);
+
+			ClientIndex = client.Index;
 			
 			RegisterPlayerColor(world, Palette);
 		}

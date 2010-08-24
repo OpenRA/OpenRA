@@ -19,8 +19,11 @@ namespace OpenRA.Network
 		public static void ProcessOrder( World world, int clientId, Order order )
 		{
 			// Drop exploiting orders
-			if (order.Subject != null && order.Subject.Owner != world.players[clientId])
+			if (order.Subject != null && order.Subject.Owner.ClientIndex != clientId)
+			{
+				Game.Debug("Detected exploit order from {0}: {1}".F(clientId, order.OrderString));
 				return;
+			}
 			
 			switch( order.OrderString )
 			{
