@@ -45,6 +45,7 @@ namespace OpenRA.Graphics
 
 		static void LoadSequencesForCursor(XmlElement eCursor)
 		{
+			Viewport.DrawLoadScreen();
 			string cursorSrc = eCursor.GetAttribute("src");
 			string palette = eCursor.GetAttribute("palette");
 
@@ -55,6 +56,7 @@ namespace OpenRA.Graphics
 
 		static void LoadSequencesForUnit(XmlElement eUnit)
 		{
+			Viewport.DrawLoadScreen();
 			string unitName = eUnit.GetAttribute("name");
 			try {
 				var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()

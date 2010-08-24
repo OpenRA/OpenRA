@@ -235,6 +235,9 @@ namespace OpenRA
 
 		public static void HandleKeyEvent(KeyInput e)
 		{
+			if (world == null)
+				return;
+			
 			int sync = world.SyncHash();
 
 			if (Widget.HandleKeyPress(e))

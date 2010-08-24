@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
 			postgameBG.IsVisible = () =>
 			{
-				return Game.world.LocalPlayer.WinState != WinState.Undefined;
+				return Game.world.LocalPlayer != null && Game.world.LocalPlayer.WinState != WinState.Undefined;
 			};
 			
 			postgameText.GetText = () =>

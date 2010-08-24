@@ -31,7 +31,7 @@ namespace OpenRA
 			FileSystem.LoadFromManifest( Manifest );
 			ChromeProvider.Initialize( Manifest.Chrome );
 			
-			Viewport.DrawLoadScreen(Game.Renderer, 0f);
+			Viewport.DrawLoadScreen();
 			
 			ObjectCreator = new ObjectCreator( Manifest );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
@@ -52,7 +52,7 @@ namespace OpenRA
 		string cachedTheatre = null;
 		public Map PrepareMap(string uid)
 		{
-			Viewport.DrawLoadScreen(Game.Renderer, 0f);
+			Viewport.DrawLoadScreen();
 
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
