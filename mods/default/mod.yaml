@@ -28,4 +28,5 @@ Chrome:
 ChromeLayout:
 	mods/default/menus.yaml:
 
+LoadScreen: NullLoadScreen
 ShellmapUid: 95c34889e85a903d7dbb41f13d6c373b44a8b62e

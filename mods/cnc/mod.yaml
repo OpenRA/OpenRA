@@ -64,4 +64,5 @@ TileSets:
 	mods/cnc/tileset-win.yaml: Winter
 	mods/cnc/tileset-tem.yaml: Temperate
 
+LoadScreen: NullLoadScreen
 ShellmapUid:d715c86d9d49d153756b86ef87a825ea8fae6756

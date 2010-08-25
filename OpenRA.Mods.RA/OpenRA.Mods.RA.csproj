@@ -240,6 +240,7 @@
     <Compile Include="LocalPlayerFromMap.cs" />
     <Compile Include="HackyAI.cs" />
     <Compile Include="RALoadScreen.cs" />
+    <Compile Include="NullLoadScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
