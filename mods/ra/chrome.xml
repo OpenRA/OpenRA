@@ -208,8 +208,4 @@
 	<collection name="checkbox" src="buttons.png">
 		<image name="checked" x="0" y="112" width="16" height="16" />
 	</collection>
-	<collection name="loadscreen" src="dialog.png">
-		<image name="stripe" x="512" y="371" width="128" height="128" />
-		<image name="logo" x="544" y="128" width="253" height="240" />
-	</collection>
 </chrome>

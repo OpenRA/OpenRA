@@ -12,11 +12,13 @@ namespace OpenRA.Mods.RA
 {
 	public class NullLoadScreen : ILoadScreen
 	{
+		public void Init() {}
 		public void Display()
 		{
 			if (Game.Renderer == null)
 				return;
 			
+			// Draw a black screen
 			Game.Renderer.BeginFrame(float2.Zero);
 			Game.Renderer.EndFrame();
 		}

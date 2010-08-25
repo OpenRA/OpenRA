@@ -19,16 +19,38 @@ namespace OpenRA.Mods.RA
 {
 	public class RALoadScreen : ILoadScreen
 	{	
-		static string[] loadComments = new[] {	"Filling Crates...", "Charging Capacitors...", "Reticulating Splines...",
+		static string[] Comments = new[] {	"Filling Crates...", "Charging Capacitors...", "Reticulating Splines...",
 												"Planting Trees...", "Building Bridges...", "Aging Empires...",
 												"Compiling EVA...", "Constructing Pylons...", "Activating Skynet...",
 												"Splitting Atoms..."
 		};
 		
-		static Stopwatch lastLoadScreen = new Stopwatch();
+		Stopwatch lastLoadScreen = new Stopwatch();
+		Rectangle StripeRect;
+		Sprite Stripe, Logo;
+		float2 LogoPos;
+		
+		Renderer r;
+		SpriteFont Font;
+		public void Init()
+		{
+			// Avoid standard loading mechanisms so we
+			// can display loadscreen as early as possible
+			r = Game.Renderer;
+			if (r == null) return;
+			Font = r.BoldFont;
+			
+			var s = new Sheet("mods/ra/loadscreen.png");
+			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
+			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
+			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);
+			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
+		}
+
+		
 		public void Display()
 		{
-			if (Game.Renderer == null)
+			if (r == null)
 				return;
 			
 			// Update text at most every 0.5 seconds
@@ -36,22 +58,13 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			lastLoadScreen.Reset();
+			var text = Comments.Random(Game.CosmeticRandom);
+			var textSize = Font.Measure(text);
 			
-			var r = Game.Renderer;
-			var font = r.BoldFont;
 			r.BeginFrame(float2.Zero);
-			
-			WidgetUtils.FillRectWithSprite(new Rectangle(0, Renderer.Resolution.Height/2 - 64, Renderer.Resolution.Width, 128), ChromeProvider.GetImage("loadscreen", "stripe"));
-			
-			var logo = ChromeProvider.GetImage("loadscreen","logo");
-			var logoPos =  new float2((Renderer.Resolution.Width - logo.size.X)/2,(Renderer.Resolution.Height - logo.size.Y)/2);
-			r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
-			
-			var text = loadComments.Random(Game.CosmeticRandom);
-			var textSize = font.Measure(text);
-			
-			font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
-			
+			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
+			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
+			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
 			r.RgbaSpriteRenderer.Flush();
 			r.EndFrame();
 		}

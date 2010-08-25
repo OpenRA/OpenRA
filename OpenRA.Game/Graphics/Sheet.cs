@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 			Size = size;
 		}
 
-		internal Sheet(string filename)
+		public Sheet(string filename)
 		{
 			bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 			Size = bitmap.Size;

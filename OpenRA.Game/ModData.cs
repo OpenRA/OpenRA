@@ -29,14 +29,13 @@ namespace OpenRA
 		public ModData( params string[] mods )
 		{
 			Manifest = new Manifest( mods );
-			FileSystem.LoadFromManifest( Manifest );
-			ChromeProvider.Initialize( Manifest.Chrome );
-			
 			ObjectCreator = new ObjectCreator( Manifest );
-
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen);
+			LoadScreen.Init();
 			LoadScreen.Display();
 			
+			FileSystem.LoadFromManifest( Manifest );
+			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 			AvailableMaps = FindMaps( mods );
@@ -79,5 +78,5 @@ namespace OpenRA
 		}
 	}
 	
-	public interface ILoadScreen { void Display(); }
+	public interface ILoadScreen { void Display(); void Init(); }
 }
