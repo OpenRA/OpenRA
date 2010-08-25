@@ -15,17 +15,17 @@ namespace OpenRA.Mods.RA
 {
 	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
-	public class SpawnMapActors : IGameStarted
+	public class SpawnMapActors : IWorldLoaded
 	{
 		public Dictionary<string, Actor> Actors = new Dictionary<string, Actor>();
 
-		public void GameStarted(World world)
+		public void WorldLoaded(World world)
 		{
-			foreach( var actorReference in world.Map.Actors )
+			foreach (var actorReference in world.Map.Actors)
 			{
 				var initDict = actorReference.Value.InitDict;
-				initDict.Add( new SkipMakeAnimsInit() );
-				Actors[ actorReference.Key ] = world.CreateActor( actorReference.Value.Type, initDict );
+				initDict.Add(new SkipMakeAnimsInit());
+				Actors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, initDict);
 			}
 		}
 	}

@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, ILoadWorldHook
+	public class ResourceLayer: IRenderOverlay, IWorldLoaded
 	{		
 		World world;
 

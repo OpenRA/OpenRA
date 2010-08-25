@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 {
 	class Gdi01ScriptInfo : TraitInfo<Gdi01Script> { }
 
-	class Gdi01Script: ILoadWorldHook, ITick
+	class Gdi01Script: IWorldLoaded, ITick
 	{		
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;

@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class ColorPickerPaletteModifierInfo : TraitInfo<ColorPickerPaletteModifier> {}
 	
-	class ColorPickerPaletteModifier : IPaletteModifier, ILoadWorldHook
+	class ColorPickerPaletteModifier : IPaletteModifier, IWorldLoaded
 	{	
 		bool SplitPlayerPalette;
 		public void WorldLoaded(World w)

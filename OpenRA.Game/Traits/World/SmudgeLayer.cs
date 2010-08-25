@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
-	public class SmudgeLayer: IRenderOverlay, ILoadWorldHook
+	public class SmudgeLayer: IRenderOverlay, IWorldLoaded
 	{		
 		public SmudgeLayerInfo Info;
 		TileReference<byte,byte>[,] tiles;

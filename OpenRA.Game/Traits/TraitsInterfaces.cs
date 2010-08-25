@@ -159,8 +159,7 @@ namespace OpenRA.Traits
 	public interface ITraitPrerequisite<T> where T : ITraitInfo { }
 
 	public interface INotifySelection { void SelectionChanged(); }
-	public interface ILoadWorldHook { void WorldLoaded(World w); }
-	public interface IGameStarted { void GameStarted(World w); }
+	public interface IWorldLoaded { void WorldLoaded(World w); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
 	public interface IBot { void Activate(Player p); }

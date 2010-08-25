@@ -192,11 +192,6 @@ namespace OpenRA
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;
 
-			world.Queries = new World.AllQueries(world);
-
-			foreach (var gs in world.WorldActor.TraitsImplementing<IGameStarted>())
-				gs.GameStarted(world);
-
 			orderManager.StartGame();
 			viewport.RefreshPalette();
 			AfterGameStart();

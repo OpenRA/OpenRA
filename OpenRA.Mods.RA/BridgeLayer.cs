@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new BridgeLayer(init.self, this); }
 	}
 
-	class BridgeLayer : ILoadWorldHook
+	class BridgeLayer : IWorldLoaded
 	{
 		readonly BridgeLayerInfo Info;
 		readonly World world;

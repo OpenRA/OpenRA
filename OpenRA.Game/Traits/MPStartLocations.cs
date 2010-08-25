@@ -21,10 +21,11 @@ namespace OpenRA.Traits
 		public readonly int InitialExploreRange = 5;
 	}
 	
-	public class MPStartLocations : IGameStarted
+	public class MPStartLocations : IWorldLoaded
 	{
 		public Dictionary<Player, int2> Start = new Dictionary<Player, int2>();
-		public void GameStarted(World world)
+
+		public void WorldLoaded(World world)
 		{
 			var taken = Game.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
 				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();

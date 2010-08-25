@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	class DefaultShellmapScriptInfo : TraitInfo<DefaultShellmapScript> { }
 
-	class DefaultShellmapScript: ILoadWorldHook, ITick
+	class DefaultShellmapScript: IWorldLoaded, ITick
 	{		
 		Dictionary<string, Actor> Actors;
 		

@@ -15,9 +15,9 @@ namespace OpenRA.Mods.RA
 {
 	class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, ITraitPrerequisite<MPStartLocationsInfo> {}
 
-	class SpawnMPUnits : IGameStarted
+	class SpawnMPUnits : IWorldLoaded
 	{
-		public void GameStarted(World world)
+		public void WorldLoaded(World world)
 		{
 			foreach (var s in world.WorldActor.Trait<MPStartLocations>().Start)
 				SpawnUnitsForPlayer(s.Key, s.Value);

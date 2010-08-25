@@ -23,7 +23,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new BibLayer(init.self, this); }
 	}
 
-	class BibLayer: IRenderOverlay, ILoadWorldHook
+	class BibLayer: IRenderOverlay, IWorldLoaded
 	{		
 		World world;
 		BibLayerInfo info;

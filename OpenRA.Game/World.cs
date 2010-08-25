@@ -88,6 +88,7 @@ namespace OpenRA
 			Timer.Time("renderer: {0}");
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
+			Queries = new AllQueries(this);
 			
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
@@ -100,11 +101,12 @@ namespace OpenRA
 						p.Stances[q] = Stance.Neutral;		
 			
 			Timer.Time( "worldActor, players: {0}" );
-			
-			foreach (var wlh in WorldActor.TraitsImplementing<ILoadWorldHook>())
-				wlh.WorldLoaded(this);
 
 			PathFinder = new PathFinder(this);
+
+			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
+				wlh.WorldLoaded(this);
+			
 			Timer.Time( "hooks, pathing: {0}" );
 
 			Timer.Time( "----end World.ctor" );
