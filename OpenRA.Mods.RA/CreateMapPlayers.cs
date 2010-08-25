@@ -25,6 +25,9 @@ namespace OpenRA.Mods.RA
 			
 			foreach (var kv in w.Map.Players)
 			{
+				if (kv.Value.Playable)
+					continue;		// these will be created another way.
+
 				var player = new Player(w, kv.Value, mapPlayerIndex--);
 				w.AddPlayer(player);
 				Players.Add(kv.Key,player);
