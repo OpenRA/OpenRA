@@ -22,7 +22,7 @@ namespace OpenRA.FileFormats
 			Sequences, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
 
-		public readonly string ShellmapUid;
+		public readonly string ShellmapUid, LoadScreen;
 
 		public Manifest(string[] mods)
 		{
@@ -44,6 +44,7 @@ namespace OpenRA.FileFormats
 			TileSets = YamlList(yaml, "TileSets");
 
 			ShellmapUid = yaml["ShellmapUid"].Value;
+			LoadScreen = yaml["LoadScreen"].Value;
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key)

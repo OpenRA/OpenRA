@@ -24,6 +24,7 @@ namespace OpenRA
 		public readonly SheetBuilder SheetBuilder;
 		public readonly CursorSheetBuilder CursorSheetBuilder;
 		public readonly Dictionary<string, MapStub> AvailableMaps;
+		public ILoadScreen LoadScreen = null;
 		
 		public ModData( params string[] mods )
 		{
@@ -31,9 +32,11 @@ namespace OpenRA
 			FileSystem.LoadFromManifest( Manifest );
 			ChromeProvider.Initialize( Manifest.Chrome );
 			
-			Viewport.DrawLoadScreen();
-			
 			ObjectCreator = new ObjectCreator( Manifest );
+
+			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen);
+			LoadScreen.Display();
+			
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 			AvailableMaps = FindMaps( mods );
@@ -52,7 +55,7 @@ namespace OpenRA
 		string cachedTheatre = null;
 		public Map PrepareMap(string uid)
 		{
-			Viewport.DrawLoadScreen();
+			LoadScreen.Display();
 
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
@@ -75,4 +78,6 @@ namespace OpenRA
 			return map;
 		}
 	}
+	
+	public interface ILoadScreen { void Display(); }
 }

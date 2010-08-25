@@ -67,4 +67,5 @@ Movies:
 	mods/ra/movies1.yaml
 	mods/ra/movies2.yaml
 
+LoadScreen: RALoadScreen
 ShellmapUid:5065fbcb8e5b1b6cea2a003c64f9b48fcaa33e06
