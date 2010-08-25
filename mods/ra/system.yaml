@@ -83,6 +83,7 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
+	HackyAI:
 		
 
 World:
@@ -180,7 +181,6 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
-	HackyAI:
 
 MINP:
 	Mine:

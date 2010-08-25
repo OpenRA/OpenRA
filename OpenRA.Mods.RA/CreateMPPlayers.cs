@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 					var player = new Player(w, w.Map.Players[slot.MapPlayer], playerIndex++);
 					w.AddPlayer(player);
 					
-					/* todo: init its bot -- but only on the host! */
+					/* todo: only activate the bot option that's selected! */
 					if (Game.IsHost)
 						foreach (var bot in player.PlayerActor.TraitsImplementing<IBot>())
 							bot.Activate(player);
