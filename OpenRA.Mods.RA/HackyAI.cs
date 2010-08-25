@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 	/* a pile of hacks, which control a local player on the host. */
 
-	class HackyAI : IGameStarted, ITick
+	class HackyAI : ITick, IBot
 	{
 		bool enabled;
 		int ticks;
@@ -62,23 +62,14 @@ namespace OpenRA.Mods.RA
 
 		BuildState state = BuildState.WaitForFeedback;
 
-		public void GameStarted(World w)
+		/* called by the host's player creation code */
+		public void Activate(Player p)
 		{
-            try
-            {
-                p = Game.world.players.First(c => c.Value.PlayerName.Equals("bot")).Value;
-            }
-            catch (Exception)
-            {
-                //Could not find a bot.
-            }
-			//p = Game.world.LocalPlayer;
-			enabled = Game.IsHost && p != null;
-			if (enabled)
-			{
-				productionQueue = p.PlayerActor.Trait<ProductionQueue>();
-				playerResources = p.PlayerActor.Trait<PlayerResources>();
-			}
+			this.p = p;
+			enabled = true;
+		
+			productionQueue = p.PlayerActor.Trait<ProductionQueue>();
+			playerResources = p.PlayerActor.Trait<PlayerResources>();
 		}
 
 		int GetPowerProvidedBy(string building)
@@ -341,6 +332,5 @@ namespace OpenRA.Mods.RA
                     break;
             }
         }
-    
-    }
+	}
 }

@@ -37,6 +37,7 @@ namespace OpenRA
 		public readonly int Index;
 		public readonly bool NonCombatant = false;
 		public readonly int ClientIndex;
+		public readonly PlayerReference PlayerRef;
 		
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
@@ -58,28 +59,31 @@ namespace OpenRA
 			NonCombatant = pr.NonCombatant;
 			Country = world.GetCountries()
 				.FirstOrDefault(c => pr.Race == c.Race);
+
+			PlayerRef = pr;
 			
 			RegisterPlayerColor(world, Palette);
 		}
 		
-		public Player( World world, Session.Client client )
+		public Player( World world, Session.Client client, PlayerReference pr, int index )
 		{
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 			
-			Index = client.Index;
-			Palette = "player"+client.Index;
+			Index = index;
+			Palette = "player"+index;
 			Color = client.Color1;
 			Color2 = client.Color2;
 			PlayerName = client.Name;
-			InternalName = "Multi{0}".F(client.Index);
+			InternalName = pr.Name;
 			Country = world.GetCountries()
 				.FirstOrDefault(c => client != null && client.Country == c.Race)
 				?? world.GetCountries().Random(world.SharedRandom);
 
 			ClientIndex = client.Index;
+			PlayerRef = pr;
 			
 			RegisterPlayerColor(world, Palette);
 		}

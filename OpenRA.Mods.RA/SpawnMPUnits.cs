@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -28,6 +25,9 @@ namespace OpenRA.Mods.RA
 
 		void SpawnUnitsForPlayer(Player p, int2 sp)
 		{
+			if (!p.PlayerRef.DefaultStartingUnits)
+				return;	/* they don't want an mcv, the map provides something else for them. */
+
 			p.World.CreateActor("mcv", new TypeDictionary 
 			{ 
 				new LocationInit( sp ),

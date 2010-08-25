@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -21,11 +20,30 @@ namespace OpenRA.Mods.RA
 	{
 		public void CreatePlayers(World w)
 		{
-			// Add real players
-			w.SetLocalPlayer(Game.LocalClientId);
-
-			foreach (var c in Game.LobbyInfo.Clients)
-				w.AddPlayer(new Player(w, c));
+			var playerIndex = 0;
+			foreach (var slot in Game.LobbyInfo.Slots)
+			{
+				var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+				if (client != null)
+				{
+					/* spawn a real player in this slot. */
+					var player = new Player(w, client, w.Map.Players[slot.MapPlayer], playerIndex++);
+					w.AddPlayer(player);
+					if (client.Index == Game.LocalClientId)
+						w.SetLocalPlayer(player.Index);		// bind this one to the local player.
+				}
+				else if (slot.Bot != null)
+				{
+					/* spawn a bot in this slot, "owned" by the host */
+					var player = new Player(w, w.Map.Players[slot.MapPlayer], playerIndex++);
+					w.AddPlayer(player);
+					
+					/* todo: init its bot -- but only on the host! */
+					if (Game.IsHost)
+						foreach (var bot in player.PlayerActor.TraitsImplementing<IBot>())
+							bot.Activate(player);
+				}
+			}
 			
 			foreach (var p in w.players.Values)
 				foreach (var q in w.players.Values)

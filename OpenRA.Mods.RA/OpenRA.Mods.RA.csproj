@@ -238,7 +238,7 @@
     <Compile Include="CreateMapPlayers.cs" />
     <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="LocalPlayerFromMap.cs" />
-    <Compile Include="World\HackyAI.cs" />
+    <Compile Include="HackyAI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

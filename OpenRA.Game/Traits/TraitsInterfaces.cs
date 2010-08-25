@@ -162,6 +162,8 @@ namespace OpenRA.Traits
 	public interface ILoadWorldHook { void WorldLoaded(World w); }
 	public interface IGameStarted { void GameStarted(World w); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
+
+	public interface IBot { void Activate(Player p); }
 	
 	public interface IActivity
 	{
