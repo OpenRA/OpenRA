@@ -21,6 +21,18 @@ namespace OpenRA.Mods.RA
 		public void CreatePlayers(World w)
 		{
 			var playerIndex = 0;
+			var mapPlayerIndex = -1;	// todo: unhack this, but people still rely on it.
+
+			// create the unplayable map players -- neutral, shellmap, scripted, etc.
+			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
+			{
+				var player = new Player(w, kv.Value, mapPlayerIndex--);
+				w.AddPlayer(player);
+				if (kv.Value.OwnsWorld)
+					w.WorldActor.Owner = player;
+			}
+
+			// create the players which are bound through slots.
 			foreach (var slot in Game.LobbyInfo.Slots)
 			{
 				var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
@@ -56,6 +68,11 @@ namespace OpenRA.Mods.RA
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q) return Stance.Ally;
+
+			if (p.PlayerRef.Allies.Contains(q.InternalName))
+				return Stance.Ally;
+			if (p.PlayerRef.Enemies.Contains(q.InternalName))
+				return Stance.Enemy;
 
 			// Hack: All map players are neutral wrt everyone else
 			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;

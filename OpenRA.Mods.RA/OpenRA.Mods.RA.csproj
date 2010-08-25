@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -235,7 +235,6 @@
     <Compile Include="Crates\RevealMapCrateAction.cs" />
     <Compile Include="TargetableCloaked.cs" />
     <Compile Include="SpawnMPUnits.cs" />
-    <Compile Include="CreateMapPlayers.cs" />
     <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="HackyAI.cs" />
     <Compile Include="RALoadScreen.cs" />
