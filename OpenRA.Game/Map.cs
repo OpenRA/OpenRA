@@ -176,7 +176,13 @@ namespace OpenRA
 			{
 				for (int index = 0; index < Waypoints.Count; index++)
 				{
-					var p = new PlayerReference("Multi{0}".F(index), "Random", false, false) { Playable = true };
+					var p = new PlayerReference
+					{
+						Name = "Multi{0}".F(index),
+						Race = "Random",
+						Playable = true,
+						DefaultStartingUnits = true
+					};
 					Players.Add(p.Name, p);
 				}
 			}

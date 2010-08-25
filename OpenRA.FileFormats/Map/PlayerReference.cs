@@ -20,6 +20,7 @@ namespace OpenRA.FileFormats
 		public bool OwnsWorld = false;
 		public bool NonCombatant = false;
 		public bool Playable = false;
+		public bool DefaultStartingUnits = false;
 		public Color Color = Color.FromArgb(238,238,238);
 		public Color Color2 = Color.FromArgb(44,28,24);
 		
