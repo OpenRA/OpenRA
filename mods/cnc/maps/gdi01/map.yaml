@@ -32,7 +32,7 @@ Players:
 		Enemies: GoodGuy
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Palette:
+		Playable: yes
 		Race: gdi
 		OwnsWorld: False
 		NonCombatant: False
@@ -447,11 +447,9 @@ Smudges:
 
 Rules:
 	World:
-		-CreateMPPlayers:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
-		LocalPlayerFromMap:
 		Gdi01Script:
 	Player:
 		-ConquestVictoryConditions:

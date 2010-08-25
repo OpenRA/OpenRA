@@ -237,7 +237,6 @@
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="CreateMapPlayers.cs" />
     <Compile Include="CreateMPPlayers.cs" />
-    <Compile Include="LocalPlayerFromMap.cs" />
     <Compile Include="HackyAI.cs" />
     <Compile Include="RALoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
