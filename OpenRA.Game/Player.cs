@@ -58,7 +58,8 @@ namespace OpenRA
 			PlayerName = InternalName = pr.Name;
 			NonCombatant = pr.NonCombatant;
 			Country = world.GetCountries()
-				.FirstOrDefault(c => pr.Race == c.Race);
+				.FirstOrDefault(c => pr.Race == c.Race)
+				?? world.GetCountries().Random(world.SharedRandom);
 
 			PlayerRef = pr;
 			

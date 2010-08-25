@@ -200,10 +200,8 @@ namespace OpenRA.Mods.RA
                 // which is a leading cause of blocking the spawn points :(
                 int2 attackTarget = spawnPoints[random.Next(0, spawnPoints.Length)];
                 foreach (var a in unitsHangingAroundTheBase)
-                {
-                    attackForce.Add(a);
-                    tryToMove(a, attackTarget);
-                }
+					if (TryToMove(a, attackTarget))
+						attackForce.Add(a);
                 unitsHangingAroundTheBase.Clear();
             }
         }
@@ -235,8 +233,11 @@ namespace OpenRA.Mods.RA
 
         //try very hard to find a valid move destination near the target.
         //(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
-        private bool tryToMove(Actor a, int2 desiredMoveTarget)
+        private bool TryToMove(Actor a, int2 desiredMoveTarget)
         {
+			if (!a.HasTrait<IMove>())
+				return false;
+
             int2 xy;
             int loopCount = 0; //avoid infinite loops.
             int range = 2;

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 
 namespace OpenRA.Traits
 {
@@ -30,10 +31,19 @@ namespace OpenRA.Traits
 			var available = world.Map.SpawnPoints.Except(taken).ToList();
 
 			// Set spawn
-			foreach (var client in Game.LobbyInfo.Clients)
-				Start.Add(world.players[client.Index],(client.SpawnPoint == 0)
+			foreach (var slot in Game.LobbyInfo.Slots)
+			{
+				var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+				var player = FindPlayerInSlot(world, slot);
+
+				if (player == null) continue;
+
+				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1));
+					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
+
+				Start.Add(player, spid);
+			}
 			
 			// Explore allied shroud
 			foreach (var p in Start)
@@ -44,6 +54,11 @@ namespace OpenRA.Traits
 			// Set viewport
 			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
 				Game.viewport.Center(Start[world.LocalPlayer]);
+		}
+
+		static Player FindPlayerInSlot(World world, Session.Slot slot)
+		{
+			return world.players.Values.FirstOrDefault(p => p.PlayerRef.Name == slot.MapPlayer);
 		}
 		
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)
