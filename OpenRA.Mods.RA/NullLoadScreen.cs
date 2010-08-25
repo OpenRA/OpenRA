@@ -14,6 +14,9 @@ namespace OpenRA.Mods.RA
 	{
 		public void Display()
 		{
+			if (Game.Renderer == null)
+				return;
+			
 			Game.Renderer.BeginFrame(float2.Zero);
 			Game.Renderer.EndFrame();
 		}

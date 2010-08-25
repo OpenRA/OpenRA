@@ -18,12 +18,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.RA
 {
 	public class RALoadScreen : ILoadScreen
-	{
-		public RALoadScreen ()
-		{
-			
-		}
-		
+	{	
 		static string[] loadComments = new[] {	"Filling Crates...", "Charging Capacitors...", "Reticulating Splines...",
 												"Planting Trees...", "Building Bridges...", "Aging Empires...",
 												"Compiling EVA...", "Constructing Pylons...", "Activating Skynet...",
@@ -33,6 +28,9 @@ namespace OpenRA.Mods.RA
 		static Stopwatch lastLoadScreen = new Stopwatch();
 		public void Display()
 		{
+			if (Game.Renderer == null)
+				return;
+			
 			// Update text at most every 0.5 seconds
 			if (lastLoadScreen.ElapsedTime() < 0.5)
 				return;
