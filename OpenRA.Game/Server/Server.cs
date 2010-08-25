@@ -447,6 +447,35 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
+				{ "slot_bot",
+					s =>
+					{
+						var parts = s.Split(' ');
+
+						if (parts.Length != 2)
+						{
+							SendChatTo( conn, "Malformed slot_bot command" );
+							return true;
+						}
+
+						int slot;
+						if (!int.TryParse(parts[0], out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Bot = parts[1];
+
+						SyncLobbyInfo();
+						return true;
+					}},
 				{ "map",
 					s =>
 					{

@@ -271,7 +271,7 @@ namespace OpenRA.Widgets.Delegates
 							else
 							{
 								if (s.Bot == null)
-									s.Bot = "HackyAI";
+									Game.IssueOrder(Order.Command("slot_bot HackyAI"));
 								else
 									Game.IssueOrder(Order.Command("slot_close " + s.Index));
 							}
