@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World w)
 		{
 			Map = w.Map;
-			Players = w.WorldActor.Trait<CreateMapPlayers>().Players;
+			Players = w.players.Values.ToDictionary(p => p.InternalName);
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
 			

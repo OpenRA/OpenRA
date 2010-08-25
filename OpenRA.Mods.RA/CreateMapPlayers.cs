@@ -37,11 +37,11 @@ namespace OpenRA.Mods.RA
 			
 			foreach(var p in Players)
 			{
-				foreach(var q in w.Map.Players[p.Key].Allies)
-					p.Value.Stances[Players[q]] = Stance.Ally;
+			//	foreach(var q in w.Map.Players[p.Key].Allies)
+			//		p.Value.Stances[Players[q]] = Stance.Ally;
 				
-				foreach(var q in w.Map.Players[p.Key].Enemies)
-					p.Value.Stances[Players[q]] = Stance.Enemy;
+			//	foreach(var q in w.Map.Players[p.Key].Enemies)
+			//		p.Value.Stances[Players[q]] = Stance.Enemy;
 			}
 		}
 	}
