@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 		static Session.Client GetClientForPlayer(Player p)
 		{
-			return Game.LobbyInfo.Clients.Single(c => c.Index == p.Index);
+			return Game.LobbyInfo.Clients.Single(c => c.Index == p.ClientIndex);
 		}
 	}
 }
