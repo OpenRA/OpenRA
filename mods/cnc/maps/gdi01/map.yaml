@@ -454,3 +454,35 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 
+	PROC.proxy:
+		-Buildable:
+	SILO:
+		-Buildable:
+	WEAP:
+		-Buildable:
+	HQ:
+		-Buildable:
+	NUK2:
+		-Buildable:
+	FIX:
+		-Buildable:
+	HPAD:
+		-Buildable:
+	EYE:
+		-Buildable:
+	SBAG:
+		-Buildable:
+	BRIK:
+		-Buildable:
+	GTWR:
+		-Buildable:
+	ATWR:
+		-Buildable:
+	E2:
+		-Buildable:
+	E3:
+		-Buildable:
+	E6:
+		-Buildable:
+	RMBO:
+		-Buildable:
