@@ -180,11 +180,10 @@ namespace OpenRA.Mods.RA
 			attackForce.RemoveAll(a => a.Destroyed);
 			activeProductionBuildings.RemoveAll(a => a.Destroyed);
 
-            //don't select harvesters.
+            // don't select harvesters.
             var newUnits = self.World.Queries.OwnedBy[p]
-                .Where(a => (a.Info.Traits.Contains<IMove>()
-                    && a.Info != Rules.Info["harv"]
-                    && !activeUnits.Contains(a))).ToArray();
+                .Where(a => a.HasTrait<IMove>() && a.Info != Rules.Info["harv"]
+                    && !activeUnits.Contains(a)).ToArray();
 
             foreach (var a in newUnits)
             {
