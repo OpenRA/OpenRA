@@ -6,7 +6,7 @@ Title: Equal Opportunity
 
 Author: Westwood Studios
 
-PlayerCount: 5
+PlayerCount: 4
 
 Tileset: SNOW
 
@@ -23,8 +23,65 @@ Players:
 		Race: allies
 		OwnsWorld: True
 		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
 
 Actors:
 	Actor0: sbag
@@ -120,7 +177,6 @@ Waypoints:
 	spawn1: 80,80
 	spawn2: 77,39
 	spawn3: 47,81
-	spawn4: 47,81
 
 Smudges:
 
