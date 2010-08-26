@@ -44,7 +44,7 @@ namespace RALint
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				// all the @something names which actually EXIST.
-				var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<BuildableInfo>()).Where(b => b != null)
+				var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<TooltipInfo>()).Where(b => b != null)
 					.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
 
 				ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
