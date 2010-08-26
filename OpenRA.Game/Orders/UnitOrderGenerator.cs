@@ -38,8 +38,9 @@ namespace OpenRA.Orders
 		public void RenderBeforeWorld(World world)
 		{
 			foreach (var a in world.Selection.Actors)
-				foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
-					t.RenderBeforeWorld(a);
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
+						t.RenderBeforeWorld(a);
 
 			Game.Renderer.Flush();
 		}
@@ -47,8 +48,9 @@ namespace OpenRA.Orders
 		public void RenderAfterWorld( World world )
 		{
 			foreach (var a in world.Selection.Actors)
-				foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-					t.RenderAfterWorld(a);
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
+						t.RenderAfterWorld(a);
 
 			Game.Renderer.Flush();
 		}

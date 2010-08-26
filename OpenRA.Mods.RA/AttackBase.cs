@@ -144,6 +144,10 @@ namespace OpenRA.Mods.RA
 				facing = barrel.Facing + 
 					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
 					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+
+				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
+					 .Select(a => a.GetFirepowerModifier())
+					 .Product()
 			};
 			
 			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>

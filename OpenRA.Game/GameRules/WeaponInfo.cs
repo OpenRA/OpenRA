@@ -65,6 +65,7 @@ namespace OpenRA.GameRules
 		public Target target;
 		public int2 dest;
 		public int destAltitude;
+		public float firepowerModifier = 1.0f;
 	}
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }

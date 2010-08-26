@@ -70,11 +70,6 @@ namespace OpenRA.Mods.RA
 			if (warhead.Ore)
 				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
 
-			var firepowerModifier = args.firedBy
-				.TraitsImplementing<IFirepowerModifier>()
-				.Select(a => a.GetFirepowerModifier())
-				.Product();
-
 			switch (warhead.DamageModel)
 			{
 				case DamageModel.Normal:
@@ -84,7 +79,7 @@ namespace OpenRA.Mods.RA
 
 						foreach (var victim in hitActors)
 						{
-							var damage = (int)GetDamageToInflict(victim, args, warhead, firepowerModifier);
+							var damage = (int)GetDamageToInflict(victim, args, warhead, args.firepowerModifier);
 							victim.InflictDamage(args.firedBy, damage, warhead);
 						}
 					} break;
