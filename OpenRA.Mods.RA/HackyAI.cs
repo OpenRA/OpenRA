@@ -175,6 +175,13 @@ namespace OpenRA.Mods.RA
 
         private void AssignRolesToIdleUnits(Actor self)
         {
+			//HACK: trim these lists -- we really shouldn't be hanging onto all this state
+			//when it's invalidated so easily, but that's Matthew/Alli's problem.
+			activeUnits.RemoveAll(a => a.Destroyed);
+			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
+			attackForce.RemoveAll(a => a.Destroyed);
+			activeProductionBuildings.RemoveAll(a => a.Destroyed);
+
             //don't select harvesters.
             var newUnits = self.World.Queries.OwnedBy[p]
                 .Where(a => ((a.Info.Category == "Infantry" || a.Info.Category == "Vehicle")
