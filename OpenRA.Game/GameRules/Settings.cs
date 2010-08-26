@@ -109,7 +109,7 @@ namespace OpenRA.GameRules
 			if (File.Exists(SettingsFile))
 			{
 				System.Console.WriteLine("Loading settings file {0}",SettingsFile);
-				var yaml = MiniYaml.FromFile(SettingsFile);
+				var yaml = MiniYaml.DictFromFile(SettingsFile);
 				
 				foreach (var kv in Sections)
 					if (yaml.ContainsKey(kv.Key))
@@ -128,9 +128,9 @@ namespace OpenRA.GameRules
 		
 		public void Save()
 		{
-			Dictionary<string, MiniYaml> root = new Dictionary<string, MiniYaml>();
-			foreach (var kv in Sections)
-				root.Add(kv.Key, SectionYaml(kv.Value));
+			var root = new List<MiniYamlNode>();
+			foreach( var kv in Sections )
+				root.Add( new MiniYamlNode( kv.Key, SectionYaml( kv.Value ) ) );
 			
 			root.WriteToFile(SettingsFile);
 		}

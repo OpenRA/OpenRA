@@ -30,7 +30,7 @@ namespace OpenRA.FileFormats
 
 		public static void Load( object self, MiniYaml my )
 		{
-			foreach( var x in my.Nodes )
+			foreach( var x in my.NodesDict )
 				if (!x.Key.StartsWith("-"))
 					LoadField(self, x.Key, x.Value.Value);
 
@@ -154,7 +154,7 @@ namespace OpenRA.FileFormats
 	{
 		public static MiniYaml Save(object o)
 		{
-			var dict = new Dictionary<string, MiniYaml>();
+			var nodes = new List<MiniYamlNode>();
 			string root = null;
 
 			foreach( var f in o.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance ) )
@@ -162,10 +162,10 @@ namespace OpenRA.FileFormats
 				if( f.HasAttribute<FieldFromYamlKeyAttribute>() )
 					root = FormatValue( o, f );
 				else
-					dict.Add( f.Name, new MiniYaml( FormatValue( o, f ) ) );
+					nodes.Add( new MiniYamlNode( f.Name, FormatValue( o, f ) ) );
 			}
 
-			return new MiniYaml( root, dict );
+			return new MiniYaml( root, nodes );
 		}
 		
 		public static MiniYaml SaveDifferences(object o, object from)
@@ -175,10 +175,10 @@ namespace OpenRA.FileFormats
 
 			var fields = o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
 				.Where(f => FormatValue(o,f) != FormatValue(from,f));
-			
-			return new MiniYaml(null, fields.ToDictionary(
-					f => f.Name,
-					f => new MiniYaml(FormatValue(o, f))));
+
+			return new MiniYaml( null, fields.Select( f => new MiniYamlNode(
+					f.Name,
+					FormatValue( o, f ) ) ).ToList() );
 		}
 
 		public static string FormatValue(object o, FieldInfo f)

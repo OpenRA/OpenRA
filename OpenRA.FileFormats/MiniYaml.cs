@@ -15,35 +15,58 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	using MiniYamlNodes = Dictionary<string, MiniYaml>;
+	using MiniYamlNodes = List<MiniYamlNode>;
+
+	public class MiniYamlNode
+	{
+		public string Key;
+		public MiniYaml Value;
+
+		public MiniYamlNode( string k, MiniYaml v )
+		{
+			Key = k;
+			Value = v;
+		}
+
+		public MiniYamlNode( string k, string v )
+			: this( k, new MiniYaml( v, null ) )
+		{
+		}
+		public MiniYamlNode( string k, string v, List<MiniYamlNode> n )
+			: this( k, new MiniYaml( v, n ) )
+		{
+		}
+	}
 
 	public class MiniYaml
 	{
 		public string Value;
-		public Dictionary<string, MiniYaml> Nodes = new Dictionary<string,MiniYaml>();
+		public List<MiniYamlNode> Nodes;
 
-		public MiniYaml( string value ) : this( value, new Dictionary<string, MiniYaml>() ) { }
+		public Dictionary<string, MiniYaml> NodesDict { get { return Nodes.ToDictionary( x => x.Key, x => x.Value ); } }
 
-		public MiniYaml( string value, Dictionary<string, MiniYaml> nodes )
+		public MiniYaml( string value ) : this( value, null ) { }
+
+		public MiniYaml( string value, List<MiniYamlNode> nodes )
 		{
 			Value = value;
-			Nodes = nodes;
+			Nodes = nodes ?? new List<MiniYamlNode>();
+		}
+
+		public static MiniYaml FromDictionary<K, V>( Dictionary<K, V> dict )
+		{
+			return new MiniYaml( null, dict.Select( x => new MiniYamlNode( x.Key.ToString(), new MiniYaml( x.Value.ToString() ) ) ).ToList() );
+		}
+
+		public static MiniYaml FromList<T>( List<T> list )
+		{
+			return new MiniYaml( null, list.Select( x => new MiniYamlNode( x.ToString(), new MiniYaml( null ) ) ).ToList() );
 		}
 		
-		public static MiniYaml FromDictionary<K,V>(Dictionary<K,V>dict)
+		static List<MiniYamlNode> FromLines(string[] lines)
 		{
-			return new MiniYaml( null, dict.ToDictionary( x=>x.Key.ToString(), x=>new MiniYaml(x.Value.ToString())));
-		}
-		
-		public static MiniYaml FromList<T>(List<T>list)
-		{
-			return new MiniYaml( null, list.ToDictionary( x=>x.ToString(), x=>new MiniYaml(null)));
-		}
-		
-		static Dictionary<string, MiniYaml> FromLines(string[] lines)
-		{
-			var levels = new List<Dictionary<string, MiniYaml>>();
-			levels.Add(new Dictionary<string, MiniYaml>());
+			var levels = new List<List<MiniYamlNode>>();
+			levels.Add(new List<MiniYamlNode>());
 
 			foreach (var line in lines)
 			{
@@ -58,27 +81,27 @@ namespace OpenRA.FileFormats
 					levels.RemoveAt(levels.Count - 1);
 
 				var colon = t.IndexOf(':');
-				var d = new Dictionary<string, MiniYaml>();
+				var d = new List<MiniYamlNode>();
 				try
 				{
-					if (colon == -1)
-						levels[level].Add(t.Trim(), new MiniYaml(null, d));
+					if( colon == -1 )
+						levels[ level ].Add( new MiniYamlNode( t.Trim(), new MiniYaml( null, d ) ) );
 					else
 					{
-						var value = t.Substring(colon + 1).Trim();
-						if (value.Length == 0)
+						var value = t.Substring( colon + 1 ).Trim();
+						if( value.Length == 0 )
 							value = null;
-						levels[level].Add(t.Substring(0, colon).Trim(), new MiniYaml(value, d));
+						levels[ level ].Add( new MiniYamlNode( t.Substring( 0, colon ).Trim(), new MiniYaml( value, d ) ) );
 					}
 				}
 				catch (ArgumentException) { throw new InvalidDataException("Duplicate Identifier:`{0}`".F(t)); }
 				
 				levels.Add(d);
 			}
-			return levels[0];
+			return levels[ 0 ];
 		}
 
-		public static Dictionary<string, MiniYaml> FromFileInPackage( string path )
+		public static List<MiniYamlNode> FromFileInPackage( string path )
 		{
 			StreamReader reader = new StreamReader( FileSystem.Open(path) );
 			List<string> lines = new List<string>();
@@ -89,52 +112,61 @@ namespace OpenRA.FileFormats
 			
 			return FromLines(lines.ToArray());
 		}
-		
-		public static Dictionary<string, MiniYaml> FromFile( string path )
+
+		public static Dictionary<string, MiniYaml> DictFromFile( string path )
+		{
+			return FromFile( path ).ToDictionary( x => x.Key, x => x.Value );
+		}
+
+		public static Dictionary<string, MiniYaml> DictFromStream( Stream stream )
+		{
+			return FromStream( stream ).ToDictionary( x => x.Key, x => x.Value );
+		}
+
+		public static List<MiniYamlNode> FromFile( string path )
 		{			
 			return FromLines(File.ReadAllLines( path ));
 		}
 
-		public static Dictionary<string, MiniYaml> FromStream(Stream s)
+		public static List<MiniYamlNode> FromStream(Stream s)
 		{
 			using (var reader = new StreamReader(s))
 				return FromString(reader.ReadToEnd());
 		}
 
-		public static Dictionary<string, MiniYaml> FromString(string text)
+		public static List<MiniYamlNode> FromString(string text)
 		{
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));
 		}
 
-		public static Dictionary<string, MiniYaml> Merge( Dictionary<string, MiniYaml> a, Dictionary<string, MiniYaml> b )
+		public static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b )
 		{
 			if( a.Count == 0 )
 				return b;
 			if( b.Count == 0 )
 				return a;
 
-			var ret = new Dictionary<string, MiniYaml>();
+			var ret = new List<MiniYamlNode>();
 
-			var keys = a.Keys.Union( b.Keys ).ToList();
+			var aDict = a.ToDictionary( x => x.Key, x => x.Value );
+			var bDict = b.ToDictionary( x => x.Key, x => x.Value );
+			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
 
 			var noInherit = keys.Where( x => x.Length > 0 && x[ 0 ] == '-' ).Select( x => x.Substring( 1 ) ).ToList();
 
 			foreach( var key in keys )
 			{
 				MiniYaml aa, bb;
-				a.TryGetValue( key, out aa );
-				b.TryGetValue( key, out bb );
+				aDict.TryGetValue( key, out aa );
+				bDict.TryGetValue( key, out bb );
 
-//				if( key.Length > 0 && key[ 0 ] == '-' )
-//					continue;
-			//	else 
 				if( noInherit.Contains( key ) )
 				{
 					if( aa != null )
-						ret.Add( key, aa );
+						ret.Add( new MiniYamlNode( key, aa ) );
 				}
 				else
-					ret.Add( key, Merge( aa, bb ) );
+					ret.Add( new MiniYamlNode( key, Merge( aa, bb ) ) );
 			}
 
 			return ret;

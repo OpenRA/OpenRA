@@ -39,11 +39,11 @@ namespace OpenRA
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 
 		// Rules overrides
-		public Dictionary<string, MiniYaml> Rules = new Dictionary<string, MiniYaml>();
-		public Dictionary<string, MiniYaml> Weapons = new Dictionary<string, MiniYaml>();
-		public Dictionary<string, MiniYaml> Voices = new Dictionary<string, MiniYaml>();
-		public Dictionary<string, MiniYaml> Music = new Dictionary<string, MiniYaml>();
-		public Dictionary<string, MiniYaml> Terrain = new Dictionary<string, MiniYaml>();
+		public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
+		public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
+		public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
+		public List<MiniYamlNode> Music = new List<MiniYamlNode>();
+		public List<MiniYamlNode> Terrain = new List<MiniYamlNode>();
 		
 		// Binary map data
 		public byte TileFormat = 1;
@@ -99,13 +99,13 @@ namespace OpenRA
 		public Map(IFolder package)
 		{
 			Package = package;
-			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
+			var yaml = MiniYaml.DictFromStream(Package.GetContent("map.yaml"));
 
 			// 'Simple' metadata
 			FieldLoader.LoadFields(this, yaml, SimpleFields);
 
 			// Waypoints
-			foreach (var wp in yaml["Waypoints"].Nodes)
+			foreach (var wp in yaml["Waypoints"].NodesDict)
 			{
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
@@ -124,7 +124,7 @@ namespace OpenRA
 						Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
 
 						int actors = 0;
-						foreach (var kv in yaml["Actors"].Nodes)
+						foreach (var kv in yaml["Actors"].NodesDict)
 						{
 							string[] vals = kv.Value.Value.Split(' ');
 							string[] loc = vals[2].Split(',');
@@ -138,13 +138,13 @@ namespace OpenRA
 
 				case 2:
 					{
-						foreach (var kv in yaml["Players"].Nodes)
+						foreach (var kv in yaml["Players"].NodesDict)
 						{
 							var player = new PlayerReference(kv.Value);
 							Players.Add(player.Name, player);
 						}
 
-						foreach (var kv in yaml["Actors"].Nodes)
+						foreach (var kv in yaml["Actors"].NodesDict)
 						{
 							var oldActorReference = FieldLoader.Load<Format2ActorReference>(kv.Value);
 							Actors.Add(oldActorReference.Id, new ActorReference(oldActorReference.Type)
@@ -157,14 +157,14 @@ namespace OpenRA
 
 				case 3:
 					{
-						foreach (var kv in yaml["Players"].Nodes)
+						foreach (var kv in yaml["Players"].NodesDict)
 						{
 							var player = new PlayerReference(kv.Value);
 							Players.Add(player.Name, player);
 						}
 
-						foreach (var kv in yaml["Actors"].Nodes)
-							Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.Nodes));
+						foreach (var kv in yaml["Actors"].NodesDict)
+							Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
 					} break;
 
 				default:
@@ -188,7 +188,7 @@ namespace OpenRA
 			}
 
 			// Smudges
-			foreach (var kv in yaml["Smudges"].Nodes)
+			foreach (var kv in yaml["Smudges"].NodesDict)
 			{
 				string[] vals = kv.Key.Split(' ');
 				string[] loc = vals[1].Split(',');
@@ -207,27 +207,27 @@ namespace OpenRA
 		{
 			MapFormat = 3;
 			
-			var root = new Dictionary<string, MiniYaml>();
+			var root = new List<MiniYamlNode>();
 			foreach (var field in SimpleFields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
-				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+				root.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
 
-			root.Add("Players",
-				new MiniYaml(null, Players.ToDictionary(
-					p => "PlayerReference@{0}".F(p.Key),
-					p => FieldSaver.Save(p.Value))));
+			root.Add( new MiniYamlNode( "Players", null,
+				Players.Select( p => new MiniYamlNode(
+					"PlayerReference@{0}".F( p.Key ),
+					FieldSaver.Save( p.Value ) ) ).ToList() ) );
 
-			root.Add("Actors",
-				new MiniYaml( null, Actors.ToDictionary(
-					x => x.Key,
-					x => x.Value.Save() ) ) );
+			root.Add( new MiniYamlNode( "Actors", null,
+				Actors.Select( x => new MiniYamlNode(
+					x.Key,
+					x.Value.Save() ) ).ToList() ) );
 
-			root.Add("Waypoints", MiniYaml.FromDictionary<string, int2>(Waypoints));
-			root.Add("Smudges", MiniYaml.FromList<SmudgeReference>(Smudges));
-			root.Add("Rules", new MiniYaml(null, Rules));
+			root.Add( new MiniYamlNode( "Waypoints", MiniYaml.FromDictionary<string, int2>( Waypoints ) ) );
+			root.Add( new MiniYamlNode( "Smudges", MiniYaml.FromList<SmudgeReference>( Smudges ) ) );
+			root.Add( new MiniYamlNode( "Rules", null, Rules ) );
 
 			SaveBinaryData(Path.Combine(filepath, "map.bin"));
 			root.WriteToFile(Path.Combine(filepath, "map.yaml"));

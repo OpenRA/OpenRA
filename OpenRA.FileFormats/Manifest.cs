@@ -43,13 +43,17 @@ namespace OpenRA.FileFormats
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");
 
-			ShellmapUid = yaml["ShellmapUid"].Value;
-			LoadScreen = yaml["LoadScreen"].Value;
+			ShellmapUid = yaml.First( x => x.Key == "ShellmapUid" ).Value.Value;
+			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value.Value;
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> ys, string key)
+		static string[] YamlList(List<MiniYamlNode> ys, string key)
 		{
-			return ys.ContainsKey(key) ? ys[key].Nodes.Keys.ToArray() : new string[] { };
+			var y = ys.FirstOrDefault( x => x.Key == key );
+			if( y == null )
+				return new string[ 0 ];
+
+			return y.Value.NodesDict.Keys.ToArray();
 		}
 	}
 }

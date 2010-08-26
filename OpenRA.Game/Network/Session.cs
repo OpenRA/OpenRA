@@ -61,15 +61,15 @@ namespace OpenRA.Network
 
 		public string Serialize()
 		{
-			var clientData = new Dictionary<string, MiniYaml>();
+			var clientData = new List<MiniYamlNode>();
 
-			foreach (var client in Clients)
-				clientData["Client@{0}".F(client.Index)] = FieldSaver.Save(client);
+			foreach( var client in Clients )
+				clientData.Add( new MiniYamlNode( "Client@{0}".F( client.Index ), FieldSaver.Save( client ) ) );
 
-			foreach (var slot in Slots)
-				clientData["Slot@{0}".F(slot.Index)] = FieldSaver.Save(slot);
+			foreach( var slot in Slots )
+				clientData.Add( new MiniYamlNode( "Slot@{0}".F( slot.Index ), FieldSaver.Save( slot ) ) );
 
-			clientData["GlobalSettings"] = FieldSaver.Save(GlobalSettings);
+			clientData.Add( new MiniYamlNode( "GlobalSettings", FieldSaver.Save( GlobalSettings ) ) );
 
 			return clientData.WriteToString();
 		}

@@ -42,27 +42,25 @@ namespace OpenRA.FileFormats
 		public TileTemplate() {}
 		public TileTemplate(MiniYaml my)
 		{
-			FieldLoader.LoadFields(this, my.Nodes, fields);
+			FieldLoader.LoadFields(this, my.NodesDict, fields);
 
-			Tiles = my.Nodes["Tiles"].Nodes.ToDictionary(
+			Tiles = my.NodesDict["Tiles"].NodesDict.ToDictionary(
 				t => byte.Parse(t.Key),
 				t => t.Value.Value);
 		}
 		
 		public MiniYaml Save()
 		{
-			var root = new Dictionary<string, MiniYaml>();
+			var root = new List<MiniYamlNode>();
 			foreach (var field in fields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
-				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+				root.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
 
-			root.Add("Tiles",
-				new MiniYaml(null, Tiles.ToDictionary(
-					p => p.Key.ToString(),
-					p => new MiniYaml(p.Value))));
+			root.Add( new MiniYamlNode( "Tiles", null,
+				Tiles.Select( x => new MiniYamlNode( x.Key.ToString(), x.Value ) ).ToList() ) );
 			
 			return new MiniYaml(null, root);
 		}
@@ -82,17 +80,17 @@ namespace OpenRA.FileFormats
 		public TileSet() {}
 		public TileSet( string filepath )
 		{
-			var yaml = MiniYaml.FromFile(filepath);
+			var yaml = MiniYaml.FromFile(filepath).ToDictionary( x => x.Key, x => x.Value );
 			
 			// General info
 			FieldLoader.Load(this, yaml["General"]);
 
 			// TerrainTypes
-			Terrain = yaml["Terrain"].Nodes.Values
+			Terrain = yaml["Terrain"].NodesDict.Values
 				.Select(y => new TerrainTypeInfo(y)).ToDictionary(t => t.Type);
 
 			// Templates
-			Templates = yaml["Templates"].Nodes.Values
+			Templates = yaml["Templates"].NodesDict.Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
 		}
 		
@@ -108,32 +106,32 @@ namespace OpenRA.FileFormats
 		
 		public void Save(string filepath)
 		{			
-			var root = new Dictionary<string, MiniYaml>();
+			var root = new List<MiniYamlNode>();
 			foreach (var field in fields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
-				root.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+				root.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
 			
-			var gen = new Dictionary<string, MiniYaml>();
+			var gen = new List<MiniYamlNode>();
 			foreach (var field in fields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
-				gen.Add(field, new MiniYaml(FieldSaver.FormatValue(this, f), null));
+				gen.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
-			root.Add("General", new MiniYaml(null, gen)); 
-			
-			root.Add("Terrain",
-				new MiniYaml(null, Terrain.ToDictionary(
-					t => "TerrainType@{0}".F(t.Value.Type),
-					t => t.Value.Save())));
-			
-			root.Add("Templates",
-				new MiniYaml(null, Templates.ToDictionary(
-					t => "Template@{0}".F(t.Value.Id),
-					t => t.Value.Save())));
+			root.Add( new MiniYamlNode( "General", null, gen ) );
+
+			root.Add( new MiniYamlNode( "Terrain", null, 
+				Terrain.Select( t => new MiniYamlNode(
+					"TerrainType@{0}".F( t.Value.Type ),
+					t.Value.Save() ) ).ToList() ) );
+
+			root.Add( new MiniYamlNode( "Templates", null,
+				Templates.Select( t => new MiniYamlNode(
+					"Template@{0}".F( t.Value.Id ),
+					t.Value.Save() ) ).ToList() ) );
 			root.WriteToFile(filepath);
 		} 
 				

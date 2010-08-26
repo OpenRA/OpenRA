@@ -16,7 +16,7 @@ namespace OpenRA
 {
 	class WidgetLoader
 	{
-		public static Widget LoadWidget(KeyValuePair<string, MiniYaml> node)
+		public static Widget LoadWidget(MiniYamlNode node)
 		{
 			var widget = NewWidget(node.Key);
 			foreach (var child in node.Value.Nodes)

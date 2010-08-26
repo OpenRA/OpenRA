@@ -22,7 +22,7 @@ namespace OpenRA.GameRules
 		public readonly string DefaultVariant = ".aud" ;
 		public readonly string[] DisableVariants = { };
 		
-		Func<MiniYaml, string, Dictionary<string, string[]>> Load = (y,name) => (y.Nodes.ContainsKey(name))? y.Nodes[name].Nodes.ToDictionary(a => a.Key, 
+		Func<MiniYaml, string, Dictionary<string, string[]>> Load = (y,name) => (y.NodesDict.ContainsKey(name))? y.NodesDict[name].NodesDict.ToDictionary(a => a.Key, 
 			                           a => (string[])FieldLoader.GetValue( "(value)", typeof(string[]), a.Value.Value ))
 						: new Dictionary<string, string[]>(); 
 
@@ -30,7 +30,7 @@ namespace OpenRA.GameRules
 
 		public VoiceInfo( MiniYaml y )
 		{
-			FieldLoader.LoadFields(this, y.Nodes, new string[] { "DisableVariants" });
+			FieldLoader.LoadFields(this, y.NodesDict, new string[] { "DisableVariants" });
 			Variants = Load(y, "Variants"); 
 			Voices = Load(y, "Voices");
 			

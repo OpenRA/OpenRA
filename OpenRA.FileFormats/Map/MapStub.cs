@@ -43,11 +43,11 @@ namespace OpenRA.FileFormats
 		public MapStub(IFolder package)
 		{
 			Package = package;
-			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
+			var yaml = MiniYaml.DictFromStream(Package.GetContent("map.yaml"));
 			FieldLoader.LoadFields(this, yaml, Fields);
 			
 			// Waypoints
-			foreach (var wp in yaml["Waypoints"].Nodes)
+			foreach (var wp in yaml["Waypoints"].NodesDict)
 			{
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));

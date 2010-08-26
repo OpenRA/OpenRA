@@ -86,19 +86,19 @@ namespace OpenRA.GameRules
 
 		public WeaponInfo(string name, MiniYaml content)
 		{
-			foreach (var kv in content.Nodes)
+			foreach (var kv in content.NodesDict)
 			{
 				var key = kv.Key.Split('@')[0];
 				switch (key)
 				{
-					case "Range": FieldLoader.LoadField(this, "Range", content.Nodes["Range"].Value); break;
-					case "ROF": FieldLoader.LoadField(this, "ROF", content.Nodes["ROF"].Value); break;
-					case "Report": FieldLoader.LoadField(this, "Report", content.Nodes["Report"].Value); break;
-					case "Burst": FieldLoader.LoadField(this, "Burst", content.Nodes["Burst"].Value); break;
-					case "Charges": FieldLoader.LoadField(this, "Charges", content.Nodes["Charges"].Value); break;
-					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.Nodes["ValidTargets"].Value); break;
-					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.Nodes["Underwater"].Value); break;
-					case "BurstDelay": FieldLoader.LoadField(this, "BurstDelay", content.Nodes["BurstDelay"].Value); break;
+					case "Range": FieldLoader.LoadField(this, "Range", content.NodesDict["Range"].Value); break;
+					case "ROF": FieldLoader.LoadField(this, "ROF", content.NodesDict["ROF"].Value); break;
+					case "Report": FieldLoader.LoadField(this, "Report", content.NodesDict["Report"].Value); break;
+					case "Burst": FieldLoader.LoadField(this, "Burst", content.NodesDict["Burst"].Value); break;
+					case "Charges": FieldLoader.LoadField(this, "Charges", content.NodesDict["Charges"].Value); break;
+					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.NodesDict["ValidTargets"].Value); break;
+					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.NodesDict["Underwater"].Value); break;
+					case "BurstDelay": FieldLoader.LoadField(this, "BurstDelay", content.NodesDict["BurstDelay"].Value); break;
 
 					case "Warhead":
 						{

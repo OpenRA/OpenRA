@@ -33,7 +33,7 @@ namespace OpenRA
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
 			Music = LoadYamlRules(m.Music, map.Music, (k, _) => new MusicInfo(k.Key, k.Value));
-			Movies = LoadYamlRules(m.Movies, new Dictionary<string,MiniYaml>(), (k, v) => k.Value.Value);
+			Movies = LoadYamlRules(m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 			
 			TileSets = new Dictionary<string, TileSet>();
 			foreach (var file in m.TileSets)
@@ -45,10 +45,11 @@ namespace OpenRA
 			TechTree = new TechTree();
 		}
 		
-		static Dictionary<string, T> LoadYamlRules<T>(string[] files, Dictionary<string,MiniYaml>dict, Func<KeyValuePair<string, MiniYaml>, Dictionary<string, MiniYaml>, T> f)
+		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
 			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.Merge);
-			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
+			var yy = y.ToDictionary( x => x.Key, x => x.Value );
+			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy));
 		}
 	}
 }

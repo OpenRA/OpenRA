@@ -33,7 +33,7 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
-			try
+			//try
 			{
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
@@ -61,11 +61,11 @@ namespace RALint
 
 				return 0;
 			}
-			catch (Exception e)
-			{
-				Console.WriteLine("Failed with exception: {0}".F(e));
-				return 1;
-			}
+			//catch (Exception e)
+			//{
+			//    Console.WriteLine("Failed with exception: {0}".F(e));
+			//    return 1;
+			//}
 		}
 
 		static void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo)

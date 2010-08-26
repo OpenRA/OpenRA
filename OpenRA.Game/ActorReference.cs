@@ -45,7 +45,7 @@ namespace OpenRA.FileFormats
 			foreach( var init in InitDict )
 			{
 				var initName = init.GetType().Name;
-				ret.Nodes.Add( initName.Substring( 0, initName.Length - 4 ), FieldSaver.Save( init ) );
+				ret.NodesDict.Add( initName.Substring( 0, initName.Length - 4 ), FieldSaver.Save( init ) );
 			}
 			return ret;
 		}
