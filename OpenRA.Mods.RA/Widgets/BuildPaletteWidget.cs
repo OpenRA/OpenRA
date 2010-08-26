@@ -29,14 +29,15 @@ namespace OpenRA.Mods.RA.Widgets
 		List<ProductionQueue> visibleTabs = new List<ProductionQueue>();
 
 		bool paletteOpen = false;
-		Dictionary<string, string[]> tabImageNames;
 		Dictionary<string, Sprite> iconSprites;
+		
 		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
 		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
 		static float2 paletteOrigin = paletteClosedOrigin;
 		const int paletteAnimationLength = 7;
 		int paletteAnimationFrame = 0;
 		bool paletteAnimating = false;
+		
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 		List<Pair<Rectangle, Action<MouseInput>>> tabs = new List<Pair<Rectangle, Action<MouseInput>>>();
 		Animation cantBuild;
@@ -63,15 +64,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.ToDictionary(
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
-
-			var groups = Rules.Categories();
 			
-			tabImageNames = groups.Select(
-				(g, i) => Pair.New(g,
-					OpenRA.Graphics.Util.MakeArray(3,
-						n => i.ToString())))
-				.ToDictionary(a => a.First, a => a.Second);
-
 			IsVisible = () => { return CurrentQueue != null || (CurrentQueue == null && !paletteOpen);  };
 		}
 		
@@ -337,7 +330,6 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		void HandleBuildPalette( World world, string item, bool isLmb )
 		{
-			var player = world.LocalPlayer;
 			var unit = Rules.Info[item];
 			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var producing = CurrentQueue.AllItems().FirstOrDefault( a => a.Item == item );
