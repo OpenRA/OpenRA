@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA
 
             //don't select harvesters.
             var newUnits = self.World.Queries.OwnedBy[p]
-                .Where(a => ((a.Info.Category == "Infantry" || a.Info.Category == "Vehicle")
+                .Where(a => (a.Info.Traits.Contains<IMove>()
                     && a.Info != Rules.Info["harv"]
                     && !activeUnits.Contains(a))).ToArray();
 
@@ -198,7 +198,11 @@ namespace OpenRA.Mods.RA
             if (unitsHangingAroundTheBase.Count > 5)
             {
                 Game.Debug("Launch an attack.");
+				
+				// Todo: We have a trait which holds player/spawn info (MPStartLocationsInfo) - use it
                 int2[] spawnPoints = Game.world.Map.SpawnPoints.ToArray();
+				
+				
                 // At the start of the game, all you can do is investigate each spawn point
                 // until you learn where some other players are.
                 // this sometimes sends an attack to the bot's own spawn point,
@@ -214,8 +218,7 @@ namespace OpenRA.Mods.RA
         private void SetRallyPointsForNewProductionBuildings(Actor self)
         {
             var newProdBuildings = self.World.Queries.OwnedBy[p]
-                .Where(a => (a.Info.Category == "Building"
-                    && a.TraitOrDefault<RallyPoint>() != null
+                .Where(a => (a.TraitOrDefault<RallyPoint>() != null
                     && !activeProductionBuildings.Contains(a))).ToArray();
 
             foreach (var a in newProdBuildings)

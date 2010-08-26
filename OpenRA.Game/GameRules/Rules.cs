@@ -50,10 +50,5 @@ namespace OpenRA
 			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.Merge);
 			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, y));
 		}
-
-		public static IEnumerable<string> Categories()
-		{
-			return Info.Values.Select( x => x.Category ).Distinct().Where( g => g != null ).ToList();
-		}
 	}
 }

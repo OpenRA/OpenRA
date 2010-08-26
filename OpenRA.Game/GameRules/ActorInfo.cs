@@ -19,7 +19,6 @@ namespace OpenRA
 	public class ActorInfo
 	{
 		public readonly string Name;
-		public readonly string Category;
 		public readonly TypeDictionary Traits = new TypeDictionary();
 
 		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
@@ -27,12 +26,8 @@ namespace OpenRA
 			var mergedNode = MergeWithParent( node, allUnits ).Nodes;
 
 			Name = name;
-			MiniYaml categoryNode;
-			if( mergedNode.TryGetValue( "Category", out categoryNode ) )
-				Category = categoryNode.Value;
-
 			foreach( var t in mergedNode )
-				if( t.Key != "Inherits" && t.Key != "Category" && !t.Key.StartsWith("-") )
+				if( t.Key != "Inherits" && !t.Key.StartsWith("-") )
 					Traits.Add( LoadTraitInfo( t.Key.Split('@')[0], t.Value ) );
 		}
 

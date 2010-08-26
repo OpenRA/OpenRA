@@ -33,6 +33,8 @@ namespace OpenRA.Traits
 		public readonly string[] BuiltAt = { };
 		
 		public readonly string[] Owner = { };
+		
+		public readonly string Queue;
 
 		// todo: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;

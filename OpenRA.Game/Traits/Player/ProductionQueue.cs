@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 			return Producing.ElementAtOrDefault(0);
 		}
 		
-		public IEnumerable<ProductionItem> AllItems()
+		public IEnumerable<ProductionItem> AllQueued()
 		{
 			return Producing;
 		}
@@ -64,13 +64,14 @@ namespace OpenRA.Traits
 			case "StartProduction":
 				{
 					var unit = Rules.Info[order.TargetString];
-					if (unit.Category != Info.Type)
+					var bi = unit.Traits.Get<BuildableInfo>();
+					if (bi.Queue != Info.Type)
 						return; /* Not built by this queue */
 				
 					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 					var time = GetBuildTime(order.TargetString);
 
-					if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
+					if (!Rules.TechTree.BuildableItems(order.Player, bi.Queue).Contains(order.TargetString))
 						return;	/* you can't build that!! */
 				
 					bool hasPlayedSound = false;
@@ -96,9 +97,6 @@ namespace OpenRA.Traits
 				}
 			case "PauseProduction":
 				{
-					if (Rules.Info[ order.TargetString ].Category != Info.Type)
-						return; /* Not built by this queue */	
-
 					if( Producing.Count > 0 && Producing[0].Item == order.TargetString )
 						Producing[0].Paused = ( order.TargetLocation.X != 0 );
 					break;
@@ -127,10 +125,8 @@ namespace OpenRA.Traits
 		}
 
 		void CancelProduction( string itemName )
-		{
-			var category = Rules.Info[itemName].Category;
-			
-			if (category != Info.Type || Producing.Count == 0)
+		{			
+			if (Producing.Count == 0)
 				return; // Nothing to do here
 			
 			var lastIndex = Producing.FindLastIndex( a => a.Item == itemName );

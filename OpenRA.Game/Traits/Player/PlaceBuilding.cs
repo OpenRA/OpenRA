@@ -85,8 +85,12 @@ namespace OpenRA.Traits
 		// finds a construction yard (or equivalent) and runs its "build" animation.
 		static void PlayBuildAnim( Actor self, ActorInfo unit )
 		{
+			var bi = unit.Traits.GetOrDefault<BuildableInfo>();
+			if (bi == null)
+				return;
+			
 			var producers = self.World.Queries.OwnedBy[ self.Owner ].WithTrait<Production>()
-							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( unit.Category ) )
+							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
 							   .ToList();
 			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )
 				.FirstOrDefault();
@@ -98,7 +102,11 @@ namespace OpenRA.Traits
 		static int GetNumBuildables(Player p)
 		{
 			if (p != p.World.LocalPlayer) return 0;		// this only matters for local players.
-			return Rules.TechTree.BuildableItems(p, Rules.Categories().ToArray()).Count();
+			
+			// todo: this will simplify once queues know about what they can build
+			var queues = p.World.Queries.WithTraitMultiple<ProductionQueue>().Where(a => a.Actor.Owner == p)
+				.Select(a => a.Trait.Info.Type).Distinct().ToArray();
+			return Rules.TechTree.BuildableItems(p, queues).Count();
 		}
 	}
 }

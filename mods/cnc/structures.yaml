@@ -465,7 +465,6 @@ TMPL:
 		MissileWeapon: atomic
 
 OBLI:
-	Category: Defense
 	RequiresPower:
 	Inherits: ^Building
 	Valued:
@@ -475,6 +474,7 @@ OBLI:
 		Icon:obliicnh
 		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl
 		Owner: nod
@@ -499,7 +499,6 @@ OBLI:
 	-EmitInfantryOnSell:
 
 CYCL:
-	Category: Defense
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
@@ -508,6 +507,7 @@ CYCL:
 		Icon:cyclicnh
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Owner: nod
@@ -516,7 +516,6 @@ CYCL:
 		Armor: none
 
 SBAG:
-	Category: Defense
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
@@ -525,6 +524,7 @@ SBAG:
 		Icon:sbagicnh
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: gdi
@@ -533,7 +533,6 @@ SBAG:
 		Armor: none
 
 BRIK:
-	Category: Defense
 	Inherits: ^Wall
 	Valued:
 		Cost: 100
@@ -542,6 +541,7 @@ BRIK:
 		Icon:brikicnh
 		Description: Stop units and blocks enemy fire.
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: fact
 		Owner: gdi,nod
@@ -552,7 +552,6 @@ BRIK:
 		CrushClasses: heavywall
 		
 GUN:
-	Category: Defense
 	Inherits: ^Building
 	Valued:
 		Cost: 600
@@ -561,6 +560,7 @@ GUN:
 		Icon: gunicnh
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: hand
 		Owner: nod
@@ -583,7 +583,6 @@ GUN:
 	RenderRangeCircle:
 
 SAM:
-	Category: Defense
 	Inherits: ^Building
 	Valued:
 		Cost: 750
@@ -592,6 +591,7 @@ SAM:
 		Icon: samicnh
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Owner: nod
@@ -616,7 +616,6 @@ SAM:
 	RenderRangeCircle:
 	
 GTWR:
-	Category: Defense
 	Inherits: ^Building
 	Valued:
 		Cost: 500
@@ -625,6 +624,7 @@ GTWR:
 		Icon: gtwricnh
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: pyle
 		Owner: gdi
@@ -643,7 +643,6 @@ GTWR:
 	RenderRangeCircle:
 	
 ATWR:
-	Category: Defense
 	Inherits: ^Building
 	Valued:
 		Cost: 1000
@@ -652,6 +651,7 @@ ATWR:
 		Icon: atwricnh
 		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: gdi

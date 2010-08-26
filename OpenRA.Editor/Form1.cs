@@ -152,9 +152,8 @@ namespace OpenRA.Editor
 					actorPalette.Controls.Add(ibox);
 
 					tt.SetToolTip(ibox,
-						"{0}:{1}".F(
-						info.Name,
-						info.Category));
+						"{0}".F(
+						info.Name));
 
 					actorTemplates.Add(template);
 				}

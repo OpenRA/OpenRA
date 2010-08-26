@@ -58,9 +58,9 @@ namespace OpenRA.Mods.RA.Widgets
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
-			
+
 			iconSprites = Rules.Info.Values
-				.Where(u => u.Traits.Contains<BuildableInfo>())
+				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^' )
 				.ToDictionary(
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var drawPos = new float2(rect.Location);
 				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos);
 				
-				var firstOfThis = queue.AllItems().FirstOrDefault(a => a.Item == item.Name);
+				var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
 				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 					tooltipItem = item.Name;
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.RA.Widgets
 						overlayBits.Add(Pair.New(ready.Image, overlayPos));
 					}
 
-					var repeats = queue.AllItems().Count(a => a.Item == item.Name);
+					var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
 					if (repeats > 1 || queue.CurrentItem() != firstOfThis)
 					{
 						var offset = -22;
@@ -332,7 +332,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			var unit = Rules.Info[item];
 			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			var producing = CurrentQueue.AllItems().FirstOrDefault( a => a.Item == item );
+			var producing = CurrentQueue.AllQueued().FirstOrDefault( a => a.Item == item );
 
 			if (isLmb)
 			{
@@ -411,7 +411,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 				{
-					//var text = CategoryNameRemaps.ContainsKey(groupName) ? CategoryNameRemaps[groupName] : groupName;
 					var text = queue.Info.Type;
 					var sz = Game.Renderer.BoldFont.Measure(text);
 					WidgetUtils.DrawPanelPartial("dialog4",

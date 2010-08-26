@@ -62,7 +62,7 @@ namespace OpenRA.GameRules
 				if( playerBuildings[ p ].Count == 0 )
 					return false;
 
-			if( producesIndex[ info.Category ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
+			if( producesIndex[ bi.Queue ].All( x => playerBuildings[ x.Name ].Count == 0 ) )
 				return false;
 
 			return true;
@@ -83,17 +83,18 @@ namespace OpenRA.GameRules
 		{
 			return Rules.Info.Values
 				.Where( x => x.Name[ 0 ] != '^' )
-				.Where( x => categories.Contains( x.Category ) )
-				.Where( x => x.Traits.Contains<BuildableInfo>() );
+				.Where( x => x.Traits.Contains<BuildableInfo>() )
+				.Where( x => categories.Contains(x.Traits.Get<BuildableInfo>().Queue) );
 		}
 
 		public IEnumerable<ActorInfo> UnitBuiltAt( ActorInfo info )
 		{
-			var builtAt = info.Traits.Get<BuildableInfo>().BuiltAt;
+			var bi = info.Traits.Get<BuildableInfo>();
+			var builtAt = bi.BuiltAt;
 			if( builtAt.Length != 0 )
 				return builtAt.Select( x => Rules.Info[ x.ToLowerInvariant() ] );
 			else
-				return producesIndex[ info.Category ];
+				return producesIndex[ bi.Queue ];
 		}
 	}
 }
