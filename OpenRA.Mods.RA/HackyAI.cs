@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA
 			var unit = ChooseRandomUnitToBuild(category);
 			if (unit != null)
 			{
-				Game.IssueOrder(Order.StartProduction(p, unit, 1));
+				Game.IssueOrder(Order.StartProduction(queue.self, unit, 1));
 			}
         }
 
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.RA
                         else
                         {
                             state = BuildState.WaitForProduction;
-                            Game.IssueOrder(Order.StartProduction(p, item, 1));
+                            Game.IssueOrder(Order.StartProduction(queue.self, item, 1));
                         }
                     }
                     break;
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.RA
                     if (currentBuilding == null) return;	/* let it happen.. */
 
                     else if (currentBuilding.Paused)
-                        Game.IssueOrder(Order.PauseProduction(p, currentBuilding.Item, false));
+                        Game.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
                     else if (currentBuilding.Done)
                     {
                         state = BuildState.WaitForFeedback;
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA
                         if (location == null)
                         {
                             Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
-                            Game.IssueOrder(Order.CancelProduction(p, currentBuilding.Item));
+                            Game.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item));
                         }
                         else
                         {
