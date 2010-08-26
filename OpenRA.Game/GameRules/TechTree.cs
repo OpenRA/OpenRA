@@ -39,9 +39,9 @@ namespace OpenRA.GameRules
 			foreach( var b in player.World.Queries.OwnedBy[player].Where( x=>x.Info.Traits.Contains<BuildingInfo>() ) )
 			{
 				ret[ b.Info.Name ].Add( b );
-				var buildable = b.Info.Traits.GetOrDefault<BuildableInfo>();
-				if( buildable != null )
-					foreach( var alt in buildable.AlternateName )
+				var tt = b.Info.Traits.GetOrDefault<TooltipInfo>();
+				if( tt != null )
+					foreach( var alt in tt.AlternateName )
 						ret[ alt ].Add( b );
 			}
 			return ret;

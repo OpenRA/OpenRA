@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			var valuedInfo = Rules.Info[Info.Unit].Traits.Get<ValuedInfo>();
+			var valuedInfo = Rules.Info[Info.Unit].Traits.Get<BuildableInfo>();
 			return valuedInfo.Owner.Contains(collector.Owner.Country.Race)
 				? base.GetSelectionShares(collector)
 				: 0;		// this unit is not buildable by the collector's country, so

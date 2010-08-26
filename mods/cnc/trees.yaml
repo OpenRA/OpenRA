@@ -4,8 +4,8 @@ SPLIT2:
 		Palette: terrain
 	SeedsResource:
 		ResourceType:Tiberium
-	Valued:
-		Description: Blossom Tree
+	Tooltip:
+		Name: Blossom Tree
 	-Selectable:
 	RadarColorFromTerrain:
 		Terrain: Ore
@@ -16,8 +16,8 @@ SPLIT3:
 		Palette: terrain
 	SeedsResource:
 		ResourceType:Tiberium
-	Valued:
-		Description: Blossom Tree
+	Tooltip:
+		Name: Blossom Tree
 	-Selectable:
 	RadarColorFromTerrain:
 		Terrain: Ore

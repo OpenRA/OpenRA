@@ -1,13 +1,15 @@
 MCV:
 	Inherits: ^Vehicle
-	Buildable:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
 		Icon: mcvicnh
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: fix
 		Owner: gdi,nod
-		Cost: 2000
-		Description: Mobile Construction Vehicle
-		LongDesc: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Mobile:
@@ -28,14 +30,16 @@ MCV:
 
 HARV:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Harvester
 		Icon: harvicnh
+		Description: Collects Tiberium for processing.\n  Unarmed
+	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: gdi,nod
-		Cost: 1400
-		Description: Harvester
-		LongDesc: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	Harvester:
@@ -54,14 +58,16 @@ HARV:
 
 APC:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Armored Personnel Carrier
 		Icon: apcicnh
+		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Owner: gdi
-		Cost: 700
-		Description: Armored Personnel Carrier
-		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Mobile:
 		ROT: 5
 		Speed: 15
@@ -84,14 +90,16 @@ APC:
 
 ARTY:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Artillery
 		Icon:artyicnh
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 600
-		Description: Artillery
-		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Mobile:
 		ROT: 2
 		Speed: 6
@@ -108,14 +116,16 @@ ARTY:
 
 FTNK:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Flame Tank
 		Icon: ftnkicnh
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hq
 		Owner: nod
-		Cost: 800
-		Description: Flame Tank
-		LongDesc: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Mobile:
 		ROT: 5
 		Speed: 9
@@ -133,14 +143,16 @@ FTNK:
 
 BGGY:
 	Inherits: ^Vehicle
-	Buildable:
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Nod Buggy
 		Icon: bggyicnh
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Owner: nod
-		Cost: 300
-		Description: Nod Buggy
-		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Mobile:
 		ROT: 10
 		Speed: 18
@@ -160,14 +172,16 @@ BGGY:
 	
 BIKE:
 	Inherits: ^Vehicle
-	Buildable:
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Recon Bike
 		Icon: bikeicnh
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Owner: nod
-		Cost: 450
-		Description: Recon Bike
-		LongDesc: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
 		ROT: 10
 		Speed: 20
@@ -188,14 +202,16 @@ BIKE:
 	
 JEEP:
 	Inherits: ^Vehicle
-	Buildable:
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Hum-Vee
 		Icon: jeepicnh
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
 		Owner: gdi
-		Cost: 400
-		Description: Hum-Vee
-		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Mobile:
 		ROT: 10
 		Speed: 15
@@ -215,14 +231,16 @@ JEEP:
 	
 LTNK:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Light Tank
 		Icon: ltnkicnh
+		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: hq
 		Owner: nod
-		Cost: 600
-		Description: Light Tank
-		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Mobile:
 		Speed: 9
 	Health:
@@ -245,14 +263,16 @@ LTNK:
 	
 MTNK:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medium Tank
 		Icon: mtnkicnh
+		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 800
-		Description: Medium Tank
-		LongDesc: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
 		Speed: 9
 	Health:
@@ -275,14 +295,16 @@ MTNK:
 
 HTNK:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Mammoth Tank
 		Icon: htnkicnh
+		Description: Heavily armored GDI Tank.\n  Strong vs Everything
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye
 		Owner: gdi
-		Cost: 1500
-		Description: Mammoth Tank
-		LongDesc: Heavily armored GDI Tank.\n  Strong vs Everything
 	Mobile:
 		Crushes: wall, heavywall
 		Speed: 3
@@ -310,14 +332,16 @@ HTNK:
 
 MSAM:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Rocket Launcher
 		Icon: msamicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 800
-		Description: Rocket Launcher
-		LongDesc: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Mobile:
 		Speed: 6
 	Health:
@@ -342,14 +366,16 @@ MSAM:
 
 MLRS:
 	Inherits: ^Tank
-	Buildable:
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SSM Launcher
 		Icon: mlrsicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: nod
-		Cost: 750
-		Description: SSM Launcher
-		LongDesc: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 	Mobile:
 		Speed: 6
 	Health:
@@ -369,14 +395,16 @@ MLRS:
 
 STNK:
 	Inherits: ^Vehicle
-	Buildable:
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Stealth Tank
 		Icon: stnkicnh
+		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
+	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl
 		Owner: nod
-		Cost: 900
-		Description: Stealth Tank
-		LongDesc: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Mobile:
 		Speed: 15
 	Health:
@@ -396,15 +424,17 @@ STNK:
 
 TRAN:
 	Inherits: ^Helicopter
-	Buildable:
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Chinook Transport
 		Icon:tranicnh
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: gdi,nod
-		Cost: 1500
-		Description: Chinook Transport
-		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
 	Helicopter:
 		LandWhenIdle: true
 		ROT: 5
@@ -425,15 +455,17 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
-	Buildable:
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Apache Longbow
 		Icon: heliicnh
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: nod
-		Cost: 1200
-		Description: Apache Longbow
-		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Helicopter:
 		ROT: 4
 		Speed: 20
@@ -453,15 +485,17 @@ HELI:
 
 ORCA:
 	Inherits: ^Helicopter
-	Buildable:
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Orca
 		Icon: orcaicnh
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: gdi
-		Cost: 1200
-		Description: Orca
-		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Helicopter:
 		ROT: 4
 		Speed: 20
@@ -482,6 +516,8 @@ C17:
 	ParaDrop:
 		LZRange: 1
 	Inherits: ^Plane
+	Tooltip:
+		Name: Supply Aircraft
 	Plane:
 		ROT: 5
 		Speed: 25
@@ -500,6 +536,9 @@ C17:
 
 A10:
 	Inherits: ^Plane
+	Tooltip:
+		Name: A10 Bomber
+		Icon: a10icnh
 	Plane:
 		ROT: 4
 		Speed: 25
@@ -519,7 +558,9 @@ BOAT:
 	Inherits: ^Ship
 	Valued:
 		Cost: 300
-		Description: Gunboat
+	Tooltip:
+		Name: Gunboat
+		Icon: boaticnh
 	Health:
 		HP: 700
 		Armor: heavy
@@ -544,7 +585,8 @@ LST:
 	Inherits: ^Ship
 	Valued:
 		Cost: 300
-		Description: Landing Craft
+	Tooltip:
+		Name: Landing Craft
 	Mobile:
 		Crushes: crate
 		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
@@ -567,8 +609,9 @@ LST:
 
 LTNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Light Tank)
+	Tooltip:
+		Name: Husk (Light Tank)
+		Icon: ltnkicnh
 	RenderUnit:
 		Image: ltnk
 	ThrowsParticle@turret:
@@ -579,8 +622,9 @@ LTNK.Husk:
 
 MTNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Medium Tank)
+	Tooltip:
+		Name: Husk (Medium Tank)
+		Icon: mtnkicnh
 	RenderUnit:
 		Image: mtnk
 	ThrowsParticle@turret:
@@ -591,8 +635,9 @@ MTNK.Husk:
 
 HTNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Mammoth Tank)
+	Tooltip:
+		Name: Husk (Mammoth Tank)
+		Icon: htnkicnh
 	RenderUnit:
 		Image: htnk
 	ThrowsParticle@turret:
@@ -603,8 +648,9 @@ HTNK.Husk:
 
 MSAM.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Rocket Launcher)
+	Tooltip:
+		Name: Husk (Rocket Launcher)
+		Icon: msamicnh
 	RenderUnit:
 		Image: msam
 	ThrowsParticle@turret:
@@ -615,8 +661,9 @@ MSAM.Husk:
 
 MLRS.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (SSM Launcher)
+	Tooltip:
+		Name: Husk (SSM Launcher)
+		Icon: mlrsicnh
 	RenderUnit:
 		Image: mlrs
 	ThrowsParticle@turret:

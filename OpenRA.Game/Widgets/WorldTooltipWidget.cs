@@ -47,8 +47,8 @@ namespace OpenRA.Widgets
 			if (actor == null || !actor.IsVisible(world.LocalPlayer))
 				return;
 		
-			var text = actor.Info.Traits.Contains<ValuedInfo>()
-				? actor.Info.Traits.Get<ValuedInfo>().Description
+			var text = actor.Info.Traits.Contains<TooltipInfo>()
+				? actor.Info.Traits.Get<TooltipInfo>().Name
 				: actor.Info.Name;
 			var text2 = (actor.Owner.NonCombatant)
 				? "" : "{0}".F(actor.Owner.PlayerName);

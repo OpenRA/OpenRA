@@ -102,7 +102,8 @@
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
-		Description: Civilian
+	Tooltip:
+		Name: Civilian
 	Mobile:
 		Speed: 4
 	Health:
@@ -186,16 +187,16 @@
 		Armor: wood
 	Building:
 	-RepairableBuilding:
-	Valued:
-		Description: Civilian Building
+	Tooltip:
+		Name: Civilian Building
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
 	DeadBuildingState:
 		Zombie: true
-	Valued:
-		Description: Field
+	Tooltip:
+		Name: Field
 	RenderBuilding:
 		OverrideTheater: DESERT
 		OverrideImage: v23
@@ -227,8 +228,8 @@
 
 ^Tree:
 	Category: Building
-	Valued:
-		Description: Tree
+	Tooltip:
+		Name: Tree
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -239,8 +240,8 @@
 		Terrain: Tree
 ^Rock:
 	Category: Building
-	Valued:
-		Description: Rock
+	Tooltip:
+		Name: Rock
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -264,8 +265,8 @@
 
 ^Bridge:
 	Category: Building
-	Valued:
-		Description: Bridge
+	Tooltip:
+		Name: Bridge
 	Targetable:
 		TargetTypes: Ground, Water
 	BelowUnits:

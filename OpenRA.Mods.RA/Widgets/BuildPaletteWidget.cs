@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.Where(u => u.Traits.Contains<BuildableInfo>())
 				.ToDictionary(
 					u => u.Name,
-					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<BuildableInfo>().Icon ?? (u.Name + "icon"))[0]);
+					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
 
 			var groups = Rules.Categories();
 			
@@ -331,7 +331,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if( a[ 0 ] == '@' )
 				return "any " + a.Substring( 1 );
 			else
-				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<ValuedInfo>().Description;
+				return Rules.Info[ a.ToLowerInvariant() ].Traits.Get<TooltipInfo>().Name;
 		}
 		
 		void HandleBuildPalette( World world, string item, bool isLmb )
@@ -457,24 +457,25 @@ namespace OpenRA.Mods.RA.Widgets
 			var p = pos.ToFloat2() - new float2(297, -3);
 
 			var info = Rules.Info[unit];
+			var tooltip = info.Traits.Get<TooltipInfo>();
 			var buildable = info.Traits.Get<BuildableInfo>();
-
+			var cost = info.Traits.Get<ValuedInfo>().Cost;
 			var buildings = Rules.TechTree.GatherBuildings( pl );
 			var canBuildThis = Rules.TechTree.CanBuild(info, pl, buildings);
 
-			var longDescSize = Game.Renderer.RegularFont.Measure(buildable.LongDesc.Replace("\\n", "\n")).Y;
+			var longDescSize = Game.Renderer.RegularFont.Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
 			
 			Game.Renderer.BoldFont.DrawText(
-				buildable.Description + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
+				tooltip.Name + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
 
-			DrawRightAligned("${0}".F(buildable.Cost), pos + new int2(-5, 5),
-				(resources.DisplayCash + resources.DisplayOre >= buildable.Cost ? Color.White : Color.Red ));
+			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
+				(resources.DisplayCash + resources.DisplayOre >= cost ? Color.White : Color.Red ));
 			
 			var lowpower = resources.GetPowerState() != PowerState.Normal;
 			var time = ProductionQueue.GetBuildTime(pl.PlayerActor, info.Name) 
@@ -500,7 +501,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 
 			p += new int2(0, 15);
-			Game.Renderer.RegularFont.DrawText(buildable.LongDesc.Replace("\\n", "\n"), 
+			Game.Renderer.RegularFont.DrawText(tooltip.Description.Replace("\\n", "\n"), 
 				p.ToInt2(), Color.White);
 
 			Game.Renderer.RgbaSpriteRenderer.Flush();

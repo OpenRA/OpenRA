@@ -13,26 +13,34 @@ namespace OpenRA.Traits
 	public class ValuedInfo : ITraitInfo
 	{
 		public readonly int Cost = 0;
-		public readonly string Description = "";
-		public readonly string LongDesc = "";
-		public readonly string[] Owner = { };
-
-		public virtual object Create(ActorInitializer init) { return new Valued(); }
+		public object Create(ActorInitializer init) { return new Valued(); }
 	}
 
-	public class BuildableInfo : ValuedInfo
+	public class TooltipInfo : ITraitInfo
 	{
-		[ActorReference]public readonly string[] Prerequisites = { };
-		[ActorReference] public readonly string[] BuiltAt = { };
-		
+		public readonly string Description = "";
+		public readonly string Name = "";
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
+		public object Create(ActorInitializer init) { return new Tooltip(); }
+	}
+	
+	public class BuildableInfo : ITraitInfo
+	{
+		[ActorReference]
+		public readonly string[] Prerequisites = { };
+		[ActorReference]
+		public readonly string[] BuiltAt = { };
+		
+		public readonly string[] Owner = { };
+
+		// todo: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
         public readonly string Hotkey = null;
-
-		public override object Create(ActorInitializer init) { return new Buildable(); }
+		public object Create(ActorInitializer init) { return new Buildable(); }
 	}
 
-	class Valued { }		/* halfway to buildable */
+	class Valued { }
 	class Buildable { }
+	class Tooltip { }
 }

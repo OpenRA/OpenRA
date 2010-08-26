@@ -146,9 +146,8 @@ World:
 		WaterChance: 0
 
 CRATE:
-	Valued:
-		Cost: 0
-		Description: Crate
+	Tooltip:
+		Name: Crate
 	Crate:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Ore, Beach

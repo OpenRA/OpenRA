@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 			var buildings = Rules.TechTree.GatherBuildings(Owner);
 			var effectivePrereq = Info.Prerequisites
 				.Select(a => a.ToLowerInvariant())
-				.Where(a => Rules.Info[a].Traits.Get<ValuedInfo>().Owner.Contains(Owner.Country.Race));
+				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Country.Race));
 
 			if (Info.Prerequisites.Count() == 0) 
 				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;

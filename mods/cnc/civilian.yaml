@@ -6,8 +6,8 @@ V01:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Valued:
-		Description: Church
+	Tooltip:
+		Name: Church
 
 V02:
 	Inherits: ^CivBuilding
@@ -147,15 +147,18 @@ BARB:
 	Health:
 		HP: 100
 		Armor: none
-	Valued:
-		Description: Wire Fence
+	Tooltip:
+		Name: Wire Fence
+		Icon: barbicnh
+
 WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
 		Armor: none
-	Valued:
-		Description: Wooden Fence
+	Tooltip:
+		Name: Wooden Fence
+		Icon: woodicnh
 
 BRIDGE1:
 	Inherits: ^Bridge

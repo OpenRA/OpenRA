@@ -2,7 +2,10 @@ FACT:
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
-		Description: Construction Yard
+	Tooltip:
+		Name: Construction Yard
+		Icon: mcvicnh
+		Description: Builds structures
 	Building:
 		Power: 15
 		Footprint: xxx xxx xxx
@@ -23,13 +26,15 @@ FACT:
 		Facing: 108
 NUKE:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Power Plant
 		Icon: nukeicnh
+		Description: Provides power for other structures
+	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
-		Cost: 300
-		Description: Power Plant
-		LongDesc: Provides power for other structures
 	Building:
 		Power: 100
 		Footprint: x_ xx
@@ -44,14 +49,16 @@ NUKE:
 
 PROC.proxy:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tiberium Refinery
 		Icon: procicnh
+		Description: Processes raw Tiberium into useable resources
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: nuke
 		Owner: gdi,nod
-		Cost: 2000
-		Description: Tiberium Refinery
-		LongDesc: Processes raw Tiberium into useable resources
 	Building:
 		Power: -50
 		Footprint: ___xx xxxxx xxx__ xxx__
@@ -69,8 +76,10 @@ PROC:
 	Inherits: ^Building
 	Valued:
 		Cost: 1700
-		Description: Tiberium Refinery
-		LongDesc: Processes raw Tiberium into useable resources
+	Tooltip:
+		Name: Tiberium Refinery
+		Icon: procicnh
+		Description: Processes raw Tiberium into useable resources
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -106,14 +115,16 @@ PROC:
 		SpawnOffset: 3,1
 SILO:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Tiberium Silo
 		Icon: siloicnh
+		Description: Stores processed Tiberium
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: proc
 		Owner: gdi,nod
-		Cost: 150
-		Description: Tiberium Silo
-		LongDesc: Stores processed Tiberium
 	Building:
 		Power: -10
 		Footprint: xx
@@ -134,15 +145,17 @@ SILO:
 
 PYLE:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Barracks
 		Icon: pyleicnh
+		Description: Trains infantry
+		AlternateName: @Barracks
+	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: nuke
 		Owner: gdi
-		Cost: 300
-		Description: Barracks
-		LongDesc: Trains infantry
-		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -163,15 +176,17 @@ PYLE:
 
 HAND:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Hand of Nod
 		Icon: handicnh
+		Description: Trains infantry
+		AlternateName: @Barracks
+	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: nuke
 		Owner: nod
-		Cost: 300
-		Description: Hand of Nod
-		LongDesc: Trains infantry
-		AlternateName: @Barracks
 	Building:
 		Power: -20
 		Footprint: __ xx xx
@@ -192,15 +207,17 @@ HAND:
 
 AFLD:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Airstrip
 		Icon: afldicnh
+		AlternateName: @Vehicle Production
+		Description: Provides a dropzone for vehicle reinforcements
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: nod
-		Cost: 2000
-		Description: Airstrip
-		AlternateName: @Vehicle Production
-		LongDesc: Provides a dropzone for vehicle reinforcements
 	Building:
 		Power: -30
 		Footprint: xxxx xxxx
@@ -223,15 +240,17 @@ AFLD:
 	
 WEAP:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Weapons Factory
 		Icon: weapicnh
+		AlternateName: @Vehicle Production
+		Description: Assembly point for vehicle reinforcements
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: gdi
-		Cost: 2000
-		Description: Weapons Factory
-		AlternateName: @Vehicle Production
-		LongDesc: Assembly point for vehicle reinforcements
 	Building:
 		Power: -30
 		Footprint: ___ xxx ===
@@ -256,14 +275,16 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Communications Center
 		Icon: hqicnh
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: proc
 		Owner: gdi,nod
-		Cost: 1000
-		Description: Communications Center
-		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: __ xx
@@ -281,14 +302,16 @@ HQ:
 
 NUK2:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Advanced Power Plant
 		Icon:nuk2icnh
+		Description: Provides more power, cheaper than the \nstandard Power Plant
+	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: hq
 		Owner: gdi,nod
-		Cost: 500
-		Description: Advanced Power Plant
-		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 	Building:
 		Power: 200
 		Footprint: xx xx
@@ -303,14 +326,16 @@ NUK2:
 		
 FIX:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Repair Facility
 		Icon: fixicnh
+		Description: Repairs vehicles and allows the\nconstruction of additional bases.
+	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: @Vehicle Production
 		Owner: gdi,nod
-		Cost: 1200
-		Description: Repair Facility
-		LongDesc: Repairs vehicles and allows the\nconstruction of additional bases.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -328,14 +353,16 @@ FIX:
 
 HPAD:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Helipad
 		Icon:hpadicnh
+		Description: Produces and reloads helicopters
+	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: @Barracks
 		Owner: gdi,nod
-		Cost: 1500
-		Description: Helipad
-		LongDesc: Produces and reloads helicopters
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -361,15 +388,17 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1800
+	Tooltip:
+		Name: Advanced Communications Center
 		Icon: eyeicnh
+		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
+		AlternateName: @Superweapon
+	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 1800
-		Description: Advanced Communications Center
-		LongDesc: Provides access to the Ion Cannon.\n  Requires power to operate.
-		AlternateName: @Superweapon
 	Building:
 		Power: -200
 		Footprint: __ xx
@@ -388,15 +417,17 @@ TMPL:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Temple of Nod
 		Icon: tmplicnh
+		Description: Place of worship and secret missile silo.\nRequires power to operate.
+		AlternateName: @Superweapon
+	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
 		Owner: nod
-		Cost: 2000
-		Description: Temple of Nod
-		LongDesc: Place of worship and secret missile silo.\nRequires power to operate.
-		AlternateName: @Superweapon
 	Building:
 		Power: -150
 		Footprint: ___ xxx xxx
@@ -415,14 +446,16 @@ OBLI:
 	Category: Defense
 	RequiresPower:
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Obelisk of Light
 		Icon:obliicnh
+		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl
 		Owner: nod
-		Cost: 1500
-		Description: Obelisk of Light
-		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -446,14 +479,16 @@ OBLI:
 CYCL:
 	Category: Defense
 	Inherits: ^Wall
-	Buildable:
+	Valued:
+		Cost: 25
+	Tooltip:
+		Name: Chain Link Barrier
 		Icon:cyclicnh
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Owner: nod
-		Cost: 25
-		Description: Chain Link Barrier
-		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 		Armor: none
@@ -461,14 +496,16 @@ CYCL:
 SBAG:
 	Category: Defense
 	Inherits: ^Wall
-	Buildable:
+	Valued:
+		Cost: 25
+	Tooltip:
+		Name: Sandbag Barrier
 		Icon:sbagicnh
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: gdi
-		Cost: 25
-		Description: Sandbag Barrier
-		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 250
 		Armor: none
@@ -476,14 +513,16 @@ SBAG:
 BRIK:
 	Category: Defense
 	Inherits: ^Wall
-	Buildable:
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Concrete Barrier
 		Icon:brikicnh
+		Description: Stop units and blocks enemy fire.
+	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: fact
 		Owner: gdi,nod
-		Cost: 100
-		Description: Concrete Barrier
-		LongDesc: Stop units and blocks enemy fire.
 	Health:
 		HP: 1000
 		Armor: heavy
@@ -493,14 +532,16 @@ BRIK:
 GUN:
 	Category: Defense
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Turret
 		Icon: gunicnh
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: hand
 		Owner: nod
-		Cost: 600
-		Description: Turret
-		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -20
 	Health:
@@ -522,14 +563,16 @@ GUN:
 SAM:
 	Category: Defense
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SAM Site
 		Icon: samicnh
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Owner: nod
-		Cost: 750
-		Description: SAM Site
-		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -20
 		Footprint: xx
@@ -553,14 +596,16 @@ SAM:
 GTWR:
 	Category: Defense
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Guard Tower
 		Icon: gtwricnh
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: pyle
 		Owner: gdi
-		Cost: 500
-		Description: Guard Tower
-		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -10
 	Health:
@@ -578,14 +623,16 @@ GTWR:
 ATWR:
 	Category: Defense
 	Inherits: ^Building
-	Buildable:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Advanced Guard Tower
 		Icon: atwricnh
+		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
+	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 1000
-		Description: Advanced Guard Tower
-		LongDesc: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
 	Building:
 		Power: -20
 	Health:

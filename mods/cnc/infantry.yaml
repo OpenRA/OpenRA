@@ -1,12 +1,14 @@
 E1:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Minigunner
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e1icnh
 	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi, nod
-		Cost: 100
-		Description: Minigunner
-		LongDesc: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: e1icnh
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -19,14 +21,16 @@ E1:
 	
 E2:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Icon: e2icnh
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: gdi
-		Cost: 160
-		Description: Grenadier
-		LongDesc: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
-		Icon: e2icnh
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -41,13 +45,15 @@ E2:
 	
 E3:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Rocket Soldier
+		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Icon: e3icnh
 	Buildable:
 		BuildPaletteOrder: 20
 		Owner: nod, gdi
-		Cost: 300
-		Description: Rocket Soldier
-		LongDesc: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
-		Icon: e3icnh
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -62,14 +68,16 @@ E3:
 
 E4:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Flamethrower
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Icon: e4icnh
 	Buildable:
 		BuildPaletteOrder: 40
 		Owner: nod
 		Prerequisites: hq
-		Cost: 200
-		Description: Flamethrower
-		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
-		Icon: e4icnh
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -87,13 +95,15 @@ E4:
 
 E5:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chem Warrior
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e5icnh
 	Buildable:
 		BuildPaletteOrder: 50
 		Owner: nod
-		Cost: 300
-		Description: Chem Warrior
-		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: e5icnh
 		Prerequisites: tmpl
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -113,13 +123,15 @@ E5:
 
 E6:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: e6icnh
 	Buildable:
 		BuildPaletteOrder: 30
 		Owner: gdi,nod
-		Cost: 500
-		Description: Engineer
-		LongDesc: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
-		Icon: e6icnh
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -135,14 +147,16 @@ E6:
 
 RMBO:
 	Inherits: ^Infantry
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Icon: rmboicnh
+		Name: Commando
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 50
 		Owner: gdi
-		Cost: 1000
 		Prerequisites: eye
-		Icon: rmboicnh
-		Description: Commando
-		LongDesc: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice

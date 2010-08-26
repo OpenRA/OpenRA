@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
 						var unit = Rules.Info[order.TargetString];
-						var ui = unit.Traits.Get<BuildableInfo>();
+						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 						var time = GetBuildTime(self, order.TargetString);
 
 						if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
@@ -63,7 +63,7 @@ namespace OpenRA.Traits
 						bool hasPlayedSound = false;
 
 						BeginProduction(unit.Category,
-							new ProductionItem(order.TargetString, (int)time, ui.Cost,
+							new ProductionItem(order.TargetString, (int)time, cost,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
@@ -102,8 +102,8 @@ namespace OpenRA.Traits
 				return 0;
 			
 			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastBuild) return 0;
-			var ui = unit.Traits.Get<BuildableInfo>();
-			var time = ui.Cost
+			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+			var time = cost
 				* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
 				* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 				 / 1000;
