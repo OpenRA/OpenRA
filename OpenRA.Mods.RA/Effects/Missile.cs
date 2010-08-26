@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Effects
 			var targetPosition = Args.target.CenterLocation + offset;
 
 			var targetAltitude = 0;
-			if (Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
+			if (Args.target.IsValid && Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
 				targetAltitude =  Args.target.Actor.Trait<IMove>().Altitude;
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
