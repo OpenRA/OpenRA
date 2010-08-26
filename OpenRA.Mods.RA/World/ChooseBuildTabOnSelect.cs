@@ -30,18 +30,27 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public void SelectionChanged()
 		{
-			var firstItem = world.Selection.Actors.FirstOrDefault(
-				a => a.World.LocalPlayer == a.Owner && a.HasTrait<Production>());
-
-			if (firstItem == null)
+			// Queue-per-structure
+			var perqueue = world.Selection.Actors.FirstOrDefault(
+				a => a.World.LocalPlayer == a.Owner && a.HasTrait<ProductionQueue>());
+			
+			if (perqueue != null)
+			{
+				Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+					.SetCurrentTab(perqueue.TraitsImplementing<ProductionQueue>().First());
 				return;
+			}
+			
+			// Queue-per-player
+			var types = world.Selection.Actors.SelectMany(a => a.TraitsImplementing<Production>())
+											  .SelectMany(t => t.Info.Produces)
+											  .Distinct();
+			
+			if (types.Count() == 0)
+				return;	
 
-			var produces = firstItem.Info.Traits.Get<ProductionInfo>().Produces.FirstOrDefault();
-			if (produces == null)
-				return;
-
-			//Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-			//	.SetCurrentTab(produces);
+			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>().FirstOrDefault(t => types.Contains(t.Info.Type)));
 		}
 	}
 }
