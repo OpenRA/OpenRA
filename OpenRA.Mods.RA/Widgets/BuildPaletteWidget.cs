@@ -349,7 +349,7 @@ namespace OpenRA.Mods.RA.Widgets
 					if (producing.Done)
 					{
 						if (unit.Traits.Contains<BuildingInfo>())
-							world.OrderGenerator = new PlaceBuildingOrderGenerator(player.PlayerActor, item);
+							world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.self, item);
 						return;
 					}
 
@@ -472,7 +472,7 @@ namespace OpenRA.Mods.RA.Widgets
 			
 			var lowpower = resources.GetPowerState() != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name) 
-				* ((lowpower)? pl.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown : 1);
+				* ((lowpower)? CurrentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();

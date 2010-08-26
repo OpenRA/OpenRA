@@ -77,7 +77,7 @@ namespace OpenRA.Traits
 					
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
-						BeginProduction(new ProductionItem(order.TargetString, (int)time, cost,
+						BeginProduction(new ProductionItem(this, order.TargetString, (int)time, cost,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
@@ -165,6 +165,15 @@ namespace OpenRA.Traits
 
 		void BuildUnit( string name )
 		{			
+			// If the actor has a production trait, use it.
+			var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
+			if (sp != null)
+			{
+				if (!IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
+					FinishProduction();
+				return;
+			}
+						
 			var producers = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<Production>()
 				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
@@ -193,7 +202,7 @@ namespace OpenRA.Traits
 	public class ProductionItem
 	{
 		public readonly string Item;
-		
+		public readonly ProductionQueue Queue;
 		public readonly int TotalTime;
 		public readonly int TotalCost;
 		public int RemainingTime { get; private set; }
@@ -204,13 +213,14 @@ namespace OpenRA.Traits
 
 		int slowdown = 0;
 
-		public ProductionItem(string item, int time, int cost, Action onComplete)
+		public ProductionItem(ProductionQueue queue, string item, int time, int cost, Action onComplete)
 		{
 			if (time <= 0) time = 1;
 			Item = item;
 			RemainingTime = TotalTime = time;
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
+			Queue = queue;
 
 			Log.Write("debug", "new ProductionItem: {0} time={1} cost={2}", item, time, cost);
 		}
@@ -228,7 +238,7 @@ namespace OpenRA.Traits
 			if (player.PlayerActor.Trait<PlayerResources>().GetPowerState() != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
-					slowdown = player.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().LowPowerSlowdown; 
+					slowdown = Queue.Info.LowPowerSlowdown; 
 				else
 					return;
 			}

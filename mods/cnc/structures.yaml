@@ -24,6 +24,15 @@ FACT:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 108
+	ProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+
 NUKE:
 	Inherits: ^Building
 	Valued:
@@ -173,7 +182,10 @@ PYLE:
 		SpawnOffsets: -10,2, 7,7
 		ExitCells: 0,1, 1,1
 	PrimaryBuilding:
-
+	ProductionQueue@Vehicle:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -204,7 +216,10 @@ HAND:
 		SpawnOffsets: 12,24
 		ExitCells:1,2
 	PrimaryBuilding:
-
+	ProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 AFLD:
 	Inherits: ^Building
 	Valued:
@@ -237,7 +252,11 @@ AFLD:
 		SpawnOffsets: -24,0
 		ExitCells:3,1
 	PrimaryBuilding:
-	
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+
 WEAP:
 	Inherits: ^Building
 	Valued:
@@ -270,7 +289,11 @@ WEAP:
 		SpawnOffsets: -8,-8
 		ExitCells: 0,2
 	PrimaryBuilding:
-	
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+
 HQ:
 	RequiresPower:
 	CanPowerDown:
@@ -383,7 +406,11 @@ HPAD:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-
+	ProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	
 EYE:
 	RequiresPower:
 	CanPowerDown:
