@@ -103,10 +103,9 @@ namespace OpenRA.Traits
 		{
 			if (p != p.World.LocalPlayer) return 0;		// this only matters for local players.
 			
-			// todo: this will simplify once queues know about what they can build
-			var queues = p.World.Queries.WithTraitMultiple<ProductionQueue>().Where(a => a.Actor.Owner == p)
-				.Select(a => a.Trait.Info.Type).Distinct().ToArray();
-			return Rules.TechTree.BuildableItems(p, queues).Count();
+			return p.World.Queries.WithTraitMultiple<ProductionQueue>()
+				.Where(a => a.Actor.Owner == p)
+				.SelectMany(a => a.Trait.BuildableItems()).Distinct().Count();
 		}
 	}
 }

@@ -82,13 +82,10 @@ namespace OpenRA.Mods.RA.Widgets
 				.Select(p => p.Trait);
 			
 			foreach (var queue in queues)
-				if (!Rules.TechTree.BuildableItems(world.LocalPlayer, queue.Info.Type).Any())
-				{
-					if (CurrentQueue == queue)
-						CurrentQueue = null;
-				}
-				else
+				if (queue.BuildableItems().Count() > 0)
 					visibleTabs.Add(queue);
+				else if (CurrentQueue == queue)
+					CurrentQueue = null;
 
 			if (CurrentQueue == null)
 				CurrentQueue = queues.FirstOrDefault();
@@ -185,19 +182,15 @@ namespace OpenRA.Mods.RA.Widgets
 			
 			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
 			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
-			var queueName = queue.Info.Type;
 						
 			// Collect info
 			var x = 0;
 			var y = 0;
-			var buildableItems = Rules.TechTree.BuildableItems(world.LocalPlayer, queueName).ToArray();
-			var allBuildables = Rules.TechTree.AllBuildables(queueName)
-				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(world.LocalPlayer.Country.Race))
-				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder)
-				.ToArray();
+			var buildableItems = queue.BuildableItems();
+			var allBuildables = queue.AllItems();
 
 			var overlayBits = new List<Pair<Sprite, float2>>();
-			numActualRows = Math.Max((allBuildables.Length + Columns - 1) / Columns, Rows);
+			numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
 
 			// Palette Background
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
@@ -260,10 +253,10 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 				}
 				else
-					if (!buildableItems.Contains(item.Name) || isBuildingSomething)
+					if (!buildableItems.Any(a => a.Name == item.Name) || isBuildingSomething)
 						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
-				var closureName = buildableItems.Contains(item.Name) ? item.Name : null;
+				var closureName = buildableItems.Any(a => a.Name == item.Name) ? item.Name : null;
 				buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
 
 				if (++x == Columns) { x = 0; y++; }
@@ -444,9 +437,8 @@ namespace OpenRA.Mods.RA.Widgets
 			var tooltip = info.Traits.Get<TooltipInfo>();
 			var buildable = info.Traits.Get<BuildableInfo>();
 			var cost = info.Traits.Get<ValuedInfo>().Cost;
-			var buildings = Rules.TechTree.GatherBuildings( pl );
-			var canBuildThis = Rules.TechTree.CanBuild(info, pl, buildings);
-
+			var canBuildThis = CurrentQueue.CanBuild(info);
+			
 			var longDescSize = Game.Renderer.RegularFont.Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
@@ -494,15 +486,12 @@ namespace OpenRA.Mods.RA.Widgets
         bool DoBuildingHotkey(char c, World world)
         {
 			if (!paletteOpen) return false;
-			
-            var buildable = Rules.TechTree.BuildableItems(world.LocalPlayer, CurrentQueue.Info.Type);
-
-            var toBuild = buildable.FirstOrDefault(b => Rules.Info[b.ToLowerInvariant()].Traits.Get<BuildableInfo>().Hotkey == c.ToString());
+            var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == c.ToString());
 
             if ( toBuild != null )
 			{
 				Sound.Play(TabClick);
-		    	HandleBuildPalette(world, toBuild, true);
+		    	HandleBuildPalette(world, toBuild.Name, true);
 				return true;
 			}
 

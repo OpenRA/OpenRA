@@ -70,23 +70,23 @@ namespace OpenRA.Mods.RA
 			playerResources = p.PlayerActor.Trait<PlayerResources>();
 		}
 
-		int GetPowerProvidedBy(string building)
+		int GetPowerProvidedBy(ActorInfo building)
 		{
-			var bi = Rules.Info[building].Traits.GetOrDefault<BuildingInfo>();
+			var bi = building.Traits.GetOrDefault<BuildingInfo>();
 			if (bi == null) return 0;
 			return bi.Power;
 		}
 
-        string ChooseRandomUnitToBuild(string category)
+        ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
         {
-            var buildableThings = Rules.TechTree.BuildableItems(p, category).ToArray();
-            if (buildableThings.Length == 0) return null;
-            return buildableThings[random.Next(buildableThings.Length)];
+            var buildableThings = queue.BuildableItems();
+            if (buildableThings.Count() == 0) return null;
+            return buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
         }
 
-		string ChooseBuildingToBuild()
+		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
 		{
-			var buildableThings = Rules.TechTree.BuildableItems(p, "Building").ToArray();
+			var buildableThings = queue.BuildableItems();
 
 			if (playerResources.PowerProvided <= playerResources.PowerDrained * 1.2)	/* try to maintain 20% excess power */
 			{
@@ -107,9 +107,9 @@ namespace OpenRA.Mods.RA
 				.Select( a => a.Actor.Info.Name ).ToArray();
 
 			foreach (var frac in buildingFractions)
-				if (buildableThings.Contains(frac.Key))
+				if (buildableThings.Any(b => b.Name == frac.Key))
 					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
-						return frac.Key;
+						return Rules.Info[frac.Key];
 
 			return null;
 		}
@@ -290,10 +290,10 @@ namespace OpenRA.Mods.RA
 			if (queue == null)
 				return;
 			
-			var unit = ChooseRandomUnitToBuild(category);
+			var unit = ChooseRandomUnitToBuild(queue);
 			if (unit != null)
 			{
-				Game.IssueOrder(Order.StartProduction(queue.self, unit, 1));
+				Game.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
 			}
         }
 
@@ -305,12 +305,15 @@ namespace OpenRA.Mods.RA
 				.Select(a => a.Trait)
 				.FirstOrDefault();
 			
+			if (queue == null)
+				return;
+			
 			var currentBuilding = queue.CurrentItem();
             switch (state)
             {
                 case BuildState.ChooseItem:
                     {
-                        var item = ChooseBuildingToBuild();
+                        var item = ChooseBuildingToBuild(queue);
                         if (item == null)
                         {
                             state = BuildState.WaitForFeedback;
@@ -319,7 +322,7 @@ namespace OpenRA.Mods.RA
                         else
                         {
                             state = BuildState.WaitForProduction;
-                            Game.IssueOrder(Order.StartProduction(queue.self, item, 1));
+                            Game.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
                         }
                     }
                     break;

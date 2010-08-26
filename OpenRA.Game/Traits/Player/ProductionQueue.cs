@@ -46,9 +46,27 @@ namespace OpenRA.Traits
 			return Producing;
 		}
 		
+		public IEnumerable<ActorInfo> AllItems()
+		{
+			return Rules.TechTree.AllBuildables(Info.Type)
+				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Country.Race))
+				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+		}
+		
+		public IEnumerable<ActorInfo> BuildableItems()
+		{
+			return Rules.TechTree.BuildableItems(self.Owner, Info.Type).Select(b => Rules.Info[b.ToLowerInvariant()]);
+		}
+		
+		public bool CanBuild(ActorInfo actor)
+		{
+			var buildings = Rules.TechTree.GatherBuildings( self.Owner );
+			return Rules.TechTree.CanBuild(actor, self.Owner, buildings);
+		}
+		
 		public void Tick( Actor self )
 		{			
-			while( Producing.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, Info.Type ).Contains( Producing[ 0 ].Item ) )
+			while( Producing.Count > 0 && !BuildableItems().Any(b => b.Name == Producing[ 0 ].Item) )
 			{
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Producing[0].TotalCost - Producing[0].RemainingCost); // refund what's been paid so far.
 				FinishProduction();
@@ -71,7 +89,7 @@ namespace OpenRA.Traits
 					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 					var time = GetBuildTime(order.TargetString);
 
-					if (!Rules.TechTree.BuildableItems(order.Player, bi.Queue).Contains(order.TargetString))
+					if (!BuildableItems().Any(b => b.Name == order.TargetString))
 						return;	/* you can't build that!! */
 				
 					bool hasPlayedSound = false;
