@@ -17,32 +17,44 @@ namespace OpenRA.Traits
 {
 	public class ProductionQueueInfo : ITraitInfo
 	{
+		public readonly string Type = null;
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
-		public object Create(ActorInitializer init) { return new ProductionQueue(init.self); }
+		public object Create(ActorInitializer init) { return new ProductionQueue(init.self, this); }
 	}
 
 	public class ProductionQueue : IResolveOrder, ITick
 	{
-		Actor self;
+		public readonly Actor self;
+		public ProductionQueueInfo Info;
+		// TODO: sync this
+		List<ProductionItem> Producing = new List<ProductionItem>();
 
-		public ProductionQueue( Actor self )
+		public ProductionQueue( Actor self, ProductionQueueInfo info )
 		{
 			this.self = self;
+			this.Info = info;
 		}
 
-		public void Tick( Actor self )
+		public ProductionItem CurrentItem()
 		{
-			foreach( var p in production.OrderBy( p => p.Key ) )
+			return Producing.ElementAtOrDefault(0);
+		}
+		
+		public IEnumerable<ProductionItem> AllItems()
+		{
+			return Producing;
+		}
+		
+		public void Tick( Actor self )
+		{			
+			while( Producing.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, Info.Type ).Contains( Producing[ 0 ].Item ) )
 			{
-				while( p.Value.Count > 0 && !Rules.TechTree.BuildableItems( self.Owner, p.Key ).Contains( p.Value[ 0 ].Item ) )
-				{
-					self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(p.Value[0].TotalCost - p.Value[0].RemainingCost); // refund what's been paid so far.
-					FinishProduction(p.Key);
-				}
-				if( p.Value.Count > 0 )
-					( p.Value )[ 0 ].Tick( self.Owner );
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Producing[0].TotalCost - Producing[0].RemainingCost); // refund what's been paid so far.
+				FinishProduction();
 			}
+			if( Producing.Count > 0 )
+				Producing[ 0 ].Tick( self.Owner );
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -51,19 +63,21 @@ namespace OpenRA.Traits
 			{
 			case "StartProduction":
 				{
+					var unit = Rules.Info[order.TargetString];
+					if (unit.Category != Info.Type)
+						return; /* Not built by this queue */
+				
+					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+					var time = GetBuildTime(order.TargetString);
+
+					if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
+						return;	/* you can't build that!! */
+				
+					bool hasPlayedSound = false;
+					
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
-						var unit = Rules.Info[order.TargetString];
-						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
-						var time = GetBuildTime(self, order.TargetString);
-
-						if (!Rules.TechTree.BuildableItems(order.Player, unit.Category).Contains(order.TargetString))
-							return;	/* you can't build that!! */
-
-						bool hasPlayedSound = false;
-
-						BeginProduction(unit.Category,
-							new ProductionItem(order.TargetString, (int)time, cost,
+						BeginProduction(new ProductionItem(order.TargetString, (int)time, cost,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
@@ -82,9 +96,11 @@ namespace OpenRA.Traits
 				}
 			case "PauseProduction":
 				{
-					var producing = CurrentItem( Rules.Info[ order.TargetString ].Category );
-					if( producing != null && producing.Item == order.TargetString )
-						producing.Paused = ( order.TargetLocation.X != 0 );
+					if (Rules.Info[ order.TargetString ].Category != Info.Type)
+						return; /* Not built by this queue */	
+
+					if( Producing.Count > 0 && Producing[0].Item == order.TargetString )
+						Producing[0].Paused = ( order.TargetLocation.X != 0 );
 					break;
 				}
 			case "CancelProduction":
@@ -95,65 +111,50 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public static int GetBuildTime(Actor self, String unitString)
+		public int GetBuildTime(String unitString)
 		{
 			var unit = Rules.Info[unitString];
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 			
-			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastBuild) return 0;
+			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
 			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 			var time = cost
-				* self.Owner.PlayerActor.Info.Traits.Get<ProductionQueueInfo>().BuildSpeed /* todo: country-specific build speed bonus */
+				* Info.BuildSpeed
 				* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 				 / 1000;
 			return (int) time;
 		}
 
-		// Key: Production category.
-		// TODO: sync this
-		readonly Cache<string, List<ProductionItem>> production 
-			= new Cache<string, List<ProductionItem>>( _ => new List<ProductionItem>() );
-
-		public ProductionItem CurrentItem(string category)
-		{
-			return production[category].ElementAtOrDefault(0);
-		}
-
-		public IEnumerable<ProductionItem> AllItems(string category)
-		{
-			return production[category];
-		}
-
 		void CancelProduction( string itemName )
 		{
 			var category = Rules.Info[itemName].Category;
-			var queue = production[ category ];
-			if (queue.Count == 0) return;
-
-			var lastIndex = queue.FindLastIndex( a => a.Item == itemName );
+			
+			if (category != Info.Type || Producing.Count == 0)
+				return; // Nothing to do here
+			
+			var lastIndex = Producing.FindLastIndex( a => a.Item == itemName );
 			if (lastIndex > 0)
 			{
-				queue.RemoveAt(lastIndex);
+				Producing.RemoveAt(lastIndex);
 			}
 			else if( lastIndex == 0 )
 			{
-				var item = queue[0];
+				var item = Producing[0];
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
-				FinishProduction(category);
+				FinishProduction();
 			}
 		}
 
-		public void FinishProduction( string category )
+		public void FinishProduction()
 		{
-			var queue = production[category];
-			if (queue.Count == 0) return;
-			queue.RemoveAt(0);
+			if (Producing.Count == 0) return;
+			Producing.RemoveAt(0);
 		}
 
-		void BeginProduction( string group, ProductionItem item )
+		void BeginProduction( ProductionItem item )
 		{
-			production[group].Add(item);
+			Producing.Add(item);
 		}
 
 		static bool IsDisabledBuilding(Actor a)
@@ -163,13 +164,10 @@ namespace OpenRA.Traits
 		}
 
 		void BuildUnit( string name )
-		{
-			var newUnitType = Rules.Info[ name ];
-			var producerTypes = Rules.TechTree.UnitBuiltAt( newUnitType );
-			
+		{			
 			var producers = self.World.Queries.OwnedBy[self.Owner]
 				.WithTrait<Production>()
-				.Where(x => producerTypes.Contains(x.Actor.Info))
+				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ) // prioritize the primary.
 				.ToArray();
 
@@ -183,9 +181,9 @@ namespace OpenRA.Traits
 			{
 				if (IsDisabledBuilding(p.Actor)) continue;
 
-				if (p.Trait.Produce(p.Actor, newUnitType))
+				if (p.Trait.Produce(p.Actor, Rules.Info[ name ]))
 				{
-					FinishProduction(newUnitType.Category);
+					FinishProduction();
 					break;
 				}
 			}

@@ -26,8 +26,11 @@ namespace OpenRA.Traits
 	public class Production
 	{	
 		public readonly List<Pair<float2, int2>> Spawns = new List<Pair<float2, int2>>();
+		public ProductionInfo Info;
 		public Production(ProductionInfo info)
 		{
+			Info = info;
+			
 			if (info.SpawnOffsets == null || info.ExitCells == null)
 				return;
 			

@@ -40,8 +40,8 @@ namespace OpenRA.Mods.RA.Widgets
 			if (produces == null)
 				return;
 
-			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-				.SetCurrentTab(produces);
+			//Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+			//	.SetCurrentTab(produces);
 		}
 	}
 }

@@ -1,5 +1,22 @@
 Player:
-	ProductionQueue:
+	ProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Plane:
+		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
@@ -41,6 +58,7 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
+	HackyAI:
 	
 World:
 	ScreenShaker:

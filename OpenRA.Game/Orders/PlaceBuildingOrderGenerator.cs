@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -56,8 +57,14 @@ namespace OpenRA.Orders
 		
 		public void Tick( World world )
 		{
-			var producing = Producer.Trait<Traits.ProductionQueue>().CurrentItem( Rules.Info[ Building ].Category );
-			if (producing == null || producing.Item != Building || producing.RemainingTime != 0)
+			// Find the queue with the target actor
+			var queue = Producer.TraitsImplementing<ProductionQueue>()
+				.Where(p => p.CurrentItem() != null && 
+		                 	p.CurrentItem().Item == Building && 
+		                 	p.CurrentItem().RemainingTime == 0)
+				.FirstOrDefault();
+						
+			if (queue == null)
 				world.CancelInputMode();
 		}
 

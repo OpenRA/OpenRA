@@ -29,7 +29,6 @@ namespace OpenRA.Mods.RA
 		bool enabled;
 		int ticks;
 		Player p;
-		ProductionQueue productionQueue;
 		PlayerResources playerResources;
 		int2 baseCenter;
         Random random = new Random(); //we do not use the synced random number generator.
@@ -68,7 +67,6 @@ namespace OpenRA.Mods.RA
 			this.p = p;
 			enabled = true;
 		
-			productionQueue = p.PlayerActor.Trait<ProductionQueue>();
 			playerResources = p.PlayerActor.Trait<PlayerResources>();
 		}
 
@@ -262,7 +260,7 @@ namespace OpenRA.Mods.RA
 
         private void DeployMcv(Actor self)
         {
-            /* find our mcv and deploy it */
+			/* find our mcv and deploy it */
             var mcv = self.World.Queries.OwnedBy[p]
                 .FirstOrDefault(a => a.Info == Rules.Info["mcv"]);
 
@@ -278,20 +276,33 @@ namespace OpenRA.Mods.RA
         //Build a random unit of the given type. Not going to be needed once there is actual AI...
         private void BuildRandom(string category)
         {
-            var unitInProduction = productionQueue.CurrentItem(category);
-            if (unitInProduction == null)
-            {
-                var unit = ChooseRandomUnitToBuild(category);
-                if (unit != null)
-                {
-                    Game.IssueOrder(Order.StartProduction(p, unit, 1));
-                }
-            }
+			// Pick a free queue
+			var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+				.Where(a => a.Actor.Owner == p &&
+				       a.Trait.Info.Type == category &&
+				       a.Trait.CurrentItem() == null)
+				.Select(a => a.Trait)
+				.FirstOrDefault();
+			
+			if (queue == null)
+				return;
+			
+			var unit = ChooseRandomUnitToBuild(category);
+			if (unit != null)
+			{
+				Game.IssueOrder(Order.StartProduction(p, unit, 1));
+			}
         }
 
         private void BuildBuildings()
         {
-            var currentBuilding = productionQueue.CurrentItem("Building");
+            // Pick a free queue
+			var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Building")
+				.Select(a => a.Trait)
+				.FirstOrDefault();
+			
+			var currentBuilding = queue.CurrentItem();
             switch (state)
             {
                 case BuildState.ChooseItem:

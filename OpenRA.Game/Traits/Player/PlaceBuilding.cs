@@ -26,14 +26,20 @@ namespace OpenRA.Traits
 				self.World.AddFrameEndTask(w =>
 				{
 					var prevItems = GetNumBuildables(self.Owner);
-
-					var queue = self.Trait<ProductionQueue>();
-					var unit = Rules.Info[order.TargetString];
-					var producing = queue.CurrentItem(unit.Category);
-
-					if (producing == null || producing.Item != order.TargetString || producing.RemainingTime != 0)
+					
+					// Find the queue with the target actor
+					var queue = w.Queries.WithTraitMultiple<ProductionQueue>()
+						.Where(p => p.Actor.Owner == self.Owner &&
+						       		 p.Trait.CurrentItem() != null && 
+					                 p.Trait.CurrentItem().Item == order.TargetString && 
+					                 p.Trait.CurrentItem().RemainingTime == 0)
+						.Select(p => p.Trait)
+						.FirstOrDefault();
+					
+					if (queue == null)
 						return;
-
+					
+					var unit = Rules.Info[order.TargetString];
 					var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 					if (order.OrderString == "LineBuild")
@@ -66,7 +72,7 @@ namespace OpenRA.Traits
 
 					PlayBuildAnim( self, unit );
 
-					queue.FinishProduction(unit.Category);
+					queue.FinishProduction();
 
 					if (GetNumBuildables(self.Owner) > prevItems)
 						w.Add(new DelayedAction(10,

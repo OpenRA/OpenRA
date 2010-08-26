@@ -177,6 +177,21 @@ namespace OpenRA
 			return new Order("Command", null, text) { IsImmediate = true };	
 		}
 
+		public static Order StartProduction(Actor subject, string item, int count)
+		{
+			return new Order("StartProduction", subject, new int2( count, 0 ), item );
+		}
+
+		public static Order PauseProduction(Actor subject, string item, bool pause)
+		{
+			return new Order("PauseProduction", subject, new int2( pause ? 1 : 0, 0 ), item);
+		}
+
+		public static Order CancelProduction(Actor subject, string item)
+		{
+			return new Order("CancelProduction", subject, item);
+		}
+		
 		public static Order StartProduction(Player subject, string item, int count)
 		{
 			return new Order("StartProduction", subject.PlayerActor, new int2( count, 0 ), item );
