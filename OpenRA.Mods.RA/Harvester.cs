@@ -86,6 +86,9 @@ namespace OpenRA.Mods.RA
 
 		public void Deliver(Actor self, Actor proc)
 		{
+			if (!proc.IsInWorld)
+				return;	// fail to deliver if there is no proc.
+
 			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
 			contents.Clear();
 		}
