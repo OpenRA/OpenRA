@@ -19,6 +19,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA
 {
+	[FieldLoader.Foo( "Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight" )]
 	public class Map
 	{
 		public IFolder Package;
@@ -61,10 +62,6 @@ namespace OpenRA
 		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
 		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
 
-		static List<string> SimpleFields = new List<string>() {
-			"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"
-		};
-
 		public Map()
 		{
 			MapSize = new int2(1, 1);
@@ -95,13 +92,13 @@ namespace OpenRA
 		public Map(IFolder package)
 		{
 			Package = package;
-			var yaml = MiniYaml.DictFromStream(Package.GetContent("map.yaml"));
+			var yaml = new MiniYaml( null, MiniYaml.FromStream( Package.GetContent( "map.yaml" ) ) );
 
 			// 'Simple' metadata
-			FieldLoader.LoadFields(this, yaml, SimpleFields);
+			FieldLoader.Load( this, yaml );
 
 			// Waypoints
-			foreach (var wp in yaml["Waypoints"].NodesDict)
+			foreach (var wp in yaml.NodesDict["Waypoints"].NodesDict)
 			{
 				string[] loc = wp.Value.Value.Split(',');
 				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
@@ -120,7 +117,7 @@ namespace OpenRA
 						Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
 
 						int actors = 0;
-						foreach (var kv in yaml["Actors"].NodesDict)
+						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
 						{
 							string[] vals = kv.Value.Value.Split(' ');
 							string[] loc = vals[2].Split(',');
@@ -134,13 +131,13 @@ namespace OpenRA
 
 				case 2:
 					{
-						foreach (var kv in yaml["Players"].NodesDict)
+						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 						{
 							var player = new PlayerReference(kv.Value);
 							Players.Add(player.Name, player);
 						}
 
-						foreach (var kv in yaml["Actors"].NodesDict)
+						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
 						{
 							var oldActorReference = FieldLoader.Load<Format2ActorReference>(kv.Value);
 							Actors.Add(oldActorReference.Id, new ActorReference(oldActorReference.Type)
@@ -153,13 +150,13 @@ namespace OpenRA
 
 				case 3:
 					{
-						foreach (var kv in yaml["Players"].NodesDict)
+						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 						{
 							var player = new PlayerReference(kv.Value);
 							Players.Add(player.Name, player);
 						}
 
-						foreach (var kv in yaml["Actors"].NodesDict)
+						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
 							Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
 					} break;
 
@@ -184,7 +181,7 @@ namespace OpenRA
 			}
 
 			// Smudges
-			foreach (var kv in yaml["Smudges"].NodesDict)
+			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
 			{
 				string[] vals = kv.Key.Split(' ');
 				string[] loc = vals[1].Split(',');
@@ -192,7 +189,7 @@ namespace OpenRA
 			}
 
 			// Rules
-			Rules = yaml["Rules"].Nodes;
+			Rules = yaml.NodesDict["Rules"].Nodes;
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];			
 			LoadUid();
@@ -204,7 +201,7 @@ namespace OpenRA
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in SimpleFields)
+			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"})
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;

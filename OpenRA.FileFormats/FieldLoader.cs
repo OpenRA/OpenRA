@@ -22,7 +22,7 @@ namespace OpenRA.FileFormats
 		{
 			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s,f,t) );
 		};
-		
+
 		public static Action<string,Type> UnknownFieldAction = (s,f) =>
 		{
 			throw new NotImplementedException( "FieldLoader: Missing field `{0}` on `{1}`".F( s, f.Name ) );
@@ -64,15 +64,6 @@ namespace OpenRA.FileFormats
 			Load(t, y);
 			return t;
 		}
-		
-		public static void LoadFields( object self, Dictionary<string,MiniYaml> my, IEnumerable<string> fields )
-		{
-			foreach (var field in fields)
-			{
-				if (!my.ContainsKey(field)) continue;
-				LoadField(self,field,my[field].Value);
-			}
-		}
 
 		public static void LoadField( object self, string key, string value )
 		{
@@ -85,7 +76,7 @@ namespace OpenRA.FileFormats
 			else
 				field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
 		}
-				
+
 		public static object GetValue( string field, Type fieldType, string x )
 		{
 			if (x != null) x = x.Trim();
@@ -96,7 +87,7 @@ namespace OpenRA.FileFormats
 					return res;
 				return InvalidValueAction(x,fieldType, field);
 			}
-			
+
 			else if( fieldType == typeof( ushort ) )
 			{
 				ushort res;
@@ -115,7 +106,7 @@ namespace OpenRA.FileFormats
 
 			else if (fieldType == typeof(string))
 				return x;
-			
+
 			else if (fieldType == typeof(Color))
 			{
 				var parts = x.Split(',');
@@ -125,14 +116,14 @@ namespace OpenRA.FileFormats
 					return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
 				return InvalidValueAction(x,fieldType, field);
 			}
-			
+
 			else if (fieldType.IsEnum)
 			{
 				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(x.ToLower()))
 					return InvalidValueAction(x,fieldType, field);
 				return Enum.Parse(fieldType, x, true);
 			}
-			
+
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(x, fieldType, field);
 
@@ -153,7 +144,7 @@ namespace OpenRA.FileFormats
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new int2(int.Parse(parts[0]), int.Parse(parts[1]));
 			}
-			
+
 			UnknownFieldAction("[Type] {0}".F(x),fieldType);
 			return null;
 		}
@@ -175,7 +166,7 @@ namespace OpenRA.FileFormats
 			var ret = new Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>();
 
 			var fieldsToLoad = new List<FieldInfo>();
-			var attr = (CustomLoadAttribute[])type.GetCustomAttributes( typeof( CustomLoadAttribute ), false );
+			var attr = (FooAttribute[])type.GetCustomAttributes( typeof( FooAttribute ), false );
 			if( attr.Length == 0 )
 			{
 				var defCtor = type.GetConstructor( new Type[ 0 ] );
@@ -195,7 +186,7 @@ namespace OpenRA.FileFormats
 			{
 				var use = (LoadUsingAttribute[])field.GetCustomAttributes( typeof( LoadUsingAttribute ), false );
 				if( use.Length != 0 )
-					ret[ field ] = ( _1, _2, yaml ) => use[ 0 ].Loader( yaml );
+					ret[ field ] = ( _1, fieldType, yaml ) => use[ 0 ].LoaderFunc( field )( yaml );
 				else
 				{
 					var attr2 = (FieldFromYamlKeyAttribute[])field.GetCustomAttributes( typeof( FieldFromYamlKeyAttribute ), false );
@@ -207,18 +198,32 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
-		public class CustomLoadAttribute : Attribute
+		public class FooAttribute : Attribute
 		{
 			public string[] Fields;
+
+			public FooAttribute( params string[] fields )
+			{
+				Fields = fields;
+			}
 		}
 
 		public class LoadUsingAttribute : Attribute
 		{
-			public readonly Func<MiniYaml, object> Loader;
+			Func<MiniYaml, object> loaderFuncCache;
+			public readonly string Loader;
 
-			public LoadUsingAttribute( Func<MiniYaml, object> loader )
+			public LoadUsingAttribute( string loader )
 			{
 				Loader = loader;
+			}
+
+			internal Func<MiniYaml, object> LoaderFunc( FieldInfo field )
+			{
+				const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+				if( loaderFuncCache == null )
+					loaderFuncCache = (Func<MiniYaml, object>)Delegate.CreateDelegate( typeof( Func<MiniYaml, object> ), field.DeclaringType.GetMethod( Loader, bf ) );
+				return loaderFuncCache;
 			}
 		}
 	}
@@ -240,7 +245,7 @@ namespace OpenRA.FileFormats
 
 			return new MiniYaml( root, nodes );
 		}
-		
+
 		public static MiniYaml SaveDifferences(object o, object from)
 		{
 			if (o.GetType() != from.GetType())
@@ -266,7 +271,7 @@ namespace OpenRA.FileFormats
 				var c = (Color)v;
 				return "{0},{1},{2},{3}".F(c.A,c.R,c.G,c.B);
 			}
-			
+
 			return f.FieldType.IsArray
 				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
 				: v.ToString();

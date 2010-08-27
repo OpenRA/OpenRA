@@ -15,6 +15,7 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
+	[FieldLoader.Foo( "Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight" )]
 	public class MapStub
 	{
 		public readonly IFolder Package;
@@ -28,6 +29,8 @@ namespace OpenRA.FileFormats
 		public string Author;
 		public int PlayerCount;
 		public string Tileset;
+
+		[FieldLoader.LoadUsing( "LoadWaypoints" )]
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
 		
@@ -36,24 +39,24 @@ namespace OpenRA.FileFormats
 		public int Width { get { return BottomRight.X - TopLeft.X; } }
 		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
 	
-		static List<string> Fields = new List<string>() {
-			"Selectable", "Title", "Description", "Author", "PlayerCount", "Tileset", "TopLeft", "BottomRight"
-		};
-
 		public MapStub(IFolder package)
 		{
 			Package = package;
-			var yaml = MiniYaml.DictFromStream(Package.GetContent("map.yaml"));
-			FieldLoader.LoadFields(this, yaml, Fields);
+			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
+			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			
-			// Waypoints
-			foreach (var wp in yaml["Waypoints"].NodesDict)
-			{
-				string[] loc = wp.Value.Value.Split(',');
-				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
-			}
-
 			Uid = Package.GetContent("map.uid").ReadAllText();
+		}
+
+		static object LoadWaypoints( MiniYaml y )
+		{
+			var ret = new Dictionary<string, int2>();
+			foreach( var wp in y.NodesDict[ "Waypoints" ].NodesDict )
+			{
+				string[] loc = wp.Value.Value.Split( ',' );
+				ret.Add( wp.Key, new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) );
+			}
+			return ret;
 		}
 	}
 }

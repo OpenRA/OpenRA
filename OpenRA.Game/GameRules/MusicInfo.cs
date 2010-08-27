@@ -12,7 +12,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.GameRules
 {
-	[FieldLoader.CustomLoad()]
+	[FieldLoader.Foo()]
 	public class MusicInfo
 	{
 		public readonly string Filename = null;

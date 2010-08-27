@@ -29,30 +29,34 @@ namespace OpenRA.FileFormats
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
 	
+	[FieldLoader.Foo("Id", "Image", "Size", "PickAny")]
 	public class TileTemplate
 	{
 		public ushort Id;
 		public string Image;
 		public int2 Size;
 		public bool PickAny;
+
+		[FieldLoader.LoadUsing( "LoadTiles" )]
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 		
-		static List<string> fields = new List<string>() {"Id", "Image", "Size", "PickAny"};
-
 		public TileTemplate() {}
 		public TileTemplate(MiniYaml my)
 		{
-			FieldLoader.LoadFields(this, my.NodesDict, fields);
+			FieldLoader.Load( this, my );
+		}
 
-			Tiles = my.NodesDict["Tiles"].NodesDict.ToDictionary(
+		static object LoadTiles( MiniYaml y )
+		{
+			return y.NodesDict["Tiles"].NodesDict.ToDictionary(
 				t => byte.Parse(t.Key),
-				t => t.Value.Value);
+				t => t.Value.Value );
 		}
 		
 		public MiniYaml Save()
 		{
 			var root = new List<MiniYamlNode>();
-			foreach (var field in fields)
+			foreach (var field in new string[] {"Id", "Image", "Size", "PickAny"})
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;

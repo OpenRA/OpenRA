@@ -15,6 +15,7 @@ using System;
 
 namespace OpenRA.GameRules
 {
+	[FieldLoader.Foo( "DisableVariants" )]
 	public class VoiceInfo
 	{
 		public readonly Dictionary<string,string[]> Variants;
@@ -30,7 +31,7 @@ namespace OpenRA.GameRules
 
 		public VoiceInfo( MiniYaml y )
 		{
-			FieldLoader.LoadFields(this, y.NodesDict, new string[] { "DisableVariants" });
+			FieldLoader.Load( this, y );
 			Variants = Load(y, "Variants"); 
 			Voices = Load(y, "Voices");
 			
