@@ -30,13 +30,32 @@ namespace OpenRA.FileFormats
 
 		public static void Load( object self, MiniYaml my )
 		{
-			foreach( var x in my.NodesDict )
-				if (!x.Key.StartsWith("-"))
-					LoadField(self, x.Key, x.Value.Value);
+			var loadDict = typeLoadInfo[ self.GetType() ];
 
-			foreach( var field in self.GetType().GetFields())
-				if( field.HasAttribute<FieldFromYamlKeyAttribute>() )
-					field.SetValue( self, GetValue( field.Name, field.FieldType, my.Value ) );
+			foreach( var kv in loadDict )
+			{
+				object val;
+				if( kv.Value != null )
+					val = kv.Value( kv.Key.Name, kv.Key.FieldType, my );
+				else if( !TryGetValueFromYaml( kv.Key.Name, kv.Key.FieldType, my, out val ) )
+					continue;
+
+				kv.Key.SetValue( self, val );
+			}
+		}
+
+		static bool TryGetValueFromYaml( string fieldName, Type fieldType, MiniYaml yaml, out object ret )
+		{
+			ret = null;
+			var n = yaml.Nodes.Where( x=>x.Key == fieldName ).ToList();
+			if( n.Count == 0 )
+				return false;
+			if( n.Count == 1 && n[ 0 ].Value.Nodes.Count == 0 )
+			{
+				ret = GetValue( fieldName, fieldType, n[ 0 ].Value.Value );
+				return true;
+			}
+			throw new InvalidOperationException( "TryGetValueFromYaml: unable to load field {0} (of type {1})".F( fieldName, fieldType ) );
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -147,6 +166,60 @@ namespace OpenRA.FileFormats
 			if( p == "no" ) return false;
 			if( p == "false" ) return false;
 			return InvalidValueAction(p,fieldType, field);
+		}
+
+		static Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>> typeLoadInfo = new Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>>( GetTypeLoadInfo );
+
+		static Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>> GetTypeLoadInfo( Type type )
+		{
+			var ret = new Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>();
+
+			var fieldsToLoad = new List<FieldInfo>();
+			var attr = (CustomLoadAttribute[])type.GetCustomAttributes( typeof( CustomLoadAttribute ), false );
+			if( attr.Length == 0 )
+			{
+				var defCtor = type.GetConstructor( new Type[ 0 ] );
+				if( defCtor == null || ( defCtor.GetMethodImplementationFlags() | MethodImplAttributes.Runtime ) == 0 )
+					throw new InvalidOperationException( "FieldLoader: refusing to load type {0}; has non-default ctor".F( type ) );
+				fieldsToLoad.AddRange( type.GetFields() );
+			}
+			else if( attr[ 0 ].Fields != null )
+				fieldsToLoad.AddRange( attr[ 0 ].Fields.Select( x => type.GetField( x ) ) );
+			else
+				fieldsToLoad.AddRange( type.GetFields() );
+
+			foreach( var field in fieldsToLoad )
+				ret.Add( field, null );
+
+			foreach( var field in type.GetFields() )
+			{
+				var use = (LoadUsingAttribute[])field.GetCustomAttributes( typeof( LoadUsingAttribute ), false );
+				if( use.Length != 0 )
+					ret[ field ] = ( _1, _2, yaml ) => use[ 0 ].Loader( yaml );
+				else
+				{
+					var attr2 = (FieldFromYamlKeyAttribute[])field.GetCustomAttributes( typeof( FieldFromYamlKeyAttribute ), false );
+					if( attr2.Length != 0 )
+						ret[ field ] = ( f, ft, yaml ) => GetValue( f, ft, yaml.Value );
+				}
+			}
+
+			return ret;
+		}
+
+		public class CustomLoadAttribute : Attribute
+		{
+			public string[] Fields;
+		}
+
+		public class LoadUsingAttribute : Attribute
+		{
+			public readonly Func<MiniYaml, object> Loader;
+
+			public LoadUsingAttribute( Func<MiniYaml, object> loader )
+			{
+				Loader = loader;
+			}
 		}
 	}
 
