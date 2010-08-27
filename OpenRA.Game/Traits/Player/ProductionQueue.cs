@@ -23,39 +23,79 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ProductionQueue(init.self, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
-		// TODO: sync this
-		List<ProductionItem> Producing = new List<ProductionItem>();
+		
+		// TODO: sync these
+		// A list of things we are currently building
+		List<ProductionItem> Queue = new List<ProductionItem>();
+		
+		// A list of things we could possibly build, even if our race doesn't normally get it
+		Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
 
 		public ProductionQueue( Actor self, ProductionQueueInfo info )
 		{
 			this.self = self;
 			this.Info = info;
+			
+			var ttc = self.Owner.PlayerActor.Trait<TechTreeCache>();
+			foreach (var a in Rules.TechTree.AllBuildables(Info.Type))
+			{
+				var bi = a.Traits.Get<BuildableInfo>();
+				// Can our race build this by satisfying normal prereqs?
+				var buildable = bi.Owner.Contains(self.Owner.Country.Race);
+				Produceable.Add( a, new ProductionState(){ Visible = buildable && !bi.Hidden } );
+				if (buildable)
+					ttc.Add( a.Name, a.Traits.Get<BuildableInfo>().Prerequisites.ToList(), this );
+			}
+		}
+		
+		public void OverrideProduction(ActorInfo type, bool buildable)
+		{
+			Produceable[type].Buildable = buildable;
+			Produceable[type].Sticky = true;
+		}
+				
+		public void PrerequisitesAvailable(string key)
+		{
+			var ps = Produceable[ Rules.Info[key] ];
+			if (!ps.Sticky)
+				ps.Buildable = true;
+		}
+		
+		public void PrerequisitesUnavailable(string key)
+		{
+			var ps = Produceable[ Rules.Info[key] ];
+			if (!ps.Sticky)
+				ps.Buildable = false;
 		}
 
 		public ProductionItem CurrentItem()
 		{
-			return Producing.ElementAtOrDefault(0);
+			return Queue.ElementAtOrDefault(0);
 		}
 		
 		public IEnumerable<ProductionItem> AllQueued()
 		{
-			return Producing;
+			return Queue;
 		}
 		
 		public IEnumerable<ActorInfo> AllItems()
 		{
-			return Rules.TechTree.AllBuildables(Info.Type)
-				.Where(a => a.Traits.Get<BuildableInfo>().Owner.Contains(self.Owner.Country.Race))
-				.OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+				return Produceable.Select(a => a.Key);
+			
+			return Produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
 		}
 		
 		public IEnumerable<ActorInfo> BuildableItems()
 		{
-			return Rules.TechTree.BuildableItems(self.Owner, Info.Type).Select(b => Rules.Info[b.ToLowerInvariant()]);
+			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
+				return Produceable.Select(a => a.Key);
+			
+			return Produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
 		}
 		
 		public bool CanBuild(ActorInfo actor)
@@ -66,13 +106,13 @@ namespace OpenRA.Traits
 		
 		public void Tick( Actor self )
 		{			
-			while( Producing.Count > 0 && !BuildableItems().Any(b => b.Name == Producing[ 0 ].Item) )
+			while( Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item) )
 			{
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Producing[0].TotalCost - Producing[0].RemainingCost); // refund what's been paid so far.
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
 				FinishProduction();
 			}
-			if( Producing.Count > 0 )
-				Producing[ 0 ].Tick( self.Owner );
+			if( Queue.Count > 0 )
+				Queue[ 0 ].Tick( self.Owner );
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -115,8 +155,8 @@ namespace OpenRA.Traits
 				}
 			case "PauseProduction":
 				{
-					if( Producing.Count > 0 && Producing[0].Item == order.TargetString )
-						Producing[0].Paused = ( order.TargetLocation.X != 0 );
+					if( Queue.Count > 0 && Queue[0].Item == order.TargetString )
+						Queue[0].Paused = ( order.TargetLocation.X != 0 );
 					break;
 				}
 			case "CancelProduction":
@@ -144,17 +184,15 @@ namespace OpenRA.Traits
 
 		void CancelProduction( string itemName )
 		{			
-			if (Producing.Count == 0)
+			if (Queue.Count == 0)
 				return; // Nothing to do here
 			
-			var lastIndex = Producing.FindLastIndex( a => a.Item == itemName );
+			var lastIndex = Queue.FindLastIndex( a => a.Item == itemName );
 			if (lastIndex > 0)
-			{
-				Producing.RemoveAt(lastIndex);
-			}
+				Queue.RemoveAt(lastIndex);
 			else if( lastIndex == 0 )
 			{
-				var item = Producing[0];
+				var item = Queue[0];
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.
 				FinishProduction();
 			}
@@ -162,13 +200,13 @@ namespace OpenRA.Traits
 
 		public void FinishProduction()
 		{
-			if (Producing.Count == 0) return;
-			Producing.RemoveAt(0);
+			if (Queue.Count == 0) return;
+			Queue.RemoveAt(0);
 		}
 
 		void BeginProduction( ProductionItem item )
 		{
-			Producing.Add(item);
+			Queue.Add(item);
 		}
 
 		static bool IsDisabledBuilding(Actor a)
@@ -213,6 +251,13 @@ namespace OpenRA.Traits
 		}
 	}
 
+	public class ProductionState
+	{
+		public bool Visible = false;
+		public bool Buildable = false;
+		public bool Sticky = false;
+	}
+	
 	public class ProductionItem
 	{
 		public readonly string Item;

@@ -1,5 +1,6 @@
 FACT:
 	Inherits: ^Building
+	-Buildable:
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -83,6 +84,7 @@ PROC.proxy:
 
 PROC:
 	Inherits: ^Building
+	-Buildable:
 	Valued:
 		Cost: 1700
 	Tooltip:

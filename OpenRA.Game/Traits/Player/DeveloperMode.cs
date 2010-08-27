@@ -25,11 +25,11 @@ namespace OpenRA.Traits
 	public class DeveloperMode : IResolveOrder
 	{
 		DeveloperModeInfo Info;
-		[Sync]
-		public bool FastCharge;
-		public bool FastBuild;
-		public bool DisableShroud;
-		public bool PathDebug;
+		[Sync] public bool FastCharge;
+		[Sync] public bool AllTech;
+		[Sync] public bool FastBuild;
+		[Sync] public bool DisableShroud;
+		[Sync] public bool PathDebug;
 		
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -46,6 +46,11 @@ namespace OpenRA.Traits
 			
 			switch(order.OrderString)
 			{
+				case "DevEnableTech":
+					{
+						AllTech ^= true;
+						break;
+					}
 				case "DevFastCharge":
 					{
 						FastCharge ^= true;

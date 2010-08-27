@@ -21,12 +21,15 @@ namespace OpenRA.Traits
 	{
 		class Watcher
 		{
-			public readonly List<ActorInfo> prerequisites;
+			public readonly string key;
+			// strings may be either actor type, or "alternate name" key
+			public readonly List<string> prerequisites;
 			public readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
 
-			public Watcher(List<ActorInfo> prerequisites, ITechTreeElement watcher)
+			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
 			{
+				this.key = key;
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				this.hasPrerequisites = false;
@@ -34,18 +37,13 @@ namespace OpenRA.Traits
 
 			public void Tick( Player owner, Cache<string, List<Actor>> buildings )
 			{
-				if (owner.Country == null)
-					return;
-
-				var effectivePrereq = prerequisites.Where( a => a.Traits.Contains<BuildableInfo>() && a.Traits.Get<BuildableInfo>().Owner.Contains( owner.Country.Race ) );
-				var nowHasPrerequisites = effectivePrereq.Any() &&
-					effectivePrereq.All( a => buildings[ a.Name ].Any( b => !b.Trait<Building>().Disabled ) );
+				var nowHasPrerequisites = prerequisites.All( a => buildings[ a ].Any( b => !b.Trait<Building>().Disabled ) );
 
 				if( nowHasPrerequisites && !hasPrerequisites )
-					watcher.Available();
+					watcher.PrerequisitesAvailable(key);
 
 				if( !nowHasPrerequisites && hasPrerequisites )
-					watcher.Unavailable();
+					watcher.PrerequisitesUnavailable(key);
 
 				hasPrerequisites = nowHasPrerequisites;
 			}
@@ -61,20 +59,20 @@ namespace OpenRA.Traits
 				w.Tick( self.Owner, buildings );
 		}
 
-		public void Add( List<ActorInfo> prerequisites, ITechTreeElement tte )
+		public void Add( string key, List<string> prerequisites, ITechTreeElement tte )
 		{
-			watchers.Add( new Watcher( prerequisites, tte ) );
+			watchers.Add( new Watcher( key, prerequisites, tte ) );
 		}
 
-		public void Remove( ITechTreeElement tte )
+		public void Remove( string key )
 		{
-			watchers.RemoveAll( x => x.watcher == tte );
+			watchers.RemoveAll( x => x.key == key );
 		}
 	}
 
 	interface ITechTreeElement
 	{
-		void Available();
-		void Unavailable();
+		void PrerequisitesAvailable(string key);
+		void PrerequisitesUnavailable(string key);
 	}
 }

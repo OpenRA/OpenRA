@@ -59,7 +59,7 @@ namespace OpenRA.Traits
 			Self = self;
 			Owner = self.Owner;
 
-			self.Trait<TechTreeCache>().Add( Info.Prerequisites.Select( a => Rules.Info[ a.ToLowerInvariant() ] ).ToList(), this );
+			self.Trait<TechTreeCache>().Add( Info.OrderName, Info.Prerequisites.Select( a => a.ToLowerInvariant() ).ToList(), this );
 		}
 
 		public void Tick(Actor self)
@@ -95,8 +95,7 @@ namespace OpenRA.Traits
 		{
 			var buildings = Rules.TechTree.GatherBuildings(Owner);
 			var effectivePrereq = Info.Prerequisites
-				.Select(a => a.ToLowerInvariant())
-				.Where(a => Rules.Info[a].Traits.Get<BuildableInfo>().Owner.Contains(Owner.Country.Race));
+				.Select(a => a.ToLowerInvariant());
 
 			if (Info.Prerequisites.Count() == 0) 
 				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
@@ -146,12 +145,12 @@ namespace OpenRA.Traits
 
 		bool hasPrerequisites;
 
-		public void Available()
+		public void PrerequisitesAvailable(string key)
 		{
 			hasPrerequisites = true;
 		}
 
-		public void Unavailable()
+		public void PrerequisitesUnavailable(string key)
 		{
 			hasPrerequisites = false;
 		}
