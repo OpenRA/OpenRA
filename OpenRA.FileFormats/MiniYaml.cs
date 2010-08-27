@@ -19,6 +19,12 @@ namespace OpenRA.FileFormats
 
 	public class MiniYamlNode
 	{
+		public struct SourceLocation
+		{
+			public string Filename; public int Line;
+		}
+
+		public SourceLocation Location;
 		public string Key;
 		public MiniYaml Value;
 
@@ -28,12 +34,23 @@ namespace OpenRA.FileFormats
 			Value = v;
 		}
 
+		public MiniYamlNode( string k, MiniYaml v, SourceLocation loc )
+			: this( k, v )
+		{
+			Location = loc;
+		}
+
 		public MiniYamlNode( string k, string v )
-			: this( k, new MiniYaml( v, null ) )
+			: this( k, v, null )
 		{
 		}
 		public MiniYamlNode( string k, string v, List<MiniYamlNode> n )
 			: this( k, new MiniYaml( v, n ) )
+		{
+		}
+
+		public MiniYamlNode( string k, string v, List<MiniYamlNode> n, SourceLocation loc )
+			: this( k, new MiniYaml( v, n ), loc )
 		{
 		}
 	}
@@ -63,13 +80,15 @@ namespace OpenRA.FileFormats
 			return new MiniYaml( null, list.Select( x => new MiniYamlNode( x.ToString(), new MiniYaml( null ) ) ).ToList() );
 		}
 		
-		static List<MiniYamlNode> FromLines(string[] lines)
+		static List<MiniYamlNode> FromLines(string[] lines, string filename)
 		{
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
 
+			var lineNo = 0;
 			foreach (var line in lines)
 			{
+				++lineNo;
 				var t = line.TrimStart(' ', '\t');
 				if (t.Length == 0 || t[0] == '#')
 					continue;
@@ -80,25 +99,25 @@ namespace OpenRA.FileFormats
 				while (levels.Count > level + 1)
 					levels.RemoveAt(levels.Count - 1);
 
-				var colon = t.IndexOf(':');
 				var d = new List<MiniYamlNode>();
-				try
-				{
-					if( colon == -1 )
-						levels[ level ].Add( new MiniYamlNode( t.Trim(), new MiniYaml( null, d ) ) );
-					else
-					{
-						var value = t.Substring( colon + 1 ).Trim();
-						if( value.Length == 0 )
-							value = null;
-						levels[ level ].Add( new MiniYamlNode( t.Substring( 0, colon ).Trim(), new MiniYaml( value, d ) ) );
-					}
-				}
-				catch (ArgumentException) { throw new InvalidDataException("Duplicate Identifier:`{0}`".F(t)); }
+				var rhs = SplitAtColon( ref t );
+				levels[ level ].Add( new MiniYamlNode( t, rhs, d, new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo } ) );
 				
 				levels.Add(d);
 			}
 			return levels[ 0 ];
+		}
+
+		static string SplitAtColon( ref string t )
+		{
+			var colon = t.IndexOf(':');
+			if( colon == -1 )
+				return null;
+			var ret = t.Substring( colon + 1 ).Trim();
+			if( ret.Length == 0 )
+				ret = null;
+			t = t.Substring( 0, colon ).Trim();
+			return ret;
 		}
 
 		public static List<MiniYamlNode> FromFileInPackage( string path )
@@ -110,7 +129,7 @@ namespace OpenRA.FileFormats
 				lines.Add(reader.ReadLine());
 			reader.Close();
 			
-			return FromLines(lines.ToArray());
+			return FromLines(lines.ToArray(), path);
 		}
 
 		public static Dictionary<string, MiniYaml> DictFromFile( string path )
@@ -125,7 +144,7 @@ namespace OpenRA.FileFormats
 
 		public static List<MiniYamlNode> FromFile( string path )
 		{			
-			return FromLines(File.ReadAllLines( path ));
+			return FromLines(File.ReadAllLines( path ), path);
 		}
 
 		public static List<MiniYamlNode> FromStream(Stream s)
@@ -136,7 +155,7 @@ namespace OpenRA.FileFormats
 
 		public static List<MiniYamlNode> FromString(string text)
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries));
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), "<no filename available>");
 		}
 
 		public static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b )
