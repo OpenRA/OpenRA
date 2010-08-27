@@ -564,6 +564,7 @@ PT:
 MIG:
 	Inherits: ^Plane
 	Buildable:
+		Queue: Plane
 		BuildPaletteOrder: 100
 		Prerequisites: afld
 		BuiltAt: afld
@@ -596,6 +597,7 @@ MIG:
 YAK:
 	Inherits: ^Plane
 	Buildable:
+		Queue: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: afld
 		BuiltAt: afld
@@ -627,6 +629,7 @@ YAK:
 TRAN:
 	Inherits: ^Plane
 	Buildable:
+		Queue: Plane
 		BuildPaletteOrder: 110
 		Prerequisites: hpad
 		BuiltAt: hpad
@@ -656,6 +659,7 @@ TRAN:
 HELI:
 	Inherits: ^Plane
 	Buildable:
+		Queue: Plane
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		BuiltAt: hpad
@@ -689,6 +693,7 @@ HELI:
 HIND:
 	Inherits: ^Plane
 	Buildable:
+		Queue: Plane
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		BuiltAt: hpad

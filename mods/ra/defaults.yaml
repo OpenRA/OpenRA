@@ -1,5 +1,4 @@
 ^Vehicle:
-	Category: Vehicle
 	AppearsOnRadar:
 	Mobile:
 		Crushes: atmine, crate
@@ -10,6 +9,8 @@
 		Voice: VehicleVoice
 	Targetable:
 		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -23,7 +24,6 @@
 		Notification: unitlst1.aud
 
 ^Tank:
-	Category: Vehicle
 	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, atmine, crate
@@ -34,6 +34,8 @@
 		Voice: VehicleVoice
 	Targetable:
 		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -47,7 +49,6 @@
 		Notification: unitlst1.aud
 
 ^Infantry:
-	Category: Infantry
 	AppearsOnRadar:
 	Health:
 		Armor: none
@@ -61,6 +62,8 @@
 		Voice: GenericVoice
 	Targetable:
 		TargetTypes: Ground
+	Buildable:
+		Queue: Infantry
 	RenderInfantry:
 	AutoTarget:
 	Passenger:
@@ -74,7 +77,6 @@
 		Notification: unitlst1.aud
 
 ^Ship:
-	Category: Ship
 	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
@@ -84,6 +86,8 @@
 		Voice: ShipVoice
 	Targetable:
 		TargetTypes: Ground, Water
+	Buildable:
+		Queue: Ship
 	DetectCloaked:
 		Range: 3
 	HiddenUnderFog:
@@ -94,7 +98,6 @@
 		Notification: navylst1.aud
 
 ^Plane:
-	Category: Plane
 	AppearsOnRadar:
 	Selectable:
 		Voice: GenericVoice
@@ -108,7 +111,6 @@
 		Notification: aunitl1.aud
 
 ^Building:
-	Category: Building
 	AppearsOnRadar:
 	Selectable:
 		Priority: 3
@@ -121,6 +123,8 @@
 	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6
+	Buildable:
+		Queue: Building
 	MustBeDestroyed:
 	GivesExperience:
 	FrozenUnderFog:
@@ -128,7 +132,6 @@
 		Notification: strucap1.aud
 
 ^Wall:
-	Category: Building
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -154,6 +157,7 @@
 
 ^CivBuilding:
 	Inherits: ^Building
+	-Buildable:
 	-RepairableBuilding:
 	Health:
 		HP: 400
@@ -168,7 +172,6 @@
 		Description: Field
 
 ^Tree:
-	Category: Building
 	Valued:
 		Description: Tree
 	RenderBuilding:
@@ -181,7 +184,6 @@
 		Terrain: Tree
 
 ^Husk:
-	Category: Vehicle
 	Health:
 		HP: 140
 		Armor: Heavy
@@ -193,7 +195,6 @@
 	Burns:
 
 ^Bridge:
-	Category: Building
 	Valued:
 		Description: Bridge
 	BelowUnits:

@@ -191,7 +191,6 @@ MINP:
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
-	Category: Building
 
 MINV:
 	Mine:
@@ -203,7 +202,6 @@ MINV:
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
-	Category: Building
 
 CRATE:
 	Valued:
