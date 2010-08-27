@@ -222,45 +222,52 @@ Container@INGAME_ROOT:
 					Height:25
 					Text:Developer Mode
 					Align:Center
-				Checkbox@SETTINGS_CHECKBOX_SHROUD
-					Id:SETTINGS_CHECKBOX_SHROUD
+				Checkbox@CHECKBOX_SHROUD
+					Id:CHECKBOX_SHROUD
 					X:30
 					Y:50
 					Height:20
 					Width:PARENT_RIGHT - 30
 					Text:Disable Shroud
-				Checkbox@SETTINGS_CHECKBOX_UNITDEBUG:
-					Id:SETTINGS_CHECKBOX_UNITDEBUG
+				Checkbox@CHECKBOX_UNITDEBUG:
+					Id:CHECKBOX_UNITDEBUG
 					X:30
 					Y:80
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Show Occupied Cells
-				Checkbox@SETTINGS_CHECKBOX_PATHDEBUG:
-					Id:SETTINGS_CHECKBOX_PATHDEBUG
+				Checkbox@CHECKBOX_PATHDEBUG:
+					Id:CHECKBOX_PATHDEBUG
 					X:30
 					Y:110
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Show Unit Paths
-				Button@SETTINGS_GIVE_CASH
-					Id:SETTINGS_GIVE_CASH
+				Button@GIVE_CASH
+					Id:GIVE_CASH
 					X:30
 					Y:140
 					Width:200
 					Height:20
 					Text: Give Cash
-				Checkbox@SETTINGS_BUILD_SPEED
-					Id:SETTINGS_BUILD_SPEED
+				Checkbox@INSTANT_BUILD
+					Id:INSTANT_BUILD
 					X:30
 					Y:170
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Instant Build Speed
-				Checkbox@SETTINGS_CHARGE_TIME
-					Id:SETTINGS_CHARGE_TIME
+				Checkbox@INSTANT_CHARGE
+					Id:INSTANT_CHARGE
 					X:30
 					Y:200
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Instant Charge Time (Special Powers)
+				Checkbox@ENABLE_TECH
+					Id:ENABLE_TECH
+					X:30
+					Y:230
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Build Everything
