@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public int Rows = 5;
 		
 		ProductionQueue CurrentQueue = null;
-		List<ProductionQueue> visibleTabs = new List<ProductionQueue>();
+		List<ProductionQueue> VisibleQueues = new List<ProductionQueue>();
 
 		bool paletteOpen = false;
 		Dictionary<string, Sprite> iconSprites;
@@ -75,20 +75,21 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		public override void Tick(World world)
 		{
-			visibleTabs.Clear();
+			VisibleQueues.Clear();
 			
 			var queues = world.Queries.WithTraitMultiple<ProductionQueue>()
 				.Where(p => p.Actor.Owner == world.LocalPlayer)
 				.Select(p => p.Trait);
 			
 			foreach (var queue in queues)
-				if (queue.BuildableItems().Count() > 0)
-					visibleTabs.Add(queue);
+			{
+				if (queue.AllItems().Count() > 0)
+					VisibleQueues.Add(queue);
 				else if (CurrentQueue == queue)
 					CurrentQueue = null;
-
+			}
 			if (CurrentQueue == null)
-				CurrentQueue = queues.FirstOrDefault();
+				CurrentQueue = VisibleQueues.FirstOrDefault();
 			
 			TickPaletteAnimation(world);
 			
@@ -385,12 +386,8 @@ namespace OpenRA.Mods.RA.Widgets
 			var y = paletteOrigin.Y + 9;
 			
 			tabs.Clear();
-			 
-			var queues = world.Queries.WithTraitMultiple<ProductionQueue>()
-						.Where(p => p.Actor.Owner == world.LocalPlayer)
-						.Select(p => p.Trait);
-			
-			foreach (var queue in queues)
+
+			foreach (var queue in VisibleQueues)
 			{											
 				string[] tabKeys = { "normal", "ready", "selected" };
 				var producing = queue.CurrentItem();
@@ -500,23 +497,23 @@ namespace OpenRA.Mods.RA.Widgets
          
 		void TabChange(bool shift)
         {
-            int size = visibleTabs.Count();
+            int size = VisibleQueues.Count();
             if (size > 0)
             {
-                int current = visibleTabs.IndexOf(CurrentQueue);
+                int current = VisibleQueues.IndexOf(CurrentQueue);
                 if (!shift)
                 {
                     if (current + 1 >= size)
-                        SetCurrentTab(visibleTabs.FirstOrDefault());
+                        SetCurrentTab(VisibleQueues.FirstOrDefault());
                     else
-                        SetCurrentTab(visibleTabs[current + 1]);
+                        SetCurrentTab(VisibleQueues[current + 1]);
                 }
                 else
                 {
                     if (current - 1 < 0)
-                        SetCurrentTab(visibleTabs.LastOrDefault());
+                        SetCurrentTab(VisibleQueues.LastOrDefault());
                     else
-                        SetCurrentTab(visibleTabs[current - 1]);
+                        SetCurrentTab(VisibleQueues[current - 1]);
                 }
             }
         }
