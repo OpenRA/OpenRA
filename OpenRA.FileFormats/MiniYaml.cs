@@ -167,25 +167,29 @@ namespace OpenRA.FileFormats
 
 			var ret = new List<MiniYamlNode>();
 
-			var aDict = a.ToDictionary( x => x.Key, x => x.Value );
-			var bDict = b.ToDictionary( x => x.Key, x => x.Value );
+			var aDict = a.ToDictionary( x => x.Key );
+			var bDict = b.ToDictionary( x => x.Key );
 			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
 
 			var noInherit = keys.Where( x => x.Length > 0 && x[ 0 ] == '-' ).Select( x => x.Substring( 1 ) ).ToList();
 
 			foreach( var key in keys )
 			{
-				MiniYaml aa, bb;
+				MiniYamlNode aa, bb;
 				aDict.TryGetValue( key, out aa );
 				bDict.TryGetValue( key, out bb );
 
 				if( noInherit.Contains( key ) )
 				{
 					if( aa != null )
-						ret.Add( new MiniYamlNode( key, aa ) );
+						ret.Add( aa );
 				}
 				else
-					ret.Add( new MiniYamlNode( key, Merge( aa, bb ) ) );
+				{
+					var loc = aa == null ? default( MiniYamlNode.SourceLocation ) : aa.Location;
+					var merged = ( aa == null || bb == null ) ? aa ?? bb : new MiniYamlNode( key, Merge( aa.Value, bb.Value ), loc );
+					ret.Add( merged );
+				}
 			}
 
 			return ret;
