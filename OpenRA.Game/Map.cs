@@ -40,11 +40,7 @@ namespace OpenRA
 
 		// Rules overrides
 		public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
-		public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
-		public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
-		public List<MiniYamlNode> Music = new List<MiniYamlNode>();
-		public List<MiniYamlNode> Terrain = new List<MiniYamlNode>();
-		
+
 		// Binary map data
 		public byte TileFormat = 1;
 		public int2 MapSize;
