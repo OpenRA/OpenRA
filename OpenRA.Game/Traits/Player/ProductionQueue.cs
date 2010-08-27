@@ -39,11 +39,18 @@ namespace OpenRA.Traits
 		{
 			this.self = self;
 			this.Info = info;
-			
+		}
+		
+		// Trait initialization bites us when queue lives on PlayerActor; delay init until first tick
+		bool initialized = false;
+		void Initialize()
+		{
+			initialized = true;
 			var ttc = self.Owner.PlayerActor.Trait<TechTreeCache>();
 			foreach (var a in Rules.TechTree.AllBuildables(Info.Type))
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
+				Console.WriteLine(a.Name);
 				// Can our race build this by satisfying normal prereqs?
 				var buildable = bi.Owner.Contains(self.Owner.Country.Race);
 				Produceable.Add( a, new ProductionState(){ Visible = buildable && !bi.Hidden } );
@@ -106,6 +113,9 @@ namespace OpenRA.Traits
 		
 		public void Tick( Actor self )
 		{			
+			if (!initialized)
+				Initialize();
+			
 			while( Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item) )
 			{
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
