@@ -165,49 +165,30 @@ namespace OpenRA.FileFormats
 		{
 			var ret = new Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>();
 
-			var fieldsToLoad = new List<FieldInfo>();
-			var attr = (FooAttribute[])type.GetCustomAttributes( typeof( FooAttribute ), false );
-			if( attr.Length == 0 )
-			{
-				var defCtor = type.GetConstructor( new Type[ 0 ] );
-				if( defCtor == null || ( defCtor.GetMethodImplementationFlags() | MethodImplAttributes.Runtime ) == 0 )
-					throw new InvalidOperationException( "FieldLoader: refusing to load type {0}; has non-default ctor".F( type ) );
-				fieldsToLoad.AddRange( type.GetFields() );
-			}
-			else if( attr[ 0 ].Fields != null )
-				fieldsToLoad.AddRange( attr[ 0 ].Fields.Select( x => type.GetField( x ) ) );
-			else
-				fieldsToLoad.AddRange( type.GetFields() );
-
-			foreach( var field in fieldsToLoad )
-				ret.Add( field, null );
-
 			foreach( var field in type.GetFields() )
 			{
-				var use = (LoadUsingAttribute[])field.GetCustomAttributes( typeof( LoadUsingAttribute ), false );
-				if( use.Length != 0 )
-					ret[ field ] = ( _1, fieldType, yaml ) => use[ 0 ].LoaderFunc( field )( yaml );
-				else
-				{
-					var attr2 = (FieldFromYamlKeyAttribute[])field.GetCustomAttributes( typeof( FieldFromYamlKeyAttribute ), false );
-					if( attr2.Length != 0 )
-						ret[ field ] = ( f, ft, yaml ) => GetValue( f, ft, yaml.Value );
-				}
+				var load = (LoadAttribute[])field.GetCustomAttributes( typeof( LoadAttribute ), false );
+				var loadUsing = (LoadUsingAttribute[])field.GetCustomAttributes( typeof( LoadUsingAttribute ), false );
+				var fromYamlKey = (FieldFromYamlKeyAttribute[])field.GetCustomAttributes( typeof( FieldFromYamlKeyAttribute ), false );
+				if( loadUsing.Length != 0 )
+					ret[ field ] = ( _1, fieldType, yaml ) => loadUsing[ 0 ].LoaderFunc( field )( yaml );
+				else if( fromYamlKey.Length != 0 )
+					ret[ field ] = ( f, ft, yaml ) => GetValue( f, ft, yaml.Value );
+				else if( load.Length != 0 )
+					ret[ field ] = null;
 			}
+
+			if( ret.Count == 0 )
+				foreach( var f in type.GetFields() )
+					ret.Add( f, null );
 
 			return ret;
 		}
 
-		public class FooAttribute : Attribute
-		{
-			public string[] Fields;
+		[AttributeUsage( AttributeTargets.Field )]
+		public class LoadAttribute : Attribute { }
 
-			public FooAttribute( params string[] fields )
-			{
-				Fields = fields;
-			}
-		}
-
+		[AttributeUsage( AttributeTargets.Field )]
 		public class LoadUsingAttribute : Attribute
 		{
 			Func<MiniYaml, object> loaderFuncCache;

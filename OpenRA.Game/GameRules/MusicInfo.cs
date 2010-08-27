@@ -12,12 +12,11 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.GameRules
 {
-	[FieldLoader.Foo()]
 	public class MusicInfo
 	{
-		public readonly string Filename = null;
-		public readonly string Title = null;
-		public readonly int Length = 0; // seconds
+		[FieldLoader.Load] public readonly string Filename = null;
+		[FieldLoader.Load] public readonly string Title = null;
+		[FieldLoader.Load] public readonly int Length = 0; // seconds
 
 		public MusicInfo( string key, MiniYaml value )
 		{

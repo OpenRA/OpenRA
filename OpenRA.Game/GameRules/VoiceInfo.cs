@@ -15,17 +15,21 @@ using System;
 
 namespace OpenRA.GameRules
 {
-	[FieldLoader.Foo( "DisableVariants" )]
 	public class VoiceInfo
 	{
 		public readonly Dictionary<string,string[]> Variants;
 		public readonly Dictionary<string,string[]> Voices;
 		public readonly string DefaultVariant = ".aud" ;
-		public readonly string[] DisableVariants = { };
-		
-		Func<MiniYaml, string, Dictionary<string, string[]>> Load = (y,name) => (y.NodesDict.ContainsKey(name))? y.NodesDict[name].NodesDict.ToDictionary(a => a.Key, 
-			                           a => (string[])FieldLoader.GetValue( "(value)", typeof(string[]), a.Value.Value ))
-						: new Dictionary<string, string[]>(); 
+		[FieldLoader.Load] public readonly string[] DisableVariants = { };
+
+		static Dictionary<string, string[]> Load( MiniYaml y, string name )
+		{
+			return y.NodesDict.ContainsKey( name )
+				? y.NodesDict[ name ].NodesDict.ToDictionary(
+					a => a.Key,
+					a => (string[])FieldLoader.GetValue( "(value)", typeof( string[] ), a.Value.Value ) )
+				: new Dictionary<string, string[]>();
+		}
 
 		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
 

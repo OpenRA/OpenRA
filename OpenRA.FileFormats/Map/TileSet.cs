@@ -29,13 +29,12 @@ namespace OpenRA.FileFormats
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
 	
-	[FieldLoader.Foo("Id", "Image", "Size", "PickAny")]
 	public class TileTemplate
 	{
-		public ushort Id;
-		public string Image;
-		public int2 Size;
-		public bool PickAny;
+		[FieldLoader.Load] public ushort Id;
+		[FieldLoader.Load] public string Image;
+		[FieldLoader.Load] public int2 Size;
+		[FieldLoader.Load] public bool PickAny;
 
 		[FieldLoader.LoadUsing( "LoadTiles" )]
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
@@ -84,7 +83,7 @@ namespace OpenRA.FileFormats
 		public TileSet() {}
 		public TileSet( string filepath )
 		{
-			var yaml = MiniYaml.FromFile(filepath).ToDictionary( x => x.Key, x => x.Value );
+			var yaml = MiniYaml.DictFromFile( filepath );
 			
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

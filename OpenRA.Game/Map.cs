@@ -19,20 +19,19 @@ using OpenRA.FileFormats;
 
 namespace OpenRA
 {
-	[FieldLoader.Foo( "Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight" )]
 	public class Map
 	{
 		public IFolder Package;
 		public string Uid;
 
 		// Yaml map data
-		public bool Selectable = true;
-		public int MapFormat;
-		public string Title;
-		public string Description;
-		public string Author;
-		public int PlayerCount;
-		public string Tileset;
+		[FieldLoader.Load] public bool Selectable = true;
+		[FieldLoader.Load] public int MapFormat;
+		[FieldLoader.Load] public string Title;
+		[FieldLoader.Load] public string Description;
+		[FieldLoader.Load] public string Author;
+		[FieldLoader.Load] public int PlayerCount;
+		[FieldLoader.Load] public string Tileset;
 
 		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
@@ -44,10 +43,10 @@ namespace OpenRA
 
 		// Binary map data
 		public byte TileFormat = 1;
-		public int2 MapSize;
+		[FieldLoader.Load] public int2 MapSize;
 
-		public int2 TopLeft;
-		public int2 BottomRight;
+		[FieldLoader.Load] public int2 TopLeft;
+		[FieldLoader.Load] public int2 BottomRight;
 
 		public TileReference<ushort, byte>[,] MapTiles;
 		public TileReference<byte, byte>[,] MapResources;
