@@ -17,8 +17,8 @@ V01:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Valued:
-		Description: Church
+	Tooltip:
+		Name: Church
 V02:
 	Inherits: ^CivBuilding
 	Building:
@@ -99,8 +99,8 @@ BARL:
 	Health:
 		HP: 10
 	Explodes:
-	Valued:
-		Description: Explosive Barrel
+	Tooltip:
+		Name: Explosive Barrel
 
 BRL3:
 	Inherits: ^Building
@@ -113,8 +113,8 @@ BRL3:
 	Health:
 		HP: 10
 	Explodes:
-	Valued:
-		Description: Explosive Barrel
+	Tooltip:
+		Name: Explosive Barrel
 
 MISS:
 	Inherits: ^CivBuilding

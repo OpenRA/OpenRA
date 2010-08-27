@@ -3,15 +3,16 @@ MSLO:
 		MissileWeapon: atomic
 		SpawnOffset: 10,0
 	Inherits: ^Building
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Missile Silo
+		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
 		Prerequisites: @Tech Center
 		Owner: soviet,allies
-		Cost: 2500
-		Description: Missile Silo
-		LongDesc: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
-		Hotkey: m
 	Building:
 		Power: -100
 		Footprint: xx
@@ -29,14 +30,14 @@ GAP:
 	Inherits: ^Building
 	Valued:
 		Cost: 500
-		Description: Gap Generator
+	Tooltip:
+		Name: Gap Generator
+		Description: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
 #	Buildable:
 #		BuildPaletteOrder: 100
 #		Prerequisites: atek
 #		Owner: allies
 #		Cost: 500
-#		Description: Gap Generator
-#		LongDesc: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
 #		Hotkey: g
 	Building:
 		Power: -60
@@ -54,13 +55,16 @@ SPEN:
 	InfiltrateForSupportPower:
 		Power: SonarPulsePower
 	Inherits: ^Building
+	Valued:
+		Cost: 650
+	Tooltip:
+		Name: Sub Pen
+		Description: Produces and repairs submarines and \ntransports
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Cost: 650
-		Description: Sub Pen
-		LongDesc: Produces and repairs submarines and \ntransports
 		Hotkey: s
 	Targetable:
 		TargetTypes: Ground, Water
@@ -92,13 +96,16 @@ SYRD:
 		Power: SonarPulsePower
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: @Power Plant
 		Owner: allies
-		Cost: 650
-		Description: Shipyard
-		LongDesc: Produces and repairs ships
 		Hotkey: s
+	Valued:
+		Cost: 650
+	Tooltip:
+		Name: Shipyard
+		Description: Produces and repairs ships
 	Targetable:
 		TargetTypes: Ground, Water
 	Building:
@@ -133,10 +140,12 @@ IRON:
 		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
-		Cost: 1500
-		Description: Iron Curtain
-		LongDesc: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
 		Hotkey: c
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Iron Curtain
+		Description: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -160,10 +169,12 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
-		Cost: 1500
-		Description: Chronosphere
-		LongDesc: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
 		Hotkey: o
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Chronosphere
+		Description: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -189,10 +200,12 @@ TSLA:
 		BuildPaletteOrder: 70
 		Prerequisites: weap
 		Owner: soviet
-		Cost: 1500
-		Description: Tesla Coil
-		LongDesc: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 		Hotkey: t
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Tesla Coil
+		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -220,10 +233,12 @@ AGUN:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: allies
-		Cost: 600
-		Description: AA Gun
-		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 		Hotkey: a
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: AA Gun
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -50
 		Footprint: _ x
@@ -250,13 +265,16 @@ DOME:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: allies,soviet
-		Cost: 1000
-		Description: Radar Dome
-		LongDesc: Provides an overview of the battlefield.\n  Requires power to operate.
 		Hotkey: r
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Radar Dome
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -278,10 +296,12 @@ PBOX:
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Cost: 400
-		Description: Pillbox
-		LongDesc: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 		Hotkey: x
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Pillbox
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
 	Health:
@@ -302,10 +322,12 @@ HBOX:
 		BuildPaletteOrder: 30
 		Prerequisites: tent
 		Owner: allies
-		Cost: 600
-		Description: Camo Pillbox
-		LongDesc: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 		Hotkey: c
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Camo Pillbox
+		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
 	Health:
@@ -326,10 +348,12 @@ GUN:
 		BuildPaletteOrder: 40
 		Prerequisites: tent
 		Owner: allies
-		Cost: 600
-		Description: Turret
-		LongDesc: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 		Hotkey: t
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Turret
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -40
 	Health:
@@ -355,10 +379,12 @@ FTUR:
 		BuildPaletteOrder: 20
 		Prerequisites: barr
 		Owner: soviet
-		Cost: 600
-		Description: Flame Turret
-		LongDesc: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 		Hotkey: f
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Flame Turret
+		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -20
 	Health:
@@ -380,10 +406,12 @@ SAM:
 		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: soviet
-		Cost: 750
-		Description: SAM Site
-		LongDesc: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 		Hotkey: s
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SAM Site
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -20
 		Footprint: xx
@@ -407,14 +435,17 @@ SAM:
 ATEK:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: weap,dome
 		Owner: allies
-		Cost: 1500
-		Description: Allied Tech Center
-		LongDesc: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
-		AlternateName: @Tech Center
 		Hotkey: t
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Allied Tech Center
+		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
+		AlternateName: @Tech Center
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -432,13 +463,16 @@ ATEK:
 WEAP:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: soviet,allies
-		Cost: 2000
-		Description: War Factory
-		LongDesc: Produces tanks & light vehicles.
 		Hotkey: w
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: War Factory
+		Description: Produces tanks & light vehicles.
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -461,7 +495,6 @@ WEAP:
 
 FACT:
 	Inherits: ^Building
-	-Buildable:
 	Building:
 		Power: 0
 		Footprint: xxx xxx xxx
@@ -478,7 +511,8 @@ FACT:
 	IronCurtainable: 
 	Valued:
 		Cost: 2500
-		Description: Construction Yard
+	Tooltip:
+		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -490,13 +524,16 @@ FACT:
 PROC:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: @Power Plant
 		Owner: allies,soviet
-		Cost: 1400
-		Description: Ore Refinery
-		LongDesc: Converts Ore and Gems into money
 		Hotkey: e
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Ore Refinery
+		Description: Converts Ore and Gems into money
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -525,13 +562,16 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Owner: allies,soviet
-		Cost: 150
-		Description: Silo
-		LongDesc: Stores excess harvested Ore
 		Hotkey: o
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+		Description: Stores excess harvested Ore
 	Building:
 		Power: -10
 		Capturable: true
@@ -551,13 +591,16 @@ SILO:
 HPAD:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: allies
-		Cost: 1500
-		Description: Helipad
-		LongDesc: Produces and reloads helicopters
 		Hotkey: i
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Helipad
+		Description: Produces and reloads helicopters
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -581,13 +624,16 @@ HPAD:
 AFLD:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: soviet
-		Cost: 1100
-		Description: Airstrip
-		LongDesc: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 		Hotkey: a
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Airstrip
+		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -50
 		Footprint: xxx xxx
@@ -610,13 +656,16 @@ AFLD:
 POWR:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 0
 		Owner: allies,soviet
-		Cost: 300
-		Description: Power Plant
-		LongDesc: Provides power for other structures
-		AlternateName: @Power Plant
 		Hotkey: p
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Power Plant
+		Description: Provides power for other structures
+		AlternateName: @Power Plant
 	Building:
 		Power: 100
 		Footprint: xx xx
@@ -633,13 +682,16 @@ POWR:
 APWR:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: dome
 		Owner: allies,soviet
-		Cost: 500
-		Description: Advanced Power Plant
-		LongDesc: Provides more power, cheaper than the \nstandard Power Plant
 		Hotkey: l
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Advanced Power Plant
+		Description: Provides more power, cheaper than the \nstandard Power Plant
 		AlternateName: @Power Plant
 	Building:
 		Power: 200
@@ -657,14 +709,17 @@ APWR:
 STEK:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: weap,dome
 		Owner: soviet
-		Cost: 1500
-		Description: Soviet Tech Center
-		LongDesc: Provides Soviet advanced technologies
-		AlternateName: @Tech Center
 		Hotkey: t
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Soviet Tech Center
+		Description: Provides Soviet advanced technologies
+		AlternateName: @Tech Center
 	Building:
 		Power: -100
 		Footprint: xxx xxx
@@ -681,13 +736,16 @@ STEK:
 BARR:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Cost: 400
-		Description: Soviet Barracks
-		LongDesc: Produces infantry
 		Hotkey: b
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Soviet Barracks
+		Description: Produces infantry
 		AlternateName: @Barracks
 	Building:
 		Power: -20
@@ -711,13 +769,16 @@ BARR:
 TENT:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: allies
-		Cost: 400
-		Description: Allied Barracks
-		LongDesc: Produces infantry
 		Hotkey: b
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Allied Barracks
+		Description: Produces infantry
 		AlternateName: @Barracks
 	Building:
 		Power: -20
@@ -741,13 +802,16 @@ TENT:
 KENN:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Cost: 200
-		Description: Kennel
-		LongDesc: Produces attack dogs
 		Hotkey: k
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Kennel
+		Description: Produces attack dogs
 	Building:
 		Power: -10
 	Health:
@@ -767,13 +831,16 @@ KENN:
 FIX:
 	Inherits: ^Building
 	Buildable:
+		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
-		Cost: 700
-		Description: Service Depot
-		LongDesc: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 		Hotkey: d
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Service Depot
+		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -848,7 +915,8 @@ SYRF:
 	Inherits: ^Building
 	Valued:
 		Cost: 50
-		Description: Fake Shipyard
+	Tooltip:
+		Name: Fake Shipyard
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: @Power Plant
@@ -901,7 +969,8 @@ DOMF:
 	Inherits: ^Building
 	Valued:
 		Cost: 50
-		Description: Fake Radar Dome
+	Tooltip:
+		Name: Fake Radar Dome
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: proc
@@ -933,10 +1002,12 @@ SBAG:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies
-		Cost: 25
-		Description: Sandbag Wall
-		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: b
+	Valued:
+		Cost: 25
+	Tooltip:
+		Name: Sandbag Wall
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 		Armor: none
@@ -948,10 +1019,12 @@ FENC:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: soviet
-		Cost: 25
-		Description: Wire Fence
-		LongDesc: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 		Hotkey: n
+	Valued:
+		Cost: 25
+	Tooltip:
+		Name: Wire Fence
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 		Armor: none
@@ -963,10 +1036,12 @@ BRIK:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies,soviet
-		Cost: 100
-		Description: Concrete Wall
-		LongDesc: Stop units and blocks enemy fire.
 		Hotkey: w
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
 	Building:
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud

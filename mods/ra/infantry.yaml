@@ -1,13 +1,16 @@
 DOG:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 30
 		Prerequisites: kenn
 		BuiltAt: KENN
 		Owner: soviet
+	Valued:
 		Cost: 200
-		Description: Attack Dog
-		LongDesc: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Tooltip:
+		Name: Attack Dog
+		Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Voice: DogVoice
 		Bounds: 12,17,-1,-4
@@ -24,13 +27,16 @@ DOG:
 E1:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 10
 		Prerequisites: @Barracks
 		Owner: allies,soviet
-		Cost: 100
-		Description: Rifle Infantry
-		LongDesc: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 		BuiltAt: barr,tent
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Rifle Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -44,13 +50,16 @@ E1:
 E2:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: soviet
-		Cost: 160
-		Description: Grenadier
-		LongDesc: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 		Prerequisites: barr
 		BuiltAt: barr
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -66,13 +75,16 @@ E2:
 E3:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies,soviet
-		Cost: 300
-		Description: Rocket Soldier
-		LongDesc: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 		Prerequisites: @Barracks
 		BuiltAt: barr,tent
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Rocket Soldier
+		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -88,13 +100,16 @@ E3:
 E4:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: stek, @Barracks
 		Owner: soviet
-		Cost: 300
-		Description: Flamethrower
-		LongDesc: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 		BuiltAt: barr,tent
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Flamethrower
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 12,17,0,-9
 	Health:
@@ -110,13 +125,16 @@ E4:
 E6:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: soviet,allies
-		Cost: 500
-		Description: Engineer
-		LongDesc: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 		Prerequisites: @Barracks
 		BuiltAt: barr,tent
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
@@ -134,13 +152,16 @@ E6:
 SPY:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: dome, tent
 		Owner: allies
-		Cost: 500
-		Description: Spy
-		LongDesc: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 		BuiltAt: tent
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Spy
+		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:
 		Voice: SpyVoice
 		Bounds: 12,17,0,-9
@@ -161,13 +182,16 @@ SPY:
 E7:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 110
 		Prerequisites: @Tech Center, @Barracks
 		Owner: allies,soviet
-		Cost: 1200
-		Description: Tanya
-		LongDesc: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
 		BuiltAt: barr,tent
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Tanya
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -187,13 +211,16 @@ E7:
 MEDI:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies
-		Cost: 800
-		Description: Medic
-		LongDesc: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
 		Prerequisites: tent
 		BuiltAt: tent
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
 		Voice: MedicVoice
 		Bounds: 12,17,0,-9
@@ -218,7 +245,8 @@ C1:
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
-		Description: Technician
+	Tooltip:
+		Name: Technician
 	Health:
 		HP: 20
 	Mobile:
@@ -235,7 +263,8 @@ C2:
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
-		Description: Technician
+	Tooltip:
+		Name: Technician
 	Health:
 		HP: 20
 	Mobile:
@@ -248,10 +277,14 @@ C2:
 SHOK:
 	Inherits: ^Infantry
 	Buildable:
+		Queue: Infantry
 		Prerequisites: stek,tsla
 		Owner: soviet
+	Valued:
 		Cost: 900
-		Description: Tesla Trooper
+	Tooltip:
+		Name: Tesla Trooper
+		Description: TODO
 	Selectable:
 		Voice: ShokVoice
 		Bounds: 12,17,0,-9

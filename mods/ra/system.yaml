@@ -1,9 +1,26 @@
 Player:
-	ProductionQueue:
+	TechTreeCache:
+	ProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Ship:
+		Type: Ship
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Plane:
+		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
-	TechTreeCache:
 	GpsPower:
 		Image: gpssicon
 		OneShot: yes
@@ -204,9 +221,8 @@ MINV:
 	InvisibleToOthers:
 
 CRATE:
-	Valued:
-		Cost: 0
-		Description: Crate
+	Tooltip:
+		Name: Crate
 	Crate:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach

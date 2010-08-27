@@ -9,8 +9,6 @@
 		Voice: VehicleVoice
 	Targetable:
 		TargetTypes: Ground
-	Buildable:
-		Queue: Vehicle
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -34,8 +32,6 @@
 		Voice: VehicleVoice
 	Targetable:
 		TargetTypes: Ground
-	Buildable:
-		Queue: Vehicle
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
@@ -62,8 +58,6 @@
 		Voice: GenericVoice
 	Targetable:
 		TargetTypes: Ground
-	Buildable:
-		Queue: Infantry
 	RenderInfantry:
 	AutoTarget:
 	Passenger:
@@ -86,8 +80,6 @@
 		Voice: ShipVoice
 	Targetable:
 		TargetTypes: Ground, Water
-	Buildable:
-		Queue: Ship
 	DetectCloaked:
 		Range: 3
 	HiddenUnderFog:
@@ -123,8 +115,6 @@
 	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6
-	Buildable:
-		Queue: Building
 	MustBeDestroyed:
 	GivesExperience:
 	FrozenUnderFog:
@@ -157,23 +147,22 @@
 
 ^CivBuilding:
 	Inherits: ^Building
-	-Buildable:
 	-RepairableBuilding:
 	Health:
 		HP: 400
 		Armor: wood
-	Valued:
-		Description: Civilian Building
+	Tooltip:
+		Name: Civilian Building
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
-	Valued:
-		Description: Field
+	Tooltip:
+		Name: Field
 
 ^Tree:
-	Valued:
-		Description: Tree
+	Tooltip:
+		Name: Tree
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -195,8 +184,8 @@
 	Burns:
 
 ^Bridge:
-	Valued:
-		Description: Bridge
+	Tooltip:
+		Name: Bridge
 	BelowUnits:
 	Targetable:
 		TargetTypes: Ground, Water

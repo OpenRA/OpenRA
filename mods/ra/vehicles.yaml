@@ -40,12 +40,15 @@ BADR.bomber:
 V2RL:
 	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Prerequisites: weap,dome
 		Owner: soviet
+	Valued:
 		Cost: 700
-		Description: V2 Rocket
-		LongDesc: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Tooltip:
+		Name: V2 Rocket
+		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 		Armor: light
@@ -64,12 +67,15 @@ V2RL:
 1TNK:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: allies
+	Valued:
 		Cost: 700
-		Description: Light Tank
-		LongDesc: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+	Tooltip:
+		Name: Light Tank
+		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 300
 		Armor: heavy
@@ -93,12 +99,15 @@ V2RL:
 2TNK:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Prerequisites: weap
 		Owner: allies
+	Valued:
 		Cost: 800
-		Description: Medium Tank
-		LongDesc: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Tooltip:
+		Name: Medium Tank
+		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 400
 		Armor: heavy
@@ -122,12 +131,15 @@ V2RL:
 3TNK:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: soviet
+	Valued:
 		Cost: 1200
-		Description: Heavy Tank
-		LongDesc: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Tooltip:
+		Name: Heavy Tank
+		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 550
 		Armor: heavy
@@ -151,12 +163,15 @@ V2RL:
 4TNK:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: weap,stek
 		Owner: soviet
+	Valued:
 		Cost: 1800
-		Description: Mammoth Tank
-		LongDesc: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+	Tooltip:
+		Name: Mammoth Tank
+		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 750
 		Armor: heavy
@@ -187,12 +202,15 @@ V2RL:
 ARTY:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: weap
 		Owner: allies
+	Valued:
 		Cost: 600
-		Description: Artillery
-		LongDesc: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Tooltip:
+		Name: Artillery
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 75
 		Armor: light
@@ -210,12 +228,15 @@ ARTY:
 HARV:
 	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: weap,proc
 		Owner: allies,soviet
+	Valued:
 		Cost: 1100
-		Description: Ore Truck
-		LongDesc: Collects Ore and Gems for processing.\n  Unarmed
+	Tooltip:
+		Name: Ore Truck
+		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	Harvester:
@@ -233,12 +254,15 @@ HARV:
 MCV:
 	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: weap,fix
 		Owner: allies,soviet
+	Valued:
 		Cost: 2000
-		Description: Mobile Construction Vehicle
-		LongDesc: Deploys into another Construction Yard.\n  Unarmed
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Health:
@@ -261,12 +285,15 @@ MCV:
 JEEP:
 	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
+	Valued:
 		Cost: 500
-		Description: Ranger
-		LongDesc: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Tooltip:
+		Name: Ranger
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 		Armor: light
@@ -287,12 +314,15 @@ JEEP:
 APC:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: weap,tent
 		Owner: allies
+	Valued:
 		Cost: 800
-		Description: Armored Personnel Carrier
-		LongDesc: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+	Tooltip:
+		Name: Armored Personnel Carrier
+		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 200
 		Armor: heavy
@@ -315,13 +345,16 @@ APC:
 MNLY.AP:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
 		Owner: soviet
+	Valued:
 		Cost: 800
+	Tooltip:
+		Name: Minelayer (Anti-Personnel)
 		Icon: MNLYICON
-		Description: Minelayer (Anti-Personnel)
-		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
 		Armor: heavy
@@ -340,13 +373,16 @@ MNLY.AP:
 MNLY.AT:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: weap,fix
 		Owner: allies
+	Valued:
 		Cost: 800
+	Tooltip:
+		Name: Minelayer (Anti-Tank)
 		Icon: MNLYICON
-		Description: Minelayer (Anti-Tank)
-		LongDesc: Lays mines to destroy unwary enemy units.\n  Unarmed
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
 		Armor: heavy
@@ -376,13 +412,16 @@ TRUK:
 SS:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 50
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
+	Valued:
 		Cost: 950
-		Description: Submarine
-		LongDesc: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+	Tooltip:
+		Name: Submarine
+		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 250
 		Armor: light
@@ -412,13 +451,16 @@ SS:
 MSUB:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 60
 		Prerequisites: spen,stek
 		BuiltAt: spen
 		Owner: soviet
+	Valued:
 		Cost: 2400
-		Description: Missile Submarine
-		LongDesc: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+	Tooltip:
+		Name: Missile Submarine
+		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 400
 		Armor: light
@@ -447,13 +489,16 @@ MSUB:
 DD:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 70
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
+	Valued:
 		Cost: 1000
-		Description: Destroyer
-		LongDesc: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+	Tooltip:
+		Name: Destroyer
+		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
 		Armor: heavy
@@ -477,13 +522,16 @@ DD:
 CA:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 100
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
+	Valued:
 		Cost: 3200
-		Description: Cruiser
-		LongDesc: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+	Tooltip:
+		Name: Cruiser
+		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
 		HP: 800
 		Armor: heavy
@@ -511,11 +559,14 @@ CA:
 LST:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 30
 		Owner: allies,soviet
+	Valued:
 		Cost: 700
-		Description: Transport
-		LongDesc: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+	Tooltip:
+		Name: Transport
+		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
 	Health:
 		HP: 350
 		Armor: heavy
@@ -534,13 +585,16 @@ LST:
 PT:
 	Inherits: ^Ship
 	Buildable:
+		Queue: Ship
 		BuildPaletteOrder: 50
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
+	Valued:
 		Cost: 500
-		Description: Gunboat
-		LongDesc: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+	Tooltip:
+		Name: Gunboat
+		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Health:
 		HP: 200
 		Armor: heavy
@@ -569,9 +623,11 @@ MIG:
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
+	Valued:
 		Cost: 1200
-		Description: Mig Attack Plane
-		LongDesc: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
+	Tooltip:
+		Name: Mig Attack Plane
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Health:
 		HP: 70
 		Armor: light
@@ -602,9 +658,11 @@ YAK:
 		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
+	Valued:
 		Cost: 800
-		Description: Yak Attack Plane
-		LongDesc: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
+	Tooltip:
+		Name: Yak Attack Plane
+		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
 	Health:
 		HP: 60
 		Armor: light
@@ -634,9 +692,11 @@ TRAN:
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
+	Valued:
 		Cost: 1200
-		Description: Transport Helicopter
-		LongDesc: Fast Infantry Transport Helicopter.\n  Unarmed
+	Tooltip:
+		Name: Transport Helicopter
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
 		HP: 90
 		Armor: light
@@ -664,9 +724,11 @@ HELI:
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
+	Valued:
 		Cost: 1200
-		Description: Longbow
-		LongDesc: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Tooltip:
+		Name: Longbow
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Health:
 		HP: 120
 		Armor: light
@@ -698,9 +760,11 @@ HIND:
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
+	Valued:
 		Cost: 1200
-		Description: Hind
-		LongDesc: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+	Tooltip:
+		Name: Hind
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
 		HP: 120
 		Armor: light
@@ -738,8 +802,8 @@ U2:
 
 1TNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Light Tank)
+	Tooltip:
+		Name: Husk (Light Tank)
 	RenderUnit:
 		Image: 1tnk
 	ThrowsParticle@turret:
@@ -750,8 +814,8 @@ U2:
 
 2TNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Medium Tank)
+	Tooltip:
+		Name: Husk (Medium Tank)
 	RenderUnit:
 		Image: 2tnk
 	ThrowsParticle@turret:
@@ -762,8 +826,8 @@ U2:
 
 3TNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Heavy Tank)
+	Tooltip:
+		Name: Husk (Heavy Tank)
 	RenderUnit:
 		Image: 3tnk
 	ThrowsParticle@turret:
@@ -774,8 +838,8 @@ U2:
 
 4TNK.Husk:
 	Inherits: ^Husk
-	Valued:
-		Description: Husk (Mammoth Tank)
+	Tooltip:
+		Name: Husk (Mammoth Tank)
 	RenderUnit:
 		Image: 4tnk
 	ThrowsParticle@turret:
@@ -787,11 +851,14 @@ U2:
 TTNK:
 	Inherits: ^Tank
 	Buildable:
+		Queue: Vehicle
 		Prerequisites: stek,tsla
 		Owner: soviet
+	Valued:
 		Cost: 1800
-		Description: Tesla Tank
-		LongDesc: TODO
+	Tooltip:
+		Name: Tesla Tank
+		Description: TODO
 	Health:
 		HP: 110
 		Armor: light
