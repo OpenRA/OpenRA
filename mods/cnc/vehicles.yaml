@@ -318,7 +318,7 @@ HTNK:
 	AttackTurreted:
 		PrimaryWeapon: 120mmDual
 		SecondaryWeapon: MissilePack
-		PrimaryLocalOffset: -4,-5,0,4,-5,0
+		PrimaryLocalOffset: -5,0,0,5,0,0
 		SecondaryLocalOffset: -9,2,25,9,2,-25
 		Recoil: 4
 	RenderUnitTurreted:
@@ -387,8 +387,13 @@ MLRS:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: HonestJohn
-		PrimaryOffset: 0,5,0,0
-	RenderUnitTurreted:
+		SecondaryWeapon: HonestJohn
+		PrimaryOffset: 0,3,0,-3
+		PrimaryLocalOffset: -4,0,0
+		SecondaryLocalOffset: 4,0,0
+		Recoil: 0
+		AlignIdleTurrets: true
+	RenderUnitTurretedAim:
 	AutoTarget:
 	LeavesHusk: 
 		HuskActor: MLRS.Husk

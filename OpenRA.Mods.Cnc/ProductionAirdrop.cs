@@ -9,13 +9,11 @@
 #endregion
 
 using System.Linq;
-using System.Drawing;
-using OpenRA.GameRules;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Cnc
 {

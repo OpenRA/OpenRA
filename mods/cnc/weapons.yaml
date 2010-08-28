@@ -324,13 +324,13 @@ MissilePack:
 
 227mm: 
 	ROF: 80
-	Range: 6
+	Range: 8
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Missile:
 		Arm: 5
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 5
 		Image: DRAGON
@@ -485,14 +485,17 @@ HonestJohn:
 	ROF: 200
 	Range: 10
 	Report: ROCKET1
-	Missile:
+	Bullet:
 		Arm: 10
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
-		Inaccuracy: 3
+		Inaccuracy: 5
 		Image: MISSILE
-		Speed: 15
+		Trail: smokey
+		Speed: 11
+		RangeLimit: 35
+		Angle: .15
 	Warhead:
 		Spread: 6
 		Verses: 90%,75%,60%,25%,100%
