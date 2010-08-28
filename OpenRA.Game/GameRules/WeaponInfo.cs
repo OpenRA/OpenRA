@@ -38,6 +38,11 @@ namespace OpenRA.GameRules
 			
 			return Verses[(int)(health.Armor)];
 		}
+
+		public WarheadInfo( MiniYaml yaml )
+		{
+			FieldLoader.Load( this, yaml );
+		}
 	}
 
 	public enum ArmorType
@@ -72,49 +77,41 @@ namespace OpenRA.GameRules
 
 	public class WeaponInfo
 	{
-		public readonly float Range = 0;
-		public readonly string Report = null;
-		public readonly int ROF = 1;
-		public readonly int Burst = 1;
-		public readonly bool Charges = false;
-		public readonly bool Underwater = false;
-		public readonly string[] ValidTargets = { "Ground" };
-		public readonly int BurstDelay = 5;
+		[FieldLoader.Load] public readonly float Range = 0;
+		[FieldLoader.Load] public readonly string Report = null;
+		[FieldLoader.Load] public readonly int ROF = 1;
+		[FieldLoader.Load] public readonly int Burst = 1;
+		[FieldLoader.Load] public readonly bool Charges = false;
+		[FieldLoader.Load] public readonly bool Underwater = false;
+		[FieldLoader.Load] public readonly string[] ValidTargets = { "Ground" };
+		[FieldLoader.Load] public readonly int BurstDelay = 5;
 
-		public IProjectileInfo Projectile;
-		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
+		[FieldLoader.LoadUsing( "LoadProjectile" )] public IProjectileInfo Projectile;
+		[FieldLoader.LoadUsing( "LoadWarheads" )] public List<WarheadInfo> Warheads;
 
 		public WeaponInfo(string name, MiniYaml content)
 		{
-			foreach (var kv in content.NodesDict)
-			{
-				var key = kv.Key.Split('@')[0];
-				switch (key)
-				{
-					case "Range": FieldLoader.LoadField(this, "Range", content.NodesDict["Range"].Value); break;
-					case "ROF": FieldLoader.LoadField(this, "ROF", content.NodesDict["ROF"].Value); break;
-					case "Report": FieldLoader.LoadField(this, "Report", content.NodesDict["Report"].Value); break;
-					case "Burst": FieldLoader.LoadField(this, "Burst", content.NodesDict["Burst"].Value); break;
-					case "Charges": FieldLoader.LoadField(this, "Charges", content.NodesDict["Charges"].Value); break;
-					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.NodesDict["ValidTargets"].Value); break;
-					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.NodesDict["Underwater"].Value); break;
-					case "BurstDelay": FieldLoader.LoadField(this, "BurstDelay", content.NodesDict["BurstDelay"].Value); break;
+			FieldLoader.Load( this, content );
+		}
 
-					case "Warhead":
-						{
-							var warhead = new WarheadInfo();
-							FieldLoader.Load(warhead, kv.Value);
-							Warheads.Add(warhead);
-						} break;
+		static object LoadProjectile( MiniYaml yaml )
+		{
+			MiniYaml proj;
+			if( !yaml.NodesDict.TryGetValue( "Projectile", out proj ) )
+				return null;
+			var ret = Game.CreateObject<IProjectileInfo>( proj.Value + "Info" );
+			FieldLoader.Load( ret, proj );
+			return ret;
+		}
 
-					// in this case, it's an implementation of IProjectileInfo
-					default:
-						{
-							Projectile = Game.CreateObject<IProjectileInfo>(key + "Info");
-							FieldLoader.Load(Projectile, kv.Value);
-						} break;
-				}
-			}	
+		static object LoadWarheads( MiniYaml yaml )
+		{
+			var ret = new List<WarheadInfo>();
+			foreach( var w in yaml.Nodes )
+				if( w.Key.Split( '@' )[ 0 ] == "Warhead" )
+					ret.Add( new WarheadInfo( w.Value ) );
+
+			return ret;
 		}
 	}
 }

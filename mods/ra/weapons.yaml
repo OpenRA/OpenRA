@@ -2,7 +2,7 @@ Colt45:
 	ROF: 5
 	Range: 5.75
 	Report: GUN5
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 1
@@ -16,7 +16,7 @@ ZSU-23:
 	Range: 6
 	Report: AACANON3
 	ValidTargets: Air
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -28,7 +28,7 @@ Vulcan:
 	ROF: 30
 	Range: 6
 	Report: GUN13
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead@1:
 		Spread: 3
@@ -79,7 +79,7 @@ Maverick:
 	Burst: 2
 	BurstDelay: 7
 	ValidTargets: Ground
-	Missile:
+	Projectile: Missile
 		Speed: 30
 		Arm: 2
 		High: true
@@ -102,7 +102,7 @@ Maverick:
 FireballLauncher:
 	ROF: 45
 	Range: 4
-	Bullet:
+	Projectile: Bullet
 		Speed: 12
 		Trail: fb2
 		Image: FB1
@@ -119,7 +119,7 @@ FireballLauncher:
 Flamer:
 	ROF: 50
 	Range: 5
-	Bullet:
+	Projectile: Bullet
 		Speed: 12
 		Trail: fb2
 		Image: FB1
@@ -137,7 +137,7 @@ ChainGun:
 	ROF: 3
 	Range: 5
 	Report: GUN13
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -151,7 +151,7 @@ Pistol:
 	ROF: 7
 	Range: 3
 	Report: GUN27
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -164,7 +164,7 @@ M1Carbine:
 	ROF: 20
 	Range: 5
 	Report: GUN11
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -178,7 +178,7 @@ Dragon:
 	Range: 5
 	Report: MISSILE6
 	ValidTargets: Ground
-	Missile:
+	Projectile: Missile
 		Speed: 25
 		Arm: 2
 		High: true
@@ -204,7 +204,7 @@ Hellfire:
 	Range: 4
 	Report: MISSILE6
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Speed: 30
 		Arm: 2
 		High: true
@@ -228,7 +228,7 @@ Grenade:
 	ROF: 60
 	Range: 4
 	Report: grenade1
-	Bullet:
+	Projectile: Bullet
 		Speed: 5
 		High: true
 		Angle: .1
@@ -248,7 +248,7 @@ Grenade:
 	ROF: 10
 	Range: 4
 	Report: CANNON2
-	Bullet:
+	Projectile: Bullet
 		Speed: 50
 		Image: 120MM
 	Warhead:
@@ -264,7 +264,7 @@ Grenade:
 	ROF: 50
 	Range: 4.75
 	Report: CANNON1
-	Bullet:
+	Projectile: Bullet
 		Speed: 40
 		Image: 120MM
 	Warhead:
@@ -282,7 +282,7 @@ Grenade:
 	Report: CANNON1
 	Burst: 2
 	BurstDelay: 4
-	Bullet:
+	Projectile: Bullet
 		Speed: 40
 		Image: 120MM
 	Warhead:
@@ -299,7 +299,7 @@ Grenade:
 	Range: 4.75
 	Report: CANNON1
 	Burst: 2
-	Bullet:
+	Projectile: Bullet
 		Speed: 40
 		Image: 120MM
 	Warhead:
@@ -315,7 +315,7 @@ TurretGun:
 	ROF: 30
 	Range: 7
 	Report: TURRET1
-	Bullet:
+	Projectile: Bullet
 		Speed: 40
 		Image: 120MM
 	Warhead:
@@ -333,7 +333,7 @@ MammothTusk:
 	Report: MISSILE6
 	Burst: 2
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Speed: 30
 		Arm: 2
 		High: true
@@ -357,7 +357,7 @@ MammothTusk:
 	ROF: 85
 	Range: 14
 	Report: TANK5
-	Bullet:
+	Projectile: Bullet
 		Speed: 12
 		High: true
 		Angle: .1
@@ -377,7 +377,7 @@ M60mg:
 	Range: 4
 	Report: PILLBOX1
 	Burst: 5
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -390,7 +390,7 @@ M60mg:
 Napalm:
 	ROF: 20
 	Range: 4.5
-	Bullet:
+	Projectile: Bullet
 		Image: BOMBLET
 		Speed: 5
 		High: yes
@@ -433,7 +433,7 @@ TeslaZap:
 	Charges: true
 	Range: 8.5
 	Report: TESLA1
-	TeslaZap:
+	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
 		Verses: 100%,100%,100%,100%,100%
@@ -445,7 +445,7 @@ Nike:
 	Range: 7.5
 	Report: MISSILE1
 	ValidTargets: Air
-	Missile:
+	Projectile: Missile
 		Arm: 3
 		High: true
 		Shadow: false
@@ -468,7 +468,7 @@ RedEye:
 	Range: 7.5
 	Report: MISSILE1
 	ValidTargets: Air
-	Missile:
+	Projectile: Missile
 		Arm: 3
 		High: true
 		Shadow: false
@@ -491,7 +491,7 @@ RedEye:
 	Range: 16
 	Burst: 2
 	Report: TURRET1
-	Bullet:
+	Projectile: Bullet
 		Speed: 12
 		High: true
 		Angle: .1
@@ -513,7 +513,7 @@ SubMissile:
 	Range: 16
 	Burst: 2
 	Report: MISSILE6
-	Bullet:
+	Projectile: Bullet
 		Speed: 6
 		High: true
 		Angle: .4
@@ -536,7 +536,7 @@ Stinger:
 	Range: 9
 	Report: MISSILE6
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Arm: 3
 		High: true
 		Shadow: false
@@ -564,7 +564,7 @@ TorpTube:
 	Underwater: yes
 	Burst: 2
 	BurstDelay: 1
-	Bullet:
+	Projectile: Bullet
 		Image: MISSILE
 		Speed: 6
 	Warhead:
@@ -579,7 +579,7 @@ TorpTube:
 	ROF: 60
 	Range: 5.5
 	Report: CANNON2
-	Bullet:
+	Projectile: Bullet
 		Speed: 25
 		Image: 120MM
 	Warhead:
@@ -595,7 +595,7 @@ DepthCharge:
 	ROF: 60
 	Range: 5
 	ValidTargets: Underwater
-	Bullet:
+	Projectile: Bullet
 		Speed: 5
 		Image: BOMB
 		Angle: .1
@@ -613,7 +613,7 @@ ParaBomb:
 	ROF: 10
 	Range: 4.5
 	Report: CHUTE1
-	GravityBomb:
+	Projectile: GravityBomb
 		Image: PARABOMB
 	Warhead:
 		Spread: 3
@@ -639,7 +639,7 @@ Heal:
 	ROF: 80
 	Range: 4
 	Report: HEAL2
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 5
@@ -651,7 +651,7 @@ SCUD:
 	ROF: 250
 	Range: 13
 	Report: MISSILE1
-	Bullet:
+	Projectile: Bullet
 		Speed: 10
 		Arm: 10
 		High: true
@@ -742,7 +742,7 @@ PortaTesla:
 	Report: TESLA1
 #	Report: SHKTROP1
 	Charges: yes
-	TeslaZap:
+	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
 		Verses: 100%,100%,100%,100%,100%
@@ -754,7 +754,7 @@ TTankZap:
 	Range: 7
 	Report: TESLA1
 	Charges: yes
-	TeslaZap:
+	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
 		Verses: 100%,100%,100%,100%,100%
