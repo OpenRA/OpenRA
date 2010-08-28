@@ -306,7 +306,7 @@ HTNK:
 		Prerequisites: eye
 		Owner: gdi
 	Mobile:
-		Crushes: wall, heavywall
+		Crushes: wall, heavywall, crate
 		Speed: 3
 	Health:
 		HP: 600
