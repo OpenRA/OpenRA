@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -85,28 +84,35 @@ namespace OpenRA.GameRules
 		public IProjectileInfo Projectile;
 		public List<WarheadInfo> Warheads = new List<WarheadInfo>();
 
-		static readonly string[] SimpleFields = { "Range", "Report", "ROF", "Burst", "Charges", "Underwater",
-													"ValidTargets", "BurstDelay" };
-
 		public WeaponInfo(string name, MiniYaml content)
 		{
-			FieldLoader.LoadFields( this, content.Nodes, SimpleFields );
-
 			foreach (var kv in content.Nodes)
 			{
 				var key = kv.Key.Split('@')[0];
-				if (SimpleFields.Contains(key))
-					continue;
-				else if (key == "Warhead")
+				switch (key)
 				{
-					var warhead = new WarheadInfo();
-					FieldLoader.Load(warhead, kv.Value);
-					Warheads.Add(warhead);
-				}
-				else
-				{
-					Projectile = Game.CreateObject<IProjectileInfo>(key + "Info");
-					FieldLoader.Load(Projectile, kv.Value);
+					case "Range": FieldLoader.LoadField(this, "Range", content.Nodes["Range"].Value); break;
+					case "ROF": FieldLoader.LoadField(this, "ROF", content.Nodes["ROF"].Value); break;
+					case "Report": FieldLoader.LoadField(this, "Report", content.Nodes["Report"].Value); break;
+					case "Burst": FieldLoader.LoadField(this, "Burst", content.Nodes["Burst"].Value); break;
+					case "Charges": FieldLoader.LoadField(this, "Charges", content.Nodes["Charges"].Value); break;
+					case "ValidTargets": FieldLoader.LoadField(this, "ValidTargets", content.Nodes["ValidTargets"].Value); break;
+					case "Underwater": FieldLoader.LoadField(this, "Underwater", content.Nodes["Underwater"].Value); break;
+					case "BurstDelay": FieldLoader.LoadField(this, "BurstDelay", content.Nodes["BurstDelay"].Value); break;
+
+					case "Warhead":
+						{
+							var warhead = new WarheadInfo();
+							FieldLoader.Load(warhead, kv.Value);
+							Warheads.Add(warhead);
+						} break;
+
+					// in this case, it's an implementation of IProjectileInfo
+					default:
+						{
+							Projectile = Game.CreateObject<IProjectileInfo>(key + "Info");
+							FieldLoader.Load(Projectile, kv.Value);
+						} break;
 				}
 			}	
 		}
