@@ -10,6 +10,7 @@
 
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -25,8 +26,12 @@ namespace OpenRA.Mods.RA.Render
 			: base(self, () => self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing : 0)
 		{
 			facing = self.Trait<IFacing>();
-			
 			anim.Play("left");
+
+			var wake = new Animation(anim.Name);
+			wake.Play("left-wake");
+			Func<float2> offset = () => new float2(((anims["wake"].Animation.CurrentSequence.Name == "left-wake") ? 1 : -1),2);
+			anims.Add( "wake", new AnimationWithOffset( wake, offset, () => false ) { ZOffset = -2 } );
 			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
 		}
 
@@ -36,8 +41,11 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var dir = (facing.Facing > 128) ? "right" : "left";
 			if (dir != lastDir)
-				anim.ReplaceAnim((lastDir = dir)+lastDamage);
-
+			{
+				anim.ReplaceAnim(dir+lastDamage);
+				anims["wake"].Animation.ReplaceAnim(dir+"-wake");
+				lastDir = dir;
+			}
 			base.Tick(self);
 		}
 		

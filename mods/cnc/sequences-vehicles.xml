@@ -111,11 +111,13 @@
   <!-- Gunboat -->
   <unit name="boat">
     <sequence name="left" start="0" facings="32" />
-    <sequence name="left-damaged" start="32" facings="32" />
-    <sequence name="left-critical" start="64" facings="32" />
+    <sequence name="left-damaged" start="32" />
+    <sequence name="left-critical" start="64" />
+    <sequence name="left-wake" start="6" length="6" src="wake" />
     <sequence name="right" start="96" facings="32" />
     <sequence name="right-damaged" start="128" facings="32" />
     <sequence name="right-critical" start="160" facings="32" />
+    <sequence name="right-wake" start="0" length="6" src="wake" />
   </unit>
   <unit name="a10">
     <sequence name="idle" start="0" facings="32" />
