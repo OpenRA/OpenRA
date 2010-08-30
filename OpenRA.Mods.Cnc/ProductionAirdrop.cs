@@ -14,6 +14,7 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -39,6 +40,8 @@ namespace OpenRA.Mods.Cnc
 			var spawn = self.CenterLocation + Spawns.First().First;
 			var exit = self.Location + Spawns.First().Second;
 			
+			var rb = self.Trait<RenderBuilding>();
+			rb.PlayCustomAnimRepeating(self, "active");
 			owner.World.AddFrameEndTask(w =>
 			{
 				var a = w.CreateActor("C17", new TypeDictionary 
@@ -55,12 +58,13 @@ namespace OpenRA.Mods.Cnc
 					new OwnerInit( self.Owner ),
 				});
 				cargo.Load(a, newUnit);
-				
+				a.QueueActivity(new Fly(self.Location + new int2(6,0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
 				{
 					if (self.IsDead())
 						return;
+					rb.PlayCustomAnimRepeating(self, "idle");
 					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit, spawn));
 				}));
 				a.QueueActivity(new Fly(endPos));

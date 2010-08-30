@@ -49,6 +49,12 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayThen(GetPrefix(self) + name,
 				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
 		}
+		
+		public void PlayCustomAnimRepeating(Actor self, string name)
+		{
+			anim.PlayThen(GetPrefix(self) + name,
+				() => { PlayCustomAnimRepeating(self, name); });
+		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{

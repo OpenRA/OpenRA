@@ -62,8 +62,10 @@
   </unit>
   <!-- Nod Airfield -->
   <unit name="afld">
-    <sequence name="idle" start="0" length="16" tick="120" />
-    <sequence name="damaged-idle" start="16" length="16" tick="120" />
+    <sequence name="idle" start="0" length="1" tick="120" />
+    <sequence name="active" start="0" length="16" tick="120" />
+    <sequence name="damaged-idle" start="16" length="1" tick="120" />
+    <sequence name="damaged-active" start="16" length="16" tick="120" />
     <sequence name="dead" start="32" length="1" />
     <sequence name="make" start="0" length="*" src="afldmake" />
   </unit>
