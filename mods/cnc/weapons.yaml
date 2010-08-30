@@ -56,7 +56,7 @@ Sniper:
 	Report: RAMGUN2
 	ROF: 40
 	Range: 7
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead: 
 		Damage: 100
@@ -68,7 +68,7 @@ HighV:
 	ROF: 40
 	Range: 4
 	Report: GUN8
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Damage: 20
@@ -81,7 +81,7 @@ Pistol:
 	ROF: 7
 	Range: 3
 	Report: GUN18
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -94,7 +94,7 @@ M16:
 	ROF: 20
 	Range: 4
 	Report: MGUN2
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -108,7 +108,7 @@ Rockets:
 	Range: 6
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: no
@@ -134,7 +134,7 @@ Rockets.Orca:
 	Burst: 2
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: no
@@ -158,7 +158,7 @@ Flamethrower:
 	ROF: 50
 	Range: 2
 	Report: FLAMER2
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 8
@@ -172,7 +172,7 @@ BigFlamer:
 	ROF: 50
 	Range: 2
 	Report: FLAMER2
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 8
@@ -187,7 +187,7 @@ Chemspray:
 	ROF: 70
 	Range: 2
 	Report: FLAMER2
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Damage: 80
@@ -200,7 +200,7 @@ Chemspray:
 Grenade: 
 	ROF: 50
 	Range: 5
-	Bullet:
+	Projectile: Bullet
 		Speed: 5
 		High: yes
 		Angle: .1
@@ -219,7 +219,7 @@ Grenade:
 	ROF: 60
 	Range: 4
 	Report: TNKFIRE3
-	Bullet:
+	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
 	Warhead:
@@ -235,7 +235,7 @@ Grenade:
 	ROF: 50
 	Range: 4.75
 	Report: TNKFIRE4
-	Bullet:
+	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
 	Warhead:
@@ -251,7 +251,7 @@ Grenade:
 	ROF: 80
 	Range: 4.75
 	Report: TNKFIRE6
-	Bullet:
+	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
 	Warhead:
@@ -268,7 +268,7 @@ Grenade:
 	Range: 4.75
 	Report: TNKFIRE6
 	Burst: 2
-	Bullet:
+	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
 	Warhead:
@@ -284,7 +284,7 @@ TurretGun:
 	ROF: 50
 	Range: 6
 	Report: TNKFIRE6
-	Bullet:
+	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
 	Warhead:
@@ -302,7 +302,7 @@ MissilePack:
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: no
@@ -327,7 +327,7 @@ MissilePack:
 	Range: 8
 	Report: ROCKET1
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: yes
@@ -351,7 +351,7 @@ Ballistic:
 	ROF: 65
 	Range: 6
 	Report: TNKFIRE2
-	Bullet:
+	Projectile: Bullet
 		Speed: 12
 		High: yes
 		Angle: .1
@@ -370,7 +370,7 @@ MachineGun:
 	ROF: 30
 	Range: 4
 	Report: MGUN11
-	Bullet:
+	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
@@ -385,7 +385,7 @@ BoatMissile:
 	Burst: 2
 	BurstDelay: 7
 	Report: ROCKET2
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: no
@@ -410,7 +410,7 @@ Tomahawk:
 	Range: 6
 	Report: ROCKET2
 	ValidTargets: Ground, Air
-	Missile:
+	Projectile: Missile
 		Arm: 5
 		High: yes
 		Shadow: no
@@ -432,7 +432,7 @@ Tomahawk:
 
 Napalm:
 	ROF: 5
-	GravityBomb:
+	Projectile: GravityBomb
 		Image: BOMBLET
 	Warhead:
 		Spread: 8
@@ -448,7 +448,7 @@ Laser:
 	Range: 7.5
 	Charges: true
 	Report: OBELRAY1
-	LaserZap:
+	Projectile: LaserZap
 		BeamRadius: 1
 		UsePlayerColor: true
 	Warhead:
@@ -463,7 +463,7 @@ Nike:
 	Range: 15
 	Report: ROCKET2
 	ValidTargets: Air
-	Missile:
+	Projectile: Missile
 		Arm: 3
 		High: yes
 		Shadow: no
@@ -485,7 +485,7 @@ HonestJohn:
 	ROF: 200
 	Range: 10
 	Report: ROCKET1
-	Bullet:
+	Projectile: Bullet
 		Arm: 10
 		High: yes
 		Shadow: yes
