@@ -19,7 +19,8 @@ MSLO:
 		Dimensions: 2,1
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	IronCurtainable:
@@ -46,7 +47,8 @@ GAP:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	IronCurtainable:
@@ -78,7 +80,8 @@ SPEN:
 		WaterBound: yes
 	Health:
 		HP: 1000
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Exit@1:
@@ -132,7 +135,8 @@ SYRD:
 		WaterBound: yes
 	Health:
 		HP: 1000
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Exit@1:
@@ -181,7 +185,8 @@ IRON:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -210,7 +215,8 @@ PDOX:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -240,7 +246,8 @@ TSLA:
 		Dimensions: 1,2
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
@@ -273,7 +280,8 @@ AGUN:
 		Dimensions: 1,2
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -310,7 +318,8 @@ DOME:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -334,7 +343,8 @@ PBOX:
 		Power: -15
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 6
 	AttackOmni:
@@ -360,7 +370,8 @@ HBOX:
 		Power: -15
 	Health:
 		HP: 600
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 6
 	AttackOmni:
@@ -386,7 +397,8 @@ GUN:
 		Power: -40
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -417,7 +429,8 @@ FTUR:
 		Power: -20
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 6
 	AttackOmni:
@@ -446,7 +459,8 @@ SAM:
 		Dimensions: 2,1
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -481,7 +495,8 @@ ATEK:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -508,7 +523,8 @@ WEAP:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -531,7 +547,8 @@ FACT:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -570,7 +587,8 @@ PROC:
 		Capturable: true
 	Health:
 		HP: 900
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 6
 	Bib:
@@ -606,7 +624,8 @@ SILO:
 		Capturable: true
 	Health:
 		HP: 300
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	RenderBuildingOre:
@@ -637,7 +656,8 @@ HPAD:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -671,7 +691,8 @@ AFLD:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Exit@1:
@@ -704,7 +725,8 @@ POWR:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -731,7 +753,8 @@ APWR:
 		Capturable: true
 	Health:
 		HP: 700
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -758,7 +781,8 @@ STEK:
 		Capturable: true
 	Health:
 		HP: 600
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -785,7 +809,8 @@ BARR:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -822,7 +847,8 @@ TENT:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -858,7 +884,8 @@ FIX:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	BelowUnits:
@@ -1020,7 +1047,8 @@ SBAG:
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
-		Armor: none
+	Armor:
+		Type: None
 
 FENC:
 	Inherits: ^Wall
@@ -1037,7 +1065,8 @@ FENC:
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
-		Armor: none
+	Armor:
+		Type: None
 
 BRIK:
 	Inherits: ^Wall
@@ -1057,23 +1086,27 @@ BRIK:
 		DestroyedSound: kaboom30.aud
 	Health:
 		HP: 1500
-		Armor: none
+	Armor:
+		Type: None
 	Wall:
 		CrushClasses: heavywall
 CYCL:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor: none
+	Armor: 
+		Type: None
 		
 BARB:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor: none
+	Armor:
+		Type: None
 
 WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor: none
+	Armor: 
+		Type: None

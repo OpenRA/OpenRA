@@ -55,7 +55,8 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Armor: none
+	Armor:
+		Type: None
 	RevealsShroud:
 		Range: 4
 	Mobile:
@@ -162,7 +163,8 @@
 	-RepairableBuilding:
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	Tooltip:
 		Name: Civilian Building
 
@@ -187,7 +189,8 @@
 ^Husk:
 	Health:
 		HP: 140
-		Armor: Heavy
+	Armor:
+		Type: Heavy
 	Husk:
 	Selectable: 
 		Priority: -1

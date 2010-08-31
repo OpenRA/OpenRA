@@ -4,7 +4,8 @@ BADR:
 	Inherits: ^Plane
 	Health:
 		HP: 60
-		Armor: light
+	Armor:
+		Type: Light
 	Plane:
 		ROT: 5
 		Speed: 16
@@ -24,7 +25,8 @@ BADR.bomber:
 	Inherits: ^Plane
 	Health:
 		HP: 60
-		Armor: light
+	Armor:
+		Type: Light
 	Plane:
 		ROT: 5
 		Speed: 16
@@ -51,7 +53,8 @@ V2RL:
 		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 7
 	RevealsShroud:
@@ -78,7 +81,8 @@ V2RL:
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 300
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 9
 	RevealsShroud:
@@ -110,7 +114,8 @@ V2RL:
 		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 7
 	RevealsShroud:
@@ -142,7 +147,8 @@ V2RL:
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 550
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 5
 	RevealsShroud:
@@ -174,7 +180,8 @@ V2RL:
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 750
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 3
 	RevealsShroud:
@@ -213,7 +220,8 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 75
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 2
 		Speed: 6
@@ -244,7 +252,8 @@ HARV:
 		Resources: Ore,Gems
 	Health:
 		HP: 600
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 6
 	RevealsShroud:
@@ -267,7 +276,8 @@ MCV:
 		Priority: 3
 	Health:
 		HP: 600
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 6
 	RevealsShroud:
@@ -296,7 +306,8 @@ JEEP:
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 10
 		Speed: 12
@@ -325,7 +336,8 @@ APC:
 		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 200
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 10
 	RevealsShroud:
@@ -357,7 +369,8 @@ MNLY.AP:
 		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 9
 	RevealsShroud:
@@ -385,7 +398,8 @@ MNLY.AT:
 		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 9
 	RevealsShroud:
@@ -402,7 +416,8 @@ TRUK:
 	Inherits: ^Vehicle
 	Health:
 		HP: 110
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 10
 	RevealsShroud:
@@ -424,7 +439,8 @@ SS:
 		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 250
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 4
 		Speed: 5
@@ -463,7 +479,8 @@ MSUB:
 		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 400
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 3
 		Speed: 3
@@ -501,7 +518,8 @@ DD:
 		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		ROT: 7
 		Speed: 6
@@ -534,7 +552,8 @@ CA:
 		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
 		HP: 800
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		ROT: 2
 		Speed: 2
@@ -569,7 +588,8 @@ LST:
 		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
 	Health:
 		HP: 350
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		ROT: 10
 		Speed: 14
@@ -597,7 +617,8 @@ PT:
 		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Health:
 		HP: 200
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		ROT: 7
 		Speed: 9
@@ -630,7 +651,8 @@ MIG:
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Health:
 		HP: 70
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 12
 	AttackPlane:
@@ -667,7 +689,8 @@ YAK:
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
 	Health:
 		HP: 60
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 10
 	AttackPlane:
@@ -704,7 +727,8 @@ TRAN:
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
 		HP: 90
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 12
 	Helicopter:
@@ -736,7 +760,8 @@ HELI:
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Health:
 		HP: 120
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
@@ -772,7 +797,8 @@ HIND:
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
 		HP: 120
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
@@ -800,7 +826,8 @@ U2:
 	Inherits: ^Plane
 	Health:
 		HP: 2000
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Plane:
 		ROT: 7
 		Speed: 40
@@ -871,7 +898,8 @@ TTNK:
 		Description: TODO
 	Health:
 		HP: 110
-		Armor: light
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 8
 	RevealsShroud:

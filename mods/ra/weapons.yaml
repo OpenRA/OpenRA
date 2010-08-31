@@ -6,7 +6,11 @@ Colt45:
 		Speed: 100
 	Warhead:
 		Spread: 1
-		Verses: 100%,5%,5%,5%,5%
+		Versus:
+			Wood: 5%
+			Light: 5%
+			Heavy: 5%
+			Concrete: 5%
 		Explosion: piff
 		InfDeath: 1
 		Damage: 50
@@ -20,7 +24,11 @@ ZSU-23:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: med_explosion
 		Damage: 25
 		
@@ -32,41 +40,65 @@ Vulcan:
 		Speed: 100
 	Warhead@1:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 	Warhead@2:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 5
 		Delay: 7
 	Warhead@3:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 4
 	Warhead@4:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 6
 	Warhead@5:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
 		Delay: 8
 	Warhead@6:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 7
@@ -92,7 +124,11 @@ Maverick:
 		RangeLimit: 60
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
@@ -108,7 +144,11 @@ FireballLauncher:
 		Image: FB1
 	Warhead:
 		Spread: 5
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 4
@@ -125,7 +165,12 @@ Flamer:
 		Image: FB1
 	Warhead:
 		Spread: 4
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Wood: 100%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 4
@@ -141,7 +186,11 @@ ChainGun:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		WaterExplosion: small_splash
 		InfDeath: 1
@@ -155,7 +204,11 @@ Pistol:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,60%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 1
@@ -168,7 +221,11 @@ M1Carbine:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,25%,30%,10%,10%
+		Versus: 
+			Wood: 25%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
 		Explosion: piffs
 		InfDeath: 1
 		Damage: 15
@@ -191,7 +248,11 @@ Dragon:
 		RangeLimit: 35
 	Warhead:
 		Spread: 3
-		Verses: 10%,75%,35%,100%,20%
+		Versus: 
+			None: 10%
+			Wood: 75%
+			Light: 35%
+			Concrete: 20%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
@@ -217,7 +278,11 @@ Hellfire:
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
@@ -236,7 +301,11 @@ Grenade:
 		Image: BOMB
 	Warhead:
 		Spread: 6
-		Verses: 50%,100%,25%,5%,100%
+		Versus: 
+			None: 50%
+			Wood: 100%
+			Light: 25%
+			Heavy: 5%
 		Explosion: med_explosion
 		WaterExplosion: small_splash
 		InfDeath: 2
@@ -253,7 +322,11 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 30%,40%,100%,40%,30%
+		Versus: 
+			None: 30%
+			Wood: 40%
+			Heavy: 40%
+			Concrete: 30%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -269,7 +342,11 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 20%,75%,75%,100%,50%
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -287,7 +364,11 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 20%,75%,75%,100%,50%
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -304,7 +385,11 @@ Grenade:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 20%,75%,75%,100%,50%
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -320,7 +405,11 @@ TurretGun:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -346,7 +435,11 @@ MammothTusk:
 		RangeLimit: 40
 	Warhead:
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
@@ -365,7 +458,11 @@ MammothTusk:
 		Image: 120MM
 	Warhead:
 		Spread: 8
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
@@ -381,7 +478,11 @@ M60mg:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,10%,30%,10%,10%
+		Versus: 
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
 		Explosion: piffs
 		WaterExplosion: small_splash
 		InfDeath: 1
@@ -398,7 +499,11 @@ Napalm:
 		Arm: 24
 	Warhead:
 		Spread: 4
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: med_splash
 		InfDeath: 4
@@ -409,7 +514,11 @@ Napalm:
 CrateNapalm:
 	Warhead:
 		Spread: 4
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: napalm
 		InfDeath: 4
@@ -421,7 +530,11 @@ CrateExplosion:
 	Warhead:
 		Damage: 500
 		Spread: 10
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: self_destruct
 		WaterExplosion: self_destruct
 		InfDeath: 3
@@ -436,7 +549,6 @@ TeslaZap:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 5
 		Damage: 100
 		
@@ -457,7 +569,12 @@ Nike:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 90%,0%,90%,50%,0%
+		Versus: 
+			None: 90%
+			Wood: 0%
+			Light: 90%
+			Heavy: 50%
+			Concrete: 0%
 		Explosion: med_explosion
 		InfDeath: 2
 		SmudgeType: Crater
@@ -480,7 +597,11 @@ RedEye:
 		Speed: 35
 	Warhead:
 		Spread: 3
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: med_explosion
 		InfDeath: 2
 		SmudgeType: Crater
@@ -499,7 +620,11 @@ RedEye:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 60%,75%,60%,25%,100%
+		Versus: 
+			None: 60%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
 		InfDeath: 2
@@ -522,7 +647,10 @@ SubMissile:
 		Trail: smokey
 	Warhead:
 		Spread: 10
-		Verses: 40%,100%,30%,30%,100%
+		Versus: 
+			None: 40%,
+			Light: 30%
+			Heavy: 30%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
 		InfDeath: 2
@@ -549,7 +677,11 @@ Stinger:
 		Speed: 20
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
@@ -569,7 +701,11 @@ TorpTube:
 		Speed: 6
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
@@ -584,7 +720,11 @@ TorpTube:
 		Image: 120MM
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
@@ -603,7 +743,11 @@ DepthCharge:
 		Inaccuracy: 3
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
@@ -617,7 +761,11 @@ ParaBomb:
 		Image: PARABOMB
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		Explosion: self_destruct
 		WaterExplosion: small_splash
 		InfDeath: 3
@@ -631,7 +779,11 @@ DogJaw:
 	Report: DOGG5P
 	Warhead:
 		Spread: 5
-		Verses: 100%,0%,0%,0%,0%
+		Versus: 
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
 		InfDeath: 0
 		Damage: 100
 		
@@ -643,7 +795,11 @@ Heal:
 		Speed: 100
 	Warhead:
 		Spread: 5
-		Verses: 100%,0%,0%,0%,0%
+		Versus: 
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
 		InfDeath: 0
 		Damage: -50
 		
@@ -663,7 +819,11 @@ SCUD:
 		Angle: .1
 	Warhead:
 		Spread: 8
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: napalm
 		WaterExplosion: large_splash
 		InfDeath: 2
@@ -677,7 +837,11 @@ Atomic:
 		Damage: 1000
 		Spread: 6
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 4
@@ -687,7 +851,11 @@ Atomic:
 		SmudgeType: Scorch
 		Size: 5,4
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
 
@@ -695,7 +863,11 @@ UnitExplode:
 	Warhead:
 		Damage: 500
 		Spread: 10
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: self_destruct
 		InfDeath: 3
 		ImpactSound: kaboom22
@@ -704,35 +876,44 @@ UnitExplodeSmall:
 	Warhead:
 		Damage: 40
 		Spread: 10
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: large_explosion
 		InfDeath: 3
 		ImpactSound: kaboom15
 
 Crush:
 	Warhead:
-		Verses: 100%,100%,100%,100%,100%
 		ImpactSound: squishy2
 		Damage: 100
 
 ATMine:
 	Warhead:
 		Damage: 500
-		Verses: 0%,0%,100%,100%,0%
+		Versus: 
+			None: 0%
+			Wood: 0%
+			Concrete: 0%
 		ImpactSound: mineblo1
 		Explosion: large_explosion
 
 APMine:
 	Warhead:
 		Damage: 700
-		Verses: 100%,0%,0%,0%,0%
+		Versus: 
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
 		ImpactSound: mine1
 		InfDeath: 2
 		Explosion: napalm
 		
 Demolish:
 	Warhead:
-		Verses: 100%,100%,100%,100%,100%
 		ImpactSound: kaboom25
 		Explosion: building
 
@@ -745,7 +926,6 @@ PortaTesla:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 5
 		Damage: 45
 
@@ -757,6 +937,5 @@ TTankZap:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 5
 		Damage: 100

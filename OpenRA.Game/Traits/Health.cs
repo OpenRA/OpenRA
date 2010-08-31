@@ -22,7 +22,6 @@ namespace OpenRA.Traits
 	public class HealthInfo : ITraitInfo
 	{
 		public readonly int HP = 0;
-		public readonly ArmorType Armor = ArmorType.none;		
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 

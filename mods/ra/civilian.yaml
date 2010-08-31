@@ -7,7 +7,8 @@ FCOM:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -126,7 +127,8 @@ MISS:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor:
+		Type: Wood
 	Bib:
 
 BR1:
