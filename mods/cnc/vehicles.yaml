@@ -594,8 +594,17 @@ LST:
 		Name: Landing Craft
 	Mobile:
 		Crushes: crate
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%, 100%
+		TerrainSpeeds:
+			Clear: 100%
+			Rough: 100%
+			Road: 100%
+			Tree: 100%
+			Water: 100%
+			Rock: 100%
+			Wall: 100%
+			Ore: 100%
+			Beach: 100%
+			River: 100%
 		InitialFacing:0
 		ROT: 4
 		Speed: 10

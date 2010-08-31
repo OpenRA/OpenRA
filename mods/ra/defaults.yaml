@@ -2,8 +2,12 @@
 	AppearsOnRadar:
 	Mobile:
 		Crushes: atmine, crate
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 60%, 40%, 100%, 0%, 0%, 0%, 0%, 90%, 40%, 0%
+		TerrainSpeeds:
+			Clear: 60%
+			Rough: 40%
+			Road: 100%
+			Ore: 90%
+			Beach: 40%
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
@@ -25,8 +29,12 @@
 	AppearsOnRadar:
 	Mobile:
 		Crushes: wall, atmine, crate
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 80%, 70%, 100%, 0%, 0%, 0%, 0%, 90%, 70%, 0%
+		TerrainSpeeds:
+			Clear: 80%
+			Rough: 70%
+			Road: 100%
+			Ore: 70%
+			Beach: 70%
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
@@ -52,8 +60,12 @@
 		Range: 4
 	Mobile:
 		Crushes: apmine, crate
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 90%, 80%, 100%, 0%, 0%, 0%, 0%, 100%, 80%, 0%
+		TerrainSpeeds:
+			Clear: 90%
+			Rough: 80%
+			Road: 100%
+			Ore: 100%
+			Beach: 80%
 	Selectable:
 		Voice: GenericVoice
 	Targetable:
@@ -74,8 +86,8 @@
 	AppearsOnRadar:
 	Mobile:
 		Crushes: crate
-		TerrainTypes: Clear, Rough, Road, Tree, Water, Rock, Wall, Ore, Beach, River
-		TerrainSpeeds: 0%, 0%, 0%, 0%, 100%, 0%, 0%, 0%, 0%, 0%
+		TerrainSpeeds:
+			Water: 100%
 	Selectable:
 		Voice: ShipVoice
 	Targetable:

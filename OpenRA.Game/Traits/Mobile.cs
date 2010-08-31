@@ -14,33 +14,49 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	public class MobileInfo : ITraitInfo
 	{
-		public readonly string[] TerrainTypes;
-		public readonly float[] TerrainSpeeds;
-		public readonly string[] TerrainCostOverrides;
-		public readonly float[] TerrainCosts;
-		public readonly string[] Crushes;
-		public readonly int WaitAverage = 60;
-		public readonly int WaitSpread = 20;
-		public readonly int InitialFacing = 128;
-		public readonly int ROT = 255;
-		public readonly int Speed = 1;
-		public readonly bool OnRails = false;
+		[FieldLoader.LoadUsing( "LoadSpeeds" )]
+		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
+		[FieldLoader.Load] public readonly string[] Crushes;
+		[FieldLoader.Load] public readonly int WaitAverage = 60;
+		[FieldLoader.Load] public readonly int WaitSpread = 20;
+		[FieldLoader.Load] public readonly int InitialFacing = 128;
+		[FieldLoader.Load] public readonly int ROT = 255;
+		[FieldLoader.Load] public readonly int Speed = 1;
+		[FieldLoader.Load] public readonly bool OnRails = false;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
+		
+		static object LoadSpeeds( MiniYaml y )
+		{
+			Dictionary<string,TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
+			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
+			{
+				var speed = (float)FieldLoader.GetValue("speed", typeof(float),t.Value.Value);
+				var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (float)FieldLoader.GetValue("cost", typeof(float), t.Value.NodesDict["PathingCost"].Value) : 1f/speed;
+				ret.Add(t.Key, new TerrainInfo{Speed = speed, Cost = cost});
+			}
+			
+			return ret;
+		}
+		
+		public class TerrainInfo
+		{
+			public float Cost = float.PositiveInfinity;
+			public float Speed = 0;
+		}
 	}
-
+	
 	public class Mobile : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
-		public readonly Dictionary<string,float> TerrainCost;
-		public readonly Dictionary<string,float> TerrainSpeed;
-
+		
 		[Sync]
 		public int Facing { get; set; }
 		[Sync]
@@ -93,26 +109,6 @@ namespace OpenRA.Traits
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
-
-			TerrainCost = new Dictionary<string, float>();
-			TerrainSpeed = new Dictionary<string, float>();
-			
-			if (info.TerrainTypes.Count() != info.TerrainSpeeds.Count())
-				throw new InvalidOperationException("Mobile TerrainType/TerrainSpeed length mismatch");
-			
-			if (info.TerrainCostOverrides != null)
-				for (int i = 0; i < info.TerrainCostOverrides.Count(); i++)
-				{		
-					TerrainCost.Add(info.TerrainCostOverrides[i], info.TerrainCosts[i]);
-				}
-			
-			for (int i = 0; i < info.TerrainTypes.Count(); i++)
-			{		
-				if (!TerrainCost.ContainsKey(info.TerrainTypes[i]))
-					TerrainCost.Add(info.TerrainTypes[i], 1f/info.TerrainSpeeds[i]);
-				
-				TerrainSpeed.Add(info.TerrainTypes[i], info.TerrainSpeeds[i]);
-			}
 		}
 
 		public void SetPosition(Actor self, int2 cell)
@@ -259,18 +255,24 @@ namespace OpenRA.Traits
 				return float.PositiveInfinity;
 
 			var type = self.World.GetTerrainType(cell);
-			return TerrainCost[type];
+			if (!Info.TerrainSpeeds.ContainsKey(type))
+				return float.PositiveInfinity;
+			
+			return Info.TerrainSpeeds[type].Cost;
 		}
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)
 		{
 			var type = self.World.GetTerrainType(cell);
-
+			
+			if (!Info.TerrainSpeeds.ContainsKey(type))
+				return 0;
+			
 			var modifier = self
 				.TraitsImplementing<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return Info.Speed * TerrainSpeed[type] * modifier;
+			return Info.Speed * Info.TerrainSpeeds[type].Speed * modifier;
 		}
 		
 		public IEnumerable<float2> GetCurrentPath(Actor self)
