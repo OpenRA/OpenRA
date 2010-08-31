@@ -29,7 +29,7 @@ Atomic:
 		DamageModel: PerCell
 		Damage: 250
 		SmudgeType: Scorch
-		Size: 5,4
+		Size: 5
 		Ore: true
 		Verses: 90%,100%,60%,25%,50%
 		Delay: 3

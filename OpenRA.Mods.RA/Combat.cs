@@ -57,8 +57,9 @@ namespace OpenRA.Mods.RA
 
 				if (warhead.Size[0] > 0)
 				{
-					var smudgeCells = world.FindTilesInCircle(targetTile, warhead.Size[0])
-						.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+					var smudgeCells = world.FindTilesInCircle(targetTile, warhead.Size[0]);
+					if (warhead.Size.Length == 2 )
+						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1])) ;
 
 					foreach (var sc in smudgeCells)
 						smudgeLayer.AddSmudge(sc);
