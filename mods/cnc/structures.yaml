@@ -308,7 +308,7 @@ HQ:
 		Owner: gdi,nod
 	Building:
 		Power: -40
-		Footprint: __ xx
+		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
 	Health:
@@ -359,7 +359,7 @@ FIX:
 		Owner: gdi,nod
 	Building:
 		Power: -30
-		Footprint: _x_ xxx _x_
+		Footprint: ___ xxx ===
 		Dimensions: 3,3
 		Capturable: true
 	Health:
@@ -371,6 +371,7 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
+	Bib:
 
 HPAD:
 	Inherits: ^Building
@@ -425,7 +426,7 @@ EYE:
 		Owner: gdi
 	Building:
 		Power: -200
-		Footprint: __ xx
+		Footprint: x_ xx
 		Dimensions: 2,2
 		Capturable: true
 	Health:
