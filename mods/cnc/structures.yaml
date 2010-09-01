@@ -366,7 +366,7 @@ FIX:
 		Owner: gdi,nod
 	Building:
 		Power: -30
-		Footprint: ___ xxx ===
+		Footprint: _x_ xxx =x=
 		Dimensions: 3,3
 		Capturable: true
 	Health:
