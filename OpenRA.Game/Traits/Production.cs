@@ -16,33 +16,32 @@ namespace OpenRA.Traits
 {
 	public class ProductionInfo : ITraitInfo
 	{
-		public readonly float[] SpawnOffsets; // in px relative to CenterLocation
-		public readonly int[] ExitCells; // in cells relative to TopLeft, supports a list for multiple exits
 		public readonly string[] Produces = { };
 		
 		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
 
+	public class ExitInfo : TraitInfo<Exit>
+	{
+		public readonly float2 SpawnOffset = float2.Zero; // in px relative to CenterLocation
+		public readonly int2 ExitCell = int2.Zero; // in cells relative to TopLeft
+		public readonly int Facing = -1;
+	}
+	public class Exit {}
+	
 	public class Production
-	{	
-		public readonly List<Pair<float2, int2>> Spawns = new List<Pair<float2, int2>>();
+	{		
 		public ProductionInfo Info;
 		public Production(ProductionInfo info)
 		{
 			Info = info;
-			
-			if (info.SpawnOffsets == null || info.ExitCells == null)
-				return;
-			
-			if (info.SpawnOffsets.Length != info.ExitCells.Length)
-				throw new System.InvalidOperationException("SpawnOffset, ExitCells length mismatch");
-			
-			for (int i = 0; i < info.ExitCells.Length; i+=2)
-				Spawns.Add(Pair.New(new float2(info.SpawnOffsets[i],info.SpawnOffsets[i+1]), new int2(info.ExitCells[i], info.ExitCells[i+1])));
 		}
 		
-		public void DoProduction(Actor self, Actor newUnit, int2 exit, float2 spawn)
+		public void DoProduction(Actor self, Actor newUnit, ExitInfo exitinfo)
 		{
+			var exit = self.Location + exitinfo.ExitCell;
+			var spawn = self.CenterLocation + exitinfo.SpawnOffset;
+
 			var move = newUnit.Trait<IMove>();
 			var facing = newUnit.TraitOrDefault<IFacing>();
 			
@@ -51,7 +50,7 @@ namespace OpenRA.Traits
 			var to = Util.CenterOfCell(exit);
 			newUnit.CenterLocation = spawn;
 			if (facing != null)
-				facing.Facing = Util.GetFacing(to - spawn, facing.Facing);
+				facing.Facing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, facing.Facing) : exitinfo.Facing;
 			self.World.Add(newUnit);
 
 			// Animate the spawn -> exit transition
@@ -95,16 +94,15 @@ namespace OpenRA.Traits
 			// Todo: remove assumption on Mobile; 
 			// required for 3-arg CanEnterCell
 			var mobile = newUnit.Trait<Mobile>();
-	
+			
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
-			foreach (var s in Spawns)
+			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
 			{
-				var exit = self.Location + s.Second;
-				var spawn = self.CenterLocation + s.First;
-				if (mobile.CanEnterCell(exit,self,true))
+				System.Console.WriteLine("here");
+				if (mobile.CanEnterCell(self.Location + s.ExitCell,self,true))
 				{
-					DoProduction(self, newUnit, exit, spawn);
+					DoProduction(self, newUnit, s);
 					return true;
 				}
 			}

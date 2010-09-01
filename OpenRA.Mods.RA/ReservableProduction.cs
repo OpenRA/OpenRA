@@ -32,10 +32,10 @@ namespace OpenRA.Mods.RA
 
 			// Pick a spawn/exit point
 			// Todo: Reorder in a synced random way
-			foreach (var s in Spawns)
+			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
 			{
-				var exit = self.Location + s.Second;
-				var spawn = self.CenterLocation + s.First;
+				var exit = self.Location + s.ExitCell;
+				var spawn = self.CenterLocation + s.SpawnOffset;
 				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any())
 				{
 					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary

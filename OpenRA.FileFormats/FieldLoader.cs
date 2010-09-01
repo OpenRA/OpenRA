@@ -144,6 +144,18 @@ namespace OpenRA.FileFormats
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new int2(int.Parse(parts[0]), int.Parse(parts[1]));
 			}
+			else if (fieldType == typeof(float2))
+			{
+				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				float xx = 0;
+				float yy = 0;
+				float res;
+				if (float.TryParse(parts[0].Replace("%",""), out res))
+					xx = res * (parts[0].Contains( '%' ) ? 0.01f : 1f);
+				if (float.TryParse(parts[1].Replace("%",""), out res))
+					yy = res * (parts[1].Contains( '%' ) ? 0.01f : 1f);
+				return new float2(xx,yy);
+			}
 
 			UnknownFieldAction("[Type] {0}".F(x),fieldType);
 			return null;

@@ -179,11 +179,15 @@ PYLE:
 		Range: 5
 	Bib:
 	RallyPoint:
-	Production:
+	Exit@1:
+		SpawnOffset: -10,2
+		ExitCell: 0,1
+	Exit@2:
+		SpawnOffset: 7,7
+		ExitCell: 1,1	
+	Production:		
 		Produces: Infantry
-		SpawnOffsets: -10,2, 7,7
-		ExitCells: 0,1, 1,1
-	ProductionQueue@Vehicle:
+	ProductionQueue:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -212,10 +216,11 @@ HAND:
 		Range: 5
 	Bib:
 	RallyPoint:
+	Exit@1:
+		SpawnOffset: 12,24
+		ExitCell: 1,2
 	Production:
 		Produces: Infantry
-		SpawnOffsets: 12,24
-		ExitCells:1,2
 	ProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
@@ -247,10 +252,11 @@ AFLD:
 	RallyPoint:
 		RallyPoint: 4,2
 	BelowUnits:
+	Exit@1:
+		SpawnOffset: -24,0
+		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
-		SpawnOffsets: -24,0
-		ExitCells:3,1
 	ProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
@@ -283,10 +289,11 @@ WEAP:
 	RenderWarFactory:
 	RallyPoint:
 		RallyPoint: 0,3
+	Exit@1:
+		SpawnOffset: -8,-8
+		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
-		SpawnOffsets: -8,-8
-		ExitCells: 0,2
 	ProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
@@ -396,9 +403,9 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Bib:
+	Exit@1:
+		SpawnOffset: 0,-6
 	ReservableProduction:
-		SpawnOffsets: 0,-6
-		ExitCells: 0,0
 		Produces: Plane
 	BelowUnits:
 	Reservable:

@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (res != null)
 				self.Trait<Helicopter>().reservation = res.Reserve(self);
 
-			var pi = dest.Trait<Production>();
-			var offset = pi != null ? pi.Spawns.First().First : float2.Zero;
+			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+			var offset = exit != null ? exit.SpawnOffset : float2.Zero;
 
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterLocation + offset),

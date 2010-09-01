@@ -37,8 +37,7 @@ namespace OpenRA.Mods.Cnc
 			
 			
 			// Assume a single exit point for simplicity
-			var spawn = self.CenterLocation + Spawns.First().First;
-			var exit = self.Location + Spawns.First().Second;
+			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
 			
 			var rb = self.Trait<RenderBuilding>();
 			rb.PlayCustomAnimRepeating(self, "active");
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 					if (self.IsDead())
 						return;
 					rb.PlayCustomAnimRepeating(self, "idle");
-					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit, spawn));
+					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit));
 				}));
 				a.QueueActivity(new Fly(endPos));
 				a.QueueActivity(new RemoveSelf());
