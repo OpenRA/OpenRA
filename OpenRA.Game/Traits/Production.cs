@@ -98,14 +98,11 @@ namespace OpenRA.Traits
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
-			{
-				System.Console.WriteLine("here");
 				if (mobile.CanEnterCell(self.Location + s.ExitCell,self,true))
 				{
 					DoProduction(self, newUnit, s);
 					return true;
 				}
-			}
 			return false;
 		}
 
