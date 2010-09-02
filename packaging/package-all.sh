@@ -28,7 +28,7 @@ msg "\E[32m" "Connecting to GIT server...."
 if [ -d $_gitname ] ; then
   pushd $_gitname &> /dev/null && git pull origin
   msg "\E[32m" "The local files are updated."
-  popd &> /dev/null
+  popd &> /dev/null # $_gitname
 else
   git clone $_gitroot $_gitname
 fi
@@ -54,8 +54,8 @@ if [ $? -ne 0 ]; then
 fi
 
 make prefix=/usr DESTDIR=../built install
-popd &> /dev/null
-popd &> /dev/null
+
+pushd packaging &> /dev/null
 
 #Arch-Linux
 msg "\E[34m" "Building Arch-Linux package."
@@ -98,3 +98,6 @@ else
 fi
 popd &> /dev/null
 
+popd &> /dev/null # packaging
+popd &> /dev/null # $_gitname-build
+popd &> /dev/null # ~/openra-package/
