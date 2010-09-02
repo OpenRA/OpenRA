@@ -47,13 +47,11 @@ if [ $? -ne 0 ]; then
 fi
 
 msg "\E[32m" "Starting make..."
-make prefix=/usr all
+make prefix=/usr DESTDIR=../built install
 if [ $? -ne 0 ]; then
   msg "\E[31m" "Build failed."
   exit 1
 fi
-
-make prefix=/usr DESTDIR=../built install
 
 pushd packaging &> /dev/null
 
