@@ -22,6 +22,8 @@ namespace OpenRA.Graphics
 		readonly float2 screenSize;
 		float2 scrollPosition;
 		readonly Renderer renderer;
+		readonly int2 mapStart;
+		readonly int2 mapEnd;
 
 		public float2 Location { get { return scrollPosition; } }
 
@@ -35,13 +37,31 @@ namespace OpenRA.Graphics
 
 		public void Scroll(float2 delta)
 		{
-			scrollPosition = scrollPosition + delta;
+		  float2 topLeftBorder = (Game.CellSize* mapStart).ToFloat2();
+		  float2 bottomRightBorder = (Game.CellSize* mapEnd).ToFloat2();
+		  float2 newScrollPosition = scrollPosition + delta;
+		  
+		  if(newScrollPosition.Y < topLeftBorder.Y)
+			newScrollPosition.Y = topLeftBorder.Y;
+
+		  if(newScrollPosition.X < topLeftBorder.X)
+			newScrollPosition.X = topLeftBorder.X;
+			
+		  if(newScrollPosition.Y > bottomRightBorder.Y-screenSize.Y)
+			newScrollPosition.Y = bottomRightBorder.Y-screenSize.Y;
+
+		  if(newScrollPosition.X > bottomRightBorder.X-screenSize.X)
+			newScrollPosition.X = bottomRightBorder.X-screenSize.X;
+
+		  scrollPosition = newScrollPosition;
 		}
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
+			this.mapStart = mapStart;
+			this.mapEnd = mapEnd;
 
 			this.scrollPosition = Game.CellSize* mapStart;
 		}

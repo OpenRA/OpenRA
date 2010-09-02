@@ -50,7 +50,7 @@ namespace OpenRA.Widgets
 		{
 			if (!Game.Settings.Game.ViewportEdgeScroll)
 				return null;
-			
+
 			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Left))
 				return "scroll-tl";
 			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Right))
