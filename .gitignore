@@ -44,6 +44,9 @@ settings.ini
 
 packaging/windows/*.exe
 
+# osx crap
+.DS_Store
+
 # osx build crap
 packaging/osx/launcher/build/
 packaging/osx/launcher/OpenRA.xcodeproj/*.pbxuser
