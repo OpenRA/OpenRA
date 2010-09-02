@@ -55,6 +55,25 @@ namespace OpenRA.Graphics
 
 		  scrollPosition = newScrollPosition;
 		}
+		
+		public ScrollDirection GetBlockedDirections()
+		{
+			int2 topLeftBorder = (Game.CellSize* mapStart);
+		  	int2 bottomRightBorder = (Game.CellSize* mapEnd);
+			
+			ScrollDirection blockedDirections = ScrollDirection.None;
+			
+			if(scrollPosition.Y <= topLeftBorder.Y)
+				blockedDirections = blockedDirections.Set(ScrollDirection.Up, true);
+			if(scrollPosition.X <= topLeftBorder.X)
+				blockedDirections = blockedDirections.Set(ScrollDirection.Left, true);
+			if(scrollPosition.Y >= bottomRightBorder.Y - screenSize.Y)
+				blockedDirections = blockedDirections.Set(ScrollDirection.Down, true);
+		  	if(scrollPosition.X >= bottomRightBorder.X - screenSize.X)
+				blockedDirections = blockedDirections.Set(ScrollDirection.Right, true);
+			
+			return blockedDirections;
+		}
 
 		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
