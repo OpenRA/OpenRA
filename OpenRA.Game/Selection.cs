@@ -52,7 +52,11 @@ namespace OpenRA
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
 		public void Clear() { actors = new List<Actor>(); }
-
+		public void Remove(Actor a)
+		{
+			actors.Remove(a);
+		}
+		
 		public void Tick(World world)
 		{
 			actors.RemoveAll(a => !a.IsInWorld);

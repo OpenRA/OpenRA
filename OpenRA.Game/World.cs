@@ -136,6 +136,9 @@ namespace OpenRA
 		public void Remove(Actor a)
 		{
 			a.IsInWorld = false;
+			if (Selection.Contains(a))
+				Selection.Remove(a);
+			
 			actors.Remove(a);
 			ActorRemoved(a);
 		}
