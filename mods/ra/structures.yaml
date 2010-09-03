@@ -81,9 +81,23 @@ SPEN:
 		Armor: light
 	RevealsShroud:
 		Range: 4
+	Exit@1:
+		SpawnOffset: 0,-5
+		Facing: 96
+		ExitCell: -1,2
+	Exit@2:
+		SpawnOffset: 0,-5
+		Facing: 160
+		ExitCell: 3,2
+	Exit@3:
+		SpawnOffset: 0,0
+		Facing: 32
+		ExitCell: 0,0
+	Exit@4:
+		SpawnOffset: 0,0
+		Facing: 224
+		ExitCell: 2,0
 	Production:
-		SpawnOffsets: 0,-5, 0,-5, 0,0, 0,0
-		ExitCells: -1,2, 3,2, 0,0, 2,0
 		Produces: Ship
 	PrimaryBuilding:
 	IronCurtainable:
@@ -121,10 +135,24 @@ SYRD:
 		Armor: light
 	RevealsShroud:
 		Range: 4
+	Exit@1:
+		SpawnOffset: -24,24
+		Facing: 160
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: 24,24
+		Facing: 224
+		ExitCell: 2,2
+	Exit@3:
+		SpawnOffset: -24,-24
+		Facing: 96
+		ExitCell: 0,0
+	Exit@4:
+		SpawnOffset: 24,-24
+		Facing: 32
+		ExitCell: 2,0
 	Production:
 		Produces: Ship
-		SpawnOffsets: -25,23, 26,23, -22,-25, 23,-25
-		ExitCells: 0,2, 2,2, 0,0, 2,0
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -486,9 +514,10 @@ WEAP:
 	Bib:
 	RenderWarFactory:
 	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,0
+		ExitCell: 1,1
 	Production:
-		SpawnOffsets: 5,0
-		ExitCells: 1,1
 		Produces: Vehicle
 	PrimaryBuilding:
 	IronCurtainable:
@@ -612,9 +641,10 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Bib:
+	Exit@1:
+		SpawnOffset: 0,-6
+		ExitCell: 0,0
 	ReservableProduction:
-		SpawnOffsets: 0,-6
-		ExitCells: 0,0
 		Produces: Plane
 	PrimaryBuilding:
 	BelowUnits:
@@ -644,10 +674,11 @@ AFLD:
 		Armor: heavy
 	RevealsShroud:
 		Range: 7
+	Exit@1:
+		SpawnOffset: 0,-4
+		ExitCell: 1,1
 	ReservableProduction:
 		Produces: Plane
-		SpawnOffsets: 0,4
-		ExitCells: 1,1
 	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
@@ -759,9 +790,13 @@ BARR:
 		Range: 5
 	Bib:
 	RallyPoint:
+	Exit@1:
+		SpawnOffset: -4,19
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: -17,15
+		ExitCell: 0,2
 	Production:
-		SpawnOffsets: -4,19, -17,15
-		ExitCells: 0,2, 0,2
 		Produces: Infantry
 	PrimaryBuilding:
 	IronCurtainable:
@@ -792,10 +827,14 @@ TENT:
 		Range: 5
 	Bib:
 	RallyPoint:
+	Exit@1:
+		SpawnOffset: -1,19
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: -17,15
+		ExitCell: 0,2
 	Production:
 		Produces: Infantry
-		SpawnOffsets: -1,19, -17,15
-		ExitCells: 0,2, 0,2
 	PrimaryBuilding:
 	IronCurtainable:
 
@@ -820,9 +859,10 @@ KENN:
 	RevealsShroud:
 		Range: 4
 	RallyPoint:
+	Exit@1:
+		SpawnOffset: 0,0
+		ExitCell: 0,0
 	Production:
-		SpawnOffsets: 0,0
-		ExitCells: 0,0
 		Produces: Infantry
 	PrimaryBuilding:
 	IronCurtainable:
