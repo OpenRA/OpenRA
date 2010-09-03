@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			// Queue-per-structure
 			var perqueue = world.Selection.Actors.FirstOrDefault(
-				a => a.World.LocalPlayer == a.Owner && a.HasTrait<ProductionQueue>());
+				a => a.IsInWorld && a.World.LocalPlayer == a.Owner && a.HasTrait<ProductionQueue>());
 			
 			if (perqueue != null)
 			{
@@ -42,7 +42,8 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			
 			// Queue-per-player
-			var types = world.Selection.Actors.SelectMany(a => a.TraitsImplementing<Production>())
+			var types = world.Selection.Actors.Where(a => a.IsInWorld)
+											  .SelectMany(a => a.TraitsImplementing<Production>())
 											  .SelectMany(t => t.Info.Produces)
 											  .Distinct();
 			
