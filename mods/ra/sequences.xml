@@ -342,7 +342,7 @@
     <sequence name="scroll-b-blocked" start="128" x="12" y="12" />
     <sequence name="scroll-bl-blocked" start="129" x="12" y="12" />
     <sequence name="scroll-l-blocked" start="130" x="12" y="12" />
-    <sequence name="scroll-lt-blocked" start="131" x="12" y="12" />
+    <sequence name="scroll-tl-blocked" start="131" x="12" y="12" />
     <sequence name="select" start="15" length="6" x="12" y="12" />
 
   	<sequence name="default" start="0" />
