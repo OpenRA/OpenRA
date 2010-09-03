@@ -281,7 +281,7 @@ namespace OpenRA.Widgets.Delegates
 					else
 					{
 						template = EmptySlotTemplate.Clone();
-						var name = template.GetWidget<ButtonWidget>("NAME");
+						var name = template.GetWidget<LabelWidget>("NAME");
 						name.GetText = () => s.Closed ? "Closed" : "Open";
 					}
 
