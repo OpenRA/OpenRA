@@ -35,31 +35,34 @@ namespace OpenRA.Graphics
 		public static int TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
 
-		public void Scroll(float2 delta)
+		public void Scroll(float2 delta){
+			this.Scroll(delta, false);
+		}
+		
+		public void Scroll(float2 delta, bool ignoreBorders)
 		{
-		  float2 topLeftBorder = (Game.CellSize* mapStart).ToFloat2();
-		  float2 bottomRightBorder = (Game.CellSize* mapEnd).ToFloat2();
-		  float2 newScrollPosition = scrollPosition + delta;
-		  
-		  if(newScrollPosition.Y < topLeftBorder.Y)
-			newScrollPosition.Y = topLeftBorder.Y;
-
-		  if(newScrollPosition.X < topLeftBorder.X)
-			newScrollPosition.X = topLeftBorder.X;
+			float2 newScrollPosition = scrollPosition + delta;
 			
-		  if(newScrollPosition.Y > bottomRightBorder.Y-screenSize.Y)
-			newScrollPosition.Y = bottomRightBorder.Y-screenSize.Y;
-
-		  if(newScrollPosition.X > bottomRightBorder.X-screenSize.X)
-			newScrollPosition.X = bottomRightBorder.X-screenSize.X;
-
-		  scrollPosition = newScrollPosition;
+			if(!ignoreBorders){
+		  		float2 topLeftBorder = (Game.CellSize* mapStart).ToFloat2();
+				float2 bottomRightBorder = (Game.CellSize* mapEnd).ToFloat2();
+		  
+				if(newScrollPosition.Y < topLeftBorder.Y)
+					newScrollPosition.Y = topLeftBorder.Y;
+				if(newScrollPosition.X < topLeftBorder.X)
+					newScrollPosition.X = topLeftBorder.X;
+				if(newScrollPosition.Y > bottomRightBorder.Y-screenSize.Y)
+					newScrollPosition.Y = bottomRightBorder.Y-screenSize.Y;
+				if(newScrollPosition.X > bottomRightBorder.X-screenSize.X)
+					newScrollPosition.X = bottomRightBorder.X-screenSize.X;
+			}
+			scrollPosition = newScrollPosition;
 		}
 		
 		public ScrollDirection GetBlockedDirections()
 		{
 			int2 topLeftBorder = (Game.CellSize* mapStart);
-		  	int2 bottomRightBorder = (Game.CellSize* mapEnd);
+			int2 bottomRightBorder = (Game.CellSize* mapEnd);
 			
 			ScrollDirection blockedDirections = ScrollDirection.None;
 			
