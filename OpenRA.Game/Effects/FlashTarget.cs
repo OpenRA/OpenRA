@@ -34,6 +34,9 @@ namespace OpenRA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
+			if (!target.IsInWorld)
+				yield break;
+			
 			if (remainingTicks % 2 == 0)
 				foreach (var r in target.Render())
 					yield return r.WithPalette("highlight");
