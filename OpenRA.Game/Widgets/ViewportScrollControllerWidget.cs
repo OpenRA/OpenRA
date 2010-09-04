@@ -137,17 +137,20 @@ namespace OpenRA.Widgets
 				if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Down, true);
 			}
-			var scroll = new float2(0,0);
-			if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up))
-				scroll += new float2(0, -10);
-			if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
-				scroll += new float2(10, 0);
-			if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down))
-				scroll += new float2(0, 10);
-			if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left))
-				scroll += new float2(-10, 0);
+			if(Keyboard != ScrollDirection.None || Edge != ScrollDirection.None)
+			{
+				var scroll = new float2(0,0);
+				if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up))
+					scroll += new float2(0, -10);
+				if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
+					scroll += new float2(10, 0);
+				if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down))
+					scroll += new float2(0, 10);
+				if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left))
+					scroll += new float2(-10, 0);
 			
-			Game.viewport.Scroll(scroll);
+				Game.viewport.Scroll(scroll);
+			}
 		}
 		
 		public override Widget Clone() { return new ViewportScrollControllerWidget(this); }

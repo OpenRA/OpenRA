@@ -23,7 +23,8 @@ namespace OpenRA.Traits
 		
 		public void Tick (Actor self)
 		{
-			if(shakeEffects.Any()){
+			if(shakeEffects.Any())
+			{
 				Game.viewport.Scroll(GetScrollOffset(), true);
 				shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
 			}
