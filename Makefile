@@ -123,8 +123,8 @@ install: all
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
 	@echo "OpenRA is now installed. You will now want to download"
-	@echo "http://open-ra.org/packages/ra-packages.zip and"
-	@echo "http://open-ra.org/packages/cnc-packages.zip"
+	@echo "http://open-ra.org/packages/ra-packages.php and"
+	@echo "http://open-ra.org/packages/cnc-packages.php"
 	@echo "and extract their contents to"
 	@echo "$(INSTALL_DIR)/mods/ra/packages and "
 	@echo "$(INSTALL_DIR)/mods/cnc/packages respectively."
