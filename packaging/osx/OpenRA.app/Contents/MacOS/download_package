@@ -66,7 +66,7 @@ EOT`
 /usr/bin/osascript << EOT
 	tell application "Terminal"
 		activate
-		do script "cd \"${SUPPORT_PATH}\"; curl -L --create-dirs -o \"./Downloads/${1}\" \"${5}\"; unzip -o \"Downloads/${1}\" -d \"${2}\"; touch done; exit;"
+		do script "cd \"${SUPPORT_PATH}\"; curl --create-dirs -L -o \"./Downloads/${1}\" \"${5}\"; unzip -o \"Downloads/${1}\" -d \"${2}\"; touch done; exit;"
 	end tell
 EOT
 	# Hack around osascript returning before the download finishes
