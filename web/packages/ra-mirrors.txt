@@ -1,0 +1,2 @@
+http://metahash.com/packages/ra-packages.zip
+http://openra.res0l.net/packages/ra-packages.zip

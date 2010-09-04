@@ -1,0 +1,2 @@
+http://metahash.com/packages/cnc-packages.zip
+http://openra.res0l.net/packages/cnc-packages.zip
