@@ -88,3 +88,4 @@ ShokVoice:
 		Select: jchrge1,jjuice1,jjump1,jpower1
 		Move: jdance1,jyes1
 		Attack: jburn1,jcrisp1,jshock1,jlight1
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
