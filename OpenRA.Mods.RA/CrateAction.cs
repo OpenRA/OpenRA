@@ -41,12 +41,10 @@ namespace OpenRA.Mods.RA
 		public virtual void Activate(Actor collector)
 		{
 			Sound.PlayToPlayer(collector.Owner, info.Notification);
-			
-			collector.World.AddFrameEndTask(w => 
-			{
-				if (info.Effect != null)
-					w.Add(new CrateEffect(collector, info.Effect));
-			});
+
+			if (info.Effect != null)
+				collector.World.AddFrameEndTask(
+					w => w.Add(new CrateEffect(collector, info.Effect)));
 		}
 	}
 }
