@@ -50,3 +50,6 @@ have very strange errors.
 * libglfw2
 * nvidia-cg-toolkit
 * libmono-*
+
+OpenRA is incompatible with Compiz, please disable desktop effects when trying
+to run OpenRA or the game will crash.

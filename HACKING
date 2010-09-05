@@ -37,7 +37,7 @@ Three renderers (SpriteRenderer, LineRenderer, Rgba?Renderer) render most stuff.
 
 UserSettings stores the data loaded from settings.ini (or defaults). Eventually we need to be able to save values changed in game into settings.ini (not yet implemented)
 
-Bugs: There is a list of known bugs and features at http://openra.res0l.net/projects/openra/issues . There's also a few at http://github.com/chrisforbes/OpenRA/issues (which won't be ported over, but no more bugs should be added here).
+Bugs: There is a list of known bugs and features at http://red-bull.ijw.co.nz:3690/OpenRA . There's also a few at http://github.com/chrisforbes/OpenRA/issues (which won't be ported over, but no more bugs should be added here).
 
 We also have a website at http://www.open-ra.org/ . 
 
