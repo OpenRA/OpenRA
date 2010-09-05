@@ -1,0 +1,4 @@
+http://open-ra.org/releases/mac/osx-deps-v2.zip
+http://openra.res0l.net/releases/mac/osx-deps-v2.zip
+http://metahash.com/releases/mac/osx-deps-v2.zip
+http://mirumu.jp/pub/releases/mac/osx-deps-v2.zip

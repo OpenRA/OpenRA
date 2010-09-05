@@ -1,13 +1,13 @@
 
 install_ra_packages() {
-    wget http://open-ra.org/packages/ra-packages.php
+    wget "http://open-ra.org/get-dependency.php?file=ra"
     mkdir -p $pkgdir/usr/share/openra/mods/ra/packages
     unzip ra-packages.zip -d $pkgdir/usr/share/openra/mods/ra/packages
     rm ra-packages.zip
 }
 
 install_cnc_packages() {
-    wget http://open-ra.org/packages/cnc-packages.php
+    wget "http://open-ra.org/get-dependency.php?file=cnc"
     mkdir -p $pkgdir/usr/share/openra/mods/cnc/packages
     unzip cnc-packages.zip -d $pkgdir/usr/share/openra/mods/cnc/packages
     rm cnc-packages.zip

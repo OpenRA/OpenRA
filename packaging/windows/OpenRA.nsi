@@ -105,7 +105,7 @@ SectionGroup /e "Mods"
 			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download http://open-ra.org/packages/ra-packages.php ra-packages.zip
+				NSISdl::download "http://open-ra.org/get-dependency.php?file=ra" ra-packages.zip
 				Pop $R0
 				StrCmp $R0 "success" +2
 					Abort
@@ -126,7 +126,7 @@ SectionGroup /e "Mods"
 			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download http://open-ra.org/packages/cnc-packages.php cnc-packages.zip
+				NSISdl::download "http://open-ra.org/get-dependency.php?file=cnc" cnc-packages.zip
 				Pop $R0
 				StrCmp $R0 "success" +2
 					Abort
@@ -169,7 +169,7 @@ Section "-Freetype" Freetype
 	SetOutPath "$TEMP"
 	IfFileExists $INSTDIR\zlib1.dll done installfreetype
 	installfreetype:
-		NSISdl::download http://www.open-ra.org/releases/windows/freetype-zlib.zip freetype-zlib.zip
+		NSISdl::download "http://open-ra.org/get-dependency.php?file=freetype" freetype-zlib.zip
 		Pop $R0
 		StrCmp $R0 "success" +2
 			Abort
@@ -182,7 +182,7 @@ Section "-Cg" Cg
 	SetOutPath "$TEMP"
 	IfFileExists $INSTDIR\cg.dll done installcg
 	installcg:
-		NSISdl::download http://www.open-ra.org/releases/windows/cg-win32.zip cg-win32.zip
+		NSISdl::download "http://open-ra.org/get-dependency.php?file=cg" cg-win32.zip
 		Pop $R0
 		StrCmp $R0 "success" +2
 			Abort
