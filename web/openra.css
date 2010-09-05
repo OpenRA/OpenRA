@@ -178,3 +178,8 @@ div.rounded
 {
 	border: solid 3px #650b03
 }
+
+pre, code
+{
+	font-family: Consolas, Incosolata, Lucida Console, Monospace;
+}
