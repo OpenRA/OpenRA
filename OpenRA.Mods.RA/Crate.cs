@@ -75,7 +75,6 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-
 			if( ++ticks >= self.Info.Traits.Get<CrateInfo>().Lifetime * 25 )
 				self.Destroy();
 		}
