@@ -2,13 +2,13 @@
 $mirrors_file = "";
 switch ($_GET["file"])
 {
-    case "ra":
+    case "ra-packages":
         $mirrors_file = "packages/ra-mirrors.txt";
         break;
-    case "cnc":
+    case "cnc-packages":
         $mirrors_file = "packages/cnc-mirrors.txt";
         break;
-    case "osx":
+    case "osx-deps-v2":
         $mirrors_file = "releases/mac/osx-dependencies-mirrors.txt";
         break;
     case "freetype":

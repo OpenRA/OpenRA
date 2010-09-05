@@ -105,7 +105,7 @@ SectionGroup /e "Mods"
 			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download "http://open-ra.org/get-dependency.php?file=ra" ra-packages.zip
+				NSISdl::download "http://open-ra.org/get-dependency.php?file=ra-packages" ra-packages.zip
 				Pop $R0
 				StrCmp $R0 "success" +2
 					Abort
@@ -126,7 +126,7 @@ SectionGroup /e "Mods"
 			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download "http://open-ra.org/get-dependency.php?file=cnc" cnc-packages.zip
+				NSISdl::download "http://open-ra.org/get-dependency.php?file=cnc-packages" cnc-packages.zip
 				Pop $R0
 				StrCmp $R0 "success" +2
 					Abort
