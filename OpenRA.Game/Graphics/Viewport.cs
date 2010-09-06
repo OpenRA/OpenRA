@@ -55,14 +55,14 @@ namespace OpenRA.Graphics
 			float2 topLeftBorder = (Game.CellSize* mapStart).ToFloat2();
 			float2 bottomRightBorder = (Game.CellSize* mapEnd).ToFloat2();
 		  
-			if(newScrollPosition.Y < topLeftBorder.Y)
-				newScrollPosition.Y = topLeftBorder.Y;
-			if(newScrollPosition.X < topLeftBorder.X)
-				newScrollPosition.X = topLeftBorder.X;
-			if(newScrollPosition.Y > bottomRightBorder.Y-screenSize.Y)
-				newScrollPosition.Y = bottomRightBorder.Y-screenSize.Y;
-			if(newScrollPosition.X > bottomRightBorder.X-screenSize.X)
-				newScrollPosition.X = bottomRightBorder.X-screenSize.X;
+			if(newScrollPosition.Y < topLeftBorder.Y - screenSize.Y/2)
+				newScrollPosition.Y = topLeftBorder.Y - screenSize.Y/2;
+			if(newScrollPosition.X < topLeftBorder.X - screenSize.X/2)
+				newScrollPosition.X = topLeftBorder.X - screenSize.X/2;
+			if(newScrollPosition.Y > bottomRightBorder.Y - screenSize.Y/2)
+				newScrollPosition.Y = bottomRightBorder.Y - screenSize.Y/2;
+			if(newScrollPosition.X > bottomRightBorder.X - screenSize.X/2)
+				newScrollPosition.X = bottomRightBorder.X - screenSize.X/2;
 			
 			return newScrollPosition;
 		}
@@ -74,13 +74,13 @@ namespace OpenRA.Graphics
 			
 			ScrollDirection blockedDirections = ScrollDirection.None;
 			
-			if(scrollPosition.Y <= topLeftBorder.Y)
+			if(scrollPosition.Y <= topLeftBorder.Y - screenSize.Y/2)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Up, true);
-			if(scrollPosition.X <= topLeftBorder.X)
+			if(scrollPosition.X <= topLeftBorder.X - screenSize.X/2)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Left, true);
-			if(scrollPosition.Y >= bottomRightBorder.Y - screenSize.Y)
+			if(scrollPosition.Y >= bottomRightBorder.Y - screenSize.Y/2)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Down, true);
-		  	if(scrollPosition.X >= bottomRightBorder.X - screenSize.X)
+		  	if(scrollPosition.X >= bottomRightBorder.X - screenSize.X/2)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Right, true);
 			
 			return blockedDirections;
