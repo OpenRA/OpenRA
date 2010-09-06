@@ -620,7 +620,7 @@ MIG:
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 100
-		Prerequisites: afld
+		Prerequisites: afld, stek
 		BuiltAt: afld
 		Owner: soviet
 	Valued:
