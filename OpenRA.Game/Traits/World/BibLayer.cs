@@ -64,10 +64,10 @@ namespace OpenRA.Traits
 			for (int i = 0; i < 2 * size; i++)
 			{
 				var p = b.Location + new int2(i % size, i / size + bibOffset);
-				byte type = (byte)((isAdd) ? bib+1 : 0);
-				byte index = (byte)i;
-				
-				tiles[p] = new TileReference<byte,byte>(type,index);
+				if (isAdd)
+					tiles[p] = new TileReference<byte, byte>((byte)((isAdd) ? bib + 1 : 0), (byte)i);
+				else
+					tiles.Remove(p);
 			}
 		}
 
