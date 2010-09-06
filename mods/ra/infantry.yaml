@@ -3,8 +3,7 @@ DOG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Prerequisites: kenn
-		BuiltAt: KENN
+		Prerequisites: barr
 		Owner: soviet
 	Valued:
 		Cost: 200

@@ -838,36 +838,6 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 
-KENN:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 30
-		Prerequisites: @Power Plant
-		Owner: soviet
-		Hotkey: k
-	Valued:
-		Cost: 200
-	Tooltip:
-		Name: Kennel
-		Description: Produces attack dogs
-	Building:
-		Power: -10
-	Health:
-		HP: 400
-		Armor: wood
-	RevealsShroud:
-		Range: 4
-	RallyPoint:
-	Exit@1:
-		SpawnOffset: 0,0
-		ExitCell: 0,0
-	Production:
-		Produces: Infantry
-	PrimaryBuilding:
-	IronCurtainable:
-	-EmitInfantryOnSell:
-
 FIX:
 	Inherits: ^Building
 	Buildable:
