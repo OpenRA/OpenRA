@@ -74,6 +74,7 @@ gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
 /usr/share/openra/*.exe
 /usr/share/openra/*.ttf
 /usr/share/openra/*.dll
+/usr/share/openra/VERSION
 /usr/share/openra/shaders/
 /usr/share/openra/mods/
 /usr/share/openra/thirdparty/
