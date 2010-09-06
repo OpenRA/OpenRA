@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 
 				if (best != null)
 				{
-					Game.Debug("AI: Need more power, so {0} is best choice.".F(best));
+					Game.Debug("AI: Need more power, so {0} is best choice.".F(best.Name));
 					return best;
 				}
 				else
