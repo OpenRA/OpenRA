@@ -49,9 +49,7 @@ namespace OpenRA
 			
 			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
 			world = null;	// trying to access the old world will NRE, rather than silently doing it wrong.
-			Timer.Time("viewport: {0}");
 			world = new World(modData.Manifest, map);
-			Timer.Time("world: {0}");
 		}
 
 		public static void MoveViewport(int2 loc)

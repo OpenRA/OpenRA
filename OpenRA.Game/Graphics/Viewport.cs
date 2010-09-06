@@ -90,26 +90,20 @@ namespace OpenRA.Graphics
 		
 		public void DrawRegions( World world )
 		{
-			Timer.Time( "DrawRegions start" );
-
 			renderer.BeginFrame(scrollPosition);
 			world.WorldRenderer.Draw();
-			Timer.Time( "worldRenderer: {0}" );
 
 			Widget.DoDraw(world);
-			Timer.Time( "widgets: {0}" );
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);
 			c.Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
-			Timer.Time( "cursors: {0}" );
 
 			renderer.RgbaSpriteRenderer.Flush();
 			renderer.SpriteRenderer.Flush();
 			renderer.WorldSpriteRenderer.Flush();
 
 			renderer.EndFrame();
-			Timer.Time( "endFrame: {0}" );
 		}
 
 		public void RefreshPalette()

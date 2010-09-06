@@ -59,21 +59,15 @@ namespace OpenRA
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			
-			Timer.Time("----PrepareMap");
 			var map = new Map(AvailableMaps[uid].Package);
-			Timer.Time( "Map: {0}" );
 			
 			Rules.LoadRules(Manifest, map);
-			Timer.Time( "Rules: {0}" );
-
 			if (map.Theater != cachedTheatre)
 			{
 				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
 				SequenceProvider.Initialize(Manifest.Sequences);
-				Timer.Time("SSB, SeqProv: {0}");
 				cachedTheatre = map.Theater;
 			}
-			Timer.Time("----end PrepareMap");
 			return map;
 		}
 	}

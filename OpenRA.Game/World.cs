@@ -78,15 +78,12 @@ namespace OpenRA
 		
 		public World(Manifest manifest, Map map)
 		{
-			Timer.Time( "----World.ctor" );
 			Map = map;
 			
 			TileSet = Rules.TileSets[Map.Tileset];
 			TileSet.LoadTiles();
-			Timer.Time( "Tileset: {0}" );
 
 			WorldRenderer = new WorldRenderer(this);
-			Timer.Time("renderer: {0}");
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			Queries = new AllQueries(this);
@@ -101,16 +98,10 @@ namespace OpenRA
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = Stance.Neutral;		
 			
-			Timer.Time( "worldActor, players: {0}" );
-
 			PathFinder = new PathFinder(this);
 
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 				wlh.WorldLoaded(this);
-			
-			Timer.Time( "hooks, pathing: {0}" );
-
-			Timer.Time( "----end World.ctor" );
 		}
 
 		public Actor CreateActor( string name, TypeDictionary initDict )
@@ -155,31 +146,19 @@ namespace OpenRA
 			if (DisableTick)
 				return;
 			
-			Timer.Time("----World Tick");
-
-			actors.DoTimed( x => x.Tick(), "expensive actor tick: {0} ({1:0.000})", 0.001 );
-			Timer.Time("		actors: {0:0.000}");
+			actors.DoTimed( x => x.Tick(), "expensive actor tick: {0} ({1:0.000} ms)", 0.001 );
 
 			Queries.WithTraitMultiple<ITick>().DoTimed( x =>
 			{
 				x.Trait.Tick( x.Actor );
-				Timer.Time( "trait tick \"{0}\": {{0}}".F( x.Trait.GetType().Name ) );
-			}, "expensive trait tick: {0} ({1:0.000})", 0.001 );
-			Timer.Time("		traits: {0:0.000}");
+			}, "expensive trait tick: {0} ({1:0.000} ms)", 0.001 );
 
-			effects.DoTimed( e => e.Tick( this ), "expensive effect tick: {0} ({1:0.000})", 0.001 );
-			Timer.Time("		effects: {0:0.000}");
-
+			effects.DoTimed( e => e.Tick( this ), "expensive effect tick: {0} ({1:0.000} ms)", 0.001 );
 			Game.viewport.Tick();
-			Timer.Time("		viewport: {0:0.000}");
-
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
 
-			Timer.Time("		frameEndActions: {0:0.000}");
-
 			WorldRenderer.Tick();
-			Timer.Time("		worldrenderer: {0:0.000}");
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
