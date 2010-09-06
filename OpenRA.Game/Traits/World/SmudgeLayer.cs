@@ -66,7 +66,10 @@ namespace OpenRA.Traits
 			// Existing smudge; make it deeper
 			int depth = Info.Depths[tile.type-1];
 			if (tile.image < depth - 1)
+			{
 				tile.image++;
+				tiles[loc] = tile;	// struct semantics.
+			}
 		}
 		
 		public void Render()
@@ -81,7 +84,7 @@ namespace OpenRA.Traits
 				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[tiles[kv.Key].type- 1][tiles[kv.Key].image],
+				Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[kv.Value.type- 1][kv.Value.image],
 						Game.CellSize * kv.Key, "terrain");
 			}
 		}
