@@ -190,6 +190,18 @@ Section "-Cg" Cg
 	done:
 SectionEnd
 
+Section "-DotNet" DotNet
+	ClearErrors
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
+	IfErrors error 0	
+	IntCmp $0 0 error error done
+	error: 
+		MessageBox MB_OK ".NET Framework v3.5 or later is required to run OpenRA. $\nPlease install it from \
+		http://www.microsoft.com/downloads/en/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7 $\nand try the installer again"
+		Abort
+	done:
+SectionEnd
+
 ;***************************
 ;Uninstaller Sections
 ;***************************
@@ -213,8 +225,10 @@ SectionEnd
 !macro Clean UN
 Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
+	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\shaders
 	Delete $INSTDIR\OpenRA.Game.exe
+	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.FileFormats.dll
 	Delete $INSTDIR\OpenRA.Gl.dll
 	Delete $INSTDIR\Tao.*.dll
