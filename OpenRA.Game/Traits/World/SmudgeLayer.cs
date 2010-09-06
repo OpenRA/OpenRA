@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
@@ -27,7 +28,7 @@ namespace OpenRA.Traits
 	public class SmudgeLayer: IRenderOverlay, IWorldLoaded
 	{		
 		public SmudgeLayerInfo Info;
-		TileReference<byte,byte>[,] tiles;
+		Dictionary<int2,TileReference<byte,byte>> tiles;
 		Sprite[][] smudgeSprites;
 		World world;
 
@@ -40,12 +41,12 @@ namespace OpenRA.Traits
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			tiles = new TileReference<byte,byte>[w.Map.MapSize.X,w.Map.MapSize.Y];
+			tiles = new Dictionary<int2,TileReference<byte,byte>>();
 			
 			// Add map smudges
 			foreach (var s in w.Map.Smudges.Where( s => Info.Types.Contains(s.Type )))
-				tiles[s.Location.X,s.Location.Y] = new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
-				                                                  (byte)s.Depth);
+				tiles.Add(s.Location,new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
+				                                                  (byte)s.Depth));
 		}
 		
 		public void AddSmudge(int2 loc)
@@ -54,17 +55,18 @@ namespace OpenRA.Traits
 				return;
 
 			// No smudge; create a new one
-			if (tiles[loc.X, loc.Y].type == 0)
+			if (!tiles.ContainsKey(loc))
 			{
 				byte st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
-				tiles[loc.X,loc.Y] = new TileReference<byte,byte>(st,(byte)0);
+				tiles.Add(loc, new TileReference<byte,byte>(st,(byte)0));
 				return;
 			}
 			
+			var tile = tiles[loc];
 			// Existing smudge; make it deeper
-			int depth = Info.Depths[tiles[loc.X, loc.Y].type-1];
-			if (tiles[loc.X, loc.Y].image < depth - 1)
-				tiles[loc.X,loc.Y].image++;
+			int depth = Info.Depths[tile.type-1];
+			if (tile.image < depth - 1)
+				tile.image++;
 		}
 		
 		public void Render()
@@ -72,21 +74,16 @@ namespace OpenRA.Traits
 			var cliprect = Game.viewport.ShroudBounds().HasValue 
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
 
-			var minx = cliprect.Left;
-			var maxx = cliprect.Right;
+			foreach (var kv in tiles)
+			{
+				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
+					continue;
+				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
+					continue;
 
-			var miny = cliprect.Top;
-			var maxy = cliprect.Bottom;
-
-			for (int x = minx; x < maxx; x++)
-				for (int y = miny; y < maxy; y++)
-				{
-					var t = new int2(x, y);
-					if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(t) || tiles[x,y].type == 0) continue;
-	
-					Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[tiles[x,y].type- 1][tiles[x,y].image],
-						Game.CellSize * t, "terrain");
-				}
+				Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[tiles[kv.Key].type- 1][tiles[kv.Key].image],
+						Game.CellSize * kv.Key, "terrain");
+			}
 		}
 	}
 }
