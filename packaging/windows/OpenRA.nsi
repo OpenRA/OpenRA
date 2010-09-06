@@ -193,10 +193,14 @@ SectionEnd
 Section "-DotNet" DotNet
 	ClearErrors
 	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
-	IfErrors error 0	
-	IntCmp $0 0 error error done
+	IfErrors error 0
+	IntCmp $0 1 0 error 0
+	ClearErrors
+	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "SP"
+	IfErrors error 0
+	IntCmp $0 1 done error done
 	error: 
-		MessageBox MB_OK ".NET Framework v3.5 or later is required to run OpenRA. $\nPlease install it from \
+		MessageBox MB_OK ".NET Framework v3.5 SP1 or later is required to run OpenRA. $\nPlease install it from \
 		http://www.microsoft.com/downloads/en/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7 $\nand try the installer again"
 		Abort
 	done:
