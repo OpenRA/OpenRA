@@ -59,6 +59,7 @@ Section "Client" Client
 	File "${SRCDIR}\HACKING"
 	File "${SRCDIR}\INSTALL"
 	File "${SRCDIR}\*.ttf"
+	File "${SRCDIR}\VERSION"
 	
 	File "${SRCDIR}\OpenRA.Game\OpenRA.ico"
 	
