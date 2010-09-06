@@ -115,6 +115,7 @@ install: all
 	@cp *.ttf $(INSTALL_DIR)
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll $(INSTALL_DIR)
+	@-$(INSTALL_PROGRAM) VERSION $(INSTALL_DIR)
 	
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
@@ -123,8 +124,8 @@ install: all
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
 	@echo "OpenRA is now installed. You will now want to download"
-	@echo "http://open-ra.org/packages/ra-packages.php and"
-	@echo "http://open-ra.org/packages/cnc-packages.php"
+	@echo "http://open-ra.org/get-dependency.php?ra-packages and"
+	@echo "http://open-ra.org/get-dependency.php?cnc-packages"
 	@echo "and extract their contents to"
 	@echo "$(INSTALL_DIR)/mods/ra/packages and "
 	@echo "$(INSTALL_DIR)/mods/cnc/packages respectively."
