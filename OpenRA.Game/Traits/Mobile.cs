@@ -125,7 +125,7 @@ namespace OpenRA.Traits
 
 			// force-fire should *always* take precedence over move.
 			if (mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
-		
+
 			if (underCursor != null && underCursor.Owner != null)
 			{
 				// force-move
@@ -142,20 +142,33 @@ namespace OpenRA.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				if (CanEnterCell(order.TargetLocation))
+				int2 currentLocation = order.TargetLocation;
+				if(!CanEnterCell(currentLocation))
 				{
-					if (self.Owner == self.World.LocalPlayer)
-						self.World.AddFrameEndTask(w =>
+					NearLocationsFinder locationsFinder = new NearLocationsFinder(self.Location, order.TargetLocation);
+					do
+					{
+						if(locationsFinder.HasNext())
 						{
-							w.Add(new MoveFlash(self.World, order.TargetLocation));
-							var line = self.TraitOrDefault<DrawLineToTarget>();
-							if (line != null)
-								line.SetTarget(self, Target.FromOrder(order), Color.Green);
-						});
-					
-					if( !order.Queued ) self.CancelActivity();
-					self.QueueActivity(new Activities.Move(order.TargetLocation, 8));
+							currentLocation = locationsFinder.GetNext();
+						}
+						else
+							return;
+					}
+					while(!CanEnterCell(currentLocation));
 				}
+					
+				if( !order.Queued ) self.CancelActivity();
+				self.QueueActivity(new Activities.Move(currentLocation, 8));
+				
+				if (self.Owner == self.World.LocalPlayer)
+					self.World.AddFrameEndTask(w =>
+					{
+						w.Add(new MoveFlash(self.World, order.TargetLocation));
+						var line = self.TraitOrDefault<DrawLineToTarget>();
+						if (line != null)
+							line.SetTarget(self, Target.FromCell(currentLocation), Color.Green);
+					});
 			}
 		}
 		
@@ -335,5 +348,67 @@ namespace OpenRA.Traits
 				self.QueueActivity(new Move(moveTo.Value, 0));
 			}
 		}
+	}
+
+	class NearLocationsFinder
+	{
+		int2 currentTargetLocation;
+		int2 actorLocation;
+		float2 cos;
+		float distance;
+		int attempts;
+		const int maxAttempts = 8 /* number of cell checked */ * 2 /* radius */;
+		
+		public NearLocationsFinder(int2 actorLocation, int2 currentTargetLocation)
+		{
+			this.actorLocation = actorLocation;
+			this.currentTargetLocation = currentTargetLocation;
+			this.attempts = 0;
+			
+			int cx = currentTargetLocation.X - actorLocation.X;
+			int cy = currentTargetLocation.Y - actorLocation.Y;
+			this.distance = (float)Math.Sqrt(cx*cx + cy*cy);
+			this.cos = new float2((cx / this.distance), (cy / this.distance));
+		}
+		
+		public bool HasNext()
+		{
+			return attempts < maxAttempts || distance > 2;
+		}
+		
+		public int2 GetNext()
+		{
+			// search location nearby
+			if(attempts < maxAttempts)
+			{
+				int radius = attempts / 8;
+				switch(attempts++ % 8)
+				{
+				case 0:
+					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y + radius);
+				case 1:
+					return new int2(currentTargetLocation.X, currentTargetLocation.Y + radius);
+				case 2:
+					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y + radius);
+				case 3:
+					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y);
+				case 4:
+					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y - radius);
+				case 5:
+					return new int2(currentTargetLocation.X, currentTargetLocation.Y - radius);
+				case 6:
+					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y - radius);
+				case 7:
+					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y);
+				}
+			}
+			else
+			{
+				// search location on the "direct" path to target
+				if(distance-- > 2)
+					return new int2(actorLocation.X + (int)Math.Round(distance * cos.X), actorLocation.Y + (int)Math.Round(distance * cos.Y));
+			}
+			return currentTargetLocation;
+		}	
 	}
 }
