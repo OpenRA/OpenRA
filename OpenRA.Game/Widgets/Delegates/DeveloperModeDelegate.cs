@@ -93,6 +93,12 @@ namespace OpenRA.Widgets.Delegates
 				Game.IssueOrder(new Order("DevEnableTech", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
+
+			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
+			{
+				Game.IssueOrder(new Order("DevGiveExploration", Game.world.LocalPlayer.PlayerActor));
+				return true;
+			};
 				
 			devModeButton.IsVisible = () => { return Game.LobbyInfo.GlobalSettings.AllowCheats; };
 		}

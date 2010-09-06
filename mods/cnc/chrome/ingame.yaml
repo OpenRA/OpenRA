@@ -264,6 +264,13 @@ Container@ROOT:
 							Width:PARENT_RIGHT - 30
 							Height:20
 							Text:Build Everything
+						Button@GIVE_EXPLORATION
+							Id:GIVE_EXPLORATION
+							X:30
+							Y:260
+							Width:200
+							Height:20
+							Text: Give Exploration
 		Background@FMVPLAYER:
 			Id:FMVPLAYER
 			Width:WINDOW_RIGHT

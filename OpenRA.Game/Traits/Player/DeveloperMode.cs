@@ -87,6 +87,12 @@ namespace OpenRA.Traits
 							Game.Settings.Debug.ShowCollisions ^= true;
 						break;
 					}
+				case "DevGiveExploration":
+					{
+						if (self.World.LocalPlayer == self.Owner)
+							self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
+						break;
+					}
 			}
 		}
 	}

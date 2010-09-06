@@ -211,7 +211,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:350
-			Height:300
+			Height:330
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -271,3 +271,10 @@ Container@INGAME_ROOT:
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Build Everything
+				Button@GIVE_EXPLORATION
+					Id:GIVE_EXPLORATION
+					X:30
+					Y:260
+					Width:200
+					Height:20
+					Text: Give Exploration
