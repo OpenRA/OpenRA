@@ -11,6 +11,7 @@
 using System;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -68,8 +69,12 @@ namespace OpenRA.Mods.RA.Render
 			if (!e.DamageStateChanged)
 				return;
 			
-			if (e.DamageState == DamageState.Dead)	
-				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.CenterLocation.ToInt2(), "building", false)));
+			if (e.DamageState == DamageState.Dead)
+				foreach (var t in Footprint.UnpathableTiles( self.Info.Name, self.Info.Traits.Get<BuildingInfo>(), self.Location ))
+				{
+					var cell = t; // required: c# fails at bindings
+					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, Util.CenterOfCell(cell).ToInt2(), "building", false)));
+				}
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 			{
 				anim.ReplaceAnim("damaged-idle");
