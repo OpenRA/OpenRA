@@ -11,6 +11,7 @@
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -66,9 +67,8 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			if (inAttack) return;
+			if (self.GetCurrentActivity() is Activities.IdleAnimation) return;
 			if (ChooseMoveAnim(self)) return;
-
-			/* todo: idle anims, etc */
 
 			if (IsProne(self))
 				anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */

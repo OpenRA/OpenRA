@@ -157,6 +157,7 @@ namespace OpenRA.Traits
 			// Couldn't find a cell
 			return target;
 		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")

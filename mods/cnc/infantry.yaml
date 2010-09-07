@@ -65,6 +65,8 @@ E3:
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 5
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E4:
 	Inherits: ^Infantry
