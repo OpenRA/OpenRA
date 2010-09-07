@@ -496,6 +496,7 @@
     <sequence name="idle" start="0" facings="32" />
     <sequence name="rotor" start="0" length="4" src="lrotor" />
     <sequence name="slow-rotor" start="4" length="8" src="lrotor" />
+		<sequence name="muzzle" start="0" length="6" facings="8" src="minigun" />
   </unit>
   <unit name="tran">
     <sequence name="idle" start="0" facings="32" />

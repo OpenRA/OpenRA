@@ -777,8 +777,9 @@ HIND:
 		Range: 12
 	AttackHeli:
 		PrimaryWeapon: ChainGun
-		PrimaryOffset: -5,0,0,2
-		SecondaryOffset: 5,0,0,2
+		SecondaryWeapon: ChainGun
+		PrimaryOffset: -5,-2,0,2
+		SecondaryOffset: 5,-2,0,2
 	Helicopter:
 		RearmBuildings: hpad
 		LandWhenIdle: false
@@ -788,11 +789,12 @@ HIND:
 	RenderUnitRotor:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 12
+		Ammo: 24
 		PipCount: 6
 	IronCurtainable:
 	Selectable:
 		Bounds: 38,32,0,0
+	WithMuzzleFlash:
 
 U2:
 	Inherits: ^Plane
