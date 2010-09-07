@@ -1,4 +1,5 @@
 http://metahash.com/packages/ra-packages.zip
 http://openra.res0l.net/packages/ra-packages.zip
-http://open-ra.org/packages/ra-packages.zip
 http://mirumu.jp/pub/packages/ra-packages.zip
+http://alzeih.github.com/www/packages/ra-packages.zip
+http://www.sleipnirstuff.com/openra/ra-packages.zip

@@ -1,4 +1,5 @@
 http://metahash.com/packages/cnc-packages.zip
 http://openra.res0l.net/packages/cnc-packages.zip
-http://open-ra.org/packages/cnc-packages.zip
 http://mirumu.jp/pub/packages/cnc-packages.zip
+http://alzeih.github.com/www/packages/cnc-packages.zip
+http://www.sleipnirstuff.com/openra/cnc-packages.zip
