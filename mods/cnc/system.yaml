@@ -43,6 +43,7 @@ Player:
 World:
 	ScreenShaker:
 	ColorPickerPaletteModifier:
+	NukePaletteEffect:
 	WaterPaletteRotation:
 		CncMode: true
 	BuildingInfluence:
