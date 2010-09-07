@@ -681,7 +681,7 @@ YAK:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 16
+		Ammo: 18
 		PipCount: 6
 	IronCurtainable:
 	ReturnOnIdle:
