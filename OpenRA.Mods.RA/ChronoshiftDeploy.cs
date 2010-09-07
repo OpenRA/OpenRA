@@ -45,8 +45,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "ChronoshiftDeploy")
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.OrderGenerator = new SetChronoTankDestination(self);
+				if (chargeTick <= 0)
+					if (self.Owner == self.World.LocalPlayer)
+						self.World.OrderGenerator = new SetChronoTankDestination(self);
 				return;
 			}
 
