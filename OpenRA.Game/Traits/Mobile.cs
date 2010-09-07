@@ -138,26 +138,33 @@ namespace OpenRA.Traits
 			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
+		public int2 NearestMoveableCell(int2 target)
+		{
+			if (CanEnterCell(target))
+				return target;
+			
+			var searched = new List<int2>(){};
+			// Limit search to a radius of 10 tiles
+			for (int r = 1; r < 10; r++)
+				foreach (var tile in self.World.FindTilesInCircle(target,r).Except(searched))
+				{
+					if (CanEnterCell(tile))
+						return tile;
+					
+					searched.Add(tile);
+				}
+			
+			// Couldn't find a cell
+			return target;
+		}
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
 			{
-				int2 currentLocation = order.TargetLocation;
-				if(!CanEnterCell(currentLocation))
-				{
-					NearLocationsFinder locationsFinder = new NearLocationsFinder(self.Location, order.TargetLocation);
-					do
-					{
-						if(locationsFinder.HasNext())
-						{
-							currentLocation = locationsFinder.GetNext();
-						}
-						else
-							return;
-					}
-					while(!CanEnterCell(currentLocation));
-				}
-					
+				int2 currentLocation = NearestMoveableCell(order.TargetLocation);
+				if (!CanEnterCell(currentLocation))
+					return;
+				
 				if( !order.Queued ) self.CancelActivity();
 				self.QueueActivity(new Activities.Move(currentLocation, 8));
 				
@@ -348,67 +355,5 @@ namespace OpenRA.Traits
 				self.QueueActivity(new Move(moveTo.Value, 0));
 			}
 		}
-	}
-
-	class NearLocationsFinder
-	{
-		int2 currentTargetLocation;
-		int2 actorLocation;
-		float2 cos;
-		float distance;
-		int attempts;
-		const int maxAttempts = 8 /* number of cell checked */ * 2 /* radius */;
-		
-		public NearLocationsFinder(int2 actorLocation, int2 currentTargetLocation)
-		{
-			this.actorLocation = actorLocation;
-			this.currentTargetLocation = currentTargetLocation;
-			this.attempts = 0;
-			
-			int cx = currentTargetLocation.X - actorLocation.X;
-			int cy = currentTargetLocation.Y - actorLocation.Y;
-			this.distance = (float)Math.Sqrt(cx*cx + cy*cy);
-			this.cos = new float2((cx / this.distance), (cy / this.distance));
-		}
-		
-		public bool HasNext()
-		{
-			return attempts < maxAttempts || distance > 2;
-		}
-		
-		public int2 GetNext()
-		{
-			// search location nearby
-			if(attempts < maxAttempts)
-			{
-				int radius = attempts / 8;
-				switch(attempts++ % 8)
-				{
-				case 0:
-					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y + radius);
-				case 1:
-					return new int2(currentTargetLocation.X, currentTargetLocation.Y + radius);
-				case 2:
-					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y + radius);
-				case 3:
-					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y);
-				case 4:
-					return new int2(currentTargetLocation.X - radius, currentTargetLocation.Y - radius);
-				case 5:
-					return new int2(currentTargetLocation.X, currentTargetLocation.Y - radius);
-				case 6:
-					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y - radius);
-				case 7:
-					return new int2(currentTargetLocation.X + radius, currentTargetLocation.Y);
-				}
-			}
-			else
-			{
-				// search location on the "direct" path to target
-				if(distance-- > 2)
-					return new int2(actorLocation.X + (int)Math.Round(distance * cos.X), actorLocation.Y + (int)Math.Round(distance * cos.Y));
-			}
-			return currentTargetLocation;
-		}	
 	}
 }
