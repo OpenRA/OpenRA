@@ -5,6 +5,7 @@ Folders:
 	./
 Packages:
 	mods/cnc/overrides.mix
+	mods/cnc/snow.mix
 	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
@@ -67,6 +68,7 @@ TileSets:
 	mods/cnc/tileset-des.yaml: Desert
 	mods/cnc/tileset-win.yaml: Winter
 	mods/cnc/tileset-tem.yaml: Temperate
+	mods/cnc/tileset-sno.yaml: Snow
 
 LoadScreen: NullLoadScreen
 ShellmapUid:d715c86d9d49d153756b86ef87a825ea8fae6756
