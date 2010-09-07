@@ -572,8 +572,8 @@ GUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: hand
-		Owner: nod
+		Prerequisites: @Barracks
+		Owner: gdi,nod
 	Building:
 		Power: -20
 	Health:
@@ -636,8 +636,8 @@ GTWR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
-		Prerequisites: pyle
-		Owner: gdi
+		Prerequisites: @Barracks
+		Owner: gdi,nod
 	Building:
 		Power: -10
 	Health:
