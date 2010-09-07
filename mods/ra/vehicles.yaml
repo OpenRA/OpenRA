@@ -786,6 +786,8 @@ HIND:
 		Ammo: 12
 		PipCount: 6
 	IronCurtainable:
+	Selectable:
+		Bounds: 38,32,0,0
 
 U2:
 	Inherits: ^Plane
