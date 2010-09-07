@@ -18,7 +18,8 @@ E1:
 	AttackBase:
 		PrimaryWeapon: M16
 	TakeCover:
-	
+	IdleAnimation:
+		Animations: idle1,idle2,idle3	
 E2:
 	Inherits: ^Infantry
 	Valued:
@@ -42,6 +43,8 @@ E2:
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 15
 	TakeCover:	
+	IdleAnimation:
+		Animations: idle1,idle2
 	
 E3:
 	Inherits: ^Infantry
@@ -94,6 +97,8 @@ E4:
 	-RenderInfantry:
 	RenderInfantry:
 	WithMuzzleFlash:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E5:
 	Inherits: ^Infantry
@@ -122,6 +127,8 @@ E5:
 	RenderInfantry:
 	WithMuzzleFlash:
 	-PoisonedByTiberium:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E6:
 	Inherits: ^Infantry
@@ -146,6 +153,8 @@ E6:
 	EngineerRepair:
 	EngineerCapture:
 	-AutoTarget:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 RMBO:
 	Inherits: ^Infantry
@@ -173,3 +182,5 @@ RMBO:
 	TakeCover:
 	C4Demolition:
 		C4Delay: .03
+	IdleAnimation:
+		Animations: idle1,idle2,idle3

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 
 		public void Idle(Actor self)
 		{
-			self.QueueActivity(new Activities.IdleAnimation(Info.Animations.Random(Game.CosmeticRandom),
+			self.QueueActivity(new Activities.IdleAnimation(Info.Animations.Random(self.World.SharedRandom),
 			                                                Info.IdleWaitTicks));
 		}
 	}

@@ -12,7 +12,10 @@
     <sequence name="crawl" start="144" length="4" facings="8" />
     <sequence name="standup" start="176" length="2" facings="8" />
     <sequence name="prone-shoot" start="192" length="8" facings="8" />
-    <sequence name="die1" start="311" length="8" />
+    <sequence name="idle1" start="257" length="15" />
+    <sequence name="idle2" start="272" length="16" />
+    <sequence name="idle3" start="289" length="22" />
+    <sequence name="die1" start="381" length="9" />
     <sequence name="die5" start="418" length="18" />
     <sequence name="die4" start="406" length="12" />
     <sequence name="die3" start="398" length="8" />
@@ -25,6 +28,8 @@
     <sequence name="shoot" start="64" length="20" facings="8" />
     <sequence name="crawl" start="240" length="4" facings="8" />
     <sequence name="prone-shoot" start="288" length="12" facings="8" />
+    <sequence name="idle1" start="384" length="16" />
+    <sequence name="idle2" start="400" length="13" />
     <sequence name="die5" start="546" length="18" />
     <sequence name="die4" start="534" length="12" />
     <sequence name="die3" start="526" length="8" />
@@ -53,6 +58,8 @@
     <sequence name="shoot" start="64" length="16" facings="8" />
     <sequence name="crawl" start="208" length="4" facings="8" />
     <sequence name="prone-shoot" start="256" length="16" facings="8" />
+    <sequence name="idle1" start="384" length="16" />
+    <sequence name="idle2" start="400" length="16" />
     <sequence name="die5" start="546" length="18" />
     <sequence name="die4" start="534" length="12" />
     <sequence name="die3" start="526" length="8" />
@@ -67,6 +74,8 @@
     <sequence name="shoot" start="64" length="16" facings="8" />
     <sequence name="crawl" start="208" length="4" facings="8" />
     <sequence name="prone-shoot" start="256" length="16" facings="8" />
+    <sequence name="idle1" start="384" length="16" />
+    <sequence name="idle2" start="400" length="16" />
     <sequence name="die5" start="546" length="18" />
     <sequence name="die4" start="534" length="12" />
     <sequence name="die3" start="526" length="8" />
@@ -79,6 +88,8 @@
     <sequence name="stand2" start="8" length="1" facings="8" />
     <sequence name="run" start="16" length="6" facings="8" />
     <sequence name="crawl" start="82" length="4" facings="8" />
+    <sequence name="idle1" start="114" length="6" />
+    <sequence name="idle2" start="200" length="6" />
     <sequence name="die5" start="182" length="18" />
     <sequence name="die4" start="170" length="12" />
     <sequence name="die3" start="162" length="8" />
@@ -202,6 +213,9 @@
     <sequence name="shoot" start="64" length="4" facings="8" />
     <sequence name="crawl" start="112" length="4" facings="8" />
     <sequence name="prone-shoot" start="160" length="4" facings="8" />
+    <sequence name="idle1" start="192" length="16" />
+    <sequence name="idle2" start="208" length="16" />
+    <sequence name="idle3" start="224" length="15" />
     <sequence name="die5" start="354" length="18" />
     <sequence name="die4" start="342" length="12" />
     <sequence name="die3" start="334" length="8" />
