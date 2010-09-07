@@ -170,10 +170,10 @@ Flamethrower:
 
 BigFlamer: 
 	ROF: 50
-	Range: 2
+	Range: 3.5
 	Report: FLAMER2
 	Projectile: Bullet
-		Speed: 100
+		Speed: 20
 	Warhead:
 		Spread: 8
 		Verses: 90%,100%,60%,25%,50%
@@ -181,7 +181,7 @@ BigFlamer:
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
-		Damage: 50
+		Damage: 40
 
 Chemspray: 
 	ROF: 70

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -20,27 +21,36 @@ namespace OpenRA.Mods.RA
 
 	class WithMuzzleFlash : INotifyAttack
 	{
-		Animation muzzleFlash;
+		List<Animation> muzzleFlashes = new List<Animation>();
 		bool isShowing;
 
 		public WithMuzzleFlash(Actor self)
 		{
 			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
+			var attack = self.Trait<AttackBase>();
 			var render = self.Trait<RenderSimple>();
+			var facing = self.Trait<IFacing>();
 
-			muzzleFlash = new Animation(render.GetImage(self), () => self.Trait<IFacing>().Facing);
-			muzzleFlash.Play("muzzle");
+			foreach (var t in attack.Turrets)
+			{
+				var turret = t;
+				var muzzleFlash = new Animation(render.GetImage(self), () => self.Trait<IFacing>().Facing);
+				muzzleFlash.Play("muzzle");
 
-			render.anims.Add("muzzle", new RenderSimple.AnimationWithOffset(
-				muzzleFlash,
-				() => attackInfo.PrimaryOffset.AbsOffset(),
-				() => !isShowing));
+				render.anims.Add("muzzle{0}".F(muzzleFlashes.Count), new RenderSimple.AnimationWithOffset(
+					muzzleFlash,
+					() => Combat.GetTurretPosition(self, facing, turret),
+					() => !isShowing));
+
+				muzzleFlashes.Add(muzzleFlash);
+			}
 		}
 
 		public void Attacking(Actor self)
 		{
 			isShowing = true;
-			muzzleFlash.PlayThen("muzzle", () => isShowing = false);
+			foreach( var mf in muzzleFlashes )
+				mf.PlayThen("muzzle", () => isShowing = false);
 		}
 	}
 }

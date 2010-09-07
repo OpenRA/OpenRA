@@ -136,10 +136,12 @@ FTNK:
 		Range: 4
 	AttackBase:
 		PrimaryWeapon: BigFlamer
-		PrimaryOffset: 0,0,0,-2
-		MuzzleFlash: yes
+		PrimaryOffset: 2,-8,0,-2
+		SecondaryWeapon: BigFlamer
+		SecondaryOffset: -2,-8,0,-2
 	RenderUnit:
 	AutoTarget:
+	WithMuzzleFlash:
 
 BGGY:
 	Inherits: ^Vehicle
