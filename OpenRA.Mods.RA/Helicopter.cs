@@ -42,6 +42,7 @@ namespace OpenRA.Mods.RA
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 
 			if (underCursor == null)
 				if (self.TraitOrDefault<IMove>().CanEnterCell(xy))
