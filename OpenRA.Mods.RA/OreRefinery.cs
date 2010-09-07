@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips (Actor self)
 		{
 			if (!Info.LocalStorage)
-				return new PipType[] { };
+				return null;
 			
 			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * 1f / Info.Capacity > i * 1f / Info.PipCount) ? Info.PipColor : PipType.Transparent);
 		}

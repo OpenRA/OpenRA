@@ -109,7 +109,11 @@ namespace OpenRA.Traits
 
 			foreach (var pips in self.TraitsImplementing<IPips>())
 			{
-				foreach (var pip in pips.GetPips(self))
+				var thisRow = pips.GetPips(self);
+				if (thisRow == null)
+					continue;
+
+				foreach (var pip in thisRow)
 				{
 					if (pipxyOffset.X+5 > self.GetBounds(false).Width)
 					{
