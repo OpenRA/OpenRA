@@ -35,6 +35,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;	// force-fire, so don't do this.
 
 			if (self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(underCursor.Info.Name)
 				&& underCursor.Owner == self.Owner)
