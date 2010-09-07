@@ -680,7 +680,7 @@ YAK:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 16
-		PipCount: 8
+		PipCount: 6
 	IronCurtainable:
 	ReturnOnIdle:
 
@@ -784,6 +784,7 @@ HIND:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 12
+		PipCount: 6
 	IronCurtainable:
 
 U2:
