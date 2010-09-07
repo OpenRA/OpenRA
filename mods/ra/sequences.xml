@@ -485,6 +485,7 @@
   </unit>
   <unit name="yak">
     <sequence name="idle" start="0" facings="16" />
+		<sequence name="muzzle" start="0" length="6" facings="8" src="minigun" />
   </unit>
   <unit name="heli">
     <sequence name="idle" start="0" facings="32" />
