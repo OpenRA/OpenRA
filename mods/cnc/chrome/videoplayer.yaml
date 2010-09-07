@@ -1,79 +1,77 @@
-Container@ROOT:
+Background@VIDEOPLAYER_MENU:
+	Id:VIDEOPLAYER_MENU
+	Delegate:VideoPlayerDelegate
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM- HEIGHT)/2
+	Width: 700
+	Height: 680
+	Visible: false
 	Children:
-		Background@VIDEOPLAYER_MENU:
-			Id:VIDEOPLAYER_MENU
-			Delegate:VideoPlayerDelegate
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM- HEIGHT)/2
-			Width: 700
-			Height: 680
-			Visible: false
+		Label@VIDEOPLAYER_TITLE:
+			X:0
+			Y:20
+			Align:Center
+			Width:PARENT_RIGHT
+			Height:20
+			Text:Video Player
+			Bold:True
+		VqaPlayer:
+			Id:VIDEOPLAYER
+			X:30
+			Y:50
+			Width:640
+			Height:400
+		ListBox@VIDEO_LIST:
+			Id:VIDEO_LIST
+			X:20
+			Y:460
+			Width:480
+			Height:200
 			Children:
-				Label@VIDEOPLAYER_TITLE:
-					X:0
-					Y:20
-					Align:Center
-					Width:PARENT_RIGHT
-					Height:20
-					Text:Video Player
-					Bold:True
-				VqaPlayer:
-					Id:VIDEOPLAYER
-					X:30
-					Y:50
-					Width:640
-					Height:400
-				ListBox@VIDEO_LIST:
-					Id:VIDEO_LIST
-					X:20
-					Y:460
-					Width:480
-					Height:200
-					Children:
-						Label@VIDEO_TEMPLATE:
-							Id:VIDEO_TEMPLATE
-							Width:PARENT_RIGHT-28
-							Height:25
-							ClickThrough:false
-							X:2
-							Y:0
-							Visible:false
-				Button@BUTTON_PLAYPAUSE:
-					Id:BUTTON_PLAYPAUSE
-					X:600 - WIDTH - 10
-					Y:460
+				Label@VIDEO_TEMPLATE:
+					Id:VIDEO_TEMPLATE
+					Width:PARENT_RIGHT-28
+					Height:25
+					ClickThrough:false
+					X:2
+					Y:0
+					Visible:false
+		Button@BUTTON_PLAYPAUSE:
+			Id:BUTTON_PLAYPAUSE
+			X:600 - WIDTH - 10
+			Y:460
+			Width:25
+			Height:25
+			Children:
+				Image@PLAY:
+					Id:PLAY
 					Width:25
 					Height:25
-					Children:
-						Image@PLAY:
-							Id:PLAY
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:play
-						Image@PAUSE:
-							Id:PAUSE
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:pause
-				Button@BUTTON_STOP:
-					Id:BUTTON_STOP
-					X:610
-					Y:460
+					ImageCollection:music
+					ImageName:play
+				Image@PAUSE:
+					Id:PAUSE
 					Width:25
 					Height:25
-					Children:
-						Image:
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:stop
-				Button@BUTTON_CLOSE:
-					Id:BUTTON_CLOSE
-					X:PARENT_RIGHT - 180
-					Y:PARENT_BOTTOM - 45
-					Width:160
+					ImageCollection:music
+					ImageName:pause
+		Button@BUTTON_STOP:
+			Id:BUTTON_STOP
+			X:610
+			Y:460
+			Width:25
+			Height:25
+			Children:
+				Image:
+					Width:25
 					Height:25
-					Text:Close
-					Bold:True
+					ImageCollection:music
+					ImageName:stop
+		Button@BUTTON_CLOSE:
+			Id:BUTTON_CLOSE
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Close
+			Bold:True

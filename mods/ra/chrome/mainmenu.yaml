@@ -1,15 +1,9 @@
-VqaPlayer:
-	Id:VIDEOPLAYER
-	X:WINDOW_RIGHT - 400
-	Y:WINDOW_BOTTOM - 250
-	Width:200
-	Height:200
 Background@MAINMENU_BG:
 	Id:MAINMENU_BG
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:250
-	Height:290
+	Height:250
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Label@MAINMENU_LABEL_TITLE:
@@ -45,21 +39,22 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Settings
 			Bold:True
-		Button@MAINMENU_BUTTON_VIDEOPLAYER:
-			Id:MAINMENU_BUTTON_VIDEOPLAYER
+		Button@MAINMENU_BUTTON_QUIT:
+			Id:MAINMENU_BUTTON_QUIT
 			X:45
 			Y:190
 			Width:160
 			Height:25
-			Text:Video Player
+			Text:Quit
 			Bold:True
-		Button@MAINMENU_BUTTON_QUIT:
-			Id:MAINMENU_BUTTON_QUIT
+		Button@MAINMENU_BUTTON_VIDEOPLAYER:
+			Id:MAINMENU_BUTTON_VIDEOPLAYER
+			Visible:false
 			X:45
 			Y:230
 			Width:160
 			Height:25
-			Text:Quit
+			Text:Video Player
 			Bold:True
 		Label@VERSION_STRING:
 			Id:VERSION_STRING

@@ -1,286 +1,284 @@
-Container@ROOT:
+Container@INGAME_ROOT:
+	Id:INGAME_ROOT
+	Delegate:IngameChromeDelegate
+	Visible:false
 	Children:
-		Container@INGAME_ROOT:
-			Id:INGAME_ROOT
-			Delegate:IngameChromeDelegate
-			Visible:false
-			Children:
-				WorldInteractionController:
-					X:0
-					Y:0
-					Width:WINDOW_RIGHT
-					Height:WINDOW_BOTTOM
-				ViewportScrollController:
-					X:0
-					Y:0
-					Width:WINDOW_RIGHT
-					Height:WINDOW_BOTTOM
-				Timer@GAME_TIMER:
-					Id:GAME_TIMER
-					X: WINDOW_RIGHT/2
-					Y: 10
-				Background@POSTGAME_BG:
-					Id:POSTGAME_BG
-					X:(WINDOW_RIGHT - WIDTH)/2
-					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:400
-					Height:100
-					Background:dialog4
-					Visible:false
-					Children:
-						Label@TEXT:
-							Id:TEXT
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:(PARENT_BOTTOM - HEIGHT)/2
-							Width:200
-							Height:40
-							Align:Center
-							Bold:True
-				SpecialPowerBin@INGAME_POWERS_BIN:
-					Id:INGAME_POWERS_BIN
-					X:0
-					Y:25
-				BuildPalette@INGAME_BUILD_PALETTE:
-					Id:INGAME_BUILD_PALETTE
-					X:WINDOW_RIGHT - 250
-					Y:280
-					Width:250
-					Height:500
-					TabClick: button.aud
-					BuildPaletteOpen: appear1.aud 
-					BuildPaletteClose: appear1.aud
-				Button@INGAME_OPTIONS_BUTTON:
-					Id:INGAME_OPTIONS_BUTTON
-					X:0
-					Y:0
-					Width:160
-					Height:25
-					Text:Options
-					Bold:True
-				Button@INGAME_DIPLOMACY_BUTTON:
-					Id:INGAME_DIPLOMACY_BUTTON
-					X:162
-					Y:0
-					Width:160
-					Height:25
-					Text:Diplomacy
-					Bold:True
-				Button@INGAME_DEVELOPERMODE_BUTTON:
-					Id:INGAME_DEVELOPERMODE_BUTTON
-					X:324
-					Y:0
-					Width:160
-					Height:25
-					Text:Developer Mode
-					Visible:false
-					Bold:True
-				RadarBin@INGAME_RADAR_BIN:
-					Id:INGAME_RADAR_BIN
-				PowerBin@INGAME_POWER_BIN:
-					Id:INGAME_POWER_BIN
-				MoneyBin@INGAME_MONEY_BIN:
-					Id:INGAME_MONEY_BIN
-					X:WINDOW_RIGHT - WIDTH
-					Y:0
-					Width:320
-					Height: 32
-					SplitOreAndCash: yes
-					Children:
-						OrderButton@SELL:
-							Id:SELL
-							Delegate:OrderButtonsChromeDelegate
-							X:39
-							Y:0
-							Width:30
-							Height:30
-							Image:sell
-							Description:Sell
-							LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
-						OrderButton@REPAIR:
-							Id:REPAIR
-							Delegate:OrderButtonsChromeDelegate
-							X:75
-							Y:0
-							Width:30
-							Height:30
-							Image:repair
-							Description:Repair
-							LongDesc:Repair damaged buildings
-				WorldTooltip:
-				Background@INGAME_OPTIONS_BG:
-					Id:INGAME_OPTIONS_BG
-					X:(WINDOW_RIGHT - WIDTH)/2
-					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:300
-					Height:280
-					Visible:false
-					Children:
-						Label@LABEL_TITLE:
-							Id:LABEL_TITLE
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:20
-							Width:250
-							Height:25
-							Text:Options
-							Align:Center
-							Bold:True
-						Button@BUTTON_RESUME:
-							Id:BUTTON_RESUME
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:60
-							Width:160
-							Height:25
-							Text:Resume
-							Bold:True
-						Button@BUTTON_SURRENDER:
-							Id:BUTTON_SURRENDER
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:100
-							Width:160
-							Height:25
-							Text:Surrender
-							Bold:True
-						Button@BUTTON_SETTINGS:
-							Id:BUTTON_SETTINGS
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:140
-							Width:160
-							Height:25
-							Text:Settings
-							Bold:True
-						Button@BUTTON_DISCONNECT:
-							Id:BUTTON_DISCONNECT
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:180
-							Width:160
-							Height:25
-							Text:Disconnect
-							Bold:True
-						Button@BUTTON_QUIT:
-							Id:BUTTON_QUIT
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:220
-							Width:160
-							Height:25
-							Text:Quit
-							Bold:True
-				Background@DIPLOMACY_BG:
-					Id:DIPLOMACY_BG
-					Delegate:DiplomacyDelegate
-					X:(WINDOW_RIGHT - WIDTH)/2
-					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:450
-					Height:400
-					Visible:false
-					Children:
-						Label@LABEL_TITLE:
-							Id:LABEL_TITLE
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:20
-							Width:250
-							Height:25
-							Text:Diplomacy
-							Align:Center
-							Bold:True
-				ChatDisplay@CHAT_DISPLAY:
-					Id:CHAT_DISPLAY
-					X:250
-					Y:WINDOW_BOTTOM - HEIGHT - 30
-					Width: 760
-					Height: 200
-					ClickThrough: True
-					DrawBackground: False
-					RemoveTime:250
-				ChatEntry@CHAT_ENTRY:
-					Id:CHAT_ENTRY
-					X:250
-					Y:WINDOW_BOTTOM - HEIGHT
-					Width: 760
-					Height: 30
-					ClickThrough: True
-				Background@DEVELOPERMODE_BG:
-					Id:DEVELOPERMODE_BG
-					Delegate:DeveloperModeDelegate
-					X:(WINDOW_RIGHT - WIDTH)/2
-					Y:(WINDOW_BOTTOM - HEIGHT)/2
-					Width:350
-					Height:330
-					Visible:false
-					Children:
-						Label@LABEL_TITLE:
-							Id:LABEL_TITLE
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:20
-							Width:250
-							Height:25
-							Text:Developer Mode
-							Align:Center
-						Checkbox@CHECKBOX_SHROUD
-							Id:CHECKBOX_SHROUD
-							X:30
-							Y:50
-							Height:20
-							Width:PARENT_RIGHT - 30
-							Text:Disable Shroud
-						Checkbox@CHECKBOX_UNITDEBUG:
-							Id:CHECKBOX_UNITDEBUG
-							X:30
-							Y:80
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Show Occupied Cells
-						Checkbox@CHECKBOX_PATHDEBUG:
-							Id:CHECKBOX_PATHDEBUG
-							X:30
-							Y:110
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Show Unit Paths
-						Button@GIVE_CASH
-							Id:GIVE_CASH
-							X:30
-							Y:140
-							Width:200
-							Height:20
-							Text: Give Cash
-						Checkbox@INSTANT_BUILD
-							Id:INSTANT_BUILD
-							X:30
-							Y:170
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Instant Build Speed
-						Checkbox@INSTANT_CHARGE
-							Id:INSTANT_CHARGE
-							X:30
-							Y:200
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Instant Charge Time (Special Powers)
-						Checkbox@ENABLE_TECH
-							Id:ENABLE_TECH
-							X:30
-							Y:230
-							Width:PARENT_RIGHT - 30
-							Height:20
-							Text:Build Everything
-						Button@GIVE_EXPLORATION
-							Id:GIVE_EXPLORATION
-							X:30
-							Y:260
-							Width:200
-							Height:20
-							Text: Give Exploration
-		Background@FMVPLAYER:
-			Id:FMVPLAYER
+		WorldInteractionController:
+			X:0
+			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
-			Visible: false
+		ViewportScrollController:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+		Timer@GAME_TIMER:
+			Id:GAME_TIMER
+			X: WINDOW_RIGHT/2
+			Y: 10
+		Background@POSTGAME_BG:
+			Id:POSTGAME_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:400
+			Height:100
 			Background:dialog4
+			Visible:false
 			Children:
-				VqaPlayer:
-					Id:PLAYER
-					X:0
+				Label@TEXT:
+					Id:TEXT
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:(PARENT_BOTTOM - HEIGHT)/2
+					Width:200
+					Height:40
+					Align:Center
+					Bold:True
+		SpecialPowerBin@INGAME_POWERS_BIN:
+			Id:INGAME_POWERS_BIN
+			X:0
+			Y:25
+		BuildPalette@INGAME_BUILD_PALETTE:
+			Id:INGAME_BUILD_PALETTE
+			X:WINDOW_RIGHT - 250
+			Y:280
+			Width:250
+			Height:500
+			TabClick: button.aud
+			BuildPaletteOpen: appear1.aud 
+			BuildPaletteClose: appear1.aud
+		Button@INGAME_OPTIONS_BUTTON:
+			Id:INGAME_OPTIONS_BUTTON
+			X:0
+			Y:0
+			Width:160
+			Height:25
+			Text:Options
+			Bold:True
+		Button@INGAME_DIPLOMACY_BUTTON:
+			Id:INGAME_DIPLOMACY_BUTTON
+			X:162
+			Y:0
+			Width:160
+			Height:25
+			Text:Diplomacy
+			Bold:True
+		Button@INGAME_DEVELOPERMODE_BUTTON:
+			Id:INGAME_DEVELOPERMODE_BUTTON
+			X:324
+			Y:0
+			Width:160
+			Height:25
+			Text:Developer Mode
+			Visible:false
+			Bold:True
+		RadarBin@INGAME_RADAR_BIN:
+			Id:INGAME_RADAR_BIN
+		PowerBin@INGAME_POWER_BIN:
+			Id:INGAME_POWER_BIN
+		MoneyBin@INGAME_MONEY_BIN:
+			Id:INGAME_MONEY_BIN
+			X:WINDOW_RIGHT - WIDTH
+			Y:0
+			Width:320
+			Height: 32
+			SplitOreAndCash: yes
+			Children:
+				OrderButton@SELL:
+					Id:SELL
+					Delegate:OrderButtonsChromeDelegate
+					X:39
 					Y:0
-					Width:WINDOW_RIGHT
-					Height:WINDOW_BOTTOM
+					Width:30
+					Height:30
+					Image:sell
+					Description:Sell
+					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
+				OrderButton@REPAIR:
+					Id:REPAIR
+					Delegate:OrderButtonsChromeDelegate
+					X:75
+					Y:0
+					Width:30
+					Height:30
+					Image:repair
+					Description:Repair
+					LongDesc:Repair damaged buildings
+		WorldTooltip:
+		Background@INGAME_OPTIONS_BG:
+			Id:INGAME_OPTIONS_BG
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:300
+			Height:280
+			Visible:false
+			Children:
+				Label@LABEL_TITLE:
+					Id:LABEL_TITLE
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:20
+					Width:250
+					Height:25
+					Text:Options
+					Align:Center
+					Bold:True
+				Button@BUTTON_RESUME:
+					Id:BUTTON_RESUME
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:60
+					Width:160
+					Height:25
+					Text:Resume
+					Bold:True
+				Button@BUTTON_SURRENDER:
+					Id:BUTTON_SURRENDER
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:100
+					Width:160
+					Height:25
+					Text:Surrender
+					Bold:True
+				Button@BUTTON_SETTINGS:
+					Id:BUTTON_SETTINGS
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:140
+					Width:160
+					Height:25
+					Text:Settings
+					Bold:True
+				Button@BUTTON_DISCONNECT:
+					Id:BUTTON_DISCONNECT
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:180
+					Width:160
+					Height:25
+					Text:Disconnect
+					Bold:True
+				Button@BUTTON_QUIT:
+					Id:BUTTON_QUIT
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:220
+					Width:160
+					Height:25
+					Text:Quit
+					Bold:True
+		Background@DIPLOMACY_BG:
+			Id:DIPLOMACY_BG
+			Delegate:DiplomacyDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:450
+			Height:400
+			Visible:false
+			Children:
+				Label@LABEL_TITLE:
+					Id:LABEL_TITLE
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:20
+					Width:250
+					Height:25
+					Text:Diplomacy
+					Align:Center
+					Bold:True
+		ChatDisplay@CHAT_DISPLAY:
+			Id:CHAT_DISPLAY
+			X:250
+			Y:WINDOW_BOTTOM - HEIGHT - 30
+			Width: 760
+			Height: 200
+			ClickThrough: True
+			DrawBackground: False
+			RemoveTime:250
+		ChatEntry@CHAT_ENTRY:
+			Id:CHAT_ENTRY
+			X:250
+			Y:WINDOW_BOTTOM - HEIGHT
+			Width: 760
+			Height: 30
+			ClickThrough: True
+		Background@DEVELOPERMODE_BG:
+			Id:DEVELOPERMODE_BG
+			Delegate:DeveloperModeDelegate
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:350
+			Height:330
+			Visible:false
+			Children:
+				Label@LABEL_TITLE:
+					Id:LABEL_TITLE
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:20
+					Width:250
+					Height:25
+					Text:Developer Mode
+					Align:Center
+				Checkbox@CHECKBOX_SHROUD
+					Id:CHECKBOX_SHROUD
+					X:30
+					Y:50
+					Height:20
+					Width:PARENT_RIGHT - 30
+					Text:Disable Shroud
+				Checkbox@CHECKBOX_UNITDEBUG:
+					Id:CHECKBOX_UNITDEBUG
+					X:30
+					Y:80
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Show Occupied Cells
+				Checkbox@CHECKBOX_PATHDEBUG:
+					Id:CHECKBOX_PATHDEBUG
+					X:30
+					Y:110
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Show Unit Paths
+				Button@GIVE_CASH
+					Id:GIVE_CASH
+					X:30
+					Y:140
+					Width:200
+					Height:20
+					Text: Give Cash
+				Checkbox@INSTANT_BUILD
+					Id:INSTANT_BUILD
+					X:30
+					Y:170
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Instant Build Speed
+				Checkbox@INSTANT_CHARGE
+					Id:INSTANT_CHARGE
+					X:30
+					Y:200
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Instant Charge Time (Special Powers)
+				Checkbox@ENABLE_TECH
+					Id:ENABLE_TECH
+					X:30
+					Y:230
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Build Everything
+				Button@GIVE_EXPLORATION
+					Id:GIVE_EXPLORATION
+					X:30
+					Y:260
+					Width:200
+					Height:20
+					Text: Give Exploration
+Background@FMVPLAYER:
+	Id:FMVPLAYER
+	Width:WINDOW_RIGHT
+	Height:WINDOW_BOTTOM
+	Visible: false
+	Background:dialog4
+	Children:
+		VqaPlayer:
+			Id:PLAYER
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM

@@ -1,216 +1,214 @@
-Container@ROOT:
+Background@SETTINGS_MENU:
+	Id:SETTINGS_MENU
+	Delegate:SettingsMenuDelegate
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM- HEIGHT)/2
+	Width: 450
+	Height: 350
+	Visible: false
 	Children:
-		Background@SETTINGS_MENU:
-			Id:SETTINGS_MENU
-			Delegate:SettingsMenuDelegate
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM- HEIGHT)/2
-			Width: 450
-			Height: 350
+		Label@SETTINGS_LABEL_TITLE:
+			Id:SETTINGS_LABEL_TITLE
+			X:0
+			Y:20
+			Width:450
+			Height:25
+			Text:Settings
+			Align:Center
+			Bold:True
+		Button@BUTTON_CLOSE:
+			Id:BUTTON_CLOSE
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Close
+			Bold:True
+		Container@TAB_CONTAINER:
+			Id:TAB_CONTAINER
+			X:0
+			Y:50
+			Width:PARENT_RIGHT
+			Height:25
+			Children:
+				Button@GENERAL:
+					Id:GENERAL
+					X:45
+					Y:0
+					Width:90
+					Height:25
+					Text:General
+					Bold:True
+				Button@AUDIO:
+					Id:AUDIO
+					X:135
+					Y:0
+					Width:90
+					Height:25
+					Text:Audio
+					Bold:True
+				Button@DISPLAY:
+					Id:DISPLAY
+					X:225
+					Y:0
+					Width:90
+					Height:25
+					Text:Display
+					Bold:True
+				Button@DEBUG:
+					Id:DEBUG
+					X:315
+					Y:0
+					Width:90
+					Height:25
+					Text:Debug
+					Bold:True
+		Container@GENERAL_PANE:
+			Id:GENERAL_PANE
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
+			Visible: true
+			Children:
+				Label@SETTINGS_PLAYER_NAME:
+					Id:SETTINGS_PLAYER_NAME
+					X:0
+					Y:10
+					Text: Player Name:
+				TextField@NAME:
+					Id:NAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:0
+					MaxLength:16
+				Checkbox@EDGE_SCROLL:
+					Id:EDGE_SCROLL
+					X:0
+					Y:30
+					Width:200
+					Height:20
+					Text: Enable Edge Scrolling
+				Checkbox@INVERSE_SCROLL:
+					Id:INVERSE_SCROLL
+					X:0
+					Y:60
+					Width:200
+					Height:20
+					Text: Invert Mouse Drag Scrolling
+		Container@AUDIO_PANE:
+			Id:AUDIO_PANE
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Label@SETTINGS_LABEL_TITLE:
-					Id:SETTINGS_LABEL_TITLE
+				Label@SOUND_VOLUME_LABEL:
+					Id:SOUND_VOLUME_LABEL
 					X:0
-					Y:20
-					Width:450
-					Height:25
-					Text:Settings
-					Align:Center
-					Bold:True
-				Button@BUTTON_CLOSE:
-					Id:BUTTON_CLOSE
-					X:PARENT_RIGHT - 180
-					Y:PARENT_BOTTOM - 45
-					Width:160
-					Height:25
-					Text:Close
-					Bold:True
-				Container@TAB_CONTAINER:
-					Id:TAB_CONTAINER
+					Y:10
+					Text: Sound Volume		
+				Slider@SOUND_VOLUME:
+					Id:SOUND_VOLUME
+					X:100
+					Y:0
+					Width:250
+					Height:20
+					Ticks:5
+				Label@MUSIC_VOLUME_LABEL:
+					Id:MUSIC_VOLUME_LABEL
+					X:0
+					Y:40
+					Text: Music Volume
+				Slider@MUSIC_VOLUME:
+					Id:MUSIC_VOLUME
+					X:100
+					Y:30
+					Width:250
+					Height:20
+					Ticks:5
+				Checkbox@MUSICPLAYER_CHECKBOX:
+					Id:MUSICPLAYER_CHECKBOX
+					X:0
+					Y:70
+					Width:300
+					Height:20
+					Text:Show Music Player
+		Container@DISPLAY_PANE:
+			Id:DISPLAY_PANE
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
+			Visible: false
+			Children:
+				Checkbox@FULLSCREEN_CHECKBOX:
+					Id:FULLSCREEN_CHECKBOX
+					X:0
+					Y:0
+					Width:300
+					Height:20
+					Text:Fullscreen
+				Label@RESOLUTION_LABEL:
+					Id:RESOLUTION_LABEL
 					X:0
 					Y:50
-					Width:PARENT_RIGHT
+					Text: Window Resolution:
+				TextField@SCREEN_WIDTH:
+					Id:SCREEN_WIDTH
+					Text:Width
+					Width:50
 					Height:25
-					Children:
-						Button@GENERAL:
-							Id:GENERAL
-							X:45
-							Y:0
-							Width:90
-							Height:25
-							Text:General
-							Bold:True
-						Button@AUDIO:
-							Id:AUDIO
-							X:135
-							Y:0
-							Width:90
-							Height:25
-							Text:Audio
-							Bold:True
-						Button@DISPLAY:
-							Id:DISPLAY
-							X:225
-							Y:0
-							Width:90
-							Height:25
-							Text:Display
-							Bold:True
-						Button@DEBUG:
-							Id:DEBUG
-							X:315
-							Y:0
-							Width:90
-							Height:25
-							Text:Debug
-							Bold:True
-				Container@GENERAL_PANE:
-					Id:GENERAL_PANE
-					X:37
-					Y:100
-					Width:PARENT_RIGHT - 37
-					Height:PARENT_BOTTOM - 100
-					Visible: true
-					Children:
-						Label@SETTINGS_PLAYER_NAME:
-							Id:SETTINGS_PLAYER_NAME
-							X:0
-							Y:10
-							Text: Player Name:
-						TextField@NAME:
-							Id:NAME
-							Text:Name
-							Width:139
-							Height:25
-							X:90
-							Y:0
-							MaxLength:16
-						Checkbox@EDGE_SCROLL:
-							Id:EDGE_SCROLL
-							X:0
-							Y:30
-							Width:200
-							Height:20
-							Text: Enable Edge Scrolling
-						Checkbox@INVERSE_SCROLL:
-							Id:INVERSE_SCROLL
-							X:0
-							Y:60
-							Width:200
-							Height:20
-							Text: Invert Mouse Drag Scrolling
-				Container@AUDIO_PANE:
-					Id:AUDIO_PANE
-					X:37
-					Y:100
-					Width:PARENT_RIGHT - 37
-					Height:PARENT_BOTTOM - 100
-					Visible: false
-					Children:
-						Label@SOUND_VOLUME_LABEL:
-							Id:SOUND_VOLUME_LABEL
-							X:0
-							Y:10
-							Text: Sound Volume		
-						Slider@SOUND_VOLUME:
-							Id:SOUND_VOLUME
-							X:100
-							Y:0
-							Width:250
-							Height:20
-							Ticks:5
-						Label@MUSIC_VOLUME_LABEL:
-							Id:MUSIC_VOLUME_LABEL
-							X:0
-							Y:40
-							Text: Music Volume
-						Slider@MUSIC_VOLUME:
-							Id:MUSIC_VOLUME
-							X:100
-							Y:30
-							Width:250
-							Height:20
-							Ticks:5
-						Checkbox@MUSICPLAYER_CHECKBOX:
-							Id:MUSICPLAYER_CHECKBOX
-							X:0
-							Y:70
-							Width:300
-							Height:20
-							Text:Show Music Player
-				Container@DISPLAY_PANE:
-					Id:DISPLAY_PANE
-					X:37
-					Y:100
-					Width:PARENT_RIGHT - 37
-					Height:PARENT_BOTTOM - 100
-					Visible: false
-					Children:
-						Checkbox@FULLSCREEN_CHECKBOX:
-							Id:FULLSCREEN_CHECKBOX
-							X:0
-							Y:0
-							Width:300
-							Height:20
-							Text:Fullscreen
-						Label@RESOLUTION_LABEL:
-							Id:RESOLUTION_LABEL
-							X:0
-							Y:50
-							Text: Window Resolution:
-						TextField@SCREEN_WIDTH:
-							Id:SCREEN_WIDTH
-							Text:Width
-							Width:50
-							Height:25
-							X:130
-							Y:40
-							MaxLength:5
-						Label@X:
-							Id:X
-							Text:x
-							X:185
-							Y:50
-						TextField@SCREEN_HEIGHT:
-							Id:SCREEN_HEIGHT
-							Text:Height
-							Width:50
-							Height:25
-							X:195
-							Y:40
-							MaxLength:5
-						Label@RESTART:
-							Id:RESTART
-							Text: Restart Game To Apply Changes
-							X:0
-							Y:PARENT_BOTTOM - 30
-				Container@DEBUG_PANE:
-					Id:DEBUG_PANE
-					X:37
-					Y:100
-					Width:PARENT_RIGHT - 37
-					Height:PARENT_BOTTOM - 100
-					Visible: false
-					Children:
-						Checkbox@PERFDEBUG_CHECKBOX:
-							Id:PERFDEBUG_CHECKBOX
-							X:0
-							Y:0
-							Width:300
-							Height:20
-							Text:Show Performance Information
-						Checkbox@SYNCREPORTS_CHECKBOX:
-							Id:SYNCREPORTS_CHECKBOX
-							X:0
-							Y:30
-							Width:300
-							Height:20
-							Text:Collect Sync Reports
-						Checkbox@GAMETIME_CHECKBOX:
-							Id:GAMETIME_CHECKBOX
-							X:0
-							Y:60
-							Width:300
-							Height:20
-							Text:Show Game Time Counter 
+					X:130
+					Y:40
+					MaxLength:5
+				Label@X:
+					Id:X
+					Text:x
+					X:185
+					Y:50
+				TextField@SCREEN_HEIGHT:
+					Id:SCREEN_HEIGHT
+					Text:Height
+					Width:50
+					Height:25
+					X:195
+					Y:40
+					MaxLength:5
+				Label@RESTART:
+					Id:RESTART
+					Text: Restart Game To Apply Changes
+					X:0
+					Y:PARENT_BOTTOM - 30
+		Container@DEBUG_PANE:
+			Id:DEBUG_PANE
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
+			Visible: false
+			Children:
+				Checkbox@PERFDEBUG_CHECKBOX:
+					Id:PERFDEBUG_CHECKBOX
+					X:0
+					Y:0
+					Width:300
+					Height:20
+					Text:Show Performance Information
+				Checkbox@SYNCREPORTS_CHECKBOX:
+					Id:SYNCREPORTS_CHECKBOX
+					X:0
+					Y:30
+					Width:300
+					Height:20
+					Text:Collect Sync Reports
+				Checkbox@GAMETIME_CHECKBOX:
+					Id:GAMETIME_CHECKBOX
+					X:0
+					Y:60
+					Width:300
+					Height:20
+					Text:Show Game Time Counter 
