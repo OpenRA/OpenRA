@@ -14,25 +14,25 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class RepairBuilding : IActivity
 	{
-		Actor target;
+		Target target;
 
-		public RepairBuilding(Actor target) { this.target = target; }
+		public RepairBuilding(Actor target) { this.target = Target.FromActor(target); }
 
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
-			if (target == null || target.IsDead()) return NextActivity;
-			var health = target.Trait<Health>();
+			if (!target.IsValid) return NextActivity;
+			var health = target.Actor.Trait<Health>();
 			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
 			
-			target.InflictDamage(self, -health.MaxHP, null);
+			target.Actor.InflictDamage(self, -health.MaxHP, null);
 			self.Destroy();
 
 			return NextActivity;
 		}
 
-		public void Cancel(Actor self) { target = null; NextActivity = null; }
+		public void Cancel(Actor self) { target = Target.None; NextActivity = null; }
 	}
 }
