@@ -57,10 +57,10 @@ NUKE:
 		Range: 4
 	Bib:
 
-PROC.proxy:
+PROC:
 	Inherits: ^Building
 	Valued:
-		Cost: 2000
+		Cost: 1700
 	Tooltip:
 		Name: Tiberium Refinery
 		Icon: procicnh
@@ -70,30 +70,8 @@ PROC.proxy:
 		Prerequisites: nuke
 		Owner: gdi,nod
 	Building:
-		Power: -50
-		Footprint: ___xx xxxxx xxx__ xxx__
-		Dimensions: 5,4
-		Capturable: true
-	Health:
-		HP: 900
-		Armor: wood
-	RevealsShroud:
-		Range: 6
-	ReplaceWithActor:
-		Actor: proc
-
-PROC:
-	Inherits: ^Building
-	-Buildable:
-	Valued:
-		Cost: 1700
-	Tooltip:
-		Name: Tiberium Refinery
-		Icon: procicnh
-		Description: Processes raw Tiberium into useable resources
-	Building:
 		Power: -30
-		Footprint: ___ xxx ===
+		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		Capturable: true
 	Health:
@@ -110,6 +88,10 @@ PROC:
 		Capacity: 1000
 		ProcessTick: 25
 		ProcessAmount: 50
+	StoresOre:
+		PipColor: Green
+		PipCount: 15
+		Capacity: 1500
 	TiberiumRefineryDockAction:
 	CustomSellValue:
 		Value: 500
@@ -118,12 +100,7 @@ PROC:
 		InitialActivity: Harvest
 		SpawnOffset: 1,2
 		Facing: 64
-	FreeActor@silo1:
-		Actor: silo
-		SpawnOffset: 3,0
-	FreeActor@silo2:
-		Actor: silo
-		SpawnOffset: 3,1
+
 SILO:
 	Inherits: ^Building
 	Valued:
@@ -133,6 +110,7 @@ SILO:
 		Icon: siloicnh
 		Description: Stores processed Tiberium
 	Buildable:
+		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: proc
 		Owner: gdi,nod
