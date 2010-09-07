@@ -649,6 +649,8 @@ MIG:
 		Ammo: 8
 	IronCurtainable:
 	ReturnOnIdle:
+	Selectable:
+		Bounds: 44,40,0,0
 
 YAK:
 	Inherits: ^Plane
