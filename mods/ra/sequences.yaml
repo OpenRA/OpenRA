@@ -814,7 +814,7 @@ hind:
 		Facings: 8
 
 tran:
-	idle:
+	idle: tran2
 		Start: 0
 		Facings: 32
 	rotor: lrotor
@@ -829,11 +829,12 @@ tran:
 	slow-rotor2: rrotor
 		Start: 4
 		Length: 8
-	open:
+	open: tran2
 		Start: 32
 		Length: 4
-	unload:
-		Start: 35
+	unload: tran2
+		Start: 32
+		Length: 4
 
 v2:
 	idle:
@@ -1820,3 +1821,10 @@ shok:
 		Start: 0
 		Length: *
 
+ftrk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
