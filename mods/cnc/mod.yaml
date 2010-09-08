@@ -6,10 +6,8 @@ Folders:
 Packages:
 	mods/cnc/overrides.mix
 	mods/cnc/snow.mix
-	mods/cnc/packages/cclocal.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
-	mods/cnc/packages/general.mix
 	mods/cnc/packages/sounds.mix
 	mods/cnc/packages/tempicnh.mix
 	mods/cnc/packages/updatec.mix
