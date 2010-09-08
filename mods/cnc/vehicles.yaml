@@ -43,6 +43,7 @@ HARV:
 		Owner: gdi,nod
 	Selectable:
 		Priority: 7
+		Bounds: 44,44
 	Harvester:
 		Resources: Tiberium
 		PipCount: 5
@@ -207,7 +208,6 @@ BIKE:
 	RenderUnit:
 	AutoTarget:
 	
-	
 JEEP:
 	Inherits: ^Vehicle
 	Valued:
@@ -270,7 +270,7 @@ LTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	
+
 MTNK:
 	Inherits: ^Tank
 	Valued:
@@ -303,6 +303,8 @@ MTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	Selectable:
+		Bounds: 34,34
 
 HTNK:
 	Inherits: ^Tank
@@ -341,6 +343,8 @@ HTNK:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	Selectable:
+		Bounds: 40,38,0,-3
 
 MSAM:
 	Inherits: ^Tank

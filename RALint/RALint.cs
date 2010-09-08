@@ -13,9 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OpenRA;
-using OpenRA.GameRules;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace RALint
 {
@@ -40,7 +39,7 @@ namespace RALint
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-				Game.modData = new ModData( args );
+				Game.modData = new ModData(args);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				// all the @something names which actually EXIST.
@@ -63,8 +62,8 @@ namespace RALint
 			}
 			catch (Exception e)
 			{
-			    Console.WriteLine("Failed with exception: {0}".F(e));
-			    return 1;
+				EmitError("Failed with exception: {0}".F(e));
+				return 1;
 			}
 		}
 
