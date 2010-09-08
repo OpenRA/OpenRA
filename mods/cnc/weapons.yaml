@@ -3,7 +3,11 @@ UnitExplode:
 	Warhead:
 		Damage: 500
 		Spread: 10
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: 8
 		InfDeath: 3
 		ImpactSound: xplobig4
@@ -12,7 +16,11 @@ UnitExplodeSmall:
 	Warhead:
 		Damage: 40
 		Spread: 10
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		Explosion: 8
 		InfDeath: 3
 		ImpactSound: xplos
@@ -22,7 +30,11 @@ Atomic:
 		Damage: 1000
 		Spread: 6
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Explosion: 6
 		InfDeath: 4
 	Warhead@areanuke:
@@ -31,7 +43,11 @@ Atomic:
 		SmudgeType: Scorch
 		Size: 5
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
 
@@ -40,7 +56,11 @@ IonCannon:
 		Damage: 500
 		Spread: 6
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		InfDeath: 4
 	Warhead@area:
 		DamageModel: PerCell
@@ -48,7 +68,11 @@ IonCannon:
 		SmudgeType: Scorch
 		Size: 2,1
 		Ore: true
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
 
@@ -61,7 +85,11 @@ Sniper:
 	Warhead: 
 		Damage: 100
 		Spread: 1
-		Verses: 100%,5%,5%,5%,5%
+		Versus: 
+			Wood: 5%
+			Light: 5%
+			Heavy: 5%
+			Concrete: 5%
 		InfDeath: 1
 
 HighV: 
@@ -73,7 +101,11 @@ HighV:
 	Warhead:
 		Damage: 20
 		Spread: 3
-		Verses: 100%,50%,50%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 50%
+			Heavy: 25%
+			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 
@@ -85,7 +117,11 @@ Pistol:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,50%,25%,25%
+		Versus: 
+			Wood: 50%
+			Light: 50%
+			Heavy: 25%
+			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 		Damage: 1
@@ -98,7 +134,11 @@ M16:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,25%,30%,10%,10%
+		Versus: 
+			Wood: 25%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
 		Explosion: 1
 		InfDeath: 1
 		Damage: 15
@@ -121,7 +161,11 @@ Rockets:
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -147,7 +191,11 @@ Rockets.Orca:
 		RangeLimit: 20
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -162,7 +210,11 @@ Flamethrower:
 		Speed: 100
 	Warhead:
 		Spread: 8
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		InfDeath: 4
 		ImpactSound: flamer2
 		SmudgeType: Scorch
@@ -176,7 +228,11 @@ BigFlamer:
 		Speed: 20
 	Warhead:
 		Spread: 8
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
@@ -192,7 +248,11 @@ Chemspray:
 	Warhead:
 		Damage: 80
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		SmudgeType: Scorch
 		ImpactSound: xplos
@@ -208,7 +268,11 @@ Grenade:
 		Image: BOMB
 	Warhead:
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
@@ -224,7 +288,11 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -240,7 +308,11 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -256,7 +328,11 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -273,7 +349,11 @@ Grenade:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -289,7 +369,11 @@ TurretGun:
 		Speed: 40
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -315,7 +399,11 @@ MissilePack:
 		RangeLimit: 35
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -340,7 +428,11 @@ MissilePack:
 		RangeLimit: 35
 	Warhead:
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -360,7 +452,11 @@ Ballistic:
 	Warhead:
 		Damage: 150
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: 5
 		SmudgeType: Crater
@@ -374,7 +470,12 @@ MachineGun:
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Verses: 100%,50%,50%,25%,25%
+		Versus: 
+			None: 100%
+			Wood: 50%
+			Light: 50%
+			Heavy: 25%
+			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 		Damage: 15
@@ -398,7 +499,11 @@ BoatMissile:
 		RangeLimit: 60
 	Warhead:
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
@@ -423,7 +528,11 @@ Tomahawk:
 		RangeLimit: 40
 	Warhead:
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
@@ -436,7 +545,11 @@ Napalm:
 		Image: BOMBLET
 	Warhead:
 		Spread: 8
-		Verses: 90%,100%,60%,25%,50%
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
@@ -453,7 +566,6 @@ Laser:
 		UsePlayerColor: true
 	Warhead:
 		Spread: 1
-		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 4
 		SmudgeType: Scorch
 		Damage: 200
@@ -474,7 +586,11 @@ Nike:
 		RangeLimit: 50
 	Warhead: AP
 		Spread: 3
-		Verses: 30%,75%,75%,100%,50%
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -498,7 +614,11 @@ HonestJohn:
 		Angle: .15
 	Warhead:
 		Spread: 6
-		Verses: 90%,75%,60%,25%,100%
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
@@ -509,6 +629,5 @@ Tiberium:
 	ROF: 10
 	Warhead:
 		Spread: 1
-		Verses: 100%,100%,100%,100%,100%
 		InfDeath: 4
 		Damage: 5

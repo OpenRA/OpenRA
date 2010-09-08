@@ -16,7 +16,8 @@ MCV:
 		Speed: 6
 	Health:
 		HP: 600
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Transforms:
@@ -51,7 +52,8 @@ HARV:
 		Speed: 6
 	Health:
 		HP: 600
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
@@ -73,7 +75,8 @@ APC:
 		Speed: 15
 	Health:
 		HP: 200
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	AttackBase:
@@ -105,7 +108,8 @@ ARTY:
 		Speed: 6
 	Health:
 		HP: 75
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 6
 	AttackBase:
@@ -131,7 +135,8 @@ FTNK:
 		Speed: 9
 	Health:
 		HP: 300
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 4
 	AttackBase:
@@ -160,7 +165,8 @@ BGGY:
 		Speed: 18
 	Health:
 		HP: 140
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -219,7 +225,8 @@ JEEP:
 		Speed: 15
 	Health:
 		HP: 150
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -247,7 +254,8 @@ LTNK:
 		Speed: 9
 	Health:
 		HP: 300
-		Armor: Heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 4
 	Turreted:
@@ -279,7 +287,8 @@ MTNK:
 		Speed: 9
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -312,7 +321,8 @@ HTNK:
 		Speed: 3
 	Health:
 		HP: 600
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -348,7 +358,8 @@ MSAM:
 		Speed: 6
 	Health:
 		HP: 120
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 6
 	Turreted:
@@ -382,7 +393,8 @@ MLRS:
 		Speed: 6
 	Health:
 		HP: 120
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 10
 	Turreted:
@@ -416,7 +428,8 @@ STNK:
 		Speed: 15
 	Health:
 		HP: 110
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Cloak:
@@ -449,7 +462,8 @@ TRAN:
 		InitialFacing: 0
 	Health:
 		HP: 90
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	RenderUnitRotor:
@@ -478,7 +492,8 @@ HELI:
 		Speed: 20
 	Health:
 		HP: 125
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
@@ -508,7 +523,8 @@ ORCA:
 		Speed: 20
 	Health:
 		HP: 125
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
@@ -530,7 +546,8 @@ C17:
 		Speed: 25
 	Health:
 		HP: 25
-		Armor: light
+	Armor:
+		Type: Light
 	RenderUnit:
 	WithShadow:
 	Cargo:
@@ -551,7 +568,8 @@ A10:
 		Speed: 25
 	Health:
 		HP: 60
-		Armor: light
+	Armor:
+		Type: Light
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -570,7 +588,8 @@ BOAT:
 		Icon: boaticnh
 	Health:
 		HP: 700
-		Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		InitialFacing:64
 		ROT: 4
@@ -612,7 +631,8 @@ LST:
 		Speed: 10
 	Health:
 		HP: 400
-		Armor: light
+	Armor:
+		Type: Light
 	RevealsShroud:
 		Range: 7
 	RenderUnit:

@@ -14,7 +14,6 @@ FACT:
 		Capturable: true
 	Health:
 		HP: 1400
-		Armor: wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -52,7 +51,6 @@ NUKE:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -76,7 +74,6 @@ PROC:
 		Capturable: true
 	Health:
 		HP: 900
-		Armor: wood
 	RevealsShroud:
 		Range: 6
 	Bib:
@@ -121,7 +118,6 @@ SILO:
 		Capturable: true
 	Health:
 		HP: 300
-		Armor: wood
 	RevealsShroud:
 		Range: 4
 	RenderBuildingOre:
@@ -152,7 +148,6 @@ PYLE:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -189,7 +184,6 @@ HAND:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -223,7 +217,8 @@ AFLD:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: heavy
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Bib:
@@ -260,7 +255,8 @@ WEAP:
 		Capturable: true
 	Health:
 		HP: 400
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -298,7 +294,6 @@ HQ:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -325,7 +320,6 @@ NUK2:
 		Capturable: true
 	Health:
 		HP: 600
-		Armor: wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -349,7 +343,6 @@ FIX:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
 	RevealsShroud:
 		Range: 5
 	BelowUnits:
@@ -377,7 +370,6 @@ HPAD:
 		Capturable: true
 	Health:
 		HP: 800
-		Armor: wood
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -416,7 +408,6 @@ EYE:
 		Capturable: true
 	Health:
 		HP: 1000
-		Armor: wood
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -445,7 +436,8 @@ TMPL:
 		Capturable: true
 	Health:
 		HP: 2000
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 6
 	Bib:
@@ -472,7 +464,8 @@ OBLI:
 		Dimensions: 1,2
 	Health:
 		HP: 400
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
@@ -501,7 +494,8 @@ CYCL:
 		Owner: nod
 	Health:
 		HP: 300
-		Armor: none
+	Armor: 
+		Type: None
 
 SBAG:
 	Inherits: ^Wall
@@ -518,7 +512,8 @@ SBAG:
 		Owner: gdi
 	Health:
 		HP: 250
-		Armor: none
+	Armor: 
+		Type: None
 
 BRIK:
 	Inherits: ^Wall
@@ -535,7 +530,8 @@ BRIK:
 		Owner: gdi,nod
 	Health:
 		HP: 1000
-		Armor: heavy
+	Armor: 
+		Type: Heavy
 	Wall:
 		CrushClasses: heavywall
 		
@@ -556,7 +552,8 @@ GUN:
 		Power: -20
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -589,7 +586,8 @@ SAM:
 		Dimensions: 2,1
 	Health:
 		HP: 400
-		Armor: heavy
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 5
 	Turreted:
@@ -620,7 +618,6 @@ GTWR:
 		Power: -10
 	Health:
 		HP: 600
-		Armor: wood
 	RevealsShroud:
 		Range: 6
 	AttackOmni:
@@ -647,7 +644,8 @@ ATWR:
 		Power: -20
 	Health:
 		HP: 800
-		Armor: light
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	AttackOmni:

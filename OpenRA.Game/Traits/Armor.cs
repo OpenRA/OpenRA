@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 {
 	public class ArmorInfo : ITraitInfo
 	{
-		[FieldLoader.Load] public readonly string Type = null;
+		public readonly string Type = null;
 		public object Create (ActorInitializer init) { return new Armor(); }
 	}
 	public class Armor {}

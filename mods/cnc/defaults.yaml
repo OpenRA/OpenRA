@@ -78,7 +78,8 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
-		Armor: none
+	Armor:
+		Type: None
 	RevealsShroud:
 		Range: 4
 	Mobile:
@@ -168,6 +169,8 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground
+	Armor:
+		Type: Wood
 	RepairableBuilding:
 	Building:
 		Dimensions: 1,1
@@ -200,7 +203,8 @@
 		Zombie: true
 	Health:
 		HP: 400
-		Armor: wood
+	Armor: 
+		Type: Wood
 	Building:
 	-RepairableBuilding:
 	Tooltip:
@@ -267,7 +271,8 @@
 ^Husk:
 	Health:
 		HP: 140
-		Armor: Heavy
+	Armor: 
+		Type: Heavy
 	Husk:
 	Selectable: 
 		Priority: -1
