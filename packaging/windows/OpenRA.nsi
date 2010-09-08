@@ -250,6 +250,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING
 	Delete $INSTDIR\INSTALL
+	Delete $INSTDIR\VERSION
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete $INSTDIR\settings-netplay-*.ini
@@ -264,7 +265,7 @@ Function ${UN}Clean
 	
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
-	;DeleteRegKey HKCU "Software\OpenRA"
+	DeleteRegKey HKLM "Software\OpenRA"
 FunctionEnd
 !macroend
 
