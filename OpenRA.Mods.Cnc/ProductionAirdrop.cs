@@ -52,11 +52,6 @@ namespace OpenRA.Mods.Cnc
 				});
 				
 				var cargo = a.Trait<Cargo>();
-				var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
-				{
-					new OwnerInit( self.Owner ),
-				});
-				cargo.Load(a, newUnit);
 				a.QueueActivity(new Fly(self.Location + new int2(6,0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
@@ -64,7 +59,7 @@ namespace OpenRA.Mods.Cnc
 					if (self.IsDead())
 						return;
 					rb.PlayCustomAnimRepeating(self, "idle");
-					self.World.AddFrameEndTask(ww => DoProduction(self, cargo.Unload(self), exit));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
 				}));
 				a.QueueActivity(new Fly(endPos));
 				a.QueueActivity(new RemoveSelf());

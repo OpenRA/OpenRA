@@ -37,8 +37,13 @@ namespace OpenRA.Traits
 			Info = info;
 		}
 		
-		public void DoProduction(Actor self, Actor newUnit, ExitInfo exitinfo)
+		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
+			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
+			{
+			    new OwnerInit( self.Owner ),
+			});
+
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterLocation + exitinfo.SpawnOffset;
 
@@ -86,21 +91,17 @@ namespace OpenRA.Traits
 		
 		public virtual bool Produce( Actor self, ActorInfo producee )
 		{			
-			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
-			{
-				new OwnerInit( self.Owner ),
-			});
-			
 			// Todo: remove assumption on Mobile; 
 			// required for 3-arg CanEnterCell
-			var mobile = newUnit.Trait<Mobile>();
+			//var mobile = newUnit.Trait<Mobile>();
+			var mobileInfo = producee.Traits.Get<MobileInfo>();
 			
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
-				if (mobile.CanEnterCell(self.Location + s.ExitCell,self,true))
+				if( Mobile.CanEnterCell( mobileInfo, self.World, self.Location + s.ExitCell,self,true ) )
 				{
-					DoProduction(self, newUnit, s);
+					DoProduction(self, producee, s);
 					return true;
 				}
 			return false;

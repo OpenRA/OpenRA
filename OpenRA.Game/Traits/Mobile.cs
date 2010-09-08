@@ -88,7 +88,6 @@ namespace OpenRA.Traits
 
 		Shroud shroud;
 		UnitInfluence uim;
-		BuildingInfluence bim;
 		bool canShareCell;
 		
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -98,7 +97,6 @@ namespace OpenRA.Traits
 			
 			shroud = self.World.WorldActor.Trait<Shroud>();
 			uim = self.World.WorldActor.Trait<UnitInfluence>();
-			bim = self.World.WorldActor.Trait<BuildingInfluence>();
 			canShareCell = self.HasTrait<SharesCell>();
 			
 			if (init.Contains<LocationInit>())
@@ -208,50 +206,47 @@ namespace OpenRA.Traits
 
 		public bool CanEnterCell(int2 p)
 		{
-			return CanEnterCell(p, null, true);
+			return CanEnterCell( p, null, true);
 		}
 
-		public virtual bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
+		public virtual bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
-			if (MovementCostForCell(self, cell) == float.PositiveInfinity)
+			return CanEnterCell( Info, self.World, cell, ignoreActor, checkTransientActors );
+		}
+
+		public static bool CanEnterCell( MobileInfo mobileInfo, World world, int2 cell, Actor ignoreActor, bool checkTransientActors )
+		{
+			if (MovementCostForCell(mobileInfo, world, cell) == float.PositiveInfinity)
 				return false;
+
+			var bim = world.WorldActor.Trait<BuildingInfluence>();
+			var uim = world.WorldActor.Trait<UnitInfluence>();
 
 			// Check for buildings
 			var building = bim.GetBuildingBlocking(cell);
 			if (building != null && building != ignoreActor)
 			{
-				if (Info.Crushes == null)
+				if (mobileInfo.Crushes == null)
 					return false;
 
 				var crushable = building.TraitsImplementing<ICrushable>();
 				if (crushable.Count() == 0)
 					return false;
 
-				if (!crushable.Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))
+				if (!crushable.Any(b => b.CrushClasses.Intersect(mobileInfo.Crushes).Any()))
 					return false;
 			}
 
 			// Check mobile actors
 			if (checkTransientActors && uim.AnyUnitsAt(cell))
 			{
-				var actors = uim.GetUnitsAt(cell).Where(a => a != self && a != ignoreActor).ToArray();
-				var nonshareable = canShareCell ? actors : actors.Where(a => !a.HasTrait<SharesCell>()).ToArray();
-
-				if (canShareCell)
-				{
-					var shareable = actors.Where(a => a.HasTrait<SharesCell>());
-
-					// only allow 5 in a cell
-					if (shareable.Count() >= 5)
-						return false;
-				}
-
+				var actors = uim.GetUnitsAt(cell).Where(a => a != ignoreActor).ToArray();
 				// We can enter a cell with nonshareable units only if we can crush all of them
-				if (Info.Crushes == null && nonshareable.Length > 0)
+				if (mobileInfo.Crushes == null && actors.Length > 0)
 					return false;
 
-				if (nonshareable.Length > 0 && nonshareable.Any(a => !(a.HasTrait<ICrushable>() &&
-											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(Info.Crushes).Any()))))
+				if (actors.Length > 0 && actors.Any(a => !(a.HasTrait<ICrushable>() &&
+											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(mobileInfo.Crushes).Any()))))
 					return false;
 			}
 
@@ -269,17 +264,22 @@ namespace OpenRA.Traits
 					b.OnCrush(self);
 			}
 		}
-				
-		public virtual float MovementCostForCell(Actor self, int2 cell)
+
+		public float MovementCostForCell( Actor self, int2 cell )
 		{
-			if (!self.World.Map.IsInMap(cell.X,cell.Y))
+			return MovementCostForCell( Info, self.World, cell );
+		}
+
+		public static float MovementCostForCell(MobileInfo info, World world, int2 cell)
+		{
+			if (!world.Map.IsInMap(cell.X,cell.Y))
 				return float.PositiveInfinity;
 
-			var type = self.World.GetTerrainType(cell);
-			if (!Info.TerrainSpeeds.ContainsKey(type))
+			var type = world.GetTerrainType(cell);
+			if (!info.TerrainSpeeds.ContainsKey(type))
 				return float.PositiveInfinity;
 			
-			return Info.TerrainSpeeds[type].Cost;
+			return info.TerrainSpeeds[type].Cost;
 		}
 
 		public virtual float MovementSpeedForCell(Actor self, int2 cell)
