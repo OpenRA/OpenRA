@@ -201,9 +201,15 @@ Section "-DotNet" DotNet
 	IfErrors error 0
 	IntCmp $0 1 done error done
 	error: 
-		MessageBox MB_OK ".NET Framework v3.5 SP1 or later is required to run OpenRA. $\nPlease install it from \
-		http://www.microsoft.com/downloads/en/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7 $\nand try the installer again"
-		Abort
+		MessageBox MB_YESNO ".NET Framework v3.5 SP1 or later is required to run OpenRA. $\n \
+		Do you wish for the installer to launch your web browser in order to download and install it?" \
+		IDYES download IDNO error2
+	download:
+		ExecShell "open" "http://www.microsoft.com/downloads/en/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7"
+		Goto done
+	error2:
+		MessageBox MB_OK "Installation will continue but be aware that OpenRA will not run unless .NET v3.5 SP1 \
+		or later is installed."
 	done:
 SectionEnd
 
