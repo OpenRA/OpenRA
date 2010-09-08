@@ -1,50 +1,56 @@
-Copyright 2007,2009,2010 Chris Forbes, Robert Pepperell, Matthew Bowra-Dean, 
-	Paul Chote, Alli Witheford.
-	
-This file is part of OpenRA.
+Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+This file is part of OpenRA, which is free software. It is made 
+available to you under the terms of the GNU General Public License
+as published by the Free Software Foundation. For more information,
+see LICENSE.
 
-OpenRA is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+To run OpenRA, several files are needed from the original game disks.
 
-OpenRA is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+The required files for the Red Alert mod are:
+EITHER:
+	* conquer.mix
+	* temperat.mix
+	* interior.mix
+	* snow.mix
+	* sounds.mix
+	* allies.mix
+	* russian.mix
+OR:
+	* main.mix
+AND:
+	* redalert.mix
 
-You should have received a copy of the GNU General Public License
-along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+These need to be copied into the mods/ra/packages/ directory.
 
-To compile OpenRA, open the OpenRA.sln solution in the main folder, 
-or build it from the command-line with MSBuild.
 
-To run OpenRA, several files from the original game’s install need 
-to be copied to the root of the project directory. The required files are:
+The required files for the Command and Conquer mod are:
+	* cclocal.mix
+	* speech.mix
+	* conquer.mix
+	* sounds.mix
+	* tempicnh.mix
+	* temperat.mix
+	* winter.mix
+	* desert.mix
 
-	redalert.mix
-	conquer.mix
-	temperat.mix
-	interior.mix
-	snow.mix
-	sounds.mix
-	allies.mix
-	russian.mix
-	general.mix
-	
-	hires1.mix
-	expand2.mix
+These need to be copied into the mods/cnc/packages/ directory.
+If you have a case-sensitive filesystem you must change the filenames to
+lower case.
 
-Red Alert has been released by EA Games as freeware so it shouldn’t 
-be too hard to find a legal copy of the CD images. Unfortunately the 
-installer is 16-bit and so won’t run on 64-bit operating systems. This 
-can be worked around by using the Red Alert Setup Manager 
+
+Red Alert and C&C have been released by EA Games as freeware. They can be
+downloaded from http://www.commandandconquer.com/classic
+Unfortunately the installer is 16-bit and so won’t run on 64-bit operating
+systems. This can be worked around by using the Red Alert Setup Manager 
 	(http://ra.afraid.org/html/downloads/utilities-3.html). 
 Make sure you apply the no-CD protection fix so all the files needed 
 are installed to the hard drive.
 
 Dependencies - Make sure you have these installed, or you'll 
 have very strange errors.
+
+
+WINDOWS:
 
 * .NET Framework >= 3.5-SP1
 	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
@@ -55,3 +61,39 @@ have very strange errors.
 	(http://connect.creativelabs.com/openal/Downloads/oalinst.zip)
 * Cg Toolkit >= 2.2
 	(http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_October2009_Setup.exe)
+
+To compile OpenRA, open the OpenRA.sln solution in the main folder, 
+or build it from the command-line with MSBuild.
+
+Run the game with `OpenRA.Game.exe Game.Mods=ra` for Red Alert
+or `OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
+
+
+UBUNTU (substitute comparable packages for other linux distros):
+
+* mono-gmcs
+* freetype
+* libmono-corlib1.0-cil
+* libmono-winforms2.0-cil
+* libopenal1
+* libsdl1.2-dev
+* nvidia-cg-toolkit (download the latest version from
+  http://developer.nvidia.com/object/cg_download.html)
+
+OpenRA is incompatible with Compiz, please disable desktop effects when trying
+to run OpenRA or the game will crash.
+
+You will need to copy the Tao dependencies (.dll and .config) from the
+thirdparty/Tao directory into the game root, or install them permanently into
+your GAC with the following script
+
+#!/bin/sh
+gacutil -i thirdparty/Tao/Tao.Cg.dll
+gacutil -i thirdparty/Tao/Tao.OpenGl.dll
+gacutil -i thirdparty/Tao/Tao.OpenAl.dll
+gacutil -i thirdparty/Tao/Tao.Sdl.dll
+gacutil -i thirdparty/Tao/Tao.FreeType.dll
+
+To compile OpenRA, run `make' from the command line.
+Run the game with `mono OpenRA.Game.exe Game.Mods=ra` for Red Alert
+or `mono OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
