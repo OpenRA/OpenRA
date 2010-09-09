@@ -99,11 +99,17 @@ SectionEnd
 SectionGroup /e "Mods"
 	SectionGroup "Red Alert" RA
 		Section "-RA_Core"
-			SetOutPath "$INSTDIR\mods\ra"
+		    CreateDirectory "$TEMP\ra-packages"
+		    CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
+		    RMDir /r "$INSTDIR\mods\ra"
+		    SetOutPath "$INSTDIR\mods\ra"
 			File "${SRCDIR}\mods\ra\*.*"
 			File /r "${SRCDIR}\mods\ra\maps"
 			File /r "${SRCDIR}\mods\ra\chrome"
 			File /r "${SRCDIR}\mods\ra\extras"
+			CreateDirectory "$INSTDIR\mods\ra\packages"
+			CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
+			RMDir /r "$TEMP\ra-packages"
 		SectionEnd
 		Section "Download content" RA_Content
 			AddSize 10137
@@ -121,10 +127,16 @@ SectionGroup /e "Mods"
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
+		    CreateDirectory "$TEMP\cnc-packages"
+		    CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
+		    RMDir /r "$INSTDIR\mods\cnc"
 			SetOutPath "$INSTDIR\mods\cnc"
 			File "${SRCDIR}\mods\cnc\*.*"
 			File /r "${SRCDIR}\mods\cnc\maps"
 			File /r "${SRCDIR}\mods\cnc\chrome"
+			CreateDirectory "$INSTDIR\mods\cnc\packages"
+			CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
+			RMDir /r "$TEMP\cnc-packages"
 		SectionEnd
 		Section "Download content" CNC_Content
 			AddSize 9431
