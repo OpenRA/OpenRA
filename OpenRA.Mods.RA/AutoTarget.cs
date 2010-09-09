@@ -72,7 +72,8 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (!self.IsIdle) return;
-
+			if (e.Attacker.Destroyed) return;
+			
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attack = self.Trait<AttackBase>();
 			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker))) return;

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 			if (e.DamageState == DamageState.Dead)
 			{	
 				// Prevent TK from giving exp
-				if (e.Attacker == null || e.Attacker.Owner.Stances[ self.Owner ] == Stance.Ally )
+				if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[ self.Owner ] == Stance.Ally )
 					return;
 
 				var info = self.Info.Traits.Get<GivesExperienceInfo>();
