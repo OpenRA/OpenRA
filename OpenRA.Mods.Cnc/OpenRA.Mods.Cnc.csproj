@@ -62,6 +62,7 @@
     <Compile Include="Missions\Gdi01Script.cs" />
     <Compile Include="RenderGunboat.cs" />
     <Compile Include="RenderCargo.cs" />
+    <Compile Include="CncLoadScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

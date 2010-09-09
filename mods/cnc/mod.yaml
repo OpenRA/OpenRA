@@ -76,5 +76,5 @@ TileSets:
 	mods/cnc/tilesets/temperat.yaml
 	mods/cnc/tilesets/snow.yaml
 
-LoadScreen: NullLoadScreen
+LoadScreen: CncLoadScreen
 ShellmapUid:e7b9badb3b7d49ccc773a7aa086c0ff9a1136b77
