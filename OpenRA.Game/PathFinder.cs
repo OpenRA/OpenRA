@@ -49,11 +49,13 @@ namespace OpenRA
 					cached.tick = Game.LocalTick;
 					return new List<int2>(cached.result);
 				}
+				
+				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(self, target, from, true)
+					PathSearch.FromPoint(world, mi, target, from, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self)),
-					PathSearch.FromPoint(self, from, target, true)
+					PathSearch.FromPoint(world, mi, from, target, true)
 						.WithCustomBlocker(AvoidUnitsNear(from, 4, self))
 						.InReverse());
 
@@ -69,11 +71,11 @@ namespace OpenRA
 		{
 			using( new PerfSample( "find_unit_path_multiple_src" ) )
 			{
-				var mobile = self.Trait<Mobile>();
+				var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => mobile.CanEnterCell(t));
+					.Where( t => Mobile.CanEnterCell(self.World, mobileInfo, t, null, true));
 
-				var path = FindPath( PathSearch.FromPoints( self, tilesInRange, src, false )
+				var path = FindPath( PathSearch.FromPoints( world, mobileInfo, tilesInRange, src, false )
 					.WithCustomBlocker(AvoidUnitsNear(src, 4, self))
 					.InReverse());
 				path.Reverse();

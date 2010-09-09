@@ -45,7 +45,7 @@ namespace OpenRA.Traits.Activities
 		{
 			this.getPath = (self,mobile) =>
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self, mobile.toCell, destination, false )
+					PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, destination, false )
 					.WithoutLaneBias());
 			this.destination = destination;
 			this.nearEnough = 0;
@@ -55,8 +55,7 @@ namespace OpenRA.Traits.Activities
 		public Move( int2 destination, int nearEnough ) 
 			: this()
 		{
-			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPath(
-				mobile.toCell, destination, self );
+			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPath( mobile.toCell, destination, self );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -66,7 +65,7 @@ namespace OpenRA.Traits.Activities
 		{
 			this.getPath = (self,mobile) => 
 				self.World.PathFinder.FindPath(
-					PathSearch.FromPoint( self, mobile.toCell, destination, false )
+					PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, destination, false )
 					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( mobile.toCell, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 

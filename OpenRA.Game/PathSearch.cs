@@ -24,16 +24,19 @@ namespace OpenRA
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
-		Actor self;
 		public bool inReverse;
-		Mobile mobile;
-
-		public PathSearch(Actor self)
+		
+		MobileInfo mobileInfo;
+		BuildingInfluence bim;
+		UnitInfluence uim;
+		
+		public PathSearch(World world, MobileInfo mobileInfo)
 		{
-			this.self = self;
-			world = self.World;
+			this.world = world;
+			bim = world.WorldActor.Trait<BuildingInfluence>();
+			uim = world.WorldActor.Trait<UnitInfluence>();
 			cellInfo = InitCellInfo();
-			mobile = self.Trait<Mobile>();
+			this.mobileInfo = mobileInfo;
 			queue = new PriorityQueue<PathDistance>();
 		}
 
@@ -69,7 +72,7 @@ namespace OpenRA
 		
 		public PathSearch FromPoint(int2 from)
 		{
-			AddInitialCell( self.World, from );
+			AddInitialCell( world, from );
 			return this;
 		}
 		
@@ -86,7 +89,7 @@ namespace OpenRA
 
 			cellInfo[p.Location.X, p.Location.Y].Seen = true;
 			
-			var thisCost = mobile.MovementCostForCell(self, p.Location);
+			var thisCost = Mobile.MovementCostForCell(mobileInfo, world, p.Location);
 
 			if (thisCost == float.PositiveInfinity) 
 				return p.Location;
@@ -99,12 +102,12 @@ namespace OpenRA
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var costHere = mobile.MovementCostForCell(self, newHere);
+				var costHere = Mobile.MovementCostForCell(mobileInfo, world, newHere);
 				
 				if (costHere == float.PositiveInfinity)
 					continue;
 
-				if (!mobile.CanEnterCell(newHere, ignoreBuilding, checkForBlocked))
+				if (!Mobile.CanEnterCell(mobileInfo, world, uim, bim, newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
@@ -160,33 +163,33 @@ namespace OpenRA
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
 		
-		public static PathSearch Search( Actor self, bool checkForBlocked )
+		public static PathSearch Search( World world, MobileInfo mi, bool checkForBlocked )
 		{
-			var search = new PathSearch(self) {
+			var search = new PathSearch(world, mi) {
 				checkForBlocked = checkForBlocked };
 			return search;
 		}
 		
-		public static PathSearch FromPoint( Actor self, int2 from, int2 target, bool checkForBlocked )
+		public static PathSearch FromPoint( World world, MobileInfo mi, int2 from, int2 target, bool checkForBlocked )
 		{
-			var search = new PathSearch(self) {
+			var search = new PathSearch(world, mi) {
 				heuristic = DefaultEstimator( target ),
 				checkForBlocked = checkForBlocked };
 
-			search.AddInitialCell( self.World, from );
+			search.AddInitialCell( world, from );
 			return search;
 		}
 
-		public static PathSearch FromPoints(Actor self, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
+		public static PathSearch FromPoints(World world, MobileInfo mi, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
 		{
-			var search = new PathSearch(self)
+			var search = new PathSearch(world, mi)
 			{
 				heuristic = DefaultEstimator(target),
 				checkForBlocked = checkForBlocked
 			};
 
 			foreach (var sl in froms)
-				search.AddInitialCell(self.World, sl);
+				search.AddInitialCell(world, sl);
 
 			return search;
 		}

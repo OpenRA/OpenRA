@@ -63,8 +63,8 @@ namespace OpenRA.Mods.RA
 			var refs = self.World.Queries.OwnedBy[self.Owner]
 				.Where(x => x != ignore && x.HasTrait<IAcceptOre>())
 				.ToList();
-			
-			var path = self.World.PathFinder.FindPath(PathSearch.FromPoints(self,
+			var mi = self.Info.Traits.Get<MobileInfo>();
+			var path = self.World.PathFinder.FindPath(PathSearch.FromPoints(self.World, mi,
 			                                                                refs.Select(r => r.Location + r.Trait<IAcceptOre>().DeliverOffset),
 			                                                                self.Location,
 			                                                                false));

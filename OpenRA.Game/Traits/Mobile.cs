@@ -207,18 +207,24 @@ namespace OpenRA.Traits
 			return CanEnterCell( p, null, true);
 		}
 
+		public static bool CanEnterCell( World world, MobileInfo mi, int2 cell, Actor ignoreActor, bool checkTransientActors )
+		{
+			var bim = world.WorldActor.Trait<BuildingInfluence>();
+			var uim = world.WorldActor.Trait<UnitInfluence>();
+			return Mobile.CanEnterCell( mi, world, uim, bim, cell, ignoreActor, checkTransientActors );
+		}
+		
 		public bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
-			return CanEnterCell( Info, self.World, cell, ignoreActor, checkTransientActors );
+			var bim = self.World.WorldActor.Trait<BuildingInfluence>();
+			var uim = self.World.WorldActor.Trait<UnitInfluence>();
+			return CanEnterCell( Info, self.World, uim, bim, cell, ignoreActor, checkTransientActors );
 		}
 
-		public static bool CanEnterCell( MobileInfo mobileInfo, World world, int2 cell, Actor ignoreActor, bool checkTransientActors )
+		public static bool CanEnterCell( MobileInfo mobileInfo, World world, UnitInfluence uim, BuildingInfluence bim, int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
 			if (MovementCostForCell(mobileInfo, world, cell) == float.PositiveInfinity)
 				return false;
-
-			var bim = world.WorldActor.Trait<BuildingInfluence>();
-			var uim = world.WorldActor.Trait<UnitInfluence>();
 
 			// Check for buildings
 			var building = bim.GetBuildingBlocking(cell);

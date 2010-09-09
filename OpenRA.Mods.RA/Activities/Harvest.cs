@@ -62,11 +62,11 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			var res = self.World.WorldActor.Trait<ResourceLayer>();
 			var harv = self.Info.Traits.Get<HarvesterInfo>();
-
+			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			self.QueueActivity(new Move(
 				() =>
 				{
-					return self.World.PathFinder.FindPath(PathSearch.Search(self, true)
+					return self.World.PathFinder.FindPath(PathSearch.Search(self.World, mobileInfo, true)
 						.WithHeuristic(loc => (res.GetResource(loc) != null && harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
 				        .FromPoint(self.Location));
 				}));
