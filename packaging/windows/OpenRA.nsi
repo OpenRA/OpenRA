@@ -47,8 +47,8 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "English"
 
+Var DownloadCount
 !macro DownloadDependency name saveas
-	Var DownloadCount
 	IntOp $DownloadCount 0 + 1
 	download:
 		NSISdl::download "http://open-ra.org/get-dependency.php?file=${name}" ${saveas}
