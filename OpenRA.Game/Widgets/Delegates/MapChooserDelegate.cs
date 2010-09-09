@@ -74,7 +74,7 @@ namespace OpenRA.Widgets.Delegates
 			if (uid != null)
 				Map = Game.modData.AvailableMaps[uid];
 			else
-				Map = Game.modData.AvailableMaps.FirstOrDefault().Value;
+				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 		}
 	}
 }

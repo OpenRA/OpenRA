@@ -34,7 +34,7 @@ namespace OpenRA.Widgets.Delegates
 			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
 				r.OpenWindow("SERVER_LOBBY");
 				
-				var map = Game.modData.AvailableMaps.Keys.FirstOrDefault();
+				var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
 				
 				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
