@@ -1,0 +1,201 @@
+clock:
+	idle: hclock
+		Start: 0
+		Length: *
+
+120mm:
+	idle:
+		Start: 0
+
+atomicup:
+	idle:
+		Start: 0
+		Length: *
+
+atomicdn:
+	idle:
+		Start: 0
+		Length: *
+
+explosion:
+	1: piff
+		Start: 0
+		Length: *
+	2: piffpiff
+		Start: 0
+		Length: *
+	3: napalm2
+		Start: 0
+		Length: *
+	4: veh-hit3
+		Start: 0
+		Length: *
+	5: veh-hit2
+		Start: 0
+		Length: *
+	6: atomsfx
+		Start: 0
+		Length: *
+	6w: atomsfx
+		Start: 0
+		Length: *
+	1w: piff
+		Start: 0
+		Length: *
+	2w: piffpiff
+		Start: 0
+		Length: *
+	3w: napalm2
+		Start: 0
+		Length: *
+	4w: veh-hit3
+		Start: 0
+		Length: *
+	5w: veh-hit2
+		Start: 0
+		Length: *
+	8: art-exp1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+
+pips:
+	ready: hpips
+		Start: 3
+	hold: hpips
+		Start: 4
+	pip-empty: hpips
+		Start: 0
+	pip-green: hpips
+		Start: 1
+	pip-yellow: hpips
+		Start: 5
+	pip-gray: hpips
+		Start: 6
+	pip-red: hpips
+		Start: 7
+	tag-primary: hpips
+		Start: 2
+	groups: pdigits
+		Start: 0
+		Length: *
+
+rank:
+	rank:
+		Start: 0
+		Length: *
+
+flagfly:
+	idle:
+		Start: 0
+		Length: *
+
+smoke_m:
+	idle:
+		Start: 0
+		Length: *
+	loop:
+		Start: 49
+		Length: 42
+	end:
+		Start: 0
+		Length: 26
+
+dragon:
+	idle:
+		Start: 0
+		Facings: 32
+
+smokey:
+	idle:
+		Start: 0
+		Length: *
+
+bomb:
+	idle:
+		Start: 0
+		Length: *
+
+missile:
+	idle:
+		Start: 0
+		Facings: 32
+
+moveflsh:
+	idle:
+		Start: 0
+		Length: *
+
+miss:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+select:
+	repair:
+		Start: 2
+
+tabs:
+	left-normal: htabs
+		Start: 0
+	left-pressed: htabs
+		Start: 1
+
+crate:
+	idle: wcrate
+		Start: 0
+
+crate-effects:
+	airstrike: deviator
+		Start: 0
+		Length: *
+	nuke: missile2
+		Start: 0
+		Length: 29
+	dollar: dollar
+		Start: 0
+		Length: *
+	reveal-map: earth
+		Start: 0
+		Length: *
+	hide-map: empulse
+		Start: 0
+		Length: *
+	heal: invun
+		Start: 0
+		Length: *
+	mine: mine
+		Start: 0
+		Length: 21
+	redskull: rapid
+		Start: 0
+		Length: 20
+	stealth: stealth2
+		Start: 0
+		Length: *
+	levelup: levelup
+		Start: 0
+		Length: *
+		Tick: 200
+
+ionsfx:
+	idle:
+		Start: 0
+		Length: *
+
+atomic:
+	up: atomicup
+		Start: 0
+		Length: *
+	down: atomicdn
+		Start: 0
+		Length: *
+
+bomblet:
+	idle:
+		Start: 0
+		Length: *
+

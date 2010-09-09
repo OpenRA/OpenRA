@@ -1,0 +1,1765 @@
+fcom:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make:
+		Start: 0
+
+fact:
+	idle:
+		Start: 0
+	make: factmake
+		Start: 0
+		Length: *
+	build:
+		Start: 1
+		Length: 25
+	damaged-idle:
+		Start: 26
+	damaged-build:
+		Start: 27
+		Length: 25
+
+proc:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: procmake
+		Start: 0
+		Length: *
+
+silo:
+	idle:
+		Start: 0
+		Length: 5
+	damaged-idle:
+		Start: 5
+		Length: 5
+	make: silomake
+		Start: 0
+		Length: *
+
+powr:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: powrmake
+		Start: 0
+		Length: *
+
+apwr:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: apwrmake
+		Start: 0
+		Length: *
+
+barr:
+	idle:
+		Start: 0
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+	make: barrmake
+		Start: 0
+		Length: *
+
+tent:
+	idle:
+		Start: 0
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+	make: tentmake
+		Start: 0
+		Length: *
+
+kenn:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: kennmake
+		Start: 0
+		Length: *
+
+dome:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: domemake
+		Start: 0
+		Length: *
+
+atek:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: atekmake
+		Start: 0
+		Length: *
+	active: sputdoor
+		Start: 0
+		Length: *
+
+stek:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: stekmake
+		Start: 0
+		Length: *
+
+weap:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: weapmake
+		Start: 0
+		Length: *
+	build-top: weap2
+		Start: 0
+		Length: 4
+	damaged-build-top: weap2
+		Start: 4
+		Length: 4
+	idle-top: weap2
+		Start: 0
+	damaged-idle-top: weap2
+		Start: 4
+
+hpad:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 7
+	make: hpadmake
+		Start: 0
+		Length: *
+	active:
+		Start: 1
+		Length: 6
+	damaged-active:
+		Start: 8
+		Length: 6
+
+afld:
+	idle:
+		Start: 4
+		Length: 4
+		Tick: 160
+	damaged-idle:
+		Start: 12
+		Length: 4
+		Tick: 160
+	make: afldmake
+		Start: 0
+		Length: *
+	active:
+		Start: 0
+		Length: 4
+		Tick: 160
+	damaged-active:
+		Start: 8
+		Length: 4
+		Tick: 160
+
+spen:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: spenmake
+		Start: 0
+		Length: *
+
+syrd:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: syrdmake
+		Start: 0
+		Length: *
+
+fix:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 7
+	make: fixmake
+		Start: 0
+		Length: *
+	active:
+		Start: 1
+		Length: 6
+	damaged-active:
+		Start: 8
+		Length: 6
+
+gun:
+	idle:
+		Start: 0
+		Facings: 32
+	recoil:
+		Start: 32
+		Facings: 32
+	make: gunmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 64
+		Facings: 32
+	damaged-recoil:
+		Start: 96
+		Facings: 32
+
+agun:
+	idle:
+		Start: 0
+		Facings: 32
+	recoil:
+		Start: 32
+		Facings: 32
+	make: agunmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 64
+		Facings: 32
+	damaged-recoil:
+		Start: 96
+		Facings: 32
+
+sam:
+	idle:
+		Start: 0
+		Facings: 32
+	damaged-idle:
+		Start: 34
+		Facings: 32
+	make: sammake
+		Start: 0
+		Length: *
+
+ftur:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: fturmake
+		Start: 0
+		Length: *
+
+tsla:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 10
+	make: tslamake
+		Start: 0
+		Length: *
+	active:
+		Start: 1
+		Length: 9
+	damaged-active:
+		Start: 11
+		Length: 9
+
+pbox:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: pboxmake
+		Start: 0
+		Length: *
+
+hbox:
+	damaged-idle:
+		Start: 2
+	idle:
+		Start: 0
+	make: hboxmake
+		Start: 0
+		Length: *
+
+gap:
+	idle:
+		Start: 0
+		Length: 32
+	damaged-idle:
+		Start: 32
+		Length: 32
+	make: gapmake
+		Start: 0
+		Length: *
+
+iron:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 11
+	damaged-idle:
+		Start: 11
+	damaged-active:
+		Start: 11
+		Length: 11
+	make: ironmake
+		Start: 0
+		Length: *
+
+pdox:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 29
+	active:
+		Start: 0
+		Length: 29
+	damaged-active:
+		Start: 29
+		Length: 29
+	make: pdoxmake
+		Start: 0
+		Length: *
+
+mslo:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 8
+	make: mslomake
+		Start: 0
+		Length: *
+	active:
+		Start: 1
+		Length: 7
+		Tick: 80
+	damaged-active:
+		Start: 9
+		Length: 7
+
+mcv:
+	idle:
+		Start: 0
+		Facings: 32
+
+truk:
+	idle:
+		Start: 0
+		Facings: 32
+
+harv:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	empty:
+		Start: 96
+		Length: 15
+
+1tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+2tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+3tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+4tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+v2rl:
+	idle:
+		Start: 0
+		Facings: 32
+	empty-idle:
+		Start: 32
+		Facings: 32
+	aim:
+		Start: 64
+		Facings: 8
+	empty-aim:
+		Start: 72
+		Facings: 8
+
+arty:
+	idle:
+		Start: 0
+		Facings: 32
+
+jeep:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+apc:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	close:
+		Start: 32
+		Length: 3
+	unload:
+		Start: 32
+
+mnly:
+	idle:
+		Start: 0
+		Facings: 32
+
+mrj:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+
+mgg:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 8
+
+ss:
+	idle:
+		Start: 0
+		Facings: 16
+
+e1:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	stand3:
+		Start: 128
+		Length: 16
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	crawl:
+		Start: 144
+		Length: 4
+		Facings: 8
+	standup-0:
+		Start: 176
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 8
+		Facings: 8
+	idle1:
+		Start: 256
+		Length: 16
+	idle2:
+		Start: 272
+		Length: 16
+	die1:
+		Start: 288
+		Length: 8
+	die2:
+		Start: 296
+		Length: 8
+	die3:
+		Start: 304
+		Length: 8
+	die4:
+		Start: 312
+		Length: 12
+	die5:
+		Start: 324
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+
+clock:
+	idle:
+		Start: 0
+		Length: *
+
+powerdown:
+	disabled: speed
+		Start: 3
+
+120mm:
+	idle:
+		Start: 0
+
+e3:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	die1:
+		Start: 304
+		Length: 8
+	die2:
+		Start: 312
+		Length: 8
+	die3:
+		Start: 320
+		Length: 8
+	die4:
+		Start: 328
+		Length: 12
+	die5:
+		Start: 340
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 10
+		Facings: 8
+
+e6:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	die1:
+		Start: 146
+		Length: 8
+	die2:
+		Start: 154
+		Length: 8
+	die3:
+		Start: 162
+		Length: 8
+	die4:
+		Start: 170
+		Length: 12
+	die5:
+		Start: 182
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 82
+		Length: 4
+		Facings: 8
+
+ca:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: turr
+		Start: 0
+		Facings: 32
+
+dd:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: ssam
+		Start: 0
+		Facings: 32
+
+pt:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: mgun
+		Start: 0
+		Facings: 32
+
+medi:
+	stand:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	heal:
+		Start: 56
+		Length: 58
+	standup:
+		Start: 114
+		Length: 2
+		Facings: 8
+	die1:
+		Start: 196
+		Length: 5
+	die2:
+		Start: 201
+		Length: 8
+	die3:
+		Start: 209
+		Length: 8
+	die4:
+		Start: 217
+		Length: 12
+	die5:
+		Start: 229
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 130
+		Length: 4
+		Facings: 8
+
+explosion:
+	piff: piff
+		Start: 0
+		Length: *
+	piffs: piffpiff
+		Start: 0
+		Length: *
+	small_explosion: veh-hit3
+		Start: 0
+		Length: *
+	med_explosion: veh-hit2
+		Start: 0
+		Length: *
+	large_splash: h2o_exp1
+		Start: 0
+		Length: *
+	napalm: napalm2
+		Start: 0
+		Length: *
+	nuke: atomsfx
+		Start: 0
+		Length: *
+	med_splash: h2o_exp2
+		Start: 0
+		Length: *
+	self_destruct: art-exp1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	small_splash: h2o_exp3
+		Start: 0
+		Length: *
+	large_explosion: frag1
+		Start: 0
+		Length: *
+
+lst:
+	idle:
+		Start: 0
+	open:
+		Start: 1
+		Length: 4
+	unload:
+		Start: 4
+
+pips:
+	groups:
+		Start: 8
+		Length: 10
+	medic:
+		Start: 20
+	ready:
+		Start: 3
+	hold:
+		Start: 4
+	pip-empty:
+		Start: 0
+	pip-green:
+		Start: 1
+	pip-yellow:
+		Start: 5
+	pip-gray:
+		Start: 6
+	pip-red:
+		Start: 7
+	tag-fake:
+		Start: 18
+	tag-primary:
+		Start: 2
+
+mig:
+	idle:
+		Start: 0
+		Facings: 16
+
+yak:
+	idle:
+		Start: 0
+		Facings: 16
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+heli:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+
+hind:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+tran:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	rotor2: rrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open:
+		Start: 32
+		Length: 4
+	unload:
+		Start: 35
+
+v2:
+	idle:
+		Start: 0
+		Facings: 32
+
+flagfly:
+	idle:
+		Start: 0
+		Length: *
+
+smoke_m:
+	idle:
+		Start: 0
+		Length: *
+	loop:
+		Start: 49
+		Length: 42
+	end:
+		Start: 0
+		Length: 26
+
+tc04:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+tc05:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+tc03:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+tc02:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+tc01:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t17:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t16:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t15:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 10
+
+t14:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t13:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t12:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t11:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 10
+
+t10:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t08:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t07:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t06:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t05:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t03:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t02:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+t01:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+mine:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+
+dragon:
+	idle:
+		Start: 0
+		Facings: 32
+
+smokey:
+	idle:
+		Start: 0
+		Length: *
+
+e2:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 20
+		Facings: 8
+	die1:
+		Start: 416
+		Length: 8
+	die2:
+		Start: 424
+		Length: 8
+	die3:
+		Start: 432
+		Length: 8
+	die4:
+		Start: 440
+		Length: 12
+	die5:
+		Start: 452
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 240
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 288
+		Length: 12
+		Facings: 8
+
+bomb:
+	idle:
+		Start: 0
+		Length: *
+
+dog:
+	stand:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	die1:
+		Start: 236
+		Length: 6
+	die2:
+		Start: 242
+		Length: 9
+	die3:
+		Start: 236
+		Length: 6
+	die4:
+		Start: 242
+		Length: 9
+	die5:
+		Start: 251
+		Length: 14
+	die6: electdog
+		Start: 0
+		Length: *
+	shoot: dogbullt
+		Start: 0
+		Length: 4
+		Facings: 8
+
+missile:
+	idle:
+		Start: 0
+		Facings: 32
+
+spy:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	die1:
+		Start: 288
+		Length: 8
+	die2:
+		Start: 296
+		Length: 8
+	die3:
+		Start: 304
+		Length: 8
+	die4:
+		Start: 312
+		Length: 12
+	die5:
+		Start: 324
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 8
+		Facings: 8
+
+litning:
+	bright:
+		Start: 0
+		Length: 4
+	dim:
+		Start: 4
+		Length: 4
+
+e7:
+	stand:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 56
+		Length: 7
+		Facings: 8
+	die1:
+		Start: 262
+		Length: 8
+	die2:
+		Start: 270
+		Length: 8
+	die3:
+		Start: 278
+		Length: 8
+	die4:
+		Start: 286
+		Length: 12
+	die5:
+		Start: 298
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 128
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 176
+		Length: 7
+		Facings: 8
+
+e4:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	die1:
+		Start: 416
+		Length: 8
+	die2:
+		Start: 424
+		Length: 8
+	die3:
+		Start: 432
+		Length: 8
+	die4:
+		Start: 440
+		Length: 12
+	die5:
+		Start: 452
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+
+fb1:
+	idle:
+		Start: 0
+		Length: *
+
+thf:
+	stand:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	die1:
+		Start: 139
+		Length: 8
+	die2:
+		Start: 147
+		Length: 8
+	die3:
+		Start: 155
+		Length: 8
+	die4:
+		Start: 163
+		Length: 12
+	die5:
+		Start: 175
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+	crawl:
+		Start: 72
+		Length: 4
+		Facings: 8
+
+moveflsh:
+	idle:
+		Start: 0
+		Length: *
+
+v01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+	active:
+		Start: 1
+	damaged-active:
+		Start: 3
+
+v05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v06:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v07:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v08:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v09:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v10:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v11:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v12:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v13:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v14:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v15:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v16:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v17:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v18:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v19:
+	idle:
+		Start: 0
+		Length: 14
+	damaged-idle:
+		Start: 14
+		Length: 15
+
+barl:
+	idle:
+		Start: 0
+		Length: *
+
+brl3:
+	idle:
+		Start: 0
+		Length: *
+
+miss:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+minp:
+	idle:
+		Start: 0
+
+minv:
+	idle:
+		Start: 0
+
+select:
+	repair:
+		Start: 2
+
+tabs:
+	left-normal:
+		Start: 0
+	left-pressed:
+		Start: 1
+
+sputnik:
+	idle:
+		Start: 0
+		Length: *
+
+dd-crnr:
+	idle:
+		Start: 0
+		Length: *
+	top-left:
+		Start: 0
+	top-right:
+		Start: 1
+	bottom-left:
+		Start: 2
+	bottom-right:
+		Start: 3
+
+fb2:
+	idle:
+		Start: 0
+		Length: *
+
+u2:
+	idle:
+		Start: 0
+		Facings: 16
+
+crate:
+	idle: wcrate
+		Start: 0
+	water: wwcrate
+		Start: 0
+		Length: *
+		Tick: 500
+
+crate-effects:
+	speed: speed
+		Start: 0
+		Length: *
+	dollar: dollar
+		Start: 0
+		Length: *
+	reveal-map: earth
+		Start: 0
+		Length: *
+	hide-map: empulse
+		Start: 0
+		Length: *
+	fpower: fpower
+		Start: 0
+		Length: *
+	gps: gpsbox
+		Start: 0
+		Length: *
+	invuln: invulbox
+		Start: 0
+		Length: *
+	heal: invun
+		Start: 0
+		Length: *
+	nuke: missile2
+		Start: 0
+		Length: *
+	parabombs: parabox
+		Start: 0
+		Length: *
+	sonar: sonarbox
+		Start: 0
+		Length: *
+	stealth: stealth2
+		Start: 0
+		Length: *
+	timequake: tquake
+		Start: 0
+		Length: *
+	armor: armor
+		Start: 0
+		Length: *
+	chrono: chronbox
+		Start: 0
+		Length: *
+	airstrike: deviator
+		Start: 0
+		Length: *
+	levelup: levelup
+		Start: 0
+		Length: *
+		Tick: 200
+
+parach:
+	open:
+		Start: 0
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
+badr:
+	idle:
+		Start: 0
+		Facings: 16
+
+brik:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 16
+		Length: 16
+	damaged-idle:
+		Start: 32
+		Length: 16
+	critical-idle:
+		Start: 48
+		Length: 16
+
+sbag:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+fenc:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+cycl:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 32
+		Length: 16
+
+barb:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+wood:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+atomicup:
+	idle:
+		Start: 0
+		Length: *
+
+atomicdn:
+	idle:
+		Start: 0
+		Length: *
+
+bomblet:
+	idle:
+		Start: 0
+		Length: *
+
+nuke:
+	up: atomicup
+		Start: 0
+		Length: *
+	down: atomicdn
+		Start: 0
+		Length: *
+
+c1:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 152
+		Length: 8
+	die2:
+		Start: 160
+		Length: 8
+	die3:
+		Start: 168
+		Length: 12
+	die4:
+		Start: 180
+		Length: 18
+	die5:
+		Start: 160
+		Length: 8
+	die6: electro
+		Start: 0
+		Length: *
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+
+c2:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 152
+		Length: 8
+	die2:
+		Start: 160
+		Length: 8
+	die3:
+		Start: 168
+		Length: 12
+	die4:
+		Start: 180
+		Length: 18
+	die5:
+		Start: 160
+		Length: 8
+	die6: electro
+		Start: 0
+		Length: *
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+
+parabomb:
+	open:
+		Start: 0
+		Length: 8
+	idle:
+		Start: 8
+		Length: 5
+
+smokland:
+	open: playersmoke
+		Start: 0
+		Length: 60
+		Tick: 120
+	idle: playersmoke
+		Start: 60
+		Length: 32
+		Tick: 120
+
+fire:
+	1: fire1
+		Start: 0
+		Length: *
+	2: fire2
+		Start: 0
+		Length: *
+	3: fire3
+		Start: 0
+		Length: *
+	4: fire4
+		Start: 0
+		Length: *
+
+rank:
+	rank:
+		Start: 0
+		Length: *
+
+atomic:
+	up: atomicup
+		Start: 0
+		Length: *
+	down: atomicdn
+		Start: 0
+		Length: *
+
+msub:
+	idle:
+		Start: 0
+		Facings: 16
+
+ttnk:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+
+shok:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	stand3:
+		Start: 192
+		Length: 16
+	crawl:
+		Start: 208
+		Length: 4
+		Facings: 8
+	standup:
+		Start: 240
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	die1:
+		Start: 416
+		Length: 8
+	die2:
+		Start: 424
+		Length: 8
+	die3:
+		Start: 432
+		Length: 8
+	die4:
+		Start: 440
+		Length: 12
+	die5:
+		Start: 452
+		Length: 18
+	die6: electro
+		Start: 0
+		Length: *
+

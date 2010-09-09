@@ -1,0 +1,350 @@
+fact:
+	build:
+		Start: 4
+		Length: 20
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 80
+	damaged-idle:
+		Start: 24
+		Length: 4
+		Tick: 80
+	damaged-build:
+		Start: 28
+		Length: 20
+	dead:
+		Start: 48
+	make: factmake
+		Start: 0
+		Length: *
+
+nuke:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 400
+	damaged-idle:
+		Start: 4
+		Length: 4
+		Tick: 400
+	dead:
+		Start: 8
+		Tick: 400
+	make: nukemake
+		Start: 0
+		Length: *
+
+proc.proxy:
+	make: procmake
+		Start: 0
+		Length: *
+
+proc:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 30
+	damaged-idle:
+		Start: 30
+	damaged-active:
+		Start: 30
+		Length: 30
+	dead:
+		Start: 60
+	make: procmake
+		Start: 0
+		Length: *
+
+silo:
+	idle:
+		Start: 0
+		Length: 5
+	damaged-idle:
+		Start: 5
+		Length: 5
+	dead:
+		Start: 10
+	make: silomake
+		Start: 0
+		Length: *
+
+hand:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: handmake
+		Start: 0
+		Length: *
+
+pyle:
+	idle:
+		Start: 0
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+	dead:
+		Start: 20
+	make: pylemake
+		Start: 0
+		Length: *
+
+weap:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	build-top: weap2
+		Start: 0
+		Length: 10
+	damaged-build-top: weap2
+		Start: 10
+		Length: 10
+	idle-top: weap2
+		Start: 0
+	damaged-idle-top: weap2
+		Start: 4
+	make: weapmake
+		Start: 0
+		Length: *
+
+afld:
+	idle:
+		Start: 0
+		Tick: 120
+	active:
+		Start: 0
+		Length: 16
+		Tick: 120
+	damaged-idle:
+		Start: 16
+		Tick: 120
+	damaged-active:
+		Start: 16
+		Length: 16
+		Tick: 120
+	dead:
+		Start: 32
+	make: afldmake
+		Start: 0
+		Length: *
+
+hq:
+	idle:
+		Start: 0
+		Length: 16
+		Tick: 200
+	damaged-idle:
+		Start: 16
+		Length: 16
+		Tick: 200
+	dead:
+		Start: 32
+	make: hqmake
+		Start: 0
+		Length: *
+
+nuk2:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 400
+	damaged-idle:
+		Start: 4
+		Length: 4
+		Tick: 400
+	dead:
+		Start: 8
+	make: nuk2make
+		Start: 0
+		Length: *
+
+hpad:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 7
+	active:
+		Start: 1
+		Length: 6
+	damaged-active:
+		Start: 8
+		Length: 6
+	dead:
+		Start: 14
+	make: hpadmake
+		Start: 0
+		Length: *
+
+fix:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 7
+	active:
+		Start: 0
+		Length: 7
+	damaged-active:
+		Start: 7
+		Length: 7
+	dead:
+		Start: 14
+	make: fixmake
+		Start: 0
+		Length: 14
+
+eye:
+	idle:
+		Start: 0
+		Length: 16
+		Tick: 200
+	damaged-idle:
+		Start: 16
+		Length: 16
+		Tick: 200
+	dead:
+		Start: 32
+	make: eyemake
+		Start: 0
+		Length: *
+
+tmpl:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 5
+	active:
+		Start: 0
+		Length: 5
+	damaged-active:
+		Start: 5
+		Length: 5
+	dead:
+		Start: 10
+	make: tmplmake
+		Start: 0
+		Length: *
+
+obli:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 4
+	active:
+		Start: 0
+		Length: 4
+	damaged-active:
+		Start: 4
+		Length: 4
+	dead:
+		Start: 8
+	make: oblimake
+		Start: 0
+		Length: 13
+
+brik:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 16
+		Length: 16
+	damaged-idle:
+		Start: 32
+		Length: 16
+	critical-idle:
+		Start: 48
+		Length: 16
+
+sbag:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+cycl:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 32
+		Length: 16
+
+barb:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+wood:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+gun:
+	idle:
+		Start: 0
+		Facings: 32
+	recoil:
+		Start: 32
+		Facings: 32
+	damaged-idle:
+		Start: 64
+		Facings: 32
+	damaged-recoil:
+		Start: 96
+		Facings: 32
+	make: gunmake
+		Start: 0
+		Length: *
+
+sam:
+	idle:
+		Start: 17
+		Facings: 32
+	damaged-idle:
+		Start: 81
+		Facings: 32
+	make: sammake
+		Start: 0
+		Length: 20
+
+gtwr:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: gtwrmake
+		Start: 0
+		Length: *
+
+atwr:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: atwrmake
+		Start: 0
+		Length: *
+

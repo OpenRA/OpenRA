@@ -35,10 +35,13 @@ namespace OpenRA.Graphics
 		{
 			XmlDocument document = new XmlDocument();
 			document.Load(FileSystem.Open(filename));
-
+			
+			var ret = new List<MiniYamlNode>();
 			foreach (XmlElement eUnit in document.SelectNodes("/sequences/unit"))
-				LoadSequencesForUnit(eUnit);
+				LoadSequencesForUnit(eUnit, ret);
 
+			ret.WriteToFile(filename+".yaml");
+				
 			foreach (XmlElement eCursor in document.SelectNodes("/sequences/cursor"))
 				LoadSequencesForCursor(eCursor);
 		}
@@ -54,7 +57,7 @@ namespace OpenRA.Graphics
 
 		}
 
-		static void LoadSequencesForUnit(XmlElement eUnit)
+		static void LoadSequencesForUnit(XmlElement eUnit, List<MiniYamlNode> converted)
 		{
 			Game.modData.LoadScreen.Display();
 			string unitName = eUnit.GetAttribute("name");
@@ -64,9 +67,19 @@ namespace OpenRA.Graphics
 					.ToDictionary(s => s.Name);
 				
 				units.Add(unitName, sequences);
+				converted.Add(new MiniYamlNode(unitName, SaveSequencesForUnit(unitName)));
 			} catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art	
 		}
 
+		public static MiniYaml SaveSequencesForUnit(string unitname)
+		{
+			var ret = new List<MiniYamlNode>();
+			foreach (var s in units[unitname])
+				ret.Add(new MiniYamlNode(s.Key, s.Value.Save()));
+			
+			return new MiniYaml(null, ret);
+		}
+		
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
 			try { return units[unitName][sequenceName]; }

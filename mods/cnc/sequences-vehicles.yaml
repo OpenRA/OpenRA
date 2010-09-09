@@ -1,0 +1,217 @@
+mcv:
+	idle:
+		Start: 0
+		Facings: 32
+
+harv:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 4
+		Facings: 8
+
+bggy:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+c17:
+	idle:
+		Start: 0
+		Facings: 32
+
+tran:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	rotor2: rrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open:
+		Start: 32
+		Length: 4
+	unload:
+		Start: 35
+
+heli:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+
+orca:
+	idle:
+		Start: 0
+		Facings: 32
+	damaged-idle:
+		Start: 32
+		Facings: 32
+
+mtnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+ltnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+htnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+jeep:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+bike:
+	idle:
+		Start: 0
+		Facings: 32
+
+ftnk:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: flame
+		Start: 0
+		Length: 13
+		Facings: 8
+
+mhq:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+
+msam:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	aim:
+		Start: 64
+		Facings: 32
+	turret-3:
+		Start: 64
+		Facings: 32
+
+mlrs:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	turret-2:
+		Start: 64
+		Facings: 32
+	turret-3:
+		Start: 96
+		Facings: 32
+
+stnk:
+	idle:
+		Start: 0
+		Facings: 32
+
+arty:
+	idle:
+		Start: 0
+		Facings: 32
+
+apc:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	close:
+		Start: 32
+		Length: 3
+	unload:
+		Start: 32
+
+lst:
+	idle:
+		Start: 0
+	unload:
+		Start: 0
+
+boat:
+	left:
+		Start: 0
+		Facings: 32
+	left-damaged:
+		Start: 32
+	left-critical:
+		Start: 64
+	left-wake: wake
+		Start: 6
+		Length: 6
+	right:
+		Start: 96
+		Facings: 32
+	right-damaged:
+		Start: 128
+		Facings: 32
+	right-critical:
+		Start: 160
+		Facings: 32
+	right-wake: wake
+		Start: 0
+		Length: 6
+
+a10:
+	idle:
+		Start: 0
+		Facings: 32
+

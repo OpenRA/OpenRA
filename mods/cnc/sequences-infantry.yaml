@@ -1,0 +1,658 @@
+vice:
+	idle:
+		Start: 0
+		Length: *
+
+e1:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	crawl:
+		Start: 144
+		Length: 4
+		Facings: 8
+	standup:
+		Start: 176
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 8
+		Facings: 8
+	idle1:
+		Start: 257
+		Length: 15
+	idle2:
+		Start: 272
+		Length: 16
+	idle3:
+		Start: 289
+		Length: 22
+	die1:
+		Start: 381
+		Length: 9
+	die5:
+		Start: 418
+		Length: 18
+	die4:
+		Start: 406
+		Length: 12
+	die3:
+		Start: 398
+		Length: 8
+	die2:
+		Start: 390
+		Length: 8
+
+e2:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 20
+		Facings: 8
+	crawl:
+		Start: 240
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 288
+		Length: 12
+		Facings: 8
+	idle1:
+		Start: 384
+		Length: 16
+	idle2:
+		Start: 400
+		Length: 13
+	die5:
+		Start: 546
+		Length: 18
+	die4:
+		Start: 534
+		Length: 12
+	die3:
+		Start: 526
+		Length: 8
+	die2:
+		Start: 518
+		Length: 8
+	die1:
+		Start: 509
+		Length: 9
+
+e3:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	crawl:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 10
+		Facings: 8
+	idle1:
+		Start: 274
+		Length: 12
+	idle2:
+		Start: 289
+		Length: 14
+	die1:
+		Start: 397
+		Length: 9
+	die2:
+		Start: 406
+		Length: 8
+	die3:
+		Start: 414
+		Length: 8
+	die4:
+		Start: 422
+		Length: 12
+	die5:
+		Start: 434
+		Length: 18
+
+e4:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	crawl:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	idle1:
+		Start: 384
+		Length: 16
+	idle2:
+		Start: 400
+		Length: 16
+	die5:
+		Start: 546
+		Length: 18
+	die4:
+		Start: 534
+		Length: 12
+	die3:
+		Start: 526
+		Length: 8
+	die2:
+		Start: 518
+		Length: 8
+	die1:
+		Start: 509
+		Length: 9
+	muzzle: flame
+		Start: 0
+		Length: 13
+		Facings: 8
+
+e5:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	crawl:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	idle1:
+		Start: 384
+		Length: 16
+	idle2:
+		Start: 400
+		Length: 16
+	die5:
+		Start: 546
+		Length: 18
+	die4:
+		Start: 534
+		Length: 12
+	die3:
+		Start: 526
+		Length: 8
+	die2:
+		Start: 518
+		Length: 8
+	die1:
+		Start: 509
+		Length: 9
+	muzzle: chem
+		Start: 0
+		Length: 13
+		Facings: 8
+
+e6:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	crawl:
+		Start: 82
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 114
+		Length: 6
+	idle2:
+		Start: 200
+		Length: 6
+	die5:
+		Start: 182
+		Length: 18
+	die4:
+		Start: 170
+		Length: 12
+	die3:
+		Start: 162
+		Length: 8
+	die2:
+		Start: 154
+		Length: 8
+	die1:
+		Start: 145
+		Length: 9
+
+c1:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c2:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c3:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c4:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c5:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c6:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c7:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c8:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c9:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+c10:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 172
+		Length: 4
+	die2:
+		Start: 329
+		Length: 8
+	die3:
+		Start: 337
+		Length: 8
+	die4:
+		Start: 345
+		Length: 12
+	die5:
+		Start: 357
+		Length: 18
+
+rmbo:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 4
+		Facings: 8
+	crawl:
+		Start: 112
+		Length: 4
+		Facings: 8
+	prone-shoot:
+		Start: 160
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 192
+		Length: 16
+	idle2:
+		Start: 208
+		Length: 16
+	idle3:
+		Start: 224
+		Length: 15
+	die5:
+		Start: 354
+		Length: 18
+	die4:
+		Start: 342
+		Length: 12
+	die3:
+		Start: 334
+		Length: 8
+	die2:
+		Start: 326
+		Length: 8
+	die1:
+		Start: 317
+		Length: 9
+
+fire:
+	1: fire1
+		Start: 0
+		Length: *
+	2: fire2
+		Start: 0
+		Length: *
+

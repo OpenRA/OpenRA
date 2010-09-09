@@ -1,0 +1,76 @@
+steg:
+	stand:
+		Start: 0
+		Length: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die1:
+		Start: 176
+		Length: 22
+
+trex:
+	stand:
+		Start: 0
+		Length: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die1:
+		Start: 144
+		Length: 40
+
+tric:
+	stand:
+		Start: 0
+		Length: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die1:
+		Start: 176
+		Length: 20
+
+rapt:
+	stand:
+		Start: 0
+		Length: 8
+	stand2:
+		Start: 8
+		Length: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	shoot:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die1:
+		Start: 144
+		Length: 40
+

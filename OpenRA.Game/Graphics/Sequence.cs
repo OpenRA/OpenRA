@@ -9,6 +9,8 @@
 #endregion
 
 using System.Xml;
+using OpenRA.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
@@ -24,9 +26,10 @@ namespace OpenRA.Graphics
 		public int Facings { get { return facings; } }
 		public int Tick { get { return tick; } }
 
+		string srcOverride;
 		public Sequence(string unit, XmlElement e)
 		{
-			string srcOverride = e.GetAttribute("src");
+			srcOverride = e.GetAttribute("src");
 			Name = e.GetAttribute("name");
 
 			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
@@ -51,7 +54,27 @@ namespace OpenRA.Graphics
 			else
 				tick = 40;
 		}
-
+		
+		public MiniYaml Save()
+		{
+			var root = new List<MiniYamlNode>();
+			
+			root.Add(new MiniYamlNode("Start", start.ToString()));
+			
+			if (length > 1 && (start != 0 || length != sprites.Length - start))
+				root.Add(new MiniYamlNode("Length", length.ToString()));
+			else if (length > 1 && length == sprites.Length - start)
+				root.Add(new MiniYamlNode("Length", "*"));
+			
+			if (facings > 1)
+				root.Add(new MiniYamlNode("Facings", facings.ToString()));
+			
+			if (tick != 40)
+				root.Add(new MiniYamlNode("Tick", tick.ToString()));		
+			
+			return new MiniYaml(srcOverride, root);
+		}
+		
 		public Sprite GetSprite( int frame )
 		{
 			return GetSprite( frame, 0 );
