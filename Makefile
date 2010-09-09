@@ -103,13 +103,21 @@ install: all
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/chrome $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/bits $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/rules $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/sequences $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/tilesets $(INSTALL_DIR)/mods/cnc
+	@cp -r mods/cnc/uibits $(INSTALL_DIR)/mods/cnc
 	
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
 	@$(INSTALL_PROGRAM) $(ra_TARGET) $(INSTALL_DIR)/mods/ra
 	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/extras $(INSTALL_DIR)/mods/ra
+	@cp -r mods/ra/bits $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/chrome $(INSTALL_DIR)/mods/ra
+	@cp -r mods/ra/rules $(INSTALL_DIR)/mods/ra
+	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
+	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
 	
 	@cp -r shaders $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
