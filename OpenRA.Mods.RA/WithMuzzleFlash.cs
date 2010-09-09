@@ -26,7 +26,6 @@ namespace OpenRA.Mods.RA
 
 		public WithMuzzleFlash(Actor self)
 		{
-			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 			var attack = self.Trait<AttackBase>();
 			var render = self.Trait<RenderSimple>();
 			var facing = self.Trait<IFacing>();

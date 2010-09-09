@@ -51,7 +51,6 @@ namespace OpenRA.Mods.Cnc
 					new AltitudeInit( Rules.Info["c17"].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 				
-				var cargo = a.Trait<Cargo>();
 				a.QueueActivity(new Fly(self.Location + new int2(6,0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 

@@ -88,7 +88,6 @@ namespace OpenRA.Traits
 
 		Shroud shroud;
 		UnitInfluence uim;
-		bool canShareCell;
 		
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
@@ -97,7 +96,6 @@ namespace OpenRA.Traits
 			
 			shroud = self.World.WorldActor.Trait<Shroud>();
 			uim = self.World.WorldActor.Trait<UnitInfluence>();
-			canShareCell = self.HasTrait<SharesCell>();
 			
 			if (init.Contains<LocationInit>())
 			{
