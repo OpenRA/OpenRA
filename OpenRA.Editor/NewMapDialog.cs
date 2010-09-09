@@ -18,5 +18,10 @@ namespace OpenRA.Editor
 		{
 			InitializeComponent();
 		}
+
+		private void SelectText(object sender, System.EventArgs e)
+		{
+			(sender as NumericUpDown).Select(0, (sender as NumericUpDown).ToString().Length);
+		}
 	}
 }

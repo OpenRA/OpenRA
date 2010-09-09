@@ -25,6 +25,8 @@ namespace OpenRA.Editor
 		public Palette Palette { get; private set; }
 		int2 Offset;
 
+		float Zoom = 1.0f;
+
 		BrushTemplate Brush;
 		ActorTemplate Actor;
 		ResourceTemplate Resource;
@@ -80,7 +82,34 @@ namespace OpenRA.Editor
 			Offset -= dx;
 			Invalidate();
 		}
-		
+
+		protected override void OnMouseWheel(MouseEventArgs e)
+		{
+			base.OnMouseWheel(e);
+
+			Zoom *= e.Delta > 0 ? 4.0f / 3.0f : .75f;
+
+			Invalidate();
+		}
+
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			base.OnMouseLeave(e);
+
+			this.Parent.Focus();
+
+			Invalidate();
+		}
+
+		protected override void OnMouseEnter(EventArgs e)
+		{
+			base.OnMouseLeave(e);
+
+			this.Focus();
+
+			Invalidate();
+		}
+
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
@@ -96,7 +125,7 @@ namespace OpenRA.Editor
 					Erase();
 
 				if (e.Button == MouseButtons.Left)
-				Draw();
+					Draw();
 
 				Invalidate();
 			}
@@ -208,18 +237,27 @@ namespace OpenRA.Editor
 
 		void Erase()
 		{
+			// Crash preventing
+			var BrushLocation = GetBrushLocation();
+
+			if (Map == null || BrushLocation.X >= Map.MapSize.X ||
+				BrushLocation.Y >= Map.MapSize.Y ||
+				BrushLocation.X < 0 ||
+				BrushLocation.Y < 0)
+				return;
+
 			Actor = null;
 			Brush = null;
 			Resource = null;
 			Waypoint = null;
 
-			var key = Map.Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+			var key = Map.Actors.FirstOrDefault(a => a.Value.Location() == BrushLocation);
 			if (key.Key != null) Map.Actors.Remove(key.Key);
 
-			if (Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y].type != 0)
+			if (Map.MapResources[BrushLocation.X, BrushLocation.Y].type != 0)
 			{
-				Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y] = new TileReference<byte, byte>();
-				var ch = new int2((GetBrushLocation().X) / ChunkSize, (GetBrushLocation().Y) / ChunkSize);
+				Map.MapResources[BrushLocation.X, BrushLocation.Y] = new TileReference<byte, byte>();
+				var ch = new int2((BrushLocation.X) / ChunkSize, (BrushLocation.Y) / ChunkSize);
 				if (Chunks.ContainsKey(ch))
 				{
 					Chunks[ch].Dispose();
@@ -227,7 +265,7 @@ namespace OpenRA.Editor
 				}
 			}
 
-			var k = Map.Waypoints.FirstOrDefault(a => a.Value == GetBrushLocation());
+			var k = Map.Waypoints.FirstOrDefault(a => a.Value == BrushLocation);
 			if (k.Key != null) Map.Waypoints.Remove(k.Key);
 
 			AfterChange();
@@ -358,28 +396,56 @@ namespace OpenRA.Editor
 
 		int2 GetBrushLocation()
 		{
-			var v = MousePos - Offset;
-			return new int2(v.X / 24, v.Y / 24);
+			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
+			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
+			return new int2(vX / 24, vY / 24);
 		}
 
 		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			g.DrawImage(t.Bitmap,
-					((24 * p + Offset
-					- (t.Centered
-					? new int2(t.Bitmap.Width / 2 - 12, t.Bitmap.Height / 2 - 12)
-					: int2.Zero)).ToPoint()));
+			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - 12 : 0;
+			float DrawX = 24 * p.X * Zoom + Offset.X - OffsetX;
+
+			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - 12 : 0;
+			float DrawY = 24 * p.Y * Zoom + Offset.Y - OffsetY;
+
+			float width = t.Bitmap.Width * Zoom;
+			float height = t.Bitmap.Height * Zoom;
+			RectangleF sourceRect = new RectangleF(0, 0, t.Bitmap.Width, t.Bitmap.Height);
+			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
+			g.DrawImage(t.Bitmap, destRect, sourceRect, GraphicsUnit.Pixel);
+		}
+
+		void DrawImage(System.Drawing.Graphics g, Bitmap bmp, int2 location)
+		{
+			float OffsetX = bmp.Width / 2 - 12;
+			float DrawX = 24 * location.X * Zoom + Offset.X - OffsetX;
+
+			float OffsetY = bmp.Height / 2 - 12;
+			float DrawY = 24 * location.Y * Zoom + Offset.Y - OffsetY;
+
+			float width = bmp.Width * Zoom;
+			float height = bmp.Height * Zoom;
+			RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
+			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
+			g.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 		}
 
 		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			var origin = (24 * p + Offset
-					- (t.Centered
-					? new int2(t.Bitmap.Width / 2 - 12, t.Bitmap.Height / 2 - 12)
-					: int2.Zero)).ToPoint();
+			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - 12 : 0;
+			float DrawX = 24 * p.X * Zoom + Offset.X - OffsetX;
+
+			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - 12 : 0;
+			float DrawY = 24 * p.Y * Zoom + Offset.Y - OffsetY;
+
+			float width = t.Bitmap.Width * Zoom;
+			float height = t.Bitmap.Height * Zoom;
+			RectangleF sourceRect = new RectangleF(0, 0, t.Bitmap.Width, t.Bitmap.Height);
+			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
 			g.DrawRectangle(CordonPen,
-				origin.X, origin.Y,
-				t.Bitmap.Width, t.Bitmap.Height );
+				DrawX, DrawY,
+				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -392,37 +458,49 @@ namespace OpenRA.Editor
 				{
 					var x = new int2(u/ChunkSize,v/ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);
-					e.Graphics.DrawImage(Chunks[x], (24 * ChunkSize * x + Offset).ToPoint());
+
+					Bitmap bmp = Chunks[x];
+
+					float DrawX = 24.0f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					float DrawY = 24.0f * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
+					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
+					RectangleF destRect = new RectangleF(DrawX, DrawY, bmp.Width * Zoom, bmp.Height * Zoom);
+					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 				}
 
 			e.Graphics.DrawRectangle(CordonPen,
-				new Rectangle(Map.XOffset * 24 + Offset.X, Map.YOffset * 24 + Offset.Y, Map.Width * 24, Map.Height * 24));
+				Map.XOffset * 24 * Zoom + Offset.X,
+				Map.YOffset * 24 * Zoom + Offset.Y,
+				Map.Width * 24 * Zoom,
+				Map.Height * 24 * Zoom);
 
 			foreach (var ar in Map.Actors)
 				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type]);
 
 			foreach (var wp in Map.Waypoints)
-				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(
-					24 * wp.Value.X + Offset.X + 4,
-					24 * wp.Value.Y + Offset.Y + 4,
-					16, 16));
+				e.Graphics.DrawRectangle(Pens.LimeGreen,
+					24 * wp.Value.X * Zoom + Offset.X + 4,
+					24 * wp.Value.Y * Zoom + Offset.Y + 4,
+					16 * Zoom, 16 * Zoom);
 
 			if (Brush != null)
 				e.Graphics.DrawImage(Brush.Bitmap,
-					(24 * GetBrushLocation() + Offset).ToPoint());
+					24 * GetBrushLocation().X * Zoom + Offset.X,
+					24 * GetBrushLocation().Y * Zoom + Offset.Y,
+					Brush.Bitmap.Width * Zoom,
+					Brush.Bitmap.Height * Zoom);
 
 			if (Actor != null)
 				DrawActor(e.Graphics, GetBrushLocation(), Actor);
 
 			if (Resource != null)
-				e.Graphics.DrawImage(Resource.Bitmap,
-					(24 * GetBrushLocation() + Offset).ToPoint());
+				DrawImage(e.Graphics, Resource.Bitmap, GetBrushLocation());
 
 			if (Waypoint != null)
-				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(
-					24 * GetBrushLocation().X + Offset.X + 4,
-					24 * GetBrushLocation().Y + Offset.Y + 4,
-					16, 16));
+				e.Graphics.DrawRectangle(Pens.LimeGreen,
+					24 * GetBrushLocation().X * Zoom + Offset.X + 4,
+					24 * GetBrushLocation().Y * Zoom + Offset.Y + 4,
+					16 * Zoom, 16 * Zoom);
 
 			if (Brush == null && Actor == null && Resource == null)
 			{

@@ -55,7 +55,7 @@
 			this.button2.Location = new System.Drawing.Point(229, 160);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 12;
+			this.button2.TabIndex = 7;
 			this.button2.Text = "OK";
 			this.button2.UseVisualStyleBackColor = true;
 			// 
@@ -65,7 +65,7 @@
 			this.button1.Location = new System.Drawing.Point(310, 160);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 13;
+			this.button1.TabIndex = 8;
 			this.button1.Text = "Cancel";
 			this.button1.UseVisualStyleBackColor = true;
 			// 
@@ -106,12 +106,13 @@
             0});
 			this.cordonBottom.Name = "cordonBottom";
 			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
-			this.cordonBottom.TabIndex = 8;
+			this.cordonBottom.TabIndex = 5;
 			this.cordonBottom.Value = new decimal(new int[] {
             112,
             0,
             0,
             0});
+			this.cordonBottom.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// cordonTop
 			// 
@@ -129,6 +130,7 @@
             0,
             0,
             0});
+			this.cordonTop.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// cordonRight
 			// 
@@ -140,12 +142,13 @@
             0});
 			this.cordonRight.Name = "cordonRight";
 			this.cordonRight.Size = new System.Drawing.Size(105, 20);
-			this.cordonRight.TabIndex = 5;
+			this.cordonRight.TabIndex = 4;
 			this.cordonRight.Value = new decimal(new int[] {
             112,
             0,
             0,
             0});
+			this.cordonRight.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// cordonLeft
 			// 
@@ -157,12 +160,13 @@
             0});
 			this.cordonLeft.Name = "cordonLeft";
 			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
-			this.cordonLeft.TabIndex = 7;
+			this.cordonLeft.TabIndex = 2;
 			this.cordonLeft.Value = new decimal(new int[] {
             16,
             0,
             0,
             0});
+			this.cordonLeft.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// height
 			// 
@@ -179,12 +183,13 @@
             0});
 			this.height.Name = "height";
 			this.height.Size = new System.Drawing.Size(105, 20);
-			this.height.TabIndex = 6;
+			this.height.TabIndex = 1;
 			this.height.Value = new decimal(new int[] {
             128,
             0,
             0,
             0});
+			this.height.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// width
 			// 
@@ -201,12 +206,13 @@
             0});
 			this.width.Name = "width";
 			this.width.Size = new System.Drawing.Size(105, 20);
-			this.width.TabIndex = 4;
+			this.width.TabIndex = 0;
 			this.width.Value = new decimal(new int[] {
             128,
             0,
             0,
             0});
+			this.width.Enter += new System.EventHandler(this.SelectText);
 			// 
 			// label4
 			// 
@@ -224,7 +230,7 @@
 			this.theater.Location = new System.Drawing.Point(169, 121);
 			this.theater.Name = "theater";
 			this.theater.Size = new System.Drawing.Size(216, 21);
-			this.theater.TabIndex = 15;
+			this.theater.TabIndex = 6;
 			// 
 			// NewMapDialog
 			// 
