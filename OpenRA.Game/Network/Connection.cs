@@ -140,8 +140,11 @@ namespace OpenRA.Network
 
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
+			catch (ObjectDisposedException) { /* ditto */ }
 		}
+
 		bool disposed = false;
+
 		public void Dispose ()
 		{
 			if (disposed) return;
