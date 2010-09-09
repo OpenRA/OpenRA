@@ -195,7 +195,7 @@ namespace OpenRA.Traits
 
 		public int2 TopLeft { get { return toCell; } }
 
-		public virtual IEnumerable<int2> OccupiedCells()
+		public IEnumerable<int2> OccupiedCells()
 		{
 			return (fromCell == toCell)
 				? new[] { fromCell }
@@ -209,7 +209,7 @@ namespace OpenRA.Traits
 			return CanEnterCell( p, null, true);
 		}
 
-		public virtual bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
+		public bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
 			return CanEnterCell( Info, self.World, cell, ignoreActor, checkTransientActors );
 		}
@@ -238,23 +238,22 @@ namespace OpenRA.Traits
 			}
 
 			// Check mobile actors
-			if (checkTransientActors && uim.AnyUnitsAt(cell))
+			var blockingActors = uim.GetUnitsAt( cell ).Where( x => x != ignoreActor ).ToList();
+			if (checkTransientActors && blockingActors.Count > 0)
 			{
-				var actors = uim.GetUnitsAt(cell).Where(a => a != ignoreActor).ToArray();
 				// We can enter a cell with nonshareable units only if we can crush all of them
-				if (mobileInfo.Crushes == null && actors.Length > 0)
+				if (mobileInfo.Crushes == null)
 					return false;
 
-				if (actors.Length > 0 && actors.Any(a => !(a.HasTrait<ICrushable>() &&
+				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
 											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(mobileInfo.Crushes).Any()))))
 					return false;
 			}
 
-
 			return true;
 		}
 		
-		public virtual void FinishedMoving(Actor self)
+		public void FinishedMoving(Actor self)
 		{
 			var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
 			foreach (var a in crushable)
@@ -282,7 +281,7 @@ namespace OpenRA.Traits
 			return info.TerrainSpeeds[type].Cost;
 		}
 
-		public virtual float MovementSpeedForCell(Actor self, int2 cell)
+		public float MovementSpeedForCell(Actor self, int2 cell)
 		{
 			var type = self.World.GetTerrainType(cell);
 			
@@ -304,12 +303,12 @@ namespace OpenRA.Traits
 			return Enumerable.Reverse(move.path).Select( c => Util.CenterOfCell(c) );
 		}
 		
-		public virtual void AddInfluence()
+		public void AddInfluence()
 		{
 			uim.Add( self, this );
 		}
 		
-		public virtual void RemoveInfluence()
+		public void RemoveInfluence()
 		{
 			uim.Remove( self, this );
 		}

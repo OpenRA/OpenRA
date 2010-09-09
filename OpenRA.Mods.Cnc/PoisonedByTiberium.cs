@@ -33,26 +33,17 @@ namespace OpenRA.Mods.Cnc
 
 		public void Tick(Actor self)
 		{
-			if (--poisonTicks <= 0)
-			{
-				var rl = self.World.WorldActor.Trait<ResourceLayer>();
-				var r = rl.GetResource(self.Location);
+			if (--poisonTicks > 0) return;
 
-				if (r != null && info.Resources.Contains(r.info.Name))
-					Combat.DoImpacts(new ProjectileArgs
-					{
-						src = self.CenterLocation.ToInt2(),
-						dest = self.CenterLocation.ToInt2(),
-						srcAltitude = 0,
-						destAltitude = 0,
-						facing = 0,
-						firedBy = self,
-						target = Target.FromActor(self),
-						weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()]
-					});
+			var rl = self.World.WorldActor.Trait<ResourceLayer>();
+			var r = rl.GetResource(self.Location);
+			if( r == null ) return;
+			if( !info.Resources.Contains(r.info.Name) ) return;
 
-				poisonTicks = Rules.Weapons[info.Weapon.ToLowerInvariant()].ROF;
-			}	
+			var weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
+
+			self.InflictDamage( self.World.WorldActor, weapon.Warheads[ 0 ].Damage, weapon.Warheads[ 0 ] );
+			poisonTicks = weapon.ROF;
 		}
 	}
 }

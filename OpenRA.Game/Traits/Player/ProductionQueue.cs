@@ -271,7 +271,7 @@ namespace OpenRA.Traits
 				var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
 				if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
 						FinishProduction();
-			}			
+			}
 		}
 	}
 
