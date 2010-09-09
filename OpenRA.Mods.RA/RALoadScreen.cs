@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			if (r == null) return;
 			Font = r.BoldFont;
 			
-			var s = new Sheet("mods/ra/loadscreen.png");
+			var s = new Sheet("mods/ra/uibits/loadscreen.png");
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
 			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
 			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);

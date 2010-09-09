@@ -1,11 +1,11 @@
 # Classic Red Alert Mod -- Package Manifest
 
 Folders:
-	./mods/ra/packages
-	./mods/ra/extras
-	./mods/ra
-	./
-
+	.
+	mods/ra
+	mods/ra/bits
+	mods/ra/uibits
+	mods/ra/packages
 Packages:
 	~main.mix
 	redalert.mix
@@ -24,13 +24,13 @@ Packages:
 	~movies2.mix
 
 Rules:
-	mods/ra/defaults.yaml
-	mods/ra/system.yaml
-	mods/ra/vehicles.yaml
-	mods/ra/structures.yaml
-	mods/ra/infantry.yaml
-	mods/ra/civilian.yaml
-	mods/ra/trees.yaml
+	mods/ra/rules/defaults.yaml
+	mods/ra/rules/system.yaml
+	mods/ra/rules/vehicles.yaml
+	mods/ra/rules/structures.yaml
+	mods/ra/rules/infantry.yaml
+	mods/ra/rules/civilian.yaml
+	mods/ra/rules/trees.yaml
 
 Sequences:
 	mods/ra/sequences.yaml:	Original animation sequences
@@ -59,9 +59,9 @@ Voices:
 	mods/ra/voices.yaml
 	
 TileSets:
-	mods/ra/tileset-sno.yaml: Snow
-	mods/ra/tileset-int.yaml: Interior
-	mods/ra/tileset-tem.yaml: Temperate
+	mods/ra/tilesets/snow.yaml: Snow
+	mods/ra/tilesets/interior.yaml: Interior
+	mods/ra/tilesets/temperat.yaml: Temperate
 
 Music:
 	mods/ra/music.yaml

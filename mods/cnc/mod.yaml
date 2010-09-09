@@ -2,23 +2,25 @@
 
 Folders:
 	.
-	mods/cnc/
-	mods/cnc/uibits/
+	mods/cnc
+	mods/cnc/bits
+	mods/cnc/uibits
+	mods/cnc/packages
 Packages:
-	mods/cnc/bits/snow.mix
-	mods/cnc/bits/overrides.mix
-	mods/cnc/packages/speech.mix
-	mods/cnc/packages/conquer.mix
-	mods/cnc/packages/sounds.mix
-	mods/cnc/packages/tempicnh.mix
-	mods/cnc/packages/updatec.mix
-	mods/cnc/packages/temperat.mix
-	mods/cnc/packages/winter.mix
-	mods/cnc/packages/desert.mix
-	~mods/cnc/packages/movies-gdi.mix
-	~mods/cnc/packages/movies-nod.mix
-	~mods/cnc/packages/movies.mix
-	~mods/cnc/packages/scores.mix
+	overrides.mix
+	snow.mix
+	speech.mix
+	conquer.mix
+	sounds.mix
+	tempicnh.mix
+	updatec.mix
+	temperat.mix
+	winter.mix
+	desert.mix
+	~movies-gdi.mix
+	~movies-nod.mix
+	~movies.mix
+	~scores.mix
 
 Rules:
 	mods/cnc/rules/defaults.yaml:		Basic stuff
