@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int UnloadFacing = 0;
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, INotifyDamage
 	{
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
@@ -113,6 +113,13 @@ namespace OpenRA.Mods.RA
 		public void Load(Actor self, Actor a)
 		{
 			cargo.Add(a);
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
+				foreach (var c in cargo)
+					c.Kill(e.Attacker);
 		}
 	}
 }
