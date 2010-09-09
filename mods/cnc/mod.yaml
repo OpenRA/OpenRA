@@ -3,10 +3,10 @@
 Folders:
 	.
 	mods/cnc/
-	mods/cnc/bits/
 	mods/cnc/uibits/
 Packages:
 	mods/cnc/bits/snow.mix
+	mods/cnc/bits/overrides.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
 	mods/cnc/packages/sounds.mix
