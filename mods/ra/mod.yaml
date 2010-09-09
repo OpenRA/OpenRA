@@ -20,7 +20,7 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
-	scores.mix
+	~scores.mix
 	~movies1.mix
 	~movies2.mix
 
