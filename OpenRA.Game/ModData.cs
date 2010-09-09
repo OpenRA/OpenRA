@@ -66,6 +66,7 @@ namespace OpenRA
 			{
 				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
 				SequenceProvider.Initialize(Manifest.Sequences);
+				CursorProvider.Initialize(Manifest.Cursors);
 				cachedTheatre = map.Theater;
 			}
 			return map;

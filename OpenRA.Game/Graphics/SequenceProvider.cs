@@ -20,54 +20,25 @@ namespace OpenRA.Graphics
 	public static class SequenceProvider
 	{
 		static Dictionary<string, Dictionary<string, Sequence>> units;
-		static Dictionary<string, CursorSequence> cursors;
 
 		public static void Initialize(string[] sequenceFiles)
 		{
 			units = new Dictionary<string, Dictionary<string, Sequence>>();
-			cursors = new Dictionary<string, CursorSequence>();
 			
-			foreach (var f in sequenceFiles)
-				LoadSequenceSource(f);
+			var sequences = sequenceFiles
+				.Select(s => MiniYaml.FromFile(s))
+				.Aggregate(MiniYaml.Merge);
+
+			foreach (var s in sequences)
+				LoadSequencesForUnit(s.Key, s.Value);
 		}
 
-		static void LoadSequenceSource(string filename)
-		{
-			XmlDocument document = new XmlDocument();
-			document.Load(FileSystem.Open(filename));
-			
-			var ret = new List<MiniYamlNode>();
-			foreach (XmlElement eUnit in document.SelectNodes("/sequences/unit"))
-				LoadSequencesForUnit(eUnit, ret);
-
-			ret.WriteToFile(filename+".yaml");
-				
-			foreach (XmlElement eCursor in document.SelectNodes("/sequences/cursor"))
-				LoadSequencesForCursor(eCursor);
-		}
-
-		static void LoadSequencesForCursor(XmlElement eCursor)
+		static void LoadSequencesForUnit(string unit, MiniYaml sequences)
 		{
 			Game.modData.LoadScreen.Display();
-			string cursorSrc = eCursor.GetAttribute("src");
-			string palette = eCursor.GetAttribute("palette");
-
-			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
-				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, palette, eSequence));
-
-		}
-
-		static void LoadSequencesForUnit(XmlElement eUnit, List<MiniYamlNode> converted)
-		{
-			Game.modData.LoadScreen.Display();
-			string unitName = eUnit.GetAttribute("name");
 			try {
-				var sequences = eUnit.SelectNodes("./sequence").OfType<XmlElement>()
-					.Select(e => new Sequence(unitName, e))
-					.ToDictionary(s => s.Name);
-				
-				units.Add(unitName, sequences);
-				converted.Add(new MiniYamlNode(unitName, SaveSequencesForUnit(unitName)));
+				var seq = sequences.NodesDict.ToDictionary(x => x.Key, x => new Sequence(unit,x.Key,x.Value));
+				units.Add(unit, seq);
 			} catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art	
 		}
 
@@ -93,21 +64,6 @@ namespace OpenRA.Graphics
 		public static bool HasSequence(string unit, string seq)
 		{
 			return units[unit].ContainsKey(seq);
-		}
-		
-		public static bool HasCursorSequence(string cursor)
-		{
-			return cursors.ContainsKey(cursor);
-		}
-
-		public static CursorSequence GetCursorSequence(string cursor)
-		{
-			try { return cursors[cursor]; }
-			catch (KeyNotFoundException)
-			{
-				throw new InvalidOperationException(
-					"Cursor does not have a sequence `{0}`".F(cursor));
-			}
 		}
 	}
 }

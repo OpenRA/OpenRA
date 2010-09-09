@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sequences>
+  <cursor src="mouse2" palette="cursor">
+	<sequence name="scroll-t" start="1" x="12" y="12" />
+	<sequence name="scroll-tr" start="2" x="12" y="12" />
+	<sequence name="scroll-r" start="3" x="12" y="12" />
+	<sequence name="scroll-br" start="4" x="12" y="12" />
+	<sequence name="scroll-b" start="5" x="12" y="12" />
+	<sequence name="scroll-bl" start="6" x="12" y="12" />
+	<sequence name="scroll-l" start="7" x="12" y="12" />
+	<sequence name="scroll-tl" start="8" x="12" y="12" />
+    <sequence name="scroll-t-blocked" start="130" x="12" y="12" />
+    <sequence name="scroll-tr-blocked" start="131" x="12" y="12" />
+    <sequence name="scroll-r-blocked" start="132" x="12" y="12" />
+    <sequence name="scroll-br-blocked" start="133" x="12" y="12" />
+    <sequence name="scroll-b-blocked" start="134" x="12" y="12" />
+    <sequence name="scroll-bl-blocked" start="135" x="12" y="12" />
+    <sequence name="scroll-l-blocked" start="136" x="12" y="12" />
+    <sequence name="scroll-tl-blocked" start="137" x="12" y="12" />
+    <sequence name="select" start="12" length="6" x="12" y="12" />
+	
+	<sequence name="default" start="0" />
+    <sequence name="default-minimap" start="86" length="1" />
+    <sequence name="generic-blocked" start="9" x="12" y="12" />
+    <sequence name="generic-blocked-minimap" start="27" x="12" y="12" />
+    <sequence name="attack" start="18" length="8" x="12" y="12" />
+    <sequence name="attack-minimap" start="140" length="8" x="12" y="12" />
+    <sequence name="attackmove" start="18" length="8" x="12" y="12" />
+    <sequence name="attackmove-minimap" start="140" length="8" x="12" y="12" />
+    <sequence name="enter" start="119" length="3" x="12" y="12" />
+    <sequence name="enter-minimap" start="148" length="3" x="12" y="12" />
+    <sequence name="c4" start="122" length="3" x="12" y="12" />
+    <sequence name="c4-minimap" start="127" length="3" x="12" y="12" />
+    <sequence name="guard" start="153" length="1" x="12" y="12" />
+    <sequence name="guard-minimap" start="152" length="1" x="12" y="12" />
+
+	<!-- Need minimap cursors -->
+    <sequence name="deploy" start="53" length="9" x="12" y="12" />
+    <sequence name="repair" start="29" length="24" x="12" y="12" />
+    <sequence name="repair-blocked" start="126" length="1" x="12" y="12" />
+    <sequence name="sell" start="62" length="24" x="12" y="12" />
+    <sequence name="sell-blocked" start="125" length="1" x="12" y="12" />
+    <sequence name="ability" start="88" length="8" x="12" y="12" />
+    <sequence name="nuke" start="96" length="7" x="12" y="12" />
+    <sequence name="ioncannon" start="103" length="16" x="12" y="12" />
+    <sequence name="sell-vehicle" start="154" length="24" x="12" y="12" />
+  </cursor>
+  <cursor src="mouse4" palette="cursor">
+    <sequence name="move" start="0" length="8" x="12" y="12" />
+    <sequence name="move-blocked" start="8" x="12" y="12" />
+    <sequence name="move-minimap" start="9" length="4" x="12" y="12" />
+    <sequence name="move-blocked-minimap" start="13" length="1" x="12" y="12" />
+  </cursor>
+  <cursor src="mouse3" palette="cursor2">
+    <sequence name="enter-blocked" start="212" length="1" x="12" y="12" />
+    <sequence name="enter-blocked-minimap" start="33" />
+    <sequence name="capture" start="164" length="3" x="12" y="12" />
+    <sequence name="capture-minimap" start="167" length="3" x="12" y="12" />
+    <sequence name="heal" start="160" length="4" x="12" y="12" />
+    <sequence name="heal-minimap" start="194" length="1" x="12" y="12" />
+    <sequence name="ability-minimap" start="214" length="8" x="12" y="12" />
+    <sequence name="deploy-blocked" start="211" length="1" x="12" y="12" />
+    <sequence name="goldwrench" start="170" length="24" x="12" y="12" />
+    <sequence name="goldwrench-blocked" start="213" length="1" x="12" y="12" />
+  </cursor>
+</sequences>

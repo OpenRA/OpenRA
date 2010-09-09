@@ -19,7 +19,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly string[]
 			Folders, Packages, Rules,
-			Sequences, Chrome, Assemblies, ChromeLayout,
+			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
 
 		public readonly string ShellmapUid, LoadScreen;
@@ -34,6 +34,7 @@ namespace OpenRA.FileFormats
 			Packages = YamlList(yaml, "Packages");
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
+			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");
 			ChromeLayout = YamlList(yaml, "ChromeLayout");

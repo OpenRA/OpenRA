@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (cursor == null)
 				return "default";
 			
-			return SequenceProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
+			return CursorProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
 		}
 
 		public override bool HandleInputInner(MouseInput mi)

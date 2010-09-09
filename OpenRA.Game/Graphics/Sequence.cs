@@ -27,30 +27,30 @@ namespace OpenRA.Graphics
 		public int Tick { get { return tick; } }
 
 		string srcOverride;
-		public Sequence(string unit, XmlElement e)
+		public Sequence(string unit, string name, MiniYaml info)
 		{
-			srcOverride = e.GetAttribute("src");
-			Name = e.GetAttribute("name");
-
+			srcOverride = info.Value;
+			Name = name;
+			var d = info.NodesDict;
+			
 			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
-			start = int.Parse(e.GetAttribute("start"));
+			start = int.Parse(d["Start"].Value);
 
-			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")
-				length = sprites.Length - Start;
-			else if (e.HasAttribute("length"))
-				length = int.Parse(e.GetAttribute("length"));
-			else if (e.HasAttribute("end"))
-				length = int.Parse(e.GetAttribute("end")) - int.Parse(e.GetAttribute("start"));
-			else
+			if (!d.ContainsKey("Length"))
 				length = 1;
+			else if (d["Length"].Value == "*")
+				length = sprites.Length - Start;
+			else
+				length = int.Parse(d["Length"].Value);
 
-			if( e.HasAttribute( "facings" ) )
-				facings = int.Parse( e.GetAttribute( "facings" ) );
+
+			if(d.ContainsKey("Facings"))
+				facings = int.Parse(d["Facings"].Value);
 			else
 				facings = 1;
 
-			if (e.HasAttribute("tick"))
-				tick = int.Parse(e.GetAttribute("tick"));
+			if(d.ContainsKey("Tick"))
+				tick = int.Parse(d["Tick"].Value);
 			else
 				tick = 40;
 		}

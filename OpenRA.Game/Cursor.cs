@@ -17,7 +17,7 @@ namespace OpenRA
 		CursorSequence sequence;
 		public Cursor(string cursor)
 		{
-			sequence = SequenceProvider.GetCursorSequence(cursor);
+			sequence = CursorProvider.GetCursorSequence(cursor);
 		}
 		
 		public void Draw(int frame, float2 pos)

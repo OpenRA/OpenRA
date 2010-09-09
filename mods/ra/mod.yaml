@@ -33,7 +33,10 @@ Rules:
 	mods/ra/trees.yaml
 
 Sequences:
-	mods/ra/sequences.xml:	Original animation sequences
+	mods/ra/sequences.yaml:	Original animation sequences
+
+Cursors:
+	mods/ra/cursors.xml:
 
 Chrome:
 	mods/ra/chrome.xml:
