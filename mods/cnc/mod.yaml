@@ -1,11 +1,12 @@
 # Classic Command and Conquer -- Package Manifest
 
 Folders:
-	./mods/cnc/
-	./
+	.
+	mods/cnc/
+	mods/cnc/bits/
+	mods/cnc/uibits/
 Packages:
-	mods/cnc/overrides.mix
-	mods/cnc/snow.mix
+	mods/cnc/bits/snow.mix
 	mods/cnc/packages/speech.mix
 	mods/cnc/packages/conquer.mix
 	mods/cnc/packages/sounds.mix
@@ -16,16 +17,17 @@ Packages:
 	mods/cnc/packages/desert.mix
 	~mods/cnc/packages/movies-gdi.mix
 	~mods/cnc/packages/movies-nod.mix
+	~mods/cnc/packages/movies.mix
 	~mods/cnc/packages/scores.mix
 
 Rules:
-	mods/cnc/defaults.yaml:		Basic stuff
-	mods/cnc/system.yaml:		Player and world actors
-	mods/cnc/structures.yaml:
-	mods/cnc/infantry.yaml:
-	mods/cnc/vehicles.yaml:
-	mods/cnc/trees.yaml:
-	mods/cnc/civilian.yaml:		Civilian structures and bridges
+	mods/cnc/rules/defaults.yaml:		Basic stuff
+	mods/cnc/rules/system.yaml:		Player and world actors
+	mods/cnc/rules/structures.yaml:
+	mods/cnc/rules/infantry.yaml:
+	mods/cnc/rules/vehicles.yaml:
+	mods/cnc/rules/trees.yaml:
+	mods/cnc/rules/civilian.yaml:		Civilian structures and bridges
 
 Sequences:
 	mods/cnc/sequences/structures.yaml:
@@ -66,10 +68,10 @@ Music:
 	mods/cnc/music.yaml
 
 TileSets:
-	mods/cnc/tileset-des.yaml: Desert
-	mods/cnc/tileset-win.yaml: Winter
-	mods/cnc/tileset-tem.yaml: Temperate
-	mods/cnc/tileset-sno.yaml: Snow
+	mods/cnc/tilesets/desert.yaml: Desert
+	mods/cnc/tilesets/winter.yaml: Winter
+	mods/cnc/tilesets/temperat.yaml: Temperate
+	mods/cnc/tilesets/snow.yaml: Snow
 
 LoadScreen: NullLoadScreen
 ShellmapUid:d715c86d9d49d153756b86ef87a825ea8fae6756
