@@ -47,6 +47,23 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "English"
 
+!macro DownloadDependency name saveas
+	Var DownloadCount
+	IntOp $DownloadCount 0 + 1
+	download:
+		NSISdl::download "http://open-ra.org/get-dependency.php?file=${name}" ${saveas}
+		Pop $R0
+		StrCmp $R0 "success" success
+		IntCmp $DownloadCount 3 failure retry
+	failure:
+		MessageBox MB_OK "Download of ${saveas} did not succeed. Aborting installation. $\n$\n$R0"
+		Abort
+	retry:
+		IntOp $DownloadCount $DownloadCount + 1
+		Goto download
+	success:
+!macroend
+
 ;***************************
 ;Section Definitions
 ;***************************
@@ -99,10 +116,10 @@ SectionEnd
 SectionGroup /e "Mods"
 	SectionGroup "Red Alert" RA
 		Section "-RA_Core"
-		    CreateDirectory "$TEMP\ra-packages"
-		    CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
-		    RMDir /r "$INSTDIR\mods\ra"
-		    SetOutPath "$INSTDIR\mods\ra"
+			CreateDirectory "$TEMP\ra-packages"
+			CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
+			RMDir /r "$INSTDIR\mods\ra"
+			SetOutPath "$INSTDIR\mods\ra"
 			File "${SRCDIR}\mods\ra\*.*"
 			File /r "${SRCDIR}\mods\ra\maps"
 			File /r "${SRCDIR}\mods\ra\chrome"
@@ -115,14 +132,11 @@ SectionGroup /e "Mods"
 			RMDir /r "$TEMP\ra-packages"
 		SectionEnd
 		Section "Download content" RA_Content
-			AddSize 10137
+			AddSize 6584
 			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download "http://open-ra.org/get-dependency.php?file=ra-packages" ra-packages.zip
-				Pop $R0
-				StrCmp $R0 "success" +2
-					Abort
+				!insertmacro DownloadDependency "ra-packages" "ra-packages.zip"
 				ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
 				Delete ra-packages.zip
 			done:
@@ -130,9 +144,9 @@ SectionGroup /e "Mods"
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
-		    CreateDirectory "$TEMP\cnc-packages"
-		    CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
-		    RMDir /r "$INSTDIR\mods\cnc"
+			CreateDirectory "$TEMP\cnc-packages"
+			CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
+			RMDir /r "$INSTDIR\mods\cnc"
 			SetOutPath "$INSTDIR\mods\cnc"
 			File "${SRCDIR}\mods\cnc\*.*"
 			File /r "${SRCDIR}\mods\cnc\maps"
@@ -147,14 +161,11 @@ SectionGroup /e "Mods"
 			RMDir /r "$TEMP\cnc-packages"
 		SectionEnd
 		Section "Download content" CNC_Content
-			AddSize 9431
+			AddSize 4621
 			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
 			dlcontent:
 				SetOutPath "$OUTDIR\packages"
-				NSISdl::download "http://open-ra.org/get-dependency.php?file=cnc-packages" cnc-packages.zip
-				Pop $R0
-				StrCmp $R0 "success" +2
-					Abort
+				!insertmacro DownloadDependency "cnc-packages" "cnc-packages.zip"
 				ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
 				Delete cnc-packages.zip
 			done:
@@ -194,10 +205,7 @@ Section "-Freetype" Freetype
 	SetOutPath "$TEMP"
 	IfFileExists $INSTDIR\zlib1.dll done installfreetype
 	installfreetype:
-		NSISdl::download "http://open-ra.org/get-dependency.php?file=freetype" freetype-zlib.zip
-		Pop $R0
-		StrCmp $R0 "success" +2
-			Abort
+		!insertmacro DownloadDependency "freetype" "freetype-zlib.zip"
 		ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
 	done:
 SectionEnd
@@ -207,10 +215,7 @@ Section "-Cg" Cg
 	SetOutPath "$TEMP"
 	IfFileExists $INSTDIR\cg.dll done installcg
 	installcg:
-		NSISdl::download "http://open-ra.org/get-dependency.php?file=cg" cg-win32.zip
-		Pop $R0
-		StrCmp $R0 "success" +2
-			Abort
+		!insertmacro DownloadDependency "cg" "cg-win32.zip"
 		ZipDLL::extractall "cg-win32.zip" "$INSTDIR"
 	done:
 SectionEnd
