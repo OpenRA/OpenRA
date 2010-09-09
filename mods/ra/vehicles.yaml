@@ -132,6 +132,8 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 2TNK.Husk
+	Selectable:
+		Bounds: 30,30
 
 3TNK:
 	Inherits: ^Tank
@@ -165,6 +167,8 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 3TNK.Husk
+	Selectable:
+		Bounds: 30,30
 
 4TNK:
 	Inherits: ^Tank
@@ -205,6 +209,8 @@ V2RL:
 		Step: 1
 		Ticks: 5
 		HealIfBelow: 50%
+	Selectable:
+		Bounds: 44,38,0,-4
 
 ARTY:
 	Inherits: ^Tank
@@ -247,6 +253,7 @@ HARV:
 		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
+		Bounds: 42,42
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -274,6 +281,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
+		Bounds: 42,42
 	Health:
 		HP: 600
 	Armor:
