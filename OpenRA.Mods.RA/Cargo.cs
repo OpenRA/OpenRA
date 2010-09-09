@@ -28,12 +28,15 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			if (mi.Button != MouseButton.Right || underCursor != self)
-				return null;
-			
-			return new Order("Unload", self);				
+			if (mi.Button == MouseButton.Right && underCursor == self)
+				return new Order("Unload", self);
+
+			if( mi.Button == MouseButton.Right && underCursor != null && underCursor.Owner == self.Owner )
+				return new Order("EnterTransport", underCursor, self);
+
+			return null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Unload")
