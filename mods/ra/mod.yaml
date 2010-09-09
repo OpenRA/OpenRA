@@ -6,6 +6,7 @@ Folders:
 	mods/ra/bits
 	mods/ra/uibits
 	mods/ra/packages
+
 Packages:
 	~main.mix
 	redalert.mix
@@ -33,24 +34,24 @@ Rules:
 	mods/ra/rules/trees.yaml
 
 Sequences:
-	mods/ra/sequences.yaml:	Original animation sequences
+	mods/ra/sequences.yaml
 
 Cursors:
-	mods/ra/cursors.xml:
+	mods/ra/cursors.xml
 
 Chrome:
-	mods/ra/chrome.xml:
+	mods/ra/chrome.xml
 	
 Assemblies:
-	mods/ra/OpenRA.Mods.RA.dll:	Traits used
+	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:
-	mods/ra/chrome/ingame.yaml:	
-	mods/ra/chrome/mainmenu.yaml:
-	mods/ra/chrome/videoplayer.yaml:
-	mods/ra/chrome/settings.yaml:
-	mods/ra/chrome/gamelobby.yaml:
-	mods/ra/chrome/serverbrowser.yaml:
+	mods/ra/chrome/ingame.yaml
+	mods/ra/chrome/mainmenu.yaml
+	mods/ra/chrome/videoplayer.yaml
+	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/gamelobby.yaml
+	mods/ra/chrome/serverbrowser.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
@@ -59,9 +60,9 @@ Voices:
 	mods/ra/voices.yaml
 	
 TileSets:
-	mods/ra/tilesets/snow.yaml: Snow
-	mods/ra/tilesets/interior.yaml: Interior
-	mods/ra/tilesets/temperat.yaml: Temperate
+	mods/ra/tilesets/snow.yaml
+	mods/ra/tilesets/interior.yaml
+	mods/ra/tilesets/temperat.yaml
 
 Music:
 	mods/ra/music.yaml

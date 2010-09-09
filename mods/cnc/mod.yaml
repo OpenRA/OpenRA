@@ -6,6 +6,7 @@ Folders:
 	mods/cnc/bits
 	mods/cnc/uibits
 	mods/cnc/packages
+
 Packages:
 	overrides.mix
 	snow.mix
@@ -23,57 +24,57 @@ Packages:
 	~scores.mix
 
 Rules:
-	mods/cnc/rules/defaults.yaml:		Basic stuff
-	mods/cnc/rules/system.yaml:		Player and world actors
-	mods/cnc/rules/structures.yaml:
-	mods/cnc/rules/infantry.yaml:
-	mods/cnc/rules/vehicles.yaml:
-	mods/cnc/rules/trees.yaml:
-	mods/cnc/rules/civilian.yaml:		Civilian structures and bridges
+	mods/cnc/rules/defaults.yaml
+	mods/cnc/rules/system.yaml
+	mods/cnc/rules/structures.yaml
+	mods/cnc/rules/infantry.yaml
+	mods/cnc/rules/vehicles.yaml
+	mods/cnc/rules/trees.yaml
+	mods/cnc/rules/civilian.yaml
 
 Sequences:
-	mods/cnc/sequences/structures.yaml:
-	mods/cnc/sequences/vehicles.yaml:
-	mods/cnc/sequences/infantry.yaml:
-	mods/cnc/sequences/map.yaml: Trees etc
-	mods/cnc/sequences/misc.yaml:	Obsolete; will disappear once done converting
+	mods/cnc/sequences/structures.yaml
+	mods/cnc/sequences/vehicles.yaml
+	mods/cnc/sequences/infantry.yaml
+	mods/cnc/sequences/map.yaml
+	mods/cnc/sequences/misc.yaml
 
 Cursors:
-	mods/cnc/cursors.xml:
+	mods/cnc/cursors.xml
 
 Chrome:
-	mods/cnc/chrome.xml:
+	mods/cnc/chrome.xml
 	
 Assemblies:
-	mods/ra/OpenRA.Mods.RA.dll:	Red alert mod traits
-	mods/cnc/OpenRA.Mods.Cnc.dll: Cnc mod traits
+	mods/ra/OpenRA.Mods.RA.dll
+	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	mods/cnc/chrome/ingame.yaml:
-	mods/cnc/chrome/mainmenu.yaml:
-	mods/cnc/chrome/videoplayer.yaml:
-	mods/cnc/chrome/settings.yaml:
-	mods/cnc/chrome/gamelobby.yaml:
-	mods/cnc/chrome/serverbrowser.yaml:
+	mods/cnc/chrome/ingame.yaml
+	mods/cnc/chrome/mainmenu.yaml
+	mods/cnc/chrome/videoplayer.yaml
+	mods/cnc/chrome/settings.yaml
+	mods/cnc/chrome/gamelobby.yaml
+	mods/cnc/chrome/serverbrowser.yaml
 
 Weapons:
-	mods/cnc/weapons.yaml:
+	mods/cnc/weapons.yaml
 
 Movies:
 	mods/cnc/movies-gdi.yaml
 	mods/cnc/movies-nod.yaml
 	
 Voices:
-	mods/cnc/voices.yaml:
+	mods/cnc/voices.yaml
 
 Music:
 	mods/cnc/music.yaml
 
 TileSets:
-	mods/cnc/tilesets/desert.yaml: Desert
-	mods/cnc/tilesets/winter.yaml: Winter
-	mods/cnc/tilesets/temperat.yaml: Temperate
-	mods/cnc/tilesets/snow.yaml: Snow
+	mods/cnc/tilesets/desert.yaml
+	mods/cnc/tilesets/winter.yaml
+	mods/cnc/tilesets/temperat.yaml
+	mods/cnc/tilesets/snow.yaml
 
 LoadScreen: NullLoadScreen
 ShellmapUid:d715c86d9d49d153756b86ef87a825ea8fae6756
