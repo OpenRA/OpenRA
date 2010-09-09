@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA.Activities
 
 			var harv = self.Trait<Harvester>();
 
-			if (harv.LinkedProc == null)
+			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 				harv.ChooseNewProc(self, null);
 
-			if (harv.LinkedProc == null)
+			if (harv.LinkedProc == null)	// no procs exist; check again in 1s.
 				return new Wait(25) { NextActivity = this };
 
 			var proc = harv.LinkedProc;
