@@ -1,30 +1,18 @@
 # Default Game Mod
 
 Folders:
-	./mods/default
-	./
-
-Packages:
-
+	.
+	mods/default
 Rules:
 	mods/default/system.yaml
-
-Sequences:
-	mods/default/sequences.xml
+Cursors:
+	mods/default/cursors.xml
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
-Weapons:
-
-Voices:
-
-Music:
-
 TileSets:
 	mods/default/tileset-dummy.yaml
-
 Chrome:
 	mods/default/chrome.xml:
-
 ChromeLayout:
 	mods/default/menus.yaml:
 
