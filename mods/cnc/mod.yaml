@@ -28,11 +28,11 @@ Rules:
 	mods/cnc/civilian.yaml:		Civilian structures and bridges
 
 Sequences:
-	mods/cnc/sequences-structures.yaml:
-	mods/cnc/sequences-vehicles.yaml:
-	mods/cnc/sequences-infantry.yaml:
-	mods/cnc/sequences-map.yaml: Trees etc
-	mods/cnc/sequences.yaml:	Obsolete; will disappear once done converting
+	mods/cnc/sequences/structures.yaml:
+	mods/cnc/sequences/vehicles.yaml:
+	mods/cnc/sequences/infantry.yaml:
+	mods/cnc/sequences/map.yaml: Trees etc
+	mods/cnc/sequences/misc.yaml:	Obsolete; will disappear once done converting
 
 Cursors:
 	mods/cnc/cursors.xml:
