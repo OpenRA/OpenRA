@@ -124,7 +124,7 @@ namespace OpenRA.Widgets.Delegates
 				template.IsVisible = () => true;
 				
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + Rules.Music[song].Title;
-				template.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D2}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
+				template.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
 
 				ml.AddChild(template);
 
