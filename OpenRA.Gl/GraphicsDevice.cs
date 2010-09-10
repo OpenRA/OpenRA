@@ -182,7 +182,8 @@ namespace OpenRA.GlRenderer
         public void Present()
         {
             Sdl.SDL_GL_SwapBuffers();
-
+			Game.HasInputFocus = 0 != (Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS);
+			
             var mods = MakeModifiers(Sdl.SDL_GetModState());
             Game.HandleModifierKeys(mods);
             MouseEventArgs pendingMotion = null;

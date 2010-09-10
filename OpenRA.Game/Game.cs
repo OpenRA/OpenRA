@@ -42,6 +42,7 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static Session LobbyInfo = new Session();
+		public static bool HasInputFocus = false;
 		
 		static void LoadMap(string uid)
 		{

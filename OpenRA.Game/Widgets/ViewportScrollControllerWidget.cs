@@ -125,7 +125,7 @@ namespace OpenRA.Widgets
 		public override void Tick(World world)
 		{
 			Edge = ScrollDirection.None;
-			if (Game.Settings.Game.ViewportEdgeScroll)
+			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
 			{
 				// Check for edge-scroll
 				if (Viewport.LastMousePos.X < EdgeScrollThreshold)
@@ -137,6 +137,7 @@ namespace OpenRA.Widgets
 				if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Down, true);
 			}
+			
 			if(Keyboard != ScrollDirection.None || Edge != ScrollDirection.None)
 			{
 				var scroll = new float2(0,0);
