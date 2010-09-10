@@ -102,6 +102,20 @@ namespace OpenRA.FileFormats
 			return output;
 		}
 
+		public static float SoundLength(Stream s)
+		{
+			var br = new BinaryReader(s);
+			var sampleRate = br.ReadUInt16();
+			/*var dataSize = */ br.ReadInt32();
+			var outputSize = br.ReadInt32();
+			var flags = (SoundFlags) br.ReadByte();
+			
+			var samples = outputSize;
+			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;
+			if (0 != (flags & SoundFlags._16Bit)) samples /= 2;
+			return samples / sampleRate;
+		}
+		
 		public static byte[] LoadSound(Stream s)
 		{
 			var br = new BinaryReader(s);

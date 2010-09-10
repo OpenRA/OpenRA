@@ -14,15 +14,21 @@ namespace OpenRA.GameRules
 {
 	public class MusicInfo
 	{
-		[FieldLoader.Load] public readonly string Filename = null;
-		[FieldLoader.Load] public readonly string Title = null;
-		[FieldLoader.Load] public readonly int Length = 0; // seconds
+		public readonly string Filename = null;
+		public readonly string Title = null;
+		public readonly int Length = 0; // seconds
+		public readonly bool Exists = false;
 
 		public MusicInfo( string key, MiniYaml value )
 		{
-			FieldLoader.Load(this, value);
-			if (Filename == null)
-				Filename = key+".aud";
+			Filename = key+".aud";
+			Title = value.Value;
+
+			if (!FileSystem.Exists(Filename))
+				return;
+			
+			Exists = true;
+			Length = (int)AudLoader.SoundLength(FileSystem.Open(Filename));
 		}
 	}
 }

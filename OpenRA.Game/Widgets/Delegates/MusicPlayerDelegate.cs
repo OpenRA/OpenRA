@@ -86,12 +86,9 @@ namespace OpenRA.Widgets.Delegates
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			
-			foreach (var kv in Rules.Music)
+			foreach (var kv in Rules.Music.Where(m => m.Value.Exists))
 			{
 				var song = kv.Key;
-				if (!FileSystem.Exists(Rules.Music[song].Filename))
-					continue;
-
 				if (CurrentSong == null)
 					CurrentSong = song;
 
