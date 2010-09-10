@@ -3,7 +3,7 @@ Background@MAINMENU_BG:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:250
-	Height:250
+	Height:290
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Label@MAINMENU_LABEL_TITLE:
@@ -39,10 +39,18 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Settings
 			Bold:True
+		Button@MAINMENU_BUTTON_MUSIC:
+			Id:MAINMENU_BUTTON_MUSIC
+			X:45
+			Y:190
+			Width:160
+			Height:25
+			Text:Music
+			Bold:True
 		Button@MAINMENU_BUTTON_QUIT:
 			Id:MAINMENU_BUTTON_QUIT
 			X:45
-			Y:190
+			Y:230
 			Width:160
 			Height:25
 			Text:Quit
@@ -51,7 +59,7 @@ Background@MAINMENU_BG:
 			Id:MAINMENU_BUTTON_VIDEOPLAYER
 			Visible:false
 			X:45
-			Y:230
+			Y:260
 			Width:160
 			Height:25
 			Text:Video Player
@@ -88,3 +96,158 @@ Background@PERF_BG:
 			Y:205
 			Width:170
 			Height:40
+Background@MUSIC_MENU:
+	Id:MUSIC_MENU
+	Delegate:MusicPlayerDelegate
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width: 450
+	Height: 250
+	Visible: false
+	Children:
+		Label@SETTINGS_LABEL_TITLE:
+			Id:SETTINGS_LABEL_TITLE
+			X:0
+			Y:20
+			Width:450
+			Height:25
+			Text:Music
+			Align:Center
+			Bold:True
+		Button@BUTTON_CLOSE:
+			Id:BUTTON_CLOSE
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Close
+			Bold:True
+		Container@BUTTONS:
+			X:PARENT_RIGHT - 150
+			Y:50
+			Children:
+				Button@BUTTON_PLAY:
+					Id:BUTTON_PLAY
+					X:35
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PLAY:
+							Id:IMAGE_PLAY
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:play
+				Button@BUTTON_PAUSE:
+					Id:BUTTON_PAUSE
+					Visible:false
+					X:35
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PAUSE:
+							Id:IMAGE_PAUSE
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:pause
+				Button@BUTTON_STOP:
+					Id:BUTTON_STOP
+					X:70
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_STOP:
+							Id:IMAGE_STOP
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:stop
+				Button@BUTTON_NEXT:
+					Id:BUTTON_NEXT
+					X:105
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_NEXT:
+							Id:IMAGE_NEXT
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:next
+				Button@BUTTON_PREV:
+					Id:BUTTON_PREV
+					X:0
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PREV:
+							Id:IMAGE_PREV
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:prev
+		Label@TIME:
+			Id:TIME
+			X:PARENT_RIGHT - 150
+			Y:75
+			Width:140
+			Height:25
+			Align: Center
+		ListBox@MUSIC_LIST:
+			Id:MUSIC_LIST
+			X:10
+			Y:50
+			Width:280
+			Height:140
+			Children:
+				Label@MUSIC_TEMPLATE:
+					Id:MUSIC_TEMPLATE
+					Width:PARENT_RIGHT-28
+					Height:25
+					ClickThrough:false
+					X:2
+					Y:0
+					Visible:false
+					Children:
+						Label@TITLE:
+							Id:TITLE
+							X:5
+							Width:PARENT_RIGHT - 10
+							Height:PARENT_BOTTOM
+							Align: Left
+						Label@LENGTH:
+							Id:LENGTH
+							X:5
+							Width:PARENT_RIGHT - 10
+							Height:PARENT_BOTTOM
+							Align: Right
+		Checkbox@SHUFFLE:
+			Id:SHUFFLE
+			X:PARENT_RIGHT - 150
+			Y:110
+			Width:100
+			Height:20
+			Text:Shuffle
+		Checkbox@REPEAT:
+			Id:REPEAT
+			X:PARENT_RIGHT - 150
+			Y:140
+			Width:100
+			Height:20
+			Text:Repeat

@@ -119,7 +119,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
-			Height:280
+			Height:320
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -131,42 +131,50 @@ Container@INGAME_ROOT:
 					Text:Options
 					Align:Center
 					Bold:True
-				Button@BUTTON_RESUME:
-					Id:BUTTON_RESUME
+				Button@RESUME:
+					Id:RESUME
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:60
 					Width:160
 					Height:25
 					Text:Resume
 					Bold:True
-				Button@BUTTON_SURRENDER:
-					Id:BUTTON_SURRENDER
+				Button@SETTINGS:
+					Id:SETTINGS
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:100
 					Width:160
 					Height:25
-					Text:Surrender
+					Text:Settings
 					Bold:True
-				Button@BUTTON_SETTINGS:
-					Id:BUTTON_SETTINGS
+				Button@MUSIC:
+					Id:MUSIC
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:140
 					Width:160
 					Height:25
-					Text:Settings
-					Bold:True
-				Button@BUTTON_DISCONNECT:
-					Id:BUTTON_DISCONNECT
+					Text:Music
+					Bold:True					
+				Button@SURRENDER:
+					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:180
 					Width:160
 					Height:25
-					Text:Disconnect
+					Text:Surrender
 					Bold:True
-				Button@BUTTON_QUIT:
-					Id:BUTTON_QUIT
+				Button@DISCONNECT:
+					Id:DISCONNECT
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:220
+					Width:160
+					Height:25
+					Text:Disconnect
+					Bold:True
+				Button@QUIT:
+					Id:QUIT
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:260
 					Width:160
 					Height:25
 					Text:Quit

@@ -19,10 +19,20 @@ namespace OpenRA.Widgets.Delegates
 		string CurrentSong = null;
 		public MusicPlayerDelegate()
 		{
-			var bg = Widget.RootWidget.GetWidget("MUSIC_BG");
-			//bg.Visible = Game.Settings.MusicPlayer;
+			var bg = Widget.RootWidget.GetWidget("MUSIC_MENU");
 			CurrentSong = GetNextSong();
 
+			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
+				Game.Settings.Save();
+				Widget.RootWidget.CloseWindow();
+				return true;
+			};
+			
+			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_MUSIC").OnMouseUp = mi => {
+				Widget.RootWidget.OpenWindow("MUSIC_MENU");
+				return true;
+			};
+			
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
 				if (CurrentSong == null)
@@ -64,9 +74,14 @@ namespace OpenRA.Widgets.Delegates
 				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
 			
-			bg.GetWidget<LabelWidget>("TIME").GetText = () => "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
+			bg.GetWidget<LabelWidget>("TIME").GetText = () =>
+			{
+				if (CurrentSong == null)
+					return "";
+				return "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
 			                                                                                    Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
-
+			};
+			
 			var ml = bg.GetWidget<ListBoxWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;

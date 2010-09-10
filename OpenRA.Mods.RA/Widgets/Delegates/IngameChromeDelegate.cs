@@ -29,30 +29,35 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			optionsBG.GetWidget("BUTTON_DISCONNECT").OnMouseUp = mi => {
+			optionsBG.GetWidget("DISCONNECT").OnMouseUp = mi => {
 				optionsBG.Visible = false;
 				Game.Disconnect();
 				return true;
 			};
 			
-			optionsBG.GetWidget("BUTTON_SETTINGS").OnMouseUp = mi => {
+			optionsBG.GetWidget("SETTINGS").OnMouseUp = mi => {
 				r.OpenWindow("SETTINGS_MENU");
 				return true;
 			};
 
-			optionsBG.GetWidget("BUTTON_RESUME").OnMouseUp = mi =>
+			optionsBG.GetWidget("MUSIC").OnMouseUp = mi => {
+				r.OpenWindow("MUSIC_MENU");
+				return true;
+			};
+			
+			optionsBG.GetWidget("RESUME").OnMouseUp = mi =>
 			{
 				optionsBG.Visible = false;
 				return true;
 			};
 
-			optionsBG.GetWidget("BUTTON_SURRENDER").OnMouseUp = mi =>
+			optionsBG.GetWidget("SURRENDER").OnMouseUp = mi =>
 			{
 				Game.IssueOrder(new Order("Surrender", Game.world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
-			optionsBG.GetWidget("BUTTON_QUIT").OnMouseUp = mi => {
+			optionsBG.GetWidget("QUIT").OnMouseUp = mi => {
 				Game.Exit();
 				return true;
 			};
