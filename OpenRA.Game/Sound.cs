@@ -102,9 +102,27 @@ namespace OpenRA
 				soundEngine.StopSound(video);
 		}
 		
+		public static void Tick()
+		{
+			// Song finished
+			if (MusicPlaying && !music.Playing)
+			{
+				StopMusic();
+				OnMusicComplete();
+			}
+		}
+		
+		static Action OnMusicComplete;
 		public static bool MusicPlaying { get; private set; }
+		
 		public static void PlayMusic(string name)
 		{
+			PlayMusicThen(name, () => {});
+		}
+		public static void PlayMusicThen(string name, Action then)
+		{
+			OnMusicComplete = then;
+
 			if (name == "" || name == null)
 				return;
 
@@ -114,11 +132,11 @@ namespace OpenRA
 				return;
 			}
 			StopMusic();
-			
+						
 			currentMusic = name;
 			MusicPlaying = true;
 			var sound = sounds[name];
-			music = soundEngine.Play2D(sound, true, true, float2.Zero, MusicVolume);
+			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 		}
 		
 		public static void PlayMusic()
@@ -236,6 +254,7 @@ namespace OpenRA
 	{
 		float Volume { get; set; }
 		float SeekPosition { get; }
+		bool Playing { get; }
 	}
 
 	class OpenAlSoundEngine : ISoundEngine
@@ -446,6 +465,16 @@ namespace OpenRA
 				float pos;
 				Al.alGetSourcef(source, Al.AL_SAMPLE_OFFSET, out pos);
 				return pos/22050f; 
+			}
+		}
+		
+		public bool Playing
+		{
+			get 
+			{
+				int state;
+				Al.alGetSourcei(source, Al.AL_SOURCE_STATE, out state);
+				return state == Al.AL_PLAYING;
 			}
 		}
 	}

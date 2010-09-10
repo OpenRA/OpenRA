@@ -49,6 +49,7 @@ namespace OpenRA.GameRules
 		public float MusicVolume = 0.5f;
 		public float VideoVolume = 0.5f;
 		public bool Shuffle = false;
+		public bool Repeat = false;
 	}
 	
 	public class PlayerSettings

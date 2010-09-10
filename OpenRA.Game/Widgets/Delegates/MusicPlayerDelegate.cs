@@ -38,7 +38,8 @@ namespace OpenRA.Widgets.Delegates
 				if (CurrentSong == null)
 					return true;
 				
-				Sound.PlayMusic(Rules.Music[CurrentSong].Filename);
+				Sound.PlayMusicThen(Rules.Music[CurrentSong].Filename,
+				      () => bg.GetWidget(Game.Settings.Sound.Repeat ? "BUTTON_PLAY" : "BUTTON_NEXT").OnMouseUp(new MouseInput()));
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
 
@@ -81,6 +82,14 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			shuffle.Checked = () => Game.Settings.Sound.Shuffle;
+			
+			var repeat = bg.GetWidget<CheckboxWidget>("REPEAT");
+			repeat.OnMouseDown = mi => 
+			{
+				Game.Settings.Sound.Repeat ^= true;
+				return true;
+			};
+			repeat.Checked = () => Game.Settings.Sound.Repeat;
 			
 			bg.GetWidget<LabelWidget>("TIME").GetText = () =>
 			{

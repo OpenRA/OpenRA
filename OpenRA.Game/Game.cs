@@ -118,7 +118,7 @@ namespace OpenRA
 				{
 					lastTime += Settings.Game.Timestep;
 					Widget.DoTick(world);
-
+					Sound.Tick();
 					orderManager.TickImmediate(world);
 
 					var isNetTick = LocalTick % NetTickScale == 0;
