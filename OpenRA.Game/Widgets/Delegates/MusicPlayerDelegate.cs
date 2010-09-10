@@ -103,6 +103,13 @@ namespace OpenRA.Widgets.Delegates
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			
+			if (!Rules.Music.Where(m => m.Value.Exists).Any())
+			{
+				itemTemplate.IsVisible = () => true;
+				itemTemplate.GetWidget<LabelWidget>("TITLE").GetText = () => "No Music Installed";
+				itemTemplate.GetWidget<LabelWidget>("TITLE").Align = LabelWidget.TextAlign.Center;
+			}
+			
 			foreach (var kv in Rules.Music.Where(m => m.Value.Exists))
 			{
 				var song = kv.Key;
@@ -138,6 +145,9 @@ namespace OpenRA.Widgets.Delegates
 			var songs = Rules.Music.Where(a => a.Value.Exists)
 				.Select(a => a.Key);
 			
+			if (!songs.Any())
+				return null;
+			
 			if (Game.Settings.Sound.Shuffle)
 				return songs.Random(Game.CosmeticRandom);
 			
@@ -150,6 +160,9 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var songs = Rules.Music.Where(a => a.Value.Exists)
 				.Select(a => a.Key).Reverse();
+			
+			if (!songs.Any())
+				return null;
 			
 			if (Game.Settings.Sound.Shuffle)
 				return songs.Random(Game.CosmeticRandom);
