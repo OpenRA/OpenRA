@@ -22,6 +22,8 @@ DOG:
 	AutoTarget:
 	AttackLeap:
 		PrimaryWeapon: DogJaw
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E1:
 	Inherits: ^Infantry
@@ -45,6 +47,8 @@ E1:
 	AttackBase:
 		PrimaryWeapon: M1Carbine
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E2:
 	Inherits: ^Infantry
@@ -70,6 +74,8 @@ E2:
 		PrimaryOffset: 0,0,0,-13
 		FireDelay: 15
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E3:
 	Inherits: ^Infantry
@@ -95,6 +101,8 @@ E3:
 		SecondaryWeapon: Dragon
 		PrimaryOffset: 0,0,0,-13
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E4:
 	Inherits: ^Infantry
@@ -120,6 +128,8 @@ E4:
 		PrimaryOffset: 0,0,0,-7
 		FireDelay: 8
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E6:
 	Inherits: ^Infantry
@@ -147,6 +157,8 @@ E6:
 	EngineerCapture:
 	TakeCover:
 	-AutoTarget:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 SPY:
 	Inherits: ^Infantry
@@ -177,6 +189,8 @@ SPY:
 	Spy:
 	-RenderInfantry:
 	-AutoTarget:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 E7:
 	Inherits: ^Infantry
@@ -206,6 +220,8 @@ E7:
 		PrimaryWeapon: Colt45
 		SecondaryWeapon: Colt45
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2
 
 MEDI:
 	Inherits: ^Infantry
@@ -236,6 +252,8 @@ MEDI:
 		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
+	IdleAnimation:
+		Animations: idle1,idle2
 	
 C1:
 	Inherits: ^Infantry
@@ -296,3 +314,5 @@ SHOK:
 	AttackBase:
 		PrimaryWeapon: PortaTesla
 	TakeCover:
+	IdleAnimation:
+		Animations: idle1,idle2

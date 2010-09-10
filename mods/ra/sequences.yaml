@@ -560,6 +560,12 @@ e3:
 		Start: 64
 		Length: 8
 		Facings: 8
+	idle1:
+		Start: 272
+		Length: 14
+	idle2:
+		Start: 287
+		Length: 16
 	die1:
 		Start: 304
 		Length: 8
@@ -598,6 +604,12 @@ e6:
 		Start: 16
 		Length: 6
 		Facings: 8
+	idle1:
+		Start: 121
+		Length: 8
+	idle2:
+		Start: 130
+		Length: 14
 	die1:
 		Start: 146
 		Length: 8
@@ -660,9 +672,15 @@ medi:
 		Start: 114
 		Length: 2
 		Facings: 8
+	idle1:
+		Start: 163
+		Length: 14
+	idle2:
+		Start: 178
+		Length: 14
 	die1:
-		Start: 196
-		Length: 5
+		Start: 193
+		Length: 7
 	die2:
 		Start: 201
 		Length: 8
@@ -1009,6 +1027,12 @@ e2:
 		Start: 64
 		Length: 20
 		Facings: 8
+	idle1:
+		Start: 384
+		Length: 14
+	idle2:
+		Start: 399
+		Length: 16
 	die1:
 		Start: 416
 		Length: 8
@@ -1049,6 +1073,12 @@ dog:
 		Start: 8
 		Length: 6
 		Facings: 8
+	idle1:
+		Start: 216
+		Length: 7
+	idle2:
+		Start: 224
+		Length: 11
 	die1:
 		Start: 236
 		Length: 6
@@ -1092,6 +1122,12 @@ spy:
 		Start: 64
 		Length: 8
 		Facings: 8
+	idle1:
+		Start: 256
+		Length: 14
+	idle2:
+		Start: 271
+		Length: 16
 	die1:
 		Start: 288
 		Length: 8
@@ -1139,6 +1175,12 @@ e7:
 		Start: 56
 		Length: 7
 		Facings: 8
+	idle1:
+		Start: 233
+		Length: 14
+	idle2:
+		Start: 248
+		Length: 15
 	die1:
 		Start: 262
 		Length: 8
@@ -1181,6 +1223,12 @@ e4:
 		Start: 64
 		Length: 16
 		Facings: 8
+	idle1:
+		Start: 384
+		Length: 14
+	idle2:
+		Start: 399
+		Length: 16
 	die1:
 		Start: 416
 		Length: 8
@@ -1221,6 +1269,9 @@ thf:
 		Start: 8
 		Length: 6
 		Facings: 8
+	idle1:
+		Start: 120
+		Length: 18
 	die1:
 		Start: 139
 		Length: 8
@@ -1744,6 +1795,12 @@ shok:
 		Start: 256
 		Length: 16
 		Facings: 8
+	idle1:
+		Start: 384
+		Length: 14
+	idle2:
+		Start: 399
+		Length: 16
 	die1:
 		Start: 416
 		Length: 8
