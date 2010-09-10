@@ -74,6 +74,14 @@ namespace OpenRA.Widgets.Delegates
 				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
 			
+			var shuffle = bg.GetWidget<CheckboxWidget>("SHUFFLE");
+			shuffle.OnMouseDown = mi =>
+			{
+				Game.Settings.Sound.Shuffle ^= true;
+				return true;
+			};
+			shuffle.Checked = () => Game.Settings.Sound.Shuffle;
+			
 			bg.GetWidget<LabelWidget>("TIME").GetText = () =>
 			{
 				if (CurrentSong == null)
@@ -118,35 +126,27 @@ namespace OpenRA.Widgets.Delegates
 		
 		string GetNextSong()
 		{
-			var songs = Rules.Music.Select(a => a.Key)
-				.Where(a => FileSystem.Exists(Rules.Music[a].Filename));
+			var songs = Rules.Music.Where(a => a.Value.Exists)
+				.Select(a => a.Key);
 			
-			var nextSong = songs
-				.SkipWhile(m => m != CurrentSong)
-				.Skip(1)
-				.FirstOrDefault();
+			if (Game.Settings.Sound.Shuffle)
+				return songs.Random(Game.CosmeticRandom);
 			
-			if (nextSong == null)
-				nextSong = songs.FirstOrDefault();
-			
-			return nextSong;
+			return songs.SkipWhile(m => m != CurrentSong)
+				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+
 		}
 
 		string GetPrevSong()
 		{
-			var songs = Rules.Music.Select(a => a.Key)
-				.Where(a => FileSystem.Exists(Rules.Music[a].Filename))
-				.Reverse();
+			var songs = Rules.Music.Where(a => a.Value.Exists)
+				.Select(a => a.Key).Reverse();
 			
-			var nextSong = songs
-				.SkipWhile(m => m != CurrentSong)
-				.Skip(1)
-				.FirstOrDefault();
+			if (Game.Settings.Sound.Shuffle)
+				return songs.Random(Game.CosmeticRandom);
 			
-			if (nextSong == null)
-				nextSong = songs.FirstOrDefault();
-			
-			return nextSong;
+			return songs.SkipWhile(m => m != CurrentSong)
+				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
 		}
 	}
 }
