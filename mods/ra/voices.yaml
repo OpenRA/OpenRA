@@ -47,7 +47,7 @@ TanyaVoice:
 
 DogVoice:
 	Voices:
-		Select: 
+		Select: dogy1
 		Move: dogy1
 		Attack: dogg5p,dogw3px
 		Die: dogw5,dogw6,dogw7
