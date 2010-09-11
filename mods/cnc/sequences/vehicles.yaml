@@ -181,11 +181,15 @@ apc:
 		Start: 32
 
 lst:
-	idle:
+	idle: lstnew
 		Start: 0
-	unload:
+		Facings: 32
+	unload: lstnew
 		Start: 0
-
+		Facings: 32
+	roof: lstnew2
+		Start: 0
+		Facings: 32
 boat:
 	left:
 		Start: 0

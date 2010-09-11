@@ -627,14 +627,14 @@ LST:
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 100%
-			Rough: 100%
-			Road: 100%
-			Water: 100%
-			Tiberium: 100%
-			BlueTiberium: 100%
-			Beach: 100%
-			River: 100%
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 100
+			River: 100
 		InitialFacing:0
 		ROT: 4
 		Speed: 10
@@ -647,7 +647,7 @@ LST:
 	RenderUnit:
 	BelowUnits:
 	RenderCargo:
-	-Selectable:
+#	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
 		Passengers: 5

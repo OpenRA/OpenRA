@@ -24,17 +24,23 @@ namespace OpenRA.Mods.Cnc
 	public class RenderCargo : IRenderModifier
 	{
 		Cargo cargo;
+		IFacing facing;
 		
 		public RenderCargo(Actor self)
 		{
 			cargo = self.Trait<Cargo>();
+			if (self.HasTrait<IFacing>())
+				facing = self.Trait<IFacing>();
 		}
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			foreach (var c in cargo.Passengers)
+			{
 				c.Trait<ITeleportable>().SetPxPosition( c, self.Trait<IHasLocation>().PxPosition );
-			
+				if (facing != null && c.HasTrait<IFacing>())
+					c.Trait<IFacing>().Facing = facing.Facing;
+			}
 			return r.Concat(cargo.Passengers.SelectMany(a => a.Render()));
 		}
 	}
