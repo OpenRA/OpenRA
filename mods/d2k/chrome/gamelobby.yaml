@@ -1,0 +1,516 @@
+Background@SERVER_LOBBY:
+	Id:SERVER_LOBBY
+	Delegate:LobbyDelegate
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:800
+	Height:600
+	Visible:false
+	Children:
+		Label@LOBBY_TITLE:
+			X:0
+			Y:20
+			Align:Center
+			Width:800
+			Height:20
+			Bold:True
+			Text:OpenRA Multiplayer Lobby
+		Background@LOBBY_MAP_BG:
+			X:PARENT_RIGHT-268
+			Y:39
+			Width:252
+			Height:252
+			Background:dialog3
+			Children:
+				MapPreview@LOBBY_MAP_PREVIEW:
+					Id:LOBBY_MAP_PREVIEW
+					X:4
+					Y:4
+					Width:244
+					Height:244
+		Container@PLAYERS:
+			Id:PLAYERS
+			X:20
+			Y:75
+			Width:500
+			Height:200
+			Children:
+				Container@TEMPLATE_LOCAL:
+					Id:TEMPLATE_LOCAL
+					X:0
+					Y:0
+					Width:500
+					Height:30
+					Visible:false
+					Children:
+						TextField@NAME:
+							Id:NAME
+							Text:Name
+							Width:139
+							Height:25
+							X:0
+							Y:0
+							MaxLength:16
+						Button@COLOR:
+							Id:COLOR
+							Width:65
+							Height:25
+							X:159
+							Y:0
+							Children:
+								ColorBlock@COLORBLOCK:
+									Id:COLORBLOCK
+									X:5
+									Y:7
+									Width:PARENT_RIGHT-10
+									Height:PARENT_BOTTOM-12
+						Button@FACTION:
+							Id:FACTION
+							Width:110
+							Height:25
+							X:244
+							Y:0
+							Children:
+								Image@FACTIONFLAG:
+									Id:FACTIONFLAG
+									Width:30
+									Height:15
+									X:5
+									Y:5
+								Label@FACTIONNAME:
+									Id:FACTIONNAME
+									Text:Faction
+									Width:60
+									Height:25
+									X:40
+									Y:0
+						Button@TEAM:
+							Id:TEAM
+							Text:Team
+							Width:25
+							Height:25
+							X:374
+							Y:0
+						Checkbox@STATUS:
+							Id:STATUS
+							X:455
+							Y:2
+							Width:20
+							Height:20
+				Container@TEMPLATE_REMOTE:
+					Id:TEMPLATE_REMOTE
+					X:0
+					Y:0
+					Width:500
+					Height:30
+					Visible:false
+					Children:
+						Label@NAME:
+							Id:NAME
+							Text:Name
+							Width:139
+							Height:25
+							X:0
+							Y:0
+						ColorBlock@COLOR:
+							Id:COLOR
+							X:164
+							Y:7
+							Width:55
+							Height:13
+						Label@FACTION:
+							Id:FACTION
+							Width:110
+							Height:25
+							X:244
+							Y:0
+							Children:
+								Image@FACTIONFLAG:
+									Id:FACTIONFLAG
+									Width:30
+									Height:15
+									X:5
+									Y:5
+								Label@FACTIONNAME:
+									Id:FACTIONNAME
+									Text:Faction
+									Width:60
+									Height:25
+									X:40
+									Y:0
+						Label@TEAM:
+							Id:TEAM
+							Text:Team
+							Width:70
+							Height:25
+							X:351
+							Y:0
+							Align:Center
+							Bold: false
+						Checkbox@STATUS:
+							Id:STATUS
+							X:455
+							Y:2
+							Width:20
+							Height:20
+				Container@TEMPLATE_EMPTY:
+					Id:TEMPLATE_EMPTY
+					X:0
+					Y:0
+					Width:500
+					Height:30
+					Visible:false
+					Children:
+						Label@NAME:
+							Id:NAME
+							Text:Name
+							Width:139
+							Height:25
+							X:0
+							Y:0
+						Button@JOIN:
+							Id:JOIN
+							Text:Play in this slot
+							Width:PARENT_RIGHT - 160
+							Height:25
+							X:160
+							Y:0
+				Container@TEMPLATE_EMPTY_HOST:
+					Id:TEMPLATE_EMPTY_HOST
+					X:0
+					Y:0
+					Width:500
+					Height:30
+					Visible:false
+					Children:
+						Button@NAME:		-- TODO: replace with dropdown
+							Id:NAME
+							Text:Name
+							Width:155
+							Height:25
+							X:0
+							Y:0
+						Button@JOIN:
+							Id:JOIN
+							Text:Play in this slot
+							Width:PARENT_RIGHT - 160
+							Height:25
+							X:160
+							Y:0
+		Container@LABEL_CONTAINER:
+			X:30
+			Y:45
+			Children:
+				Label@LABEL_LOBBY_NAME:
+					Id:LABEL_LOBBY_NAME
+					Width:139
+					Height:25
+					X:0
+					Y:0
+					Text:Name
+					Align:Center
+					Bold:True
+				Label@LABEL_LOBBY_COLOR:
+					Id:LABEL_LOBBY_COLOR
+					Width:65
+					Height:25
+					X:159
+					Y:0
+					Text:Color
+					Align:Center
+					Bold:True
+				Label@LABEL_LOBBY_FACTION:
+					Id:LABEL_LOBBY_FACTION
+					Width:110
+					Height:25
+					X:244
+					Y:0
+					Text:Faction
+					Align:Center
+					Bold:True
+				Label@LABEL_LOBBY_TEAM:
+					Id:LABEL_LOBBY_TEAM
+					Width:70
+					Height:25
+					X:351
+					Y:0
+					Text:Team
+					Align:Center
+					Bold:True
+				Label@LABEL_LOBBY_STATUS:
+					Id:LABEL_LOBBY_STATUS
+					X:432
+					Y:0
+					Width:70
+					Height:25
+					Text:Ready
+					Align:Center
+					Bold:True
+		Button@CHANGEMAP_BUTTON:
+			Id:CHANGEMAP_BUTTON
+			Visible:true
+			X:PARENT_RIGHT-160
+			Y:PARENT_BOTTOM-269
+			Width:120
+			Height:25
+			Text:Change Map
+			Bold:True
+		ChatDisplay@CHAT_DISPLAY:
+			Id:CHAT_DISPLAY
+			Visible:true
+			X:20
+			Notification:
+			Height:230
+			Y:PARENT_BOTTOM - 289
+			Width:PARENT_RIGHT - 200
+		Label@LABEL_CHATTYPE:
+			Id:LABEL_CHATTYPE
+			Width:65
+			Height:25
+			X:0
+			Y:PARENT_BOTTOM - 50
+			Text:Chat:
+			Align:Right
+		TextField@CHAT_TEXTFIELD:
+			Id:CHAT_TEXTFIELD
+			Visible:true
+			X:70
+			Y:PARENT_BOTTOM - 49
+			Width:550
+			Height:25
+		Button@START_GAME_BUTTON:
+			Id:START_GAME_BUTTON
+			Visible:true
+			X:PARENT_RIGHT-160
+			Y:PARENT_BOTTOM-49
+			Width:120
+			Height:25
+			Text:Start Game
+			Bold:True
+		Button@DISCONNECT_BUTTON:
+			Id:DISCONNECT_BUTTON
+			Visible:true
+			X:PARENT_RIGHT-160
+			Y:PARENT_BOTTOM-189
+			Width:120
+			Height:25
+			Text:Disconnect
+			Bold:True
+		Checkbox@LOCKTEAMS_CHECKBOX:
+			Id:LOCKTEAMS_CHECKBOX
+			Visible: true
+			X: PARENT_RIGHT-160
+			Y: PARENT_BOTTOM-229
+			Width: 80
+			Height: 20
+			Text: Lock Teams
+		Background@COLOR_CHOOSER:
+			Id:COLOR_CHOOSER
+			Width:500
+			Height:195
+			X:(WINDOW_RIGHT - WIDTH)/2 - PARENT_LEFT
+			Y:100	
+			Visible:false
+			Children:
+				Button@BUTTON_OK:
+					Id:BUTTON_OK
+					X:PARENT_RIGHT - 180
+					Y:PARENT_BOTTOM - 45
+					Width:160
+					Height:25
+					Text:Ok
+					Bold:True
+				ShpImage@MCV:
+					Id:MCV
+					X:PARENT_RIGHT - 90
+					Y:20
+					Image:mcv
+					Frame:8
+					Palette:colorpicker
+				ShpImage@FACT:
+					Id:FACT
+					X:PARENT_RIGHT - 100
+					Y:70
+					Image:fact
+					Palette:colorpicker
+				Label@HUE_LABEL:
+					X:0
+					Y:30
+					Width:110
+					Height:20
+					Align: Right
+					Text: Hue:
+				Slider@HUE:
+					Id:HUE_SLIDER
+					X:120
+					Y:30
+					Width:260
+					Height:20
+					Ticks:5
+				Label@SAT_LABEL:
+					X:0
+					Y:60
+					Width:110
+					Height:20
+					Align: Right
+					Text: Saturation:	
+				Slider@SAT:
+					Id:SAT_SLIDER
+					X:120
+					Y:60
+					Width:260
+					Height:20
+					Ticks:5
+				Label@LUM_LABEL:
+					X:0
+					Y:90
+					Width:110
+					Height:20
+					Align: Right
+					Text: Brightness:	
+				Slider@LUM:
+					Id:LUM_SLIDER
+					X:120
+					Y:90
+					Width:260
+					Height:20
+					Ticks:5
+				Label@RANGE_LABEL:
+					X:0
+					Y:120
+					Width:110
+					Height:20
+					Align: Right
+					Text: Range:	
+				Slider@RANGE:
+					Id:RANGE_SLIDER
+					X:120
+					Y:120
+					Width:260
+					Height:20
+					Ticks:5
+Background@MAP_CHOOSER:
+	Id:MAP_CHOOSER
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Delegate:MapChooserDelegate
+	Width:800
+	Height:600
+	Visible:false
+	Children:
+		Label@MAPCHOOSER_TITLE:
+			X:0
+			Y:20
+			Align:Center
+			Width:800
+			Height:20
+			Text:Choose Map
+			Bold:True
+		ListBox@MAP_LIST:
+			Id:MAP_LIST
+			X:20
+			Y:50
+			Width:500
+			Height:480
+			Children:
+				Label@MAP_TEMPLATE:
+					Id:MAP_TEMPLATE
+					Width:PARENT_RIGHT-28
+					Height:25
+					ClickThrough:false
+					X:2
+					Y:0
+					Visible:false
+		Background@MAPCHOOSER_MAP_BG:
+			X:PARENT_RIGHT-268
+			Y:50
+			Width:252
+			Height:252
+			Background:dialog3
+			Children:
+				MapPreview@MAPCHOOSER_MAP_PREVIEW:
+					Id:MAPCHOOSER_MAP_PREVIEW
+					X:4
+					Y:4
+					Width:244
+					Height:244
+		Label@CURMAP_TITLE_LABEL:
+			Id:CURMAP_TITLE_LABEL
+			X:PARENT_RIGHT - 200 - WIDTH
+			Y:311
+			Align:Right
+			Width:70
+			Height:20
+			Text:Title:
+			Bold:True
+		Label@CURMAP_TITLE:
+			Id:CURMAP_TITLE
+			X:PARENT_RIGHT - 195
+			Y:311
+			Align:Left
+			Width:70
+			Height:20
+		Label@CURMAP_SIZE_LABEL:
+			Id:CURMAP_SIZE_LABEL
+			X:PARENT_RIGHT - 200 - WIDTH
+			Y:331
+			Align:Right
+			Width:70
+			Height:20
+			Text:Size:
+			Bold:True
+		Label@CURMAP_SIZE:
+			Id:CURMAP_SIZE
+			X:PARENT_RIGHT - 195
+			Y:331
+			Align:Left
+			Width:70
+			Height:20
+		Label@CURMAP_THEATER_LABEL:
+			Id:CURMAP_THEATER_LABEL
+			X:PARENT_RIGHT - 200 - WIDTH
+			Y:351
+			Align:Right
+			Width:70
+			Height:20
+			Text:Theater:
+			Bold:True
+		Label@CURMAP_THEATER:
+			Id:CURMAP_THEATER
+			X:PARENT_RIGHT - 195
+			Y:351
+			Align:Left
+			Width:70
+			Height:20
+		Label@CURMAP_PLAYERS_LABEL:
+			Id:CURMAP_PLAYERS_LABEL
+			X:PARENT_RIGHT - 200 - WIDTH
+			Y:371
+			Align:Right
+			Width:70
+			Height:20
+			Text:Players:
+			Bold:True
+		Label@CURMAP_PLAYERS:
+			Id:CURMAP_PLAYERS
+			X:PARENT_RIGHT - 195
+			Y:371
+			Align:Left
+			Width:70
+			Height:20
+		Button@BUTTON_OK:
+			Id:BUTTON_OK
+			X:PARENT_RIGHT - 360
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Ok
+			Bold:True
+		Button@BUTTON_CANCEL:
+			Id:BUTTON_CANCEL
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Cancel
+			Bold:True

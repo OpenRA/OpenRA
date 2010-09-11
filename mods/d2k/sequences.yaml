@@ -1,0 +1,44 @@
+mcv:
+	idle:
+		Start: 0
+		Facings: 32
+
+moveflsh:
+	idle:
+		Start: 0
+		Length: *
+
+pips:
+	groups:
+		Start: 8
+		Length: 10
+	medic:
+		Start: 20
+	ready:
+		Start: 3
+	hold:
+		Start: 4
+	pip-empty:
+		Start: 0
+	pip-green:
+		Start: 1
+	pip-yellow:
+		Start: 5
+	pip-gray:
+		Start: 6
+	pip-red:
+		Start: 7
+	tag-fake:
+		Start: 18
+	tag-primary:
+		Start: 2
+
+clock:
+	idle:
+		Start: 0
+		Length: *
+
+rank:
+	rank:
+		Start: 0
+		Length: *

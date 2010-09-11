@@ -1,0 +1,46 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Test Map
+
+Description: Describe your map here
+
+Author: Your name here
+
+PlayerCount: 3
+
+Tileset: ARRAKIS
+
+MapSize: 64,64
+
+TopLeft: 2,2
+
+BottomRight: 62,62
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+
+Waypoints:
+	wp0: 21,11
+	wp1: 51,28
+	wp2: 24,52
+
+Smudges:
+
+Rules:
+

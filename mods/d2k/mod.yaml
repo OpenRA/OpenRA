@@ -1,0 +1,36 @@
+# Dune 2000 Mod -- Package Manifest
+# Piggybacks some things from ra mod
+Folders:
+	.
+	mods/d2k
+	mods/d2k/bits
+	mods/ra/uibits
+Packages:
+	mods/d2k/bits/arrakis.mix
+Rules:
+	mods/d2k/rules/defaults.yaml
+	mods/d2k/rules/vehicles.yaml
+	mods/d2k/rules/system.yaml
+Sequences:
+	mods/d2k/sequences.yaml
+Cursors:
+	mods/d2k/cursors.xml
+Chrome:
+	mods/ra/chrome.xml
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+ChromeLayout:
+	mods/d2k/chrome/ingame.yaml
+	mods/d2k/chrome/mainmenu.yaml
+	mods/d2k/chrome/videoplayer.yaml
+	mods/d2k/chrome/settings.yaml
+	mods/d2k/chrome/gamelobby.yaml
+	mods/d2k/chrome/serverbrowser.yaml
+Weapons:
+Voices:
+TileSets:
+	mods/d2k/tilesets/arrakis.yaml
+Music:
+Movies:
+LoadScreen: NullLoadScreen
+ShellmapUid:c7bc5cded5f9b67bc678ca92b9d690fb71ae2ee2

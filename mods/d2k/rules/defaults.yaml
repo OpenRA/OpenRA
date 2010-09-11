@@ -1,0 +1,16 @@
+^Vehicle:
+	AppearsOnRadar:
+	Mobile:
+		TerrainSpeeds:
+			clear: 100%
+		ROT: 5
+	Selectable: 
+	Targetable:
+		TargetTypes: Ground
+	Repairable: 
+	Passenger: 
+		CargoType: Vehicle
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:

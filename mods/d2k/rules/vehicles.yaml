@@ -1,0 +1,21 @@
+MCV:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+		Bounds: 42,42
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+	RevealsShroud:
+		Range: 4
+	RenderUnit:
+	MustBeDestroyed:
+	BaseBuilding:

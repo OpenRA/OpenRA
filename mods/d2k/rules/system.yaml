@@ -1,0 +1,78 @@
+Player:
+	TechTreeCache:
+	PlayerResources:
+		InitialCash: 5000
+	ActorGroupProxy:
+	DeveloperMode:
+
+World:
+	ScreenShaker:
+	ColorPickerPaletteModifier:
+	BuildingInfluence:
+	UnitInfluence:
+	ChooseBuildTabOnSelect:
+	PaletteFromCurrentTheatre:
+		Name: terrain
+	PlayerColorPalette:
+		BasePalette: units
+	PaletteFromFile@units:
+		Name: units
+		Filename: units.pal
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
+	Country@0:
+		Name: Allies
+		Race: allies
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartLocations:
+	SpawnMPUnits:
+	EvaAlerts:
+		RadarUp:
+		RadarDown:
+		BuildingSelectAudio:
+		BuildingReadyAudio:
+		BuildingCannotPlaceAudio:
+		UnitSelectAudio:
+		UnitReadyAudio:
+		OnHoldAudio:
+		CancelledAudio:
+		CashTickUp:
+		CashTickDown:
+		LowPower:
+		SilosNeeded:
+		PrimaryBuildingSelected:
+		AbilityInsufficientPower:
+		LevelUp:
+	SpatialBins:
+		BinSize: 4
+	Shroud:
