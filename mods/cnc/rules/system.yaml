@@ -54,7 +54,7 @@ World:
 		Name: terrain
 	PlayerColorPalette:
 		BasePalette: terrain
-		SplitRamp: yes
+		PaletteFormat: cnc
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

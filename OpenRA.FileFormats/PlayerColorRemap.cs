@@ -15,15 +15,16 @@ using System.Linq;
 namespace OpenRA.FileFormats
 {
 	// TODO: ship this out of here.
+	public enum PaletteFormat { ra, cnc, d2k }
 
 	public class PlayerColorRemap : IPaletteRemap
 	{
 		Dictionary<int, Color> remapColors;
 
-		public PlayerColorRemap(Color c1, Color c2, bool useSplitRamp)
+		public PlayerColorRemap(Color c1, Color c2, PaletteFormat fmt)
 		{
-			var baseIndex = useSplitRamp ? 0xb0 : 80;
-			var ramp = useSplitRamp
+			var baseIndex = (fmt == PaletteFormat.cnc) ? 0xb0 : (fmt == PaletteFormat.d2k) ? 240 : 80;
+			var ramp = (fmt == PaletteFormat.cnc)
 				? new[] { 0, 2, 4, 6, 8, 10, 13, 15, 1, 3, 5, 7, 9, 11, 12, 14 }
 				: new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 

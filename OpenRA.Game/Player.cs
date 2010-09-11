@@ -93,7 +93,7 @@ namespace OpenRA
 		{			
 			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
 			var newpal = new Palette(world.WorldRenderer.GetPalette(info.BasePalette),
-			                 new PlayerColorRemap(Color, Color2, info.SplitRamp));
+			                 new PlayerColorRemap(Color, Color2, info.PaletteFormat));
 			world.WorldRenderer.AddPalette(palette, newpal);
 		}
 		

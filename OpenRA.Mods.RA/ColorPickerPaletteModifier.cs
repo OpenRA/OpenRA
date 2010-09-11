@@ -19,12 +19,12 @@ namespace OpenRA.Mods.RA
 	
 	class ColorPickerPaletteModifier : IPaletteModifier, IWorldLoaded
 	{	
-		bool SplitPlayerPalette;
+		PaletteFormat format;
 		public void WorldLoaded(World w)
 		{
 			// Copy the base palette for the colorpicker
 			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
-			SplitPlayerPalette = info.SplitRamp;
+			format = info.PaletteFormat;
 			w.WorldRenderer.AddPalette("colorpicker", w.WorldRenderer.GetPalette(info.BasePalette));
 		}
 
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
 			  new PlayerColorRemap(LobbyDelegate.CurrentColorPreview1,
-				  LobbyDelegate.CurrentColorPreview2, SplitPlayerPalette));
+				  LobbyDelegate.CurrentColorPreview2, format));
 		}
 	}
 }

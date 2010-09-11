@@ -8,12 +8,13 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 namespace OpenRA.Traits
-{
+{	
 	public class PlayerColorPaletteInfo : TraitInfo<PlayerColorPalette>
 	{
 		public readonly string BasePalette = null;
-		public readonly bool SplitRamp = false;
+		public readonly PaletteFormat PaletteFormat = PaletteFormat.ra;
 	}
 
 	public class PlayerColorPalette {}

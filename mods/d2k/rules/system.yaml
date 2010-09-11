@@ -15,6 +15,7 @@ World:
 		Name: terrain
 	PlayerColorPalette:
 		BasePalette: units
+		PaletteFormat: d2k
 	PaletteFromFile@units:
 		Name: units
 		Filename: units.pal
