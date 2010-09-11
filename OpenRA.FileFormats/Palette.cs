@@ -57,6 +57,7 @@ namespace OpenRA.FileFormats
 			colors[0] = 0;
 			if (remapTransparent)
 			{
+				colors[1] = 178u << 24; // Hack for d2k; may have side effects
 				colors[3] = 178u << 24;
 				colors[4] = 140u << 24;
 			}
