@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (isCanceled) return NextActivity;
+			if (host != null && !host.IsInWorld) return NextActivity;
 			if (remainingTicks == 0)
 			{
 				var health = self.TraitOrDefault<Health>();
