@@ -86,7 +86,6 @@ namespace OpenRA.Traits
 			AddInfluence();
 		}
 
-		Shroud shroud;
 		UnitInfluence uim;
 		
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -94,7 +93,6 @@ namespace OpenRA.Traits
 			this.self = init.self;
 			this.Info = info;
 			
-			shroud = self.World.WorldActor.Trait<Shroud>();
 			uim = self.World.WorldActor.Trait<UnitInfluence>();
 			
 			if (init.Contains<LocationInit>())
@@ -119,18 +117,15 @@ namespace OpenRA.Traits
 			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
 		}
 		
+		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (Info.OnRails) return null;
 			
 			if (mi.Button == MouseButton.Left) return null;
 
-			if (!CanEnterCell(xy))
-				return null;
-			
-			if (xy == toCell) return null;
-			
-			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
+			var type = (!self.World.LocalPlayer.Shroud.IsVisible(xy) || CanEnterCell(xy)) ? "Move" : "Move-Blocked";
+			return new Order(type, self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
 		public int2 NearestMoveableCell(int2 target)
@@ -155,7 +150,7 @@ namespace OpenRA.Traits
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move")
+			if (order.OrderString == "Move" || order.OrderString == "Move-Blocked")
 			{
 				int2 currentLocation = NearestMoveableCell(order.TargetLocation);
 				if (!CanEnterCell(currentLocation))
@@ -177,17 +172,20 @@ namespace OpenRA.Traits
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Move")
-				return null;
+			if (order.OrderString == "Move")
+				return "move";
 			
-			var xy = order.TargetLocation;
-			return (!shroud.exploredCells[xy.X, xy.Y] || CanEnterCell(xy)) ? "move" : "move-blocked";
+			if (order.OrderString == "Move-Blocked")
+				return "move-blocked";
+			
+			return null;
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			var xy = order.TargetLocation;
-			return (order.OrderString == "Move" && (!shroud.exploredCells[xy.X, xy.Y] || CanEnterCell(xy))) ? "Move" : null;
+			if (order.OrderString == "Move" || order.OrderString == "Move-Blocked")
+				return "Move";
+			return null;
 		}
 
 		public int2 TopLeft { get { return toCell; } }
