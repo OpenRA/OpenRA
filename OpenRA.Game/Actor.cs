@@ -105,7 +105,7 @@ namespace OpenRA
 			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
 		}
 
-		public Order Order( int2 xy, MouseInput mi )
+		public Order Order( int2 xy, MouseInput mi, Actor underCursor )
 		{
 			if (Owner != World.LocalPlayer)
 				return null;
@@ -115,11 +115,6 @@ namespace OpenRA
 
 			if (Destroyed)
 				return null;
-
-			var underCursor = World.FindUnitsAtMouse(mi.Location)
-				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
-				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
-				.FirstOrDefault();
 			
 			return TraitsImplementing<IIssueOrder>()
 				.OrderByDescending( x => x.OrderPriority( this, xy, mi, underCursor ) )

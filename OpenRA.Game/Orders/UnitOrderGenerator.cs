@@ -18,9 +18,9 @@ namespace OpenRA.Orders
 	class UnitOrderGenerator : IOrderGenerator
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
-		{
+		{		
 			var orders = world.Selection.Actors
-				.Select(a => a.Order(xy, mi))
+				.Select(a => a.Order(xy, mi, UnderCursor(world, mi)))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -55,17 +55,26 @@ namespace OpenRA.Orders
 			Game.Renderer.Flush();
 		}
 
-		public string GetCursor( World world, int2 xy, MouseInput mi )
+		public Actor UnderCursor(World world, MouseInput mi)
 		{
+			return world.FindUnitsAtMouse(mi.Location)
+				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
+				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
+				.FirstOrDefault();
+		}
+		
+		public string GetCursor( World world, int2 xy, MouseInput mi )
+		{		
+			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
+				if (UnderCursor(world, mi) != null)
+					return "select";
+						
 			var c = Order(world, xy, mi)
 				.Select(o => o.Subject.TraitsImplementing<IOrderCursor>()
 					.Select(pc => pc.CursorForOrder(o.Subject, o)).FirstOrDefault(a => a != null))
 				.FirstOrDefault(a => a != null);
 
-			return c ??
-				(world.FindUnitsAtMouse(mi.Location)
-				.Any(a => a.Info.Traits.Contains<SelectableInfo>())
-					? "select" : "default");
+			return c ?? "default";
 		}
 	}
 }
