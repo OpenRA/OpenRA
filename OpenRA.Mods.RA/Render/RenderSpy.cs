@@ -21,29 +21,39 @@ namespace OpenRA.Mods.RA.Render
 
 	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
 	{
-		Actor disguisedAs;
+		Player disguisedAsPlayer;
+		string disguisedAsSprite;
 
 		public RenderSpy(Actor self) : base(self) { }
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return disguisedAs != null ? r.Select(a => a.WithPalette(disguisedAs.Owner.Palette)) : r;
+			return disguisedAsPlayer != null ? r.Select(a => a.WithPalette(disguisedAsPlayer.Palette)) : r;
 		}
 
 		public override void Tick(Actor self)
 		{
-			if (disguisedAs != null)
-				anim.ChangeImage(disguisedAs.Trait<RenderSimple>().GetImage(disguisedAs));
-			else
-				anim.ChangeImage(GetImage(self));
-
 			base.Tick(self);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Disguise")
-				disguisedAs = order.TargetActor == self ? null : order.TargetActor;
+			{
+				var target = order.TargetActor == self ? null : order.TargetActor;
+				if (target != null && target.IsInWorld)
+				{
+					disguisedAsPlayer = target.Owner;
+					disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);
+					anim.ChangeImage(disguisedAsSprite);
+				}
+				else
+				{
+					disguisedAsPlayer = null;
+					disguisedAsSprite = null;
+					anim.ChangeImage(GetImage(self));
+				}
+			}
 		}
 		
 		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
