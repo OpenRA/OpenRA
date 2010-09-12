@@ -55,15 +55,11 @@ namespace OpenRA.Mods.RA
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
-			
-			if (underCursor == null)
-				return new Order("Move", self, xy);
-			
-			if (AircraftCanEnter(self, underCursor)
+			if (underCursor != null && AircraftCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner)
 				return new Order("Enter", self, underCursor);
-
-			return null;
+			
+			return new Order("Move", self, xy);
 		}
 		
 		public string CursorForOrder(Actor self, Order order)

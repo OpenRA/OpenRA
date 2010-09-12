@@ -49,13 +49,12 @@ namespace OpenRA.Mods.RA
 		{
 			if (mi.Button == MouseButton.Left) return null;
 
-			if (underCursor == null)
-				if (self.TraitOrDefault<IMove>().CanEnterCell(xy))
-					return new Order("Move", self, xy);
-
-			if (AircraftCanEnter(self, underCursor)
+			if (underCursor != null && AircraftCanEnter(self, underCursor)
 				&& underCursor.Owner == self.Owner)
 				return new Order("Enter", self, underCursor);
+			
+			if (self.TraitOrDefault<IMove>().CanEnterCell(xy))
+				return new Order("Move", self, xy);
 			
 			return null;
 		}
