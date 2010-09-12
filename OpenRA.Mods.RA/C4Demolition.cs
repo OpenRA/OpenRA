@@ -25,15 +25,15 @@ namespace OpenRA.Mods.RA
 	{
 		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			return 5;
+			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? 1001 : 1;
 		}
 		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button != MouseButton.Right) return null;
 			if (underCursor == null) return null;
-			if (underCursor.Owner == self.Owner && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 			if (!underCursor.HasTrait<Building>()) return null;
+			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 
 			return new Order("C4", self, underCursor);
 		}

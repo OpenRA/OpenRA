@@ -176,7 +176,7 @@ namespace OpenRA.Mods.RA
 
 		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? int.MaxValue : 1;
+			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? 1000 : 1;
 		}
 		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
