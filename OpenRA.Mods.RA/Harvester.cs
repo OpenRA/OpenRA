@@ -92,6 +92,11 @@ namespace OpenRA.Mods.RA
 			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
 			contents.Clear();
 		}
+		
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 5;
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

@@ -122,6 +122,7 @@ namespace OpenRA
 				.FirstOrDefault();
 			
 			return TraitsImplementing<IIssueOrder>()
+				.OrderByDescending( x => x.OrderPriority( this, xy, mi, underCursor ) )
 				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
 				.FirstOrDefault( x => x != null );
 		}

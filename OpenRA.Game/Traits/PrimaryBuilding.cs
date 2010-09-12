@@ -24,6 +24,11 @@ namespace OpenRA.Traits
 		{
 			yield return (isPrimary) ? TagType.Primary : TagType.None;
 		}
+		
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 0;
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

@@ -42,6 +42,11 @@ namespace OpenRA.Traits
 					anim.Image, Util.CenterOfCell(rallyPoint));
 		}
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 0;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left || underCursor != null) return null;

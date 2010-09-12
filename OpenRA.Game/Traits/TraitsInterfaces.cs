@@ -33,7 +33,11 @@ namespace OpenRA.Traits
 
 	public interface ITick { void Tick(Actor self); }
 	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
-	public interface IIssueOrder { Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor ); }
+	public interface IIssueOrder
+	{
+		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
+		int OrderPriority( Actor self, int2 xy, MouseInput mi, Actor underCursor );
+	}
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IOrderCursor { string CursorForOrder(Actor self, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }

@@ -45,6 +45,11 @@ namespace OpenRA.Mods.RA.Render
 			if (order.OrderString == "Disguise")
 				disguisedAs = order.TargetActor == self ? null : order.TargetActor;
 		}
+		
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 5;
+		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{

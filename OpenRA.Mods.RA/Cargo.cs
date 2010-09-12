@@ -26,6 +26,11 @@ namespace OpenRA.Mods.RA
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 5;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && underCursor == self)

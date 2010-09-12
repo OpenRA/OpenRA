@@ -32,6 +32,11 @@ namespace OpenRA.Mods.RA
 		public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 5;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && underCursor == null && mi.Modifiers.HasModifier(Modifiers.Ctrl))

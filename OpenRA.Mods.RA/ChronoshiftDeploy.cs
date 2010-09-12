@@ -33,6 +33,11 @@ namespace OpenRA.Mods.RA
 				chargeTick--;
 		}
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return 5;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Right && xy == self.Location)

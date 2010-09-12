@@ -113,22 +113,21 @@ namespace OpenRA.Traits
 			self.CenterLocation = Util.CenterOfCell(fromCell);
 		}
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			// Force move takes precidence
+			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (Info.OnRails) return null;
 			
 			if (mi.Button == MouseButton.Left) return null;
 
-			// force-fire should *always* take precedence over move.
-			if (mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
-
-			if (underCursor != null && underCursor.Owner != null)
-			{
-				// force-move
-				if (!mi.Modifiers.HasModifier(Modifiers.Alt)) return null;
-				if (!CanEnterCell(underCursor.Location, null, true)) return null;
-			}
-			if (MovementSpeedForCell(self, toCell) == 0) return null;		/* allow disabling move orders from modifiers */
+			if (!CanEnterCell(xy))
+				return null;
+			
 			if (xy == toCell) return null;
 			
 			return new Order("Move", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));

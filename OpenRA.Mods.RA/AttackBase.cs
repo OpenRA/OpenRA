@@ -174,6 +174,11 @@ namespace OpenRA.Mods.RA
 			return info.FireDelay;
 		}
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? int.MaxValue : 1;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;

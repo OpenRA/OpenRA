@@ -46,6 +46,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		{
+			// Force move takes precidence
+			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
+		}
+		
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
