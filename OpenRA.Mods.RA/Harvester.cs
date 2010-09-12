@@ -101,7 +101,10 @@ namespace OpenRA.Mods.RA
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
 			if (mi.Button == MouseButton.Left) return null;
-
+			
+			// Don't leak info about resources under the shroud
+			if (!self.World.LocalPlayer.Shroud.IsExplored(xy)) return null;
+			
 			if (underCursor != null
 				&& underCursor.Owner == self.Owner
 				&& underCursor.HasTrait<IAcceptOre>())
