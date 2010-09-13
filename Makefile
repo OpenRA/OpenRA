@@ -91,7 +91,7 @@ clean:
 
 distclean: clean
 
-CORE = fileformats gl game seqed
+CORE = fileformats gl game editor
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"

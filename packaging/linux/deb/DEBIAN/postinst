@@ -1,0 +1,41 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_installmenu
+if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ]; then
+	update-menus
+fi
+# End automatically added section
+
+start_directory=$( pwd )
+cd /tmp
+
+anw=`zenity --question --text "Download and install RA packages? (This might take a while) [Y/n]"; echo $?`
+if [ $anw = 0 ] ; then
+    cd /tmp/
+    wget "http://open-ra.org/get-dependency.php?file=ra-packages" -O ra-packages.zip
+    mkdir -p /usr/share/openra/mods/ra/packages
+    unzip -f ra-packages.zip -d /usr/share/openra/mods/ra/packages
+    rm ra-packages.zip
+    cd $start_directory
+    else
+    break
+fi
+
+
+anw=`zenity --question --text "Download and install C&C packages? (This might take a while) [Y/n]"; echo $?`
+if [ $anw = 0 ] ; then
+    cd /tmp/
+    wget "http://open-ra.org/get-dependency.php?file=cnc-packages" -O cnc-packages.zip
+    mkdir -p /usr/share/openra/mods/cnc/packages
+    unzip -f cnc-packages.zip -d usr/share/openra/mods/cnc/packages
+    rm cnc-packages.zip
+    cd $start_directory
+    else
+    break
+fi
+
+gacutil -i /usr/share/openra/thirdparty/Tao/Tao.Cg.dll
+gacutil -i /usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
+gacutil -i /usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
+gacutil -i /usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
+gacutil -i /usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
