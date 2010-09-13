@@ -35,7 +35,7 @@ do
     case $REPLY in
         y|Y|"") 
             pushd /tmp/
-            wget "http://open-ra.org/get-dependency.php?file=ra-packages"
+            wget "http://open-ra.org/get-dependency.php?file=ra-packages" -O ra-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
             unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
             rm ra-packages.zip
@@ -52,10 +52,10 @@ do
     case $REPLY in
         y|Y|"") 
             pushd /tmp/
-            wget "http://open-ra.org/get-dependency.php?file=cnc-packages"
+            wget "http://open-ra.org/get-dependency.php?file=cnc-packages" -O cnc-packages.zip
             mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
-            unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
-            rm ra-packages.zip
+            unzip cnc-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
+            rm cnc-packages.zip
             popd
             break;;
         n|N) break;;
