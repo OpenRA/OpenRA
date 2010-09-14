@@ -28,7 +28,7 @@
 		    <?php
 		        function generateDownloadButton($target, $text, $desc)
 		        {
-		            echo "<div class=\"rounded download\" style=\"display: block; text-align: center\" onclick=\"document.location='".$target."'\">\n";
+		            echo "<div class=\"rounded download\" style=\"display: block; text-align: center; width: 320px\" onclick=\"document.location='".$target."'\">\n";
 		            echo "\t<img src=\"/arrow.png\" alt=\"Download Arrow\" style=\"float: left; margin-top: 3px\" />\n";
 		            echo "\t". $text ."<br />\n";
 		            echo "\t<span class=\"desc\">". $desc ."</span>\n";
@@ -46,6 +46,12 @@
 		        $desc = sprintf("version: %s size: %.2fMB", $version, $size/1048576);
 		        
 		        generateDownloadButton(trim($target), "Download for RPM based systems", $desc);
+		        
+		        $debTarget = file_get_contents("deblatest.txt");
+		        list($version,$size,$target) = explode(",", $debTarget);
+		        $desc = sprintf("version: %s size: %.2fMB", $version, $size/1048576);
+		        
+		        generateDownloadButton(trim($target), "Download for deb based systems", $desc);
 		        
 		        $version = file_get_contents("srclatest.txt");
 		        $target = "http://github.com/chrisforbes/OpenRA/tarball/playtest-".trim($version);
