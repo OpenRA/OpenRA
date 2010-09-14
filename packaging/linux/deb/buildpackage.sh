@@ -1,10 +1,10 @@
 #!/bin/bash
-ARGS=7
+ARGS=8
 E_BADARGS=85
 
 if [ $# -ne "$ARGS" ]
 then
-    echo "Usage: `basename $0` ftp-server ftp-path username password version temp-packaging-dir"
+    echo "Usage: `basename $0` ftp-server ftp-path username password version src-dir temp-packaging-dir"
     exit $E_BADARGS
 fi
 
@@ -22,12 +22,12 @@ PACKAGE_SIZE= $( du --apparent-size -c ./usr | grep total | sed 's/[a-z]//g' | s
 sed -i '5,5 i\Installed-Size: $PACKAGE_SIZE' ./DEBIAN/control
 
 # Copy our two needed folders to a clean package directory (yes, this is needed)
-cp -R ./DEBIAN $6
-cp -R ./usr $6
+cp -R ./DEBIAN $7
+cp -R $6/usr $7
 
 # Build it in the package directory, but place the finished deb in our starting directory
 BUILD_DIR=$( pwd )
-pushd $6
+pushd $7
 
 # Calculate md5sums and clean up the /usr/ part of them
 md5sum `find . -type f | grep -v '^[.]/DEBIAN/'` >DEBIAN/md5sums
@@ -53,4 +53,4 @@ wput -u deblatest.txt "ftp://$3:$4@$1/$2/"
 
 # remove temp-packaging-dir
 
-rm -rf $6
+rm -rf $7

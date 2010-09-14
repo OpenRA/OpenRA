@@ -41,7 +41,10 @@ do
             rm ra-packages.zip
             popd
             break;;
-        n|N) break;;
+        n|N)
+            echo "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
+            to /usr/share/openra/mods/ra/packages before the RA mod will work." 
+            break;;
         *) echo "Please enter y or n.";;
     esac
 done
@@ -58,7 +61,10 @@ do
             rm cnc-packages.zip
             popd
             break;;
-        n|N) break;;
+        n|N)
+            echo "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
+            to /usr/share/openra/mods/cnc/packages before the C&C mod will work." 
+            break;;
         *) echo "Please enter y or n.";;
     esac
 done

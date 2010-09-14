@@ -9,7 +9,7 @@ fi
 start_directory=$( pwd )
 cd /tmp
 
-anw=`zenity --question --text "Download and install RA packages? (This might take a while) [Y/n]"; echo $?`
+anw=`zenity --question --text "Download and install RA packages? [Y/n]"; echo $?`
 if [ $anw = 0 ] ; then
     cd /tmp/
     wget "http://open-ra.org/get-dependency.php?file=ra-packages" -O ra-packages.zip
@@ -18,11 +18,13 @@ if [ $anw = 0 ] ; then
     rm ra-packages.zip
     cd $start_directory
     else
+    zenity --info --text "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
+    to /usr/share/openra/mods/ra/packages before the RA mod will work."
     break
 fi
 
 
-anw=`zenity --question --text "Download and install C&C packages? (This might take a while) [Y/n]"; echo $?`
+anw=`zenity --question --text "Download and install C&C packages? [Y/n]"; echo $?`
 if [ $anw = 0 ] ; then
     cd /tmp/
     wget "http://open-ra.org/get-dependency.php?file=cnc-packages" -O cnc-packages.zip
@@ -31,6 +33,8 @@ if [ $anw = 0 ] ; then
     rm cnc-packages.zip
     cd $start_directory
     else
+    zenity --info --text "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
+    to /usr/share/openra/mods/cnc/packages before the C&C mod will work."
     break
 fi
 
