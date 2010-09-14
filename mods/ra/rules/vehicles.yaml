@@ -306,7 +306,7 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: weap
-		Owner: allies,soviet
+		Owner: allies
 	Valued:
 		Cost: 500
 	Tooltip:
