@@ -1,9 +1,9 @@
 Package: openra
-Version: 20100907-1
+Version: 20100914
 Architecture: i386
 Maintainer: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Uploaders: Maikel van den Hout <ma1kelvdh@gmail.com>
-Installed-Size: 31623
+Installed-Size: 8306	
 Depends: nvidia-cg-toolkit (>= 2.2), libopenal1, mono-runtime, libmono-winforms2.0-cil, libfreetype6, libsdl1.2debian, libgl1-mesa-glx, libgl1-mesa-dri, zenity, wget, unzip
 Section: games
 Priority: extra

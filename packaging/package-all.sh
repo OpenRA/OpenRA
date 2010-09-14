@@ -75,6 +75,15 @@ if [ $? -ne 0 ]; then
 fi
 popd &> /dev/null
 
+#deb
+msg "\E[34m" "Building deb package."
+pushd linux/deb/ &> /dev/null
+./buildpackage.sh "ftp.open-ra.org" "httpdocs/releases/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
+if [ $? -ne 0 ]; then
+  msg "\E[31m" "Package build failed, refer to log."
+fi
+popd &> /dev/null
+
 #OSX
 msg "\E[34m" "Building OSX package."
 pushd osx/ &>/dev/null

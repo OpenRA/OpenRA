@@ -1,5 +1,16 @@
-openra (20100907-1) unstable; urgency=low
+openra (20100914) unstable; urgency=low
 
-* Changed MiG prerequisites to AFLD+STEK * Removed KENN, build DOG directly from BARR now * Chronotank can only teleport when fully charged  * Improved OpenGL error logging * Fixed targeting of FIX * Fixed crash when an engineer is trying to repair a building, but it dies/gets sold/* etc. * Added muzzle flashes to Yak and Hind chainguns * Fixed bounding boxes on some units * Fixed accuracy of Tesla weapons * Changed ownership of GUN and GTWR in CNC to both * Fixed crash on destroying things that have a building reserved * If ordered to move to an unpathable cell, move somewhere nearby that is pathable   * instead * Fixed RPM linux package
+* Changed MiG prerequisites to AFLD+STEK 
+* Removed KENN, build DOG directly from BARR now 
+* Chronotank can only teleport when fully charged  
+* Improved OpenGL error logging 
+* Fixed targeting of FIX 
+* Fixed crash when an engineer is trying to repair a building, but it dies/gets sold/etc. 
+* Added muzzle flashes to Yak and Hind chainguns * Fixed bounding boxes on some units 
+* Fixed accuracy of Tesla weapons 
+* Changed ownership of GUN and GTWR in CNC to both 
+* Fixed crash on destroying things that have a building reserved 
+* If ordered to move to an unpathable cell, move somewhere nearby that is pathable instead 
+* Fixed RPM linux package
 
 -- Maikel van den Hout <ma1kelvdh@gmail.com>  Thu, 09 Sep 2010 16:34:03 +0200
