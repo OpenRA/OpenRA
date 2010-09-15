@@ -2,21 +2,21 @@ Selectable: True
 
 MapFormat: 3
 
-Title: Test Map
+Title: Name your map here
 
 Description: Describe your map here
 
 Author: Your name here
 
-PlayerCount: 3
+PlayerCount: 1
 
 Tileset: ARRAKIS
 
-MapSize: 64,64
+MapSize: 128,128
 
-TopLeft: 2,2
+TopLeft: 16,16
 
-BottomRight: 62,62
+BottomRight: 112,112
 
 Players:
 	PlayerReference@Neutral:
@@ -34,11 +34,12 @@ Players:
 		Enemies:
 
 Actors:
+	Actor0: mcv
+		Location: 16,17
+		Owner: Neutral
 
 Waypoints:
-	wp0: 21,11
-	wp1: 51,28
-	wp2: 24,52
+	wp0: 18,18
 
 Smudges:
 

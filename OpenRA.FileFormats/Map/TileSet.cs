@@ -74,7 +74,7 @@ namespace OpenRA.FileFormats
 		public string Name;
 		public string Id;
 		public string Palette;
-		public int TileSize = 24;
+		public int TileSize;
 		public string[] Extensions;
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
@@ -111,13 +111,6 @@ namespace OpenRA.FileFormats
 		public void Save(string filepath)
 		{			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in fields)
-			{
-				FieldInfo f = this.GetType().GetField(field);
-				if (f.GetValue(this) == null) continue;
-				root.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
-			}
-			
 			var gen = new List<MiniYamlNode>();
 			foreach (var field in fields)
 			{

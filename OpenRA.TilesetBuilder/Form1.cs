@@ -23,14 +23,13 @@ namespace OpenRA.TilesetBuilder
 	public partial class Form1 : Form
 	{
 		string srcfile;
-		int TileSize;
+		int size;
 		public Form1( string src, int size )
 		{
 			srcfile = src;
-			TileSize = size;
+			this.size = size;
 			InitializeComponent();
-
-			surface1.TileSize = TileSize;
+			surface1.TileSize = size;
 			surface1.Image = (Bitmap)Image.FromFile(src);
 			surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
 			surface1.Templates = new List<Template>();
@@ -125,7 +124,7 @@ namespace OpenRA.TilesetBuilder
 			{
 				Name = "Arrakis",
 				Id = "ARRAKIS",
-				TileSize = this.TileSize,
+				TileSize = size,
 				Palette = "arrakis.pal",
 				Extensions = new string[] {".arr", ".shp"}
 			};
@@ -194,6 +193,7 @@ namespace OpenRA.TilesetBuilder
 
 		string ExportTemplate(Template t, int n, string suffix, string dir)
 		{
+			var TileSize = size;
 			var filename = Path.Combine(dir, "t{0:00}{1}".F(n, suffix));
 			var totalTiles = t.Width * t.Height;
 
