@@ -26,6 +26,10 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{			
 			if (target == null || target.IsDead()) return NextActivity;
+			if ((target.Location - self.Location).Length > 1)
+				return NextActivity;
+			
+			
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25 * 2,
 				() => target.Kill(self))));
 			return NextActivity;

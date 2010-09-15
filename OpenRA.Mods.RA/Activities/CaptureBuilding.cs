@@ -23,7 +23,9 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (target == null || target.IsDead()) return NextActivity;
-
+			if ((target.Location - self.Location).Length > 1)
+				return NextActivity;
+			
 			target.World.AddFrameEndTask(w =>
 			{
 				// momentarily remove from world so the ownership queries don't get confused
