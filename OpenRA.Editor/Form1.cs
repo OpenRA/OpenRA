@@ -201,7 +201,7 @@ namespace OpenRA.Editor
 			var template = ts.Templates[n];
 			var tile = ts.Tiles[n];
 
-			var bitmap = new Bitmap(24 * template.Size.X, 24 * template.Size.Y);
+			var bitmap = new Bitmap(ts.TileSize * template.Size.X, ts.TileSize * template.Size.Y);
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
@@ -215,15 +215,15 @@ namespace OpenRA.Editor
 						if (tile.TileBitmapBytes[u + v * template.Size.X] != null)
 						{
 							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
-							for (var i = 0; i < 24; i++)
-								for (var j = 0; j < 24; j++)
-									q[(v * 24 + j) * stride + u * 24 + i] = p.GetColor(rawImage[i + 24 * j]).ToArgb();
+							for (var i = 0; i < ts.TileSize; i++)
+								for (var j = 0; j < ts.TileSize; j++)
+									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = p.GetColor(rawImage[i + ts.TileSize * j]).ToArgb();
 						}
 						else
 						{
-							for (var i = 0; i < 24; i++)
-								for (var j = 0; j < 24; j++)
-									q[(v * 24 + j) * stride + u * 24 + i] = Color.Transparent.ToArgb();
+							for (var i = 0; i < ts.TileSize; i++)
+								for (var j = 0; j < ts.TileSize; j++)
+									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = Color.Transparent.ToArgb();
 						}
 			}
 

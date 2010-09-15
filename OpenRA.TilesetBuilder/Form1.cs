@@ -23,14 +23,16 @@ namespace OpenRA.TilesetBuilder
 	public partial class Form1 : Form
 	{
 		string srcfile;
-		public Form1( string src )
+		int TileSize;
+		public Form1( string src, int size )
 		{
 			srcfile = src;
-
+			TileSize = size;
 			InitializeComponent();
 
+			surface1.TileSize = TileSize;
 			surface1.Image = (Bitmap)Image.FromFile(src);
-			surface1.TerrainTypes = new int[surface1.Image.Width / 24, surface1.Image.Height / 24];		/* all passable by default */
+			surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
 			surface1.Templates = new List<Template>();
 			surface1.Size = surface1.Image.Size;
 
@@ -123,6 +125,7 @@ namespace OpenRA.TilesetBuilder
 			{
 				Name = "Arrakis",
 				Id = "ARRAKIS",
+				TileSize = this.TileSize,
 				Palette = "arrakis.pal",
 				Extensions = new string[] {".arr", ".shp"}
 			};
@@ -197,8 +200,8 @@ namespace OpenRA.TilesetBuilder
 			var ms = new MemoryStream();
 			using (var bw = new BinaryWriter(ms))
 			{
-				bw.Write((ushort)24);
-				bw.Write((ushort)24);
+				bw.Write((ushort)TileSize);
+				bw.Write((ushort)TileSize);
 				bw.Write((uint)totalTiles);
 				bw.Write((ushort)t.Width);
 				bw.Write((ushort)t.Height);
@@ -225,13 +228,13 @@ namespace OpenRA.TilesetBuilder
 						{
 							if (t.Cells.ContainsKey(new int2(u + t.Left, v + t.Top)))
 							{
-								byte* q = p + data.Stride * 24 * (v + t.Top) + 24 * (u + t.Left);
-								for (var j = 0; j < 24; j++)
-									for (var i = 0; i < 24; i++)
+								byte* q = p + data.Stride * TileSize * (v + t.Top) + TileSize * (u + t.Left);
+								for (var j = 0; j < TileSize; j++)
+									for (var i = 0; i < TileSize; i++)
 										bw.Write(q[i + j * data.Stride]);
 							}
 							else
-								for (var x = 0; x < 24 * 24; x++)
+								for (var x = 0; x < TileSize * TileSize; x++)
 									bw.Write((byte)0);					/* todo: don't fill with air */
 						}
 				}
@@ -292,7 +295,8 @@ namespace OpenRA.TilesetBuilder
 		public List<Template> Templates = new List<Template>();
 		public bool ShowTerrainTypes = true;
 		public string InputMode;
-
+		public int TileSize;
+		
 		Template CurrentTemplate;
 
 		public Surface()
@@ -319,9 +323,9 @@ namespace OpenRA.TilesetBuilder
 					for (var j = 0; j <= TerrainTypes.GetUpperBound(1); j++)
 						if (TerrainTypes[i, j] != 0)
 						{
-							e.Graphics.FillRectangle(Brushes.Black, 24 * i + 10, 24 * j + 10, 10, 10);
+							e.Graphics.FillRectangle(Brushes.Black, TileSize * i + 10, TileSize * j + 10, 10, 10);
 							e.Graphics.DrawString(TerrainTypes[i, j].ToString(),
-								Font, Brushes.LimeGreen, 24 * i + 10, 24 * j + 10);
+								Font, Brushes.LimeGreen, TileSize * i + 10, TileSize * j + 10);
 						}
 
 			/* draw template outlines */
@@ -330,23 +334,23 @@ namespace OpenRA.TilesetBuilder
 				foreach (var c in t.Cells.Keys)
 				{
 					if (CurrentTemplate == t)
-						e.Graphics.FillRectangle(currentBrush, 24 * c.X, 24 * c.Y, 24, 24);
+						e.Graphics.FillRectangle(currentBrush, TileSize * c.X, TileSize * c.Y, TileSize, TileSize);
 
 					if (!t.Cells.ContainsKey(c + new int2(-1, 0)))
-						e.Graphics.DrawLine(Pens.Red, (24 * c).ToPoint(), (24 * (c + new int2(0, 1))).ToPoint());
+						e.Graphics.DrawLine(Pens.Red, (TileSize * c).ToPoint(), (TileSize * (c + new int2(0, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(+1, 0)))
-						e.Graphics.DrawLine(Pens.Red, (24 * (c + new int2(1, 0))).ToPoint(), (24 * (c + new int2(1, 1))).ToPoint());
+						e.Graphics.DrawLine(Pens.Red, (TileSize * (c + new int2(1, 0))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(0, +1)))
-						e.Graphics.DrawLine(Pens.Red, (24 * (c + new int2(0, 1))).ToPoint(), (24 * (c + new int2(1, 1))).ToPoint());
+						e.Graphics.DrawLine(Pens.Red, (TileSize * (c + new int2(0, 1))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(0, -1)))
-						e.Graphics.DrawLine(Pens.Red, (24 * c).ToPoint(), (24 * (c + new int2(1, 0))).ToPoint());
+						e.Graphics.DrawLine(Pens.Red, (TileSize * c).ToPoint(), (TileSize * (c + new int2(1, 0))).ToPoint());
 				}
 			}
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			var pos = new int2( e.X / 24, e.Y / 24 );
+			var pos = new int2( e.X / TileSize, e.Y / TileSize );
 
 			if (InputMode == null)
 			{
@@ -375,7 +379,7 @@ namespace OpenRA.TilesetBuilder
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
-			var pos = new int2(e.X / 24, e.Y / 24);
+			var pos = new int2(e.X / TileSize, e.Y / TileSize);
 
 			if (InputMode == null)
 			{

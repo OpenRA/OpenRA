@@ -17,15 +17,15 @@ namespace OpenRA.FileFormats
 	{
 		public readonly List<byte[]> TileBitmapBytes = new List<byte[]>();
 
-		public Terrain( Stream stream )
+		public Terrain( Stream stream, int size )
 		{		
 			// Try loading as a cnc .tem
 			BinaryReader reader = new BinaryReader( stream );
 			int Width = reader.ReadUInt16();
 			int Height = reader.ReadUInt16();
 
-			if( Width != 24 || Height != 24 )
-				throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
+			if( Width != size || Height != size )
+				throw new InvalidDataException( string.Format( "Expected tile of size {0}x{1}, got {1}x{2]", size, size, Width, Height ) );
 			
 			/*NumTiles = */reader.ReadUInt16();
 			/*Zero1 = */reader.ReadUInt16();			
@@ -46,9 +46,7 @@ namespace OpenRA.FileFormats
 				reader = new BinaryReader( stream );
 				Width = reader.ReadUInt16();
 				Height = reader.ReadUInt16();
-				if( Width != 24 || Height != 24 )
-					throw new InvalidDataException( string.Format( "{0}x{1}", Width, Height ) );
-	
+				
 				/*NumTiles = */reader.ReadUInt16();
 				reader.ReadUInt16();
 				/*XDim = */reader.ReadUInt16();
@@ -67,8 +65,8 @@ namespace OpenRA.FileFormats
 			{
 				if (b != 255)
 				{
-					stream.Position = ImgStart + b * 24 * 24;
-					TileBitmapBytes.Add(new BinaryReader(stream).ReadBytes(24 * 24));
+					stream.Position = ImgStart + b * size * size;
+					TileBitmapBytes.Add(new BinaryReader(stream).ReadBytes(size * size));
 				}
 				else
 					TileBitmapBytes.Add(null);

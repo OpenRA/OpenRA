@@ -142,8 +142,8 @@ namespace OpenRA.Graphics
 			for (var j = 0; j < world.Map.MapSize.Y;
 				j += world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
 			{
-				Game.Renderer.LineRenderer.DrawLine(new float2(0, j * 24), new float2(world.Map.MapSize.X * 24, j * 24), Color.Black, Color.Black);
-				Game.Renderer.LineRenderer.DrawLine(new float2(j * 24, 0), new float2(j * 24, world.Map.MapSize.Y * 24), Color.Black, Color.Black);
+				Game.Renderer.LineRenderer.DrawLine(new float2(0, j * Game.CellSize), new float2(world.Map.MapSize.X * Game.CellSize, j * Game.CellSize), Color.Black, Color.Black);
+				Game.Renderer.LineRenderer.DrawLine(new float2(j * Game.CellSize, 0), new float2(j * Game.CellSize, world.Map.MapSize.Y * Game.CellSize), Color.Black, Color.Black);
 			}
 		}
 

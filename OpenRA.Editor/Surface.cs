@@ -346,7 +346,7 @@ namespace OpenRA.Editor
 		Bitmap RenderChunk(int u, int v)
 		{
 
-			var bitmap = new Bitmap(ChunkSize * 24, ChunkSize * 24);
+			var bitmap = new Bitmap(ChunkSize * TileSet.TileSize, ChunkSize * TileSet.TileSize);
 			bitmap.SetPixel(0, 0, Color.Green);
 
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
@@ -364,9 +364,9 @@ namespace OpenRA.Editor
 						var tile = TileSet.Tiles[tr.type];
 						var index = (tr.image < tile.TileBitmapBytes.Count) ? tr.image : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
-						for (var x = 0; x < 24; x++)
-							for (var y = 0; y < 24; y++)
-								p[(j * 24 + y) * stride + i * 24 + x] = Palette.GetColor(rawImage[x + 24 * y]).ToArgb();
+						for (var x = 0; x < TileSet.TileSize; x++)
+							for (var y = 0; y < TileSet.TileSize; y++)
+								p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = Palette.GetColor(rawImage[x + TileSet.TileSize * y]).ToArgb();
 
 						if (Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type != 0)
 						{
@@ -377,12 +377,12 @@ namespace OpenRA.Editor
 							int* q = (int*)srcdata.Scan0.ToPointer();
 							var srcstride = srcdata.Stride >> 2;
 
-							for (var x = 0; x < 24; x++)
-								for (var y = 0; y < 24; y++)
+							for (var x = 0; x < TileSet.TileSize; x++)
+								for (var y = 0; y < TileSet.TileSize; y++)
 								{
 									var c = q[y * srcstride + x];
 									if ((c & 0xff000000) != 0)	/* quick & dirty, i cbf doing real alpha */
-										p[(j * 24 + y) * stride + i * 24 + x] = c;
+										p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = c;
 								}
 
 							resourceImage.UnlockBits(srcdata);
@@ -398,16 +398,16 @@ namespace OpenRA.Editor
 		{
 			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
-			return new int2(vX / 24, vY / 24);
+			return new int2(vX / TileSet.TileSize, vY / TileSet.TileSize);
 		}
 
 		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - 12 : 0;
-			float DrawX = 24 * p.X * Zoom + Offset.X - OffsetX;
+			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize/2 : 0;
+			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - 12 : 0;
-			float DrawY = 24 * p.Y * Zoom + Offset.Y - OffsetY;
+			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize/2 : 0;
+			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = t.Bitmap.Width * Zoom;
 			float height = t.Bitmap.Height * Zoom;
@@ -418,11 +418,11 @@ namespace OpenRA.Editor
 
 		void DrawImage(System.Drawing.Graphics g, Bitmap bmp, int2 location)
 		{
-			float OffsetX = bmp.Width / 2 - 12;
-			float DrawX = 24 * location.X * Zoom + Offset.X - OffsetX;
+			float OffsetX = bmp.Width / 2 - TileSet.TileSize / 2;
+			float DrawX = TileSet.TileSize * location.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = bmp.Height / 2 - 12;
-			float DrawY = 24 * location.Y * Zoom + Offset.Y - OffsetY;
+			float OffsetY = bmp.Height / 2 - TileSet.TileSize / 2;
+			float DrawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = bmp.Width * Zoom;
 			float height = bmp.Height * Zoom;
@@ -433,11 +433,11 @@ namespace OpenRA.Editor
 
 		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - 12 : 0;
-			float DrawX = 24 * p.X * Zoom + Offset.X - OffsetX;
+			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
+			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - 12 : 0;
-			float DrawY = 24 * p.Y * Zoom + Offset.Y - OffsetY;
+			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
+			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = t.Bitmap.Width * Zoom;
 			float height = t.Bitmap.Height * Zoom;
@@ -461,32 +461,32 @@ namespace OpenRA.Editor
 
 					Bitmap bmp = Chunks[x];
 
-					float DrawX = 24.0f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
-					float DrawY = 24.0f * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
+					float DrawX = TileSet.TileSize* 1f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					float DrawY = TileSet.TileSize * 1f * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
 					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
 					RectangleF destRect = new RectangleF(DrawX, DrawY, bmp.Width * Zoom, bmp.Height * Zoom);
 					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 				}
 
 			e.Graphics.DrawRectangle(CordonPen,
-				Map.XOffset * 24 * Zoom + Offset.X,
-				Map.YOffset * 24 * Zoom + Offset.Y,
-				Map.Width * 24 * Zoom,
-				Map.Height * 24 * Zoom);
+				Map.XOffset * TileSet.TileSize * Zoom + Offset.X,
+				Map.YOffset * TileSet.TileSize * Zoom + Offset.Y,
+				Map.Width * TileSet.TileSize * Zoom,
+				Map.Height * TileSet.TileSize * Zoom);
 
 			foreach (var ar in Map.Actors)
 				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type]);
 
 			foreach (var wp in Map.Waypoints)
 				e.Graphics.DrawRectangle(Pens.LimeGreen,
-					24 * wp.Value.X * Zoom + Offset.X + 4,
-					24 * wp.Value.Y * Zoom + Offset.Y + 4,
-					16 * Zoom, 16 * Zoom);
+					TileSet.TileSize * wp.Value.X * Zoom + Offset.X + 4,
+					TileSet.TileSize * wp.Value.Y * Zoom + Offset.Y + 4,
+					(TileSet.TileSize - 8) * Zoom, (TileSet.TileSize - 8) * Zoom);
 
 			if (Brush != null)
 				e.Graphics.DrawImage(Brush.Bitmap,
-					24 * GetBrushLocation().X * Zoom + Offset.X,
-					24 * GetBrushLocation().Y * Zoom + Offset.Y,
+					TileSet.TileSize * GetBrushLocation().X * Zoom + Offset.X,
+					TileSet.TileSize * GetBrushLocation().Y * Zoom + Offset.Y,
 					Brush.Bitmap.Width * Zoom,
 					Brush.Bitmap.Height * Zoom);
 
@@ -498,9 +498,9 @@ namespace OpenRA.Editor
 
 			if (Waypoint != null)
 				e.Graphics.DrawRectangle(Pens.LimeGreen,
-					24 * GetBrushLocation().X * Zoom + Offset.X + 4,
-					24 * GetBrushLocation().Y * Zoom + Offset.Y + 4,
-					16 * Zoom, 16 * Zoom);
+					TileSet.TileSize * GetBrushLocation().X * Zoom + Offset.X + 4,
+					TileSet.TileSize * GetBrushLocation().Y * Zoom + Offset.Y + 4,
+					(TileSet.TileSize - 8) * Zoom, (TileSet.TileSize - 8) * Zoom);
 
 			if (Brush == null && Actor == null && Resource == null)
 			{

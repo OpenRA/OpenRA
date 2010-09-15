@@ -21,7 +21,8 @@ namespace OpenRA.TilesetBuilder
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1(args.First()));
+			Console.WriteLine("{0} {1}",args[0], args[1]);
+			Application.Run(new Form1(args[0], int.Parse(args[1])));
 		}
 	}
 }

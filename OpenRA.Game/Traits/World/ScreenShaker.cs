@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 			var cp = Game.viewport.Location 
 				+ .5f * new float2(Game.viewport.Width, Game.viewport.Height);
 
-			var intensity = 24 * 24 * 100 * shakeEffects.Sum(
+			var intensity = Game.CellSize * Game.CellSize * 100 * shakeEffects.Sum(
 				e => e.Intensity / (e.Position - cp).LengthSquared);
 
 			return Math.Min(intensity, 10);	

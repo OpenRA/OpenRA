@@ -74,11 +74,12 @@ namespace OpenRA.FileFormats
 		public string Name;
 		public string Id;
 		public string Palette;
+		public int TileSize = 24;
 		public string[] Extensions;
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
-		static List<string> fields = new List<string>() {"Name", "Id", "Palette", "Extensions"};
+		static List<string> fields = new List<string>() {"Name", "TileSize", "Id", "Palette", "Extensions"};
 
 		public TileSet() {}
 		public TileSet( string filepath )
@@ -103,7 +104,7 @@ namespace OpenRA.FileFormats
 				using( Stream s = FileSystem.OpenWithExts(t.Value.Image, Extensions) )
 				{
 					if( !Tiles.ContainsKey( t.Key ) )
-						Tiles.Add( t.Key, new Terrain( s ) );
+						Tiles.Add( t.Key, new Terrain( s, TileSize ) );
 				}
 		}
 		
@@ -144,7 +145,7 @@ namespace OpenRA.FileFormats
 			if( Tiles.TryGetValue( r.type, out tile ) )
 				return tile.TileBitmapBytes[ r.image ];
 			
-			byte[] missingTile = new byte[ 24 * 24 ];
+			byte[] missingTile = new byte[ TileSize * TileSize ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
 				missingTile[ i ] = 0x36;
 
