@@ -43,7 +43,6 @@ namespace OpenRA.Editor
 		}
 
 		void MakeDirty() { dirty = true; }
-
 		string loadedMapName;
 		string currentMod = "ra";
 		TileSet tileset;
@@ -51,7 +50,7 @@ namespace OpenRA.Editor
 
 		void LoadMap(string mapname)
 		{
-			tilePalette.Controls.Clear();
+            tilePalette.Controls.Clear();
 			actorPalette.Controls.Clear();
 			resourcePalette.Controls.Clear();
 
@@ -94,13 +93,12 @@ namespace OpenRA.Editor
 			tileset = Rules.TileSets[map.Theater];
 			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
+            
 
 			surface1.Bind(map, tileset, palette);
-
 			// construct the palette of tiles
-			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
+            var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
-
 			foreach (var t in tileset.Templates)
 			{
 				try
@@ -119,7 +117,6 @@ namespace OpenRA.Editor
 
 					var template = t.Value;
 					tilePalette.Controls.Add(ibox);
-
 					tt.SetToolTip(ibox,
 						"{1}:{0} ({2}x{3})".F(
 						template.Image,
@@ -147,6 +144,7 @@ namespace OpenRA.Editor
 						SizeMode = PictureBoxSizeMode.StretchImage,
                         BorderStyle = BorderStyle.FixedSingle
 					};
+
 
 					ibox.Click += (_, e) => surface1.SetActor(template);
 
@@ -177,6 +175,8 @@ namespace OpenRA.Editor
 						Height = template.Bitmap.Height,
 						SizeMode = PictureBoxSizeMode.StretchImage
 					};
+
+
 
 					ibox.Click += (_, e) => surface1.SetResource(template);
 
@@ -523,10 +523,8 @@ namespace OpenRA.Editor
 
         private void layersFloaterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var npb = new PaletteBox())
-            {
-                npb.Show();
-            }
+            var pb = new PaletteBox(); 
+            pb.Show();
         }
 	}
 }
