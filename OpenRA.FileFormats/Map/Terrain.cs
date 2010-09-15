@@ -19,16 +19,13 @@ namespace OpenRA.FileFormats
 
 		public Terrain( Stream stream, int size )
 		{		
-			System.Console.WriteLine("Loading tile with expected size {0}",size);
 			// Try loading as a cnc .tem
 			BinaryReader reader = new BinaryReader( stream );
 			int Width = reader.ReadUInt16();
 			int Height = reader.ReadUInt16();
-
-			System.Console.WriteLine("Actual size {0}x{1}",Width,Height);
 			
 			if( Width != size || Height != size )
-				throw new InvalidDataException( "Expected tile of size {0}x{0}, got {1}x{2]".F(size, Width, Height ) );
+				throw new InvalidDataException( "{0}x{1} != {2}x{2}".F(Width, Height, size ) );
 			
 			/*NumTiles = */reader.ReadUInt16();
 			/*Zero1 = */reader.ReadUInt16();			

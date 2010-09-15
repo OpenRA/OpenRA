@@ -29,7 +29,7 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public static readonly int CellSize = 24;
+		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
 		public static ModData modData;
 		public static World world;

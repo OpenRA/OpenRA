@@ -144,13 +144,13 @@ namespace OpenRA.TilesetBuilder
 			// Todo: add support for multiple/different terraintypes
 			var terraintype = new TerrainTypeInfo()
 			{
-				Type = "clear",
+				Type = "Clear",
 				Buildable = true,
 				AcceptSmudge = true,
 				IsWater = false,
 				Color = Color.White
 			};
-			tileset.Terrain.Add("clear", terraintype);
+			tileset.Terrain.Add("Clear", terraintype);
 			
 			// Add the templates
 			ushort cur = 0;
@@ -166,7 +166,7 @@ namespace OpenRA.TilesetBuilder
 				// Todo: add support for different terraintypes
 				// Todo: restrict cells? this doesn't work: .Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
 				foreach (var t in tp.Cells)
-					template.Tiles.Add((byte)((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top)), "clear");
+					template.Tiles.Add((byte)((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top)), "Clear");
 
 				tileset.Templates.Add(cur, template);
 				cur++;

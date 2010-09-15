@@ -33,4 +33,5 @@ TileSets:
 Music:
 Movies:
 LoadScreen: NullLoadScreen
-ShellmapUid:c7bc5cded5f9b67bc678ca92b9d690fb71ae2ee2
+ShellmapUid:899fa73ce1ffd82799e84b63256930514db5e048
+TileSize:32

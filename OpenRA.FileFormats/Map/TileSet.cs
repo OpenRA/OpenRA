@@ -74,7 +74,7 @@ namespace OpenRA.FileFormats
 		public string Name;
 		public string Id;
 		public string Palette;
-		public int TileSize;
+		public int TileSize = 24;
 		public string[] Extensions;
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();

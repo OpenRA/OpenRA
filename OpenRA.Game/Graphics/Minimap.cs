@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using System.IO;
 
 namespace OpenRA.Graphics
 {
@@ -38,6 +39,9 @@ namespace OpenRA.Graphics
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
 						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
+						if (!tileset.Terrain.ContainsKey(type))
+							throw new InvalidDataException("Tileset {0} lacks terraintype {1}".F(tileset.Id, type));
+					
 						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
 					}
 			}

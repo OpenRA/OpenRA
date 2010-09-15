@@ -2,7 +2,7 @@
 	AppearsOnRadar:
 	Mobile:
 		TerrainSpeeds:
-			clear: 100%
+			Clear: 100%
 		ROT: 5
 	Selectable: 
 	Targetable:

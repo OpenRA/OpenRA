@@ -6,8 +6,8 @@ General:
 	Extensions: .arr,.shp
 
 Terrain:
-	TerrainType@clear:
-		Type: clear
+	TerrainType@Clear:
+		Type: Clear
 		Buildable: True
 		AcceptSmudge: True
 		IsWater: False
@@ -20,273 +20,273 @@ Templates:
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: clear
+			0: Clear
 	Template@0:
 		Id: 0
 		Image: t00
 		Size: 1,1
 		PickAny: False
 		Tiles:
-			0: clear
+			0: Clear
 	Template@1:
 		Id: 1
 		Image: t01
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@2:
 		Id: 2
 		Image: t02
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@3:
 		Id: 3
 		Image: t03
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@4:
 		Id: 4
 		Image: t04
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@5:
 		Id: 5
 		Image: t05
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@6:
 		Id: 6
 		Image: t06
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@7:
 		Id: 7
 		Image: t07
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@8:
 		Id: 8
 		Image: t08
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@9:
 		Id: 9
 		Image: t09
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@10:
 		Id: 10
 		Image: t10
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@11:
 		Id: 11
 		Image: t11
 		Size: 5,3
 		PickAny: False
 		Tiles:
-			0: clear
-			6: clear
-			1: clear
-			5: clear
-			10: clear
-			11: clear
-			12: clear
-			13: clear
-			14: clear
-			9: clear
-			4: clear
-			3: clear
-			2: clear
-			7: clear
-			8: clear
+			0: Clear
+			6: Clear
+			1: Clear
+			5: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			9: Clear
+			4: Clear
+			3: Clear
+			2: Clear
+			7: Clear
+			8: Clear
 	Template@12:
 		Id: 12
 		Image: t12
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@13:
 		Id: 13
 		Image: t13
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@14:
 		Id: 14
 		Image: t14
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@15:
 		Id: 15
 		Image: t15
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@16:
 		Id: 16
 		Image: t16
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@17:
 		Id: 17
 		Image: t17
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@18:
 		Id: 18
 		Image: t18
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@19:
 		Id: 19
 		Image: t19
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@20:
 		Id: 20
 		Image: t20
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@21:
 		Id: 21
 		Image: t21
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@22:
 		Id: 22
 		Image: t22
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@23:
 		Id: 23
 		Image: t23
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@24:
 		Id: 24
 		Image: t24
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 	Template@25:
 		Id: 25
 		Image: t25
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: clear
-			1: clear
-			3: clear
-			2: clear
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
 

@@ -23,13 +23,15 @@ namespace OpenRA.FileFormats
 			Weapons, Voices, Music, Movies, TileSets;
 
 		public readonly string ShellmapUid, LoadScreen;
+		public readonly int TileSize = 24;
 
 		public Manifest(string[] mods)
 		{
 			var yaml = mods
 				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
 				.Aggregate(MiniYaml.Merge);
-
+			
+			// Todo: Use fieldloader
 			Folders = YamlList(yaml, "Folders");
 			Packages = YamlList(yaml, "Packages");
 			Rules = YamlList(yaml, "Rules");
@@ -46,6 +48,9 @@ namespace OpenRA.FileFormats
 
 			ShellmapUid = yaml.First( x => x.Key == "ShellmapUid" ).Value.Value;
 			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value.Value;
+			
+			if (yaml.FirstOrDefault( x => x.Key == "TileSize" ) != null)
+				TileSize = int.Parse(yaml.First( x => x.Key == "TileSize" ).Value.Value);
 		}
 
 		static string[] YamlList(List<MiniYamlNode> ys, string key)
