@@ -63,13 +63,21 @@ namespace OpenRA
 
 		public Map()
 		{
+			// Do nothing; not a valid map (editor hack)
+		}
+		
+		public Map(string tileset)
+		{
 			MapSize = new int2(1, 1);
+			Tileset = tileset;
 			MapResources = new TileReference<byte, byte>[1, 1];
+			
+			var tile = OpenRA.Rules.TileSets[Tileset].Templates.First();
 			MapTiles = new TileReference<ushort, byte>[1, 1] 
 				{ { new TileReference<ushort, byte> { 
-					type =  (ushort)0xffffu, 
-					image = (byte)0xffu, 
-					index = (byte)0xffu } } };
+					type = tile.Key, 
+					image = (byte)(tile.Value.PickAny ? 0xffu : 0), 
+					index = (byte)(tile.Value.PickAny ? 0xffu : 0) } } };
 
 			PlayerCount = 0;
 			TopLeft = new int2(0, 0);

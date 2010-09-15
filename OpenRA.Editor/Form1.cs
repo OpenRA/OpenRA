@@ -362,13 +362,12 @@ namespace OpenRA.Editor
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var map = new Map();
+					var map = new Map(nmd.theater.SelectedItem as string);
 
 					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
 
 					map.TopLeft = new int2((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value);
 					map.BottomRight = new int2((int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
-					map.Tileset = nmd.theater.SelectedItem as string;
 					map.Players.Add("Neutral", new PlayerReference("Neutral", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 					NewMap(map);
 				}

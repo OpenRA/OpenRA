@@ -14,13 +14,6 @@ Terrain:
 		Color: 255,255,255,255
 
 Templates:
-	Template@65535:
-		Id: 65535
-		Image: t00
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Clear
 	Template@0:
 		Id: 0
 		Image: t00
