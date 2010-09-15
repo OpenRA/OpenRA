@@ -39,12 +39,14 @@
             this.lblNew = new System.Windows.Forms.Label();
             this.txtNew = new System.Windows.Forms.TextBox();
             this.txtPath = new System.Windows.Forms.TextBox();
+            this.colTitle = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // MapList
             // 
             this.MapList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colMapName,
+            this.colTitle,
             this.colTheater});
             this.MapList.Dock = System.Windows.Forms.DockStyle.Top;
             this.MapList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -63,12 +65,12 @@
             // colMapName
             // 
             this.colMapName.Text = "Map name";
-            this.colMapName.Width = 300;
+            this.colMapName.Width = 170;
             // 
             // colTheater
             // 
             this.colTheater.Text = "Theater";
-            this.colTheater.Width = 140;
+            this.colTheater.Width = 110;
             // 
             // MapIconsList
             // 
@@ -123,6 +125,11 @@
             this.txtPath.TabIndex = 5;
             this.txtPath.Visible = false;
             // 
+            // colTitle
+            // 
+            this.colTitle.Text = "Title";
+            this.colTitle.Width = 170;
+            // 
             // MapSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,5 +164,6 @@
         public System.Windows.Forms.Button btnOk;
         public System.Windows.Forms.Label lblNew;
         public System.Windows.Forms.TextBox txtNew;
+        private System.Windows.Forms.ColumnHeader colTitle;
     }
 }

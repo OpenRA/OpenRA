@@ -29,7 +29,9 @@ namespace OpenRA.Editor
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
+                
                 var map = new Map(new Folder(txtPath.Text + "\\" + subDirectory.Name));
+                map1.SubItems.Add(map.Title);
                 map1.SubItems.Add(map.Theater);
             }
             MapList.Items[0].Selected = true;
