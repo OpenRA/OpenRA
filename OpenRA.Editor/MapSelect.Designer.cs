@@ -38,7 +38,6 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.lblNew = new System.Windows.Forms.Label();
             this.txtNew = new System.Windows.Forms.TextBox();
-            this.txtPath = new System.Windows.Forms.TextBox();
             this.colTitle = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
@@ -117,14 +116,6 @@
             this.txtNew.TabIndex = 4;
             this.txtNew.Visible = false;
             // 
-            // txtPath
-            // 
-            this.txtPath.Location = new System.Drawing.Point(12, 307);
-            this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(448, 20);
-            this.txtPath.TabIndex = 5;
-            this.txtPath.Visible = false;
-            // 
             // colTitle
             // 
             this.colTitle.Text = "Title";
@@ -134,8 +125,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(472, 303);
-            this.Controls.Add(this.txtPath);
+            this.ClientSize = new System.Drawing.Size(472, 299);
             this.Controls.Add(this.txtNew);
             this.Controls.Add(this.lblNew);
             this.Controls.Add(this.btnOk);
@@ -160,7 +150,6 @@
         private System.Windows.Forms.ColumnHeader colMapName;
         private System.Windows.Forms.ColumnHeader colTheater;
         private System.Windows.Forms.ImageList MapIconsList;
-        public System.Windows.Forms.TextBox txtPath;
         public System.Windows.Forms.ListView MapList;
         public System.Windows.Forms.Button btnCancel;
         public System.Windows.Forms.Button btnOk;

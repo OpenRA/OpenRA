@@ -341,7 +341,7 @@ namespace OpenRA.Editor
 		{
             using (var nms = new MapSelect())
             {
-                nms.txtPath.Text = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+                nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
                 .Aggregate(Path.Combine);
 
                 nms.lblNew.Visible = true;
@@ -353,14 +353,14 @@ namespace OpenRA.Editor
                 if (DialogResult.OK == nms.ShowDialog())
                 {
                     string mapfolderitem = nms.MapList.SelectedItems[0].Text;
-                    string mapfoldername = nms.txtPath.Text + '\\' + mapfolderitem;
+                    string mapfoldername = nms.MapFolderPath + '\\' + mapfolderitem;
                     if (nms.txtNew.Text == "")
                     {
-                       mapfoldername = nms.txtPath.Text + '\\' + mapfolderitem;
+                        mapfoldername = nms.MapFolderPath + '\\' + mapfolderitem;
                     }
                     else
                     {
-                       mapfoldername = nms.txtPath.Text + '\\' + nms.txtNew.Text;
+                        mapfoldername = nms.MapFolderPath + '\\' + nms.txtNew.Text;
                     }
                     DirectoryInfo directory = new DirectoryInfo(mapfoldername);
                     loadedMapName = mapfoldername;
@@ -398,7 +398,7 @@ namespace OpenRA.Editor
 
             using (var nms = new MapSelect())
             {
-                nms.txtPath.Text = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+                nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
                 .Aggregate(Path.Combine);
 
                 nms.lblNew.Visible = false;
@@ -408,8 +408,7 @@ namespace OpenRA.Editor
                 if (DialogResult.OK == nms.ShowDialog())
                 {
                     string mapfolderitem = nms.MapList.SelectedItems[0].Text;
-                    string mapfoldername = nms.txtPath.Text + '\\'+ mapfolderitem;
-                     //   nms.txtPath.Text + '\\';
+                    string mapfoldername = nms.MapFolderPath + '\\' + mapfolderitem;
                     LoadMap(mapfoldername);
                 }
             }

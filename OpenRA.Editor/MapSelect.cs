@@ -13,6 +13,8 @@ namespace OpenRA.Editor
 {
     public partial class MapSelect : Form
     {
+        public string MapFolderPath;
+
         public MapSelect()
         {
             InitializeComponent();
@@ -21,7 +23,7 @@ namespace OpenRA.Editor
         private void MapSelect_Load(object sender, EventArgs e)
         {
 
-            DirectoryInfo directory = new DirectoryInfo(txtPath.Text);
+            DirectoryInfo directory = new DirectoryInfo(MapFolderPath);
             DirectoryInfo[] directories = directory.GetDirectories();
             MapList.Items.Clear();
             foreach (DirectoryInfo subDirectory in directories)
@@ -29,8 +31,8 @@ namespace OpenRA.Editor
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
-                
-                var map = new Map(new Folder(txtPath.Text + "\\" + subDirectory.Name));
+
+                var map = new Map(new Folder(MapFolderPath + "\\" + subDirectory.Name));
                 map1.SubItems.Add(map.Title);
                 map1.SubItems.Add(map.Theater);
             }
