@@ -142,9 +142,10 @@ namespace OpenRA.Editor
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
-						Width = template.Bitmap.Width / 2,
-						Height = template.Bitmap.Height / 2,
-						SizeMode = PictureBoxSizeMode.StretchImage
+						Width = 32,
+						Height = 32,
+						SizeMode = PictureBoxSizeMode.StretchImage,
+                        BorderStyle = BorderStyle.FixedSingle
 					};
 
 					ibox.Click += (_, e) => surface1.SetActor(template);
@@ -193,8 +194,10 @@ namespace OpenRA.Editor
 
 			surface1.BindResourceTemplates(resourceTemplates);
 
-			foreach (var p in palettes) { p.Visible = true; p.ResumeLayout(); }
+            foreach (var p in palettes) { p.Visible = true; p.ResumeLayout(); }
 		}
+
+
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
@@ -321,35 +324,99 @@ namespace OpenRA.Editor
 		
 		void SaveClicked(object sender, EventArgs e)
 		{
-			if (loadedMapName == null)
-				SaveAsClicked(sender, e);
-			else
-			{
-				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
-				surface1.Map.Package = new Folder(loadedMapName);
-				surface1.Map.Save(loadedMapName);
+                if (loadedMapName == null)
+                    SaveAsClicked(sender, e);
+                else
+                {
+                    surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
+                    surface1.Map.Package = new Folder(loadedMapName);
+                    surface1.Map.Save(loadedMapName);
 
-				dirty = false;
-			}
+                    dirty = false;
+                }
+
 		}
 
 		void SaveAsClicked(object sender, EventArgs e)
 		{
-			folderBrowser.ShowNewFolderButton = true;
+            using (var nms = new MapSelect())
+            {
+                nms.txtPath.Text = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+                .Aggregate(Path.Combine);
 
-			if (DialogResult.OK == folderBrowser.ShowDialog())
-			{
-				loadedMapName = folderBrowser.SelectedPath;
-				SaveClicked(sender, e);
-			}
+                nms.lblNew.Visible = true;
+                nms.txtNew.Visible = true;
+                nms.btnOk.Text = "Save";
+                nms.txtNew.Text = "Untitled1";
+           
+
+                if (DialogResult.OK == nms.ShowDialog())
+                {
+                    string mapfolderitem = nms.MapList.SelectedItems[0].Text;
+                    string mapfoldername = nms.txtPath.Text + '\\' + mapfolderitem;
+                    if (nms.txtNew.Text == "")
+                    {
+                       mapfoldername = nms.txtPath.Text + '\\' + mapfolderitem;
+                    }
+                    else
+                    {
+                       mapfoldername = nms.txtPath.Text + '\\' + nms.txtNew.Text;
+                    }
+                    DirectoryInfo directory = new DirectoryInfo(mapfoldername);
+                    loadedMapName = mapfoldername;
+                    try
+                    {
+
+                        if (directory.Exists)
+                        {
+                            return;
+                        }
+                        directory.Create();
+                    }
+                    catch (Exception ed)
+                    {
+                        Console.WriteLine("Directory creation failed: {0}", ed.ToString());
+                    }
+                    finally { }
+
+                    SaveClicked(sender, e);
+                }
+            }
+
+
+			//if (DialogResult.OK == folderBrowser.ShowDialog())
+			//{
+				//loadedMapName = folderBrowser.SelectedPath;
+			//	SaveClicked(sender, e);
+			//}
 		}
 
 		void OpenClicked(object sender, EventArgs e)
 		{
-			folderBrowser.ShowNewFolderButton = true;
+			//folderBrowser.ShowNewFolderButton = true;
 
-			if (DialogResult.OK == folderBrowser.ShowDialog())
-				LoadMap(folderBrowser.SelectedPath);
+
+            using (var nms = new MapSelect())
+            {
+                nms.txtPath.Text = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+                .Aggregate(Path.Combine);
+
+                nms.lblNew.Visible = false;
+                nms.txtNew.Visible = false;
+                nms.btnOk.Text = "Open";
+
+                if (DialogResult.OK == nms.ShowDialog())
+                {
+                    string mapfolderitem = nms.MapList.SelectedItems[0].Text;
+                    string mapfoldername = nms.txtPath.Text + '\\'+ mapfolderitem;
+                     //   nms.txtPath.Text + '\\';
+                    LoadMap(mapfoldername);
+                }
+            }
+
+
+			//if (DialogResult.OK == folderBrowser.ShowDialog())
+				//LoadMap(folderBrowser.SelectedPath);
 		}
 
 		void NewClicked(object sender, EventArgs e)
@@ -439,5 +506,28 @@ namespace OpenRA.Editor
 				case DialogResult.Cancel: e.Cancel = true; break;
 			}
 		}
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void surface1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void layersFloaterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var npb = new PaletteBox())
+            {
+                npb.Show();
+            }
+        }
 	}
 }

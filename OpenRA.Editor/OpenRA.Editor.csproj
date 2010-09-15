@@ -12,6 +12,9 @@
     <AssemblyName>OpenRA.Editor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>OpenRA.Editor.Icon.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,11 +63,23 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="LegacyMapImporter.cs" />
+    <Compile Include="MapSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapSelect.Designer.cs">
+      <DependentUpon>MapSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewMapDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaletteBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaletteBox.Designer.cs">
+      <DependentUpon>PaletteBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="PropertiesDialog.cs">
@@ -76,8 +92,14 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MapSelect.resx">
+      <DependentUpon>MapSelect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewMapDialog.resx">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaletteBox.resx">
+      <DependentUpon>PaletteBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropertiesDialog.resx">
       <DependentUpon>PropertiesDialog.cs</DependentUpon>
@@ -122,6 +144,9 @@
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OpenRA.Editor.Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
