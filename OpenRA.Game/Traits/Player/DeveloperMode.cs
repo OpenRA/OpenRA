@@ -93,7 +93,12 @@ namespace OpenRA.Traits
 							self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
 						break;
 					}
+				default:
+					return;
 			}
+
+			Game.Debug("Cheat used: {0} by {1}"
+				.F(order.OrderString, self.Owner.PlayerName));
 		}
 	}
 }
