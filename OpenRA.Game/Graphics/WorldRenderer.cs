@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 			{
 				var result = x.ZOffset.CompareTo(y.ZOffset);
 				if (result == 0)
-					result = x.Pos.Y.CompareTo(y.Pos.Y);
+					result = (x.Pos.Y + .5f * x.Sprite.size.Y).CompareTo(y.Pos.Y + .5f * y.Sprite.size.Y);
 
 				return result;
 			}
