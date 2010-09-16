@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 		
 		public void Tick(Actor self)
 		{	
-			if (!self.IsIdle && previousLocation != self.Location)
+			if (previousLocation != self.Location)
 			{
 				previousLocation = self.Location;
 				self.World.WorldActor.Trait<Shroud>().UpdateActor(self);

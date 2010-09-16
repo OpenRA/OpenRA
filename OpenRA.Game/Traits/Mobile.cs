@@ -113,7 +113,7 @@ namespace OpenRA.Traits
 
 		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
 		{
-			// Force move takes precidence
+			// Force move takes precedence
 			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
 		}
 		
