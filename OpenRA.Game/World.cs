@@ -146,14 +146,13 @@ namespace OpenRA
 			if (DisableTick)
 				return;
 			
-			actors.DoTimed( x => x.Tick(), "expensive actor tick: {0} ({1:0.000} ms)", 0.001 );
-
+			actors.Do( x => x.Tick() );
 			Queries.WithTraitMultiple<ITick>().DoTimed( x =>
 			{
 				x.Trait.Tick( x.Actor );
-			}, "expensive trait tick: {0} ({1:0.000} ms)", 0.001 );
+			}, "[{2}] Trait: {0} ({1:0.000} ms)", 0.001 );
 
-			effects.DoTimed( e => e.Tick( this ), "expensive effect tick: {0} ({1:0.000} ms)", 0.001 );
+			effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", 0.001 );
 			Game.viewport.Tick();
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);

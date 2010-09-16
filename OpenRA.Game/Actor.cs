@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -74,8 +75,13 @@ namespace OpenRA
 			while (currentActivity != null)
 			{
 				var a = currentActivity;
+				
+				var sw = new Stopwatch();
 				currentActivity = a.Tick(this) ?? new Idle();
-
+				var dt = sw.ElapsedTime();
+				if( dt > 0.001 )
+					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", a, dt * 1000, Game.LocalTick);
+				
 				if (a == currentActivity) break;
 
 				if (currentActivity is Idle)

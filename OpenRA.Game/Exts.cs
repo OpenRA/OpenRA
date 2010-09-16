@@ -64,7 +64,7 @@ namespace OpenRA
 				a( x );
 				var dt = sw.ElapsedTime() - t;
 				if( dt > time )
-					Log.Write("perf", text, x, dt * 1000);
+					Log.Write("perf", text, x, dt * 1000, Game.LocalTick);
 			} );
 		}
 	}
