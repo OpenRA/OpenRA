@@ -202,7 +202,7 @@ namespace OpenRA.Editor
 				p.Visible = true;
 				p.ResumeLayout();
 			}
-			pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
+			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
@@ -491,7 +491,7 @@ namespace OpenRA.Editor
 
 		private void OnSurfaceClicked(object sender, EventArgs e)
 		{
-			pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
+			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
 	}
 }

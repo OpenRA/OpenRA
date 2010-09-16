@@ -59,9 +59,7 @@ namespace OpenRA.Editor
 				pbMinimap.Image = null;
                 try
                 {
-					var b = Minimap.TerrainBitmap(map, true);
-					Minimap.AddStaticResources(map, b);
-					pbMinimap.Image = b;
+					pbMinimap.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));
                 }
                 catch (Exception ed)
                 {
