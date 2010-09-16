@@ -22,9 +22,21 @@ namespace OpenRA.Graphics
 	{		
 		public static Bitmap TerrainBitmap(Map map)
 		{
+			return TerrainBitmap(map, false);
+		}
+		
+		public static Bitmap TerrainBitmap(Map map, bool actualSize)
+		{
 			var tileset = Rules.TileSets[map.Tileset];
-			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
-			Bitmap terrain = new Bitmap(size, size);
+			var width = map.Width;
+			var height = map.Height;
+			
+			if (!actualSize)
+			{
+				width = height = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			}
+			
+			Bitmap terrain = new Bitmap(width, height);
 			
 			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);

@@ -3,14 +3,14 @@
     partial class MapSelect
     {
         /// <summary>
-        /// Требуется переменная конструктора.
+        /// TODO
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Освободить все используемые ресурсы.
+        /// TODO
         /// </summary>
-        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        /// <param name="disposing">TODO</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,8 +23,7 @@
         #region Код, автоматически созданный конструктором форм Windows
 
         /// <summary>
-        /// Обязательный метод для поддержки конструктора - не изменяйте
-        /// содержимое данного метода при помощи редактора кода.
+        /// TODO
         /// </summary>
         private void InitializeComponent()
         {
@@ -136,7 +135,7 @@
             this.pbMinimap.Location = new System.Drawing.Point(32, 25);
             this.pbMinimap.Name = "pbMinimap";
             this.pbMinimap.Size = new System.Drawing.Size(124, 124);
-            this.pbMinimap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbMinimap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbMinimap.TabIndex = 5;
             this.pbMinimap.TabStop = false;
             // 

@@ -198,10 +198,12 @@ namespace OpenRA.Editor
 
 			surface1.BindResourceTemplates(resourceTemplates);
 
-            foreach (var p in palettes) { p.Visible = true; p.ResumeLayout();
-            var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
-            pmMiniMap.Image = terrainBitmap;
+            foreach (var p in palettes)
+			{
+				p.Visible = true;
+				p.ResumeLayout();
             }
+			pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
 		}
 
 
@@ -340,10 +342,8 @@ namespace OpenRA.Editor
                     surface1.Map.Save(loadedMapName);
                     using (var nms = new MapSelect())
                     {
-                        var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
-                        nms.pbMinimap.Image = terrainBitmap;
-                        Bitmap png = new Bitmap(nms.pbMinimap.Image);
-                        png.Save(Path.Combine(loadedMapName, "map.png"), System.Drawing.Imaging.ImageFormat.Png);
+                        Minimap.TerrainBitmap(surface1.Map, true)
+							.Save(Path.Combine(loadedMapName, "map.png"), System.Drawing.Imaging.ImageFormat.Png);
                     }
                     dirty = false;
                 }
@@ -535,12 +535,9 @@ namespace OpenRA.Editor
             pb.Show();
         }
 
-
         private void surface1_Click_1(object sender, EventArgs e)
         {
-            var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
-            pmMiniMap.Image = terrainBitmap;
+            pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
         }
-
 	}
 }
