@@ -32,6 +32,7 @@ namespace OpenRA.Editor
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
+
             }
             if (txtNew.Text == "unnamed")
             {
@@ -54,6 +55,16 @@ namespace OpenRA.Editor
                 txtAuthor.Text = map.Author;
                 txtTheater.Text = map.Theater;
                 txtDesc.Text = map.Description;
+                pbMinimap.Image = new Bitmap(pbMinimap.Width, pbMinimap.Height);
+                try
+                {
+                    pbMinimap.Image = Image.FromFile(Path.Combine(Path.Combine(MapFolderPath, txtNew.Text), "map.png"));
+                }
+                catch (Exception ed)
+                {
+                    Console.WriteLine("No map preview image found: {0}", ed.ToString());
+                }
+                finally { }
             }
         }
 

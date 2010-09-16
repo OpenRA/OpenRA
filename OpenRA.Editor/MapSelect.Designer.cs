@@ -39,19 +39,19 @@
             this.txtNew = new System.Windows.Forms.TextBox();
             this.pbMinimap = new System.Windows.Forms.PictureBox();
             this.pnlBottom = new System.Windows.Forms.Panel();
+            this.lblPathOut = new System.Windows.Forms.Label();
+            this.lblPath = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lblMinimap = new System.Windows.Forms.Label();
-            this.lblMapName = new System.Windows.Forms.Label();
-            this.txtTitle = new System.Windows.Forms.TextBox();
-            this.txtAuthor = new System.Windows.Forms.TextBox();
-            this.lblAuthor = new System.Windows.Forms.Label();
-            this.txtTheater = new System.Windows.Forms.TextBox();
-            this.lblTheater = new System.Windows.Forms.Label();
+            this.lblMapList = new System.Windows.Forms.Label();
             this.txtDesc = new System.Windows.Forms.TextBox();
             this.lblDesc = new System.Windows.Forms.Label();
-            this.lblMapList = new System.Windows.Forms.Label();
-            this.lblPath = new System.Windows.Forms.Label();
-            this.lblPathOut = new System.Windows.Forms.Label();
+            this.txtTheater = new System.Windows.Forms.TextBox();
+            this.lblTheater = new System.Windows.Forms.Label();
+            this.txtAuthor = new System.Windows.Forms.TextBox();
+            this.lblAuthor = new System.Windows.Forms.Label();
+            this.txtTitle = new System.Windows.Forms.TextBox();
+            this.lblMapName = new System.Windows.Forms.Label();
+            this.lblMinimap = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMinimap)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -131,10 +131,11 @@
             // pbMinimap
             // 
             this.pbMinimap.BackColor = System.Drawing.Color.Black;
-            this.pbMinimap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbMinimap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pbMinimap.Location = new System.Drawing.Point(32, 25);
             this.pbMinimap.Name = "pbMinimap";
             this.pbMinimap.Size = new System.Drawing.Size(124, 124);
+            this.pbMinimap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbMinimap.TabIndex = 5;
             this.pbMinimap.TabStop = false;
             // 
@@ -152,6 +153,24 @@
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(494, 70);
             this.pnlBottom.TabIndex = 6;
+            // 
+            // lblPathOut
+            // 
+            this.lblPathOut.AutoSize = true;
+            this.lblPathOut.Location = new System.Drawing.Point(55, 13);
+            this.lblPathOut.Name = "lblPathOut";
+            this.lblPathOut.Size = new System.Drawing.Size(0, 13);
+            this.lblPathOut.TabIndex = 6;
+            // 
+            // lblPath
+            // 
+            this.lblPath.AutoSize = true;
+            this.lblPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblPath.Location = new System.Drawing.Point(12, 13);
+            this.lblPath.Name = "lblPath";
+            this.lblPath.Size = new System.Drawing.Size(37, 13);
+            this.lblPath.TabIndex = 5;
+            this.lblPath.Text = "Path:";
             // 
             // splitContainer1
             // 
@@ -180,72 +199,14 @@
             this.splitContainer1.SplitterDistance = 300;
             this.splitContainer1.TabIndex = 7;
             // 
-            // lblMinimap
+            // lblMapList
             // 
-            this.lblMinimap.AutoSize = true;
-            this.lblMinimap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblMinimap.Location = new System.Drawing.Point(29, 9);
-            this.lblMinimap.Name = "lblMinimap";
-            this.lblMinimap.Size = new System.Drawing.Size(71, 13);
-            this.lblMinimap.TabIndex = 6;
-            this.lblMinimap.Text = "Map preview:";
-            // 
-            // lblMapName
-            // 
-            this.lblMapName.AutoSize = true;
-            this.lblMapName.Location = new System.Drawing.Point(13, 161);
-            this.lblMapName.Name = "lblMapName";
-            this.lblMapName.Size = new System.Drawing.Size(30, 13);
-            this.lblMapName.TabIndex = 7;
-            this.lblMapName.Text = "Title:";
-            // 
-            // txtTitle
-            // 
-            this.txtTitle.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTitle.Location = new System.Drawing.Point(16, 177);
-            this.txtTitle.Name = "txtTitle";
-            this.txtTitle.ReadOnly = true;
-            this.txtTitle.Size = new System.Drawing.Size(162, 20);
-            this.txtTitle.TabIndex = 8;
-            // 
-            // txtAuthor
-            // 
-            this.txtAuthor.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.txtAuthor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAuthor.Location = new System.Drawing.Point(16, 214);
-            this.txtAuthor.Name = "txtAuthor";
-            this.txtAuthor.ReadOnly = true;
-            this.txtAuthor.Size = new System.Drawing.Size(162, 20);
-            this.txtAuthor.TabIndex = 10;
-            // 
-            // lblAuthor
-            // 
-            this.lblAuthor.AutoSize = true;
-            this.lblAuthor.Location = new System.Drawing.Point(13, 198);
-            this.lblAuthor.Name = "lblAuthor";
-            this.lblAuthor.Size = new System.Drawing.Size(41, 13);
-            this.lblAuthor.TabIndex = 9;
-            this.lblAuthor.Text = "Author:";
-            // 
-            // txtTheater
-            // 
-            this.txtTheater.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.txtTheater.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTheater.Location = new System.Drawing.Point(16, 252);
-            this.txtTheater.Name = "txtTheater";
-            this.txtTheater.ReadOnly = true;
-            this.txtTheater.Size = new System.Drawing.Size(162, 20);
-            this.txtTheater.TabIndex = 12;
-            // 
-            // lblTheater
-            // 
-            this.lblTheater.AutoSize = true;
-            this.lblTheater.Location = new System.Drawing.Point(13, 236);
-            this.lblTheater.Name = "lblTheater";
-            this.lblTheater.Size = new System.Drawing.Size(47, 13);
-            this.lblTheater.TabIndex = 11;
-            this.lblTheater.Text = "Theater:";
+            this.lblMapList.AutoSize = true;
+            this.lblMapList.Location = new System.Drawing.Point(12, 9);
+            this.lblMapList.Name = "lblMapList";
+            this.lblMapList.Size = new System.Drawing.Size(81, 13);
+            this.lblMapList.TabIndex = 1;
+            this.lblMapList.Text = "Available maps:";
             // 
             // txtDesc
             // 
@@ -266,32 +227,72 @@
             this.lblDesc.TabIndex = 13;
             this.lblDesc.Text = "Description:";
             // 
-            // lblMapList
+            // txtTheater
             // 
-            this.lblMapList.AutoSize = true;
-            this.lblMapList.Location = new System.Drawing.Point(12, 9);
-            this.lblMapList.Name = "lblMapList";
-            this.lblMapList.Size = new System.Drawing.Size(81, 13);
-            this.lblMapList.TabIndex = 1;
-            this.lblMapList.Text = "Available maps:";
+            this.txtTheater.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.txtTheater.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTheater.Location = new System.Drawing.Point(16, 252);
+            this.txtTheater.Name = "txtTheater";
+            this.txtTheater.ReadOnly = true;
+            this.txtTheater.Size = new System.Drawing.Size(162, 20);
+            this.txtTheater.TabIndex = 12;
             // 
-            // lblPath
+            // lblTheater
             // 
-            this.lblPath.AutoSize = true;
-            this.lblPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblPath.Location = new System.Drawing.Point(12, 13);
-            this.lblPath.Name = "lblPath";
-            this.lblPath.Size = new System.Drawing.Size(37, 13);
-            this.lblPath.TabIndex = 5;
-            this.lblPath.Text = "Path:";
+            this.lblTheater.AutoSize = true;
+            this.lblTheater.Location = new System.Drawing.Point(13, 236);
+            this.lblTheater.Name = "lblTheater";
+            this.lblTheater.Size = new System.Drawing.Size(47, 13);
+            this.lblTheater.TabIndex = 11;
+            this.lblTheater.Text = "Theater:";
             // 
-            // lblPathOut
+            // txtAuthor
             // 
-            this.lblPathOut.AutoSize = true;
-            this.lblPathOut.Location = new System.Drawing.Point(55, 13);
-            this.lblPathOut.Name = "lblPathOut";
-            this.lblPathOut.Size = new System.Drawing.Size(0, 13);
-            this.lblPathOut.TabIndex = 6;
+            this.txtAuthor.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.txtAuthor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAuthor.Location = new System.Drawing.Point(16, 214);
+            this.txtAuthor.Name = "txtAuthor";
+            this.txtAuthor.ReadOnly = true;
+            this.txtAuthor.Size = new System.Drawing.Size(162, 20);
+            this.txtAuthor.TabIndex = 10;
+            // 
+            // lblAuthor
+            // 
+            this.lblAuthor.AutoSize = true;
+            this.lblAuthor.Location = new System.Drawing.Point(13, 198);
+            this.lblAuthor.Name = "lblAuthor";
+            this.lblAuthor.Size = new System.Drawing.Size(41, 13);
+            this.lblAuthor.TabIndex = 9;
+            this.lblAuthor.Text = "Author:";
+            // 
+            // txtTitle
+            // 
+            this.txtTitle.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTitle.Location = new System.Drawing.Point(16, 177);
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.ReadOnly = true;
+            this.txtTitle.Size = new System.Drawing.Size(162, 20);
+            this.txtTitle.TabIndex = 8;
+            // 
+            // lblMapName
+            // 
+            this.lblMapName.AutoSize = true;
+            this.lblMapName.Location = new System.Drawing.Point(13, 161);
+            this.lblMapName.Name = "lblMapName";
+            this.lblMapName.Size = new System.Drawing.Size(30, 13);
+            this.lblMapName.TabIndex = 7;
+            this.lblMapName.Text = "Title:";
+            // 
+            // lblMinimap
+            // 
+            this.lblMinimap.AutoSize = true;
+            this.lblMinimap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblMinimap.Location = new System.Drawing.Point(29, 9);
+            this.lblMinimap.Name = "lblMinimap";
+            this.lblMinimap.Size = new System.Drawing.Size(71, 13);
+            this.lblMinimap.TabIndex = 6;
+            this.lblMinimap.Text = "Map preview:";
             // 
             // MapSelect
             // 

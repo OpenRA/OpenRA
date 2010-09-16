@@ -199,6 +199,8 @@ namespace OpenRA.Editor
 			surface1.BindResourceTemplates(resourceTemplates);
 
             foreach (var p in palettes) { p.Visible = true; p.ResumeLayout();
+            var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
+            pmMiniMap.Image = terrainBitmap;
             }
 		}
 
@@ -336,7 +338,13 @@ namespace OpenRA.Editor
                     surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
                     surface1.Map.Package = new Folder(loadedMapName);
                     surface1.Map.Save(loadedMapName);
-
+                    using (var nms = new MapSelect())
+                    {
+                        var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
+                        nms.pbMinimap.Image = terrainBitmap;
+                        Bitmap png = new Bitmap(nms.pbMinimap.Image);
+                        png.Save(Path.Combine(loadedMapName, "map.png"), System.Drawing.Imaging.ImageFormat.Png);
+                    }
                     dirty = false;
                 }
 
