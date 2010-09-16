@@ -58,7 +58,7 @@ editor_TARGET		= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
-editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources
+editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
 
 ralint_SRCS		= $(shell find RALint/ -iname '*.cs')
 ralint_TARGET	= RALint.exe
@@ -150,9 +150,12 @@ mod_cnc: $(cnc_TARGET) $(ralint_TARGET)
 	mono RALint.exe cnc
 mods: mod_ra mod_cnc
 
+OpenRA.Editor.MapSelect.resources:
+	resgen2 OpenRA.Editor/MapSelect.resx OpenRA.Editor.MapSelect.resources 1> /dev/null
+
 OpenRA.Editor.Form1.resources:
 	resgen2 OpenRA.Editor/Form1.resx OpenRA.Editor.Form1.resources 1> /dev/null
-editor: OpenRA.Editor.Form1.resources $(editor_TARGET)
+editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 ralint: $(ralint_TARGET)
 seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
 SequenceEditor.Form1.resources:
