@@ -8,6 +8,7 @@ using System.Text;
 using OpenRA.FileFormats;
 using System.Windows.Forms;
 using System.IO;
+using OpenRA.Graphics;
 
 namespace OpenRA.Editor
 {
@@ -55,10 +56,12 @@ namespace OpenRA.Editor
                 txtAuthor.Text = map.Author;
                 txtTheater.Text = map.Theater;
                 txtDesc.Text = map.Description;
-                pbMinimap.Image = new Bitmap(pbMinimap.Width, pbMinimap.Height);
+				pbMinimap.Image = null;
                 try
                 {
-                    pbMinimap.Image = Image.FromFile(Path.Combine(Path.Combine(MapFolderPath, txtNew.Text), "map.png"));
+					var b = Minimap.TerrainBitmap(map, true);
+					Minimap.AddStaticResources(map, b);
+					pbMinimap.Image = b;
                 }
                 catch (Exception ed)
                 {
