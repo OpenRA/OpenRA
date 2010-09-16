@@ -23,6 +23,9 @@ namespace OpenRA.Mods.RA.Activities
 		public IActivity Tick(Actor self)
 		{
 			if (!target.IsValid) return NextActivity;
+			if ((target.Actor.Location - self.Location).Length > 1)
+				return NextActivity;
+
 			var health = target.Actor.Trait<Health>();
 			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
