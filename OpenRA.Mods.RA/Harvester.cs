@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 			if (!self.World.LocalPlayer.Shroud.IsExplored(xy)) return null;
 			
 			if (underCursor != null
-				&& underCursor.Owner == self.Owner
+				&& self.Owner.Stances[ underCursor.Owner ] == Stance.Ally
 				&& underCursor.HasTrait<IAcceptOre>())
 			{
 				return new Order("Deliver", self, underCursor);
