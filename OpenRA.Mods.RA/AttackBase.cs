@@ -34,6 +34,7 @@ namespace OpenRA.Mods.RA
 		public readonly int FireDelay = 0;
 
 		public readonly bool AlignIdleTurrets = false;
+		public readonly bool CanAttackGround = true;
 
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
@@ -205,6 +206,7 @@ namespace OpenRA.Mods.RA
 				if (!target.IsActor)
 				{
 					if (!forceFire) return null;
+					if (!self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround) return null;
 					return new Order("Attack", self, xy);
 				}
 
