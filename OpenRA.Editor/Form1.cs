@@ -360,7 +360,7 @@ namespace OpenRA.Editor
                 nms.txtNew.ReadOnly = false;
                 nms.btnOk.Text = "Save";
                 nms.txtNew.Text = "unnamed";
-           
+                nms.txtPathOut.ReadOnly = false;
 
                 if (DialogResult.OK == nms.ShowDialog())
                 {
@@ -411,6 +411,7 @@ namespace OpenRA.Editor
                 .Aggregate(Path.Combine);
 
                 nms.txtNew.ReadOnly = true;
+                nms.txtPathOut.ReadOnly = true;
                 nms.btnOk.Text = "Open";
 
                 if (DialogResult.OK == nms.ShowDialog())

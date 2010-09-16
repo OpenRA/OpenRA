@@ -26,7 +26,7 @@ namespace OpenRA.Editor
             DirectoryInfo directory = new DirectoryInfo(MapFolderPath);
             DirectoryInfo[] directories = directory.GetDirectories();
             MapList.Items.Clear();
-            lblPathOut.Text = MapFolderPath;
+            txtPathOut.Text = MapFolderPath;
             foreach (DirectoryInfo subDirectory in directories)
             {
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
@@ -66,6 +66,11 @@ namespace OpenRA.Editor
                 }
                 finally { }
             }
+        }
+
+        private void txtPathOut_TextChanged(object sender, EventArgs e)
+        {
+            MapFolderPath = txtPathOut.Text;
         }
 
     }

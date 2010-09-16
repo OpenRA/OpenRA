@@ -52,6 +52,7 @@
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.lblMapName = new System.Windows.Forms.Label();
             this.lblMinimap = new System.Windows.Forms.Label();
+            this.txtPathOut = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbMinimap)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -141,6 +142,7 @@
             // 
             // pnlBottom
             // 
+            this.pnlBottom.Controls.Add(this.txtPathOut);
             this.pnlBottom.Controls.Add(this.lblPathOut);
             this.pnlBottom.Controls.Add(this.lblPath);
             this.pnlBottom.Controls.Add(this.btnCancel);
@@ -294,6 +296,16 @@
             this.lblMinimap.TabIndex = 6;
             this.lblMinimap.Text = "Map preview:";
             // 
+            // txtPathOut
+            // 
+            this.txtPathOut.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPathOut.Location = new System.Drawing.Point(55, 10);
+            this.txtPathOut.Name = "txtPathOut";
+            this.txtPathOut.ReadOnly = true;
+            this.txtPathOut.Size = new System.Drawing.Size(265, 20);
+            this.txtPathOut.TabIndex = 7;
+            this.txtPathOut.TextChanged += new System.EventHandler(this.txtPathOut_TextChanged);
+            // 
             // MapSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -346,5 +358,6 @@
         public System.Windows.Forms.Label lblMapList;
         public System.Windows.Forms.Label lblPathOut;
         public System.Windows.Forms.Label lblPath;
+        public System.Windows.Forms.TextBox txtPathOut;
     }
 }
