@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -36,8 +37,13 @@ namespace OpenRA.Mods.RA
 			if (mi.Button == MouseButton.Right && underCursor == self)
 				return new Order("Unload", self);
 
-			if( mi.Button == MouseButton.Right && underCursor != null && underCursor.Owner == self.Owner )
-				return new Order("EnterTransport", underCursor, self);
+			if (mi.Button == MouseButton.Right && underCursor != null && underCursor.Owner == self.Owner)
+			{
+				var pi = underCursor.Info.Traits.GetOrDefault<PassengerInfo>();
+				var ci = self.Info.Traits.Get<CargoInfo>();
+				if (pi != null && ci.Types.Contains(pi.CargoType))
+					return new Order("EnterTransport", underCursor, self);
+			}
 
 			return null;
 		}
