@@ -26,26 +26,36 @@ namespace OpenRA.Editor
             DirectoryInfo directory = new DirectoryInfo(MapFolderPath);
             DirectoryInfo[] directories = directory.GetDirectories();
             MapList.Items.Clear();
+            lblPathOut.Text = MapFolderPath;
             foreach (DirectoryInfo subDirectory in directories)
             {
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
-
-                var map = new Map(new Folder(MapFolderPath + "\\" + subDirectory.Name));
-                map1.SubItems.Add(map.Title);
-                map1.SubItems.Add(map.Theater);
             }
-            MapList.Items[0].Selected = true;
+            if (txtNew.Text == "unnamed")
+            {
+                //dumb indian code
+            }
+            else
+            {
+                MapList.Items[0].Selected = true;
+            }
 
         }
 
         private void MapList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (MapList.SelectedItems.Count > 0)
+            if (MapList.SelectedItems.Count == 1)
             {
                 txtNew.Text = MapList.SelectedItems[0].Text;
+                var map = new Map(new Folder(Path.Combine(MapFolderPath, MapList.SelectedItems[0].Text)));
+                txtTitle.Text = map.Title;
+                txtAuthor.Text = map.Author;
+                txtTheater.Text = map.Theater;
+                txtDesc.Text = map.Description;
             }
         }
+
     }
 }
