@@ -15,26 +15,23 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Demolish : IActivity
 	{
-		Actor target;
+		Target target;
 		public IActivity NextActivity { get; set; }
 
-		public Demolish( Actor target )
-		{
-			this.target = target;
-		}
+		public Demolish( Actor target ) { this.target = Target.FromActor(target); }
 
 		public IActivity Tick(Actor self)
 		{			
-			if (target == null || target.IsDead()) return NextActivity;
-			if ((target.Location - self.Location).Length > 1)
+			if (!target.IsValid) return NextActivity;
+			if ((target.Actor.Location - self.Location).Length > 1)
 				return NextActivity;
-			
-			
+
+
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25 * 2,
-				() => target.Kill(self))));
+				() => { if (target.IsValid) target.Actor.Kill(self); })));
 			return NextActivity;
 		}
 
-		public void Cancel(Actor self) { target = null; NextActivity = null; }
+		public void Cancel(Actor self) { target = Target.None; NextActivity = null; }
 	}
 }
