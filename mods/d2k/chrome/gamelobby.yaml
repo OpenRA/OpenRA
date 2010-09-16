@@ -325,14 +325,14 @@ Background@SERVER_LOBBY:
 					X:PARENT_RIGHT - 90
 					Y:20
 					Image:mcv
-					Frame:8
+					Frame:20
 					Palette:colorpicker
-				ShpImage@FACT:
-					Id:FACT
-					X:PARENT_RIGHT - 100
-					Y:70
-					Image:fact
-					Palette:colorpicker
+#				ShpImage@FACT:
+#					Id:FACT
+#					X:PARENT_RIGHT - 100
+#					Y:70
+#					Image:fact
+#					Palette:colorpicker
 				Label@HUE_LABEL:
 					X:0
 					Y:30
