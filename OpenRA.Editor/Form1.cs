@@ -18,6 +18,8 @@ using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.Widgets;
+using OpenRA.Graphics;
 
 namespace OpenRA.Editor
 {
@@ -60,6 +62,7 @@ namespace OpenRA.Editor
 
 			// load the map
 			var map = new Map(new Folder(mapname));
+
 
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.
@@ -141,7 +144,7 @@ namespace OpenRA.Editor
 						Image = template.Bitmap,
 						Width = 32,
 						Height = 32,
-						SizeMode = PictureBoxSizeMode.StretchImage,
+						SizeMode = PictureBoxSizeMode.Zoom,
                         BorderStyle = BorderStyle.FixedSingle
 					};
 
@@ -171,9 +174,10 @@ namespace OpenRA.Editor
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
-						Width = template.Bitmap.Width,
-						Height = template.Bitmap.Height,
-						SizeMode = PictureBoxSizeMode.StretchImage
+                        Width = 32,
+                        Height = 32,
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        BorderStyle = BorderStyle.FixedSingle
 					};
 
 
@@ -194,7 +198,8 @@ namespace OpenRA.Editor
 
 			surface1.BindResourceTemplates(resourceTemplates);
 
-            foreach (var p in palettes) { p.Visible = true; p.ResumeLayout(); }
+            foreach (var p in palettes) { p.Visible = true; p.ResumeLayout();
+            }
 		}
 
 
@@ -520,5 +525,13 @@ namespace OpenRA.Editor
             var pb = new PaletteBox(); 
             pb.Show();
         }
+
+
+        private void surface1_Click_1(object sender, EventArgs e)
+        {
+            var terrainBitmap = Minimap.TerrainBitmap(surface1.Map);
+            pmMiniMap.Image = terrainBitmap;
+        }
+
 	}
 }

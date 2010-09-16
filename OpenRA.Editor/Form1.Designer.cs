@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.pmMiniMap = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tilePalette = new System.Windows.Forms.FlowLayoutPanel();
@@ -69,6 +71,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pmMiniMap)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -103,7 +109,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
@@ -112,6 +118,36 @@
             this.splitContainer1.Size = new System.Drawing.Size(985, 727);
             this.splitContainer1.SplitterDistance = 198;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.pmMiniMap);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer2.Size = new System.Drawing.Size(198, 727);
+            this.splitContainer2.SplitterDistance = 160;
+            this.splitContainer2.TabIndex = 1;
+            // 
+            // pmMiniMap
+            // 
+            this.pmMiniMap.BackColor = System.Drawing.Color.Black;
+            this.pmMiniMap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pmMiniMap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pmMiniMap.Location = new System.Drawing.Point(0, 0);
+            this.pmMiniMap.Name = "pmMiniMap";
+            this.pmMiniMap.Size = new System.Drawing.Size(198, 160);
+            this.pmMiniMap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pmMiniMap.TabIndex = 1;
+            this.pmMiniMap.TabStop = false;
             // 
             // tabControl1
             // 
@@ -123,17 +159,18 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(6, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(198, 727);
+            this.tabControl1.Size = new System.Drawing.Size(198, 563);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.tilePalette);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 20);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(190, 701);
+            this.tabPage1.Size = new System.Drawing.Size(190, 539);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Templates";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -145,16 +182,16 @@
             this.tilePalette.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tilePalette.Location = new System.Drawing.Point(3, 3);
             this.tilePalette.Name = "tilePalette";
-            this.tilePalette.Size = new System.Drawing.Size(184, 695);
+            this.tilePalette.Size = new System.Drawing.Size(184, 533);
             this.tilePalette.TabIndex = 1;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.actorPalette);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 20);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(190, 701);
+            this.tabPage2.Size = new System.Drawing.Size(190, 539);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Actors";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -166,15 +203,15 @@
             this.actorPalette.Dock = System.Windows.Forms.DockStyle.Fill;
             this.actorPalette.Location = new System.Drawing.Point(3, 3);
             this.actorPalette.Name = "actorPalette";
-            this.actorPalette.Size = new System.Drawing.Size(184, 695);
+            this.actorPalette.Size = new System.Drawing.Size(184, 533);
             this.actorPalette.TabIndex = 2;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.resourcePalette);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 20);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(190, 701);
+            this.tabPage3.Size = new System.Drawing.Size(190, 539);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Resources";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -186,7 +223,7 @@
             this.resourcePalette.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resourcePalette.Location = new System.Drawing.Point(0, 0);
             this.resourcePalette.Name = "resourcePalette";
-            this.resourcePalette.Size = new System.Drawing.Size(190, 701);
+            this.resourcePalette.Size = new System.Drawing.Size(190, 539);
             this.resourcePalette.TabIndex = 3;
             // 
             // surface1
@@ -198,6 +235,7 @@
             this.surface1.Size = new System.Drawing.Size(783, 727);
             this.surface1.TabIndex = 5;
             this.surface1.Text = "surface1";
+            this.surface1.Click += new System.EventHandler(this.surface1_Click_1);
             // 
             // menuStrip1
             // 
@@ -397,6 +435,10 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pmMiniMap)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -443,6 +485,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layersFloaterToolStripMenuItem;
+        private System.Windows.Forms.PictureBox pmMiniMap;
+        private System.Windows.Forms.SplitContainer splitContainer2;
 
 	}
 }
