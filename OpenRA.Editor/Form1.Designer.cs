@@ -110,7 +110,6 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -235,7 +234,7 @@
             this.surface1.Size = new System.Drawing.Size(783, 727);
             this.surface1.TabIndex = 5;
             this.surface1.Text = "surface1";
-            this.surface1.Click += new System.EventHandler(this.surface1_Click_1);
+            this.surface1.Click += new System.EventHandler(this.OnSurfaceClicked);
             // 
             // menuStrip1
             // 

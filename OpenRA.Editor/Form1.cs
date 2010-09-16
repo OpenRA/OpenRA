@@ -34,7 +34,7 @@ namespace OpenRA.Editor
 
 			Text = "OpenRA Editor (mod:{0})".F(currentMod);
 
-			Game.modData = new ModData( currentMod );
+			Game.modData = new ModData(currentMod);
 
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
@@ -52,17 +52,16 @@ namespace OpenRA.Editor
 
 		void LoadMap(string mapname)
 		{
-            tilePalette.Controls.Clear();
+			tilePalette.Controls.Clear();
 			actorPalette.Controls.Clear();
 			resourcePalette.Controls.Clear();
 
 			loadedMapName = mapname;
 
-			Game.modData = new ModData( currentMod );
+			Game.modData = new ModData(currentMod);
 
 			// load the map
 			var map = new Map(new Folder(mapname));
-
 
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.
@@ -83,7 +82,7 @@ namespace OpenRA.Editor
 
 			loadedMapName = null;
 
-			Game.modData = new ModData( currentMod );
+			Game.modData = new ModData(currentMod);
 
 			PrepareMapResources(Game.modData.Manifest, map);
 
@@ -92,15 +91,15 @@ namespace OpenRA.Editor
 
 		void PrepareMapResources(Manifest manifest, Map map)
 		{
-			Rules.LoadRules(manifest, map);			
+			Rules.LoadRules(manifest, map);
 			tileset = Rules.TileSets[map.Theater];
 			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
-            
+
 
 			surface1.Bind(map, tileset, palette);
 			// construct the palette of tiles
-            var palettes = new[] { tilePalette, actorPalette, resourcePalette };
+			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
 			foreach (var t in tileset.Templates)
 			{
@@ -137,7 +136,7 @@ namespace OpenRA.Editor
 				try
 				{
 					var info = Rules.Info[a];
-					if( !info.Traits.Contains<RenderSimpleInfo>() ) continue;
+					if (!info.Traits.Contains<RenderSimpleInfo>()) continue;
 					var template = RenderActor(info, tileset, palette);
 					var ibox = new PictureBox
 					{
@@ -145,7 +144,7 @@ namespace OpenRA.Editor
 						Width = 32,
 						Height = 32,
 						SizeMode = PictureBoxSizeMode.Zoom,
-                        BorderStyle = BorderStyle.FixedSingle
+						BorderStyle = BorderStyle.FixedSingle
 					};
 
 
@@ -174,10 +173,10 @@ namespace OpenRA.Editor
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
-                        Width = 32,
-                        Height = 32,
-                        SizeMode = PictureBoxSizeMode.Zoom,
-                        BorderStyle = BorderStyle.FixedSingle
+						Width = 32,
+						Height = 32,
+						SizeMode = PictureBoxSizeMode.Zoom,
+						BorderStyle = BorderStyle.FixedSingle
 					};
 
 
@@ -198,15 +197,13 @@ namespace OpenRA.Editor
 
 			surface1.BindResourceTemplates(resourceTemplates);
 
-            foreach (var p in palettes)
+			foreach (var p in palettes)
 			{
 				p.Visible = true;
 				p.ResumeLayout();
-            }
+			}
 			pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
 		}
-
-
 
 		static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
@@ -251,7 +248,7 @@ namespace OpenRA.Editor
 				for (int i = 0; i < ri.OverrideTheater.Length; i++)
 					if (ri.OverrideTheater[i] == tileset.Id)
 						image = ri.OverrideImage[i];
-			
+
 			image = image ?? ri.Image ?? info.Name;
 			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
@@ -330,100 +327,72 @@ namespace OpenRA.Editor
 				surface1.Invalidate();
 			}
 		}
-		
+
 		void SaveClicked(object sender, EventArgs e)
 		{
-                if (loadedMapName == null)
-                    SaveAsClicked(sender, e);
-                else
-                {
-                    surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
-                    surface1.Map.Package = new Folder(loadedMapName);
-                    surface1.Map.Save(loadedMapName);
-                    using (var nms = new MapSelect())
-                    {
-                        Minimap.TerrainBitmap(surface1.Map, true)
-							.Save(Path.Combine(loadedMapName, "map.png"), System.Drawing.Imaging.ImageFormat.Png);
-                    }
-                    dirty = false;
-                }
+			if (loadedMapName == null)
+				SaveAsClicked(sender, e);
+			else
+			{
+				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
+				surface1.Map.Package = new Folder(loadedMapName);
+				surface1.Map.Save(loadedMapName);
+				dirty = false;
+			}
 
 		}
 
 		void SaveAsClicked(object sender, EventArgs e)
 		{
-            using (var nms = new MapSelect())
-            {
-                nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
-                .Aggregate(Path.Combine);
+			using (var nms = new MapSelect())
+			{
+				nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+				.Aggregate(Path.Combine);
 
-                nms.txtNew.ReadOnly = false;
-                nms.btnOk.Text = "Save";
-                nms.txtNew.Text = "unnamed";
-                nms.txtPathOut.ReadOnly = false;
+				nms.txtNew.ReadOnly = false;
+				nms.btnOk.Text = "Save";
+				nms.txtNew.Text = "unnamed";
+				nms.txtPathOut.ReadOnly = false;
 
-                if (DialogResult.OK == nms.ShowDialog())
-                {
+				if (DialogResult.OK == nms.ShowDialog())
+				{
+					if (nms.txtNew.Text == "")
+						nms.txtNew.Text = "unnamed";
 
-                    if (nms.txtNew.Text == "")
-                    {
-                        nms.txtNew.Text = "unnamed";
-                    }
+					string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
+					loadedMapName = mapfoldername;
 
-                    string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
-                    DirectoryInfo directory = new DirectoryInfo(mapfoldername);
-                    loadedMapName = mapfoldername;
-                    try
-                    {
+					try
+					{
+						Directory.CreateDirectory(mapfoldername);
+					}
+					catch (Exception ed)
+					{
+						MessageBox.Show("Directory creation failed: {0}", ed.ToString());
+					}
 
-                        if (directory.Exists)
-                        {
-                            return;
-                        }
-                        directory.Create();
-                    }
-                    catch (Exception ed)
-                    {
-                        Console.WriteLine("Directory creation failed: {0}", ed.ToString());
-                    }
-                    finally { }
-
-                    SaveClicked(sender, e);
-                }
-            }
-
-
-			//if (DialogResult.OK == folderBrowser.ShowDialog())
-			//{
-				//loadedMapName = folderBrowser.SelectedPath;
-			//	SaveClicked(sender, e);
-			//}
+					SaveClicked(sender, e);
+				}
+			}
 		}
 
 		void OpenClicked(object sender, EventArgs e)
 		{
-			//folderBrowser.ShowNewFolderButton = true;
+			using (var nms = new MapSelect())
+			{
+				nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+				.Aggregate(Path.Combine);
 
+				nms.txtNew.ReadOnly = true;
+				nms.txtPathOut.ReadOnly = true;
+				nms.btnOk.Text = "Open";
 
-            using (var nms = new MapSelect())
-            {
-                nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
-                .Aggregate(Path.Combine);
-
-                nms.txtNew.ReadOnly = true;
-                nms.txtPathOut.ReadOnly = true;
-                nms.btnOk.Text = "Open";
-
-                if (DialogResult.OK == nms.ShowDialog())
-                {
-                    string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
-                    LoadMap(mapfoldername);
-                }
-            }
-
-
-			//if (DialogResult.OK == folderBrowser.ShowDialog())
-				//LoadMap(folderBrowser.SelectedPath);
+				if (DialogResult.OK == nms.ShowDialog())
+				{
+					string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
+					LoadMap(mapfoldername);
+				}
+			}
 		}
 
 		void NewClicked(object sender, EventArgs e)
@@ -489,9 +458,9 @@ namespace OpenRA.Editor
 
 					var map = LegacyMapImporter.Import(ofd.FileName);
 					map.Package = new Folder(savePath);
-					map.Players.Add("Neutral", new PlayerReference("Neutral", 
+					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
-					
+
 					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
@@ -514,30 +483,15 @@ namespace OpenRA.Editor
 			}
 		}
 
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
-        {
+		private void layersFloaterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var pb = new PaletteBox();
+			pb.Show();
+		}
 
-        }
-
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void surface1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void layersFloaterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var pb = new PaletteBox(); 
-            pb.Show();
-        }
-
-        private void surface1_Click_1(object sender, EventArgs e)
-        {
-            pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
-        }
+		private void OnSurfaceClicked(object sender, EventArgs e)
+		{
+			pmMiniMap.Image = Minimap.TerrainBitmap(surface1.Map, true);
+		}
 	}
 }
