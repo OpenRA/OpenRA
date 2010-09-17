@@ -83,7 +83,6 @@
     <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
-    <Compile Include="Traits\Player\TechTreeCache.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\ChatEntryWidget.cs" />
     <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
@@ -228,6 +227,7 @@
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Traits\Player\PlayerProductionQueue.cs" />
+    <Compile Include="Traits\Player\TechTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

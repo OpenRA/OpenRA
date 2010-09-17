@@ -15,16 +15,16 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	class TechTreeCacheInfo : ITraitInfo
+	class TechTreeInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new TechTreeCache(init);}
+		public object Create(ActorInitializer init) { return new TechTree(init);}
 	}
 
-	class TechTreeCache
+	class TechTree
 	{
 		readonly List<Watcher> watchers = new List<Watcher>();
 		readonly Player player;
-		public TechTreeCache(ActorInitializer init)
+		public TechTree(ActorInitializer init)
 		{
 			player = init.self.Owner;
 			init.world.ActorAdded += ActorChanged;

@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class PlayerProductionQueueInfo : ProductionQueueInfo, ITraitPrerequisite<TechTreeCacheInfo>
+	public class PlayerProductionQueueInfo : ProductionQueueInfo, ITraitPrerequisite<TechTreeInfo>
 	{
 		public override object Create(ActorInitializer init) { return new PlayerProductionQueue(init.self, this); }
 	}

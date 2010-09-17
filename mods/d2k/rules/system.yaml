@@ -1,5 +1,5 @@
 Player:
-	TechTreeCache:
+	TechTree:
 	PlayerResources:
 		InitialCash: 5000
 	ActorGroupProxy:

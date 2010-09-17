@@ -1,6 +1,6 @@
 Player:
 	PlaceBuilding:
-	TechTreeCache:
+	TechTree:
 	NukePower:
 		Image: atomicnh
 		ChargeTime: 5

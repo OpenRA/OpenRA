@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 			this.self = self;
 			this.Info = info;
 
-			var ttc = playerActor.Trait<TechTreeCache>();
+			var ttc = playerActor.Trait<TechTree>();
 			
 			foreach (var a in AllBuildables(Info.Type))
 			{

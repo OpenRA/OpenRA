@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeCacheInfo>
+	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeInfo>
 	{
 		public readonly bool RequiresPower = true;
 		public readonly bool OneShot = false;
@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 			effectivePrereq = Info.Prerequisites
 				.Select(a => a.ToLowerInvariant()).ToArray();
 			
-			self.Trait<TechTreeCache>().Add( Info.OrderName, Info.Prerequisites.Select( a => a.ToLowerInvariant() ).ToList(), this );
+			self.Trait<TechTree>().Add( Info.OrderName, Info.Prerequisites.Select( a => a.ToLowerInvariant() ).ToList(), this );
 		}
 
 		public void Tick(Actor self)
@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
 			
 			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
-			var buildings = TechTreeCache.GatherBuildings(Owner);
+			var buildings = TechTree.GatherBuildings(Owner);
 			
 			return effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
 		}
