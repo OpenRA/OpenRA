@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return r.Select(a => a.WithZOffset(-1));
+			return r.Select(a => a.WithZOffset((int) -a.Sprite.size.Y));
 		}
 	}
 }
