@@ -581,6 +581,7 @@ A10:
 	CarpetBomb:
 		Weapon: Napalm
 		Range: 3
+	-Selectable:
 	-GainsExperience:
 
 BOAT:
