@@ -1,26 +1,26 @@
 Player:
 	TechTree:
-	PlayerProductionQueue@Building:
+	ClassicProductionQueue@Building:
 		Type: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	PlayerProductionQueue@Defense:
+	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	PlayerProductionQueue@Vehicle:
+	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	PlayerProductionQueue@Infantry:
+	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	PlayerProductionQueue@Ship:
+	ClassicProductionQueue@Ship:
 		Type: Ship
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	PlayerProductionQueue@Plane:
+	ClassicProductionQueue@Plane:
 		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3

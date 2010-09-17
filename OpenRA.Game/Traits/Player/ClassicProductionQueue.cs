@@ -15,23 +15,22 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class PlayerProductionQueueInfo : ProductionQueueInfo, ITraitPrerequisite<TechTreeInfo>
+	public class ClassicProductionQueueInfo : ProductionQueueInfo, ITraitPrerequisite<TechTreeInfo>
 	{
-		public override object Create(ActorInitializer init) { return new PlayerProductionQueue(init.self, this); }
+		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
 
-	public class PlayerProductionQueue : ProductionQueue
+	public class ClassicProductionQueue : ProductionQueue
 	{
-		public PlayerProductionQueue( Actor self, PlayerProductionQueueInfo info )
+		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
 			: base(self, self, info as ProductionQueueInfo) {}
 				
 		[Sync] bool QueueActive = true;
 		public override void Tick( Actor self )
 		{
-			if (self == self.Owner.PlayerActor)
-				QueueActive = self.World.Queries.OwnedBy[self.Owner].WithTrait<Production>()
-					.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
-					.Any();
+			QueueActive = self.World.Queries.OwnedBy[self.Owner].WithTrait<Production>()
+				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
+				.Any();
 			
 			base.Tick(self);
 		}
@@ -49,14 +48,13 @@ namespace OpenRA.Traits
 		
 		protected override void BuildUnit( string name )
 		{			
-			// original ra behavior; queue lives on PlayerActor, need to find a production structure
+			// Find a production structure to build this actor
 			var producers = self.World.Queries.OwnedBy[self.Owner]
-			.WithTrait<Production>()
-			.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
-			.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ) // prioritize the primary.
-			.ToArray();
+				.WithTrait<Production>()
+				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
+				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
 
-			if (producers.Length == 0)
+			if (producers.Count() == 0)
 			{
 				CancelProduction(name);
 				return;
