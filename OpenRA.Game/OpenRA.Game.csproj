@@ -227,6 +227,7 @@
     <Compile Include="Traits\ActorStance.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
+    <Compile Include="Traits\Player\PlayerProductionQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

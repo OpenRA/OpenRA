@@ -46,8 +46,6 @@ namespace OpenRA
 		{
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
-
-			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 			
 			Index = index;
 			Palette = "player"+index;
@@ -64,14 +62,13 @@ namespace OpenRA
 			PlayerRef = pr;
 			
 			RegisterPlayerColor(world, Palette);
+			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 		}
 		
 		public Player( World world, Session.Client client, PlayerReference pr, int index )
 		{
 			World = world;
 			Shroud = new ShroudRenderer(this, world.Map);
-
-			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 			
 			Index = index;
 			Palette = "player"+index;
@@ -87,6 +84,7 @@ namespace OpenRA
 			PlayerRef = pr;
 			
 			RegisterPlayerColor(world, Palette);
+			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 		}
 		
 		public void RegisterPlayerColor(World world, string palette)

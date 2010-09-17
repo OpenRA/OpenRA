@@ -15,10 +15,45 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	class TechTreeCacheInfo : TraitInfo<TechTreeCache> { }
-
-	class TechTreeCache : ITick
+	class TechTreeCacheInfo : ITraitInfo
 	{
+		public object Create(ActorInitializer init) { return new TechTreeCache(init);}
+	}
+
+	class TechTreeCache
+	{
+		readonly List<Watcher> watchers = new List<Watcher>();
+		readonly Player player;
+		public TechTreeCache(ActorInitializer init)
+		{
+			player = init.self.Owner;
+			init.world.ActorAdded += ActorChanged;
+			init.world.ActorRemoved += ActorChanged;
+		}
+		
+		public void ActorChanged(Actor a)
+		{
+			if (a.Owner == player && a.HasTrait<Building>())
+				Update();
+		}
+				
+		public void Update()
+		{
+			var buildings = Rules.TechTree.GatherBuildings(player);
+			foreach(var w in watchers)
+				w.Update(buildings);
+		}
+
+		public void Add(string key, List<string> prerequisites, ITechTreeElement tte)
+		{
+			watchers.Add(new Watcher( key, prerequisites, tte ));
+		}
+
+		public void Remove(string key)
+		{
+			watchers.RemoveAll(x => x.key == key);
+		}
+		
 		class Watcher
 		{
 			public readonly string key;
@@ -35,10 +70,16 @@ namespace OpenRA.Traits
 				this.hasPrerequisites = false;
 			}
 
-			public void Tick( Player owner, Cache<string, List<Actor>> buildings )
+			public void Update(Cache<string, List<Actor>> buildings)
 			{
-				var nowHasPrerequisites = prerequisites.All( a => buildings[ a ].Any( b => !b.Trait<Building>().Disabled ) );
-
+				var nowHasPrerequisites = true;
+				foreach (var p in prerequisites)
+					if (!buildings.Keys.Contains(p))
+					{
+						nowHasPrerequisites = false;
+						break;
+					}
+								
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.PrerequisitesAvailable(key);
 
@@ -47,26 +88,6 @@ namespace OpenRA.Traits
 
 				hasPrerequisites = nowHasPrerequisites;
 			}
-		}
-
-		readonly List<Watcher> watchers = new List<Watcher>();
-
-		public void Tick( Actor self )
-		{
-			var buildings = Rules.TechTree.GatherBuildings( self.Owner );
-
-			foreach( var w in watchers )
-				w.Tick( self.Owner, buildings );
-		}
-
-		public void Add( string key, List<string> prerequisites, ITechTreeElement tte )
-		{
-			watchers.Add( new Watcher( key, prerequisites, tte ) );
-		}
-
-		public void Remove( string key )
-		{
-			watchers.RemoveAll( x => x.key == key );
 		}
 	}
 

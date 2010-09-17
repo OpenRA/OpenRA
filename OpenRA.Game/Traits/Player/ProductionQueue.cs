@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		public readonly string Type = null;
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
-		public object Create(ActorInitializer init) { return new ProductionQueue(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
 	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement
@@ -35,18 +35,12 @@ namespace OpenRA.Traits
 		// A list of things we could possibly build, even if our race doesn't normally get it
 		Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
 
-		public ProductionQueue( Actor self, ProductionQueueInfo info )
+		public ProductionQueue( Actor self, Actor playerActor, ProductionQueueInfo info )
 		{
 			this.self = self;
 			this.Info = info;
-		}
-		
-		// Trait initialization bites us when queue lives on PlayerActor; delay init until first tick
-		bool initialized = false;
-		void Initialize()
-		{
-			initialized = true;
-			var ttc = self.Owner.PlayerActor.Trait<TechTreeCache>();
+
+			var ttc = playerActor.Trait<TechTreeCache>();
 			foreach (var a in Rules.TechTree.AllBuildables(Info.Type))
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
@@ -88,23 +82,16 @@ namespace OpenRA.Traits
 			return Queue;
 		}
 		
-		ActorInfo[] None = new ActorInfo[]{};
-		public IEnumerable<ActorInfo> AllItems()
-		{
-			if (!QueueActive)
-				return None;
-			
+		public virtual IEnumerable<ActorInfo> AllItems()
+		{			
 			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
 			
 			return Produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
 		}
 		
-		public IEnumerable<ActorInfo> BuildableItems()
+		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
-			if (!QueueActive)
-				return None;
-			
 			if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
 			
@@ -117,17 +104,8 @@ namespace OpenRA.Traits
 			return Rules.TechTree.CanBuild(actor, self.Owner, buildings);
 		}
 		
-		[Sync] bool QueueActive = true;
-		public void Tick( Actor self )
-		{			
-			if (!initialized)
-				Initialize();
-			
-			if (self == self.Owner.PlayerActor)
-				QueueActive = self.World.Queries.OwnedBy[self.Owner].WithTrait<Production>()
-					.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
-					.Any();
-			
+		public virtual void Tick( Actor self )
+		{		
 			while( Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item) )
 			{
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
@@ -204,7 +182,7 @@ namespace OpenRA.Traits
 			return (int) time;
 		}
 
-		void CancelProduction( string itemName )
+		protected void CancelProduction( string itemName )
 		{			
 			if (Queue.Count == 0)
 				return; // Nothing to do here
@@ -226,52 +204,23 @@ namespace OpenRA.Traits
 			Queue.RemoveAt(0);
 		}
 
-		void BeginProduction( ProductionItem item )
+		protected void BeginProduction( ProductionItem item )
 		{
 			Queue.Add(item);
 		}
 
-		static bool IsDisabledBuilding(Actor a)
+		protected static bool IsDisabledBuilding(Actor a)
 		{
 			var building = a.TraitOrDefault<Building>();
 			return building != null && building.Disabled;
 		}
 
-		void BuildUnit( string name )
+		protected virtual void BuildUnit( string name )
 		{			
-			if (self == self.Owner.PlayerActor)
-			{
-				// original ra behavior; queue lives on PlayerActor, need to find a production structure
-				var producers = self.World.Queries.OwnedBy[self.Owner]
-				.WithTrait<Production>()
-				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
-				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ) // prioritize the primary.
-				.ToArray();
-
-				if (producers.Length == 0)
-				{
-					CancelProduction(name);
-					return;
-				}
-				
-				foreach (var p in producers)
-				{
-					if (IsDisabledBuilding(p.Actor)) continue;
-	
-					if (p.Trait.Produce(p.Actor, Rules.Info[ name ]))
-					{
-						FinishProduction();
-						break;
-					}
-				}
-			}
-			else
-			{
-				// queue lives on actor; is produced at same actor
-				var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
-				if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
-						FinishProduction();
-			}
+			// queue lives on actor; is produced at same actor
+			var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
+			if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
+					FinishProduction();
 		}
 	}
 
