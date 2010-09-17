@@ -12,22 +12,33 @@ using System;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 using OpenRA.GameRules;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.RA.Render
 {
 	public class RenderBuildingInfo : RenderSimpleInfo
 	{
 		public readonly bool HasMakeAnimation = true;
+		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init);}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold
+	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold, IRenderModifier
 	{
+		readonly float2 Origin;
+		
 		public RenderBuilding( ActorInitializer init )
 			: this( init, () => 0 )
 		{
+			Origin = init.self.Info.Traits.Get<RenderBuildingInfo>().Origin;
 		}
 
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			return r.Select(a => a.WithPos(a.Pos - Origin));
+		}
+		
 		public RenderBuilding( ActorInitializer init, Func<int> baseFacing )
 			: base(init.self, baseFacing)
 		{
