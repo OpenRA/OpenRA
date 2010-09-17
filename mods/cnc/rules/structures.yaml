@@ -9,8 +9,8 @@ FACT:
 		Description: Builds structures
 	Building:
 		Power: 15
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 		Capturable: true
 	Health:
 		HP: 1400
