@@ -33,12 +33,15 @@ e1:
 	idle1:
 		Start: 257
 		Length: 15
+		Tick: 120
 	idle2:
 		Start: 272
 		Length: 16
+		Tick: 120
 	idle3:
 		Start: 289
 		Length: 22
+		Tick: 120
 	die1:
 		Start: 381
 		Length: 9
@@ -81,9 +84,11 @@ e2:
 	idle1:
 		Start: 384
 		Length: 16
+		Tick: 120
 	idle2:
 		Start: 400
 		Length: 13
+		Tick: 120
 	die5:
 		Start: 546
 		Length: 18
@@ -126,9 +131,11 @@ e3:
 	idle1:
 		Start: 274
 		Length: 12
+		Tick: 120
 	idle2:
 		Start: 289
 		Length: 14
+		Tick: 120
 	die1:
 		Start: 397
 		Length: 9
@@ -171,9 +178,11 @@ e4:
 	idle1:
 		Start: 384
 		Length: 16
+		Tick: 120
 	idle2:
 		Start: 400
 		Length: 16
+		Tick: 120
 	die5:
 		Start: 546
 		Length: 18
@@ -220,9 +229,11 @@ e5:
 	idle1:
 		Start: 384
 		Length: 16
+		Tick: 120
 	idle2:
 		Start: 400
 		Length: 16
+		Tick: 120
 	die5:
 		Start: 546
 		Length: 18
@@ -261,9 +272,11 @@ e6:
 	idle1:
 		Start: 114
 		Length: 6
+		Tick: 120
 	idle2:
 		Start: 200
 		Length: 6
+		Tick: 120
 	die5:
 		Start: 182
 		Length: 18
@@ -626,12 +639,15 @@ rmbo:
 	idle1:
 		Start: 192
 		Length: 16
+		Tick: 120
 	idle2:
 		Start: 208
 		Length: 16
+		Tick: 120
 	idle3:
 		Start: 224
 		Length: 15
+		Tick: 120
 	die5:
 		Start: 354
 		Length: 18

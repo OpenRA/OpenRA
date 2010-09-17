@@ -510,9 +510,11 @@ e1:
 	idle1:
 		Start: 256
 		Length: 16
+		Tick: 120
 	idle2:
 		Start: 272
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 288
 		Length: 8
@@ -563,9 +565,11 @@ e3:
 	idle1:
 		Start: 272
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 287
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 304
 		Length: 8
@@ -607,9 +611,11 @@ e6:
 	idle1:
 		Start: 121
 		Length: 8
+		Tick: 120
 	idle2:
 		Start: 130
 		Length: 14
+		Tick: 120
 	die1:
 		Start: 146
 		Length: 8
@@ -675,9 +681,11 @@ medi:
 	idle1:
 		Start: 163
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 178
 		Length: 14
+		Tick: 120
 	die1:
 		Start: 193
 		Length: 7
@@ -1077,9 +1085,11 @@ dog:
 	idle1:
 		Start: 216
 		Length: 7
+		Tick: 120
 	idle2:
 		Start: 224
 		Length: 11
+		Tick: 120
 	die1:
 		Start: 236
 		Length: 6
@@ -1126,9 +1136,11 @@ spy:
 	idle1:
 		Start: 256
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 271
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 288
 		Length: 8
@@ -1179,9 +1191,11 @@ e7:
 	idle1:
 		Start: 233
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 248
 		Length: 15
+		Tick: 120
 	die1:
 		Start: 262
 		Length: 8
@@ -1227,9 +1241,11 @@ e4:
 	idle1:
 		Start: 384
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 399
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 416
 		Length: 8
@@ -1261,40 +1277,6 @@ fb1:
 	idle:
 		Start: 0
 		Length: *
-
-thf:
-	stand:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
-		Length: 6
-		Facings: 8
-	idle1:
-		Start: 120
-		Length: 18
-	die1:
-		Start: 139
-		Length: 8
-	die2:
-		Start: 147
-		Length: 8
-	die3:
-		Start: 155
-		Length: 8
-	die4:
-		Start: 163
-		Length: 12
-	die5:
-		Start: 175
-		Length: 18
-	die6: electro
-		Start: 0
-		Length: *
-	crawl:
-		Start: 72
-		Length: 4
-		Facings: 8
 
 moveflsh:
 	idle:
@@ -1799,9 +1781,11 @@ shok:
 	idle1:
 		Start: 384
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 399
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 416
 		Length: 8
