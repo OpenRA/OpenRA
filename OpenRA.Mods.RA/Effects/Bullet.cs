@@ -134,15 +134,15 @@ namespace OpenRA.Mods.RA.Effects
 				if (Info.High || Info.Angle > 0)
 				{
 					if (Info.Shadow)
-						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow");
+						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow", (int)pos.Y);
 
 					var highPos = pos - new float2(0, GetAltitude());
 
-					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette);
+					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette, (int)pos.Y);
 				}
 				else
 					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
-						Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette);
+						Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette, (int)pos.Y);
 			}
 		}
 

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Effects
 		
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image,offset, "effect");
+			yield return new Renderable(anim.Image,offset, "effect", (int)offset.Y);
 		}
 	}
 }

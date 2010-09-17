@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Effects
 				var step = steps.Where(t => (to - (z + new float2(t[0],t[1]))).LengthSquared < (to - z).LengthSquared )
 					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
 
-				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]), "effect"));
+				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]), "effect", (int)from.Y));
 				z += new float2(step[0], step[1]);
 			}
 

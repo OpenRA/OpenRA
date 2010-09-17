@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect");
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect", (int)pos.Y);
 		}
 
 		public Player Owner { get { return null; } }

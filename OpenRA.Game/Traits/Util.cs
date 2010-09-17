@@ -100,7 +100,7 @@ namespace OpenRA.Traits
 		{
 			var pal = self.Owner == null ? "player0" : self.Owner.Palette;
 			var loc = location - 0.5f * s.size;
-			return new Renderable(s, loc.Round(), pal);
+			return new Renderable(s, loc.Round(), pal, (int)self.CenterLocation.Y);
 		}
 
 		public static IActivity SequenceActivities(params IActivity[] acts)

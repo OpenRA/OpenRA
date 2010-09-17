@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Renderable> Render(Actor self)
 		{
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain");
+				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain", Game.CellSize * t.Key.Y);
 		}
 		
 		bool IsIntact(Bridge b)

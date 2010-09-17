@@ -138,22 +138,24 @@ namespace OpenRA.Traits
 		public readonly Sprite Sprite;
 		public readonly float2 Pos;
 		public readonly string Palette;
+		public readonly int Z;
 		public readonly int ZOffset;
 
-		public Renderable(Sprite sprite, float2 pos, string palette, int zOffset)
+		public Renderable(Sprite sprite, float2 pos, string palette, int z, int zOffset)
 		{
 			Sprite = sprite;
 			Pos = pos;
 			Palette = palette;
+			Z = z;
 			ZOffset = zOffset;
 		}
 
-		public Renderable(Sprite sprite, float2 pos, string palette)
-			: this(sprite, pos, palette, 0) { }
+		public Renderable(Sprite sprite, float2 pos, string palette, int z)
+			: this(sprite, pos, palette, z, 0) { }
 
-		public Renderable WithPalette(string newPalette) { return new Renderable(Sprite, Pos, newPalette, ZOffset); }
-		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, newOffset); }
-		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, ZOffset); }
+		public Renderable WithPalette(string newPalette) { return new Renderable(Sprite, Pos, newPalette, Z, ZOffset); }
+		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, Z, newOffset); }
+		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, Z, ZOffset); }
 	}
 
 	public interface ITraitInfo { object Create(ActorInitializer init); }
