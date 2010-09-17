@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
 			
 			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
-			var buildings = Rules.TechTree.GatherBuildings(Owner);
+			var buildings = TechTreeCache.GatherBuildings(Owner);
 			
 			return effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
 		}

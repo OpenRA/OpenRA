@@ -41,7 +41,8 @@ namespace OpenRA.Traits
 			this.Info = info;
 
 			var ttc = playerActor.Trait<TechTreeCache>();
-			foreach (var a in Rules.TechTree.AllBuildables(Info.Type))
+			
+			foreach (var a in AllBuildables(Info.Type))
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
 				// Can our race build this by satisfying normal prereqs?
@@ -52,6 +53,14 @@ namespace OpenRA.Traits
 			}
 		}
 		
+		IEnumerable<ActorInfo> AllBuildables(string category)
+		{
+			return Rules.Info.Values
+				.Where( x => x.Name[ 0 ] != '^' )
+				.Where( x => x.Traits.Contains<BuildableInfo>() )
+				.Where( x => x.Traits.Get<BuildableInfo>().Queue == category );
+		}
+			
 		public void OverrideProduction(ActorInfo type, bool buildable)
 		{
 			Produceable[type].Buildable = buildable;
@@ -100,8 +109,7 @@ namespace OpenRA.Traits
 		
 		public bool CanBuild(ActorInfo actor)
 		{
-			var buildings = Rules.TechTree.GatherBuildings( self.Owner );
-			return Rules.TechTree.CanBuild(actor, self.Owner, buildings);
+			return Produceable.ContainsKey(actor) && Produceable[actor].Buildable;
 		}
 		
 		public virtual void Tick( Actor self )

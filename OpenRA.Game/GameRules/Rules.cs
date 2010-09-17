@@ -18,8 +18,6 @@ namespace OpenRA
 {
 	public static class Rules
 	{
-		public static TechTree TechTree;
-
 		public static Dictionary<string, ActorInfo> Info;
 		public static Dictionary<string, WeaponInfo> Weapons;
 		public static Dictionary<string, VoiceInfo> Voices;
@@ -41,8 +39,6 @@ namespace OpenRA
 				var t = new TileSet(file);
 				TileSets.Add(t.Id,t);
 			}
-			
-			TechTree = new TechTree();
 		}
 		
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)

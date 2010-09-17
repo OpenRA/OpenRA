@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 				
 		public void Update()
 		{
-			var buildings = Rules.TechTree.GatherBuildings(player);
+			var buildings = GatherBuildings(player);
 			foreach(var w in watchers)
 				w.Update(buildings);
 		}
@@ -52,6 +52,23 @@ namespace OpenRA.Traits
 		public void Remove(string key)
 		{
 			watchers.RemoveAll(x => x.key == key);
+		}
+		
+		public static Cache<string, List<Actor>> GatherBuildings( Player player )
+		{
+			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
+			if (player == null)
+				return ret;
+
+			foreach( var b in player.World.Queries.OwnedBy[player].Where( x=>x.Info.Traits.Contains<BuildingInfo>() ) )
+			{
+				ret[ b.Info.Name ].Add( b );
+				var tt = b.Info.Traits.GetOrDefault<TooltipInfo>();
+				if( tt != null )
+					foreach( var alt in tt.AlternateName )
+						ret[ alt ].Add( b );
+			}
+			return ret;
 		}
 		
 		class Watcher
