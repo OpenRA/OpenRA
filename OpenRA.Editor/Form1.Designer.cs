@@ -41,7 +41,6 @@
             this.actorPalette = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
-            this.surface1 = new OpenRA.Editor.Surface();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +52,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.cCRedAlertMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bitmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMinimapToPNG = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.exotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,8 +64,9 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layersFloaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.surface1 = new OpenRA.Editor.Surface();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -225,17 +227,6 @@
             this.resourcePalette.Size = new System.Drawing.Size(190, 539);
             this.resourcePalette.TabIndex = 3;
             // 
-            // surface1
-            // 
-            this.surface1.BackColor = System.Drawing.Color.Black;
-            this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.surface1.Location = new System.Drawing.Point(0, 0);
-            this.surface1.Name = "surface1";
-            this.surface1.Size = new System.Drawing.Size(783, 727);
-            this.surface1.TabIndex = 5;
-            this.surface1.Text = "surface1";
-            this.surface1.Click += new System.EventHandler(this.OnSurfaceClicked);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
@@ -259,6 +250,7 @@
             this.saveAsToolStripMenuItem,
             this.toolStripSeparator2,
             this.toolStripMenuItem1,
+            this.mnuExport,
             this.toolStripSeparator3,
             this.exotToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -270,7 +262,7 @@
             this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New...";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.NewClicked);
             // 
@@ -330,6 +322,23 @@
             this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
             this.bitmapToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.bitmapToolStripMenuItem.Text = "&Bitmap...";
+            this.bitmapToolStripMenuItem.Visible = false;
+            // 
+            // mnuExport
+            // 
+            this.mnuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuMinimapToPNG});
+            this.mnuExport.Name = "mnuExport";
+            this.mnuExport.Size = new System.Drawing.Size(152, 22);
+            this.mnuExport.Text = "&Export";
+            // 
+            // mnuMinimapToPNG
+            // 
+            this.mnuMinimapToPNG.Image = ((System.Drawing.Image)(resources.GetObject("mnuMinimapToPNG.Image")));
+            this.mnuMinimapToPNG.Name = "mnuMinimapToPNG";
+            this.mnuMinimapToPNG.Size = new System.Drawing.Size(152, 22);
+            this.mnuMinimapToPNG.Text = "Minimap to PNG";
+            this.mnuMinimapToPNG.Click += new System.EventHandler(this.mnuMinimapToPNG_Click);
             // 
             // toolStripSeparator3
             // 
@@ -390,6 +399,7 @@
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            this.toolsToolStripMenuItem.Visible = false;
             // 
             // layersFloaterToolStripMenuItem
             // 
@@ -409,6 +419,23 @@
             this.statusStrip1.Size = new System.Drawing.Size(985, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // surface1
+            // 
+            this.surface1.BackColor = System.Drawing.Color.Black;
+            this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.surface1.Location = new System.Drawing.Point(0, 0);
+            this.surface1.Name = "surface1";
+            this.surface1.Size = new System.Drawing.Size(783, 727);
+            this.surface1.TabIndex = 5;
+            this.surface1.Text = "surface1";
+            this.surface1.Click += new System.EventHandler(this.OnSurfaceClicked);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.DefaultExt = "*.png";
+            this.saveFileDialog.Filter = "PNG Image (*.png)|";
+            this.saveFileDialog.Title = "Export minimap to PNG";
             // 
             // Form1
             // 
@@ -460,8 +487,7 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.FlowLayoutPanel actorPalette;
 		private System.Windows.Forms.TabPage tabPage3;
-		private System.Windows.Forms.FlowLayoutPanel resourcePalette;
-		private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private System.Windows.Forms.FlowLayoutPanel resourcePalette;
 		private Surface surface1;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -486,6 +512,9 @@
         private System.Windows.Forms.ToolStripMenuItem layersFloaterToolStripMenuItem;
         private System.Windows.Forms.PictureBox pmMiniMap;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ToolStripMenuItem mnuExport;
+        private System.Windows.Forms.ToolStripMenuItem mnuMinimapToPNG;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
 
 	}
 }

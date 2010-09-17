@@ -38,9 +38,6 @@ namespace OpenRA.Editor
 
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
-			folderBrowser.SelectedPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
-				.Aggregate(Path.Combine);
-
 			surface1.AfterChange += MakeDirty;
 		}
 
@@ -270,6 +267,57 @@ namespace OpenRA.Editor
 				}
 
 				bitmap.UnlockBits(data);
+
+                try
+                {
+                    using (var s2 = FileSystem.OpenWithExts(image + "2", tileset.Extensions))
+                    {
+                        shp = new ShpReader(s2);
+                        frame = shp[0];
+
+                        var bitmap2 = new Bitmap(shp.Width, shp.Height);
+                        var data2 = bitmap2.LockBits(new Rectangle(0, 0, bitmap2.Width, bitmap2.Height),
+                            ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+                        unsafe
+                        {
+                            int* q = (int*)data2.Scan0.ToPointer();
+                            var stride2 = data2.Stride >> 2;
+
+                            for (var i = 0; i < shp.Width; i++)
+                                for (var j = 0; j < shp.Height; j++)
+                                    q[j * stride2 + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+                        }
+
+                        bitmap2.UnlockBits(data);
+                        System.Drawing.Bitmap finalImage = null;
+                        finalImage = new System.Drawing.Bitmap(bitmap2.Width, bitmap2.Height);
+
+                        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(finalImage))
+                        {
+                            //set background color
+                            g.Clear(System.Drawing.Color.Transparent);
+
+                            //go through each image and draw it on the final image
+                            int offset = 0;
+                                g.DrawImage(bitmap,
+                                  new System.Drawing.Rectangle(offset, 0, bitmap.Width, bitmap.Height));
+                                g.DrawImage(bitmap2,
+                                  new System.Drawing.Rectangle(offset, 0, bitmap2.Width, bitmap2.Height));
+
+                        }
+                        
+                        bitmap = finalImage;
+
+                    }
+                }
+                catch (Exception ed)
+                {
+                    //
+                }
+
+
+
 				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<BuildingInfo>() };
 			}
 		}
@@ -493,5 +541,32 @@ namespace OpenRA.Editor
 		{
 			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
+
+        private void mnuMinimapToPNG_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                saveFileDialog.InitialDirectory = new string[] { Environment.CurrentDirectory, "maps" }
+.Aggregate(Path.Combine);
+            
+            FileInfo file = new FileInfo(loadedMapName + ".png");
+            string name = file.Name;
+            saveFileDialog.FileName = name;
+
+            saveFileDialog.ShowDialog();
+            if (saveFileDialog.FileName == "")
+            {
+                saveFileDialog.FileName = name;
+            }
+            else
+            {
+                Bitmap png = new Bitmap(pmMiniMap.Image);
+
+                png.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png); 
+            }
+            
+            }
+            catch { }
+        }
 	}
 }

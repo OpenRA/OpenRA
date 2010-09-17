@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>309, 17</value>
+    <value>198, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="newToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -239,6 +239,23 @@
         gg==
 </value>
   </data>
+  <data name="mnuMinimapToPNG.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
+        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsMAAALDAE/QCLIAAACR0lE
+        QVQ4T6WTXUiTARSGdxkRRBdB0IUREV1EKRFEYYuQAklL8sKQfphUoJSUWJbLxAVZWqyBio5WajorM1PL
+        xExUlLQfbU5n0lygRerMP/qxOZ92vpjfCKLAi3P5Puc957xHA2gWUoo49147gWUqbSPrdjOXChrQm56S
+        lFVFvKEcXaqV2OQiohMt7Esw+6Ro5gGeWfhbff0BY9NzDI3N0f/JS6fLy7rd6f8HcNsdOI6EYD8cjK3V
+        roiLawdYu+vivwHSWcQM1THz/DQv96+ixeHlVvU71oQFAGTmP+37bdsPBf8WZ4fRFhVEXdcsBQ9srN6Z
+        pjqQhQUCAmcW29JZxA8fvaWyY5YcawdBOy6oANm2H9A3MMypDLNS7b1flJnFtnQWcVmrB2NhMytD9SpA
+        TiUA5+CYInQOjWPrH2V7RBzmijdo9x5VKr+yj6ImD9nmelZsS1UBcme/+OPIJIOfv/Gi201ZXQ/hMfFU
+        Peuktqnbd3QN+U/cXM6tYfmW8ypAQiKdh91TTE7PYHNOYKl6z916F3m+eSNjT1B4vxHjzWoFYrhRwbLN
+        51SAJOynx8vo5Ay9rimKHzu5XtJDpuU1WZY2Eg1WgrXRJOpNxKdcUyBLN6WoAInnyPh3XvW6KW/4MC9O
+        z2ki+Wo1CWklROkMCiT8wEm0kXEsCTmrAiTbDtcEpTVdZOS1oDfWk5xZ6RPeQZeUR8zxK0Qe1BO65xjr
+        t0YotXhjAEAeQ7It8ZSESUjkznIq2bYsTGYW29JZxIs2nFEdLOSdfwFwpvLxRKIY2AAAAABJRU5ErkJg
+        gg==
+</value>
+  </data>
   <data name="propertiesToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
@@ -291,11 +308,11 @@
   <metadata name="tt.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>182, 17</value>
-  </metadata>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>418, 17</value>
+    <value>307, 17</value>
+  </metadata>
+  <metadata name="saveFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>76, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>45</value>
