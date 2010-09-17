@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=20100907-1
+Name=OpenRA - Command & Conquer
+Comment=The OpenRA RTS engine running Command & Conquer
+Icon=openra
+Exec=/usr/bin/openra Game.Mods=cnc
+Terminal=false
+Categories=Game;

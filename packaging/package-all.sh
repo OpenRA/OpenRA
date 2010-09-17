@@ -57,6 +57,32 @@ fi
 
 pushd packaging &> /dev/null
 
+####### *nix Builds #######
+pushd linux &> /dev/null
+
+#Desktop Icons
+BUILTDIR=../../../built
+mkdir -p $BUILTDIR/usr/share/applications/
+sed -i "3,3 d" openra-ra.desktop
+sed -i "3,3 i\Version=$VERSION" openra-ra.desktop
+sed -i "3,3 d" openra-cnc.desktop
+sed -i "3,3 i\Version=$VERSION" openra-cnc.desktop
+cp openra-ra.desktop $BUILTDIR/usr/share/applications/
+cp openra-cnc.desktop $BUILTDIR/usr/share/applications/
+
+#Menu entries
+mkdir -p $BUILTDIR/usr/share/menu/
+cp openra-ra $BUILTDIR/usr/share/menu/
+cp openra-cnc $BUILTDIR/usr/share/menu/
+
+#Icon images
+mkdir -p $BUILTDIR/usr/share/pixmaps/
+cp openra.32.xpm $BUILTDIR/usr/share/pixmaps/
+mkdir -p $BUILTDIR/usr/share/icons/
+cp -r hicolor $BUILTDIR/usr/share/icons/
+
+popd &> /dev/null
+
 #Arch-Linux
 msg "\E[34m" "Building Arch-Linux package."
 pushd linux/pkgbuild/ &> /dev/null
@@ -84,7 +110,7 @@ if [ $? -ne 0 ]; then
 fi
 popd &> /dev/null
 
-#OSX
+####### OSX #######
 msg "\E[34m" "Building OSX package."
 pushd osx/ &>/dev/null
 sh package-game.sh ~/openra-package/$_gitname-build "$VERSION" &> package.log
@@ -95,7 +121,7 @@ else
 fi
 popd &> /dev/null
 
-#Windows
+####### Windows #######
 msg "\E[34m" "Building Windows package."
 pushd windows/ &> /dev/null
 makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi &> package.log

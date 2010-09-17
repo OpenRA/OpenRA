@@ -1,0 +1,2 @@
+?package(openra):needs="X11" section="Games/Simulation" title="OpenRA - Red Alert"\
+command="/usr/bin/openra Game.Mods=ra" icon="/usr/share/pixmaps/openra.32.xpm"
