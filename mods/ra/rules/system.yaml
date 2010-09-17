@@ -32,7 +32,6 @@ Player:
 		Description: GPS Satellite
 		LongDesc: Reveals the entire map
 		Prerequisites: ATEK
-		TechLevel: 12
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
 	ChronoshiftPower:
@@ -41,7 +40,6 @@ Player:
 		Description: Chronoshift
 		LongDesc: Temporarily teleports a vehicle across \nthe map.
 		Prerequisites: PDOX
-		TechLevel: 12
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
@@ -51,7 +49,6 @@ Player:
 		Description: Invulnerability
 		LongDesc: Makes a single unit invulnerable for a \nshort time.
 		Prerequisites: IRON
-		TechLevel: 12
 		Duration: .75
 	SpyPlanePower:
 		Image: smigicon
@@ -59,14 +56,12 @@ Player:
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map.
 		Prerequisites: AFLD
-		TechLevel: 5
 	ParatroopersPower:
 		Image: pinficon
 		ChargeTime: 6
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
 		Prerequisites: AFLD
-		TechLevel: 5
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
 	NukePower:
@@ -75,7 +70,6 @@ Player:
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		Prerequisites: MSLO
-		TechLevel: 12
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
@@ -85,7 +79,6 @@ Player:
 		ChargeTime: 10
 		Description: Sonar Pulse (Single Use)
 		LongDesc: Reveals all submarines on the map for a \nshort time.
-		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
 	AirstrikePower:
@@ -93,7 +86,6 @@ Player:
 		ChargeTime: 5
 		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted bombs on your target.
-		TechLevel: 5
 		GivenAuto: no
 		OneShot: yes
 		UnitType: badr.bomber

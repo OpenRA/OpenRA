@@ -22,7 +22,6 @@ namespace OpenRA.Traits
 		public readonly string LongDesc = "";
 		[ActorReference]
 		public readonly string[] Prerequisites = { };
-		public readonly int TechLevel = -1;
 		public readonly bool GivenAuto = true;
 
 		public readonly string OrderName;
@@ -48,7 +47,8 @@ namespace OpenRA.Traits
 
 		protected readonly Actor Self;
 		protected readonly Player Owner;
-
+		string[] effectivePrereq = {};
+		
 		bool notifiedCharging;
 		bool notifiedReady;
 
@@ -59,6 +59,9 @@ namespace OpenRA.Traits
 			Self = self;
 			Owner = self.Owner;
 
+			effectivePrereq = Info.Prerequisites
+				.Select(a => a.ToLowerInvariant()).ToArray();
+			
 			self.Trait<TechTreeCache>().Add( Info.OrderName, Info.Prerequisites.Select( a => a.ToLowerInvariant() ).ToList(), this );
 		}
 
@@ -66,13 +69,14 @@ namespace OpenRA.Traits
 		{
 			if (Info.OneShot && IsUsed)
 				return;
-
-			if (Info.GivenAuto)
-				IsAvailable = Info.TechLevel > -1 && hasPrerequisites;
 			
+			if (Info.GivenAuto)
+				IsAvailable = hasPrerequisites;
+							
 			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
 			{
 				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastCharge) RemainingTime = 0;
+
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)
 				{
@@ -93,15 +97,13 @@ namespace OpenRA.Traits
 
 		bool IsPowered()
 		{
-			var buildings = Rules.TechTree.GatherBuildings(Owner);
-			var effectivePrereq = Info.Prerequisites
-				.Select(a => a.ToLowerInvariant());
-
-			if (Info.Prerequisites.Count() == 0) 
+			if (effectivePrereq.Count() == 0) 
 				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
 			
-			return effectivePrereq.Any() && 
-				effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
+			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
+			var buildings = Rules.TechTree.GatherBuildings(Owner);
+			
+			return effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
 		}
 
 		public void FinishActivate()
