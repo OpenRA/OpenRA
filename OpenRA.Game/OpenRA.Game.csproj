@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -98,7 +98,6 @@
     <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
-    <Compile Include="GameRules\TechTree.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Graphics\ChromeProvider.cs" />
