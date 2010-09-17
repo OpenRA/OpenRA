@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Render
 		public void BuildingComplete( Actor self )
 		{
 			roof.Play( GetPrefix(self) + "idle-top" );
-			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 2 } );
+			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 24 } );
 		}
 
 		public void Tick(Actor self)
