@@ -33,6 +33,7 @@ namespace OpenRA.GameRules
 		public bool PerfGraph = false;
 		public bool RecordSyncReports = true;
 		public bool ShowCollisions = false;
+		public float LongTickThreshold = 0.001f;
 	}
 	
 	public class GraphicSettings

@@ -79,7 +79,7 @@ namespace OpenRA
 				var sw = new Stopwatch();
 				currentActivity = a.Tick(this) ?? new Idle();
 				var dt = sw.ElapsedTime();
-				if( dt > 0.001 )
+				if(dt > Game.Settings.Debug.LongTickThreshold)
 					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", a, dt * 1000, Game.LocalTick);
 				
 				if (a == currentActivity) break;

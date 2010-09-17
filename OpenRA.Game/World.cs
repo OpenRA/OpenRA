@@ -150,9 +150,9 @@ namespace OpenRA
 			Queries.WithTraitMultiple<ITick>().DoTimed( x =>
 			{
 				x.Trait.Tick( x.Actor );
-			}, "[{2}] Trait: {0} ({1:0.000} ms)", 0.001 );
+			}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
 
-			effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", 0.001 );
+			effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
 			Game.viewport.Tick();
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
