@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 				anims.Add( "turret_{0}".F(i), 
 					new AnimationWithOffset( turretAnim,
 						() => Combat.GetTurretPosition( self, facing, turret ),
-						null) { ZOffset = 1 });
+						null) { ZOffset = 70 });
 
 				if (attackInfo.MuzzleFlash)
 				{
