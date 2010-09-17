@@ -3,6 +3,8 @@ using OpenRA.Traits;
 using System;
 using System.Collections.Generic;
 
+using XRandom = OpenRA.Thirdparty.Random;
+
 
 //TODO:
 // [y] never give harvesters orders
@@ -31,7 +33,7 @@ namespace OpenRA.Mods.RA
 		Player p;
 		PlayerResources playerResources;
 		int2 baseCenter;
-        Random random = new Random(); //we do not use the synced random number generator.
+        XRandom random = new XRandom(); //we do not use the synced random number generator.
 
 		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
 		{
@@ -197,16 +199,11 @@ namespace OpenRA.Mods.RA
             if (unitsHangingAroundTheBase.Count > 5)
             {
                 Game.Debug("Launch an attack.");
-				
-				// Todo: We have a trait which holds player/spawn info (MPStartLocationsInfo) - use it
-                int2[] spawnPoints = Game.world.Map.SpawnPoints.ToArray();
-				
-				
-                // At the start of the game, all you can do is investigate each spawn point
-                // until you learn where some other players are.
-                // this sometimes sends an attack to the bot's own spawn point,
-                // which is a leading cause of blocking the spawn points :(
-                int2 attackTarget = spawnPoints[random.Next(0, spawnPoints.Length)];
+
+				int2 attackTarget = Game.world.WorldActor.Trait<MPStartLocations>().Start
+					.Where(kv => kv.Key != p)
+					.Select(kv => kv.Value)
+					.Random(random);
                 foreach (var a in unitsHangingAroundTheBase)
 					if (TryToMove(a, attackTarget))
 						attackForce.Add(a);
