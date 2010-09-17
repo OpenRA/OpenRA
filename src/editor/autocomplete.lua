@@ -198,16 +198,34 @@ for i,api in pairs(apis) do
 	fillTips(api,"")
 end
 
+function UpdateAssignCache(editor)
+	if (editor.spec.typeassigns and not editor.assignscache) then
+		local assigns = editor.spec.typeassigns(editor)
+		editor.assignscache = {
+			assigns = assigns,
+			line = editor:GetCurrentLine(),
+		}
+	end
+end
+
 function GetTipInfo(editor, content, short)
+	
+
 	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
-	local class  = caller and content:match("([a-zA-Z_0-9]+)[%.:]"..caller.."%(%s*$")
+	local class  = caller and content:match("([a-zA-Z_0-9%.]+)[%.:]"..caller.."%(%s*$")
 	local tip = editor.api.tip
 	
-	if (not short) then
-		return caller and (class and tip.finfoclass[class]) and tip.finfoclass[class][caller] or tip.finfo[caller]
-	else
-		return caller and (class and tip.shortfinfoclass[class]) and tip.shortfinfoclass[class][caller] or tip.shortfinfo[caller]
+	local classtab = short and tip.shortfinfoclass or tip.finfoclass
+	local funcstab = short and tip.shortfinfo or tip.finfoclass
+	
+	UpdateAssignCache(editor)
+	
+	if (editor.assignscache and not (class and classtab[class])) then
+		local assigns = editor.assignscache.assigns
+		class = assigns and assigns[class] or class
 	end
+	
+	return caller and (class and classtab[class]) and classtab[class][caller] or funcstab[caller]
 end
 
 
@@ -306,8 +324,9 @@ local function buildcache(childs)
 end
 
 -- make syntype dependent
-function CreateAutoCompList(api,key) 
-	--DisplayOutput(key_.."\n")
+function CreateAutoCompList(editor,key) 
+	local api = editor.api
+	--DisplayOutput(key,"\n")
 	local tip = api.tip
 	local ac = api.ac
 	
@@ -318,8 +337,18 @@ function CreateAutoCompList(api,key)
 	-- track recursion depth
 	local depth = 0
 	
+	UpdateAssignCache(editor)
+	
+	if (editor.assignscache) then
+		local id,rest = key:match("([%w_.]+):(.*)")
+		-- replace for lookup
+		if (id and rest) then
+			key = (editor.assignscache.assigns[id] or id)..":"..rest
+		end
+	end
+	
 	local function findtab (rest,tab)
-		local key,krest = rest:match("([a-zA-Z0-9_]+)(.*)")
+		local key,krest = rest:match("([%w_]+)(.*)")
 		
 		--DisplayOutput("2> "..rest.." : "..(key or "nil").." : "..tostring(krest).."\n")
 	
@@ -374,11 +403,16 @@ function CreateAutoCompList(api,key)
 	local compstr = ""
 	if complete and complete[rest:lower()] then
 		local list = complete[rest:lower()]
-		table.sort(list,function(a,b)
-			local ma,mb = a:sub(1,#rest)==last, b:sub(1,#rest)==rest
-			if (ma and mb) or (not ma and not mb) then return a<b end
-			return ma
-		end)
+		
+		if (#rest > 0) then
+			table.sort(list,function(a,b)
+				local ma,mb = a:sub(1,#rest)==last, b:sub(1,#rest)==rest
+				if (ma and mb) or (not ma and not mb) then return a<b end
+				return ma
+			end)
+		else
+			table.sort(list)
+		end
 		compstr = table.concat(list," ")
 	end
 	

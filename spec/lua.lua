@@ -20,7 +20,83 @@ return {
 					end
 					return s,e,cap,l
 				end,
+	
+	typeassigns = function(editor)
+			local line = editor:GetCurrentLine()
+			line = line-1
+			
+			local scopestart = {"if","do","while","function", "local%s+function", "for"}
+			local scopeend = {"end"}
+			local iscomment = editor.spec.iscomment
+			
+			local assigns = {}
+			
+			-- iterate up until a line starts with scopestart
+			-- always ignore lines whose first symbol is styled as comment
+			local endline = line
+			while (line >= 0) do 
+				local ls = editor:PositionFromLine(line)
+				local s = bit.band(editor:GetStyleAt(ls),31)
 
+				if (not iscomment[s]) then
+					local tx = editor:GetLine(line)
+					local leftscope
+					
+					for i,v in ipairs(scopestart) do
+						if (tx:match("^"..v)) then
+							leftscope = true
+						end
+					end
+					if (leftscope) then 
+						break 
+					end
+				end
+				line = line -1
+			end
+			
+			while (line <= endline) do
+				local ls = editor:PositionFromLine(line)
+				local s = bit.band(editor:GetStyleAt(ls),31)
+
+				if (not iscomment[s]) then
+					local tx = editor:GetLine(line)
+					-- check for assignments
+					local identifier = "([%w_%.:]+)"
+					-- special hint
+					local typ,var = tx:match("%s*--=%s*"..identifier.."%s+"..identifier)
+					if (var and typ) then
+						assigns[var] = typ
+					else
+						-- real assignments
+						var,typ,comma = tx:match("%s*"..identifier.."%s*=%s*"..identifier..".-%s*([,]*)%s*$")
+						if (typ and comma == "") then
+							local identifier = "([%w_]+)"
+							class,func,comma = typ:match(identifier.."[%.:]"..identifier)
+							if (func) then
+								local funcnames = {"new","load","create"}
+								for i,v in ipairs(funcnames) do
+									if (func:match("^"..v)) then
+										assigns[var] = class
+										break
+									end
+								end
+							elseif (assigns[typ]) then
+								assigns[var] = assigns[typ]
+							end
+						end
+					end
+				end
+				line = line+1
+			end
+			
+			DisplayOutput("\nTYPES\n")
+			for i,v in pairs(assigns) do
+				DisplayOutput(i,v,"\n")
+			end
+	
+			return assigns
+		end,
+	
 	lexerstyleconvert = {
 		text		= {wxstc.wxSTC_LUA_IDENTIFIER,},
 	

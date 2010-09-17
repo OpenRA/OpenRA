@@ -16,9 +16,10 @@ StylesApplyToEditor(ide.config.stylesoutshell,out,ide.ofont,ide.ofontItalic)
 
 local function print(...)
 	out:SetReadOnly(false)
-	for i=1,select('#',...) do
+	local cnt = select('#',...)
+	for i=1,cnt do
 		local x = select(i,...)
-		out:InsertText(out:GetLength(),tostring(x))
+		out:InsertText(out:GetLength(),tostring(x)..(i < cnt and "\t" or ""))
 	end
 	out:InsertText(out:GetLength(),"\n")
 	out:GotoPos(out:GetLength())

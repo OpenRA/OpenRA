@@ -23,18 +23,22 @@ function ClearOutput(event)
 	errorlog:SetReadOnly(true)
 end
 
-function DisplayOutput(message, dont_add_marker)
-	--if splitter:IsSplit() == false then
-	--	local w, h = ide.frame:GetClientSizeWH()
-	--	splitter:SplitHorizontally(notebook, bottomnotebook, h - ide.config.view.splitterheight)
-	--end
-	if not dont_add_marker then
-		errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
+function DisplayOutputNoMarker(...)
+	local message = ""
+	local cnt = select('#',...)
+	for i=1,cnt do
+		local v = select(i,...)
+		message = message..tostring(v)..(i<cnt and "\t" or "")
 	end
+	
 	errorlog:SetReadOnly(false)
 	errorlog:AppendText(message)
 	errorlog:SetReadOnly(true)
 	errorlog:GotoPos(errorlog:GetLength())
+end
+function DisplayOutput(...)
+	errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
+	DisplayOutputNoMarker(...)
 end
 
 local streamins   = {}
@@ -92,11 +96,11 @@ function RunCommandLine(cmd,wdir,tooutput,nohide)
 	
 	-- check process
 	if not pid or pid == -1 then
-		DisplayOutput("Unknown ERROR Running program!\n", true)
+		DisplayOutputNoMarker("Unknown ERROR Running program!\n")
 		customproc = nil
 		return
 	else
-		DisplayOutput("Process: "..exename.." pid:"..tostring(pid).."\n", true)
+		DisplayOutputNoMarker("Process: "..exename.." pid:"..tostring(pid).."\n")
 		customprocs[pid] = {proc=customproc,exename=exename}
 	end
 	
@@ -109,20 +113,20 @@ function RunCommandLine(cmd,wdir,tooutput,nohide)
 		streamerrs[pid] = streamerr
 	end
 	
-	DisplayOutput("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n", true)
+	DisplayOutputNoMarker("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n")
 end
 
 local function getStreams()
 	for i,streamin in pairs(streamins) do
 		while(streamin:CanRead()) do
 			str = streamin:Read(4096)
-			DisplayOutput(str,true)
+			DisplayOutputNoMarker(str)
 		end
 	end
 	for i,streamerr in pairs(streamerrs) do
 		while (streamerr:CanRead()) do
 			str = streamerr:Read(4096)
-			DisplayOutput(str,true)
+			DisplayOutputNoMarker(str)
 		end
 	end
 end

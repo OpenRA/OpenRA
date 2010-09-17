@@ -4,6 +4,8 @@
 local frame    = ide.frame
 local menuBar  = frame.menuBar
 
+
+
 local editMenu = wx.wxMenu{
 		{ ID_CUT,       "Cu&t\tCtrl-X",        "Cut selected text to clipboard" },
 		{ ID_COPY,      "&Copy\tCtrl-C",       "Copy selected text to the clipboard" },
@@ -138,7 +140,7 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 			
 			--DisplayOutput("> "..complete.."\n")
 			
-			local userList = CreateAutoCompList(editor.api,complete)
+			local userList = CreateAutoCompList(editor,complete)
 			if userList and string.len(userList) > 0 then
 				editor:UserListShow(1, userList)
 				--ShowList(userList)

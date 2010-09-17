@@ -124,7 +124,14 @@ local function addToTab(tab,file)
 					format(file,debug.traceback(err)))
 			end)
 		if (name and success) then
-			tab[name] = result
+			if (tab[name]) then
+				local out = tab[name]
+				for i,v in pairs(result) do
+					out[i] = v
+				end
+			else
+				tab[name] = result
+			end
 		end
 	end
 end
@@ -156,6 +163,7 @@ local function loadSpecs()
 	for n,spec in pairs(ide.specs) do
 		spec.sep = spec.sep or "\1"
 		spec.iscomment = {}
+		spec.iskeyword0 = {}
 		if (spec.lexerstyleconvert) then
 			if (spec.lexerstyleconvert.comment) then
 				for i,s in pairs(spec.lexerstyleconvert.comment) do
@@ -164,14 +172,14 @@ local function loadSpecs()
 			end
 			if (spec.lexerstyleconvert.keywords0) then
 				for i,s in pairs(spec.lexerstyleconvert.keywords0) do
-					spec.iscomment[s] = true
+					spec.iskeyword0[s] = true
 				end
 			end
 		end
 	end
 end
 loadSpecs()
-
+ide.loadSpecs = loadSpecs
 
 -- load tools
 local function loadTools()

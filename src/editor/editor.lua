@@ -182,6 +182,7 @@ function CreateEditor(name)
 	editorID = editorID + 1 -- increment so they're always unique
 	
 	editor.matchon = false
+	editor.assignscache = false
 
 	editor:SetBufferedDraw(true)
 	editor:StyleClearAll()
@@ -254,7 +255,9 @@ function CreateEditor(name)
 	
 	editor:Connect(wxstc.wxEVT_STC_MODIFIED,
 			function (event)
-				
+				if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
+					editor.assignscache = false
+				end
 				if (bit.band(event:GetModificationType(),wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
 					table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
 				end
@@ -429,6 +432,15 @@ function IndicateFunctions(editor, lines, linee)
 	
 	local isfunc = editor.spec.isfncall
 	local iscomment = editor.spec.iscomment
+	local iskeyword0 = editor.spec.iskeyword0
+	local isinvalid = {}
+	for i,v in pairs(iscomment) do
+		isinvalid[i] = v
+	end
+	for i,v in pairs(iskeyword0) do
+		isinvalid[i] = v
+	end
+	
 	local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
 	local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
 
@@ -451,7 +463,7 @@ function IndicateFunctions(editor, lines, linee)
 			if (f) then
 				local p = ls+f+off
 				local s = bit.band(editor:GetStyleAt(p),31)
-				if (not iscomment[s]) then
+				if (not (isinvalid[s])) then
 					
 					editor:StartStyling(p,INDICS_MASK)
 					editor:SetStyling(t-f,INDIC0_MASK + 1)
@@ -527,6 +539,7 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
 		-- parse current file and update list
 		funclist:Clear()
 		local editor = GetEditor()
+				
 		if (not (editor and editor.spec and editor.spec.isfndef)) then return end
 		
 		local lines = 0
