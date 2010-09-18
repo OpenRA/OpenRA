@@ -1,4 +1,0 @@
-http://open-ra.org/releases/windows/freetype-zlib.zip
-http://openra.res0l.net/releases/windows/freetype-zlib.zip
-http://metahash.com/releases/windows/freetype-zlib.zip
-http://mirumu.jp/pub/releases/windows/freetype-zlib.zip
