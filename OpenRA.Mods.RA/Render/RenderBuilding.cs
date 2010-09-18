@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 				var ret = a.WithPos(a.Pos - Origin);
 				yield return ret;
 				if (disabled)
-					yield return ret.WithPalette("disabled").WithZOffset(-1);
+					yield return ret.WithPalette("disabled").WithZOffset(1);
 			}
 		}
 		
