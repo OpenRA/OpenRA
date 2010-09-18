@@ -19,10 +19,8 @@ using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Support;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
-using Timer = OpenRA.Support.Timer;
 using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA

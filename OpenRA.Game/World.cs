@@ -10,13 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
-using OpenRA.Support;
 using OpenRA.Traits;
 
 using XRandom = OpenRA.Thirdparty.Random;

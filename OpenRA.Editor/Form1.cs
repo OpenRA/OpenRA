@@ -11,15 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
-using OpenRA.GameRules;
-using OpenRA.Traits;
-using OpenRA.Widgets;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
