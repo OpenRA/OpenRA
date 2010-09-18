@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 		public int Facing { get; set; }
 		[Sync]
 		public int Altitude { get; set; }
-		[Sync]
+		
 		public int ROT { get { return Info.ROT; } }
 		public int InitialFacing { get { return Info.InitialFacing; } }
 		

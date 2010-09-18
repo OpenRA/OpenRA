@@ -23,6 +23,8 @@ namespace OpenRA.Network
 		string GenerateSyncReport()
 		{
 			var sb = new StringBuilder();
+			sb.AppendLine("SharedRandom: "+Game.world.SharedRandom.Last);
+			
 			sb.AppendLine("Actors:");
 			foreach (var a in Game.world.Actors)
 				sb.AppendLine("\t {0} {1} {2} ({3})".F(

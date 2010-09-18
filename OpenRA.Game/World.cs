@@ -182,6 +182,9 @@ namespace OpenRA
 				foreach (var x in traitDict.ActorsWithTraitMultiple<object>(this))
 					ret += n++ * (int)x.Actor.ActorID * Sync.CalculateSyncHash(x.Trait);
 
+				// Hash the shared rng
+				ret += SharedRandom.Last;
+				
 				return ret;
 			}
 		}

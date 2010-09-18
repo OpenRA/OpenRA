@@ -18,6 +18,8 @@ namespace OpenRA.Thirdparty
 	{
 		uint[] mt = new uint[624];
 		int index = 0;
+		
+		public int Last;
 
 		public Random() : this(Environment.TickCount) { }
 		
@@ -39,7 +41,8 @@ namespace OpenRA.Thirdparty
 			y ^= y >> 18;
 
 			index = (index + 1) % 624;
-			return (int)(y % int.MaxValue);
+			Last = (int)(y % int.MaxValue);
+			return Last;
 		}
 
 		public int Next(int low, int high) { return low + Next() % (high - low); }
