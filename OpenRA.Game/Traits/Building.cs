@@ -44,6 +44,8 @@ namespace OpenRA.Traits
 		public readonly BuildingInfo Info;
 		[Sync]
 		readonly int2 topLeft;
+		
+		readonly PowerManager PlayerPower;
 
 		public bool Disabled
 		{
@@ -57,6 +59,8 @@ namespace OpenRA.Traits
 			Info = self.Info.Traits.Get<BuildingInfo>();
 			self.CenterLocation = Game.CellSize 
 				* ((float2)topLeft + .5f * (float2)Info.Dimensions);
+			
+			PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 		
 		public int GetPowerUsage()
@@ -78,6 +82,19 @@ namespace OpenRA.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			// Power plants lose power with damage
+			if (Info.Power > 0)
+			{
+				var modifier = self
+					.TraitsImplementing<IPowerModifier>()
+					.Select(t => t.GetPowerModifier())
+					.Product();
+					
+				var health = self.TraitOrDefault<Health>();
+				var healthFraction = (health == null) ? 1f : health.HPFraction;
+				PlayerPower.UpdateActor(self, (int)(modifier * healthFraction * Info.Power));
+			}
+			
 			if (e.DamageState == DamageState.Dead)
 			{
 				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
