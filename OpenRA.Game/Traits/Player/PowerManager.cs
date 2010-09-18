@@ -46,7 +46,6 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-			Game.Debug("Added {0}: {1}",a.Info.Name, a.Trait<Building>().GetPowerUsage());
 			PowerDrain.Add(a, a.Trait<Building>().GetPowerUsage());
 			UpdateTotals();
 		}
@@ -55,7 +54,6 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-			Game.Debug("Removing {0}",a.Info.Name);
 			PowerDrain.Remove(a);
 			UpdateTotals();
 		}
@@ -72,7 +70,6 @@ namespace OpenRA.Traits
 				else
 					totalDrained -= p;
 			}
-			Game.Debug("Provided: {0} Drained: {1}",totalProvided, totalDrained);
 		}
 		
 		public void UpdateActor(Actor a, int newPower)
