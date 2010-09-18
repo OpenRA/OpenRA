@@ -130,13 +130,6 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
-				Checkbox@MUSICPLAYER_CHECKBOX:
-					Id:MUSICPLAYER_CHECKBOX
-					X:0
-					Y:70
-					Width:300
-					Height:20
-					Text:Show Music Player
 		Container@DISPLAY_PANE:
 			Id:DISPLAY_PANE
 			X:37

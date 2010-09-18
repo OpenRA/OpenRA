@@ -60,8 +60,6 @@ Container@INGAME_ROOT:
 			Height:25
 			Text:Diplomacy
 			Bold:True
-		WorldTooltip@INGAME_WORLD_TOOLTIP:
-			Id:INGAME_WORLD_TOOLTIP
 		Button@INGAME_DEVELOPERMODE_BUTTON:
 			Id:INGAME_DEVELOPERMODE_BUTTON
 			X:324

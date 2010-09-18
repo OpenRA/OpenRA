@@ -250,4 +250,4 @@ Background@MUSIC_MENU:
 			Y:140
 			Width:100
 			Height:20
-			Text:Repeat
+			Text:Loop
