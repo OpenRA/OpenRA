@@ -99,7 +99,6 @@ namespace OpenRA.Traits
 	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r); }
 	public interface IDamageModifier { float GetDamageModifier( WarheadInfo warhead ); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }
-	public interface IPowerModifier { float GetPowerModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
 	public interface IPaletteModifier { void AdjustPalette(Dictionary<string,Palette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }

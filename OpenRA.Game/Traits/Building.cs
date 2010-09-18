@@ -65,34 +65,22 @@ namespace OpenRA.Traits
 		
 		public int GetPowerUsage()
 		{
-			var modifier = self
-				.TraitsImplementing<IPowerModifier>()
-				.Select(t => t.GetPowerModifier())
-				.Product();
+			if (Info.Power <= 0)
+				return Info.Power;
 			
-			if (Info.Power > 0)
-			{
-				var health = self.TraitOrDefault<Health>();
-				var healthFraction = (health == null) ? 1f : health.HPFraction;
-				return (int)(modifier * healthFraction * Info.Power);
-			}
-			else
-				return (int)(modifier * Info.Power);
+			var health = self.TraitOrDefault<Health>();
+			var healthFraction = (health == null) ? 1f : health.HPFraction;
+			return (int)(healthFraction * Info.Power);	
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			// Power plants lose power with damage
 			if (Info.Power > 0)
-			{
-				var modifier = self
-					.TraitsImplementing<IPowerModifier>()
-					.Select(t => t.GetPowerModifier())
-					.Product();
-					
+			{					
 				var health = self.TraitOrDefault<Health>();
 				var healthFraction = (health == null) ? 1f : health.HPFraction;
-				PlayerPower.UpdateActor(self, (int)(modifier * healthFraction * Info.Power));
+				PlayerPower.UpdateActor(self, (int)(healthFraction * Info.Power));
 			}
 			
 			if (e.DamageState == DamageState.Dead)

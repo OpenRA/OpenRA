@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -25,7 +26,8 @@ namespace OpenRA.Traits
 		PowerManagerInfo Info;
 		Player Player;
 		
-		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>(); 
+		Dictionary<Actor, List<string>> Overrides = new Dictionary<Actor, List<string>>();
+		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
 	
@@ -41,7 +43,7 @@ namespace OpenRA.Traits
 			init.world.ActorRemoved += ActorRemoved;
 		}
 		
-		public void ActorAdded(Actor a)
+		void ActorAdded(Actor a)
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
@@ -50,16 +52,7 @@ namespace OpenRA.Traits
 			UpdateTotals();
 		}
 		
-		public void UpdateActor(Actor a, int newPower)
-		{
-			if (a.Owner != Player || !a.HasTrait<Building>())
-				return;
-			Game.Debug("Updated {0}: {1}->{2}",a.Info.Name, PowerDrain[a], newPower);
-			PowerDrain[a] = newPower;
-			UpdateTotals();
-		}
-		
-		public void ActorRemoved(Actor a)
+		void ActorRemoved(Actor a)
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
@@ -72,14 +65,27 @@ namespace OpenRA.Traits
 		{
 			totalProvided = 0;
 			totalDrained = 0;
-			foreach (var p in PowerDrain.Values)
+			foreach (var kv in PowerDrain)
 			{
+				if (Overrides.Keys.Contains(kv.Key))
+					continue;
+				
+				var p = kv.Value;
 				if (p > 0)
 					totalProvided += p;
 				else
 					totalDrained -= p;
 			}
 			Game.Debug("Provided: {0} Drained: {1}",totalProvided, totalDrained);
+		}
+		
+		public void UpdateActor(Actor a, int newPower)
+		{
+			if (a.Owner != Player || !a.HasTrait<Building>())
+				return;
+		
+			PowerDrain[a] = newPower;
+			UpdateTotals();
 		}
 		
 		int nextPowerAdviceTime = 0;
@@ -91,7 +97,6 @@ namespace OpenRA.Traits
 				nextPowerAdviceTime = 0;
 			wasLowPower = lowPower;
 			
-			
 			if (--nextPowerAdviceTime <= 0)
 			{
 				if (lowPower)
@@ -99,6 +104,46 @@ namespace OpenRA.Traits
 				
 				nextPowerAdviceTime = Info.AdviceInterval;
 			}
+		}
+		
+		// Force power down for power-down button, spy, emp, etc
+		public void Disable(Actor a, string key)
+		{
+			Game.Debug("Disabled {0}.{1}",a.Info.Name,key);
+
+			if (Overrides.ContainsKey(a))
+			{
+				if (Overrides[a].Contains(key))
+					return;
+				
+				Overrides[a].Add(key);
+			}
+			else
+				Overrides.Add(a, new List<string>() { key });
+			
+			UpdateTotals();
+		}
+		
+		public void RemoveDisable(Actor a, string key)
+		{
+			Game.Debug("Enabled {0}.{1}",a.Info.Name, key);
+
+			if (!Overrides.ContainsKey(a) || !Overrides[a].Contains(key))
+				return;
+			
+			Overrides[a].Remove(key);
+			if (Overrides[a].Count == 0)
+				Overrides.Remove(a);
+			
+			UpdateTotals();
+		}
+		
+		public bool IsPowered(Actor a)
+		{
+			if (Overrides.ContainsKey(a))
+				return false;
+			
+			return PowerProvided >= PowerDrained;
 		}
 
 		public PowerState GetPowerState()
