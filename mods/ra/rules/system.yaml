@@ -92,6 +92,7 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
 	ConquestVictoryConditions:
+	PowerManager:
 	PlayerResources:
 		InitialCash: 5000
 	ActorGroupProxy:
