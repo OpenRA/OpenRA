@@ -222,8 +222,7 @@ namespace OpenRA.Traits
 
 		protected static bool IsDisabledBuilding(Actor a)
 		{
-			var building = a.TraitOrDefault<Building>();
-			return building != null && building.Disabled;
+			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
 
 		protected virtual void BuildUnit( string name )

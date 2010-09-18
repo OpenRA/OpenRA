@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Building(init); }
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, IRenderModifier, IOccupySpace
+	public class Building : INotifyDamage, IResolveOrder, IOccupySpace
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -46,11 +46,6 @@ namespace OpenRA.Traits
 		readonly int2 topLeft;
 		
 		readonly PowerManager PlayerPower;
-
-		public bool Disabled
-		{
-			get	{ return self.TraitsImplementing<IDisable>().Any(t => t.Disabled); }
-		}
 
 		public Building(ActorInitializer init)
 		{
@@ -99,16 +94,6 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
-		{
-			foreach (var a in r)
-			{
-				yield return a;
-				if (Disabled)
-					yield return a.WithPalette("disabled");
-			}
-		}
-
 		public int2 TopLeft
 		{
 			get { return topLeft; }

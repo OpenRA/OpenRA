@@ -26,7 +26,6 @@ namespace OpenRA.Traits
 		PowerManagerInfo Info;
 		Player Player;
 		
-		Dictionary<Actor, List<string>> Overrides = new Dictionary<Actor, List<string>>();
 		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
@@ -67,9 +66,6 @@ namespace OpenRA.Traits
 			totalDrained = 0;
 			foreach (var kv in PowerDrain)
 			{
-				if (Overrides.Keys.Contains(kv.Key))
-					continue;
-				
 				var p = kv.Value;
 				if (p > 0)
 					totalProvided += p;
@@ -106,46 +102,6 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		// Force power down for power-down button, spy, emp, etc
-		public void Disable(Actor a, string key)
-		{
-			Game.Debug("Disabled {0}.{1}",a.Info.Name,key);
-
-			if (Overrides.ContainsKey(a))
-			{
-				if (Overrides[a].Contains(key))
-					return;
-				
-				Overrides[a].Add(key);
-			}
-			else
-				Overrides.Add(a, new List<string>() { key });
-			
-			UpdateTotals();
-		}
-		
-		public void RemoveDisable(Actor a, string key)
-		{
-			Game.Debug("Enabled {0}.{1}",a.Info.Name, key);
-
-			if (!Overrides.ContainsKey(a) || !Overrides[a].Contains(key))
-				return;
-			
-			Overrides[a].Remove(key);
-			if (Overrides[a].Count == 0)
-				Overrides.Remove(a);
-			
-			UpdateTotals();
-		}
-		
-		public bool IsPowered(Actor a)
-		{
-			if (Overrides.ContainsKey(a))
-				return false;
-			
-			return PowerProvided >= PowerDrained;
-		}
-
 		public PowerState GetPowerState()
 		{
 			if (PowerProvided >= PowerDrained) return PowerState.Normal;

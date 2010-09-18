@@ -11,6 +11,7 @@
 using System;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void QueueAttack( Actor self, Order order )
 		{
-			if (self.HasTrait<Building>() && self.Trait<Building>().Disabled) 
+			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
 				return;
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */

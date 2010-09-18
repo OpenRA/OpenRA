@@ -17,15 +17,17 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new CanPowerDown(init); }
 	}
 
-	public class CanPowerDown : IResolveOrder
+	public class CanPowerDown : IResolveOrder, IDisable
 	{
 		[Sync]
 		bool disabled = false;
-		
+		int normalPower = 0;
 		readonly PowerManager PlayerPower;
+		
 		public CanPowerDown(ActorInitializer init)
 		{
 			PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
+			normalPower = init.self.Info.Traits.Get<BuildingInfo>().Power;
 		}
 		public bool Disabled { get { return disabled; } }
 				
@@ -37,10 +39,7 @@ namespace OpenRA.Mods.RA
 				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 				Sound.PlayToPlayer(self.Owner, disabled ? eva.EnablePower : eva.DisablePower);
 				
-				if (disabled)
-					PlayerPower.Disable(self, "PowerDown");
-				else
-					PlayerPower.RemoveDisable(self, "PowerDown");
+				PlayerPower.UpdateActor(self, disabled ? 0 : normalPower);
 			}
 		}
 	}

@@ -23,8 +23,8 @@ namespace OpenRA.Traits
 		bool UpdateActive(Actor self)
 		{
 			// Check if powered
-			var b = self.Trait<Building>();
-			if (b.Disabled) return false;
+			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
+				return false;
 
 			var isJammed = self.World.Queries.WithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
 				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);

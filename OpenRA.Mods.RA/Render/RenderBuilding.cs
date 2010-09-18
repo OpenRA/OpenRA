@@ -36,7 +36,14 @@ namespace OpenRA.Mods.RA.Render
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return r.Select(a => a.WithPos(a.Pos - Origin));
+			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			foreach (var a in r)
+			{
+				var ret = a.WithPos(a.Pos - Origin);
+				yield return ret;
+				if (disabled)
+					yield return ret.WithPalette("disabled").WithZOffset(-1);
+			}
 		}
 		
 		public RenderBuilding( ActorInitializer init, Func<int> baseFacing )

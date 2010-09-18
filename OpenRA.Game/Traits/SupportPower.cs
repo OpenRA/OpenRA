@@ -104,8 +104,7 @@ namespace OpenRA.Traits
 			
 			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
 			var buildings = TechTree.GatherBuildings(Owner);
-			
-			return effectivePrereq.All(a => buildings[a].Any(b => !b.Trait<Building>().Disabled));
+			return effectivePrereq.All(a => buildings[a].Any(b => !b.TraitsImplementing<IDisable>().All(d => d.Disabled)));
 		}
 
 		public void FinishActivate()

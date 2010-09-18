@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 
 		public bool Disabled
 		{
-			get { return power.IsPowered(self); }
+			get { return power.PowerProvided < power.PowerDrained; }
 		}
 	}
 }
