@@ -173,9 +173,10 @@ namespace OpenRA
 		{
 			//using (new PerfSample("synchash"))
 			{
+				int n = 0;
 				int ret = 0;
 				foreach (var a in Actors)
-					ret += (int)a.ActorID * Sync.CalculateSyncHash(a);
+					ret += n++ * (int)a.ActorID * Sync.CalculateSyncHash(a);
 
 				return ret;
 			}
