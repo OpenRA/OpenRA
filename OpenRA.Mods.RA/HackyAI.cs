@@ -32,6 +32,8 @@ namespace OpenRA.Mods.RA
 		int ticks;
 		Player p;
 		PlayerResources playerResources;
+		PowerManager playerPower;
+		
 		int2 baseCenter;
         XRandom random = new XRandom(); //we do not use the synced random number generator.
 
@@ -70,6 +72,7 @@ namespace OpenRA.Mods.RA
 			enabled = true;
 		
 			playerResources = p.PlayerActor.Trait<PlayerResources>();
+			playerPower = p.PlayerActor.Trait<PowerManager>();
 		}
 
 		int GetPowerProvidedBy(ActorInfo building)
@@ -90,7 +93,7 @@ namespace OpenRA.Mods.RA
 		{
 			var buildableThings = queue.BuildableItems();
 
-			if (playerResources.PowerProvided <= playerResources.PowerDrained * 1.2)	/* try to maintain 20% excess power */
+			if (playerPower.PowerProvided <= playerPower.PowerDrained * 1.2)	/* try to maintain 20% excess power */
 			{
 				/* find the best thing we can build which produces power */
 				var best = buildableThings.Where(a => GetPowerProvidedBy(a) > 0)

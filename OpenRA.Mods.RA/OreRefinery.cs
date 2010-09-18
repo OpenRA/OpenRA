@@ -33,7 +33,8 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
-		readonly PlayerResources Player;
+		readonly PlayerResources PlayerResources;
+		readonly PowerManager PlayerPower;
 		List<Actor> LinkedHarv;
 
 		[Sync]
@@ -45,7 +46,9 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			Info = info;
-			Player = self.Owner.PlayerActor.Trait<PlayerResources> ();
+			PlayerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
+
 			LinkedHarv = new List<Actor> ();
 		}
 
@@ -63,7 +66,7 @@ namespace OpenRA.Mods.RA
 		public void GiveOre (int amount)
 		{
 			if (!Info.LocalStorage)
-				Player.GiveOre(amount);
+				PlayerResources.GiveOre(amount);
 			else
 			{
 				Ore += amount;
@@ -80,14 +83,14 @@ namespace OpenRA.Mods.RA
 			if (--nextProcessTime <= 0) {
 				// Convert resources to cash
 				int amount = Math.Min (Ore, Info.ProcessAmount);
-				amount = Math.Min (amount, Player.OreCapacity - Player.Ore);
+				amount = Math.Min (amount, PlayerResources.OreCapacity - PlayerResources.Ore);
 				
 				if (amount > 0)
 				{
 					Ore -= amount;
-					Player.GiveOre (amount);
+					PlayerResources.GiveOre (amount);
 				}
-				nextProcessTime = (Player.GetPowerState() == PowerState.Normal)? 
+				nextProcessTime = (PlayerPower.GetPowerState() == PowerState.Normal)? 
 					Info.ProcessTick : Info.LowPowerProcessTick ;
 			}
 		}

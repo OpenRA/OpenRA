@@ -26,6 +26,8 @@ namespace OpenRA.Traits
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
+		readonly PowerManager PlayerPower;
+		readonly PlayerResources PlayerResources;
 		
 		// TODO: sync these
 		// A list of things we are currently building
@@ -38,7 +40,9 @@ namespace OpenRA.Traits
 		{
 			this.self = self;
 			this.Info = info;
-
+			PlayerResources = playerActor.Trait<PlayerResources>();
+			PlayerPower = playerActor.Trait<PowerManager>();
+			
 			var ttc = playerActor.Trait<TechTree>();
 			
 			foreach (var a in AllBuildables(Info.Type))
@@ -119,7 +123,7 @@ namespace OpenRA.Traits
 				FinishProduction();
 			}
 			if( Queue.Count > 0 )
-				Queue[ 0 ].Tick( self.Owner );
+				Queue[ 0 ].Tick( PlayerResources, PlayerPower );
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -249,7 +253,6 @@ namespace OpenRA.Traits
 
 		public bool Paused = false, Done = false;
 		public Action OnComplete;
-
 		int slowdown = 0;
 
 		public ProductionItem(ProductionQueue queue, string item, int time, int cost, Action onComplete)
@@ -264,7 +267,7 @@ namespace OpenRA.Traits
 			Log.Write("debug", "new ProductionItem: {0} time={1} cost={2}", item, time, cost);
 		}
 
-		public void Tick(Player player)
+		public void Tick(PlayerResources pr, PowerManager pm)
 		{
 			if (Done)
 			{
@@ -274,7 +277,7 @@ namespace OpenRA.Traits
 
 			if (Paused) return;
 
-			if (player.PlayerActor.Trait<PlayerResources>().GetPowerState() != PowerState.Normal)
+			if (pm.GetPowerState() != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
 					slowdown = Queue.Info.LowPowerSlowdown; 
@@ -283,7 +286,7 @@ namespace OpenRA.Traits
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !player.PlayerActor.Trait<PlayerResources>().TakeCash(costThisFrame)) return;
+			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame)) return;
 			RemainingCost -= costThisFrame;
 			RemainingTime -= 1;
 			if (RemainingTime > 0) return;

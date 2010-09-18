@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly string BuildPaletteOpen = "bleep13.aud";
 		public readonly string BuildPaletteClose = "bleep13.aud";
 		public readonly string TabClick = "ramenu1.aud";
-		
+
 		public BuildPaletteWidget() : base() { }
 		
 		public override void Initialize()
@@ -449,11 +449,12 @@ namespace OpenRA.Mods.RA.Widgets
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
+			var power = pl.PlayerActor.Trait<PowerManager>();
 
 			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
 				(resources.DisplayCash + resources.DisplayOre >= cost ? Color.White : Color.Red ));
 			
-			var lowpower = resources.GetPowerState() != PowerState.Normal;
+			var lowpower = power.GetPowerState() != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name) 
 				* ((lowpower)? CurrentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);
@@ -461,7 +462,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
-				                 ((resources.PowerProvided - resources.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
+				                 ((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
 		
 			p += new int2(5, 35);
 			if (!canBuildThis)

@@ -29,11 +29,11 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 
-			var resources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			var power = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 
 			// Nothing to draw
-			if (resources.PowerProvided == 0
-				&& resources.PowerDrained == 0)
+			if (power.PowerProvided == 0
+				&& power.PowerDrained == 0)
 				return;
 
 			// Draw bar horizontally
@@ -41,18 +41,18 @@ namespace OpenRA.Mods.RA.Widgets
 			var barEnd = barStart + new float2(powerSize.Width, 0);
 
 			float powerScaleBy = 100;
-			var maxPower = Math.Max(resources.PowerProvided, resources.PowerDrained);
+			var maxPower = Math.Max(power.PowerProvided, power.PowerDrained);
 			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 
 			// Current power supply
-			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (resources.PowerProvided / powerScaleBy);
+			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerProvided / powerScaleBy);
 			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
 			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = Color.LimeGreen;
-			if (resources.GetPowerState() == PowerState.Low)
+			if (power.GetPowerState() == PowerState.Low)
 				color = Color.Orange;
-			if (resources.GetPowerState() == PowerState.Critical)
+			if (power.GetPowerState() == PowerState.Critical)
 				color = Color.Red;
 
 			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Power usage indicator
 			var indicator = ChromeProvider.GetImage( powerCollection, "power-indicator");
-			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (resources.PowerDrained / powerScaleBy);
+			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerDrained / powerScaleBy);
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 

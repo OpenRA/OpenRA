@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeInfo>
+	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeInfo>, ITraitPrerequisite<PowerManagerInfo>
 	{
 		public readonly bool RequiresPower = true;
 		public readonly bool OneShot = false;
@@ -52,12 +52,14 @@ namespace OpenRA.Traits
 		bool notifiedCharging;
 		bool notifiedReady;
 
+		readonly PowerManager PlayerPower;
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
 			Info = info;
 			RemainingTime = TotalTime;
 			Self = self;
 			Owner = self.Owner;
+			PlayerPower = self.Trait<PowerManager>();
 
 			effectivePrereq = Info.Prerequisites
 				.Select(a => a.ToLowerInvariant()).ToArray();
@@ -98,7 +100,7 @@ namespace OpenRA.Traits
 		bool IsPowered()
 		{
 			if (effectivePrereq.Count() == 0) 
-				return Owner.PlayerActor.Trait<PlayerResources>().GetPowerState() == PowerState.Normal;
+				return PlayerPower.GetPowerState() == PowerState.Normal;
 			
 			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
 			var buildings = TechTree.GatherBuildings(Owner);
