@@ -79,7 +79,5 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 								((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};
 		}
-		bool AreMutualAllies(Player a, Player b) { return a.Stances[b] == Stance.Ally && b.Stances[a] == Stance.Ally; }
-
 	}
 }

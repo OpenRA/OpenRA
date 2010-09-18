@@ -237,6 +237,28 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
+		static Bitmap RenderShp(ShpReader shp, Palette p)
+		{
+			var frame = shp[0];
+
+			var bitmap = new Bitmap(shp.Width, shp.Height);
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* q = (int*)data.Scan0.ToPointer();
+				var stride2 = data.Stride >> 2;
+
+				for (var i = 0; i < shp.Width; i++)
+					for (var j = 0; j < shp.Height; j++)
+						q[j * stride2 + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+			}
+
+			bitmap.UnlockBits(data);
+			return bitmap;
+		}
+
 		static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
 		{
 			var ri = info.Traits.Get<RenderSimpleInfo>();
@@ -250,73 +272,20 @@ namespace OpenRA.Editor
 			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);
-				var frame = shp[0];
+				var bitmap = RenderShp(shp, p);
 
-				var bitmap = new Bitmap(shp.Width, shp.Height);
-				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-					ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-				unsafe
+				try
 				{
-					int* q = (int*)data.Scan0.ToPointer();
-					var stride = data.Stride >> 2;
+					using (var s2 = FileSystem.OpenWithExts(image + "2", tileset.Extensions))
+					{
+						var shp2 = new ShpReader(s2);
+						var roofBitmap = RenderShp(shp2, p);
 
-					for (var i = 0; i < shp.Width; i++)
-						for (var j = 0; j < shp.Height; j++)
-							q[j * stride + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+						using (var g = System.Drawing.Graphics.FromImage(bitmap))
+							g.DrawImage(roofBitmap, 0, 0);
+					}
 				}
-
-				bitmap.UnlockBits(data);
-
-                try
-                {
-                    using (var s2 = FileSystem.OpenWithExts(image + "2", tileset.Extensions))
-                    {
-                        shp = new ShpReader(s2);
-                        frame = shp[0];
-
-                        var bitmap2 = new Bitmap(shp.Width, shp.Height);
-                        var data2 = bitmap2.LockBits(new Rectangle(0, 0, bitmap2.Width, bitmap2.Height),
-                            ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-
-                        unsafe
-                        {
-                            int* q = (int*)data2.Scan0.ToPointer();
-                            var stride2 = data2.Stride >> 2;
-
-                            for (var i = 0; i < shp.Width; i++)
-                                for (var j = 0; j < shp.Height; j++)
-                                    q[j * stride2 + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
-                        }
-
-                        bitmap2.UnlockBits(data);
-                        System.Drawing.Bitmap finalImage = null;
-                        finalImage = new System.Drawing.Bitmap(bitmap2.Width, bitmap2.Height);
-
-                        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(finalImage))
-                        {
-                            //set background color
-                            g.Clear(System.Drawing.Color.Transparent);
-
-                            //go through each image and draw it on the final image
-                            int offset = 0;
-                                g.DrawImage(bitmap,
-                                  new System.Drawing.Rectangle(offset, 0, bitmap.Width, bitmap.Height));
-                                g.DrawImage(bitmap2,
-                                  new System.Drawing.Rectangle(offset, 0, bitmap2.Width, bitmap2.Height));
-
-                        }
-                        
-                        bitmap = finalImage;
-
-                    }
-                }
-                catch (Exception ed)
-                {
-                    //
-                }
-
-
+				catch { }
 
 				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<BuildingInfo>() };
 			}
