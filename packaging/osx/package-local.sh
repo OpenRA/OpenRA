@@ -9,7 +9,7 @@ SOURCE_PATH="$PWD/."
 BUNDLE_PATH="$SOURCE_PATH/packaging/osx/OpenRA.app"
 TARGET_PATH="$PACKAGING_PATH/OpenRA.app/Contents/Resources"
 
-FILES="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc"
+FILES="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION"
 EXCLUDE="*.mdb ./mods/cnc/packages/*.mix ./mods/ra/packages/*.mix  ./mods/cnc/packages/*.MIX ./mods/ra/packages/*.MIX"
 
 # Copy source files into packaging dir
@@ -27,7 +27,6 @@ for i in $EXCLUDE; do
 	find . -path "$i" -delete
 done
 
-git describe --tags > "VERSION"
 cd $PACKAGING_PATH
 zip OpenRA -r -9 OpenRA.app 
 echo "Done!"

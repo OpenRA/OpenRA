@@ -8,7 +8,7 @@ SOURCE_PATH="$1"
 BUNDLE_PATH="OpenRA.app"
 TARGET_PATH="$PACKAGING_PATH/OpenRA.app/Contents/Resources"
 
-FILES="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc"
+FILES="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION"
 EXCLUDE="*.mdb"
 
 # Copy source files into packaging dir
