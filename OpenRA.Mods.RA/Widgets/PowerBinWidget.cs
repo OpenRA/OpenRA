@@ -50,9 +50,9 @@ namespace OpenRA.Mods.RA.Widgets
 			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = Color.LimeGreen;
-			if (power.GetPowerState() == PowerState.Low)
+			if (power.PowerState == PowerState.Low)
 				color = Color.Orange;
-			if (power.GetPowerState() == PowerState.Critical)
+			if (power.PowerState == PowerState.Critical)
 				color = Color.Red;
 
 			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);

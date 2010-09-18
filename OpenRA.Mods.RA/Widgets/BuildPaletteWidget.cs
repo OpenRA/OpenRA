@@ -454,7 +454,7 @@ namespace OpenRA.Mods.RA.Widgets
 			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
 				(resources.DisplayCash + resources.DisplayOre >= cost ? Color.White : Color.Red ));
 			
-			var lowpower = power.GetPowerState() != PowerState.Normal;
+			var lowpower = power.PowerState != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name) 
 				* ((lowpower)? CurrentQueue.Info.LowPowerSlowdown : 1);
 			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);

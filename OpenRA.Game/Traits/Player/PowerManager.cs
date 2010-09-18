@@ -102,11 +102,13 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public PowerState GetPowerState()
+		public PowerState PowerState
 		{
-			if (PowerProvided >= PowerDrained) return PowerState.Normal;
-			if (PowerProvided > PowerDrained / 2) return PowerState.Low;
-			return PowerState.Critical;
+			get {
+				if (PowerProvided >= PowerDrained) return PowerState.Normal;
+				if (PowerProvided > PowerDrained / 2) return PowerState.Low;
+				return PowerState.Critical;
+			}
 		}
 	}
 }

@@ -19,11 +19,9 @@ namespace OpenRA.Mods.RA
 
 	class RequiresPower : IDisable
 	{
-		readonly Actor self;
 		readonly PowerManager power;
 		public RequiresPower( Actor self )
 		{
-			this.self = self;
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 

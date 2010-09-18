@@ -31,7 +31,6 @@ namespace OpenRA.Mods.RA
 		bool enabled;
 		int ticks;
 		Player p;
-		PlayerResources playerResources;
 		PowerManager playerPower;
 		
 		int2 baseCenter;
@@ -70,8 +69,6 @@ namespace OpenRA.Mods.RA
 		{
 			this.p = p;
 			enabled = true;
-		
-			playerResources = p.PlayerActor.Trait<PlayerResources>();
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 		}
 

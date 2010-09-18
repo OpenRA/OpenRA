@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 					Ore -= amount;
 					PlayerResources.GiveOre (amount);
 				}
-				nextProcessTime = (PlayerPower.GetPowerState() == PowerState.Normal)? 
+				nextProcessTime = (PlayerPower.PowerState == PowerState.Normal)? 
 					Info.ProcessTick : Info.LowPowerProcessTick ;
 			}
 		}

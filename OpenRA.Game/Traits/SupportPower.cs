@@ -47,7 +47,6 @@ namespace OpenRA.Traits
 
 		protected readonly Actor Self;
 		protected readonly Player Owner;
-		string[] effectivePrereq = {};
 		
 		bool notifiedCharging;
 		bool notifiedReady;
@@ -60,9 +59,6 @@ namespace OpenRA.Traits
 			Self = self;
 			Owner = self.Owner;
 			PlayerPower = self.Trait<PowerManager>();
-
-			effectivePrereq = Info.Prerequisites
-				.Select(a => a.ToLowerInvariant()).ToArray();
 			
 			self.Trait<TechTree>().Add( Info.OrderName, Info.Prerequisites.Select( a => a.ToLowerInvariant() ).ToList(), this );
 		}
@@ -74,8 +70,8 @@ namespace OpenRA.Traits
 			
 			if (Info.GivenAuto)
 				IsAvailable = hasPrerequisites;
-							
-			if (IsAvailable && (!Info.RequiresPower || IsPowered()))
+
+			if (IsAvailable && (!Info.RequiresPower || PlayerPower.PowerState == PowerState.Normal))
 			{
 				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastCharge) RemainingTime = 0;
 
@@ -95,16 +91,6 @@ namespace OpenRA.Traits
 				OnFinishCharging();
 				notifiedReady = true;
 			}
-		}
-
-		bool IsPowered()
-		{
-			if (effectivePrereq.Count() == 0) 
-				return PlayerPower.GetPowerState() == PowerState.Normal;
-			
-			// Takes 0.3ms on pchote's machine -- calling it every tick for every active special power is retarded
-			var buildings = TechTree.GatherBuildings(Owner);
-			return effectivePrereq.All(a => buildings[a].Any(b => !b.TraitsImplementing<IDisable>().All(d => d.Disabled)));
 		}
 
 		public void FinishActivate()
@@ -135,7 +121,7 @@ namespace OpenRA.Traits
 			if (!IsAvailable || !IsReady)
 				return;
 
-			if (Info.RequiresPower && !IsPowered())
+			if (Info.RequiresPower && PlayerPower.PowerState != PowerState.Normal)
 			{
 				var eva = Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 				Sound.Play(eva.AbilityInsufficientPower);

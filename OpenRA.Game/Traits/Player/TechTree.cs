@@ -14,12 +14,12 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class TechTreeInfo : ITraitInfo
+	public class TechTreeInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new TechTree(init);}
 	}
 
-	class TechTree
+	public class TechTree
 	{
 		readonly List<Watcher> watchers = new List<Watcher>();
 		readonly Player player;
@@ -42,10 +42,16 @@ namespace OpenRA.Traits
 			foreach(var w in watchers)
 				w.Update(buildings);
 		}
-
+		
 		public void Add(string key, List<string> prerequisites, ITechTreeElement tte)
 		{
-			watchers.Add(new Watcher( key, prerequisites, tte ));
+			Add(key, prerequisites, false, tte);
+		}
+		
+		// set requiresPowered = true to discard buildings that have an IDisabled active (eg manually powered down)
+		public void Add(string key, List<string> prerequisites, bool requiresPowered, ITechTreeElement tte)
+		{
+			watchers.Add(new Watcher( key, prerequisites, requiresPowered, tte ));
 		}
 
 		public void Remove(string key)
@@ -53,7 +59,7 @@ namespace OpenRA.Traits
 			watchers.RemoveAll(x => x.key == key);
 		}
 		
-		public static Cache<string, List<Actor>> GatherBuildings( Player player )
+		static Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
 			if (player == null)
@@ -77,25 +83,28 @@ namespace OpenRA.Traits
 			public readonly List<string> prerequisites;
 			public readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-
-			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
+			bool requiresPowered;
+			
+			public Watcher(string key, List<string> prerequisites, bool requiresPowered, ITechTreeElement watcher)
 			{
 				this.key = key;
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				this.hasPrerequisites = false;
+				this.requiresPowered = requiresPowered;
 			}
 
 			public void Update(Cache<string, List<Actor>> buildings)
-			{
+			{                   
 				var nowHasPrerequisites = true;
 				foreach (var p in prerequisites)
-					if (!buildings.Keys.Contains(p))
+					if (!buildings.Keys.Contains(p) || 
+					    (requiresPowered && buildings[p].All(b => b.TraitsImplementing<IDisable>().Any(d => d.Disabled))))
 					{
 						nowHasPrerequisites = false;
 						break;
 					}
-								
+				
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.PrerequisitesAvailable(key);
 
@@ -107,7 +116,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	interface ITechTreeElement
+	public interface ITechTreeElement
 	{
 		void PrerequisitesAvailable(string key);
 		void PrerequisitesUnavailable(string key);

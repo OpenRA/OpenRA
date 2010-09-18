@@ -276,7 +276,7 @@ namespace OpenRA.Traits
 
 			if (Paused) return;
 
-			if (pm.GetPowerState() != PowerState.Normal)
+			if (pm.PowerState != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
 					slowdown = Queue.Info.LowPowerSlowdown; 
