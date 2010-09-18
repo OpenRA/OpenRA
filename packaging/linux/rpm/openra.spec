@@ -87,8 +87,8 @@ gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
 /usr/share/applications/openra*
 /usr/share/menu/openra*
 /usr/share/pixmaps/openra.32.xpm
-/usr/share/icons/hicolor/16x16/applications/openra.png
-/usr/share/icons/hicolor/32x32/applications/openra.png
-/usr/share/icons/hicolor/48x48/applications/openra.png
-/usr/share/icons/hicolor/64x64/applications/openra.png
-/usr/share/icons/hicolor/128x128/applications/openra.png
+/usr/share/icons/hicolor/16x16/apps/openra.png
+/usr/share/icons/hicolor/32x32/apps/openra.png
+/usr/share/icons/hicolor/48x48/apps/openra.png
+/usr/share/icons/hicolor/64x64/apps/openra.png
+/usr/share/icons/hicolor/128x128/apps/openra.png
