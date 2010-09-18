@@ -416,10 +416,9 @@ namespace OpenRA.Widgets.Delegates
 
 		bool CycleTeam(MouseInput mi)
 		{
-			var d = (mi.Button == MouseButton.Left) ? +1 : Game.world.Map.PlayerCount;
-
-			var newIndex = (Game.LocalClient.Team + d) % (Game.world.Map.PlayerCount + 1);
-
+			var d = (mi.Button == MouseButton.Left) ? +1 : Map.PlayerCount;
+			var newIndex = (Game.LocalClient.Team + d) % (Map.PlayerCount + 1);
+			
 			Game.IssueOrder(
 				Order.Command("team " + newIndex));
 			return true;
