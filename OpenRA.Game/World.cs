@@ -175,8 +175,14 @@ namespace OpenRA
 			{
 				int n = 0;
 				int ret = 0;
+
+				// hash all the actors
 				foreach (var a in Actors)
 					ret += n++ * (int)a.ActorID * Sync.CalculateSyncHash(a);
+
+				// hash all the traits that tick
+				foreach (var x in traitDict.ActorsWithTraitMultiple<ITick>(this))
+					ret += n++ * (int)x.Actor.ActorID * Sync.CalculateSyncHash(x.Trait);
 
 				return ret;
 			}
