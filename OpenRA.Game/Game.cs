@@ -292,9 +292,9 @@ namespace OpenRA
 
 		public static Action<Color,string,string> AddChatLine = (c,n,s) => {};
 
-		public static void Debug(string s)
+		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", s); 
+			AddChatLine(Color.White, "Debug", String.Format(s,args)); 
 		}
 
 		public static void Disconnect()

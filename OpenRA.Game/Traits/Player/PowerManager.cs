@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-			
+			Game.Debug("Added {0}: {1}",a.Info.Name, a.Trait<Building>().GetPowerUsage());
 			PowerDrain.Add(a, a.Trait<Building>().GetPowerUsage());
 			UpdateTotals();
 		}
@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-			
+			Game.Debug("Updated {0}: {1}->{2}",a.Info.Name, PowerDrain[a], newPower);
 			PowerDrain[a] = newPower;
 			UpdateTotals();
 		}
@@ -63,13 +63,15 @@ namespace OpenRA.Traits
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-			
+			Game.Debug("Removing {0}",a.Info.Name);
 			PowerDrain.Remove(a);
 			UpdateTotals();
 		}
 		
 		void UpdateTotals()
 		{
+			totalProvided = 0;
+			totalDrained = 0;
 			foreach (var p in PowerDrain.Values)
 			{
 				if (p > 0)
@@ -77,6 +79,7 @@ namespace OpenRA.Traits
 				else
 					totalDrained -= p;
 			}
+			Game.Debug("Provided: {0} Drained: {1}",totalProvided, totalDrained);
 		}
 		
 		int nextPowerAdviceTime = 0;
