@@ -25,7 +25,7 @@ return {
 			local line = editor:GetCurrentLine()
 			line = line-1
 			
-			local scopestart = {"if","do","while","function", "local%s+function", "for"}
+			local scopestart = {"if","do","while","function", "local%s+function", "for", "else", "elseif"}
 			local scopeend = {"end"}
 			local iscomment = editor.spec.iscomment
 			
@@ -59,19 +59,25 @@ return {
 				local s = bit.band(editor:GetStyleAt(ls),31)
 
 				if (not iscomment[s]) then
-					local tx = editor:GetLine(line)
+					local tx = editor:GetLine(line) --= string
+					
 					-- check for assignments
+					local varname = "([%w_]+)"
 					local identifier = "([%w_%.:]+)"
+
 					-- special hint
-					local typ,var = tx:match("%s*--=%s*"..identifier.."%s+"..identifier)
+					local typ,var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
 					if (var and typ) then
 						assigns[var] = typ
 					else
 						-- real assignments
-						var,typ,comma = tx:match("%s*"..identifier.."%s*=%s*"..identifier..".-%s*([,]*)%s*$")
-						if (typ and comma == "") then
-							local identifier = "([%w_]+)"
-							class,func,comma = typ:match(identifier.."[%.:]"..identifier)
+						local var,typ,rest = tx:match("%s*"..identifier.."%s*=%s*"..identifier.."(.*)")
+						local comment = rest and rest:match(".*%-%-=%s*"..varname.."%s*$")
+						local comma = rest and rest:match(".-%s*([,]*)%s*$")
+						if (var and comment) then
+							assigns[var] = comment
+						elseif (var and typ and comma=="") then
+							class,func = typ:match(varname.."[%.:]"..varname)
 							if (func) then
 								local funcnames = {"new","load","create"}
 								for i,v in ipairs(funcnames) do
@@ -85,6 +91,7 @@ return {
 							end
 						end
 					end
+
 				end
 				line = line+1
 			end
