@@ -42,15 +42,17 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			
 			// Queue-per-player
-			var types = world.Selection.Actors.Where(a => a.IsInWorld)
+			var types = world.Selection.Actors.Where(a => a.IsInWorld && (a.World.LocalPlayer == a.Owner))
 											  .SelectMany(a => a.TraitsImplementing<Production>())
 											  .SelectMany(t => t.Info.Produces)
 											  .Distinct();
-			
+
 			if (types.Count() == 0)
 				return;	
 
+
 			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+			
 				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>().FirstOrDefault(t => types.Contains(t.Info.Type)));
 		}
 	}
