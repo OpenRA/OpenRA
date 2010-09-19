@@ -260,6 +260,7 @@ WEAP:
 	RevealsShroud:
 		Range: 4
 	Bib:
+	-RenderBuilding:
 	RenderWarFactory:
 	RallyPoint:
 		RallyPoint: 0,3
