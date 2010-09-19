@@ -31,6 +31,7 @@ namespace OpenRA.Network
 		void GenerateSyncReport(Report report)
 		{
 			report.Frame = Game.orderManager.FrameNumber;
+			report.SyncedRandom = Game.world.SharedRandom.Last;
 			report.Traits.Clear();
 			foreach (var a in Game.world.Queries.WithTraitMultiple<object>())
 			{
