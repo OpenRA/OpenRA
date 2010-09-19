@@ -161,10 +161,9 @@ namespace OpenRA.Graphics
 		
 		public Rectangle ViewBounds()
 		{
-			int2 boundary = new int2(3,3); // Add a curtain of cells around the viewport to account for rounding errors
-			var origin = new int2((int)(scrollPosition.X/Game.CellSize), (int)(scrollPosition.Y/Game.CellSize));		
-			var tl = ViewToWorld(origin).ToInt2() - boundary;
-			var br = ViewToWorld(origin + new int2(Width, Height)).ToInt2() + boundary;
+			int2 boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
+			var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
+			var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
 			return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 		}
 	}
