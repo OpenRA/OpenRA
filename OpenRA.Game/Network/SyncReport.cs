@@ -3,63 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.FileFormats;
+using OpenRA.Support;
 
 namespace OpenRA.Network
 {
 	class SyncReport
 	{
-		Queue<Pair<int, string>> syncReports = new Queue<Pair<int, string>>();
 		const int numSyncReports = 5;
+		Report[] syncReports = new Report[numSyncReports];
+		int curIndex = 0;
 
+		public SyncReport()
+		{
+			for (var i = 0; i < numSyncReports; i++)
+				syncReports[i] = new SyncReport.Report();
+		}
+		
 		internal void UpdateSyncReport()
 		{
 			if (!Game.Settings.Debug.RecordSyncReports)
 				return;
-
-			while (syncReports.Count >= numSyncReports) syncReports.Dequeue();
-			syncReports.Enqueue(Pair.New(Game.orderManager.FrameNumber, GenerateSyncReport()));
-		}
-
-		string GenerateSyncReport()
-		{
-			var sb = new StringBuilder();
-			sb.AppendLine("SharedRandom: "+Game.world.SharedRandom.Last);
 			
-			sb.AppendLine("Actors:");
-			foreach (var a in Game.world.Actors)
-				sb.AppendLine("\t {0} {1} {2} ({3})".F(
-					a.ActorID,
-					a.Info.Name,
-					(a.Owner == null) ? "null" : a.Owner.InternalName,
-					Sync.CalculateSyncHash(a)));
-
-			sb.AppendLine("Tick Actors:");
+			GenerateSyncReport(syncReports[curIndex]);
+			curIndex = ++curIndex % numSyncReports;
+		}
+		
+		void GenerateSyncReport(Report report)
+		{
+			report.Frame = Game.orderManager.FrameNumber;
+			report.Traits.Clear();
 			foreach (var a in Game.world.Queries.WithTraitMultiple<object>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
-					sb.AppendLine("\t {0} {1} {2} {3} ({4})".F(
-						a.Actor.ActorID,
-						a.Actor.Info.Name,
-						(a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
-						a.Trait.GetType().Name,
-						sync));
+					report.Traits.Add(new TraitReport()
+					{
+						ActorID = a.Actor.ActorID,
+						Type = a.Actor.Info.Name,
+						Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
+						Trait = a.Trait.GetType().Name,
+						Hash = sync
+					});
 			}
-
-			return sb.ToString();
 		}
 
 		internal void DumpSyncReport(int frame)
 		{
-			var f = syncReports.FirstOrDefault(a => a.First == frame);
-			if (f == default(Pair<int, string>))
-			{
-				Log.Write("sync", "No sync report available!");
-				return;
-			}
-
-			Log.Write("sync", "Sync for net frame {0} -------------", f.First);
-			Log.Write("sync", "{0}", f.Second);
+			foreach (var r in syncReports)
+				if (r.Frame == frame)
+				{
+					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
+					Log.Write("sync", "SharedRandom: "+r.SyncedRandom);
+					Log.Write("sync", "Synced Traits:");
+					foreach (var a in r.Traits)
+						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(
+							a.ActorID,
+							a.Type,
+							a.Owner,
+					        a.Trait,
+					        a.Hash
+						));
+					return;
+				}
+			Log.Write("sync", "No sync report available!");
 		}
+	
+		class Report
+		{
+			public int Frame;
+			public int SyncedRandom;
+			public List<TraitReport> Traits = new List<TraitReport>();
+		}
+		
+		struct TraitReport
+		{
+			public uint ActorID;
+			public string Type;
+			public string Owner;
+			public string Trait;
+			public int Hash;
+		}
+
 	}
 }
