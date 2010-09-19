@@ -145,7 +145,7 @@ namespace OpenRA
 			}
 
 			var clipRect = Bounds.HasValue ? Rectangle.Intersect(Bounds.Value, map.Bounds) : map.Bounds;
-
+			clipRect = Rectangle.Intersect(Game.viewport.ViewBounds(), clipRect);
 			var miny = clipRect.Top;
 			var maxy = clipRect.Bottom;
 			var minx = clipRect.Left;

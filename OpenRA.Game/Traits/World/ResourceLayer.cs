@@ -29,6 +29,8 @@ namespace OpenRA.Traits
 			var cliprect = Game.viewport.ShroudBounds().HasValue
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
 
+			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
+			
 			var minx = cliprect.Left;
 			var maxx = cliprect.Right;
 
