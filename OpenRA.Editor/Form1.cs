@@ -36,6 +36,9 @@ namespace OpenRA.Editor
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			surface1.AfterChange += MakeDirty;
+			
+			string path = Directory.GetCurrentDirectory();
+			 Icon = new Icon(path + Path.DirectorySeparatorChar + "OpenRA.Editor" + Path.DirectorySeparatorChar + "OpenRA.Editor.Icon.ico");
 		}
 
 		void MakeDirty() { dirty = true; }
