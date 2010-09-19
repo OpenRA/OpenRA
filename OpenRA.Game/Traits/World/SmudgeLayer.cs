@@ -76,7 +76,7 @@ namespace OpenRA.Traits
 		{
 			var cliprect = Game.viewport.ShroudBounds().HasValue 
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
-
+			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
 			foreach (var kv in tiles)
 			{
 				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
