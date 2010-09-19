@@ -58,28 +58,28 @@ namespace OpenRA.Mods.RA.Render
 
 		void Complete( Actor self )
 		{
-			anim.PlayRepeating( GetPrefix(self) + "idle" );
+			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 			foreach( var x in self.TraitsImplementing<INotifyBuildComplete>() )
 				x.BuildingComplete( self );
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
 		{
-			anim.PlayThen(GetPrefix(self) + name,
-				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
+			anim.PlayThen(NormalizeSequence(self, name),
+				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 		
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
-			anim.PlayThen(GetPrefix(self) + name,
+			anim.PlayThen(NormalizeSequence(self, name),
 				() => { PlayCustomAnimRepeating(self, name); });
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			var hasSequence = anim.HasSequence(GetPrefix(self) + name);
-			anim.PlayBackwardsThen(hasSequence ? GetPrefix(self) + name : name,
-				() => { anim.PlayRepeating(GetPrefix(self) + "idle"); a(); });
+			var hasSequence = anim.HasSequence(NormalizeSequence(self, name));
+			anim.PlayBackwardsThen(NormalizeSequence(self, name),
+				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
 		public virtual void Damaged(Actor self, AttackInfo e)
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Render
 				anim.ReplaceAnim("idle");
 		}
 
-		public void Selling( Actor self )
+		public virtual void Selling( Actor self )
 		{
 			if( self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
 				anim.PlayBackwardsThen( "make", null );

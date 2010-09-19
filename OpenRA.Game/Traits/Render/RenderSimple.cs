@@ -62,16 +62,20 @@ namespace OpenRA.Traits
 				a.Animation.Tick();
 		}
 
-		protected virtual string GetPrefix(Actor self)
+		protected virtual string NormalizeSequence(Actor self, string baseSequence)
 		{
-			return self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
+			string damageState = self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
+			if (anim.HasSequence(damageState + baseSequence))
+				return damageState + baseSequence;
+			else
+				return baseSequence;
 		}
 
 		public void PlayCustomAnim(Actor self, string name)
 		{
 			if (anim.HasSequence(name))
-				anim.PlayThen(GetPrefix(self) + name,
-					() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+				anim.PlayThen(NormalizeSequence(self, name),
+					() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 
 		public class AnimationWithOffset

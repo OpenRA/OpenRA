@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init); }
 	}
 
-	/* used for tesla */
+	/* used for tesla */	
 	public class RenderBuildingCharge : RenderBuilding
 	{
 		public RenderBuildingCharge( ActorInitializer init )
@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCharge(Actor self)
 		{
 			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio, self.CenterLocation);
-			anim.PlayThen(GetPrefix(self) + "active", 
-				() => anim.PlayRepeating(GetPrefix(self) + "idle"));
+			anim.PlayThen(NormalizeSequence(self, "active"), 
+				() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
 	}
 }

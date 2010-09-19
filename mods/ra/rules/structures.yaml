@@ -529,6 +529,7 @@ WEAP:
 		Range: 4
 	Bib:
 	RenderWarFactory:
+	-RenderBuilding:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 5,0
@@ -942,8 +943,8 @@ WEAF:
 		Range: 4
 	Bib:
 	RenderWarFactory:
-	RenderBuilding:
 		Image: WEAP
+	-RenderBuilding:
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:

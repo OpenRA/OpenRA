@@ -14,46 +14,43 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderWarFactoryInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	class RenderWarFactoryInfo : RenderBuildingInfo
 	{
-		public object Create(ActorInitializer init) { return new RenderWarFactory(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderWarFactory(init); }
 	}
 
-	class RenderWarFactory : INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold
+	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold
 	{
 		public Animation roof;
 		[Sync]
 		bool isOpen;
 		[Sync]
 		int2 openExit;
-		
-		string GetPrefix(Actor self)
-		{
-			return self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
-		}
 
-		public RenderWarFactory(Actor self)
+		public RenderWarFactory(ActorInitializer init)
+			: base(init)
 		{
-			roof = new Animation(self.Trait<RenderSimple>().GetImage(self));
+			roof = new Animation(GetImage(init.self));
 		}
 
 		public void BuildingComplete( Actor self )
 		{
-			roof.Play( GetPrefix(self) + "idle-top" );
+			roof.Play( NormalizeSequence(self, "idle-top") );
 			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 24 } );
 		}
 
-		public void Tick(Actor self)
+		public override void Tick(Actor self)
 		{
+			base.Tick(self);
 			if (isOpen && !self.World.WorldActor.Trait<UnitInfluence>()
 				.GetUnitsAt(openExit).Any())
 			{
 				isOpen = false;
-				roof.PlayBackwardsThen(GetPrefix(self) + "build-top", () => roof.Play(GetPrefix(self) + "idle-top"));
+				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"), () => roof.Play(NormalizeSequence(self, "idle-top")));
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public override void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged) return;
 			
@@ -65,14 +62,12 @@ namespace OpenRA.Mods.RA.Render
 
 		public void UnitProduced(Actor self, Actor other, int2 exit)
 		{
-			roof.PlayThen(GetPrefix(self) + "build-top", () => {isOpen = true; openExit = exit;});
+			roof.PlayThen(NormalizeSequence(self, "build-top"), () => { isOpen = true; openExit = exit; });
 		}
 
-		public void Selling( Actor self )
+		public override void Selling( Actor self )
 		{
 			self.Trait<RenderSimple>().anims.Remove( "roof" );
 		}
-
-		public void Sold( Actor self ) { }
 	}
 }
