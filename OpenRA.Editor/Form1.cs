@@ -376,7 +376,7 @@ namespace OpenRA.Editor
 		{
 			if (!dirty) return;
 
-			switch (MessageBox.Show("The map has been modified since it was last saved. Save changes now?",
+			switch (MessageBox.Show("The map has been modified since it was last saved. " + "\r\n" + "Save changes now?",
 				"Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation))
 			{
 				case DialogResult.Yes: SaveClicked(null, EventArgs.Empty); break;
