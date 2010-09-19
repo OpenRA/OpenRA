@@ -5,43 +5,82 @@ There are n main sections to OpenRA: UI, Rendering, unit behaviour, ...
 All  units/structures/most things in the map are Actors. Actors contain a  collection of traits.
 Traits consist of an info class and a  class that does stuff
 
-Actor assembly is done via the mod's yaml files. A section  exists for each actor type, and within that section we list the traits  the actor should have. These get looked up in the loaded mod DLLs. Each trait can contain properties, which are automatically loaded into the corresponding fields on the trait's ITraitInfo.
+Actor assembly is done via the mod's yaml files. A section  exists for each actor type, 
+and within that section we list the traits  the actor should have. 
+These get looked up in the loaded mod DLLs. Each trait can contain properties, 
+which are automatically loaded into the corresponding fields on the trait's ITraitInfo.
 
 - Traits: look at TraitInterfaces.cs
-    We've tried to make individual traits implement as self-contained a unit of functionality as possible - all cross-trait references should be in terms of an interface from TraitInterfaces.cs.
+    We've tried to make individual traits implement as self-contained a unit of functionality 
+    as possible - all cross-trait references should be in terms of an interface from 
+    TraitInterfaces.cs.
     
-- Things an actor can be *doing* are represented as IActivity implementations. Actor has a queue of these. There's a standard set of activities in OpenRa.Game/Traits/Activities, and mods tend to define more as they need them. (RA defines various special-infantry actions as activities).
+- Things an actor can be *doing* are represented as IActivity implementations. 
+    Actor has a queue of these. There's a standard set of activities in 
+    OpenRa.Game/Traits/Activities, and mods tend to define more as they need them. (RA 
+    defines various special-infantry actions as activities).
 
-- Units offer orders they can perform (given context) through traits that implement IIssueOrder. Every trait with this interface is given a chance to generate orders for the current context.
+- Units offer orders they can perform (given context) through traits that implement IIssueOrder. 
+  Every trait with this interface is given a chance to generate orders for the current context.
 
-- For more complex things that require modal UI (like special abilities, RA-style sell/repair buttons, etc) we have IOrderGenerator implementations. This can completely replace the normal actors-provide-orders model temporarily. IOGs wiring is provided through OpenRa.Game/Controller.cs (ToggleInputMode<T>, CancelInputMode)
+- For more complex things that require modal UI (like special abilities, 
+  RA-style sell/repair buttons, etc) we have IOrderGenerator implementations. This can 
+  completely replace the normal actors-provide-orders model temporarily. IOGs wiring is 
+  provided through OpenRa.Game/Controller.cs (ToggleInputMode<T>, CancelInputMode)
 
-- Things that don't affect gameplay, or (increasingly) are just transient are implemented as IEffect, rather than real Actors. This is similar to the temp ents mechanism in many other game engines.
+- Things that don't affect gameplay, or (increasingly) are just transient are implemented as 
+  IEffect, rather than real Actors. This is similar to the temp ents mechanism in many other 
+  game engines.
 
-- Most player-level or global-level game behavior is implemented as traits on special Player and World actors. These are accessible via Player.PlayerActor and World.WorldActor. This includes production queue support, ore/tiberium growth, various palette manipulation magic.
+- Most player-level or global-level game behavior is implemented as traits on special Player 
+  and World actors. These are accessible via Player.PlayerActor and World.WorldActor. This 
+  includes production queue support, ore/tiberium growth, various palette manipulation magic.
 
-- Many traits can be modified by adding an appropriate IFooModifier implementation to the unit. This includes rendering, where IRenderModifier allows you to define an arbitrary transform on the Renderables emitted by the actor's IRender implementation(s). Examples are things like cloaking, invisibility to certain players, flying units with shadows, etc. Other modifiers can affect movement speed, damage taken, weapon firepower, etc.
+- Many traits can be modified by adding an appropriate IFooModifier implementation to the unit.
+  This includes rendering, where IRenderModifier allows you to define an arbitrary transform on 
+  the Renderables emitted by the actor's IRender implementation(s). Examples are things like 
+  cloaking, invisibility to certain players, flying units with shadows, etc. Other modifiers 
+  can affect movement speed, damage taken, weapon firepower, etc.
 
-Game code is collected into "Mod" units. Mods can be added prior to starting the game. Currently there is no dependancy mechanism, but provided you are doing additions or overrides you can add multiple mods without problem.
+Game code is collected into "Mod" units. Mods can be added prior to starting the game. 
+Currently there is no dependancy mechanism, but provided you are doing additions or overrides 
+you can add multiple mods without problem.
 Everything is a mod  (including RA - which is loaded by default). 
 
-The contents of the mod is defined in a manifest file mod.yaml. This lists the packages containing art assets (typically .mix files), yaml files defining actor defintions, and ini files containing legacy information that have yet to be ported over to the (relatively new) yaml system.
+The contents of the mod is defined in a manifest file mod.yaml. This lists the packages 
+containing art assets (typically .mix files), yaml files defining actor defintions, 
+and ini files containing legacy information that have yet to be ported over to 
+the (relatively new) yaml system.
 
-The unit artwork itself must be defined in a Sequences file (typically Sequences.xml; check mod.yaml for a list of what the mod uses); the format is self explanatory. There is also the SequenceEditor tool to make this easy.
+The unit artwork itself must be defined in a Sequences file (typically Sequences.xml; 
+check mod.yaml for a list of what the mod uses); the format is self explanatory. There is 
+also the SequenceEditor tool to make this easy.
 
-Chrome artwork is similarly defined in Chrome.xml. Chrome is already mod dependent. Sortof ;) mod-dependent *behavior* would be nice too, not just skinning. This is a property of the traits however; once we port UI into traits this will become a non-issue.
+Chrome artwork is similarly defined in Chrome.xml. Chrome is already mod dependent. Sortof ;) 
+mod-dependent *behavior* would be nice too, not just skinning. This is a property of the traits
+however; once we port UI into traits this will become a non-issue.
 
 Rendering
 OpenRa.Game/Chrome.cs is the user interface. 
-Three renderers (SpriteRenderer, LineRenderer, Rgba?Renderer) render most stuff. Don't forget to flush the renderer (if you want to see anything).
+Three renderers (SpriteRenderer, LineRenderer, Rgba?Renderer) render most stuff. Don't forget 
+to flush the renderer (if you want to see anything).
 
-UserSettings stores the data loaded from settings.ini (or defaults). Eventually we need to be able to save values changed in game into settings.ini (not yet implemented)
+UserSettings stores the data loaded from settings.ini (or defaults). Eventually we need to be 
+able to save values changed in game into settings.ini (not yet implemented)
 
-Bugs: There is a list of known bugs and features at http://red-bull.ijw.co.nz:3690/OpenRA . There's also a few at http://github.com/chrisforbes/OpenRA/issues (which won't be ported over, but no more bugs should be added here).
+Bugs: There is a list of known bugs and features at http://red-bull.ijw.co.nz:3690/OpenRA .
 
 We also have a website at http://www.open-ra.org/ . 
 
-As far as using git, get your own repository on github. You probably want to set up the gitbot to spam irc when you make commits (its nice to know). Push your changes into your git repository, and it will/might :P be merged into chrisforbes/OpenRA . Alli: setup howto for this?
+Our IRC channel is #openra on irc.freenode.net .
+
+As far as using git, get your own repository on github. You probably want to set up the gitbot
+to spam irc when you make commits (its nice to know). Push your changes into your git 
+repository, and it will/might :P be merged into chrisforbes/OpenRA . 
+See http://help.github.com/ for working with GitHub and see http://progit.org/ for working 
+with Git.
+
+
 
 Other things we probably want to put in here:
     - A guide on how to add a generic unit via yaml using existing traits
@@ -50,6 +89,6 @@ Other things we probably want to put in here:
     - VFS (OpenRa.FileFormats.FileSystem, Package, Folder classes)
     - Trait inheritance (and the magicness of ^ActorType)
     - Removing inherited traits (prepend `-` to the trait name)
-    - Multiple instances of a trait (`@` and all subsequent characters are ignored for the purposes 
-        of looking up the trait.
+    - Multiple instances of a trait (`@` and all subsequent characters are ignored for 
+        the purposes of looking up the trait.
 
