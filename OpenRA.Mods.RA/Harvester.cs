@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				if (LinkedProc != null)
+				if (LinkedProc != null && !LinkedProc.Destroyed)
 					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 		}
 		
