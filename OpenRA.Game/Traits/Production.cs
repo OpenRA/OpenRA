@@ -63,7 +63,7 @@ namespace OpenRA.Traits
 			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
 			newUnit.QueueActivity(new Activities.Drag(spawn, to, length));
 
-			Log.Write("debug", "length={0} facing={1} exit={2} spawn={3}", length, facing.Facing, exit, spawn);
+//			Log.Write("debug", "length={0} facing={1} exit={2} spawn={3}", length, facing.Facing, exit, spawn);
 			
 			// For the target line
 			var target = exit;
