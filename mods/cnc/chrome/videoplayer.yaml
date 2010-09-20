@@ -5,7 +5,6 @@ Background@VIDEOPLAYER_MENU:
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 700
 	Height: 680
-	Visible: false
 	Children:
 		Label@VIDEOPLAYER_TITLE:
 			X:0

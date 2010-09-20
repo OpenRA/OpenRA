@@ -103,7 +103,6 @@ Background@MUSIC_MENU:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width: 450
 	Height: 250
-	Visible: false
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			Id:SETTINGS_LABEL_TITLE

@@ -1,7 +1,6 @@
 Container@INGAME_ROOT:
 	Id:INGAME_ROOT
 	Delegate:IngameChromeDelegate
-	Visible:false
 	Children:
 		WorldInteractionController:
 			X:0
@@ -281,7 +280,6 @@ Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Visible: false
 	Background:dialog4
 	Children:
 		VqaPlayer:

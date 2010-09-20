@@ -5,7 +5,6 @@ Background@CREATESERVER_BG:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
 	Height:240
-	Visible:false
 	Children:
 		Label@LABEL_TITLE:
 			Id:LABEL_TITLE
@@ -100,7 +99,6 @@ Background@JOINSERVER_BG:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:700
 	Height:410
-	Visible:false
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
 			Id:JOINSERVER_LABEL_TITLE
@@ -252,7 +250,6 @@ Background@DIRECTCONNECT_BG:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
 	Height:155
-	Visible:false
 	Children:
 		Label@DIRECTCONNECT_LABEL_TITLE:
 			Id:DIRECTCONNECT_LABEL_TITLE
@@ -296,12 +293,11 @@ Background@DIRECTCONNECT_BG:
 			Bold:True
 Background@CONNECTION_FAILED_BG:
 	Id:CONNECTION_FAILED_BG
-	Delegate:ConnectionDialogsDelegate
+	Delegate:ConnectionFailedDelegate
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450
 	Height:150
-	Visible:false
 	Children:
 		Label@CONNECTION_FAILED_TITLE:
 			Id:CONNECTION_FAILED_TITLE
@@ -343,7 +339,6 @@ Background@CONNECTING_BG:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450
 	Height:150
-	Visible:false
 	Children:
 		Label@CONNECTING_TITLE:
 			Id:CONNECTING_TITLE
