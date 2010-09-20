@@ -73,5 +73,17 @@ namespace OpenRA
 		{
 			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
 		}
+
+		public static T[] GetCustomAttributes<T>( this MemberInfo mi, bool inherit )
+			where T : class
+		{
+			return (T[])mi.GetCustomAttributes( typeof( T ), inherit );
+		}
+
+		public static T[] GetCustomAttributes<T>( this ParameterInfo mi )
+			where T : class
+		{
+			return (T[])mi.GetCustomAttributes( typeof( T ), true );
+		}
 	}
 }

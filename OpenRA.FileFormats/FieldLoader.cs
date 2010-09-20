@@ -179,9 +179,9 @@ namespace OpenRA.FileFormats
 
 			foreach( var field in type.GetFields() )
 			{
-				var load = (LoadAttribute[])field.GetCustomAttributes( typeof( LoadAttribute ), false );
-				var loadUsing = (LoadUsingAttribute[])field.GetCustomAttributes( typeof( LoadUsingAttribute ), false );
-				var fromYamlKey = (FieldFromYamlKeyAttribute[])field.GetCustomAttributes( typeof( FieldFromYamlKeyAttribute ), false );
+				var load = field.GetCustomAttributes<LoadAttribute>( false );
+				var loadUsing = field.GetCustomAttributes<LoadUsingAttribute>( false );
+				var fromYamlKey = field.GetCustomAttributes<FieldFromYamlKeyAttribute>( false );
 				if( loadUsing.Length != 0 )
 					ret[ field ] = ( _1, fieldType, yaml ) => loadUsing[ 0 ].LoaderFunc( field )( yaml );
 				else if( fromYamlKey.Length != 0 )
