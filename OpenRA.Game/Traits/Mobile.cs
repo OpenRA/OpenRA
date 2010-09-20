@@ -66,17 +66,21 @@ namespace OpenRA.Traits
 		public int InitialFacing { get { return Info.InitialFacing; } }
 		
 		int2 __fromCell, __toCell;
+
+		[Sync]
 		public int2 fromCell
 		{
 			get { return __fromCell; }
 			set { SetLocation( value, __toCell ); }
 		}
+
 		[Sync]
 		public int2 toCell
 		{
 			get { return __toCell; }
 			set { SetLocation( __fromCell, value ); }
 		}
+
 		void SetLocation( int2 from, int2 to )
 		{
 			if( fromCell == from && toCell == to ) return;

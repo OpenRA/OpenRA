@@ -102,6 +102,16 @@ namespace OpenRA.Traits.Activities
 			this.nearEnough = 0;
 		}
 
+		List<int2> EvalPath( Actor self, Mobile mobile )
+		{
+			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
+
+			Log.Write("debug", "EvalPath #{0} {1}",
+				self.ActorID, string.Join(" ", path.Select(a => a.ToString()).ToArray()));
+
+			return path;
+		}
+
 		public IActivity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
@@ -123,7 +133,7 @@ namespace OpenRA.Traits.Activities
 					return this;
 				}
 
-				path = getPath( self, mobile ).TakeWhile( a => a != mobile.toCell ).ToList();
+				path = EvalPath(self, mobile);
 				SanityCheckPath( mobile );
 			}
 			
@@ -221,7 +231,7 @@ namespace OpenRA.Traits.Activities
 					return null;
 
 				mobile.RemoveInfluence();
-				var newPath = getPath( self, mobile ).TakeWhile(a => a != mobile.toCell).ToList();
+				var newPath = EvalPath(self, mobile);
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)
