@@ -354,7 +354,13 @@ namespace OpenRA.Traits
 							line.SetTargetSilently(self, Target.FromCell(moveTo.Value), Color.Green);
 					});
 				self.QueueActivity(new Move(moveTo.Value, 0));
+
+				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
+					self.ActorID, self.Location, moveTo.Value);
 			}
+			else
+				Log.Write("debug", "OnNudge #{0} refuses at {1}",
+					self.ActorID, self.Location);
 		}
 	}
 }
