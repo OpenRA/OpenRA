@@ -62,6 +62,8 @@ namespace OpenRA.Traits
 			var speed = move.MovementSpeedForCell(self, exit);
 			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
 			newUnit.QueueActivity(new Activities.Drag(spawn, to, length));
+
+			Log.Write("debug", "length={0}", length);
 			
 			// For the target line
 			var target = exit;
