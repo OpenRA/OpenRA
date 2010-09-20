@@ -144,6 +144,8 @@ namespace OpenRA.Traits.Activities
 			if( firstFacing != mobile.Facing )
 			{
 				path.Add( nextCell.Value );
+				Log.Write("debug", "Turn: #{0} from {1} to {2}",
+					self.ActorID, mobile.Facing, firstFacing);
 
 				return new Turn( firstFacing ) { NextActivity = this };
 			}
