@@ -349,9 +349,11 @@ namespace OpenRA.Editor
 
 		void ImportLegacyMapClicked(object sender, EventArgs e)
 		{
+			var currentDirectory = Directory.GetCurrentDirectory();
 			using (var ofd = new OpenFileDialog { Filter = "Legacy maps (*.ini;*.mpr)|*.ini;*.mpr" })
 				if (DialogResult.OK == ofd.ShowDialog())
 				{
+					Directory.SetCurrentDirectory( currentDirectory );
 					/* massive hack: we should be able to call NewMap() with the imported Map object,
 					 * but something's not right internally in it, unless loaded via the real maploader */
 
