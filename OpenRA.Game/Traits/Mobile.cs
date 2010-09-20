@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
+using System.Diagnostics;
 
 namespace OpenRA.Traits
 {
@@ -101,6 +102,7 @@ namespace OpenRA.Traits
 			AddInfluence();
 
 			Log.Write("debug", "#{0} set location = {1} {2}", self.ActorID, from, to);
+			Log.Write("debug", "{0}", new StackTrace());
 		}
 
 		UnitInfluence uim;
