@@ -75,7 +75,7 @@ namespace OpenRA.Widgets.Delegates
 			mapButton.OnMouseUp = mi =>
 			{
 				r.GetWidget("MAP_CHOOSER").SpecialOneArg(MapUid);
-				r.OpenWindow("MAP_CHOOSER");
+				Widget.OpenWindow("MAP_CHOOSER");
 				return true;
 			};
 

@@ -310,8 +310,8 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(shellmap);
 
-			Widget.RootWidget.CloseWindow();
-			Widget.RootWidget.OpenWindow("MAINMENU_BG");
+			Widget.CloseWindow();
+			Widget.OpenWindow("MAINMENU_BG");
 		}
 
 		static string baseSupportDir = null;

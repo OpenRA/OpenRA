@@ -40,20 +40,20 @@ namespace OpenRA.Widgets.Delegates
 			
 			Game.ConnectionStateChanged += () =>
 			{
-				r.CloseWindow();
+				Widget.CloseWindow();
 				switch( Game.orderManager.Connection.ConnectionState )
 				{
 					case ConnectionState.PreConnecting:
-						r.OpenWindow("MAINMENU_BG");
+						Widget.OpenWindow("MAINMENU_BG");
 						break;
 					case ConnectionState.Connecting:
-						r.OpenWindow("CONNECTING_BG");
+						Widget.OpenWindow("CONNECTING_BG");
 						break;
 					case ConnectionState.NotConnected:
-						r.OpenWindow("CONNECTION_FAILED_BG");
+						Widget.OpenWindow("CONNECTION_FAILED_BG");
 						break;
 					case ConnectionState.Connected:
-						r.OpenWindow("SERVER_LOBBY");
+						Widget.OpenWindow("SERVER_LOBBY");
 						
 						var lobby = r.GetWidget("SERVER_LOBBY");
 						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();

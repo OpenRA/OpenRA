@@ -33,13 +33,13 @@ namespace OpenRA.Widgets.Delegates
 			bg.GetWidget("BUTTON_OK").OnMouseUp = mi =>
 			{
 				Game.IssueOrder(Order.Command("map " + Map.Uid));
-				r.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 
 			bg.GetWidget("BUTTON_CANCEL").OnMouseUp = mi =>
 			{
-				r.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 

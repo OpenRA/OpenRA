@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
-			Game.BeforeGameStart += () => r.OpenWindow("INGAME_ROOT");
+			Game.BeforeGameStart += () => Widget.OpenWindow("INGAME_ROOT");
 			Game.AfterGameStart += () => gameRoot.GetWidget<RadarBinWidget>("INGAME_RADAR_BIN").SetWorld(Game.world);
 
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			optionsBG.GetWidget("SETTINGS").OnMouseUp = mi => {
-				r.OpenWindow("SETTINGS_MENU");
+				Widget.OpenWindow("SETTINGS_MENU");
 				return true;
 			};
 
 			optionsBG.GetWidget("MUSIC").OnMouseUp = mi => {
-				r.OpenWindow("MUSIC_MENU");
+				Widget.OpenWindow("MUSIC_MENU");
 				return true;
 			};
 			

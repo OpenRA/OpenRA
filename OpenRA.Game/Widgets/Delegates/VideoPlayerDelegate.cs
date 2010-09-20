@@ -44,13 +44,13 @@ namespace OpenRA.Widgets.Delegates
 		
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				player.Stop();
-				Widget.RootWidget.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 			
 			// Menu Buttons
 			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_VIDEOPLAYER").OnMouseUp = mi => {
-				Widget.RootWidget.OpenWindow("VIDEOPLAYER_MENU");
+				Widget.OpenWindow("VIDEOPLAYER_MENU");
 				return true;
 			};
 			

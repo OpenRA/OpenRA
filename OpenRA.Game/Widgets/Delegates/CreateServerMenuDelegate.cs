@@ -22,17 +22,17 @@ namespace OpenRA.Widgets.Delegates
 			var r = Widget.RootWidget;
 			var cs = r.GetWidget("CREATESERVER_BG");
 			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
-				r.OpenWindow("CREATESERVER_BG");
+				Widget.OpenWindow("CREATESERVER_BG");
 				return true;
 			};
 			
 			cs.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
-				r.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 			
 			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
-				r.OpenWindow("SERVER_LOBBY");
+				Widget.OpenWindow("SERVER_LOBBY");
 				
 				var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
 				

@@ -322,14 +322,14 @@ namespace OpenRA.Widgets
 			return (widget != null)? (T) widget : null;
 		}
 		
-		public void CloseWindow()
+		public static void CloseWindow()
 		{
 			RootWidget.GetWidget(WindowList.Pop()).Visible = false;
 			if (WindowList.Count > 0)
 				RootWidget.GetWidget(WindowList.Peek()).Visible = true;
 		}
 
-		public Widget OpenWindow(string id)
+		public static Widget OpenWindow(string id)
 		{
 			if (WindowList.Count > 0)
 				RootWidget.GetWidget(WindowList.Peek()).Visible = false;

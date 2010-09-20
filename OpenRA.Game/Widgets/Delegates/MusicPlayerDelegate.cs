@@ -24,12 +24,12 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
-				Widget.RootWidget.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 			
 			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_MUSIC").OnMouseUp = mi => {
-				Widget.RootWidget.OpenWindow("MUSIC_MENU");
+				Widget.OpenWindow("MUSIC_MENU");
 				return true;
 			};
 			

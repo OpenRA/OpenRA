@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 				
 		public static void PlayFullscreenFMVThen(World w, string movie, Action then)
 		{
-			var playerRoot = Widget.RootWidget.OpenWindow("FMVPLAYER");
+			var playerRoot = Widget.OpenWindow("FMVPLAYER");
 			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
 			w.DisableTick = true;
 			player.Load(movie);	
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 				if (music)
 					Sound.PlayMusic();
 				
-				Widget.RootWidget.CloseWindow();
+				Widget.CloseWindow();
 				w.DisableTick = false;
 				then();
 			});

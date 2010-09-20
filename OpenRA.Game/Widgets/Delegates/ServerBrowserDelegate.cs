@@ -33,7 +33,7 @@ namespace OpenRA.Widgets.Delegates
 
 			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi =>
 			{
-				r.OpenWindow("JOINSERVER_BG");
+				Widget.OpenWindow("JOINSERVER_BG");
 
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
@@ -83,16 +83,16 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 			{
-				r.CloseWindow();
+				Widget.CloseWindow();
 				return true;
 			};
 
 			bg.GetWidget("DIRECTCONNECT_BUTTON").OnMouseUp = mi =>
 			{
-				r.CloseWindow();
+				Widget.CloseWindow();
 
 				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
-				r.OpenWindow("DIRECTCONNECT_BG");
+				Widget.OpenWindow("DIRECTCONNECT_BG");
 				return true;
 			};
 
@@ -119,7 +119,7 @@ namespace OpenRA.Widgets.Delegates
 					return false;
 				}
 
-				r.CloseWindow();
+				Widget.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
 				return true;
 			};
@@ -136,14 +136,14 @@ namespace OpenRA.Widgets.Delegates
 				Game.Settings.Player.LastServer = address;
 				Game.Settings.Save();
 
-				r.CloseWindow();
+				Widget.CloseWindow();
 				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
 				return true;
 			};
 
 			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 			{
-				r.CloseWindow();
+				Widget.CloseWindow();
 				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};
 		}
