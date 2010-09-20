@@ -56,16 +56,27 @@ namespace OpenRA.Traits
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
-		
+
+		int __facing;
+		int2 __fromCell, __toCell;
+		int __altitude;
+
 		[Sync]
-		public int Facing { get; set; }
+		public int Facing
+		{
+			get { return __facing; }
+			set { __facing = value; Log.Write("debug", "#{0} set Facing={1}", self.ActorID, value); }
+		}
+
 		[Sync]
-		public int Altitude { get; set; }
+		public int Altitude
+		{
+			get { return __altitude; }
+			set { __altitude = value; Log.Write("debug", "#{0} set Altitude={1}", self.ActorID, value); }
+		}
 		
 		public int ROT { get { return Info.ROT; } }
 		public int InitialFacing { get { return Info.InitialFacing; } }
-		
-		int2 __fromCell, __toCell;
 
 		[Sync]
 		public int2 fromCell
@@ -81,13 +92,15 @@ namespace OpenRA.Traits
 			set { SetLocation( __fromCell, value ); }
 		}
 
-		void SetLocation( int2 from, int2 to )
+		void SetLocation(int2 from, int2 to)
 		{
-			if( fromCell == from && toCell == to ) return;
+			if (fromCell == from && toCell == to) return;
 			RemoveInfluence();
 			__fromCell = from;
 			__toCell = to;
 			AddInfluence();
+
+			Log.Write("debug", "#{0} set location = {1} {2}", self.ActorID, from, to);
 		}
 
 		UnitInfluence uim;
