@@ -279,9 +279,9 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
-			Game.BeforeGameStart = () => Widget.OpenWindow("INGAME_ROOT");
+			Game.BeforeGameStart += () => Widget.OpenWindow("INGAME_ROOT");
 
-			Game.ConnectionStateChanged = () =>
+			Game.ConnectionStateChanged += () =>
 			{
 				Widget.CloseWindow();
 				switch( Game.orderManager.Connection.ConnectionState )
