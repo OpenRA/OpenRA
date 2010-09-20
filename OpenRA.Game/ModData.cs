@@ -24,6 +24,7 @@ namespace OpenRA
 		public readonly SheetBuilder SheetBuilder;
 		public readonly CursorSheetBuilder CursorSheetBuilder;
 		public readonly Dictionary<string, MapStub> AvailableMaps;
+		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
 		
 		public ModData( params string[] mods )
@@ -39,6 +40,7 @@ namespace OpenRA
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 			AvailableMaps = FindMaps( mods );
+			WidgetLoader = new WidgetLoader( this );
 		}
 		
 		// TODO: Do this nicer

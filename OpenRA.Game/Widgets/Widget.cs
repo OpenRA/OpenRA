@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
 		public string Width = "0";
 		public string Height = "0";
 		public string Delegate = null;
+		public string EventHandler = null;
 		public bool ClickThrough = true;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
@@ -35,7 +36,7 @@ namespace OpenRA.Widgets
 		public Widget Parent = null;
 
 		static List<string> Delegates = new List<string>();
-		public static Stack<string> WindowList = new Stack<string>();
+		public static Stack<Widget> WindowList = new Stack<Widget>();
 		
 		// Common Funcs that most widgets will want
 		public Action<object> SpecialOneArg = (arg) => {};
@@ -47,24 +48,13 @@ namespace OpenRA.Widgets
 		public Func<bool> IsVisible;
 
 		public Widget() { IsVisible = () => Visible; }
-		
-		public static Widget RootWidget {
-			get 
-			{ 
-				if (rootWidget == null)
-				{
-					rootWidget = new ContainerWidget();
-					foreach( var file in Game.modData.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
-						foreach( var w in file )
-							rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
-					
-					rootWidget.Initialize();
-					rootWidget.InitDelegates();
-				}
-				return rootWidget;
-			}
+
+		public static Widget RootWidget
+		{
+			get { return rootWidget; }
+			set { rootWidget = value; }
 		}
-		private static Widget rootWidget = null;
+		private static Widget rootWidget = new ContainerWidget();
 		
 		public Widget(Widget widget)
 		{	
@@ -132,14 +122,15 @@ namespace OpenRA.Widgets
 								   Evaluator.Evaluate(Y, substitutions),
 								   width,
 								   height);
+		}
 
-			// Non-static func definitions
-
-			if (Delegate != null && !Delegates.Contains(Delegate))
-				Delegates.Add(Delegate);
-
-			foreach (var child in Children)
-				child.Initialize();
+		public void PostInit()
+		{
+			if( Delegate != null )
+			{
+				var createDict = new Dictionary<string, object> { { "widget", this } };
+				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>( Delegate, createDict );
+			}
 		}
 		
 		public void InitDelegates()
@@ -324,18 +315,17 @@ namespace OpenRA.Widgets
 		
 		public static void CloseWindow()
 		{
-			RootWidget.GetWidget(WindowList.Pop()).Visible = false;
-			if (WindowList.Count > 0)
-				RootWidget.GetWidget(WindowList.Peek()).Visible = true;
+			RootWidget.Children.Remove( WindowList.Pop() );
+			if( WindowList.Count > 0 )
+				rootWidget.Children.Add( WindowList.Peek() );
 		}
 
 		public static Widget OpenWindow(string id)
 		{
-			if (WindowList.Count > 0)
-				RootWidget.GetWidget(WindowList.Peek()).Visible = false;
-			WindowList.Push(id);
-			var window = RootWidget.GetWidget(id);
-			window.Visible = true;
+			var window = Game.modData.WidgetLoader.LoadWidget( rootWidget, id );
+			if( WindowList.Count > 0 )
+				rootWidget.Children.Remove( WindowList.Peek() );
+			WindowList.Push( window );
 			return window;
 		}
 		

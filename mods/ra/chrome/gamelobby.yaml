@@ -5,7 +5,7 @@ Background@SERVER_LOBBY:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:800
 	Height:600
-	Visible:false
+	Visible:true
 	Children:
 		Label@LOBBY_TITLE:
 			X:0
@@ -396,7 +396,7 @@ Background@MAP_CHOOSER:
 	Delegate:MapChooserDelegate
 	Width:800
 	Height:600
-	Visible:false
+	Visible:true
 	Children:
 		Label@MAPCHOOSER_TITLE:
 			X:0

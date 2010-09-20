@@ -27,7 +27,8 @@ namespace OpenRA.Widgets.Delegates
 		public static Color CurrentColorPreview1;
 		public static Color CurrentColorPreview2;
 		
-		public LobbyDelegate()
+		[ObjectCreator.UseCtor]
+		public LobbyDelegate( [ObjectCreator.Param( "widget" )] Widget lobby )
 		{
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
@@ -35,9 +36,7 @@ namespace OpenRA.Widgets.Delegates
 			CurrentColorPreview1 = Game.Settings.Player.Color1;
 			CurrentColorPreview2 = Game.Settings.Player.Color2;
 
-			var r = Widget.RootWidget;
-			var lobby = r.GetWidget("SERVER_LOBBY");
-			Players = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("PLAYERS");
+			Players = lobby.GetWidget("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
@@ -74,8 +73,7 @@ namespace OpenRA.Widgets.Delegates
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi =>
 			{
-				r.GetWidget("MAP_CHOOSER").SpecialOneArg(MapUid);
-				Widget.OpenWindow("MAP_CHOOSER");
+				Widget.OpenWindow("MAP_CHOOSER").SpecialOneArg(MapUid); // WTF
 				return true;
 			};
 

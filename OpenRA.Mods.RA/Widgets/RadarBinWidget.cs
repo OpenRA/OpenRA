@@ -163,6 +163,9 @@ namespace OpenRA.Mods.RA.Widgets
 		int updateTicks = 0;
 		public override void Tick(World w)
 		{
+			if( world != w )
+				SetWorld( w );
+
 			var hasRadarNew = world.Queries.OwnedBy[world.LocalPlayer]
 				.WithTrait<ProvidesRadar>()
 				.Any(a => a.Trait.IsActive);

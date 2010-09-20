@@ -1,7 +1,7 @@
 Container@INGAME_ROOT:
 	Id:INGAME_ROOT
 	Delegate:IngameChromeDelegate
-	Visible:false
+	Visible:true
 	Children:
 		WorldInteractionController:
 			X:0

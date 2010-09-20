@@ -27,12 +27,7 @@ namespace OpenRA.Widgets.Delegates
 				Widget.CloseWindow();
 				return true;
 			};
-			
-			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_MUSIC").OnMouseUp = mi => {
-				Widget.OpenWindow("MUSIC_MENU");
-				return true;
-			};
-			
+
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
 				if (CurrentSong == null)

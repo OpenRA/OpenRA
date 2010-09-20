@@ -279,6 +279,35 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
+			Game.BeforeGameStart = () => Widget.OpenWindow("INGAME_ROOT");
+
+			Game.ConnectionStateChanged = () =>
+			{
+				Widget.CloseWindow();
+				switch( Game.orderManager.Connection.ConnectionState )
+				{
+					case ConnectionState.PreConnecting:
+						Widget.OpenWindow("MAINMENU_BG");
+						break;
+					case ConnectionState.Connecting:
+						Widget.OpenWindow("CONNECTING_BG");
+						break;
+					case ConnectionState.NotConnected:
+						Widget.OpenWindow("CONNECTION_FAILED_BG");
+						break;
+					case ConnectionState.Connected:
+						var lobby = Widget.OpenWindow("SERVER_LOBBY");
+						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
+						lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
+						lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
+						//r.GetWidget("INGAME_ROOT").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();	
+						break;
+				}
+			};
+
+			Widget.OpenWindow("MAINMENU_BG");
+
 			ResetTimer();
 		}
 

@@ -17,10 +17,10 @@ namespace OpenRA.Widgets.Delegates
 	public class MapChooserDelegate : IWidgetDelegate
 	{
 		MapStub Map = null;
-		public MapChooserDelegate()
+
+		[ObjectCreator.UseCtor]
+		public MapChooserDelegate( [ObjectCreator.Param( "widget" )] Widget bg )
 		{
-			var r = Widget.RootWidget;
-			var bg = r.GetWidget("MAP_CHOOSER");
 			bg.SpecialOneArg = (map) => RefreshMapList(map);
 			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
 

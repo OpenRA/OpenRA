@@ -23,28 +23,20 @@ namespace OpenRA.Widgets.Delegates
 		GameServer currentServer = null;
 		Widget ServerTemplate;
 
-		public ServerBrowserDelegate()
+		[ObjectCreator.UseCtor]
+		public ServerBrowserDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
 		{
-			var r = Widget.RootWidget;
-			var bg = r.GetWidget("JOINSERVER_BG");
-			var dc = r.GetWidget("DIRECTCONNECT_BG");
+			var bg = widget.GetWidget("JOINSERVER_BG");
 
 			MasterServerQuery.OnComplete += games => RefreshServerList(games);
 
-			r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi =>
-			{
-				Widget.OpenWindow("JOINSERVER_BG");
+			widget.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+			widget.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
-				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+			bg.Children.RemoveAll(a => GameButtons.Contains(a));
+			GameButtons.Clear();
 
-				bg.Children.RemoveAll(a => GameButtons.Contains(a));
-				GameButtons.Clear();
-
-				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
-
-				return true;
-			};
+			MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
 
 			bg.GetWidget("SERVER_INFO").IsVisible = () => currentServer != null;
 			var preview = bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
@@ -70,8 +62,8 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
 			{
-				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+				widget.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				widget.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
@@ -90,8 +82,6 @@ namespace OpenRA.Widgets.Delegates
 			bg.GetWidget("DIRECTCONNECT_BUTTON").OnMouseUp = mi =>
 			{
 				Widget.CloseWindow();
-
-				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
 				Widget.OpenWindow("DIRECTCONNECT_BG");
 				return true;
 			};
@@ -122,29 +112,6 @@ namespace OpenRA.Widgets.Delegates
 				Widget.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
 				return true;
-			};
-
-			// Direct Connect
-			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
-			{
-
-				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-				var cpts = address.Split(':').ToArray();
-				if (cpts.Length != 2)
-					return true;
-
-				Game.Settings.Player.LastServer = address;
-				Game.Settings.Save();
-
-				Widget.CloseWindow();
-				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
-				return true;
-			};
-
-			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
-			{
-				Widget.CloseWindow();
-				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};
 		}
 
@@ -203,6 +170,39 @@ namespace OpenRA.Widgets.Delegates
 				sl.ContentHeight += template.Bounds.Height;
 				i++;
 			}
+		}
+	}
+
+	public class DirectConnectDelegate : IWidgetDelegate
+	{
+		[ObjectCreator.UseCtor]
+		public DirectConnectDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		{
+			var dc = widget.GetWidget("DIRECTCONNECT_BG");
+
+			dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
+
+			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
+			{
+
+				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
+				var cpts = address.Split(':').ToArray();
+				if (cpts.Length != 2)
+					return true;
+
+				Game.Settings.Player.LastServer = address;
+				Game.Settings.Save();
+
+				Widget.CloseWindow();
+				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
+				return true;
+			};
+
+			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
+			{
+				Widget.CloseWindow();
+				return widget.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
+			};
 		}
 	}
 }

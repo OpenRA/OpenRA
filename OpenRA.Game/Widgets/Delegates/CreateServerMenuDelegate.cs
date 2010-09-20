@@ -14,26 +14,18 @@ using System.Net;
 namespace OpenRA.Widgets.Delegates
 {
 	public class CreateServerMenuDelegate : IWidgetDelegate
-	{		
-		public CreateServerMenuDelegate()
+	{
+		[ObjectCreator.UseCtor]
+		public CreateServerMenuDelegate( [ObjectCreator.Param( "widget" )] Widget cs )
 		{
 			var settings = Game.Settings;
 
-			var r = Widget.RootWidget;
-			var cs = r.GetWidget("CREATESERVER_BG");
-			r.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => {
-				Widget.OpenWindow("CREATESERVER_BG");
-				return true;
-			};
-			
 			cs.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
 				Widget.CloseWindow();
 				return true;
 			};
 			
 			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
-				Widget.OpenWindow("SERVER_LOBBY");
-				
 				var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
 				
 				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;

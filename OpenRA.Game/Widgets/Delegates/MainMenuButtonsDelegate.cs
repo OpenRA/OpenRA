@@ -14,13 +14,17 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
-		public MainMenuButtonsDelegate()
+		[ObjectCreator.UseCtor]
+		public MainMenuButtonsDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
 		{
 			// Main menu is the default window
-			Widget.WindowList.Push("MAINMENU_BG");
-			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+			widget.GetWidget( "MAINMENU_BUTTON_JOIN" ).OnMouseUp = mi => { Widget.OpenWindow( "JOINSERVER_BG" ); return true; };
+			widget.GetWidget( "MAINMENU_BUTTON_CREATE" ).OnMouseUp = mi => { Widget.OpenWindow( "CREATESERVER_BG" ); return true; };
+			widget.GetWidget( "MAINMENU_BUTTON_SETTINGS" ).OnMouseUp = mi => { Widget.OpenWindow( "SETTINGS_MENU" ); return true; };
+			widget.GetWidget( "MAINMENU_BUTTON_MUSIC" ).OnMouseUp = mi => { Widget.OpenWindow( "MUSIC_MENU" ); return true; };
+			widget.GetWidget( "MAINMENU_BUTTON_QUIT" ).OnMouseUp = mi => { Game.Exit(); return true; };
 
-			var version = Widget.RootWidget.GetWidget("MAINMENU_BG").GetWidget<LabelWidget>("VERSION_STRING");
+			var version = widget.GetWidget<LabelWidget>("VERSION_STRING");
 
 			if (FileSystem.Exists("VERSION"))
 			{

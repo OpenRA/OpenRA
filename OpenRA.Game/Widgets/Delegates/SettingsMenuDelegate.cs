@@ -153,14 +153,6 @@ namespace OpenRA.Widgets.Delegates
 				Widget.CloseWindow();
 				return true;
 			};
-			
-			// Menu Buttons
-			Widget.RootWidget.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => {
-				Widget.OpenWindow("SETTINGS_MENU");
-				return true;
-			};
-			
-
 		}
 		
 		string open = null;
