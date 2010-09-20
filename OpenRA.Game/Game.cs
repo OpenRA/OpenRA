@@ -306,6 +306,7 @@ namespace OpenRA
 				}
 			};
 
+			modData.WidgetLoader.LoadWidget( Widget.RootWidget, "PERF_BG" );
 			Widget.OpenWindow("MAINMENU_BG");
 
 			ResetTimer();
