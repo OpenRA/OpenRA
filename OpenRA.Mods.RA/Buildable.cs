@@ -8,23 +8,10 @@
  */
 #endregion
 
-namespace OpenRA.Traits
-{
-	public class ValuedInfo : ITraitInfo
-	{
-		public readonly int Cost = 0;
-		public object Create(ActorInitializer init) { return new Valued(); }
-	}
+using OpenRA.Traits;
 
-	public class TooltipInfo : ITraitInfo
-	{
-		public readonly string Description = "";
-		public readonly string Name = "";
-		public readonly string Icon = null;
-		public readonly string[] AlternateName = { };
-		public object Create(ActorInitializer init) { return new Tooltip(); }
-	}
-	
+namespace OpenRA.Mods.RA
+{
 	public class BuildableInfo : ITraitInfo
 	{
 		[ActorReference]
@@ -43,7 +30,5 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Buildable(); }
 	}
 
-	class Valued { }
 	class Buildable { }
-	class Tooltip { }
 }

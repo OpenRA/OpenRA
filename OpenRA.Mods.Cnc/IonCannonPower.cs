@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Mods.Cnc.Effects;
+using OpenRA.Mods.RA;
 using OpenRA.Orders;
 using OpenRA.Traits;
 

@@ -77,6 +77,7 @@
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
+    <Compile Include="Buildable.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
     <Compile Include="Crates\GiveMcvCrateAction.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="LimitedAmmo.cs" />
+    <Compile Include="MPStartLocations.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Player\ProductionQueue.cs" />
     <Compile Include="PrimaryBuilding.cs" />
     <Compile Include="Production.cs" />
+    <Compile Include="ProvidesRadar.cs" />
     <Compile Include="RallyPoint.cs" />
     <Compile Include="RenderDetectionCircle.cs" />
     <Compile Include="RenderRangeCircle.cs" />
@@ -198,12 +201,14 @@
     <Compile Include="Spy.cs" />
     <Compile Include="SupportPowers\SpyPlanePower.cs" />
     <Compile Include="SupportPowers\NukePower.cs" />
+    <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="TakeCover.cs" />
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
     <Compile Include="ThrowsParticles.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="DefaultShellmapScript.cs" />
+    <Compile Include="Turreted.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Weapon.cs" />
@@ -250,6 +255,7 @@
     <Compile Include="NullLoadScreen.cs" />
     <Compile Include="Activities\IdleAnimation.cs" />
     <Compile Include="IdleAnimation.cs" />
+    <Compile Include="World\SmudgeLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

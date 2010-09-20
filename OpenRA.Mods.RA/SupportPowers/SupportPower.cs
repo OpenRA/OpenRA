@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public abstract class SupportPowerInfo : ITraitInfo, ITraitPrerequisite<TechTreeInfo>, ITraitPrerequisite<PowerManagerInfo>
 	{

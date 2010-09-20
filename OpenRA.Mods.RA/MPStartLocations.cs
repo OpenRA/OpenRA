@@ -8,13 +8,14 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class MPStartLocationsInfo : TraitInfo<MPStartLocations>
 	{

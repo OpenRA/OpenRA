@@ -153,19 +153,15 @@
     <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
-    <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
-    <Compile Include="Traits\SupportPower.cs" />
-    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
-    <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
     <Compile Include="Network\UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />
@@ -185,8 +181,6 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
-    <Compile Include="Traits\World\BibLayer.cs" />
-    <Compile Include="Traits\World\SmudgeLayer.cs" />
     <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
@@ -194,7 +188,6 @@
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
-    <Compile Include="Traits\SharesCell.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
     <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
@@ -212,7 +205,6 @@
     <Compile Include="Traits\Activities\Drag.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
-    <Compile Include="Traits\MPStartLocations.cs" />
     <Compile Include="GameRules\Settings.cs" />
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Traits\ActorStance.cs" />
@@ -234,6 +226,9 @@
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="TraitDictionary.cs" />
+    <Compile Include="Traits\SharesCell.cs" />
+    <Compile Include="Traits\Valued.cs" />
+    <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
