@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
@@ -135,7 +134,6 @@
     <Compile Include="Traits\Activities\RemoveSelf.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
-    <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="PathFinder.cs" />
@@ -158,17 +156,13 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
-    <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\SupportPower.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\Selectable.cs" />
-    <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Mobile.cs" />
-    <Compile Include="Traits\Production.cs" />
-    <Compile Include="Traits\RallyPoint.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Turreted.cs" />
@@ -215,7 +209,6 @@
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Targetable.cs" />
     <Compile Include="Traits\Health.cs" />
-    <Compile Include="Traits\RepairableBuilding.cs" />
     <Compile Include="Traits\Activities\Drag.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
@@ -226,7 +219,6 @@
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
-    <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
     <Compile Include="Traits\Player\PowerManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +234,6 @@
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="TraitDictionary.cs" />
-    <Compile Include="Traits\PrimaryBuilding.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
   </ItemGroup>
   <ItemGroup>

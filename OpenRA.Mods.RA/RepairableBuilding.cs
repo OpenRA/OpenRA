@@ -9,14 +9,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using OpenRA.Effects;
-using OpenRA.GameRules;
-using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	public class RepairableBuildingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{

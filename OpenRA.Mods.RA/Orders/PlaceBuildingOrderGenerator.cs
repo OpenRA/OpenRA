@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Orders
+namespace OpenRA.Mods.RA.Orders
 {
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{

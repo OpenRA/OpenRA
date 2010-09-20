@@ -10,10 +10,10 @@
 
 using System.Linq;
 using OpenRA.Effects;
-using OpenRA.GameRules;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class PlaceBuildingInfo : TraitInfo<PlaceBuilding> {}
 

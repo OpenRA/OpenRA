@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class PlayerResourcesInfo : ITraitInfo
+	public class PlayerResourcesInfo : ITraitInfo
 	{
 		public readonly int InitialCash = 10000;
 		public readonly int InitialOre = 0;

@@ -11,8 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA
 {
 	class RallyPointInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
@@ -38,8 +39,8 @@ namespace OpenRA.Traits
 		public IEnumerable<Renderable> Render(Actor self)
 		{
 			if (self.Owner == self.World.LocalPlayer && self.World.Selection.Actors.Contains(self))
-				yield return Util.Centered(self,
-					anim.Image, Util.CenterOfCell(rallyPoint));
+				yield return Traits.Util.Centered(self,
+					anim.Image, Traits.Util.CenterOfCell(rallyPoint));
 		}
 
 		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)

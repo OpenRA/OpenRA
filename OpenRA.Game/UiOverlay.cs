@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	class UiOverlay
+	public class UiOverlay
 	{
 		Sprite buildOk, buildBlocked, unitDebug;
 
@@ -79,7 +79,7 @@ namespace OpenRA
 		}
 	}
 
-	static class LineBuildUtils
+	public static class LineBuildUtils
 	{
 		public static IEnumerable<int2> GetLineBuildCells(World world, int2 location, string name, BuildingInfo bi)
 		{
