@@ -14,17 +14,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class HeliAttack : IActivity
+	public class HeliAttack : CancelableActivity
 	{
 		Target target;
 		public HeliAttack( Target target ) { this.target = target; }
 
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (!target.IsValid)
-				return NextActivity;
+			if (IsCanceled) return NextActivity;
+			if (!target.IsValid) return NextActivity;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
@@ -53,7 +51,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { target = Target.None; NextActivity = null; }
 	}
 }

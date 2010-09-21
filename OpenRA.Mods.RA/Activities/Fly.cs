@@ -14,21 +14,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Fly : IActivity
+	public class Fly : CancelableActivity
 	{
 		public readonly float2 Pos;
-		bool isCanceled;
 
 		public Fly(float2 pos) { Pos = pos; }
 		public Fly(int2 pos) { Pos = Util.CenterOfCell(pos); }
 		
-		public IActivity NextActivity { get; set; }
-		
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 
 			var d = Pos - self.CenterLocation;
 			if (d.LengthSquared < 50)		/* close enough */
@@ -46,8 +43,6 @@ namespace OpenRA.Mods.RA.Activities
 			FlyUtil.Fly(self, cruiseAltitude);
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 
 	public static class FlyUtil

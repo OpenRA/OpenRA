@@ -170,9 +170,33 @@ namespace OpenRA.Traits
 	
 	public interface IActivity
 	{
-		IActivity NextActivity { get; set; }
 		IActivity Tick(Actor self);
 		void Cancel(Actor self);
+		void Queue(IActivity activity);
+	}
+
+	public abstract class CancelableActivity : IActivity
+	{
+		protected IActivity NextActivity { get; private set; }
+		protected bool IsCanceled { get; private set; }
+
+		public abstract IActivity Tick( Actor self );
+		protected virtual void OnCancel() {}
+
+		public void Cancel( Actor self )
+		{
+			IsCanceled = true;
+			NextActivity = null;
+			OnCancel();
+		}
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
 	}
 
 	public interface IRenderOverlay { void Render(); }

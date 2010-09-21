@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class HeliFly : IActivity
+	class HeliFly : CancelableActivity
 	{
 		public readonly float2 Dest;
 		public HeliFly(float2 dest)
@@ -22,13 +22,9 @@ namespace OpenRA.Mods.RA.Activities
 			Dest = dest;
 		}
 
-		public IActivity NextActivity { get; set; }
-		bool isCanceled;
-		
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled)
-				return NextActivity;
+			if (IsCanceled)	return NextActivity;
 
 			var info = self.Info.Traits.Get<HelicopterInfo>();
 			var aircraft = self.Trait<Aircraft>();
@@ -57,7 +53,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

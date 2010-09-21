@@ -17,12 +17,11 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Transform : IActivity
+	class Transform : CancelableActivity
 	{
 		string actor = null;
 		int2 offset;
 		string[] sounds = null;		
-		bool isCanceled;
 		int facing;
 		
 		RenderBuilding rb;
@@ -34,10 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.facing = facing;
 			rb = self.TraitOrDefault<RenderBuilding>();
 		}
-		
-		public IActivity NextActivity { get; set; }
 
-		
 		void DoTransform(Actor self)
 		{
 			// Hack: repeat the first frame of the make anim instead
@@ -70,9 +66,9 @@ namespace OpenRA.Mods.RA.Activities
 		}
 		
 		bool started = false;
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			if (started) return this;
 			
 			if (rb == null)
@@ -88,7 +84,5 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			return this;
 		}
-		
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

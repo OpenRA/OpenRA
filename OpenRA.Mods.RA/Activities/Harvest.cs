@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Harvest : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 		bool isHarvesting = false;
 
 		public IActivity Tick( Actor self )
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			harv.LastHarvestedCell = self.Location;
 
 			if( harv.IsFull )
-				return new DeliverResources { NextActivity = NextActivity };
+				return Util.SequenceActivities( new DeliverResources(), NextActivity );
 
 			if (HarvestThisTile(self))
 				return this;
@@ -74,5 +74,13 @@ namespace OpenRA.Mods.RA.Activities
 		}
 
 		public void Cancel(Actor self) { }
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
 	}
 }

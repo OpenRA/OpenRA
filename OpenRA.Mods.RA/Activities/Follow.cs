@@ -13,7 +13,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Follow : IActivity
+	public class Follow : CancelableActivity
 	{
 		Target Target;
 		int Range;
@@ -24,24 +24,18 @@ namespace OpenRA.Mods.RA.Activities
 			Range = range;
 		}
 
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
-			if (!Target.IsValid)
-				return NextActivity;
+			if (IsCanceled) return NextActivity;
+			if (!Target.IsValid) return NextActivity;
 
 			var inRange = ( Util.CellContaining( Target.CenterLocation ) - self.Location ).LengthSquared < Range * Range;
 
-			if( !inRange )
-				return new Move( Target, Range ) { NextActivity = this };
+			if( inRange ) return this;
 
-			return this;
-		}
-
-		public void Cancel(Actor self)
-		{
-			Target = Target.None;
+			var ret = new Move( Target, Range );
+			ret.Queue( this );
+			return ret;
 		}
 	}
 }

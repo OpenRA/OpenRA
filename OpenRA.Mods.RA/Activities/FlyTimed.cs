@@ -12,27 +12,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class FlyTimed : IActivity
+	public class FlyTimed : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
 		int remainingTicks;
 
 		public FlyTimed(int ticks) { remainingTicks = ticks; }
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
+			if( IsCanceled ) return NextActivity;
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			if (remainingTicks-- == 0) return NextActivity;
 			FlyUtil.Fly(self, targetAltitude);
 			return this;
 		}
-
-		public void Cancel(Actor self) { remainingTicks = 0; NextActivity = null; }
 	}
 
 	public class FlyOffMap : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 		bool isCanceled;
 		public bool Interruptible = true;
 
@@ -52,6 +50,13 @@ namespace OpenRA.Mods.RA.Activities
 				NextActivity = null;
 			}
 		}
-	}
 
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
+	}
 }

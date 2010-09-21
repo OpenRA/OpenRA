@@ -12,7 +12,7 @@ namespace OpenRA.Traits.Activities
 {
 	class Sell : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		bool started;
 
@@ -55,5 +55,13 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public void Cancel(Actor self) { /* never gonna give you up.. */ }
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
 	}
 }

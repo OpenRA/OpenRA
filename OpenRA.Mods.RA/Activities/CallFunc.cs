@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		
 		Action a;
 		bool interruptable;
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self)
 		{
@@ -39,6 +39,14 @@ namespace OpenRA.Mods.RA.Activities
 			
 			a = null;
 			NextActivity = null;
+		}
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
 		}
 	}
 }

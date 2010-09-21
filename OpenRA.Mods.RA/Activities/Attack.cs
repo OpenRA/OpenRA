@@ -15,7 +15,7 @@ using OpenRA.Traits.Activities;
 namespace OpenRA.Mods.RA.Activities
 {
 	/* non-turreted attack */
-	public class Attack : IActivity
+	public class Attack : CancelableActivity
 	{
 		Target Target;
 		int Range;
@@ -26,10 +26,11 @@ namespace OpenRA.Mods.RA.Activities
 			Range = range;
 		}
 
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
+			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();
 			if (!Target.IsValid)
 				return NextActivity;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 			var targetCell = Util.CellContaining(Target.CenterLocation);
 
 			if ((targetCell - self.Location).LengthSquared >= Range * Range)
-				return new Move( Target, Range ) { NextActivity = this };
+				return Util.SequenceActivities( new Move( Target, Range ), this );
 
 			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);
 			var renderUnit = self.TraitOrDefault<RenderUnit>();
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (Util.QuantizeFacing(facing.Facing, numDirs) 
 				!= Util.QuantizeFacing(desiredFacing, numDirs))
 			{
-				return new Turn( desiredFacing ) { NextActivity = this };
+				return Util.SequenceActivities( new Turn( desiredFacing ), this );
 			}
 
 			var attack = self.Trait<AttackBase>();
@@ -55,7 +56,5 @@ namespace OpenRA.Mods.RA.Activities
 			attack.DoAttack(self);
 			return this;
 		}
-
-		public void Cancel(Actor self) { Target = Target.None; }
 	}
 }

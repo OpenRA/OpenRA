@@ -12,10 +12,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class EnterTransport : IActivity
+	class EnterTransport : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-		bool isCanceled;
 		public Actor transport;
 
 		public EnterTransport(Actor self, Actor transport)
@@ -23,9 +21,9 @@ namespace OpenRA.Mods.RA.Activities
 			this.transport = transport;
 		}
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			if (transport == null || !transport.IsInWorld) return NextActivity;
 
 			var cargo = transport.Trait<Cargo>();
@@ -43,7 +41,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

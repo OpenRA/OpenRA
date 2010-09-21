@@ -13,10 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Teleport : IActivity
+	public class Teleport : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-
 		int2 destination;
 
 		public Teleport(int2 destination)
@@ -24,12 +22,10 @@ namespace OpenRA.Mods.RA.Activities
 			this.destination = destination;
 		}
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			self.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(self, destination);
 			return NextActivity;
 		}
-
-		public void Cancel(Actor self) { }
 	}
 }

@@ -151,16 +151,9 @@ namespace OpenRA
 		public void QueueActivity( IActivity nextActivity )
 		{
 			if( currentActivity == null )
-			{
 				currentActivity = nextActivity;
-				return;
-			}
-			var act = currentActivity;
-			while( act.NextActivity != null )
-			{
-				act = act.NextActivity;
-			}
-			act.NextActivity = nextActivity;
+			else
+				currentActivity.Queue( nextActivity );
 		}
 
 		public void CancelActivity()

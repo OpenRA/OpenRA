@@ -17,7 +17,7 @@ namespace OpenRA.Traits.Activities
 {
 	public class Move : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		int2? destination;
 		int nearEnough;
@@ -164,9 +164,7 @@ namespace OpenRA.Traits.Activities
 				Log.Write("debug", "Turn: #{0} from {1} to {2}",
 					self.ActorID, mobile.Facing, firstFacing);
 
-				return new Turn( firstFacing )
-					{ NextActivity = this }
-					.Tick( self );
+				return Util.SequenceActivities( new Turn( firstFacing ), this ).Tick( self );
 			}
 			else
 			{
@@ -261,6 +259,14 @@ namespace OpenRA.Traits.Activities
 			NextActivity = null;
 		}
 
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
+
 		abstract class MovePart : IActivity
 		{
 			public readonly Move move;
@@ -280,11 +286,14 @@ namespace OpenRA.Traits.Activities
 				this.moveFractionTotal = (int)(( to - from ).Length*3);
 			}
 
-			public IActivity NextActivity { get { return move; } set { move.NextActivity = value; } }
-
 			public void Cancel( Actor self )
 			{
-				NextActivity.Cancel( self );
+				move.Cancel( self );
+			}
+
+			public void Queue( IActivity activity )
+			{
+				move.Queue( activity );
 			}
 
 			public IActivity Tick( Actor self )

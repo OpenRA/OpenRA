@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Leap : IActivity
+	class Leap : CancelableActivity
 	{
 		Target target;
 		float2 initialLocation;
@@ -31,12 +31,10 @@ namespace OpenRA.Mods.RA.Activities
 			Sound.Play("dogg5p.aud", self.CenterLocation);
 		}
 
-		public IActivity NextActivity { get; set; }
-		
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (!target.IsValid)
-				return NextActivity;
+			if (IsCanceled) return NextActivity;
+			if (!target.IsValid) return NextActivity;
 
 			t += (1f / delay);
 
@@ -54,7 +52,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { target = new Target(); NextActivity = null; }
 	}
 }

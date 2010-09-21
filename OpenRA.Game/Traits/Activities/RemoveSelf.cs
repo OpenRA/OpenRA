@@ -10,18 +10,13 @@
 
 namespace OpenRA.Traits.Activities
 {
-	public class RemoveSelf : IActivity
+	public class RemoveSelf : CancelableActivity
 	{
-		bool isCanceled;
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			self.Destroy();
 			return null;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

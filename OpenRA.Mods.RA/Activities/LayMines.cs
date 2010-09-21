@@ -17,14 +17,11 @@ namespace OpenRA.Mods.RA.Activities
 {
 	// assumes you have Minelayer on that unit
 
-	class LayMines : IActivity
+	class LayMines : CancelableActivity
 	{
-		bool canceled = false;
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
-			if (canceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
@@ -37,8 +34,11 @@ namespace OpenRA.Mods.RA.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				return new Move(Util.CellContaining(rearmTarget.CenterLocation), rearmTarget)
-					{ NextActivity = new Rearm() { NextActivity = new Repair(rearmTarget) { NextActivity = this } } };
+				return Util.SequenceActivities(
+					new Move(Util.CellContaining(rearmTarget.CenterLocation), rearmTarget),
+					new Rearm(),
+					new Repair(rearmTarget),
+					this );
 			}
 
 			var ml = self.Trait<Minelayer>();
@@ -46,14 +46,14 @@ namespace OpenRA.Mods.RA.Activities
 				ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
-				return new Wait(20) { NextActivity = this };	// a little wait after placing each mine, for show
+				return Util.SequenceActivities( new Wait(20), this ); // a little wait after placing each mine, for show
 			}
 
 			for (var n = 0; n < 20; n++)		// dont get stuck forever here
 			{
 				var p = ml.minefield.Random(self.World.SharedRandom);
 				if (ShouldLayMine(self, p))
-					return new Move(p, 0) { NextActivity = this };
+					return Util.SequenceActivities( new Move(p, 0), this );
 			}
 
 			// todo: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
@@ -80,7 +80,5 @@ namespace OpenRA.Mods.RA.Activities
 					new OwnerInit( self.Owner ),
 				}));
 		}
-
-		public void Cancel( Actor self ) { canceled = true; NextActivity = null; }
 	}
 }

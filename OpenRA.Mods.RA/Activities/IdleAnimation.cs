@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.delay = delay;
 		}
 
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		bool active = true;
 		public IActivity Tick(Actor self)
@@ -42,6 +42,14 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			active = false;
 			NextActivity = null;
+		}
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
 		}
 	}
 }

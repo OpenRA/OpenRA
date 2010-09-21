@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class DeliverResources : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		bool isDocking;
 
@@ -32,25 +32,33 @@ namespace OpenRA.Mods.RA.Activities
 				harv.ChooseNewProc(self, null);
 
 			if (harv.LinkedProc == null)	// no procs exist; check again in 1s.
-				return new Wait(25) { NextActivity = this };
+				return Util.SequenceActivities( new Wait(25), this );
 
 			var proc = harv.LinkedProc;
 			
 			if( self.Location != proc.Location + proc.Trait<IAcceptOre>().DeliverOffset )
 			{
-				return new Move(proc.Location + proc.Trait<IAcceptOre>().DeliverOffset, 0) { NextActivity = this };
+				return Util.SequenceActivities( new Move(proc.Location + proc.Trait<IAcceptOre>().DeliverOffset, 0), this );
 			}
 			else if (!isDocking)
 			{
 				isDocking = true;
 				proc.Trait<IAcceptOre>().OnDock(self, this);
 			}
-			return new Wait(10) { NextActivity = this };
+			return Util.SequenceActivities( new Wait(10), this );
 		}
 
 		public void Cancel(Actor self)
 		{
 			// TODO: allow canceling of deliver orders?
+		}
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
 		}
 	}
 }

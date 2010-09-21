@@ -113,7 +113,7 @@ namespace OpenRA.Traits
 		public static IActivity SequenceActivities(params IActivity[] acts)
 		{
 			return acts.Reverse().Aggregate(
-				(next, a) => { a.NextActivity = next; return a; });
+				(next, a) => { a.Queue( next ); return a; });
 		}
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }

@@ -12,14 +12,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Infiltrate : IActivity
+	class Infiltrate : CancelableActivity
 	{
 		Actor target;
 		public Infiltrate(Actor target) { this.target = target; }
-		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
+			if (IsCanceled) return NextActivity;
 			if (target == null || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
@@ -30,7 +30,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return NextActivity;
 		}
-
-		public void Cancel(Actor self) { target = null; NextActivity = null; }
 	}
 }

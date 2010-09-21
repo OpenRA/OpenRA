@@ -14,7 +14,7 @@ namespace OpenRA.Traits.Activities
 {
 	public class Drag : IActivity
 	{
-		public IActivity NextActivity { get; set; }
+		IActivity NextActivity { get; set; }
 
 		float2 endLocation;
 		float2 startLocation;
@@ -40,5 +40,13 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public void Cancel(Actor self) {	}
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
 	}
 }

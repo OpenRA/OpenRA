@@ -14,21 +14,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Land : IActivity
+	public class Land : CancelableActivity
 	{
-		bool isCanceled;
 		Target Target;
 
 		public Land(Target t) { Target = t; }
 		
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			if (!Target.IsValid)
 				Cancel(self);
 			
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 
 			var d = Target.CenterLocation - self.CenterLocation;
 			if (d.LengthSquared < 50)		/* close enough */
@@ -49,7 +46,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

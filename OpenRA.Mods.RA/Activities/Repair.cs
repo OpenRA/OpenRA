@@ -14,18 +14,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Repair : IActivity
+	public class Repair : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-		bool isCanceled;
 		int remainingTicks;
 		Actor host;
 
 		public Repair(Actor host) { this.host = host; }
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			if (host != null && !host.IsInWorld) return NextActivity;
 			if (remainingTicks == 0)
 			{
@@ -58,7 +56,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

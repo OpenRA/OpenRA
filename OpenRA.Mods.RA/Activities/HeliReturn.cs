@@ -14,11 +14,8 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class HeliReturn : IActivity
+	public class HeliReturn : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-		bool isCanceled;
-
 		static Actor ChooseHelipad(Actor self)
 		{
 			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
@@ -27,9 +24,9 @@ namespace OpenRA.Mods.RA.Activities
 					!Reservable.IsReserved(a));
 		}
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			var dest = ChooseHelipad(self);
 
 			var initialFacing = self.Info.Traits.Get<AircraftInfo>().InitialFacing;
@@ -54,7 +51,5 @@ namespace OpenRA.Mods.RA.Activities
 				new Rearm(),
 				NextActivity);
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

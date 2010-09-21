@@ -16,7 +16,8 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		int remainingTicks;
 		bool interruptable = true;
-		
+		IActivity NextActivity { get; set; }
+
 		public Wait(int period) { remainingTicks = period; }
 		public Wait(int period, bool interruptable)
 		{
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.interruptable = interruptable;
 		}
 		
-		public IActivity Tick(Actor self)
+		public virtual IActivity Tick(Actor self)
 		{
 			if (remainingTicks-- == 0) return NextActivity;
 			return this;
@@ -38,6 +39,13 @@ namespace OpenRA.Mods.RA.Activities
 			remainingTicks = 0;
 			NextActivity = null;
 		}
-		public IActivity NextActivity { get; set; }
+
+		public void Queue( IActivity activity )
+		{
+			if( NextActivity != null )
+				NextActivity.Queue( activity );
+			else
+				NextActivity = activity;
+		}
 	}
 }

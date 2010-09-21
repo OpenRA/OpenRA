@@ -12,16 +12,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class RepairBuilding : IActivity
+	class RepairBuilding : CancelableActivity
 	{
 		Target target;
 
 		public RepairBuilding(Actor target) { this.target = Target.FromActor(target); }
 
-		public IActivity NextActivity { get; set; }
-
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
+			if (IsCanceled) return NextActivity;
 			if (!target.IsValid) return NextActivity;
 			if ((target.Actor.Location - self.Location).Length > 1)
 				return NextActivity;
@@ -35,7 +34,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return NextActivity;
 		}
-
-		public void Cancel(Actor self) { target = Target.None; NextActivity = null; }
 	}
 }

@@ -16,11 +16,8 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class UnloadCargo : IActivity
+	public class UnloadCargo : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-		bool isCanceled;
-
 		int2? ChooseExitTile(Actor self, Actor cargo)
 		{
 			// is anyone still hogging this tile?
@@ -38,16 +35,16 @@ namespace OpenRA.Mods.RA.Activities
 			return null;
 		}
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 
 			// if we're a thing that can turn, turn to the
 			// right facing for the unload animation
 			var facing = self.TraitOrDefault<IFacing>();
 			var unloadFacing = self.Info.Traits.Get<CargoInfo>().UnloadFacing;
 			if (facing != null && facing.Facing != unloadFacing)
-				return new Turn(unloadFacing) { NextActivity = this };
+				return Util.SequenceActivities( new Turn(unloadFacing), this );
 
 			// todo: handle the BS of open/close sequences, which are inconsistent,
 			//		for reasons that probably make good sense to the westwood guys.
@@ -82,7 +79,5 @@ namespace OpenRA.Mods.RA.Activities
 
 			return this;
 		}
-
-		public void Cancel(Actor self) { NextActivity = null; isCanceled = true; }
 	}
 }

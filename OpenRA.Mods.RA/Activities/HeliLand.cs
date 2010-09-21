@@ -12,17 +12,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class HeliLand : IActivity
+	class HeliLand : CancelableActivity
 	{
 		public HeliLand(bool requireSpace) { this.requireSpace = requireSpace; }
 
 		bool requireSpace;
-		bool isCanceled;
-		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude == 0)
 				return NextActivity;
@@ -33,7 +31,5 @@ namespace OpenRA.Mods.RA.Activities
 			--aircraft.Altitude;
 			return this;
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }

@@ -12,9 +12,8 @@ using System.Linq;
 
 namespace OpenRA.Traits.Activities
 {
-	public class Turn : IActivity
+	public class Turn : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
 		int desiredFacing;
 
 		public Turn( int desiredFacing )
@@ -22,8 +21,9 @@ namespace OpenRA.Traits.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
+			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();
 
 			if( desiredFacing == facing.Facing )
@@ -31,12 +31,6 @@ namespace OpenRA.Traits.Activities
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.ROT);
 
 			return this;
-		}
-
-		public void Cancel( Actor self )
-		{
-			desiredFacing = self.Trait<IFacing>().Facing;
-			NextActivity = null;
 		}
 	}
 }

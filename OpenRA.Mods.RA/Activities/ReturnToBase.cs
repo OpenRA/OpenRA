@@ -14,11 +14,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class ReturnToBase : IActivity
+	public class ReturnToBase : CancelableActivity
 	{
-		public IActivity NextActivity { get; set; }
-
-		bool isCanceled;
 		bool isCalculated;
 		Actor dest;
 
@@ -88,9 +85,9 @@ namespace OpenRA.Mods.RA.Activities
 			this.dest = dest;
 		}
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
-			if (isCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 			if (!isCalculated)
 				Calculate(self);
 
@@ -101,7 +98,5 @@ namespace OpenRA.Mods.RA.Activities
 				new Land(Target.FromActor(dest)),
 				NextActivity);
 		}
-
-		public void Cancel(Actor self) { isCanceled = true; NextActivity = null; }
 	}
 }
