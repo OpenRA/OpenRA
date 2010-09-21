@@ -102,7 +102,7 @@ namespace OpenRA
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var costHere = Mobile.MovementCostForCell(mobileInfo, world, newHere);
+				var costHere = (float)Mobile.MovementCostForCell(mobileInfo, world, newHere);
 				
 				if (costHere == float.PositiveInfinity)
 					continue;
@@ -117,7 +117,7 @@ namespace OpenRA
 				if( est == float.PositiveInfinity )
 					continue;
 
-				float cellCost = ((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere;
+				float cellCost = (float)(((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere);
 
 				// directional bonuses for smoother flow!
 				var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
@@ -128,7 +128,7 @@ namespace OpenRA
 				if (uy == 0 && d.X < 0) cellCost += LaneBias;
 				else if (uy == 1 && d.X > 0) cellCost += LaneBias;
 
-				float newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
+				float newCost = (float)(cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost);
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
 					continue;
