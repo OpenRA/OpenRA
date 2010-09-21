@@ -126,6 +126,8 @@ namespace OpenRA
 					{
 						++LocalTick;
 
+						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+
 						if (isNetTick) orderManager.Tick(world);
 
 						world.OrderGenerator.Tick(world);
