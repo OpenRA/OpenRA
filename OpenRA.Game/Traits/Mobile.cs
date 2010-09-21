@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
 			{
 				var speed = (float)FieldLoader.GetValue("speed", typeof(float),t.Value.Value);
-				var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (float)FieldLoader.GetValue("cost", typeof(float), t.Value.NodesDict["PathingCost"].Value) : 1f/speed;
+				var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (int)FieldLoader.GetValue("cost", typeof(int), t.Value.NodesDict["PathingCost"].Value) : (int)(10000/speed);
 				ret.Add(t.Key, new TerrainInfo{Speed = speed, Cost = cost});
 			}
 			
@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 		
 		public class TerrainInfo
 		{
-			public float Cost = float.PositiveInfinity;
+			public int Cost = int.MaxValue;
 			public float Speed = 0;
 		}
 	}
@@ -250,7 +250,7 @@ namespace OpenRA.Traits
 
 		public static bool CanEnterCell( MobileInfo mobileInfo, World world, UnitInfluence uim, BuildingInfluence bim, int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
-			if (MovementCostForCell(mobileInfo, world, cell) == float.PositiveInfinity)
+			if (MovementCostForCell(mobileInfo, world, cell) == int.MaxValue)
 				return false;
 
 			// Check for buildings
@@ -295,19 +295,14 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public float MovementCostForCell( Actor self, int2 cell )
-		{
-			return MovementCostForCell( Info, self.World, cell );
-		}
-
-		public static float MovementCostForCell(MobileInfo info, World world, int2 cell)
+		public static int MovementCostForCell(MobileInfo info, World world, int2 cell)
 		{
 			if (!world.Map.IsInMap(cell.X,cell.Y))
-				return float.PositiveInfinity;
+				return int.MaxValue;
 
 			var type = world.GetTerrainType(cell);
 			if (!info.TerrainSpeeds.ContainsKey(type))
-				return float.PositiveInfinity;
+				return int.MaxValue;
 			
 			return info.TerrainSpeeds[type].Cost;
 		}
@@ -323,7 +318,7 @@ namespace OpenRA.Traits
 				.TraitsImplementing<ISpeedModifier>()
 				.Select(t => t.GetSpeedModifier())
 				.Product();
-			return Info.Speed * Info.TerrainSpeeds[type].Speed * modifier;
+			return Info.Speed * Info.TerrainSpeeds[type].Speed * modifier / 100f;
 		}
 		
 		public IEnumerable<float2> GetCurrentPath(Actor self)

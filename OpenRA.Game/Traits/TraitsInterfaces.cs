@@ -112,7 +112,6 @@ namespace OpenRA.Traits
 
 	public interface IMove : ITeleportable
 	{
-		float MovementCostForCell(Actor self, int2 cell);
 		float MovementSpeedForCell(Actor self, int2 cell);
 		IEnumerable<float2> GetCurrentPath(Actor self);
 		int Altitude { get; set; }

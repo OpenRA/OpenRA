@@ -20,7 +20,7 @@ namespace OpenRA
 		World world;
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
-		public Func<int2, float> heuristic;
+		public Func<int2, int> heuristic;
 		Func<int2, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
@@ -58,7 +58,7 @@ namespace OpenRA
 			return this;
 		}
 
-		public PathSearch WithHeuristic(Func<int2, float> h)
+		public PathSearch WithHeuristic(Func<int2, int> h)
 		{
 			heuristic = h;
 			return this;
@@ -66,7 +66,7 @@ namespace OpenRA
 		
 		public PathSearch WithoutLaneBias()
 		{
-			LaneBias = 0f;
+			LaneBias = 0;
 			return this;
 		}
 		
@@ -76,7 +76,7 @@ namespace OpenRA
 			return this;
 		}
 		
-		float LaneBias = .5f;
+		int LaneBias = 1;
 
 		public int2 Expand( World world )
 		{
@@ -91,7 +91,7 @@ namespace OpenRA
 			
 			var thisCost = Mobile.MovementCostForCell(mobileInfo, world, p.Location);
 
-			if (thisCost == float.PositiveInfinity) 
+			if (thisCost == int.MaxValue) 
 				return p.Location;
 
 			foreach( int2 d in directions )
@@ -102,9 +102,9 @@ namespace OpenRA
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var costHere = (float)Mobile.MovementCostForCell(mobileInfo, world, newHere);
+				var costHere = Mobile.MovementCostForCell(mobileInfo, world, newHere);
 				
-				if (costHere == float.PositiveInfinity)
+				if (costHere == int.MaxValue)
 					continue;
 
 				if (!Mobile.CanEnterCell(mobileInfo, world, uim, bim, newHere, ignoreBuilding, checkForBlocked))
@@ -114,10 +114,11 @@ namespace OpenRA
 					continue;
 				
 				var est = heuristic( newHere );
-				if( est == float.PositiveInfinity )
+				if( est == int.MaxValue )
 					continue;
 
-				float cellCost = (float)(((d.X * d.Y != 0) ? 1.414213563f : 1.0f) * costHere);
+				int cellCost = costHere;
+				if( d.X * d.Y != 0 ) cellCost = ( cellCost * 34 ) / 24;
 
 				// directional bonuses for smoother flow!
 				var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
@@ -128,7 +129,7 @@ namespace OpenRA
 				if (uy == 0 && d.X < 0) cellCost += LaneBias;
 				else if (uy == 1 && d.X > 0) cellCost += LaneBias;
 
-				float newCost = (float)(cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost);
+				int newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
 
 				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
 					continue;
@@ -199,18 +200,18 @@ namespace OpenRA
 			var cellInfo = new CellInfo[ world.Map.MapSize.X, world.Map.MapSize.Y ];
 			for( int x = 0 ; x < world.Map.MapSize.X ; x++ )
 				for( int y = 0 ; y < world.Map.MapSize.Y ; y++ )
-					cellInfo[ x, y ] = new CellInfo( float.PositiveInfinity, new int2( x, y ), false );
+					cellInfo[ x, y ] = new CellInfo( int.MaxValue, new int2( x, y ), false );
 			return cellInfo;
 		}
 
-		public static Func<int2, float> DefaultEstimator( int2 destination )
+		public static Func<int2, int> DefaultEstimator( int2 destination )
 		{
 			return here =>
 			{
 				int2 d = ( here - destination ).Abs();
 				int diag = Math.Min( d.X, d.Y );
 				int straight = Math.Abs( d.X - d.Y );
-				return 1.5f * diag + straight;
+				return (3400 * diag / 24) + (100 * straight);
 			};
 		}
 	}

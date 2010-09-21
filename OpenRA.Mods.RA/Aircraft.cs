@@ -80,8 +80,6 @@ namespace OpenRA.Mods.RA
 		
 		public bool CanEnterCell(int2 location) { return true; }
 		
-		public float MovementCostForCell(Actor self, int2 cell) { return 1f; }
-		
 		public float MovementSpeedForCell(Actor self, int2 cell)
 		{		
 			var modifier = self

@@ -207,11 +207,11 @@ namespace OpenRA
 
 	public struct CellInfo
 	{
-		public float MinCost;
+		public int MinCost;
 		public int2 Path;
 		public bool Seen;
 
-		public CellInfo( float minCost, int2 path, bool seen )
+		public CellInfo( int minCost, int2 path, bool seen )
 		{
 			MinCost = minCost;
 			Path = path;
@@ -221,10 +221,10 @@ namespace OpenRA
 
 	public struct PathDistance : IComparable<PathDistance>
 	{
-		public float EstTotal;
+		public int EstTotal;
 		public int2 Location;
 
-		public PathDistance(float estTotal, int2 location)
+		public PathDistance(int estTotal, int2 location)
 		{
 			EstTotal = estTotal;
 			Location = location;
