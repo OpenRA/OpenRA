@@ -98,6 +98,9 @@ namespace OpenRA.Traits
 			set { SetLocation( __fromCell, value ); }
 		}
 
+		[Sync]
+		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
+
 		void SetLocation(int2 from, int2 to)
 		{
 			if (fromCell == from && toCell == to) return;

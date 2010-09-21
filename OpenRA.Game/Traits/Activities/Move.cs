@@ -102,12 +102,24 @@ namespace OpenRA.Traits.Activities
 			this.nearEnough = 0;
 		}
 
+		static int HashList<T>(List<T> xs)
+		{
+			int hash = 0;
+			int n = 0;
+			foreach (var x in xs)
+				hash += n++ * x.GetHashCode();
+
+			return hash;
+		}
+
 		List<int2> EvalPath( Actor self, Mobile mobile )
 		{
 			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
 
 			Log.Write("debug", "EvalPath #{0} {1}",
 				self.ActorID, string.Join(" ", path.Select(a => a.ToString()).ToArray()));
+
+			mobile.PathHash = HashList(path);
 
 			return path;
 		}
