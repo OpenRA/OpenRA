@@ -26,7 +26,6 @@ namespace OpenRA.Traits.Activities
 		public Actor ignoreBuilding;
 		bool cancellable = true;
 		
-		MovePart move;
 		int ticksBeforePathing;
 
 		const int avgTicksBeforePathing = 5;
@@ -130,12 +129,6 @@ namespace OpenRA.Traits.Activities
 		{
 			var mobile = self.Trait<Mobile>();
 
-			if( move != null )
-			{
-				move.TickMove( self, mobile, this );
-				return this;
-			}
-
 			if (destination == mobile.toCell)
 				return NextActivity;
 
@@ -171,21 +164,22 @@ namespace OpenRA.Traits.Activities
 				Log.Write("debug", "Turn: #{0} from {1} to {2}",
 					self.ActorID, mobile.Facing, firstFacing);
 
-				return new Turn( firstFacing ) { NextActivity = this };
+				return new Turn( firstFacing )
+					{ NextActivity = this }
+					.Tick( self );
 			}
 			else
 			{
 				mobile.toCell = nextCell.Value;
-				move = new MoveFirstHalf(
+				var move = new MoveFirstHalf(
+					this,
 					Util.CenterOfCell( mobile.fromCell ),
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					mobile.Facing,
 					mobile.Facing,
-					0 );
+					0 ) { NextActivity = this };
 
-				move.TickMove( self, mobile, this );
-
-				return this;
+				return move.Tick( self );
 			}
 		}
 
@@ -267,15 +261,17 @@ namespace OpenRA.Traits.Activities
 			NextActivity = null;
 		}
 
-		abstract class MovePart
+		abstract class MovePart : IActivity
 		{
+			public readonly Move move;
 			public readonly float2 from, to;
 			public readonly int fromFacing, toFacing;
 			public int moveFraction;
 			public readonly int moveFractionTotal;
 
-			public MovePart( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+			public MovePart( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
 			{
+				this.move = move;
 				this.from = from;
 				this.to = to;
 				this.fromFacing = fromFacing;
@@ -284,18 +280,29 @@ namespace OpenRA.Traits.Activities
 				this.moveFractionTotal = (int)(( to - from ).Length*3);
 			}
 
-			public void TickMove( Actor self, Mobile mobile, Move parent )
+			public IActivity NextActivity { get { return move; } set { move.NextActivity = value; } }
+
+			public void Cancel( Actor self )
 			{
+				NextActivity.Cancel( self );
+			}
+
+			public IActivity Tick( Actor self )
+			{
+				var mobile = self.Trait<Mobile>();
 				moveFraction += (int)mobile.MovementSpeedForCell(self, mobile.toCell);
 				if( moveFraction >= moveFractionTotal )
 					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );
 				if( moveFraction >= moveFractionTotal )
 				{
-					parent.move = OnComplete( self, mobile, parent );
-					if( parent.move == null )
-						UpdateCenterLocation( self, mobile );
+					var next = OnComplete( self, mobile, move );
+					if( next != null )
+						return next;
+					UpdateCenterLocation( self, mobile );
+					return move;
 				}
+				return this;
 			}
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
@@ -315,8 +322,8 @@ namespace OpenRA.Traits.Activities
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
-				: base( from, to, fromFacing, toFacing, startingFraction )
+			public MoveFirstHalf( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
 
@@ -328,6 +335,7 @@ namespace OpenRA.Traits.Activities
 					if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 					{
 						var ret = new MoveFirstHalf(
+							move,
 							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 							Util.BetweenCells( mobile.toCell, nextCell.Value ),
 							mobile.Facing,
@@ -341,6 +349,7 @@ namespace OpenRA.Traits.Activities
 						parent.path.Add( nextCell.Value );
 				}
 				var ret2 = new MoveSecondHalf(
+					move,
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					Util.CenterOfCell( mobile.toCell ),
 					mobile.Facing,
@@ -353,8 +362,8 @@ namespace OpenRA.Traits.Activities
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf( float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
-				: base( from, to, fromFacing, toFacing, startingFraction )
+			public MoveSecondHalf( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
 
