@@ -177,7 +177,7 @@ namespace OpenRA.Traits.Activities
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					mobile.Facing,
 					mobile.Facing,
-					0 ) { NextActivity = this };
+					0 );
 
 				return move.Tick( self );
 			}
