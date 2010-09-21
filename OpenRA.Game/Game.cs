@@ -189,6 +189,8 @@ namespace OpenRA
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;
 
+			LocalTick = 0;
+
 			orderManager.StartGame();
 			viewport.RefreshPalette();
 			AfterGameStart();
