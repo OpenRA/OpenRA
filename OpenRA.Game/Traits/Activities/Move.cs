@@ -120,6 +120,7 @@ namespace OpenRA.Traits.Activities
 				self.ActorID, string.Join(" ", path.Select(a => a.ToString()).ToArray()));
 
 			mobile.PathHash = HashList(path);
+			Log.Write("debug", "EvalPathHash #{0} {1}", mobile.PathHash);
 
 			return path;
 		}

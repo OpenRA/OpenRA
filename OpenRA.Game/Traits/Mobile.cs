@@ -68,6 +68,9 @@ namespace OpenRA.Traits
 			get { return __facing; }
 			set
 			{
+				if (__facing == value)
+					return;		// not interesting unless it changes 
+
 				__facing = value; 
 				Log.Write("debug", "#{0} set Facing={1}", self.ActorID, value);
 				Log.Write("debug", "{0}", new StackTrace());
