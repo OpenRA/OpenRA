@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.RA
 			// Animate the spawn -> exit transition
 			var speed = move.MovementSpeedForCell(self, exit);
 			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
-			newUnit.QueueActivity(new Traits.Activities.Drag(spawn, to, length));
+			newUnit.QueueActivity(new Drag(spawn, to, length));
 
 //			Log.Write("debug", "length={0} facing={1} exit={2} spawn={3}", length, facing.Facing, exit, spawn);
 			
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.RA
 			{
 				target = rp.rallyPoint;
 				// Todo: Move implies unit has Mobile
-				newUnit.QueueActivity(new Traits.Activities.Move(target, 1));
+				newUnit.QueueActivity(new Move(target, 1));
 			}
 			
 			if (newUnit.Owner == self.World.LocalPlayer)

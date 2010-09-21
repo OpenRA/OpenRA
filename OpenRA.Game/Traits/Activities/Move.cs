@@ -15,16 +15,13 @@ using System.Linq;
 
 namespace OpenRA.Traits.Activities
 {
-	public class Move : IActivity
+	public class Move : CancelableActivity
 	{
-		IActivity NextActivity { get; set; }
-
 		int2? destination;
 		int nearEnough;
 		public List<int2> path;
 		Func<Actor, Mobile, List<int2>> getPath;
 		public Actor ignoreBuilding;
-		bool cancellable = true;
 		
 		int ticksBeforePathing;
 
@@ -48,7 +45,6 @@ namespace OpenRA.Traits.Activities
 					.WithoutLaneBias());
 			this.destination = destination;
 			this.nearEnough = 0;
-			this.cancellable = false;
 		}
 
 		public Move( int2 destination, int nearEnough ) 
@@ -125,7 +121,7 @@ namespace OpenRA.Traits.Activities
 			return path;
 		}
 
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
 
@@ -251,20 +247,9 @@ namespace OpenRA.Traits.Activities
 			return nextCell;
 		}
 
-		public void Cancel( Actor self )
+		protected override void OnCancel()
 		{
-			if (!cancellable) return;
-			
 			path = new List<int2>();
-			NextActivity = null;
-		}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
 		}
 
 		abstract class MovePart : IActivity
