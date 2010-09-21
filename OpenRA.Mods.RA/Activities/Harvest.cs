@@ -15,14 +15,14 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Harvest : IActivity
+	public class Harvest : CancelableActivity
 	{
-		IActivity NextActivity { get; set; }
 		bool isHarvesting = false;
 
-		public IActivity Tick( Actor self )
+		public override IActivity Tick( Actor self )
 		{
 			if( isHarvesting ) return this;
+			if( IsCanceled ) return NextActivity;
 			if( NextActivity != null ) return NextActivity;
 
 			var harv = self.Trait<Harvester>();
@@ -71,16 +71,6 @@ namespace OpenRA.Mods.RA.Activities
 				        .FromPoint(self.Location));
 				}));
 			self.QueueActivity(new Harvest());
-		}
-
-		public void Cancel(Actor self) { }
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
 		}
 	}
 }

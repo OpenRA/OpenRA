@@ -10,19 +10,8 @@
 
 namespace OpenRA.Traits.Activities
 {
-	class Idle : IActivity
+	class Idle : CancelableActivity
 	{
-		IActivity NextActivity { get; set; }
-
-		public IActivity Tick(Actor self) { return NextActivity; }
-		public void Cancel(Actor self) {}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
+		public override IActivity Tick(Actor self) { return NextActivity; }
 	}
 }

@@ -164,7 +164,7 @@ namespace OpenRA.Traits
 			if (mobile != null)
 			{
 				var alt = new float2(0, -mobile.Altitude);
-				var path = mobile.GetCurrentPath(self);
+				var path = self.GetCurrentActivity().GetCurrentPath();
 				var start = self.CenterLocation + alt;
 
 				var c = Color.Green;

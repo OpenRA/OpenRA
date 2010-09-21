@@ -33,8 +33,10 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override IActivity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
+			if( t == 0 && IsCanceled ) return NextActivity;
 			if (!target.IsValid) return NextActivity;
+
+			self.Trait<AttackLeap>().IsLeaping = true;
 
 			t += (1f / delay);
 
@@ -47,6 +49,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				if (target.IsActor)
 					target.Actor.Kill(self);
+				self.Trait<AttackLeap>().IsLeaping = false;
 				return NextActivity;
 			}
 

@@ -70,14 +70,6 @@ namespace OpenRA.Mods.RA
 				|| Info.RepairBuildings.Contains( a.Info.Name );
 		}
 
-		public virtual IEnumerable<float2> GetCurrentPath(Actor self)
-		{
-			var move = self.GetCurrentActivity() as Activities.Fly;
-			if (move == null) return new float2[] { };
-			
-			return new float2[] { move.Pos };
-		}
-		
 		public bool CanEnterCell(int2 location) { return true; }
 		
 		public float MovementSpeedForCell(Actor self, int2 cell)

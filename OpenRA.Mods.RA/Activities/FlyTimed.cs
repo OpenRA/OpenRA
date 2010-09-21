@@ -28,35 +28,21 @@ namespace OpenRA.Mods.RA.Activities
 		}
 	}
 
-	public class FlyOffMap : IActivity
+	public class FlyOffMap : CancelableActivity
 	{
-		IActivity NextActivity { get; set; }
-		bool isCanceled;
 		public bool Interruptible = true;
 
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-			if (isCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
+			if (IsCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
 			FlyUtil.Fly(self, targetAltitude);
 			return this;
 		}
 
-		public void Cancel(Actor self)
+		protected override bool OnCancel()
 		{
-			if (Interruptible)
-			{
-				isCanceled = true; 
-				NextActivity = null;
-			}
-		}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
+			return Interruptible;
 		}
 	}
 }

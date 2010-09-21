@@ -113,7 +113,6 @@ namespace OpenRA.Traits
 	public interface IMove : ITeleportable
 	{
 		float MovementSpeedForCell(Actor self, int2 cell);
-		IEnumerable<float2> GetCurrentPath(Actor self);
 		int Altitude { get; set; }
 	}
 	
@@ -173,6 +172,7 @@ namespace OpenRA.Traits
 		IActivity Tick(Actor self);
 		void Cancel(Actor self);
 		void Queue(IActivity activity);
+		IEnumerable<float2> GetCurrentPath();
 	}
 
 	public abstract class CancelableActivity : IActivity
@@ -181,13 +181,15 @@ namespace OpenRA.Traits
 		protected bool IsCanceled { get; private set; }
 
 		public abstract IActivity Tick( Actor self );
-		protected virtual void OnCancel() {}
+		protected virtual bool OnCancel() { return true; }
 
 		public void Cancel( Actor self )
 		{
-			IsCanceled = true;
-			NextActivity = null;
-			OnCancel();
+			IsCanceled = OnCancel();
+			if( IsCanceled )
+				NextActivity = null;
+			else
+				NextActivity.Cancel( self );
 		}
 
 		public void Queue( IActivity activity )
@@ -196,6 +198,11 @@ namespace OpenRA.Traits
 				NextActivity.Queue( activity );
 			else
 				NextActivity = activity;
+		}
+
+		public virtual IEnumerable<float2> GetCurrentPath()
+		{
+			yield break;
 		}
 	}
 

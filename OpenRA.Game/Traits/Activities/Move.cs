@@ -247,9 +247,17 @@ namespace OpenRA.Traits.Activities
 			return nextCell;
 		}
 
-		protected override void OnCancel()
+		protected override bool OnCancel()
 		{
 			path = new List<int2>();
+			return true;
+		}
+
+		public override IEnumerable<float2> GetCurrentPath()
+		{
+			if( path == null )
+				return new float2[ 0 ];
+			return Enumerable.Reverse(path).Select( c => Util.CenterOfCell(c) );
 		}
 
 		abstract class MovePart : IActivity
@@ -312,6 +320,11 @@ namespace OpenRA.Traits.Activities
 			}
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
+
+			public IEnumerable<float2> GetCurrentPath()
+			{
+				return move.GetCurrentPath();
+			}
 		}
 
 		class MoveFirstHalf : MovePart

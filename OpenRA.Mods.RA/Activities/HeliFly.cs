@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -52,6 +52,11 @@ namespace OpenRA.Mods.RA.Activities
 			aircraft.Location = Util.CellContaining(self.CenterLocation);
 
 			return this;
+		}
+
+		public override IEnumerable<float2> GetCurrentPath()
+		{
+			yield return Dest;
 		}
 	}
 }

@@ -321,14 +321,6 @@ namespace OpenRA.Traits
 			return Info.Speed * Info.TerrainSpeeds[type].Speed * modifier / 100f;
 		}
 		
-		public IEnumerable<float2> GetCurrentPath(Actor self)
-		{
-			var move = self.GetCurrentActivity() as Move;
-			if (move == null || move.path == null) return new float2[] { };
-			
-			return Enumerable.Reverse(move.path).Select( c => Util.CenterOfCell(c) );
-		}
-		
 		public void AddInfluence()
 		{
 			uim.Add( self, this );

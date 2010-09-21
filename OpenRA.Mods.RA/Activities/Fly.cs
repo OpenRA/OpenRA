@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -42,6 +42,11 @@ namespace OpenRA.Mods.RA.Activities
 
 			FlyUtil.Fly(self, cruiseAltitude);
 			return this;
+		}
+
+		public override IEnumerable<float2> GetCurrentPath()
+		{
+			yield return Pos;
 		}
 	}
 

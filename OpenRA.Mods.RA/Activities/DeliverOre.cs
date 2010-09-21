@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
@@ -59,6 +60,11 @@ namespace OpenRA.Mods.RA.Activities
 				NextActivity.Queue( activity );
 			else
 				NextActivity = activity;
+		}
+
+		public IEnumerable<float2> GetCurrentPath()
+		{
+			yield break;
 		}
 	}
 }

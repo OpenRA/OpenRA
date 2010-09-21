@@ -19,6 +19,8 @@ namespace OpenRA.Mods.RA
 
 	class AttackLeap : AttackBase
 	{
+		internal bool IsLeaping;
+
 		public AttackLeap(Actor self)
 			: base(self) {}
 
@@ -27,7 +29,7 @@ namespace OpenRA.Mods.RA
 			base.Tick(self);
 
 			if (!target.IsValid) return;
-			if (self.GetCurrentActivity() is Leap) return;
+			if (IsLeaping) return;
 
 			var weapon = self.Trait<AttackBase>().Weapons[0].Info;
 			if (weapon.Range * Game.CellSize * weapon.Range * Game.CellSize

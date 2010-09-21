@@ -12,11 +12,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Wait : IActivity
+	public class Wait : CancelableActivity
 	{
 		int remainingTicks;
 		bool interruptable = true;
-		IActivity NextActivity { get; set; }
 
 		public Wait(int period) { remainingTicks = period; }
 		public Wait(int period, bool interruptable)
@@ -25,27 +24,17 @@ namespace OpenRA.Mods.RA.Activities
 			this.interruptable = interruptable;
 		}
 		
-		public virtual IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			if (remainingTicks-- == 0) return NextActivity;
 			return this;
 		}
 
-		public void Cancel(Actor self)
+		protected override bool OnCancel()
 		{
-			if (!interruptable)
-				return;
-			
+			if( !interruptable ) return false;
 			remainingTicks = 0;
-			NextActivity = null;
-		}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
+			return true;
 		}
 	}
 }
