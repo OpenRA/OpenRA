@@ -26,8 +26,6 @@ namespace OpenRA.Mods.RA.Activities
 			Range = range;
 		}
 
-		IActivity NextActivity { get; set; }
-
 		public override IActivity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
