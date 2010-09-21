@@ -32,9 +32,9 @@ namespace OpenRA.Traits
 		static float2[] fvecs = Graphics.Util.MakeArray<float2>( 32,
 			i => -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ) );
 
-		public static int GetFacing( float2 d, int currentFacing )
+		public static int _GetFacing( float2 d, int currentFacing )
 		{
-			if( float2.WithinEpsilon( d, float2.Zero, 0.001f ) )
+			if (float2.WithinEpsilon(d, float2.Zero, 0.001f))
 				return currentFacing;
 
 			int highest = -1;
@@ -51,6 +51,13 @@ namespace OpenRA.Traits
 			}
 
 			return highest * 8;
+		}
+
+		public static int GetFacing(float2 d, int currentFacing)
+		{
+			var result = _GetFacing(d, currentFacing);
+			Log.Write("debug", "GetFacing {0} {1} => {2}", d, currentFacing, result);
+			return result;
 		}
 
 		public static int GetNearestFacing( int facing, int desiredFacing )
