@@ -136,11 +136,11 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
-#	CrateSpawner:
-#		Minimum: 1
-#		Maximum: 3
-#		SpawnInterval: 120
-#		WaterChance: 0
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
 
 CRATE:
 	Tooltip:

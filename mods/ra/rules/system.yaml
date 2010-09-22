@@ -112,11 +112,11 @@ World:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3
-#	CrateDrop:
-#		Minimum: 1
-#		Maximum: 3
-#		SpawnInterval: 120
-#		WaterChance: .2
+	CrateDrop:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: .2
 	PaletteFromCurrentTheatre:
 		Name: terrain
 	PlayerColorPalette:
