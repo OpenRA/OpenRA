@@ -31,7 +31,6 @@ namespace OpenRA.Traits.Activities
 		public IActivity Tick( Actor self )
 		{
 			self.CenterLocation = float2.Lerp(startLocation, endLocation, (float)ticks/(length-1));
-			Log.Write("debug", "drag #{0} {1} {2}", self.ActorID, ticks, self.CenterLocation);
 			
 			if (++ticks >= length)
 			{

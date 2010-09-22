@@ -110,14 +110,9 @@ namespace OpenRA.Traits.Activities
 		List<int2> EvalPath( Actor self, Mobile mobile )
 		{
 			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
-
-			Log.Write("debug", "EvalPath #{0} {1}",
-				self.ActorID, string.Join(" ", path.Select(a => a.ToString()).ToArray()));
-
 			mobile.PathHash = HashList(path);
 			Log.Write("debug", "EvalPathHash #{0} {1}", 
 				self.ActorID, mobile.PathHash);
-
 			return path;
 		}
 
@@ -157,9 +152,6 @@ namespace OpenRA.Traits.Activities
 			if( firstFacing != mobile.Facing )
 			{
 				path.Add( nextCell.Value );
-				Log.Write("debug", "Turn: #{0} from {1} to {2}",
-					self.ActorID, mobile.Facing, firstFacing);
-
 				return Util.SequenceActivities( new Turn( firstFacing ), this ).Tick( self );
 			}
 			else

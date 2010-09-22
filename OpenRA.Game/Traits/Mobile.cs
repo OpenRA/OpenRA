@@ -67,22 +67,14 @@ namespace OpenRA.Traits
 		public int Facing
 		{
 			get { return __facing; }
-			set
-			{
-				if (__facing == value)
-					return;		// not interesting unless it changes 
-
-				__facing = value; 
-				Log.Write("debug", "#{0} set Facing={1}", self.ActorID, value);
-				Log.Write("debug", "{0}", new StackTrace());
-			}
+			set { __facing = value; }
 		}
 
 		[Sync]
 		public int Altitude
 		{
 			get { return __altitude; }
-			set { __altitude = value; Log.Write("debug", "#{0} set Altitude={1}", self.ActorID, value); }
+			set { __altitude = value; }
 		}
 		
 		public int ROT { get { return Info.ROT; } }
@@ -112,9 +104,6 @@ namespace OpenRA.Traits
 			__fromCell = from;
 			__toCell = to;
 			AddInfluence();
-
-			Log.Write("debug", "#{0} set location = {1} {2}", self.ActorID, from, to);
-			Log.Write("debug", "{0}", new StackTrace());
 		}
 
 		UnitInfluence uim;
