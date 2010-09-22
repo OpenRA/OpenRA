@@ -64,19 +64,14 @@ namespace OpenRA.Traits
 				return Info.Power;
 			
 			var health = self.TraitOrDefault<Health>();
-			var healthFraction = (health == null) ? 1f : health.HPFraction;
-			return (int)(healthFraction * Info.Power);	
+			return health != null ? (Info.Power * health.HP / health.MaxHP) : Info.Power;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			// Power plants lose power with damage
 			if (Info.Power > 0)
-			{					
-				var health = self.TraitOrDefault<Health>();
-				var healthFraction = (health == null) ? 1f : health.HPFraction;
-				PlayerPower.UpdateActor(self, (int)(healthFraction * Info.Power));
-			}
+				PlayerPower.UpdateActor(self, GetPowerUsage());
 			
 			if (e.DamageState == DamageState.Dead)
 			{
