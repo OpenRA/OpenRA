@@ -1,0 +1,43 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: (TEST) spiral stress test
+
+Author: Bob
+
+PlayerCount: 2
+
+Tileset: SNOW
+
+MapSize: 64,64
+
+TopLeft: 1,1
+
+BottomRight: 63,63
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: allies
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+
+Waypoints:
+	wp0: 1,1
+	wp1: 62,62
+
+Smudges:
+
+Rules:
+
