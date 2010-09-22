@@ -255,9 +255,11 @@ namespace OpenRA.Traits.Activities
 
 		public override IEnumerable<float2> GetCurrentPath()
 		{
-			if( path == null )
-				return new float2[ 0 ];
-			return Enumerable.Reverse(path).Select( c => Util.CenterOfCell(c) );
+			if( path != null )
+				return Enumerable.Reverse(path).Select( c => Util.CenterOfCell(c) );
+			if( destination != null )
+				return new float2[] { destination.Value };
+			return new float2[ 0 ];
 		}
 
 		abstract class MovePart : IActivity
