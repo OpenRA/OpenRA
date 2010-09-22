@@ -3,11 +3,11 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 60%
-			Rough: 40%
-			Road: 100%
-			Ore: 70%
-			Beach: 40%
+			Clear: 60
+			Rough: 40
+			Road: 100
+			Ore: 70
+			Beach: 40
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
@@ -32,11 +32,11 @@
 	Mobile:
 		Crushes: wall, crate
 		TerrainSpeeds:
-			Clear: 80%
-			Rough: 70%
-			Road: 100%
-			Ore: 90%
-			Beach: 70%
+			Clear: 80
+			Rough: 70
+			Road: 100
+			Ore: 90
+			Beach: 70
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
@@ -85,12 +85,12 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 90%
-			Rough: 80%
-			Road: 100%
-			Ore: 90%
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Ore: 90
 				PathingCost: 200
-			Beach: 80%
+			Beach: 80
 	Selectable:
 		Voice: GenericVoice
 	Targetable:
@@ -151,7 +151,7 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Water: 100%
+			Water: 100
 	Selectable:
 		Voice: GenericVoice
 	Targetable:
