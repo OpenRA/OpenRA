@@ -34,8 +34,11 @@ namespace OpenRA.Traits.Activities
 			Log.Write("debug", "drag #{0} {1} {2}", self.ActorID, ticks, self.CenterLocation);
 			
 			if (++ticks >= length)
+			{
+				self.Trait<Mobile>().IsMoving = false;
 				return NextActivity;
-			
+			}
+			self.Trait<Mobile>().IsMoving = true;
 			return this;
 		}
 

@@ -57,6 +57,7 @@ namespace OpenRA.Traits
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
+		public bool IsMoving { get; internal set; }
 
 		int __facing;
 		int2 __fromCell, __toCell;

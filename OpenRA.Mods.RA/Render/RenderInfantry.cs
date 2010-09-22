@@ -30,10 +30,9 @@ namespace OpenRA.Mods.RA.Render
 
 		bool ChooseMoveAnim(Actor self)
 		{
-			if (!(self.GetCurrentActivity() is Move) && !(self.GetCurrentActivity() is Drag)) // A bit of a hack
-				return false;
-
 			var mobile = self.Trait<Mobile>();
+			if( !mobile.IsMoving ) return false;
+
 			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
 
 			var seq = IsProne(self) ? "crawl" : "run";

@@ -294,19 +294,27 @@ namespace OpenRA.Traits.Activities
 			public IActivity Tick( Actor self )
 			{
 				var mobile = self.Trait<Mobile>();
-				moveFraction += (int)mobile.MovementSpeedForCell(self, mobile.toCell);
-				if( moveFraction >= moveFractionTotal )
+				var ret = InnerTick( self, mobile );
+				mobile.IsMoving = ( ret is MovePart );
+
+				if( moveFraction > moveFractionTotal )
 					moveFraction = moveFractionTotal;
 				UpdateCenterLocation( self, mobile );
-				if( moveFraction >= moveFractionTotal )
-				{
-					var next = OnComplete( self, mobile, move );
-					if( next != null )
-						return next;
-					UpdateCenterLocation( self, mobile );
-					return move;
-				}
-				return this;
+
+				return ret;
+			}
+
+			IActivity InnerTick( Actor self, Mobile mobile )
+			{
+				moveFraction += (int)mobile.MovementSpeedForCell(self, mobile.toCell);
+				if( moveFraction <= moveFractionTotal )
+					return this;
+
+				var next = OnComplete( self, mobile, move );
+				if( next != null )
+					return next;
+
+				return move;
 			}
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
