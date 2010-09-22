@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA
 
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor, IOrderVoice
 	{
+		public bool IsAttacking { get; internal set; }
 		public Target target;
 
 		public List<Weapon> Weapons = new List<Weapon>();

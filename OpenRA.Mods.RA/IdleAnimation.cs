@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.GetCurrentActivity() is IdleAnimation)
+			if (self.GetCurrentActivity() is Activities.IdleAnimation)
 				self.CancelActivity();
 		}
 

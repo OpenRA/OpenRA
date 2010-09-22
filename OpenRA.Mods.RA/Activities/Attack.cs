@@ -28,6 +28,14 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override IActivity Tick( Actor self )
 		{
+			var attack = self.Trait<AttackBase>();
+			var ret = InnerTick( self, attack );
+			attack.IsAttacking = ( ret == this );
+			return ret;
+		}
+
+		IActivity InnerTick( Actor self, AttackBase attack )
+		{
 			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();
 			if (!Target.IsValid)
@@ -49,7 +57,6 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities( new Turn( desiredFacing ), this );
 			}
 
-			var attack = self.Trait<AttackBase>();
 			attack.target = Target;
 			attack.DoAttack(self);
 			return this;

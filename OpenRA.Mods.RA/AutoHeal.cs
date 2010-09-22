@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			if (target != null)
 				attack.ResolveOrder(self, new Order("Attack", self, target));
 			else
-				if (self.GetCurrentActivity() is Attack)
+				if (attack.IsAttacking)
 					self.CancelActivity();
 		}
 

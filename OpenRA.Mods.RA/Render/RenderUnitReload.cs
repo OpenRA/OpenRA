@@ -24,13 +24,11 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void Tick(Actor self)
 		{
-			var isAttacking = self.GetCurrentActivity() is Attack;
-
 			var attack = self.TraitOrDefault<AttackBase>();
 
 			if (attack != null)
 				anim.ReplaceAnim((attack.IsReloading() ? "empty-" : "")
-					+ (isAttacking ? "aim" : "idle"));
+					+ (attack.IsAttacking ? "aim" : "idle"));
 			base.Tick(self);
 		}
 	}
