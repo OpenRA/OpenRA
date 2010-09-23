@@ -68,17 +68,14 @@ namespace OpenRA.Traits
 					}
 				case "DevShroud":
 					{
+						DisableShroud ^= true;
 						if (self.World.LocalPlayer == self.Owner)
-						{
-							DisableShroud ^= true;
 							Game.world.LocalPlayer.Shroud.Disabled = DisableShroud;
-						}
 						break;	
 					}
 				case "DevPathDebug":
 					{
-						if (self.World.LocalPlayer == self.Owner)
-							PathDebug ^= true;
+						PathDebug ^= true;
 						break;
 					}
 				case "DevUnitDebug":
