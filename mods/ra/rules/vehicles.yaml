@@ -468,6 +468,8 @@ SS:
 		PrimaryWeapon: TorpTube
 		PrimaryLocalOffset: -4,0,0,4,0,0
 		FireDelay: 2
+	Selectable:
+		Bounds: 38,38
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -507,6 +509,8 @@ MSUB:
 	AttackBase:
 		PrimaryWeapon: SubMissile
 		FireDelay: 2
+	Selectable:
+		Bounds: 44,44
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -539,11 +543,17 @@ DD:
 		PrimaryWeapon: Stinger
 		SecondaryWeapon: DepthCharge
 		PrimaryOffset: 0,-8,0,-3
+		PrimaryLocalOffset: -4,0,-20,4,0,20
+	Selectable:
+		Bounds: 38,38
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	DetectCloaked:
+		Range: 4
+	RenderDetectionCircle:
 
 CA:
 	Inherits: ^Ship
@@ -577,6 +587,8 @@ CA:
 		PrimaryLocalOffset: -4,-5,0,4,-5,0
 		SecondaryLocalOffset: -4,-5,0,4,-5,0
 		Recoil: 4
+	Selectable:
+		Bounds: 44,44
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:
@@ -638,6 +650,8 @@ PT:
 		PrimaryWeapon: 2Inch
 		SecondaryWeapon: DepthCharge
 		PrimaryOffset: 0,-6,0,-1
+	Selectable:
+		Bounds: 32,32
 	RenderUnitTurreted:
 	AutoTarget:
 	Chronoshiftable:

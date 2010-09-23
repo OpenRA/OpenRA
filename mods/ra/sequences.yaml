@@ -1817,4 +1817,4 @@ bubbles:
 	idle:
 		Start: 0
 		Length: *
-		Tick: 120
+		Tick: 220

@@ -663,6 +663,8 @@ Stinger:
 	ROF: 60
 	Range: 9
 	Report: MISSILE6
+	Burst: 2
+	BurstDelay: 0
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 3
