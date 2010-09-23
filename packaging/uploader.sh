@@ -6,8 +6,9 @@
 PLATFORM=$1
 VERSION=$2
 FILENAME=$3
+FTPPATH=$4
 
-FTP="ftp://$4:$5@ftp.open-ra.org/httpdocs/releases/${PLATFORM}/"
+FTP="ftp://$5:$6@ftp.open-ra.org/${FTPPATH}/${PLATFORM}/"
 
 if [ ! -e "${FILENAME}" ]; then
 	echo "File not found: ${FILENAME}"
