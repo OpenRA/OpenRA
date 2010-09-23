@@ -79,6 +79,29 @@ fi
 
 pushd packaging &> /dev/null
 
+####### Windows #######
+msg "\E[34m" "Building Windows package."
+pushd windows/ &> /dev/null
+makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi &> package.log
+if [ $? -eq 0 ]; then
+    mv OpenRA.exe OpenRA-$VERSION.exe
+    ../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe $FTPPATH "$2" "$3"
+else
+    msg "\E[31m" "Package build failed, refer to log."  
+fi
+popd &> /dev/null
+
+####### OSX #######
+msg "\E[34m" "Building OSX package."
+pushd osx/ &>/dev/null
+sh package-game.sh ~/openra-package/$_gitname-build "$VERSION" &> package.log
+if [ $? -eq 0 ]; then
+    ../uploader.sh mac "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip $FTPPATH "$2" "$3"
+else
+    msg "\E[31m" "Package build failed, refer to log."
+fi
+popd &> /dev/null
+
 ####### *nix Builds #######
 pushd linux &> /dev/null
 
@@ -129,29 +152,6 @@ pushd linux/deb/ &> /dev/null
 ./buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
 if [ $? -ne 0 ]; then
   msg "\E[31m" "Package build failed, refer to log."
-fi
-popd &> /dev/null
-
-####### OSX #######
-msg "\E[34m" "Building OSX package."
-pushd osx/ &>/dev/null
-sh package-game.sh ~/openra-package/$_gitname-build "$VERSION" &> package.log
-if [ $? -eq 0 ]; then
-    ../uploader.sh mac "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip $FTPPATH "$2" "$3"
-else
-    msg "\E[31m" "Package build failed, refer to log."
-fi
-popd &> /dev/null
-
-####### Windows #######
-msg "\E[34m" "Building Windows package."
-pushd windows/ &> /dev/null
-makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi &> package.log
-if [ $? -eq 0 ]; then
-    mv OpenRA.exe OpenRA-$VERSION.exe
-    ../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe $FTPPATH "$2" "$3"
-else
-    msg "\E[31m" "Package build failed, refer to log."  
 fi
 popd &> /dev/null
 
