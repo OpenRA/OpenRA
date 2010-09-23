@@ -696,9 +696,13 @@ TorpTube:
 	Underwater: yes
 	Burst: 2
 	BurstDelay: 1
-	Projectile: Bullet
+	Projectile: Missile
 		Image: MISSILE
-		Speed: 6
+		Arm: 3
+		Speed: 8
+		Trail: bubbles
+		ROT: 5
+		RangeLimit: 100
 	Warhead:
 		Spread: 3
 		Versus: 

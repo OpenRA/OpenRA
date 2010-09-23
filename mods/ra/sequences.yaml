@@ -1812,3 +1812,9 @@ ftrk:
 	turret:
 		Start: 32
 		Facings: 32
+
+bubbles:
+	idle:
+		Start: 0
+		Length: *
+		Tick: 120
