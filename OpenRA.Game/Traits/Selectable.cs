@@ -159,12 +159,13 @@ namespace OpenRA.Traits
 		void DrawUnitPath(Actor self)
 		{
 			if (!Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
-			
+
+			var activity = self.GetCurrentActivity();
 			var mobile = self.TraitOrDefault<IMove>();
-			if (mobile != null)
+			if (activity != null && mobile != null)
 			{
 				var alt = new float2(0, -mobile.Altitude);
-				var path = self.GetCurrentActivity().GetCurrentPath();
+				var path = activity.GetCurrentPath();
 				var start = self.CenterLocation + alt;
 
 				var c = Color.Green;
