@@ -49,7 +49,6 @@ namespace OpenRA.Traits
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, int2 exit); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
-	public interface INotifyEnterCell { void OnEnterCell(Actor self, int2 cell); }
 	public interface IStoreOre { int Capacity { get; }}
 
 	public interface IDisable { bool Disabled { get; } }
@@ -70,12 +69,6 @@ namespace OpenRA.Traits
 		IEnumerable<int2> OccupiedCells();
 	}
 	
-	public interface IOccupyAir
-	{
-		int2 TopLeft { get; }
-		IEnumerable<int2> OccupiedAirCells();
-	}
-
 	public static class IOccupySpaceExts
 	{
 		public static int2 NearestCellTo( this IOccupySpace ios, int2 other )
