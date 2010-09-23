@@ -177,8 +177,9 @@ namespace OpenRA.FileFormats
 		{
 			var ret = new Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>();
 
-			foreach( var field in type.GetFields() )
+			foreach( var ff in type.GetFields() )
 			{
+				var field = ff;
 				var load = field.GetCustomAttributes<LoadAttribute>( false );
 				var loadUsing = field.GetCustomAttributes<LoadUsingAttribute>( false );
 				var fromYamlKey = field.GetCustomAttributes<FieldFromYamlKeyAttribute>( false );
