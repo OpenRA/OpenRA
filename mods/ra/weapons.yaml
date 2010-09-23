@@ -699,10 +699,10 @@ TorpTube:
 	Projectile: Missile
 		Image: MISSILE
 		Arm: 3
-		Speed: 8
+		Speed: 6
 		Trail: bubbles
-		ROT: 5
-		RangeLimit: 100
+		ROT: 1
+		RangeLimit: 160
 	Warhead:
 		Spread: 3
 		Versus: 
