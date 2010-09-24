@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
@@ -37,6 +38,12 @@ namespace OpenRA.Graphics
 
 		public readonly SpriteFont RegularFont, BoldFont, TitleFont;
 
+		internal const int TempBufferSize = 8192;
+		const int TempBufferCount = 8;
+
+		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
+		Queue<IIndexBuffer> tempBuffersI = new Queue<IIndexBuffer>();
+
 		public Renderer()
 		{
 			SpriteShader = device.CreateShader(FileSystem.Open("shaders/world-shp.fx"));
@@ -52,6 +59,12 @@ namespace OpenRA.Graphics
 			RegularFont = new SpriteFont("FreeSans.ttf", 14);
 			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
 			TitleFont = new SpriteFont("titles.ttf", 48);
+
+			for( int i = 0 ; i < TempBufferCount ; i++ )
+			{
+				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
+				tempBuffersI.Enqueue( device.CreateIndexBuffer( TempBufferSize ) );
+			}
 		}
 
 		public IGraphicsDevice Device { get { return device; } }
@@ -116,10 +129,6 @@ namespace OpenRA.Graphics
 			LineRenderer.Flush();
 		}
 
-
-
-
-
 		static IGraphicsDevice device;
 
 		public static Size Resolution { get { return device.WindowSize; } }
@@ -153,6 +162,20 @@ namespace OpenRA.Graphics
 					.Invoke( new object[] { width, height, window, vsync } );
 			}
 			throw new NotImplementedException();
+		}
+
+		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
+		{
+			var ret = tempBuffersV.Dequeue();
+			tempBuffersV.Enqueue( ret );
+			return ret;
+		}
+
+		internal IIndexBuffer GetTempIndexBuffer()
+		{
+			var ret = tempBuffersI.Dequeue();
+			tempBuffersI.Enqueue( ret );
+			return ret;
 		}
 	}
 }

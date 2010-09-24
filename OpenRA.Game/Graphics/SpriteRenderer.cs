@@ -14,26 +14,18 @@ namespace OpenRA.Graphics
 {
 	public class SpriteRenderer
 	{
-		IVertexBuffer<Vertex> vertexBuffer;
-		IIndexBuffer indexBuffer;
 		Renderer renderer;
 		IShader shader;
 
-		const int spritesPerBatch = 1024;
-
-		Vertex[] vertices = new Vertex[4 * spritesPerBatch];
-		ushort[] indices = new ushort[6 * spritesPerBatch];
+		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		ushort[] indices = new ushort[Renderer.TempBufferSize];
 		Sheet currentSheet = null;
-		int sprites = 0;
 		int nv = 0, ni = 0;
 
 		public SpriteRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
-
-			vertexBuffer = renderer.Device.CreateVertexBuffer( vertices.Length );
-			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 
 		public SpriteRenderer(Renderer renderer)
@@ -41,14 +33,16 @@ namespace OpenRA.Graphics
 
 		public void Flush()
 		{
-			if (sprites > 0)
+			if (ni > 0)
 			{
 				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
 				shader.Render(() =>
 				{
-					vertexBuffer.SetData(vertices);
-					indexBuffer.SetData(indices);
-					renderer.DrawBatch(vertexBuffer, indexBuffer,
+					var vb = renderer.GetTempVertexBuffer();
+					var ib = renderer.GetTempIndexBuffer();
+					vb.SetData(vertices, nv);
+					ib.SetData(indices, ni);
+					renderer.DrawBatch(vb, ib,
 						new Range<int>(0, nv),
 						new Range<int>(0, ni),
 						PrimitiveType.TriangleList,
@@ -57,7 +51,6 @@ namespace OpenRA.Graphics
 
 				nv = 0; ni = 0;
 				currentSheet = null;
-				sprites = 0;
 			}
 		}
 				
@@ -76,11 +69,14 @@ namespace OpenRA.Graphics
 			if (s.sheet != currentSheet)
 				Flush();
 
+			if( nv + 4 > Renderer.TempBufferSize )
+				Flush();
+			if( ni + 6 > Renderer.TempBufferSize )
+				Flush();
+
 			currentSheet = s.sheet;
 			Util.FastCreateQuad(vertices, indices, location.ToInt2(), s, paletteIndex, nv, ni, size);
 			nv += 4; ni += 6;
-			if (++sprites >= spritesPerBatch)
-				Flush();
 		}
 		
 		

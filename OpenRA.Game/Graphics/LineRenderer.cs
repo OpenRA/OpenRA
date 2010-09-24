@@ -16,42 +16,41 @@ namespace OpenRA.Graphics
 	public class LineRenderer
 	{
 		Renderer renderer;
-		IVertexBuffer<Vertex> vertexBuffer;
-		IIndexBuffer indexBuffer;            /* kindof a waste of space, but the GPU likes indexing, oh well */
 
-		const int linesPerBatch = 1024;
-
-		Vertex[] vertices = new Vertex[ 2 * linesPerBatch ];
-		ushort[] indices = new ushort[ 2 * linesPerBatch ];
-		int lines = 0;
+		Vertex[] vertices = new Vertex[ Renderer.TempBufferSize ];
+		ushort[] indices = new ushort[ Renderer.TempBufferSize ];
 		int nv = 0, ni = 0;
 
 		public LineRenderer( Renderer renderer )
 		{
 			this.renderer = renderer;
-			vertexBuffer = renderer.Device.CreateVertexBuffer(vertices.Length );
-			indexBuffer = renderer.Device.CreateIndexBuffer( indices.Length );
 		}
 
 		public void Flush()
 		{
-			if( lines > 0 )
+			if( ni > 0 )
 			{
 				renderer.LineShader.Render( () =>
 				{
-					vertexBuffer.SetData( vertices );
-					indexBuffer.SetData( indices );
-					renderer.DrawBatch( vertexBuffer, indexBuffer,
+					var vb = renderer.GetTempVertexBuffer();
+					var ib = renderer.GetTempIndexBuffer();
+					vb.SetData( vertices, nv );
+					ib.SetData( indices, ni );
+					renderer.DrawBatch( vb, ib,
 					nv, ni / 2, PrimitiveType.LineList );
 				} );
 
 				nv = 0; ni = 0;
-				lines = 0;
 			}
 		}
 
 		public void DrawLine( float2 start, float2 end, Color startColor, Color endColor )
 		{
+			if( ni + 2 > Renderer.TempBufferSize )
+				Flush();
+			if( nv + 2 > Renderer.TempBufferSize )
+				Flush();
+
 			indices[ ni++ ] = (ushort)nv;
 
 			vertices[ nv++ ] = new Vertex( start,
@@ -63,9 +62,6 @@ namespace OpenRA.Graphics
 			vertices[ nv++ ] = new Vertex( end,
 			new float2( endColor.R / 255.0f, endColor.G / 255.0f ),
 			new float2( endColor.B / 255.0f, endColor.A / 255.0f ) );
-
-			if( ++lines >= linesPerBatch )
-				Flush();
 		}
 		
 		public void FillRect( RectangleF r, Color color )

@@ -56,10 +56,10 @@ namespace OpenRA.Graphics
 				}
 
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer( vertices.Length );
-			vertexBuffer.SetData( vertices );
+			vertexBuffer.SetData( vertices, nv );
 
 			indexBuffer = Game.Renderer.Device.CreateIndexBuffer( indices.Length );
-			indexBuffer.SetData( indices );
+			indexBuffer.SetData( indices, ni );
 		}
 
 		public void Draw( Viewport viewport )

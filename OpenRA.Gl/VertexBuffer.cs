@@ -24,13 +24,21 @@ namespace OpenRA.GlRenderer
 		{
 			Gl.glGenBuffers(1, out buffer);
 			GraphicsDevice.CheckGlError();
-		}
-
-		public void SetData(T[] data)
-		{
 			Bind();
 			Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
-				new IntPtr(Marshal.SizeOf(typeof(T)) * data.Length), data, Gl.GL_DYNAMIC_DRAW);
+				new IntPtr(Marshal.SizeOf(typeof(T)) * size),
+				new T[ size ],
+				Gl.GL_DYNAMIC_DRAW);
+			GraphicsDevice.CheckGlError();
+		}
+
+		public void SetData(T[] data, int length)
+		{
+			Bind();
+			Gl.glBufferSubData(Gl.GL_ARRAY_BUFFER,
+				IntPtr.Zero,
+				new IntPtr(Marshal.SizeOf(typeof(T)) * length),
+				data);
 			GraphicsDevice.CheckGlError();
 		}
 

@@ -52,13 +52,13 @@ namespace OpenRA.FileFormats.Graphics
 	public interface IVertexBuffer<T>
 	{
 		void Bind();
-		void SetData( T[] vertices );
+		void SetData( T[] vertices, int length );
 	}
 
 	public interface IIndexBuffer
 	{
 		void Bind();
-		void SetData( ushort[] indices );
+		void SetData( ushort[] indices, int length );
 	}
 
 	public interface IShader
