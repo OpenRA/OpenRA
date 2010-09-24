@@ -17,6 +17,8 @@
 
 !include "MUI2.nsh"
 !include "ZipDLL.nsh"
+!include "FileFunc.nsh"
+!include "WordFunc.nsh"
 
 Name "OpenRA"
 OutFile "OpenRA.exe"
@@ -178,7 +180,11 @@ SectionGroupEnd
 ;***************************
 Section "-OpenAl" OpenAl
 	AddSize 768
-	IfFileExists $SYSDIR\OpenAL32.dll done installal
+	ClearErrors
+	${GetFileVersion} $SYSDIR\OpenAL32.dll $0
+	IfErrors installal 0
+	${VersionCompare} $0 "6.14.357.24" $1
+	IntCmp $1 1 done done installal
 	installal:
 		SetOutPath "$TEMP"
 		NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
