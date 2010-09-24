@@ -151,65 +151,39 @@ namespace OpenRA
 			var minx = clipRect.Left;
 			var maxx = clipRect.Right;
 
-			var shroudPalette = Game.world.WorldRenderer.GetPaletteIndex("fog");
+			DrawShroud( minx, miny, maxx, maxy, fogSprites, "fog" );
+			DrawShroud( minx, miny, maxx, maxy, sprites, "shroud" );
+		}
+
+		void DrawShroud( int minx, int miny, int maxx, int maxy, Sprite[,] s, string pal )
+		{
+			var shroudPalette = Game.world.WorldRenderer.GetPaletteIndex(pal);
 
 			for (var j = miny; j < maxy; j++)
 			{
 				var starti = minx;
 				for (var i = minx; i < maxx; i++)
 				{
-					if (fogSprites[i, j] == shadowBits[0x0f])
+					if (s[i, j] == shadowBits[0x0f])
 						continue;
 
 					if (starti != i)
 					{
-						fogSprites[starti, j].DrawAt(
-						    Game.CellSize * new float2(starti, j),
-						    shroudPalette,
-						    new float2(Game.CellSize * (i - starti), Game.CellSize));
-						starti = i+1;
-					}
-
-					fogSprites[i, j].DrawAt(
-						Game.CellSize * new float2(i, j),
-						shroudPalette);
-					starti = i+1;
-				}
-
-				if (starti < maxx)
-					fogSprites[starti, j].DrawAt(
-						Game.CellSize * new float2(starti, j),
-						shroudPalette,
-						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
-			}
-
-			shroudPalette = Game.world.WorldRenderer.GetPaletteIndex("shroud");
-
-			for (var j = miny; j < maxy; j++)
-			{
-				var starti = minx;
-				for (var i = minx; i < maxx; i++)
-				{
-					if (sprites[i, j] == shadowBits[0x0f])
-						continue;
-
-					if (starti != i)
-					{
-						sprites[starti, j].DrawAt(
+						s[starti, j].DrawAt(
 							Game.CellSize * new float2(starti, j),
 							shroudPalette,
 							new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i + 1;
 					}
 
-					sprites[i, j].DrawAt(
+					s[i, j].DrawAt(
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i + 1;
 				}
 
 				if (starti < maxx)
-					sprites[starti, j].DrawAt(
+					s[starti, j].DrawAt(
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
