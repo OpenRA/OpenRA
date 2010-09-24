@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, basePosition + new float2(-8, 1), "chrome");
+			pipImages.Image.DrawAt(basePosition + new float2(-8, 1), "chrome");
 		}
 
 		void DrawPips(Actor self, float2 basePosition)
@@ -122,7 +122,7 @@ namespace OpenRA.Traits
 					}
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					Game.Renderer.SpriteRenderer.DrawSprite(pipImages.Image, pipxyBase + pipxyOffset, "chrome");
+					pipImages.Image.DrawAt(pipxyBase + pipxyOffset, "chrome");
 					pipxyOffset += new float2(4, 0);
 				}
 				// Increment row
@@ -148,7 +148,7 @@ namespace OpenRA.Traits
 						
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					Game.Renderer.SpriteRenderer.DrawSprite(tagImages.Image, tagxyBase + tagxyOffset, "chrome");
+					tagImages.Image.DrawAt(tagxyBase + tagxyOffset, "chrome");
 					
 					// Increment row
 					tagxyOffset.Y += 8;

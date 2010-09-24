@@ -39,8 +39,6 @@ namespace OpenRA.Widgets
 
 			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
 				world.WorldRenderer.DrawSelectionBox(u, Color.Yellow);
-			
-			Game.Renderer.LineRenderer.Flush();
 		}
 		
 		float2 dragStart, dragEnd;

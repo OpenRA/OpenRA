@@ -41,8 +41,7 @@ namespace OpenRA.Widgets
 			if (DrawBackground)
 				WidgetUtils.DrawPanel("dialog3", chatLogArea);
 			
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-			Game.Renderer.Device.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
+			Game.Renderer.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
 				chatpos.Y -= 20;
@@ -52,8 +51,7 @@ namespace OpenRA.Widgets
 				Game.Renderer.RegularFont.DrawText(line.Text, chatpos + new int2(inset, 0), Color.White);
 			}
 
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-			Game.Renderer.Device.DisableScissor();
+			Game.Renderer.DisableScissor();
 		}
 		
 		public void AddLine(Color c, string from, string text)

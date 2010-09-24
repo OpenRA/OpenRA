@@ -163,21 +163,21 @@ namespace OpenRA
 
 					if (starti != i)
 					{
-						Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
+						fogSprites[starti, j].DrawAt(
 						    Game.CellSize * new float2(starti, j),
 						    shroudPalette,
 						    new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i+1;
 					}
 
-					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[i, j],
+					fogSprites[i, j].DrawAt(
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i+1;
 				}
 
 				if (starti < maxx)
-					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
+					fogSprites[starti, j].DrawAt(
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
@@ -195,21 +195,21 @@ namespace OpenRA
 
 					if (starti != i)
 					{
-						Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
+						sprites[starti, j].DrawAt(
 							Game.CellSize * new float2(starti, j),
 							shroudPalette,
 							new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i + 1;
 					}
 
-					Game.Renderer.SpriteRenderer.DrawSprite(sprites[i, j],
+					sprites[i, j].DrawAt(
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i + 1;
 				}
 
 				if (starti < maxx)
-					Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
+					sprites[starti, j].DrawAt(
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));

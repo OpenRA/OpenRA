@@ -69,9 +69,6 @@ namespace OpenRA.Mods.RA.Widgets
 				}
 				Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
 			}
-			// Draw on top of the sprite
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-			Game.Renderer.LineRenderer.Flush();
 
 			// Power usage indicator
 			var indicator = ChromeProvider.GetImage( powerCollection, "power-indicator");
@@ -80,7 +77,6 @@ namespace OpenRA.Mods.RA.Widgets
 			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel);
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }

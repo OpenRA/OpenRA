@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA
 				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				Game.Renderer.SpriteRenderer.DrawSprite(smudgeSprites[kv.Value.type- 1][kv.Value.image],
+				smudgeSprites[kv.Value.type- 1][kv.Value.image].DrawAt(
 						Game.CellSize * kv.Key, "terrain");
 			}
 		}

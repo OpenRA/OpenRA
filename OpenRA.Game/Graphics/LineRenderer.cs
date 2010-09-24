@@ -13,7 +13,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	public class LineRenderer
+	public class LineRenderer : Renderer.IBatchRenderer
 	{
 		Renderer renderer;
 
@@ -46,6 +46,8 @@ namespace OpenRA.Graphics
 
 		public void DrawLine( float2 start, float2 end, Color startColor, Color endColor )
 		{
+			Renderer.CurrentBatchRenderer = this;
+
 			if( ni + 2 > Renderer.TempBufferSize )
 				Flush();
 			if( nv + 2 > Renderer.TempBufferSize )

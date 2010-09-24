@@ -40,8 +40,6 @@ namespace OpenRA.Widgets
 					return b;
 				});
 			}
-
-			Game.Renderer.LineRenderer.Flush();
 		}
 	}
 }

@@ -127,16 +127,13 @@ namespace OpenRA.Widgets
 				if (Focused)
 					textPos += new int2(Bounds.Width - 2 * margin - textSize.X, 0);
 
-				Game.Renderer.Device.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
+				Game.Renderer.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
 			}
 
 			font.DrawText(Text + cursor, textPos, Color.White);
 
 			if (textSize.X > Bounds.Width - 2 * margin)
-			{
-				Game.Renderer.RgbaSpriteRenderer.Flush();
-				Game.Renderer.Device.DisableScissor();
-			}
+				Game.Renderer.DisableScissor();
 		}
 
 		public override Widget Clone() { return new TextFieldWidget(this); }

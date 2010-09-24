@@ -24,10 +24,10 @@ namespace OpenRA.Graphics
 	{
 		internal static int SheetSize;
 
-		public IShader SpriteShader { get; private set; }    /* note: shared shader params */
-		public IShader LineShader { get; private set; }
-		public IShader RgbaSpriteShader { get; private set; }
-		public IShader WorldSpriteShader { get; private set; }
+		internal IShader SpriteShader { get; private set; }    /* note: shared shader params */
+		internal IShader LineShader { get; private set; }
+		internal IShader RgbaSpriteShader { get; private set; }
+		internal IShader WorldSpriteShader { get; private set; }
 
 		public SpriteRenderer SpriteRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
@@ -67,7 +67,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public IGraphicsDevice Device { get { return device; } }
+		internal IGraphicsDevice Device { get { return device; } }
 
 		public void BeginFrame(float2 scroll)
 		{
@@ -94,6 +94,7 @@ namespace OpenRA.Graphics
 
 		public void EndFrame()
 		{
+			Flush();
 			device.End();
 			device.Present();
 		}
@@ -124,9 +125,7 @@ namespace OpenRA.Graphics
 		
 		public void Flush()
 		{
-			WorldSpriteRenderer.Flush();
-			RgbaSpriteRenderer.Flush();
-			LineRenderer.Flush();
+			CurrentBatchRenderer = null;
 		}
 
 		static IGraphicsDevice device;
@@ -176,6 +175,36 @@ namespace OpenRA.Graphics
 			var ret = tempBuffersI.Dequeue();
 			tempBuffersI.Enqueue( ret );
 			return ret;
+		}
+
+		public interface IBatchRenderer
+		{
+			void Flush();
+		}
+
+		static IBatchRenderer currentBatchRenderer;
+		public static IBatchRenderer CurrentBatchRenderer
+		{
+			get { return currentBatchRenderer; }
+			set
+			{
+				if( currentBatchRenderer == value ) return;
+				if( currentBatchRenderer != null )
+					currentBatchRenderer.Flush();
+				currentBatchRenderer = value;
+			}
+		}
+
+		public void EnableScissor(int left, int top, int width, int height)
+		{
+			Flush();
+			Device.EnableScissor( left, top, width, height );
+		}
+
+		public void DisableScissor()
+		{
+			Flush();
+			Device.DisableScissor();
 		}
 	}
 }

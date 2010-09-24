@@ -65,7 +65,6 @@ namespace OpenRA.Mods.Cnc
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
 			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
-			r.RgbaSpriteRenderer.Flush();
 			r.EndFrame();
 		}
 	}

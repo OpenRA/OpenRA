@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 
 					var c = content[x, y];
 					if (c.image != null)
-						Game.Renderer.SpriteRenderer.DrawSprite(c.image[c.density],
+						c.image[c.density].DrawAt(
 							Game.CellSize * new int2(x, y),
 							c.type.info.Palette);
 				}

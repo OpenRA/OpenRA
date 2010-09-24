@@ -12,7 +12,7 @@ using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
-	public class SpriteRenderer
+	public class SpriteRenderer : Renderer.IBatchRenderer
 	{
 		Renderer renderer;
 		IShader shader;
@@ -66,6 +66,8 @@ namespace OpenRA.Graphics
 		
 		public void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)
 		{
+			Renderer.CurrentBatchRenderer = this;
+
 			if (s.sheet != currentSheet)
 				Flush();
 

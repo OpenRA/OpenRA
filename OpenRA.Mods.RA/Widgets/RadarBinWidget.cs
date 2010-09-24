@@ -137,7 +137,6 @@ namespace OpenRA.Mods.RA.Widgets
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, s);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, s);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, s);
-				Game.Renderer.RgbaSpriteRenderer.Flush();
 
 				// Draw viewport rect
 				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength)
@@ -146,14 +145,12 @@ namespace OpenRA.Mods.RA.Widgets
 					var br = CellToMinimapPixel(new int2((int)((Game.viewport.Location.X + Game.viewport.Width)/Game.CellSize), (int)((Game.viewport.Location.Y + Game.viewport.Height)/Game.CellSize)));
 					var tr = new int2(br.X, tl.Y);
 					var bl = new int2(tl.X, br.Y);
-					Game.Renderer.LineRenderer.Flush();
-					Game.Renderer.Device.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
+					Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
 					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + tl, Game.viewport.Location + tr, Color.White, Color.White);
 					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + tr, Game.viewport.Location + br, Color.White, Color.White);
 					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + br, Game.viewport.Location + bl, Color.White, Color.White);
 					Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + bl, Game.viewport.Location + tl, Color.White, Color.White);
-					Game.Renderer.LineRenderer.Flush();
-					Game.Renderer.Device.DisableScissor();
+					Game.Renderer.DisableScissor();
 				}
 			}
 			

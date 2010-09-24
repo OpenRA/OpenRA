@@ -85,7 +85,6 @@ namespace OpenRA.Widgets
 					ChromeProvider.GetImage("flags", actor.Owner.Country.Race),
 					new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 50));
 			}
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 }

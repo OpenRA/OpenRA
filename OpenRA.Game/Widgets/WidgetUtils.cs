@@ -127,8 +127,6 @@ namespace OpenRA.Widgets
 				DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
 				DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
-
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 	}
 

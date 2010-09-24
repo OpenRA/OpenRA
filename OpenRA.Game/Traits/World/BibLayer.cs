@@ -84,7 +84,7 @@ namespace OpenRA.Traits
 				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				Game.Renderer.SpriteRenderer.DrawSprite(bibSprites[kv.Value.type - 1][kv.Value.image],
+				bibSprites[kv.Value.type - 1][kv.Value.image].DrawAt(
 					Game.CellSize * kv.Key, "terrain");
 			}
 		}

@@ -90,20 +90,16 @@ namespace OpenRA.Graphics
 		public void Draw()
 		{
 			var bounds = GetBoundsRect();
-			Game.Renderer.Device.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(Game.viewport);
 
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(world);
 
-			Game.Renderer.SpriteRenderer.Flush();
-			Game.Renderer.LineRenderer.Flush();
-
 			foreach (var image in worldSprites)
-				Game.Renderer.SpriteRenderer.DrawSprite(image.Sprite, image.Pos, image.Palette);
+				image.Sprite.DrawAt(image.Pos, image.Palette);
 			uiOverlay.Draw(world);
-			Game.Renderer.SpriteRenderer.Flush();
 
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderAfterWorld(world);
@@ -111,11 +107,7 @@ namespace OpenRA.Graphics
 			if (world.LocalPlayer != null)
 				world.LocalPlayer.Shroud.Draw();
 
-			Game.Renderer.SpriteRenderer.Flush();
-
-			Game.Renderer.Device.DisableScissor();
-
-			Game.Renderer.LineRenderer.Flush();
+			Game.Renderer.DisableScissor();
 		}
 
 		void DrawBox(RectangleF r, Color color)

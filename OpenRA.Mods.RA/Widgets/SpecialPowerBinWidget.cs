@@ -77,8 +77,6 @@ namespace OpenRA.Mods.RA.Widgets
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-			
 			// Hack Hack Hack
 			rectBounds.Width = 69;
 			rectBounds.Height = 10 + numPowers * 51 + 21;
@@ -147,7 +145,6 @@ namespace OpenRA.Mods.RA.Widgets
 					y += 51;
 				}
 			}
-			Game.Renderer.WorldSpriteRenderer.Flush();
 		}
 		
 		Action<MouseInput> HandleSupportPower(SupportPower sp)

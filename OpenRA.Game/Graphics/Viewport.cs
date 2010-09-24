@@ -107,10 +107,6 @@ namespace OpenRA.Graphics
 			var c = new Cursor(cursorName);
 			c.Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
 
-			renderer.RgbaSpriteRenderer.Flush();
-			renderer.SpriteRenderer.Flush();
-			renderer.WorldSpriteRenderer.Flush();
-
 			renderer.EndFrame();
 		}
 

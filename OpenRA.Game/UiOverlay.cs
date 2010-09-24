@@ -49,7 +49,7 @@ namespace OpenRA
 				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
 					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
 						if (uim.GetUnitsAt(new int2(i, j)).Any())
-							Game.Renderer.SpriteRenderer.DrawSprite(unitDebug, Game.CellSize * new float2(i, j), "terrain");
+							unitDebug.DrawAt(Game.CellSize * new float2(i, j), "terrain");
 			}
 		}
 
@@ -63,19 +63,17 @@ namespace OpenRA
 			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
 			{
 				foreach (var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi))
-					Game.Renderer.SpriteRenderer.DrawSprite(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t)
-						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
+					(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t) ? buildOk : buildBlocked)
+						.DrawAt(Game.CellSize * t, "terrain");
 			}
 			else
 			{
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 				foreach (var t in Footprint.Tiles(name, bi, topLeft))
-					Game.Renderer.SpriteRenderer.DrawSprite((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null)
-						? buildOk : buildBlocked, Game.CellSize * t, "terrain");
+					((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null) ? buildOk : buildBlocked)
+						.DrawAt(Game.CellSize * t, "terrain");
 			}
-			
-			Game.Renderer.SpriteRenderer.Flush();
 		}
 	}
 

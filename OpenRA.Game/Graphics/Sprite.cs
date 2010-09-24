@@ -49,6 +49,21 @@ namespace OpenRA.Graphics
 		{
 			return uvhax[ k ];
 		}
+
+		public void DrawAt( float2 location, string palette )
+		{
+			Game.Renderer.SpriteRenderer.DrawSprite( this, location, palette );
+		}
+
+		public void DrawAt(float2 location, string palette, float2 size)
+		{
+			Game.Renderer.SpriteRenderer.DrawSprite( this, location, palette, size );
+		}
+
+		public void DrawAt( float2 location, int paletteIndex, float2 size )
+		{
+			Game.Renderer.SpriteRenderer.DrawSprite( this, location, paletteIndex, size );
+		}
 	}
 
 	public enum TextureChannel

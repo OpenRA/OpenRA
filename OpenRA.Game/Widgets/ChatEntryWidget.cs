@@ -33,8 +33,6 @@ namespace OpenRA.Widgets
 
 				Game.Renderer.BoldFont.DrawText(text, RenderOrigin + new float2(3, 7), Color.White);
 				Game.Renderer.RegularFont.DrawText(content, RenderOrigin + new float2(3 + w, 7), Color.White);
-
-				Game.Renderer.RgbaSpriteRenderer.Flush();
 			}
 		}
 		

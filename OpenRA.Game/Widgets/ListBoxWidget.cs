@@ -71,15 +71,12 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-
-			Game.Renderer.Device.EnableScissor(backgroundRect.X, backgroundRect.Y + HeaderHeight, backgroundRect.Width, backgroundRect.Height - HeaderHeight);
+			Game.Renderer.EnableScissor(backgroundRect.X, backgroundRect.Y + HeaderHeight, backgroundRect.Width, backgroundRect.Height - HeaderHeight);
 
 			foreach (var child in Children)
 				child.Draw(world);
 
-			Game.Renderer.RgbaSpriteRenderer.Flush();
-			Game.Renderer.Device.DisableScissor();
+			Game.Renderer.DisableScissor();
 		}
 
 		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)ListOffset); } }

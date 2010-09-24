@@ -204,7 +204,6 @@ namespace OpenRA.Mods.RA.Widgets
 					new float2(origin.X - 9, origin.Y + 48 * w));
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
 				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 
 			// Icons
@@ -270,8 +269,6 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var ob in overlayBits)
 				WidgetUtils.DrawSHP(ob.First, ob.Second);
 
-			Game.Renderer.WorldSpriteRenderer.Flush();
-
 			// Tooltip
 			if (tooltipItem != null && !paletteAnimating && paletteOpen)
 				DrawProductionTooltip(world, tooltipItem, 
@@ -287,7 +284,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-bottom"),
 				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows));
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 
 			return 48 * y + 9;
 		}
@@ -418,8 +414,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 				y += tabHeight;
 			}
-			
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
 		void DrawRightAligned(string text, int2 pos, Color c)
@@ -482,8 +476,6 @@ namespace OpenRA.Mods.RA.Widgets
 			p += new int2(0, 15);
 			Game.Renderer.RegularFont.DrawText(tooltip.Description.Replace("\\n", "\n"), 
 				p.ToInt2(), Color.White);
-
-			Game.Renderer.RgbaSpriteRenderer.Flush();
 		}
 
         bool DoBuildingHotkey(char c, World world)
