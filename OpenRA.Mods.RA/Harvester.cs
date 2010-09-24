@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (order.TargetActor != LinkedProc)
 				{
-					if (LinkedProc != null)
+					if (LinkedProc != null && LinkedProc.IsInWorld)
 						LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 					LinkedProc = order.TargetActor;
 					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
