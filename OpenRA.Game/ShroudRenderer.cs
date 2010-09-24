@@ -151,7 +151,7 @@ namespace OpenRA
 			var minx = clipRect.Left;
 			var maxx = clipRect.Right;
 
-			var shroudPalette = "fog";
+			var shroudPalette = Game.world.WorldRenderer.GetPaletteIndex("fog");
 
 			for (var j = miny; j < maxy; j++)
 			{
@@ -183,7 +183,7 @@ namespace OpenRA
 						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
 			}
 
-			shroudPalette = "shroud";
+			shroudPalette = Game.world.WorldRenderer.GetPaletteIndex("shroud");
 
 			for (var j = miny; j < maxy; j++)
 			{
