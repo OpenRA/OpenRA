@@ -28,7 +28,7 @@ esac
 (
     msg "\E[34m" "Building Windows package."
     pushd windows/ &> /dev/null
-    makensis -DSRCDIR=/home/openra/openra-package/$_gitname-build OpenRA.nsi &> package.log
+    makensis -DSRCDIR=/home/openra/openra-package/OpenRA-build OpenRA.nsi &> package.log
     if [ $? -eq 0 ]; then
         mv OpenRA.exe OpenRA-$VERSION.exe
         ../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe "$FTPPATH" "$2" "$3"
