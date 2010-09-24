@@ -23,6 +23,7 @@ namespace OpenRA.Traits
 		public readonly string TerrainType = "Ore";
 
 		public Sprite[][] Sprites;
+		public int PaletteIndex;
 		
 		public object Create(ActorInitializer init) { return new ResourceType(this); }
 	}

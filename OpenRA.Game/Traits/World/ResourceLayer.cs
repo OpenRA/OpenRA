@@ -37,6 +37,9 @@ namespace OpenRA.Traits
 			var miny = cliprect.Top;
 			var maxy = cliprect.Bottom;
 
+			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
+				rt.info.PaletteIndex = world.WorldRenderer.GetPaletteIndex(rt.info.Palette);
+
 			for (int x = minx; x < maxx; x++)
 				for (int y = miny; y < maxy; y++)
 				{
@@ -48,7 +51,7 @@ namespace OpenRA.Traits
 					if (c.image != null)
 						c.image[c.density].DrawAt(
 							Game.CellSize * new int2(x, y),
-							c.type.info.Palette);
+							c.type.info.PaletteIndex);
 				}
 		}
 
