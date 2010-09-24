@@ -146,6 +146,7 @@ namespace OpenRA.Traits
 			content[p.X, p.Y].type = null;
 			content[p.X, p.Y].image = null;
 			content[p.X, p.Y].density = 0;
+			world.Map.CustomTerrain[p.X, p.Y] = null;
 		}
 
 		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
