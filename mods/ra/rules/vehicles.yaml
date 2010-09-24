@@ -945,7 +945,7 @@ FTRK:
 		Name: Flak Truck
 		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles\nand Aircraft, Weak vs Tanks 
 	Health:
-		HP: 300
+		HP: 120
 	Armor: 
 		Type: Light
 	Mobile:

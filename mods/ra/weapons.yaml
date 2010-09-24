@@ -956,10 +956,10 @@ FLAK-23:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 70%
-			Wood: 50%
+			None: 40%
+			Wood: 10%
 			Light: 60%
-			Heavy: 60%
+			Heavy: 10%
 			Concrete: 20%
 		Explosion: med_explosion
 		Damage: 20
