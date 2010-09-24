@@ -811,7 +811,7 @@ Heal:
 		
 SCUD:
 	ROF: 250
-	Range: 13
+	Range: 10
 	Report: MISSILE1
 	Projectile: Bullet
 		Speed: 10
@@ -834,7 +834,7 @@ SCUD:
 		WaterExplosion: large_splash
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 700
+		Damage: 600
 		ImpactSound: firebl3
 		WaterImpactSound: splash9
 
