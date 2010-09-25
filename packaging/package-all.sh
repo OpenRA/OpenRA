@@ -42,9 +42,9 @@ esac
 (
     msg "\E[34m" "Building OSX package."
     pushd osx/ &>/dev/null
-    sh package-game.sh ~/openra-package/$_gitname-build "$VERSION" &> package.log
+    sh buildpackage.sh /home/openra/openra-package/OpenRA-build "$VERSION" &> package.log
     if [ $? -eq 0 ]; then
-        ../uploader.sh mac "$VERSION" ~/openra-package/$_gitname-build/osxbuild/OpenRA-$VERSION.zip "$FTPPATH" "$2" "$3"
+        ../uploader.sh mac "$VERSION" OpenRA-$VERSION.zip "$FTPPATH" "$2" "$3"
     else
         msg "\E[31m" "OSX package build failed, refer to log."
     fi
