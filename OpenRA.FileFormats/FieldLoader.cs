@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Globalization;
 
 namespace OpenRA.FileFormats
 {
@@ -99,7 +100,7 @@ namespace OpenRA.FileFormats
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(x.Replace("%",""), out res))
+				if (float.TryParse(x.Replace("%",""),  System.Globalization.NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
 					return res * (x.Contains( '%' ) ? 0.01f : 1f);
 				return InvalidValueAction(x,fieldType, field);
 			}

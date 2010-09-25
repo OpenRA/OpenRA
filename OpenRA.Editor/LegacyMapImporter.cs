@@ -17,6 +17,7 @@ using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using System.Drawing;
+using System.Globalization;
 
 namespace OpenRA.Editor
 {
@@ -401,7 +402,7 @@ namespace OpenRA.Editor
 				{
 					new LocationInit(new int2(loc % MapSize, loc / MapSize)),
 					new OwnerInit(parts[0]),
-					new HealthInit(float.Parse(parts[2])/256),
+					new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo)/256),
 					new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
 					new ActorStanceInit(stance),
 				};
