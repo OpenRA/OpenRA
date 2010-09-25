@@ -30,8 +30,8 @@ namespace OpenRA.Widgets.Delegates
 
 			MasterServerQuery.OnComplete += games => RefreshServerList(games);
 
-			widget.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-			widget.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+			bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+			bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
 			bg.Children.RemoveAll(a => GameButtons.Contains(a));
 			GameButtons.Clear();
@@ -62,8 +62,8 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
 			{
-				widget.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				widget.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+				bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
+				bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
@@ -184,7 +184,6 @@ namespace OpenRA.Widgets.Delegates
 
 			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
 			{
-
 				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
 				var cpts = address.Split(':').ToArray();
 				if (cpts.Length != 2)
@@ -201,7 +200,8 @@ namespace OpenRA.Widgets.Delegates
 			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 			{
 				Widget.CloseWindow();
-				return widget.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
+				Widget.OpenWindow("MAINMENU_BG");
+				return true;
 			};
 		}
 	}
