@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 	public class ExitInfo : TraitInfo<Exit>
 	{
-		public readonly float2 SpawnOffset = float2.Zero; // in px relative to CenterLocation
+		public readonly int2 SpawnOffset = int2.Zero; // in px relative to CenterLocation
 		public readonly int2 ExitCell = int2.Zero; // in cells relative to TopLeft
 		public readonly int Facing = -1;
 	}
@@ -46,21 +46,21 @@ namespace OpenRA.Mods.RA
 			});
 
 			var exit = self.Location + exitinfo.ExitCell;
-			var spawn = self.CenterLocation + exitinfo.SpawnOffset;
+			var spawn = self.CenterLocation.ToInt2() + exitinfo.SpawnOffset;
 
-			var move = newUnit.Trait<IMove>();
+			var mobile = newUnit.Trait<Mobile>();
 			var facing = newUnit.TraitOrDefault<IFacing>();
 			
 			// Set the physical position of the unit as the exit cell
-			move.SetPosition(newUnit,exit);
+			mobile.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
-			newUnit.CenterLocation = spawn;
+			mobile.PxPosition = spawn;
 			if (facing != null)
 				facing.Facing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, facing.Facing) : exitinfo.Facing;
 			self.World.Add(newUnit);
 
 			// Animate the spawn -> exit transition
-			var speed = move.MovementSpeedForCell(self, exit);
+			var speed = mobile.MovementSpeedForCell(self, exit);
 			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
 			newUnit.QueueActivity(new Drag(spawn, to, length));
 

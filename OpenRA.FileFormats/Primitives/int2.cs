@@ -25,6 +25,7 @@ namespace OpenRA
 		public static int2 operator -(int2 a, int2 b) { return new int2(a.X - b.X, a.Y - b.Y); }
 		public static int2 operator *(int a, int2 b) { return new int2(a * b.X, a * b.Y); }
 		public static int2 operator *(int2 b, int a) { return new int2(a * b.X, a * b.Y); }
+		public static int2 operator /(int2 a, int b) { return new int2(a.X / b, a.Y / b); }
 
 		public static bool operator ==(int2 me, int2 other) { return (me.X == other.X && me.Y == other.Y); }
 		public static bool operator !=(int2 me, int2 other) { return !(me == other); }
@@ -58,6 +59,16 @@ namespace OpenRA
 		public static uint Swap(uint orig)
 		{
 			return (uint)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
+		}
+
+		public static int Lerp( int a, int b, int mul, int div )
+		{
+			return a + ( b - a ) * mul / div;
+		}
+
+		public static int2 Lerp( int2 a, int2 b, int mul, int div )
+		{
+			return a + ( b - a ) * mul / div;
 		}
 	}
 }

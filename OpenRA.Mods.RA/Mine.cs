@@ -55,6 +55,8 @@ namespace OpenRA.Mods.RA
 		public int2 TopLeft { get { return location; } }
 
 		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
+
+		public int2 PxPosition { get { return Util.CenterOfCell( location ); } }
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

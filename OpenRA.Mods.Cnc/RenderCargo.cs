@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Cnc
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			foreach (var c in cargo.Passengers)
-				c.CenterLocation = self.CenterLocation;
+			foreach( var c in cargo.Passengers )
+				c.Trait<ITeleportable>().SetPxPosition( c, self.Trait<IHasLocation>().PxPosition );
 			
 			return r.Concat(cargo.Passengers.SelectMany(a => a.Render()));
 		}

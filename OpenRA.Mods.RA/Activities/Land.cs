@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			var angle = aircraft.Facing / 128f * Math.PI;
 
-			self.CenterLocation += speed * -float2.FromAngle((float)angle);
+			aircraft.center += speed * -float2.FromAngle((float)angle);
 			aircraft.Location = Util.CellContaining(self.CenterLocation);
 
 			return this;

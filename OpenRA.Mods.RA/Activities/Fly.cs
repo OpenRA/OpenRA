@@ -18,8 +18,13 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		public readonly float2 Pos;
 
-		public Fly(float2 pos) { Pos = pos; }
-		public Fly(int2 pos) { Pos = Util.CenterOfCell(pos); }
+		private Fly( float2 pos )
+		{
+			this.Pos = pos;
+		}
+
+		public static Fly ToPx( float2 px ) { return new Fly( px ); }
+		public static Fly ToCell( int2 pos ) { return new Fly( Util.CenterOfCell( pos ) ); }
 		
 		public override IActivity Tick(Actor self)
 		{
@@ -57,7 +62,7 @@ namespace OpenRA.Mods.RA.Activities
 			var aircraft = self.Trait<Aircraft>();
 			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			var angle = aircraft.Facing / 128f * Math.PI;
-			self.CenterLocation += speed * -float2.FromAngle((float)angle);
+			aircraft.center += speed * -float2.FromAngle((float)angle);
 			aircraft.Location = Util.CellContaining(self.CenterLocation);
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
