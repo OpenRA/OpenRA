@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			return Util.SequenceActivities(
-				Fly.ToPx(Target.CenterLocation),
+				new Fly(Target.CenterLocation),
 				new FlyTimed(50),
 				this);
 		}
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( IsCanceled ) return NextActivity;
 
 			return Util.SequenceActivities(
-				Fly.ToPx(Util.CenterOfCell(Target)),
+				new Fly(Util.CenterOfCell(Target)),
 				new FlyTimed(50),
 				this);
 		}

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 				});
 
 				plane.CancelActivity();
-				plane.QueueActivity(Fly.ToPx(Util.CenterOfCell(order.TargetLocation)));
+				plane.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
 				plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w => 
 					{
 						var camera = w.CreateActor("camera", new TypeDictionary

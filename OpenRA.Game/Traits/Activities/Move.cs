@@ -248,7 +248,7 @@ namespace OpenRA.Traits.Activities
 		public override IEnumerable<float2> GetCurrentPath()
 		{
 			if( path != null )
-				return Enumerable.Reverse(path).Select( c => (float2)Util.CenterOfCell(c) );
+				return Enumerable.Reverse(path).Select( c => Util.CenterOfCell(c) );
 			if( destination != null )
 				return new float2[] { destination.Value };
 			return new float2[ 0 ];
@@ -257,12 +257,12 @@ namespace OpenRA.Traits.Activities
 		abstract class MovePart : IActivity
 		{
 			public readonly Move move;
-			public readonly int2 from, to;
+			public readonly float2 from, to;
 			public readonly int fromFacing, toFacing;
 			public int moveFraction;
 			public readonly int moveFractionTotal;
 
-			public MovePart( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+			public MovePart( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
 			{
 				this.move = move;
 				this.from = from;
@@ -270,7 +270,7 @@ namespace OpenRA.Traits.Activities
 				this.fromFacing = fromFacing;
 				this.toFacing = toFacing;
 				this.moveFraction = startingFraction;
-				this.moveFractionTotal = (int)( ( to - from ) * 3 ).Length;
+				this.moveFractionTotal = (int)(( to - from ).Length*3);
 			}
 
 			public void Cancel( Actor self )
@@ -311,12 +311,14 @@ namespace OpenRA.Traits.Activities
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
-				mobile.PxPosition = int2.Lerp( from, to, moveFraction, moveFractionTotal );
+				var frac = (float)moveFraction / moveFractionTotal;
+
+				self.CenterLocation = float2.Lerp( from, to, frac );
 
 				if( moveFraction >= moveFractionTotal )
 					mobile.Facing = toFacing & 0xFF;
 				else
-					mobile.Facing = int2.Lerp( fromFacing, toFacing, moveFraction, moveFractionTotal ) & 0xFF;
+					mobile.Facing = ( fromFacing + ( toFacing - fromFacing ) * moveFraction / moveFractionTotal ) & 0xFF;
 			}
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
@@ -329,7 +331,7 @@ namespace OpenRA.Traits.Activities
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+			public MoveFirstHalf( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
 				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
@@ -368,14 +370,14 @@ namespace OpenRA.Traits.Activities
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+			public MoveSecondHalf( Move move, float2 from, float2 to, int fromFacing, int toFacing, int startingFraction )
 				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
 
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
-				mobile.PxPosition = Util.CenterOfCell( mobile.toCell );
+				self.CenterLocation = Util.CenterOfCell( mobile.toCell );
 				mobile.SetLocation( mobile.toCell, mobile.toCell );
 				mobile.FinishedMoving(self);
 				return null;

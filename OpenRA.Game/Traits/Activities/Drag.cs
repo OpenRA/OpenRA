@@ -16,11 +16,11 @@ namespace OpenRA.Traits.Activities
 	{
 		IActivity NextActivity { get; set; }
 
-		int2 endLocation;
-		int2 startLocation;
+		float2 endLocation;
+		float2 startLocation;
 		int length;
 
-		public Drag(int2 start, int2 end, int length)
+		public Drag(float2 start, float2 end, int length)
 		{
 			startLocation = start;
 			endLocation = end;
@@ -30,15 +30,14 @@ namespace OpenRA.Traits.Activities
 		int ticks = 0;
 		public IActivity Tick( Actor self )
 		{
-			var mobile = self.Trait<Mobile>();
-			mobile.PxPosition = int2.Lerp( startLocation, endLocation, ticks, length - 1 );
+			self.CenterLocation = float2.Lerp(startLocation, endLocation, (float)ticks/(length-1));
 			
 			if (++ticks >= length)
 			{
-				mobile.IsMoving = false;
+				self.Trait<Mobile>().IsMoving = false;
 				return NextActivity;
 			}
-			mobile.IsMoving = true;
+			self.Trait<Mobile>().IsMoving = true;
 			return this;
 		}
 

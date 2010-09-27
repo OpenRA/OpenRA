@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 						a.Trait<CarpetBomb>().SetTarget(order.TargetLocation);
 
 						a.CancelActivity();
-						a.QueueActivity(Fly.ToCell(order.TargetLocation));
+						a.QueueActivity(new Fly(order.TargetLocation));
 
 						if (flare != null)
 							a.QueueActivity(new CallFunc(() => flare.Destroy()));

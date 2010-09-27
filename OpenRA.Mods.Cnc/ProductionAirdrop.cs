@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc
 					new AltitudeInit( Rules.Info["c17"].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 				
-				a.QueueActivity(Fly.ToCell(self.Location + new int2(6,0)));
+				a.QueueActivity(new Fly(self.Location + new int2(6,0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
 				{
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc
 					rb.PlayCustomAnimRepeating(self, "idle");
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
 				}));
-				a.QueueActivity(Fly.ToCell(endPos));
+				a.QueueActivity(new Fly(endPos));
 				a.QueueActivity(new RemoveSelf());
 			});
 

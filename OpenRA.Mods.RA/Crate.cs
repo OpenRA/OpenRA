@@ -82,13 +82,6 @@ namespace OpenRA.Mods.RA
 		public int2 TopLeft { get { return Location; } }
 		public IEnumerable<int2> OccupiedCells() { return new int2[] { Location }; }
 
-		public int2 PxPosition { get; private set; }
-
-		public void SetPxPosition( Actor self, int2 px )
-		{
-			SetPosition( self, Util.CellContaining( px ) );
-		}
-
 		public bool CanEnterCell(int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
@@ -103,7 +96,7 @@ namespace OpenRA.Mods.RA
 			uim.Remove(self, this);
 
 			Location = cell;
-			PxPosition = Util.CenterOfCell(cell);
+			self.CenterLocation = Util.CenterOfCell(cell);
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
 			if (seq != self.Trait<RenderSimple>().anim.CurrentSequence.Name)

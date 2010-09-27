@@ -82,14 +82,14 @@ namespace OpenRA.Traits
 				ecc * (cosAngle * v.Y - sinAngle * v.X));
 		}
 
-		public static int2 CenterOfCell(int2 loc)
+		public static float2 CenterOfCell(int2 loc)
 		{
-			return new int2(Game.CellSize/2, Game.CellSize/2) + Game.CellSize * loc;
+			return new float2(12, 12) + Game.CellSize * (float2)loc;
 		}
 
-		public static int2 BetweenCells(int2 from, int2 to)
+		public static float2 BetweenCells(int2 from, int2 to)
 		{
-			return int2.Lerp( CenterOfCell( from ), CenterOfCell( to ), 1, 2 );
+			return 0.5f * (CenterOfCell(from) + CenterOfCell(to));
 		}
 
 		public static int2 AsInt2(this int[] xs) { return new int2(xs[0], xs[1]); }

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
 			{
 				var exit = self.Location + s.ExitCell;
-				var spawn = self.Trait<IHasLocation>().PxPosition + s.SpawnOffset;
+				var spawn = self.CenterLocation + s.SpawnOffset;
 				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any())
 				{
 					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
@@ -43,7 +43,8 @@ namespace OpenRA.Mods.RA
 						new LocationInit( exit ),
 						new OwnerInit( self.Owner ),
 					});
-
+					newUnit.CenterLocation = spawn;
+		        	
 					var rp = self.TraitOrDefault<RallyPoint>();
 					if( rp != null )
 					{

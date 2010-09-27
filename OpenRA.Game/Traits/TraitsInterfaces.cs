@@ -63,13 +63,7 @@ namespace OpenRA.Traits
 	
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-
-	public interface IHasLocation
-	{
-		int2 PxPosition { get; }
-	}
-
-	public interface IOccupySpace : IHasLocation
+	public interface IOccupySpace
 	{
 		int2 TopLeft { get; }
 		IEnumerable<int2> OccupiedCells();
@@ -103,15 +97,15 @@ namespace OpenRA.Traits
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 
-	public interface ITeleportable : IHasLocation /* crap name! */
+	public interface ITeleportable /* crap name! */
 	{
 		bool CanEnterCell(int2 location);
 		void SetPosition(Actor self, int2 cell);
-		void SetPxPosition(Actor self, int2 px);
 	}
 
 	public interface IMove : ITeleportable
 	{
+		float MovementSpeedForCell(Actor self, int2 cell);
 		int Altitude { get; set; }
 	}
 	
@@ -232,7 +226,6 @@ namespace OpenRA.Traits
 		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
-		public int2 PxPosition { get { return actor != null ? actor.Trait<IHasLocation>().PxPosition : pos.ToInt2(); } }
 		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : pos.ToInt2(); } }
 
 		public Actor Actor { get { return actor; } }

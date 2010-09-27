@@ -36,18 +36,13 @@ namespace OpenRA.Mods.RA
 		public int Facing { get; set; }
 		[Sync]
 		public int Altitude { get; set; }
-
-		public float2 center;
 		
 		AircraftInfo Info;
 
 		public Aircraft( ActorInitializer init , AircraftInfo info)
 		{
-			if( init.Contains<LocationInit>() )
-			{
-				this.Location = init.Get<LocationInit, int2>();
-				this.center = Util.CenterOfCell( Location );
-			}
+			if (init.Contains<LocationInit>())
+				this.Location = init.Get<LocationInit,int2>();
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
@@ -66,15 +61,9 @@ namespace OpenRA.Mods.RA
 		public void SetPosition(Actor self, int2 cell)
 		{
 			Location = cell;
-			center = Util.CenterOfCell(cell);
+			self.CenterLocation = Util.CenterOfCell(cell);
 		}
 		
-		public void SetPxPosition(Actor self, int2 px)
-		{
-			Location = Util.CellContaining(px);
-			center = px;
-		}
-
 		public bool AircraftCanEnter(Actor self, Actor a)
 		{
 			return Info.RearmBuildings.Contains( a.Info.Name )
@@ -94,6 +83,5 @@ namespace OpenRA.Mods.RA
 		
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
-		public int2 PxPosition { get { return center.ToInt2(); } }
 	}
 }
