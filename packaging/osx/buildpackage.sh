@@ -23,7 +23,7 @@ fi
 cp -rv template.app OpenRA.app
 
 for i in $FILES; do
-	cp -Rv "$1$i" "OpenRA.app/Contents/Resources/$i" || exit 3
+	cp -Rv "$1/$i" "OpenRA.app/Contents/Resources/$i" || exit 3
 done
 
 # Delete excluded files
