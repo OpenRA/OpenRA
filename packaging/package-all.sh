@@ -33,7 +33,7 @@ esac
         mv OpenRA.exe OpenRA-$VERSION.exe
         ../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe "$FTPPATH" "$2" "$3"
     else
-        msg "\E[31m" "Windows package build failed, refer to log."  
+        msg "\E[31m" "Windows package build failed, refer to $PWD/package.log."  
     fi
     popd &> /dev/null
 ) &
@@ -46,7 +46,7 @@ esac
     if [ $? -eq 0 ]; then
         ../uploader.sh mac "$VERSION" OpenRA-$VERSION.zip "$FTPPATH" "$2" "$3"
     else
-        msg "\E[31m" "OSX package build failed, refer to log."
+        msg "\E[31m" "OSX package build failed, refer to $PWD/package.log."
     fi
     popd &> /dev/null
 ) &
@@ -84,7 +84,7 @@ esac
         pushd linux/pkgbuild/ &> /dev/null
         sh buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" &> package.log
         if [ $? -ne 0 ]; then
-            msg "\E[31m" "Arch-Linux package build failed, refer to log."
+            msg "\E[31m" "Arch-Linux package build failed, refer to $PWD/package.log."
         fi
         popd &> /dev/null
     ) &
@@ -95,7 +95,7 @@ esac
         pushd linux/rpm/ &> /dev/null
         sh buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/rpmbuild &> package.log
         if [ $? -ne 0 ]; then
-            msg "\E[31m" "RPM package build failed, refer to log."
+            msg "\E[31m" "RPM package build failed, refer to $PWD/package.log."
         fi
         popd &> /dev/null
     ) &
@@ -106,7 +106,7 @@ esac
         pushd linux/deb/ &> /dev/null
         ./buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
         if [ $? -ne 0 ]; then
-            msg "\E[31m" "deb package build failed, refer to log."
+            msg "\E[31m" "deb package build failed, refer to $PWD/package.log."
         fi
         popd &> /dev/null
     ) &
@@ -116,3 +116,6 @@ esac
 
 wait
 
+if [ "$TYPE" = "release" ]; then
+    wput --basename=../ -u ../VERSION ftp://ftp.open-ra.org/httpdocs/master/
+fi

@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.Server;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -31,6 +32,8 @@ namespace OpenRA.Widgets.Delegates
 				var s = FileSystem.Open("VERSION");
 				version.Text = s.ReadAllText();
 				s.Close();
+				MasterServerQuery.OnVersion += v => { version.Text += "\nLatest: " + v; };
+				MasterServerQuery.GetCurrentVersion(Game.Settings.Server.MasterServer);
 			}
 		}
 	}

@@ -20,9 +20,12 @@ namespace OpenRA.Server
 	static class MasterServerQuery
 	{
 		public static event Action<GameServer[]> OnComplete = _ => { };
+		public static event Action<string> OnVersion = _ => { };
 
 		static GameServer[] Games = { };
+		static string Version = "";
 		static AutoResetEvent ev = new AutoResetEvent(false);
+		static AutoResetEvent ev2 = new AutoResetEvent(false);
 
 		public static void Refresh(string masterServerUrl)
 		{
@@ -30,9 +33,7 @@ namespace OpenRA.Server
 			{
 				try
 				{
-					var wc = new WebClient();
-					var data = wc.DownloadData(new Uri(masterServerUrl + "list.php"));
-					var str = Encoding.UTF8.GetString(data);
+					var str = GetData(new Uri(masterServerUrl + "list.php"));
 
 					var yaml = MiniYaml.FromString(str);
 
@@ -52,6 +53,32 @@ namespace OpenRA.Server
 		{
 			if (ev.WaitOne(TimeSpan.FromMilliseconds(0))) 
 				OnComplete(Games);
+			if (ev2.WaitOne(TimeSpan.FromMilliseconds(0)))
+				OnVersion(Version);
+		}
+
+		static string GetData(Uri uri)
+		{
+			var wc = new WebClient();
+			var data = wc.DownloadData(uri);
+			return Encoding.UTF8.GetString(data);
+		}
+
+		public static void GetCurrentVersion(string masterServerUrl)
+		{
+			new Thread(() =>
+				{
+					try
+					{
+						Version = GetData(new Uri(masterServerUrl + "VERSION"));
+					}
+					catch
+					{
+						Version = "";
+					}
+
+					ev2.Set();
+				}).Start();
 		}
 	}
 

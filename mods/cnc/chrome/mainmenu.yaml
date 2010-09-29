@@ -67,9 +67,9 @@ Background@MAINMENU_BG:
 		Label@VERSION_STRING:
 			Id:VERSION_STRING
 			X:WINDOW_RIGHT - PARENT_LEFT - WIDTH - 15
-			Y:WINDOW_BOTTOM - PARENT_TOP - 25
+			Y:WINDOW_BOTTOM - PARENT_TOP - 65
 			Width:400
-			Height:35
+			Height:70
 			Text:
 			Align:Right
 			Bold:True
