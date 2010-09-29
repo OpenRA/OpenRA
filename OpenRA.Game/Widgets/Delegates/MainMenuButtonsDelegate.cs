@@ -32,7 +32,7 @@ namespace OpenRA.Widgets.Delegates
 				var s = FileSystem.Open("VERSION");
 				version.Text = s.ReadAllText();
 				s.Close();
-				MasterServerQuery.OnVersion += v => { version.Text += "\nLatest: " + v; };
+				MasterServerQuery.OnVersion += v => { if (!string.IsNullOrEmpty(v)) version.Text += "\nLatest: " + v; };
 				MasterServerQuery.GetCurrentVersion(Game.Settings.Server.MasterServer);
 			}
 		}
