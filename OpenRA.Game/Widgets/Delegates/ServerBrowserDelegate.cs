@@ -125,6 +125,10 @@ namespace OpenRA.Widgets.Delegates
 		{
 			var r = Widget.RootWidget;
 			var bg = r.GetWidget("JOINSERVER_BG");
+
+            if (bg == null) // We got a MasterServer reply AFTER the browser is gone, just return to prevent crash - Gecko
+                return;
+
 			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
 
 			sl.Children.Clear();
