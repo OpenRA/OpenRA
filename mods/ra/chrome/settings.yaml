@@ -91,6 +91,18 @@ Background@SETTINGS_MENU:
 					Width:200
 					Height:20
 					Text: Enable Edge Scrolling
+				Label@EDGE_SCROLL_AMOUNT_LABEL:
+					Id:EDGE_SCROLL_AMOUNT_LABEL
+					X:0
+					Y:70
+					Text: Scroll Speed
+				Slider@EDGE_SCROLL_AMOUNT:
+					Id:EDGE_SCROLL_AMOUNT
+					X:130
+					Y:60
+					Width:250
+					Height:20
+					Ticks:100
 				Checkbox@INVERSE_SCROLL:
 					Id:INVERSE_SCROLL
 					X:0

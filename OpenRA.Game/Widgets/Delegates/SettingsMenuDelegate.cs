@@ -53,6 +53,14 @@ namespace OpenRA.Widgets.Delegates
                 Game.Settings.Game.ViewportEdgeScroll ^= true;
                 return true;
             };
+            
+            // Added scroll sensitivity - Gecko	
+            var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
+            if (edgeScrollSlider != null) // Backwards compatible - Gecko
+            {
+                edgeScrollSlider.OnChange += x => { x += 0.1f; Game.Settings.Game.ViewportEdgeScrollStep = x; };
+                edgeScrollSlider.GetOffset = () => { return Game.Settings.Game.ViewportEdgeScrollStep - 0.1f; };
+            }
 
             var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
             inverseScroll.Checked = () => Game.Settings.Game.InverseDragScroll;
