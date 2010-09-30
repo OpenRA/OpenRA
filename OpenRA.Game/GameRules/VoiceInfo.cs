@@ -31,7 +31,7 @@ namespace OpenRA.GameRules
 				: new Dictionary<string, string[]>();
 		}
 
-		public readonly Lazy<Dictionary<string, VoicePool>> Pools;
+		public readonly OpenRA.FileFormats.Lazy<Dictionary<string, VoicePool>> Pools;
 
 		public VoiceInfo( MiniYaml y )
 		{
