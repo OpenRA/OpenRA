@@ -67,6 +67,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void DrawInner(World world)
 		{		
 			buttons.Clear();
+
+			if( world.LocalPlayer == null ) return;
 			
 			var powers = world.LocalPlayer.PlayerActor.TraitsImplementing<SupportPower>();
 			var numPowers = powers.Count(p => p.IsAvailable);

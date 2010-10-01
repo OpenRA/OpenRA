@@ -109,8 +109,7 @@ namespace OpenRA.Widgets
 		public override string GetCursor(int2 pos)
 		{
 			var world = Game.world;
-			int sync = world.SyncHash();
-			try
+			return Sync.CheckSyncUnchanged( world, () =>
 			{
 				if (!world.GameHasStarted)
 					return "default";
@@ -122,13 +121,8 @@ namespace OpenRA.Widgets
 					Modifiers = Game.GetModifierKeys()
 				};
 
-				return Game.world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
-			}
-			finally
-			{
-				if( sync != world.SyncHash() )
-					throw new InvalidOperationException( "Desync in InputControllerWidget.GetCursor" );
-			}
+				return world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
+			} );
 		}
 
 		public override bool HandleKeyPressInner(KeyInput e)

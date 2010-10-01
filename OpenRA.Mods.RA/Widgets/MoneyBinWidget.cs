@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void DrawInner(World world)
 		{
+			if( world.LocalPlayer == null ) return;
+
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;

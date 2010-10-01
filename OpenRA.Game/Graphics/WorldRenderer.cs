@@ -97,8 +97,8 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(world);
 
-			foreach (var image in worldSprites)
-				image.Sprite.DrawAt(image.Pos, image.Palette);
+			foreach( var image in worldSprites )
+				image.Sprite.DrawAt( image.Pos, this.GetPaletteIndex( image.Palette ) );
 			uiOverlay.Draw(world);
 
 			if (world.OrderGenerator != null)

@@ -129,5 +129,22 @@ namespace OpenRA
 				return p.Index * 0x567;
 			return 0;
 		}
+
+		public static void CheckSyncUnchanged( World world, Action fn )
+		{
+			int sync = world.SyncHash();
+			fn();
+			if( sync != world.SyncHash() )
+				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+		}
+
+		public static T CheckSyncUnchanged<T>( World world, Func<T> fn )
+		{
+			int sync = world.SyncHash();
+			var ret = fn();
+			if( sync != world.SyncHash() )
+				throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+			return ret;
+		}
 	}
 }

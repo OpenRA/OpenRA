@@ -78,7 +78,7 @@ namespace OpenRA.Network
 				}
 			case "SyncInfo":
 				{
-					Game.SyncLobbyInfo(order.TargetString);
+					Game.SyncLobbyInfo( world, order.TargetString);
 					break;
 				}
 			case "SetStance":
