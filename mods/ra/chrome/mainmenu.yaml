@@ -6,6 +6,39 @@ Background@MAINMENU_BG:
 	Height:290
 	Delegate:MainMenuButtonsDelegate
 	Children:
+		Background@MOTD_BG:
+			Id:MOTD_BG
+			X:0 - PARENT_LEFT + WINDOW_RIGHT/3
+			Y:0 - PARENT_TOP + 44
+			Width:WINDOW_RIGHT/3
+			Height:30
+			Background:dialog4
+			Children:
+				ScrollingText@MOTD_SCROLLER:
+					Id:MOTD_SCROLLER
+					X:15
+					Y:2
+					Width:PARENT_RIGHT - 30
+					Height:25
+					ScrollRate:8
+					Text:This is a super duper huge long Scrolling Test
+		Background@MOTD_LABEL_BG
+			Id:MOTD_LABEL_BG
+			X:0 - PARENT_LEFT + (WINDOW_RIGHT/16)*7
+			Y:0 - PARENT_TOP + 15
+			Width:(WINDOW_RIGHT/16)*2
+			Height:30
+			Background:dialog4
+			Children:
+				Label@MOTD_LABEL
+					Id:MOTD_LABEL
+					X:0
+					Y:2
+					Width:(WINDOW_RIGHT/16)*2
+					Height:25
+					Text:Message of the Day
+					Align:Center
+					Bold:True
 		Label@MAINMENU_LABEL_TITLE:
 			Id:MAINMENU_LABEL_TITLE
 			X:0

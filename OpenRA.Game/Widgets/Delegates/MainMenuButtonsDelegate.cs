@@ -10,6 +10,8 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Server;
+using System.Net;
+using System.IO;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -27,6 +29,8 @@ namespace OpenRA.Widgets.Delegates
 
 			var version = widget.GetWidget<LabelWidget>("VERSION_STRING");
 
+			var motd = widget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
+
 			if (FileSystem.Exists("VERSION"))
 			{
 				var s = FileSystem.Open("VERSION");
@@ -34,6 +38,33 @@ namespace OpenRA.Widgets.Delegates
 				s.Close();
 				MasterServerQuery.OnVersion += v => { if (!string.IsNullOrEmpty(v)) version.Text += "\nLatest: " + v; };
 				MasterServerQuery.GetCurrentVersion(Game.Settings.Server.MasterServer);
+			}
+			else
+			{
+				version.Text = "Dev Build";
+			}
+
+			if (motd != null)
+			{
+				motd.Text = "Welcome to OpenRA. MOTD unable to be loaded from server.";
+
+				string URL = "http://open-ra.org/master/motd.php?v=" + version.Text;
+
+				WebRequest req = WebRequest.Create(URL);
+				StreamReader reader = null;
+				try
+				{
+					reader = new StreamReader(req.GetResponse().GetResponseStream());
+				}
+				catch (WebException e)
+				{
+					reader.Close();
+					return;
+				}
+				var result = reader.ReadToEnd();
+				reader.Close();
+				
+				motd.Text = result;
 			}
 		}
 	}
