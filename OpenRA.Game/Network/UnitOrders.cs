@@ -21,10 +21,10 @@ namespace OpenRA.Network
 			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == id);
 		}
 
-		static Player FindPlayerByClientId(int id)
+		static Player FindPlayerByClientId( this World world, int id)
 		{
 			/* todo: find the interactive player. */
-			return Game.world.players.Values.FirstOrDefault(p => p.ClientIndex == id);
+			return world.players.Values.FirstOrDefault(p => p.ClientIndex == id);
 		}
 
 		public static void ProcessOrder( World world, int clientId, Order order )
@@ -43,7 +43,7 @@ namespace OpenRA.Network
 					var client = FindClientById(clientId);
 					if (client != null)
 					{
-						var player = FindPlayerByClientId(clientId);
+						var player = world.FindPlayerByClientId(clientId);
 						if (player != null && player.WinState == WinState.Lost)
 							Game.AddChatLine(client.Color1, client.Name + " (Dead)", order.TargetString);
 						else
@@ -56,7 +56,7 @@ namespace OpenRA.Network
 					var client = FindClientById(clientId);
 					if (client != null)
 					{
-						var player = FindPlayerByClientId(clientId);
+						var player = world.FindPlayerByClientId(clientId);
 						var display = (world.GameHasStarted) ? 
 							player != null && (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
 								|| player.WinState == WinState.Lost) :

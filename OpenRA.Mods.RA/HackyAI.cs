@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA
 		int2 baseCenter;
         XRandom random = new XRandom(); //we do not use the synced random number generator.
 
+		World world { get { return p.PlayerActor.World; } }
+
         Dictionary<string, float> unitsToBuild = new Dictionary<string, float>
         {
             {"e1", .0f},
@@ -171,9 +173,9 @@ namespace OpenRA.Mods.RA
 			var bi = Rules.Info[item.Item].Traits.Get<BuildingInfo>();
 
 			for (var k = 0; k < MaxBaseDistance; k++)
-				foreach (var t in Game.world.FindTilesInCircle(baseCenter, k))
-					if (Game.world.CanPlaceBuilding(item.Item, bi, t, null))
-						if (Game.world.IsCloseEnoughToBase(p, item.Item, bi, t))
+				foreach (var t in world.FindTilesInCircle(baseCenter, k))
+					if (world.CanPlaceBuilding(item.Item, bi, t, null))
+						if (world.IsCloseEnoughToBase(p, item.Item, bi, t))
 							return t;
 
 			return null;		// i don't know where to put it.
@@ -237,7 +239,7 @@ namespace OpenRA.Mods.RA
 			// 2. human.
 			// 3. not dead.
 
-			var possibleTargets = Game.world.WorldActor.Trait<MPStartLocations>().Start
+			var possibleTargets = world.WorldActor.Trait<MPStartLocations>().Start
 					.Where(kv => kv.Key != p && IsHumanPlayer(kv.Key) 
 						&& p.WinState == WinState.Undefined)
 					.Select(kv => kv.Value);
@@ -276,7 +278,7 @@ namespace OpenRA.Mods.RA
 				if (attackTarget == null)
 					return;
 
-                foreach (var a in unitsHangingAroundTheBase)
+				foreach (var a in unitsHangingAroundTheBase)
 					if (TryToMove(a, attackTarget.Value))
 						attackForce.Add(a);
 
@@ -305,8 +307,8 @@ namespace OpenRA.Mods.RA
         private int2 ChooseRallyLocationNear(int2 startPos)
         {
             Random r = new Random();
-            foreach (var t in Game.world.FindTilesInCircle(startPos, 8))
-                if (Game.world.IsCellBuildable(t, false) && t != startPos && r.Next(64) == 0)
+            foreach (var t in world.FindTilesInCircle(startPos, 8))
+                if (world.IsCellBuildable(t, false) && t != startPos && r.Next(64) == 0)
                         return t;
             
             return startPos;		// i don't know where to put it.
@@ -353,7 +355,7 @@ namespace OpenRA.Mods.RA
         private void BuildRandom(string category)
         {
 			// Pick a free queue
-			var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+			var queue = world.Queries.WithTraitMultiple<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p &&
 				       a.Trait.Info.Type == category &&
 				       a.Trait.CurrentItem() == null)
@@ -386,7 +388,7 @@ namespace OpenRA.Mods.RA
         private void BuildBuildings()
         {
             // Pick a free queue
-			var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+			var queue = world.Queries.WithTraitMultiple<ProductionQueue>()
                 .Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Building")
 				.Select(a => a.Trait)
 				.FirstOrDefault();
@@ -448,7 +450,7 @@ namespace OpenRA.Mods.RA
         private void BuildDefense()
         {
             // Pick a free queue
-            var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+            var queue = world.Queries.WithTraitMultiple<ProductionQueue>()
                 .Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Defense")
                 .Select(a => a.Trait)
                 .FirstOrDefault();
