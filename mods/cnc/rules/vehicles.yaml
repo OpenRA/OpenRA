@@ -135,7 +135,7 @@ FTNK:
 		ROT: 5
 		Speed: 9
 	Health:
-		HP: 300
+		HP: 350
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -182,7 +182,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 450
+		Cost: 400
 	Tooltip:
 		Name: Recon Bike
 		Icon: bikeicnh
@@ -195,16 +195,14 @@ BIKE:
 		ROT: 10
 		Speed: 20
 	Health:
-		HP: 160
+		HP: 120
 		Armor: none
 	RevealsShroud:
 		Range: 7
 	AttackBase:
-		PrimaryWeapon: Rockets
+		PrimaryWeapon: Rockets.Bike
 		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: -4,0,25
-		SecondaryWeapon: Rockets
-		SecondaryLocalOffset: 4,0,-25
+		PrimaryLocalOffset: -4,0,25,4,0,-25
 	RenderUnit:
 	AutoTarget:
 	

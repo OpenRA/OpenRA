@@ -158,7 +158,7 @@ Rockets:
 		ROT: 5
 		Trail: smokey
 		Speed: 25
-		RangeLimit: 20
+		RangeLimit: 40
 	Warhead:
 		Spread: 3
 		Versus: 
@@ -171,6 +171,37 @@ Rockets:
 		ImpactSound: xplos
 		SmudgeType: Crater
 		Damage: 30
+
+Rockets.Bike: 
+	ROF: 60
+	Range: 7
+	Report: BAZOOK1
+	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 0
+	Projectile: Missile
+		Arm: 5
+		High: yes
+		Shadow: no
+		Proximity: yes
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 25
+		RangeLimit: 40
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 30%
+			Wood: 30%
+			Light: 75%
+			Concrete: 30%
+		InfDeath: 3
+		Explosion: 4
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 15
 		
 Rockets.Orca: 
 	ROF: 150
