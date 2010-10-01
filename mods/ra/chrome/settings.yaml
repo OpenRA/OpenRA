@@ -102,7 +102,7 @@ Background@SETTINGS_MENU:
 					Y:60
 					Width:250
 					Height:20
-					Ticks:100
+					Ticks:5
 				Checkbox@INVERSE_SCROLL:
 					Id:INVERSE_SCROLL
 					X:0
