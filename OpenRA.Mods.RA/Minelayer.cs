@@ -110,8 +110,8 @@ namespace OpenRA.Mods.RA
 				}
 
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					//.Where(a => a.Info.Traits.Contains<SelectableInfo>())
-					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
+					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() 
+						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 					.FirstOrDefault();
 
 				if (mi.Button == MouseButton.Right && underCursor == null)
@@ -120,13 +120,16 @@ namespace OpenRA.Mods.RA
 
 			public void Tick(World world)
 			{
-				if (minelayer.IsDead() || !minelayer.IsInWorld)
+				if (!minelayer.IsInWorld || minelayer.IsDead())
 					world.CancelInputMode();
 			}
 
 			int2 lastMousePos;
 			public void RenderAfterWorld(World world)
 			{
+				if (!minelayer.IsInWorld)
+					return;
+
 				var ml = minelayer.Trait<Minelayer>();
 				var movement = minelayer.Trait<IMove>();
 				var minefield = GetMinefieldCells(ml.minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
