@@ -65,3 +65,16 @@ technique low_quality {
 		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
+
+technique low_quality_cg21 {
+	pass p0 {
+		BlendEnable = true;
+		DepthTestEnable = false;
+		CullFaceEnable = false;
+		VertexProgram = compile arbvp1 Simple_vp();
+		FragmentProgram = compile arbfp1 Palette_fp();
+
+		BlendEquation = FuncAdd;
+		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
+	}
+}
