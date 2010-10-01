@@ -4,11 +4,9 @@ MapFormat: 3
 
 Title: Llamas
 
-Description:
-
 Author: Chris Forbes
 
-PlayerCount: 0
+PlayerCount: 4
 
 Tileset: WINTER
 
@@ -34,8 +32,42 @@ Players:
 		Enemies:
 
 Actors:
+	Actor0: split2
+		Location: 17,33
+		Owner: Neutral
+	Actor1: split2
+		Location: 55,34
+		Owner: Neutral
+	Actor2: split2
+		Location: 12,55
+		Owner: Neutral
+	Actor3: split2
+		Location: 61,55
+		Owner: Neutral
+	Actor4: split2
+		Location: 12,10
+		Owner: Neutral
+	Actor5: split2
+		Location: 61,10
+		Owner: Neutral
+	Actor6: split2
+		Location: 37,22
+		Owner: Neutral
+	Actor7: split2
+		Location: 36,23
+		Owner: Neutral
+	Actor8: split2
+		Location: 36,44
+		Owner: Neutral
+	Actor9: split2
+		Location: 37,43
+		Owner: Neutral
 
 Waypoints:
+	wp0: 30,57
+	wp1: 42,57
+	wp2: 30,11
+	wp3: 42,11
 
 Smudges:
 
