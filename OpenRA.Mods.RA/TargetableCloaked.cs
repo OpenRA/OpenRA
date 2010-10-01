@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA.Graphics;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
