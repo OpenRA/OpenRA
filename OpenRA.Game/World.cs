@@ -54,8 +54,18 @@ namespace OpenRA
 		public readonly TileSet TileSet;
 
 		public readonly WorldRenderer WorldRenderer;
-		
-		public IOrderGenerator OrderGenerator = new UnitOrderGenerator();
+
+		IOrderGenerator orderGenerator_;
+		public IOrderGenerator OrderGenerator
+		{
+			get { return orderGenerator_; }
+			set
+			{
+				Sync.AssertUnsynced( "The current order generator may not be changed from synced code" );
+				orderGenerator_ = value;
+			}
+		}
+
 		public Selection Selection = new Selection();
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
@@ -76,6 +86,7 @@ namespace OpenRA
 		
 		public World(Manifest manifest, Map map)
 		{
+			orderGenerator_ = new UnitOrderGenerator();
 			Map = map;
 			
 			TileSet = Rules.TileSets[Map.Tileset];
