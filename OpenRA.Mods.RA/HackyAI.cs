@@ -86,11 +86,16 @@ namespace OpenRA.Mods.RA
             return buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
         }
 
+		bool HasAdequatePower()
+		{
+			return playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
+		}
+
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
 
-			if (playerPower.PowerProvided <= playerPower.PowerDrained * 1.2)	/* try to maintain 20% excess power */
+			if (!HasAdequatePower())	/* try to maintain 20% excess power */
 			{
 				/* find the best thing we can build which produces power */
 				var best = buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
