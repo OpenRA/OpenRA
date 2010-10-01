@@ -134,14 +134,9 @@ namespace OpenRA.GameRules
 		{
 			var root = new List<MiniYamlNode>();
 			foreach( var kv in Sections )
-				root.Add( new MiniYamlNode( kv.Key, SectionYaml( kv.Value ) ) );
+				root.Add( new MiniYamlNode( kv.Key, FieldSaver.Save(kv.Value) ) );
 			
 			root.WriteToFile(SettingsFile);
-		}
-		
-		MiniYaml SectionYaml(object section)
-		{
-			return FieldSaver.SaveDifferences(section, Activator.CreateInstance(section.GetType()));
 		}
 		
 		void LoadSectionYaml(MiniYaml yaml, object section)
