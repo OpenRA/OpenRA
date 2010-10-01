@@ -88,7 +88,9 @@ namespace OpenRA.Mods.RA
 
 		bool HasAdequatePower()
 		{
-			return playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
+			/* note: CNC `fact` provides a small amount of power. don't get jammed because of that. */
+			return playerPower.PowerProvided > 50 && 
+				playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
