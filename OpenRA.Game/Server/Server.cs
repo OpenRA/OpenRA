@@ -164,7 +164,8 @@ namespace OpenRA.Server
 
 		static int ChooseFreeSlot()
 		{
-			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null).Index;
+			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
+				&& !lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
 		}
 
 		static void AcceptConnection()
