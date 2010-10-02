@@ -29,8 +29,6 @@ namespace OpenRA.Widgets.Delegates
 
 			var version = widget.GetWidget<LabelWidget>("VERSION_STRING");
 
-			var motd = widget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
-
 			if (FileSystem.Exists("VERSION"))
 			{
 				var s = FileSystem.Open("VERSION");
@@ -43,29 +41,9 @@ namespace OpenRA.Widgets.Delegates
 			{
 				version.Text = "Dev Build";
 			}
+			MasterServerQuery.ClientVersion = version.Text;
 
-			if (motd != null)
-			{
-				motd.Text = "Welcome to OpenRA. MOTD unable to be loaded from server.";
-
-				string URL = "http://open-ra.org/master/motd.php?v=" + version.Text;
-
-				WebRequest req = WebRequest.Create(URL);
-				StreamReader reader = null;
-				try
-				{
-					reader = new StreamReader(req.GetResponse().GetResponseStream());
-				}
-				catch (WebException e)
-				{
-					reader.Close();
-					return;
-				}
-				var result = reader.ReadToEnd();
-				reader.Close();
-				
-				motd.Text = result;
-			}
+			MasterServerQuery.GetMOTD(Game.Settings.Server.MasterServer);
 		}
 	}
 }

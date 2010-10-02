@@ -14,6 +14,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using OpenRA.FileFormats;
+using OpenRA.Widgets;
 
 namespace OpenRA.Server
 {
@@ -23,7 +24,8 @@ namespace OpenRA.Server
 		public static event Action<string> OnVersion = _ => { };
 
 		static GameServer[] Games = { };
-		static string Version = "";
+		public static string ClientVersion = "";
+		public static string ServerVersion = "";
 		static AutoResetEvent ev = new AutoResetEvent(false);
 		static AutoResetEvent ev2 = new AutoResetEvent(false);
 
@@ -49,12 +51,35 @@ namespace OpenRA.Server
 			}).Start();
 		}
 
+		public static void GetMOTD(string masterServerUrl)
+		{
+			new Thread(() =>
+			{
+				var motd = Widget.RootWidget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
+				if (motd != null)
+				{
+					try
+					{
+						motd.Text = GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion));
+						motd.ResetScroll();
+					}
+					catch
+					{
+						motd.Text = "Welcome to OpenRA. MOTD unable to be loaded from server.";
+						motd.ResetScroll();
+					}
+				}
+
+				ev.Set();
+			}).Start();
+		}
+
 		public static void Tick()
 		{
 			if (ev.WaitOne(TimeSpan.FromMilliseconds(0))) 
 				OnComplete(Games);
 			if (ev2.WaitOne(TimeSpan.FromMilliseconds(0)))
-				OnVersion(Version);
+				OnVersion(ServerVersion);
 		}
 
 		static string GetData(Uri uri)
@@ -70,11 +95,11 @@ namespace OpenRA.Server
 				{
 					try
 					{
-						Version = GetData(new Uri(masterServerUrl + "VERSION"));
+						ServerVersion = GetData(new Uri(masterServerUrl + "VERSION"));
 					}
 					catch
 					{
-						Version = "";
+						ServerVersion = "";
 					}
 
 					ev2.Set();

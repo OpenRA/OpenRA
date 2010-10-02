@@ -47,6 +47,12 @@ namespace OpenRA.Widgets
 			UpdateScrollBuffer();
 		}
 
+		public void ResetScroll()
+		{
+			ScrollLocation = 0;
+			ScrollTick = 0;
+		}
+
 		private void UpdateScrollBuffer()
 		{
 			ScrollTick++;
