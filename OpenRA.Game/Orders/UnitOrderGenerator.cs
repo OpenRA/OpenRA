@@ -111,8 +111,9 @@ namespace OpenRA.Orders
 					var actorsAt = uim.GetUnitsAt( xy ).ToList();
 
 					string cursor = null;
-					if( o.Order.CanTargetUnit( self, underCursor, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
-						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
+					if( underCursor != null )
+						if( o.Order.CanTargetUnit( self, underCursor, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
+							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
 					if( o.Order.CanTargetLocation( self, xy, actorsAt, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
 						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
 				}

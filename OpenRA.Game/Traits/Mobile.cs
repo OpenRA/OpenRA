@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 		}
 	}
 	
-	public class Mobile : IIssueOrder2, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
+	public class Mobile : IIssueOrder2, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -167,7 +167,7 @@ namespace OpenRA.Traits
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move" || order.OrderString == "Move-Blocked")
+			if (order.OrderString == "Move")
 			{
 				int2 currentLocation = NearestMoveableCell(order.TargetLocation);
 				if (!CanEnterCell(currentLocation))
@@ -187,20 +187,9 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Move")
-				return "move";
-			
-			if (order.OrderString == "Move-Blocked")
-				return "move-blocked";
-			
-			return null;
-		}
-		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move" || order.OrderString == "Move-Blocked")
+			if (order.OrderString == "Move")
 				return "Move";
 			return null;
 		}

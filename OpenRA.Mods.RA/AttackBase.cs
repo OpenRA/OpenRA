@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderCursor, IOrderVoice
+	public class AttackBase : IIssueOrder2, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
 	{
 		public bool IsAttacking { get; internal set; }
 		public Target target;
@@ -179,48 +179,23 @@ namespace OpenRA.Mods.RA
 			return info.FireDelay;
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		bool IsHeal { get { return Weapons[ 0 ].Info.Warheads[ 0 ].Damage < 0; } }
+
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? 1000 : 1;
+			get { yield return new AttackOrderTargeter( "Attack", 6, IsHeal ); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button == MouseButton.Left) return null;
-			if (self == underCursor) return null;
-
-			var target = underCursor == null ? Target.FromCell(xy) : Target.FromActor(underCursor);
-
-			var isHeal = Weapons[0].Info.Warheads[0].Damage < 0;
-			var forceFire = mi.Modifiers.HasModifier(Modifiers.Ctrl);
-
-			if (isHeal)
+			if( order is AttackOrderTargeter )
 			{
-				// we can never "heal ground"; that makes no sense.
-				if (!target.IsActor) return null;
-				
-				// unless forced, only heal allies.
-				if (self.Owner.Stances[underCursor.Owner] != Stance.Ally && !forceFire) return null;
-				
-				// don't allow healing of fully-healed stuff!
-				if (underCursor.GetDamageState() == DamageState.Undamaged) return null;
+				if( target.IsActor )
+					return new Order( IsHeal ? "Heal" : "Attack", self, target.Actor );
+				else
+					return new Order( IsHeal ? "Heal" : "Attack", self, Util.CellContaining( target.CenterLocation ) );
 			}
-			else
-			{
-				if (!target.IsActor)
-				{
-					if (!forceFire) return null;
-					if (!self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround) return null;
-					return new Order("Attack", self, xy);
-				}
-
-				if ((self.Owner.Stances[underCursor.Owner] != Stance.Enemy) && !forceFire)
-					return null;
-			}
-			
-			if (!HasAnyValidWeapons(target)) return null;
-
-			return new Order(isHeal ? "Heal" : "Attack", self, underCursor);
+			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -251,16 +226,6 @@ namespace OpenRA.Mods.RA
 					self.Trait<Turreted>().desiredFacing = null;
 			}
 		}
-
-		public string CursorForOrder(Actor self, Order order)
-		{
-			switch (order.OrderString)
-			{
-				case "Attack": return "attack";
-				case "Heal": return "heal";
-				default: return null;
-			}
-		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
@@ -282,5 +247,48 @@ namespace OpenRA.Mods.RA
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
 
 		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(t)); }
+
+		class AttackOrderTargeter : IOrderTargeter
+		{
+			readonly bool isHeal;
+
+			public AttackOrderTargeter( string order, int priority, bool isHeal )
+			{
+				this.OrderID = order;
+				this.OrderPriority = priority;
+				this.isHeal = isHeal;
+			}
+
+			public string OrderID { get; private set; }
+			public int OrderPriority { get; private set; }
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				cursor = isHeal ? "heal" : "attack";
+				if( self == target ) return false;
+				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromActor( target ) ) ) return false;
+
+				var playerRelationship = self.Owner.Stances[ target.Owner ];
+
+				if( isHeal )
+					return playerRelationship == Stance.Ally || forceAttack;
+
+				else
+					return playerRelationship == Stance.Enemy || forceAttack;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				cursor = isHeal ? "heal" : "attack";
+				if( isHeal ) return false;
+				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromCell( location ) ) ) return false;
+
+				if( forceAttack )
+					if( self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround )
+						return true;
+
+				return false;
+			}
+		}
 	}
 }
