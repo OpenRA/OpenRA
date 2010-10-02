@@ -10,13 +10,14 @@ TAG=$1
 TYPE=`echo $TAG | grep -o "^[a-z]\\+"`
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 
+FTPSERVER=openra.res0l.net
 
 case "$TYPE" in
     "release") 
-        FTPPATH="httpdocs/releases"
+        FTPPATH="openra.res0l.net/releases"
         ;;
     "playtest") 
-        FTPPATH="httpdocs/playtests"
+        FTPPATH="openra.res0l.net/playtests"
         ;;
     *)
         msg "\E[31m" "Unrecognized tag prefix $TYPE"
@@ -82,7 +83,7 @@ esac
         #Arch-Linux
         msg "\E[34m" "Building Arch-Linux package."
         pushd linux/pkgbuild/ &> /dev/null
-        sh buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" &> package.log
+        sh buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" &> package.log
         if [ $? -ne 0 ]; then
             msg "\E[31m" "Arch-Linux package build failed, refer to $PWD/package.log."
         fi
@@ -93,7 +94,7 @@ esac
         #RPM
         msg "\E[34m" "Building RPM package."
         pushd linux/rpm/ &> /dev/null
-        sh buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/rpmbuild &> package.log
+        sh buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/rpmbuild &> package.log
         if [ $? -ne 0 ]; then
             msg "\E[31m" "RPM package build failed, refer to $PWD/package.log."
         fi
@@ -104,7 +105,7 @@ esac
         #deb
         msg "\E[34m" "Building deb package."
         pushd linux/deb/ &> /dev/null
-        ./buildpackage.sh "ftp.open-ra.org" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
+        ./buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
         if [ $? -ne 0 ]; then
             msg "\E[31m" "deb package build failed, refer to $PWD/package.log."
         fi
@@ -117,5 +118,5 @@ esac
 wait
 
 if [ "$TYPE" = "release" ]; then
-    wput --basename=../ -u ../VERSION ftp://ftp.open-ra.org/httpdocs/master/
+    wput --basename=../ -u ../VERSION ftp://$FTPPATH/master/
 fi
