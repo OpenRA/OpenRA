@@ -12,38 +12,46 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
-	public class CargoInfo : TraitInfo<Cargo>
+	public class CargoInfo : ITraitInfo
 	{
 		public readonly int Passengers = 0;
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
+
+		public object Create( ActorInitializer init ) { return new Cargo( init.self ); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, INotifyDamage
+	public class Cargo : IPips, IIssueOrder2, IResolveOrder, IOrderVoice, INotifyDamage
 	{
+		readonly Actor self;
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public Cargo( Actor self )
 		{
-			return 5;
+			this.self = self;
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("Unload", self);
 
-			if (mi.Button == MouseButton.Right && underCursor != null && underCursor.Owner == self.Owner)
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
 			{
-				var pi = underCursor.Info.Traits.GetOrDefault<PassengerInfo>();
-				var ci = self.Info.Traits.Get<CargoInfo>();
-				if (pi != null && ci.Types.Contains(pi.CargoType))
-					return new Order("EnterTransport", underCursor, self);
+				yield return new DeployOrderTargeter( "Unload", 10, () => CanUnload( self ) );
+				yield return new UnitTraitOrderTargeter<Passenger>( "ReverseEnterTransport", 6, null, false, true );
 			}
+		}
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order.OrderID == "Unload" )
+				return new Order( order.OrderID, self );
+
+			if( order.OrderID == "ReverseEnterTransport" )
+				return new Order( order.OrderID, self, target.Actor );
 
 			return null;
 		}
@@ -57,6 +65,15 @@ namespace OpenRA.Mods.RA
 				
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo());
+			}
+
+			if( order.OrderString == "ReverseEnterTransport" )
+			{
+				if( order.Subject.Owner == order.TargetActor.Owner )
+				{
+					var passenger = order.TargetActor.Trait<Passenger>();
+					passenger.ResolveOrder( order.TargetActor, new Order( "EnterTransport", order.TargetActor, self ) );
+				}
 			}
 		}
 		
