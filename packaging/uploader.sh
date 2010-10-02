@@ -16,13 +16,14 @@ if [ ! -e "${FILENAME}" ]; then
 fi
 
 SIZE=`du -bh ${FILENAME} | cut -f1`B
-echo -e "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/version.json
-echo `basename ${FILENAME}` > /tmp/latest.txt
+mkdir -p /tmp/${PLATFORM}/
+echo -e "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/${PLATFORM}/version.json
+echo `basename ${FILENAME}` > /tmp/${PLATFORM}/latest.txt
 
 pushd `dirname ${FILENAME}`
 wput -u "${FTP}" "`basename ${FILENAME}`"
 popd
-pushd /tmp/
+pushd /tmp/${PLATFORM}
 wput -u "${FTP}" version.json
 wput -u "${FTP}" latest.txt
 popd
