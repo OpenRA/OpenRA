@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA
 
 	public class Aircraft : IMove, IFacing, IOccupySpace
 	{
+		protected readonly Actor self;
 		[Sync]
 		public int2 Location;
 		[Sync]
@@ -41,6 +42,7 @@ namespace OpenRA.Mods.RA
 
 		public Aircraft( ActorInitializer init , AircraftInfo info)
 		{
+			this.self = init.self;
 			if (init.Contains<LocationInit>())
 				this.Location = init.Get<LocationInit,int2>();
 			
@@ -64,8 +66,9 @@ namespace OpenRA.Mods.RA
 			self.CenterLocation = Util.CenterOfCell(cell);
 		}
 		
-		public bool AircraftCanEnter(Actor self, Actor a)
+		public bool AircraftCanEnter(Actor a)
 		{
+			if( self.Owner != a.Owner ) return false;
 			return Info.RearmBuildings.Contains( a.Info.Name )
 				|| Info.RepairBuildings.Contains( a.Info.Name );
 		}

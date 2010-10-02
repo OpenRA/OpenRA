@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int ChargeTime = 120; // Seconds
 	}
 
-	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IOrderCursor, IOrderVoice
+	class ChronoshiftDeploy : IIssueOrder2, IResolveOrder, ITick, IPips, IOrderVoice
 	{
 		// Recharge logic
 		[Sync]
@@ -33,29 +33,22 @@ namespace OpenRA.Mods.RA
 				chargeTick--;
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get { yield return new DeployOrderTargeter( "ChronoshiftDeploy", 5, () => chargeTick <= 0 ); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button == MouseButton.Right && xy == self.Location)
-				return new Order("ChronoshiftDeploy", self);
+			if( order.OrderID == "ChronoshiftDeploy" )
+				if (chargeTick <= 0)
+					self.World.OrderGenerator = new SetChronoTankDestination( self );
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "ChronoshiftDeploy")
-			{
-				if (chargeTick <= 0)
-					if (self.Owner == self.World.LocalPlayer)
-						self.World.OrderGenerator = new SetChronoTankDestination(self);
-				return;
-			}
-
 			var movement = self.TraitOrDefault<IMove>();
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
@@ -76,14 +69,6 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString != "ChronoshiftDeploy")
-				return null;
-			
-			return (chargeTick <= 0) ? "deploy" : "deploy-blocked";
-		}
-		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "ChronoshiftDeploy" && chargeTick <= 0) ? "Move" : null;

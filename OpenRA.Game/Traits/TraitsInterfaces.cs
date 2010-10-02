@@ -33,11 +33,6 @@ namespace OpenRA.Traits
 
 	public interface ITick { void Tick(Actor self); }
 	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
-	public interface IIssueOrder
-	{
-		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
-		int OrderPriority( Actor self, int2 xy, MouseInput mi, Actor underCursor );
-	}
 	public interface IIssueOrder2
 	{
 		IEnumerable<IOrderTargeter> Orders { get; }

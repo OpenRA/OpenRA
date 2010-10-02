@@ -9,11 +9,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, ITick
+	public class Plane : Aircraft, IIssueOrder2, IResolveOrder, IOrderVoice, ITick
 	{
 		public IDisposable reservation;
 
@@ -46,31 +48,28 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			// Force move takes precidence
-			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
+			get
+			{
+				yield return new EnterOrderTargeter<Building>( "Enter", 5, false, true,
+					target => AircraftCanEnter( target ), target => !Reservable.IsReserved( target ) );
+
+				yield return new AircraftMoveOrderTargeter();
+			}
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button == MouseButton.Left) return null;
-			if (underCursor != null && AircraftCanEnter(self, underCursor)
-				&& underCursor.Owner == self.Owner)
-				return new Order("Enter", self, underCursor);
-			
-			return new Order("Move", self, xy);
-		}
-		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Move") return "move";
-			if (order.OrderString == "Enter")
-				return Reservable.IsReserved(order.TargetActor) ? "enter-blocked" : "enter";
-			
+			if( order.OrderID == "Enter" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			if( order.OrderID == "Move" )
+				return new Order( order.OrderID, self, Util.CellContaining( target.CenterLocation ) );
+
 			return null;
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
@@ -132,6 +131,23 @@ namespace OpenRA.Mods.RA
 				Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));
 				UnReserve();
 			}
+		}
+	}
+
+	class AircraftMoveOrderTargeter : IOrderTargeter
+	{
+		public string OrderID { get { return "Move"; } }
+		public int OrderPriority { get { return 4; } }
+
+		public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+		{
+			return false;
+		}
+
+		public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+		{
+			cursor = "move";
+			return true;
 		}
 	}
 }

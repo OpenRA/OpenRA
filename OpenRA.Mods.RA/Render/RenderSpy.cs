@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
 	}
 
-	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder2, IResolveOrder, IOrderVoice
 	{
 		Player disguisedAsPlayer;
 		string disguisedAsSprite;
@@ -55,23 +56,18 @@ namespace OpenRA.Mods.RA.Render
 				}
 			}
 		}
-		
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get { yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 5, "ability", true, true ); }
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (underCursor != null && underCursor.HasTrait<RenderInfantry>())
-				return new Order("Disguise", self, underCursor);
+			if( order.OrderID == "Disguise" )
+				return new Order( order.OrderID, self, target.Actor );
 
 			return null;
-		}
-
-		public string CursorForOrder(Actor self, Order order)
-		{
-			return order.OrderString == "Disguise" ? "ability" : null;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

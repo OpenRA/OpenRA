@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
 	}
 
-	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class Helicopter : Aircraft, ITick, IIssueOrder2, IResolveOrder, IOrderVoice
 	{
 		public IDisposable reservation;
 		HelicopterInfo Info;
@@ -39,32 +40,25 @@ namespace OpenRA.Mods.RA
 			Info = info;
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			// Force move takes precidence
-			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
-		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Left) return null;
+			get
+			{
+				yield return new EnterOrderTargeter<Building>( "Enter", 5, false, true,
+					target => AircraftCanEnter( target ), target => !Reservable.IsReserved( target ) );
 
-			if (underCursor != null && AircraftCanEnter(self, underCursor)
-				&& underCursor.Owner == self.Owner)
-				return new Order("Enter", self, underCursor);
-			
-			if (self.TraitOrDefault<IMove>().CanEnterCell(xy))
-				return new Order("Move", self, xy);
-			
-			return null;
+				yield return new AircraftMoveOrderTargeter();
+			}
 		}
-		
-		public string CursorForOrder(Actor self, Order order)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (order.OrderString == "Move") return "move";
-			if (order.OrderString == "Enter")
-				return Reservable.IsReserved(order.TargetActor) ? "enter-blocked" : "enter";
-			
+			if( order.OrderID == "Enter" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			if( order.OrderID == "Move" )
+				return new Order( order.OrderID, self, Util.CellContaining( target.CenterLocation ) );
+
 			return null;
 		}
 
