@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
 
-	class PrimaryBuilding : IIssueOrder2, IResolveOrder, ITags
+	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }

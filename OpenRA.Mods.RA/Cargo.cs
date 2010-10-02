@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Cargo( init.self ); }
 	}
 
-	public class Cargo : IPips, IIssueOrder2, IResolveOrder, IOrderVoice, INotifyDamage
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyDamage
 	{
 		readonly Actor self;
 		List<Actor> cargo = new List<Actor>();

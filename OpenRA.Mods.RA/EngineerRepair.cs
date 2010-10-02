@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 {
 	class EngineerRepairInfo : TraitInfo<EngineerRepair> {}
 
-	class EngineerRepair : IIssueOrder2, IResolveOrder, IOrderVoice
+	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public IEnumerable<IOrderTargeter> Orders
 		{

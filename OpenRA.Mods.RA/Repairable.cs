@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
 	}
 
-	class Repairable : IIssueOrder2, IResolveOrder, IOrderVoice
+	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
 		readonly Health Health;

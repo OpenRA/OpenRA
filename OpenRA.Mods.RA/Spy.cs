@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	class SpyInfo : TraitInfo<Spy> { }
 
-	class Spy : IIssueOrder2, IResolveOrder
+	class Spy : IIssueOrder, IResolveOrder
 	{
 		public IEnumerable<IOrderTargeter> Orders
 		{

@@ -103,7 +103,7 @@ namespace OpenRA.Orders
 			if( mi.Button == MouseButton.Right )
 			{
 				var uim = self.World.WorldActor.Trait<UnitInfluence>();
-				foreach( var o in self.TraitsImplementing<IIssueOrder2>()
+				foreach( var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany( trait => trait.Orders
 						.Select( x => new { Trait = trait, Order = x } ) )
 					.OrderByDescending( x => x.Order.OrderPriority ) )
@@ -135,11 +135,11 @@ namespace OpenRA.Orders
 		{
 			public readonly Actor self;
 			public readonly IOrderTargeter iot;
-			public readonly IIssueOrder2 trait;
+			public readonly IIssueOrder trait;
 			public readonly string cursor;
 			public readonly Target target;
 
-			public UnitOrderResult( Actor self, IOrderTargeter iot, IIssueOrder2 trait, string cursor, Target target )
+			public UnitOrderResult( Actor self, IOrderTargeter iot, IIssueOrder trait, string cursor, Target target )
 			{
 				this.self = self;
 				this.iot = iot;

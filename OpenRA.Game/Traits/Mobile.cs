@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 		}
 	}
 	
-	public class Mobile : IIssueOrder2, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;

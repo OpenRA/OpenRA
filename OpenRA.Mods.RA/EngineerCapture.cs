@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace OpenRA.Mods.RA
 {
 	class EngineerCaptureInfo : TraitInfo<EngineerCapture> {}
-	class EngineerCapture : IIssueOrder2, IResolveOrder, IOrderVoice
+	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public IEnumerable<IOrderTargeter> Orders
 		{

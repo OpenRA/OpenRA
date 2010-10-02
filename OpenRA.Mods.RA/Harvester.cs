@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder2, IResolveOrder, INotifyDamage, IPips, 
+	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, 
 		IRenderModifier, IExplodeModifier, IOrderVoice,
 		ISpeedModifier
 	{

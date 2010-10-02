@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new RepairableNear( init.self ); }
 	}
 
-	class RepairableNear : IIssueOrder2, IResolveOrder
+	class RepairableNear : IIssueOrder, IResolveOrder
 	{
 		readonly Actor self;
 

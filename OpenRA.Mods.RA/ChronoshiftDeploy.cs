@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int ChargeTime = 120; // Seconds
 	}
 
-	class ChronoshiftDeploy : IIssueOrder2, IResolveOrder, ITick, IPips, IOrderVoice
+	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IOrderVoice
 	{
 		// Recharge logic
 		[Sync]

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly float C4Delay = 0;
 	}
 
-	class C4Demolition : IIssueOrder2, IResolveOrder, IOrderVoice
+	class C4Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public IEnumerable<IOrderTargeter> Orders
 		{

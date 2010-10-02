@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder2, IResolveOrder, IOrderVoice, ITick
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick
 	{
 		public IDisposable reservation;
 

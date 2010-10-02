@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Transforms(init.self, this); }
 	}
 
-	class Transforms : IIssueOrder2, IResolveOrder, IOrderVoice
+	class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		Actor self;
 		TransformsInfo Info;

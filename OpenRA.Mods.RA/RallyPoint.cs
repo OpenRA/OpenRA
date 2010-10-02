@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new RallyPoint(init.self); }
 	}
 
-	public class RallyPoint : IRender, IIssueOrder2, IResolveOrder, ITick
+	public class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
 	{
 		[Sync]
 		public int2 rallyPoint;

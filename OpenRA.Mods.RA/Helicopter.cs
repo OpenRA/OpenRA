@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
 	}
 
-	class Helicopter : Aircraft, ITick, IIssueOrder2, IResolveOrder, IOrderVoice
+	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public IDisposable reservation;
 		HelicopterInfo Info;

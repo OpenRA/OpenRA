@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
-	public class AttackBase : IIssueOrder2, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
+	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
 	{
 		public bool IsAttacking { get; internal set; }
 		public Target target;

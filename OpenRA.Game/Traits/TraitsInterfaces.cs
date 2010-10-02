@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 
 	public interface ITick { void Tick(Actor self); }
 	public interface IRender { IEnumerable<Renderable> Render(Actor self); }
-	public interface IIssueOrder2
+	public interface IIssueOrder
 	{
 		IEnumerable<IOrderTargeter> Orders { get; }
 		Order IssueOrder( Actor self, IOrderTargeter order, Target target );
