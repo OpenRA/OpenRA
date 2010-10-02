@@ -15,7 +15,7 @@ MCV:
 	Mobile:
 		Speed: 6
 	Health:
-		HP: 600
+		HP: 750
 	Armor: 
 		Type: Light
 	RevealsShroud:

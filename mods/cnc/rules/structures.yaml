@@ -13,7 +13,7 @@ FACT:
 		Dimensions: 3,2
 		Capturable: true
 	Health:
-		HP: 1400
+		HP: 1750
 	RevealsShroud:
 		Range: 5
 	Bib:
