@@ -14,6 +14,8 @@ using OpenRA.Effects;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using System.Collections.Generic;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,53 +25,51 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
 	}
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class Repairable : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
-		Health Health;
+		readonly Actor self;
+		readonly Health Health;
+
 		public Repairable(Actor self)
 		{
+			this.self = self;
 			Health = self.Trait<Health>();
 		}
 		
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get { yield return new EnterBuildingOrderTargeter<Building>( "Repair", 5, false, true, target => CanRepairAt( target ), _ => CanRepair() ); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
 
-			if (self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains(underCursor.Info.Name)
-				&& underCursor.Owner == self.Owner)
-				return new Order("Repair", self, underCursor);
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order.OrderID == "Repair" )
+				return new Order( order.OrderID, self, target.Actor );
 
 			return null;
 		}
-		
-		bool CanRepair(Actor self)
+
+		bool CanRepairAt( Actor target )
+		{
+			return self.Info.Traits.Get<RepairableInfo>().RepairBuildings.Contains( target.Info.Name );
+		}
+
+		bool CanRepair()
 		{
 			var li = self.TraitOrDefault<LimitedAmmo>();
 			return (Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo()) );
 		}
 		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString != "Repair") return null;
-			return CanRepair(self) ? "enter" : "enter-blocked";
-		}
-		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair(self)) ? "Move" : null;
+			return (order.OrderString == "Repair" && CanRepair()) ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
 			{
-                if (!CanRepair(self))
+				if( !CanRepairAt( order.TargetActor ) || !CanRepair() )
 					return;
 				
 				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();

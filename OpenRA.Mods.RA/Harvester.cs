@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterBuildingOrderTargeter<IAcceptOre>( "Deliver", 5, false, true, _ => !IsEmpty );
+				yield return new EnterBuildingOrderTargeter<IAcceptOre>( "Deliver", 5, false, true, _ => true, _ => !IsEmpty );
 				yield return new HarvestOrderTargeter();
 			}
 		}

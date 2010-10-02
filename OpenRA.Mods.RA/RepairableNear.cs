@@ -13,43 +13,55 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using System.Collections.Generic;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableNearInfo : TraitInfo<RepairableNear>, ITraitPrerequisite<HealthInfo>
+	class RepairableNearInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{
 		[ActorReference]
 		public readonly string[] Buildings = { "spen", "syrd" };
+
+		public object Create( ActorInitializer init ) { return new RepairableNear( init.self ); }
 	}
 
-	class RepairableNear : IIssueOrder, IResolveOrder, IOrderCursor
+	class RepairableNear : IIssueOrder2, IResolveOrder
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		readonly Actor self;
+
+		public RepairableNear( Actor self ) { this.self = self; }
+
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get
+			{
+				yield return new EnterBuildingOrderTargeter<Building>( "RepairNear", 5, false, true,
+					target => CanRepairAt( target ), _ => ShouldRepair() );
+			}
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
-			
-			if (underCursor.Owner == self.Owner &&
-				self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( underCursor.Info.Name ) &&
-				self.GetDamageState() > DamageState.Undamaged)
-				return new Order("Enter", self, underCursor);
+			if( order.OrderID == "RepairNear" )
+				return new Order( order.OrderID, self, target.Actor );
 
 			return null;
 		}
 
-		public string CursorForOrder(Actor self, Order order)
+		bool CanRepairAt( Actor target )
 		{
-			return (order.OrderString == "Enter") ? "enter" : null;
+			return self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( target.Info.Name );
 		}
-		
+
+		bool ShouldRepair()
+		{
+			return self.GetDamageState() > DamageState.Undamaged;
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Enter")
+			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));
