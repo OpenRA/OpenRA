@@ -6,12 +6,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	class EnterBuildingOrderTargeter<T> : UnitTraitOrderTargeter<T>
+	class EnterOrderTargeter<T> : UnitTraitOrderTargeter<T>
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
-		public EnterBuildingOrderTargeter( string order, int priority, bool targetEnemy, bool targetAlly,
+		public EnterOrderTargeter( string order, int priority, bool targetEnemy, bool targetAlly,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor )
 			: base( order, priority, "enter", targetEnemy, targetAlly )
 		{

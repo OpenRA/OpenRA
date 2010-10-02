@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterBuildingOrderTargeter<Building>( "RepairNear", 5, false, true,
+				yield return new EnterOrderTargeter<Building>( "RepairNear", 5, false, true,
 					target => CanRepairAt( target ), _ => ShouldRepair() );
 			}
 		}

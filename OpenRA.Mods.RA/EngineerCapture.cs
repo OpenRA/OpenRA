@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterBuildingOrderTargeter<Building>( "CaptureBuilding", 5, true, false,
+				yield return new EnterOrderTargeter<Building>( "CaptureBuilding", 5, true, false,
 					_ => true, target => target.Info.Traits.Get<BuildingInfo>().Capturable );
 			}
 		}

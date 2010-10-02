@@ -14,58 +14,58 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Linq;
+using System.Collections.Generic;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
-	class PassengerInfo : TraitInfo<Passenger>
+	class PassengerInfo : ITraitInfo
 	{
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
+
+		public object Create( ActorInitializer init ) { return new Passenger( init.self ); }
 	}
 
-	class Passenger : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class Passenger : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		readonly Actor self;
+		public Passenger( Actor self ) { this.self = self; }
+
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get
+			{
+				yield return new EnterOrderTargeter<Cargo>( "EnterTransport", 6, false, true,
+					target => IsCorrectCargoType( target ), target => CanEnter( target ) );
+			}
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{		
-			if (mi.Button != MouseButton.Right) 
-			    return null;
 
-			if (underCursor == null || underCursor.Owner != self.Owner)
-			    return null;
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order.OrderID == "EnterTransport" )
+				return new Order( order.OrderID, self, target.Actor );
 
-			var cargo = underCursor.TraitOrDefault<Cargo>();
-			if (cargo == null)
-			    return null;
-			
+			return null;
+		}
+
+		bool IsCorrectCargoType( Actor target )
+		{
 			var pi = self.Info.Traits.Get<PassengerInfo>();
-			var ci = underCursor.Info.Traits.Get<CargoInfo>();
-			if (!ci.Types.Contains(pi.CargoType))
-				return null;
-			
-			return new Order("EnterTransport", self, underCursor);
-		}
-		
-		bool CanEnter(Actor self, Actor a)
-		{
-			var cargo = a.TraitOrDefault<Cargo>();
-			return (cargo != null && !cargo.IsFull(a));
-		}
-		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString != "EnterTransport") return null;
-			return CanEnter(self, order.TargetActor) ? "enter" : "enter-blocked";
+			var ci = target.Info.Traits.Get<CargoInfo>();
+			return ci.Types.Contains( pi.CargoType );
 		}
 
+		bool CanEnter( Actor target )
+		{
+			var cargo = target.TraitOrDefault<Cargo>();
+			return (cargo != null && !cargo.IsFull(target));
+		}
+		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "EnterTransport" ||
-				!CanEnter(self, order.TargetActor)) return null;
+				!CanEnter(order.TargetActor)) return null;
 			return "Move";
 		}
 		
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "EnterTransport")
 			{
-				if (!CanEnter(self, order.TargetActor)) return;
+				if (!CanEnter(order.TargetActor)) return;
 				
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
