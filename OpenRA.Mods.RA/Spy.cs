@@ -8,40 +8,35 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using System.Drawing;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
 	class SpyInfo : TraitInfo<Spy> { }
 
-	class Spy : IIssueOrder, IResolveOrder, IOrderCursor
+	class Spy : IIssueOrder2, IResolveOrder
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
-		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
-			if (underCursor.Owner == self.Owner) return null;
-			if (!underCursor.HasTrait<IAcceptSpy>()) return null;
-
-			return new Order("Infiltrate", self, underCursor);
+			get { yield return new UnitTraitOrderTargeter<IAcceptSpy>( "SpyInfiltrate", 5, "enter", true, false ); }
 		}
 
-		public string CursorForOrder(Actor self, Order order)
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			return (order.OrderString == "Infiltrate") ? "enter" : null;
+			if( order.OrderID == "SpyInfiltrate" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			return null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Infiltrate")
+			if (order.OrderString == "SpyInfiltrate")
 			{
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor, 1));

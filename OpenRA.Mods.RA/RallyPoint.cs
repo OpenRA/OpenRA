@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new RallyPoint(init.self); }
 	}
 
-	public class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
+	public class RallyPoint : IRender, IIssueOrder2, IResolveOrder, ITick
 	{
 		[Sync]
 		public int2 rallyPoint;
@@ -43,15 +43,17 @@ namespace OpenRA.Mods.RA
 					anim.Image, Traits.Util.CenterOfCell(rallyPoint));
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 0;
+			get { yield return new RallyPointOrderTargeter(); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button == MouseButton.Left || underCursor != null) return null;
-			return new Order("SetRallyPoint", self, xy);
+			if( order.OrderID == "SetRallyPoint" )
+				return new Order( order.OrderID, self, Traits.Util.CellContaining( target.CenterLocation ) );
+
+			return null;
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -61,5 +63,21 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void Tick(Actor self) { anim.Tick(); }
+
+		class RallyPointOrderTargeter : IOrderTargeter
+		{
+			public string OrderID { get { return "SetRallyPoint"; } }
+			public int OrderPriority { get { return 0; } }
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return false;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return true;
+			}
+		}
 	}
 }

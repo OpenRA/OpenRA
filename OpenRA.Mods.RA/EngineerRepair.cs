@@ -8,9 +8,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
@@ -18,35 +20,21 @@ namespace OpenRA.Mods.RA
 {
 	class EngineerRepairInfo : TraitInfo<EngineerRepair> {}
 
-	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class EngineerRepair : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
-		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
-			if (!CanRepair(self, underCursor)) return null;
-			
-			return new Order("EngineerRepair", self, underCursor);
-		}
-		
-		bool CanRepair(Actor self, Actor a)
-		{
-			if (!a.HasTrait<Building>()) return false;			
-			return (self.Owner.Stances[a.Owner] == Stance.Ally);
+			get { yield return new EngineerRepairOrderTargeter(); }
 		}
 
-		public string CursorForOrder(Actor self, Order order)
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (order.OrderString != "EngineerRepair") return null;
-			if (order.TargetActor == null) return null;
-			return (order.TargetActor.GetDamageState() == DamageState.Undamaged) ? "goldwrench-blocked" : "goldwrench";
+			if( order.OrderID == "EngineerRepair" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			return null;
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "EngineerRepair"
@@ -70,6 +58,23 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new RepairBuilding(order.TargetActor));
+			}
+		}
+
+		class EngineerRepairOrderTargeter : UnitTraitOrderTargeter<Building>
+		{
+			public EngineerRepairOrderTargeter()
+				: base( "EngineerRepair", 6, "goldwrench", false, true )
+			{
+			}
+
+			public override bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				if( !base.CanTargetUnit( self, target, forceAttack, forceMove, ref cursor ) ) return false;
+
+				if( target.GetDamageState() > DamageState.Undamaged )
+					cursor = "goldwrench-blocked";
+				return true;
 			}
 		}
 	}

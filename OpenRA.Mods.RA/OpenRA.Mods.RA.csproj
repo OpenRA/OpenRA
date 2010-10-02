@@ -93,7 +93,10 @@
     <Compile Include="Effects\TeslaZap.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="MPStartLocations.cs" />
+    <Compile Include="Orders\DeployOrderTargeter.cs" />
+    <Compile Include="Orders\EnterBuildingOrderTargeter.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
+    <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Aircraft.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />

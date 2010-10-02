@@ -13,32 +13,31 @@ using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Orders;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
 	class EngineerCaptureInfo : TraitInfo<EngineerCapture> {}
-	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class EngineerCapture : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
-		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
-			if (self.Owner.Stances[underCursor.Owner] == Stance.Ally) return null;
-			if (!underCursor.HasTrait<Building>() || !underCursor.Info.Traits.Get<BuildingInfo>().Capturable) return null;
-
-			return new Order("CaptureBuilding", self, underCursor);
+			get
+			{
+				yield return new EnterBuildingOrderTargeter<Building>( "CaptureBuilding", 5, true, false,
+					target => target.Info.Traits.Get<BuildingInfo>().Capturable );
+			}
 		}
 
-		public string CursorForOrder(Actor self, Order order)
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			return (order.OrderString == "CaptureBuilding") ? "capture" : null;
+			if( order.OrderID == "CaptureBuilding" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			return null;
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "CaptureBuilding") ? "Attack" : null;			

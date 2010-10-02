@@ -8,11 +8,14 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -21,21 +24,19 @@ namespace OpenRA.Mods.RA
 		public readonly float C4Delay = 0;
 	}
 
-	class C4Demolition : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class C4Demolition : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? 1001 : 1;
+			get { yield return new UnitTraitOrderTargeter<Building>( "C4", 6, "c4", true, false ); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button != MouseButton.Right) return null;
-			if (underCursor == null) return null;
-			if (!underCursor.HasTrait<Building>()) return null;
-			if (self.Owner.Stances[underCursor.Owner] != Stance.Enemy && !mi.Modifiers.HasModifier(Modifiers.Ctrl)) return null;
 
-			return new Order("C4", self, underCursor);
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order.OrderID == "C4" )
+				return new Order( "C4", self, target.Actor );
+
+			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -56,11 +57,6 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Demolish(order.TargetActor));
 				self.QueueActivity(new Move(self.Location, 0));
 			}
-		}
-		
-		public string CursorForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "C4") ? "c4" : null;
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)

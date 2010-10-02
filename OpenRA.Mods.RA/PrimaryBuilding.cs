@@ -11,12 +11,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
 	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
 
-	class PrimaryBuilding : IIssueOrder, IResolveOrder, IOrderCursor, ITags
+	class PrimaryBuilding : IIssueOrder2, IResolveOrder, ITags
 	{
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
@@ -26,21 +27,17 @@ namespace OpenRA.Mods.RA
 			yield return (isPrimary) ? TagType.Primary : TagType.None;
 		}
 		
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 0;
+			get { yield return new DeployOrderTargeter( "PrimaryProducer", 1 ); }
 		}
 
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (mi.Button == MouseButton.Right && underCursor == self)
-				return new Order("PrimaryProducer", self);
+			if( order.OrderID == "PrimaryProducer" )
+				return new Order( order.OrderID, self );
+
 			return null;
-		}
-
-		public string CursorForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "PrimaryProducer") ? "deploy" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

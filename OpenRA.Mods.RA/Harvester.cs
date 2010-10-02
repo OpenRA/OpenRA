@@ -15,6 +15,7 @@ using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.RA
 {
@@ -29,8 +30,8 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, 
-		IRenderModifier, IExplodeModifier, IOrderCursor, IOrderVoice,
+	public class Harvester : IIssueOrder2, IResolveOrder, INotifyDamage, IPips, 
+		IRenderModifier, IExplodeModifier, IOrderVoice,
 		ISpeedModifier
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
@@ -93,40 +94,26 @@ namespace OpenRA.Mods.RA
 			contents.Clear();
 		}
 		
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
-		}
-
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Left) return null;
-			
-			// Don't leak info about resources under the shroud
-			if (!self.World.LocalPlayer.Shroud.IsExplored(xy)) return null;
-			
-			if (underCursor != null
-				&& self.Owner.Stances[ underCursor.Owner ] == Stance.Ally
-				&& underCursor.HasTrait<IAcceptOre>())
+			get
 			{
-				return new Order("Deliver", self, underCursor);
+				yield return new EnterBuildingOrderTargeter<IAcceptOre>( "Deliver", 5, false, true, _ => !IsEmpty );
+				yield return new HarvestOrderTargeter();
 			}
-			var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(xy);
-			var info = self.Info.Traits.Get<HarvesterInfo>();
-
-			if (underCursor == null && res != null && info.Resources.Contains(res.info.Name) && !IsFull)
-				return new Order("Harvest", self, xy);
-
-			return null;
 		}
-		
-		public string CursorForOrder(Actor self, Order order)
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
 		{
-			if (order.OrderString == "Harvest") return "attackmove";
-			if (order.OrderString == "Deliver") return IsEmpty ? "enter-blocked" : "enter";
+			if( order.OrderID == "Deliver" )
+				return new Order( order.OrderID, self, target.Actor );
+
+			if( order.OrderID == "Harvest" )
+				return new Order( order.OrderID, self, Util.CellContaining( target.CenterLocation ) );
+
 			return null;
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Harvest" || (order.OrderString == "Deliver" && !IsEmpty)) ? "Move" : null;
@@ -221,6 +208,31 @@ namespace OpenRA.Mods.RA
 		{
 			return float2.Lerp(1f, Info.FullyLoadedSpeed,
 				contents.Values.Sum() / (float)Info.Capacity);
+		}
+
+		class HarvestOrderTargeter : IOrderTargeter
+		{
+			public string OrderID { get { return "Harvest";}}
+			public int OrderPriority { get { return 10; } }
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return false;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				// Don't leak info about resources under the shroud
+				if( !self.World.LocalPlayer.Shroud.IsExplored( location ) ) return false;
+
+				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource( location );
+				var info = self.Info.Traits.Get<HarvesterInfo>();
+
+				if( res == null ) return false;
+				if( !info.Resources.Contains( res.info.Name ) ) return false;
+				cursor = "attackmove";
+				return true;
+			}
 		}
 	}
 }
