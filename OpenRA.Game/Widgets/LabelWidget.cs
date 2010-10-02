@@ -16,10 +16,12 @@ namespace OpenRA.Widgets
 	public class LabelWidget : Widget
 	{
 		public enum TextAlign { Left, Center, Right }
+		public enum TextVAlign { Top, Middle, Bottom }
 		
 		public string Text = null;
 		public string Background = null;
 		public TextAlign Align = TextAlign.Left;
+		public TextVAlign VAlign = TextVAlign.Middle;
 		public bool Bold = false;
 		public Func<string> GetText;
 		public Func<string> GetBackground;
@@ -54,8 +56,14 @@ namespace OpenRA.Widgets
 				return;
 			
 			int2 textSize = font.Measure(text);
-			int2 position = RenderOrigin + new int2(0, (Bounds.Height - textSize.Y)/2);
-
+			int2 position = RenderOrigin;
+			
+			if (VAlign == TextVAlign.Middle)
+				position += new int2(0, (Bounds.Height - textSize.Y)/2);
+			
+			if (VAlign == TextVAlign.Bottom)
+				position += new int2(0, Bounds.Height - textSize.Y);
+		
 			if (Align == TextAlign.Center)
 				position += new int2((Bounds.Width - textSize.X)/2, 0);
 

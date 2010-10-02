@@ -141,10 +141,16 @@ Background@JOINSERVER_BG:
 			Height:PARENT_BOTTOM
 			Visible:false
 			Children:
+				MapPreview@MAP_PREVIEW:
+					Id:MAP_PREVIEW
+					X:PARENT_RIGHT-241
+					Y:30
+					Width:192
+					Height:192
 				Label@SERVER_IP_LABEL:
 					Id:SERVER_IP_LABEL
 					X:PARENT_RIGHT - 200 - WIDTH
-					Y:50
+					Y:230
 					Align:Right
 					Width:70
 					Height:20
@@ -153,46 +159,14 @@ Background@JOINSERVER_BG:
 				Label@SERVER_IP:
 					Id:SERVER_IP
 					X:PARENT_RIGHT - 195
-					Y:50
-					Align:Left
-					Width:70
-					Height:20
-				Label@SERVER_MODS_LABEL:
-					Id:SERVER_MODS_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:70
-					Align:Right
-					Width:70
-					Height:20
-					Text:Mods:
-					Bold:True
-				Label@SERVER_MODS:
-					Id:SERVER_MODS
-					X:PARENT_RIGHT - 195
-					Y:70
-					Align:Left
-					Width:70
-					Height:20
-				Label@MAP_TITLE_LABEL:
-					Id:MAP_TITLE_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:90
-					Align:Right
-					Width:70
-					Height:20
-					Text:Map:
-					Bold:True
-				Label@MAP_TITLE:
-					Id:MAP_TITLE
-					X:PARENT_RIGHT - 195
-					Y:90
+					Y:230
 					Align:Left
 					Width:70
 					Height:20
 				Label@MAP_PLAYERS_LABEL:
 					Id:MAP_PLAYERS_LABEL
 					X:PARENT_RIGHT - 200 - WIDTH
-					Y:110
+					Y:250
 					Align:Right
 					Width:70
 					Height:20
@@ -201,16 +175,43 @@ Background@JOINSERVER_BG:
 				Label@MAP_PLAYERS:
 					Id:MAP_PLAYERS
 					X:PARENT_RIGHT - 195
-					Y:110
+					Y:250
 					Align:Left
 					Width:70
 					Height:20
-				MapPreview@MAP_PREVIEW:
-					Id:MAP_PREVIEW
-					X:PARENT_RIGHT-241
-					Y:140
-					Width:192
-					Height:192
+				Label@MAP_TITLE_LABEL:
+					Id:MAP_TITLE_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:270
+					Align:Right
+					Width:70
+					Height:20
+					Text:Map:
+					Bold:True
+				Label@MAP_TITLE:
+					Id:MAP_TITLE
+					X:PARENT_RIGHT - 195
+					Y:270
+					Align:Left
+					Width:70
+					Height:20
+				Label@SERVER_MODS_LABEL:
+					Id:SERVER_MODS_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:290
+					Align:Right
+					Width:70
+					Height:20
+					Text:Mods:
+					Bold:True
+				Label@SERVER_MODS:
+					Id:SERVER_MODS
+					X:PARENT_RIGHT - 195
+					Y:293
+					Align:Left
+					VAlign:Top
+					Width:70
+					Height:20
 		Button@DIRECTCONNECT_BUTTON:
 			Id:DIRECTCONNECT_BUTTON
 			X:20

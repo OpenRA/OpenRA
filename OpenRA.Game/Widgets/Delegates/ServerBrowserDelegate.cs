@@ -44,7 +44,7 @@ namespace OpenRA.Widgets.Delegates
 			preview.IsVisible = () => CurrentMap() != null;
 
 			bg.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
-			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => string.Join(",", currentServer.Mods);
+			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => GenerateModsLabel();
 			bg.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
 			bg.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () =>
 			{
@@ -119,6 +119,13 @@ namespace OpenRA.Widgets.Delegates
 		{
 			return (currentServer == null || !Game.modData.AvailableMaps.ContainsKey(currentServer.Map))
 				? null : Game.modData.AvailableMaps[currentServer.Map];
+		}
+		
+		string GenerateModsLabel()
+		{
+			return string.Join("\n", currentServer.Mods.Select(m => 
+			       ModData.AllMods.ContainsKey(m) ? string.Format("{0} ({1})", ModData.AllMods[m].Title, ModData.AllMods[m].Version)
+			                                   : string.Format("Unknown Mod: {0}",m)).ToArray());
 		}
 
 		void RefreshServerList(IEnumerable<GameServer> games)
