@@ -1,4 +1,7 @@
-# Default Game Mod
+Metadata:
+	Title: Default Mod Template
+	Description: Minimal template for creating a base mod
+	Version: a0001
 
 Folders:
 	.

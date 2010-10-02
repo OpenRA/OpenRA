@@ -267,7 +267,14 @@ namespace OpenRA
 			Renderer.SheetSize = Settings.Game.SheetSize;
 			Renderer = new Renderer();
 			
-			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods;
+			Console.WriteLine("Available mods:");
+			foreach(var mod in ModData.AllMods)
+				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
+			
+			// Discard any invalid mods
+			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods.Where(m => ModData.AllMods.ContainsKey(m)).ToArray();
+			Console.WriteLine("Loading mods: {0}",string.Join(",",LobbyInfo.GlobalSettings.Mods));
+			
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 			
 			Sound.Initialize();

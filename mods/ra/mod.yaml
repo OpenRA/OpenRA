@@ -1,4 +1,7 @@
-# Classic Red Alert Mod -- Package Manifest
+Metadata:
+	Title: Red Alert
+	Description: OpenRA Reimagining of the classic game
+	Version: a0001
 
 Folders:
 	.

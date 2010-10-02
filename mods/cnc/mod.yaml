@@ -1,4 +1,7 @@
-# Classic Command and Conquer -- Package Manifest
+Metadata:
+	Title: Command & Conquer
+	Description: OpenRA Reimagining of the classic game
+	Version: a0001
 
 Folders:
 	.

@@ -19,6 +19,35 @@ namespace OpenRA
 {
 	public class ModData
 	{
+		public static readonly Dictionary<string,Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
+		
+		public static Dictionary<string,Mod> ValidateMods(string[] mods)
+		{
+			var ret = new Dictionary<string,Mod>();
+			foreach (var m in mods)
+			{
+				if (!File.Exists("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"))
+					continue;
+				
+				var yaml = new MiniYaml( null, MiniYaml.FromFile("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"));
+				if (!yaml.NodesDict.ContainsKey("Metadata"))
+				{
+					System.Console.WriteLine("Invalid mod: "+m);
+					continue;
+				}
+				
+				ret.Add(m,FieldLoader.Load<Mod>(yaml.NodesDict["Metadata"]));
+			}
+			return ret;
+		}
+		
+		public class Mod
+		{
+			public string Title;
+			public string Description;
+			public string Version;
+		}
+		
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
 		public readonly SheetBuilder SheetBuilder;
@@ -28,7 +57,7 @@ namespace OpenRA
 		public ILoadScreen LoadScreen = null;
 		
 		public ModData( params string[] mods )
-		{
+		{		
 			Manifest = new Manifest( mods );
 			ObjectCreator = new ObjectCreator( Manifest );
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen);

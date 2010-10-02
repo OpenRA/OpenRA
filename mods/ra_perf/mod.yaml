@@ -1,4 +1,7 @@
-# RA Performance Tests -- Package Manifest
+Metadata:
+	Title: RA Perf
+	Description: Performance Test map pack
+	Version: a0001
 
 Folders:
 	./mods/ra_perf
