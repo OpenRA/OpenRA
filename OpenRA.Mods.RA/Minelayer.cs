@@ -54,9 +54,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "BeginMinefield")
 			{
-				minefieldStart = order.TargetLocation;
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.OrderGenerator = new MinefieldOrderGenerator(self);
+				//minefieldStart = order.TargetLocation;
+				//if (self.Owner == self.World.LocalPlayer)
+				//    self.World.OrderGenerator = new MinefieldOrderGenerator(self);
 			}
 
 			if (order.OrderString == "PlaceMinefield")

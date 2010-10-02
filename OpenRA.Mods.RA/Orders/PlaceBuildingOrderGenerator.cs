@@ -63,9 +63,6 @@ namespace OpenRA.Mods.RA.Orders
 		                 	p.CurrentItem().Item == Building && 
 		                 	p.CurrentItem().RemainingTime == 0)
 				.FirstOrDefault();
-						
-			if (queue == null)
-				world.CancelInputMode();
 		}
 
 		public void RenderAfterWorld( World world ) {}

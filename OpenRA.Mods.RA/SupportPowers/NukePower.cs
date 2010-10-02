@@ -49,7 +49,6 @@ namespace OpenRA.Mods.RA
 				
 				silo.Trait<NukeSilo>().Attack(order.TargetLocation);
 				
-				self.World.CancelInputMode();
 				FinishActivate();
 			}
 		}

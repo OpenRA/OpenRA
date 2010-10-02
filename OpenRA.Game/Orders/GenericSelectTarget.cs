@@ -35,8 +35,11 @@ namespace OpenRA.Orders
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left && world.Map.IsInMap(xy))
-				yield return new Order(order, subject, xy);
+			if( mi.Button == MouseButton.Left && world.Map.IsInMap( xy ) )
+			{
+				world.CancelInputMode();
+				yield return new Order( order, subject, xy );
+			}
 		}
 
 		public virtual void Tick(World world) { }

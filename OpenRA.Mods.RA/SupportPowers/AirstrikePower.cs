@@ -71,9 +71,6 @@ namespace OpenRA.Mods.RA
 						a.QueueActivity(new RemoveSelf());
 					});
 
-				if (Owner == Owner.World.LocalPlayer)
-					self.World.CancelInputMode();
-
 				FinishActivate();
 			}
 		}

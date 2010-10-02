@@ -41,9 +41,6 @@ namespace OpenRA.Mods.RA
 			{
 				FinishActivate();
 
-				if (order.Player == Owner.World.LocalPlayer)
-					self.World.CancelInputMode();
-
 				var enterCell = self.World.ChooseRandomEdgeCell();
 
 				var plane = self.World.CreateActor("u2", new TypeDictionary 

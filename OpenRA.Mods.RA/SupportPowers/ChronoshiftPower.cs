@@ -37,9 +37,6 @@ namespace OpenRA.Mods.RA
 			
 			if (order.OrderString == "ChronosphereActivate")
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.CancelInputMode();
-				
 				// Ensure the target cell is valid for the unit
 				var movement = order.TargetActor.TraitOrDefault<IMove>();
 				if (!movement.CanEnterCell(order.TargetLocation))

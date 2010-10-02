@@ -39,9 +39,6 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "IronCurtain")
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.CancelInputMode();
-
 				var curtain = self.World.Queries.WithTrait<IronCurtain>()
 					.Where(a => a.Actor.Owner != null)
 					.FirstOrDefault().Actor;
