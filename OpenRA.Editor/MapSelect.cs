@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using OpenRA.FileFormats;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Editor
@@ -19,11 +13,11 @@ namespace OpenRA.Editor
         public MapSelect()
         {
             InitializeComponent();
+			MapIconsList.Images.Add(pictureBox1.Image);
         }
 
-        private void MapSelect_Load(object sender, EventArgs e)
+        void MapSelect_Load(object sender, EventArgs e)
         {
-
             DirectoryInfo directory = new DirectoryInfo(MapFolderPath);
             DirectoryInfo[] directories = directory.GetDirectories();
             MapList.Items.Clear();
@@ -33,20 +27,14 @@ namespace OpenRA.Editor
                 ListViewItem map1 = new ListViewItem(subDirectory.Name);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
-
             }
-            if (txtNew.Text == "unnamed")
-            {
-                //dumb indian code
-            }
-            else
-            {
+            
+			// hack
+			if (txtNew.Text != "unnamed")
                 MapList.Items[0].Selected = true;
-            }
-
         }
 
-        private void MapList_SelectedIndexChanged(object sender, EventArgs e)
+        void MapList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (MapList.SelectedItems.Count == 1)
             {
@@ -69,7 +57,7 @@ namespace OpenRA.Editor
             }
         }
 
-        private void txtPathOut_TextChanged(object sender, EventArgs e)
+        void txtPathOut_TextChanged(object sender, EventArgs e)
         {
             MapFolderPath = txtPathOut.Text;
         }

@@ -52,11 +52,13 @@
 			this.txtTitle = new System.Windows.Forms.TextBox();
 			this.lblMapName = new System.Windows.Forms.Label();
 			this.lblMinimap = new System.Windows.Forms.Label();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.pbMinimap)).BeginInit();
 			this.pnlBottom.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// MapList
@@ -85,9 +87,9 @@
 			// 
 			// MapIconsList
 			// 
-			this.MapIconsList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("MapIconsList.ImageStream")));
+			this.MapIconsList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			this.MapIconsList.ImageSize = new System.Drawing.Size(24, 24);
 			this.MapIconsList.TransparentColor = System.Drawing.Color.Transparent;
-			this.MapIconsList.Images.SetKeyName(0, "mapicon");
 			// 
 			// btnCancel
 			// 
@@ -141,6 +143,7 @@
 			// 
 			// pnlBottom
 			// 
+			this.pnlBottom.Controls.Add(this.pictureBox1);
 			this.pnlBottom.Controls.Add(this.txtPathOut);
 			this.pnlBottom.Controls.Add(this.lblPathOut);
 			this.pnlBottom.Controls.Add(this.lblPath);
@@ -301,6 +304,16 @@
 			this.lblMinimap.TabIndex = 6;
 			this.lblMinimap.Text = "Map preview:";
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+			this.pictureBox1.Location = new System.Drawing.Point(336, -9);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(54, 35);
+			this.pictureBox1.TabIndex = 7;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Visible = false;
+			// 
 			// MapSelect
 			// 
 			this.AcceptButton = this.btnOk;
@@ -327,6 +340,7 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.Panel2.PerformLayout();
 			this.splitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 
         }
@@ -356,5 +370,6 @@
         public System.Windows.Forms.Label lblPathOut;
         public System.Windows.Forms.Label lblPath;
         public System.Windows.Forms.TextBox txtPathOut;
+		private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
