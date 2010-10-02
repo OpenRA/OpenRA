@@ -439,10 +439,6 @@ namespace OpenRA.Editor
 			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
-			float width = t.Bitmap.Width * Zoom;
-			float height = t.Bitmap.Height * Zoom;
-			RectangleF sourceRect = new RectangleF(0, 0, t.Bitmap.Width, t.Bitmap.Height);
-			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
 			g.DrawRectangle(CordonPen,
 				DrawX, DrawY,
 				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);

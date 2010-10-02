@@ -77,7 +77,6 @@ namespace OpenRA.Mods.RA.Render
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
 		{
-			var hasSequence = anim.HasSequence(NormalizeSequence(self, name));
 			anim.PlayBackwardsThen(NormalizeSequence(self, name),
 				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}

@@ -194,7 +194,6 @@ namespace OpenRA
 			readonly World world;
 
 			public readonly Cache<Player, OwnedByCachedView> OwnedBy;
-			readonly TypeDictionary hasTrait = new TypeDictionary();
 
 			public AllQueries( World world )
 			{
