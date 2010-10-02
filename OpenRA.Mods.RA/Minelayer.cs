@@ -26,44 +26,35 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IOrderCursor, IPostRenderSelection
+	class Minelayer : IIssueOrder2, IResolveOrder, IPostRenderSelection
 	{
 		/* [Sync] when sync can cope with arrays! */ 
 		public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
+		public IEnumerable<IOrderTargeter> Orders
 		{
-			return 5;
+			get { yield return new BeginMinefieldOrderTargeter(); }
 		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Right && underCursor == null && mi.Modifiers.HasModifier(Modifiers.Ctrl))
-				return new Order("BeginMinefield", self, xy);
 
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order is BeginMinefieldOrderTargeter )
+			{
+				var start = Util.CellContaining( target.CenterLocation );
+				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
+				return new Order( "BeginMinefield", self, start );
+			}
 			return null;
 		}
 
-		public string CursorForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "BeginMinefield") ? "ability" : null;
-		}
-		
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "BeginMinefield")
-			{
-				//minefieldStart = order.TargetLocation;
-				//if (self.Owner == self.World.LocalPlayer)
-				//    self.World.OrderGenerator = new MinefieldOrderGenerator(self);
-			}
+			if( order.OrderString == "BeginMinefield" )
+				minefieldStart = order.TargetLocation;
 
 			if (order.OrderString == "PlaceMinefield")
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.CancelInputMode();
-
 				var movement = self.Trait<IMove>();
 
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
@@ -97,9 +88,10 @@ namespace OpenRA.Mods.RA
 
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
-			Actor minelayer;
+			readonly Actor minelayer;
+			readonly int2 minefieldStart;
 
-			public MinefieldOrderGenerator(Actor self) { minelayer = self; }
+			public MinefieldOrderGenerator(Actor self, int2 xy ) { minelayer = self; minefieldStart = xy; }
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
@@ -114,8 +106,11 @@ namespace OpenRA.Mods.RA
 						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 					.FirstOrDefault();
 
-				if (mi.Button == MouseButton.Right && underCursor == null)
-					yield return new Order("PlaceMinefield", minelayer, xy);
+				if( mi.Button == MouseButton.Right && underCursor == null )
+				{
+					minelayer.World.CancelInputMode();
+					yield return new Order( "PlaceMinefield", minelayer, xy );
+				}
 			}
 
 			public void Tick(World world)
@@ -132,7 +127,7 @@ namespace OpenRA.Mods.RA
 
 				var ml = minelayer.Trait<Minelayer>();
 				var movement = minelayer.Trait<IMove>();
-				var minefield = GetMinefieldCells(ml.minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
+				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
 				world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
@@ -150,6 +145,23 @@ namespace OpenRA.Mods.RA
 			
 			if (minefield != null)
 				self.World.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+		}
+
+		class BeginMinefieldOrderTargeter : IOrderTargeter
+		{
+			public string OrderID { get { return "BeginMinefield"; } }
+			public int OrderPriority { get { return 5; } }
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return false;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				cursor = "ability";
+				return ( actorsAtLocation.Count == 0 && forceAttack );
+			}
 		}
 	}
 }

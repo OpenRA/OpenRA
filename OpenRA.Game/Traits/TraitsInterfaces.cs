@@ -38,6 +38,18 @@ namespace OpenRA.Traits
 		Order IssueOrder( Actor self, int2 xy, MouseInput mi, Actor underCursor );
 		int OrderPriority( Actor self, int2 xy, MouseInput mi, Actor underCursor );
 	}
+	public interface IIssueOrder2
+	{
+		IEnumerable<IOrderTargeter> Orders { get; }
+		Order IssueOrder( Actor self, IOrderTargeter order, Target target );
+	}
+	public interface IOrderTargeter
+	{
+		string OrderID { get; }
+		int OrderPriority { get; }
+		bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor );
+		bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor );
+	}
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IOrderCursor { string CursorForOrder(Actor self, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }

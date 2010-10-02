@@ -178,7 +178,7 @@ namespace OpenRA
 			LobbyInfoChanged();
 		}
 
-		public static void IssueOrder(Order o) { orderManager.IssueOrder(o); }	/* avoid exposing the OM to mod code */
+		public static void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
 
 		public static event Action AfterGameStart = () => {};

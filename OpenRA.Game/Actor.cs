@@ -110,23 +110,6 @@ namespace OpenRA
 			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
 		}
 
-		public Order Order( int2 xy, MouseInput mi, Actor underCursor )
-		{
-			if (Owner != World.LocalPlayer)
-				return null;
-
-			if (!World.Map.IsInMap(xy.X, xy.Y))
-				return null;
-
-			if (Destroyed)
-				return null;
-			
-			return TraitsImplementing<IIssueOrder>()
-				.OrderByDescending( x => x.OrderPriority( this, xy, mi, underCursor ) )
-				.Select( x => x.IssueOrder( this, xy, mi, underCursor ) )
-				.FirstOrDefault( x => x != null );
-		}
-
 		public RectangleF GetBounds(bool useAltitude)
 		{
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();

@@ -12,6 +12,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.GameRules;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new Transforms(this); }
 	}
 
-	class Transforms : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice
+	class Transforms : IIssueOrder2, IResolveOrder, IOrderVoice
 	{
 		TransformsInfo Info;
 		BuildingInfo bi;
@@ -38,19 +39,6 @@ namespace OpenRA.Mods.RA
 			bi = Rules.Info[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
 		}
 		
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			return 5;
-		}
-		
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (mi.Button == MouseButton.Right && self == underCursor)
-				return new Order("DeployTransform", self);
-
-			return null;
-		}
-
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "DeployTransform") ? "Move" : null;
@@ -60,7 +48,17 @@ namespace OpenRA.Mods.RA
 		{
 			return (bi == null || self.World.CanPlaceBuilding(Info.IntoActor, bi, self.Location + Info.Offset, self));
 		}
-		
+
+		public IEnumerable<IOrderTargeter> Orders { get { yield return new TransformOrderTargeter(); } }
+
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order is TransformOrderTargeter )
+				return new Order( "DeployTransform", self );
+
+			return null;
+		}
+
 		public void ResolveOrder( Actor self, Order order )
 		{
 			if (order.OrderString == "DeployTransform")
@@ -79,13 +77,29 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Transform(self, Info.IntoActor, Info.Offset, Info.Facing, Info.TransformSounds));
 			}
 		}
-		
-		public string CursorForOrder(Actor self, Order order)
+
+		class TransformOrderTargeter : IOrderTargeter
 		{
-			if (order.OrderString != "DeployTransform")
-				return null;
-			
-			return CanDeploy(self) ? "deploy" : "deploy-blocked";
+			public string OrderID
+			{
+				get { return "DeployTransform"; }
+			}
+
+			public int OrderPriority
+			{
+				get { return 5; }
+			}
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				cursor = self.Trait<Transforms>().CanDeploy( self ) ? "deploy" : "deploy-blocked";
+				return self == target;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, System.Collections.Generic.List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return false;
+			}
 		}
 	}
 }

@@ -16,6 +16,7 @@ using OpenRA.Effects;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using System.Diagnostics;
+using OpenRA.Orders;
 
 namespace OpenRA.Traits
 {
@@ -53,7 +54,7 @@ namespace OpenRA.Traits
 		}
 	}
 	
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
+	public class Mobile : IIssueOrder2, IResolveOrder, IOrderCursor, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -131,21 +132,17 @@ namespace OpenRA.Traits
 			self.CenterLocation = Util.CenterOfCell(fromCell);
 		}
 
-		public int OrderPriority(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			// Force move takes precedence
-			return mi.Modifiers.HasModifier(Modifiers.Alt) ? int.MaxValue : 0;
-		}
-		
-		// Note: Returns a valid order even if the unit can't move to the target
-		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
-		{
-			if (Info.OnRails) return null;
-			
-			if (mi.Button == MouseButton.Left) return null;
+		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter( Info ); } }
 
-			var type = (!self.World.LocalPlayer.Shroud.IsVisible(xy) || CanEnterCell(xy)) ? "Move" : "Move-Blocked";
-			return new Order(type, self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
+		// Note: Returns a valid order even if the unit can't move to the target
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		{
+			if( order is MoveOrderTargeter )
+			{
+				if( Info.OnRails ) return null;
+				return new Order( "Move", self, Util.CellContaining( target.CenterLocation ), false );
+			}
+			return null;
 		}
 
 		public int2 NearestMoveableCell(int2 target)
@@ -368,6 +365,32 @@ namespace OpenRA.Traits
 			else
 				Log.Write("debug", "OnNudge #{0} refuses at {1}",
 					self.ActorID, self.Location);
+		}
+
+		class MoveOrderTargeter : IOrderTargeter
+		{
+			readonly MobileInfo unitType;
+
+			public MoveOrderTargeter( MobileInfo unitType )
+			{
+				this.unitType = unitType;
+			}
+
+			public string OrderID { get { return "Move"; } }
+			public int OrderPriority { get { return 4; } }
+
+			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				return false;
+			}
+
+			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			{
+				cursor = "move";
+				if( self.World.LocalPlayer.Shroud.IsVisible( location ) && !self.Trait<Mobile>().CanEnterCell( location ) )
+					cursor = "move-blocked";
+				return true;
+			}
 		}
 	}
 }

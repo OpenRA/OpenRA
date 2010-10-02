@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Orders
 {
@@ -25,17 +26,17 @@ namespace OpenRA.Orders
 				.FirstOrDefault();
 			
 			var orders = world.Selection.Actors
-				.Select(a => a.Order(xy, mi, underCursor))
+				.Select(a => OrderForUnit(a, xy, mi, underCursor))
 				.Where(o => o != null)
 				.ToArray();
 
-			var actorsInvolved = orders.Select(o => o.Subject).Distinct();
+			var actorsInvolved = orders.Select(o => o.self).Distinct();
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
 					string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()));
 
-			foreach (var o in orders)
-				yield return o;
+			foreach( var o in orders )
+				yield return CheckSameOrder( o.iot, o.trait.IssueOrder( o.self, o.iot, o.target ) );
 		}
 
 		public void Tick( World world ) {}
@@ -62,22 +63,89 @@ namespace OpenRA.Orders
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )
 		{		
-			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
-			{
-				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Info.Traits.Contains<SelectableInfo>())
-					.Any();
-				
-				if (underCursor)
-					return "select";
-			}
+			var underCursor = world.FindUnitsAtMouse(mi.Location)
+				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
+				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
+				.FirstOrDefault();
 			
-			var c = Order(world, xy, mi)
-				.Select(o => o.Subject.TraitsImplementing<IOrderCursor>()
-					.Select(pc => pc.CursorForOrder(o.Subject, o)).FirstOrDefault(a => a != null))
-				.FirstOrDefault(a => a != null);
+			if( mi.Modifiers.HasModifier( Modifiers.Shift ) || !world.Selection.Actors.Any() )
+				if( underCursor != null )
+					return "select";
+			
+			var orders = world.Selection.Actors
+				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+				.Where(o => o != null)
+				.ToArray();
 
-			return c ?? "default";
+			if( orders.Length == 0 ) return "default";
+
+			return orders[ 0 ].cursor ?? "default";
+		}
+
+		static UnitOrderResult OrderForUnit( Actor self, int2 xy, MouseInput mi, Actor underCursor )
+		{
+			if (self.Owner != self.World.LocalPlayer)
+				return null;
+
+			if (!self.World.Map.IsInMap(xy.X, xy.Y))
+				return null;
+
+			if (self.Destroyed)
+				return null;
+
+			//var old = self.TraitsImplementing<IIssueOrder>()
+			//    .OrderByDescending( x => x.OrderPriority( self, xy, mi, underCursor ) )
+			//    .Select( x => x.IssueOrder( self, xy, mi, underCursor ) )
+			//    .FirstOrDefault( x => x != null );
+			//if( old != null )
+			//    return old;
+
+			if( mi.Button == MouseButton.Right )
+			{
+				var uim = self.World.WorldActor.Trait<UnitInfluence>();
+				foreach( var o in self.TraitsImplementing<IIssueOrder2>()
+					.SelectMany( trait => trait.Orders
+						.Select( x => new { Trait = trait, Order = x } ) )
+					.OrderByDescending( x => x.Order.OrderPriority ) )
+				{
+					var actorsAt = uim.GetUnitsAt( xy ).ToList();
+
+					string cursor = null;
+					if( o.Order.CanTargetUnit( self, underCursor, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
+						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
+					if( o.Order.CanTargetLocation( self, xy, actorsAt, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
+						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
+				}
+			}
+
+			return null;
+		}
+
+		static Order CheckSameOrder( IOrderTargeter iot, Order order )
+		{
+			if( order == null && iot.OrderID != null )
+				Game.Debug( "BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID );
+			else if( iot.OrderID != order.OrderString )
+				Game.Debug( "BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString );
+			return order;
+		}
+
+		class UnitOrderResult
+		{
+			public readonly Actor self;
+			public readonly IOrderTargeter iot;
+			public readonly IIssueOrder2 trait;
+			public readonly string cursor;
+			public readonly Target target;
+
+			public UnitOrderResult( Actor self, IOrderTargeter iot, IIssueOrder2 trait, string cursor, Target target )
+			{
+				this.self = self;
+				this.iot = iot;
+				this.trait = trait;
+				this.cursor = cursor;
+				this.target = target;
+			}
 		}
 	}
 }
