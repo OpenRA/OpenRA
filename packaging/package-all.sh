@@ -14,10 +14,10 @@ FTPSERVER=openra.res0l.net
 
 case "$TYPE" in
     "release") 
-        FTPPATH="openra.res0l.net/openra.res0l.net/releases"
+        FTPPATH="openra.res0l.net/releases"
         ;;
     "playtest") 
-        FTPPATH="openra.res0l.net/openra.res0l.net/playtests"
+        FTPPATH="openra.res0l.net/playtests"
         ;;
     *)
         msg "\E[31m" "Unrecognized tag prefix $TYPE"
@@ -118,5 +118,5 @@ esac
 wait
 
 if [ "$TYPE" = "release" ]; then
-    wput --basename=../ -u ../VERSION ftp://$FTPPATH/master/
+    wput --basename=../ -u ../VERSION ftp://$FTPSERVER/$FTPPATH/master/
 fi
