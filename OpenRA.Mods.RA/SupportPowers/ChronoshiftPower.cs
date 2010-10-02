@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
 			{
-				self.World.OrderGenerator = new SelectDestination(order.TargetActor);
+				//self.World.OrderGenerator = new SelectDestination(order.TargetActor);
 			}
 			
 			if (order.OrderString == "ChronosphereActivate")
@@ -60,7 +60,13 @@ namespace OpenRA.Mods.RA
 				if (mi.Button == MouseButton.Right)
 					world.CancelInputMode();
 
-				return OrderInner(world, xy, mi);
+				var ret = OrderInner( world, xy, mi ).ToList();
+				foreach( var order in ret )
+				{
+					world.OrderGenerator = new SelectDestination(order.TargetActor);
+					break;
+				}
+				return ret;
 			}
 
 			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
@@ -109,11 +115,19 @@ namespace OpenRA.Mods.RA
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
+					world.CancelInputMode();
+
+				var ret = OrderInner( world, xy, mi ).ToList();
+				foreach( var order in ret )
 				{
 					world.CancelInputMode();
-					yield break;
+					break;
 				}
+				return ret;
+			}
 
+			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
+			{
 				// Cannot chronoshift into unexplored location
 				if (world.LocalPlayer.Shroud.IsExplored(xy))
 					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy);

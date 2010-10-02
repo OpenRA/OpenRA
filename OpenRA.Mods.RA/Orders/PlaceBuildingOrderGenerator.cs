@@ -32,7 +32,13 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
-			return InnerOrder(world, xy, mi);
+			var ret = InnerOrder( world, xy, mi ).ToList();
+			foreach( var order in ret )
+			{
+				world.CancelInputMode();
+				break;
+			}
+			return ret;
 		}
 
 		IEnumerable<Order> InnerOrder(World world, int2 xy, MouseInput mi)
