@@ -12,6 +12,8 @@ VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 
 FTPSERVER=openra.res0l.net
 
+export FTPSERVER
+
 case "$TYPE" in
     "release") 
         FTPPATH="openra.res0l.net/releases"
@@ -118,5 +120,5 @@ esac
 wait
 
 if [ "$TYPE" = "release" ]; then
-    wput --basename=../ -u ../VERSION ftp://$FTPSERVER/$FTPPATH/master/
+    wput --basename=../ -u ../VERSION ftp://$2:$3@$FTPSERVER/$FTPPATH/master/
 fi
