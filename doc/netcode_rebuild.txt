@@ -1,0 +1,200 @@
+Netcode for OpenRA
+
+        Current deficiencies:
+            bandwidth use to say *nothing*. we have to say nothing _somehow_.
+                of course, but it's currently the bulk of our cost. it will probably continue to be so.
+                it's mostly NODELAY'd ACKs, right?~half is reduction by half enough?
+                    enough to host 8p on my link. good enough, then.
+            port forwarding
+            versioning
+            limited to 8 players -- why exactly? other than a dumb check in server? Just the dumb check i think, which i have removed. Untested - there are probably other stupid assumptions.
+            setting NODELAY doubles our bandwidth usage
+            various bits of the engine get confused when people drop -- dumb bug.
+            latency
+                A <-> server <-> B can longer than it needs to be if A is near B
+                Peer to peer in some aspect then?
+                    udp makes this easier than current, but still interesting.
+                    server probably still needs to get everything, even if there are other faster
+                    ways some players can get it.
+                    This is sounding like we'd need proper routing algorithms
+                        maybe. i can see "attempt to connect to everyone" being the only useful strategy here, so we can just send our orders over every link we have. (and ask the server to pass on the rest, if neccessary)
+                        need to be careful about how much upstream bandwidth we'd use
+                            at 25fps, saying "no orders this frame" is ~25*28 bytes/sec/player.
+                            even chris' connection can handle that for 8p.
+                            700B/s/player
+                            that's assuming we remove the '3 ticks per net tick' thing
+                                 if we keep that, divide by 3.
+
+
+        use JUST udp, or tcp too? the --> server link could easily be TCP (without NODELAY, if necessary) as long as our players graph is fully connected via udp.
+        can we make udp multicast work?
+            through the internet..... probably not.
+            LAN, we might as well broadcast. LAN bandwidth isnt a concern :S nor latency.
+
+        Solutions:
+            port forwarding
+                UPNP - fixes the problem on _some_ routers huge pain in the arse to implement
+                    BS, there are OTS libraries we can use with .NET/mono.
+                UDP+punchthrough - better solution
+                    requires a server with a udp port open and usable.
+                         Can we abuse the master server in some way for this?
+                             on our current host, probably not
+                                 - dreamhost: no
+                                 - master.open-ra.org: yes
+                                 - dchote mentioned that he knows people with a bunch of redundant servers we can use for persistant lobbies. maybe.
+                                     can we host ALL internet lobbies on external servers?
+                                        - This would be a nice feature. 
+                                        - Provide a dedicated server for people to run their own.
+            
+            versioning
+                we need at least mod versions + engine version.
+            
+            player limit
+                easily removed
+                requires lobby upgrades > easy
+            
+            NODELAY
+                tcp latency optimization, but bandwidth pessimization.
+                    do we have the equiv of TCP_CORK sockopt on all platforms?
+                        i don't think so, though we may be able to achieve the same result by toggling NODELAY.
+
+    Extra features?
+       - game chat <-> irc bridge
+       - MOTD etc broadcast from master server into game lobbies
+       - Desync communication from clients to the server (write desync diffs to server.log).
+           - actively send desync logs to us (for internet games at least)
+       - AOE(?) style desync detection stream
+           explain.
+               chrisf was talking about this a while back, they have a stream that they can insert arbitrary data into to check sync.
+               i like this plan.
+
+
+
+Can we focus first on making our current setup with tcp sane? Or is this more work than throwing everything out and starting again
+        probably easier to start again; the current server is a quick hack with hacks added :D
+    dont forget the extra hacks added after that :D
+Sounds like every other part of the engine :D
+    parts of it are good.
+    also, most of it is 'top-level' stuff that other code doesn't rely on.
+
+Implementation:
+        TCP connection to servers run by us; udp between peers.
+           - what about latency? having N players in NZ, with a server in the US shouldn't make things suck.
+               - latency will either be
+                   - 'longest path through the udp connection graph' (if we allow routing), or
+                   - longest A <-> server <-> B without a connection A <-> B otherwise.
+                - ideally, we can get a totally connected graph and this isn't an issue.
+        server provides punchthrough introduction where necessary
+        udp provides:
+            - reliable, order transport.
+                - because we commonly have N frames of nothing before an order, we can optimise this.
+            - multiple streams (at least: chat, orders, sync. possibly lobby.)
+        sync: build arbitrary stream of sync data, send per-frame hashes to the server (only)
+            send stream for that frame on request
+            adding to the stream should be as easy as Game.AddToSyncLog( T )
+
+        who checks sync? how do we get individual players' syncreports together?
+             Can the server check either hashes or whatever new mechanism, and then send an
+                order to clients to dump their syncreport? Relying on clients to check is a bit dumb
+              -> server should be able to drop the players that desync
+                  (who? if there are N distinct groups)
+                      can we split the game into N distinct games, in that case?
+                          drop any one-player games, since we know which client is at fault here.
+                      We can do this in general; the faulty client can either automatically win, 
+                         or play a bot on their side.
+Open Questions:
+        what level of connectivity do we _require_ wrt p2p?
+            can we achieve 100% reliably?
+                100% reachable nodes? 100% that we can _directly_ communicate with via udp.
+        For what reasons do we still need a server? Besides sync checking?
+            If lobbies are done by an external server controlled by us, user created servers are not really necessary are they?
+            in the case of a not-100% connected graph, a player quitting may disconnect it.
+                -> we should never kill a game when a player leaves.
+                    perf degradation is bad but acceptable.
+
+Protocol:
+    Handshake:
+        Client says: "Version, all mod versions available, player state(name,color,etc)"
+        Server says: "Game id, mods versions required, syncrandom, lobbystate" OR "GTFO"
+           -- client should be given the option to change mods if required and possible
+           -- this can be done by noting the required mods, dropping, reiniting appropriately, and connecting again.
+              The client still needs to be told by the server what it needs, for direct connect.
+           -- Would this include available slots?
+               It doesn't need to -> clients can be dumped into an "observers bin" on join, if there
+                   isn't a free slot available
+               I'm not sure how nice that actually is -- having the server dump players into a 
+                       real slot if one is available is nicer, for noobs.
+                       when you want to play with specific people, having some of them be unable to join until you kick someone is undesirable. -> observer bin. let host pro/demote people into/outof full slots.
+                       "Heroes of Newerth" (a dota clone) is kinda like this.
+                           their previous game was kinda a disaster wrt lobby stuff :D
+                           (savage, s2)
+                           HoN's netcode is REALLY nice. fps-style though, so not useful.
+                overflow into a bin, sure.
+        Client says : "ACK, NACK"?
+            --password? --banning?
+        Connection moves to "Lobby" protocol.
+    Lobby:
+        Server says: "assigned slot (as per above discussion), other player details(?)"
+            -- Player info exchange could be done via UDP at this stage
+                we probably want to use this stage to _connect_ udp, so probably not.
+                also, no reason; we care about neither latency nor bandwidth here.
+            Transfer of maps? mods?
+            One easy way to do this is for the host to upload to a repository
+            then the other clients can retrieve the missing bits using WebClient etc.
+            (Rather than reinventing a bulk transfer protocol)
+                Need a data structure for info that is needed for the lobby; slots, minimap(?)
+                  Why should they not download everything immediately? maps arent big.
+                    How do existing rts's solve this?
+                        by not having the client determine lobby structure from the map.
+                        (more generally, by not loading the map until game start)
+        Syncing client info in a less hacky way (currently its a hack that only works in frame 0). yes, we fix that.
+
+
+
+protocol stages:
+    Handshake:
+        verify versions, password; choose player name/color; client is assigned a clientid
+    Lobby:
+        Sync lobby info; alter player name, color, team, etc.
+        transmit maps and any other transferable but not-currently-present data.
+        connect udp.
+    Game:
+        orders over udp; sync over tcp.
+    -> Return to Lobby mode at the end of a game (after postgame etc). Drop and reconnect is fine, if its automated.
+
+Implementation stages:
+    Handshake:
+        - This can do nothing, as a first attempt.
+    Lobby:
+        - The udp connections are the most interesting bit here.
+        - As a first attempt, require 100% connectivity. i hate routing.
+            interesting or "interesting"?
+            udp punchthrough is the latter. 
+                    Do we need this in our first N attempts?
+                        If we want to establish UDP connections with everyone, I imagine so.
+                        We need punchthrough or upnp. (and, excepting broken routers, punchthrough isn't much more difficult. THAT is the "interesting" case.)
+        - Don't need transferrable data in first attempt.
+    Game:
+        -  We need reliable, working, ordered, udp data transfer.
+
+
+ Other Issues: (to be solved later)
+            Where does this magical infinite webspace live?
+                maps are small.
+                    If it's permanent you can't pretend a limit won't ever be hit
+                         it isn't permanent; it only has to last the duration of the server.
+                     Storing the maps indexed by sha is probably a very sane way to do it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
