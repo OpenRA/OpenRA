@@ -34,17 +34,17 @@ namespace OpenRA
 			return xs.Aggregate(1f, (a, x) => a * x);
 		}
 
-		public static V GetOrAdd<K, V>( this Dictionary<K, V> d, K k )
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
 			where V : new()
 		{
-			return d.GetOrAdd( k, _ => new V() );
+			return d.GetOrAdd(k, _ => new V());
 		}
 
-		public static V GetOrAdd<K, V>( this Dictionary<K, V> d, K k, Func<K, V> createFn )
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
 		{
 			V ret;
-			if( !d.TryGetValue( k, out ret ) )
-				d.Add( k, ret = createFn( k ) );
+			if (!d.TryGetValue(k, out ret))
+				d.Add(k, ret = createFn(k));
 			return ret;
 		}
 
@@ -54,18 +54,28 @@ namespace OpenRA
 			return xs[r.Next(xs.Length)];
 		}
 
-		public static void DoTimed<T>( this IEnumerable<T> e, Action<T> a, string text, double time )
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, double time)
 		{
 			var sw = new Stopwatch();
 
-			e.Do( x =>
+			e.Do(x =>
 			{
 				var t = sw.ElapsedTime();
-				a( x );
+				a(x);
 				var dt = sw.ElapsedTime() - t;
-				if( dt > time )
+				if (dt > time)
 					Log.Write("perf", text, x, dt * 1000, Game.LocalTick);
-			} );
+			});
+		}
+
+		public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+		{
+			if (val.CompareTo(min) < 0)
+				return min;
+			else if (val.CompareTo(max) > 0)
+				return max;
+			else
+				return val;
 		}
 	}
 }

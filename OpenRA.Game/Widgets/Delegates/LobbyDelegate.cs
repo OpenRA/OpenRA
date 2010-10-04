@@ -317,16 +317,16 @@ namespace OpenRA.Widgets.Delegates
 					{
 						var colorChooser = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
 						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-						hueSlider.Offset = Game.LocalClient.Color1.GetHue()/360f;
+						hueSlider.SetOffset(Game.LocalClient.Color1.GetHue()/360f);
 						
 						var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-						satSlider.Offset = Game.LocalClient.Color1.GetSaturation();
-			
+						satSlider.SetOffset(Game.LocalClient.Color1.GetSaturation());
+
 						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-						lumSlider.Offset = Game.LocalClient.Color1.GetBrightness();
+						lumSlider.SetOffset(Game.LocalClient.Color1.GetBrightness());
 						
 						var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-						rangeSlider.Offset = Game.LocalClient.Color1.GetBrightness() == 0 ? 0 : Game.LocalClient.Color2.GetBrightness()/Game.LocalClient.Color1.GetBrightness();
+						rangeSlider.SetOffset(Game.LocalClient.Color1.GetBrightness() == 0 ? 0 : Game.LocalClient.Color2.GetBrightness()/Game.LocalClient.Color1.GetBrightness());
 
 						UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 						colorChooser.IsVisible = () => true;

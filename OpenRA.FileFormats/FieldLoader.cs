@@ -112,9 +112,9 @@ namespace OpenRA.FileFormats
 			{
 				var parts = x.Split(',');
 				if (parts.Length == 3)
-					return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
-					return Color.FromArgb(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255), int.Parse(parts[3]).Clamp(0, 255));
 				return InvalidValueAction(x,fieldType, field);
 			}
 
@@ -264,7 +264,10 @@ namespace OpenRA.FileFormats
 			if (f.FieldType == typeof(Color))
 			{
 				var c = (Color)v;
-				return "{0},{1},{2},{3}".F(c.A,c.R,c.G,c.B);
+				return "{0},{1},{2},{3}".F(((int)c.A).Clamp(0, 255),
+					((int)c.R).Clamp(0, 255),
+					((int)c.G).Clamp(0, 255),
+					((int)c.B).Clamp(0, 255));
 			}
 
 			return f.FieldType.IsArray

@@ -370,10 +370,12 @@ Background@SERVER_LOBBY:
 				Slider@LUM:
 					Id:LUM_SLIDER
 					X:120
+					Id:LUM_SLIDER
 					Y:90
 					Width:260
 					Height:20
 					Ticks:5
+					Range:0.2,1
 				Label@RANGE_LABEL:
 					X:0
 					Y:120
@@ -388,6 +390,7 @@ Background@SERVER_LOBBY:
 					Width:260
 					Height:20
 					Ticks:5
+					Range:0,0.25
 Background@MAP_CHOOSER:
 	Id:MAP_CHOOSER
 	X:(WINDOW_RIGHT - WIDTH)/2

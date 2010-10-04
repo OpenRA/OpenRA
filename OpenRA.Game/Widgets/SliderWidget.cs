@@ -17,9 +17,11 @@ namespace OpenRA.Widgets
 	{
 		public event Action<float> OnChange;
 		public Func<float> GetOffset;
-		public float Offset = 0;
 		public int Ticks = 0;
 		public int TrackHeight = 5;
+		public float2 Range = new float2(0f, 1f);
+		
+		private float Offset = 0;
 
 		int2 lastMouseLocation;
 		bool isMoving = false;
@@ -27,7 +29,14 @@ namespace OpenRA.Widgets
 		public SliderWidget()
 			: base()
 		{
-			GetOffset = () => Offset;
+			GetOffset = () =>
+			{
+				var Big = Math.Max(Range.X, Range.Y);
+				var Little = Math.Min(Range.X, Range.Y);
+				var Spread = Big - Little;
+
+				return Spread * Offset + Little;
+			};
 			OnChange = x => Offset = x;
 		}
 
@@ -41,6 +50,15 @@ namespace OpenRA.Widgets
 			TrackHeight = other.TrackHeight;
 			lastMouseLocation = other.lastMouseLocation;
 			isMoving = other.isMoving;
+		}
+
+		public void SetOffset(float newOffset)
+		{
+			var Big = Math.Max(Range.X, Range.Y);
+			var Little = Math.Min(Range.X, Range.Y);
+			var Spread = Big - Little;
+
+			Offset = (newOffset - Little) / Spread;
 		}
 
 		public override bool HandleInputInner(MouseInput mi)
@@ -72,7 +90,7 @@ namespace OpenRA.Widgets
 						}
 						else if (Ticks != 0)
 						{
-							var pos = GetOffset();
+							var pos = Offset;
 
 							// Offset slightly the direction we want to move so we don't get stuck on a tick
 							var delta = 0.001;
@@ -92,7 +110,7 @@ namespace OpenRA.Widgets
 							var thumb = thumbRect;
 							var center = thumb.X + thumb.Width / 2;
 							var newOffset = OffsetBy((mi.Location.X - center) * 1f / (RenderBounds.Width - thumb.Width));
-							if (newOffset != GetOffset())
+							if (newOffset != Offset)
 							{
 								OnChange(newOffset);
 
@@ -127,7 +145,7 @@ namespace OpenRA.Widgets
 
 		float OffsetBy(float amount)
 		{
-			var centerPos = GetOffset() + amount;
+			var centerPos = Offset + amount;
 			if (centerPos < 0) centerPos = 0;
 			if (centerPos > 1) centerPos = 1;
 			return centerPos;
@@ -141,7 +159,7 @@ namespace OpenRA.Widgets
 			{
 				var width = RenderBounds.Height;
 				var height = RenderBounds.Height;
-				var origin = (int)((RenderBounds.X + width / 2) + GetOffset() * (RenderBounds.Width - width) - width / 2f);
+				var origin = (int)((RenderBounds.X + width / 2) + Offset * (RenderBounds.Width - width) - width / 2f);
 				return new Rectangle(origin, RenderBounds.Y, width, height);
 			}
 		}
