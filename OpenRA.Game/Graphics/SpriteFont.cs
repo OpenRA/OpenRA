@@ -80,17 +80,20 @@ namespace OpenRA.Graphics
 		GlyphInfo CreateGlyph(Pair<char,Color> c)
 		{
 			var index = FT.FT_Get_Char_Index(face, (uint)c.First);
-			FT.FT_Load_Glyph(face, index, FT.FT_LOAD_RENDER);
+			if (0 != FT.FT_Load_Glyph(face, index, FT.FT_LOAD_RENDER))
+				throw new InvalidOperationException( "FT_Load_Glyph failed." );
 
 			var _face = (FT_FaceRec)Marshal.PtrToStructure(face, typeof(FT_FaceRec));
 			var _glyph = (FT_GlyphSlotRec)Marshal.PtrToStructure(_face.glyph, typeof(FT_GlyphSlotRec));
 
-			var s = builder.Allocate(new Size(_glyph.metrics.width >> 6, _glyph.metrics.height >> 6));
+			var s = builder.Allocate(
+				new Size(_glyph.metrics.width.ToInt32() >> 6, 
+					_glyph.metrics.height.ToInt32() >> 6));
 
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = _glyph.metrics.horiAdvance / 64f,
+				Advance = _glyph.metrics.horiAdvance.ToInt32() / 64f,
 				Offset = { X = _glyph.bitmap_left, Y = -_glyph.bitmap_top }
 			};
 
