@@ -45,12 +45,29 @@ namespace OpenRA.Mods.RA
 		int2 baseCenter;
         XRandom random = new XRandom(); //we do not use the synced random number generator.
 
+        Dictionary<string, float> unitsToBuild = new Dictionary<string, float>
+        {
+            {"e1", .0f},
+            {"e2", .0f},
+            {"e3", .0f},
+            {"1tnk", .0f},
+            {"2tnk", .0f},
+            {"3tnk", .0f}
+        };
+
 		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
 		{
-			{ "proc", .2f },
+			{ "proc", .3f },
 			{ "barr", .05f },
 			{ "tent", .05f },
 			{ "weap", .05f },
+            { "pbox", .05f },
+            { "hbox", .05f },
+            { "gun",  .05f },
+            { "tsla", .05f },
+            { "ftur", .05f },
+            { "agun", .01f },
+            { "sam",  .01f },
 			{ "atek", .01f },
 			{ "stek", .01f },
 			{ "silo", .05f },
@@ -71,7 +88,8 @@ namespace OpenRA.Mods.RA
 
 		const int MaxBaseDistance = 15;
 
-		BuildState state = BuildState.WaitForFeedback;
+		BuildState bstate = BuildState.WaitForFeedback;
+        BuildState dstate = BuildState.WaitForFeedback;
 
 		/* called by the host's player creation code */
 		public void Activate(Player p)
@@ -123,7 +141,8 @@ namespace OpenRA.Mods.RA
 
 			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
 				.Select( a => a.Actor.Info.Name ).ToArray();
-
+            
+            
 			foreach (var frac in buildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
 					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
@@ -131,6 +150,21 @@ namespace OpenRA.Mods.RA
 
 			return null;
 		}
+
+        ActorInfo ChooseDefenseToBuild(ProductionQueue queue)
+        {
+            var buildableThings = queue.BuildableItems();
+
+            var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
+                .Select(a => a.Actor.Info.Name).ToArray();
+
+            foreach (var frac in buildingFractions)
+                if (buildableThings.Any(b => b.Name == frac.Key))
+                    if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
+                        return Rules.Info[frac.Key];
+
+            return null;
+        }
 
 		int2? ChooseBuildLocation(ProductionItem item)
 		{
@@ -174,7 +208,7 @@ namespace OpenRA.Mods.RA
 
 
             BuildBuildings();
-            //build Defense
+            BuildDefense();
             //build Ship
 		}
 
@@ -212,10 +246,10 @@ namespace OpenRA.Mods.RA
 
             /* Create an attack force when we have enough units around our base. */
             // (don't bother leaving any behind for defense.)
-            if (unitsHangingAroundTheBase.Count > 5)
+            if (unitsHangingAroundTheBase.Count > 8)
             {
                 Game.Debug("Launch an attack.");
-
+                
 				int2 attackTarget = Game.world.WorldActor.Trait<MPStartLocations>().Start
 					.Where(kv => kv.Key != p)
 					.Select(kv => kv.Value)
@@ -231,12 +265,15 @@ namespace OpenRA.Mods.RA
         {
             var newProdBuildings = self.World.Queries.OwnedBy[p]
                 .Where(a => (a.TraitOrDefault<RallyPoint>() != null
-                    && !activeProductionBuildings.Contains(a))).ToArray();
+                    //&& !activeProductionBuildings.Contains(a)
+                    )).ToArray(); 
 
             foreach (var a in newProdBuildings)
             {
                 activeProductionBuildings.Add(a);
                 int2 newRallyPoint = ChooseRallyLocationNear(a.Location);
+                newRallyPoint.X += 4;
+                newRallyPoint.Y += 4;
                 Game.IssueOrder(new Order("SetRallyPoint", a, newRallyPoint));
             }
         }
@@ -244,10 +281,11 @@ namespace OpenRA.Mods.RA
         //won't work for shipyards...
         private int2 ChooseRallyLocationNear(int2 startPos)
         {
-            foreach (var t in Game.world.FindTilesInCircle(startPos, 6))
-                if (Game.world.IsCellBuildable(t, false) && t != startPos)
+            Random r = new Random();
+            foreach (var t in Game.world.FindTilesInCircle(startPos, 8))
+                if (Game.world.IsCellBuildable(t, false) && t != startPos && r.Next(64) == 0)
                         return t;
-
+            
             return startPos;		// i don't know where to put it.
         }
 
@@ -303,17 +341,30 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var unit = ChooseRandomUnitToBuild(queue);
-			if (unit != null)
-			{
-				Game.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
-			}
+            Boolean found = false;
+            if (unit != null)
+            {
+                foreach (var un in unitsToBuild)
+                {
+                    if (un.Key == unit.Name)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found == true)
+                {
+                    Game.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
+                }
+            }
         }
 
         private void BuildBuildings()
         {
             // Pick a free queue
 			var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Building")
+                .Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Building")
 				.Select(a => a.Trait)
 				.FirstOrDefault();
 			
@@ -321,19 +372,20 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var currentBuilding = queue.CurrentItem();
-            switch (state)
+            switch (bstate)
             {
                 case BuildState.ChooseItem:
                     {
                         var item = ChooseBuildingToBuild(queue);
                         if (item == null)
                         {
-                            state = BuildState.WaitForFeedback;
+                            bstate = BuildState.WaitForFeedback;
                             lastThinkTick = ticks;
                         }
                         else
                         {
-                            state = BuildState.WaitForProduction;
+                            Game.Debug("AI: Starting production of {0}".F(item.Name));
+                            bstate = BuildState.WaitForProduction;
                             Game.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
                         }
                     }
@@ -346,7 +398,7 @@ namespace OpenRA.Mods.RA
                         Game.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
                     else if (currentBuilding.Done)
                     {
-                        state = BuildState.WaitForFeedback;
+                        bstate = BuildState.WaitForFeedback;
                         lastThinkTick = ticks;
 
                         /* place the building */
@@ -365,7 +417,69 @@ namespace OpenRA.Mods.RA
 
                 case BuildState.WaitForFeedback:
                     if (ticks - lastThinkTick > feedbackTime)
-                        state = BuildState.ChooseItem;
+                        bstate = BuildState.ChooseItem;
+                    break;
+            }
+        }
+
+        private void BuildDefense()
+        {
+            // Pick a free queue
+            var queue = Game.world.Queries.WithTraitMultiple<ProductionQueue>()
+                .Where(a => a.Actor.Owner == p && a.Trait.Info.Type == "Defense")
+                .Select(a => a.Trait)
+                .FirstOrDefault();
+
+            if (queue == null)
+                return;
+
+            var currentBuilding = queue.CurrentItem();
+            switch (dstate)
+            {
+                case BuildState.ChooseItem:
+                    {
+                        var item = ChooseDefenseToBuild(queue);
+                        if (item == null)
+                        {
+                            dstate = BuildState.WaitForFeedback;
+                            lastThinkTick = ticks;
+                        }
+                        else
+                        {
+                            Game.Debug("AI: Starting production of {0}".F(item.Name));
+                            dstate = BuildState.WaitForProduction;
+                            Game.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
+                        }
+                    }
+                    break;
+
+                case BuildState.WaitForProduction:
+                    if (currentBuilding == null) return;	/* let it happen.. */
+
+                    else if (currentBuilding.Paused)
+                        Game.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
+                    else if (currentBuilding.Done)
+                    {
+                        dstate = BuildState.WaitForFeedback;
+                        lastThinkTick = ticks;
+
+                        /* place the building */
+                        var location = ChooseBuildLocation(currentBuilding);
+                        if (location == null)
+                        {
+                            Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
+                            Game.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item));
+                        }
+                        else
+                        {
+                            Game.IssueOrder(new Order("PlaceBuilding", p.PlayerActor, location.Value, currentBuilding.Item));
+                        }
+                    }
+                    break;
+
+                case BuildState.WaitForFeedback:
+                    if (ticks - lastThinkTick > feedbackTime)
+                        dstate = BuildState.ChooseItem;
                     break;
             }
         }
