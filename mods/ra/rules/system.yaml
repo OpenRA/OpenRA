@@ -205,6 +205,8 @@ MINP:
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
+	Tooltip:
+		Name: Anti-Personnel Mine
 
 MINV:
 	Mine:
@@ -216,6 +218,8 @@ MINV:
 	RenderUnit:
 	BelowUnits:
 	InvisibleToOthers:
+	Tooltip:
+		Name: Anti-Tank Mine
 
 CRATE:
 	Tooltip:
