@@ -589,8 +589,9 @@ namespace OpenRA.Server
 
 		static void SyncLobbyInfo()
 		{
-			DispatchOrders(null, 0,
-				new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
+			if (!GameStarted)	/* don't do this while the game is running, it breaks things. */
+				DispatchOrders(null, 0,
+					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
 
 			PingMasterServer();
 		}
