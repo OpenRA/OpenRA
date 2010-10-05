@@ -17,7 +17,7 @@ TAG=$1
 
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 
-_gitroot="git://github.com/chrisforbes/OpenRA.git"
+_gitroot="git://github.com/OpenRA/OpenRA.git"
 _gitname="OpenRA"
 
 if [ -z $VERSION ]; then
