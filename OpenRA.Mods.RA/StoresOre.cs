@@ -44,13 +44,13 @@ namespace OpenRA.Mods.RA
 		
 		int Stored(Actor self)
 		{
-			return (int)(Player.GetSiloFullness() * Info.Capacity);
+			return Info.Capacity * Player.Ore / Player.OreCapacity;
 		}
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (self.IsDead() && Player.GetSiloFullness() > 0)
-				Player.TakeOre(Stored(self));		// Lose the stored ore
+			if (self.IsDead())
+				Player.TakeOre(Stored(self));	// Lose the stored ore
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -60,6 +60,6 @@ namespace OpenRA.Mods.RA
 					? Info.PipColor : PipType.Transparent );
 		}
 
-		public bool ShouldExplode(Actor self) { return Player.GetSiloFullness() > 0; }
+		public bool ShouldExplode(Actor self) { return Stored(self) > 0; }
 	}
 }
