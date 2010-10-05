@@ -484,6 +484,8 @@ CYCL:
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Chain Link Barrier
 		Icon:cyclicnh
@@ -502,6 +504,8 @@ SBAG:
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Sandbag Barrier
 		Icon:sbagicnh
@@ -520,6 +524,8 @@ BRIK:
 	Inherits: ^Wall
 	Valued:
 		Cost: 100
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
 		Icon:brikicnh

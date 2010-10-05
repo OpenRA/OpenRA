@@ -1043,6 +1043,8 @@ SBAG:
 		Hotkey: b
 	Valued:
 		Cost: 25
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Sandbag Wall
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
@@ -1061,6 +1063,8 @@ FENC:
 		Hotkey: n
 	Valued:
 		Cost: 25
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Wire Fence
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
@@ -1079,6 +1083,8 @@ BRIK:
 		Hotkey: w
 	Valued:
 		Cost: 100
+	CustomSellValue:
+		Value: 0
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
@@ -1091,6 +1097,7 @@ BRIK:
 		Type: None
 	Wall:
 		CrushClasses: heavywall
+
 CYCL:
 	Inherits: ^Wall
 	Health:
