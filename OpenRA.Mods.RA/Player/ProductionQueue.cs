@@ -173,7 +173,7 @@ namespace OpenRA.Mods.RA
 				}
 			case "CancelProduction":
 				{
-					CancelProduction(order.TargetString);
+					CancelProduction(order.TargetString,order.TargetLocation.X);
 					break;
 				}
 			}
@@ -194,15 +194,26 @@ namespace OpenRA.Mods.RA
 			return (int) time;
 		}
 
-		protected void CancelProduction( string itemName )
-		{			
+		protected void CancelProduction(string itemName, int numberToCancel)
+		{
 			if (Queue.Count == 0)
 				return; // Nothing to do here
-			
-			var lastIndex = Queue.FindLastIndex( a => a.Item == itemName );
-			if (lastIndex > 0)
+
+			var lastIndex = Queue.FindLastIndex(a => a.Item == itemName);
+
+			while (lastIndex > 0)
+			{
+
 				Queue.RemoveAt(lastIndex);
-			else if( lastIndex == 0 )
+				lastIndex = Queue.FindLastIndex(a => a.Item == itemName);
+				if (numberToCancel > 0)
+					--numberToCancel;
+				if (numberToCancel == 0)
+					break;
+				//else negative, continue deleting all orders
+			}
+
+			if (lastIndex == 0)
 			{
 				var item = Queue[0];
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(item.TotalCost - item.RemainingCost); // refund what's been paid so far.

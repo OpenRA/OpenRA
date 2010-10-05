@@ -357,7 +357,13 @@ namespace OpenRA.Mods.RA.Widgets
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
 						Sound.Play(eva.CancelledAudio);
-						Game.IssueOrder(Order.CancelProduction(CurrentQueue.self, item));
+						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
+						if (Game.GetModifierKeys().HasModifier(Modifiers.Shift) &&
+							Game.GetModifierKeys().HasModifier(Modifiers.Ctrl))
+						{
+							numberToCancel = -1; //cancel all
+						}
+						Game.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}
 					else
 					{

@@ -187,9 +187,9 @@ namespace OpenRA
 			return new Order("PauseProduction", subject, new int2( pause ? 1 : 0, 0 ), item);
 		}
 
-		public static Order CancelProduction(Actor subject, string item)
+		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, item);
+			return new Order("CancelProduction", subject, new int2( count, 0 ), item);
 		}
 	}
 }

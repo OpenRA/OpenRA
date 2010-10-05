@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 
 			if (producers.Count() == 0)
 			{
-				CancelProduction(name);
+				CancelProduction(name,1);
 				return;
 			}
 			
