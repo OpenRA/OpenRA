@@ -11,10 +11,11 @@
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class IdleAnimation : IActivity
+	public class IdleAnimation : Idle
 	{
 		string sequence;
 		int delay;
@@ -25,10 +26,8 @@ namespace OpenRA.Mods.RA.Activities
 			this.delay = delay;
 		}
 
-		IActivity NextActivity { get; set; }
-
 		bool active = true;
-		public IActivity Tick(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			if (!active) return NextActivity;
 			
@@ -38,23 +37,11 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		public void Cancel(Actor self)
+		protected override bool OnCancel()
 		{
 			active = false;
-			NextActivity = null;
+			return true;
 		}
 
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
-
-		public IEnumerable<float2> GetCurrentPath()
-		{
-			yield break;
-		}
 	}
 }
