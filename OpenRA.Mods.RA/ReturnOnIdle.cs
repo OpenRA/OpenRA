@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 			}
 			else
 			{
-				Game.Debug("Plane has nowhere to land; flying away");
+				//Game.Debug("Plane has nowhere to land; flying away");
 				self.QueueActivity(new FlyOffMap());
 			}
 		}
