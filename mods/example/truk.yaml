@@ -1,0 +1,25 @@
+TRUK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 50
+		Prerequisites: weap,barr
+		Owner: soviet
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Supply Truck
+		Description: Light infantry transport.\n Weak vs Everything
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 12
+	RevealsShroud:
+		Range: 5
+	RenderUnit:
+	Cargo:
+		Types: Infantry
+		Passengers: 5
+		UnloadFacing: 220

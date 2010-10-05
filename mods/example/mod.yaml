@@ -1,0 +1,11 @@
+Metadata:
+	Title: Example Mod
+	Description: Adds a soviet troop transport
+	Version: a0001
+
+Folders:
+	mods/example
+Rules:
+	mods/example/truk.yaml
+Sequences:
+	mods/example/sequences.yaml
