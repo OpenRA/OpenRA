@@ -53,9 +53,11 @@ namespace OpenRA.Server
 
 		public static void GetMOTD(string masterServerUrl)
 		{
+			var motd = Widget.RootWidget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
+			
+			// Runs in a separate thread to prevent dns lookup hitches
 			new Thread(() =>
 			{
-				var motd = Widget.RootWidget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
 				if (motd != null)
 				{
 					try
