@@ -30,7 +30,8 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage > 0)		/* fix to allow healing via `damage` */
-				remainingProneTime = defaultProneTime;
+				if (!e.Warhead.PreventProne)
+					remainingProneTime = defaultProneTime;
 		}
 
 		public void Tick(Actor self)

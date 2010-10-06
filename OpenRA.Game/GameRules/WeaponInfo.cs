@@ -32,6 +32,7 @@ namespace OpenRA.GameRules
 		[FieldLoader.Load] public readonly int Damage = 0;									// how much (raw) damage to deal
 		[FieldLoader.Load] public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
 		[FieldLoader.Load] public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
+		[FieldLoader.Load] public readonly bool PreventProne = false;						// whether we should prevent prone response in infantry.
 
 		public float EffectivenessAgainst(Actor self)
 		{

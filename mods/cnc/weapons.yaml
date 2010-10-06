@@ -662,3 +662,4 @@ Tiberium:
 		Spread: 1
 		InfDeath: 4
 		Damage: 5
+		PreventProne: yes
