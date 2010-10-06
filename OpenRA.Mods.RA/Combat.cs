@@ -62,7 +62,11 @@ namespace OpenRA.Mods.RA
 						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1])) ;
 
 					foreach (var sc in smudgeCells)
+					{
 						smudgeLayer.AddSmudge(sc);
+						if (warhead.Ore)
+							world.WorldActor.Trait<ResourceLayer>().Destroy(sc);
+					}
 				}
 				else
 					smudgeLayer.AddSmudge(targetTile);
