@@ -93,6 +93,7 @@ namespace OpenRA.GameRules
 		[FieldLoader.Load] public readonly bool Underwater = false;
 		[FieldLoader.Load] public readonly string[] ValidTargets = { "Ground" };
 		[FieldLoader.Load] public readonly int BurstDelay = 5;
+		[FieldLoader.Load] public readonly float MinRange = 0;
 
 		[FieldLoader.LoadUsing( "LoadProjectile" )] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing( "LoadWarheads" )] public List<WarheadInfo> Warheads;

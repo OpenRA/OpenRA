@@ -123,6 +123,9 @@ namespace OpenRA.Mods.RA
 
 			if (w.Info.Range * w.Info.Range * Game.CellSize * Game.CellSize
 			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
+
+			if (w.Info.MinRange * w.Info.MinRange * Game.CellSize * Game.CellSize >
+				(target.CenterLocation - self.CenterLocation).LengthSquared) return false;
 			
 			if (!w.IsValidAgainst(target)) return false;
 
