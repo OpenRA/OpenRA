@@ -1051,7 +1051,7 @@ SBAG:
 	Health:
 		HP: 300
 	Armor:
-		Type: None
+		Type: Wood
 
 FENC:
 	Inherits: ^Wall
@@ -1071,7 +1071,7 @@ FENC:
 	Health:
 		HP: 300
 	Armor:
-		Type: None
+		Type: Wood
 
 BRIK:
 	Inherits: ^Wall
@@ -1094,7 +1094,7 @@ BRIK:
 	Health:
 		HP: 1500
 	Armor:
-		Type: None
+		Type: Concrete
 	Wall:
 		CrushClasses: heavywall
 
@@ -1103,18 +1103,18 @@ CYCL:
 	Health:
 		HP: 100
 	Armor: 
-		Type: None
+		Type: Wood
 		
 BARB:
 	Inherits: ^Wall
 	Health:
 		HP: 100
 	Armor:
-		Type: None
+		Type: Wood
 
 WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
 	Armor: 
-		Type: None
+		Type: Wood
