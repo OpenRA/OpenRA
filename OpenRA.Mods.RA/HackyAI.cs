@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 
 		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
 		{
-			{ "proc", .3f },
+			{ "proc", .2f },
 			{ "barr", .05f },
 			{ "tent", .05f },
 			{ "weap", .05f },
@@ -72,8 +72,8 @@ namespace OpenRA.Mods.RA
 			{ "stek", .01f },
 			{ "silo", .05f },
 			{ "fix", .01f },
-			{ "hpad", .01f },
-			{ "afld", .01f },
+			//{ "hpad", .01f },
+			//{ "afld", .01f },
 			{ "dome", .01f },
 		};
 		
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.RA
         {
             var newProdBuildings = self.World.Queries.OwnedBy[p]
                 .Where(a => (a.TraitOrDefault<RallyPoint>() != null
-                    //&& !activeProductionBuildings.Contains(a)
+                    && !activeProductionBuildings.Contains(a)
                     )).ToArray(); 
 
             foreach (var a in newProdBuildings)
