@@ -37,7 +37,7 @@ namespace OpenRA.Widgets
 
 				return Spread * Offset + Little;
 			};
-			OnChange = x => Offset = x;
+			OnChange = x => Offset = x.Clamp(0f, 1f);
 		}
 
 		public SliderWidget(SliderWidget other)
@@ -45,8 +45,9 @@ namespace OpenRA.Widgets
 		{
 			OnChange = other.OnChange;
 			GetOffset = other.GetOffset;
-			Offset = other.Offset;
 			Ticks = other.Ticks;
+			Range = other.Range;
+			Offset = GetOffset();
 			TrackHeight = other.TrackHeight;
 			lastMouseLocation = other.lastMouseLocation;
 			isMoving = other.isMoving;
@@ -58,7 +59,7 @@ namespace OpenRA.Widgets
 			var Little = Math.Min(Range.X, Range.Y);
 			var Spread = Big - Little;
 
-			Offset = (newOffset - Little) / Spread;
+			Offset = ((newOffset - Little) / Spread).Clamp(0f, 1f);
 		}
 
 		public override bool HandleInputInner(MouseInput mi)

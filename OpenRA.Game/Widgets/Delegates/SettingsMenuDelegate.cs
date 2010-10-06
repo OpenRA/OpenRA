@@ -57,9 +57,10 @@ namespace OpenRA.Widgets.Delegates
             // Added scroll sensitivity - Gecko	
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
             if (edgeScrollSlider != null) // Backwards compatible - Gecko
-            {
-                edgeScrollSlider.OnChange += x => { x += 0.1f; Game.Settings.Game.ViewportEdgeScrollStep = x; };
-                edgeScrollSlider.GetOffset = () => { return Game.Settings.Game.ViewportEdgeScrollStep - 0.1f; };
+			{
+				edgeScrollSlider.SetOffset(Game.Settings.Game.ViewportEdgeScrollStep);
+                edgeScrollSlider.OnChange += _ => { Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset(); };
+				Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
             }
 
             var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
@@ -76,10 +77,12 @@ namespace OpenRA.Widgets.Delegates
 			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
 			soundslider.OnChange += x => { Sound.SoundVolume = x; };
 			soundslider.GetOffset = () => { return Sound.SoundVolume; };
+			soundslider.SetOffset(Sound.SoundVolume);
 			
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
 			musicslider.OnChange += x => { Sound.MusicVolume = x; };
 			musicslider.GetOffset = () => { return Sound.MusicVolume; };
+			musicslider.SetOffset(Sound.MusicVolume);
 			
 			
 			// Display

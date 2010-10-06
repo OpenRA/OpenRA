@@ -144,14 +144,18 @@ namespace OpenRA.Widgets
 
                 // Modified to use the ViewportEdgeScrollStep setting - Gecko
                 if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up))
-                    scroll += new float2(0, -(Game.Settings.Game.ViewportEdgeScrollStep * 100));
+                    scroll += new float2(0, -1);
                 if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
-                    scroll += new float2((Game.Settings.Game.ViewportEdgeScrollStep * 100), 0);
+                    scroll += new float2(1, 0);
                 if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down))
-                    scroll += new float2(0, (Game.Settings.Game.ViewportEdgeScrollStep * 100));
+                    scroll += new float2(0, 1);
                 if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left))
-                    scroll += new float2(-(Game.Settings.Game.ViewportEdgeScrollStep * 100), 0);
-			
+                    scroll += new float2(-1, 0);
+
+				float length = scroll.Length;
+				scroll.X = (scroll.X / length) * Game.Settings.Game.ViewportEdgeScrollStep;
+				scroll.Y = (scroll.Y / length) * Game.Settings.Game.ViewportEdgeScrollStep;
+
 				Game.viewport.Scroll(scroll);
 			}
 		}
