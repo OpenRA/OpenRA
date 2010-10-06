@@ -587,7 +587,7 @@ CrateNuke:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 15
+		Delay: 4
 		InfDeath: 4
 		ImpactSound: kaboom22
 		
@@ -917,7 +917,7 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 15
+		Delay: 4
 		InfDeath: 4
 		ImpactSound: kaboom22
 
