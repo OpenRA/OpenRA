@@ -575,6 +575,7 @@ CrateNuke:
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 4
+		ImpactSound: kaboom1
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
@@ -586,8 +587,9 @@ CrateNuke:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 3
+		Delay: 15
 		InfDeath: 4
+		ImpactSound: kaboom22
 		
 		
 TeslaZap:
@@ -903,6 +905,7 @@ Atomic:
 		Explosion: nuke
 		WaterExplosion: nuke
 		InfDeath: 4
+		ImpactSound: kaboom1
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
@@ -914,8 +917,9 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 3
+		Delay: 15
 		InfDeath: 4
+		ImpactSound: kaboom22
 
 UnitExplode:
 	Warhead:
