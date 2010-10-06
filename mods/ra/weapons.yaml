@@ -561,6 +561,33 @@ CrateExplosion:
 		WaterExplosion: self_destruct
 		InfDeath: 3
 		ImpactSound: kaboom15
+
+CrateNuke:
+	Warhead@impact:
+		Damage: 1000
+		Spread: 6
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		WaterExplosion: nuke
+		InfDeath: 4
+	Warhead@areanuke:
+		DamageModel: PerCell
+		Damage: 250
+		SmudgeType: Scorch
+		Size: 5,4
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 3
+		InfDeath: 4
 		
 		
 TeslaZap:
