@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
@@ -18,6 +19,7 @@ namespace OpenRA.Mods.RA
 		public int SelectionShares = 10;
 		public string Effect = null;
 		public string Notification = null;
+		public string[] ExcludedActorTypes = { };
 
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
@@ -31,6 +33,14 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			this.info = info;
+		}
+
+		public int GetSelectionSharesOuter(Actor collector)
+		{
+			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
+				return 0;
+
+			return GetSelectionShares(collector);
 		}
 		
 		public virtual int GetSelectionShares(Actor collector)
