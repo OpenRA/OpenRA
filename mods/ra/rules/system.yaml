@@ -83,7 +83,7 @@ Player:
 		OneShot: yes
 	AirstrikePower:
 		Image: pbmbicon
-		ChargeTime: 5
+		ChargeTime: 1
 		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted bombs on your target.
 		GivenAuto: no
