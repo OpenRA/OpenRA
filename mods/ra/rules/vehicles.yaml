@@ -183,7 +183,7 @@ V2RL:
 		Name: Mammoth Tank
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
-		HP: 750
+		HP: 900
 	Armor:
 		Type: Heavy
 	Mobile:
