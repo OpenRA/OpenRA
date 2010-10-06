@@ -720,8 +720,8 @@ YAK:
 	RevealsShroud:
 		Range: 10
 	AttackPlane:
-		PrimaryWeapon: ChainGun
-		SecondaryWeapon: ChainGun
+		PrimaryWeapon: ChainGun.Yak
+		SecondaryWeapon: ChainGun.Yak
 		PrimaryOffset: -5,-6,0,0
 		SecondaryOffset: 5,-6,0,0
 	Plane:

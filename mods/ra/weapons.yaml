@@ -107,6 +107,7 @@ Vulcan:
 Maverick:
 	ROF: 30
 	Range: 9
+	MinRange: 3
 	Report: MISSILE7
 	Burst: 2
 	BurstDelay: 7
@@ -181,6 +182,26 @@ Flamer:
 ChainGun:
 	ROF: 3
 	Range: 5
+	MinRange: 1
+	Report: GUN13
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		WaterExplosion: small_splash
+		InfDeath: 1
+		Damage: 40
+
+ChainGun.Yak:
+	ROF: 3
+	Range: 5
+	MinRange: 3
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
@@ -449,6 +470,7 @@ MammothTusk:
 155mm:
 	ROF: 85
 	Range: 14
+	MinRange: 3
 	Report: TANK5
 	Projectile: Bullet
 		Speed: 12
@@ -610,6 +632,7 @@ RedEye:
 8Inch:
 	ROF: 250
 	Range: 16
+	MinRange: 8
 	Burst: 2
 	Report: TURRET1
 	Projectile: Bullet
@@ -636,6 +659,7 @@ RedEye:
 SubMissile:
 	ROF: 300
 	Range: 16
+	MinRange: 8
 	Burst: 2
 	Report: MISSILE6
 	Projectile: Bullet
@@ -812,6 +836,7 @@ Heal:
 SCUD:
 	ROF: 250
 	Range: 10
+	MinRange: 3
 	Report: MISSILE1
 	Projectile: Bullet
 		Speed: 10
