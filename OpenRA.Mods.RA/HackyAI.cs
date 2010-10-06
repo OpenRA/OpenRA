@@ -223,7 +223,29 @@ namespace OpenRA.Mods.RA
         //This is purely to identify production buildings that don't have a rally point set.
         List<Actor> activeProductionBuildings = new List<Actor>();
 
-        private void AssignRolesToIdleUnits(Actor self)
+		bool IsHumanPlayer(Player p)
+		{
+			/* hack hack: this actually detects 'is not HackyAI' -- possibly actually a good thing. */
+			var hackyAI = p.PlayerActor.Trait<HackyAI>();
+			return !hackyAI.enabled;
+		}
+
+		int2? ChooseEnemyTarget()
+		{
+			// Criteria for picking an enemy:
+			// 1. not ourself.
+			// 2. human.
+			// 3. not dead.
+
+			var possibleTargets = Game.world.WorldActor.Trait<MPStartLocations>().Start
+					.Where(kv => kv.Key != p && IsHumanPlayer(kv.Key) 
+						&& p.WinState == WinState.Undefined)
+					.Select(kv => kv.Value);
+
+			return possibleTargets.Any() ? possibleTargets.Random(random) : (int2?) null;
+		}
+
+        void AssignRolesToIdleUnits(Actor self)
         {
 			//HACK: trim these lists -- we really shouldn't be hanging onto all this state
 			//when it's invalidated so easily, but that's Matthew/Alli's problem.
@@ -249,14 +271,15 @@ namespace OpenRA.Mods.RA
             if (unitsHangingAroundTheBase.Count > 8)
             {
                 Game.Debug("Launch an attack.");
-                
-				int2 attackTarget = Game.world.WorldActor.Trait<MPStartLocations>().Start
-					.Where(kv => kv.Key != p)
-					.Select(kv => kv.Value)
-					.Random(random);
+
+				var attackTarget = ChooseEnemyTarget();
+				if (attackTarget == null)
+					return;
+
                 foreach (var a in unitsHangingAroundTheBase)
-					if (TryToMove(a, attackTarget))
+					if (TryToMove(a, attackTarget.Value))
 						attackForce.Add(a);
+
                 unitsHangingAroundTheBase.Clear();
             }
         }
