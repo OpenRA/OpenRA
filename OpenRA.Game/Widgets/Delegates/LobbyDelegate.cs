@@ -174,7 +174,7 @@ namespace OpenRA.Widgets.Delegates
 		}
 		
 		// hk is hue in the range [0,1] instead of [0,360]
-		Color ColorFromHSL(float hk, float s, float l)
+		public static Color ColorFromHSL(float hk, float s, float l)
 		{		
 			// Convert from HSL to RGB
 			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);

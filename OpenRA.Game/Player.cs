@@ -49,6 +49,7 @@ namespace OpenRA
 			
 			Index = index;
 			Palette = "player"+index;
+
 			Color = pr.Color;
 			Color2 = pr.Color2;
 			ClientIndex = 0;		/* it's a map player, "owned" by host */

@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
+using OpenRA.Widgets.Delegates;
 
 namespace OpenRA.Mods.RA
 {
@@ -47,6 +48,14 @@ namespace OpenRA.Mods.RA
 				else if (slot.Bot != null)
 				{
 					/* spawn a bot in this slot, "owned" by the host */
+
+					/* pick a random color for the bot */
+					var hue = (float)w.SharedRandom.NextDouble();
+					w.Map.Players[slot.MapPlayer].Color = LobbyDelegate.ColorFromHSL(hue, 1.0f, 0.7f);
+					w.Map.Players[slot.MapPlayer].Color2 = LobbyDelegate.ColorFromHSL(hue, 1.0f, 0.2f);
+
+					/* todo: pick a random name from the pool */
+
 					var player = new Player(w, w.Map.Players[slot.MapPlayer], playerIndex++);
 					w.AddPlayer(player);
 					
