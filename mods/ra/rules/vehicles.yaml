@@ -17,6 +17,8 @@ BADR:
 		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
+	Tooltip:
+		Name: Badger
 
 BADR.bomber:
 	CarpetBomb:
@@ -38,6 +40,8 @@ BADR.bomber:
 	IronCurtainable:	
 	-Selectable:
 	-GainsExperience:
+	Tooltip:
+		Name: Badger
 
 V2RL:
 	Inherits: ^Vehicle
