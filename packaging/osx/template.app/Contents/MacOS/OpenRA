@@ -18,8 +18,8 @@ GAME_PATH=$RESOURCES_PATH
 SUPPORT_PATH=~/Library/"Application Support"/OpenRA
 
 # Downloadable content
-DEPS_PACKAGE="osx-deps-v2.zip"
-DEPS_URL="http://open-ra.org/get-dependency.php?file=osx-deps-v2"
+DEPS_PACKAGE="osx-deps-v3.zip"
+DEPS_URL="http://open-ra.org/get-dependency.php?file=osx-deps-v3"
 RA_PACKAGE="ra-packages.zip"
 RA_URL="http://open-ra.org/get-dependency.php?file=ra-packages"
 CNC_PACKAGE="cnc-packages.zip"
@@ -75,7 +75,7 @@ fi
 
 # Run the game
 cd "${GAME_PATH}"
-"${EXE_PATH}"mono --debug "OpenRA.Game.exe" Game.Mods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
+"${EXE_PATH}"mono --debug --gc=sgen "OpenRA.Game.exe" Game.Mods=$MOD SupportDir=~/Library/"Application Support"/OpenRA
 
 # Did we crash?
 STATUS=$?
