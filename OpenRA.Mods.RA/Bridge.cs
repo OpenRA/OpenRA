@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA
 		
 		bool IsIntact(Bridge b)
 		{
-			return b != null && b.self.IsInWorld && !b.self.IsDead();
+			return b != null && !b.self.IsDead();
 		}
 
 		void KillUnitsOnBridge()

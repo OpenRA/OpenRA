@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 			}
 			// GoodGuy win conditions
 			// BadGuy is dead
-			int badcount = self.World.Queries.OwnedBy[Players["BadGuy"]].Count(a => a.IsInWorld && !a.IsDead());
+			int badcount = self.World.Queries.OwnedBy[Players["BadGuy"]].Count(a => !a.IsDead());
 			if (badcount != lastBadCount)
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA
 			}
 			
 			//GoodGuy lose conditions
-			if (self.World.Queries.OwnedBy[Players["GoodGuy"]].Count( a => a.IsInWorld && !a.IsDead()) == 0)
+			if (self.World.Queries.OwnedBy[Players["GoodGuy"]].Count( a => !a.IsDead()) == 0)
 				OnLose(self.World);
 			
 			// GoodGuy reinforcements

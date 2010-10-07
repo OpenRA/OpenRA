@@ -237,9 +237,16 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 		}
 
+		// Builds a unit from the actor that holds this queue (1 queue per building)
 		protected virtual void BuildUnit( string name )
 		{			
-			// queue lives on actor; is produced at same actor
+			// Cannot produce if i'm dead
+			if (!self.IsInWorld || self.IsDead())
+			{
+				CancelProduction(name, 1);
+				return;
+			}
+			
 			var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
 			if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
 					FinishProduction();

@@ -61,9 +61,10 @@ namespace OpenRA.Traits
 		
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
+			if (!self.IsInWorld) return;
+			
 			var health = self.TraitOrDefault<Health>();
-			if (self.IsDead() || health == null)
-				return;
+			if (health == null || health.IsDead) return;
 			
 			var c = Color.Gray;
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);

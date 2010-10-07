@@ -140,6 +140,8 @@ namespace OpenRA.Traits
 	{
 		public static bool IsDead(this Actor self)
 		{
+			if (self.Destroyed)	return true;
+			
 			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? true : health.IsDead;
 		}

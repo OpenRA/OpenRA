@@ -55,8 +55,9 @@ namespace OpenRA.Mods.Cnc
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() => 
 				{
-					if (self.IsDead())
+					if (!self.IsInWorld || self.IsDead())
 						return;
+					
 					rb.PlayCustomAnimRepeating(self, "idle");
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
 				}));

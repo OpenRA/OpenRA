@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override IActivity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (target == null || target.IsDead()) return NextActivity;
+			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
 			foreach (var t in target.TraitsImplementing<IAcceptSpy>())
