@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	public class TargetableInfo : ITraitInfo
 	{
 		public readonly string[] TargetTypes = {};
-		public object Create( ActorInitializer init ) { return new Targetable(this); }
+		public virtual object Create( ActorInitializer init ) { return new Targetable(this); }
 	}
 
 	public class Targetable : ITargetable

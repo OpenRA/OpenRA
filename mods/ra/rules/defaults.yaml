@@ -106,8 +106,9 @@
 	AppearsOnRadar:
 	Selectable:
 		Voice: GenericVoice
-	Targetable:
+	TargetableAircraft:
 		TargetTypes: Air
+		GroundedTargetTypes: Ground
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
