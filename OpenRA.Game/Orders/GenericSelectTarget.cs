@@ -11,18 +11,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
 	public class GenericSelectTarget : IOrderGenerator
 	{
-		readonly Actor subject;
+		readonly IEnumerable<Actor> subjects;
 		readonly string order;
 		readonly string cursor;
 
+		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
+		{
+			this.subjects = subjects;
+			this.order = order;
+			this.cursor = cursor;
+		}
+
 		public GenericSelectTarget(Actor subject, string order, string cursor)
 		{
-			this.subject = subject;
+			this.subjects = new Actor[] { subject };
 			this.order = order;
 			this.cursor = cursor;
 		}
@@ -36,16 +44,35 @@ namespace OpenRA.Orders
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if( mi.Button == MouseButton.Left && world.Map.IsInMap( xy ) )
+			if (mi.Button == MouseButton.Left && world.Map.IsInMap(xy))
 			{
 				world.CancelInputMode();
-				yield return new Order( order, subject, xy );
+				foreach (var subject in subjects)
+					yield return new Order(order, subject, xy);
 			}
 		}
 
 		public virtual void Tick(World world) { }
-		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
+
+		public void RenderBeforeWorld(WorldRenderer wr, World world)
+		{
+			foreach (var a in world.Selection.Actors)
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
+						t.RenderBeforeWorld(wr, a);
+
+			Game.Renderer.Flush();
+		}
+
+		public void RenderAfterWorld(WorldRenderer wr, World world)
+		{
+			foreach (var a in world.Selection.Actors)
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
+						t.RenderAfterWorld(wr, a);
+
+			Game.Renderer.Flush();
+		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
@@ -67,5 +94,4 @@ namespace OpenRA.Orders
 				world.CancelInputMode();
 		}
 	}
-
 }

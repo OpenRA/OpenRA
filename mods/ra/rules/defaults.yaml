@@ -18,6 +18,7 @@
 	Passenger: 
 		CargoType: Vehicle
 	IronCurtainable: 
+	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -44,7 +45,8 @@
 	Chronoshiftable: 
 	Passenger: 
 		CargoType: Vehicle
-	IronCurtainable: 
+	IronCurtainable:
+	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -73,6 +75,7 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
+	AttackMove:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
@@ -96,6 +99,7 @@
 	DetectCloaked:
 		Range: 3
 	HiddenUnderFog:
+	AttackMove:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:

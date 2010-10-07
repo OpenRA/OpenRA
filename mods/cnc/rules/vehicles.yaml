@@ -28,6 +28,7 @@ MCV:
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
 	MustBeDestroyed:
+	-AttackMove:
 
 HARV:
 	Inherits: ^Tank
@@ -58,6 +59,7 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
+	-AttackMove:
 
 APC:
 	Inherits: ^Tank
@@ -650,6 +652,8 @@ LST:
 	Cargo:
 		Types: Infantry, Vehicle
 		Passengers: 5
+	AttackMove:
+		JustMove: true
 
 LTNK.Husk:
 	Inherits: ^Husk

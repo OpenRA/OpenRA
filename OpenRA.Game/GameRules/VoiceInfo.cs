@@ -41,6 +41,9 @@ namespace OpenRA.GameRules
 			
 			if (!Voices.ContainsKey("Attack"))
 				Voices.Add("Attack", Voices["Move"]);
+
+			if (!Voices.ContainsKey("AttackMove"))
+				Voices.Add("AttackMove", Voices["Move"]);
 			
 			Pools = Lazy.New(() => Voices.ToDictionary( a => a.Key, a => new VoicePool(a.Value) ));
 		}

@@ -179,8 +179,9 @@ namespace OpenRA.Traits
 					return;
 				
 				if( !order.Queued ) self.CancelActivity();
+
 				self.QueueActivity(new Activities.Move(currentLocation, 8));
-				
+			
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{

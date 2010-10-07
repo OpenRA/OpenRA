@@ -8,65 +8,22 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class AutoTargetInfo : TraitInfo<AutoTarget>
 	{
-		public readonly float ScanTimeAverage = 2f;
-		public readonly float ScanTimeSpread = .5f;
 		public readonly bool AllowMovement = true;
 	}
 
 	class AutoTarget : ITick, INotifyDamage
 	{
-		[Sync]
-		int nextScanTime = 0;
-
-		void AttackTarget(Actor self, Actor target)
-		{
-			var attack = self.Trait<AttackBase>();
-			if (target != null)
-			{
-				if (self.Info.Traits.Get<AutoTargetInfo>().AllowMovement)
-					attack.ResolveOrder(self, new Order("Attack", self, target));
-				else
-					attack.target = Target.FromActor(target);	// for turreted things on rails.
-			}
-		}
-
 		public void Tick(Actor self)
 		{
 			if (!self.IsIdle && self.Info.Traits.Get<AutoTargetInfo>().AllowMovement) return;
 
-			if (--nextScanTime <= 0)
-			{
-				var attack = self.Trait<AttackBase>();
-				var range = attack.GetMaximumRange();
-
-				if (!attack.target.IsValid ||
-					(Util.CellContaining(attack.target.CenterLocation) - self.Location).LengthSquared > range * range)
-					AttackTarget(self, ChooseTarget(self, range));
-
-				var info = self.Info.Traits.Get<AutoTargetInfo>();
-				nextScanTime = (int)(25 * (info.ScanTimeAverage + 
-					(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
-			}
-		}
-
-		Actor ChooseTarget(Actor self, float range)
-		{
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.Trait<AttackBase>();
-
-			return inRange
-				.Where(a => a.Owner != null && self.Owner.Stances[ a.Owner ] == Stance.Enemy)
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.Where(a => !a.HasTrait<Cloak>() || a.Trait<Cloak>().IsVisible(a,self.Owner))
-				.OrderBy(a => (a.Location - self.Location).LengthSquared)
-				.FirstOrDefault();
+			self.Trait<AttackBase>().ScanAndAttack(self, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -83,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
-			AttackTarget(self, e.Attacker);
+			self.Trait<AttackBase>().AttackTarget(self, e.Attacker, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
 		}
 	}
 }

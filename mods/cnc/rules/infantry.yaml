@@ -153,6 +153,8 @@ E6:
 	EngineerRepair:
 	EngineerCapture:
 	-AutoTarget:
+	AttackMove:
+		JustMove: true
 	IdleAnimation:
 		Animations: idle1,idle2
 

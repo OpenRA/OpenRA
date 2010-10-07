@@ -270,6 +270,7 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
+	-AttackMove:
 
 MCV:
 	Inherits: ^Vehicle
@@ -303,6 +304,7 @@ MCV:
 	RenderUnit:
 	MustBeDestroyed:
 	BaseBuilding:
+	-AttackMove:
 
 JEEP:
 	Inherits: ^Vehicle
@@ -394,6 +396,8 @@ MNLY.AP:
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 5
+	AttackMove:
+		JustMove: true
 
 MNLY.AT:
 	Inherits: ^Tank
@@ -423,6 +427,8 @@ MNLY.AT:
 	MineImmune:
 	LimitedAmmo:
 		Ammo: 5
+	AttackMove:
+		JustMove: true
 
 TRUK:
 	Inherits: ^Vehicle
@@ -625,6 +631,8 @@ LST:
 		Passengers: 5
 	IronCurtainable:
 	RepairableNear:
+	AttackMove:
+		JustMove: true
 
 PT:
 	Inherits: ^Ship

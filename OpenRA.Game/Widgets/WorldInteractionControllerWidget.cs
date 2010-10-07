@@ -46,6 +46,7 @@ namespace OpenRA.Widgets
 		}
 		
 		float2 dragStart, dragEnd;
+
 		public override bool HandleInputInner(MouseInput mi)
 		{			
 			var xy = Game.viewport.ViewToWorld(mi);
@@ -139,8 +140,20 @@ namespace OpenRA.Widgets
 					GotoNextBase();
 					return true;
 				}
+
+				if (e.KeyChar == 'a')
+				{
+					StartAttackMoveOrder();
+					return true;
+				}
 			}
 			return false;
+		}
+
+		public void StartAttackMoveOrder()
+		{
+			if (world.Selection.Actors.Count() > 0)
+				world.OrderGenerator = new GenericSelectTarget(world.Selection.Actors, "AttackMove", "attackmove");
 		}
 		
 		public void GotoNextBase()

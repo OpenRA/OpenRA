@@ -36,11 +36,17 @@ namespace OpenRA.Mods.RA
 		public readonly bool AlignIdleTurrets = false;
 		public readonly bool CanAttackGround = true;
 
+		public readonly float ScanTimeAverage = 2f;
+		public readonly float ScanTimeSpread = .5f;
+
 		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
 	}
 
 	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
 	{
+		[Sync]
+		int nextScanTime = 0;
+
 		public bool IsAttacking { get; internal set; }
 		public Target target;
 
@@ -228,6 +234,7 @@ namespace OpenRA.Mods.RA
 				if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
 					self.Trait<Turreted>().desiredFacing = null;
 			}
+
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -250,6 +257,48 @@ namespace OpenRA.Mods.RA
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
 
 		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(self.World, t)); }
+
+		public void AttackTarget(Actor self, Actor target, bool allowMovement)
+		{
+			var attack = self.Trait<AttackBase>();
+			if (target != null)
+			{
+				if (allowMovement)
+					attack.ResolveOrder(self, new Order("Attack", self, target));
+				else
+					attack.target = Target.FromActor(target);	// for turreted things on rails.
+			}
+		}
+
+		public void ScanAndAttack(Actor self, bool allowMovement)
+		{
+			if (--nextScanTime <= 0)
+			{
+				var attack = self.Trait<AttackBase>();
+				var range = attack.GetMaximumRange();
+
+				if (!attack.target.IsValid ||
+					(Util.CellContaining(attack.target.CenterLocation) - self.Location).LengthSquared > range * range)
+					AttackTarget(self, ChooseTarget(self, range), allowMovement);
+
+				var info = self.Info.Traits.Get<AttackBaseInfo>();
+				nextScanTime = (int)(25 * (info.ScanTimeAverage +
+					(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
+			}
+		}
+
+		Actor ChooseTarget(Actor self, float range)
+		{
+			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+			var attack = self.Trait<AttackBase>();
+
+			return inRange
+				.Where(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Enemy)
+				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+				.Where(a => !a.HasTrait<Cloak>() || a.Trait<Cloak>().IsVisible(a, self.Owner))
+				.OrderBy(a => (a.Location - self.Location).LengthSquared)
+				.FirstOrDefault();
+		}
 
 		class AttackOrderTargeter : IOrderTargeter
 		{

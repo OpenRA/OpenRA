@@ -158,6 +158,8 @@ E6:
 	EngineerCapture:
 	TakeCover:
 	-AutoTarget:
+	AttackMove:
+		JustMove: true
 	IdleAnimation:
 		Animations: idle1,idle2
 
@@ -190,6 +192,8 @@ SPY:
 	Spy:
 	-RenderInfantry:
 	-AutoTarget:
+	AttackMove:
+		JustMove: true
 	IdleAnimation:
 		Animations: idle1,idle2
 
@@ -253,6 +257,8 @@ MEDI:
 		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
+	AttackMove:
+		JustMove: true
 	IdleAnimation:
 		Animations: idle1,idle2
 	

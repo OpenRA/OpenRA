@@ -39,7 +39,6 @@ GAP:
 #		Prerequisites: atek
 #		Owner: allies
 #		Cost: 500
-#		Hotkey: g
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -268,7 +267,7 @@ AGUN:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: allies
-		Hotkey: a
+		Hotkey: g
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -679,7 +678,7 @@ AFLD:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: soviet
-		Hotkey: a
+		Hotkey: g
 	Valued:
 		Cost: 1100
 	Tooltip:
