@@ -17,7 +17,6 @@ namespace OpenRA.Mods.RA
 {
     public class TargetableAircraftInfo : TargetableInfo
     {
-        public readonly string[] TargetTypes = { };
         public readonly string[] GroundedTargetTypes = { };
         public override object Create(ActorInitializer init) { return new TargetableAircraft(init.self, this); }
     }

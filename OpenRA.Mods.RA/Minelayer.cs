@@ -125,7 +125,6 @@ namespace OpenRA.Mods.RA
 				if (!minelayer.IsInWorld)
 					return;
 
-				var ml = minelayer.Trait<Minelayer>();
 				var movement = minelayer.Trait<IMove>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();

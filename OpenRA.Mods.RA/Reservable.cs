@@ -13,17 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ReservableInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init) { return new Reservable(init.self); }
-	}
+	class ReservableInfo : TraitInfo<Reservable> {}
 
 	public class Reservable : ITick
 	{
 		Actor reservedFor;
-		Actor self;
+		//Actor self;
 
-		public Reservable(Actor self) { this.self = self; }
+		//public Reservable(Actor self) { this.self = self; }
 
 		public void Tick(Actor self)
 		{

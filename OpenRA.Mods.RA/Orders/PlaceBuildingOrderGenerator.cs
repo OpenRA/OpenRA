@@ -64,11 +64,11 @@ namespace OpenRA.Mods.RA.Orders
 		public void Tick( World world )
 		{
 			// Find the queue with the target actor
-			var queue = Producer.TraitsImplementing<ProductionQueue>()
-				.Where(p => p.CurrentItem() != null && 
-		                 	p.CurrentItem().Item == Building && 
-		                 	p.CurrentItem().RemainingTime == 0)
-				.FirstOrDefault();
+			//var queue = Producer.TraitsImplementing<ProductionQueue>()
+			//	.Where(p => p.CurrentItem() != null && 
+		    //             	p.CurrentItem().Item == Building && 
+		    //             	p.CurrentItem().RemainingTime == 0)
+			//	.FirstOrDefault();
 		}
 
 		public void RenderAfterWorld( World world ) {}
