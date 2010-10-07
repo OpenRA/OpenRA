@@ -429,7 +429,7 @@ namespace OpenRA.Mods.RA
                         if (location == null)
                         {
                             Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
-                            Game.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item));
+                            Game.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
                         }
                         else
                         {
