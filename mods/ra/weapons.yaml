@@ -661,7 +661,7 @@ RedEye:
 8Inch:
 	ROF: 250
 	Range: 16
-	MinRange: 8
+#	MinRange: 8
 	Burst: 2
 	Report: TURRET1
 	Projectile: Bullet
@@ -688,7 +688,7 @@ RedEye:
 SubMissile:
 	ROF: 300
 	Range: 16
-	MinRange: 8
+#	MinRange: 8
 	Burst: 2
 	Report: MISSILE6
 	Projectile: Bullet
