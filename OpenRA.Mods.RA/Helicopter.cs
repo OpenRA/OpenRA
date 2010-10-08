@@ -147,10 +147,8 @@ namespace OpenRA.Mods.RA
 				aircraft.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
 				offsetTicks = Info.InstabilityTicks;
 			}
-
-			Location = Util.CellContaining(self.CenterLocation);
 		}
-			
+
 		const float Epsilon = .5f;
 		public float2 GetRepulseForce(Actor self, Actor h)
 		{

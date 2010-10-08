@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 	{
 		protected readonly Actor self;
 		[Sync]
-		public int2 Location;
+		public int2 Location { get { return Util.CellContaining( center.ToInt2() ); } }
 		[Sync]
 		public int Facing { get; set; }
 		[Sync]
@@ -46,10 +46,7 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
-			{
-				this.Location = init.Get<LocationInit, int2>();
-				this.center = Util.CenterOfCell( Location );
-			}
+				this.center = Util.CenterOfCell( init.Get<LocationInit, int2>() );
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
@@ -67,13 +64,11 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, int2 cell)
 		{
-			Location = cell;
-			center = Util.CenterOfCell(cell);
+			SetPxPosition( self, Util.CenterOfCell( cell ) );
 		}
 
 		public void SetPxPosition( Actor self, int2 px )
 		{
-			Location = Util.CellContaining( px );
 			center = px;
 		}
 
