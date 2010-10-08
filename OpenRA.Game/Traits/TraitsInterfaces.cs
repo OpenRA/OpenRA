@@ -70,7 +70,12 @@ namespace OpenRA.Traits
 	
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-	public interface IOccupySpace
+	public interface IHasLocation
+	{
+		int2 PxPosition { get; }
+	}
+
+	public interface IOccupySpace : IHasLocation
 	{
 		int2 TopLeft { get; }
 		IEnumerable<int2> OccupiedCells();
@@ -104,15 +109,15 @@ namespace OpenRA.Traits
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 
-	public interface ITeleportable /* crap name! */
+	public interface ITeleportable : IHasLocation /* crap name! */
 	{
 		bool CanEnterCell(int2 location);
 		void SetPosition(Actor self, int2 cell);
+		void SetPxPosition(Actor self, int2 px);
 	}
 
 	public interface IMove : ITeleportable
 	{
-		float MovementSpeedForCell(Actor self, int2 cell);
 		int Altitude { get; set; }
 	}
 	
@@ -233,9 +238,10 @@ namespace OpenRA.Traits
 		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
-		public float2 CenterLocation { get { return actor != null ? actor.CenterLocation : pos.ToInt2(); } }
+		public int2 PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos.ToInt2(); } }
+		public float2 CenterLocation { get { return PxPosition; } }
 
-		public Actor Actor { get { return actor; } }
-		public bool IsActor { get { return actor != null; } }
+		public Actor Actor { get { return IsActor ? actor : null; } }
+		public bool IsActor { get { return actor != null && !actor.Destroyed; } }
 	}
 }

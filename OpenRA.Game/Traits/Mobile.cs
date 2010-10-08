@@ -82,16 +82,11 @@ namespace OpenRA.Traits
 		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		[Sync]
-		public int2 fromCell
-		{
-			get { return __fromCell; }
-		}
-
+		public int2 PxPosition { get; set; }
 		[Sync]
-		public int2 toCell
-		{
-			get { return __toCell; }
-		}
+		public int2 fromCell { get { return __fromCell; } }
+		[Sync]
+		public int2 toCell { get { return __toCell; } }
 
 		[Sync]
 		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
@@ -117,6 +112,7 @@ namespace OpenRA.Traits
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
+				this.PxPosition = Util.CenterOfCell( fromCell );
 				AddInfluence();
 			}
 			
@@ -127,7 +123,14 @@ namespace OpenRA.Traits
 		public void SetPosition(Actor self, int2 cell)
 		{
 			SetLocation( cell, cell );
-			self.CenterLocation = Util.CenterOfCell(fromCell);
+			PxPosition = Util.CenterOfCell(fromCell);
+		}
+
+		public void SetPxPosition( Actor self, int2 px )
+		{
+			var cell = Util.CellContaining( px );
+			SetLocation( cell, cell );
+			PxPosition = px;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter( Info ); } }

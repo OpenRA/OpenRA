@@ -92,9 +92,9 @@ namespace OpenRA.Mods.RA.Activities
 				Calculate(self);
 
 			return Util.SequenceActivities(
-				new Fly(w1),
-				new Fly(w2),
-				new Fly(w3),
+				Fly.ToPx(w1),
+				Fly.ToPx(w2),
+				Fly.ToPx(w3),
 				new Land(Target.FromActor(dest)),
 				NextActivity);
 		}

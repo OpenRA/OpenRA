@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Activities
 			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
-				self.CenterLocation += (rawSpeed / dist.Length) * dist;
+				aircraft.center += (rawSpeed / dist.Length) * dist;
 
 			return this;
 		}

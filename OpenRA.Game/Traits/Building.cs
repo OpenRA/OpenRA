@@ -44,16 +44,16 @@ namespace OpenRA.Traits
 		public readonly BuildingInfo Info;
 		[Sync]
 		readonly int2 topLeft;
-		
+
 		readonly PowerManager PlayerPower;
+
+		public int2 PxPosition { get { return ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2; } }
 
 		public Building(ActorInitializer init)
 		{
 			this.self = init.self;
 			this.topLeft = init.Get<LocationInit,int2>();
 			Info = self.Info.Traits.Get<BuildingInfo>();
-			self.CenterLocation = Game.CellSize 
-				* ((float2)topLeft + .5f * (float2)Info.Dimensions);
 			
 			PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 		}
