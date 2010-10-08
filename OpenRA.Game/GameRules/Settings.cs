@@ -69,7 +69,7 @@ namespace OpenRA.GameRules
 		// Behaviour settings
         public bool ViewportEdgeScroll = true;
         public bool InverseDragScroll = false;
-        public float ViewportEdgeScrollStep = 0.1f; // 0.1f equals 10 - Gecko
+		public float ViewportEdgeScrollStep = 10f;
 
 		// Internal game settings
 		public int Timestep = 40;
