@@ -42,7 +42,7 @@ namespace OpenRA
 			else
 				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasVoice());
+			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoice());
 			if (voicedUnit != null)
 				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
 
@@ -56,6 +56,10 @@ namespace OpenRA
 		public void Tick(World world)
 		{
 			actors.RemoveAll(a => !a.IsInWorld);
+
+			foreach (var cg in controlGroups.Values)
+				cg.RemoveAll(a => a.Destroyed);		// note: NOT `!a.IsInWorld`, since that would remove things
+													// that are in transports.
 		}
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
