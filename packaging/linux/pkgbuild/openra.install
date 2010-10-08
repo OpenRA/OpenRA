@@ -30,10 +30,4 @@ post_install() {
             *) echo "Please enter y or n.";;
         esac
     done
-    
-    gacutil -i thirdparty/Tao/Tao.Cg.dll
-    gacutil -i thirdparty/Tao/Tao.FreeType.dll
-    gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-    gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-    gacutil -i thirdparty/Tao/Tao.Sdl.dll
 }

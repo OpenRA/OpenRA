@@ -59,21 +59,18 @@ do
     esac
 done
 
-gacutil -i thirdparty/Tao/Tao.Cg.dll
-gacutil -i thirdparty/Tao/Tao.FreeType.dll
-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-gacutil -i thirdparty/Tao/Tao.Sdl.dll
-
 %files
 /usr/bin/openra
 /usr/share/openra/*.exe
 /usr/share/openra/*.ttf
 /usr/share/openra/*.dll
+/usr/share/openra/*.dll.config
 /usr/share/openra/VERSION
+/usr/share/openra/COPYING
+/usr/share/openra/HACKING
+/usr/share/openra/INSTALL
 /usr/share/openra/shaders/
 /usr/share/openra/mods/
-/usr/share/openra/thirdparty/
 /usr/share/applications/openra*
 /usr/share/menu/openra*
 /usr/share/pixmaps/openra.32.xpm
