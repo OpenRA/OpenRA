@@ -9,6 +9,8 @@ namespace OpenRA.Widgets
 	class ScrollingTextWidget : Widget
 	{
 		public string Text = "";
+		private string ScrollingText = "";
+		
 		public string Background = null;
 
 		public bool Bold = false;
@@ -44,6 +46,11 @@ namespace OpenRA.Widgets
 
 		public override void Tick(World world)
 		{
+			if (Text != "")
+			{
+				ScrollingText = Text;
+				Text = "";
+			}
 			UpdateScrollBuffer();
 		}
 
@@ -65,21 +72,27 @@ namespace OpenRA.Widgets
 			ScrollTick = 0;
 			ScrollBuffer = "";
 
-			if (Text.Substring(Text.Length - 4, 3) != "   ")
+			if (ScrollingText.Substring(ScrollingText.Length - 4, 3) != "   ")
 			{
-				Text += "   ";
+				ScrollingText += "   ";
 			}
 
 			int tempScrollLocation = ScrollLocation;
 			for (int i = 0; i < ScrollLength; ++i)
 			{
-				ScrollBuffer += Text.Substring(tempScrollLocation, 1);
-				tempScrollLocation = (tempScrollLocation + 1) % Text.Length;
+				ScrollBuffer += ScrollingText.Substring(tempScrollLocation, 1);
+				tempScrollLocation = (tempScrollLocation + 1) % ScrollingText.Length;
 			}
 
-			ScrollLocation = (ScrollLocation + 1) % Text.Length;
+			ScrollLocation = (ScrollLocation + 1) % ScrollingText.Length;
 		}
-		
+
+		public void SetText(string newText)
+		{
+			Text = newText.Replace("\n", " ");
+			Text = Text.Replace("\r", "");
+		}
+
 		public override void DrawInner(World world)
 		{
 			var bg = GetBackground();

@@ -62,12 +62,12 @@ namespace OpenRA.Server
 				{
 					try
 					{
-						motd.Text = GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion));
+						motd.SetText(GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion)));
 						motd.ResetScroll();
 					}
 					catch
 					{
-						motd.Text = "Welcome to OpenRA. MOTD unable to be loaded from server.";
+						motd.SetText("Welcome to OpenRA. MOTD unable to be loaded from server.");
 						motd.ResetScroll();
 					}
 				}
