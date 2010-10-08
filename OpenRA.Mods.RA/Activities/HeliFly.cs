@@ -39,7 +39,6 @@ namespace OpenRA.Mods.RA.Activities
 			if (float2.WithinEpsilon(float2.Zero, dist, 2))
 			{
 				aircraft.center = Dest;
-				aircraft.Location = Util.CellContaining(self.CenterLocation);
 				return NextActivity;
 			}
 
@@ -49,7 +48,6 @@ namespace OpenRA.Mods.RA.Activities
 
 			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
 			aircraft.center += (rawSpeed / dist.Length) * dist;
-			aircraft.Location = Util.CellContaining(self.CenterLocation);
 
 			return this;
 		}
