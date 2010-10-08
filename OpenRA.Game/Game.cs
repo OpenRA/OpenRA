@@ -251,6 +251,12 @@ namespace OpenRA
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
 			Settings = new Settings(SupportDir + "settings.yaml", args);
 
+			// force master server upgrade -- remove once everyone is switched over.
+			if (Settings.Server.MasterServer == "http://open-ra.org/master/")
+				Settings.Server.MasterServer = "http://master.open-ra.org/";
+
+			Settings.Save();
+
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");

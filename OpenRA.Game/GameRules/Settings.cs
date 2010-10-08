@@ -107,12 +107,12 @@ namespace OpenRA.GameRules
 			
 			FieldLoader.UnknownFieldAction = (s,f) =>
 			{
-				System.Console.WriteLine( "Ignoring unknown field `{0}` on `{1}`".F( s, f.Name ) );
+				Console.WriteLine( "Ignoring unknown field `{0}` on `{1}`".F( s, f.Name ) );
 			};
 			
 			if (File.Exists(SettingsFile))
 			{
-				System.Console.WriteLine("Loading settings file {0}",SettingsFile);
+				Console.WriteLine("Loading settings file {0}",SettingsFile);
 				var yaml = MiniYaml.DictFromFile(SettingsFile);
 				
 				foreach (var kv in Sections)
@@ -124,7 +124,7 @@ namespace OpenRA.GameRules
 			foreach (var kv in Sections)
 				foreach (var f in kv.Value.GetType().GetFields())
 					if (args.Contains(kv.Key+"."+f.Name))
-						OpenRA.FileFormats.FieldLoader.LoadField( kv.Value, f.Name, args.GetValue(kv.Key+"."+f.Name, "") );
+						FieldLoader.LoadField( kv.Value, f.Name, args.GetValue(kv.Key+"."+f.Name, "") );
 			
 			FieldLoader.UnknownFieldAction = err1;
 			FieldLoader.InvalidValueAction = err2;
