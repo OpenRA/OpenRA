@@ -562,6 +562,7 @@ C17:
 	-Selectable:
 	-Targetable:
 	-GainsExperience:
+	FlyAwayOnIdle:
 
 A10:
 	Inherits: ^Plane
@@ -584,6 +585,7 @@ A10:
 		Range: 3
 	-Selectable:
 	-GainsExperience:
+	FlyAwayOnIdle:
 
 BOAT:
 	Inherits: ^Ship

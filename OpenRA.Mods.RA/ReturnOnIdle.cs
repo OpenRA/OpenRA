@@ -37,4 +37,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 	}
+
+	class FlyAwayOnIdleInfo : TraitInfo<FlyAwayOnIdle> { }
+
+	class FlyAwayOnIdle : INotifyIdle
+	{
+		public void Idle(Actor self)
+		{
+			self.QueueActivity(new FlyOffMap());
+		}
+	}
 }

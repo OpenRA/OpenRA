@@ -12,9 +12,9 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Cnc
 			
 			// Start and end beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
 			var startPos = new int2(owner.World.Map.XOffset + owner.World.Map.Width+5, self.Location.Y);
-			var endPos = new int2(owner.World.Map.XOffset-5, self.Location.Y);
-			
+			var endPos = new int2(owner.World.Map.XOffset-5, self.Location.Y);		
 			
 			// Assume a single exit point for simplicity
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
