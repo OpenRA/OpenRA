@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			
-			var isFlying = self.Trait<IMove>().Altitude > 0;
+
+			var isFlying = self.Trait<IMove>().Altitude > 0 && !self.IsDead();
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor")) 
 				return;
 

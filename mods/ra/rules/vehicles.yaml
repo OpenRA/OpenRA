@@ -770,6 +770,7 @@ TRAN:
 		Types: Infantry
 		Passengers: 5
 	IronCurtainable:
+	FallsToEarth:
 
 HELI:
 	Inherits: ^Plane
@@ -807,6 +808,7 @@ HELI:
 	LimitedAmmo:
 		Ammo: 6
 	IronCurtainable:
+	FallsToEarth:
 
 HIND:
 	Inherits: ^Plane
@@ -847,6 +849,7 @@ HIND:
 	Selectable:
 		Bounds: 38,32,0,0
 	WithMuzzleFlash:
+	FallsToEarth:
 
 U2:
 	Inherits: ^Plane

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	public class AircraftInfo : ITraitInfo
 	{
-		public readonly int CruiseAltitude = 20;
+		public readonly int CruiseAltitude = 30;
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
 		[ActorReference]
