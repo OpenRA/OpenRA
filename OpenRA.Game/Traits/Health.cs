@@ -163,7 +163,9 @@ namespace OpenRA.Traits
 		{
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
-			health.InflictDamage(self, attacker, health.HP, null);
+
+			/* hack. Fix for proper */
+			health.InflictDamage(self, attacker, int.MaxValue, null);
 		}
 	}
 }
