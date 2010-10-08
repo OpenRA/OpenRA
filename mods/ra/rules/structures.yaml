@@ -522,7 +522,7 @@ WEAP:
 		Dimensions: 3,2
 		Capturable: true
 	Health:
-		HP: 1000
+		HP: 1500
 	Armor:
 		Type: Light
 	RevealsShroud:
