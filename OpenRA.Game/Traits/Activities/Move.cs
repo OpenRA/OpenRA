@@ -156,7 +156,7 @@ namespace OpenRA.Traits.Activities
 			}
 			else
 			{
-				mobile.toCell = nextCell.Value;
+				mobile.SetLocation( mobile.fromCell, nextCell.Value );
 				var move = new MoveFirstHalf(
 					this,
 					Util.CenterOfCell( mobile.fromCell ),
@@ -350,8 +350,7 @@ namespace OpenRA.Traits.Activities
 							mobile.Facing,
 							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
-						mobile.fromCell = mobile.toCell;
-						mobile.toCell = nextCell.Value;
+						mobile.SetLocation( mobile.toCell, nextCell.Value );
 						return ret;
 					}
 					else
@@ -364,7 +363,7 @@ namespace OpenRA.Traits.Activities
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
-				mobile.fromCell = mobile.toCell;
+				mobile.SetLocation( mobile.toCell, mobile.toCell );
 				return ret2;
 			}
 		}
@@ -379,7 +378,7 @@ namespace OpenRA.Traits.Activities
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
 				self.CenterLocation = Util.CenterOfCell( mobile.toCell );
-				mobile.fromCell = mobile.toCell;
+				mobile.SetLocation( mobile.toCell, mobile.toCell );
 				mobile.FinishedMoving(self);
 				return null;
 			}

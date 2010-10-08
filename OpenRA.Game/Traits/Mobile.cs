@@ -85,20 +85,18 @@ namespace OpenRA.Traits
 		public int2 fromCell
 		{
 			get { return __fromCell; }
-			set { SetLocation( value, __toCell ); }
 		}
 
 		[Sync]
 		public int2 toCell
 		{
 			get { return __toCell; }
-			set { SetLocation( __fromCell, value ); }
 		}
 
 		[Sync]
 		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-		void SetLocation(int2 from, int2 to)
+		public void SetLocation(int2 from, int2 to)
 		{
 			if (fromCell == from && toCell == to) return;
 			RemoveInfluence();
