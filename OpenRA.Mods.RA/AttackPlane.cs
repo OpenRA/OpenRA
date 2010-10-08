@@ -24,6 +24,9 @@ namespace OpenRA.Mods.RA
 
 		protected override void QueueAttack(Actor self, Order order)
 		{
+			if (self.Trait<Aircraft>().Altitude == 0)
+				return;	// dont fire while landed
+
 			target = Target.FromOrder(order);
 			self.QueueActivity(new FlyAttack(target));
 		}
