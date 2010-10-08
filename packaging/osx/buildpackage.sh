@@ -1,14 +1,8 @@
 #!/bin/bash
+# OpenRA packaging script for Mac OSX
 
-# Files to include in the package
-# Specified relative to the build-dir (argument $1)
-FILES="OpenRA.Game.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION"
-
-# Files that match the above patterns, that should be excluded
-EXCLUDE="*.mdb"
-
-if [ $# -ne "2" ]; then
-	echo "Usage: `basename $0` build-dir version"
+if [ $# -ne "3" ]; then
+	echo "Usage: `basename $0` version files-dir outputdir"
     exit 1
 fi
 
@@ -21,19 +15,13 @@ fi
 # Copy the template to build the game package
 # Assumes it is layed out with the correct directory structure
 cp -rv template.app OpenRA.app
+cp -R "$2/" "OpenRA.app/Contents/Resources/" || exit 3
 
-for i in $FILES; do
-	cp -Rv "$1/$i" "OpenRA.app/Contents/Resources/$i" || exit 3
-done
+# Remove the tao and WindowsBase dlls (which are shipped with the deps package)
+rm OpenRA.app/Contents/Resources/Tao.*
+rm OpenRA.app/Contents/Resources/WindowsBase.dll
 
-# Delete excluded files
-pushd "OpenRA.app/Contents/Resources/" &> /dev/null
-for i in $EXCLUDE; do
-	find . -path "$i" -delete
-done
-popd &> /dev/null
-
-# Package app bundle into a zip
-zip OpenRA-$2 -r -9 OpenRA.app
+# Package app bundle into a zip and clean up
+zip OpenRA-$1 -r -9 OpenRA.app
+mv OpenRA-$1.zip $3
 rm -rf OpenRA.app
-echo "Done!"

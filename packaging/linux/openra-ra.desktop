@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=20100907-1
+Version={VERSION}
 Name=OpenRA - Red Alert
 Comment=The OpenRA RTS engine running Red Alert
 Icon=openra

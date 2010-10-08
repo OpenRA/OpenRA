@@ -1,14 +1,15 @@
 Package: openra
-Version: 20100914
+Version: {VERSION}
 Architecture: all
 Maintainer: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Uploaders: Maikel van den Hout <ma1kelvdh@gmail.com>
-Installed-Size: 8306	
+Installed-Size: {SIZE}	
 Depends: nvidia-cg-toolkit (>= 2.1), libopenal1, mono-runtime, libmono-winforms2.0-cil, libfreetype6, libsdl1.2debian, libgl1-mesa-glx, libgl1-mesa-dri, zenity, wget, unzip
 Section: games
 Priority: extra
 Homepage: http://www.open-ra.org/
 Description: A multiplayer reimplementation of the Command & Conquer: Red Alert game engine in .NET/Mono, OpenGL, OpenAL and SDL. Has extensive modding support and includes Command & Conquer as an official mod.
  .
- Please note: OpenRA is currently at an alpha release stage. If you have any problems, please report them to the IRC channel (#openra on 
- irc.freenode.net) or the bug-tracker (http://red-bull.ijw.co.nz:3690/OpenRA).
+ Please note: OpenRA is currently at an alpha release stage. Releases may be buggy 
+ or unstable. If you have any problems, please report them to the IRC channel (#openra on 
+ irc.freenode.net) or the bug-tracker (http://bugs.open-ra.org).

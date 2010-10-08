@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=20100907-1
+Version={VERSION}
 Name=OpenRA - Command & Conquer
 Comment=The OpenRA RTS engine running Command & Conquer
 Icon=openra

@@ -1,124 +1,79 @@
 #!/bin/bash
-msg () {
-  echo -ne $1
-  echo $2
-  echo -ne "\E[0m"
-}
+# OpenRA master packaging script
 
-TAG=$1
+if [ $# -ne "3" ]; then
+	echo "Usage: `basename $0` tag srcdir outputdir"
+    exit 1
+fi
 
-TYPE=`echo $TAG | grep -o "^[a-z]\\+"`
-VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+VERSION=`echo $1 | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+SRCDIR=$2
+PACKAGEDIR=$3
+BUILTDIR="${SRCDIR}/packaging/built"
 
-FTPSERVER=openra.res0l.net
+# Build the code and push the files into a clean dir
+cd "$SRCDIR"
+echo $1 > VERSION
+make game editor
+mkdir packaging/built
+mkdir packaging/built/mods
 
-export FTPSERVER
+# List of files that are packaged on all platforms
+# Note that the Tao dlls are shipped on all platforms except osx
+# and that they are now installed to the game directory instead of being placed in the gac
+FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION"
 
-case "$TYPE" in
-    "release") 
-        FTPPATH="openra.res0l.net/releases"
-        ;;
-    "playtest") 
-        FTPPATH="openra.res0l.net/playtests"
-        ;;
-    *)
-        msg "\E[31m" "Unrecognized tag prefix $TYPE"
-        exit 1
-        ;;
-esac
+# Files that match the above patterns, that should be excluded
+EXCLUDE="*.mdb"
 
-####### Windows #######
-(
-    msg "\E[34m" "Building Windows package."
-    pushd windows/ &> /dev/null
-    makensis -DSRCDIR=/home/openra/openra-package/OpenRA-build OpenRA.nsi &> package.log
-    if [ $? -eq 0 ]; then
-        mv OpenRA.exe OpenRA-$VERSION.exe
-        ../uploader.sh windows "$VERSION" OpenRA-$VERSION.exe "$FTPPATH" "$2" "$3"
-    else
-        msg "\E[31m" "Windows package build failed, refer to $PWD/package.log."  
-    fi
-    popd &> /dev/null
-) &
+for i in $FILES; do
+	cp -R "$i" "packaging/built/$i" || exit 3
+done
+for i in $EXCLUDE; do
+	find . -path "$i" -delete
+done
+
+# Copy Tao
+cp thirdparty/Tao/* packaging/built
+
+# Copy WindowsBase.dll for linux packages
+cp thirdparty/WindowsBase.dll packaging/built
+
+# Change into packaging directory and run the platform-dependant packaging in parallel
+cd packaging
+
+# ####### Windows #######
+# (
+#     msg "\E[34m" "Building Windows package."
+#     pushd windows/ &> /dev/null
+#     makensis -DSRCDIR="$SRCDIR" OpenRA.nsi &> package.log
+#     if [ $? -eq 0 ]; then
+#         mv OpenRA.exe "$PACKAGEDIR"OpenRA-$VERSION.exe
+#     else
+#         msg "\E[31m" "Windows package build failed, refer to $PWD/package.log."  
+#     fi
+#     popd &> /dev/null
+# ) &
 
 ####### OSX #######
 (
-    msg "\E[34m" "Building OSX package."
-    pushd osx/ &>/dev/null
-    sh buildpackage.sh /home/openra/openra-package/OpenRA-build "$VERSION" &> package.log
-    if [ $? -eq 0 ]; then
-        ../uploader.sh mac "$VERSION" OpenRA-$VERSION.zip "$FTPPATH" "$2" "$3"
-    else
-        msg "\E[31m" "OSX package build failed, refer to $PWD/package.log."
+    echo "Building OSX package."
+	cd osx
+    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$PACKAGEDIR" &> package.log
+    if [ $? -ne 0 ]; then
+        echo "OSX package build failed, refer to $PWD/package.log."
     fi
-    popd &> /dev/null
 ) &
 
-####### *nix Builds #######
+####### Linux #######
 (
-    pushd linux &> /dev/null
-
-    #Desktop Icons
-    BUILTDIR=../../../built
-    mkdir -p $BUILTDIR/usr/share/applications/
-    sed -i "3,3 d" openra-ra.desktop
-    sed -i "3,3 i\Version=$VERSION" openra-ra.desktop
-    sed -i "3,3 d" openra-cnc.desktop
-    sed -i "3,3 i\Version=$VERSION" openra-cnc.desktop
-    cp openra-ra.desktop $BUILTDIR/usr/share/applications/
-    cp openra-cnc.desktop $BUILTDIR/usr/share/applications/
-
-    #Menu entries
-    mkdir -p $BUILTDIR/usr/share/menu/
-    cp openra-ra $BUILTDIR/usr/share/menu/
-    cp openra-cnc $BUILTDIR/usr/share/menu/
-
-    #Icon images
-    mkdir -p $BUILTDIR/usr/share/pixmaps/
-    cp openra.32.xpm $BUILTDIR/usr/share/pixmaps/
-    mkdir -p $BUILTDIR/usr/share/icons/
-    cp -r hicolor $BUILTDIR/usr/share/icons/
-
-    popd &> /dev/null
-    
-    (
-        #Arch-Linux
-        msg "\E[34m" "Building Arch-Linux package."
-        pushd linux/pkgbuild/ &> /dev/null
-        sh buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" &> package.log
-        if [ $? -ne 0 ]; then
-            msg "\E[31m" "Arch-Linux package build failed, refer to $PWD/package.log."
-        fi
-        popd &> /dev/null
-    ) &
-
-    (
-        #RPM
-        msg "\E[34m" "Building RPM package."
-        pushd linux/rpm/ &> /dev/null
-        sh buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/rpmbuild &> package.log
-        if [ $? -ne 0 ]; then
-            msg "\E[31m" "RPM package build failed, refer to $PWD/package.log."
-        fi
-        popd &> /dev/null
-    ) &
-
-    (
-        #deb
-        msg "\E[34m" "Building deb package."
-        pushd linux/deb/ &> /dev/null
-        ./buildpackage.sh "$FTPSERVER" "$FTPPATH/linux" "$2" "$3" "$VERSION" ~/openra-package/built ~/debpackage &> package.log
-        if [ $? -ne 0 ]; then
-            msg "\E[31m" "deb package build failed, refer to $PWD/package.log."
-        fi
-        popd &> /dev/null
-    ) &
-    
-    wait
+    echo "Building linux common."
+	cd linux
+	sh buildpackage.sh "$VERSION" "$BUILTDIR" "$PACKAGEDIR" &> package.log
+    if [ $? -ne 0 ]; then
+        echo "linux package build failed, refer to $PWD/package.log."
+    fi
 ) &
-
 wait
 
-if [ "$TYPE" = "release" ]; then
-    wput --basename=../ -u ../VERSION ftp://$2:$3@$FTPSERVER/$FTPPATH/master/
-fi
+rm -rf $BUILTDIR

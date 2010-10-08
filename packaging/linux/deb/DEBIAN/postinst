@@ -13,8 +13,7 @@ anw=`zenity --question --text "Download and install RA packages?"; echo $?`
 if [ $anw = 0 ] ; then
     mono OpenRA.Utility.exe --download-packages=ra
     else
-    zenity --info --text "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
-to /usr/share/openra/mods/ra/packages before the RA mod will work."
+    zenity --info --text "The Red Alert packages need to be manually installed before it will work.\nSee the OpenRA website for more information."
     break
 fi
 
@@ -23,15 +22,6 @@ anw=`zenity --question --text "Download and install C&amp;C packages?"; echo $?`
 if [ $anw = 0 ] ; then
     mono OpenRA.Utility.exe --download-packages=cnc
     else
-    zenity --info --text "The C&amp;C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
-    to /usr/share/openra/mods/cnc/packages before the C&amp;C mod will work."
+    zenity --info --text "The C&amp;C packages need to be manually installed before it will work.\nSee the OpenRA website for more information."
     break
 fi
-
-gacutil -i thirdparty/Tao/Tao.Cg.dll
-gacutil -i thirdparty/Tao/Tao.FreeType.dll
-gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-gacutil -i thirdparty/Tao/Tao.Sdl.dll
-
-cd $start_directory
