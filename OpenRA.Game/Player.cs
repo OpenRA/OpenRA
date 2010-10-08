@@ -38,6 +38,7 @@ namespace OpenRA
 		public readonly bool NonCombatant = false;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerRef;
+		public bool IsBot;
 		
 		public ShroudRenderer Shroud;
 		public World World { get; private set; }
