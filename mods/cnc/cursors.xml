@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sequences>
   <cursor src="mouse2" palette="cursor">
-	<sequence name="scroll-t" start="1" x="12" y="12" />
-	<sequence name="scroll-tr" start="2" x="12" y="12" />
-	<sequence name="scroll-r" start="3" x="12" y="12" />
-	<sequence name="scroll-br" start="4" x="12" y="12" />
-	<sequence name="scroll-b" start="5" x="12" y="12" />
-	<sequence name="scroll-bl" start="6" x="12" y="12" />
-	<sequence name="scroll-l" start="7" x="12" y="12" />
-	<sequence name="scroll-tl" start="8" x="12" y="12" />
-    <sequence name="scroll-t-blocked" start="130" x="12" y="12" />
-    <sequence name="scroll-tr-blocked" start="131" x="12" y="12" />
-    <sequence name="scroll-r-blocked" start="132" x="12" y="12" />
-    <sequence name="scroll-br-blocked" start="133" x="12" y="12" />
-    <sequence name="scroll-b-blocked" start="134" x="12" y="12" />
-    <sequence name="scroll-bl-blocked" start="135" x="12" y="12" />
-    <sequence name="scroll-l-blocked" start="136" x="12" y="12" />
-    <sequence name="scroll-tl-blocked" start="137" x="12" y="12" />
+	<sequence name="scroll-t" start="1" x="14" y="-2" />
+	<sequence name="scroll-tr" start="2" x="14" y="-2" />
+	<sequence name="scroll-r" start="3" x="28" y="12" />
+	<sequence name="scroll-br" start="4" x="28" y="22" />
+	<sequence name="scroll-b" start="5" x="14" y="22" />
+	<sequence name="scroll-bl" start="6" x="-2" y="22" />
+	<sequence name="scroll-l" start="7" x="-1" y="13" />
+	<sequence name="scroll-tl" start="8" x="-2" y="-2" />
+    <sequence name="scroll-t-blocked" start="130" x="14" y="-2" />
+    <sequence name="scroll-tr-blocked" start="131" x="14" y="-2" />
+    <sequence name="scroll-r-blocked" start="132" x="28" y="12" />
+    <sequence name="scroll-br-blocked" start="133" x="28" y="22" />
+    <sequence name="scroll-b-blocked" start="134" x="14" y="22" />
+    <sequence name="scroll-bl-blocked" start="135" x="-2" y="22" />
+    <sequence name="scroll-l-blocked" start="136" x="-1" y="13" />
+    <sequence name="scroll-tl-blocked" start="137" x="-2" y="-2" />
     <sequence name="select" start="12" length="6" x="12" y="12" />
 	
 	<sequence name="default" start="0" />
