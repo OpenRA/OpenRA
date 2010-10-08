@@ -152,7 +152,7 @@ namespace OpenRA.Widgets
                 if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left))
                     scroll += new float2(-1, 0);
 
-				float length = scroll.Length;
+				float length = Math.Max(1, scroll.Length);
 				scroll.X = (scroll.X / length) * Game.Settings.Game.ViewportEdgeScrollStep;
 				scroll.Y = (scroll.Y / length) * Game.Settings.Game.ViewportEdgeScrollStep;
 
