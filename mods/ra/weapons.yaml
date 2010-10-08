@@ -180,7 +180,7 @@ Flamer:
 		Damage: 70
 
 ChainGun:
-	ROF: 3
+	ROF: 10
 	Range: 5
 	MinRange: 1
 	Report: GUN13
@@ -196,7 +196,7 @@ ChainGun:
 		Explosion: piffs
 		WaterExplosion: small_splash
 		InfDeath: 1
-		Damage: 40
+		Damage: 20
 
 ChainGun.Yak:
 	ROF: 3
