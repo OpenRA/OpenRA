@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA
 					});
 
 				self.CancelActivity();
-				self.QueueActivity(new Fly(Util.CenterOfCell(order.TargetLocation)));
+				self.QueueActivity(Fly.ToCell(order.TargetLocation));
 			}
 
 			else if (order.OrderString == "Enter")

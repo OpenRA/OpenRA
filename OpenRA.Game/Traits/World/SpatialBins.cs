@@ -45,9 +45,9 @@ namespace OpenRA.Traits
 				for (var i = 0; i <= bins.GetUpperBound(0); i++)
 					bins[i, j].Clear();
 
-			foreach (var a in self.World.Actors)
+			foreach (var a in self.World.Queries.WithTrait<IHasLocation>())
 			{
-				var bounds = a.GetBounds(true);
+				var bounds = a.Actor.GetBounds(true);
 
 				if (bounds.Right <= Game.CellSize * self.World.Map.XOffset) continue;
 				if (bounds.Bottom <= Game.CellSize * self.World.Map.YOffset) continue;
@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 				
 				for (var j = j1; j <= j2; j++)
 					for (var i = i1; i <= i2; i++)
-						bins[i, j].Add(a);
+						bins[i, j].Add(a.Actor);
 			}
 		}
 

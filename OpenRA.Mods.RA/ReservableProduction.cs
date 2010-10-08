@@ -43,7 +43,6 @@ namespace OpenRA.Mods.RA
 						new LocationInit( exit ),
 						new OwnerInit( self.Owner ),
 					});
-					newUnit.CenterLocation = spawn;
 		        	
 					var rp = self.TraitOrDefault<RallyPoint>();
 					if( rp != null )

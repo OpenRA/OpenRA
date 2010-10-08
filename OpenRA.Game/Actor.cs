@@ -27,6 +27,7 @@ namespace OpenRA
 		public readonly uint ActorID;
 
 		public int2 Location { get { return Trait<IOccupySpace>().TopLeft; } }
+		public float2 CenterLocation { get { return Trait<IHasLocation>().PxPosition; } }
 		[Sync]
 		public Player Owner;
 
@@ -51,9 +52,6 @@ namespace OpenRA
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
-
-			if( CenterLocation == float2.Zero && HasTrait<IOccupySpace>() )
-				CenterLocation = Traits.Util.CenterOfCell(Location);
 
 			Size = Lazy.New(() =>
 			{
@@ -98,8 +96,6 @@ namespace OpenRA
 		{
 			get { return currentActivity == null || currentActivity is Idle; }
 		}
-
-		public float2 CenterLocation;
 
         OpenRA.FileFormats.Lazy<float2> Size;
 
