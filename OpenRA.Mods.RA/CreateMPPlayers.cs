@@ -63,6 +63,9 @@ namespace OpenRA.Mods.RA
 					if (Game.IsHost)
 						foreach (var bot in player.PlayerActor.TraitsImplementing<IBot>())
 							bot.Activate(player);
+
+					/* a bit of a hack */
+					player.IsBot = true;
 				}
 			}
 			
@@ -85,6 +88,9 @@ namespace OpenRA.Mods.RA
 
 			// Hack: All map players are neutral wrt everyone else
 			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;
+
+			if (p.IsBot ^ q.IsBot)
+				return Stance.Enemy;	// bots and humans hate each other
 
 			var pc = GetClientForPlayer(p);
 			var qc = GetClientForPlayer(q);
