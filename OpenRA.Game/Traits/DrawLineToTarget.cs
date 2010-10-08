@@ -53,6 +53,9 @@ namespace OpenRA.Traits
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return;
 
+			if (!target.IsValid)
+				return;
+
 			var p = target.CenterLocation;
 
 			Game.Renderer.LineRenderer.DrawLine(self.CenterLocation, p, c, c);
