@@ -45,7 +45,6 @@ cp OpenRA.Game/OpenRA.ico packaging/built
 # Change into packaging directory and run the platform-dependant packaging in parallel
 cd packaging
 
-# ####### Windows #######
 (
     echo "Building Windows package."
     cd windows
@@ -53,27 +52,25 @@ cd packaging
     if [ $? -eq 0 ]; then
         mv OpenRA.exe "$PACKAGEDIR"/OpenRA-$VERSION.exe
     else
-        echo "Windows package build failed, refer to $PWD/package.log."  
+        echo "Windows package build failed, refer to windows/package.log."  
     fi
 ) &
 
-####### OSX #######
 (
     echo "Building OSX package."
 	cd osx
     sh buildpackage.sh "$VERSION" "$BUILTDIR" "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "OSX package build failed, refer to $PWD/package.log."
+        echo "OSX package build failed, refer to osx/package.log."
     fi
 ) &
 
-####### Linux #######
 (
-    echo "Building linux common."
+    echo "Building linux packages."
 	cd linux
 	sh buildpackage.sh "$VERSION" "$BUILTDIR" "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
-        echo "linux package build failed, refer to $PWD/package.log."
+        echo "linux package build failed, refer to linux/package.log."
     fi
 ) &
 wait

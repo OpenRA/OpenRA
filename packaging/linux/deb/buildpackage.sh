@@ -7,11 +7,9 @@ then
     exit $E_BADARGS
 fi
 VERSION=$1
+PACKAGE_SIZE=`du --apparent-size -c $2/usr | grep "total" | awk '{print $1}'`
 
-# HACK: bsd du doesn't like --apparant-size; remember to add back when running on debian
-PACKAGE_SIZE=`du -c $2/usr | grep "total" | awk '{print $1}'`
-
-# Copy our two needed folders to a clean package directory (yes, this is needed)
+# Copy template files into a clean build directory (required)
 mkdir root
 cp -R DEBIAN root
 cp -R $2/usr root
