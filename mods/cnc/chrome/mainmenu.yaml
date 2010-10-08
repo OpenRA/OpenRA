@@ -21,7 +21,7 @@ Background@MAINMENU_BG:
 					Width:PARENT_RIGHT - 30
 					Height:25
 					ScrollRate:8
-					Text:This is a super duper huge long Scrolling Test
+					Text:Welcome to OpenRA. Enjoy your stay.
 		Background@MOTD_LABEL_BG
 			Id:MOTD_LABEL_BG
 			X:0 - PARENT_LEFT + (WINDOW_RIGHT/16)*7
