@@ -12,6 +12,7 @@ Folders:
 
 Packages:
 	overrides.mix
+	bluetib.mix
 	snow.mix
 	speech.mix
 	conquer.mix

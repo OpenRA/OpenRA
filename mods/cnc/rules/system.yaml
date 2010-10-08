@@ -104,6 +104,12 @@ World:
 		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		ValuePerUnit: 30
 		Name: Tiberium
+	ResourceType@blue-tib:
+		ResourceType: 2
+		Palette: terrain
+		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		ValuePerUnit: 60
+		Name: Blue Tiberium
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		Types:sc1,sc2,sc3,sc4,sc5,sc6

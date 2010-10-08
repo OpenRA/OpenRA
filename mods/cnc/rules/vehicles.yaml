@@ -45,7 +45,7 @@ HARV:
 		Priority: 7
 		Bounds: 44,44
 	Harvester:
-		Resources: Tiberium
+		Resources: Tiberium, Blue Tiberium
 		PipCount: 5
 		PipColor: Green
 		Capacity: 28
