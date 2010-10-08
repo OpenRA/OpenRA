@@ -73,7 +73,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "EnterTransport")
 			{
+				if (order.TargetActor == null) return;
 				if (!CanEnter(order.TargetActor)) return;
+				if (!IsCorrectCargoType(order.TargetActor)) return;
 				
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>

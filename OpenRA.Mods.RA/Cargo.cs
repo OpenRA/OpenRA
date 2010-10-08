@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 
 			if( order.OrderString == "ReverseEnterTransport" )
 			{
-				if( order.Subject.Owner == order.TargetActor.Owner )
+				if( order.TargetActor != null && order.Subject.Owner == order.TargetActor.Owner )
 				{
 					var passenger = order.TargetActor.Trait<Passenger>();
 					passenger.ResolveOrder( order.TargetActor, new Order( "EnterTransport", order.TargetActor, self ) );
@@ -90,7 +90,6 @@ namespace OpenRA.Mods.RA
 			// Todo: Check if there is a free tile to unload to
 			return true;
 		}
-		
 		
 		public string CursorForOrder(Actor self, Order order)
 		{
