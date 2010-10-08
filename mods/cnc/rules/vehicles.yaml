@@ -475,6 +475,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		Passengers: 5
+	FallsToEarth:
 
 HELI:
 	Inherits: ^Helicopter
@@ -506,6 +507,7 @@ HELI:
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
+	FallsToEarth:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -536,6 +538,7 @@ ORCA:
 		SecondaryOffset: 5,0,0,2
 	RenderUnit:
 	WithShadow:
+	FallsToEarth:
 
 C17:
 	ParaDrop:
