@@ -83,10 +83,8 @@ Section "Client" Client
 	File "${SRCDIR}\INSTALL"
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\VERSION"
-	
-	File "${SRCDIR}\OpenRA.Game\OpenRA.ico"
-	
-	File "${SRCDIR}\thirdparty\Tao\*.dll"
+	File "${SRCDIR}\OpenRA.ico"
+	File "${SRCDIR}\Tao.*.dll"
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -98,8 +96,6 @@ Section "Client" Client
 	
 	SetOutPath "$INSTDIR\shaders"
 	File "${SRCDIR}\shaders\*.fx"
-	SetOutPath "$INSTDIR\maps"
-	File "${SRCDIR}\maps\README"
 SectionEnd
 
 Section "Editor" Editor

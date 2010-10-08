@@ -21,7 +21,7 @@ mkdir packaging/built/mods
 # List of files that are packaged on all platforms
 # Note that the Tao dlls are shipped on all platforms except osx
 # and that they are now installed to the game directory instead of being placed in the gac
-FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION"
+FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION COPYING HACKING INSTALL"
 
 # Files that match the above patterns, that should be excluded
 EXCLUDE="*.mdb"
@@ -39,21 +39,23 @@ cp thirdparty/Tao/* packaging/built
 # Copy WindowsBase.dll for linux packages
 cp thirdparty/WindowsBase.dll packaging/built
 
+# Copy game icon for windows package
+cp OpenRA.Game/OpenRA.ico packaging/built
+
 # Change into packaging directory and run the platform-dependant packaging in parallel
 cd packaging
 
 # ####### Windows #######
-# (
-#     msg "\E[34m" "Building Windows package."
-#     pushd windows/ &> /dev/null
-#     makensis -DSRCDIR="$SRCDIR" OpenRA.nsi &> package.log
-#     if [ $? -eq 0 ]; then
-#         mv OpenRA.exe "$PACKAGEDIR"OpenRA-$VERSION.exe
-#     else
-#         msg "\E[31m" "Windows package build failed, refer to $PWD/package.log."  
-#     fi
-#     popd &> /dev/null
-# ) &
+(
+    echo "Building Windows package."
+    cd windows
+    makensis -DSRCDIR="$BUILTDIR" OpenRA.nsi &> package.log
+    if [ $? -eq 0 ]; then
+        mv OpenRA.exe "$PACKAGEDIR"/OpenRA-$VERSION.exe
+    else
+        echo "Windows package build failed, refer to $PWD/package.log."  
+    fi
+) &
 
 ####### OSX #######
 (

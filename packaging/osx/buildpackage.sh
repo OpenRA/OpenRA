@@ -20,6 +20,7 @@ cp -R "$2/" "OpenRA.app/Contents/Resources/" || exit 3
 # Remove the tao and WindowsBase dlls (which are shipped with the deps package)
 rm OpenRA.app/Contents/Resources/Tao.*
 rm OpenRA.app/Contents/Resources/WindowsBase.dll
+rm OpenRA.app/Contents/Resources/OpenRA.ico
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app
