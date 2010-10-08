@@ -568,7 +568,7 @@ CA:
 		BuiltAt: syrd
 		Owner: allies
 	Valued:
-		Cost: 3200
+		Cost: 2400
 	Tooltip:
 		Name: Cruiser
 		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
