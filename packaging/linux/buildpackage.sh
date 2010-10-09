@@ -44,7 +44,7 @@ cp -r hicolor root/usr/share/icons/
 (
     echo "Building Arch-Linux package."
     cd pkgbuild
-    sh buildpackage.sh "$VERSION" "$PACKAGEDIR" &> package.log
+    sh buildpackage.sh "$VERSION" ../root "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi

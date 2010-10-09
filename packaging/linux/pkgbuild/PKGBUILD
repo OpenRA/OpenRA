@@ -21,5 +21,5 @@ noextract=()
 md5sums=()
 
 build() {
-  cp -r ~/openra-package/built/usr/ $pkgdir/
+  cp -r {ROOT}/usr/ $pkgdir/
 }
