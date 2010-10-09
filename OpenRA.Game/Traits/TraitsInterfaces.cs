@@ -188,7 +188,7 @@ namespace OpenRA.Traits
 			IsCanceled = OnCancel();
 			if( IsCanceled )
 				NextActivity = null;
-			else
+			else if (NextActivity != null)
 				NextActivity.Cancel( self );
 		}
 
