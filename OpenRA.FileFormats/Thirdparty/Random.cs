@@ -47,7 +47,11 @@ namespace OpenRA.Thirdparty
 
 		public int Next(int low, int high) { return low + Next() % (high - low); }
 		public int Next(int high) { return Next() % high; }
-		public double NextDouble() { return Math.Abs(Next() / (double)0x7fffffff); }
+
+		public double NextDouble()
+		{
+			return (double)(uint)Next() / (double)uint.MaxValue;
+		}
 
 		void Generate()
 		{
