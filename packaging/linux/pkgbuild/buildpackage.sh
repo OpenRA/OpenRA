@@ -7,11 +7,11 @@ then
 fi
 
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
-sed -i "s/pkgver=[0-9\\.]\+/pkgver=$PKGVERSION/" PKGBUILD
+sed -i "s/{VERSION}/$PKGVERSION/" PKGBUILD
 
 makepkg --holdver
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
-mv openra-git-$PKGVERSION-1-any.pkg.tar.xz $2
+mv openra-$PKGVERSION-1-any.pkg.tar.xz $2

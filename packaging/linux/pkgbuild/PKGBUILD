@@ -1,6 +1,6 @@
 # Contributor: Matthew Bowra-Dean <matthew@ijw.co.nz>
-pkgname=openra-git
-pkgver=20100806.2
+pkgname=openra
+pkgver={VERSION}
 pkgrel=1
 pkgdesc="Open Source rebuild of the Red Alert game engine using Mono/OpenGL."
 arch=(any)

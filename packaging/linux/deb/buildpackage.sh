@@ -1,5 +1,5 @@
 #!/bin/bash
-# OpenRA packaging script for Mac OSX
+# OpenRA packaging script for Debian based distributions
 E_BADARGS=85
 if [ $# -ne "3" ]
 then
