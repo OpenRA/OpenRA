@@ -53,7 +53,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-git describe --tags > "VERSION"
+echo $TAG > "VERSION"
 
 msg "\E[32m" "Starting make..."
 make prefix=/usr DESTDIR=../built install
