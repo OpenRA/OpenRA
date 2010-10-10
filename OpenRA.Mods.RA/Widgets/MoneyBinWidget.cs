@@ -8,11 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -21,17 +17,9 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class MoneyBinWidget : Widget
 	{
-		const int chromeButtonGap = 2;
 		public bool SplitOreAndCash = false;
 
-		/* legacy crap!!! */
-		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle, Action<MouseInput>>>();
-		void AddButton(Rectangle r, Action<MouseInput> b) { buttons.Add(Pair.New(r, b)); }
-
 		public MoneyBinWidget() : base() { }
-		protected MoneyBinWidget(Widget other) : base(other) { }
-
-		public override Widget Clone() { return new MoneyBinWidget(this); }
 
 		public override void DrawInner(World world)
 		{
@@ -73,21 +61,6 @@ namespace OpenRA.Mods.RA.Widgets
 					x -= 14;
 				}
 			}
-		}
-
-		public override bool HandleInputInner(MouseInput mi)
-		{
-			if (mi.Event == MouseInputEvent.Down)
-			{
-				var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
-				.Select(a => a.Second).FirstOrDefault();
-				if (action == null)
-					return false;
-
-				action(mi);
-				return true;
-			}
-			return false;
 		}
 	}
 }

@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,7 +20,6 @@ namespace OpenRA.Widgets
 	class WorldInteractionControllerWidget : Widget
 	{
 		public WorldInteractionControllerWidget() : base()	{}
-		protected WorldInteractionControllerWidget(WorldInteractionControllerWidget widget) : base(widget) {}
 		
 		public override void DrawInner( World world )
 		{
@@ -173,7 +171,5 @@ namespace OpenRA.Widgets
 				.DefaultIfEmpty( new Actor[] {} )
 				.FirstOrDefault();
 		}
-		
-		public override Widget Clone() { return new WorldInteractionControllerWidget(this); }
 	}
 }
