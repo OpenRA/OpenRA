@@ -68,7 +68,12 @@ namespace OpenRA
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged();
 
-			orderManager = new OrderManager(new NetworkConnection(host, port), ChooseReplayFilename());
+			var replayFilename = ChooseReplayFilename();
+			string path = Path.Combine( Game.SupportDir, "Replays" );
+			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
+			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
+
+			orderManager = new OrderManager( new ReplayRecorderConnection( new NetworkConnection( host, port ), replayFile ) );
 		}
 
 		static string ChooseReplayFilename()
@@ -117,7 +122,7 @@ namespace OpenRA
 					lastTime += Settings.Game.Timestep;
 					Widget.DoTick(world);
 					Sound.Tick();
-					orderManager.TickImmediate(world);
+					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate( world ); } );
 
 					var isNetTick = LocalTick % NetTickScale == 0;
 

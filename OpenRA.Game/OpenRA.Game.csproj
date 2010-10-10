@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -222,6 +222,7 @@
     <Compile Include="ActorReference.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Network\ReplayConnection.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />

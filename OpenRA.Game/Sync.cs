@@ -140,6 +140,7 @@ namespace OpenRA
 		public static T CheckSyncUnchanged<T>( World world, Func<T> fn )
 		{
 			int sync = world.SyncHash();
+			bool prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;
 			try
 			{
@@ -147,9 +148,9 @@ namespace OpenRA
 			}
 			finally
 			{
-				inUnsyncedCode = false;
+				inUnsyncedCode = prevInUnsyncedCode;
 				if( sync != world.SyncHash() )
-					throw new InvalidOperationException( "Desync in DispatchMouseInput" );
+					throw new InvalidOperationException( "CheckSyncUnchanged: sync-changing code may not run here" );
 			}
 		}
 

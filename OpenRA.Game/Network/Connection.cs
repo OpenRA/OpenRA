@@ -26,7 +26,7 @@ namespace OpenRA.Network
 		Connected,
 	}
 
-	interface IConnection
+	interface IConnection : IDisposable
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
@@ -73,9 +73,11 @@ namespace OpenRA.Network
 			foreach( var p in packets )
 				packetFn( p.FromClient, p.Data );
 		}
+
+		public virtual void Dispose() { }
 	}
 
-	class NetworkConnection : EchoConnection, IDisposable
+	class NetworkConnection : EchoConnection
 	{
 		TcpClient socket;
 		int clientId;
@@ -145,7 +147,7 @@ namespace OpenRA.Network
 
 		bool disposed = false;
 
-		public void Dispose ()
+		public override void Dispose ()
 		{
 			if (disposed) return;
 			disposed = true;
@@ -159,49 +161,5 @@ namespace OpenRA.Network
 		}
 		
 		~NetworkConnection() { Dispose(); }
-	}
-
-	class ReplayConnection : IConnection
-	{
-		//uint nextFrame = 1;
-		FileStream replayStream;
-
-		public ReplayConnection( string replayFilename )
-		{
-			replayStream = File.OpenRead( replayFilename );
-		}
-
-		public int LocalClientId
-		{
-			get { return 0; }
-		}
-
-		public ConnectionState ConnectionState
-		{
-			get { return ConnectionState.Connected; }
-		}
-
-		public void Send( byte[] packet )
-		{
-			// do nothing; ignore locally generated orders
-		}
-
-		public void Receive( Action<int, byte[]> packetFn )
-		{
-			if( replayStream == null ) return;
-
-			var reader = new BinaryReader( replayStream );
-			while( replayStream.Position < replayStream.Length )
-			{
-				var client = reader.ReadInt32();
-				var packetLen = reader.ReadInt32();
-				var packet = reader.ReadBytes( packetLen );
-				packetFn( client, packet );
-
-				if( !Game.orderManager.GameStarted )
-					return;
-			}
-			replayStream = null;
-		}
 	}
 }
