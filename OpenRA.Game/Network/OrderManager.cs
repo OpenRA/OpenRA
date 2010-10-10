@@ -18,7 +18,8 @@ namespace OpenRA.Network
 {
 	class OrderManager : IDisposable
 	{
-		SyncReport syncReport = new SyncReport();
+		readonly SyncReport syncReport = new SyncReport();
+		readonly FrameData frameData = new FrameData();
 
 		public int FrameNumber { get; private set; }
 
@@ -29,10 +30,6 @@ namespace OpenRA.Network
 		
 		public readonly int SyncHeaderSize = 9;
 		
-		Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();
-
-		Dictionary<int, Dictionary<int, byte[]>> frameClientData = 
-			new Dictionary<int, Dictionary<int, byte[]>>();
 		List<Order> localOrders = new List<Order>();
 
 		public void StartGame()
@@ -74,13 +71,13 @@ namespace OpenRA.Network
 				{
 					var frame = BitConverter.ToInt32( packet, 0 );
 					if( packet.Length == 5 && packet[ 4 ] == 0xBF )
-						clientQuitTimes[ clientId ] = frame;
+						frameData.ClientQuit( clientId, frame );
 					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
 						CheckSync( packet );
 					else if( frame == 0 )
 						immediatePackets.Add( Pair.New( clientId, packet ) );
 					else
-						frameClientData.GetOrAdd( frame ).Add( clientId, packet );
+						frameData.AddFrameOrders( clientId, frame, packet );
 				} );
 
 			foreach( var p in immediatePackets )
@@ -121,14 +118,9 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		void OutOfSync( int frame , int index)
-		{	
-			var frameData = clientQuitTimes
-				.Where( x => frame <= x.Value )
-				.OrderBy( x => x.Key )
-				.ToDictionary( k => k.Key, v => frameClientData[ FrameNumber ][ v.Key ] );
-			
-			var order = frameData.SelectMany( o => o.Value.ToOrderList( Game.world ).Select( a => new { Client = o.Key, Order = a } ) ).ElementAt(index);
+		void OutOfSync(int frame, int index)
+		{
+			var order = frameData.OrdersForFrame( Game.world, frame ).ElementAt(index);
 			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, order.Order.ToString()));
 		}
 		
@@ -144,13 +136,7 @@ namespace OpenRA.Network
 
 		public bool IsReadyForNextFrame
 		{
-			get
-			{
-				return FrameNumber > 0 &&
-					clientQuitTimes
-						.Where( x => FrameNumber <= x.Value )
-						.All( x => frameClientData.GetOrAdd( FrameNumber ).ContainsKey( x.Key ) );
-			}
+			get { return FrameNumber >= 1 && frameData.IsReadyForFrame( FrameNumber ); }
 		}
 
 		public void Tick( World world )
@@ -161,14 +147,10 @@ namespace OpenRA.Network
 			Connection.Send( localOrders.Serialize( FrameNumber + FramesAhead ) );
 			localOrders.Clear();
 
-			var frameData = clientQuitTimes
-				.Where( x => FrameNumber <= x.Value )
-				.OrderBy( x => x.Key )
-				.ToDictionary( k => k.Key, v => frameClientData[ FrameNumber ][ v.Key ] );
 			var sync = new List<int>();
 			sync.Add( world.SyncHash() );
 
-			foreach( var order in frameData.SelectMany( o => o.Value.ToOrderList( world ).Select( a => new { Client = o.Key, Order = a } ) ) )
+			foreach( var order in frameData.OrdersForFrame( world, FrameNumber) )
 			{
 				UnitOrders.ProcessOrder( world, order.Client, order.Order );
 				sync.Add( world.SyncHash() );

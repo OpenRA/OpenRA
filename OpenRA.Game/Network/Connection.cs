@@ -114,12 +114,13 @@ namespace OpenRA.Network
 							receivedPackets.Add( new ReceivedPacket { FromClient = client, Data = buf } );
 					}
 				}
-				catch( SocketException )
+				catch { }
+				finally
 				{
 					connectionState = ConnectionState.NotConnected;
+					if( socket != null )
+						socket.Close();
 				}
-				catch ( IOException ) { socket.Close(); }
-				catch (ThreadAbortException ) { socket.Close(); }
 			}
 			) { IsBackground = true };
 			t.Start();
@@ -134,12 +135,10 @@ namespace OpenRA.Network
 
 			try
 			{
-
 				var ms = new MemoryStream();
 				ms.Write(BitConverter.GetBytes((int)packet.Length));
 				ms.Write(packet);
 				ms.WriteTo(socket.GetStream());
-
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }
 			catch (ObjectDisposedException) { /* ditto */ }

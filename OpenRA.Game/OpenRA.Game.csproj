@@ -222,6 +222,7 @@
     <Compile Include="ActorReference.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Network\FrameData.cs" />
     <Compile Include="Network\ReplayConnection.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
