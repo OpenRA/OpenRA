@@ -23,14 +23,15 @@ using OpenRA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-
 namespace OpenRA.Widgets.Delegates
 {
-
 	public class DeveloperModeDelegate : IWidgetDelegate
 	{
-		public DeveloperModeDelegate ()
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public DeveloperModeDelegate( [ObjectCreator.Param("world")] World world )
 		{
+			this.world = world;
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
 			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
 			
@@ -41,10 +42,10 @@ namespace OpenRA.Widgets.Delegates
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().DisableShroud;
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().DisableShroud;
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
-				Game.IssueOrder(new Order("DevShroud", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevShroud", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
@@ -52,51 +53,51 @@ namespace OpenRA.Widgets.Delegates
 				() => Game.Settings.Debug.ShowCollisions;
 			devmodeBG.GetWidget("CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
 			{
-				Game.IssueOrder(new Order("DevUnitDebug", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevUnitDebug", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug;
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug;
 			devmodeBG.GetWidget("CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
 			{
-				Game.IssueOrder(new Order("DevPathDebug", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevPathDebug", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_CASH").OnMouseUp = mi =>
 			{
-				Game.IssueOrder(new Order("DevGiveCash", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").Checked =
-				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastBuild;
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastBuild;
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").OnMouseDown = mi =>
 			{
-				Game.IssueOrder(new Order("DevFastBuild", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevFastBuild", world.LocalPlayer.PlayerActor));
 				return true;
 			};	
 
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastCharge;
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastCharge;
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").OnMouseDown = mi =>
 			{
-				Game.IssueOrder(new Order("DevFastCharge", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevFastCharge", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").Checked = 
-				() => Game.world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().AllTech;
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().AllTech;
 			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").OnMouseDown = mi =>
 			{
-				Game.IssueOrder(new Order("DevEnableTech", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevEnableTech", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
 			{
-				Game.IssueOrder(new Order("DevGiveExploration", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 				

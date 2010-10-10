@@ -19,7 +19,12 @@ namespace OpenRA.Widgets
 {
 	class WorldInteractionControllerWidget : Widget
 	{
-		public WorldInteractionControllerWidget() : base()	{}
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public WorldInteractionControllerWidget( [ObjectCreator.Param( "world" )] World world )
+		{
+			this.world = world;
+		}
 		
 		public override void DrawInner( World world )
 		{
@@ -43,7 +48,6 @@ namespace OpenRA.Widgets
 		public override bool HandleInputInner(MouseInput mi)
 		{			
 			var xy = Game.viewport.ViewToWorld(mi);
-			var world = Game.world;
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				dragStart = dragEnd = xy;
@@ -106,7 +110,6 @@ namespace OpenRA.Widgets
 		
 		public override string GetCursor(int2 pos)
 		{
-			var world = Game.world;
 			return Sync.CheckSyncUnchanged( world, () =>
 			{
 				if (!world.GameHasStarted)
@@ -129,7 +132,7 @@ namespace OpenRA.Widgets
 			{
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
 				{
-					Game.world.Selection.DoControlGroup(Game.world, e.KeyName[0] - '0', e.Modifiers);
+					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
 					return true;
 				}
 
@@ -144,7 +147,6 @@ namespace OpenRA.Widgets
 		
 		public void GotoNextBase()
 		{
-			var world = Game.world;
 			var bases = world.Queries.OwnedBy[world.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
 			if (!bases.Any()) return;
 

@@ -33,14 +33,14 @@ namespace OpenRA
 					widgets.Add( w.Key.Substring( w.Key.IndexOf( '@' ) + 1 ), w );
 		}
 
-		public Widget LoadWidget( Widget parent, string w )
+		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, string w )
 		{
-			return LoadWidget( parent, widgets[ w ] );
+			return LoadWidget( args, parent, widgets[ w ] );
 		}
 
-		public Widget LoadWidget( Widget parent, MiniYamlNode node)
+		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, MiniYamlNode node)
 		{
-			var widget = NewWidget(node.Key);
+			var widget = NewWidget(node.Key, args);
 			parent.AddChild( widget );
 
 			foreach (var child in node.Value.Nodes)
@@ -52,16 +52,16 @@ namespace OpenRA
 			foreach (var child in node.Value.Nodes)
 				if (child.Key == "Children")
 					foreach (var c in child.Value.Nodes)
-						LoadWidget( widget, c);
+						LoadWidget( args, widget, c);
 
-			widget.PostInit();
+			widget.PostInit( args );
 			return widget;
 		}
 
-		Widget NewWidget(string widgetType)
+		Widget NewWidget(string widgetType, Dictionary<string, object> args)
 		{
 			widgetType = widgetType.Split('@')[0];
-			return Game.CreateObject<Widget>(widgetType + "Widget");
+			return Game.modData.ObjectCreator.CreateObject<Widget>(widgetType + "Widget", args);
 		}
 	}
 }

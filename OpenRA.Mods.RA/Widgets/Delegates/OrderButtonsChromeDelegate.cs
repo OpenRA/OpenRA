@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Widgets;
 
@@ -15,8 +16,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class OrderButtonsChromeDelegate : IWidgetDelegate
 	{
-		public OrderButtonsChromeDelegate()
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public OrderButtonsChromeDelegate( [ObjectCreator.Param("world")] World world )
 		{
+			this.world = world;
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			
@@ -25,23 +29,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var sell = moneybin.GetWidget<OrderButtonWidget>("SELL");
 			if (sell != null)
 			{
-				sell.Pressed = () => Game.world.OrderGenerator is SellOrderGenerator;
-				sell.OnMouseDown = mi => { Game.world.ToggleInputMode<SellOrderGenerator>(); return true; };
+				sell.Pressed = () => world.OrderGenerator is SellOrderGenerator;
+				sell.OnMouseDown = mi => { world.ToggleInputMode<SellOrderGenerator>(); return true; };
 			}
 			
 			var powerdown = moneybin.GetWidget<OrderButtonWidget>("POWER_DOWN");
 			if (powerdown != null)
 			{
-				powerdown.Pressed = () => Game.world.OrderGenerator is PowerDownOrderGenerator;
-				powerdown.OnMouseDown = mi => { Game.world.ToggleInputMode<PowerDownOrderGenerator>(); return true; };
+				powerdown.Pressed = () => world.OrderGenerator is PowerDownOrderGenerator;
+				powerdown.OnMouseDown = mi => { world.ToggleInputMode<PowerDownOrderGenerator>(); return true; };
 			}
 			
 			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
 			if (repair != null)
 			{
-				repair.Enabled = () => { return RepairOrderGenerator.PlayerIsAllowedToRepair( Game.world ); };
-				repair.Pressed = () => Game.world.OrderGenerator is RepairOrderGenerator;
-				repair.OnMouseDown = mi => { Game.world.ToggleInputMode<RepairOrderGenerator>(); return true; };
+				repair.Enabled = () => { return RepairOrderGenerator.PlayerIsAllowedToRepair( world ); };
+				repair.Pressed = () => world.OrderGenerator is RepairOrderGenerator;
+				repair.OnMouseDown = mi => { world.ToggleInputMode<RepairOrderGenerator>(); return true; };
 				repair.GetLongDesc = () => { return repair.Enabled() ? repair.LongDesc : repair.LongDesc + "\n\nRequires: Construction Yard"; };
 			}
 		}

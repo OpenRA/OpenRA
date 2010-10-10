@@ -124,12 +124,13 @@ namespace OpenRA.Widgets
 								   height);
 		}
 
-		public void PostInit()
+		public void PostInit( Dictionary<string, object> args )
 		{
 			if( Delegate != null )
 			{
-				var createDict = new Dictionary<string, object> { { "widget", this } };
-				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>( Delegate, createDict );
+				args[ "widget" ] = this;
+				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>( Delegate, args );
+				args.Remove( "widget" );
 			}
 		}
 		
@@ -320,9 +321,14 @@ namespace OpenRA.Widgets
 				rootWidget.Children.Add( WindowList.Peek() );
 		}
 
-		public static Widget OpenWindow(string id)
+		public static Widget OpenWindow( string id )
 		{
-			var window = Game.modData.WidgetLoader.LoadWidget( rootWidget, id );
+			return OpenWindow( id, new Dictionary<string, object>() );
+		}
+
+		public static Widget OpenWindow(string id, Dictionary<string, object> args )
+		{
+			var window = Game.modData.WidgetLoader.LoadWidget( args, rootWidget, id );
 			if( WindowList.Count > 0 )
 				rootWidget.Children.Remove( WindowList.Peek() );
 			WindowList.Push( window );

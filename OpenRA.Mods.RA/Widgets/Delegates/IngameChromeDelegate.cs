@@ -15,8 +15,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class IngameChromeDelegate : IWidgetDelegate
 	{
-		public IngameChromeDelegate()
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public IngameChromeDelegate( [ObjectCreator.Param("world")] World world )
 		{
+			this.world = world;
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			optionsBG.GetWidget("SURRENDER").OnMouseUp = mi =>
 			{
-				Game.IssueOrder(new Order("Surrender", Game.world.LocalPlayer.PlayerActor));
+				Game.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor));
 				return true;
 			};
 			
@@ -66,12 +69,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
 			postgameBG.IsVisible = () =>
 			{
-				return Game.world.LocalPlayer != null && Game.world.LocalPlayer.WinState != WinState.Undefined;
+				return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
 			};
 			
 			postgameText.GetText = () =>
 			{
-				var state = Game.world.LocalPlayer.WinState;
+				var state = world.LocalPlayer.WinState;
 				return (state == WinState.Undefined)? "" :
 								((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};

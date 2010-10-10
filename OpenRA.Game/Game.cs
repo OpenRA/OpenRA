@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -186,7 +187,7 @@ namespace OpenRA
 		public static void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
 
-		public static event Action AfterGameStart = () => {};
+		public static event Action<World> AfterGameStart = _ => {};
 		public static event Action BeforeGameStart = () => {};
 		internal static void StartGame(string map)
 		{
@@ -200,7 +201,7 @@ namespace OpenRA
 
 			orderManager.StartGame();
 			viewport.RefreshPalette();
-			AfterGameStart();
+			AfterGameStart( world );
 		}
 
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
@@ -291,7 +292,7 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
-			Game.BeforeGameStart += () => Widget.OpenWindow("INGAME_ROOT");
+			Game.AfterGameStart += world => Widget.OpenWindow("INGAME_ROOT", new Dictionary<string,object>{{"world", world}});
 
 			Game.ConnectionStateChanged += () =>
 			{
@@ -318,7 +319,7 @@ namespace OpenRA
 				}
 			};
 
-			modData.WidgetLoader.LoadWidget( Widget.RootWidget, "PERF_BG" );
+			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
 			Widget.OpenWindow("MAINMENU_BG");
 
 			ResetTimer();

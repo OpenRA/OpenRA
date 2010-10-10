@@ -21,8 +21,11 @@ namespace OpenRA.Widgets.Delegates
 		static List<Widget> controls = new List<Widget>();
 
 		int validPlayers = 0;
-		public DiplomacyDelegate()
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public DiplomacyDelegate( [ObjectCreator.Param("world")] World world )
 		{
+			this.world = world;
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
 			var diplomacy = root.GetWidget("INGAME_DIPLOMACY_BUTTON");
@@ -34,7 +37,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			Game.AfterGameStart += () => validPlayers = Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.NonCombatant).Count();
+			Game.AfterGameStart += _ => validPlayers = world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
 
@@ -71,7 +74,7 @@ namespace OpenRA.Widgets.Delegates
 
 			y += 35;
 
-			foreach (var p in Game.world.players.Values.Where(a => a != Game.world.LocalPlayer && !a.NonCombatant))
+			foreach (var p in world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant))
 			{
 				var pp = p;
 				var label = new LabelWidget
@@ -94,7 +97,7 @@ namespace OpenRA.Widgets.Delegates
 					Align = LabelWidget.TextAlign.Left,
 					Bold = false,
 
-					GetText = () => pp.Stances[ Game.world.LocalPlayer ].ToString(),
+					GetText = () => pp.Stances[ world.LocalPlayer ].ToString(),
 				};
 
 				bg.AddChild(theirStance);
@@ -104,7 +107,7 @@ namespace OpenRA.Widgets.Delegates
 				{
 					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
-					Text = Game.world.LocalPlayer.Stances[ pp ].ToString(),
+					Text = world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
 				myStance.OnMouseUp = mi => { CycleStance(pp, myStance); return true; };
@@ -135,7 +138,7 @@ namespace OpenRA.Widgets.Delegates
 
 			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
 
-			Game.IssueOrder(new Order("SetStance", Game.world.LocalPlayer.PlayerActor,
+			Game.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
 				new int2(p.Index, (int)nextStance)));
 
 			bw.Text = nextStance.ToString();

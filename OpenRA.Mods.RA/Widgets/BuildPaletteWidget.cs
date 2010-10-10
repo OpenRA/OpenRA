@@ -47,7 +47,12 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly string BuildPaletteClose = "bleep13.aud";
 		public readonly string TabClick = "ramenu1.aud";
 
-		public BuildPaletteWidget() : base() { }
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public BuildPaletteWidget( [ObjectCreator.Param("world")] World world )
+		{
+			this.world = world;
+		}
 		
 		public override void Initialize()
 		{
@@ -148,7 +153,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 			}
 
-			return DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), Game.world);
+			return DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), world);
 		}
 		
 		public override bool HandleInputInner(MouseInput mi)
