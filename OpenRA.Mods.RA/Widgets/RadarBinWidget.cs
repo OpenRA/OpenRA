@@ -105,10 +105,10 @@ namespace OpenRA.Mods.RA.Widgets
 					Location = (loc * Game.CellSize - Game.viewport.Location).ToInt2()
 				};
 
-				Widget.HandleInput(Game.world, fakemi);
+				Widget.HandleInput(fakemi);
 
 				fakemi.Event = MouseInputEvent.Up;
-				Widget.HandleInput(Game.world, fakemi);
+				Widget.HandleInput(fakemi);
 			}
 
 			return true;

@@ -163,15 +163,15 @@ namespace OpenRA
 
 		internal static event Action LobbyInfoChanged = () => { };
 
-		internal static void SyncLobbyInfo( World world, string data)
+		internal static void SyncLobbyInfo( string data)
 		{
 			LobbyInfo = Session.Deserialize(data);
 
-			if( !world.GameHasStarted )
-				world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );
+			//if( !world.GameHasStarted )
+			//    world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );
 
-			if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
-				world.SetLocalPlayer(orderManager.Connection.LocalClientId);
+			//if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
+			//    world.SetLocalPlayer(orderManager.Connection.LocalClientId);
 
 			if (orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
 				&& !orderManager.GameStarted)
@@ -217,7 +217,7 @@ namespace OpenRA
 					Location = new int2( e.Location ),
 					Modifiers = modifierKeys,
 				};
-				Widget.HandleInput( world, mi );
+				Widget.HandleInput( mi );
 			} );
 		}
 

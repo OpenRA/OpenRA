@@ -196,7 +196,7 @@ namespace OpenRA.Widgets
 		
 		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough; }
 		
-		public static bool HandleInput(World world, MouseInput mi)
+		public static bool HandleInput(MouseInput mi)
 		{
 			bool handled = false;
 			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
