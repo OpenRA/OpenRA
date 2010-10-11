@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA
 			}
 
 			// create the players which are bound through slots.
-			foreach (var slot in Game.LobbyInfo.Slots)
+			foreach (var slot in w.LobbyInfo.Slots)
 			{
-				var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+				var client = w.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
 				if (client != null)
 				{
 					/* spawn a real player in this slot. */
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 
 		static Session.Client GetClientForPlayer(Player p)
 		{
-			return Game.LobbyInfo.Clients.Single(c => c.Index == p.ClientIndex);
+			return p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
 		}
 	}
 }

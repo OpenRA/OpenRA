@@ -40,7 +40,6 @@ namespace OpenRA
 		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
 		public static Renderer Renderer;
-		public static Session LobbyInfo = new Session();
 		public static bool HasInputFocus = false;
 		
 		static void LoadMap(string uid)
@@ -48,7 +47,7 @@ namespace OpenRA
 			var map = modData.PrepareMap(uid);
 			
 			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
-			world = new World(modData.Manifest, map);
+			world = new World(modData.Manifest, map, orderManager);
 		}
 
 		public static void MoveViewport(int2 loc)
@@ -164,28 +163,12 @@ namespace OpenRA
 
 		internal static event Action LobbyInfoChanged = () => { };
 
-		internal static void SyncLobbyInfo( string data)
+		internal static void SyncLobbyInfo()
 		{
-			LobbyInfo = Session.Deserialize(data);
-
-			//if( !world.GameHasStarted )
-			//    world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );
-
-			//if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
-			//    world.SetLocalPlayer(orderManager.Connection.LocalClientId);
-
-			if (orderManager.FramesAhead != LobbyInfo.GlobalSettings.OrderLatency
-				&& !orderManager.GameStarted)
-			{
-				orderManager.FramesAhead = LobbyInfo.GlobalSettings.OrderLatency;
-				Debug("Order lag is now {0} frames.".F(LobbyInfo.GlobalSettings.OrderLatency));
-			}
-
 			LobbyInfoChanged();
 		}
 
 		public static void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
-
 
 		public static event Action<World> AfterGameStart = _ => {};
 		public static event Action BeforeGameStart = () => {};
@@ -225,11 +208,6 @@ namespace OpenRA
 		public static bool IsHost
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
-		}
-
-		internal static Session.Client LocalClient
-		{
-			get { return LobbyInfo.Clients.FirstOrDefault(c => c.Index == orderManager.Connection.LocalClientId); }
 		}
 
 		public static void HandleKeyEvent(KeyInput e)
@@ -278,10 +256,10 @@ namespace OpenRA
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 			
 			// Discard any invalid mods
-			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods.Where(m => ModData.AllMods.ContainsKey(m)).ToArray();
-			Console.WriteLine("Loading mods: {0}",string.Join(",",LobbyInfo.GlobalSettings.Mods));
+			var mods = Settings.Game.Mods.Where( m => ModData.AllMods.ContainsKey( m ) ).ToArray();
+			Console.WriteLine("Loading mods: {0}",string.Join(",",mods));
 			
-			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
+			modData = new ModData( mods );
 			
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -309,7 +287,7 @@ namespace OpenRA
 						Widget.OpenWindow("CONNECTION_FAILED_BG");
 						break;
 					case ConnectionState.Connected:
-						var lobby = Widget.OpenWindow("SERVER_LOBBY");
+						var lobby = Widget.OpenWindow( "SERVER_LOBBY", new Dictionary<string, object> { { "orderManager", orderManager } } );
 						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
 						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
 						lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
@@ -348,8 +326,6 @@ namespace OpenRA
 		{
 			orderManager.Dispose();
 			var shellmap = modData.Manifest.ShellmapUid;
-			LobbyInfo = new Session();
-			LobbyInfo.GlobalSettings.Mods = Settings.Game.Mods;
 			JoinLocal();
 			StartGame(shellmap);
 

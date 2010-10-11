@@ -18,7 +18,7 @@ namespace OpenRA.FileFormats
 	public class Manifest
 	{
 		public readonly string[]
-			Folders, Packages, Rules,
+			Mods, Folders, Packages, Rules,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
 
@@ -27,6 +27,7 @@ namespace OpenRA.FileFormats
 
 		public Manifest(string[] mods)
 		{
+			Mods = mods;
 			var yaml = mods
 				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
 				.Aggregate(MiniYaml.Merge);

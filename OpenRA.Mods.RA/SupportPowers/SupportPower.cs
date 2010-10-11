@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 
 			if (IsAvailable && (!Info.RequiresPower || PlayerPower.PowerState == PowerState.Normal))
 			{
-				if (Game.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastCharge) RemainingTime = 0;
+				if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Trait<DeveloperMode>().FastCharge) RemainingTime = 0;
 
 				if (RemainingTime > 0) --RemainingTime;
 				if (!notifiedCharging)

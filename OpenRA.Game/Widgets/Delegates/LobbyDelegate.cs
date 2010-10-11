@@ -26,10 +26,12 @@ namespace OpenRA.Widgets.Delegates
 		
 		public static Color CurrentColorPreview1;
 		public static Color CurrentColorPreview2;
-		
+
+		readonly OrderManager orderManager;
 		[ObjectCreator.UseCtor]
-		public LobbyDelegate( [ObjectCreator.Param( "widget" )] Widget lobby )
+		internal LobbyDelegate( [ObjectCreator.Param( "widget" )] Widget lobby, [ObjectCreator.Param] OrderManager orderManager )
 		{
+			this.orderManager = orderManager;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
 			
@@ -46,8 +48,8 @@ namespace OpenRA.Widgets.Delegates
 			mapPreview.Map = () => Map;
 			mapPreview.OnSpawnClick = sp =>
 			{
-				if (Game.LocalClient.State == Session.ClientState.Ready) return;
-				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
+				if (orderManager.LocalClient.State == Session.ClientState.Ready) return;
+				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
 				if (sp == 0 || !owned)
 					Game.IssueOrder(Order.Command("spawn {0}".F(sp)));
 			};
@@ -59,7 +61,7 @@ namespace OpenRA.Widgets.Delegates
 
 				for (int i = 1; i <= spawns.Count(); i++)
 				{
-					var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
+					var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
 					if (client == null)
 						continue;
 					sc.Add(spawns.ElementAt(i - 1), client.Color1);
@@ -88,12 +90,12 @@ namespace OpenRA.Widgets.Delegates
 
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsVisible = () => lockTeamsCheckbox.Visible && true;
-			lockTeamsCheckbox.Checked = () => Game.LobbyInfo.GlobalSettings.LockTeams;
+			lockTeamsCheckbox.Checked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
 			lockTeamsCheckbox.OnMouseDown = mi =>
 			{
 				if (Game.IsHost)
 					Game.IssueOrder(Order.Command(
-						"lockteams {0}".F(!Game.LobbyInfo.GlobalSettings.LockTeams)));
+						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
 				return true;
 			};
 			
@@ -175,8 +177,8 @@ namespace OpenRA.Widgets.Delegates
 
 		void UpdateCurrentMap()
 		{
-			if (MapUid == Game.LobbyInfo.GlobalSettings.Map) return;
-			MapUid = Game.LobbyInfo.GlobalSettings.Map;
+			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
+			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 			Map = Game.modData.AvailableMaps[MapUid];
 		}
 
@@ -188,13 +190,13 @@ namespace OpenRA.Widgets.Delegates
 				return;
 			hasJoined = true;
 			
-			if (Game.LocalClient.Name != Game.Settings.Player.Name)
+			if (orderManager.LocalClient.Name != Game.Settings.Player.Name)
 				Game.IssueOrder(Order.Command("name " + Game.Settings.Player.Name));
 			
 			var c1 = Game.Settings.Player.Color1;
 			var c2 = Game.Settings.Player.Color2;
 			
-			if (Game.LocalClient.Color1 != c1 || Game.LocalClient.Color2 != c2)			
+			if (orderManager.LocalClient.Color1 != c1 || orderManager.LocalClient.Color2 != c2)			
 				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
 		
@@ -204,9 +206,9 @@ namespace OpenRA.Widgets.Delegates
 				hasJoined = false;
 		}
 
-		static Session.Client GetClientInSlot(Session.Slot slot)
+		Session.Client GetClientInSlot(Session.Slot slot)
 		{
-			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+			return orderManager.LobbyInfo.ClientInSlot( slot );
 		}
 		
 		void UpdatePlayerList()
@@ -216,7 +218,7 @@ namespace OpenRA.Widgets.Delegates
 			Players.Children.Clear();
 
 			int offset = 0;
-			foreach (var slot in Game.LobbyInfo.Slots)
+			foreach (var slot in orderManager.LobbyInfo.Slots)
 			{
 				var s = slot;
 				var c = GetClientInSlot(s);
@@ -260,7 +262,7 @@ namespace OpenRA.Widgets.Delegates
 						join.IsVisible = () => !s.Closed && s.Bot == null;
 					}
 				}
-				else if (c.Index == Game.LocalClient.Index && c.State != Session.ClientState.Ready)
+				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
@@ -287,16 +289,16 @@ namespace OpenRA.Widgets.Delegates
 					{
 						var colorChooser = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
 						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-						hueSlider.SetOffset(Game.LocalClient.Color1.GetHue()/360f);
+						hueSlider.SetOffset(orderManager.LocalClient.Color1.GetHue()/360f);
 						
 						var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-						satSlider.SetOffset(Game.LocalClient.Color1.GetSaturation());
+						satSlider.SetOffset(orderManager.LocalClient.Color1.GetSaturation());
 
 						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-						lumSlider.SetOffset(Game.LocalClient.Color1.GetBrightness());
+						lumSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness());
 						
 						var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-						rangeSlider.SetOffset(Game.LocalClient.Color1.GetBrightness() == 0 ? 0 : Game.LocalClient.Color2.GetBrightness()/Game.LocalClient.Color1.GetBrightness());
+						rangeSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness() == 0 ? 0 : orderManager.LocalClient.Color2.GetBrightness()/orderManager.LocalClient.Color1.GetBrightness());
 
 						UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 						colorChooser.IsVisible = () => true;
@@ -341,7 +343,7 @@ namespace OpenRA.Widgets.Delegates
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.Checked = () => c.State == Session.ClientState.Ready;
-					if (c.Index == Game.LocalClient.Index) status.OnMouseDown = CycleReady;
+					if (c.Index == orderManager.LocalClient.Index) status.OnMouseDown = CycleReady;
 				}
 
 				template.Id = "SLOT_{0}".F(s.Index);
@@ -355,7 +357,7 @@ namespace OpenRA.Widgets.Delegates
 			}
 		}
 
-		bool SpawnPointAvailable(int index) { return (index == 0) || Game.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
+		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 		bool CycleRace(MouseInput mi)
 		{
 			var countries = CountryNames.Select(a => a.Key);
@@ -364,7 +366,7 @@ namespace OpenRA.Widgets.Delegates
 				countries = countries.Reverse();
 
 			var nextCountry = countries
-				.SkipWhile(c => c != Game.LocalClient.Country)
+				.SkipWhile(c => c != orderManager.LocalClient.Country)
 				.Skip(1)
 				.FirstOrDefault();
 
@@ -385,7 +387,7 @@ namespace OpenRA.Widgets.Delegates
 		bool CycleTeam(MouseInput mi)
 		{
 			var d = (mi.Button == MouseButton.Left) ? +1 : Map.PlayerCount;
-			var newIndex = (Game.LocalClient.Team + d) % (Map.PlayerCount + 1);
+			var newIndex = (orderManager.LocalClient.Team + d) % (Map.PlayerCount + 1);
 			
 			Game.IssueOrder(
 				Order.Command("team " + newIndex));

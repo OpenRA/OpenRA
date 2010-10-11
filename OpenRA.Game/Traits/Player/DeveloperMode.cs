@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 		
 		public void ResolveOrder (Actor self, Order order)
 		{
-			if (!Game.LobbyInfo.GlobalSettings.AllowCheats) return;
+			if (!self.World.LobbyInfo.GlobalSettings.AllowCheats) return;
 			
 			switch(order.OrderString)
 			{

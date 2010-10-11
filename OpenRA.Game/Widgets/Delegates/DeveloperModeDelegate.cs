@@ -101,7 +101,7 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 				
-			devModeButton.IsVisible = () => { return Game.LobbyInfo.GlobalSettings.AllowCheats; };
+			devModeButton.IsVisible = () => { return world.LobbyInfo.GlobalSettings.AllowCheats; };
 		}
 	}
 }

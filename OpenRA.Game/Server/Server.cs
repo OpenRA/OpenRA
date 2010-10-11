@@ -60,8 +60,7 @@ namespace OpenRA.Server
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
-			lobbyInfo = new Session();
-			lobbyInfo.GlobalSettings.Mods = settings.Game.Mods;
+			lobbyInfo = new Session( settings.Game.Mods );
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
 			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;

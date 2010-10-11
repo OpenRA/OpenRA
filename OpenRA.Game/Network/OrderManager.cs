@@ -21,8 +21,10 @@ namespace OpenRA.Network
 		readonly SyncReport syncReport = new SyncReport();
 		readonly FrameData frameData = new FrameData();
 
-		public int FrameNumber { get; private set; }
+		public Session LobbyInfo = new Session( Game.Settings.Game.Mods );
+		public Session.Client LocalClient { get { return LobbyInfo.ClientWithIndex( Connection.LocalClientId ); } }
 
+		public int FrameNumber { get; private set; }
 		public int FramesAhead = 0;
 
 		public bool GameStarted { get { return FrameNumber != 0; } }
@@ -82,7 +84,7 @@ namespace OpenRA.Network
 
 			foreach( var p in immediatePackets )
 				foreach( var o in p.Second.ToOrderList( world ) )
-					UnitOrders.ProcessOrder( world, p.First, o );
+					UnitOrders.ProcessOrder( this, world, p.First, o );
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -152,7 +154,7 @@ namespace OpenRA.Network
 
 			foreach( var order in frameData.OrdersForFrame( world, FrameNumber) )
 			{
-				UnitOrders.ProcessOrder( world, order.Client, order.Order );
+				UnitOrders.ProcessOrder( this, world, order.Client, order.Order );
 				sync.Add( world.SyncHash() );
 			}
 

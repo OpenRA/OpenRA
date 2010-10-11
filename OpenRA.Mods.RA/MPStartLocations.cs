@@ -28,14 +28,14 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
-			var taken = Game.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
+			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
 				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
 			var available = world.Map.SpawnPoints.Except(taken).ToList();
 
 			// Set spawn
-			foreach (var slot in Game.LobbyInfo.Slots)
+			foreach (var slot in world.LobbyInfo.Slots)
 			{
-				var client = Game.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+				var client = world.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
 				var player = FindPlayerInSlot(world, slot);
 
 				if (player == null) continue;

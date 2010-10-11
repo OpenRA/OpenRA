@@ -18,6 +18,7 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 
 using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.Network;
 
 namespace OpenRA
 {
@@ -27,6 +28,9 @@ namespace OpenRA
 		Set<Actor> actors = new Set<Actor>();
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
+
+		readonly OrderManager orderManager;
+		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
 		public XRandom SharedRandom = new XRandom(0);
 
@@ -84,8 +88,9 @@ namespace OpenRA
 			}
 		}
 		
-		public World(Manifest manifest, Map map)
+		internal World(Manifest manifest, Map map, OrderManager orderManager)
 		{
+			this.orderManager = orderManager;
 			orderGenerator_ = new UnitOrderGenerator();
 			Map = map;
 			

@@ -16,18 +16,13 @@ namespace OpenRA.Network
 {
 	static class UnitOrders
 	{
-		static Session.Client FindClientById(int id)
-		{
-			return Game.LobbyInfo.Clients.FirstOrDefault(c => c.Index == id);
-		}
-
 		static Player FindPlayerByClientId( this World world, int id)
 		{
 			/* todo: find the interactive player. */
 			return world.players.Values.FirstOrDefault(p => p.ClientIndex == id);
 		}
 
-		public static void ProcessOrder( World world, int clientId, Order order )
+		public static void ProcessOrder( OrderManager orderManager, World world, int clientId, Order order )
 		{
 			// Drop exploiting orders
 			if (order.Subject != null && order.Subject.Owner.ClientIndex != clientId)
@@ -40,7 +35,7 @@ namespace OpenRA.Network
 			{
 			case "Chat":
 				{
-					var client = FindClientById(clientId);
+					var client = orderManager.LobbyInfo.ClientWithIndex( clientId );
 					if (client != null)
 					{
 						var player = world.FindPlayerByClientId(clientId);
@@ -53,14 +48,14 @@ namespace OpenRA.Network
 				}
 			case "TeamChat":
 				{
-					var client = FindClientById(clientId);
+					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 					if (client != null)
 					{
 						var player = world.FindPlayerByClientId(clientId);
 						var display = (world.GameHasStarted) ? 
 							player != null && (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
 								|| player.WinState == WinState.Lost) :
-							client == Game.LocalClient || (client.Team == Game.LocalClient.Team && client.Team != 0);
+							client == orderManager.LocalClient || (client.Team == orderManager.LocalClient.Team && client.Team != 0);
 						
 						if (display)
 						{
@@ -73,12 +68,27 @@ namespace OpenRA.Network
 			case "StartGame":
 				{
 					Game.AddChatLine(Color.White, "Server", "The game has started.");
-					Game.StartGame(Game.LobbyInfo.GlobalSettings.Map);
+					Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map);
 					break;
 				}
 			case "SyncInfo":
 				{
-					Game.SyncLobbyInfo( order.TargetString);
+					orderManager.LobbyInfo = Session.Deserialize( order.TargetString );
+
+					//if( !world.GameHasStarted )
+					//    world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );
+
+					//if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
+					//    world.SetLocalPlayer(orderManager.Connection.LocalClientId);
+
+					if( orderManager.FramesAhead != orderManager.LobbyInfo.GlobalSettings.OrderLatency
+						&& !orderManager.GameStarted )
+					{
+						orderManager.FramesAhead = orderManager.LobbyInfo.GlobalSettings.OrderLatency;
+						Game.Debug( "Order lag is now {0} frames.".F( orderManager.LobbyInfo.GlobalSettings.OrderLatency ) );
+					}
+
+					Game.SyncLobbyInfo();
 					break;
 				}
 			case "SetStance":

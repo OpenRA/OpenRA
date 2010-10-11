@@ -42,7 +42,7 @@ namespace OpenRA
 			{
 				var type = mod.First.GetType( mod.Second + "." + className, false );
 				if( type == null ) continue;
-				var ctors = type.GetConstructors().Where( x => x.HasAttribute<UseCtorAttribute>() ).ToList();
+				var ctors = type.GetConstructors( BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance ).Where( x => x.HasAttribute<UseCtorAttribute>() ).ToList();
 				if( ctors.Count == 0 )
 					return (T)CreateBasic( type );
 				else if( ctors.Count == 1 )

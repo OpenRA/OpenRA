@@ -95,7 +95,7 @@ namespace OpenRA.Widgets.Delegates
 				// Or even better, reject them server side and display the error in the connection failed dialog.
 
 				// Don't bother joining a server with different mods... its only going to crash
-				if (currentServer.Mods.SymmetricDifference(Game.LobbyInfo.GlobalSettings.Mods).Any())
+				if (currentServer.Mods.SymmetricDifference(Game.modData.Manifest.Mods).Any())
 				{
 					System.Console.WriteLine("Player has different mods to server; not connecting to avoid crash");
 					System.Console.WriteLine("FIX THIS BUG YOU NOOB!");

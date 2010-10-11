@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Network
@@ -19,6 +20,16 @@ namespace OpenRA.Network
 		public List<Client> Clients = new List<Client>();
 		public List<Slot> Slots = new List<Slot>();
 		public Global GlobalSettings = new Global();
+
+		public Client ClientWithIndex( int clientID )
+		{
+			return Clients.Single( c => c.Index == clientID );
+		}
+
+		public Client ClientInSlot( Slot slot )
+		{
+			return Clients.SingleOrDefault( c => c.Slot == slot.Index );
+		}
 
 		public enum ClientState
 		{
@@ -59,6 +70,11 @@ namespace OpenRA.Network
 			public bool AllowCheats = false;
 		}
 
+		public Session( string[] mods )
+		{
+			this.GlobalSettings.Mods = mods.ToArray();
+		}
+
 		public string Serialize()
 		{
 			var clientData = new List<MiniYamlNode>();
@@ -76,8 +92,7 @@ namespace OpenRA.Network
 
 		public static Session Deserialize(string data)
 		{
-			var session = new Session();
-			session.GlobalSettings.Mods = Game.Settings.Game.Mods;
+			var session = new Session( Game.Settings.Game.Mods );
 
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)
