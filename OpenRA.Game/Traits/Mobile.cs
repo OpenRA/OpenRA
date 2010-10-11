@@ -101,6 +101,10 @@ namespace OpenRA.Traits
 		}
 
 		UnitInfluence uim;
+
+		const int avgTicksBeforePathing = 5;
+		const int spreadTicksBeforePathing = 5;
+		internal int ticksBeforePathing = 0;
 		
 		public Mobile(ActorInitializer init, MobileInfo info)
 		{
@@ -185,6 +189,8 @@ namespace OpenRA.Traits
 						if (line != null)
 							line.SetTarget(self, Target.FromCell(currentLocation), Color.Green);
 					});
+				ticksBeforePathing = avgTicksBeforePathing +
+						self.World.SharedRandom.Next( -spreadTicksBeforePathing, spreadTicksBeforePathing );
 			}
 		}
 		

@@ -23,21 +23,9 @@ namespace OpenRA.Traits.Activities
 		Func<Actor, Mobile, List<int2>> getPath;
 		public Actor ignoreBuilding;
 		
-		int ticksBeforePathing;
-
-		const int avgTicksBeforePathing = 5;
-		const int spreadTicksBeforePathing = 5;
-
-		Move()
-		{
-			ticksBeforePathing = avgTicksBeforePathing + 
-				Game.world.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
-		}
-
 		// Scriptable move order
 		// Ignores lane bias and nearby units
-		public Move( int2 destination ) 
-			: this()
+		public Move( int2 destination )
 		{
 			this.getPath = (self,mobile) =>
 				self.World.PathFinder.FindPath(
@@ -48,7 +36,6 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move( int2 destination, int nearEnough ) 
-			: this()
 		{
 			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPath( mobile.toCell, destination, self );
 			this.destination = destination;
@@ -56,7 +43,6 @@ namespace OpenRA.Traits.Activities
 		}
 		
 		public Move(int2 destination, Actor ignoreBuilding)
-			: this()
 		{
 			this.getPath = (self,mobile) => 
 				self.World.PathFinder.FindPath(
@@ -70,7 +56,6 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move( Actor target, int range )
-			: this()
 		{
 			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
 				mobile.toCell, target.Location,
@@ -80,7 +65,6 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move(Target target, int range)
-			: this()
 		{
 			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
 				mobile.toCell, Util.CellContaining(target.CenterLocation),
@@ -90,7 +74,6 @@ namespace OpenRA.Traits.Activities
 		}
 
 		public Move(Func<List<int2>> getPath)
-			: this()
 		{
 			this.getPath = (_1,_2) => getPath();
 			this.destination = null;
@@ -125,9 +108,9 @@ namespace OpenRA.Traits.Activities
 
 			if( path == null )
 			{
-				if (ticksBeforePathing > 0)
+				if (mobile.ticksBeforePathing > 0)
 				{
-					--ticksBeforePathing;
+					--mobile.ticksBeforePathing;
 					return this;
 				}
 
@@ -223,6 +206,12 @@ namespace OpenRA.Traits.Activities
 
 				if (--waitTicksRemaining >= 0)
 					return null;
+
+				if (mobile.ticksBeforePathing > 0)
+				{
+					--mobile.ticksBeforePathing;
+					return null;
+				}
 
 				mobile.RemoveInfluence();
 				var newPath = EvalPath(self, mobile);
