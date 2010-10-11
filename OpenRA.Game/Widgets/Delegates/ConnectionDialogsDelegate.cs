@@ -15,7 +15,7 @@ namespace OpenRA.Widgets.Delegates
 	public class ConnectionDialogsDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionDialogsDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		public ConnectionDialogsDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			widget.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
@@ -31,7 +31,7 @@ namespace OpenRA.Widgets.Delegates
 	public class ConnectionFailedDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		public ConnectionFailedDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			widget.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;

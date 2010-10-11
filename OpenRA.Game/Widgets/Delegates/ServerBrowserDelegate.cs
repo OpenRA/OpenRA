@@ -24,7 +24,7 @@ namespace OpenRA.Widgets.Delegates
 		Widget ServerTemplate;
 
 		[ObjectCreator.UseCtor]
-		public ServerBrowserDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		public ServerBrowserDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			var bg = widget.GetWidget("JOINSERVER_BG");
 
@@ -187,7 +187,7 @@ namespace OpenRA.Widgets.Delegates
 	public class DirectConnectDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public DirectConnectDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		public DirectConnectDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			var dc = widget.GetWidget("DIRECTCONNECT_BG");
 

@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 	{
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public WorldInteractionControllerWidget( [ObjectCreator.Param( "world" )] World world )
+		public WorldInteractionControllerWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 		}

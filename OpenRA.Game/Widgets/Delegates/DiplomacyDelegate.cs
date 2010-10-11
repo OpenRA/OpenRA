@@ -23,7 +23,7 @@ namespace OpenRA.Widgets.Delegates
 		int validPlayers = 0;
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public DiplomacyDelegate( [ObjectCreator.Param("world")] World world )
+		public DiplomacyDelegate( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");

@@ -18,7 +18,7 @@ namespace OpenRA.Widgets.Delegates
 	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public MainMenuButtonsDelegate( [ObjectCreator.Param( "widget" )] Widget widget )
+		public MainMenuButtonsDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			// Main menu is the default window
 			widget.GetWidget( "MAINMENU_BUTTON_JOIN" ).OnMouseUp = mi => { Widget.OpenWindow( "JOINSERVER_BG" ); return true; };

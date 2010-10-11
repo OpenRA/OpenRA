@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public BuildPaletteWidget( [ObjectCreator.Param("world")] World world )
+		public BuildPaletteWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 		}

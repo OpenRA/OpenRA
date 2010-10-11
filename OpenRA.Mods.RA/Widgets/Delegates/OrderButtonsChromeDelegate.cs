@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	{
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public OrderButtonsChromeDelegate( [ObjectCreator.Param("world")] World world )
+		public OrderButtonsChromeDelegate( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 			var r = Widget.RootWidget;

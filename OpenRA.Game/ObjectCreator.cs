@@ -67,7 +67,7 @@ namespace OpenRA
 			{
 				var attrs = p[ i ].GetCustomAttributes<ParamAttribute>();
 				if( attrs.Length != 1 ) throw new InvalidOperationException( "ObjectCreator: argument in [UseCtor] doesn't have [Param]" );
-				a[ i ] = args[ attrs[ 0 ].ParamName ];
+				a[ i ] = args[ attrs[ 0 ].ParamName ?? p[i].Name ];
 			}
 			return ctor.Invoke( a );
 		}
@@ -76,6 +76,8 @@ namespace OpenRA
 		public class ParamAttribute : Attribute
 		{
 			public string ParamName { get; private set; }
+
+			public ParamAttribute() { }
 
 			public ParamAttribute( string paramName )
 			{

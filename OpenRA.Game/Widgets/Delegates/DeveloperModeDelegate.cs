@@ -29,7 +29,7 @@ namespace OpenRA.Widgets.Delegates
 	{
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public DeveloperModeDelegate( [ObjectCreator.Param("world")] World world )
+		public DeveloperModeDelegate( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
