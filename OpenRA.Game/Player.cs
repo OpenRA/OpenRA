@@ -63,7 +63,6 @@ namespace OpenRA
 
 			PlayerRef = pr;
 			
-			RegisterPlayerColor(world, Palette);
 			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
 		}
 		
@@ -85,16 +84,7 @@ namespace OpenRA
 			ClientIndex = client.Index;
 			PlayerRef = pr;
 			
-			RegisterPlayerColor(world, Palette);
 			PlayerActor = world.CreateActor("Player", new TypeDictionary{ new OwnerInit( this ) });
-		}
-		
-		public void RegisterPlayerColor(World world, string palette)
-		{			
-			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
-			var newpal = new Palette(world.WorldRenderer.GetPalette(info.BasePalette),
-			                 new PlayerColorRemap(Color, Color2, info.PaletteFormat));
-			world.WorldRenderer.AddPalette(palette, newpal);
 		}
 		
 		public void GiveAdvice(string advice)

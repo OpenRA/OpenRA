@@ -12,20 +12,20 @@ using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Widgets.Delegates;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
 	class ColorPickerPaletteModifierInfo : TraitInfo<ColorPickerPaletteModifier> {}
 	
-	class ColorPickerPaletteModifier : IPaletteModifier, IWorldLoaded
+	class ColorPickerPaletteModifier : IPalette, IPaletteModifier
 	{	
 		PaletteFormat format;
-		public void WorldLoaded(World w)
+		public void InitPalette( WorldRenderer wr )
 		{
-			// Copy the base palette for the colorpicker
-			var info = Rules.Info["world"].Traits.Get<PlayerColorPaletteInfo>();
+			var info = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
 			format = info.PaletteFormat;
-			w.WorldRenderer.AddPalette("colorpicker", w.WorldRenderer.GetPalette(info.BasePalette));
+			wr.AddPalette("colorpicker", wr.GetPalette(info.BasePalette));
 		}
 
 		public void AdjustPalette(Dictionary<string, Palette> palettes)

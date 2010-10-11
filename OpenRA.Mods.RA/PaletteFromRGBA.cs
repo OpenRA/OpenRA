@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
@@ -26,15 +27,21 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.world, this); }
 	}
 
-	class PaletteFromRGBA
+	class PaletteFromRGBA : IPalette
 	{
+		readonly World world;
+		readonly PaletteFromRGBAInfo info;
 		public PaletteFromRGBA(World world, PaletteFromRGBAInfo info)
 		{
-			if (info.Theatre == null ||
-				info.Theatre.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
+			this.world = world;
+			this.info = info;
+		}
+
+		public void InitPalette( WorldRenderer wr )
+		{
+			if (info.Theatre == null || info.Theatre.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
 			{
 				// TODO: This shouldn't rely on a base palette
-				var wr = world.WorldRenderer;
 				var pal = wr.GetPalette("terrain");
 				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))));
 			}

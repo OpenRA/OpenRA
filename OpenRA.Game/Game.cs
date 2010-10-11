@@ -32,6 +32,8 @@ namespace OpenRA
 
 		public static ModData modData;
 		public static World world;
+		public static WorldRenderer worldRenderer;
+
 		public static Viewport viewport;
 		public static Settings Settings;
 
@@ -48,6 +50,7 @@ namespace OpenRA
 			
 			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
 			world = new World(modData.Manifest, map, orderManager);
+			worldRenderer = new WorldRenderer(world);
 		}
 
 		public static void MoveViewport(int2 loc)
@@ -131,6 +134,7 @@ namespace OpenRA
 						world.OrderGenerator.Tick(world);
 						world.Selection.Tick(world);
 						world.Tick();
+						worldRenderer.Tick();
 
 						PerfHistory.Tick();
 					}
@@ -143,7 +147,7 @@ namespace OpenRA
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions(world.WorldRenderer, world);
+				viewport.DrawRegions(worldRenderer, world);
 				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
 			}
 
@@ -259,7 +263,8 @@ namespace OpenRA
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["text"].hasNormalTick = false;
-			PerfHistory.items["cursor"].hasNormalTick = false;
+			PerfHistory.items["cursor"].hasNormalTick = false;
+
 			
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);

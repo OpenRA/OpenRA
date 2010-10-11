@@ -21,12 +21,20 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromCurrentTheatre(init.world, this); }
 	}
 
-	class PaletteFromCurrentTheatre
+	class PaletteFromCurrentTheatre : IPalette
 	{
+		readonly World world;
+		readonly PaletteFromCurrentTheatreInfo info;
+
 		public PaletteFromCurrentTheatre(World world, PaletteFromCurrentTheatreInfo info)
 		{
-			world.WorldRenderer.AddPalette(info.Name, 
-				new Palette(FileSystem.Open(world.TileSet.Palette), info.Transparent));
+			this.world = world;
+			this.info = info;
+		}
+
+		public void InitPalette( OpenRA.Graphics.WorldRenderer wr )
+		{
+			wr.AddPalette( info.Name, new Palette( FileSystem.Open( world.TileSet.Palette ), info.Transparent ) );
 		}
 	}
 }

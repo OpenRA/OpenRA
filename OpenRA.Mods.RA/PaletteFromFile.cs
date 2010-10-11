@@ -10,6 +10,7 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,16 +24,20 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new PaletteFromFile(init.world, this); }
 	}
 
-	class PaletteFromFile
+	class PaletteFromFile : IPalette
 	{
+		readonly World world;
+		readonly PaletteFromFileInfo info;
 		public PaletteFromFile(World world, PaletteFromFileInfo info)
 		{
-			if (info.Theater == null || 
-				info.Theater.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
-			{
-				world.WorldRenderer.AddPalette(info.Name, 
-					new Palette(FileSystem.Open(info.Filename), info.Transparent));
-			}
+			this.world = world;
+			this.info = info;
+		}
+
+		public void InitPalette( WorldRenderer wr )
+		{
+			if( info.Theater == null || info.Theater.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant() )
+				wr.AddPalette( info.Name, new Palette( FileSystem.Open( info.Filename ), info.Transparent ) );
 		}
 	}
 }

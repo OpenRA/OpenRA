@@ -105,6 +105,7 @@ namespace OpenRA.Traits
 	public interface IDamageModifier { float GetDamageModifier( WarheadInfo warhead ); }
 	public interface ISpeedModifier { float GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
+	public interface IPalette { void InitPalette( WorldRenderer wr ); }
 	public interface IPaletteModifier { void AdjustPalette(Dictionary<string,Palette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }

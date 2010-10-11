@@ -111,7 +111,7 @@ namespace OpenRA.Graphics
 
 		public void RefreshPalette()
 		{
-			Game.world.WorldRenderer.palette.Update(
+			Game.worldRenderer.palette.Update(
 				Game.world.WorldActor.TraitsImplementing<IPaletteModifier>());
 		}
 

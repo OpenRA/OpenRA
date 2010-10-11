@@ -57,8 +57,6 @@ namespace OpenRA
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
-		public readonly WorldRenderer WorldRenderer;
-
 		IOrderGenerator orderGenerator_;
 		public IOrderGenerator OrderGenerator
 		{
@@ -96,8 +94,6 @@ namespace OpenRA
 			
 			TileSet = Rules.TileSets[Map.Tileset];
 			TileSet.LoadTiles();
-
-			WorldRenderer = new WorldRenderer(this);
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			Queries = new AllQueries(this);
@@ -170,8 +166,6 @@ namespace OpenRA
 			Game.viewport.Tick();
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
-
-			WorldRenderer.Tick();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

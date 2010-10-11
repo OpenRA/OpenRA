@@ -37,10 +37,12 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI:
-	
+	PlayerColorPalette:
+		BasePalette: terrain
+		PaletteFormat: cnc
+
 World:
 	ScreenShaker:
-	ColorPickerPaletteModifier:
 	NukePaletteEffect:
 	WaterPaletteRotation:
 		CncMode: true
@@ -50,9 +52,6 @@ World:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	PaletteFromCurrentTheatre:
 		Name: terrain
-	PlayerColorPalette:
-		BasePalette: terrain
-		PaletteFormat: cnc
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
@@ -85,6 +84,7 @@ World:
 		G: 0
 		B: 0
 		A: 180
+	ColorPickerPaletteModifier:
 	ShroudPalette@shroud:
 	ShroudPalette@fog:
 		IsFog: yes

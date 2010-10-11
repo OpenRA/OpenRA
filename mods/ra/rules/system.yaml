@@ -98,11 +98,11 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI:
-		
+	PlayerColorPalette:
+		BasePalette: terrain
 
 World:
 	ScreenShaker:
-	ColorPickerPaletteModifier:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
 	NukePaletteEffect:
@@ -119,8 +119,6 @@ World:
 		WaterChance: .2
 	PaletteFromCurrentTheatre:
 		Name: terrain
-	PlayerColorPalette:
-		BasePalette: terrain
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
@@ -154,6 +152,7 @@ World:
 		G: 0
 		B: 0
 		A: 180
+	ColorPickerPaletteModifier:
 	ShroudPalette@shroud:
 	ShroudPalette@fog:
 		IsFog: yes

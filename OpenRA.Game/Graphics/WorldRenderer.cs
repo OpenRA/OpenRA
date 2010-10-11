@@ -31,6 +31,9 @@ namespace OpenRA.Graphics
 			terrainRenderer = new TerrainRenderer(world, this);
 			uiOverlay = new UiOverlay();
 			palette = new HardwarePalette(world.Map);
+
+			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
+				pal.Trait.InitPalette( this );
 		}
 		
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
