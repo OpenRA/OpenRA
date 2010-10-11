@@ -173,7 +173,6 @@ namespace OpenRA.Widgets.Delegates
 		{
 			CurrentColorPreview1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
 			CurrentColorPreview2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
-			Game.worldRenderer.RefreshPalette();
 		}
 
 		void UpdateCurrentMap()

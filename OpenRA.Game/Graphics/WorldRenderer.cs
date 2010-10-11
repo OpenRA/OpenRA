@@ -73,7 +73,6 @@ namespace OpenRA.Graphics
 		Renderable[] worldSprites = { };
 		public void Tick()
 		{
-			RefreshPalette();
 			var bounds = GetBoundsRect();
 			var comparer = new SpriteComparer();
 
@@ -93,6 +92,7 @@ namespace OpenRA.Graphics
 
 		public void Draw()
 		{
+			RefreshPalette();
 			var bounds = GetBoundsRect();
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 

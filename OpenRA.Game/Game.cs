@@ -32,7 +32,7 @@ namespace OpenRA
 
 		public static ModData modData;
 		public static World world;
-		public static WorldRenderer worldRenderer;
+		private static WorldRenderer worldRenderer;
 
 		public static Viewport viewport;
 		public static Settings Settings;
