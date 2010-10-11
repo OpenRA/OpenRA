@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -96,16 +95,16 @@ namespace OpenRA.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 		
-		public void DrawRegions( World world )
+		public void DrawRegions( WorldRenderer wr, World world )
 		{
 			renderer.BeginFrame(scrollPosition);
-			world.WorldRenderer.Draw();
+			wr.Draw();
 
 			Widget.DoDraw(world);
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);
-			c.Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
+			c.Draw(wr, (int)cursorFrame, Viewport.LastMousePos + Location); 
 
 			renderer.EndFrame();
 		}

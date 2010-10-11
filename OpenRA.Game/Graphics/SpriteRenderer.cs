@@ -54,14 +54,14 @@ namespace OpenRA.Graphics
 			}
 		}
 				
-		public void DrawSprite(Sprite s, float2 location, string palette)
+		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette)
 		{
-			DrawSprite(s, location, Game.world.WorldRenderer.GetPaletteIndex(palette), s.size);
+			DrawSprite(s, location, wr.GetPaletteIndex(palette), s.size);
 		}
 		
-		public void DrawSprite(Sprite s, float2 location, string palette, float2 size)
+		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette, float2 size)
 		{
-			DrawSprite(s, location, Game.world.WorldRenderer.GetPaletteIndex(palette), size);
+			DrawSprite(s, location, wr.GetPaletteIndex(palette), size);
 		}
 		
 		public void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)

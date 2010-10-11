@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -96,8 +97,8 @@ namespace OpenRA.Mods.RA
 				// TODO: Check if the selected unit is still alive
 			}
 
-			public void RenderAfterWorld( World world ) { }
-			public void RenderBeforeWorld(World world) { }
+			public void RenderAfterWorld( WorldRenderer wr, World world ) { }
+			public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
@@ -145,12 +146,12 @@ namespace OpenRA.Mods.RA
 				// TODO: Check if the selected unit is still alive
 			}
 			
-			public void RenderAfterWorld(World world)
+			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				world.WorldRenderer.DrawSelectionBox(self, Color.Red);
+				wr.DrawSelectionBox(self, Color.Red);
 			}
 
-			public void RenderBeforeWorld(World world) { }
+			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{

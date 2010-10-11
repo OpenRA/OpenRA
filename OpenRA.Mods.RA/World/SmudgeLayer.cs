@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public void Render()
+		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.ShroudBounds().HasValue 
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA
 				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type- 1][kv.Value.image].DrawAt(
+				smudgeSprites[kv.Value.type- 1][kv.Value.image].DrawAt( wr,
 						Game.CellSize * kv.Key, "terrain");
 			}
 		}

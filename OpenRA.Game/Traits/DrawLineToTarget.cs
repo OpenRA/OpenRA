@@ -9,7 +9,7 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.Traits.Activities;
+using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 			this.c = c;
 		}
 
-		public void RenderAfterWorld(Actor self)
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
 			if (self.IsIdle) return;
 

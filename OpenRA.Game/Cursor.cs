@@ -20,9 +20,9 @@ namespace OpenRA
 			sequence = CursorProvider.GetCursorSequence(cursor);
 		}
 		
-		public void Draw(int frame, float2 pos)
+		public void Draw(WorldRenderer wr, int frame, float2 pos)
 		{
-			sequence.GetSprite(frame).DrawAt(pos - sequence.Hotspot, sequence.Palette);
+			sequence.GetSprite(frame).DrawAt(wr, pos - sequence.Hotspot, sequence.Palette);
 		}
 	}
 }

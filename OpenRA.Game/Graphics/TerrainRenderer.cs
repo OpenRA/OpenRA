@@ -62,7 +62,7 @@ namespace OpenRA.Graphics
 			indexBuffer.SetData( indices, ni );
 		}
 
-		public void Draw( Viewport viewport )
+		public void Draw( WorldRenderer wr, Viewport viewport )
 		{
 			int indicesPerRow = map.Width * 6;
 			int verticesPerRow = map.Width * 4;
@@ -98,7 +98,7 @@ namespace OpenRA.Graphics
 					PrimitiveType.TriangleList, Game.Renderer.SpriteShader));
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
-				r.Render();
+				r.Render( wr );
 		}
 	}
 }

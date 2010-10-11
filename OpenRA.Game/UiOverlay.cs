@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -40,7 +39,7 @@ namespace OpenRA
 			return Game.modData.SheetBuilder.Add(data, new Size(Game.CellSize, Game.CellSize));
 		}
 
-		public void Draw( World world )
+		public void Draw( WorldRenderer wr, World world )
 		{
 			if (Game.Settings.Debug.ShowCollisions)
 			{
@@ -49,11 +48,11 @@ namespace OpenRA
 				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
 					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
 						if (uim.GetUnitsAt(new int2(i, j)).Any())
-							unitDebug.DrawAt(Game.CellSize * new float2(i, j), "terrain");
+							unitDebug.DrawAt(wr, Game.CellSize * new float2(i, j), "terrain");
 			}
 		}
 
-		public void DrawBuildingGrid( World world, string name, BuildingInfo bi )
+		public void DrawBuildingGrid( WorldRenderer wr, World world, string name, BuildingInfo bi )
 		{
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
@@ -64,7 +63,7 @@ namespace OpenRA
 			{
 				foreach (var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi))
 					(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t) ? buildOk : buildBlocked)
-						.DrawAt(Game.CellSize * t, "terrain");
+						.DrawAt(wr, Game.CellSize * t, "terrain");
 			}
 			else
 			{
@@ -72,7 +71,7 @@ namespace OpenRA
 				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 				foreach (var t in Footprint.Tiles(name, bi, topLeft))
 					((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null) ? buildOk : buildBlocked)
-						.DrawAt(Game.CellSize * t, "terrain");
+						.DrawAt( wr, Game.CellSize * t, "terrain");
 			}
 		}
 	}

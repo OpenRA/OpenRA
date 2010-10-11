@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 		
-		public void Render()
+		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.ShroudBounds().HasValue
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 			var maxy = cliprect.Bottom;
 
 			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
-				rt.info.PaletteIndex = world.WorldRenderer.GetPaletteIndex(rt.info.Palette);
+				rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 
 			for (int x = minx; x < maxx; x++)
 				for (int y = miny; y < maxy; y++)

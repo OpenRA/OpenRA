@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA
 		{
 			if( order is BeginMinefieldOrderTargeter )
 			{
-				var start = Util.CellContaining( target.CenterLocation );
+				var start = Traits.Util.CellContaining( target.CenterLocation );
 				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
 				return new Order( "BeginMinefield", self, start );
 			}
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			int2 lastMousePos;
-			public void RenderAfterWorld(World world)
+			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				if (!minelayer.IsInWorld)
 					return;
@@ -129,21 +130,21 @@ namespace OpenRA.Mods.RA
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
-				world.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+				wr.DrawLocus(Color.Cyan, minefield);
 			}
 
-			public void RenderBeforeWorld(World world) { }
+			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
 		}
 
-		public void RenderAfterWorld(Actor self)
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 			
 			if (minefield != null)
-				self.World.WorldRenderer.DrawLocus(Color.Cyan, minefield);
+				wr.DrawLocus(Color.Cyan, minefield);
 		}
 
 		class BeginMinefieldOrderTargeter : IOrderTargeter

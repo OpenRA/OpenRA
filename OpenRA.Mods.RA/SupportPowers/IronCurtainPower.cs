@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -95,8 +96,8 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(World world) { }
-			public void RenderBeforeWorld(World world) { }
+			public void RenderAfterWorld(WorldRenderer wr, World world) { }
+			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{

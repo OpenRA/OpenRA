@@ -9,11 +9,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public void Render()
+		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.ShroudBounds().HasValue
 				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
@@ -84,7 +84,7 @@ namespace OpenRA.Traits
 				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				bibSprites[kv.Value.type - 1][kv.Value.image].DrawAt(
+				bibSprites[kv.Value.type - 1][kv.Value.image].DrawAt( wr,
 					Game.CellSize * kv.Key, "terrain");
 			}
 		}

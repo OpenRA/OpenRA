@@ -10,9 +10,9 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
@@ -211,13 +211,13 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public interface IRenderOverlay { void Render(); }
+	public interface IRenderOverlay { void Render( WorldRenderer wr ); }
 	public interface INotifyIdle { void Idle(Actor self); }
 
 	public interface IBlocksBullets { }
 
-	public interface IPostRenderSelection { void RenderAfterWorld(Actor self); }
-	public interface IPreRenderSelection { void RenderBeforeWorld(Actor self); }
+	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr, Actor self); }
+	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
 
 	public struct Target		// a target: either an actor, or a fixed location.
 	{

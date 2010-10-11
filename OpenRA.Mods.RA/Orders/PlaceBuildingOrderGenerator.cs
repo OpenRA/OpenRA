@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
@@ -71,11 +72,11 @@ namespace OpenRA.Mods.RA.Orders
 			//	.FirstOrDefault();
 		}
 
-		public void RenderAfterWorld( World world ) {}
+		public void RenderAfterWorld( WorldRenderer wr, World world ) { }
 
-		public void RenderBeforeWorld(World world)
+		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
-			world.WorldRenderer.uiOverlay.DrawBuildingGrid(world, Building, BuildingInfo);
+			wr.uiOverlay.DrawBuildingGrid( wr, world, Building, BuildingInfo );
 		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }

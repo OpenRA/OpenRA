@@ -9,10 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Orders
 {
@@ -41,22 +40,22 @@ namespace OpenRA.Orders
 
 		public void Tick( World world ) {}
 
-		public void RenderBeforeWorld(World world)
+		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
-						t.RenderBeforeWorld(a);
+						t.RenderBeforeWorld( wr, a );
 
 			Game.Renderer.Flush();
 		}
 
-		public void RenderAfterWorld( World world )
+		public void RenderAfterWorld( WorldRenderer wr, World world )
 		{
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-						t.RenderAfterWorld(a);
+						t.RenderAfterWorld( wr, a );
 
 			Game.Renderer.Flush();
 		}

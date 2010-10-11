@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
-using System.Linq;
 
 namespace OpenRA.Traits
 {
@@ -29,7 +28,7 @@ namespace OpenRA.Traits
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
 		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
 		
-		public void RenderAfterWorld (Actor self)
+		public void RenderAfterWorld (WorldRenderer wr, Actor self)
 		{
 			var bounds = self.GetBounds(true);
 
@@ -40,9 +39,9 @@ namespace OpenRA.Traits
 
 			DrawSelectionBox(self, xy, Xy, xY, XY, Color.White);
 			DrawHealthBar(self, xy, Xy);
-			DrawControlGroup(self, xy);
-			DrawPips(self, xY);
-			DrawTags(self, new float2(.5f * (bounds.Left + bounds.Right), bounds.Top));
+			DrawControlGroup(wr, self, xy);
+			DrawPips(wr, self, xY);
+			DrawTags(wr, self, new float2(.5f * (bounds.Left + bounds.Right), bounds.Top));
 			DrawUnitPath(self);
 		}
 		
@@ -89,7 +88,7 @@ namespace OpenRA.Traits
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
 		}
 
-		void DrawControlGroup(Actor self, float2 basePosition)
+		void DrawControlGroup(WorldRenderer wr, Actor self, float2 basePosition)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null) return;
@@ -97,10 +96,10 @@ namespace OpenRA.Traits
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			pipImages.Image.DrawAt(basePosition + new float2(-8, 1), "chrome");
+			pipImages.Image.DrawAt(wr, basePosition + new float2(-8, 1), "chrome");
 		}
 
-		void DrawPips(Actor self, float2 basePosition)
+		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
 		{
 			if (self.Owner != self.World.LocalPlayer) return;
 			
@@ -123,7 +122,7 @@ namespace OpenRA.Traits
 					}
 					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					pipImages.Image.DrawAt(pipxyBase + pipxyOffset, "chrome");
+					pipImages.Image.DrawAt(wr, pipxyBase + pipxyOffset, "chrome");
 					pipxyOffset += new float2(4, 0);
 				}
 				// Increment row
@@ -132,7 +131,7 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		void DrawTags(Actor self, float2 basePosition)
+		void DrawTags(WorldRenderer wr, Actor self, float2 basePosition)
 		{
 			if (self.Owner != self.World.LocalPlayer) return;
 			
@@ -149,7 +148,7 @@ namespace OpenRA.Traits
 						
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					tagImages.Image.DrawAt(tagxyBase + tagxyOffset, "chrome");
+					tagImages.Image.DrawAt(wr, tagxyBase + tagxyOffset, "chrome");
 					
 					// Increment row
 					tagxyOffset.Y += 8;

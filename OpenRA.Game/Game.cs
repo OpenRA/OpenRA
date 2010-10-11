@@ -141,7 +141,7 @@ namespace OpenRA
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions(world);
+				viewport.DrawRegions(world.WorldRenderer, world);
 				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
 			}
 

@@ -92,17 +92,17 @@ namespace OpenRA.Graphics
 			var bounds = GetBoundsRect();
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
-			terrainRenderer.Draw(Game.viewport);
+			terrainRenderer.Draw(this, Game.viewport);
 
 			if (world.OrderGenerator != null)
-				world.OrderGenerator.RenderBeforeWorld(world);
+				world.OrderGenerator.RenderBeforeWorld(this, world);
 
 			foreach( var image in worldSprites )
 				image.Sprite.DrawAt( image.Pos, this.GetPaletteIndex( image.Palette ) );
-			uiOverlay.Draw(world);
+			uiOverlay.Draw(this, world);
 
 			if (world.OrderGenerator != null)
-				world.OrderGenerator.RenderAfterWorld(world);
+				world.OrderGenerator.RenderAfterWorld(this, world);
 
 			if (world.LocalPlayer != null)
 				world.LocalPlayer.Shroud.Draw();

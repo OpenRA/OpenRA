@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
@@ -36,12 +37,12 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public void Tick( World world ) { }
-		public void RenderAfterWorld( World world )
+		public void RenderAfterWorld( WorldRenderer wr, World world )
 		{
-			world.WorldRenderer.DrawSelectionBox(self, Color.White);
+			wr.DrawSelectionBox(self, Color.White);
 		}
 
-		public void RenderBeforeWorld(World world) { }
+		public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
 
 		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{

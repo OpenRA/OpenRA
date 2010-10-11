@@ -8,10 +8,10 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA.Traits;
-using OpenRA.FileFormats;
 using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -16,12 +17,12 @@ namespace OpenRA.Mods.RA
 	class RenderDetectionCircleInfo : TraitInfo<RenderDetectionCircle> { }
 	class RenderDetectionCircle : IPreRenderSelection
 	{
-		public void RenderBeforeWorld(Actor self)
+		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 			
-			self.World.WorldRenderer.DrawRangeCircle(
+			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.LimeGreen),
 				self.CenterLocation, self.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}

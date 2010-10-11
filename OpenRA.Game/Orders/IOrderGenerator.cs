@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
 
 namespace OpenRA
 {
@@ -16,8 +17,8 @@ namespace OpenRA
 	{
 		IEnumerable<Order> Order(World world, int2 xy, MouseInput mi);
 		void Tick(World world);
-		void RenderBeforeWorld(World world);
-		void RenderAfterWorld(World world);
+		void RenderBeforeWorld(WorldRenderer wr, World world);
+		void RenderAfterWorld(WorldRenderer wr, World world);
 		string GetCursor(World world, int2 xy, MouseInput mi);
 	}
 }
