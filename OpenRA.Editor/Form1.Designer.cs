@@ -429,7 +429,6 @@
             this.surface1.Size = new System.Drawing.Size(783, 727);
             this.surface1.TabIndex = 5;
             this.surface1.Text = "surface1";
-            this.surface1.Click += new System.EventHandler(this.OnSurfaceClicked);
             // 
             // saveFileDialog
             // 

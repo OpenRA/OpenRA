@@ -87,6 +87,8 @@ namespace OpenRA.Editor
 		{
 			base.OnMouseWheel(e);
 
+			if (Map == null) return;
+
 			Zoom *= e.Delta > 0 ? 4.0f / 3.0f : .75f;
 
 			Invalidate();
@@ -113,6 +115,8 @@ namespace OpenRA.Editor
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
+
+			if (Map == null) return;
 
 			var oldMousePos = MousePos;
 			MousePos = new int2(e.Location);
@@ -331,6 +335,8 @@ namespace OpenRA.Editor
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
+
+			if (Map == null) return;
 
 			if (!IsPanning)
 			{

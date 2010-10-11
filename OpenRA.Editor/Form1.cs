@@ -35,7 +35,13 @@ namespace OpenRA.Editor
 
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
-			surface1.AfterChange += MakeDirty;
+			surface1.AfterChange += OnMapChanged;
+		}
+
+		void OnMapChanged()
+		{
+			MakeDirty();
+			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
 
 		void MakeDirty() { dirty = true; }
@@ -388,11 +394,6 @@ namespace OpenRA.Editor
 		{
 			var pb = new PaletteBox();
 			pb.Show();
-		}
-
-		private void OnSurfaceClicked(object sender, EventArgs e)
-		{
-			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
 
         private void mnuMinimapToPNG_Click(object sender, EventArgs e)
