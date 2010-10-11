@@ -63,8 +63,9 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}		
 		
-		public override void DrawInner(World world)
-		{		
+		public override void DrawInner()
+		{
+			var world = Game.world;
 			buttons.Clear();
 
 			if( world.LocalPlayer == null ) return;

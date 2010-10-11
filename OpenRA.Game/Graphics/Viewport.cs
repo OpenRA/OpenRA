@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 			renderer.BeginFrame(scrollPosition);
 			wr.Draw();
 
-			Widget.DoDraw(world);
+			Widget.DoDraw();
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);

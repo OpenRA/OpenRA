@@ -34,7 +34,7 @@ namespace OpenRA.Widgets
 			return new ColorBlockWidget(this);
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
 		}

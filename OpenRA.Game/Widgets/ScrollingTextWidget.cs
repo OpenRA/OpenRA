@@ -93,7 +93,7 @@ namespace OpenRA.Widgets
 			Text = Text.Replace("\r", "");
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			var bg = GetBackground();
 

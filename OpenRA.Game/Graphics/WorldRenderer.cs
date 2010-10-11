@@ -105,7 +105,7 @@ namespace OpenRA.Graphics
 				world.OrderGenerator.RenderAfterWorld(this, world);
 
 			if (world.LocalPlayer != null)
-				world.LocalPlayer.Shroud.Draw();
+				world.LocalPlayer.Shroud.Draw( this );
 
 			Game.Renderer.DisableScissor();
 		}

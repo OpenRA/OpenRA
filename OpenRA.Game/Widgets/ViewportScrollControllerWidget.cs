@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 
 		public ViewportScrollControllerWidget() : base() { }
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
-		public override void DrawInner( World world ) {}
+		public override void DrawInner() {}
 		
 		public override bool HandleInputInner(MouseInput mi)
 		{									

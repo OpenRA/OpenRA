@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 		Sprite sprite = null;
 		string cachedImage = null;
 		int cachedFrame= -1;
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			var image = GetImage();
 			var frame = GetFrame();

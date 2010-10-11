@@ -24,7 +24,7 @@ namespace OpenRA.Widgets
 		bool composing = false;
 		bool teamChat = false;
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			if (composing)
 			{

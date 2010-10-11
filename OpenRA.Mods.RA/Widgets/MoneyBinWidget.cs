@@ -21,8 +21,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public MoneyBinWidget() : base() { }
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
+			var world = Game.world;
 			if( world.LocalPlayer == null ) return;
 
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();

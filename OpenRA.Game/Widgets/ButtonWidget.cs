@@ -62,7 +62,7 @@ namespace OpenRA.Widgets
 			return Depressed;
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);

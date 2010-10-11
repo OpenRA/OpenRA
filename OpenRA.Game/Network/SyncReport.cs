@@ -19,21 +19,21 @@ namespace OpenRA.Network
 				syncReports[i] = new SyncReport.Report();
 		}
 		
-		internal void UpdateSyncReport()
+		internal void UpdateSyncReport( World world )
 		{
 			if (!Game.Settings.Debug.RecordSyncReports)
 				return;
 			
-			GenerateSyncReport(syncReports[curIndex]);
+			GenerateSyncReport(world, syncReports[curIndex]);
 			curIndex = ++curIndex % numSyncReports;
 		}
 		
-		void GenerateSyncReport(Report report)
+		void GenerateSyncReport(World world, Report report)
 		{
 			report.Frame = Game.orderManager.FrameNumber;
-			report.SyncedRandom = Game.world.SharedRandom.Last;
+			report.SyncedRandom = world.SharedRandom.Last;
 			report.Traits.Clear();
-			foreach (var a in Game.world.Queries.WithTraitMultiple<object>())
+			foreach (var a in world.Queries.WithTraitMultiple<object>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)

@@ -107,7 +107,7 @@ namespace OpenRA.Widgets
 			base.Tick(world);
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			int margin = 5;
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;

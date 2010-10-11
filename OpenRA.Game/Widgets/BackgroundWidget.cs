@@ -14,7 +14,7 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Background = "dialog";
 		
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			WidgetUtils.DrawPanel(Background, RenderBounds);
 		}

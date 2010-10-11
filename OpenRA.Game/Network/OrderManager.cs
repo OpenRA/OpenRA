@@ -80,7 +80,7 @@ namespace OpenRA.Network
 					if( packet.Length == 5 && packet[ 4 ] == 0xBF )
 						frameData.ClientQuit( clientId, frame );
 					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
-						CheckSync( packet );
+						CheckSync( world, packet );
 					else if( frame == 0 )
 						immediatePackets.Add( Pair.New( clientId, packet ) );
 					else
@@ -94,7 +94,7 @@ namespace OpenRA.Network
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
 
-		void CheckSync(byte[] packet)
+		void CheckSync(World world, byte[] packet)
 		{
 			var frame = BitConverter.ToInt32(packet, 0);
 			byte[] existingSync;
@@ -116,7 +116,7 @@ namespace OpenRA.Network
 							if (i < SyncHeaderSize)
 								OutOfSync(frame, "Tick");
 							else
-								OutOfSync(frame, (i - SyncHeaderSize) / 4);
+								OutOfSync(world, frame, (i - SyncHeaderSize) / 4);
 						}
 					}
 				}
@@ -125,9 +125,9 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		void OutOfSync(int frame, int index)
+		void OutOfSync( World world, int frame, int index)
 		{
-			var order = frameData.OrdersForFrame( Game.world, frame ).ElementAt(index);
+			var order = frameData.OrdersForFrame( world, frame ).ElementAt(index);
 			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, order.Order.ToString()));
 		}
 		
@@ -166,9 +166,9 @@ namespace OpenRA.Network
 			var ss = sync.SerializeSync( FrameNumber );
 			Connection.Send( ss );
 
-			syncReport.UpdateSyncReport();
+			syncReport.UpdateSyncReport( world );
 
-			CheckSync( ss );
+			CheckSync( world, ss );
 
 			++FrameNumber;
 		}

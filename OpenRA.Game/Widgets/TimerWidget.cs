@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 			IsVisible = () => Game.Settings.Game.MatchTimer;
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			var s = WorldUtils.FormatTime(Game.LocalTick);
 			var size = Game.Renderer.TitleFont.Measure(s);

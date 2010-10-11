@@ -26,7 +26,7 @@ namespace OpenRA.Widgets
 			this.world = world;
 		}
 		
-		public override void DrawInner( World world )
+		public override void DrawInner()
 		{
 			var selbox = SelectionBox;
 			if (selbox == null) return;

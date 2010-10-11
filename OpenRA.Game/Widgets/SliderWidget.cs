@@ -165,7 +165,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			if (!IsVisible())
 				return;

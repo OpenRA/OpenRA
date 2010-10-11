@@ -127,7 +127,7 @@ namespace OpenRA
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}
 
-		internal void Draw()
+		internal void Draw( WorldRenderer wr )
 		{
 			if (disabled)
 				return;
@@ -150,13 +150,13 @@ namespace OpenRA
 			var minx = clipRect.Left;
 			var maxx = clipRect.Right;
 
-			DrawShroud( minx, miny, maxx, maxy, fogSprites, "fog" );
-			DrawShroud( minx, miny, maxx, maxy, sprites, "shroud" );
+			DrawShroud( wr, minx, miny, maxx, maxy, fogSprites, "fog" );
+			DrawShroud( wr, minx, miny, maxx, maxy, sprites, "shroud" );
 		}
 
-		void DrawShroud( int minx, int miny, int maxx, int maxy, Sprite[,] s, string pal )
+		void DrawShroud( WorldRenderer wr, int minx, int miny, int maxx, int maxy, Sprite[,] s, string pal )
 		{
-			var shroudPalette = Game.world.WorldRenderer.GetPaletteIndex(pal);
+			var shroudPalette = wr.GetPaletteIndex(pal);
 
 			for (var j = miny; j < maxy; j++)
 			{

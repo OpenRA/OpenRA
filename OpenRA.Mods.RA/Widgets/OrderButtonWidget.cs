@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets
 			GetLongDesc = () => LongDesc;
 		}
 		
-		public override void DrawInner (World world)
+		public override void DrawInner()
 		{
 			var image = ChromeProvider.GetImage(Image + "-button", GetImage());
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);

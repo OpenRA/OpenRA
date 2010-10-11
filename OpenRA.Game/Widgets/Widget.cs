@@ -269,15 +269,15 @@ namespace OpenRA.Widgets
 			return false;
 		}
 		
-		public abstract void DrawInner( World world );
+		public abstract void DrawInner();
 		
-		public virtual void Draw(World world)
+		public virtual void Draw()
 		{
 			if (IsVisible())
 			{
-				DrawInner( world );
+				DrawInner();
 				foreach (var child in Children)
-					child.Draw(world);
+					child.Draw();
 			}
 		}
 		
@@ -344,9 +344,9 @@ namespace OpenRA.Widgets
 			++Viewport.TicksSinceLastMove;
 		}
 		
-		public static void DoDraw(World world)
+		public static void DoDraw()
 		{
-			RootWidget.Draw(world);
+			RootWidget.Draw();
 		}
 	}
 
@@ -355,7 +355,7 @@ namespace OpenRA.Widgets
 
 		public ContainerWidget(Widget other) : base(other) { }
 
-		public override void DrawInner( World world ) { }
+		public override void DrawInner() { }
 		
 		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }

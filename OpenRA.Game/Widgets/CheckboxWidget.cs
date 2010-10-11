@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		public bool Bold = false;
 		public Func<bool> Checked = () => false;
 		
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{
 			var font = Bold ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var pos = RenderOrigin;

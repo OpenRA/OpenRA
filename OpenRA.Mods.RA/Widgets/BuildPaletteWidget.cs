@@ -176,7 +176,7 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		int paletteHeight = 0;
 		int numActualRows = 0;
-		public override void DrawInner(World world)
+		public override void DrawInner()
 		{	
 			if (!IsVisible()) return;
 			// todo: fix
