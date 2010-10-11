@@ -19,11 +19,15 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public bool SplitOreAndCash = false;
 
-		public MoneyBinWidget() : base() { }
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public MoneyBinWidget( [ObjectCreator.Param] World world )
+		{
+			this.world = world;
+		}
 
 		public override void DrawInner( WorldRenderer wr )
 		{
-			var world = Game.world;
 			if( world.LocalPlayer == null ) return;
 
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();

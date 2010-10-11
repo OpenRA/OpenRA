@@ -29,7 +29,6 @@ namespace OpenRA.Mods.RA.Widgets
 		bool hasRadar = false;
 		string radarCollection;
 		
-		World world;
 		float previewScale = 0;
 		RectangleF mapRect = Rectangle.Empty;
 		int2 previewOrigin;
@@ -38,15 +37,16 @@ namespace OpenRA.Mods.RA.Widgets
 		Sprite customTerrainSprite;
 		Sprite actorSprite;
 		Sprite shroudSprite;
-		
-		public void SetWorld(World world)
+
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public RadarBinWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
 			var size = Math.Max(world.Map.Width, world.Map.Height);
 			previewScale = Math.Min(192f / world.Map.Width, 192f / world.Map.Height);
 			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Height)/2));
 			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
-			
 
 			// Only needs to be done once
 			var terrainBitmap = Minimap.TerrainBitmap(world.Map);
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var s = new Size( terrainBitmap.Width, terrainBitmap.Height );
 			terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			terrainSprite.sheet.Texture.SetData(terrainBitmap);
-			
+
 			// Data is set in Tick()
 			customTerrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
@@ -160,10 +160,6 @@ namespace OpenRA.Mods.RA.Widgets
 		int updateTicks = 0;
 		public override void Tick()
 		{
-			var w = Game.world;
-			if( world != w )
-				SetWorld( w );
-
 			var hasRadarNew = world.Queries.OwnedBy[world.LocalPlayer]
 				.WithTrait<ProvidesRadar>()
 				.Any(a => a.Trait.IsActive);

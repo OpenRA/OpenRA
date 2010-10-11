@@ -19,10 +19,15 @@ namespace OpenRA.Widgets
 	public class WorldTooltipWidget : Widget
 	{
 		public int TooltipDelay = 10;
-		public WorldTooltipWidget() : base() { }
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public WorldTooltipWidget( [ObjectCreator.Param] World world )
+		{
+			this.world = world;
+		}
+
 		public override void DrawInner( WorldRenderer wr )
 		{
-			var world = Game.world;
 			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)
 				return;
 

@@ -24,8 +24,13 @@ namespace OpenRA.Mods.RA.Widgets
 		Animation ready;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
-		
-		public SpecialPowerBinWidget() : base() { }
+
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public SpecialPowerBinWidget( [ObjectCreator.Param] World world )
+		{
+			this.world = world;
+		}
 		
 		public override void Initialize()
 		{
@@ -65,7 +70,6 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		public override void DrawInner( WorldRenderer wr )
 		{
-			var world = Game.world;
 			buttons.Clear();
 
 			if( world.LocalPlayer == null ) return;

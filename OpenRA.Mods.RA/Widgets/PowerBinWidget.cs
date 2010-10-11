@@ -25,9 +25,15 @@ namespace OpenRA.Mods.RA.Widgets
 		float? lastPowerDrainedPos;
 		string powerCollection;
 
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public PowerBinWidget( [ObjectCreator.Param] World world )
+		{
+			this.world = world;
+		}
+
 		public override void DrawInner( WorldRenderer wr )
 		{
-			var world = Game.world;
 			if( world.LocalPlayer == null ) return;
 
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
