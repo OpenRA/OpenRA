@@ -47,8 +47,11 @@ namespace OpenRA.Mods.RA
 		public List<Weapon> Weapons = new List<Weapon>();
 		public List<Turret> Turrets = new List<Turret>();
 
+		readonly Actor self;
+
 		public AttackBase(Actor self)
 		{
+			this.self = self;
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
 			Turrets.Add(new Turret(info.PrimaryOffset));
@@ -127,7 +130,7 @@ namespace OpenRA.Mods.RA
 			if (w.Info.MinRange * w.Info.MinRange * Game.CellSize * Game.CellSize >
 				(target.CenterLocation - self.CenterLocation).LengthSquared) return false;
 			
-			if (!w.IsValidAgainst(target)) return false;
+			if (!w.IsValidAgainst(self.World, target)) return false;
 
 			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
 			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
@@ -243,10 +246,10 @@ namespace OpenRA.Mods.RA
 						Math.Max(0, (int)weapon.Info.Range)));
 		}
 
-		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(t)); }
+		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
 
-		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(t)); }
+		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(self.World, t)); }
 
 		class AttackOrderTargeter : IOrderTargeter
 		{

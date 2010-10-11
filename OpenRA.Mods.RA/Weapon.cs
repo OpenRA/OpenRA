@@ -72,9 +72,12 @@ namespace OpenRA.Mods.RA
 			Turret.Recoil = Math.Max(0f, Turret.Recoil - .2f);
 		}
 
-		public bool IsValidAgainst(Target target)
+		public bool IsValidAgainst(World world, Target target)
 		{
-			return Combat.WeaponValidForTarget(Info, target);
+			if( target.IsActor )
+				return Combat.WeaponValidForTarget( Info, target.Actor );
+			else
+				return Combat.WeaponValidForTarget( Info, world, Util.CellContaining( target.CenterLocation ) );
 		}
 
 		public void FiredShot()

@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			// don't hit air units with splash from ground explosions, etc
-			if (!WeaponValidForTarget(args.weapon, Target.FromActor(target))) return 0f;
+			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
 
 			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
 			var radius = selectable != null ? selectable.Radius : 0;			
@@ -161,22 +161,23 @@ namespace OpenRA.Mods.RA
 			return (float)(rawDamage * multiplier);
 		}
 
-		public static bool WeaponValidForTarget(WeaponInfo weapon, Target target)
+		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			// todo: fix this properly.
-			if (!target.IsValid) return false;
-			if (!target.IsActor) return weapon.ValidTargets.Contains("Ground") // hack!
-				|| (weapon.ValidTargets.Contains("Water") && 
-					Game.world.GetTerrainType(Util.CellContaining(target.CenterLocation)) == "Water"); // even bigger hack!
-
-			var targetable = target.Actor.TraitOrDefault<ITargetable>();
+			var targetable = target.TraitOrDefault<ITargetable>();
 			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 			
-			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target.Actor) <= 0))
+			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target) <= 0))
 				return false;
 
 			return true;
+		}
+
+		public static bool WeaponValidForTarget( WeaponInfo weapon, World world, int2 location )
+		{
+			if( weapon.ValidTargets.Contains( "Ground" ) && world.GetTerrainType( location ) != "Water" ) return true;
+			if( weapon.ValidTargets.Contains( "Water" ) && world.GetTerrainType( location ) == "Water" ) return true;
+			return false;
 		}
 
 		static float2 GetRecoil(Actor self, float recoil)
