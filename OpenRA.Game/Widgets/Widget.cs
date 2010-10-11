@@ -338,10 +338,6 @@ namespace OpenRA.Widgets
 		public static void DoTick(World world)
 		{
 			RootWidget.Tick(world);
-			
-			if (!world.GameHasStarted) return;
-			if (world.LocalPlayer == null) return;
-			++Viewport.TicksSinceLastMove;
 		}
 		
 		public static void DoDraw()

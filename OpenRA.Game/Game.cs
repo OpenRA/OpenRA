@@ -113,6 +113,8 @@ namespace OpenRA
 				{
 					lastTime += Settings.Game.Timestep;
 					Widget.DoTick(world);
+					if( world.GameHasStarted && world.LocalPlayer != null )
+						++Viewport.TicksSinceLastMove;
 					Sound.Tick();
 					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate( world ); } );
 
