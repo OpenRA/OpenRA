@@ -139,12 +139,13 @@ namespace OpenRA.Graphics
 			scrollPosition = this.NormalizeScrollPosition((avgPos - .5f * new float2(Width, Height)));
 		}
 
-		public Rectangle? ShroudBounds()
+		public Rectangle ShroudBounds( World world )
 		{
-			var localPlayer = Game.world.LocalPlayer;
-			if (localPlayer == null) return null;
-			if (localPlayer.Shroud.Disabled) return null;
-			return localPlayer.Shroud.Bounds;
+			var localPlayer = world.LocalPlayer;
+			if( localPlayer == null ) return world.Map.Bounds;
+			if( localPlayer.Shroud.Disabled ) return world.Map.Bounds;
+			if( !localPlayer.Shroud.Bounds.HasValue ) return world.Map.Bounds;
+			return Rectangle.Intersect( localPlayer.Shroud.Bounds.Value, world.Map.Bounds );
 		}
 		
 		public Rectangle ViewBounds()

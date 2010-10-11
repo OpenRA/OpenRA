@@ -73,9 +73,7 @@ namespace OpenRA.Traits
 
 		public void Render( WorldRenderer wr )
 		{
-			var cliprect = Game.viewport.ShroudBounds().HasValue
-				? Rectangle.Intersect(Game.viewport.ShroudBounds().Value, world.Map.Bounds) : world.Map.Bounds;
-			
+			var cliprect = Game.viewport.ShroudBounds( world );			
 			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
 			foreach (var kv in tiles)
 			{
