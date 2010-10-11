@@ -97,14 +97,14 @@ namespace OpenRA.Widgets
 
 		int blinkCycle = 10;
 		bool showCursor = true;
-		public override void Tick(World world)
+		public override void Tick()
 		{
 			if (--blinkCycle <= 0)
 			{
 				blinkCycle = 20;
 				showCursor ^= true;
 			}
-			base.Tick(world);
+			base.Tick();
 		}
 
 		public override void DrawInner()

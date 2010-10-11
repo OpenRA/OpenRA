@@ -122,7 +122,7 @@ namespace OpenRA.Widgets
 			return false;
 		}
 		
-		public override void Tick(World world)
+		public override void Tick()
 		{
 			Edge = ScrollDirection.None;
 			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)

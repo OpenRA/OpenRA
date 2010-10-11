@@ -112,7 +112,7 @@ namespace OpenRA
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Game.Timestep;
-					Widget.DoTick(world);
+					Widget.DoTick();
 					if( world.GameHasStarted && world.LocalPlayer != null )
 						++Viewport.TicksSinceLastMove;
 					Sound.Tick();

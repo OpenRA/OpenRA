@@ -281,11 +281,11 @@ namespace OpenRA.Widgets
 			}
 		}
 		
-		public virtual void Tick(World world)
+		public virtual void Tick()
 		{
 			if (IsVisible())
 				foreach (var child in Children)
-					child.Tick(world);
+					child.Tick();
 		}
 		
 		public void AddChild(Widget child)
@@ -335,9 +335,9 @@ namespace OpenRA.Widgets
 			return window;
 		}
 		
-		public static void DoTick(World world)
+		public static void DoTick()
 		{
-			RootWidget.Tick(world);
+			RootWidget.Tick();
 		}
 		
 		public static void DoDraw()

@@ -86,7 +86,7 @@ namespace OpenRA.Widgets
 			return EventBounds;
 		}
 		
-		public override void Tick (World world)
+		public override void Tick ()
 		{
 			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;
 			if (DownPressed) ListOffset -= ScrollVelocity;

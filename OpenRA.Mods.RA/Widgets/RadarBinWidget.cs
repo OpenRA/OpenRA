@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void DrawInner()
 		{
-			if( world.LocalPlayer == null ) return;
+			if( world == null || world.LocalPlayer == null ) return;
 
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 
@@ -155,13 +155,12 @@ namespace OpenRA.Mods.RA.Widgets
 					Game.Renderer.DisableScissor();
 				}
 			}
-			
-
 		}
 
 		int updateTicks = 0;
-		public override void Tick(World w)
+		public override void Tick()
 		{
+			var w = Game.world;
 			if( world != w )
 				SetWorld( w );
 

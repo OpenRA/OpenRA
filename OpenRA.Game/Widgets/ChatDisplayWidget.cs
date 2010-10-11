@@ -75,7 +75,7 @@ namespace OpenRA.Widgets
 			recentLines = new List<ChatLine>();	
 		}
 		
-		public override void Tick (World world)
+		public override void Tick()
 		{
 			if (RemoveTime == 0) return;
 			if (--ticksUntilRemove > 0) return;

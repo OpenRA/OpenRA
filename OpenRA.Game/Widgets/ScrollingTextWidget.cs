@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			GetBackground = other.GetBackground;
 		}
 
-		public override void Tick(World world)
+		public override void Tick()
 		{
 			if (Text != "")
 			{

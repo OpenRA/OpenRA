@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets
 			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, 48 * numActualRows); }
 		}
 		
-		public override void Tick(World world)
+		public override void Tick()
 		{
 			VisibleQueues.Clear();
 			
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets
 			
 			TickPaletteAnimation(world);
 			
-			base.Tick(world);
+			base.Tick();
 		}
 		
 		void TickPaletteAnimation(World world)
