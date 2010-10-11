@@ -48,7 +48,6 @@ namespace OpenRA.Traits
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IOrderCursor { string CursorForOrder(Actor self, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
-	public interface ITargetable { string[] TargetTypes { get; } }
 
 	public interface INotifySold { void Selling( Actor self );  void Sold( Actor self ); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }

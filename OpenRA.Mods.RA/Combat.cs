@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			var targetable = target.TraitOrDefault<ITargetable>();
+			var targetable = target.TraitOrDefault<Targetable>();
 			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 			

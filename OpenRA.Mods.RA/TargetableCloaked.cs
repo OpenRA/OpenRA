@@ -12,26 +12,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TargetableCloakedInfo : ITraitInfo, ITraitPrerequisite<CloakInfo>
+	public class TargetableCloakedInfo : TargetableInfo, ITraitPrerequisite<CloakInfo>
 	{
-		public readonly string[] TargetTypes = {};
 		public readonly string[] CloakedTargetTypes = {};
-		public object Create( ActorInitializer init ) { return new TargetableCloaked(init.self, this); }
+		public override object Create( ActorInitializer init ) { return new TargetableCloaked(init.self, this); }
 	}
 
-	public class TargetableCloaked : ITargetable
+	public class TargetableCloaked : Targetable
 	{
-		TargetableCloakedInfo Info;
 		Cloak Cloak;
 		public TargetableCloaked(Actor self, TargetableCloakedInfo info)
+            : base(info)
 		{
-			Info = info;
 			Cloak = self.Trait<Cloak>();
 		}
 		
-		public string[] TargetTypes
+		public override string[] TargetTypes
 		{
-			get { return (Cloak.Cloaked) ? Info.CloakedTargetTypes : Info.TargetTypes;}
+			get { return (Cloak.Cloaked) ? ((TargetableCloakedInfo)Info).CloakedTargetTypes
+                                         : ((TargetableCloakedInfo)Info).TargetTypes;}
 		}
 	}
 }

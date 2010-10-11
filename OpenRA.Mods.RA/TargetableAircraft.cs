@@ -15,25 +15,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-    public class TargetableAircraftInfo : TargetableInfo
+    public class TargetableAircraftInfo : TargetableInfo, ITraitPrerequisite<AircraftInfo>
     {
         public readonly string[] GroundedTargetTypes = { };
         public override object Create(ActorInitializer init) { return new TargetableAircraft(init.self, this); }
     }
 
-    public class TargetableAircraft : ITargetable
+    public class TargetableAircraft : Targetable
     {
-        TargetableAircraftInfo Info;
         Aircraft Aircraft;
         public TargetableAircraft(Actor self, TargetableAircraftInfo info)
+            : base(info)
         {
-            Info = info;
             Aircraft = self.Trait<Aircraft>();
         }
 
-        public string[] TargetTypes
+        public override string[] TargetTypes
         {
-            get { return (Aircraft.Altitude > 0) ? Info.TargetTypes : Info.GroundedTargetTypes; }
+            get { return (Aircraft.Altitude > 0) ? ((TargetableAircraftInfo)Info).TargetTypes 
+                                                 : ((TargetableAircraftInfo)Info).GroundedTargetTypes; }
         }
     }
 }

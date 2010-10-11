@@ -20,15 +20,15 @@ namespace OpenRA.Traits
 		public virtual object Create( ActorInitializer init ) { return new Targetable(this); }
 	}
 
-	public class Targetable : ITargetable
+	public class Targetable
 	{
-		TargetableInfo Info;
+		protected TargetableInfo Info;
 		public Targetable(TargetableInfo info)
 		{
 			Info = info;
 		}
 		
-		public string[] TargetTypes
+		public virtual string[] TargetTypes
 		{
 			get { return Info.TargetTypes;}
 		}
