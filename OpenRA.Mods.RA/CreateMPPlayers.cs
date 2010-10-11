@@ -9,9 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
-using OpenRA.Widgets.Delegates;
 
 namespace OpenRA.Mods.RA
 {
@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA
 
 					/* pick a random color for the bot */
 					var hue = (float)w.SharedRandom.NextDouble();
-					w.Map.Players[slot.MapPlayer].Color = LobbyDelegate.ColorFromHSL(hue, 1.0f, 0.7f);
-					w.Map.Players[slot.MapPlayer].Color2 = LobbyDelegate.ColorFromHSL(hue, 1.0f, 0.2f);
+					w.Map.Players[slot.MapPlayer].Color = PlayerColorRemap.ColorFromHSL(hue, 1.0f, 0.7f);
+					w.Map.Players[slot.MapPlayer].Color2 = PlayerColorRemap.ColorFromHSL(hue, 1.0f, 0.2f);
 
 					/* todo: pick a random name from the pool */
 

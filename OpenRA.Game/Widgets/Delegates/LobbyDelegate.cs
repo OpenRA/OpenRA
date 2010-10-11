@@ -157,8 +157,8 @@ namespace OpenRA.Widgets.Delegates
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
 		{
-			var c1 = ColorFromHSL(hf, sf, lf);
-			var c2 = ColorFromHSL(hf, sf, r*lf);
+			var c1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
+			var c2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
 			
 			Game.Settings.Player.Color1 = c1;
 			Game.Settings.Player.Color2 = c2;
@@ -168,40 +168,10 @@ namespace OpenRA.Widgets.Delegates
 		
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
-			CurrentColorPreview1 = ColorFromHSL(hf, sf, lf);
-			CurrentColorPreview2 = ColorFromHSL(hf, sf, r*lf);
+			CurrentColorPreview1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
+			CurrentColorPreview2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
 			Game.viewport.RefreshPalette();
 		}
-		
-		// hk is hue in the range [0,1] instead of [0,360]
-		public static Color ColorFromHSL(float hk, float s, float l)
-		{		
-			// Convert from HSL to RGB
-			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);
-			var p = 2 * l - q;
-			
-			float[] trgb = { hk + 1 / 3.0f,
-							  hk,
-							  hk - 1/3.0f };
-			float[] rgb = { 0, 0, 0 };
-			
-			for (int k = 0; k < 3; k++)
-			{
-				while (trgb[k] < 0) trgb[k] += 1.0f;
-				while (trgb[k] > 1) trgb[k] -= 1.0f;
-			}
-			
-			for (int k = 0; k < 3; k++)
-			{
-				if (trgb[k] < 1 / 6.0f) { rgb[k] = (p + ((q - p) * 6 * trgb[k])); }
-				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5) { rgb[k] = q; }
-				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3) { rgb[k] = (p + ((q - p) * 6 * (2.0f / 3 - trgb[k]))); }
-				else { rgb[k] = p; }
-			}
-			
-			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
-		}
-
 
 		void UpdateCurrentMap()
 		{
