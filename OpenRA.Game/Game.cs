@@ -55,25 +55,18 @@ namespace OpenRA
 			viewport.Center(loc);
 		}
 
-		internal static string CurrentHost = "";
-		internal static int CurrentPort = 0;
-
 		internal static void JoinServer(string host, int port)
 		{
 			if (orderManager != null) orderManager.Dispose();
-
-			CurrentHost = host;
-			CurrentPort = port;
-
-			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged();
 
 			var replayFilename = ChooseReplayFilename();
 			string path = Path.Combine( Game.SupportDir, "Replays" );
 			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
 			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
 
-			orderManager = new OrderManager( new ReplayRecorderConnection( new NetworkConnection( host, port ), replayFile ) );
+			orderManager = new OrderManager( host, port, new ReplayRecorderConnection( new NetworkConnection( host, port ), replayFile ) );
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged(orderManager);
 		}
 
 		static string ChooseReplayFilename()
@@ -83,11 +76,10 @@ namespace OpenRA
 
 		static void JoinLocal()
 		{
-			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged();
-
 			if (orderManager != null) orderManager.Dispose();
-			orderManager = new OrderManager(new EchoConnection());
+			orderManager = new OrderManager("<no server>", -1, new EchoConnection());
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged( orderManager );
 		}
 
 		static int lastTime = Environment.TickCount;
@@ -101,7 +93,7 @@ namespace OpenRA
 		internal static int LocalTick = 0;
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
-		public static event Action ConnectionStateChanged = () => { };
+		internal static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 
@@ -110,7 +102,7 @@ namespace OpenRA
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
 				lastConnectionState = orderManager.Connection.ConnectionState;
-				ConnectionStateChanged();
+				ConnectionStateChanged( orderManager );
 			}
 
 			int t = Environment.TickCount;
@@ -272,19 +264,21 @@ namespace OpenRA
 
 			Game.AfterGameStart += world => Widget.OpenWindow("INGAME_ROOT", new Dictionary<string,object>{{"world", world}});
 
-			Game.ConnectionStateChanged += () =>
+			Game.ConnectionStateChanged += orderManager =>
 			{
 				Widget.CloseWindow();
-				switch( Game.orderManager.Connection.ConnectionState )
+				switch( orderManager.Connection.ConnectionState )
 				{
 					case ConnectionState.PreConnecting:
 						Widget.OpenWindow("MAINMENU_BG");
 						break;
 					case ConnectionState.Connecting:
-						Widget.OpenWindow("CONNECTING_BG");
+						Widget.OpenWindow( "CONNECTING_BG",
+							new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
 						break;
 					case ConnectionState.NotConnected:
-						Widget.OpenWindow("CONNECTION_FAILED_BG");
+						Widget.OpenWindow( "CONNECTION_FAILED_BG",
+							new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
 						break;
 					case ConnectionState.Connected:
 						var lobby = Widget.OpenWindow( "SERVER_LOBBY", new Dictionary<string, object> { { "orderManager", orderManager } } );

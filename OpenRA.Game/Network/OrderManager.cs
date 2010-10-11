@@ -24,6 +24,9 @@ namespace OpenRA.Network
 		public Session LobbyInfo = new Session( Game.Settings.Game.Mods );
 		public Session.Client LocalClient { get { return LobbyInfo.ClientWithIndex( Connection.LocalClientId ); } }
 
+		public readonly string Host;
+		public readonly int Port;
+
 		public int FrameNumber { get; private set; }
 		public int FramesAhead = 0;
 
@@ -43,8 +46,10 @@ namespace OpenRA.Network
 				Connection.Send( new List<Order>().Serialize( i ) );
 		}
 
-		public OrderManager( IConnection conn )
+		public OrderManager( string host, int port, IConnection conn )
 		{
+			this.Host = host;
+			this.Port = port;
 			Connection = conn;
 		}
 

@@ -15,7 +15,10 @@ namespace OpenRA.Widgets.Delegates
 	public class ConnectionDialogsDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionDialogsDelegate( [ObjectCreator.Param] Widget widget )
+		public ConnectionDialogsDelegate(
+			[ObjectCreator.Param] Widget widget,
+			[ObjectCreator.Param] string host,
+			[ObjectCreator.Param] int port )
 		{
 			widget.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
@@ -24,14 +27,17 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Connecting to {0}:{1}...".F(Game.CurrentHost, Game.CurrentPort);
+				"Connecting to {0}:{1}...".F(host, port);
 		}
 	}
 
 	public class ConnectionFailedDelegate : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedDelegate( [ObjectCreator.Param] Widget widget )
+		public ConnectionFailedDelegate(
+			[ObjectCreator.Param] Widget widget,
+			[ObjectCreator.Param] string host,
+			[ObjectCreator.Param] int port )
 		{
 			widget.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;
@@ -39,12 +45,12 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			widget.GetWidget("CONNECTION_BUTTON_RETRY").OnMouseUp = mi => {
-				Game.JoinServer(Game.CurrentHost, Game.CurrentPort);
+				Game.JoinServer(host, port);
 				return true;
 			};
 
 			widget.GetWidget<LabelWidget>("CONNECTION_FAILED_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(Game.CurrentHost, Game.CurrentPort);
+				"Could not connect to {0}:{1}".F(host, port);
 		}
 	}
 }

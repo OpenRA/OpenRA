@@ -199,10 +199,10 @@ namespace OpenRA.Widgets.Delegates
 			if (orderManager.LocalClient.Color1 != c1 || orderManager.LocalClient.Color2 != c2)			
 				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
-		
-		void ResetConnectionState()
+
+		void ResetConnectionState( OrderManager orderManager )
 		{
-			if (Game.orderManager.Connection.ConnectionState == ConnectionState.PreConnecting)
+			if( orderManager.Connection.ConnectionState == ConnectionState.PreConnecting )
 				hasJoined = false;
 		}
 
