@@ -58,7 +58,7 @@ echo "Creating packages..."
 ) &
 
 (
-	cd osx
+    cd osx
     sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "OSX package build failed, refer to osx/package.log."
@@ -66,8 +66,8 @@ echo "Creating packages..."
 ) &
 
 (
-	cd linux
-	sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" &> package.log
+    cd linux
+    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "linux package build failed, refer to linux/package.log."
     fi

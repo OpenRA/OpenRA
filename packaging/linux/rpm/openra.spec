@@ -1,5 +1,6 @@
 %define name openra
-%define version 20100801.2
+%define version {VERSION_FIELD}
+%define root {ROOT_DIR}
 Name: %{name}
 Version: %{version}
 Release: 1
@@ -22,7 +23,7 @@ and includes Command & Conquer as an official mod.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cp -r ~/openra-package/built/ $RPM_BUILD_ROOT 
+cp -r %{root} $RPM_BUILD_ROOT 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -65,6 +66,7 @@ done
 /usr/share/openra/*.ttf
 /usr/share/openra/*.dll
 /usr/share/openra/*.dll.config
+/usr/share/openra/OpenRA.ico
 /usr/share/openra/VERSION
 /usr/share/openra/COPYING
 /usr/share/openra/HACKING
@@ -79,3 +81,4 @@ done
 /usr/share/icons/hicolor/48x48/apps/openra.png
 /usr/share/icons/hicolor/64x64/apps/openra.png
 /usr/share/icons/hicolor/128x128/apps/openra.png
+

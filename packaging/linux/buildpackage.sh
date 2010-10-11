@@ -10,11 +10,14 @@ VERSION=$1
 BUILTDIR=$2
 PACKAGEDIR=$3
 
+# Clean up
+rm -rf root
+
 # Game files
 mkdir -p root/usr/bin/
 cp openra root/usr/bin/
 mkdir -p root/usr/share/openra/
-cp -R "$BUILTDIR/" "root/usr/share/openra/" || exit 3
+cp -R $BUILTDIR/* "root/usr/share/openra/" || exit 3
 
 # Desktop Icons
 mkdir -p root/usr/share/applications/
@@ -49,18 +52,15 @@ cp -r hicolor root/usr/share/icons/
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
 ) &
-#     
-#     (
-#         echo "Building RPM package."
-#         pushd rpm/ &> /dev/null
-#         sh buildpackage.sh "$VERSION" ~/rpmbuild "$PACKAGEDIR" &> package.log
-#         if [ $? -ne 0 ]; then
-#             echo "RPM package build failed, refer to $PWD/package.log."
-#         fi
-#         popd &> /dev/null
-#     ) &
-# 
+     
+(
+    echo "Building RPM package."
+    cd rpm
+    sh buildpackage.sh "$VERSION" ../root ~/rpmbuild "$PACKAGEDIR" &> package.log
+    if [ $? -ne 0 ]; then
+        echo "RPM package build failed, refer to $PWD/package.log."
+    fi
+) &
+ 
 wait
 
-# Clean up
-rm -rf root

@@ -8,7 +8,8 @@ fi
 
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
 sed -i "s/{VERSION}/$PKGVERSION/" PKGBUILD
-sed -i "s/{ROOT}/$2/" PKGBUILD
+rootdir=`readlink -f $2`
+sed -i "s|{ROOT}|$rootdir|" PKGBUILD
 
 makepkg --holdver
 if [ $? -ne 0 ]; then
@@ -16,3 +17,4 @@ if [ $? -ne 0 ]; then
 fi
 
 mv openra-$PKGVERSION-1-any.pkg.tar.xz $3
+

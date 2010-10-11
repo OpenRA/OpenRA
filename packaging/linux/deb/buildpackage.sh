@@ -7,12 +7,13 @@ then
     exit $E_BADARGS
 fi
 VERSION=$1
-PACKAGE_SIZE=`du --apparent-size -c $2/usr | grep "total" | awk '{print $1}'`
+rootdir=`readlink -f $2`
+PACKAGE_SIZE=`du --apparent-size -c $rootdir/usr | grep "total" | awk '{print $1}'`
 
 # Copy template files into a clean build directory (required)
 mkdir root
 cp -R DEBIAN root
-cp -R $2/usr root
+cp -R $rootdir/usr root
 
 # Create the control and changelog files from templates
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > root/DEBIAN/control
@@ -30,3 +31,4 @@ dpkg-deb -b . $3/openra-$VERSION.deb
 # Clean up
 popd
 rm -rf root
+
