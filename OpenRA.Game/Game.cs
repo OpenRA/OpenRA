@@ -181,7 +181,7 @@ namespace OpenRA
 			LocalTick = 0;
 
 			orderManager.StartGame();
-			viewport.RefreshPalette();
+			worldRenderer.RefreshPalette();
 			AfterGameStart( world );
 		}
 

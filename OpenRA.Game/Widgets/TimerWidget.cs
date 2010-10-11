@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA.Widgets
@@ -22,7 +23,7 @@ namespace OpenRA.Widgets
 			IsVisible = () => Game.Settings.Game.MatchTimer;
 		}
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var s = WorldUtils.FormatTime(Game.LocalTick);
 			var size = Game.Renderer.TitleFont.Measure(s);

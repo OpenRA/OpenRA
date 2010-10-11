@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 		Sprite sprite = null;
 		string cachedImage = null;
 		int cachedFrame= -1;
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var image = GetImage();
 			var frame = GetFrame();
@@ -61,7 +61,7 @@ namespace OpenRA.Widgets
 				cachedFrame = frame;
 			}
 			
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite,RenderOrigin, Game.worldRenderer, palette);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(sprite,RenderOrigin, wr, palette);
 		}
 	}
 }

@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new ImageWidget(this); }
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var name = GetImageName();
 			var collection = GetImageCollection();

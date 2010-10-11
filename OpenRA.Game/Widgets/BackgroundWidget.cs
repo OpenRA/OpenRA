@@ -8,13 +8,15 @@
  */
 #endregion
 
+using OpenRA.Graphics;
+
 namespace OpenRA.Widgets
 {
 	class BackgroundWidget : Widget
 	{
 		public readonly string Background = "dialog";
 		
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			WidgetUtils.DrawPanel(Background, RenderBounds);
 		}

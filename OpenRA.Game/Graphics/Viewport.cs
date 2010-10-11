@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 			renderer.BeginFrame(scrollPosition);
 			wr.Draw();
 
-			Widget.DoDraw();
+			Widget.DoDraw( wr );
 
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 			var c = new Cursor(cursorName);
@@ -109,16 +109,9 @@ namespace OpenRA.Graphics
 			renderer.EndFrame();
 		}
 
-		public void RefreshPalette()
-		{
-			Game.worldRenderer.palette.Update(
-				Game.world.WorldActor.TraitsImplementing<IPaletteModifier>());
-		}
-
 		public void Tick()
 		{
 			cursorFrame += 0.5f;
-			RefreshPalette();
 		}
 
 		public float2 ViewToWorld(int2 loc)

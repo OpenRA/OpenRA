@@ -73,6 +73,7 @@ namespace OpenRA.Graphics
 		Renderable[] worldSprites = { };
 		public void Tick()
 		{
+			RefreshPalette();
 			var bounds = GetBoundsRect();
 			var comparer = new SpriteComparer();
 
@@ -187,6 +188,11 @@ namespace OpenRA.Graphics
 				Game.Renderer.LineRenderer.DrawLine(prev, pos, c, c);
 				prev = pos;
 			}
+		}
+
+		public void RefreshPalette()
+		{
+			palette.Update( world.WorldActor.TraitsImplementing<IPaletteModifier>() );
 		}
 	}
 }

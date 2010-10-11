@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -172,7 +173,7 @@ namespace OpenRA.Widgets.Delegates
 		{
 			CurrentColorPreview1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
 			CurrentColorPreview2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
-			Game.viewport.RefreshPalette();
+			Game.worldRenderer.RefreshPalette();
 		}
 
 		void UpdateCurrentMap()
@@ -182,7 +183,6 @@ namespace OpenRA.Widgets.Delegates
 			Map = Game.modData.AvailableMaps[MapUid];
 		}
 
-		
 		bool hasJoined = false;
 		void JoinedServer()
 		{

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -32,7 +33,7 @@ namespace OpenRA.Widgets
 			: base(widget) { }
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);

@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -24,7 +25,7 @@ namespace OpenRA.Widgets
 		bool composing = false;
 		bool teamChat = false;
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			if (composing)
 			{

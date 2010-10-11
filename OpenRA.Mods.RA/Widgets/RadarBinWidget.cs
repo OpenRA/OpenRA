@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA.Widgets
 			get { return new Rectangle((int)mapRect.X, (int)mapRect.Y, (int)mapRect.Width, (int)mapRect.Height);}
 		}
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			if( world == null || world.LocalPlayer == null ) return;
 

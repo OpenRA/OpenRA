@@ -163,9 +163,9 @@ namespace OpenRA
 			}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
 
 			effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
-			Game.viewport.Tick();
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
+			Game.viewport.Tick();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

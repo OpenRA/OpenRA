@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -26,7 +27,7 @@ namespace OpenRA.Widgets
 			this.world = world;
 		}
 		
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var selbox = SelectionBox;
 			if (selbox == null) return;
@@ -41,7 +42,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
 
 			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
-				Game.worldRenderer.DrawSelectionBox(u, Color.Yellow);
+				wr.DrawSelectionBox(u, Color.Yellow);
 		}
 		
 		float2 dragStart, dragEnd;

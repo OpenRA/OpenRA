@@ -27,9 +27,9 @@ namespace OpenRA.Widgets
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos);
 		}
 		
-		public static void DrawSHP(Sprite s, float2 pos)
+		public static void DrawSHP(Sprite s, float2 pos, WorldRenderer wr)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos, Game.worldRenderer, "chrome");
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos, wr, "chrome");
 		}
 
 		public static void DrawPanel(string collection, Rectangle Bounds)

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets
 		float? lastPowerDrainedPos;
 		string powerCollection;
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var world = Game.world;
 			if( world.LocalPlayer == null ) return;

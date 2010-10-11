@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA.Widgets
@@ -18,7 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public PerfGraphWidget() : base() { }
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var rect = RenderBounds;
 			float2 origin = Game.viewport.Location + new float2(rect.Right, rect.Bottom);

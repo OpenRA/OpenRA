@@ -69,7 +69,7 @@ namespace OpenRA.Widgets
 			overlaySprite.sheet.Texture.SetData(overlay);
 		}
 		
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			if (video == null)
 				return;

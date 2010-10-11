@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 	{
 		public int TooltipDelay = 10;
 		public WorldTooltipWidget() : base() { }
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var world = Game.world;
 			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)

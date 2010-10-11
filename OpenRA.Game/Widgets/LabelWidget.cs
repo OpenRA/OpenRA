@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -43,7 +44,7 @@ namespace OpenRA.Widgets
 			GetBackground = other.GetBackground;
 		}
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{		
 			var bg = GetBackground();
 

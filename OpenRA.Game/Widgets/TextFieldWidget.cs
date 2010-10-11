@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -107,7 +108,7 @@ namespace OpenRA.Widgets
 			base.Tick();
 		}
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			int margin = 5;
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;

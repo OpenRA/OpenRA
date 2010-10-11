@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}		
 		
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			var world = Game.world;
 			buttons.Clear();
@@ -127,19 +127,19 @@ namespace OpenRA.Mods.RA.Widgets
 						}
 					}
 
-					WidgetUtils.DrawSHP(image, drawPos);
+					WidgetUtils.DrawSHP(image, drawPos, wr);
 
 					clock.PlayFetchIndex("idle",
 						() => (sp.TotalTime - sp.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 					clock.Tick();
 
-					WidgetUtils.DrawSHP(clock.Image, drawPos);
+					WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
 
 					if (sp.IsReady)
 					{
 						ready.Play("ready");
-						WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2));
+						WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
 					}
 
 					buttons.Add(Pair.New(rect,HandleSupportPower(sp)));

@@ -176,15 +176,15 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		int paletteHeight = 0;
 		int numActualRows = 0;
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{	
 			if (!IsVisible()) return;
 			// todo: fix
-			paletteHeight = DrawPalette(world, CurrentQueue);
+			paletteHeight = DrawPalette(wr, world, CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);
 		}
 
-		int DrawPalette(World world, ProductionQueue queue)
+		int DrawPalette(WorldRenderer wr, World world, ProductionQueue queue)
 		{
 			buttons.Clear();
 			if (queue == null) return 0;
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = new float2(rect.Location);
-				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos);
+				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, wr);
 				
 				var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA.Widgets
 						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
 					clock.Tick();
-					WidgetUtils.DrawSHP(clock.Image, drawPos);
+					WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
 
 					if (firstOfThis.Done)
 					{
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (x != 0) y++;
 
 			foreach (var ob in overlayBits)
-				WidgetUtils.DrawSHP(ob.First, ob.Second);
+				WidgetUtils.DrawSHP(ob.First, ob.Second, wr);
 
 			// Tooltip
 			if (tooltipItem != null && !paletteAnimating && paletteOpen)

@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -165,7 +166,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override void DrawInner()
+		public override void DrawInner( WorldRenderer wr )
 		{
 			if (!IsVisible())
 				return;
