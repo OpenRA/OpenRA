@@ -6,7 +6,8 @@
 			Clear: 60
 			Rough: 40
 			Road: 100
-			Ore: 70
+			Tiberium: 40
+			BlueTiberium: 40
 			Beach: 40
 		ROT: 5
 	Selectable: 
@@ -36,7 +37,8 @@
 			Clear: 80
 			Rough: 70
 			Road: 100
-			Ore: 90
+			Tiberium: 70
+			BlueTiberium: 70
 			Beach: 70
 		ROT: 5
 	Selectable: 
@@ -91,7 +93,9 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
-			Ore: 90
+			Tiberium: 70
+				PathingCost: 200
+			BlueTiberium: 70
 				PathingCost: 200
 			Beach: 80
 	Selectable:

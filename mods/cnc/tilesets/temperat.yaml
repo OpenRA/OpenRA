@@ -51,11 +51,16 @@ Terrain:
 		Buildable: False
 		AcceptSmudge: False
 		Color: 176, 156, 120
-	TerrainType@Ore:
-		Type: Ore
+	TerrainType@Tiberium:
+		Type: Tiberium
 		Buildable: False
 		AcceptSmudge: True
 		Color: 161, 226, 28
+	TerrainType@BlueTiberium:
+		Type: BlueTiberium
+		Buildable: False
+		AcceptSmudge: True
+		Color: 84, 252, 252
 
 Templates:
 	Template@255:

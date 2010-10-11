@@ -101,12 +101,14 @@ World:
 	ResourceType@green-tib:
 		ResourceType: 1
 		Palette: terrain
+		TerrainType: Tiberium
 		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		ValuePerUnit: 30
 		Name: Tiberium
 	ResourceType@blue-tib:
 		ResourceType: 2
 		Palette: terrain
+		TerrainType: BlueTiberium
 		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
 		ValuePerUnit: 60
 		Name: Blue Tiberium
@@ -153,7 +155,7 @@ CRATE:
 		Name: Crate
 	Crate:
 		Lifetime: 120
-		TerrainTypes: Clear, Rough, Road, Ore, Beach
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50

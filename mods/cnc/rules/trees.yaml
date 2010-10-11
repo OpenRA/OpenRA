@@ -8,7 +8,7 @@ SPLIT2:
 		Name: Blossom Tree
 	-Selectable:
 	RadarColorFromTerrain:
-		Terrain: Ore
+		Terrain: Tiberium
 
 SPLIT3:
 	Inherits: ^Tree
@@ -20,7 +20,7 @@ SPLIT3:
 		Name: Blossom Tree
 	-Selectable:
 	RadarColorFromTerrain:
-		Terrain: Ore
+		Terrain: Tiberium
 
 ROCK1:
 	Inherits: ^Rock

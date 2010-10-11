@@ -629,11 +629,9 @@ LST:
 			Clear: 100%
 			Rough: 100%
 			Road: 100%
-			Tree: 100%
 			Water: 100%
-			Rock: 100%
-			Wall: 100%
-			Ore: 100%
+			Tiberium: 100%
+			BlueTiberium: 100%
 			Beach: 100%
 			River: 100%
 		InitialFacing:0
