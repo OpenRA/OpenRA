@@ -58,6 +58,7 @@
 
 ^Helicopter:
 	AppearsOnRadar:
+		UseLocation: yes
 	Targetable:
 		TargetTypes: Air
 	Selectable:
@@ -135,6 +136,7 @@
 
 ^Plane:
 	AppearsOnRadar:
+		UseLocation: yes
 	Selectable:
 		Voice: GenericVoice
 	Targetable:

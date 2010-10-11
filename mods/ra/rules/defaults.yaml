@@ -104,6 +104,7 @@
 
 ^Plane:
 	AppearsOnRadar:
+		UseLocation: yes
 	Selectable:
 		Voice: GenericVoice
 	TargetableAircraft:

@@ -15,16 +15,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class AppearsOnRadarInfo : TraitInfo<AppearsOnRadar> {}
+	public class AppearsOnRadarInfo : TraitInfo<AppearsOnRadar>
+	{
+		public readonly bool UseLocation = false;
+	}
+
 	public class AppearsOnRadar : IRadarSignature
-	{		
+	{
+		AppearsOnRadarInfo info;
 		IOccupySpace Space;
 
 		public IEnumerable<int2> RadarSignatureCells(Actor self)
 		{
-			if (Space == null)
-				Space = self.Trait<IOccupySpace>();
-			return Space.OccupiedCells();
+			if (info == null)
+				info = self.Info.Traits.Get<AppearsOnRadarInfo>();
+
+			if (info.UseLocation)
+				return new int2[] { self.Location };
+			else
+			{
+				if (Space == null)
+					Space = self.Trait<IOccupySpace>();
+				return Space.OccupiedCells();
+			}
 		}
 		
 		public Color RadarSignatureColor(Actor self)
