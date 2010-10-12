@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA
 			}
 			else
 			{
-				Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));
+				// Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));
 				UnReserve();
 			}
 		}
