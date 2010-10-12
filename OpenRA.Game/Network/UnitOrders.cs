@@ -16,10 +16,13 @@ namespace OpenRA.Network
 {
 	static class UnitOrders
 	{
-		static Player FindPlayerByClientId( this World world, int id)
+		static Player FindPlayerByClient( this World world, Session.Client c)
 		{
-			/* todo: find the interactive player. */
-			return world.players.Values.FirstOrDefault(p => p.ClientIndex == id);
+			/* todo: this is still a hack. 
+			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,
+			 * bots,.. */
+			return world.players.Values.FirstOrDefault(
+				p => p.ClientIndex == c.Index && p.PlayerName == c.Name);
 		}
 
 		public static void ProcessOrder( OrderManager orderManager, World world, int clientId, Order order )
@@ -36,10 +39,14 @@ namespace OpenRA.Network
 			case "Chat":
 				{
 					var client = orderManager.LobbyInfo.ClientWithIndex( clientId );
-					if( client != null )
-						Game.AddChatLine( client.Color1, client.Name, order.TargetString );
+					if (client != null)
+					{
+						var player = world != null ? world.FindPlayerByClient(client) : null;
+						var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
+						Game.AddChatLine(client.Color1, client.Name, order.TargetString);
+					}
 					else
-						Game.AddChatLine( Color.White, "(player {0})".F( clientId ), order.TargetString );
+						Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
 					break;
 				}
 			case "TeamChat":
@@ -47,9 +54,15 @@ namespace OpenRA.Network
 					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 					if (client != null)
 					{
-						if (world != null)		// TODO: fix this whole thing properly. this is BS.
+						if (world == null)
 						{
-							var player = world.FindPlayerByClientId(clientId);
+							if (client.Team == orderManager.LocalClient.Team)
+								Game.AddChatLine(client.Color1, client.Name + " (Team)",
+									order.TargetString);
+						}
+						else
+						{
+							var player = world.FindPlayerByClient(client);
 							var display = player != null
 								&& (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally
 									|| player.WinState == WinState.Lost);
