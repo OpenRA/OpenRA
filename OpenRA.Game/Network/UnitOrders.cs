@@ -93,13 +93,16 @@ namespace OpenRA.Network
 				{
 					var targetPlayer = order.Player.World.players[order.TargetLocation.X];
 					var oldStance = order.Player.Stances[targetPlayer];
-					order.Player.Stances[targetPlayer] = (Stance)order.TargetLocation.Y;
-					
-					if (targetPlayer == world.LocalPlayer)
-						world.WorldActor.Trait<Shroud>().UpdatePlayerStance(world, order.Player, oldStance, order.Player.Stances[targetPlayer]);
-					
+					var newStance = (Stance)order.TargetLocation.Y;
+
+					SetPlayerStance(world, order.Player, targetPlayer, newStance);
+
+					// automatically declare war reciprocally
+					if (newStance == Stance.Enemy)
+						SetPlayerStance(world, targetPlayer, order.Player, newStance);
+
 					Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
-						order.Player.PlayerName, targetPlayer.PlayerName, order.Player.Stances[targetPlayer]));
+						order.Player.PlayerName, targetPlayer.PlayerName, newStance));
 					break;
 				}
 			default:
@@ -110,6 +113,14 @@ namespace OpenRA.Network
 					break;
 				}
 			}
+		}
+
+		static void SetPlayerStance(World w, Player a, Player b, Stance s)
+		{
+			var oldStance = a.Stances[b];
+			a.Stances[b] = s;
+			if (b == w.LocalPlayer)
+				w.WorldActor.Trait<Shroud>().UpdatePlayerStance(w, b, oldStance, s);
 		}
 	}
 }
