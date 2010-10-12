@@ -638,7 +638,7 @@ HonestJohn:
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 5
-		Image: MISSILE
+		Image: patriot
 		Trail: smokey
 		Speed: 11
 		RangeLimit: 35

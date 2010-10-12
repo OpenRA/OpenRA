@@ -123,6 +123,11 @@ missile:
 		Start: 0
 		Facings: 32
 
+patriot:
+	idle:
+		Start: 0
+		Facings: 32
+
 moveflsh:
 	idle:
 		Start: 0
