@@ -76,7 +76,7 @@ namespace OpenRA.Widgets.Delegates
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi =>
 			{
-				Widget.OpenWindow("MAP_CHOOSER").SpecialOneArg(MapUid); // WTF
+				Widget.OpenWindow( "MAP_CHOOSER", new Dictionary<string, object> { { "orderManager", orderManager }, { "mapName", MapUid } } );
 				return true;
 			};
 

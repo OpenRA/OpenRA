@@ -32,6 +32,8 @@ namespace OpenRA.Network
 		public int LocalFrameNumber;
 		public int FramesAhead = 0;
 
+		public int LastTickTime = Environment.TickCount;
+
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 		

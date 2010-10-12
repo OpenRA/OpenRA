@@ -75,13 +75,6 @@ namespace OpenRA
 			ConnectionStateChanged( orderManager );
 		}
 
-		static int lastTime = Environment.TickCount;
-
-		static void ResetTimer()
-		{
-			lastTime = Environment.TickCount;
-		}
-
 		internal static int RenderFrame = 0;
 		internal static int LocalTick { get { return orderManager.LocalFrameNumber; } }
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
@@ -98,42 +91,9 @@ namespace OpenRA
 				ConnectionStateChanged( orderManager );
 			}
 
-			int t = Environment.TickCount;
-			int dt = t - lastTime;
-			if (dt >= Settings.Game.Timestep)
-			{
-				using (new PerfSample("tick_time"))
-				{
-					lastTime += Settings.Game.Timestep;
-					Widget.DoTick();
-					var world = orderManager.world;
-					if( orderManager.GameStarted && world.LocalPlayer != null )
-						++Viewport.TicksSinceLastMove;
-					Sound.Tick();
-					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );
-
-					var isNetTick = LocalTick % NetTickScale == 0;
-
-					if (!isNetTick || orderManager.IsReadyForNextFrame)
-					{
-						++orderManager.LocalFrameNumber;
-
-						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
-
-						if (isNetTick) orderManager.Tick();
-
-						world.OrderGenerator.Tick(world);
-						world.Selection.Tick(world);
-						world.Tick();
-						worldRenderer.Tick();
-
-						PerfHistory.Tick();
-					}
-					else
-						if (orderManager.NetFrameNumber == 0)
-							lastTime = Environment.TickCount;
-				}
-			}
+			Tick( orderManager );
+			if( orderManager.world != worldRenderer.world )
+				Tick( worldRenderer.world.orderManager );
 
 			using (new PerfSample("render"))
 			{
@@ -148,6 +108,44 @@ namespace OpenRA
 			PerfHistory.items["cursor"].Tick();
 
 			MasterServerQuery.Tick();
+		}
+
+		private static void Tick( OrderManager orderManager )
+		{
+			int t = Environment.TickCount;
+			int dt = t - orderManager.LastTickTime;
+			if (dt >= Settings.Game.Timestep)
+				using( new PerfSample( "tick_time" ) )
+				{
+					orderManager.LastTickTime += Settings.Game.Timestep;
+					Widget.DoTick();
+					var world = orderManager.world;
+					if( orderManager.GameStarted && world.LocalPlayer != null )
+						++Viewport.TicksSinceLastMove;
+					Sound.Tick();
+					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );
+
+					var isNetTick = LocalTick % NetTickScale == 0;
+
+					if( !isNetTick || orderManager.IsReadyForNextFrame )
+					{
+						++orderManager.LocalFrameNumber;
+
+						Log.Write( "debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local" );
+
+						if( isNetTick ) orderManager.Tick();
+
+						world.OrderGenerator.Tick( world );
+						world.Selection.Tick( world );
+						world.Tick();
+						worldRenderer.Tick();
+
+						PerfHistory.Tick();
+					}
+					else
+						if( orderManager.NetFrameNumber == 0 )
+							orderManager.LastTickTime = Environment.TickCount;
+				}
 		}
 
 		internal static event Action LobbyInfoChanged = () => { };
@@ -288,7 +286,7 @@ namespace OpenRA
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
 			Widget.OpenWindow("MAINMENU_BG");
 
-			ResetTimer();
+			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
 
 		static bool quit;

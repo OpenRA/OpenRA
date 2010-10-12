@@ -20,11 +20,17 @@ namespace OpenRA.Widgets.Delegates
 		MapStub Map = null;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserDelegate( [ObjectCreator.Param( "widget" )] Widget bg, [ObjectCreator.Param] OrderManager orderManager )
+		internal MapChooserDelegate(
+			[ObjectCreator.Param( "widget" )] Widget bg,
+			[ObjectCreator.Param] OrderManager orderManager,
+			[ObjectCreator.Param] string mapName )
 		{
-			bg.SpecialOneArg = (map) => RefreshMapList(map);
-			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
+			if (mapName != null)
+				Map = Game.modData.AvailableMaps[mapName];
+			else
+				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 
+			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
 			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => Map;
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
 			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Width, Map.Height);
@@ -66,16 +72,6 @@ namespace OpenRA.Widgets.Delegates
 				offset += template.Bounds.Height;
 				ml.ContentHeight += template.Bounds.Height;
 			}
-		}
-
-		public void RefreshMapList(object uidobj)
-		{
-			// Set the default selected map
-			var uid = uidobj as string;
-			if (uid != null)
-				Map = Game.modData.AvailableMaps[uid];
-			else
-				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 		}
 	}
 }

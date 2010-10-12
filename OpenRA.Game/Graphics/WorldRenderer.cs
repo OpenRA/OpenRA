@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 {
 	public class WorldRenderer
 	{
-		readonly World world;
+		public readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
 		public readonly UiOverlay uiOverlay;
 		internal readonly HardwarePalette palette;

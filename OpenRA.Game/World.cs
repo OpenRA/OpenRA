@@ -29,7 +29,7 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
-		readonly OrderManager orderManager;
+		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
 		public XRandom SharedRandom = new XRandom(0);
