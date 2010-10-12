@@ -25,8 +25,65 @@ Players:
 		Race: gdi
 		OwnsWorld: True
 		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
 
 Actors:
 	Actor0: split3
@@ -337,6 +394,9 @@ Actors:
 		Owner: Neutral
 	Actor131: v06
 		Location: 47,36
+		Owner: Neutral
+	Actor46: hosp
+		Location: 45,41
 		Owner: Neutral
 
 Waypoints:

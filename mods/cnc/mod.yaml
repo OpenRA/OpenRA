@@ -35,6 +35,7 @@ Rules:
 	mods/cnc/rules/vehicles.yaml
 	mods/cnc/rules/trees.yaml
 	mods/cnc/rules/civilian.yaml
+	mods/cnc/rules/tech.yaml
 
 Sequences:
 	mods/cnc/sequences/structures.yaml

@@ -129,6 +129,18 @@ Actors:
 	Actor22: cycl
 		Location: 37,23
 		Owner: Neutral
+	Actor8: v19
+		Location: 9,24
+		Owner: Neutral
+	Actor24: v19
+		Location: 10,24
+		Owner: Neutral
+	Actor25: v19
+		Location: 39,23
+		Owner: Neutral
+	Actor26: v19
+		Location: 38,23
+		Owner: Neutral
 
 Waypoints:
 	wp0: 35,39

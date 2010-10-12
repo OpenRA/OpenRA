@@ -483,3 +483,49 @@ v33:
 	dead:
 		Start: 2
 
+v19:
+	idle:
+		Start: 0
+		Length: 14
+		Tick: 120
+	damaged-idle:
+		Start: 14
+		Length: 14
+		Tick: 120
+	dead:
+		Start: 28
+
+arco:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 1
+hosp:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: hospmake
+		Start: 0
+		Length: *
+bio:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+	make: biomake
+		Start: 0
+		Length: *
+miss:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2

@@ -142,6 +142,13 @@ V33:
 		OverrideTheater: DESERT
 		OverrideImage: v33
 
+ARCO:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+
 BARB:
 	Inherits: ^Wall
 	Health:
