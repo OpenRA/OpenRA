@@ -2,6 +2,8 @@ Metadata:
 	Title: Red Alert
 	Description: OpenRA Reimagining of the classic game
 	Version: a0001
+	Author: The OpenRA Developers
+	Standalone: true
 
 Folders:
 	.

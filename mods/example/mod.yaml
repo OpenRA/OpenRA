@@ -2,6 +2,8 @@ Metadata:
 	Title: Example Mod
 	Description: Adds a soviet troop transport
 	Version: a0001
+	Author: The OpenRA Developers
+	RequiresMods: ra
 
 Folders:
 	mods/example

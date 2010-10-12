@@ -46,6 +46,9 @@ namespace OpenRA
 			public string Title;
 			public string Description;
 			public string Version;
+			public string Author;
+			public string[] RequiresMods;
+			public bool Standalone = false;
 		}
 		
 		public readonly Manifest Manifest;

@@ -2,6 +2,8 @@ Metadata:
 	Title: RA Perf
 	Description: Performance Test map pack
 	Version: a0001
+	Author: The OpenRA Developers
+	RequiresMods: ra
 
 Folders:
 	./mods/ra_perf

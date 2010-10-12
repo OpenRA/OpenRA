@@ -1,5 +1,10 @@
-# Dune 2000 Mod -- Package Manifest
-# Piggybacks some things from ra mod
+Metadata:
+	Title: Dune 2000
+	Description: Work in progress d2k port
+	Version: a0001
+	Author: The OpenRA Developers
+	Standalone: true
+
 Folders:
 	.
 	mods/d2k
