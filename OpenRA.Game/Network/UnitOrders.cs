@@ -47,15 +47,18 @@ namespace OpenRA.Network
 					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 					if (client != null)
 					{
-						var player = world.FindPlayerByClientId(clientId);
-						var display = player != null
-							&& (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
-								|| player.WinState == WinState.Lost);
-						
-						if (display)
+						if (world != null)		// TODO: fix this whole thing properly. this is BS.
 						{
-							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : " (Team)";
-							Game.AddChatLine(client.Color1, client.Name + suffix, order.TargetString);
+							var player = world.FindPlayerByClientId(clientId);
+							var display = player != null
+								&& (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally
+									|| player.WinState == WinState.Lost);
+
+							if (display)
+							{
+								var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : " (Team)";
+								Game.AddChatLine(client.Color1, client.Name + suffix, order.TargetString);
+							}
 						}
 					}
 					break;
