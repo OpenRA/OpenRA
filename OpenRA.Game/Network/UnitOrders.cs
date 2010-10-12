@@ -36,14 +36,10 @@ namespace OpenRA.Network
 			case "Chat":
 				{
 					var client = orderManager.LobbyInfo.ClientWithIndex( clientId );
-					if (client != null)
-					{
-						var player = world.FindPlayerByClientId(clientId);
-						if (player != null && player.WinState == WinState.Lost)
-							Game.AddChatLine(client.Color1, client.Name + " (Dead)", order.TargetString);
-						else
-							Game.AddChatLine(client.Color1, client.Name, order.TargetString);
-					}
+					if( client != null )
+						Game.AddChatLine( client.Color1, client.Name, order.TargetString );
+					else
+						Game.AddChatLine( Color.White, "(player {0})".F( clientId ), order.TargetString );
 					break;
 				}
 			case "TeamChat":

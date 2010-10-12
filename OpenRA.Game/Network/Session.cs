@@ -23,7 +23,7 @@ namespace OpenRA.Network
 
 		public Client ClientWithIndex( int clientID )
 		{
-			return Clients.Single( c => c.Index == clientID );
+			return Clients.SingleOrDefault( c => c.Index == clientID );
 		}
 
 		public Client ClientInSlot( Slot slot )
