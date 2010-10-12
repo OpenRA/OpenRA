@@ -347,7 +347,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 					if (producing.Paused)
 					{
-						Game.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, false));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, false));
 						return;
 					}
 				}
@@ -368,12 +368,12 @@ namespace OpenRA.Mods.RA.Widgets
 						{
 							numberToCancel = -1; //cancel all
 						}
-						Game.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
+						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}
 					else
 					{
 						Sound.Play(eva.OnHoldAudio);
-						Game.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, true));
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, true));
 					}
 				}
 			}
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
 						
-			Game.IssueOrder(Order.StartProduction(CurrentQueue.self, item, 
+			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item, 
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
 		

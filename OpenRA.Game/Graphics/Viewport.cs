@@ -95,7 +95,7 @@ namespace OpenRA.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 		
-		public void DrawRegions( WorldRenderer wr, World world )
+		public void DrawRegions( WorldRenderer wr )
 		{
 			renderer.BeginFrame(scrollPosition);
 			wr.Draw();

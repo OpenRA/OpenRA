@@ -18,19 +18,21 @@ namespace OpenRA.Network
 {
 	class OrderManager : IDisposable
 	{
-		readonly SyncReport syncReport = new SyncReport();
+		readonly SyncReport syncReport;
 		readonly FrameData frameData = new FrameData();
 
 		public Session LobbyInfo = new Session( Game.Settings.Game.Mods );
 		public Session.Client LocalClient { get { return LobbyInfo.ClientWithIndex( Connection.LocalClientId ); } }
+		public World world;
 
 		public readonly string Host;
 		public readonly int Port;
 
-		public int FrameNumber { get; private set; }
+		public int NetFrameNumber { get; private set; }
+		public int LocalFrameNumber;
 		public int FramesAhead = 0;
 
-		public bool GameStarted { get { return FrameNumber != 0; } }
+		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 		
 		public readonly int SyncHeaderSize = 9;
@@ -41,8 +43,8 @@ namespace OpenRA.Network
 		{
 			if (GameStarted) return;
 
-			FrameNumber = 1;
-			for( int i = FrameNumber ; i <= FramesAhead ; i++ )
+			NetFrameNumber = 1;
+			for( int i = NetFrameNumber ; i <= FramesAhead ; i++ )
 				Connection.Send( new List<Order>().Serialize( i ) );
 		}
 
@@ -51,6 +53,7 @@ namespace OpenRA.Network
 			this.Host = host;
 			this.Port = port;
 			Connection = conn;
+			syncReport = new SyncReport( this );
 		}
 
 		public void IssueOrders( Order[] orders )
@@ -64,7 +67,7 @@ namespace OpenRA.Network
 			localOrders.Add( order );
 		}
 
-		public void TickImmediate( World world )
+		public void TickImmediate()
 		{
 			var immediateOrders = localOrders.Where( o => o.IsImmediate ).ToList();
 			if( immediateOrders.Count != 0 )
@@ -80,7 +83,7 @@ namespace OpenRA.Network
 					if( packet.Length == 5 && packet[ 4 ] == 0xBF )
 						frameData.ClientQuit( clientId, frame );
 					else if( packet.Length >= 5 && packet[ 4 ] == 0x65 )
-						CheckSync( world, packet );
+						CheckSync( packet );
 					else if( frame == 0 )
 						immediatePackets.Add( Pair.New( clientId, packet ) );
 					else
@@ -94,7 +97,7 @@ namespace OpenRA.Network
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
 
-		void CheckSync(World world, byte[] packet)
+		void CheckSync(byte[] packet)
 		{
 			var frame = BitConverter.ToInt32(packet, 0);
 			byte[] existingSync;
@@ -116,7 +119,7 @@ namespace OpenRA.Network
 							if (i < SyncHeaderSize)
 								OutOfSync(frame, "Tick");
 							else
-								OutOfSync(world, frame, (i - SyncHeaderSize) / 4);
+								OutOfSync(frame, (i - SyncHeaderSize) / 4);
 						}
 					}
 				}
@@ -125,7 +128,7 @@ namespace OpenRA.Network
 				syncForFrame.Add(frame, packet);
 		}
 
-		void OutOfSync( World world, int frame, int index)
+		void OutOfSync(int frame, int index)
 		{
 			var order = frameData.OrdersForFrame( world, frame ).ElementAt(index);
 			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, order.Order.ToString()));
@@ -143,34 +146,34 @@ namespace OpenRA.Network
 
 		public bool IsReadyForNextFrame
 		{
-			get { return FrameNumber >= 1 && frameData.IsReadyForFrame( FrameNumber ); }
+			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame( NetFrameNumber ); }
 		}
 
-		public void Tick( World world )
+		public void Tick()
 		{
 			if( !IsReadyForNextFrame )
 				throw new InvalidOperationException();
 
-			Connection.Send( localOrders.Serialize( FrameNumber + FramesAhead ) );
+			Connection.Send( localOrders.Serialize( NetFrameNumber + FramesAhead ) );
 			localOrders.Clear();
 
 			var sync = new List<int>();
 			sync.Add( world.SyncHash() );
 
-			foreach( var order in frameData.OrdersForFrame( world, FrameNumber) )
+			foreach( var order in frameData.OrdersForFrame( world, NetFrameNumber) )
 			{
 				UnitOrders.ProcessOrder( this, world, order.Client, order.Order );
 				sync.Add( world.SyncHash() );
 			}
 
-			var ss = sync.SerializeSync( FrameNumber );
+			var ss = sync.SerializeSync( NetFrameNumber );
 			Connection.Send( ss );
 
-			syncReport.UpdateSyncReport( world );
+			syncReport.UpdateSyncReport();
 
-			CheckSync( world, ss );
+			CheckSync( ss );
 
-			++FrameNumber;
+			++NetFrameNumber;
 		}
 
 		bool disposed;

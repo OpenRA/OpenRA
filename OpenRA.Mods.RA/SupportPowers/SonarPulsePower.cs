@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 
 		protected override void OnActivate()
 		{
-			Game.IssueOrder(new Order("SonarPulse", Owner.PlayerActor));
+			Self.World.IssueOrder(new Order("SonarPulse", Owner.PlayerActor));
 		}
 
 		public void ResolveOrder(Actor self, Order order)

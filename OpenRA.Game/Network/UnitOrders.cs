@@ -52,10 +52,9 @@ namespace OpenRA.Network
 					if (client != null)
 					{
 						var player = world.FindPlayerByClientId(clientId);
-						var display = (world.GameHasStarted) ? 
-							player != null && (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
-								|| player.WinState == WinState.Lost) :
-							client == orderManager.LocalClient || (client.Team == orderManager.LocalClient.Team && client.Team != 0);
+						var display = player != null
+							&& (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally 
+								|| player.WinState == WinState.Lost);
 						
 						if (display)
 						{

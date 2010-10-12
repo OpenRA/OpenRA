@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -19,7 +20,7 @@ namespace OpenRA.Widgets.Delegates
 		MapStub Map = null;
 
 		[ObjectCreator.UseCtor]
-		public MapChooserDelegate( [ObjectCreator.Param( "widget" )] Widget bg )
+		internal MapChooserDelegate( [ObjectCreator.Param( "widget" )] Widget bg, [ObjectCreator.Param] OrderManager orderManager )
 		{
 			bg.SpecialOneArg = (map) => RefreshMapList(map);
 			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
@@ -32,7 +33,7 @@ namespace OpenRA.Widgets.Delegates
 
 			bg.GetWidget("BUTTON_OK").OnMouseUp = mi =>
 			{
-				Game.IssueOrder(Order.Command("map " + Map.Uid));
+				orderManager.IssueOrder(Order.Command("map " + Map.Uid));
 				Widget.CloseWindow();
 				return true;
 			};

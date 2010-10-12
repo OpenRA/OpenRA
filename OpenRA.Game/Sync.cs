@@ -139,6 +139,7 @@ namespace OpenRA
 
 		public static T CheckSyncUnchanged<T>( World world, Func<T> fn )
 		{
+			if( world == null ) return fn();
 			int sync = world.SyncHash();
 			bool prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;

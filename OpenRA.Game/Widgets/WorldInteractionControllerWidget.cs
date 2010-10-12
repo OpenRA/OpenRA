@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 			if (world.OrderGenerator == null) return;
 
 			var orders = world.OrderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
-			Game.orderManager.IssueOrders( orders );
+			orders.Do( o => world.IssueOrder( o ) );
 			
 			// Find an actor with a phrase to say
 			var done = false;
@@ -113,9 +113,6 @@ namespace OpenRA.Widgets
 		{
 			return Sync.CheckSyncUnchanged( world, () =>
 			{
-				if (!world.GameHasStarted)
-					return "default";
-
 				var mi = new MouseInput
 				{
 					Location = pos,

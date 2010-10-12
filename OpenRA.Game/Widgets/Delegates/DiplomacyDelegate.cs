@@ -138,7 +138,7 @@ namespace OpenRA.Widgets.Delegates
 
 			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
 
-			Game.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
+			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
 				new int2(p.Index, (int)nextStance)));
 
 			bw.Text = nextStance.ToString();

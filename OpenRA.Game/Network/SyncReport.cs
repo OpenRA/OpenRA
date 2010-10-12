@@ -9,31 +9,33 @@ namespace OpenRA.Network
 {
 	class SyncReport
 	{
+		readonly OrderManager orderManager;
 		const int numSyncReports = 5;
 		Report[] syncReports = new Report[numSyncReports];
 		int curIndex = 0;
 
-		public SyncReport()
+		public SyncReport( OrderManager orderManager )
 		{
+			this.orderManager = orderManager;
 			for (var i = 0; i < numSyncReports; i++)
 				syncReports[i] = new SyncReport.Report();
 		}
 		
-		internal void UpdateSyncReport( World world )
+		internal void UpdateSyncReport()
 		{
 			if (!Game.Settings.Debug.RecordSyncReports)
 				return;
 			
-			GenerateSyncReport(world, syncReports[curIndex]);
+			GenerateSyncReport(syncReports[curIndex]);
 			curIndex = ++curIndex % numSyncReports;
 		}
 		
-		void GenerateSyncReport(World world, Report report)
+		void GenerateSyncReport(Report report)
 		{
-			report.Frame = Game.orderManager.FrameNumber;
-			report.SyncedRandom = world.SharedRandom.Last;
+			report.Frame = orderManager.NetFrameNumber;
+			report.SyncedRandom = orderManager.world.SharedRandom.Last;
 			report.Traits.Clear();
-			foreach (var a in world.Queries.WithTraitMultiple<object>())
+			foreach (var a in orderManager.world.Queries.WithTraitMultiple<object>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)

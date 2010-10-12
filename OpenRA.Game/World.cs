@@ -38,8 +38,6 @@ namespace OpenRA
 
 		public void AddPlayer(Player p) { players[p.Index] = p; }
 
-		public bool GameHasStarted { get { return Game.orderManager.GameStarted; } }
-
 		int localPlayerIndex;
 		public Player LocalPlayer
 		{
@@ -56,6 +54,8 @@ namespace OpenRA
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
+
+		public void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
 		IOrderGenerator orderGenerator_;
 		public IOrderGenerator OrderGenerator

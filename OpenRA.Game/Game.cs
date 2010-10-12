@@ -31,7 +31,6 @@ namespace OpenRA
 		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
 		public static ModData modData;
-		private static World world;
 		private static WorldRenderer worldRenderer;
 
 		public static Viewport viewport;
@@ -44,15 +43,6 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
 		
-		static void LoadMap(string uid)
-		{
-			var map = modData.PrepareMap(uid);
-			
-			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
-			world = new World(modData.Manifest, map, orderManager);
-			worldRenderer = new WorldRenderer(world);
-		}
-
 		public static void MoveViewport(int2 loc)
 		{
 			viewport.Center(loc);
@@ -93,14 +83,14 @@ namespace OpenRA
 		}
 
 		internal static int RenderFrame = 0;
-		internal static int LocalTick = 0;
+		internal static int LocalTick { get { return orderManager.LocalFrameNumber; } }
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
 		internal static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 
-		static void Tick( World world, OrderManager orderManager, Viewport viewPort )
+		static void Tick( OrderManager orderManager, Viewport viewPort )
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
@@ -116,20 +106,21 @@ namespace OpenRA
 				{
 					lastTime += Settings.Game.Timestep;
 					Widget.DoTick();
-					if( world.GameHasStarted && world.LocalPlayer != null )
+					var world = orderManager.world;
+					if( orderManager.GameStarted && world.LocalPlayer != null )
 						++Viewport.TicksSinceLastMove;
 					Sound.Tick();
-					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate( world ); } );
+					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );
 
 					var isNetTick = LocalTick % NetTickScale == 0;
 
 					if (!isNetTick || orderManager.IsReadyForNextFrame)
 					{
-						++LocalTick;
+						++orderManager.LocalFrameNumber;
 
 						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
-						if (isNetTick) orderManager.Tick(world);
+						if (isNetTick) orderManager.Tick();
 
 						world.OrderGenerator.Tick(world);
 						world.Selection.Tick(world);
@@ -139,7 +130,7 @@ namespace OpenRA
 						PerfHistory.Tick();
 					}
 					else
-						if (orderManager.FrameNumber == 0)
+						if (orderManager.NetFrameNumber == 0)
 							lastTime = Environment.TickCount;
 				}
 			}
@@ -147,7 +138,7 @@ namespace OpenRA
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions(worldRenderer, world);
+				viewport.DrawRegions(worldRenderer);
 				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
 			}
 
@@ -166,31 +157,30 @@ namespace OpenRA
 			LobbyInfoChanged();
 		}
 
-		public static void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
-
 		public static event Action<World> AfterGameStart = _ => {};
 		public static event Action BeforeGameStart = () => {};
-		internal static void StartGame(string map)
+		internal static void StartGame(string mapUID)
 		{
-			world = null;
 			BeforeGameStart();
-			LoadMap(map);
+
+			var map = modData.PrepareMap(mapUID);
+			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
+			orderManager.world = new World(modData.Manifest, map, orderManager);
+			worldRenderer = new WorldRenderer(orderManager.world);
+
 			if (orderManager.GameStarted) return;
 			Widget.SelectedWidget = null;
 
-			LocalTick = 0;
+			orderManager.LocalFrameNumber = 0;
 
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
-			AfterGameStart( world );
+			AfterGameStart( orderManager.world );
 		}
 
 		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
 		{
-			var world = Game.world;
-			if (world == null) return;
-
-			Sync.CheckSyncUnchanged( world, () =>
+			Sync.CheckSyncUnchanged( orderManager.world, () =>
 			{
 				var mi = new MouseInput
 				{
@@ -210,10 +200,7 @@ namespace OpenRA
 
 		public static void HandleKeyEvent(KeyInput e)
 		{
-			var world = Game.world;
-			if( world == null ) return;
-
-			Sync.CheckSyncUnchanged( world, () =>
+			Sync.CheckSyncUnchanged( orderManager.world, () =>
 			{
 				Widget.HandleKeyPress( e );
 			} );
@@ -269,7 +256,7 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
-			Game.AfterGameStart += world => Widget.OpenWindow("INGAME_ROOT", new Dictionary<string,object>{{"world", world}});
+			Game.AfterGameStart += world => Widget.OpenWindow("INGAME_ROOT", new Dictionary<string,object>{{"world", world},{"orderManager",orderManager}});
 
 			Game.ConnectionStateChanged += orderManager =>
 			{
@@ -309,7 +296,7 @@ namespace OpenRA
 		{
 			while (!quit)
 			{
-				Tick( world, orderManager, viewport );
+				Tick( orderManager, viewport );
 				Application.DoEvents();
 			}
 		}

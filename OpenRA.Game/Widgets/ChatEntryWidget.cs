@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets
 {
@@ -24,6 +25,13 @@ namespace OpenRA.Widgets
 		string content = "";
 		bool composing = false;
 		bool teamChat = false;
+
+		readonly OrderManager orderManager;
+		[ObjectCreator.UseCtor]
+		internal ChatEntryWidget( [ObjectCreator.Param] OrderManager orderManager )
+		{
+			this.orderManager = orderManager;
+		}
 
 		public override void DrawInner( WorldRenderer wr )
 		{
@@ -61,7 +69,7 @@ namespace OpenRA.Widgets
 
 					composing = false;
 					if (content != "")
-						Game.IssueOrder(teamChat
+						orderManager.IssueOrder(teamChat
 							? Order.TeamChat(content)
 							: Order.Chat(content));
 					content = "";

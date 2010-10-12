@@ -42,9 +42,6 @@ namespace OpenRA.Network
 				var packetLen = reader.ReadInt32();
 				var packet = reader.ReadBytes( packetLen );
 				packetFn( client, packet );
-
-				if( !Game.orderManager.GameStarted )
-					return;
 			}
 			replayStream = null;
 		}

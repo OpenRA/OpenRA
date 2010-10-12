@@ -52,7 +52,7 @@ namespace OpenRA.Widgets.Delegates
 				if (orderManager.LocalClient.State == Session.ClientState.Ready) return;
 				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
 				if (sp == 0 || !owned)
-					Game.IssueOrder(Order.Command("spawn {0}".F(sp)));
+					orderManager.IssueOrder(Order.Command("spawn {0}".F(sp)));
 			};
 
 			mapPreview.SpawnColors = () =>
@@ -95,7 +95,7 @@ namespace OpenRA.Widgets.Delegates
 			lockTeamsCheckbox.OnMouseDown = mi =>
 			{
 				if (Game.IsHost)
-					Game.IssueOrder(Order.Command(
+					orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
 				return true;
 			};
@@ -106,7 +106,7 @@ namespace OpenRA.Widgets.Delegates
 				mapButton.Visible = false;
 				disconnectButton.Visible = false;
 				lockTeamsCheckbox.Visible = false;
-				Game.IssueOrder(Order.Command("startgame"));
+				orderManager.IssueOrder(Order.Command("startgame"));
 				return true;
 			};
 			startGameButton.IsVisible = () => Game.IsHost;
@@ -126,7 +126,7 @@ namespace OpenRA.Widgets.Delegates
 					return true;
 
 				var order = (teamChat) ? Order.TeamChat(chatTextField.Text) : Order.Chat(chatTextField.Text);
-				Game.IssueOrder(order);
+				orderManager.IssueOrder(order);
 				chatTextField.Text = "";
 				return true;
 			};
@@ -166,7 +166,7 @@ namespace OpenRA.Widgets.Delegates
 			Game.Settings.Player.Color1 = c1;
 			Game.Settings.Player.Color2 = c2;
 			Game.Settings.Save();
-			Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
+			orderManager.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
 		
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
@@ -190,13 +190,13 @@ namespace OpenRA.Widgets.Delegates
 			hasJoined = true;
 			
 			if (orderManager.LocalClient.Name != Game.Settings.Player.Name)
-				Game.IssueOrder(Order.Command("name " + Game.Settings.Player.Name));
+				orderManager.IssueOrder(Order.Command("name " + Game.Settings.Player.Name));
 			
 			var c1 = Game.Settings.Player.Color1;
 			var c2 = Game.Settings.Player.Color2;
 			
 			if (orderManager.LocalClient.Color1 != c1 || orderManager.LocalClient.Color2 != c2)			
-				Game.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
+				orderManager.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
 		}
 
 		void ResetConnectionState( OrderManager orderManager )
@@ -235,14 +235,14 @@ namespace OpenRA.Widgets.Delegates
 							if (s.Closed)
 							{
 								s.Bot = null;
-								Game.IssueOrder(Order.Command("slot_open " + s.Index));
+								orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
 							}
 							else
 							{
 								if (s.Bot == null)
-									Game.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
+									orderManager.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
 								else
-									Game.IssueOrder(Order.Command("slot_close " + s.Index));
+									orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
 							}
 							return true;
 						};
@@ -257,7 +257,7 @@ namespace OpenRA.Widgets.Delegates
 					var join = template.GetWidget<ButtonWidget>("JOIN");
 					if (join != null)
 					{
-						join.OnMouseUp = _ => { Game.IssueOrder(Order.Command("slot " + s.Index)); return true; };
+						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + s.Index)); return true; };
 						join.IsVisible = () => !s.Closed && s.Bot == null;
 					}
 				}
@@ -276,7 +276,7 @@ namespace OpenRA.Widgets.Delegates
 						if (name.Text == c.Name)
 							return true;
 
-						Game.IssueOrder(Order.Command("name " + name.Text));
+						orderManager.IssueOrder(Order.Command("name " + name.Text));
 						Game.Settings.Player.Name = name.Text;
 						Game.Settings.Save();
 						return true;
@@ -372,14 +372,14 @@ namespace OpenRA.Widgets.Delegates
 			if (nextCountry == null)
 				nextCountry = countries.First();
 
-			Game.IssueOrder(Order.Command("race " + nextCountry));
+			orderManager.IssueOrder(Order.Command("race " + nextCountry));
 
 			return true;
 		}
 
 		bool CycleReady(MouseInput mi)
 		{
-			Game.IssueOrder(Order.Command("ready"));
+			orderManager.IssueOrder(Order.Command("ready"));
 			return true;
 		}
 
@@ -388,7 +388,7 @@ namespace OpenRA.Widgets.Delegates
 			var d = (mi.Button == MouseButton.Left) ? +1 : Map.PlayerCount;
 			var newIndex = (orderManager.LocalClient.Team + d) % (Map.PlayerCount + 1);
 			
-			Game.IssueOrder(
+			orderManager.IssueOrder(
 				Order.Command("team " + newIndex));
 			return true;
 		}
