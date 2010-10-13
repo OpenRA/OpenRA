@@ -1,0 +1,60 @@
+Crossplatform "Launcher" ideas:
+
+provides facility for commands like "--install-ra-packages", etc instead of having to reinvent the wheel on each platform.
+    Command ideas:
+        --list-mods: Simple list of available mods
+           - This is already done on game init, just needs pulling somewhere generic
+        --mod-info <mod>: Metadata on specific mod
+        --list-mod-heirarchy: Like above, but shows mod heirarchy
+            Is this needed? With a combination of listing and mod info, you can easily build the tree yourself. But if every platform has to do this, we may as well share the code. *shrug* its not a big deal at this stage.
+        --install-ra-music <path to cd>: Extracts scores.mix and copies it to the ra/packages dir
+        --install-cnc-music <path to cd>: Copies scores.mix from cnc disk to cnc/packages dir
+        --download-(ra|cnc)-packages: downloads ds and extracts packages from web
+        --install-(ra|cnc)-packages <path to cd>: copies required files from ra/cnc cd
+
+Implementation:
+    Either separate exe or in the OpenRA.Game executable as a cli interface for modifying
+    the game install.
+    Platform specific guis that call the appropriate commands, and launch the game itself.
+    
+    Separate Exe: <-- lets go with this for the first version. It can link against Fileformats to get
+                                 the mix extraction and mod list stuff.
+        Pros:
+            Small
+            Doesn't clutter main executable with functionality not used elsewhere.
+        Cons:
+        
+    OpenRA.Game executable:
+        Pros:
+        
+        Cons:
+        
+Platform specific gui scope:
+   -- Allow setting basic settings before launch? (toggle fullscreen is frequently asked for)
+        This would be a nice feature given setting them in game requires a restart.
+        Lets limit this to graphical settings. I'd rather not reinvent the wheel for things that 
+        don't need it.
+  -- Give an overview of installed mods.
+  -- Install new mods from site/downloaded archive.
+  -- Install new maps for a mod.
+  -- Update core game and mods
+  -- Launch game with a selection of mods.
+       -- Also allow the user to set custom commandline args
+           Via GUI selection? Via a textfield below the mods checkbox
+               That would be unfriendly to a lot of users or is this for "power user" options?
+               Power users. It can be hidden behind a toggle/pref if necessary.
+
+Gameplan:
+  -- Start by building the cli interface, and hook up the existing postinstall scripts to use them
+        -- Code for listing mods exists, move this into fileformats (for --list-mods)
+        -- Code for extracting files from mixes exists in fileformats (for --install-ra-music).
+        -- Copying files: filesystem permissions? Do we require root? How do we handle this?
+            We do on Windows and Linux at least. Unless we do per user.
+            -- Is installing files to the support dir acceptable?
+                For mods, perhaps. For core game: no.
+            -- Gui launchers can run the cli app with appropriate permissions. cli can be dumb.
+         -- Require code to download files from intarwebs, and report progress to stdout.
+                This is about the only non-trivial code that we need to write. Its still relatively trivial.
+  -- Platform-specific maintainers work on their own launcher later
+  -- ????
+

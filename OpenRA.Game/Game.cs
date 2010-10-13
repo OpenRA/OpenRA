@@ -239,11 +239,11 @@ namespace OpenRA
 			Renderer = new Renderer();
 			
 			Console.WriteLine("Available mods:");
-			foreach(var mod in ModData.AllMods)
+			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 			
 			// Discard any invalid mods
-			var mods = Settings.Game.Mods.Where( m => ModData.AllMods.ContainsKey( m ) ).ToArray();
+			var mods = Settings.Game.Mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mods));
 			
 			modData = new ModData( mods );

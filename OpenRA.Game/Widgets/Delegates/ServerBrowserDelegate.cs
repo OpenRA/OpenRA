@@ -124,7 +124,7 @@ namespace OpenRA.Widgets.Delegates
 		string GenerateModsLabel()
 		{
 			return string.Join("\n", currentServer.Mods.Select(m => 
-			       ModData.AllMods.ContainsKey(m) ? string.Format("{0} ({1})", ModData.AllMods[m].Title, ModData.AllMods[m].Version)
+			       Mod.AllMods.ContainsKey(m) ? string.Format("{0} ({1})", Mod.AllMods[m].Title, Mod.AllMods[m].Version)
 			                                   : string.Format("Unknown Mod: {0}",m)).ToArray());
 		}
 
