@@ -134,7 +134,7 @@ namespace OpenRA.GameRules
 		{
 			var root = new List<MiniYamlNode>();
 			foreach( var kv in Sections )
-				root.Add( new MiniYamlNode( kv.Key, FieldSaver.Save(kv.Value) ) );
+				root.Add( new MiniYamlNode( kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType())) ) );
 			
 			root.WriteToFile(SettingsFile);
 		}
