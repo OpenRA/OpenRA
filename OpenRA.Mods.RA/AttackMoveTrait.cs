@@ -48,9 +48,6 @@ namespace OpenRA.Mods.RA
 							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
 							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
-
-				if (self.Owner == self.Owner.World.LocalPlayer)
-					self.World.CancelInputMode();
 			}
 			else
 			{
