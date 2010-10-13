@@ -180,6 +180,9 @@ namespace OpenRA.Widgets.Delegates
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 			Map = Game.modData.AvailableMaps[MapUid];
+
+			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
+			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
 		bool hasJoined = false;

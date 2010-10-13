@@ -62,6 +62,7 @@ namespace OpenRA.Network
 
 		public class Global
 		{
+			public string ServerName;
 			public string Map;
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;

@@ -7,6 +7,7 @@ Background@SERVER_LOBBY:
 	Height:600
 	Children:
 		Label@LOBBY_TITLE:
+			Id:LOBBY_TITLE
 			X:0
 			Y:20
 			Align:Center
@@ -16,7 +17,7 @@ Background@SERVER_LOBBY:
 			Text:OpenRA Multiplayer Lobby
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
-			Y:39
+			Y:50
 			Width:252
 			Height:252
 			Background:dialog3
