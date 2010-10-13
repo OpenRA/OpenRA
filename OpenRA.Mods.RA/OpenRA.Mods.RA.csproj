@@ -77,7 +77,7 @@
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
-    <Compile Include="AttackMoveTrait.cs" />
+    <Compile Include="AttackMove.cs" />
     <Compile Include="Buildable.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
