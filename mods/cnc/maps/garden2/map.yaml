@@ -1,0 +1,211 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Tiberium Garden II
+
+Description: Large map for 6p FFA, 2v2v2 or 3v3
+
+Author: Chris Forbes
+
+PlayerCount: 6
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi4:
+		Name: Multi4
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi5:
+		Name: Multi5
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: rock7
+		Location: 50,64
+		Owner: Neutral
+	Actor1: rock7
+		Location: 73,64
+		Owner: Neutral
+	Actor2: rock6
+		Location: 56,70
+		Owner: Neutral
+	Actor3: rock6
+		Location: 69,70
+		Owner: Neutral
+	Actor4: rock2
+		Location: 54,72
+		Owner: Neutral
+	Actor5: rock1
+		Location: 71,71
+		Owner: Neutral
+	Actor6: rock2
+		Location: 57,56
+		Owner: Neutral
+	Actor7: rock3
+		Location: 56,54
+		Owner: Neutral
+	Actor8: rock1
+		Location: 69,56
+		Owner: Neutral
+	Actor9: rock6
+		Location: 71,55
+		Owner: Neutral
+	Actor10: split3
+		Location: 48,68
+		Owner: Neutral
+	Actor11: split3
+		Location: 63,75
+		Owner: Neutral
+	Actor12: split3
+		Location: 76,68
+		Owner: Neutral
+	Actor13: split3
+		Location: 77,57
+		Owner: Neutral
+	Actor14: split3
+		Location: 62,50
+		Owner: Neutral
+	Actor15: split3
+		Location: 49,57
+		Owner: Neutral
+	Actor16: split3
+		Location: 32,38
+		Owner: Neutral
+	Actor17: split3
+		Location: 28,47
+		Owner: Neutral
+	Actor18: split3
+		Location: 58,24
+		Owner: Neutral
+	Actor19: split3
+		Location: 68,24
+		Owner: Neutral
+	Actor20: split3
+		Location: 95,39
+		Owner: Neutral
+	Actor21: split3
+		Location: 99,49
+		Owner: Neutral
+	Actor22: split3
+		Location: 99,79
+		Owner: Neutral
+	Actor23: split3
+		Location: 97,89
+		Owner: Neutral
+	Actor24: split3
+		Location: 69,102
+		Owner: Neutral
+	Actor25: split3
+		Location: 58,102
+		Owner: Neutral
+	Actor26: split3
+		Location: 29,87
+		Owner: Neutral
+	Actor27: split3
+		Location: 26,77
+		Owner: Neutral
+
+Waypoints:
+	wp0: 100,64
+	wp1: 83,97
+	wp2: 42,97
+	wp3: 25,64
+	wp4: 82,32
+	wp5: 45,31
+
+Smudges:
+
+Rules:
+
