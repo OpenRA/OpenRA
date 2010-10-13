@@ -74,7 +74,8 @@ namespace OpenRA.Mods.Cnc
 				return;
 			
 			// invisible harvester makes ceiling cat cry
-			harv.Trait<Harvester>().Visible = true;
+			if (!harv.IsDead())
+				harv.Trait<Harvester>().Visible = true;
 		}
 		
 		public void Selling (Actor self) { CancelDock(self, dockedHarv); }
