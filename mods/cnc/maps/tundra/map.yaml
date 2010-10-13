@@ -141,6 +141,18 @@ Actors:
 	Actor26: v19
 		Location: 38,23
 		Owner: Neutral
+	Actor99: t10
+		Location: 30,19
+		Owner: Neutral
+	Actor29: v13
+		Location: 22,14
+		Owner: Neutral
+	Actor100: tc03
+		Location: 15,28
+		Owner: Neutral
+	Actor98: tc02
+		Location: 24,21
+		Owner: Neutral
 
 Waypoints:
 	wp0: 35,39
