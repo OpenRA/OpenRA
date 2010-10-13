@@ -32,7 +32,7 @@ namespace OpenRA
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
-		public XRandom SharedRandom = new XRandom(0);
+		public XRandom SharedRandom;
 
 		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
 
@@ -94,6 +94,8 @@ namespace OpenRA
 			
 			TileSet = Rules.TileSets[Map.Tileset];
 			TileSet.LoadTiles();
+
+			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			Queries = new AllQueries(this);
