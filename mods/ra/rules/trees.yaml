@@ -127,6 +127,7 @@ MINE:
 	SeedsResource:
 	RadarColorFromTerrain:
 		Terrain: Ore
+	BelowUnits:
 
 BOXES01:
 	Inherits: ^Tree
