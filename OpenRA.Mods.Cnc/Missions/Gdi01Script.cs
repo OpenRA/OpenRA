@@ -14,10 +14,12 @@ using OpenRA.Traits;
 using OpenRA.Widgets;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
+using OpenRA;
 using OpenRA.Mods.RA.Activities;
 using System;
+using OpenRA.Mods.RA;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Cnc
 {
 	class Gdi01ScriptInfo : TraitInfo<Gdi01Script> { }
 
@@ -27,29 +29,6 @@ namespace OpenRA.Mods.RA
 		Dictionary<string, Player> Players;
 		Map Map;
 				
-		public static void PlayFullscreenFMVThen(World w, string movie, Action then)
-		{
-			var playerRoot = Widget.OpenWindow("FMVPLAYER");
-			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
-			w.DisableTick = true;
-			player.Load(movie);	
-			
-			// Stop music while fmv plays
-			var music = Sound.MusicPlaying;
-			if (music)
-				Sound.PauseMusic();
-			
-			player.PlayThen(() =>
-			{
-				if (music)
-					Sound.PlayMusic();
-				
-				Widget.CloseWindow();
-				w.DisableTick = false;
-				then();
-			});
-		}
-		
 		public void WorldLoaded(World w)
 		{
 			Map = w.Map;
@@ -57,11 +36,12 @@ namespace OpenRA.Mods.RA
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
 			
-			PlayFullscreenFMVThen(w, "gdi1.vqa", () => PlayFullscreenFMVThen(w, "landing.vqa", () =>
-			{
-				Sound.PlayMusic(Rules.Music["aoi"].Filename);
-				started = true;
-			}));
+			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa", 
+			    () => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
+				{
+					Sound.PlayMusic(Rules.Music["aoi"].Filename);
+					started = true;
+				}));
 		}
 		
 		public void OnVictory(World w)
@@ -72,7 +52,7 @@ namespace OpenRA.Mods.RA
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => PlayFullscreenFMVThen(w, "consyard.vqa", () =>
+			w.WorldActor.QueueActivity(new CallFunc(() => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", () =>
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
@@ -87,7 +67,7 @@ namespace OpenRA.Mods.RA
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => PlayFullscreenFMVThen(w, "gameover.vqa", () =>
+			w.WorldActor.QueueActivity(new CallFunc(() => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", () =>
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
