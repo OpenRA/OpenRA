@@ -587,6 +587,20 @@ Napalm:
 		SmudgeType: Scorch
 		Damage: 100
 
+Napalm.Crate:
+	Warhead:
+		Spread: 4
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		InfDeath: 4
+		Explosion: 3
+		ImpactSound: flamer2
+		SmudgeType: Scorch
+		Damage: 500
+
 Laser: 
 	ROF: 90
 	Range: 7.5
