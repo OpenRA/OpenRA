@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 		{
 			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+			Sound.SoundVolumeModifier = 0f;
 		}
 		
 		int ticks = 0;

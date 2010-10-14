@@ -111,7 +111,8 @@ namespace OpenRA
 						p.Stances[q] = Stance.Neutral;		
 			
 			PathFinder = new PathFinder(this);
-
+			
+			Sound.SoundVolumeModifier = 1.0f;
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 				wlh.WorldLoaded(this);
 		}

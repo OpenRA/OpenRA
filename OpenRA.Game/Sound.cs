@@ -54,7 +54,7 @@ namespace OpenRA
 				return;
 
 			var sound = sounds[name];
-			soundEngine.Play2D(sound, false, true, float2.Zero, SoundVolume);
+			soundEngine.Play2D(sound, false, true, float2.Zero, InternalSoundVolume);
 		}
 
 		public static void Play(string name, float2 pos)
@@ -63,7 +63,7 @@ namespace OpenRA
 				return;
 			
 			var sound = sounds[name];
-			soundEngine.Play2D(sound, false, false, pos, SoundVolume);
+			soundEngine.Play2D(sound, false, false, pos, InternalSoundVolume);
 		}
 
 		public static void PlayToPlayer(Player player, string name)
@@ -81,7 +81,7 @@ namespace OpenRA
 		public static void PlayVideo(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
-			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, SoundVolume);
+			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, InternalSoundVolume);
 		}
 		
 		public static void PlayVideo()
@@ -171,13 +171,25 @@ namespace OpenRA
 			set { soundEngine.Volume = value;}
 		}
 		
+		static float soundVolumeModifier = 1.0f;
+		public static float SoundVolumeModifier
+		{
+			get { return soundVolumeModifier; }
+			set
+			{
+				soundVolumeModifier = value;
+				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
+			}
+		}
+		
+		static float InternalSoundVolume { get { return SoundVolume*soundVolumeModifier; } }
 		public static float SoundVolume
 		{
 			get { return Game.Settings.Sound.SoundVolume; }
 			set
 			{
 				Game.Settings.Sound.SoundVolume = value;
-				soundEngine.SetSoundVolume(value, music, video);
+				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
 			}
 		}
 
