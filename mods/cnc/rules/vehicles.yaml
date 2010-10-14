@@ -558,7 +558,7 @@ C17:
 	RenderUnit:
 	WithShadow:
 	Cargo:
-		Types: Infantry, Vehicle
+#		Types: Infantry, Vehicle
 		Passengers: 10
 	Invulnerable:
 	-Selectable:

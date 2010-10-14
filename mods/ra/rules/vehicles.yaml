@@ -14,7 +14,7 @@ BADR:
 	IronCurtainable:
 	Cargo:
 		Passengers: 10
-		Types: Infantry, Vehicle
+#		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
 	Tooltip:
