@@ -119,9 +119,9 @@ namespace OpenRA
 		}
 
 		// Hacky workaround for orderManager visibility
-		public void OpenWindow(string widget)
+		public Widget OpenWindow(string widget)
 		{
-			Widget.OpenWindow(widget, new Dictionary<string,object>{{"world", this}, { "orderManager", orderManager }});
+			return Widget.OpenWindow(widget, new Dictionary<string,object>{{"world", this}, { "orderManager", orderManager }});
 		}
 		
 		public Actor CreateActor( string name, TypeDictionary initDict )
@@ -163,16 +163,18 @@ namespace OpenRA
 		public bool DisableTick = false;
 		public void Tick()
 		{
-			if (DisableTick)
-				return;
-			
-			actors.Do( x => x.Tick() );
-			Queries.WithTraitMultiple<ITick>().DoTimed( x =>
+			// Todo: Expose this as an order so it can be synced
+			if (!DisableTick)
 			{
-				x.Trait.Tick( x.Actor );
-			}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
-
-			effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
+				actors.Do( x => x.Tick() );
+				Queries.WithTraitMultiple<ITick>().DoTimed( x =>
+				{
+					x.Trait.Tick( x.Actor );
+				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
+	
+				effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
+			}
+			
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
 			Game.viewport.Tick();

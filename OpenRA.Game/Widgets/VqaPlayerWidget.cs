@@ -31,6 +31,14 @@ namespace OpenRA.Widgets
 		
 		public bool Paused { get { return paused; } }
 		
+		
+		readonly World world;
+		[ObjectCreator.UseCtor]
+		public VqaPlayerWidget( [ObjectCreator.Param] World world )
+		{
+			this.world = world;
+		}
+		
 		public bool DrawOverlay = true;
 		public void Load(string filename)
 		{
@@ -148,7 +156,7 @@ namespace OpenRA.Widgets
 			Sound.StopVideo();
 			video.Reset();
 			videoSprite.sheet.Texture.SetData(video.FrameData);
-			OnComplete();
+			world.AddFrameEndTask(_ => OnComplete());
 		}
 	}
 }

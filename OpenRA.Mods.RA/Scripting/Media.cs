@@ -23,15 +23,14 @@ namespace OpenRA.Scripting
 	{		
 		public static void PlayFMVFullscreen(World w, string movie, Action onComplete)
 		{
-			var playerRoot = Widget.OpenWindow("FMVPLAYER");
+			var playerRoot = w.OpenWindow("FMVPLAYER");
 			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
 			w.DisableTick = true;
-			
-			Console.WriteLine("PlayFMV {0}",movie);
 			player.Load(movie);	
 			
 			// Mute world sounds
 			var oldModifier = Sound.SoundVolumeModifier;
+			// Todo: this also modifies vqa audio
 			//Sound.SoundVolumeModifier = 0f;
 			
 			// Stop music while fmv plays
