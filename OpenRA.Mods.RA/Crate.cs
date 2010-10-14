@@ -48,7 +48,10 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = init.self;
 			if (init.Contains<LocationInit>())
-				this.Location = init.Get<LocationInit,int2>();
+			{
+				this.Location = init.Get<LocationInit, int2>();
+				PxPosition = Util.CenterOfCell(Location);
+			}
 			
 			this.Info = info;
 			
