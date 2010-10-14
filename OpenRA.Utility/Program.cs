@@ -14,6 +14,8 @@ using System.Linq;
 using System.Text;
 using OpenRA.FileFormats;
 using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace OpenRA.Utility
 {
@@ -37,6 +39,7 @@ namespace OpenRA.Utility
 			argCallbacks.Add("--mod-info", ListModInfo);
 			argCallbacks.Add("--install-ra-music", InstallRAMusic);
 			argCallbacks.Add("--install-cnc-music", InstallCncMusic);
+			argCallbacks.Add("--download-packages", DownloadPackage);
 			
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
@@ -55,12 +58,13 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --mod-info=MODS           List metadata for MODS (comma separated list of mods)");
 			Console.WriteLine("  --install-ra-music=PATH   Install scores.mix from PATH to Red Alert CD");
 			Console.WriteLine("  --install-cnc-music=PATH  Install scores.mix from PATH to Command & Conquer CD");
+			Console.WriteLine("  --download-packages=MOD   Download and install the packages for MOD");
 		}
 
 		static void ListMods(string _)
 		{
-			foreach (var m in Mod.AllMods.Where(x => !x.Key.StartsWith("Invalid mod:")).Select(x => x.Key))
-				Console.WriteLine(m);
+			foreach (var m in Mod.AllMods)
+				Console.WriteLine(m.Key);
 		}
 
 		static void ListModInfo(string modList)
@@ -111,6 +115,38 @@ namespace OpenRA.Utility
 			File.Copy(scoresMixPath, string.Format("mods{0}cnc{0}packages{0}scores.mix", Path.DirectorySeparatorChar), true);
 
 			Console.WriteLine("Done");
+		}
+
+		static void DownloadPackage(string mod)
+		{
+			WebClient wc = new WebClient();
+			wc.DownloadProgressChanged += DownloadProgressChanged;
+			wc.DownloadFileCompleted += DownloadFileCompleted;
+			wc.DownloadFileAsync(
+				new Uri(string.Format("http://open-ra.org/get-dependency.php?file={0}-packages", mod)),
+				string.Format("{0}{1}{2}-packages.zip", Path.GetTempPath(), Path.DirectorySeparatorChar, mod), 
+				mod);
+
+			while (wc.IsBusy)
+				Thread.Sleep(500);
+		}
+
+		static void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+		{
+			if (e.Error != null)
+			{
+				Console.WriteLine("Error: {0}", e.Error.Message);
+				return;
+			}
+
+			Console.WriteLine("Download Completed");
+
+			//TODO: Extract packages into mod dir
+		}
+
+		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+		{
+			Console.WriteLine("{0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
 		}
 	}
 }

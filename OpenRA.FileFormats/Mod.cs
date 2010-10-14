@@ -28,7 +28,6 @@ namespace OpenRA.FileFormats
 				var yaml = new MiniYaml(null, MiniYaml.FromFile("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"));
 				if (!yaml.NodesDict.ContainsKey("Metadata"))
 				{
-					System.Console.WriteLine("Invalid mod: " + m);
 					continue;
 				}
 
