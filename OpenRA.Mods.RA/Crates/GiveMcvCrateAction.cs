@@ -15,6 +15,7 @@ namespace OpenRA.Mods.RA.Crates
 {
 	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
 	{
+		public int NoBaseSelectionShares = 1000;
 		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.self, this); }
 	}
 
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA.Crates
 		public override int GetSelectionShares(Actor collector)
 		{
 			var hasBase = self.World.Queries.OwnedBy[collector.Owner].WithTrait<BaseBuilding>().Any();
-			return hasBase ? 0 : base.GetSelectionShares(collector);
+			return hasBase ? info.SelectionShares : (info as GiveMcvCrateActionInfo).NoBaseSelectionShares;
 		}
 	}
 }
