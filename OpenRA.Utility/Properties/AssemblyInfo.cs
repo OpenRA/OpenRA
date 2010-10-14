@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("OpenRA")]
-[assembly: AssemblyCopyright("Copyright ©  2010 OpenRA Development Team")]
+[assembly: AssemblyCopyright("Copyright ©  2010 The OpenRA Developers")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
