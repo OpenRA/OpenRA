@@ -45,10 +45,7 @@ namespace OpenRA.Mods.RA
 			{
 				var bi = Rules.Info[bridge].Traits.Get<BridgeInfo>();
 				foreach (var template in bi.Templates)
-				{
 					BridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
-					Log.Write("debug", "Adding template {0} for bridge {1}", template, bridge);
-				}
 			}
 			
 			// Loop through the map looking for templates to overlay
@@ -66,9 +63,7 @@ namespace OpenRA.Mods.RA
 		}
 		
 		void ConvertBridgeToActor(World w, int i, int j)
-		{
-			Log.Write("debug", "Converting bridge at {0} {1}", i, j);
-			
+		{		
 			// This cell already has a bridge overlaying it from a previous iteration
 			if (Bridges[i,j] != null)
 				return;
@@ -104,9 +99,7 @@ namespace OpenRA.Mods.RA
 				// This isn't the bridge you're looking for
 				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].image != ind)
 					continue;
-				
-				Log.Write("debug", "Adding tile {0} {1} for type {2}", x,y,tile);
-				
+								
 				subTiles.Add(new int2(x,y),ind);
 				Bridges[x,y] = bridge;
 			}

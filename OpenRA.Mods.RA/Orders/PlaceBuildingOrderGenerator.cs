@@ -34,11 +34,9 @@ namespace OpenRA.Mods.RA.Orders
 				world.CancelInputMode();
 
 			var ret = InnerOrder( world, xy, mi ).ToList();
-			foreach( var order in ret )
-			{
+			if (ret.Count > 0)
 				world.CancelInputMode();
-				break;
-			}
+
 			return ret;
 		}
 

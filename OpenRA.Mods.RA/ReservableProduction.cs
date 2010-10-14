@@ -35,7 +35,6 @@ namespace OpenRA.Mods.RA
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
 			{
 				var exit = self.Location + s.ExitCell;
-				var spawn = self.CenterLocation + s.SpawnOffset;
 				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any())
 				{
 					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.RA
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 		
-					Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
+					//Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
 					return true;
 				}
 			}

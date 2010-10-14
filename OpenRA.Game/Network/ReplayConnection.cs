@@ -52,13 +52,11 @@ namespace OpenRA.Network
 	class ReplayRecorderConnection : IConnection
 	{
 		IConnection inner;
-		FileStream replayFile;
 		BinaryWriter writer;
 
 		public ReplayRecorderConnection( IConnection inner, FileStream replayFile )
 		{
 			this.inner = inner;
-			this.replayFile = replayFile;
 			this.writer = new BinaryWriter( replayFile );
 		}
 

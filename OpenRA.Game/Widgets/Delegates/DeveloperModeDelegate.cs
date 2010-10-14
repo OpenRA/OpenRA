@@ -27,11 +27,9 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class DeveloperModeDelegate : IWidgetDelegate
 	{
-		readonly World world;
 		[ObjectCreator.UseCtor]
 		public DeveloperModeDelegate( [ObjectCreator.Param] World world )
 		{
-			this.world = world;
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
 			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
 			

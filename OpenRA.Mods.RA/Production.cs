@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);
 
-			Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
+			//Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
 		}
 		
 		public virtual bool Produce( Actor self, ActorInfo producee )

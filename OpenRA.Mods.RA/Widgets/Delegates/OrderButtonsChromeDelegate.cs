@@ -16,11 +16,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class OrderButtonsChromeDelegate : IWidgetDelegate
 	{
-		readonly World world;
 		[ObjectCreator.UseCtor]
 		public OrderButtonsChromeDelegate( [ObjectCreator.Param] World world )
 		{
-			this.world = world;
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 			

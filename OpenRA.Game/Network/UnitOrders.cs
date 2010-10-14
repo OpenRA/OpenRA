@@ -43,7 +43,7 @@ namespace OpenRA.Network
 					{
 						var player = world != null ? world.FindPlayerByClient(client) : null;
 						var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
-						Game.AddChatLine(client.Color1, client.Name, order.TargetString);
+						Game.AddChatLine(client.Color1, client.Name+suffix, order.TargetString);
 					}
 					else
 						Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
@@ -105,7 +105,6 @@ namespace OpenRA.Network
 			case "SetStance":
 				{
 					var targetPlayer = order.Player.World.players[order.TargetLocation.X];
-					var oldStance = order.Player.Stances[targetPlayer];
 					var newStance = (Stance)order.TargetLocation.Y;
 
 					SetPlayerStance(world, order.Player, targetPlayer, newStance);
