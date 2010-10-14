@@ -6,22 +6,6 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Utility
 {
-	static class Exts
-	{
-		public static string JoinString(this IEnumerable<string> self, string joiner)
-		{
-			if (self == null || self.Count() == 0) return "";
-			StringBuilder sb = new StringBuilder();
-			foreach (var s in self)
-			{
-				sb.Append(s);
-				sb.Append(joiner);
-			}
-			sb.Remove(sb.Length - joiner.Length, joiner.Length);
-			return sb.ToString();
-		}
-	}
-
 	class Program
 	{
 		static KeyValuePair<string, string> SplitArgs(string arg)
@@ -40,7 +24,6 @@ namespace OpenRA.Utility
 			argCallbacks = new Dictionary<string, ArgCallback>();
 			argCallbacks.Add("--list-mods", ListMods);
 			argCallbacks.Add("--mod-info", ListModInfo);
-			argCallbacks.Add("--list-mod-heirarchy", ListModHeirarchy);
 			
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
@@ -56,8 +39,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION]");
 			Console.WriteLine();
 			Console.WriteLine("  --list-mods             List currently installed mods");
-			Console.WriteLine("  --mod-info=MOD          List metadata for MOD");
-			Console.WriteLine("  --list-mod-heirarchy    Print a tree of the mod heirarchy");
+			Console.WriteLine("  --mod-info=MODS         List metadata for MODS (comma separated list of mods)");
 		}
 
 		static void ListMods(string argValue)
@@ -68,27 +50,27 @@ namespace OpenRA.Utility
 
 		static void ListModInfo(string argValue)
 		{
-			var mod = Mod.AllMods
-				.Where(x => x.Key.Equals(argValue))
-				.Select(x => x.Value)
-				.FirstOrDefault();
-			if (mod == null)
+			string[] mods = argValue.Split(',');
+			foreach (var m in mods)
 			{
-				Console.WriteLine("Error: Mod `{0}` is not installed or could not be found.", argValue);
-				return;
+				var mod = Mod.AllMods
+					.Where(x => x.Key.Equals(m))
+					.Select(x => x.Value)
+					.FirstOrDefault();
+				if (mod == null)
+				{
+					Console.WriteLine("Error: Mod `{0}` is not installed or could not be found.", m);
+					return;
+				}
+
+				Console.WriteLine("{0}:", m);
+				Console.WriteLine("  Title: {0}", mod.Title);
+				Console.WriteLine("  Version: {0}", mod.Version);
+				Console.WriteLine("  Author: {0}", mod.Author);
+				Console.WriteLine("  Description: {0}", mod.Description);
+				Console.WriteLine("  Requires: {0}", mod.RequiresMods == null ? "" : string.Join(",", mod.RequiresMods));
+				Console.WriteLine("  Standalone: {0}", mod.Standalone.ToString());
 			}
-
-			Console.WriteLine("Title: {0}", mod.Title);
-			Console.WriteLine("Version: {0}", mod.Version);
-			Console.WriteLine("Author: {0}", mod.Author);
-			Console.WriteLine("Description: {0}", mod.Description);
-			Console.WriteLine("Requires: {0}", mod.RequiresMods.JoinString(","));
-			Console.WriteLine("Standalone: {0}", mod.Standalone.ToString());
-		}
-
-		static void ListModHeirarchy(string argValue)
-		{
-			Console.WriteLine("TODO");
 		}
 	}
 }
