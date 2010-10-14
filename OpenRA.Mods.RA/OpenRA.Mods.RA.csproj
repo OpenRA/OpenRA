@@ -263,6 +263,7 @@
     <Compile Include="IdleAnimation.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Scripting\Media.cs" />
+    <Compile Include="OpenWidgetAtGameStart.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

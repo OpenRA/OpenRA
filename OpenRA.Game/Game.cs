@@ -254,8 +254,6 @@ namespace OpenRA
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
 
-			Game.AfterGameStart += world => Widget.OpenWindow("INGAME_ROOT", new Dictionary<string,object>{{"world", world},{"orderManager",orderManager}});
-
 			Game.ConnectionStateChanged += orderManager =>
 			{
 				Widget.CloseWindow();

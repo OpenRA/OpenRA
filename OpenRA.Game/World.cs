@@ -19,6 +19,7 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 
 using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -117,6 +118,12 @@ namespace OpenRA
 				wlh.WorldLoaded(this);
 		}
 
+		// Hacky workaround for orderManager visibility
+		public void OpenWindow(string widget)
+		{
+			Widget.OpenWindow(widget, new Dictionary<string,object>{{"world", this}, { "orderManager", orderManager }});
+		}
+		
 		public Actor CreateActor( string name, TypeDictionary initDict )
 		{
 			return CreateActor( true, name, initDict );

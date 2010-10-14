@@ -42,6 +42,7 @@ Player:
 		PaletteFormat: cnc
 
 World:
+	OpenWidgetAtGameStart:
 	ScreenShaker:
 	NukePaletteEffect:
 	WaterPaletteRotation:
