@@ -242,7 +242,7 @@ namespace OpenRA
 				return false;
 			
 			var variantext = (vi.Variants.ContainsKey(variant) && !vi.DisableVariants.Contains(phrase))? 
-				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants.Count] : vi.DefaultVariant;
+				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants[variant].Length] : vi.DefaultVariant;
 			Play(clip + variantext);
 			return true;
 		}
