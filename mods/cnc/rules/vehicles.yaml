@@ -647,7 +647,7 @@ LST:
 	RenderUnit:
 	WithRoof:
 	RenderCargo:
-#	-Selectable:
+	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
 		Passengers: 5

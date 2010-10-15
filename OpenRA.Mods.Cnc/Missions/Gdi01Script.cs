@@ -203,9 +203,9 @@ namespace OpenRA.Mods.Cnc
 						});
 					}
 				}));
-				//a.QueueActivity(new Wait(25));
-				//a.QueueActivity(new Move(startPos));
-				//a.QueueActivity(new RemoveSelf());
+				a.QueueActivity(new Wait(25));
+				a.QueueActivity(new Move(startPos));
+				a.QueueActivity(new RemoveSelf());
 			});
 		}
 	}
