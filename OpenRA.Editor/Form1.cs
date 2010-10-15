@@ -240,7 +240,6 @@ namespace OpenRA.Editor
 			else
 			{
 				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
-				surface1.Map.Package = new Folder(loadedMapName);
 				surface1.Map.Save(loadedMapName);
 				dirty = false;
 			}
@@ -364,7 +363,6 @@ namespace OpenRA.Editor
 					Directory.CreateDirectory(savePath);
 
 					var map = LegacyMapImporter.Import(ofd.FileName);
-					map.Package = new Folder(savePath);
 					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 

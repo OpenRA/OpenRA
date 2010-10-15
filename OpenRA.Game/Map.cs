@@ -183,6 +183,8 @@ namespace OpenRA
 
 		public void Save(string filepath)
 		{
+			// Todo: save to a zip file in the support dir by default
+			Package = new Folder(filepath);
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();

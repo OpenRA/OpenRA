@@ -17,7 +17,7 @@ namespace OpenRA.FileFormats
 {
 	public class MapStub
 	{
-		public readonly IFolder Package;
+		public IFolder Package { get; protected set; }
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
