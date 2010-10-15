@@ -98,6 +98,30 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI:
+		BuildingFractions:
+			proc: 20%
+			barr: 5%
+			tent: 5%
+			weap: 5%
+			pbox: 5%
+			hbox: 5%
+			gun: 5%
+			tsla: 5%
+			ftur: 5%
+			agun: 1%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+			silo: 5%
+			fix: 1%
+			dome: 1%
+		UnitsToBuild:
+			e1: 0%
+			e2: 0%
+			e3: 0%
+			1tnk: 0%
+			2tnk: 0%
+			3tnk: 0%
 	PlayerColorPalette:
 		BasePalette: terrain
 

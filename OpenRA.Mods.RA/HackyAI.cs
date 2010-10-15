@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.FileFormats;
 
 
 //TODO:
@@ -31,7 +32,32 @@ using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA.Mods.RA
 {
-	class HackyAIInfo : TraitInfo<HackyAI> { }
+	class HackyAIInfo : ITraitInfo
+	{
+		[FieldLoader.LoadUsing( "LoadUnits" )]
+		public readonly Dictionary<string, float> UnitsToBuild;
+
+		[FieldLoader.LoadUsing( "LoadBuildings" )]
+		public readonly Dictionary<string, float> BuildingFractions;
+		
+		static object LoadUnits( MiniYaml y )
+		{
+			Dictionary<string,float> ret = new Dictionary<string, float>();
+			foreach (var t in y.NodesDict["UnitsToBuild"].Nodes)
+				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));			
+			return ret;
+		}
+		
+		static object LoadBuildings( MiniYaml y )
+		{
+			Dictionary<string,float> ret = new Dictionary<string, float>();
+			foreach (var t in y.NodesDict["BuildingFractions"].Nodes)
+				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));			
+			return ret;
+		}
+		
+		public object Create(ActorInitializer init) { return new HackyAI(this); }
+	}
 
 	/* a pile of hacks, which control a local player on the host. */
 
@@ -47,38 +73,12 @@ namespace OpenRA.Mods.RA
 
 		World world { get { return p.PlayerActor.World; } }
 
-        Dictionary<string, float> unitsToBuild = new Dictionary<string, float>
-        {
-            {"e1", .0f},
-            {"e2", .0f},
-            {"e3", .0f},
-            {"1tnk", .0f},
-            {"2tnk", .0f},
-            {"3tnk", .0f}
-        };
-
-		Dictionary<string, float> buildingFractions = new Dictionary<string, float>
+		readonly HackyAIInfo Info;
+		public HackyAI(HackyAIInfo Info)
 		{
-			{ "proc", .2f },
-			{ "barr", .05f },
-			{ "tent", .05f },
-			{ "weap", .05f },
-            { "pbox", .05f },
-            { "hbox", .05f },
-            { "gun",  .05f },
-            { "tsla", .05f },
-            { "ftur", .05f },
-            { "agun", .01f },
-            { "sam",  .01f },
-			{ "atek", .01f },
-			{ "stek", .01f },
-			{ "silo", .05f },
-			{ "fix", .01f },
-			//{ "hpad", .01f },
-			//{ "afld", .01f },
-			{ "dome", .01f },
-		};
-		
+			this.Info = Info;
+		}
+				
 		enum BuildState
 		{
 			ChooseItem,
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA
 				.Select( a => a.Actor.Info.Name ).ToArray();
             
             
-			foreach (var frac in buildingFractions)
+			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
 					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
 						return Rules.Info[frac.Key];
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA
             var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
                 .Select(a => a.Actor.Info.Name).ToArray();
 
-            foreach (var frac in buildingFractions)
+            foreach (var frac in Info.BuildingFractions)
                 if (buildableThings.Any(b => b.Name == frac.Key))
                     if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
                         return Rules.Info[frac.Key];
@@ -369,7 +369,7 @@ namespace OpenRA.Mods.RA
             Boolean found = false;
             if (unit != null)
             {
-                foreach (var un in unitsToBuild)
+                foreach (var un in Info.UnitsToBuild)
                 {
                     if (un.Key == unit.Name)
                     {
