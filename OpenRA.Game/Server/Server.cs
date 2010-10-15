@@ -191,19 +191,25 @@ namespace OpenRA.Server
 				conns.Add(newConn);
 
 				var defaults = new GameRules.PlayerSettings();
-				lobbyInfo.Clients.Add(
-					new Session.Client()
-					{
-						Index = newConn.PlayerIndex,
-						Color1 = defaults.Color1,
-						Color2 = defaults.Color2,
-						Name = defaults.Name,
-						Country = "random",
-						State = Session.ClientState.NotReady,
-						SpawnPoint = 0,
-						Team = 0,
-						Slot = ChooseFreeSlot(),
-					});
+				
+				var client = new Session.Client()
+				{
+					Index = newConn.PlayerIndex,
+					Color1 = defaults.Color1,
+					Color2 = defaults.Color2,
+					Name = defaults.Name,
+					Country = "random",
+					State = Session.ClientState.NotReady,
+					SpawnPoint = 0,
+					Team = 0,
+					Slot = ChooseFreeSlot(),
+				};
+				
+				var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+				if (slotData != null)
+					SyncClientToPlayerReference(client, Map.Players[slotData.MapPlayer]);
+				
+				lobbyInfo.Clients.Add(client);
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
@@ -275,6 +281,17 @@ namespace OpenRA.Server
 			catch (NotImplementedException) { }
 		}
 
+		static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
+		{
+			if (pr.LockColor)
+			{
+				c.Color1 = pr.Color;
+				c.Color2 = pr.Color2;
+			}
+			if (pr.LockRace)
+				c.Country = pr.Race;
+		}
+		
 		static bool InterpretCommand(Connection conn, string cmd)
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
@@ -391,7 +408,11 @@ namespace OpenRA.Server
 							|| lobbyInfo.Clients.Any( c => c.Slot == slot ))
 							return false;
 
-						GetClient(conn).Slot = slot;
+						var cl = GetClient(conn);
+						cl.Slot = slot;
+						
+						SyncClientToPlayerReference(cl, Map.Players[slotData.MapPlayer]);
+						
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -491,6 +512,10 @@ namespace OpenRA.Server
 						foreach(var client in lobbyInfo.Clients)
 						{
 							client.SpawnPoint = 0;
+							var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+							if (slotData != null)
+								SyncClientToPlayerReference(client, Map.Players[slotData.MapPlayer]);
+				
 							client.State = Session.ClientState.NotReady;
 						}
 						

@@ -291,6 +291,9 @@ namespace OpenRA.Widgets.Delegates
 					var color = template.GetWidget<ButtonWidget>("COLOR");
 					color.OnMouseUp = mi =>
 					{
+						if (Map.Players[s.MapPlayer].LockColor)
+							return false;
+						
 						var colorChooser = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
 						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 						hueSlider.SetOffset(orderManager.LocalClient.Color1.GetHue()/360f);
@@ -313,7 +316,7 @@ namespace OpenRA.Widgets.Delegates
 					colorBlock.GetColor = () => c.Color1;
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
-					faction.OnMouseUp = CycleRace;
+					faction.OnMouseUp = mi => CycleRace(mi, s);
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
@@ -362,8 +365,11 @@ namespace OpenRA.Widgets.Delegates
 		}
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-		bool CycleRace(MouseInput mi)
+		bool CycleRace(MouseInput mi, Session.Slot s)
 		{
+			if (Map.Players[s.MapPlayer].LockColor)
+				return false;
+			
 			var countries = CountryNames.Select(a => a.Key);
 
 			if (mi.Button == MouseButton.Right)

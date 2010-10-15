@@ -34,8 +34,10 @@ Players:
 		Name: GoodGuy
 		Playable: yes
 		Race: gdi
+		LockRace: true
 		OwnsWorld: False
 		NonCombatant: False
+		LockColor: true
 		Color: 255,246,214,121
 		Color2: 255,40,32,8
 		InitialCash: 20

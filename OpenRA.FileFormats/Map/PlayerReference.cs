@@ -16,12 +16,16 @@ namespace OpenRA.FileFormats
 	{
 		public string Name;
 		public string Palette;
-		public string Race;
 		public bool OwnsWorld = false;
 		public bool NonCombatant = false;
 		public bool Playable = false;
 		public bool DefaultStartingUnits = false;
 		public bool AllowBots = true;
+		
+		public bool LockRace = false;
+		public string Race;
+		
+		public bool LockColor = false;
 		public Color Color = Color.FromArgb(238,238,238);
 		public Color Color2 = Color.FromArgb(44,28,24);
 		
