@@ -32,6 +32,7 @@ FACT:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+	BaseBuilding:
 
 NUKE:
 	Inherits: ^Building

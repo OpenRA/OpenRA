@@ -29,6 +29,7 @@ MCV:
 	RenderUnit:
 	MustBeDestroyed:
 	-AttackMove:
+	BaseBuilding:
 
 HARV:
 	Inherits: ^Tank
