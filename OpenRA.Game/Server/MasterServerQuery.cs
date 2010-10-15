@@ -62,8 +62,13 @@ namespace OpenRA.Server
 				{
 					try
 					{
-						motd.SetText(GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion)));
-						motd.ResetScroll();
+						string motdText = GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion));
+						string[] p = motdText.Split('|');
+						if (p.Length == 2 && p[1].Length == int.Parse(p[0]))
+						{
+							motd.SetText(p[1]);
+							motd.ResetScroll();
+						}
 					}
 					catch
 					{
