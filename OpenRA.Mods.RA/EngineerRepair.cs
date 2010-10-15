@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 			{
 				if( !base.CanTargetUnit( self, target, forceAttack, forceMove, ref cursor ) ) return false;
 
-				if( target.GetDamageState() > DamageState.Undamaged )
+				if( target.GetDamageState() == DamageState.Undamaged )
 					cursor = "goldwrench-blocked";
 				return true;
 			}
