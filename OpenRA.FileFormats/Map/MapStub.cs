@@ -20,7 +20,7 @@ namespace OpenRA.FileFormats
 		public readonly IFolder Package;
 		
 		// Yaml map data
-		public readonly string Uid;
+		public string Uid { get; protected set; }
 		[FieldLoader.Load] public bool Selectable;
 
 		[FieldLoader.Load] public string Title;
@@ -37,7 +37,8 @@ namespace OpenRA.FileFormats
 		[FieldLoader.Load] public int2 BottomRight;
 		public int Width { get { return BottomRight.X - TopLeft.X; } }
 		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
-	
+		
+		public MapStub() {} // Hack for the editor - not used for anything important
 		public MapStub(IFolder package)
 		{
 			Package = package;

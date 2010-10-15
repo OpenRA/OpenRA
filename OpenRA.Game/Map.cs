@@ -19,24 +19,14 @@ using OpenRA.FileFormats;
 
 namespace OpenRA
 {
-	public class Map
+	public class Map : MapStub
 	{
-		public IFolder Package;
-		public string Uid;
-
 		// Yaml map data
-		[FieldLoader.Load] public bool Selectable = true;
 		[FieldLoader.Load] public int MapFormat;
-		[FieldLoader.Load] public string Title;
-		[FieldLoader.Load] public string Description;
-		[FieldLoader.Load] public string Author;
-		[FieldLoader.Load] public int PlayerCount;
-		[FieldLoader.Load] public string Tileset;
 
 		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
-		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
 
 		// Rules overrides
 		public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
@@ -45,8 +35,6 @@ namespace OpenRA
 		public byte TileFormat = 1;
 		[FieldLoader.Load] public int2 MapSize;
 
-		[FieldLoader.Load] public int2 TopLeft;
-		[FieldLoader.Load] public int2 BottomRight;
 
 		public TileReference<ushort, byte>[,] MapTiles;
 		public TileReference<byte, byte>[,] MapResources;
@@ -55,10 +43,7 @@ namespace OpenRA
 		// Temporary compat hacks
 		public int XOffset { get { return TopLeft.X; } }
 		public int YOffset { get { return TopLeft.Y; } }
-		public int Width { get { return BottomRight.X - TopLeft.X; } }
-		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
 		public string Theater { get { return Tileset; } }
-		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
 		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
 
 		public Map()
@@ -97,19 +82,13 @@ namespace OpenRA
 		}
 
 		public Map(IFolder package)
+			: base(package)
 		{
-			Package = package;
 			var yaml = new MiniYaml( null, MiniYaml.FromStream( Package.GetContent( "map.yaml" ) ) );
 
 			// 'Simple' metadata
 			FieldLoader.Load( this, yaml );
 
-			// Waypoints
-			foreach (var wp in yaml.NodesDict["Waypoints"].NodesDict)
-			{
-				string[] loc = wp.Value.Value.Split(',');
-				Waypoints.Add(wp.Key, new int2(int.Parse(loc[0]), int.Parse(loc[1])));
-			}
 
 			// Players & Actors -- this has changed several times.
 			//	- Be backwards compatible wherever possible.
@@ -199,7 +178,6 @@ namespace OpenRA
 			Rules = yaml.NodesDict["Rules"].Nodes;
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];			
-			LoadUid();
 			LoadBinaryData();
 		}
 
@@ -312,11 +290,6 @@ namespace OpenRA
 			}
 			File.Delete(filepath);
 			File.Move(filepath + ".tmp", filepath);
-		}
-
-		public void LoadUid()
-		{
-			Uid = Package.GetContent("map.uid").ReadAllText();
 		}
 
 		public void SaveUid(string filename)

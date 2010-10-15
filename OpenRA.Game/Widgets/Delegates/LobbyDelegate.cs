@@ -23,7 +23,7 @@ namespace OpenRA.Widgets.Delegates
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
-		MapStub Map;
+		Map Map;
 		
 		public static Color CurrentColorPreview1;
 		public static Color CurrentColorPreview2;
@@ -109,6 +109,8 @@ namespace OpenRA.Widgets.Delegates
 				orderManager.IssueOrder(Order.Command("startgame"));
 				return true;
 			};
+			
+			// Todo: Only show if the map requirements are met for player slots
 			startGameButton.IsVisible = () => Game.IsHost;
 			
 			Game.LobbyInfoChanged += JoinedServer;
@@ -179,7 +181,7 @@ namespace OpenRA.Widgets.Delegates
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
-			Map = Game.modData.AvailableMaps[MapUid];
+			Map = new Map(Game.modData.AvailableMaps[MapUid].Package);
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
@@ -242,7 +244,7 @@ namespace OpenRA.Widgets.Delegates
 							}
 							else
 							{
-								if (s.Bot == null)
+								if (s.Bot == null && Map.Players[s.MapPlayer].AllowBots)
 									orderManager.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
 								else
 									orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
