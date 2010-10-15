@@ -8,9 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {
@@ -31,10 +32,15 @@ namespace OpenRA.Mods.RA.Crates
 		public override int GetSelectionShares(Actor collector)
 		{
 			var valuedInfo = Rules.Info[Info.Unit].Traits.Get<BuildableInfo>();
-			return valuedInfo.Owner.Contains(collector.Owner.Country.Race)
-				? base.GetSelectionShares(collector)
-				: 0;		// this unit is not buildable by the collector's country, so
-							// don't give them free ones either.
+
+			// this unit is not buildable by the collector's country, so
+			// don't give them free ones either.
+			if (!valuedInfo.Owner.Contains(collector.Owner.Country.Race)) return 0;
+
+			// avoid dumping tanks in the sea, and ships on dry land.
+			if (!GetSuitableCells(collector.Location).Any()) return 0;
+
+			return base.GetSelectionShares(collector);
 		}
 
 		public override void Activate(Actor collector)
@@ -51,18 +57,22 @@ namespace OpenRA.Mods.RA.Crates
 			base.Activate(collector);
 		}
 
-		int2? ChooseEmptyCellNear(Actor a)
+		IEnumerable<int2> GetSuitableCells(int2 near)
 		{
-			// hack: use `a`'s movement capability.
-			var move = a.Trait<ITeleportable>();
-			var loc = a.Location;
-
+			var mi = Rules.Info[Info.Unit].Traits.GetOrDefault<MobileInfo>();
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
-					if (move.CanEnterCell(loc + new int2(i, j)))
-						return loc + new int2(i, j);
+					if (Mobile.CanEnterCell(self.World, mi, near + new int2(i, j), null, true))
+						yield return near + new int2(i, j);
+		}
 
-			return null;	// nowhere we can place this -- so the crate will do nothing.
+		int2? ChooseEmptyCellNear(Actor a)
+		{
+			var possibleCells = GetSuitableCells(a.Location).ToArray();
+			if (possibleCells.Length == 0)
+				return null;
+
+			return possibleCells.Random(self.World.SharedRandom);
 		}
 	}
 }
