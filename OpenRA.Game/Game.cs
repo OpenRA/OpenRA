@@ -135,8 +135,12 @@ namespace OpenRA
 
 						if( isNetTick ) orderManager.Tick();
 
-						world.OrderGenerator.Tick( world );
-						world.Selection.Tick( world );
+						Sync.CheckSyncUnchanged(world, () =>
+							{
+								world.OrderGenerator.Tick(world);
+								world.Selection.Tick(world);
+							});
+						
 						world.Tick();
 						worldRenderer.Tick();
 

@@ -13,13 +13,11 @@ using System.Collections.Generic;
 using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Orders;
 using OpenRA.Traits;
-
-using XRandom = OpenRA.Thirdparty.Random;
 using OpenRA.Widgets;
+using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA
 {
