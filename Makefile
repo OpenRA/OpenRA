@@ -82,7 +82,7 @@ tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
 utility_SRCS		= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
-utility_DEPS        = $(fileformats_TARGET)
+utility_DEPS        = $(fileformats_TARGET) thirdparty/ICSharpCode.SharpZipLib.dll
 utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
 
 
@@ -130,6 +130,7 @@ install: all
 	@cp *.ttf $(INSTALL_DIR)
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 	@-$(INSTALL_PROGRAM) VERSION $(INSTALL_DIR)
 	
 	@echo "#!/bin/sh" > openra

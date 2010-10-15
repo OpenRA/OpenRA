@@ -16,6 +16,8 @@ using OpenRA.FileFormats;
 using System.IO;
 using System.Net;
 using System.Threading;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace OpenRA.Utility
 {
@@ -54,11 +56,11 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION]");
 			Console.WriteLine();
-			Console.WriteLine("  --list-mods               List currently installed mods");
-			Console.WriteLine("  --mod-info=MODS           List metadata for MODS (comma separated list of mods)");
-			Console.WriteLine("  --install-ra-music=PATH   Install scores.mix from PATH to Red Alert CD");
-			Console.WriteLine("  --install-cnc-music=PATH  Install scores.mix from PATH to Command & Conquer CD");
-			Console.WriteLine("  --download-packages=MOD   Download and install the packages for MOD");
+			Console.WriteLine("  --list-mods                      List currently installed mods");
+			Console.WriteLine("  --mod-info=MODS                  List metadata for MODS (comma separated list of mods)");
+			Console.WriteLine("  --install-ra-music=PATH          Install scores.mix from PATH to Red Alert CD");
+			Console.WriteLine("  --install-cnc-music=PATH         Install scores.mix from PATH to Command & Conquer CD");
+			Console.WriteLine("  --download-packages=MOD{,PATH}   Download packages for MOD to PATH (def: system temp folder) and install them");
 		}
 
 		static void ListMods(string _)
@@ -117,15 +119,35 @@ namespace OpenRA.Utility
 			Console.WriteLine("Done");
 		}
 
-		static void DownloadPackage(string mod)
+		static void DownloadPackage(string argValue)
 		{
+			string[] args = argValue.Split(',');
+			string mod = "";
+			string destPath = Path.GetTempPath();
+			
+			if (args.Length >= 1) 
+				mod = args[0];
+			if (args.Length >= 2)
+				destPath = args[1];
+			
+			string destFile = string.Format("{0}{1}{2}-packages.zip", destPath, Path.DirectorySeparatorChar, mod);
+			
+			if (File.Exists(destFile))
+			{
+				Console.WriteLine ("Downloaded file already exists, using it instead.");
+				DownloadFileCompleted(null, 
+					new System.ComponentModel.AsyncCompletedEventArgs(null, false, new string[] { mod, destPath }));
+				return;
+			}
+			
 			WebClient wc = new WebClient();
 			wc.DownloadProgressChanged += DownloadProgressChanged;
 			wc.DownloadFileCompleted += DownloadFileCompleted;
+			Console.WriteLine("Downloading {0}-packages.zip to {1}", mod, destPath);
 			wc.DownloadFileAsync(
 				new Uri(string.Format("http://open-ra.org/get-dependency.php?file={0}-packages", mod)),
-				string.Format("{0}{1}{2}-packages.zip", Path.GetTempPath(), Path.DirectorySeparatorChar, mod), 
-				mod);
+				destFile, 
+				new string[] { mod, destPath });
 
 			while (wc.IsBusy)
 				Thread.Sleep(500);
@@ -140,8 +162,33 @@ namespace OpenRA.Utility
 			}
 
 			Console.WriteLine("Download Completed");
-
-			//TODO: Extract packages into mod dir
+			string[] modAndDest = (string[])e.UserState;
+			string mod = modAndDest[0];
+			string dest = modAndDest[1];
+			string filepath = string.Format("{0}{1}{2}-packages.zip", dest, Path.DirectorySeparatorChar, mod);
+			string modPackageDir = string.Format("mods{0}{1}{0}packages{0}", Path.DirectorySeparatorChar, mod);
+			
+			using (var z = new ZipInputStream(File.OpenRead(filepath)))
+			{
+				ZipEntry entry;
+				while ((entry = z.GetNextEntry()) != null)
+				{
+					if (!entry.IsFile) continue;
+					
+					Console.WriteLine ("Extracting {0}", entry.Name);
+					using (var f = File.Create(modPackageDir + entry.Name))
+					{
+						int bufSize = 2048;
+						byte[] buf = new byte[bufSize];
+						while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+						{
+							f.Write(buf, 0, bufSize);
+						}
+					}
+				}
+			}
+			
+			Console.WriteLine ("Done");
 		}
 
 		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
