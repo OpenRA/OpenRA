@@ -8,6 +8,7 @@ MSLO:
 	Tooltip:
 		Name: Missile Silo
 		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
