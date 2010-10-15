@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.RA
 			{
 				//Game.Debug("Plane has nowhere to land; flying away");
 				self.QueueActivity(new FlyOffMap());
+				self.QueueActivity(new RemoveSelf());
 			}
 		}
 	}
@@ -45,6 +47,7 @@ namespace OpenRA.Mods.RA
 		public void Idle(Actor self)
 		{
 			self.QueueActivity(new FlyOffMap());
+			self.QueueActivity(new RemoveSelf());
 		}
 	}
 }
