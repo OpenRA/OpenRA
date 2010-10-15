@@ -106,10 +106,17 @@ Background@SETTINGS_MENU:
 				Checkbox@INVERSE_SCROLL:
 					Id:INVERSE_SCROLL
 					X:0
-					Y:120
+					Y:90
 					Width:200
 					Height:20
 					Text: Invert Mouse Drag Scrolling
+				Checkbox@TEAMCHAT_TOGGLE:
+					Id:TEAMCHAT_TOGGLE
+					X:0
+					Y:120
+					Width:200
+					Height:20
+					Text: Shift-Enter Toggles Team Chat
 		Container@AUDIO_PANE:
 			Id:AUDIO_PANE
 			X:37

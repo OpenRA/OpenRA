@@ -66,6 +66,9 @@ namespace OpenRA.GameRules
 		public string[] Mods = { "ra" };
 		public bool MatchTimer = true;
 		
+		// Chat settings
+		public bool TeamChatToggle = false;
+
 		// Behaviour settings
         public bool ViewportEdgeScroll = true;
         public bool InverseDragScroll = false;

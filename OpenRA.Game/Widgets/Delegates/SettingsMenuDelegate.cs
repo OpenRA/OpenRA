@@ -70,7 +70,15 @@ namespace OpenRA.Widgets.Delegates
                 Game.Settings.Game.InverseDragScroll ^= true;
                 return true;
             };
-						
+
+			var teamChatToggle = general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE");
+			teamChatToggle.Checked = () => Game.Settings.Game.TeamChatToggle;
+			teamChatToggle.OnMouseDown = mi =>
+			{
+				Game.Settings.Game.TeamChatToggle ^= true;
+				return true;
+			};
+			
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
 			

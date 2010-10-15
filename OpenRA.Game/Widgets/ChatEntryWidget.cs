@@ -81,7 +81,14 @@ namespace OpenRA.Widgets
 				{
 					TakeFocus(new MouseInput());
 					composing = true;
-					teamChat ^= e.Modifiers.HasModifier(Modifiers.Shift);
+					if (Game.Settings.Game.TeamChatToggle)
+					{
+						teamChat ^= e.Modifiers.HasModifier(Modifiers.Shift);
+					}
+					else
+					{
+						teamChat = e.Modifiers.HasModifier(Modifiers.Shift);
+					}
 					return true;
 				}
 			}
