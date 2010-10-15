@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 			if (explosionType != null)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, args.dest, explosionType, isWater)));
+					w => w.Add(new Explosion(w, args.dest, explosionType, isWater, args.destAltitude)));
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 			

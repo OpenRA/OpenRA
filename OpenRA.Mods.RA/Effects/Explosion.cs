@@ -19,10 +19,12 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Animation anim;
 		int2 pos;
+		int altitude;
 
-		public Explosion(World world, int2 pixelPos, string style, bool isWater)
+		public Explosion(World world, int2 pixelPos, string style, bool isWater, int altitude)
 		{
 			this.pos = pixelPos;
+			this.altitude = altitude;
 			anim = new Animation("explosion");
 			anim.PlayThen(style,
 				() => world.AddFrameEndTask(w => w.Remove(this)));
@@ -32,7 +34,9 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect", (int)pos.Y);
+			yield return new Renderable(anim.Image, 
+				pos - .5f * anim.Image.size - new int2(0,altitude), 
+				"effect", (int)pos.Y - altitude);
 		}
 
 		public Player Owner { get { return null; } }
