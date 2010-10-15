@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc seqed editor ralint filex tsbuild
+PROGRAMS	=fileformats gl game ra cnc seqed editor ralint filex tsbuild utility
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -62,13 +62,13 @@ editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.
 
 ralint_SRCS		= $(shell find RALint/ -iname '*.cs')
 ralint_TARGET	= RALint.exe
-ralint_KIND		= winexe
+ralint_KIND		= exe
 ralint_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS		= $(COMMON_LIBS) $(ralint_DEPS)
 
 filex_SRCS		= $(shell find FileExtractor/ -iname '*.cs')
 filex_TARGET	= FileExtractor.exe
-filex_KIND		= winexe
+filex_KIND		= exe
 filex_DEPS		= $(fileformats_TARGET)
 filex_LIBS		= $(COMMON_LIBS) $(filex_DEPS)
 
@@ -79,19 +79,26 @@ tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
 tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
 
+utility_SRCS		= $(shell find OpenRA.Utility/ -iname '*.cs')
+utility_TARGET		= OpenRA.Utility.exe
+utility_KIND		= exe
+utility_DEPS        = $(fileformats_TARGET)
+utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
+
+
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex
+.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility
 
-game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
+game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 
 distclean: clean
 
-CORE = fileformats gl game editor
+CORE = fileformats gl game editor utility
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -132,8 +139,8 @@ install: all
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 		
 	@echo "OpenRA is now installed. You will now want to download"
-	@echo "http://open-ra.org/get-dependency.php?ra-packages and"
-	@echo "http://open-ra.org/get-dependency.php?cnc-packages"
+	@echo "http://open-ra.org/get-dependency.php?file=ra-packages and"
+	@echo "http://open-ra.org/get-dependency.php?file=cnc-packages"
 	@echo "and extract their contents to"
 	@echo "$(INSTALL_DIR)/mods/ra/packages and "
 	@echo "$(INSTALL_DIR)/mods/cnc/packages respectively."
