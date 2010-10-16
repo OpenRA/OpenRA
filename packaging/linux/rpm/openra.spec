@@ -28,18 +28,13 @@ cp -r ~/openra-package/built/ $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 
 %post
-cd /tmp
+cd $RPM_BUILD_ROOT/usr/share/openra
 while true 
 do
     read -s -n1 -p "Download and install RA packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
-            pushd /tmp/
-            wget "http://open-ra.org/get-dependency.php?file=ra-packages" -O ra-packages.zip
-            mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
-            unzip ra-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/ra/packages
-            rm ra-packages.zip
-            popd
+            mono OpenRA.Utility.exe --download-packages=ra
             break;;
         n|N)
             echo "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
@@ -54,12 +49,7 @@ do
     read -s -n1 -p "Download and install C&C packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
-            pushd /tmp/
-            wget "http://open-ra.org/get-dependency.php?file=cnc-packages" -O cnc-packages.zip
-            mkdir -p $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
-            unzip cnc-packages.zip -d $RPM_BUILD_ROOT/usr/share/openra/mods/cnc/packages
-            rm cnc-packages.zip
-            popd
+            mono OpenRA.Utility.exe --download-packages=cnc
             break;;
         n|N)
             echo "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
@@ -69,11 +59,11 @@ do
     esac
 done
 
-gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Cg.dll
-gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
-gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
-gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
-gacutil -i $RPM_BUILD_ROOT/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
+gacutil -i thirdparty/Tao/Tao.Cg.dll
+gacutil -i thirdparty/Tao/Tao.FreeType.dll
+gacutil -i thirdparty/Tao/Tao.OpenAl.dll
+gacutil -i thirdparty/Tao/Tao.OpenGl.dll
+gacutil -i thirdparty/Tao/Tao.Sdl.dll
 
 %files
 /usr/bin/openra

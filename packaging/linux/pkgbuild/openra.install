@@ -1,28 +1,12 @@
-
-install_ra_packages() {
-    wget "http://open-ra.org/get-dependency.php?file=ra-packages"
-    mkdir -p $pkgdir/usr/share/openra/mods/ra/packages
-    unzip ra-packages.zip -d $pkgdir/usr/share/openra/mods/ra/packages
-    rm ra-packages.zip
-}
-
-install_cnc_packages() {
-    wget "http://open-ra.org/get-dependency.php?file=cnc-packages"
-    mkdir -p $pkgdir/usr/share/openra/mods/cnc/packages
-    unzip cnc-packages.zip -d $pkgdir/usr/share/openra/mods/cnc/packages
-    rm cnc-packages.zip
-}
-
 # arg 1:  the new package version
 post_install() {
+    cd $pkgdir/usr/share/openra
     while true 
     do
         read -s -n1 -p "Download and install RA packages? [Y/n]"
         case $REPLY in
             y|Y|"")
-                pushd /tmp/ 
-                install_ra_packages
-                popd
+                mono OpenRA.Utility.exe --download-packages=ra
                 break;;
             n|N)
                 echo "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
@@ -37,9 +21,7 @@ post_install() {
         read -s -n1 -p "Download and install C&C packages? [Y/n]"
         case $REPLY in
             y|Y|"") 
-                pushd /tmp/
-                install_cnc_packages
-                popd
+                mono OpenRA.Utility.exe --download-packages=cnc
                 break;;
             n|N)
                 echo "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
@@ -49,9 +31,9 @@ post_install() {
         esac
     done
     
-    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Cg.dll
-    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.FreeType.dll
-    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenAl.dll
-    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.OpenGl.dll
-    gacutil -i $pkgdir/usr/share/openra/thirdparty/Tao/Tao.Sdl.dll
+    gacutil -i thirdparty/Tao/Tao.Cg.dll
+    gacutil -i thirdparty/Tao/Tao.FreeType.dll
+    gacutil -i thirdparty/Tao/Tao.OpenAl.dll
+    gacutil -i thirdparty/Tao/Tao.OpenGl.dll
+    gacutil -i thirdparty/Tao/Tao.Sdl.dll
 }
