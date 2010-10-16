@@ -427,7 +427,7 @@ TurretGun:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 30%
+			None: 20%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
