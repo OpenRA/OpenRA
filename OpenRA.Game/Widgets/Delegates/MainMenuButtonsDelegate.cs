@@ -10,8 +10,6 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Server;
-using System.Net;
-using System.IO;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -32,9 +30,15 @@ namespace OpenRA.Widgets.Delegates
 			if (FileSystem.Exists("VERSION"))
 			{
 				var s = FileSystem.Open("VERSION");
-				version.Text = s.ReadAllText();
+				var versionFileContent = s.ReadAllText();
+				version.Text = versionFileContent;
 				s.Close();
-				MasterServerQuery.OnVersion += v => { if (!string.IsNullOrEmpty(v)) version.Text += "\nLatest: " + v; };
+
+				MasterServerQuery.OnVersion += v =>
+				{
+					if (!string.IsNullOrEmpty(v))
+						version.Text = versionFileContent + "\nLatest: " + v;
+				};
 				MasterServerQuery.GetCurrentVersion(Game.Settings.Server.MasterServer);
 			}
 			else
