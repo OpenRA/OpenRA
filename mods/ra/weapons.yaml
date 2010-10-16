@@ -479,7 +479,7 @@ MammothTusk:
 		Inaccuracy: 80
 		Image: 120MM
 	Warhead:
-		Spread: 8
+		Spread: 10
 		Versus: 
 			None: 90%
 			Wood: 75%
@@ -489,7 +489,7 @@ MammothTusk:
 		WaterExplosion: med_splash
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 150
+		Damage: 220
 
 M60mg:
 	ROF: 30
