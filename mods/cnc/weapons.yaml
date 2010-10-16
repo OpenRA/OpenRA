@@ -204,9 +204,9 @@ Rockets.Bike:
 		Damage: 15
 		
 Rockets.Orca: 
-	ROF: 150
-	Range: 6
-	Burst: 2
+	ROF: 300
+	Range: 5
+	Burst: 4
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -219,7 +219,7 @@ Rockets.Orca:
 		ROT: 5
 		Trail: smokey
 		Speed: 25
-		RangeLimit: 20
+		RangeLimit: 30
 	Warhead:
 		Spread: 3
 		Versus: 

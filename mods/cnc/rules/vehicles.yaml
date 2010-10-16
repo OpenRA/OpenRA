@@ -166,7 +166,7 @@ BGGY:
 		Owner: nod
 	Mobile:
 		ROT: 10
-		Speed: 18
+		Speed: 12
 	Health:
 		HP: 140
 	Armor:
@@ -196,7 +196,7 @@ BIKE:
 		Owner: nod
 	Mobile:
 		ROT: 10
-		Speed: 20
+		Speed: 13
 	Health:
 		HP: 120
 		Armor: none
@@ -223,7 +223,7 @@ JEEP:
 		Owner: gdi
 	Mobile:
 		ROT: 10
-		Speed: 15
+		Speed: 10
 	Health:
 		HP: 150
 	Armor:
@@ -529,7 +529,7 @@ ORCA:
 		ROT: 4
 		Speed: 20
 	Health:
-		HP: 125
+		HP: 100
 	Armor:
 		Type: Heavy
 	RevealsShroud:
