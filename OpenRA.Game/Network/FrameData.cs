@@ -25,6 +25,13 @@ namespace OpenRA.Network
 
 		public void ClientQuit( int clientId, int lastClientFrame )
 		{
+			if (clientQuitTimes.ContainsKey(clientId))
+			{
+				Game.Debug("Warning: double-quit from client {0}, frames {1},{2}",
+					clientId, clientQuitTimes[clientId], lastClientFrame);
+				return;
+			}
+
 			clientQuitTimes.Add( clientId, lastClientFrame );
 		}
 
