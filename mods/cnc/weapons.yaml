@@ -155,9 +155,9 @@ Rockets:
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 6
 		Trail: smokey
-		Speed: 25
+		Speed: 35
 		RangeLimit: 40
 	Warhead:
 		Spread: 3
@@ -188,7 +188,7 @@ Rockets.Bike:
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
-		Speed: 25
+		Speed: 35
 		RangeLimit: 40
 	Warhead:
 		Spread: 3
@@ -629,6 +629,7 @@ Nike:
 		ROT: 20
 		Speed: 40
 		RangeLimit: 50
+		Trail: smokey
 	Warhead: AP
 		Spread: 3
 		Versus: 
