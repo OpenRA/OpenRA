@@ -55,7 +55,7 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
-		public void Send( int frame, List<byte[]> orders )
+		public virtual void Send( int frame, List<byte[]> orders )
 		{
 			var ms = new MemoryStream();
 			ms.Write( BitConverter.GetBytes( frame ) );
@@ -64,7 +64,7 @@ namespace OpenRA.Network
 			Send( ms.ToArray() );
 		}
 
-		public void SendImmediate( List<byte[]> orders )
+		public virtual void SendImmediate( List<byte[]> orders )
 		{
 			var ms = new MemoryStream();
 			ms.Write( BitConverter.GetBytes( (int)0 ) );
@@ -73,7 +73,7 @@ namespace OpenRA.Network
 			Send( ms.ToArray() );
 		}
 
-		public void SendSync( int frame, byte[] syncData )
+		public virtual void SendSync( int frame, byte[] syncData )
 		{
 			var ms = new MemoryStream();
 			ms.Write( BitConverter.GetBytes( frame ) );
@@ -157,6 +157,16 @@ namespace OpenRA.Network
 		public override int LocalClientId { get { return clientId; } }
 		public override ConnectionState ConnectionState { get { return connectionState; } }
 
+		List<byte[]> queuedSyncPackets = new List<byte[]>();
+
+		public override void SendSync( int frame, byte[] syncData )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( frame ) );
+			ms.Write( syncData );
+			queuedSyncPackets.Add( ms.ToArray() );
+		}
+
 		protected override void Send( byte[] packet )
 		{
 			base.Send( packet );
@@ -166,6 +176,12 @@ namespace OpenRA.Network
 				var ms = new MemoryStream();
 				ms.Write(BitConverter.GetBytes((int)packet.Length));
 				ms.Write(packet);
+				foreach( var q in queuedSyncPackets )
+				{
+					ms.Write( BitConverter.GetBytes( (int)q.Length ) );
+					ms.Write( q );
+				}
+				queuedSyncPackets.Clear();
 				ms.WriteTo(socket.GetStream());
 			}
 			catch (SocketException) { /* drop this on the floor; we'll pick up the disconnect from the reader thread */ }

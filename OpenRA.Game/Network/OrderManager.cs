@@ -99,7 +99,7 @@ namespace OpenRA.Network
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
 
-		void CheckSync(byte[] packet)
+		void CheckSync( byte[] packet )
 		{
 			var frame = BitConverter.ToInt32(packet, 0);
 			byte[] existingSync;
@@ -172,8 +172,6 @@ namespace OpenRA.Network
 			Connection.SendSync( NetFrameNumber, ss );
 
 			syncReport.UpdateSyncReport();
-
-			CheckSync( ss );
 
 			++NetFrameNumber;
 		}
