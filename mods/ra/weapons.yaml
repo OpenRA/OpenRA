@@ -863,7 +863,7 @@ Heal:
 		Damage: -50
 		
 SCUD:
-	ROF: 250
+	ROF: 280
 	Range: 10
 	MinRange: 3
 	Report: MISSILE1
