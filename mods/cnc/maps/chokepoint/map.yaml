@@ -1,0 +1,185 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Chokepoint
+
+Description: A battle over a small stream with only small passes
+
+Author: Tiberian
+
+PlayerCount: 2
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 80,48
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		Race: gdi
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		Race: Random
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: v01
+		Location: 16,42
+		Owner: Neutral
+	Actor1: v03
+		Location: 18,42
+		Owner: Neutral
+	Actor3: hosp
+		Location: 20,46
+		Owner: Neutral
+	Actor4: tc04
+		Location: 15,46
+		Owner: Neutral
+	Actor5: v32
+		Location: 20,44
+		Owner: Neutral
+	Actor6: c7
+		Location: 16,44
+		Owner: Neutral
+	Actor7: c10
+		Location: 19,44
+		Owner: Neutral
+	Actor8: c1
+		Location: 18,45
+		Owner: Neutral
+	Actor9: v16
+		Location: 16,45
+		Owner: Neutral
+	Actor10: t18
+		Location: 17,38
+		Owner: Neutral
+	Actor11: tc03
+		Location: 25,46
+		Owner: Neutral
+	Actor12: t08
+		Location: 24,42
+		Owner: Neutral
+	Actor13: t10
+		Location: 74,16
+		Owner: Neutral
+	Actor14: t15
+		Location: 73,18
+		Owner: Neutral
+	Actor15: tc01
+		Location: 76,16
+		Owner: Neutral
+	Actor16: tc03
+		Location: 78,16
+		Owner: Neutral
+	Actor17: t18
+		Location: 73,20
+		Owner: Neutral
+	Actor18: v11
+		Location: 76,18
+		Owner: Neutral
+	Actor19: v09
+		Location: 77,18
+		Owner: Neutral
+	Actor20: v09
+		Location: 78,18
+		Owner: Neutral
+	Actor21: wood
+		Location: 75,22
+		Owner: Neutral
+	Actor22: wood
+		Location: 76,22
+		Owner: Neutral
+	Actor30: c9
+		Location: 75,21
+		Owner: Neutral
+	Actor24: wood
+		Location: 78,22
+		Owner: Neutral
+	Actor25: wood
+		Location: 79,22
+		Owner: Neutral
+	Actor27: arco
+		Location: 78,20
+		Owner: Neutral
+	Actor28: c2
+		Location: 75,19
+		Owner: Neutral
+	Actor29: c7
+		Location: 77,21
+		Owner: Neutral
+	Actor31: tc02
+		Location: 69,17
+		Owner: Neutral
+	Actor32: tc03
+		Location: 77,26
+		Owner: Neutral
+	Actor33: tc05
+		Location: 70,24
+		Owner: Neutral
+	Actor34: t09
+		Location: 70,21
+		Owner: Neutral
+	Actor35: split3
+		Location: 62,44
+		Owner: Neutral
+	Actor36: split2
+		Location: 69,42
+		Owner: Neutral
+	Actor37: split3
+		Location: 76,44
+		Owner: Neutral
+	Actor38: split2
+		Location: 20,15
+		Owner: Neutral
+	Actor39: split3
+		Location: 26,17
+		Owner: Neutral
+	Actor40: split2
+		Location: 32,15
+		Owner: Neutral
+
+Waypoints:
+	wp0: 22,29
+	wp1: 72,32
+
+Smudges:
+
+Rules:
+
