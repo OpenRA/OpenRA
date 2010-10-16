@@ -76,7 +76,7 @@ APC:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 15
+		Speed: 11
 	Health:
 		HP: 200
 	Armor:
