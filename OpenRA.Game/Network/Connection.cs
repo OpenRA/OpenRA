@@ -30,7 +30,9 @@ namespace OpenRA.Network
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
-		void Send( byte[] packet );
+		void Send( int frame, List<byte[]> orders );
+		void SendImmediate( List<byte[]> orders );
+		void SendSync( int frame, byte[] syncData );
 		void Receive( Action<int, byte[]> packetFn );
 	}
 
@@ -53,7 +55,33 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
-		public virtual void Send( byte[] packet )
+		public void Send( int frame, List<byte[]> orders )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( frame ) );
+			foreach( var o in orders )
+				ms.Write( o );
+			Send( ms.ToArray() );
+		}
+
+		public void SendImmediate( List<byte[]> orders )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( (int)0 ) );
+			foreach( var o in orders )
+				ms.Write( o );
+			Send( ms.ToArray() );
+		}
+
+		public void SendSync( int frame, byte[] syncData )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( frame ) );
+			ms.Write( syncData );
+			Send( ms.ToArray() );
+		}
+
+		protected virtual void Send( byte[] packet )
 		{
 			if( packet.Length == 0 )
 				throw new NotImplementedException();
@@ -129,7 +157,7 @@ namespace OpenRA.Network
 		public override int LocalClientId { get { return clientId; } }
 		public override ConnectionState ConnectionState { get { return connectionState; } }
 
-		public override void Send( byte[] packet )
+		protected override void Send( byte[] packet )
 		{
 			base.Send( packet );
 

@@ -47,7 +47,7 @@ namespace OpenRA.Network
 
 			NetFrameNumber = 1;
 			for( int i = NetFrameNumber ; i <= FramesAhead ; i++ )
-				Connection.Send( new List<Order>().Serialize( i ) );
+				Connection.Send( i, new List<byte[]>() );
 		}
 
 		public OrderManager( string host, int port, IConnection conn )
@@ -73,7 +73,7 @@ namespace OpenRA.Network
 		{
 			var immediateOrders = localOrders.Where( o => o.IsImmediate ).ToList();
 			if( immediateOrders.Count != 0 )
-				Connection.Send( immediateOrders.Serialize( 0 ) );
+				Connection.SendImmediate( immediateOrders.Select( o => o.Serialize() ).ToList() );
 			localOrders.RemoveAll( o => o.IsImmediate );
 
 			var immediatePackets = new List<Pair<int, byte[]>>();
@@ -156,7 +156,7 @@ namespace OpenRA.Network
 			if( !IsReadyForNextFrame )
 				throw new InvalidOperationException();
 
-			Connection.Send( localOrders.Serialize( NetFrameNumber + FramesAhead ) );
+			Connection.Send( NetFrameNumber + FramesAhead, localOrders.Select( o => o.Serialize() ).ToList() );
 			localOrders.Clear();
 
 			var sync = new List<int>();
@@ -168,8 +168,8 @@ namespace OpenRA.Network
 				sync.Add( world.SyncHash() );
 			}
 
-			var ss = sync.SerializeSync( NetFrameNumber );
-			Connection.Send( ss );
+			var ss = sync.SerializeSync();
+			Connection.SendSync( NetFrameNumber, ss );
 
 			syncReport.UpdateSyncReport();
 

@@ -26,10 +26,10 @@ namespace OpenRA.Network
 			get { return ConnectionState.Connected; }
 		}
 
-		public void Send( byte[] packet )
-		{
-			// do nothing; ignore locally generated orders
-		}
+		// do nothing; ignore locally generated orders
+		public void Send( int frame, List<byte[]> orders ) { }
+		public void SendImmediate( List<byte[]> orders ) { }
+		public void SendSync( int frame, byte[] syncData ) { }
 
 		public void Receive( Action<int, byte[]> packetFn )
 		{
@@ -63,10 +63,9 @@ namespace OpenRA.Network
 		public int LocalClientId { get { return inner.LocalClientId; } }
 		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
 
-		public void Send( byte[] packet )
-		{
-			inner.Send( packet );
-		}
+		public void Send( int frame, List<byte[]> orders ) { inner.Send( frame, orders ); }
+		public void SendImmediate( List<byte[]> orders ) { inner.SendImmediate( orders ); }
+		public void SendSync( int frame, byte[] syncData ) { inner.SendSync( frame, syncData ); }
 
 		public void Receive( Action<int, byte[]> packetFn )
 		{
