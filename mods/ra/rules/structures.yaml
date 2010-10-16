@@ -686,7 +686,7 @@ AFLD:
 		Name: Airstrip
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
-		Power: -50
+		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Capturable: true
