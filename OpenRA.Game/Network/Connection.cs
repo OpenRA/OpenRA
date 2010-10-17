@@ -180,6 +180,7 @@ namespace OpenRA.Network
 				{
 					ms.Write( BitConverter.GetBytes( (int)q.Length ) );
 					ms.Write( q );
+					base.Send( q );
 				}
 				queuedSyncPackets.Clear();
 				ms.WriteTo(socket.GetStream());
