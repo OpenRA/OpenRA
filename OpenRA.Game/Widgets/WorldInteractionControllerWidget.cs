@@ -163,7 +163,7 @@ namespace OpenRA.Widgets
 
 			var next = bases
 				.Select( b => b.Actor )
-				.SkipWhile(b => world.Selection.Actors.Contains(b))
+				.SkipWhile(b => !world.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
