@@ -86,12 +86,6 @@ namespace OpenRA.Network
 				{
 					orderManager.LobbyInfo = Session.Deserialize( order.TargetString );
 
-					//if( !world.GameHasStarted )
-					//    world.SharedRandom = new XRandom( LobbyInfo.GlobalSettings.RandomSeed );
-
-					//if (orderManager.Connection.ConnectionState == ConnectionState.Connected)
-					//    world.SetLocalPlayer(orderManager.Connection.LocalClientId);
-
 					if( orderManager.FramesAhead != orderManager.LobbyInfo.GlobalSettings.OrderLatency
 						&& !orderManager.GameStarted )
 					{
