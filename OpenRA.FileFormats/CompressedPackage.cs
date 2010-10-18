@@ -41,5 +41,11 @@ namespace OpenRA.FileFormats
 		{
 			return hashes.Contains(PackageEntry.HashFilename(filename));
 		}
+
+
+		public int Priority
+		{
+			get { return 1; }
+		}
 	}
 }

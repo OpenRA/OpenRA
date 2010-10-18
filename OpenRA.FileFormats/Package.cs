@@ -20,6 +20,7 @@ namespace OpenRA.FileFormats
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<uint> AllFileHashes();
+		int Priority { get; }
 	}
 
 	public class Package : IFolder
@@ -148,6 +149,12 @@ namespace OpenRA.FileFormats
 		public bool Exists(string filename)
 		{
 			return index.ContainsKey(PackageEntry.HashFilename(filename));
+		}
+
+
+		public int Priority
+		{
+			get { return 0; }
 		}
 	}
 

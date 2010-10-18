@@ -28,12 +28,18 @@ namespace OpenRA.FileFormats
 		public IEnumerable<uint> AllFileHashes()
 		{
 			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
-				yield return PackageEntry.HashFilename( filename );
+				yield return PackageEntry.HashFilename( Path.GetFileName(filename) );
 		}
 		
 		public bool Exists(string filename)
 		{
 			return File.Exists(Path.Combine(path,filename));
+		}
+
+
+		public int Priority
+		{
+			get { return 100; }
 		}
 	}
 }

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
@@ -73,9 +74,14 @@ namespace OpenRA.FileFormats
 
 		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
 		{
-			foreach( var folder in index[ PackageEntry.HashFilename( filename ) ] )
-				if (folder.Exists(filename))
-					return folder.GetContent(filename);
+			var folder = index[PackageEntry.HashFilename(filename)]
+				.Where(x => x.Exists(filename))
+				.OrderByDescending(x => x.Priority)
+				.FirstOrDefault();
+
+			if (folder != null)
+				return folder.GetContent(filename);
+
 			return null;
 		}
 
@@ -88,11 +94,13 @@ namespace OpenRA.FileFormats
 					return ret;
 			}
 
-			foreach( IFolder folder in mountedFolders )
-			{
-				if (folder.Exists(filename))
-					return folder.GetContent(filename);
-			}
+			var folder = mountedFolders
+				.Where(x => x.Exists(filename))
+				.OrderByDescending(x => x.Priority)
+				.FirstOrDefault();
+
+			if (folder != null)
+				return folder.GetContent(filename);
 
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
 		}
