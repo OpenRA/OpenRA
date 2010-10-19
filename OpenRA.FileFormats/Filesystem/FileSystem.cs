@@ -38,11 +38,11 @@ namespace OpenRA.FileFormats
 
 		static IFolder OpenPackage(string filename)
 		{
-			if (filename.EndsWith(".mix"))
+			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 				return new MixFile(filename, order++);
-			else if (filename.EndsWith(".zip"))
+			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new CompressedPackage(filename, order++);
-			else if (filename.EndsWith(".Z"))
+			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldPackage(filename, order++);
 			else
 				return new Folder(filename, order++);
@@ -50,7 +50,6 @@ namespace OpenRA.FileFormats
 
 		public static void Mount(string name)
 		{
-			name = name.ToLowerInvariant();
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 
