@@ -168,6 +168,9 @@ namespace OpenRA.Utility
 			string filepath = string.Format("{0}{1}{2}-packages.zip", dest, Path.DirectorySeparatorChar, mod);
 			string modPackageDir = string.Format("mods{0}{1}{0}packages{0}", Path.DirectorySeparatorChar, mod);
 			
+			if (!Directory.Exists(modPackageDir))
+				Directory.CreateDirectory(modPackageDir);
+			
 			using (var z = new ZipInputStream(File.OpenRead(filepath)))
 			{
 				ZipEntry entry;
