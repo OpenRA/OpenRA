@@ -1,0 +1,283 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Wargames
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+TopLeft: 1,1
+
+BottomRight: 63,63
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: brik
+		Location: 62,34
+		Owner: Neutral
+	Actor1: brik
+		Location: 61,34
+		Owner: Neutral
+	Actor2: brik
+		Location: 60,34
+		Owner: Neutral
+	Actor3: brik
+		Location: 34,33
+		Owner: Neutral
+	Actor4: brik
+		Location: 32,33
+		Owner: Neutral
+	Actor5: brik
+		Location: 30,33
+		Owner: Neutral
+	Actor6: brik
+		Location: 35,32
+		Owner: Neutral
+	Actor7: brik
+		Location: 33,32
+		Owner: Neutral
+	Actor8: brik
+		Location: 31,32
+		Owner: Neutral
+	Actor9: brik
+		Location: 29,32
+		Owner: Neutral
+	Actor10: brik
+		Location: 34,31
+		Owner: Neutral
+	Actor11: brik
+		Location: 32,31
+		Owner: Neutral
+	Actor12: brik
+		Location: 30,31
+		Owner: Neutral
+	Actor13: brik
+		Location: 35,30
+		Owner: Neutral
+	Actor14: brik
+		Location: 33,30
+		Owner: Neutral
+	Actor15: brik
+		Location: 31,30
+		Owner: Neutral
+	Actor16: brik
+		Location: 29,30
+		Owner: Neutral
+	Actor17: brik
+		Location: 3,30
+		Owner: Neutral
+	Actor18: brik
+		Location: 2,30
+		Owner: Neutral
+	Actor19: brik
+		Location: 1,30
+		Owner: Neutral
+	Actor20: brik
+		Location: 34,29
+		Owner: Neutral
+	Actor21: brik
+		Location: 32,29
+		Owner: Neutral
+	Actor22: brik
+		Location: 30,29
+		Owner: Neutral
+	Actor23: split3
+		Location: 38,60
+		Owner: Neutral
+	Actor24: split3
+		Location: 31,60
+		Owner: Neutral
+	Actor25: split3
+		Location: 23,59
+		Owner: Neutral
+	Actor26: split3
+		Location: 57,58
+		Owner: Neutral
+	Actor27: split3
+		Location: 7,58
+		Owner: Neutral
+	Actor28: split3
+		Location: 31,55
+		Owner: Neutral
+	Actor29: split3
+		Location: 57,38
+		Owner: Neutral
+	Actor30: split3
+		Location: 10,37
+		Owner: Neutral
+	Actor31: t01
+		Location: 5,34
+		Owner: Neutral
+	Actor32: split3
+		Location: 2,34
+		Owner: Neutral
+	Actor33: t02
+		Location: 59,33
+		Owner: Neutral
+	Actor34: tc04
+		Location: 6,33
+		Owner: Neutral
+	Actor35: tc01
+		Location: 61,32
+		Owner: Neutral
+	Actor36: t02
+		Location: 40,32
+		Owner: Neutral
+	Actor37: t02
+		Location: 11,32
+		Owner: Neutral
+	Actor38: tc04
+		Location: 8,32
+		Owner: Neutral
+	Actor39: t01
+		Location: 60,31
+		Owner: Neutral
+	Actor40: tc01
+		Location: 1,31
+		Owner: Neutral
+	Actor41: split3
+		Location: 60,29
+		Owner: Neutral
+	Actor42: tc01
+		Location: 55,29
+		Owner: Neutral
+	Actor43: t01
+		Location: 22,29
+		Owner: Neutral
+	Actor44: t02
+		Location: 4,29
+		Owner: Neutral
+	Actor45: t01
+		Location: 57,28
+		Owner: Neutral
+	Actor46: tc04
+		Location: 53,28
+		Owner: Neutral
+	Actor47: tc01
+		Location: 52,28
+		Owner: Neutral
+	Actor48: t02
+		Location: 51,28
+		Owner: Neutral
+	Actor49: split3
+		Location: 53,24
+		Owner: Neutral
+	Actor50: split3
+		Location: 5,24
+		Owner: Neutral
+	Actor51: split3
+		Location: 31,7
+		Owner: Neutral
+	Actor52: split3
+		Location: 57,3
+		Owner: Neutral
+	Actor53: split3
+		Location: 7,3
+		Owner: Neutral
+	Actor54: split3
+		Location: 31,2
+		Owner: Neutral
+	Actor55: split3
+		Location: 38,1
+		Owner: Neutral
+	Actor56: split3
+		Location: 23,1
+		Owner: Neutral
+
+Waypoints:
+	wp1: 46,50
+	wp3: 50,10
+	wp0: 17,51
+	wp2: 16,10
+
+Smudges:
+
+Rules:
+
