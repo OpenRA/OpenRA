@@ -1,0 +1,413 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Yellowstone II
+
+Description:
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+TopLeft: 1,1
+
+BottomRight: 63,63
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: split3
+		Location: 31,61
+		Owner: Neutral
+	Actor1: t01
+		Location: 53,57
+		Owner: Neutral
+	Actor2: t15
+		Location: 27,57
+		Owner: Neutral
+	Actor3: t15
+		Location: 26,57
+		Owner: Neutral
+	Actor4: split3
+		Location: 34,56
+		Owner: Neutral
+	Actor5: t15
+		Location: 29,56
+		Owner: Neutral
+	Actor6: t10
+		Location: 27,56
+		Owner: Neutral
+	Actor7: t01
+		Location: 56,54
+		Owner: Neutral
+	Actor8: tc01
+		Location: 25,54
+		Owner: Neutral
+	Actor9: t03
+		Location: 18,54
+		Owner: Neutral
+	Actor10: tc05
+		Location: 17,54
+		Owner: Neutral
+	Actor11: tc04
+		Location: 54,53
+		Owner: Neutral
+	Actor12: t01
+		Location: 35,53
+		Owner: Neutral
+	Actor13: t01
+		Location: 33,53
+		Owner: Neutral
+	Actor14: split3
+		Location: 52,52
+		Owner: Neutral
+	Actor15: split3
+		Location: 23,52
+		Owner: Neutral
+	Actor16: split2
+		Location: 4,52
+		Owner: Neutral
+	Actor17: t01
+		Location: 34,49
+		Owner: Neutral
+	Actor18: tc01
+		Location: 57,47
+		Owner: Neutral
+	Actor19: t03
+		Location: 54,47
+		Owner: Neutral
+	Actor20: t07
+		Location: 53,47
+		Owner: Neutral
+	Actor21: t11
+		Location: 18,47
+		Owner: Neutral
+	Actor22: t10
+		Location: 17,47
+		Owner: Neutral
+	Actor23: split3
+		Location: 13,47
+		Owner: Neutral
+	Actor24: tc02
+		Location: 58,46
+		Owner: Neutral
+	Actor25: tc04
+		Location: 55,46
+		Owner: Neutral
+	Actor26: t01
+		Location: 2,46
+		Owner: Neutral
+	Actor27: tc01
+		Location: 56,45
+		Owner: Neutral
+	Actor28: tc01
+		Location: 54,45
+		Owner: Neutral
+	Actor29: t07
+		Location: 48,45
+		Owner: Neutral
+	Actor30: tc02
+		Location: 52,44
+		Owner: Neutral
+	Actor31: t02
+		Location: 51,44
+		Owner: Neutral
+	Actor32: tc04
+		Location: 46,43
+		Owner: Neutral
+	Actor33: tc01
+		Location: 44,43
+		Owner: Neutral
+	Actor34: t02
+		Location: 8,43
+		Owner: Neutral
+	Actor35: tc04
+		Location: 5,43
+		Owner: Neutral
+	Actor36: t01
+		Location: 8,42
+		Owner: Neutral
+	Actor37: split2
+		Location: 57,41
+		Owner: Neutral
+	Actor38: t15
+		Location: 61,40
+		Owner: Neutral
+	Actor39: t01
+		Location: 46,40
+		Owner: Neutral
+	Actor40: tc01
+		Location: 44,39
+		Owner: Neutral
+	Actor41: split2
+		Location: 32,38
+		Owner: Neutral
+	Actor42: split3
+		Location: 10,37
+		Owner: Neutral
+	Actor43: tc02
+		Location: 59,36
+		Owner: Neutral
+	Actor44: tc02
+		Location: 22,36
+		Owner: Neutral
+	Actor45: t17
+		Location: 51,35
+		Owner: Neutral
+	Actor46: t01
+		Location: 46,35
+		Owner: Neutral
+	Actor47: tc01
+		Location: 44,35
+		Owner: Neutral
+	Actor48: t11
+		Location: 2,35
+		Owner: Neutral
+	Actor49: tc05
+		Location: 16,34
+		Owner: Neutral
+	Actor50: t13
+		Location: 2,34
+		Owner: Neutral
+	Actor51: tc04
+		Location: 58,33
+		Owner: Neutral
+	Actor52: split2
+		Location: 46,32
+		Owner: Neutral
+	Actor53: tc04
+		Location: 16,32
+		Owner: Neutral
+	Actor54: tc02
+		Location: 11,31
+		Owner: Neutral
+	Actor55: tc04
+		Location: 2,31
+		Owner: Neutral
+	Actor56: tc01
+		Location: 10,30
+		Owner: Neutral
+	Actor57: t01
+		Location: 4,30
+		Owner: Neutral
+	Actor58: tc03
+		Location: 2,30
+		Owner: Neutral
+	Actor59: tc02
+		Location: 29,29
+		Owner: Neutral
+	Actor60: tc01
+		Location: 27,29
+		Owner: Neutral
+	Actor61: split2
+		Location: 12,29
+		Owner: Neutral
+	Actor62: tc01
+		Location: 31,28
+		Owner: Neutral
+	Actor63: tc05
+		Location: 3,28
+		Owner: Neutral
+	Actor64: t02
+		Location: 2,28
+		Owner: Neutral
+	Actor65: split2
+		Location: 56,26
+		Owner: Neutral
+	Actor66: split3
+		Location: 27,26
+		Owner: Neutral
+	Actor67: t01
+		Location: 33,25
+		Owner: Neutral
+	Actor68: tc04
+		Location: 6,22
+		Owner: Neutral
+	Actor69: tc05
+		Location: 38,21
+		Owner: Neutral
+	Actor70: tc02
+		Location: 34,21
+		Owner: Neutral
+	Actor71: t01
+		Location: 33,21
+		Owner: Neutral
+	Actor72: tc01
+		Location: 11,21
+		Owner: Neutral
+	Actor73: tc04
+		Location: 32,20
+		Owner: Neutral
+	Actor74: tc04
+		Location: 7,20
+		Owner: Neutral
+	Actor75: tc05
+		Location: 5,18
+		Owner: Neutral
+	Actor76: split3
+		Location: 36,17
+		Owner: Neutral
+	Actor77: tc04
+		Location: 55,16
+		Owner: Neutral
+	Actor78: tc02
+		Location: 49,15
+		Owner: Neutral
+	Actor79: split3
+		Location: 22,14
+		Owner: Neutral
+	Actor80: tc01
+		Location: 50,13
+		Owner: Neutral
+	Actor81: tc05
+		Location: 47,13
+		Owner: Neutral
+	Actor82: t17
+		Location: 32,13
+		Owner: Neutral
+	Actor83: split3
+		Location: 4,13
+		Owner: Neutral
+	Actor84: tc04
+		Location: 46,12
+		Owner: Neutral
+	Actor85: split2
+		Location: 57,11
+		Owner: Neutral
+	Actor86: t06
+		Location: 30,11
+		Owner: Neutral
+	Actor87: t16
+		Location: 28,10
+		Owner: Neutral
+	Actor88: tc01
+		Location: 26,10
+		Owner: Neutral
+	Actor89: tc03
+		Location: 26,9
+		Owner: Neutral
+	Actor90: split3
+		Location: 42,8
+		Owner: Neutral
+	Actor91: tc05
+		Location: 46,4
+		Owner: Neutral
+	Actor92: t01
+		Location: 47,3
+		Owner: Neutral
+	Actor93: tc01
+		Location: 43,2
+		Owner: Neutral
+	Actor94: tc04
+		Location: 40,2
+		Owner: Neutral
+	Actor95: tc01
+		Location: 31,2
+		Owner: Neutral
+	Actor96: t01
+		Location: 31,1
+		Owner: Neutral
+	Actor97: tc01
+		Location: 30,0
+		Owner: Neutral
+
+Waypoints:
+	spawn3: 12,59
+	spawn2: 46,60
+	spawn1: 55,5
+	spawn0: 8,8
+
+Smudges:
+	sc6 35,22 0:
+	sc5 37,20 0:
+	sc6 38,17 0:
+	sc5 37,17 0:
+	sc5 35,17 0:
+
+Rules:
+
