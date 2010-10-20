@@ -39,6 +39,7 @@ namespace OpenRA.Mods.RA
 
 			self.World.AddFrameEndTask( w =>
 			{
+				if (self.Destroyed) return;
 				Combat.DoExplosion(self, info.PrimaryWeapon, self.CenterLocation, altitude);
 		
 				// Remove from world

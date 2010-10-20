@@ -65,6 +65,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
+				if (actor.Destroyed) return;
 				w.Add(actor);
 				actor.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
 				actor.CancelActivity();

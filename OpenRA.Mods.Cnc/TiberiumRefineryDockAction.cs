@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Cnc
 						if (harv.Owner == self.World.LocalPlayer)
 							self.World.AddFrameEndTask( w =>
 							{
+								if (harv.Destroyed) return;
 								var line = harv.TraitOrDefault<DrawLineToTarget>();
 								if (line != null)
 									line.SetTargetSilently(harv, Target.FromCell(harvester.LastHarvestedCell), Color.Green);                           

@@ -197,6 +197,7 @@ namespace OpenRA.Mods.Cnc
 						var b = cargo.Unload(a);
 						world.AddFrameEndTask(w2 =>
 						{
+							if (b.Destroyed) return;
 							w2.Add(b);
 							b.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(b, a.Location);
 							b.QueueActivity(new Move(unload, 2));

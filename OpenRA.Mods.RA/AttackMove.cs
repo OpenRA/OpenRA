@@ -47,6 +47,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
+						if (self.Destroyed) return;
 						if (order.TargetActor != null)
 							w.Add(new FlashTarget(order.TargetActor));
 

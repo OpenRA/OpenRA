@@ -185,6 +185,7 @@ namespace OpenRA.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
+						if (self.Destroyed) return;
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
@@ -350,6 +351,7 @@ namespace OpenRA.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
+						if (self.Destroyed) return;
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTargetSilently(self, Target.FromCell(moveTo.Value), Color.Green);

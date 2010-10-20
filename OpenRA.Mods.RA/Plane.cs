@@ -93,6 +93,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
+						if (self.Destroyed) return;
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
@@ -114,6 +115,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
+						if (self.Destroyed) return;
 						w.Add(new FlashTarget(order.TargetActor));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)

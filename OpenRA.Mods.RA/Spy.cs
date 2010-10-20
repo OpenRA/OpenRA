@@ -43,6 +43,7 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask( w =>
 					{
+						if (self.Destroyed) return;
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
 							line.SetTargetSilently(self, Target.FromActor(order.TargetActor), Color.Green);
