@@ -38,12 +38,16 @@ namespace OpenRA.Utility
 		{
 			argCallbacks = new Dictionary<string, ArgCallback>();
 			argCallbacks.Add("--list-mods", ListMods);
+			argCallbacks.Add("-l", ListMods);
 			argCallbacks.Add("--mod-info", ListModInfo);
+			argCallbacks.Add("-i", ListModInfo);
 			argCallbacks.Add("--install-ra-music", InstallRAMusic);
 			argCallbacks.Add("--install-cnc-music", InstallCncMusic);
 			argCallbacks.Add("--download-packages", DownloadPackages);
 			argCallbacks.Add("--install-ra-packages", InstallRAPackages);
 			argCallbacks.Add("--install-cnc-packages", InstallCncPackages);
+			argCallbacks.Add("--settings-value", Settings);
+
 			
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
@@ -58,13 +62,14 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION]");
 			Console.WriteLine();
-			Console.WriteLine("  --list-mods                      List currently installed mods");
-			Console.WriteLine("  --mod-info=MODS                  List metadata for MODS (comma separated list of mods)");
-			Console.WriteLine("  --install-ra-music=PATH          Install scores.mix from PATH to Red Alert CD");
-			Console.WriteLine("  --install-cnc-music=PATH         Install scores.mix from PATH to Command & Conquer CD");
-			Console.WriteLine("  --download-packages=MOD{,DEST}   Download packages for MOD to DEST (def: system temp folder) and install them");
-			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from PATH to CD");
-			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from PATH to CD");
+			Console.WriteLine("  -l,--list-mods                           List currently installed mods");
+			Console.WriteLine("  -i=MODS,--mod-info=MODS                  List metadata for MODS (comma separated list of mods)");
+			Console.WriteLine("  --install-ra-music=PATH                  Install scores.mix from PATH to Red Alert CD");
+			Console.WriteLine("  --install-cnc-music=PATH                 Install scores.mix from PATH to Command & Conquer CD");
+			Console.WriteLine("  --download-packages=MOD{,DEST}           Download packages for MOD to DEST (def: system temp folder) and install them");
+			Console.WriteLine("  --install-ra-packages=PATH               Install required packages for RA from PATH to CD");
+			Console.WriteLine("  --install-cnc-packages=PATH              Install required packages for C&C from PATH to CD");
+			Console.WriteLine("  --settings-value=SUPPORTDIR,KEY{,VALUE}  Get or set KEY in SUPPORTDIR/settings.yaml");
 		}
 
 		static void ListMods(string _)
@@ -235,6 +240,46 @@ namespace OpenRA.Utility
 		static void InstallCncPackages(string path)
 		{
 			Console.WriteLine ("Error: NotI");
+		}
+
+		static void Settings(string argValue)
+		{
+			string[] args = argValue.Split(',');
+			
+			if (args.Length < 2) { return; }
+
+			string settingsFile = args[0] + Path.DirectorySeparatorChar + "settings.yaml";
+			List<MiniYamlNode> settingsYaml = MiniYaml.FromFile(settingsFile);
+			Queue<String> settingKey = new Queue<string>(args[1].Split('.'));
+
+			string s = settingKey.Dequeue();
+			MiniYaml n = settingsYaml.Where(x => x.Key == s).Select(x => x.Value).FirstOrDefault();
+
+			if (n == null)
+			{
+				Console.WriteLine("Error: Could not find {0} in {1}", args[1], settingsFile);
+				return;
+			}
+
+			while (settingKey.Count > 0)
+			{
+				s = settingKey.Dequeue();
+				if (!n.NodesDict.TryGetValue(s, out n))
+				{
+					Console.WriteLine("Error: Could not find {0} in {1}", args[1], settingsFile);
+					return;
+				}
+			}
+
+			if (args.Length == 2)
+			{
+				Console.WriteLine(n.Value);
+			}
+			else if (args.Length == 3)
+			{
+				n.Value = args[2];
+				settingsYaml.WriteToFile(settingsFile);
+			}
 		}
 	}
 }
