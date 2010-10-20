@@ -41,7 +41,7 @@ namespace OpenRA
 
 		public void Draw( WorldRenderer wr, World world )
 		{
-			if (Game.Settings.Debug.ShowCollisions)
+			if (world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnitInfluenceDebug)
 			{
 				var uim = world.WorldActor.Trait<UnitInfluence>();
 				

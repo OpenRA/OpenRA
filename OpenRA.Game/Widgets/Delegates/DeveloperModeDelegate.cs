@@ -47,8 +47,8 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").Checked = 
-				() => Game.Settings.Debug.ShowCollisions;
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").Checked =
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnitInfluenceDebug;
 			devmodeBG.GetWidget("CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
 			{
 				world.IssueOrder(new Order("DevUnitDebug", world.LocalPlayer.PlayerActor));

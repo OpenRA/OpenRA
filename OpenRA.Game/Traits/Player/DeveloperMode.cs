@@ -18,6 +18,7 @@ namespace OpenRA.Traits
 		public bool FastCharge = false;
 		public bool DisableShroud = false;
 		public bool PathDebug = false;
+		public bool UnitInfluenceDebug = false;
 		
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -30,7 +31,8 @@ namespace OpenRA.Traits
 		[Sync] public bool FastBuild;
 		[Sync] public bool DisableShroud;
 		[Sync] public bool PathDebug;
-		
+		[Sync] public bool UnitInfluenceDebug;
+
 		public DeveloperMode(DeveloperModeInfo info)
 		{
 			Info = info;
@@ -38,6 +40,7 @@ namespace OpenRA.Traits
 			FastCharge = Info.FastCharge;
 			DisableShroud = Info.DisableShroud;
 			PathDebug = Info.PathDebug;
+			UnitInfluenceDebug = info.UnitInfluenceDebug;
 		}
 		
 		public void ResolveOrder (Actor self, Order order)
@@ -80,8 +83,7 @@ namespace OpenRA.Traits
 					}
 				case "DevUnitDebug":
 					{
-						if (self.World.LocalPlayer == self.Owner)
-							Game.Settings.Debug.ShowCollisions ^= true;
+						UnitInfluenceDebug ^= true;
 						break;
 					}
 				case "DevGiveExploration":
