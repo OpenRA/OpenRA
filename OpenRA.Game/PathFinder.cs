@@ -40,7 +40,7 @@ namespace OpenRA
 
 		public List<int2> FindUnitPath(int2 from, int2 target, Actor self)
 		{
-			using (new PerfSample("find_unit_path"))
+			using (new PerfSample("Pathfinder"))
 			{
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
@@ -69,7 +69,7 @@ namespace OpenRA
 
 		public List<int2> FindUnitPathToRange( int2 src, int2 target, int range, Actor self )
 		{
-			using( new PerfSample( "find_unit_path_multiple_src" ) )
+			using( new PerfSample( "Pathfinder" ) )
 			{
 				var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
@@ -93,7 +93,7 @@ namespace OpenRA
 
 		public List<int2> FindPath( PathSearch search )
 		{
-			//using (new PerfSample("find_path_inner"))
+			using (new PerfSample("Pathfinder"))
 			{
 				while (!search.queue.Empty)
 				{
@@ -127,26 +127,29 @@ namespace OpenRA
 
 
 
-		List<int2> FindBidiPath(			/* searches from both ends toward each other */
+		public List<int2> FindBidiPath(			/* searches from both ends toward each other */
 			PathSearch fromSrc,
 			PathSearch fromDest)
 		{
-			while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
+			using (new PerfSample("Pathfinder"))
 			{
-				/* make some progress on the first search */
-				var p = fromSrc.Expand( world );
+				while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
+				{
+					/* make some progress on the first search */
+					var p = fromSrc.Expand( world );
 
-				if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
-					return MakeBidiPath(fromSrc, fromDest, p);
+					if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+						return MakeBidiPath(fromSrc, fromDest, p);
 
-				/* make some progress on the second search */
-				var q = fromDest.Expand( world );
+					/* make some progress on the second search */
+					var q = fromDest.Expand( world );
 
-				if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
-					return MakeBidiPath(fromSrc, fromDest, q);
+					if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
+						return MakeBidiPath(fromSrc, fromDest, q);
+				}
+
+				return new List<int2>();
 			}
-
-			return new List<int2>();
 		}
 
 		static List<int2> MakeBidiPath(PathSearch a, PathSearch b, int2 p)

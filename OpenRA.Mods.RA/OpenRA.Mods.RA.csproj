@@ -57,6 +57,7 @@
     <Compile Include="Activities\CaptureBuilding.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\Fly.cs" />
     <Compile Include="Activities\FlyAttack.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Activities\Land.cs" />
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
+    <Compile Include="Activities\MoveAdjacentTo.cs" />
     <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "SpyInfiltrate")
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 1));
+				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask( w =>
 					{

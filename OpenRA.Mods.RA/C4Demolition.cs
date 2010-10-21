@@ -54,7 +54,8 @@ namespace OpenRA.Mods.RA
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
+				self.QueueActivity(new Enter(order.TargetActor));
+				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new Demolish(order.TargetActor));
 				self.QueueActivity(new Move(self.Location, 0));
 			}

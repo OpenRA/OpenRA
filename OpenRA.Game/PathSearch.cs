@@ -72,7 +72,7 @@ namespace OpenRA
 		
 		public PathSearch FromPoint(int2 from)
 		{
-			AddInitialCell( world, from );
+			AddInitialCell( from );
 			return this;
 		}
 		
@@ -155,7 +155,7 @@ namespace OpenRA
 			new int2(  1,  1 ),
 		};
 
-		public void AddInitialCell( World world, int2 location )
+		public void AddInitialCell( int2 location )
 		{
 			if (!world.Map.IsInMap(location.X, location.Y))
 				return;
@@ -177,7 +177,7 @@ namespace OpenRA
 				heuristic = DefaultEstimator( target ),
 				checkForBlocked = checkForBlocked };
 
-			search.AddInitialCell( world, from );
+			search.AddInitialCell( from );
 			return search;
 		}
 
@@ -189,8 +189,8 @@ namespace OpenRA
 				checkForBlocked = checkForBlocked
 			};
 
-			foreach (var sl in froms)
-				search.AddInitialCell(world, sl);
+			foreach( var sl in froms )
+				search.AddInitialCell( sl );
 
 			return search;
 		}
