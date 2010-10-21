@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
 
@@ -15,20 +16,21 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Demolish : CancelableActivity
 	{
-		Target target;
+		Actor target;
 
-		public Demolish( Actor target ) { this.target = Target.FromActor(target); }
+		public Demolish( Actor target ) { this.target = target; }
 
 		public override IActivity Tick(Actor self)
 		{
-			if( IsCanceled ) return NextActivity;
-			if (!target.IsValid) return NextActivity;
-			if ((target.Actor.Location - self.Location).Length > 1)
+			if (IsCanceled) return NextActivity;
+			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
+			if (target.Owner == self.Owner) return NextActivity;
+			
+			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x == self.Location ) )
 				return NextActivity;
 
-
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25 * 2,
-				() => { if (target.IsValid) target.Actor.Kill(self); })));
+				() => { if (target.IsInWorld) target.Kill(self); })));
 			return NextActivity;
 		}
 	}

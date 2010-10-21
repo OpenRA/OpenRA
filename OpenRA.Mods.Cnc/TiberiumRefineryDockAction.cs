@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			int2 startDock = harv.Trait<IHasLocation>().PxPosition;
 			int2 endDock = self.Trait<IHasLocation>().PxPosition + new int2(-15,8);
+			var mobile = self.Trait<Mobile>();
 			var harvester = harv.Trait<Harvester>();
 
 			harv.QueueActivity( new Turn(112) );
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Cnc
 					harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
 					if (harvester.LastHarvestedCell != int2.Zero)
 					{
-						harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+						harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
 						if (harv.Owner == self.World.LocalPlayer)
 							self.World.AddFrameEndTask( w =>
 							{

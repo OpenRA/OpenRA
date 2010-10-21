@@ -33,9 +33,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			if( inRange ) return this;
 
-			var ret = new Move( Target, Range );
-			ret.Queue( this );
-			return ret;
+			var mobile = self.Trait<Mobile>();
+			return Util.SequenceActivities( mobile.MoveTo( Target, Range ), this );
 		}
 	}
 }

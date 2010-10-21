@@ -63,8 +63,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
 			{
+				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				self.QueueActivity(new Move(order.TargetActor, 1));
+				self.QueueActivity(mobile.MoveTo(order.TargetActor, 1));
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask( w =>
 					{

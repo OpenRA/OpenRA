@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (IsCanceled) return NextActivity;
 
+			var mobile = self.Trait<Mobile>();
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (!limitedAmmo.HasAmmo())
 			{
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				var p = ml.minefield.Random(self.World.SharedRandom);
 				if (ShouldLayMine(self, p))
-					return Util.SequenceActivities( new Move(p, 0), this );
+					return Util.SequenceActivities( mobile.MoveTo(p, 0), this );
 			}
 
 			// todo: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.

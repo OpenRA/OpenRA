@@ -53,11 +53,12 @@ namespace OpenRA.Mods.RA
 							line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
 				
+				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
 				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new Demolish(order.TargetActor));
-				self.QueueActivity(new Move(self.Location, 0));
+				self.QueueActivity(mobile.MoveTo(self.Location, 0));
 			}
 		}
 		

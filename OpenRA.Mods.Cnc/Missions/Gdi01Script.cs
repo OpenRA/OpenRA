@@ -97,9 +97,10 @@ namespace OpenRA.Mods.Cnc
 							new FacingInit( 0 ),
 							new LocationInit ( Map.Waypoints["nod0"] ),
 						});
-						a.QueueActivity( new Move( Map.Waypoints["nod1"], 2 ) );
-						a.QueueActivity( new Move( Map.Waypoints["nod2"], 2 ) );
-						a.QueueActivity( new Move( Map.Waypoints["nod3"], 2 ) );
+						var mobile = a.Trait<Mobile>();
+						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod1"], 2 ) );
+						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod2"], 2 ) );
+						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod3"], 2 ) );
 						// Todo: Queue hunt order
 					}
 				});
@@ -162,9 +163,11 @@ namespace OpenRA.Mods.Cnc
 		
 		void SetGunboatPath()
 		{
-			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatLeft"] ));
-			Actors["Gunboat"].QueueActivity(new Move( Map.Waypoints["gunboatRight"] ));
-			Actors["Gunboat"].QueueActivity(new CallFunc(() => SetGunboatPath()));
+			var self = Actors[ "Gunboat" ];
+			var mobile = self.Trait<Mobile>();
+			self.QueueActivity(mobile.MoveTo( Map.Waypoints["gunboatLeft"] ));
+			self.QueueActivity(mobile.MoveTo( Map.Waypoints["gunboatRight"] ));
+			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		
 		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items)
@@ -179,7 +182,8 @@ namespace OpenRA.Mods.Cnc
 					new OwnerInit( Players["GoodGuy"] ),
 					new FacingInit( 0 ),
 				});
-				
+
+				var mobile = a.Trait<Mobile>();
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
 					cargo.Load(a, world.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary
@@ -189,7 +193,7 @@ namespace OpenRA.Mods.Cnc
 					}));
 				
 				a.CancelActivity();
-				a.QueueActivity(new Move(endPos));
+				a.QueueActivity(mobile.MoveTo(endPos));
 				a.QueueActivity(new CallFunc(() =>
 				{
 					while (!cargo.IsEmpty(a))
@@ -200,12 +204,12 @@ namespace OpenRA.Mods.Cnc
 							if (b.Destroyed) return;
 							w2.Add(b);
 							b.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(b, a.Location);
-							b.QueueActivity(new Move(unload, 2));
+							b.QueueActivity(mobile.MoveTo(unload, 2));
 						});
 					}
 				}));
 				a.QueueActivity(new Wait(25));
-				a.QueueActivity(new Move(startPos));
+				a.QueueActivity(mobile.MoveTo(startPos));
 				a.QueueActivity(new RemoveSelf());
 			});
 		}

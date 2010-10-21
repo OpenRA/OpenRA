@@ -67,9 +67,11 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				if (actor.Destroyed) return;
 				w.Add(actor);
-				actor.TraitsImplementing<IMove>().FirstOrDefault().SetPosition(actor, self.Location);
+
+				var mobile = self.Trait<Mobile>();
+				mobile.SetPosition(actor, self.Location);
 				actor.CancelActivity();
-				actor.QueueActivity(new Move(exitTile.Value, 0));
+				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
 				if (actor.Owner == self.World.LocalPlayer)
 				{
 					var line = actor.TraitOrDefault<DrawLineToTarget>();

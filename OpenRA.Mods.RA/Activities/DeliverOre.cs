@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( NextActivity != null )
 				return NextActivity;
 
+			var mobile = self.Trait<Mobile>();
 			var harv = self.Trait<Harvester>();
 
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 			
 			if( self.Location != proc.Location + proc.Trait<IAcceptOre>().DeliverOffset )
 			{
-				return Util.SequenceActivities( new Move(proc.Location + proc.Trait<IAcceptOre>().DeliverOffset, 0), this );
+				return Util.SequenceActivities( mobile.MoveTo(proc.Location + proc.Trait<IAcceptOre>().DeliverOffset, 0), this );
 			}
 			else if (!isDocking)
 			{

@@ -72,6 +72,7 @@ namespace OpenRA.Mods.RA
 				if( !CanRepairAt( order.TargetActor ) || !CanRepair() )
 					return;
 				
+				var mobile = self.Trait<Mobile>();
 				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
 
 				if (self.Owner == self.World.LocalPlayer)
@@ -85,13 +86,13 @@ namespace OpenRA.Mods.RA
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(new Move(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
+				self.QueueActivity(mobile.MoveTo(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				if (rp != null)
 					self.QueueActivity(new CallFunc(
-						() => self.QueueActivity(new Move(rp.rallyPoint, order.TargetActor))));
+						() => self.QueueActivity(mobile.MoveTo(rp.rallyPoint, order.TargetActor))));
 			}
 		}
 	}

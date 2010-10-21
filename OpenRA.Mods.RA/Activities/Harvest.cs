@@ -60,10 +60,11 @@ namespace OpenRA.Mods.RA.Activities
 
 		void FindMoreResource(Actor self)
 		{
+			var mobile = self.Trait<Mobile>();
 			var res = self.World.WorldActor.Trait<ResourceLayer>();
 			var harv = self.Info.Traits.Get<HarvesterInfo>();
 			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
-			self.QueueActivity(new Move(
+			self.QueueActivity(mobile.MoveTo(
 				() =>
 				{
 					return self.World.PathFinder.FindPath(PathSearch.Search(self.World, mobileInfo, true)

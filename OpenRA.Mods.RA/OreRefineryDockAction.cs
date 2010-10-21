@@ -41,7 +41,8 @@ namespace OpenRA.Mods.RA
 
 						if (harvester.LastHarvestedCell != int2.Zero)
 						{
-							harv.QueueActivity( new Move(harvester.LastHarvestedCell, 5) );
+							var mobile = harv.Trait<Mobile>();
+							harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
 							if (harv.Owner == self.World.LocalPlayer)
 								self.World.AddFrameEndTask( w =>
 								{

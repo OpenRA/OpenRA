@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Activities
 			var ret = self.World.PathFinder.FindBidiPath( ps1, ps2 );
 			if( ret.Count > 0 )
 				ret.RemoveAt( 0 );
-			return Util.SequenceActivities( new Move( () => ret ), this );
+			return Util.SequenceActivities( mobile.MoveTo( () => ret ), this );
 		}
 	}
 }

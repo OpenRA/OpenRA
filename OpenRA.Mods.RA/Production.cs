@@ -72,8 +72,7 @@ namespace OpenRA.Mods.RA
 			if (rp != null)
 			{
 				target = rp.rallyPoint;
-				// Todo: Move implies unit has Mobile
-				newUnit.QueueActivity(new Move(target, 1));
+				newUnit.QueueActivity(mobile.MoveTo(target, 1));
 			}
 			
 			if (newUnit.Owner == self.World.LocalPlayer)

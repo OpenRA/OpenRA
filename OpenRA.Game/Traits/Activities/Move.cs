@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Traits.Activities
 {
-	public class Move : CancelableActivity
+	class Move : CancelableActivity
 	{
 		int2? destination;
 		int nearEnough;
