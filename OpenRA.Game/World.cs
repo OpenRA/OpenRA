@@ -28,6 +28,8 @@ namespace OpenRA
 		List<IEffect> effects = new List<IEffect>();
 		Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
+		public int FrameNumber { get { return orderManager.LocalFrameNumber; } }
+
 		internal readonly OrderManager orderManager;
 		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
 
@@ -49,7 +51,6 @@ namespace OpenRA
 		}
 
 		public readonly Actor WorldActor;		
-		public readonly PathFinder PathFinder;
 
 		public readonly Map Map;
 		public readonly TileSet TileSet;
@@ -108,8 +109,6 @@ namespace OpenRA
 				foreach (var q in players.Values)
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = Stance.Neutral;		
-			
-			PathFinder = new PathFinder(this);
 			
 			Sound.SoundVolumeModifier = 1.0f;
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())

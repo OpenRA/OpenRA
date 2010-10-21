@@ -12,6 +12,7 @@ using System.Linq;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.QueueActivity(mobile.MoveTo(
 				() =>
 				{
-					return self.World.PathFinder.FindPath(PathSearch.Search(self.World, mobileInfo, true)
+					return self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, true)
 						.WithHeuristic(loc => (res.GetResource(loc) != null && harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
 				        .FromPoint(self.Location));
 				}));

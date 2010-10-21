@@ -16,6 +16,7 @@ using OpenRA.Traits.Activities;
 using System.Drawing;
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {

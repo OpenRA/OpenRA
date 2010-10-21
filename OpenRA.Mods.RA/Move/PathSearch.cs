@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA
+namespace OpenRA.Mods.RA.Move
 {
 	public class PathSearch
 	{

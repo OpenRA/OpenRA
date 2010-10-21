@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.RA.Activities
 			ps1.heuristic = PathSearch.DefaultEstimator( mobile.toCell );
 
 			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, target.Location, true );
-			var ret = self.World.PathFinder.FindBidiPath( ps1, ps2 );
+			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath( ps1, ps2 );
 			if( ret.Count > 0 )
 				ret.RemoveAt( 0 );
 			return Util.SequenceActivities( mobile.MoveTo( () => ret ), this );

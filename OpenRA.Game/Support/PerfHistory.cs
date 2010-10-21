@@ -90,7 +90,7 @@ namespace OpenRA.Support
 		}
 	}
 
-	class PerfSample : IDisposable
+	public class PerfSample : IDisposable
 	{
 		readonly Stopwatch sw = new Stopwatch();
 		readonly string Item;

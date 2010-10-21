@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Move
 {
 	class Move : CancelableActivity
 	{
@@ -28,7 +30,7 @@ namespace OpenRA.Traits.Activities
 		public Move( int2 destination )
 		{
 			this.getPath = (self,mobile) =>
-				self.World.PathFinder.FindPath(
+				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, destination, false )
 					.WithoutLaneBias());
 			this.destination = destination;
@@ -37,7 +39,7 @@ namespace OpenRA.Traits.Activities
 
 		public Move( int2 destination, int nearEnough ) 
 		{
-			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPath( mobile.toCell, destination, self );
+			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPath( mobile.toCell, destination, self );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -45,9 +47,9 @@ namespace OpenRA.Traits.Activities
 		public Move(int2 destination, Actor ignoreBuilding)
 		{
 			this.getPath = (self,mobile) => 
-				self.World.PathFinder.FindPath(
+				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, destination, false )
-					.WithCustomBlocker( self.World.PathFinder.AvoidUnitsNear( mobile.toCell, 4, self ))
+					.WithCustomBlocker( self.World.WorldActor.Trait<PathFinder>().AvoidUnitsNear( mobile.toCell, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;
@@ -57,7 +59,7 @@ namespace OpenRA.Traits.Activities
 
 		public Move( Actor target, int range )
 		{
-			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
+			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
 				mobile.toCell, target.Location,
 				range, self );
 			this.destination = null;
@@ -66,7 +68,7 @@ namespace OpenRA.Traits.Activities
 
 		public Move(Target target, int range)
 		{
-			this.getPath = (self,mobile) => self.World.PathFinder.FindUnitPathToRange(
+			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
 				mobile.toCell, Util.CellContaining(target.CenterLocation),
 				range, self);
 			this.destination = null;

@@ -13,6 +13,7 @@ using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {

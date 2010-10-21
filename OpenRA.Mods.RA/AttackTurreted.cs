@@ -12,6 +12,7 @@ using System;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using System.Linq;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {

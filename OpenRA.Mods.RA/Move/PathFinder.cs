@@ -15,16 +15,17 @@ using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA
+namespace OpenRA.Mods.RA.Move
 {
+	public class PathFinderInfo : ITraitInfo
+	{
+		public object Create( ActorInitializer init ) { return new PathFinder( init.world ); }
+	}
+
 	public class PathFinder
 	{
 		readonly World world;
-		
-		public PathFinder( World world )
-		{
-			this.world = world;
-		}
+		public PathFinder( World world ) { this.world = world; }
 
 		class CachedPath
 		{
@@ -45,8 +46,8 @@ namespace OpenRA
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
-					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, Game.LocalTick - cached.tick);
-					cached.tick = Game.LocalTick;
+					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
+					cached.tick = world.FrameNumber;
 					return new List<int2>(cached.result);
 				}
 				
@@ -61,8 +62,8 @@ namespace OpenRA
 
 				CheckSanePath2(pb, from, target);
 
-				CachedPaths.RemoveAll(p => Game.LocalTick - p.tick > MaxPathAge);
-				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = Game.LocalTick });
+				CachedPaths.RemoveAll(p => world.FrameNumber - p.tick > MaxPathAge);
+				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.FrameNumber });
 				return new List<int2>(pb);
 			}
 		}
@@ -98,8 +99,6 @@ namespace OpenRA
 				while (!search.queue.Empty)
 				{
 					var p = search.Expand( world );
-					PerfHistory.Increment("nodes_expanded", .01);
-
 					if (search.heuristic(p) == 0)
 						return MakePath(search.cellInfo, p);
 				}

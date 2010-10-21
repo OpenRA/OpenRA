@@ -178,6 +178,7 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: 0
+	PathFinder:
 
 CRATE:
 	Tooltip:

@@ -97,6 +97,11 @@
     <Compile Include="FallsToEarth.cs" />
     <Compile Include="CashTrickler.cs" />
     <Compile Include="LimitedAmmo.cs" />
+    <Compile Include="Move\Drag.cs" />
+    <Compile Include="Move\Mobile.cs" />
+    <Compile Include="Move\Move.cs" />
+    <Compile Include="Move\PathFinder.cs" />
+    <Compile Include="Move\PathSearch.cs" />
     <Compile Include="MPStartLocations.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterBuildingOrderTargeter.cs" />

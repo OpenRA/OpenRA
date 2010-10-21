@@ -106,7 +106,6 @@
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
-    <Compile Include="PathSearch.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />
@@ -136,7 +135,6 @@
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Graphics\Sheet.cs" />
-    <Compile Include="PathFinder.cs" />
     <Compile Include="Graphics\Sequence.cs" />
     <Compile Include="Network\Order.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
@@ -151,7 +149,6 @@
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
-    <Compile Include="Traits\Activities\Move.cs" />
     <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
@@ -159,7 +156,6 @@
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\Selectable.cs" />
-    <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\World\UnitInfluence.cs" />
@@ -202,7 +198,6 @@
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Targetable.cs" />
     <Compile Include="Traits\Health.cs" />
-    <Compile Include="Traits\Activities\Drag.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
     <Compile Include="GameRules\Settings.cs" />

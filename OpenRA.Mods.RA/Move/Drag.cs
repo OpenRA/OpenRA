@@ -9,8 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Move
 {
 	public class Drag : IActivity
 	{

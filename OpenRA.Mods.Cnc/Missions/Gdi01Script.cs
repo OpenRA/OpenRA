@@ -18,6 +18,7 @@ using OpenRA;
 using OpenRA.Mods.RA.Activities;
 using System;
 using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.Cnc
 {

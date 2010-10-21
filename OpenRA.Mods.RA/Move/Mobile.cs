@@ -17,8 +17,9 @@ using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using System.Diagnostics;
 using OpenRA.Orders;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Move
 {
 	public class MobileInfo : ITraitInfo
 	{
@@ -180,7 +181,7 @@ namespace OpenRA.Traits
 				
 				if( !order.Queued ) self.CancelActivity();
 
-				self.QueueActivity(new Activities.Move(currentLocation, 8));
+				self.QueueActivity(new Move(currentLocation, 8));
 			
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
