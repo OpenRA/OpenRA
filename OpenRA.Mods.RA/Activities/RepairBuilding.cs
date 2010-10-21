@@ -8,31 +8,32 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class RepairBuilding : CancelableActivity
 	{
-		Target target;
+		Actor target;
 
-		public RepairBuilding(Actor target) { this.target = Target.FromActor(target); }
+		public RepairBuilding(Actor target) { this.target = target; }
 
 		public override IActivity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (!target.IsValid) return NextActivity;
-			if ((target.Actor.Location - self.Location).Length > 1)
+			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
+			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x == self.Location ) )
 				return NextActivity;
 
-			var health = target.Actor.Trait<Health>();
+			var health = target.Trait<Health>();
 			if (health.DamageState == DamageState.Undamaged)
 				return NextActivity;
-			
-			target.Actor.InflictDamage(self, -health.MaxHP, null);
+
+			target.InflictDamage(self, -health.MaxHP, null);
 			self.Destroy();
 
-			return NextActivity;
+			return this;
 		}
 	}
 }

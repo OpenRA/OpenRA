@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -23,12 +24,15 @@ namespace OpenRA.Mods.RA.Activities
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
+			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x == self.Location ) )
+				return NextActivity;
+
 			foreach (var t in target.TraitsImplementing<IAcceptSpy>())
 				t.OnInfiltrate(target, self);
 
 			self.Destroy();
 
-			return NextActivity;
+			return this;
 		}
 	}
 }

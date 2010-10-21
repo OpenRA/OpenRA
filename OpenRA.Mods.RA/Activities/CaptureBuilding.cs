@@ -8,33 +8,36 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class CaptureBuilding : CancelableActivity
 	{
-		Target target;
+		Actor target;
 
-		public CaptureBuilding(Actor target) { this.target = Target.FromActor(target); }
+		public CaptureBuilding(Actor target) { this.target = target; }
 
 		public override IActivity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (!target.IsValid) return NextActivity;
-			if ((target.Actor.Location - self.Location).Length > 1)
-				return NextActivity;
+			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
+			if (target.Owner == self.Owner) return NextActivity;
 			
+			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x == self.Location ) )
+				return NextActivity;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				// momentarily remove from world so the ownership queries don't get confused
-				var oldOwner = target.Actor.Owner;
-				w.Remove(target.Actor);
-				target.Actor.Owner = self.Owner;
-				w.Add(target.Actor);
+				var oldOwner = target.Owner;
+				w.Remove(target);
+				target.Owner = self.Owner;
+				w.Add(target);
 				
-				foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(target.Actor, self, oldOwner, self.Owner);
+				foreach (var t in target.TraitsImplementing<INotifyCapture>())
+					t.OnCapture(target, self, oldOwner, self.Owner);
 
 				self.Destroy();
 			});
