@@ -65,7 +65,10 @@
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
 			this.surface1 = new OpenRA.Editor.Surface();
+			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -81,6 +84,7 @@
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
 			this.splitContainer3.SuspendLayout();
+			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -115,7 +119,7 @@
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
 			this.splitContainer2.Size = new System.Drawing.Size(198, 744);
-			this.splitContainer2.SplitterDistance = 182;
+			this.splitContainer2.SplitterDistance = 164;
 			this.splitContainer2.TabIndex = 1;
 			// 
 			// pmMiniMap
@@ -125,7 +129,7 @@
 			this.pmMiniMap.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pmMiniMap.Location = new System.Drawing.Point(0, 0);
 			this.pmMiniMap.Name = "pmMiniMap";
-			this.pmMiniMap.Size = new System.Drawing.Size(198, 182);
+			this.pmMiniMap.Size = new System.Drawing.Size(198, 164);
 			this.pmMiniMap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pmMiniMap.TabIndex = 1;
 			this.pmMiniMap.TabStop = false;
@@ -142,7 +146,7 @@
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.Padding = new System.Drawing.Point(6, 0);
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(198, 558);
+			this.tabControl1.Size = new System.Drawing.Size(198, 576);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
@@ -151,7 +155,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 20);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(190, 534);
+			this.tabPage1.Size = new System.Drawing.Size(190, 552);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Templates";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -163,7 +167,7 @@
 			this.tilePalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tilePalette.Location = new System.Drawing.Point(3, 3);
 			this.tilePalette.Name = "tilePalette";
-			this.tilePalette.Size = new System.Drawing.Size(184, 528);
+			this.tilePalette.Size = new System.Drawing.Size(184, 546);
 			this.tilePalette.TabIndex = 1;
 			// 
 			// tabPage2
@@ -172,7 +176,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 20);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(190, 534);
+			this.tabPage2.Size = new System.Drawing.Size(190, 552);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Actors";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -184,7 +188,7 @@
 			this.actorPalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.actorPalette.Location = new System.Drawing.Point(3, 3);
 			this.actorPalette.Name = "actorPalette";
-			this.actorPalette.Size = new System.Drawing.Size(184, 528);
+			this.actorPalette.Size = new System.Drawing.Size(184, 546);
 			this.actorPalette.TabIndex = 2;
 			// 
 			// tabPage3
@@ -192,7 +196,7 @@
 			this.tabPage3.Controls.Add(this.resourcePalette);
 			this.tabPage3.Location = new System.Drawing.Point(4, 20);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(190, 534);
+			this.tabPage3.Size = new System.Drawing.Size(190, 552);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Resources";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -204,7 +208,7 @@
 			this.resourcePalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.resourcePalette.Location = new System.Drawing.Point(0, 0);
 			this.resourcePalette.Name = "resourcePalette";
-			this.resourcePalette.Size = new System.Drawing.Size(190, 534);
+			this.resourcePalette.Size = new System.Drawing.Size(190, 552);
 			this.resourcePalette.TabIndex = 3;
 			// 
 			// menuStrip1
@@ -417,6 +421,24 @@
 			this.splitContainer3.SplitterDistance = 25;
 			this.splitContainer3.TabIndex = 6;
 			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelFiller,
+            this.toolStripStatusLabelMousePosition});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 751);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(985, 22);
+			this.statusStrip1.TabIndex = 7;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// toolStripStatusLabelMousePosition
+			// 
+			this.toolStripStatusLabelMousePosition.Name = "toolStripStatusLabelMousePosition";
+			this.toolStripStatusLabelMousePosition.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+			this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(22, 17);
+			this.toolStripStatusLabelMousePosition.Text = "0:0";
+			// 
 			// surface1
 			// 
 			this.surface1.BackColor = System.Drawing.Color.Black;
@@ -427,11 +449,19 @@
 			this.surface1.TabIndex = 5;
 			this.surface1.Text = "surface1";
 			// 
+			// toolStripStatusLabelFiller
+			// 
+			this.toolStripStatusLabelFiller.Name = "toolStripStatusLabelFiller";
+			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(821, 17);
+			this.toolStripStatusLabelFiller.Spring = true;
+			this.toolStripStatusLabelFiller.Text = "toolStripStatusLabel1";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(985, 773);
+			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.splitContainer3);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
@@ -459,7 +489,10 @@
 			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			this.splitContainer3.ResumeLayout(false);
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -501,6 +534,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuMinimapToPNG;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
 		private System.Windows.Forms.SplitContainer splitContainer3;
+		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelMousePosition;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFiller;
 
 	}
 }
