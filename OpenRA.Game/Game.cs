@@ -43,7 +43,7 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
 		
-		public static void MoveViewport(int2 loc)
+		public static void MoveViewport(float2 loc)
 		{
 			viewport.Center(loc);
 		}

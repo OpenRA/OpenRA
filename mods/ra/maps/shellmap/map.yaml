@@ -835,7 +835,7 @@ Actors:
 	Actor261: gun
 		Location: 32,42
 		Owner: Greece
-	Actor262: weap
+	greeceweap: weap
 		Location: 37,48
 		Owner: Greece
 	Actor263: fact
@@ -1219,6 +1219,15 @@ Actors:
 	mslo3: mslo
 		Location: 89,82
 		Owner: Greece
+	mig1: mig
+		Location: 124,52
+		Owner: GoodGuy
+	mig2: mig
+		Location: 128,47
+		Owner: GoodGuy
+	mig3: mig
+		Location: 120,42
+		Owner: GoodGuy
 
 Waypoints:
 	spawn0: 36,36
@@ -1237,3 +1246,4 @@ Rules:
 		DefaultShellmapScript:
 		-SpawnMPUnits:
 		-MPStartLocations:
+

@@ -123,7 +123,7 @@ namespace OpenRA.Graphics
 			return ViewToWorld(mi.Location);
 		}
 		
-		public void Center(int2 loc)
+		public void Center(float2 loc)
 		{
 			scrollPosition = this.NormalizeScrollPosition(Game.CellSize*loc - .5f * new float2(Width, Height));
 		}
