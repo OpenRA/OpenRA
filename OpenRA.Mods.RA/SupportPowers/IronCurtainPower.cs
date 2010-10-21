@@ -77,13 +77,8 @@ namespace OpenRA.Mods.RA
 							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 					if( underCursor != null )
-					{
-						world.CancelInputMode();
 						yield return new Order( "IronCurtain", underCursor.Owner.PlayerActor, underCursor );
-					}
 				}
-
-				yield break;
 			}
 
 			public void Tick(World world)
