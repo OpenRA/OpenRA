@@ -35,6 +35,8 @@ namespace OpenRA.Editor
 		public bool IsPanning;
 		public event Action AfterChange = () => { };
 
+		private ToolStripStatusLabel MousePositionLabel = null;
+
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
 
@@ -83,6 +85,11 @@ namespace OpenRA.Editor
 			Invalidate();
 		}
 
+		public void SetMousePositionLabel(ToolStripStatusLabel mouseLabel)
+		{
+			MousePositionLabel = mouseLabel;
+		}
+
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
 			base.OnMouseWheel(e);
@@ -120,6 +127,11 @@ namespace OpenRA.Editor
 
 			var oldMousePos = MousePos;
 			MousePos = new int2(e.Location);
+
+			if (MousePositionLabel != null)
+			{
+				MousePositionLabel.Text = GetBrushLocation().ToString();
+			}
 
 			if (e.Button == MouseButtons.Middle || (e.Button != MouseButtons.None && IsPanning))
 				Scroll(oldMousePos - MousePos);

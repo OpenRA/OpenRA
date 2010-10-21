@@ -66,9 +66,9 @@
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
 			this.surface1 = new OpenRA.Editor.Surface();
-			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -432,12 +432,18 @@
 			this.statusStrip1.TabIndex = 7;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
+			// toolStripStatusLabelFiller
+			// 
+			this.toolStripStatusLabelFiller.Name = "toolStripStatusLabelFiller";
+			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(948, 17);
+			this.toolStripStatusLabelFiller.Spring = true;
+			// 
 			// toolStripStatusLabelMousePosition
 			// 
 			this.toolStripStatusLabelMousePosition.Name = "toolStripStatusLabelMousePosition";
 			this.toolStripStatusLabelMousePosition.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
 			this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(22, 17);
-			this.toolStripStatusLabelMousePosition.Text = "0:0";
+			this.toolStripStatusLabelMousePosition.Text = "0,0";
 			// 
 			// surface1
 			// 
@@ -448,13 +454,6 @@
 			this.surface1.Size = new System.Drawing.Size(783, 744);
 			this.surface1.TabIndex = 5;
 			this.surface1.Text = "surface1";
-			// 
-			// toolStripStatusLabelFiller
-			// 
-			this.toolStripStatusLabelFiller.Name = "toolStripStatusLabelFiller";
-			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(821, 17);
-			this.toolStripStatusLabelFiller.Spring = true;
-			this.toolStripStatusLabelFiller.Text = "toolStripStatusLabel1";
 			// 
 			// Form1
 			// 
