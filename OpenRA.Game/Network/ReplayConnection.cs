@@ -29,10 +29,23 @@ namespace OpenRA.Network
 		// do nothing; ignore locally generated orders
 		public void Send( int frame, List<byte[]> orders ) { }
 		public void SendImmediate( List<byte[]> orders ) { }
-		public void SendSync( int frame, byte[] syncData ) { }
+		public void SendSync( int frame, byte[] syncData )
+		{
+			var ms = new MemoryStream();
+			ms.Write( BitConverter.GetBytes( frame ) );
+			ms.Write( syncData );
+			sync.Add( ms.ToArray() );
+		}
+
+		List<byte[]> sync = new List<byte[]>();
 
 		public void Receive( Action<int, byte[]> packetFn )
 		{
+			while( sync.Count != 0 )
+			{
+				packetFn( LocalClientId, sync[ 0 ] );
+				sync.RemoveAt( 0 );
+			}
 			if( replayStream == null ) return;
 
 			var reader = new BinaryReader( replayStream );
