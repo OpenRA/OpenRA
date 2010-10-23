@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			int2 startDock = harv.Trait<IHasLocation>().PxPosition;
 			int2 endDock = self.Trait<IHasLocation>().PxPosition + new int2(-15,8);
-			var mobile = self.Trait<Mobile>();
+			var mobile = harv.Trait<Mobile>();
 			var harvester = harv.Trait<Harvester>();
 
 			harv.QueueActivity( new Turn(112) );
