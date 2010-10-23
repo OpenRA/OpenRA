@@ -14,24 +14,39 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class FlyAttack : CancelableActivity
 	{
-		Target Target;
+		readonly Target Target;
+		IActivity inner;
 
 		public FlyAttack(Target target) { Target = target; }
 
 		public override IActivity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-			if (!Target.IsValid)
-				return NextActivity;
-
+			if( !Target.IsValid )
+				Cancel( self );
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-				return NextActivity;
+			if( limitedAmmo != null && !limitedAmmo.HasAmmo() )
+				Cancel( self );
 
-			return Util.SequenceActivities(
-				Fly.ToPx(Target.CenterLocation),
-				new FlyTimed(50),
-				this);
+			self.Trait<AttackPlane>().DoAttack( self );
+
+			if( IsCanceled && inner == null ) return NextActivity;
+
+			if( inner == null )
+			{
+				inner = Util.SequenceActivities(
+					Fly.ToPx(Target.CenterLocation),
+					new FlyTimed(50));
+			}
+			inner = inner.Tick( self );
+
+			return this;
+		}
+
+		protected override bool OnCancel( Actor self )
+		{
+			if( inner != null )
+				inner.Cancel( self );
+			return base.OnCancel( self );
 		}
 	}
 

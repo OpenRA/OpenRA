@@ -39,7 +39,8 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 			}
 
-			var range = self.Trait<AttackBase>().GetMaximumRange() - 1;
+			var attack = self.Trait<AttackBase>();
+			var range = attack.GetMaximumRange() - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
@@ -48,6 +49,8 @@ namespace OpenRA.Mods.RA.Activities
 			
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				aircraft.center += (rawSpeed / dist.Length) * dist;
+
+			attack.DoAttack( self );
 
 			return this;
 		}

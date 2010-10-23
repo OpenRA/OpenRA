@@ -20,17 +20,18 @@ namespace OpenRA.Mods.RA
 
 		readonly int FacingTolerance;
 
-		public override void Tick(Actor self)
+		protected override bool CanAttack( Actor self )
 		{
-			base.Tick(self);
-
-			if (!target.IsValid) return;
+			if( !base.CanAttack( self ) )
+				return false;
 
 			var facing = self.Trait<IFacing>().Facing;
 			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, facing);
 
-			if (Math.Abs(facingToTarget - facing) % 256 < FacingTolerance)
-				DoAttack(self);
+			if( Math.Abs( facingToTarget - facing ) % 256 >= FacingTolerance )
+				return false;
+
+			return true;
 		}
 	}
 }
