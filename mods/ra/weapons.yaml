@@ -1004,13 +1004,13 @@ TTankZap:
 
 FLAK-23:
 	ROF: 10
-	Range: 6
+	Range: 8
 	Report: AACANON3
 	ValidTargets: Air,Ground
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Spread: 3
+		Spread: 5
 		Versus: 
 			None: 40%
 			Wood: 10%
