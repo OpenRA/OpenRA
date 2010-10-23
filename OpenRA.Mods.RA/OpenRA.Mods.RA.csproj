@@ -76,6 +76,7 @@
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Teleport.cs" />
+    <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />

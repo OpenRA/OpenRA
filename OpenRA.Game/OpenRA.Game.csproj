@@ -149,7 +149,6 @@
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
-    <Compile Include="Traits\Activities\Turn.cs" />
     <Compile Include="Traits\Building.cs" />
     <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />

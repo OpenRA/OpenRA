@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Activities
 {
 	public class Turn : CancelableActivity
 	{
