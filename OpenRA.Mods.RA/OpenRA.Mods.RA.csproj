@@ -73,6 +73,7 @@
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\MoveAdjacentTo.cs" />
     <Compile Include="Activities\Rearm.cs" />
+    <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\ReturnToBase.cs" />
     <Compile Include="Activities\Teleport.cs" />

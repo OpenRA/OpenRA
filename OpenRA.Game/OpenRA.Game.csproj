@@ -130,7 +130,6 @@
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
-    <Compile Include="Traits\Activities\RemoveSelf.cs" />
     <Compile Include="Traits\Activities\Sell.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Player.cs" />
