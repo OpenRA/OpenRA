@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class AttackBaseInfo : ITraitInfo
+	public abstract class AttackBaseInfo : ITraitInfo
 	{
 		[WeaponReference]
 		public readonly string PrimaryWeapon = null;
@@ -39,10 +39,10 @@ namespace OpenRA.Mods.RA
 		public readonly float ScanTimeAverage = 2f;
 		public readonly float ScanTimeSpread = .5f;
 
-		public virtual object Create(ActorInitializer init) { return new AttackBase(init.self); }
+		public abstract object Create(ActorInitializer init);
 	}
 
-	public class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
 	{
 		[Sync]
 		int nextScanTime = 0;
@@ -343,5 +343,15 @@ namespace OpenRA.Mods.RA
 				return false;
 			}
 		}
+	}
+
+	public class AttackDefaultInfo : AttackBaseInfo
+	{
+		public override object Create( ActorInitializer init ) { return new AttackDefault( init.self ); }
+	}
+
+	public class AttackDefault : AttackBase
+	{
+		public AttackDefault( Actor self ) : base( self ) { }
 	}
 }

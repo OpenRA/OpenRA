@@ -45,7 +45,7 @@ E1:
 		HP: 50
 	Mobile:
 		Speed: 4
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: M1Carbine
 	TakeCover:
 	IdleAnimation:
@@ -70,7 +70,7 @@ E2:
 		HP: 50
 	Mobile:
 		Speed: 5
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-13
 		FireDelay: 15
@@ -97,7 +97,7 @@ E3:
 		HP: 45
 	Mobile:
 		Speed: 3
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: RedEye
 		SecondaryWeapon: Dragon
 		PrimaryOffset: 0,0,0,-13
@@ -124,7 +124,7 @@ E4:
 		HP: 40
 	Mobile:
 		Speed: 3
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Flamer
 		PrimaryOffset: 0,0,0,-7
 		FireDelay: 8
@@ -221,7 +221,7 @@ E7:
 		Range: 6
 	C4Demolition:
 		C4Delay: .03
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Colt45
 		SecondaryWeapon: Colt45
 	TakeCover:
@@ -253,7 +253,7 @@ MEDI:
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
@@ -261,7 +261,7 @@ MEDI:
 		JustMove: true
 	IdleAnimation:
 		Animations: idle1,idle2
-	
+
 C1:
 	Inherits: ^Infantry
 	Selectable:
@@ -277,7 +277,7 @@ C1:
 		Speed: 4
 	RevealsShroud:
 		Range: 2
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Pistol
 
 C2:
@@ -295,7 +295,7 @@ C2:
 		Speed: 4
 	RevealsShroud:
 		Range: 2
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Pistol
 
 SHOK:
@@ -318,7 +318,7 @@ SHOK:
 		Speed: 3
 	RevealsShroud:
 		Range: 4
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: PortaTesla
 	TakeCover:
 	IdleAnimation:

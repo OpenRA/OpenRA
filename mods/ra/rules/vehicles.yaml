@@ -63,7 +63,7 @@ V2RL:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
 #	AutoTarget:
@@ -237,7 +237,7 @@ ARTY:
 		Speed: 6
 	RevealsShroud:
 		Range: 5
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
@@ -356,7 +356,7 @@ APC:
 		Speed: 10
 	RevealsShroud:
 		Range: 5
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
 		MuzzleFlash: yes
@@ -474,7 +474,7 @@ SS:
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: TorpTube
 		PrimaryLocalOffset: -4,0,0,4,0,0
 		FireDelay: 2
@@ -516,7 +516,7 @@ MSUB:
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: SubMissile
 		FireDelay: 2
 	Selectable:
@@ -941,7 +941,7 @@ TTNK:
 		Speed: 8
 	RevealsShroud:
 		Range: 7
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: TTankZap
 	RenderUnitSpinner:
 	Selectable:
