@@ -679,7 +679,7 @@ MIG:
 		BuiltAt: afld
 		Owner: soviet
 	Valued:
-		Cost: 1200
+		Cost: 2000
 	Tooltip:
 		Name: Mig Attack Plane
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
@@ -717,7 +717,7 @@ YAK:
 		BuiltAt: afld
 		Owner: soviet
 	Valued:
-		Cost: 800
+		Cost: 1000
 	Tooltip:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings

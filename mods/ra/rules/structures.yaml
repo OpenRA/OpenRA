@@ -681,7 +681,7 @@ AFLD:
 		Owner: soviet
 		Hotkey: g
 	Valued:
-		Cost: 1100
+		Cost: 300
 	Tooltip:
 		Name: Airstrip
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
