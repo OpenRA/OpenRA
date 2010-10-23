@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -91,6 +92,67 @@ namespace OpenRA.Mods.RA
 				FireDelay = Info.ROF;
 				Burst = Info.Burst;
 			}
+		}
+
+		public void CheckFire(Actor self, AttackBase attack, IMove move, IFacing facing, Target target)
+		{		
+			if (FireDelay > 0) return;
+
+			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
+			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+				return;
+
+			if (Info.Range * Info.Range * Game.CellSize * Game.CellSize
+			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return;
+
+			if (Info.MinRange * Info.MinRange * Game.CellSize * Game.CellSize >
+				(target.CenterLocation - self.CenterLocation).LengthSquared) return;
+			
+			if (!IsValidAgainst(self.World, target)) return;
+
+			var barrel = Barrels[Burst % Barrels.Length];
+			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
+
+			var args = new ProjectileArgs
+			{
+				weapon = Info,
+
+				firedBy = self,
+				target = target,
+
+				src = (self.CenterLocation
+					+ Combat.GetTurretPosition(self, facing, Turret)
+					+ Combat.GetBarrelPosition(self, facing, Turret, barrel)).ToInt2(),
+				srcAltitude = move != null ? move.Altitude : 0,
+				dest = target.CenterLocation.ToInt2(),
+				destAltitude = destMove != null ? destMove.Altitude : 0,
+				
+				facing = barrel.Facing + 
+					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
+					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+
+				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
+					 .Select(a => a.GetFirepowerModifier())
+					 .Product()
+			};
+			
+			attack.ScheduleDelayedAction( attack.FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
+			{
+				if (args.weapon.Projectile != null)
+				{
+					var projectile = args.weapon.Projectile.Create(args);
+					if (projectile != null)
+						self.World.Add(projectile);
+
+					if (!string.IsNullOrEmpty(args.weapon.Report))
+						Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
+				}
+			});
+
+			foreach (var na in self.TraitsImplementing<INotifyAttack>())
+				na.Attacking(self);
+
+			FiredShot();
 		}
 	}
 }

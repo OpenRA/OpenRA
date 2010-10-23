@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA
 			delayedActions.RemoveAll(a => a.First <= 0);
 		}
 
-		void ScheduleDelayedAction(int t, Action a)
+		internal void ScheduleDelayedAction(int t, Action a)
 		{
 			if (t > 0)
 				delayedActions.Add(Pair.New(t, a));
@@ -118,69 +118,7 @@ namespace OpenRA.Mods.RA
 			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var w in Weapons)
-				if (CheckFire(self, move, facing, w))
-					w.FiredShot();
-		}
-
-		bool CheckFire(Actor self, IMove move, IFacing facing, Weapon w)
-		{		
-			if (w.FireDelay > 0) return false;
-
-			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-				return false;
-
-			if (w.Info.Range * w.Info.Range * Game.CellSize * Game.CellSize
-			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return false;
-
-			if (w.Info.MinRange * w.Info.MinRange * Game.CellSize * Game.CellSize >
-				(target.CenterLocation - self.CenterLocation).LengthSquared) return false;
-			
-			if (!w.IsValidAgainst(self.World, target)) return false;
-
-			var barrel = w.Barrels[w.Burst % w.Barrels.Length];
-			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
-
-			var args = new ProjectileArgs
-			{
-				weapon = w.Info,
-
-				firedBy = self,
-				target = this.target,
-
-				src = (self.CenterLocation
-					+ Combat.GetTurretPosition(self, facing, w.Turret)
-					+ Combat.GetBarrelPosition(self, facing, w.Turret, barrel)).ToInt2(),
-				srcAltitude = move != null ? move.Altitude : 0,
-				dest = target.CenterLocation.ToInt2(),
-				destAltitude = destMove != null ? destMove.Altitude : 0,
-				
-				facing = barrel.Facing + 
-					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
-					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
-
-				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
-					 .Select(a => a.GetFirepowerModifier())
-					 .Product()
-			};
-			
-			ScheduleDelayedAction( FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
-			{
-				if (args.weapon.Projectile != null)
-				{
-					var projectile = args.weapon.Projectile.Create(args);
-					if (projectile != null)
-						self.World.Add(projectile);
-
-					if (!string.IsNullOrEmpty(args.weapon.Report))
-						Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
-				}
-			});
-
-			foreach (var na in self.TraitsImplementing<INotifyAttack>())
-				na.Attacking(self);
-
-			return true;
+				w.CheckFire(self, this, move, facing, target);
 		}
 
 		public virtual int FireDelay( Actor self, AttackBaseInfo info )
