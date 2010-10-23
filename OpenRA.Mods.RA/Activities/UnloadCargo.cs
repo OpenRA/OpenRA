@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (actor.Destroyed) return;
 				w.Add(actor);
 
-				var mobile = self.Trait<Mobile>();
+				var mobile = actor.Trait<Mobile>();
 				mobile.SetPosition(actor, self.Location);
 				actor.CancelActivity();
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
