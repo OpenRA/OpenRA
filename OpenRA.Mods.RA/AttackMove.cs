@@ -20,10 +20,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool JustMove = false;
 	}
 
-	class AttackMove : ITick, IResolveOrder, IOrderVoice
+	class AttackMove : IResolveOrder, IOrderVoice
 	{
-		public bool AttackMoving { get; set; }
-
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "AttackMove")
@@ -38,12 +36,10 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				//if we are just moving, we don't turn on attackmove and this becomes a regular move order
-				if (!self.Info.Traits.Get<AttackMoveInfo>().JustMove)
-				{
-					AttackMoving = true;
-				}
-				Order newOrder = new Order("Move", order.Subject, order.TargetLocation);
-				self.Trait<Mobile>().ResolveOrder(self, newOrder);
+				if (self.Info.Traits.Get<AttackMoveInfo>().JustMove)
+					self.QueueActivity( self.Trait<Mobile>().MoveTo( order.TargetLocation, 1 ));
+				else
+					self.QueueActivity( new AttackMoveActivity(order.TargetLocation));
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -58,23 +54,35 @@ namespace OpenRA.Mods.RA
 							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
 			}
-			else
-			{
-				AttackMoving = false; //cancel attack move state for other orders
-			}
 		}
 
-		public void Tick(Actor self)
+		class AttackMoveActivity : CancelableActivity
 		{
-			if (self.Info.Traits.Get<AttackMoveInfo>().JustMove) return;
-			if (!self.HasTrait<AttackBase>())
-			{
-				Game.Debug("AttackMove: {0} has no AttackBase trait".F(self.ToString()));
-				return;
-			}
-			if (!self.IsIdle && (self.HasTrait<AttackMove>() && !(self.Trait<AttackMove>().AttackMoving))) return;
+			readonly int2 target;
+			IActivity inner;
+			public AttackMoveActivity( int2 target ) { this.target = target; }
 
-			self.Trait<AttackBase>().ScanAndAttack(self, true);
+			public override IActivity Tick( Actor self )
+			{
+				self.Trait<AttackBase>().ScanAndAttack(self, true);
+
+				if( inner == null )
+				{
+					if( IsCanceled )
+						return NextActivity;
+					inner = self.Trait<Mobile>().MoveTo( target, 1 );
+				}
+				inner = inner.Tick( self );
+				return this;
+			}
+
+			protected override bool OnCancel( Actor self )
+			{
+				if( inner != null )
+					inner.Cancel( self );
+				return base.OnCancel( self );
+			}
 		}
+
 	}
 }

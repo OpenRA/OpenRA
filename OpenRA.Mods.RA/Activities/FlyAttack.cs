@@ -29,10 +29,10 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.Trait<AttackPlane>().DoAttack( self, Target );
 
-			if( IsCanceled && inner == null ) return NextActivity;
-
 			if( inner == null )
 			{
+				if( IsCanceled )
+					return NextActivity;
 				inner = Util.SequenceActivities(
 					Fly.ToPx(Target.CenterLocation),
 					new FlyTimed(50));
