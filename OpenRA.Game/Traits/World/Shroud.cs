@@ -131,9 +131,12 @@ namespace OpenRA.Traits
 			{
 				var ios = a.TraitOrDefault<IOccupySpace>();
 				if (ios != null)
-					return ios.OccupiedCells();
-				else
-					return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
+				{
+					var cells = ios.OccupiedCells();
+					if (cells.Any()) return cells;
+				}
+
+				return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
 			}
 		}
 
