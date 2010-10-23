@@ -230,7 +230,7 @@ namespace OpenRA.Mods.RA.Move
 			return nextCell;
 		}
 
-		protected override bool OnCancel()
+		protected override bool OnCancel( Actor self )
 		{
 			path = new List<int2>();
 			return true;

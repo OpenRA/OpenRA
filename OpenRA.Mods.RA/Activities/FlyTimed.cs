@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		protected override bool OnCancel()
+		protected override bool OnCancel( Actor self )
 		{
 			return Interruptible;
 		}

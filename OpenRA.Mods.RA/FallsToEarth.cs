@@ -52,6 +52,6 @@ namespace OpenRA.Mods.RA
 			return this;
 		}
 
-		protected override bool OnCancel() { return false; }
+		protected override bool OnCancel( Actor self ) { return false; }
 	}
 }

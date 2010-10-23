@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		protected override bool OnCancel()
+		protected override bool OnCancel( Actor self )
 		{
 			if( !interruptable ) return false;
 			remainingTicks = 0;

@@ -186,11 +186,11 @@ namespace OpenRA.Traits
 		protected bool IsCanceled { get; private set; }
 
 		public abstract IActivity Tick( Actor self );
-		protected virtual bool OnCancel() { return true; }
+		protected virtual bool OnCancel( Actor self ) { return true; }
 
 		public void Cancel( Actor self )
 		{
-			IsCanceled = OnCancel();
+			IsCanceled = OnCancel( self );
 			if( IsCanceled )
 				NextActivity = null;
 			else if (NextActivity != null)
