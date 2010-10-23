@@ -789,7 +789,7 @@ HELI:
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
-		Cost: 1200
+		Cost: 2000
 	Tooltip:
 		Name: Longbow
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
@@ -827,7 +827,7 @@ HIND:
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
-		Cost: 1200
+		Cost: 2000
 	Tooltip:
 		Name: Hind
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
