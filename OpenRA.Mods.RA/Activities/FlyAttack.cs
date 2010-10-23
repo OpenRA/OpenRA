@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( limitedAmmo != null && !limitedAmmo.HasAmmo() )
 				Cancel( self );
 
-			self.Trait<AttackPlane>().DoAttack( self );
+			self.Trait<AttackPlane>().DoAttack( self, Target );
 
 			if( IsCanceled && inner == null ) return NextActivity;
 

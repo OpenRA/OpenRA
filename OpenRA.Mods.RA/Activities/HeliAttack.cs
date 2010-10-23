@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				aircraft.center += (rawSpeed / dist.Length) * dist;
 
-			attack.DoAttack( self );
+			attack.DoAttack( self, target );
 
 			return this;
 		}

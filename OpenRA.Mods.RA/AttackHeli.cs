@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA
 	{
 		public AttackHeli(Actor self) : base(self, 20) { }
 
-		protected override void QueueAttack(Actor self, Order order)
+		protected override void QueueAttack(Actor self, Target newTarget)
 		{
-			target = Target.FromOrder(order);
-			self.QueueActivity(new HeliAttack(target));
+			target = newTarget;
+			self.QueueActivity(new HeliAttack(newTarget));
 		}
 	}
 }

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			var attack = self.TraitOrDefault<AttackBase>();
-			var isAttacking = attack != null && attack.target.IsValid;
+			var isAttacking = attack.IsAttacking;
 			anims["turret_0"].Animation.ReplaceAnim(isAttacking ? "aim" : "turret");
 			base.Tick(self);
 		}

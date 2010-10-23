@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA
 	{
 		public AttackPlane(Actor self) : base(self, 20) { }
 
-		protected override void QueueAttack(Actor self, Order order)
+		protected override void QueueAttack(Actor self, Target newTarget)
 		{
-			target = Target.FromOrder(order);
-			self.QueueActivity(new FlyAttack(target));
+			target = newTarget;
+			self.QueueActivity(new FlyAttack(newTarget));
 		}
 
 		protected override bool CanAttack(Actor self)

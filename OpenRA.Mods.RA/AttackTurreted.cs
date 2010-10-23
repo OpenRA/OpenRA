@@ -42,23 +42,23 @@ namespace OpenRA.Mods.RA
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			DoAttack( self );
+			DoAttack( self, target );
 		}
 
-		protected override void QueueAttack( Actor self, Order order )
+		protected override void QueueAttack( Actor self, Target newTarget )
 		{
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
 				return;
 			
 			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
+			var weapon = ChooseWeaponForTarget(newTarget);
 			if (weapon == null)
 				return;
 
-			target = Target.FromOrder(order);
+			target = newTarget;
 
 			if (self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-				self.QueueActivity( new Follow( target,
+				self.QueueActivity( new Follow( newTarget,
 					Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
 		}
 

@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA
 				a();
 		}
 
-		public void DoAttack(Actor self)
+		public void DoAttack(Actor self, Target target)
 		{
 			if( !CanAttack( self ) ) return;
 
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Attack" || order.OrderString == "Heal")
 			{
 				self.CancelActivity();
-				QueueAttack(self, order);
+				QueueAttack(self, Target.FromOrder(order));
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -181,14 +181,14 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Attack" || order.OrderString == "Heal") ? "Attack" : null;
 		}
 		
-		protected virtual void QueueAttack(Actor self, Order order)
+		protected virtual void QueueAttack(Actor self, Target newTarget)
 		{
-			var weapon = ChooseWeaponForTarget(Target.FromOrder(order));
+			var weapon = ChooseWeaponForTarget(newTarget);
 
 			if (weapon != null)
 				self.QueueActivity(
 					new Activities.Attack(
-						Target.FromOrder(order), 
+						newTarget, 
 						Math.Max(0, (int)weapon.Info.Range)));
 		}
 

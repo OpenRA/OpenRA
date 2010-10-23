@@ -33,12 +33,12 @@ namespace OpenRA.Mods.RA
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			DoAttack(self);
+			DoAttack(self, target);
 		}
 
-		protected override void QueueAttack(Actor self, Order order)
+		protected override void QueueAttack(Actor self, Target newTarget)
 		{
-			target = Target.FromOrder(order);
+			target = newTarget;
 		}
 	}
 }

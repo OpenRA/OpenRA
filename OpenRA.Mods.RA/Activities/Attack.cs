@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			attack.target = Target;
-			attack.DoAttack(self);
+			attack.DoAttack(self, Target);
 			return this;
 		}
 	}
