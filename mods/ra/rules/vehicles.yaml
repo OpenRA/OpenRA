@@ -827,7 +827,7 @@ HIND:
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
-		Cost: 2000
+		Cost: 1500
 	Tooltip:
 		Name: Hind
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
