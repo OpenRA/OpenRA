@@ -17,13 +17,13 @@ Colt45:
 		
 ZSU-23:
 	ROF: 10
-	Range: 6
+	Range: 10
 	Report: AACANON3
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Spread: 3
+		Spread: 5
 		Versus: 
 			None: 30%
 			Wood: 75%
