@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	class AttackTeslaInfo : AttackOmniInfo
 	{
 		public readonly int MaxCharges = 3;
+		public readonly int ReloadTime = 120;
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.self); }
 	}
 
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.RA
 			foreach (var w in Weapons)
 				w.FireDelay = 8;
 
-			timeToRecharge = Weapons[0].Info.ROF;
+			timeToRecharge = self.Info.Traits.Get<AttackTeslaInfo>().ReloadTime;
 			--charges;
 
 			if (target.Actor != previousTarget)

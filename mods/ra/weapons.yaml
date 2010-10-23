@@ -593,7 +593,7 @@ CrateNuke:
 		
 		
 TeslaZap:
-	ROF: 120
+	ROF: 3
 	Charges: true
 	Range: 8.5
 	Report: TESLA1

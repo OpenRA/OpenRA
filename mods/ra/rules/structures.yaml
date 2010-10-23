@@ -254,6 +254,7 @@ TSLA:
 	AttackTesla:
 		PrimaryWeapon: TeslaZap
 		FireDelay: 8
+		ReloadTime: 120
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
