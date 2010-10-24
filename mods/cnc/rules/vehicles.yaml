@@ -83,7 +83,7 @@ APC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,0,0,-4
 		MuzzleFlash: yes
@@ -116,7 +116,7 @@ ARTY:
 		Type: Light
 	RevealsShroud:
 		Range: 6
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: Ballistic
 	RenderUnit:
 	Explodes:
@@ -143,7 +143,7 @@ FTNK:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 2,-8,0,-2
 		SecondaryWeapon: BigFlamer
@@ -202,7 +202,7 @@ BIKE:
 		Armor: none
 	RevealsShroud:
 		Range: 7
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: Rockets.Bike
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,25,4,0,-25
@@ -442,7 +442,7 @@ STNK:
 		CloakDelay: 2.0
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: 227mm
 	RenderUnit:
 	AutoTarget:
@@ -507,6 +507,7 @@ HELI:
 		SecondaryWeapon: HighV
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
+		FacingTolerance: 20
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
@@ -539,6 +540,7 @@ ORCA:
 		SecondaryWeapon: Rockets.Orca
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
+		FacingTolerance: 20
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:

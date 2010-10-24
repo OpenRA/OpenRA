@@ -282,14 +282,4 @@ namespace OpenRA.Mods.RA
 			}
 		}
 	}
-
-	public class AttackDefaultInfo : AttackBaseInfo
-	{
-		public override object Create( ActorInitializer init ) { return new AttackDefault( init.self ); }
-	}
-
-	public class AttackDefault : AttackBase
-	{
-		public AttackDefault( Actor self ) : base( self ) { }
-	}
 }

@@ -71,7 +71,7 @@ V2RL:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: SCUD
 	RenderUnitReload:
 	AutoTarget:
@@ -245,7 +245,7 @@ ARTY:
 		Speed: 6
 	RevealsShroud:
 		Range: 5
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
@@ -364,7 +364,7 @@ APC:
 		Speed: 10
 	RevealsShroud:
 		Range: 5
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
 		MuzzleFlash: yes
@@ -482,7 +482,7 @@ SS:
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: TorpTube
 		PrimaryLocalOffset: -4,0,0,4,0,0
 		FireDelay: 2
@@ -524,7 +524,7 @@ MSUB:
 		CloakDelay: 2.0
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: SubMissile
 		FireDelay: 2
 	Selectable:
@@ -702,6 +702,7 @@ MIG:
 		SecondaryWeapon: Maverick
 		PrimaryLocalOffset: -15,0,-10,-12,0,6
 		SecondaryLocalOffset: 15,0,10,12,0,6
+		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192
 		ROT: 5
@@ -744,6 +745,7 @@ YAK:
 		SecondaryWeapon: ChainGun.Yak
 		PrimaryOffset: -5,-6,0,0
 		SecondaryOffset: 5,-6,0,0
+		FacingTolerance: 20
 	Plane:
 		RearmBuildings: afld
 		InitialFacing: 192
@@ -818,6 +820,7 @@ HELI:
 		SecondaryWeapon: Hellfire
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
+		FacingTolerance: 20
 	Helicopter:
 		RearmBuildings: hpad
 		LandWhenIdle: false
@@ -856,6 +859,7 @@ HIND:
 		SecondaryWeapon: ChainGun
 		PrimaryOffset: -5,-2,0,2
 		SecondaryOffset: 5,-2,0,2
+		FacingTolerance: 20
 	Helicopter:
 		RearmBuildings: hpad
 		LandWhenIdle: false
@@ -959,7 +963,7 @@ TTNK:
 		Speed: 8
 	RevealsShroud:
 		Range: 7
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: TTankZap
 	RenderUnitSpinner:
 	Selectable:

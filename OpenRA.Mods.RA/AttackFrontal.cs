@@ -13,12 +13,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	abstract class AttackFrontal : AttackBase
+	public class AttackFrontalInfo : AttackBaseInfo
 	{
-		public AttackFrontal(Actor self, int facingTolerance)
-			: base(self) { FacingTolerance = facingTolerance; }
+		public readonly int FacingTolerance = 1;
 
-		readonly int FacingTolerance;
+		public override object Create( ActorInitializer init ) { return new AttackFrontal( init.self, this ); }
+	}
+
+	public class AttackFrontal : AttackBase
+	{
+		readonly AttackFrontalInfo info;
+		public AttackFrontal(Actor self, AttackFrontalInfo info)
+			: base( self ) { this.info = info; }
 
 		protected override bool CanAttack( Actor self )
 		{
@@ -28,7 +34,7 @@ namespace OpenRA.Mods.RA
 			var facing = self.Trait<IFacing>().Facing;
 			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, facing);
 
-			if( Math.Abs( facingToTarget - facing ) % 256 >= FacingTolerance )
+			if( Math.Abs( facingToTarget - facing ) % 256 > info.FacingTolerance )
 				return false;
 
 			return true;

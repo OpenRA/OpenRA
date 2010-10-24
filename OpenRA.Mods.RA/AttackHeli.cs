@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackHeliInfo : AttackBaseInfo
+	class AttackHeliInfo : AttackFrontalInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackHeli(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackHeli(init.self, this); }
 	}
 
 	class AttackHeli : AttackFrontal
 	{
-		public AttackHeli(Actor self) : base(self, 20) { }
+		public AttackHeli(Actor self, AttackHeliInfo info) : base(self, info) { }
 
 		protected override void QueueAttack(Actor self, Target newTarget)
 		{

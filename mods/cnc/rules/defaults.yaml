@@ -135,7 +135,7 @@
 		HP: 20
 	RevealsShroud:
 		Range: 2
-	AttackDefault:
+	AttackFrontal:
 		PrimaryWeapon: Pistol
 #	ActorLostNotification:
 #		Notification: civdead1.aud
