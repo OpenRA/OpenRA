@@ -12,7 +12,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class FallsToEarthInfo : TraitInfo<FallsToEarth> { }
+	class FallsToEarthInfo : TraitInfo<FallsToEarth>
+	{
+		[WeaponReference]
+		public readonly string Explosion = null;
+	}
 
 	class FallsToEarth : INotifyDamage
 	{
@@ -23,7 +27,7 @@ namespace OpenRA.Mods.RA
 				self.Trait<Health>().RemoveOnDeath = false;
 
 				self.CancelActivity();
-				self.QueueActivity(new FallToEarth());
+				self.QueueActivity(new FallToEarth(self.Info.Traits.Get<FallsToEarthInfo>()));
 			}
 		}
 	}
@@ -32,6 +36,12 @@ namespace OpenRA.Mods.RA
 	{
 		int acceleration = 0;
 		int spin = 0;
+		FallsToEarthInfo info;
+
+		public FallToEarth(FallsToEarthInfo info)
+		{
+			this.info = info;
+		}
 
 		public override IActivity Tick(Actor self)
 		{
@@ -41,6 +51,9 @@ namespace OpenRA.Mods.RA
 			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude <= 0)
 			{
+				if (info.Explosion != null)
+					Combat.DoExplosion(self, info.Explosion, self.CenterLocation, 0);
+
 				self.Destroy();
 				return null;
 			}
@@ -52,6 +65,6 @@ namespace OpenRA.Mods.RA
 			return this;
 		}
 
-		protected override bool OnCancel( Actor self ) { return false; }
+		protected override bool OnCancel(Actor self) { return false; }
 	}
 }
