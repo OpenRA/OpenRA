@@ -166,7 +166,7 @@ namespace OpenRA
 			BeforeGameStart();
 
 			var map = modData.PrepareMap(mapUID);
-			viewport = new Viewport(new float2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
+			viewport = new Viewport(new int2(Renderer.Resolution), map.TopLeft, map.BottomRight, Renderer);
 			orderManager.world = new World(modData.Manifest, map, orderManager);
 			worldRenderer = new WorldRenderer(orderManager.world);
 

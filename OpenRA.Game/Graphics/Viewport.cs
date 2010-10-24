@@ -18,16 +18,16 @@ namespace OpenRA.Graphics
 {
 	public class Viewport
 	{
-		readonly float2 screenSize;
-		float2 scrollPosition;
+		readonly int2 screenSize;
+		int2 scrollPosition;
 		readonly Renderer renderer;
 		readonly int2 mapStart;
 		readonly int2 mapEnd;
 
 		public float2 Location { get { return scrollPosition; } }
 
-		public int Width { get { return (int)screenSize.X; } }
-		public int Height { get { return (int)screenSize.Y; } }
+		public int Width { get { return screenSize.X; } }
+		public int Height { get { return screenSize.Y; } }
 
 		float cursorFrame = 0f;
 
@@ -41,7 +41,8 @@ namespace OpenRA.Graphics
 		
 		public void Scroll(float2 delta, bool ignoreBorders)
 		{
-			float2 newScrollPosition = scrollPosition + delta;
+			var d = delta.ToInt2();
+			var newScrollPosition = scrollPosition + d;
 			
 			if(!ignoreBorders)
 				newScrollPosition = this.NormalizeScrollPosition(newScrollPosition);
@@ -49,10 +50,10 @@ namespace OpenRA.Graphics
 			scrollPosition = newScrollPosition;
 		}
 		
-		private float2 NormalizeScrollPosition(float2 newScrollPosition)
+		private int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
-			float2 topLeftBorder = (Game.CellSize* mapStart).ToFloat2();
-			float2 bottomRightBorder = (Game.CellSize* mapEnd).ToFloat2();
+			var topLeftBorder = Game.CellSize* mapStart;
+			var bottomRightBorder = Game.CellSize* mapEnd;
 		  
 			if(newScrollPosition.Y < topLeftBorder.Y - screenSize.Y/2)
 				newScrollPosition.Y = topLeftBorder.Y - screenSize.Y/2;
@@ -85,7 +86,7 @@ namespace OpenRA.Graphics
 			return blockedDirections;
 		}
 
-		public Viewport(float2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
+		public Viewport(int2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
@@ -125,7 +126,7 @@ namespace OpenRA.Graphics
 		
 		public void Center(float2 loc)
 		{
-			scrollPosition = this.NormalizeScrollPosition(Game.CellSize*loc - .5f * new float2(Width, Height));
+			scrollPosition = this.NormalizeScrollPosition(Game.CellSize*loc - screenSize / 2);
 		}
 
 		public void Center(IEnumerable<Actor> actors)
@@ -136,7 +137,7 @@ namespace OpenRA.Graphics
 				.Select(a => a.CenterLocation)
 				.Aggregate((a, b) => a + b);
 
-			scrollPosition = this.NormalizeScrollPosition((avgPos - .5f * new float2(Width, Height)));
+			scrollPosition = this.NormalizeScrollPosition((avgPos.ToInt2() - screenSize / 2));
 		}
 
 		public Rectangle ShroudBounds( World world )
