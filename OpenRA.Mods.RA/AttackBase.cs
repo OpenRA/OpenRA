@@ -138,16 +138,16 @@ namespace OpenRA.Mods.RA
 			if( order is AttackOrderTargeter )
 			{
 				if( target.IsActor )
-					return new Order( IsHeal ? "Heal" : "Attack", self, target.Actor );
+					return new Order( "Attack", self, target.Actor );
 				else
-					return new Order( IsHeal ? "Heal" : "Attack", self, Util.CellContaining( target.CenterLocation ) );
+					return new Order( "Attack", self, Util.CellContaining( target.CenterLocation ) );
 			}
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack" || order.OrderString == "Heal")
+			if (order.OrderString == "Attack")
 			{
 				self.CancelActivity();
 				QueueAttack(self, Target.FromOrder(order));
@@ -178,7 +178,7 @@ namespace OpenRA.Mods.RA
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Attack" || order.OrderString == "Heal") ? "Attack" : null;
+			return (order.OrderString == "Attack") ? "Attack" : null;
 		}
 		
 		protected virtual void QueueAttack(Actor self, Target newTarget)
