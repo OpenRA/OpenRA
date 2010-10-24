@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int[] ContrailOffset = {0, 0};
 
 		public readonly int TrailLength = 20;
-		public readonly int[] TrailColor = null;
+		public readonly bool UsePlayerColor = true;
 
 		public object Create(ActorInitializer init) { return new Contrail(init.self, this); }
 	}
@@ -45,18 +45,10 @@ namespace OpenRA.Mods.RA
 
 			TrailLength = Info.TrailLength;
 
-			// if no color specified or wrong format, blend with owner color
-			if (Info.TrailColor == null || Info.TrailColor.Length != 4)
+			if (Info.UsePlayerColor)
 			{
 				var ownerColor = Color.FromArgb(255, self.Owner.Color);
 				TrailColor = PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
-			}
-			else
-			{
-				// otherwise, blend with specified color
-				var blendColor = Color.FromArgb(255, Info.TrailColor[1].Clamp(0, 255),
-					Info.TrailColor[2].Clamp(0, 255), Info.TrailColor[3].Clamp(0, 255));
-				TrailColor = PlayerColorRemap.ColorLerp(0.5f, blendColor, Color.White);
 			}
 		}
 
