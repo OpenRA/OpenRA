@@ -185,6 +185,8 @@ namespace OpenRA.Traits
 
 	public interface IBlocksBullets { }
 
+	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
+
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
 

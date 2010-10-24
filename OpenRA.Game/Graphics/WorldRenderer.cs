@@ -105,6 +105,12 @@ namespace OpenRA.Graphics
 				image.Sprite.DrawAt( image.Pos, this.GetPaletteIndex( image.Palette ) );
 			uiOverlay.Draw(this, world);
 
+			// added for contrails
+			foreach (var a in world.Actors)
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPostRender>())
+						t.RenderAfterWorld(this, a);
+
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderAfterWorld(this, world);
 

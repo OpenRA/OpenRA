@@ -32,7 +32,7 @@ namespace OpenRA.FileFormats
 				.ToDictionary(u => u.First, u => u.Second);
 		}
 
-		static Color ColorLerp(float t, Color c1, Color c2)
+		public static Color ColorLerp(float t, Color c1, Color c2)
 		{
 			return Color.FromArgb(255,
 				(int)(t * c2.R + (1 - t) * c1.R),

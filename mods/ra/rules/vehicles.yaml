@@ -19,6 +19,10 @@ BADR:
 	-GainsExperience:
 	Tooltip:
 		Name: Badger
+	Contrail@1:
+		ContrailOffset: 11, -11
+	Contrail@2:
+		ContrailOffset: -11, -11
 
 BADR.bomber:
 	CarpetBomb:
@@ -42,6 +46,10 @@ BADR.bomber:
 	-GainsExperience:
 	Tooltip:
 		Name: Badger
+	Contrail@1:
+		ContrailOffset: 11, -11
+	Contrail@2:
+		ContrailOffset: -11, -11
 
 V2RL:
 	Inherits: ^Vehicle
@@ -707,6 +715,10 @@ MIG:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 44,40,0,0
+	Contrail@1:
+		ContrailOffset: 16,-14
+	Contrail@2:
+		ContrailOffset: -16,-14
 
 YAK:
 	Inherits: ^Plane
@@ -745,6 +757,8 @@ YAK:
 	IronCurtainable:
 	ReturnOnIdle:
 	WithMuzzleFlash:
+	Contrail:
+		ContrailOffset: 0, -20
 
 TRAN:
 	Inherits: ^Plane
@@ -873,6 +887,10 @@ U2:
 	IronCurtainable:
 	-Selectable:
 	-GainsExperience:
+	Contrail@1:
+		ContrailOffset: 16, -17
+	Contrail@2:
+		ContrailOffset: -16, -17
 
 1TNK.Husk:
 	Inherits: ^Husk
