@@ -126,7 +126,7 @@ namespace OpenRA.Graphics
 		
 		public void Center(float2 loc)
 		{
-			scrollPosition = this.NormalizeScrollPosition(Game.CellSize*loc - screenSize / 2);
+			scrollPosition = this.NormalizeScrollPosition((Game.CellSize*loc - screenSize / 2).ToInt2());
 		}
 
 		public void Center(IEnumerable<Actor> actors)
