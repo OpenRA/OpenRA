@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -16,6 +17,9 @@ namespace OpenRA.Mods.RA
 	{
 		[WeaponReference]
 		public readonly string Explosion = null;
+
+		public readonly bool Spins = true;
+		public readonly bool Moves = false;
 	}
 
 	class FallsToEarth : INotifyDamage
@@ -27,7 +31,7 @@ namespace OpenRA.Mods.RA
 				self.Trait<Health>().RemoveOnDeath = false;
 
 				self.CancelActivity();
-				self.QueueActivity(new FallToEarth(self.Info.Traits.Get<FallsToEarthInfo>()));
+				self.QueueActivity(new FallToEarth(self, self.Info.Traits.Get<FallsToEarthInfo>()));
 			}
 		}
 	}
@@ -38,16 +42,15 @@ namespace OpenRA.Mods.RA
 		int spin = 0;
 		FallsToEarthInfo info;
 
-		public FallToEarth(FallsToEarthInfo info)
+		public FallToEarth(Actor self, FallsToEarthInfo info)
 		{
 			this.info = info;
+			if (info.Spins)
+				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
 		public override IActivity Tick(Actor self)
 		{
-			if (acceleration == 0)
-				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
-
 			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude <= 0)
 			{
@@ -58,8 +61,15 @@ namespace OpenRA.Mods.RA
 				return null;
 			}
 
-			spin += acceleration;
-			aircraft.Facing = (aircraft.Facing + spin) % 256;
+			if (info.Spins)
+			{
+				spin += acceleration;
+				aircraft.Facing = (aircraft.Facing + spin) % 256;
+			}
+
+			if (info.Moves)
+				FlyUtil.Fly(self, aircraft.Altitude);
+
 			aircraft.Altitude--;
 
 			return this;
