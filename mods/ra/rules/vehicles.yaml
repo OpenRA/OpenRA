@@ -23,6 +23,10 @@ BADR:
 		ContrailOffset: 11, -11
 	Contrail@2:
 		ContrailOffset: -11, -11
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
 
 BADR.bomber:
 	CarpetBomb:
@@ -50,6 +54,10 @@ BADR.bomber:
 		ContrailOffset: 11, -11
 	Contrail@2:
 		ContrailOffset: -11, -11
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
 
 V2RL:
 	Inherits: ^Vehicle
@@ -720,6 +728,10 @@ MIG:
 		ContrailOffset: 16,-14
 	Contrail@2:
 		ContrailOffset: -16,-14
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
 
 YAK:
 	Inherits: ^Plane
@@ -761,6 +773,10 @@ YAK:
 	WithMuzzleFlash:
 	Contrail:
 		ContrailOffset: 0, -20
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
 
 TRAN:
 	Inherits: ^Plane
@@ -795,6 +811,7 @@ TRAN:
 		Passengers: 5
 	IronCurtainable:
 	FallsToEarth:
+		Explosion: UnitExplode
 
 HELI:
 	Inherits: ^Plane
@@ -834,6 +851,7 @@ HELI:
 		Ammo: 6
 	IronCurtainable:
 	FallsToEarth:
+		Explosion: UnitExplode
 
 HIND:
 	Inherits: ^Plane
@@ -876,6 +894,7 @@ HIND:
 		Bounds: 38,32,0,0
 	WithMuzzleFlash:
 	FallsToEarth:
+		Explosion: UnitExplode
 
 U2:
 	Inherits: ^Plane
@@ -895,6 +914,10 @@ U2:
 		ContrailOffset: 16, -17
 	Contrail@2:
 		ContrailOffset: -16, -17
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
 
 1TNK.Husk:
 	Inherits: ^Husk
