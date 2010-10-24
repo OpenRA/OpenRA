@@ -15,7 +15,7 @@ E1:
 		Speed: 4
 	Health:
 		HP: 50
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: M16
 	TakeCover:
 	IdleAnimation:
@@ -38,7 +38,7 @@ E2:
 		Speed: 4
 	Health:
 		HP: 50
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 15
@@ -63,7 +63,7 @@ E3:
 		Speed: 3
 	Health:
 		HP: 45
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 5
@@ -89,7 +89,7 @@ E4:
 		Speed: 4
 	Health:
 		HP: 90
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Flamethrower
 		PrimaryOffset: 0,0,0,-5
 		FireDelay: 3
@@ -118,7 +118,7 @@ E5:
 		Speed: 4
 	Health:
 		HP: 90
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Chemspray
 		PrimaryOffset: 0,0,0,-5
 		FireDelay: 3
@@ -179,7 +179,7 @@ RMBO:
 		HP: 200
 	RevealsShroud:
 		Range: 5
-	AttackBase:
+	AttackDefault:
 		PrimaryWeapon: Sniper
 	TakeCover:
 	C4Demolition:
