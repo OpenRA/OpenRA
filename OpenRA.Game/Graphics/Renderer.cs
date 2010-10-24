@@ -86,7 +86,7 @@ namespace OpenRA.Graphics
 		private void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
 		{
 			s.SetValue( "Palette", PaletteTexture );
-			s.SetValue( "Scroll", scroll.X, scroll.Y );
+			s.SetValue( "Scroll", (int) scroll.X, (int) scroll.Y );
 			s.SetValue( "r1", r1.X, r1.Y );
 			s.SetValue( "r2", r2.X, r2.Y );
 			s.Commit();
