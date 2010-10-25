@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 
 	class TeslaInstantKills : IDamageModifier
 	{
-		public float GetDamageModifier( WarheadInfo warhead )
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
 			if( warhead != null && warhead.InfDeath == 5 )
 				return 1000f;

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 				--remainingProneTime;
 		}
 
-		public float GetDamageModifier( WarheadInfo warhead )
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
 			return IsProne ? proneDamage : 1f;
 		}
