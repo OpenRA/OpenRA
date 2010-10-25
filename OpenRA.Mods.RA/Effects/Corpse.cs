@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class Corpse : IEffect
+	public class Corpse : IEffect
 	{
 		readonly Animation anim;
 		readonly float2 pos;
