@@ -100,7 +100,6 @@ utility_KIND		= exe
 utility_DEPS        = $(fileformats_TARGET) thirdparty/ICSharpCode.SharpZipLib.dll
 utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
 
-
 # -platform:x86
 
 .SUFFIXES:

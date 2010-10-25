@@ -10,14 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenRA.FileFormats;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Threading;
 using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Utility
 {
@@ -47,7 +46,12 @@ namespace OpenRA.Utility
 			argCallbacks.Add("--install-ra-packages", InstallRAPackages);
 			argCallbacks.Add("--install-cnc-packages", InstallCncPackages);
 			argCallbacks.Add("--settings-value", Settings);
+			argCallbacks.Add("--install-mod", InstallMod);
 
+			WindowsIdentity id = WindowsIdentity.GetCurrent();
+			WindowsPrincipal p = new WindowsPrincipal(id);
+			if (p.IsInRole(WindowsBuiltInRole.Administrator))
+				Console.SetOut(new StreamWriter(File.OpenWrite("output.txt")));
 			
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
@@ -56,20 +60,24 @@ namespace OpenRA.Utility
 				callback(arg.Value);
 			else
 				PrintUsage();
+
+			if (p.IsInRole(WindowsBuiltInRole.Administrator))
+				Console.Out.Close();
 		}
 
 		static void PrintUsage()
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION]");
 			Console.WriteLine();
-			Console.WriteLine("  -l,--list-mods                           List currently installed mods");
-			Console.WriteLine("  -i=MODS,--mod-info=MODS                  List metadata for MODS (comma separated list of mods)");
-			Console.WriteLine("  --install-ra-music=PATH                  Install scores.mix from PATH to Red Alert CD");
-			Console.WriteLine("  --install-cnc-music=PATH                 Install scores.mix from PATH to Command & Conquer CD");
-			Console.WriteLine("  --download-packages=MOD{,DEST}           Download packages for MOD to DEST (def: system temp folder) and install them");
-			Console.WriteLine("  --install-ra-packages=PATH               Install required packages for RA from PATH to CD");
-			Console.WriteLine("  --install-cnc-packages=PATH              Install required packages for C&C from PATH to CD");
-			Console.WriteLine("  --settings-value=SUPPORTDIR,KEY{,VALUE}  Get or set KEY in SUPPORTDIR/settings.yaml");
+			Console.WriteLine("  -l,--list-mods                   List currently installed mods");
+			Console.WriteLine("  -i=MODS,--mod-info=MODS          List metadata for MODS (comma separated list of mods)");
+			Console.WriteLine("  --install-ra-music=PATH          Install scores.mix from PATH to Red Alert CD");
+			Console.WriteLine("  --install-cnc-music=PATH         Install scores.mix from PATH to Command & Conquer CD");
+			Console.WriteLine("  --download-packages=MOD{,DEST}   Download packages for MOD to DEST (def: system temp folder) and install them");
+			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from PATH to CD");
+			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from PATH to CD");
+			Console.WriteLine("  --settings-value=SUPPORTDIR,KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
+			Console.WriteLine("  --install-mod=ZIPFILE            Install a mod from ZIPFILE");
 		}
 
 		static void ListMods(string _)
@@ -271,14 +279,14 @@ namespace OpenRA.Utility
 				}
 			}
 
-			if (args.Length == 2)
+			Console.WriteLine(n.Value);
+		}
+
+		static void InstallMod(string zipFile)
+		{
+			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
+			using (var zipStream = new ZipInputStream(File.OpenRead(zipFile)))
 			{
-				Console.WriteLine(n.Value);
-			}
-			else if (args.Length == 3)
-			{
-				n.Value = args[2];
-				settingsYaml.WriteToFile(settingsFile);
 			}
 		}
 	}
