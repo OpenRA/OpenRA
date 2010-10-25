@@ -98,6 +98,7 @@ namespace OpenRA.Widgets
 			var done = false;
 			foreach (var o in orders)
 			{
+				if (o.Subject.Destroyed) continue;
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
 				{
 					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject, o.Subject.Owner.Country.Race))
