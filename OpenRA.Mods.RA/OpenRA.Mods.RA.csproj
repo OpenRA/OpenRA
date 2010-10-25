@@ -84,6 +84,7 @@
     <Compile Include="AttackMove.cs" />
     <Compile Include="Buildable.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="Player\SurrenderOnDisconnect.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
     <Compile Include="Crates\GiveMcvCrateAction.cs" />
     <Compile Include="Crates\GiveUnitCrateAction.cs" />

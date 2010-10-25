@@ -68,7 +68,7 @@ Player:
 	PlayerColorPalette:
 		BasePalette: terrain
 		PaletteFormat: cnc
-
+	SurrenderOnDisconnect:
 World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT

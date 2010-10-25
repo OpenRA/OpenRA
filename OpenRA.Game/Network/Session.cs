@@ -21,20 +21,21 @@ namespace OpenRA.Network
 		public List<Slot> Slots = new List<Slot>();
 		public Global GlobalSettings = new Global();
 
-		public Client ClientWithIndex( int clientID )
+		public Client ClientWithIndex(int clientID)
 		{
-			return Clients.SingleOrDefault( c => c.Index == clientID );
+			return Clients.SingleOrDefault(c => c.Index == clientID);
 		}
 
-		public Client ClientInSlot( Slot slot )
+		public Client ClientInSlot(Slot slot)
 		{
-			return Clients.SingleOrDefault( c => c.Slot == slot.Index );
+			return Clients.SingleOrDefault(c => c.Slot == slot.Index);
 		}
 
 		public enum ClientState
 		{
 			NotReady,
-			Ready
+			Ready,
+			Disconnected = 1000
 		}
 
 		public class Client
@@ -71,7 +72,7 @@ namespace OpenRA.Network
 			public bool AllowCheats = false;
 		}
 
-		public Session( string[] mods )
+		public Session(string[] mods)
 		{
 			this.GlobalSettings.Mods = mods.ToArray();
 		}
@@ -80,27 +81,27 @@ namespace OpenRA.Network
 		{
 			var clientData = new List<MiniYamlNode>();
 
-			foreach( var client in Clients )
-				clientData.Add( new MiniYamlNode( "Client@{0}".F( client.Index ), FieldSaver.Save( client ) ) );
+			foreach (var client in Clients)
+				clientData.Add(new MiniYamlNode("Client@{0}".F(client.Index), FieldSaver.Save(client)));
 
-			foreach( var slot in Slots )
-				clientData.Add( new MiniYamlNode( "Slot@{0}".F( slot.Index ), FieldSaver.Save( slot ) ) );
+			foreach (var slot in Slots)
+				clientData.Add(new MiniYamlNode("Slot@{0}".F(slot.Index), FieldSaver.Save(slot)));
 
-			clientData.Add( new MiniYamlNode( "GlobalSettings", FieldSaver.Save( GlobalSettings ) ) );
+			clientData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(GlobalSettings)));
 
 			return clientData.WriteToString();
 		}
 
 		public static Session Deserialize(string data)
 		{
-			var session = new Session( Game.Settings.Game.Mods );
+			var session = new Session(Game.Settings.Game.Mods);
 
 			var ys = MiniYaml.FromString(data);
 			foreach (var y in ys)
 			{
 				var yy = y.Key.Split('@');
 
-				switch( yy[0] )
+				switch (yy[0])
 				{
 					case "GlobalSettings":
 						FieldLoader.Load(session.GlobalSettings, y.Value);
@@ -111,7 +112,7 @@ namespace OpenRA.Network
 						break;
 
 					case "Slot":
-						session.Slots.Add(FieldLoader.Load<Session.Slot>(y.Value ));
+						session.Slots.Add(FieldLoader.Load<Session.Slot>(y.Value));
 						break;
 				}
 			}

@@ -656,35 +656,41 @@ namespace OpenRA.Server
 				new ServerOrder("Chat", text).Serialize());
 		}
 
-		static void SendChat(Connection asConn, string text)
-		{
-			DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
-		}
+        static void SendChat(Connection asConn, string text)
+        {
+            DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
+        }
+
+        static void SendDisconnected(Connection asConn)
+        {
+            DispatchOrders(asConn, 0, new ServerOrder("Disconnected", "").Serialize());
+        }
 
 		static void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
 			switch (so.Name)
 			{
 				case "Command":
-				{
-					if(GameStarted)
-						SendChatTo(conn, "Cannot change state when game started.");
-					else if (GetClient(conn).State == Session.ClientState.Ready && !(so.Data == "ready" || so.Data == "startgame") )
-						SendChatTo(conn, "Cannot change state when marked as ready.");
-					else if (!InterpretCommand(conn, so.Data))
 					{
-						Log.Write("server", "Bad server command: {0}", so.Data);
-						SendChatTo(conn, "Bad server command.");
-					};
-				}
-				break;
+						if (GameStarted)
+							SendChatTo(conn, "Cannot change state when game started.");
+						else if (GetClient(conn).State == Session.ClientState.Ready && !(so.Data == "ready" || so.Data == "startgame"))
+							SendChatTo(conn, "Cannot change state when marked as ready.");
+						else if (!InterpretCommand(conn, so.Data))
+						{
+							Log.Write("server", "Bad server command: {0}", so.Data);
+							SendChatTo(conn, "Bad server command.");
+						};
+					}
+					break;
 
-				case "Chat": 
+				case "Chat":
 				case "TeamChat":
-				if (E(e => e.OnChat(conn, so.Data, so.Name == "TeamChat")))
-					foreach (var c in conns.Except(conn).ToArray())
-						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
-				break;
+				case "Disconnected":
+					if (E(e => e.OnChat(conn, so.Data, so.Name == "TeamChat")))
+						foreach (var c in conns.Except(conn).ToArray())
+							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
+					break;
 			}
 		}
 
@@ -697,6 +703,9 @@ namespace OpenRA.Server
 		{
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
+
+            if (GameStarted)
+                SendDisconnected(toDrop); /* Report disconnection */
 
 			lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
