@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class TextFieldWidget : Widget
+	public class TextFieldWidget : Widget
 	{
 		public string Text = "";
 		public int MaxLength = 0;

@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class CheckboxWidget : Widget
+	public class CheckboxWidget : Widget
 	{
 		public string Text = "";
 		public int baseLine = 1;

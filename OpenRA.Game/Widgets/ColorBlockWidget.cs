@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class ColorBlockWidget : Widget
+	public class ColorBlockWidget : Widget
 	{
 		public Func<Color> GetColor;
 

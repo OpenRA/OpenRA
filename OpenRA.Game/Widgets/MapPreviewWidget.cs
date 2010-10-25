@@ -17,7 +17,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class MapPreviewWidget : Widget
+	public class MapPreviewWidget : Widget
 	{
 		public int SpawnClickRadius = 50;
 		

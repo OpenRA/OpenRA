@@ -80,7 +80,7 @@ namespace OpenRA
 		internal static int LocalTick { get { return orderManager.LocalFrameNumber; } }
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
-		internal static event Action<OrderManager> ConnectionStateChanged = _ => { };
+		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 
@@ -152,8 +152,8 @@ namespace OpenRA
 				}
 		}
 
-		internal static event Action LobbyInfoChanged = () => { };
-		internal static event Action ConnectedToLobby = () => { };
+		public static event Action LobbyInfoChanged = () => { };
+		public static event Action ConnectedToLobby = () => { };
 
 		internal static void SyncLobbyInfo()
 		{
