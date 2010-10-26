@@ -32,6 +32,7 @@
 			this.okButton = new System.Windows.Forms.Button();
 			this.installButton = new System.Windows.Forms.Button();
 			this.installModDialog = new System.Windows.Forms.OpenFileDialog();
+			this.treeView1 = new System.Windows.Forms.TreeView();
 			this.SuspendLayout();
 			// 
 			// cancelButton
@@ -71,11 +72,19 @@
 			this.installModDialog.Filter = "Zip files|*.zip";
 			this.installModDialog.RestoreDirectory = true;
 			// 
+			// treeView1
+			// 
+			this.treeView1.Location = new System.Drawing.Point(12, 12);
+			this.treeView1.Name = "treeView1";
+			this.treeView1.Size = new System.Drawing.Size(175, 209);
+			this.treeView1.TabIndex = 3;
+			// 
 			// ConfigureModsDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(362, 262);
+			this.Controls.Add(this.treeView1);
 			this.Controls.Add(this.installButton);
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.cancelButton);
@@ -95,5 +104,6 @@
 		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.Button installButton;
 		private System.Windows.Forms.OpenFileDialog installModDialog;
+		private System.Windows.Forms.TreeView treeView1;
 	}
 }

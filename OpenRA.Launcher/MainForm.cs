@@ -21,7 +21,7 @@ namespace OpenRA.Launcher
 			var response = UtilityProgram.Call("--settings-value", configPath, "Game.Mods");
 
 			if (response.IsError)
-				currentMods = new string[] { };
+				currentMods = new string[] { "ra" };
 			else
 				currentMods = response.Response.Split(',');
 
