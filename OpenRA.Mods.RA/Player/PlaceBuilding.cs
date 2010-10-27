@@ -61,6 +61,11 @@ namespace OpenRA.Mods.RA
 					}
 					else
 					{
+						if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null))
+						{
+							return;
+						}
+
 						var building = w.CreateActor(order.TargetString, new TypeDictionary
 						{
 							new LocationInit( order.TargetLocation ),
