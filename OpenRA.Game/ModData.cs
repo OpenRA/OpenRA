@@ -50,7 +50,7 @@ namespace OpenRA
 				.Where(p => Directory.Exists(p))
 				.SelectMany(p => Directory.GetDirectories(p)).ToList();
 
-			return paths.Select(p => new MapStub(new Folder(p))).ToDictionary(m => m.Uid);
+			return paths.Select(p => new MapStub(new Folder(p, 0))).ToDictionary(m => m.Uid);
 		}
 		
 		string cachedTheatre = null;

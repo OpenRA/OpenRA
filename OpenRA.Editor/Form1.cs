@@ -62,7 +62,7 @@ namespace OpenRA.Editor
 			Game.modData = new ModData(currentMod);
 
 			// load the map
-			var map = new Map(new Folder(mapname));
+			var map = new Map(new Folder(mapname, 0));
 
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.

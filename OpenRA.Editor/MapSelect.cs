@@ -39,7 +39,7 @@ namespace OpenRA.Editor
             if (MapList.SelectedItems.Count == 1)
             {
                 txtNew.Text = MapList.SelectedItems[0].Text;
-                var map = new Map(new Folder(Path.Combine(MapFolderPath, MapList.SelectedItems[0].Text)));
+                var map = new Map(new Folder(Path.Combine(MapFolderPath, MapList.SelectedItems[0].Text), 0));
                 txtTitle.Text = map.Title;
                 txtAuthor.Text = map.Author;
                 txtTheater.Text = map.Theater;

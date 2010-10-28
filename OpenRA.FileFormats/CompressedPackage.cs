@@ -21,9 +21,11 @@ namespace OpenRA.FileFormats
 		readonly uint[] hashes;
 		readonly Stream s;
 		readonly ZipPackage pkg;
+		int priority;
 
-		public CompressedPackage(string filename)
+		public CompressedPackage(string filename, int priority)
 		{
+			this.priority = priority;
 			s = FileSystem.Open(filename);
 			pkg = (ZipPackage)ZipPackage.Open(s, FileMode.Open);
 			hashes = pkg.GetParts()
@@ -45,7 +47,7 @@ namespace OpenRA.FileFormats
 
 		public int Priority
 		{
-			get { return 1; }
+			get { return 500 + priority; }
 		}
 	}
 }

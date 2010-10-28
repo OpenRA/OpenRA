@@ -17,7 +17,9 @@ namespace OpenRA.FileFormats
 	{
 		readonly string path;
 
-		public Folder(string path) { this.path = path; }
+		int priority;
+
+		public Folder(string path, int priority) { this.path = path; this.priority = priority; }
 
 		public Stream GetContent(string filename)
 		{
@@ -39,7 +41,7 @@ namespace OpenRA.FileFormats
 
 		public int Priority
 		{
-			get { return 100; }
+			get { return priority; }
 		}
 	}
 }

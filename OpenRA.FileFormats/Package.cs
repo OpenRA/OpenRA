@@ -29,9 +29,11 @@ namespace OpenRA.FileFormats
 		readonly bool isRmix, isEncrypted;
 		readonly long dataStart;
 		readonly Stream s;
+		int priority;
 
-		public Package(string filename)
+		public Package(string filename, int priority)
 		{
+			this.priority = priority;
 			s = FileSystem.Open(filename);
 
 			BinaryReader reader = new BinaryReader(s);
@@ -154,7 +156,7 @@ namespace OpenRA.FileFormats
 
 		public int Priority
 		{
-			get { return 0; }
+			get { return 1000 + priority; }
 		}
 	}
 

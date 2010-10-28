@@ -34,14 +34,16 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		static int order = 0;
+
 		static IFolder OpenPackage(string filename)
 		{
 			if (filename.EndsWith(".mix"))
-				return new Package(filename);
+				return new Package(filename, order++);
 			else if (filename.EndsWith(".zip"))
-				return new CompressedPackage(filename);
+				return new CompressedPackage(filename, order++);
 			else
-				return new Folder(filename);
+				return new Folder(filename, order++);
 		}
 
 		public static void Mount(string name)
@@ -76,7 +78,7 @@ namespace OpenRA.FileFormats
 		{
 			var folder = index[PackageEntry.HashFilename(filename)]
 				.Where(x => x.Exists(filename))
-				.OrderByDescending(x => x.Priority)
+				.OrderBy(x => x.Priority)
 				.FirstOrDefault();
 
 			if (folder != null)
