@@ -96,7 +96,9 @@ namespace OpenRA.Traits
 					DamageState = this.DamageState,
 					PreviousDamageState = oldState,
 					DamageStateChanged = this.DamageState != oldState,
-					Warhead = warhead
+					Warhead = warhead,
+                    PreviousHealth = hp + damage < 0 ? 0 : hp + damage,
+                    Health = hp
 				});
 
 			if (hp <= 0)

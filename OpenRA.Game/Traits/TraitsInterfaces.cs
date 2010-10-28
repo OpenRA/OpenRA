@@ -29,7 +29,9 @@ namespace OpenRA.Traits
 		public int Damage;
 		public DamageState DamageState;
 		public DamageState PreviousDamageState;
-		public bool DamageStateChanged;
+        public bool DamageStateChanged;
+        public int PreviousHealth;
+        public int Health;
 	}
 
 	public interface ITick { void Tick(Actor self); }
