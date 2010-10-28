@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Server
 {
-	static class MasterServerQuery
+    public static class MasterServerQuery
 	{
 		public static event Action<GameServer[]> OnComplete = _ => { };
 		public static event Action<string> OnVersion = _ => { };
@@ -114,7 +114,7 @@ namespace OpenRA.Server
 		}
 	}
 
-	class GameServer
+    public class GameServer
 	{
 		public readonly int Id = 0;
 		public readonly string Name = null;

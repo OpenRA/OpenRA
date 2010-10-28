@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	class EnterOrderTargeter<T> : UnitTraitOrderTargeter<T>
+	public class EnterOrderTargeter<T> : UnitTraitOrderTargeter<T>
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;

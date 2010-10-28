@@ -222,6 +222,7 @@
     <Compile Include="Server\IServerExtension.cs" />
     <Compile Include="Server\NullServerExtension.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
+    <Compile Include="Traits\Scale.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />

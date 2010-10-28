@@ -62,7 +62,7 @@ namespace OpenRA
 				// auto size from render
 				var firstSprite = TraitsImplementing<IRender>().SelectMany(x => x.Render(this)).FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
-				return firstSprite.Sprite.size;
+                return firstSprite.Sprite.size * firstSprite.Scale;
 			});
 		}
 
@@ -111,6 +111,12 @@ namespace OpenRA
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 
 			var size = Size.Value;
+
+            /* apply scaling */
+		    var scale = this.TraitOrDefault<Scale>();
+            if (scale != null && scale.Info.Value != 1)
+                size = size*scale.Info.Value;
+
 			var loc = CenterLocation - 0.5f * size;
 			
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)

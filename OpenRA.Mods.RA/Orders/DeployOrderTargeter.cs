@@ -6,7 +6,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	class DeployOrderTargeter : IOrderTargeter
+    public class DeployOrderTargeter : IOrderTargeter
 	{
 		readonly Func<bool> useDeployCursor;
 

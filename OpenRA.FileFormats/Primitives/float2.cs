@@ -62,7 +62,8 @@ namespace OpenRA
 				Constrain(Y, min.Y, max.Y));
 		}
 
-		public static float2 operator *(float a, float2 b) { return new float2(a * b.X, a * b.Y); }
+        public static float2 operator *(float a, float2 b) { return new float2(a * b.X, a * b.Y); }
+        public static float2 operator *(float2 b, float a) { return new float2(a * b.X, a * b.Y); }
 		public static float2 operator *( float2 a, float2 b ) { return new float2( a.X * b.X, a.Y * b.Y ); }
 		public static float2 operator /( float2 a, float2 b ) { return new float2( a.X / b.X, a.Y / b.Y ); }
 
