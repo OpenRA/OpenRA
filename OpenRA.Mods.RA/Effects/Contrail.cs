@@ -73,17 +73,15 @@ namespace OpenRA.Mods.RA
 			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R,
 											trailStart.G, trailStart.B);
 
+			// LocalPlayer is null on shellmap
+			ShroudRenderer shroud = null;
+			if (self.World.LocalPlayer != null)
+				shroud = self.World.LocalPlayer.Shroud;
+
 			for (int i = positions.Count - 1; i >= 1; --i)
 			{
 				var conPos = positions[i];
 				var nextPos = positions[i - 1];
-				ShroudRenderer shroud = null;
-
-				// LocalPlayer is null on shellmap
-				if (self.World.LocalPlayer != null)
-				{
-					shroud = self.World.LocalPlayer.Shroud;
-				}
 
 				if (shroud == null ||
 					shroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||

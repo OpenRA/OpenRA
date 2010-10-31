@@ -135,10 +135,12 @@ namespace OpenRA.Graphics
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
-				
+
+				var player = world.LocalPlayer;
+
 				foreach (var t in world.Queries.WithTraitMultiple<IRadarSignature>())
 				{
-					if (!t.Actor.IsVisible(world.LocalPlayer))
+					if (!t.Actor.IsVisible(player))
 						continue;
 					
 					var color = t.Trait.RadarSignatureColor(t.Actor);
@@ -162,7 +164,9 @@ namespace OpenRA.Graphics
 
 			var shroud = Color.Black.ToArgb();
 			var fog = Color.FromArgb(128, Color.Black).ToArgb();
-						
+
+			var playerShroud = world.LocalPlayer.Shroud;
+	
 			unsafe
 			{
 				int* c = (int*)bitmapData.Scan0;
@@ -172,9 +176,9 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.TopLeft.X;
 						var mapY = y + map.TopLeft.Y;
-						if (!world.LocalPlayer.Shroud.IsExplored(mapX, mapY))
+						if (!playerShroud.IsExplored(mapX, mapY))
 							*(c + (y * bitmapData.Stride >> 2) + x) = shroud;
-						else if (!world.LocalPlayer.Shroud.IsVisible(mapX,mapY))					
+						else if (!playerShroud.IsVisible(mapX,mapY))					
 							*(c + (y * bitmapData.Stride >> 2) + x) = fog;
 					}
 			}

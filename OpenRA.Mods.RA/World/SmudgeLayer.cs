@@ -77,11 +77,12 @@ namespace OpenRA.Mods.RA
 		{
 			var cliprect = Game.viewport.ShroudBounds( world );
 			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
+			var localPlayer = world.LocalPlayer;
 			foreach (var kv in tiles)
 			{
 				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
 					continue;
-				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
+				if (localPlayer != null && !localPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
 				smudgeSprites[kv.Value.type- 1][kv.Value.image].DrawAt( wr,

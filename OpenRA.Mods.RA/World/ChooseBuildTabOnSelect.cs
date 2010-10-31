@@ -50,9 +50,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (types.Count() == 0)
 				return;	
 
-
 			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-			
 				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>().FirstOrDefault(t => types.Contains(t.Info.Type)));
 		}
 	}
