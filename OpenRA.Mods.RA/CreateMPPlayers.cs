@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			// create the players which are bound through slots.
 			foreach (var slot in w.LobbyInfo.Slots)
 			{
-				var client = w.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
+				var client = w.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index && slot.MapPlayer != null);
 				if (client != null)
 				{
 					/* spawn a real player in this slot. */
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 					if (client.Index == Game.LocalClientId)
 						w.SetLocalPlayer(player.Index);		// bind this one to the local player.
 				}
-				else if (slot.Bot != null)
+				else if (slot.Bot != null && slot.MapPlayer != null)
 				{
 					/* spawn a bot in this slot, "owned" by the host */
 
@@ -80,6 +80,14 @@ namespace OpenRA.Mods.RA
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q) return Stance.Ally;
+			var pc = GetClientForPlayer(p);
+			var qc = GetClientForPlayer(q);
+
+			if (p.World.LobbyInfo.Slots.Count > 0)
+			{
+				if (p.World.LobbyInfo.Slots[pc.Slot].Spectator) return Stance.Ally;
+				if (p.World.LobbyInfo.Slots[qc.Slot].Spectator) return Stance.Ally;
+			}
 
 			if (p.PlayerRef.Allies.Contains(q.InternalName))
 				return Stance.Ally;
@@ -92,8 +100,6 @@ namespace OpenRA.Mods.RA
 			if (p.IsBot ^ q.IsBot)
 				return Stance.Enemy;	// bots and humans hate each other
 
-			var pc = GetClientForPlayer(p);
-			var qc = GetClientForPlayer(q);
 
 			return pc.Team != 0 && pc.Team == qc.Team
 				? Stance.Ally : Stance.Enemy;

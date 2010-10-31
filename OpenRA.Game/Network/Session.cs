@@ -56,7 +56,7 @@ namespace OpenRA.Network
 			public string Bot;	// trait name of the bot to initialize in this slot, or null otherwise.
 			public bool Closed;	// host has explicitly closed this slot.
 			public string MapPlayer;	// playerReference to bind against.
-			
+			public bool Spectator = false; // Spectating or not
 			// todo: more stuff?
 		}
 

@@ -78,7 +78,7 @@ namespace OpenRA
 			PlayerName = client.Name;
 			InternalName = pr.Name;
 			Country = world.GetCountries()
-				.FirstOrDefault(c => client != null && client.Country == c.Race)
+				.FirstOrDefault(c => client != null && client.Country == c.Race )
 				?? world.GetCountries().Random(world.SharedRandom);
 
 			ClientIndex = client.Index;

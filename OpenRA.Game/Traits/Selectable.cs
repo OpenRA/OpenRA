@@ -158,7 +158,7 @@ namespace OpenRA.Traits
 		
 		void DrawUnitPath(Actor self)
 		{
-			if (!self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
+			if (self.World.LocalPlayer == null ||!self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
 
 			var activity = self.GetCurrentActivity();
 			var mobile = self.TraitOrDefault<IMove>();

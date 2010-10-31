@@ -103,6 +103,7 @@ namespace OpenRA
 
 		public static bool IsVisible(this Actor a, Player byPlayer)			/* must never be relied on in synced code! */
 		{
+			if (byPlayer == null) return true; // Observer
 			if (a.World.LocalPlayer != null && a.World.LocalPlayer.Shroud.Disabled)
 				return true;
 

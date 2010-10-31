@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
 using OpenRA.FileFormats;
@@ -232,6 +233,10 @@ namespace OpenRA.Mods.RA
 			return !hackyAI.enabled;
 		}
 
+		bool HasHumanPlayers()
+		{
+			return p.World.players.Any(a => !a.Value.IsBot && !a.Value.NonCombatant);
+		}
 		int2? ChooseEnemyTarget()
 		{
 			// Criteria for picking an enemy:
@@ -240,7 +245,7 @@ namespace OpenRA.Mods.RA
 			// 3. not dead.
 
 			var possibleTargets = world.WorldActor.Trait<MPStartLocations>().Start
-					.Where(kv => kv.Key != p && IsHumanPlayer(kv.Key) 
+					.Where(kv => kv.Key != p && (!HasHumanPlayers()|| IsHumanPlayer(kv.Key))
 						&& p.WinState == WinState.Undefined)
 					.Select(kv => kv.Value);
 

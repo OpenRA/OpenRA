@@ -15,7 +15,8 @@ namespace OpenRA.Mods.RA
 	public class OpenWidgetAtGameStartInfo : ITraitInfo
 	{
 		public readonly string Widget = "INGAME_ROOT";
-		
+		public readonly string ObserverWidget = "";
+
 		public object Create(ActorInitializer init) { return new OpenWidgetAtGameStart(this); }
 	}
 
@@ -29,9 +30,10 @@ namespace OpenRA.Mods.RA
 		
 		public void WorldLoaded(World world)
 		{
-			// Todo: custom observer ui?
 			if (world.LocalPlayer != null)
 				world.OpenWindow(Info.Widget);
+			else if (Info.ObserverWidget != null)
+				world.OpenWindow(Info.ObserverWidget);
 		}
 	}
 }

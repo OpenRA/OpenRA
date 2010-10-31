@@ -29,175 +29,204 @@ Background@SERVER_LOBBY:
 					Y:4
 					Width:244
 					Height:244
-		Container@PLAYERS:
-			Id:PLAYERS
+		ListBox@PLAYERSX:
+			Id:PLAYERSX
 			X:20
 			Y:75
 			Width:500
-			Height:200
+			Height:227
 			Children:
-				Container@TEMPLATE_LOCAL:
-					Id:TEMPLATE_LOCAL
-					X:0
-					Y:0
+				Container@PLAYERS:
+					Id:PLAYERS
+					X:2
+					Y:1
 					Width:500
-					Height:30
-					Visible:false
+					Height:2270
 					Children:
-						TextField@NAME:
-							Id:NAME
-							Text:Name
-							Width:139
-							Height:25
+						Container@TEMPLATE_LOCAL:
+							Id:TEMPLATE_LOCAL
 							X:0
 							Y:0
-							MaxLength:16
-						Button@COLOR:
-							Id:COLOR
-							Width:65
-							Height:25
-							X:159
-							Y:0
+							Width:400
+							Height:30
+							Visible:false
 							Children:
-								ColorBlock@COLORBLOCK:
-									Id:COLORBLOCK
-									X:5
+								TextField@NAME:
+									Id:NAME
+									Text:Name
+									Width:139
+									Height:25
+									X:0
+									Y:0
+									MaxLength:16
+								Button@COLOR:
+									Id:COLOR
+									Width:65
+									Height:25
+									X:159
+									Y:0
+									Children:
+										ColorBlock@COLORBLOCK:
+											Id:COLORBLOCK
+											X:5
+											Y:7
+											Width:PARENT_RIGHT-10
+											Height:PARENT_BOTTOM-12
+								Button@FACTION:
+									Id:FACTION
+									Width:110
+									Height:25
+									X:244
+									Y:0
+									Children:
+										Image@FACTIONFLAG:
+											Id:FACTIONFLAG
+											Width:30
+											Height:15
+											X:5
+											Y:5
+										Label@FACTIONNAME:
+											Id:FACTIONNAME
+											Text:Faction
+											Width:60
+											Height:25
+											X:40
+											Y:0
+								Button@TEAM:
+									Id:TEAM
+									Text:Team
+									Width:25
+									Height:25
+									X:374
+									Y:0
+								Checkbox@STATUS:
+									Id:STATUS
+									X:450
+									Y:2
+									Width:20
+									Height:20
+						Container@TEMPLATE_REMOTE:
+							Id:TEMPLATE_REMOTE
+							X:0
+							Y:0
+							Width:400
+							Height:30
+							Visible:false
+							Children:
+								Label@NAME:
+									Id:NAME
+									Text:Name
+									Width:139
+									Height:25
+									X:0
+									Y:0
+								ColorBlock@COLOR:
+									Id:COLOR
+									X:164
 									Y:7
-									Width:PARENT_RIGHT-10
-									Height:PARENT_BOTTOM-12
-						Button@FACTION:
-							Id:FACTION
-							Width:110
-							Height:25
-							X:244
-							Y:0
-							Children:
-								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
-									Width:30
-									Height:15
-									X:5
-									Y:5
-								Label@FACTIONNAME:
-									Id:FACTIONNAME
-									Text:Faction
-									Width:60
+									Width:55
+									Height:13
+								Label@FACTION:
+									Id:FACTION
+									Width:110
 									Height:25
-									X:40
+									X:244
 									Y:0
-						Button@TEAM:
-							Id:TEAM
-							Text:Team
-							Width:25
-							Height:25
-							X:374
-							Y:0
-						Checkbox@STATUS:
-							Id:STATUS
-							X:455
-							Y:2
-							Width:20
-							Height:20
-				Container@TEMPLATE_REMOTE:
-					Id:TEMPLATE_REMOTE
-					X:0
-					Y:0
-					Width:500
-					Height:30
-					Visible:false
-					Children:
-						Label@NAME:
-							Id:NAME
-							Text:Name
-							Width:139
-							Height:25
-							X:0
-							Y:0
-						ColorBlock@COLOR:
-							Id:COLOR
-							X:164
-							Y:7
-							Width:55
-							Height:13
-						Label@FACTION:
-							Id:FACTION
-							Width:110
-							Height:25
-							X:244
-							Y:0
-							Children:
-								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
-									Width:30
-									Height:15
-									X:5
-									Y:5
-								Label@FACTIONNAME:
-									Id:FACTIONNAME
-									Text:Faction
-									Width:60
+									Children:
+										Image@FACTIONFLAG:
+											Id:FACTIONFLAG
+											Width:30
+											Height:15
+											X:5
+											Y:5
+										Label@FACTIONNAME:
+											Id:FACTIONNAME
+											Text:Faction
+											Width:60
+											Height:25
+											X:40
+											Y:0
+								Label@TEAM:
+									Id:TEAM
+									Text:Team
+									Width:70
 									Height:25
-									X:40
+									X:351
 									Y:0
-						Label@TEAM:
-							Id:TEAM
-							Text:Team
-							Width:70
-							Height:25
-							X:351
-							Y:0
-							Align:Center
-							Bold: false
-						Checkbox@STATUS:
-							Id:STATUS
-							X:455
-							Y:2
-							Width:20
-							Height:20
-				Container@TEMPLATE_EMPTY:
-					Id:TEMPLATE_EMPTY
-					X:0
-					Y:0
-					Width:500
-					Height:30
-					Visible:false
-					Children:
-						Label@NAME:
-							Id:NAME
-							Text:Name
-							Width:139
-							Height:25
+									Align:Center
+									Bold: false
+								Checkbox@STATUS:
+									Id:STATUS
+									X:455
+									Y:2
+									Width:20
+									Height:20
+						Container@TEMPLATE_EMPTY_SPECTATOR:
+							Id:TEMPLATE_EMPTY_SPECTATOR
 							X:0
 							Y:0
-						Button@JOIN:
-							Id:JOIN
-							Text:Play in this slot
-							Width:PARENT_RIGHT - 160
-							Height:25
-							X:160
-							Y:0
-				Container@TEMPLATE_EMPTY_HOST:
-					Id:TEMPLATE_EMPTY_HOST
-					X:0
-					Y:0
-					Width:500
-					Height:30
-					Visible:false
-					Children:
-						Button@NAME:		-- TODO: replace with dropdown
-							Id:NAME
-							Text:Name
-							Width:155
-							Height:25
+							Width:400
+							Height:30
+							Visible:false
+							Children:
+								Button@NAME:
+									Id:NAME
+									Text:Name
+									Width:139
+									Height:25
+									X:0
+									Y:0
+								Button@JOIN:
+									Id:JOIN
+									Text:Spectate this match
+									Width:PARENT_RIGHT - 90
+									Height:25
+									X:160
+									Y:0
+						Container@TEMPLATE_EMPTY:
+							Id:TEMPLATE_EMPTY
 							X:0
 							Y:0
-						Button@JOIN:
-							Id:JOIN
-							Text:Play in this slot
-							Width:PARENT_RIGHT - 160
-							Height:25
-							X:160
+							Width:400
+							Height:30
+							Visible:false
+							Children:
+								Label@NAME:
+									Id:NAME
+									Text:Name
+									Width:139
+									Height:25
+									X:0
+									Y:0
+								Button@JOIN:
+									Id:JOIN
+									Text:Play in this slot
+									Width:PARENT_RIGHT - 90
+									Height:25
+									X:160
+									Y:0
+						Container@TEMPLATE_EMPTY_HOST:
+							Id:TEMPLATE_EMPTY_HOST
+							X:0
 							Y:0
+							Width:400
+							Height:30
+							Visible:false
+							Children:
+								Button@NAME:		-- TODO: replace with dropdown
+									Id:NAME
+									Text:Name
+									Width:155
+									Height:25
+									X:0
+									Y:0
+								Button@JOIN:
+									Id:JOIN
+									Text:Play in this slot
+									Width:PARENT_RIGHT - 90
+									Height:25
+									X:160
+									Y:0
 		Container@LABEL_CONTAINER:
 			X:30
 			Y:45
@@ -240,7 +269,7 @@ Background@SERVER_LOBBY:
 					Bold:True
 				Label@LABEL_LOBBY_STATUS:
 					Id:LABEL_LOBBY_STATUS
-					X:432
+					X:420
 					Y:0
 					Width:70
 					Height:25

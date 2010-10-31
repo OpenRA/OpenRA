@@ -40,6 +40,9 @@ namespace OpenRA.Server
 
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
+
+		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
+
 		static int lastPing = 0;
 		static bool isInternetServer;
 		static string masterServerUrl;
@@ -135,6 +138,12 @@ namespace OpenRA.Server
 				.Where(s => s != null)
 				.Select((s, i) => { s.Index = i; return s; })
 				.ToList();
+
+			// Generate slots for spectators
+			for (int i = 0; i < MaxSpectators; i++)
+			{
+				lobbyInfo.Slots.Add(new Session.Slot { Spectator = true, Index = lobbyInfo.Slots.Count(), MapPlayer = null, Bot = null});
+			}
 		}
 
 		/* lobby rework todo: 
@@ -283,6 +292,8 @@ namespace OpenRA.Server
 
 		static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
 		{
+			if (pr == null)
+				return;
 			if (pr.LockColor)
 			{
 				c.Color1 = pr.Color;
@@ -358,6 +369,13 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},	
+				{ "spectator",
+					s =>
+						{
+						// GetClient(conn).Slot = -1; /* observer */
+						SyncLobbyInfo();
+						return true;
+					}},	
 				{ "team",
 					s => 
 					{
@@ -411,7 +429,7 @@ namespace OpenRA.Server
 						var cl = GetClient(conn);
 						cl.Slot = slot;
 						
-						SyncClientToPlayerReference(cl, Map.Players[slotData.MapPlayer]);
+						SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
 						
 						SyncLobbyInfo();
 						return true;

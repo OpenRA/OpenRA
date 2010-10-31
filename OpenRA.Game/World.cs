@@ -39,7 +39,7 @@ namespace OpenRA
 
 		public void AddPlayer(Player p) { players[p.Index] = p; }
 
-		int localPlayerIndex;
+		int localPlayerIndex = -999;
 		public Player LocalPlayer
 		{
 			get { return players.ContainsKey(localPlayerIndex) ? players[localPlayerIndex] : null; }

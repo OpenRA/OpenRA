@@ -28,13 +28,15 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
-			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0)
+			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != -1)
 				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
 			var available = world.Map.SpawnPoints.Except(taken).ToList();
 
 			// Set spawn
 			foreach (var slot in world.LobbyInfo.Slots)
 			{
+				if (slot.Spectator)
+					continue; // Skip spectator slots
 				var client = world.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
 				var player = FindPlayerInSlot(world, slot);
 
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.RA
 			
 			// Explore allied shroud
 			foreach (var p in Start)
-				if (p.Key == world.LocalPlayer || p.Key.Stances[world.LocalPlayer] == Stance.Ally)
+				if ((world.LocalPlayer != null ) &&(p.Key == world.LocalPlayer || p.Key.Stances[world.LocalPlayer] == Stance.Ally))
 					world.WorldActor.Trait<Shroud>().Explore(world, p.Value,
 						world.WorldActor.Info.Traits.Get<MPStartLocationsInfo>().InitialExploreRange);
 			

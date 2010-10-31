@@ -19,7 +19,7 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
+		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost, EmptySpectatorSlotTemplateHost;
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -44,6 +44,7 @@ namespace OpenRA.Widgets.Delegates
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
 			EmptySlotTemplateHost = Players.GetWidget("TEMPLATE_EMPTY_HOST");
+			EmptySpectatorSlotTemplateHost = Players.GetWidget("TEMPLATE_EMPTY_SPECTATOR");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;
@@ -71,6 +72,7 @@ namespace OpenRA.Widgets.Delegates
 			};
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
+
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
@@ -232,25 +234,48 @@ namespace OpenRA.Widgets.Delegates
 				{
 					if (Game.IsHost)
 					{
-						template = EmptySlotTemplateHost.Clone();
-						var name = template.GetWidget<ButtonWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null)? "Open" : "Bot: " + s.Bot;
-						name.OnMouseUp = _ =>
+						if (slot.Spectator)
 						{
-							if (s.Closed)
+							template = EmptySlotTemplateHost.Clone();
+							var btn = template.GetWidget<ButtonWidget>("JOIN");
+							var name = template.GetWidget<ButtonWidget>("NAME");
+							btn.GetText = () =>  "Spectate in this slot";
+							name.GetText = () => s.Closed ? "Closed" : "Open";
+							name.OnMouseUp = _ =>
 							{
-								s.Bot = null;
-								orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
-							}
-							else
-							{
-								if (s.Bot == null && Map.Players[s.MapPlayer].AllowBots)
-									orderManager.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
+								if (s.Closed)
+								{
+									orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
+								}
 								else
+								{
 									orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
-							}
-							return true;
-						};
+								}
+								return true;
+							};
+						}
+						else
+						{
+							template = EmptySlotTemplateHost.Clone();
+							var name = template.GetWidget<ButtonWidget>("NAME");
+							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
+							name.OnMouseUp = _ =>
+		                 	{
+		                 		if (s.Closed)
+		                 		{
+		                 			s.Bot = null;
+		                 			orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
+		                 		}
+		                 		else
+		                 		{
+		                 			if (s.Bot == null && Map.Players[s.MapPlayer].AllowBots)
+		                 				orderManager.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
+		                 			else
+		                 				orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
+		                 		}
+		                 		return true;
+		                 	};
+						}
 					}
 					else
 					{
@@ -330,6 +355,14 @@ namespace OpenRA.Widgets.Delegates
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.Checked = () => c.State == Session.ClientState.Ready;
 					status.OnMouseDown = CycleReady;
+
+					Session.Slot slot1 = slot;
+					color.IsVisible = () => !slot1.Spectator;
+					colorBlock.IsVisible = () => !slot1.Spectator;
+					faction.IsVisible = () => !slot1.Spectator;
+					factionname.IsVisible = () => !slot1.Spectator;
+					factionflag.IsVisible = () => !slot1.Spectator;
+					team.IsVisible = () => !slot1.Spectator;
 				}
 				else
 				{

@@ -125,8 +125,10 @@ Player:
 	PlayerColorPalette:
 		BasePalette: terrain
 
-World:
+World:	
 	OpenWidgetAtGameStart:
+		Widget: INGAME_ROOT
+		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
 	WaterPaletteRotation:
 	ChronoshiftPaletteEffect:
