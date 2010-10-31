@@ -70,8 +70,7 @@ namespace OpenRA.Graphics
 				return new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
 		}
 
-		Renderable[] worldSprites = { };
-		public void Tick()
+		IEnumerable<Renderable> SpritesToRender()
 		{
 			var bounds = GetBoundsRect();
 			var comparer = new SpriteComparer();
@@ -87,7 +86,7 @@ namespace OpenRA.Graphics
 
 			var effects = world.Effects.SelectMany(e => e.Render());
 
-			worldSprites = renderables.Concat(effects).ToArray();
+			return renderables.Concat(effects);
 		}
 
 		public void Draw()
@@ -101,7 +100,7 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
-			foreach( var image in worldSprites )
+			foreach( var image in SpritesToRender() )
 				image.Sprite.DrawAt( image.Pos, this.GetPaletteIndex( image.Palette ) );
 			uiOverlay.Draw(this, world);
 

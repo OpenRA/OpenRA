@@ -143,7 +143,6 @@ namespace OpenRA
 							});
 						
 						world.Tick();
-						worldRenderer.Tick();
 
 						PerfHistory.Tick();
 					}
