@@ -17,7 +17,7 @@ namespace OpenRA.Editor
 {
 	static class RenderUtils
 	{
-		static ColorPalette MakeSystemPalette(Palette p)
+		public static ColorPalette MakeSystemPalette(Palette p)
 		{
 			ColorPalette pal;
 			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))

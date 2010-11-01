@@ -15,6 +15,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Editor
 {
@@ -46,6 +47,7 @@ namespace OpenRA.Editor
 			TileSet = ts;
 			Palette = p;
 			Brush = null;
+			PlayerPalettes = null;
 			Chunks.Clear();
 		}
 
@@ -419,7 +421,7 @@ namespace OpenRA.Editor
 			return new int2(vX / TileSet.TileSize, vY / TileSet.TileSize);
 		}
 
-		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t)
+		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t, ColorPalette cp)
 		{
 			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
@@ -431,7 +433,11 @@ namespace OpenRA.Editor
 			float height = t.Bitmap.Height * Zoom;
 			RectangleF sourceRect = new RectangleF(0, 0, t.Bitmap.Width, t.Bitmap.Height);
 			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
+
+			var restorePalette = t.Bitmap.Palette;
+			if (cp != null) t.Bitmap.Palette = cp;
 			g.DrawImage(t.Bitmap, destRect, sourceRect, GraphicsUnit.Pixel);
+			if (cp != null) t.Bitmap.Palette = restorePalette;
 		}
 
 		void DrawImage(System.Drawing.Graphics g, Bitmap bmp, int2 location)
@@ -462,6 +468,28 @@ namespace OpenRA.Editor
 				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);
 		}
 
+		ColorPalette GetPaletteForPlayer(string name)
+		{
+			var pr = Map.Players[name];
+			var pcpi = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			var remap = new PlayerColorRemap(pr.Color, pr.Color2, pcpi.PaletteFormat);
+			return RenderUtils.MakeSystemPalette(new Palette(Palette, remap));
+		}
+
+		Cache<string, ColorPalette> PlayerPalettes;
+
+		ColorPalette GetPaletteForActor(ActorReference ar)
+		{
+			if (PlayerPalettes == null)
+				PlayerPalettes = new Cache<string, ColorPalette>(GetPaletteForPlayer);
+
+			var ownerInit = ar.InitDict.GetOrDefault<OwnerInit>();
+			if (ownerInit == null)
+				return null;
+
+			return PlayerPalettes[ownerInit.PlayerName];
+		}
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (Map == null) return;
@@ -489,7 +517,8 @@ namespace OpenRA.Editor
 				Map.Height * TileSet.TileSize * Zoom);
 
 			foreach (var ar in Map.Actors)
-				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type]);
+				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
+					GetPaletteForActor(ar.Value));
 
 			foreach (var wp in Map.Waypoints)
 				e.Graphics.DrawRectangle(Pens.LimeGreen,
@@ -505,7 +534,8 @@ namespace OpenRA.Editor
 					Brush.Bitmap.Height * Zoom);
 
 			if (Actor != null)
-				DrawActor(e.Graphics, GetBrushLocation(), Actor);
+				DrawActor(e.Graphics, GetBrushLocation(), Actor, null);	/* todo: include the player 
+																		 * in the brush so we can color new buildings too */
 
 			if (Resource != null)
 				DrawImage(e.Graphics, Resource.Bitmap, GetBrushLocation());
