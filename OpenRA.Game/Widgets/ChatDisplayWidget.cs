@@ -46,9 +46,15 @@ namespace OpenRA.Widgets
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
 				chatpos.Y -= 20;
-				var owner = line.Owner + ":";
-				var inset = Game.Renderer.RegularFont.Measure(owner).X + 10;
-				Game.Renderer.RegularFont.DrawText(owner, chatpos, line.Color);
+				int inset = 0;
+
+				if (!string.IsNullOrEmpty(line.Owner))
+				{
+					var owner = line.Owner + ":";
+					inset = Game.Renderer.RegularFont.Measure(owner).X + 10;
+					Game.Renderer.RegularFont.DrawText(owner, chatpos, line.Color);
+				}
+
 				Game.Renderer.RegularFont.DrawText(line.Text, chatpos + new int2(inset, 0), Color.White);
 			}
 
