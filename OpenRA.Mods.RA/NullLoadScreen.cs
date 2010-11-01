@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 			
 			// Draw a black screen
 			Game.Renderer.BeginFrame(float2.Zero);
-			Game.Renderer.EndFrame();
+			Game.Renderer.EndFrame( new NullInputHandler() );
 		}
 	}
 }

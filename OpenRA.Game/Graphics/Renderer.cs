@@ -92,11 +92,11 @@ namespace OpenRA.Graphics
 			s.Commit();
 		}
 
-		public void EndFrame()
+		public void EndFrame( IInputHandler inputHandler )
 		{
 			Flush();
 			device.End();
-			device.Present();
+			device.Present( inputHandler );
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,

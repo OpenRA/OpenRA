@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -9,16 +9,33 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace OpenRA
 {
+	public interface IInputHandler
+	{
+		void ModifierKeys( Modifiers mods );
+		void OnKeyInput( KeyInput input );
+		void OnMouseInput( MouseInput input );
+	}
+
 	public struct MouseInput
 	{
 		public MouseInputEvent Event;
-		public int2 Location;
 		public MouseButton Button;
+		public int2 Location;
 		public Modifiers Modifiers;
+
+		public MouseInput( MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods )
+		{
+			this.Event = ev;
+			this.Button = button;
+			this.Location = location;
+			this.Modifiers = mods;
+		}
 	}
 
 	public enum MouseInputEvent { Down, Move, Up };

@@ -40,7 +40,7 @@ namespace OpenRA.FileFormats.Graphics
 		void Begin();
 		void End();
 		void Clear( Color color );
-		void Present();
+		void Present( IInputHandler inputHandler );
 
 		void DrawIndexedPrimitives( PrimitiveType type, Range<int> vertexRange, Range<int> indexRange );
 		void DrawIndexedPrimitives( PrimitiveType type, int vertexPool, int numPrimitives );

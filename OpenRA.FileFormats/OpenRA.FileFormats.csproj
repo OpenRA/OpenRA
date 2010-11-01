@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Tao.Sdl, Version=1.2.13.0, Culture=neutral, PublicKeyToken=9c7a200e36c0094e">
       <SpecificVersion>False</SpecificVersion>
@@ -61,6 +62,7 @@
     <Compile Include="FileSystem.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
+    <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="MiniYaml.cs" />

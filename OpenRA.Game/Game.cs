@@ -99,7 +99,7 @@ namespace OpenRA
 			using (new PerfSample("render"))
 			{
 				++RenderFrame;
-				viewport.DrawRegions(worldRenderer);
+				viewport.DrawRegions(worldRenderer, new DefaultInputHandler( orderManager.world ));
 				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
 			}
 
@@ -181,37 +181,14 @@ namespace OpenRA
 			AfterGameStart( orderManager.world );
 		}
 
-		public static void DispatchMouseInput(MouseInputEvent ev, MouseEventArgs e, Modifiers modifierKeys)
-		{
-			Sync.CheckSyncUnchanged( orderManager.world, () =>
-			{
-				var mi = new MouseInput
-				{
-					Button = (MouseButton)(int)e.Button,
-					Event = ev,
-					Location = new int2( e.Location ),
-					Modifiers = modifierKeys,
-				};
-				Widget.HandleInput( mi );
-			} );
-		}
-
 		public static bool IsHost
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
 
-		public static void HandleKeyEvent(KeyInput e)
-		{
-			Sync.CheckSyncUnchanged( orderManager.world, () =>
-			{
-				Widget.HandleKeyPress( e );
-			} );
-		}
-
 		static Modifiers modifiers;
 		public static Modifiers GetModifierKeys() { return modifiers; }
-		public static void HandleModifierKeys(Modifiers mods) {	modifiers = mods; }
+		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
 
 		internal static void Initialize(Arguments args)
 		{

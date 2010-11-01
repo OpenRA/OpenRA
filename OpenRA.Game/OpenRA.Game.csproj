@@ -139,8 +139,6 @@
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\HardwarePalette.cs" />
-    <Compile Include="MainWindow.cs">
-    </Compile>
     <Compile Include="Support\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Graphics\Renderer.cs" />
@@ -214,6 +212,7 @@
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="ActorReference.cs" />
     <Compile Include="Misc.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Network\FrameData.cs" />

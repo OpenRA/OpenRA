@@ -96,7 +96,7 @@ namespace OpenRA.Graphics
 			this.scrollPosition = Game.CellSize* mapStart;
 		}
 		
-		public void DrawRegions( WorldRenderer wr )
+		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
 		{
 			renderer.BeginFrame(scrollPosition);
 			wr.Draw();
@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 			var c = new Cursor(cursorName);
 			c.Draw(wr, (int)cursorFrame, Viewport.LastMousePos + Location); 
 
-			renderer.EndFrame();
+			renderer.EndFrame( inputHandler );
 		}
 
 		public void Tick()
