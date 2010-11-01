@@ -211,13 +211,30 @@ namespace OpenRA.Server
 
 		static void AcceptConnection()
 		{
-			var newConn = new Connection { socket = listener.AcceptSocket() };
+			Socket newSocket = null;
+
+			try
+			{
+				if (!listener.Server.IsBound) return;
+				newSocket = listener.AcceptSocket();
+			}catch
+			{
+				/* could have an exception here when listener 'goes away' when calling AcceptConnection! */
+				/* alternative would be to use locking but the listener doesnt go away without a reason */
+				return; 
+			}
+
+
+			var newConn = new Connection { socket = newSocket };
+
+			
 			if (Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnValidateConnection(GameStarted, newConn))
 			{
 				DropClient(newConn, new Exception() );
 
 				return;
 			}
+
 			try
 			{
 				if (GameStarted)
