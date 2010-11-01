@@ -221,6 +221,10 @@ World:
 		BinSize: 4
 	Shroud:
 	PathFinder:
+	WorldGameOver:
+		Delay: 10
+		ReturnToLobby: yes
+		EndMessage: The game will end in {0} seconds.
 
 MINP:
 	Mine:
