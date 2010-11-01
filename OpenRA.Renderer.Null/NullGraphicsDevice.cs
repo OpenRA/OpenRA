@@ -1,4 +1,14 @@
-﻿using System.Drawing;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
+#endregion
+
+using System.Drawing;
 using System.IO;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Graphics;
@@ -19,8 +29,6 @@ namespace OpenRA.Renderer.Null
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }
 
-		public void Begin() { }
-		public void End() { }
 		public void Clear(Color c) { }
 
 		public void Present(IInputHandler ih)

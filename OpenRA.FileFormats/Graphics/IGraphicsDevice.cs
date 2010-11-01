@@ -37,8 +37,6 @@ namespace OpenRA.FileFormats.Graphics
 
 		Size WindowSize { get; }
 
-		void Begin();
-		void End();
 		void Clear( Color color );
 		void Present( IInputHandler inputHandler );
 

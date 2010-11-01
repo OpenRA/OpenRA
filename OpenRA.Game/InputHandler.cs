@@ -8,13 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using OpenRA.Widgets;
-using OpenRA.Network;
 
 namespace OpenRA
 {

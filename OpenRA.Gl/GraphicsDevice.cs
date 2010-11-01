@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Windows.Forms;
 using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 using Tao.OpenGl;
@@ -127,9 +126,6 @@ namespace OpenRA.GlRenderer
 			Gl.glDisable( Gl.GL_SCISSOR_TEST );
 			CheckGlError();
 		}
-
-		public void Begin() { }
-		public void End() { }
 
 		public void Clear( Color c )
 		{

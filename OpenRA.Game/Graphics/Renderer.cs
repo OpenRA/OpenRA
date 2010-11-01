@@ -9,14 +9,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
-using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
@@ -71,7 +71,6 @@ namespace OpenRA.Graphics
 
 		public void BeginFrame(float2 scroll)
 		{
-			device.Begin();
 			device.Clear(Color.Black);
 
 			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);
@@ -95,7 +94,6 @@ namespace OpenRA.Graphics
 		public void EndFrame( IInputHandler inputHandler )
 		{
 			Flush();
-			device.End();
 			device.Present( inputHandler );
 		}
 
