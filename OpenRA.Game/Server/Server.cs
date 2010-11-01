@@ -376,15 +376,25 @@ namespace OpenRA.Server
 					}},
 				{ "race",
 					s => 
-					{					
-						GetClient(conn).Country = s;
+					{	
+							GetClient(conn).Country = s;
+
 						SyncLobbyInfo();
 						return true;
 					}},	
 				{ "spectator",
 					s =>
 						{
-						// GetClient(conn).Slot = -1; /* observer */
+						var slotData = lobbyInfo.Slots.Where(ax => ax.Spectator && !lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
+						if (slotData == null)
+							return true;
+
+						var cl = GetClient(conn);
+						
+							cl.Slot = slotData.Index;
+
+							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
+
 						SyncLobbyInfo();
 						return true;
 					}},	
