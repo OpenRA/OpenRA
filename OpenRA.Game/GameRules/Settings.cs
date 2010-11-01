@@ -15,6 +15,7 @@ using System.IO;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Server;
 
 namespace OpenRA.GameRules
 {

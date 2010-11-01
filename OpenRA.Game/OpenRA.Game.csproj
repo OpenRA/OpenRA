@@ -211,7 +211,6 @@
     </ProjectReference>
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="ActorReference.cs" />
-    <Compile Include="Misc.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
@@ -220,6 +219,8 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
+    <Compile Include="Server\IServerExtension.cs" />
+    <Compile Include="Server\NullServerExtension.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />
