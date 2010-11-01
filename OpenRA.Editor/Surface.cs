@@ -183,7 +183,7 @@ namespace OpenRA.Editor
 		{
 			for (; ; )
 			{
-				var q = p+d;
+				var q = p + d;
 				if (!Map.IsInMap(q)) return p;
 				if (!Map.MapTiles[q.X, q.Y].Equals(replace)) return p;
 				p = q;
@@ -215,7 +215,7 @@ namespace OpenRA.Editor
 								{
 									type = Brush.N,
 									index = template.PickAny ? byte.MaxValue : (byte)z,
-									image = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4)*4) : (byte)z,
+									image = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
 								};
 
 						var ch = new int2((pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
@@ -421,10 +421,10 @@ namespace OpenRA.Editor
 
 		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize/2 : 0;
+			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize/2 : 0;
+			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = t.Bitmap.Width * Zoom;
@@ -467,15 +467,15 @@ namespace OpenRA.Editor
 			if (Map == null) return;
 			if (TileSet == null) return;
 
-			for( var u = 0; u < Map.MapSize.X; u += ChunkSize )
+			for (var u = 0; u < Map.MapSize.X; u += ChunkSize)
 				for (var v = 0; v < Map.MapSize.Y; v += ChunkSize)
 				{
-					var x = new int2(u/ChunkSize,v/ChunkSize);
+					var x = new int2(u / ChunkSize, v / ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);
 
 					Bitmap bmp = Chunks[x];
 
-					float DrawX = TileSet.TileSize* 1f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					float DrawX = TileSet.TileSize * 1f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
 					float DrawY = TileSet.TileSize * 1f * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
 					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
 					RectangleF destRect = new RectangleF(DrawX, DrawY, bmp.Width * Zoom, bmp.Height * Zoom);
