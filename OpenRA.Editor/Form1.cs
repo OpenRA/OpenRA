@@ -36,7 +36,7 @@ namespace OpenRA.Editor
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			surface1.AfterChange += OnMapChanged;
-			surface1.SetMousePositionLabel(toolStripStatusLabelMousePosition);
+			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
 		}
 
 		void OnMapChanged()
