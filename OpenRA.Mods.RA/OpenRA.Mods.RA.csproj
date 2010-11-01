@@ -276,6 +276,7 @@
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
+    <Compile Include="World\WorldGameOver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

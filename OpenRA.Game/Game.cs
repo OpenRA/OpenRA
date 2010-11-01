@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
@@ -153,6 +154,7 @@ namespace OpenRA
 		}
 
 		internal static event Action LobbyInfoChanged = () => { };
+		internal static event Action ConnectedToLobby = () => { };
 
 		internal static void SyncLobbyInfo()
 		{
@@ -174,7 +176,6 @@ namespace OpenRA
 			Widget.SelectedWidget = null;
 
 			orderManager.LocalFrameNumber = 0;
-
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
 			AfterGameStart( orderManager.world );
@@ -342,6 +343,40 @@ namespace OpenRA
 		public static T CreateObject<T>( string name )
 		{
 			return modData.ObjectCreator.CreateObject<T>( name );
+		}
+
+		public static void RejoinLobby(World world)
+		{
+			if (Game.IsHost && Game.Settings.Server.Extension != null)
+				Game.Settings.Server.Extension.OnRejoinLobby(world);
+
+			var map = orderManager.LobbyInfo.GlobalSettings.Map;
+			var host = orderManager.Host;
+			var port = orderManager.Port;
+			var isHost = Game.IsHost;
+
+			Disconnect();
+			ConnectedToLobby += () =>
+         	{
+				if (world.LocalPlayer != null)
+				{
+					/* Try to get back the old slot */
+					Game.orderManager.IssueOrder(Order.Command("race " + world.LocalPlayer.Country.Race));
+					Game.orderManager.IssueOrder(Order.Command("slot " + world.LobbyInfo.ClientWithIndex(world.LocalPlayer.ClientIndex).Slot));
+				}else /* a spectator */
+				{
+					Game.orderManager.IssueOrder(Order.Command("spectator"));
+				}
+
+         		ConnectedToLobby = null;
+         	};
+			if (isHost)
+			{
+				Server.Server.ServerMain(Game.modData, Settings, map);
+				JoinServer(IPAddress.Loopback.ToString(), Settings.Server.ListenPort);
+			}
+			else
+				JoinServer(host, port);
 		}
 	}
 }
