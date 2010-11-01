@@ -94,6 +94,12 @@ namespace OpenRA.Mods.RA
 		BuildState bstate = BuildState.WaitForFeedback;
         BuildState dstate = BuildState.WaitForFeedback;
 
+		public static void BotDebug(string s, params object[] args)
+		{
+			if (Game.Settings.Debug.BotDebug)
+				Game.Debug(s, args);
+		}
+
 		/* called by the host's player creation code */
 		public void Activate(Player p)
 		{
@@ -135,11 +141,11 @@ namespace OpenRA.Mods.RA
 
 				if (best != null)
 				{
-					Game.Debug("AI: Need more power, so {0} is best choice.".F(best.Name));
+					BotDebug("AI: Need more power, so {0} is best choice.", best.Name);
 					return best;
 				}
 				else
-					Game.Debug("AI: Need more power, but can't build anything that produces it.");
+					BotDebug("AI: Need more power, but can't build anything that produces it.");
 			}
 
 			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
@@ -268,7 +274,7 @@ namespace OpenRA.Mods.RA
 
             foreach (var a in newUnits)
             {
-                Game.Debug("AI: Found a newly built unit");
+				BotDebug("AI: Found a newly built unit");
                 unitsHangingAroundTheBase.Add(a);
                 activeUnits.Add(a);
             }
@@ -277,7 +283,7 @@ namespace OpenRA.Mods.RA
             // (don't bother leaving any behind for defense.)
             if (unitsHangingAroundTheBase.Count > 8)
             {
-                Game.Debug("Launch an attack.");
+                BotDebug("Launch an attack.");
 
 				var attackTarget = ChooseEnemyTarget();
 				if (attackTarget == null)
@@ -353,7 +359,7 @@ namespace OpenRA.Mods.RA
                 world.IssueOrder(new Order("DeployTransform", mcv));
             }
             else
-                Game.Debug("AI: Can't find the MCV.");
+                BotDebug("AI: Can't find the MCV.");
         }
 
         //Build a random unit of the given type. Not going to be needed once there is actual AI...
@@ -414,7 +420,7 @@ namespace OpenRA.Mods.RA
                         }
                         else
                         {
-                            Game.Debug("AI: Starting production of {0}".F(item.Name));
+                            BotDebug("AI: Starting production of {0}".F(item.Name));
                             bstate = BuildState.WaitForProduction;
                             world.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
                         }
@@ -435,7 +441,7 @@ namespace OpenRA.Mods.RA
                         var location = ChooseBuildLocation(currentBuilding);
                         if (location == null)
                         {
-                            Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
+							BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));
                             world.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
                         }
                         else
@@ -476,7 +482,7 @@ namespace OpenRA.Mods.RA
                         }
                         else
                         {
-                            Game.Debug("AI: Starting production of {0}".F(item.Name));
+							BotDebug("AI: Starting production of {0}".F(item.Name));
                             dstate = BuildState.WaitForProduction;
                             world.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
                         }
@@ -497,7 +503,7 @@ namespace OpenRA.Mods.RA
                         var location = ChooseBuildLocation(currentBuilding);
                         if (location == null)
                         {
-                            Game.Debug("AI: Nowhere to place {0}".F(currentBuilding.Item));
+							BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));
                             world.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
                         }
                         else
