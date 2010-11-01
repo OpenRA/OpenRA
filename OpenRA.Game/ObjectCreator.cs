@@ -19,7 +19,7 @@ namespace OpenRA
 				.ToList();
 
 			// Namespaces from each mod assembly
-			foreach (var a in manifest.Assemblies)
+			foreach (var a in manifest.Assemblies.Concat(manifest.LocalAssemblies))
 			{
 				var asm = Assembly.LoadFile(Path.GetFullPath(a));
 				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));

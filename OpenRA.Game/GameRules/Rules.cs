@@ -27,7 +27,9 @@ namespace OpenRA
 
 		public static void LoadRules(Manifest m, Map map)
 		{
-			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+			// Added support to extend the list of rules (add it to m.LocalRules)
+			// Should only be used to add ITraitNoSync traits! (otherwise BOOM)
+			Info = LoadYamlRules(m.Rules.Concat(m.LocalRules).ToArray(), map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, new List<MiniYamlNode>(), (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 			Voices = LoadYamlRules(m.Voices, new List<MiniYamlNode>(), (k, _) => new VoiceInfo(k.Value));
 			Music = LoadYamlRules(m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
