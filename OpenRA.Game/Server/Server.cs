@@ -59,17 +59,23 @@ namespace OpenRA.Server
 		{
 			conns.Clear();
 			GameStarted = false;
-			try
-			{
-				listener.Stop();
-			}catch(Exception)
-			{
-			}
+			try { listener.Stop(); }
+			catch { }
 
-
-			if (Game.Settings.Server.Extension != null)
-				Game.Settings.Server.Extension.OnServerStop(true);
+			E(e => e.OnServerStop(true));
 		}
+
+		public static void E(Action<IServerExtension> f)
+		{
+			E(g => { f(g); return true; });
+		}
+
+		public static bool E(Func<IServerExtension, bool> f)
+		{
+			return Game.Settings.Server.Extension == null ||
+				f(Game.Settings.Server.Extension);
+		}
+
 		public static void ServerMain(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
@@ -107,8 +113,7 @@ namespace OpenRA.Server
 				throw new InvalidOperationException( "Unable to start server: port is already in use" );
 			}
 
-			if (Game.Settings.Server.Extension != null)
-				Game.Settings.Server.Extension.OnServerStart();
+			E(e => e.OnServerStart());
 				
 			new Thread( _ =>
 			{
@@ -135,9 +140,7 @@ namespace OpenRA.Server
 					{
 						listener.Stop();
 						GameStarted = false;
-
-						if (Game.Settings.Server.Extension != null)
-							Game.Settings.Server.Extension.OnServerStop(false);
+						E(e => e.OnServerStop(false));
 						break;
 					}
 				}
@@ -166,37 +169,27 @@ namespace OpenRA.Server
 				.Select((s, i) => { s.Index = i; return s; })
 				.ToList();
 
-			if (Game.Settings.Server.Extension != null)
-				Game.Settings.Server.Extension.OnLoadMap(Map);
+			E(e => e.OnLoadMap(Map));
 
 			// Generate slots for spectators
 			for (int i = 0; i < MaxSpectators; i++)
-			{
-				lobbyInfo.Slots.Add(new Session.Slot { Spectator = true, Index = lobbyInfo.Slots.Count(), MapPlayer = null, Bot = null});
-			}
+				lobbyInfo.Slots.Add(new Session.Slot
+				{
+					Spectator = true,
+					Index = lobbyInfo.Slots.Count(),
+					MapPlayer = null,
+					Bot = null
+				});
 		}
 
 		/* lobby rework todo: 
-		 * 
-		 *	- auto-assign players to slots
-		 *	- show all the slots in the lobby ui.
-		 *	- rework the game start so we actually use the slots.
-		 *	- all players should be able to click an empty slot to move to it
-		 *	- host should be able to choose whether a slot is open/closed/bot, with
-		 *		potentially more than one choice of bot class.
-		 *	- host should be able to kick a client from the lobby by closing its slot.
-		 *	- change lobby commands so the host can configure bots, rather than
-		 *		just configuring itself.
 		 *	- "teams together" option for team games -- will eliminate most need
 		 *		for manual spawnpoint choosing.
-		 *	- pick sensible non-conflicting colors for bots.
+		 *	- 256 max players is a dirty hack
 		 */
-		/// <summary>
-		/// @todo The 256 is a big hack, need to look @ amount of available slots instead?
-		/// </summary>
 		static int ChooseFreePlayerIndex()
 		{
-			for (var i = 0; i < 256; i++) // 256 was 8, but thats bit low
+			for (var i = 0; i < 256; i++)
 				if (conns.All(c => c.PlayerIndex != i))
 					return i;
 
@@ -228,7 +221,7 @@ namespace OpenRA.Server
 			var newConn = new Connection { socket = newSocket };
 
 			
-			if (Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnValidateConnection(GameStarted, newConn))
+			if (!E(e => e.OnValidateConnection(GameStarted, newConn)))
 			{
 				DropClient(newConn, new Exception() );
 
@@ -397,7 +390,7 @@ namespace OpenRA.Server
 						DispatchOrders(null, 0,
 							new ServerOrder("StartGame", "").Serialize());
 
-						if (Game.Settings.Server.Extension != null) Game.Settings.Server.Extension.OnStartGame();
+						E(e => e.OnStartGame());
 
 						PingMasterServer();
 						return true;
@@ -407,9 +400,8 @@ namespace OpenRA.Server
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnNickChange(conn, GetClient(conn), s))
+						if (E(e => e.OnNickChange(conn, GetClient(conn), s)))
 							GetClient(conn).Name = s;
-						
 						
 						SyncLobbyInfo();
 						return true;
@@ -429,7 +421,7 @@ namespace OpenRA.Server
 				{ "race",
 					s => 
 					{	
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnRaceChange(conn, GetClient(conn), s))
+						if (E(e => e.OnRaceChange(conn, GetClient(conn), s)))
 							GetClient(conn).Country = s;
 
 						SyncLobbyInfo();
@@ -444,11 +436,11 @@ namespace OpenRA.Server
 
 						var cl = GetClient(conn);
 						
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnSlotChange(conn, cl, slotData, Map))
+						if (E(e => e.OnSlotChange(conn, cl, slotData, Map)))
 						{
 							cl.Slot = slotData.Index;
-
-							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
+							SyncClientToPlayerReference(cl, slotData.MapPlayer != null 
+								? Map.Players[slotData.MapPlayer] : null);
 						}
 
 						SyncLobbyInfo();
@@ -459,7 +451,7 @@ namespace OpenRA.Server
 					{
 						int team;
 						if (!int.TryParse(s, out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnTeamChange(conn, GetClient(conn), team))
+						if (E(e => e.OnTeamChange(conn, GetClient(conn), team)))
 						{
 							GetClient(conn).Team = team;
 						}
@@ -481,7 +473,7 @@ namespace OpenRA.Server
 							SendChatTo( conn, "You can't be at the same spawn point as another player" );
 							return true;
 						}
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnSpawnpointChange(conn, GetClient(conn), spawnPoint))
+						if (E(e => e.OnSpawnpointChange(conn, GetClient(conn), spawnPoint)))
 						{
 							GetClient(conn).SpawnPoint = spawnPoint;
 						}
@@ -492,11 +484,13 @@ namespace OpenRA.Server
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
+						var c1 = Color.FromArgb(c[0], c[1], c[2]);
+						var c2 = Color.FromArgb(c[3], c[4], c[5]);
 						
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnColorChange(conn, GetClient(conn), Color.FromArgb(c[0], c[1], c[2]), Color.FromArgb(c[3], c[4], c[5])))
+						if (E(e => e.OnColorChange(conn, GetClient(conn), c1, c2)))
 						{
-							GetClient(conn).Color1 = Color.FromArgb(c[0], c[1], c[2]);
-							GetClient(conn).Color2 = Color.FromArgb(c[3], c[4], c[5]);
+							GetClient(conn).Color1 = c1;
+							GetClient(conn).Color2 = c2;
 						}
 						SyncLobbyInfo();		
 						return true;
@@ -514,11 +508,11 @@ namespace OpenRA.Server
 
 						var cl = GetClient(conn);
 						
-						if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnSlotChange(conn, cl, slotData, Map))
+						if (E(e => e.OnSlotChange(conn, cl, slotData, Map)))
 						{
 							cl.Slot = slot;
-
-							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
+							SyncClientToPlayerReference(cl, slotData.MapPlayer != null 
+								? Map.Players[slotData.MapPlayer] : null);
 						}
 
 						SyncLobbyInfo();
@@ -630,15 +624,6 @@ namespace OpenRA.Server
 						SyncLobbyInfo();
 						return true;
 					}},
-				{ "mods",
-					s =>
-					{
-						var args = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-						lobbyInfo.GlobalSettings.Mods = args.GetRange(0,args.Count - 1).ToArray();
-						lobbyInfo.GlobalSettings.Map = args.Last();
-						SyncLobbyInfo();
-						return true;
-					}},
 				{ "lockteams",
 					s =>
 					{
@@ -696,7 +681,7 @@ namespace OpenRA.Server
 
 				case "Chat": 
 				case "TeamChat":
-				if (Game.Settings.Server.Extension == null || Game.Settings.Server.Extension.OnChat(conn, so.Data, so.Name == "TeamChat"))
+				if (E(e => e.OnChat(conn, so.Data, so.Name == "TeamChat")))
 					foreach (var c in conns.Except(conn).ToArray())
 						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
 				break;
@@ -723,8 +708,7 @@ namespace OpenRA.Server
 
 		static void SyncLobbyInfo()
 		{
-			if (Game.Settings.Server.Extension != null)
-				Game.Settings.Server.Extension.OnLobbySync(lobbyInfo, GameStarted);
+			E(e => e.OnLobbySync(lobbyInfo, GameStarted));
 
 			if (!GameStarted)	/* don't do this while the game is running, it breaks things. */
 				DispatchOrders(null, 0,
@@ -739,7 +723,7 @@ namespace OpenRA.Server
 		{
 			if (isBusy || !isInternetServer) return;
 
-			if (Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnPingMasterServer(lobbyInfo, GameStarted))
+			if (!E(e => e.OnPingMasterServer(lobbyInfo, GameStarted)))
 				return;
 
 			lastPing = Environment.TickCount;
