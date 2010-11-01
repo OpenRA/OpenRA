@@ -135,11 +135,8 @@ namespace OpenRA.Mods.RA
 			if (!HasAdequatePower())	/* try to maintain 20% excess power */
 			{
 				/* find the best thing we can build which produces power */
-				var best = buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
+				return buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
 					.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
-
-				if (best != null)
-					return best;
 			}
 
 			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
@@ -156,6 +153,9 @@ namespace OpenRA.Mods.RA
 
 		ActorInfo ChooseDefenseToBuild(ProductionQueue queue)
 		{
+			if (!HasAdequatePower())
+				return null;
+
 			var buildableThings = queue.BuildableItems();
 
 			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
