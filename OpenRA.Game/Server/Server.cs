@@ -50,6 +50,18 @@ namespace OpenRA.Server
 		static ModData ModData;
 		static Map Map;
 
+		public static void StopListening()
+		{
+			conns.Clear();
+			GameStarted = false;
+			try
+			{
+				listener.Stop();
+			}catch(Exception)
+			{
+			}
+
+		}
 		public static void ServerMain(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
@@ -98,7 +110,7 @@ namespace OpenRA.Server
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
-						else conns.Single( c => c.socket == s ).ReadData();
+						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData();
 
 					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
 						PingMasterServer();

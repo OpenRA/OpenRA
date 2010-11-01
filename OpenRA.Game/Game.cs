@@ -308,6 +308,9 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
+			if (IsHost)
+				Server.Server.StopListening();
+
 			orderManager.Dispose();
 			var shellmap = modData.Manifest.ShellmapUid;
 			JoinLocal();
