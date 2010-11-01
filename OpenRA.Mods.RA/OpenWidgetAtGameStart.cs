@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 	public class OpenWidgetAtGameStartInfo : ITraitInfo
 	{
 		public readonly string Widget = "INGAME_ROOT";
-		public readonly string ObserverWidget = "";
+		public readonly string ObserverWidget = null;
 
 		public object Create(ActorInitializer init) { return new OpenWidgetAtGameStart(this); }
 	}
