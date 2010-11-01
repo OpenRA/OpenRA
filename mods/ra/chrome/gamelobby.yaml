@@ -157,7 +157,7 @@ Background@SERVER_LOBBY:
 									Bold: false
 								Checkbox@STATUS:
 									Id:STATUS
-									X:455
+									X:450
 									Y:2
 									Width:20
 									Height:20
