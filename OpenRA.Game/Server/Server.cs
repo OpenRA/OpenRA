@@ -212,6 +212,12 @@ namespace OpenRA.Server
 		static void AcceptConnection()
 		{
 			var newConn = new Connection { socket = listener.AcceptSocket() };
+			if (Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnValidateConnection(GameStarted, newConn))
+			{
+				DropClient(newConn, new Exception() );
+
+				return;
+			}
 			try
 			{
 				if (GameStarted)
