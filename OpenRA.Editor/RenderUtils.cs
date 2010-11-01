@@ -17,19 +17,34 @@ namespace OpenRA.Editor
 {
 	static class RenderUtils
 	{
+		static ColorPalette MakeSystemPalette(Palette p)
+		{
+			ColorPalette pal;
+			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
+				pal = b.Palette;
+			
+			for (var i = 0; i < 256; i++)
+				pal.Entries[i] = p.GetColor(i);
+			return pal;
+		}
+
 		public static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
 			var template = ts.Templates[n];
 			var tile = ts.Tiles[n];
 
-			var bitmap = new Bitmap(ts.TileSize * template.Size.X, ts.TileSize * template.Size.Y);
+			var bitmap = new Bitmap(ts.TileSize * template.Size.X, ts.TileSize * template.Size.Y,
+				PixelFormat.Format8bppIndexed);
+
+			bitmap.Palette = MakeSystemPalette(p);
+
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 			unsafe
 			{
-				int* q = (int*)data.Scan0.ToPointer();
-				var stride = data.Stride >> 2;
+				byte* q = (byte*)data.Scan0.ToPointer();
+				var stride = data.Stride;
 
 				for (var u = 0; u < template.Size.X; u++)
 					for (var v = 0; v < template.Size.Y; v++)
@@ -38,13 +53,13 @@ namespace OpenRA.Editor
 							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
 							for (var i = 0; i < ts.TileSize; i++)
 								for (var j = 0; j < ts.TileSize; j++)
-									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = p.GetColor(rawImage[i + ts.TileSize * j]).ToArgb();
+									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = rawImage[i + ts.TileSize * j];
 						}
 						else
 						{
 							for (var i = 0; i < ts.TileSize; i++)
 								for (var j = 0; j < ts.TileSize; j++)
-									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = Color.Transparent.ToArgb();
+									q[(v * ts.TileSize + j) * stride + u * ts.TileSize + i] = 0;
 						}
 			}
 
@@ -56,18 +71,21 @@ namespace OpenRA.Editor
 		{
 			var frame = shp[0];
 
-			var bitmap = new Bitmap(shp.Width, shp.Height);
+			var bitmap = new Bitmap(shp.Width, shp.Height, PixelFormat.Format8bppIndexed);
+
+			bitmap.Palette = MakeSystemPalette(p);
+
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 			unsafe
 			{
-				int* q = (int*)data.Scan0.ToPointer();
-				var stride2 = data.Stride >> 2;
+				byte* q = (byte*)data.Scan0.ToPointer();
+				var stride2 = data.Stride;
 
 				for (var i = 0; i < shp.Width; i++)
 					for (var j = 0; j < shp.Height; j++)
-						q[j * stride2 + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+						q[j * stride2 + i] = frame.Image[i + shp.Width * j];
 			}
 
 			bitmap.UnlockBits(data);
@@ -114,18 +132,19 @@ namespace OpenRA.Editor
 				var shp = new ShpReader(s);
 				var frame = shp[shp.ImageCount - 1];
 
-				var bitmap = new Bitmap(shp.Width, shp.Height);
+				var bitmap = new Bitmap(shp.Width, shp.Height, PixelFormat.Format8bppIndexed);
+				bitmap.Palette = MakeSystemPalette(p);
 				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-					ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+					ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 				unsafe
 				{
-					int* q = (int*)data.Scan0.ToPointer();
-					var stride = data.Stride >> 2;
+					byte* q = (byte*)data.Scan0.ToPointer();
+					var stride = data.Stride;
 
 					for (var i = 0; i < shp.Width; i++)
 						for (var j = 0; j < shp.Height; j++)
-							q[j * stride + i] = p.GetColor(frame.Image[i + shp.Width * j]).ToArgb();
+							q[j * stride + i] = frame.Image[i + shp.Width * j];
 				}
 
 				bitmap.UnlockBits(data);
