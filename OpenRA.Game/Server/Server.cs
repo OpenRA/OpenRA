@@ -191,14 +191,16 @@ namespace OpenRA.Server
 		 *		for manual spawnpoint choosing.
 		 *	- pick sensible non-conflicting colors for bots.
 		 */
-
+		/// <summary>
+		/// @todo The 256 is a big hack, need to look @ amount of available slots instead?
+		/// </summary>
 		static int ChooseFreePlayerIndex()
 		{
-			for (var i = 0; i < 8; i++)
+			for (var i = 0; i < 256; i++) // 256 was 8, but thats bit low
 				if (conns.All(c => c.PlayerIndex != i))
 					return i;
 
-			throw new InvalidOperationException("Already got 8 players");
+			throw new InvalidOperationException("Already got 256 players");
 		}
 
 		static int ChooseFreeSlot()
