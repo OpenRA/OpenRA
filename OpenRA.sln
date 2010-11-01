@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtractor", "FileExtrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Null", "OpenRA.Renderer.Null\OpenRA.Renderer.Null.csproj", "{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,14 @@ Global
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
