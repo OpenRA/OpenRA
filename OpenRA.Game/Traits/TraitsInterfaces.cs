@@ -190,6 +190,8 @@ namespace OpenRA.Traits
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
 
+	public interface ITraitNotSynced{} // Traits marked with NotSynced arent sync-checked
+
 	public struct Target		// a target: either an actor, or a fixed location.
 	{
 		Actor actor;

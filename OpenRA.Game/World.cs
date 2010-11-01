@@ -199,7 +199,11 @@ namespace OpenRA
 
 				// hash all the traits that tick
 				foreach (var x in traitDict.ActorsWithTraitMultiple<object>(this))
-					ret += n++ * (int)x.Actor.ActorID * Sync.CalculateSyncHash(x.Trait);
+				{
+					if (x.Trait is ITraitNotSynced) continue;
+
+					ret += n++*(int) x.Actor.ActorID*Sync.CalculateSyncHash(x.Trait);
+				}
 
 				// Hash the shared rng
 				ret += SharedRandom.Last;

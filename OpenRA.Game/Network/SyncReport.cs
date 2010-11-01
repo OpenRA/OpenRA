@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Network
 {
@@ -37,6 +38,7 @@ namespace OpenRA.Network
 			report.Traits.Clear();
 			foreach (var a in orderManager.world.Queries.WithTraitMultiple<object>())
 			{
+				if (a.Trait is ITraitNotSynced ) continue;
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
 					report.Traits.Add(new TraitReport()
