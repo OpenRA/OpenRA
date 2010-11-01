@@ -213,6 +213,7 @@
     </ProjectReference>
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="ActorReference.cs" />
+    <Compile Include="Misc.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Network\FrameData.cs" />

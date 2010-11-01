@@ -135,7 +135,11 @@ namespace OpenRA.Graphics
 		internal static void Initialize( OpenRA.FileFormats.Graphics.WindowMode windowMode )
 		{
 			var resolution = GetResolution( windowMode );
-			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Gl.dll" ) ), resolution.Width, resolution.Height, windowMode, false );
+
+			if (Game.Settings.Graphics.UseNullRenderer)
+				device = CreateDevice(Assembly.LoadFile(Path.GetFullPath(Game.Settings.Graphics.NullRenderEngine)), resolution.Width, resolution.Height, windowMode, false);
+			else
+				device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( Game.Settings.Graphics.RenderEngine ) ), resolution.Width, resolution.Height, windowMode, false );
 		}
 
 		static Size GetResolution(WindowMode windowmode)

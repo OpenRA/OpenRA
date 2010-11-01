@@ -39,6 +39,10 @@ namespace OpenRA.Network
 			case "Chat":
 				{
 					var client = orderManager.LobbyInfo.ClientWithIndex( clientId );
+
+					if (Game.IsHost && Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnIngameChat(client, order.TargetString, false))
+						break;
+
 					if (client != null)
 					{
 						var player = world != null ? world.FindPlayerByClient(client) : null;
@@ -52,6 +56,10 @@ namespace OpenRA.Network
 			case "TeamChat":
 				{
 					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+
+					if (Game.IsHost && Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnIngameChat(client, order.TargetString, true))
+						break;
+
 					if (client != null)
 					{
 						if (world == null)
@@ -98,8 +106,13 @@ namespace OpenRA.Network
 				}
 			case "SetStance":
 				{
+					
 					var targetPlayer = order.Player.World.players[order.TargetLocation.X];
 					var newStance = (Stance)order.TargetLocation.Y;
+
+					if (Game.IsHost && Game.Settings.Server.Extension != null)
+						Game.Settings.Server.Extension.OnIngameSetStance(order.Player, targetPlayer, newStance);
+						
 
 					SetPlayerStance(world, order.Player, targetPlayer, newStance);
 

@@ -15,20 +15,20 @@ using System.Net.Sockets;
 
 namespace OpenRA.Server
 {
-	class Connection
+	public class Connection
 	{
-		public Socket socket;
-		public List<byte> data = new List<byte>();
-		public ReceiveState State = ReceiveState.Header;
-		public int ExpectLength = 8;
-		public int Frame = 0;
+		internal Socket socket;
+		internal List<byte> data = new List<byte>();
+		internal ReceiveState State = ReceiveState.Header;
+		internal int ExpectLength = 8;
+		internal int Frame = 0;
 
-		public int MostRecentFrame = 0;
+		internal int MostRecentFrame = 0;
 
 		/* client data */
-		public int PlayerIndex;
+		public int PlayerIndex { get; internal set; }
 
-		public byte[] PopBytes(int n)
+		internal byte[] PopBytes(int n)
 		{
 			var result = data.GetRange(0, n);
 			data.RemoveRange(0, n);
@@ -65,7 +65,7 @@ namespace OpenRA.Server
 			return true;
 		}
 
-		public void ReadData()
+		internal void ReadData()
 		{
 			if (ReadDataInner())
 				while (data.Count >= ExpectLength)
