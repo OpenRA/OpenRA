@@ -32,10 +32,10 @@ namespace OpenRA.Mods.RA
 		
 		// TODO: sync these
 		// A list of things we are currently building
-		List<ProductionItem> Queue = new List<ProductionItem>();
+		public List<ProductionItem> Queue = new List<ProductionItem>();
 		
 		// A list of things we could possibly build, even if our race doesn't normally get it
-		Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
+		public Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
 
 		public ProductionQueue( Actor self, Actor playerActor, ProductionQueueInfo info )
 		{
