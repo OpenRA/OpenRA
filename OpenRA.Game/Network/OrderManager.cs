@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-	class OrderManager : IDisposable
+    public class OrderManager : IDisposable
 	{
 		readonly SyncReport syncReport;
 		readonly FrameData frameData = new FrameData();

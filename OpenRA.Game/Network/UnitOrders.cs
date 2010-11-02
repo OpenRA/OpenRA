@@ -27,14 +27,14 @@ namespace OpenRA.Network
 
 		public static void ProcessOrder( OrderManager orderManager, World world, int clientId, Order order )
 		{
-			// Drop exploiting orders
-			if (order.Subject != null && order.Subject.Owner.ClientIndex != clientId)
+			if (world != null)
 			{
-				Game.Debug("Detected exploit order from {0}: {1}".F(clientId, order.OrderString));
-				return;
+				if (!world.WorldActor.TraitsImplementing<IValidateOrder>().All(vo =>
+					vo.OrderValidation(orderManager, world, clientId, order)))
+					return;
 			}
-			
-			switch( order.OrderString )
+
+		    switch( order.OrderString )
 			{
 			case "Chat":
 				{
