@@ -51,7 +51,7 @@ namespace OpenRA.Traits
     }
 	public interface IOrderCursor { string CursorForOrder(Actor self, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
-
+    public interface ICustomUnitOrderGenerator : IOrderGenerator {};
 	public interface INotifySold { void Selling( Actor self );  void Sold( Actor self ); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }

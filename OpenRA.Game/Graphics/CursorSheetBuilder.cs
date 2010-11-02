@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		}
 
 		Sprite[] LoadCursors(string filename)
-		{
+        {
 			try
 			{
 				var shp = new Dune2ShpReader(FileSystem.OpenWithExts(filename, exts));

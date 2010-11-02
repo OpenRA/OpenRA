@@ -18,30 +18,60 @@ namespace OpenRA.Orders
 	class UnitOrderGenerator : IOrderGenerator
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
-		{		
-			var underCursor = world.FindUnitsAtMouse(mi.Location)
-				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
-				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
-				.FirstOrDefault();
-			
-			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, xy, mi, underCursor))
-				.Where(o => o != null)
-				.ToArray();
+		{
+		    var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
+            if (custom != null)
+            {
+                var customOrders = custom.Order(world, xy, mi);
 
-			var actorsInvolved = orders.Select(o => o.self).Distinct();
-			if (actorsInvolved.Any())
-				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
-					string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()));
+                foreach (var o in customOrders)
+                    yield return o;
+            }
+            else
+            {
+                var underCursor = world.FindUnitsAtMouse(mi.Location)
+                    .Where(a => a.Info.Traits.Contains<TargetableInfo>())
+                    .OrderByDescending(
+                        a =>
+                        a.Info.Traits.Contains<SelectableInfo>()
+                            ? a.Info.Traits.Get<SelectableInfo>().Priority
+                            : int.MinValue)
+                    .FirstOrDefault();
 
-			foreach( var o in orders )
-				yield return CheckSameOrder( o.iot, o.trait.IssueOrder( o.self, o.iot, o.target ) );
+                var orders = world.Selection.Actors
+                    .Select(a => OrderForUnit(a, xy, mi, underCursor))
+                    .Where(o => o != null)
+                    .ToArray();
+
+                var actorsInvolved = orders.Select(o => o.self).Distinct();
+                if (actorsInvolved.Any())
+                    yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
+                                           string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()))
+                        ;
+
+                foreach (var o in orders)
+                    yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target));
+            }
 		}
 
-		public void Tick( World world ) {}
+		public void Tick( World world )
+        {
+            var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
+            if (custom != null)
+            {
+                custom.Tick(world);
+            }
+		}
 
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
-		{
+        {
+            var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
+            if (custom != null)
+            {
+                custom.RenderBeforeWorld(wr, world);
+                return;
+            }
+
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
@@ -51,7 +81,14 @@ namespace OpenRA.Orders
 		}
 
 		public void RenderAfterWorld( WorldRenderer wr, World world )
-		{
+        {
+            var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
+            if (custom != null)
+            {
+                custom.RenderAfterWorld(wr, world);
+                return;
+            }
+
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
@@ -61,7 +98,13 @@ namespace OpenRA.Orders
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )
-		{		
+        {
+            var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
+            if (custom != null)
+            {
+               return custom.GetCursor(world, xy, mi);
+            }
+
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
