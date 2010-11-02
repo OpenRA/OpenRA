@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class Parachute : IEffect
+	public class Parachute : IEffect
 	{
 		readonly Animation anim;
 		readonly Animation paraAnim;
