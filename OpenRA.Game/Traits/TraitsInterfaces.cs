@@ -166,8 +166,12 @@ namespace OpenRA.Traits
             Scale = scale; /* default */
         }
 
-		public Renderable(Sprite sprite, float2 pos, string palette, int z)
-			: this(sprite, pos, palette, z, 0) { }
+        public Renderable(Sprite sprite, float2 pos, string palette, int z)
+            : this(sprite, pos, palette, z, 0) { }
+
+
+        public Renderable(Sprite sprite, float2 pos, string palette, int z, float scale)
+            : this(sprite, pos, palette, z, 0, scale) { }
 
         public Renderable WithPalette(string newPalette) { return new Renderable(Sprite, Pos, newPalette, Z, ZOffset, Scale); }
         public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, Z, newOffset, Scale); }
