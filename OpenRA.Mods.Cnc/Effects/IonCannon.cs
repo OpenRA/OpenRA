@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class IonCannon : IEffect
+	public class IonCannon : IEffect
 	{
 		Target target;
 		Animation anim;

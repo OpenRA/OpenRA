@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class NukeLaunch : IEffect
+	public class NukeLaunch : IEffect
 	{
 		readonly Actor silo;
 		Animation anim;
