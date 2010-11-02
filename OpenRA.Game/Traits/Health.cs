@@ -81,14 +81,14 @@ namespace OpenRA.Traits
 			var oldState = this.DamageState;
 			
 			/* apply the damage modifiers, if we have any. */
-			var modifier = (float)self.TraitsImplementing<IDamageModifier>()
+            var modifier = (float)self.TraitsImplementing<IDamageModifier>().Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 				.Select(t => t.GetDamageModifier(warhead)).Product();
 
 			damage = (int)(damage * modifier);
 
 			hp -= damage;
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>())
+            foreach (var nd in self.TraitsImplementing<INotifyDamage>().Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
 				nd.Damaged(self, new AttackInfo
 				{
 					Attacker = attacker,
