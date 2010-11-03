@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
 
-		public IEnumerable<int2> TargetableSquares( Actor self )
+		public IEnumerable<int2> TargetableCells( Actor self )
 		{
 			return self.Trait<Building>().OccupiedCells();
 		}

@@ -241,6 +241,6 @@ namespace OpenRA.Traits
 	public interface ITargetable
 	{
 		string[] TargetTypes { get; }
-		IEnumerable<int2> TargetableSquares( Actor self );
+		IEnumerable<int2> TargetableCells( Actor self );
 	}
 }

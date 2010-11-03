@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA
 		public static bool IsInRange( float2 attackOrigin, float range, Actor target )
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach( var cell in target.Trait<ITargetable>().TargetableSquares( target ) )
+			foreach( var cell in target.Trait<ITargetable>().TargetableCells( target ) )
 				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared < rsq )
 					return true;
 			return false;

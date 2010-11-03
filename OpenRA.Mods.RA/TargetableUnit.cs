@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual string[] TargetTypes { get { return info.TargetTypes; } }
 
-		public virtual IEnumerable<int2> TargetableSquares( Actor self )
+		public virtual IEnumerable<int2> TargetableCells( Actor self )
 		{
 			yield return Util.CellContaining( self.CenterLocation );
 		}
