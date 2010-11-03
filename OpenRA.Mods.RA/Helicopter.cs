@@ -133,7 +133,7 @@ namespace OpenRA.Mods.RA
 			if (aircraft.Altitude <= 0)
 				return;
 			
-			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var rawSpeed = .2f * aircraft.MovementSpeed;
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 

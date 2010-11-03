@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 		public static void Fly(Actor self, int desiredAltitude )
 		{
 			var aircraft = self.Trait<Aircraft>();
-			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var speed = .2f * aircraft.MovementSpeed;
 			var angle = aircraft.Facing / 128f * Math.PI;
 			aircraft.center += speed * -float2.FromAngle((float)angle);
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);

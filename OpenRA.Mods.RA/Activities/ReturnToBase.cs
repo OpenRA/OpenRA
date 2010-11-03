@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Activities
 			var landPos = dest.CenterLocation;
 			var aircraft = self.Trait<Aircraft>();
 
-			var speed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var speed = .2f * aircraft.MovementSpeed;
 			
 			var approachStart = landPos - new float2(aircraft.Altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;

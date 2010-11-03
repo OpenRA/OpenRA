@@ -80,14 +80,17 @@ namespace OpenRA.Mods.RA
 		}
 
 		public bool CanEnterCell(int2 location) { return true; }
-		
-		public float MovementSpeedForCell(Actor self, int2 cell)
-		{		
-			var modifier = self
-				.TraitsImplementing<ISpeedModifier>()
-				.Select(t => t.GetSpeedModifier())
-				.Product();
-			return Info.Speed * modifier;
+
+		public float MovementSpeed
+		{
+			get
+			{
+				var modifier = self
+					.TraitsImplementing<ISpeedModifier>()
+					.Select( t => t.GetSpeedModifier() )
+					.Product();
+				return Info.Speed * modifier;
+			}
 		}
 		
 		int2[] noCells = new int2[] { };

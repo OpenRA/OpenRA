@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			var rawSpeed = .2f * aircraft.MovementSpeedForCell(self, self.Location);
+			var rawSpeed = .2f * aircraft.MovementSpeed;
 			
 			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
 				aircraft.center += (rawSpeed / dist.Length) * dist;
