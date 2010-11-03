@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.Graphics;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
@@ -31,6 +32,11 @@ namespace OpenRA.Traits
 		public virtual string[] TargetTypes
 		{
 			get { return Info.TargetTypes;}
+		}
+
+		public virtual IEnumerable<int2> TargetableSquares( Actor self )
+		{
+			yield return self.Location;
 		}
 	}
 }

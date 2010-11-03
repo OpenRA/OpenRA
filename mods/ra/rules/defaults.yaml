@@ -125,7 +125,7 @@
 	AppearsOnRadar:
 	Selectable:
 		Priority: 3
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground
 	Building:
 		Dimensions: 1,1

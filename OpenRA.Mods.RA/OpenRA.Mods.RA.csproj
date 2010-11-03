@@ -221,6 +221,7 @@
     <Compile Include="SupportPowers\SupportPower.cs" />
     <Compile Include="TakeCover.cs" />
     <Compile Include="TargetableAircraft.cs" />
+    <Compile Include="TargetableBuilding.cs" />
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
     <Compile Include="ThrowsParticles.cs" />

@@ -219,5 +219,20 @@ namespace OpenRA.Mods.RA
 
 			return Util.RotateVectorByFacing(barrel.Position, turretFacing, .7f);
 		}
+
+		public static bool IsInRange( float2 attackOrigin, float range, Actor target )
+		{
+			var rsq = range * range * Game.CellSize * Game.CellSize;
+			foreach( var cell in target.Trait<Targetable>().TargetableSquares( target ) )
+				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared < rsq )
+					return true;
+			return false;
+		}
+
+		public static bool IsInRange( float2 attackOrigin, float range, float2 targetLocation )
+		{
+			var rsq = range * range * Game.CellSize * Game.CellSize;
+			return ( attackOrigin - targetLocation ).LengthSquared < rsq;
+		}
 	}
 }

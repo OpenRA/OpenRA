@@ -32,8 +32,7 @@ namespace OpenRA.Mods.RA
 			if (IsLeaping) return;
 
 			var weapon = self.Trait<AttackBase>().Weapons[0].Info;
-			if (weapon.Range * Game.CellSize * weapon.Range * Game.CellSize
-			    < (target.CenterLocation - self.CenterLocation).LengthSquared) return;
+			if( !Combat.IsInRange( self.CenterLocation, weapon.Range, target.Actor ) ) return;
 
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));
