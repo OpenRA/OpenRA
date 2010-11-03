@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		{
 			var info = self.Info.Traits.Get<CarpetBombInfo>();
 
-			if ((self.Location - Target).LengthSquared > info.Range * info.Range)
+			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target ) )
 				return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();

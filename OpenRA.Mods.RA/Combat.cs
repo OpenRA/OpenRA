@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
 			foreach( var cell in target.Trait<ITargetable>().TargetableCells( target ) )
-				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared < rsq )
+				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared <= rsq )
 					return true;
 			return false;
 		}
@@ -232,7 +232,7 @@ namespace OpenRA.Mods.RA
 		public static bool IsInRange( float2 attackOrigin, float range, float2 targetLocation )
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			return ( attackOrigin - targetLocation ).LengthSquared < rsq;
+			return ( attackOrigin - targetLocation ).LengthSquared <= rsq;
 		}
 
 		public static bool IsInRange( float2 attackOrigin, float range, Target target )

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 			if (!attack.target.IsValid)
 				return true;	// he's dead.
-			if ((attack.target.CenterLocation - self.Location).LengthSquared > range * range + 2)
+			if( !Combat.IsInRange( self.CenterLocation, range, attack.target ) )
 				return true;	// wandered off faster than we could follow
 			
 			if (attack.target.IsActor
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.OrderBy(a => (a.Location - self.Location).LengthSquared)
+				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
 				.FirstOrDefault();
 		}
 	}

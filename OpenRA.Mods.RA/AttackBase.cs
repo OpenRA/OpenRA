@@ -216,8 +216,7 @@ namespace OpenRA.Mods.RA
 				var attack = self.Trait<AttackBase>();
 				var range = attack.GetMaximumRange();
 
-				if (!attack.target.IsValid ||
-					(Util.CellContaining(attack.target.CenterLocation) - self.Location).LengthSquared > range * range)
+				if (!attack.target.IsValid || !Combat.IsInRange( self.CenterLocation, range, attack.target ))
 					AttackTarget(self, ChooseTarget(self, range), allowMovement);
 
 				var info = self.Info.Traits.Get<AttackBaseInfo>();
@@ -235,7 +234,7 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Enemy)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.Where(a => !a.HasTrait<Cloak>() || a.Trait<Cloak>().IsVisible(a, self.Owner))
-				.OrderBy(a => (a.Location - self.Location).LengthSquared)
+				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
 				.FirstOrDefault();
 		}
 
