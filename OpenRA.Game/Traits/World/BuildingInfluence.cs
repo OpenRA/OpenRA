@@ -41,11 +41,8 @@ namespace OpenRA.Traits
 		void ChangeInfluence( Actor a, Building building, bool isAdd )
 		{
 			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
-			{
-				if( !map.IsInMap( u ) )
-					throw new InvalidOperationException( "building outside map bounds" );
-				influence[ u.X, u.Y ] = isAdd ? a : null;
-			}
+				if( map.IsInMap( u ) )
+					influence[ u.X, u.Y ] = isAdd ? a : null;
 		}
 
 		public Actor GetBuildingAt(int2 cell)
