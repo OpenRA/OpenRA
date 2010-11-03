@@ -234,5 +234,14 @@ namespace OpenRA.Mods.RA
 			var rsq = range * range * Game.CellSize * Game.CellSize;
 			return ( attackOrigin - targetLocation ).LengthSquared < rsq;
 		}
+
+		public static bool IsInRange( float2 attackOrigin, float range, Target target )
+		{
+			if( !target.IsValid ) return false;
+			if( target.IsActor )
+				return IsInRange( attackOrigin, range, target.Actor );
+			else
+				return IsInRange( attackOrigin, range, target.CenterLocation );
+		}
 	}
 }

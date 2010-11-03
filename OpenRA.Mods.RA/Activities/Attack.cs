@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			var targetCell = Util.CellContaining(Target.CenterLocation);
 
-			if (!Combat.IsInRange( self.CenterLocation, Range, Util.CenterOfCell(targetCell)))
+			if (!Combat.IsInRange( self.CenterLocation, Range, Target))
 				return Util.SequenceActivities( mobile.MoveTo( Target, Range ), this );
 
 			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);

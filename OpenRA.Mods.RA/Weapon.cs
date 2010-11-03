@@ -102,13 +102,10 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
-			if( target.IsActor && !Combat.IsInRange( self.CenterLocation, Info.Range, target.Actor ) )
+			if( !Combat.IsInRange( self.CenterLocation, Info.Range, target ) )
 				return;
-			else if( !target.IsActor && !Combat.IsInRange( self.CenterLocation, Info.Range, target.CenterLocation ) )
+			if( Combat.IsInRange( self.CenterLocation, Info.MinRange, target ) )
 				return;
-
-			if (Info.MinRange * Info.MinRange * Game.CellSize * Game.CellSize >
-				(target.CenterLocation - self.CenterLocation).LengthSquared) return;
 			
 			if (!IsValidAgainst(self.World, target)) return;
 
