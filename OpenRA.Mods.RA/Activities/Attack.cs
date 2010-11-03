@@ -42,22 +42,16 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValid)
 				return NextActivity;
 
-			var mobile = self.Trait<Mobile>();
-			var targetCell = Util.CellContaining(Target.CenterLocation);
-
 			if (!Combat.IsInRange( self.CenterLocation, Range, Target))
-				return Util.SequenceActivities( mobile.MoveTo( Target, Range ), this );
+				return Util.SequenceActivities( self.Trait<Mobile>().MoveTo( Target, Range ), this );
 
-			var desiredFacing = Util.GetFacing((targetCell - self.Location).ToFloat2(), 0);
+			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
 			var renderUnit = self.TraitOrDefault<RenderUnit>();
 			var numDirs = (renderUnit != null)
 				? renderUnit.anim.CurrentSequence.Facings : 8;
 
-			if (Util.QuantizeFacing(facing.Facing, numDirs) 
-				!= Util.QuantizeFacing(desiredFacing, numDirs))
-			{
+			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities( new Turn( desiredFacing ), this );
-			}
 
 			attack.target = Target;
 			attack.DoAttack(self, Target);
