@@ -98,13 +98,12 @@ namespace OpenRA.Mods.RA
 			// required for 3-arg CanEnterCell
 			//var mobile = newUnit.Trait<Mobile>();
 			var mobileInfo = producee.Traits.Get<MobileInfo>();
-			var bim = self.World.WorldActor.Trait<BuildingInfluence>();
 			var uim = self.World.WorldActor.Trait<UnitInfluence>();
 			
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
-				if( Mobile.CanEnterCell( mobileInfo, self.World, uim, bim, self.Location + s.ExitCell,self,true ) )
+				if( Mobile.CanEnterCell( mobileInfo, self.World, uim, self.Location + s.ExitCell,self,true ) )
 				{
 					DoProduction(self, producee, s);
 					return true;

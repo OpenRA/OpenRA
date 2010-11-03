@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
 			{
 				var exit = self.Location + s.ExitCell;
-				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any())
+				if (!self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt( exit ).Any( x => x != self ))
 				{
 					var newUnit = self.World.CreateActor( producee.Name, new TypeDictionary
 					{

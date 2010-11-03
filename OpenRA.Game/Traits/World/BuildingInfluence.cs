@@ -10,6 +10,7 @@
 
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
+using System;
 
 namespace OpenRA.Traits
 {
@@ -20,34 +21,31 @@ namespace OpenRA.Traits
 
 	public class BuildingInfluence
 	{
-		bool[,] blocked;
 		Actor[,] influence;
 		Map map;
 
 		public BuildingInfluence( World world )
 		{
 			map = world.Map;
-			
-			blocked = new bool[map.MapSize.X, map.MapSize.Y];
+
 			influence = new Actor[map.MapSize.X, map.MapSize.Y];
-			
+
 			world.ActorAdded +=
-				a => { if (a.HasTrait<Building>()) 
+				a => { if (a.HasTrait<Building>())
 					ChangeInfluence(a, a.Trait<Building>(), true); };
 			world.ActorRemoved +=
-				a => { if (a.HasTrait<Building>()) 
+				a => { if (a.HasTrait<Building>())
 					ChangeInfluence(a, a.Trait<Building>(), false); };
 		}
 
 		void ChangeInfluence( Actor a, Building building, bool isAdd )
 		{
-			foreach( var u in Footprint.UnpathableTiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
-				if( map.IsInMap( u ) )
-					blocked[ u.X, u.Y ] = isAdd;
-
 			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
-				if( map.IsInMap( u ) )
-					influence[ u.X, u.Y ] = isAdd ? a : null;
+			{
+				if( !map.IsInMap( u ) )
+					throw new InvalidOperationException( "building outside map bounds" );
+				influence[ u.X, u.Y ] = isAdd ? a : null;
+			}
 		}
 
 		public Actor GetBuildingAt(int2 cell)
@@ -55,21 +53,5 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(cell)) return null;
 			return influence[cell.X, cell.Y];
 		}
-		
-		public Actor GetBuildingBlocking(int2 cell)
-		{
-			if (!map.IsInMap(cell) || !blocked[cell.X, cell.Y]) return null;
-			return influence[cell.X, cell.Y];
-		}
-
-		public bool CanMoveHere(int2 cell)
-		{
-			return map.IsInMap(cell) && !blocked[cell.X, cell.Y];
-		}
-
-		public bool CanMoveHere(int2 cell, Actor toIgnore)
-		{
-			return map.IsInMap(cell) && 
-				(!blocked[cell.X, cell.Y] || influence[cell.X, cell.Y] == toIgnore);
-		}
-	}}
+	}
+}

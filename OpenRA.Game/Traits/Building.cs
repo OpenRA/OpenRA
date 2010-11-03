@@ -53,9 +53,11 @@ namespace OpenRA.Traits
 		{
 			this.self = init.self;
 			this.topLeft = init.Get<LocationInit,int2>();
-			Info = self.Info.Traits.Get<BuildingInfo>();
-			
-			PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
+			this.Info = self.Info.Traits.Get<BuildingInfo>();
+			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
+
+			var uim = init.world.WorldActor.Trait<UnitInfluence>();
+			uim.Add( init.self, this );
 		}
 		
 		public int GetPowerUsage()

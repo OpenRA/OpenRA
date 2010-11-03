@@ -222,39 +222,21 @@ namespace OpenRA.Mods.RA.Move
 
 		public static bool CanEnterCell( World world, MobileInfo mi, int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
-			var bim = world.WorldActor.Trait<BuildingInfluence>();
 			var uim = world.WorldActor.Trait<UnitInfluence>();
-			return Mobile.CanEnterCell( mi, world, uim, bim, cell, ignoreActor, checkTransientActors );
+			return Mobile.CanEnterCell( mi, world, uim, cell, ignoreActor, checkTransientActors );
 		}
 		
 		public bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
-			var bim = self.World.WorldActor.Trait<BuildingInfluence>();
 			var uim = self.World.WorldActor.Trait<UnitInfluence>();
-			return CanEnterCell( Info, self.World, uim, bim, cell, ignoreActor, checkTransientActors );
+			return CanEnterCell( Info, self.World, uim, cell, ignoreActor, checkTransientActors );
 		}
 
-		public static bool CanEnterCell( MobileInfo mobileInfo, World world, UnitInfluence uim, BuildingInfluence bim, int2 cell, Actor ignoreActor, bool checkTransientActors )
+		public static bool CanEnterCell( MobileInfo mobileInfo, World world, UnitInfluence uim, int2 cell, Actor ignoreActor, bool checkTransientActors )
 		{
 			if (MovementCostForCell(mobileInfo, world, cell) == int.MaxValue)
 				return false;
 
-			// Check for buildings
-			var building = bim.GetBuildingBlocking(cell);
-			if (building != null && building != ignoreActor)
-			{
-				if (mobileInfo.Crushes == null)
-					return false;
-
-				var crushable = building.TraitsImplementing<ICrushable>();
-				if (crushable.Count() == 0)
-					return false;
-
-				if (!crushable.Any(b => b.CrushClasses.Intersect(mobileInfo.Crushes).Any()))
-					return false;
-			}
-
-			// Check mobile actors
 			var blockingActors = uim.GetUnitsAt( cell ).Where( x => x != ignoreActor ).ToList();
 			if (checkTransientActors && blockingActors.Count > 0)
 			{

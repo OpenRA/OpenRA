@@ -27,13 +27,11 @@ namespace OpenRA.Mods.RA.Move
 		public bool inReverse;
 		
 		MobileInfo mobileInfo;
-		BuildingInfluence bim;
 		UnitInfluence uim;
 		
 		public PathSearch(World world, MobileInfo mobileInfo)
 		{
 			this.world = world;
-			bim = world.WorldActor.Trait<BuildingInfluence>();
 			uim = world.WorldActor.Trait<UnitInfluence>();
 			cellInfo = InitCellInfo();
 			this.mobileInfo = mobileInfo;
@@ -107,7 +105,7 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!Mobile.CanEnterCell(mobileInfo, world, uim, bim, newHere, ignoreBuilding, checkForBlocked))
+				if (!Mobile.CanEnterCell(mobileInfo, world, uim, newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
