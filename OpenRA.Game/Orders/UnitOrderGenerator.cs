@@ -30,7 +30,7 @@ namespace OpenRA.Orders
             else
             {
                 var underCursor = world.FindUnitsAtMouse(mi.Location)
-                    .Where(a => a.Info.Traits.Contains<TargetableInfo>())
+                    .Where(a => a.HasTrait<ITargetable>())
                     .OrderByDescending(
                         a =>
                         a.Info.Traits.Contains<SelectableInfo>()
@@ -106,7 +106,7 @@ namespace OpenRA.Orders
             }
 
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
-				.Where(a => a.Info.Traits.Contains<TargetableInfo>())
+				.Where(a => a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 				.FirstOrDefault();
 			

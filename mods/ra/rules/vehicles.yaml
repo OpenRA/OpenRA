@@ -480,7 +480,7 @@ SS:
 		Speed: 5
 	RevealsShroud:
 		Range: 6
-	-Targetable:
+	-TargetableUnit:
 	TargetableCloaked:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater
@@ -523,7 +523,7 @@ MSUB:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	-Targetable:
+	-TargetableUnit:
 	TargetableCloaked:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater

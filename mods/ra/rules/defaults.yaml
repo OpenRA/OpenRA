@@ -11,7 +11,7 @@
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
@@ -39,7 +39,7 @@
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
@@ -71,7 +71,7 @@
 			Beach: 80
 	Selectable:
 		Voice: GenericVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
@@ -94,7 +94,7 @@
 			Water: 100
 	Selectable:
 		Voice: ShipVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground, Water
 	DetectCloaked:
 		Range: 3
@@ -157,7 +157,7 @@
 		Range: 8
 	Selectable:
 		Priority: 1
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
@@ -208,7 +208,7 @@
 	Tooltip:
 		Name: Bridge
 	BelowUnits:
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
 		Footprint: ____ ____

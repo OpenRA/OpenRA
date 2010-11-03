@@ -237,4 +237,10 @@ namespace OpenRA.Traits
 		public Actor Actor { get { return IsActor ? actor : null; } }
 		public bool IsActor { get { return actor != null && !actor.Destroyed; } }
 	}
+
+	public interface ITargetable
+	{
+		string[] TargetTypes { get; }
+		IEnumerable<int2> TargetableSquares( Actor self );
+	}
 }

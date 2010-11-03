@@ -68,7 +68,7 @@ SPEN:
 		Prerequisites: @Power Plant
 		Owner: soviet
 		Hotkey: s
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
 		Power: -30
@@ -123,7 +123,7 @@ SYRD:
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
 		Power: -30
@@ -964,7 +964,7 @@ SYRF:
 #		Description: Fake Shipyard
 #		LongDesc: Looks like a Shipyard
 #		Hotkey: z
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
 		Power: -2
@@ -985,7 +985,7 @@ SYRF:
 
 SPEF:
 	Inherits: ^Building
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
 		Power: -2

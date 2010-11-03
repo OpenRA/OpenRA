@@ -446,6 +446,9 @@ STNK:
 		PrimaryWeapon: 227mm
 	RenderUnit:
 	AutoTarget:
+	-TargetableUnit:
+	TargetableCloaked:
+		CloakedTargetTypes: cloaked
 
 TRAN:
 	Inherits: ^Helicopter
@@ -565,7 +568,7 @@ C17:
 		Passengers: 10
 	Invulnerable:
 	-Selectable:
-	-Targetable:
+	-TargetableUnit:
 	-GainsExperience:
 	FlyAwayOnIdle:
 

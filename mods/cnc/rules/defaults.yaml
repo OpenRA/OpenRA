@@ -12,7 +12,7 @@
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
@@ -43,7 +43,7 @@
 		ROT: 5
 	Selectable: 
 		Voice: VehicleVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
@@ -63,7 +63,7 @@
 ^Helicopter:
 	AppearsOnRadar:
 		UseLocation: yes
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Air
 	Selectable:
 		Voice: VehicleVoice
@@ -100,7 +100,7 @@
 			Beach: 80
 	Selectable:
 		Voice: GenericVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground
 	Buildable:
 		Queue: Infantry
@@ -146,7 +146,7 @@
 		UseLocation: yes
 	Selectable:
 		Voice: GenericVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Air
 	HiddenUnderFog:
 	GainsExperience:
@@ -163,7 +163,7 @@
 			Water: 100
 	Selectable:
 		Voice: GenericVoice
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
 	GainsExperience:
@@ -177,7 +177,7 @@
 	AppearsOnRadar:
 	Selectable:
 		Priority: 3
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground
 	Armor:
 		Type: Wood
@@ -242,7 +242,7 @@
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 		Adjacent: 7
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground
 	Wall:
 		CrushClasses: wall
@@ -293,7 +293,7 @@
 ^Bridge:
 	Tooltip:
 		Name: Bridge
-	Targetable:
+	TargetableBuilding:
 		TargetTypes: Ground, Water
 	BelowUnits:
 	Health:

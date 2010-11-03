@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA
 
 		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
 		{
-			var targetable = target.TraitOrDefault<Targetable>();
+			var targetable = target.TraitOrDefault<ITargetable>();
 			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 			
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA
 		public static bool IsInRange( float2 attackOrigin, float range, Actor target )
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach( var cell in target.Trait<Targetable>().TargetableSquares( target ) )
+			foreach( var cell in target.Trait<ITargetable>().TargetableSquares( target ) )
 				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared < rsq )
 					return true;
 			return false;

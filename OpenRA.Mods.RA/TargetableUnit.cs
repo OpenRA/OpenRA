@@ -16,25 +16,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class TargetableBuildingInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
+	public class TargetableUnitInfo : ITraitInfo
 	{
 		public readonly string[] TargetTypes = { };
-		public object Create( ActorInitializer init ) { return new TargetableBuilding( this ); }
+		public virtual object Create( ActorInitializer init ) { return new TargetableUnit<TargetableUnitInfo>( this ); }
 	}
 
-	class TargetableBuilding : ITargetable
+	public class TargetableUnit<Info> : ITargetable
+		where Info : TargetableUnitInfo
 	{
-		readonly TargetableBuildingInfo info;
-		public TargetableBuilding( TargetableBuildingInfo info )
+		protected readonly Info info;
+		public TargetableUnit( Info info )
 		{
 			this.info = info;
 		}
 
-		public string[] TargetTypes { get { return info.TargetTypes; } }
+		public virtual string[] TargetTypes { get { return info.TargetTypes; } }
 
-		public IEnumerable<int2> TargetableSquares( Actor self )
+		public virtual IEnumerable<int2> TargetableSquares( Actor self )
 		{
-			return self.Trait<Building>().OccupiedCells();
+			yield return Util.CellContaining( self.CenterLocation );
 		}
 	}
 }

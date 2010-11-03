@@ -192,7 +192,6 @@
     <Compile Include="Widgets\ViewportScrollControllerWidget.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
-    <Compile Include="Traits\Targetable.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
