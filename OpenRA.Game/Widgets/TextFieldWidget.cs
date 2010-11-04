@@ -96,8 +96,8 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		int blinkCycle = 10;
-		bool showCursor = true;
+		protected int blinkCycle = 10;
+		protected bool showCursor = true;
 		public override void Tick()
 		{
 			if (--blinkCycle <= 0)

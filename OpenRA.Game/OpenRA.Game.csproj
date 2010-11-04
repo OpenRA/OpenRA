@@ -217,6 +217,7 @@
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />
+    <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
     <Compile Include="Widgets\ScrollingTextWidget.cs" />
   </ItemGroup>
