@@ -53,27 +53,33 @@ namespace OpenRA
 			}
 		}
 
+		public void DrawGrid( WorldRenderer wr, Dictionary<int2, bool> cells )
+		{
+			foreach( var c in cells )
+				( c.Value ? buildOk : buildBlocked ).DrawAt( wr, Game.CellSize * c.Key, "terrain" );
+		}
+
 		public void DrawBuildingGrid( WorldRenderer wr, World world, string name, BuildingInfo bi )
 		{
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - Footprint.AdjustForBuildingSize( bi );
-			
+
+			var cells = new Dictionary<int2, bool>();
 			// Linebuild for walls.
 			// Assumes a 1x1 footprint; weird things will happen for other footprints
 			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
 			{
-				foreach (var t in LineBuildUtils.GetLineBuildCells(world, topLeft, name, bi))
-					(world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, t) ? buildOk : buildBlocked)
-						.DrawAt(wr, Game.CellSize * t, "terrain");
+				foreach( var t in LineBuildUtils.GetLineBuildCells( world, topLeft, name, bi ) )
+					cells.Add( t, world.IsCloseEnoughToBase( world.LocalPlayer, name, bi, t ) );
 			}
 			else
 			{
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = world.IsCloseEnoughToBase(world.LocalPlayer, name, bi, topLeft);
 				foreach (var t in Footprint.Tiles(name, bi, topLeft))
-					((isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null) ? buildOk : buildBlocked)
-						.DrawAt( wr, Game.CellSize * t, "terrain");
+					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, bi.WaterBound) && res.GetResource(t) == null );
 			}
+			DrawGrid( wr, cells );
 		}
 	}
 
