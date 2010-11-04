@@ -83,6 +83,17 @@
     <Compile Include="AttackBase.cs" />
     <Compile Include="AttackMove.cs" />
     <Compile Include="Buildable.cs" />
+    <Compile Include="Buildings\BibLayer.cs" />
+    <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\BuildingInfluence.cs" />
+    <Compile Include="Buildings\CustomSellValue.cs" />
+    <Compile Include="Buildings\FootprintUtils.cs" />
+    <Compile Include="Buildings\LineBuild.cs" />
+    <Compile Include="Buildings\PowerManager.cs" />
+    <Compile Include="Buildings\Sell.cs" />
+    <Compile Include="Buildings\TechTree.cs" />
+    <Compile Include="Buildings\Util.cs" />
+    <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />
     <Compile Include="Crates\CloakCrateAction.cs" />
@@ -126,7 +137,7 @@
     <Compile Include="Render\RenderBuildingTurreted.cs" />
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitTurreted.cs" />
-    <Compile Include="RepairableBuilding.cs" />
+    <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="ReservableProduction.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="AttackFrontal.cs" />
@@ -143,7 +154,7 @@
     <Compile Include="BridgeLayer.cs" />
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
-    <Compile Include="CanPowerDown.cs" />
+    <Compile Include="Buildings\CanPowerDown.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
     <Compile Include="Crates\LevelUpCrateAction.cs" />
@@ -202,7 +213,7 @@
     <Compile Include="Render\RenderUnitSpinner.cs" />
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairsUnits.cs" />
-    <Compile Include="RequiresPower.cs" />
+    <Compile Include="Buildings\RequiresPower.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -229,7 +240,7 @@
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="DefaultShellmapScript.cs" />
     <Compile Include="Turreted.cs" />
-    <Compile Include="Wall.cs" />
+    <Compile Include="Buildings\Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
@@ -240,6 +251,7 @@
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarBinWidget.cs" />
     <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
+    <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />
     <Compile Include="NukePaletteEffect.cs" />

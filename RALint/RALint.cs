@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using OpenRA;
 using OpenRA.FileFormats;
@@ -43,10 +42,10 @@ namespace RALint
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				// all the @something names which actually EXIST.
-				var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<TooltipInfo>()).Where(b => b != null)
-					.Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
+				//var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<TooltipInfo>()).Where(b => b != null)
+				//    .Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
 
-				ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
+				//ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
 
 				foreach (var actorInfo in Rules.Info)
 					foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())

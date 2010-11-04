@@ -8,15 +8,15 @@
  */
 #endregion
 
-using System.Linq;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Effects;
-using OpenRA.Traits;
-using OpenRA.Traits.Activities;
-using System.Drawing;
 using System.Collections.Generic;
-using OpenRA.Mods.RA.Orders;
+using System.Drawing;
+using System.Linq;
+using OpenRA.Effects;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveTo(Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
+				self.QueueActivity(mobile.MoveTo(Traits.Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair(order.TargetActor));
 

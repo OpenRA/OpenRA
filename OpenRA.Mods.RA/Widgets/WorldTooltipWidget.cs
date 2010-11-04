@@ -12,9 +12,9 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.RA.Widgets
 {
 	public class WorldTooltipWidget : Widget
 	{

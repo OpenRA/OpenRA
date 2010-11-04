@@ -11,10 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Network;
+using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
-using OpenRA.FileFormats;
 
 
 //TODO:
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.RA
 			for (var k = 0; k < MaxBaseDistance; k++)
 				foreach (var t in world.FindTilesInCircle(baseCenter, k))
 					if (world.CanPlaceBuilding(item.Item, bi, t, null))
-						if (world.IsCloseEnoughToBase(p, item.Item, bi, t))
+						if (bi.IsCloseEnoughToBase(world, p, item.Item, t))
 							return t;
 
 			return null;		// i don't know where to put it.

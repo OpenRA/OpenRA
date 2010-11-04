@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Traits
 {
 	/* tag trait for "bases": mcv/fact */

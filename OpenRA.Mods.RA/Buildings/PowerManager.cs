@@ -8,12 +8,10 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using System.Collections.Generic;
-using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class PowerManagerInfo : ITraitInfo
 	{

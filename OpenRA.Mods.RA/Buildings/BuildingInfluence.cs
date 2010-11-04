@@ -8,11 +8,9 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-using OpenRA.GameRules;
-using System;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class BuildingInfluenceInfo : ITraitInfo
 	{
@@ -40,7 +38,7 @@ namespace OpenRA.Traits
 
 		void ChangeInfluence( Actor a, Building building, bool isAdd )
 		{
-			foreach( var u in Footprint.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
+			foreach( var u in FootprintUtils.Tiles( a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location ) )
 				if( map.IsInMap( u ) )
 					influence[ u.X, u.Y ] = isAdd ? a : null;
 		}

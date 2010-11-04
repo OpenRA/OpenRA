@@ -11,7 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
-using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets

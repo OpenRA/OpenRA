@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.RA
 					if (order.OrderString == "LineBuild")
 					{
 						bool playSounds = true;
-						foreach (var t in LineBuildUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
+						foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 						{
 							var building = w.CreateActor(order.TargetString, new TypeDictionary
 							{

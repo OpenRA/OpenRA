@@ -11,9 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

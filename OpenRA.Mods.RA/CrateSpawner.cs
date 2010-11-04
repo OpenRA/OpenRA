@@ -11,8 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

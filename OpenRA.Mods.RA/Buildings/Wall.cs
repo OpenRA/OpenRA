@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class WallInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
 	{

@@ -11,11 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 
-namespace OpenRA.GameRules
+namespace OpenRA.Mods.RA.Buildings
 {
-	public static class Footprint
+	public static class FootprintUtils
 	{
 		public static IEnumerable<int2> Tiles( string name, BuildingInfo buildingInfo, int2 topLeft )
 		{

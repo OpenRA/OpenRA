@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
@@ -44,9 +44,9 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				var topLeft = xy - Footprint.AdjustForBuildingSize( BuildingInfo );
+				var topLeft = xy - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
 				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
-					|| !world.IsCloseEnoughToBase(Producer.Owner, Building, BuildingInfo, topLeft))
+					|| !BuildingInfo.IsCloseEnoughToBase(world, Producer.Owner, Building, topLeft))
 				{
 					var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 					Sound.Play(eva.BuildingCannotPlaceAudio);
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
-			wr.uiOverlay.DrawBuildingGrid( wr, world, Building, BuildingInfo );
+			BuildingInfo.DrawBuildingGrid( wr, world, Building );
 		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }

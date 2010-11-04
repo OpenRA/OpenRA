@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;

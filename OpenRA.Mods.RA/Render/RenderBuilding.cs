@@ -9,11 +9,11 @@
 #endregion
 
 using System;
-using OpenRA.Mods.RA.Effects;
-using OpenRA.Traits;
-using OpenRA.GameRules;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -87,10 +87,10 @@ namespace OpenRA.Mods.RA.Render
 				return;
 			
 			if (e.DamageState == DamageState.Dead)
-				foreach (var t in Footprint.UnpathableTiles( self.Info.Name, self.Info.Traits.Get<BuildingInfo>(), self.Location ))
+				foreach (var t in FootprintUtils.UnpathableTiles( self.Info.Name, self.Info.Traits.Get<BuildingInfo>(), self.Location ))
 				{
 					var cell = t; // required: c# fails at bindings
-					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, Util.CenterOfCell(cell), "building", false, 0)));
+					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, Traits.Util.CenterOfCell(cell), "building", false, 0)));
 				}
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 			{

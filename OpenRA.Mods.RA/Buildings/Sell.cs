@@ -9,8 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits.Activities
+namespace OpenRA.Mods.RA.Buildings
 {
 	class Sell : IActivity
 	{

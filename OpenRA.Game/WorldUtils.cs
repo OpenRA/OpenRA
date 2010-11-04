@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,22 +20,6 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static bool IsCellBuildable(this World world, int2 a, bool waterBound)
-		{
-			return world.IsCellBuildable(a, waterBound, null);	
-		}
-		
-		public static bool IsCellBuildable(this World world, int2 a, bool waterBound, Actor toIgnore)
-		{
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
-			if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
-			
-			if (waterBound)
-				return world.Map.IsInMap(a.X,a.Y) && GetTerrainInfo(world,a).IsWater;
-
-			return world.Map.IsInMap(a.X, a.Y) && world.GetTerrainInfo(a).Buildable;
-		}
-		
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = mouseLocation + Game.viewport.Location;
@@ -93,14 +76,6 @@ namespace OpenRA
 			return world.TileSet.Terrain[world.GetTerrainType(cell)];
 		}
 		
-		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
-		{
-			var res = world.WorldActor.Trait<ResourceLayer>();
-			return Footprint.Tiles(name, building, topLeft).All(
-				t => world.Map.IsInMap(t.X, t.Y) && res.GetResource(t) == null &&
-					world.IsCellBuildable(t, building.WaterBound, toIgnore));
-		}
-
 		public static bool IsVisible(this Actor a, Player byPlayer)			/* must never be relied on in synced code! */
 		{
 			if (byPlayer == null) return true; // Observer
@@ -117,34 +92,7 @@ namespace OpenRA
 			return true;
 		}
 
-		public static bool IsCloseEnoughToBase(this World world, Player p, string buildingName, BuildingInfo bi, int2 topLeft)
-		{
-			var buildingMaxBounds = bi.Dimensions;
-			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
-				buildingMaxBounds.Y += 1;
-
-			var scanStart = world.ClampToWorld( topLeft - new int2( bi.Adjacent, bi.Adjacent ) );
-			var scanEnd = world.ClampToWorld( topLeft + buildingMaxBounds + new int2( bi.Adjacent, bi.Adjacent ) );
-
-			var nearnessCandidates = new List<int2>();
-
-			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
-			{
-				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
-				{
-					var at = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
-					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
-						nearnessCandidates.Add( new int2( x, y ) );
-				}
-			}
-			var buildingTiles = Footprint.Tiles( buildingName, bi, topLeft ).ToList();
-			return nearnessCandidates
-				.Any( a => buildingTiles
-					.Any( b => Math.Abs( a.X - b.X ) <= bi.Adjacent
-							&& Math.Abs( a.Y - b.Y ) <= bi.Adjacent ) );
-		}
-
-		static int2 ClampToWorld( this World world, int2 xy )
+		public static int2 ClampToWorld( this World world, int2 xy )
 		{
 			return int2.Min(world.Map.BottomRight, int2.Max(world.Map.TopLeft, xy));
 		}

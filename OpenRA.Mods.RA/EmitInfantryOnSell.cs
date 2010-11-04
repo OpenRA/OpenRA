@@ -8,11 +8,10 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using OpenRA.GameRules;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -39,7 +38,7 @@ namespace OpenRA.Mods.RA
 			var health = self.TraitOrDefault<Health>();
 			var hpFraction = (health == null) ? 1f : health.HPFraction;
 			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
-			var eligibleLocations = Footprint.Tiles(self).ToList();
+			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))

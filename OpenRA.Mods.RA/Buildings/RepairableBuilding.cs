@@ -12,7 +12,7 @@ using System;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class RepairableBuildingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{

@@ -8,13 +8,13 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Traits;
-using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using System.Collections.Generic;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Buildings
 {
 	class RequiresPowerInfo : ITraitInfo
 	{

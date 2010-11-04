@@ -79,7 +79,6 @@
     <Compile Include="Group.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Server\ProtocolVersion.cs" />
-    <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
@@ -116,12 +115,10 @@
     <Compile Include="Sound.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
-    <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\World\SpatialBins.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="Cursor.cs" />
-    <Compile Include="GameRules\Footprint.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />
@@ -130,7 +127,6 @@
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Traits\Activities\Idle.cs" />
-    <Compile Include="Traits\Activities\Sell.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Graphics\Sheet.cs" />
@@ -146,8 +142,6 @@
     <Compile Include="Graphics\SpriteRenderer.cs" />
     <Compile Include="Graphics\SpriteSheetBuilder.cs" />
     <Compile Include="Graphics\TerrainRenderer.cs" />
-    <Compile Include="Traits\Building.cs" />
-    <Compile Include="Traits\World\BuildingInfluence.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
@@ -161,12 +155,10 @@
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
-    <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
     <Compile Include="Traits\Player\EvaAlerts.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
-    <Compile Include="Traits\LineBuild.cs" />
     <Compile Include="Widgets\WidgetLoader.cs" />
     <Compile Include="Widgets\ButtonWidget.cs" />
     <Compile Include="Widgets\Widget.cs" />
@@ -200,8 +192,6 @@
     <Compile Include="Traits\ActorStance.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
-    <Compile Include="Traits\Player\TechTree.cs" />
-    <Compile Include="Traits\Player\PowerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -220,13 +210,12 @@
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Server\IServerExtension.cs" />
     <Compile Include="Server\NullServerExtension.cs" />
+    <Compile Include="Traits\BaseBuilding.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\Scale.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />
-    <Compile Include="Traits\Valued.cs" />
-    <Compile Include="Traits\World\BibLayer.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
     <Compile Include="Widgets\ScrollingTextWidget.cs" />
   </ItemGroup>

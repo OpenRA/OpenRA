@@ -14,8 +14,9 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Buildings
 {
 	class BibLayerInfo : ITraitInfo
 	{
@@ -88,6 +89,6 @@ namespace OpenRA.Traits
 		}
 	}
 	
-	class BibInfo : TraitInfo<Bib> { }
+	public class BibInfo : TraitInfo<Bib> { }
 	public class Bib { }
 }

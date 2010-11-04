@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {

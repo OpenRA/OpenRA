@@ -10,13 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
-using OpenRA.GameRules;
-using OpenRA.Traits.Activities;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class BuildingInfo : ITraitInfo
 	{
@@ -36,6 +34,56 @@ namespace OpenRA.Traits
 		public readonly string DestroyedSound = "kaboom22.aud";
 
 		public object Create(ActorInitializer init) { return new Building(init); }
+
+		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, int2 topLeft)
+		{
+			var buildingMaxBounds = Dimensions;
+			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
+				buildingMaxBounds.Y += 1;
+
+			var scanStart = world.ClampToWorld( topLeft - new int2( Adjacent, Adjacent ) );
+			var scanEnd = world.ClampToWorld( topLeft + buildingMaxBounds + new int2( Adjacent, Adjacent ) );
+
+			var nearnessCandidates = new List<int2>();
+
+			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
+			{
+				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
+				{
+					var at = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
+					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
+						nearnessCandidates.Add( new int2( x, y ) );
+				}
+			}
+			var buildingTiles = FootprintUtils.Tiles( buildingName, this, topLeft ).ToList();
+			return nearnessCandidates
+				.Any( a => buildingTiles
+					.Any( b => Math.Abs( a.X - b.X ) <= Adjacent
+							&& Math.Abs( a.Y - b.Y ) <= Adjacent ) );
+		}
+
+		public void DrawBuildingGrid( WorldRenderer wr, World world, string name )
+		{
+			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+			var topLeft = position - FootprintUtils.AdjustForBuildingSize( this );
+
+			var cells = new Dictionary<int2, bool>();
+			// Linebuild for walls.
+			// Assumes a 1x1 footprint; weird things will happen for other footprints
+			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
+			{
+				foreach( var t in BuildingUtils.GetLineBuildCells( world, topLeft, name, this ) )
+					cells.Add( t, IsCloseEnoughToBase( world, world.LocalPlayer, name, t ) );
+			}
+			else
+			{
+				var res = world.WorldActor.Trait<ResourceLayer>();
+				var isCloseEnough = IsCloseEnoughToBase(world, world.LocalPlayer, name, topLeft);
+				foreach (var t in FootprintUtils.Tiles(name, this, topLeft))
+					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, WaterBound) && res.GetResource(t) == null );
+			}
+			wr.uiOverlay.DrawGrid( wr, cells );
+		}
 	}
 
 	public class Building : INotifyDamage, IResolveOrder, IOccupySpace
@@ -98,7 +146,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<int2> OccupiedCells()
 		{
-			return Footprint.UnpathableTiles( self.Info.Name, Info, TopLeft );
+			return FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft );
 		}
 	}
 }

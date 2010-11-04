@@ -12,9 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.GameRules;
-using OpenRA.Traits;
 
 namespace OpenRA.Traits
 {
@@ -122,22 +119,14 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<int2> GetVisOrigins(Actor a)
 		{
-			if (a.Info.Traits.Contains<BuildingInfo>())
+			var ios = a.TraitOrDefault<IOccupySpace>();
+			if (ios != null)
 			{
-				var bi = a.Info.Traits.Get<BuildingInfo>();
-				return Footprint.Tiles(a.Info.Name, bi, a.Location);
+				var cells = ios.OccupiedCells();
+				if (cells.Any()) return cells;
 			}
-			else
-			{
-				var ios = a.TraitOrDefault<IOccupySpace>();
-				if (ios != null)
-				{
-					var cells = ios.OccupiedCells();
-					if (cells.Any()) return cells;
-				}
 
-				return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
-			}
+			return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
 		}
 
 		void RemoveActor(Actor a)

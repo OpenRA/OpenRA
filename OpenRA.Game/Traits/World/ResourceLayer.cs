@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
 					// Todo: Valid terrain should be specified in the resource
-					if (!w.IsCellBuildable(new int2(x,y), false))
+					if (!AllowOreAt(new int2(x,y)))
 						continue;
 					
 					content[x, y].type = resourceTypes.FirstOrDefault(
@@ -87,6 +87,14 @@ namespace OpenRA.Traits
 						content[x, y].density = GetIdealDensity(x, y);
 						w.Map.CustomTerrain[x, y] = content[x, y].type.info.TerrainType;
 					}
+		}
+
+		bool AllowOreAt( int2 a )
+		{
+			if( !world.Map.IsInMap( a.X, a.Y ) ) return false;
+			if( !world.GetTerrainInfo( a ).Buildable ) return false;
+			if( world.WorldActor.Trait<UnitInfluence>().AnyUnitsAt( a ) ) return false;
+			return true;
 		}
 
 		Sprite[] ChooseContent(ResourceType t)
