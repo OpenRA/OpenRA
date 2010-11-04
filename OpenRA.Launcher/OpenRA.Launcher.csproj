@@ -48,6 +48,12 @@
     <Compile Include="ConfigureModsDialog.Designer.cs">
       <DependentUpon>ConfigureModsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="InstallPackagesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstallPackagesDialog.Designer.cs">
+      <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +77,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ConfigureModsDialog.resx">
       <DependentUpon>ConfigureModsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallPackagesDialog.resx">
+      <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

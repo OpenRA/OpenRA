@@ -1,27 +1,30 @@
-﻿using System;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace OpenRA.Launcher
 {
-	struct Mod
-	{
-		public string Title;
-		public string Version;
-		public string Author;
-		public string Description;
-		public string Requires;
-		public bool Standalone;
-	}
-
 	public partial class ConfigureModsDialog : Form
 	{
-		string[] activeMods;
+		List<string> activeMods;
+
+		public List<string> ActiveMods
+		{
+			get { return activeMods; }
+		}
+
 		Dictionary<string, Mod> allMods;
 		public ConfigureModsDialog(string[] activeMods)
 		{
@@ -29,19 +32,21 @@ namespace OpenRA.Launcher
 
 			Util.UacShield(installButton);
 
-			this.activeMods = activeMods;
+			this.activeMods = new List<string>(activeMods);
 
+			listView1.Items.AddRange(activeMods.Select(x => new ListViewItem(x)).ToArray());
+			
 			RefreshMods();
 		}
 
 		Mod GetMetadata(string mod)
 		{
 			var response = UtilityProgram.Call("-i", mod);
-			Mod m = new Mod();
-			if (response.IsError) return m;
+			if (response.IsError) return null;
 			string[] lines = response.ResponseLines;
 
-
+			string title = "", version = "", author = "", description = "", requires = "";
+			bool standalone = false;
 			foreach (string line in lines)
 			{
 				string s = line.Trim(' ', '\r', '\n');
@@ -51,29 +56,29 @@ namespace OpenRA.Launcher
 				switch (s.Substring(0, i))
 				{
 					case "Title":
-						m.Title = value;
+						title = value;
 						break;
 					case "Version":
-						m.Version = value;
+						version = value;
 						break;
 					case "Author":
-						m.Author = value;
+						author = value;
 						break;
 					case "Description":
-						m.Description = value;
+						description = value;
 						break;
 					case "Requires":
-						m.Requires = value;
+						requires = value;
 						break;
 					case "Standalone":
-						m.Standalone = bool.Parse(value);
+						standalone = bool.Parse(value);
 						break;
 					default:
 						break;
 				}
 			}
 
-			return m;
+			return new Mod(title, version, author, description, requires, standalone);
 		}
 
 		void RefreshMods()
@@ -99,6 +104,7 @@ namespace OpenRA.Launcher
 
 		void RefreshModTree(TreeView treeView, string[] modList)
 		{
+			treeView.Nodes.Clear();
 			Dictionary<string, TreeNode> nodes;
 			nodes = modList.Where(x => allMods[x].Standalone).ToDictionary(x => x, x => new TreeNode(x));
 			string[] rootMods = modList.Where(x => allMods[x].Standalone).ToArray();
@@ -147,6 +153,112 @@ namespace OpenRA.Launcher
 			}
 
 			treeView.Invalidate();
+		}
+
+		void TreeViewSelect(object sender, TreeViewEventArgs e)
+		{
+			SelectMod(e.Node.Text);
+		}
+
+		void ListViewSelect(object sender, EventArgs e)
+		{
+			if (listView1.SelectedItems.Count > 0)
+				SelectMod(listView1.SelectedItems[0].Text);
+			else
+				SelectMod("");
+		}
+		
+		void treeView1_Enter(object sender, EventArgs e)
+		{
+			if (treeView1.SelectedNode != null)
+				SelectMod(treeView1.SelectedNode.Text);
+			else
+				SelectMod("");
+		}
+
+		void SelectMod(string mod)
+		{
+			if (!allMods.ContainsKey(mod))
+				propertyGrid1.SelectedObject = null;
+			else
+				propertyGrid1.SelectedObject = allMods[mod];
+		}
+
+		void ActivateMod(object sender, EventArgs e)
+		{
+			if (treeView1.SelectedNode == null) return;
+			string mod = treeView1.SelectedNode.Text;
+			if (!allMods.ContainsKey(mod)) return;
+			if (activeMods.Contains(mod)) return;
+			
+			Mod m = allMods[mod];
+			Stack<string> toAdd = new Stack<string>();
+			toAdd.Push(mod);
+			while (!string.IsNullOrEmpty(m.Requires))
+			{
+				string r = m.Requires;
+				if (!allMods.ContainsKey(r))
+				{
+					MessageBox.Show(string.Format("A requirement for the mod \"{0}\" is missing. Please install \"{1}\" or the game may not run properly.", mod, r));
+					return;
+				}
+				if (!activeMods.Contains(r))
+					toAdd.Push(r);
+				mod = r;
+				m = allMods[mod];
+			}
+
+			while (toAdd.Count > 0)
+				activeMods.Add(toAdd.Pop());
+
+			listView1.Items.Clear();
+			listView1.Items.AddRange(activeMods.Select(x => new ListViewItem(x)).ToArray());
+		}
+
+		void DeactivateMod(object sender, EventArgs e)
+		{
+			if (listView1.SelectedItems.Count < 1) return;
+			string mod = listView1.SelectedItems[0].Text;
+			List<string> toRemove = new List<string>();
+			
+			Stack<string> nodes = new Stack<string>();
+			nodes.Push(mod);
+			string currentNode;
+			while (nodes.Count > 0)
+			{
+				currentNode = nodes.Pop();
+				toRemove.Add(currentNode);
+				foreach (string n in activeMods.Where(x => allMods[x].Requires == currentNode))
+					nodes.Push(n);
+			}
+
+			listView1.SuspendLayout();
+			foreach (string s in toRemove)
+			{
+				listView1.Items.Remove(listView1.Items.OfType<ListViewItem>().Where(x => x.Text == s).SingleOrDefault());
+				activeMods.Remove(s);
+			}
+			listView1.ResumeLayout();
+		}
+	}
+
+	class Mod
+	{
+		public string Title { get; private set; }
+		public string Version { get; private set; }
+		public string Author { get; private set; }
+		public string Description { get; private set; }
+		public string Requires { get; private set; }
+		public bool Standalone { get; private set; }
+
+		public Mod(string title, string version, string author, string description, string requires, bool standalone)
+		{
+			Title = title;
+			Version = version;
+			Author = author;
+			Description = description;
+			Requires = requires;
+			Standalone = standalone;
 		}
 	}
 }

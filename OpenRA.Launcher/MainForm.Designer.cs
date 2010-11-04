@@ -59,6 +59,7 @@
 			this.launchButton.TabIndex = 1;
 			this.launchButton.Text = "Launch OpenRA";
 			this.launchButton.UseVisualStyleBackColor = true;
+			this.launchButton.Click += new System.EventHandler(this.LaunchGame);
 			// 
 			// tableLayoutPanel1
 			// 
@@ -107,6 +108,7 @@
 			// configGameButton
 			// 
 			this.configGameButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.configGameButton.Enabled = false;
 			this.configGameButton.Location = new System.Drawing.Point(51, 239);
 			this.configGameButton.Name = "configGameButton";
 			this.configGameButton.Size = new System.Drawing.Size(192, 50);
