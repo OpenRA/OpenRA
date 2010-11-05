@@ -132,7 +132,7 @@ namespace OpenRA
 		{
 			return "OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
 				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n".F(
-			    		OrderString, Subject, TargetActor.Info.Name , TargetLocation, TargetString, IsImmediate, Player.PlayerName);
+				OrderString, Subject, TargetActor != null ? TargetActor.Info.Name : null , TargetLocation, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
 		}
 
 		static uint UIntFromActor(Actor a)
