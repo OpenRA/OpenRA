@@ -141,9 +141,14 @@ namespace OpenRA.Network
 					}
 				default:
 					{
-						if (!order.IsImmediate)
-							foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
-								t.ResolveOrder(order.Subject, order);
+						if( !order.IsImmediate )
+						{
+							var self = order.Subject;
+							var health = self.TraitOrDefault<Health>();
+							if( health == null || !health.IsDead )
+								foreach( var t in self.TraitsImplementing<IResolveOrder>() )
+									t.ResolveOrder( self, order );
+						}
 						break;
 					}
 			}

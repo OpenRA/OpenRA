@@ -146,9 +146,12 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
-				foreach (var c in cargo)
-					c.Kill(e.Attacker);
+			if( e.DamageStateChanged && e.DamageState == DamageState.Dead )
+			{
+				foreach( var c in cargo )
+					c.Destroy();
+				cargo.Clear();
+			}
 		}
 	}
 }

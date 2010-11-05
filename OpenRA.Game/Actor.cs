@@ -200,7 +200,7 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask( w =>
 			{
-				if (Destroyed || !IsInWorld) return;
+				if (Destroyed) return;
 
 				World.Remove( this );
 				World.traitDict.RemoveActor( this );
