@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -52,7 +51,7 @@ namespace OpenRA.Mods.RA
 				// Todo: Valid terrain should be specified in the resource
 				if (cell != null && self.World.Map.IsInMap(cell.Value) && 
 					(resLayer.GetResource(cell.Value) == resourceType 
-					|| (resLayer.GetResource(cell.Value) == null && self.World.IsCellBuildable(cell.Value, false))))
+					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(cell.Value))))
 					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
 
 				ticks = info.Interval;

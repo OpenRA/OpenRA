@@ -71,7 +71,7 @@ namespace OpenRA.Traits
 				for (int y = map.YOffset; y < map.YOffset + map.Height; y++)
 				{
 					// Todo: Valid terrain should be specified in the resource
-					if (!AllowOreAt(new int2(x,y)))
+					if (!AllowResourceAt(new int2(x,y)))
 						continue;
 					
 					content[x, y].type = resourceTypes.FirstOrDefault(
@@ -89,7 +89,7 @@ namespace OpenRA.Traits
 					}
 		}
 
-		bool AllowOreAt( int2 a )
+		public bool AllowResourceAt( int2 a )
 		{
 			if( !world.Map.IsInMap( a.X, a.Y ) ) return false;
 			if( !world.GetTerrainInfo( a ).Buildable ) return false;
