@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -96,5 +97,11 @@ namespace OpenRA.Mods.RA.Air
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
 		public int2 PxPosition { get { return center.ToInt2(); } }
+
+		public void TickMove( float speed, int facing )
+		{
+			var angle = facing / 128f * Math.PI;
+			center += speed * -float2.FromAngle((float)angle);
+		}
 	}
 }

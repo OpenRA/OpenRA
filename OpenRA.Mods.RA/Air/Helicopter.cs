@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA.Air
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
-				.Select(h => self.Trait<Helicopter>().GetRepulseForce(self, h))
+				.Select(h => self.Trait<Helicopter>().GetRepulseForce(self, h, h.Trait<Helicopter>()))
 				.Aggregate(float2.Zero, (a, b) => a + b);
 
 			aircraft.center += rawSpeed * f;
@@ -152,9 +152,11 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		const float Epsilon = .5f;
-		public float2 GetRepulseForce(Actor self, Actor h)
+		public float2 GetRepulseForce(Actor self, Actor h, Aircraft hAir)
 		{
 			if (self == h)
+				return float2.Zero;
+			if( hAir.Altitude < Altitude )
 				return float2.Zero;
 			var d = self.CenterLocation - h.CenterLocation;
 			

@@ -58,8 +58,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			var aircraft = self.Trait<Aircraft>();
 			var speed = .2f * aircraft.MovementSpeed;
-			var angle = aircraft.Facing / 128f * Math.PI;
-			aircraft.center += speed * -float2.FromAngle((float)angle);
+			aircraft.TickMove( speed, aircraft.Facing );
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}

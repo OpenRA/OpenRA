@@ -26,10 +26,7 @@ namespace OpenRA.Mods.RA.Air
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
-			{	
-				self.QueueActivity(new HeliReturn());
-				return NextActivity;
-			}
+				return Util.SequenceActivities( new HeliReturn(), NextActivity );
 			
 			var aircraft = self.Trait<Aircraft>();
 			var info = self.Info.Traits.Get<HelicopterInfo>();

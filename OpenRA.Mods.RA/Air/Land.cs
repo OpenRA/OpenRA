@@ -39,9 +39,8 @@ namespace OpenRA.Mods.RA.Air
 			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 			var speed = .2f * aircraft.MovementSpeed;
-			var angle = aircraft.Facing / 128f * Math.PI;
 
-			aircraft.center += speed * -float2.FromAngle((float)angle);
+			aircraft.TickMove( speed, aircraft.Facing );
 
 			return this;
 		}
