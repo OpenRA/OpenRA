@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Air
 {
 	// a small hack to teach Production about Reservable.
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 					var rp = self.TraitOrDefault<RallyPoint>();
 					if( rp != null )
 					{
-						newUnit.QueueActivity( new Activities.HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
+						newUnit.QueueActivity( new HeliFly( Util.CenterOfCell(rp.rallyPoint)) );
 					}
 					
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())

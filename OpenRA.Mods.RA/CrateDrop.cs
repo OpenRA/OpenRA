@@ -15,6 +15,7 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.RA
 {

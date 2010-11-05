@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : CancelableActivity
 	{

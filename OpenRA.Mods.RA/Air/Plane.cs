@@ -18,7 +18,7 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Air
 {
 	public class PlaneInfo : AircraftInfo
 	{

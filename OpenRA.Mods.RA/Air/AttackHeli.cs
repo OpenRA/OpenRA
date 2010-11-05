@@ -11,7 +11,7 @@
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Air
 {
 	class AttackHeliInfo : AttackFrontalInfo
 	{

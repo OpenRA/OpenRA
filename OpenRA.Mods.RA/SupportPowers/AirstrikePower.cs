@@ -13,6 +13,7 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.RA
 {

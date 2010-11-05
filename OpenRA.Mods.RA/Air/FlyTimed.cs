@@ -10,7 +10,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Activities
+namespace OpenRA.Mods.RA.Air
 {
 	public class FlyTimed : CancelableActivity
 	{
