@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
+using System.IO.Pipes;
 
 namespace OpenRA.Utility
 {
@@ -43,20 +44,27 @@ namespace OpenRA.Utility
 			argCallbacks.Add("--settings-value", Command.Settings);
 			argCallbacks.Add("--install-mod", Command.InstallMod);
 
-			WindowsIdentity id = WindowsIdentity.GetCurrent();
-			WindowsPrincipal p = new WindowsPrincipal(id);
-			if (p.IsInRole(WindowsBuiltInRole.Administrator))
-				Console.SetOut(new StreamWriter(File.Create("output.txt")));
-			
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
+
+			bool piping = false;
+			if (args.Length > 1 && args[1] == "--pipe")
+			{
+				piping = true;
+				var ps = new PipeSecurity();
+				ps.AddAccessRule(new PipeAccessRule("EVERYONE", PipeAccessRights.FullControl, System.Security.AccessControl.AccessControlType.Allow));
+				NamedPipeServerStream pipe = new NamedPipeServerStream("OpenRA.Utility", PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024, 1024, ps);
+				pipe.WaitForConnection();
+				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
+			}
+
 			ArgCallback callback;
 			if (argCallbacks.TryGetValue(arg.Key, out callback))
 				callback(arg.Value);
 			else
 				PrintUsage();
 
-			if (p.IsInRole(WindowsBuiltInRole.Administrator))
+			if (piping)
 				Console.Out.Close();
 		}
 

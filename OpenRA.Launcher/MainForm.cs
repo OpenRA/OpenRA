@@ -24,12 +24,14 @@ namespace OpenRA.Launcher
 		{
 			InitializeComponent();
 			quitButton.Click += (o, e) => { Application.Exit(); };
-			var response = UtilityProgram.Call("--settings-value", configPath, "Game.Mods");
-
-			if (response.IsError)
-				currentMods = new string[] { "ra" };
-			else
-				currentMods = response.Response.Split(',');
+			using (var s = UtilityProgram.Call("--settings-value", configPath, "Game.Mods"))
+			{
+				var response = s.ReadToEnd();
+				if (Util.IsError(ref response))
+					currentMods = new string[] { "ra" };
+				else
+					currentMods = response.Split(',');
+			}
 
 			UpdateModLabel();
 		}

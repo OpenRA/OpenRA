@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.IO.Pipes;
 
 namespace OpenRA.Launcher
 {
@@ -55,26 +56,26 @@ namespace OpenRA.Launcher
 			return arguments.ToString();
 		}
 
-		public static UtilityProgramResponse Call(string command, params string[] args)
+		public static StreamReader Call(string command, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = BuildArgs(command, args);
-			p.StartInfo.RedirectStandardOutput = true;
+			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe";
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
-			
+						
 			p.Start();
 
-			return new UtilityProgramResponse(p.StandardOutput.ReadToEnd());
+			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			pipe.Connect();
+			return new StreamReader(pipe);
 		}
 
-		public static UtilityProgramResponse CallWithAdmin(string command, params string[] args)
+		public static StreamReader CallWithAdmin(string command, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = BuildArgs(command, args);
-			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe";
 			p.StartInfo.Verb = "runas";
 
 			try
@@ -84,13 +85,16 @@ namespace OpenRA.Launcher
 			catch (Win32Exception e)
 			{
 				if (e.NativeErrorCode == 1223) //ERROR_CANCELLED
-					return new UtilityProgramResponse("Error: User cancelled elevation prompt.");
+					return null;
 				throw e;
 			}
 
+			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			pipe.Connect();
+
 			p.WaitForExit();
 
-			return new UtilityProgramResponse(File.ReadAllText("output.txt"));
+			return new StreamReader(pipe);
 		}
 	}
 }

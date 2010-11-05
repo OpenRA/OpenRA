@@ -61,6 +61,8 @@ namespace OpenRA.Utility
 				if (!entry.IsFile) continue;
 
 				Console.WriteLine("Extracting {0}", entry.Name);
+				if (!Directory.Exists(Path.Combine(destPath, Path.GetDirectoryName(entry.Name))))
+					Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
 				using (var f = File.Create(destPath + Path.DirectorySeparatorChar + entry.Name))
 				{
 					int bufSize = 2048;

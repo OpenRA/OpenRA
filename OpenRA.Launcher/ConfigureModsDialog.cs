@@ -41,9 +41,14 @@ namespace OpenRA.Launcher
 
 		Mod GetMetadata(string mod)
 		{
-			var response = UtilityProgram.Call("-i", mod);
-			if (response.IsError) return null;
-			string[] lines = response.ResponseLines;
+			string responseString;
+			using (var response = UtilityProgram.Call("-i", mod))
+			{
+				responseString = response.ReadToEnd();
+			}
+
+			if (Util.IsError(ref responseString)) return null;
+			string[] lines = responseString.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
 			string title = "", version = "", author = "", description = "", requires = "";
 			bool standalone = false;
@@ -83,12 +88,17 @@ namespace OpenRA.Launcher
 
 		void RefreshMods()
 		{
-			var response = UtilityProgram.Call("--list-mods");
+			string responseString;
+			using (var response = UtilityProgram.Call("--list-mods"))
+			{
+				responseString = response.ReadToEnd();
+			}
+
 			string[] mods;
-			if (!response.IsError)
-				mods = response.ResponseLines;
+			if (!Util.IsError(ref responseString))
+				mods = responseString.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			else
-				throw new Exception(string.Format("Could not list mods: {0}", response.Response));
+				throw new Exception(string.Format("Could not list mods: {0}", responseString));
 
 			allMods = mods.ToDictionary(x => x, x => GetMetadata(x));
 
@@ -98,8 +108,12 @@ namespace OpenRA.Launcher
 		private void InstallMod(object sender, EventArgs e)
 		{
 			if (installModDialog.ShowDialog() != DialogResult.OK) return;
-			UtilityProgram.CallWithAdmin("--install-mods", installModDialog.FileName);
-			RefreshModTree(treeView1, allMods.Keys.ToArray());
+			using (var response = UtilityProgram.CallWithAdmin("--install-mod", installModDialog.FileName))
+			{
+				string s = response.ReadToEnd();
+			}
+
+			RefreshMods();
 		}
 
 		void RefreshModTree(TreeView treeView, string[] modList)

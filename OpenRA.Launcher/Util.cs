@@ -22,5 +22,17 @@ namespace OpenRA.Launcher
 			b.FlatStyle = FlatStyle.System;
 			SendMessage(b.Handle, BCM_SETSHIELD, 0, 0xFFFFFFFF);
 		}
+
+		static public bool IsError(ref string utilityResponseLine)
+		{
+			utilityResponseLine = utilityResponseLine.Trim('\r', '\n');
+			if (utilityResponseLine.StartsWith("Error:"))
+			{
+				utilityResponseLine = utilityResponseLine.Remove(0, 7);
+				return true;
+			}
+
+			return false;
+		}
 	}
 }

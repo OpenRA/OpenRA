@@ -30,7 +30,7 @@ namespace OpenRA.Launcher
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			UtilityProgramResponse response = null;
+			StreamReader response = null;
 			if (radioButton1.Checked)
 				response = UtilityProgram.CallWithAdmin("--download-packages", mod);
 
@@ -41,11 +41,13 @@ namespace OpenRA.Launcher
 						folderBrowserDialog1.SelectedPath + Path.DirectorySeparatorChar);
 			}
 
-			if (response.IsError)
+			string s = response.ReadToEnd();
+			if (Util.IsError(ref s))
 				DialogResult = DialogResult.No;
 			else
 				DialogResult = DialogResult.OK;
 
+			response.Close();
 			Close();
 		}
 	}
