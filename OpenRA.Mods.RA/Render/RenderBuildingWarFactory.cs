@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			if (isOpen && !self.World.WorldActor.Trait<UnitInfluence>()
-				.GetUnitsAt(openExit).Any())
+				.GetUnitsAt(openExit).Any( a => a != self ))
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"), () => roof.Play(NormalizeSequence(self, "idle-top")));
