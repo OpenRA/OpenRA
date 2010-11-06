@@ -656,7 +656,7 @@ RedEye:
 		Explosion: med_explosion
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 40
 
 8Inch:
 	ROF: 250
