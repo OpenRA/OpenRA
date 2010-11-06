@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class ListBoxWidget : Widget
+	public class ListBoxWidget : Widget
 	{
 		public readonly string Background = "dialog3";
 		public readonly int ScrollbarWidth = 24;

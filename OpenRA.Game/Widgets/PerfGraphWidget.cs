@@ -15,7 +15,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
-	class PerfGraphWidget : Widget
+	public class PerfGraphWidget : Widget
 	{
 		public PerfGraphWidget() : base() { }
 

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
-	class WorldInteractionControllerWidget : Widget
+	public class WorldInteractionControllerWidget : Widget
 	{
 		readonly World world;
 		[ObjectCreator.UseCtor]

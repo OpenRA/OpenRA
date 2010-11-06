@@ -9,15 +9,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class ScrollingTextWidget : Widget
+	public class ScrollingTextWidget : Widget
 	{
 		public string Text = "";
 		private string ScrollingText = "";

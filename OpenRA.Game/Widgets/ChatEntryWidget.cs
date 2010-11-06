@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 	// this emulates the previous chat support, with one improvement: shift+enter can toggle the
 	// team/all mode *while* composing, not just on beginning to compose.
 
-	class ChatEntryWidget : Widget
+	public class ChatEntryWidget : Widget
 	{
 		string content = "";
 		bool composing = false;
