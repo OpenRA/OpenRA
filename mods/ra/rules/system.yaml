@@ -36,7 +36,7 @@ Player:
 		LaunchSound: satlnch1.aud
 	ChronoshiftPower:
 		Image: warpicon
-		ChargeTime: 4
+		ChargeTime: 2
 		Description: Chronoshift
 		LongDesc: Temporarily teleports a vehicle across \nthe map.
 		Prerequisites: PDOX
@@ -45,11 +45,11 @@ Player:
 		EndChargeSound: chrordy1.aud
 	IronCurtainPower:
 		Image: infxicon
-		ChargeTime: 6
+		ChargeTime: 2
 		Description: Invulnerability
-		LongDesc: Makes a single unit invulnerable for a \nshort time.
+		LongDesc: Makes a single unit invulnerable for 30 seconds.
 		Prerequisites: IRON
-		Duration: .75
+		Duration: .5
 	SpyPlanePower:
 		Image: smigicon
 		ChargeTime: 3
