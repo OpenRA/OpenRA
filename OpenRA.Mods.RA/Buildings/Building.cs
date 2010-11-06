@@ -105,7 +105,6 @@ namespace OpenRA.Mods.RA.Buildings
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 
 			var uim = init.world.WorldActor.Trait<UnitInfluence>();
-			uim.Add( init.self, this );
 		}
 		
 		public int GetPowerUsage()

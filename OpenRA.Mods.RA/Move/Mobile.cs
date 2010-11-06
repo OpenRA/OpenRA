@@ -118,7 +118,6 @@ namespace OpenRA.Mods.RA.Move
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
 				this.PxPosition = Util.CenterOfCell( fromCell );
-				AddInfluence();
 			}
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;

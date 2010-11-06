@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				self.Destroy();
 			});
-			return NextActivity;
+			return this;
 		}
 	}
 }

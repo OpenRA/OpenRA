@@ -52,10 +52,7 @@ namespace OpenRA.Mods.RA
 				this.Location = init.Get<LocationInit, int2>();
 				PxPosition = Util.CenterOfCell(Location);
 			}
-			
 			this.Info = info;
-			
-			self.World.WorldActor.Trait<UnitInfluence>().Add(self, this);
 		}
 
 		public void OnCrush(Actor crusher)

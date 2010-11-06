@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = 0;
 		}
 
-		public Move( int2 destination, int nearEnough ) 
+		public Move( int2 destination, int nearEnough )
 		{
 			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPath( mobile.toCell, destination, self );
 			this.destination = destination;
@@ -50,7 +50,6 @@ namespace OpenRA.Mods.RA.Move
 			this.getPath = (self,mobile) => 
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, destination, false )
-					.WithCustomBlocker( self.World.WorldActor.Trait<PathFinder>().AvoidUnitsNear( mobile.toCell, 4, self ))
 					.WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;

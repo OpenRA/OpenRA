@@ -37,6 +37,7 @@ namespace OpenRA.Traits
 			map = world.Map;
 			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];
 
+			world.ActorAdded += a => Add( a, a.TraitOrDefault<IOccupySpace>() );
 			world.ActorRemoved += a => Remove( a, a.TraitOrDefault<IOccupySpace>() );
 		}
 
@@ -55,8 +56,9 @@ namespace OpenRA.Traits
 
 		public void Add( Actor self, IOccupySpace unit )
 		{
-			foreach( var c in unit.OccupiedCells() )
-				influence[ c.X, c.Y ] = new InfluenceNode { next = influence[ c.X, c.Y ], actor = self };
+			if (unit != null)
+				foreach( var c in unit.OccupiedCells() )
+					influence[ c.X, c.Y ] = new InfluenceNode { next = influence[ c.X, c.Y ], actor = self };
 		}
 
 		public void Remove( Actor self, IOccupySpace unit )
