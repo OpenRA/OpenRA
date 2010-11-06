@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			if (!Combat.IsInRange( self.CenterLocation, Range, Target))
-				return Util.SequenceActivities( self.Trait<Mobile>().MoveTo( Target, Range ), this );
+				return Util.SequenceActivities( self.Trait<Mobile>().MoveWithinRange( Target, Range ), this );
 
 			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
 			var renderUnit = self.TraitOrDefault<RenderUnit>();

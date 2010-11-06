@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( inRange ) return this;
 
 			var mobile = self.Trait<Mobile>();
-			return Util.SequenceActivities( mobile.MoveTo( Target, Range ), this );
+			return Util.SequenceActivities( mobile.MoveWithinRange( Target, Range ), this );
 		}
 	}
 }

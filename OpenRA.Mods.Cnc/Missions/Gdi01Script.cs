@@ -166,8 +166,8 @@ namespace OpenRA.Mods.Cnc
 		{
 			var self = Actors[ "Gunboat" ];
 			var mobile = self.Trait<Mobile>();
-			self.QueueActivity(mobile.MoveTo( Map.Waypoints["gunboatLeft"] ));
-			self.QueueActivity(mobile.MoveTo( Map.Waypoints["gunboatRight"] ));
+			self.QueueActivity(mobile.ScriptedMove( Map.Waypoints["gunboatLeft"] ));
+			self.QueueActivity(mobile.ScriptedMove( Map.Waypoints["gunboatRight"] ));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc
 					}));
 				
 				a.CancelActivity();
-				a.QueueActivity(mobile.MoveTo(endPos));
+				a.QueueActivity(mobile.ScriptedMove(endPos));
 				a.QueueActivity(new CallFunc(() =>
 				{
 					while (!cargo.IsEmpty(a))
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Cnc
 					}
 				}));
 				a.QueueActivity(new Wait(25));
-				a.QueueActivity(mobile.MoveTo(startPos));
+				a.QueueActivity(mobile.ScriptedMove(startPos));
 				a.QueueActivity(new RemoveSelf());
 			});
 		}

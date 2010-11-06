@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 			{
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveTo(order.TargetActor, 1));
+				self.QueueActivity(mobile.MoveWithinRange(order.TargetActor, 1));
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask( w =>
 					{
