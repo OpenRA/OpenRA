@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 			ViewportOrigin = loc;
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
-			Sound.SoundVolumeModifier = 0f;
+			Sound.SoundVolumeModifier = 0.25f;
 		}
 		
 		int ticks = 0;
