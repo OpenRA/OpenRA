@@ -49,7 +49,7 @@ namespace OpenRA
 			viewport.Center(loc);
 		}
 
-		internal static void JoinServer(string host, int port)
+		public static void JoinServer(string host, int port)
 		{
 			if (orderManager != null) orderManager.Dispose();
 
