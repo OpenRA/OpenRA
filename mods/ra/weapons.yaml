@@ -819,7 +819,7 @@ ParaBomb:
 	Projectile: GravityBomb
 		Image: PARABOMB
 	Warhead:
-		Spread: 3
+		Spread: 6
 		Versus: 
 			None: 30%
 			Wood: 75%
