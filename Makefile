@@ -16,7 +16,7 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
 fileformats_SRCS	=	$(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	=	OpenRA.FileFormats.dll
 fileformats_KIND	=	library
-fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll thirdparty/WindowsBase.dll
+fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll thirdparty/WindowsBase.dll
 
 gl_SRCS				= $(shell find OpenRA.Gl/ -iname '*.cs')
 gl_TARGET			= OpenRA.Gl.dll
