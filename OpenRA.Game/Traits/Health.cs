@@ -22,6 +22,7 @@ namespace OpenRA.Traits
 	public class HealthInfo : ITraitInfo
 	{
 		public readonly int HP = 0;
+		public readonly float Radius = 10;
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 

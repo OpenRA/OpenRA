@@ -151,9 +151,10 @@ namespace OpenRA.Mods.RA
 			// don't hit air units with splash from ground explosions, etc
 			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
 
-			var selectable = target.Info.Traits.GetOrDefault<SelectableInfo>();
-			var radius = selectable != null ? selectable.Radius : 0;			
-			var distance = (int)Math.Max(0, (target.CenterLocation - args.dest).Length - radius);
+			var health = target.Info.Traits.GetOrDefault<HealthInfo>();
+			if( health == null ) return 0f;
+
+			var distance = (int)Math.Max(0, (target.CenterLocation - args.dest).Length - health.Radius);
 			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 			var rawDamage = (float)(warhead.Damage * modifier * falloff);
 			var multiplier = (float)warhead.EffectivenessAgainst(target);

@@ -19,7 +19,6 @@ namespace OpenRA.Traits
 		public readonly int[] Bounds = null;
 		[VoiceReference]
 		public readonly string Voice = null;
-		public readonly float Radius = 10;
 	}
 
 	public class Selectable : IPostRenderSelection
