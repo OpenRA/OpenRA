@@ -205,6 +205,8 @@
 		Notification: nodcapt1.aud
 	ActorLostNotification:
 		Notification: strclost.aud
+	EditorAppearance:
+		RelativeToTopLeft: yes
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -254,6 +256,8 @@
 		HasMakeAnimation: false
 		Palette: terrain
 	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
 
 ^Tree:
 	Tooltip:

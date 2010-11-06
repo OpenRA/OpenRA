@@ -139,6 +139,8 @@
 	FrozenUnderFog:
 	CaptureNotification:
 		Notification: strucap1.aud
+	EditorAppearance:
+		RelativeToTopLeft: yes
 
 ^Wall:
 	AppearsOnRadar:
@@ -163,6 +165,8 @@
 		HasMakeAnimation: false
 		Palette: terrain
 	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
 
 ^CivBuilding:
 	Inherits: ^Building

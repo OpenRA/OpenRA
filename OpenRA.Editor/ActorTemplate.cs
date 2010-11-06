@@ -18,7 +18,7 @@ namespace OpenRA.Editor
 	{
 		public Bitmap Bitmap;
 		public ActorInfo Info;
-		public bool Centered;
+		public EditorAppearanceInfo Appearance;
 	}
 
 	class BrushTemplate

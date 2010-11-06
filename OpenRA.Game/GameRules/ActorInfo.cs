@@ -66,21 +66,21 @@ namespace OpenRA
 			var ret = new List<ITraitInfo>();
 			var t = Traits.WithInterface<ITraitInfo>().ToList();
 			int index = 0;
-			while( t.Count != 0 )
+			while (t.Count != 0)
 			{
-				if( index >= t.Count )
-					throw new InvalidOperationException( "Trait prerequisites not satisfied (or prerequisite loop) Actor={0} Unresolved={1}".F(
-						Name, string.Join( ",", t.Select( x => x.GetType().Name ).ToArray())));
-
-				var prereqs = PrerequisitesOf( t[ index ] );
-				if( prereqs.Count == 0 || prereqs.All( n => ret.Any( x => x.GetType() == n || x.GetType().IsSubclassOf( n ) ) ) )
+				var prereqs = PrerequisitesOf(t[index]);
+				var unsatisfied = prereqs.Where(n => !ret.Any(x => x.GetType() == n || x.GetType().IsSubclassOf(n)));
+				if (!unsatisfied.Any())
 				{
-					ret.Add( t[ index ] );
-					t.RemoveAt( index );
+					ret.Add(t[index]);
+					t.RemoveAt(index);
 					index = 0;
 				}
-				else
-					++index;
+				else if (++index >= t.Count)
+					throw new InvalidOperationException("Trait prerequisites not satisfied (or prerequisite loop) Actor={0} Unresolved={1} Missing={2}".F(
+						Name,
+						string.Join(",", t.Select(x => x.GetType().Name).ToArray()),
+						string.Join(",", unsatisfied.Select(x => x.Name).ToArray())));
 			}
 
 			return ret;

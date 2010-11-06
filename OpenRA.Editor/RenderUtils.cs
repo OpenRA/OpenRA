@@ -13,7 +13,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Editor
 {
@@ -122,7 +121,12 @@ namespace OpenRA.Editor
 				}
 				catch { }
 
-				return new ActorTemplate { Bitmap = bitmap, Info = info, Centered = !info.Traits.Contains<BuildingInfo>() };
+				return new ActorTemplate
+				{
+					Bitmap = bitmap,
+					Info = info,
+					Appearance = info.Traits.GetOrDefault<EditorAppearanceInfo>()
+				};
 			}
 		}
 

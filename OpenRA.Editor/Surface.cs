@@ -413,10 +413,12 @@ namespace OpenRA.Editor
 
 		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t, ColorPalette cp)
 		{
-			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
+			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
+
+			float OffsetX = centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
+			float OffsetY = centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = t.Bitmap.Width * Zoom;
@@ -447,10 +449,12 @@ namespace OpenRA.Editor
 
 		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
-			float OffsetX = t.Centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
+			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
+
+			float OffsetX = centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = t.Centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
+			float OffsetY = centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
 
 			g.DrawRectangle(CordonPen,
