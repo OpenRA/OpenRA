@@ -278,7 +278,7 @@ Dragon:
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 50
 		ImpactSound: kaboom12
 		
 Hellfire:
