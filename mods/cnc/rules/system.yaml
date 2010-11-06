@@ -69,6 +69,7 @@ Player:
 		BasePalette: terrain
 		PaletteFormat: cnc
 	SurrenderOnDisconnect:
+	
 World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
@@ -181,6 +182,7 @@ World:
 		SpawnInterval: 120
 		WaterChance: 0
 	PathFinder:
+	ValidateOrder:
 
 CRATE:
 	Tooltip:
