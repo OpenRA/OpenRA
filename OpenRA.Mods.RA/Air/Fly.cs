@@ -57,8 +57,7 @@ namespace OpenRA.Mods.RA.Air
 		public static void Fly(Actor self, int desiredAltitude )
 		{
 			var aircraft = self.Trait<Aircraft>();
-			var speed = .2f * aircraft.MovementSpeed;
-			aircraft.TickMove( speed, aircraft.Facing );
+			aircraft.TickMove( 1024 * aircraft.MovementSpeed, aircraft.Facing );
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}

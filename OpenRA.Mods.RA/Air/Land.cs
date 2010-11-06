@@ -38,9 +38,7 @@ namespace OpenRA.Mods.RA.Air
 
 			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			var speed = .2f * aircraft.MovementSpeed;
-
-			aircraft.TickMove( speed, aircraft.Facing );
+			aircraft.TickMove( 1024 * aircraft.MovementSpeed, aircraft.Facing );
 
 			return this;
 		}

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo
 	{
-		public readonly float InstabilityMagnitude = 2.0f;
+		public readonly int InstabilityMagnitude = 1024;
 		public readonly int InstabilityTicks = 5;	
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA.Air
 					reservation = res.Reserve(self);
 
 				var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-				var offset = exit != null ? exit.SpawnOffset : float2.Zero;
+				var offset = exit != null ? exit.SpawnOffset : int2.Zero;
 				
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA.Air
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(order.TargetActor.CenterLocation + offset));
+				self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
 				self.QueueActivity(new Turn(Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
 				self.QueueActivity(Info.RearmBuildings.Contains(order.TargetActor.Info.Name)
@@ -133,7 +133,6 @@ namespace OpenRA.Mods.RA.Air
 			if (aircraft.Altitude <= 0)
 				return;
 			
-			var rawSpeed = .2f * aircraft.MovementSpeed;
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 
@@ -141,15 +140,25 @@ namespace OpenRA.Mods.RA.Air
 				.Select(h => self.Trait<Helicopter>().GetRepulseForce(self, h, h.Trait<Helicopter>()))
 				.Aggregate(float2.Zero, (a, b) => a + b);
 
-			aircraft.center += rawSpeed * f;
+			RepulsionFacing = Util.GetFacing( f, -1 );
+			if( RepulsionFacing != -1 )
+				aircraft.TickMove( 1024 * aircraft.MovementSpeed, RepulsionFacing );
 
 			if (--offsetTicks <= 0)
 			{
-				aircraft.center += Info.InstabilityMagnitude * self.World.SharedRandom.Gauss2D(5);
+				InstabilityFacing = Util.GetFacing( self.World.SharedRandom.Gauss2D( 5 ), -1 );
+				if( InstabilityFacing != -1 )
+					aircraft.TickMove( Info.InstabilityMagnitude, InstabilityFacing );
+
 				aircraft.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
 				offsetTicks = Info.InstabilityTicks;
 			}
 		}
+
+		[Sync]
+		int RepulsionFacing;
+		[Sync]
+		int InstabilityFacing;
 
 		const float Epsilon = .5f;
 		public float2 GetRepulseForce(Actor self, Actor h, Aircraft hAir)

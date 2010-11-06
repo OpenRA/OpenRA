@@ -42,10 +42,9 @@ namespace OpenRA.Mods.RA.Air
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			var rawSpeed = .2f * aircraft.MovementSpeed;
-			
-			if (!float2.WithinEpsilon(float2.Zero, dist, range * Game.CellSize))
-				aircraft.center += (rawSpeed / dist.Length) * dist;
+
+			if( !float2.WithinEpsilon( float2.Zero, dist, range * Game.CellSize ) )
+				aircraft.TickMove( 1024 * aircraft.MovementSpeed, desiredFacing );
 
 			attack.DoAttack( self, target );
 

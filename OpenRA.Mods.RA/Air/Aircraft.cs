@@ -33,32 +33,27 @@ namespace OpenRA.Mods.RA.Air
 	{
 		protected readonly Actor self;
 		[Sync]
-		public int2 Location { get { return Util.CellContaining( center.ToInt2() ); } }
-		[Sync]
 		public int Facing { get; set; }
 		[Sync]
 		public int Altitude { get; set; }
+		[Sync]
+		public int2 SubPxPosition;
+		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		public int2 TopLeft { get { return Util.CellContaining( PxPosition ); } }
 
-		public float2 center;
-
-		AircraftInfo Info;
+		readonly AircraftInfo Info;
 
 		public Aircraft( ActorInitializer init , AircraftInfo info)
 		{
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
-				this.center = Util.CenterOfCell( init.Get<LocationInit, int2>() );
+				this.SubPxPosition = 1024 * Util.CenterOfCell( init.Get<LocationInit, int2>() );
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
 			Info = info;
 		}
 
-		public int2 TopLeft
-		{
-			get { return Location; }
-		}
-		
 		public int ROT { get { return Info.ROT; } }
 		
 		public int InitialFacing { get { return Info.InitialFacing; } }
@@ -70,7 +65,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public void SetPxPosition( Actor self, int2 px )
 		{
-			center = px;
+			SubPxPosition = px * 1024;
 		}
 
 		public bool AircraftCanEnter(Actor a)
@@ -82,26 +77,31 @@ namespace OpenRA.Mods.RA.Air
 
 		public bool CanEnterCell(int2 location) { return true; }
 
-		public float MovementSpeed
+		public int MovementSpeed
 		{
 			get
 			{
-				var modifier = self
-					.TraitsImplementing<ISpeedModifier>()
-					.Select( t => t.GetSpeedModifier() )
-					.Product();
-				return Info.Speed * modifier;
+				//var modifier = self
+				//    .TraitsImplementing<ISpeedModifier>()
+				//    .Select( t => t.GetSpeedModifier() )
+				//    .Product();
+				return Info.Speed;// *modifier;
 			}
 		}
 		
 		int2[] noCells = new int2[] { };
 		public IEnumerable<int2> OccupiedCells() { return noCells; }
-		public int2 PxPosition { get { return center.ToInt2(); } }
 
-		public void TickMove( float speed, int facing )
+		public void TickMove( int speed, int facing )
 		{
-			var angle = facing / 128f * Math.PI;
-			center += speed * -float2.FromAngle((float)angle);
+			var rawspeed = speed * 7 / (32 * 1024);
+			SubPxPosition += rawspeed * -SubPxVector( facing );
+		}
+
+		int2 SubPxVector( int facing )
+		{
+			var angle = facing * Math.PI / 128.0;
+			return new int2( (int)Math.Truncate( 1024 * Math.Sin( angle ) ), (int)Math.Truncate( 1024 * Math.Cos( angle ) ) );
 		}
 	}
 }

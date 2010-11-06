@@ -43,10 +43,10 @@ namespace OpenRA.Mods.RA.Air
 				self.Trait<Helicopter>().reservation = res.Reserve(self);
 
 			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-			var offset = exit != null ? exit.SpawnOffset : float2.Zero;
+			var offset = exit != null ? exit.SpawnOffset : int2.Zero;
 
 			return Util.SequenceActivities(
-				new HeliFly(dest.CenterLocation + offset),
+				new HeliFly(dest.Trait<IHasLocation>().PxPosition + offset),
 				new Turn(initialFacing),
 				new HeliLand(false),
 				new Rearm(),

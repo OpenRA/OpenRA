@@ -16,8 +16,8 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : CancelableActivity
 	{
-		public readonly float2 Dest;
-		public HeliFly(float2 dest)
+		public readonly int2 Dest;
+		public HeliFly(int2 dest)
 		{
 			Dest = dest;
 		}
@@ -35,19 +35,16 @@ namespace OpenRA.Mods.RA.Air
 				return this;
 			}
 			
-			var dist = Dest - self.CenterLocation;
+			var dist = Dest - aircraft.PxPosition;
 			if (float2.WithinEpsilon(float2.Zero, dist, 2))
 			{
-				aircraft.center = Dest;
+				aircraft.SubPxPosition = Dest * 1024;
 				return NextActivity;
 			}
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, 
-				aircraft.ROT);
-
-			var rawSpeed = .2f * aircraft.MovementSpeed;
-			aircraft.center += (rawSpeed / dist.Length) * dist;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
+			aircraft.TickMove( 1024 * aircraft.MovementSpeed, desiredFacing );
 
 			return this;
 		}

@@ -27,6 +27,8 @@ namespace OpenRA
 		public static int2 operator *(int2 b, int a) { return new int2(a * b.X, a * b.Y); }
 		public static int2 operator /(int2 a, int b) { return new int2(a.X / b, a.Y / b); }
 
+		public static int2 operator -(int2 a) { return new int2(-a.X, -a.Y); }
+
 		public static bool operator ==(int2 me, int2 other) { return (me.X == other.X && me.Y == other.Y); }
 		public static bool operator !=(int2 me, int2 other) { return !(me == other); }
 
