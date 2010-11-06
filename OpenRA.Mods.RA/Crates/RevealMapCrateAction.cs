@@ -8,12 +8,14 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class RevealMapCrateActionInfo : CrateActionInfo
 	{
+		public readonly bool IncludeAllies = false;
 		public override object Create(ActorInitializer init) { return new RevealMapCrateAction(init.self, this); }
 	}
 
@@ -22,10 +24,20 @@ namespace OpenRA.Mods.RA
 		public RevealMapCrateAction(Actor self, RevealMapCrateActionInfo info)
 			: base(self, info) {}
 
+		bool ShouldReveal(Player collectingPlayer)
+		{
+			if ((info as RevealMapCrateActionInfo).IncludeAllies)
+				return collectingPlayer.World.LocalPlayer != null &&
+					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer] == Stance.Ally;
+
+			return collectingPlayer == collectingPlayer.World.LocalPlayer;
+		}
+
 		public override void Activate(Actor collector)
 		{
 			base.Activate(collector);
-			if (collector.Owner == collector.World.LocalPlayer)
+
+			if (ShouldReveal( collector.Owner ))
 				collector.World.WorldActor.Trait<Shroud>().ExploreAll(collector.World);
 		}
 	}
