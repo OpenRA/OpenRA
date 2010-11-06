@@ -73,7 +73,8 @@ namespace OpenRA.Traits
 			else if( influenceNode.actor == toRemove )
 				influenceNode = influenceNode.next;
 
-			RemoveInner( ref influenceNode.next, toRemove );
+			if (influenceNode != null)
+				RemoveInner( ref influenceNode.next, toRemove );
 		}
 
 		public void Update(Actor self, IOccupySpace unit)
