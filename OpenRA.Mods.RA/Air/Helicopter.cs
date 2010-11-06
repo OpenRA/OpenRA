@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Air
 				if( InstabilityFacing != -1 )
 					aircraft.TickMove( Info.InstabilityMagnitude, InstabilityFacing );
 
-				aircraft.Altitude += (int)(Info.InstabilityMagnitude * self.World.SharedRandom.Gauss1D(5));
+				aircraft.Altitude += (int)(Info.InstabilityMagnitude / 1024 * self.World.SharedRandom.Gauss1D(5));
 				offsetTicks = Info.InstabilityTicks;
 			}
 		}

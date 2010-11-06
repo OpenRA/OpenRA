@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
-		public readonly float[] SpeedModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
+		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
 		public object Create(ActorInitializer init) { return new GainsExperience(init.self, this); }
 	}
 
@@ -79,9 +79,9 @@ namespace OpenRA.Mods.RA
 			return Level > 0 ? Info.FirepowerModifier[Level - 1] : 1;
 		}
 
-		public float GetSpeedModifier()
+		public decimal GetSpeedModifier()
 		{
-			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1;
+			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1m;
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)

@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Move
 
 			IActivity InnerTick( Actor self, Mobile mobile )
 			{
-				moveFraction += (int)mobile.MovementSpeedForCell(self, mobile.toCell);
+				moveFraction += mobile.MovementSpeedForCell(self, mobile.toCell);
 				if( moveFraction <= moveFractionTotal )
 					return this;
 

@@ -81,11 +81,10 @@ namespace OpenRA.Mods.RA.Air
 		{
 			get
 			{
-				//var modifier = self
-				//    .TraitsImplementing<ISpeedModifier>()
-				//    .Select( t => t.GetSpeedModifier() )
-				//    .Product();
-				return Info.Speed;// *modifier;
+				decimal ret = Info.Speed;
+				foreach( var t in self.TraitsImplementing<ISpeedModifier>() )
+					ret *= t.GetSpeedModifier();
+				return (int)ret;
 			}
 		}
 		

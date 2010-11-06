@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
-		public readonly float FullyLoadedSpeed = .85f;
+		public readonly decimal FullyLoadedSpeed = .85m;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
@@ -208,10 +208,9 @@ namespace OpenRA.Mods.RA
 
 		public bool ShouldExplode(Actor self) { return !IsEmpty; }
 
-		public float GetSpeedModifier()
+		public decimal GetSpeedModifier()
 		{
-			return float2.Lerp(1f, Info.FullyLoadedSpeed,
-				contents.Values.Sum() / (float)Info.Capacity);
+			return 1m - ( 1m - Info.FullyLoadedSpeed ) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter

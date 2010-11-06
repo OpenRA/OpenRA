@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Move
 			Dictionary<string,TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
 			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
 			{
-				var speed = (float)FieldLoader.GetValue("speed", typeof(float),t.Value.Value);
+				var speed = (decimal)FieldLoader.GetValue("speed", typeof(decimal),t.Value.Value);
 				var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (int)FieldLoader.GetValue("cost", typeof(int), t.Value.NodesDict["PathingCost"].Value) : (int)(10000/speed);
 				ret.Add(t.Key, new TerrainInfo{Speed = speed, Cost = cost});
 			}
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Move
 		public class TerrainInfo
 		{
 			public int Cost = int.MaxValue;
-			public float Speed = 0;
+			public decimal Speed = 0;
 		}
 	}
 	
@@ -275,18 +275,17 @@ namespace OpenRA.Mods.RA.Move
 			return info.TerrainSpeeds[type].Cost;
 		}
 
-		public float MovementSpeedForCell(Actor self, int2 cell)
+		public int MovementSpeedForCell(Actor self, int2 cell)
 		{
 			var type = self.World.GetTerrainType(cell);
 			
 			if (!Info.TerrainSpeeds.ContainsKey(type))
 				return 0;
-			
-			var modifier = self
-				.TraitsImplementing<ISpeedModifier>()
-				.Select(t => t.GetSpeedModifier())
-				.Product();
-			return Info.Speed * Info.TerrainSpeeds[type].Speed * modifier / 100f;
+
+			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
+			foreach( var t in self.TraitsImplementing<ISpeedModifier>() )
+				speed *= t.GetSpeedModifier();
+			return (int)(speed / 100);
 		}
 		
 		public void AddInfluence()

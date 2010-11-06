@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		const int defaultProneTime = 100;	/* ticks, =4s */
 		const float proneDamage = .5f;
-		const float proneSpeed = .5f;
+		const decimal proneSpeed = .5m;
 
 		[Sync]
 		int remainingProneTime = 0;
@@ -45,9 +45,9 @@ namespace OpenRA.Mods.RA
 			return IsProne ? proneDamage : 1f;
 		}
 
-		public float GetSpeedModifier()
+		public decimal GetSpeedModifier()
 		{
-			return IsProne ? proneSpeed : 1f;
+			return IsProne ? proneSpeed : 1m;
 		}
 	}
 }

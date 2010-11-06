@@ -105,6 +105,14 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(x,fieldType, field);
 			}
 
+			else if (fieldType == typeof(decimal))
+			{
+				decimal res;
+				if (decimal.TryParse(x.Replace("%",""),  System.Globalization.NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+					return res * (x.Contains( '%' ) ? 0.01m : 1m);
+				return InvalidValueAction(x,fieldType, field);
+			}
+
 			else if (fieldType == typeof(string))
 				return x;
 
