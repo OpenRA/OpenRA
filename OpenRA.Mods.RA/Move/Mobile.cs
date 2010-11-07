@@ -289,12 +289,14 @@ namespace OpenRA.Mods.RA.Move
 		
 		public void AddInfluence()
 		{
-			uim.Add( self, this );
+			if( self.IsInWorld )
+				uim.Add( self, this );
 		}
 		
 		public void RemoveInfluence()
 		{
-			uim.Remove( self, this );
+			if( self.IsInWorld )
+				uim.Remove( self, this );
 		}
 
 		public void OnNudge(Actor self, Actor nudger)
