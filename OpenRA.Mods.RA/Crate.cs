@@ -100,7 +100,8 @@ namespace OpenRA.Mods.RA
 		{
 			var uim = self.World.WorldActor.Trait<UnitInfluence>();
 
-			uim.Remove(self, this);
+			if( self.IsInWorld )
+				uim.Remove(self, this);
 
 			Location = cell;
 			PxPosition = Util.CenterOfCell(cell);
@@ -109,7 +110,8 @@ namespace OpenRA.Mods.RA
 			if (seq != self.Trait<RenderSimple>().anim.CurrentSequence.Name)
 				self.Trait<RenderSimple>().anim.PlayRepeating(seq);
 
-			uim.Add(self, this);
+			if( self.IsInWorld )
+				uim.Add(self, this);
 		}
 
 		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }
