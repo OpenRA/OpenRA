@@ -1,0 +1,237 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Network;
+
+namespace OpenRA.Server.Traits
+{
+	public class LobbyCommands : IInterpretCommand
+	{
+		public bool InterpretCommand(Connection conn, string cmd)
+		{
+			var dict = new Dictionary<string, Func<string, bool>>
+			{
+				{ "ready",
+					s =>
+					{
+						// if we're downloading, we can't ready up.
+
+						var client = Server.GetClient(conn);
+						if (client.State == Session.ClientState.NotReady)
+							client.State = Session.ClientState.Ready;
+						else if (client.State == Session.ClientState.Ready)
+							client.State = Session.ClientState.NotReady;
+
+						Log.Write("server", "Player @{0} is {1}",
+							conn.socket.RemoteEndPoint, client.State);
+
+						Server.SyncLobbyInfo();
+						
+						if (Server.conns.Count > 0 && Server.conns.All(c => Server.GetClient(c).State == Session.ClientState.Ready))
+							InterpretCommand(conn, "startgame");
+						
+						return true;
+					}},
+				{ "startgame", 
+					s => 
+					{
+						Server.GameStarted = true;
+						foreach( var c in Server.conns )
+							foreach( var d in Server.conns )
+								Server.DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
+
+						Server.DispatchOrders(null, 0,
+							new ServerOrder("StartGame", "").Serialize());
+
+						Server.PingMasterServer();
+						return true;
+					}},
+				{ "lag",
+					s =>
+					{
+						int lag;
+						if (!int.TryParse(s, out lag)) { Log.Write("server", "Invalid order lag: {0}", s); return false; }
+
+						Log.Write("server", "Order lag is now {0} frames.", lag);
+
+						Server.lobbyInfo.GlobalSettings.OrderLatency = lag;
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "spectator",
+					s =>
+						{
+						var slotData = Server.lobbyInfo.Slots.Where(ax => ax.Spectator && !Server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
+						if (slotData == null)
+							return true;
+
+						var cl = Server.GetClient(conn);
+						
+							cl.Slot = slotData.Index;
+
+							Server.SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+
+						Server.SyncLobbyInfo();
+						return true;
+					}},	
+				{ "slot",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null || slotData.Closed || slotData.Bot != null 
+							|| Server.lobbyInfo.Clients.Any( c => c.Slot == slot ))
+							return false;
+
+						var cl = Server.GetClient(conn);
+						cl.Slot = slot;
+						
+						Server.SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+						
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "slot_close",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							Server.SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Closed = true;
+						slotData.Bot = null;
+						
+						/* kick any player that's in the slot */
+						var occupant = Server.lobbyInfo.Clients.FirstOrDefault( c => c.Slot == slotData.Index );
+						if (occupant != null)
+						{
+							var occupantConn = Server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
+							if (occupantConn != null)
+								Server.DropClient( occupantConn, new Exception() );
+						}
+
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "slot_open",
+					s =>
+					{
+						int slot;
+						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							Server.SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Closed = false;
+						slotData.Bot = null;
+
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "slot_bot",
+					s =>
+					{
+						var parts = s.Split(' ');
+
+						if (parts.Length != 2)
+						{
+							Server.SendChatTo( conn, "Malformed slot_bot command" );
+							return true;
+						}
+
+						int slot;
+						if (!int.TryParse(parts[0], out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+
+						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						if (slotData == null)
+							return false;
+
+						if (conn.PlayerIndex != 0)
+						{
+							Server.SendChatTo( conn, "Only the host can alter slots" );
+							return true;
+						}
+
+						slotData.Bot = parts[1];
+
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "map",
+					s =>
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							Server.SendChatTo( conn, "Only the host can change the map" );
+							return true;
+						}
+						Server.lobbyInfo.GlobalSettings.Map = s;			
+						Server.LoadMap();
+
+						foreach(var client in Server.lobbyInfo.Clients)
+						{
+							client.SpawnPoint = 0;
+							var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+							if (slotData != null)
+								Server.SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
+				
+							client.State = Session.ClientState.NotReady;
+						}
+						
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "lockteams",
+					s =>
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							Server.SendChatTo( conn, "Only the host can set that option" );
+							return true;
+						}
+						
+						bool.TryParse(s, out Server.lobbyInfo.GlobalSettings.LockTeams);
+						Server.SyncLobbyInfo();
+						return true;
+					}},
+			};
+			
+			var cmdName = cmd.Split(' ').First();
+			var cmdValue = string.Join(" ", cmd.Split(' ').Skip(1).ToArray());
+
+			Func<string,bool> a;
+			if (!dict.TryGetValue(cmdName, out a))
+				return false;
+			
+			return a(cmdValue);
+		}
+	}
+}
