@@ -27,13 +27,6 @@ namespace OpenRA.GameRules
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
-		public string ExtensionDll = "";
-		public string ExtensionClass = "";
-
-		/* not storeable */
-		public IServerExtension Extension { get; set; }
-		public string ExtensionYaml { get; set; }
-		public bool IsDedicated { get; set; }
 	}
 	
 	public class DebugSettings
@@ -50,9 +43,6 @@ namespace OpenRA.GameRules
 		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024, 768);
 		public readonly int2 MinResolution = new int2(800, 600);
-		public readonly string RenderEngine = "OpenRA.Gl.dll";
-		public readonly string NullRenderEngine = "OpenRA.Renderer.Null.dll";
-		public bool UseNullRenderer { get; set; }
 	}
 	
 	public class SoundSettings
@@ -115,11 +105,6 @@ namespace OpenRA.GameRules
 				{"Debug", Debug}
 			};
 			
-			// Should we run in dedicated mode (use the server extension)
-			Server.IsDedicated = args.GetValue("Server.IsDedicated", false);
-			if (Server.IsDedicated)
-				Graphics.UseNullRenderer = args.GetValue("Graphics.UseNullRenderer", false);
-
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;

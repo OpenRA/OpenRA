@@ -21,8 +21,6 @@ namespace OpenRA.FileFormats
 			Mods, Folders, Packages, Rules,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
-		public string[] LocalRules = new string[0];
-		public string[] LocalAssemblies = new string[0];
 		public readonly string ShellmapUid, LoadScreen;
 		public readonly int TileSize = 24;
 

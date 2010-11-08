@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -36,14 +36,9 @@ namespace OpenRA.Network
 
 			switch (order.OrderString)
 			{
-				case "Chat":
+			case "Chat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-
-						if (Game.IsHost && Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnIngameChat(client, order.TargetString, false))
-							break;
-
-
 						if (client != null)
 						{
 							var player = world != null ? world.FindPlayerByClient(client) : null;
@@ -54,7 +49,6 @@ namespace OpenRA.Network
 							Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
 						break;
 					}
-
 				case "Disconnected": /* reports that the target player disconnected */
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
@@ -67,9 +61,6 @@ namespace OpenRA.Network
 				case "TeamChat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-
-						if (Game.IsHost && Game.Settings.Server.Extension != null && !Game.Settings.Server.Extension.OnIngameChat(client, order.TargetString, true))
-							break;
 
 						if (client != null)
 						{
@@ -124,10 +115,6 @@ namespace OpenRA.Network
 					{
 						var targetPlayer = order.Player.World.players[order.TargetLocation.X];
 						var newStance = (Stance)order.TargetLocation.Y;
-
-						if (Game.IsHost && Game.Settings.Server.Extension != null)
-							Game.Settings.Server.Extension.OnIngameSetStance(order.Player, targetPlayer, newStance);
-
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 

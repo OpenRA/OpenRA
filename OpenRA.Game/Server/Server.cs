@@ -25,17 +25,12 @@ namespace OpenRA.Server
 {
 	static class Server
 	{
-		public static Connection[] Connections
-		{
-			get { return conns.ToArray(); }
-		}
-
 		static List<Connection> conns = new List<Connection>();
 		static TcpListener listener = null;
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
 		static Session lobbyInfo;
-		internal static bool GameStarted = false;
+		static bool GameStarted = false;
 		static string Name;
 		static int ExternalPort;
 		static int randomSeed;
@@ -62,20 +57,7 @@ namespace OpenRA.Server
 			try { listener.Stop(); }
 			catch { }
 
-			E(e => e.OnServerStop(true));
 		}
-
-		public static void E(Action<IServerExtension> f)
-		{
-			E(g => { f(g); return true; });
-		}
-
-		public static bool E(Func<IServerExtension, bool> f)
-		{
-			return Game.Settings.Server.Extension == null ||
-				f(Game.Settings.Server.Extension);
-		}
-
 		public static void ServerMain(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
@@ -83,7 +65,6 @@ namespace OpenRA.Server
 			isInitialPing = true;
 			Server.masterServerUrl = settings.Server.MasterServer;
 			isInternetServer = settings.Server.AdvertiseOnline;
-
 			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
 			Name = settings.Server.Name;
 			ExternalPort = settings.Server.ExternalPort;
@@ -113,8 +94,6 @@ namespace OpenRA.Server
 				throw new InvalidOperationException( "Unable to start server: port is already in use" );
 			}
 
-			E(e => e.OnServerStart());
-				
 			new Thread( _ =>
 			{
 				for( ; ; )
@@ -140,7 +119,6 @@ namespace OpenRA.Server
 					{
 						listener.Stop();
 						GameStarted = false;
-						E(e => e.OnServerStop(false));
 						break;
 					}
 				}
@@ -168,8 +146,6 @@ namespace OpenRA.Server
 				.Where(s => s != null)
 				.Select((s, i) => { s.Index = i; return s; })
 				.ToList();
-
-			E(e => e.OnLoadMap(Map));
 
 			// Generate slots for spectators
 			for (int i = 0; i < MaxSpectators; i++)
@@ -217,17 +193,7 @@ namespace OpenRA.Server
 				return; 
 			}
 
-
 			var newConn = new Connection { socket = newSocket };
-
-			
-			if (!E(e => e.OnValidateConnection(GameStarted, newConn)))
-			{
-				DropClient(newConn, new Exception() );
-
-				return;
-			}
-
 			try
 			{
 				if (GameStarted)
@@ -338,7 +304,7 @@ namespace OpenRA.Server
 			catch (NotImplementedException) { }
 		}
 
-		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
+		static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
 		{
 			if (pr == null)
 				return;
@@ -351,7 +317,7 @@ namespace OpenRA.Server
 				c.Country = pr.Race;
 		}
 		
-		public static bool InterpretCommand(Connection conn, string cmd)
+		static bool InterpretCommand(Connection conn, string cmd)
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
@@ -371,12 +337,9 @@ namespace OpenRA.Server
 
 						SyncLobbyInfo();
 						
-						if (Game.Settings.Server.Extension== null || Game.Settings.Server.Extension.OnReadyUp(conn, client))
-						{
-							if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
-								InterpretCommand(conn, "startgame");
-						}
-
+						if (conns.Count > 0 && conns.All(c => GetClient(c).State == Session.ClientState.Ready))
+							InterpretCommand(conn, "startgame");
+						
 						return true;
 					}},
 				{ "startgame", 
@@ -390,8 +353,6 @@ namespace OpenRA.Server
 						DispatchOrders(null, 0,
 							new ServerOrder("StartGame", "").Serialize());
 
-						E(e => e.OnStartGame());
-
 						PingMasterServer();
 						return true;
 					}},
@@ -399,10 +360,7 @@ namespace OpenRA.Server
 					s => 
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
-
-						if (E(e => e.OnNickChange(conn, GetClient(conn), s)))
-							GetClient(conn).Name = s;
-						
+						GetClient(conn).Name = s;
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -421,7 +379,6 @@ namespace OpenRA.Server
 				{ "race",
 					s => 
 					{	
-						if (E(e => e.OnRaceChange(conn, GetClient(conn), s)))
 							GetClient(conn).Country = s;
 
 						SyncLobbyInfo();
@@ -436,12 +393,9 @@ namespace OpenRA.Server
 
 						var cl = GetClient(conn);
 						
-						if (E(e => e.OnSlotChange(conn, cl, slotData, Map)))
-						{
 							cl.Slot = slotData.Index;
-							SyncClientToPlayerReference(cl, slotData.MapPlayer != null 
-								? Map.Players[slotData.MapPlayer] : null);
-						}
+
+							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
 
 						SyncLobbyInfo();
 						return true;
@@ -451,10 +405,8 @@ namespace OpenRA.Server
 					{
 						int team;
 						if (!int.TryParse(s, out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
-						if (E(e => e.OnTeamChange(conn, GetClient(conn), team)))
-						{
-							GetClient(conn).Team = team;
-						}
+
+						GetClient(conn).Team = team;
 						SyncLobbyInfo();
 						return true;
 					}},	
@@ -473,10 +425,8 @@ namespace OpenRA.Server
 							SendChatTo( conn, "You can't be at the same spawn point as another player" );
 							return true;
 						}
-						if (E(e => e.OnSpawnpointChange(conn, GetClient(conn), spawnPoint)))
-						{
-							GetClient(conn).SpawnPoint = spawnPoint;
-						}
+
+						GetClient(conn).SpawnPoint = spawnPoint;
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -484,14 +434,8 @@ namespace OpenRA.Server
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
-						var c1 = Color.FromArgb(c[0], c[1], c[2]);
-						var c2 = Color.FromArgb(c[3], c[4], c[5]);
-						
-						if (E(e => e.OnColorChange(conn, GetClient(conn), c1, c2)))
-						{
-							GetClient(conn).Color1 = c1;
-							GetClient(conn).Color2 = c2;
-						}
+						GetClient(conn).Color1 = Color.FromArgb(c[0],c[1],c[2]);
+						GetClient(conn).Color2 = Color.FromArgb(c[3],c[4],c[5]);
 						SyncLobbyInfo();		
 						return true;
 					}},
@@ -507,14 +451,10 @@ namespace OpenRA.Server
 							return false;
 
 						var cl = GetClient(conn);
+						cl.Slot = slot;
 						
-						if (E(e => e.OnSlotChange(conn, cl, slotData, Map)))
-						{
-							cl.Slot = slot;
-							SyncClientToPlayerReference(cl, slotData.MapPlayer != null 
-								? Map.Players[slotData.MapPlayer] : null);
-						}
-
+						SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Map.Players[slotData.MapPlayer] : null);
+						
 						SyncLobbyInfo();
 						return true;
 					}},
@@ -673,7 +613,7 @@ namespace OpenRA.Server
 				case "Command":
 					{
 						if (GameStarted)
-							SendChatTo(conn, "Cannot change state when game started.");
+							SendChatTo(conn, "Cannot change state when game started. ({0})".F(so.Data));
 						else if (GetClient(conn).State == Session.ClientState.Ready && !(so.Data == "ready" || so.Data == "startgame"))
 							SendChatTo(conn, "Cannot change state when marked as ready.");
 						else if (!InterpretCommand(conn, so.Data))
@@ -686,11 +626,9 @@ namespace OpenRA.Server
 
 				case "Chat":
 				case "TeamChat":
-				case "Disconnected":
-					if (E(e => e.OnChat(conn, so.Data, so.Name == "TeamChat")))
-						foreach (var c in conns.Except(conn).ToArray())
-							DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
-					break;
+					foreach (var c in conns.Except(conn).ToArray())
+						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
+				break;
 			}
 		}
 
@@ -717,8 +655,6 @@ namespace OpenRA.Server
 
 		static void SyncLobbyInfo()
 		{
-			E(e => e.OnLobbySync(lobbyInfo, GameStarted));
-
 			if (!GameStarted)	/* don't do this while the game is running, it breaks things. */
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
@@ -731,9 +667,6 @@ namespace OpenRA.Server
 		static void PingMasterServer()
 		{
 			if (isBusy || !isInternetServer) return;
-
-			if (!E(e => e.OnPingMasterServer(lobbyInfo, GameStarted)))
-				return;
 
 			lastPing = Environment.TickCount;
 			isBusy = true;
