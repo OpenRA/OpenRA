@@ -195,6 +195,7 @@
     <Compile Include="ServerTraits\TraitInterfaces.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="ServerTraits\PlayerCommands.cs" />
+    <Compile Include="ServerTraits\MasterServerPinger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -46,15 +46,7 @@ namespace OpenRA.Server.Traits
 				{ "startgame", 
 					s => 
 					{
-						Server.GameStarted = true;
-						foreach( var c in Server.conns )
-							foreach( var d in Server.conns )
-								Server.DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
-
-						Server.DispatchOrders(null, 0,
-							new ServerOrder("StartGame", "").Serialize());
-
-						Server.PingMasterServer();
+						Server.StartGame();
 						return true;
 					}},
 				{ "lag",

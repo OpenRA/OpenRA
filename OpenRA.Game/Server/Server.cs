@@ -34,22 +34,13 @@ namespace OpenRA.Server
 		static TypeDictionary ServerTraits = new TypeDictionary();
 		public static Session lobbyInfo;
 		public static bool GameStarted = false;
-		static string Name;
-		static int ExternalPort;
+		public static string Name;
 		static int randomSeed;
 
 		const int DownloadChunkInterval = 20000;
 		const int DownloadChunkSize = 16384;
 
-		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
-												// of leeway.
-
 		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
-
-		static int lastPing = 0;
-		static bool isInternetServer;
-		static string masterServerUrl;
-		static bool isInitialPing;
 		public static ModData ModData;
 		public static Map Map;
 
@@ -68,12 +59,10 @@ namespace OpenRA.Server
 			ServerTraits.Add( new DebugServerTrait() );
 			ServerTraits.Add( new PlayerCommands() );
 			ServerTraits.Add( new LobbyCommands() );
-			isInitialPing = true;
-			Server.masterServerUrl = settings.Server.MasterServer;
-			isInternetServer = settings.Server.AdvertiseOnline;
+			ServerTraits.Add( new MasterServerPinger() );
+			
 			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
 			Name = settings.Server.Name;
-			ExternalPort = settings.Server.ExternalPort;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
@@ -90,7 +79,7 @@ namespace OpenRA.Server
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Log.Write("server","- {0}", m);
 			
-			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
+			//Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
 			
 			try
 			{
@@ -103,24 +92,21 @@ namespace OpenRA.Server
 
 			new Thread( _ =>
 			{
+				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for( ; ; )
 				{
 					var checkRead = new ArrayList();
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
 
-					Socket.Select( checkRead, null, null, MasterPingInterval * 10000 );
+					Socket.Select( checkRead, null, null, timeout );
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
 						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData();
 
-					if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
-						PingMasterServer();
-					else
-						lock (masterServerMessages)
-							while (masterServerMessages.Count > 0)
-								SendChat(null, masterServerMessages.Dequeue());
+					foreach (var t in ServerTraits.WithInterface<ITick>())
+						t.Tick();
 					
 					if (conns.Count() == 0)
 					{
@@ -130,8 +116,6 @@ namespace OpenRA.Server
 					}
 				}
 			} ) { IsBackground = true }.Start();
-
-
 		}
 
 		/* lobby rework todo: 
@@ -205,7 +189,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		public static void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
+		static void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
 			{
@@ -326,54 +310,22 @@ namespace OpenRA.Server
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
 
-			PingMasterServer();
+			foreach (var t in ServerTraits.WithInterface<INotifySyncLobbyInfo>())
+				t.LobbyInfoSynced();
 		}
-
-		static volatile bool isBusy;
-		static Queue<string> masterServerMessages = new Queue<string>();
-		public static void PingMasterServer()
+		
+		public static void StartGame()
 		{
-			if (isBusy || !isInternetServer) return;
+			Server.GameStarted = true;
+			foreach( var c in Server.conns )
+				foreach( var d in Server.conns )
+					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
-			lastPing = Environment.TickCount;
-			isBusy = true;
+			DispatchOrders(null, 0,
+				new ServerOrder("StartGame", "").Serialize());
 
-			Action a = () =>
-				{
-					try
-					{
-						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
-						if (isInitialPing) url += "&new=1";
-
-						using (var wc = new WebClient())
-						{
-							 wc.DownloadData(
-								masterServerUrl + url.F(
-								ExternalPort, Uri.EscapeUriString(Name),
-								GameStarted ? 2 : 1,	// todo: post-game states, etc.
-								lobbyInfo.Clients.Count,
-								string.Join(",", lobbyInfo.GlobalSettings.Mods),
-								lobbyInfo.GlobalSettings.Map));
-
-							if (isInitialPing)
-							{
-								isInitialPing = false;
-								lock (masterServerMessages)
-									masterServerMessages.Enqueue("Master server communication established.");
-							}
-						}
-					}
-					catch(Exception ex)
-					{
-						Log.Write("server", ex.ToString());
-						lock( masterServerMessages )
-							masterServerMessages.Enqueue( "Master server communication failed." );
-					}
-
-					isBusy = false;
-				};
-
-			a.BeginInvoke(null, null);
+			foreach (var t in ServerTraits.WithInterface<IStartGame>())
+				t.GameStarted();
 		}
 	}
 }
