@@ -15,7 +15,8 @@ namespace OpenRA.Server.Traits
 	// Returns true if order is handled 
 	public interface IInterpretCommand { bool InterpretCommand(Connection conn, Session.Client client, string cmd); }
 	public interface INotifySyncLobbyInfo { void LobbyInfoSynced(); }
-	public interface IStartServer { void ServerStarted(); }
+	public interface INotifyServerStart { void ServerStarted(); }
+	public interface INotifyServerShutdown { void ServerShutdown(); }
 	public interface IStartGame { void GameStarted(); }
 	public interface IClientJoined { void ClientJoined(Connection conn); }
 	public interface ITick
@@ -25,7 +26,7 @@ namespace OpenRA.Server.Traits
 	}
 	
 	
-	public class DebugServerTrait : IInterpretCommand, IStartGame, INotifySyncLobbyInfo
+	public class DebugServerTrait : IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown
 	{		
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
@@ -41,6 +42,16 @@ namespace OpenRA.Server.Traits
 		public void LobbyInfoSynced()
 		{
 			Console.WriteLine("LobbyInfoSynced()");
+		}
+		
+		public void ServerStarted()
+		{
+			Console.WriteLine("ServerStarted()");
+		}
+		
+		public void ServerShutdown()
+		{
+			Console.WriteLine("ServerShutdown()");
 		}
 	}
 }

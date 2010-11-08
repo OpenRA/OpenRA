@@ -37,17 +37,16 @@ namespace OpenRA.Server
 		public static string Name;
 		static int randomSeed;
 
-		const int DownloadChunkInterval = 20000;
-		const int DownloadChunkSize = 16384;
-
-		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
 		public static ModData ModData;
 		public static Map Map;
 
-		public static void StopListening()
+		public static void Shutdown()
 		{
 			conns.Clear();
 			GameStarted = false;
+			foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
+				t.ServerShutdown();
+			
 			try { listener.Stop(); }
 			catch { }
 		}
@@ -72,14 +71,14 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
 			lobbyInfo.GlobalSettings.ServerName = settings.Server.Name;
 			
-			foreach (var t in ServerTraits.WithInterface<IStartServer>())
+			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted();
 						
 			Log.Write("server", "Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Log.Write("server","- {0}", m);
 			
-			//Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
+			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
 			
 			try
 			{

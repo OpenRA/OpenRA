@@ -16,8 +16,10 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Server.Traits
 {
-	public class LobbyCommands : IInterpretCommand, IStartServer, IClientJoined
+	public class LobbyCommands : IInterpretCommand, INotifyServerStart, IClientJoined
 	{
+		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
+
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
@@ -242,7 +244,7 @@ namespace OpenRA.Server.Traits
 				.ToList();
 
 			// Generate slots for spectators
-			for (int i = 0; i < Server.MaxSpectators; i++)
+			for (int i = 0; i < MaxSpectators; i++)
 				Server.lobbyInfo.Slots.Add(new Session.Slot
 				{
 					Spectator = true,
