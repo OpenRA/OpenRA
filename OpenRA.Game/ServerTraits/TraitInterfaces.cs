@@ -12,6 +12,7 @@ namespace OpenRA.Server.Traits
 {	
 	// Returns true if order is handled 
 	public interface IInterpretCommand { bool InterpretCommand(Connection conn, string cmd); }
+	public interface IStartServer { void ServerStarted(); }
 
 	public class DebugServerTrait : IInterpretCommand
 	{		

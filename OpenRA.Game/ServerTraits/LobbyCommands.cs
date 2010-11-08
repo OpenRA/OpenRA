@@ -12,10 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Server.Traits
 {
-	public class LobbyCommands : IInterpretCommand
+	public class LobbyCommands : IInterpretCommand, IStartServer
 	{
 		public bool InterpretCommand(Connection conn, string cmd)
 		{
@@ -194,7 +195,7 @@ namespace OpenRA.Server.Traits
 							return true;
 						}
 						Server.lobbyInfo.GlobalSettings.Map = s;			
-						Server.LoadMap();
+						LoadMap();
 
 						foreach(var client in Server.lobbyInfo.Clients)
 						{
@@ -232,6 +233,38 @@ namespace OpenRA.Server.Traits
 				return false;
 			
 			return a(cmdValue);
+		}
+		
+		public void ServerStarted() { LoadMap(); }
+		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
+		{
+			if (!pr.Playable) return null;
+			return new Session.Slot
+			{
+				MapPlayer = pr.Name,
+				Bot = null,	/* todo: allow the map to specify a bot class? */
+				Closed = false,
+			};
+		}
+
+		public static void LoadMap()
+		{
+			Server.Map = new Map(Server.ModData.AvailableMaps[Server.lobbyInfo.GlobalSettings.Map]);
+			Server.lobbyInfo.Slots = Server.Map.Players
+				.Select(p => MakeSlotFromPlayerReference(p.Value))
+				.Where(s => s != null)
+				.Select((s, i) => { s.Index = i; return s; })
+				.ToList();
+
+			// Generate slots for spectators
+			for (int i = 0; i < Server.MaxSpectators; i++)
+				Server.lobbyInfo.Slots.Add(new Session.Slot
+				{
+					Spectator = true,
+					Index = Server.lobbyInfo.Slots.Count(),
+					MapPlayer = null,
+					Bot = null
+				});
 		}
 	}
 }

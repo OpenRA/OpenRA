@@ -50,7 +50,7 @@ namespace OpenRA.Server
 		static bool isInternetServer;
 		static string masterServerUrl;
 		static bool isInitialPing;
-		static ModData ModData;
+		public static ModData ModData;
 		public static Map Map;
 
 		public static void StopListening()
@@ -59,8 +59,8 @@ namespace OpenRA.Server
 			GameStarted = false;
 			try { listener.Stop(); }
 			catch { }
-
 		}
+		
 		public static void ServerMain(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
@@ -83,8 +83,9 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
 			lobbyInfo.GlobalSettings.ServerName = settings.Server.Name;
 			
-			LoadMap();	// populates the Session's slots, too.
-			
+			foreach (var t in ServerTraits.WithInterface<IStartServer>())
+				t.ServerStarted();
+						
 			Log.Write("server", "Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
 				Log.Write("server","- {0}", m);
@@ -131,37 +132,6 @@ namespace OpenRA.Server
 			} ) { IsBackground = true }.Start();
 
 
-		}
-
-		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
-		{
-			if (!pr.Playable) return null;
-			return new Session.Slot
-			{
-				MapPlayer = pr.Name,
-				Bot = null,	/* todo: allow the map to specify a bot class? */
-				Closed = false,
-			};
-		}
-
-		public static void LoadMap()
-		{
-			Map = new Map(ModData.AvailableMaps[lobbyInfo.GlobalSettings.Map]);
-			lobbyInfo.Slots = Map.Players
-				.Select(p => MakeSlotFromPlayerReference(p.Value))
-				.Where(s => s != null)
-				.Select((s, i) => { s.Index = i; return s; })
-				.ToList();
-
-			// Generate slots for spectators
-			for (int i = 0; i < MaxSpectators; i++)
-				lobbyInfo.Slots.Add(new Session.Slot
-				{
-					Spectator = true,
-					Index = lobbyInfo.Slots.Count(),
-					MapPlayer = null,
-					Bot = null
-				});
 		}
 
 		/* lobby rework todo: 
