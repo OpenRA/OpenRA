@@ -18,7 +18,7 @@ namespace OpenRA.Server.Traits
 {		
 	public class PlayerCommands : IInterpretCommand
 	{
-		public bool InterpretCommand(Connection conn, string cmd)
+		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
@@ -26,14 +26,14 @@ namespace OpenRA.Server.Traits
 					s => 
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
-						Server.GetClient(conn).Name = s;
+						client.Name = s;
 						Server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "race",
 					s => 
 					{	
-						Server.GetClient(conn).Country = s;
+						client.Country = s;
 						Server.SyncLobbyInfo();
 						return true;
 					}},
@@ -43,7 +43,7 @@ namespace OpenRA.Server.Traits
 						int team;
 						if (!int.TryParse(s, out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
 
-						Server.GetClient(conn).Team = team;
+						client.Team = team;
 						Server.SyncLobbyInfo();
 						return true;
 					}},	
@@ -57,13 +57,13 @@ namespace OpenRA.Server.Traits
 							return false;
 						}
 						
-						if (Server.lobbyInfo.Clients.Where( c => c != Server.GetClient(conn) ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
+						if (Server.lobbyInfo.Clients.Where( c => c != client ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
 						{
 							Server.SendChatTo( conn, "You can't be at the same spawn point as another player" );
 							return true;
 						}
 
-						Server.GetClient(conn).SpawnPoint = spawnPoint;
+						client.SpawnPoint = spawnPoint;
 						Server.SyncLobbyInfo();
 						return true;
 					}},
@@ -71,8 +71,8 @@ namespace OpenRA.Server.Traits
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
-						Server.GetClient(conn).Color1 = Color.FromArgb(c[0],c[1],c[2]);
-						Server.GetClient(conn).Color2 = Color.FromArgb(c[3],c[4],c[5]);
+						client.Color1 = Color.FromArgb(c[0],c[1],c[2]);
+						client.Color2 = Color.FromArgb(c[3],c[4],c[5]);
 						Server.SyncLobbyInfo();		
 						return true;
 					}}

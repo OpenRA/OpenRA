@@ -8,25 +8,26 @@
  */
 #endregion
 using System;
+using OpenRA.Network;
+
 namespace OpenRA.Server.Traits
 {	
 	// Returns true if order is handled 
-	public interface IInterpretCommand { bool InterpretCommand(Connection conn, string cmd); }
+	public interface IInterpretCommand { bool InterpretCommand(Connection conn, Session.Client client, string cmd); }
+	public interface INotifySyncLobbyInfo { void LobbyInfoSynced(); }
+	public interface IStartServer { void ServerStarted(); }
+	public interface IStartGame { void GameStarted(); }
+	public interface IClientJoined { void ClientJoined(Connection conn); }
 	public interface ITick
 	{
 		void Tick();
 		int TickTimeout { get; }
 	}
 	
-	public interface INotifySyncLobbyInfo { void LobbyInfoSynced(); }
-	public interface IStartServer { void ServerStarted(); }
-	public interface IStartGame { void GameStarted(); }
-
-	public interface IClientJoined { void ClientJoined(Connection conn); }
 	
 	public class DebugServerTrait : IInterpretCommand, IStartGame, INotifySyncLobbyInfo
 	{		
-		public bool InterpretCommand(Connection conn, string cmd)
+		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
 			Console.WriteLine("Server received command from player {1}: {0}",cmd, conn.PlayerIndex);
 			return false;

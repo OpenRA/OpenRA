@@ -263,7 +263,7 @@ namespace OpenRA.Server
 						{
 							bool handled = false;
 							foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
-								if ((handled = t.InterpretCommand(conn, so.Data)))
+								if ((handled = t.InterpretCommand(conn, GetClient(conn), so.Data)))
 									break;
 							
 							if (!handled)

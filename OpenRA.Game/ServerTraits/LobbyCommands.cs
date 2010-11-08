@@ -18,7 +18,7 @@ namespace OpenRA.Server.Traits
 {
 	public class LobbyCommands : IInterpretCommand, IStartServer, IClientJoined
 	{
-		public bool InterpretCommand(Connection conn, string cmd)
+		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
@@ -26,8 +26,6 @@ namespace OpenRA.Server.Traits
 					s =>
 					{
 						// if we're downloading, we can't ready up.
-
-						var client = Server.GetClient(conn);
 						if (client.State == Session.ClientState.NotReady)
 							client.State = Session.ClientState.Ready;
 						else if (client.State == Session.ClientState.Ready)
@@ -39,7 +37,7 @@ namespace OpenRA.Server.Traits
 						Server.SyncLobbyInfo();
 						
 						if (Server.conns.Count > 0 && Server.conns.All(c => Server.GetClient(c).State == Session.ClientState.Ready))
-							InterpretCommand(conn, "startgame");
+							InterpretCommand(conn, client, "startgame");
 						
 						return true;
 					}},
@@ -68,9 +66,8 @@ namespace OpenRA.Server.Traits
 							if (slotData == null)
 								return true;
 	
-							var cl = Server.GetClient(conn);
-							cl.Slot = slotData.Index;
-							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+							client.Slot = slotData.Index;
+							SyncClientToPlayerReference(client, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
 
 						Server.SyncLobbyInfo();
 						return true;
@@ -86,9 +83,8 @@ namespace OpenRA.Server.Traits
 							|| Server.lobbyInfo.Clients.Any( c => c.Slot == slot ))
 							return false;
 
-						var cl = Server.GetClient(conn);
-						cl.Slot = slot;
-						SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+						client.Slot = slot;
+						SyncClientToPlayerReference(client, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
 						
 						Server.SyncLobbyInfo();
 						return true;
@@ -186,14 +182,14 @@ namespace OpenRA.Server.Traits
 						Server.lobbyInfo.GlobalSettings.Map = s;			
 						LoadMap();
 
-						foreach(var client in Server.lobbyInfo.Clients)
+						foreach(var c in Server.lobbyInfo.Clients)
 						{
-							client.SpawnPoint = 0;
-							var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+							c.SpawnPoint = 0;
+							var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == c.Slot );
 							if (slotData != null && slotData.MapPlayer != null)
-								SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
+								SyncClientToPlayerReference(c, Server.Map.Players[slotData.MapPlayer]);
 				
-							client.State = Session.ClientState.NotReady;
+							c.State = Session.ClientState.NotReady;
 						}
 						
 						Server.SyncLobbyInfo();
