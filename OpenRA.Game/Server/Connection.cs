@@ -15,7 +15,7 @@ using System.Net.Sockets;
 
 namespace OpenRA.Server
 {
-	class Connection
+	public class Connection
 	{
 		public Socket socket;
 		public List<byte> data = new List<byte>();
@@ -93,5 +93,5 @@ namespace OpenRA.Server
 				}
 		}}
 
-	enum ReceiveState { Header, Data };
+	public enum ReceiveState { Header, Data };
 }

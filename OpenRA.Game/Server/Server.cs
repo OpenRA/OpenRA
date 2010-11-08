@@ -23,12 +23,28 @@ using OpenRA.Network;
 
 namespace OpenRA.Server
 {
+	// Todo: Refactor this stuff elsewhere once it does something useful
+	
+	// Returns true if order is handled 
+	public interface IInterpretCommand { bool InterpretCommand(Connection conn, string cmd); }
+
+	public class DebugServerTrait : IInterpretCommand
+	{		
+		public bool InterpretCommand(Connection conn, string cmd)
+		{
+			Game.Debug("Server recieved command from player {1}: {0}".F(cmd, conn.PlayerIndex));
+			return false;
+		}
+	}
+	
 	static class Server
 	{
 		static List<Connection> conns = new List<Connection>();
 		static TcpListener listener = null;
 		static Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
+		
+		static TypeDictionary ServerTraits = new TypeDictionary();
 		static Session lobbyInfo;
 		static bool GameStarted = false;
 		static string Name;
@@ -62,6 +78,8 @@ namespace OpenRA.Server
 		{
 			Log.AddChannel("server", "server.log");
 
+			ServerTraits.Add( new DebugServerTrait() );
+			
 			isInitialPing = true;
 			Server.masterServerUrl = settings.Server.MasterServer;
 			isInternetServer = settings.Server.AdvertiseOnline;
@@ -319,6 +337,9 @@ namespace OpenRA.Server
 		
 		static bool InterpretCommand(Connection conn, string cmd)
 		{
+			foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
+				t.InterpretCommand(conn, cmd);
+			
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
 				{ "ready",
