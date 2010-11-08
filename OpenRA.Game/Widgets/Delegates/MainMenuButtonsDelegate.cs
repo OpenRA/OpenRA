@@ -10,11 +10,15 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Server;
+using OpenRA.Network;
+using System.Collections.Generic;
 
 namespace OpenRA.Widgets.Delegates
 {
 	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
+		static bool FirstInit = true;
+
 		[ObjectCreator.UseCtor]
 		public MainMenuButtonsDelegate( [ObjectCreator.Param] Widget widget )
 		{
@@ -48,6 +52,37 @@ namespace OpenRA.Widgets.Delegates
 			MasterServerQuery.ClientVersion = version.Text;
 
 			MasterServerQuery.GetMOTD(Game.Settings.Server.MasterServer);
+			
+			if (FirstInit)
+			{
+				FirstInit = false;
+				Game.ConnectionStateChanged += orderManager =>
+				{
+					Widget.CloseWindow();
+					switch( orderManager.Connection.ConnectionState )
+					{
+						case ConnectionState.PreConnecting:
+							Widget.OpenWindow("MAINMENU_BG");
+							break;
+						case ConnectionState.Connecting:
+							Widget.OpenWindow( "CONNECTING_BG",
+								new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
+							break;
+						case ConnectionState.NotConnected:
+							Widget.OpenWindow( "CONNECTION_FAILED_BG",
+								new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
+							break;
+						case ConnectionState.Connected:
+							var lobby = Widget.OpenWindow( "SERVER_LOBBY", new Dictionary<string, object> { { "orderManager", orderManager } } );
+							lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+							lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
+							lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
+							lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
+							//r.GetWidget("INGAME_ROOT").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();	
+							break;
+					}
+				};
+			}
 		}
 	}
 }
