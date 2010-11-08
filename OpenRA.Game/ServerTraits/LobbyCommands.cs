@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Server.Traits
 {
-	public class LobbyCommands : IInterpretCommand, IStartServer
+	public class LobbyCommands : IInterpretCommand, IStartServer, IClientJoined
 	{
 		public bool InterpretCommand(Connection conn, string cmd)
 		{
@@ -72,15 +72,13 @@ namespace OpenRA.Server.Traits
 				{ "spectator",
 					s =>
 						{
-						var slotData = Server.lobbyInfo.Slots.Where(ax => ax.Spectator && !Server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
-						if (slotData == null)
-							return true;
-
-						var cl = Server.GetClient(conn);
-						
+							var slotData = Server.lobbyInfo.Slots.Where(ax => ax.Spectator && !Server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
+							if (slotData == null)
+								return true;
+	
+							var cl = Server.GetClient(conn);
 							cl.Slot = slotData.Index;
-
-							Server.SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+							SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
 
 						Server.SyncLobbyInfo();
 						return true;
@@ -98,8 +96,7 @@ namespace OpenRA.Server.Traits
 
 						var cl = Server.GetClient(conn);
 						cl.Slot = slot;
-						
-						Server.SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+						SyncClientToPlayerReference(cl, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
 						
 						Server.SyncLobbyInfo();
 						return true;
@@ -201,8 +198,8 @@ namespace OpenRA.Server.Traits
 						{
 							client.SpawnPoint = 0;
 							var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
-							if (slotData != null)
-								Server.SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
+							if (slotData != null && slotData.MapPlayer != null)
+								SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
 				
 							client.State = Session.ClientState.NotReady;
 						}
@@ -265,6 +262,56 @@ namespace OpenRA.Server.Traits
 					MapPlayer = null,
 					Bot = null
 				});
+		}
+		
+		public void ClientJoined(Connection newConn)
+		{
+			var defaults = new GameRules.PlayerSettings();
+			
+			var client = new Session.Client()
+			{
+				Index = newConn.PlayerIndex,
+				Color1 = defaults.Color1,
+				Color2 = defaults.Color2,
+				Name = defaults.Name,
+				Country = "random",
+				State = Session.ClientState.NotReady,
+				SpawnPoint = 0,
+				Team = 0,
+				Slot = ChooseFreeSlot(),
+			};
+			
+			var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+			if (slotData != null)
+				SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
+			
+			Server.lobbyInfo.Clients.Add(client);
+
+			Log.Write("server", "Client {0}: Accepted connection from {1}",
+				newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+
+			Server.SendChat(newConn, "has joined the game.");
+			Server.SyncLobbyInfo();
+		}
+		
+		static int ChooseFreeSlot()
+		{
+			return Server.lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
+				&& !Server.lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
+		}
+		
+		
+		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
+		{
+			if (pr == null)
+				return;
+			if (pr.LockColor)
+			{
+				c.Color1 = pr.Color;
+				c.Color2 = pr.Color2;
+			}
+			if (pr.LockRace)
+				c.Country = pr.Race;
 		}
 	}
 }

@@ -148,12 +148,6 @@ namespace OpenRA.Server
 			throw new InvalidOperationException("Already got 256 players");
 		}
 
-		static int ChooseFreeSlot()
-		{
-			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
-				&& !lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
-		}
-
 		static void AcceptConnection()
 		{
 			Socket newSocket = null;
@@ -189,33 +183,8 @@ namespace OpenRA.Server
 				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
 				conns.Add(newConn);
 
-				var defaults = new GameRules.PlayerSettings();
-				
-				var client = new Session.Client()
-				{
-					Index = newConn.PlayerIndex,
-					Color1 = defaults.Color1,
-					Color2 = defaults.Color2,
-					Name = defaults.Name,
-					Country = "random",
-					State = Session.ClientState.NotReady,
-					SpawnPoint = 0,
-					Team = 0,
-					Slot = ChooseFreeSlot(),
-				};
-				
-				var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
-				if (slotData != null)
-					SyncClientToPlayerReference(client, Map.Players[slotData.MapPlayer]);
-				
-				lobbyInfo.Clients.Add(client);
-
-				Log.Write("server", "Client {0}: Accepted connection from {1}",
-					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
-
-				SendChat(newConn, "has joined the game.");
-
-				SyncLobbyInfo();
+				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
+					t.ClientJoined(newConn);
 			}
 			catch (Exception e) { DropClient(newConn, e); }
 		}
@@ -279,19 +248,6 @@ namespace OpenRA.Server
 			catch (EndOfStreamException) { }
 			catch (NotImplementedException) { }
 		}
-
-		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
-		{
-			if (pr == null)
-				return;
-			if (pr.LockColor)
-			{
-				c.Color1 = pr.Color;
-				c.Color2 = pr.Color2;
-			}
-			if (pr.LockRace)
-				c.Country = pr.Race;
-		}
 		
 		public static void SendChatTo(Connection conn, string text)
 		{
@@ -299,12 +255,12 @@ namespace OpenRA.Server
 				new ServerOrder("Chat", text).Serialize());
 		}
 
-        static void SendChat(Connection asConn, string text)
+        public static void SendChat(Connection asConn, string text)
         {
             DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
         }
 
-        static void SendDisconnected(Connection asConn)
+        public static void SendDisconnected(Connection asConn)
         {
             DispatchOrders(asConn, 0, new ServerOrder("Disconnected", "").Serialize());
         }
