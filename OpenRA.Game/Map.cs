@@ -80,11 +80,12 @@ namespace OpenRA
 			public int2 Location = int2.Zero;
 			public string Owner = null;
 		}
-
+		
+		public Map(MapStub stub) : this(stub.Container) {}
 		public Map(IFolder package)
 			: base(package)
 		{
-			var yaml = new MiniYaml( null, MiniYaml.FromStream( Package.GetContent( "map.yaml" ) ) );
+			var yaml = new MiniYaml( null, MiniYaml.FromStream( Container.GetContent( "map.yaml" ) ) );
 
 			// 'Simple' metadata
 			FieldLoader.Load( this, yaml );
@@ -184,7 +185,7 @@ namespace OpenRA
 		public void Save(string filepath)
 		{
 			// Todo: save to a zip file in the support dir by default
-			Package = new Folder(filepath, 0);
+			Container = new Folder(filepath, 0);
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();
@@ -232,7 +233,7 @@ namespace OpenRA
 
 		public void LoadBinaryData()
 		{
-			using (var dataStream = Package.GetContent("map.bin"))
+			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (ReadByte(dataStream) != 1)
 					throw new InvalidDataException("Unknown binary map format");
@@ -298,8 +299,8 @@ namespace OpenRA
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
 			// Read the relevant data into a buffer
-			var data = Package.GetContent("map.yaml").ReadAllBytes()
-				.Concat(Package.GetContent("map.bin").ReadAllBytes()).ToArray();
+			var data = Container.GetContent("map.yaml").ReadAllBytes()
+				.Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
 
 			// Take the SHA1
 			using (var csp = SHA1.Create())

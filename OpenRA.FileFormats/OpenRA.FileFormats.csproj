@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,8 +59,6 @@
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
-    <Compile Include="FileSystem.cs" />
-    <Compile Include="Folder.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\Vertex.cs" />
@@ -68,8 +66,6 @@
     <Compile Include="MiniYaml.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="PackageEntry.cs" />
-    <Compile Include="Package.cs" />
-    <Compile Include="PackageWriter.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PlayerColorRemap.cs" />
     <Compile Include="Primitives\DisposableAction.cs" />
@@ -101,8 +97,12 @@
     <Compile Include="Map\MapStub.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\PlayerReference.cs" />
-    <Compile Include="CompressedPackage.cs" />
     <Compile Include="Graphics\VqaReader.cs" />
+    <Compile Include="Filesystem\MixFile.cs" />
+    <Compile Include="Filesystem\FileSystem.cs" />
+    <Compile Include="Filesystem\Folder.cs" />
+    <Compile Include="Filesystem\PackageWriter.cs" />
+    <Compile Include="Filesystem\CompressedPackage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -112,4 +112,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Filesystem\" />
+  </ItemGroup>
 </Project>

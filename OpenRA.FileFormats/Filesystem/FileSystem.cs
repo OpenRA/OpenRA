@@ -39,7 +39,7 @@ namespace OpenRA.FileFormats
 		static IFolder OpenPackage(string filename)
 		{
 			if (filename.EndsWith(".mix"))
-				return new Package(filename, order++);
+				return new MixFile(filename, order++);
 			else if (filename.EndsWith(".zip"))
 				return new CompressedPackage(filename, order++);
 			else

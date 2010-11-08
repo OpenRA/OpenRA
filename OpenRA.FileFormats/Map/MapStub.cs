@@ -17,7 +17,7 @@ namespace OpenRA.FileFormats
 {
 	public class MapStub
 	{
-		public IFolder Package { get; protected set; }
+		public IFolder Container { get; protected set; }
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
@@ -39,13 +39,13 @@ namespace OpenRA.FileFormats
 		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
 		
 		public MapStub() {} // Hack for the editor - not used for anything important
-		public MapStub(IFolder package)
+		public MapStub(IFolder container)
 		{
-			Package = package;
-			var yaml = MiniYaml.FromStream(Package.GetContent("map.yaml"));
+			Container = container;
+			var yaml = MiniYaml.FromStream(Container.GetContent("map.yaml"));
 			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			
-			Uid = Package.GetContent("map.uid").ReadAllText();
+			Uid = Container.GetContent("map.uid").ReadAllText();
 		}
 
 		static object LoadWaypoints( MiniYaml y )

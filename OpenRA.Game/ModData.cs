@@ -60,7 +60,7 @@ namespace OpenRA
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			
-			var map = new Map(AvailableMaps[uid].Package);
+			var map = new Map(AvailableMaps[uid]);
 			
 			Rules.LoadRules(Manifest, map);
 			if (map.Theater != cachedTheatre)

@@ -23,7 +23,7 @@ namespace OpenRA.FileFormats
 		int Priority { get; }
 	}
 
-	public class Package : IFolder
+	public class MixFile : IFolder
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly bool isRmix, isEncrypted;
@@ -31,7 +31,7 @@ namespace OpenRA.FileFormats
 		readonly Stream s;
 		int priority;
 
-		public Package(string filename, int priority)
+		public MixFile(string filename, int priority)
 		{
 			this.priority = priority;
 			s = FileSystem.Open(filename);

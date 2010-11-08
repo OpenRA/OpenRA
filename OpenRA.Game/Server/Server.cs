@@ -162,7 +162,7 @@ namespace OpenRA.Server
 
 		static void LoadMap()
 		{
-			Map = new Map(ModData.AvailableMaps[lobbyInfo.GlobalSettings.Map].Package);
+			Map = new Map(ModData.AvailableMaps[lobbyInfo.GlobalSettings.Map]);
 			lobbyInfo.Slots = Map.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
