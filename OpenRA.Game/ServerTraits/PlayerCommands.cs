@@ -20,6 +20,17 @@ namespace OpenRA.Server.Traits
 	{
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
+			if (Server.GameStarted)
+			{
+				Server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
+				return false;
+			}
+			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
+			{
+				Server.SendChatTo(conn, "Cannot change state when marked as ready.");
+				return false;
+			}
+			
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
 				{ "name", 

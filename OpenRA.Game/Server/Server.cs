@@ -254,22 +254,15 @@ namespace OpenRA.Server
 			{
 				case "Command":
 					{
-						if (GameStarted)
-							SendChatTo(conn, "Cannot change state when game started. ({0})".F(so.Data));
-						else if (GetClient(conn).State == Session.ClientState.Ready && !(so.Data == "ready" || so.Data == "startgame"))
-							SendChatTo(conn, "Cannot change state when marked as ready.");
-						else
+						bool handled = false;
+						foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
+							if ((handled = t.InterpretCommand(conn, GetClient(conn), so.Data)))
+								break;
+						
+						if (!handled)
 						{
-							bool handled = false;
-							foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
-								if ((handled = t.InterpretCommand(conn, GetClient(conn), so.Data)))
-									break;
-							
-							if (!handled)
-							{
-								Log.Write("server", "Unknown server command: {0}", so.Data);
-								SendChatTo(conn, "Unknown server command: {0}".F(so.Data));
-							}
+							Log.Write("server", "Unknown server command: {0}", so.Data);
+							SendChatTo(conn, "Unknown server command: {0}".F(so.Data));
 						}
 					}
 					break;
