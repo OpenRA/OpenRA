@@ -37,6 +37,13 @@ namespace OpenRA.Widgets.Delegates
 			var offset = template.Bounds.Y;
 			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep"))
 				AddReplay(rl, replayFile, template, ref offset);
+
+			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
+				{
+					Widget.CloseWindow();
+					Game.JoinReplay(currentReplay);
+					return true;
+				};
 		}
 
 		string currentReplay = null;
