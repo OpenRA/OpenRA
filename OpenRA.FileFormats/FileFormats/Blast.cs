@@ -14,53 +14,11 @@ using System.IO;
 namespace OpenRA.FileFormats
 {
 	// A reimplementation of the Blast routines included in zlib
-	class Blast
+	public static class Blast
 	{
-		public const int MAXBITS = 13; // maximum code length
-		public const int MAXWIN = 4096; // maximum window size
+		public static readonly int MAXBITS = 13; // maximum code length
+		public static readonly int MAXWIN = 4096; // maximum window size
 		
-		Stream InStream;
-		Stream OutStream;
-		public Blast(Stream inStream, Stream outStream)
-		{
-			InStream = inStream;
-			OutStream = outStream;
-			Decompress();
-		}
-
-		/*
-		 * Return `need' bits from the input stream.  This always leaves less than
-		 * eight bits in the buffer.  bits() works properly for need == 0.
-		 *
-		 * Format notes:
-		 *
-		 * - Bits are stored in bytes from the least significant bit to the most
-		 *   significant bit.  Therefore bits are dropped from the bottom of the bit
-		 *   buffer, using shift right, and new bytes are appended to the top of the
-		 *   bit buffer, using shift left.
-		 */
-		int bitBuffer;
-		byte bitCount;
-		private int GetBits(int count)
-		{
-			int ret = 0;
-			int filled = 0;
-			while (filled < count)
-			{
-				if (bitCount == 0)
-				{
-					bitBuffer = InStream.ReadByte();
-					bitCount = 8;
-				}
-				
-				ret |= (bitBuffer & 1) << filled;
-				bitBuffer >>= 1;
-				bitCount--;
-				filled++;
-			}
-			return ret;
-		}
-
 		/*
 		 * Decode a code from the stream s using huffman table h.  Return the symbol or
 		 * a negative value if there is an error.  If all of the lengths are zero, i.e.
@@ -82,18 +40,16 @@ namespace OpenRA.FileFormats
 		 *   this ordering, the bits pulled during decoding are inverted to apply the
 		 *   more "natural" ordering starting with all zeros and incrementing.
 		 */
-		private int Decode(Huffman h)
+		private static int Decode(Huffman h, BitReader br)
 		{
-			int count; // number of codes of length len	
 			int code = 0; // len bits being decoded
 			int first = 0; // first code of length len
 			int index = 0; // index of first code of length len in symbol table
-			int len = 1; // current number of bits in code
 			short next = 1;
 			while (true)
 			{
-				code |= GetBits(1) ^ 1; // invert code
-				count = h.Count[next++];
+				code |= br.ReadBits(1) ^ 1; // invert code
+				int count = h.Count[next++];
 				if (code < first + count)
 					return h.Symbol[index + (code - first)];
 
@@ -101,7 +57,6 @@ namespace OpenRA.FileFormats
 				first += count;
 				first <<= 1;
 				code <<= 1;
-				len++;
 			}
 		}
 
@@ -143,10 +98,6 @@ namespace OpenRA.FileFormats
 		 *   ignoring whether the length is greater than the distance or not implements
 		 *   this correctly.
 		 */
-
-		static Huffman litcode = null;
-		static Huffman lencode = null;
-		static Huffman distcode = null;
 		
 		static byte[] litlen = new byte[] {
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
@@ -178,50 +129,53 @@ namespace OpenRA.FileFormats
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
 		};
-
-
-		public void Decompress()
+		
+		static Huffman litcode = new Huffman(litlen, litlen.Length, 256);
+		static Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
+		static Huffman distcode = new Huffman(distlen, distlen.Length, 64);
+				
+		public static byte[] Decompress(byte[] src)
 		{
-			// Init the Huffman tables
-			if (litcode == null)
-			{
-				litcode = new Huffman(litlen, litlen.Length, 256);
-				lencode = new Huffman(lenlen, lenlen.Length, 16);
-				distcode = new Huffman(distlen, distlen.Length, 64);
-			}
+			BitReader br = new BitReader(src);
 			
 			// Are literals coded?
-			int coded = InStream.ReadByte();
+			int coded = br.ReadBits(8);
+			
 			if (coded < 0 || coded > 1)
 				throw new NotImplementedException("Invalid datastream");
 			bool EncodedLiterals = (coded == 1);
 			
 			// log2(dictionary size) - 6
-			int dict = InStream.ReadByte();
+			int dict = br.ReadBits(8);
 			if (dict < 4 || dict > 6)
-				throw new InvalidDataException("Invalid dictionary size");
+				throw new InvalidDataException("Invalid dictionary size");	
 			
 			// output state
 			ushort next = 0; // index of next write location in out[]
 			bool first = true; // true to check distances (for first 4K)
 			byte[] outBuffer = new byte[MAXWIN]; // output buffer and sliding window
-			
+			var ms = new MemoryStream();
+
 			// decode literals and length/distance pairs
 			do
 			{
 				// length/distance pair
-				if (GetBits(1) == 1)
+				if (br.ReadBits(1) == 1)
 				{
 					// Length
-					int symbol = Decode(lencode);
-					int len = lengthbase[symbol] + GetBits(extra[symbol]);
+					int symbol = Decode(lencode, br);
+					int len = lengthbase[symbol] + br.ReadBits(extra[symbol]);
 					if (len == 519) // Magic number for "done"
+					{
+						for (int i = 0; i < next; i++)
+							ms.WriteByte(outBuffer[i]);
 						break;
+					}
 					
 					// Distance
 					symbol = len == 2 ? 2 : dict;
-					int dist = Decode (distcode) << symbol;
-					dist += GetBits (symbol);
+					int dist = Decode(distcode, br) << symbol;
+					dist += br.ReadBits(symbol);
 					dist++;
 					
 					if (first && dist > next)
@@ -234,7 +188,8 @@ namespace OpenRA.FileFormats
 						int source = dest - dist;
 						
 						int copy = MAXWIN;
-						if (next < dist) {
+						if (next < dist)
+						{
 							source += copy;
 							copy = dist;
 						}
@@ -245,32 +200,66 @@ namespace OpenRA.FileFormats
 						
 						len -= copy;
 						next += (ushort)copy;
-						Array.Copy (outBuffer, source, outBuffer, dest, copy);
+						Array.Copy(outBuffer, source, outBuffer, dest, copy);
 						
 						// Flush window to outstream
 						if (next == MAXWIN)
 						{
-							foreach (var b in outBuffer)
-								OutStream.WriteByte (b);
+							for (int i = 0; i < next; i++)
+								ms.WriteByte(outBuffer[i]);
 							next = 0;
 							first = false;
 						}
 					} while (len != 0);
-				
 				}
 				else // literal value
 				{
-					int symbol = EncodedLiterals ? Decode(litcode) : GetBits(8);
+					int symbol = EncodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{
-						foreach (var b in outBuffer)
-							OutStream.WriteByte(b);
+						for (int i = 0; i < next; i++)
+							ms.WriteByte(outBuffer[i]);
 						next = 0;
 						first = false;
 					}
 				}
 			} while (true);
+			
+			return ms.ToArray();
+		}
+	}
+	
+	class BitReader
+	{
+		readonly byte[] src;
+        int offset = 0;
+		int bitBuffer = 0;
+		int bitCount = 0;
+
+		public BitReader(byte[] src)
+		{
+            this.src = src;
+		}
+		
+		public int ReadBits(int count)
+		{
+			int ret = 0;
+			int filled = 0;
+			while (filled < count)
+			{
+				if (bitCount == 0)
+				{
+					bitBuffer = src[offset++];
+					bitCount = 8;
+				}
+				
+				ret |= (bitBuffer & 1) << filled;
+				bitBuffer >>= 1;
+				bitCount--;
+				filled++;
+			}
+			return ret;
 		}
 	}
 

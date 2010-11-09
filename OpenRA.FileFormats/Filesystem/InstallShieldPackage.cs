@@ -93,7 +93,8 @@ namespace OpenRA.FileFormats
 			s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
 			byte[] data = new byte[ e.Length ];
 			s.Read( data, 0, (int)e.Length );
-			return new MemoryStream(data);
+			
+			return new MemoryStream(Blast.Decompress(data));
 		}
 
 		public Stream GetContent(string filename)
