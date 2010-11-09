@@ -20,7 +20,6 @@ using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
-using OpenRA.Server.Traits;
 
 namespace OpenRA.Server
 {

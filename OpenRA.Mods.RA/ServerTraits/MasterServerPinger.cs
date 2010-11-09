@@ -11,8 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using OpenRA.Server;
+using server = OpenRA.Server.Server;
 
-namespace OpenRA.Server.Traits
+namespace OpenRA.Mods.RA.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame
 	{
@@ -26,7 +28,7 @@ namespace OpenRA.Server.Traits
 			else
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
-						Server.SendChat(null, masterServerMessages.Dequeue());
+						server.SendChat(null, masterServerMessages.Dequeue());
 			
 		}
 		
@@ -61,11 +63,11 @@ namespace OpenRA.Server.Traits
 						{
 							 wc.DownloadData(
 								masterServerUrl + url.F(
-								externalPort, Uri.EscapeUriString(Server.Name),
-								Server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
-								Server.lobbyInfo.Clients.Count,
-								string.Join(",", Server.lobbyInfo.GlobalSettings.Mods),
-								Server.lobbyInfo.GlobalSettings.Map));
+								externalPort, Uri.EscapeUriString(server.Name),
+								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
+								server.lobbyInfo.Clients.Count,
+								string.Join(",", server.lobbyInfo.GlobalSettings.Mods),
+								server.lobbyInfo.GlobalSettings.Map));
 
 							if (isInitialPing)
 							{

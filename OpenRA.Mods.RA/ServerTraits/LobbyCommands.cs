@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.FileFormats;
+using OpenRA.Server;
+using server = OpenRA.Server.Server;
 
-namespace OpenRA.Server.Traits
+namespace OpenRA.Mods.RA.Server
 {
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, IClientJoined
 	{
@@ -22,14 +24,14 @@ namespace OpenRA.Server.Traits
 
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
-			if (Server.GameStarted)
+			if (server.GameStarted)
 			{
-				Server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
+				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
 			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
 			{
-				Server.SendChatTo(conn, "Cannot change state when marked as ready.");
+				server.SendChatTo(conn, "Cannot change state when marked as ready.");
 				return false;
 			}
 			
@@ -47,9 +49,9 @@ namespace OpenRA.Server.Traits
 						Log.Write("server", "Player @{0} is {1}",
 							conn.socket.RemoteEndPoint, client.State);
 
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						
-						if (Server.conns.Count > 0 && Server.conns.All(c => Server.GetClient(c).State == Session.ClientState.Ready))
+						if (server.conns.Count > 0 && server.conns.All(c => server.GetClient(c).State == Session.ClientState.Ready))
 							InterpretCommand(conn, client, "startgame");
 						
 						return true;
@@ -57,7 +59,7 @@ namespace OpenRA.Server.Traits
 				{ "startgame", 
 					s => 
 					{
-						Server.StartGame();
+						server.StartGame();
 						return true;
 					}},
 				{ "lag",
@@ -68,21 +70,21 @@ namespace OpenRA.Server.Traits
 
 						Log.Write("server", "Order lag is now {0} frames.", lag);
 
-						Server.lobbyInfo.GlobalSettings.OrderLatency = lag;
-						Server.SyncLobbyInfo();
+						server.lobbyInfo.GlobalSettings.OrderLatency = lag;
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "spectator",
 					s =>
 						{
-							var slotData = Server.lobbyInfo.Slots.Where(ax => ax.Spectator && !Server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
+							var slotData = server.lobbyInfo.Slots.Where(ax => ax.Spectator && !server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
 							if (slotData == null)
 								return true;
 	
 							client.Slot = slotData.Index;
-							SyncClientToPlayerReference(client, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+							SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
 
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},	
 				{ "slot",
@@ -91,15 +93,15 @@ namespace OpenRA.Server.Traits
 						int slot;
 						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
 
-						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
 						if (slotData == null || slotData.Closed || slotData.Bot != null 
-							|| Server.lobbyInfo.Clients.Any( c => c.Slot == slot ))
+							|| server.lobbyInfo.Clients.Any( c => c.Slot == slot ))
 							return false;
 
 						client.Slot = slot;
-						SyncClientToPlayerReference(client, slotData.MapPlayer != null ? Server.Map.Players[slotData.MapPlayer] : null);
+						SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
 						
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "slot_close",
@@ -108,13 +110,13 @@ namespace OpenRA.Server.Traits
 						int slot;
 						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
 
-						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
 						if (slotData == null)
 							return false;
 
 						if (conn.PlayerIndex != 0)
 						{
-							Server.SendChatTo( conn, "Only the host can alter slots" );
+							server.SendChatTo( conn, "Only the host can alter slots" );
 							return true;
 						}
 
@@ -122,15 +124,15 @@ namespace OpenRA.Server.Traits
 						slotData.Bot = null;
 						
 						/* kick any player that's in the slot */
-						var occupant = Server.lobbyInfo.Clients.FirstOrDefault( c => c.Slot == slotData.Index );
+						var occupant = server.lobbyInfo.Clients.FirstOrDefault( c => c.Slot == slotData.Index );
 						if (occupant != null)
 						{
-							var occupantConn = Server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
+							var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
 							if (occupantConn != null)
-								Server.DropClient( occupantConn, new Exception() );
+								server.DropClient( occupantConn, new Exception() );
 						}
 
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "slot_open",
@@ -139,20 +141,20 @@ namespace OpenRA.Server.Traits
 						int slot;
 						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
 
-						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
 						if (slotData == null)
 							return false;
 
 						if (conn.PlayerIndex != 0)
 						{
-							Server.SendChatTo( conn, "Only the host can alter slots" );
+							server.SendChatTo( conn, "Only the host can alter slots" );
 							return true;
 						}
 
 						slotData.Closed = false;
 						slotData.Bot = null;
 
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "slot_bot",
@@ -162,26 +164,26 @@ namespace OpenRA.Server.Traits
 
 						if (parts.Length != 2)
 						{
-							Server.SendChatTo( conn, "Malformed slot_bot command" );
+							server.SendChatTo( conn, "Malformed slot_bot command" );
 							return true;
 						}
 
 						int slot;
 						if (!int.TryParse(parts[0], out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
 
-						var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
+						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
 						if (slotData == null)
 							return false;
 
 						if (conn.PlayerIndex != 0)
 						{
-							Server.SendChatTo( conn, "Only the host can alter slots" );
+							server.SendChatTo( conn, "Only the host can alter slots" );
 							return true;
 						}
 
 						slotData.Bot = parts[1];
 
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "map",
@@ -189,23 +191,23 @@ namespace OpenRA.Server.Traits
 					{
 						if (conn.PlayerIndex != 0)
 						{
-							Server.SendChatTo( conn, "Only the host can change the map" );
+							server.SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
-						Server.lobbyInfo.GlobalSettings.Map = s;			
+						server.lobbyInfo.GlobalSettings.Map = s;			
 						LoadMap();
 
-						foreach(var c in Server.lobbyInfo.Clients)
+						foreach(var c in server.lobbyInfo.Clients)
 						{
 							c.SpawnPoint = 0;
-							var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == c.Slot );
+							var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == c.Slot );
 							if (slotData != null && slotData.MapPlayer != null)
-								SyncClientToPlayerReference(c, Server.Map.Players[slotData.MapPlayer]);
+								SyncClientToPlayerReference(c, server.Map.Players[slotData.MapPlayer]);
 				
 							c.State = Session.ClientState.NotReady;
 						}
 						
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "lockteams",
@@ -213,12 +215,12 @@ namespace OpenRA.Server.Traits
 					{
 						if (conn.PlayerIndex != 0)
 						{
-							Server.SendChatTo( conn, "Only the host can set that option" );
+							server.SendChatTo( conn, "Only the host can set that option" );
 							return true;
 						}
 						
-						bool.TryParse(s, out Server.lobbyInfo.GlobalSettings.LockTeams);
-						Server.SyncLobbyInfo();
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.LockTeams);
+						server.SyncLobbyInfo();
 						return true;
 					}},
 			};
@@ -247,8 +249,8 @@ namespace OpenRA.Server.Traits
 
 		public static void LoadMap()
 		{
-			Server.Map = new Map(Server.ModData.AvailableMaps[Server.lobbyInfo.GlobalSettings.Map]);
-			Server.lobbyInfo.Slots = Server.Map.Players
+			server.Map = new Map(server.ModData.AvailableMaps[server.lobbyInfo.GlobalSettings.Map]);
+			server.lobbyInfo.Slots = server.Map.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.Select((s, i) => { s.Index = i; return s; })
@@ -256,10 +258,10 @@ namespace OpenRA.Server.Traits
 
 			// Generate slots for spectators
 			for (int i = 0; i < MaxSpectators; i++)
-				Server.lobbyInfo.Slots.Add(new Session.Slot
+				server.lobbyInfo.Slots.Add(new Session.Slot
 				{
 					Spectator = true,
-					Index = Server.lobbyInfo.Slots.Count(),
+					Index = server.lobbyInfo.Slots.Count(),
 					MapPlayer = null,
 					Bot = null
 				});
@@ -282,23 +284,23 @@ namespace OpenRA.Server.Traits
 				Slot = ChooseFreeSlot(),
 			};
 			
-			var slotData = Server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+			var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
 			if (slotData != null)
-				SyncClientToPlayerReference(client, Server.Map.Players[slotData.MapPlayer]);
+				SyncClientToPlayerReference(client, server.Map.Players[slotData.MapPlayer]);
 			
-			Server.lobbyInfo.Clients.Add(client);
+			server.lobbyInfo.Clients.Add(client);
 
 			Log.Write("server", "Client {0}: Accepted connection from {1}",
 				newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
-			Server.SendChat(newConn, "has joined the game.");
-			Server.SyncLobbyInfo();
+			server.SendChat(newConn, "has joined the game.");
+			server.SyncLobbyInfo();
 		}
 		
 		static int ChooseFreeSlot()
 		{
-			return Server.lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
-				&& !Server.lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
+			return server.lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
+				&& !server.lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
 		}
 		
 		

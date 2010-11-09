@@ -10,7 +10,7 @@
 using System;
 using OpenRA.Network;
 
-namespace OpenRA.Server.Traits
+namespace OpenRA.Server
 {	
 	// Returns true if order is handled 
 	public interface IInterpretCommand { bool InterpretCommand(Connection conn, Session.Client client, string cmd); }

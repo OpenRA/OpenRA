@@ -13,21 +13,23 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Server;
+using server = OpenRA.Server.Server;
 
-namespace OpenRA.Server.Traits
+namespace OpenRA.Mods.RA.Server
 {		
 	public class PlayerCommands : ServerTrait, IInterpretCommand
 	{
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{
-			if (Server.GameStarted)
+			if (server.GameStarted)
 			{
-				Server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
+				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
 			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
 			{
-				Server.SendChatTo(conn, "Cannot change state when marked as ready.");
+				server.SendChatTo(conn, "Cannot change state when marked as ready.");
 				return false;
 			}
 			
@@ -38,14 +40,14 @@ namespace OpenRA.Server.Traits
 					{
 						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
 						client.Name = s;
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "race",
 					s => 
 					{	
 						client.Country = s;
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "team",
@@ -55,7 +57,7 @@ namespace OpenRA.Server.Traits
 						if (!int.TryParse(s, out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
 
 						client.Team = team;
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},	
 				{ "spawn",
@@ -68,14 +70,14 @@ namespace OpenRA.Server.Traits
 							return false;
 						}
 						
-						if (Server.lobbyInfo.Clients.Where( c => c != client ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
+						if (server.lobbyInfo.Clients.Where( c => c != client ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
 						{
-							Server.SendChatTo( conn, "You can't be at the same spawn point as another player" );
+							server.SendChatTo( conn, "You can't be at the same spawn point as another player" );
 							return true;
 						}
 
 						client.SpawnPoint = spawnPoint;
-						Server.SyncLobbyInfo();
+						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "color",
@@ -84,7 +86,7 @@ namespace OpenRA.Server.Traits
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
 						client.Color1 = Color.FromArgb(c[0],c[1],c[2]);
 						client.Color2 = Color.FromArgb(c[3],c[4],c[5]);
-						Server.SyncLobbyInfo();		
+						server.SyncLobbyInfo();		
 						return true;
 					}}
 			};

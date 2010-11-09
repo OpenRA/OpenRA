@@ -192,10 +192,7 @@
     <Compile Include="Traits\ActorStance.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
-    <Compile Include="ServerTraits\TraitInterfaces.cs" />
-    <Compile Include="ServerTraits\LobbyCommands.cs" />
-    <Compile Include="ServerTraits\PlayerCommands.cs" />
-    <Compile Include="ServerTraits\MasterServerPinger.cs" />
+    <Compile Include="Server\TraitInterfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
