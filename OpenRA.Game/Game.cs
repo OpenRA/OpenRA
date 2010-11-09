@@ -52,29 +52,36 @@ namespace OpenRA
 
 		public static void JoinServer(string host, int port)
 		{
-			if (orderManager != null) orderManager.Dispose();
-
 			var replayFilename = ChooseReplayFilename();
 			string path = Path.Combine( Game.SupportDir, "Replays" );
 			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
 			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
 
-			orderManager = new OrderManager( host, port, new ReplayRecorderConnection( new NetworkConnection( host, port ), replayFile ) );
-			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged(orderManager);
-		}
+			JoinInner(new OrderManager(host, port, 
+				new ReplayRecorderConnection(new NetworkConnection(host, port), replayFile)));
+		}		
 
 		static string ChooseReplayFilename()
 		{
 			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ.rep");
 		}
 
-		static void JoinLocal()
+		static void JoinInner(OrderManager om)
 		{
 			if (orderManager != null) orderManager.Dispose();
-			orderManager = new OrderManager("<no server>", -1, new EchoConnection());
+			orderManager = om;
 			lastConnectionState = ConnectionState.PreConnecting;
-			ConnectionStateChanged( orderManager );
+			ConnectionStateChanged(orderManager);
+		}
+
+		public static void JoinReplay(string replayFile)
+		{
+			JoinInner(new OrderManager("<no server>", -1, new ReplayConnection(replayFile)));
+		}
+
+		static void JoinLocal()
+		{
+			JoinInner(new OrderManager("<no server>", -1, new EchoConnection()));
 		}
 
 		public static int RenderFrame = 0;
