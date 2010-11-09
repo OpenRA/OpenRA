@@ -42,6 +42,8 @@ namespace OpenRA.FileFormats
 				return new MixFile(filename, order++);
 			else if (filename.EndsWith(".zip"))
 				return new CompressedPackage(filename, order++);
+			else if (filename.EndsWith(".Z"))
+				return new InstallShieldPackage(filename, order++);
 			else
 				return new Folder(filename, order++);
 		}

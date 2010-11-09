@@ -17,9 +17,9 @@ namespace OpenRA.FileFormats
 {
 	public class InstallShieldPackage : IFolder
 	{
-		readonly Dictionary<uint, PackageEntry> index;
-		readonly long dataStart;
+		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
 		readonly Stream s;
+		readonly long dataStart = 255;
 		int priority;
 
 		public InstallShieldPackage(string filename, int priority)
@@ -39,15 +39,13 @@ namespace OpenRA.FileFormats
 			var ArchiveSize = reader.ReadUInt32();
 			reader.ReadBytes(19);
 			var TOCAddress = reader.ReadInt32();
-			
-			Console.WriteLine("SETUP.Z:");
-			Console.WriteLine("FileCount: {0}", FileCount);
-			Console.WriteLine("Archive Size: {0}", ArchiveSize);
+			reader.ReadBytes(4);
+			var DirCount = reader.ReadUInt16();
 			
 			// Parse the directory list
 			s.Seek(TOCAddress, SeekOrigin.Begin);
 			BinaryReader TOCreader = new BinaryReader(s);
-			while (s.Position < s.Length)
+			for (var i = 0; i < DirCount; i++)
 				ParseDirectory(TOCreader);
 		}
 
@@ -62,12 +60,12 @@ namespace OpenRA.FileFormats
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 6);
 			
-			Console.WriteLine("Directory `{0}': {1}", DirName, FileCount);
 			// Parse files
 			for (var i = 0; i < FileCount; i++)
 				ParseFile(reader);
 		}
 		
+		uint AccumulatedData = 0;
 		void ParseFile(BinaryReader reader)
 		{
 			reader.ReadBytes(7);
@@ -78,10 +76,12 @@ namespace OpenRA.FileFormats
 			var NameLength = reader.ReadByte();
 			var FileName = new String(reader.ReadChars(NameLength));
 
+			var hash = PackageEntry.HashFilename(FileName);
+			index.Add(hash, new PackageEntry(hash,AccumulatedData, CompressedSize));
+			AccumulatedData += CompressedSize;
+			
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 30);
-			
-			Console.WriteLine("\t{0}: {1}", FileName, CompressedSize);
 		}
 		
 		public Stream GetContent(uint hash)
@@ -114,7 +114,7 @@ namespace OpenRA.FileFormats
 
 		public int Priority
 		{
-			get { return 1000 + priority; }
+			get { return 2000 + priority; }
 		}
 	}
 }
