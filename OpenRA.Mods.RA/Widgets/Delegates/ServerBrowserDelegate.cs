@@ -158,6 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
 
+			sl.ContentHeight = 0;
 			int offset = ServerTemplate.Bounds.Y;
 			int i = 0;
 			foreach (var loop in games.Where(g => g.State == 1))	/* only "waiting for players" */
