@@ -23,7 +23,7 @@ using OpenRA.Network;
 
 namespace OpenRA.Server
 {
-	static class Server
+	public static class Server
 	{
 		public static List<Connection> conns = new List<Connection>();
 		static TcpListener listener = null;
