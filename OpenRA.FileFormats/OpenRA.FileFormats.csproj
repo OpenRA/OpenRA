@@ -103,6 +103,7 @@
     <Compile Include="Filesystem\Folder.cs" />
     <Compile Include="Filesystem\PackageWriter.cs" />
     <Compile Include="Filesystem\CompressedPackage.cs" />
+    <Compile Include="Filesystem\InstallShieldPackage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
