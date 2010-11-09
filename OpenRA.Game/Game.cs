@@ -135,29 +135,33 @@ namespace OpenRA
 					Sound.Tick();
 					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );
 
-					var isNetTick = LocalTick % NetTickScale == 0;
-
-					if( !isNetTick || orderManager.IsReadyForNextFrame )
+					if (world != null)
 					{
-						++orderManager.LocalFrameNumber;
+						var isNetTick = LocalTick % NetTickScale == 0;
 
-						Log.Write( "debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local" );
+						if (!isNetTick || orderManager.IsReadyForNextFrame)
+						{
+							++orderManager.LocalFrameNumber;
 
-						if( isNetTick ) orderManager.Tick();
+							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
-						Sync.CheckSyncUnchanged(world, () =>
-							{
-								world.OrderGenerator.Tick(world);
-								world.Selection.Tick(world);
-							});
-						
-						world.Tick();
+							if (isNetTick) orderManager.Tick();
 
-						PerfHistory.Tick();
+
+							Sync.CheckSyncUnchanged(world, () =>
+								{
+									world.OrderGenerator.Tick(world);
+									world.Selection.Tick(world);
+								});
+
+							world.Tick();
+
+							PerfHistory.Tick();
+						}
+						else
+							if (orderManager.NetFrameNumber == 0)
+								orderManager.LastTickTime = Environment.TickCount;
 					}
-					else
-						if( orderManager.NetFrameNumber == 0 )
-							orderManager.LastTickTime = Environment.TickCount;
 				}
 		}
 
