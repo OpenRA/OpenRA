@@ -25,8 +25,9 @@ namespace OpenRA.Server.Traits
 		int TickTimeout { get; }
 	}
 	
+	public abstract class ServerTrait {}
 	
-	public class DebugServerTrait : IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown
+	public class DebugServerTrait : ServerTrait, IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown
 	{		
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{

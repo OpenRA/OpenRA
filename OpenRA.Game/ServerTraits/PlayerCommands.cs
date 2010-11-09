@@ -16,7 +16,7 @@ using OpenRA.Network;
 
 namespace OpenRA.Server.Traits
 {		
-	public class PlayerCommands : IInterpretCommand
+	public class PlayerCommands : ServerTrait, IInterpretCommand
 	{
 		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
 		{

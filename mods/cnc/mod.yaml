@@ -83,3 +83,7 @@ TileSets:
 
 LoadScreen: CncLoadScreen
 ShellmapUid:e7b9badb3b7d49ccc773a7aa086c0ff9a1136b77
+ServerTraits:
+	PlayerCommands
+	LobbyCommands
+	MasterServerPinger

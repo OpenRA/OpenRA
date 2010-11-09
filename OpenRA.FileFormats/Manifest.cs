@@ -18,7 +18,7 @@ namespace OpenRA.FileFormats
 	public class Manifest
 	{
 		public readonly string[]
-			Mods, Folders, Packages, Rules,
+			Mods, Folders, Packages, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
 		public readonly string ShellmapUid, LoadScreen;
@@ -35,6 +35,7 @@ namespace OpenRA.FileFormats
 			Folders = YamlList(yaml, "Folders");
 			Packages = YamlList(yaml, "Packages");
 			Rules = YamlList(yaml, "Rules");
+			ServerTraits = YamlList(yaml, "ServerTraits");
 			Sequences = YamlList(yaml, "Sequences");
 			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");

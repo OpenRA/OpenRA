@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Server.Traits
 {
-	public class LobbyCommands : IInterpretCommand, INotifyServerStart, IClientJoined
+	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, IClientJoined
 	{
 		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
 

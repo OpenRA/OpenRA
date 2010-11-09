@@ -14,7 +14,7 @@ using System.Net;
 
 namespace OpenRA.Server.Traits
 {
-	public class MasterServerPinger : ITick, INotifySyncLobbyInfo, IStartGame
+	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame
 	{
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.

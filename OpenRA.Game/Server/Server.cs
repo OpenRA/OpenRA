@@ -55,16 +55,14 @@ namespace OpenRA.Server
 		{
 			Log.AddChannel("server", "server.log");
 
-			ServerTraits.Add( new DebugServerTrait() );
-			ServerTraits.Add( new PlayerCommands() );
-			ServerTraits.Add( new LobbyCommands() );
-			ServerTraits.Add( new MasterServerPinger() );
-			
 			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
 			Name = settings.Server.Name;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
+			foreach (var trait in modData.Manifest.ServerTraits)
+				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
+			
 			lobbyInfo = new Session( settings.Game.Mods );
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
