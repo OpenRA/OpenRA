@@ -16,6 +16,12 @@ namespace OpenRA.Widgets.Delegates
 		public ReplayBrowserDelegate( [ObjectCreator.Param] Widget widget )
 		{
 			/* todo */
+
+			widget.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
+				{
+					Widget.CloseWindow();
+					return true;
+				};
 		}
 	}
 }
