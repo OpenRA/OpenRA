@@ -22,11 +22,14 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		Palette:
-		Race: gdi
 		OwnsWorld: True
 		NonCombatant: True
 		Playable: False
 		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -35,11 +38,14 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -48,11 +54,14 @@ Players:
 	PlayerReference@Multi1:
 		Name: Multi1
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -66,7 +75,7 @@ Actors:
 	Actor1: v03
 		Location: 18,42
 		Owner: Neutral
-	Actor3: hosp
+	Actor2: v02
 		Location: 20,46
 		Owner: Neutral
 	Actor4: tc04
