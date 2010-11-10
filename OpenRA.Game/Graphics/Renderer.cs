@@ -46,10 +46,10 @@ namespace OpenRA.Graphics
 
 		public Renderer()
 		{
-			SpriteShader = device.CreateShader(FileSystem.Open("shaders/world-shp.fx"));
-			LineShader = device.CreateShader(FileSystem.Open("shaders/line.fx"));
-			RgbaSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-rgba.fx"));
-			WorldSpriteShader = device.CreateShader(FileSystem.Open("shaders/chrome-shp.fx"));
+			SpriteShader = device.CreateShader("world-shp");
+			LineShader = device.CreateShader("world-line");
+			RgbaSpriteShader = device.CreateShader("chrome-rgba");
+			WorldSpriteShader = device.CreateShader("chrome-shp");
 
 			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
 			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );

@@ -44,6 +44,6 @@ namespace OpenRA.Renderer.Null
 		public IIndexBuffer CreateIndexBuffer(int size) { return new NullIndexBuffer(); }
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
-		public IShader CreateShader(Stream stream) { return new NullShader(); }
+		public IShader CreateShader(string name) { return new NullShader(); }
 	}
 }

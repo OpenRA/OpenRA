@@ -312,6 +312,6 @@ namespace OpenRA.GlRenderer
 		public IIndexBuffer CreateIndexBuffer( int size ) { return new IndexBuffer( this, size ); }
 		public ITexture CreateTexture() { return new Texture( this ); }
 		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( this, bitmap ); }
-		public IShader CreateShader( Stream stream ) { return new Shader( this, stream ); }
+		public IShader CreateShader( string name ) { return new Shader( this, name ); }
 	}
 }

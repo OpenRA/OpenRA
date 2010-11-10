@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 
@@ -21,11 +22,11 @@ namespace OpenRA.GlRenderer
 		IntPtr technique;
 		GraphicsDevice dev;
 
-		public Shader(GraphicsDevice dev, Stream s)
+		public Shader(GraphicsDevice dev, string name)
 		{
 			this.dev = dev;
 			string code;
-			using (var file = new StreamReader(s))
+			using (var file = new StreamReader(FileSystem.Open("cg{0}{1}.fx".F(Path.DirectorySeparatorChar, name))))
 				code = file.ReadToEnd();
 			effect = Cg.cgCreateEffect(dev.cgContext, code, null);
 

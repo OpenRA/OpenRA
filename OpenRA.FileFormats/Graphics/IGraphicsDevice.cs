@@ -33,7 +33,7 @@ namespace OpenRA.FileFormats.Graphics
 		IIndexBuffer CreateIndexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
 		ITexture CreateTexture();
-		IShader CreateShader( Stream stream );
+		IShader CreateShader( string name );
 
 		Size WindowSize { get; }
 
