@@ -20,31 +20,44 @@ namespace OpenRA.Orders
 		readonly IEnumerable<Actor> subjects;
 		readonly string order;
 		readonly string cursor;
+		readonly MouseButton expectedButton;
 
-		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
+		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
 		{
 			this.subjects = subjects;
 			this.order = order;
 			this.cursor = cursor;
+			expectedButton = button;
+		}
+
+		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor) 
+			: this(subjects, order, cursor, MouseButton.Left)
+		{
+			
 		}
 
 		public GenericSelectTarget(Actor subject, string order, string cursor)
+			: this(new Actor[] { subject }, order, cursor)
 		{
-			this.subjects = new Actor[] { subject };
-			this.order = order;
-			this.cursor = cursor;
+
+		}
+
+		public GenericSelectTarget(Actor subject, string order, string cursor, MouseButton button)
+			: this(new Actor[] { subject }, order, cursor, button)
+		{
+
 		}
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Right)
+			if (mi.Button != expectedButton)
 				world.CancelInputMode();
 			return OrderInner(world, xy, mi);
 		}
 
 		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left && world.Map.IsInMap(xy))
+			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
 			{
 				world.CancelInputMode();
 				foreach (var subject in subjects)
@@ -83,6 +96,9 @@ namespace OpenRA.Orders
 	{
 		public GenericSelectTargetWithBuilding(Actor subject, string order, string cursor)
 			: base(subject, order, cursor) { }
+
+		public GenericSelectTargetWithBuilding(Actor subject, string order, string cursor, MouseButton button)
+			: base(subject, order, cursor, button) { }
 
 		public override void Tick(World world)
 		{
