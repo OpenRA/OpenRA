@@ -142,20 +142,8 @@ namespace OpenRA.Widgets
 					handled = (t.KeyPressed(world.WorldActor, e)) ? true : handled;
 
 				if (handled) return true;
-
-				if (e.KeyChar == 'a')
-				{
-					StartAttackMoveOrder();
-					return true;
-				}
 			}
 			return false;
-		}
-
-		public void StartAttackMoveOrder()
-		{
-			if (world.Selection.Actors.Count() > 0)
-				world.OrderGenerator = new GenericSelectTarget(world.Selection.Actors, "AttackMove", "attackmove");
 		}
 		
 		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)
