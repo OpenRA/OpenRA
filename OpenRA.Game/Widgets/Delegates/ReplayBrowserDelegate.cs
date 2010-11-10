@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Network;
 using System;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -54,6 +55,18 @@ namespace OpenRA.Widgets.Delegates
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
+		MapStub MapStubFromSummary(ReplaySummary rs)
+		{
+			if (rs.LobbyInfo == null)
+				return null;
+			
+			var map = rs.LobbyInfo.GlobalSettings.Map;
+			if (!Game.modData.AvailableMaps.ContainsKey(map))
+				return null;
+
+			return Game.modData.AvailableMaps[map];
+		}
+
 		string currentReplay = null;
 		string CurrentReplay
 		{
@@ -64,8 +77,13 @@ namespace OpenRA.Widgets.Delegates
 				if (currentReplay != null)
 				{
 					var summary = new ReplaySummary(currentReplay);
+					var mapStub = MapStubFromSummary(summary);
+
 					widget.GetWidget<LabelWidget>("DURATION").GetText = 
 						() => WorldUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+					widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
+					widget.GetWidget<LabelWidget>("MAP_TITLE").GetText = 
+						() => mapStub != null ? mapStub.Title : "(Unknown Map)";
 				}
 			}
 		}
@@ -94,10 +112,13 @@ namespace OpenRA.Widgets.Delegates
 	class ReplaySummary
 	{
 		public readonly int Duration;
+		public readonly Session LobbyInfo;
 
 		public ReplaySummary(string filename)
 		{
 			var lastFrame = 0;
+			var hasSeenGameStart = false;
+			var lobbyInfo = null as Session;
 			using (var conn = new ReplayConnection(filename))
 				conn.Receive((client, packet) =>
 					{
@@ -109,12 +130,19 @@ namespace OpenRA.Widgets.Delegates
 						else if (frame == 0)
 						{
 							/* decode this to recover lobbyinfo, etc */
+							var orders = packet.ToOrderList(null);
+							foreach (var o in orders)
+								if (o.OrderString == "StartGame")
+									hasSeenGameStart = true;
+								else if (o.OrderString == "SyncInfo" && !hasSeenGameStart)
+									lobbyInfo = Session.Deserialize(o.TargetString);
 						}
 						else
 							lastFrame = Math.Max(lastFrame, frame);
 					});
 
 			Duration = lastFrame;
+			LobbyInfo = lobbyInfo;
 		}
 	}
 }
