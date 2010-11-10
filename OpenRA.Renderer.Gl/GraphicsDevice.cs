@@ -23,9 +23,6 @@ namespace OpenRA.Renderer.Glsl
 	public class GraphicsDevice : IGraphicsDevice
 	{
 		Size windowSize;
-		internal IntPtr cgContext;
-		internal int vertexProfile, fragmentProfile;
-
 		IntPtr surf;
 
 		public Size WindowSize { get { return windowSize; } }
@@ -83,18 +80,6 @@ namespace OpenRA.Renderer.Glsl
 
 			windowSize = new Size( width, height );
 
-			cgContext = Tao.Cg.Cg.cgCreateContext();
-
-			Tao.Cg.Cg.cgSetErrorCallback( CgErrorCallback );
-
-			Tao.Cg.CgGl.cgGLRegisterStates( cgContext );
-			Tao.Cg.CgGl.cgGLSetManageTextureParameters( cgContext, true );
-			vertexProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_VERTEX );
-			fragmentProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_FRAGMENT );
-
-			//Console.WriteLine("VP Profile: " + vertexProfile);
-			//Console.WriteLine("FP Profile: " + fragmentProfile);
-
 			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
 			CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
@@ -102,14 +87,6 @@ namespace OpenRA.Renderer.Glsl
 
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
 		}
-
-		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
-		{
-			var err = Tao.Cg.Cg.cgGetError();
-			var str = Tao.Cg.Cg.cgGetErrorString( err );
-			throw new InvalidOperationException(
-			string.Format( "CG Error: {0}: {1}", err, str ) );
-		};
 
 		public void EnableScissor( int left, int top, int width, int height )
 		{
