@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public static void StartAttackMoveOrder(World world)
 		{
 			if (world.Selection.Actors.Count() > 0)
-				world.OrderGenerator = new GenericSelectTarget(world.Selection.Actors, "AttackMove", "attackmove");
+				world.OrderGenerator = new GenericSelectTarget(world.Selection.Actors, "AttackMove", "attackmove", MouseButton.Right);
 		}
 	}
 }
