@@ -51,9 +51,18 @@ namespace OpenRA.Utility
 			if (args.Length > 1 && args[1] == "--pipe")
 			{
 				piping = true;
-				var ps = new PipeSecurity();
-				ps.AddAccessRule(new PipeAccessRule("EVERYONE", PipeAccessRights.FullControl, System.Security.AccessControl.AccessControlType.Allow));
-				NamedPipeServerStream pipe = new NamedPipeServerStream("OpenRA.Utility", PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024, 1024, ps);
+				NamedPipeServerStream pipe;
+				var id = WindowsIdentity.GetCurrent();
+				var principal = new WindowsPrincipal(id);
+				if (principal.IsInRole(WindowsBuiltInRole.Administrator))
+				{
+					var ps = new PipeSecurity();
+					ps.AddAccessRule(new PipeAccessRule("EVERYONE", PipeAccessRights.FullControl, System.Security.AccessControl.AccessControlType.Allow));
+					pipe = new NamedPipeServerStream("OpenRA.Utility", PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024, 1024, ps);
+				}
+				else
+					pipe = new NamedPipeServerStream("OpenRA.Utility", PipeDirection.Out);
+
 				pipe.WaitForConnection();
 				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
 			}
