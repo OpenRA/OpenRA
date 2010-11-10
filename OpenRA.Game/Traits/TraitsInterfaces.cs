@@ -241,4 +241,6 @@ namespace OpenRA.Traits
 		string[] TargetTypes { get; }
 		IEnumerable<int2> TargetableCells( Actor self );
 	}
+
+	public interface INotifyKeyPress { bool KeyPressed(Actor self, KeyInput e); }
 }

@@ -136,11 +136,12 @@ namespace OpenRA.Widgets
 					return true;
 				}
 
-				if (e.KeyChar == '\b' || e.KeyChar == (char)127)
-				{
-					GotoNextBase();
-					return true;
-				}
+				bool handled = false;
+
+				foreach (var t in world.WorldActor.TraitsImplementing<INotifyKeyPress>())
+					handled = (t.KeyPressed(world.WorldActor, e)) ? true : handled;
+
+				if (handled) return true;
 
 				if (e.KeyChar == 'a')
 				{
@@ -155,24 +156,6 @@ namespace OpenRA.Widgets
 		{
 			if (world.Selection.Actors.Count() > 0)
 				world.OrderGenerator = new GenericSelectTarget(world.Selection.Actors, "AttackMove", "attackmove");
-		}
-		
-		public void GotoNextBase()
-		{
-			var bases = world.Queries.OwnedBy[world.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
-			if (!bases.Any()) return;
-
-			var next = bases
-				.Select( b => b.Actor )
-				.SkipWhile(b => !world.Selection.Actors.Contains(b))
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (next == null)
-				next = bases.Select(b => b.Actor).First();
-
-			world.Selection.Combine(world, new Actor[] { next }, false, true);
-			Game.viewport.Center(world.Selection.Actors);
 		}
 		
 		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)

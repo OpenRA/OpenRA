@@ -227,6 +227,7 @@ World:
 		ReturnToLobby: yes
 		EndMessage: The game will end in {0} seconds.
 	ValidateOrder:
+	GotoNextBase:
 
 MINP:
 	Mine:

@@ -183,6 +183,7 @@ World:
 		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
+	GotoNextBase:
 
 CRATE:
 	Tooltip:

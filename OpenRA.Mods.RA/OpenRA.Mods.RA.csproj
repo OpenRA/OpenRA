@@ -82,6 +82,7 @@
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="AttackMove.cs" />
+    <Compile Include="BaseBuilding.cs" />
     <Compile Include="Buildable.cs" />
     <Compile Include="Buildings\BibLayer.cs" />
     <Compile Include="Buildings\Building.cs" />
@@ -288,6 +289,7 @@
     <Compile Include="NullLoadScreen.cs" />
     <Compile Include="Activities\IdleAnimation.cs" />
     <Compile Include="IdleAnimation.cs" />
+    <Compile Include="World\GotoNextBase.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
