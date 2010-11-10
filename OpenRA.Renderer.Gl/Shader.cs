@@ -25,6 +25,7 @@ namespace OpenRA.Renderer.Glsl
 		{
 			this.type = type;
 			Console.WriteLine("Loading shader: {0}",type);
+			
 			// Vertex shader
 			string vertexCode;
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, type))))
@@ -40,7 +41,7 @@ namespace OpenRA.Renderer.Glsl
 			
 			// Fragment shader
 			string fragmentCode;
-			using (var file = new StreamReader(FileSystem.Open("glsl{0}rgba.frag".F(Path.DirectorySeparatorChar, type))))
+			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, type))))
 				fragmentCode = file.ReadToEnd();
 			int f = Gl.glCreateShader(Gl.GL_FRAGMENT_SHADER);
 			GraphicsDevice.CheckGlError();
@@ -69,27 +70,38 @@ namespace OpenRA.Renderer.Glsl
 
 		public void Render(Action a)
 		{
-			GraphicsDevice.CheckGlError();
 			Gl.glUseProgram(program);
 			GraphicsDevice.CheckGlError();
-			Console.WriteLine("rendering");
 			a();
-			GraphicsDevice.CheckGlError();
-			Gl.glUseProgram(0);
 			GraphicsDevice.CheckGlError();
 		}
 
 		public void SetValue(string name, ITexture t)
-		{
-			
-		}
-
-		public void SetValue(string name, float x, float y)
-		{
+		{			
+			Gl.glUseProgram(program);
 			GraphicsDevice.CheckGlError();
-			Console.WriteLine("setting value {0} to {1},{2} in {3}",name,x,y,type);
+			var texture = (Texture)t;
 			int param = Gl.glGetUniformLocation(program, name);
 			GraphicsDevice.CheckGlError();
+
+			
+			if (texture != null && param >= 0)
+			{
+				//texture.texture = 0;
+				Console.WriteLine("setting {0}:{1} to {2}",type,name,texture.texture);
+				Gl.glUniform1i(param, texture.texture);
+				GraphicsDevice.CheckGlError();
+				
+			}
+		}
+		
+		public void SetValue(string name, float x, float y)
+		{
+			Gl.glUseProgram(program);
+			GraphicsDevice.CheckGlError();
+			//Console.WriteLine("setting {3}:{0} to ({1},{2})",name,x,y,type);
+			int param = Gl.glGetUniformLocation(program, name);
+			GraphicsDevice.CheckGlError();			
 			Gl.glUniform2f(param,x,y);
 			GraphicsDevice.CheckGlError();
 		}

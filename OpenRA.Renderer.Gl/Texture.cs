@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -34,6 +34,23 @@ namespace OpenRA.Renderer.Glsl
 			SetData(bitmap);
 		}
 
+		void PrepareTexture()
+		{
+			Gl.glActiveTexture(Gl.GL_TEXTURE0 + texture);
+			GraphicsDevice.CheckGlError();
+			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_NEAREST);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_NEAREST);
+			GraphicsDevice.CheckGlError();
+			
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
+			GraphicsDevice.CheckGlError();
+		}
+		
 		public void SetData(byte[] colors, int width, int height)
 		{
 			if (!IsPowerOf2(width) || !IsPowerOf2(height))
@@ -44,13 +61,7 @@ namespace OpenRA.Renderer.Glsl
 				fixed (byte* ptr = &colors[0])
 				{
 					IntPtr intPtr = new IntPtr((void*)ptr);
-
-					Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
+					PrepareTexture();
 					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
@@ -72,13 +83,7 @@ namespace OpenRA.Renderer.Glsl
 				fixed (uint* ptr = &colors[0,0])
 				{
 					IntPtr intPtr = new IntPtr((void *) ptr);
-					
-					Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
+					PrepareTexture();
 					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
@@ -93,23 +98,16 @@ namespace OpenRA.Renderer.Glsl
 				//throw new InvalidOperationException( "non-power-of-2-texture" );
 				bitmap = new Bitmap(bitmap, new Size(NextPowerOf2(bitmap.Width), NextPowerOf2(bitmap.Height)));
 			}
-
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-			GraphicsDevice.CheckGlError();
-
+			
 			var bits = bitmap.LockBits(
 				new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadOnly,
 				PixelFormat.Format32bppArgb);
 			
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
+			PrepareTexture();
 			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height,
 				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
 			GraphicsDevice.CheckGlError();
-
 			bitmap.UnlockBits(bits);
 		}
 
