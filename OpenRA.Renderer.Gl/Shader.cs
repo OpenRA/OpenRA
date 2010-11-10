@@ -20,12 +20,8 @@ namespace OpenRA.Renderer.Glsl
 	public class Shader : IShader
 	{
 		int program;
-		string type;
 		public Shader(GraphicsDevice dev, string type)
-		{
-			this.type = type;
-			Console.WriteLine("Loading shader: {0}",type);
-			
+		{			
 			// Vertex shader
 			string vertexCode;
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, type))))
@@ -65,6 +61,7 @@ namespace OpenRA.Renderer.Glsl
 			
 			Gl.glGetProgramInfoLog(program,4024,l,log);
 			Console.WriteLine(log.ToString());
+			
 			GraphicsDevice.CheckGlError();
 		}
 
@@ -83,15 +80,11 @@ namespace OpenRA.Renderer.Glsl
 			var texture = (Texture)t;
 			int param = Gl.glGetUniformLocation(program, name);
 			GraphicsDevice.CheckGlError();
-
 			
 			if (texture != null && param >= 0)
 			{
-				//texture.texture = 0;
-				Console.WriteLine("setting {0}:{1} to {2}",type,name,texture.texture);
 				Gl.glUniform1i(param, texture.texture);
 				GraphicsDevice.CheckGlError();
-				
 			}
 		}
 		
@@ -99,7 +92,6 @@ namespace OpenRA.Renderer.Glsl
 		{
 			Gl.glUseProgram(program);
 			GraphicsDevice.CheckGlError();
-			//Console.WriteLine("setting {3}:{0} to ({1},{2})",name,x,y,type);
 			int param = Gl.glGetUniformLocation(program, name);
 			GraphicsDevice.CheckGlError();			
 			Gl.glUniform2f(param,x,y);
