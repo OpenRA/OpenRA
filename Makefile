@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS = fileformats rcg rgl rnull game ra cnc seqed editor ralint filex tsbuild utility
+PROGRAMS = fileformats rcg rgl rnull game ra cnc seqed editor ralint filex tsbuild utility winlaunch
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -100,19 +100,28 @@ utility_KIND		= exe
 utility_DEPS        = $(fileformats_TARGET) thirdparty/ICSharpCode.SharpZipLib.dll
 utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
 
+winlaunch_SRCS		= $(shell find OpenRA.Launcher/ -iname '*.cs')
+winlaunch_TARGET	= OpenRA.Launcher.exe
+winlaunch_KIND		= winexe
+winlaunch_DEPS		= 
+winlaunch_LIBS		= $(COMMON_LIBS) System.Windows.Forms.dll
+winlaunch_EXTRA		= -resource:OpenRA.Launcher.MainForm.resources \
+						-resource:OpenRA.Launcher.InstallPackagesDialog.resources \
+						-resource:OpenRA.Launcher.ConfigureModsDialog.resources
+
 # -platform:x86
 
 .SUFFIXES:
-.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility
+.PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility winlaunch
 
-game: $(fileformats_TARGET) $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET)
+game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET) $(winlaunch_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 
 distclean: clean
 
-CORE = fileformats rcg game editor utility
+CORE = fileformats rcg rgl rnull game editor utility winlaunch
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -186,6 +195,16 @@ filex: $(filex_TARGET)
 tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
 OpenRA.TilesetBuilder.Form1.resources:
 	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
+	
+winlaunch: OpenRA.Launcher.MainForm.resources OpenRA.Launcher.InstallPackagesDialog.resources \
+           OpenRA.Launcher.ConfigureModsDialog.resources $(winlaunch_TARGET)
+OpenRA.Launcher.MainForm.resources:
+	resgen2 OpenRA.Launcher/MainForm.resx OpenRA.Launcher.MainForm.resources 1> /dev/null
+OpenRA.Launcher.InstallPackagesDialog.resources:
+	resgen2 OpenRA.Launcher/InstallPackagesDialog.resx OpenRA.Launcher.InstallPackagesDialog.resources 1> /dev/null
+OpenRA.Launcher.ConfigureModsDialog.resources:
+	resgen2 OpenRA.Launcher/ConfigureModsDialog.resx OpenRA.Launcher.ConfigureModsDialog.resources 1> /dev/null
+    
 tools: editor ralint seqed filex tsbuild
 all: game tools
 

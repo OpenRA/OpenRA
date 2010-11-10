@@ -48,7 +48,9 @@ namespace OpenRA.Launcher
 			}
 
 			if (Util.IsError(ref responseString)) return null;
-			string[] lines = responseString.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			string[] lines = responseString.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < lines.Length; i++)
+				lines[i] = lines[i].Trim('\r');
 
 			string title = "", version = "", author = "", description = "", requires = "";
 			bool standalone = false;
@@ -96,9 +98,12 @@ namespace OpenRA.Launcher
 
 			string[] mods;
 			if (!Util.IsError(ref responseString))
-				mods = responseString.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+				mods = responseString.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 			else
 				throw new Exception(string.Format("Could not list mods: {0}", responseString));
+			
+			for (int i = 0; i < mods.Length; i++)
+				mods[i] = mods[i].Trim('\r');
 
 			allMods = mods.ToDictionary(x => x, x => GetMetadata(x));
 
