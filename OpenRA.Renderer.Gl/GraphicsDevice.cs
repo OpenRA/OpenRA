@@ -84,7 +84,10 @@ namespace OpenRA.Renderer.Glsl
 			CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
 			CheckGlError();
-
+			
+			Gl.glEnable(Gl.GL_BLEND);
+			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+			
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
 		}
 
