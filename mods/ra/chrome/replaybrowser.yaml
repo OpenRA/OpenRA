@@ -60,17 +60,17 @@ Background@REPLAYBROWSER_BG:
 					Align:Left
 					Width:70
 					Height:20
-				Label@MAP_PLAYERS_LABEL:
-					Id:MAP_PLAYERS_LABEL
+				Label@DURATION_LABEL:
+					Id:DURATION_LABEL
 					X:PARENT_RIGHT - 200 - WIDTH
 					Y:270
 					Align:Right
 					Width:70
 					Height:20
-					Text:Players:
+					Text:Duration:
 					Bold:True
-				Label@MAP_PLAYERS:
-					Id:MAP_PLAYERS
+				Label@DURATION:
+					Id:DURATION
 					X:PARENT_RIGHT - 195
 					Y:270
 					Align:Left

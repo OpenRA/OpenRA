@@ -8,16 +8,22 @@
  */
 #endregion
 
-using System.IO;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using OpenRA.Network;
+using System;
+
 namespace OpenRA.Widgets.Delegates
 {
 	public class ReplayBrowserDelegate : IWidgetDelegate
 	{
+		Widget widget; 
+
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserDelegate( [ObjectCreator.Param] Widget widget )
 		{
-			/* todo */
+			this.widget = widget;
 
 			widget.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 				{
@@ -30,7 +36,7 @@ namespace OpenRA.Widgets.Delegates
 			var replayDir = Path.Combine(Game.SupportDir, "Replays");
 
 			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
-			currentReplay = null;
+			CurrentReplay = null;
 
 			rl.Children.Clear();
 			rl.ContentHeight = 0;
@@ -41,30 +47,74 @@ namespace OpenRA.Widgets.Delegates
 			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
 				{
 					Widget.CloseWindow();
-					Game.JoinReplay(currentReplay);
+					Game.JoinReplay(CurrentReplay);
 					return true;
 				};
+
+			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
 		string currentReplay = null;
+		string CurrentReplay
+		{
+			get { return currentReplay; }
+			set
+			{
+				currentReplay = value;
+				if (currentReplay != null)
+				{
+					var summary = new ReplaySummary(currentReplay);
+					widget.GetWidget<LabelWidget>("DURATION").GetText = 
+						() => WorldUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+				}
+			}
+		}
 
 		void AddReplay(ListBoxWidget list, string filename, LabelWidget template, ref int offset)
 		{
 			var entry = template.Clone() as LabelWidget;
 			entry.Id = "REPLAY_";
 			entry.GetText = () => "   {0}".F(Path.GetFileName(filename));
-			entry.GetBackground = () => (currentReplay == filename) ? "dialog2" : null;
-			entry.OnMouseDown = mi => { currentReplay = filename; return true; };
+			entry.GetBackground = () => (CurrentReplay == filename) ? "dialog2" : null;
+			entry.OnMouseDown = mi => { CurrentReplay = filename; return true; };
 			entry.Parent = list;
 			entry.Bounds = new Rectangle(entry.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 			entry.IsVisible = () => true;
 			list.AddChild(entry);
 
 			if (offset == template.Bounds.Y)
-				currentReplay = filename;
+				CurrentReplay = filename;
 
 			offset += template.Bounds.Height;
 			list.ContentHeight += template.Bounds.Height;
+		}
+	}
+
+	/* a maze of twisty little hacks,... */
+	class ReplaySummary
+	{
+		public readonly int Duration;
+
+		public ReplaySummary(string filename)
+		{
+			var lastFrame = 0;
+			using (var conn = new ReplayConnection(filename))
+				conn.Receive((client, packet) =>
+					{
+						var frame = BitConverter.ToInt32(packet, 0);
+						if (packet.Length == 5 && packet[4] == 0xBF)
+							return;	// disconnect
+						else if (packet.Length >= 5 && packet[4] == 0x65)
+							return;	// sync
+						else if (frame == 0)
+						{
+							/* decode this to recover lobbyinfo, etc */
+						}
+						else
+							lastFrame = Math.Max(lastFrame, frame);
+					});
+
+			Duration = lastFrame;
 		}
 	}
 }
