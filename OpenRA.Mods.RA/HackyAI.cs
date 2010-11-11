@@ -282,7 +282,7 @@ namespace OpenRA.Mods.RA
 					return;
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (TryToMove(a, attackTarget.Value))
+					if (TryToAttackMove(a, attackTarget.Value))
 						attackForce.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
@@ -336,6 +336,28 @@ namespace OpenRA.Mods.RA
 				if (loopCount > 10) return false;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
 			world.IssueOrder(new Order("Move", a, xy, false));
+			return true;
+		}
+
+		//try very hard to find a valid move destination near the target.
+		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
+		bool TryToAttackMove(Actor a, int2 desiredMoveTarget)
+		{
+			if (!a.HasTrait<IMove>())
+				return false;
+
+			int2 xy;
+			int loopCount = 0; //avoid infinite loops.
+			int range = 2;
+			do
+			{
+				//loop until we find a valid move location
+				xy = new int2(desiredMoveTarget.X + random.Next(-range, range), desiredMoveTarget.Y + random.Next(-range, range));
+				loopCount++;
+				range = Math.Max(range, loopCount / 2);
+				if (loopCount > 10) return false;
+			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
+			world.IssueOrder(new Order("AttackMove", a, xy));
 			return true;
 		}
 
