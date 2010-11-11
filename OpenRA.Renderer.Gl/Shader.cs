@@ -58,27 +58,21 @@ namespace OpenRA.Renderer.Glsl
 			GraphicsDevice.CheckGlError();
 			
 			Gl.glLinkProgram(program);
-			StringBuilder foo = new StringBuilder();
-			int[] l = new int[1];
-            System.Text.StringBuilder log = new System.Text.StringBuilder(4024);
+			GraphicsDevice.CheckGlError();
 			
-			Gl.glGetProgramInfoLog(program,4024,l,log);
-			GraphicsDevice.CheckGlError();
-			Console.WriteLine(log.ToString());
-
-			int numAttribs;
-			Gl.glGetProgramiv( program, Gl.GL_ACTIVE_UNIFORMS, out numAttribs );
-			GraphicsDevice.CheckGlError();
-
 			Gl.glUseProgram(program);
+			GraphicsDevice.CheckGlError();
+			
+			int numUniforms;
+			Gl.glGetProgramiv( program, Gl.GL_ACTIVE_UNIFORMS, out numUniforms );
 			GraphicsDevice.CheckGlError();
 
 			int nextTexUnit = 1;
-			for( int i = 0 ; i < numAttribs ; i++ )
+			for( int i = 0 ; i < numUniforms ; i++ )
 			{
 				int uLen, uSize, uType;
-				var sb = new StringBuilder(4096);
-				Gl.glGetActiveUniform( program, i, 4096, out uLen, out uSize, out uType, sb );
+				var sb = new StringBuilder(128);
+				Gl.glGetActiveUniform( program, i, 128, out uLen, out uSize, out uType, sb );
 				GraphicsDevice.CheckGlError();
 				if( uType == Gl.GL_SAMPLER_2D )
 				{
