@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA
 		private void RenderStance(Actor self)
 		{
 			var bounds = self.GetBounds(true);
-			var loc = new float2(bounds.Left, bounds.Top) + new float2(1, 2);
+			var loc = new float2(bounds.Left, bounds.Top) + new float2(0, 1);
 			var max = Math.Max(bounds.Height, bounds.Width);
 
 			var shape = Shape;
@@ -245,6 +245,8 @@ namespace OpenRA.Mods.RA
 				shape = shape.Replace(" ", "  ");
 				shape = shape.Replace("x", "xx");
 			}
+			var color = Color.FromArgb(125, Color.Black);
+
 
 			int y = 0;
 			var shapeLines = shape.Split('\n');
@@ -259,7 +261,31 @@ namespace OpenRA.Mods.RA
 					{
 						if (shapeKey == 'x')
 						{
-							Game.Renderer.LineRenderer.DrawLine(loc + new float2(x, y), loc + new float2(x + 1f, y),SelectionColor, SelectionColor);
+							Game.Renderer.LineRenderer.DrawLine(loc + new float2(x, y), loc + new float2(x + 1f, y), color, color);
+						}
+
+						x++;
+					}
+					y++;
+				}
+			}
+
+
+			y = 0;
+			shapeLines = shape.Split('\n');
+
+			color = SelectionColor;
+			foreach (var shapeLine in shapeLines)
+			{
+				for (int yt = 0; yt < ((max >= Game.CellSize) ? 2 : 1); yt++)
+				{
+					int x = 0;
+
+					foreach (var shapeKey in shapeLine)
+					{
+						if (shapeKey == 'x')
+						{
+							Game.Renderer.LineRenderer.DrawLine(loc + new float2(x + 1, y + 1), loc + new float2(x + 1 + 1f, y + 1), color, color);
 						}
 
 						x++;
