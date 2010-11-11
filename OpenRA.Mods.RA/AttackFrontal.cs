@@ -40,12 +40,12 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget)
+		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 			if( weapon == null )
 				return null;
-			return new Activities.Attack(newTarget, Math.Max(0, (int)weapon.Info.Range));
+			return new Activities.Attack(newTarget, Math.Max(0, (int)weapon.Info.Range), allowMove);
 		}
 	}
 }

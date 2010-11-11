@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public AttackHeli(Actor self, AttackHeliInfo info) : base(self, info) { }
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget)
+		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new HeliAttack( newTarget );
 		}

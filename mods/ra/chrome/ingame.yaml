@@ -13,6 +13,11 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
+		WorldCommand:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
 			Id:GAME_TIMER
 			X: WINDOW_RIGHT/2

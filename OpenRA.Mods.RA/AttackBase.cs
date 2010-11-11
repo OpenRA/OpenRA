@@ -147,9 +147,10 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack")
+			if (order.OrderString == "Attack" || order.OrderString == "AttackHold")
 			{
-				self.QueueActivity(order.Queued, GetAttackActivity(self, Target.FromOrder(order)));
+				bool allowMove = order.OrderString == "Attack";
+				self.QueueActivity(order.Queued, GetAttackActivity(self, Target.FromOrder(order), allowMove));
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -163,24 +164,29 @@ namespace OpenRA.Mods.RA
 							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
 							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
-			}
-			else
+				return;
+			} // else not an attack order
+
+			// StopAttack order cancels the current activity IF it is an attack one
+			if (order.OrderString == "StopAttack")
 			{
-				target = Target.None;
-
-				/* hack */
-				if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
-					self.Trait<Turreted>().desiredFacing = null;
+				if (self.GetCurrentActivity() is Activities.Attack)
+					self.GetCurrentActivity().Cancel(self);
 			}
 
+			target = Target.None;
+
+			/* hack */
+			if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
+				self.Trait<Turreted>().desiredFacing = null;
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Attack") ? "Attack" : null;
+			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
 		}
-		
-		protected abstract IActivity GetAttackActivity(Actor self, Target newTarget);
+
+		protected abstract IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
@@ -189,30 +195,50 @@ namespace OpenRA.Mods.RA
 
 		public void AttackTarget(Actor self, Actor target, bool allowMovement)
 		{
+			AttackTarget(self, target, allowMovement, false);
+		}
+
+		public void AttackTarget(Actor self, Actor target, bool allowMovement, bool holdStill)
+		{
 			var attack = self.Trait<AttackBase>();
 			if (target != null)
 			{
 				if (allowMovement)
-					attack.ResolveOrder(self, new Order("Attack", self, target, false));
+					attack.ResolveOrder(self, new Order((holdStill) ? "AttackHold" : "Attack", self, target, false));
 				else
 					attack.target = Target.FromActor(target);	// for turreted things on rails.
 			}
 		}
 
-		public void ScanAndAttack(Actor self, bool allowMovement)
+		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
 		{
 			if (--nextScanTime <= 0)
 			{
-				var attack = self.Trait<AttackBase>();
-				var range = attack.GetMaximumRange();
+				var targetActor = ScanForTarget(self);
 
-				if (!attack.target.IsValid || !Combat.IsInRange( self.CenterLocation, range, attack.target ))
-					AttackTarget(self, ChooseTarget(self, range), allowMovement);
+				if (targetActor != null)
+					AttackTarget(self, targetActor, allowMovement, holdStill);
 
 				var info = self.Info.Traits.Get<AttackBaseInfo>();
 				nextScanTime = (int)(25 * (info.ScanTimeAverage +
 					(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
 			}
+		}
+
+		public Actor ScanForTarget(Actor self)
+		{
+			var attack = self.Trait<AttackBase>();
+			var range = attack.GetMaximumRange();
+
+			if ((!attack.target.IsValid || self.IsIdle) || !Combat.IsInRange(self.CenterLocation, range, attack.target))
+				return ChooseTarget(self, range);
+
+			return null;
+		}
+
+		public void ScanAndAttack(Actor self, bool allowMovement)
+		{
+			ScanAndAttack(self, allowMovement, false);
 		}
 
 		Actor ChooseTarget(Actor self, float range)

@@ -20,16 +20,24 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		Target Target;
 		int Range;
+		bool AllowMovement;
 
-		public Attack(Target target, int range)
+		public Attack(Target target, int range, bool allowMovement)
 		{
 			Target = target;
 			Range = range;
+			AllowMovement = allowMovement;
+		}
+
+		public Attack(Target target, int range) : this(target, range, true)
+		{
+			
 		}
 
 		public override IActivity Tick( Actor self )
 		{
 			var attack = self.Trait<AttackBase>();
+
 			var ret = InnerTick( self, attack );
 			attack.IsAttacking = ( ret == this );
 			return ret;
@@ -42,8 +50,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValid)
 				return NextActivity;
 
-			if (!Combat.IsInRange( self.CenterLocation, Range, Target))
-				return Util.SequenceActivities( self.Trait<Mobile>().MoveWithinRange( Target, Range ), this );
+			if (!Combat.IsInRange(self.CenterLocation, Range, Target))
+				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
 
 			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
 			var renderUnit = self.TraitOrDefault<RenderUnit>();

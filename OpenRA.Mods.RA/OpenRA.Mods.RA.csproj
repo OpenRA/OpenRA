@@ -59,6 +59,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="UnitStances\UnitStanceAggressive.cs" />
     <Compile Include="Air\Fly.cs" />
     <Compile Include="Air\FlyAttack.cs" />
     <Compile Include="Air\FlyTimed.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
+    <Compile Include="UnitStances\UnitStance.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="AttackMove.cs" />
     <Compile Include="BaseBuilding.cs" />
@@ -94,6 +96,11 @@
     <Compile Include="Buildings\Sell.cs" />
     <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
+    <Compile Include="UnitStances\AssignUnitStance.cs" />
+    <Compile Include="UnitStances\UnitStanceHoldFire.cs" />
+    <Compile Include="UnitStances\UnitStanceNone.cs" />
+    <Compile Include="UnitStances\UnitStanceReturnFire.cs" />
+    <Compile Include="UnitStances\UnitStanceGuard.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />
@@ -252,6 +259,7 @@
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarBinWidget.cs" />
     <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
+    <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="WithMuzzleFlash.cs" />
     <Compile Include="WithShadow.cs" />
