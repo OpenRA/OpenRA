@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -30,13 +31,20 @@ namespace OpenRA.Traits
 		public void RenderAfterWorld (WorldRenderer wr, Actor self)
 		{
 			var bounds = self.GetBounds(true);
+			Color selectionColor = Color.White;
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 			var xY = new float2(bounds.Left, bounds.Bottom);
 			var XY = new float2(bounds.Right, bounds.Bottom);
 
-			DrawSelectionBox(self, xy, Xy, xY, XY, Color.White);
+			var colorResults = self.TraitsImplementing<ISelectionColorModifier>().Select(t => t.GetSelectionColorModifier(self, selectionColor)).Where(
+					c => c.ToArgb() != selectionColor.ToArgb());
+
+			if (colorResults.Any())
+				selectionColor = colorResults.First();
+
+			DrawSelectionBox(self, xy, Xy, xY, XY, selectionColor);
 			DrawHealthBar(self, xy, Xy);
 			DrawControlGroup(wr, self, xy);
 			DrawPips(wr, self, xY);

@@ -109,6 +109,7 @@ namespace OpenRA.Traits
     public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
+	public interface ISelectionColorModifier { Color GetSelectionColorModifier(Actor self, Color defaultColor); }
 	public interface IPalette { void InitPalette( WorldRenderer wr ); }
 	public interface IPaletteModifier { void AdjustPalette(Dictionary<string,Palette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
