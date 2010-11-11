@@ -36,7 +36,6 @@ namespace OpenRA.Renderer.Glsl
 
 		void PrepareTexture()
 		{
-			Gl.glActiveTexture(Gl.GL_TEXTURE0 + texture);
 			GraphicsDevice.CheckGlError();
 			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
 			GraphicsDevice.CheckGlError();

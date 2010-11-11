@@ -14,12 +14,15 @@ using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 using System.Text;
+using System.Collections.Generic;
 
 namespace OpenRA.Renderer.Glsl
 {
 	public class Shader : IShader
 	{
 		int program;
+		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
+
 		public Shader(GraphicsDevice dev, string type)
 		{			
 			// Vertex shader
@@ -60,9 +63,30 @@ namespace OpenRA.Renderer.Glsl
             System.Text.StringBuilder log = new System.Text.StringBuilder(4024);
 			
 			Gl.glGetProgramInfoLog(program,4024,l,log);
-			Console.WriteLine(log.ToString());
-			
 			GraphicsDevice.CheckGlError();
+			Console.WriteLine(log.ToString());
+
+			int numAttribs;
+			Gl.glGetProgramiv( program, Gl.GL_ACTIVE_UNIFORMS, out numAttribs );
+			GraphicsDevice.CheckGlError();
+
+			Gl.glUseProgram(program);
+			GraphicsDevice.CheckGlError();
+
+			int nextTexUnit = 1;
+			for( int i = 0 ; i < numAttribs ; i++ )
+			{
+				int uLen, uSize, uType;
+				var sb = new StringBuilder(4096);
+				Gl.glGetActiveUniform( program, i, 4096, out uLen, out uSize, out uType, sb );
+				GraphicsDevice.CheckGlError();
+				if( uType == Gl.GL_SAMPLER_2D )
+				{
+					samplers.Add( sb.ToString(), nextTexUnit );
+					Gl.glUniform1i( i, nextTexUnit );
+					++nextTexUnit;
+				}
+			}
 		}
 
 		public void Render(Action a)
@@ -74,17 +98,19 @@ namespace OpenRA.Renderer.Glsl
 		}
 
 		public void SetValue(string name, ITexture t)
-		{			
+		{
+			if( t == null ) return;
 			Gl.glUseProgram(program);
 			GraphicsDevice.CheckGlError();
 			var texture = (Texture)t;
-			int param = Gl.glGetUniformLocation(program, name);
-			GraphicsDevice.CheckGlError();
-			
-			if (texture != null && param >= 0)
+			int texUnit;
+			if( samplers.TryGetValue( name, out texUnit ) )
 			{
-				Gl.glUniform1i(param, texture.texture);
+				Gl.glActiveTexture( Gl.GL_TEXTURE0 + texUnit );
 				GraphicsDevice.CheckGlError();
+				Gl.glBindTexture( Gl.GL_TEXTURE_2D, texture.texture );
+				GraphicsDevice.CheckGlError();
+				Gl.glActiveTexture( Gl.GL_TEXTURE0 );
 			}
 		}
 		
