@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.World.LocalPlayer == null) return false;
 
-			if (e.KeyChar == 'a')
+			if (e.KeyChar == 'a' && e.Modifiers == Modifiers.None)
 			{
 				StartAttackMoveOrder(self.World);
 				return true;
