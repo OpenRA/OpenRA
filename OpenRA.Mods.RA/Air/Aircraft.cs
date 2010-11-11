@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Air
 		public readonly int InitialFacing = 128;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
+		public readonly string[] LandableTerrainTypes = { };
 
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
@@ -101,6 +102,18 @@ namespace OpenRA.Mods.RA.Air
 		{
 			var angle = facing * Math.PI / 128.0;
 			return new int2( (int)Math.Truncate( 1024 * Math.Sin( angle ) ), (int)Math.Truncate( 1024 * Math.Cos( angle ) ) );
+		}
+
+		public bool CanLand(int2 cell)
+		{
+			if (!self.World.Map.IsInMap(cell))
+				return false;
+
+			if (self.World.WorldActor.Trait<UnitInfluence>().AnyUnitsAt(cell))
+				return false;
+
+			var type = self.World.GetTerrainType(cell);
+			return Info.LandableTerrainTypes.Contains(type);
 		}
 	}
 }

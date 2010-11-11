@@ -468,6 +468,7 @@ TRAN:
 		ROT: 5
 		Speed: 15
 		InitialFacing: 0
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	Health:
 		HP: 90
 	Armor:

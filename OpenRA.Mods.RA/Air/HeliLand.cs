@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Air
 			if (aircraft.Altitude == 0)
 				return NextActivity;
 
-			if (requireSpace && !aircraft.CanEnterCell(self.Location))
+			if (requireSpace && !aircraft.CanLand(self.Location))
 				return this;
 			
 			--aircraft.Altitude;

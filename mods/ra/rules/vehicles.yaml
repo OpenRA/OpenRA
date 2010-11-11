@@ -802,6 +802,7 @@ TRAN:
 		InitialFacing: 0
 		ROT: 5
 		Speed: 12
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	RenderUnitRotor:
 		PrimaryOffset: 0,14,0,-8
 		SecondaryOffset: 0,-14,0,-5
