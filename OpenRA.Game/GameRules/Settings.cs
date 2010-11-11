@@ -39,6 +39,7 @@ namespace OpenRA.GameRules
 
 	public class GraphicSettings
 	{
+		public string Renderer = "Cg";
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
 		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024, 768);

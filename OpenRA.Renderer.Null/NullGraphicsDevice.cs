@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Graphics;
+using System;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Null.NullGraphicsDevice))]
 
@@ -23,6 +24,7 @@ namespace OpenRA.Renderer.Null
 
 		public NullGraphicsDevice(int width, int height, WindowMode window, bool vsync)
 		{
+			Console.WriteLine("Using Null renderer");
 			WindowSize = new Size(width, height);
 		}
 
@@ -45,5 +47,32 @@ namespace OpenRA.Renderer.Null
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
+	}
+	
+	public class NullIndexBuffer : IIndexBuffer
+	{
+		public void Bind() {}
+		public void SetData(ushort[] indices, int length) {}
+	}
+	
+	public class NullShader : IShader
+	{
+		public void SetValue(string name, float x, float y) { }
+		public void SetValue(string param, ITexture texture) { }
+		public void Commit() { }
+		public void Render(Action a) { }
+	}
+	
+	public class NullTexture : ITexture
+	{
+		public void SetData(Bitmap bitmap) { }
+		public void SetData(uint[,] colors) { }
+		public void SetData(byte[] colors, int width, int height) { }
+	}
+	
+	class NullVertexBuffer<T> : IVertexBuffer<T>
+	{
+		public void Bind() { }
+		public void SetData(T[] vertices, int length) { }
 	}
 }

@@ -48,10 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NullGraphicsDevice.cs" />
-    <Compile Include="NullIndexBuffer.cs" />
-    <Compile Include="NullShader.cs" />
-    <Compile Include="NullTexture.cs" />
-    <Compile Include="NullVertexBuffer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

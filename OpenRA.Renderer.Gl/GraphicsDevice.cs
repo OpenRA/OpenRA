@@ -47,6 +47,7 @@ namespace OpenRA.Renderer.Glsl
 
 		public GraphicsDevice( int width, int height, WindowMode window, bool vsync )
 		{
+			Console.WriteLine("Using Gl renderer");
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_DOUBLEBUFFER, 1 );
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_RED_SIZE, 8 );
