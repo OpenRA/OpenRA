@@ -16,9 +16,9 @@ using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Sdl;
 
-[assembly: Renderer(typeof(OpenRA.GlRenderer.GraphicsDevice))]
+[assembly: Renderer(typeof(OpenRA.Renderer.Cg.GraphicsDevice))]
 
-namespace OpenRA.GlRenderer
+namespace OpenRA.Renderer.Cg
 {
 	public class GraphicsDevice : IGraphicsDevice
 	{
@@ -83,12 +83,12 @@ namespace OpenRA.GlRenderer
 
 			windowSize = new Size( width, height );
 
-			cgContext = Cg.cgCreateContext();
+			cgContext = Tao.Cg.Cg.cgCreateContext();
 
-			Cg.cgSetErrorCallback( CgErrorCallback );
+			Tao.Cg.Cg.cgSetErrorCallback( CgErrorCallback );
 
-			CgGl.cgGLRegisterStates( cgContext );
-			CgGl.cgGLSetManageTextureParameters( cgContext, true );
+			Tao.Cg.CgGl.cgGLRegisterStates( cgContext );
+			Tao.Cg.CgGl.cgGLSetManageTextureParameters( cgContext, true );
 			vertexProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_VERTEX );
 			fragmentProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_FRAGMENT );
 
@@ -103,10 +103,10 @@ namespace OpenRA.GlRenderer
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
 		}
 
-		static Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
+		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
 		{
-			var err = Cg.cgGetError();
-			var str = Cg.cgGetErrorString( err );
+			var err = Tao.Cg.Cg.cgGetError();
+			var str = Tao.Cg.Cg.cgGetErrorString( err );
 			throw new InvalidOperationException(
 			string.Format( "CG Error: {0}: {1}", err, str ) );
 		};

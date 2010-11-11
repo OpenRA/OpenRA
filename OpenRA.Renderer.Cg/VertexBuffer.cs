@@ -9,40 +9,46 @@
 #endregion
 
 using System;
+using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 
-namespace OpenRA.GlRenderer
+namespace OpenRA.Renderer.Cg
 {
-	public class IndexBuffer : IIndexBuffer, IDisposable
+	public class VertexBuffer<T> : IVertexBuffer<T>, IDisposable
+			where T : struct
 	{
 		int buffer;
 
-		public IndexBuffer(GraphicsDevice dev, int size)
+		public VertexBuffer(GraphicsDevice dev, int size)
 		{
 			Gl.glGenBuffers(1, out buffer);
 			GraphicsDevice.CheckGlError();
 			Bind();
-			Gl.glBufferData(Gl.GL_ELEMENT_ARRAY_BUFFER,
-				new IntPtr(2 * size),
-				new ushort[ size ],
+			Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
+				new IntPtr(Marshal.SizeOf(typeof(T)) * size),
+				new T[ size ],
 				Gl.GL_DYNAMIC_DRAW);
 			GraphicsDevice.CheckGlError();
 		}
 
-		public void SetData(ushort[] data, int length)
+		public void SetData(T[] data, int length)
 		{
 			Bind();
-			Gl.glBufferSubData(Gl.GL_ELEMENT_ARRAY_BUFFER,
+			Gl.glBufferSubData(Gl.GL_ARRAY_BUFFER,
 				IntPtr.Zero,
-				new IntPtr(2 * length),
+				new IntPtr(Marshal.SizeOf(typeof(T)) * length),
 				data);
 			GraphicsDevice.CheckGlError();
 		}
 
 		public void Bind()
 		{
-			Gl.glBindBuffer(Gl.GL_ELEMENT_ARRAY_BUFFER, buffer);
+			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, buffer);
+			GraphicsDevice.CheckGlError();
+			Gl.glVertexPointer(3, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), new IntPtr(12));
 			GraphicsDevice.CheckGlError();
 		}
 
@@ -56,6 +62,6 @@ namespace OpenRA.GlRenderer
 			disposed = true;
 		}
 
-		//~IndexBuffer() { Dispose(); }
+		//~VertexBuffer() { Dispose(); }
 	}
 }

@@ -15,7 +15,7 @@ using Tao.OpenGl;
 using System.IO;
 using System;
 
-namespace OpenRA.GlRenderer
+namespace OpenRA.Renderer.Cg
 {
 	public class Texture : ITexture
 	{

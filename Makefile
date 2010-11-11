@@ -1,7 +1,7 @@
 CSC     = gmcs
 CSFLAGS  = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE  = DEBUG;TRACE
-PROGRAMS	=fileformats gl game ra cnc seqed editor ralint filex tsbuild utility
+PROGRAMS = fileformats rcg game ra cnc seqed editor ralint filex tsbuild utility
 prefix = /usr/local
 datarootdir = $(prefix)/share
 datadir = $(datarootdir)
@@ -18,13 +18,13 @@ fileformats_TARGET	=	OpenRA.FileFormats.dll
 fileformats_KIND	=	library
 fileformats_LIBS	=	$(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll thirdparty/WindowsBase.dll
 
-gl_SRCS				= $(shell find OpenRA.Gl/ -iname '*.cs')
-gl_TARGET			= OpenRA.Gl.dll
-gl_KIND				= library
-gl_DEPS				= $(fileformats_TARGET) $(game_TARGET)
-gl_LIBS				= $(COMMON_LIBS) System.Windows.Forms.dll \
-						thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
-						$(gl_DEPS) $(game_TARGET)
+rcg_SRCS			= $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
+rcg_TARGET			= OpenRA.Renderer.Cg.dll
+rcg_KIND			= library
+rcg_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+rcg_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
+					thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
+					$(rcg_DEPS) $(game_TARGET)
 
 game_SRCS			=	$(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET			= OpenRA.Game.exe
@@ -91,14 +91,14 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
 .SUFFIXES:
 .PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility
 
-game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET)
+game: $(fileformats_TARGET) $(rcg_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 
 distclean: clean
 
-CORE = fileformats gl game editor utility
+CORE = fileformats rcg game editor utility
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
