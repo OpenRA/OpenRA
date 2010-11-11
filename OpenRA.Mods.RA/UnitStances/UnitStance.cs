@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.RA
 		#endregion
 	}
 
-	public abstract class UnitStance : ITick, IResolveOrder, ISelectionColorModifier
+	public abstract class UnitStance : ITick, IResolveOrder, ISelectionColorModifier, IPostRenderSelection
 	{
 		[Sync]
 		public int NextScanTime;
@@ -212,6 +214,59 @@ namespace OpenRA.Mods.RA
 				return defaultColor;
 
 			return Active ? SelectionColor : defaultColor;
+		}
+
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		{
+			if (!Active) return;
+			if (!self.IsInWorld) return;
+			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] != Stance.Ally)
+				return;
+
+			RenderStance(self);
+		}
+
+		protected virtual string Shape
+		{
+			get { return "xxxx\nx  x\nx  x\nxxxx"; }
+		}
+
+		private void RenderStance(Actor self)
+		{
+			var bounds = self.GetBounds(true);
+			var loc = new float2(bounds.Left, bounds.Top) + new float2(1, 2);
+			var max = Math.Max(bounds.Height, bounds.Width);
+
+			var shape = Shape;
+
+			// 'Resize' for large actors
+			if (max >= Game.CellSize)
+			{
+				shape = shape.Replace(" ", "  ");
+				shape = shape.Replace("x", "xx");
+			}
+
+			int y = 0;
+			var shapeLines = shape.Split('\n');
+
+			foreach (var shapeLine in shapeLines)
+			{
+				for (int yt = 0; yt < ((max >= Game.CellSize) ? 2 : 1); yt++)
+				{
+					int x = 0;
+
+					foreach (var shapeKey in shapeLine)
+					{
+						if (shapeKey == 'x')
+						{
+							Game.Renderer.LineRenderer.DrawLine(loc + new float2(x, y), loc + new float2(x + 1f, y),SelectionColor, SelectionColor);
+						}
+
+						x++;
+					}
+					y++;
+				}
+			}
 		}
 	}
 }

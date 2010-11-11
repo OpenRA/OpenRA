@@ -39,5 +39,10 @@ namespace OpenRA.Mods.RA
 		{
 			get { return Color.SpringGreen; }
 		}
+
+		protected override string Shape
+		{
+			get { return " xx \nxxxx\n xx "; }
+		}
 	}
 }

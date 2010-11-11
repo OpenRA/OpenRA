@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -12,13 +14,17 @@ namespace OpenRA.Mods.RA
 	/// <summary>
 	/// Inherits the Return Fire damage handler!
 	/// </summary>
-	public class UnitStanceAggressive : UnitStance, INotifyDamage, ISelectionColorModifier
+	public class UnitStanceAggressive : UnitStance, INotifyDamage
 	{
 		public UnitStanceAggressive(Actor self, UnitStanceAggressiveInfo info)
 			: base(self, info)
 		{
+			RankAnim = new Animation("rank");
+			RankAnim.PlayFetchIndex("rank", () => 3 - 1);
 		
 		}
+
+		protected Animation RankAnim { get; set; }
 
 		public override string OrderString
 		{
@@ -56,6 +62,11 @@ namespace OpenRA.Mods.RA
 		public override Color SelectionColor
 		{
 			get { return Color.Red; }
+		}
+
+		protected override string Shape
+		{
+			get { return "x  x\n xx \n xx \nx  x"; }
 		}
 	}
 }
