@@ -8,8 +8,8 @@
     <ProjectGuid>{67CF1A10-C5F6-48FA-B1A7-FE83BE4CE2CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRA.GlRenderer</RootNamespace>
-    <AssemblyName>OpenRA.Gl</AssemblyName>
+    <RootNamespace>OpenRA.Renderer.Cg</RootNamespace>
+    <AssemblyName>OpenRA.Renderer.Cg</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
