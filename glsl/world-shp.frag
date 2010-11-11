@@ -2,9 +2,7 @@ uniform sampler2D DiffuseTexture, Palette;
 
 void main()
 {
-	//float4 x = tex2D(DiffuseTexture, f.Tex0.xy);
-	//float2 p = float2( dot(x, f.ChannelMask), f.Tex0.z );
-	//return tex2D(Palette, p);
-	//st
-	gl_FragColor = texture2D(Palette,gl_TexCoord[0].xy);
+	vec4 x = texture2D(DiffuseTexture, gl_TexCoord[0].st);
+	vec2 p = vec2( dot(x, gl_TexCoord[1]), gl_TexCoord[0].p );
+	gl_FragColor = texture2D(Palette,p);
 }
