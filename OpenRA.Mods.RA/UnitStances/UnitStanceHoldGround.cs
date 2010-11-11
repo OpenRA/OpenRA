@@ -5,14 +5,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class UnitStanceGuardInfo : UnitStanceInfo
+	public class UnitStanceHoldGroundInfo : UnitStanceInfo
 	{
-		public override object Create(ActorInitializer init) { return new UnitStanceGuard(init.self, this); }
+		public override object Create(ActorInitializer init) { return new UnitStanceHoldGround(init.self, this); }
 	}
 
-	public class UnitStanceGuard : UnitStance, INotifyDamage, ISelectionColorModifier
+	public class UnitStanceHoldGround : UnitStance, INotifyDamage
 	{
-		public UnitStanceGuard(Actor self, UnitStanceGuardInfo info)
+		public UnitStanceHoldGround(Actor self, UnitStanceHoldGroundInfo info)
 			: base(self, info)
 		{
 		
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 
 		public override string OrderString
 		{
-			get { return "StanceGuard"; }
+			get { return "StanceHoldGround"; }
 		}
 
 		protected override void OnScan(Actor self)

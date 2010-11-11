@@ -13,7 +13,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public World World { get { return OrderManager.world; } }
 
 		public char AttackMoveKey = 'a';
-		public char GuardKey = 'g'; // (G)uard
+		public char HoldGroundKey = 'g'; // Hold (G)round
 		// public char DefensiveKey = 'd'; // (D)efensive
 		public char AggressiveKey = 'a'; // (A)ggressive
 		public char ReturnFireKey = 'r'; // (R)eturn Fire
@@ -53,9 +53,9 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 
 			// command: GuardStance
-			if (e.KeyChar == GuardKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
+			if (e.KeyChar == HoldGroundKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
 			{
-				return EnableStance<UnitStanceGuard>();
+				return EnableStance<UnitStanceHoldGround>();
 			}
 
 			// command: AggressiveStance

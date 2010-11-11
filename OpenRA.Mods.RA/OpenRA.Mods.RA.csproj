@@ -99,7 +99,7 @@
     <Compile Include="UnitStances\AssignUnitStance.cs" />
     <Compile Include="UnitStances\UnitStanceHoldFire.cs" />
     <Compile Include="UnitStances\UnitStanceReturnFire.cs" />
-    <Compile Include="UnitStances\UnitStanceGuard.cs" />
+    <Compile Include="UnitStances\UnitStanceHoldGround.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />
