@@ -15,9 +15,14 @@ namespace OpenRA.Mods.RA
 	public class UnitStanceAggressive : UnitStance, INotifyDamage, ISelectionColorModifier
 	{
 		public UnitStanceAggressive(Actor self, UnitStanceAggressiveInfo info)
+			: base(self, info)
 		{
-			Info = info;
-			Active = (self.World.LocalPlayer == self.Owner || (self.Owner.IsBot && Game.IsHost))  ? Info.Default : false;
+		
+		}
+
+		public override string OrderString
+		{
+			get { return "StanceAggressive"; }
 		}
 
 		protected override void OnScan(Actor self)
@@ -32,7 +37,7 @@ namespace OpenRA.Mods.RA
 			AttackTarget(self, target, false);
 		}
 
-		protected override void OnFirstTick(Actor self)
+		protected override void OnActivate(Actor self)
 		{
 			if (!self.HasTrait<AttackBase>()) return;
 
@@ -48,9 +53,9 @@ namespace OpenRA.Mods.RA
 			ReturnFire(self, e, false); // only triggers when standing still
 		}
 
-		public Color GetSelectionColorModifier(Actor self, Color defaultColor)
+		public override Color SelectionColor
 		{
-			return Active ? Color.Red : defaultColor;
+			get { return Color.Red; }
 		}
 	}
 }

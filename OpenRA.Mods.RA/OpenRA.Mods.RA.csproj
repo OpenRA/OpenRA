@@ -98,7 +98,6 @@
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="UnitStances\AssignUnitStance.cs" />
     <Compile Include="UnitStances\UnitStanceHoldFire.cs" />
-    <Compile Include="UnitStances\UnitStanceNone.cs" />
     <Compile Include="UnitStances\UnitStanceReturnFire.cs" />
     <Compile Include="UnitStances\UnitStanceGuard.cs" />
     <Compile Include="Valued.cs" />

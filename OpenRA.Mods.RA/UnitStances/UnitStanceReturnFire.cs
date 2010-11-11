@@ -17,9 +17,9 @@ namespace OpenRA.Mods.RA
 	public class UnitStanceReturnFire : UnitStance, INotifyDamage, ISelectionColorModifier
 	{
 		public UnitStanceReturnFire(Actor self, UnitStanceReturnFireInfo info)
+			: base(self, info)
 		{
-			Info = info;
-			Active = (self.World.LocalPlayer == self.Owner || (self.Owner.IsBot && Game.IsHost)) ? Info.Default : false;
+	
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -30,9 +30,14 @@ namespace OpenRA.Mods.RA
 			ReturnFire(self, e, false); // only triggers when standing still
 		}
 
-		public Color GetSelectionColorModifier(Actor self, Color defaultColor)
+		public override string OrderString
 		{
-			return Active ? Color.Orange : defaultColor;
+			get { return "StanceReturnFire"; }
+		}
+
+		public override Color SelectionColor
+		{
+			get { return Color.Orange; }
 		}
 	}
 }

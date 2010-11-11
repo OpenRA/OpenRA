@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Widgets
 				World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.TraitOrDefault<T>() != null && !UnitStance.IsActive<T>(a)).
 					Select(a => new Pair<Actor, T>(a, a.TraitOrDefault<T>()) );
 			
-			World.AddFrameEndTask(w => traits.Do(p => p.Second.Activate(p.First)));
+			World.AddFrameEndTask(w => traits.Do(p => UnitStance.OrderStance(p.First, p.Second)));
 
 			return traits.Any();
 		}

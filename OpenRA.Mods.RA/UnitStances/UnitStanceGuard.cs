@@ -13,9 +13,15 @@ namespace OpenRA.Mods.RA
 	public class UnitStanceGuard : UnitStance, INotifyDamage, ISelectionColorModifier
 	{
 		public UnitStanceGuard(Actor self, UnitStanceGuardInfo info)
+			: base(self, info)
 		{
-			Info = info;
-			Active = (self.World.LocalPlayer == self.Owner || (self.Owner.IsBot && Game.IsHost)) ? Info.Default : false;
+		
+		}
+
+
+		public override string OrderString
+		{
+			get { return "StanceGuard"; }
 		}
 
 		protected override void OnScan(Actor self)
@@ -30,7 +36,7 @@ namespace OpenRA.Mods.RA
 			AttackTarget(self, target, true);
 		}
 
-		protected override void OnFirstTick(Actor self)
+		protected override void OnActivate(Actor self)
 		{
 			if (!self.HasTrait<AttackBase>()) return;
 
@@ -46,9 +52,9 @@ namespace OpenRA.Mods.RA
 			ReturnFire(self, e, false, false, true); // only triggers when standing still
 		}
 
-		public virtual Color GetSelectionColorModifier(Actor self, Color defaultColor)
+		public override Color SelectionColor
 		{
-			return Active ? Color.Yellow : defaultColor;
+			get { return Color.Yellow; }
 		}
 	}
 }

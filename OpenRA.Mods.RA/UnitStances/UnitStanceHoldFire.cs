@@ -16,13 +16,18 @@ namespace OpenRA.Mods.RA
 	/// </summary>
 	public class UnitStanceHoldFire : UnitStance, ISelectionColorModifier
 	{
-		public UnitStanceHoldFire(Actor self, UnitStanceHoldFireInfo info)
+		public UnitStanceHoldFire(Actor self, UnitStanceHoldFireInfo info) 
+			: base(self, info)
 		{
-			Info = info;
-			Active = (self.World.LocalPlayer == self.Owner || (self.Owner.IsBot && Game.IsHost)) ? Info.Default : false;
+
 		}
 
-		protected override void OnFirstTick(Actor self)
+		public override string OrderString
+		{
+			get { return "StanceHoldFire"; }
+		}
+
+		protected override void OnActivate(Actor self)
 		{
 			if (!self.HasTrait<AttackBase>()) return;
 
@@ -30,9 +35,9 @@ namespace OpenRA.Mods.RA
 				StopAttack(self);
 		}
 
-		public Color GetSelectionColorModifier(Actor self, Color defaultColor)
+		public override Color SelectionColor
 		{
-			return Active ? Color.SpringGreen : defaultColor;
+			get { return Color.SpringGreen; }
 		}
 	}
 }

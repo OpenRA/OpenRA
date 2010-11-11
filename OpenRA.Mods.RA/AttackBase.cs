@@ -167,13 +167,6 @@ namespace OpenRA.Mods.RA
 				return;
 			} // else not an attack order
 
-			// StopAttack order cancels the current activity IF it is an attack one
-			if (order.OrderString == "StopAttack")
-			{
-				if (self.GetCurrentActivity() is Activities.Attack)
-					self.GetCurrentActivity().Cancel(self);
-			}
-
 			target = Target.None;
 
 			/* hack */

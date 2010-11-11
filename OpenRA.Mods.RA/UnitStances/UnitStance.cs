@@ -1,77 +1,64 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public interface IUnitStance
-	{
-		bool Active { get; set; }
-		bool IsDefault { get; }
-		void Activate(Actor self);
-		void Deactivate(Actor self);
-	}
 
 	public class UnitStanceInfo : ITraitInfo
 	{
-		public readonly bool Default;
+		public readonly bool Default = false;
+		public readonly int ScanDelayMin = 12;
+		public readonly int ScanDelayMax = 24;
 
 		#region ITraitInfo Members
 
 		public virtual object Create(ActorInitializer init)
 		{
-			throw new Exception("Do not use UnitStance at the rules!");
+			throw new Exception("UnitStanceInfo: Override me!");
 		}
 
 		#endregion
 	}
 
-	public abstract class UnitStance : IUnitStance, ITick
+	public abstract class UnitStance : ITick, IResolveOrder, ISelectionColorModifier
 	{
-		public int NextScantime;
-		public int ScanDelay = 12; // 2x - second
-		private bool _unsetFirstTick;
+		[Sync]
+		public int NextScanTime;
 
 		public UnitStanceInfo Info { get; protected set; }
-
-		public bool IsFirstTick { get; private set; }
-
-		public bool IsScanAvailable
-		{
-			get
-			{
-				NextScantime--;
-				if (NextScantime <= 0)
-				{
-					NextScantime = ScanDelay;
-					return true;
-				}
-
-				return false;
-			}
-		}
+		public abstract Color SelectionColor { get; }
 
 		#region ITick Members
+
+		protected UnitStance(Actor self, UnitStanceInfo info)
+		{
+			Info = info;
+			Active = Info.Default;
+		}
 
 		public virtual void Tick(Actor self)
 		{
 			if (!Active) return;
 
-			if (IsFirstTick && _unsetFirstTick)
-			{
-				IsFirstTick = false;
-				_unsetFirstTick = false;
-			}
-			else if (IsFirstTick)
-			{
-				_unsetFirstTick = true;
-				OnFirstTick(self);
-			}
+			TickScan(self);
+		}
 
-			if (IsScanAvailable)
+		private void TickScan(Actor self)
+		{
+			NextScanTime--;
+
+			if (NextScanTime <= 0)
 			{
+				NextScanTime = GetNextScanTime(self);
 				OnScan(self);
 			}
+		}
+
+		private int GetNextScanTime(Actor self)
+		{
+			return self.World.SharedRandom.Next(Info.ScanDelayMin, Info.ScanDelayMax+1);
 		}
 
 		#endregion
@@ -90,11 +77,9 @@ namespace OpenRA.Mods.RA
 			if (Active) return;
 
 			Active = true;
-			IsFirstTick = true;
-			NextScantime = 0;
-			_unsetFirstTick = false;
-
+			NextScanTime = 0;
 			DeactivateOthers(self);
+			OnActivate(self);
 		}
 
 		public virtual void Deactivate(Actor self)
@@ -119,22 +104,12 @@ namespace OpenRA.Mods.RA
 			return stance != null && stance.Active;
 		}
 
-		public static void ActivateDefault(Actor self)
+		public static void DeactivateOthers(Actor self, UnitStance stance)
 		{
-			if (!self.TraitsImplementing<IUnitStance>().Where(t => t.IsDefault).Any())
-			{
-				// deactive all of them as a default if nobody has a default
-				DeactivateOthers(self, null);
-				return;
-			}
-
-			self.TraitsImplementing<IUnitStance>().Where(t => t.IsDefault).First().Activate(self);
+			self.TraitsImplementing<UnitStance>().Where(t => t != stance).Do(t => t.Deactivate(self));
 		}
 
-		public static void DeactivateOthers(Actor self, IUnitStance stance)
-		{
-			self.TraitsImplementing<IUnitStance>().Where(t => t != stance).Do(t => t.Deactivate(self));
-		}
+		public abstract string OrderString { get; }
 
 		public static bool ReturnFire(Actor self, AttackInfo e, bool allowActivity, bool allowTargetSwitch, bool holdStill)
 		{
@@ -185,13 +160,14 @@ namespace OpenRA.Mods.RA
 
 			if (attack != null && target != null)
 			{
-				self.World.IssueOrder(new Order((holdStill) ? "AttackHold" : "Attack", self, target, false));
+				attack.ResolveOrder(self, new Order((holdStill) ? "AttackHold" : "Attack", self, target, false));
 			}
 		}
 
 		public static void StopAttack(Actor self)
 		{
-			self.World.IssueOrder(new Order("StopAttack", self, self, false));
+			if (self.GetCurrentActivity() is Activities.Attack)
+				self.GetCurrentActivity().Cancel(self);
 		}
 
 		/// <summary>
@@ -206,13 +182,36 @@ namespace OpenRA.Mods.RA
 		/// Called when on the first tick after the stance has been activated
 		/// </summary>
 		/// <param name="self"></param>
-		protected virtual void OnFirstTick(Actor self)
+		protected virtual void OnActivate(Actor self)
 		{
 		}
 
 		public static Actor ScanForTarget(Actor self)
 		{
 			return self.Trait<AttackBase>().ScanForTarget(self);
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString != OrderString)
+				return;
+
+			// Its our order, activate the stance
+			Activate(self);
+		}
+
+		public static void OrderStance(Actor self, UnitStance stance)
+		{
+			self.World.IssueOrder(new Order(stance.OrderString, self, false));
+		}
+
+		public Color GetSelectionColorModifier(Actor self, Color defaultColor)
+		{
+
+			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] != Stance.Ally)
+				return defaultColor;
+
+			return Active ? SelectionColor : defaultColor;
 		}
 	}
 }
