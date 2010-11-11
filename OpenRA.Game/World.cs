@@ -48,7 +48,8 @@ namespace OpenRA
 
 		public void SetLocalPlayer(int index)
 		{			
-			localPlayerIndex = index;
+			if (!(orderManager.Connection is ReplayConnection))
+				localPlayerIndex = index;
 		}
 
 		public readonly Actor WorldActor;		
