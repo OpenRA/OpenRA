@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Traits;
@@ -20,8 +21,12 @@ namespace OpenRA.Mods.RA
 		public readonly bool JustMove = false;
 	}
 
-	class AttackMove : IResolveOrder, IOrderVoice
+	class AttackMove : IResolveOrder, IOrderVoice, ITick
 	{
+		[Sync] public int2 TargetLocation = int2.Zero; 
+
+		[Sync] public bool AttackMoving = false;
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "AttackMove")
@@ -34,12 +39,20 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "AttackMove")
 			{
+				
 				self.CancelActivity();
 				//if we are just moving, we don't turn on attackmove and this becomes a regular move order
 				if (self.Info.Traits.Get<AttackMoveInfo>().JustMove)
-					self.QueueActivity( self.Trait<Mobile>().MoveTo( order.TargetLocation, 1 ));
+				{
+					self.QueueActivity(self.Trait<Mobile>().MoveTo(order.TargetLocation, 1));
+					AttackMoving = false;
+				}
 				else
-					self.QueueActivity( new AttackMoveActivity(order.TargetLocation));
+				{
+					self.QueueActivity(new AttackMoveActivity(order.TargetLocation));
+					AttackMoving = true;
+					TargetLocation = order.TargetLocation;
+				}
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -53,6 +66,10 @@ namespace OpenRA.Mods.RA
 							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
 							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
 					});
+			}
+			else
+			{
+				AttackMoving = false;
 			}
 		}
 
@@ -84,5 +101,16 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		public void Tick(Actor self)
+		{
+			if (!self.IsInWorld) return;
+
+			if (AttackMoving && self.IsIdle)
+			{
+				self.CancelActivity();
+				self.QueueActivity(new AttackMoveActivity(TargetLocation));
+			}
+
+		}
 	}
 }
