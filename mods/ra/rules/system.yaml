@@ -228,7 +228,6 @@ World:
 		EndMessage: The game will end in {0} seconds.
 	ValidateOrder:
 	GotoNextBase:
-	AttackMoveInteraction:
 
 MINP:
 	Mine:
