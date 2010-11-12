@@ -97,8 +97,11 @@ Section "Client" Client
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
-	SetOutPath "$INSTDIR\shaders"
-	File "${SRCDIR}\shaders\*.fx"
+	SetOutPath "$INSTDIR\cg"
+	File "${SRCDIR}\cg\*.fx"
+	SetOutPath "$INSTDIR\glsl"
+	File "${SRCDIR}\glsl\*.frag"
+	File "${SRCDIR}\glsl\*.vert"
 SectionEnd
 
 Section "Editor" Editor
@@ -271,7 +274,8 @@ SectionEnd
 Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\maps
-	RMDir /r $INSTDIR\shaders
+	RMDir /r $INSTDIR\cg
+	RMDir /r $INSTDIR\glsl
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
