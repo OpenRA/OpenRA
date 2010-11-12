@@ -13,7 +13,6 @@ namespace OpenRA.Mods.RA
 		public readonly bool Default = false;
 		public readonly int ScanDelayMin = 12;
 		public readonly int ScanDelayMax = 24;
-
 		#region ITraitInfo Members
 
 		public virtual object Create(ActorInitializer init)
@@ -32,6 +31,9 @@ namespace OpenRA.Mods.RA
 		public UnitStanceInfo Info { get; protected set; }
 		public abstract Color SelectionColor { get; }
 
+		[Sync]
+		public bool AllowMultiTrigger { get; protected set; }
+
 		#region ITick Members
 
 		protected UnitStance(Actor self, UnitStanceInfo info)
@@ -45,6 +47,13 @@ namespace OpenRA.Mods.RA
 			if (!Active) return;
 
 			TickScan(self);
+
+			OnTick(self);
+		}
+
+		protected virtual void OnTick(Actor self)
+		{
+
 		}
 
 		private void TickScan(Actor self)
@@ -76,7 +85,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual void Activate(Actor self)
 		{
-			if (Active) return;
+			if (Active && !AllowMultiTrigger) return;
 
 			Active = true;
 			NextScanTime = 0;
@@ -195,11 +204,21 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != OrderString)
-				return;
+			if (order.OrderString == OrderString)
+			{
+				// Its our order, activate the stance
+				Activate(self);
+				return; // Do not call OnOrder on our own stance order
+			}
 
-			// Its our order, activate the stance
-			Activate(self);
+			if (!Active) return;
+
+			OnOrder(self, order);
+		}
+
+		protected virtual void OnOrder(Actor self, Order order)
+		{
+
 		}
 
 		public static void OrderStance(Actor self, UnitStance stance)
