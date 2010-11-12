@@ -59,6 +59,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="UnitStances\UnitStanceDefensive.cs" />
     <Compile Include="UnitStances\UnitStanceAggressive.cs" />
     <Compile Include="Air\Fly.cs" />
     <Compile Include="Air\FlyAttack.cs" />

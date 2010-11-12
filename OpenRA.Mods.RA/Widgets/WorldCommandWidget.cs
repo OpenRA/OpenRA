@@ -14,10 +14,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public char AttackMoveKey = 'a';
 		public char HoldGroundKey = 'g'; // Hold (G)round
-		// public char DefensiveKey = 'd'; // (D)efensive
+		public char DefensiveKey = 'd'; // (D)efensive
 		public char AggressiveKey = 'a'; // (A)ggressive
 		public char ReturnFireKey = 'r'; // (R)eturn Fire
-		public char HoldFire = 'h'; // (h)old fire
+		public char HoldFireKey = 'h'; // (h)old fire
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -73,9 +73,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// stance: Hold Fire
 			// description: Prevents attacking (ie no autotarget is being done)
-			if (e.KeyChar == HoldFire && (e.Modifiers.HasModifier(Modifiers.Alt)))
+			if (e.KeyChar == HoldFireKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
 			{
 				return EnableStance<UnitStanceHoldFire>();
+			}
+
+			// stance: Defensive
+			if (e.KeyChar == DefensiveKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
+			{
+				return EnableStance<UnitStanceDefensive>();
 			}
 
 			return false;
