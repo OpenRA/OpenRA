@@ -12,6 +12,6 @@ namespace OpenRA.Traits.Activities
 {
 	public class Idle : CancelableActivity
 	{
-		public override IActivity Tick(Actor self) { return NextActivity; }
+		public override IActivity Tick(Actor self) { return NextActivity ?? this; }
 	}
 }
