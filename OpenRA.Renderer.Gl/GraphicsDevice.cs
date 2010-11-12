@@ -86,10 +86,12 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
 			CheckGlError();
 			
-			Gl.glEnable(Gl.GL_BLEND);
-			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
-			
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
+			
+			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
+			
+			if (!extensions.Contains("GL_ARB_vertex_shader") || !extensions.Contains("GL_ARB_fragment_shader"))
+				throw new InvalidProgramException("Unsupported GPU. OpenRA requires the GL_ARB_vertex_shader and GL_ARB_fragment_shader extensions.");
 		}
 
 		public void EnableScissor( int left, int top, int width, int height )
