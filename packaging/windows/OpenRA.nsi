@@ -76,8 +76,11 @@ SectionEnd
 Section "Client" Client
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\OpenRA.Game.exe"
+	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
-	File "${SRCDIR}\OpenRA.Gl.dll"
+	File "${SRCDIR}\OpenRA.Renderers.Gl.dll"
+	File "${SRCDIR}\OpenRA.Renderers.Cg.dll"
+	File "${SRCDIR}\OpenRA.Renderers.Null.dll"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\HACKING"
 	File "${SRCDIR}\INSTALL"
@@ -270,9 +273,12 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\shaders
 	Delete $INSTDIR\OpenRA.Game.exe
+	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
 	Delete $INSTDIR\OpenRA.FileFormats.dll
-	Delete $INSTDIR\OpenRA.Gl.dll
+	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
+	Delete $INSTDIR\OpenRA.Renderer.Cg.dll
+	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING

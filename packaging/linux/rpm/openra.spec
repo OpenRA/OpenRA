@@ -61,24 +61,3 @@ do
 done
 
 %files
-/usr/bin/openra
-/usr/share/openra/*.exe
-/usr/share/openra/*.ttf
-/usr/share/openra/*.dll
-/usr/share/openra/*.dll.config
-/usr/share/openra/OpenRA.ico
-/usr/share/openra/VERSION
-/usr/share/openra/COPYING
-/usr/share/openra/HACKING
-/usr/share/openra/INSTALL
-/usr/share/openra/shaders/
-/usr/share/openra/mods/
-/usr/share/applications/openra*
-/usr/share/menu/openra*
-/usr/share/pixmaps/openra.32.xpm
-/usr/share/icons/hicolor/16x16/apps/openra.png
-/usr/share/icons/hicolor/32x32/apps/openra.png
-/usr/share/icons/hicolor/48x48/apps/openra.png
-/usr/share/icons/hicolor/64x64/apps/openra.png
-/usr/share/icons/hicolor/128x128/apps/openra.png
-

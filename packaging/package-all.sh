@@ -25,7 +25,8 @@ find . -path "*.mdb" -delete
 # List of files that are packaged on all platforms
 # Note that the Tao dlls are shipped on all platforms except osx and that
 # they are now installed to the game directory instead of placed in the gac
-FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Gl.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION COPYING HACKING INSTALL"
+FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.Renderer.Cg.dll OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll \
+OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf shaders mods/ra mods/cnc VERSION COPYING HACKING INSTALL"
 
 for i in $FILES; do
 	cp -R "$i" "packaging/built/$i" || exit 3
