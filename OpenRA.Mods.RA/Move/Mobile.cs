@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using System.Diagnostics;
@@ -169,31 +170,46 @@ namespace OpenRA.Mods.RA.Move
 			// Couldn't find a cell
 			return target;
 		}
-		
+
+		protected void PerformMove(Actor self, int2 targetLocation, bool queued)
+		{
+			var ph = new QueuedActivity(
+				(qa) =>
+				{
+					int2 currentLocation = NearestMoveableCell(targetLocation);
+
+					if (!CanEnterCell(currentLocation))
+					{
+						if (queued) self.CancelActivity();
+						return;
+					}
+
+					if (!queued) self.CancelActivity();
+
+					ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+
+					qa.Insert(new Move(currentLocation, 8));
+					
+					if (self.Owner == self.World.LocalPlayer)
+						self.World.AddFrameEndTask(
+							w =>
+							{
+								if (self.Destroyed) return;
+								w.Add(new MoveFlash(self.World, targetLocation));
+								var line = self.TraitOrDefault<DrawLineToTarget>();
+								if (line != null)
+									line.SetTarget(self, Target.FromCell(currentLocation),
+									               Color.Green);
+							});
+				});
+
+			self.QueueActivity(queued ? ph : ph.Run(self));
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
-			{
-				int2 currentLocation = NearestMoveableCell(order.TargetLocation);
-				if (!CanEnterCell(currentLocation))
-					return;
-				
-				if( !order.Queued ) self.CancelActivity();
-
-				self.QueueActivity(new Move(currentLocation, 8));
-			
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						w.Add(new MoveFlash(self.World, order.TargetLocation));
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTarget(self, Target.FromCell(currentLocation), Color.Green);
-					});
-				ticksBeforePathing = avgTicksBeforePathing +
-						self.World.SharedRandom.Next( -spreadTicksBeforePathing, spreadTicksBeforePathing );
-			}
+				PerformMove(self, order.TargetLocation, order.Queued && !self.IsIdle);
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
