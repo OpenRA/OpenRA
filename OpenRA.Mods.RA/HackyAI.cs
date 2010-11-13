@@ -357,7 +357,7 @@ namespace OpenRA.Mods.RA
 				range = Math.Max(range, loopCount / 2);
 				if (loopCount > 10) return false;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("AttackMove", a, xy));
+			world.IssueOrder(new Order("AttackMove", a, xy, false));
 			return true;
 		}
 

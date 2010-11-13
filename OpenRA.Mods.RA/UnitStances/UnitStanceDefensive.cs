@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 			self.World.AddFrameEndTask(w =>
 			{
 				self.CancelActivity();
-				attackBase.ResolveOrder(self, new Order("Stop", self));
+				attackBase.ResolveOrder(self, new Order("Stop", self, false));
 				self.QueueActivity(self.Trait<Mobile>().MoveWithinRange(DefendTarget, 1));
 				WaitForIdle();
 			});
