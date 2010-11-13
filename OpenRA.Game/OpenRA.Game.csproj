@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -209,9 +209,6 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
-    <Compile Include="Traits\BaseBuilding.cs" />
-    <Compile Include="Server\IServerExtension.cs" />
-    <Compile Include="Server\NullServerExtension.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\Scale.cs" />
@@ -242,6 +239,9 @@
   <ItemGroup>
     <Content Include="OpenRA.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServerTraits\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -250,7 +250,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="ServerTraits\" />
-  </ItemGroup>
 </Project>
