@@ -38,9 +38,9 @@ namespace OpenRA.Mods.RA
 			DoAttack(self, target);
 		}
 
-		protected override void QueueAttack(Actor self, bool queued, Target newTarget)
+		protected override IActivity GetAttackActivity(Actor self, Target newTarget)
 		{
-			self.QueueActivity( queued, new SetTarget( newTarget ) );
+			return new SetTarget( newTarget );
 		}
 
 		class SetTarget : CancelableActivity

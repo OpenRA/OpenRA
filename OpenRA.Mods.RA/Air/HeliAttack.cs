@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Air
 				return this;
 			}
 
-			var attack = self.Trait<AttackBase>();
+			var attack = self.Trait<AttackHeli>();
 			var range = attack.GetMaximumRange() - 1;
 			var dist = target.CenterLocation - self.CenterLocation;
 
@@ -46,6 +46,7 @@ namespace OpenRA.Mods.RA.Air
 			if( !float2.WithinEpsilon( float2.Zero, dist, range * Game.CellSize ) )
 				aircraft.TickMove( 1024 * aircraft.MovementSpeed, desiredFacing );
 
+			attack.target = target;
 			attack.DoAttack( self, target );
 
 			return this;

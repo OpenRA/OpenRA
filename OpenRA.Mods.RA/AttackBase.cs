@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Attack")
 			{
-				QueueAttack(self, order.Queued, Target.FromOrder(order));
+				self.QueueActivity(order.Queued, GetAttackActivity(self, Target.FromOrder(order)));
 
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Attack") ? "Attack" : null;
 		}
 		
-		protected abstract void QueueAttack(Actor self, bool queued, Target newTarget);
+		protected abstract IActivity GetAttackActivity(Actor self, Target newTarget);
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }

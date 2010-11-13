@@ -27,7 +27,9 @@ namespace OpenRA.Mods.RA.Air
 			if( limitedAmmo != null && !limitedAmmo.HasAmmo() )
 				Cancel( self );
 
-			self.Trait<AttackPlane>().DoAttack( self, Target );
+			var attack = self.Trait<AttackPlane>();
+			attack.target = Target;
+			attack.DoAttack( self, Target );
 
 			if( inner == null )
 			{

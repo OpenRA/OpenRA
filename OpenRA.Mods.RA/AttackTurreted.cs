@@ -46,12 +46,9 @@ namespace OpenRA.Mods.RA
 			DoAttack( self, target );
 		}
 
-		protected override void QueueAttack( Actor self, bool queued, Target newTarget )
+		protected override IActivity GetAttackActivity(Actor self, Target newTarget)
 		{
-			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
-				return;
-
-			self.QueueActivity( queued, new AttackActivity( newTarget ) );
+			return new AttackActivity( newTarget );
 		}
 
 		bool buildComplete = false;
@@ -65,6 +62,9 @@ namespace OpenRA.Mods.RA
 			public override IActivity Tick( Actor self )
 			{
 				if( IsCanceled ) return NextActivity;
+
+				if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
+					return this;
 
 				var attack = self.Trait<AttackTurreted>();
 				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */

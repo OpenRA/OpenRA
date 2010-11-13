@@ -22,10 +22,9 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public AttackHeli(Actor self, AttackHeliInfo info) : base(self, info) { }
 
-		protected override void QueueAttack(Actor self, bool queued, Target newTarget)
+		protected override IActivity GetAttackActivity(Actor self, Target newTarget)
 		{
-			target = newTarget;
-			self.QueueActivity(queued, new HeliAttack(newTarget));
+			return new HeliAttack( newTarget );
 		}
 	}
 }
