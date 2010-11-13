@@ -39,5 +39,16 @@ namespace OpenRA.Mods.RA
 
 			return true;
 		}
+
+		protected override void QueueAttack(Actor self, Target newTarget)
+		{
+			var weapon = ChooseWeaponForTarget(newTarget);
+
+			if (weapon != null)
+				self.QueueActivity(
+					new Activities.Attack(
+						newTarget, 
+						Math.Max(0, (int)weapon.Info.Range)));
+		}
 	}
 }

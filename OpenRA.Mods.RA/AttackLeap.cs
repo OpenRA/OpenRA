@@ -9,6 +9,8 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using System;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -36,6 +38,17 @@ namespace OpenRA.Mods.RA
 
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));
+		}
+
+		protected override void QueueAttack(Actor self, Target newTarget)
+		{
+			var weapon = ChooseWeaponForTarget(newTarget);
+
+			if (weapon != null)
+				self.QueueActivity(
+					new Activities.Attack(
+						newTarget, 
+						Math.Max(0, (int)weapon.Info.Range)));
 		}
 	}
 }

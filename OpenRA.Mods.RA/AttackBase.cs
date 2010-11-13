@@ -181,16 +181,7 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Attack") ? "Attack" : null;
 		}
 		
-		protected virtual void QueueAttack(Actor self, Target newTarget)
-		{
-			var weapon = ChooseWeaponForTarget(newTarget);
-
-			if (weapon != null)
-				self.QueueActivity(
-					new Activities.Attack(
-						newTarget, 
-						Math.Max(0, (int)weapon.Info.Range)));
-		}
+		protected abstract void QueueAttack(Actor self, Target newTarget);
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
