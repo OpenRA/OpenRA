@@ -55,6 +55,7 @@
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\CaptureBuilding.cs" />
+    <Compile Include="Activities\QueuedActivity.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
