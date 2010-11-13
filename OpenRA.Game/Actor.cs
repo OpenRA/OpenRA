@@ -133,6 +133,13 @@ namespace OpenRA
 
 		public bool IsInWorld { get; internal set; }
 
+		public void QueueActivity( bool queued, IActivity nextActivity )
+		{
+			if( !queued )
+				CancelActivity();
+			QueueActivity( nextActivity );
+		}
+
 		public void QueueActivity( IActivity nextActivity )
 		{
 			if( currentActivity == null )

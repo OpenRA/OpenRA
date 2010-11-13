@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -37,9 +38,22 @@ namespace OpenRA.Mods.RA
 			DoAttack(self, target);
 		}
 
-		protected override void QueueAttack(Actor self, Target newTarget)
+		protected override void QueueAttack(Actor self, bool queued, Target newTarget)
 		{
-			target = newTarget;
+			self.QueueActivity( queued, new SetTarget( newTarget ) );
+		}
+
+		class SetTarget : CancelableActivity
+		{
+			readonly Target target;
+			public SetTarget( Target target ) { this.target = target; }
+
+			public override IActivity Tick( Actor self )
+			{
+				if( !IsCanceled )
+					self.Trait<AttackBase>().target = target;
+				return NextActivity;
+			}
 		}
 	}
 }

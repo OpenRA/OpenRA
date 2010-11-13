@@ -46,24 +46,39 @@ namespace OpenRA.Mods.RA
 			DoAttack( self, target );
 		}
 
-		protected override void QueueAttack( Actor self, Target newTarget )
+		protected override void QueueAttack( Actor self, bool queued, Target newTarget )
 		{
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
 				return;
-			
-			const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-			var weapon = ChooseWeaponForTarget(newTarget);
-			if (weapon == null)
-				return;
 
-			target = newTarget;
-
-			if (self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-				self.QueueActivity( new Follow( newTarget,
-					Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
+			self.QueueActivity( queued, new AttackActivity( newTarget ) );
 		}
 
 		bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
+
+		class AttackActivity : CancelableActivity
+		{
+			readonly Target newTarget;
+			public AttackActivity( Target newTarget ) { this.newTarget = newTarget; }
+
+			public override IActivity Tick( Actor self )
+			{
+				if( IsCanceled ) return NextActivity;
+
+				var attack = self.Trait<AttackTurreted>();
+				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
+				var weapon = attack.ChooseWeaponForTarget(newTarget);
+				if (weapon != null)
+				{
+					attack.target = newTarget;
+
+					if (self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
+						self.QueueActivity( new Follow( newTarget,
+							Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ) );
+				}
+				return NextActivity;
+			}
+		}
 	}
 }

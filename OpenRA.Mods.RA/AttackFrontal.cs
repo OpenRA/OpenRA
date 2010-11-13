@@ -40,12 +40,12 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		protected override void QueueAttack(Actor self, Target newTarget)
+		protected override void QueueAttack(Actor self, bool queued, Target newTarget)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 
 			if (weapon != null)
-				self.QueueActivity(
+				self.QueueActivity( queued,
 					new Activities.Attack(
 						newTarget, 
 						Math.Max(0, (int)weapon.Info.Range)));
