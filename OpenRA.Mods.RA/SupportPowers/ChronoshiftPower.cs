@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 					if (underCursor != null)
-						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, underCursor);
+						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, underCursor, false);
 				}
 
 				yield break;
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA
 			{
 				// Cannot chronoshift into unexplored location
 				if (world.LocalPlayer.Shroud.IsExplored(xy))
-					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy);
+					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy, false);
 			}
 
 			public void Tick(World world)

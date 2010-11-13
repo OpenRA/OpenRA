@@ -62,10 +62,10 @@ namespace OpenRA.Mods.RA.Render
 			get { yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 5, "ability", true, true ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "Disguise" )
-				return new Order( order.OrderID, self, target.Actor );
+				return new Order( order.OrderID, self, target.Actor, queued );
 
 			return null;
 		}

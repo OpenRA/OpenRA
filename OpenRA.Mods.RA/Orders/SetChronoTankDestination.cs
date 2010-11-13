@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Orders
 			}
 
 			if (world.LocalPlayer.Shroud.IsExplored(xy))
-				yield return new Order("ChronoshiftSelf", self, xy);
+				yield return new Order("ChronoshiftSelf", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
 		public void Tick( World world ) { }

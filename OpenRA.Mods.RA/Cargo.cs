@@ -44,13 +44,13 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "Unload" )
-				return new Order( order.OrderID, self );
+				return new Order( order.OrderID, self, queued );
 
 			if( order.OrderID == "ReverseEnterTransport" )
-				return new Order( order.OrderID, self, target.Actor );
+				return new Order( order.OrderID, self, target.Actor, queued );
 
 			return null;
 		}
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 				if( order.TargetActor != null && order.Subject.Owner == order.TargetActor.Owner )
 				{
 					var passenger = order.TargetActor.Trait<Passenger>();
-					passenger.ResolveOrder( order.TargetActor, new Order( "EnterTransport", order.TargetActor, self ) );
+					passenger.ResolveOrder( order.TargetActor, new Order( "EnterTransport", order.TargetActor, self, false ) );
 				}
 			}
 		}

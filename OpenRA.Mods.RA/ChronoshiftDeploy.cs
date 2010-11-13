@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 			get { yield return new DeployOrderTargeter( "ChronoshiftDeploy", 5, () => chargeTick <= 0 ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "ChronoshiftDeploy" )
 				if (chargeTick <= 0)

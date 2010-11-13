@@ -42,10 +42,10 @@ namespace OpenRA.Mods.RA
 			get { yield return new EnterOrderTargeter<Building>( "Repair", 5, false, true, target => CanRepairAt( target ), _ => CanRepair() ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "Repair" )
-				return new Order( order.OrderID, self, target.Actor );
+				return new Order( order.OrderID, self, target.Actor, queued );
 
 			return null;
 		}

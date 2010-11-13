@@ -140,12 +140,12 @@ namespace OpenRA.Mods.RA.Move
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter( Info ); } }
 
 		// Note: Returns a valid order even if the unit can't move to the target
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order is MoveOrderTargeter )
 			{
 				if( Info.OnRails ) return null;
-				return new Order( "Move", self, Util.CellContaining( target.CenterLocation ), false );
+				return new Order( "Move", self, Util.CellContaining( target.CenterLocation ), queued );
 			}
 			return null;
 		}

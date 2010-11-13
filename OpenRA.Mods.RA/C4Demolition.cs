@@ -31,10 +31,10 @@ namespace OpenRA.Mods.RA
 			get { yield return new UnitTraitOrderTargeter<Building>( "C4", 6, "c4", true, false ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "C4" )
-				return new Order( "C4", self, target.Actor );
+				return new Order( "C4", self, target.Actor, queued );
 
 			return null;
 		}

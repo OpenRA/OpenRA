@@ -302,7 +302,7 @@ namespace OpenRA.Mods.RA
 				int2 newRallyPoint = ChooseRallyLocationNear(a.Location);
 				newRallyPoint.X += 4;
 				newRallyPoint.Y += 4;
-				world.IssueOrder(new Order("SetRallyPoint", a, newRallyPoint));
+				world.IssueOrder(new Order("SetRallyPoint", a, newRallyPoint, false));
 			}
 		}
 
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA
 				range = Math.Max(range, loopCount / 2);
 				if (loopCount > 10) return false;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("Move", a, xy));
+			world.IssueOrder(new Order("Move", a, xy, false));
 			return true;
 		}
 
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.RA
 			if (mcv != null)
 			{
 				baseCenter = mcv.Location;
-				world.IssueOrder(new Order("DeployTransform", mcv));
+				world.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find the MCV.");
@@ -454,7 +454,7 @@ namespace OpenRA.Mods.RA
 							else
 							{
 								ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, 
-									location.Value, currentBuilding.Item));
+									location.Value, currentBuilding.Item, false));
 							}
 						}
 						break;

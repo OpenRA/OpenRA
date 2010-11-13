@@ -46,11 +46,11 @@ namespace OpenRA.Orders
                 var actorsInvolved = orders.Select(o => o.self).Distinct();
                 if (actorsInvolved.Any())
                     yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor,
-                                           string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()))
+                                           string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray()), false)
                         ;
 
                 foreach (var o in orders)
-                    yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target));
+                    yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target, mi.Modifiers.HasModifier(Modifiers.Shift)));
             }
 		}
 

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Orders
 				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
 
 				if (building != null && !building.Unsellable)
-					yield return new Order("Sell", underCursor);
+					yield return new Order("Sell", underCursor, false);
 			}
 		}
 

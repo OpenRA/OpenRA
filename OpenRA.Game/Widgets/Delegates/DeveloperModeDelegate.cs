@@ -43,7 +43,7 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().DisableShroud;
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").OnMouseDown = mi => 
 			{
-				world.IssueOrder(new Order("DevShroud", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevShroud", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
@@ -51,7 +51,7 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnitInfluenceDebug;
 			devmodeBG.GetWidget("CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
 			{
-				world.IssueOrder(new Order("DevUnitDebug", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevUnitDebug", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
@@ -59,13 +59,13 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug;
 			devmodeBG.GetWidget("CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
 			{
-				world.IssueOrder(new Order("DevPathDebug", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevPathDebug", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_CASH").OnMouseUp = mi =>
 			{
-				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
@@ -73,7 +73,7 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastBuild;
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").OnMouseDown = mi =>
 			{
-				world.IssueOrder(new Order("DevFastBuild", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevFastBuild", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};	
 
@@ -81,7 +81,7 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastCharge;
 			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").OnMouseDown = mi =>
 			{
-				world.IssueOrder(new Order("DevFastCharge", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevFastCharge", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
@@ -89,13 +89,13 @@ namespace OpenRA.Widgets.Delegates
 				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().AllTech;
 			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").OnMouseDown = mi =>
 			{
-				world.IssueOrder(new Order("DevEnableTech", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevEnableTech", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
 			{
-				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 				

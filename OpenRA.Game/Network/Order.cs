@@ -37,22 +37,20 @@ namespace OpenRA
 			this.Queued = queued;
 		}
 
-		public Order(string orderString, Actor subject) 
-			: this(orderString, subject, null, int2.Zero, null, false) { }
-		public Order(string orderString, Actor subject, Actor targetActor)
-			: this(orderString, subject, targetActor, int2.Zero, null, false) { }
-		public Order(string orderString, Actor subject, int2 targetLocation)
-			: this(orderString, subject, null, targetLocation, null, false) { }
+		public Order(string orderString, Actor subject, bool queued) 
+			: this(orderString, subject, null, int2.Zero, null, queued) { }
+		public Order(string orderString, Actor subject, Actor targetActor, bool queued)
+			: this(orderString, subject, targetActor, int2.Zero, null, queued) { }
 		public Order(string orderString, Actor subject, int2 targetLocation, bool queued)
 			: this(orderString, subject, null, targetLocation, null, queued) { }
-		public Order(string orderString, Actor subject, string targetString)
-			: this(orderString, subject, null, int2.Zero, targetString, false) { }
-		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation)
-			: this(orderString, subject, targetActor, targetLocation, null, false) { }
-		public Order(string orderString, Actor subject, Actor targetActor, string targetString)
-			: this(orderString, subject, targetActor, int2.Zero, targetString, false) { }
-		public Order(string orderString, Actor subject, int2 targetLocation, string targetString)
-			: this(orderString, subject, null, targetLocation, targetString, false) { }
+		public Order(string orderString, Actor subject, string targetString, bool queued)
+			: this(orderString, subject, null, int2.Zero, targetString, queued) { }
+		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation, bool queued)
+			: this(orderString, subject, targetActor, targetLocation, null, queued) { }
+		public Order(string orderString, Actor subject, Actor targetActor, string targetString, bool queued)
+			: this(orderString, subject, targetActor, int2.Zero, targetString, queued) { }
+		public Order(string orderString, Actor subject, int2 targetLocation, string targetString, bool queued)
+			: this(orderString, subject, null, targetLocation, targetString, queued) { }
 
 		public byte[] Serialize()
 		{
@@ -120,7 +118,7 @@ namespace OpenRA
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, null, data ) { IsImmediate = true };
+						return new Order( name, null, data, false ) { IsImmediate = true };
 					}
 
 				default:
@@ -164,32 +162,32 @@ namespace OpenRA
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(string text)
 		{
-			return new Order("Chat", null, text) { IsImmediate = true };
+			return new Order("Chat", null, text, false) { IsImmediate = true };
 		}
 
 		public static Order TeamChat(string text)
 		{
-			return new Order("TeamChat", null, text) { IsImmediate = true };
+			return new Order("TeamChat", null, text, false) { IsImmediate = true };
 		}
 		
 		public static Order Command(string text)
 		{
-			return new Order("Command", null, text) { IsImmediate = true };	
+			return new Order("Command", null, text, false) { IsImmediate = true };	
 		}
 
 		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, new int2( count, 0 ), item );
+			return new Order("StartProduction", subject, new int2( count, 0 ), item, false );
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, new int2( pause ? 1 : 0, 0 ), item);
+			return new Order("PauseProduction", subject, new int2( pause ? 1 : 0, 0 ), item, false);
 		}
 
 		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, new int2( count, 0 ), item);
+			return new Order("CancelProduction", subject, new int2( count, 0 ), item, false);
 		}
 	}
 }

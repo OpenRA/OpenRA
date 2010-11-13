@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		{
 			var attack = self.Trait<AttackBase>();
 			if (target != null)
-				attack.ResolveOrder(self, new Order("Attack", self, target));
+				attack.ResolveOrder(self, new Order("Attack", self, target, false));
 			else
 				if (attack.IsAttacking)
 					self.CancelActivity();

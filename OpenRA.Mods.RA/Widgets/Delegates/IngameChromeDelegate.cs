@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			optionsBG.GetWidget("SURRENDER").OnMouseUp = mi =>
 			{
-				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor));
+				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			

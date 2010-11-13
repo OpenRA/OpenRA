@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 	public interface IIssueOrder
 	{
 		IEnumerable<IOrderTargeter> Orders { get; }
-		Order IssueOrder( Actor self, IOrderTargeter order, Target target );
+		Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued );
 	}
 	public interface IOrderTargeter
 	{

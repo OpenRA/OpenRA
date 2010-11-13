@@ -139,7 +139,7 @@ namespace OpenRA.Widgets.Delegates
 			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
 
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
-				new int2(p.Index, (int)nextStance)));
+				new int2(p.Index, (int)nextStance), false));
 
 			bw.Text = nextStance.ToString();
 		}

@@ -48,10 +48,10 @@ namespace OpenRA.Mods.RA
 			get { yield return new RallyPointOrderTargeter(); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "SetRallyPoint" )
-				return new Order( order.OrderID, self, Traits.Util.CellContaining( target.CenterLocation ) );
+				return new Order( order.OrderID, self, Traits.Util.CellContaining( target.CenterLocation ), false );
 
 			return null;
 		}

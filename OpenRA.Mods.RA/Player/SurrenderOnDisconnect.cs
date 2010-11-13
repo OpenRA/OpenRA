@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			if (client.State == Session.ClientState.Disconnected)
 			{
 				Disconnected = true; /* dont call this multiple times! */
-				self.World.IssueOrder(new Order("Surrender", self));
+				self.World.IssueOrder(new Order("Surrender", self, false));
 			}
 		}
 	}

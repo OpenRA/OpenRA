@@ -38,13 +38,13 @@ namespace OpenRA.Mods.RA
 			get { yield return new BeginMinefieldOrderTargeter(); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order is BeginMinefieldOrderTargeter )
 			{
 				var start = Traits.Util.CellContaining( target.CenterLocation );
 				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
-				return new Order( "BeginMinefield", self, start );
+				return new Order( "BeginMinefield", self, start, false );
 			}
 			return null;
 		}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 				if( mi.Button == MouseButton.Right && underCursor == null )
 				{
 					minelayer.World.CancelInputMode();
-					yield return new Order( "PlaceMinefield", minelayer, xy );
+					yield return new Order( "PlaceMinefield", minelayer, xy, false );
 				}
 			}
 

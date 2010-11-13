@@ -133,14 +133,14 @@ namespace OpenRA.Mods.RA
 			get { yield return new AttackOrderTargeter( "Attack", 6, IsHeal ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order is AttackOrderTargeter )
 			{
 				if( target.IsActor )
-					return new Order( "Attack", self, target.Actor );
+					return new Order( "Attack", self, target.Actor, queued );
 				else
-					return new Order( "Attack", self, Util.CellContaining( target.CenterLocation ) );
+					return new Order( "Attack", self, Util.CellContaining( target.CenterLocation ), queued );
 			}
 			return null;
 		}
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.RA
 			if (target != null)
 			{
 				if (allowMovement)
-					attack.ResolveOrder(self, new Order("Attack", self, target));
+					attack.ResolveOrder(self, new Order("Attack", self, target, false));
 				else
 					attack.target = Target.FromActor(target);	// for turreted things on rails.
 			}

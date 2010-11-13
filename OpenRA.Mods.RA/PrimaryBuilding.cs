@@ -32,10 +32,10 @@ namespace OpenRA.Mods.RA
 			get { yield return new DeployOrderTargeter( "PrimaryProducer", 1 ); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target )
+		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "PrimaryProducer" )
-				return new Order( order.OrderID, self );
+				return new Order( order.OrderID, self, false );
 
 			return null;
 		}

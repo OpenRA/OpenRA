@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Orders
 						.FirstOrDefault();
 
 				if (underCursor != null)
-					yield return new Order("PowerDown", underCursor);
+					yield return new Order("PowerDown", underCursor, false);
 			}
 		}
 
