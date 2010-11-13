@@ -142,15 +142,17 @@ namespace OpenRA.Mods.RA.Air
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
 
-		public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+		public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
 			return false;
 		}
 
-		public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
+			IsQueued = forceQueued;
 			cursor = "move";
 			return true;
 		}
+		public bool IsQueued { get; protected set; }
 	}
 }

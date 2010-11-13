@@ -98,7 +98,9 @@ namespace OpenRA.Orders
 		}
 
 		public string GetCursor( World world, int2 xy, MouseInput mi )
-        {
+		{
+			bool useSelect = false;
+
             var custom = world.WorldActor.TraitOrDefault<ICustomUnitOrderGenerator>();
             if (custom != null)
             {
@@ -109,19 +111,20 @@ namespace OpenRA.Orders
 				.Where(a => a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 				.FirstOrDefault();
-			
-			if( mi.Modifiers.HasModifier( Modifiers.Shift ) || !world.Selection.Actors.Any() )
-				if( underCursor != null )
-					return "select";
-			
+
+
+			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
+				if (underCursor != null)
+					useSelect = true;
+
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, xy, mi, underCursor))
 				.Where(o => o != null)
 				.ToArray();
 
-			if( orders.Length == 0 ) return "default";
+			if( orders.Length == 0 ) return (useSelect) ? "select" : "default";
 
-			return orders[ 0 ].cursor ?? "default";
+			return orders[0].cursor ?? ((useSelect) ? "select" : "default");
 		}
 
 		static UnitOrderResult OrderForUnit( Actor self, int2 xy, MouseInput mi, Actor underCursor )
@@ -154,9 +157,9 @@ namespace OpenRA.Orders
 
 					string cursor = null;
 					if( underCursor != null )
-						if( o.Order.CanTargetUnit( self, underCursor, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
+						if (o.Order.CanTargetUnit(self, underCursor, mi.Modifiers.HasModifier(Modifiers.Ctrl), mi.Modifiers.HasModifier(Modifiers.Alt), mi.Modifiers.HasModifier(Modifiers.Shift), ref cursor))
 							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
-					if( o.Order.CanTargetLocation( self, xy, actorsAt, mi.Modifiers.HasModifier( Modifiers.Ctrl ), mi.Modifiers.HasModifier( Modifiers.Alt ), ref cursor ) )
+					if (o.Order.CanTargetLocation(self, xy, actorsAt, mi.Modifiers.HasModifier(Modifiers.Ctrl), mi.Modifiers.HasModifier(Modifiers.Alt), mi.Modifiers.HasModifier(Modifiers.Shift), ref cursor))
 						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
 				}
 			}

@@ -31,12 +31,13 @@ namespace OpenRA.Mods.RA.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 
-		public virtual bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+		public virtual bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
 			if( self == null ) throw new ArgumentNullException( "self" );
 			if( target == null ) throw new ArgumentNullException( "target" );
 
 			cursor = this.cursor;
+			IsQueued = forceQueued;
 
 			var playerRelationship = self.Owner.Stances[ target.Owner ];
 
@@ -46,10 +47,11 @@ namespace OpenRA.Mods.RA.Orders
 			return true;
 		}
 
-		public virtual bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+		public virtual bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
 			return false;
 		}
+		public virtual bool IsQueued { get; protected set; }
 	}
 
     public class UnitTraitOrderTargeter<T> : UnitOrderTargeter
@@ -59,10 +61,12 @@ namespace OpenRA.Mods.RA.Orders
 		{
 		}
 
-		public override bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+		public override bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetUnit( self, target, forceAttack, forceMove, ref cursor ) ) return false;
+			if( !base.CanTargetUnit( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
 			if( !target.HasTrait<T>() ) return false;
+
+			IsQueued = forceQueued;
 
 			return true;
 		}

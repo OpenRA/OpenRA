@@ -218,15 +218,15 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get { return "Harvest";}}
 			public int OrderPriority { get { return 10; } }
 
-			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				return false;
 			}
 
-			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				// Don't leak info about resources under the shroud
-				if( !self.World.LocalPlayer.Shroud.IsExplored( location ) ) return false;
+				if (!self.World.LocalPlayer.Shroud.IsExplored(location)) return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource( location );
 				var info = self.Info.Traits.Get<HarvesterInfo>();
@@ -234,8 +234,11 @@ namespace OpenRA.Mods.RA
 				if( res == null ) return false;
 				if( !info.Resources.Contains( res.info.Name ) ) return false;
 				cursor = "attackmove";
+				IsQueued = forceQueued;
+
 				return true;
 			}
+			public bool IsQueued { get; protected set; }
 		}
 	}
 }

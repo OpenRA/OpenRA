@@ -261,8 +261,10 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
-			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
+				IsQueued = forceQueued;
+
 				cursor = isHeal ? "heal" : "attack";
 				if( self == target ) return false;
 				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromActor( target ) ) ) return false;
@@ -276,8 +278,10 @@ namespace OpenRA.Mods.RA
 					return playerRelationship == Stance.Enemy || forceAttack;
 			}
 
-			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
+				IsQueued = forceQueued;
+
 				cursor = isHeal ? "heal" : "attack";
 				if( isHeal ) return false;
 				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromCell( location ) ) ) return false;
@@ -288,6 +292,8 @@ namespace OpenRA.Mods.RA
 
 				return false;
 			}
+
+			public bool IsQueued { get; protected set; }
 		}
 	}
 }

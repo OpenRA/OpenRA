@@ -152,16 +152,19 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get { return "BeginMinefield"; } }
 			public int OrderPriority { get { return 5; } }
 
-			public bool CanTargetUnit( Actor self, Actor target, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				return false;
 			}
 
-			public bool CanTargetLocation( Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, ref string cursor )
+			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				cursor = "ability";
+				IsQueued = forceQueued;
+
 				return ( actorsAtLocation.Count == 0 && forceAttack );
 			}
+			public bool IsQueued { get; protected set; }
 		}
 	}
 }
