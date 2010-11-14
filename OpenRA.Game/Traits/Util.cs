@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
@@ -113,6 +114,24 @@ namespace OpenRA.Traits
 		{
 			return acts.Reverse().Aggregate(
 				(next, a) => { a.Queue( next ); return a; });
+		}
+
+		public static IActivity RunActivity( Actor self, IActivity act )
+		{
+			while( act != null )
+			{
+				var prev = act;
+
+				var sw = new Stopwatch();
+				act = act.Tick( self );
+				var dt = sw.ElapsedTime();
+				if(dt > Game.Settings.Debug.LongTickThreshold)
+					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", prev, dt * 1000, Game.LocalTick);
+
+				if( prev == act )
+					break;
+			}
+			return act;
 		}
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }

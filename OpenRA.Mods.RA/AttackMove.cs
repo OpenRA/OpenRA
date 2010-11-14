@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 						return NextActivity;
 					inner = self.Trait<Mobile>().MoveTo( target, 1 );
 				}
-				inner = inner.Tick( self );
+				inner = Util.RunActivity( self, inner );
 				return this;
 			}
 

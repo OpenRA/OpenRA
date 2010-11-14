@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public AttackPlane(Actor self, AttackPlaneInfo info) : base(self, info) { }
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new FlyAttack( newTarget );
 		}

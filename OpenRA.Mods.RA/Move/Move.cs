@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Move
 			if( firstFacing != mobile.Facing )
 			{
 				path.Add( nextCell.Value );
-				return Util.SequenceActivities( new Turn( firstFacing ), this ).Tick( self );
+				return Util.SequenceActivities( new Turn( firstFacing ), this );
 			}
 			else
 			{
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Move
 					mobile.Facing,
 					0 );
 
-				return move.Tick( self );
+				return move;
 			}
 		}
 

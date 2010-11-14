@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
 		}
 
-		protected abstract IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
+		public abstract IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }

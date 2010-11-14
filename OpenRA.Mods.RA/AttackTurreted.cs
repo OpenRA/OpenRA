@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 			DoAttack( self, target );
 		}
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new AttackActivity( newTarget );
 		}

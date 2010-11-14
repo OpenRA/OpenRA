@@ -27,29 +27,33 @@ namespace OpenRA.Mods.RA
 		class IdleHealActivity : Idle
 		{
 			Actor currentTarget;
+			IActivity inner;
 
 			public override IActivity Tick( Actor self )
 			{
-				if( NextActivity != null )
-					return NextActivity;
+				if( inner == null )
+				{
+					if( NextActivity != null )
+						return NextActivity;
 
-				var attack = self.Trait<AttackBase>();
-				var range = attack.GetMaximumRange();
+					var attack = self.Trait<AttackBase>();
+					var range = attack.GetMaximumRange();
 
-				if (NeedsNewTarget(self))
-					AttackTarget(self, ChooseTarget(self, range));
+					if (NeedsNewTarget(self))
+					{
+						currentTarget = ChooseTarget(self, range);
+						if( currentTarget != null )
+							inner = self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( currentTarget ), false );
+					}
+				}
+				if( inner != null )
+				{
+					if( currentTarget.GetDamageState() == DamageState.Undamaged )
+						inner.Cancel( self );
+					inner = Util.RunActivity( self, inner );
+				}
 
 				return this;
-			}
-
-			void AttackTarget(Actor self, Actor target)
-			{
-				var attack = self.Trait<AttackBase>();
-				if (target != null)
-					attack.AttackTarget(Target.FromActor( target), false, true );
-				else
-					if (attack.IsAttacking)
-						self.CancelActivity();
 			}
 
 			bool NeedsNewTarget(Actor self)

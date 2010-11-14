@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Air
 					Fly.ToPx(Target.CenterLocation),
 					new FlyTimed(50));
 			}
-			inner = inner.Tick( self );
+			inner = Util.RunActivity( self, inner );
 
 			return this;
 		}

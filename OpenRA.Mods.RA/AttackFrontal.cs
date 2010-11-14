@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 			if( weapon == null )

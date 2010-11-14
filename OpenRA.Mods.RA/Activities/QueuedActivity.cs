@@ -17,18 +17,15 @@ namespace OpenRA.Mods.RA.Activities
 	public class QueuedActivity : IActivity
 	{
 		public QueuedActivity(Action<QueuedActivity> a) { this.a = a; }
-		public QueuedActivity(bool runChildOnFirstTick, Action<QueuedActivity> a) : this(a, true, runChildOnFirstTick) { }
 
-		public QueuedActivity(Action<QueuedActivity> a, bool interruptable, bool runChildOnFirstTick)
+		public QueuedActivity(Action<QueuedActivity> a, bool interruptable)
 		{
 			this.a = a;
 			this.interruptable = interruptable;
-			runChildOnFirstTick = runChildOnFirstTick;
 		}
 
 		Action<QueuedActivity> a;
 		private bool interruptable = true;
-		private bool runChild = false;
 		public IActivity NextActivity { get; set; }
 
 		public IActivity Tick(Actor self) { return Run(self); }
@@ -37,8 +34,6 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (a != null)
 				a(this);
-			if (runChild && NextActivity != null)
-				return NextActivity.Tick(self);
 
 			return NextActivity;
 		}

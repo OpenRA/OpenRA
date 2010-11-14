@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(new Leap(self, target));
 		}
 
-		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 			if( weapon == null )

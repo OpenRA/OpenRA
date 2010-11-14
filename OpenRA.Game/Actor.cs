@@ -69,27 +69,11 @@ namespace OpenRA
 		public void Tick()
 		{
 			var wasIdle = currentActivity is Idle;
-			while (currentActivity != null)
-			{
-				var a = currentActivity;
-				
-				var sw = new Stopwatch();
-				currentActivity = a.Tick(this) ?? new Idle();
-				var dt = sw.ElapsedTime();
-				if(dt > Game.Settings.Debug.LongTickThreshold)
-					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", a, dt * 1000, Game.LocalTick);
-				
-				if (a == currentActivity) break;
+			currentActivity = Util.RunActivity( this, currentActivity ) ?? new Idle();
 
-				if (currentActivity is Idle)
-				{
-					if (!wasIdle)
-						foreach (var ni in TraitsImplementing<INotifyIdle>())
-							ni.Idle(this);
-
-					break;
-				}
-			}
+			if (currentActivity is Idle && !wasIdle)
+				foreach (var ni in TraitsImplementing<INotifyIdle>())
+					ni.Idle(this);
 		}
 
 		public bool IsIdle
