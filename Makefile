@@ -113,8 +113,8 @@ winlaunch_EXTRA		= -resource:OpenRA.Launcher.MainForm.resources \
 
 .SUFFIXES:
 .PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility winlaunch
-
-game: $(fileformats_TARGET) $(gl_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET) $(utility_TARGET) $(winlaunch_TARGET)
+core: game editor utility winlaunch
+game: $(fileformats_TARGET) $(rcg_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -195,7 +195,8 @@ filex: $(filex_TARGET)
 tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
 OpenRA.TilesetBuilder.Form1.resources:
 	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
-	
+
+utility: $(utility_TARGET)
 winlaunch: OpenRA.Launcher.MainForm.resources OpenRA.Launcher.InstallPackagesDialog.resources \
            OpenRA.Launcher.ConfigureModsDialog.resources $(winlaunch_TARGET)
 OpenRA.Launcher.MainForm.resources:
@@ -204,7 +205,7 @@ OpenRA.Launcher.InstallPackagesDialog.resources:
 	resgen2 OpenRA.Launcher/InstallPackagesDialog.resx OpenRA.Launcher.InstallPackagesDialog.resources 1> /dev/null
 OpenRA.Launcher.ConfigureModsDialog.resources:
 	resgen2 OpenRA.Launcher/ConfigureModsDialog.resx OpenRA.Launcher.ConfigureModsDialog.resources 1> /dev/null
-    
+
 tools: editor ralint seqed filex tsbuild
 all: game tools
 
