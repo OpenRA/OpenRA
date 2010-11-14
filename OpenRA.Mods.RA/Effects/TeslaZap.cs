@@ -103,6 +103,8 @@ namespace OpenRA.Mods.RA.Effects
 
 				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]), "effect", (int)from.Y));
 				z += new float2(step[0], step[1]);
+				if( rs.Count >= 1000 )
+					break;
 			}
 
 			p = z;
