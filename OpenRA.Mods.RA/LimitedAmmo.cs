@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public void Attacking(Actor self) { --ammo; }
+		public void Attacking(Actor self, Target target) { --ammo; }
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{

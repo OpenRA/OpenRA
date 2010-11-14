@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA
 	class AttackOmni : AttackBase, INotifyBuildComplete
 	{
 		bool buildComplete = false;
-		protected Target target;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 
 		public AttackOmni(Actor self) : base(self) { }
@@ -31,12 +30,6 @@ namespace OpenRA.Mods.RA
 		{
 			var isBuilding = ( self.HasTrait<Building>() && !buildComplete );
 			return base.CanAttack( self, target ) && !isBuilding;
-		}
-
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-			DoAttack(self, target);
 		}
 
 		protected override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
@@ -54,7 +47,7 @@ namespace OpenRA.Mods.RA
 				if( IsCanceled || !target.IsValid )
 					return NextActivity;
 
-				self.Trait<AttackOmni>().target = target;
+				self.Trait<AttackOmni>().DoAttack(self, target);
 				return this;
 			}
 		}

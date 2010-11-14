@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Activities
 		void LayMine(Actor self)
 		{
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null) limitedAmmo.Attacking(self);
+			if (limitedAmmo != null) limitedAmmo.Attacking(self, Target.FromCell(self.Location));
 
 			self.World.AddFrameEndTask(
 				w => w.CreateActor(self.Info.Traits.Get<MinelayerInfo>().Mine, new TypeDictionary

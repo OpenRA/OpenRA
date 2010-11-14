@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			return target.Actor == previousTarget ? 3 : base.FireDelay(self, target, info);
 		}
 
-		public void Attacking(Actor self)
+		public void Attacking(Actor self, Target target)
 		{
 			foreach (var w in Weapons)
 				w.FireDelay = 8;

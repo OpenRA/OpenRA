@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void Attacking(Actor self)
+		public void Attacking(Actor self, Target target)
 		{
 			isShowing = true;
 			foreach( var mf in muzzleFlashes )

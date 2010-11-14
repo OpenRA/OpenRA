@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.target = target;
 			initialLocation = self.Trait<Mobile>().PxPosition;
 
-			self.Trait<RenderInfantry>().Attacking(self);
+			self.Trait<RenderInfantry>().Attacking(self, target);
 			Sound.Play("dogg5p.aud", self.CenterLocation);
 		}
 

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 			remainingTime = Math.Max(remainingTime, (int)(info.CloakDelay * 25));
 		}
 
-		public void Attacking(Actor self) { DoUncloak(); }
+		public void Attacking(Actor self, Target target) { DoUncloak(); }
 		public void Damaged(Actor self, AttackInfo e)
 		{			
 			canCloak = (e.DamageState < DamageState.Critical);

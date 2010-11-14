@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Render
 			return takeCover != null && takeCover.IsProne;
 		}
 
-		public void Attacking(Actor self)
+		public void Attacking(Actor self, Target target)
 		{
 			inAttack = true;
 
