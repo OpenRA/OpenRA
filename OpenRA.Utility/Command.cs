@@ -94,6 +94,7 @@ namespace OpenRA.Utility
 			wc.DownloadProgressChanged += DownloadProgressChanged;
 			wc.DownloadFileCompleted += DownloadFileCompleted;
 			Console.WriteLine("Downloading {0}-packages.zip to {1}", mod, destPath);
+			Console.WriteLine("Initializing...");
 			wc.DownloadFileAsync(
 				new Uri(string.Format("http://open-ra.org/get-dependency.php?file={0}-packages", mod)),
 				destFile,
@@ -118,6 +119,7 @@ namespace OpenRA.Utility
 
 		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
+			Console.SetCursorPosition(0, Console.CursorTop-1);
 			Console.WriteLine("{0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
 		}
 
