@@ -79,7 +79,7 @@ namespace OpenRA.Utility
 			if (args.Length >= 1)
 				mod = args[0];
 			if (args.Length >= 2)
-				destPath = args[1];
+				destPath = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 
 			string destFile = string.Format("{0}{1}{2}-packages.zip", destPath, Path.DirectorySeparatorChar, mod);
 
