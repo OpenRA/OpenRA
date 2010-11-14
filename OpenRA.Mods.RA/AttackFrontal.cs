@@ -26,9 +26,9 @@ namespace OpenRA.Mods.RA
 		public AttackFrontal(Actor self, AttackFrontalInfo info)
 			: base( self ) { this.info = info; }
 
-		protected override bool CanAttack( Actor self )
+		protected override bool CanAttack( Actor self, Target target )
 		{
-			if( !base.CanAttack( self ) )
+			if( !base.CanAttack( self, target ) )
 				return false;
 
 			var facing = self.Trait<IFacing>().Facing;

@@ -27,10 +27,10 @@ namespace OpenRA.Mods.RA.Air
 			return new FlyAttack( newTarget );
 		}
 
-		protected override bool CanAttack(Actor self)
+		protected override bool CanAttack(Actor self, Target target)
 		{
 			// dont fire while landed
-			return base.CanAttack(self) 
+			return base.CanAttack(self, target) 
 				&& self.Trait<Aircraft>().Altitude > 0;
 		}
 	}

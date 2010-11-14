@@ -218,7 +218,7 @@ namespace OpenRA.Traits
 		float2 pos;
 		bool valid;
 
-		public static Target FromActor(Actor a) { return new Target { actor = a, valid = true }; }
+		public static Target FromActor(Actor a) { return new Target { actor = a, valid = (a != null) }; }
 		public static Target FromPos(float2 p) { return new Target { pos = p, valid = true }; }
 		public static Target FromCell(int2 c) { return new Target { pos = Util.CenterOfCell(c), valid = true }; }
 		public static Target FromOrder(Order o)

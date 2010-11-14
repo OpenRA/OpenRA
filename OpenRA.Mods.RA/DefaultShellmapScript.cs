@@ -58,9 +58,9 @@ namespace OpenRA.Mods.RA
 
 			if (ticks == 430)
 			{
-				Actors["mig1"].Trait<AttackPlane>().AttackTarget(Actors["mig1"], Actors["greeceweap"], true);
-				Actors["mig2"].Trait<AttackPlane>().AttackTarget(Actors["mig2"], Actors["greeceweap"], true);
-				Actors["mig3"].Trait<AttackPlane>().AttackTarget(Actors["mig3"], Actors["greeceweap"], true);
+				Actors["mig1"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
+				Actors["mig2"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
+				Actors["mig3"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
 			}
 			
 			ticks++;

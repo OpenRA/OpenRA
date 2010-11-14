@@ -61,7 +61,6 @@ namespace OpenRA.Mods.RA.Activities
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities( new Turn( desiredFacing ), this );
 
-			attack.target = Target;
 			attack.DoAttack(self, Target);
 			return this;
 		}

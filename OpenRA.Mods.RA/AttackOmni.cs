@@ -22,14 +22,15 @@ namespace OpenRA.Mods.RA
 	class AttackOmni : AttackBase, INotifyBuildComplete
 	{
 		bool buildComplete = false;
+		protected Target target;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 
 		public AttackOmni(Actor self) : base(self) { }
 
-		protected override bool CanAttack( Actor self )
+		protected override bool CanAttack( Actor self, Target target )
 		{
 			var isBuilding = ( self.HasTrait<Building>() && !buildComplete );
-			return base.CanAttack( self ) && !isBuilding;
+			return base.CanAttack( self, target ) && !isBuilding;
 		}
 
 		public override void Tick(Actor self)
@@ -50,9 +51,11 @@ namespace OpenRA.Mods.RA
 
 			public override IActivity Tick( Actor self )
 			{
-				if( !IsCanceled )
-					self.Trait<AttackBase>().target = target;
-				return NextActivity;
+				if( IsCanceled || !target.IsValid )
+					return NextActivity;
+
+				self.Trait<AttackOmni>().target = target;
+				return this;
 			}
 		}
 	}

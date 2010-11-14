@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA
 	class AttackLeap : AttackBase
 	{
 		internal bool IsLeaping;
+		protected Target target;
 
 		public AttackLeap(Actor self)
 			: base(self) {}
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.RA
 			if (!target.IsValid) return;
 			if (IsLeaping) return;
 
-			var weapon = self.Trait<AttackBase>().Weapons[0].Info;
+			var weapon = Weapons[0].Info;
 			if( !Combat.IsInRange( self.CenterLocation, weapon.Range, target ) ) return;
 
 			self.CancelActivity();

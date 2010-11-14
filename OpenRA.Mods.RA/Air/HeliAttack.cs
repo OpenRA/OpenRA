@@ -46,7 +46,6 @@ namespace OpenRA.Mods.RA.Air
 			if( !float2.WithinEpsilon( float2.Zero, dist, range * Game.CellSize ) )
 				aircraft.TickMove( 1024 * aircraft.MovementSpeed, desiredFacing );
 
-			attack.target = target;
 			attack.DoAttack( self, target );
 
 			return this;

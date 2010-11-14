@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
-			self.Trait<AttackBase>().AttackTarget(self, e.Attacker, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
+			self.Trait<AttackBase>().AttackTarget(Target.FromActor(e.Attacker), false, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
 		}
 	}
 }

@@ -48,7 +48,6 @@ namespace OpenRA.Mods.RA
 		int nextScanTime = 0;
 
 		public bool IsAttacking { get; internal set; }
-		public Target target;
 
 		public List<Weapon> Weapons = new List<Weapon>();
 		public List<Turret> Turrets = new List<Turret>();
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.RA
 					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset));
 		}
 
-		protected virtual bool CanAttack(Actor self)
+		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!target.IsValid) return false;
 			if (Weapons.All(w => w.IsReloading)) return false;
@@ -113,7 +112,7 @@ namespace OpenRA.Mods.RA
 
 		public void DoAttack(Actor self, Target target)
 		{
-			if( !CanAttack( self ) ) return;
+			if( !CanAttack( self, target ) ) return;
 
 			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
@@ -121,7 +120,7 @@ namespace OpenRA.Mods.RA
 				w.CheckFire(self, this, move, facing, target);
 		}
 
-		public virtual int FireDelay( Actor self, AttackBaseInfo info )
+		public virtual int FireDelay( Actor self, Target target, AttackBaseInfo info )
 		{
 			return info.FireDelay;
 		}
@@ -147,31 +146,18 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack" || order.OrderString == "AttackHold")
+			if (order.OrderString == "Attack")
+				AttackTarget( Target.FromOrder( order ), order.Queued, true );
+
+			else if(order.OrderString == "AttackHold")
+				AttackTarget( Target.FromOrder( order ), order.Queued, false );
+
+			else
 			{
-				bool allowMove = order.OrderString == "Attack";
-				self.QueueActivity(order.Queued, GetAttackActivity(self, Target.FromOrder(order), allowMove));
-
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						if (order.TargetActor != null)
-							w.Add(new FlashTarget(order.TargetActor));
-
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
-							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
-					});
-				return;
-			} // else not an attack order
-
-			target = Target.None;
-
-			/* hack */
-			if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
-				self.Trait<Turreted>().desiredFacing = null;
+				/* hack */
+				if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
+					self.Trait<Turreted>().desiredFacing = null;
+			}
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -186,31 +172,32 @@ namespace OpenRA.Mods.RA
 
 		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(self.World, t)); }
 
-		public void AttackTarget(Actor self, Actor target, bool allowMovement)
+		public void AttackTarget( Target target, bool queued, bool allowMove )
 		{
-			AttackTarget(self, target, allowMovement, false);
-		}
+			if( !target.IsValid ) return;
+			self.QueueActivity(queued, GetAttackActivity(self, target, allowMove));
 
-		public void AttackTarget(Actor self, Actor target, bool allowMovement, bool holdStill)
-		{
-			var attack = self.Trait<AttackBase>();
-			if (target != null)
-			{
-				if (allowMovement)
-					attack.ResolveOrder(self, new Order((holdStill) ? "AttackHold" : "Attack", self, target, false));
-				else
-					attack.target = Target.FromActor(target);	// for turreted things on rails.
-			}
+			if (self.Owner == self.World.LocalPlayer)
+				self.World.AddFrameEndTask(w =>
+				{
+					if (self.Destroyed) return;
+					if (target.IsActor)
+						w.Add(new FlashTarget(target.Actor));
+
+					var line = self.TraitOrDefault<DrawLineToTarget>();
+					if (line != null)
+						line.SetTarget(self, target, Color.Red);
+				});
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
 		{
 			if (--nextScanTime <= 0)
 			{
-				var targetActor = ScanForTarget(self);
+				var targetActor = ScanForTarget(self, null);
 
 				if (targetActor != null)
-					AttackTarget(self, targetActor, allowMovement, holdStill);
+					AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
 
 				var info = self.Info.Traits.Get<AttackBaseInfo>();
 				nextScanTime = (int)(25 * (info.ScanTimeAverage +
@@ -218,15 +205,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Actor ScanForTarget(Actor self)
+		public Actor ScanForTarget(Actor self, Actor currentTarget)
 		{
-			var attack = self.Trait<AttackBase>();
-			var range = attack.GetMaximumRange();
+			var range = GetMaximumRange();
 
-			if ((!attack.target.IsValid || self.IsIdle) || !Combat.IsInRange(self.CenterLocation, range, attack.target))
+			if (self.IsIdle || currentTarget == null || !Combat.IsInRange(self.CenterLocation, range, currentTarget))
 				return ChooseTarget(self, range);
 
-			return null;
+			return currentTarget;
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMovement)
@@ -237,11 +223,10 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, float range)
 		{
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.Trait<AttackBase>();
 
 			return inRange
 				.Where(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Enemy)
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+				.Where(a => HasAnyValidWeapons(Target.FromActor(a)))
 				.Where(a => !a.HasTrait<Cloak>() || a.Trait<Cloak>().IsVisible(a, self.Owner))
 				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
 				.FirstOrDefault();

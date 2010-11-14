@@ -28,7 +28,6 @@ namespace OpenRA.Mods.RA.Air
 				Cancel( self );
 
 			var attack = self.Trait<AttackPlane>();
-			attack.target = Target;
 			attack.DoAttack( self, Target );
 
 			if( inner == null )

@@ -11,61 +11,76 @@
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
 	class AutoHealInfo : TraitInfo<AutoHeal> { }
 
-	class AutoHeal : ITick
+	class AutoHeal : INotifyIdle
 	{
-		void AttackTarget(Actor self, Actor target)
+		public void Idle( Actor self )
 		{
-			var attack = self.Trait<AttackBase>();
-			if (target != null)
-				attack.ResolveOrder(self, new Order("Attack", self, target, false));
-			else
-				if (attack.IsAttacking)
-					self.CancelActivity();
+			self.QueueActivity( new IdleHealActivity() );
 		}
 
-		bool NeedsNewTarget(Actor self)
+		class IdleHealActivity : Idle
 		{
-			var attack = self.Trait<AttackBase>();
-			var range = attack.GetMaximumRange();
+			Actor currentTarget;
 
-			if (!attack.target.IsValid)
-				return true;	// he's dead.
-			if( !Combat.IsInRange( self.CenterLocation, range, attack.target ) )
-				return true;	// wandered off faster than we could follow
-			
-			if (attack.target.IsActor
-			    && attack.target.Actor.GetDamageState() == DamageState.Undamaged)
-				return true;	// fully healed
+			public override IActivity Tick( Actor self )
+			{
+				if( NextActivity != null )
+					return NextActivity;
 
-			return false;
-		}
+				var attack = self.Trait<AttackBase>();
+				var range = attack.GetMaximumRange();
 
-		public void Tick(Actor self)
-		{
-			var attack = self.Trait<AttackBase>();
-			var range = attack.GetMaximumRange();
+				if (NeedsNewTarget(self))
+					AttackTarget(self, ChooseTarget(self, range));
 
-			if (NeedsNewTarget(self))
-				AttackTarget(self, ChooseTarget(self, range));
-		}
+				return this;
+			}
 
-		Actor ChooseTarget(Actor self, float range)
-		{
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.Trait<AttackBase>();
+			void AttackTarget(Actor self, Actor target)
+			{
+				var attack = self.Trait<AttackBase>();
+				if (target != null)
+					attack.AttackTarget(Target.FromActor( target), false, true );
+				else
+					if (attack.IsAttacking)
+						self.CancelActivity();
+			}
 
-			return inRange
-				.Where(a => a != self && self.Owner.Stances[a.Owner] == Stance.Ally)
-				.Where(a => a.IsInWorld && !a.IsDead())
-				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-				.FirstOrDefault();
+			bool NeedsNewTarget(Actor self)
+			{
+				var attack = self.Trait<AttackBase>();
+				var range = attack.GetMaximumRange();
+
+				if (currentTarget == null || !currentTarget.IsInWorld)
+					return true;	// he's dead.
+				if( !Combat.IsInRange( self.CenterLocation, range, currentTarget ) )
+					return true;	// wandered off faster than we could follow
+
+				if (currentTarget.GetDamageState() == DamageState.Undamaged)
+					return true;	// fully healed
+
+				return false;
+			}
+
+			Actor ChooseTarget(Actor self, float range)
+			{
+				var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+				var attack = self.Trait<AttackBase>();
+
+				return inRange
+					.Where(a => a != self && self.Owner.Stances[a.Owner] == Stance.Ally)
+					.Where(a => a.IsInWorld && !a.IsDead())
+					.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
+					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+					.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
+					.FirstOrDefault();
+			}
 		}
 	}
 }

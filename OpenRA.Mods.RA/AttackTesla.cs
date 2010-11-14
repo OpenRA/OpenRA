@@ -32,9 +32,9 @@ namespace OpenRA.Mods.RA
 			charges = self.Info.Traits.Get<AttackTeslaInfo>().MaxCharges;
 		}
 
-		protected override bool CanAttack( Actor self )
+		protected override bool CanAttack( Actor self, Target target )
 		{
-			return base.CanAttack( self ) && ( charges > 0 );
+			return base.CanAttack( self, target ) && ( charges > 0 );
 		}
 
 		public override void Tick( Actor self )
@@ -53,9 +53,9 @@ namespace OpenRA.Mods.RA
 
 		Actor previousTarget;
 
-		public override int FireDelay( Actor self, AttackBaseInfo info )
+		public override int FireDelay( Actor self, Target target, AttackBaseInfo info )
 		{
-			return target.Actor == previousTarget ? 3 : base.FireDelay(self, info);
+			return target.Actor == previousTarget ? 3 : base.FireDelay(self, target, info);
 		}
 
 		public void Attacking(Actor self)

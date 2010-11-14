@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA
 					 .Product()
 			};
 			
-			attack.ScheduleDelayedAction( attack.FireDelay( self, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
+			attack.ScheduleDelayedAction( attack.FireDelay( self, target, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
 			{
 				if (args.weapon.Projectile != null)
 				{

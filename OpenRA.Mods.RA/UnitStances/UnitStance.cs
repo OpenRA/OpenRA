@@ -8,7 +8,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 
-	public class UnitStanceInfo : ITraitInfo
+	public class UnitStanceInfo : ITraitInfo, ITraitPrerequisite<AttackBaseInfo>
 	{
 		public readonly bool Default = false;
 		public readonly int ScanDelayMin = 12;
@@ -167,12 +167,8 @@ namespace OpenRA.Mods.RA
 
 		public static void AttackTarget(Actor self, Actor target, bool holdStill)
 		{
-			var attack = self.Trait<AttackBase>();
-
-			if (attack != null && target != null)
-			{
-				attack.ResolveOrder(self, new Order((holdStill) ? "AttackHold" : "Attack", self, target, false));
-			}
+			if (target != null)
+				self.Trait<AttackBase>().AttackTarget(Target.FromActor(target), false, !holdStill);
 		}
 
 		public static void StopAttack(Actor self)
@@ -199,7 +195,7 @@ namespace OpenRA.Mods.RA
 
 		public static Actor ScanForTarget(Actor self)
 		{
-			return self.Trait<AttackBase>().ScanForTarget(self);
+			return self.Trait<AttackBase>().ScanForTarget(self, null);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
