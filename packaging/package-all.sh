@@ -17,7 +17,7 @@ cd "$SRCDIR"
 mkdir packaging/built
 mkdir packaging/built/mods
 echo $1 > VERSION
-make game editor
+make package
 
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
@@ -28,6 +28,7 @@ find . -path "*.mdb" -delete
 FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.Renderer.Cg.dll OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll \
 OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf cg glsl mods/ra mods/cnc VERSION COPYING HACKING INSTALL"
 
+echo "Copying files..."
 for i in $FILES; do
 	cp -R "$i" "packaging/built/$i" || exit 3
 done
@@ -37,6 +38,9 @@ cp thirdparty/Tao/* packaging/built
 
 # Copy WindowsBase.dll for linux packages
 cp thirdparty/WindowsBase.dll packaging/built
+
+# SharpZipLib for zip file support
+cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built

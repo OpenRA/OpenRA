@@ -113,7 +113,10 @@ winlaunch_EXTRA		= -resource:OpenRA.Launcher.MainForm.resources \
 
 .SUFFIXES:
 .PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility winlaunch
-core: game editor utility winlaunch
+core: game editor
+package: game editor utility
+all: game tools
+tools: editor ralint seqed filex tsbuild utility winlaunch
 game: $(fileformats_TARGET) $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
 
 clean: 
@@ -205,9 +208,6 @@ OpenRA.Launcher.InstallPackagesDialog.resources:
 	resgen2 OpenRA.Launcher/InstallPackagesDialog.resx OpenRA.Launcher.InstallPackagesDialog.resources 1> /dev/null
 OpenRA.Launcher.ConfigureModsDialog.resources:
 	resgen2 OpenRA.Launcher/ConfigureModsDialog.resx OpenRA.Launcher.ConfigureModsDialog.resources 1> /dev/null
-
-tools: editor ralint seqed filex tsbuild
-all: game tools
 
 fixheader: packaging/fixheader.cs
 	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
