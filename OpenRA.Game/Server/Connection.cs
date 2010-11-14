@@ -35,7 +35,7 @@ namespace OpenRA.Server
 			return result.ToArray();
 		}
 
-		bool ReadDataInner()
+		bool ReadDataInner( Server server )
 		{
 			var rx = new byte[1024];
 			var len = 0;
@@ -49,7 +49,7 @@ namespace OpenRA.Server
 					else
 					{
 						if (len == 0)
-							Server.DropClient(this, null);
+							server.DropClient(this, null);
 						break;
 					}
 						
@@ -57,7 +57,7 @@ namespace OpenRA.Server
 				catch (SocketException e)
 				{
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
-					Server.DropClient(this, e); 
+					server.DropClient(this, e); 
 					return false; 
 				}
 			}
@@ -65,9 +65,9 @@ namespace OpenRA.Server
 			return true;
 		}
 
-		public void ReadData()
+		public void ReadData( Server server )
 		{
-			if (ReadDataInner())
+			if (ReadDataInner(server))
 				while (data.Count >= ExpectLength)
 				{
 					var bytes = PopBytes(ExpectLength);
@@ -82,12 +82,12 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
-								Server.DispatchOrders(this, Frame, bytes);
+								server.DispatchOrders(this, Frame, bytes);
 								MostRecentFrame = Frame;
 								ExpectLength = 8;
 								State = ReceiveState.Header;
 
-								Server.UpdateInFlightFrames(this);
+								server.UpdateInFlightFrames(this);
 							} break;
 					}
 				}

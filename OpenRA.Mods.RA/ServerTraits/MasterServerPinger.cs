@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using OpenRA.Server;
-using server = OpenRA.Server.Server;
+using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.RA.Server
 {
@@ -21,10 +21,10 @@ namespace OpenRA.Mods.RA.Server
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
-		public void Tick()
+		public void Tick(S server)
 		{
 			if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
-				PingMasterServer();
+				PingMasterServer(server);
 			else
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA.Server
 		}
 		
 		
-		public void LobbyInfoSynced() { PingMasterServer(); }
-		public void GameStarted() { PingMasterServer(); }
+		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
+		public void GameStarted(S server) { PingMasterServer(server); }
 
 		static int lastPing = 0;
 		// Todo: use the settings passed to the server instead
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Server
 		
 		static volatile bool isBusy;
 		static Queue<string> masterServerMessages = new Queue<string>();
-		public static void PingMasterServer()
+		public static void PingMasterServer(S server)
 		{
 			if (isBusy || !isInternetServer) return;
 

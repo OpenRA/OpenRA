@@ -38,6 +38,7 @@ namespace OpenRA
 		public static Settings Settings;
 
 		internal static OrderManager orderManager;
+		static Server.Server server;
 
 		public static XRandom CosmeticRandom = new XRandom();	// not synced
 
@@ -258,8 +259,8 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
-			if (IsHost)
-				Server.Server.Shutdown();
+			if (IsHost && server != null)
+				server.Shutdown();
 
 			orderManager.Dispose();
 			var shellmap = modData.Manifest.ShellmapUid;
@@ -317,12 +318,15 @@ namespace OpenRA
          		ConnectedToLobby = null;
          	};
 			if (isHost)
-			{
-				Server.Server.ServerMain(Game.modData, Settings, map);
-				JoinServer(IPAddress.Loopback.ToString(), Settings.Server.ListenPort);
-			}
+				CreateAndJoinServer( Settings, map );
 			else
 				JoinServer(host, port);
+		}
+
+		public static void CreateAndJoinServer(Settings settings, string map)
+		{
+			server = new Server.Server(modData, settings, map);
+			JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
 		}
 	}
 }

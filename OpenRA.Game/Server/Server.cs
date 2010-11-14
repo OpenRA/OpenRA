@@ -23,34 +23,34 @@ using OpenRA.Network;
 
 namespace OpenRA.Server
 {
-	public static class Server
+	public class Server
 	{
-		public static List<Connection> conns = new List<Connection>();
-		static TcpListener listener = null;
-		static Dictionary<int, List<Connection>> inFlightFrames
+		public List<Connection> conns = new List<Connection>();
+		TcpListener listener = null;
+		Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
 		
-		static TypeDictionary ServerTraits = new TypeDictionary();
-		public static Session lobbyInfo;
-		public static bool GameStarted = false;
-		public static string Name;
-		static int randomSeed;
+		TypeDictionary ServerTraits = new TypeDictionary();
+		public Session lobbyInfo;
+		public bool GameStarted = false;
+		public string Name;
+		int randomSeed;
 
-		public static ModData ModData;
-		public static Map Map;
+		public ModData ModData;
+		public Map Map;
 
-		public static void Shutdown()
+		public void Shutdown()
 		{
 			conns.Clear();
 			GameStarted = false;
 			foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
-				t.ServerShutdown();
+				t.ServerShutdown(this);
 			
 			try { listener.Stop(); }
 			catch { }
 		}
 		
-		public static void ServerMain(ModData modData, Settings settings, string map)
+		public Server(ModData modData, Settings settings, string map)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -69,7 +69,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.ServerName = settings.Server.Name;
 			
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
-				t.ServerStarted();
+				t.ServerStarted(this);
 						
 			Log.Write("server", "Initial mods: ");
 			foreach( var m in lobbyInfo.GlobalSettings.Mods )
@@ -99,10 +99,10 @@ namespace OpenRA.Server
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
-						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData();
+						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData( this );
 
 					foreach (var t in ServerTraits.WithInterface<ITick>())
-						t.Tick();
+						t.Tick(this);
 					
 					if (conns.Count() == 0)
 					{
@@ -119,7 +119,7 @@ namespace OpenRA.Server
 		 *		for manual spawnpoint choosing.
 		 *	- 256 max players is a dirty hack
 		 */
-		static int ChooseFreePlayerIndex()
+		int ChooseFreePlayerIndex()
 		{
 			for (var i = 0; i < 256; i++)
 				if (conns.All(c => c.PlayerIndex != i))
@@ -128,7 +128,7 @@ namespace OpenRA.Server
 			throw new InvalidOperationException("Already got 256 players");
 		}
 
-		static void AcceptConnection()
+		void AcceptConnection()
 		{
 			Socket newSocket = null;
 
@@ -164,12 +164,12 @@ namespace OpenRA.Server
 				conns.Add(newConn);
 
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
-					t.ClientJoined(newConn);
+					t.ClientJoined(this, newConn);
 			}
 			catch (Exception e) { DropClient(newConn, e); }
 		}
 
-		public static void UpdateInFlightFrames(Connection conn)
+		public void UpdateInFlightFrames(Connection conn)
 		{
 			if (conn.Frame != 0)
 			{
@@ -185,7 +185,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		static void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
+		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
 		{
 			try
 			{
@@ -199,7 +199,7 @@ namespace OpenRA.Server
 			catch( Exception e ) { DropClient( c, e ); }
 		}
 
-		public static void DispatchOrders(Connection conn, int frame, byte[] data)
+		public void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
@@ -211,7 +211,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		static void InterpretServerOrders(Connection conn, byte[] data)
+		void InterpretServerOrders(Connection conn, byte[] data)
 		{
 			var ms = new MemoryStream(data);
 			var br = new BinaryReader(ms);
@@ -229,23 +229,23 @@ namespace OpenRA.Server
 			catch (NotImplementedException) { }
 		}
 		
-		public static void SendChatTo(Connection conn, string text)
+		public void SendChatTo(Connection conn, string text)
 		{
 			DispatchOrdersToClient(conn, 0, 0,
 				new ServerOrder("Chat", text).Serialize());
 		}
 
-        public static void SendChat(Connection asConn, string text)
+        public void SendChat(Connection asConn, string text)
         {
             DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
         }
 
-        public static void SendDisconnected(Connection asConn)
+        public void SendDisconnected(Connection asConn)
         {
             DispatchOrders(asConn, 0, new ServerOrder("Disconnected", "").Serialize());
         }
 
-		static void InterpretServerOrder(Connection conn, ServerOrder so)
+		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
 			switch (so.Name)
 			{
@@ -253,7 +253,7 @@ namespace OpenRA.Server
 					{
 						bool handled = false;
 						foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
-							if ((handled = t.InterpretCommand(conn, GetClient(conn), so.Data)))
+							if ((handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data)))
 								break;
 						
 						if (!handled)
@@ -272,12 +272,12 @@ namespace OpenRA.Server
 			}
 		}
 
-		public static Session.Client GetClient(Connection conn)
+		public Session.Client GetClient(Connection conn)
 		{
 			return lobbyInfo.Clients.First(c => c.Index == conn.PlayerIndex);
 		}
 
-		public static void DropClient(Connection toDrop, Exception e)
+		public void DropClient(Connection toDrop, Exception e)
 		{
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
@@ -293,28 +293,28 @@ namespace OpenRA.Server
 				SyncLobbyInfo();
 		}
 
-		public static void SyncLobbyInfo()
+		public void SyncLobbyInfo()
 		{
 			if (!GameStarted)	/* don't do this while the game is running, it breaks things. */
 				DispatchOrders(null, 0,
 					new ServerOrder("SyncInfo", lobbyInfo.Serialize()).Serialize());
 
 			foreach (var t in ServerTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced();
+				t.LobbyInfoSynced(this);
 		}
 		
-		public static void StartGame()
+		public void StartGame()
 		{
-			Server.GameStarted = true;
-			foreach( var c in Server.conns )
-				foreach( var d in Server.conns )
+			GameStarted = true;
+			foreach( var c in conns )
+				foreach( var d in conns )
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());
 
 			foreach (var t in ServerTraits.WithInterface<IStartGame>())
-				t.GameStarted();
+				t.GameStarted(this);
 		}
 	}
 }

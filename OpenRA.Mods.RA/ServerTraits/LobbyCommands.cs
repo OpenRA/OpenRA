@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Network;
 using OpenRA.FileFormats;
 using OpenRA.Server;
-using server = OpenRA.Server.Server;
+using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.RA.Server
 {
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Server
 	{
 		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
 
-		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
+		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (server.GameStarted)
 			{
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						
 						if (server.conns.Count > 0 && server.conns.All(c => server.GetClient(c).State == Session.ClientState.Ready))
-							InterpretCommand(conn, client, "startgame");
+							InterpretCommand(server, conn, client, "startgame");
 						
 						return true;
 					}},
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 						server.lobbyInfo.GlobalSettings.Map = s;			
-						LoadMap();
+						LoadMap(server);
 
 						foreach(var c in server.lobbyInfo.Clients)
 						{
@@ -235,7 +235,7 @@ namespace OpenRA.Mods.RA.Server
 			return a(cmdValue);
 		}
 		
-		public void ServerStarted() { LoadMap(); }
+		public void ServerStarted(S server) { LoadMap(server); }
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.RA.Server
 			};
 		}
 
-		public static void LoadMap()
+		public static void LoadMap(S server)
 		{
 			server.Map = new Map(server.ModData.AvailableMaps[server.lobbyInfo.GlobalSettings.Map]);
 			server.lobbyInfo.Slots = server.Map.Players
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.RA.Server
 				});
 		}
 		
-		public void ClientJoined(Connection newConn)
+		public void ClientJoined(S server, Connection newConn)
 		{
 			var defaults = new GameRules.PlayerSettings();
 			
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA.Server
 				State = Session.ClientState.NotReady,
 				SpawnPoint = 0,
 				Team = 0,
-				Slot = ChooseFreeSlot(),
+				Slot = ChooseFreeSlot(server),
 			};
 			
 			var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
@@ -297,7 +297,7 @@ namespace OpenRA.Mods.RA.Server
 			server.SyncLobbyInfo();
 		}
 		
-		static int ChooseFreeSlot()
+		static int ChooseFreeSlot(S server)
 		{
 			return server.lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
 				&& !server.lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;

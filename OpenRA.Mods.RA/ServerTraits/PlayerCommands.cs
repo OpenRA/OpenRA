@@ -14,13 +14,13 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Server;
-using server = OpenRA.Server.Server;
+using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.RA.Server
 {		
 	public class PlayerCommands : ServerTrait, IInterpretCommand
 	{
-		public bool InterpretCommand(Connection conn, Session.Client client, string cmd)
+		public bool InterpretCommand( S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (server.GameStarted)
 			{
