@@ -89,6 +89,8 @@ namespace OpenRA.Mods.RA
 
 		public virtual void Tick(Actor self)
 		{
+			--nextScanTime;
+
 			foreach (var w in Weapons)
 				w.Tick();
 
@@ -192,17 +194,9 @@ namespace OpenRA.Mods.RA
 
 		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
 		{
-			if (--nextScanTime <= 0)
-			{
-				var targetActor = ScanForTarget(self, null);
-
-				if (targetActor != null)
-					AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
-
-				var info = self.Info.Traits.Get<AttackBaseInfo>();
-				nextScanTime = (int)(25 * (info.ScanTimeAverage +
-					(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
-			}
+			var targetActor = ScanForTarget(self, null);
+			if (targetActor != null)
+				AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
 		}
 
 		public Actor ScanForTarget(Actor self, Actor currentTarget)
@@ -210,7 +204,8 @@ namespace OpenRA.Mods.RA
 			var range = GetMaximumRange();
 
 			if (self.IsIdle || currentTarget == null || !Combat.IsInRange(self.CenterLocation, range, currentTarget))
-				return ChooseTarget(self, range);
+				if(nextScanTime <= 0)
+					return ChooseTarget(self, range);
 
 			return currentTarget;
 		}
@@ -222,6 +217,10 @@ namespace OpenRA.Mods.RA
 
 		Actor ChooseTarget(Actor self, float range)
 		{
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
+			nextScanTime = (int)(25 * (info.ScanTimeAverage +
+				(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
+
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange

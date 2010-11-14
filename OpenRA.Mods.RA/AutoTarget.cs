@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -17,15 +18,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool AllowMovement = true;
 	}
 
-	class AutoTarget : ITick, INotifyDamage
+	class AutoTarget : INotifyIdle, INotifyDamage
 	{
-		public void Tick(Actor self)
-		{
-			if (!self.IsIdle && self.Info.Traits.Get<AutoTargetInfo>().AllowMovement) return;
-
-			self.Trait<AttackBase>().ScanAndAttack(self, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
-		}
-
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (!self.IsIdle) return;
@@ -41,6 +35,39 @@ namespace OpenRA.Mods.RA
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
 			self.Trait<AttackBase>().AttackTarget(Target.FromActor(e.Attacker), false, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
+		}
+
+		public void Idle( Actor self )
+		{
+			self.QueueActivity( new IdleAttackActivity() );
+		}
+
+		class IdleAttackActivity : Idle
+		{
+			Actor currentTarget;
+			IActivity inner;
+
+			public override IActivity Tick( Actor self )
+			{
+				if( NextActivity != null && inner != null )
+					inner.Cancel( self );
+				if( inner == null )
+				{
+					if( NextActivity != null )
+						return NextActivity;
+
+					var attack = self.Trait<AttackBase>();
+					var range = attack.GetMaximumRange();
+
+					currentTarget = attack.ScanForTarget(self, null);
+					if( currentTarget != null )
+						inner = attack.GetAttackActivity( self, Target.FromActor(currentTarget), self.Info.Traits.Get<AutoTargetInfo>().AllowMovement );
+				}
+				if( inner != null )
+					inner = Util.RunActivity( self, inner );
+
+				return this;
+			}
 		}
 	}
 }
