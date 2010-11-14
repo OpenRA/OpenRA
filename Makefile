@@ -114,7 +114,7 @@ winlaunch_EXTRA		= -resource:OpenRA.Launcher.MainForm.resources \
 .SUFFIXES:
 .PHONY: clean all game tool default mods mod_ra mod_cnc install uninstall editor_res editor tsbuild ralint seqed filex utility winlaunch
 core: game editor utility winlaunch
-game: $(fileformats_TARGET) $(rcg_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
+game: $(fileformats_TARGET) $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(game_TARGET) $(ra_TARGET) $(cnc_TARGET)
 
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
