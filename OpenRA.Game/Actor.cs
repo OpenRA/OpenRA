@@ -68,12 +68,11 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			var wasIdle = currentActivity is Idle;
-			currentActivity = Util.RunActivity( this, currentActivity ) ?? new Idle();
-
-			if (currentActivity is Idle && !wasIdle)
+			if (currentActivity == null)
 				foreach (var ni in TraitsImplementing<INotifyIdle>())
-					ni.Idle(this);
+					ni.TickIdle(this);
+
+			currentActivity = Util.RunActivity( this, currentActivity );
 		}
 
 		public bool IsIdle

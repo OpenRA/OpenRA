@@ -203,7 +203,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render( WorldRenderer wr ); }
-	public interface INotifyIdle { void Idle(Actor self); }
+	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IBlocksBullets { }
 

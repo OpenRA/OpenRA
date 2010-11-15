@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Air
 
 	class ReturnOnIdle : INotifyIdle
 	{
-		public void Idle(Actor self)
+		public void TickIdle(Actor self)
 		{
 			var altitude = self.Trait<Aircraft>().Altitude;
 			if (altitude == 0) return;	// we're on the ground, let's stay there.
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Air
 
 	class FlyAwayOnIdle : INotifyIdle
 	{
-		public void Idle(Actor self)
+		public void TickIdle(Actor self)
 		{
 			self.QueueActivity(new FlyOffMap());
 			self.QueueActivity(new RemoveSelf());

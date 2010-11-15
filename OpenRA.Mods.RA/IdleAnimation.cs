@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 		}
 
-		public void Idle(Actor self)
+		public void TickIdle(Actor self)
 		{
 			self.QueueActivity(new Activities.IdleAnimation(Info.Animations.Random(self.World.SharedRandom),
 			                                                Info.IdleWaitTicks));

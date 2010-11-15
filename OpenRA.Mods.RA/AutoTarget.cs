@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			self.Trait<AttackBase>().AttackTarget(Target.FromActor(e.Attacker), false, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
 		}
 
-		public void Idle( Actor self )
+		public void TickIdle( Actor self )
 		{
 			self.QueueActivity( new IdleAttackActivity() );
 		}

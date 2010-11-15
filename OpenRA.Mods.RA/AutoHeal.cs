@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 
 	class AutoHeal : INotifyIdle
 	{
-		public void Idle( Actor self )
+		public void TickIdle( Actor self )
 		{
 			self.QueueActivity( new IdleHealActivity() );
 		}
