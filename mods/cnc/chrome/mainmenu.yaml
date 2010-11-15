@@ -3,7 +3,7 @@ Background@MAINMENU_BG:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:250
-	Height:290
+	Height:330
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Background@MOTD_BG:
@@ -80,10 +80,18 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Music
 			Bold:True
+		Button@MAINMENU_BUTTON_REPLAY_VIEWER:
+			Id:MAINMENU_BUTTON_REPLAY_VIEWER
+			X:45
+			Y:230
+			Width:160
+			Height:25
+			Text: Replay Viewer
+			Bold: True
 		Button@MAINMENU_BUTTON_QUIT:
 			Id:MAINMENU_BUTTON_QUIT
 			X:45
-			Y:230
+			Y:270
 			Width:160
 			Height:25
 			Text:Quit

@@ -62,6 +62,7 @@ ChromeLayout:
 	mods/cnc/chrome/settings.yaml
 	mods/cnc/chrome/gamelobby.yaml
 	mods/cnc/chrome/serverbrowser.yaml
+	mods/cnc/chrome/replaybrowser.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
