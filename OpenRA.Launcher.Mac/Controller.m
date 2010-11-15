@@ -8,6 +8,7 @@
 
 #import "Controller.h"
 #import "ModEntry.h"
+#import "GameInstall.h"
 #import "ImageAndTextCell.h"
 
 @implementation Controller
@@ -24,6 +25,8 @@
 	[outlineView reloadData];
 	[outlineView expandItem:[outlineView itemAtRow:1] expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+	
+	game = [[GameInstall alloc] initWithPath:@"/Users/paul/src/OpenRA"];
 }
 
 - (void) dealloc
@@ -109,5 +112,10 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 			[(ImageAndTextCell*)cell setImage:[item icon]];
 		}
 	}
+}
+
+- (IBAction)launchGame:(id)sender
+{
+	[game launchGame];
 }
 @end

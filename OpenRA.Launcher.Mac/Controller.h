@@ -9,10 +9,13 @@
 #import <Cocoa/Cocoa.h>
 
 @class ModEntry;
+@class GameInstall;
 @interface Controller : NSObject
 {
 	ModEntry *sidebarItems;
+	GameInstall *game;
 	IBOutlet NSOutlineView *outlineView;
 }
 - (ModEntry *)modTree;
+- (IBAction)launchGame:(id)sender;
 @end

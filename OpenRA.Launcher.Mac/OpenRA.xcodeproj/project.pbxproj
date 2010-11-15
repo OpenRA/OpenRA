@@ -16,6 +16,8 @@
 		DA81FAAA1290FA0000C48F2F /* ModEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FAA91290FA0000C48F2F /* ModEntry.m */; };
 		DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */; };
 		DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA81FBDB12910E4900C48F2F /* OpenRA.icns */; };
+		DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FC3E12911E2B00C48F2F /* GameInstall.m */; };
+		DA9292C81291DF2D00EDB02E /* OpenRA.app in Resources */ = {isa = PBXBuildFile; fileRef = DA9292C71291DF2D00EDB02E /* OpenRA.app */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,9 @@
 		DA81FB9112910A8B00C48F2F /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
 		DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		DA81FBDB12910E4900C48F2F /* OpenRA.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRA.icns; sourceTree = "<group>"; };
+		DA81FC3D12911E2B00C48F2F /* GameInstall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInstall.h; sourceTree = "<group>"; };
+		DA81FC3E12911E2B00C48F2F /* GameInstall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameInstall.m; sourceTree = "<group>"; };
+		DA9292C71291DF2D00EDB02E /* OpenRA.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = OpenRA.app; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +68,8 @@
 				DA81FA811290F5C800C48F2F /* Controller.m */,
 				DA81FAA81290FA0000C48F2F /* ModEntry.h */,
 				DA81FAA91290FA0000C48F2F /* ModEntry.m */,
+				DA81FC3D12911E2B00C48F2F /* GameInstall.h */,
+				DA81FC3E12911E2B00C48F2F /* GameInstall.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -117,6 +124,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA9292C71291DF2D00EDB02E /* OpenRA.app */,
 				DA81FBDB12910E4900C48F2F /* OpenRA.icns */,
 				8D1107310486CEB800E47090 /* OpenRA-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -187,6 +195,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */,
+				DA9292C81291DF2D00EDB02E /* OpenRA.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +211,7 @@
 				DA81FA821290F5C800C48F2F /* Controller.m in Sources */,
 				DA81FAAA1290FA0000C48F2F /* ModEntry.m in Sources */,
 				DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */,
+				DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
