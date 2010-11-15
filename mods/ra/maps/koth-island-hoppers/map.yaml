@@ -194,6 +194,8 @@ Smudges:
 Rules:
 	MISS:
 		ProximityCapturable:
+		StrategicPoint:
+			Critical: false
 		-RepairableBuilding:
 		Tooltip:
 			Name: Strategic Point
@@ -202,10 +204,16 @@ Rules:
 			Unsellable: true
 		Scale:
 			Value: 0.75
+		-RevealsShroud
 		RevealsShroud:
 			Range: 20
 		-Health:
-		
+	Player:
+		StrategicVictoryConditions:
+			TicksToHold: 1500
+			ResetOnHoldLost: false
+			RatioRequired: 1
+			CriticalRatioRequired: 1
 Sequences:
 
 Weapons:
