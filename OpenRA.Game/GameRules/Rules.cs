@@ -30,7 +30,7 @@ namespace OpenRA
 			// Added support to extend the list of rules (add it to m.LocalRules)
 			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
-			Voices = LoadYamlRules(m.Voices, new List<MiniYamlNode>(), (k, _) => new VoiceInfo(k.Value));
+			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
 			Music = LoadYamlRules(m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
 			Movies = LoadYamlRules(m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 			
