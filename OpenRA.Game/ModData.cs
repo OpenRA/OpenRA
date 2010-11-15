@@ -53,6 +53,7 @@ namespace OpenRA
 		}
 		
 		string cachedTheatre = null;
+
 		public Map PrepareMap(string uid)
 		{
 			LoadScreen.Display();
@@ -63,13 +64,15 @@ namespace OpenRA
 			var map = new Map(AvailableMaps[uid]);
 			
 			Rules.LoadRules(Manifest, map);
+
 			if (map.Theater != cachedTheatre)
 			{
 				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
-				SequenceProvider.Initialize(Manifest.Sequences);
 				CursorProvider.Initialize(Manifest.Cursors);
+				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
 				cachedTheatre = map.Theater;
 			}
+
 			return map;
 		}
 	}
