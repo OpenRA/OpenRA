@@ -184,7 +184,6 @@ World:
 	PathFinder:
 	ValidateOrder:
 	GotoNextBase:
-	AttackMoveInteraction:
 
 CRATE:
 	Tooltip:
