@@ -44,6 +44,9 @@ packaging/osx/launcher/OpenRA.xcodeproj/*.mode1v3
 temp.c
 temp.o
 temp.s
-
+OpenRA.Launcher.Mac/build/
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.pbxuser
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.config
 *.resources
