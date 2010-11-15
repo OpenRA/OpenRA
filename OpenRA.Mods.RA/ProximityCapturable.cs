@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 	public class ProximityCapturable : ITick
 	{
 		[Sync]
-		public Player Owner;
+		public Player Owner { get { return Captured ? Self.Owner : OriginalOwner; } }
 
 		[Sync]
 		public readonly Player OriginalOwner;
@@ -38,21 +38,16 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public bool MustBeClear = false;
 
+		public Actor Self;
+
 		public ProximityCapturable(Actor self, ProximityCapturableInfo info)
 		{
-			Owner = self.Owner;
-			OriginalOwner = Owner;
 			Info = info;
 			Range = info.Range;
 			Permanent = info.Permanent;
 			MustBeClear = info.MustBeClear;
-		}
-
-		public Player GetCurrentOwner()
-		{
-			if (!Captured) return OriginalOwner;
-
-			return Owner ?? OriginalOwner;
+			Self = self;
+			OriginalOwner = self.Owner;
 		}
 
 		public void Tick(Actor self)
@@ -76,7 +71,7 @@ namespace OpenRA.Mods.RA
 			if (MustBeClear && playersNear != 1)
 			{
 				// Revert Ownership
-				ChangeOwnership(self, GetCurrentOwner(), OriginalOwner);
+				ChangeOwnership(self, Owner, OriginalOwner);
 			}
 			// See if the 'temporary' owner still is in range
 			else if (!IsStillInRange(self, self.Owner, Range))
@@ -86,12 +81,12 @@ namespace OpenRA.Mods.RA
 
 				if (captor != null) // got one
 				{
-					ChangeOwnership(self, captor, GetCurrentOwner());
+					ChangeOwnership(self, captor, Owner);
 					return;
 				}
 
 				// Revert Ownership otherwise
-				ChangeOwnership(self, GetCurrentOwner(), OriginalOwner);
+				ChangeOwnership(self, Owner, OriginalOwner);
 			}
 		}
 
@@ -110,7 +105,6 @@ namespace OpenRA.Mods.RA
 					w.Add(new FlashTarget(self));
 
 				Captured = false;
-				Owner = null;
 
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(self, self, previousOwner, self.Owner);
@@ -132,7 +126,6 @@ namespace OpenRA.Mods.RA
 					w.Add(new FlashTarget(self));
 
 				Captured = true;
-				Owner = captor.Owner;
 
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(self, captor, previousOwner, self.Owner);
@@ -145,7 +138,7 @@ namespace OpenRA.Mods.RA
 			var unitsInRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return unitsInRange
-				.Where(a => a.Owner != null && a.Owner == currentOwner && !a.Destroyed && a.IsInWorld && a != self)
+				.Where(a => a.Owner == currentOwner && !a.Destroyed && a.IsInWorld && a != self)
 				.Any();
 		}
 
@@ -155,7 +148,7 @@ namespace OpenRA.Mods.RA
 			var unitsInRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return unitsInRange
-				.Where(a => a.Owner != null && a.Owner != originalOwner && !a.Destroyed && a.IsInWorld && a != self)
+				.Where(a => a.Owner != originalOwner && !a.Destroyed && a.IsInWorld && a != self)
 				.Where(a => !a.Owner.PlayerRef.OwnsWorld)
 				.Where(a => !a.Owner.PlayerRef.NonCombatant)
 				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
@@ -167,7 +160,7 @@ namespace OpenRA.Mods.RA
 			var unitsInRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return unitsInRange
-				.Where(a => a.Owner != null && a.Owner != ignoreMe && !a.Destroyed && a.IsInWorld && a != self)
+				.Where(a => a.Owner != ignoreMe && !a.Destroyed && a.IsInWorld && a != self)
 				.Where(a => !a.Owner.PlayerRef.OwnsWorld)
 				.Where(a => !a.Owner.PlayerRef.NonCombatant)
 				.Select(a => a.Owner)
