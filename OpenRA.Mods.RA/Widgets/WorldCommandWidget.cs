@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return ProcessInput(e);
 		}
 
-		private bool ProcessInput(KeyInput e)
+		bool ProcessInput(KeyInput e)
 		{
 			// command: AttackMove
 			if (e.KeyChar == AttackMoveKey && e.Modifiers == Modifiers.None)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return PerformAttackMove();
 			}
 
-			// command: GuardStance
+/*			// command: GuardStance
 			if (e.KeyChar == HoldGroundKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
 			{
 				return EnableStance<UnitStanceHoldGround>();
@@ -82,26 +82,26 @@ namespace OpenRA.Mods.RA.Widgets
 			if (e.KeyChar == DefensiveKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
 			{
 				return EnableStance<UnitStanceDefensive>();
-			}
-
+			}	*/
+			
 			return false;
 		}
 
-		private bool EnableStance<T>() where T : UnitStance
-		{
-			if (World.Selection.Actors.Count() == 0)
-				return false;
+		//bool EnableStance<T>() where T : UnitStance
+		//{
+		//    if (World.Selection.Actors.Count() == 0)
+		//        return false;
 
-			var traits =
-				World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.TraitOrDefault<T>() != null && !UnitStance.IsActive<T>(a)).
-					Select(a => new Pair<Actor, T>(a, a.TraitOrDefault<T>()) );
+		//    var traits =
+		//        World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.TraitOrDefault<T>() != null && !UnitStance.IsActive<T>(a)).
+		//            Select(a => new Pair<Actor, T>(a, a.TraitOrDefault<T>()) );
 			
-			World.AddFrameEndTask(w => traits.Do(p => UnitStance.OrderStance(p.First, p.Second)));
+		//    World.AddFrameEndTask(w => traits.Do(p => UnitStance.OrderStance(p.First, p.Second)));
 
-			return traits.Any();
-		}
+		//    return traits.Any();
+		//}
 
-		private bool PerformAttackMove()
+		bool PerformAttackMove()
 		{
 			if (World.Selection.Actors.Count() > 0)
 			{
