@@ -34,6 +34,8 @@ namespace OpenRA
 		// Sequences overrides
 		public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
 
+		// Weapon overrides
+		public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
 		// Binary map data
 		public byte TileFormat = 1;
 		[FieldLoader.Load] public int2 MapSize;
@@ -184,6 +186,9 @@ namespace OpenRA
 			// Sequences
 			Sequences = (yaml.NodesDict.ContainsKey("Sequences")) ? yaml.NodesDict["Sequences"].Nodes : new List<MiniYamlNode>();
 
+			// Weapons
+			Weapons = (yaml.NodesDict.ContainsKey("Weapons")) ? yaml.NodesDict["Weapons"].Nodes : new List<MiniYamlNode>();
+			
 			CustomTerrain = new string[MapSize.X, MapSize.Y];			
 			LoadBinaryData();
 		}
@@ -216,6 +221,7 @@ namespace OpenRA
 			root.Add( new MiniYamlNode( "Smudges", MiniYaml.FromList<SmudgeReference>( Smudges ) ) );
 			root.Add(new MiniYamlNode("Rules", null, Rules));
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
+			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 
 			SaveBinaryData(Path.Combine(filepath, "map.bin"));
 			root.WriteToFile(Path.Combine(filepath, "map.yaml"));
