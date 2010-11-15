@@ -13,9 +13,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ConquestVictoryConditionsInfo : TraitInfo<ConquestVictoryConditions> { }
+	public class ConquestVictoryConditionsInfo : TraitInfo<ConquestVictoryConditions> { }
 
-	class ConquestVictoryConditions : ITick, IResolveOrder
+	public class ConquestVictoryConditions : ITick, IResolveOrder
 	{
 		public void Tick(Actor self)
 		{
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 				Surrender(self);
 		}
 
-		void Surrender(Actor self)
+		public void Surrender(Actor self)
 		{
 			if (self.Owner.WinState == WinState.Lost) return;
 			self.Owner.WinState = WinState.Lost;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 
 		}
 		
-		void Win(Actor self)	
+		public void Win(Actor self)	
 		{
 			if (self.Owner.WinState == WinState.Won) return;
 			self.Owner.WinState = WinState.Won;
