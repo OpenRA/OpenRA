@@ -174,6 +174,14 @@
 		<image name="unowned" x="528" y="128" width="16" height="16" />
 		<image name="owned" x="512" y="128" width="16" height="16" />
 	</collection>
+	<collection name="strategic" src="strategic.png">
+		<image name="unowned" x="0" y="0" width="32" height="32" />
+		<!-- <image name="owned" x="32" y="0" width="32" height="32" /> -->
+		<image name="critical_unowned" x="0" y="32" width="32" height="32" />
+		<image name="enemy_owned" x="32" y="32" width="32" height="32" />
+		<!-- <image name="unused_unowned" x="0" y="32" width="32" height="32" /> -->
+		<image name="player_owned" x="96" y="0" width="32" height="32" />
+	</collection>
 	<collection name="sell-button" src="buttons.png">
 		<image name="normal" x="0" y="0" width="34" height="28" />
 		<image name="pressed" x="34" y="0" width="34" height="28" />

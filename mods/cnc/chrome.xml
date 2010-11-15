@@ -209,4 +209,12 @@
 	<collection name="checkbox" src="buttons.png">
 		<image name="checked" x="0" y="112" width="16" height="16" />
 	</collection>
+	<collection name="strategic" src="strategic.png">
+		<image name="unowned" x="0" y="0" width="32" height="32" />
+		<!-- <image name="owned" x="32" y="0" width="32" height="32" /> -->
+		<image name="critical_unowned" x="0" y="32" width="32" height="32" />
+		<image name="enemy_owned" x="32" y="32" width="32" height="32" />
+		<!-- <image name="unused_unowned" x="0" y="32" width="32" height="32" /> -->
+		<image name="player_owned" x="96" y="0" width="32" height="32" />
+	</collection>
 </chrome>

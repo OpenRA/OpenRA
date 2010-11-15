@@ -263,6 +263,7 @@
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarBinWidget.cs" />
     <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
+    <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="WithMuzzleFlash.cs" />

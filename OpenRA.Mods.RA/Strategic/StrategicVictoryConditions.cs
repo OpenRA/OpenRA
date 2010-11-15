@@ -31,12 +31,12 @@ namespace OpenRA.Mods.RA
 	public class StrategicVictoryConditions : ITick
 	{
 		[Sync] public Actor Self;
-		[Sync] public StrategicVictoryConditionsInfo Info;
+		public StrategicVictoryConditionsInfo Info;
 
 		[Sync] public int TicksToHold;
 		[Sync] public bool ResetOnHoldLost;
-		[Sync] public float RatioRequired;
-		[Sync] public float CriticalRatioRequired;
+		public float RatioRequired;
+		public float CriticalRatioRequired;
 		[Sync] public bool SplitHolds;
 		[Sync] public int TicksLeft = 0;
 		[Sync] public int CriticalTicksLeft = 0;
