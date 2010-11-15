@@ -100,9 +100,11 @@ namespace OpenRA.Utility
 				destFile,
 				new string[] { mod, destPath });
 
-			while (wc.IsBusy)
+			while (!completed)
 				Thread.Sleep(500);
 		}
+
+		static bool completed = false;
 
 		static void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
@@ -115,11 +117,11 @@ namespace OpenRA.Utility
 			Console.WriteLine("Download Completed");
 			string[] modAndDest = (string[])e.UserState;
 			Util.ExtractPackagesFromZip(modAndDest[0], modAndDest[1]);
+			completed = true;
 		}
 
 		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			Console.SetCursorPosition(0, Console.CursorTop-1);
 			Console.WriteLine("{0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
 		}
 

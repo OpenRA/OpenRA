@@ -34,6 +34,13 @@
 			this.radioButton1 = new System.Windows.Forms.RadioButton();
 			this.radioButton2 = new System.Windows.Forms.RadioButton();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+			this.radioPanel = new System.Windows.Forms.Panel();
+			this.progressPanel = new System.Windows.Forms.Panel();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.progressLabel = new System.Windows.Forms.Label();
+			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+			this.radioPanel.SuspendLayout();
+			this.progressPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -68,10 +75,9 @@
 			// 
 			// radioButton1
 			// 
-			this.radioButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.radioButton1.AutoSize = true;
 			this.radioButton1.Checked = true;
-			this.radioButton1.Location = new System.Drawing.Point(16, 113);
+			this.radioButton1.Location = new System.Drawing.Point(3, 3);
 			this.radioButton1.Name = "radioButton1";
 			this.radioButton1.Size = new System.Drawing.Size(138, 17);
 			this.radioButton1.TabIndex = 3;
@@ -81,9 +87,8 @@
 			// 
 			// radioButton2
 			// 
-			this.radioButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.radioButton2.AutoSize = true;
-			this.radioButton2.Location = new System.Drawing.Point(16, 136);
+			this.radioButton2.Location = new System.Drawing.Point(3, 26);
 			this.radioButton2.Name = "radioButton2";
 			this.radioButton2.Size = new System.Drawing.Size(96, 17);
 			this.radioButton2.TabIndex = 4;
@@ -96,6 +101,48 @@
 			this.folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer;
 			this.folderBrowserDialog1.ShowNewFolderButton = false;
 			// 
+			// radioPanel
+			// 
+			this.radioPanel.Controls.Add(this.radioButton1);
+			this.radioPanel.Controls.Add(this.radioButton2);
+			this.radioPanel.Location = new System.Drawing.Point(12, 105);
+			this.radioPanel.Name = "radioPanel";
+			this.radioPanel.Size = new System.Drawing.Size(281, 52);
+			this.radioPanel.TabIndex = 5;
+			// 
+			// progressPanel
+			// 
+			this.progressPanel.Controls.Add(this.progressLabel);
+			this.progressPanel.Controls.Add(this.progressBar1);
+			this.progressPanel.Location = new System.Drawing.Point(12, 105);
+			this.progressPanel.Name = "progressPanel";
+			this.progressPanel.Size = new System.Drawing.Size(281, 52);
+			this.progressPanel.TabIndex = 6;
+			this.progressPanel.Visible = false;
+			// 
+			// progressBar1
+			// 
+			this.progressBar1.Location = new System.Drawing.Point(3, 3);
+			this.progressBar1.Name = "progressBar1";
+			this.progressBar1.Size = new System.Drawing.Size(275, 23);
+			this.progressBar1.TabIndex = 0;
+			// 
+			// progressLabel
+			// 
+			this.progressLabel.AutoSize = true;
+			this.progressLabel.Location = new System.Drawing.Point(3, 29);
+			this.progressLabel.Name = "progressLabel";
+			this.progressLabel.Size = new System.Drawing.Size(0, 13);
+			this.progressLabel.TabIndex = 1;
+			// 
+			// backgroundWorker1
+			// 
+			this.backgroundWorker1.WorkerReportsProgress = true;
+			this.backgroundWorker1.WorkerSupportsCancellation = true;
+			this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+			this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+			this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+			// 
 			// InstallPackagesDialog
 			// 
 			this.AcceptButton = this.button2;
@@ -103,8 +150,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(305, 198);
-			this.Controls.Add(this.radioButton2);
-			this.Controls.Add(this.radioButton1);
+			this.Controls.Add(this.progressPanel);
+			this.Controls.Add(this.radioPanel);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.label1);
@@ -114,8 +161,11 @@
 			this.Name = "InstallPackagesDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Install Mod Files";
+			this.radioPanel.ResumeLayout(false);
+			this.radioPanel.PerformLayout();
+			this.progressPanel.ResumeLayout(false);
+			this.progressPanel.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -127,5 +177,10 @@
 		private System.Windows.Forms.RadioButton radioButton1;
 		private System.Windows.Forms.RadioButton radioButton2;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+		private System.Windows.Forms.Panel radioPanel;
+		private System.Windows.Forms.Panel progressPanel;
+		private System.Windows.Forms.Label progressLabel;
+		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 	}
 }

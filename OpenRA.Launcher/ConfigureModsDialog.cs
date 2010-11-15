@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.IO.Pipes;
+using System.IO;
 
 namespace OpenRA.Launcher
 {
@@ -113,7 +115,13 @@ namespace OpenRA.Launcher
 		private void InstallMod(object sender, EventArgs e)
 		{
 			if (installModDialog.ShowDialog() != DialogResult.OK) return;
-			using (var response = UtilityProgram.CallWithAdmin("--install-mod", installModDialog.FileName))
+			var p = UtilityProgram.CallWithAdmin("--install-mod", installModDialog.FileName);
+			var pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			pipe.Connect();
+
+			p.WaitForExit();
+
+			using (var response = new StreamReader(pipe))
 			{
 				string s = response.ReadToEnd();
 			}

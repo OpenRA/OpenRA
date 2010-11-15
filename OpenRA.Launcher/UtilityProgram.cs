@@ -71,7 +71,7 @@ namespace OpenRA.Launcher
 			return new StreamReader(pipe);
 		}
 
-		public static StreamReader CallWithAdmin(string command, params string[] args)
+		public static Process CallWithAdmin(string command, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
@@ -89,12 +89,7 @@ namespace OpenRA.Launcher
 				throw e;
 			}
 
-			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
-			pipe.Connect();
-
-			p.WaitForExit();
-
-			return new StreamReader(pipe);
+			return p;
 		}
 	}
 }

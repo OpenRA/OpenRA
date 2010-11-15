@@ -11,6 +11,8 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.IO.Pipes;
 
 namespace OpenRA.Launcher
 {
@@ -30,24 +32,80 @@ namespace OpenRA.Launcher
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			StreamReader response = null;
 			if (radioButton1.Checked)
-				response = UtilityProgram.CallWithAdmin("--download-packages", mod);
-
-			if (radioButton2.Checked)
 			{
-				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-					response = UtilityProgram.CallWithAdmin(string.Format("--install-{0}-packages", mod), 
-						folderBrowserDialog1.SelectedPath + Path.DirectorySeparatorChar);
+				radioPanel.Visible = false;
+				progressPanel.Visible = true;
+				button2.Enabled = false;
+				cancelButton.Enabled = false;
+				backgroundWorker1.RunWorkerAsync();
 			}
 
-			string s = response.ReadToEnd();
-			if (Util.IsError(ref s))
+			if (radioButton2.Checked && folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+			{
+				var p = UtilityProgram.CallWithAdmin(string.Format("--install-{0}-packages", mod), 
+						folderBrowserDialog1.SelectedPath + Path.DirectorySeparatorChar);
+
+				NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+				pipe.Connect();
+
+				p.WaitForExit();
+
+				using (var response = new StreamReader(pipe))
+				{
+					string s = response.ReadToEnd();
+					if (Util.IsError(ref s))
+						DialogResult = DialogResult.No;
+					else
+						DialogResult = DialogResult.OK;
+				}
+				Close();
+			}
+		}
+
+		private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		{
+			var p = UtilityProgram.CallWithAdmin("--download-packages", mod);
+			Regex r = new Regex(@"(\d{1,3})% (\d+/\d+ bytes)");
+
+			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			pipe.Connect();
+
+			using (var response = new StreamReader(pipe))
+			{
+				while (!p.HasExited)
+				{
+					string s = response.ReadLine();
+					if (Util.IsError(ref s))
+					{
+						e.Cancel = true;
+						e.Result = s;
+						return;
+					}
+					if (!r.IsMatch(s)) continue;
+					var m = r.Match(s);
+					backgroundWorker1.ReportProgress(int.Parse(m.Groups[1].Value), m.Groups[2].Value);
+				}
+			}
+		}
+
+		private void backgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+		{
+			progressBar1.Value = e.ProgressPercentage;
+			progressLabel.Text = (string)e.UserState;
+		}
+
+		private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+		{
+			if (e.Cancelled)
+			{
+				MessageBox.Show((string)e.Result);
 				DialogResult = DialogResult.No;
+			}
 			else
 				DialogResult = DialogResult.OK;
-
-			response.Close();
+			progressPanel.Visible = false;
+			radioPanel.Visible = true;
 			Close();
 		}
 	}
