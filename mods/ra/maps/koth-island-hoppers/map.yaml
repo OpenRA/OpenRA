@@ -1,0 +1,214 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Island Hoppers (KoTH)
+
+Description: Island Hoppers, Modified for King Of The Hill
+
+Author: Westwood Studios
+
+PlayerCount: 4
+
+Tileset: SNOW
+
+MapSize: 128,128
+
+TopLeft: 11,19
+
+BottomRight: 107,115
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: allies
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: miss
+		Location: 60,81
+		Owner: Neutral
+	Actor1: miss
+		Location: 60,44
+		Owner: Neutral
+	Actor2: t08
+		Location: 59,76
+		Owner: Neutral
+	Actor3: tc05
+		Location: 53,99
+		Owner: Neutral
+	Actor4: tc05
+		Location: 18,68
+		Owner: Neutral
+	Actor5: tc05
+		Location: 59,34
+		Owner: Neutral
+	Actor6: tc04
+		Location: 98,68
+		Owner: Neutral
+	Actor7: tc04
+		Location: 39,24
+		Owner: Neutral
+	Actor8: tc04
+		Location: 80,105
+		Owner: Neutral
+	Actor9: tc03
+		Location: 41,105
+		Owner: Neutral
+	Actor10: tc02
+		Location: 18,80
+		Owner: Neutral
+	Actor11: tc02
+		Location: 57,23
+		Owner: Neutral
+	Actor12: tc01
+		Location: 98,81
+		Owner: Neutral
+	Actor13: t17
+		Location: 97,50
+		Owner: Neutral
+	Actor14: t16
+		Location: 67,101
+		Owner: Neutral
+	Actor15: t15
+		Location: 31,103
+		Owner: Neutral
+	Actor16: t14
+		Location: 21,48
+		Owner: Neutral
+	Actor17: t11
+		Location: 62,26
+		Owner: Neutral
+	Actor18: t10
+		Location: 93,66
+		Owner: Neutral
+	Actor19: mine
+		Location: 44,59
+		Owner: Neutral
+	Actor20: mine
+		Location: 87,48
+		Owner: Neutral
+	Actor21: mine
+		Location: 84,89
+		Owner: Neutral
+	Actor22: mine
+		Location: 45,86
+		Owner: Neutral
+	Actor23: mine
+		Location: 70,26
+		Owner: Neutral
+	Actor24: mine
+		Location: 66,103
+		Owner: Neutral
+	Actor25: mine
+		Location: 46,102
+		Owner: Neutral
+	Actor26: mine
+		Location: 50,31
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 41,53
+	spawn1: 79,84
+	spawn2: 81,50
+	spawn3: 40,84
+
+Smudges:
+
+Rules:
+	MISS:
+		ProximityCapturable:
+		-RepairableBuilding:
+		Tooltip:
+			Name: Strategic Point
+		Building:
+			Capturable: false
+			Unsellable: true
+		Scale:
+			Value: 0.75
+		RevealsShroud:
+			Range: 20
+		-Health:
+		
+Sequences:
+
+Weapons:
+
+Voices:
+
