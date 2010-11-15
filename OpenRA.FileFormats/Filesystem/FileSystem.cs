@@ -69,6 +69,16 @@ namespace OpenRA.FileFormats
 			allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 		}
 
+		public static bool Unmount(IFolder mount)
+		{
+			return (mountedFolders.RemoveAll(f => f == mount) > 0);
+		}
+
+		public static void Mount(IFolder mount)
+		{
+			if (!mountedFolders.Contains(mount)) mountedFolders.Add(mount);
+		}
+
 		public static void LoadFromManifest( Manifest manifest )
 		{
 			UnmountAll();

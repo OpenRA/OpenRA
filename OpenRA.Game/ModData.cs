@@ -49,10 +49,12 @@ namespace OpenRA
 				.Where(p => Directory.Exists(p))
 				.SelectMany(p => Directory.GetDirectories(p)).ToList();
 
-			return paths.Select(p => new MapStub(new Folder(p, 0))).ToDictionary(m => m.Uid);
+			return paths.Select(p => new MapStub(new Folder(p, int.MaxValue))).ToDictionary(m => m.Uid);
 		}
 		
 		string cachedTheatre = null;
+
+		IFolder previousMapMount = null;
 
 		public Map PrepareMap(string uid)
 		{
@@ -62,7 +64,18 @@ namespace OpenRA
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			
 			var map = new Map(AvailableMaps[uid]);
-			
+
+			// unload the previous map mount if we have one
+			if (previousMapMount != null) FileSystem.Unmount(previousMapMount);
+
+			// Adds the map its container to the FileSystem
+			// allowing the map to use custom assets
+			// Container should have the lowest priority of all (ie int max)
+			FileSystem.Mount(map.Container);
+
+			// Store a reference so we can unload it next time
+			previousMapMount = map.Container;
+
 			Rules.LoadRules(Manifest, map);
 
 			if (map.Theater != cachedTheatre)
