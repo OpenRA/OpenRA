@@ -111,6 +111,7 @@ namespace OpenRA.Utility
 			if (e.Error != null)
 			{
 				Console.WriteLine("Error: {0}", e.Error.Message);
+				completed = true;
 				return;
 			}
 
