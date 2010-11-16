@@ -29,6 +29,7 @@
 
 - (void)launchCurrentMod
 {
+	NSLog(@"launchcurrent");
 	[controller launchGame];
 }
 

@@ -30,7 +30,7 @@
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 	
 	jsbridge = [[JSBridge alloc] initWithController:self];
-    [[webView windowScriptObject] setValue:jsbridge forKey:@"Launcher"];
+    [[webView windowScriptObject] setValue:jsbridge forKey:@"external"];
 }
 
 - (SidebarEntry *)sidebarModsTree

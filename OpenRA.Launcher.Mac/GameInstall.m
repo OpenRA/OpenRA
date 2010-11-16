@@ -110,22 +110,20 @@
 
 - (NSString *)runUtilityQuery:(NSString *)arg
 {
-	NSTask *aTask = [[NSTask alloc] init];
-	NSPipe *aPipe = [NSPipe pipe];
-	NSFileHandle *readHandle = [aPipe fileHandleForReading];
-	
+	NSTask *task = [[NSTask alloc] init];
+	NSPipe *outPipe = [NSPipe pipe];
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
 	[taskArgs addObject:arg];
 	
-    [aTask setCurrentDirectoryPath:[gameURL absoluteString]];
-    [aTask setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
-    [aTask setArguments:taskArgs];
-	[aTask setStandardOutput:aPipe];
-	[aTask setStandardError:[aTask standardOutput]];
-    [aTask launch];
-	NSData *data = [readHandle readDataToEndOfFile];
-    [aTask release];
-	
+    [task setCurrentDirectoryPath:[gameURL absoluteString]];
+    [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
+    [task setArguments:taskArgs];
+	[task setStandardOutput:outPipe];
+	[task setStandardError:[task standardOutput]];
+    [task launch];
+	NSData *data = [[outPipe fileHandleForReading] readDataToEndOfFile];
+	[task waitUntilExit];
+    [task release];
 	return [NSString stringWithUTF8String:[data bytes]];
 }
 
