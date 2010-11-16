@@ -18,15 +18,20 @@
 - (void) awakeFromNib
 {
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
-	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
-	[sidebarItems addChild:[self sidebarModsTree]];
-	[sidebarItems addChild:[self sidebarOtherTree]];
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
 	[col setDataCell:imageAndTextCell];
 	
+	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
+	id modsRoot = [self sidebarModsTree];
+	[sidebarItems addChild:modsRoot];
+	id otherRoot = [self sidebarOtherTree];
+	[sidebarItems addChild:otherRoot];
+	
+	
 	[outlineView reloadData];
-	[outlineView expandItem:[outlineView itemAtRow:0] expandChildren:YES];
+	[outlineView expandItem:modsRoot expandChildren:YES];
+	[outlineView expandItem:otherRoot expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 	
 	jsbridge = [[JSBridge alloc] initWithController:self];
@@ -44,7 +49,7 @@
 	{	
 		if ([aMod standalone])
 		{	
-			id child = [SidebarEntry entryWithMod:aMod allMods:allMods];
+			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[[game gameURL] URLByAppendingPathComponent:@"mods"]];
 			[rootItem addChild:child];
 		}
 	}
@@ -55,8 +60,8 @@
 - (SidebarEntry *)sidebarOtherTree
 {
 	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"OTHER"];
-	[rootItem addChild:[SidebarEntry entryWithTitle:@"Support" object:nil icon:nil]];
-	[rootItem addChild:[SidebarEntry entryWithTitle:@"Credits" object:nil icon:nil]];
+	[rootItem addChild:[SidebarEntry entryWithTitle:@"Support" url:nil icon:nil]];
+	[rootItem addChild:[SidebarEntry entryWithTitle:@"Credits" url:nil icon:nil]];
 	
 	return rootItem;
 }

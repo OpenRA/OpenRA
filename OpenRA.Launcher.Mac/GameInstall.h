@@ -12,6 +12,7 @@
 @interface GameInstall : NSObject {
 	NSURL *gameURL;
 }
+@property(readonly) NSURL *gameURL;
 
 -(id)initWithURL:(NSURL *)path;
 -(void)launchGame;

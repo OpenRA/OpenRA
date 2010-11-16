@@ -10,6 +10,7 @@
 #import "Mod.h"
 
 @implementation GameInstall
+@synthesize gameURL;
 
 -(id)initWithURL:(NSURL *)url
 {
@@ -78,6 +79,12 @@
 			[fields setObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
 					   forKey:key];
 	}
+	if (current != nil)
+	{	
+		id url = [gameURL URLByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
+		[ret addObject:[Mod modWithId:current fields:fields baseURL:url]];
+	}
+	
 	return ret;
 }
 
@@ -110,11 +117,11 @@
 
 - (NSString *)runUtilityQuery:(NSString *)arg
 {
-	NSTask *task = [[NSTask alloc] init];
 	NSPipe *outPipe = [NSPipe pipe];
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
 	[taskArgs addObject:arg];
 	
+	NSTask *task = [[NSTask alloc] init];
     [task setCurrentDirectoryPath:[gameURL absoluteString]];
     [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
     [task setArguments:taskArgs];
@@ -124,7 +131,8 @@
 	NSData *data = [[outPipe fileHandleForReading] readDataToEndOfFile];
 	[task waitUntilExit];
     [task release];
-	return [NSString stringWithUTF8String:[data bytes]];
+	
+	return [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
 }
 
 

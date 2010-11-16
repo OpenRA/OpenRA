@@ -20,12 +20,12 @@
 	}
 	return self;
 }
+
 - (void) dealloc
 {
 	[controller release]; controller = nil;
 	[super dealloc];
 }
-
 
 - (void)launchCurrentMod
 {

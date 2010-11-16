@@ -14,7 +14,7 @@
 	BOOL isHeader;
 	NSString *title;
 	NSImage *icon;
-	id object;
+	NSURL *url;
 	NSMutableArray *children;
 }
 
@@ -24,9 +24,9 @@
 @property (readonly) NSImage* icon;
 
 + (id)headerWithTitle:(NSString *)aTitle;
-+ (id)entryWithTitle:(NSString *)aTitle object:(id)anObject icon:(id)anIcon;
-+ (id)entryWithMod:(Mod *)baseMod allMods:(NSArray *)allMods;
-- (id)initWithTitle:(NSString *)aTitle object:(id)anObject icon:(id)anIcon isHeader:(BOOL)aHeader;
++ (id)entryWithTitle:(NSString *)aTitle url:(NSURL *)aURL icon:(id)anIcon;
++ (id)entryWithMod:(Mod *)baseMod allMods:(NSArray *)allMods baseURL:(NSURL *)aURL;
+- (id)initWithTitle:(NSString *)aTitle url:(NSURL *)aURL icon:(id)anIcon isHeader:(BOOL)aHeader;
 - (void)addChild:(id)child;
 - (NSURL *)url;
 @end
