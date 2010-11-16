@@ -16,7 +16,6 @@
 {
 	SidebarEntry *sidebarItems;
 	GameInstall *game;
-	JSBridge *jsbridge;
 	IBOutlet NSOutlineView *outlineView;
 	IBOutlet WebView *webView;
 }

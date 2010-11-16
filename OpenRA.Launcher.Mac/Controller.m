@@ -18,8 +18,8 @@
 - (void) awakeFromNib
 {
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
-	jsbridge = [[JSBridge alloc] initWithController:self];
-
+	[[JSBridge sharedInstance] setController:self];
+	
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
 	[col setDataCell:imageAndTextCell];
@@ -153,7 +153,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 #pragma mark WebView delegates
 - (void)webView:(WebView *)sender didClearWindowObject:(WebScriptObject *)windowObject forFrame:(WebFrame *)frame
 {
-	[windowObject setValue:jsbridge forKey:@"external"];
+	[windowObject setValue:[JSBridge sharedInstance] forKey:@"external"];
 }
 
 @end

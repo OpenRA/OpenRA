@@ -12,7 +12,11 @@
 @class Controller;
 @interface JSBridge : NSObject {
 	Controller *controller;
+	NSDictionary *methods;
 }
+@property(readonly) NSDictionary *methods;
 
--(id)initWithController:(Controller *)aController;
++ (JSBridge *)sharedInstance;
+- (void)setController:(Controller *)aController;
+
 @end
