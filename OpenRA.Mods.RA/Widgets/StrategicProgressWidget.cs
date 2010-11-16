@@ -65,11 +65,13 @@ namespace OpenRA.Mods.RA.Widgets
 				if (pendingWinner != wr.world.LocalPlayer && (pendingWinner.Stances[wr.world.LocalPlayer] != Stance.Ally || wr.world.LocalPlayer.Stances[pendingWinner] != Stance.Ally))
 				{
 					// losing
-					tc = "Strategic defeat in " + ((svc.CriticalTicksLeft > svc.TicksLeft) ? svc.CriticalTicksLeft / 25 : svc.TicksLeft / 25) + " second(s)";
+					tc = "Strategic defeat in " +
+						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WorldUtils.FormatTime(svc.CriticalTicksLeft) : WorldUtils.FormatTime(svc.TicksLeft));
 				}else
 				{
 					// winning
-					tc = "Strategic victory in " + ((svc.CriticalTicksLeft > svc.TicksLeft) ? svc.CriticalTicksLeft / 25 : svc.TicksLeft / 25) + " second(s)";
+					tc = "Strategic victory in " +
+						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WorldUtils.FormatTime(svc.CriticalTicksLeft) : WorldUtils.FormatTime(svc.TicksLeft));
 				}
 
 				var size = Game.Renderer.BoldFont.Measure(tc);
