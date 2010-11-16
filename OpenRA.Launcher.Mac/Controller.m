@@ -18,6 +18,8 @@
 - (void) awakeFromNib
 {
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
+	jsbridge = [[JSBridge alloc] initWithController:self];
+
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
 	[col setDataCell:imageAndTextCell];
@@ -31,11 +33,22 @@
 	
 	[outlineView reloadData];
 	[outlineView expandItem:modsRoot expandChildren:YES];
-	[outlineView expandItem:otherRoot expandChildren:YES];
-	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 	
-	jsbridge = [[JSBridge alloc] initWithController:self];
-    [[webView windowScriptObject] setValue:jsbridge forKey:@"external"];
+	if ([[modsRoot children] count] > 0)
+	{
+		id firstMod = [[modsRoot children] objectAtIndex:0];
+		int row = [outlineView rowForItem:firstMod];
+		[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [firstMod url]]];
+	}
+	
+	[outlineView expandItem:otherRoot expandChildren:YES];
+}
+
+- (void) dealloc
+{
+	[sidebarItems release]; sidebarItems = nil;
+	[super dealloc];
 }
 
 - (SidebarEntry *)sidebarModsTree
@@ -48,7 +61,7 @@
 	for (id aMod in allMods)
 	{	
 		if ([aMod standalone])
-		{	
+		{
 			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[[game gameURL] URLByAppendingPathComponent:@"mods"]];
 			[rootItem addChild:child];
 		}
@@ -66,11 +79,9 @@
 	return rootItem;
 }
 
-
-- (void) dealloc
+- (void)launchGame
 {
-	[sidebarItems release]; sidebarItems = nil;
-	[super dealloc];
+	[game launchGame];
 }
 
 #pragma mark Sidebar Datasource and Delegate
@@ -139,8 +150,10 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	}
 }
 
-- (void)launchGame
+#pragma mark WebView delegates
+- (void)webView:(WebView *)sender didClearWindowObject:(WebScriptObject *)windowObject forFrame:(WebFrame *)frame
 {
-	[game launchGame];
+	[windowObject setValue:jsbridge forKey:@"external"];
 }
+
 @end
