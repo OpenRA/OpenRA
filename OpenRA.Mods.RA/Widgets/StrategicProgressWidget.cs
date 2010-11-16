@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (svc.Holding && svc.TicksLeft > 0 && svc.TicksLeft < shortest)
 				{
-					shortest = svc.CriticalTicksLeft;
+					shortest = svc.TicksLeft;
 					shortestPlayer = p;
 				}
 			}
