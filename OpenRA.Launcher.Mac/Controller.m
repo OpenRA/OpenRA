@@ -15,8 +15,9 @@
 
 - (void) awakeFromNib
 {
+	game = [[GameInstall alloc] initWithPath:@"/Users/paul/src/OpenRA"];
 	sidebarItems = [[ModEntry headerWithTitle:@""] retain];
-	[sidebarItems addChild:[self modTree]];
+	[sidebarItems addChild:[game modTree]];
 
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
@@ -25,32 +26,12 @@
 	[outlineView reloadData];
 	[outlineView expandItem:[outlineView itemAtRow:1] expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
-	
-	game = [[GameInstall alloc] initWithPath:@"/Users/paul/src/OpenRA"];
 }
 
 - (void) dealloc
 {
 	[sidebarItems release]; sidebarItems = nil;
 	[super dealloc];
-}
-
-- (ModEntry *)modTree
-{
-	// Create root item
-	ModEntry *rootItem = [ModEntry headerWithTitle:@"MODS"];
-	
-	NSString* imageName = [[NSBundle mainBundle] pathForResource:@"OpenRA" ofType:@"icns"];
-	NSImage* imageObj = [[NSImage alloc] initWithContentsOfFile:imageName];
-	
-	NSDictionary *foo = [NSDictionary dictionaryWithObjectsAndKeys:
-						 @"Test mod", @"Title",
-						 @"Foobar", @"Author",
-						 imageObj, @"Icon",
-						 nil];
-	[imageObj release];
-	[rootItem addChild:[ModEntry modWithFields:foo]];
-	return rootItem;
 }
 
 #pragma mark Sidebar Datasource and Delegate
@@ -100,7 +81,12 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item;
 {	
 	// don't allow headers to be selected
-	return ![item isHeader];
+	if ([item isHeader])
+		 return NO;
+	
+	// TODO: Display the webpage
+	
+	return YES;
 }
 
 - (void)outlineView:(NSOutlineView *)olv willDisplayCell:(NSCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item

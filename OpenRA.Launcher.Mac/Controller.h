@@ -16,6 +16,5 @@
 	GameInstall *game;
 	IBOutlet NSOutlineView *outlineView;
 }
-- (ModEntry *)modTree;
 - (IBAction)launchGame:(id)sender;
 @end

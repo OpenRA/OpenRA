@@ -42,7 +42,7 @@ namespace OpenRA.Utility
 					return;
 				}
 
-				Console.WriteLine("{0}:", m);
+				Console.WriteLine("Mod:{0}", m);
 				Console.WriteLine("  Title: {0}", mod.Title);
 				Console.WriteLine("  Version: {0}", mod.Version);
 				Console.WriteLine("  Author: {0}", mod.Author);

@@ -10,6 +10,7 @@
 
 @interface ModEntry : NSObject {
 	BOOL isHeader;
+	NSString *mod;
 	NSString *title;
 	NSString *version;
 	NSString *author;
@@ -20,6 +21,7 @@
 }
 
 @property (readonly) BOOL isHeader;
+@property (readonly) NSString *mod;
 @property (readonly) NSString *title;
 @property (readonly) NSString *version;
 @property (readonly) NSString *author;
@@ -30,8 +32,10 @@
 @property (readonly) NSImage* icon;
 
 + (id)headerWithTitle:(NSString *)aTitle;
-+ (id)modWithFields:(id)fields;
-- (id)initWithFields:(NSDictionary *)fields isHeader:(BOOL)header;
++ (id)errorWithTitle:(NSString *)aTitle;
++ (id)modWithId:(NSString *)mid fields:(id)fields;
+- (id)initWithId:(NSString *)mod fields:(NSDictionary *)fields isHeader:(BOOL)header;
 - (void)addChild:(id)child;
+- (void)buildChildTree:(NSArray *)allMods;
 - (id)icon;
 @end

@@ -2,7 +2,8 @@ Metadata:
 	Title: C&C
 	Description: OpenRA Reimagining of the classic game
 	Version: a0001
-
+	Author: The OpenRA Developers
+	Standalone: true
 Folders:
 	.
 	mods/cnc
