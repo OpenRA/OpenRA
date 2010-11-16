@@ -194,9 +194,9 @@ Smudges:
 Rules:
 	MISS:
 		ProximityCapturable:
+			MustBeClear: true
 		StrategicPoint:
 			Critical: false
-			MustBeClear: true
 		-RepairableBuilding:
 		Tooltip:
 			Name: Strategic Point
