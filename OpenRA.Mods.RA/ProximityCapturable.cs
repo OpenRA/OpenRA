@@ -58,23 +58,28 @@ namespace OpenRA.Mods.RA
 
 			if (!Captured)
 			{
-				if (MustBeClear && playersNear != 1) return;
-
 				var captor = GetInRange(self, OriginalOwner, Range);
 
-				if (captor != null) ChangeOwnership(self, captor, OriginalOwner);
+				if (captor != null)
+				{
+					if (MustBeClear && !IsClear(self, captor.Owner, Range, OriginalOwner)) return;
+
+					ChangeOwnership(self, captor, OriginalOwner);
+				}
 
 				return;
 			}
 
 			// if the area must be clear, and there is more than 1 player nearby => return ownership to default
-			if (MustBeClear && playersNear != 1)
+			if (MustBeClear && !IsClear(self, Owner, Range, OriginalOwner))
 			{
 				// Revert Ownership
 				ChangeOwnership(self, Owner, OriginalOwner);
+				return;
 			}
+
 			// See if the 'temporary' owner still is in range
-			else if (!IsStillInRange(self, self.Owner, Range))
+			if (!IsStillInRange(self, self.Owner, Range))
 			{
 				// no.. So find a new one
 				var captor = GetInRange(self, OriginalOwner, Range);
@@ -130,6 +135,13 @@ namespace OpenRA.Mods.RA
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(self, captor, previousOwner, self.Owner);
 			});
+		}
+
+		public static bool IsClear(Actor self, Player currentOwner, int range, Player originalOwner)
+		{
+			var unitsInRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+
+			return unitsInRange.Where(a => !a.Destroyed && a.IsInWorld && a != self && !a.Owner.NonCombatant && a.Owner != originalOwner).Where(a => a.Owner != currentOwner).All(a => (a.Owner.Stances[currentOwner] == Stance.Ally) && (currentOwner.Stances[a.Owner] == Stance.Ally));
 		}
 
 		// TODO exclude other NeutralActor that arent permanent
