@@ -13,17 +13,18 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DA81FA821290F5C800C48F2F /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FA811290F5C800C48F2F /* Controller.m */; };
-		DA81FAAA1290FA0000C48F2F /* ModEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FAA91290FA0000C48F2F /* ModEntry.m */; };
+		DA81FAAA1290FA0000C48F2F /* Mod.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FAA91290FA0000C48F2F /* Mod.m */; };
 		DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */; };
 		DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA81FBDB12910E4900C48F2F /* OpenRA.icns */; };
 		DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FC3E12911E2B00C48F2F /* GameInstall.m */; };
 		DA9292C81291DF2D00EDB02E /* OpenRA.app in Resources */ = {isa = PBXBuildFile; fileRef = DA9292C71291DF2D00EDB02E /* OpenRA.app */; };
+		DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9295A612921DF900EDB02E /* WebKit.framework */; };
+		DA9296901292328200EDB02E /* SidebarEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA92968F1292328200EDB02E /* SidebarEntry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* OpenRAAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenRAAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* OpenRAAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenRAAppDelegate.m; sourceTree = "<group>"; };
@@ -35,14 +36,17 @@
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA81FA801290F5C800C48F2F /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		DA81FA811290F5C800C48F2F /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
-		DA81FAA81290FA0000C48F2F /* ModEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModEntry.h; sourceTree = "<group>"; };
-		DA81FAA91290FA0000C48F2F /* ModEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModEntry.m; sourceTree = "<group>"; };
+		DA81FAA81290FA0000C48F2F /* Mod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mod.h; sourceTree = "<group>"; };
+		DA81FAA91290FA0000C48F2F /* Mod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mod.m; sourceTree = "<group>"; };
 		DA81FB9112910A8B00C48F2F /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
 		DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		DA81FBDB12910E4900C48F2F /* OpenRA.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRA.icns; sourceTree = "<group>"; };
 		DA81FC3D12911E2B00C48F2F /* GameInstall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInstall.h; sourceTree = "<group>"; };
 		DA81FC3E12911E2B00C48F2F /* GameInstall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameInstall.m; sourceTree = "<group>"; };
 		DA9292C71291DF2D00EDB02E /* OpenRA.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = OpenRA.app; sourceTree = "<group>"; };
+		DA9295A612921DF900EDB02E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		DA92968E1292328200EDB02E /* SidebarEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarEntry.h; sourceTree = "<group>"; };
+		DA92968F1292328200EDB02E /* SidebarEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarEntry.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,10 +71,12 @@
 				256AC3D90F4B6AC300CF3369 /* OpenRAAppDelegate.m */,
 				DA81FA801290F5C800C48F2F /* Controller.h */,
 				DA81FA811290F5C800C48F2F /* Controller.m */,
-				DA81FAA81290FA0000C48F2F /* ModEntry.h */,
-				DA81FAA91290FA0000C48F2F /* ModEntry.m */,
+				DA81FAA81290FA0000C48F2F /* Mod.h */,
+				DA81FAA91290FA0000C48F2F /* Mod.m */,
 				DA81FC3D12911E2B00C48F2F /* GameInstall.h */,
 				DA81FC3E12911E2B00C48F2F /* GameInstall.m */,
+				DA92968E1292328200EDB02E /* SidebarEntry.h */,
+				DA92968F1292328200EDB02E /* SidebarEntry.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -86,8 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				DA9295A612921DF900EDB02E /* WebKit.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -209,9 +216,10 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* OpenRAAppDelegate.m in Sources */,
 				DA81FA821290F5C800C48F2F /* Controller.m in Sources */,
-				DA81FAAA1290FA0000C48F2F /* ModEntry.m in Sources */,
+				DA81FAAA1290FA0000C48F2F /* Mod.m in Sources */,
 				DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */,
 				DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */,
+				DA9296901292328200EDB02E /* SidebarEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

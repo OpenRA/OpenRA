@@ -7,7 +7,7 @@
  */
 
 #import "GameInstall.h"
-#import "ModEntry.h"
+#import "Mod.h"
 
 @implementation GameInstall
 
@@ -76,7 +76,7 @@
 		{
 			// Commit prev mod
 			if (current != nil)
-				[ret addObject:[ModEntry modWithId:current fields:fields]];
+				[ret addObject:[Mod modWithId:current fields:fields]];
 			NSLog(@"Parsing mod %@",value);
 			current = value;
 			fields = [NSMutableDictionary dictionary];			
@@ -87,25 +87,6 @@
 					   forKey:key];
 	}
 	return ret;
-}
-
-- (ModEntry *)modTree
-{
-	// Get info for all installed mods
-	id modnames = [self installedMods];
-	NSArray *allMods = [self infoForMods:modnames];
-
-	ModEntry *rootItem = [ModEntry headerWithTitle:@"MODS"];
-	for (id aMod in allMods)
-	{	
-		if ([aMod standalone])
-		{	
-			[rootItem addChild:aMod];
-			[aMod buildChildTree:allMods];
-		}
-	}
-	
-	return rootItem;
 }
 
 -(void)launchGame

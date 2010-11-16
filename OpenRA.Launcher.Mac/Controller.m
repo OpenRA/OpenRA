@@ -7,7 +7,8 @@
  */
 
 #import "Controller.h"
-#import "ModEntry.h"
+#import "Mod.h"
+#import "SidebarEntry.h"
 #import "GameInstall.h"
 #import "ImageAndTextCell.h"
 
@@ -16,9 +17,9 @@
 - (void) awakeFromNib
 {
 	game = [[GameInstall alloc] initWithPath:@"/Users/paul/src/OpenRA"];
-	sidebarItems = [[ModEntry headerWithTitle:@""] retain];
-	[sidebarItems addChild:[game modTree]];
-
+	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
+	[sidebarItems addChild:[self sidebarModsTree]];
+	[sidebarItems addChild:[self sidebarOtherTree]];
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
 	[col setDataCell:imageAndTextCell];
@@ -27,6 +28,35 @@
 	[outlineView expandItem:[outlineView itemAtRow:1] expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 }
+
+- (SidebarEntry *)sidebarModsTree
+{
+	// Get info for all installed mods
+	id modnames = [game installedMods];
+	NSArray *allMods = [game infoForMods:modnames];
+	
+	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"MODS"];
+	for (id aMod in allMods)
+	{	
+		if ([aMod standalone])
+		{	
+			id child = [SidebarEntry entryWithMod:aMod allMods:allMods];
+			[rootItem addChild:child];
+		}
+	}
+	
+	return rootItem;
+}
+
+- (SidebarEntry *)sidebarOtherTree
+{
+	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"OTHER"];
+	[rootItem addChild:[SidebarEntry entryWithTitle:@"Support" object:nil icon:nil]];
+	[rootItem addChild:[SidebarEntry entryWithTitle:@"Credits" object:nil icon:nil]];
+	
+	return rootItem;
+}
+
 
 - (void) dealloc
 {

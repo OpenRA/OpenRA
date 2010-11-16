@@ -8,19 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ModEntry : NSObject {
-	BOOL isHeader;
+@interface Mod : NSObject {
 	NSString *mod;
 	NSString *title;
 	NSString *version;
 	NSString *author;
 	NSString *requires;
 	BOOL standalone;
-	NSMutableArray *children;
-	NSImage *icon;
 }
 
-@property (readonly) BOOL isHeader;
 @property (readonly) NSString *mod;
 @property (readonly) NSString *title;
 @property (readonly) NSString *version;
@@ -28,14 +24,7 @@
 @property (readonly) NSString *description;
 @property (readonly) NSString *requires;
 @property (readonly) BOOL standalone;
-@property (readonly) NSMutableArray* children;
-@property (readonly) NSImage* icon;
 
-+ (id)headerWithTitle:(NSString *)aTitle;
-+ (id)errorWithTitle:(NSString *)aTitle;
 + (id)modWithId:(NSString *)mid fields:(id)fields;
-- (id)initWithId:(NSString *)mod fields:(NSDictionary *)fields isHeader:(BOOL)header;
-- (void)addChild:(id)child;
-- (void)buildChildTree:(NSArray *)allMods;
-- (id)icon;
+- (id)initWithId:(NSString *)mod fields:(NSDictionary *)fields;
 @end

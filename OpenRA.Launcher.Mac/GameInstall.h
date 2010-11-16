@@ -8,14 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ModEntry;
+@class Mod;
 @interface GameInstall : NSObject {
 	NSString *gamePath;
 	NSMutableString *utilityBuffer;
 }
 
 -(id)initWithPath:(NSString *)path;
-- (ModEntry *)modTree;
 -(void)launchGame;
 - (void)runUtilityApp:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel;
+- (NSArray *)installedMods;
+- (NSArray *)infoForMods:(NSArray *)mods;
 @end

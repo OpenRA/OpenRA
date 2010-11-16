@@ -7,14 +7,17 @@
  */
 
 #import <Cocoa/Cocoa.h>
-
-@class ModEntry;
+#import <WebKit/WebKit.h>
+@class Mod;
+@class SidebarEntry;
 @class GameInstall;
 @interface Controller : NSObject
 {
-	ModEntry *sidebarItems;
+	SidebarEntry *sidebarItems;
 	GameInstall *game;
 	IBOutlet NSOutlineView *outlineView;
+	IBOutlet WebView *webView;
 }
 - (IBAction)launchGame:(id)sender;
+- (SidebarEntry *)sidebarModsTree;
 @end
