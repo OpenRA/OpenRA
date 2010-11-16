@@ -28,5 +28,5 @@
 + (id)entryWithMod:(Mod *)baseMod allMods:(NSArray *)allMods;
 - (id)initWithTitle:(NSString *)aTitle object:(id)anObject icon:(id)anIcon isHeader:(BOOL)aHeader;
 - (void)addChild:(id)child;
-
+- (NSURL *)url;
 @end

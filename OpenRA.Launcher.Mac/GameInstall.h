@@ -10,13 +10,13 @@
 
 @class Mod;
 @interface GameInstall : NSObject {
-	NSString *gamePath;
-	NSMutableString *utilityBuffer;
+	NSURL *gameURL;
 }
 
--(id)initWithPath:(NSString *)path;
+-(id)initWithURL:(NSURL *)path;
 -(void)launchGame;
-- (void)runUtilityApp:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel;
+- (NSString *)runUtilityQuery:(NSString *)arg;
+- (void)runUtilityQuery:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel;
 - (NSArray *)installedMods;
 - (NSArray *)infoForMods:(NSArray *)mods;
 @end

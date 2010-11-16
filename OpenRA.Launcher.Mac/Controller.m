@@ -16,7 +16,7 @@
 
 - (void) awakeFromNib
 {
-	game = [[GameInstall alloc] initWithPath:@"/Users/paul/src/OpenRA"];
+	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
 	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
 	[sidebarItems addChild:[self sidebarModsTree]];
 	[sidebarItems addChild:[self sidebarOtherTree]];
@@ -25,7 +25,7 @@
 	[col setDataCell:imageAndTextCell];
 	
 	[outlineView reloadData];
-	[outlineView expandItem:[outlineView itemAtRow:1] expandChildren:YES];
+	[outlineView expandItem:[outlineView itemAtRow:0] expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
 }
 
@@ -111,11 +111,11 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item;
 {	
 	// don't allow headers to be selected
-	if ([item isHeader])
-		 return NO;
+	if ([item isHeader] || [item url] == nil)
+		return NO;
 	
-	// TODO: Display the webpage
-	
+	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[item url]]];
+
 	return YES;
 }
 

@@ -68,6 +68,22 @@
 	[children addObject:child];
 }
 
+- (BOOL)shouldSelect
+{	
+	return [object shouldSelect];
+}
+
+- (NSURL *)url
+{
+	if (object == nil)
+	{	
+		NSLog(@"object is nil");
+		return nil;
+	}
+	
+	return [object pageURL];
+}
+
 - (void) dealloc
 {
 	[title release]; title = nil;

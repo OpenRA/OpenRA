@@ -18,19 +18,20 @@
 @synthesize requires;
 @synthesize standalone;
 
-+ (id)modWithId:(NSString *)mod fields:(id)fields
++ (id)modWithId:(NSString *)mod fields:(id)fields baseURL:(NSURL *)url
 {
-	id newObject = [[self alloc] initWithId:mod fields:fields];
+	id newObject = [[self alloc] initWithId:mod fields:fields baseURL:url];
 	[newObject autorelease];
 	return newObject;
 }
 
-- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields
+- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields baseURL:(NSURL *)url
 {
 	self = [super init];
 	if (self)
 	{
-		mod = anId;
+		mod = [anId retain];
+		baseURL = [url retain];
 		title = [[fields objectForKey:@"Title"] retain];
 		version = [[fields objectForKey:@"Version"] retain];
 		author = [[fields objectForKey:@"Author"] retain];
@@ -41,15 +42,21 @@
 	return self;
 }
 
-
 - (void) dealloc
 {
+	[mod release]; mod = nil;
+	[baseURL release]; baseURL = nil;
 	[title release]; title = nil;
 	[version release]; version = nil;
 	[author release]; author = nil;
 	[description release]; description = nil;	
 	[requires release]; requires = nil;	
 	[super dealloc];
+}
+
+- (NSURL *)pageURL
+{
+	return [baseURL URLByAppendingPathComponent:@"mod.html"];
 }
 
 @end

@@ -20,4 +20,6 @@
 }
 - (IBAction)launchGame:(id)sender;
 - (SidebarEntry *)sidebarModsTree;
+- (SidebarEntry *)sidebarOtherTree;
+
 @end
