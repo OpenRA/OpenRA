@@ -11,14 +11,16 @@
 @class Mod;
 @class SidebarEntry;
 @class GameInstall;
+@class JSBridge;
 @interface Controller : NSObject
 {
 	SidebarEntry *sidebarItems;
 	GameInstall *game;
+	JSBridge *jsbridge;
 	IBOutlet NSOutlineView *outlineView;
 	IBOutlet WebView *webView;
 }
-- (IBAction)launchGame:(id)sender;
+- (void)launchGame;
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
 

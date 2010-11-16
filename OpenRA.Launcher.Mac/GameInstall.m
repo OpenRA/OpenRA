@@ -16,13 +16,14 @@
 	self = [super init];
 	if (self != nil)
 	{
-		gameURL = url;
+		gameURL = [url retain];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
+	[gameURL release]; gameURL = nil;
 	[super dealloc];
 }
 

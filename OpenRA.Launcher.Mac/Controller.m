@@ -11,6 +11,7 @@
 #import "SidebarEntry.h"
 #import "GameInstall.h"
 #import "ImageAndTextCell.h"
+#import "JSBridge.h"
 
 @implementation Controller
 
@@ -27,6 +28,9 @@
 	[outlineView reloadData];
 	[outlineView expandItem:[outlineView itemAtRow:0] expandChildren:YES];
 	[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:1] byExtendingSelection:NO];
+	
+	jsbridge = [[JSBridge alloc] initWithController:self];
+    [[webView windowScriptObject] setValue:jsbridge forKey:@"Launcher"];
 }
 
 - (SidebarEntry *)sidebarModsTree
@@ -130,7 +134,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	}
 }
 
-- (IBAction)launchGame:(id)sender
+- (void)launchGame
 {
 	[game launchGame];
 }
