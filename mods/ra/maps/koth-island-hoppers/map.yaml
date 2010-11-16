@@ -196,6 +196,7 @@ Rules:
 		ProximityCapturable:
 		StrategicPoint:
 			Critical: false
+			MustBeClear: true
 		-RepairableBuilding:
 		Tooltip:
 			Name: Strategic Point
@@ -210,8 +211,8 @@ Rules:
 		-Health:
 	Player:
 		StrategicVictoryConditions:
-			TicksToHold: 1500
-			ResetOnHoldLost: false
+			TicksToHold: 3000
+			ResetOnHoldLost: true
 			RatioRequired: 1
 			CriticalRatioRequired: 1
 Sequences:
