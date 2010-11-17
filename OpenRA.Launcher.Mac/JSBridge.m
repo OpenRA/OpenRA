@@ -61,14 +61,29 @@ static JSBridge *SharedInstance;
 
 - (BOOL)launchMod:(NSString *)aMod
 {
-	id mod = [[controller allMods] objectForKey:aMod];
-	if (mod == nil)
-	{
-		NSLog(@"Invalid or unknown mod: %@", aMod);
-		return NO;
-	}
+	// Build the list of mods to launch
+	NSMutableArray *mods = [NSMutableArray array];
+	NSString *current = aMod;
 	
-	[controller launchMod:aMod];
+	// Assemble the mods in the reverse order to work around an engine bug
+	while (current != nil)
+	{
+		Mod *mod = [[controller allMods] objectForKey:current];
+		if (mod == nil)
+		{
+			NSLog(@"Unknown mod: %@", current);
+			return NO;
+		}
+		[mods addObject:current];
+		
+		if ([mod standalone])
+			current = nil;
+		else
+			current = [mod requires];
+	}
+	// Todo: Reverse the array ordering once the engine bug is fixed
+	
+	[controller launchMod:[mods componentsJoinedByString:@","]];
 	return YES;
 }
 
