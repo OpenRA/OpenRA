@@ -134,7 +134,7 @@ namespace OpenRA.Utility
 			var redalertMixPath = "{0}{1}INSTALL{1}REDALERT.MIX".F(path, Path.DirectorySeparatorChar);
 			if (!File.Exists(redalertMixPath)) { Console.WriteLine("Error: REDALERT.MIX could not be found on the CD"); return; }
 			Console.WriteLine("Copying REDALERT.MIX");
-			File.Copy(redalertMixPath, "mods{0}ra{0}packages{0}redalert.mix".F(Path.DirectorySeparatorChar));
+			File.Copy(redalertMixPath, "mods{0}ra{0}packages{0}redalert.mix".F(Path.DirectorySeparatorChar),true);
 			Console.WriteLine("Done");
 		}
 
