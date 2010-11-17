@@ -24,10 +24,9 @@
 @property (readonly) NSString *author;
 @property (readonly) NSString *description;
 @property (readonly) NSString *requires;
+@property (readonly) NSURL *baseURL;
 @property (readonly) BOOL standalone;
 
 + (id)modWithId:(NSString *)mid fields:(id)fields baseURL:(NSURL *)url;
 - (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields baseURL:(NSURL *)url;
-
-- (NSURL *)pageURL;
 @end

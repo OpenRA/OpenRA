@@ -15,9 +15,9 @@
 @property(readonly) NSURL *gameURL;
 
 -(id)initWithURL:(NSURL *)path;
--(void)launchGame;
+-(void)launchMod:(NSString *)mod;
 - (NSString *)runUtilityQuery:(NSString *)arg;
 - (void)runUtilityQuery:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel;
 - (NSArray *)installedMods;
-- (NSArray *)infoForMods:(NSArray *)mods;
+- (NSDictionary *)infoForMods:(NSArray *)mods;
 @end

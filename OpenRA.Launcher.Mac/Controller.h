@@ -16,10 +16,14 @@
 {
 	SidebarEntry *sidebarItems;
 	GameInstall *game;
+	NSDictionary *allMods;
 	IBOutlet NSOutlineView *outlineView;
 	IBOutlet WebView *webView;
 }
-- (void)launchGame;
+@property(readonly) NSDictionary *allMods;
+
+- (void)launchMod:(NSString *)mod;
+- (void)populateModInfo;
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
 

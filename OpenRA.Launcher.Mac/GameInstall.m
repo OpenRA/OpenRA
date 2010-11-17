@@ -35,12 +35,12 @@
 	return [mods componentsSeparatedByString:@"\n"];
 }
 
-- (NSArray *)infoForMods:(NSArray *)mods
+- (NSDictionary *)infoForMods:(NSArray *)mods
 {
 	id query = [NSString stringWithFormat:@"-i=%@",[mods componentsJoinedByString:@","]];
 	NSArray *lines = [[self runUtilityQuery:query] componentsSeparatedByString:@"\n"];
 	
-	NSMutableArray *ret = [NSMutableArray array];
+	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
 	NSMutableDictionary *fields = nil;
 	NSString *current = nil;
 	for (id l in lines)
@@ -68,7 +68,7 @@
 			if (current != nil)
 			{	
 				id url = [gameURL URLByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-				[ret addObject:[Mod modWithId:current fields:fields baseURL:url]];
+				[ret setObject:[Mod modWithId:current fields:fields baseURL:url] forKey:current];
 			}
 			NSLog(@"Parsing mod %@",value);
 			current = value;
@@ -82,17 +82,17 @@
 	if (current != nil)
 	{	
 		id url = [gameURL URLByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-		[ret addObject:[Mod modWithId:current fields:fields baseURL:url]];
+		[ret setObject:[Mod modWithId:current fields:fields baseURL:url] forKey:current];
 	}
 	
 	return ret;
 }
 
--(void)launchGame
+-(void)launchMod:(NSString *)mod
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app/Contents/MacOS/OpenRA"];
-	NSArray *args = [NSArray arrayWithObjects:[gameURL absoluteString], @"mono", @"--debug", @"OpenRA.Game.exe", @"Game.Mods=ra",nil];
+	NSArray *args = [NSArray arrayWithObjects:[gameURL absoluteString], @"mono", @"--debug", @"OpenRA.Game.exe", [NSString stringWithFormat:@"Game.Mods=%@",mod],nil];
 
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:path], &appRef);

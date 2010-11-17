@@ -38,7 +38,7 @@ static JSBridge *SharedInstance;
 	if (self != nil)
 	{
 		methods = [[NSDictionary dictionaryWithObjectsAndKeys:
-						@"launchCurrentMod", NSStringFromSelector(@selector(launchCurrentMod)),
+						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
 						@"fileExistsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
 					nil] retain];
@@ -59,10 +59,17 @@ static JSBridge *SharedInstance;
 
 #pragma mark JS methods
 
-- (void)launchCurrentMod
+- (BOOL)launchMod:(NSString *)aMod
 {
-	NSLog(@"launchcurrent");
-	[controller launchGame];
+	id mod = [[controller allMods] objectForKey:aMod];
+	if (mod == nil)
+	{
+		NSLog(@"Invalid or unknown mod: %@", aMod);
+		return NO;
+	}
+	
+	[controller launchMod:aMod];
+	return YES;
 }
 
 - (void)log:(NSString *)message
@@ -72,8 +79,19 @@ static JSBridge *SharedInstance;
 
 - (BOOL)fileExists:(NSString *)aFile inMod:(NSString *)aMod
 {
-	NSLog(@"File %@ exists in mod %@",aFile, aMod);
-	return NO;
+	id mod = [[controller allMods] objectForKey:aMod];
+	if (mod == nil)
+	{
+		NSLog(@"Invalid or unknown mod: %@", aMod);
+		return NO;
+	}
+	
+	// Disallow traversing up the directory tree
+	id path = [[[mod baseURL] absoluteString]
+			   stringByAppendingPathComponent:[aFile stringByReplacingOccurrencesOfString:@"../"
+																			   withString:@""]];
+	
+	return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
 @end

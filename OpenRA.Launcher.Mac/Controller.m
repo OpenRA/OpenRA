@@ -14,6 +14,7 @@
 #import "JSBridge.h"
 
 @implementation Controller
+@synthesize allMods;
 
 - (void) awakeFromNib
 {
@@ -25,6 +26,7 @@
 	[col setDataCell:imageAndTextCell];
 	
 	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
+	[self populateModInfo];
 	id modsRoot = [self sidebarModsTree];
 	[sidebarItems addChild:modsRoot];
 	id otherRoot = [self sidebarOtherTree];
@@ -45,21 +47,25 @@
 	[outlineView expandItem:otherRoot expandChildren:YES];
 }
 
-- (void) dealloc
+- (void)dealloc
 {
 	[sidebarItems release]; sidebarItems = nil;
 	[super dealloc];
 }
 
-- (SidebarEntry *)sidebarModsTree
+- (void)populateModInfo
 {
 	// Get info for all installed mods
-	id modnames = [game installedMods];
-	NSArray *allMods = [game infoForMods:modnames];
-	
+	[allMods autorelease];
+	allMods = [[game infoForMods:[game installedMods]] retain];	
+}
+
+- (SidebarEntry *)sidebarModsTree
+{
 	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"MODS"];
-	for (id aMod in allMods)
+	for (id key in allMods)
 	{	
+		id aMod = [allMods objectForKey:key];
 		if ([aMod standalone])
 		{
 			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[[game gameURL] URLByAppendingPathComponent:@"mods"]];
@@ -79,9 +85,9 @@
 	return rootItem;
 }
 
-- (void)launchGame
+- (void)launchMod:(NSString *)mod
 {
-	[game launchGame];
+	[game launchMod:mod];
 }
 
 #pragma mark Sidebar Datasource and Delegate
@@ -156,4 +162,8 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	[windowObject setValue:[JSBridge sharedInstance] forKey:@"external"];
 }
 
+- (void)webView:(WebView *)webView addMessageToConsole:(NSDictionary *)dictionary
+{
+	NSLog(@"%@",dictionary);
+}
 @end

@@ -17,6 +17,7 @@
 @synthesize description;
 @synthesize requires;
 @synthesize standalone;
+@synthesize baseURL;
 
 + (id)modWithId:(NSString *)mod fields:(id)fields baseURL:(NSURL *)url
 {
@@ -52,11 +53,6 @@
 	[description release]; description = nil;	
 	[requires release]; requires = nil;	
 	[super dealloc];
-}
-
-- (NSURL *)pageURL
-{
-	return [baseURL URLByAppendingPathComponent:@"mod.html"];
 }
 
 @end

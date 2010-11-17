@@ -14,6 +14,7 @@
             	padding: 20px 0px;
             	width:100%;
             	height:100%;
+            	overflow:hidden;
             }
 
             div#header
@@ -21,6 +22,7 @@
             	margin-top: 30px;
             	height: 66px;
             	text-align:center;
+            	overflow:hidden;
             }
 
             div.bar
@@ -40,15 +42,20 @@
             div#content
             {
             	text-align: justify;
-            	width:50%;
             	padding-left:50px;
+            	overflow:hidden;
             }
 
-            div#buttons
+            div.buttons
             {
             	position:absolute;
             	bottom:0px;
             	padding:20px;
+            }
+            
+            div.desc
+            {
+                font-size:0.75em;
             }
 
             .button
@@ -57,7 +64,7 @@
             	border-radius: 10px;
             	margin:10px;
             	height:40px;
-            	width:150px;
+            	width:170px;
             	color:white;
             	font-weight:bold;
             	font-size:1em;
@@ -75,8 +82,42 @@
             }
 
         </style>
+        <script type="text/javascript">
+        // Check which packages are installed.
+        // Returns 1 if basic files are installed
+        // Returns 2 if basic files plus music are installed
+        function packagesInstalled()
+        {
+            if (window.external.fileExistsInMod('packages/conquer.mix','cnc') != 1)
+                return 0;
+            
+            return (window.external.fileExistsInMod('packages/scores.mix','cnc') == 1) ? 2 : 1;
+        }
+        
+        function play()
+        {
+            window.external.launchMod("cnc");
+        }
+        
+        function installFromCD()
+        {
+            window.external.log("installFromCD()");
+        }
+        
+        function installFromWeb()
+        {
+            window.external.log("installFromWeb()");
+        }
+
+        function onLoad()
+        {
+            document.getElementById("buttons-install").style.display = (packagesInstalled() == 0) ? "" : "none";
+            document.getElementById("buttons-upgrade").style.display = (packagesInstalled() == 1) ? "" : "none";
+            document.getElementById("buttons-play").style.display = (packagesInstalled() == 2) ? "" : "none";
+        }
+        </script>
 	</head>
-	<body>
+	<body onload="onLoad();">
 		<div id="header" class="bar">
 			<h1>Command&nbsp;&amp;&nbsp;Conquer</h1>
 		</div>
@@ -93,9 +134,23 @@
 				    </ul>
 				</div>
 			</div>
-			<div id="buttons">
-			    <input type="button" class="button" onclick="window.external.launchCurrentMod();" value="Play" />
-			    <input type="button" class="button" onclick="window.external.fileExistsInMod('foo.mix','ra');"value="Debug" />
+			<div id="buttons-install" class="buttons">
+			    <div class="desc">The original game data is required before you can play this mod.<br />
+			        Installing from web will install the minimal files required to play.<br />
+			        Installing from CD will also install the music and movie files for an improved game experience.
+			    </div>
+			    <input type="button" class="button" onclick="installFromWeb();" value="Install from Web" />
+			    <input type="button" class="button" onclick="installFromCD();" value="Install from CD" />
+			</div>
+			<div id="buttons-upgrade" class="buttons" style="display:none">
+			    <div class="desc">
+			        Upgrade from CD to install the original music and movie files for an improved game experience.
+			    </div>
+			    <input type="button" class="button" onclick="play();" value="Play" />
+			    <input type="button" class="button" onclick="installFromCD();" value="Upgrade from CD" />
+			</div>
+			<div id="buttons-play" class="buttons" style="display:none">
+			    <input type="button" class="button" onclick="play();" value="Play" />
 			</div>
 		</div>
 	</body>

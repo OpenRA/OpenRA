@@ -29,7 +29,7 @@
 	return newObject;
 }
 
-+ (id)entryWithMod:(Mod *)baseMod allMods:(NSArray *)allMods baseURL:(NSURL *)baseURL
++ (id)entryWithMod:(Mod *)baseMod allMods:(NSDictionary *)allMods baseURL:(NSURL *)baseURL
 {
 	// TODO: Get the mod icon from the Mod
 	// Temporary hack until mods define an icon
@@ -40,8 +40,9 @@
 	
 	id ret = [SidebarEntry entryWithTitle:[baseMod title] url:url icon:icon];
 	
-	for (id aMod in allMods)
+	for (id key in allMods)
 	{
+		id aMod = [allMods objectForKey:key];
 		if (![[aMod requires] isEqualToString:[baseMod mod]])
 			continue;
 		
