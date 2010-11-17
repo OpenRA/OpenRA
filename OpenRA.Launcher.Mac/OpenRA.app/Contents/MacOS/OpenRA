@@ -7,4 +7,4 @@
 
 echo "Launching OpenRA from $1"
 cd $1
-${@:2}
+mono --debug OpenRA.Game.exe Graphics.Renderer=Gl SupportDir=~/Library/"Application Support"/OpenRA ${@:2}

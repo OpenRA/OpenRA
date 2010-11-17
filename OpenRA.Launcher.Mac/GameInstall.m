@@ -92,7 +92,13 @@
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app/Contents/MacOS/OpenRA"];
-	NSArray *args = [NSArray arrayWithObjects:[gameURL absoluteString], @"mono", @"--debug", @"OpenRA.Game.exe", [NSString stringWithFormat:@"Game.Mods=%@",mod],nil];
+	
+	// First argument is the directory to run in
+	// Second...Nth arguments are passed to OpenRA.Game.exe
+	// Launcher wrapper sets mono --debug, gl renderer and support dir.
+	NSArray *args = [NSArray arrayWithObjects:[gameURL absoluteString],
+						[NSString stringWithFormat:@"Game.Mods=%@",mod],
+					nil];
 
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:path], &appRef);
