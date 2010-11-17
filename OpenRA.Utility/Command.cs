@@ -52,24 +52,6 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public static void InstallRAMusic(string path)
-		{
-			Util.ExtractPackagesFromMix(path, string.Format("mods{0}ra{0}packages", Path.DirectorySeparatorChar),
-								   "MAIN.MIX", "scores.mix");
-			Console.WriteLine("Done");
-		}
-
-		public static void InstallCncMusic(string path)
-		{
-			if (!Directory.Exists(path)) { Console.WriteLine("Error: Path {0} does not exist", path); return; }
-			string scoresMixPath = path + Path.DirectorySeparatorChar + "SCORES.MIX";
-			if (!File.Exists(scoresMixPath)) { Console.WriteLine("Error: Could not find SCORES.MIX in path {0}", path); return; }
-
-			File.Copy(scoresMixPath, string.Format("mods{0}cnc{0}packages{0}scores.mix", Path.DirectorySeparatorChar), true);
-
-			Console.WriteLine("Done");
-		}
-
 		public static void DownloadPackages(string argValue)
 		{
 			string[] args = argValue.Split(',');
@@ -128,19 +110,49 @@ namespace OpenRA.Utility
 
 		public static void InstallRAPackages(string path)
 		{
-			Util.ExtractPackagesFromMix(path, "mods{0}ra{0}packages".F(Path.DirectorySeparatorChar), "MAIN.MIX",
-								   "conquer.mix", "russian.mix", "allies.mix", "sounds.mix", "scores.mix",
-								   "snow.mix", "interior.mix", "temperat.mix");
-			var redalertMixPath = "{0}{1}INSTALL{1}REDALERT.MIX".F(path, Path.DirectorySeparatorChar);
-			if (!File.Exists(redalertMixPath)) { Console.WriteLine("Error: REDALERT.MIX could not be found on the CD"); return; }
-			Console.WriteLine("Copying REDALERT.MIX");
-			File.Copy(redalertMixPath, "mods{0}ra{0}packages{0}redalert.mix".F(Path.DirectorySeparatorChar),true);
-			Console.WriteLine("Done");
+			var basePath = "{0}{1}".F(path, Path.DirectorySeparatorChar);
+			var toPath = "mods{0}ra{0}packages{0}".F(Path.DirectorySeparatorChar);
+			var directCopy = new string[] {"INSTALL/REDALERT.MIX"};
+			var extract = new string[] {"conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
+										"scores.mix", "snow.mix", "interior.mix", "temperat.mix"};
+			if (!Directory.Exists(toPath))
+				Directory.CreateDirectory(toPath);
+			
+			Util.ExtractFromPackage(basePath, "MAIN.MIX", extract, toPath);
+			foreach (var file in directCopy)
+			{
+				if (!File.Exists(basePath+file))
+				{
+					Console.WriteLine("Error: Could not find "+file);
+					return;
+				}
+				Console.WriteLine("Extracting: {0}", file);
+				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
+			}
 		}
 
 		public static void InstallCncPackages(string path)
 		{
-			Console.WriteLine("Error: NotI");
+			var basePath = "{0}{1}".F(path, Path.DirectorySeparatorChar);
+			var toPath = "mods{0}cnc{0}packages{0}".F(Path.DirectorySeparatorChar);
+			var directCopy = new string[] {"CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
+											   "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
+			var extract = new string[] {"cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix"};
+			
+			if (!Directory.Exists(toPath))
+				Directory.CreateDirectory(toPath);
+			
+			Util.ExtractFromPackage(basePath+"INSTALL", "SETUP.Z", extract, toPath);
+			foreach (var file in directCopy)
+			{
+				if (!File.Exists(basePath+file))
+				{
+					Console.WriteLine("Error: Could not find "+file);
+					return;
+				}
+				Console.WriteLine("Extracting: {0}", file);
+				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
+			}
 		}
 
 		public static void Settings(string argValue)

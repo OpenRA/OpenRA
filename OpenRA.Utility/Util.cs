@@ -17,23 +17,22 @@ namespace OpenRA.Utility
 {
 	static class Util
 	{
-		public static void ExtractPackagesFromMix(string srcPath, string destPath, string mix, params string[] packages)
+		public static void ExtractFromPackage(string srcPath, string package, string[] files, string destPath)
 		{
 			if (!Directory.Exists(srcPath)) { Console.WriteLine("Error: Path {0} does not exist", srcPath); return; }
+			if (!Directory.Exists(destPath)) { Console.WriteLine("Error: Path {0} does not exist", destPath); return; }
+
 			FileSystem.Mount(srcPath);
-			if (!FileSystem.Exists(mix)) { Console.WriteLine("Error: Could not find {1} in path {0}", srcPath, mix); return; }
-			FileSystem.Mount(mix);
+			if (!FileSystem.Exists(package)) { Console.WriteLine("Error: Could not find {0}", package); return; }
+			FileSystem.Mount(package);
 
-			if (!Directory.Exists(destPath))
-				Directory.CreateDirectory(destPath);
-
-			foreach (string s in packages)
+			foreach (string s in files)
 			{
 				var destFile = "{0}{1}{2}".F(destPath, Path.DirectorySeparatorChar, s);
 				using (var sourceStream = FileSystem.Open(s))
 				using (var destStream = File.Create(destFile))
 				{
-					Console.WriteLine("Extracting {0}", s);
+					Console.WriteLine("Extracting: {0}", s);
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
 			}
