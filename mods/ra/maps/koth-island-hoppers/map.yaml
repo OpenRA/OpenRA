@@ -203,6 +203,7 @@ Rules:
 		Building:
 			Capturable: false
 			Unsellable: true
+			BaseNormal: false
 		Scale:
 			Value: 0.75
 		-RevealsShroud
