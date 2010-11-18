@@ -37,7 +37,11 @@ These need to be copied into the mods/cnc/packages/ directory.
 If you have a case-sensitive filesystem you must change the filenames to
 lower case.
 
+The files can be downloaded from:
+http://open-ra.org/get-dependency.php?file=ra-packages for the Red Alert files and
+http://open-ra.org/get-dependency.php?file=cnc-packages for the Command & Conquer files.
 
+Alternatively:
 Red Alert and C&C have been released by EA Games as freeware. They can be
 downloaded from http://www.commandandconquer.com/classic
 Unfortunately the installer is 16-bit and so won’t run on 64-bit operating
@@ -55,8 +59,7 @@ WINDOWS:
 * .NET Framework >= 3.5-SP1
 	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
 * Tao Framework >= 2.1.0
-	(http://sourceforge.net/projects/taoframework/)
-	(required libs: Tao.OpenGL, Tao.Cg, Tao.Platform.Windows)
+	This is now bundled with OpenRA, copy the files in thirdparty/Tao to the game root directory.
 * OpenAL >= 1.1
 	(http://connect.creativelabs.com/openal/Downloads/oalinst.zip)
 * Cg Toolkit >= 2.2

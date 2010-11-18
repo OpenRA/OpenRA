@@ -68,7 +68,7 @@ to flush the renderer (if you want to see anything).
 UserSettings stores the data loaded from settings.ini (or defaults). Eventually we need to be 
 able to save values changed in game into settings.ini (not yet implemented)
 
-Bugs: There is a list of known bugs and features at http://red-bull.ijw.co.nz:3690/OpenRA .
+Bugs: There is a list of known bugs and features at http://bugs.open-ra.org/ .
 
 We also have a website at http://www.open-ra.org/ . 
 
@@ -76,7 +76,7 @@ Our IRC channel is #openra on irc.freenode.net .
 
 As far as using git, get your own repository on github. You probably want to set up the gitbot
 to spam irc when you make commits (its nice to know). Push your changes into your git 
-repository, and it will/might :P be merged into chrisforbes/OpenRA . 
+repository, and it will/might :P be merged into http://github.com/OpenRA/OpenRA . 
 See http://help.github.com/ for working with GitHub and see http://progit.org/ for working 
 with Git.
 
