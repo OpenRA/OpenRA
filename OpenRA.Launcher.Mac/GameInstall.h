@@ -11,13 +11,14 @@
 @class Mod;
 @interface GameInstall : NSObject {
 	NSURL *gameURL;
+	NSMutableDictionary *downloadTasks;
 }
 @property(readonly) NSURL *gameURL;
 
 -(id)initWithURL:(NSURL *)path;
 -(void)launchMod:(NSString *)mod;
 - (NSString *)runUtilityQuery:(NSString *)arg;
-- (void)runUtilityQuery:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel;
 - (NSArray *)installedMods;
 - (NSDictionary *)infoForMods:(NSArray *)mods;
+- (BOOL)downloadUrl:(NSString *)url toPath:(NSString *)filename withId:(NSString *)key;
 @end

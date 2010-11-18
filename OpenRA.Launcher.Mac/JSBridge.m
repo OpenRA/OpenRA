@@ -40,7 +40,9 @@ static JSBridge *SharedInstance;
 		methods = [[NSDictionary dictionaryWithObjectsAndKeys:
 						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
+						@"installCncPackagesFromWeb", NSStringFromSelector(@selector(installCncPackagesFromWeb)),
 						@"fileExistsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
+						@"downloadFileToCache",NSStringFromSelector(@selector(downloadFile:intoCacheWithName:id:)),
 					nil] retain];
 	}
 	return self;
@@ -85,6 +87,13 @@ static JSBridge *SharedInstance;
 	
 	[controller launchMod:[mods componentsJoinedByString:@","]];
 	return YES;
+}
+
+- (void)downloadFile:(NSString *)url intoCacheWithName:(NSString *)name  id:(NSString *)did
+{
+	NSLog(@"downloadFile:%@ intoCacheWithName:%@ id:%@",url,name,did);
+	// Disallow traversing directories; take only the last component
+	[controller downloadUrl:url intoCache:[name lastPathComponent] withId:did];
 }
 
 - (void)log:(NSString *)message

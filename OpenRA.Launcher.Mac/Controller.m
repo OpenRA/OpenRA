@@ -90,6 +90,12 @@
 	[game launchMod:mod];
 }
 
+- (BOOL)downloadUrl:(NSString *)url intoCache:(NSString *)filename withId:(NSString *)key
+{
+	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:filename] stringByExpandingTildeInPath];
+	return [game downloadUrl:url toPath:path withId:key];
+}
+
 #pragma mark Sidebar Datasource and Delegate
 - (int)outlineView:(NSOutlineView *)anOutlineView numberOfChildrenOfItem:(id)item
 {

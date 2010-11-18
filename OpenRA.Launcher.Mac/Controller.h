@@ -26,5 +26,5 @@
 - (void)populateModInfo;
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
-
+- (BOOL)downloadUrl:(NSString *)url intoCache:(NSString *)filename withId:(NSString *)key;
 @end

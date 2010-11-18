@@ -18,6 +18,7 @@
 	if (self != nil)
 	{
 		gameURL = [url retain];
+		downloadTasks = [[NSMutableDictionary alloc] init];
 	}
 	return self;
 }
@@ -25,6 +26,7 @@
 - (void)dealloc
 {
 	[gameURL release]; gameURL = nil;
+	[downloadTasks release]; downloadTasks = nil;
 	[super dealloc];
 }
 
@@ -142,26 +144,71 @@
 }
 
 
-- (void)runUtilityQuery:(NSString *)arg handleOutput:(id)obj withMethod:(SEL)sel
+- (BOOL)downloadUrl:(NSString *)url toPath:(NSString *)filename withId:(NSString *)key
 {
-	NSTask *aTask = [[NSTask alloc] init];
-	NSPipe *aPipe = [NSPipe pipe];
-	NSFileHandle *readHandle = [aPipe fileHandleForReading];
+	NSLog(@"Starting download...");
+	if ([downloadTasks objectForKey:key] != nil)
+	{
+		NSLog(@"Error: a download is already in progress for %@",key);
+		return NO;
+	}
+	
+	NSTask *task = [[[NSTask alloc] init] autorelease];
+	NSPipe *pipe = [NSPipe pipe];
 	
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
+	NSString *arg = [NSString stringWithFormat:@"--download-url=%@,%@",url,filename];
 	[taskArgs addObject:arg];
 	
-    [aTask setCurrentDirectoryPath:[gameURL absoluteString]];
-    [aTask setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
-    [aTask setArguments:taskArgs];
-	[aTask setStandardOutput:aPipe];
-    [aTask launch];
+    [task setCurrentDirectoryPath:[gameURL absoluteString]];
+    [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
+    [task setArguments:taskArgs];
+	[task setStandardOutput:pipe];
 	
-	NSData *inData = nil;
-    while ((inData = [readHandle availableData]) && [inData length])
-        [obj performSelector:sel withObject:[NSString stringWithUTF8String:[inData bytes]]];
-	[aTask waitUntilExit];
-    [aTask release];
+	NSFileHandle *readHandle = [pipe fileHandleForReading];
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self
+		   selector:@selector(utilityResponded:)
+			   name:NSFileHandleReadCompletionNotification
+			 object:readHandle];
+	[nc addObserver:self
+		   selector:@selector(utilityTerminated:)
+			   name:NSTaskDidTerminateNotification
+			 object:task];
+    [task launch];
+	[readHandle readInBackgroundAndNotify];
+		
+	[downloadTasks setObject:task forKey:key];
+	return YES;
 }
 
+- (void)utilityResponded:(NSNotification *)n
+{
+	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
+	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
+	NSLog(@"r: %@",response);
+
+	// Keep reading
+	if ([n object] != nil)
+		[[n object] readInBackgroundAndNotify];
+}
+
+- (void)utilityTerminated:(NSNotification *)n
+{
+	id task = [n object];
+	id pipe = [task standardOutput];
+	
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[pipe fileHandleForReading]];
+	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
+}
+
+- (void)cancelDownload:(NSString *)key
+{
+	id task = [downloadTasks objectForKey:key];
+	if (task == nil)
+		return;
+	
+	[task interrupt];
+}
 @end

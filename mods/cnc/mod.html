@@ -78,7 +78,8 @@
             
             .button:hover
             {
-                background-color: #333;
+                border-color:#fff;
+                background-color:#650b03;
                 cursor:pointer;
             }
 
@@ -107,7 +108,8 @@
         
         function installFromWeb()
         {
-            window.external.log("installFromWeb()");
+           window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=cnc-packages","test.zip","cnc-packages");
+           //window.external.installCncPackagesFromWeb();
         }
 
         function onLoad()
