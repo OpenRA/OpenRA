@@ -42,11 +42,12 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="ConfigureModsDialog.cs">
+    <Compile Include="JSBridge.cs" />
+    <Compile Include="Launcher.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConfigureModsDialog.Designer.cs">
-      <DependentUpon>ConfigureModsDialog.cs</DependentUpon>
+    <Compile Include="Launcher.Designer.cs">
+      <DependentUpon>Launcher.cs</DependentUpon>
     </Compile>
     <Compile Include="InstallPackagesDialog.cs">
       <SubType>Form</SubType>
@@ -54,12 +55,7 @@
     <Compile Include="InstallPackagesDialog.Designer.cs">
       <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Mod.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="UtilityProgram.cs" />
@@ -75,14 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConfigureModsDialog.resx">
-      <DependentUpon>ConfigureModsDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Launcher.resx">
+      <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallPackagesDialog.resx">
       <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
