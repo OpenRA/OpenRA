@@ -1,0 +1,220 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: Crossroads (KoTH)
+
+Description: Classic KoTH map for 2-man teams
+
+Author: Chris Forbes
+
+PlayerCount: 1
+
+Tileset: TEMPERAT
+
+MapSize: 80,80
+
+TopLeft: 8,8
+
+BottomRight: 72,66
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: allies
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: miss
+		Location: 38,35
+		Owner: Neutral
+	Actor1: tc05
+		Location: 34,28
+		Owner: Neutral
+	Actor2: tc02
+		Location: 45,27
+		Owner: Neutral
+	Actor3: tc04
+		Location: 34,43
+		Owner: Neutral
+	Actor4: tc02
+		Location: 45,43
+		Owner: Neutral
+	Actor5: brik
+		Location: 37,32
+		Owner: Neutral
+	Actor6: brik
+		Location: 36,32
+		Owner: Neutral
+	Actor7: brik
+		Location: 35,32
+		Owner: Neutral
+	Actor8: brik
+		Location: 35,33
+		Owner: Neutral
+	Actor9: brik
+		Location: 35,34
+		Owner: Neutral
+	Actor10: brik
+		Location: 35,37
+		Owner: Neutral
+	Actor11: brik
+		Location: 35,38
+		Owner: Neutral
+	Actor12: brik
+		Location: 35,39
+		Owner: Neutral
+	Actor13: brik
+		Location: 36,39
+		Owner: Neutral
+	Actor14: brik
+		Location: 37,39
+		Owner: Neutral
+	Actor15: brik
+		Location: 41,39
+		Owner: Neutral
+	Actor16: brik
+		Location: 42,39
+		Owner: Neutral
+	Actor17: brik
+		Location: 43,39
+		Owner: Neutral
+	Actor18: brik
+		Location: 43,38
+		Owner: Neutral
+	Actor19: brik
+		Location: 43,37
+		Owner: Neutral
+	Actor20: brik
+		Location: 43,34
+		Owner: Neutral
+	Actor21: brik
+		Location: 43,33
+		Owner: Neutral
+	Actor22: brik
+		Location: 43,32
+		Owner: Neutral
+	Actor23: brik
+		Location: 42,32
+		Owner: Neutral
+	Actor24: brik
+		Location: 41,32
+		Owner: Neutral
+	Actor25: brik
+		Location: 37,31
+		Owner: Neutral
+	Actor26: brik
+		Location: 36,31
+		Owner: Neutral
+	Actor27: brik
+		Location: 34,33
+		Owner: Neutral
+	Actor28: brik
+		Location: 34,34
+		Owner: Neutral
+	Actor29: brik
+		Location: 34,37
+		Owner: Neutral
+	Actor30: brik
+		Location: 34,38
+		Owner: Neutral
+	Actor31: brik
+		Location: 36,40
+		Owner: Neutral
+	Actor32: brik
+		Location: 37,40
+		Owner: Neutral
+	Actor33: brik
+		Location: 41,40
+		Owner: Neutral
+	Actor34: brik
+		Location: 42,40
+		Owner: Neutral
+	Actor35: brik
+		Location: 44,38
+		Owner: Neutral
+	Actor36: brik
+		Location: 44,37
+		Owner: Neutral
+	Actor37: brik
+		Location: 44,33
+		Owner: Neutral
+	Actor38: brik
+		Location: 44,34
+		Owner: Neutral
+	Actor39: brik
+		Location: 42,31
+		Owner: Neutral
+	Actor40: brik
+		Location: 41,31
+		Owner: Neutral
+	Actor41: mine
+		Location: 27,12
+		Owner: Neutral
+	Actor42: mine
+		Location: 13,28
+		Owner: Neutral
+	Actor43: tc01
+		Location: 31,18
+		Owner: Neutral
+	Actor44: tc04
+		Location: 21,28
+		Owner: Neutral
+	Actor45: tc01
+		Location: 12,32
+		Owner: Neutral
+	Actor46: t14
+		Location: 12,31
+		Owner: Neutral
+	Actor47: tc04
+		Location: 14,32
+		Owner: Neutral
+
+Waypoints:
+	wp0: 14,15
+
+Smudges:
+
+Rules:
+	MISS:
+		ProximityCapturable:
+			MustBeClear: true
+		StrategicPoint:
+			Critical: false
+		-RepairableBuilding:
+		Tooltip:
+			Name: Strategic Point
+		Building:
+			Capturable: false
+			Unsellable: true
+		Scale:
+			Value: 0.75
+		-RevealsShroud
+		RevealsShroud:
+			Range: 20
+		-Health:
+	Player:
+		StrategicVictoryConditions:
+			TicksToHold: 3000
+			ResetOnHoldLost: true
+			RatioRequired: 1
+			CriticalRatioRequired: 1
+
+Sequences:
+
+Weapons:
+
+Voices:
+
