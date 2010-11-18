@@ -52,36 +52,26 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public static void DownloadPackages(string argValue)
+		public static void DownloadUrl(string argValue)
 		{
 			string[] args = argValue.Split(',');
-			string mod = "";
-			string destPath = Path.GetTempPath();
-
-			if (args.Length >= 1)
-				mod = args[0];
-			if (args.Length >= 2)
-				destPath = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-
-			string destFile = string.Format("{0}{1}{2}-packages.zip", destPath, Path.DirectorySeparatorChar, mod);
-
-			if (File.Exists(destFile))
+			
+			if (args.Length != 2)
 			{
-				Console.WriteLine("Downloaded file already exists, using it instead.");
-				Util.ExtractPackagesFromZip(mod, destPath);
+				Console.WriteLine("Error: invalid syntax");
 				return;
 			}
-
+			string url = args[0];
+			string path = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+			
 			WebClient wc = new WebClient();
 			wc.DownloadProgressChanged += DownloadProgressChanged;
 			wc.DownloadFileCompleted += DownloadFileCompleted;
-			Console.WriteLine("Downloading {0}-packages.zip to {1}", mod, destPath);
-			Console.WriteLine("Initializing...");
-			wc.DownloadFileAsync(
-				new Uri(string.Format("http://open-ra.org/get-dependency.php?file={0}-packages", mod)),
-				destFile,
-				new string[] { mod, destPath });
 
+			Console.WriteLine("Downloading {0} to {1}", url, path);
+			Console.WriteLine("Status: Initializing");
+			
+			wc.DownloadFileAsync(new Uri(url), path);
 			while (!completed)
 				Thread.Sleep(500);
 		}
@@ -91,21 +81,15 @@ namespace OpenRA.Utility
 		static void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
 			if (e.Error != null)
-			{
 				Console.WriteLine("Error: {0}", e.Error.Message);
-				completed = true;
-				return;
-			}
-
-			Console.WriteLine("Download Completed");
-			string[] modAndDest = (string[])e.UserState;
-			Util.ExtractPackagesFromZip(modAndDest[0], modAndDest[1]);
+			else
+				Console.WriteLine("Status: Completed");
 			completed = true;
 		}
 
 		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
 		{
-			Console.WriteLine("{0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
+			Console.WriteLine("Status: {0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
 		}
 
 		public static void InstallRAPackages(string path)
