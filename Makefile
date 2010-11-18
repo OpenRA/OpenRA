@@ -168,18 +168,15 @@ winlaunch_TARGET	= OpenRA.Launcher.exe
 winlaunch_KIND		= winexe
 winlaunch_DEPS		= 
 winlaunch_LIBS		= $(COMMON_LIBS) System.Windows.Forms.dll
-winlaunch_EXTRA		= -resource:OpenRA.Launcher.MainForm.resources \
-						-resource:OpenRA.Launcher.InstallPackagesDialog.resources \
-						-resource:OpenRA.Launcher.ConfigureModsDialog.resources
+winlaunch_EXTRA		= -resource:OpenRA.Launcher.InstallPackagesDialog.resources \
+						-resource:OpenRA.Launcher.Launcher.resources
 PROGRAMS 			+= winlaunch
-OpenRA.Launcher.MainForm.resources:
-	resgen2 OpenRA.Launcher/MainForm.resx OpenRA.Launcher.MainForm.resources 1> /dev/null
 OpenRA.Launcher.InstallPackagesDialog.resources:
 	resgen2 OpenRA.Launcher/InstallPackagesDialog.resx OpenRA.Launcher.InstallPackagesDialog.resources 1> /dev/null
-OpenRA.Launcher.ConfigureModsDialog.resources:
-	resgen2 OpenRA.Launcher/ConfigureModsDialog.resx OpenRA.Launcher.ConfigureModsDialog.resources 1> /dev/null
-winlaunch: OpenRA.Launcher.MainForm.resources OpenRA.Launcher.InstallPackagesDialog.resources \
-           OpenRA.Launcher.ConfigureModsDialog.resources $(winlaunch_TARGET)
+OpenRA.Launcher.Launcher.resources:
+	resgen2 OpenRA.Launcher/Launcher.resx OpenRA.Launcher.Launcher.resources 1> /dev/null
+winlaunch: OpenRA.Launcher.InstallPackagesDialog.resources \
+           OpenRA.Launcher.Launcher.resources $(winlaunch_TARGET)
 
 .PHONY: $(PHONY) $(PROGRAMS)
 
