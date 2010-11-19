@@ -9,8 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 @class Mod;
+@class Controller;
 @interface GameInstall : NSObject {
 	NSURL *gameURL;
+	Controller *controller;
 	NSMutableDictionary *downloadTasks;
 }
 @property(readonly) NSURL *gameURL;
@@ -20,5 +22,8 @@
 - (NSString *)runUtilityQuery:(NSString *)arg;
 - (NSArray *)installedMods;
 - (NSDictionary *)infoForMods:(NSArray *)mods;
-- (BOOL)downloadUrl:(NSString *)url toPath:(NSString *)filename withId:(NSString *)key;
+- (NSTask *)runAsyncUtilityWithArg:(NSString *)arg 
+						  delegate:(id)object
+				  responseSelector:(SEL)response
+				terminatedSelector:(SEL)terminated;
 @end

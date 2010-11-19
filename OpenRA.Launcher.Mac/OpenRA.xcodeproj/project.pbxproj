@@ -13,6 +13,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DA38212212925344003B0BB5 /* JSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = DA38212112925344003B0BB5 /* JSBridge.m */; };
+		DA7D85671295E92900E58547 /* Download.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D85661295E92900E58547 /* Download.m */; };
 		DA81FA821290F5C800C48F2F /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FA811290F5C800C48F2F /* Controller.m */; };
 		DA81FAAA1290FA0000C48F2F /* Mod.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FAA91290FA0000C48F2F /* Mod.m */; };
 		DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */; };
@@ -37,6 +38,8 @@
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA38212012925344003B0BB5 /* JSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridge.h; sourceTree = "<group>"; };
 		DA38212112925344003B0BB5 /* JSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridge.m; sourceTree = "<group>"; };
+		DA7D85651295E92900E58547 /* Download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Download.h; sourceTree = "<group>"; };
+		DA7D85661295E92900E58547 /* Download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Download.m; sourceTree = "<group>"; };
 		DA81FA801290F5C800C48F2F /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		DA81FA811290F5C800C48F2F /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
 		DA81FAA81290FA0000C48F2F /* Mod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mod.h; sourceTree = "<group>"; };
@@ -78,6 +81,8 @@
 				DA81FAA91290FA0000C48F2F /* Mod.m */,
 				DA81FC3D12911E2B00C48F2F /* GameInstall.h */,
 				DA81FC3E12911E2B00C48F2F /* GameInstall.m */,
+				DA7D85651295E92900E58547 /* Download.h */,
+				DA7D85661295E92900E58547 /* Download.m */,
 				DA92968E1292328200EDB02E /* SidebarEntry.h */,
 				DA92968F1292328200EDB02E /* SidebarEntry.m */,
 				DA38212012925344003B0BB5 /* JSBridge.h */,
@@ -226,6 +231,7 @@
 				DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */,
 				DA9296901292328200EDB02E /* SidebarEntry.m in Sources */,
 				DA38212212925344003B0BB5 /* JSBridge.m in Sources */,
+				DA7D85671295E92900E58547 /* Download.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

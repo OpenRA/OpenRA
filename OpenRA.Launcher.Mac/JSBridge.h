@@ -10,6 +10,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class Controller;
+@class Download;
 @interface JSBridge : NSObject {
 	Controller *controller;
 	NSDictionary *methods;
@@ -18,5 +19,5 @@
 
 + (JSBridge *)sharedInstance;
 - (void)setController:(Controller *)aController;
-
+- (void)notifyDownloadProgress:(Download *)download;
 @end

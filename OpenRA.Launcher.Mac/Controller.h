@@ -17,14 +17,19 @@
 	SidebarEntry *sidebarItems;
 	GameInstall *game;
 	NSDictionary *allMods;
+	NSMutableDictionary *downloads;
 	IBOutlet NSOutlineView *outlineView;
 	IBOutlet WebView *webView;
 }
 @property(readonly) NSDictionary *allMods;
+@property(readonly) WebView *webView;
 
 - (void)launchMod:(NSString *)mod;
 - (void)populateModInfo;
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
-- (BOOL)downloadUrl:(NSString *)url intoCache:(NSString *)filename withId:(NSString *)key;
+
+- (BOOL)downloadUrl:(NSString *)url toFile:(NSString *)filename withId:(NSString *)key;
+- (void)cancelDownload:(NSString *)key;
+
 @end

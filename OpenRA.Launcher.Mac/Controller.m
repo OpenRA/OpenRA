@@ -12,14 +12,16 @@
 #import "GameInstall.h"
 #import "ImageAndTextCell.h"
 #import "JSBridge.h"
+#import "Download.h"
 
 @implementation Controller
 @synthesize allMods;
-
+@synthesize webView;
 - (void) awakeFromNib
 {
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
 	[[JSBridge sharedInstance] setController:self];
+	downloads = [[NSMutableDictionary alloc] init];
 	
 	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
 	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
@@ -50,6 +52,7 @@
 - (void)dealloc
 {
 	[sidebarItems release]; sidebarItems = nil;
+	[downloads release]; downloads = nil;
 	[super dealloc];
 }
 
@@ -90,10 +93,24 @@
 	[game launchMod:mod];
 }
 
-- (BOOL)downloadUrl:(NSString *)url intoCache:(NSString *)filename withId:(NSString *)key
+- (BOOL)downloadUrl:(NSString *)url toFile:(NSString *)path withId:(NSString *)key
 {
-	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:filename] stringByExpandingTildeInPath];
-	return [game downloadUrl:url toPath:path withId:key];
+	if ([downloads objectForKey:key] != nil)
+	{
+		NSLog(@"Download already in progress for %@",key);
+		return NO;
+	}
+	
+	
+	Download *download = [Download downloadWithURL:url filename:path key:key game:game];
+	[downloads setObject:download forKey:key];
+	return YES;
+}
+
+- (void)cancelDownload:(NSString *)key
+{
+	[[downloads objectForKey:key] cancel];
+	[downloads removeObjectForKey:key];
 }
 
 #pragma mark Sidebar Datasource and Delegate

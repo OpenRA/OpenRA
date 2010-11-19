@@ -106,12 +106,25 @@
             window.external.log("installFromCD()");
         }
         
-        function installFromWeb()
+        function download1()
         {
-           window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=cnc-packages","test.zip","cnc-packages");
-           //window.external.installCncPackagesFromWeb();
+            window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=cnc-packages","test.zip","cnc-packages");
         }
-
+        function download2()
+        {
+            window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=ra-packages","test2.zip","ra-packages");
+        }
+        
+        function cancel1()
+        {
+            window.external.cancelDownload("cnc-packages");
+        }
+        
+        function cancel2()
+        {
+            window.external.cancelDownload("ra-packages");
+        }
+        
         function onLoad()
         {
             document.getElementById("buttons-install").style.display = (packagesInstalled() == 0) ? "" : "none";
@@ -142,8 +155,11 @@
 			        Installing from web will install the minimal files required to play.<br />
 			        Installing from CD will also install the music and movie files for an improved game experience.
 			    </div>
-			    <input type="button" class="button" onclick="installFromWeb();" value="Install from Web" />
-			    <input type="button" class="button" onclick="installFromCD();" value="Install from CD" />
+			    <input type="button" class="button" onclick="download1();" value="Download1" />
+			    <input type="button" class="button" onclick="cancel1();" value="Cancel1" />
+			    <input type="button" class="button" onclick="download2();" value="Download2" />
+			    <input type="button" class="button" onclick="cancel2();" value="Cancel2" />
+			    
 			</div>
 			<div id="buttons-upgrade" class="buttons" style="display:none">
 			    <div class="desc">

@@ -7,6 +7,7 @@
  */
 
 #import "GameInstall.h"
+#import "Controller.h"
 #import "Mod.h"
 
 @implementation GameInstall
@@ -47,7 +48,7 @@
 	NSString *current = nil;
 	for (id l in lines)
 	{
-		id line = [l stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		NSString *line = [l stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if (line == nil || [line length] == 0)
 			continue;
 		
@@ -143,21 +144,15 @@
 	return [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
 }
 
-
-- (BOOL)downloadUrl:(NSString *)url toPath:(NSString *)filename withId:(NSString *)key
+- (NSTask *)runAsyncUtilityWithArg:(NSString *)arg 
+							delegate:(id)object
+					responseSelector:(SEL)response
+				  terminatedSelector:(SEL)terminated
 {
-	NSLog(@"Starting download...");
-	if ([downloadTasks objectForKey:key] != nil)
-	{
-		NSLog(@"Error: a download is already in progress for %@",key);
-		return NO;
-	}
-	
 	NSTask *task = [[[NSTask alloc] init] autorelease];
 	NSPipe *pipe = [NSPipe pipe];
 	
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
-	NSString *arg = [NSString stringWithFormat:@"--download-url=%@,%@",url,filename];
 	[taskArgs addObject:arg];
 	
     [task setCurrentDirectoryPath:[gameURL absoluteString]];
@@ -167,48 +162,17 @@
 	
 	NSFileHandle *readHandle = [pipe fileHandleForReading];
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self
-		   selector:@selector(utilityResponded:)
+	[nc addObserver:object
+		   selector:response
 			   name:NSFileHandleReadCompletionNotification
 			 object:readHandle];
-	[nc addObserver:self
-		   selector:@selector(utilityTerminated:)
+	[nc addObserver:object
+		   selector:terminated
 			   name:NSTaskDidTerminateNotification
 			 object:task];
     [task launch];
 	[readHandle readInBackgroundAndNotify];
-		
-	[downloadTasks setObject:task forKey:key];
-	return YES;
+	return task;
 }
 
-- (void)utilityResponded:(NSNotification *)n
-{
-	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
-	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
-	NSLog(@"r: %@",response);
-
-	// Keep reading
-	if ([n object] != nil)
-		[[n object] readInBackgroundAndNotify];
-}
-
-- (void)utilityTerminated:(NSNotification *)n
-{
-	id task = [n object];
-	id pipe = [task standardOutput];
-	
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[pipe fileHandleForReading]];
-	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
-}
-
-- (void)cancelDownload:(NSString *)key
-{
-	id task = [downloadTasks objectForKey:key];
-	if (task == nil)
-		return;
-	
-	[task interrupt];
-}
 @end

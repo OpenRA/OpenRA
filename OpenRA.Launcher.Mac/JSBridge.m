@@ -8,6 +8,8 @@
 
 #import "JSBridge.h"
 #import "Controller.h"
+#import "Download.h"
+#import "Mod.h"
 
 static JSBridge *SharedInstance;
 
@@ -40,9 +42,10 @@ static JSBridge *SharedInstance;
 		methods = [[NSDictionary dictionaryWithObjectsAndKeys:
 						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
-						@"installCncPackagesFromWeb", NSStringFromSelector(@selector(installCncPackagesFromWeb)),
 						@"fileExistsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
-						@"downloadFileToCache",NSStringFromSelector(@selector(downloadFile:intoCacheWithName:id:)),
+						@"fileExistsInCache", NSStringFromSelector(@selector(fileExistsInCache:)),
+						@"downloadFileToCache", NSStringFromSelector(@selector(downloadFileIntoCache:withName:key:)),
+						@"cancelDownload", NSStringFromSelector(@selector(cancelDownload:)),
 					nil] retain];
 	}
 	return self;
@@ -59,7 +62,14 @@ static JSBridge *SharedInstance;
 	[super dealloc];
 }
 
-#pragma mark JS methods
+- (void)notifyDownloadProgress:(Download *)download
+{
+	NSLog(@"notified");
+	//[[[controller webView] windowScriptObject] evaluateWebScript:
+	// @"updateDownloadStatus(’sample_graphic.jpg’, ‘320’, ‘240’)"];
+}
+
+#pragma mark JS API methods
 
 - (BOOL)launchMod:(NSString *)aMod
 {
@@ -89,11 +99,25 @@ static JSBridge *SharedInstance;
 	return YES;
 }
 
-- (void)downloadFile:(NSString *)url intoCacheWithName:(NSString *)name  id:(NSString *)did
+- (BOOL)fileExistsInCache:(NSString *)name
 {
-	NSLog(@"downloadFile:%@ intoCacheWithName:%@ id:%@",url,name,did);
 	// Disallow traversing directories; take only the last component
-	[controller downloadUrl:url intoCache:[name lastPathComponent] withId:did];
+	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[name lastPathComponent]] stringByExpandingTildeInPath];
+	return [[NSFileManager defaultManager] fileExistsAtPath:path];
+}
+
+- (void)downloadFileIntoCache:(NSString *)url withName:(NSString *)name key:(NSString *)key
+{
+	NSLog(@"downloadFile:%@ intoCacheWithName:%@ key:%@",url,name,key);
+	
+	// Disallow traversing directories; take only the last component
+	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[name lastPathComponent]] stringByExpandingTildeInPath];
+	[controller downloadUrl:url toFile:path withId:key];
+}
+
+- (void)cancelDownload:(NSString *)key
+{
+	[controller cancelDownload:key];
 }
 
 - (void)log:(NSString *)message
