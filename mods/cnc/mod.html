@@ -90,10 +90,10 @@
         // Returns 2 if basic files plus music are installed
         function packagesInstalled()
         {
-            if (window.external.fileExistsInMod('packages/conquer.mix','cnc') != 1)
+            if (window.external.existsInMod('packages/conquer.mix','cnc') != 1)
                 return 0;
             
-            return (window.external.fileExistsInMod('packages/scores.mix','cnc') == 1) ? 2 : 1;
+            return (window.external.existsInMod('packages/scores.mix','cnc') == 1) ? 2 : 1;
         }
         
         function play()
@@ -101,18 +101,14 @@
             window.external.launchMod("cnc");
         }
         
-        function installFromCD()
-        {
-            window.external.log("installFromCD()");
-        }
-        
         function download1()
         {
-            window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=cnc-packages","test.zip","cnc-packages");
+            window.external.downloadToCache("http://localhost/~paul/cnc-packages.zip","test.zip","cnc-packages");
         }
+        
         function download2()
         {
-            window.external.downloadFileToCache("http://www.open-ra.org/get-dependency.php?file=ra-packages","test2.zip","ra-packages");
+            window.external.downloadToCache("http://localhost/~paul/ra-packages.zip","test2.zip","ra-packages");
         }
         
         function cancel1()
@@ -131,6 +127,15 @@
             document.getElementById("buttons-upgrade").style.display = (packagesInstalled() == 1) ? "" : "none";
             document.getElementById("buttons-play").style.display = (packagesInstalled() == 2) ? "" : "none";
         }
+        
+        function downloadProgressed(file)
+        {
+           var total = window.external.bytesTotal(file);
+           var downloaded = window.external.bytesCompleted(file);
+           var percent = (100*downloaded/total).toPrecision(3);
+           window.external.log("file: "+file+" "+downloaded+"/"+total+" ("+percent+"%)");
+        }
+        
         </script>
 	</head>
 	<body onload="onLoad();">

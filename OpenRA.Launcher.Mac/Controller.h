@@ -12,6 +12,7 @@
 @class SidebarEntry;
 @class GameInstall;
 @class JSBridge;
+@class Download;
 @interface Controller : NSObject
 {
 	SidebarEntry *sidebarItems;
@@ -31,5 +32,6 @@
 
 - (BOOL)downloadUrl:(NSString *)url toFile:(NSString *)filename withId:(NSString *)key;
 - (void)cancelDownload:(NSString *)key;
+- (Download *)downloadWithKey:(NSString *)key;
 
 @end

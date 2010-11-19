@@ -42,10 +42,15 @@ static JSBridge *SharedInstance;
 		methods = [[NSDictionary dictionaryWithObjectsAndKeys:
 						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
-						@"fileExistsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
-						@"fileExistsInCache", NSStringFromSelector(@selector(fileExistsInCache:)),
-						@"downloadFileToCache", NSStringFromSelector(@selector(downloadFileIntoCache:withName:key:)),
+						@"existsInMod", NSStringFromSelector(@selector(exists:inMod:)),
+						
+						// File downloading
+						@"existsInCache", NSStringFromSelector(@selector(existsInCache:)),
+						@"downloadToCache", NSStringFromSelector(@selector(downloadUrl:withName:key:)),
 						@"cancelDownload", NSStringFromSelector(@selector(cancelDownload:)),
+						@"isDownloading", NSStringFromSelector(@selector(isDownloading:)),
+						@"bytesCompleted", NSStringFromSelector(@selector(bytesCompleted:)),
+						@"bytesTotal", NSStringFromSelector(@selector(bytesTotal:)),
 					nil] retain];
 	}
 	return self;
@@ -64,9 +69,8 @@ static JSBridge *SharedInstance;
 
 - (void)notifyDownloadProgress:(Download *)download
 {
-	NSLog(@"notified");
-	//[[[controller webView] windowScriptObject] evaluateWebScript:
-	// @"updateDownloadStatus(’sample_graphic.jpg’, ‘320’, ‘240’)"];
+	[[[controller webView] windowScriptObject] evaluateWebScript:
+		[NSString stringWithFormat:@"downloadProgressed('%@')",[download key]]];
 }
 
 #pragma mark JS API methods
@@ -99,14 +103,14 @@ static JSBridge *SharedInstance;
 	return YES;
 }
 
-- (BOOL)fileExistsInCache:(NSString *)name
+- (BOOL)existsInCache:(NSString *)name
 {
 	// Disallow traversing directories; take only the last component
 	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[name lastPathComponent]] stringByExpandingTildeInPath];
 	return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
-- (void)downloadFileIntoCache:(NSString *)url withName:(NSString *)name key:(NSString *)key
+- (void)downloadUrl:(NSString *)url withName:(NSString *)name key:(NSString *)key
 {
 	NSLog(@"downloadFile:%@ intoCacheWithName:%@ key:%@",url,name,key);
 	
@@ -118,6 +122,23 @@ static JSBridge *SharedInstance;
 - (void)cancelDownload:(NSString *)key
 {
 	[controller cancelDownload:key];
+}
+
+- (BOOL)isDownloading:(NSString *)key
+{
+	return [controller downloadWithKey:key] != nil;
+}
+
+- (int)bytesCompleted:(NSString *)key
+{
+	Download *d = [controller downloadWithKey:key];
+	return (d == nil) ? -1 : [d bytesCompleted];
+}
+
+- (int)bytesTotal:(NSString *)key
+{
+	Download *d = [controller downloadWithKey:key];
+	return (d == nil) ? -1 : [d bytesTotal];
 }
 
 - (void)log:(NSString *)message

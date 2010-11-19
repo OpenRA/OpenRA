@@ -17,7 +17,8 @@
 @implementation Controller
 @synthesize allMods;
 @synthesize webView;
-- (void) awakeFromNib
+
+- (void)awakeFromNib
 {
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
 	[[JSBridge sharedInstance] setController:self];
@@ -101,7 +102,6 @@
 		return NO;
 	}
 	
-	
 	Download *download = [Download downloadWithURL:url filename:path key:key game:game];
 	[downloads setObject:download forKey:key];
 	return YES;
@@ -111,6 +111,11 @@
 {
 	[[downloads objectForKey:key] cancel];
 	[downloads removeObjectForKey:key];
+}
+
+- (Download *)downloadWithKey:(NSString *)key
+{
+	return [downloads objectForKey:key];
 }
 
 #pragma mark Sidebar Datasource and Delegate
