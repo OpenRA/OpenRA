@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using OpenRA.Effects;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

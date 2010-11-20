@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA

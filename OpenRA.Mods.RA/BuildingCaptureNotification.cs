@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+
 namespace OpenRA.Mods.RA
 {
 	class CaptureNotificationInfo : ITraitInfo
