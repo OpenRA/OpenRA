@@ -281,7 +281,7 @@ namespace OpenRA.Widgets.Delegates
 					{
 						template = EmptySlotTemplate.Clone();
 						var name = template.GetWidget<LabelWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : "Open";
+						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
 
 						if (slot.Spectator)
 						{
