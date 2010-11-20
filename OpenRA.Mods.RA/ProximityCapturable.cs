@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (Captured && Permanent) return; // Permanent capture
 
-			var playersNear = CountPlayersNear(self, OriginalOwner, Range);
+			//var playersNear = CountPlayersNear(self, OriginalOwner, Range);
 
 			if (!Captured)
 			{

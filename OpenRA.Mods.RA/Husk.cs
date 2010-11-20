@@ -20,7 +20,6 @@ namespace OpenRA.Mods.RA
 
 	class Husk : IOccupySpace, IFacing
 	{
-		Actor self;
 		[Sync]
 		int2 location;
 		
@@ -31,7 +30,6 @@ namespace OpenRA.Mods.RA
 
 		public Husk(ActorInitializer init)
 		{
-			this.self = init.self;
 			this.location = init.Get<LocationInit,int2>();
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
 		}

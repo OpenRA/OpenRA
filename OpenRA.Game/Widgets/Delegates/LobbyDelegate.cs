@@ -19,7 +19,7 @@ namespace OpenRA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost, EmptySpectatorSlotTemplateHost;
+		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -44,7 +44,6 @@ namespace OpenRA.Widgets.Delegates
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
 			EmptySlotTemplateHost = Players.GetWidget("TEMPLATE_EMPTY_HOST");
-			EmptySpectatorSlotTemplateHost = Players.GetWidget("TEMPLATE_EMPTY_SPECTATOR");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;

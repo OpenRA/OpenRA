@@ -34,9 +34,9 @@ namespace OpenRA.FileFormats
 				throw new InvalidDataException("Not an Installshield package");
 			
 			reader.ReadBytes(8);
-			var FileCount = reader.ReadUInt16();
+			/*var FileCount = */reader.ReadUInt16();
 			reader.ReadBytes(4);
-			var ArchiveSize = reader.ReadUInt32();
+			/*var ArchiveSize = */reader.ReadUInt32();
 			reader.ReadBytes(19);
 			var TOCAddress = reader.ReadInt32();
 			reader.ReadBytes(4);
@@ -55,7 +55,7 @@ namespace OpenRA.FileFormats
 			var FileCount = reader.ReadUInt16();
 			var ChunkSize = reader.ReadUInt16();
 			var NameLength = reader.ReadUInt16();
-			var DirName = new String(reader.ReadChars(NameLength));
+			reader.ReadChars(NameLength); //var DirName = new String(reader.ReadChars(NameLength));
 			
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 6);

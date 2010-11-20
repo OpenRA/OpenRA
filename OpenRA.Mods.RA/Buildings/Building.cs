@@ -103,8 +103,6 @@ namespace OpenRA.Mods.RA.Buildings
 			this.topLeft = init.Get<LocationInit,int2>();
 			this.Info = self.Info.Traits.Get<BuildingInfo>();
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
-
-			var uim = init.world.WorldActor.Trait<UnitInfluence>();
 		}
 		
 		public int GetPowerUsage()

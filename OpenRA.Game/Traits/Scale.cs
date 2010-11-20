@@ -8,18 +8,16 @@ namespace OpenRA.Traits
 
         public ScaleInfo() { }		/* only because we have other ctors */
 
-        public object Create(ActorInitializer init) { return new Scale(init.self, this); }
+        public object Create(ActorInitializer init) { return new Scale(this); }
     }
 
     public class Scale : IRenderModifier
     {
-        Actor self;
         public ScaleInfo Info { get; protected set; }
 
-        public Scale(Actor self, ScaleInfo info)
+        public Scale(ScaleInfo info)
 		{
 			this.Info = info;
-			this.self = self;
 		}
 
         public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

@@ -57,8 +57,6 @@ namespace OpenRA.Mods.RA
 						return NextActivity;
 
 					var attack = self.Trait<AttackBase>();
-					var range = attack.GetMaximumRange();
-
 					currentTarget = attack.ScanForTarget(self, null);
 					if( currentTarget != null )
 						inner = attack.GetAttackActivity( self, Target.FromActor(currentTarget), self.Info.Traits.Get<AutoTargetInfo>().AllowMovement );
