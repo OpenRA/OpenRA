@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	public class PowerManagerInfo : ITraitInfo
+	public class PowerManagerInfo : ITraitInfo, ITraitPrerequisite<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
 		public object Create(ActorInitializer init) { return new PowerManager(init, this); }
@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		PowerManagerInfo Info;
 		Player Player;
+		DeveloperMode devMode;
 		
 		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
@@ -38,6 +39,9 @@ namespace OpenRA.Mods.RA.Buildings
 			
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
+
+			devMode = init.self.Trait<DeveloperMode>();
+			wasHackEnabled = devMode.UnlimitedPower;
 		}
 		
 		void ActorAdded(Actor a)
@@ -68,6 +72,9 @@ namespace OpenRA.Mods.RA.Buildings
 				else
 					totalDrained -= p;
 			}
+
+			if (devMode.UnlimitedPower)
+				totalProvided = 1000000;
 		}
 		
 		public void UpdateActor(Actor a, int newPower)
@@ -81,8 +88,16 @@ namespace OpenRA.Mods.RA.Buildings
 		
 		int nextPowerAdviceTime = 0;
 		bool wasLowPower = false;
+		bool wasHackEnabled;
+
 		public void Tick(Actor self)
 		{
+			if (wasHackEnabled != devMode.UnlimitedPower)
+			{
+				UpdateTotals();
+				wasHackEnabled = devMode.UnlimitedPower;
+			}
+
 			var lowPower = totalProvided < totalDrained;
 			if (lowPower && !wasLowPower)
 				nextPowerAdviceTime = 0;

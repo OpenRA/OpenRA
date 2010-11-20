@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+
 namespace OpenRA.Traits
 {
 	public class DeveloperModeInfo : ITraitInfo
@@ -19,6 +20,7 @@ namespace OpenRA.Traits
 		public bool DisableShroud = false;
 		public bool PathDebug = false;
 		public bool UnitInfluenceDebug = false;
+		public bool UnlimitedPower;
 		
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -32,6 +34,7 @@ namespace OpenRA.Traits
 		[Sync] public bool DisableShroud;
 		[Sync] public bool PathDebug;
 		[Sync] public bool UnitInfluenceDebug;
+		[Sync] public bool UnlimitedPower;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -41,6 +44,7 @@ namespace OpenRA.Traits
 			DisableShroud = Info.DisableShroud;
 			PathDebug = Info.PathDebug;
 			UnitInfluenceDebug = info.UnitInfluenceDebug;
+			UnlimitedPower = info.UnlimitedPower;
 		}
 		
 		public void ResolveOrder (Actor self, Order order)
@@ -90,6 +94,11 @@ namespace OpenRA.Traits
 					{
 						if (self.World.LocalPlayer == self.Owner)
 							self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
+						break;
+					}
+				case "DevUnlimitedPower":
+					{
+						UnlimitedPower ^= true;
 						break;
 					}
 				default:

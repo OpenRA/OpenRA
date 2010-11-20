@@ -93,6 +93,14 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
+			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").Checked =
+				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnlimitedPower;
+			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").OnMouseDown = mi =>
+			{
+				world.IssueOrder(new Order("DevUnlimitedPower", world.LocalPlayer.PlayerActor, false));
+				return true;
+			};
+
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
 			{
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));

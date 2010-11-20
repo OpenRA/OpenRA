@@ -218,7 +218,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:350
-			Height:330
+			Height:360
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -278,10 +278,17 @@ Container@INGAME_ROOT:
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Build Everything
+				Checkbox@UNLIMITED_POWER
+					Id:UNLIMITED_POWER
+					X:30
+					Y:260
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Unlimited Power
 				Button@GIVE_EXPLORATION
 					Id:GIVE_EXPLORATION
 					X:30
-					Y:260
+					Y:290
 					Width:200
 					Height:20
 					Text: Give Exploration
