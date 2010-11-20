@@ -10,6 +10,7 @@ BADR:
 		ROT: 5
 		Speed: 16
 	RenderUnit:
+		Smokes: no
 	WithShadow:
 	IronCurtainable:
 	Cargo:
@@ -27,6 +28,7 @@ BADR:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 BADR.bomber:
 	CarpetBomb:
@@ -44,6 +46,7 @@ BADR.bomber:
 		Ammo: 7
 	RenderUnit:
 		Image: badr
+		Smokes: no
 	WithShadow:
 	IronCurtainable:	
 	-Selectable:
@@ -58,6 +61,7 @@ BADR.bomber:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 V2RL:
 	Inherits: ^Vehicle
@@ -717,6 +721,7 @@ MIG:
 		Speed: 20
 		RearmBuildings: afld
 	RenderUnit:
+		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
@@ -732,6 +737,7 @@ MIG:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 YAK:
 	Inherits: ^Plane
@@ -764,6 +770,7 @@ YAK:
 		ROT: 5
 		Speed: 16
 	RenderUnit:
+		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 18
@@ -777,6 +784,7 @@ YAK:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 TRAN:
 	Inherits: ^Plane
@@ -847,12 +855,14 @@ HELI:
 		Speed: 16
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
+		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 6
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 HIND:
 	Inherits: ^Plane
@@ -886,6 +896,7 @@ HIND:
 		ROT: 4
 		Speed: 12
 	RenderUnitRotor:
+		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 24
@@ -896,6 +907,7 @@ HIND:
 	WithMuzzleFlash:
 	FallsToEarth:
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 U2:
 	Inherits: ^Plane
@@ -907,6 +919,7 @@ U2:
 		ROT: 7
 		Speed: 40
 	RenderUnit:
+		Smokes: no
 	WithShadow:
 	IronCurtainable:
 	-Selectable:
@@ -919,6 +932,7 @@ U2:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
 
 1TNK.Husk:
 	Inherits: ^Husk

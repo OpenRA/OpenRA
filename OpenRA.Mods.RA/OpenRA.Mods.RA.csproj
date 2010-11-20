@@ -60,6 +60,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="SmokeTrailWhenDamaged.cs" />
     <Compile Include="Strategic\StrategicVictoryConditions.cs" />
     <Compile Include="Strategic\StrategicPoint.cs" />
     <Compile Include="ProximityCapturable.cs" />
