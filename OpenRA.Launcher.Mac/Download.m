@@ -32,7 +32,7 @@
 		filename = [aFilename retain];
 		key = [aKey retain];
 		game = [aGame retain];
-		status = Initializing;
+		status = @"Initializing";
 		bytesCompleted = -1;
 		bytesTotal = -1;
 		
@@ -65,17 +65,17 @@
 		
 		if ([type isEqualToString:@"Error"])
 		{
-			status = Error;
+			status = @"Error";
 		}
 		else if ([type isEqualToString:@"Status"])
 		{
 			if ([message isEqualToString:@"Initializing"])
 			{
-				status = Initializing;
+				status = @"Initializing";
 			}
 			else if ([message isEqualToString:@"Completed"])
 			{
-				status = Complete;
+				status = @"Complete";
 			}
 			
 			// Parse download status info
@@ -97,7 +97,7 @@
 - (void)cancel
 {
 	NSLog(@"Cancelling");
-	status = Cancelled;
+	status = @"Cancelled";
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
 	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];

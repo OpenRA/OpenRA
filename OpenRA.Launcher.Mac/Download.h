@@ -8,14 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum {
-	Initializing,
-	Downloading,
-	Complete,
-	Cancelled,
-	Error
-} DownloadStatus;
-
 @class GameInstall;
 @interface Download : NSObject
 {
@@ -24,12 +16,12 @@ typedef enum {
 	NSString *filename;
 	GameInstall *game;
 	NSTask *task;
-	DownloadStatus status;
+	NSString * status;
 	int bytesCompleted;
 	int bytesTotal;
 }
 @property(readonly) NSString *key;
-@property(readonly) DownloadStatus status;
+@property(readonly) NSString *status;
 @property(readonly) int bytesCompleted;
 @property(readonly) int bytesTotal;
 

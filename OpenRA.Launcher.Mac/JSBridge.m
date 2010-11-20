@@ -42,13 +42,13 @@ static JSBridge *SharedInstance;
 		methods = [[NSDictionary dictionaryWithObjectsAndKeys:
 						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
-						@"existsInMod", NSStringFromSelector(@selector(exists:inMod:)),
+						@"existsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
 						
 						// File downloading
 						@"existsInCache", NSStringFromSelector(@selector(existsInCache:)),
 						@"downloadToCache", NSStringFromSelector(@selector(downloadUrl:withName:key:)),
 						@"cancelDownload", NSStringFromSelector(@selector(cancelDownload:)),
-						@"isDownloading", NSStringFromSelector(@selector(isDownloading:)),
+						@"downloadStatus", NSStringFromSelector(@selector(downloadStatus:)),
 						@"bytesCompleted", NSStringFromSelector(@selector(bytesCompleted:)),
 						@"bytesTotal", NSStringFromSelector(@selector(bytesTotal:)),
 					nil] retain];
@@ -124,9 +124,13 @@ static JSBridge *SharedInstance;
 	[controller cancelDownload:key];
 }
 
-- (BOOL)isDownloading:(NSString *)key
+- (NSString *)downloadStatus:(NSString *)key
 {
-	return [controller downloadWithKey:key] != nil;
+	Download *d = [controller downloadWithKey:key];
+	if (d == nil)
+		return @"Invalid";
+	
+	return [d status];
 }
 
 - (int)bytesCompleted:(NSString *)key

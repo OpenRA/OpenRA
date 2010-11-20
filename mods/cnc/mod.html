@@ -90,10 +90,9 @@
         // Returns 2 if basic files plus music are installed
         function packagesInstalled()
         {
-            if (window.external.existsInMod('packages/conquer.mix','cnc') != 1)
+            if (window.external.existsInMod("packages/conquer.mix","cnc") != 1)
                 return 0;
-            
-            return (window.external.existsInMod('packages/scores.mix','cnc') == 1) ? 2 : 1;
+            return (window.external.existsInMod("packages/scores.mix","cnc") == 1) ? 2 : 1;
         }
         
         function play()
@@ -101,39 +100,71 @@
             window.external.launchMod("cnc");
         }
         
-        function download1()
+        function download()
         {
-            window.external.downloadToCache("http://localhost/~paul/cnc-packages.zip","test.zip","cnc-packages");
+            window.external.downloadToCache("http://localhost/~paul/cnc-packages.zip","cnc-packages.zip","cnc-packages");
+            document.getElementById("install-download").style.display = "none";
+            document.getElementById("install-downloading").style.display = "";
         }
-        
-        function download2()
-        {
-            window.external.downloadToCache("http://localhost/~paul/ra-packages.zip","test2.zip","ra-packages");
-        }
-        
-        function cancel1()
+
+        function cancel()
         {
             window.external.cancelDownload("cnc-packages");
+            // TODO: Remove incomplete file from cache
+            // TODO: Restore buttons to the before-downloading state
         }
         
-        function cancel2()
+        function extract()
         {
-            window.external.cancelDownload("ra-packages");
+            window.external.log("Todo: Extract package");
         }
         
         function onLoad()
         {
-            document.getElementById("buttons-install").style.display = (packagesInstalled() == 0) ? "" : "none";
-            document.getElementById("buttons-upgrade").style.display = (packagesInstalled() == 1) ? "" : "none";
-            document.getElementById("buttons-play").style.display = (packagesInstalled() == 2) ? "" : "none";
+            var installed = packagesInstalled();
+            document.getElementById("buttons-install").style.display = (installed == 0) ? "" : "none";
+            document.getElementById("buttons-upgrade").style.display = (installed == 1) ? "" : "none";
+            document.getElementById("buttons-play").style.display = (installed == 2) ? "" : "none";
+            
+            window.external.log("installed: "+installed);
+            // Select the correct subsection
+            if (installed == 0)
+            {
+                var downloaded = window.external.existsInCache("cnc-packages.zip");
+                window.external.log("downloaded: "+downloaded);
+                document.getElementById("install-extract").style.display = downloaded ? "" : "none";
+                document.getElementById("install-download").style.display = !downloaded ? "" : "none";
+            }
         }
         
         function downloadProgressed(file)
         {
-           var total = window.external.bytesTotal(file);
-           var downloaded = window.external.bytesCompleted(file);
-           var percent = (100*downloaded/total).toPrecision(3);
-           window.external.log("file: "+file+" "+downloaded+"/"+total+" ("+percent+"%)");
+            if (file != "cnc-packages")
+                return;
+            
+            var status = window.external.downloadStatus(file);
+            if (status == "Complete")
+            {
+                document.getElementById("install-extract").style.display = "";
+                document.getElementById("install-downloading").style.display = "none";
+            }
+            var total = window.external.bytesTotal(file);
+            var downloaded = window.external.bytesCompleted(file);
+            
+            var multiplier = 1/1024.0;
+            var unit = "kB";
+            
+            var max = max(total,downloaded); // total may be -1 if the server doesn't supply a size
+            if (max > 1.1*1024*1024)
+            {
+                multiplier /= 1024;
+                unit = "MB";
+            }
+            total = (total*multiplier).toPrecision(2);
+            downloaded = (downloaded*multiplier).toPrecision(2);
+            
+            document.getElementById("download-status").value = downloaded+"/"+total+" "+unit;
+            window.external.log("file: "+file+" "+downloaded+"/"+total+" ("+percent+"%)");
         }
         
         </script>
@@ -144,7 +175,7 @@
 		</div>
 
 		<div id="main">
-			<div id="content">
+			<!-- div id="content">
 				<h2>Latest News</h2>
 				<div>
 				    <h3>Version XXYYZZ Available</h3>
@@ -154,17 +185,21 @@
 				        <li>Bugfixes!!!</li>
 				    </ul>
 				</div>
-			</div>
+			</div -->
 			<div id="buttons-install" class="buttons">
 			    <div class="desc">The original game data is required before you can play this mod.<br />
-			        Installing from web will install the minimal files required to play.<br />
-			        Installing from CD will also install the music and movie files for an improved game experience.
+			        Installing from web will install the minimal files required to play.
 			    </div>
-			    <input type="button" class="button" onclick="download1();" value="Download1" />
-			    <input type="button" class="button" onclick="cancel1();" value="Cancel1" />
-			    <input type="button" class="button" onclick="download2();" value="Download2" />
-			    <input type="button" class="button" onclick="cancel2();" value="Cancel2" />
-			    
+			    <div id="install-download">
+			        <input type="button" class="button" onclick="download();" value="Download" />
+			    </div>
+			    <div id="install-downloading" style="display:none">
+			        <input type="button" class="button" id="download-status" value="Initializing..." />
+			        <input type="button" class="button" onclick="cancel();" value="Cancel" />
+			    </div>
+			    <div id="install-extract">
+			        <input type="button" class="button" onclick="install();" value="Install" />
+			    </div>
 			</div>
 			<div id="buttons-upgrade" class="buttons" style="display:none">
 			    <div class="desc">
