@@ -16,6 +16,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	public class RenderUnitInfo : RenderSimpleInfo
 	{
+		public readonly bool Smokes = true;
 		public override object Create(ActorInitializer init) { return new RenderUnit(init.self); }
 	}
 
@@ -24,8 +25,12 @@ namespace OpenRA.Mods.RA.Render
 		public RenderUnit(Actor self)
 			: base(self, () => self.HasTrait<IFacing>() ? self.Trait<IFacing>().Facing : 0)
 		{
+			canSmoke = self.Info.Traits.Get<RenderUnitInfo>().Smokes;
+
 			anim.Play("idle");
-			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
+
+			if (canSmoke)
+				anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
 		}
 
 		public void PlayCustomAnimation(Actor self, string newAnim, Action after)
@@ -34,11 +39,12 @@ namespace OpenRA.Mods.RA.Render
 		}
 
 		bool isSmoking;
+		bool canSmoke;
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState < DamageState.Heavy) return;
-			if (isSmoking) return;
+			if (isSmoking || !canSmoke) return;
 
 			isSmoking = true;
 			var smoke = anims[ "smoke" ].Animation;
