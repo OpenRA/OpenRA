@@ -8,7 +8,7 @@ Description: Classic KoTH map for 2-man teams
 
 Author: Chris Forbes
 
-PlayerCount: 1
+PlayerCount: 4
 
 Tileset: TEMPERAT
 
@@ -29,6 +29,22 @@ Players:
 		AllowBots: True
 		LockRace: False
 		Race: allies
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
 		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
@@ -181,9 +197,48 @@ Actors:
 	Actor47: tc04
 		Location: 14,32
 		Owner: Neutral
+	Actor48: mine
+		Location: 52,12
+		Owner: Neutral
+	Actor49: mine
+		Location: 65,28
+		Owner: Neutral
+	Actor50: tc04
+		Location: 50,18
+		Owner: Neutral
+	Actor51: tc04
+		Location: 64,32
+		Owner: Neutral
+	Actor52: mine
+		Location: 65,45
+		Owner: Neutral
+	Actor53: tc05
+		Location: 49,55
+		Owner: Neutral
+	Actor55: tc01
+		Location: 65,41
+		Owner: Neutral
+	Actor56: mine
+		Location: 52,62
+		Owner: Neutral
+	Actor54: mine
+		Location: 13,45
+		Owner: Neutral
+	Actor57: mine
+		Location: 26,62
+		Owner: Neutral
+	Actor58: tc04
+		Location: 19,42
+		Owner: Neutral
+	Actor60: tc01
+		Location: 33,59
+		Owner: Neutral
 
 Waypoints:
 	wp0: 14,15
+	wp1: 65,16
+	wp2: 64,56
+	wp3: 15,58
 
 Smudges:
 
@@ -201,7 +256,7 @@ Rules:
 			Unsellable: true
 		Scale:
 			Value: 0.75
-		-RevealsShroud
+		-RevealsShroud:
 		RevealsShroud:
 			Range: 20
 		-Health:
