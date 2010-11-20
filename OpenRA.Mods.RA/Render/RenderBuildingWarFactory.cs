@@ -68,6 +68,7 @@ namespace OpenRA.Mods.RA.Render
 		public override void Selling( Actor self )
 		{
 			self.Trait<RenderSimple>().anims.Remove( "roof" );
+			base.Selling(self);
 		}
 	}
 }
