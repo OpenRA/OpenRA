@@ -270,6 +270,9 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		
 ^Rock:
 	Tooltip:
 		Name: Rock
@@ -281,6 +284,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
 
 ^Husk:
 	Health:
