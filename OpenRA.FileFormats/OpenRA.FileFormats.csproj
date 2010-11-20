@@ -54,6 +54,10 @@
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evaluator.cs" />
@@ -102,9 +106,9 @@
     <Compile Include="Filesystem\FileSystem.cs" />
     <Compile Include="Filesystem\Folder.cs" />
     <Compile Include="Filesystem\PackageWriter.cs" />
-    <Compile Include="Filesystem\CompressedPackage.cs" />
     <Compile Include="Filesystem\InstallShieldPackage.cs" />
     <Compile Include="FileFormats\Blast.cs" />
+    <Compile Include="Filesystem\ZipFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

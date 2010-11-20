@@ -11,39 +11,38 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Packaging;
+using ICSharpCode.SharpZipLib.Zip;
+using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	public class CompressedPackage : IFolder
+	public class ZipFile : IFolder
 	{
-		readonly uint[] hashes;
-		readonly Stream s;
-		readonly ZipPackage pkg;
+		readonly SZipFile pkg;
 		int priority;
 
-		public CompressedPackage(string filename, int priority)
+		public ZipFile(string filename, int priority)
 		{
 			this.priority = priority;
-			s = FileSystem.Open(filename);
-			pkg = (ZipPackage)ZipPackage.Open(s, FileMode.Open);
-			hashes = pkg.GetParts()
-				.Select(p => PackageEntry.HashFilename(p.Uri.LocalPath)).ToArray();
+			pkg = new SZipFile(File.OpenRead(filename));
 		}
 
 		public Stream GetContent(string filename)
 		{
-			return pkg.GetPart(new Uri(filename)).GetStream(FileMode.Open);
+			return pkg.GetInputStream(pkg.GetEntry(filename));
 		}
 
-		public IEnumerable<uint> AllFileHashes() { return hashes; }
+		public IEnumerable<uint> AllFileHashes()
+		{
+			foreach(ZipEntry entry in pkg)
+				yield return PackageEntry.HashFilename(entry.Name);
+		}
 		
 		public bool Exists(string filename)
 		{
-			return hashes.Contains(PackageEntry.HashFilename(filename));
+			return pkg.GetEntry(filename) != null;
 		}
-
 
 		public int Priority
 		{

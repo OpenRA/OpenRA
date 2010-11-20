@@ -36,9 +36,6 @@ done
 # Copy Tao
 cp thirdparty/Tao/* packaging/built
 
-# Copy WindowsBase.dll for linux packages
-cp thirdparty/WindowsBase.dll packaging/built
-
 # SharpZipLib for zip file support
 cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 

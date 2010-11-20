@@ -17,9 +17,8 @@ fi
 cp -rv template.app OpenRA.app
 cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
 
-# Remove the tao and WindowsBase dlls (they are shipped in the deps package)
+# Remove the tao dlls (they are shipped in the deps package)
 rm OpenRA.app/Contents/Resources/Tao.*
-rm OpenRA.app/Contents/Resources/WindowsBase.dll
 
 # Icon isn't used, and editor doesn't work under mono 2.8
 rm OpenRA.app/Contents/Resources/OpenRA.ico
