@@ -61,7 +61,7 @@ fi
 
 ./package-all.sh $VERSION ~/openra-package/packages/
 
-./upload-all.sh $TAG ~/openra-package/packages/
+./upload-all.sh $TAG ~/openra-package/packages $2 $3
 
 popd &> /dev/null # packaging
 popd &> /dev/null # $_gitname-build

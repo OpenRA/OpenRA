@@ -6,9 +6,10 @@ PLATFORM=$1
 VERSION=$2
 FILENAME=$3
 LATESTNAME=$4
-FTPPATH=$5
+FTPSERVER=$5
+FTPPATH=$6
 
-FTP="ftp://$6:$7@${FTPSERVER}/${FTPPATH}/${PLATFORM}/"
+FTP="ftp://$7:$8@${FTPSERVER}/${FTPPATH}/${PLATFORM}/"
 
 if [ ! -e "${FILENAME}" ]; then
 	echo "File not found: ${FILENAME}"
