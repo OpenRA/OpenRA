@@ -13,18 +13,44 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SmokeTrailWhenDamagedInfo : TraitInfo<SmokeTrailWhenDamaged> { }
+	class SmokeTrailWhenDamagedInfo : ITraitInfo
+	{
+		public readonly int[] Offset = { 0, 0 };
+		public readonly int Interval = 1;
+
+		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
+	}
 
 	class SmokeTrailWhenDamaged : ITick
 	{
+		Turret smokeTurret;
+		int2 position;
+		int interval;
+		int ticks;
+
+		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
+		{
+			smokeTurret = new Turret(info.Offset);
+			interval = info.Interval;
+		}
+
 		public void Tick(Actor self)
 		{
-			if (self.GetDamageState() >= DamageState.Heavy)
-				self.World.AddFrameEndTask(
-					w => { if (!self.Destroyed) w.Add(
-						new Smoke(w, self.CenterLocation.ToInt2() 
-							- new int2(0, self.Trait<IMove>().Altitude), 
-							"smokey")); });
+			if (--ticks <= 0)
+			{
+				if (self.Trait<IMove>().Altitude > 0)
+				{
+					var facing = self.Trait<IFacing>();
+					var altitude = new float2(0, self.Trait<IMove>().Altitude);
+					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret) - altitude).ToInt2();
+
+					if (self.GetDamageState() >= DamageState.Heavy)
+						self.World.AddFrameEndTask(
+							w => w.Add(new Smoke(w, position, "smokey")));
+				}
+
+				ticks = interval;
+			}
 		}
 	}
 }

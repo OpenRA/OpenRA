@@ -28,7 +28,12 @@ BADR:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
-	SmokeTrailWhenDamaged:
+	SmokeTrailWhenDamaged@0:
+		Offset: 11, -11
+		Interval: 2
+	SmokeTrailWhenDamaged@1:
+		Offset: -11, -11
+		Interval: 2
 
 BADR.bomber:
 	CarpetBomb:
@@ -61,7 +66,12 @@ BADR.bomber:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
-	SmokeTrailWhenDamaged:
+	SmokeTrailWhenDamaged@0:
+		Offset: 11, -11
+		Interval: 2
+	SmokeTrailWhenDamaged@1:
+		Offset: -11, -11
+		Interval: 2
 
 V2RL:
 	Inherits: ^Vehicle
@@ -738,6 +748,8 @@ MIG:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
+		Offset: 0,-20,0,-4
+		Interval: 2
 
 YAK:
 	Inherits: ^Plane
@@ -785,6 +797,9 @@ YAK:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
+		Offset: 0, -20
+		Interval: 2
+		
 
 TRAN:
 	Inherits: ^Plane
@@ -863,6 +878,7 @@ HELI:
 	FallsToEarth:
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
+		Offset: 0,-10
 
 HIND:
 	Inherits: ^Plane
@@ -908,6 +924,7 @@ HIND:
 	FallsToEarth:
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
+		Offset: 0,-10
 
 U2:
 	Inherits: ^Plane
@@ -933,6 +950,8 @@ U2:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
+		Offset: 0,-25
+		Interval: 2
 
 1TNK.Husk:
 	Inherits: ^Husk
