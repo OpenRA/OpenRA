@@ -240,10 +240,10 @@ install: all
 	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
 	
-	@cp -r shaders $(INSTALL_DIR)
+	@cp -r glsl $(INSTALL_DIR)
+	@cp -r cg $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/WindowsBase.dll $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 	@-$(INSTALL_PROGRAM) VERSION $(INSTALL_DIR)
 	
