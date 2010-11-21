@@ -20,14 +20,14 @@ case "$TYPE" in
         ;;
 esac
 
-uploader.sh windows "$VERSION" $PKGDIR/OpenRA-$VERSION.exe "latest" "$FTPPATH" "$3" "$4"
-uploader.sh mac "$VERSION" $PKGDIR/OpenRA-$VERSION.zip "latest" "$FTPPATH" "$3" "$4"
+./uploader.sh windows "$VERSION" $PKGDIR/OpenRA-$VERSION.exe "latest" "$FTPPATH" "$3" "$4"
+./uploader.sh mac "$VERSION" $PKGDIR/OpenRA-$VERSION.zip "latest" "$FTPPATH" "$3" "$4"
 
 LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
-uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION.deb "deblatest" "$FTPPATH" "$3" "$4"
-uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm "rpmlatest" "$FTPPATH" "$3" "$4"
-uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz "archlatest" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION.deb "deblatest" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm "rpmlatest" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz "archlatest" "$FTPPATH" "$3" "$4"
 
 if [ "$TYPE" = "release" ]; then
     wput --basename=../ -u ../VERSION ftp://$3:$4@$FTPSERVER/$FTPPATHBASE/master/
