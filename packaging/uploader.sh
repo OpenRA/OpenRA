@@ -5,9 +5,10 @@
 PLATFORM=$1
 VERSION=$2
 FILENAME=$3
-FTPPATH=$4
+LATESTNAME=$4
+FTPPATH=$5
 
-FTP="ftp://$5:$6@${FTPSERVER}/${FTPPATH}/${PLATFORM}/"
+FTP="ftp://$6:$7@${FTPSERVER}/${FTPPATH}/${PLATFORM}/"
 
 if [ ! -e "${FILENAME}" ]; then
 	echo "File not found: ${FILENAME}"
@@ -17,12 +18,12 @@ fi
 SIZE=`du -bh ${FILENAME} | cut -f1`B
 mkdir -p /tmp/${PLATFORM}/
 echo -e "{\n\t\"version\":\"${VERSION}\",\n\t\"size\":\"${SIZE}\"\n}" > /tmp/${PLATFORM}/version.json
-echo `basename ${FILENAME}` > /tmp/${PLATFORM}/latest.txt
+echo `basename ${FILENAME}` > /tmp/${PLATFORM}/${LATESTNAME}.txt
 
 pushd `dirname ${FILENAME}`
 wput -u "${FTP}" "`basename ${FILENAME}`"
 popd
 pushd /tmp/${PLATFORM}
 wput -u "${FTP}" version.json
-wput -u "${FTP}" latest.txt
+wput -u "${FTP}" ${LATESTNAME}.txt
 popd
