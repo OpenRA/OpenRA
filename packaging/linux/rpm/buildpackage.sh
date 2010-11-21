@@ -6,7 +6,9 @@ then
     exit $E_BADARGS
 fi
 
+# Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
+
 sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra.spec
 rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec

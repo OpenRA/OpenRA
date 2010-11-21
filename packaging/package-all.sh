@@ -9,7 +9,9 @@ fi
 # Resolve the absolute source path from the location of this script
 SRCDIR=$(readlink -f $(dirname $0)/../)
 BUILTDIR="${SRCDIR}/packaging/built"
-VERSION=`echo $1 | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+# TODO: Shift this into the checkout-and-build script
+#VERSION=`echo $1 | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+VERSION=$1
 OUTPUTDIR=$(readlink -f $2)
 
 # Build the code and push the files into a clean dir
