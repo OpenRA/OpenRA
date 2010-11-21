@@ -53,18 +53,22 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo $TAG > "VERSION"
+#echo $TAG > "VERSION"
 
-msg "\E[32m" "Starting make..."
-make prefix=/usr DESTDIR=../built install
-if [ $? -ne 0 ]; then
-    msg "\E[31m" "Build failed."
-    exit 1
-fi
+#msg "\E[32m" "Starting make..."
+#make prefix=/usr DESTDIR=../built install
+#if [ $? -ne 0 ]; then
+#    msg "\E[31m" "Build failed."
+#    exit 1
+#fi
 
 pushd packaging &> /dev/null
 
-./package-all.sh $TAG $2 $3
+if [ ! -d ~/openra-package/packages/ ] ; then
+    mkdir ~/openra-package/packages/
+fi
+
+./package-all.sh $VERSION ~/openra-package/packages/
 
 popd &> /dev/null # packaging
 popd &> /dev/null # $_gitname-build
