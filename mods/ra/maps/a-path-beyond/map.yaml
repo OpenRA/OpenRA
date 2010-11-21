@@ -1,0 +1,337 @@
+Selectable: True
+
+MapFormat: 3
+
+Title: A Path Beyond
+
+Description:
+
+Author: Westwood Studios
+
+PlayerCount: 9
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+TopLeft: 16,16
+
+BottomRight: 112,112
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette:
+		OwnsWorld: True
+		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: allies
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi4:
+		Name: Multi4
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi5:
+		Name: Multi5
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi6:
+		Name: Multi6
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi7:
+		Name: Multi7
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi8:
+		Name: Multi8
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+
+Actors:
+	Actor0: tc01
+		Location: 25,71
+		Owner: Neutral
+	Actor1: t07
+		Location: 28,72
+		Owner: Neutral
+	Actor2: t11
+		Location: 27,75
+		Owner: Neutral
+	Actor3: tc01
+		Location: 47,78
+		Owner: Neutral
+	Actor4: t08
+		Location: 51,77
+		Owner: Neutral
+	Actor5: t08
+		Location: 47,80
+		Owner: Neutral
+	Actor6: tc05
+		Location: 53,98
+		Owner: Neutral
+	Actor7: tc04
+		Location: 57,21
+		Owner: Neutral
+	Actor8: tc02
+		Location: 55,23
+		Owner: Neutral
+	Actor9: tc01
+		Location: 64,20
+		Owner: Neutral
+	Actor10: tc01
+		Location: 60,19
+		Owner: Neutral
+	Actor11: tc05
+		Location: 66,49
+		Owner: Neutral
+	Actor12: tc03
+		Location: 103,44
+		Owner: Neutral
+	Actor13: tc04
+		Location: 101,42
+		Owner: Neutral
+	Actor14: tc05
+		Location: 89,52
+		Owner: Neutral
+	Actor15: tc03
+		Location: 48,91
+		Owner: Neutral
+	Actor16: tc02
+		Location: 50,80
+		Owner: Neutral
+	Actor17: tc01
+		Location: 53,84
+		Owner: Neutral
+	Actor18: tc05
+		Location: 43,32
+		Owner: Neutral
+	Actor19: tc05
+		Location: 23,43
+		Owner: Neutral
+	Actor20: tc02
+		Location: 61,38
+		Owner: Neutral
+	Actor21: tc02
+		Location: 102,72
+		Owner: Neutral
+	Actor22: tc01
+		Location: 100,73
+		Owner: Neutral
+	Actor23: tc04
+		Location: 69,88
+		Owner: Neutral
+	Actor24: tc02
+		Location: 30,74
+		Owner: Neutral
+	Actor25: tc04
+		Location: 38,43
+		Owner: Neutral
+	Actor26: tc05
+		Location: 36,46
+		Owner: Neutral
+	Actor27: tc04
+		Location: 40,68
+		Owner: Neutral
+	Actor28: mine
+		Location: 94,44
+		Owner: Neutral
+	Actor29: mine
+		Location: 62,51
+		Owner: Neutral
+	Actor30: mine
+		Location: 69,45
+		Owner: Neutral
+	Actor31: mine
+		Location: 52,27
+		Owner: Neutral
+	Actor32: mine
+		Location: 30,50
+		Owner: Neutral
+	Actor33: mine
+		Location: 39,80
+		Owner: Neutral
+	Actor34: mine
+		Location: 80,90
+		Owner: Neutral
+	Actor35: mine
+		Location: 94,76
+		Owner: Neutral
+	Actor36: mine
+		Location: 30,43
+		Owner: Neutral
+	Actor37: mine
+		Location: 38,84
+		Owner: Neutral
+	Actor38: mine
+		Location: 74,87
+		Owner: Neutral
+	Actor39: mine
+		Location: 96,80
+		Owner: Neutral
+	Actor40: mine
+		Location: 95,41
+		Owner: Neutral
+	Actor41: mine
+		Location: 71,66
+		Owner: Neutral
+	Actor42: tc04
+		Location: 79,102
+		Owner: Neutral
+	Actor43: tc02
+		Location: 50,34
+		Owner: Neutral
+
+Waypoints:
+	spawn0: 33,32
+	spawn1: 97,97
+	spawn2: 35,93
+	spawn3: 94,28
+	spawn4: 66,95
+	spawn5: 33,63
+	spawn6: 66,31
+	spawn7: 91,60
+	spawn98: 16,16
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+Weapons:
+
+Voices:
+
