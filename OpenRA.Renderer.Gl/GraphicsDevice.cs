@@ -15,6 +15,7 @@ using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Sdl;
+using System.Linq;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Glsl.GraphicsDevice))]
 
@@ -86,12 +87,25 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
 			CheckGlError();
 			
-			Sdl.SDL_SetModState( 0 );	// i have had enough.
+			Sdl.SDL_SetModState( 0 );
+			
+			// Test for required extensions
+			var required = new string[]
+			{
+				"GL_ARB_vertex_shader",
+				"GL_ARB_fragment_shader",
+				"GL_ARB_vertex_buffer_object",
+			};
 			
 			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
-			
-			if (!extensions.Contains("GL_ARB_vertex_shader") || !extensions.Contains("GL_ARB_fragment_shader"))
-				throw new InvalidProgramException("Unsupported GPU. OpenRA requires the GL_ARB_vertex_shader and GL_ARB_fragment_shader extensions.");
+			if (required.Any(r => !extensions.Contains(r)))
+			{
+				Log.AddChannel("graphics", "graphics.log");
+				Log.Write("graphics", "Unsupported GPU: Missing extensions.");
+				Log.Write("graphics", "Available extensions:");
+				Log.Write("graphics", extensions);
+				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
+			}
 		}
 
 		public void EnableScissor( int left, int top, int width, int height )
