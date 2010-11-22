@@ -54,6 +54,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
+
+			optionsBG.GetWidget("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
 			
 			optionsBG.GetWidget("QUIT").OnMouseUp = mi => {
 				Game.Exit();
