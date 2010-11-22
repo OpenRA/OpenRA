@@ -4,6 +4,7 @@ Container@INGAME_ROOT:
 	Visible:true
 	Children:
 		WorldInteractionController:
+			Id:INTERACTION_CONTROLLER
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
@@ -80,6 +81,7 @@ Container@INGAME_ROOT:
 			Bold:True
 		RadarBin@INGAME_RADAR_BIN:
 			Id:INGAME_RADAR_BIN
+			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
 			Id:INGAME_POWER_BIN
 		MoneyBin@INGAME_MONEY_BIN:

@@ -18,6 +18,8 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class RadarBinWidget : Widget
 	{
+		public string WorldInteractionController = null;
+		
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
 		public static float2 radarOrigin = radarClosedOrigin;
@@ -105,10 +107,13 @@ namespace OpenRA.Mods.RA.Widgets
 					Location = (loc * Game.CellSize - Game.viewport.Location).ToInt2()
 				};
 
-				Widget.HandleInput(fakemi);
-
-				fakemi.Event = MouseInputEvent.Up;
-				Widget.HandleInput(fakemi);
+				if (WorldInteractionController != null)
+				{
+					var controller = Widget.RootWidget.GetWidget<WorldInteractionControllerWidget>(WorldInteractionController);
+					controller.HandleInputInner(fakemi);
+					fakemi.Event = MouseInputEvent.Up;
+					controller.HandleInputInner(fakemi);
+				}
 			}
 
 			return true;
