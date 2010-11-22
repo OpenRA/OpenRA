@@ -27,12 +27,15 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick( World world )
 		{
-			if (a.IsDead() || b.GetDamageModifier(null, null) > 0)
+			if (a.Destroyed || a.IsDead() || b.GetDamageModifier(null, null) > 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
+			if (a.Destroyed) // Tick will clean up
+				yield break;
+
 			foreach (var r in a.Render())
 				yield return r.WithPalette("invuln");
 		}
