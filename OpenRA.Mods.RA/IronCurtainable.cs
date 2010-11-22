@@ -34,7 +34,9 @@ namespace OpenRA.Mods.RA
 
 		public void Activate(Actor self, int duration)
 		{
-			self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self)));
+			if (RemainingTicks == 0)
+				self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self))); // do not stack the invuln effect
+
 			RemainingTicks = duration;
 		}
 	}
