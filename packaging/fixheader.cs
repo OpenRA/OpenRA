@@ -10,6 +10,7 @@ namespace fixheader
 
 		static void Main(string[] args)
 		{
+			Console.WriteLine("fixheader {0}", args[0]);
 			data = File.ReadAllBytes(args[0]);
 			peOffset = BitConverter.ToInt32(data, 0x3c);
 			var corHeaderRva = BitConverter.ToInt32(data, peOffset + 20 + 100 + 14 * 8);
