@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (!IsAvailable) return;
+			if (!IsReady) return;
 
 			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
 			{
