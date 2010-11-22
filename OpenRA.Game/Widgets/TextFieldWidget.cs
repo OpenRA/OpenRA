@@ -23,6 +23,7 @@ namespace OpenRA.Widgets
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
 		public Action OnLoseFocus = () => { };
+		public int CursorPosition { get; protected set; }
 
 		public TextFieldWidget() : base() {}
 		protected TextFieldWidget(TextFieldWidget widget)
@@ -72,23 +73,55 @@ namespace OpenRA.Widgets
 			if (e.KeyChar == '\t' && OnTabKey())
 				return true;
 
+			if (e.KeyName == "left")
+			{
+				if (CursorPosition > 0)
+					CursorPosition--;
+
+				return true;
+			}
+
+			if (e.KeyName == "right")
+			{
+				if (CursorPosition <= Text.Length-1)
+					CursorPosition++;
+
+				return true;
+			}
+
+			if (e.KeyName == "delete")
+			{
+				if (Text.Length > 0 && CursorPosition < Text.Length)
+				{
+					Text = Text.Remove(CursorPosition, 1);
+				}
+				return true;
+			}
+
 			TypeChar(e.KeyChar);
 			return true;
 		}
 
 		public void TypeChar(char c)
 		{
+			// backspace
 			if (c == '\b' || c == 0x7f)
 			{
-				if (Text.Length > 0)
-					Text = Text.Remove(Text.Length - 1);
+				if (Text.Length > 0 && CursorPosition > 0)
+				{
+					Text = Text.Remove(CursorPosition - 1, 1);
+
+					CursorPosition--;
+				}
 			}
 			else if (!char.IsControl(c))
 			{
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
 
-				Text += c;
+				Text = Text.Insert(CursorPosition, c.ToString());
+
+				CursorPosition++;
 			}
 		}
 
@@ -101,17 +134,24 @@ namespace OpenRA.Widgets
 				blinkCycle = 20;
 				showCursor ^= true;
 			}
+
 			base.Tick();
 		}
 
 		public virtual void DrawWithString(string text)
 		{
+			if (text == null) text = "";
+			
 			int margin = 5;
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
-			var cursor = (showCursor && Focused) ? "|" : "";
-			var textSize = font.Measure(text + "|");
 			var pos = RenderOrigin;
 
+			if (CursorPosition > text.Length)
+				CursorPosition = text.Length;
+
+			var textSize = font.Measure(text);
+			var cursorPosition = font.Measure(text.Substring(0,CursorPosition));
+			
 			WidgetUtils.DrawPanel("dialog3",
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
 
@@ -127,7 +167,10 @@ namespace OpenRA.Widgets
 				Game.Renderer.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
 			}
 
-			font.DrawText(text + cursor, textPos, Color.White);
+			font.DrawText(text, textPos, Color.White);
+			
+			if (showCursor && Focused)
+				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), Color.White);
 
 			if (textSize.X > Bounds.Width - 2 * margin)
 				Game.Renderer.DisableScissor();
