@@ -25,7 +25,9 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
-
+	ProximityCaptor:
+		Types:Vehicle
+		
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
@@ -53,6 +55,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
+	ProximityCaptor:
+		Types:Tank
 
 ^Infantry:
 	AppearsOnRadar:
@@ -87,6 +91,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
+	ProximityCaptor:
+		Types:Infantry
 
 ^Ship:
 	AppearsOnRadar:
@@ -107,6 +113,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: navylst1.aud
+	ProximityCaptor:
+		Types:Ship
 
 ^Plane:
 	AppearsOnRadar:
@@ -122,10 +130,13 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: aunitl1.aud
+<<<<<<< HEAD
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
 	DebugAircraftAltitude:
+	ProximityCaptor:
+		Types:Plane
 
 ^Building:
 	AppearsOnRadar:
@@ -151,6 +162,8 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
+	ProximityCaptor:
+		Types:Building
 
 ^Wall:
 	AppearsOnRadar:
@@ -179,6 +192,8 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
+	ProximityCaptor:
+		Types:Wall
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -189,12 +204,17 @@
 		Type: Wood
 	Tooltip:
 		Name: Civilian Building
+	ProximityCaptor:
+		Types:CivilianBuilding
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
 	Tooltip:
 		Name: Field
+	-ProximityCaptor:
+	ProximityCaptor:
+		Types:CivilianField
 
 ^Tree:
 	Tooltip:
@@ -209,6 +229,8 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree
 
 ^Husk:
 	Health:
@@ -221,6 +243,8 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
+	ProximityCaptor:
+		Types:Husk
 
 ^Bridge:
 	Tooltip:
@@ -233,3 +257,5 @@
 		Dimensions: 4,2
 	Health:
 		HP: 1000
+	ProximityCaptor:
+		Types:Bridge

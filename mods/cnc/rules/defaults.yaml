@@ -28,6 +28,8 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	ProximityCaptor:
+		Types:Vehicle
 
 ^Tank:
 	AppearsOnRadar:
@@ -59,6 +61,8 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	ProximityCaptor:
+		Types:Tank
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -79,6 +83,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
+	ProximityCaptor:
+		Types:Helicopter
 
 ^Infantry:
 	AppearsOnRadar:
@@ -118,6 +124,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
+	ProximityCaptor:
+		Types:Infantry
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -141,6 +149,8 @@
 #	ActorLostNotification:
 #		Notification: civdead1.aud
 #		NotifyAll: true
+	ProximityCaptor:
+		Types:CivilianInfantry
 
 ^Plane:
 	AppearsOnRadar:
@@ -155,6 +165,8 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
+	ProximityCaptor:
+		Types:Plane
 
 ^Ship:
 	AppearsOnRadar:
@@ -173,6 +185,8 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	ProximityCaptor:
+		Types:Ship
 
 ^Building:
 	AppearsOnRadar:
@@ -211,6 +225,8 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
+	ProximityCaptor:
+		Types:Building
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -226,6 +242,8 @@
 #	-FrozenUnderFog:
 	Tooltip:
 		Name: Civilian Building
+	ProximityCaptor:
+		Types:CivilianBuilding
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -237,6 +255,9 @@
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v23
+	-ProximityCaptor:
+	ProximityCaptor:
+		Types:CivilianField
 
 ^Wall:
 	AppearsOnRadar:
@@ -263,6 +284,8 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
+	ProximityCaptor:
+		Types:Wall
 
 ^Tree:
 	Tooltip:
@@ -277,6 +300,8 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree
 		
 ^Rock:
 	Tooltip:
@@ -291,6 +316,8 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Rock
 
 ^Husk:
 	Health:
@@ -303,6 +330,8 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
+	ProximityCaptor:
+		Types:Husk
 
 ^Bridge:
 	Tooltip:
@@ -318,3 +347,5 @@
 	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
+	ProximityCaptor:
+		Types:Bridge

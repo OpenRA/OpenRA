@@ -191,3 +191,5 @@ CRATE:
 		Unit: mcv
 	RenderUnit:
 	BelowUnits:
+	ProximityCaptor:
+		Types:Crate

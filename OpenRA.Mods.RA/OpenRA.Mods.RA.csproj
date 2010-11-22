@@ -106,6 +106,7 @@
     <Compile Include="UnitStances\UnitStanceHoldFire.cs" />
     <Compile Include="UnitStances\UnitStanceReturnFire.cs" />
     <Compile Include="UnitStances\UnitStanceHoldGround.cs" />
+    <Compile Include="ProximityCaptor.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />

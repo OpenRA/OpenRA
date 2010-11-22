@@ -281,6 +281,9 @@ C1:
 		Range: 2
 	AttackFrontal:
 		PrimaryWeapon: Pistol
+	-ProximityCaptor:
+	ProximityCaptor:
+		Types:CivilianInfantry
 
 C2:
 	Inherits: ^Infantry
@@ -299,6 +302,9 @@ C2:
 		Range: 2
 	AttackFrontal:
 		PrimaryWeapon: Pistol
+	-ProximityCaptor:
+	ProximityCaptor:
+		Types:CivilianInfantry
 
 SHOK:
 	Inherits: ^Infantry

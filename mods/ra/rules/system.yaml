@@ -208,6 +208,8 @@ MINP:
 	InvisibleToOthers:
 	Tooltip:
 		Name: Anti-Personnel Mine
+	ProximityCaptor:
+		Types:Mine
 
 MINV:
 	Mine:
@@ -221,6 +223,8 @@ MINV:
 	InvisibleToOthers:
 	Tooltip:
 		Name: Anti-Tank Mine
+	ProximityCaptor:
+		Types:Mine
 
 CRATE:
 	Tooltip:
@@ -279,13 +283,17 @@ CRATE:
 		Unit: 4tnk
 	RenderUnit:
 	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
 
 CAMERA:
 	Aircraft:
 	Health:
 		HP:1000
 	RevealsShroud:
-		Range: 10
+		Range: 10	
+	ProximityCaptor:
+		Types:Camera
 
 FLARE:
 	Aircraft:
@@ -298,6 +306,8 @@ FLARE:
 	HiddenUnderFog:
 	Tooltip:
 		Name: Flare
+	ProximityCaptor:
+		Types: Flare
 
 powerproxy.parabombs:
 	AirstrikePower:
