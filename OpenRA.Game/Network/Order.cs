@@ -11,9 +11,27 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRA.Network;
 
 namespace OpenRA
 {
+	[Flags]
+	enum OrderFields : byte
+	{
+		TargetActor = 0x01, 
+		TargetLocation = 0x02, 
+		TargetString = 0x04, 
+		Queued = 0x08, 
+	}
+
+	static class OrderFieldsExts
+	{
+		public static bool HasField(this OrderFields of, OrderFields f)
+		{
+			return (of & f) != 0;
+		}
+	}
+
 	public sealed class Order
 	{
 		public readonly string OrderString;
@@ -78,13 +96,25 @@ namespace OpenRA
 						w.Write( (byte)0xFF );
 						w.Write(OrderString);
 						w.Write(UIntFromActor(Subject));
-						w.Write(UIntFromActor(TargetActor));
-						w.Write(TargetLocation.X);
-						w.Write(TargetLocation.Y);
-						w.Write(TargetString != null);
+
+						OrderFields fields = 0;
+						if (TargetActor != null) fields |= OrderFields.TargetActor;
+						if (TargetLocation != int2.Zero) fields |= OrderFields.TargetLocation;
+						if (TargetString != null) fields |= OrderFields.TargetString;
+						if (Queued) fields |= OrderFields.Queued;
+
+						w.Write((byte)fields);
+
+						if (TargetActor != null)
+							w.Write(UIntFromActor(TargetActor));
+						if (TargetLocation != int2.Zero)
+						{
+							w.Write(TargetLocation.X);
+							w.Write(TargetLocation.Y);
+						}
 						if (TargetString != null)
 							w.Write(TargetString);
-						w.Write(Queued);
+
 						return ret.ToArray();
 					}
 			}
@@ -98,13 +128,12 @@ namespace OpenRA
 					{
 						var order = r.ReadString();
 						var subjectId = r.ReadUInt32();
-						var targetActorId = r.ReadUInt32();
-						var targetLocation = new int2(r.ReadInt32(), 0);
-						targetLocation.Y = r.ReadInt32();
-						var targetString = null as string;
-						if (r.ReadBoolean())
-							targetString = r.ReadString();
-						var queued = r.ReadBoolean();
+						var flags = (OrderFields)r.ReadByte();
+						
+						var targetActorId = flags.HasField(OrderFields.TargetActor) ?  r.ReadUInt32() : 0xffffffff;
+						var targetLocation = flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero;
+						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
+						var queued = flags.HasField(OrderFields.Queued);
 
 						Actor subject, targetActor;
 						if( !TryGetActorFromUInt( world, subjectId, out subject ) || !TryGetActorFromUInt( world, targetActorId, out targetActor ) )

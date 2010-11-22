@@ -47,5 +47,12 @@ namespace OpenRA.Network
 			}
 			return ms.ToArray();
 		}
+
+		public static int2 ReadInt2(this BinaryReader r)
+		{
+			var x = r.ReadInt32();
+			var y = r.ReadInt32();
+			return new int2(x, y);
+		}
 	}
 }
