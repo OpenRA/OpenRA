@@ -24,11 +24,7 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Action OnLoseFocus = () => { };
 
-		public TextFieldWidget()
-			: base()
-		{
-		}
-
+		public TextFieldWidget() : base() {}
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{
@@ -108,12 +104,12 @@ namespace OpenRA.Widgets
 			base.Tick();
 		}
 
-		public override void DrawInner( WorldRenderer wr )
+		public virtual void DrawWithString(string text)
 		{
 			int margin = 5;
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var cursor = (showCursor && Focused) ? "|" : "";
-			var textSize = font.Measure(Text + "|");
+			var textSize = font.Measure(text + "|");
 			var pos = RenderOrigin;
 
 			WidgetUtils.DrawPanel("dialog3",
@@ -131,10 +127,15 @@ namespace OpenRA.Widgets
 				Game.Renderer.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
 			}
 
-			font.DrawText(Text + cursor, textPos, Color.White);
+			font.DrawText(text + cursor, textPos, Color.White);
 
 			if (textSize.X > Bounds.Width - 2 * margin)
 				Game.Renderer.DisableScissor();
+		}
+		
+		public override void DrawInner( WorldRenderer wr )
+		{
+			DrawWithString(Text);
 		}
 
 		public override Widget Clone() { return new TextFieldWidget(this); }
