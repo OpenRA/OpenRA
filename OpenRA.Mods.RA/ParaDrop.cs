@@ -9,11 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.RA
@@ -24,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly string ChuteSound = "chute1.aud";
 	}
 
-	public class ParaDrop : ITick
+	public class ParaDrop : ITick, INotifyDamage
 	{
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;
@@ -85,6 +83,21 @@ namespace OpenRA.Mods.RA
 				flare.CancelActivity();
 				flare.QueueActivity(new Wait(300));
 				flare.QueueActivity(new RemoveSelf());
+				flare = null;
+			}
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
+			{
+				if (flare != null)
+				{
+					flare.CancelActivity();
+					flare.QueueActivity(new Wait(300));
+					flare.QueueActivity(new RemoveSelf());
+					flare = null;
+				}
 			}
 		}
 	}
