@@ -184,7 +184,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawRangeCircle(Color c, float2 location, int range)
+		public void DrawRangeCircle(Color c, float2 location, float range)
 		{
 			var prev = location + Game.CellSize * range * float2.FromAngle(0);
 			for (var i = 1; i <= 32; i++)
