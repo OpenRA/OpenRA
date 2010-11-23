@@ -13,20 +13,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class PaletteFromCurrentTheatreInfo : ITraitInfo
+	class PaletteFromCurrentTilesetInfo : ITraitInfo
 	{
 		public readonly string Name = null;
 		public readonly bool Transparent = true;
 
-		public object Create(ActorInitializer init) { return new PaletteFromCurrentTheatre(init.world, this); }
+		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.world, this); }
 	}
 
-	class PaletteFromCurrentTheatre : IPalette
+	class PaletteFromCurrentTileset : IPalette
 	{
 		readonly World world;
-		readonly PaletteFromCurrentTheatreInfo info;
+		readonly PaletteFromCurrentTilesetInfo info;
 
-		public PaletteFromCurrentTheatre(World world, PaletteFromCurrentTheatreInfo info)
+		public PaletteFromCurrentTileset(World world, PaletteFromCurrentTilesetInfo info)
 		{
 			this.world = world;
 			this.info = info;

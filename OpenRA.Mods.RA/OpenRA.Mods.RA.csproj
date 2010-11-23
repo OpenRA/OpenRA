@@ -276,7 +276,6 @@
     <Compile Include="ReplaceWithActor.cs" />
     <Compile Include="OreRefineryDockAction.cs" />
     <Compile Include="StoresOre.cs" />
-    <Compile Include="PaletteFromCurrentTheatre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="EngineerRepair.cs" />
@@ -312,6 +311,7 @@
     <Compile Include="ServerTraits\PlayerCommands.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />
+    <Compile Include="PaletteFromCurrentTileset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

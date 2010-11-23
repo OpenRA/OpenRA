@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	class PaletteFromFileInfo : ITraitInfo
 	{
 		public readonly string Name = null;
-		public readonly string Theater = null;
+		public readonly string Tileset = null;
 		public readonly string Filename = null;
 		public readonly bool Transparent = true;
 
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 		public void InitPalette( WorldRenderer wr )
 		{
-			if( info.Theater == null || info.Theater.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant() )
+			if( info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant() )
 				wr.AddPalette( info.Name, new Palette( FileSystem.Open( info.Filename ), info.Transparent ) );
 		}
 	}

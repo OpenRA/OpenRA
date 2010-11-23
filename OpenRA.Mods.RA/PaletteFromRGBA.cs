@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	class PaletteFromRGBAInfo : ITraitInfo
 	{
 		public readonly string Name = null;
-		public readonly string Theatre = null;
+		public readonly string Tileset = null;
 		public readonly int R = 0;
 		public readonly int G = 0;
 		public readonly int B = 0;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 
 		public void InitPalette( WorldRenderer wr )
 		{
-			if (info.Theatre == null || info.Theatre.ToLowerInvariant() == world.Map.Theater.ToLowerInvariant())
+			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
 			{
 				// TODO: This shouldn't rely on a base palette
 				var pal = wr.GetPalette("terrain");

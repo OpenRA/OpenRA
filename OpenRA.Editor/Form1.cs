@@ -94,7 +94,7 @@ namespace OpenRA.Editor
 		void PrepareMapResources(Manifest manifest, Map map)
 		{
 			Rules.LoadRules(manifest, map);
-			tileset = Rules.TileSets[map.Theater];
+			tileset = Rules.TileSets[map.Tileset];
 			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
 

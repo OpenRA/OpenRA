@@ -97,9 +97,9 @@ namespace OpenRA.Editor
 		{
 			var ri = info.Traits.Get<RenderSimpleInfo>();
 			string image = null;
-			if (ri.OverrideTheater != null)
-				for (int i = 0; i < ri.OverrideTheater.Length; i++)
-					if (ri.OverrideTheater[i] == tileset.Id)
+			if (ri.OverrideTileset != null)
+				for (int i = 0; i < ri.OverrideTileset.Length; i++)
+					if (ri.OverrideTileset[i] == tileset.Id)
 						image = ri.OverrideImage[i];
 
 			image = image ?? ri.Image ?? info.Name;

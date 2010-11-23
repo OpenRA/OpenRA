@@ -11,7 +11,7 @@ World:
 	BuildingInfluence:
 	UnitInfluence:
 	ChooseBuildTabOnSelect:
-	PaletteFromCurrentTheatre:
+	PaletteFromCurrentTileset:
 		Name: terrain
 	PlayerColorPalette:
 		BasePalette: units

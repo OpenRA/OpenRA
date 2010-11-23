@@ -230,7 +230,7 @@
 	Tooltip:
 		Name: Field
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v23
 
 ^Wall:

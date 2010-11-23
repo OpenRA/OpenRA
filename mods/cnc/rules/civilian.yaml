@@ -1,7 +1,7 @@
 V01:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v25
 	Building:
 		Footprint: xx xx
@@ -12,7 +12,7 @@ V01:
 V02:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v20
 	Building:
 		Footprint: xx xx
@@ -24,7 +24,7 @@ V03:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v21
 
 V04:
@@ -33,7 +33,7 @@ V04:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v24
 
 V05:
@@ -42,7 +42,7 @@ V05:
 		Footprint: xx
 		Dimensions: 2,1
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v22
 
 V06:
@@ -51,7 +51,7 @@ V06:
 		Footprint: xx
 		Dimensions: 2,1
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v26
 
 V07:
@@ -60,43 +60,43 @@ V07:
 		Footprint: xx
 		Dimensions: 2,1
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v30
 
 V08:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v23
 
 V09:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v27
 
 V10:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v28
 
 V11:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v29
 
 V12:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v34
 
 V13:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v35
 
 V14:
@@ -121,7 +121,7 @@ V31:
 		Dimensions: 2,1
 	RenderBuilding:
 		Image: v05
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v31
 V32:
 	Inherits: ^CivBuilding
@@ -130,7 +130,7 @@ V32:
 		Dimensions: 2,1
 	RenderBuilding:
 		Image: v05
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v32
 V33:
 	Inherits: ^CivBuilding
@@ -139,7 +139,7 @@ V33:
 		Dimensions: 2,1
 	RenderBuilding:
 		Image: v05
-		OverrideTheater: DESERT
+		OverrideTileset: DESERT
 		OverrideImage: v33
 
 ARCO:

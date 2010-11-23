@@ -256,7 +256,7 @@
 			this.lblTheater.Name = "lblTheater";
 			this.lblTheater.Size = new System.Drawing.Size(47, 13);
 			this.lblTheater.TabIndex = 11;
-			this.lblTheater.Text = "Theater:";
+			this.lblTheater.Text = "Tileset:";
 			// 
 			// txtAuthor
 			// 

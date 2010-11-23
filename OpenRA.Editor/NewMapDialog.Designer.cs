@@ -221,7 +221,7 @@
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(44, 13);
 			this.label4.TabIndex = 14;
-			this.label4.Text = "Theater";
+			this.label4.Text = "Tileset";
 			// 
 			// theater
 			// 

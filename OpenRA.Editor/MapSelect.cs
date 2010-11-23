@@ -42,7 +42,7 @@ namespace OpenRA.Editor
                 var map = new Map(new Folder(Path.Combine(MapFolderPath, MapList.SelectedItems[0].Text), 0));
                 txtTitle.Text = map.Title;
                 txtAuthor.Text = map.Author;
-                txtTheater.Text = map.Theater;
+                txtTheater.Text = map.Tileset;
                 txtDesc.Text = map.Description;
 				pbMinimap.Image = null;
                 try

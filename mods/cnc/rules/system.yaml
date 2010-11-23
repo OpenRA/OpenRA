@@ -82,7 +82,7 @@ World:
 	UnitInfluence:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
-	PaletteFromCurrentTheatre:
+	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@chrome:
 		Name: chrome

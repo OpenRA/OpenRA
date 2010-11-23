@@ -147,7 +147,7 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: .2
-	PaletteFromCurrentTheatre:
+	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@chrome:
 		Name: chrome

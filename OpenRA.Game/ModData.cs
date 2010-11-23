@@ -52,7 +52,7 @@ namespace OpenRA
 			return paths.Select(p => new MapStub(new Folder(p, int.MaxValue))).ToDictionary(m => m.Uid);
 		}
 		
-		string cachedTheatre = null;
+		string cachedTileset = null;
 		bool previousMapHadSequences = true;
 		IFolder previousMapMount = null;
 
@@ -78,13 +78,13 @@ namespace OpenRA
 
 			Rules.LoadRules(Manifest, map);
 
-			if (map.Theater != cachedTheatre 
+			if (map.Tileset != cachedTileset
 				|| previousMapHadSequences || map.Sequences.Count > 0)
 			{
 				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
 				CursorProvider.Initialize(Manifest.Cursors);
 				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-				cachedTheatre = map.Theater;
+				cachedTileset = map.Tileset;
 			}
 
 			previousMapHadSequences = map.Sequences.Count > 0;

@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	public abstract class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
-		public readonly string[] OverrideTheater = null;
+		public readonly string[] OverrideTileset = null;
 		public readonly string[] OverrideImage = null;
 		public readonly string Palette = null;
 		public abstract object Create(ActorInitializer init);
@@ -35,9 +35,9 @@ namespace OpenRA.Traits
 				return cachedImage;
 			
 			var Info = self.Info.Traits.Get<RenderSimpleInfo>();
-			if (Info.OverrideTheater != null)
-				for (int i = 0; i < Info.OverrideTheater.Length; i++)
-					if (Info.OverrideTheater[i] == self.World.Map.Theater)
+			if (Info.OverrideTileset != null)
+				for (int i = 0; i < Info.OverrideTileset.Length; i++)
+					if (Info.OverrideTileset[i] == self.World.Map.Tileset)
 						return cachedImage = Info.OverrideImage[i];
 			
 			return cachedImage = Info.Image ?? self.Info.Name;
