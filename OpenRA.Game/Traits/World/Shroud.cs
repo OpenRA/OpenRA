@@ -48,10 +48,10 @@ namespace OpenRA.Traits
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
-			if (min.X < world.Map.XOffset - 1) min.X = world.Map.XOffset - 1;
-			if (min.Y < world.Map.YOffset - 1) min.Y = world.Map.YOffset - 1;
-			if (max.X > world.Map.XOffset + world.Map.Width) max.X = world.Map.XOffset + world.Map.Width;
-			if (max.Y > world.Map.YOffset + world.Map.Height) max.Y = world.Map.YOffset + world.Map.Height;
+			if (min.X < world.Map.TopLeft.X - 1) min.X = world.Map.TopLeft.X - 1;
+			if (min.Y < world.Map.TopLeft.Y - 1) min.Y = world.Map.TopLeft.Y - 1;
+			if (max.X > world.Map.BottomRight.X) max.X = world.Map.BottomRight.X;
+			if (max.Y > world.Map.BottomRight.Y) max.Y = world.Map.BottomRight.Y;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)

@@ -50,8 +50,6 @@ namespace OpenRA
 		public string [,] CustomTerrain;
 
 		// Temporary compat hacks
-		public int XOffset { get { return TopLeft.X; } }
-		public int YOffset { get { return TopLeft.Y; } }
 		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
 
 		public Map()

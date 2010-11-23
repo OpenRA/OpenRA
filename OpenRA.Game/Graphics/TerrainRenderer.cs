@@ -69,7 +69,7 @@ namespace OpenRA.Graphics
 
 			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize + 2);
 
-			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.YOffset);
+			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.TopLeft.Y);
 			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)
@@ -81,11 +81,11 @@ namespace OpenRA.Graphics
 			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
 			{
 				var r = world.LocalPlayer.Shroud.Bounds.Value;
-				if (firstRow < r.Top - map.YOffset)
-					firstRow = r.Top - map.YOffset;
+				if (firstRow < r.Top - map.TopLeft.Y)
+					firstRow = r.Top - map.TopLeft.Y;
 
-				if (firstRow > r.Bottom - map.YOffset)
-					firstRow = r.Bottom - map.YOffset;
+				if (firstRow > r.Bottom - map.TopLeft.Y)
+					firstRow = r.Bottom - map.TopLeft.Y;
 			}
 
 			if( lastRow < firstRow ) lastRow = firstRow;
