@@ -475,8 +475,11 @@ namespace OpenRA.Mods.RA
 							}
 							else
 							{
-								ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, 
-									location.Value, currentBuilding.Item, false));
+								ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, false)
+									{
+										TargetLocation = location.Value,
+										TargetString = currentBuilding.Item
+									});
 							}
 						}
 						break;

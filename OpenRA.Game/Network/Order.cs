@@ -46,7 +46,7 @@ namespace OpenRA
 		
 		public Player Player { get { return Subject.Owner; } }
 
-		public Order(string orderString, Actor subject, 
+		Order(string orderString, Actor subject, 
 			Actor targetActor, int2 targetLocation, string targetString, bool queued, int2 extraLocation)
 		{
 			this.OrderString = orderString;
@@ -66,8 +66,6 @@ namespace OpenRA
 			: this(orderString, subject, targetActor, targetLocation, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, Actor targetActor, string targetString, bool queued)
 			: this(orderString, subject, targetActor, int2.Zero, targetString, queued, int2.Zero) { }
-		public Order(string orderString, Actor subject, int2 targetLocation, string targetString, bool queued)
-			: this(orderString, subject, null, targetLocation, targetString, queued, int2.Zero) { }
 
 		public byte[] Serialize()
 		{
@@ -206,17 +204,17 @@ namespace OpenRA
 
 		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, new int2( count, 0 ), item, false );
+			return new Order("StartProduction", subject, false) { TargetLocation = new int2(count, 0), TargetString = item };
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, new int2( pause ? 1 : 0, 0 ), item, false);
+			return new Order("PauseProduction", subject, false) { TargetLocation = new int2(pause ? 1 : 0, 0), TargetString = item };
 		}
 
 		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, new int2( count, 0 ), item, false);
+			return new Order("CancelProduction", subject, false) { TargetLocation = new int2(count, 0), TargetString = item };
 		}
 	}
 }
