@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -45,9 +46,13 @@ namespace OpenRA.Mods.RA
 			
 			if (ticks == 250)
 			{
-				//Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca1"], new int2(90, 70));
-				//Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca2"], new int2(92, 71));
+				Scripting.RASpecialPowers.Chronoshift(self.World, new List<Pair<Actor, int2>>()
+				{
+					Pair.New(Actors["ca1"], new int2(90, 70)),
+					Pair.New(Actors["ca2"], new int2(92, 71))
+				}, Actors["pdox"], -1, false);
 			}
+			
 			if (ticks == 100)
 				Actors["mslo1"].Trait<NukeSilo>().Attack(new int2(98, 52));
 			if (ticks == 140)

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -311,6 +311,7 @@
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerCommands.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
+    <Compile Include="Scripting\RASpecialPowers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
