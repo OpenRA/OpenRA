@@ -33,43 +33,15 @@ namespace OpenRA
 		}
 	}
 
-	public sealed class _Order
-	{
-		public readonly string OrderString;
-		public readonly Actor Subject;
-		public Actor TargetActor;
-		public int2 TargetLocation;
-		public string TargetString;
-		public bool Queued;
-		public int2 ExtraLocation;
-
-		public _Order(Actor subject, string orderString)
-		{
-			this.Subject = subject;
-			this.OrderString = orderString;
-		}
-
-		public static implicit operator Order(_Order o)
-		{
-			return new Order(o.OrderString,
-				o.Subject,
-				o.TargetActor,
-				o.TargetLocation,
-				o.TargetString,
-				o.Queued,
-				o.ExtraLocation);
-		}
-	}
-
 	public sealed class Order
 	{
 		public readonly string OrderString;
 		public readonly Actor Subject;
-		public readonly Actor TargetActor;
-		public readonly int2 TargetLocation;
-		public readonly string TargetString;
 		public readonly bool Queued;
-		public readonly int2 ExtraLocation;
+		public Actor TargetActor;
+		public int2 TargetLocation;
+		public string TargetString;
+		public int2 ExtraLocation;
 		public bool IsImmediate;
 		
 		public Player Player { get { return Subject.Owner; } }
@@ -88,8 +60,6 @@ namespace OpenRA
 
 		public Order(string orderString, Actor subject, bool queued) 
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
-		public Order(string orderString, Actor subject, Actor targetActor, bool queued)
-			: this(orderString, subject, targetActor, int2.Zero, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, int2 targetLocation, bool queued)
 			: this(orderString, subject, null, targetLocation, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, string targetString, bool queued)

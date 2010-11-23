@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA
 							&& a.HasTrait<IronCurtainable>()
 							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
-					if( underCursor != null )
-						yield return new Order( "IronCurtain", underCursor.Owner.PlayerActor, underCursor, false );
+					if (underCursor != null)
+						yield return new Order("IronCurtain", underCursor.Owner.PlayerActor, false) { TargetActor = underCursor };
 				}
 			}
 

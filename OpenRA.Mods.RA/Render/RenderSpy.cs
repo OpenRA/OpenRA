@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "Disguise" )
-				return new Order( order.OrderID, self, target.Actor, queued );
+				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}

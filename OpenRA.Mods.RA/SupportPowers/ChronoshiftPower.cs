@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 							&& a.HasTrait<Selectable>()).FirstOrDefault();
 
 					if (underCursor != null)
-						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, underCursor, false);
+						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
 				}
 
 				yield break;

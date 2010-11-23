@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA
 			if( order is AttackOrderTargeter )
 			{
 				if( target.IsActor )
-					return new Order( "Attack", self, target.Actor, queued );
+					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
 					return new Order( "Attack", self, Util.CellContaining( target.CenterLocation ), queued );
 			}

@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 				return new Order( order.OrderID, self, queued );
 
 			if( order.OrderID == "ReverseEnterTransport" )
-				return new Order( order.OrderID, self, target.Actor, queued );
+				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
@@ -71,7 +71,8 @@ namespace OpenRA.Mods.RA
 				if( order.TargetActor != null && order.Subject.Owner == order.TargetActor.Owner )
 				{
 					var passenger = order.TargetActor.Trait<Passenger>();
-					passenger.ResolveOrder( order.TargetActor, new Order( "EnterTransport", order.TargetActor, self, false ) );
+					passenger.ResolveOrder(order.TargetActor,
+						new Order("EnterTransport", order.TargetActor, false) { TargetActor = self });
 				}
 			}
 		}
