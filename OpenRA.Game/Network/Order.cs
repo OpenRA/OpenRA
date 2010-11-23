@@ -33,6 +33,28 @@ namespace OpenRA
 		}
 	}
 
+	public sealed class _Order
+	{
+		public string OrderString;
+		public Actor Subject;
+		public Actor TargetActor;
+		public int2 TargetLocation;
+		public string TargetString;
+		public bool Queued;
+		public int2 ExtraLocation;
+
+		public static implicit operator Order(_Order o)
+		{
+			return new Order(o.OrderString,
+				o.Subject,
+				o.TargetActor,
+				o.TargetLocation,
+				o.TargetString,
+				o.Queued,
+				o.ExtraLocation);
+		}
+	}
+
 	public sealed class Order
 	{
 		public readonly string OrderString;
