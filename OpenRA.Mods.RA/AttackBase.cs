@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 				if( target.IsActor )
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
-					return new Order( "Attack", self, Util.CellContaining( target.CenterLocation ), queued );
+					return new Order( "Attack", self, queued ) { TargetLocation = Util.CellContaining( target.CenterLocation ) };
 			}
 			return null;
 		}

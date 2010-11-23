@@ -302,7 +302,7 @@ namespace OpenRA.Mods.RA
 				int2 newRallyPoint = ChooseRallyLocationNear(a.Location);
 				newRallyPoint.X += 4;
 				newRallyPoint.Y += 4;
-				world.IssueOrder(new Order("SetRallyPoint", a, newRallyPoint, false));
+				world.IssueOrder(new Order("SetRallyPoint", a, false) { TargetLocation = newRallyPoint });
 			}
 		}
 
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA
 				range = Math.Max(range, loopCount / 2);
 				if (loopCount > 10) return false;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("Move", a, xy, false));
+			world.IssueOrder(new Order("Move", a, false) { TargetLocation = xy });
 			return true;
 		}
 
@@ -357,7 +357,7 @@ namespace OpenRA.Mods.RA
 				range = Math.Max(range, loopCount / 2);
 				if (loopCount > 10) return false;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("AttackMove", a, xy, false));
+			world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = xy });
 			return true;
 		}
 

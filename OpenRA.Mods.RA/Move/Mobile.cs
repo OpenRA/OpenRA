@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA.Move
 			if( order is MoveOrderTargeter )
 			{
 				if( Info.OnRails ) return null;
-				return new Order( "Move", self, Util.CellContaining( target.CenterLocation ), queued );
+				return new Order( "Move", self, queued ) { TargetLocation = Util.CellContaining( target.CenterLocation ) };
 			}
 			return null;
 		}

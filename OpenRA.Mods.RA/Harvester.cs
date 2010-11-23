@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if( order.OrderID == "Harvest" )
-				return new Order( order.OrderID, self, Util.CellContaining( target.CenterLocation ), queued );
+				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
 
 			return null;
 		}

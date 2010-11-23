@@ -60,8 +60,6 @@ namespace OpenRA
 
 		public Order(string orderString, Actor subject, bool queued) 
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
-		public Order(string orderString, Actor subject, int2 targetLocation, bool queued)
-			: this(orderString, subject, null, targetLocation, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, string targetString, bool queued)
 			: this(orderString, subject, null, int2.Zero, targetString, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation, bool queued)

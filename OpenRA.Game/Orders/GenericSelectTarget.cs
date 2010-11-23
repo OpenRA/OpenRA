@@ -61,7 +61,7 @@ namespace OpenRA.Orders
 			{
 				world.CancelInputMode();
 				foreach (var subject in subjects)
-					yield return new Order(order, subject, xy, false);
+					yield return new Order(order, subject, false) { TargetLocation = xy };
 			}
 		}
 

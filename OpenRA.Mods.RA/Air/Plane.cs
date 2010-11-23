@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Air
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if( order.OrderID == "Move" )
-				return new Order( order.OrderID, self, Util.CellContaining( target.CenterLocation ), queued );
+				return new Order( order.OrderID, self, queued ) { TargetLocation = Util.CellContaining( target.CenterLocation ) };
 
 			return null;
 		}

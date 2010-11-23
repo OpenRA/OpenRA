@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			{
 				var start = Traits.Util.CellContaining( target.CenterLocation );
 				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
-				return new Order( "BeginMinefield", self, start, false );
+				return new Order("BeginMinefield", self, false) { TargetLocation = start };
 			}
 			return null;
 		}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 				if( mi.Button == MouseButton.Right && underCursor == null )
 				{
 					minelayer.World.CancelInputMode();
-					yield return new Order( "PlaceMinefield", minelayer, xy, false );
+					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = xy };
 				}
 			}
 
@@ -127,7 +127,8 @@ namespace OpenRA.Mods.RA
 					return;
 
 				var movement = minelayer.Trait<IMove>();
-				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
+				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, 
+					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
 				wr.DrawLocus(Color.Cyan, minefield);

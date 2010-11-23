@@ -32,8 +32,9 @@ namespace OpenRA.Mods.RA.Orders
 				yield break;
 			}
 
+			var queued =  mi.Modifiers.HasModifier(Modifiers.Shift);
 			if (world.LocalPlayer.Shroud.IsExplored(xy))
-				yield return new Order("ChronoshiftSelf", self, xy, mi.Modifiers.HasModifier(Modifiers.Shift));
+				yield return new Order("ChronoshiftSelf", self, queued) { TargetLocation = xy };
 		}
 
 		public void Tick( World world ) { }
