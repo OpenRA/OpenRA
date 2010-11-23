@@ -20,11 +20,14 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		Palette:
-		Race: allies
 		OwnsWorld: True
 		NonCombatant: True
 		Playable: False
 		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: allies
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -33,11 +36,14 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -46,11 +52,14 @@ Players:
 	PlayerReference@Multi1:
 		Name: Multi1
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -59,11 +68,14 @@ Players:
 	PlayerReference@Multi2:
 		Name: Multi2
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -72,11 +84,14 @@ Players:
 	PlayerReference@Multi3:
 		Name: Multi3
 		Palette:
-		Race: Random
 		OwnsWorld: False
 		NonCombatant: False
 		Playable: True
 		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -84,9 +99,6 @@ Players:
 		Enemies:
 
 Actors:
-	Actor0: sbag
-		Location: 61,96
-		Owner: Neutral
 	Actor1: tc03
 		Location: 38,66
 		Owner: Neutral
@@ -181,4 +193,10 @@ Waypoints:
 Smudges:
 
 Rules:
+
+Sequences:
+
+Weapons:
+
+Voices:
 
