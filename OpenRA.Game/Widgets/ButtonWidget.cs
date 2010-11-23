@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Widgets
 {
@@ -70,13 +71,108 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds);
 
 			var text = GetText();
+
 			font.DrawText(text,
-				new int2(RenderOrigin.X + Bounds.Width / 2, RenderOrigin.Y + Bounds.Height / 2)
+				new int2(RenderOrigin.X + UsableWidth / 2, RenderOrigin.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2) + stateOffset, Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }
+		public virtual int UsableWidth { get { return Bounds.Width; } }
+	}
 
+	public class DropDownButtonWidget : ButtonWidget
+	{
+		public DropDownButtonWidget()
+			: base()
+		{
+		}
+
+		protected DropDownButtonWidget(DropDownButtonWidget widget)
+			: base(widget)
+		{
+		}
+
+		public override void DrawInner(WorldRenderer wr)
+		{
+			base.DrawInner(wr);
+			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
+			WidgetUtils.DrawRGBA( image,
+				new float2( RenderBounds.Right - RenderBounds.Height + 4, 
+					RenderBounds.Top + (RenderBounds.Height - image.bounds.Height) / 2 ));
+
+			WidgetUtils.FillRectWithColor(new Rectangle(RenderBounds.Right - RenderBounds.Height,
+				RenderBounds.Top + 3, 1, RenderBounds.Height - 6),
+				Color.White);
+		}
+
+		public override Widget Clone() { return new DropDownButtonWidget(this); }
+		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
+
+		public static void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
+		{
+			var fullscreenMask = new ContainerWidget
+			{
+				Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height),
+				ClickThrough = false,
+				Visible = true
+			};
+
+			Widget.RootWidget.AddChild(fullscreenMask);
+
+			var origin = w.RenderOrigin;
+			var dropDown = new ListBoxWidget
+			{
+				Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100),
+				Visible = true,
+				ClickThrough = false,
+				OnMouseUp = mi => true,
+			};
+
+			Widget.RootWidget.AddChild(dropDown);
+
+			Action HideDropDown = () =>
+			{
+				Widget.RootWidget.Children.Remove(fullscreenMask);
+				Widget.RootWidget.Children.Remove(dropDown);
+			};
+
+			fullscreenMask.OnMouseUp = mi =>
+			{
+				HideDropDown();
+				return false;
+			};
+
+			var y = 0;
+			List<LabelWidget> items = new List<LabelWidget>();
+
+			foreach (var t in ts)
+			{
+				var tt = t;
+				var ww = ft(t, dropDown.Bounds.Width);
+				var origMouseUp = ww.OnMouseUp;
+				ww.OnMouseUp = mi => { var result = origMouseUp(mi); HideDropDown(); return result; };
+				ww.ClickThrough = false;
+				ww.IsVisible = () => true;
+				ww.Bounds = new Rectangle(0, y, ww.Bounds.Width, ww.Bounds.Height);
+
+				ww.OnMouseMove = mi =>
+				{
+					items.Do(lw =>
+					{
+						lw.Background = null; ww.Background = "dialog2";
+					}); return true;
+				};
+
+				dropDown.AddChild(ww);
+				items.Add(ww);
+
+				y += ww.Bounds.Height;
+			}
+
+			dropDown.ContentHeight = y;
+			dropDown.Bounds.Height = y + 2;
+		}
 	}
 }

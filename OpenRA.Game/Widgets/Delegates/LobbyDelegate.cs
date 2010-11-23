@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Graphics;
+using System;
 
 namespace OpenRA.Widgets.Delegates
 {
@@ -215,6 +216,34 @@ namespace OpenRA.Widgets.Delegates
 		{
 			return orderManager.LobbyInfo.ClientInSlot( slot );
 		}
+
+		void ShowDropDown(Session.Slot slot, ButtonWidget name, bool showBotOptions)
+		{
+			var dropDownOptions = new List<Pair<string, Action>>
+			{
+				new Pair<string, Action>( "Open",
+					() => orderManager.IssueOrder( Order.Command( "slot_open " + slot.Index )  )),
+				new Pair<string, Action>( "Closed",
+					() => orderManager.IssueOrder( Order.Command( "slot_close " + slot.Index ) )),
+			};
+
+			if (showBotOptions)
+			{
+				var bots = new string[] { "HackyAI" };
+				bots.Do(bot =>
+					dropDownOptions.Add(new Pair<string, Action>("Bot: {0}".F(bot),
+						() => orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot.Index, bot))))));
+			}
+
+			DropDownButtonWidget.ShowDropDown( name,
+				dropDownOptions,
+				(ac, w) => new LabelWidget
+				{
+					Bounds = new Rectangle(0, 0, w, 24),
+					Text = "  {0}".F(ac.First),
+					OnMouseUp = mi => { ac.Second(); return true; },
+				});
+		}
 		
 		void UpdatePlayerList()
 		{
@@ -240,40 +269,15 @@ namespace OpenRA.Widgets.Delegates
 							var btn = template.GetWidget<ButtonWidget>("JOIN");
 							btn.GetText = () =>  "Spectate in this slot";
 							name.GetText = () => s.Closed ? "Closed" : "Open";
-							name.OnMouseUp = _ =>
-							{
-								if (s.Closed)
-								{
-									orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
-								}
-								else
-								{
-									orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
-								}
-								return true;
-							};
+							name.OnMouseDown = _ => { ShowDropDown(s, name, false); return true; };
+							
 						}
 						else
 						{
 							template = EmptySlotTemplateHost.Clone();
 							var name = template.GetWidget<ButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
-							name.OnMouseUp = _ =>
-		                 	{
-		                 		if (s.Closed)
-		                 		{
-		                 			s.Bot = null;
-		                 			orderManager.IssueOrder(Order.Command("slot_open " + s.Index));
-		                 		}
-		                 		else
-		                 		{
-		                 			if (s.Bot == null && Map.Players[s.MapPlayer].AllowBots)
-		                 				orderManager.IssueOrder(Order.Command("slot_bot {0} HackyAI".F(s.Index)));
-		                 			else
-		                 				orderManager.IssueOrder(Order.Command("slot_close " + s.Index));
-		                 		}
-		                 		return true;
-		                 	};
+							name.OnMouseDown = _ => { ShowDropDown(s, name, Map.Players[ s.MapPlayer ].AllowBots); return true; };
 						}
 					}
 					else

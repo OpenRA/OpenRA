@@ -103,14 +103,14 @@ namespace OpenRA.Widgets.Delegates
 				bg.AddChild(theirStance);
 				controls.Add(theirStance);
 
-				var myStance = new ButtonWidget
+				var myStance = new DropDownButtonWidget
 				{
 					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
 					Text = world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
-				myStance.OnMouseUp = mi => { CycleStance(pp, myStance); return true; };
+				myStance.OnMouseDown = mi => { ShowDropDown(pp, myStance); return true; };
 
 				bg.AddChild(myStance);
 				controls.Add(myStance);
@@ -119,29 +119,26 @@ namespace OpenRA.Widgets.Delegates
 			}
 		}
 
-		Stance GetNextStance(Stance s)
+		void ShowDropDown(Player p, Widget w)
 		{
-			switch (s)
-			{
-				case Stance.Ally: return Stance.Enemy;
-				case Stance.Enemy: return Stance.Neutral;
-				case Stance.Neutral: return Stance.Ally;
-				default:
-					throw new ArgumentException();
-			}
+			DropDownButtonWidget.ShowDropDown(w, Enum.GetValues(typeof(Stance)).OfType<Stance>(),
+				(s, width) => new LabelWidget
+					{
+						Bounds = new Rectangle(0, 0, width, 24),
+						Text = "  {0}".F(s),
+						OnMouseUp = mi => { SetStance((ButtonWidget)w, p, s); return true; },
+					});
 		}
 
-		void CycleStance(Player p, ButtonWidget bw)
+		void SetStance(ButtonWidget bw, Player p, Stance ss)
 		{
 			if (p.World.LobbyInfo.GlobalSettings.LockTeams)
 				return;	// team changes are banned
 
-			var nextStance = GetNextStance((Stance)Enum.Parse(typeof(Stance), bw.Text));
-
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
-				false) { TargetLocation = new int2(p.Index, (int)nextStance) });
+				false) { TargetLocation = new int2(p.Index, (int)ss) });
 
-			bw.Text = nextStance.ToString();
+			bw.Text = ss.ToString();
 		}
 	}
 }
