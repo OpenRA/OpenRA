@@ -4,11 +4,9 @@ MapFormat: 3
 
 Title: A Path Beyond
 
-Description:
-
 Author: Westwood Studios
 
-PlayerCount: 9
+PlayerCount: 8
 
 Tileset: TEMPERAT
 
@@ -149,22 +147,6 @@ Players:
 		Enemies:
 	PlayerReference@Multi7:
 		Name: Multi7
-		Palette:
-		OwnsWorld: False
-		NonCombatant: False
-		Playable: True
-		DefaultStartingUnits: True
-		AllowBots: True
-		LockRace: False
-		Race: Random
-		LockColor: False
-		Color: 255,238,238,238
-		Color2: 255,44,28,24
-		InitialCash: 0
-		Allies:
-		Enemies:
-	PlayerReference@Multi8:
-		Name: Multi8
 		Palette:
 		OwnsWorld: False
 		NonCombatant: False
@@ -323,7 +305,6 @@ Waypoints:
 	spawn5: 33,63
 	spawn6: 66,31
 	spawn7: 91,60
-	spawn98: 16,16
 
 Smudges:
 
