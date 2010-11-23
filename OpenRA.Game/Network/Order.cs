@@ -108,10 +108,7 @@ namespace OpenRA
 						if (TargetActor != null)
 							w.Write(UIntFromActor(TargetActor));
 						if (TargetLocation != int2.Zero)
-						{
-							w.Write(TargetLocation.X);
-							w.Write(TargetLocation.Y);
-						}
+							w.Write(TargetLocation);
 						if (TargetString != null)
 							w.Write(TargetString);
 

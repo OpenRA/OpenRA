@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace OpenRA.Network
 {
@@ -53,6 +51,12 @@ namespace OpenRA.Network
 			var x = r.ReadInt32();
 			var y = r.ReadInt32();
 			return new int2(x, y);
+		}
+
+		public static void Write(this BinaryWriter w, int2 p)
+		{
+			w.Write(p.X);
+			w.Write(p.Y);
 		}
 	}
 }
