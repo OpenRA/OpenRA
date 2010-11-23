@@ -27,7 +27,7 @@ namespace OpenRA
 			unitDebug = SynthesizeTile(0x04);
 		}
 
-		static Sprite SynthesizeTile(byte paletteIndex)
+		public static Sprite SynthesizeTile(byte paletteIndex)
 		{
 			byte[] data = new byte[Game.CellSize * Game.CellSize];
 

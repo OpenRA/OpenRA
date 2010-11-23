@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -9,16 +9,21 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using TUtil = OpenRA.Traits.Util;
 
 namespace OpenRA.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
 	{
 		public readonly float Duration = 0f;
+		public readonly int Range = 2; // Range in cells
+
 		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
 	}
 
@@ -30,7 +35,7 @@ namespace OpenRA.Mods.RA
 		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "ironrdy1.aud"); }
 		protected override void OnActivate()
 		{
-			Self.World.OrderGenerator = new SelectTarget();
+			Self.World.OrderGenerator = new SelectTarget(this);
 			Sound.Play("slcttgt1.aud");
 		}
 
@@ -41,23 +46,51 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "IronCurtain")
 			{
 				var curtain = self.World.Queries.WithTrait<IronCurtain>()
-					.Where(a => a.Actor.Owner != null)
+					.Where(a => a.Actor.Owner == self.Owner)
 					.FirstOrDefault().Actor;
+				
 				if (curtain != null)
 					curtain.Trait<RenderBuilding>().PlayCustomAnim(curtain, "active");
 
-				Sound.Play("ironcur9.aud", order.TargetActor.CenterLocation);
-				
-				order.TargetActor.Trait<IronCurtainable>().Activate(order.TargetActor,
-					(int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
-				
+				Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
+
+				var targets = UnitsInRange(order.TargetLocation);
+
+				foreach (var target in targets)
+				{
+					if (target.HasTrait<IronCurtainable>())
+						target.Trait<IronCurtainable>().Activate(target, (int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
+				}
+
 				FinishActivate();
 			}
+
 		}
 
+		public IEnumerable<Actor> UnitsInRange(int2 xy)
+		{
+			int range = (Info as IronCurtainPowerInfo).Range;
+			var uim = Self.World.WorldActor.Trait<UnitInfluence>();
+			var tiles = Self.World.FindTilesInCircle(xy, range);
+			var units = new List<Actor>();
+			foreach (var t in tiles)
+				units.AddRange(uim.GetUnitsAt(t));
+			
+			return units.Distinct().Where(a => a.HasTrait<IronCurtainable>());
+		}
+		
 		class SelectTarget : IOrderGenerator
 		{
-			public SelectTarget() {	}
+			IronCurtainPower power;
+			int range;
+			Sprite tile;
+			
+			public SelectTarget(IronCurtainPower power)
+			{
+				this.power = power;
+				this.range = (power.Info as IronCurtainPowerInfo).Range;
+				tile = UiOverlay.SynthesizeTile(0x0f);
+			}
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
@@ -71,13 +104,13 @@ namespace OpenRA.Mods.RA
 			{
 				if (mi.Button == MouseButton.Left)
 				{
-					var underCursor = world.FindUnitsAtMouse(mi.Location)
-						.Where(a => a.Owner != null
-							&& a.HasTrait<IronCurtainable>()
-							&& a.HasTrait<Selectable>()).FirstOrDefault();
+					var targetUnits = power.UnitsInRange(xy);
 
-					if (underCursor != null)
-						yield return new Order("IronCurtain", underCursor.Owner.PlayerActor, false) { TargetActor = underCursor };
+					if( targetUnits.Any() )
+					{
+						world.CancelInputMode();
+						yield return new Order("IronCurtain", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
+					}
 				}
 			}
 
@@ -91,14 +124,25 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			public void RenderAfterWorld(WorldRenderer wr, World world) { }
-			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
+			public void RenderAfterWorld(WorldRenderer wr, World world)
+			{
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var targetUnits = power.UnitsInRange(xy);		
+				foreach (var r in targetUnits.SelectMany(a => a.Render()))
+					r.Sprite.DrawAt(wr,r.Pos,"highlight");
+			}
+
+			public void RenderBeforeWorld(WorldRenderer wr, World world)
+			{
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var tiles = world.FindTilesInCircle(xy, range);
+				foreach (var t in tiles)
+					tile.DrawAt( wr, Game.CellSize * t, "terrain" );
+			}
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
-				mi.Button = MouseButton.Left;
-				return OrderInner(world, xy, mi).Any()
-					? "ability" : "move-blocked";
+				return power.UnitsInRange(xy).Any()	? "ability" : "move-blocked";
 			}
 		}
 	}
