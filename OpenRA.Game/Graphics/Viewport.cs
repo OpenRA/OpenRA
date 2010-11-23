@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,8 +22,7 @@ namespace OpenRA.Graphics
 		readonly int2 screenSize;
 		int2 scrollPosition;
 		readonly Renderer renderer;
-		readonly int2 mapStart;
-		readonly int2 mapEnd;
+		readonly Rectangle adjustedMapBounds;
 
 		public float2 Location { get { return scrollPosition; } }
 
@@ -52,60 +52,44 @@ namespace OpenRA.Graphics
 		
 		private int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
-			var topLeftBorder = Game.CellSize* mapStart;
-			var bottomRightBorder = Game.CellSize* mapEnd;
-		  
-			if(newScrollPosition.Y < topLeftBorder.Y - screenSize.Y/2)
-				newScrollPosition.Y = topLeftBorder.Y - screenSize.Y/2;
-			if(newScrollPosition.X < topLeftBorder.X - screenSize.X/2)
-				newScrollPosition.X = topLeftBorder.X - screenSize.X/2;
-			if(newScrollPosition.Y > bottomRightBorder.Y - screenSize.Y/2)
-				newScrollPosition.Y = bottomRightBorder.Y - screenSize.Y/2;
-			if(newScrollPosition.X > bottomRightBorder.X - screenSize.X/2)
-				newScrollPosition.X = bottomRightBorder.X - screenSize.X/2;
-			
-			return newScrollPosition;
+			return new int2(Math.Min(adjustedMapBounds.Right, Math.Max(newScrollPosition.X, adjustedMapBounds.Left)),
+			                Math.Min(adjustedMapBounds.Bottom, Math.Max(newScrollPosition.Y, adjustedMapBounds.Top)));
 		}
 		
 		public ScrollDirection GetBlockedDirections()
 		{
-			int2 topLeftBorder = (Game.CellSize* mapStart);
-			int2 bottomRightBorder = (Game.CellSize* mapEnd);
-			
 			ScrollDirection blockedDirections = ScrollDirection.None;
-			
-			if(scrollPosition.Y <= topLeftBorder.Y - screenSize.Y/2)
+			if(scrollPosition.Y <= adjustedMapBounds.Top)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Up, true);
-			if(scrollPosition.X <= topLeftBorder.X - screenSize.X/2)
+			if(scrollPosition.X <= adjustedMapBounds.Left)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Left, true);
-			if(scrollPosition.Y >= bottomRightBorder.Y - screenSize.Y/2)
+			if(scrollPosition.Y >= adjustedMapBounds.Bottom)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Down, true);
-		  	if(scrollPosition.X >= bottomRightBorder.X - screenSize.X/2)
+		  	if(scrollPosition.X >= adjustedMapBounds.Right)
 				blockedDirections = blockedDirections.Set(ScrollDirection.Right, true);
 			
 			return blockedDirections;
 		}
 
-		public Viewport(int2 screenSize, int2 mapStart, int2 mapEnd, Renderer renderer)
+		public Viewport(int2 screenSize, Rectangle mapBounds, Renderer renderer)
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			this.mapStart = mapStart;
-			this.mapEnd = mapEnd;
-
-			this.scrollPosition = Game.CellSize* mapStart;
+			this.adjustedMapBounds = new Rectangle(Game.CellSize*mapBounds.X - screenSize.X/2,
+			                                       Game.CellSize*mapBounds.Y - screenSize.Y/2,
+			                                       Game.CellSize*mapBounds.Width,
+			                                       Game.CellSize*mapBounds.Height);
+			this.scrollPosition = new int2(adjustedMapBounds.Location);
 		}
 		
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
 		{
 			renderer.BeginFrame(scrollPosition);
+			
 			wr.Draw();
-
 			Widget.DoDraw( wr );
-
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-			var c = new Cursor(cursorName);
-			c.Draw(wr, (int)cursorFrame, Viewport.LastMousePos + Location); 
+			new Cursor(cursorName).Draw(wr, (int)cursorFrame, Viewport.LastMousePos + Location); 
 
 			renderer.EndFrame( inputHandler );
 		}
