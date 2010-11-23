@@ -35,13 +35,19 @@ namespace OpenRA
 
 	public sealed class _Order
 	{
-		public string OrderString;
-		public Actor Subject;
+		public readonly string OrderString;
+		public readonly Actor Subject;
 		public Actor TargetActor;
 		public int2 TargetLocation;
 		public string TargetString;
 		public bool Queued;
 		public int2 ExtraLocation;
+
+		public _Order(Actor subject, string orderString)
+		{
+			this.Subject = subject;
+			this.OrderString = orderString;
+		}
 
 		public static implicit operator Order(_Order o)
 		{
