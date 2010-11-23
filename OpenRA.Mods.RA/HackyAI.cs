@@ -317,12 +317,10 @@ namespace OpenRA.Mods.RA
 			return startPos;		// i don't know where to put it.
 		}
 
-		//try very hard to find a valid move destination near the target.
-		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
-		bool TryToMove(Actor a, int2 desiredMoveTarget)
+		int2? ChooseDestinationNear(Actor a, int2 desiredMoveTarget)
 		{
 			if (!a.HasTrait<IMove>())
-				return false;
+				return null;
 
 			int2 xy;
 			int loopCount = 0; //avoid infinite loops.
@@ -333,9 +331,20 @@ namespace OpenRA.Mods.RA
 				xy = new int2(desiredMoveTarget.X + random.Next(-range, range), desiredMoveTarget.Y + random.Next(-range, range));
 				loopCount++;
 				range = Math.Max(range, loopCount / 2);
-				if (loopCount > 10) return false;
+				if (loopCount > 10) return null;
 			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("Move", a, false) { TargetLocation = xy });
+
+			return xy;
+		}
+
+		//try very hard to find a valid move destination near the target.
+		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
+		bool TryToMove(Actor a, int2 desiredMoveTarget)
+		{
+			var xy = ChooseDestinationNear(a, desiredMoveTarget);
+			if (xy == null)
+				return false;
+			world.IssueOrder(new Order("Move", a, false) { TargetLocation = xy.Value });
 			return true;
 		}
 
@@ -343,21 +352,10 @@ namespace OpenRA.Mods.RA
 		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
 		bool TryToAttackMove(Actor a, int2 desiredMoveTarget)
 		{
-			if (!a.HasTrait<IMove>())
+			var xy = ChooseDestinationNear(a, desiredMoveTarget);
+			if (xy == null)
 				return false;
-
-			int2 xy;
-			int loopCount = 0; //avoid infinite loops.
-			int range = 2;
-			do
-			{
-				//loop until we find a valid move location
-				xy = new int2(desiredMoveTarget.X + random.Next(-range, range), desiredMoveTarget.Y + random.Next(-range, range));
-				loopCount++;
-				range = Math.Max(range, loopCount / 2);
-				if (loopCount > 10) return false;
-			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
-			world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = xy });
+			world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = xy.Value });
 			return true;
 		}
 
