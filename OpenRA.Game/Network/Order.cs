@@ -22,6 +22,7 @@ namespace OpenRA
 		TargetLocation = 0x02, 
 		TargetString = 0x04, 
 		Queued = 0x08, 
+		ExtraLocation = 0x10,
 	}
 
 	static class OrderFieldsExts
@@ -40,12 +41,13 @@ namespace OpenRA
 		public readonly int2 TargetLocation;
 		public readonly string TargetString;
 		public readonly bool Queued;
+		public readonly int2 ExtraLocation;
 		public bool IsImmediate;
 		
 		public Player Player { get { return Subject.Owner; } }
 
 		public Order(string orderString, Actor subject, 
-			Actor targetActor, int2 targetLocation, string targetString, bool queued)
+			Actor targetActor, int2 targetLocation, string targetString, bool queued, int2 extraLocation)
 		{
 			this.OrderString = orderString;
 			this.Subject = subject;
@@ -53,22 +55,23 @@ namespace OpenRA
 			this.TargetLocation = targetLocation;
 			this.TargetString = targetString;
 			this.Queued = queued;
+			this.ExtraLocation = extraLocation;
 		}
 
 		public Order(string orderString, Actor subject, bool queued) 
-			: this(orderString, subject, null, int2.Zero, null, queued) { }
+			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, Actor targetActor, bool queued)
-			: this(orderString, subject, targetActor, int2.Zero, null, queued) { }
+			: this(orderString, subject, targetActor, int2.Zero, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, int2 targetLocation, bool queued)
-			: this(orderString, subject, null, targetLocation, null, queued) { }
+			: this(orderString, subject, null, targetLocation, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, string targetString, bool queued)
-			: this(orderString, subject, null, int2.Zero, targetString, queued) { }
+			: this(orderString, subject, null, int2.Zero, targetString, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, Actor targetActor, int2 targetLocation, bool queued)
-			: this(orderString, subject, targetActor, targetLocation, null, queued) { }
+			: this(orderString, subject, targetActor, targetLocation, null, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, Actor targetActor, string targetString, bool queued)
-			: this(orderString, subject, targetActor, int2.Zero, targetString, queued) { }
+			: this(orderString, subject, targetActor, int2.Zero, targetString, queued, int2.Zero) { }
 		public Order(string orderString, Actor subject, int2 targetLocation, string targetString, bool queued)
-			: this(orderString, subject, null, targetLocation, targetString, queued) { }
+			: this(orderString, subject, null, targetLocation, targetString, queued, int2.Zero) { }
 
 		public byte[] Serialize()
 		{
@@ -102,6 +105,7 @@ namespace OpenRA
 						if (TargetLocation != int2.Zero) fields |= OrderFields.TargetLocation;
 						if (TargetString != null) fields |= OrderFields.TargetString;
 						if (Queued) fields |= OrderFields.Queued;
+						if (ExtraLocation != int2.Zero) fields |= OrderFields.ExtraLocation;
 
 						w.Write((byte)fields);
 
@@ -111,6 +115,8 @@ namespace OpenRA
 							w.Write(TargetLocation);
 						if (TargetString != null)
 							w.Write(TargetString);
+						if (ExtraLocation != int2.Zero)
+							w.Write(ExtraLocation);
 
 						return ret.ToArray();
 					}
@@ -131,12 +137,13 @@ namespace OpenRA
 						var targetLocation = flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero;
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
+						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero;
 
 						Actor subject, targetActor;
 						if( !TryGetActorFromUInt( world, subjectId, out subject ) || !TryGetActorFromUInt( world, targetActorId, out targetActor ) )
 							return null;
 
-						return new Order( order, subject, targetActor, targetLocation, targetString, queued);
+						return new Order( order, subject, targetActor, targetLocation, targetString, queued, extraLocation);
 					}
 
 				case 0xfe:
