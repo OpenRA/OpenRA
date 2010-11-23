@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Cnc
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (!IsReady) return;
+
 			if (order.OrderString == "IonCannon")
 			{
 				Owner.World.AddFrameEndTask(w =>
