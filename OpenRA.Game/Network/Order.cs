@@ -60,8 +60,6 @@ namespace OpenRA
 
 		public Order(string orderString, Actor subject, bool queued) 
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
-		public Order(string orderString, Actor subject, string targetString, bool queued)
-			: this(orderString, subject, null, int2.Zero, targetString, queued, int2.Zero) { }
 
 		public byte[] Serialize()
 		{
@@ -141,7 +139,7 @@ namespace OpenRA
 						var name = r.ReadString();
 						var data = r.ReadString();
 
-						return new Order( name, null, data, false ) { IsImmediate = true };
+						return new Order( name, null, false ) { IsImmediate = true, TargetString = data };
 					}
 
 				default:
@@ -185,17 +183,17 @@ namespace OpenRA
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
 		public static Order Chat(string text)
 		{
-			return new Order("Chat", null, text, false) { IsImmediate = true };
+			return new Order("Chat", null, false) { IsImmediate = true, TargetString = text};
 		}
 
 		public static Order TeamChat(string text)
 		{
-			return new Order("TeamChat", null, text, false) { IsImmediate = true };
+			return new Order("TeamChat", null, false) { IsImmediate = true, TargetString = text };
 		}
 		
 		public static Order Command(string text)
 		{
-			return new Order("Command", null, text, false) { IsImmediate = true };	
+			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
 		}
 
 		public static Order StartProduction(Actor subject, string item, int count)
