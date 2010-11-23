@@ -35,7 +35,8 @@ namespace OpenRA.Mods.Cnc
 			Map = w.Map;
 			Players = w.players.Values.ToDictionary(p => p.InternalName);
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
-			Game.MoveViewport((.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2());
+			var b = w.Map.Bounds;
+			Game.MoveViewport(new int2(b.Left + b.Width/2, b.Top + b.Height/2));
 			
 			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa", 
 			    () => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>

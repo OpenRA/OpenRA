@@ -91,14 +91,14 @@ namespace OpenRA.Widgets
 					mapChooserSheet = new Sheet(new Size( preview.Width, preview.Height ) );
 
 				mapChooserSheet.Texture.SetData( preview );
-				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Width, map.Height ), TextureChannel.Alpha );
+				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Bounds.Width, map.Bounds.Height ), TextureChannel.Alpha );
 				
 				// Update map rect
-				PreviewScale = Math.Min(RenderBounds.Width * 1.0f / map.Width, RenderBounds.Height * 1.0f / map.Height);
-				var size = Math.Max(map.Width, map.Height);
-				var dw = (int)(PreviewScale * (size - map.Width)) / 2;
-				var dh = (int)(PreviewScale * (size - map.Height)) / 2;
-				MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Width * PreviewScale), (int)(map.Height * PreviewScale));
+				PreviewScale = Math.Min(RenderBounds.Width * 1.0f / map.Bounds.Width, RenderBounds.Height * 1.0f / map.Bounds.Height);
+				var size = Math.Max(map.Bounds.Width, map.Bounds.Height);
+				var dw = (int)(PreviewScale * (size - map.Bounds.Width)) / 2;
+				var dh = (int)(PreviewScale * (size - map.Bounds.Height)) / 2;
+				MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Bounds.Width * PreviewScale), (int)(map.Bounds.Height * PreviewScale));
 			}
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,

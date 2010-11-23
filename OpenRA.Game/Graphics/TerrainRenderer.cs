@@ -34,8 +34,8 @@ namespace OpenRA.Graphics
 			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
 				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
-			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
-			ushort[] indices = new ushort[6 * map.Height * map.Width];
+			Vertex[] vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
+			ushort[] indices = new ushort[6 * map.Bounds.Height * map.Bounds.Width];
 
 			terrainSheet = tileMapping[map.MapTiles[map.Bounds.Left, map.Bounds.Top]].sheet;
 
@@ -65,19 +65,19 @@ namespace OpenRA.Graphics
 
 		public void Draw( WorldRenderer wr, Viewport viewport )
 		{
-			int indicesPerRow = map.Width * 6;
-			int verticesPerRow = map.Width * 4;
+			int indicesPerRow = map.Bounds.Width * 6;
+			int verticesPerRow = map.Bounds.Width * 4;
 
 			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize + 2);
 
 			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.Bounds.Top);
 			int lastRow = firstRow + visibleRows;
 
-			if (lastRow < 0 || firstRow > map.Height)
+			if (lastRow < 0 || firstRow > map.Bounds.Height)
 				return;
 
 			if (firstRow < 0) firstRow = 0;
-			if (lastRow > map.Height) lastRow = map.Height;
+			if (lastRow > map.Bounds.Height) lastRow = map.Bounds.Height;
 
 			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
 			{

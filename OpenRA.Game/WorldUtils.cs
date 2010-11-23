@@ -90,9 +90,7 @@ namespace OpenRA
 
 		public static int2 ClampToWorld( this World world, int2 xy )
 		{
-			var b = world.Map.Bounds;
-			return new int2(Math.Min(b.Right, Math.Max(xy.X, b.Left)),
-			                Math.Min(b.Bottom, Math.Max(xy.Y, b.Top)));
+			return xy.Clamp(world.Map.Bounds);			
 		}
 
 		public static int2 ChooseRandomEdgeCell(this World w)

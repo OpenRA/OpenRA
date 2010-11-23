@@ -52,8 +52,7 @@ namespace OpenRA.Graphics
 		
 		private int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
-			return new int2(Math.Min(adjustedMapBounds.Right, Math.Max(newScrollPosition.X, adjustedMapBounds.Left)),
-			                Math.Min(adjustedMapBounds.Bottom, Math.Max(newScrollPosition.Y, adjustedMapBounds.Top)));
+			return newScrollPosition.Clamp(adjustedMapBounds);
 		}
 		
 		public ScrollDirection GetBlockedDirections()

@@ -72,5 +72,11 @@ namespace OpenRA
 		{
 			return a + ( b - a ) * mul / div;
 		}
+		
+		public int2 Clamp(Rectangle r)
+		{
+			return new int2(Math.Min(r.Right, Math.Max(X, r.Left)),
+			                Math.Min(r.Bottom, Math.Max(Y, r.Top)));
+		}
 	}
 }

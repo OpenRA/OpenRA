@@ -507,8 +507,8 @@ namespace OpenRA.Editor
 			e.Graphics.DrawRectangle(CordonPen,
 				Map.Bounds.Left * TileSet.TileSize * Zoom + Offset.X,
 				Map.Bounds.Top * TileSet.TileSize * Zoom + Offset.Y,
-				Map.Width * TileSet.TileSize * Zoom,
-				Map.Height * TileSet.TileSize * Zoom);
+				Map.Bounds.Width * TileSet.TileSize * Zoom,
+				Map.Bounds.Height * TileSet.TileSize * Zoom);
 
 			foreach (var ar in Map.Actors)
 				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],

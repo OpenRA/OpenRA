@@ -221,8 +221,10 @@ namespace OpenRA.Editor
 				if (DialogResult.OK != rd.ShowDialog())
 					return;
 
-				surface1.Map.TopLeft = new int2((int)rd.cordonLeft.Value, (int)rd.cordonTop.Value);
-				surface1.Map.BottomRight = new int2((int)rd.cordonRight.Value, (int)rd.cordonBottom.Value);
+				surface1.Map.ResizeCordon((int)rd.cordonLeft.Value,
+				                       (int)rd.cordonTop.Value,
+				                       (int)rd.cordonRight.Value,
+				                       (int)rd.cordonBottom.Value);
 
 				if ((int)rd.width.Value != surface1.Map.MapSize.X || (int)rd.height.Value != surface1.Map.MapSize.Y)
 				{

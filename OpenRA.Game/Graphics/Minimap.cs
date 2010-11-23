@@ -28,12 +28,12 @@ namespace OpenRA.Graphics
 		public static Bitmap TerrainBitmap(Map map, bool actualSize)
 		{
 			var tileset = Rules.TileSets[map.Tileset];
-			var width = map.Width;
-			var height = map.Height;
+			var width = map.Bounds.Width;
+			var height = map.Bounds.Height;
 			
 			if (!actualSize)
 			{
-				width = height = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+				width = height = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			}
 			
 			Bitmap terrain = new Bitmap(width, height);
@@ -45,8 +45,8 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				for (var x = 0; x < map.Width; x++)
-					for (var y = 0; y < map.Height; y++)
+				for (var x = 0; x < map.Bounds.Width; x++)
+					for (var y = 0; y < map.Bounds.Height; y++)
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
@@ -75,8 +75,8 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				for (var x = 0; x < map.Width; x++)
-					for (var y = 0; y < map.Height; y++)
+				for (var x = 0; x < map.Bounds.Width; x++)
+					for (var y = 0; y < map.Bounds.Height; y++)
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;	
@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 		public static Bitmap CustomTerrainBitmap(World world)
 		{
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			Bitmap bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -109,8 +109,8 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				for (var x = 0; x < map.Width; x++)
-					for (var y = 0; y < map.Height; y++)
+				for (var x = 0; x < map.Bounds.Width; x++)
+					for (var y = 0; y < map.Bounds.Height; y++)
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
@@ -127,7 +127,7 @@ namespace OpenRA.Graphics
 		public static Bitmap ActorsBitmap(World world)
 		{	
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			Bitmap bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -157,7 +157,7 @@ namespace OpenRA.Graphics
 		public static Bitmap ShroudBitmap(World world)
 		{	
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Width, map.Height));
+			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			Bitmap bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -171,8 +171,8 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 				
-				for (var x = 0; x < map.Width; x++)
-					for (var y = 0; y < map.Height; y++)
+				for (var x = 0; x < map.Bounds.Width; x++)
+					for (var y = 0; y < map.Bounds.Height; y++)
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;

@@ -35,10 +35,8 @@ namespace OpenRA.FileFormats
 		
 		[FieldLoader.Load] public int2 TopLeft;
 		[FieldLoader.Load] public int2 BottomRight;
-		public int Width { get { return BottomRight.X - TopLeft.X; } }
-		public int Height { get { return BottomRight.Y - TopLeft.Y; } }
-		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
-
+		public Rectangle Bounds;
+		
 		public MapStub() {} // Hack for the editor - not used for anything important
 		public MapStub(IFolder container)
 		{
@@ -46,6 +44,7 @@ namespace OpenRA.FileFormats
 			var yaml = MiniYaml.FromStream(Container.GetContent("map.yaml"));
 			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			
+			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
 			Uid = Container.GetContent("map.uid").ReadAllText();
 		}
 

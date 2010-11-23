@@ -67,8 +67,7 @@ namespace OpenRA
 					index = (byte)(tile.Value.PickAny ? 0xffu : 0) } } };
 
 			PlayerCount = 0;
-			TopLeft = new int2(0, 0);
-			BottomRight = new int2(0, 0);
+			ResizeCordon(0,0,0,0);
 
 			Title = "Name your map here";
 			Description = "Describe your map here";
@@ -348,6 +347,13 @@ namespace OpenRA
 			MapTiles = ResizeArray(MapTiles, MapTiles[0, 0], width, height);
 			MapResources = ResizeArray(MapResources, MapResources[0, 0], width, height);
 			MapSize = new int2(width, height);
+		}
+		
+		public void ResizeCordon(int left, int top, int right, int bottom)
+		{
+			TopLeft = new int2(left, top);
+			BottomRight = new int2(right, bottom);
+			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
 		}
 	}
 }

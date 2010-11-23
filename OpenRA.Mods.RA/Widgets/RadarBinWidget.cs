@@ -45,14 +45,14 @@ namespace OpenRA.Mods.RA.Widgets
 		public RadarBinWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
-			var size = Math.Max(world.Map.Width, world.Map.Height);
-			previewScale = Math.Min(192f / world.Map.Width, 192f / world.Map.Height);
-			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Height)/2));
-			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Width * previewScale), (int)(world.Map.Height * previewScale));
+			var size = Math.Max(world.Map.Bounds.Width, world.Map.Bounds.Height);
+			previewScale = Math.Min(192f / world.Map.Bounds.Width, 192f / world.Map.Bounds.Height);
+			previewOrigin = new int2(9 + (int)(radarOpenOrigin.X + previewScale * (size - world.Map.Bounds.Width)/2), (int)(radarOpenOrigin.Y + previewScale * (size - world.Map.Bounds.Height)/2));
+			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Bounds.Width * previewScale), (int)(world.Map.Bounds.Height * previewScale));
 
 			// Only needs to be done once
 			var terrainBitmap = Minimap.TerrainBitmap(world.Map);
-			var r = new Rectangle( 0, 0, world.Map.Width, world.Map.Height );
+			var r = new Rectangle( 0, 0, world.Map.Bounds.Width, world.Map.Bounds.Height );
 			var s = new Size( terrainBitmap.Width, terrainBitmap.Height );
 			terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			terrainSprite.sheet.Texture.SetData(terrainBitmap);
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA.Widgets
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
-				var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Height * previewScale * (1 - radarMinimapHeight)/2);
+				var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
 				var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(terrainSprite, o, s);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, s);

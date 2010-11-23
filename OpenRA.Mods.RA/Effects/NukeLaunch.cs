@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 			
 			if (silo == null)
 			{
-				altitude = silo.World.Map.Height*Game.CellSize;
+				altitude = silo.World.Map.Bounds.Height*Game.CellSize;
 				StartDescent(silo.World);
 			}
 			else
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (goingUp)
 			{
 				altitude += 10;
-				if (altitude >= world.Map.Height*Game.CellSize)
+				if (altitude >= world.Map.Bounds.Height*Game.CellSize)
 					StartDescent(world);
 			}
 			else
