@@ -128,7 +128,11 @@ namespace OpenRA.Mods.RA
 			{
 				// Cannot chronoshift into unexplored location
 				if (world.LocalPlayer.Shroud.IsExplored(xy))
-					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, self, xy, false);
+					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, false)
+						{
+							TargetActor = self,
+							TargetLocation = xy
+						};
 			}
 
 			public void Tick(World world)
