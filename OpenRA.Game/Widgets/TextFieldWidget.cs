@@ -56,7 +56,31 @@ namespace OpenRA.Widgets
 
 			blinkCycle = 10;
 			showCursor = true;
+			CursorPosition = ClosestCursorPosition(mi.Location.X);
 			return true;
+		}
+		
+		
+		public int ClosestCursorPosition(int x)
+		{
+			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var textSize = font.Measure(Text);
+			
+			var start = RenderOrigin.X + margin;
+			if (textSize.X > Bounds.Width - 2 * margin && Focused)
+				start += Bounds.Width - 2 * margin - textSize.X;
+			
+			int minIndex = -1;
+			int minValue = int.MaxValue;
+			for (int i = 0; i <= Text.Length; i++)
+			{
+				var dist = Math.Abs(start + font.Measure(Text.Substring(0,i)).X - x);
+				if (dist > minValue)
+					break;
+				minValue = dist;
+				minIndex = i;
+			}
+			return minIndex;
 		}
 
 		public override bool HandleKeyPressInner(KeyInput e)
@@ -137,12 +161,12 @@ namespace OpenRA.Widgets
 
 			base.Tick();
 		}
-
+		
+		int margin = 5;
 		public virtual void DrawWithString(string text)
 		{
 			if (text == null) text = "";
 			
-			int margin = 5;
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var pos = RenderOrigin;
 
