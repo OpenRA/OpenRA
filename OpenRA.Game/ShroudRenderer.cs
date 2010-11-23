@@ -137,11 +137,12 @@ namespace OpenRA
 			if (dirty)
 			{
 				dirty = false;
-				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 						sprites[i, j] = ChooseShroud(i, j);
-				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+				
+				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 						fogSprites[i, j] = ChooseFog(i, j);
 			}
 

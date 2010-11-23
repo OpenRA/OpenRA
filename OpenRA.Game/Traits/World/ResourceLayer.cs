@@ -67,8 +67,8 @@ namespace OpenRA.Traits
 
 			var map = w.Map;
 
-			for (int x = map.TopLeft.X; x < map.BottomRight.X; x++)
-				for (int y = map.TopLeft.Y; y < map.BottomRight.Y; y++)
+			for (int x = map.Bounds.Left; x < map.Bounds.Right; x++)
+				for (int y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
 				{
 					// Todo: Valid terrain should be specified in the resource
 					if (!AllowResourceAt(new int2(x,y)))
@@ -80,8 +80,8 @@ namespace OpenRA.Traits
 						content[x, y].image = ChooseContent(content[x, y].type);
 				}
 
-			for (int x = map.TopLeft.X; x < map.BottomRight.X; x++)
-				for (int y = map.TopLeft.Y; y < map.BottomRight.Y; y++)
+			for (int x = map.Bounds.Left; x < map.Bounds.Right; x++)
+				for (int y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
 					if (content[x, y].type != null)
 					{
 						content[x, y].density = GetIdealDensity(x, y);

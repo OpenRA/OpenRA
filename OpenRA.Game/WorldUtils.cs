@@ -54,10 +54,10 @@ namespace OpenRA
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
-			if (min.X < world.Map.TopLeft.X) min.X = world.Map.TopLeft.X;
-			if (min.Y < world.Map.TopLeft.Y) min.Y = world.Map.TopLeft.Y;
-			if (max.X > world.Map.BottomRight.X - 1) max.X = world.Map.BottomRight.X - 1;
-			if (max.Y > world.Map.BottomRight.Y - 1) max.Y = world.Map.BottomRight.Y - 1;
+			if (min.X < world.Map.Bounds.Left) min.X = world.Map.Bounds.Left;
+			if (min.Y < world.Map.Bounds.Top) min.Y = world.Map.Bounds.Top;
+			if (max.X > world.Map.Bounds.Right - 1) max.X = world.Map.Bounds.Right - 1;
+			if (max.Y > world.Map.Bounds.Bottom - 1) max.Y = world.Map.Bounds.Bottom - 1;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
@@ -103,17 +103,17 @@ namespace OpenRA
 			var edge = w.SharedRandom.Next(2) == 0;
 
 			return new int2(
-				isX ? w.SharedRandom.Next(w.Map.TopLeft.X, w.Map.BottomRight.X)
-					: (edge ? w.Map.TopLeft.X : w.Map.BottomRight.X),
-				!isX ? w.SharedRandom.Next(w.Map.TopLeft.Y, w.Map.BottomRight.Y)
-					: (edge ? w.Map.TopLeft.Y : w.Map.BottomRight.Y));
+				isX ? w.SharedRandom.Next(w.Map.Bounds.Left, w.Map.Bounds.Right)
+					: (edge ? w.Map.Bounds.Left : w.Map.Bounds.Right),
+				!isX ? w.SharedRandom.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom)
+					: (edge ? w.Map.Bounds.Top : w.Map.Bounds.Bottom));
 		}
 
 		public static int2 ChooseRandomCell(this World w, Thirdparty.Random r)
 		{
 			return new int2(
-				r.Next(w.Map.TopLeft.X, w.Map.BottomRight.X),
-				r.Next(w.Map.TopLeft.Y, w.Map.BottomRight.Y));
+				r.Next(w.Map.Bounds.Left, w.Map.Bounds.Right),
+				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
 		}
 
 		public static IEnumerable<CountryInfo> GetCountries(this World w)

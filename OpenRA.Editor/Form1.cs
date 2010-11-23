@@ -213,10 +213,10 @@ namespace OpenRA.Editor
 			{
 				rd.width.Value = surface1.Map.MapSize.X;
 				rd.height.Value = surface1.Map.MapSize.Y;
-				rd.cordonLeft.Value = surface1.Map.TopLeft.X;
-				rd.cordonTop.Value = surface1.Map.TopLeft.Y;
-				rd.cordonRight.Value = surface1.Map.BottomRight.X;
-				rd.cordonBottom.Value = surface1.Map.BottomRight.Y;
+				rd.cordonLeft.Value = surface1.Map.Bounds.Left;
+				rd.cordonTop.Value = surface1.Map.Bounds.Top;
+				rd.cordonRight.Value = surface1.Map.Bounds.Right;
+				rd.cordonBottom.Value = surface1.Map.Bounds.Bottom;
 
 				if (DialogResult.OK != rd.ShowDialog())
 					return;

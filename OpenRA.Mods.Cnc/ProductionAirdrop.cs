@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Cnc
 			var owner = self.Owner;
 			
 			// Start and end beyond the edge of the map, to give a finite delay, and ability to land when AFLD is on map edge
-			var startPos = new int2(owner.World.Map.BottomRight.X + 5, self.Location.Y);
-			var endPos = new int2(owner.World.Map.TopLeft.X - 5, self.Location.Y);
+			var startPos = new int2(owner.World.Map.Bounds.Right + 5, self.Location.Y);
+			var endPos = new int2(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 			
 			// Assume a single exit point for simplicity
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();

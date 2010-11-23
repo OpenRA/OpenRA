@@ -37,12 +37,13 @@ namespace OpenRA.Graphics
 			Vertex[] vertices = new Vertex[4 * map.Height * map.Width];
 			ushort[] indices = new ushort[6 * map.Height * map.Width];
 
-			terrainSheet = tileMapping[map.MapTiles[map.TopLeft.X, map.TopLeft.Y]].sheet;
+			terrainSheet = tileMapping[map.MapTiles[map.Bounds.Left, map.Bounds.Top]].sheet;
 
 			int nv = 0;
 			int ni = 0;
-			for( int j = map.TopLeft.Y ; j < map.BottomRight.Y; j++ )
-				for( int i = map.TopLeft.X ; i < map.BottomRight.X; i++ )
+			
+			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
+				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
 				{
 					Sprite tile = tileMapping[map.MapTiles[i, j]];
 					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
@@ -69,7 +70,7 @@ namespace OpenRA.Graphics
 
 			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize + 2);
 
-			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.TopLeft.Y);
+			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.Bounds.Top);
 			int lastRow = firstRow + visibleRows;
 
 			if (lastRow < 0 || firstRow > map.Height)
@@ -81,11 +82,11 @@ namespace OpenRA.Graphics
 			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
 			{
 				var r = world.LocalPlayer.Shroud.Bounds.Value;
-				if (firstRow < r.Top - map.TopLeft.Y)
-					firstRow = r.Top - map.TopLeft.Y;
+				if (firstRow < r.Top - map.Bounds.Top)
+					firstRow = r.Top - map.Bounds.Top;
 
-				if (firstRow > r.Bottom - map.TopLeft.Y)
-					firstRow = r.Bottom - map.TopLeft.Y;
+				if (firstRow > r.Bottom - map.Bounds.Top)
+					firstRow = r.Bottom - map.Bounds.Top;
 			}
 
 			if( lastRow < firstRow ) lastRow = firstRow;

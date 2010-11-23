@@ -48,10 +48,10 @@ namespace OpenRA.Traits
 		{
 			var min = a - new int2(r, r);
 			var max = a + new int2(r, r);
-			if (min.X < world.Map.TopLeft.X - 1) min.X = world.Map.TopLeft.X - 1;
-			if (min.Y < world.Map.TopLeft.Y - 1) min.Y = world.Map.TopLeft.Y - 1;
-			if (max.X > world.Map.BottomRight.X) max.X = world.Map.BottomRight.X;
-			if (max.Y > world.Map.BottomRight.Y) max.Y = world.Map.BottomRight.Y;
+			if (min.X < world.Map.Bounds.Left - 1) min.X = world.Map.Bounds.Left - 1;
+			if (min.Y < world.Map.Bounds.Top - 1) min.Y = world.Map.Bounds.Top - 1;
+			if (max.X > world.Map.Bounds.Right) max.X = world.Map.Bounds.Right;
+			if (max.Y > world.Map.Bounds.Bottom) max.Y = world.Map.Bounds.Bottom;
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
@@ -165,10 +165,10 @@ namespace OpenRA.Traits
 		
 		public void ExploreAll(World world)
 		{
-			for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-				for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 					exploredCells[i, j] = true;
-			exploredBounds = new Rectangle(world.Map.TopLeft.X,world.Map.TopLeft.Y,world.Map.Width,world.Map.Height);
+			exploredBounds = world.Map.Bounds;
 
 			Dirty();
 		}

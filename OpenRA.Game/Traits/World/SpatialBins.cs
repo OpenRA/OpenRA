@@ -49,10 +49,10 @@ namespace OpenRA.Traits
 			{
 				var bounds = a.Actor.GetBounds(true);
 
-				if (bounds.Right <= Game.CellSize * self.World.Map.TopLeft.X) continue;
-				if (bounds.Bottom <= Game.CellSize * self.World.Map.TopLeft.Y) continue;
-				if (bounds.Left >= Game.CellSize * self.World.Map.BottomRight.X) continue;
-				if (bounds.Top >= Game.CellSize * self.World.Map.BottomRight.Y) continue;
+				if (bounds.Right <= Game.CellSize * self.World.Map.Bounds.Left) continue;
+				if (bounds.Bottom <= Game.CellSize * self.World.Map.Bounds.Top) continue;
+				if (bounds.Left >= Game.CellSize * self.World.Map.Bounds.Right) continue;
+				if (bounds.Top >= Game.CellSize * self.World.Map.Bounds.Bottom) continue;
 
 				var i1 = Math.Max(0, (int)bounds.Left / scale);
 				var i2 = Math.Min(bins.GetUpperBound(0), (int)bounds.Right / scale);

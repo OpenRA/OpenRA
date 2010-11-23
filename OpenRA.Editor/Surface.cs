@@ -505,8 +505,8 @@ namespace OpenRA.Editor
 				}
 
 			e.Graphics.DrawRectangle(CordonPen,
-				Map.TopLeft.X * TileSet.TileSize * Zoom + Offset.X,
-				Map.TopLeft.Y * TileSet.TileSize * Zoom + Offset.Y,
+				Map.Bounds.Left * TileSet.TileSize * Zoom + Offset.X,
+				Map.Bounds.Top * TileSet.TileSize * Zoom + Offset.Y,
 				Map.Width * TileSet.TileSize * Zoom,
 				Map.Height * TileSet.TileSize * Zoom);
 

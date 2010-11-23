@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 		
 		public int2 ConvertToPreview(MapStub map, int2 point)
 		{
-			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.TopLeft.X)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.TopLeft.Y)));
+			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));
 		}
 		
 		public override bool HandleInputInner(MouseInput mi)

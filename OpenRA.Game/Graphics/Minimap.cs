@@ -48,8 +48,8 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
-						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;
+						var mapX = x + map.Bounds.Left;
+						var mapY = y + map.Bounds.Top;
 						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
 						if (!tileset.Terrain.ContainsKey(type))
 							throw new InvalidDataException("Tileset {0} lacks terraintype {1}".F(tileset.Id, type));
@@ -78,8 +78,8 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
-						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;	
+						var mapX = x + map.Bounds.Left;
+						var mapY = y + map.Bounds.Top;	
 						if (map.MapResources[mapX, mapY].type == 0)
 							continue;
 					
@@ -112,8 +112,8 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
-						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;
+						var mapX = x + map.Bounds.Left;
+						var mapY = y + map.Bounds.Top;
 						var custom = map.CustomTerrain[mapX,mapY];
 						if (custom == null)
 							continue;
@@ -146,7 +146,7 @@ namespace OpenRA.Graphics
 					var color = t.Trait.RadarSignatureColor(t.Actor);
 					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 						if (world.Map.IsInMap(cell))
-							*(c + ((cell.Y - world.Map.TopLeft.Y) * bitmapData.Stride >> 2) + cell.X - world.Map.TopLeft.X) = color.ToArgb();
+							*(c + ((cell.Y - world.Map.Bounds.Top) * bitmapData.Stride >> 2) + cell.X - world.Map.Bounds.Left) = color.ToArgb();
 				}
 			}
 
@@ -174,8 +174,8 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < map.Width; x++)
 					for (var y = 0; y < map.Height; y++)
 					{
-						var mapX = x + map.TopLeft.X;
-						var mapY = y + map.TopLeft.Y;
+						var mapX = x + map.Bounds.Left;
+						var mapY = y + map.Bounds.Top;
 						if (!playerShroud.IsExplored(mapX, mapY))
 							*(c + (y * bitmapData.Stride >> 2) + x) = shroud;
 						else if (!playerShroud.IsVisible(mapX,mapY))					

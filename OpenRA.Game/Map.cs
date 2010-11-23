@@ -44,13 +44,9 @@ namespace OpenRA
 		public byte TileFormat = 1;
 		[FieldLoader.Load] public int2 MapSize;
 
-
 		public TileReference<ushort, byte>[,] MapTiles;
 		public TileReference<byte, byte>[,] MapResources;
 		public string [,] CustomTerrain;
-
-		// Temporary compat hacks
-		public Rectangle Bounds { get { return Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y); } }
 
 		public Map()
 		{
@@ -221,8 +217,8 @@ namespace OpenRA
 					x.Key,
 					x.Value.Save() ) ).ToList() ) );
 
-			root.Add( new MiniYamlNode( "Waypoints", MiniYaml.FromDictionary<string, int2>( Waypoints ) ) );
-			root.Add( new MiniYamlNode( "Smudges", MiniYaml.FromList<SmudgeReference>( Smudges ) ) );
+			root.Add(new MiniYamlNode("Waypoints", MiniYaml.FromDictionary<string, int2>( Waypoints )));
+			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>( Smudges )));
 			root.Add(new MiniYamlNode("Rules", null, Rules));
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
@@ -334,7 +330,7 @@ namespace OpenRA
 
 		public bool IsInMap(int x, int y)
 		{
-			return (x >= TopLeft.X && y >= TopLeft.Y && x < BottomRight.X && y < BottomRight.Y);
+			return Bounds.Contains(x,y);
 		}
 
 		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
