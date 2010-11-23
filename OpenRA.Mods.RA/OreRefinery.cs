@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
-		readonly PlayerResources PlayerResources;
-		readonly PowerManager PlayerPower;
+		PlayerResources PlayerResources;
+		PowerManager PlayerPower;
 		List<Actor> LinkedHarv;
 
 		[Sync]
@@ -114,9 +114,12 @@ namespace OpenRA.Mods.RA
 			// Unlink any non-docked harvs
 			foreach (var harv in LinkedHarv)
 			{
-				if (harv.Owner == self.Owner)
+				if (harv.Owner == oldOwner)
 					harv.Trait<Harvester>().UnlinkProc (harv, self);
 			}
+
+			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public void Selling (Actor self) {}
