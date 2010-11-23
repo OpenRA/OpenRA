@@ -45,8 +45,8 @@ namespace OpenRA.Mods.RA
 			
 			if (ticks == 250)
 			{
-				Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca1"], new int2(90, 70));
-				Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca2"], new int2(92, 71));
+				//Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca1"], new int2(90, 70));
+				//Actors["pdox"].Trait<Chronosphere>().Teleport(Actors["ca2"], new int2(92, 71));
 			}
 			if (ticks == 100)
 				Actors["mslo1"].Trait<NukeSilo>().Attack(new int2(98, 52));

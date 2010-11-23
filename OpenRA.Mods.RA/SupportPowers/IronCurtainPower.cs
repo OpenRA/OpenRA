@@ -45,22 +45,17 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "IronCurtain")
 			{
-				var curtain = self.World.Queries.WithTrait<IronCurtain>()
-					.Where(a => a.Actor.Owner == self.Owner)
-					.FirstOrDefault().Actor;
+				var curtain = self.World.Queries
+					.OwnedBy[self.Owner]
+					.WithTrait<IronCurtain>()
+					.Select(x => x.Actor).FirstOrDefault();
 				
 				if (curtain != null)
 					curtain.Trait<RenderBuilding>().PlayCustomAnim(curtain, "active");
 
 				Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
-
-				var targets = UnitsInRange(order.TargetLocation);
-
-				foreach (var target in targets)
-				{
-					if (target.HasTrait<IronCurtainable>())
-						target.Trait<IronCurtainable>().Activate(target, (int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
-				}
+				foreach (var target in UnitsInRange(order.TargetLocation))
+					target.Trait<IronCurtainable>().Activate(target, (int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
 
 				FinishActivate();
 			}
@@ -89,7 +84,7 @@ namespace OpenRA.Mods.RA
 			{
 				this.power = power;
 				this.range = (power.Info as IronCurtainPowerInfo).Range;
-				tile = UiOverlay.SynthesizeTile(0x0f);
+				tile = UiOverlay.SynthesizeTile(0x04);
 			}
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)

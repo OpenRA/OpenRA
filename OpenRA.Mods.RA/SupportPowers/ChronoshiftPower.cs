@@ -14,74 +14,94 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
+		public readonly int Range = 2; // Range in cells
+		public readonly int Duration = 30;
+		public readonly bool KillCargo = true;
+		
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
 	}
 
 	class ChronoshiftPower : SupportPower, IResolveOrder
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnActivate() { Self.World.OrderGenerator = new SelectTarget(); }
+		protected override void OnActivate() { Self.World.OrderGenerator = new SelectTarget(this); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (!IsReady) return;
 
-			if (order.OrderString == "ChronosphereSelect" && self.Owner == self.World.LocalPlayer)
+			if (order.OrderString == "Chronoshift")
 			{
-				//self.World.OrderGenerator = new SelectDestination(order.TargetActor);
-			}
-			
-			if (order.OrderString == "ChronosphereActivate")
-			{
-				// Ensure the target cell is valid for the unit
-				var movement = order.TargetActor.TraitOrDefault<IMove>();
-				if (!movement.CanEnterCell(order.TargetLocation))
-					return;
-
 				var chronosphere = self.World.Queries
 					.OwnedBy[self.Owner]
 					.WithTrait<Chronosphere>()
 					.Select(x => x.Actor).FirstOrDefault();
 				
-				chronosphere.Trait<Chronosphere>().Teleport(order.TargetActor, order.TargetLocation);
+				if (chronosphere != null)
+					chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
+				
+				// Trigger screen desaturate effect
+				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
+					a.Trait.Enable();
+				
+				Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
+				Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
+				
+				var targets = UnitsInRange(order.ExtraLocation);
+				foreach (var target in targets)
+				{									
+					var cs = target.Trait<Chronoshiftable>();
+					var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
+					
+					if (cs.CanChronoshiftTo(target, targetCell))
+						target.Trait<Chronoshiftable>().Teleport(target,
+						                                         targetCell,
+						                                         (int)((Info as ChronoshiftPowerInfo).Duration * 25 * 60),
+						                                         (Info as ChronoshiftPowerInfo).KillCargo,
+						                                         chronosphere);
+				}
 
 				FinishActivate();
 			}
 		}
 
+		public IEnumerable<Actor> UnitsInRange(int2 xy)
+		{
+			int range = (Info as ChronoshiftPowerInfo).Range;
+			var uim = Self.World.WorldActor.Trait<UnitInfluence>();
+			var tiles = Self.World.FindTilesInCircle(xy, range);
+			var units = new List<Actor>();
+			foreach (var t in tiles)
+				units.AddRange(uim.GetUnitsAt(t));
+			
+			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>());
+		}
+		
 		class SelectTarget : IOrderGenerator
 		{
+			ChronoshiftPower power;
+			int range;
+			Sprite tile;
+			
+			public SelectTarget(ChronoshiftPower power)
+			{
+				this.power = power;
+				this.range = (power.Info as ChronoshiftPowerInfo).Range;
+				tile = UiOverlay.SynthesizeTile(0x04);
+			}
+						
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
 					world.CancelInputMode();
-
-				var ret = OrderInner( world, xy, mi ).ToList();
-				foreach( var order in ret )
-				{
-					world.OrderGenerator = new SelectDestination(order.TargetActor);
-					break;
-				}
-				return ret;
-			}
-
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left)
-				{
-					var underCursor = world.FindUnitsAtMouse(mi.Location)
-						.Where(a => a.Owner != null && a.HasTrait<Chronoshiftable>()
-							&& a.HasTrait<Selectable>()).FirstOrDefault();
-
-					if (underCursor != null)
-						yield return new Order("ChronosphereSelect", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
-				}
-
+				
+				world.OrderGenerator = new SelectDestination(power, xy);
 				yield break;
 			}
 
@@ -93,46 +113,74 @@ namespace OpenRA.Mods.RA
 
 				if (!hasChronosphere)
 					world.CancelInputMode();
-					
-				// TODO: Check if the selected unit is still alive
 			}
 
-			public void RenderAfterWorld( WorldRenderer wr, World world ) { }
-			public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
+			public void RenderAfterWorld(WorldRenderer wr, World world)
+			{
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var targetUnits = power.UnitsInRange(xy);
+				//foreach (var r in targetUnits.SelectMany(a => a.Render()))
+				//	r.Sprite.DrawAt(wr,r.Pos,"highlight");
+				foreach (var unit in targetUnits)
+					wr.DrawSelectionBox(unit, Color.Red);
+			}
+
+			public void RenderBeforeWorld(WorldRenderer wr, World world)
+			{
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var tiles = world.FindTilesInCircle(xy, range);
+				foreach (var t in tiles)
+					tile.DrawAt( wr, Game.CellSize * t, "terrain" );
+			}
 
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
-				mi.Button = MouseButton.Left;
-				return OrderInner(world, xy, mi).Any()
-					? "chrono-select" : "move-blocked";
+				return "chrono-select";
 			}
 		}
 
 		class SelectDestination : IOrderGenerator
 		{
-			Actor self;
-			public SelectDestination(Actor self) { this.self = self; }
+			ChronoshiftPower power;
+			int2 sourceLocation;
+			int range;
+			Sprite validTile, invalidTile, sourceTile;
+			
+			public SelectDestination(ChronoshiftPower power, int2 sourceLocation)
+			{
+				this.power = power;
+				this.sourceLocation = sourceLocation;
+				this.range = (power.Info as ChronoshiftPowerInfo).Range;
+				validTile = UiOverlay.SynthesizeTile(0x0f);
+				invalidTile = UiOverlay.SynthesizeTile(0x08);
+				sourceTile = UiOverlay.SynthesizeTile(0x04);
+			}
 			
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
+				{
 					world.CancelInputMode();
-
-				var ret = OrderInner( world, xy, mi ).ToList();
-				if (ret.Count > 0)
-					world.CancelInputMode();
-				return ret;
+					yield break;
+				}
+				
+				var ret = OrderInner( world, xy, mi ).FirstOrDefault();
+				if (ret == null)
+					yield break;
+				
+				world.CancelInputMode();
+				yield return ret;
 			}
 
 			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 			{
 				// Cannot chronoshift into unexplored location
-				if (world.LocalPlayer.Shroud.IsExplored(xy))
-					yield return new Order("ChronosphereActivate", world.LocalPlayer.PlayerActor, false)
-						{
-							TargetActor = self,
-							TargetLocation = xy
-						};
+				if (isValidTarget(xy))
+					yield return new Order("Chronoshift", world.LocalPlayer.PlayerActor, false)
+					{
+						TargetLocation = xy,
+						ExtraLocation = sourceLocation
+					};
 			}
 
 			public void Tick(World world)
@@ -143,60 +191,58 @@ namespace OpenRA.Mods.RA
 
 				if (!hasChronosphere)
 					world.CancelInputMode();
-
-				// TODO: Check if the selected unit is still alive
 			}
 			
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				wr.DrawSelectionBox(self, Color.Red);
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
-			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
+			public void RenderBeforeWorld(WorldRenderer wr, World world)
+			{
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 
+				// Source tiles
+				foreach (var t in world.FindTilesInCircle(sourceLocation, range))
+					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
+				
+				// Destination tiles
+				foreach (var t in world.FindTilesInCircle(xy, range))
+					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
+				
+				// Unit tiles
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+				{
+					var targetCell = unit.Location + xy - sourceLocation;
+					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell);
+					var tile = canEnter ? validTile : invalidTile;
+					tile.DrawAt( wr, Game.CellSize * targetCell, "terrain" );
+				}
+			}
+
+			bool isValidTarget(int2 xy)
+			{
+				var canTeleport = false;
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+				{
+					var targetCell = unit.Location + xy - sourceLocation;
+					if (unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell))
+					{
+						canTeleport = true;
+						break;
+					}
+				}
+				return canTeleport;
+			}
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
-				if (!world.LocalPlayer.Shroud.IsExplored(xy))
-					return "move-blocked";
-				
-				var movement = self.TraitOrDefault<IMove>();
-				return (movement.CanEnterCell(xy)) ? "chrono-target" : "move-blocked";
+				return isValidTarget(xy) ? "chrono-target" : "move-blocked";
 			}
 		}
 	}
 	
 	// tag trait for the building
-	class ChronosphereInfo : ITraitInfo
-	{
-		public readonly int Duration = 30;
-		public readonly bool KillCargo = true;
-		public object Create(ActorInitializer init) { return new Chronosphere(init.self); }
-	}
-	
-	class Chronosphere
-	{
-		Actor self;
-		public Chronosphere(Actor self)
-		{
-			this.self = self;
-		}
-		
-		public void Teleport(Actor targetActor, int2 targetLocation)
-		{
-			var info = self.Info.Traits.Get<ChronosphereInfo>();
-			bool success = targetActor.Trait<Chronoshiftable>().Activate(targetActor, targetLocation, info.Duration * 25, info.KillCargo, self);
-			
-			if (success)
-			{
-				Sound.Play("chrono2.aud", self.CenterLocation);
-				Sound.Play("chrono2.aud", targetActor.CenterLocation);
-				
-				// Trigger screen desaturate effect
-				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.Enable();
-
-				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-			}
-		}
-	}
+	class ChronosphereInfo : TraitInfo<Chronosphere> {}
+	class Chronosphere {}
 }

@@ -43,6 +43,8 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
+		Duration: 2
+		KillCargo: yes
 	IronCurtainPower:
 		Image: infxicon
 		ChargeTime: 2

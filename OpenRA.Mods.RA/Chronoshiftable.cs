@@ -39,8 +39,16 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Teleport(chronoshiftOrigin));
 			}
 		}
+		
+		public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation)
+		{
+			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
+			return self.HasTrait<ITeleportable>() && 
+				self.Trait<ITeleportable>().CanEnterCell(targetLocation) &&
+				self.World.LocalPlayer.Shroud.IsExplored(targetLocation);
+		}
 
-		public virtual bool Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
+		public virtual bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;

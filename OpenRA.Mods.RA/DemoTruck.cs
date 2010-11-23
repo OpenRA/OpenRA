@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	class DemoTruck : Chronoshiftable, INotifyDamage
 	{
 		// Explode on chronoshift
-		public override bool Activate(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
+		public override bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			Detonate(self, chronosphere);
 			return false;

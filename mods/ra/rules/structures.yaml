@@ -221,8 +221,6 @@ PDOX:
 		Range: 10
 	Bib:
 	Chronosphere:
-		Duration: 180
-		KillCargo: yes
 	IronCurtainable:
 
 TSLA:
