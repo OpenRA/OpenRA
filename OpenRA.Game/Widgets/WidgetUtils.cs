@@ -128,6 +128,18 @@ namespace OpenRA.Widgets
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
 				DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
 		}
+		
+		
+		public static string FormatTime(int ticks)
+		{
+			var seconds = ticks / 25;
+			var minutes = seconds / 60;
+
+			if (minutes >= 60)
+				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
+			else
+				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
+		}
 	}
 
 	[Flags]

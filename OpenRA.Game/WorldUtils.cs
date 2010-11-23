@@ -15,6 +15,7 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Support;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA
 {
@@ -52,13 +53,8 @@ namespace OpenRA
 
 		public static IEnumerable<int2> FindTilesInCircle(this World world, int2 a, int r)
 		{
-			var min = a - new int2(r, r);
-			var max = a + new int2(r, r);
-			if (min.X < world.Map.Bounds.Left) min.X = world.Map.Bounds.Left;
-			if (min.Y < world.Map.Bounds.Top) min.Y = world.Map.Bounds.Top;
-			if (max.X > world.Map.Bounds.Right - 1) max.X = world.Map.Bounds.Right - 1;
-			if (max.Y > world.Map.Bounds.Bottom - 1) max.Y = world.Map.Bounds.Bottom - 1;
-
+			var min = world.ClampToWorld(a - new int2(r, r));
+			var max = world.ClampToWorld(a + new int2(r, r));
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
 					if (r * r >= (new int2(i, j) - a).LengthSquared)
@@ -94,7 +90,9 @@ namespace OpenRA
 
 		public static int2 ClampToWorld( this World world, int2 xy )
 		{
-			return int2.Min(world.Map.BottomRight, int2.Max(world.Map.TopLeft, xy));
+			var b = world.Map.Bounds;
+			return new int2(Math.Min(b.Right, Math.Max(xy.X, b.Left)),
+			                Math.Min(b.Bottom, Math.Max(xy.Y, b.Top)));
 		}
 
 		public static int2 ChooseRandomEdgeCell(this World w)
@@ -132,17 +130,6 @@ namespace OpenRA
 		public static float2 Gauss2D(this Thirdparty.Random r, int samples)
 		{
 			return new float2(Gauss1D(r, samples), Gauss1D(r, samples));
-		}
-
-		public static string FormatTime(int ticks)
-		{
-			var seconds = ticks / 25;
-			var minutes = seconds / 60;
-
-			if (minutes >= 60)
-				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
-			else
-				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
 
 		public static bool HasVoice(this Actor a)

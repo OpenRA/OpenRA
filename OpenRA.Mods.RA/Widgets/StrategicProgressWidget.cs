@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					// losing
 					tc = "Strategic defeat in " +
-						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WorldUtils.FormatTime(svc.CriticalTicksLeft) : WorldUtils.FormatTime(svc.TicksLeft));
+						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WidgetUtils.FormatTime(svc.CriticalTicksLeft) : WidgetUtils.FormatTime(svc.TicksLeft));
 				}else
 				{
 					// winning
 					tc = "Strategic victory in " +
-						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WorldUtils.FormatTime(svc.CriticalTicksLeft) : WorldUtils.FormatTime(svc.TicksLeft));
+						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WidgetUtils.FormatTime(svc.CriticalTicksLeft) : WidgetUtils.FormatTime(svc.TicksLeft));
 				}
 
 				var size = Game.Renderer.BoldFont.Measure(tc);

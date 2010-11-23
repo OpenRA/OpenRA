@@ -465,7 +465,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var lowpower = power.PowerState != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name) 
 				* ((lowpower)? CurrentQueue.Info.LowPowerSlowdown : 1);
-			DrawRightAligned(WorldUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);
+			DrawRightAligned(WidgetUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red: Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)

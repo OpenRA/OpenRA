@@ -25,10 +25,9 @@ namespace OpenRA.Mods.RA
 		
 		public void WorldLoaded(World w)
 		{
-			int2 loc = (.5f * (w.Map.TopLeft + w.Map.BottomRight).ToFloat2()).ToInt2();
-			Game.MoveViewport(loc);
-
-			ViewportOrigin = loc;
+			var b = w.Map.Bounds;
+			ViewportOrigin = new int2(b.Left + b.Width/2, b.Top + b.Height/2);
+			Game.MoveViewport(ViewportOrigin);
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			Sound.SoundVolumeModifier = 0.25f;
