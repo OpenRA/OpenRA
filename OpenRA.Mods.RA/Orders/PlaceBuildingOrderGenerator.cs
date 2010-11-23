@@ -59,16 +59,8 @@ namespace OpenRA.Mods.RA.Orders
 			}
 		}
 		
-		public void Tick( World world )
-		{
-			// Find the queue with the target actor
-			//var queue = Producer.TraitsImplementing<ProductionQueue>()
-			//	.Where(p => p.CurrentItem() != null && 
-		    //             	p.CurrentItem().Item == Building && 
-		    //             	p.CurrentItem().RemainingTime == 0)
-			//	.FirstOrDefault();
-		}
-
+		public void Tick( World world ) {}
+		
 		public void RenderAfterWorld( WorldRenderer wr, World world ) { }
 
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
