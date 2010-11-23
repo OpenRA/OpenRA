@@ -55,6 +55,8 @@ namespace OpenRA
 		{
 			if (disabled)
 				return true;
+			if (!map.IsInMap(x, y))
+				return false;
 			return shroud.visibleCells[x,y] != 0;
 		}
 		
