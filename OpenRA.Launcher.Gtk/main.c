@@ -14,6 +14,8 @@
 #include "server.h"
 #include "bridge.h"
 
+#define WEBSERVER_PORT 48764
+
 GtkWindow * window;
 WebKitWebView * browser;
 
@@ -27,7 +29,7 @@ gboolean window_delete(GtkWidget * widget, GdkEvent * event,
 
 int main(int argc, char ** argv)
 {
-  server_init(48764);
+  server_init(WEBSERVER_PORT);
   
   gtk_init(&argc, &argv);
 
@@ -41,6 +43,7 @@ int main(int argc, char ** argv)
 
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(browser));
 
+  //TODO: Load the mod html file based on selected mod in launcher
   webkit_web_view_load_uri(browser, 
 			   "http://localhost:48764/mods/cnc/mod.html");
 

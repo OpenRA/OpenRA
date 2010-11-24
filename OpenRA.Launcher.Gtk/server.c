@@ -20,20 +20,13 @@
 
 struct MHD_Daemon * server;
 
-int http_get_args(void * cls, enum MHD_ValueKind kind, 
-		  const char * key, const char * value)
-{
-  g_message("%s: %s", key, value);
-  return MHD_YES;
-}
-
 int try_file_response(const char * url, struct MHD_Connection * connection)
 {
   int fd, ret;
   struct MHD_Response * response;
   struct stat sbuf;
 
-  g_message("Opening %s", url + 1);
+  g_message("Web server: Opening %s", url + 1);
   
   if ((-1 == (fd = open(url + 1, O_RDONLY))) || 
       (0 != fstat(fd, &sbuf)))
@@ -60,7 +53,7 @@ int access_handler_callback(void * userdata,
   struct MHD_Response * response;
   int ret = MHD_NO;
   char * text = "1";
-  g_message(url);
+  g_message("Web server: Got request for %s", url);
 
   if ((ret = try_file_response(url, connection)))
     return ret;
