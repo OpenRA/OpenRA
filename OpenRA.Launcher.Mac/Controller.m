@@ -185,4 +185,29 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 {
 	NSLog(@"%@",dictionary);
 }
+
+
+#pragma mark Application delegates
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+	return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+	// Todo: show a sheet if downloads are in progress
+	return NSTerminateNow;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+	// Cancel all in-progress downloads
+	for (NSString *key in downloads)
+	{	
+		Download *d = [downloads objectForKey:key];
+		if ([[d status] isEqualToString:@"DOWNLOADING"])
+			[d cancel];
+	}
+}
+
 @end
