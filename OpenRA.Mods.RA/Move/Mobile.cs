@@ -129,6 +129,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			SetLocation( cell, cell );
 			PxPosition = Util.CenterOfCell(fromCell);
+			FinishedMoving(self);
 		}
 
 		public void SetPxPosition( Actor self, int2 px )
@@ -136,6 +137,7 @@ namespace OpenRA.Mods.RA.Move
 			var cell = Util.CellContaining( px );
 			SetLocation( cell, cell );
 			PxPosition = px;
+			FinishedMoving(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter( Info ); } }
