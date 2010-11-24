@@ -94,23 +94,14 @@
 	[game launchMod:mod];
 }
 
-- (BOOL)downloadUrl:(NSString *)url toFile:(NSString *)path withId:(NSString *)key
+- (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
 {
 	if ([downloads objectForKey:key] != nil)
-	{
-		NSLog(@"Download already in progress for %@",key);
 		return NO;
-	}
 	
-	Download *download = [Download downloadWithURL:url filename:path key:key game:game];
-	[downloads setObject:download forKey:key];
+	[downloads setObject:[Download downloadWithURL:url filename:path key:key game:game]
+				  forKey:key];
 	return YES;
-}
-
-- (void)cancelDownload:(NSString *)key
-{
-	[[downloads objectForKey:key] cancel];
-	[downloads removeObjectForKey:key];
 }
 
 - (Download *)downloadWithKey:(NSString *)key

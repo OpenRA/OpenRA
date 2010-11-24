@@ -30,8 +30,7 @@
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
 
-- (BOOL)downloadUrl:(NSString *)url toFile:(NSString *)filename withId:(NSString *)key;
-- (void)cancelDownload:(NSString *)key;
+- (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
 - (Download *)downloadWithKey:(NSString *)key;
 
 @end

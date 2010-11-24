@@ -45,8 +45,8 @@ static JSBridge *SharedInstance;
 						@"existsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
 						
 						// File downloading
-						@"existsInCache", NSStringFromSelector(@selector(existsInCache:)),
-						@"downloadToCache", NSStringFromSelector(@selector(downloadUrl:withName:key:)),
+						@"registerDownload", NSStringFromSelector(@selector(registerDownload:withURL:filename:)),
+						@"startDownload", NSStringFromSelector(@selector(startDownload:)),
 						@"cancelDownload", NSStringFromSelector(@selector(cancelDownload:)),
 						@"downloadStatus", NSStringFromSelector(@selector(downloadStatus:)),
 						@"bytesCompleted", NSStringFromSelector(@selector(bytesCompleted:)),
@@ -103,34 +103,32 @@ static JSBridge *SharedInstance;
 	return YES;
 }
 
-- (BOOL)existsInCache:(NSString *)name
+- (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filename:(NSString *)filename
 {
 	// Disallow traversing directories; take only the last component
-	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[name lastPathComponent]] stringByExpandingTildeInPath];
-	return [[NSFileManager defaultManager] fileExistsAtPath:path];
-}
-
-- (void)downloadUrl:(NSString *)url withName:(NSString *)name key:(NSString *)key
-{
-	NSLog(@"downloadFile:%@ intoCacheWithName:%@ key:%@",url,name,key);
-	
-	// Disallow traversing directories; take only the last component
-	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[name lastPathComponent]] stringByExpandingTildeInPath];
-	[controller downloadUrl:url toFile:path withId:key];
-}
-
-- (void)cancelDownload:(NSString *)key
-{
-	[controller cancelDownload:key];
+	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[filename lastPathComponent]] stringByExpandingTildeInPath];
+	return [controller registerDownload:key withURL:url filePath:path];
 }
 
 - (NSString *)downloadStatus:(NSString *)key
 {
 	Download *d = [controller downloadWithKey:key];
 	if (d == nil)
-		return @"Invalid";
+		return @"NOT_REGISTERED";
 	
 	return [d status];
+}
+
+- (BOOL)startDownload:(NSString *)key
+{
+	Download *d = [controller downloadWithKey:key];
+	return (d == nil) ? NO : [d start];
+}
+
+- (BOOL)cancelDownload:(NSString *)key
+{
+	Download *d = [controller downloadWithKey:key];
+	return (d == nil) ? NO : [d cancel];
 }
 
 - (int)bytesCompleted:(NSString *)key

@@ -32,16 +32,18 @@
 		filename = [aFilename retain];
 		key = [aKey retain];
 		game = [aGame retain];
-		status = @"Initializing";
-		bytesCompleted = -1;
-		bytesTotal = -1;
 		
-		NSLog(@"Starting download...");
-		task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--download-url=%@,%@",url,filename]
-								   delegate:self
-						   responseSelector:@selector(utilityResponded:)
-						 terminatedSelector:@selector(utilityTerminated:)];
-		[task retain];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:filename])
+		{
+			status = @"COMPLETE";
+			bytesCompleted = bytesTotal = [[[NSFileManager defaultManager] attributesOfItemAtPath:filename error:nil] fileSize];
+		}
+		else
+		{
+			status = @"AVAILABLE";
+			bytesCompleted = -1;
+			bytesTotal = -1;
+		}
 	}
 	return self;
 }
@@ -65,17 +67,13 @@
 		
 		if ([type isEqualToString:@"Error"])
 		{
-			status = @"Error";
+			status = @"ERROR";
 		}
 		else if ([type isEqualToString:@"Status"])
 		{
-			if ([message isEqualToString:@"Initializing"])
+			if ([message isEqualToString:@"Completed"])
 			{
-				status = @"Initializing";
-			}
-			else if ([message isEqualToString:@"Completed"])
-			{
-				status = @"Complete";
+				status = @"COMPLETE";
 			}
 			
 			// Parse download status info
@@ -94,15 +92,29 @@
 		[[n object] readInBackgroundAndNotify];
 }
 
-- (void)cancel
+- (BOOL)start
+{
+	status = @"DOWNLOADING";
+
+	NSLog(@"Starting download...");
+	task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--download-url=%@,%@",url,filename]
+							   delegate:self
+					   responseSelector:@selector(utilityResponded:)
+					 terminatedSelector:@selector(utilityTerminated:)];
+	[task retain];
+	return YES;
+}
+
+- (BOOL)cancel
 {
 	NSLog(@"Cancelling");
-	status = @"Cancelled";
+	status = @"ERROR";
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
 	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
 	[task terminate];
 	[task release]; task = nil;
+	return YES;
 }
 
 - (void)utilityTerminated:(NSNotification *)n

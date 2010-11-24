@@ -20,6 +20,7 @@
 	int bytesCompleted;
 	int bytesTotal;
 }
+
 @property(readonly) NSString *key;
 @property(readonly) NSString *status;
 @property(readonly) int bytesCompleted;
@@ -27,6 +28,7 @@
 
 + (id)downloadWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)aGame;
 - (id)initWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)game;
-- (void)cancel;
+- (BOOL)start;
+- (BOOL)cancel;
 
 @end
