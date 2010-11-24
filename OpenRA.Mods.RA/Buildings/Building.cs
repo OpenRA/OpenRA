@@ -61,29 +61,6 @@ namespace OpenRA.Mods.RA.Buildings
 					.Any( b => Math.Abs( a.X - b.X ) <= Adjacent
 							&& Math.Abs( a.Y - b.Y ) <= Adjacent ) );
 		}
-
-		public void DrawBuildingGrid( WorldRenderer wr, World world, string name )
-		{
-			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
-			var topLeft = position - FootprintUtils.AdjustForBuildingSize( this );
-
-			var cells = new Dictionary<int2, bool>();
-			// Linebuild for walls.
-			// Assumes a 1x1 footprint; weird things will happen for other footprints
-			if (Rules.Info[name].Traits.Contains<LineBuildInfo>())
-			{
-				foreach( var t in BuildingUtils.GetLineBuildCells( world, topLeft, name, this ) )
-					cells.Add( t, IsCloseEnoughToBase( world, world.LocalPlayer, name, t ) );
-			}
-			else
-			{
-				var res = world.WorldActor.Trait<ResourceLayer>();
-				var isCloseEnough = IsCloseEnoughToBase(world, world.LocalPlayer, name, topLeft);
-				foreach (var t in FootprintUtils.Tiles(name, this, topLeft))
-					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, WaterBound) && res.GetResource(t) == null );
-			}
-			wr.uiOverlay.DrawGrid( wr, cells );
-		}
 	}
 
 	public class Building : INotifyDamage, IResolveOrder, IOccupySpace

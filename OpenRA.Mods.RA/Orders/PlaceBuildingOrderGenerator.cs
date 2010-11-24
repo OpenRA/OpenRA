@@ -21,12 +21,16 @@ namespace OpenRA.Mods.RA.Orders
 	{
 		readonly Actor Producer;
 		readonly string Building;
+		readonly IEnumerable<Renderable> Preview;
 		BuildingInfo BuildingInfo { get { return Rules.Info[ Building ].Traits.Get<BuildingInfo>(); } }
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
 			Building = name;
+			
+			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
+								.BuildingPreview(Rules.Info[Building], producer.World.Map.Tileset);
 		}
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
@@ -64,12 +68,36 @@ namespace OpenRA.Mods.RA.Orders
 		public void RenderAfterWorld( WorldRenderer wr, World world ) {}
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
-			var topleft = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2() - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
-			var renderables = Rules.Info[Building].Traits.Get<RenderBuildingInfo>().BuildingPreview(Rules.Info[Building], world.Map.Tileset);
-			foreach (var r in renderables)
-				r.Sprite.DrawAt(wr,Game.CellSize*topleft + r.Pos,  r.Palette ?? world.LocalPlayer.Palette);
 			
-			BuildingInfo.DrawBuildingGrid( wr, world, Building );
+			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+			var topLeft = position - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
+			
+			
+			
+			var cells = new Dictionary<int2, bool>();
+			// Linebuild for walls.
+			// Assumes a 1x1 footprint; weird things will happen for other footprints
+			if (Rules.Info[Building].Traits.Contains<LineBuildInfo>())
+			{
+				foreach( var t in BuildingUtils.GetLineBuildCells( world, topLeft, Building, BuildingInfo ) )
+				{
+					cells.Add( t, BuildingInfo.IsCloseEnoughToBase( world, world.LocalPlayer, Building, t ) );
+					foreach (var r in Preview)
+						r.Sprite.DrawAt(wr,Game.CellSize*t + r.Pos,  r.Palette ?? world.LocalPlayer.Palette);
+				}
+			}
+			else
+			{
+				foreach (var r in Preview)
+					r.Sprite.DrawAt(wr,Game.CellSize*topLeft + r.Pos,  r.Palette ?? world.LocalPlayer.Palette);
+				
+				var res = world.WorldActor.Trait<ResourceLayer>();
+				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);
+				foreach (var t in FootprintUtils.Tiles(Building, BuildingInfo, topLeft))
+					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo.WaterBound) && res.GetResource(t) == null );
+			}
+			
+			wr.uiOverlay.DrawGrid( wr, cells );
 		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }
