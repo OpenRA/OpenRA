@@ -10,13 +10,9 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <webkit/webkit.h>
-#include <JavaScriptCore/JavaScript.h>
 
 #include "server.h"
-
-#define JS_STR(str) JSStringCreateWithUTF8CString(str)
-#define JS_FUNC(ctx, callback) JSObjectMakeFunctionWithCallback(ctx, NULL, \
-						  callback)
+#include "bridge.h"
 
 GtkWindow * window;
 WebKitWebView * browser;
@@ -28,61 +24,6 @@ gboolean window_delete(GtkWidget * widget, GdkEvent * event,
   gtk_main_quit();
   return FALSE;
 }
-
-JSValueRef js_log(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
-		  size_t argc, const JSValueRef argv[],
-		  JSValueRef * exception)
-{
-  JSValueRef return_value = JSValueMakeNull(ctx);
-  if (argc < 1)
-  {
-    *exception = JSValueMakeString(ctx, JS_STR("Not enough args"));
-    return return_value;
-  }
-
-  if (JSValueIsString(ctx, argv[0]))
-  {
-    char buffer[1024];
-    JSStringRef s = JSValueToStringCopy(ctx, argv[0], NULL);
-    JSStringGetUTF8CString(s, buffer, 1024);
-    g_message("JS Log: %s", buffer);
-    return return_value;
-  }
-  else
-  {
-    *exception = JSValueMakeString(ctx, JS_STR("Tried to log something other than a string"));
-    return return_value;
-  }
-}
-
-JSValueRef js_exists_in_mod(JSContextRef ctx, JSObjectRef func, 
-			  JSObjectRef this, size_t argc, 
-			  const JSValueRef argv[], JSValueRef * exception)
-{
-  return JSValueMakeNumber(ctx, 1);
-}
-
-void bind_js_bridge(WebKitWebView * view, WebKitWebFrame * frame,
-		    gpointer context, gpointer window_object,
-		    gpointer user_data)
-{
-  JSGlobalContextRef js_ctx;
-  JSObjectRef window_obj, external_obj, 
-    log_function, exists_in_mod_function;
-  
-  js_ctx = (JSGlobalContextRef)context;
-
-  external_obj = JSObjectMake(js_ctx, NULL, NULL);
-  log_function = JS_FUNC(js_ctx, js_log);
-  exists_in_mod_function = JS_FUNC(js_ctx, js_exists_in_mod);
-  window_obj = (JSObjectRef)window_object;
-  JSObjectSetProperty(js_ctx, window_obj, JS_STR("external"),
-		      external_obj, 0, NULL);
-  JSObjectSetProperty(js_ctx, external_obj, JS_STR("log"), 
-		      log_function, 0, NULL);
-  JSObjectSetProperty(js_ctx, external_obj, JS_STR("existsInMod"),
-		      exists_in_mod_function, 0, NULL);
-} 
 
 int main(int argc, char ** argv)
 {
