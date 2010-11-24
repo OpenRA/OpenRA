@@ -122,9 +122,9 @@ namespace OpenRA.Mods.RA
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
-				var targetUnits = power.UnitsInRange(xy);		
-				foreach (var r in targetUnits.SelectMany(a => a.Render()))
-					r.Sprite.DrawAt(wr,r.Pos,"highlight");
+				var targetUnits = power.UnitsInRange(xy);
+				foreach (var unit in power.UnitsInRange(xy))
+					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
