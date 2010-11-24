@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
@@ -22,6 +23,14 @@ namespace OpenRA.Mods.RA.Render
 		public readonly bool HasMakeAnimation = true;
 		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init);}
+		
+		public virtual IEnumerable<Renderable> BuildingPreview(ActorInfo building, string Tileset)
+		{
+			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+			anim.PlayRepeating("idle");
+			var rb = building.Traits.Get<RenderBuildingInfo>();
+			yield return new Renderable(anim.Image,rb.Origin,rb.Palette,0);
+		}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold, IRenderModifier

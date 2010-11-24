@@ -28,19 +28,24 @@ namespace OpenRA.Traits
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = value; } }
 
+		public static string GetImage(ActorInfo actor, string Tileset)
+		{
+			var Info = actor.Traits.Get<RenderSimpleInfo>();
+			if (Info.OverrideTileset != null && Tileset != null)
+				for (int i = 0; i < Info.OverrideTileset.Length; i++)
+					if (Info.OverrideTileset[i] == Tileset)
+						return Info.OverrideImage[i];
+			
+			return Info.Image ?? actor.Name;
+		}
+		
 		string cachedImage = null;
 		public string GetImage(Actor self)
 		{
 			if (cachedImage != null)
 				return cachedImage;
 			
-			var Info = self.Info.Traits.Get<RenderSimpleInfo>();
-			if (Info.OverrideTileset != null)
-				for (int i = 0; i < Info.OverrideTileset.Length; i++)
-					if (Info.OverrideTileset[i] == self.World.Map.Tileset)
-						return cachedImage = Info.OverrideImage[i];
-			
-			return cachedImage = Info.Image ?? self.Info.Name;
+			return cachedImage = GetImage(self.Info, self.World.Map.Tileset);
 		}
 
 		public RenderSimple(Actor self, Func<int> baseFacing)

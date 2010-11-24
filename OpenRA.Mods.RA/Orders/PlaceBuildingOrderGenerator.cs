@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -60,11 +61,14 @@ namespace OpenRA.Mods.RA.Orders
 		}
 		
 		public void Tick( World world ) {}
-		
-		public void RenderAfterWorld( WorldRenderer wr, World world ) { }
-
+		public void RenderAfterWorld( WorldRenderer wr, World world ) {}
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
+			var topleft = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2() - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
+			var renderables = Rules.Info[Building].Traits.Get<RenderBuildingInfo>().BuildingPreview(Rules.Info[Building], world.Map.Tileset);
+			foreach (var r in renderables)
+				r.Sprite.DrawAt(wr,Game.CellSize*topleft + r.Pos,  r.Palette ?? world.LocalPlayer.Palette);
+			
 			BuildingInfo.DrawBuildingGrid( wr, world, Building );
 		}
 

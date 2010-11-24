@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -17,6 +18,17 @@ namespace OpenRA.Mods.RA.Render
 	class RenderWarFactoryInfo : RenderBuildingInfo
 	{
 		public override object Create(ActorInitializer init) { return new RenderWarFactory(init); }
+		
+		public override IEnumerable<Renderable> BuildingPreview(ActorInfo building, string Tileset)
+		{
+			foreach (var r in base.BuildingPreview(building, Tileset))
+				yield return r;
+
+			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+			anim.PlayRepeating("idle-top");
+			var rb = building.Traits.Get<RenderBuildingInfo>();
+			yield return new Renderable(anim.Image,rb.Origin,rb.Palette,0);
+		}
 	}
 
 	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold
