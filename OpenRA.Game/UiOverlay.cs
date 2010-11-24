@@ -33,7 +33,7 @@ namespace OpenRA
 
 			for (int i = 0; i < Game.CellSize; i++)
 				for (int j = 0; j < Game.CellSize; j++)
-					data[i * Game.CellSize + j] = ((i + j) % 4 < 2) ? (byte)0 : paletteIndex;
+					data[i * Game.CellSize + j] = ((i+j) % 4 != 0) ? (byte)0 : paletteIndex;
 
 			return Game.modData.SheetBuilder.Add(data, new Size(Game.CellSize, Game.CellSize));
 		}

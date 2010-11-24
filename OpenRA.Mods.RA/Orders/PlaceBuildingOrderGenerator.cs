@@ -72,8 +72,6 @@ namespace OpenRA.Mods.RA.Orders
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
 			
-			
-			
 			var cells = new Dictionary<int2, bool>();
 			// Linebuild for walls.
 			// Assumes a 1x1 footprint; weird things will happen for other footprints
