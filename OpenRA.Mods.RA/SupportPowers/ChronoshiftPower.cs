@@ -119,8 +119,6 @@ namespace OpenRA.Mods.RA
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 				var targetUnits = power.UnitsInRange(xy);
-				//foreach (var r in targetUnits.SelectMany(a => a.Render()))
-				//	r.Sprite.DrawAt(wr,r.Pos,"highlight");
 				foreach (var unit in targetUnits)
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
@@ -212,6 +210,14 @@ namespace OpenRA.Mods.RA
 					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
 				
 				// Unit tiles
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+				{
+					var targetCell = unit.Location + xy - sourceLocation;
+					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell);
+					foreach (var r in unit.Render())
+						r.Sprite.DrawAt(wr, r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
+						                r.Palette ?? unit.Owner.Palette);
+				}
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + xy - sourceLocation;
