@@ -53,7 +53,7 @@
             	padding:20px;
             }
             
-            div.desc
+            .desc
             {
                 font-size:0.75em;
             }
@@ -102,15 +102,13 @@
         
         function download()
         {
+            document.getElementById("download-status").value = "Initializing..."
             window.external.startDownload("cnc-packages");
-            refreshDownloadButtons();
         }
 
         function cancel()
         {
             window.external.cancelDownload("cnc-packages");
-            // TODO: Remove incomplete file from cache
-            // TODO: Restore buttons to the before-downloading state
         }
         
         function extract()
@@ -136,7 +134,10 @@
             // Select the correct subsection
             if (installed == 0)
             {
-                window.external.registerDownload("cnc-packages", "http://localhost/~paul/cnc-packages.zip", "cnc-packages.zip");
+                //var url = "http://localhost/~paul/cnc-packages.zip";
+                //var url = "http://localhost/~paul/cnc-packages.bogus";
+                var url = "http://open-ra.org/get-dependency.php?file=cnc-packages";
+                window.external.registerDownload("cnc-packages", url, "cnc-packages.zip");
                 refreshDownloadButtons();
             }
         }
@@ -146,6 +147,7 @@
             document.getElementById("download-available").style.display = "none";
             document.getElementById("download-downloading").style.display = "none";
             document.getElementById("download-extract").style.display = "none";
+            document.getElementById("download-error").style.display = "none";
             
             // status can be NOT_REGISTERED, AVAILABLE, DOWNLOADING, COMPLETE, ERROR
             var status = window.external.downloadStatus("cnc-packages");
@@ -153,22 +155,21 @@
             
             // Download complete, offer button to extract it
             if (status == "COMPLETE")
-            {
                  document.getElementById("download-extract").style.display = "";
-            }
             
             // Show the download progress
             else if (status == "DOWNLOADING")
-            {
                 document.getElementById("download-downloading").style.display = "";
-            }
             
             // Show the download button
-            else if (status == "AVAILABLE" || status == "ERROR")
-            {
+            else if (status == "AVAILABLE")
                 document.getElementById("download-available").style.display = "";
-                
-                // Todo: set error message
+            
+            else if (status == "ERROR")
+            {
+                var message = window.external.downloadError("cnc-packages");
+                document.getElementById("error-message").innerHTML = message;
+                document.getElementById("download-error").style.display = "";
             }
         }
         
@@ -181,14 +182,14 @@
             var downloaded = window.external.bytesCompleted(file);
             window.external.log(file+" = total: "+total+" downloaded: "+downloaded);
 
-            if (downloaded == -1)
-                return;
+            if (downloaded > 0)
+            {            
+                var multiplier = 1/1048576.0;
+                total = (total*multiplier).toPrecision(2);
+                downloaded = (downloaded*multiplier).toPrecision(2);
             
-            var multiplier = 1/1048576.0;
-            total = (total*multiplier).toPrecision(2);
-            downloaded = (downloaded*multiplier).toPrecision(2);
-            
-            document.getElementById("download-status").value = downloaded+"/"+total+" MB";
+                document.getElementById("download-status").value = downloaded+"/"+total+" MB";
+            }
             refreshDownloadButtons();
         }
         
@@ -224,6 +225,10 @@
 			    </div>
 			    <div id="download-extract" style="display:none">
 			        <input type="button" class="button" onclick="extract();" value="Install" />
+			    </div>
+			    <div id="download-error" style="display:none">
+			        <input type="button" class="button" onclick="download();" value="Retry" />
+			        <span class="desc" id="error-message"></span>
 			    </div>
 			</div>
 			<div id="buttons-upgrade" class="buttons" style="display:none">

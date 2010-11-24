@@ -16,7 +16,8 @@
 	NSString *filename;
 	GameInstall *game;
 	NSTask *task;
-	NSString * status;
+	NSString *status;
+	NSString *error;
 	int bytesCompleted;
 	int bytesTotal;
 }
@@ -25,6 +26,7 @@
 @property(readonly) NSString *status;
 @property(readonly) int bytesCompleted;
 @property(readonly) int bytesTotal;
+@property(readonly) NSString *error;
 
 + (id)downloadWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)aGame;
 - (id)initWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)game;

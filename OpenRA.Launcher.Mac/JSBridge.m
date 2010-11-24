@@ -49,6 +49,7 @@ static JSBridge *SharedInstance;
 						@"startDownload", NSStringFromSelector(@selector(startDownload:)),
 						@"cancelDownload", NSStringFromSelector(@selector(cancelDownload:)),
 						@"downloadStatus", NSStringFromSelector(@selector(downloadStatus:)),
+						@"downloadError", NSStringFromSelector(@selector(downloadError:)),
 						@"bytesCompleted", NSStringFromSelector(@selector(bytesCompleted:)),
 						@"bytesTotal", NSStringFromSelector(@selector(bytesTotal:)),
 					nil] retain];
@@ -65,12 +66,6 @@ static JSBridge *SharedInstance;
 {
 	[controller release]; controller = nil;
 	[super dealloc];
-}
-
-- (void)notifyDownloadProgress:(Download *)download
-{
-	[[[controller webView] windowScriptObject] evaluateWebScript:
-		[NSString stringWithFormat:@"downloadProgressed('%@')",[download key]]];
 }
 
 #pragma mark JS API methods
@@ -119,6 +114,15 @@ static JSBridge *SharedInstance;
 	return [d status];
 }
 
+- (NSString *)downloadError:(NSString *)key
+{
+	Download *d = [controller downloadWithKey:key];
+	if (d == nil)
+		return @"";
+	
+	return [d error];
+}
+
 - (BOOL)startDownload:(NSString *)key
 {
 	Download *d = [controller downloadWithKey:key];
@@ -142,6 +146,13 @@ static JSBridge *SharedInstance;
 	Download *d = [controller downloadWithKey:key];
 	return (d == nil) ? -1 : [d bytesTotal];
 }
+
+- (void)notifyDownloadProgress:(Download *)download
+{
+	[[[controller webView] windowScriptObject] evaluateWebScript:
+	 [NSString stringWithFormat:@"downloadProgressed('%@')",[download key]]];
+}
+
 
 - (void)log:(NSString *)message
 {

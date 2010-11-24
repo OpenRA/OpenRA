@@ -15,6 +15,7 @@
 @synthesize status;
 @synthesize bytesCompleted;
 @synthesize bytesTotal;
+@synthesize error;
 
 + (id)downloadWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)aGame
 {
@@ -32,17 +33,17 @@
 		filename = [aFilename retain];
 		key = [aKey retain];
 		game = [aGame retain];
+		error = @"";
 		
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filename])
 		{
 			status = @"COMPLETE";
-			bytesCompleted = bytesTotal = [[[NSFileManager defaultManager] attributesOfItemAtPath:filename error:nil] fileSize];
+			bytesCompleted = bytesTotal = [[[NSFileManager defaultManager] attributesOfItemAtPath:filename error:NULL] fileSize];
 		}
 		else
 		{
 			status = @"AVAILABLE";
-			bytesCompleted = -1;
-			bytesTotal = -1;
+			bytesCompleted = bytesTotal = -1;
 		}
 	}
 	return self;
@@ -68,7 +69,13 @@
 		if ([type isEqualToString:@"Error"])
 		{
 			status = @"ERROR";
+			[error autorelease];
+			if ([[message substringToIndex:36] isEqualToString:@"The remote server returned an error:"])
+				error = [[message substringFromIndex:37] retain];
+			else
+				error = [message retain];
 		}
+			
 		else if ([type isEqualToString:@"Status"])
 		{
 			if ([message isEqualToString:@"Completed"])
@@ -95,8 +102,6 @@
 - (BOOL)start
 {
 	status = @"DOWNLOADING";
-
-	NSLog(@"Starting download...");
 	task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--download-url=%@,%@",url,filename]
 							   delegate:self
 					   responseSelector:@selector(utilityResponded:)
@@ -107,13 +112,13 @@
 
 - (BOOL)cancel
 {
-	NSLog(@"Cancelling");
 	status = @"ERROR";
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
-	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
+	error = @"Download Cancelled";
+	[[JSBridge sharedInstance] notifyDownloadProgress:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:NSFileHandleReadCompletionNotification
+												  object:[[task standardOutput] fileHandleForReading]];
 	[task terminate];
-	[task release]; task = nil;
 	return YES;
 }
 
@@ -124,6 +129,12 @@
 	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
 	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
 	[task release]; task = nil;
+	
+	if (status == @"ERROR")
+	{	
+		[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
+		bytesCompleted = bytesTotal = -1;
+	}
 }
 
 @end
