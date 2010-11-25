@@ -43,8 +43,8 @@
 		[self populateModInfo];
 		id modsRoot = [self sidebarModsTree];
 		[sidebarItems addChild:modsRoot];
-		id otherRoot = [self sidebarOtherTree];
-		[sidebarItems addChild:otherRoot];
+		//id otherRoot = [self sidebarOtherTree];
+		//[sidebarItems addChild:otherRoot];
 		
 		
 		[outlineView reloadData];
@@ -58,7 +58,7 @@
 			[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [firstMod url]]];
 		}
 		
-		[outlineView expandItem:otherRoot expandChildren:YES];
+		//[outlineView expandItem:otherRoot expandChildren:YES];
 	}
 }
 
