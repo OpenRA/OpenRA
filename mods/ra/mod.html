@@ -1,6 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
-	<body>
-        <h1>Red Alert</h1>
-        <input type="button" class="button" onclick="window.external.launchMod('ra')" value="Play" />
+	<head>
+		<style>
+            body { background-color: black; margin: 0px; color: White; font-family: Cambria, Georgia, Times New Roman, Serif; font-size: 12pt }
+            h1 { font-family: Cambria, Georgia, Times New Roman, Serif }
+            h2, h3 { font-family: Helvetica, Arial, Sans-Serif }
+
+            div#main 
+            {	
+            	margin: 0 auto;
+            	padding: 20px 0px;
+            	width:100%;
+            	height:100%;
+            	overflow:hidden;
+            }
+
+            div#header
+            {
+            	margin-top: 30px;
+            	height: 66px;
+            	text-align:center;
+            	overflow:hidden;
+            }
+
+            div.bar
+            {
+            	border-top: solid 3px #650b03;
+            	border-bottom: solid 3px #650b03;
+            	background-color: #272d2c;
+            	width: 100%;
+            }
+
+            div#header h1
+            {
+            	margin: auto auto;
+            	padding-top:15px;
+            }
+
+            div#content
+            {
+            	text-align: justify;
+            	padding-left:50px;
+            	overflow:hidden;
+            }
+
+            div.buttons
+            {
+            	position:absolute;
+            	bottom:0px;
+            	padding:20px;
+            }
+            
+            .desc
+            {
+                font-size:0.75em;
+            }
+            
+            .status
+            {
+                font-size:0.8em;
+            }
+            
+            .button
+            {
+            	border: solid 3px #650b03;
+            	border-radius: 10px;
+            	margin:10px;
+            	height:40px;
+            	width:170px;
+            	color:white;
+            	font-weight:bold;
+            	font-size:1em;
+            	background-color: #272d2c;
+            }
+            
+            .button:active
+            {
+                background-color:#fff;
+            }
+            
+            .button:hover
+            {
+                border-color:#fff;
+                background-color:#650b03;
+                cursor:pointer;
+            }
+
+        </style>
+        <script type="text/javascript">
+        // Check which packages are installed.
+        // Returns 1 if basic files are installed
+        // Returns 2 if basic files plus music are installed
+        function packagesInstalled()
+        {
+            if (window.external.existsInMod("packages/conquer.mix","ra") != 1)
+                return 0;
+            return (window.external.existsInMod("packages/scores.mix","ra") == 1) ? 2 : 1;
+        }
+        
+        function play()
+        {
+            window.external.launchMod("ra");
+        }
+        
+        function download()
+        {
+            document.getElementById("download-status").value = "Connecting..."
+            window.external.startDownload("ra-packages");
+        }
+
+        function cancel()
+        {
+            window.external.cancelDownload("ra-packages");
+        }
+        
+        function extract()
+        {
+            window.external.extractDownload("ra-packages","packages","ra");
+        }
+        
+        function onLoad()
+        {
+            refreshSections();
+        }
+        
+        function refreshSections()
+        {
+            var installed = packagesInstalled();
+            document.getElementById("buttons-install").style.display = (installed == 0) ? "" : "none";
+            document.getElementById("buttons-upgrade").style.display = (installed == 1) ? "" : "none";
+            document.getElementById("buttons-play").style.display = (installed == 2) ? "" : "none";
+            
+            if (installed == 0)
+            {
+                window.external.registerDownload("ra-packages", "http://open-ra.org/get-dependency.php?file=ra-packages", "ra-packages.zip");
+                refreshDownloadButtons();
+            }
+        }
+        
+        function refreshDownloadButtons()
+        {
+            document.getElementById("download-available").style.display = "none";
+            document.getElementById("download-downloading").style.display = "none";
+            document.getElementById("download-extract").style.display = "none";
+            document.getElementById("download-extracting").style.display = "none";
+            document.getElementById("download-error").style.display = "none";
+            
+            // status can be NOT_REGISTERED, AVAILABLE, DOWNLOADING, DOWNLOADED, EXTRACTING, EXTRACTED, ERROR
+            var status = window.external.downloadStatus("ra-packages");
+            
+            if (status == "AVAILABLE")
+            {
+                document.getElementById("download-available").style.display = "";
+            }
+            else if (status == "DOWNLOADING")
+            {
+                document.getElementById("download-downloading").style.display = "";
+            }
+            if (status == "DOWNLOADED")
+            {
+                document.getElementById("download-extract").style.display = "";
+            }
+            else if (status == "EXTRACTING")
+            {
+                document.getElementById("download-extracting").style.display = "";
+            }
+            else if (status == "EXTRACTED")
+            {
+                refreshSections();
+            }
+            else if (status == "ERROR")
+            {
+                var message = window.external.downloadError("ra-packages");
+                document.getElementById("error-message").innerHTML = message;
+                document.getElementById("download-error").style.display = "";
+            }
+        }
+        
+        function downloadProgressed(file)
+        {
+            if (file != "ra-packages")
+                return;
+            
+            var total = window.external.bytesTotal(file);
+            var downloaded = window.external.bytesCompleted(file);
+            if (downloaded > 0)
+            {            
+                var multiplier = 1/1048576.0;
+                total = (total*multiplier).toPrecision(2);
+                downloaded = (downloaded*multiplier).toPrecision(2);
+                document.getElementById("download-status").value = downloaded+"/"+total+" MB";
+            }
+            refreshDownloadButtons();
+        }
+        
+        function extractProgressed(file)
+        {
+            if (file != "ra-packages")
+                return;
+                
+            // Todo: show an extraction ticker?
+            
+            refreshDownloadButtons();
+        }
+        </script>
+	</head>
+	<body onload="onLoad();">
+		<div id="header" class="bar">
+			<h1>Red Alert</h1>
+		</div>
+
+		<div id="main">
+			<!-- div id="content">
+				<h2>Latest News</h2>
+				<div>
+				    <h3>Version XXYYZZ Available</h3>
+				    <ul>
+				        <li>Cool feature one</li>
+				        <li>Cool feature two</li>
+				        <li>Bugfixes!!!</li>
+				    </ul>
+				</div>
+			</div -->
+			<div id="buttons-install" class="buttons" style="display:none">
+			    <div class="desc">The original game data is required before you can play this mod.<br />
+			        Installing from web will install the minimal files required to play.
+			    </div>
+			    <div id="download-available" style="display:none">
+			        <input type="button" class="button" onclick="download();" value="Download" />
+			    </div>
+			    <div id="download-downloading" style="display:none">
+			        <input type="button" class="button" id="download-status" value="Connecting..." />
+			        <input type="button" class="button" onclick="cancel();" value="Cancel" />
+			    </div>
+			    <div id="download-error" style="display:none">
+			        <input type="button" class="button" onclick="download();" value="Retry" />
+			        <span class="status" id="error-message"></span>
+			    </div>
+			    <div id="download-extract" style="display:none">
+			        <input type="button" class="button" onclick="extract();" value="Install" />
+			    </div>
+			    <div id="download-extracting" style="display:none">
+			        <input type="button" class="button" value="Installing..." />
+			    </div>
+			</div>
+			<div id="buttons-upgrade" class="buttons" style="display:none">
+			    <input type="button" class="button" onclick="play();" value="Play" />
+			    <!--div class="desc">
+			        Upgrade from CD to install the original music and movie files for an improved game experience.
+			    </div>
+			    <input type="button" class="button" onclick="play();" value="Play" />
+			    <input type="button" class="button" onclick="installFromCD();" value="Upgrade from CD" / -->
+			</div>
+			<div id="buttons-play" class="buttons" style="display:none">
+			    <input type="button" class="button" onclick="play();" value="Play" />
+			</div>
+		</div>
 	</body>
+
 </html>
