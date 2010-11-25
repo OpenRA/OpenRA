@@ -8,7 +8,7 @@ Description: CNC Shellmap
 
 Author: Chris Forbes
 
-PlayerCount: 0
+PlayerCount: 6
 
 Tileset: WINTER
 
@@ -19,33 +19,145 @@ TopLeft: 8,1
 BottomRight: 88,46
 
 Players:
-	PlayerReference@BadGuy:
+	PlayerReference@Nod:
 		Name: Nod
 		Palette:
-		Race: nod
 		OwnsWorld: False
 		NonCombatant: False
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: nod
+		LockColor: False
 		Color: 255,255,20,0
 		Color2: 255,56,0,0
+		InitialCash: 0
 		Allies: Nod
 		Enemies: GDI
-	PlayerReference@GoodGuy:
+	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Palette:
 		OwnsWorld: False
 		NonCombatant: False
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
 		Color: 255,246,214,121
 		Color2: 255,40,32,8
+		InitialCash: 0
 		Allies: GDI
 		Enemies: Nod
 	PlayerReference@Neutral:
 		Name: Neutral
 		Palette:
-		Race: gdi
 		OwnsWorld: True
 		NonCombatant: True
 		Playable: False
 		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi0:
+		Name: Multi0
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi1:
+		Name: Multi1
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi2:
+		Name: Multi2
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi3:
+		Name: Multi3
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi4:
+		Name: Multi4
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
+		Color: 255,238,238,238
+		Color2: 255,44,28,24
+		InitialCash: 0
+		Allies:
+		Enemies:
+	PlayerReference@Multi5:
+		Name: Multi5
+		Palette:
+		OwnsWorld: False
+		NonCombatant: False
+		Playable: True
+		DefaultStartingUnits: True
+		AllowBots: True
+		LockRace: False
+		Race: Random
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
 		InitialCash: 0
@@ -53,17 +165,17 @@ Players:
 		Enemies:
 
 Actors:
-	Actor0: boat
-		Location: 32,34
+	boat1: boat
+		Location: 45,33
 		Owner: GDI
-	Actor1: boat
-		Location: 39,36
+	boat2: boat
+		Location: 39,37
 		Owner: GDI
-	Actor2: boat
+	boat3: boat
 		Location: 70,33
 		Owner: GDI
-	Actor3: boat
-		Location: 79,36
+	boat4: boat
+		Location: 79,37
 		Owner: GDI
 	Actor4: fix
 		Location: 59,44
@@ -938,8 +1050,34 @@ Actors:
 	Actor221: jeep
 		Location: 57,45
 		Owner: GDI
+	lst1: lst
+		Location: 53,35
+		Owner: GDI
+		Facing: 64
+	lst2: lst
+		Location: 58,35
+		Owner: GDI
+		Facing: 64
+	lst3: lst
+		Location: 63,35
+		Owner: GDI
+		Facing: 64
+	ftnk1: ftnk
+		Location: 67,22
+		Owner: Nod
+		Facing: 228
+	ftnk2: ftnk
+		Location: 65,20
+		Owner: Nod
+		Facing: 192
 
 Waypoints:
+	tl1: 8,33
+	tr1: 87,33
+	tl2: 8,35
+	tr2: 87,35
+	tl3: 8,37
+	tr3: 87,37
 
 Smudges:
 
@@ -948,3 +1086,17 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
+		CncShellmapScript:
+	LST:
+		Mobile:
+			Speed: 3
+	BOAT:
+		Mobile:
+			Speed: 3
+
+Sequences:
+
+Weapons:
+
+Voices:
+

@@ -83,7 +83,7 @@ TileSets:
 	mods/cnc/tilesets/snow.yaml
 
 LoadScreen: CncLoadScreen
-ShellmapUid:e7b9badb3b7d49ccc773a7aa086c0ff9a1136b77
+ShellmapUid:2cc2a95c89dc6594acec52d7acbc720f45fc5d9e
 ServerTraits:
 	PlayerCommands
 	LobbyCommands
