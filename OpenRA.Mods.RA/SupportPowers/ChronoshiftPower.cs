@@ -209,15 +209,16 @@ namespace OpenRA.Mods.RA
 				foreach (var t in world.FindTilesInCircle(xy, range))
 					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
 				
-				// Unit tiles
+				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + xy - sourceLocation;
-					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell);
 					foreach (var r in unit.Render())
 						r.Sprite.DrawAt(wr, r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
 						                r.Palette ?? unit.Owner.Palette);
 				}
+				
+				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + xy - sourceLocation;

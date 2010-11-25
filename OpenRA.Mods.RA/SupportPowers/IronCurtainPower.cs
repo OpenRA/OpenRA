@@ -97,15 +97,10 @@ namespace OpenRA.Mods.RA
 
 			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 			{
-				if (mi.Button == MouseButton.Left)
+				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any() )
 				{
-					var targetUnits = power.UnitsInRange(xy);
-
-					if( targetUnits.Any() )
-					{
-						world.CancelInputMode();
-						yield return new Order("IronCurtain", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
-					}
+					world.CancelInputMode();
+					yield return new Order("IronCurtain", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
 				}
 			}
 
@@ -122,7 +117,6 @@ namespace OpenRA.Mods.RA
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
-				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in power.UnitsInRange(xy))
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
@@ -130,8 +124,7 @@ namespace OpenRA.Mods.RA
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
-				var tiles = world.FindTilesInCircle(xy, range);
-				foreach (var t in tiles)
+				foreach (var t in world.FindTilesInCircle(xy, range))
 					tile.DrawAt( wr, Game.CellSize * t, "terrain" );
 			}
 

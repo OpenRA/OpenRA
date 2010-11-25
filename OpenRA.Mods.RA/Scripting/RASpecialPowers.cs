@@ -33,8 +33,6 @@ namespace OpenRA.Scripting
 			{									
 				var target = kv.First;
 				var targetCell = kv.Second;
-				System.Console.WriteLine("{0} {1}",target, targetCell);
-				
 				var cs = target.Trait<Chronoshiftable>();
 				if (cs.CanChronoshiftTo(target, targetCell))
 					target.Trait<Chronoshiftable>().Teleport(target,

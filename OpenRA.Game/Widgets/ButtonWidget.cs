@@ -120,8 +120,6 @@ namespace OpenRA.Widgets
 			};
 
 			Widget.RootWidget.AddChild(fullscreenMask);
-
-			var origin = w.RenderOrigin;
 			var dropDown = new ScrollPanelWidget
 			{
 				Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100),
@@ -149,7 +147,6 @@ namespace OpenRA.Widgets
 
 			foreach (var t in ts)
 			{
-				var tt = t;
 				var ww = ft(t, dropDown.Bounds.Width);
 				var origMouseUp = ww.OnMouseUp;
 				ww.OnMouseUp = mi => { var result = origMouseUp(mi); HideDropDown(); return result; };
