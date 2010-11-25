@@ -107,7 +107,7 @@
         
         function download()
         {
-            document.getElementById("download-status").value = "Initializing..."
+            document.getElementById("download-status").value = "Connecting..."
             window.external.startDownload("cnc-packages");
         }
 
@@ -232,7 +232,7 @@
 			        <input type="button" class="button" onclick="download();" value="Download" />
 			    </div>
 			    <div id="download-downloading" style="display:none">
-			        <input type="button" class="button" id="download-status" value="Initializing..." />
+			        <input type="button" class="button" id="download-status" value="Connecting..." />
 			        <input type="button" class="button" onclick="cancel();" value="Cancel" />
 			    </div>
 			    <div id="download-error" style="display:none">

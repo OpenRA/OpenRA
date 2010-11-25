@@ -35,10 +35,8 @@
 	// Temporary hack until mods define an icon
 	NSString* imageName = [[NSBundle mainBundle] pathForResource:@"OpenRA" ofType:@"icns"];
 	id icon = [[[NSImage alloc] initWithContentsOfFile:imageName] autorelease];
-	id url = [[baseURL URLByAppendingPathComponent:[baseMod mod]]
-					   URLByAppendingPathComponent:@"mod.html"];
-	
-	id ret = [SidebarEntry entryWithTitle:[baseMod title] url:url icon:icon];
+	id path = [[[baseURL absoluteString] stringByAppendingPathComponent:[baseMod mod]] stringByAppendingPathComponent:@"mod.html"];
+	id ret = [SidebarEntry entryWithTitle:[baseMod title] url:[NSURL URLWithString:path] icon:icon];
 	
 	for (id key in allMods)
 	{

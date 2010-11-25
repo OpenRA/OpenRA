@@ -21,6 +21,7 @@
 		DA9292C81291DF2D00EDB02E /* OpenRA.app in Resources */ = {isa = PBXBuildFile; fileRef = DA9292C71291DF2D00EDB02E /* OpenRA.app */; };
 		DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9295A612921DF900EDB02E /* WebKit.framework */; };
 		DA9296901292328200EDB02E /* SidebarEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA92968F1292328200EDB02E /* SidebarEntry.m */; };
+		DAB887F5129E5D6C00C99407 /* SDL in Resources */ = {isa = PBXBuildFile; fileRef = DAB887EE129E5D6100C99407 /* SDL */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		DA9295A612921DF900EDB02E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		DA92968E1292328200EDB02E /* SidebarEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarEntry.h; sourceTree = "<group>"; };
 		DA92968F1292328200EDB02E /* SidebarEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarEntry.m; sourceTree = "<group>"; };
+		DAB887EE129E5D6100C99407 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = SDL; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DAB887EE129E5D6100C99407 /* SDL */,
 				DA9292C71291DF2D00EDB02E /* OpenRA.app */,
 				DA81FBDB12910E4900C48F2F /* OpenRA.icns */,
 				8D1107310486CEB800E47090 /* OpenRA-Info.plist */,
@@ -180,6 +183,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = OpenRA;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "OpenRA" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -204,6 +210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAB887F5129E5D6C00C99407 /* SDL in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */,
@@ -264,6 +271,10 @@
 				GCC_PREFIX_HEADER = OpenRA_Prefix.pch;
 				INFOPLIST_FILE = "OpenRA-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = OpenRA;
 			};
 			name = Debug;
@@ -278,6 +289,10 @@
 				GCC_PREFIX_HEADER = OpenRA_Prefix.pch;
 				INFOPLIST_FILE = "OpenRA-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = OpenRA;
 			};
 			name = Release;
@@ -292,7 +307,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -303,8 +318,9 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};

@@ -29,7 +29,7 @@
 {	
 	NSString *gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
 
-	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:gamePath]];
+	game = [[GameInstall alloc] initWithPath:gamePath];
 	[[JSBridge sharedInstance] setController:self];
 	downloads = [[NSMutableDictionary alloc] init];
 	hasMono = [self hasSupportedMono];
@@ -138,7 +138,8 @@
 		id aMod = [allMods objectForKey:key];
 		if ([aMod standalone])
 		{
-			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[[game gameURL] URLByAppendingPathComponent:@"mods"]];
+			id path = [[game gamePath] stringByAppendingPathComponent:@"mods"];
+			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[NSURL URLWithString:path]];
 			[rootItem addChild:child];
 		}
 	}
@@ -176,7 +177,7 @@
 }
 
 #pragma mark Sidebar Datasource and Delegate
-- (int)outlineView:(NSOutlineView *)anOutlineView numberOfChildrenOfItem:(id)item
+- (NSInteger)outlineView:(NSOutlineView *)anOutlineView numberOfChildrenOfItem:(id)item
 {
 	// Can be called before awakeFromNib; return nothing
 	if (sidebarItems == nil)
@@ -195,7 +196,7 @@
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView
-			child:(int)index
+			child:(NSInteger)index
 		   ofItem:(id)item
 {
 	if (item == nil)
@@ -271,10 +272,10 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	
 	NSString *format = count == 1 ? @"1 download is" : [NSString stringWithFormat:@"%d downloads are",count];
 	NSAlert *alert = [NSAlert alertWithMessageText:@"Are you sure you want to quit?"
-									 defaultButton:@"Cancel"
+									 defaultButton:@"Wait"
 								   alternateButton:@"Quit"
 									   otherButton:nil
-						 informativeTextWithFormat:@"%@ in progress and will be cancelled.", format];
+						 informativeTextWithFormat:@"%@ in progress and will be cancelled if you quit.", format];
 	
 	[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(quitAlertEnded:code:context:) contextInfo:NULL];
 	return NSTerminateLater;

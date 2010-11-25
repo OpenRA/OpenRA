@@ -15,6 +15,7 @@
 	NSString *version;
 	NSString *author;
 	NSString *requires;
+	NSString *description;
 	BOOL standalone;
 }
 

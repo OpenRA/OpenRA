@@ -11,14 +11,14 @@
 #import "Mod.h"
 
 @implementation GameInstall
-@synthesize gameURL;
+@synthesize gamePath;
 
--(id)initWithURL:(NSURL *)url
+-(id)initWithPath:(NSString *)path
 {
 	self = [super init];
 	if (self != nil)
 	{
-		gameURL = [url retain];
+		gamePath = [path retain];
 		downloadTasks = [[NSMutableDictionary alloc] init];
 	}
 	return self;
@@ -26,7 +26,7 @@
 
 - (void)dealloc
 {
-	[gameURL release]; gameURL = nil;
+	[gamePath release]; gamePath = nil;
 	[downloadTasks release]; downloadTasks = nil;
 	[super dealloc];
 }
@@ -70,8 +70,8 @@
 			// Commit prev mod
 			if (current != nil)
 			{	
-				id url = [gameURL URLByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-				[ret setObject:[Mod modWithId:current fields:fields baseURL:url] forKey:current];
+				id path = [gamePath stringByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
+				[ret setObject:[Mod modWithId:current fields:fields baseURL:[NSURL URLWithString:path]] forKey:current];
 			}
 			NSLog(@"Parsing mod %@",value);
 			current = value;
@@ -84,8 +84,8 @@
 	}
 	if (current != nil)
 	{	
-		id url = [gameURL URLByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-		[ret setObject:[Mod modWithId:current fields:fields baseURL:url] forKey:current];
+		id path = [gamePath stringByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
+		[ret setObject:[Mod modWithId:current fields:fields baseURL:[NSURL URLWithString:path]] forKey:current];
 	}
 	
 	return ret;
@@ -99,7 +99,7 @@
 	// First argument is the directory to run in
 	// Second...Nth arguments are passed to OpenRA.Game.exe
 	// Launcher wrapper sets mono --debug, gl renderer and support dir.
-	NSArray *args = [NSArray arrayWithObjects:[gameURL absoluteString],
+	NSArray *args = [NSArray arrayWithObjects:gamePath,
 						[NSString stringWithFormat:@"Game.Mods=%@",mod],
 					nil];
 
@@ -131,7 +131,7 @@
 	[taskArgs addObject:arg];
 	
 	NSTask *task = [[NSTask alloc] init];
-    [task setCurrentDirectoryPath:[gameURL absoluteString]];
+    [task setCurrentDirectoryPath:gamePath];
     [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
     [task setArguments:taskArgs];
 	[task setStandardOutput:outPipe];
@@ -155,7 +155,7 @@
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
 	[taskArgs addObject:arg];
 	
-    [task setCurrentDirectoryPath:[gameURL absoluteString]];
+    [task setCurrentDirectoryPath:gamePath];
     [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
     [task setArguments:taskArgs];
 	[task setStandardOutput:pipe];
