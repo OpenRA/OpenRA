@@ -37,10 +37,10 @@ namespace OpenRA.Utility
 			argCallbacks.Add("--mod-info", Command.ListModInfo);
 			argCallbacks.Add("-i", Command.ListModInfo);
 			argCallbacks.Add("--download-url", Command.DownloadUrl);
+			argCallbacks.Add("--extract-zip", Command.ExtractZip);
 			argCallbacks.Add("--install-ra-packages", Command.InstallRAPackages);
 			argCallbacks.Add("--install-cnc-packages", Command.InstallCncPackages);
 			argCallbacks.Add("--settings-value", Command.Settings);
-			argCallbacks.Add("--install-mod", Command.InstallMod);
 
 			if (args.Length == 0) { PrintUsage(); return; }
 			var arg = SplitArgs(args[0]);
@@ -82,10 +82,10 @@ namespace OpenRA.Utility
 			Console.WriteLine("  -l,--list-mods                   List currently installed mods");
 			Console.WriteLine("  -i=MODS,--mod-info=MODS          List metadata for MODS (comma separated list of mods)");
 			Console.WriteLine("  --download-url=URL,DEST          Download a file from URL to DEST");
-			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from PATH to CD");
-			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from PATH to CD");
+			Console.WriteLine("  --extract-zip=ZIPFILE,MOD,PATH   Extract the zip ZIPFILE to DEST relative to MOD");
+			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from CD to PATH");
+			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from CD to PATH");
 			Console.WriteLine("  --settings-value=SUPPORTDIR,KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
-			Console.WriteLine("  --install-mod=ZIPFILE            Install a mod from ZIPFILE");
 		}
 	}
 }

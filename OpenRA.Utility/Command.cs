@@ -52,6 +52,24 @@ namespace OpenRA.Utility
 			}
 		}
 
+		public static void ExtractZip(string argValue)
+		{
+			string[] args = argValue.Split(',');
+			
+			if (args.Length != 3)
+			{
+				Console.WriteLine("Error: invalid syntax");
+				return;
+			}
+			string zipFile = args[0];
+			string mod = args[1];
+			string path = args[2];
+			
+			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
+			string dest = "mods{0}{1}{0}{2}".F(Path.DirectorySeparatorChar,mod,path);
+			new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest);
+		}
+		
 		public static void DownloadUrl(string argValue)
 		{
 			string[] args = argValue.Split(',');
@@ -169,12 +187,6 @@ namespace OpenRA.Utility
 			}
 
 			Console.WriteLine(n.Value);
-		}
-
-		public static void InstallMod(string zipFile)
-		{
-			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
-			new ZipInputStream(File.OpenRead(zipFile)).ExtractZip("mods");
 		}
 	}
 }
