@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
 
@@ -67,7 +68,17 @@ namespace OpenRA.Utility
 			
 			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
 			string dest = "mods{0}{1}{0}{2}".F(Path.DirectorySeparatorChar,mod,path);
-			new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest);
+			List<string> extracted = new List<string>();
+			try
+			{
+				new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest, extracted);
+			}
+			catch (SharpZipBaseException e)
+			{
+				foreach(var f in extracted)
+					File.Delete(f);
+				Console.WriteLine("Error: Corrupted archive");
+			}
 		}
 		
 		public static void DownloadUrl(string argValue)

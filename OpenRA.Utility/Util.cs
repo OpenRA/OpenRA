@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRA.Utility
 {
@@ -38,21 +39,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public static void ExtractPackagesFromZip(string mod, string dest)
-		{
-			string filepath = string.Format("{0}{1}{2}-packages.zip", dest, Path.DirectorySeparatorChar, mod);
-			string modPackageDir = string.Format("mods{0}{1}{0}packages{0}", Path.DirectorySeparatorChar, mod);
-
-			if (!Directory.Exists(modPackageDir))
-				Directory.CreateDirectory(modPackageDir);
-
-			new ZipInputStream(File.OpenRead(filepath)).ExtractZip(modPackageDir);
-			
-
-			Console.WriteLine("Done");
-		}
-
-		public static void ExtractZip(this ZipInputStream z, string destPath)
+		public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted)
 		{
 			ZipEntry entry;
 			while ((entry = z.GetNextEntry()) != null)
@@ -62,7 +49,9 @@ namespace OpenRA.Utility
 				Console.WriteLine("Extracting {0}", entry.Name);
 				if (!Directory.Exists(Path.Combine(destPath, Path.GetDirectoryName(entry.Name))))
 					Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
-				using (var f = File.Create(destPath + Path.DirectorySeparatorChar + entry.Name))
+				var path = destPath + Path.DirectorySeparatorChar + entry.Name;
+				extracted.Add(path);
+				using (var f = File.Create(path))
 				{
 					int bufSize = 2048;
 					byte[] buf = new byte[bufSize];
