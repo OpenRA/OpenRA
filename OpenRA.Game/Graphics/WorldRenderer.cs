@@ -50,24 +50,20 @@ namespace OpenRA.Graphics
 
 		Rectangle GetBoundsRect()
 		{
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
-			{
-				var r = world.LocalPlayer.Shroud.Bounds.Value;
+			var r = (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)?
+				world.LocalPlayer.Shroud.Bounds.Value : world.Map.Bounds;
+						
+			var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
+			var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
+			var right = left + (int)(Game.CellSize * r.Width);
+			var bottom = top + (int)(Game.CellSize * r.Height);
+			
+			if (left < 0) left = 0;
+			if (top < 0) top = 0;
+			if (right > Game.viewport.Width) right = Game.viewport.Width;
+			if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
 
-				var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
-				var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
-				var right = left + (int)(Game.CellSize * r.Width);
-				var bottom = top + (int)(Game.CellSize * r.Height);
-
-				if (left < 0) left = 0;
-				if (top < 0) top = 0;
-				if (right > Game.viewport.Width) right = Game.viewport.Width;
-				if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
-
-				return new Rectangle(left, top, right - left, bottom - top);
-			}
-			else
-				return new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+			return new Rectangle(left, top, right - left, bottom - top);
 		}
 
 		IEnumerable<Renderable> SpritesToRender()
