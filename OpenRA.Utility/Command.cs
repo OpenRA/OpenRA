@@ -72,12 +72,14 @@ namespace OpenRA.Utility
 			{
 				new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest, extracted);
 			}
-			catch (SharpZipBaseException e)
+			catch (SharpZipBaseException)
 			{
 				foreach(var f in extracted)
 					File.Delete(f);
 				Console.WriteLine("Error: Corrupted archive");
+				return;
 			}
+			Console.WriteLine("Status: Completed");
 		}
 		
 		public static void DownloadUrl(string argValue)
@@ -138,9 +140,10 @@ namespace OpenRA.Utility
 					Console.WriteLine("Error: Could not find "+file);
 					return;
 				}
-				Console.WriteLine("Extracting: {0}", file);
+				Console.WriteLine("Status: Extracting {0}", file);
 				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
 			}
+			Console.WriteLine("Status: Completed");
 		}
 
 		public static void InstallCncPackages(string path)
@@ -162,9 +165,10 @@ namespace OpenRA.Utility
 					Console.WriteLine("Error: Could not find "+file);
 					return;
 				}
-				Console.WriteLine("Extracting: {0}", file);
+				Console.WriteLine("Status: Extracting {0}", file);
 				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
 			}
+			Console.WriteLine("Status: Completed");
 		}
 
 		public static void Settings(string argValue)

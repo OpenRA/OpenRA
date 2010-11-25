@@ -33,7 +33,7 @@ namespace OpenRA.Utility
 				using (var sourceStream = FileSystem.Open(s))
 				using (var destStream = File.Create(destFile))
 				{
-					Console.WriteLine("Extracting: {0}", s);
+					Console.WriteLine("Status: Extracting {0}", s);
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
 			}
@@ -46,7 +46,7 @@ namespace OpenRA.Utility
 			{
 				if (!entry.IsFile) continue;
 
-				Console.WriteLine("Extracting {0}", entry.Name);
+				Console.WriteLine("Status: Extracting {0}", entry.Name);
 				if (!Directory.Exists(Path.Combine(destPath, Path.GetDirectoryName(entry.Name))))
 					Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
 				var path = destPath + Path.DirectorySeparatorChar + entry.Name;
