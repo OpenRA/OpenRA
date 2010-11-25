@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 				}
 				if( inner != null )
 				{
-					if( currentTarget.GetDamageState() == DamageState.Undamaged )
+					if( NeedsNewTarget(self) )
 						inner.Cancel( self );
 					inner = Util.RunActivity( self, inner );
 				}
