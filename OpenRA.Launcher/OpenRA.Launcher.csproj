@@ -42,6 +42,7 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="Download.cs" />
     <Compile Include="JSBridge.cs" />
     <Compile Include="Launcher.cs">
       <SubType>Form</SubType>

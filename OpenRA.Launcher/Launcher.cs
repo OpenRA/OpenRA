@@ -29,9 +29,13 @@ namespace OpenRA.Launcher
 
 			//treeView.Nodes["ModsNode"].ImageIndex = 1;
 			//treeView.Nodes["ModsNode"].SelectedImageIndex = 1;
-
+			webBrowser.ObjectForScripting = new JSBridge();
+			webBrowser.DocumentCompleted += (o, e) =>
+				{
+					var b = o as WebBrowser;
+					(b.ObjectForScripting as JSBridge).Document = b.Document;
+				};
 			RefreshMods();
-			webBrowser.ObjectForScripting = new JSBridge(allMods);
 		}
 
 		Mod GetMetadata(string mod)
@@ -101,6 +105,8 @@ namespace OpenRA.Launcher
 				mods[i] = mods[i].Trim('\r');
 
 			allMods = mods.ToDictionary(x => x, x => GetMetadata(x));
+
+			(webBrowser.ObjectForScripting as JSBridge).AllMods = allMods;
 
 			RefreshModTree(treeView, allMods.Keys.ToArray());
 		}
@@ -176,6 +182,7 @@ namespace OpenRA.Launcher
 			string modHtmlPath = string.Format("mods{0}{1}{0}mod.html", Path.DirectorySeparatorChar, e.Node.Name);
 			if (!File.Exists(modHtmlPath)) return;
 			webBrowser.Navigate(Path.GetFullPath(modHtmlPath));
+			
 		}
 	}
 }
