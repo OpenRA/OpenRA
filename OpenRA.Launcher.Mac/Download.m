@@ -114,6 +114,10 @@
 {
 	status = @"ERROR";
 	error = @"Download Cancelled";
+	
+	[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
+	bytesCompleted = bytesTotal = -1;
+	
 	[[JSBridge sharedInstance] notifyDownloadProgress:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSFileHandleReadCompletionNotification

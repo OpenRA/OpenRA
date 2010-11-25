@@ -195,8 +195,31 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-	// Todo: show a sheet if downloads are in progress
-	return NSTerminateNow;
+	int count = 0;
+	for (NSString *key in downloads)
+		if ([[(Download *)[downloads objectForKey:key] status] isEqualToString:@"DOWNLOADING"])
+			count++;
+	
+	if (count == 0)
+		return NSTerminateNow;
+	
+	NSString *format = count == 1 ? @"1 download is" : [NSString stringWithFormat:@"%d downloads are",count];
+	NSAlert *alert = [NSAlert alertWithMessageText:@"Are you sure you want to quit?"
+									 defaultButton:@"Cancel"
+								   alternateButton:@"Quit"
+									   otherButton:nil
+						 informativeTextWithFormat:@"%@ in progress and will be cancelled.", format];
+	
+	[alert beginSheetModalForWindow:[webView window] modalDelegate:self didEndSelector:@selector(alertEnded:code:context:) contextInfo:NULL];
+	return NSTerminateLater;
+}
+
+- (void)alertEnded:(NSAlert *)alert
+			  code:(int)button
+		   context:(void *)v
+{
+	NSApplicationTerminateReply reply = (button == NSAlertDefaultReturn) ? NSTerminateCancel : NSTerminateNow;
+	[[NSApplication sharedApplication] replyToApplicationShouldTerminate:reply];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification

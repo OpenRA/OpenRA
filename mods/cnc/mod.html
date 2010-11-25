@@ -124,20 +124,13 @@
         function refreshSections()
         {
             var installed = packagesInstalled();
-            window.external.log("installed: "+installed);
-
             document.getElementById("buttons-install").style.display = (installed == 0) ? "" : "none";
             document.getElementById("buttons-upgrade").style.display = (installed == 1) ? "" : "none";
             document.getElementById("buttons-play").style.display = (installed == 2) ? "" : "none";
             
-            window.external.log("installed: "+installed);
-            // Select the correct subsection
             if (installed == 0)
             {
-                //var url = "http://localhost/~paul/cnc-packages.zip";
-                //var url = "http://localhost/~paul/cnc-packages.bogus";
-                var url = "http://open-ra.org/get-dependency.php?file=cnc-packages";
-                window.external.registerDownload("cnc-packages", url, "cnc-packages.zip");
+                window.external.registerDownload("cnc-packages", "http://open-ra.org/get-dependency.php?file=cnc-packages", "cnc-packages.zip");
                 refreshDownloadButtons();
             }
         }
@@ -148,23 +141,24 @@
             document.getElementById("download-downloading").style.display = "none";
             document.getElementById("download-extract").style.display = "none";
             document.getElementById("download-error").style.display = "none";
-            
             // status can be NOT_REGISTERED, AVAILABLE, DOWNLOADING, COMPLETE, ERROR
             var status = window.external.downloadStatus("cnc-packages");
-            window.external.log("status: "+status);
             
             // Download complete, offer button to extract it
             if (status == "COMPLETE")
-                 document.getElementById("download-extract").style.display = "";
-            
+            {
+                document.getElementById("download-extract").style.display = "";
+            }
             // Show the download progress
             else if (status == "DOWNLOADING")
+            {
                 document.getElementById("download-downloading").style.display = "";
-            
+            }
             // Show the download button
             else if (status == "AVAILABLE")
+            {
                 document.getElementById("download-available").style.display = "";
-            
+            }
             else if (status == "ERROR")
             {
                 var message = window.external.downloadError("cnc-packages");
@@ -180,19 +174,15 @@
             
             var total = window.external.bytesTotal(file);
             var downloaded = window.external.bytesCompleted(file);
-            window.external.log(file+" = total: "+total+" downloaded: "+downloaded);
-
             if (downloaded > 0)
             {            
                 var multiplier = 1/1048576.0;
                 total = (total*multiplier).toPrecision(2);
                 downloaded = (downloaded*multiplier).toPrecision(2);
-            
                 document.getElementById("download-status").value = downloaded+"/"+total+" MB";
             }
             refreshDownloadButtons();
         }
-        
         </script>
 	</head>
 	<body onload="onLoad();">
