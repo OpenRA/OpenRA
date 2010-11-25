@@ -57,17 +57,16 @@ namespace OpenRA.Utility
 		{
 			string[] args = argValue.Split(',');
 			
-			if (args.Length != 3)
+			if (args.Length != 2)
 			{
 				Console.WriteLine("Error: invalid syntax");
 				return;
 			}
 			string zipFile = args[0];
-			string mod = args[1];
-			string path = args[2];
+			string path = args[1];
 			
 			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
-			string dest = "mods{0}{1}{0}{2}".F(Path.DirectorySeparatorChar,mod,path);
+			string dest = "mods{0}{1}".F(Path.DirectorySeparatorChar,path);
 			List<string> extracted = new List<string>();
 			try
 			{
