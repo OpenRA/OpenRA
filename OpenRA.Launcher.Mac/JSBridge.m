@@ -52,6 +52,7 @@ static JSBridge *SharedInstance;
 						@"downloadError", NSStringFromSelector(@selector(downloadError:)),
 						@"bytesCompleted", NSStringFromSelector(@selector(bytesCompleted:)),
 						@"bytesTotal", NSStringFromSelector(@selector(bytesTotal:)),
+						@"extractDownload", NSStringFromSelector(@selector(extractDownload:toPath:inMod:)),
 					nil] retain];
 	}
 	return self;
@@ -153,6 +154,40 @@ static JSBridge *SharedInstance;
 	 [NSString stringWithFormat:@"downloadProgressed('%@')",[download key]]];
 }
 
+- (void)notifyExtractProgress:(Download *)download
+{
+	[[[controller webView] windowScriptObject] evaluateWebScript:
+	 [NSString stringWithFormat:@"extractProgressed('%@')",[download key]]];
+}
+
+- (BOOL)extractDownload:(NSString *)key toPath:(NSString *)aFile inMod:(NSString *)aMod
+{
+	Download *d = [controller downloadWithKey:key];
+	if (d == nil)
+	{
+		NSLog(@"Unknown download");
+		return NO;
+	}
+	if (![[d status] isEqualToString:@"DOWNLOADED"])
+	{
+		NSLog(@"Invalid download status");
+		return NO;
+	}
+	
+	id mod = [[controller allMods] objectForKey:aMod];
+	if (mod == nil)
+	{
+		NSLog(@"Invalid or unknown mod: %@", aMod);
+		return NO;
+	}
+	
+	// Disallow traversing up the directory tree
+	id path = [aMod stringByAppendingPathComponent:[aFile stringByReplacingOccurrencesOfString:@"../"
+																			   withString:@""]];
+	
+	[d extractToPath:path];
+	return YES;
+}
 
 - (void)log:(NSString *)message
 {

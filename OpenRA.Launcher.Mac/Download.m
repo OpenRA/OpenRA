@@ -37,7 +37,7 @@
 		
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filename])
 		{
-			status = @"COMPLETE";
+			status = @"DOWNLOADED";
 			bytesCompleted = bytesTotal = [[[NSFileManager defaultManager] attributesOfItemAtPath:filename error:NULL] fileSize];
 		}
 		else
@@ -49,7 +49,35 @@
 	return self;
 }
 
-- (void)utilityResponded:(NSNotification *)n
+
+- (BOOL)start
+{
+	status = @"DOWNLOADING";
+	task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--download-url=%@,%@",url,filename]
+							   delegate:self
+					   responseSelector:@selector(downloadResponded:)
+					 terminatedSelector:@selector(utilityTerminated:)];
+	[task retain];
+	return YES;
+}
+
+- (BOOL)cancel
+{
+	status = @"ERROR";
+	error = @"Download Cancelled";
+	
+	[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
+	bytesCompleted = bytesTotal = -1;
+	
+	[[JSBridge sharedInstance] notifyDownloadProgress:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:NSFileHandleReadCompletionNotification
+												  object:[[task standardOutput] fileHandleForReading]];
+	[task terminate];
+	return YES;
+}
+
+- (void)downloadResponded:(NSNotification *)n
 {
 	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
 	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
@@ -80,7 +108,7 @@
 		{
 			if ([message isEqualToString:@"Completed"])
 			{
-				status = @"COMPLETE";
+				status = @"DOWNLOADED";
 			}
 			
 			// Parse download status info
@@ -99,36 +127,60 @@
 		[[n object] readInBackgroundAndNotify];
 }
 
-- (BOOL)start
+- (BOOL)extractToPath:(NSString *)aPath
 {
-	status = @"DOWNLOADING";
-	task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--download-url=%@,%@",url,filename]
+	status = @"EXTRACTING";
+	task = [game runAsyncUtilityWithArg:[NSString stringWithFormat:@"--extract-zip=%@,%@",filename,aPath]
 							   delegate:self
-					   responseSelector:@selector(utilityResponded:)
+					   responseSelector:@selector(extractResponded:)
 					 terminatedSelector:@selector(utilityTerminated:)];
 	[task retain];
 	return YES;
 }
 
-- (BOOL)cancel
+- (void)extractResponded:(NSNotification *)n
 {
-	status = @"ERROR";
-	error = @"Download Cancelled";
+	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
+	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
 	
-	[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
-	bytesCompleted = bytesTotal = -1;
+	// Response can contain multiple lines, or no lines. Split into lines, and parse each in turn
+	NSArray *lines = [response componentsSeparatedByString:@"\n"];
+	for (NSString *line in lines)
+	{
+		NSLog(@"%@",line);
+		NSRange separator = [line rangeOfString:@":"];
+		if (separator.location == NSNotFound)
+			continue; // We only care about messages of the form key: value
+		
+		NSString *type = [line substringToIndex:separator.location];
+		NSString *message = [[line substringFromIndex:separator.location+1] 
+							 stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		
+		if ([type isEqualToString:@"Error"])
+		{
+			status = @"ERROR";
+			[error autorelease];
+			error = [message retain];
+		}
+		
+		else if ([type isEqualToString:@"Status"])
+		{
+			if ([message isEqualToString:@"Completed"])
+			{
+				status = @"EXTRACTED";
+			}
+		}
+	}
+	[[JSBridge sharedInstance] notifyExtractProgress:self];
 	
-	[[JSBridge sharedInstance] notifyDownloadProgress:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:NSFileHandleReadCompletionNotification
-												  object:[[task standardOutput] fileHandleForReading]];
-	[task terminate];
-	return YES;
+	// Keep reading
+	if ([n object] != nil)
+		[[n object] readInBackgroundAndNotify];
 }
 
 - (void)utilityTerminated:(NSNotification *)n
 {
-	NSLog(@"utility terminated");
+	NSLog(@"download terminated");
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
 	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];

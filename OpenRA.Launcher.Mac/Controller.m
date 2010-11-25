@@ -222,7 +222,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 }
 
 - (void)outlineView:(NSOutlineView *)olv willDisplayCell:(NSCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
-{	 
+{
 	if ([[tableColumn identifier] isEqualToString:@"mods"])
 	{
 		if ([cell isKindOfClass:[ImageAndTextCell class]])

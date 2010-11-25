@@ -57,7 +57,12 @@
             {
                 font-size:0.75em;
             }
-
+            
+            .status
+            {
+                font-size:0.8em;
+            }
+            
             .button
             {
             	border: solid 3px #650b03;
@@ -113,7 +118,7 @@
         
         function extract()
         {
-            window.external.log("Todo: Extract package");
+            window.external.extractDownload("cnc-packages","packages","cnc");
         }
         
         function onLoad()
@@ -140,24 +145,31 @@
             document.getElementById("download-available").style.display = "none";
             document.getElementById("download-downloading").style.display = "none";
             document.getElementById("download-extract").style.display = "none";
+            document.getElementById("download-extracting").style.display = "none";
             document.getElementById("download-error").style.display = "none";
-            // status can be NOT_REGISTERED, AVAILABLE, DOWNLOADING, COMPLETE, ERROR
+            
+            // status can be NOT_REGISTERED, AVAILABLE, DOWNLOADING, DOWNLOADED, EXTRACTING, EXTRACTED, ERROR
             var status = window.external.downloadStatus("cnc-packages");
             
-            // Download complete, offer button to extract it
-            if (status == "COMPLETE")
+            if (status == "AVAILABLE")
             {
-                document.getElementById("download-extract").style.display = "";
+                document.getElementById("download-available").style.display = "";
             }
-            // Show the download progress
             else if (status == "DOWNLOADING")
             {
                 document.getElementById("download-downloading").style.display = "";
             }
-            // Show the download button
-            else if (status == "AVAILABLE")
+            if (status == "DOWNLOADED")
             {
-                document.getElementById("download-available").style.display = "";
+                document.getElementById("download-extract").style.display = "";
+            }
+            else if (status == "EXTRACTING")
+            {
+                document.getElementById("download-extracting").style.display = "";
+            }
+            else if (status == "EXTRACTED")
+            {
+                refreshSections();
             }
             else if (status == "ERROR")
             {
@@ -181,6 +193,16 @@
                 downloaded = (downloaded*multiplier).toPrecision(2);
                 document.getElementById("download-status").value = downloaded+"/"+total+" MB";
             }
+            refreshDownloadButtons();
+        }
+        
+        function extractProgressed(file)
+        {
+            if (file != "cnc-packages")
+                return;
+                
+            // Todo: show an extraction ticker?
+            
             refreshDownloadButtons();
         }
         </script>
@@ -213,12 +235,15 @@
 			        <input type="button" class="button" id="download-status" value="Initializing..." />
 			        <input type="button" class="button" onclick="cancel();" value="Cancel" />
 			    </div>
+			    <div id="download-error" style="display:none">
+			        <input type="button" class="button" onclick="download();" value="Retry" />
+			        <span class="status" id="error-message"></span>
+			    </div>
 			    <div id="download-extract" style="display:none">
 			        <input type="button" class="button" onclick="extract();" value="Install" />
 			    </div>
-			    <div id="download-error" style="display:none">
-			        <input type="button" class="button" onclick="download();" value="Retry" />
-			        <span class="desc" id="error-message"></span>
+			    <div id="download-extracting" style="display:none">
+			        <input type="button" class="button" value="Installing..." />
 			    </div>
 			</div>
 			<div id="buttons-upgrade" class="buttons" style="display:none">

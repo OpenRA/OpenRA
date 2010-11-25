@@ -32,5 +32,5 @@
 - (id)initWithURL:(NSString *)aURL filename:(NSString *)aFilename key:(NSString *)aKey game:(GameInstall *)game;
 - (BOOL)start;
 - (BOOL)cancel;
-
+- (BOOL)extractToPath:(NSString *)aPath;
 @end
