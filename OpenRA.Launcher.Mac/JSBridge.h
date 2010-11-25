@@ -20,4 +20,5 @@
 + (JSBridge *)sharedInstance;
 - (void)setController:(Controller *)aController;
 - (void)notifyDownloadProgress:(Download *)download;
+- (void)notifyExtractProgress:(Download *)download;
 @end

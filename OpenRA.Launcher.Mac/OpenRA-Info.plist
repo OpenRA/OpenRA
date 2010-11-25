@@ -13,7 +13,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>OpenRA Launcher</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.open-ra.launcher.mac</string>
+	<string>org.open-ra.launcher</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

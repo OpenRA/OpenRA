@@ -18,9 +18,18 @@
 @synthesize allMods;
 @synthesize webView;
 
++ (void)initialize
+{
+	[[NSUserDefaults standardUserDefaults]
+	 registerDefaults:[NSDictionary dictionaryWithObject:[[NSBundle mainBundle] resourcePath]
+												  forKey:@"gamepath"]];
+}
+
 - (void)awakeFromNib
 {	
-	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
+	NSString *gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
+
+	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:gamePath]];
 	[[JSBridge sharedInstance] setController:self];
 	downloads = [[NSMutableDictionary alloc] init];
 	hasMono = [self hasSupportedMono];
