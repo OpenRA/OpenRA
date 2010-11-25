@@ -183,7 +183,7 @@ Background@SERVER_LOBBY:
 					Height:30
 					Visible:false
 					Children:
-						Button@NAME:		-- TODO: replace with dropdown
+						DropDownButton@NAME:		-- TODO: replace with dropdown
 							Id:NAME
 							Text:Name
 							Width:155
