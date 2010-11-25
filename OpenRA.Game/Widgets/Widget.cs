@@ -345,7 +345,7 @@ namespace OpenRA.Widgets
 		}
 	}
 
-	class ContainerWidget : Widget {
+	public class ContainerWidget : Widget {
 		public ContainerWidget() : base() { }
 
 		public ContainerWidget(Widget other) : base(other) { }

@@ -9,8 +9,9 @@
 #endregion
 
 using OpenRA.Network;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class ConnectionDialogsDelegate : IWidgetDelegate
 	{

@@ -77,8 +77,9 @@ namespace OpenRA
 			ConnectionStateChanged( orderManager );
 		}
 
-		internal static int RenderFrame = 0;
-		internal static int LocalTick { get { return orderManager.LocalFrameNumber; } }
+		public static int RenderFrame = 0;
+		public static int NetFrameNumber { get { return orderManager.NetFrameNumber; } }
+		public static int LocalTick { get { return orderManager.LocalFrameNumber; } }
 		const int NetTickScale = 3;		// 120ms net tick for 40ms local tick
 
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };

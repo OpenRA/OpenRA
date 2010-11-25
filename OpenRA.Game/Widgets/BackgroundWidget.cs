@@ -12,7 +12,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	class BackgroundWidget : Widget
+	public class BackgroundWidget : Widget
 	{
 		public readonly string Background = "dialog";
 		

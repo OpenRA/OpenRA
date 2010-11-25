@@ -12,8 +12,9 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MapChooserDelegate : IWidgetDelegate
 	{

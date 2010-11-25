@@ -8,12 +8,13 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
-using OpenRA.Server;
-using OpenRA.Network;
 using System.Collections.Generic;
+using OpenRA.FileFormats;
+using OpenRA.Network;
+using OpenRA.Server;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{

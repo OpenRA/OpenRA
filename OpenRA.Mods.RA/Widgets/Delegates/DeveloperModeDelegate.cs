@@ -23,7 +23,7 @@ using OpenRA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class DeveloperModeDelegate : IWidgetDelegate
 	{

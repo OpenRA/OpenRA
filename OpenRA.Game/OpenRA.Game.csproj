@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -83,12 +83,6 @@
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Widgets\ChatEntryWidget.cs" />
-    <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
-    <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
-    <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
-    <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
-    <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
-    <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
     <Compile Include="Widgets\MapPreviewWidget.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
@@ -165,16 +159,12 @@
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\CheckboxWidget.cs" />
-    <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
-    <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
-    <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
-    <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
     <Compile Include="Widgets\ListBoxWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TimerWidget.cs" />
@@ -186,7 +176,6 @@
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
-    <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
     <Compile Include="GameRules\Settings.cs" />
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Traits\ActorStance.cs" />
@@ -216,7 +205,6 @@
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
-    <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
     <Compile Include="Widgets\ScrollingTextWidget.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -238,9 +226,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServerTraits\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,8 +10,9 @@
 
 using System.Drawing;
 using OpenRA.FileFormats;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class VideoPlayerDelegate : IWidgetDelegate
 	{

@@ -10,8 +10,9 @@
 
 using System.Linq;
 using System.Net;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class CreateServerMenuDelegate : IWidgetDelegate
 	{

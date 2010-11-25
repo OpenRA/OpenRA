@@ -1,7 +1,3 @@
-using System.Linq;
-using OpenRA.FileFormats;
-using System.Drawing;
-using OpenRA.Support;
 #region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
@@ -12,7 +8,13 @@ using OpenRA.Support;
  */
 #endregion
 
-namespace OpenRA.Widgets.Delegates
+using System.Drawing;
+using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Support;
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MusicPlayerDelegate : IWidgetDelegate
 	{

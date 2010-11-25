@@ -312,6 +312,18 @@
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />
+    <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
+    <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
+    <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
+    <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
+    <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
+    <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
+    <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
+    <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
+    <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
+    <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
+    <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
+    <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

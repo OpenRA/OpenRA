@@ -9,11 +9,11 @@
 #endregion
 
 using System;
-using System.Windows.Forms;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class SettingsMenuDelegate : IWidgetDelegate
 	{
@@ -111,10 +111,8 @@ namespace OpenRA.Widgets.Delegates
 			{
 				try {
 					var w = int.Parse(width.Text);
-					if (w > Game.Settings.Graphics.MinResolution.X && w <= Screen.PrimaryScreen.Bounds.Size.Width)
+					if (w > Game.Settings.Graphics.MinResolution.X)
 						Game.Settings.Graphics.WindowedSize = new int2(w, Game.Settings.Graphics.WindowedSize.Y);
-					else
-						width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
 				}
 				catch (FormatException) {
 					width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
@@ -130,7 +128,7 @@ namespace OpenRA.Widgets.Delegates
 			{
 				try {
 					var h = int.Parse(height.Text);
-					if (h > Game.Settings.Graphics.MinResolution.Y  && h <= Screen.PrimaryScreen.Bounds.Size.Height)
+					if (h > Game.Settings.Graphics.MinResolution.Y)
 						Game.Settings.Graphics.WindowedSize = new int2(Game.Settings.Graphics.WindowedSize.X, h);	
 					else 
 						height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
