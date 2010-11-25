@@ -19,6 +19,25 @@ TopLeft: 8,1
 BottomRight: 88,46
 
 Players:
+	PlayerReference@BadGuy:
+		Name: Nod
+		Palette:
+		Race: nod
+		OwnsWorld: False
+		NonCombatant: False
+		Color: 255,255,20,0
+		Color2: 255,56,0,0
+		Allies: Nod
+		Enemies: GDI
+	PlayerReference@GoodGuy:
+		Name: GDI
+		Race: gdi
+		OwnsWorld: False
+		NonCombatant: False
+		Color: 255,246,214,121
+		Color2: 255,40,32,8
+		Allies: GDI
+		Enemies: Nod
 	PlayerReference@Neutral:
 		Name: Neutral
 		Palette:
@@ -36,106 +55,106 @@ Players:
 Actors:
 	Actor0: boat
 		Location: 32,34
-		Owner: Neutral
+		Owner: GDI
 	Actor1: boat
 		Location: 39,36
-		Owner: Neutral
+		Owner: GDI
 	Actor2: boat
 		Location: 70,33
-		Owner: Neutral
+		Owner: GDI
 	Actor3: boat
 		Location: 79,36
-		Owner: Neutral
+		Owner: GDI
 	Actor4: fix
 		Location: 59,44
-		Owner: Neutral
+		Owner: GDI
 	Actor5: tran
 		Location: 60,45
-		Owner: Neutral
+		Owner: GDI
 	Actor6: cycl
 		Location: 64,44
-		Owner: Neutral
+		Owner: GDI
 	Actor7: cycl
 		Location: 64,43
-		Owner: Neutral
+		Owner: GDI
 	Actor8: cycl
 		Location: 63,43
-		Owner: Neutral
+		Owner: GDI
 	Actor9: cycl
 		Location: 62,43
-		Owner: Neutral
+		Owner: GDI
 	Actor10: cycl
 		Location: 61,43
-		Owner: Neutral
+		Owner: GDI
 	Actor11: cycl
 		Location: 60,43
-		Owner: Neutral
+		Owner: GDI
 	Actor12: cycl
 		Location: 59,43
-		Owner: Neutral
+		Owner: GDI
 	Actor13: cycl
 		Location: 58,43
-		Owner: Neutral
+		Owner: GDI
 	Actor14: cycl
 		Location: 57,43
-		Owner: Neutral
+		Owner: GDI
 	Actor15: cycl
 		Location: 56,43
-		Owner: Neutral
+		Owner: GDI
 	Actor16: cycl
 		Location: 56,44
-		Owner: Neutral
+		Owner: GDI
 	Actor17: atwr
 		Location: 55,41
-		Owner: Neutral
+		Owner: GDI
 	Actor18: nuke
 		Location: 70,45
-		Owner: Neutral
+		Owner: GDI
 	Actor19: nuke
 		Location: 72,45
-		Owner: Neutral
+		Owner: GDI
 	Actor20: hq
 		Location: 54,42
-		Owner: Neutral
+		Owner: GDI
 	Actor21: t07
 		Location: 53,42
-		Owner: Neutral
+		Owner: GDI
 	Actor22: tc01
 		Location: 53,43
-		Owner: Neutral
+		Owner: GDI
 	Actor23: e1
 		Location: 57,44
-		Owner: Neutral
+		Owner: GDI
 	Actor24: e2
 		Location: 65,44
-		Owner: Neutral
+		Owner: GDI
 	Actor25: e2
 		Location: 64,45
-		Owner: Neutral
+		Owner: GDI
 	Actor26: atwr
 		Location: 66,41
-		Owner: Neutral
+		Owner: GDI
 	Actor27: tc02
 		Location: 65,42
-		Owner: Neutral
+		Owner: GDI
 	Actor28: fact
 		Location: 11,3
-		Owner: Neutral
+		Owner: Nod
 	Actor29: nuke
 		Location: 14,1
-		Owner: Neutral
+		Owner: Nod
 	Actor30: nuke
 		Location: 16,1
-		Owner: Neutral
+		Owner: Nod
 	Actor31: silo
 		Location: 19,1
-		Owner: Neutral
+		Owner: Nod
 	Actor32: silo
 		Location: 19,2
-		Owner: Neutral
+		Owner: Nod
 	Actor33: proc
 		Location: 15,3
-		Owner: Neutral
+		Owner: Nod
 	Actor34: tc04
 		Location: 11,0
 		Owner: Neutral
@@ -153,175 +172,175 @@ Actors:
 		Owner: Neutral
 	Actor43: afld
 		Location: 9,7
-		Owner: Neutral
+		Owner: Nod
 	Actor42: hq
 		Location: 10,4
-		Owner: Neutral
+		Owner: Nod
 	Actor45: sam
 		Location: 25,6
-		Owner: Neutral
+		Owner: Nod
 	Actor46: sam
 		Location: 29,6
-		Owner: Neutral
+		Owner: Nod
 	Actor47: sam
 		Location: 53,2
-		Owner: Neutral
+		Owner: Nod
 	Actor48: sam
 		Location: 79,5
-		Owner: Neutral
+		Owner: Nod
 	Actor49: hand
 		Location: 15,7
-		Owner: Neutral
+		Owner: Nod
 	Actor50: cycl
 		Location: 13,11
-		Owner: Neutral
+		Owner: Nod
 	Actor51: cycl
 		Location: 13,10
-		Owner: Neutral
+		Owner: Nod
 	Actor52: cycl
 		Location: 12,10
-		Owner: Neutral
+		Owner: Nod
 	Actor53: cycl
 		Location: 12,11
-		Owner: Neutral
+		Owner: Nod
 	Actor54: cycl
 		Location: 11,11
-		Owner: Neutral
+		Owner: Nod
 	Actor55: cycl
 		Location: 10,11
-		Owner: Neutral
+		Owner: Nod
 	Actor56: cycl
 		Location: 9,11
-		Owner: Neutral
+		Owner: Nod
 	Actor57: cycl
 		Location: 8,11
-		Owner: Neutral
+		Owner: Nod
 	Actor58: cycl
 		Location: 8,10
-		Owner: Neutral
+		Owner: Nod
 	Actor59: cycl
 		Location: 8,9
-		Owner: Neutral
+		Owner: Nod
 	Actor60: cycl
 		Location: 8,8
-		Owner: Neutral
+		Owner: Nod
 	Actor61: cycl
 		Location: 8,7
-		Owner: Neutral
+		Owner: Nod
 	Actor62: brik
 		Location: 15,14
-		Owner: Neutral
+		Owner: Nod
 	Actor63: brik
 		Location: 14,14
-		Owner: Neutral
+		Owner: Nod
 	Actor64: brik
 		Location: 14,13
-		Owner: Neutral
+		Owner: Nod
 	Actor65: brik
 		Location: 15,13
-		Owner: Neutral
+		Owner: Nod
 	Actor66: brik
 		Location: 13,14
-		Owner: Neutral
+		Owner: Nod
 	Actor67: brik
 		Location: 12,14
-		Owner: Neutral
+		Owner: Nod
 	Actor68: brik
 		Location: 11,14
-		Owner: Neutral
+		Owner: Nod
 	Actor69: brik
 		Location: 11,15
-		Owner: Neutral
+		Owner: Nod
 	Actor70: brik
 		Location: 10,15
-		Owner: Neutral
+		Owner: Nod
 	Actor71: brik
 		Location: 9,15
-		Owner: Neutral
+		Owner: Nod
 	Actor72: brik
 		Location: 8,15
-		Owner: Neutral
+		Owner: Nod
 	Actor73: brik
 		Location: 19,9
-		Owner: Neutral
+		Owner: Nod
 	Actor74: brik
 		Location: 19,10
-		Owner: Neutral
+		Owner: Nod
 	Actor75: brik
 		Location: 18,10
-		Owner: Neutral
+		Owner: Nod
 	Actor76: brik
 		Location: 18,9
-		Owner: Neutral
+		Owner: Nod
 	Actor77: brik
 		Location: 19,8
-		Owner: Neutral
+		Owner: Nod
 	Actor78: brik
 		Location: 19,7
-		Owner: Neutral
+		Owner: Nod
 	Actor79: brik
 		Location: 20,7
-		Owner: Neutral
+		Owner: Nod
 	Actor80: brik
 		Location: 20,6
-		Owner: Neutral
+		Owner: Nod
 	Actor81: brik
 		Location: 20,5
-		Owner: Neutral
+		Owner: Nod
 	Actor82: brik
 		Location: 21,5
-		Owner: Neutral
+		Owner: Nod
 	Actor83: brik
 		Location: 22,5
-		Owner: Neutral
+		Owner: Nod
 	Actor84: brik
 		Location: 23,5
-		Owner: Neutral
+		Owner: Nod
 	Actor85: brik
 		Location: 24,5
-		Owner: Neutral
+		Owner: Nod
 	Actor91: brik
 		Location: 27,5
-		Owner: Neutral
+		Owner: Nod
 	Actor90: brik
 		Location: 28,5
-		Owner: Neutral
+		Owner: Nod
 	Actor89: brik
 		Location: 29,5
-		Owner: Neutral
+		Owner: Nod
 	Actor88: brik
 		Location: 30,5
-		Owner: Neutral
+		Owner: Nod
 	Actor87: brik
 		Location: 31,5
-		Owner: Neutral
+		Owner: Nod
 	Actor35: gun
 		Location: 20,11
-		Owner: Neutral
+		Owner: Nod
 	Actor36: gun
 		Location: 16,14
-		Owner: Neutral
+		Owner: Nod
 	Actor41: brik
 		Location: 32,5
-		Owner: Neutral
+		Owner: Nod
 	Actor44: brik
 		Location: 32,4
-		Owner: Neutral
+		Owner: Nod
 	Actor86: brik
 		Location: 31,4
-		Owner: Neutral
+		Owner: Nod
 	Actor96: gun
 		Location: 33,5
-		Owner: Neutral
+		Owner: Nod
 	Actor97: gun
 		Location: 39,3
-		Owner: Neutral
+		Owner: Nod
 	Actor98: nuke
 		Location: 22,1
-		Owner: Neutral
+		Owner: Nod
 	Actor99: nuke
 		Location: 24,1
-		Owner: Neutral
+		Owner: Nod
 	Actor100: tc04
 		Location: 26,0
 		Owner: Neutral
@@ -363,82 +382,82 @@ Actors:
 		Owner: Neutral
 	Actor92: brik
 		Location: 26,5
-		Owner: Neutral
+		Owner: Nod
 	Actor93: brik
 		Location: 25,5
-		Owner: Neutral
+		Owner: Nod
 	Actor94: brik
 		Location: 39,1
-		Owner: Neutral
+		Owner: Nod
 	Actor95: brik
 		Location: 39,2
-		Owner: Neutral
+		Owner: Nod
 	Actor113: brik
 		Location: 38,2
-		Owner: Neutral
+		Owner: Nod
 	Actor114: brik
 		Location: 38,1
-		Owner: Neutral
+		Owner: Nod
 	Actor115: tc02
 		Location: 36,0
 		Owner: Neutral
 	Actor116: proc
 		Location: 57,4
-		Owner: Neutral
+		Owner: Nod
 	Actor117: silo
 		Location: 54,5
-		Owner: Neutral
+		Owner: Nod
 	Actor118: silo
 		Location: 54,6
-		Owner: Neutral
+		Owner: Nod
 	Actor119: e1
 		Location: 12,5
-		Owner: Neutral
+		Owner: Nod
 	Actor120: e1
 		Location: 11,6
-		Owner: Neutral
+		Owner: Nod
 	Actor121: e6
 		Location: 14,4
-		Owner: Neutral
+		Owner: Nod
 	Actor122: e3
 		Location: 18,4
-		Owner: Neutral
+		Owner: Nod
 	Actor123: e3
 		Location: 38,3
-		Owner: Neutral
+		Owner: Nod
 	Actor124: e3
 		Location: 59,8
-		Owner: Neutral
+		Owner: Nod
 	Actor125: e3
 		Location: 58,9
-		Owner: Neutral
+		Owner: Nod
 	Actor126: ltnk
 		Location: 21,4
-		Owner: Neutral
+		Owner: Nod
 	Actor127: ltnk
 		Location: 22,4
-		Owner: Neutral
+		Owner: Nod
 	Actor128: ltnk
 		Location: 23,4
-		Owner: Neutral
+		Owner: Nod
 	Actor129: bggy
 		Location: 11,10
-		Owner: Neutral
+		Owner: Nod
 	Actor130: bggy
 		Location: 10,10
-		Owner: Neutral
+		Owner: Nod
 	Actor131: gun
 		Location: 13,16
-		Owner: Neutral
+		Owner: Nod
 	Actor132: gun
 		Location: 12,16
-		Owner: Neutral
+		Owner: Nod
 	Actor133: brik
 		Location: 9,16
-		Owner: Neutral
+		Owner: Nod
 	Actor134: brik
 		Location: 8,16
-		Owner: Neutral
+		Owner: Nod
 	Actor135: tc01
 		Location: 10,16
 		Owner: Neutral
@@ -504,49 +523,49 @@ Actors:
 		Owner: Neutral
 	Actor156: gun
 		Location: 34,23
-		Owner: Neutral
+		Owner: Nod
 	Actor157: sam
 		Location: 32,22
-		Owner: Neutral
+		Owner: Nod
 	Actor158: e1
 		Location: 32,21
-		Owner: Neutral
+		Owner: Nod
 	Actor159: e1
 		Location: 33,21
-		Owner: Neutral
+		Owner: Nod
 	Actor160: e1
 		Location: 40,12
-		Owner: Neutral
+		Owner: Nod
 	Actor161: e1
 		Location: 39,13
-		Owner: Neutral
+		Owner: Nod
 	Actor162: cycl
 		Location: 50,5
-		Owner: Neutral
+		Owner: Nod
 	Actor163: cycl
 		Location: 51,5
-		Owner: Neutral
+		Owner: Nod
 	Actor167: cycl
 		Location: 51,8
-		Owner: Neutral
+		Owner: Nod
 	Actor165: cycl
 		Location: 51,6
-		Owner: Neutral
+		Owner: Nod
 	Actor166: cycl
 		Location: 51,7
-		Owner: Neutral
+		Owner: Nod
 	Actor168: cycl
 		Location: 51,9
-		Owner: Neutral
+		Owner: Nod
 	Actor169: cycl
 		Location: 51,10
-		Owner: Neutral
+		Owner: Nod
 	Actor170: cycl
 		Location: 52,10
-		Owner: Neutral
+		Owner: Nod
 	Actor171: cycl
 		Location: 52,9
-		Owner: Neutral
+		Owner: Nod
 	Actor172: tc04
 		Location: 47,4
 		Owner: Neutral
@@ -681,10 +700,10 @@ Actors:
 		Owner: Neutral
 	Actor219: e1
 		Location: 45,27
-		Owner: Neutral
+		Owner: Nod
 	Actor220: e1
 		Location: 46,28
-		Owner: Neutral
+		Owner: Nod
 	Actor222: v01
 		Location: 69,19
 		Owner: Neutral
@@ -741,52 +760,52 @@ Actors:
 		Owner: Neutral
 	Actor240: e1
 		Location: 79,9
-		Owner: Neutral
+		Owner: Nod
 	Actor241: e1
 		Location: 78,10
-		Owner: Neutral
+		Owner: Nod
 	Actor242: e3
 		Location: 58,1
-		Owner: Neutral
+		Owner: Nod
 	Actor243: e3
 		Location: 52,8
-		Owner: Neutral
+		Owner: Nod
 	Actor244: cycl
 		Location: 52,27
-		Owner: Neutral
+		Owner: Nod
 	Actor245: cycl
 		Location: 52,26
-		Owner: Neutral
+		Owner: Nod
 	Actor246: cycl
 		Location: 51,26
-		Owner: Neutral
+		Owner: Nod
 	Actor247: cycl
 		Location: 51,27
-		Owner: Neutral
+		Owner: Nod
 	Actor248: cycl
 		Location: 62,26
-		Owner: Neutral
+		Owner: Nod
 	Actor249: cycl
 		Location: 62,27
-		Owner: Neutral
+		Owner: Nod
 	Actor250: cycl
 		Location: 63,27
-		Owner: Neutral
+		Owner: Nod
 	Actor251: cycl
 		Location: 63,26
-		Owner: Neutral
+		Owner: Nod
 	Actor252: gun
 		Location: 53,27
-		Owner: Neutral
+		Owner: Nod
 	Actor253: gun
 		Location: 50,27
-		Owner: Neutral
+		Owner: Nod
 	Actor254: gun
 		Location: 61,27
-		Owner: Neutral
+		Owner: Nod
 	Actor255: gun
 		Location: 64,27
-		Owner: Neutral
+		Owner: Nod
 	Actor256: v03
 		Location: 68,21
 		Owner: Neutral
@@ -810,10 +829,10 @@ Actors:
 		Owner: Neutral
 	Actor264: e2
 		Location: 70,43
-		Owner: Neutral
+		Owner: GDI
 	Actor265: e2
 		Location: 71,43
-		Owner: Neutral
+		Owner: GDI
 	Actor266: tc04
 		Location: 47,42
 		Owner: Neutral
@@ -906,23 +925,26 @@ Actors:
 		Owner: Neutral
 	Actor164: nuke
 		Location: 8,12
-		Owner: Neutral
+		Owner: Nod
 	Actor209: nuke
 		Location: 10,12
-		Owner: Neutral
+		Owner: Nod
 	Actor210: nuke
 		Location: 53,45
-		Owner: Neutral
+		Owner: GDI
 	Actor214: nuke
 		Location: 55,45
-		Owner: Neutral
+		Owner: GDI
 	Actor221: jeep
 		Location: 57,45
-		Owner: Neutral
+		Owner: GDI
 
 Waypoints:
 
 Smudges:
 
 Rules:
-
+	World:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		-CrateSpawner:
