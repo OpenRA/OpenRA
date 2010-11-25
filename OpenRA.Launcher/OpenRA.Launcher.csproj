@@ -50,12 +50,6 @@
     <Compile Include="Launcher.Designer.cs">
       <DependentUpon>Launcher.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstallPackagesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InstallPackagesDialog.Designer.cs">
-      <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Mod.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Util.cs" />
@@ -74,9 +68,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Launcher.resx">
       <DependentUpon>Launcher.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InstallPackagesDialog.resx">
-      <DependentUpon>InstallPackagesDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
