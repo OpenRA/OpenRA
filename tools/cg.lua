@@ -7,14 +7,19 @@ return cgbinpath and {
 		local myMenu = wx.wxMenu{
 			{ ID "cg.profile.arb",		"&ARB VP/FP",	"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
 			{ ID "cg.profile.glsl",		"ARB &GLSL",		"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.nv40",		"NV VP/FP&40",	"NV vertex/fragment program 4 profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.gp4",		"NV &GP4",		"EXT vertex/fragment program 4 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.nv40",		"NV VP/FP&40",	"NV vertex/fragment program sm3 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gp4",		"NV &GP4",		"NV vertex/fragment program sm4 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gp5",		"NV &GP5",		"NV vertex/fragment program sm5 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.vertex",		"Compile &Vertex\tCtrl-U",		"Compile Vertex program (select entry word)" },
 			{ ID "cg.compile.fragment",		"Compile &Fragment\tCtrl-I",	"Compile Fragment program (select entry word)" },
 			{ ID "cg.compile.geometry",		"Compile &Geometry\tCtrl-J",	"Compile Geometry program (select entry word)" },
+			{ ID "cg.compile.tessctrl",		"Compile T.Ctrl",	"Compile T.Ctrl program (select entry word)" },
+			{ ID "cg.compile.tesseval",		"Compile T.Eval",	"Compile T.Eval program (select entry word)" },
+			{ },
+			{ ID "cg.format.indent",		"Indent ASM",	"indent ASM codes" },
 		}
 		menuBar:Append(myMenu, "&CgCompiler")
 		
@@ -25,12 +30,15 @@ return cgbinpath and {
 			[ID "cg.compile.vertex"]   = 1,
 			[ID "cg.compile.fragment"] = 2,
 			[ID "cg.compile.geometry"] = 3,
+			[ID "cg.compile.tessctrl"] = 4,
+			[ID "cg.compile.tesseval"] = 5,
 		}
 		data.profiles = {
-			[ID "cg.profile.arb"]  = {"arbvp1","arbfp1",false,".glp"},
-			[ID "cg.profile.glsl"] = {"glslv","glslf",false,".glsl"},
-			[ID "cg.profile.nv40"] = {"vp40","fp40",false,".glp"},
-			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",".glp"},
+			[ID "cg.profile.arb"]  = {"arbvp1","arbfp1",false,false,false,ext=".glp"},
+			[ID "cg.profile.glsl"] = {"glslv","glslf",false,false,false,ext=".glsl"},
+			[ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,ext=".glp"},
+			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp"},
+			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp"},
 		}
 		-- Profile related
 		menuBar:Check(data.profid, true)
@@ -67,7 +75,7 @@ return cgbinpath and {
 				return 
 			end
 			
-			-- TODO popup for custom input
+			-- popup for custom input
 			local args = data.customarg and wx.wxGetTextFromUser("Compiler Args") or ""
 			args = args:len() > 0 and args or nil
 			
@@ -76,9 +84,12 @@ return cgbinpath and {
 			
 			if (not profile[domain]) then return end
 			
-			local ext = 4
+			local ext = "ext"
 			local fullname = filename:GetFullPath()
+			local glsl = fullname:match("%.glsl$") and true
+			
 			local cmdline = ""..fullname.." -profile "..profile[domain].." "
+			cmdline = glsl and cmdline.."-oglsl " or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
 			cmdline = cmdline.."-o "..fullname.."."..info.selword.."^"
 			cmdline = args and cmdline..args:gsub("%s+%-",";-")..";^" or cmdline
@@ -93,6 +104,47 @@ return cgbinpath and {
 		frame:Connect(ID "cg.compile.vertex",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
 		frame:Connect(ID "cg.compile.fragment",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
 		frame:Connect(ID "cg.compile.geometry",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
+		frame:Connect(ID "cg.compile.tessctrl",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
+		frame:Connect(ID "cg.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
+		
+		-- indent asm
+		frame:Connect(ID "cg.format.indent", wx.wxEVT_COMMAND_MENU_SELECTED,
+			function(event)
+				local curedit = GetEditor()
+				local tx = curedit:GetText()
+				local newtx = ""
+				local indent = 0
+				local delta = 2
+				local startindent = {
+					"IF","REP","ELSE",
+				}
+				local endindent = {
+					"ENDIF","ENDREP","ELSE",
+				}
+				
+
+				local function checkstart(str,tab)
+					local res = false
+					for i,v in ipairs(tab) do
+						res = res or ((string.find(str,v) or 0) == 1)
+					end
+					return res
+				end
+
+				for w in string.gmatch(tx, "[^\n]*\n") do
+					if (checkstart(w,endindent)) then
+						indent = indent - delta
+					end
+					
+					local append = (string.sub(w,1,1) ~= " " and  string.rep(" ",indent) or "")..w
+					newtx = newtx..append
+					if (checkstart(w,startindent)) then
+						indent = indent + delta
+					end
+				end
+				
+				curedit:SetText(newtx)
+			end)
 	end,
 
 }

@@ -99,6 +99,7 @@ tex2Dfetch = fn "performs an unfiltered texture lookup in a given sampler (lod a
 tex2Dlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler2D, float4 s, [int texeloffset])"
 tex2Dproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .z for float3 coord, proj in .z or .w) - (float4)(sampler2D, float3/float4 s, [int texeloff])"
 tex2Dsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler2D, int lod)"
+tex2Dgather = fn "returns 4 texels of a given single channel texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler2D, int lod)"
 
 tex3D = fn "performs a texture lookup in a given 3D sampler. May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(sampler3D, float3 s, {float3 dx, dy},[int texeloffset])"
 tex3Dbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler3D, float4 s, [int texeloffset])"
