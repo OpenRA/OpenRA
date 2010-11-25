@@ -107,6 +107,11 @@ namespace OpenRA.Graphics
 					foreach (var t in a.TraitsImplementing<IPostRender>())
 						t.RenderAfterWorld(this, a);
 
+			foreach (var a in world.Selection.Actors)
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
+						t.RenderAfterWorld(this, a);
+			
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderAfterWorld(this, world);
 

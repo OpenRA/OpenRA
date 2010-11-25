@@ -77,15 +77,7 @@ namespace OpenRA.Orders
 			Game.Renderer.Flush();
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, World world)
-		{
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-						t.RenderAfterWorld(wr, a);
-
-			Game.Renderer.Flush();
-		}
+		public void RenderAfterWorld(WorldRenderer wr, World world) {}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}

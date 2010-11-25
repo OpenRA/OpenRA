@@ -90,12 +90,7 @@ namespace OpenRA.Orders
                 custom.RenderAfterWorld(wr, world);
                 return;
             }
-
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-						t.RenderAfterWorld( wr, a );
-
+			
 			Game.Renderer.Flush();
 		}
 
