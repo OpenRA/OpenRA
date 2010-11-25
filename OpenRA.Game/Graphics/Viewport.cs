@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 			                                       Game.CellSize*mapBounds.Y - screenSize.Y/2,
 			                                       Game.CellSize*mapBounds.Width,
 			                                       Game.CellSize*mapBounds.Height);
-			this.scrollPosition = new int2(adjustedMapBounds.Location);
+			this.scrollPosition = new int2(adjustedMapBounds.Location) + new int2(adjustedMapBounds.Size)/2;
 		}
 		
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
