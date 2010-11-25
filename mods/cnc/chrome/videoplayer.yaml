@@ -20,7 +20,7 @@ Background@VIDEOPLAYER_MENU:
 			Y:50
 			Width:640
 			Height:400
-		ListBox@VIDEO_LIST:
+		ScrollPanel@VIDEO_LIST:
 			Id:VIDEO_LIST
 			X:20
 			Y:460

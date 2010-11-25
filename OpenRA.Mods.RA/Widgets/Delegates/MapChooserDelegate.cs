@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			else
 				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 
-			var ml = bg.GetWidget<ListBoxWidget>("MAP_LIST");
+			var ml = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => Map;
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
 			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Bounds.Width, Map.Bounds.Height);

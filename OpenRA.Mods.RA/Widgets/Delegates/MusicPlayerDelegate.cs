@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			                                                                                    Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
 			};
 			
-			var ml = bg.GetWidget<ListBoxWidget>("MUSIC_LIST");
+			var ml = bg.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			

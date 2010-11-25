@@ -242,7 +242,7 @@ Background@MUSIC_MENU:
 			Width:140
 			Height:25
 			Align: Center
-		ListBox@MUSIC_LIST:
+		ScrollPanel@MUSIC_LIST:
 			Id:MUSIC_LIST
 			X:10
 			Y:50

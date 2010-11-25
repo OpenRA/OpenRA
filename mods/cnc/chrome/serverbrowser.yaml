@@ -109,7 +109,7 @@ Background@JOINSERVER_BG:
 			Text:Join Server
 			Align:Center
 			Bold:True
-		ListBox@SERVER_LIST:
+		ScrollPanel@SERVER_LIST:
 			Id:SERVER_LIST
 			X:20
 			Y:50

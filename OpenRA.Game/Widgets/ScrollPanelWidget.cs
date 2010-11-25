@@ -13,7 +13,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public class ListBoxWidget : Widget
+	public class ScrollPanelWidget : Widget
 	{
 		public readonly string Background = "dialog3";
 		public readonly int ScrollbarWidth = 24;
@@ -30,8 +30,8 @@ namespace OpenRA.Widgets
 		Rectangle backgroundRect;
 		Rectangle scrollbarRect;
 		
-		public ListBoxWidget() : base() {}
-		protected ListBoxWidget(ListBoxWidget other)
+		public ScrollPanelWidget() : base() {}
+		protected ScrollPanelWidget(ScrollPanelWidget other)
 			: base(other)
 		{
 			Background = other.Background;
@@ -115,6 +115,6 @@ namespace OpenRA.Widgets
 			return (UpPressed || DownPressed);
 		}
 
-		public override Widget Clone() { return new ListBoxWidget(this); }
+		public override Widget Clone() { return new ScrollPanelWidget(this); }
 	}
 }

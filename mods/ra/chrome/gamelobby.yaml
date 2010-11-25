@@ -29,7 +29,7 @@ Background@SERVER_LOBBY:
 					Y:4
 					Width:244
 					Height:244
-		ListBox@PLAYERSX:
+		ScrollPanel@PLAYERSX:
 			Id:PLAYERSX
 			X:20
 			Y:75
@@ -439,7 +439,7 @@ Background@MAP_CHOOSER:
 			Height:20
 			Text:Choose Map
 			Bold:True
-		ListBox@MAP_LIST:
+		ScrollPanel@MAP_LIST:
 			Id:MAP_LIST
 			X:20
 			Y:50

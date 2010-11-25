@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 
 
-			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
+			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			ServerTemplate = sl.GetWidget<LabelWidget>("SERVER_TEMPLATE");
 
 			bg.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
             if (bg == null) // We got a MasterServer reply AFTER the browser is gone, just return to prevent crash - Gecko
                 return;
 
-			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
+			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
 			sl.Children.Clear();
 			currentServer = null;

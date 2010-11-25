@@ -165,7 +165,6 @@
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\ChatDisplayWidget.cs" />
-    <Compile Include="Widgets\ListBoxWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TimerWidget.cs" />
     <Compile Include="Widgets\ShpImageWidget.cs" />
@@ -182,6 +181,7 @@
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
+    <Compile Include="Widgets\ScrollPanelWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -406,7 +406,7 @@ Background@MAP_CHOOSER:
 			Height:20
 			Text:Choose Map
 			Bold:True
-		ListBox@MAP_LIST:
+		ScrollPanel@MAP_LIST:
 			Id:MAP_LIST
 			X:20
 			Y:50

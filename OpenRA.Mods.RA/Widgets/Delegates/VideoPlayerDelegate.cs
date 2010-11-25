@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			var vl = bg.GetWidget<ListBoxWidget>("VIDEO_LIST");
+			var vl = bg.GetWidget<ScrollPanelWidget>("VIDEO_LIST");
 			var itemTemplate = vl.GetWidget<LabelWidget>("VIDEO_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
 			
