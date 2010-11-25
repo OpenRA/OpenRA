@@ -19,6 +19,9 @@
 	GameInstall *game;
 	NSDictionary *allMods;
 	NSMutableDictionary *downloads;
+	BOOL hasMono;
+	
+	IBOutlet NSWindow *window;
 	IBOutlet NSOutlineView *outlineView;
 	IBOutlet WebView *webView;
 }
@@ -32,5 +35,5 @@
 
 - (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
 - (Download *)downloadWithKey:(NSString *)key;
-
+- (BOOL)hasSupportedMono;
 @end

@@ -19,35 +19,92 @@
 @synthesize webView;
 
 - (void)awakeFromNib
-{
+{	
 	game = [[GameInstall alloc] initWithURL:[NSURL URLWithString:@"/Users/paul/src/OpenRA"]];
 	[[JSBridge sharedInstance] setController:self];
 	downloads = [[NSMutableDictionary alloc] init];
-	
-	NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
-	ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
-	[col setDataCell:imageAndTextCell];
-	
-	sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
-	[self populateModInfo];
-	id modsRoot = [self sidebarModsTree];
-	[sidebarItems addChild:modsRoot];
-	id otherRoot = [self sidebarOtherTree];
-	[sidebarItems addChild:otherRoot];
-	
-	
-	[outlineView reloadData];
-	[outlineView expandItem:modsRoot expandChildren:YES];
-	
-	if ([[modsRoot children] count] > 0)
+	hasMono = [self hasSupportedMono];
+	if (hasMono)
 	{
-		id firstMod = [[modsRoot children] objectAtIndex:0];
-		int row = [outlineView rowForItem:firstMod];
-		[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-		[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [firstMod url]]];
+		NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
+		ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
+		[col setDataCell:imageAndTextCell];
+		
+		sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
+		[self populateModInfo];
+		id modsRoot = [self sidebarModsTree];
+		[sidebarItems addChild:modsRoot];
+		id otherRoot = [self sidebarOtherTree];
+		[sidebarItems addChild:otherRoot];
+		
+		
+		[outlineView reloadData];
+		[outlineView expandItem:modsRoot expandChildren:YES];
+		
+		if ([[modsRoot children] count] > 0)
+		{
+			id firstMod = [[modsRoot children] objectAtIndex:0];
+			int row = [outlineView rowForItem:firstMod];
+			[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+			[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [firstMod url]]];
+		}
+		
+		[outlineView expandItem:otherRoot expandChildren:YES];
 	}
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+	if (!hasMono)
+	{
+		NSAlert *alert = [NSAlert alertWithMessageText:@"Mono Framework"
+										 defaultButton:@"Download Mono"
+									   alternateButton:@"Quit"
+										   otherButton:nil
+							 informativeTextWithFormat:@"OpenRA requires the Mono Framework version 2.6.7 or later."];
+		
+		[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(monoAlertEnded:code:context:) contextInfo:NULL];
+	}
+}
+
+- (void)monoAlertEnded:(NSAlert *)alert
+				  code:(int)button
+			   context:(void *)v
+{
+	if (button == NSAlertDefaultReturn)
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.go-mono.com/mono-downloads/download.html"]];
 	
-	[outlineView expandItem:otherRoot expandChildren:YES];
+	[[NSApplication sharedApplication] terminate:self];
+}
+
+- (BOOL)hasSupportedMono
+{
+	if (![[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Frameworks/Mono.framework/Commands/mono"])
+		return NO;
+	
+	NSPipe *outPipe = [NSPipe pipe];
+	NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
+    [task setArguments:[NSMutableArray arrayWithObject:@"--version"]];
+	[task setStandardOutput:outPipe];
+	[task setStandardError:[task standardOutput]];
+    [task launch];
+	
+	NSData *data = [[outPipe fileHandleForReading] readDataToEndOfFile];
+	[task waitUntilExit];
+    [task release];
+	
+	NSString *ret = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+	
+	int major = 0;
+	int minor = 0;
+	int point = 0;
+	sscanf([ret UTF8String], "Mono JIT compiler version %d.%d.%d", &major, &minor, &point);
+	[ret release];
+	
+	return (major > 2 ||
+			(major == 2 && minor > 6) ||
+			(major == 2 && minor == 6 && point >= 7));
 }
 
 - (void)dealloc
@@ -210,11 +267,11 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 									   otherButton:nil
 						 informativeTextWithFormat:@"%@ in progress and will be cancelled.", format];
 	
-	[alert beginSheetModalForWindow:[webView window] modalDelegate:self didEndSelector:@selector(alertEnded:code:context:) contextInfo:NULL];
+	[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(quitAlertEnded:code:context:) contextInfo:NULL];
 	return NSTerminateLater;
 }
 
-- (void)alertEnded:(NSAlert *)alert
+- (void)quitAlertEnded:(NSAlert *)alert
 			  code:(int)button
 		   context:(void *)v
 {
