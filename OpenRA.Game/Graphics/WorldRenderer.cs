@@ -52,7 +52,8 @@ namespace OpenRA.Graphics
 		{
 			var r = (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)?
 				world.LocalPlayer.Shroud.Bounds.Value : world.Map.Bounds;
-						
+			r.Intersect(world.Map.Bounds);
+			
 			var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
 			var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
 			var right = left + (int)(Game.CellSize * r.Width);
