@@ -74,8 +74,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Render( WorldRenderer wr )
 		{
-			var cliprect = Game.viewport.ShroudBounds( world );			
-			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
+			var cliprect = Game.viewport.WorldBounds(world);
 			foreach (var kv in tiles)
 			{
 				if (!cliprect.Contains(kv.Key.X, kv.Key.Y))

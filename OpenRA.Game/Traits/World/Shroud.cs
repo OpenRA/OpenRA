@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
-		public Rectangle? exploredBounds;
+		Rectangle? exploredBounds;
 		bool disabled = false;
 		public bool Disabled
 		{
@@ -34,7 +34,11 @@ namespace OpenRA.Traits
 			set { disabled = value; Dirty(); }
 		}
 		
-		public Rectangle? Bounds { get { return exploredBounds; } }
+		public Rectangle? Bounds
+		{
+			get { return !disabled ? exploredBounds : null; }
+		}
+		
 		public event Action Dirty = () => { };
 
 		public Shroud(World world)
@@ -42,7 +46,6 @@ namespace OpenRA.Traits
 			map = world.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
-
 			world.ActorAdded += AddActor;
 			world.ActorRemoved += RemoveActor;
 		}
@@ -98,8 +101,7 @@ namespace OpenRA.Traits
 				}
 
 				var box = new Rectangle(p.X - v.range, p.Y - v.range, 2 * v.range + 1, 2 * v.range + 1);
-				exploredBounds = exploredBounds.HasValue ?
-					Rectangle.Union(exploredBounds.Value, box) : box;
+				exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 			}
 
 			vis[a] = v;
@@ -165,8 +167,7 @@ namespace OpenRA.Traits
 				exploredCells[q.X, q.Y] = true;
 
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
-			exploredBounds = exploredBounds.HasValue ?
-				Rectangle.Union(exploredBounds.Value, box) : box;
+			exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 
 			Dirty();
 		}

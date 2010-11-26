@@ -75,8 +75,7 @@ namespace OpenRA.Mods.RA
 		
 		public void Render( WorldRenderer wr )
 		{
-			var cliprect = Game.viewport.ShroudBounds( world );
-			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
+			var cliprect = Game.viewport.WorldBounds(world);
 			var localPlayer = world.LocalPlayer;
 			foreach (var kv in tiles)
 			{

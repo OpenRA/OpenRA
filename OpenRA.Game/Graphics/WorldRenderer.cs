@@ -51,27 +51,9 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		Rectangle GetBoundsRect()
-		{
-			var r = (!world.LocalShroud.Disabled && world.LocalShroud.Bounds.HasValue)?
-				Rectangle.Intersect(world.LocalShroud.Bounds.Value,world.Map.Bounds) : world.Map.Bounds;
-			
-			var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
-			var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
-			var right = left + (int)(Game.CellSize * r.Width);
-			var bottom = top + (int)(Game.CellSize * r.Height);
-			
-			if (left < 0) left = 0;
-			if (top < 0) top = 0;
-			if (right > Game.viewport.Width) right = Game.viewport.Width;
-			if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
-
-			return new Rectangle(left, top, right - left, bottom - top);
-		}
-
 		IEnumerable<Renderable> SpritesToRender()
 		{
-			var bounds = GetBoundsRect();
+			var bounds = Game.viewport.ViewBounds(world);
 			var comparer = new SpriteComparer();
 
 			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
@@ -91,7 +73,7 @@ namespace OpenRA.Graphics
 		public void Draw()
 		{
 			RefreshPalette();
-			var bounds = GetBoundsRect();
+			var bounds = Game.viewport.ViewBounds(world);
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(this, Game.viewport);

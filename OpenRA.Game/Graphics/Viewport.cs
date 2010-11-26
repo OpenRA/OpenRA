@@ -122,20 +122,30 @@ namespace OpenRA.Graphics
 
 			scrollPosition = this.NormalizeScrollPosition((avgPos.ToInt2() - screenSize / 2));
 		}
-
-		public Rectangle ShroudBounds( World world )
-		{
-			if( world.LocalShroud.Disabled || !world.LocalShroud.Bounds.HasValue )
-				return world.Map.Bounds;
-			return Rectangle.Intersect( world.LocalShroud.Bounds.Value, world.Map.Bounds );
-		}
 		
-		public Rectangle ViewBounds()
+		public Rectangle ViewBounds(World world)
+		{
+			var r = WorldBounds(world);
+			var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
+			var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
+			var right = left + (int)(Game.CellSize * r.Width);
+			var bottom = top + (int)(Game.CellSize * r.Height);
+			
+			if (left < 0) left = 0;
+			if (top < 0) top = 0;
+			if (right > Game.viewport.Width) right = Game.viewport.Width;
+			if (bottom > Game.viewport.Height) bottom = Game.viewport.Height;
+			return new Rectangle(left, top, right - left, bottom - top);
+		}
+
+		public Rectangle WorldBounds(World world)
 		{
 			int2 boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
 			var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
 			var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
-			return Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
+			var view = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), world.Map.Bounds);
+			var b = world.LocalShroud.Bounds;
+			return (b.HasValue) ? Rectangle.Intersect(view, b.Value) : view;
 		}
 	}
 }

@@ -116,25 +116,19 @@ namespace OpenRA
 						fogSprites[i, j] = ChooseFog(i, j);
 			}
 
-			var clipRect = (shroud != null && shroud.Bounds.HasValue) ? Rectangle.Intersect(shroud.Bounds.Value, map.Bounds) : map.Bounds;
-			clipRect = Rectangle.Intersect(Game.viewport.ViewBounds(), clipRect);
-			var miny = clipRect.Top;
-			var maxy = clipRect.Bottom;
-			var minx = clipRect.Left;
-			var maxx = clipRect.Right;
-
-			DrawShroud( wr, minx, miny, maxx, maxy, fogSprites, "fog" );
-			DrawShroud( wr, minx, miny, maxx, maxy, sprites, "shroud" );
+			var clipRect = Game.viewport.WorldBounds(wr.world);
+			DrawShroud( wr, clipRect, fogSprites, "fog" );
+			DrawShroud( wr, clipRect, sprites, "shroud" );
 		}
 
-		void DrawShroud( WorldRenderer wr, int minx, int miny, int maxx, int maxy, Sprite[,] s, string pal )
+		void DrawShroud( WorldRenderer wr, Rectangle clip, Sprite[,] s, string pal )
 		{
 			var shroudPalette = wr.GetPaletteIndex(pal);
 
-			for (var j = miny; j < maxy; j++)
+			for (var j = clip.Top; j < clip.Bottom; j++)
 			{
-				var starti = minx;
-				for (var i = minx; i < maxx; i++)
+				var starti = clip.Left;
+				for (var i = clip.Left; i < clip.Right; i++)
 				{
 					if (s[i, j] == shadowBits[0x0f])
 						continue;
@@ -154,11 +148,11 @@ namespace OpenRA
 					starti = i + 1;
 				}
 
-				if (starti < maxx)
+				if (starti < clip.Right)
 					s[starti, j].DrawAt(
 						Game.CellSize * new float2(starti, j),
 						shroudPalette,
-						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
+						new float2(Game.CellSize * (clip.Right - starti), Game.CellSize));
 			}
 		}
 	}

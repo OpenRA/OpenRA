@@ -26,20 +26,12 @@ namespace OpenRA.Traits
 		
 		public void Render( WorldRenderer wr )
 		{
-			var cliprect = Game.viewport.ShroudBounds( world );
-			cliprect = Rectangle.Intersect(Game.viewport.ViewBounds(), cliprect);
-			
-			var minx = cliprect.Left;
-			var maxx = cliprect.Right;
-
-			var miny = cliprect.Top;
-			var maxy = cliprect.Bottom;
-
 			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
 				rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 
-			for (int x = minx; x < maxx; x++)
-				for (int y = miny; y < maxy; y++)
+			var clip = Game.viewport.WorldBounds(world);
+			for (int x = clip.Left; x < clip.Right; x++)
+				for (int y = clip.Top; y < clip.Bottom; y++)
 				{
 					if (!world.LocalShroud.IsExplored(new int2(x, y)))
 						continue;
