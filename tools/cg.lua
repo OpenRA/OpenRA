@@ -19,7 +19,7 @@ return cgbinpath and {
 			{ ID "cg.compile.tessctrl",		"Compile T.Ctrl",	"Compile T.Ctrl program (select entry word)" },
 			{ ID "cg.compile.tesseval",		"Compile T.Eval",	"Compile T.Eval program (select entry word)" },
 			{ },
-			{ ID "cg.format.indent",		"Indent ASM",	"indent ASM codes" },
+			{ ID "cg.format.asm",		"Annotate ASM",	"indent and add comments to Cg ASM output" },
 		}
 		menuBar:Append(myMenu, "&CgCompiler")
 		
@@ -108,7 +108,7 @@ return cgbinpath and {
 		frame:Connect(ID "cg.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
 		
 		-- indent asm
-		frame:Connect(ID "cg.format.indent", wx.wxEVT_COMMAND_MENU_SELECTED,
+		frame:Connect(ID "cg.format.asm", wx.wxEVT_COMMAND_MENU_SELECTED,
 			function(event)
 				local curedit = GetEditor()
 				local tx = curedit:GetText()
@@ -122,7 +122,6 @@ return cgbinpath and {
 					"ENDIF","ENDREP","ELSE",
 				}
 				
-
 				local function checkstart(str,tab)
 					local res = false
 					for i,v in ipairs(tab) do
@@ -130,14 +129,60 @@ return cgbinpath and {
 					end
 					return res
 				end
+				
+				local argregistry = {}
+				
+				local function checkargs(str)
+					local comment = "#"
+					for i in string.gmatch(str,"([%[%]%w]+)") do
+						local descr = argregistry[i]
+						if (descr) then
+							comment = comment.." "..i.." = "..descr
+						end
+					end
+					
+					return comment ~= "#" and comment
+				end
 
 				for w in string.gmatch(tx, "[^\n]*\n") do
+					local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
+					if (pref == "1") then
+						local descriptor = vtype.." "..vname
+					
+						-- check if resource is array
+						local resstart,rescnt = string.match(resource,"c%[(%d+)%], (%d+)")
+						resstart = tonumber(resstart)
+						rescnt = tonumber(rescnt)
+						
+						-- check if texture
+						local texnum = string.match(resource,"texunit (%d+)")
+						
+						local argnames = {}
+						if (rescnt) then
+							for i=0,(rescnt-1) do
+								table.insert(argnames,"c["..tostring(resstart + i).."]")
+							end
+						elseif (texnum) then
+							table.insert(argnames,"texture["..tostring(texnum).."]")
+							table.insert(argnames,"texture"..tostring(texnum))
+						else
+							table.insert(argnames,resource)
+						end
+						
+						for i,v in ipairs(argnames) do
+							argregistry[v] = descriptor
+						end
+					end
+				
 					if (checkstart(w,endindent)) then
 						indent = indent - delta
 					end
-					
-					local append = (string.sub(w,1,1) ~= " " and  string.rep(" ",indent) or "")..w
-					newtx = newtx..append
+					local firstchar = string.sub(w,1,1)
+					local indentstr = (firstchar ~= " " and  string.rep(" ",indent) or "")
+					local linestr = indentstr..w
+					local argcomment = (firstchar ~= "#") and checkargs(w)
+					newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
+					newtx = newtx..linestr
 					if (checkstart(w,startindent)) then
 						indent = indent + delta
 					end
