@@ -55,7 +55,6 @@ namespace OpenRA.Mods.RA
 				if (self.Owner == self.World.LocalPlayer)
 				{
 					self.World.CancelInputMode();
-					self.World.AddFrameEndTask(w => w.Add(new MoveFlash(self.World, order.TargetLocation)));
 				}
 				
 				self.CancelActivity();

@@ -52,19 +52,8 @@ namespace OpenRA.Mods.RA
 					AttackMoving = true;
 					TargetLocation = order.TargetLocation;
 				}
-
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						if (order.TargetActor != null)
-							w.Add(new FlashTarget(order.TargetActor));
-
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							if (order.TargetActor != null) line.SetTarget(self, Target.FromOrder(order), Color.Red);
-							else line.SetTarget(self, Target.FromOrder(order), Color.Red);
-					});
+				
+				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 			}
 			else
 			{

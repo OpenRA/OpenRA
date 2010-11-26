@@ -67,14 +67,7 @@ namespace OpenRA.Mods.RA
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(mobile.MoveWithinRange(order.TargetActor, 1));
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask( w =>
-					{
-						if (self.Destroyed) return;
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTargetSilently(self, Target.FromActor(order.TargetActor), Color.Green);
-					});
+				self.SetTargetLine(Target.FromOrder(order), Color.Green, false);
 				self.QueueActivity(new Repair(order.TargetActor));
 			}
 		}

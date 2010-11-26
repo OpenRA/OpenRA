@@ -43,15 +43,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "C4")
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Red);
-					});
+				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 				
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();

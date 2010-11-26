@@ -192,17 +192,7 @@ namespace OpenRA.Mods.RA.Move
 
 					qa.Insert(new Move(currentLocation, 8));
 					
-					if (self.Owner == self.World.LocalPlayer)
-						self.World.AddFrameEndTask(
-							w =>
-							{
-								if (self.Destroyed) return;
-								w.Add(new MoveFlash(self.World, targetLocation));
-								var line = self.TraitOrDefault<DrawLineToTarget>();
-								if (line != null)
-									line.SetTarget(self, Target.FromCell(currentLocation),
-									               Color.Green);
-							});
+					self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
 				});
 
 			self.QueueActivity(queued ? ph : ph.Run(self));
@@ -352,14 +342,7 @@ namespace OpenRA.Mods.RA.Move
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTargetSilently(self, Target.FromCell(moveTo.Value), Color.Green);
-					});
+				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(moveTo.Value, 0));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",

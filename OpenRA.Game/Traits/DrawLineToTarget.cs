@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Effects;
 
 namespace OpenRA.Traits
 {
@@ -68,6 +69,34 @@ namespace OpenRA.Traits
 				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
 				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
 			}
+		}
+	}
+	
+	public static class LineTargetExts
+	{
+		public static void SetTargetLine(this Actor self, Target target, Color color)
+		{
+			self.SetTargetLine(target, color, true);
+		}
+		
+		public static void SetTargetLine(this Actor self, Target target, Color color, bool display)
+		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.Destroyed) return;
+				if (target.IsActor && display)
+					w.Add(new FlashTarget(target.Actor));
+				
+				var line = self.TraitOrDefault<DrawLineToTarget>();
+				if (line != null)
+					if (display) 
+						line.SetTarget(self, target, color);
+					else
+						line.SetTargetSilently(self, target, color);
+			});
 		}
 	}
 }

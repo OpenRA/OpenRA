@@ -46,16 +46,8 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "EngineerRepair"
 			    && order.TargetActor.GetDamageState() > DamageState.Undamaged)
 			{
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Yellow);
-					});
-				
+				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
+								
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
 				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));

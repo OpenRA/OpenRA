@@ -44,14 +44,7 @@ namespace OpenRA.Mods.RA
 						{
 							var mobile = harv.Trait<Mobile>();
 							harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
-							if (harv.Owner == self.World.LocalPlayer)
-								self.World.AddFrameEndTask( w =>
-								{
-									if (harv.Destroyed) return;
-									var line = harv.TraitOrDefault<DrawLineToTarget>();
-									if (line != null)
-										line.SetTargetSilently(harv, Target.FromCell(harvester.LastHarvestedCell), Color.Green);
-								});
+							harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
 						}
 						harv.QueueActivity( new Harvest() );
 					});

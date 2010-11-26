@@ -76,16 +76,7 @@ namespace OpenRA.Mods.RA
 				newUnit.QueueActivity(mobile.MoveTo(target, 1));
 			}
 			
-			if (newUnit.Owner == self.World.LocalPlayer)
-			{
-				self.World.AddFrameEndTask(w =>
-				{
-					var line = newUnit.TraitOrDefault<DrawLineToTarget>();
-					if (line != null)
-						line.SetTargetSilently(newUnit, Target.FromCell(target), Color.Green);
-				});
-			}
-
+			newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
 			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);
 

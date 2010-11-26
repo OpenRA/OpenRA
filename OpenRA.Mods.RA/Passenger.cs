@@ -78,16 +78,8 @@ namespace OpenRA.Mods.RA
 				if (!CanEnter(order.TargetActor)) return;
 				if (!IsCorrectCargoType(order.TargetActor)) return;
 				
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
-					});
-				
+				self.SetTargetLine(Target.FromOrder(order), Color.Green);
+								
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(mobile.MoveTo(order.TargetActor.Location, 1));

@@ -87,7 +87,6 @@
     <Compile Include="Widgets\WidgetUtils.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
-    <Compile Include="Effects\MoveFlash.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
     <Compile Include="GameRules\VoiceInfo.cs" />

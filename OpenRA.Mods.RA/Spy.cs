@@ -40,14 +40,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask( w =>
-					{
-						if (self.Destroyed) return;
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTargetSilently(self, Target.FromActor(order.TargetActor), Color.Green);
-					});
+				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 				self.QueueActivity(new Infiltrate(order.TargetActor));
 			}
 		}

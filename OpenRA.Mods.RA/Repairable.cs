@@ -75,25 +75,19 @@ namespace OpenRA.Mods.RA
 				
 				var mobile = self.Trait<Mobile>();
 				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-
-				if (self.Owner == self.World.LocalPlayer)
-					self.World.AddFrameEndTask(w =>
-					{
-						if (self.Destroyed) return;
-						w.Add(new FlashTarget(order.TargetActor));
-						var line = self.TraitOrDefault<DrawLineToTarget>();
-						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
-					});
-				
+				self.SetTargetLine(Target.FromOrder(order), Color.Green);
+								
 				self.CancelActivity();
 				self.QueueActivity(mobile.MoveTo(Traits.Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm());
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				if (rp != null)
-					self.QueueActivity(new CallFunc(
-						() => self.QueueActivity(mobile.MoveTo(rp.rallyPoint, order.TargetActor))));
+					self.QueueActivity(new CallFunc(() => 
+					{
+						self.SetTargetLine(Target.FromCell(rp.rallyPoint), Color.Green);
+						self.QueueActivity(mobile.MoveTo(rp.rallyPoint, order.TargetActor));
+					}));
 			}
 		}
 	}

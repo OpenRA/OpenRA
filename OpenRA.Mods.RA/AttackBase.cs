@@ -177,18 +177,7 @@ namespace OpenRA.Mods.RA
 		{
 			if( !target.IsValid ) return;
 			self.QueueActivity(queued, GetAttackActivity(self, target, allowMove));
-
-			if (self.Owner == self.World.LocalPlayer)
-				self.World.AddFrameEndTask(w =>
-				{
-					if (self.Destroyed) return;
-					if (target.IsActor)
-						w.Add(new FlashTarget(target.Actor));
-
-					var line = self.TraitOrDefault<DrawLineToTarget>();
-					if (line != null)
-						line.SetTarget(self, target, Color.Red);
-				});
+			self.SetTargetLine(target, Color.Red);
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)

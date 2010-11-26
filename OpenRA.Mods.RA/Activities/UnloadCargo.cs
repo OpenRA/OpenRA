@@ -73,12 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 				mobile.SetPosition(actor, self.Location);
 				actor.CancelActivity();
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
-				if (actor.Owner == self.World.LocalPlayer)
-				{
-					var line = actor.TraitOrDefault<DrawLineToTarget>();
-					if (line != null)
-						line.SetTargetSilently(self, Target.FromCell(exitTile.Value), Color.Green);
-				}
+				actor.SetTargetLine(Target.FromCell(exitTile.Value), Color.Green, false);
 			});
 
 			return this;
