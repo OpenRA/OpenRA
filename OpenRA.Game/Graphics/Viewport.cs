@@ -138,14 +138,22 @@ namespace OpenRA.Graphics
 			return new Rectangle(left, top, right - left, bottom - top);
 		}
 
+		int2 cachedScroll = new int2(int.MaxValue, int.MaxValue);
+		Rectangle cachedRect;
+		
 		public Rectangle WorldBounds(World world)
 		{
-			int2 boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
-			var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
-			var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
-			var view = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), world.Map.Bounds);
+			if (cachedScroll != scrollPosition)
+			{
+				int2 boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
+				var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
+				var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
+				cachedRect = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), world.Map.Bounds);
+				cachedScroll = scrollPosition;
+			}
+			
 			var b = world.LocalShroud.Bounds;
-			return (b.HasValue) ? Rectangle.Intersect(view, b.Value) : view;
+			return (b.HasValue) ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
 		}
 	}
 }

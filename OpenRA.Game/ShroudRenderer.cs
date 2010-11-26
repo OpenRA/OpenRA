@@ -128,9 +128,11 @@ namespace OpenRA
 			for (var j = clip.Top; j < clip.Bottom; j++)
 			{
 				var starti = clip.Left;
+				var last = shadowBits[0x0f];
 				for (var i = clip.Left; i < clip.Right; i++)
 				{
-					if (s[i, j] == shadowBits[0x0f])
+					if ((s[i, j] == shadowBits[0x0f] && last == shadowBits[0x0f])
+						|| (s[i, j] == shadowBits[0] && last == shadowBits[0]))
 						continue;
 
 					if (starti != i)
@@ -146,6 +148,7 @@ namespace OpenRA
 						Game.CellSize * new float2(i, j),
 						shroudPalette);
 					starti = i + 1;
+					last = s[i, j];
 				}
 
 				if (starti < clip.Right)
