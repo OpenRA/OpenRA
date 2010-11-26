@@ -90,7 +90,8 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "Move")
 			{
 				UnReserve();
-
+				
+				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
@@ -98,11 +99,11 @@ namespace OpenRA.Mods.RA.Air
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
+							line.SetTarget(self, Target.FromCell(target), Color.Green);
 					});
 
 				self.CancelActivity();
-				self.QueueActivity(Fly.ToCell(order.TargetLocation));
+				self.QueueActivity(Fly.ToCell(target));
 			}
 
 			else if (order.OrderString == "Enter")
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.RA.Air
 						w.Add(new FlashTarget(order.TargetActor));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
+							line.SetTarget(self, Target.FromActor(order.TargetActor), Color.Green);
 					});
 
 				self.CancelActivity();
@@ -150,7 +151,7 @@ namespace OpenRA.Mods.RA.Air
 		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
 			IsQueued = forceQueued;
-			cursor = "move";
+			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
 			return true;
 		}
 		public bool IsQueued { get; protected set; }

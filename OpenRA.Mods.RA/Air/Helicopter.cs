@@ -77,6 +77,8 @@ namespace OpenRA.Mods.RA.Air
 
 			if (order.OrderString == "Move")
 			{
+				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+
 				if (self.Owner == self.World.LocalPlayer)
 					self.World.AddFrameEndTask(w =>
 					{
@@ -84,12 +86,12 @@ namespace OpenRA.Mods.RA.Air
 						w.Add(new MoveFlash(self.World, order.TargetLocation));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
+							line.SetTarget(self, Target.FromCell(target), Color.Green);
 					});
 				
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(Util.CenterOfCell(order.TargetLocation)));
-				
+				self.QueueActivity(new HeliFly(Util.CenterOfCell(target)));
+					
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
@@ -114,7 +116,7 @@ namespace OpenRA.Mods.RA.Air
 						w.Add(new FlashTarget(order.TargetActor));
 						var line = self.TraitOrDefault<DrawLineToTarget>();
 						if (line != null)
-							line.SetTarget(self, Target.FromOrder(order), Color.Green);
+							line.SetTarget(self, Target.FromActor(order.TargetActor), Color.Green);
 					});
 				
 				self.CancelActivity();

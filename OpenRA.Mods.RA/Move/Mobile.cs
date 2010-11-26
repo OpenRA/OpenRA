@@ -211,7 +211,10 @@ namespace OpenRA.Mods.RA.Move
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
-				PerformMove(self, order.TargetLocation, order.Queued && !self.IsIdle);
+			{
+				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+				PerformMove(self, target, order.Queued && !self.IsIdle);
+			}
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)

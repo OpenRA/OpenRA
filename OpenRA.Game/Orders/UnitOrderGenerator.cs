@@ -129,18 +129,9 @@ namespace OpenRA.Orders
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
-			if (!self.World.Map.IsInMap(xy.X, xy.Y))
-				return null;
 
 			if (self.Destroyed)
 				return null;
-
-			//var old = self.TraitsImplementing<IIssueOrder>()
-			//    .OrderByDescending( x => x.OrderPriority( self, xy, mi, underCursor ) )
-			//    .Select( x => x.IssueOrder( self, xy, mi, underCursor ) )
-			//    .FirstOrDefault( x => x != null );
-			//if( old != null )
-			//    return old;
 
 			if( mi.Button == MouseButton.Right )
 			{

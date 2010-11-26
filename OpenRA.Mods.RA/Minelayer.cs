@@ -160,6 +160,9 @@ namespace OpenRA.Mods.RA
 
 			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
+				if (!self.World.Map.IsInMap(location))
+					return false;
+				
 				cursor = "ability";
 				IsQueued = forceQueued;
 
