@@ -31,13 +31,13 @@ namespace OpenRA.Traits
 		bool disabled = false;
 		public bool Disabled
 		{
-			get { return disabled; }
+			get { return disabled || world.LocalPlayer == null; }
 			set { disabled = value; Dirty(); }
 		}
 		
 		public Rectangle? Bounds
 		{
-			get { return !disabled ? exploredBounds : null; }
+			get { return Disabled ? null : exploredBounds; }
 		}
 		
 		public event Action Dirty = () => { };
@@ -108,7 +108,8 @@ namespace OpenRA.Traits
 
 			vis[a] = v;
 
-			Dirty();
+			if (!Disabled)
+				Dirty();
 		}
 		
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
@@ -151,8 +152,9 @@ namespace OpenRA.Traits
 					--visibleCells[q.X, q.Y];
 
 			vis.Remove(a);
-
-			Dirty();
+			
+			if (!Disabled)
+				Dirty();
 		}
 
 		public void UpdateActor(Actor a)
@@ -171,7 +173,8 @@ namespace OpenRA.Traits
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
 			exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 
-			Dirty();
+			if (!Disabled)
+				Dirty();
 		}
 		
 		public void ExploreAll(World world)
@@ -181,7 +184,8 @@ namespace OpenRA.Traits
 					exploredCells[i, j] = true;
 			exploredBounds = world.Map.Bounds;
 
-			Dirty();
+			if (!Disabled)
+				Dirty();
 		}
 
 		public void ResetExploration()		// for `hide map` crate
@@ -190,7 +194,8 @@ namespace OpenRA.Traits
 				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
 					exploredCells[i, j] = visibleCells[i, j] > 0;
 
-			Dirty();
+			if (!Disabled)
+				Dirty();
 		}
 		
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
@@ -199,7 +204,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 			
-			if (disabled || world.LocalPlayer == null)
+			if (Disabled)
 				return true;
 			
 			return exploredCells[x,y];
@@ -208,7 +213,7 @@ namespace OpenRA.Traits
 		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (disabled || world.LocalPlayer == null)
+			if (Disabled)
 				return true;
 			
 			return visibleCells[x,y] != 0;
@@ -220,7 +225,7 @@ namespace OpenRA.Traits
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
 			
-			return disabled || a.Owner == a.World.LocalPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || a.Owner == a.World.LocalPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 	}
 }
