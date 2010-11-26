@@ -40,13 +40,12 @@ namespace OpenRA
 		public readonly PlayerReference PlayerRef;
 		public bool IsBot;
 
-		public ShroudRenderer Shroud;
+		public Shroud Shroud { get { return World.WorldActor.Trait<Shroud>(); }}
 		public World World { get; private set; }
 
 		public Player(World world, PlayerReference pr, int index)
 		{
 			World = world;
-			Shroud = new ShroudRenderer(this, world.Map);
 
 			Index = index;
 			Palette = "player" + index;
@@ -69,8 +68,6 @@ namespace OpenRA
 		public Player(World world, Session.Client client, PlayerReference pr, int index)
 		{
 			World = world;
-			Shroud = new ShroudRenderer(this, world.Map);
-
 			Index = index;
 			Palette = "player" + index;
 			Color = client.Color1;

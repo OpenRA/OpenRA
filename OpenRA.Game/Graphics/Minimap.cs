@@ -159,6 +159,9 @@ namespace OpenRA.Graphics
 			var map = world.Map;
 			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			Bitmap bitmap = new Bitmap(size, size);
+			if (world.LocalPlayer == null || world.LocalPlayer.Shroud == null)
+				return bitmap;
+			
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 

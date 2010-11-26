@@ -21,6 +21,8 @@ namespace OpenRA.Graphics
 	{
 		public readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
+		internal readonly ShroudRenderer shroudRenderer;
+
 		public readonly UiOverlay uiOverlay;
 		internal readonly HardwarePalette palette;
 
@@ -29,6 +31,7 @@ namespace OpenRA.Graphics
 			this.world = world;
 
 			terrainRenderer = new TerrainRenderer(world, this);
+			shroudRenderer = new ShroudRenderer(world.WorldActor.Trait<Shroud>(), world.Map);
 			uiOverlay = new UiOverlay();
 			palette = new HardwarePalette(world.Map);
 
@@ -110,9 +113,7 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderAfterWorld(this, world);
 
-			if (world.LocalPlayer != null)
-				world.LocalPlayer.Shroud.Draw( this );
-
+			shroudRenderer.Draw( this );
 			Game.Renderer.DisableScissor();
 			
 			foreach (var a in world.Selection.Actors)

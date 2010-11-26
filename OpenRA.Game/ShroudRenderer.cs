@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -20,46 +21,28 @@ namespace OpenRA
 		Sprite[,] sprites, fogSprites;
 		
 		bool dirty = true;
-		bool disabled = false;
 		Map map;
 
-		public Rectangle? Bounds { get { return shroud.exploredBounds; } }
-
-		public ShroudRenderer(Player owner, Map map)
+		public ShroudRenderer(Traits.Shroud shroud, Map map)
 		{
-			this.shroud = owner.World.WorldActor.Trait<Traits.Shroud>();
+			this.shroud = shroud;
 			this.map = map;
 			
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-
 			shroud.Dirty += () => dirty = true;
 		}
 
-		public bool Disabled
-		{
-			get { return disabled; }
-			set { disabled = value; dirty = true;}
-		}
-
-		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
 		public bool IsExplored(int x, int y)
-		{
-			if (disabled)
-				return true;
-			return shroud.exploredCells[x,y];
+		{		
+			return (shroud == null) ? true : shroud.IsExplored(x,y);
 		}
 
-		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (disabled)
-				return true;
-			if (!map.IsInMap(x, y))
-				return false;
-			return shroud.visibleCells[x,y] != 0;
+			return (shroud == null) ? true : shroud.IsVisible(x,y);
 		}
-		
+
 		static readonly byte[][] SpecialShroudTiles =
 		{
 			new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
@@ -79,61 +62,58 @@ namespace OpenRA
 			new byte[] { 41 },
 			new byte[] { 46 },
 		};
-		
+				
 		Sprite ChooseShroud(int i, int j)
 		{
-			if( !shroud.exploredCells[ i, j ] ) return shadowBits[ 0xf ];
+			if( !IsExplored( i, j ) ) return shadowBits[ 0xf ];
 
 			// bits are for unexploredness: up, right, down, left
 			var v = 0;
 			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
 
-			if( !shroud.exploredCells[ i, j - 1 ] ) { v |= 1; u |= 3; }
-			if( !shroud.exploredCells[ i + 1, j ] ) { v |= 2; u |= 6; }
-			if( !shroud.exploredCells[ i, j + 1 ] ) { v |= 4; u |= 12; }
-			if( !shroud.exploredCells[ i - 1, j ] ) { v |= 8; u |= 9; }
+			if( !IsExplored( i, j - 1 ) ) { v |= 1; u |= 3; }
+			if( !IsExplored( i + 1, j ) ) { v |= 2; u |= 6; }
+			if( !IsExplored( i, j + 1 ) ) { v |= 4; u |= 12; }
+			if( !IsExplored( i - 1, j ) ) { v |= 8; u |= 9; }
 
 			var uSides = u;
 
-			if( !shroud.exploredCells[ i - 1, j - 1 ] ) u |= 1;
-			if( !shroud.exploredCells[ i + 1, j - 1 ] ) u |= 2;
-			if( !shroud.exploredCells[ i + 1, j + 1 ] ) u |= 4;
-			if( !shroud.exploredCells[ i - 1, j + 1 ] ) u |= 8;
+			if( !IsExplored( i - 1, j - 1 ) ) u |= 1;
+			if( !IsExplored( i + 1, j - 1 ) ) u |= 2;
+			if( !IsExplored( i + 1, j + 1 ) ) u |= 4;
+			if( !IsExplored( i - 1, j + 1 ) ) u |= 8;
 
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
-
+				
 		Sprite ChooseFog(int i, int j)
 		{
-			if (shroud.visibleCells[i, j] == 0) return shadowBits[0xf];
-			if (!shroud.exploredCells[i, j]) return shadowBits[0xf];
+			if (!IsVisible(i,j)) return shadowBits[0xf];
+			if (!IsExplored(i, j)) return shadowBits[0xf];
 
 			// bits are for unexploredness: up, right, down, left
 			var v = 0;
 			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
 
-			if (shroud.visibleCells[i, j - 1] == 0) { v |= 1; u |= 3; }
-			if (shroud.visibleCells[i + 1, j] == 0) { v |= 2; u |= 6; }
-			if (shroud.visibleCells[i, j + 1] == 0) { v |= 4; u |= 12; }
-			if (shroud.visibleCells[i - 1, j] == 0) { v |= 8; u |= 9; }
+			if (!IsVisible(i, j - 1)) { v |= 1; u |= 3; }
+			if (!IsVisible(i + 1, j)) { v |= 2; u |= 6; }
+			if (!IsVisible(i, j + 1)) { v |= 4; u |= 12; }
+			if (!IsVisible(i - 1, j)) { v |= 8; u |= 9; }
 
 			var uSides = u;
 
-			if (shroud.visibleCells[i - 1, j - 1] == 0) u |= 1;
-			if (shroud.visibleCells[i + 1, j - 1] == 0) u |= 2;
-			if (shroud.visibleCells[i + 1, j + 1] == 0) u |= 4;
-			if (shroud.visibleCells[i - 1, j + 1] == 0) u |= 8;
+			if (!IsVisible(i - 1, j - 1)) u |= 1;
+			if (!IsVisible(i + 1, j - 1)) u |= 2;
+			if (!IsVisible(i + 1, j + 1)) u |= 4;
+			if (!IsVisible(i - 1, j + 1)) u |= 8;
 
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}
 
 		internal void Draw( WorldRenderer wr )
-		{
-			if (disabled)
-				return;
-			
+		{			
 			if (dirty)
 			{
 				dirty = false;
@@ -146,7 +126,7 @@ namespace OpenRA
 						fogSprites[i, j] = ChooseFog(i, j);
 			}
 
-			var clipRect = Bounds.HasValue ? Rectangle.Intersect(Bounds.Value, map.Bounds) : map.Bounds;
+			var clipRect = (shroud != null && shroud.Bounds.HasValue) ? Rectangle.Intersect(shroud.Bounds.Value, map.Bounds) : map.Bounds;
 			clipRect = Rectangle.Intersect(Game.viewport.ViewBounds(), clipRect);
 			var miny = clipRect.Top;
 			var maxy = clipRect.Bottom;

@@ -27,6 +27,14 @@ namespace OpenRA.Traits
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		public Rectangle? exploredBounds;
+		bool disabled = false;
+		public bool Disabled
+		{
+			get { return disabled; }
+			set { disabled = value; Dirty(); }
+		}
+		
+		public Rectangle? Bounds { get { return exploredBounds; } }
 		public event Action Dirty = () => { };
 
 		public Shroud(World world)
@@ -181,5 +189,30 @@ namespace OpenRA.Traits
 
 			Dirty();
 		}
+		
+		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
+		public bool IsExplored(int x, int y)
+		{
+			if (!map.IsInMap(x, y))
+				return false;
+			
+			if (disabled)
+				return true;
+			
+			return exploredCells[x,y];
+		}
+
+		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
+		public bool IsVisible(int x, int y)
+		{
+			if (!map.IsInMap(x, y))
+				return false;
+			
+			if (disabled)
+				return true;
+			
+			return visibleCells[x,y] != 0;
+		}
+
 	}
 }

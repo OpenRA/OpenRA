@@ -38,7 +38,7 @@ namespace OpenRA.Traits
 			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
 				rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 
-			ShroudRenderer shroud = null;
+			Shroud shroud = null;
 			if( world.LocalPlayer != null )
 				shroud = world.LocalPlayer.Shroud;
 

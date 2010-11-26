@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 											trailStart.G, trailStart.B);
 
 			// LocalPlayer is null on shellmap
-			ShroudRenderer shroud = null;
+			Shroud shroud = null;
 			if (self.World.LocalPlayer != null)
 				shroud = self.World.LocalPlayer.Shroud;
 
