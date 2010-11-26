@@ -104,7 +104,6 @@
     <Compile Include="Server\MasterServerQuery.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
-    <Compile Include="ShroudRenderer.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Sync.cs" />
@@ -181,6 +180,7 @@
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
+    <Compile Include="Graphics\ShroudRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

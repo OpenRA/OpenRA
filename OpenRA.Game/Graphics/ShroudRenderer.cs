@@ -9,10 +9,9 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA
+namespace OpenRA.Graphics
 {
 	public class ShroudRenderer
 	{
