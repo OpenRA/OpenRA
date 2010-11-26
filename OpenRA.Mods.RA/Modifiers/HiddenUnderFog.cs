@@ -9,36 +9,24 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class HiddenUnderFogInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init) { return new HiddenUnderFog(init.self); }
-	}
+	class HiddenUnderFogInfo : TraitInfo<HiddenUnderFog> {}
 
 	class HiddenUnderFog : IRenderModifier, IVisibilityModifier
 	{
-		Shroud shroud;
-
-		public HiddenUnderFog(Actor self)
+		public bool IsVisible(Actor self)
 		{
-			shroud = self.World.WorldActor.Trait<Shroud>();
-		}
-
-		public bool IsVisible(Actor self, Player byPlayer)
-		{
-			return self.World.LocalPlayer == null
-				|| self.Owner == byPlayer
-				|| self.World.LocalPlayer.Shroud.Disabled
-				|| shroud.visibleCells[self.Location.X, self.Location.Y] > 0;
+			return Shroud.GetVisOrigins(self).Any(o => self.World.LocalShroud.IsVisible(o));
 		}
 
 		static Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return IsVisible(self, self.World.LocalPlayer) ? r : Nothing;
+			return IsVisible(self) ? r : Nothing;
 		}
 	}
 }

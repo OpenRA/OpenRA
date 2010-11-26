@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Buildings
 			{
 				if (!cliprect.Contains(kv.Key.X, kv.Key.Y))
 					continue;
-				if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(kv.Key))
+				if (!world.LocalShroud.IsExplored(kv.Key))
 					continue;
 
 				bibSprites[kv.Value.type - 1][kv.Value.image].DrawAt( wr,

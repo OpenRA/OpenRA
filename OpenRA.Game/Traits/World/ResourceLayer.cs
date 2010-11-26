@@ -38,15 +38,11 @@ namespace OpenRA.Traits
 			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
 				rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 
-			Shroud shroud = null;
-			if( world.LocalPlayer != null )
-				shroud = world.LocalPlayer.Shroud;
-
 			for (int x = minx; x < maxx; x++)
 				for (int y = miny; y < maxy; y++)
 				{
-					if (shroud != null && !shroud.IsExplored(new int2(x, y)))
-							continue;
+					if (!world.LocalShroud.IsExplored(new int2(x, y)))
+						continue;
 
 					var c = content[x, y];
 					if (c.image != null)

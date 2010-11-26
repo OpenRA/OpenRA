@@ -14,34 +14,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class FrozenUnderFogInfo : ITraitInfo
+	class FrozenUnderFogInfo : TraitInfo<FrozenUnderFog> {}
+
+	class FrozenUnderFog : IRenderModifier
 	{
-		public object Create(ActorInitializer init) { return new FrozenUnderFog(init.self); }
-	}
-
-	class FrozenUnderFog : IRenderModifier, IVisibilityModifier
-	{
-		Shroud shroud;
-		Renderable[] cache = { };
-
-		public FrozenUnderFog(Actor self)
-		{
-			shroud = self.World.WorldActor.Trait<Shroud>();
-		}
-
-		public bool IsVisible(Actor self, Player byPlayer)
-		{
-			return self.World.LocalPlayer == null
-				|| self.Owner == byPlayer
-				|| self.World.LocalPlayer.Shroud.Disabled
-				|| Shroud.GetVisOrigins(self).Any(o => self.World.Map.IsInMap(o) && shroud.visibleCells[o.X, o.Y] != 0);
-		}
-
+		Renderable[] cache = { };		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			if (IsVisible(self, self.World.LocalPlayer))
+			if (self.World.LocalShroud.IsVisible(self))
 				cache = r.ToArray();
-
 			return cache;
 		}
 	}

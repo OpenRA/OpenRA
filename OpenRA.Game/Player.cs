@@ -40,7 +40,7 @@ namespace OpenRA
 		public readonly PlayerReference PlayerRef;
 		public bool IsBot;
 
-		public Shroud Shroud { get { return World.WorldActor.Trait<Shroud>(); }}
+		public Shroud Shroud { get { return World.LocalShroud; }}
 		public World World { get; private set; }
 
 		public Player(World world, PlayerReference pr, int index)

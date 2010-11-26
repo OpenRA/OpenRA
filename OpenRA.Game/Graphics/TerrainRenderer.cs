@@ -79,9 +79,9 @@ namespace OpenRA.Graphics
 			if (firstRow < 0) firstRow = 0;
 			if (lastRow > map.Bounds.Height) lastRow = map.Bounds.Height;
 
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)
+			if (world.LocalPlayer != null && !world.LocalShroud.Disabled && world.LocalShroud.Bounds.HasValue)
 			{
-				var r = world.LocalPlayer.Shroud.Bounds.Value;
+				var r = world.LocalShroud.Bounds.Value;
 				if (firstRow < r.Top - map.Bounds.Top)
 					firstRow = r.Top - map.Bounds.Top;
 

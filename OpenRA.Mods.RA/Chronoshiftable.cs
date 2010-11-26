@@ -40,12 +40,13 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
+		// Can't be used in synced code
 		public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation)
 		{
 			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
 			return self.HasTrait<ITeleportable>() && 
 				self.Trait<ITeleportable>().CanEnterCell(targetLocation) &&
-				(self.World.LocalPlayer == null || self.World.LocalPlayer.Shroud.IsExplored(targetLocation));
+				(self.World.LocalShroud.IsExplored(targetLocation));
 		}
 
 		public virtual bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)

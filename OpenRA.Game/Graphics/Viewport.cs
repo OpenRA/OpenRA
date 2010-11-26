@@ -125,11 +125,9 @@ namespace OpenRA.Graphics
 
 		public Rectangle ShroudBounds( World world )
 		{
-			var localPlayer = world.LocalPlayer;
-			if( localPlayer == null ) return world.Map.Bounds;
-			if( localPlayer.Shroud.Disabled ) return world.Map.Bounds;
-			if( !localPlayer.Shroud.Bounds.HasValue ) return world.Map.Bounds;
-			return Rectangle.Intersect( localPlayer.Shroud.Bounds.Value, world.Map.Bounds );
+			if( world.LocalShroud.Disabled || !world.LocalShroud.Bounds.HasValue )
+				return world.Map.Bounds;
+			return Rectangle.Intersect( world.LocalShroud.Bounds.Value, world.Map.Bounds );
 		}
 		
 		public Rectangle ViewBounds()

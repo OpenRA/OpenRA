@@ -73,7 +73,7 @@ namespace OpenRA.Traits
 		Color RadarSignatureColor(Actor self);
 	}
 	
-	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
+	public interface IVisibilityModifier { bool IsVisible(Actor self); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 	public interface IHasLocation
 	{

@@ -213,6 +213,14 @@ namespace OpenRA.Traits
 			
 			return visibleCells[x,y] != 0;
 		}
-
+		
+		// Actors are hidden under shroud, but not under fog by default
+		public bool IsVisible(Actor a)
+		{
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+				return false;
+			
+			return disabled || a.Owner == a.World.LocalPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
+		}
 	}
 }

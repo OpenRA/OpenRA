@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			
 			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
-			if (actor == null || !actor.IsVisible(world.LocalPlayer))
+			if (actor == null)
 				return;
 		
 			var text = actor.Info.Traits.Contains<TooltipInfo>()

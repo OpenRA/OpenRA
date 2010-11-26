@@ -31,7 +31,7 @@ namespace OpenRA.Graphics
 			this.world = world;
 
 			terrainRenderer = new TerrainRenderer(world, this);
-			shroudRenderer = new ShroudRenderer(world.WorldActor.Trait<Shroud>(), world.Map);
+			shroudRenderer = new ShroudRenderer(world);
 			uiOverlay = new UiOverlay();
 			palette = new HardwarePalette(world.Map);
 
@@ -53,9 +53,8 @@ namespace OpenRA.Graphics
 
 		Rectangle GetBoundsRect()
 		{
-			var r = (world.LocalPlayer != null && !world.LocalPlayer.Shroud.Disabled && world.LocalPlayer.Shroud.Bounds.HasValue)?
-				world.LocalPlayer.Shroud.Bounds.Value : world.Map.Bounds;
-			r.Intersect(world.Map.Bounds);
+			var r = (!world.LocalShroud.Disabled && world.LocalShroud.Bounds.HasValue)?
+				Rectangle.Intersect(world.LocalShroud.Bounds.Value,world.Map.Bounds) : world.Map.Bounds;
 			
 			var left = (int)(Game.CellSize * r.Left - Game.viewport.Location.X);
 			var top = (int)(Game.CellSize * r.Top - Game.viewport.Location.Y);
@@ -133,20 +132,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, color, color);
 			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, color, color);
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, color, color);
-		}
-
-		void DrawBins(RectangleF bounds)
-		{
-			DrawBox(bounds, Color.Red);
-			if (world.LocalPlayer != null)
-				DrawBox(world.LocalPlayer.Shroud.Bounds.Value, Color.Blue);
-
-			for (var j = 0; j < world.Map.MapSize.Y;
-				j += world.WorldActor.Info.Traits.Get<SpatialBinsInfo>().BinSize)
-			{
-				Game.Renderer.LineRenderer.DrawLine(new float2(0, j * Game.CellSize), new float2(world.Map.MapSize.X * Game.CellSize, j * Game.CellSize), Color.Black, Color.Black);
-				Game.Renderer.LineRenderer.DrawLine(new float2(j * Game.CellSize, 0), new float2(j * Game.CellSize, world.Map.MapSize.Y * Game.CellSize), Color.Black, Color.Black);
-			}
 		}
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c)

@@ -23,24 +23,14 @@ namespace OpenRA
 		bool dirty = true;
 		Map map;
 
-		public ShroudRenderer(Traits.Shroud shroud, Map map)
+		public ShroudRenderer(World world)
 		{
-			this.shroud = shroud;
-			this.map = map;
+			this.shroud = world.LocalShroud;
+			this.map = world.Map;
 			
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			shroud.Dirty += () => dirty = true;
-		}
-
-		public bool IsExplored(int x, int y)
-		{		
-			return (shroud == null) ? true : shroud.IsExplored(x,y);
-		}
-
-		public bool IsVisible(int x, int y)
-		{
-			return (shroud == null) ? true : shroud.IsVisible(x,y);
 		}
 
 		static readonly byte[][] SpecialShroudTiles =
@@ -65,49 +55,49 @@ namespace OpenRA
 				
 		Sprite ChooseShroud(int i, int j)
 		{
-			if( !IsExplored( i, j ) ) return shadowBits[ 0xf ];
+			if( !shroud.IsExplored( i, j ) ) return shadowBits[ 0xf ];
 
 			// bits are for unexploredness: up, right, down, left
 			var v = 0;
 			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
 
-			if( !IsExplored( i, j - 1 ) ) { v |= 1; u |= 3; }
-			if( !IsExplored( i + 1, j ) ) { v |= 2; u |= 6; }
-			if( !IsExplored( i, j + 1 ) ) { v |= 4; u |= 12; }
-			if( !IsExplored( i - 1, j ) ) { v |= 8; u |= 9; }
+			if( !shroud.IsExplored( i, j - 1 ) ) { v |= 1; u |= 3; }
+			if( !shroud.IsExplored( i + 1, j ) ) { v |= 2; u |= 6; }
+			if( !shroud.IsExplored( i, j + 1 ) ) { v |= 4; u |= 12; }
+			if( !shroud.IsExplored( i - 1, j ) ) { v |= 8; u |= 9; }
 
 			var uSides = u;
 
-			if( !IsExplored( i - 1, j - 1 ) ) u |= 1;
-			if( !IsExplored( i + 1, j - 1 ) ) u |= 2;
-			if( !IsExplored( i + 1, j + 1 ) ) u |= 4;
-			if( !IsExplored( i - 1, j + 1 ) ) u |= 8;
+			if( !shroud.IsExplored( i - 1, j - 1 ) ) u |= 1;
+			if( !shroud.IsExplored( i + 1, j - 1 ) ) u |= 2;
+			if( !shroud.IsExplored( i + 1, j + 1 ) ) u |= 4;
+			if( !shroud.IsExplored( i - 1, j + 1 ) ) u |= 8;
 
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
 				
 		Sprite ChooseFog(int i, int j)
 		{
-			if (!IsVisible(i,j)) return shadowBits[0xf];
-			if (!IsExplored(i, j)) return shadowBits[0xf];
+			if (!shroud.IsVisible(i,j)) return shadowBits[0xf];
+			if (!shroud.IsExplored(i, j)) return shadowBits[0xf];
 
 			// bits are for unexploredness: up, right, down, left
 			var v = 0;
 			// bits are for unexploredness: TL, TR, BR, BL
 			var u = 0;
 
-			if (!IsVisible(i, j - 1)) { v |= 1; u |= 3; }
-			if (!IsVisible(i + 1, j)) { v |= 2; u |= 6; }
-			if (!IsVisible(i, j + 1)) { v |= 4; u |= 12; }
-			if (!IsVisible(i - 1, j)) { v |= 8; u |= 9; }
+			if (!shroud.IsVisible(i, j - 1)) { v |= 1; u |= 3; }
+			if (!shroud.IsVisible(i + 1, j)) { v |= 2; u |= 6; }
+			if (!shroud.IsVisible(i, j + 1)) { v |= 4; u |= 12; }
+			if (!shroud.IsVisible(i - 1, j)) { v |= 8; u |= 9; }
 
 			var uSides = u;
 
-			if (!IsVisible(i - 1, j - 1)) u |= 1;
-			if (!IsVisible(i + 1, j - 1)) u |= 2;
-			if (!IsVisible(i + 1, j + 1)) u |= 4;
-			if (!IsVisible(i - 1, j + 1)) u |= 8;
+			if (!shroud.IsVisible(i - 1, j - 1)) u |= 1;
+			if (!shroud.IsVisible(i + 1, j - 1)) u |= 2;
+			if (!shroud.IsVisible(i + 1, j + 1)) u |= 4;
+			if (!shroud.IsVisible(i - 1, j + 1)) u |= 8;
 
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}

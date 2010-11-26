@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA
 			foreach (var a in self.World.Queries.OwnedBy[self.Owner])
 				a.Kill(a);
 
-			self.Owner.Shroud.Disabled = true;
-
+			if (self.Owner == self.World.LocalPlayer)
+				self.World.LocalShroud.Disabled = true;
 		}
 		
 		public void Win(Actor self)	
@@ -59,7 +59,8 @@ namespace OpenRA.Mods.RA
 			self.Owner.WinState = WinState.Won;
 			
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
-			self.Owner.Shroud.Disabled = true;
+			if (self.Owner == self.World.LocalPlayer)
+				self.World.LocalShroud.Disabled = true;
 		}
 	}
 

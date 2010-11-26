@@ -44,6 +44,7 @@ namespace OpenRA
 		{
 			get { return players.ContainsKey(localPlayerIndex) ? players[localPlayerIndex] : null; }
 		}
+		public readonly Shroud LocalShroud;
 
 		public void SetLocalPlayer(int index)
 		{			
@@ -51,7 +52,6 @@ namespace OpenRA
 		}
 
 		public readonly Actor WorldActor;		
-
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 
@@ -98,6 +98,8 @@ namespace OpenRA
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
+			LocalShroud = WorldActor.Trait<Shroud>();
+			
 			Queries = new AllQueries(this);
 			
 			// Add players
