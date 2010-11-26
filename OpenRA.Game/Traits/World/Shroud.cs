@@ -208,9 +208,6 @@ namespace OpenRA.Traits
 		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (!map.IsInMap(x, y))
-				return false;
-			
 			if (disabled || world.LocalPlayer == null)
 				return true;
 			
