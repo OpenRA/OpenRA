@@ -1,10 +1,10 @@
-//
-//  Download.m
-//  OpenRA
-//
-//  Created by Paul Chote on 19/11/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
 
 #import "Download.h"
 #import "GameInstall.h"
