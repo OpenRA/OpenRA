@@ -373,10 +373,9 @@ namespace OpenRA.Mods.RA.Move
 			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				IsQueued = forceQueued;
-
 				cursor = "move";
 				if( !self.World.Map.IsInMap(location) || (self.World.LocalPlayer.Shroud.IsExplored( location ) &&
-				                                          !self.Trait<Mobile>().CanEnterCell( location )))
+						Mobile.MovementCostForCell(self.Trait<Mobile>().Info, self.World, location) == int.MaxValue))
 					cursor = "move-blocked";
 				
 				return true;
