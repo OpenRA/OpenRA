@@ -19,12 +19,16 @@ namespace OpenRA.Mods.RA.Activities
 	public class Attack : CancelableActivity
 	{
 		Target Target;
+		ITargetable targetable;
 		int Range;
 		bool AllowMovement;
 
 		public Attack(Target target, int range, bool allowMovement)
 		{
 			Target = target;
+			if (target.IsActor)
+				targetable = target.Actor.TraitOrDefault<ITargetable>();
+			
 			Range = range;
 			AllowMovement = allowMovement;
 		}
@@ -50,6 +54,9 @@ namespace OpenRA.Mods.RA.Activities
 			if (!Target.IsValid)
 				return NextActivity;
 
+			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
+				return NextActivity;
+			
 			if (!Combat.IsInRange(self.CenterLocation, Range, Target))
 				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
 

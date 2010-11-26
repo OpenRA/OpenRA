@@ -495,7 +495,7 @@ SS:
 	RevealsShroud:
 		Range: 6
 	-TargetableUnit:
-	TargetableCloaked:
+	TargetableSubmarine:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater
 	RenderUnit:
@@ -538,7 +538,7 @@ MSUB:
 		Range: 6
 	RenderUnit:
 	-TargetableUnit:
-	TargetableCloaked:
+	TargetableSubmarine:
 		TargetTypes: Ground, Water
 		CloakedTargetTypes: Underwater
 	Cloak:

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
-
+		public bool TargetableBy(Actor self, Actor byActor) { return true; }
 		public IEnumerable<int2> TargetableCells( Actor self )
 		{
 			return self.Trait<Building>().OccupiedCells();

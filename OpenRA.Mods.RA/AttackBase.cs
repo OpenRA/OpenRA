@@ -76,7 +76,11 @@ namespace OpenRA.Mods.RA
 			if (!target.IsValid) return false;
 			if (Weapons.All(w => w.IsReloading)) return false;
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) return false;
-
+			
+			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
+			    !target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
+				return false;
+			
 			return true;
 		}
 

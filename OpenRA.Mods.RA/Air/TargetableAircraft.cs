@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Air
     {
         Aircraft Aircraft;
         public TargetableAircraft(Actor self, TargetableAircraftInfo info)
-            : base(info)
+            : base(self, info)
         {
             Aircraft = self.Trait<Aircraft>();
         }

@@ -294,7 +294,6 @@
     <Compile Include="AppearsOnRadar.cs" />
     <Compile Include="ColorPickerPaletteModifier.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />
-    <Compile Include="TargetableCloaked.cs" />
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="CreateMPPlayers.cs" />
     <Compile Include="HackyAI.cs" />
@@ -324,6 +323,7 @@
     <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
+    <Compile Include="TargetableSubmarine.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

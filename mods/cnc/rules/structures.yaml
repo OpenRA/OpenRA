@@ -300,6 +300,7 @@ HQ:
 		Range: 10
 	Bib:
 	ProvidesRadar:
+	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 8
 
@@ -414,6 +415,9 @@ EYE:
 		Range: 10
 	Bib:
 	ProvidesRadar:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 8
 	IonControl:
 	
 TMPL:
@@ -480,6 +484,9 @@ OBLI:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 6
 
 CYCL:
 	Inherits: ^Wall
@@ -574,7 +581,9 @@ GUN:
 	-RenderBuilding:
 	-DeadBuildingState:
 	RenderRangeCircle:
-
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 3
 SAM:
 	Inherits: ^Building
 	Valued:
@@ -633,6 +642,7 @@ GTWR:
 	AutoTarget:
 	DetectCloaked:
 		Range: 3
+	RenderDetectionCircle:
 	RenderRangeCircle:
 	
 ATWR:
@@ -660,6 +670,7 @@ ATWR:
 		PrimaryWeapon: Tomahawk
 		SecondaryWeapon: Tomahawk
 	AutoTarget:
+	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
 	RenderRangeCircle:

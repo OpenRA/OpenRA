@@ -438,17 +438,15 @@ STNK:
 	RevealsShroud:
 		Range: 4
 	Cloak:
-		InitialDelay: 0
-		CloakDelay: 2.0
+		InitialDelay: 5
+		CloakDelay: 5
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 	AttackFrontal:
 		PrimaryWeapon: 227mm
 	RenderUnit:
 	AutoTarget:
-	-TargetableUnit:
-	TargetableCloaked:
-		CloakedTargetTypes: cloaked
+	TargetableUnit:
 
 TRAN:
 	Inherits: ^Helicopter

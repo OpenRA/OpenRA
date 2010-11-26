@@ -103,7 +103,10 @@ namespace OpenRA.Mods.RA
 
 		public bool IsVisible(Actor self)
 		{
-			return !Cloaked || self.Owner == self.World.LocalPlayer;
+			if (!Cloaked || self.Owner == self.World.LocalPlayer || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+				return true;
+			
+			return self.World.Queries.WithTrait<DetectCloaked>().Any(a => (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}
 		
 		public Color RadarColorOverride(Actor self)

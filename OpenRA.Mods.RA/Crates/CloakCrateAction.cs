@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Crates
 {
@@ -44,7 +45,11 @@ namespace OpenRA.Mods.RA.Crates
 			collector.World.AddFrameEndTask(w =>
 				{
 					w.Remove(collector);
+					
 					collector.AddTrait(cloak);
+					if (collector.HasTrait<TargetableUnit<TargetableUnitInfo>>())
+						collector.Trait<TargetableUnit<TargetableUnitInfo>>().RecievedCloak(collector);
+					
 					w.Add(collector);
 				});
 
