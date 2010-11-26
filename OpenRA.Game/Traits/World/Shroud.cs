@@ -23,7 +23,8 @@ namespace OpenRA.Traits
 	public class Shroud
 	{
 		Map map;
-
+		World world;
+		
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		Rectangle? exploredBounds;
@@ -43,6 +44,7 @@ namespace OpenRA.Traits
 
 		public Shroud(World world)
 		{
+			this.world = world;
 			map = world.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
@@ -197,7 +199,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 			
-			if (disabled)
+			if (disabled || world.LocalPlayer == null)
 				return true;
 			
 			return exploredCells[x,y];
@@ -209,7 +211,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 			
-			if (disabled)
+			if (disabled || world.LocalPlayer == null)
 				return true;
 			
 			return visibleCells[x,y] != 0;
