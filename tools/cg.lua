@@ -134,10 +134,12 @@ return cgbinpath and {
 				
 				local function checkargs(str)
 					local comment = "#"
+					local declared = {}
 					for i in string.gmatch(str,"([%[%]%w]+)") do
 						local descr = argregistry[i]
-						if (descr) then
+						if (descr and not declared[i]) then
 							comment = comment.." "..i.." = "..descr
+							declared[i] = true
 						end
 					end
 					
