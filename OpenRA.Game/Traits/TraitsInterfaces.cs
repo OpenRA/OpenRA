@@ -151,15 +151,6 @@ namespace OpenRA.Traits
 		public readonly int ZOffset;
 	    public float Scale;
 
-        public Renderable(Sprite sprite, float2 pos, string palette, int z, int zOffset)
-        {
-            Sprite = sprite;
-            Pos = pos;
-            Palette = palette;
-            Z = z;
-            ZOffset = zOffset;
-            Scale = 1f; /* default */
-        }
         public Renderable(Sprite sprite, float2 pos, string palette, int z, int zOffset, float scale)
         {
             Sprite = sprite;
@@ -171,12 +162,12 @@ namespace OpenRA.Traits
         }
 
         public Renderable(Sprite sprite, float2 pos, string palette, int z)
-            : this(sprite, pos, palette, z, 0) { }
-
+            : this(sprite, pos, palette, z, 0, 1f) { }
 
         public Renderable(Sprite sprite, float2 pos, string palette, int z, float scale)
             : this(sprite, pos, palette, z, 0, scale) { }
-
+		
+        public Renderable WithScale(float newScale) { return new Renderable(Sprite, Pos, Palette, Z, ZOffset, newScale); }
         public Renderable WithPalette(string newPalette) { return new Renderable(Sprite, Pos, newPalette, Z, ZOffset, Scale); }
         public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, Z, newOffset, Scale); }
 		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, Z, ZOffset, Scale); }

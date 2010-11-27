@@ -100,12 +100,7 @@ namespace OpenRA.Traits
 		public static Renderable Centered(Actor self, Sprite s, float2 location)
 		{
 			var pal = self.Owner == null ? "player0" : self.Owner.Palette;
-		    var scale = self.TraitOrDefault<Scale>();
-		    var scaleModifier = 1f;
-            if (scale != null)
-                scaleModifier = scale.Info.Value;
-
-            var loc = location - 0.5f * s.size * scaleModifier;
+            var loc = location - 0.5f * s.size;
 
 			return new Renderable(s, loc.Round(), pal, (int)self.CenterLocation.Y);
 		}

@@ -91,17 +91,10 @@ namespace OpenRA
 
 		public RectangleF GetBounds(bool useAltitude)
 		{
-			var si = Info.Traits.GetOrDefault<SelectableInfo>();
-
 			var size = Size.Value;
-
-            /* apply scaling */
-		    var scale = this.TraitOrDefault<Scale>();
-            if (scale != null && scale.Info.Value != 1)
-                size = size*scale.Info.Value;
-
 			var loc = CenterLocation - 0.5f * size;
 			
+			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 				loc += new float2(si.Bounds[2], si.Bounds[3]);
 

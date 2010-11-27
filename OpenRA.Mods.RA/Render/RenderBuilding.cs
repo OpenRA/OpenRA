@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Render
 			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
 			anim.PlayRepeating("idle");
 			var rb = building.Traits.Get<RenderBuildingInfo>();
-			yield return new Renderable(anim.Image,rb.Origin,rb.Palette,0);
+			yield return new Renderable(anim.Image, rb.Origin + 0.5f*anim.Image.size*(1 - Scale), rb.Palette, 0, Scale);
 		}
 	}
 

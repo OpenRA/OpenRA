@@ -214,8 +214,9 @@ namespace OpenRA.Mods.RA
 				{
 					var targetCell = unit.Location + xy - sourceLocation;
 					foreach (var r in unit.Render())
-						r.Sprite.DrawAt(wr, r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
-						                r.Palette ?? unit.Owner.Palette);
+						r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
+							wr.GetPaletteIndex(r.Palette ?? unit.Owner.Palette),
+					        r.Scale*r.Sprite.size);
 				}
 				
 				// Unit tiles

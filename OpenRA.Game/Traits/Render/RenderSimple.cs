@@ -20,6 +20,7 @@ namespace OpenRA.Traits
 		public readonly string[] OverrideTileset = null;
 		public readonly string[] OverrideImage = null;
 		public readonly string Palette = null;
+		public readonly float Scale = 1f;
 		public abstract object Create(ActorInitializer init);
 	}
 
@@ -48,17 +49,24 @@ namespace OpenRA.Traits
 			return cachedImage = GetImage(self.Info, self.World.Map.Tileset);
 		}
 
+		RenderSimpleInfo Info;
 		public RenderSimple(Actor self, Func<int> baseFacing)
 		{
 			anims.Add( "", new Animation( GetImage(self), baseFacing ) );
+			Info = self.Info.Traits.Get<RenderSimpleInfo>();
 		}
 
 		public virtual IEnumerable<Renderable> Render( Actor self )
 		{
-			var palette = self.Info.Traits.Get<RenderSimpleInfo>().Palette;
+
 			foreach( var a in anims.Values )
 				if( a.DisableFunc == null || !a.DisableFunc() )
-					yield return ( palette == null ) ? a.Image( self ) : a.Image( self ).WithPalette(palette);
+				{
+					Renderable ret = a.Image( self );
+					if (Info.Scale != 1f)
+						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f*ret.Sprite.size*(1 - Info.Scale));
+					yield return ( Info.Palette == null ) ? ret : ret.WithPalette(Info.Palette);
+				}
 		}
 
 		public virtual void Tick(Actor self)

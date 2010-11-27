@@ -199,7 +199,6 @@
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
-    <Compile Include="Traits\Scale.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Traits\SharesCell.cs" />
