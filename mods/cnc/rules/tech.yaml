@@ -5,6 +5,21 @@ V19:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
+	-DeadBuildingState:
+	Tooltip:
+		Name: Oil Derrick
+	LeavesHusk: 
+		HuskActor: V19.Husk
+
+V19.Husk:
+	Inherits: ^CivBuilding
+	-DeadBuildingState:
+	-Health:
+	RenderBuilding:
+	WithFire:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
 	Tooltip:
 		Name: Oil Derrick
 

@@ -65,6 +65,7 @@
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="WithRoof.cs" />
     <Compile Include="Missions\CncShellmapScript.cs" />
+    <Compile Include="WithFire.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

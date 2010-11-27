@@ -27,14 +27,17 @@ namespace OpenRA.Mods.RA
 				self.World.AddFrameEndTask(w =>
 					{
 						var info = self.Info.Traits.Get<LeavesHuskInfo>();
-
-						var husk = w.CreateActor(info.HuskActor, new TypeDictionary 
+						var td = new TypeDictionary 
 						{
 							new LocationInit( self.Location ),
 							new OwnerInit( self.Owner ),
-							new FacingInit( self.Trait<IFacing>().Facing ),
-						});
-	
+							new SkipMakeAnimsInit()
+						};
+						
+						if (self.HasTrait<IFacing>())
+							td.Add(new FacingInit( self.Trait<IFacing>().Facing ));
+
+						var husk = w.CreateActor(info.HuskActor, td);
 						var turreted = self.TraitOrDefault<Turreted>();
 						if (turreted != null)
 							foreach (var p in husk.TraitsImplementing<ThrowsParticle>())

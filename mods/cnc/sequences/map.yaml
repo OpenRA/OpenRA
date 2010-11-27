@@ -495,6 +495,15 @@ v19:
 	dead:
 		Start: 28
 
+v19.husk:
+	idle: v19
+		Start: 28
+	fire-start: flmspt
+		Start: 0
+		Length: *
+	fire-loop: flmspt
+		Start: 50
+		Length: *
 arco:
 	idle:
 		Start: 0
