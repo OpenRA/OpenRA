@@ -90,6 +90,8 @@ namespace OpenRA.Widgets
 		{
 			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;
 			if (DownPressed) ListOffset -= ScrollVelocity;
+			
+			if (ListOffset > 0) ListOffset = 0;
 		}
 		
 		public override bool LoseFocus (MouseInput mi)

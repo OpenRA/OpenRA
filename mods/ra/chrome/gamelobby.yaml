@@ -33,13 +33,13 @@ Background@SERVER_LOBBY:
 			Id:PLAYERSX
 			X:20
 			Y:75
-			Width:500
+			Width:504
 			Height:227
 			Children:
 				Container@PLAYERS:
 					Id:PLAYERS
-					X:2
-					Y:1
+					X:5
+					Y:5
 					Width:500
 					Height:2270
 					Children:
