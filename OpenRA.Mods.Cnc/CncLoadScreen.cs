@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Cnc
 		};
 		
 		Stopwatch lastLoadScreen = new Stopwatch();
-		Rectangle StripeRect;
-		Sprite Stripe, Logo;
+		Rectangle StripeRect, BgRect;
+		Sprite Stripe, Logo, Bg;
 		float2 LogoPos;
 		
 		Renderer r;
@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Cnc
 			
 			var s = new Sheet("mods/cnc/uibits/loadscreen.png");
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
+			Bg = new Sprite(s, new Rectangle(0,256,512,256), TextureChannel.Alpha);
+			BgRect = new Rectangle(0, 0, Renderer.Resolution.Width, Renderer.Resolution.Height);
 			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
 			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);
 			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
@@ -62,9 +64,10 @@ namespace OpenRA.Mods.Cnc
 			var textSize = Font.Measure(text);
 			
 			r.BeginFrame(float2.Zero);
+			WidgetUtils.FillRectWithSprite(BgRect, Bg);
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
-			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
+			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.Black);
 			r.EndFrame( new NullInputHandler() );
 		}
 	}
