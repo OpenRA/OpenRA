@@ -35,7 +35,8 @@ do
     read -s -n1 -p "Download and install RA packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
-            mono OpenRA.Utility.exe --download-packages=ra
+            mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=ra-packages,/tmp/ra-packages.zip
+            mono OpenRA.Utility.exe --extract-zip=/tmp/ra-packages.zip,ra/packages/
             break;;
         n|N)
             echo "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
@@ -50,7 +51,8 @@ do
     read -s -n1 -p "Download and install C&C packages? [Y/n]"
     case $REPLY in
         y|Y|"") 
-            mono OpenRA.Utility.exe --download-packages=cnc
+            mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=cnc-packages,/tmp/cnc-packages.zip
+            mono OpenRA.Utility.exe --extract-zip=/tmp/cnc-packages.zip,cnc/packages/
             break;;
         n|N)
             echo "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
