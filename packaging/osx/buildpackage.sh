@@ -17,9 +17,10 @@ fi
 cp -rv ../../OpenRA.Launcher.Mac/build/Release/OpenRA.app OpenRA.app
 cp -rv $2/* "OpenRA.app/Contents/Resources/" || exit 3
 
-# Icon isn't used, and editor doesn't work
+# Icon isn't used, and editor doesn't work, OpenRA.Launcher is Windows specific.
 rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
+rm OpenRA.app/Contents/Resources/OpenRA.Launcher.exe
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app

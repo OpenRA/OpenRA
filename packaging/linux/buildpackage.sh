@@ -19,6 +19,9 @@ cp openra root/usr/bin/
 mkdir -p root/usr/share/openra/
 cp -R $BUILTDIR/* "root/usr/share/openra/" || exit 3
 
+# Remove unneeded files
+rm root/usr/share/openra/OpenRA.Launcher.exe
+
 # Desktop Icons
 mkdir -p root/usr/share/applications/
 sed "s/{VERSION}/$VERSION/" openra-ra.desktop > root/usr/share/applications/openra-ra.desktop
