@@ -278,6 +278,26 @@ namespace OpenRA.Widgets.Delegates
 				});
 		}
 		
+		void ShowTeamDropDown(ButtonWidget team)
+		{
+			var dropDownOptions = new List<Pair<string, Action>>();
+			for (int i = 0; i <= Map.PlayerCount; i++)
+			{
+				var ii = i;
+				dropDownOptions.Add(new Pair<string, Action>( ii == 0 ? "-" : ii.ToString(),
+					() => orderManager.IssueOrder( Order.Command("team "+ii) )) );
+			};
+
+			DropDownButtonWidget.ShowDropDown( team,
+				dropDownOptions,
+				(ac, w) => new LabelWidget
+				{
+					Bounds = new Rectangle(0, 0, w, 24),
+					Text = "  {0}".F(ac.First),
+					OnMouseUp = mi => { ac.Second(); return true; },
+				});
+		}
+		
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
@@ -392,7 +412,7 @@ namespace OpenRA.Widgets.Delegates
 					factionflag.GetImageCollection = () => "flags";
 
 					var team = template.GetWidget<ButtonWidget>("TEAM");
-					team.OnMouseUp = CycleTeam;
+					team.OnMouseDown = _ => {ShowTeamDropDown(team); return true;};
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
@@ -454,16 +474,6 @@ namespace OpenRA.Widgets.Delegates
 		bool CycleReady(MouseInput mi)
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
-			return true;
-		}
-
-		bool CycleTeam(MouseInput mi)
-		{
-			var d = (mi.Button == MouseButton.Left) ? +1 : Map.PlayerCount;
-			var newIndex = (orderManager.LocalClient.Team + d) % (Map.PlayerCount + 1);
-			
-			orderManager.IssueOrder(
-				Order.Command("team " + newIndex));
 			return true;
 		}
 	}
