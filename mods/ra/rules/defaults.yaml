@@ -136,7 +136,7 @@
 		ActorTypes: e1,e1,e1,c1,c2,e6
 	MustBeDestroyed:
 	GivesExperience:
-	FrozenUnderFog:
+#	FrozenUnderFog:
 	CaptureNotification:
 		Notification: strucap1.aud
 	EditorAppearance:
