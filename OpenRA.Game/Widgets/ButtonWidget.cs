@@ -136,7 +136,7 @@ namespace OpenRA.Widgets
 				Widget.RootWidget.Children.Remove(dropDown);
 			};
 
-			fullscreenMask.OnMouseUp = mi =>
+			fullscreenMask.OnMouseDown = mi =>
 			{
 				HideDropDown();
 				return false;
