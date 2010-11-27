@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				{
 					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
 					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
-					Text = world.LocalPlayer.Stances[ pp ].ToString(),
+					GetText = () => world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
 				myStance.OnMouseDown = mi => { ShowDropDown(pp, myStance); return true; };

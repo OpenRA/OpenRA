@@ -118,12 +118,16 @@ namespace OpenRA.Network
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 
-						// automatically declare war reciprocally
-						if (newStance == Stance.Enemy)
-							SetPlayerStance(world, targetPlayer, order.Player, newStance);
-
 						Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
 							order.Player.PlayerName, targetPlayer.PlayerName, newStance));
+				
+						// automatically declare war reciprocally
+						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
+						{
+							SetPlayerStance(world, targetPlayer, order.Player, newStance);
+							Game.Debug("{0} has reciprocated",targetPlayer.PlayerName);
+						}
+
 						break;
 					}
 				default:
@@ -141,12 +145,12 @@ namespace OpenRA.Network
 			}
 		}
 
-		static void SetPlayerStance(World w, Player a, Player b, Stance s)
+		static void SetPlayerStance(World w, Player p, Player target, Stance s)
 		{
-			var oldStance = a.Stances[b];
-			a.Stances[b] = s;
-			if (b == w.LocalPlayer)
-				w.WorldActor.Trait<Shroud>().UpdatePlayerStance(w, b, oldStance, s);
+			var oldStance = p.Stances[target];
+			p.Stances[target] = s;
+			if (target == w.LocalPlayer)
+				w.WorldActor.Trait<Shroud>().UpdatePlayerStance(w, p, oldStance, s);
 		}
 	}
 }
