@@ -157,7 +157,7 @@ namespace OpenRA.Widgets
 				ww.OnMouseUp = mi => { var result = origMouseUp(mi); HideDropDown(); return result; };
 				ww.ClickThrough = false;
 				ww.IsVisible = () => true;
-				ww.Bounds = new Rectangle(0, y, ww.Bounds.Width, ww.Bounds.Height);
+				ww.Bounds = new Rectangle(1, y, ww.Bounds.Width, ww.Bounds.Height);
 
 				ww.OnMouseMove = mi =>
 				{

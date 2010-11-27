@@ -253,17 +253,28 @@ namespace OpenRA.Widgets.Delegates
 			foreach (var c in CountryNames)
 			{
 				var cc = c;
-				dropDownOptions.Add(new Pair<string, Action>( cc.Value,
+				dropDownOptions.Add(new Pair<string, Action>( cc.Key,
 					() => orderManager.IssueOrder( Order.Command("race "+cc.Key) )) );
 			};
 
 			DropDownButtonWidget.ShowDropDown( race,
 				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = "  {0}".F(ac.First),
-					OnMouseUp = mi => { ac.Second(); return true; },
+				(ac, w) =>
+			    {
+					var ret = new LabelWidget
+					{
+						Bounds = new Rectangle(0, 0, w, 24),
+						Text = "          {0}".F(CountryNames[ac.First]),
+						OnMouseUp = mi => { ac.Second(); return true; },
+					};
+				
+					ret.AddChild(new ImageWidget
+					{
+						Bounds = new Rectangle(5, 5, 40, 15),
+						GetImageName = () => ac.First,
+						GetImageCollection = () => "flags",
+					});
+					return ret;
 				});
 		}
 		
