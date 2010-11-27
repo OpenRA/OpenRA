@@ -64,6 +64,9 @@ namespace OpenRA.Widgets
 			return Depressed;
 		}
 
+		public override int2 ChildOrigin { get { return RenderOrigin + 
+				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
+		
 		public override void DrawInner( WorldRenderer wr )
 		{
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
@@ -97,13 +100,15 @@ namespace OpenRA.Widgets
 		public override void DrawInner(WorldRenderer wr)
 		{
 			base.DrawInner(wr);
+			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			
 			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
 			WidgetUtils.DrawRGBA( image,
-				new float2( RenderBounds.Right - RenderBounds.Height + 4, 
+				stateOffset + new float2( RenderBounds.Right - RenderBounds.Height + 4, 
 					RenderBounds.Top + (RenderBounds.Height - image.bounds.Height) / 2 ));
 
-			WidgetUtils.FillRectWithColor(new Rectangle(RenderBounds.Right - RenderBounds.Height,
-				RenderBounds.Top + 3, 1, RenderBounds.Height - 6),
+			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + RenderBounds.Right - RenderBounds.Height,
+				stateOffset.Y + RenderBounds.Top + 3, 1, RenderBounds.Height - 6),
 				Color.White);
 		}
 
