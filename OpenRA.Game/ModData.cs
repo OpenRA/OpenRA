@@ -20,12 +20,12 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
-		public readonly SheetBuilder SheetBuilder;
-		public readonly CursorSheetBuilder CursorSheetBuilder;
 		public readonly Dictionary<string, MapStub> AvailableMaps;
 		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
-		
+		public SheetBuilder SheetBuilder;
+		public CursorSheetBuilder CursorSheetBuilder;
+
 		public ModData( params string[] mods )
 		{		
 			Manifest = new Manifest( mods );
@@ -81,7 +81,9 @@ namespace OpenRA
 			if (map.Tileset != cachedTileset
 				|| previousMapHadSequences || map.Sequences.Count > 0)
 			{
+				SheetBuilder = new SheetBuilder( TextureChannel.Red );
 				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
+				CursorSheetBuilder = new CursorSheetBuilder( this );
 				CursorProvider.Initialize(Manifest.Cursors);
 				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
 				cachedTileset = map.Tileset;
