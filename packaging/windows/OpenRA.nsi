@@ -75,6 +75,7 @@ SectionEnd
 
 Section "Client" Client
 	SetOutPath "$INSTDIR"
+	File "${SRCDIR}\OpenRA.Launcher.exe"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
@@ -91,10 +92,12 @@ Section "Client" Client
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Launcher.exe "" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
+		;CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
+		;	"$OUTDIR\OpenRA.ico" "" "" "" ""
+		;CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \
+		;	"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\cg"
@@ -122,6 +125,7 @@ SectionGroup /e "Mods"
 		Section "-RA_Core"
 			CreateDirectory "$TEMP\ra-packages"
 			CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
+			CopyFiles /SILENT "$INSTDIR\mods\ra\maps\*.*" "$TEMP\ra-maps"
 			RMDir /r "$INSTDIR\mods\ra"
 			SetOutPath "$INSTDIR\mods\ra"
 			File "${SRCDIR}\mods\ra\*.*"
@@ -133,23 +137,16 @@ SectionGroup /e "Mods"
 			File /r "${SRCDIR}\mods\ra\uibits"
 			CreateDirectory "$INSTDIR\mods\ra\packages"
 			CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
+			CopyFiles /SILENT "$TEMP\ra-maps\*.*" "$INSTDIR\mods\ra\maps"
 			RMDir /r "$TEMP\ra-packages"
-		SectionEnd
-		Section "Download content" RA_Content
-			AddSize 6584
-			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
-			dlcontent:
-				SetOutPath "$OUTDIR\packages"
-				!insertmacro DownloadDependency "ra-packages" "ra-packages.zip"
-				ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
-				Delete ra-packages.zip
-			done:
+			RMDir /r "$TEMP\ra-maps"
 		SectionEnd
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
 			CreateDirectory "$TEMP\cnc-packages"
 			CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
+			CopyFiles /SILENT "$INSTDIR\mods\cnc\maps\*.*" "$TEMP\cnc-maps"
 			RMDir /r "$INSTDIR\mods\cnc"
 			SetOutPath "$INSTDIR\mods\cnc"
 			File "${SRCDIR}\mods\cnc\*.*"
@@ -162,17 +159,9 @@ SectionGroup /e "Mods"
 			File /r "${SRCDIR}\mods\cnc\uibits"
 			CreateDirectory "$INSTDIR\mods\cnc\packages"
 			CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
+			CopyFiles /SILENT "$TEMP\cnc-maps\*.*" "$INSTDIR\mods\cnc\maps"
 			RMDir /r "$TEMP\cnc-packages"
-		SectionEnd
-		Section "Download content" CNC_Content
-			AddSize 4621
-			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
-			dlcontent:
-				SetOutPath "$OUTDIR\packages"
-				!insertmacro DownloadDependency "cnc-packages" "cnc-packages.zip"
-				ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
-				Delete cnc-packages.zip
-			done:
+			RMDir /r "$TEMP\cnc-maps"
 		SectionEnd
 	SectionGroupEnd
 SectionGroupEnd
@@ -276,6 +265,7 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\cg
 	RMDir /r $INSTDIR\glsl
+	Delete $INSTDIR\OpenRA.Launcher.exe
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Utility.exe
 	Delete $INSTDIR\OpenRA.Editor.exe
