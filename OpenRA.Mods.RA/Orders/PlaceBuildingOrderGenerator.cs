@@ -68,7 +68,6 @@ namespace OpenRA.Mods.RA.Orders
 		public void RenderAfterWorld( WorldRenderer wr, World world ) {}
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
-			
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
 			
@@ -78,11 +77,7 @@ namespace OpenRA.Mods.RA.Orders
 			if (Rules.Info[Building].Traits.Contains<LineBuildInfo>())
 			{
 				foreach( var t in BuildingUtils.GetLineBuildCells( world, topLeft, Building, BuildingInfo ) )
-				{
 					cells.Add( t, BuildingInfo.IsCloseEnoughToBase( world, world.LocalPlayer, Building, t ) );
-					foreach (var r in Preview)
-						r.Sprite.DrawAt(wr,Game.CellSize*t + r.Pos,  r.Palette ?? world.LocalPlayer.Palette);
-				}
 			}
 			else
 			{
