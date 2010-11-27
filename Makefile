@@ -7,7 +7,7 @@ PHONY		= core tools package all mods clean distclean
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
 tools: editor ralint seqed filex tsbuild utility
-package: fixheader core editor utility
+package: fixheader core editor utility winlaunch
 mods: mod_ra mod_cnc
 all: core tools winlaunch
 clean: 
