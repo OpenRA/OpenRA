@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		[WeaponReference]
 		public readonly string Weapon = null;
-		public readonly int Range = 0;
+		public readonly int Range = 3;
 	}
 
 	class CarpetBomb : ITick			// todo: maybe integrate this better with the normal weapons system?
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		{
 			var info = self.Info.Traits.Get<CarpetBombInfo>();
 
-			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target ) )
+			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target * Game.CellSize ) )
 				return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
