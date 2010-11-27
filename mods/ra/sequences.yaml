@@ -849,8 +849,11 @@ v2:
 		Start: 0
 		Facings: 32
 
-flagfly:
-	idle:
+rallypoint:
+	flag:flagfly
+		Start: 0
+		Length: *
+	circles:fpls
 		Start: 0
 		Length: *
 

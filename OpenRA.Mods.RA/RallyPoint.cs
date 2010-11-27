@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -22,25 +23,16 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new RallyPoint(init.self); }
 	}
 
-	public class RallyPoint : IRender, IIssueOrder, IResolveOrder, ITick
+	public class RallyPoint : IIssueOrder, IResolveOrder
 	{
 		[Sync]
 		public int2 rallyPoint;
-		public Animation anim;
 
 		public RallyPoint(Actor self)
 		{
 			var info = self.Info.Traits.Get<RallyPointInfo>();
 			rallyPoint = self.Location + new int2(info.RallyPoint[0], info.RallyPoint[1]);
-			anim = new Animation("flagfly");
-			anim.PlayRepeating("idle");
-		}
-
-		public IEnumerable<Renderable> Render(Actor self)
-		{
-			if (self.Owner == self.World.LocalPlayer && self.World.Selection.Actors.Contains(self))
-				yield return Traits.Util.Centered(self,
-					anim.Image, Traits.Util.CenterOfCell(rallyPoint));
+			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -62,8 +54,6 @@ namespace OpenRA.Mods.RA
 				rallyPoint = order.TargetLocation;
 		}
 
-		public void Tick(Actor self) { anim.Tick(); }
-
 		class RallyPointOrderTargeter : IOrderTargeter
 		{
 			public string OrderID { get { return "SetRallyPoint"; } }
@@ -76,7 +66,12 @@ namespace OpenRA.Mods.RA
 
 			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
-				return self.World.Map.IsInMap(location);
+				if (self.World.Map.IsInMap(location))
+				{
+					cursor = "ability";
+					return true;
+				}
+				return false;
 			}
 
 			public bool IsQueued { get { return false; } } // unused

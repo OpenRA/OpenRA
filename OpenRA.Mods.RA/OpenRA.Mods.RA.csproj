@@ -324,6 +324,7 @@
     <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
     <Compile Include="TargetableSubmarine.cs" />
+    <Compile Include="Effects\RallyPoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
