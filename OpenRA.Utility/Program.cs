@@ -55,7 +55,7 @@ namespace OpenRA.Utility
 				if (principal.IsInRole(WindowsBuiltInRole.Administrator))
 				{
 					var ps = new PipeSecurity();
-					ps.AddAccessRule(new PipeAccessRule("EVERYONE", PipeAccessRights.FullControl, System.Security.AccessControl.AccessControlType.Allow));
+					ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, System.Security.AccessControl.AccessControlType.Allow));
 					pipe = new NamedPipeServerStream("OpenRA.Utility", PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024, 1024, ps);
 				}
 				else
