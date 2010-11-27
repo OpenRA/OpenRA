@@ -140,25 +140,6 @@ namespace OpenRA.Widgets.Delegates
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
-			
-			var colorChooser = lobby.GetWidget("COLOR_CHOOSER");
-			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");		
-			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-
-			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-
-			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
-			{
-				colorChooser.IsVisible = () => false;
-				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				return true;
-			};
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
@@ -216,7 +197,7 @@ namespace OpenRA.Widgets.Delegates
 			return orderManager.LobbyInfo.ClientInSlot( slot );
 		}
 
-		void ShowDropDown(Session.Slot slot, ButtonWidget name, bool showBotOptions)
+		bool ShowSlotDropDown(Session.Slot slot, ButtonWidget name, bool showBotOptions)
 		{
 			var dropDownOptions = new List<Pair<string, Action>>
 			{
@@ -242,12 +223,13 @@ namespace OpenRA.Widgets.Delegates
 					Text = "  {0}".F(ac.First),
 					OnMouseUp = mi => { ac.Second(); return true; },
 				});
+			return true;
 		}
 		
-		void ShowRaceDropDown(Session.Slot s, ButtonWidget race)
+		bool ShowRaceDropDown(Session.Slot s, ButtonWidget race)
 		{
 			if (Map.Players[s.MapPlayer].LockRace)
-				return;
+				return false;
 
 			var dropDownOptions = new List<Pair<string, Action>>();
 			foreach (var c in CountryNames)
@@ -276,9 +258,10 @@ namespace OpenRA.Widgets.Delegates
 					});
 					return ret;
 				});
+			return true;
 		}
 		
-		void ShowTeamDropDown(ButtonWidget team)
+		bool ShowTeamDropDown(ButtonWidget team)
 		{
 			var dropDownOptions = new List<Pair<string, Action>>();
 			for (int i = 0; i <= Map.PlayerCount; i++)
@@ -296,6 +279,39 @@ namespace OpenRA.Widgets.Delegates
 					Text = "  {0}".F(ac.First),
 					OnMouseUp = mi => { ac.Second(); return true; },
 				});
+			return true;
+		}
+		
+		bool ShowColorDropDown(Session.Slot s, ButtonWidget color)
+		{
+			if (Map.Players[s.MapPlayer].LockColor)
+				return false;
+			
+			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), null, "COLOR_CHOOSER" );
+			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
+			hueSlider.SetOffset(orderManager.LocalClient.Color1.GetHue()/360f);
+			
+			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
+			satSlider.SetOffset(orderManager.LocalClient.Color1.GetSaturation());
+
+			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
+			lumSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness());
+			
+			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
+			rangeSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness() == 0 ? 0 : orderManager.LocalClient.Color2.GetBrightness()/orderManager.LocalClient.Color1.GetBrightness());
+			
+			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+
+			DropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() {colorChooser.GetWidget("BUTTON_OK")}, () => {
+				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+				return true;
+			});
+			return true;
 		}
 		
 		void UpdatePlayerList()
@@ -322,7 +338,7 @@ namespace OpenRA.Widgets.Delegates
 							var btn = template.GetWidget<ButtonWidget>("JOIN");
 							btn.GetText = () =>  "Spectate in this slot";
 							name.GetText = () => s.Closed ? "Closed" : "Open";
-							name.OnMouseDown = _ => { ShowDropDown(s, name, false); return true; };
+							name.OnMouseDown = _ => ShowSlotDropDown(s, name, false);
 							
 						}
 						else
@@ -330,7 +346,7 @@ namespace OpenRA.Widgets.Delegates
 							template = EmptySlotTemplateHost.Clone();
 							var name = template.GetWidget<ButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
-							name.OnMouseDown = _ => { ShowDropDown(s, name, Map.Players[ s.MapPlayer ].AllowBots); return true; };
+							name.OnMouseDown = _ => ShowSlotDropDown(s, name, Map.Players[ s.MapPlayer ].AllowBots);
 						}
 					}
 					else
@@ -376,34 +392,13 @@ namespace OpenRA.Widgets.Delegates
 					name.OnLoseFocus = () => name.OnEnterKey();
 
 					var color = template.GetWidget<ButtonWidget>("COLOR");
-					color.OnMouseUp = mi =>
-					{
-						if (Map.Players[s.MapPlayer].LockColor)
-							return false;
-						
-						var colorChooser = Widget.RootWidget.GetWidget("SERVER_LOBBY").GetWidget("COLOR_CHOOSER");
-						var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-						hueSlider.SetOffset(orderManager.LocalClient.Color1.GetHue()/360f);
-						
-						var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-						satSlider.SetOffset(orderManager.LocalClient.Color1.GetSaturation());
-
-						var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-						lumSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness());
-						
-						var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-						rangeSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness() == 0 ? 0 : orderManager.LocalClient.Color2.GetBrightness()/orderManager.LocalClient.Color1.GetBrightness());
-
-						UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-						colorChooser.IsVisible = () => true;
-						return true;
-					};
-
+					color.OnMouseUp = _ => ShowColorDropDown(s, color);
+					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.Color1;
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
-					faction.OnMouseDown = _ => {ShowRaceDropDown(s, faction); return true;};
+					faction.OnMouseDown = _ => ShowRaceDropDown(s, faction);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
@@ -412,7 +407,7 @@ namespace OpenRA.Widgets.Delegates
 					factionflag.GetImageCollection = () => "flags";
 
 					var team = template.GetWidget<ButtonWidget>("TEAM");
-					team.OnMouseDown = _ => {ShowTeamDropDown(team); return true;};
+					team.OnMouseDown = _ => ShowTeamDropDown(team);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");

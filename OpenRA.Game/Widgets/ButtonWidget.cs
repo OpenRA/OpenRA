@@ -115,7 +115,7 @@ namespace OpenRA.Widgets
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
 		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
 
-		public static void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
+		public static void ShowDropPanel(Widget w, Widget panel, IEnumerable<Widget> dismissAfter, Func<bool> onDismiss)
 		{
 			var fullscreenMask = new ContainerWidget
 			{
@@ -123,8 +123,36 @@ namespace OpenRA.Widgets
 				ClickThrough = false,
 				Visible = true
 			};
-
 			Widget.RootWidget.AddChild(fullscreenMask);
+			
+			Action HideDropDown = () =>
+			{
+				Widget.RootWidget.Children.Remove(fullscreenMask);
+				Widget.RootWidget.Children.Remove(panel);
+			};
+	
+			fullscreenMask.OnMouseDown = mi =>
+			{
+				if (onDismiss()) HideDropDown();
+				return false;
+			};
+			
+			var oldBounds = panel.Bounds;
+			panel.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, oldBounds.Width, oldBounds.Height);
+			panel.ClickThrough = false;
+			panel.Visible = true;
+			panel.OnMouseUp = mi => true;
+			
+			foreach (var ww in dismissAfter)
+			{
+				var origMouseUp = ww.OnMouseUp;
+				ww.OnMouseUp = mi => { var result = origMouseUp(mi); if (onDismiss()) HideDropDown(); return result; };
+			}
+			Widget.RootWidget.AddChild(panel);
+		}
+		
+		public static void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
+		{
 			var dropDown = new ScrollPanelWidget
 			{
 				Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100),
@@ -133,28 +161,13 @@ namespace OpenRA.Widgets
 				OnMouseUp = mi => true,
 			};
 
-			Widget.RootWidget.AddChild(dropDown);
-
-			Action HideDropDown = () =>
-			{
-				Widget.RootWidget.Children.Remove(fullscreenMask);
-				Widget.RootWidget.Children.Remove(dropDown);
-			};
-
-			fullscreenMask.OnMouseDown = mi =>
-			{
-				HideDropDown();
-				return false;
-			};
-
 			var y = 0;
 			List<LabelWidget> items = new List<LabelWidget>();
-
+			List<Widget> dismissAfter = new List<Widget>();
 			foreach (var t in ts)
 			{
 				var ww = ft(t, dropDown.Bounds.Width);
-				var origMouseUp = ww.OnMouseUp;
-				ww.OnMouseUp = mi => { var result = origMouseUp(mi); HideDropDown(); return result; };
+				dismissAfter.Add(ww);
 				ww.ClickThrough = false;
 				ww.IsVisible = () => true;
 				ww.Bounds = new Rectangle(1, y, ww.Bounds.Width, ww.Bounds.Height);
@@ -175,6 +188,7 @@ namespace OpenRA.Widgets
 
 			dropDown.ContentHeight = y;
 			dropDown.Bounds.Height = y + 2;
+			ShowDropPanel(w,dropDown, dismissAfter, () => true);
 		}
 	}
 }

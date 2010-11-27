@@ -334,94 +334,85 @@ Background@SERVER_LOBBY:
 			Width: 80
 			Height: 20
 			Text: Lock Teams
-		Background@COLOR_CHOOSER:
-			Id:COLOR_CHOOSER
-			Width:500
-			Height:195
-			X:(WINDOW_RIGHT - WIDTH)/2 - PARENT_LEFT
-			Y:100	
-			Visible:false
-			Children:
-				Button@BUTTON_OK:
-					Id:BUTTON_OK
-					X:PARENT_RIGHT - 180
-					Y:PARENT_BOTTOM - 45
-					Width:160
-					Height:25
-					Text:Ok
-					Bold:True
-				ShpImage@MCV:
-					Id:MCV
-					X:PARENT_RIGHT - 90
-					Y:20
-					Image:mcv
-					Frame:8
-					Palette:colorpicker
-				ShpImage@FACT:
-					Id:FACT
-					X:PARENT_RIGHT - 100
-					Y:70
-					Image:fact
-					Palette:colorpicker
-				Label@HUE_LABEL:
-					X:0
-					Y:30
-					Width:110
-					Height:20
-					Align: Right
-					Text: Hue:
-				Slider@HUE:
-					Id:HUE_SLIDER
-					X:120
-					Y:30
-					Width:260
-					Height:20
-					Ticks:5
-				Label@SAT_LABEL:
-					X:0
-					Y:60
-					Width:110
-					Height:20
-					Align: Right
-					Text: Saturation:	
-				Slider@SAT:
-					Id:SAT_SLIDER
-					X:120
-					Y:60
-					Width:260
-					Height:20
-					Ticks:5
-				Label@LUM_LABEL:
-					X:0
-					Y:90
-					Width:110
-					Height:20
-					Align: Right
-					Text: Brightness:	
-				Slider@LUM:
-					Id:LUM_SLIDER
-					X:120
-					Id:LUM_SLIDER
-					Y:90
-					Width:260
-					Height:20
-					Ticks:5
-					Range:0.2,1
-				Label@RANGE_LABEL:
-					X:0
-					Y:120
-					Width:110
-					Height:20
-					Align: Right
-					Text: Range:	
-				Slider@RANGE:
-					Id:RANGE_SLIDER
-					X:120
-					Y:120
-					Width:260
-					Height:20
-					Ticks:5
-					Range:0,0.25
+Background@COLOR_CHOOSER:
+	Id:COLOR_CHOOSER
+	Background:dialog2
+	Width:310
+	Height:120
+	Visible:false
+	Children:
+		Button@BUTTON_OK:
+			Id:BUTTON_OK
+			X:210
+			Y:85
+			Width:90
+			Height:25
+			Text:Ok
+			Bold:True
+		ShpImage@FACT:
+			Id:FACT
+			X:220
+			Y:10
+			Image:fact
+			Palette:colorpicker
+		Label@HUE_LABEL:
+			X:0
+			Y:5
+			Width:40
+			Height:20
+			Align: Right
+			Text: Hue:
+		Slider@HUE:
+			Id:HUE_SLIDER
+			X:43
+			Y:10
+			Width:160
+			Height:20
+			Ticks:5
+		Label@SAT_LABEL:
+			X:0
+			Y:30
+			Width:40
+			Height:20
+			Align: Right
+			Text: Sat:	
+		Slider@SAT:
+			Id:SAT_SLIDER
+			X:43
+			Y:35
+			Width:160
+			Height:20
+			Ticks:5
+		Label@LUM_LABEL:
+			X:0
+			Y:55
+			Width:40
+			Height:20
+			Align: Right
+			Text: Lum:	
+		Slider@LUM:
+			Id:LUM_SLIDER
+			X:43
+			Y:60
+			Width:160
+			Height:20
+			Ticks:5
+			Range:0.2,1
+		Label@RANGE_LABEL:
+			X:0
+			Y:80
+			Width:40
+			Height:20
+			Align: Right
+			Text: Ran:	
+		Slider@RANGE:
+			Id:RANGE_SLIDER
+			X:43
+			Y:85
+			Width:160
+			Height:20
+			Ticks:5
+			Range:0,0.25
 Background@MAP_CHOOSER:
 	Id:MAP_CHOOSER
 	X:(WINDOW_RIGHT - WIDTH)/2

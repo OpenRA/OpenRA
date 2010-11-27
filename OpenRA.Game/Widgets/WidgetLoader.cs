@@ -41,7 +41,9 @@ namespace OpenRA
 		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, MiniYamlNode node)
 		{
 			var widget = NewWidget(node.Key, args);
-			parent.AddChild( widget );
+			
+			if (parent != null)
+				parent.AddChild( widget );
 
 			foreach (var child in node.Value.Nodes)
 				if (child.Key != "Children")
