@@ -244,6 +244,29 @@ namespace OpenRA.Widgets.Delegates
 				});
 		}
 		
+		void ShowRaceDropDown(Session.Slot s, ButtonWidget race)
+		{
+			if (Map.Players[s.MapPlayer].LockRace)
+				return;
+
+			var dropDownOptions = new List<Pair<string, Action>>();
+			foreach (var c in CountryNames)
+			{
+				var cc = c;
+				dropDownOptions.Add(new Pair<string, Action>( cc.Value,
+					() => orderManager.IssueOrder( Order.Command("race "+cc.Key) )) );
+			};
+
+			DropDownButtonWidget.ShowDropDown( race,
+				dropDownOptions,
+				(ac, w) => new LabelWidget
+				{
+					Bounds = new Rectangle(0, 0, w, 24),
+					Text = "  {0}".F(ac.First),
+					OnMouseUp = mi => { ac.Second(); return true; },
+				});
+		}
+		
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
@@ -349,7 +372,8 @@ namespace OpenRA.Widgets.Delegates
 					colorBlock.GetColor = () => c.Color1;
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
-					faction.OnMouseUp = mi => CycleRace(mi, s);
+					faction.OnMouseDown = _ => {ShowRaceDropDown(s, faction); return true;};
+					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
@@ -415,28 +439,6 @@ namespace OpenRA.Widgets.Delegates
 		}
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-		bool CycleRace(MouseInput mi, Session.Slot s)
-		{
-			if (Map.Players[s.MapPlayer].LockColor)
-				return false;
-			
-			var countries = CountryNames.Select(a => a.Key);
-
-			if (mi.Button == MouseButton.Right)
-				countries = countries.Reverse();
-
-			var nextCountry = countries
-				.SkipWhile(c => c != orderManager.LocalClient.Country)
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (nextCountry == null)
-				nextCountry = countries.First();
-
-			orderManager.IssueOrder(Order.Command("race " + nextCountry));
-
-			return true;
-		}
 
 		bool CycleReady(MouseInput mi)
 		{
