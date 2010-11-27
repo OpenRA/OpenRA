@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Support
 {
-	static class PerfHistory
+	public static class PerfHistory
 	{
 		static readonly Color[] colors = { Color.Red, Color.Green, 
 											 Color.Blue, Color.Yellow, 
@@ -45,7 +45,7 @@ namespace OpenRA.Support
 		}
 	}
 
-	class PerfItem
+	public class PerfItem
 	{
 		public readonly Color c;
 		public readonly string Name;
