@@ -73,7 +73,7 @@
             treeNode1,
             treeNode2});
 			this.treeView.ShowLines = false;
-			this.treeView.Size = new System.Drawing.Size(146, 465);
+			this.treeView.Size = new System.Drawing.Size(160, 465);
 			this.treeView.TabIndex = 3;
 			this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
 			// 
@@ -91,7 +91,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.webBrowser);
 			this.splitContainer1.Size = new System.Drawing.Size(671, 465);
-			this.splitContainer1.SplitterDistance = 146;
+			this.splitContainer1.SplitterDistance = 160;
 			this.splitContainer1.TabIndex = 4;
 			// 
 			// webBrowser
@@ -101,7 +101,8 @@
 			this.webBrowser.Location = new System.Drawing.Point(0, 0);
 			this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
 			this.webBrowser.Name = "webBrowser";
-			this.webBrowser.Size = new System.Drawing.Size(521, 465);
+			this.webBrowser.ScrollBarsEnabled = false;
+			this.webBrowser.Size = new System.Drawing.Size(507, 465);
 			this.webBrowser.TabIndex = 0;
 			// 
 			// panel1
