@@ -335,17 +335,16 @@ namespace OpenRA.Widgets.Delegates
 						{
 							template = EmptySlotTemplateHost.Clone();
 							var name = template.GetWidget<ButtonWidget>("NAME");
-							var btn = template.GetWidget<ButtonWidget>("JOIN");
-							btn.GetText = () =>  "Spectate in this slot";
 							name.GetText = () => s.Closed ? "Closed" : "Open";
 							name.OnMouseDown = _ => ShowSlotDropDown(s, name, false);
-							
+							var btn = template.GetWidget<ButtonWidget>("JOIN");
+							btn.GetText = () =>  "Spectate in this slot";							
 						}
 						else
 						{
 							template = EmptySlotTemplateHost.Clone();
 							var name = template.GetWidget<ButtonWidget>("NAME");
-							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
+							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
 							name.OnMouseDown = _ => ShowSlotDropDown(s, name, Map.Players[ s.MapPlayer ].AllowBots);
 						}
 					}
@@ -353,7 +352,7 @@ namespace OpenRA.Widgets.Delegates
 					{
 						template = EmptySlotTemplate.Clone();
 						var name = template.GetWidget<LabelWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : "Bot: " + s.Bot;
+						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
 
 						if (slot.Spectator)
 						{
@@ -368,6 +367,10 @@ namespace OpenRA.Widgets.Delegates
 						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + s.Index)); return true; };
 						join.IsVisible = () => !s.Closed && s.Bot == null;
 					}
+					
+					var bot = template.GetWidget<LabelWidget>("BOT");
+					if (bot != null)
+						bot.IsVisible = () => s.Bot != null;
 				}
 				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
@@ -413,7 +416,9 @@ namespace OpenRA.Widgets.Delegates
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.Checked = () => c.State == Session.ClientState.Ready;
 					status.OnMouseDown = CycleReady;
-
+					
+					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
+					
 					Session.Slot slot1 = slot;
 					color.IsVisible = () => !slot1.Spectator;
 					colorBlock.IsVisible = () => !slot1.Spectator;
@@ -421,6 +426,7 @@ namespace OpenRA.Widgets.Delegates
 					factionname.IsVisible = () => !slot1.Spectator;
 					factionflag.IsVisible = () => !slot1.Spectator;
 					team.IsVisible = () => !slot1.Spectator;
+					spectator.IsVisible = () => slot1.Spectator || slot1.Bot != null;
 				}
 				else
 				{
@@ -443,7 +449,8 @@ namespace OpenRA.Widgets.Delegates
 					status.Checked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index) status.OnMouseDown = CycleReady;
 
-
+					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
+							
 					Session.Slot slot1 = slot;
 					color.IsVisible = () => !slot1.Spectator;
 					//colorBlock.IsVisible = () => !slot1.Spectator;
@@ -451,6 +458,7 @@ namespace OpenRA.Widgets.Delegates
 					factionname.IsVisible = () => !slot1.Spectator;
 					factionflag.IsVisible = () => !slot1.Spectator;
 					team.IsVisible = () => !slot1.Spectator;
+					spectator.IsVisible = () => slot1.Spectator || slot1.Bot != null;
 				}
 
 				template.Id = "SLOT_{0}".F(s.Index);

@@ -105,32 +105,41 @@ Background@SERVER_LOBBY:
 									Y:2
 									Width:20
 									Height:20
+								Label@SPECTATOR:
+									Id:SPECTATOR
+									Text:Spectator
+									Width:278
+									Height:25
+									X:160
+									Y:0
+									Align:Center
+									Bold:True
 						Container@TEMPLATE_REMOTE:
 							Id:TEMPLATE_REMOTE
 							X:0
 							Y:0
-							Width:400
+							Width:475
 							Height:30
 							Visible:false
 							Children:
 								Label@NAME:
 									Id:NAME
 									Text:Name
-									Width:150
+									Width:145
 									Height:25
-									X:0
-									Y:0
+									X:5
+									Y:0-1
 								ColorBlock@COLOR:
 									Id:COLOR
-									X:164
-									Y:7
-									Width:55
+									X:165
+									Y:6
+									Width:45
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Width:110
+									Width:130
 									Height:25
-									X:244
+									X:250
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -149,62 +158,57 @@ Background@SERVER_LOBBY:
 								Label@TEAM:
 									Id:TEAM
 									Text:Team
-									Width:70
+									Width:23
 									Height:25
-									X:351
-									Y:0
 									Align:Center
-									Bold: false
+									X:390
+									Y:0
 								Checkbox@STATUS:
 									Id:STATUS
-									X:450
+									X:448
 									Y:2
 									Width:20
 									Height:20
-						Container@TEMPLATE_EMPTY_SPECTATOR:
-							Id:TEMPLATE_EMPTY_SPECTATOR
-							X:0
-							Y:0
-							Width:400
-							Height:30
-							Visible:false
-							Children:
-								Button@NAME:
-									Id:NAME
-									Text:Name
-									Width:150
-									Height:25
-									X:0
-									Y:0
-								Button@JOIN:
-									Id:JOIN
-									Text:Spectate this match
-									Width:PARENT_RIGHT - 90
+								Label@SPECTATOR:
+									Id:SPECTATOR
+									Text:Spectator
+									Width:278
 									Height:25
 									X:160
 									Y:0
+									Align:Center
+									Bold:True
 						Container@TEMPLATE_EMPTY:
 							Id:TEMPLATE_EMPTY
 							X:0
 							Y:0
-							Width:400
+							Width:475
 							Height:30
 							Visible:false
 							Children:
 								Label@NAME:
 									Id:NAME
 									Text:Name
-									Width:150
+									Width:145
 									Height:25
-									X:0
-									Y:0
+									X:5
+									Y:0-1
 								Button@JOIN:
 									Id:JOIN
 									Text:Play in this slot
-									Width:PARENT_RIGHT - 90
+									Width:278
 									Height:25
 									X:160
 									Y:0
+								Label@BOT:
+									Id:BOT
+									Text:Bot
+									Width:278
+									Height:25
+									X:160
+									Y:0
+									Align:Center
+									Bold:True
 						Container@TEMPLATE_EMPTY_HOST:
 							Id:TEMPLATE_EMPTY_HOST
 							X:0
@@ -223,10 +227,19 @@ Background@SERVER_LOBBY:
 								Button@JOIN:
 									Id:JOIN
 									Text:Play in this slot
-									Width:PARENT_RIGHT - 90
+									Width:278
 									Height:25
 									X:160
 									Y:0
+								Label@BOT:
+									Id:BOT
+									Text:Bot
+									Width:278
+									Height:25
+									X:160
+									Y:0
+									Align:Center
+									Bold:True
 		Container@LABEL_CONTAINER:
 			X:25
 			Y:40
