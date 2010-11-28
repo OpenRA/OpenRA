@@ -32,9 +32,9 @@ Background@SERVER_LOBBY:
 		ScrollPanel@PLAYERSX:
 			Id:PLAYERSX
 			X:20
-			Y:75
+			Y:67
 			Width:504
-			Height:227
+			Height:235
 			Children:
 				Container@PLAYERS:
 					Id:PLAYERS
@@ -229,11 +229,11 @@ Background@SERVER_LOBBY:
 									Y:0
 		Container@LABEL_CONTAINER:
 			X:25
-			Y:45
+			Y:40
 			Children:
 				Label@LABEL_LOBBY_NAME:
 					Id:LABEL_LOBBY_NAME
-					Width:139
+					Width:150
 					Height:25
 					X:0
 					Y:0
@@ -242,39 +242,39 @@ Background@SERVER_LOBBY:
 					Bold:True
 				Label@LABEL_LOBBY_COLOR:
 					Id:LABEL_LOBBY_COLOR
-					Width:65
+					Width:80
 					Height:25
-					X:159
+					X:160
 					Y:0
 					Text:Color
 					Align:Center
 					Bold:True
 				Label@LABEL_LOBBY_FACTION:
 					Id:LABEL_LOBBY_FACTION
-					Width:110
+					Width:130
 					Height:25
-					X:244
+					X:250
 					Y:0
 					Text:Faction
 					Align:Center
 					Bold:True
 				Label@LABEL_LOBBY_TEAM:
 					Id:LABEL_LOBBY_TEAM
-					Width:70
+					Width:48
 					Height:25
-					X:351
+					X:390
 					Y:0
 					Text:Team
 					Align:Center
 					Bold:True
 				Label@LABEL_LOBBY_STATUS:
 					Id:LABEL_LOBBY_STATUS
-					X:420
+					X:448
 					Y:0
-					Width:70
+					Width:20
 					Height:25
 					Text:Ready
-					Align:Center
+					Align:Left
 					Bold:True
 		Button@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON

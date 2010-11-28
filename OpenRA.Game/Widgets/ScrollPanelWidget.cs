@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
-			Game.Renderer.EnableScissor(backgroundRect.X, backgroundRect.Y + HeaderHeight, backgroundRect.Width, backgroundRect.Height - HeaderHeight);
+			Game.Renderer.EnableScissor(backgroundRect.X+1, backgroundRect.Y + HeaderHeight+1, backgroundRect.Width-2, backgroundRect.Height - HeaderHeight-2);
 
 			foreach (var child in Children)
 				child.Draw( wr );
