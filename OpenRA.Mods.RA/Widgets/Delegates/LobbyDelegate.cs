@@ -365,7 +365,7 @@ namespace OpenRA.Widgets.Delegates
 					if (join != null)
 					{
 						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + s.Index)); return true; };
-						join.IsVisible = () => !s.Closed && s.Bot == null;
+						join.IsVisible = () => !s.Closed && s.Bot == null && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
 					
 					var bot = template.GetWidget<LabelWidget>("BOT");
