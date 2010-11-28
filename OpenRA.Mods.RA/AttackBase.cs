@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 				a();
 		}
 
-		public void DoAttack(Actor self, Target target)
+		public virtual void DoAttack(Actor self, Target target)
 		{
 			if( !CanAttack( self, target ) ) return;
 

@@ -14,25 +14,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackLeapInfo : AttackBaseInfo
+	class AttackLeapInfo : AttackFrontalInfo
 	{
-		public override object Create(ActorInitializer init) { return new AttackLeap(init.self); }
+		public override object Create(ActorInitializer init) { return new AttackLeap(init.self, this); }
 	}
 
-	class AttackLeap : AttackBase
+	class AttackLeap : AttackFrontal
 	{
 		internal bool IsLeaping;
 		protected Target target;
 
-		public AttackLeap(Actor self)
-			: base(self) {}
+		public AttackLeap(Actor self, AttackLeapInfo info)
+			: base(self, info) {}
 
-		public override void Tick(Actor self)
+		public override void DoAttack(Actor self, Target target)
 		{
-			base.Tick(self);
-
-			if (!target.IsValid) return;
-			if (IsLeaping) return;
+			if( !CanAttack( self, target ) ) return;
 
 			var weapon = Weapons[0].Info;
 			if( !Combat.IsInRange( self.CenterLocation, weapon.Range, target ) ) return;
