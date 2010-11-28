@@ -117,12 +117,11 @@ namespace OpenRA.Widgets
 
 		public static void ShowDropPanel(Widget w, Widget panel, IEnumerable<Widget> dismissAfter, Func<bool> onDismiss)
 		{
-			var fullscreenMask = new ContainerWidget
-			{
-				Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height),
-				ClickThrough = false,
-				Visible = true
-			};
+			var fullscreenMask = new ContainerWidget();
+			// Don't use initializers - breaks on mono 2.6.7
+			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+			fullscreenMask.ClickThrough = false;
+			fullscreenMask.Visible = true;
 			Widget.RootWidget.AddChild(fullscreenMask);
 			
 			Action HideDropDown = () =>
