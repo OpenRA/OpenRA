@@ -93,12 +93,12 @@ Section "Client" Client
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Launcher.exe "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Launcher.lnk" $OUTDIR\OpenRA.Launcher.exe "" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
-		;CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
-		;	"$OUTDIR\OpenRA.ico" "" "" "" ""
-		;CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \
-		;	"$OUTDIR\OpenRA.ico" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \
+			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\cg"
@@ -139,6 +139,16 @@ SectionGroup /e "Mods"
 			CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
 			RMDir /r "$TEMP\ra-packages"
 		SectionEnd
+		Section "Download content" RA_Content
+			AddSize 6584
+			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
+			dlcontent:
+				SetOutPath "$OUTDIR\packages"
+				!insertmacro DownloadDependency "ra-packages" "ra-packages.zip"
+				ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
+				Delete ra-packages.zip
+			done:
+		SectionEnd
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
@@ -157,6 +167,16 @@ SectionGroup /e "Mods"
 			CreateDirectory "$INSTDIR\mods\cnc\packages"
 			CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
 			RMDir /r "$TEMP\cnc-packages"
+			SectionEnd
+		Section "Download content" CNC_Content
+			AddSize 4621
+			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
+			dlcontent:
+				SetOutPath "$OUTDIR\packages"
+				!insertmacro DownloadDependency "cnc-packages" "cnc-packages.zip"
+				ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
+				Delete cnc-packages.zip
+			done:
 		SectionEnd
 	SectionGroupEnd
 SectionGroupEnd
