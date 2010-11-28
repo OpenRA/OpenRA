@@ -73,7 +73,7 @@ Player:
 World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
-#		ObserverWidget: 
+		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
 	NukePaletteEffect:
 	WaterPaletteRotation:
