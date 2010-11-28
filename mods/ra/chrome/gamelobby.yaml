@@ -5,7 +5,6 @@ Background@SERVER_LOBBY:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:800
 	Height:600
-	Visible:true
 	Children:
 		Label@LOBBY_TITLE:
 			Id:LOBBY_TITLE
@@ -291,7 +290,6 @@ Background@SERVER_LOBBY:
 					Bold:True
 		Button@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
-			Visible:true
 			X:PARENT_RIGHT-160
 			Y:PARENT_BOTTOM-269
 			Width:120
@@ -300,7 +298,6 @@ Background@SERVER_LOBBY:
 			Bold:True
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
-			Visible:true
 			X:20
 			Notification: rabeep1.aud
 			Height:230
@@ -316,14 +313,12 @@ Background@SERVER_LOBBY:
 			Align:Right
 		TextField@CHAT_TEXTFIELD:
 			Id:CHAT_TEXTFIELD
-			Visible:true
 			X:70
 			Y:PARENT_BOTTOM - 49
 			Width:550
 			Height:25
 		Button@START_GAME_BUTTON:
 			Id:START_GAME_BUTTON
-			Visible:true
 			X:PARENT_RIGHT-160
 			Y:PARENT_BOTTOM-49
 			Width:120
@@ -332,7 +327,6 @@ Background@SERVER_LOBBY:
 			Bold:True
 		Button@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
-			Visible:true
 			X:PARENT_RIGHT-160
 			Y:PARENT_BOTTOM-189
 			Width:120
@@ -341,7 +335,6 @@ Background@SERVER_LOBBY:
 			Bold:True
 		Checkbox@LOCKTEAMS_CHECKBOX:
 			Id:LOCKTEAMS_CHECKBOX
-			Visible: true
 			X: PARENT_RIGHT-160
 			Y: PARENT_BOTTOM-229
 			Width: 80
@@ -352,7 +345,6 @@ Background@COLOR_CHOOSER:
 	Background:dialog2
 	Width:310
 	Height:120
-	Visible:false
 	Children:
 		Button@BUTTON_OK:
 			Id:BUTTON_OK
@@ -433,7 +425,6 @@ Background@MAP_CHOOSER:
 	Delegate:MapChooserDelegate
 	Width:800
 	Height:600
-	Visible:true
 	Children:
 		Label@MAPCHOOSER_TITLE:
 			X:0
