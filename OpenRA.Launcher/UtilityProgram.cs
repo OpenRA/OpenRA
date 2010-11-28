@@ -66,7 +66,7 @@ namespace OpenRA.Launcher
 			return arguments.ToString();
 		}
 
-		public static StreamReader Call(string command, params string[] args)
+		public static Process Call(string command, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
@@ -76,9 +76,21 @@ namespace OpenRA.Launcher
 						
 			p.Start();
 
+			return p;
+		}
+
+		public static string CallSimpleResponse(string command, params string[] args)
+		{
+			var p = Call(command, args);
+			string responseString;
 			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
 			pipe.Connect();
-			return new StreamReader(pipe);
+			using (var response = new StreamReader(pipe))
+			{
+				responseString = response.ReadToEnd();
+			}
+
+			return responseString;
 		}
 
 		public static Process CallWithAdmin(string command, params string[] args)

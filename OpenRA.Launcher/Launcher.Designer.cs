@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Mods", -2, -2);
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Broken Mods");
 			this.installButton = new System.Windows.Forms.Button();
 			this.installModDialog = new System.Windows.Forms.OpenFileDialog();
 			this.treeView = new System.Windows.Forms.TreeView();
@@ -67,11 +66,8 @@
 			treeNode1.Name = "ModsNode";
 			treeNode1.SelectedImageIndex = -2;
 			treeNode1.Text = "Mods";
-			treeNode2.Name = "BrokenModsNode";
-			treeNode2.Text = "Broken Mods";
 			this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode1});
 			this.treeView.ShowLines = false;
 			this.treeView.Size = new System.Drawing.Size(160, 465);
 			this.treeView.TabIndex = 3;

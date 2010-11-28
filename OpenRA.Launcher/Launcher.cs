@@ -27,8 +27,6 @@ namespace OpenRA.Launcher
 
 			Util.UacShield(installButton);
 
-			//treeView.Nodes["ModsNode"].ImageIndex = 1;
-			//treeView.Nodes["ModsNode"].SelectedImageIndex = 1;
 			webBrowser.ObjectForScripting = new JSBridge();
 			webBrowser.DocumentCompleted += (o, e) =>
 				{
@@ -40,12 +38,8 @@ namespace OpenRA.Launcher
 
 		Mod GetMetadata(string mod)
 		{
-			string responseString;
-			using (var response = UtilityProgram.Call("-i", mod))
-			{
-				responseString = response.ReadToEnd();
-			}
-
+			string responseString = UtilityProgram.CallSimpleResponse("-i", mod);
+			
 			if (Util.IsError(ref responseString)) return null;
 			string[] lines = responseString.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < lines.Length; i++)
@@ -89,11 +83,7 @@ namespace OpenRA.Launcher
 
 		void RefreshMods()
 		{
-			string responseString;
-			using (var response = UtilityProgram.Call("--list-mods"))
-			{
-				responseString = response.ReadToEnd();
-			}
+			string responseString = UtilityProgram.CallSimpleResponse("--list-mods");
 
 			string[] mods;
 			if (!Util.IsError(ref responseString))
@@ -167,12 +157,23 @@ namespace OpenRA.Launcher
 						missing.Nodes.Add(new TreeNode(allMods[s].Title) 
 						{ ForeColor = SystemColors.GrayText, Name = s });
 				}
-
-				treeView.Nodes["BrokenModsNode"].Nodes.Add(unspecified);
-				treeView.Nodes["BrokenModsNode"].Nodes.Add(missing);
+				string brokenKey = "BrokenModsNode";
+				if (treeView.Nodes[brokenKey] != null)
+					treeView.Nodes.RemoveByKey(brokenKey);
+				treeView.Nodes.Add(brokenKey, "Broken Mods");
+				treeView.Nodes[brokenKey].Nodes.Add(unspecified);
+				treeView.Nodes[brokenKey].Nodes.Add(missing);
 			}
 			treeView.Nodes["ModsNode"].ExpandAll();
 			treeView.Invalidate();
+
+			string responseString = UtilityProgram.CallSimpleResponse("--settings-value",
+				Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "OpenRA", "Game.Mods");
+
+			if (Util.IsError(ref responseString))
+				treeView.SelectedNode = treeView.Nodes["ModsNode"].Nodes["ra"];
+			else
+				treeView.SelectedNode = treeView.Nodes["ModsNode"].Nodes[responseString];
 		}
 
 		void treeView_AfterSelect(object sender, TreeViewEventArgs e)
