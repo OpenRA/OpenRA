@@ -69,9 +69,6 @@ namespace OpenRA
 		public void Tick()
 		{
 			if (currentActivity == null)
-				currentActivity = new Idle();
-			
-			if (currentActivity is Idle)
 				foreach (var ni in TraitsImplementing<INotifyIdle>())
 					ni.TickIdle(this);
 
@@ -80,7 +77,7 @@ namespace OpenRA
 
 		public bool IsIdle
 		{
-			get { return currentActivity is Idle; }
+			get { return currentActivity == null; }
 		}
 
         OpenRA.FileFormats.Lazy<float2> Size;
@@ -121,7 +118,7 @@ namespace OpenRA
 
 		public void QueueActivity( IActivity nextActivity )
 		{
-			if( currentActivity is Idle )
+			if( currentActivity == null )
 				currentActivity = nextActivity;
 			else
 				currentActivity.Queue( nextActivity );
@@ -129,7 +126,7 @@ namespace OpenRA
 
 		public void CancelActivity()
 		{
-			if( !(currentActivity is Idle) )
+			if( currentActivity != null )
 				currentActivity.Cancel( this );
 		}
 

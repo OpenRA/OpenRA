@@ -10,8 +10,9 @@
 
 using System.Linq;
 using OpenRA.Mods.RA.Render;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {

@@ -118,7 +118,6 @@
     <Compile Include="Graphics\CursorSheetBuilder.cs" />
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
-    <Compile Include="Traits\Activities\Idle.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Graphics\Sheet.cs" />

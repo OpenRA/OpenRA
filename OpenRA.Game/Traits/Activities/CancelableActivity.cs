@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OpenRA.Traits
+namespace OpenRA.Traits.Activities
 {
 	public abstract class CancelableActivity : IActivity
 	{
