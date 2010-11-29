@@ -31,7 +31,7 @@ namespace OpenRA
 		[Sync]
 		public Player Owner;
 
-		IActivity currentActivity;
+		private IActivity currentActivity;
 		public Group Group;
 
 		internal Actor(World world, string name, TypeDictionary initDict )
@@ -68,7 +68,10 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			if (currentActivity == null || currentActivity is Idle)
+			if (currentActivity == null)
+				currentActivity = new Idle();
+			
+			if (currentActivity is Idle)
 				foreach (var ni in TraitsImplementing<INotifyIdle>())
 					ni.TickIdle(this);
 
@@ -77,7 +80,7 @@ namespace OpenRA
 
 		public bool IsIdle
 		{
-			get { return currentActivity == null || currentActivity is Idle; }
+			get { return currentActivity is Idle; }
 		}
 
         OpenRA.FileFormats.Lazy<float2> Size;
@@ -118,7 +121,7 @@ namespace OpenRA
 
 		public void QueueActivity( IActivity nextActivity )
 		{
-			if( currentActivity == null )
+			if( currentActivity is Idle )
 				currentActivity = nextActivity;
 			else
 				currentActivity.Queue( nextActivity );
@@ -126,11 +129,10 @@ namespace OpenRA
 
 		public void CancelActivity()
 		{
-			if( currentActivity != null )
+			if( !(currentActivity is Idle) )
 				currentActivity.Cancel( this );
 		}
 
-		// For pathdebug, et al
 		public IActivity GetCurrentActivity()
 		{
 			return currentActivity;
