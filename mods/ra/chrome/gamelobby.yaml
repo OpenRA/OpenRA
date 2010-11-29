@@ -495,27 +495,10 @@ Background@MAP_CHOOSER:
 			Width:175
 			Height:20
 			WordWrap:True
-		Label@CURMAP_DESC_LABEL:
-			Id:CURMAP_DESC_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:371
-			Align:Right
-			Width:70
-			Height:20
-			Text:Desc.:
-			Bold:True
-		Label@CURMAP_DESC:
-			Id:CURMAP_DESC
-			X:PARENT_RIGHT - 195
-			Y:371
-			Align:Left
-			Width:175
-			Height:20
-			WordWrap:True
 		Label@CURMAP_SIZE_LABEL:
 			Id:CURMAP_SIZE_LABEL
 			X:PARENT_RIGHT - 200 - WIDTH
-			Y:411
+			Y:371
 			Align:Right
 			Width:70
 			Height:20
@@ -524,14 +507,14 @@ Background@MAP_CHOOSER:
 		Label@CURMAP_SIZE:
 			Id:CURMAP_SIZE
 			X:PARENT_RIGHT - 195
-			Y:411
+			Y:371
 			Align:Left
 			Width:70
 			Height:20
 		Label@CURMAP_THEATER_LABEL:
 			Id:CURMAP_THEATER_LABEL
 			X:PARENT_RIGHT - 200 - WIDTH
-			Y:431
+			Y:391
 			Align:Right
 			Width:70
 			Height:20
@@ -540,14 +523,14 @@ Background@MAP_CHOOSER:
 		Label@CURMAP_THEATER:
 			Id:CURMAP_THEATER
 			X:PARENT_RIGHT - 195
-			Y:431
+			Y:391
 			Align:Left
 			Width:70
 			Height:20
 		Label@CURMAP_PLAYERS_LABEL:
 			Id:CURMAP_PLAYERS_LABEL
 			X:PARENT_RIGHT - 200 - WIDTH
-			Y:451
+			Y:411
 			Align:Right
 			Width:70
 			Height:20
@@ -556,10 +539,27 @@ Background@MAP_CHOOSER:
 		Label@CURMAP_PLAYERS:
 			Id:CURMAP_PLAYERS
 			X:PARENT_RIGHT - 195
-			Y:451
+			Y:411
 			Align:Left
 			Width:70
 			Height:20
+		Label@CURMAP_DESC_LABEL:
+			Id:CURMAP_DESC_LABEL
+			X:PARENT_RIGHT - 200 - WIDTH
+			Y:431
+			Align:Right
+			Width:70
+			Height:20
+			Text:Desc.:
+			Bold:True
+		Label@CURMAP_DESC:
+			Id:CURMAP_DESC
+			X:PARENT_RIGHT - 195
+			Y:431
+			Align:Left
+			Width:175
+			Height:20
+			WordWrap:True
 		Button@BUTTON_OK:
 			Id:BUTTON_OK
 			X:PARENT_RIGHT - 360
