@@ -58,6 +58,7 @@ namespace OpenRA.Launcher
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Game.exe";
 			p.StartInfo.Arguments = "Game.Mods=" + string.Join(",", modList.ToArray());
+			p.StartInfo.Arguments += " Graphics.Renderer=" + Launcher.Renderer;
 			p.Start();
 			return true;
 		}

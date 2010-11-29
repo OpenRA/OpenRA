@@ -21,6 +21,9 @@ namespace OpenRA.Launcher
 	public partial class Launcher : Form
 	{
 		Dictionary<string, Mod> allMods;
+		public static string Renderer = "Gl";
+		static string SupportDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "OpenRA";
+
 		public Launcher()
 		{
 			InitializeComponent();
@@ -34,6 +37,11 @@ namespace OpenRA.Launcher
 					(b.ObjectForScripting as JSBridge).Document = b.Document;
 				};
 			RefreshMods();
+			string response = UtilityProgram.CallSimpleResponse("--settings-value", SupportDir, "Graphics.Renderer");
+			if (Util.IsError(ref response) || response.Equals("gl", StringComparison.InvariantCultureIgnoreCase))
+				glButton.Checked = true;
+			else
+				cgButton.Checked = true;
 		}
 
 		Mod GetMetadata(string mod)
@@ -167,8 +175,7 @@ namespace OpenRA.Launcher
 			treeView.Nodes["ModsNode"].ExpandAll();
 			treeView.Invalidate();
 
-			string responseString = UtilityProgram.CallSimpleResponse("--settings-value",
-				Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "OpenRA", "Game.Mods");
+			string responseString = UtilityProgram.CallSimpleResponse("--settings-value", SupportDir, "Game.Mods");
 
 			if (Util.IsError(ref responseString))
 				treeView.SelectedNode = treeView.Nodes["ModsNode"].Nodes["ra"];
@@ -183,7 +190,14 @@ namespace OpenRA.Launcher
 			string modHtmlPath = string.Format("mods{0}{1}{0}mod.html", Path.DirectorySeparatorChar, e.Node.Name);
 			if (!File.Exists(modHtmlPath)) return;
 			webBrowser.Navigate(Path.GetFullPath(modHtmlPath));
-			
+		}
+
+		private void rendererChanged(object sender, EventArgs e)
+		{
+			if (sender == glButton)
+				Renderer = "Gl";
+			else
+				Renderer = "Cg";
 		}
 	}
 }

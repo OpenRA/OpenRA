@@ -35,6 +35,8 @@
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.webBrowser = new System.Windows.Forms.WebBrowser();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.cgButton = new System.Windows.Forms.RadioButton();
+			this.glButton = new System.Windows.Forms.RadioButton();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -103,12 +105,38 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.cgButton);
+			this.panel1.Controls.Add(this.glButton);
 			this.panel1.Controls.Add(this.installButton);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.panel1.Location = new System.Drawing.Point(0, 465);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(671, 47);
 			this.panel1.TabIndex = 5;
+			// 
+			// cgButton
+			// 
+			this.cgButton.AutoSize = true;
+			this.cgButton.Location = new System.Drawing.Point(481, 18);
+			this.cgButton.Name = "cgButton";
+			this.cgButton.Size = new System.Drawing.Size(87, 17);
+			this.cgButton.TabIndex = 4;
+			this.cgButton.TabStop = true;
+			this.cgButton.Text = "CG Renderer";
+			this.cgButton.UseVisualStyleBackColor = true;
+			this.cgButton.CheckedChanged += new System.EventHandler(this.rendererChanged);
+			// 
+			// glButton
+			// 
+			this.glButton.AutoSize = true;
+			this.glButton.Location = new System.Drawing.Point(574, 18);
+			this.glButton.Name = "glButton";
+			this.glButton.Size = new System.Drawing.Size(86, 17);
+			this.glButton.TabIndex = 3;
+			this.glButton.TabStop = true;
+			this.glButton.Text = "GL Renderer";
+			this.glButton.UseVisualStyleBackColor = true;
+			this.glButton.CheckedChanged += new System.EventHandler(this.rendererChanged);
 			// 
 			// Launcher
 			// 
@@ -127,6 +155,7 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -139,5 +168,7 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.WebBrowser webBrowser;
+		private System.Windows.Forms.RadioButton cgButton;
+		private System.Windows.Forms.RadioButton glButton;
 	}
 }
