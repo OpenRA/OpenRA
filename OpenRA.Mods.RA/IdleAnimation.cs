@@ -13,7 +13,7 @@ using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class IdleAnimationInfo : ITraitInfo
+	class IdleAnimationInfo : ITraitInfo, ITraitPrerequisite<RenderInfantryInfo>
 	{
 		public readonly int IdleWaitTicks = 50;
 		public readonly string[] Animations = {};
@@ -63,6 +63,8 @@ namespace OpenRA.Mods.RA
 		
 		public void TickIdle(Actor self)
 		{
+			System.Console.WriteLine("IdleAnimation:TickIdle");
+
 			//if (active)
 			//	System.Console.WriteLine("idleactive: {0} ({1}) ",self.Info.Name, self.ActorID);
 			
@@ -74,7 +76,7 @@ namespace OpenRA.Mods.RA
 			waiting = true;
 			sequence = Info.Animations.Random(self.World.SharedRandom);
 			delay = Info.IdleWaitTicks;
-			//System.Console.WriteLine("TickIdle: {2} ({3}) set {0} {1}",sequence,delay, self.Info.Name, self.ActorID);
+			System.Console.WriteLine("IdleAnimation: setting anim to {0} delay {1}", sequence, delay);
 
 		}
 	}

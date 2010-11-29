@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 	class TakeCoverInfo : TraitInfo<TakeCover> { }
 
 	// infantry prone behavior
-	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
+	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, INotifyIdle
 	{
 		const int defaultProneTime = 100;	/* ticks, =4s */
 		const float proneDamage = .5f;
@@ -30,14 +30,27 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage > 0)		/* fix to allow healing via `damage` */
+			{
 				if (e.Warhead == null || !e.Warhead.PreventProne)
 					remainingProneTime = defaultProneTime;
+				
+			}
 		}
 
 		public void Tick(Actor self)
 		{
 			if (IsProne)
 				--remainingProneTime;
+		}
+		
+		public void TickIdle(Actor self)
+		{
+			System.Console.WriteLine("TakeCover:TickIdle");
+			if (remainingProneTime > 0)
+			{
+				System.Console.WriteLine("TakeCover: set anim to crawl");
+				self.Trait<RenderSimple>().anim.PlayFetchIndex("crawl", () => 0);
+			}
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )

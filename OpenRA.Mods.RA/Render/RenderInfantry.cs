@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self); }
 	}
 
-	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage
+	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
 	{
 		public RenderInfantry(Actor self)
 			: base(self, () => self.Trait<IFacing>().Facing)
@@ -66,15 +66,15 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			if (inAttack) return;
-			if (self.IsIdle) return;
-			if (ChooseMoveAnim(self)) return;
-
-			// TODO: Pick new animation only on damage or idle notifications
-			//if (IsProne(self))
-			//	anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */
-			//else
-			//	anim.Play("stand");
+			if (self.IsIdle || inAttack) return;
+			ChooseMoveAnim(self);
+		}
+		
+		public void TickIdle(Actor self)
+		{
+			System.Console.WriteLine("RenderInfantry:TickIdle");
+			System.Console.WriteLine("RenderInfantry: setting anim to stand");
+			anim.Play("stand");
 		}
 		
 
