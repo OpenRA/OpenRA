@@ -23,58 +23,53 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
 	{
+		public enum AnimationState
+		{
+			Idle,
+			Attacking,
+			Moving
+		};
+		
+		public AnimationState State { get; private set; }
+		Mobile mobile = self.Trait<Mobile>();
 		public RenderInfantry(Actor self)
 			: base(self, () => self.Trait<IFacing>().Facing)
 		{
 			anim.Play("stand");
-		}
-
-		bool ChooseMoveAnim(Actor self)
-		{
-			var mobile = self.Trait<Mobile>();
-			if( !mobile.IsMoving ) return false;
-
-			if (float2.WithinEpsilon(self.CenterLocation, Util.CenterOfCell(mobile.toCell), 2)) return false;
-
-			var seq = IsProne(self) ? "crawl" : "run";
-
-			if (anim.CurrentSequence.Name != seq)
-				anim.PlayRepeating(seq);
-
-			return true;
-		}
-
-		bool inAttack = false;
-		bool IsProne(Actor self)
-		{
-			var takeCover = self.TraitOrDefault<TakeCover>();
-			return takeCover != null && takeCover.IsProne;
+			State = AnimationState.Idle;
 		}
 
 		public void Attacking(Actor self, Target target)
 		{
-			inAttack = true;
-
-			var seq = IsProne(self) ? "prone-shoot" : "shoot";
-
-			if (anim.HasSequence(seq))
-				anim.PlayThen(seq, () => inAttack = false);
+			State = AnimationState.Attacking;
+			if (anim.HasSequence("shoot"))
+				anim.PlayThen("shoot", () => State = AnimationState.Idle);
 			else if (anim.HasSequence("heal"))
-				anim.PlayThen("heal", () => inAttack = false);
+				anim.PlayThen("heal", () => State = AnimationState.Idle);
 		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			if (self.IsIdle || inAttack) return;
-			ChooseMoveAnim(self);
+
+			if (State == AnimationState.Attacking || self.IsIdle || !mobile.IsMoving)
+				return;
+			
+			// Set move animation
+			if (State != AnimationState.Moving)
+			{
+				State = AnimationState.Moving;
+				anim.PlayRepeating("run");
+			}
 		}
 		
 		public void TickIdle(Actor self)
 		{
-			System.Console.WriteLine("RenderInfantry:TickIdle");
-			System.Console.WriteLine("RenderInfantry: setting anim to stand");
-			anim.Play("stand");
+			if (State != AnimationState.Idle)
+			{
+				anim.Play("stand");
+				State = AnimationState.Idle;
+			}
 		}
 		
 

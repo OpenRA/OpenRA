@@ -10,13 +10,14 @@
 
 using OpenRA.GameRules;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class TakeCoverInfo : TraitInfo<TakeCover> { }
+	class TakeCoverInfo : TraitInfo<TakeCover>, ITraitPrerequisite<RenderInfantryInfo> { }
 
 	// infantry prone behavior
-	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, INotifyIdle
+	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
 	{
 		const int defaultProneTime = 100;	/* ticks, =4s */
 		const float proneDamage = .5f;
@@ -29,30 +30,38 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0)		/* fix to allow healing via `damage` */
+			if (e.Damage > 0) /* Don't go prone when healed */
 			{
 				if (e.Warhead == null || !e.Warhead.PreventProne)
 					remainingProneTime = defaultProneTime;
-				
 			}
 		}
 
 		public void Tick(Actor self)
 		{
-			if (IsProne)
-				--remainingProneTime;
+			if (!IsProne)
+				return;
+			
+			remainingProneTime--;
+			
+			var ri = self.Trait<RenderInfantry>();
+			if (ri.State == RenderInfantry.AnimationState.Idle)
+				if (IsProne)
+					ri.anim.PlayFetchIndex("crawl", () => 0);
+				else
+					ri.anim.Play("stand");
+			
+			if (ri.anim.CurrentSequence.Name == "run" && IsProne)
+				ri.anim.ReplaceAnim("crawl");
+			else if (ri.anim.CurrentSequence.Name == "crawl" && !IsProne)
+				ri.anim.ReplaceAnim("run");
+			
+			if (ri.anim.CurrentSequence.Name == "shoot" && IsProne)
+				ri.anim.ReplaceAnim("prone-shoot");
+			else if (ri.anim.CurrentSequence.Name == "prone-shoot" && !IsProne)
+				ri.anim.ReplaceAnim("shoot");
 		}
 		
-		public void TickIdle(Actor self)
-		{
-			System.Console.WriteLine("TakeCover:TickIdle");
-			if (remainingProneTime > 0)
-			{
-				System.Console.WriteLine("TakeCover: set anim to crawl");
-				self.Trait<RenderSimple>().anim.PlayFetchIndex("crawl", () => 0);
-			}
-		}
-
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
 			return IsProne ? proneDamage : 1f;

@@ -51,7 +51,6 @@ namespace OpenRA.Mods.RA
 		Actor currentTarget;
 		public void TickIdle( Actor self )
 		{
-			System.Console.WriteLine("AutoHeal:TickIdle");
 			var attack = self.Trait<AttackBase>();
 			var range = attack.GetMaximumRange();
 
@@ -59,10 +58,7 @@ namespace OpenRA.Mods.RA
 			{
 				var currentTarget = ChooseTarget(self, range);
 				if( currentTarget != null )
-				{
-					System.Console.WriteLine("AutoHeal: Queing heal activity");
 					self.QueueActivity(self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( currentTarget ), false ));
-				}
 			}
 		}
 	}

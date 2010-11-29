@@ -39,17 +39,13 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle( Actor self )
 		{
-			System.Console.WriteLine("AutoTarget:TickIdle");
 			var attack = self.Trait<AttackBase>();
 			var currentTarget = attack.ScanForTarget(self, null);
 			if( currentTarget != null )
-			{
-				System.Console.WriteLine("AutoTarget: Queing attack activity");
 				self.QueueActivity(attack.GetAttackActivity( self,
 				                                            Target.FromActor(currentTarget),
 				                                            self.Info.Traits.Get<AutoTargetInfo>().AllowMovement
 				                                            ));
-			}
 		}
 	}
 }

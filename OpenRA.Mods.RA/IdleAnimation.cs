@@ -23,11 +23,18 @@ namespace OpenRA.Mods.RA
 	// infantry prone behavior
 	class IdleAnimation : ITick, INotifyIdle
 	{
+		enum IdleState
+		{
+			None,
+			Waiting,
+			Active
+		};
+		
 		IdleAnimationInfo Info;
 		string sequence;
 		int delay;
-		bool active, waiting;
-
+		IdleState state;
+		
 		public IdleAnimation(IdleAnimationInfo info)
 		{
 			Info = info;
@@ -35,49 +42,30 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{		
-			if (active)
-			{
-				//System.Console.WriteLine("active: {0} ({1})", self.Info.Name, self.ActorID);
-				return;
-			}
 			if (!self.IsIdle)
 			{
-				//System.Console.WriteLine("notidle: {0} ({1}) ",self.Info.Name, self.ActorID);
-				active = false;
-				waiting = false;
+				state = IdleState.None;
 				return;
 			}
 			
-			if (delay > 0 && --delay == 0)
+			if (state == IdleState.Active)
+				return;
+				
+			else if (delay > 0 && --delay == 0)
 			{
-				System.Console.WriteLine("activate: {0} ({1})",self.Info.Name, self.ActorID);
-				active = true;
-				waiting = false;
-				self.Trait<RenderInfantry>().anim.PlayThen(sequence, () =>
-				{
-					//System.Console.WriteLine("finished: {0} ({1}) ",self.Info.Name, self.ActorID);
-					active = false;
-				});
+				state = IdleState.Active;
+				self.Trait<RenderInfantry>().anim.PlayThen(sequence, () => state = IdleState.None);
 			}
 		}
 		
 		public void TickIdle(Actor self)
 		{
-			System.Console.WriteLine("IdleAnimation:TickIdle");
-
-			//if (active)
-			//	System.Console.WriteLine("idleactive: {0} ({1}) ",self.Info.Name, self.ActorID);
-			
-			//if (waiting)
-			//	System.Console.WriteLine("idlewaiting: {0} ({1}) ",self.Info.Name, self.ActorID);
-			if (active || waiting)
+			if (state != IdleState.None)
 				return;
 			
-			waiting = true;
+			state = IdleState.Waiting;
 			sequence = Info.Animations.Random(self.World.SharedRandom);
 			delay = Info.IdleWaitTicks;
-			System.Console.WriteLine("IdleAnimation: setting anim to {0} delay {1}", sequence, delay);
-
 		}
 	}
 }
