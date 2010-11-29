@@ -39,33 +39,13 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle( Actor self )
 		{
-			self.QueueActivity( new IdleAttackActivity() );
-		}
-
-		class IdleAttackActivity : Idle
-		{
-			Actor currentTarget;
-			IActivity inner;
-
-			public override IActivity Tick( Actor self )
-			{
-				if( NextActivity != null && inner != null )
-					inner.Cancel( self );
-				if( inner == null )
-				{
-					if( NextActivity != null )
-						return NextActivity;
-
-					var attack = self.Trait<AttackBase>();
-					currentTarget = attack.ScanForTarget(self, null);
-					if( currentTarget != null )
-						inner = attack.GetAttackActivity( self, Target.FromActor(currentTarget), self.Info.Traits.Get<AutoTargetInfo>().AllowMovement );
-				}
-				if( inner != null )
-					inner = Util.RunActivity( self, inner );
-
-				return this;
-			}
+			var attack = self.Trait<AttackBase>();
+			var currentTarget = attack.ScanForTarget(self, null);
+			if( currentTarget != null )
+				self.QueueActivity(attack.GetAttackActivity( self,
+				                                            Target.FromActor(currentTarget),
+				                                            self.Info.Traits.Get<AutoTargetInfo>().AllowMovement
+				                                            ));
 		}
 	}
 }

@@ -67,14 +67,16 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			if (inAttack) return;
-			if (self.GetCurrentActivity() is Activities.IdleAnimation) return;
+			if (self.IsIdle) return;
 			if (ChooseMoveAnim(self)) return;
 
-			if (IsProne(self))
-				anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */
-			else
-				anim.Play("stand");
+			// TODO: Pick new animation only on damage or idle notifications
+			//if (IsProne(self))
+			//	anim.PlayFetchIndex("crawl", () => 0);			/* what a hack. */
+			//else
+			//	anim.Play("stand");
 		}
+		
 
 		public void Damaged(Actor self, AttackInfo e)
 		{

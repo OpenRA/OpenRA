@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
@@ -20,24 +21,61 @@ namespace OpenRA.Mods.RA
 	}
 
 	// infantry prone behavior
-	class IdleAnimation : INotifyDamage, INotifyIdle
+	class IdleAnimation : ITick, INotifyIdle
 	{
 		IdleAnimationInfo Info;
+		string sequence;
+		int delay;
+		bool active, waiting;
+
 		public IdleAnimation(IdleAnimationInfo info)
 		{
 			Info = info;
 		}
-		
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (self.GetCurrentActivity() is Activities.IdleAnimation)
-				self.CancelActivity();
-		}
 
+		public void Tick(Actor self)
+		{		
+			if (active)
+			{
+				//System.Console.WriteLine("active: {0} ({1})", self.Info.Name, self.ActorID);
+				return;
+			}
+			if (!self.IsIdle)
+			{
+				//System.Console.WriteLine("notidle: {0} ({1}) ",self.Info.Name, self.ActorID);
+				active = false;
+				waiting = false;
+				return;
+			}
+			
+			if (delay > 0 && --delay == 0)
+			{
+				System.Console.WriteLine("activate: {0} ({1})",self.Info.Name, self.ActorID);
+				active = true;
+				waiting = false;
+				self.Trait<RenderInfantry>().anim.PlayThen(sequence, () =>
+				{
+					//System.Console.WriteLine("finished: {0} ({1}) ",self.Info.Name, self.ActorID);
+					active = false;
+				});
+			}
+		}
+		
 		public void TickIdle(Actor self)
 		{
-			self.QueueActivity(new Activities.IdleAnimation(Info.Animations.Random(self.World.SharedRandom),
-			                                                Info.IdleWaitTicks));
+			//if (active)
+			//	System.Console.WriteLine("idleactive: {0} ({1}) ",self.Info.Name, self.ActorID);
+			
+			//if (waiting)
+			//	System.Console.WriteLine("idlewaiting: {0} ({1}) ",self.Info.Name, self.ActorID);
+			if (active || waiting)
+				return;
+			
+			waiting = true;
+			sequence = Info.Animations.Random(self.World.SharedRandom);
+			delay = Info.IdleWaitTicks;
+			//System.Console.WriteLine("TickIdle: {2} ({3}) set {0} {1}",sequence,delay, self.Info.Name, self.ActorID);
+
 		}
 	}
 }

@@ -299,7 +299,6 @@
     <Compile Include="HackyAI.cs" />
     <Compile Include="RALoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="Activities\IdleAnimation.cs" />
     <Compile Include="IdleAnimation.cs" />
     <Compile Include="World\GotoNextBase.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
