@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Widgets
 {
@@ -24,6 +25,7 @@ namespace OpenRA.Widgets
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public bool Bold = false;
+		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<string> GetBackground;
 		
@@ -58,7 +60,7 @@ namespace OpenRA.Widgets
 			
 			int2 textSize = font.Measure(text);
 			int2 position = RenderOrigin;
-			
+
 			if (VAlign == TextVAlign.Middle)
 				position += new int2(0, (Bounds.Height - textSize.Y)/2);
 			
@@ -69,7 +71,58 @@ namespace OpenRA.Widgets
 				position += new int2((Bounds.Width - textSize.X)/2, 0);
 
 			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X,0); 
+				position += new int2(Bounds.Width - textSize.X,0);
+
+			if (WordWrap)
+			{
+				if (textSize.X > Bounds.Width)
+				{
+					string[] lines = text.Split('\n');
+					List<string> newLines = new List<string>();
+					int i = 0;
+					string line = lines[i++];
+					while (true)
+					{
+						newLines.Add(line);
+						int2 m = font.Measure(line);
+						int spaceIndex = 0, start = line.Length - 1;
+						
+						if (m.X <= Bounds.Width)
+						{
+							if (i < lines.Length - 1)
+							{
+								line = lines[i++];
+								continue;
+							}
+							else
+								break;
+						}
+
+						while (m.X > Bounds.Width)
+						{
+							if (-1 == (spaceIndex = line.LastIndexOf(' ', start)))
+								break;
+							start = spaceIndex - 1;
+							m = font.Measure(line.Substring(0, spaceIndex));
+						}
+
+						if (spaceIndex != -1)
+						{
+							newLines.RemoveAt(newLines.Count - 1);
+							newLines.Add(line.Substring(0, spaceIndex));
+							line = line.Substring(spaceIndex + 1);
+						}
+						else if (i < lines.Length - 1)
+						{
+							line = lines[i++];
+							continue;
+						}
+						else
+							break;
+					}
+					text = string.Join("\n", newLines.ToArray());
+				}
+			}
 
 			font.DrawText(text, position, Color.White);
 		}

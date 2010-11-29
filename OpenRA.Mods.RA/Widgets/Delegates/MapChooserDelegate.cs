@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var ml = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => Map;
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
+			bg.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => Map.Author;
+			bg.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => Map.Description;
 			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Bounds.Width, Map.Bounds.Height);
 			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
 			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
