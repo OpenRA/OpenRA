@@ -96,4 +96,3 @@ function FileSysGet(dir,spec)
 	return content
 end
 
-

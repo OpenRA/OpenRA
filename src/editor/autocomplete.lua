@@ -209,14 +209,12 @@ function UpdateAssignCache(editor)
 end
 
 function GetTipInfo(editor, content, short)
-	
-
 	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
 	local class  = caller and content:match("([a-zA-Z_0-9%.]+)[%.:]"..caller.."%(%s*$")
 	local tip = editor.api.tip
-	
+		
 	local classtab = short and tip.shortfinfoclass or tip.finfoclass
-	local funcstab = short and tip.shortfinfo or tip.finfoclass
+	local funcstab = short and tip.shortfinfo or tip.finfo
 	
 	UpdateAssignCache(editor)
 	

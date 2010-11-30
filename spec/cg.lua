@@ -10,7 +10,7 @@ return {
 					if (not s) then
 						s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+)%s*%(")
 					end
-					if (cap and string.find(cap,"^return")) then return end
+					if (cap and (string.find(cap,"^return") or string.find(cap,"else"))) then return end
 					return s,e,cap,l
 				end,
 	
