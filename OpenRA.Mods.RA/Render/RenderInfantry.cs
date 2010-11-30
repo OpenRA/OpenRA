@@ -27,7 +27,8 @@ namespace OpenRA.Mods.RA.Render
 		{
 			Idle,
 			Attacking,
-			Moving
+			Moving,
+			Waiting
 		};
 		
 		public AnimationState State { get; private set; }
@@ -52,11 +53,14 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 
-			if (State == AnimationState.Attacking || self.IsIdle || !mobile.IsMoving)
-				return;
-			
-			// Set move animation
-			if (State != AnimationState.Moving)
+			// If path is blocked, we can have !isMoving and !idle
+			// Need to handle this case specially
+			if (!mobile.IsMoving && State == AnimationState.Moving)
+			{
+				State = AnimationState.Waiting;
+				anim.Play("stand");
+			}
+			else if (State != AnimationState.Moving && mobile.IsMoving)
 			{
 				State = AnimationState.Moving;
 				anim.PlayRepeating("run");

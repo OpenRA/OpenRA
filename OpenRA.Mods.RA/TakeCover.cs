@@ -45,11 +45,18 @@ namespace OpenRA.Mods.RA
 			remainingProneTime--;
 			
 			var ri = self.Trait<RenderInfantry>();
-			if (ri.State == RenderInfantry.AnimationState.Idle)
-				if (IsProne)
-					ri.anim.PlayFetchIndex("crawl", () => 0);
-				else
-					ri.anim.Play("stand");
+			
+			// Mobile.IsMoving isn't set to true until after the first move tick
+			// so we need a hack here to prevent a single frame of stand state
+			
+			if (IsProne && (ri.State == RenderInfantry.AnimationState.Idle || 
+			                ri.State == RenderInfantry.AnimationState.Waiting ||
+			                ri.anim.CurrentSequence.Name == "stand"))
+				ri.anim.PlayFetchIndex("crawl", () => 0);
+			else if (!IsProne && (ri.State == RenderInfantry.AnimationState.Idle || 
+			                ri.State == RenderInfantry.AnimationState.Waiting ||
+			                ri.anim.CurrentSequence.Name == "stand"))
+				ri.anim.Play("stand");
 			
 			if (ri.anim.CurrentSequence.Name == "run" && IsProne)
 				ri.anim.ReplaceAnim("crawl");
