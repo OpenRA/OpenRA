@@ -599,16 +599,16 @@ Background@MAP_CHOOSER:
 					WordWrap:True
 		Button@BUTTON_OK:
 			Id:BUTTON_OK
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-49
+			X:PARENT_RIGHT - 295
+			Y:PARENT_BOTTOM - 49
 			Width:120
 			Height:25
 			Text:Ok
 			Bold:True
 		Button@BUTTON_CANCEL:
 			Id:BUTTON_CANCEL
-			X:PARENT_RIGHT - 295
-			Y:PARENT_BOTTOM - 49
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-49
 			Width:120
 			Height:25
 			Text:Cancel
