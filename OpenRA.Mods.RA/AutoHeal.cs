@@ -18,48 +18,21 @@ namespace OpenRA.Mods.RA
 
 	class AutoHeal : INotifyIdle
 	{
-		bool NeedsNewTarget(Actor self)
+		public void TickIdle( Actor self )
 		{
 			var attack = self.Trait<AttackBase>();
-			var range = attack.GetMaximumRange();
+			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * attack.GetMaximumRange());
 
-			if (currentTarget == null || !currentTarget.IsInWorld)
-				return true;	// he's dead.
-			if( !Combat.IsInRange( self.CenterLocation, range, currentTarget ) )
-				return true;	// wandered off faster than we could follow
-
-			if (currentTarget.GetDamageState() == DamageState.Undamaged)
-				return true;	// fully healed
-
-			return false;
-		}
-
-		Actor ChooseTarget(Actor self, float range)
-		{
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-			var attack = self.Trait<AttackBase>();
-
-			return inRange
+			var target = inRange
 				.Where(a => a != self && self.Owner.Stances[a.Owner] == Stance.Ally)
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
 				.FirstOrDefault();
-		}
-	
-		Actor currentTarget;
-		public void TickIdle( Actor self )
-		{
-			var attack = self.Trait<AttackBase>();
-			var range = attack.GetMaximumRange();
-
-			if (NeedsNewTarget(self))
-			{
-				var currentTarget = ChooseTarget(self, range);
-				if( currentTarget != null )
-					self.QueueActivity(self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( currentTarget ), false ));
-			}
+			
+			if( target != null )
+				self.QueueActivity(self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( target ), false ));
 		}
 	}
 }

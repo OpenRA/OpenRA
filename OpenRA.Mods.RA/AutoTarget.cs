@@ -40,10 +40,10 @@ namespace OpenRA.Mods.RA
 		public void TickIdle( Actor self )
 		{
 			var attack = self.Trait<AttackBase>();
-			var currentTarget = attack.ScanForTarget(self, null);
-			if( currentTarget != null )
+			var target = attack.ScanForTarget(self, null);
+			if( target != null )
 				self.QueueActivity(attack.GetAttackActivity( self,
-				                                            Target.FromActor(currentTarget),
+				                                            Target.FromActor(target),
 				                                            self.Info.Traits.Get<AutoTargetInfo>().AllowMovement
 				                                            ));
 		}
