@@ -2,9 +2,11 @@ Selectable: True
 
 MapFormat: 3
 
-Title: Crossroads (KoTH)
+Title: Crossroads
 
-Description: Classic KoTH map for 2-man teams
+Type: KotH
+
+Description: Classic King of the Hill map for 2-man teams
 
 Author: Chris Forbes
 

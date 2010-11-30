@@ -24,6 +24,7 @@ namespace OpenRA.FileFormats
 		[FieldLoader.Load] public bool Selectable;
 
 		[FieldLoader.Load] public string Title;
+		[FieldLoader.Load] public string Type = "Conquest";
 		[FieldLoader.Load] public string Description;
 		[FieldLoader.Load] public string Author;
 		[FieldLoader.Load] public int PlayerCount;

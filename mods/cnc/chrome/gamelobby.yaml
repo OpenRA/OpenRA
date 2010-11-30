@@ -9,7 +9,7 @@ Background@SERVER_LOBBY:
 		Label@LOBBY_TITLE:
 			Id:LOBBY_TITLE
 			X:0
-			Y:20
+			Y:17
 			Align:Center
 			Width:800
 			Height:20
@@ -290,7 +290,7 @@ Background@SERVER_LOBBY:
 					Bold:True
 		Button@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
-			X:PARENT_RIGHT-160
+			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-269
 			Width:120
 			Height:25
@@ -319,7 +319,7 @@ Background@SERVER_LOBBY:
 			Height:25
 		Button@START_GAME_BUTTON:
 			Id:START_GAME_BUTTON
-			X:PARENT_RIGHT-160
+			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-49
 			Width:120
 			Height:25
@@ -327,7 +327,7 @@ Background@SERVER_LOBBY:
 			Bold:True
 		Button@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
-			X:PARENT_RIGHT-160
+			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-189
 			Width:120
 			Height:25
@@ -335,7 +335,7 @@ Background@SERVER_LOBBY:
 			Bold:True
 		Checkbox@LOCKTEAMS_CHECKBOX:
 			Id:LOCKTEAMS_CHECKBOX
-			X: PARENT_RIGHT-160
+			X: PARENT_RIGHT-154
 			Y: PARENT_BOTTOM-229
 			Width: 80
 			Height: 20
@@ -428,7 +428,7 @@ Background@MAP_CHOOSER:
 	Children:
 		Label@MAPCHOOSER_TITLE:
 			X:0
-			Y:20
+			Y:17
 			Align:Center
 			Width:800
 			Height:20
@@ -437,18 +437,49 @@ Background@MAP_CHOOSER:
 		ScrollPanel@MAP_LIST:
 			Id:MAP_LIST
 			X:20
-			Y:50
-			Width:500
-			Height:480
+			Y:67
+			Width:504
+			Height:474
 			Children:
-				Label@MAP_TEMPLATE:
+				Container@MAP_TEMPLATE:
 					Id:MAP_TEMPLATE
 					Width:PARENT_RIGHT-28
 					Height:25
 					ClickThrough:false
 					X:2
-					Y:0
+					Y:2
 					Visible:false
+					Children:
+						Label@TITLE:
+							Id:TITLE
+							Width:PARENT_RIGHT-100
+							Height:25
+						Label@TYPE:
+							Id:TYPE
+							Width:100
+							X:PARENT_RIGHT-100
+							Align:Right
+							Height:25
+		Container@MAP_LABELS:
+			Width:494
+			Height:25
+			X:25
+			Y:40
+			Children:
+				Label@TITLE:
+					Width:150
+					Height:25
+					X:0
+					Y:0
+					Text:Title
+					Align:Center
+					Bold:True
+				Label@TYPE:
+					Text:Type
+					Bold:true
+					Width:50
+					X:415
+					Height:25
 		Background@MAPCHOOSER_MAP_BG:
 			X:PARENT_RIGHT-268
 			Y:50
@@ -462,117 +493,123 @@ Background@MAP_CHOOSER:
 					Y:4
 					Width:244
 					Height:244
-		Label@CURMAP_TITLE_LABEL:
-			Id:CURMAP_TITLE_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
+		Container@MAP_LABEL_CONTAINER:
+			Width:70
+			Height:200
+			X:PARENT_RIGHT - 255
 			Y:311
-			Align:Right
-			Width:70
-			Height:20
-			Text:Title:
-			Bold:True
-		Label@CURMAP_TITLE:
-			Id:CURMAP_TITLE
-			X:PARENT_RIGHT - 195
-			Y:311
-			Align:Left
-			Width:70
-			Height:20
-		Label@CURMAP_AUTHOR_LABEL:
-			Id:CURMAP_AUTHOR_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:331
-			Align:Right
-			Width:70
-			Height:20
-			Text:Author:
-			Bold:True
-		Label@CURMAP_AUTHOR:
-			Id:CURMAP_AUTHOR
-			X:PARENT_RIGHT - 195
-			Y:331
-			Align:Left
-			Width:175
-			Height:20
-			WordWrap:True
-		Label@CURMAP_SIZE_LABEL:
-			Id:CURMAP_SIZE_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:371
-			Align:Right
-			Width:70
-			Height:20
-			Text:Size:
-			Bold:True
-		Label@CURMAP_SIZE:
-			Id:CURMAP_SIZE
-			X:PARENT_RIGHT - 195
-			Y:371
-			Align:Left
-			Width:70
-			Height:20
-		Label@CURMAP_THEATER_LABEL:
-			Id:CURMAP_THEATER_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:391
-			Align:Right
-			Width:70
-			Height:20
-			Text:Theater:
-			Bold:True
-		Label@CURMAP_THEATER:
-			Id:CURMAP_THEATER
-			X:PARENT_RIGHT - 195
-			Y:391
-			Align:Left
-			Width:70
-			Height:20
-		Label@CURMAP_PLAYERS_LABEL:
-			Id:CURMAP_PLAYERS_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:411
-			Align:Right
-			Width:70
-			Height:20
-			Text:Players:
-			Bold:True
-		Label@CURMAP_PLAYERS:
-			Id:CURMAP_PLAYERS
-			X:PARENT_RIGHT - 195
-			Y:411
-			Align:Left
-			Width:70
-			Height:20
-		Label@CURMAP_DESC_LABEL:
-			Id:CURMAP_DESC_LABEL
-			X:PARENT_RIGHT - 200 - WIDTH
-			Y:431
-			Align:Right
-			Width:70
-			Height:20
-			Text:Desc.:
-			Bold:True
-		Label@CURMAP_DESC:
-			Id:CURMAP_DESC
-			X:PARENT_RIGHT - 195
-			Y:431
-			Align:Left
-			Width:175
-			Height:20
-			WordWrap:True
+			Children:
+				Label@CURMAP_TITLE_LABEL:
+					Id:CURMAP_TITLE_LABEL
+					X:0
+					Y:0
+					Align:Right
+					Width:70
+					Height:20
+					Text:Title:
+					Bold:True
+				Label@CURMAP_TITLE:
+					Id:CURMAP_TITLE
+					X:75
+					Y:0
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_AUTHOR_LABEL:
+					Id:CURMAP_AUTHOR_LABEL
+					X:0
+					Y:20
+					Align:Right
+					Width:70
+					Height:20
+					Text:Author:
+					Bold:True
+				Label@CURMAP_AUTHOR:
+					Id:CURMAP_AUTHOR
+					X:75
+					Y:20
+					Align:Left
+					Width:175
+					Height:20
+					WordWrap:True
+				Label@CURMAP_SIZE_LABEL:
+					Id:CURMAP_SIZE_LABEL
+					X:0
+					Y:40
+					Align:Right
+					Width:70
+					Height:20
+					Text:Size:
+					Bold:True
+				Label@CURMAP_SIZE:
+					Id:CURMAP_SIZE
+					X:75
+					Y:40
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_THEATER_LABEL:
+					Id:CURMAP_THEATER_LABEL
+					X:0
+					Y:60
+					Align:Right
+					Width:70
+					Height:20
+					Text:Theater:
+					Bold:True
+				Label@CURMAP_THEATER:
+					Id:CURMAP_THEATER
+					X:75
+					Y:60
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_PLAYERS_LABEL:
+					Id:CURMAP_PLAYERS_LABEL
+					X:0
+					Y:80
+					Align:Right
+					Width:70
+					Height:20
+					Text:Players:
+					Bold:True
+				Label@CURMAP_PLAYERS:
+					Id:CURMAP_PLAYERS
+					X:75
+					Y:80
+					Align:Left
+					Width:70
+					Height:20
+				Label@CURMAP_DESC_LABEL:
+					Id:CURMAP_DESC_LABEL
+					X:0
+					Y:100
+					Align:Right
+					Width:70
+					Height:20
+					Text:Desc:
+					Bold:True
+				Label@CURMAP_DESC:
+					Id:CURMAP_DESC
+					X:75
+					Y:100
+					Align:Left
+					Width:170
+					Height:20
+					WordWrap:True
 		Button@BUTTON_OK:
 			Id:BUTTON_OK
-			X:PARENT_RIGHT - 360
-			Y:PARENT_BOTTOM - 45
-			Width:160
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-49
+			Width:120
 			Height:25
 			Text:Ok
 			Bold:True
 		Button@BUTTON_CANCEL:
 			Id:BUTTON_CANCEL
-			X:PARENT_RIGHT - 180
-			Y:PARENT_BOTTOM - 45
-			Width:160
+			X:PARENT_RIGHT - 295
+			Y:PARENT_BOTTOM - 49
+			Width:120
 			Height:25
 			Text:Cancel
 			Bold:True

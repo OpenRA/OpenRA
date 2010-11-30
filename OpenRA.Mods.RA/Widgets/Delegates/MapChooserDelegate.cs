@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
 			bg.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => Map.Author;
 			bg.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => Map.Description;
+			bg.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => Map.Description != null;
 			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Bounds.Width, Map.Bounds.Height);
 			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
 			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
@@ -53,23 +54,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 
-			var itemTemplate = ml.GetWidget<LabelWidget>("MAP_TEMPLATE");
+			var itemTemplate = ml.GetWidget<ContainerWidget>("MAP_TEMPLATE");
 			int offset = itemTemplate.Bounds.Y;
-			foreach (var kv in Game.modData.AvailableMaps)
+			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title))
 			{
 				var map = kv.Value;
 				if (!map.Selectable)
 					continue;
 
-				var template = itemTemplate.Clone() as LabelWidget;
+				var template = itemTemplate.Clone() as ContainerWidget;
 				template.Id = "MAP_{0}".F(map.Uid);
-				template.GetText = () => "   " + map.Title;
 				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
 				template.OnMouseDown = mi => { Map = map; return true; };
 				template.Parent = ml;
-
 				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
+				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + map.Title;
+				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type + "   ";
 				ml.AddChild(template);
 
 				offset += template.Bounds.Height;

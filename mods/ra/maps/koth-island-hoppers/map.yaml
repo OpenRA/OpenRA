@@ -2,9 +2,11 @@ Selectable: True
 
 MapFormat: 3
 
-Title: Island Hoppers (KoTH)
+Title: Island Hoppers
 
-Description: Island Hoppers, Modified for King Of The Hill
+Type: KotH
+
+Description: Island Hoppers, Modified for King of the Hill
 
 Author: Westwood Studios
 
