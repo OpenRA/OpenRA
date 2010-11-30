@@ -19,7 +19,8 @@
 
 GtkWindow * window;
 WebKitWebView * browser;
-GtkTreeStore * treeStore;
+GtkTreeStore * tree_store;
+GtkTreeView * tree;
 
 gboolean window_delete(GtkWidget * widget, GdkEvent * event, 
 		       gpointer user_data)
@@ -32,6 +33,7 @@ gboolean window_delete(GtkWidget * widget, GdkEvent * event,
 enum
 {
   ICON_COLUMN,
+  KEY_COLUMN,
   NAME_COLUMN,
   N_COLUMNS
 };
@@ -66,18 +68,25 @@ typedef void ( * lines_callback ) (char const * line, gpointer data);
 //Splits console output into lines and passes each one to a callback
 void process_lines(char * const lines, int len, lines_callback cb, gpointer data)
 {
-  char * c;
-  c = strtok(lines, "\n");
-  while (c != NULL)
+  int prev = 0, current = 0;
+  while (current < len)
   {
-    cb(c, data);
-    c = strtok(NULL, "\n");
+    if (lines[current] == '\n')
+    {
+      char * line = (char *)malloc(current - prev + 1);
+      memcpy(line, lines + prev, current - prev);
+      line[current - prev] = '\0';
+      cb(line, data);
+      free(line);
+      prev = current + 1;
+    }
+    current++;
   }
 }
 
 #define ASSIGN_TO_MOD(FIELD, VAL_OFF) \
   strncpy(mod->FIELD, val_start + VAL_OFF, MOD_##FIELD##_MAX_LEN - 1); \
-  mod->FIELD[MOD_##FIELD##_MAX_LEN - 1] = '\0';
+  mod->FIELD[MOD_##FIELD##_MAX_LEN - 1] = '\0'
 
 #define min(X, Y) X < Y ? X : Y
 
@@ -87,27 +96,27 @@ void mod_metadata_line(char const * line, gpointer data)
   char * val_start = strchr(line, ':');
   if (memcmp(line, "Mod:", 4) == 0)
   {
-    ASSIGN_TO_MOD(key, 1)
+    ASSIGN_TO_MOD(key, 1);
   }
   else if (memcmp(line, "  Title:", min(strlen(line), 8)) == 0)
   {
-    ASSIGN_TO_MOD(title, 2)
+    ASSIGN_TO_MOD(title, 2);
   }
   else if (memcmp(line, "  Version:", min(strlen(line), 10)) == 0)
   {
-    ASSIGN_TO_MOD(version, 2)
+    ASSIGN_TO_MOD(version, 2);
   }
   else if (memcmp(line, "  Author:", min(strlen(line), 9)) == 0)
   {
-    ASSIGN_TO_MOD(author, 2)
+    ASSIGN_TO_MOD(author, 2);
   }
   else if (memcmp(line, "  Description:", min(strlen(line), 14)) == 0)
   {
-    ASSIGN_TO_MOD(description, 2)
+    ASSIGN_TO_MOD(description, 2);
   }
   else if (memcmp(line, "  Requires:", min(strlen(line), 11)) == 0)
   {
-    ASSIGN_TO_MOD(requires, 2)
+    ASSIGN_TO_MOD(requires, 2);
   }
   else if (memcmp(line, "  Standalone:", min(strlen(line), 13)) == 0)
   {
@@ -115,9 +124,44 @@ void mod_metadata_line(char const * line, gpointer data)
       mod->standalone = TRUE;
     else
       mod->standalone = FALSE;
-
-    g_message("Mod standalone: %d", mod->standalone);
   }
+}
+
+mod_t * get_mod(char const * key)
+{
+  int i;
+  for (i = 0; i < mod_count; i++)
+  {
+    if (strcmp(mods[i].key, key) == 0)
+      return mods + i;
+  }
+  return NULL;
+}
+
+gboolean find_mod(GtkTreeModel * model, GtkTreePath * path, GtkTreeIter * iter,
+		  gpointer data)
+{
+  mod_t * mod = (mod_t *)data;
+  gchar * key;
+  GtkTreeIter new_iter;
+
+  gtk_tree_model_get(model, iter, KEY_COLUMN, &key, -1);
+
+  if (!key)
+  {
+    return FALSE;
+  }
+
+  if (strcmp(mod->requires, key) == 0)
+  {
+    gtk_tree_store_append(GTK_TREE_STORE(model), &new_iter, iter);
+    gtk_tree_store_set(GTK_TREE_STORE(model), &new_iter,
+		       KEY_COLUMN, mod->key,
+		       NAME_COLUMN, mod->title,
+		       -1);
+    return TRUE;
+  }
+  return FALSE;
 }
 
 void mod_metadata_callback(GPid pid, gint status, gpointer data)
@@ -125,6 +169,7 @@ void mod_metadata_callback(GPid pid, gint status, gpointer data)
   int out_len, * out_fd = (int *)data;
   char * msg = NULL;
   mod_t mod = mods[mod_count];
+  GtkTreeIter iter, mod_iter;
 
   mod_count = (mod_count + 1) % MAX_NUM_MODS;
 
@@ -136,6 +181,34 @@ void mod_metadata_callback(GPid pid, gint status, gpointer data)
 
   free(msg);
 
+  gtk_tree_model_get_iter_first(GTK_TREE_MODEL(tree_store), &mod_iter);
+
+  if (mod.standalone)
+  {
+    gtk_tree_store_append(tree_store, &iter, &mod_iter);
+    gtk_tree_store_set(tree_store, &iter,
+		     KEY_COLUMN, mod.key,
+		     NAME_COLUMN, mod.title,
+		     -1);
+  }
+  else if (!strlen(mod.requires))
+  {
+    GtkTreeIter broken_mods_iter;
+    if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(tree_store), 
+					     &broken_mods_iter, "1"))
+    {
+      gtk_tree_store_append(tree_store, &broken_mods_iter, NULL);
+    }
+    gtk_tree_store_set(tree_store, &broken_mods_iter,
+		       KEY_COLUMN, mod.key,
+		       NAME_COLUMN, mod.title,
+		       -1);
+  }
+  else
+  {
+    gtk_tree_model_foreach(GTK_TREE_MODEL(tree_store), find_mod, &mod);
+  }
+  
   close(*out_fd);
   free(out_fd);
 }
@@ -163,8 +236,48 @@ void mod_list_callback(GPid pid, gint status, gpointer data)
   g_spawn_close_pid(pid);
 }
 
+void make_tree_view(void)
+{
+  GtkTreeIter iter;
+  GtkCellRenderer * pixbuf_renderer, * text_renderer;
+  GtkTreeViewColumn * icon_column, * name_column;
+
+  tree_store = gtk_tree_store_new(N_COLUMNS, GDK_TYPE_PIXBUF, 
+				  G_TYPE_STRING, G_TYPE_STRING);
+
+  gtk_tree_store_append(tree_store, &iter, NULL);
+  gtk_tree_store_set(tree_store, &iter, 
+		     NAME_COLUMN, "MODS",
+		     -1);
+
+  tree = GTK_TREE_VIEW(gtk_tree_view_new_with_model(GTK_TREE_MODEL(tree_store)));
+  g_object_set(tree, "headers-visible", FALSE, NULL);
+
+  pixbuf_renderer = gtk_cell_renderer_pixbuf_new();
+  text_renderer = gtk_cell_renderer_text_new();
+
+  icon_column = gtk_tree_view_column_new_with_attributes
+    ("Icon", pixbuf_renderer,
+     "pixbuf", ICON_COLUMN,
+     NULL);
+
+  gtk_tree_view_column_set_sizing(icon_column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+
+  name_column = gtk_tree_view_column_new_with_attributes
+    ("Name", text_renderer,
+     "text", NAME_COLUMN,
+     NULL);
+
+  gtk_tree_view_column_set_sizing(name_column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+
+  gtk_tree_view_append_column(tree, icon_column);
+  gtk_tree_view_append_column(tree, name_column);
+}
+
 int main(int argc, char ** argv)
 {
+
+  GtkWidget * hbox;
   server_init(WEBSERVER_PORT);
   
   gtk_init(&argc, &argv);
@@ -177,11 +290,19 @@ int main(int argc, char ** argv)
   g_signal_connect(browser, "window-object-cleared", 
 		   G_CALLBACK(bind_js_bridge), 0);
 
-  treeStore = gtk_tree_store_new(N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING);
 
+  make_tree_view();
+ 
   util_get_mod_list(mod_list_callback);
 
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(browser));
+  hbox = gtk_hbox_new(FALSE, 0);
+
+  gtk_widget_set_size_request(GTK_WIDGET(tree), 250, 0);
+
+  gtk_box_pack_end(GTK_BOX(hbox), GTK_WIDGET(browser), TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(tree), TRUE, TRUE, 0);
+
+  gtk_container_add(GTK_CONTAINER(window), hbox);
 
   //TODO: Load the mod html file based on selected mod in launcher
   webkit_web_view_load_uri(browser, 

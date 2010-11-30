@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <glib.h>
+#include <sys/wait.h>
 
 int util_get_mod_list (GChildWatchFunc callback)
 {
@@ -33,6 +34,7 @@ int util_get_mod_list (GChildWatchFunc callback)
 int util_get_mod_metadata(char const * mod, GChildWatchFunc callback)
 {
   GPid child_pid;
+  int status;
   gint * out_fd = (gint *)malloc(sizeof(gint));
   char * spawn_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
   char util_args[32];
@@ -49,7 +51,10 @@ int util_get_mod_metadata(char const * mod, GChildWatchFunc callback)
     return FALSE;
   }
 
-  g_child_watch_add(child_pid, callback, out_fd);
+  //g_child_watch_add(child_pid, callback, out_fd);
+  waitpid(child_pid, &status, 0);
+
+  callback(child_pid, status, out_fd);
 
   return TRUE;
 }
