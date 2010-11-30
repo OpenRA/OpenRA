@@ -151,12 +151,12 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack")
-				AttackTarget( Target.FromOrder( order ), order.Queued, true );
-
-			else if(order.OrderString == "AttackHold")
-				AttackTarget( Target.FromOrder( order ), order.Queued, false );
-
+			if (order.OrderString == "Attack" || order.OrderString == "AttackHold")
+			{
+				var target = Target.FromOrder(order);
+				self.SetTargetLine(target, Color.Red);
+				AttackTarget(target, order.Queued, order.OrderString == "Attack");
+			}
 			else
 			{
 				/* hack */
@@ -181,7 +181,6 @@ namespace OpenRA.Mods.RA
 		{
 			if( !target.IsValid ) return;
 			self.QueueActivity(queued, GetAttackActivity(self, target, allowMove));
-			self.SetTargetLine(target, Color.Red);
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
