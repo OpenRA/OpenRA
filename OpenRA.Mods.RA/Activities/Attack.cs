@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Activities
 	/* non-turreted attack */
 	public class Attack : CancelableActivity
 	{
-		Target Target;
+		protected Target Target;
 		ITargetable targetable;
 		int Range;
 		bool AllowMovement;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Activities
 			return ret;
 		}
 
-		IActivity InnerTick( Actor self, AttackBase attack )
+		protected virtual IActivity InnerTick( Actor self, AttackBase attack )
 		{
 			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();

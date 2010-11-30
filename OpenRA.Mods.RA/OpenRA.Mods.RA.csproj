@@ -323,6 +323,8 @@
     <Compile Include="Widgets\Delegates\VideoPlayerDelegate.cs" />
     <Compile Include="TargetableSubmarine.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
+    <Compile Include="AttackMedic.cs" />
+    <Compile Include="Activities\Heal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

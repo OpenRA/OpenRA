@@ -253,14 +253,14 @@ MEDI:
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
-	AttackFrontal:
+	AttackMedic:
 		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
-#	IdleAnimation:
-#		Animations: idle1,idle2
+	IdleAnimation:
+		Animations: idle1,idle2
 
 C1:
 	Inherits: ^Infantry
