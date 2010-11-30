@@ -24,8 +24,39 @@ namespace OpenRA.Utility
 	{
 		public static void ListMods(string _)
 		{
-			foreach (var m in Mod.AllMods)
-				Console.WriteLine(m.Key);
+			var mods = Mod.AllMods;
+			List<string> seen = new List<string>(mods.Where(x => x.Value.Standalone).Select(x => x.Key));
+			List<string> remaining = new List<string>(mods.Where(x => !x.Value.Standalone).Select(x => x.Key));
+			foreach(var m in seen)
+				Console.WriteLine(m);
+
+			int oldSeenSize = 0;
+			while (true)
+			{
+				foreach (var m in remaining)
+				{
+					if (seen.Contains(m)) continue;
+
+					if (mods[m].RequiresMods == null)
+					{
+						Console.WriteLine(m);
+						seen.Add(m);
+						continue;
+					}
+
+					if (seen.Contains(mods[m].RequiresMods[0]))
+					{
+						Console.WriteLine(m);
+						seen.Add(m);
+					}
+				}
+
+				if (oldSeenSize == seen.Count) break;
+				oldSeenSize = seen.Count;
+			}
+
+			foreach(var m in remaining.Where(x => !seen.Contains(x)))
+				Console.WriteLine(m);
 		}
 
 		public static void ListModInfo(string modList)
