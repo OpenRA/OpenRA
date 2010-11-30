@@ -722,7 +722,7 @@ Actors:
 		Location: 61,63
 		Owner: Neutral
 	Actor223: gap
-		Location: 85,82
+		Location: 85,80
 		Owner: Greece
 	Actor224: apwr
 		Location: 89,86
@@ -1246,4 +1246,7 @@ Rules:
 		DefaultShellmapScript:
 		-SpawnMPUnits:
 		-MPStartLocations:
+	MSLO:
+		Building:
+			Power:0
 
