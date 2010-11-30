@@ -32,10 +32,17 @@ namespace OpenRA.Mods.RA.Effects
 			circles.Play("circles");
 		}
 
+		int2 cachedLocation;
 		public void Tick( World world )
 		{
 			flag.Tick();
 			circles.Tick();
+			if (cachedLocation != rp.rallyPoint)
+			{
+				cachedLocation = rp.rallyPoint;
+				circles.Play("circles");
+			}
+			
 			if (!building.IsInWorld || building.IsDead())
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
