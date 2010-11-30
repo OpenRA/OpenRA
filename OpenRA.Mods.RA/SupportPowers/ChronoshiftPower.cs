@@ -100,8 +100,9 @@ namespace OpenRA.Mods.RA
 			{
 				if (mi.Button == MouseButton.Right)
 					world.CancelInputMode();
+				else
+					world.OrderGenerator = new SelectDestination(power, xy);
 				
-				world.OrderGenerator = new SelectDestination(power, xy);
 				yield break;
 			}
 
