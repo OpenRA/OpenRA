@@ -304,8 +304,8 @@ Rules:
 		Building:
 			Capturable: false
 			Unsellable: true
-		Scale:
-			Value: 0.75
+		RenderBuilding:
+			Scale: 0.75
 		-RevealsShroud:
 		RevealsShroud:
 			Range: 20

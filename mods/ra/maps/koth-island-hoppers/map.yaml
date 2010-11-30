@@ -206,8 +206,8 @@ Rules:
 			Capturable: false
 			Unsellable: true
 			BaseNormal: false
-		Scale:
-			Value: 0.75
+		RenderBuilding:
+			Scale: 0.75
 		-RevealsShroud
 		RevealsShroud:
 			Range: 20
