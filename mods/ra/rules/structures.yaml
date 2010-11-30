@@ -1,4 +1,6 @@
 MSLO:
+	CanPowerDown:
+	RequiresPower:
 	NukeSilo:
 		MissileWeapon: atomic
 		SpawnOffset: 10,0
