@@ -10,6 +10,7 @@
 
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
@@ -42,10 +43,13 @@ namespace OpenRA.Mods.RA
 			var attack = self.Trait<AttackBase>();
 			var target = attack.ScanForTarget(self, null);
 			if( target != null )
+			{
+				self.SetTargetLine(Target.FromActor(target), Color.Red, false);
 				self.QueueActivity(attack.GetAttackActivity( self,
 				                                            Target.FromActor(target),
 				                                            self.Info.Traits.Get<AutoTargetInfo>().AllowMovement
 				                                            ));
+			}
 		}
 	}
 }
