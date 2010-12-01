@@ -32,12 +32,13 @@ namespace OpenRA.Mods.RA.Render
 		};
 		
 		public AnimationState State { get; private set; }
-		Mobile mobile = self.Trait<Mobile>();
+		Mobile mobile;
 		public RenderInfantry(Actor self)
 			: base(self, () => self.Trait<IFacing>().Facing)
 		{
 			anim.Play("stand");
 			State = AnimationState.Idle;
+			mobile = self.Trait<Mobile>();
 		}
 
 		public void Attacking(Actor self, Target target)
