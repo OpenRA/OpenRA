@@ -31,16 +31,13 @@ int util_get_mod_list (GChildWatchFunc callback)
   return TRUE;
 }
 
-int util_get_mod_metadata(char const * mod, GChildWatchFunc callback)
+int util_do_command_blocking(char * command, GChildWatchFunc callback)
 {
   GPid child_pid;
   int status;
   gint * out_fd = (gint *)malloc(sizeof(gint));
-  char * spawn_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
-  char util_args[32];
+  char * spawn_args[] = { "mono", "OpenRA.Utility.exe", command, NULL };
   gboolean result;
-  sprintf(util_args, "-i=%s", mod);
-  spawn_args[2] = util_args;
 
   result = g_spawn_async_with_pipes(NULL, spawn_args, NULL,
 			     G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
@@ -57,6 +54,20 @@ int util_get_mod_metadata(char const * mod, GChildWatchFunc callback)
   callback(child_pid, status, out_fd);
 
   return TRUE;
+}
+
+int util_get_mod_metadata(char const * mod, GChildWatchFunc callback)
+{
+  char util_args[32];
+  sprintf(util_args, "-i=%s", mod);
+  return util_do_command_blocking(util_args, callback);
+}
+
+int util_get_setting(const char * setting, GChildWatchFunc callback)
+{
+  char command[64];
+  sprintf(command, "--settings-value=~/.openra,%s", setting);
+  return util_do_command_blocking(command, callback);
 }
 
 char * util_get_output(int fd, int * output_len)
