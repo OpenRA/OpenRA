@@ -637,10 +637,10 @@ CA:
 
 LST:
 	Inherits: ^Ship
-	Buildable:
-		Queue: Ship
-		BuildPaletteOrder: 30
-		Owner: allies,soviet
+#	Buildable:
+#		Queue: Ship
+#		BuildPaletteOrder: 30
+#		Owner: allies,soviet
 	Valued:
 		Cost: 700
 	Tooltip:
