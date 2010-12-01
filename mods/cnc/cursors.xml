@@ -25,8 +25,6 @@
     <sequence name="generic-blocked-minimap" start="27" x="12" y="12" />
     <sequence name="attack" start="18" length="8" x="12" y="12" />
     <sequence name="attack-minimap" start="140" length="8" x="12" y="12" />
-    <sequence name="attackmove" start="18" length="8" x="12" y="12" />
-    <sequence name="attackmove-minimap" start="140" length="8" x="12" y="12" />
     <sequence name="enter" start="119" length="3" x="12" y="12" />
     <sequence name="enter-minimap" start="148" length="3" x="12" y="12" />
     <sequence name="c4" start="122" length="3" x="12" y="12" />
@@ -47,8 +45,12 @@
   </cursor>
   <cursor src="mouse4" palette="cursor">
     <sequence name="move" start="0" length="8" x="12" y="12" />
-    <sequence name="move-blocked" start="8" x="12" y="12" />
     <sequence name="move-minimap" start="9" length="4" x="12" y="12" />
+  </cursor>
+  <cursor src="attackmove" palette="cursor">
+    <sequence name="attackmove" start="0" length="8" x="12" y="12" />
+    <sequence name="attackmove-minimap" start="9" length="4" x="12" y="12" />
+    <sequence name="move-blocked" start="8" x="12" y="12" />
     <sequence name="move-blocked-minimap" start="13" length="1" x="12" y="12" />
   </cursor>
   <cursor src="mouse3" palette="cursor2">
