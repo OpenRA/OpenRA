@@ -514,6 +514,7 @@ HELI:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
 	FallsToEarth:
+	AutoTarget:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -546,6 +547,7 @@ ORCA:
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:
+	AutoTarget:
 
 C17:
 	ParaDrop:
