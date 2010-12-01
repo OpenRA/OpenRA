@@ -74,7 +74,7 @@ namespace OpenRA.Utility
 					return;
 				}
 
-				Console.WriteLine("Mod:{0}", m);
+				Console.WriteLine("Mod: {0}", m);
 				Console.WriteLine("  Title: {0}", mod.Title);
 				Console.WriteLine("  Version: {0}", mod.Version);
 				Console.WriteLine("  Author: {0}", mod.Author);
@@ -226,8 +226,16 @@ namespace OpenRA.Utility
 			string[] args = argValue.Split(',');
 
 			if (args.Length < 2) { return; }
-
-			string settingsFile = args[0] + Path.DirectorySeparatorChar + "settings.yaml";
+			
+			string expandedPath = args[0].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+			
+			string settingsFile = expandedPath + Path.DirectorySeparatorChar + "settings.yaml";
+			if (!File.Exists(settingsFile))
+			{
+				Console.WriteLine("Error: Could not locate settings file at {0}", settingsFile);
+				return;
+			}
+			
 			List<MiniYamlNode> settingsYaml = MiniYaml.FromFile(settingsFile);
 			Queue<String> settingKey = new Queue<string>(args[1].Split('.'));
 
