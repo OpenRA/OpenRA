@@ -38,20 +38,20 @@ Player:
 		Image: warpicon
 		ChargeTime: 2
 		Description: Chronoshift
-		LongDesc: Temporarily teleports a vehicle across \nthe map.
+		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
 		Prerequisites: PDOX
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
-		Duration: 2
+		Duration: 30
 		KillCargo: yes
 	IronCurtainPower:
 		Image: infxicon
 		ChargeTime: 2
 		Description: Invulnerability
-		LongDesc: Makes a single unit invulnerable for 30 seconds.
+		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
 		Prerequisites: IRON
-		Duration: .5
+		Duration: 10
 	SpyPlanePower:
 		Image: smigicon
 		ChargeTime: 3

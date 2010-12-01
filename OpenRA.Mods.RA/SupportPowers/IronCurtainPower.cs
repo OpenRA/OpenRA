@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
 	{
-		public readonly float Duration = 0f;
-		public readonly int Range = 2; // Range in cells
+		public readonly int Duration = 10; // Seconds
+		public readonly int Range = 1; // Range in cells
 
 		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
 	}
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 
 				Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
 				foreach (var target in UnitsInRange(order.TargetLocation))
-					target.Trait<IronCurtainable>().Activate(target, (int)((Info as IronCurtainPowerInfo).Duration * 25 * 60));
+					target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
 
 				FinishActivate();
 			}

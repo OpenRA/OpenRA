@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		public readonly int Range = 2; // Range in cells
-		public readonly int Duration = 30;
+		public readonly int Range = 1; // Range in cells
+		public readonly int Duration = 30; // Seconds
 		public readonly bool KillCargo = true;
 		
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 					if (cs.CanChronoshiftTo(target, targetCell))
 						target.Trait<Chronoshiftable>().Teleport(target,
 						                                         targetCell,
-						                                         (int)((Info as ChronoshiftPowerInfo).Duration * 25 * 60),
+						                                         (Info as ChronoshiftPowerInfo).Duration * 25,
 						                                         (Info as ChronoshiftPowerInfo).KillCargo,
 						                                         chronosphere);
 				}
