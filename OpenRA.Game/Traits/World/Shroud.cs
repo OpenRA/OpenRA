@@ -216,6 +216,11 @@ namespace OpenRA.Traits
 			if (Disabled)
 				return true;
 			
+			// Visibility is allowed to extend beyond the map cordon so that
+			// the fog tiles are not visible at the edge of the world
+			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
+				return false;
+
 			return visibleCells[x,y] != 0;
 		}
 		
