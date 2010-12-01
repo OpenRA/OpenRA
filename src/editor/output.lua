@@ -55,7 +55,7 @@ local function customrunning(exename)
 	return false
 end
 
-function RunCommandLine(cmd,wdir,tooutput,nohide)
+function RunCommandLine(cmd,wdir,tooutput,nohide,stringcallback)
 	local exename = string.gsub(cmd, "\\", "/")
 	exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
 	exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
@@ -107,28 +107,28 @@ function RunCommandLine(cmd,wdir,tooutput,nohide)
 	local streamin  = proc and proc:GetInputStream()
 	local streamerr = proc and proc:GetErrorStream()
 	if (streamin) then 
-		streamins[pid] = streamin
+		streamins[pid] = {stream=streamin, callback=stringcallback}
 	end
 	if (streamerr) then 
-		streamerrs[pid] = streamerr
+		streamerrs[pid] = {stream=streamerr, callback=stringcallback}
 	end
 	
-	DisplayOutputNoMarker("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n")
+	--DisplayOutputNoMarker("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n")
 end
 
 local function getStreams()
-	for i,streamin in pairs(streamins) do
-		while(streamin:CanRead()) do
-			str = streamin:Read(4096)
-			DisplayOutputNoMarker(str)
-		end
+	local function displayStream(tab)
+		for i,v in pairs(tab) do
+			while(v.stream:CanRead()) do
+				local str = v.stream:Read(4096)
+				str = (v.callback and v.callback(str)) or str
+				DisplayOutputNoMarker(str)
+			end
+		end	
 	end
-	for i,streamerr in pairs(streamerrs) do
-		while (streamerr:CanRead()) do
-			str = streamerr:Read(4096)
-			DisplayOutputNoMarker(str)
-		end
-	end
+	
+	displayStream(streamins)
+	displayStream(streamerrs)
 end
 
 errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)

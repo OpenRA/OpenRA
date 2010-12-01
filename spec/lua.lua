@@ -96,9 +96,11 @@ return {
 				line = line+1
 			end
 			
-			DisplayOutput("\nTYPES\n")
-			for i,v in pairs(assigns) do
-				DisplayOutput(i,v,"\n")
+			if (#assigns > 0) then
+				DisplayOutput("\nTYPES\n")
+				for i,v in pairs(assigns) do
+					DisplayOutput(i,v,"\n")
+				end
 			end
 	
 			return assigns

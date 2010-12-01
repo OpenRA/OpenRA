@@ -66,6 +66,109 @@ return cgbinpath and {
 		local fn = wx.wxFileName(cgbinpath..perfexe)
 		local hasperf = fn:FileExists()
 		
+		local function nvperfcallback(str)
+			local pixels = string.match(str,"([,%d]+) pixels/s")
+			pixels = pixels and string.gsub(pixels,",","")
+			pixels = tonumber(pixels)
+			local function tostr(num)
+				return string.format("%.2f",num)
+			end
+			if (pixels ~= nil) then
+				local str = string.match(str,("(.* pixels/s)"))
+				local info = "1920x1080: "..tostr(pixels/(1920*1080)).." Hz\n"
+				info = info.."1280x1024: "..tostr(pixels/(1280*1024)).." Hz\n"
+				str = (str.."\n"..info)
+				return str
+			else
+				return str.."\n"
+			end
+		end
+		
+		local function beautifyAsm(tx)
+			local newtx = ""
+			local indent = 0
+			local maxindent = 0
+			local startindent = {
+				"IF","REP","ELSE",
+			}
+			local endindent = {
+				"ENDIF","ENDREP","ELSE",
+			}
+
+			local function checkstart(str,tab)
+				local res = false
+				for i,v in ipairs(tab) do
+					res = res or ((string.find(str,v) or 0) == 1)
+				end
+				return res
+			end
+
+			local argregistry = {}
+
+			local function checkargs(str)
+				local comment = "#"
+				local declared = {}
+				for i in string.gmatch(str,"([%[%]%w]+)") do
+					local descr = argregistry[i]
+					if (descr and not declared[i]) then
+						comment = comment.." "..i.." = "..descr
+						declared[i] = true
+					end
+				end
+
+				return comment ~= "#" and comment
+			end
+
+			for w in string.gmatch(tx, "[^\n]*\n") do
+				local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
+				if (pref == "1") then
+					local descriptor = vtype.." "..vname
+
+					-- check if resource is array
+					local resstart,rescnt = string.match(resource,"c%[(%d+)%], (%d+)")
+					resstart = tonumber(resstart)
+					rescnt = tonumber(rescnt)
+
+					-- check if texture
+					local texnum = string.match(resource,"texunit (%d+)")
+
+					local argnames = {}
+					if (rescnt) then
+						for i=0,(rescnt-1) do
+							table.insert(argnames,"c["..tostring(resstart + i).."]")
+						end
+					elseif (texnum) then
+						table.insert(argnames,"texture["..tostring(texnum).."]")
+						table.insert(argnames,"texture"..tostring(texnum))
+					else
+						table.insert(argnames,resource)
+					end
+
+					for i,v in ipairs(argnames) do
+						argregistry[v] = descriptor
+					end
+				end
+
+				if (checkstart(w,endindent)) then
+					indent = indent - 1
+				end
+				local firstchar = string.sub(w,1,1)
+				local indentstr = (firstchar ~= "  " and firstchar ~= "\t" and  string.rep("  ",indent) or "")
+				local linestr = indentstr..w
+				local argcomment = (firstchar ~= "#") and checkargs(w)
+				newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
+				newtx = newtx..linestr
+				if (checkstart(w,startindent)) then
+					indent = indent + 1
+					maxindent = math.max(maxindent,indent)
+				end
+			end
+			
+			newtx = newtx.."# "..maxindent.." maximum nesting level\n"
+			
+			return newtx
+		end
+		
 		
 		-- Compile Arg
 		frame:Connect(ID "cg.compile.input",wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -73,7 +176,7 @@ return cgbinpath and {
 						data.customarg = event:IsChecked()
 					end)
 		-- Compile
-		local function evcompile(event)
+		local function evCompile(event)
 			local filename,info = GetEditorFileAndCurInfo()
 
 
@@ -91,7 +194,6 @@ return cgbinpath and {
 
 			if (not profile[domain]) then return end
 
-			local ext = "ext"
 			local fullname = filename:GetFullPath()
 			local glsl = fullname:match("%.glsl$") and true
 
@@ -100,16 +202,15 @@ return cgbinpath and {
 			cmdline = args and cmdline..args.." " or cmdline
 			cmdline = cmdline.."-o "..fullname.."."..info.selword.."^"
 			cmdline = args and cmdline..args:gsub("%s+%-",";-")..";^" or cmdline
-			cmdline = cmdline..profile[domain]..profile[ext].." "
+			cmdline = cmdline..profile[domain]..profile.ext.." "
 			cmdline = cmdline.."-entry "..info.selword
 
 			cmdline = cgbinpath.."/cgc.exe"..cmdline
 
-			-- run process
+			-- run compiler process
 			RunCommandLine(cmdline,nil,true)
-
 			
-			--optionally run perf
+			-- optionally run perf process
 			local cgperfgpu = ide.config.cgperfgpu or "G80"
 			local profiletypes = {
 					["G70"] = {},
@@ -126,98 +227,21 @@ return cgbinpath and {
 				cmdline = cmdline.." "..fullname
 
 				cmdline = cgbinpath..perfexe..cmdline
-				RunCommandLine(cmdline,nil,true)
+				RunCommandLine(cmdline,nil,true,nil,nvperfcallback)
 			end
-
 		end
-		frame:Connect(ID "cg.compile.vertex",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
-		frame:Connect(ID "cg.compile.fragment",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
-		frame:Connect(ID "cg.compile.geometry",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
-		frame:Connect(ID "cg.compile.tessctrl",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
-		frame:Connect(ID "cg.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evcompile)
+		
+		frame:Connect(ID "cg.compile.vertex",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+		frame:Connect(ID "cg.compile.fragment",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+		frame:Connect(ID "cg.compile.geometry",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+		frame:Connect(ID "cg.compile.tessctrl",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+		frame:Connect(ID "cg.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
 
 		-- indent asm
 		frame:Connect(ID "cg.format.asm", wx.wxEVT_COMMAND_MENU_SELECTED,
 			function(event)
 				local curedit = GetEditor()
-				local tx = curedit:GetText()
-				local newtx = ""
-				local indent = 0
-				local delta = 2
-				local startindent = {
-					"IF","REP","ELSE",
-				}
-				local endindent = {
-					"ENDIF","ENDREP","ELSE",
-				}
-
-				local function checkstart(str,tab)
-					local res = false
-					for i,v in ipairs(tab) do
-						res = res or ((string.find(str,v) or 0) == 1)
-					end
-					return res
-				end
-
-				local argregistry = {}
-
-				local function checkargs(str)
-					local comment = "#"
-					local declared = {}
-					for i in string.gmatch(str,"([%[%]%w]+)") do
-						local descr = argregistry[i]
-						if (descr and not declared[i]) then
-							comment = comment.." "..i.." = "..descr
-							declared[i] = true
-						end
-					end
-
-					return comment ~= "#" and comment
-				end
-
-				for w in string.gmatch(tx, "[^\n]*\n") do
-					local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
-					if (pref == "1") then
-						local descriptor = vtype.." "..vname
-
-						-- check if resource is array
-						local resstart,rescnt = string.match(resource,"c%[(%d+)%], (%d+)")
-						resstart = tonumber(resstart)
-						rescnt = tonumber(rescnt)
-
-						-- check if texture
-						local texnum = string.match(resource,"texunit (%d+)")
-
-						local argnames = {}
-						if (rescnt) then
-							for i=0,(rescnt-1) do
-								table.insert(argnames,"c["..tostring(resstart + i).."]")
-							end
-						elseif (texnum) then
-							table.insert(argnames,"texture["..tostring(texnum).."]")
-							table.insert(argnames,"texture"..tostring(texnum))
-						else
-							table.insert(argnames,resource)
-						end
-
-						for i,v in ipairs(argnames) do
-							argregistry[v] = descriptor
-						end
-					end
-
-					if (checkstart(w,endindent)) then
-						indent = indent - delta
-					end
-					local firstchar = string.sub(w,1,1)
-					local indentstr = (firstchar ~= " " and  string.rep(" ",indent) or "")
-					local linestr = indentstr..w
-					local argcomment = (firstchar ~= "#") and checkargs(w)
-					newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
-					newtx = newtx..linestr
-					if (checkstart(w,startindent)) then
-						indent = indent + delta
-					end
-				end
+				local newtx = beautifyAsm( curedit:GetText() )
 
 				curedit:SetText(newtx)
 			end)
