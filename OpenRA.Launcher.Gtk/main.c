@@ -11,6 +11,7 @@
 #include <gtk/gtk.h>
 #include <webkit/webkit.h>
 
+#include "main.h"
 #include "server.h"
 #include "bridge.h"
 #include "utility.h"
@@ -21,6 +22,7 @@ GtkWindow * window;
 WebKitWebView * browser;
 GtkTreeStore * tree_store;
 GtkTreeView * tree;
+GdkPixbuf * generic_mod_icon;
 
 gboolean window_delete(GtkWidget * widget, GdkEvent * event, 
 		       gpointer user_data)
@@ -29,36 +31,6 @@ gboolean window_delete(GtkWidget * widget, GdkEvent * event,
   gtk_main_quit();
   return FALSE;
 }
-
-enum
-{
-  ICON_COLUMN,
-  KEY_COLUMN,
-  NAME_COLUMN,
-  N_COLUMNS
-};
-
-#define MOD_key_MAX_LEN 16
-#define MOD_title_MAX_LEN 32
-#define MOD_version_MAX_LEN 16
-#define MOD_author_MAX_LEN 32
-#define MOD_description_MAX_LEN 128
-#define MOD_requires_MAX_LEN 32
-
-#define MAX_NUM_MODS 64
-
-typedef struct mod_t
-{
-  char key[MOD_key_MAX_LEN];
-  char title[MOD_title_MAX_LEN];
-  char version[MOD_version_MAX_LEN];
-  char author[MOD_author_MAX_LEN];
-  char description[MOD_description_MAX_LEN];
-  char requires[MOD_requires_MAX_LEN];
-  int standalone;
-} mod_t;
-
-
 
 static mod_t mods[MAX_NUM_MODS];
 static int mod_count = 0;
@@ -156,6 +128,7 @@ gboolean append_to_mod(GtkTreeModel * model, GtkTreePath * path,
   {
     gtk_tree_store_append(GTK_TREE_STORE(model), &new_iter, iter);
     gtk_tree_store_set(GTK_TREE_STORE(model), &new_iter,
+		       ICON_COLUMN, generic_mod_icon,
 		       KEY_COLUMN, mod->key,
 		       NAME_COLUMN, mod->title,
 		       -1);
@@ -170,30 +143,31 @@ void mod_metadata_callback(GPid pid, gint status, gpointer data)
 {
   int out_len, * out_fd = (int *)data;
   char * msg = NULL;
-  mod_t mod = mods[mod_count];
+  mod_t * mod = mods + mod_count;
   GtkTreeIter iter, mod_iter;
 
   mod_count = (mod_count + 1) % MAX_NUM_MODS;
 
-  memset(&mod, 0, sizeof(mod_t));
+  memset(mod, 0, sizeof(mod_t));
 
   msg = util_get_output(*out_fd, &out_len);
 
-  process_lines(msg, out_len, mod_metadata_line, &mod);
+  process_lines(msg, out_len, mod_metadata_line, mod);
 
   free(msg);
 
   gtk_tree_model_get_iter_first(GTK_TREE_MODEL(tree_store), &mod_iter);
 
-  if (mod.standalone)
+  if (mod->standalone)
   {
     gtk_tree_store_append(tree_store, &iter, &mod_iter);
     gtk_tree_store_set(tree_store, &iter,
-		     KEY_COLUMN, mod.key,
-		     NAME_COLUMN, mod.title,
-		     -1);
+		       ICON_COLUMN, generic_mod_icon,
+		       KEY_COLUMN, mod->key,
+		       NAME_COLUMN, mod->title,
+		       -1);
   }
-  else if (!strlen(mod.requires))
+  else if (!strlen(mod->requires))
   {
     GtkTreeIter broken_mods_iter;
     if (!gtk_tree_model_get_iter_from_string(GTK_TREE_MODEL(tree_store), 
@@ -202,13 +176,14 @@ void mod_metadata_callback(GPid pid, gint status, gpointer data)
       gtk_tree_store_append(tree_store, &broken_mods_iter, NULL);
     }
     gtk_tree_store_set(tree_store, &broken_mods_iter,
-		       KEY_COLUMN, mod.key,
-		       NAME_COLUMN, mod.title,
+		       ICON_COLUMN, generic_mod_icon,
+		       KEY_COLUMN, mod->key,
+		       NAME_COLUMN, mod->title,
 		       -1);
   }
   else
   {
-    gtk_tree_model_foreach(GTK_TREE_MODEL(tree_store), append_to_mod, &mod);
+    gtk_tree_model_foreach(GTK_TREE_MODEL(tree_store), append_to_mod, mod);
   }
   
   close(*out_fd);
@@ -353,9 +328,9 @@ void make_tree_view(void)
 		     NAME_COLUMN, "MODS",
 		     -1);
 
-  tree = GTK_TREE_VIEW(gtk_tree_view_new_with_model(GTK_TREE_MODEL(tree_store)));
+  tree = GTK_TREE_VIEW(gtk_tree_view_new_with_model(
+					GTK_TREE_MODEL(tree_store)));
   g_object_set(tree, "headers-visible", FALSE, NULL);
-  g_object_set(tree, "level-indentation", 1, NULL);
   g_signal_connect(tree, "cursor-changed", 
 		   G_CALLBACK(tree_view_selection_changed), NULL);
 
@@ -382,8 +357,8 @@ void make_tree_view(void)
 
 int main(int argc, char ** argv)
 {
-
   GtkWidget * hbox;
+
   server_init(WEBSERVER_PORT);
   
   gtk_init(&argc, &argv);
@@ -396,6 +371,8 @@ int main(int argc, char ** argv)
   g_signal_connect(browser, "window-object-cleared", 
 		   G_CALLBACK(bind_js_bridge), 0);
 
+  generic_mod_icon = gdk_pixbuf_new_from_file_at_size("soviet-logo.png", 
+						      16, 16, NULL);
 
   make_tree_view();
  

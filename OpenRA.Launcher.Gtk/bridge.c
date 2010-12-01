@@ -7,10 +7,13 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <webkit/webkit.h>
 #include <JavaScriptCore/JavaScript.h>
 #include <glib.h>
+
+#include "main.h"
 
 #define JS_STR(str) JSStringCreateWithUTF8CString(str)
 #define JS_FUNC(ctx, callback) JSObjectMakeFunctionWithCallback(ctx, NULL, \
@@ -105,8 +108,10 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
 			 JSObjectRef this, size_t argc,
 			 const JSValueRef argv[], JSValueRef * exception)
 {
-  char * mod;
+  char * mod_key, * mod_list;
   size_t mod_size;
+  mod_t * mod;
+  int offset;
   JSValueRef return_value = JSValueMakeNull(ctx);
 
   if (!js_check_num_args(ctx, "launchMod", argc, 1, exception))
@@ -118,12 +123,55 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
     return return_value;
   }
 
-  mod = js_get_cstr_from_val(ctx, argv[0], &mod_size);
+  mod_key = js_get_cstr_from_val(ctx, argv[0], &mod_size);
 
-  g_message("JS LaunchMod: %s", mod);
+  g_message("JS LaunchMod: %s", mod_key);
 
-  free(mod);
+  mod = get_mod(mod_key);
 
+  offset = strlen(mod_key);
+  mod_list = (char *)malloc(offset + 1);
+  strcpy(mod_list, mod_key);
+
+  free(mod_key);
+
+  while (strlen(mod->requires) > 0)
+  {
+    char r[MOD_requires_MAX_LEN], * comma;
+    strcpy(r, mod->requires);
+    if (NULL != (comma = strchr(r, ',')))
+    {
+      *comma = '\0';
+    }
+
+    mod = get_mod(r);
+    if (mod == NULL)
+    {
+      char exception_msg[64];
+      sprintf(exception_msg, "The mod %s is missing, cannot launch.", r);
+      *exception = JSValueMakeString(ctx, JS_STR(exception_msg));
+      free(mod_list);
+      return return_value;
+    }
+
+    mod_list = (char *)realloc(mod_list, offset + strlen(r) + 1);
+    sprintf(mod_list + offset, ",%s", r);
+    offset += strlen(r) + 1;
+  }
+
+  {
+    char * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, NULL };
+    char * game_mods_arg;
+
+    game_mods_arg = (char *)malloc(strlen(mod_list) + strlen("Game.Mods=") + 1);
+    sprintf(game_mods_arg, "Game.Mods=%s", mod_list);
+
+    launch_args[2] = game_mods_arg;
+    
+    g_spawn_async(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
+    free(game_mods_arg);
+  }
+  free(mod_list);
   return return_value;
 }
 
