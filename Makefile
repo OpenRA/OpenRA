@@ -4,6 +4,9 @@ DEFINE      = DEBUG;TRACE
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll
 PHONY		= core tools package all mods clean distclean
 
+CC	= gcc
+CFLAGS	= -g -Wall
+
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
 tools: editor ralint seqed filex tsbuild utility
@@ -173,6 +176,13 @@ OpenRA.Launcher.Launcher.resources:
 	resgen2 OpenRA.Launcher/Launcher.resx OpenRA.Launcher.Launcher.resources 1> /dev/null
 winlaunch: OpenRA.Launcher.Launcher.resources $(winlaunch_TARGET)
 
+gtklaunch_HEADERS 	= $(shell find OpenRA.Launcher.Gtk/ -iname '*.h')
+gtklaunch_SRCS		= $(shell find OpenRA.Launcher.Gtk/ -iname '*.c')
+
+gtklaunch: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
+	@echo CC launcher
+	@$(CC) $(CFLAGS) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0 libmicrohttpd) -o gtklaunch $(gtklaunch_SRCS)
+
 .PHONY: $(PHONY) $(PROGRAMS)
 
 #
@@ -210,9 +220,9 @@ install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
-		
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
+
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/chrome $(INSTALL_DIR)/mods/cnc
@@ -221,9 +231,9 @@ install: all
 	@cp -r mods/cnc/sequences $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/tilesets $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/uibits $(INSTALL_DIR)/mods/cnc
-	
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
 	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
+
 	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/bits $(INSTALL_DIR)/mods/ra
@@ -231,20 +241,20 @@ install: all
 	@cp -r mods/ra/rules $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
-	
+
 	@cp -r glsl $(INSTALL_DIR)
 	@cp -r cg $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 	@-$(INSTALL_PROGRAM) VERSION $(INSTALL_DIR)
-	
+
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
 	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe SupportDir=~/.openra \"$$""@\"" >> openra
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
-	
+
 	@echo "OpenRA is now installed. You will now want to download"
 	@echo "http://open-ra.org/get-dependency.php?file=ra-packages and"
 	@echo "http://open-ra.org/get-dependency.php?file=cnc-packages"
