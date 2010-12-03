@@ -8,14 +8,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Widgets;
-using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Activities;
 using System;
+using OpenRA.Widgets;
 
 namespace OpenRA.Scripting
 {
