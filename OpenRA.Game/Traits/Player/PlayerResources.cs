@@ -36,14 +36,13 @@ namespace OpenRA.Traits
 
 		[Sync]
 		public int Cash;
-		[Sync]
-		public int DisplayCash;
 		
 		[Sync]
 		public int Ore;
 		[Sync]
 		public int OreCapacity;
-		[Sync]
+
+		public int DisplayCash;
 		public int DisplayOre;
 
 		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
