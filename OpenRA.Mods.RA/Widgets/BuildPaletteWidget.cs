@@ -54,11 +54,11 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			this.world = world;
 		}
-		
+
 		public override void Initialize()
 		{
 			base.Initialize();
-			
+
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			ready = new Animation("pips");
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA.Widgets
 			clock = new Animation("clock");
 
 			iconSprites = Rules.Info.Values
-				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^' )
+				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
 				.ToDictionary(
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
-			
-			IsVisible = () => { return CurrentQueue != null || (CurrentQueue == null && !paletteOpen);  };
+
+			IsVisible = () => { return CurrentQueue != null || (CurrentQueue == null && !paletteOpen); };
 		}
 		
 		public override Rectangle EventBounds
