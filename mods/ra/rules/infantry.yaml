@@ -221,6 +221,8 @@ E7:
 		Range: 6
 	C4Demolition:
 		C4Delay: .03
+	Passenger:
+		PipType: Red
 	AttackFrontal:
 		PrimaryWeapon: Colt45
 		SecondaryWeapon: Colt45
