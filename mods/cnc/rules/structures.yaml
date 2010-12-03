@@ -660,6 +660,8 @@ ATWR:
 		Owner: gdi
 	Building:
 		Power: -20
+		Footprint: _ x
+		Dimensions: 1,2
 	Health:
 		HP: 800
 	Armor: 
