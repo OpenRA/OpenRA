@@ -66,23 +66,7 @@ return cgbinpath and {
 		local fn = wx.wxFileName(cgbinpath..perfexe)
 		local hasperf = fn:FileExists()
 		
-		local function nvperfcallback(str)
-			local pixels = string.match(str,"([,%d]+) pixels/s")
-			pixels = pixels and string.gsub(pixels,",","")
-			pixels = tonumber(pixels)
-			local function tostr(num)
-				return string.format("%.2f",num)
-			end
-			if (pixels ~= nil) then
-				local str = string.match(str,("(.* pixels/s)"))
-				local info = "1920x1080: "..tostr(pixels/(1920*1080)).." Hz\n"
-				info = info.."1280x1024: "..tostr(pixels/(1280*1024)).." Hz\n"
-				str = (str.."\n"..info)
-				return str
-			else
-				return str.."\n"
-			end
-		end
+
 		
 		local function beautifyAsm(tx)
 			local newtx = ""
@@ -169,6 +153,27 @@ return cgbinpath and {
 			return newtx
 		end
 		
+		local function beautifyAsmFile(filePath)
+			local file_text = ""
+			local handle = io.open(filePath, "rb")
+			if handle then
+				file_text = handle:read("*a")
+				if GetConfigIOFilter("input") then
+					file_text = GetConfigIOFilter("input")(filePath,file_text)
+				end
+				file_text = beautifyAsm(file_text)
+				handle:close()
+			end
+			
+			if (file_text == "") then return end
+			
+			local handle = io.open(filePath, "wb")
+			if handle then
+				handle:write(file_text)
+				handle:close()
+			end
+		end
+		
 		
 		-- Compile Arg
 		frame:Connect(ID "cg.compile.input",wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -197,38 +202,82 @@ return cgbinpath and {
 			local fullname = filename:GetFullPath()
 			local glsl = fullname:match("%.glsl$") and true
 
+			local outname = fullname.."."..info.selword.."^"
+			outname = args and outname..args:gsub("%s+%-",";-")..";^" or outname
+			outname = outname..profile[domain]..profile.ext
+			
 			local cmdline = " "..fullname.." -profile "..profile[domain].." "
 			cmdline = glsl and cmdline.."-oglsl " or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
-			cmdline = cmdline.."-o "..fullname.."."..info.selword.."^"
-			cmdline = args and cmdline..args:gsub("%s+%-",";-")..";^" or cmdline
-			cmdline = cmdline..profile[domain]..profile.ext.." "
+			cmdline = cmdline.."-o "..outname.." "
 			cmdline = cmdline.."-entry "..info.selword
 
 			cmdline = cgbinpath.."/cgc.exe"..cmdline
+			
+			
+			local function nvperfcallback(str)
+				local pixels = string.match(str,"([,%d]+) pixels/s")
+				pixels = pixels and string.gsub(pixels,",","")
+				pixels = tonumber(pixels)
+				local function tostr(num)
+					return string.format("%.2f",num)
+				end
+				
+				-- delete .cgbin file
+				local binname,ext = fullname:match("(.*)%.([a-zA-Z_0-9]+)$")
+				binname = binname..".cgbin"
+				wx.wxRemoveFile(binname)
+				
+				if (pixels ~= nil) then
+					local str = string.match(str,("(.* pixels/s)"))
+					local info = "1920x1080: "..tostr(pixels/(1920*1080)).." Hz\n"
+					info = info.."1280x1024: "..tostr(pixels/(1280*1024)).." Hz\n"
+					str = (str.."\n"..info)
+					return str
+				else
+					return str.."\n"
+				end
+			end
+			
+			local function compilecallback(str)
+				local postfunc
+				-- check for errors, if none, launch nvperf
+				-- and indentation
+				if (string.find(str," 0 errors.")) then
+					postfunc = function() 
+						-- beautify asm
+						beautifyAsmFile(outname)
+						
+						
+						-- optionally run perf process
+						local cgperfgpu = ide.config.cgperfgpu or "G80"
+						local profiletypes = {
+								["G70"] = {},
+								["G80"] = {	["vp40"] = " -profile vp40",
+											["fp40"] = " -profile fp40"},
+							}
+						if (hasperf and profile.nvperf and (domain == 1 or domain == 2)
+								and profiletypes[cgperfgpu])
+						then
+							local domaintypes = {"cg_vp","cg_fp",}
+							local cmdline = " -gpu "..cgperfgpu.." -type "..domaintypes[domain]
+							cmdline = cmdline.." -function "..info.selword
+							cmdline = cmdline..(profiletypes[cgperfgpu][profile[domain]] or "")
+							cmdline = cmdline.." "..fullname
+
+							cmdline = cgbinpath..perfexe..cmdline
+							RunCommandLine(cmdline,nil,true,nil,nvperfcallback)
+						end
+					end
+				end
+				
+				return str,postfunc
+			end
 
 			-- run compiler process
-			RunCommandLine(cmdline,nil,true)
+			RunCommandLine(cmdline,nil,true,nil,compilecallback)
 			
-			-- optionally run perf process
-			local cgperfgpu = ide.config.cgperfgpu or "G80"
-			local profiletypes = {
-					["G70"] = {},
-					["G80"] = {	["vp40"] = " -profile vp40",
-								["fp40"] = " -profile fp40"},
-				}
-			if (hasperf and profile.nvperf and (domain == 1 or domain == 2)
-					and profiletypes[cgperfgpu])
-			then
-				local domaintypes = {"cg_vp","cg_fp",}
-				local cmdline = " -gpu "..cgperfgpu.." -type "..domaintypes[domain]
-				cmdline = cmdline.." -function "..info.selword
-				cmdline = cmdline..(profiletypes[cgperfgpu][profile[domain]] or "")
-				cmdline = cmdline.." "..fullname
 
-				cmdline = cgbinpath..perfexe..cmdline
-				RunCommandLine(cmdline,nil,true,nil,nvperfcallback)
-			end
 		end
 		
 		frame:Connect(ID "cg.compile.vertex",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)

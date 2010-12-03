@@ -121,8 +121,12 @@ local function getStreams()
 		for i,v in pairs(tab) do
 			while(v.stream:CanRead()) do
 				local str = v.stream:Read(4096)
-				str = (v.callback and v.callback(str)) or str
+				local pfn
+				if (v.callback) then
+					str,pfn = v.callback(str)
+				end
 				DisplayOutputNoMarker(str)
+				pfn = pfn and pfn()
 			end
 		end	
 	end
