@@ -56,13 +56,14 @@ namespace OpenRA.Graphics
 			PlayThen( sequenceName, () => PlayRepeating( CurrentSequence.Name ) );
 		}
 
-		public void ReplaceAnim(string sequenceName)
+		public bool ReplaceAnim(string sequenceName)
 		{
 			if (!HasSequence(sequenceName))
-				return;
+				return false;
 
 			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
 			frame %= CurrentSequence.Length;
+			return true;
 		}
 
 		public void PlayThen( string sequenceName, Action after )
@@ -124,14 +125,15 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void ChangeImage(string newImage)
+		public void ChangeImage(string newImage, string newAnimIfMissing)
 		{
 			newImage = newImage.ToLowerInvariant();
 			
 			if (name != newImage)
 			{
 				name = newImage.ToLowerInvariant();
-				ReplaceAnim(CurrentSequence.Name);
+				if (!ReplaceAnim(CurrentSequence.Name))
+					ReplaceAnim(newAnimIfMissing);
 			}
 		}
 

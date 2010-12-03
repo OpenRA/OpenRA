@@ -8,8 +8,8 @@
  */
 #endregion
 
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -20,7 +20,6 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new IdleAnimation(this); }
 	}
 
-	// infantry prone behavior
 	class IdleAnimation : ITick, INotifyIdle
 	{
 		enum IdleState
@@ -54,7 +53,12 @@ namespace OpenRA.Mods.RA
 			else if (delay > 0 && --delay == 0)
 			{
 				state = IdleState.Active;
-				self.Trait<RenderInfantry>().anim.PlayThen(sequence, () => state = IdleState.None);
+				var ri = self.TraitOrDefault<RenderInfantry>();
+
+				if (ri.anim.HasSequence(sequence))
+					ri.anim.PlayThen(sequence, () => state = IdleState.None);
+				else
+					state = IdleState.None;
 			}
 		}
 		

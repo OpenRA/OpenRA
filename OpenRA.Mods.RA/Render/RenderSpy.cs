@@ -46,13 +46,13 @@ namespace OpenRA.Mods.RA.Render
 				{
 					disguisedAsPlayer = target.Owner;
 					disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);
-					anim.ChangeImage(disguisedAsSprite);
+					anim.ChangeImage(disguisedAsSprite, "stand");
 				}
 				else
 				{
 					disguisedAsPlayer = null;
 					disguisedAsSprite = null;
-					anim.ChangeImage(GetImage(self));
+					anim.ChangeImage(GetImage(self), "stand");
 				}
 			}
 		}
