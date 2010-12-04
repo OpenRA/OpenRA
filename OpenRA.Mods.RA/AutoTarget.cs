@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (!self.IsIdle) return;
 			if (e.Attacker.Destroyed) return;
-			
+
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attack = self.Trait<AttackBase>();
 			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker))) return;
@@ -38,18 +38,20 @@ namespace OpenRA.Mods.RA
 			self.Trait<AttackBase>().AttackTarget(Target.FromActor(e.Attacker), false, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
 		}
 
-		public void TickIdle( Actor self )
+		public void TickIdle(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
 			var target = attack.ScanForTarget(self, null);
-			if( target != null )
+			if (target != null)
 			{
 				self.SetTargetLine(Target.FromActor(target), Color.Red, false);
-				self.QueueActivity(attack.GetAttackActivity( self,
-				                                            Target.FromActor(target),
-				                                            self.Info.Traits.Get<AutoTargetInfo>().AllowMovement
-				                                            ));
+				self.QueueActivity(attack.GetAttackActivity(self,
+					Target.FromActor(target),
+					self.Info.Traits.Get<AutoTargetInfo>().AllowMovement));
 			}
 		}
 	}
+
+	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
+	class AutoTargetIgnore { }
 }
