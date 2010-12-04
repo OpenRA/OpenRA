@@ -74,11 +74,6 @@ namespace OpenRA.Orders
                 return;
             }
 
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
-						t.RenderBeforeWorld( wr, a );
-
 			Game.Renderer.Flush();
 		}
 

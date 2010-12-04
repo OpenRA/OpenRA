@@ -78,6 +78,13 @@ namespace OpenRA.Graphics
 
 			terrainRenderer.Draw(this, Game.viewport);
 
+			foreach (var a in world.Selection.Actors)
+				if (!a.Destroyed)
+					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
+						t.RenderBeforeWorld(this, a);
+			
+			Game.Renderer.Flush();
+			
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 

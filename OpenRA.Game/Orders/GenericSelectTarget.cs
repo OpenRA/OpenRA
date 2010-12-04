@@ -66,19 +66,8 @@ namespace OpenRA.Orders
 		}
 
 		public virtual void Tick(World world) { }
-
-		public void RenderBeforeWorld(WorldRenderer wr, World world)
-		{
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
-						t.RenderBeforeWorld(wr, a);
-
-			Game.Renderer.Flush();
-		}
-
-		public void RenderAfterWorld(WorldRenderer wr, World world) {}
-
+		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
+		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
 
