@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using TUtil = OpenRA.Traits.Util;
-
+/*
 namespace OpenRA.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
@@ -139,3 +139,4 @@ namespace OpenRA.Mods.RA
 	class IronCurtainInfo : TraitInfo<IronCurtain> { }
 	class IronCurtain { }
 }
+*/

@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Cnc
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.self, this); }
 	}
 
-	class IonCannonPower : SupportPower, IResolveOrder
+	class IonCannonPower : SupportPower
 	{
 		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
-
+/*
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (!IsReady) return;
@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Cnc
 			Self.World.OrderGenerator =
 				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
 		}
+*/
 	}
 
 	class IonControlInfo : TraitInfo<IonControl> { }

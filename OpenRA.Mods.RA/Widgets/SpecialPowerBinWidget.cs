@@ -74,9 +74,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if( world.LocalPlayer == null ) return;
 			
-			var powers = world.LocalPlayer.PlayerActor.TraitsImplementing<SupportPower>();
-			var numPowers = powers.Count(p => p.IsAvailable);
+			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
+			var numPowers = manager.Powers.Count;
 			if (numPowers == 0) return;
+			
 			var rectBounds = RenderBounds;
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
@@ -88,74 +89,78 @@ namespace OpenRA.Mods.RA.Widgets
 			rectBounds.Height = 10 + numPowers * 51 + 21;
 			
 			var y = rectBounds.Y + 10;
-			foreach (var sp in powers)
+			foreach (var kv in manager.Powers)
 			{
+				var sp = kv.Value;
 				var image = spsprites[sp.Info.Image];
-				if (sp.IsAvailable)
+
+				var drawPos = new float2(rectBounds.X + 5, y);
+				var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
+
+				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
 				{
-					var drawPos = new float2(rectBounds.X + 5, y);
-					var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
+					var pos = drawPos.ToInt2();					
+					var tl = new int2(pos.X-3,pos.Y-3);
+					var m = new int2(pos.X+64+3,pos.Y+48+3);
+					var br = tl + new int2(64+3+20,60);
+					
+					if (sp.Info.LongDesc != null)
+						br += Game.Renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
+					else
+						br += new int2(300,0);
 
-					if (rect.Contains(Viewport.LastMousePos.ToPoint()))
+					var border = WidgetUtils.GetBorderSizes("dialog4");
+
+					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(tl.X, tl.Y, m.X + border[3], m.Y),
+						PanelSides.Left | PanelSides.Top | PanelSides.Bottom);
+					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X - border[2], tl.Y, br.X, m.Y + border[1]),
+						PanelSides.Top | PanelSides.Right);
+					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X, m.Y - border[1], br.X, br.Y),
+						PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
+					
+					pos += new int2(77, 5);
+					Game.Renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
+					
+					pos += new int2(0,20);
+					Game.Renderer.BoldFont.DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+					Game.Renderer.BoldFont.DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+					
+					if (sp.Info.LongDesc != null)
 					{
-						var pos = drawPos.ToInt2();					
-						var tl = new int2(pos.X-3,pos.Y-3);
-						var m = new int2(pos.X+64+3,pos.Y+48+3);
-						var br = tl + new int2(64+3+20,60);
-						
-						if (sp.Info.LongDesc != null)
-							br += Game.Renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
-						else
-							br += new int2(300,0);
-
-						var border = WidgetUtils.GetBorderSizes("dialog4");
-
-						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(tl.X, tl.Y, m.X + border[3], m.Y),
-							PanelSides.Left | PanelSides.Top | PanelSides.Bottom);
-						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X - border[2], tl.Y, br.X, m.Y + border[1]),
-							PanelSides.Top | PanelSides.Right);
-						WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X, m.Y - border[1], br.X, br.Y),
-							PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
-						
-						pos += new int2(77, 5);
-						Game.Renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
-						
-						pos += new int2(0,20);
-						Game.Renderer.BoldFont.DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.Renderer.BoldFont.DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
-						
-						if (sp.Info.LongDesc != null)
-						{
-							pos += new int2(0, 20);
-							Game.Renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
-						}
+						pos += new int2(0, 20);
+						Game.Renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 					}
 
-					WidgetUtils.DrawSHP(image, drawPos, wr);
-
-					clock.PlayFetchIndex("idle",
-						() => (sp.TotalTime - sp.RemainingTime)
-							* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
-					clock.Tick();
-
-					WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
-
-					if (sp.IsReady)
-					{
-						ready.Play("ready");
-						WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
-					}
-
-					buttons.Add(Pair.New(rect,HandleSupportPower(sp)));
-
-					y += 51;
 				}
+				WidgetUtils.DrawSHP(image, drawPos, wr);
+
+				clock.PlayFetchIndex("idle",
+					() => (sp.TotalTime - sp.RemainingTime)
+						* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
+				clock.Tick();
+
+				WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
+
+				if (sp.Ready)
+				{
+					ready.Play("ready");
+					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
+				}
+				else if (!sp.Active)
+				{
+					ready.Play("hold");
+					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
+				}
+				
+				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));
+
+				y += 51;
 			}
 		}
 		
-		Action<MouseInput> HandleSupportPower(SupportPower sp)
+		Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
 		{
-			return mi => { if (mi.Button == MouseButton.Left) sp.Activate(); };
+			return mi => { if (mi.Button == MouseButton.Left) manager.Target(key); };
 		}
 	}
 }

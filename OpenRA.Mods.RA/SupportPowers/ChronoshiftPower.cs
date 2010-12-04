@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
-
+/*
 namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
@@ -255,3 +255,4 @@ namespace OpenRA.Mods.RA
 	class ChronosphereInfo : TraitInfo<Chronosphere> {}
 	class Chronosphere {}
 }
+*/

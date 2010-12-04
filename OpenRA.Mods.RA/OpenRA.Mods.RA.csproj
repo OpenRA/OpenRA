@@ -325,6 +325,7 @@
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="AttackMedic.cs" />
     <Compile Include="Activities\Heal.cs" />
+    <Compile Include="SupportPowers\SupportPowerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -351,4 +352,8 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="SupportPowers\" />
+    <Folder Include="Player\" />
+  </ItemGroup>
 </Project>

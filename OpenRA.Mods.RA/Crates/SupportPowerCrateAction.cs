@@ -26,15 +26,16 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
+			throw new System.NotImplementedException();
 			// shit and broken. if you have a single-use and a multi-use version of the same
 			// support power, this only works by order-coincidence. that's stupid.
 
-			var p = collector.Owner.PlayerActor.TraitsImplementing<SupportPower>()
-				.FirstOrDefault(sp => sp.GetType().Name == (info as SupportPowerCrateActionInfo).Power);
+			//var p = collector.Owner.PlayerActor.TraitsImplementing<SupportPower>()
+			//	.FirstOrDefault(sp => sp.GetType().Name == (info as SupportPowerCrateActionInfo).Power);
 
-			if (p != null) p.Give(1);
+			//if (p != null) p.Give(1);
 
-			base.Activate(collector);
+			//base.Activate(collector);
 		}
 	}
 }

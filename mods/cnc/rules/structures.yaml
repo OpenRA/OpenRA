@@ -33,6 +33,15 @@ FACT:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	BaseBuilding:
+	AirstrikePower:
+		Image: bombicnh
+		ChargeTime: 10
+		Description: Airstrike
+		LongDesc: Delivers a load of napalm on your target.
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		UnitType: a10
+#		AllowMultiple: true
 
 NUKE:
 	Inherits: ^Building

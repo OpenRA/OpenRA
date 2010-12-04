@@ -26,53 +26,39 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }
 	}
 
-	class AirstrikePower : SupportPower, IResolveOrder
+	class AirstrikePower : SupportPower
 	{
 		public AirstrikePower(Actor self, AirstrikePowerInfo info) : base(self, info) { }
-
-		protected override void OnActivate()
+		public override void Activate(Actor self, Order order)
 		{
-			Self.World.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, Info.OrderName, "ability");
-		}
-
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (!IsReady) return;
-
-			if (order.OrderString == Info.OrderName)
+			var startPos = self.World.ChooseRandomEdgeCell();
+			self.World.AddFrameEndTask(w =>
 			{
-				var startPos = Owner.World.ChooseRandomEdgeCell();
+				var info = (Info as AirstrikePowerInfo);
+				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
+			    {
+					new LocationInit( order.TargetLocation ),
+					new OwnerInit( self.Owner ),
+				}) : null;
+			
+				var a = w.CreateActor(info.UnitType, new TypeDictionary
+			    {
+					new LocationInit( startPos ),
+					new OwnerInit( self.Owner ),
+					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
+					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
+				});
+				a.Trait<CarpetBomb>().SetTarget(order.TargetLocation);
 
-				Owner.World.AddFrameEndTask(w =>
-					{
-						var info = (Info as AirstrikePowerInfo);
-						var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
-					    {
-							new LocationInit( order.TargetLocation ),
-							new OwnerInit( Owner ),
-						}) : null;
-					
-						var a = w.CreateActor(info.UnitType, new TypeDictionary
-					    {
-							new LocationInit( startPos ),
-							new OwnerInit( Owner ),
-							new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
-							new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
-						});
-						a.Trait<CarpetBomb>().SetTarget(order.TargetLocation);
+				a.CancelActivity();
+				a.QueueActivity(Fly.ToCell(order.TargetLocation));
 
-						a.CancelActivity();
-						a.QueueActivity(Fly.ToCell(order.TargetLocation));
+				if (flare != null)
+					a.QueueActivity(new CallFunc(() => flare.Destroy()));
 
-						if (flare != null)
-							a.QueueActivity(new CallFunc(() => flare.Destroy()));
-
-						a.QueueActivity(new FlyOffMap { Interruptible = false });
-						a.QueueActivity(new RemoveSelf());
-					});
-
-				FinishActivate();
-			}
+				a.QueueActivity(new FlyOffMap { Interruptible = false });
+				a.QueueActivity(new RemoveSelf());
+			});
 		}
 	}
 }

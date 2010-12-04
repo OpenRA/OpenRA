@@ -13,7 +13,7 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Air;
-
+/*
 namespace OpenRA.Mods.RA
 {
 	class ParatroopersPowerInfo : SupportPowerInfo
@@ -82,3 +82,4 @@ namespace OpenRA.Mods.RA
 		}
 	}
 }
+*/

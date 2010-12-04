@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-
+/*
 namespace OpenRA.Mods.RA
 {
 	class GpsPowerInfo : SupportPowerInfo
@@ -51,3 +51,4 @@ namespace OpenRA.Mods.RA
 	class GpsLaunchSiteInfo : TraitInfo<GpsLaunchSite> { }
 	class GpsLaunchSite { }
 }
+*/

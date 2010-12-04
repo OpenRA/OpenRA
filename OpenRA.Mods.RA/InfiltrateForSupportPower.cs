@@ -29,10 +29,11 @@ namespace OpenRA.Mods.RA
 
 		public void OnInfiltrate(Actor self, Actor spy)
 		{
-			var p = spy.Owner.PlayerActor.TraitsImplementing<SupportPower>()
-				.FirstOrDefault(sp => sp.GetType().Name == info.Power);
-
-			if (p != null) p.Give(1);
+			throw new System.NotImplementedException();
+			//var p = spy.Owner.PlayerActor.TraitsImplementing<SupportPower>()
+			//	.FirstOrDefault(sp => sp.GetType().Name == info.Power);
+			//
+			//if (p != null) p.Give(1);
 		}
 	}
 }

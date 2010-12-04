@@ -20,11 +20,11 @@ namespace OpenRA.Mods.RA
 	{
 		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
 	}
-	
-	class NukePower : SupportPower, IResolveOrder
+
+	class NukePower : SupportPower
 	{
 		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
-	
+/*	
 		protected override void OnActivate()
 		{
 			Self.World.OrderGenerator =
@@ -52,6 +52,7 @@ namespace OpenRA.Mods.RA
 				FinishActivate();
 			}
 		}
+*/
 	}
 
 	// tag trait for the building
