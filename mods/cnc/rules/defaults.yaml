@@ -260,6 +260,7 @@
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	AutoTargetIgnore:
 
 ^Tree:
 	Tooltip:

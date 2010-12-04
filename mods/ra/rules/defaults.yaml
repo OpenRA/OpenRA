@@ -167,6 +167,7 @@
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	AutoTargetIgnore:
 
 ^CivBuilding:
 	Inherits: ^Building
