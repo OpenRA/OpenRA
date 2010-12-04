@@ -69,7 +69,7 @@ SPEN:
 		BuildPaletteOrder: 30
 		Prerequisites: @Power Plant
 		Owner: soviet
-		Hotkey: s
+		Hotkey: y
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -119,7 +119,7 @@ SYRD:
 		BuildPaletteOrder: 40
 		Prerequisites: @Power Plant
 		Owner: allies
-		Hotkey: s
+		Hotkey: y
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -447,7 +447,7 @@ SAM:
 		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: soviet
-		Hotkey: s
+		Hotkey: y
 	Valued:
 		Cost: 750
 	Tooltip:
