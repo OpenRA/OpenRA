@@ -143,6 +143,16 @@ namespace OpenRA.Editor
 		{
 			var queue = new Queue<int2>();
 			var replace = Map.MapTiles[pos.X, pos.Y];
+			var touched = new bool[Map.MapSize.X, Map.MapSize.Y];
+
+			Action<int, int> MaybeEnqueue = (x, y) =>
+				{
+					if (Map.IsInMap(x, y) && !touched[x, y])
+					{
+						queue.Enqueue(new int2(x, y));
+						touched[x, y] = true;
+					}
+				};
 
 			queue.Enqueue(pos);
 			while (queue.Count > 0)
@@ -157,10 +167,10 @@ namespace OpenRA.Editor
 				for (var x = a.X; x <= b.X; x++)
 				{
 					Map.MapTiles[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, image = (byte)0, index = (byte)0 };
-					if (Map.MapTiles[x, p.Y - 1].Equals(replace) && Map.IsInMap(x, p.Y - 1))
-						queue.Enqueue(new int2(x, p.Y - 1));
-					if (Map.MapTiles[x, p.Y + 1].Equals(replace) && Map.IsInMap(x, p.Y + 1))
-						queue.Enqueue(new int2(x, p.Y + 1));
+					if (Map.MapTiles[x, p.Y - 1].Equals(replace))
+						MaybeEnqueue(x, p.Y - 1);
+					if (Map.MapTiles[x, p.Y + 1].Equals(replace))
+						MaybeEnqueue(x, p.Y + 1);
 				}
 			}
 
