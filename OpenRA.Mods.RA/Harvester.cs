@@ -63,10 +63,10 @@ namespace OpenRA.Mods.RA
 				.Where(x => x != ignore && x.HasTrait<IAcceptOre>())
 				.ToList();
 			var mi = self.Info.Traits.Get<MobileInfo>();
-			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.FromPoints(self.World, mi,
-			                                                                refs.Select(r => r.Location + r.Trait<IAcceptOre>().DeliverOffset),
-			                                                                self.Location,
-			                                                                false));
+			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
+				PathSearch.FromPoints(self.World, mi,
+					refs.Select(r => r.Location + r.Trait<IAcceptOre>().DeliverOffset),
+					self.Location, false));
 			path.Reverse();
 			if (path.Count != 0)
 				return refs.FirstOrDefault(x => x.Location + x.Trait<IAcceptOre>().DeliverOffset == path[0]);
