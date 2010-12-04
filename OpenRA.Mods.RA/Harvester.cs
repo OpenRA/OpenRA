@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
@@ -23,7 +22,6 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int Capacity = 28;
 		public readonly int PipCount = 7;
-		public readonly PipType PipColor = PipType.Yellow;
 		public readonly string[] Resources = { };
 		public readonly decimal FullyLoadedSpeed = .85m;
 
@@ -169,19 +167,26 @@ namespace OpenRA.Mods.RA
 
 			ChooseNewProc(self, proc);
 		}
+
+		PipType GetPipAt(int i)
+		{
+			var n = i * Info.Capacity / Info.PipCount;
+
+			foreach (var rt in contents)
+				if (n < rt.Value)
+					return rt.Key.PipColor;
+				else
+					n -= rt.Value;
+
+			return PipType.Transparent;
+		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			int numPips = Info.PipCount;
-			int n = contents.Values.Sum();
 
 			for (int i = 0; i < numPips; i++)
-			{
-				if (n * 1.0f / Info.Capacity > i * 1.0f / numPips)
-					yield return Info.PipColor;
-				else
-					yield return PipType.Transparent;
-			}
+				yield return GetPipAt(i);
 		}
 				
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

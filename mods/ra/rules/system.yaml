@@ -201,12 +201,14 @@ World:
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
 		Name: Ore
+		PipColor: Yellow
 	ResourceType@gem:
 		ResourceType: 2
 		Palette: terrain
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
 		Name: Gems
+		PipColor: Red
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		Types:sc1,sc2,sc3,sc4,sc5,sc6

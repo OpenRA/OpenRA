@@ -24,6 +24,8 @@ namespace OpenRA.Traits
 
 		public Sprite[][] Sprites;
 		public int PaletteIndex;
+
+		public PipType PipColor = PipType.Yellow;
 		
 		public object Create(ActorInitializer init) { return new ResourceType(this); }
 	}
