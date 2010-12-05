@@ -1,9 +1,4 @@
 MSLO:
-	CanPowerDown:
-	RequiresPower:
-	NukeSilo:
-		MissileWeapon: atomic
-		SpawnOffset: 10,0
 	Inherits: ^Building
 	Valued:
 		Cost: 2500
@@ -27,7 +22,19 @@ MSLO:
 	RevealsShroud:
 		Range: 5
 	IronCurtainable:
-	
+	NukePower:
+		Image: atomicon
+		ChargeTime: 540
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at a target location.
+		BeginChargeSound: aprep1.aud
+		EndChargeSound: aready1.aud
+		SelectTargetSound: slcttgt1.aud
+		LaunchSound: alaunch1.aud
+		MissileWeapon: atomic
+		SpawnOffset: 10,0
+	CanPowerDown:
+	RequiresPower:
 GAP:
 	RequiresPower:
 	CanPowerDown:
@@ -193,7 +200,7 @@ IRON:
 		Range: 10
 	Bib:
 	IronCurtainable:
-	IronCurtain:
+#	IronCurtain:
 
 PDOX:
 	RequiresPower:
@@ -222,7 +229,7 @@ PDOX:
 	RevealsShroud:
 		Range: 10
 	Bib:
-	Chronosphere:
+#	Chronosphere:
 	IronCurtainable:
 
 TSLA:
@@ -501,7 +508,7 @@ ATEK:
 		Range: 10
 	Bib:
 	IronCurtainable:
-	GpsLaunchSite:
+#	GpsLaunchSite:
 
 WEAP:
 	Inherits: ^Building

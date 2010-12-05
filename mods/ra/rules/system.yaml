@@ -25,74 +25,65 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
-	GpsPower:
-		Image: gpssicon
-		OneShot: yes
-		ChargeTime: 8
-		Description: GPS Satellite
-		LongDesc: Reveals the entire map
-		Prerequisites: ATEK
-		RevealDelay: 15
-		LaunchSound: satlnch1.aud
-	ChronoshiftPower:
-		Image: warpicon
-		ChargeTime: 2
-		Description: Chronoshift
-		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
-		Prerequisites: PDOX
-		SelectTargetSound: slcttgt1.aud
-		BeginChargeSound: chrochr1.aud
-		EndChargeSound: chrordy1.aud
-		Duration: 30
-		KillCargo: yes
-	IronCurtainPower:
-		Image: infxicon
-		ChargeTime: 2
-		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
-		Prerequisites: IRON
-		Duration: 10
-	SpyPlanePower:
-		Image: smigicon
-		ChargeTime: 3
-		Description: Spy Plane
-		LongDesc: Reveals an area of the map.
-		Prerequisites: AFLD
-	ParatroopersPower:
-		Image: pinficon
-		ChargeTime: 6
-		Description: Paratroopers
-		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
-		Prerequisites: AFLD
-		DropItems: E1,E1,E1,E3,E3
-		SelectTargetSound: slcttgt1.aud
-	NukePower:
-		Image: atomicon
-		ChargeTime: 9
-		Description: Atom Bomb
-		LongDesc: Launches a nuclear missile at a target location.
-		Prerequisites: MSLO
-		BeginChargeSound: aprep1.aud
-		EndChargeSound: aready1.aud
-		SelectTargetSound: slcttgt1.aud
-		LaunchSound: alaunch1.aud
-	SonarPulsePower:
-		Image: sonricon
-		ChargeTime: 10
-		Description: Sonar Pulse (Single Use)
-		LongDesc: Reveals all submarines on the map for a \nshort time.
-		GivenAuto: no
-		OneShot: yes
-	AirstrikePower:
-		Image: pbmbicon
-		ChargeTime: 1
-		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted bombs on your target.
-		GivenAuto: no
-		OneShot: yes
-		UnitType: badr.bomber
-		SelectTargetSound: slcttgt1.aud
-		FlareType: flare
+#	GpsPower:
+#		Image: gpssicon
+#		OneShot: yes
+#		ChargeTime: 8
+#		Description: GPS Satellite
+#		LongDesc: Reveals the entire map
+#		Prerequisites: ATEK
+#		RevealDelay: 15
+#		LaunchSound: satlnch1.aud
+#	ChronoshiftPower:
+#		Image: warpicon
+#		ChargeTime: 2
+#		Description: Chronoshift
+#		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
+#		Prerequisites: PDOX
+#		SelectTargetSound: slcttgt1.aud
+#		BeginChargeSound: chrochr1.aud
+#		EndChargeSound: chrordy1.aud
+#		Duration: 30
+#		KillCargo: yes
+#	IronCurtainPower:
+#		Image: infxicon
+#		ChargeTime: 2
+#		Description: Invulnerability
+#		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
+#		Prerequisites: IRON
+#		Duration: 10
+#	SpyPlanePower:
+#		Image: smigicon
+#		ChargeTime: 3
+#		Description: Spy Plane
+#		LongDesc: Reveals an area of the map.
+#		Prerequisites: AFLD
+#	ParatroopersPower:
+#		Image: pinficon
+#		ChargeTime: 6
+#		Description: Paratroopers
+#		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
+#		Prerequisites: AFLD
+#		DropItems: E1,E1,E1,E3,E3
+#		SelectTargetSound: slcttgt1.aud
+#	SonarPulsePower:
+#		Image: sonricon
+#		ChargeTime: 10
+#		Description: Sonar Pulse (Single Use)
+#		LongDesc: Reveals all submarines on the map for a \nshort time.
+#		GivenAuto: no
+#		OneShot: yes
+#	AirstrikePower:
+#		Image: pbmbicon
+#		ChargeTime: 1
+#		Description: Parabombs (Single Use)
+#		LongDesc: A Badger drops a load of parachuted bombs on your target.
+#		GivenAuto: no
+#		OneShot: yes
+#		UnitType: badr.bomber
+#		SelectTargetSound: slcttgt1.aud
+#		FlareType: flare
+	SupportPowerManager:
 	ConquestVictoryConditions:
 	PowerManager:
 	PlayerResources:
