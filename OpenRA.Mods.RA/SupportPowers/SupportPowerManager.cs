@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				}
 				else
 				{
-					var si = new SupportPowerInstance(this)
+					var si = new SupportPowerInstance(key, this)
 					{
 						Instances = new List<SupportPower>() { t },
 						RemainingTime = t.Info.ChargeTime * 25,
@@ -91,38 +91,42 @@ namespace OpenRA.Mods.RA
 		public void Target(string key)
 		{
 			if (Powers.ContainsKey(key))
-				Powers[key].Target(key);
+				Powers[key].Target();
 		}
 		
 		public class SupportPowerInstance
 		{
 			SupportPowerManager Manager;
+			string Key;
+			
 			public List<SupportPower> Instances;
 			public int RemainingTime;
 			public int TotalTime;
 			public bool Active;
+			public bool Disabled;
 			
 			public SupportPowerInfo Info { get { return Instances.First().Info; } }
 			public bool Ready { get { return Active && RemainingTime == 0; } }
 			
-			public SupportPowerInstance(SupportPowerManager manager)
+			public SupportPowerInstance(string key, SupportPowerManager manager)
 			{
 				Manager = manager;
+				Key = key;
 			}
 			
 			bool notifiedCharging;
 			bool notifiedReady;
 			public void Tick()
 			{
-				Active = Instances.Any(i => !i.self.TraitsImplementing<IDisable>().Any(d => d.Disabled));
-				
+				Active = !Disabled && Instances.Any(i => !i.self.TraitsImplementing<IDisable>().Any(d => d.Disabled));
+				var power = Instances.First();
+
 				if (Active)
 				{
 					if (RemainingTime > 0) --RemainingTime;
 					if (!notifiedCharging)
 					{
-						Sound.PlayToPlayer(Instances.First().self.Owner, Info.BeginChargeSound);
-						//instance.OnBeginCharging();
+						power.Charging(power.self, Key);
 						notifiedCharging = true;
 					}
 				}
@@ -130,18 +134,17 @@ namespace OpenRA.Mods.RA
 				if (RemainingTime == 0
 					&& !notifiedReady)
 				{
-					Sound.PlayToPlayer(Instances.First().self.Owner, Info.EndChargeSound);
-					//instance.FinishCharging();
+					power.Charged(power.self, Key);
 					notifiedReady = true;
 				}
 			}
 			
-			public void Target(string key)
+			public void Target()
 			{
 				if (!Ready)
 					return;
 
-				Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(key, Manager);
+				Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
 			}
 						
 			public void Activate(Order order)
@@ -154,6 +157,9 @@ namespace OpenRA.Mods.RA
 				power.Activate(power.self, order);
 				RemainingTime = TotalTime;
 				notifiedCharging = notifiedReady = false;
+				
+				if (Info.OneShot)
+					Disabled = true;
 			}
 		}
 	}

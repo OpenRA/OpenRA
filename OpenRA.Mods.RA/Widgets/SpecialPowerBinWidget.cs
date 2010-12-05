@@ -75,7 +75,8 @@ namespace OpenRA.Mods.RA.Widgets
 			if( world.LocalPlayer == null ) return;
 			
 			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
-			var numPowers = manager.Powers.Count;
+			var powers = manager.Powers.Where(p => !p.Value.Disabled);
+			var numPowers = powers.Count();
 			if (numPowers == 0) return;
 			
 			var rectBounds = RenderBounds;
@@ -89,7 +90,7 @@ namespace OpenRA.Mods.RA.Widgets
 			rectBounds.Height = 10 + numPowers * 51 + 21;
 			
 			var y = rectBounds.Y + 10;
-			foreach (var kv in manager.Powers)
+			foreach (var kv in powers)
 			{
 				var sp = kv.Value;
 				var image = spsprites[sp.Info.Image];

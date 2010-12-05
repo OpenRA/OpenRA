@@ -519,7 +519,15 @@ ATEK:
 		Range: 10
 	Bib:
 	IronCurtainable:
-#	GpsLaunchSite:
+	GpsPower:
+		Image: gpssicon
+		OneShot: yes
+#		ChargeTime: 480
+		ChargeTime: 10
+		Description: GPS Satellite
+		LongDesc: Reveals the entire map
+		RevealDelay: 15
+		LaunchSound: satlnch1.aud
 
 WEAP:
 	Inherits: ^Building

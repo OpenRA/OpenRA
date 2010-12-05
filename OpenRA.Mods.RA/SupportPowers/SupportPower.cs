@@ -20,13 +20,15 @@ namespace OpenRA.Mods.RA
 		public readonly string Image = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
-
-		public readonly string OrderName;
+		public readonly bool AllowMultiple = false;
+		public readonly bool OneShot = false;
+		
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;
 		public readonly string SelectTargetSound = null;
 		public readonly string LaunchSound = null;
-		public readonly bool AllowMultiple = false;
+
+		public readonly string OrderName;
 		public abstract object Create(ActorInitializer init);
 
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
@@ -41,6 +43,16 @@ namespace OpenRA.Mods.RA
 		{
 			Info = info;
 			this.self = self;
+		}
+		
+		public virtual void Charging(Actor self, string key)
+		{
+			Sound.PlayToPlayer(self.Owner, Info.BeginChargeSound);
+		}
+		
+		public virtual void Charged(Actor self, string key)
+		{
+			Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
 		}
 
 		public virtual void Activate(Actor self, Order order) { }
