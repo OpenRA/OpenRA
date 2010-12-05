@@ -30,8 +30,9 @@ Player:
 #		ChargeTime: 10
 #		Description: Sonar Pulse (Single Use)
 #		LongDesc: Reveals all submarines on the map for a \nshort time.
-#		GivenAuto: no
 #		OneShot: yes
+#		EndChargeSound: pulse1.aud
+#		SelectTargetSound: slcttgt1.aud
 #	AirstrikePower:
 #		Image: pbmbicon
 #		ChargeTime: 1

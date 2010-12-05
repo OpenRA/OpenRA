@@ -9,7 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
-/*
+
 namespace OpenRA.Mods.RA
 {
 	public class SonarPulsePowerInfo : SupportPowerInfo
@@ -17,31 +17,15 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new SonarPulsePower(init.self, this); }
 	}
 
-	public class SonarPulsePower : SupportPower, IResolveOrder
+	public class SonarPulsePower : SupportPower
 	{
 		public SonarPulsePower(Actor self, SonarPulsePowerInfo info) : base(self, info) { }
-
-		protected override void OnBeginCharging() { }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "pulse1.aud"); }
-
-		protected override void OnActivate()
+		public override void Activate(Actor self, Order order)
 		{
-			Self.World.IssueOrder(new Order("SonarPulse", Owner.PlayerActor, false));
-		}
+			// TODO: Reveal submarines
 
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "SonarPulse")
-			{
-				// TODO: Reveal submarines
-
-				// Should this play for all players?
-				Sound.Play("sonpulse.aud");
-				FinishActivate();
-			}
+			// Should this play for all players?
+			Sound.Play("sonpulse.aud");
 		}
 	}
 }
-*/
