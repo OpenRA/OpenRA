@@ -1,35 +1,6 @@
 Player:
 	PlaceBuilding:
 	TechTree:
-#	NukePower:
-#		Image: atomicnh
-#		ChargeTime: 5
-#		Description: Atom Bomb
-#		LongDesc: Launches a nuclear missile at a target location.
-#		Prerequisites: TMPL
-#		BeginChargeSound: 
-#		EndChargeSound: nukavail.aud
-#		SelectTargetSound: select1.aud
-#		LaunchSound: nukemisl.aud
-#	IonCannonPower:
-#		Image: ionicnh
-#		ChargeTime: 3
-#		Description: Ion Cannon
-#		LongDesc: Discharges the orbital Ion Cannon at your target.
-#		Prerequisites: EYE
-#		BeginChargeSound: ionchrg1.aud
-#		EndChargeSound: ionredy1.aud
-#		LaunchSound: ion1.aud
-#		SelectTargetSound: select1.aud
-#	AirstrikePower:
-#		Image: bombicnh
-#		ChargeTime: 4
-#		Description: Airstrike
-#		LongDesc: Delivers a load of napalm on your target.
-#		Prerequisites: hq
-#		EndChargeSound: airredy1.aud
-#		SelectTargetSound: select1.aud
-#		UnitType: a10
 	SupportPowerManager:
 	ConquestVictoryConditions:
 	PowerManager:

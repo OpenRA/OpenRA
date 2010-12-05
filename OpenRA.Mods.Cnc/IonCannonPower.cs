@@ -23,31 +23,13 @@ namespace OpenRA.Mods.Cnc
 	class IonCannonPower : SupportPower
 	{
 		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
-/*
-		public void ResolveOrder(Actor self, Order order)
+		public override void Activate(Actor self, Order order)
 		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "IonCannon")
+			self.World.AddFrameEndTask(w =>
 			{
-				Owner.World.AddFrameEndTask(w =>
-					{
-						Sound.Play(Info.LaunchSound, Game.CellSize * order.TargetLocation.ToFloat2());
-						w.Add(new IonCannon(self, w, order.TargetLocation));
-					});
-
-				FinishActivate();
-			}
+				Sound.Play(Info.LaunchSound, Game.CellSize * order.TargetLocation.ToFloat2());
+				w.Add(new IonCannon(self, w, order.TargetLocation));
+			});
 		}
-
-		protected override void OnActivate()
-		{
-			Self.World.OrderGenerator =
-				new GenericSelectTargetWithBuilding<IonControl>(Owner.PlayerActor, "IonCannon", "ability");
-		}
-*/
 	}
-
-	class IonControlInfo : TraitInfo<IonControl> { }
-	class IonControl { }
 }

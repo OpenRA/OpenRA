@@ -52,13 +52,14 @@ namespace OpenRA.Mods.RA
 				}, Actors["pdox"], -1, false);
 			}
 			
+			/*
 			if (ticks == 100)
 				Actors["mslo1"].Trait<NukeSilo>().Attack(new int2(98, 52));
 			if (ticks == 140)
 				Actors["mslo2"].Trait<NukeSilo>().Attack(new int2(95, 54));
 			if (ticks == 180)
 				Actors["mslo3"].Trait<NukeSilo>().Attack(new int2(95, 49));
-
+			 */
 			if (ticks == 430)
 			{
 				Actors["mig1"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);

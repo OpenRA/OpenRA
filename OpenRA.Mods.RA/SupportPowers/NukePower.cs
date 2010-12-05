@@ -18,72 +18,32 @@ namespace OpenRA.Mods.RA
 {
 	class NukePowerInfo : SupportPowerInfo
 	{
+		[WeaponReference]
+		public readonly string MissileWeapon = "";
+		public readonly int2 SpawnOffset = int2.Zero;
+		
 		public override object Create(ActorInitializer init) { return new NukePower(init.self, this); }
 	}
 
 	class NukePower : SupportPower
 	{
 		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
-/*	
-		protected override void OnActivate()
+		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Self.World.OrderGenerator =
-				new GenericSelectTargetWithBuilding<NukeSilo>(Owner.PlayerActor, "NuclearMissile", "nuke");
-		}
-
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "NuclearMissile")
-			{
-				var silo = self.World.Queries.OwnedBy[self.Owner]
-					.Where(a => a.HasTrait<NukeSilo>())
-					.FirstOrDefault();
-				if (silo != null)
-					silo.Trait<RenderBuilding>().PlayCustomAnim(silo, "active");
-				
-				// Play to everyone but the current player
-				if (Owner != Owner.World.LocalPlayer)
-					Sound.Play(Info.LaunchSound);
-				
-				silo.Trait<NukeSilo>().Attack(order.TargetLocation);
-				
-				FinishActivate();
-			}
-		}
-*/
-	}
-
-	// tag trait for the building
-	class NukeSiloInfo : ITraitInfo
-	{
-		[WeaponReference]
-		public readonly string MissileWeapon = "";
-		public readonly int2 SpawnOffset = int2.Zero;
-
-		public object Create(ActorInitializer init) { return new NukeSilo(init.self, this); }
-	}
-	
-	class NukeSilo
-	{
-		Actor self;
-		NukeSiloInfo info;
-
-		public NukeSilo(Actor self, NukeSiloInfo info)
-		{
-			this.self = self;
-			this.info = info;
+			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			return new SelectGenericPowerTarget(order, manager, "nuke", MouseButton.Left);
 		}
 		
-		public void Attack(int2 targetLocation)
+		public override void Activate(Actor self, Order order)
 		{
-			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
+			// Play to everyone but the current player
+			if (self.Owner != self.World.LocalPlayer)
+				Sound.Play(Info.LaunchSound);
 			
+			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 			self.World.AddFrameEndTask(w =>
 			{
-				//FIRE ZE MISSILES
-				w.Add(new NukeLaunch(self, info.MissileWeapon, info.SpawnOffset, targetLocation));
+				w.Add(new NukeLaunch(self, (Info as NukePowerInfo).MissileWeapon, (Info as NukePowerInfo).SpawnOffset, order.TargetLocation));
 			});
 		}
 	}
