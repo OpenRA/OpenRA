@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
-/*
+
 namespace OpenRA.Mods.RA
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
@@ -27,55 +27,49 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
 	}
 
-	class ChronoshiftPower : SupportPower, IResolveOrder
+	class ChronoshiftPower : SupportPower
 	{	
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		protected override void OnActivate() { Self.World.OrderGenerator = new SelectTarget(this); }
-
-		public void ResolveOrder(Actor self, Order order)
+		
+		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "Chronoshift")
+			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			return new SelectTarget(order, manager, this);
+		}
+		
+		public override void Activate(Actor self, Order order)
+		{
+			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
+				
+			// Trigger screen desaturate effect
+			foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
+				a.Trait.Enable();
+			
+			Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
+			Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
+			System.Console.WriteLine("Searching for units around {0}",order.ExtraLocation);
+			
+			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
-				var chronosphere = self.World.Queries
-					.OwnedBy[self.Owner]
-					.WithTrait<Chronosphere>()
-					.Select(x => x.Actor).FirstOrDefault();
+				System.Console.WriteLine("Found actor {0} at {1}",target.Info.Name, target.Location);
 				
-				if (chronosphere != null)
-					chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
-				
-				// Trigger screen desaturate effect
-				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.Enable();
-				
-				Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
-				Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
-				
-				var targets = UnitsInRange(order.ExtraLocation);
-				foreach (var target in targets)
-				{									
-					var cs = target.Trait<Chronoshiftable>();
-					var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
-					
-					if (cs.CanChronoshiftTo(target, targetCell))
-						target.Trait<Chronoshiftable>().Teleport(target,
-						                                         targetCell,
-						                                         (Info as ChronoshiftPowerInfo).Duration * 25,
-						                                         (Info as ChronoshiftPowerInfo).KillCargo,
-						                                         chronosphere);
-				}
-
-				FinishActivate();
+				var cs = target.Trait<Chronoshiftable>();
+				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
+				// TODO: Fix CanChronoshiftTo desync
+				if (cs.CanChronoshiftTo(target, targetCell))
+					target.Trait<Chronoshiftable>().Teleport(target,
+					                                         targetCell,
+					                                         (Info as ChronoshiftPowerInfo).Duration * 25,
+					                                         (Info as ChronoshiftPowerInfo).KillCargo,
+					                                         self);
 			}
 		}
 
 		public IEnumerable<Actor> UnitsInRange(int2 xy)
 		{
 			int range = (Info as ChronoshiftPowerInfo).Range;
-			var uim = Self.World.WorldActor.Trait<UnitInfluence>();
-			var tiles = Self.World.FindTilesInCircle(xy, range);
+			var uim = self.World.WorldActor.Trait<UnitInfluence>();
+			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(uim.GetUnitsAt(t));
@@ -85,37 +79,35 @@ namespace OpenRA.Mods.RA
 		
 		class SelectTarget : IOrderGenerator
 		{
-			ChronoshiftPower power;
-			int range;
-			Sprite tile;
+			readonly ChronoshiftPower power;
+			readonly int range;
+			readonly Sprite tile;
+			readonly SupportPowerManager manager;
+			readonly string order;
 			
-			public SelectTarget(ChronoshiftPower power)
+			public SelectTarget(string order, SupportPowerManager manager, ChronoshiftPower power)
 			{
+				this.manager = manager;
+				this.order = order;
 				this.power = power;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
 				tile = UiOverlay.SynthesizeTile(0x04);
 			}
-						
+			
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
-				if (mi.Button == MouseButton.Right)
-					world.CancelInputMode();
-				else
-					world.OrderGenerator = new SelectDestination(power, xy);
-				
+				world.CancelInputMode();
+				world.OrderGenerator = new SelectDestination(order, manager, power, xy);
 				yield break;
 			}
 
-			public void Tick( World world )
+			public void Tick(World world)
 			{
-				var hasChronosphere = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<Chronosphere>()
-					.Any();
-
-				if (!hasChronosphere)
+				// Cancel the OG if we can't use the power
+				if (!manager.Powers.ContainsKey(order))
 					world.CancelInputMode();
 			}
-
+			
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
@@ -140,13 +132,17 @@ namespace OpenRA.Mods.RA
 
 		class SelectDestination : IOrderGenerator
 		{
-			ChronoshiftPower power;
-			int2 sourceLocation;
-			int range;
-			Sprite validTile, invalidTile, sourceTile;
+			readonly ChronoshiftPower power;
+			readonly int2 sourceLocation;
+			readonly int range;
+			readonly Sprite validTile, invalidTile, sourceTile;
+			readonly SupportPowerManager manager;
+			readonly string order;
 			
-			public SelectDestination(ChronoshiftPower power, int2 sourceLocation)
+			public SelectDestination(string order, SupportPowerManager manager, ChronoshiftPower power, int2 sourceLocation)
 			{
+				this.manager = manager;
+				this.order = order;
 				this.power = power;
 				this.sourceLocation = sourceLocation;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
@@ -175,23 +171,20 @@ namespace OpenRA.Mods.RA
 			{
 				// Cannot chronoshift into unexplored location
 				if (isValidTarget(xy))
-					yield return new Order("Chronoshift", world.LocalPlayer.PlayerActor, false)
+					yield return new Order(order, manager.self, false)
 					{
 						TargetLocation = xy,
 						ExtraLocation = sourceLocation
 					};
 			}
-
+			
 			public void Tick(World world)
 			{
-				var hasChronosphere = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<Chronosphere>()
-					.Any();
-
-				if (!hasChronosphere)
+				// Cancel the OG if we can't use the power
+				if (!manager.Powers.ContainsKey(order))
 					world.CancelInputMode();
 			}
-			
+
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
@@ -244,15 +237,11 @@ namespace OpenRA.Mods.RA
 				}
 				return canTeleport;
 			}
+			
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
 				return isValidTarget(xy) ? "chrono-target" : "move-blocked";
 			}
 		}
 	}
-	
-	// tag trait for the building
-	class ChronosphereInfo : TraitInfo<Chronosphere> {}
-	class Chronosphere {}
 }
-*/

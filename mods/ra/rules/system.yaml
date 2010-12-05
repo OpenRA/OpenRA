@@ -34,17 +34,6 @@ Player:
 #		Prerequisites: ATEK
 #		RevealDelay: 15
 #		LaunchSound: satlnch1.aud
-#	ChronoshiftPower:
-#		Image: warpicon
-#		ChargeTime: 2
-#		Description: Chronoshift
-#		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
-#		Prerequisites: PDOX
-#		SelectTargetSound: slcttgt1.aud
-#		BeginChargeSound: chrochr1.aud
-#		EndChargeSound: chrordy1.aud
-#		Duration: 30
-#		KillCargo: yes
 #	IronCurtainPower:
 #		Image: infxicon
 #		ChargeTime: 2

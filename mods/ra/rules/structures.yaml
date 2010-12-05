@@ -24,7 +24,8 @@ MSLO:
 	IronCurtainable:
 	NukePower:
 		Image: atomicon
-		ChargeTime: 540
+#		ChargeTime: 540
+		ChargeTime: 10
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		BeginChargeSound: aprep1.aud
@@ -229,8 +230,18 @@ PDOX:
 	RevealsShroud:
 		Range: 10
 	Bib:
-#	Chronosphere:
 	IronCurtainable:
+	ChronoshiftPower:
+		Image: warpicon
+#		ChargeTime: 120
+		ChargeTime: 10
+		Description: Chronoshift
+		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
+		Duration: 30
+		KillCargo: yes
 
 TSLA:
 	RequiresPower:
