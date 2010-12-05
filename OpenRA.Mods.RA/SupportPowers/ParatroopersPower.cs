@@ -13,10 +13,10 @@ using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Air;
-/*
+
 namespace OpenRA.Mods.RA
 {
-	class ParatroopersPowerInfo : SupportPowerInfo
+	public class ParatroopersPowerInfo : SupportPowerInfo
 	{
 		[ActorReference]
 		public string[] DropItems = { };
@@ -28,58 +28,40 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
 
-	class ParatroopersPower : SupportPower, IResolveOrder
+	public class ParatroopersPower : SupportPower
 	{
 		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
 
-		protected override void OnActivate()
+		public override void Activate(Actor self, Order order)
 		{
-			Self.World.OrderGenerator = 
-				new GenericSelectTarget( Owner.PlayerActor, "ParatroopersActivate", "ability" );
-		}
-
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "ParatroopersActivate")
-			{
-				DoParadrop(Owner, order.TargetLocation, 
-					self.Info.Traits.Get<ParatroopersPowerInfo>().DropItems);
-
-				FinishActivate();
-			}
-		}
-
-		void DoParadrop(Player owner, int2 p, string[] items)
-		{
-			var startPos = owner.World.ChooseRandomEdgeCell();
-			owner.World.AddFrameEndTask(w =>
+			var items = (Info as ParatroopersPowerInfo).DropItems;
+			var startPos = self.World.ChooseRandomEdgeCell();
+			
+			self.World.AddFrameEndTask(w =>
 			{
 				var info = (Info as ParatroopersPowerInfo);
 				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
 				{
-					new LocationInit( p ),
-					new OwnerInit( owner ),
+					new LocationInit( order.TargetLocation ),
+					new OwnerInit( self.Owner ),
 				}) : null;
 
 				var a = w.CreateActor(info.UnitType, new TypeDictionary 
 				{
 					new LocationInit( startPos ),
-					new OwnerInit( owner ),
-					new FacingInit( Util.GetFacing(p - startPos, 0) ),
+					new OwnerInit( self.Owner ),
+					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
 					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 				
 				a.CancelActivity();
-				a.QueueActivity(new FlyCircle(p));
-				a.Trait<ParaDrop>().SetLZ(p, flare);
+				a.QueueActivity(new FlyCircle(order.TargetLocation));
+				a.Trait<ParaDrop>().SetLZ(order.TargetLocation, flare);
 
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, owner.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( a.Owner ) }));
+					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( a.Owner ) }));
 			});
 		}
 	}
 }
-*/

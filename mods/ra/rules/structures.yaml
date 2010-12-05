@@ -723,7 +723,23 @@ AFLD:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
-
+	SpyPlanePower:
+		Image: smigicon
+#		ChargeTime: 180
+		ChargeTime: 10
+		Description: Spy Plane
+		LongDesc: Reveals an area of the map.
+		SelectTargetSound: slcttgt1.aud
+		EndChargeSound: spypln1.aud
+	ParatroopersPower:
+		Image: pinficon
+#		ChargeTime: 360
+		ChargeTime: 10
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
+		Prerequisites: AFLD
+		DropItems: E1,E1,E1,E3,E3
+		SelectTargetSound: slcttgt1.aud
 POWR:
 	Inherits: ^Building
 	Buildable:

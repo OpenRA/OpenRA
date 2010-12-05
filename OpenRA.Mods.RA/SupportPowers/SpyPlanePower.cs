@@ -14,61 +14,46 @@ using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Air;
-/*
+
 namespace OpenRA.Mods.RA
 {
 	class SpyPlanePowerInfo : SupportPowerInfo
 	{
-		public readonly float RevealTime = .1f;	// minutes
+		public readonly int RevealTime = 6;	// seconds
 		public override object Create(ActorInitializer init) { return new SpyPlanePower(init.self,this); }
 	}
 
-	class SpyPlanePower : SupportPower, IResolveOrder
+	class SpyPlanePower : SupportPower
 	{
 		public SpyPlanePower(Actor self, SpyPlanePowerInfo info) : base(self, info) { }
 
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "spypln1.aud"); }
-		protected override void OnActivate()
+		public override void Activate(Actor self, Order order)
 		{
-			Self.World.OrderGenerator = new GenericSelectTarget(Owner.PlayerActor, "SpyPlane", "ability");
-			Sound.Play("slcttgt1.aud");
-		}
+			var enterCell = self.World.ChooseRandomEdgeCell();
 
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (!IsReady) return;
-
-			if (order.OrderString == "SpyPlane")
+			var plane = self.World.CreateActor("u2", new TypeDictionary 
 			{
-				FinishActivate();
+				new LocationInit( enterCell ),
+				new OwnerInit( self.Owner ),
+				new FacingInit( Util.GetFacing(order.TargetLocation - enterCell, 0) ),
+				new AltitudeInit( Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude ),
+			});
 
-				var enterCell = self.World.ChooseRandomEdgeCell();
-
-				var plane = self.World.CreateActor("u2", new TypeDictionary 
+			plane.CancelActivity();
+			plane.QueueActivity(Fly.ToCell(order.TargetLocation));
+			plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w => 
 				{
-					new LocationInit( enterCell ),
-					new OwnerInit( self.Owner ),
-					new FacingInit( Util.GetFacing(order.TargetLocation - enterCell, 0) ),
-					new AltitudeInit( Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude ),
-				});
+					var camera = w.CreateActor("camera", new TypeDictionary
+				    {
+						new LocationInit( order.TargetLocation ),
+						new OwnerInit( self.Owner ),
+					});
 
-				plane.CancelActivity();
-				plane.QueueActivity(Fly.ToCell(order.TargetLocation));
-				plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w => 
-					{
-						var camera = w.CreateActor("camera", new TypeDictionary
-					    {
-							new LocationInit( order.TargetLocation ),
-							new OwnerInit( Owner ),
-						});
-
-						camera.QueueActivity(new Wait((int)(25 * 60 * (Info as SpyPlanePowerInfo).RevealTime)));
-						camera.QueueActivity(new RemoveSelf());
-					})));
-				plane.QueueActivity(new FlyOffMap { Interruptible = false });
-				plane.QueueActivity(new RemoveSelf());
-			}
+					camera.QueueActivity(new Wait(25 * (Info as SpyPlanePowerInfo).RevealTime));
+					camera.QueueActivity(new RemoveSelf());
+				})));
+			plane.QueueActivity(new FlyOffMap { Interruptible = false });
+			plane.QueueActivity(new RemoveSelf());
 		}
 	}
 }
-*/
