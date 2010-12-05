@@ -33,16 +33,6 @@ Player:
 #		OneShot: yes
 #		EndChargeSound: pulse1.aud
 #		SelectTargetSound: slcttgt1.aud
-#	AirstrikePower:
-#		Image: pbmbicon
-#		ChargeTime: 1
-#		Description: Parabombs (Single Use)
-#		LongDesc: A Badger drops a load of parachuted bombs on your target.
-#		GivenAuto: no
-#		OneShot: yes
-#		UnitType: badr.bomber
-#		SelectTargetSound: slcttgt1.aud
-#		FlareType: flare
 	SupportPowerManager:
 	ConquestVictoryConditions:
 	PowerManager:
@@ -94,8 +84,8 @@ World:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3
 	CrateDrop:
-		Minimum: 1
-		Maximum: 3
+		Minimum: 100
+		Maximum: 300
 		SpawnInterval: 120
 		WaterChance: .2
 	PaletteFromCurrentTileset:
@@ -234,9 +224,9 @@ CRATE:
 		SelectionShares: 1
 		Effect: reveal-map
 	SupportPowerCrateAction@parabombs:
-		Power: AirstrikePower
-		SelectionShares: 5
-		Effect: parabombs
+		SelectionShares: 50000
+		Proxy: crateproxy.parabombs
+		RequiresRace: no
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
@@ -281,3 +271,16 @@ FLARE:
 	RenderFlare:
 		Image: smokland
 	HiddenUnderFog:
+	Tooltip:
+		Name: Flare
+
+crateproxy.parabombs:
+	AirstrikePower:
+		Image: pbmbicon
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		OneShot: yes
+		AllowMultiple: yes
+		UnitType: badr.bomber
+		SelectTargetSound: slcttgt1.aud
+		FlareType: flare

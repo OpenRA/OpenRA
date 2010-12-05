@@ -103,7 +103,9 @@ namespace OpenRA.Mods.RA.Widgets
 					var pos = drawPos.ToInt2();					
 					var tl = new int2(pos.X-3,pos.Y-3);
 					var m = new int2(pos.X+64+3,pos.Y+48+3);
-					var br = tl + new int2(64+3+20,60);
+					var br = tl + new int2(64+3+20,40);
+					if (sp.TotalTime > 0)
+						br += new int2(0,20);
 					
 					if (sp.Info.LongDesc != null)
 						br += Game.Renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
@@ -122,9 +124,12 @@ namespace OpenRA.Mods.RA.Widgets
 					pos += new int2(77, 5);
 					Game.Renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
 					
-					pos += new int2(0,20);
-					Game.Renderer.BoldFont.DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-					Game.Renderer.BoldFont.DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+					if (sp.TotalTime > 0)
+					{
+						pos += new int2(0,20);
+						Game.Renderer.BoldFont.DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.Renderer.BoldFont.DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+					}
 					
 					if (sp.Info.LongDesc != null)
 					{
@@ -136,7 +141,7 @@ namespace OpenRA.Mods.RA.Widgets
 				WidgetUtils.DrawSHP(image, drawPos, wr);
 
 				clock.PlayFetchIndex("idle",
-					() => (sp.TotalTime - sp.RemainingTime)
+					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 				clock.Tick();
 

@@ -10,32 +10,30 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Crates
 {
 	class SupportPowerCrateActionInfo : CrateActionInfo
 	{
-		public readonly string Power = null;
+		public readonly string Proxy = null;
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.self, this); }
 	}
 
 	class SupportPowerCrateAction : CrateAction
 	{
+		SupportPowerCrateActionInfo Info;
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)
-			: base(self, info) { }
+			: base(self, info) { Info = info; }
 
+		// The free unit crate requires same race, and the actor to be at least ITeleportable.
+		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{
-			throw new System.NotImplementedException();
-			// shit and broken. if you have a single-use and a multi-use version of the same
-			// support power, this only works by order-coincidence. that's stupid.
-
-			//var p = collector.Owner.PlayerActor.TraitsImplementing<SupportPower>()
-			//	.FirstOrDefault(sp => sp.GetType().Name == (info as SupportPowerCrateActionInfo).Power);
-
-			//if (p != null) p.Give(1);
-
-			//base.Activate(collector);
+			collector.World.AddFrameEndTask(w => w.CreateActor(Info.Proxy, new TypeDictionary
+		    {
+				new OwnerInit( collector.Owner )
+			}));
 		}
 	}
 }
