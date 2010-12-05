@@ -201,7 +201,16 @@ IRON:
 		Range: 10
 	Bib:
 	IronCurtainable:
-#	IronCurtain:
+	IronCurtainPower:
+		Image: infxicon
+#		ChargeTime: 120
+		ChargeTime: 10
+		Description: Invulnerability
+		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
+		Duration: 10
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: ironchg1.aud
+		EndChargeSound: ironrdy1.aud
 
 PDOX:
 	RequiresPower:

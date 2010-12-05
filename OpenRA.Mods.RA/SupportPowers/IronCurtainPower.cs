@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using TUtil = OpenRA.Traits.Util;
-/*
+
 namespace OpenRA.Mods.RA
 {
 	class IronCurtainPowerInfo : SupportPowerInfo
@@ -27,46 +27,29 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new IronCurtainPower(init.self, this); }
 	}
 
-	class IronCurtainPower : SupportPower, IResolveOrder
+	class IronCurtainPower : SupportPower
 	{
 		public IronCurtainPower(Actor self, IronCurtainPowerInfo info) : base(self, info) { }
-
-		protected override void OnBeginCharging() { Sound.PlayToPlayer(Owner, "ironchg1.aud"); }
-		protected override void OnFinishCharging() { Sound.PlayToPlayer(Owner, "ironrdy1.aud"); }
-		protected override void OnActivate()
+		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Self.World.OrderGenerator = new SelectTarget(this);
-			Sound.Play("slcttgt1.aud");
+			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			return new SelectTarget(order, manager, this);
 		}
-
-		public void ResolveOrder(Actor self, Order order)
+		
+		public override void Activate(Actor self, Order order)
 		{
-			if (!IsReady) return;
+			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			if (order.OrderString == "IronCurtain")
-			{
-				var curtain = self.World.Queries
-					.OwnedBy[self.Owner]
-					.WithTrait<IronCurtain>()
-					.Select(x => x.Actor).FirstOrDefault();
-				
-				if (curtain != null)
-					curtain.Trait<RenderBuilding>().PlayCustomAnim(curtain, "active");
-
-				Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
-				foreach (var target in UnitsInRange(order.TargetLocation))
-					target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
-
-				FinishActivate();
-			}
-
+			Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
+			foreach (var target in UnitsInRange(order.TargetLocation))
+				target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
 		}
 
 		public IEnumerable<Actor> UnitsInRange(int2 xy)
 		{
 			int range = (Info as IronCurtainPowerInfo).Range;
-			var uim = Self.World.WorldActor.Trait<UnitInfluence>();
-			var tiles = Self.World.FindTilesInCircle(xy, range);
+			var uim = self.World.WorldActor.Trait<UnitInfluence>();
+			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(uim.GetUnitsAt(t));
@@ -76,12 +59,16 @@ namespace OpenRA.Mods.RA
 		
 		class SelectTarget : IOrderGenerator
 		{
-			IronCurtainPower power;
-			int range;
-			Sprite tile;
+			readonly IronCurtainPower power;
+			readonly int range;
+			readonly Sprite tile;
+			readonly SupportPowerManager manager;
+			readonly string order;
 			
-			public SelectTarget(IronCurtainPower power)
+			public SelectTarget(string order, SupportPowerManager manager, IronCurtainPower power)
 			{
+				this.manager = manager;
+				this.order = order;
 				this.power = power;
 				this.range = (power.Info as IronCurtainPowerInfo).Range;
 				tile = UiOverlay.SynthesizeTile(0x04);
@@ -89,28 +76,15 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
-				if (mi.Button == MouseButton.Right)
-					world.CancelInputMode();
-
-				return OrderInner(world, xy, mi);
+				world.CancelInputMode();				
+				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
+					yield return new Order(order, manager.self, false) { TargetLocation = xy };
 			}
-
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
-			{
-				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any() )
-				{
-					world.CancelInputMode();
-					yield return new Order("IronCurtain", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy };
-				}
-			}
-
+			
 			public void Tick(World world)
 			{
-				var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<IronCurtain>()
-					.Any();
-
-				if (!hasStructure)
+				// Cancel the OG if we can't use the power
+				if (!manager.Powers.ContainsKey(order))
 					world.CancelInputMode();
 			}
 
@@ -134,9 +108,4 @@ namespace OpenRA.Mods.RA
 			}
 		}
 	}
-
-	// tag trait for the building
-	class IronCurtainInfo : TraitInfo<IronCurtain> { }
-	class IronCurtain { }
 }
-*/

@@ -25,13 +25,6 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
-#	IronCurtainPower:
-#		Image: infxicon
-#		ChargeTime: 2
-#		Description: Invulnerability
-#		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
-#		Prerequisites: IRON
-#		Duration: 10
 #	SonarPulsePower:
 #		Image: sonricon
 #		ChargeTime: 10
