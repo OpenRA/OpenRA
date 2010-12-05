@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 			{
 				var key = (t.Info.AllowMultiple) ? t.Info.OrderName+"_"+a.ActorID : t.Info.OrderName;
 				Powers[key].Instances.Remove(t);
-				if (Powers[key].Instances.Count == 0)
+				if (Powers[key].Instances.Count == 0 && !Powers[key].Disabled)
 					Powers.Remove(key);
 			}
 		}
@@ -96,14 +96,14 @@ namespace OpenRA.Mods.RA
 		
 		public class SupportPowerInstance
 		{
-			SupportPowerManager Manager;
-			string Key;
+			readonly SupportPowerManager Manager;
+			readonly string Key;
 			
 			public List<SupportPower> Instances;
 			public int RemainingTime;
 			public int TotalTime;
-			public bool Active;
-			public bool Disabled;
+			public bool Active { get; private set; }
+			public bool Disabled { get; private set; }
 			
 			public SupportPowerInfo Info { get { return Instances.First().Info; } }
 			public bool Ready { get { return Active && RemainingTime == 0; } }
@@ -119,23 +119,23 @@ namespace OpenRA.Mods.RA
 			public void Tick()
 			{
 				Active = !Disabled && Instances.Any(i => !i.self.TraitsImplementing<IDisable>().Any(d => d.Disabled));
-				var power = Instances.First();
 
 				if (Active)
 				{
+					var power = Instances.First();
 					if (RemainingTime > 0) --RemainingTime;
 					if (!notifiedCharging)
 					{
 						power.Charging(power.self, Key);
 						notifiedCharging = true;
 					}
-				}
-				
-				if (RemainingTime == 0
-					&& !notifiedReady)
-				{
-					power.Charged(power.self, Key);
-					notifiedReady = true;
+					
+					if (RemainingTime == 0
+						&& !notifiedReady)
+					{
+						power.Charged(power.self, Key);
+						notifiedReady = true;
+					}
 				}
 			}
 			
