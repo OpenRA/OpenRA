@@ -13,6 +13,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public World World { get { return OrderManager.world; } }
 
 		public char AttackMoveKey = 'a';
+		public char StopKey = 's';
 		public char HoldGroundKey = 'g'; // Hold (G)round
 		public char DefensiveKey = 'd'; // (D)efensive
 		public char AggressiveKey = 'a'; // (A)ggressive
@@ -26,15 +27,9 @@ namespace OpenRA.Mods.RA.Widgets
 			OrderManager = orderManager;
 		}
 
-		public override void DrawInner(WorldRenderer wr)
-		{
-			
-		}
+		public override void DrawInner(WorldRenderer wr) { }
 
-		public override string GetCursor(int2 pos)
-		{
-			return null;
-		}
+		public override string GetCursor(int2 pos) { return null; }
 
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
@@ -46,10 +41,16 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			// command: AttackMove
-			if (e.KeyChar == AttackMoveKey && e.Modifiers == Modifiers.None)
+			if (!World.Selection.Actors.Any())
+				return false;
+
+			if (e.Modifiers == Modifiers.None)
 			{
-				return PerformAttackMove();
+				if (e.KeyChar == AttackMoveKey)
+					return PerformAttackMove();
+
+				if (e.KeyChar == StopKey)
+					return PerformStop();
 			}
 
 /*			// command: GuardStance
@@ -103,14 +104,19 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformAttackMove()
 		{
-			if (World.Selection.Actors.Count() > 0)
-			{
-				World.OrderGenerator = new GenericSelectTarget(World.Selection.Actors, "AttackMove", "attackmove", MouseButton.Right);
+			World.OrderGenerator = new GenericSelectTarget(World.Selection.Actors, "AttackMove", 
+				"attackmove", MouseButton.Right);
 
-				return true;
-			}
+			return true;
+		}
 
-			return false;
+		bool PerformStop()
+		{
+			/* issue a stop order to everyone. */
+			foreach (var a in World.Selection.Actors)
+				World.IssueOrder(new Order("Stop", a, false));
+
+			return true;
 		}
 	}
 }
