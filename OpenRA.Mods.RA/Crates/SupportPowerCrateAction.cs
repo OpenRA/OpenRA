@@ -16,6 +16,7 @@ namespace OpenRA.Mods.RA.Crates
 {
 	class SupportPowerCrateActionInfo : CrateActionInfo
 	{
+		[ActorReference]
 		public readonly string Proxy = null;
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.self, this); }
 	}

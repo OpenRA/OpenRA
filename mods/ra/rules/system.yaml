@@ -25,14 +25,6 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	PlaceBuilding:
-#	SonarPulsePower:
-#		Image: sonricon
-#		ChargeTime: 10
-#		Description: Sonar Pulse (Single Use)
-#		LongDesc: Reveals all submarines on the map for a \nshort time.
-#		OneShot: yes
-#		EndChargeSound: pulse1.aud
-#		SelectTargetSound: slcttgt1.aud
 	SupportPowerManager:
 	ConquestVictoryConditions:
 	PowerManager:
@@ -225,8 +217,7 @@ CRATE:
 		Effect: reveal-map
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 50000
-		Proxy: crateproxy.parabombs
-		RequiresRace: no
+		Proxy: powerproxy.parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
@@ -274,7 +265,7 @@ FLARE:
 	Tooltip:
 		Name: Flare
 
-crateproxy.parabombs:
+powerproxy.parabombs:
 	AirstrikePower:
 		Image: pbmbicon
 		Description: Parabombs (Single Use)
@@ -284,3 +275,13 @@ crateproxy.parabombs:
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		FlareType: flare
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Image: sonricon
+		Description: Sonar Pulse (Single Use)
+		LongDesc: Reveals all submarines on the map for a \nshort time.
+		AllowMultiple: yes
+		OneShot: yes
+		EndChargeSound: pulse1.aud
+		SelectTargetSound: slcttgt1.aud

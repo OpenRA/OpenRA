@@ -65,7 +65,7 @@ GAP:
 
 SPEN:
 	InfiltrateForSupportPower:
-		Power: SonarPulsePower
+		Proxy: powerproxy.sonarpulse
 	Inherits: ^Building
 	Valued:
 		Cost: 650
@@ -120,7 +120,7 @@ SPEN:
 
 SYRD:
 	InfiltrateForSupportPower:
-		Power: SonarPulsePower
+		Proxy: powerproxy.sonarpulse
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
