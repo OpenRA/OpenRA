@@ -205,6 +205,11 @@ namespace OpenRA.Mods.RA.Move
 				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
 				PerformMove(self, target, order.Queued && !self.IsIdle);
 			}
+
+			if (order.OrderString == "Stop")
+			{
+				self.CancelActivity();
+			}
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)

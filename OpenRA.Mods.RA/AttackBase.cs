@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public virtual void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Attack" || order.OrderString == "AttackHold")
 			{

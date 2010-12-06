@@ -109,6 +109,17 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(Info.RearmBuildings.Contains(order.TargetActor.Info.Name)
 					? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
+
+			if (order.OrderString == "Stop")
+			{
+				self.CancelActivity();
+
+				if (Info.LandWhenIdle)
+				{
+					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new HeliLand(true));
+				}
+			}
 		}
 		
 		int offsetTicks = 0;

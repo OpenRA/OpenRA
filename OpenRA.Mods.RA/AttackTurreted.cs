@@ -53,6 +53,14 @@ namespace OpenRA.Mods.RA
 			return new AttackActivity( newTarget );
 		}
 
+		public override void ResolveOrder(Actor self, Order order)
+		{
+			base.ResolveOrder(self, order);
+
+			if (order.OrderString == "Stop")
+				target = Target.None;
+		}
+
 		bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 

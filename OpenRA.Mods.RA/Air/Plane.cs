@@ -112,6 +112,11 @@ namespace OpenRA.Mods.RA.Air
 					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
 						? (IActivity)new Rearm() : new Repair(order.TargetActor));
 			}
+			else if (order.OrderString == "Stop")
+			{
+				UnReserve();
+				self.CancelActivity();
+			}
 			else
 			{
 				// Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));
