@@ -38,9 +38,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (spsprites == null)
 				spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
+					.Select(u => u.Image).Distinct()
 					.ToDictionary(
-						u => u.Image,
-						u => SpriteSheetBuilder.LoadAllSprites(u.Image)[0]);	
+						u => u,
+						u => SpriteSheetBuilder.LoadAllSprites(u)[0]);
 			
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
