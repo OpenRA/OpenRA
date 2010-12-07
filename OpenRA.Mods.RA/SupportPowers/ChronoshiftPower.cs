@@ -47,12 +47,8 @@ namespace OpenRA.Mods.RA
 			
 			Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
 			Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
-			System.Console.WriteLine("Searching for units around {0}",order.ExtraLocation);
-			
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
-				System.Console.WriteLine("Found actor {0} at {1}",target.Info.Name, target.Location);
-				
 				var cs = target.Trait<Chronoshiftable>();
 				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
 				// TODO: Fix CanChronoshiftTo desync
