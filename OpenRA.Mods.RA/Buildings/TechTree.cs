@@ -46,13 +46,7 @@ namespace OpenRA.Mods.RA.Buildings
 		
 		public void Add(string key, List<string> prerequisites, ITechTreeElement tte)
 		{
-			Add(key, prerequisites, false, tte);
-		}
-		
-		// set requiresPowered = true to discard buildings that have an IDisabled active (eg manually powered down)
-		public void Add(string key, List<string> prerequisites, bool requiresPowered, ITechTreeElement tte)
-		{
-			watchers.Add(new Watcher( key, prerequisites, requiresPowered, tte ));
+			watchers.Add(new Watcher( key, prerequisites, tte ));
 		}
 
 		public void Remove(string key)
@@ -86,21 +80,19 @@ namespace OpenRA.Mods.RA.Buildings
 			bool hasPrerequisites;
 			bool requiresPowered;
 			
-			public Watcher(string key, List<string> prerequisites, bool requiresPowered, ITechTreeElement watcher)
+			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
 			{
 				this.key = key;
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
 				this.hasPrerequisites = false;
-				this.requiresPowered = requiresPowered;
 			}
 
 			public void Update(Cache<string, List<Actor>> buildings)
 			{                   
 				var nowHasPrerequisites = true;
 				foreach (var p in prerequisites)
-					if (!buildings.Keys.Contains(p) || 
-					    (requiresPowered && buildings[p].All(b => b.TraitsImplementing<IDisable>().Any(d => d.Disabled))))
+					if (!buildings.Keys.Contains(p))
 					{
 						nowHasPrerequisites = false;
 						break;
