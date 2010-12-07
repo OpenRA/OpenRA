@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
-	public class SupportPowerManagerInfo : ITraitInfo
+	public class SupportPowerManagerInfo : ITraitInfo, ITraitPrerequisite<DeveloperModeInfo>
 	{
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
@@ -25,11 +25,13 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly Actor self;
 		public Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
-
+		
+		public readonly DeveloperMode devMode;
 		public SupportPowerManager(ActorInitializer init)
 		{
 			self = init.self;
-			
+			devMode = init.self.Trait<DeveloperMode>();
+
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
 		}
@@ -123,6 +125,9 @@ namespace OpenRA.Mods.RA
 				if (Active)
 				{
 					var power = Instances.First();
+					if (Manager.devMode.FastCharge && RemainingTime > 25)
+						RemainingTime = 25;
+					
 					if (RemainingTime > 0) --RemainingTime;
 					if (!notifiedCharging)
 					{
