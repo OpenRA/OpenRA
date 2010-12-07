@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			
 			var frac = (float)remainingFrames / nukeEffectLength;
 			
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
+			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
 			foreach (var pal in palettes)
 			{
 				if (excludePalettes.Contains(pal.Key))

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var frac = (float)remainingFrames / chronoEffectLength;
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
+			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
 			foreach (var pal in palettes)
 			{
 				if (excludePalettes.Contains(pal.Key))
