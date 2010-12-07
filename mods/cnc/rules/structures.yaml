@@ -307,14 +307,12 @@ HQ:
 		Range: 8
 	AirstrikePower:
 		Image: bombicnh
-#		ChargeTime: 240
-		ChargeTime: 10
+		ChargeTime: 240
 		Description: Airstrike
 		LongDesc: Delivers a load of napalm on your target.
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
 		UnitType: a10
-#		AllowMultiple: true
 
 NUK2:
 	Inherits: ^Building
@@ -432,8 +430,7 @@ EYE:
 		Range: 8
 	IonCannonPower:
 		Image: ionicnh
-#		ChargeTime: 180
-		ChargeTime: 10
+		ChargeTime: 180
 		Description: Ion Cannon
 		LongDesc: Discharges the orbital Ion Cannon at your target.
 		BeginChargeSound: ionchrg1.aud
@@ -470,8 +467,7 @@ TMPL:
 	Bib:
 	NukePower:
 		Image: atomicnh
-#		ChargeTime: 300
-		ChargeTime: 10
+		ChargeTime: 300
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		BeginChargeSound: 

@@ -76,8 +76,8 @@ World:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3
 	CrateDrop:
-		Minimum: 100
-		Maximum: 300
+		Minimum: 1
+		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: .2
 	PaletteFromCurrentTileset:
@@ -216,7 +216,7 @@ CRATE:
 		SelectionShares: 1
 		Effect: reveal-map
 	SupportPowerCrateAction@parabombs:
-		SelectionShares: 50000
+		SelectionShares: 5
 		Proxy: powerproxy.parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2

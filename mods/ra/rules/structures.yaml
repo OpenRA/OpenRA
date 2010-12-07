@@ -24,8 +24,7 @@ MSLO:
 	IronCurtainable:
 	NukePower:
 		Image: atomicon
-#		ChargeTime: 540
-		ChargeTime: 10
+		ChargeTime: 540
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
 		BeginChargeSound: aprep1.aud
@@ -203,8 +202,7 @@ IRON:
 	IronCurtainable:
 	IronCurtainPower:
 		Image: infxicon
-#		ChargeTime: 120
-		ChargeTime: 10
+		ChargeTime: 120
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
 		Duration: 10
@@ -242,8 +240,7 @@ PDOX:
 	IronCurtainable:
 	ChronoshiftPower:
 		Image: warpicon
-#		ChargeTime: 120
-		ChargeTime: 10
+		ChargeTime: 120
 		Description: Chronoshift
 		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
 		SelectTargetSound: slcttgt1.aud
@@ -531,8 +528,7 @@ ATEK:
 	GpsPower:
 		Image: gpssicon
 		OneShot: yes
-#		ChargeTime: 480
-		ChargeTime: 10
+		ChargeTime: 480
 		Description: GPS Satellite
 		LongDesc: Reveals the entire map
 		RevealDelay: 15
@@ -742,16 +738,14 @@ AFLD:
 	IronCurtainable:
 	SpyPlanePower:
 		Image: smigicon
-#		ChargeTime: 180
-		ChargeTime: 10
+		ChargeTime: 180
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
 	ParatroopersPower:
 		Image: pinficon
-#		ChargeTime: 360
-		ChargeTime: 10
+		ChargeTime: 360
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
 		Prerequisites: AFLD
