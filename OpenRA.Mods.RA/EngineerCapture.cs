@@ -50,7 +50,6 @@ namespace OpenRA.Mods.RA
 								
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
-				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new CaptureBuilding(order.TargetActor));
 			}
 		}

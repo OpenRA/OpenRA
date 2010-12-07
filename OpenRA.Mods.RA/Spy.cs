@@ -38,9 +38,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "SpyInfiltrate")
 			{
-				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
+				
+				self.CancelActivity();
+				self.QueueActivity(new Enter(order.TargetActor));
 				self.QueueActivity(new Infiltrate(order.TargetActor));
 			}
 		}
