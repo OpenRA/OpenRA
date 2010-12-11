@@ -15,7 +15,7 @@ Background@REPLAYBROWSER_BG:
 			Text:Choose Replay
 			Align:Center
 			Bold:True
-		ListBox@REPLAY_LIST:
+		ScrollPanel@REPLAY_LIST:
 			Id:REPLAY_LIST
 			X:20
 			Y:50

@@ -33,7 +33,7 @@ namespace OpenRA.Widgets.Delegates
 				};
 
 			/* find some replays? */
-			var rl = widget.GetWidget<ListBoxWidget>("REPLAY_LIST");
+			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Game.SupportDir, "Replays");
 
 			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
@@ -80,7 +80,7 @@ namespace OpenRA.Widgets.Delegates
 					var mapStub = MapStubFromSummary(summary);
 
 					widget.GetWidget<LabelWidget>("DURATION").GetText = 
-						() => WorldUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+						() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
 					widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
 					widget.GetWidget<LabelWidget>("MAP_TITLE").GetText = 
 						() => mapStub != null ? mapStub.Title : "(Unknown Map)";
@@ -88,7 +88,7 @@ namespace OpenRA.Widgets.Delegates
 			}
 		}
 
-		void AddReplay(ListBoxWidget list, string filename, LabelWidget template, ref int offset)
+		void AddReplay(ScrollPanelWidget list, string filename, LabelWidget template, ref int offset)
 		{
 			var entry = template.Clone() as LabelWidget;
 			entry.Id = "REPLAY_";
