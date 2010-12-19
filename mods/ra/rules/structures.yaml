@@ -497,6 +497,8 @@ SAM:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
+	RequiresPower:
+	CanPowerDown:
 
 ATEK:
 	Inherits: ^Building
