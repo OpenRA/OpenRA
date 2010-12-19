@@ -8,12 +8,11 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using OpenRA.Network;
-using System;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
