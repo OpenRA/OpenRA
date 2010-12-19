@@ -170,18 +170,16 @@ namespace OpenRA.Server
 
 		public void UpdateInFlightFrames(Connection conn)
 		{
-			if (conn.Frame != 0)
-			{
-				if (!inFlightFrames.ContainsKey(conn.Frame))
-					inFlightFrames[conn.Frame] = new List<Connection> { conn };
-				else
-					inFlightFrames[conn.Frame].Add(conn);
+			if (conn.Frame == 0)
+				return;
 
-				if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
-				{
-					inFlightFrames.Remove(conn.Frame);
-				}
-			}
+			if (!inFlightFrames.ContainsKey(conn.Frame))
+				inFlightFrames[conn.Frame] = new List<Connection> { conn };
+			else
+				inFlightFrames[conn.Frame].Add(conn);
+
+			if (conns.All(c => inFlightFrames[conn.Frame].Contains(c)))
+				inFlightFrames.Remove(conn.Frame);
 		}
 
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
