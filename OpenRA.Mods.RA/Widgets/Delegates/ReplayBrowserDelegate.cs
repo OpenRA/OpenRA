@@ -76,14 +76,22 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				currentReplay = value;
 				if (currentReplay != null)
 				{
-					var summary = new ReplaySummary(currentReplay);
-					var mapStub = MapStubFromSummary(summary);
+					try
+					{
+						var summary = new ReplaySummary(currentReplay);
+						var mapStub = MapStubFromSummary(summary);
 
-					widget.GetWidget<LabelWidget>("DURATION").GetText = 
-						() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-					widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
-					widget.GetWidget<LabelWidget>("MAP_TITLE").GetText = 
-						() => mapStub != null ? mapStub.Title : "(Unknown Map)";
+						widget.GetWidget<LabelWidget>("DURATION").GetText =
+							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+						widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
+						widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+							() => mapStub != null ? mapStub.Title : "(Unknown Map)";
+					}
+					catch(Exception e)
+					{
+						Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
+						currentReplay = null;
+					}
 				}
 			}
 		}
