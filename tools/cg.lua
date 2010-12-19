@@ -202,8 +202,9 @@ return cgbinpath and {
 			local outname = fullname.."."..info.selword.."^"
 			outname = args and outname..args:gsub("%s+%-",";-")..";^" or outname
 			outname = outname..profile[domain]..profile.ext
+			outname = '"'..outname..'"'
 			
-			local cmdline = " "..fullname.." -profile "..profile[domain].." "
+			local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
 			cmdline = glsl and cmdline.."-oglsl " or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
 			cmdline = cmdline.."-o "..outname.." "
@@ -260,7 +261,7 @@ return cgbinpath and {
 							local cmdline = " -gpu "..cgperfgpu.." -type "..domaintypes[domain]
 							cmdline = cmdline.." -function "..info.selword
 							cmdline = cmdline..(profiletypes[cgperfgpu][profile[domain]] or "")
-							cmdline = cmdline.." "..fullname
+							cmdline = cmdline..' "'..fullname..'"'
 
 							cmdline = cgbinpath..perfexe..cmdline
 							RunCommandLine(cmdline,nil,true,nil,nvperfcallback)

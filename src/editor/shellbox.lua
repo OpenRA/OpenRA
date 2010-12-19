@@ -53,31 +53,46 @@ local function createenv ()
 		return src,level
 	end
 	
-	local _loadfile = loadfile
-	local function loadfile(file)
+	local function relativeFilename(file)
 		assert(type(file)=='string',"String as filename expected")
 		local name = file
 		local level = 3
 		while (name) do
-			if (wx.wxFileName(name):FileExists()) then return _loadfile(name) end
+			if (wx.wxFileName(name):FileExists()) then return name end
 			name,level = luafilepath(level)
 			if (name == nil) then break end
 			name = name .. "/" .. file
 		end
-		return _loadfile(file)
+		
+		return file
+	end
+	
+	local _loadfile = loadfile
+	local function loadfile(file)
+		assert(type(file)=='string',"String as filename expected")
+		local name = relativeFilename(file)
+		
+		return _loadfile(name)
 	end
 
 	local function dofile(file, ...)
 		assert(type(file) == 'string',"String as filename expected")
-		local fn = loadfile(file)
-		assert(fn)
-		setfenv(fn,env)
-		return fn(...)
+		local fn,err = loadfile(file)
+		local args = {...}
+		if not fn then
+			shellPrint("Error: "..err)
+		else
+			setfenv(fn,env)
+			xpcall(function() return fn(unpack(args)) end,function(err)
+				shellPrint(debug.traceback(err))
+			end)
+		end
 	end
 
 	env.print = shellPrint
 	env.dofile = dofile
 	env.loadfile = loadfile
+	env.RELFILE = relativeFilename
 	
 end
 
@@ -101,16 +116,14 @@ local accel = wx.wxAcceleratorTable{
 code:SetAcceleratorTable(accel)
 
 function ExecuteShellboxCode (ev,filePath)
-	local tx
+	local fn,err
 	if (filePath) then
-		local handle = io.open(filePath, "rb")
-		if handle then
-			tx = handle:read("*a")
-			handle:close()
-		end
+		fn,err = loadfile(filePath)
+	else
+		local tx = code:GetText()
+		fn,err = loadstring(tx)
 	end
-	tx = tx or code:GetText()
-	local fn,err = loadstring(tx)
+
 	if not fn then
 		shellPrint("Error: "..err)
 	else

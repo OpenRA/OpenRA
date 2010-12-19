@@ -452,10 +452,13 @@ function GetOpenFiles()
 		table.insert(openfiles,{filename = doc.fname, cursorpos = doc.cursorpos} )
 	end
 	
-	return openfiles
+	local id = GetEditor()
+	id = id and id:GetId()
+	
+	return openfiles, id and openDocuments[id].index or 0
 end
 
-function SetOpenFiles(nametab)
+function SetOpenFiles(nametab,index)
 	for i,doc in ipairs(nametab) do
 		local editor = LoadFile(doc.filename,nil,true)
 		if editor then
@@ -465,6 +468,7 @@ function SetOpenFiles(nametab)
 			editor:EnsureCaretVisible()
 		end
 	end
+	notebook:SetSelection(index or 0)
 end
 
 function CloseWindow(event)

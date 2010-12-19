@@ -271,9 +271,7 @@ do
 	end
 
 	if notebook:GetPageCount() > 0 then
-		if not loaded then 
-			notebook:SetSelection(0) 
-		end
+		
 	else
 	   local editor = CreateEditor("untitled.lua")
 	   SetupKeywords(editor, "lua")

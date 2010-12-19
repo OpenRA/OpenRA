@@ -85,8 +85,8 @@ end
 -- the filename
 function SettingsRestoreFileHistory(fntab)
 	local path = settings:GetPath()
-	local listname = "filehistory"
-	settings:SetPath("/"..listname)
+	local listname = "/filehistory"
+	settings:SetPath(listname)
 	
 	local outtab = {}
 	local inlist = {}
@@ -107,7 +107,7 @@ function SettingsRestoreFileHistory(fntab)
 end
 
 function SettingsAppendFileToHistory (filename)
-	local listname = "filehistory"
+	local listname = "/filehistory"
 	local oldlist = SettingsRestoreFileHistory(nil,listname)
 	
 	-- if the file has been in the history before, remove it
@@ -122,7 +122,7 @@ function SettingsAppendFileToHistory (filename)
 	
 	local path = settings:GetPath()
 	settings:DeleteGroup(listname)
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	for i,doc in ipairs(oldlist) do
 		settings:Write(tostring(i), doc.filename)
@@ -140,9 +140,9 @@ end
 -- of tables containing tables like
 --  {filename = "filename", cursorpos = <cursor position>}
 function SettingsRestoreFileSession(fntab)
-	local listname = "session"
+	local listname = "/session"
 	local path = settings:GetPath()
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	local outtab = {}
 	local couldread = true
 	local id = 1
@@ -159,7 +159,9 @@ function SettingsRestoreFileSession(fntab)
 		end
 	end
 	
-	if fntab then fntab(outtab) end
+	local index = settingsReadSafe(settings,"index",1)
+	
+	if fntab then fntab(outtab,index) end
 	
 	settings:SetPath(path)
 	
@@ -170,15 +172,17 @@ end
 -- () SettingsSaveFileList (table opendocs)
 -- saves the list of currently opened documents (passed in the opendocs table)
 -- in the settings.
-function SettingsSaveFileSession(opendocs)
-	local listname = "session"
+function SettingsSaveFileSession(opendocs,index)
+	local listname = "/session"
 	local path = settings:GetPath()
 	settings:DeleteGroup(listname)
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	for i,doc in ipairs(opendocs) do
 		settings:Write(tostring(i), doc.filename..";"..doc.cursorpos)
 	end
+	settings:Write("index",index)
+
 	
 	settings:SetPath(path)
 end
@@ -187,9 +191,9 @@ end
 -- () SettingsRestoreProjectSession (function)
 
 function SettingsRestoreProjectSession(fntab)
-	local listname = "projectsession"
+	local listname = "/projectsession"
 	local path = settings:GetPath()
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	local outtab = {}
 	local couldread = true
 	local id = 1
@@ -204,6 +208,7 @@ function SettingsRestoreProjectSession(fntab)
 			id = id + 1
 		end
 	end
+
 	
 	if fntab then fntab(outtab) end
 	
@@ -217,10 +222,10 @@ end
 -- saves the list of currently active projects
 -- in the settings.
 function SettingsSaveProjectSession(projdirs)
-	local listname = "projectsession"
+	local listname = "/projectsession"
 	local path = settings:GetPath()
 	settings:DeleteGroup(listname)
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	for i,dir in ipairs(projdirs) do
 		settings:Write(tostring(i), dir)
@@ -232,9 +237,9 @@ end
 -----------------------------------
 
 function SettingsRestoreView()
-	local listname = "view"
+	local listname = "/view"
 	local path = settings:GetPath()
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	local frame = ide.frame
 	local vsplitter = frame.vsplitter
@@ -269,10 +274,10 @@ function SettingsRestoreView()
 end
 
 function SettingsSaveView()
-	local listname = "view"
+	local listname = "/view"
 	local path = settings:GetPath()
 	settings:DeleteGroup(listname)
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	local frame = ide.frame
 	local vsplitter = frame.vsplitter
@@ -289,18 +294,20 @@ function SettingsSaveView()
 end
 
 function SettingsRestoreEditorSettings()
-	local listname = "editor"
+	local listname = "/editor"
 	local path = settings:GetPath()
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	ide.config.interpreter = settingsReadSafe(settings,"interpreter",ide.config.interpreter)
 	SetInterpreter(ide.config.interpreter)
 end
 function SettingsSaveEditorSettings()
-	local listname = "editor"
+	local listname = "/editor"
 	local path = settings:GetPath()
 	settings:DeleteGroup(listname)
-	settings:SetPath("/"..listname)
+	settings:SetPath(listname)
 	
 	settings:Write("interpreter", ide.config.interpreter)
+	
+	settings:SetPath(path)
 end
