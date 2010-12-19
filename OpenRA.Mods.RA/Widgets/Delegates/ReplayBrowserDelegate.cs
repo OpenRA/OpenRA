@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
 				{
-					if (currentReplay == null)
+					if (currentReplay != null)
 					{
 						Widget.CloseWindow();
 						Game.JoinReplay(CurrentReplay);
