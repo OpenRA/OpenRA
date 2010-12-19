@@ -263,15 +263,18 @@ namespace OpenRA.Server
 
 				case "Chat":
 				case "TeamChat":
+					var fromClient = GetClient(conn);
+					var fromIndex = fromClient != null ? fromClient.Index : 0;
+
 					foreach (var c in conns.Except(conn).ToArray())
-						DispatchOrdersToClient(c, GetClient(conn).Index, 0, so.Serialize());
+						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
 				break;
 			}
 		}
 
 		public Session.Client GetClient(Connection conn)
 		{
-			return lobbyInfo.Clients.First(c => c.Index == conn.PlayerIndex);
+			return lobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
 		public void DropClient(Connection toDrop, Exception e)

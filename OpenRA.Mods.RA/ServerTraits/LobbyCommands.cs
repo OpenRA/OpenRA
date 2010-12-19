@@ -285,7 +285,7 @@ namespace OpenRA.Mods.RA.Server
 			};
 			
 			var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
-			if (slotData != null)
+			if (slotData != null && slotData.MapPlayer != null)
 				SyncClientToPlayerReference(client, server.Map.Players[slotData.MapPlayer]);
 			
 			server.lobbyInfo.Clients.Add(client);
