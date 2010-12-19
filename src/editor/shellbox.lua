@@ -14,7 +14,7 @@ out:WrapCount(80)
 out:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,out,ide.ofont,ide.ofontItalic)
 
-local function print(...)
+local function shellPrint(...)
 	out:SetReadOnly(false)
 	local cnt = select('#',...)
 	for i=1,cnt do
@@ -25,11 +25,60 @@ local function print(...)
 	out:GotoPos(out:GetLength())
 	out:SetReadOnly(true)
 end
+
+
+
 local env
 local function createenv ()
 	env = {}
 	setmetatable(env,{__index = _G})
-	env.print = print
+	
+	local function luafilename(level)
+		level = level and level + 1 or 2
+		local src
+		while (true) do
+			src = debug.getinfo(level)
+			if (src == nil) then return nil,level end
+			if (string.byte(src.source) == string.byte("@")) then
+				return string.sub(src.source,2),level
+			end
+			level = level + 1
+		end
+	end
+	
+	local function luafilepath(level)
+		local src,level = luafilename(level)
+		if (src == nil) then return src,level end
+		src = string.gsub(src,"[\\/][^\\//]*$","")
+		return src,level
+	end
+	
+	local _loadfile = loadfile
+	local function loadfile(file)
+		assert(type(file)=='string',"String as filename expected")
+		local name = file
+		local level = 3
+		while (name) do
+			if (wx.wxFileName(name):FileExists()) then return _loadfile(name) end
+			name,level = luafilepath(level)
+			if (name == nil) then break end
+			name = name .. "/" .. file
+		end
+		return _loadfile(file)
+	end
+
+	local function dofile(file, ...)
+		assert(type(file) == 'string',"String as filename expected")
+		local fn = loadfile(file)
+		assert(fn)
+		setfenv(fn,env)
+		return fn(...)
+	end
+
+	env.print = shellPrint
+	env.dofile = dofile
+	env.loadfile = loadfile
+	
 end
 
 createenv()
@@ -51,15 +100,23 @@ local accel = wx.wxAcceleratorTable{
 }
 code:SetAcceleratorTable(accel)
 
-function ExecuteShellboxCode ()
-	local tx = code:GetText()
+function ExecuteShellboxCode (ev,filePath)
+	local tx
+	if (filePath) then
+		local handle = io.open(filePath, "rb")
+		if handle then
+			tx = handle:read("*a")
+			handle:close()
+		end
+	end
+	tx = tx or code:GetText()
 	local fn,err = loadstring(tx)
 	if not fn then
-		print("Error: "..err)
+		shellPrint("Error: "..err)
 	else
 		setfenv(fn,env)
 		xpcall(fn,function(err)
-			print(debug.traceback(err))
+			shellPrint(debug.traceback(err))
 		end)
 	end
 end
@@ -69,7 +126,7 @@ shellbox:Connect(wxstc.wxEVT_STC_CHARADDED,
 		frame:SetStatusText("Execute your code pressing CTRL+ENTER or erase it all with CTRL+ALT+DEL")
 	end)
 frame:Connect(ID "shellbox.eraseall", wx.wxEVT_COMMAND_MENU_SELECTED, function()
-	code:SetText""
+	code:SetText ""
 end)
 frame:Connect(ID "shellbox.execute", wx.wxEVT_COMMAND_MENU_SELECTED, ExecuteShellboxCode)
 shellbox:Connect(ID "shellbox.run",wx.wxEVT_COMMAND_BUTTON_CLICKED, ExecuteShellboxCode)

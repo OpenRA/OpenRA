@@ -246,11 +246,13 @@ dofile "src/preferences/project.lua"
 
 
 -- load rest of settings
+SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
 SettingsRestoreView()
 SettingsRestoreFileSession(SetOpenFiles)
 SettingsRestoreFileHistory(UpdateFileHistoryUI)
 SettingsRestoreProjectSession(SetProjects)
+
 
 -- ---------------------------------------------------------------------------
 -- Load the args that this script is run with

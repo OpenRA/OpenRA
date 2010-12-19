@@ -313,7 +313,7 @@ os = {type='class',description="This library is implemented through table os.",c
 			(see the os.time function for a description of this value).\
 			Otherwise, date formats the current time.\
 \
-			If format starts with `!´, then the date is formatted in Coordinated\
+			If format starts with `!Â´, then the date is formatted in Coordinated\
 			Universal Time. After this optional character, if format is *t,\
 			then date returns a table with the following fields: year (four digits),\
 			month (1--12), day (1--31), hour (0--23), min (0--59), sec (0--61),\
@@ -425,7 +425,7 @@ All functions in this library are provided inside the debug table. ",childs={["g
 				The returned table contains all the fields returned by\
 				lua_getinfo, with the string what describing which fields to\
 				fill in. The default for what is to get all information available.\
-				If present, the option `f´ adds a field named func with\
+				If present, the option `fÂ´ adds a field named func with\
 				the function itself.\
 \
 				For instance, the expression debug.getinfo(1,\"n\").name returns a\
@@ -475,7 +475,7 @@ All functions in this library are provided inside the debug table. ",childs={["g
 				and raises an error when called with a level out of range.\
 				(You can call debug.getinfo to check whether the level is valid.)\
 \
-				Variable names starting with `(´ (open parentheses) represent\
+				Variable names starting with `(Â´ (open parentheses) represent\
 				internal variables (loop control variables, temporaries, and C\
 				function locals). ", args="(level, local)", returns="(?)"}}}
 particleforceid = {type='class',description="Particle forces within particlesys allow greater control of the dynamic beahvior. You can create general effects such as  wind and gravity within the prt-script itself. However for location based effects you must add particle forces with this  class. You can also get access to the orginal prt scripts. The number of total forces per particlesys is limited to 32 and name must be shorter than 16 characters.  The more you add, the slower it will be.",childs={["linkworldref"] = {type='function', description = " sets the reference for magnet,target or agedvelocity.", args="(particleforceid,[actornode/scenenode])", returns="()"},
@@ -999,8 +999,9 @@ comparemode = {type='class',description="For some rendering operations you can s
 ["notequal"] = {type='function', description = " ", args="()", returns="(comparemode)"}}}
 matsurface = {type='class',description="Most renderable items allow their material to be changed. A materialsurface can either be just color, a texture or a material.",childs={["vertexcolor"] = {type='function', description = " removes any previous materialinfo and makes the surface just vertexcolored", args="()", returns="(matsurface)"},
 ["contains"] = {type='function', description = " checks if one matsurface contains another or is equal", args="(matsurface self, matsurface other)", returns="(boolean)"}}}
-rcmdupdatetex = {type='class',description="Upload the texture data from a vidbuffer.",childs={["buffer"] = {type='function', description = " returns or sets vidbuffer used for storage.", args="(rcmdupdatetex,[vidbuffer,[int offset]])", returns="([vidbuffer,offset])"},
+rcmdupdatetex = {type='class',description="Upload the texture data from a vidbuffer.",childs={["buffer"] = {type='function', description = " returns or sets vidbuffer used for reading.", args="(rcmdupdatetex,[vidbuffer,[int offset]])", returns="([vidbuffer,offset])"},
 ["pos"] = {type='function', description = " returns or sets the data position.", args="(rcmdupdatetex,[int x,y,z,[mip]])", returns="([int x,y,z,mip])"},
+["tex"] = {type='function', description = " returns or sets texture used.", args="(rcmdupdatetex,[texture])", returns="([texture])"},
 ["format"] = {type='function', description = " sets datatype.", args="(rcmdupdatetex,texdatatype)", returns="()"},
 ["size"] = {type='function', description = " returns or sets the data dimensions.", args="(rcmdupdatetex,[int w,h,d])", returns="([int w,h,d])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdupdatetex)"}}}
@@ -1179,15 +1180,15 @@ character x itself.\
 * %z --- represents the character with representation 0.\
 * %x (where x is any non-alphanumeric character) --- represents the character x.\
 This is the standard way to escape the magic characters. Any punctuation character\
-(even the non magic) can be preceded by a `%´ when used to represent itself in a pattern.\
+(even the non magic) can be preceded by a `%Â´ when used to represent itself in a pattern.\
 \
 * [set] --- represents the class which is the union of all characters in set. A\
 range of characters may be specified by separating the end characters of the range\
-with a `-´. All classes %x described above may also be used as components in set.\
+with a `-Â´. All classes %x described above may also be used as components in set.\
 All other characters in set represent themselves. For example, [%w_] (or [_%w])\
 represents all alphanumeric characters plus the underscore, [0-7] represents the\
 octal digits, and [0-7%l%-] represents the octal digits plus the lowercase letters\
-plus the `-´ character.\
+plus the `-Â´ character.\
 \
 The interaction between ranges and classes is not defined. Therefore, patterns\
 like [%a-z] or [a-%%] have no meaning.\
@@ -1204,16 +1205,16 @@ locale. In particular, the class [a-z] may not be equivalent to %l.\
 A pattern item may be\
 \
 * a single character class, which matches any single character in the class;\
-* a single character class followed by `*´, which matches 0 or more repetitions\
+* a single character class followed by `*Â´, which matches 0 or more repetitions\
 of characters in the class. These repetition items will always match the longest\
 possible sequence;\
-* a single character class followed by `+´, which matches 1 or more repetitions\
+* a single character class followed by `+Â´, which matches 1 or more repetitions\
 of characters in the class. These repetition items will always match the longest\
 possible sequence;\
-* a single character class followed by `-´, which also matches 0 or more repetitions\
-of characters in the class. Unlike `*´, these repetition items will always match the\
+* a single character class followed by `-Â´, which also matches 0 or more repetitions\
+of characters in the class. Unlike `*Â´, these repetition items will always match the\
 shortest possible sequence;\
-* a single character class followed by `?´, which matches 0 or 1 occurrence of a\
+* a single character class followed by `?Â´, which matches 0 or 1 occurrence of a\
 character in the class;\
 * %n, for n between 1 and 9; such item matches a substring equal to the n-th\
 captured string (see below);\
@@ -1223,10 +1224,10 @@ that, if one reads the string from left to right, counting +1 for an x and -1\
 for a y, the ending y is the first y where the count reaches 0. For instance,\
 the item %b() matches expressions with balanced parentheses.\
 \
-A pattern is a sequence of pattern items. A `^´ at the beginning of a pattern\
-anchors the match at the beginning of the subject string. A `$´ at the end of\
+A pattern is a sequence of pattern items. A `^Â´ at the beginning of a pattern\
+anchors the match at the beginning of the subject string. A `$Â´ at the end of\
 a pattern anchors the match at the end of the subject string. At other positions,\
-`^´ and `$´ have no special meaning and represent themselves.\
+`^Â´ and `$Â´ have no special meaning and represent themselves.\
 \
 A pattern may contain sub-patterns enclosed in parentheses; they describe\
 captures. When a match succeeds, the substrings of the subject string that\
@@ -3297,8 +3298,8 @@ to provide implementations for some of its facilities.",childs={["xpcall"] = {ty
 \
 			An optional argument specifies the base to interpret the numeral.\
 			The base may be any integer between 2 and 36, inclusive. In bases\
-			above 10, the letter `A´ (in either upper or lower case) represents\
-			10, `B´ represents 11, and so forth, with `Z´ representing 35. In\
+			above 10, the letter `AÂ´ (in either upper or lower case) represents\
+			10, `BÂ´ represents 11, and so forth, with `ZÂ´ representing 35. In\
 			base 10 (the default), the number may have a decimal part, as well\
 			as an optional exponent part (see 2.1). In other bases, only unsigned\
 			integers are accepted. ", args="(e [, base])", returns="(?)"},
@@ -4296,7 +4297,7 @@ message as a second result) and some value different from nil on success.\
 			* \"a+\" --- append update mode, previous data is preserved, writing is\
 			only allowed at the end of file.\
 \
-			The mode string may also have a `b´ at the end, which is needed in\
+			The mode string may also have a `bÂ´ at the end, which is needed in\
 			some systems to open the file in binary mode. This string is exactly\
 			what is used in the standard C function fopen.", args="(filename [, mode])", returns="(?)"},
 ["output"] = {type='function', description = " Similar to io.input, but operates\
@@ -4492,9 +4493,10 @@ FileSystem = {type='class',description="Luxinia used an internal way to gain acc
 	Removes an existing directory. The argument is the name of the directory.\
 	Returns true if the operation was successful; in case of error, it returns \
 	nil plus an error string.", args="(string dirname)", returns="([boolean success],[string error])"}}}
-rcmdfncall = {type='class',description="Wraps an external function call lxRcmdcall_func_fn",childs={["forcedraw"] = {type='function', description = " returns or sets whether the fncall shall be drawn even if the specified node wasnt updated (visible) this frame (default false).", args="(rcmddrawl3d,[boolean])", returns="([boolean])"},
-["func"] = {type='function', description = " returns or sets function and upvalue pointers.", args="(rcmddrawl3d,[pointer fn, upvalue])", returns="([pointer fn, upvalue])"},
-["node"] = {type='function', description = " returns or sets l3dnode whose final matrix should be passed, no matrix passed if not set or invisible.", args="(rcmdupdatetex,[l3dnode])", returns="([l3dnode])"},
+rcmdfncall = {type='class',description="Wraps an external function call lxRcmdcall_func_fn",childs={["matrix"] = {type='function', description = " returns or sets.", args="(rcmdfncall,[matrix4x4])", returns="([matrix4x4])"},
+["size"] = {type='function', description = " returns or sets.", args="(rcmdfncall,[float x,y,z])", returns="([float x,y,z])"},
+["orthographic"] = {type='function', description = " returns or sets whether 2d orhographic overlay mode should be used instead of the current active camera.", args="(rcmdfncall,[boolean])", returns="([boolean])"},
+["func"] = {type='function', description = " returns or sets function and upvalue pointers.", args="(rcmdfncall,[pointer fn, upvalue])", returns="([pointer fn, upvalue])"},
 ["new"] = {type='function', description = " returns the rcmd", args="()", returns="(rcmdfncall)"}}}
 FXUtils = {type='class',description="The FXUtils class is a collection of lua functions that aid setting up effects.",childs={["applyMaterialTexFilter"] = {type='function', description = " adds a texture filter material to an object that supports\
 	matobject and matsurface assignments. Texoffsets and weights should match in length and may not exceed 9. Both contain tables of sizes\
@@ -4801,7 +4803,7 @@ Other body properties are usually constant over time:\
 ["matrix"] = {type='function', description = " sets/gets matrix of geom", args="(dgeom geom,[matrix4x4])", returns="([matrix4x4])"},
 ["worldpointvel"] = {type='function', description = " retrieve velocity at world point x,y,z", args="(dbody,float x,y,z)", returns="(float x,y,z)"},
 ["addreltorque"] = {type='function', description = " adds torque force to the body in the body's orientation", args="([float fx,fy,fz])", returns="()"},
-["rotrad"] = {type='function', description = " sets/gets 				 rotation of geom. The angles must be calculated from a matrix, so the results 				 can differ from what you set. These matrix calculations are quite expensive, 				 so use it with care. This functions uses x,y,z as angles in radians (180�==PI)", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
+["rotrad"] = {type='function', description = " sets/gets 				 rotation of geom. The angles must be calculated from a matrix, so the results 				 can differ from what you set. These matrix calculations are quite expensive, 				 so use it with care. This functions uses x,y,z as angles in radians (180°==PI)", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
 ["torque"] = {type='function', description = " sets/gets power of torque force", args="([float x,y,z])", returns="([float x,y,z])"},
 ["velocity"] = {type='function', description = " sets/gets linear velocity of the body", args="(dbody self,[float fx,fy,fz])", returns="([float vx,vy,vz])"},
 ["rotquat"] = {type='function', description = " sets/gets 				  rotation of geom as quaternion.", args="(dgeom geom,[float x,y,z,w])", returns="([float x,y,z,w])"},
@@ -4835,7 +4837,7 @@ This can be useful to alleviate certain sources of error caused by quickly spinn
 ["local2world"] = {type='function', description = " converts local to world coordinates", args="(dbody,float x,y,z)", returns="(float x,y,z)"},
 ["new"] = {type='function', description = " creates a new body", args="()", returns="(dbody)"},
 ["affect"] = {type='function', description = " sets/gets body affection. If two bodies collide and at least one reaffect bit of the other body is set that is set in affect, the other body is affected by the body.", args="(dbody,[int affect])", returns="([int affect])"},
-["rotdeg"] = {type='function', description = " sets/gets 				 rotation of geom. The angles must be calculated from a matrix, so the results 				 can differ from what you set. These matrix calculations are quite expensive, 				 so use it with care. This function uses x,y,z as angles in degrees (180�==PI).", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
+["rotdeg"] = {type='function', description = " sets/gets 				 rotation of geom. The angles must be calculated from a matrix, so the results 				 can differ from what you set. These matrix calculations are quite expensive, 				 so use it with care. This function uses x,y,z as angles in degrees (180°==PI).", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
 ["addtorque"] = {type='function', description = " adds torque force to the body", args="([float fx,fy,fz])", returns="()"},
 ["massrotate"] = {type='function', description = " rotates (radians) the mass of the body.", args="(dbody self, float x,y,z)", returns="()"},
 ["angularthreshold"] = {type='function', description = " rotational minimum limit when the body should become disabled.", args="([float])", returns="([float])"},
@@ -5481,7 +5483,7 @@ ExtMath = {type='class',description="The Extended Math class contains some gener
 ["v3axisrotate"] = {type='function', description = " rotates vector vec around angle of the given axis", args="(table axis,number angle, table vec)", returns="(table point)"},
 ["anglediff"] = {type='function', description = " calculates the shortest angledifference between two angles (which is a bit tricky i.e. -Math.PI - Math.PI == 0)", args="(radians1, radians2)", returns="(angle)"},
 ["v3div"] = {type='function', description = " returns componentwise multiplication a / b", args="(table a,b)", returns="(table out)"},
-["v3len"] = {type='function', description = " euklid length of vecotr (a�+b�+c�)^0.5", args="(table vec)", returns="(float len)"},
+["v3len"] = {type='function', description = " euklid length of vecotr (a²+b²+c²)^0.5", args="(table vec)", returns="(float len)"},
 ["v3mul"] = {type='function', description = " returns componentwise multiplication a * b", args="(table a,b)", returns="(table out)"},
 ["quatslerp"] = {type='function', description = " returns quaternion spherical interoplation", args="(number fracc, table q1, q2)", returns="(tabel qout)"},
 ["v3max"] = {type='function', description = " returns maximum vector a and b", args="(table a, b)", returns="(table vector)"},
@@ -5489,7 +5491,7 @@ ExtMath = {type='class',description="The Extended Math class contains some gener
 ["nextpowerof2"] = {type='function', description = " calculates the next positive power of 2 number", args="(number)", returns="(number)"},
 ["v4scale"] = {type='function', description = " returns component wise a * f", args="(table a,float f)", returns="(table out)"},
 ["v3scaledadd"] = {type='function', description = " returns a + (b * f)", args="(table a,table b,float f)", returns="(table out)"},
-["v3sqdist"] = {type='function', description = " return square distance |(v1-v2)|� of vectors", args="(table v1,v2)", returns="(float sqdist)"},
+["v3sqdist"] = {type='function', description = " return square distance |(v1-v2)|² of vectors", args="(table v1,v2)", returns="(float sqdist)"},
 ["spline"] = {type='function', description = " returns catmull-rom spline interpolated value between from and to", args="(float fraction,float prevfrom, float from, float to, float nextto)", returns="(float)"}}}
 l3dset = {type='class',description="The List3D is organised in l3dsets, every set contains multiple layers. You can render the same set from different l3dviews. One default l3dview always exists per l3dset.		Each l3dset has its own sun. particlesystems and particleclouds are rendered at the end of every l3dset.		Every l3dnode requires a l3dlayerid, directly or indirectly via defaults. l3dsets are independent from each other, and l3dnodes		can only be rendered in one l3dset. By default 0-2 are disabled.<br>		l3dsets are renderd in this order: 0,1,2,3.<br>",childs={["sun"] = {type='function', description = " returns or sets sun, disabled when 2nd arg is not a l3dlight. If disabled we will use default sun", args="(l3dset,[l3dlight])", returns="(l3dlight)"},
 ["default"] = {type='function', description = " returns or sets default l3dset.", args="([l3dset])", returns="([l3dset])"},
@@ -5809,10 +5811,10 @@ dgeom = {type='class',description="Geoms are solid objects that can collide with
 ["maxcontacts"] = {type='function', description = " sets/gets maximum number of contacts for this geom. If two geoms are tested for collision, multiple contacts can be generated for this case. If a geom has a limited number of possible contacts (set <=0 for deactivation of maximum), the minimum of maxcontacts of both geoms is chosen. Reducing the number of contacts max boost up the simulation, but can cause jittering of bodies, making autodisabling useless. Defaultvalue is 0 (no limit), but the general limit of contacts per geom is 128. The effect depends on the geom type. For example, two colliding spheres will never generate more than one contact, while two colliding boxes can generate not more than 4 contacts. Only if a geom collides with a complex trimesh, the limit can be exceeded.", args="(dgeom geom,[int])", returns="([int])"},
 ["maxcontactinfo"] = {type='function', description = " sets/gets the maximum number of generated contact info. The contactinfo is a structure that stores the coordinates, the normal and the depth of a contact. This is normaly also stored in a contactjoint that is generated from a contact. However, if you want to create a geom that only works as a sensor for collision (i.e. if a door should open if someone stands in front of it), and turn nocontactgeneration on, you can retrieve contactinformation from such geoms.", args="(dgeom geom, [int])", returns="([int])"},
 ["transformer"] = {type='function', description = " returns the geomtransform that transforms the geom or returns nothing if the geom is not transformed. Note that you might get the 'final' geom in the transformhierarchy if you get a collision feedback, what may not be what you want / need.", args="(dgeom)", returns="([dgeomtransform])"},
-["rotdeg"] = {type='function', description = " sets/gets rotation of geom. The angles must be calculated from a matrix, so the results can differ from what you set. These matrix calculations are quite expensive, so use it with care. This function uses x,y,z as angles in degrees (180�==PI).", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
+["rotdeg"] = {type='function', description = " sets/gets rotation of geom. The angles must be calculated from a matrix, so the results can differ from what you set. These matrix calculations are quite expensive, so use it with care. This function uses x,y,z as angles in degrees (180°==PI).", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
 ["matrix"] = {type='function', description = " sets/gets matrix of geom", args="(dgeom geom,[matrix4x4])", returns="([matrix4x4])"},
 ["enabledspace"] = {type='function', description = " The enabledspace is the space a geom is put into if it has no body or if its body is enabled. This is usefull if you have a large amount of bodies that should collide with each other but that are disabled most of the time.", args="(dgeom geom,[dspace])", returns="([dspace])"},
-["rotrad"] = {type='function', description = " sets/gets rotation of geom. The angles must be calculated from a matrix, so the results can differ from what you set. These matrix calculations are quite expensive, so use it with care. This functions uses x,y,z as angles in radians (180�==PI)", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
+["rotrad"] = {type='function', description = " sets/gets rotation of geom. The angles must be calculated from a matrix, so the results can differ from what you set. These matrix calculations are quite expensive, so use it with care. This functions uses x,y,z as angles in radians (180°==PI)", args="(dgeom geom,[float x,y,z])", returns="([float x,y,z])"},
 ["getcontactinfo"] = {type='value', description = "(int / float x,y,z, nx,ny,nz, depth, dgeom othergeom):(dgeom geom, [int index])If contacts have been generated in your simulation and you have set the maxcontactinfo value for this geom to a value>0, a collision generation that creates contacts will also store the contact results in the contactinfo of the geom. You can read out the values for contact generation with this function. If no index is given as argument, the number of stored contactinformation are returned for this geom. If an index is passed, the contactinformation for this index is returned. The index must be >=0 and <contactcount in order to return valid values. The returned values are the position, the normalvector and the depth (distance) of the penetraction."},
 ["surfaceid"] = {type='function', description = " sets/gets surfaceid of geom (0-255). If two geoms generate a contact, the surfaceproperties must be specified. These properties can be rather complicated and may depend from the type of the surface (rubber on glas won't slide, wood on glas slides, both slides on ice, but both don't slide at each other very well, etc.). In order to give you as much control as possible, yet keeping it as simple as possible, you can specify every surfacecombination that you wish by defining a list of contactparameters and defining the surface to be used by a combination of surfaceids.", args="(dgeom,[int])", returns="([int])"},
 ["rotquat"] = {type='function', description = " sets/gets 					 rotation of geom as quaternion.", args="(dgeom geom,[float x,y,z,w])", returns="([float x,y,z,w])"},

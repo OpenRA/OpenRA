@@ -6,7 +6,7 @@ editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
 
-interpreter = "Luxinia"
+interpreter = "luxinia"
 
 filehistorylength = 20
 

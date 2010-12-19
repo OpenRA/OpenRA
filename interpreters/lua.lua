@@ -1,6 +1,7 @@
 return {
 		name = "Lua",
 		description = "Commandline Lua interpreter",
+		api = {"wx","baselib"},
 		fcmdline = function(filepath) 
 				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
 				local code = ([[

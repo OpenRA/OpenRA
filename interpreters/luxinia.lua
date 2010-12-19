@@ -1,6 +1,7 @@
 return {
 		name = "Luxinia",
 		description = "Luxinia project",
+		api = {"luxiniaapi","baselib"},
 		fcmdline = function(filepath) 
 				local projdir = ide.config.path.projectdir
 				local endstr = projdir and projdir:len()>0

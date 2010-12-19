@@ -26,7 +26,8 @@ local filetree      = ide.filetree
 local interpreters = {}
 local lastinterpreter
 for i,v in pairs(ide.interpreters) do
-	interpreters[ID ("debug.interpreter."..v.name)] = v
+	interpreters[ID ("debug.interpreter."..i)] = v
+	v.fname = i
 	lastinterpreter = v.name
 end
 assert(lastinterpreter,"no interpreters defined")
@@ -89,11 +90,13 @@ local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  o
 	menuBar:Check(curinterpreterid, true)
 	
 	local function selectInterpreter (id)
-		for id,inter in pairs(interpreters) do
-			menuBar:Check(id, false)
+		for i,inter in pairs(interpreters) do
+			menuBar:Check(i, false)
 		end
 		menuBar:Check(id, true)
 		curinterpreterid = id
+		ide.config.interpreter = interpreters[id].fname
+		ReloadLuaAPI()
 	end
 	
 	local function evSelectInterpreter (event)
@@ -104,6 +107,12 @@ local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  o
 	for id,inter in pairs(interpreters) do
 		frame:Connect(id,wx.wxEVT_COMMAND_MENU_SELECTED,evSelectInterpreter)
 	end
+	
+function SetInterpreter(name)
+	local id = IDget("debug.interpreter."..name)
+	if (not id) then return end
+	selectInterpreter(id)
+end
 
 local function projChoose(event)
 	local editor = GetEditor()

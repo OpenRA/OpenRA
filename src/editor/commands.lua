@@ -490,6 +490,7 @@ function CloseWindow(event)
 	SettingsSaveFileSession(GetOpenFiles())
 	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
+	SettingsSaveEditorSettings()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
 	CloseWatchWindow()

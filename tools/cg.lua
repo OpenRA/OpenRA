@@ -158,9 +158,6 @@ return cgbinpath and {
 			local handle = io.open(filePath, "rb")
 			if handle then
 				file_text = handle:read("*a")
-				if GetConfigIOFilter("input") then
-					file_text = GetConfigIOFilter("input")(filePath,file_text)
-				end
 				file_text = beautifyAsm(file_text)
 				handle:close()
 			end

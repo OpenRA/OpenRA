@@ -1,22 +1,26 @@
 ------------
 -- API
 
-local function newAPI()
-	return {
-		-- tool tip info and reserved names
-		tip = {
-			staticnames = {},
-			keys = {},
-			finfo = {},
-			finfoclass = {},
-			shortfinfo = {},
-			shortfinfoclass = {},
-		},
-		-- autocomplete hierarchy
-		ac = {
-			childs = {},
-		},
+local function newAPI(api)
+	api = api or {}
+	for i,v in pairs(api) do
+		api[i] = nil
+	end
+	-- tool tip info and reserved names
+	api.tip = {
+		staticnames = {},
+		keys = {},
+		finfo = {},
+		finfoclass = {},
+		shortfinfo = {},
+		shortfinfoclass = {},
 	}
+	-- autocomplete hierarchy
+	api.ac = {
+		childs = {},
+	}
+	
+	return api
 end
 
 
@@ -54,12 +58,15 @@ end
 
 
 
-function addAPI(apifile) -- relative to API directory
-	local ftype = apifile:match("api[/\\]([^/\\]+)")
+local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
+	local ftype,fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
 	if not ftype then
 		print("The API file must be located in a subdirectory of the API directory\n")
 		return
 	end
+	if ((only and ftype ~= only) or (ignore and ignore[ftype])) then return end
+	if (subapis and not subapis[fname]) then return end
+	
 	local fn,err = loadfile(apifile)
 	if err then
 		print("API file '"..apifile.."' could not be loaded: "..err.."\n")
@@ -76,22 +83,22 @@ function addAPI(apifile) -- relative to API directory
 	end)
 end
 
-function loadallAPIs ()
+local function loadallAPIs (only,subapis,ignore)
 	for i,dir in ipairs(FileSysGet(".\\api\\*.*",wx.wxDIR)) do
 		local files = FileSysGet(dir.."\\*.*",wx.wxFILE)
 		for i,file in ipairs(files) do
 			if file:match "%.lua$" then
-				addAPI(file)
+				addAPI(file,only,subapis,ignore)
 			end
 		end
 	end
 end
-loadallAPIs()
-
-
+loadallAPIs(nil,nil,{lua = true})
 
 -- Lua wx specific
-do 
+local function applyWXAPI(subapis) 
+	if (subapis and not subapis["wx"]) then return end
+	
 	apis.lua.ac.childs.wx = {
 		type = "lib",
 		description = "WX lib",
@@ -108,6 +115,9 @@ do
 	end
 	
 end
+
+
+ 
 
 ---------
 -- ToolTip and reserved words list
@@ -194,8 +204,12 @@ local function fillTips(api,apibasename)
 	traverse(apiac,apibasename)
 end
 
-for i,api in pairs(apis) do
-	fillTips(api,"")
+function GenerateAPIInfo(only)
+	for i,api in pairs(apis) do
+		if ((not only) or i == only) then
+			fillTips(api,"")
+		end
+	end
 end
 
 function UpdateAssignCache(editor)
@@ -226,6 +240,28 @@ function GetTipInfo(editor, content, short)
 	return caller and (class and classtab[class]) and classtab[class][caller] or funcstab[caller]
 end
 
+function ReloadAPI(only,subapis)
+	newAPI(apis[only])
+	loadallAPIs(only,subapis)
+	
+	if (only == "lua") then
+		applyWXAPI(subapis)
+	end
+	GenerateAPIInfo(only)
+end
+
+function ReloadLuaAPI()
+	local interpreterapi = ide.interpreters[ide.config.interpreter]
+	interpreterapi = interpreterapi and interpreterapi.api
+	if (interpreterapi) then
+		local apinames = {}
+		for i,v in ipairs(interpreterapi) do
+			apinames[v] = true
+		end
+		interpreterapi = apinames
+	end
+	ReloadAPI("lua",interpreterapi)
+end
 
 -------------
 -- Dynamic Words

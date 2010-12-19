@@ -11,9 +11,9 @@ return {
 				end,
 	isfndef = function(str)
 					local l
-					local s,e,cap = string.find(str,"function%s*([A-Za-z0-9_]+%s*[%.%:]*%s*[A-Za-z0-9_]*%s*%(.*%))")
+					local s,e,cap = string.find(str,"function%s+([A-Za-z0-9_]+%s*[%.%:]*%s*[A-Za-z0-9_]*%s*%(.*%))")
 					if (not s) then
-						s,e,cap = string.find(str,"function%s*([A-Za-z0-9_]+%s*[%.%:]*%s*[A-Za-z0-9_]*)%s*")
+						s,e,cap = string.find(str,"function%s+([A-Za-z0-9_]+%s*[%.%:]*%s*[A-Za-z0-9_]*)%s*")
 					end
 					if (s) then
 						l = string.find(string.sub(str,1,s-1),"local%s+$")

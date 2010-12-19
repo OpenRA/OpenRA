@@ -293,8 +293,14 @@ function SettingsRestoreEditorSettings()
 	local path = settings:GetPath()
 	settings:SetPath("/"..listname)
 	
-	--settingsReadSafe
+	ide.config.interpreter = settingsReadSafe(settings,"interpreter",ide.config.interpreter)
+	SetInterpreter(ide.config.interpreter)
 end
 function SettingsSaveEditorSettings()
+	local listname = "editor"
+	local path = settings:GetPath()
+	settings:DeleteGroup(listname)
+	settings:SetPath("/"..listname)
 	
+	settings:Write("interpreter", ide.config.interpreter)
 end
