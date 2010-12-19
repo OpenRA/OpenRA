@@ -335,7 +335,7 @@ Grenade:
 		ImpactSound: kaboom12
 
 25mm:
-	ROF: 10
+	ROF: 13
 	Range: 4
 	Report: CANNON2
 	Projectile: Bullet
@@ -352,7 +352,7 @@ Grenade:
 		WaterExplosion: small_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 18
+		Damage: 16
 
 90mm:
 	ROF: 50
