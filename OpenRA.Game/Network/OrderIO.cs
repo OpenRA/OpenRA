@@ -13,7 +13,7 @@ using System.IO;
 
 namespace OpenRA.Network
 {
-	static class OrderIO
+	public static class OrderIO
 	{
 		public static void Write(this Stream s, byte[] buf)
 		{

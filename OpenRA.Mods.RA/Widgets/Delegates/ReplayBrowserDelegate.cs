@@ -13,8 +13,9 @@ using System.Drawing;
 using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Widgets;
 
-namespace OpenRA.Widgets.Delegates
+namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class ReplayBrowserDelegate : IWidgetDelegate
 	{

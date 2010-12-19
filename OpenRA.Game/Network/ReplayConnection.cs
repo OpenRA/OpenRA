@@ -6,7 +6,7 @@ using System.IO;
 
 namespace OpenRA.Network
 {
-	class ReplayConnection : IConnection
+	public class ReplayConnection : IConnection
 	{
 		//uint nextFrame = 1;
 		FileStream replayStream;
