@@ -169,6 +169,7 @@ return cgbinpath and {
 				handle:write(file_text)
 				handle:close()
 			end
+			
 		end
 		
 		
@@ -244,7 +245,7 @@ return cgbinpath and {
 				if (string.find(str," 0 errors.")) then
 					postfunc = function() 
 						-- beautify asm
-						beautifyAsmFile(outname)
+						beautifyAsmFile(outname:sub(2,-2))
 						
 						
 						-- optionally run perf process
