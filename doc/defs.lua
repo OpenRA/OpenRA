@@ -223,6 +223,7 @@ tool = {
 interpreter = {
 		name = "",
 		description = "",
+		api = {"apifile_without_extension"} -- optional to limit loaded apis
 		fcmdline = function(filepath) 
 				return "execommand"
 			end,

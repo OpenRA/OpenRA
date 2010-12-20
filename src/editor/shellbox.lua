@@ -67,6 +67,12 @@ local function createenv ()
 		return file
 	end
 	
+	local function relativeFilepath(file)
+		local name,level = luafilepath(3)
+		return (file and name) and name.."/"..file or file or name
+	end
+	
+	
 	local _loadfile = loadfile
 	local function loadfile(file)
 		assert(type(file)=='string',"String as filename expected")
@@ -93,6 +99,7 @@ local function createenv ()
 	env.dofile = dofile
 	env.loadfile = loadfile
 	env.RELFILE = relativeFilename
+	env.RELPATH = relativeFilepath
 	
 end
 
