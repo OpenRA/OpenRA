@@ -77,6 +77,9 @@ namespace OpenRA.Graphics
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(this, Game.viewport);
+			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
+				foreach (var r in a.Trait.RenderAsTerrain(a.Actor))
+					r.Sprite.DrawAt(r.Pos, this.GetPaletteIndex(r.Palette), r.Scale);
 
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)

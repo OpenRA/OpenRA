@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class Bridge: IRender, INotifyDamage
+	class Bridge: IRenderAsTerrain, INotifyDamage
 	{
 		static string cachedTileset;
 		static Cache<TileReference<ushort,byte>, Sprite> sprites;
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.RA
 			return bridges.GetBridge(self.Location + new int2(offset[0], offset[1]));
 		}
 
-		public IEnumerable<Renderable> Render(Actor self)
+		public IEnumerable<Renderable> RenderAsTerrain(Actor self)
 		{
 			foreach (var t in TileSprites[currentTemplate])
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain", Game.CellSize * t.Key.Y);
