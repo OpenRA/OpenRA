@@ -3,7 +3,7 @@ local luxpath = os.getenv("LUXINIA")
 path.luxinia = luxpath and luxpath.."/" or "../luxinia/"
 path.cgbin = "../Cg/bin"
 
-interpreter = "Luxinia"
+interpreter = "luxinia"
 acandtip.shorttip = true
 acandtip.nodynwords = true
 editor.iofilter = "GermanUtf8Ascii"

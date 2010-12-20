@@ -110,7 +110,7 @@ local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  o
 	
 function SetInterpreter(name)
 	local id = IDget("debug.interpreter."..name)
-	if (not id) then return end
+	if (not interpreters[id]) then return end
 	selectInterpreter(id)
 end
 

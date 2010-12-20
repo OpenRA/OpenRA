@@ -2,7 +2,7 @@
 local luxpath = os.getenv("LUXINIA")
 path.luxinia = luxpath and luxpath.."/" or "../luxinia/"
 
-interpreter = "Lua"
+interpreter = "estrelashell"
 acandtip.shorttip = true
 acandtip.nodynwords = true
 editor.iofilter = "GermanUtf8Ascii"
