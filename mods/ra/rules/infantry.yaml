@@ -310,7 +310,7 @@ SHOK:
 		Cost: 900
 	Tooltip:
 		Name: Tesla Trooper
-		Description: TODO
+		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
 	Selectable:
 		Voice: ShokVoice
 		Bounds: 12,17,0,-9

@@ -1011,7 +1011,7 @@ TTNK:
 		Cost: 1800
 	Tooltip:
 		Name: Tesla Tank
-		Description: TODO
+		Description: Tank with mounted tesla coil.\n Strong vs Infantry.\n Weak vs Tanks
 	Health:
 		HP: 110
 	Armor:
