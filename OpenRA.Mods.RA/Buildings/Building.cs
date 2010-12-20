@@ -62,14 +62,14 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, IOccupySpace
+	public class Building : INotifyDamage, IResolveOrder, IOccupySpace, INotifyCapture
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
 		[Sync]
 		readonly int2 topLeft;
 
-		readonly PowerManager PlayerPower;
+		PowerManager PlayerPower;
 
 		public int2 PxPosition { get { return ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2; } }
 
@@ -120,6 +120,11 @@ namespace OpenRA.Mods.RA.Buildings
 		public IEnumerable<int2> OccupiedCells()
 		{
 			return FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft );
+		}
+
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }
