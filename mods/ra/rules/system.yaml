@@ -57,6 +57,7 @@ Player:
 			1tnk: 0%
 			2tnk: 0%
 			3tnk: 0%
+		SquadSize: 3
 	HackyAI@NormalAI:
 		Name:Normal AI
 		BuildingFractions:
@@ -80,7 +81,7 @@ Player:
 			4tnk: 0%
 			arty: 0%
 			v2rl: 0%
-		SquadSize: 15
+		SquadSize: 5
 	PlayerColorPalette:
 		BasePalette: terrain
 	SurrenderOnDisconnect:
