@@ -162,7 +162,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						var parts = s.Split(' ');
 
-						if (parts.Length != 2)
+						if (parts.Length < 2)
 						{
 							server.SendChatTo( conn, "Malformed slot_bot command" );
 							return true;
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						slotData.Bot = parts[1];
+						slotData.Bot = string.Join(" ", parts.Skip(1).ToArray() );
 
 						server.SyncLobbyInfo();
 						return true;

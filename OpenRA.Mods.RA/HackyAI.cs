@@ -33,8 +33,18 @@ using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA.Mods.RA
 {
-	class HackyAIInfo : ITraitInfo
+	interface IBotInfo
 	{
+		string Name { get; }
+	}
+
+	class HackyAIInfo : IBotInfo, ITraitInfo
+	{
+		[FieldLoader.Load]
+		public readonly string Name;
+
+		string IBotInfo.Name { get { return this.Name; } }
+
 		[FieldLoader.LoadUsing("LoadUnits")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 

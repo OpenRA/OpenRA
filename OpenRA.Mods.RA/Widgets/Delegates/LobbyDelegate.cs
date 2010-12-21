@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			if (showBotOptions)
 			{
-				var bots = new string[] { "HackyAI" };
+				var bots = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
 				bots.Do(bot =>
 					dropDownOptions.Add(new Pair<string, Action>("Bot: {0}".F(bot),
 						() => orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot.Index, bot))))));

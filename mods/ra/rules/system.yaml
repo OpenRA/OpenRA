@@ -32,7 +32,8 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
-	HackyAI:
+	HackyAI@Default:
+		Name:Easy AI
 		BuildingFractions:
 			proc: 20%
 			barr: 5%
