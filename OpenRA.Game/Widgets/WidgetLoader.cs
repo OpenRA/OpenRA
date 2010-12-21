@@ -17,13 +17,6 @@ namespace OpenRA
 {
 	public class WidgetLoader
 	{
-		//        foreach( var file in Game.modData.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
-		//            foreach( var w in file )
-		//                rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
-
-		//        rootWidget.Initialize();
-		//        rootWidget.InitDelegates();
-
 		Dictionary<string, MiniYamlNode> widgets = new Dictionary<string, MiniYamlNode>();
 
 		public WidgetLoader( ModData modData )
