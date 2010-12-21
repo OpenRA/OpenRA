@@ -184,7 +184,12 @@ namespace OpenRA.Traits
 	public interface IWorldLoaded { void WorldLoaded(World w); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBot { void Activate(Player p); }
+	public interface IBotInfo { string Name { get; } }
+	public interface IBot
+	{
+		void Activate(Player p);
+		IBotInfo Info { get; }
+	}
 	
 	public interface IActivity
 	{

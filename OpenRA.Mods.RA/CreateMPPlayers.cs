@@ -59,10 +59,11 @@ namespace OpenRA.Mods.RA
 					var player = new Player(w, w.Map.Players[slot.MapPlayer], playerIndex++);
 					w.AddPlayer(player);
 					
-					/* todo: only activate the bot option that's selected! */
+					/* activate the bot option that's selected! */
 					if (Game.IsHost)
-						foreach (var bot in player.PlayerActor.TraitsImplementing<IBot>())
-							bot.Activate(player);
+						player.PlayerActor.TraitsImplementing<IBot>()
+							.Single(b => b.Info.Name == slot.Bot)
+							.Activate(player);
 
 					/* a bit of a hack */
 					player.IsBot = true;

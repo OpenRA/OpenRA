@@ -33,11 +33,6 @@ using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA.Mods.RA
 {
-	interface IBotInfo
-	{
-		string Name { get; }
-	}
-
 	class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		[FieldLoader.Load]
@@ -84,6 +79,7 @@ namespace OpenRA.Mods.RA
 		BaseBuilder[] builders;
 
 		World world { get { return p.PlayerActor.World; } }
+		IBotInfo IBot.Info { get { return this.Info; } }
 
 		readonly HackyAIInfo Info;
 		public HackyAI(HackyAIInfo Info)
