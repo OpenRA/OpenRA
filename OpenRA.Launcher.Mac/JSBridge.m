@@ -101,8 +101,13 @@ static JSBridge *SharedInstance;
 
 - (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filename:(NSString *)filename
 {
+	// Create the download directory if it doesn't exist
+	NSString *downloadDir = [@"~/Library/Application Support/OpenRA/Downloads/" stringByExpandingTildeInPath];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:downloadDir])
+		[[NSFileManager defaultManager] createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:NULL];
+	
 	// Disallow traversing directories; take only the last component
-	id path = [[@"~/Library/Application Support/OpenRA/Downloads/" stringByAppendingPathComponent:[filename lastPathComponent]] stringByExpandingTildeInPath];
+	NSString *path = [downloadDir stringByAppendingPathComponent:[filename lastPathComponent]];
 	return [controller registerDownload:key withURL:url filePath:path];
 }
 
