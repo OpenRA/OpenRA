@@ -38,6 +38,9 @@ namespace OpenRA.Mods.RA
 		[FieldLoader.Load]
 		public readonly string Name;
 
+		[FieldLoader.Load]
+		public readonly int SquadSize = 8;
+
 		string IBotInfo.Name { get { return this.Name; } }
 
 		[FieldLoader.LoadUsing("LoadUnits")]
@@ -256,17 +259,13 @@ namespace OpenRA.Mods.RA
 		//This is purely to identify production buildings that don't have a rally point set.
 		List<Actor> activeProductionBuildings = new List<Actor>();
 
-		bool IsHumanPlayer(Player p)
-		{
-			/* hack hack: this actually detects 'is not HackyAI' -- possibly actually a good thing. */
-			var hackyAI = p.PlayerActor.Trait<HackyAI>();
-			return !hackyAI.enabled;
-		}
+		bool IsHumanPlayer(Player p) { return !p.IsBot && !p.NonCombatant; }
 
 		bool HasHumanPlayers()
 		{
 			return p.World.players.Any(a => !a.Value.IsBot && !a.Value.NonCombatant);
 		}
+
 		int2? ChooseEnemyTarget()
 		{
 			// Criteria for picking an enemy:
@@ -305,7 +304,7 @@ namespace OpenRA.Mods.RA
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
-			if (unitsHangingAroundTheBase.Count > 8)
+			if (unitsHangingAroundTheBase.Count >= Info.SquadSize)
 			{
 				BotDebug("Launch an attack.");
 
