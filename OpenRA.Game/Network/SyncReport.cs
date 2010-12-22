@@ -24,9 +24,6 @@ namespace OpenRA.Network
 		
 		internal void UpdateSyncReport()
 		{
-			if (!Game.Settings.Debug.RecordSyncReports)
-				return;
-			
 			GenerateSyncReport(syncReports[curIndex]);
 			curIndex = ++curIndex % numSyncReports;
 		}

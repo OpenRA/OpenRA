@@ -149,14 +149,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			var syncreports = debug.GetWidget<CheckboxWidget>("SYNCREPORTS_CHECKBOX");
-			syncreports.Checked = () => { return Game.Settings.Debug.RecordSyncReports; };
-			syncreports.OnMouseDown = mi =>
-			{
-				Game.Settings.Debug.RecordSyncReports ^= true;
-				return true;
-			};
-			
 			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
 			timedebug.Checked = () => {return Game.Settings.Game.MatchTimer;};
 			timedebug.OnMouseDown = mi => 

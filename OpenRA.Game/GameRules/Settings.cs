@@ -33,7 +33,6 @@ namespace OpenRA.GameRules
 	{
 		public bool BotDebug = false;
 		public bool PerfGraph = false;
-		public bool RecordSyncReports = true;
 		public float LongTickThreshold = 0.001f;
 	}
 
