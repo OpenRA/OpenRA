@@ -44,6 +44,7 @@ static JSBridge *SharedInstance;
 						@"log", NSStringFromSelector(@selector(log:)),
 						@"existsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
 						@"metadata", NSStringFromSelector(@selector(metadata:forMod:)),
+						@"httpRequest", NSStringFromSelector(@selector(httpRequest:)),
 						
 						// File downloading
 						@"registerDownload", NSStringFromSelector(@selector(registerDownload:withURL:filename:)),
@@ -230,6 +231,14 @@ static JSBridge *SharedInstance;
 	
 	NSLog(@"Invalid or unknown field: %@", aField);
 	return @"";
+}
+
+- (NSString *)httpRequest:(NSString *)url
+{
+	NSLog(@"Requesting url %@",url);
+	NSString *response = [NSString stringWithContentsOfURL:[NSURL URLWithString:url] encoding:NSASCIIStringEncoding error:NULL];
+	NSLog(@"Response %@",response);
+	return response;
 }
 
 @end

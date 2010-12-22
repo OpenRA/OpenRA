@@ -44,6 +44,7 @@
             {
             	text-align: justify;
             	padding-left:50px;
+            	padding-right:50px;
             	overflow:hidden;
             }
 
@@ -125,7 +126,12 @@
         function onLoad()
         {
             refreshSections();
-            document.getElementById("versionstring").innerHTML = window.external.metadata("VERSION", "cnc");
+            var version = window.external.metadata("VERSION", "cnc");
+            document.getElementById("installedversion").innerHTML = version;
+            document.getElementById("latestversion").innerHTML = window.external.httpRequest("http://master.open-ra.org/VERSION");
+            motd = window.external.httpRequest("http://master.open-ra.org/motd.php?v="+version);
+            if (motd != undefined)
+                document.getElementById("motd").innerHTML = motd.substring(3);
         }
         
         function refreshSections()
@@ -212,21 +218,14 @@
 	<body onload="onLoad();">
 		<div id="header" class="bar">
 			<h1>Command&nbsp;&amp;&nbsp;Conquer</h1>
-			<p id="versionstring">XXX</p>
+			<p id="installedversion">XXX</p>
 		</div>
 
 		<div id="main">
-			<!-- div id="content">
-				<h2>Latest News</h2>
-				<div>
-				    <h3>Version XXYYZZ Available</h3>
-				    <ul>
-				        <li>Cool feature one</li>
-				        <li>Cool feature two</li>
-				        <li>Bugfixes!!!</li>
-				    </ul>
-				</div>
-			</div -->
+			<div id="content">
+			    <p>Latest version: <span id="latestversion">Unknown</span></p>
+				<p id="motd"></p>
+			</div>
 			<div id="buttons-install" class="buttons" style="display:none">
 			    <div class="desc">The original game data is required before you can play this mod.<br />
 			        Installing from web will install the minimal files required to play.
