@@ -94,22 +94,22 @@
 -(void)launchMod:(NSString *)mod
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
-	NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OpenRA.app/Contents/MacOS/OpenRA"];
-	
+
 	// First argument is the directory to run in
 	// Second...Nth arguments are passed to OpenRA.Game.exe
 	// Launcher wrapper sets mono --debug, gl renderer and support dir.
-	NSArray *args = [NSArray arrayWithObjects:gamePath,
+	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath,
+						[NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 						[NSString stringWithFormat:@"Game.Mods=%@",mod],
 					nil];
 
 	FSRef appRef;
-	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:path], &appRef);
-
+	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
+	
 	// Set the launch parameters
 	LSApplicationParameters params;
 	params.version = 0;
-	params.flags = kLSLaunchDefaults;
+	params.flags = kLSLaunchDefaults | kLSLaunchNewInstance;
 	params.application = &appRef;
 	params.asyncLaunchRefCon = NULL;
 	params.environment = NULL; // CFDictionaryRef of environment variables; could be useful
