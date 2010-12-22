@@ -125,6 +125,7 @@
         function onLoad()
         {
             refreshSections();
+            document.getElementById("versionstring").innerHTML = window.external.metadata("VERSION", "ra");
         }
         
         function refreshSections()
@@ -211,6 +212,7 @@
 	<body onload="onLoad();">
 		<div id="header" class="bar">
 			<h1>Red Alert</h1>
+			<p id="versionstring">XXX</p>
 		</div>
 
 		<div id="main">

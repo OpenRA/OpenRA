@@ -43,6 +43,7 @@ static JSBridge *SharedInstance;
 						@"launchMod", NSStringFromSelector(@selector(launchMod:)),
 						@"log", NSStringFromSelector(@selector(log:)),
 						@"existsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
+						@"metadata", NSStringFromSelector(@selector(metadata:forMod:)),
 						
 						// File downloading
 						@"registerDownload", NSStringFromSelector(@selector(registerDownload:withURL:filename:)),
@@ -213,6 +214,22 @@ static JSBridge *SharedInstance;
 																			   withString:@""]];
 	
 	return [[NSFileManager defaultManager] fileExistsAtPath:path];
+}
+
+- (NSString *)metadata:(NSString *)aField forMod:(NSString *)aMod
+{
+	id mod = [[controller allMods] objectForKey:aMod];
+	if (mod == nil)
+	{
+		NSLog(@"Invalid or unknown mod: %@", aMod);
+		return @"";
+	}
+	
+	if ([aField isEqualToString:@"VERSION"])
+		return [mod version];
+	
+	NSLog(@"Invalid or unknown field: %@", aField);
+	return @"";
 }
 
 @end
