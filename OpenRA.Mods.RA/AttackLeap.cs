@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA
 	class AttackLeap : AttackFrontal
 	{
 		internal bool IsLeaping;
-		protected Target target;
 
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info) {}

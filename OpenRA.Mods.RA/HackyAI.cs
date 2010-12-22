@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 	class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		[FieldLoader.Load]
-		public readonly string Name;
+		public readonly string Name = "Unnamed Bot";
 
 		[FieldLoader.Load]
 		public readonly int SquadSize = 8;

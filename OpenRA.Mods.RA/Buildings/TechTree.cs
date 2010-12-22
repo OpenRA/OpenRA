@@ -78,7 +78,6 @@ namespace OpenRA.Mods.RA.Buildings
 			public readonly List<string> prerequisites;
 			public readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			bool requiresPowered;
 			
 			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
 			{
