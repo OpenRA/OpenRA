@@ -87,7 +87,6 @@ Section "Client" Client
 	File "${SRCDIR}\HACKING"
 	File "${SRCDIR}\INSTALL"
 	File "${SRCDIR}\*.ttf"
-	File "${SRCDIR}\VERSION"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
 		
@@ -293,7 +292,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING
 	Delete $INSTDIR\INSTALL
-	Delete $INSTDIR\VERSION
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
 	Delete $INSTDIR\settings-netplay-*.ini

@@ -51,36 +51,6 @@ namespace OpenRA.Server
 			}).Start();
 		}
 
-		public static void GetMOTD(string masterServerUrl)
-		{
-			var motd = Widget.RootWidget.GetWidget<ScrollingTextWidget>("MOTD_SCROLLER");
-			
-			// Runs in a separate thread to prevent dns lookup hitches
-			new Thread(() =>
-			{
-				if (motd != null)
-				{
-					try
-					{
-						string motdText = GetData(new Uri(masterServerUrl + "motd.php?v=" + ClientVersion));
-						string[] p = motdText.Split('|');
-						if (p.Length == 2 && p[1].Length == int.Parse(p[0]))
-						{
-							motd.SetText(p[1]);
-							motd.ResetScroll();
-						}
-					}
-					catch
-					{
-						motd.SetText("Welcome to OpenRA. MOTD unable to be loaded from server.");
-						motd.ResetScroll();
-					}
-				}
-
-				ev.Set();
-			}).Start();
-		}
-
 		public static void Tick()
 		{
 			if (ev.WaitOne(TimeSpan.FromMilliseconds(0))) 
@@ -94,23 +64,6 @@ namespace OpenRA.Server
 			var wc = new WebClient();
 			var data = wc.DownloadData(uri);
 			return Encoding.UTF8.GetString(data);
-		}
-
-		public static void GetCurrentVersion(string masterServerUrl)
-		{
-			new Thread(() =>
-				{
-					try
-					{
-						ServerVersion = GetData(new Uri(masterServerUrl + "VERSION"));
-					}
-					catch
-					{
-						ServerVersion = "";
-					}
-
-					ev2.Set();
-				}).Start();
 		}
 	}
 

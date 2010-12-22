@@ -6,39 +6,6 @@ Background@MAINMENU_BG:
 	Height:330
 	Delegate:MainMenuButtonsDelegate
 	Children:
-		Background@MOTD_BG:
-			Id:MOTD_BG
-			X:0 - PARENT_LEFT + WINDOW_RIGHT/3
-			Y:0 - PARENT_TOP + 44
-			Width:WINDOW_RIGHT/3
-			Height:30
-			Background:dialog4
-			Children:
-				ScrollingText@MOTD_SCROLLER:
-					Id:MOTD_SCROLLER
-					X:15
-					Y:2
-					Width:PARENT_RIGHT - 30
-					Height:25
-					ScrollRate:8
-					Text:Welcome to OpenRA. Enjoy your stay.
-		Background@MOTD_LABEL_BG
-			Id:MOTD_LABEL_BG
-			X:0 - PARENT_LEFT + (WINDOW_RIGHT/16)*7
-			Y:0 - PARENT_TOP + 15
-			Width:(WINDOW_RIGHT/16)*2
-			Height:30
-			Background:dialog4
-			Children:
-				Label@MOTD_LABEL
-					Id:MOTD_LABEL
-					X:0
-					Y:2
-					Width:(WINDOW_RIGHT/16)*2
-					Height:25
-					Text:Message of the Day
-					Align:Center
-					Bold:True
 		Label@MAINMENU_LABEL_TITLE:
 			Id:MAINMENU_LABEL_TITLE
 			X:0
@@ -104,15 +71,6 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Video Player
-			Bold:True
-		Label@VERSION_STRING:
-			Id:VERSION_STRING
-			X:WINDOW_RIGHT - PARENT_LEFT - WIDTH - 15
-			Y:WINDOW_BOTTOM - PARENT_TOP - 65
-			Width:400
-			Height:70
-			Text:
-			Align:Right
 			Bold:True
 Background@PERF_BG:
 	ClickThrough:true

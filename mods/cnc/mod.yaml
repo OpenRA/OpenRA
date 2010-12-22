@@ -1,7 +1,7 @@
 Metadata:
 	Title: C&C
 	Description: OpenRA Reimagining of the classic game
-	Version: a0001
+	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
 	Standalone: true
 Folders:

@@ -18,7 +18,6 @@ OUTPUTDIR=$(readlink -f $2)
 cd "$SRCDIR"
 mkdir packaging/built
 mkdir packaging/built/mods
-echo $1 > VERSION
 make package
 
 # Remove the mdb files that are created during `make`
@@ -29,7 +28,7 @@ find . -path "*.mdb" -delete
 # they are now installed to the game directory instead of placed in the gac
 FILES="OpenRA.Launcher.exe OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.Renderer.Cg.dll \
 OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf \
-cg glsl mods/ra mods/cnc VERSION COPYING HACKING INSTALL"
+cg glsl mods/ra mods/cnc COPYING HACKING INSTALL"
 
 echo "Copying files..."
 for i in $FILES; do
@@ -44,6 +43,11 @@ cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
+
+# Update mod versions
+sed -i "" "s/{DEV_VERSION}/$VERSION/" ./packaging/built/mods/ra/mod.yaml
+sed -i "" "s/{DEV_VERSION}/$VERSION/" ./packaging/built/mods/cnc/mod.yaml
+ 
 
 #
 # Change into packaging directory and run the 

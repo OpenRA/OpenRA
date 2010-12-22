@@ -31,30 +31,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("MAINMENU_BUTTON_REPLAY_VIEWER").OnMouseUp = mi => { Widget.OpenWindow("REPLAYBROWSER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
 
-			var version = widget.GetWidget<LabelWidget>("VERSION_STRING");
-
-			if (FileSystem.Exists("VERSION"))
-			{
-				var s = FileSystem.Open("VERSION");
-				var versionFileContent = s.ReadAllText();
-				version.Text = versionFileContent;
-				s.Close();
-
-				MasterServerQuery.OnVersion += v =>
-				{
-					if (!string.IsNullOrEmpty(v))
-						version.Text = versionFileContent + "\nLatest: " + v;
-				};
-				MasterServerQuery.GetCurrentVersion(Game.Settings.Server.MasterServer);
-			}
-			else
-			{
-				version.Text = "Dev Build";
-			}
-			MasterServerQuery.ClientVersion = version.Text;
-
-			MasterServerQuery.GetMOTD(Game.Settings.Server.MasterServer);
-			
 			if (FirstInit)
 			{
 				FirstInit = false;
