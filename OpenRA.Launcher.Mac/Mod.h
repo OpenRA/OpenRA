@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface Mod : NSObject {
-	NSURL *baseURL;
+	NSString *path;
 	NSString *mod;
 	NSString *title;
 	NSString *version;
@@ -25,9 +25,9 @@
 @property (readonly) NSString *author;
 @property (readonly) NSString *description;
 @property (readonly) NSString *requires;
-@property (readonly) NSURL *baseURL;
+@property (readonly) NSString *path;
 @property (readonly) BOOL standalone;
 
-+ (id)modWithId:(NSString *)mid fields:(id)fields baseURL:(NSURL *)url;
-- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields baseURL:(NSURL *)url;
++ (id)modWithId:(NSString *)mid fields:(id)fields path:(NSString *)path;
+- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields path:(NSString *)path;
 @end

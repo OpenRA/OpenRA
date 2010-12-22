@@ -29,14 +29,14 @@
 	return newObject;
 }
 
-+ (id)entryWithMod:(Mod *)baseMod allMods:(NSDictionary *)allMods baseURL:(NSURL *)baseURL
++ (id)entryWithMod:(Mod *)baseMod allMods:(NSDictionary *)allMods basePath:(NSString *)basePath
 {
 	// TODO: Get the mod icon from the Mod
 	// Temporary hack until mods define an icon
-	NSString* imageName = [[NSBundle mainBundle] pathForResource:@"OpenRA" ofType:@"icns"];
-	id icon = [[[NSImage alloc] initWithContentsOfFile:imageName] autorelease];
-	id path = [[[baseURL absoluteString] stringByAppendingPathComponent:[baseMod mod]] stringByAppendingPathComponent:@"mod.html"];
-	id ret = [SidebarEntry entryWithTitle:[baseMod title] url:[NSURL URLWithString:path] icon:icon];
+	NSString *imageName = [[NSBundle mainBundle] pathForResource:@"OpenRA" ofType:@"icns"];
+	NSImage *icon = [[[NSImage alloc] initWithContentsOfFile:imageName] autorelease];
+	NSURL *url = [NSURL URLWithString:[[[baseMod path] stringByAppendingPathComponent:@"mod.html"] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+	SidebarEntry *ret = [SidebarEntry entryWithTitle:[baseMod title] url:url icon:icon];
 	
 	for (id key in allMods)
 	{
@@ -44,7 +44,7 @@
 		if (![[aMod requires] isEqualToString:[baseMod mod]])
 			continue;
 		
-		id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:baseURL];
+		id child = [SidebarEntry entryWithMod:aMod allMods:allMods basePath:basePath];
 		[ret addChild:child];
 	}
 	return ret;

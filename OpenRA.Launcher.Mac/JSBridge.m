@@ -209,8 +209,7 @@ static JSBridge *SharedInstance;
 	}
 	
 	// Disallow traversing up the directory tree
-	id path = [[[mod baseURL] absoluteString]
-			   stringByAppendingPathComponent:[aFile stringByReplacingOccurrencesOfString:@"../"
+	id path = [[mod path] stringByAppendingPathComponent:[aFile stringByReplacingOccurrencesOfString:@"../"
 																			   withString:@""]];
 	
 	return [[NSFileManager defaultManager] fileExistsAtPath:path];

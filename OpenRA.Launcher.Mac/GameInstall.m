@@ -71,7 +71,7 @@
 			if (current != nil)
 			{	
 				id path = [gamePath stringByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-				[ret setObject:[Mod modWithId:current fields:fields baseURL:[NSURL URLWithString:path]] forKey:current];
+				[ret setObject:[Mod modWithId:current fields:fields path:path] forKey:current];
 			}
 			NSLog(@"Parsing mod %@",value);
 			current = value;
@@ -85,7 +85,7 @@
 	if (current != nil)
 	{	
 		id path = [gamePath stringByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
-		[ret setObject:[Mod modWithId:current fields:fields baseURL:[NSURL URLWithString:path]] forKey:current];
+		[ret setObject:[Mod modWithId:current fields:fields path:path] forKey:current];
 	}
 	
 	return ret;

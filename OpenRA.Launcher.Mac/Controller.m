@@ -139,7 +139,7 @@
 		if ([aMod standalone])
 		{
 			id path = [[game gamePath] stringByAppendingPathComponent:@"mods"];
-			id child = [SidebarEntry entryWithMod:aMod allMods:allMods baseURL:[NSURL URLWithString:path]];
+			id child = [SidebarEntry entryWithMod:aMod allMods:allMods basePath:path];
 			[rootItem addChild:child];
 		}
 	}

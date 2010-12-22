@@ -17,22 +17,22 @@
 @synthesize description;
 @synthesize requires;
 @synthesize standalone;
-@synthesize baseURL;
+@synthesize path;
 
-+ (id)modWithId:(NSString *)mod fields:(id)fields baseURL:(NSURL *)url
++ (id)modWithId:(NSString *)mod fields:(id)fields path:(NSString *)aPath
 {
-	id newObject = [[self alloc] initWithId:mod fields:fields baseURL:url];
+	id newObject = [[self alloc] initWithId:mod fields:fields path:aPath];
 	[newObject autorelease];
 	return newObject;
 }
 
-- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields baseURL:(NSURL *)url
+- (id)initWithId:(NSString *)anId fields:(NSDictionary *)fields path:(NSString *)aPath
 {
 	self = [super init];
 	if (self)
 	{
 		mod = [anId retain];
-		baseURL = [url retain];
+		path = [aPath retain];
 		title = [[fields objectForKey:@"Title"] retain];
 		version = [[fields objectForKey:@"Version"] retain];
 		author = [[fields objectForKey:@"Author"] retain];
@@ -46,7 +46,7 @@
 - (void) dealloc
 {
 	[mod release]; mod = nil;
-	[baseURL release]; baseURL = nil;
+	[path release]; path = nil;
 	[title release]; title = nil;
 	[version release]; version = nil;
 	[author release]; author = nil;
