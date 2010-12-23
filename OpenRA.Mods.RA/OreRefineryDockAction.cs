@@ -53,16 +53,8 @@ namespace OpenRA.Mods.RA
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{		
-			if (dockedHarv == null)
-				return;
-			
-			dockedHarv.World.AddFrameEndTask(w =>
-			{
-				// momentarily remove from world so the ownership queries don't get confused
-				w.Remove(dockedHarv);
-				dockedHarv.Owner = captor.Owner;
-				w.Add(dockedHarv);
-			});
+			if (dockedHarv != null)
+				dockedHarv.ChangeOwner(newOwner);
 		}
 	}
 }

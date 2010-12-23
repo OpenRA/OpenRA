@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
 
@@ -137,11 +134,18 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
+		static bool AreMutualAllies(Player a, Player b)
+		{
+			return a.Stances[b] == Stance.Ally &&
+				b.Stances[a] == Stance.Ally;
+		}
+
 		public static bool IsClear(Actor self, Player currentOwner, int range, Player originalOwner)
 		{
 			var unitsInRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
-			return unitsInRange.Where(a => !a.Destroyed && a.IsInWorld && a != self && !a.Owner.NonCombatant && a.Owner != originalOwner).Where(a => a.Owner != currentOwner).All(a => (a.Owner.Stances[currentOwner] == Stance.Ally) && (currentOwner.Stances[a.Owner] == Stance.Ally));
+			return unitsInRange.Where(a => !a.Destroyed && a.IsInWorld && a != self && !a.Owner.NonCombatant && a.Owner != originalOwner)
+				.Where(a => a.Owner != currentOwner).All(a => AreMutualAllies(a.Owner, currentOwner));
 		}
 
 		// TODO exclude other NeutralActor that arent permanent

@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x == self.Location ) )
 				return NextActivity;
 
+			// todo: clean this up
 			self.World.AddFrameEndTask(w =>
 			{
 				// momentarily remove from world so the ownership queries don't get confused

@@ -189,5 +189,17 @@ namespace OpenRA
 				Destroyed = true;
 			} );
 		}
+
+		// todo: move elsewhere.
+		public void ChangeOwner(Player newOwner)
+		{
+			World.AddFrameEndTask(w =>
+			{
+				// momentarily remove from world so the ownership queries don't get confused
+				w.Remove(this);
+				Owner = newOwner;
+				w.Add(this);
+			});
+		}
 	}
 }
