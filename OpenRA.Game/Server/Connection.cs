@@ -49,7 +49,7 @@ namespace OpenRA.Server
 					else
 					{
 						if (len == 0)
-							server.DropClient(this, null);
+							server.DropClient(this);
 						break;
 					}
 						
@@ -57,7 +57,7 @@ namespace OpenRA.Server
 				catch (SocketException e)
 				{
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
-					server.DropClient(this, e); 
+					server.DropClient(this); 
 					return false; 
 				}
 			}

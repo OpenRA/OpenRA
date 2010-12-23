@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Server
 						{
 							var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
 							if (occupantConn != null)
-								server.DropClient( occupantConn, new Exception() );
+								server.DropClient(occupantConn);
 						}
 
 						server.SyncLobbyInfo();
@@ -221,6 +221,31 @@ namespace OpenRA.Mods.RA.Server
 						
 						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.LockTeams);
 						server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "kick",
+					s => 
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							server.SendChatTo( conn, "Only the host can kick players" );
+							return true;
+						}
+
+						int slot;
+						int.TryParse( s, out slot );
+
+						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Slot == slot);
+						if (connToKick == null) 
+						{
+							server.SendChatTo( conn, "Noone in that slot." );
+							return true;
+						}
+
+						server.DropClient(connToKick);
+
+						server.SyncLobbyInfo();
+
 						return true;
 					}},
 			};

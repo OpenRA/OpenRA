@@ -165,7 +165,7 @@ namespace OpenRA.Server
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 			}
-			catch (Exception e) { DropClient(newConn, e); }
+			catch (Exception e) { DropClient(newConn); }
 		}
 
 		public void UpdateInFlightFrames(Connection conn)
@@ -193,7 +193,7 @@ namespace OpenRA.Server
 				ms.Write( data );
 				c.socket.Send( ms.ToArray() );
 			}
-			catch( Exception e ) { DropClient( c, e ); }
+			catch (Exception e) { DropClient(c); }
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
@@ -277,7 +277,7 @@ namespace OpenRA.Server
 			return lobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
-		public void DropClient(Connection toDrop, Exception e)
+		public void DropClient(Connection toDrop)
 		{
 			conns.Remove(toDrop);
 			SendChat(toDrop, "Connection Dropped");
