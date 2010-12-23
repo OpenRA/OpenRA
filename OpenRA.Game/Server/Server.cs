@@ -291,6 +291,12 @@ namespace OpenRA.Server
 			
 			if (conns.Count != 0)
 				SyncLobbyInfo();
+
+			try
+			{
+				toDrop.socket.Disconnect(false);
+			}
+			catch { }
 		}
 
 		public void SyncLobbyInfo()

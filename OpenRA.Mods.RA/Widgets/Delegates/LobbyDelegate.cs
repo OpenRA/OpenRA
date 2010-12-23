@@ -461,6 +461,14 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					factionflag.IsVisible = () => !slot1.Spectator;
 					team.IsVisible = () => !slot1.Spectator;
 					spectator.IsVisible = () => slot1.Spectator || slot1.Bot != null;
+
+					var kickButton = template.GetWidget<ButtonWidget>("KICK");
+					kickButton.IsVisible = () => Game.IsHost;
+					kickButton.OnMouseUp = mi =>
+						{
+							orderManager.IssueOrder(Order.Command("kick " + c.Slot));
+							return true;
+						};
 				}
 
 				template.Id = "SLOT_{0}".F(s.Index);
