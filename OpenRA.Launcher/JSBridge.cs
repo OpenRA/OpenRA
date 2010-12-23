@@ -6,6 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Net;
 
 namespace OpenRA.Launcher
 {
@@ -147,6 +148,21 @@ namespace OpenRA.Launcher
 			downloads[key].ExtractDownload(targetPath);
 
 			return true;
+		}
+		
+		public string metadata(string field, string mod)
+		{
+			if (field == "VERSION")
+				return allMods[mod].Version;
+			
+			return "";
+		}
+		
+		public string httpRequest(string url)
+		{
+			var wc = new WebClient();
+			var data = wc.DownloadData(new Uri(url));
+			return Encoding.UTF8.GetString(data);
 		}
 	}
 }
