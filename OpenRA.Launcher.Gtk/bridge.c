@@ -216,6 +216,7 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   size_t key_size, url_size, filename_size;
   download_t * download;
   JSValueRef o;
+  FILE * f;
   if (!js_check_num_args(ctx, "registerDownload", argc, 3, exception))
     return JSValueMakeNull(ctx);
 
@@ -250,11 +251,20 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   free(url);
 
   filename = js_get_cstr_from_val(ctx, argv[2], &filename_size);
-  strncpy(download->dest, filename, 127);
+  //TODO Clean filename to stop access to locations it shouldn't be allowed to access
+  sprintf(download->dest, "/tmp/%s", filename);
   download->dest[127] = '\0';
   free(filename);
 
-  download->status = JSValueMakeString(ctx, JS_STR("AVAILABLE"));
+  f = fopen(download->dest, "r");
+
+  if (NULL != f)
+  {
+    fclose(f);
+    download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADED"));
+  }
+  else
+    download->status = JSValueMakeString(ctx, JS_STR("AVAILABLE"));
   
   return JSValueMakeNull(ctx);
 }
@@ -278,29 +288,30 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
     {
       if (0 == memcmp(line, "Error:", 6))
       {
-	download->status = JSValueMakeString(ctx, JS_STR("ERROR"));
-	download->error = JSValueMakeString(ctx, JS_STR(line + 7));
+        download->status = JSValueMakeString(ctx, JS_STR("ERROR"));
+        download->error = JSValueMakeString(ctx, JS_STR(line + 7));
       }
       else
       {
-	download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADING"));
-	GRegex * pattern = g_regex_new("(\\d{1,3})% (\\d+)/(\\d+) bytes", 0, 0, NULL);
-	GMatchInfo * match;
-	if (g_regex_match(pattern, line, 0, &match))
-	{
-	  gchar * current = g_match_info_fetch(match, 2), * total = g_match_info_fetch(match, 3);
-	  download->current_bytes = atoi(current);
- 	  download->total_bytes = atoi(total);
-	  g_free(current);
-	  g_free(total);
-	}
-	g_free(match);
+	      download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADING"));
+	      GRegex * pattern = g_regex_new("(\\d{1,3})% (\\d+)/(\\d+) bytes", 0, 0, NULL);
+	      GMatchInfo * match;
+	      if (g_regex_match(pattern, line, 0, &match))
+	      {
+	        gchar * current = g_match_info_fetch(match, 2), * total = g_match_info_fetch(match, 3);
+	        download->current_bytes = atoi(current);
+       	  download->total_bytes = atoi(total);
+	        g_free(current);
+	        g_free(total);
+	      }
+	      g_free(match);
       }
     }
     g_free(line);
     break;
   case G_IO_HUP:
-    download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADED"));
+    if (!JSStringIsEqualToUTF8CString(JSValueToStringCopy(ctx, download->status, NULL), "ERROR"))
+      download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADED"));
     g_io_channel_shutdown(source, FALSE, NULL);
     break;
   default:
@@ -356,7 +367,31 @@ JSValueRef js_start_download(JSContextRef ctx, JSObjectRef func, JSObjectRef thi
 JSValueRef js_cancel_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  return JSValueMakeNull(ctx);
+  char * key;
+  size_t key_size;
+  download_t * download;
+
+  if (!js_check_num_args(ctx, "cancelDownload", argc, 1, exception))
+    return JSValueMakeNull(ctx);
+
+  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+
+  if (NULL == (download = find_download(key)))
+  {
+    free(key);
+    return JSValueMakeBoolean(ctx, 0);
+  }
+
+  if (download->pid)
+  {
+    download->status = JSValueMakeString(ctx, JS_STR("ERROR"));
+    download->error = JSValueMakeString(ctx, JS_STR("Download Cancelled"));
+    kill(download->pid, SIGTERM);
+    remove(download->dest);
+  }
+
+  free(key);
+  return JSValueMakeBoolean(ctx, 1);
 }
 
 JSValueRef js_download_status(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
