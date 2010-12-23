@@ -87,28 +87,40 @@ int util_get_setting(const char * setting, GChildWatchFunc callback)
   return return_val;
 }
 
-int util_do_download(const char * url, const char * dest, GPid * pid)
+int util_spawn_with_command(const char * command, const char * arg1, const char * arg2, GPid * pid)
 {
-  char * command;
+  char * complete_command;
   int out_fd;
   gboolean result;
 
   char * launch_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
 
-  command = (char *)malloc(strlen(url) + strlen(dest) + strlen("--download-url=") + 2);
-  sprintf(command, "--download-url=%s,%s", url, dest);
+  complete_command = (char *)malloc(strlen(command) + strlen(arg1) + strlen(arg2) + 2);
+  sprintf(complete_command, "%s%s,%s", command, arg1, arg2);
 
-  launch_args[2] = command;
+  launch_args[2] = complete_command;
 
   result = g_spawn_async_with_pipes(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH,
-				    NULL, NULL, pid, NULL, &out_fd, NULL, NULL);
-  free(command);
+            NULL, NULL, pid, NULL, &out_fd, NULL, NULL);
+
+  free(complete_command);
 
   if (!result)
   {
     return 0;
   }
+
   return out_fd;
+}
+
+int util_do_download(const char * url, const char * dest, GPid * pid)
+{
+  return util_spawn_with_command("--download-url=", url, dest, pid);
+}
+
+int util_do_extract(const char * target, const char * dest, GPid * pid)
+{
+  return util_spawn_with_command("--extract-zip=", target, dest, pid);
 }
 
 char * util_get_output(int fd, int * output_len)

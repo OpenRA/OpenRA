@@ -10,4 +10,5 @@ int util_get_mod_list (GChildWatchFunc);
 int util_get_mod_metadata(char const *, GChildWatchFunc);
 int util_get_setting(const char *, GChildWatchFunc);
 int util_do_download(const char *, const char *, GPid *);
+int util_do_extract(const char *, const char *, GPid *);
 char * util_get_output(int, int *);

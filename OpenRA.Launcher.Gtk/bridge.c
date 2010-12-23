@@ -187,6 +187,7 @@ typedef struct download_t
   int total_bytes;
   JSContextGroupRef ctx_group;
   JSObjectRef download_progressed_func;
+  JSObjectRef extraction_progressed_func;
   JSValueRef status;
   JSValueRef error;
   GIOChannel * output_channel;
@@ -207,6 +208,24 @@ download_t * find_download(char const * key)
       return downloads + i;
   }
   return NULL;
+}
+
+void set_download_status(JSContextRef ctx, download_t * download, const char * status)
+{
+  JSValueUnprotect(ctx, download->status);
+
+  download->status = JSValueMakeString(ctx, JS_STR(status));
+
+  JSValueProtect(ctx, download->status);
+}
+
+void set_download_error(JSContextRef ctx, download_t * download, const char * error)
+{
+  JSValueUnprotect(ctx, download->error);
+
+  download->error = JSValueMakeString(ctx, JS_STR(error));
+
+  JSValueProtect(ctx, download->error);
 }
 
 JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
@@ -239,6 +258,8 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   download->ctx_group = JSContextGetGroup(ctx);
   o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR("downloadProgressed"), NULL);
   download->download_progressed_func = JSValueToObject(ctx, o, NULL);
+  o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR("extractProgressed"), NULL);
+  download->extraction_progressed_func = JSValueToObject(ctx, o, NULL);
 
   strncpy(download->key, key, 31);
   download->key[31] = '\0';
@@ -261,16 +282,17 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   if (NULL != f)
   {
     fclose(f);
-    download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADED"));
+    set_download_status(ctx, download, "DOWNLOADED");
   }
   else
-    download->status = JSValueMakeString(ctx, JS_STR("AVAILABLE"));
+    set_download_status(ctx, download, "AVAILABLE");
   
   return JSValueMakeNull(ctx);
 }
 
 gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpointer data)
 {
+  int ret = TRUE;
   download_t * download = (download_t *)data;
   gchar * line;
   gsize line_length;
@@ -288,12 +310,12 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
     {
       if (0 == memcmp(line, "Error:", 6))
       {
-        download->status = JSValueMakeString(ctx, JS_STR("ERROR"));
-        download->error = JSValueMakeString(ctx, JS_STR(line + 7));
+        set_download_status(ctx, download, "ERROR");
+        set_download_error(ctx, download, line + 7);
       }
       else
       {
-	      download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADING"));
+	      set_download_status(ctx, download, "DOWNLOADING");
 	      GRegex * pattern = g_regex_new("(\\d{1,3})% (\\d+)/(\\d+) bytes", 0, 0, NULL);
 	      GMatchInfo * match;
 	      if (g_regex_match(pattern, line, 0, &match))
@@ -311,8 +333,9 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
     break;
   case G_IO_HUP:
     if (!JSStringIsEqualToUTF8CString(JSValueToStringCopy(ctx, download->status, NULL), "ERROR"))
-      download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADED"));
+      set_download_status(ctx, download, "DOWNLOADED");
     g_io_channel_shutdown(source, FALSE, NULL);
+    ret = FALSE;
     break;
   default:
     break;
@@ -321,8 +344,7 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
   args[0] = JSValueMakeString(ctx, JS_STR(download->key));
   JSObjectCallAsFunction(ctx, download->download_progressed_func, NULL, 1, args, NULL);
 
-  JSGlobalContextRelease((JSGlobalContextRef)ctx);
-  return TRUE;
+  return ret;
 }
 
 JSValueRef js_start_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
@@ -349,7 +371,7 @@ JSValueRef js_start_download(JSContextRef ctx, JSObjectRef func, JSObjectRef thi
 
   g_message("Starting download %s", download->key);
 
-  download->status = JSValueMakeString(ctx, JS_STR("DOWNLOADING"));
+  set_download_status(ctx, download, "DOWNLOADING");
 
   fd = util_do_download(download->url, download->dest, &pid);
 
@@ -384,8 +406,8 @@ JSValueRef js_cancel_download(JSContextRef ctx, JSObjectRef func, JSObjectRef th
 
   if (download->pid)
   {
-    download->status = JSValueMakeString(ctx, JS_STR("ERROR"));
-    download->error = JSValueMakeString(ctx, JS_STR("Download Cancelled"));
+    set_download_status(ctx, download, "ERROR");
+    set_download_error(ctx, download, "Download Cancelled");
     kill(download->pid, SIGTERM);
     remove(download->dest);
   }
@@ -457,7 +479,7 @@ JSValueRef js_bytes_completed(JSContextRef ctx, JSObjectRef func, JSObjectRef th
   if (NULL == (download = find_download(key)))
   {
     free(key);
-    return JSValueMakeNumber(ctx, 0);
+    return JSValueMakeNumber(ctx, -1);
   }
 
   free(key);
@@ -480,7 +502,7 @@ JSValueRef js_bytes_total(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
   if (NULL == (download = find_download(key)))
   {
     free(key);
-    return JSValueMakeNumber(ctx, 0);
+    return JSValueMakeNumber(ctx, -1);
   }
 
   free(key);
@@ -488,10 +510,96 @@ JSValueRef js_bytes_total(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
   return JSValueMakeNumber(ctx, download->total_bytes);
 }
 
+gboolean update_extraction_progress(GIOChannel * source, GIOCondition condition, gpointer data)
+{
+  int ret = TRUE;
+  download_t * download = (download_t *)data;
+  gchar * line;
+  gsize line_length;
+  GIOStatus io_status;
+  JSValueRef args[1];
+  JSContextRef ctx;
+
+  ctx = JSGlobalContextCreateInGroup(download->ctx_group, NULL);
+
+  switch(condition)
+  {
+  case G_IO_IN:
+    io_status = g_io_channel_read_line(source, &line, &line_length, NULL, NULL);
+    if ((G_IO_STATUS_NORMAL == io_status) && (0 == memcmp(line, "Error:", 6)))
+    {
+      set_download_status(ctx, download, "ERROR");
+      set_download_error(ctx, download, line + 7);
+    }
+    free(line);
+    break;
+  case G_IO_HUP:
+    if (!JSStringIsEqualToUTF8CString(JSValueToStringCopy(ctx, download->status, NULL), "ERROR"))
+      set_download_status(ctx, download, "EXTRACTED");
+    g_io_channel_shutdown(source, FALSE, NULL);
+    ret = FALSE;
+    break;
+  default:
+    break;
+  }
+
+  args[0] = JSValueMakeString(ctx, JS_STR(download->key));
+  JSObjectCallAsFunction(ctx, download->extraction_progressed_func, NULL, 1, args, NULL);
+
+  return ret;  
+}
+
 JSValueRef js_extract_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  return JSValueMakeNull(ctx);
+  char * key, * dir, * mod, * status, dest_path[512];
+  size_t size;
+  download_t * download;
+  int fd;
+  GPid pid;
+
+  if (!js_check_num_args(ctx, "extractDownload", argc, 3, exception))
+    return JSValueMakeNull(ctx);
+
+  key = js_get_cstr_from_val(ctx, argv[0], &size);
+
+  if (NULL == (download = find_download(key)))
+    return JSValueMakeBoolean(ctx, 0);
+
+  status = js_get_cstr_from_val(ctx, download->status, &size);
+
+  if (0 != strcmp(status, "DOWNLOADED"))
+    return JSValueMakeBoolean(ctx, 0);
+
+  free(status);
+
+  set_download_status(ctx, download, "EXTRACTING");
+
+  dir = js_get_cstr_from_val(ctx, argv[1], &size);
+  mod = js_get_cstr_from_val(ctx, argv[2], &size);
+
+  sprintf(dest_path, "%s/%s", mod, dir);
+
+  fd = util_do_extract(download->dest, dest_path, &pid);
+
+  if (!fd)
+  {
+    free(key);
+    free(dir);
+    free(mod);
+    return JSValueMakeBoolean(ctx, 0);
+  }
+
+  download->pid = pid;
+  download->output_channel = g_io_channel_unix_new(fd);
+
+  g_io_add_watch(download->output_channel, G_IO_IN | G_IO_HUP, update_extraction_progress, download);
+
+  free(key);
+  free(dir);
+  free(mod);
+
+  return JSValueMakeBoolean(ctx, 1);
 }
 
 void js_add_functions(JSGlobalContextRef ctx, JSObjectRef target, char ** names, 
