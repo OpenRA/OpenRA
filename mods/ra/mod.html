@@ -129,7 +129,8 @@
             var version = window.external.metadata("VERSION", "ra");
             document.getElementById("installedversion").innerHTML = version;
             document.getElementById("latestversion").innerHTML = window.external.httpRequest("http://master.open-ra.org/VERSION");
-            motd = window.external.httpRequest("http://master.open-ra.org/motd.php?v="+version);
+            var motd = window.external.httpRequest("http://master.open-ra.org/motd.php?v="+version);
+            
             if (motd != undefined)
                 document.getElementById("motd").innerHTML = motd.substring(3);
         }
