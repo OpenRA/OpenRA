@@ -142,6 +142,8 @@ namespace OpenRA.Mods.RA
 				this.power = power;
 				this.sourceLocation = sourceLocation;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
+
+                // todo: this burns up more texture space every time someone uses chronoshift.
 				validTile = UiOverlay.SynthesizeTile(0x0f);
 				invalidTile = UiOverlay.SynthesizeTile(0x08);
 				sourceTile = UiOverlay.SynthesizeTile(0x04);
