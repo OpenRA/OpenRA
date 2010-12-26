@@ -38,8 +38,10 @@ namespace OpenRA.Mods.RA
 				Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
 
 				w.Add(new SatelliteLaunch(self));
-				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25, 
-					() => self.Owner.Shroud.Disabled = true));
+
+                /* there is only one shroud, but it is misleadingly available through Player.Shroud */
+                w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25,
+                    () => { if (self.Owner == self.World.LocalPlayer) self.World.LocalShroud.Disabled = true; }));
 			});
 		}
 	}
