@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA
 			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
 			{
 				// Cannot chronoshift into unexplored location
-				if (isValidTarget(xy))
+				if (IsValidTarget(xy))
 					yield return new Order(order, manager.self, false)
 					{
 						TargetLocation = xy,
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			bool isValidTarget(int2 xy)
+			bool IsValidTarget(int2 xy)
 			{
 				var canTeleport = false;
 				foreach (var unit in power.UnitsInRange(sourceLocation))
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA
 			
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
-				return isValidTarget(xy) ? "chrono-target" : "move-blocked";
+				return IsValidTarget(xy) ? "chrono-target" : "move-blocked";
 			}
 		}
 	}
