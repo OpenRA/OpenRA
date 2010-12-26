@@ -89,13 +89,15 @@ namespace OpenRA.Mods.RA
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
 				tile = UiOverlay.SynthesizeTile(0x04);
 			}
-			
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-			{
-				world.CancelInputMode();
-				world.OrderGenerator = new SelectDestination(order, manager, power, xy);
-				yield break;
-			}
+
+            public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+            {
+                world.CancelInputMode();
+                if (mi.Button == MouseButton.Left)
+                    world.OrderGenerator = new SelectDestination(order, manager, power, xy);
+
+                yield break;
+            }
 
 			public void Tick(World world)
 			{
