@@ -75,7 +75,7 @@ namespace OpenRA
 
 		public IEnumerable<TraitPair<T>> ActorsWithTraitMultiple<T>( World world )
 		{
-			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).All();//.Where( x => x.Actor.IsInWorld );
+			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).All();
 		}
 
 		public void RemoveActor( Actor a )
