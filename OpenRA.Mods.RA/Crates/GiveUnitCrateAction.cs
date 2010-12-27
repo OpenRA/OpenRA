@@ -32,11 +32,11 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			var valuedInfo = Rules.Info[Info.Unit].Traits.Get<BuildableInfo>();
+			var bi = Rules.Info[Info.Unit].Traits.Get<BuildableInfo>();
 
 			// this unit is not buildable by the collector's country, so
 			// don't give them free ones either.
-			if (!valuedInfo.Owner.Contains(collector.Owner.Country.Race)) return 0;
+			if (!bi.Owner.Contains(collector.Owner.Country.Race)) return 0;
 
 			// avoid dumping tanks in the sea, and ships on dry land.
 			if (!GetSuitableCells(collector.Location).Any()) return 0;
