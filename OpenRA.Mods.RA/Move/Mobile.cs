@@ -22,376 +22,383 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
-	public class MobileInfo : ITraitInfo
-	{
-		[FieldLoader.LoadUsing( "LoadSpeeds" )]
-		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
-		[FieldLoader.Load] public readonly string[] Crushes;
-		[FieldLoader.Load] public readonly int WaitAverage = 60;
-		[FieldLoader.Load] public readonly int WaitSpread = 20;
-		[FieldLoader.Load] public readonly int InitialFacing = 128;
-		[FieldLoader.Load] public readonly int ROT = 255;
-		[FieldLoader.Load] public readonly int Speed = 1;
-		[FieldLoader.Load] public readonly bool OnRails = false;
+    public class MobileInfo : ITraitInfo
+    {
+        [FieldLoader.LoadUsing("LoadSpeeds")]
+        public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
+        [FieldLoader.Load]
+        public readonly string[] Crushes;
+        [FieldLoader.Load]
+        public readonly int WaitAverage = 60;
+        [FieldLoader.Load]
+        public readonly int WaitSpread = 20;
+        [FieldLoader.Load]
+        public readonly int InitialFacing = 128;
+        [FieldLoader.Load]
+        public readonly int ROT = 255;
+        [FieldLoader.Load]
+        public readonly int Speed = 1;
+        [FieldLoader.Load]
+        public readonly bool OnRails = false;
 
-		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
-		
-		static object LoadSpeeds( MiniYaml y )
-		{
-			Dictionary<string,TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
-			foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
-			{
-				var speed = (decimal)FieldLoader.GetValue("speed", typeof(decimal),t.Value.Value);
-				var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (int)FieldLoader.GetValue("cost", typeof(int), t.Value.NodesDict["PathingCost"].Value) : (int)(10000/speed);
-				ret.Add(t.Key, new TerrainInfo{Speed = speed, Cost = cost});
-			}
-			
-			return ret;
-		}
-		
-		public class TerrainInfo
-		{
-			public int Cost = int.MaxValue;
-			public decimal Speed = 0;
-		}
-	}
-	
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
-	{
-		public readonly Actor self;
-		public readonly MobileInfo Info;
-		public bool IsMoving { get; internal set; }
+        public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
-		int __facing;
-		int2 __fromCell, __toCell;
-		int __altitude;
+        static object LoadSpeeds(MiniYaml y)
+        {
+            Dictionary<string, TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
+            foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
+            {
+                var speed = (decimal)FieldLoader.GetValue("speed", typeof(decimal), t.Value.Value);
+                var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (int)FieldLoader.GetValue("cost", typeof(int), t.Value.NodesDict["PathingCost"].Value) : (int)(10000 / speed);
+                ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
+            }
 
-		[Sync]
-		public int Facing
-		{
-			get { return __facing; }
-			set { __facing = value; }
-		}
+            return ret;
+        }
 
-		[Sync]
-		public int Altitude
-		{
-			get { return __altitude; }
-			set { __altitude = value; }
-		}
-		
-		public int ROT { get { return Info.ROT; } }
-		public int InitialFacing { get { return Info.InitialFacing; } }
+        public class TerrainInfo
+        {
+            public int Cost = int.MaxValue;
+            public decimal Speed = 0;
+        }
 
-		[Sync]
-		public int2 PxPosition { get; set; }
-		[Sync]
-		public int2 fromCell { get { return __fromCell; } }
-		[Sync]
-		public int2 toCell { get { return __toCell; } }
+        public int MovementCostForCell(World world, int2 cell)
+        {
+            if (!world.Map.IsInMap(cell.X, cell.Y))
+                return int.MaxValue;
 
-		[Sync]
-		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
+            var type = world.GetTerrainType(cell);
+            if (!TerrainSpeeds.ContainsKey(type))
+                return int.MaxValue;
 
-		public void SetLocation(int2 from, int2 to)
-		{
-			if (fromCell == from && toCell == to) return;
-			RemoveInfluence();
-			__fromCell = from;
-			__toCell = to;
-			AddInfluence();
-		}
+            return TerrainSpeeds[type].Cost;
+        }
 
-		UnitInfluence uim;
+        public bool CanEnterCell(World world, UnitInfluence uim, int2 cell, Actor ignoreActor, bool checkTransientActors)
+        {
+            if (MovementCostForCell(world, cell) == int.MaxValue)
+                return false;
 
-		const int avgTicksBeforePathing = 5;
-		const int spreadTicksBeforePathing = 5;
-		internal int ticksBeforePathing = 0;
-		
-		public Mobile(ActorInitializer init, MobileInfo info)
-		{
-			this.self = init.self;
-			this.Info = info;
-			
-			uim = self.World.WorldActor.Trait<UnitInfluence>();
-			
-			if (init.Contains<LocationInit>())
-			{
-				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
-				this.PxPosition = Util.CenterOfCell( fromCell );
-			}
-			
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
-			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
-		}
+            var blockingActors = uim.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
+            if (checkTransientActors && blockingActors.Count > 0)
+            {
+                // We can enter a cell with nonshareable units only if we can crush all of them
+                if (Crushes == null)
+                    return false;
 
-		public void SetPosition(Actor self, int2 cell)
-		{
-			SetLocation( cell, cell );
-			PxPosition = Util.CenterOfCell(fromCell);
-			FinishedMoving(self);
-		}
+                if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
+                                             a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(Crushes).Any()))))
+                    return false;
+            }
 
-		public void SetPxPosition( Actor self, int2 px )
-		{
-			var cell = Util.CellContaining( px );
-			SetLocation( cell, cell );
-			PxPosition = px;
-			FinishedMoving(self);
-		}
+            return true;
+        }
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter( Info ); } }
+        public bool CanEnterCell(World world, int2 cell, Actor ignoreActor, bool checkTransientActors)
+        {
+            var uim = world.WorldActor.Trait<UnitInfluence>();
+            return CanEnterCell(world, uim, cell, ignoreActor, checkTransientActors);
+        }
+    }
 
-		// Note: Returns a valid order even if the unit can't move to the target
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
-		{
-			if( order is MoveOrderTargeter )
-			{
-				if( Info.OnRails ) return null;
-				return new Order( "Move", self, queued ) { TargetLocation = Util.CellContaining( target.CenterLocation ) };
-			}
-			return null;
-		}
+    public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
+    {
+        public readonly Actor self;
+        public readonly MobileInfo Info;
+        public bool IsMoving { get; internal set; }
 
-		public int2 NearestMoveableCell(int2 target)
-		{
-			if (CanEnterCell(target))
-				return target;
-			
-			var searched = new List<int2>(){};
-			// Limit search to a radius of 10 tiles
-			for (int r = 1; r < 10; r++)
-				foreach (var tile in self.World.FindTilesInCircle(target,r).Except(searched))
-				{
-					if (CanEnterCell(tile))
-						return tile;
-					
-					searched.Add(tile);
-				}
-			
-			// Couldn't find a cell
-			return target;
-		}
+        int __facing;
+        int2 __fromCell, __toCell;
+        int __altitude;
 
-		protected void PerformMove(Actor self, int2 targetLocation, bool queued)
-		{
-			var ph = new QueuedActivity(
-				(qa) =>
-				{
-					int2 currentLocation = NearestMoveableCell(targetLocation);
+        [Sync]
+        public int Facing
+        {
+            get { return __facing; }
+            set { __facing = value; }
+        }
 
-					if (!CanEnterCell(currentLocation))
-					{
-						if (queued) self.CancelActivity();
-						return;
-					}
+        [Sync]
+        public int Altitude
+        {
+            get { return __altitude; }
+            set { __altitude = value; }
+        }
 
-					if (!queued) self.CancelActivity();
+        public int ROT { get { return Info.ROT; } }
+        public int InitialFacing { get { return Info.InitialFacing; } }
 
-					ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+        [Sync]
+        public int2 PxPosition { get; set; }
+        [Sync]
+        public int2 fromCell { get { return __fromCell; } }
+        [Sync]
+        public int2 toCell { get { return __toCell; } }
 
-					qa.Insert(new Move(currentLocation, 8));
-					
-					self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
-				});
+        [Sync]
+        public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-			self.QueueActivity(queued ? ph : ph.Run(self));
-		}
+        public void SetLocation(int2 from, int2 to)
+        {
+            if (fromCell == from && toCell == to) return;
+            RemoveInfluence();
+            __fromCell = from;
+            __toCell = to;
+            AddInfluence();
+        }
 
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Move")
-			{
-				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
-				PerformMove(self, target, order.Queued && !self.IsIdle);
-			}
+        UnitInfluence uim;
 
-			if (order.OrderString == "Stop")
-			{
-				self.CancelActivity();
-			}
-		}
-		
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Move")
-				return "Move";
-			return null;
-		}
+        const int avgTicksBeforePathing = 5;
+        const int spreadTicksBeforePathing = 5;
+        internal int ticksBeforePathing = 0;
 
-		public int2 TopLeft { get { return toCell; } }
+        public Mobile(ActorInitializer init, MobileInfo info)
+        {
+            this.self = init.self;
+            this.Info = info;
 
-		public IEnumerable<int2> OccupiedCells()
-		{
-			return (fromCell == toCell)
-				? new[] { fromCell }
-				: CanEnterCell(toCell)
-					? new[] { toCell }
-					: new[] { fromCell, toCell };
-		}
+            uim = self.World.WorldActor.Trait<UnitInfluence>();
 
-		public bool CanEnterCell(int2 p)
-		{
-			return CanEnterCell( p, null, true);
-		}
+            if (init.Contains<LocationInit>())
+            {
+                this.__fromCell = this.__toCell = init.Get<LocationInit, int2>();
+                this.PxPosition = Util.CenterOfCell(fromCell);
+            }
 
-		public static bool CanEnterCell( World world, MobileInfo mi, int2 cell, Actor ignoreActor, bool checkTransientActors )
-		{
-			var uim = world.WorldActor.Trait<UnitInfluence>();
-			return Mobile.CanEnterCell( mi, world, uim, cell, ignoreActor, checkTransientActors );
-		}
-		
-		public bool CanEnterCell( int2 cell, Actor ignoreActor, bool checkTransientActors )
-		{
-			var uim = self.World.WorldActor.Trait<UnitInfluence>();
-			return CanEnterCell( Info, self.World, uim, cell, ignoreActor, checkTransientActors );
-		}
+            this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+            this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit, int>() : 0;
+        }
 
-		public static bool CanEnterCell( MobileInfo mobileInfo, World world, UnitInfluence uim, int2 cell, Actor ignoreActor, bool checkTransientActors )
-		{
-			if (MovementCostForCell(mobileInfo, world, cell) == int.MaxValue)
-				return false;
+        public void SetPosition(Actor self, int2 cell)
+        {
+            SetLocation(cell, cell);
+            PxPosition = Util.CenterOfCell(fromCell);
+            FinishedMoving(self);
+        }
 
-			var blockingActors = uim.GetUnitsAt( cell ).Where( x => x != ignoreActor ).ToList();
-			if (checkTransientActors && blockingActors.Count > 0)
-			{
-				// We can enter a cell with nonshareable units only if we can crush all of them
-				if (mobileInfo.Crushes == null)
-					return false;
+        public void SetPxPosition(Actor self, int2 px)
+        {
+            var cell = Util.CellContaining(px);
+            SetLocation(cell, cell);
+            PxPosition = px;
+            FinishedMoving(self);
+        }
 
-				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
-											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushClasses.Intersect(mobileInfo.Crushes).Any()))))
-					return false;
-			}
+        public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
 
-			return true;
-		}
-		
-		public void FinishedMoving(Actor self)
-		{
-			var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
-			foreach (var a in crushable)
-			{
-				var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
-				foreach (var b in crushActions)
-					b.OnCrush(self);
-			}
-		}
+        // Note: Returns a valid order even if the unit can't move to the target
+        public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+        {
+            if (order is MoveOrderTargeter)
+            {
+                if (Info.OnRails) return null;
+                return new Order("Move", self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
+            }
+            return null;
+        }
 
-		public static int MovementCostForCell(MobileInfo info, World world, int2 cell)
-		{
-			if (!world.Map.IsInMap(cell.X,cell.Y))
-				return int.MaxValue;
+        public int2 NearestMoveableCell(int2 target)
+        {
+            if (CanEnterCell(target))
+                return target;
 
-			var type = world.GetTerrainType(cell);
-			if (!info.TerrainSpeeds.ContainsKey(type))
-				return int.MaxValue;
-			
-			return info.TerrainSpeeds[type].Cost;
-		}
+            var searched = new List<int2>() { };
+            // Limit search to a radius of 10 tiles
+            for (int r = 1; r < 10; r++)
+                foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+                {
+                    if (CanEnterCell(tile))
+                        return tile;
 
-		public int MovementSpeedForCell(Actor self, int2 cell)
-		{
-			var type = self.World.GetTerrainType(cell);
-			
-			if (!Info.TerrainSpeeds.ContainsKey(type))
-				return 0;
+                    searched.Add(tile);
+                }
 
-			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
-			foreach( var t in self.TraitsImplementing<ISpeedModifier>() )
-				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100);
-		}
-		
-		public void AddInfluence()
-		{
-			if( self.IsInWorld )
-				uim.Add( self, this );
-		}
-		
-		public void RemoveInfluence()
-		{
-			if( self.IsInWorld )
-				uim.Remove( self, this );
-		}
+            // Couldn't find a cell
+            return target;
+        }
 
-		public void OnNudge(Actor self, Actor nudger)
-		{
-			/* initial fairly braindead implementation. */
+        protected void PerformMove(Actor self, int2 targetLocation, bool queued)
+        {
+            var ph = new QueuedActivity(
+                (qa) =>
+                {
+                    int2 currentLocation = NearestMoveableCell(targetLocation);
 
-			if (self.Owner.Stances[nudger.Owner] != Stance.Ally)
-				return;		/* don't allow ourselves to be pushed around
+                    if (!CanEnterCell(currentLocation))
+                    {
+                        if (queued) self.CancelActivity();
+                        return;
+                    }
+
+                    if (!queued) self.CancelActivity();
+
+                    ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+
+                    qa.Insert(new Move(currentLocation, 8));
+
+                    self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
+                });
+
+            self.QueueActivity(queued ? ph : ph.Run(self));
+        }
+
+        public void ResolveOrder(Actor self, Order order)
+        {
+            if (order.OrderString == "Move")
+            {
+                var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+                PerformMove(self, target, order.Queued && !self.IsIdle);
+            }
+
+            if (order.OrderString == "Stop")
+            {
+                self.CancelActivity();
+            }
+        }
+
+        public string VoicePhraseForOrder(Actor self, Order order)
+        {
+            if (order.OrderString == "Move")
+                return "Move";
+            return null;
+        }
+
+        public int2 TopLeft { get { return toCell; } }
+
+        public IEnumerable<int2> OccupiedCells()
+        {
+            return (fromCell == toCell)
+                ? new[] { fromCell }
+                : CanEnterCell(toCell)
+                    ? new[] { toCell }
+                    : new[] { fromCell, toCell };
+        }
+
+        public bool CanEnterCell(int2 p)
+        {
+            return CanEnterCell(p, null, true);
+        }
+
+        public bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
+        {
+            var uim = self.World.WorldActor.Trait<UnitInfluence>();
+            return Info.CanEnterCell(self.World, uim, cell, ignoreActor, checkTransientActors);
+        }
+
+        public void FinishedMoving(Actor self)
+        {
+            var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
+            foreach (var a in crushable)
+            {
+                var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
+                foreach (var b in crushActions)
+                    b.OnCrush(self);
+            }
+        }
+
+        public int MovementSpeedForCell(Actor self, int2 cell)
+        {
+            var type = self.World.GetTerrainType(cell);
+
+            if (!Info.TerrainSpeeds.ContainsKey(type))
+                return 0;
+
+            decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
+            foreach (var t in self.TraitsImplementing<ISpeedModifier>())
+                speed *= t.GetSpeedModifier();
+            return (int)(speed / 100);
+        }
+
+        public void AddInfluence()
+        {
+            if (self.IsInWorld)
+                uim.Add(self, this);
+        }
+
+        public void RemoveInfluence()
+        {
+            if (self.IsInWorld)
+                uim.Remove(self, this);
+        }
+
+        public void OnNudge(Actor self, Actor nudger)
+        {
+            /* initial fairly braindead implementation. */
+
+            if (self.Owner.Stances[nudger.Owner] != Stance.Ally)
+                return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 
-			if (!self.IsIdle)
-				return;		/* don't nudge if we're busy doing something! */
+            if (!self.IsIdle)
+                return;		/* don't nudge if we're busy doing something! */
 
-			// pick an adjacent available cell.
-			var availCells = new List<int2>();
-			var notStupidCells = new List<int2>();
+            // pick an adjacent available cell.
+            var availCells = new List<int2>();
+            var notStupidCells = new List<int2>();
 
-			for( var i = -1; i < 2; i++ )
-				for (var j = -1; j < 2; j++)
-				{
-					var p = toCell + new int2(i, j);
-					if (CanEnterCell(p))
-						availCells.Add(p);
-					else
-						if (p != nudger.Location && p != toCell)
-							notStupidCells.Add(p);
-				}
+            for (var i = -1; i < 2; i++)
+                for (var j = -1; j < 2; j++)
+                {
+                    var p = toCell + new int2(i, j);
+                    if (CanEnterCell(p))
+                        availCells.Add(p);
+                    else
+                        if (p != nudger.Location && p != toCell)
+                            notStupidCells.Add(p);
+                }
 
-			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
-				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (int2?)null;
+            var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
+                notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (int2?)null;
 
-			if (moveTo.HasValue)
-			{
-				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
-				self.QueueActivity(new Move(moveTo.Value, 0));
+            if (moveTo.HasValue)
+            {
+                self.CancelActivity();
+                self.SetTargetLine(Target.FromCell(moveTo.Value), Color.Green, false);
+                self.QueueActivity(new Move(moveTo.Value, 0));
 
-				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
-					self.ActorID, self.Location, moveTo.Value);
-			}
-			else
-				Log.Write("debug", "OnNudge #{0} refuses at {1}",
-					self.ActorID, self.Location);
-		}
+                Log.Write("debug", "OnNudge #{0} from {1} to {2}",
+                    self.ActorID, self.Location, moveTo.Value);
+            }
+            else
+                Log.Write("debug", "OnNudge #{0} refuses at {1}",
+                    self.ActorID, self.Location);
+        }
 
-		class MoveOrderTargeter : IOrderTargeter
-		{
-			readonly MobileInfo unitType;
+        class MoveOrderTargeter : IOrderTargeter
+        {
+            readonly MobileInfo unitType;
 
-			public MoveOrderTargeter( MobileInfo unitType )
-			{
-				this.unitType = unitType;
-			}
+            public MoveOrderTargeter(MobileInfo unitType)
+            {
+                this.unitType = unitType;
+            }
 
-			public string OrderID { get { return "Move"; } }
-			public int OrderPriority { get { return 4; } }
-			public bool IsQueued { get; protected set; }
-			public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
-			{
-				return false;
-			}
+            public string OrderID { get { return "Move"; } }
+            public int OrderPriority { get { return 4; } }
+            public bool IsQueued { get; protected set; }
+            public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+            {
+                return false;
+            }
 
-			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
-			{
-				IsQueued = forceQueued;
-				cursor = "move";
-				if( !self.World.Map.IsInMap(location) || (self.World.LocalPlayer.Shroud.IsExplored( location ) &&
-						Mobile.MovementCostForCell(self.Trait<Mobile>().Info, self.World, location) == int.MaxValue))
-					cursor = "move-blocked";
-				
-				return true;
-			}
-		}
+            public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+            {
+                IsQueued = forceQueued;
+                cursor = "move";
+                if (!self.World.Map.IsInMap(location) || (self.World.LocalPlayer.Shroud.IsExplored(location) &&
+                        self.Trait<Mobile>().Info.MovementCostForCell(self.World, location) == int.MaxValue))
+                    cursor = "move-blocked";
 
-		public IActivity ScriptedMove( int2 cell ) { return new Move( cell ); }
-		public IActivity MoveTo( int2 cell, int nearEnough ) { return new Move( cell, nearEnough ); }
-		public IActivity MoveTo( int2 cell, Actor ignoredActor ) { return new Move( cell, ignoredActor ); }
-		public IActivity MoveWithinRange( Actor target, int range ) { return new Move( target, range ); }
-		public IActivity MoveWithinRange( Target target, int range ) { return new Move( target, range ); }
-		public IActivity MoveTo( Func<List<int2>> pathFunc ) { return new Move( pathFunc ); }
-	}
+                return true;
+            }
+        }
+
+        public IActivity ScriptedMove(int2 cell) { return new Move(cell); }
+        public IActivity MoveTo(int2 cell, int nearEnough) { return new Move(cell, nearEnough); }
+        public IActivity MoveTo(int2 cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
+        public IActivity MoveWithinRange(Actor target, int range) { return new Move(target, range); }
+        public IActivity MoveWithinRange(Target target, int range) { return new Move(target, range); }
+        public IActivity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
+    }
 }

@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Move
 
 			cellInfo[p.Location.X, p.Location.Y].Seen = true;
 			
-			var thisCost = Mobile.MovementCostForCell(mobileInfo, world, p.Location);
+			var thisCost = mobileInfo.MovementCostForCell(world, p.Location);
 
 			if (thisCost == int.MaxValue) 
 				return p.Location;
@@ -100,12 +100,12 @@ namespace OpenRA.Mods.RA.Move
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
 					continue;
 
-				var costHere = Mobile.MovementCostForCell(mobileInfo, world, newHere);
+				var costHere = mobileInfo.MovementCostForCell(world, newHere);
 				
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!Mobile.CanEnterCell(mobileInfo, world, uim, newHere, ignoreBuilding, checkForBlocked))
+				if (!mobileInfo.CanEnterCell(world, uim, newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))

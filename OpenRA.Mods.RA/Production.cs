@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 			// Pick a spawn/exit point pair
 			// Todo: Reorder in a synced random way
 			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
-				if( Mobile.CanEnterCell( mobileInfo, self.World, uim, self.Location + s.ExitCell,self,true ) )
+				if( mobileInfo.CanEnterCell( self.World, uim, self.Location + s.ExitCell,self,true ) )
 				{
 					DoProduction(self, producee, s);
 					return true;
