@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
@@ -36,7 +37,6 @@ namespace OpenRA.Mods.RA
 		readonly OreRefineryInfo Info;
 		PlayerResources PlayerResources;
 		PowerManager PlayerPower;
-		List<Actor> LinkedHarv;
 
 		[Sync]
 		int nextProcessTime = 0;
@@ -49,20 +49,13 @@ namespace OpenRA.Mods.RA
 			Info = info;
 			PlayerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
-
-			LinkedHarv = new List<Actor> ();
 		}
 
-		public void LinkHarvester (Actor self, Actor harv)
-		{
-			LinkedHarv.Add (harv);
-		}
-
-		public void UnlinkHarvester (Actor self, Actor harv)
-		{
-			if (LinkedHarv.Contains (harv))
-				LinkedHarv.Remove (harv);
-		}
+        public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
+        {
+            return self.World.Queries.WithTrait<Harvester>()
+                .Where(a => a.Trait.LinkedProc == self);
+        }
 
 		public void GiveOre (int amount)
 		{
@@ -99,8 +92,8 @@ namespace OpenRA.Mods.RA
 		public void Damaged (Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				foreach (var harv in LinkedHarv)
-					harv.Trait<Harvester> ().UnlinkProc(harv, self);
+				foreach (var harv in GetLinkedHarvesters())
+					harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
 		public int2 DeliverOffset {get{ return Info.DockOffset; }}
@@ -112,11 +105,9 @@ namespace OpenRA.Mods.RA
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{		
 			// Unlink any non-docked harvs
-			foreach (var harv in LinkedHarv)
-			{
-				if (harv.Owner == oldOwner)
-					harv.Trait<Harvester>().UnlinkProc (harv, self);
-			}
+            foreach (var harv in GetLinkedHarvesters())
+                if (harv.Actor.Owner == oldOwner)
+                    harv.Trait.UnlinkProc(harv.Actor, self);
 
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
@@ -125,8 +116,8 @@ namespace OpenRA.Mods.RA
 		public void Selling (Actor self) {}
 		public void Sold (Actor self)
 		{
-			foreach (var harv in LinkedHarv)
-				harv.Trait<Harvester>().UnlinkProc (harv, self);
+            foreach (var harv in GetLinkedHarvesters())
+                harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
 		public IEnumerable<PipType> GetPips (Actor self)

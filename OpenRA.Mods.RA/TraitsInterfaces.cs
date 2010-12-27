@@ -16,8 +16,6 @@ namespace OpenRA.Mods.RA
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
 		void GiveOre(int amount);
-		void LinkHarvester(Actor self, Actor harv);
-		void UnlinkHarvester(Actor self, Actor harv);
 		int2 DeliverOffset { get; }
 	}
 	

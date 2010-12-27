@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, INotifyDamage, IPips, 
+	public class Harvester : IIssueOrder, IResolveOrder, IPips, 
 		IRenderModifier, IExplodeModifier, IOrderVoice,
 		ISpeedModifier
 	{
@@ -53,8 +53,6 @@ namespace OpenRA.Mods.RA
 		public void ChooseNewProc(Actor self, Actor ignore)
 		{
 			LinkedProc = ClosestProc(self, ignore);
-			if (LinkedProc != null)
-				LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
 		}
 		
 		Actor ClosestProc(Actor self, Actor ignore)
@@ -131,12 +129,7 @@ namespace OpenRA.Mods.RA
 			else if (order.OrderString == "Deliver")
 			{
 				if (order.TargetActor != LinkedProc)
-				{
-					if (LinkedProc != null && LinkedProc.IsInWorld)
-						LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 					LinkedProc = order.TargetActor;
-					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().LinkHarvester(LinkedProc,self);
-				}
 				
 				if (IsEmpty)
 					return;
@@ -146,13 +139,6 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (e.DamageState == DamageState.Dead)
-				if (LinkedProc != null && !LinkedProc.Destroyed)
-					LinkedProc.TraitsImplementing<IAcceptOre>().FirstOrDefault().UnlinkHarvester(LinkedProc,self);
 		}
 		
 		public void LinkProc(Actor self, Actor proc)
