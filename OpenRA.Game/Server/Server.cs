@@ -165,7 +165,7 @@ namespace OpenRA.Server
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 			}
-			catch (Exception e) { DropClient(newConn); }
+			catch (Exception) { DropClient(newConn); }
 		}
 
 		public void UpdateInFlightFrames(Connection conn)
@@ -193,7 +193,7 @@ namespace OpenRA.Server
 				ms.Write( data );
 				c.socket.Send( ms.ToArray() );
 			}
-			catch (Exception e) { DropClient(c); }
+			catch (Exception) { DropClient(c); }
 		}
 
 		public void DispatchOrders(Connection conn, int frame, byte[] data)

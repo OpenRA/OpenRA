@@ -27,7 +27,7 @@ namespace RALint
 			++errors;
 		}
 
-		static Dictionary<string, int> ValidPrereqs;
+        static Dictionary<string, int> ValidPrereqs = new Dictionary<string, int>();
 
 		static int Main(string[] args)
 		{
