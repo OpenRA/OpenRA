@@ -387,7 +387,7 @@ namespace OpenRA.Mods.RA.Move
                 IsQueued = forceQueued;
                 cursor = "move";
                 if (!self.World.Map.IsInMap(location) || (self.World.LocalPlayer.Shroud.IsExplored(location) &&
-                        self.Trait<Mobile>().Info.MovementCostForCell(self.World, location) == int.MaxValue))
+                        unitType.MovementCostForCell(self.World, location) == int.MaxValue))
                     cursor = "move-blocked";
 
                 return true;
