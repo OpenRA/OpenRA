@@ -377,7 +377,8 @@ namespace OpenRA.Mods.RA.Move
             public string OrderID { get { return "Move"; } }
             public int OrderPriority { get { return 4; } }
             public bool IsQueued { get; protected set; }
-            public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+
+            public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
             {
                 return false;
             }

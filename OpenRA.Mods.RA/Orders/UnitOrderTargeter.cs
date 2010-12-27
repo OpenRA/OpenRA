@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 
-		public virtual bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		public virtual bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
 			if( self == null ) throw new ArgumentNullException( "self" );
 			if( target == null ) throw new ArgumentNullException( "target" );
@@ -61,9 +61,9 @@ namespace OpenRA.Mods.RA.Orders
 		{
 		}
 
-		public override bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetUnit( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
+			if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
 			if( !target.HasTrait<T>() ) return false;
 
 			IsQueued = forceQueued;

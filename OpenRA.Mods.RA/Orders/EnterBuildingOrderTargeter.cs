@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Orders
 			this.useEnterCursor = useEnterCursor;
 		}
 
-		public override bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetUnit( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
+			if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
 			if( !canTarget( target ) ) return false;
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
 			IsQueued = forceQueued;

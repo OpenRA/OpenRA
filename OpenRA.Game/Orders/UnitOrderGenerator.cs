@@ -140,7 +140,7 @@ namespace OpenRA.Orders
 
 					string cursor = null;
 					if( underCursor != null )
-						if (o.Order.CanTargetUnit(self, underCursor, mi.Modifiers.HasModifier(Modifiers.Ctrl), mi.Modifiers.HasModifier(Modifiers.Alt), mi.Modifiers.HasModifier(Modifiers.Shift), ref cursor))
+						if (o.Order.CanTargetActor(self, underCursor, mi.Modifiers.HasModifier(Modifiers.Ctrl), mi.Modifiers.HasModifier(Modifiers.Alt), mi.Modifiers.HasModifier(Modifiers.Shift), ref cursor))
 							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
 					if (o.Order.CanTargetLocation(self, xy, actorsAt, mi.Modifiers.HasModifier(Modifiers.Ctrl), mi.Modifiers.HasModifier(Modifiers.Alt), mi.Modifiers.HasModifier(Modifiers.Shift), ref cursor))
 						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );

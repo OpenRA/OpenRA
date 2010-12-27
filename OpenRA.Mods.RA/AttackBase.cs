@@ -236,7 +236,7 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
-			public bool CanTargetUnit(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				IsQueued = forceQueued;
 
