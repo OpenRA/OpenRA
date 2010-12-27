@@ -23,6 +23,11 @@ namespace OpenRA.Mods.RA.Activities
 		int Range;
 		bool AllowMovement;
 
+        int nextPathTime;
+
+        const int delayBetweenPathingAttempts = 20;
+        const int delaySpread = 5;
+
 		public Attack(Target target, int range, bool allowMovement)
 		{
 			Target = target;
@@ -33,10 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 			AllowMovement = allowMovement;
 		}
 
-		public Attack(Target target, int range) : this(target, range, true)
-		{
-			
-		}
+		public Attack(Target target, int range) : this(target, range, true) {}
 
 		public override IActivity Tick( Actor self )
 		{
@@ -56,9 +58,17 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
 				return NextActivity;
-			
-			if (!Combat.IsInRange(self.CenterLocation, Range, Target))
-				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
+
+            if (!Combat.IsInRange(self.CenterLocation, Range, Target))
+            {
+                if (--nextPathTime > 0)
+                    return this;
+
+                nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
+                    delayBetweenPathingAttempts + delaySpread);
+
+                return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
+            }
 
 			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
 			if (facing.Facing != desiredFacing)
