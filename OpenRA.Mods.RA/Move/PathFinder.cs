@@ -72,15 +72,18 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using( new PerfSample( "Pathfinder" ) )
 			{
-				var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+				var mi = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => Mobile.CanEnterCell(self.World, mobileInfo, t, null, true));
+					.Where( t => Mobile.CanEnterCell(self.World, mi, t, null, true));
 
-				var path = FindPath( PathSearch.FromPoints( world, mobileInfo, tilesInRange, src, false )
-					.WithCustomBlocker(AvoidUnitsNear(src, 4, self))
-					.InReverse());
-				path.Reverse();
-				return path;
+                var path = FindBidiPath(
+                    PathSearch.FromPoints(world, mi, tilesInRange, src, true)
+                        .WithCustomBlocker(AvoidUnitsNear(src, 4, self)),
+                    PathSearch.FromPoint(world, mi, src, target, true)
+                        .WithCustomBlocker(AvoidUnitsNear(src, 4, self))
+                        .InReverse());
+                
+                return path;
 			}
 		}
 		
