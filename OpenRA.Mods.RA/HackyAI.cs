@@ -409,7 +409,7 @@ namespace OpenRA.Mods.RA
 		private void BuildRandom(string category)
 		{
 			// Pick a free queue
-			var queue = world.Queries.WithTraitMultiple<ProductionQueue>()
+			var queue = world.Queries.WithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p &&
 					   a.Trait.Info.Type == category &&
 					   a.Trait.CurrentItem() == null)
@@ -457,7 +457,7 @@ namespace OpenRA.Mods.RA
 			public void Tick()
 			{
 				// Pick a free queue
-				var queue = ai.world.Queries.WithTraitMultiple<ProductionQueue>()
+				var queue = ai.world.Queries.WithTrait<ProductionQueue>()
 					.Where(a => a.Actor.Owner == ai.p && a.Trait.Info.Type == category)
 					.Select(a => a.Trait)
 					.FirstOrDefault();

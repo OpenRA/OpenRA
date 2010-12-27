@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 					var prevItems = GetNumBuildables(self.Owner);
 					
 					// Find the queue with the target actor
-					var queue = w.Queries.WithTraitMultiple<ProductionQueue>()
+					var queue = w.Queries.WithTrait<ProductionQueue>()
 						.Where(p => p.Actor.Owner == self.Owner &&
 						       		 p.Trait.CurrentItem() != null && 
 					                 p.Trait.CurrentItem().Item == order.TargetString && 
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (p != p.World.LocalPlayer) return 0;		// this only matters for local players.
 			
-			return p.World.Queries.WithTraitMultiple<ProductionQueue>()
+			return p.World.Queries.WithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p)
 				.SelectMany(a => a.Trait.BuildableItems()).Distinct().Count();
 		}

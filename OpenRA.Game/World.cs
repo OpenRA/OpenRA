@@ -167,7 +167,7 @@ namespace OpenRA
 			if (!DisableTick)
 			{
 				actors.Do( x => x.Tick() );
-				Queries.WithTraitMultiple<ITick>().DoTimed( x =>
+				Queries.WithTrait<ITick>().DoTimed( x =>
 				{
 					x.Trait.Tick( x.Actor );
 				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
@@ -239,11 +239,6 @@ namespace OpenRA
 					x => new TraitPair<T> { Actor = x, Trait = x.Trait<T>() } );
 				hasTrait.Add( ret );
 				return ret;
-			}
-
-			public IEnumerable<TraitPair<T>> WithTraitMultiple<T>()
-			{
-				return world.traitDict.ActorsWithTraitMultiple<T>( world );
 			}
 
 			public class OwnedByCachedView : CachedView<Actor, Actor>
