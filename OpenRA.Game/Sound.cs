@@ -28,8 +28,7 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
-			var data = AudLoader.LoadSound(FileSystem.Open(filename));
-			return soundEngine.AddSoundSourceFromMemory(data, 1, 16, 22050);
+            return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
 		}
 
 		static ISoundSource LoadSoundRaw(byte[] rawData)
