@@ -307,34 +307,6 @@ namespace OpenRA
 			return modData.ObjectCreator.CreateObject<T>( name );
 		}
 
-		public static void RejoinLobby(World world)
-		{
-			var map = orderManager.LobbyInfo.GlobalSettings.Map;
-			var host = orderManager.Host;
-			var port = orderManager.Port;
-			var isHost = Game.IsHost;
-
-			Disconnect();
-			ConnectedToLobby += () =>
-         	{
-				if (world.LocalPlayer != null)
-				{
-					/* Try to get back the old slot */
-					Game.orderManager.IssueOrder(Order.Command("race " + world.LocalPlayer.Country.Race));
-					Game.orderManager.IssueOrder(Order.Command("slot " + world.LobbyInfo.ClientWithIndex(world.LocalPlayer.ClientIndex).Slot));
-				}else /* a spectator */
-				{
-					Game.orderManager.IssueOrder(Order.Command("spectator"));
-				}
-
-         		ConnectedToLobby = null;
-         	};
-			if (isHost)
-				CreateAndJoinServer( Settings, map );
-			else
-				JoinServer(host, port);
-		}
-
 		public static void CreateAndJoinServer(Settings settings, string map)
 		{
 			server = new Server.Server(modData, settings, map);
