@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Support;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
@@ -132,5 +133,18 @@ namespace OpenRA.Traits
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
 
 		public static int2 CellContaining(float2 pos) { return (1f / Game.CellSize * pos).ToInt2(); }
+
+        /* pretty crap */
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, Thirdparty.Random random)
+        {
+            var items = ts.ToList();
+            while (items.Count > 0)
+            {
+                var t = items.Random(random);
+                yield return t;
+                items.Remove(t);
+            }
+        }
+
 	}
 }

@@ -82,26 +82,21 @@ namespace OpenRA.Mods.RA
 
 			//Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
 		}
-		
-		public virtual bool Produce( Actor self, ActorInfo producee )
-		{			
-			// Todo: remove assumption on Mobile; 
-			// required for 3-arg CanEnterCell
-			//var mobile = newUnit.Trait<Mobile>();
-			var mobileInfo = producee.Traits.Get<MobileInfo>();
-			var uim = self.World.WorldActor.Trait<UnitInfluence>();
-			
-			// Pick a spawn/exit point pair
-			// Todo: Reorder in a synced random way
-			foreach (var s in self.Info.Traits.WithInterface<ExitInfo>())
-				if( mobileInfo.CanEnterCell( self.World, uim, self.Location + s.ExitCell,self,true ) )
-				{
-					DoProduction(self, producee, s);
-					return true;
-				}
-			return false;
-		}
 
+        public virtual bool Produce(Actor self, ActorInfo producee)
+        {
+            // todo: remove Mobile requirement.
+            var mobileInfo = producee.Traits.Get<MobileInfo>();
+            var uim = self.World.WorldActor.Trait<UnitInfluence>();
 
+            // pick a spawn/exit point pair
+            foreach (var s in self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom))
+                if (mobileInfo.CanEnterCell(self.World, uim, self.Location + s.ExitCell, self, true))
+                {
+                    DoProduction(self, producee, s);
+                    return true;
+                }
+            return false;
+        }
 	}
 }
