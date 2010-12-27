@@ -18,10 +18,16 @@ namespace OpenRA.Mods.RA.Render
 	class RenderWarFactoryInfo : RenderBuildingInfo
 	{
 		public override object Create(ActorInitializer init) { return new RenderWarFactory(init); }
-		
+
+        /* get around unverifiability */
+        IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, string tileset)
+        {
+            return base.BuildingPreview(building, tileset);
+        }
+
 		public override IEnumerable<Renderable> BuildingPreview(ActorInfo building, string Tileset)
 		{
-			foreach (var r in base.BuildingPreview(building, Tileset))
+			foreach (var r in BaseBuildingPreview(building, Tileset))
 				yield return r;
 
 			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
