@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			rl.Children.Clear();
 			rl.ContentHeight = 0;
 			var offset = template.Bounds.Y;
-			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep"))
+			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
 				AddReplay(rl, replayFile, template, ref offset);
 
 			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
