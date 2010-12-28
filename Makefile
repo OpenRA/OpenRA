@@ -1,7 +1,7 @@
 CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll
+COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll
 PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
@@ -21,7 +21,7 @@ fileformats_SRCS	= $(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	= OpenRA.FileFormats.dll
 #fileformats_DEPS	= fixheader
 fileformats_KIND	= library
-fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll thirdparty/ICSharpCode.SharpZipLib.dll
+fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
 PROGRAMS 			= fileformats
 fileformats: $(fileformats_TARGET)
 
