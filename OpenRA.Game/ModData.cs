@@ -34,6 +34,9 @@ namespace OpenRA
 			LoadScreen.Init();
 			LoadScreen.Display();
 			
+            // all this manipulation of static crap here is nasty and breaks 
+            // horribly when you use ModData in unexpected ways.
+
 			FileSystem.LoadFromManifest( Manifest );
 			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
