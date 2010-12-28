@@ -43,11 +43,21 @@ namespace OpenRA
 		}
 		
 		// TODO: Do this nicer
+        IEnumerable<string> FindMapsIn(string dir)
+        {
+            string[] NoMaps = { };
+
+            if (!Directory.Exists(dir))
+                return NoMaps;
+
+            // todo: look for compressed maps too.
+            return Directory.GetDirectories(dir);
+        }
+
 		Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
-			var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
-				.Where(p => Directory.Exists(p))
-				.SelectMany(p => Directory.GetDirectories(p)).ToList();
+            var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
+                .SelectMany(p => FindMapsIn(p));
 
 			return paths.Select(p => new MapStub(new Folder(p, int.MaxValue))).ToDictionary(m => m.Uid);
 		}
