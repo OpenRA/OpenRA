@@ -175,7 +175,8 @@ namespace OpenRA.TilesetBuilder
 			}
 			
 			tileset.Save(Path.Combine(dir, tilesetFile));
-			PackageWriter.CreateMix(Path.Combine(dir, mixFile),fileList);
+			throw new NotImplementedException("NotI");
+			//PackageWriter.CreateMix(Path.Combine(dir, mixFile),fileList);
 			
 			// Cleanup
 			foreach (var file in fileList)

@@ -105,7 +105,6 @@
     <Compile Include="Filesystem\MixFile.cs" />
     <Compile Include="Filesystem\FileSystem.cs" />
     <Compile Include="Filesystem\Folder.cs" />
-    <Compile Include="Filesystem\PackageWriter.cs" />
     <Compile Include="Filesystem\InstallShieldPackage.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="Filesystem\ZipFile.cs" />

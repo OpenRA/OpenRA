@@ -117,5 +117,10 @@ namespace OpenRA.FileFormats
 		{
 			get { return 2000 + priority; }
 		}
+		
+		public void Write(Dictionary<string, byte[]> contents)
+		{
+			throw new NotImplementedException("Cannot save InstallShieldPackages.");
+		}
 	}
 }

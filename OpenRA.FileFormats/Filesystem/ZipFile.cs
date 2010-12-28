@@ -48,5 +48,31 @@ namespace OpenRA.FileFormats
 		{
 			get { return 500 + priority; }
 		}
+		
+		public void Write(Dictionary<string, byte[]> contents)
+		{
+			pkg.BeginUpdate();
+			// TODO: Clear existing content?
+			
+			foreach (var kvp in contents)
+			{
+				pkg.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
+			}
+			pkg.CommitUpdate();
+		}
+	}
+
+	class StaticMemoryDataSource : IStaticDataSource
+	{
+		byte[] data;
+		public StaticMemoryDataSource (byte[] data)
+		{
+			this.data = data;
+		}
+		
+		public Stream GetSource()
+		{
+			return new MemoryStream(data);
+		}
 	}
 }

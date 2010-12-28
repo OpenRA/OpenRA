@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace OpenRA.FileFormats
 {
@@ -42,6 +43,14 @@ namespace OpenRA.FileFormats
 		public int Priority
 		{
 			get { return priority; }
+		}
+		
+		public void Write(Dictionary<string, byte[]> contents)
+		{
+			foreach (var file in contents)
+				using (var dataStream = File.Create(Path.Combine(path, file.Key)))
+					using (var writer = new BinaryWriter(dataStream))
+				       writer.Write(file.Value);
 		}
 	}
 }

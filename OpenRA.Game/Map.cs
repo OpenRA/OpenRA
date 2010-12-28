@@ -226,8 +226,7 @@ namespace OpenRA
 			entries.Add("map.bin", SaveBinaryData());
 			var s = root.WriteToString();
 			entries.Add("map.yaml", System.Text.Encoding.UTF8.GetBytes(s));
-			PackageWriter.CreateZip(filepath, entries);
-			Container = new ZipFile(filepath, 0);
+			Container.Write(entries);
 		}
 
 		static byte ReadByte(Stream s)

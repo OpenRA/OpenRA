@@ -20,6 +20,7 @@ namespace OpenRA.FileFormats
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<uint> AllFileHashes();
+		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
 	}
 
@@ -157,6 +158,35 @@ namespace OpenRA.FileFormats
 		public int Priority
 		{
 			get { return 1000 + priority; }
+		}
+		
+		public void Write(Dictionary<string, byte[]> contents)
+		{
+			// Construct a list of entries for the file header
+			uint dataSize = 0;
+			var items = new List<PackageEntry>();
+			foreach (var kv in contents)
+			{
+				uint length = (uint)kv.Value.Length;
+				uint hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key));
+				items.Add(new PackageEntry(hash, dataSize, length));
+				dataSize += length;
+			}
+
+			using (var writer = new BinaryWriter(s))
+			{
+				// Write file header
+				writer.Write((ushort)items.Count);
+				writer.Write(dataSize);
+				foreach (var item in items)
+					item.Write(writer);
+
+				writer.Flush();
+
+				// Copy file data
+				foreach (var file in contents)
+					s.Write(file.Value);
+			}
 		}
 	}
 
