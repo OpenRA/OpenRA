@@ -45,8 +45,8 @@ cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 cp OpenRA.Game/OpenRA.ico packaging/built
 
 # Update mod versions
-sed -i "" "s/{DEV_VERSION}/$VERSION/" ./packaging/built/mods/ra/mod.yaml
-sed -i "" "s/{DEV_VERSION}/$VERSION/" ./packaging/built/mods/cnc/mod.yaml
+sed "s/{DEV_VERSION}/$VERSION/" -i ./packaging/built/mods/ra/mod.yaml
+sed "s/{DEV_VERSION}/$VERSION/" -i ./packaging/built/mods/cnc/mod.yaml
  
 
 #
