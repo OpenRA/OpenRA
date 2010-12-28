@@ -238,9 +238,9 @@ namespace OpenRA
 			PerfHistory.items["text"].hasNormalTick = false;
 			PerfHistory.items["cursor"].hasNormalTick = false;
 
-			
 			JoinLocal();
-			StartGame(modData.Manifest.ShellmapUid);
+
+			StartGame(ChooseShellmap());
 
 			// TODO: unhardcode this
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
@@ -248,6 +248,13 @@ namespace OpenRA
 
 			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
+
+        static string ChooseShellmap()
+        {
+            return modData.AvailableMaps
+                .Where(m => m.Value.UseAsShellmap)
+                .Random(CosmeticRandom).Key;
+        }
 
 		static bool quit;
 		internal static void Run()
@@ -274,7 +281,7 @@ namespace OpenRA
 				server.Shutdown();
 
 			orderManager.Dispose();
-			var shellmap = modData.Manifest.ShellmapUid;
+			var shellmap = ChooseShellmap();
 			JoinLocal();
 			StartGame(shellmap);
 

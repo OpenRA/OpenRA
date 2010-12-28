@@ -78,7 +78,6 @@ Movies:
 	mods/ra/movies2.yaml
 
 LoadScreen: RALoadScreen
-ShellmapUid:a628d8d09c2275ca22e1dc84e41491978a96a71e
 ServerTraits:
 	PlayerCommands
 	LobbyCommands

@@ -21,7 +21,7 @@ namespace OpenRA.FileFormats
 			Mods, Folders, Packages, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets;
-		public readonly string ShellmapUid, LoadScreen;
+		public readonly string LoadScreen;
 		public readonly int TileSize = 24;
 
 		public Manifest(string[] mods)
@@ -47,7 +47,6 @@ namespace OpenRA.FileFormats
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");
 
-			ShellmapUid = yaml.First( x => x.Key == "ShellmapUid" ).Value.Value;
 			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value.Value;
 			
 			if (yaml.FirstOrDefault( x => x.Key == "TileSize" ) != null)

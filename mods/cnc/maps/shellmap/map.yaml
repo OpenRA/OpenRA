@@ -18,6 +18,8 @@ TopLeft: 8,1
 
 BottomRight: 88,46
 
+UseAsShellmap: yes
+
 Players:
 	PlayerReference@Nod:
 		Name: Nod

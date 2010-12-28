@@ -332,6 +332,7 @@ namespace OpenRA.Editor
 				pd.desc.Text = surface1.Map.Description;
 				pd.author.Text = surface1.Map.Author;
 				pd.selectable.Checked = surface1.Map.Selectable;
+                pd.useAsShellmap.Checked = surface1.Map.UseAsShellmap;
 
 				if (DialogResult.OK != pd.ShowDialog())
 					return;
@@ -340,6 +341,7 @@ namespace OpenRA.Editor
 				surface1.Map.Description = pd.desc.Text;
 				surface1.Map.Author = pd.author.Text;
 				surface1.Map.Selectable = pd.selectable.Checked;
+                surface1.Map.UseAsShellmap = pd.useAsShellmap.Checked;
 			}
 		}
 
