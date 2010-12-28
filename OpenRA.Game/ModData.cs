@@ -62,7 +62,7 @@ namespace OpenRA
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods/" + p + "/maps/"));
 
-			return paths.Select(p => new MapStub(new Folder(p, int.MaxValue)))
+			return paths.Select(p => new MapStub(FileSystem.OpenPackage(p, int.MaxValue)))
                 .ToDictionary(m => m.Uid);
 		}
 		
