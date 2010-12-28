@@ -57,7 +57,7 @@ namespace OpenRA
 
 		Dictionary<string, MapStub> FindMaps(string[] mods)
 		{
-            var paths = new[] { "maps/" }.Concat(mods.Select(m => "mods/" + m + "/maps/"))
+            var paths = mods.Select(m => "mods/" + m + "/maps/")
                 .SelectMany(p => FindMapsIn(p));
 
 			return paths.Select(p => new MapStub(new Folder(p, int.MaxValue)))
