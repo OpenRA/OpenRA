@@ -149,7 +149,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return;
 			}
 
-			if (games.Count() == 0)
+            // only "waiting for players"
+            var gamesWaiting = games.Where(g => g.State == 1);
+
+            if (gamesWaiting.Count() == 0)
 			{
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";
@@ -161,7 +164,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			sl.ContentHeight = 0;
 			int offset = ServerTemplate.Bounds.Y;
 			int i = 0;
-			foreach (var loop in games.Where(g => g.State == 1))	/* only "waiting for players" */
+            foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
 				var template = ServerTemplate.Clone() as LabelWidget;
