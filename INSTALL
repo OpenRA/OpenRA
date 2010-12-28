@@ -86,8 +86,8 @@ UBUNTU (substitute comparable packages for other linux distros):
 OpenRA is incompatible with Compiz, please disable desktop effects when trying
 to run OpenRA or the game will crash.
 
-You will need to copy the Tao dependencies (.dll and .config) from the
-thirdparty/Tao directory into the game root, or install them permanently into
+You will need to copy the third party dependencies (.dll and .config) from the
+thirdparty and thirdparty/Tao directories into the game root, or install them permanently into
 your GAC with the following script
 
 #!/bin/sh
@@ -96,6 +96,7 @@ gacutil -i thirdparty/Tao/Tao.OpenGl.dll
 gacutil -i thirdparty/Tao/Tao.OpenAl.dll
 gacutil -i thirdparty/Tao/Tao.Sdl.dll
 gacutil -i thirdparty/Tao/Tao.FreeType.dll
+gacutil -i thirdparty/ICSharpCode.SharpZipLib.dll
 
 To compile OpenRA, run `make' from the command line.
 Run the game with `mono OpenRA.Game.exe Game.Mods=ra` for Red Alert
