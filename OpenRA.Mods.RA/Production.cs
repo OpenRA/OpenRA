@@ -9,10 +9,12 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.RA
 {
@@ -49,54 +51,82 @@ namespace OpenRA.Mods.RA
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.Trait<IHasLocation>().PxPosition + exitinfo.SpawnOffset;
 
-			var mobile = newUnit.Trait<Mobile>();
+			var teleportable = newUnit.Trait<ITeleportable>();
 			var facing = newUnit.TraitOrDefault<IFacing>();
 			
 			// Set the physical position of the unit as the exit cell
-			mobile.SetPosition(newUnit,exit);
+			teleportable.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
-			mobile.PxPosition = spawn;
+            teleportable.SetPxPosition(newUnit, spawn);
 			if (facing != null)
 				facing.Facing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, facing.Facing) : exitinfo.Facing;
 			self.World.Add(newUnit);
 
-			// Animate the spawn -> exit transition
-			var speed = mobile.MovementSpeedForCell(self, exit);
-			var length = speed > 0 ? (int)( ( to - spawn ).Length*3 / speed ) : 0;
-			newUnit.QueueActivity(new Drag(spawn, to, length));
+            var mobile = newUnit.TraitOrDefault<Mobile>();
+            if (mobile != null)
+            {
+                // Animate the spawn -> exit transition
+                var speed = mobile.MovementSpeedForCell(newUnit, exit);
+                var length = speed > 0 ? (int)((to - spawn).Length * 3 / speed) : 0;
+                newUnit.QueueActivity(new Drag(spawn, to, length));
+            }
 
-//			Log.Write("debug", "length={0} facing={1} exit={2} spawn={3}", length, facing.Facing, exit, spawn);
-			
-			// For the target line
-			var target = exit;
-			var rp = self.TraitOrDefault<RallyPoint>();
-			if (rp != null)
-			{
-				target = rp.rallyPoint;
-				newUnit.QueueActivity(mobile.MoveTo(target, 1));
-			}
+            var target = MoveToRallyPoint(self, newUnit, exit);
 			
 			newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
 			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);
-
-			//Log.Write("debug", "{0} #{1} produced by {2} #{3}", newUnit.Info.Name, newUnit.ActorID, self.Info.Name, self.ActorID);
 		}
+
+        static int2 MoveToRallyPoint(Actor self, Actor newUnit, int2 exitLocation)
+        {
+            var rp = self.TraitOrDefault<RallyPoint>();
+            if (rp == null)
+                return exitLocation;
+
+            var mobile = self.TraitOrDefault<Mobile>();
+            if (mobile != null)
+            {
+                newUnit.QueueActivity(mobile.MoveTo(rp.rallyPoint, 1));
+                return rp.rallyPoint;
+            }
+
+            // todo: don't talk about HeliFly here.
+            var helicopter = self.TraitOrDefault<Helicopter>();
+            if (helicopter != null)
+            {
+                newUnit.QueueActivity(new HeliFly(Util.CenterOfCell(rp.rallyPoint)));
+                return rp.rallyPoint;
+            }
+
+            return exitLocation;
+        }
 
         public virtual bool Produce(Actor self, ActorInfo producee)
         {
-            // todo: remove Mobile requirement.
-            var mobileInfo = producee.Traits.Get<MobileInfo>();
-            var uim = self.World.WorldActor.Trait<UnitInfluence>();
+            if (Reservable.IsReserved(self))
+                return false;
 
             // pick a spawn/exit point pair
-            foreach (var s in self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom))
-                if (mobileInfo.CanEnterCell(self.World, uim, self.Location + s.ExitCell, self, true))
-                {
-                    DoProduction(self, producee, s);
-                    return true;
-                }
+            var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
+                .FirstOrDefault(e => CanUseExit(self, producee, e));
+
+            if (exit != null)
+            {
+                DoProduction(self, producee, exit);
+                return true;
+            }
+
             return false;
+        }
+
+        static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
+        {
+            var uim = self.World.WorldActor.Trait<UnitInfluence>();
+            var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
+
+            return mobileInfo == null || 
+                mobileInfo.CanEnterCell(self.World, uim, self.Location + s.ExitCell, self, true);
         }
 	}
 }

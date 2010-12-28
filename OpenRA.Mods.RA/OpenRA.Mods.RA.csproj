@@ -151,7 +151,6 @@
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitTurreted.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
-    <Compile Include="Air\ReservableProduction.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
     <Compile Include="AttackFrontal.cs" />
     <Compile Include="Air\AttackHeli.cs" />
@@ -353,8 +352,4 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="SupportPowers\" />
-    <Folder Include="Player\" />
-  </ItemGroup>
 </Project>

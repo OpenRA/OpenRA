@@ -388,7 +388,7 @@ HPAD:
 	Bib:
 	Exit@1:
 		SpawnOffset: 0,-6
-	ReservableProduction:
+	Production:
 		Produces: Plane
 	BelowUnits:
 	Reservable:

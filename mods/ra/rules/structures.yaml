@@ -698,7 +698,7 @@ HPAD:
 	Exit@1:
 		SpawnOffset: 0,-6
 		ExitCell: 0,0
-	ReservableProduction:
+	Production:
 		Produces: Plane
 	PrimaryBuilding:
 	BelowUnits:
@@ -732,7 +732,7 @@ AFLD:
 	Exit@1:
 		SpawnOffset: 0,-4
 		ExitCell: 1,1
-	ReservableProduction:
+	Production:
 		Produces: Plane
 	PrimaryBuilding:
 	BelowUnits:
