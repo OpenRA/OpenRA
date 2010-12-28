@@ -225,7 +225,7 @@ namespace OpenRA.FileFormats
 		{
 			return string.Join("\n", y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
 		}
-
+		
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
 		{
 			foreach (var kv in y)

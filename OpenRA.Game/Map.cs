@@ -195,7 +195,6 @@ namespace OpenRA
 		public void Save(string filepath)
 		{
 			// Todo: save to a zip file in the support dir by default
-			Container = new Folder(filepath, 0);
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();
@@ -222,9 +221,13 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 			root.Add(new MiniYamlNode("Voices", null, Voices));
-
-			SaveBinaryData(Path.Combine(filepath, "map.bin"));
-			root.WriteToFile(Path.Combine(filepath, "map.yaml"));
+			
+			Dictionary<string, byte[]> entries = new Dictionary<string, byte[]>();
+			entries.Add("map.bin", SaveBinaryData());
+			var s = root.WriteToString();
+			entries.Add("map.yaml", System.Text.Encoding.UTF8.GetBytes(s));
+			PackageWriter.CreateZip(filepath, entries);
+			Container = new ZipFile(filepath, 0);
 		}
 
 		static byte ReadByte(Stream s)
@@ -277,9 +280,9 @@ namespace OpenRA
 			}
 		}
 
-		public void SaveBinaryData(string filepath)
+		public byte[] SaveBinaryData()
 		{
-			using (var dataStream = File.Create(filepath + ".tmp"))
+			MemoryStream dataStream = new MemoryStream();
 			using (var writer = new BinaryWriter(dataStream))
 			{
 				// File header consists of a version byte, followed by 2 ushorts for width and height
@@ -303,8 +306,7 @@ namespace OpenRA
 						writer.Write(MapResources[i, j].index);
 					}
 			}
-			File.Delete(filepath);
-			File.Move(filepath + ".tmp", filepath);
+			return dataStream.ToArray();
 		}
 
 		public bool IsInMap(int2 xy)

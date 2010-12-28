@@ -267,17 +267,17 @@ namespace OpenRA.Editor
 					if (nms.txtNew.Text == "")
 						nms.txtNew.Text = "unnamed";
 
-					string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
-					loadedMapName = mapfoldername;
+					string mapZipName = Path.Combine(nms.MapFolderPath, nms.txtNew.Text + ".oramap");
+					loadedMapName = mapZipName;
 
-					try
-					{
-						Directory.CreateDirectory(mapfoldername);
-					}
-					catch (Exception ed)
-					{
-						MessageBox.Show("Directory creation failed: {0}", ed.ToString());
-					}
+//					try
+//					{
+//						Directory.CreateDirectory(mapZipName);
+//					}
+//					catch (Exception ed)
+//					{
+//						MessageBox.Show("Directory creation failed: {0}", ed.ToString());
+//					}
 
 					SaveClicked(sender, e);
 				}

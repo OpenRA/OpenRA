@@ -10,6 +10,9 @@
 
 using System.Collections.Generic;
 using System.IO;
+using ICSharpCode.SharpZipLib;
+using ICSharpCode.SharpZipLib.Zip;
+using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace OpenRA.FileFormats
 {
@@ -43,6 +46,32 @@ namespace OpenRA.FileFormats
 				foreach (var file in contents)
 					s.Write(File.ReadAllBytes(file));
 			}
+		}
+		
+		class StaticMemoryDataSource : IStaticDataSource
+		{
+			byte[] data;
+			public StaticMemoryDataSource (byte[] data)
+			{
+				this.data = data;
+			}
+			
+			public Stream GetSource()
+			{
+				return new MemoryStream(data);
+			}
+		}
+		
+		public static void CreateZip(string zipFile, Dictionary<string, byte[]> contents)
+		{
+			var z = SZipFile.Create(zipFile);
+			z.BeginUpdate();
+			foreach (var kvp in contents)
+			{
+				z.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
+			}
+			z.CommitUpdate();
+			z.Close();
 		}
 	}
 }
