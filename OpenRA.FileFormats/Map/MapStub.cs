@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace OpenRA.FileFormats
 {
@@ -46,8 +47,20 @@ namespace OpenRA.FileFormats
 			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			
 			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
-			Uid = Container.GetContent("map.uid").ReadAllText();
+            Uid = ComputeHash();
 		}
+
+        string ComputeHash()
+        {
+            // UID is calculated by taking an SHA1 of the yaml and binary data
+            // Read the relevant data into a buffer
+            var data = Container.GetContent("map.yaml").ReadAllBytes()
+                .Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
+
+            // Take the SHA1
+            using (var csp = SHA1.Create())
+                return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+        }
 
 		static object LoadWaypoints( MiniYaml y )
 		{
