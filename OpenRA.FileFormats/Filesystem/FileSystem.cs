@@ -42,6 +42,8 @@ namespace OpenRA.FileFormats
 				return new MixFile(filename, order++);
 			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order++);
+            else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+                return new ZipFile(filename, order++);
 			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldPackage(filename, order++);
 			else

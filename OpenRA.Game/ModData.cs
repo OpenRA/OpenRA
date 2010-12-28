@@ -50,7 +50,9 @@ namespace OpenRA
                 return NoMaps;
 
             // todo: look for compressed maps too.
-            return Directory.GetDirectories(dir);
+            return Directory.GetDirectories(dir)
+                .Concat(Directory.GetFiles(dir, "*.zip"))
+                .Concat(Directory.GetFiles(dir, "*.oramap"));
         }
 
 		Dictionary<string, MapStub> FindMaps(string[] mods)
