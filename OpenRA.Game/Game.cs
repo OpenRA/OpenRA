@@ -166,7 +166,6 @@ namespace OpenRA
 		}
 
 		public static event Action LobbyInfoChanged = () => { };
-		public static event Action ConnectedToLobby = () => { };
 
 		internal static void SyncLobbyInfo()
 		{
