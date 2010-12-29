@@ -8,12 +8,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
-using System.Linq;
 
 namespace OpenRA.FileFormats
 {
@@ -25,7 +23,19 @@ namespace OpenRA.FileFormats
 		public ZipFile(string filename, int priority)
 		{
 			this.priority = priority;
-			pkg = new SZipFile(File.OpenRead(filename));
+			if (File.Exists(filename))
+			{
+				try
+				{
+					pkg = new SZipFile(File.OpenRead(filename));
+				}
+				catch (ZipException e)
+				{
+					Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
+				}
+			}
+			else
+				pkg = SZipFile.Create(filename);
 		}
 
 		public Stream GetContent(string filename)
