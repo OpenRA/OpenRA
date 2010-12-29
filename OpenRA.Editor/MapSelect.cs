@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using System.Linq;
 
 namespace OpenRA.Editor
 {
@@ -10,9 +11,12 @@ namespace OpenRA.Editor
     {
         public string MapFolderPath;
 
-        public MapSelect()
+        public MapSelect(string currentMod)
         {
-            InitializeComponent();
+            MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+				.Aggregate(Path.Combine);
+			
+			InitializeComponent();
 			MapIconsList.Images.Add(pictureBox1.Image);
         }
 

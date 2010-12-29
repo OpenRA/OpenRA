@@ -254,11 +254,8 @@ namespace OpenRA.Editor
 
 		void SaveAsClicked(object sender, EventArgs e)
 		{
-			using (var nms = new MapSelect())
+			using (var nms = new MapSelect(currentMod))
 			{
-				nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
-				.Aggregate(Path.Combine);
-
 				nms.txtNew.ReadOnly = false;
 				nms.btnOk.Text = "Save";
 				nms.txtNew.Text = "unnamed";
@@ -281,21 +278,14 @@ namespace OpenRA.Editor
 
 		void OpenClicked(object sender, EventArgs e)
 		{
-			using (var nms = new MapSelect())
+			using (var nms = new MapSelect(currentMod))
 			{
-				nms.MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
-				.Aggregate(Path.Combine);
-
 				nms.txtNew.ReadOnly = true;
 				nms.txtPathOut.ReadOnly = true;
 				nms.btnOk.Text = "Open";
 
 				if (DialogResult.OK == nms.ShowDialog())
-				{
-					var path = nms.txtNew.Tag as string;
-					System.Console.WriteLine("OpenClicked: {0}", path);
-					LoadMap(path);
-				}
+					LoadMap(nms.txtNew.Tag as string);
 			}
 		}
 
