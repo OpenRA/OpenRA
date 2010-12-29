@@ -18,7 +18,8 @@ namespace OpenRA.FileFormats
 {
 	public class MapStub
 	{
-		public IFolder Container { get; protected set; }
+		protected IFolder Container;
+		public string Path;
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
@@ -43,11 +44,9 @@ namespace OpenRA.FileFormats
 		public MapStub() {} // Hack for the editor - not used for anything important
 		
 		public MapStub(string path)
-			: this(FileSystem.OpenPackage(path, int.MaxValue)) {}
-		
-		public MapStub(IFolder container)
 		{
-			Container = container;
+			Path = path;
+			Container = FileSystem.OpenPackage(path, int.MaxValue);
 			var yaml = MiniYaml.FromStream(Container.GetContent("map.yaml"));
 			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			

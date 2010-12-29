@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
-			Map = new Map(Game.modData.AvailableMaps[MapUid]);
+			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;

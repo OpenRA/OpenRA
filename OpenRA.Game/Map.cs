@@ -85,10 +85,8 @@ namespace OpenRA
 			public string Owner = null;
 		}
 		
-		public Map(string path) : this(FileSystem.OpenPackage(path, int.MaxValue)) {}
-		public Map(MapStub stub) : this(stub.Container) {}
-		public Map(IFolder package)
-			: base(package)
+		public Map(string path)
+			: base(path)
 		{
 			var yaml = new MiniYaml( null, MiniYaml.FromStream( Container.GetContent( "map.yaml" ) ) );
 

@@ -77,7 +77,7 @@ namespace OpenRA
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			
-			var map = new Map(AvailableMaps[uid]);
+			var map = new Map(AvailableMaps[uid].Path);
 
 			// unload the previous map mount if we have one
 			if (previousMapMount != null) FileSystem.Unmount(previousMapMount);
@@ -85,11 +85,9 @@ namespace OpenRA
 			// Adds the map its container to the FileSystem
 			// allowing the map to use custom assets
 			// Container should have the lowest priority of all (ie int max)
-			FileSystem.Mount(map.Container);
-
 			// Store a reference so we can unload it next time
-			previousMapMount = map.Container;
-
+			previousMapMount = FileSystem.OpenPackage(map.Path, int.MaxValue);
+			FileSystem.Mount(previousMapMount);
 			Rules.LoadRules(Manifest, map);
 
 			if (map.Tileset != cachedTileset
