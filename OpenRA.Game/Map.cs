@@ -53,25 +53,28 @@ namespace OpenRA
 			// Do nothing; not a valid map (editor hack)
 		}
 		
-		public Map(string tileset)
+		public static Map NewWithTileset(string tileset)
 		{
-			MapSize = new int2(1, 1);
-			Tileset = tileset;
-			MapResources = new TileReference<byte, byte>[1, 1];
+			Map map = new Map();
+			map.MapSize = new int2(1, 1);
+			map.Tileset = tileset;
+			map.MapResources = new TileReference<byte, byte>[1, 1];
 			
-			var tile = OpenRA.Rules.TileSets[Tileset].Templates.First();
-			MapTiles = new TileReference<ushort, byte>[1, 1] 
+			var tile = OpenRA.Rules.TileSets[map.Tileset].Templates.First();
+			map.MapTiles = new TileReference<ushort, byte>[1, 1] 
 				{ { new TileReference<ushort, byte> { 
 					type = tile.Key, 
 					image = (byte)(tile.Value.PickAny ? 0xffu : 0), 
 					index = (byte)(tile.Value.PickAny ? 0xffu : 0) } } };
 
-			PlayerCount = 0;
-			ResizeCordon(0,0,0,0);
+			map.PlayerCount = 0;
+			map.ResizeCordon(0,0,0,0);
 
-			Title = "Name your map here";
-			Description = "Describe your map here";
-			Author = "Your name here";
+			map.Title = "Name your map here";
+			map.Description = "Describe your map here";
+			map.Author = "Your name here";
+			
+			return map;
 		}
 
 		class Format2ActorReference
@@ -82,6 +85,7 @@ namespace OpenRA
 			public string Owner = null;
 		}
 		
+		public Map(string path) : this(FileSystem.OpenPackage(path, int.MaxValue)) {}
 		public Map(MapStub stub) : this(stub.Container) {}
 		public Map(IFolder package)
 			: base(package)
@@ -192,7 +196,7 @@ namespace OpenRA
 			LoadBinaryData();
 		}
 
-		public void Save(string filepath)
+		public void Save()
 		{
 			// Todo: save to a zip file in the support dir by default
 			MapFormat = 3;

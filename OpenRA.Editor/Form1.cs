@@ -61,8 +61,10 @@ namespace OpenRA.Editor
 
 			Game.modData = new ModData(currentMod);
 
+			System.Console.WriteLine("Loading map: {0}",mapname);
+			
 			// load the map
-			var map = new Map(new Folder(mapname, 0));
+			var map = new Map(mapname);
 
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.
@@ -243,8 +245,8 @@ namespace OpenRA.Editor
 				SaveAsClicked(sender, e);
 			else
 			{
-				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
-				surface1.Map.Save(loadedMapName);
+				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;				
+				surface1.Map.Save();
 				dirty = false;
 			}
 
@@ -267,17 +269,10 @@ namespace OpenRA.Editor
 					if (nms.txtNew.Text == "")
 						nms.txtNew.Text = "unnamed";
 
-					string mapZipName = Path.Combine(nms.MapFolderPath, nms.txtNew.Text + ".oramap");
-					loadedMapName = mapZipName;
-
-//					try
-//					{
-//						Directory.CreateDirectory(mapZipName);
-//					}
-//					catch (Exception ed)
-//					{
-//						MessageBox.Show("Directory creation failed: {0}", ed.ToString());
-//					}
+					// TODO: Allow the user to choose map format (directory vs oramap)
+					loadedMapName = Path.Combine(nms.MapFolderPath, nms.txtNew.Text + ".oramap");
+					
+					// TODO: Change surface1.Map.Container if necessary
 
 					SaveClicked(sender, e);
 				}
@@ -297,8 +292,9 @@ namespace OpenRA.Editor
 
 				if (DialogResult.OK == nms.ShowDialog())
 				{
-					string mapfoldername = Path.Combine(nms.MapFolderPath, nms.txtNew.Text);
-					LoadMap(mapfoldername);
+					var path = nms.txtNew.Tag as string;
+					System.Console.WriteLine("OpenClicked: {0}", path);
+					LoadMap(path);
 				}
 			}
 		}
@@ -313,7 +309,7 @@ namespace OpenRA.Editor
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var map = new Map(nmd.theater.SelectedItem as string);
+					var map = Map.NewWithTileset(nmd.theater.SelectedItem as string);
 
 					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
 					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
@@ -371,7 +367,8 @@ namespace OpenRA.Editor
 					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 
-					map.Save(savePath);
+					// TODO: Set map.Container using savePath
+					map.Save();
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
 

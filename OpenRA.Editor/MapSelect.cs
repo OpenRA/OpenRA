@@ -18,13 +18,14 @@ namespace OpenRA.Editor
 
         void MapSelect_Load(object sender, EventArgs e)
         {
-            DirectoryInfo directory = new DirectoryInfo(MapFolderPath);
-            DirectoryInfo[] directories = directory.GetDirectories();
             MapList.Items.Clear();
             txtPathOut.Text = MapFolderPath;
-            foreach (DirectoryInfo subDirectory in directories)
+			
+            foreach (var map in ModData.FindMapsIn(MapFolderPath))
             {
-                ListViewItem map1 = new ListViewItem(subDirectory.Name);
+                ListViewItem map1 = new ListViewItem();
+				map1.Tag = map;
+				map1.Text = Path.GetFileNameWithoutExtension(map);
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
             }
@@ -39,12 +40,15 @@ namespace OpenRA.Editor
             if (MapList.SelectedItems.Count == 1)
             {
                 txtNew.Text = MapList.SelectedItems[0].Text;
-                var map = new Map(new Folder(Path.Combine(MapFolderPath, MapList.SelectedItems[0].Text), 0));
+				txtNew.Tag = MapList.SelectedItems[0].Tag;
+				System.Console.WriteLine(MapList.SelectedItems[0]);
+                var map = new Map(txtNew.Tag as string);
                 txtTitle.Text = map.Title;
                 txtAuthor.Text = map.Author;
                 txtTheater.Text = map.Tileset;
                 txtDesc.Text = map.Description;
 				pbMinimap.Image = null;
+				
                 try
                 {
 					pbMinimap.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));

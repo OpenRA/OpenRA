@@ -45,7 +45,7 @@ namespace OpenRA
 			WidgetLoader = new WidgetLoader( this );
 		}
 		
-        IEnumerable<string> FindMapsIn(string dir)
+        public static IEnumerable<string> FindMapsIn(string dir)
         {
             string[] NoMaps = { };
 
@@ -62,7 +62,7 @@ namespace OpenRA
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods/" + p + "/maps/"));
 
-			return paths.Select(p => new MapStub(FileSystem.OpenPackage(p, int.MaxValue)))
+			return paths.Select(p => new MapStub(p))
                 .ToDictionary(m => m.Uid);
 		}
 		

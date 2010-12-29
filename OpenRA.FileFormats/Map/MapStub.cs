@@ -41,6 +41,10 @@ namespace OpenRA.FileFormats
 		public Rectangle Bounds;
 		
 		public MapStub() {} // Hack for the editor - not used for anything important
+		
+		public MapStub(string path)
+			: this(FileSystem.OpenPackage(path, int.MaxValue)) {}
+		
 		public MapStub(IFolder container)
 		{
 			Container = container;
