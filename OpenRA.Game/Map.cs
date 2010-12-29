@@ -53,7 +53,7 @@ namespace OpenRA
 			// Do nothing; not a valid map (editor hack)
 		}
 		
-		public static Map NewWithTileset(string tileset)
+		public static Map FromTileset(string tileset)
 		{
 			Map map = new Map();
 			map.MapSize = new int2(1, 1);
@@ -194,8 +194,18 @@ namespace OpenRA
 			LoadBinaryData();
 		}
 
-		public void Save()
+		public void Save(string toPath)
 		{
+			// Saving the map to a new location
+			if (toPath != Path)
+			{
+				// TODO: Copy all other files (resources, rules) in the map package
+				Path = toPath;
+				
+				// TODO: This doesn't work - need a FileSystem.CreatePackage()
+				Container = FileSystem.OpenPackage(Path, int.MaxValue);
+			}
+			
 			// Todo: save to a zip file in the support dir by default
 			MapFormat = 3;
 			

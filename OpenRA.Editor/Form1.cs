@@ -60,8 +60,6 @@ namespace OpenRA.Editor
 			loadedMapName = mapname;
 
 			Game.modData = new ModData(currentMod);
-
-			System.Console.WriteLine("Loading map: {0}",mapname);
 			
 			// load the map
 			var map = new Map(mapname);
@@ -246,7 +244,7 @@ namespace OpenRA.Editor
 			else
 			{
 				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;				
-				surface1.Map.Save();
+				surface1.Map.Save(loadedMapName);
 				dirty = false;
 			}
 
@@ -268,9 +266,6 @@ namespace OpenRA.Editor
 
 					// TODO: Allow the user to choose map format (directory vs oramap)
 					loadedMapName = Path.Combine(nms.MapFolderPath, nms.txtNew.Text + ".oramap");
-					
-					// TODO: Change surface1.Map.Container if necessary
-
 					SaveClicked(sender, e);
 				}
 			}
@@ -299,7 +294,7 @@ namespace OpenRA.Editor
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var map = Map.NewWithTileset(nmd.theater.SelectedItem as string);
+					var map = Map.FromTileset(nmd.theater.SelectedItem as string);
 
 					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
 					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
@@ -357,8 +352,7 @@ namespace OpenRA.Editor
 					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 
-					// TODO: Set map.Container using savePath
-					map.Save();
+					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
 

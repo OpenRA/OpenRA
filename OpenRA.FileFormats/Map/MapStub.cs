@@ -19,7 +19,7 @@ namespace OpenRA.FileFormats
 	public class MapStub
 	{
 		protected IFolder Container;
-		public string Path;
+		public string Path {get; protected set;}
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
