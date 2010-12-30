@@ -1,0 +1,208 @@
+-- function helpers
+local self = ...
+local function key (str)
+	self[str] = {type="keyword"}
+	return key
+end
+
+local function fn (description) 
+	local description2,returns,args = description:match("(.+)%-%s*(%b())%s*(%b())")
+	if not description2 then
+		return {type="function",description=description,
+			returns="(?)"} 
+	end
+	return {type="function",description=description2,
+		returns=returns:gsub("^%s+",""):gsub("%s+$",""), args = args} 
+end
+
+local function val (description)
+	return {type="value",description = description}
+end
+-- docs
+
+radians = fn "converts degrees to radians - (vecN)(vecN)"
+degrees = fn "converts radians to degrees - (vecN)(vecN)"
+sin = fn "returns sine of scalars and vectors. - (vecN)(vecN)"
+sinh = fn "returns hyperbolic sine of scalars and vectors. - (vecN)(vecN)"
+cos = fn "returns cosine of scalars and vectors.  - (vecN)(vecN)"
+cosh = fn "returns hyperbolic cosine of scalars and vectors. - (vecN)(vecN)"
+atan = fn "returns arc tangent of scalars and vectors. - (vecN)([vecN y_over_x ]/[vecN y, vecN x])"
+asin = fn "returns arc sine of scalars and vectors. - (vecN)(vecN)"
+acos = fn "returns arc cosine of scalars and vectors. - (vecN)(vecN)"
+atan = fn "returns arc tangent of scalars and vectors. - (vecN)(vecN)"
+tan = fn "returns tangent of scalars and vectors. - (vecN)(vecN)"
+tanh = fn "returns hyperbolic tangent of scalars and vectors. - (vecN)(vecN)"
+acosh = fn "returns hyperbolic arc cosine of scalars and vectors. - (vecN)(vecN)"
+asinh = fn "returns hyperbolic arc sine of scalars and vectors. - (vecN)(vecN)"
+atanh = fn "returns hyperbolic arc tangent of scalars and vectors. - (vecN)(vecN)"
+
+exp = fn "returns the base-e exponential of scalars and vectors. - (vecN)(vecN)"
+exp2 = fn "returns the base-2 exponential of scalars and vectors. - (vecN)(vecN)"
+log = fn "returns the natural logarithm of scalars and vectors. - (vecN)(vecN)"
+log2 = fn "returns the base-2 logarithm of scalars and vectors. - (vecN)(vecN)"
+pow = fn "returns x to the y-th power of scalars and vectors. - (vecN)(vecN x, y)"
+sqrt = fn "returns square root of scalars and vectors. - (vecN)(vecN)"
+inversesqrt = fn "returns inverse square root of scalars and vectors. - (vecN)(vecN)"
+
+abs = fn "returns absolute value of scalars and vectors. - (vecN)(vecN)"
+sign = fn "returns sign (1 or -1) of scalar or each vector component. - (vecN)(vecN)"
+floor = fn "returns largest integer not greater than a scalar or each vector component. - (vecN)(vecN)"
+ceil = fn "returns smallest integer not less than a scalar or each vector component.  - (vecN)(vecN)"
+trunc = fn "returns largest integer not greater than a scalar or each vector component. - (vecN)(vecN)"
+round = fn "returns the rounded value of scalars or vectors. - (vecN)(vecN a)"
+roundEven = fn "returns the nearest even integer value of scalars or vectors. - (vecN)(vecN a)"
+fract = fn "returns the fractional portion of a scalar or each vector component.  - (vecN)(vecN)"
+mod = fn "modulus - (vecN)(vecN x, y)"
+modf = fn "separate integer and fractional parts. - (vecN)(vecN x, out vecN i)"
+max = fn "returns the maximum of two scalars or each respective component of two vectors. - (vecN)(vecN a, b)"
+min = fn "returns the minimum of two scalars or each respective component of two vectors. - (vecN)(vecN a, b)"
+mix = fn "returns linear interpolation of two scalars or vectors based on a weight. - (vecN)(vecN a, b, weight)"
+step = fn "implement a step function returning either zero or one (x >= edge). - (vecN)(vecN edge, x)"
+
+isinf = fn "test whether or not a scalar or each vector component is infinite. - (boolN)(vecN)"
+isnan = fn "test whether or not a scalar or each vector component is not-a-number. - (boolN)(vecN)"
+clamp = fn "returns x clamped to the range [a,b]. - (vecN)(vecN x, a, b)"
+smoothstep = fn "clip and smooth blend [a,b]. - (vecN)(vecN a, b, x)"
+floatBitsToInt = fn "returns the 32-bit integer representation of an IEEE 754 floating-point scalar or vector - (uintN/intN)(floatN)"
+intBitsToFloat = fn "returns the float value corresponding to a given bit represention.of a scalar int value or vector of int values. - (floatN)(uintN/intN)"
+fma = fn "return a*b + c, treated as single operation when using precise - (vecN a, vecN b, vecN c)"
+frexp = fn "splits scalars and vectors into normalized fraction [0.5,1.0) and a power of 2. - (vecN)(vecN x, out vecN e)"
+ldexp = fn "build floating point number from x and the corresponding integral exponen of 2 in exp. - (vecN)(vecN x, exp)"
+
+packUnorm2x16 = fn "Converts each comp. of v into 16-bit ints, packs results into the returned 32-bit uint. - (uint)(vec2 v)"
+packUnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into the returned 32-bit uint. - (uint)(vec4 v)"
+packSnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into the returned 32-bit uint. - (uint)(vec4 v)"
+
+unpackUnorm2x16 = fn "Unpacks 32-bit p into two 16-bit uints and converts them to normalized float. - (vec2)(uint p)"
+unpackUnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)"
+unpackSnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)"
+
+packDouble2x32 = fn "Packs components of v into a 64-bit value and returns a double-prec value. - (double)(uvec2 v)"
+unpackDouble2x32 = fn "Returns a 2 component vector representation of v. - (uvec2)(double v)"
+
+length = fn "return scalar Euclidean length of a vector. - (type)(vecN)"
+distance = fn "return the Euclidean distance between two points. - (vecN)(vecN a, b)"
+dot = fn "returns the scalar dot product of two vectors. - (type)(vecN a, b)"
+cross = fn "returns the cross product of two three-component vectors. - (type3)(type3 a, b)"
+normalize = fn "Returns the normalized version of a vector, meaning a vector in the same direction as the original vector but with a Euclidean length of one. - (vecN)(vecN)"
+reflect = fn "returns the reflectiton vector given an incidence vector and a normal vector. - (vecN)(vecN incidence, normal)"
+refract = fn "computes a refraction vector. - (vecN)(vecN incidence, normal, type eta)"
+faceforward = fn "returns a normal as-is if a vertex's eye-space position vector points in the opposite direction of a geometric normal, otherwise return the negated version of the normal. - (vecN)(vecN Nperturbated, Incident, Ngeometric)"
+
+determinant = fn "returns the scalar determinant of a square matrix. - (float)(matN)"
+transpose = fn "returns transpose matrix of a matrix. - (matNxM)(matMxN)"
+inverse = fn "returns inverse matrix of a matrix. - (matN)(mat)"
+matrixCompMult = fn "component-wise multiply. - (mat)(mat a, b)"
+outerProduct = fn "outer product. - (matNxM)(vecM c, vecN r)"
+
+all = fn "returns true if a boolean scalar or all components of a boolean vector are true. - (bool)(boolN)"
+any = fn "returns true if a boolean scalar or any component of a boolean vector is true.  - (bool)(boolN)"
+--_G["not"] = fn "returns logical complement. - (boolN)(boolN)"
+lessThan = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+lessThanEqual = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+greaterThan = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+greaterThanEqual = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+equal = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+notEqual = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
+
+uaddCarry = fn "Adds 32-bit uintx and y, returning the sum modulo 2^32. - (uintN)(uintN x, y, out carry)"
+usubBorrow = fn "Subtracts y from x, returning the difference if non-negative otherwise 2^32 plus the difference. - (uint)(uint x, y, out  borrow)"
+umulExtended = fn "Multiplies 32-bit integers x and y producing 64-bit result. (uintN)(uintN x, y, out msb, out lsb)"
+imulExtended = fn "Multiplies 32-bit integers x and y producing 64-bit result. (intN)(intN x, y, out msb, out lsb)"
+bitfieldExtract = fn "Extracts bits (offset, offset + bits -1) from value and returns them in lsb of result.  - (intN)(intN value, int offset, int bits)"
+bitfieldInsert = fn "Returns the insertion the bits lsb of insert into base. - (intN)(intN base insert, int offset, int bits)"
+bitfieldReverse = fn "Returns the reversal of the bits. - (intN)(intN)"
+bitCount = fn "returns the number of bits set to 1. - (intN)(intN)"
+findLSB = fn "returns bit number of lsb. - (intN)(intN)"
+findMSB = fn "returns bit number of msb. - (intN)(intN)"
+
+discard = fn "conditionally (<0) kill a pixel before output. - ()(vecN)"
+dFdx = fn "returns approximate partial derivative with respect to window-space X. - (vecN)(vecN)"
+dFdy = fn "returns approximate partial derivative with respect to window-space Y. - (vecN)(vecN)"
+fwidth = fn "returns sum of approximate window-space partial derivatives magnitudes. - (vecN)(vecN)"
+interpolateAtCentroid = fn "Return value of interpolant sampled inside pixel and the primitive. - (floatN)(floatN)"
+interpolateAtSample = fn "Return value of interpolant at the location fo sample. - (floatN)(floatN, int sample)"
+interpolateAtOffset = fn "Return value of interpolant sampled at fixed offset offset from pixel center. - (floatN)(floatN, vec2 offset)"
+
+noise1 = fn "returns noise value. - (float)(float)"
+noise2 = fn "returns noise value. - (vec2)(float)"
+noise3 = fn "returns noise value. - (vec3)(float)"
+noise4 = fn "returns noise value. - (vec4)(float)"
+
+EmitStreamVertex = fn "Emits values of the output variables of the current output primitive stream. - ()(int stream)"
+EndStreamPrimitive = fn "Completes current output primitive stream and starts a new one. - ()(int stream)"
+EmitVertex= fn "Emits values of the output variable of the current output primitive. - ()()"
+EndPrimitive = fn "Completes current output primitive and starts a new one. - ()()"
+barrier = fn "Synchronizes across shader invocations. - ()()"
+
+memoryBarrier = fn "control ordering of memory transactions issued by shader thread. - ()()"
+imageAtomicAdd = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicMin = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicMax = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicIncWrap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicDecWrap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicAnd = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicOr = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicXor = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicExchange = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageAtomicCompSwap = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)"
+imageStore = fn "stores the texel at the coordinate. - ()(imageN, intN coord, [int sample], vecN data)"
+imageLoad = fn "loads the texel at the coordinate. - (vecN)(imageN, intN coord, [int sample])"
+
+textureSize = fn "returns the size of the texture (no lod required: Rect, MS and Buffer). - (intN)(samplerN, [int lod])"
+textureQueryLod = fn "returns the lod values for a given coordinate. - (vec2)(samplerN, vecN coord)"
+texture = fn "performs a texture lookup. Shadow samplers require base N+1 coordinate.  Lod bias is optional (illegal for MS, Buffer, Rect). - (vec4)(samplerN, vecN coord, [float bias])"
+textureProj = fn "performas a projective texture lookup (only Nd samplers + Rect). Shadows require N+1 base coordinate, no Lod bias allowed for Rect. - (vec4)(samplerN, vecN+1 coord, [float bias])"
+textureLod = fn "performs a lookup with explicit LOD. Shadows require N+1 base coordinate. Illegal function for Rect, MS, Buffer. - (vec4)(samplerN, vecN coord, float lod)"
+textureOffset = fn "offset added before texture lookup. "
+textureProjOffset = fn ""
+textureLodOffset = fn ""
+textureProjLodOffset = fn ""
+textureGrad = fn ""
+textureGradOffset = fn ""
+textureProjGradOffset = fn ""
+textureGather = fn ""
+textureGatherOffset = fn ""
+texelFetch = fn ""
+texelFetchOffset = fn ""
+
+local keyw = 
+[[int uint half float bool double
+vec2 vec3 vec4 dvec2 dvec3 dvec4
+ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
+mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
+dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
+struct typedef
+usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
+isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
+sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
+sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
+usamplerBuffer isamplerBuffer samplerBuffer
+in out inout uniform const centroid sample attribute varying patch
+return switch case for do while if else break continue main
+location vertices line_strip triangle_strip max_vertices stream
+triangles quads equal_spacing isolines fractional_even_spacing
+fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
+invocations
+origin_upper_left pixel_center_integer
+smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
+gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
+subroutine
+gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexcoord0 gl_MultiTexcoord1
+gl_MultiTexcoord2 gl_MultiTexcoord3 gl_MultiTexcoord4 gl_MultiTexcoord5 gl_MultiTexcoord6
+gl_MultiTexcoord7 gl_FogCoord gl_PointSize gl_ClipDistance
+gl_Texcoord gl_FogFragCoord gl_ClipVertex gl_in
+gl_PatchVerticesIn
+gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
+gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
+gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
+gl_FragData gl_FragDepth gl_SampleMask
+]]
+
+-- keywords - shouldn't be left out
+for w in keyw:gmatch("([a-zA-Z_0-9]+)") do
+	key(w)
+end
+
+
+

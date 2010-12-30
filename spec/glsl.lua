@@ -73,6 +73,12 @@ return {
 		gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
 		gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
 		gl_FragData gl_FragDepth gl_SampleMask
+		
+		coherent volatile restrict
+		image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
+		uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
+		iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
+		size1x8 size1x16 size1x32 size2x16 size4x32
 		]],
 
 		[[discard 
@@ -101,6 +107,11 @@ return {
 		texelFetchOffset texelFetch textureProjLod textureProjLodOffset
 		textureGrad textureGradOffset textureProjGrad textureProjGradOffset
 		textureGather textureGatherOffset
+		imageLoad imageStore
+		imageAtomicAdd imageAtomicMin imageAtomicMax
+		imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
+		imageAtomicOr imageAtomixXor imageAtomicExchange
+		imageCompSwap memoryBarrier
 		
 		x y z w 
 		xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy 
