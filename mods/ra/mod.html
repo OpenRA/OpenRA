@@ -123,16 +123,23 @@
             window.external.extractDownload("ra-packages","packages","ra");
         }
         
+        function versionCallback(version)
+        {
+            document.getElementById("latestversion").innerHTML = version;
+        }
+        
+        function motdCallback(motd)
+        {
+            document.getElementById("motd").innerHTML = motd;
+        }
+        
         function onLoad()
         {
             refreshSections();
-            var version = window.external.metadata("VERSION", "ra");
+            var version = window.external.metadata("VERSION", "cnc");
             document.getElementById("installedversion").innerHTML = version;
-            document.getElementById("latestversion").innerHTML = window.external.httpRequest("http://master.open-ra.org/VERSION");
-            var motd = window.external.httpRequest("http://master.open-ra.org/motd.php?v="+version);
-            
-            if (motd != undefined)
-                document.getElementById("motd").innerHTML = motd.substring(3);
+            window.external.httpRequest("http://master.open-ra.org/VERSION", "versionCallback");
+            window.external.httpRequest("http://master.open-ra.org/motd.php?v="+version, "motdCallback");
         }
         
         function refreshSections()
@@ -224,7 +231,7 @@
 
 		<div id="main">
 			<div id="content">
-			    <p>Latest version: <span id="latestversion">Unknown</span></p>
+			    <p>Latest version: <span id="latestversion">Checking...</span></p>
 				<p id="motd"></p>
 			</div>
 			<div id="buttons-install" class="buttons" style="display:none">

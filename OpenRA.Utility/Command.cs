@@ -85,29 +85,48 @@ namespace OpenRA.Utility
 		public static void DownloadUrl(string argValue)
 		{
 			string[] args = argValue.Split(',');
+			string url = args[0];
+			WebClient wc = new WebClient();
+
+			if (args.Length == 1)
+			{
+				wc.DownloadStringCompleted += DownloadStringCompleted;
+				
+				wc.DownloadStringAsync(new Uri(url));
+			}
+			else if (args.Length == 2)
+			{
+				string path = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+				
+				wc.DownloadProgressChanged += DownloadProgressChanged;
+				wc.DownloadFileCompleted += DownloadFileCompleted;
+	
+				Console.WriteLine("Downloading {0} to {1}", url, path);
+				Console.WriteLine("Status: Initializing");
 			
-			if (args.Length != 2)
+				wc.DownloadFileAsync(new Uri(url), path);
+			}
+			else
 			{
 				Console.WriteLine("Error: invalid syntax");
 				return;
 			}
-			string url = args[0];
-			string path = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 			
-			WebClient wc = new WebClient();
-			wc.DownloadProgressChanged += DownloadProgressChanged;
-			wc.DownloadFileCompleted += DownloadFileCompleted;
-
-			Console.WriteLine("Downloading {0} to {1}", url, path);
-			Console.WriteLine("Status: Initializing");
-			
-			wc.DownloadFileAsync(new Uri(url), path);
 			while (!completed)
 				Thread.Sleep(500);
 		}
 
 		static bool completed = false;
 
+		static void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+		{
+			if (e.Error != null)
+				Console.WriteLine("Error: {0}", e.Error.Message);
+			else
+				Console.WriteLine(e.Result);
+			completed = true;
+		}
+		
 		static void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 		{
 			if (e.Error != null)

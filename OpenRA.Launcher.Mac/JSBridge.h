@@ -19,6 +19,5 @@
 
 + (JSBridge *)sharedInstance;
 - (void)setController:(Controller *)aController;
-- (void)notifyDownloadProgress:(Download *)download;
-- (void)notifyExtractProgress:(Download *)download;
+- (void)runCallback:(NSString *)cb withArgument:(NSString *)arg;
 @end

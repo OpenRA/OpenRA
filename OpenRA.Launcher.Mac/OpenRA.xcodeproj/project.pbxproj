@@ -20,6 +20,7 @@
 		DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FC3E12911E2B00C48F2F /* GameInstall.m */; };
 		DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9295A612921DF900EDB02E /* WebKit.framework */; };
 		DA9296901292328200EDB02E /* SidebarEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA92968F1292328200EDB02E /* SidebarEntry.m */; };
+		DAA3F31C12CBF60D00E214BF /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA3F31B12CBF60D00E214BF /* HttpRequest.m */; };
 		DAB887F5129E5D6C00C99407 /* SDL in Resources */ = {isa = PBXBuildFile; fileRef = DAB887EE129E5D6100C99407 /* SDL */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,8 @@
 		DA9295A612921DF900EDB02E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		DA92968E1292328200EDB02E /* SidebarEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarEntry.h; sourceTree = "<group>"; };
 		DA92968F1292328200EDB02E /* SidebarEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarEntry.m; sourceTree = "<group>"; };
+		DAA3F31A12CBF60D00E214BF /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
+		DAA3F31B12CBF60D00E214BF /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
 		DAB887EE129E5D6100C99407 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = SDL; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,8 +83,10 @@
 				DA7D85661295E92900E58547 /* Download.m */,
 				DA92968E1292328200EDB02E /* SidebarEntry.h */,
 				DA92968F1292328200EDB02E /* SidebarEntry.m */,
-				DA38212012925344003B0BB5 /* JSBridge.h */,
 				DA38212112925344003B0BB5 /* JSBridge.m */,
+				DA38212012925344003B0BB5 /* JSBridge.h */,
+				DAA3F31A12CBF60D00E214BF /* HttpRequest.h */,
+				DAA3F31B12CBF60D00E214BF /* HttpRequest.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 				DA9296901292328200EDB02E /* SidebarEntry.m in Sources */,
 				DA38212212925344003B0BB5 /* JSBridge.m in Sources */,
 				DA7D85671295E92900E58547 /* Download.m in Sources */,
+				DAA3F31C12CBF60D00E214BF /* HttpRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

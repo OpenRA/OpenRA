@@ -13,6 +13,7 @@
 #import "ImageAndTextCell.h"
 #import "JSBridge.h"
 #import "Download.h"
+#import "HttpRequest.h"
 
 @implementation Controller
 @synthesize allMods;
@@ -32,6 +33,7 @@
 	game = [[GameInstall alloc] initWithPath:gamePath];
 	[[JSBridge sharedInstance] setController:self];
 	downloads = [[NSMutableDictionary alloc] init];
+	httpRequests = [[NSMutableArray alloc] init];
 	hasMono = [self hasSupportedMono];
 	if (hasMono)
 	{
@@ -120,6 +122,7 @@
 {
 	[sidebarItems release]; sidebarItems = nil;
 	[downloads release]; downloads = nil;
+	[httpRequests release]; httpRequests = nil;
 	[super dealloc];
 }
 
@@ -174,6 +177,17 @@
 - (Download *)downloadWithKey:(NSString *)key
 {
 	return [downloads objectForKey:key];
+}
+
+- (void)fetchURL:(NSString *)url withCallback:(NSString *)cb
+{
+	// Clean up any completed requests
+	for (int i = [httpRequests count] - 1; i >= 0; i--)
+		if ([[httpRequests objectAtIndex:i] terminated])
+			[httpRequests removeObjectAtIndex:i];
+	
+	// Create request
+	[httpRequests addObject:[HttpRequest requestWithURL:url callback:cb game:game]];
 }
 
 #pragma mark Sidebar Datasource and Delegate
@@ -245,6 +259,10 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 #pragma mark WebView delegates
 - (void)webView:(WebView *)sender didClearWindowObject:(WebScriptObject *)windowObject forFrame:(WebFrame *)frame
 {
+	// Cancel any in progress http requests
+	for (HttpRequest *r in httpRequests)
+		[r cancel];
+	
 	[windowObject setValue:[JSBridge sharedInstance] forKey:@"external"];
 }
 

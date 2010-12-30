@@ -81,7 +81,7 @@ namespace OpenRA.Utility
 			Console.WriteLine();
 			Console.WriteLine("  -l,--list-mods                   List currently installed mods");
 			Console.WriteLine("  -i=MODS,--mod-info=MODS          List metadata for MODS (comma separated list of mods)");
-			Console.WriteLine("  --download-url=URL,DEST          Download a file from URL to DEST");
+			Console.WriteLine("  --download-url=URL,DEST          Download a file from URL to DEST (omit DEST to print to stdout)");
 			Console.WriteLine("  --extract-zip=ZIPFILE,PATH       Extract the zip ZIPFILE to DEST (relative to openra dir)");
 			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from CD to PATH");
 			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from CD to PATH");

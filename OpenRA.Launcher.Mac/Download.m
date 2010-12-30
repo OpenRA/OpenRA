@@ -69,7 +69,7 @@
 	[[NSFileManager defaultManager] removeItemAtPath:filename error:NULL];
 	bytesCompleted = bytesTotal = -1;
 	
-	[[JSBridge sharedInstance] notifyDownloadProgress:self];
+	[[JSBridge sharedInstance] runCallback:@"downloadProgressed" withArgument:[self key]];
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSFileHandleReadCompletionNotification
 												  object:[[task standardOutput] fileHandleForReading]];
@@ -120,7 +120,7 @@
 			}
 		}
 	}
-	[[JSBridge sharedInstance] notifyDownloadProgress:self];
+	[[JSBridge sharedInstance] runCallback:@"downloadProgressed" withArgument:[self key]];
 		
 	// Keep reading
 	if ([n object] != nil)
@@ -171,8 +171,8 @@
 			}
 		}
 	}
-	[[JSBridge sharedInstance] notifyExtractProgress:self];
-	
+	[[JSBridge sharedInstance] runCallback:@"extractProgressed" withArgument:[self key]];
+
 	// Keep reading
 	if ([n object] != nil)
 		[[n object] readInBackgroundAndNotify];

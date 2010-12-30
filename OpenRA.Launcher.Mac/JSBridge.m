@@ -44,7 +44,7 @@ static JSBridge *SharedInstance;
 						@"log", NSStringFromSelector(@selector(log:)),
 						@"existsInMod", NSStringFromSelector(@selector(fileExists:inMod:)),
 						@"metadata", NSStringFromSelector(@selector(metadata:forMod:)),
-						@"httpRequest", NSStringFromSelector(@selector(httpRequest:)),
+						@"httpRequest", NSStringFromSelector(@selector(httpRequest:withCallback:)),
 						
 						// File downloading
 						@"registerDownload", NSStringFromSelector(@selector(registerDownload:withURL:filename:)),
@@ -69,6 +69,13 @@ static JSBridge *SharedInstance;
 {
 	[controller release]; controller = nil;
 	[super dealloc];
+}
+
+- (void)runCallback:(NSString *)cb withArgument:(NSString *)arg
+{
+	NSString *cmd = [NSString stringWithFormat:@"%@('%@')", cb, 
+					  [arg stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"]];
+	[[[controller webView] windowScriptObject] evaluateWebScript:cmd];
 }
 
 #pragma mark JS API methods
@@ -155,18 +162,6 @@ static JSBridge *SharedInstance;
 	return (d == nil) ? -1 : [d bytesTotal];
 }
 
-- (void)notifyDownloadProgress:(Download *)download
-{
-	[[[controller webView] windowScriptObject] evaluateWebScript:
-	 [NSString stringWithFormat:@"downloadProgressed('%@')",[download key]]];
-}
-
-- (void)notifyExtractProgress:(Download *)download
-{
-	[[[controller webView] windowScriptObject] evaluateWebScript:
-	 [NSString stringWithFormat:@"extractProgressed('%@')",[download key]]];
-}
-
 - (BOOL)extractDownload:(NSString *)key toPath:(NSString *)aFile inMod:(NSString *)aMod
 {
 	Download *d = [controller downloadWithKey:key];
@@ -233,12 +228,9 @@ static JSBridge *SharedInstance;
 	return @"";
 }
 
-- (NSString *)httpRequest:(NSString *)url
+- (void)httpRequest:(NSString *)url withCallback:(NSString *)cb
 {
-	NSLog(@"Requesting url %@",url);
-	NSString *response = [NSString stringWithContentsOfURL:[NSURL URLWithString:url] encoding:NSASCIIStringEncoding error:NULL];
-	NSLog(@"Response %@",response);
-	return response;
+	[controller fetchURL:url withCallback:cb];
 }
 
 @end

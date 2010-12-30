@@ -18,6 +18,7 @@
 	SidebarEntry *sidebarItems;
 	GameInstall *game;
 	NSDictionary *allMods;
+	NSMutableArray *httpRequests;
 	NSMutableDictionary *downloads;
 	BOOL hasMono;
 	
@@ -33,6 +34,7 @@
 - (SidebarEntry *)sidebarModsTree;
 - (SidebarEntry *)sidebarOtherTree;
 
+- (void)fetchURL:(NSString *)url withCallback:(NSString *)cb;
 - (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
 - (Download *)downloadWithKey:(NSString *)key;
 - (BOOL)hasSupportedMono;
