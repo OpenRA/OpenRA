@@ -41,6 +41,20 @@ namespace OpenRA.FileFormats
             return OpenPackage(filename, order++);
 		}
 
+		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
+        {
+			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
+                return new MixFile(filename, order, content);
+            else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+                return new ZipFile(filename, order, content);
+            else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+                return new ZipFile(filename, order, content);
+            else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+                throw new NotImplementedException("Creating .Z archives is unsupported");
+            else
+                return new Folder(filename, order, content);
+        }
+		
         public static IFolder OpenPackage(string filename, int order)
         {
             if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))

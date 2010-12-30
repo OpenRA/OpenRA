@@ -55,24 +55,23 @@ namespace OpenRA
 		
 		public static Map FromTileset(string tileset)
 		{
-			Map map = new Map();
-			map.MapSize = new int2(1, 1);
-			map.Tileset = tileset;
-			map.MapResources = new TileReference<byte, byte>[1, 1];
-			
-			var tile = OpenRA.Rules.TileSets[map.Tileset].Templates.First();
-			map.MapTiles = new TileReference<ushort, byte>[1, 1] 
+			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
+			Map map = new Map()
+			{
+				Title = "Name your map here",
+				Description = "Describe your map here",
+				Author = "Your name here",
+				MapSize = new int2(1, 1),
+				PlayerCount = 0,
+				Tileset = tileset,
+				MapResources = new TileReference<byte, byte>[1, 1],
+				MapTiles = new TileReference<ushort, byte>[1, 1] 
 				{ { new TileReference<ushort, byte> { 
 					type = tile.Key, 
 					image = (byte)(tile.Value.PickAny ? 0xffu : 0), 
-					index = (byte)(tile.Value.PickAny ? 0xffu : 0) } } };
-
-			map.PlayerCount = 0;
-			map.ResizeCordon(0,0,0,0);
-
-			map.Title = "Name your map here";
-			map.Description = "Describe your map here";
-			map.Author = "Your name here";
+					index = (byte)(tile.Value.PickAny ? 0xffu : 0) }
+				} },
+			};
 			
 			return map;
 		}
@@ -195,17 +194,7 @@ namespace OpenRA
 		}
 
 		public void Save(string toPath)
-		{
-			// Saving the map to a new location
-			if (toPath != Path)
-			{
-				// TODO: Copy all other files (resources, rules) in the map package
-				Path = toPath;
-				
-				// TODO: This doesn't work - need a FileSystem.CreatePackage()
-				Container = FileSystem.OpenPackage(Path, int.MaxValue);
-			}
-			
+		{			
 			// Todo: save to a zip file in the support dir by default
 			MapFormat = 3;
 			
@@ -238,6 +227,18 @@ namespace OpenRA
 			entries.Add("map.bin", SaveBinaryData());
 			var s = root.WriteToString();
 			entries.Add("map.yaml", System.Text.Encoding.UTF8.GetBytes(s));
+			
+			// Saving the map to a new location
+			if (toPath != Path)
+			{
+				Path = toPath;
+				
+				// Create a new map package
+				// TODO: Add other files (resources, rules) to the entries list
+				Container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
+			}
+			
+			// Update existing package
 			Container.Write(entries);
 		}
 

@@ -31,6 +31,17 @@ namespace OpenRA.FileFormats
 		readonly long dataStart;
 		readonly Stream s;
 		int priority;
+		
+		// Create a new MixFile
+		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
+		{
+			this.priority = priority;
+			if (File.Exists(filename))
+				File.Delete(filename);
+			
+			s = File.Create(filename);
+			Write(contents);
+		}
 
 		public MixFile(string filename, int priority)
 		{
@@ -162,6 +173,14 @@ namespace OpenRA.FileFormats
 		
 		public void Write(Dictionary<string, byte[]> contents)
 		{
+			// Cannot modify existing mixfile - rename existing file and
+			// create a new one with original content plus modifications
+			FileSystem.Unmount(this);
+			
+			// TODO: Add existing data to the contents list
+			if (index.Count > 0)
+				throw new NotImplementedException("Updating mix files unfinished");
+		
 			// Construct a list of entries for the file header
 			uint dataSize = 0;
 			var items = new List<PackageEntry>();
@@ -173,6 +192,8 @@ namespace OpenRA.FileFormats
 				dataSize += length;
 			}
 
+			// Write the new file
+			s.Seek(0,SeekOrigin.Begin);
 			using (var writer = new BinaryWriter(s))
 			{
 				// Write file header

@@ -20,7 +20,22 @@ namespace OpenRA.FileFormats
 
 		int priority;
 
-		public Folder(string path, int priority) { this.path = path; this.priority = priority; }
+		// Create a new folder package
+		public Folder(string path, int priority, Dictionary<string, byte[]> contents)
+		{
+			this.path = path;
+			this.priority = priority;
+			if (Directory.Exists(path))
+				Directory.Delete(path);
+			
+			Write(contents);
+		}
+		
+		public Folder(string path, int priority)
+		{
+			this.path = path;
+			this.priority = priority;
+		}
 
 		public Stream GetContent(string filename)
 		{

@@ -23,19 +23,25 @@ namespace OpenRA.FileFormats
 		public ZipFile(string filename, int priority)
 		{
 			this.priority = priority;
-			if (File.Exists(filename))
+			try
 			{
-				try
-				{
-					pkg = new SZipFile(File.OpenRead(filename));
-				}
-				catch (ZipException e)
-				{
-					Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
-				}
+				pkg = new SZipFile(File.OpenRead(filename));
 			}
-			else
-				pkg = SZipFile.Create(filename);
+			catch (ZipException e)
+			{
+				Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
+			}
+		}
+
+		// Create a new zip with the specified contents
+		public ZipFile(string filename, int priority, Dictionary<string, byte[]> contents)
+		{
+			this.priority = priority;
+			if (File.Exists(filename))
+				File.Delete(filename);
+			
+			pkg = SZipFile.Create(filename);
+			Write(contents);
 		}
 
 		public Stream GetContent(string filename)
