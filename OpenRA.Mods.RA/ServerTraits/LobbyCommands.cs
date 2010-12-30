@@ -18,7 +18,7 @@ using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.RA.Server
 {
-	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, IClientJoined
+	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
 	{
 		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
 
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Server
 								return true;
 	
 							client.Slot = slotData.Index;
-							SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
+							S.SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
 
 						server.SyncLobbyInfo();
 						return true;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Server
 							return false;
 
 						client.Slot = slot;
-						SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
+						S.SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
 						
 						server.SyncLobbyInfo();
 						return true;
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.RA.Server
 							c.SpawnPoint = 0;
 							var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == c.Slot );
 							if (slotData != null && slotData.MapPlayer != null)
-								SyncClientToPlayerReference(c, server.Map.Players[slotData.MapPlayer]);
+								S.SyncClientToPlayerReference(c, server.Map.Players[slotData.MapPlayer]);
 				
 							c.State = Session.ClientState.NotReady;
 						}
@@ -290,56 +290,6 @@ namespace OpenRA.Mods.RA.Server
 					MapPlayer = null,
 					Bot = null
 				});
-		}
-		
-		public void ClientJoined(S server, Connection newConn)
-		{
-			var defaults = new GameRules.PlayerSettings();
-			
-			var client = new Session.Client()
-			{
-				Index = newConn.PlayerIndex,
-				Color1 = defaults.Color1,
-				Color2 = defaults.Color2,
-				Name = defaults.Name,
-				Country = "random",
-				State = Session.ClientState.NotReady,
-				SpawnPoint = 0,
-				Team = 0,
-				Slot = ChooseFreeSlot(server),
-			};
-			
-			var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
-			if (slotData != null && slotData.MapPlayer != null)
-				SyncClientToPlayerReference(client, server.Map.Players[slotData.MapPlayer]);
-			
-			server.lobbyInfo.Clients.Add(client);
-
-			Log.Write("server", "Client {0}: Accepted connection from {1}",
-				newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
-
-			server.SendChat(newConn, "has joined the game.");
-			server.SyncLobbyInfo();
-		}
-		
-		static int ChooseFreeSlot(S server)
-		{
-			return server.lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
-				&& !server.lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
-		}
-		
-		
-		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
-		{
-			if (pr == null)
-				return;
-			if (pr.LockColor)
-			{
-				c.Color1 = pr.Color;
-				c.Color2 = pr.Color2;
-			}
-			if (pr.LockRace)
-				c.Country = pr.Race;
 		}
 	}
 }

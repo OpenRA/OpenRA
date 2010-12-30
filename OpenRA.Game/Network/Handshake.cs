@@ -17,30 +17,36 @@ namespace OpenRA.Network
 {
 	public class HandshakeResponse
 	{
-		public string Name;
-		public Color Color1;
-		public Color Color2;
-		public string[] Mods = { "ra" };	// mod names
-		public string Password;
+		[FieldLoader.Load] public string[] Mods;
+		[FieldLoader.Load] public string Password;
+		public Session.Client Client;
 		
 		public string Serialize()
 		{
 			var data = new List<MiniYamlNode>();
-			data.Add(new MiniYamlNode("Handshake", FieldSaver.Save(this)));
-			System.Console.WriteLine("Serializing handshake response:");
-			System.Console.WriteLine(data.WriteToString());
+			data.Add( new MiniYamlNode( "Handshake", null,
+				new string[]{ "Mods", "Password" }.Select( p => FieldSaver.SaveField(this, p) ).ToList() ) );
+			data.Add(new MiniYamlNode("Client", FieldSaver.Save(Client)));
 			
 			return data.WriteToString();
 		}
 
 		public static HandshakeResponse Deserialize(string data)
 		{
-			System.Console.WriteLine("Deserializing handshake response:");
-			System.Console.WriteLine(data);
-			
 			var handshake = new HandshakeResponse();
+			handshake.Client = new Session.Client();
+			
 			var ys = MiniYaml.FromString(data);
-			FieldLoader.Load(handshake, ys.First().Value);
+			foreach (var y in ys)
+				switch (y.Key)
+				{
+					case "Handshake":
+						FieldLoader.Load(handshake, y.Value);
+					break;
+					case "Client":
+						FieldLoader.Load(handshake.Client, y.Value);
+					break;
+				}
 			return handshake;
 		}
 	}

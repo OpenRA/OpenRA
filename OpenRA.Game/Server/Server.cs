@@ -172,9 +172,8 @@ namespace OpenRA.Server
 			catch (Exception) { DropClient(newConn); }
 		}
 		
-		void AcceptPlayer(Connection newConn)
+		void AcceptClient(Connection newConn, Session.Client client)
 		{
-			
 			try
 			{
 				if (GameStarted)
@@ -185,17 +184,52 @@ namespace OpenRA.Server
 					return;
 				}
 
+				// Promote connection to a valid client
 				preConns.Remove(newConn);
 				conns.Add(newConn);
 
+				// Enforce correct PlayerIndex and Slot
+				client.Index = newConn.PlayerIndex;
+				client.Slot = ChooseFreeSlot();
+				
+				var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
+				if (slotData != null && slotData.MapPlayer != null)
+					SyncClientToPlayerReference(client, Map.Players[slotData.MapPlayer]);
+				
+				lobbyInfo.Clients.Add(client);
+	
+				Log.Write("server", "Client {0}: Accepted connection from {1}",
+					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+				SendChat(newConn, "has joined the game.");
+				
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 				
-				Console.WriteLine("Server: Accepted connection as player");
+				SyncLobbyInfo();
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
 
+		int ChooseFreeSlot()
+		{
+			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
+				&& !lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
+		}
+		
+		
+		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
+		{
+			if (pr == null)
+				return;
+			if (pr.LockColor)
+			{
+				c.Color1 = pr.Color;
+				c.Color2 = pr.Color2;
+			}
+			if (pr.LockRace)
+				c.Country = pr.Race;
+		}
+		
 		public void UpdateInFlightFrames(Connection conn)
 		{
 			if (conn.Frame == 0)
@@ -288,15 +322,14 @@ namespace OpenRA.Server
 				
 					break;
 				case "HandshakeResponse":
-					Console.WriteLine("Server Recieved Handshake response");
 					var response = HandshakeResponse.Deserialize(so.Data);
+					
+					// TODO: Validate password
 				
-					// Validate versions again
-				
-					// Validate password
-				
-					// Accept connection; set name, color, etc.
-					AcceptPlayer(conn);
+					// Accept connection, set initial client info
+					AcceptClient(conn, response.Client);
+					SyncLobbyInfo();
+					
 					break;
 				case "Chat":
 				case "TeamChat":

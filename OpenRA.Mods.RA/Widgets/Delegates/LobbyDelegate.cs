@@ -115,9 +115,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			// Todo: Only show if the map requirements are met for player slots
 			startGameButton.IsVisible = () => Game.IsHost;
-			
-			Game.LobbyInfoChanged += JoinedServer;
-			Game.ConnectionStateChanged += ResetConnectionState;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			
 			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
@@ -169,29 +166,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
-		}
-
-		bool hasJoined = false;
-		void JoinedServer()
-		{
-			if (hasJoined)
-				return;
-			hasJoined = true;
-			
-			if (orderManager.LocalClient.Name != Game.Settings.Player.Name)
-				orderManager.IssueOrder(Order.Command("name " + Game.Settings.Player.Name));
-			
-			var c1 = Game.Settings.Player.Color1;
-			var c2 = Game.Settings.Player.Color2;
-			
-			if (orderManager.LocalClient.Color1 != c1 || orderManager.LocalClient.Color2 != c2)			
-				orderManager.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
-		}
-
-		void ResetConnectionState( OrderManager orderManager )
-		{
-			if( orderManager.Connection.ConnectionState == ConnectionState.PreConnecting )
-				hasJoined = false;
 		}
 
 		Session.Client GetClientInSlot(Session.Slot slot)

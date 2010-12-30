@@ -100,7 +100,6 @@ namespace OpenRA.Network
 				
 				case "HandshakeRequest":
 				{
-					Console.WriteLine("Client: Recieved HandshakeRequest");
 					// Check valid mods/versions
 					var serverInfo = Session.Deserialize(order.TargetString);
 					var serverMods = serverInfo.GlobalSettings.Mods;
@@ -112,22 +111,31 @@ namespace OpenRA.Network
 					if (serverMods.SymmetricDifference(localMods).Count() > 0)
 						throw new InvalidOperationException("Version mismatch. Client: `{0}`, Server: `{1}`"
 					                                    .F(string.Join(",",localMods), string.Join(",",serverMods)));
-					
+										
+					var info = new Session.Client()
+					{
+						Name = Game.Settings.Player.Name,
+						Color1 = Game.Settings.Player.Color1,
+						Color2 = Game.Settings.Player.Color2,
+						Country = "random",
+						SpawnPoint = 0,
+						Team = 0,
+						State = Session.ClientState.NotReady
+					};
+				
 					var response = new HandshakeResponse()
 					{
-						Name = "Test Player",
-						Color1 = Color.PaleGreen,
-						Color2 = Color.PeachPuff,
+						Client = info,
 						Mods = localMods,
 						Password = "Foo"
 					};
+				
 					orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
 					break;
 				}
 				
 				case "SyncInfo":
 					{
-						Console.WriteLine("Client: Recieved SyncInfo");
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
 
 						if (orderManager.FramesAhead != orderManager.LobbyInfo.GlobalSettings.OrderLatency
