@@ -24,7 +24,12 @@ namespace OpenRA.Server
 {
 	public class Server
 	{
+		// Valid player connections
 		public List<Connection> conns = new List<Connection>();
+		
+		// Pre-verified player connections
+		public List<Connection> preConns = new List<Connection>();
+
 		TcpListener listener = null;
 		Dictionary<int, List<Connection>> inFlightFrames
 			= new Dictionary<int, List<Connection>>();
@@ -88,24 +93,31 @@ namespace OpenRA.Server
 					var checkRead = new ArrayList();
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
-
+					foreach( var c in preConns ) checkRead.Add( c.socket );
+					
 					Socket.Select( checkRead, null, null, timeout );
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
+						else if (preConns.Count > 0)
+						{
+							var p = preConns.SingleOrDefault( c => c.socket == s );
+							if (p != null) p.ReadData( this );
+						}
 						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData( this );
 
 					foreach (var t in ServerTraits.WithInterface<ITick>())
 						t.Tick(this);
 					
-					if (conns.Count() == 0 || shutdown)
+					if (shutdown)
 						break;
 				}
 				
 				GameStarted = false;
 				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
 					t.ServerShutdown(this);
-				
+
+				preConns.Clear();
 				conns.Clear();
 				try { listener.Stop(); }
 				catch { }
@@ -120,7 +132,7 @@ namespace OpenRA.Server
 		int ChooseFreePlayerIndex()
 		{
 			for (var i = 0; i < 256; i++)
-				if (conns.All(c => c.PlayerIndex != i))
+				if (conns.All(c => c.PlayerIndex != i) && preConns.All(c => c.PlayerIndex != i))
 					return i;
 
 			throw new InvalidOperationException("Already got 256 players");
@@ -134,7 +146,8 @@ namespace OpenRA.Server
 			{
 				if (!listener.Server.IsBound) return;
 				newSocket = listener.AcceptSocket();
-			}catch
+			}
+			catch
 			{
 				/* could have an exception here when listener 'goes away' when calling AcceptConnection! */
 				/* alternative would be to use locking but the listener doesnt go away without a reason */
@@ -142,6 +155,26 @@ namespace OpenRA.Server
 			}
 
 			var newConn = new Connection { socket = newSocket };
+			try
+			{
+				newConn.socket.Blocking = false;
+				newConn.socket.NoDelay = true;
+
+				// assign the player number.
+				newConn.PlayerIndex = ChooseFreePlayerIndex();
+				newConn.socket.Send(BitConverter.GetBytes(ProtocolVersion.Version));
+				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
+				preConns.Add(newConn);
+				
+				// Dispatch a handshake order
+				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", lobbyInfo.Serialize()).Serialize());
+			}
+			catch (Exception) { DropClient(newConn); }
+		}
+		
+		void AcceptPlayer(Connection newConn)
+		{
+			
 			try
 			{
 				if (GameStarted)
@@ -152,17 +185,13 @@ namespace OpenRA.Server
 					return;
 				}
 
-				newConn.socket.Blocking = false;
-				newConn.socket.NoDelay = true;
-
-				// assign the player number.
-				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				newConn.socket.Send(BitConverter.GetBytes(ProtocolVersion.Version));
-				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
+				preConns.Remove(newConn);
 				conns.Add(newConn);
 
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
+				
+				Console.WriteLine("Server: Accepted connection as player");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
@@ -246,20 +275,29 @@ namespace OpenRA.Server
 			switch (so.Name)
 			{
 				case "Command":
+					bool handled = false;
+					foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
+						if ((handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data)))
+							break;
+					
+					if (!handled)
 					{
-						bool handled = false;
-						foreach (var t in ServerTraits.WithInterface<IInterpretCommand>())
-							if ((handled = t.InterpretCommand(this, conn, GetClient(conn), so.Data)))
-								break;
-						
-						if (!handled)
-						{
-							Log.Write("server", "Unknown server command: {0}", so.Data);
-							SendChatTo(conn, "Unknown server command: {0}".F(so.Data));
-						}
+						Log.Write("server", "Unknown server command: {0}", so.Data);
+						SendChatTo(conn, "Unknown server command: {0}".F(so.Data));
 					}
+				
 					break;
-
+				case "HandshakeResponse":
+					Console.WriteLine("Server Recieved Handshake response");
+					var response = HandshakeResponse.Deserialize(so.Data);
+				
+					// Validate versions again
+				
+					// Validate password
+				
+					// Accept connection; set name, color, etc.
+					AcceptPlayer(conn);
+					break;
 				case "Chat":
 				case "TeamChat":
 					var fromClient = GetClient(conn);

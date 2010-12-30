@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -180,6 +180,7 @@
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
     <Compile Include="Graphics\ShroudRenderer.cs" />
+    <Compile Include="Network\Handshake.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

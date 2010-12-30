@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA.Network
 {
@@ -96,8 +97,37 @@ namespace OpenRA.Network
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map);
 						break;
 					}
+				
+				case "HandshakeRequest":
+				{
+					Console.WriteLine("Client: Recieved HandshakeRequest");
+					// Check valid mods/versions
+					var serverInfo = Session.Deserialize(order.TargetString);
+					var serverMods = serverInfo.GlobalSettings.Mods;
+					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods;
+				
+					// TODO: Check that the map exists on the client
+					
+					// Todo: Display a friendly dialog
+					if (serverMods.SymmetricDifference(localMods).Count() > 0)
+						throw new InvalidOperationException("Version mismatch. Client: `{0}`, Server: `{1}`"
+					                                    .F(string.Join(",",localMods), string.Join(",",serverMods)));
+					
+					var response = new HandshakeResponse()
+					{
+						Name = "Test Player",
+						Color1 = Color.PaleGreen,
+						Color2 = Color.PeachPuff,
+						Mods = localMods,
+						Password = "Foo"
+					};
+					orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
+					break;
+				}
+				
 				case "SyncInfo":
 					{
+						Console.WriteLine("Client: Recieved SyncInfo");
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
 
 						if (orderManager.FramesAhead != orderManager.LobbyInfo.GlobalSettings.OrderLatency
