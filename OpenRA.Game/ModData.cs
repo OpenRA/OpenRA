@@ -62,8 +62,16 @@ namespace OpenRA
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods/" + p + "/maps/"));
 
-			return paths.Select(p => new MapStub(p))
-                .ToDictionary(m => m.Uid);
+			Dictionary<string, MapStub> ret = new Dictionary<string, MapStub>();
+			foreach (var path in paths)
+			{
+				var map = new MapStub(path);
+				if (ret.ContainsKey(map.Uid))
+					System.Console.WriteLine("Ignoring duplicate map: {0}", path);
+				else
+					ret.Add(map.Uid, map);
+			}
+			return ret;
 		}
 		
 		string cachedTileset = null;

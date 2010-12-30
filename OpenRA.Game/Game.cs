@@ -251,9 +251,13 @@ namespace OpenRA
 
         static string ChooseShellmap()
         {
-            return modData.AvailableMaps
-                .Where(m => m.Value.UseAsShellmap)
-                .Random(CosmeticRandom).Key;
+            var shellmaps =  modData.AvailableMaps
+                .Where(m => m.Value.UseAsShellmap);
+			
+			if (shellmaps.Count() == 0)
+				throw new InvalidDataException("No valid shellmaps available");
+			
+			return shellmaps.Random(CosmeticRandom).Key;
         }
 
 		static bool quit;

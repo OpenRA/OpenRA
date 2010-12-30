@@ -46,7 +46,15 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			return pkg.GetInputStream(pkg.GetEntry(filename));
+			var ms = new MemoryStream();
+			var z = pkg.GetInputStream(pkg.GetEntry(filename));
+			int bufSize = 2048;
+			byte[] buf = new byte[bufSize];
+			while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+				ms.Write(buf, 0, bufSize);
+			
+			ms.Seek(0, SeekOrigin.Begin);
+			return ms;
 		}
 
 		public IEnumerable<uint> AllFileHashes()

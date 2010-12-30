@@ -195,11 +195,12 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{			
+			Console.WriteLine("Saving map to path {0}",toPath);
 			// Todo: save to a zip file in the support dir by default
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight"})
+			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap"})
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
