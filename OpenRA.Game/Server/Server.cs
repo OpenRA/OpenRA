@@ -38,15 +38,10 @@ namespace OpenRA.Server
 		public ModData ModData;
 		public Map Map;
 
+		bool shutdown = false;
 		public void Shutdown()
 		{
-			conns.Clear();
-			GameStarted = false;
-			foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
-				t.ServerShutdown(this);
-			
-			try { listener.Stop(); }
-			catch { }
+			shutdown = true;
 		}
 		
 		public Server(ModData modData, Settings settings, string map)
@@ -103,13 +98,17 @@ namespace OpenRA.Server
 					foreach (var t in ServerTraits.WithInterface<ITick>())
 						t.Tick(this);
 					
-					if (conns.Count() == 0)
-					{
-						listener.Stop();
-						GameStarted = false;
+					if (conns.Count() == 0 || shutdown)
 						break;
-					}
 				}
+				
+				GameStarted = false;
+				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
+					t.ServerShutdown(this);
+				
+				conns.Clear();
+				try { listener.Stop(); }
+				catch { }
 			} ) { IsBackground = true }.Start();
 		}
 
