@@ -200,7 +200,7 @@ namespace OpenRA
 			MapFormat = 3;
 			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap"})
+			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;

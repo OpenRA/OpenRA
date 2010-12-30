@@ -11,6 +11,8 @@
 using System;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Linq;
+using System.IO;
 
 namespace OpenRA.Editor
 {
@@ -19,11 +21,32 @@ namespace OpenRA.Editor
 		[STAThread]
 		static void Main( string[] args )
 		{
+			if (args.Length >= 2 && args[0] == "--convert")
+			{
+				Game.modData = new ModData(args[1]);
+				Rules.LoadRules(Game.modData.Manifest, new Map());
+				UpgradeMaps(args[1]);
+				return;
+			}
+			
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			Application.Run(new Form1(args));
 		}
+		
+		static void UpgradeMaps(string mod)
+		{
+			var MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", mod, "maps" }
+				.Aggregate(Path.Combine);
+			
+			foreach (var path in ModData.FindMapsIn(MapFolderPath))
+            {
+                var map = new Map(path);
+				map.Save(path+".oramap");
+            }
+		}
+		
 	}
 }
