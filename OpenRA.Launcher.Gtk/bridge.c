@@ -22,11 +22,11 @@
 
 int js_check_num_args(JSContextRef ctx, char const * func_name, int argc, int num_expected, JSValueRef * exception)
 {
-  char buf[64];
+  GString * buf = g_string_new(NULL);
   if (argc < num_expected)
   {
-    sprintf(buf, "%s: Not enough args, expected %d got %d", func_name, num_expected, argc);
-    *exception = JSValueMakeString(ctx, JS_STR(buf));
+    g_string_printf(buf, "%s: Not enough args, expected %d got %d", func_name, num_expected, argc);
+    *exception = JSValueMakeString(ctx, JS_STR(buf->str));
     return 0;
   }
   return 1;
@@ -101,8 +101,8 @@ JSValueRef js_exists_in_mod(JSContextRef ctx, JSObjectRef func,
     fclose(f);
     return_value = JSValueMakeNumber(ctx, 1);
   }
-
-  g_message("JS ExistsInMod: Not found");
+  else
+    g_message("JS ExistsInMod: Not found");
 
   return return_value;
 }
@@ -140,9 +140,8 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
 
   while (strlen(mod->requires) > 0)
   {
-    char r[MOD_requires_MAX_LEN], * comma;
-    strcpy(r, mod->requires);
-    if (NULL != (comma = strchr(r, ',')))
+	gchar * r = g_strdup(mod->requires), * comma;
+    if (NULL != (comma = g_strstr_len(r, -1, ",")))
     {
       *comma = '\0';
     }
@@ -160,10 +159,11 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
     mod_list = (char *)realloc(mod_list, offset + strlen(r) + 1);
     sprintf(mod_list + offset, ",%s", r);
     offset += strlen(r) + 1;
+	g_free(r);
   }
 
   {
-    char * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, NULL };
+    char * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, "SupportDir=~/.openra", NULL };
     char * game_mods_arg;
 
     game_mods_arg = (char *)malloc(strlen(mod_list) + strlen("Game.Mods=") + 1);

@@ -6,9 +6,9 @@
  * see LICENSE.
  */
 
-int util_get_mod_list (GChildWatchFunc);
-int util_get_mod_metadata(char const *, GChildWatchFunc);
-int util_get_setting(const char *, GChildWatchFunc);
-int util_do_download(const char *, const char *, GPid *);
-int util_do_extract(const char *, const char *, GPid *);
-char * util_get_output(int, int *);
+gboolean util_get_mod_list (GChildWatchFunc);
+gboolean util_get_mod_metadata(gchar const *, GChildWatchFunc);
+gboolean util_get_setting(gchar const *, GChildWatchFunc);
+gint util_do_download(gchar const *, gchar const *, GPid *);
+gint util_do_extract(gchar const *, gchar const *, GPid *);
+GString * util_get_output(int);

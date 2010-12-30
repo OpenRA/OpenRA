@@ -24,32 +24,43 @@ GtkTreeStore * tree_store;
 GtkTreeView * tree;
 GdkPixbuf * generic_mod_icon;
 
+static mod_t mods[MAX_NUM_MODS];
+static int mod_count = 0;
+
+void free_mod(mod_t * mod)
+{
+  g_free(mod->key);
+  g_free(mod->title);
+  g_free(mod->version);
+  g_free(mod->author);
+  g_free(mod->description);
+  g_free(mod->requires);
+}
+
 gboolean window_delete(GtkWidget * widget, GdkEvent * event, 
 		       gpointer user_data)
 {
+  int i;
   server_teardown();
+  for (i = 0; i < mod_count; i++)
+    free_mod(mods + i);
   gtk_main_quit();
   return FALSE;
 }
 
-static mod_t mods[MAX_NUM_MODS];
-static int mod_count = 0;
-
-typedef void ( * lines_callback ) (char const * line, gpointer data);
+typedef void ( * lines_callback ) (GString const * line, gpointer data);
 
 //Splits console output into lines and passes each one to a callback
-void process_lines(char * const lines, int len, lines_callback cb, gpointer data)
+void process_lines(GString * lines, lines_callback cb, gpointer data)
 {
   int prev = 0, current = 0;
-  while (current < len)
+  while (current < lines->len)
   {
-    if (lines[current] == '\n')
+    if (lines->str[current] == '\n')
     {
-      char * line = (char *)malloc(current - prev + 1);
-      memcpy(line, lines + prev, current - prev);
-      line[current - prev] = '\0';
+      GString * line = g_string_new_len(lines->str + prev, current - prev);
       cb(line, data);
-      free(line);
+      g_string_free(line, TRUE);
       prev = current + 1;
     }
     current++;
@@ -57,49 +68,46 @@ void process_lines(char * const lines, int len, lines_callback cb, gpointer data
 }
 
 #define ASSIGN_TO_MOD(FIELD) \
-  strncpy(mod->FIELD, val_start + 2, MOD_##FIELD##_MAX_LEN - 1); \
-  mod->FIELD[MOD_##FIELD##_MAX_LEN - 1] = '\0'
+  mod->FIELD = g_strdup(val_start)
 
-#define min(X, Y) X < Y ? X : Y
-
-void mod_metadata_line(char const * line, gpointer data)
+void mod_metadata_line(GString const * line, gpointer data)
 {
   mod_t * mod = (mod_t *)data;
-  char * val_start = strchr(line, ':');
-  if (memcmp(line, "Mod:", 4) == 0)
+  gchar * val_start = g_strstr_len(line->str, -1, ":") + 2;
+  if (g_str_has_prefix(line->str, "Mod:"))
   {
     ASSIGN_TO_MOD(key);
   }
-  else if (memcmp(line, "  Title:", min(strlen(line), 8)) == 0)
+  else if (g_str_has_prefix(line->str, "  Title:"))
   {
     ASSIGN_TO_MOD(title);
   }
-  else if (memcmp(line, "  Version:", min(strlen(line), 10)) == 0)
+  else if (g_str_has_prefix(line->str, "  Version:"))
   {
     ASSIGN_TO_MOD(version);
   }
-  else if (memcmp(line, "  Author:", min(strlen(line), 9)) == 0)
+  else if (g_str_has_prefix(line->str, "  Author:"))
   {
     ASSIGN_TO_MOD(author);
   }
-  else if (memcmp(line, "  Description:", min(strlen(line), 14)) == 0)
+  else if (g_str_has_prefix(line->str, "  Description:"))
   {
     ASSIGN_TO_MOD(description);
   }
-  else if (memcmp(line, "  Requires:", min(strlen(line), 11)) == 0)
+  else if (g_str_has_prefix(line->str, "  Requires:"))
   {
     ASSIGN_TO_MOD(requires);
   }
-  else if (memcmp(line, "  Standalone:", min(strlen(line), 13)) == 0)
+  else if (g_str_has_prefix(line->str, "  Standalone:"))
   {
-    if (strcmp(val_start + 2, "True") == 0)
+    if (strcmp(val_start, "True") == 0)
       mod->standalone = TRUE;
     else
       mod->standalone = FALSE;
   }
 }
 
-mod_t * get_mod(char const * key)
+mod_t * get_mod(gchar const * key)
 {
   int i;
   for (i = 0; i < mod_count; i++)
@@ -141,20 +149,27 @@ gboolean append_to_mod(GtkTreeModel * model, GtkTreePath * path,
 
 void mod_metadata_callback(GPid pid, gint status, gpointer data)
 {
-  int out_len, * out_fd = (int *)data;
-  char * msg = NULL;
+  int * out_fd = (int *)data;
+  GString * msg = NULL;
   mod_t * mod = mods + mod_count;
   GtkTreeIter iter, mod_iter;
 
   mod_count = (mod_count + 1) % MAX_NUM_MODS;
 
+  free_mod(mod);
   memset(mod, 0, sizeof(mod_t));
 
-  msg = util_get_output(*out_fd, &out_len);
+  msg = util_get_output(*out_fd);
 
-  process_lines(msg, out_len, mod_metadata_line, mod);
+  close(*out_fd);
+  free(out_fd);
 
-  free(msg);
+  if (!msg)
+    return;
+
+  process_lines(msg, mod_metadata_line, mod);
+
+  g_string_free(msg, TRUE);
 
   gtk_tree_model_get_iter_first(GTK_TREE_MODEL(tree_store), &mod_iter);
 
@@ -185,14 +200,11 @@ void mod_metadata_callback(GPid pid, gint status, gpointer data)
   {
     gtk_tree_model_foreach(GTK_TREE_MODEL(tree_store), append_to_mod, mod);
   }
-  
-  close(*out_fd);
-  free(out_fd);
 }
 
 typedef struct tree_node
 {
-  char const * key;
+  gchar const * key;
   gchar * node_path;
 } tree_node;
 
@@ -222,23 +234,32 @@ gboolean find_mod(GtkTreeModel * model, GtkTreePath * path,
 
 void last_mod_callback(GPid pid, gint status, gpointer data)
 {
-  int out_len, * out_fd = (int *)data;
-  char * comma_pos = 0;
-  char * msg = NULL;
+  int * out_fd = (int *)data;
+  gchar * comma_pos = 0, * newline_pos = 0;
+  GString * msg = NULL;
   tree_node n;
 
   memset(&n, 0, sizeof(tree_node));
 
-  msg = util_get_output(*out_fd, &out_len);
+  msg = util_get_output(*out_fd);
 
-  if (0 == memcmp(msg, "Error:", 6))
-    memcpy(msg, "ra", 3);
-  else if (NULL != (comma_pos = strchr(msg, ',')))
+  close(*out_fd);
+  free(out_fd);
+
+  if (!msg)
+    return;
+
+  if (0 == strcmp(msg->str, "Error:"))
   {
-    *comma_pos = '\0';
+    g_string_truncate(msg, 2);
+    g_string_overwrite(msg, 0, "ra");
   }
+  else if (NULL != (comma_pos = g_strstr_len(msg->str, -1, ",")))
+    *comma_pos = '\0';
+  else if (NULL != (newline_pos = g_strstr_len(msg->str, -1, "\n")))
+    *newline_pos = '\0';
 
-  n.key = msg;
+  n.key = msg->str;
 
   gtk_tree_model_foreach(GTK_TREE_MODEL(tree_store), find_mod, &n);
 
@@ -254,31 +275,35 @@ void last_mod_callback(GPid pid, gint status, gpointer data)
     g_free(n.node_path);
   }
 
-  free(msg);
+  g_string_free(msg, TRUE);
 }
 
-void mod_list_line(char const * mod, gpointer user)
+void mod_list_line(GString const * mod, gpointer user)
 {
-  util_get_mod_metadata(mod, mod_metadata_callback);
+  util_get_mod_metadata(mod->str, mod_metadata_callback);
 }
 
 void mod_list_callback(GPid pid, gint status, gpointer data)
 {
-  int out_len, * out_fd = (int *)data;
-  char * msg = NULL;
+  int * out_fd = (int *)data;
+  GString * msg = NULL;
   
-  msg = util_get_output(*out_fd, &out_len);
-
-  mod_count = 0;
-
-  process_lines(msg, out_len, mod_list_line, NULL);
-
-  util_get_setting("Game.Mods", last_mod_callback);
-
-  free(msg);
+  msg = util_get_output(*out_fd);
 
   close(*out_fd);
   free(out_fd);
+
+  if (!msg)
+    return;
+
+  mod_count = 0;
+
+  process_lines(msg, mod_list_line, NULL);
+
+  util_get_setting("Game.Mods", last_mod_callback);
+
+  g_string_free(msg, TRUE);
+  
   g_spawn_close_pid(pid);
 }
 
@@ -287,7 +312,7 @@ void tree_view_selection_changed(GtkTreeView * tree_view, gpointer data)
   GtkTreePath * path;
   GtkTreeIter iter;
   gchar * key;
-  char url[256];
+  GString * url;
 
   gtk_tree_view_get_cursor(tree_view, &path, NULL);
 
@@ -306,12 +331,15 @@ void tree_view_selection_changed(GtkTreeView * tree_view, gpointer data)
     return;
   }
 
-  sprintf(url, "http://localhost:%d/mods/%s/mod.html", WEBSERVER_PORT, key);
+  url = g_string_new(NULL);
 
-  webkit_web_view_load_uri(browser, url);
+  g_string_printf(url, "http://localhost:%d/mods/%s/mod.html", WEBSERVER_PORT, key);
+
+  webkit_web_view_load_uri(browser, url->str);
 
   g_free(key);
   gtk_tree_path_free(path);
+  g_string_free(url, TRUE);
 }
 
 void make_tree_view(void)

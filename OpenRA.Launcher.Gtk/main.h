@@ -16,26 +16,19 @@ enum
   N_COLUMNS
 };
 
-#define MOD_key_MAX_LEN 16
-#define MOD_title_MAX_LEN 32
-#define MOD_version_MAX_LEN 16
-#define MOD_author_MAX_LEN 32
-#define MOD_description_MAX_LEN 128
-#define MOD_requires_MAX_LEN 32
-
 #define MAX_NUM_MODS 64
 
 typedef struct mod_t
 {
-  char key[MOD_key_MAX_LEN];
-  char title[MOD_title_MAX_LEN];
-  char version[MOD_version_MAX_LEN];
-  char author[MOD_author_MAX_LEN];
-  char description[MOD_description_MAX_LEN];
-  char requires[MOD_requires_MAX_LEN];
+  gchar * key;
+  gchar * title;
+  gchar * version;
+  gchar * author;
+  gchar * description;
+  gchar * requires;
   int standalone;
 } mod_t;
 
-mod_t * get_mod(char const * key);
+mod_t * get_mod(gchar const * key);
 
 #endif
