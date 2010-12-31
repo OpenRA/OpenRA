@@ -249,7 +249,7 @@ void last_mod_callback(GPid pid, gint status, gpointer data)
   if (!msg)
     return;
 
-  if (0 == strcmp(msg->str, "Error:"))
+  if (g_str_has_prefix(msg->str, "Error:"))
   {
     g_string_truncate(msg, 2);
     g_string_overwrite(msg, 0, "ra");

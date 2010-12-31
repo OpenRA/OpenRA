@@ -20,86 +20,117 @@
 #define JS_FUNC(ctx, callback) JSObjectMakeFunctionWithCallback(ctx, NULL, \
 						  callback)
 
-int js_check_num_args(JSContextRef ctx, char const * func_name, int argc, int num_expected, JSValueRef * exception)
+#define JS_TRUE JSValueMakeBoolean(ctx, TRUE)
+#define JS_FALSE JSValueMakeBoolean(ctx, FALSE)
+#define JS_NULL JSValueMakeNull(ctx)
+
+GString * sanitize_path(gchar const * path)
 {
-  GString * buf = g_string_new(NULL);
+  gchar * basename = g_path_get_basename(path);
+  gchar * dirname = g_path_get_dirname(path);
+  gchar ** frags = g_strsplit(dirname, "/", -1);
+  gint offset = 0;
+  GString * new_path = g_string_new(NULL);
+  while (*(frags + offset))
+  {
+    if ((strcmp(*(frags + offset), "..") == 0) || (strcmp(*(frags + offset), ".") == 0))
+    {
+      offset++;
+      continue;
+    }
+    g_string_append(new_path, *(frags + offset));
+    g_string_append_c(new_path, G_DIR_SEPARATOR);
+    offset++;
+  }
+  g_string_append(new_path, basename);
+  g_free(basename);
+  g_free(dirname);
+  g_strfreev(frags);
+  return new_path;
+}
+
+int js_check_num_args(JSContextRef ctx, gchar const * func_name, int argc, int num_expected, JSValueRef * exception)
+{
+  GString * buf;
   if (argc < num_expected)
   {
+    buf = g_string_new(NULL);
     g_string_printf(buf, "%s: Not enough args, expected %d got %d", func_name, num_expected, argc);
     *exception = JSValueMakeString(ctx, JS_STR(buf->str));
+    g_string_free(buf, TRUE);
     return 0;
   }
   return 1;
 }
 
-char * js_get_cstr_from_val(JSContextRef ctx, JSValueRef val, size_t * size)
+GString * js_get_cstr_from_val(JSContextRef ctx, JSValueRef val)
 {
-  char * buf;
-  size_t str_size;
-  JSStringRef str = JSValueToStringCopy(ctx, val, NULL);
-  str_size = JSStringGetMaximumUTF8CStringSize(str);
-  buf = (char *)malloc(str_size);
-  *size = JSStringGetUTF8CString(str, buf, str_size);
-  return buf;
+  gchar * buf;
+  GString * ret;
+  size_t len;
+  JSStringRef str;
+  if (!JSValueIsString(ctx, val))
+    return NULL;
+  str = JSValueToStringCopy(ctx, val, NULL);
+  len = JSStringGetMaximumUTF8CStringSize(str);
+  buf = (gchar *)g_malloc(len);
+  ret = g_string_sized_new(JSStringGetUTF8CString(str, buf, len));
+  g_string_assign(ret, buf);
+  g_free(buf);
+  return ret;
 }
 
 JSValueRef js_log(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
-		  size_t argc, const JSValueRef argv[], JSValueRef * exception)
+        size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  JSValueRef return_value = JSValueMakeNull(ctx);
   if (!js_check_num_args(ctx, "log", argc, 1, exception))
-    return return_value;
+    return JS_NULL;
 
-  if (JSValueIsString(ctx, argv[0]))
-  {
-    char * buffer;
-    size_t str_size;
-    buffer = js_get_cstr_from_val(ctx, argv[0], &str_size);
-    g_message("JS Log: %s", buffer);
-    free(buffer);
-    return return_value;
-  }
-  else
-  {
-    *exception = JSValueMakeString(ctx, JS_STR("Tried to log something other than a string"));
-    return return_value;
-  }
+  GString * buffer;
+  buffer = js_get_cstr_from_val(ctx, argv[0]);
+  if (!buffer)
+    return JS_NULL;
+  g_message("JS Log: %s", buffer->str);
+  g_string_free(buffer, TRUE);
+  return JS_NULL;
 }
 
 JSValueRef js_exists_in_mod(JSContextRef ctx, JSObjectRef func, 
-			  JSObjectRef this, size_t argc, 
-			  const JSValueRef argv[], JSValueRef * exception)
+        JSObjectRef this, size_t argc, 
+        const JSValueRef argv[], JSValueRef * exception)
 {
-  char * mod_buf, * file_buf, search_path[512];
-  size_t mod_size, file_size;
-  JSValueRef return_value = JSValueMakeNumber(ctx, 0);
+  GString * mod_buf, * file_buf, * search_path, * search_path_sanitized;
+  JSValueRef return_value = JS_FALSE;
   FILE * f;
   if (!js_check_num_args(ctx, "existsInMod", argc, 2, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  if (!JSValueIsString(ctx, argv[0]) || !JSValueIsString(ctx, argv[1]))
-  {
-    *exception = JSValueMakeString(ctx, JS_STR("One or more args are incorrect types."));
-    return JSValueMakeNull(ctx);
-  }
-
-  file_buf = js_get_cstr_from_val(ctx, argv[0], &file_size);
-  mod_buf = js_get_cstr_from_val(ctx, argv[1], &mod_size);
+  file_buf = js_get_cstr_from_val(ctx, argv[0]);
+  if (!file_buf)
+    return JS_NULL;
+  mod_buf = js_get_cstr_from_val(ctx, argv[1]);
+  if (!mod_buf)
+    return JS_NULL;
   
-  sprintf(search_path, "mods/%s/%s", mod_buf, file_buf);
+  search_path = g_string_new(NULL);
+  g_string_printf(search_path, "mods/%s/%s", mod_buf->str, file_buf->str);
+  search_path_sanitized = sanitize_path(search_path->str);
 
-  free(file_buf);
-  free(mod_buf);
+  g_string_free(search_path, TRUE);
+  g_string_free(file_buf, TRUE);
+  g_string_free(mod_buf, TRUE);
  
-  g_message("JS ExistsInMod: Looking for %s", search_path);
+  g_message("JS ExistsInMod: Looking for %s", search_path_sanitized->str);
 
-  f = fopen(search_path, "r");
+  f = fopen(search_path_sanitized->str, "r");
+
+  g_string_free(search_path_sanitized, TRUE);
 
   if (f != NULL)
   {
     g_message("JS ExistsInMod: Found");
     fclose(f);
-    return_value = JSValueMakeNumber(ctx, 1);
+    return_value = JS_TRUE;
   }
   else
     g_message("JS ExistsInMod: Not found");
@@ -111,36 +142,31 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
 			 JSObjectRef this, size_t argc,
 			 const JSValueRef argv[], JSValueRef * exception)
 {
-  char * mod_key, * mod_list;
-  size_t mod_size;
+  GString * mod_key, * mod_list;
   mod_t * mod;
-  int offset;
-  JSValueRef return_value = JSValueMakeNull(ctx);
 
   if (!js_check_num_args(ctx, "launchMod", argc, 1, exception))
-    return return_value;
+    return JS_NULL;
 
   if (!JSValueIsString(ctx, argv[0]))
   {
     *exception = JSValueMakeString(ctx, JS_STR("One or more args are incorrect types."));
-    return return_value;
+    return JS_NULL;
   }
 
-  mod_key = js_get_cstr_from_val(ctx, argv[0], &mod_size);
+  mod_key = js_get_cstr_from_val(ctx, argv[0]);
 
-  g_message("JS LaunchMod: %s", mod_key);
+  g_message("JS LaunchMod: %s", mod_key->str);
 
-  mod = get_mod(mod_key);
+  mod = get_mod(mod_key->str);
 
-  offset = strlen(mod_key);
-  mod_list = (char *)malloc(offset + 1);
-  strcpy(mod_list, mod_key);
+  mod_list = g_string_new(mod_key->str);
 
-  free(mod_key);
+  g_string_free(mod_key, TRUE);
 
   while (strlen(mod->requires) > 0)
   {
-	gchar * r = g_strdup(mod->requires), * comma;
+    gchar * r = g_strdup(mod->requires), * comma;
     if (NULL != (comma = g_strstr_len(r, -1, ",")))
     {
       *comma = '\0';
@@ -149,40 +175,36 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
     mod = get_mod(r);
     if (mod == NULL)
     {
-      char exception_msg[64];
-      sprintf(exception_msg, "The mod %s is missing, cannot launch.", r);
-      *exception = JSValueMakeString(ctx, JS_STR(exception_msg));
-      free(mod_list);
-      return return_value;
+      GString * exception_msg = g_string_new(NULL);
+      g_string_printf(exception_msg, "The mod %s is missing, cannot launch.", r);
+      *exception = JSValueMakeString(ctx, JS_STR(exception_msg->str));
+      g_string_free(exception_msg, TRUE);
+      g_string_free(mod_list, TRUE);
+      return JS_NULL;
     }
-
-    mod_list = (char *)realloc(mod_list, offset + strlen(r) + 1);
-    sprintf(mod_list + offset, ",%s", r);
-    offset += strlen(r) + 1;
-	g_free(r);
+    g_string_append_printf(mod_list, ",%s", r);
+    g_free(r);
   }
 
   {
-    char * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, "SupportDir=~/.openra", NULL };
-    char * game_mods_arg;
+    gchar * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, "SupportDir=~/.openra", NULL };
+    GString * game_mods_arg = g_string_new(NULL);
+    g_string_printf(game_mods_arg, "Game.Mods=%s", mod_list->str);
 
-    game_mods_arg = (char *)malloc(strlen(mod_list) + strlen("Game.Mods=") + 1);
-    sprintf(game_mods_arg, "Game.Mods=%s", mod_list);
-
-    launch_args[2] = game_mods_arg;
+    launch_args[2] = game_mods_arg->str;
     
     g_spawn_async(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
-    free(game_mods_arg);
+    g_string_free(game_mods_arg, TRUE);
   }
-  free(mod_list);
-  return return_value;
+  g_string_free(mod_list, TRUE);
+  return JS_NULL;
 }
 
 typedef struct download_t 
 {
-  char key[32];
-  char url[128];
-  char dest[128];
+  gchar * key;
+  gchar * url;
+  gchar * dest;
   int current_bytes;
   int total_bytes;
   JSContextGroupRef ctx_group;
@@ -199,7 +221,7 @@ typedef struct download_t
 static download_t downloads[MAX_DOWNLOADS];
 static int num_downloads = 0;
 
-download_t * find_download(char const * key)
+download_t * find_download(gchar const * key)
 {
   int i;
   for (i = 0; i < num_downloads; i++)
@@ -228,31 +250,38 @@ void set_download_error(JSContextRef ctx, download_t * download, const char * er
   JSValueProtect(ctx, download->error);
 }
 
+void free_download(download_t * download)
+{
+  g_free(download->key);
+  g_free(download->url);
+  g_free(download->dest);
+}
+
 JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key, * url, * filename;
-  size_t key_size, url_size, filename_size;
+  GString * key, * url, * filename;
   download_t * download;
   JSValueRef o;
   FILE * f;
   if (!js_check_num_args(ctx, "registerDownload", argc, 3, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  g_message("JS RegisterDownload: Registering %s", key);
+  g_message("JS RegisterDownload: Registering %s", key->str);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
     download = downloads + num_downloads++;
     if (num_downloads >= MAX_DOWNLOADS)
     {
       num_downloads = MAX_DOWNLOADS - 1;
-      return JSValueMakeNull(ctx);
+      return JS_NULL;
     }
   }
 
+  free_download(download);
   memset(download, 0, sizeof(download_t));
 
   download->ctx_group = JSContextGetGroup(ctx);
@@ -261,21 +290,24 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR("extractProgressed"), NULL);
   download->extraction_progressed_func = JSValueToObject(ctx, o, NULL);
 
-  strncpy(download->key, key, 31);
-  download->key[31] = '\0';
+  download->key = g_strdup(key->str);
 
-  free(key);
+  g_string_free(key, TRUE);
 
-  url = js_get_cstr_from_val(ctx, argv[1], &url_size);
-  strncpy(download->url, url, 127);
-  download->url[127] = '\0';
-  free(url);
+  url = js_get_cstr_from_val(ctx, argv[1]);
+  download->url = g_strdup(url->str);
+  g_string_free(url, TRUE);
 
-  filename = js_get_cstr_from_val(ctx, argv[2], &filename_size);
-  //TODO Clean filename to stop access to locations it shouldn't be allowed to access
-  sprintf(download->dest, "/tmp/%s", filename);
-  download->dest[127] = '\0';
-  free(filename);
+  filename = js_get_cstr_from_val(ctx, argv[2]);
+  {
+    GString * path = g_string_new(NULL), * sanitized_path;
+    g_string_printf(path, "/tmp/%s", filename->str);
+    g_string_free(filename, TRUE);
+    sanitized_path = sanitize_path(path->str);
+    g_string_free(path, TRUE);
+    download->dest = g_strdup(sanitized_path->str);
+    g_string_free(sanitized_path, TRUE);
+  }
 
   f = fopen(download->dest, "r");
 
@@ -287,7 +319,7 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   else
     set_download_status(ctx, download, "AVAILABLE");
   
-  return JSValueMakeNull(ctx);
+  return JS_NULL;
 }
 
 gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpointer data)
@@ -308,7 +340,7 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
     io_status = g_io_channel_read_line(source, &line, &line_length, NULL, NULL);
     if (G_IO_STATUS_NORMAL == io_status)
     {
-      if (0 == memcmp(line, "Error:", 6))
+      if (g_str_has_prefix(line, "Error:"))
       {
         set_download_status(ctx, download, "ERROR");
         set_download_error(ctx, download, line + 7);
@@ -350,24 +382,23 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
 JSValueRef js_start_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
   int fd;
   GPid pid;
 
   if (!js_check_num_args(ctx, "startDownload", argc, 1, exception))
-    return JSValueMakeNull(ctx);  
+    return JS_NULL;  
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
-    return JSValueMakeBoolean(ctx, 0);
+    g_string_free(key, TRUE);
+    return JS_FALSE;
   }
 
-  free(key);
+  g_string_free(key, TRUE);
 
   g_message("Starting download %s", download->key);
 
@@ -376,32 +407,31 @@ JSValueRef js_start_download(JSContextRef ctx, JSObjectRef func, JSObjectRef thi
   fd = util_do_download(download->url, download->dest, &pid);
 
   if (!fd)
-    return JSValueMakeBoolean(ctx, 0);
+    return JS_FALSE;
 
   download->pid = pid;
   download->output_channel = g_io_channel_unix_new(fd);
 
   g_io_add_watch(download->output_channel, G_IO_IN | G_IO_HUP, update_download_stats, download);
 
-  return JSValueMakeBoolean(ctx, 1);
+  return JS_TRUE;
 }
 
 JSValueRef js_cancel_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
 
   if (!js_check_num_args(ctx, "cancelDownload", argc, 1, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
-    return JSValueMakeBoolean(ctx, 0);
+    g_string_free(key, TRUE);
+    return JS_FALSE;
   }
 
   if (download->pid)
@@ -412,29 +442,28 @@ JSValueRef js_cancel_download(JSContextRef ctx, JSObjectRef func, JSObjectRef th
     remove(download->dest);
   }
 
-  free(key);
-  return JSValueMakeBoolean(ctx, 1);
+  g_string_free(key, TRUE);
+  return JS_TRUE;
 }
 
 JSValueRef js_download_status(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 			      size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
 
   if (!js_check_num_args(ctx, "downloadStatus", argc, 1, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
+    g_string_free(key, TRUE);
     return JSValueMakeString(ctx, JS_STR("NOT_REGISTERED"));
   }
 
-  free(key);
+  g_string_free(key, TRUE);
 
   return download->status;
 }
@@ -442,24 +471,23 @@ JSValueRef js_download_status(JSContextRef ctx, JSObjectRef func, JSObjectRef th
 JSValueRef js_download_error(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 			     size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
 
   if (!js_check_num_args(ctx, "downloadError", argc, 1, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  g_message("JS DownloadError: Retrieving error message for %s", key);
+  g_message("JS DownloadError: Retrieving error message for %s", key->str);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
+    g_string_free(key, TRUE);
     return JSValueMakeString(ctx, JS_STR(""));
   }
 
-  free(key);
+  g_string_free(key, TRUE);
 
   return download->error;
 }
@@ -467,22 +495,21 @@ JSValueRef js_download_error(JSContextRef ctx, JSObjectRef func, JSObjectRef thi
 JSValueRef js_bytes_completed(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
 
   if (!js_check_num_args(ctx, "bytesCompleted", argc, 1, exception))
     return JSValueMakeNull(ctx);
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
+    g_string_free(key, TRUE);
     return JSValueMakeNumber(ctx, -1);
   }
 
-  free(key);
+  g_string_free(key, TRUE);
 
   return JSValueMakeNumber(ctx, download->current_bytes);
 }
@@ -490,22 +517,21 @@ JSValueRef js_bytes_completed(JSContextRef ctx, JSObjectRef func, JSObjectRef th
 JSValueRef js_bytes_total(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key;
-  size_t key_size;
+  GString * key;
   download_t * download;
 
   if (!js_check_num_args(ctx, "bytesTotal", argc, 1, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &key_size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
   {
-    free(key);
+    g_string_free(key, TRUE);
     return JSValueMakeNumber(ctx, -1);
   }
 
-  free(key);
+  g_string_free(key, TRUE);
 
   return JSValueMakeNumber(ctx, download->total_bytes);
 }
@@ -526,7 +552,7 @@ gboolean update_extraction_progress(GIOChannel * source, GIOCondition condition,
   {
   case G_IO_IN:
     io_status = g_io_channel_read_line(source, &line, &line_length, NULL, NULL);
-    if ((G_IO_STATUS_NORMAL == io_status) && (0 == memcmp(line, "Error:", 6)))
+    if ((G_IO_STATUS_NORMAL == io_status) && (g_str_has_prefix(line, "Error:")))
     {
       set_download_status(ctx, download, "ERROR");
       set_download_error(ctx, download, line + 7);
@@ -552,54 +578,58 @@ gboolean update_extraction_progress(GIOChannel * source, GIOCondition condition,
 JSValueRef js_extract_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
 				size_t argc, const JSValueRef argv[], JSValueRef * exception)
 {
-  char * key, * dir, * mod, * status, dest_path[512];
-  size_t size;
+  GString * key, * dir, * mod, * status, * dest_path, * sanitized_dest_path;
   download_t * download;
   int fd;
   GPid pid;
 
   if (!js_check_num_args(ctx, "extractDownload", argc, 3, exception))
-    return JSValueMakeNull(ctx);
+    return JS_NULL;
 
-  key = js_get_cstr_from_val(ctx, argv[0], &size);
+  key = js_get_cstr_from_val(ctx, argv[0]);
 
-  if (NULL == (download = find_download(key)))
+  if (NULL == (download = find_download(key->str)))
+  {
+    g_string_free(key, TRUE);
+    return JS_FALSE;
+  }
+
+  g_string_free(key, TRUE);
+
+  status = js_get_cstr_from_val(ctx, download->status);
+
+  if (0 != strcmp(status->str, "DOWNLOADED"))
+  {
+    g_string_free(status, TRUE);
     return JSValueMakeBoolean(ctx, 0);
+  }
 
-  status = js_get_cstr_from_val(ctx, download->status, &size);
-
-  if (0 != strcmp(status, "DOWNLOADED"))
-    return JSValueMakeBoolean(ctx, 0);
-
-  free(status);
+  g_string_free(status, TRUE);
 
   set_download_status(ctx, download, "EXTRACTING");
 
-  dir = js_get_cstr_from_val(ctx, argv[1], &size);
-  mod = js_get_cstr_from_val(ctx, argv[2], &size);
+  dir = js_get_cstr_from_val(ctx, argv[1]);
+  mod = js_get_cstr_from_val(ctx, argv[2]);
 
-  sprintf(dest_path, "%s/%s", mod, dir);
+  dest_path = g_string_new(NULL);
+  g_string_printf(dest_path, "%s/%s", mod->str, dir->str);
+  sanitized_dest_path = sanitize_path(dest_path->str);
+  g_string_free(dest_path, TRUE);
+  g_string_free(mod, TRUE);
+  g_string_free(dir, TRUE);
 
-  fd = util_do_extract(download->dest, dest_path, &pid);
+  fd = util_do_extract(download->dest, sanitized_dest_path->str, &pid);
+  g_string_free(sanitized_dest_path, TRUE);
 
   if (!fd)
-  {
-    free(key);
-    free(dir);
-    free(mod);
-    return JSValueMakeBoolean(ctx, 0);
-  }
+    return JS_FALSE;
 
   download->pid = pid;
   download->output_channel = g_io_channel_unix_new(fd);
 
   g_io_add_watch(download->output_channel, G_IO_IN | G_IO_HUP, update_extraction_progress, download);
 
-  free(key);
-  free(dir);
-  free(mod);
-
-  return JSValueMakeBoolean(ctx, 1);
+  return JS_TRUE;
 }
 
 void js_add_functions(JSGlobalContextRef ctx, JSObjectRef target, char ** names, 
