@@ -18,14 +18,13 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Background = "dialog3";
 		public readonly int ScrollbarWidth = 24;
-		public readonly float ScrollVelocity = 4f;
-		public readonly int HeaderHeight = 0;
-		
+		public readonly float ScrollVelocity = 4f;		
 		
 		public int ContentHeight = 0;
 		float ListOffset = 0;
 		bool UpPressed = false;
 		bool DownPressed = false;
+		bool ThumbPressed = false;
 		Rectangle upButtonRect;
 		Rectangle downButtonRect;
 		Rectangle backgroundRect;
@@ -43,8 +42,9 @@ namespace OpenRA.Widgets
 			backgroundRect = other.backgroundRect;
 			thumbRect = other.thumbRect;
 			
-			UpPressed = other.UpPressed;	
+			UpPressed = other.UpPressed;
 			DownPressed = other.DownPressed;
+			ThumbPressed = other.ThumbPressed;
 		}
 		
 		public override void DrawInner( WorldRenderer wr ) {}
@@ -53,7 +53,6 @@ namespace OpenRA.Widgets
 			if (!IsVisible())
 				return;
 			
-			// Height/ContentHeight*Height
 			var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
 			
 			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
@@ -85,7 +84,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
-			Game.Renderer.EnableScissor(backgroundRect.X+1, backgroundRect.Y + HeaderHeight+1, backgroundRect.Width-2, backgroundRect.Height - HeaderHeight-2);
+			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);
 
 			foreach (var child in Children)
 				child.Draw( wr );
@@ -104,13 +103,13 @@ namespace OpenRA.Widgets
 		{
 			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;
 			if (DownPressed) ListOffset -= ScrollVelocity;
-			
+						
 			ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
 		}
 		
 		public override bool LoseFocus (MouseInput mi)
 		{
-			UpPressed = DownPressed = false;
+			UpPressed = DownPressed = ThumbPressed = false;
 			return base.LoseFocus(mi);
 		}
 		
@@ -122,13 +121,21 @@ namespace OpenRA.Widgets
 			if (!Focused)
 				return false;
 
-			UpPressed = upButtonRect.Contains(mi.Location.X,mi.Location.Y);
-			DownPressed = downButtonRect.Contains(mi.Location.X,mi.Location.Y);
-			
+			UpPressed = upButtonRect.Contains(mi.Location.X, mi.Location.Y);
+			DownPressed = downButtonRect.Contains(mi.Location.X, mi.Location.Y);
+			ThumbPressed = thumbRect.Contains(mi.Location.X, mi.Location.Y);
 			if (Focused && mi.Event == MouseInputEvent.Up)
 				LoseFocus(mi);
 			
-			return (UpPressed || DownPressed);
+			if (ThumbPressed && mi.Event == MouseInputEvent.Move)
+			{
+				var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
+				var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
+			
+				ListOffset += (int)((Viewport.LastMousePos.Y - mi.Location.Y)*(ContentHeight - RenderBounds.Height)*1f/(ScrollbarHeight - thumbHeight));
+				ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+			}
+			return (UpPressed || DownPressed || ThumbPressed);
 		}
 
 		public override Widget Clone() { return new ScrollPanelWidget(this); }
