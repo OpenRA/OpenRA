@@ -114,8 +114,6 @@ namespace OpenRA
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
-			PerfHistory.items["text"].Tick();
-			PerfHistory.items["cursor"].Tick();
 
 			MasterServerQuery.Tick();
 		}
@@ -235,8 +233,6 @@ namespace OpenRA
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
-			PerfHistory.items["text"].hasNormalTick = false;
-			PerfHistory.items["cursor"].hasNormalTick = false;
 
 			JoinLocal();
 
