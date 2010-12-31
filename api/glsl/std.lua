@@ -97,7 +97,7 @@ outerProduct = fn "outer product. - (matNxM)(vecM c, vecN r)"
 
 all = fn "returns true if a boolean scalar or all components of a boolean vector are true. - (bool)(boolN)"
 any = fn "returns true if a boolean scalar or any component of a boolean vector is true.  - (bool)(boolN)"
---_G["not"] = fn "returns logical complement. - (boolN)(boolN)"
+self["not"] = fn "returns logical complement. - (boolN)(boolN)"
 lessThan = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
 lessThanEqual = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
 greaterThan = fn "returns  retusult of component-wise comparison. - (boolN)(vecN a,b)"
@@ -154,17 +154,17 @@ textureQueryLod = fn "returns the lod values for a given coordinate. - (vec2)(sa
 texture = fn "performs a texture lookup. Shadow samplers require base N+1 coordinate.  Lod bias is optional (illegal for MS, Buffer, Rect). - (vec4)(samplerN, vecN coord, [float bias])"
 textureProj = fn "performas a projective texture lookup (only Nd samplers + Rect). Shadows require N+1 base coordinate, no Lod bias allowed for Rect. - (vec4)(samplerN, vecN+1 coord, [float bias])"
 textureLod = fn "performs a lookup with explicit LOD. Shadows require N+1 base coordinate. Illegal function for Rect, MS, Buffer. - (vec4)(samplerN, vecN coord, float lod)"
-textureOffset = fn "offset added before texture lookup. "
-textureProjOffset = fn ""
-textureLodOffset = fn ""
-textureProjLodOffset = fn ""
-textureGrad = fn ""
-textureGradOffset = fn ""
-textureProjGradOffset = fn ""
-textureGather = fn ""
-textureGatherOffset = fn ""
-texelFetch = fn ""
-texelFetchOffset = fn ""
+textureOffset = fn "offset added before texture lookup. Illegal for MS, Buffer, Cube. - (vec4)(samplerN, vecN coord, intN offset, [float bias])"
+textureProjOffset = fn "projective texture lookup with offset. Illegal for MS, Buffer, Cube, Array. - (vec4)(samplerN, vecN+1 coord, intN offset, [float bias])"
+textureLodOffset = fn "offset added with explicit LOD. - (vec4)(samplerN, vecN coord, intN offset, int lod)"
+textureProjLodOffset = fn "projective lookup with offset and explicit LOD. - (vec4)(samplerN, vecN+1 coord, intN offset, int lod)"
+textureGrad = fn "lookup with explicit gradients. Illegal for MS, Buffer. - (vec4)(samplerN, vecN coord, gradX, gradY)"
+textureGradOffset = fn "lookup with explicit gradients and offset. Illegal for MS, Buffer, Cube. - (vec4)(samplerN, vecN coord, gradX, gradY, intN offset)"
+textureProjGradOffset = fn "projective lookup with expöicit gradients and offset. Illegal for MS, Buffer, Cube. - (vec4)(samplerN, vecN+1 coord, vecN gradX, gradY, intN offset)"
+textureGather = fn "gather lookup (pixel quad of 4 single channel samples at once). Component 0: x, 1: y ... is ignored for shadow samplers instead reference value must be passed. Only 2D/Cube. Illegal for MS. - (vec4)(samplerN, vecN coord, [int comp] / float shadowRefZ)"
+textureGatherOffset = fn "gather lookup (pixel quad of 4 single channel samples at once) with offset. Component 0: x, 1: y ... is ignored for shadow samplers instead reference value must be passed. Only 2D/Cube. Illegal for MS. - (vec4)(samplerN, vecN coord, [float shadowRefZ], intN offset / intN offset[4] , [int comp])"
+texelFetch = fn "integer coordinate lookup for a single texel. No lod parameter for Buffer, MS, Rect. Illegal for Cube - (vec4)(samplerN, intN coord, [int lod/sample])"
+texelFetchOffset = fn "integer coordinate lookup for a single texel with offset. No lod parameter for Buffer, MS, Rect. Illegal for Cube, Buffer, MS. - (vec4)(samplerN, intN coord, [int lod/sample], intN offset)"
 
 local keyw = 
 [[int uint half float bool double
@@ -172,15 +172,15 @@ vec2 vec3 vec4 dvec2 dvec3 dvec4
 ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
 mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
 dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
-struct typedef
+struct typedef void
 usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
 isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
 sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
 sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
 usamplerBuffer isamplerBuffer samplerBuffer
 in out inout uniform const centroid sample attribute varying patch
-return switch case for do while if else break continue main
-location vertices line_strip triangle_strip max_vertices stream
+return switch case for do while if else break continue
+layout location vertices line_strip triangle_strip max_vertices stream
 triangles quads equal_spacing isolines fractional_even_spacing
 fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
 invocations

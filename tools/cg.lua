@@ -41,6 +41,13 @@ return cgbinpath and {
 			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp",nvperf=true},
 			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp"},
 		}
+		data.domaindefs = {
+			" -D_VERTEX_ ",
+			" -D_FRAGMENT_ ",
+			" -D_GEOMETRY_ ",
+			" -D_TESS_CONTROL_ ",
+			" -D_TESS_EVAL_ ",
+		}
 		-- Profile related
 		menuBar:Check(data.profid, true)
 
@@ -65,7 +72,6 @@ return cgbinpath and {
 		local perfexe = "/NVShaderPerf.exe"
 		local fn = wx.wxFileName(cgbinpath..perfexe)
 		local hasperf = fn:FileExists()
-		
 
 		
 		local function beautifyAsm(tx)
@@ -181,6 +187,7 @@ return cgbinpath and {
 		-- Compile
 		local function evCompile(event)
 			local filename,info = GetEditorFileAndCurInfo()
+			local editor = GetEditor()
 
 
 			if (not (filename and info.selword and cgbinpath)) then
@@ -188,17 +195,16 @@ return cgbinpath and {
 				return
 			end
 
+			local domain = data.domains[event:GetId()]
+			local profile = data.profiles[data.profid]
+			if (not profile[domain]) then return end
+			
 			-- popup for custom input
 			local args = data.customarg and wx.wxGetTextFromUser("Compiler Args") or ""
 			args = args:len() > 0 and args or nil
 
-			local domain = data.domains[event:GetId()]
-			local profile = data.profiles[data.profid]
-
-			if (not profile[domain]) then return end
-
 			local fullname = filename:GetFullPath()
-			local glsl = fullname:match("%.glsl$") and true
+			local glsl = editor and editor.spec and editor.spec.apitype and editor.spec.apitype == "glsl"
 
 			local outname = fullname.."."..info.selword.."^"
 			outname = args and outname..args:gsub("%s+%-",";-")..";^" or outname
@@ -206,8 +212,9 @@ return cgbinpath and {
 			outname = '"'..outname..'"'
 			
 			local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
-			cmdline = glsl and cmdline.."-oglsl " or cmdline
+			cmdline = glsl and cmdline.."-oglsl -glslWerror " or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
+			cmdline = cmdline..data.domaindefs[domain]
 			cmdline = cmdline.."-o "..outname.." "
 			cmdline = cmdline.."-entry "..info.selword
 
@@ -252,8 +259,9 @@ return cgbinpath and {
 						local cgperfgpu = ide.config.cgperfgpu or "G80"
 						local profiletypes = {
 								["G70"] = {},
-								["G80"] = {	["vp40"] = " -profile vp40",
-											["fp40"] = " -profile fp40"},
+								["G80"] = {
+									["vp40"] = " -profile vp40",
+									["fp40"] = " -profile fp40"},
 							}
 						if (hasperf and profile.nvperf and (domain == 1 or domain == 2)
 								and profiletypes[cgperfgpu])

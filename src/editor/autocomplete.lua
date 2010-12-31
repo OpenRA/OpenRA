@@ -93,7 +93,6 @@ local function loadallAPIs (only,subapis,ignore)
 		end
 	end
 end
-loadallAPIs(nil,nil,{lua = true})
 
 -- Lua wx specific
 local function applyWXAPI(subapis) 
@@ -124,7 +123,7 @@ end
 -- also fixes function descriptions
 
 
-local function fillTips(api,apibasename)
+local function fillTips(api,apibasename,apiname)
 	local apiac = api.ac
 	local tclass = api.tip
 
@@ -207,7 +206,7 @@ end
 function GenerateAPIInfo(only)
 	for i,api in pairs(apis) do
 		if ((not only) or i == only) then
-			fillTips(api,"")
+			fillTips(api,"",i)
 		end
 	end
 end
@@ -247,8 +246,9 @@ function ReloadAPI(only,subapis)
 	if (only == "lua") then
 		applyWXAPI(subapis)
 	end
-	GenerateAPIInfo(only)
+	GenerateAPIInfo(only,ignore)
 end
+
 
 function ReloadLuaAPI()
 	local interpreterapi = ide.interpreters[ide.config.interpreter]
@@ -260,8 +260,12 @@ function ReloadLuaAPI()
 		end
 		interpreterapi = apinames
 	end
-	ReloadAPI("lua",interpreterapi)
+	ReloadAPI("lua",nil,interpreterapi)
 end
+
+-- by defaul load everything except lua
+loadallAPIs(nil,nil,{lua = true})
+GenerateAPIInfo()
 
 -------------
 -- Dynamic Words

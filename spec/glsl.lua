@@ -48,7 +48,7 @@ return {
 		ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
 		mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
 		dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
-		struct typedef
+		struct typedef void
 		usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
 		isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
 		sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
@@ -56,7 +56,7 @@ return {
 		usamplerBuffer isamplerBuffer samplerBuffer
 		in out inout uniform const centroid sample attribute varying patch
 		return switch case for do while if else break continue main
-		location vertices line_strip triangle_strip max_vertices stream
+		layout location vertices line_strip triangle_strip max_vertices stream
 		triangles quads equal_spacing isolines fractional_even_spacing
 		fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
 		invocations
