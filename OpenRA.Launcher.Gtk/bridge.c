@@ -632,6 +632,41 @@ JSValueRef js_extract_download(JSContextRef ctx, JSObjectRef func, JSObjectRef t
   return JS_TRUE;
 }
 
+JSValueRef js_metadata(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
+				size_t argc, const JSValueRef argv[], JSValueRef * exception)
+{
+  GString * field, * mod;
+
+  if (!js_check_num_args(ctx, "metadata", argc, 2, exception))
+    return JS_NULL;
+
+  field = js_get_cstr_from_val(ctx, argv[0]);
+  if (!field)
+    return JS_NULL;
+
+  mod = js_get_cstr_from_val(ctx, argv[1]);
+  if (!mod)
+  {
+    g_string_free(field, TRUE);
+    return JS_NULL;
+  }
+
+  if (0 == strcmp(field->str, "VERSION"))
+  {
+    mod_t * m = get_mod(mod->str);
+    if (m)
+    {
+      g_string_free(mod, TRUE);
+      g_string_free(field, TRUE);
+      return JSValueMakeString(ctx, JS_STR(m->version));
+    }
+  }
+
+  g_string_free(mod, TRUE);
+  g_string_free(field, TRUE);
+  return JS_NULL;
+} 
+
 void js_add_functions(JSGlobalContextRef ctx, JSObjectRef target, char ** names, 
 		      JSObjectCallAsFunctionCallback * callbacks, size_t count)
 {
@@ -650,16 +685,16 @@ void bind_js_bridge(WebKitWebView * view, WebKitWebFrame * frame,
   JSGlobalContextRef js_ctx;
   JSObjectRef window_obj, external_obj;
   
-  int func_count = 11;
+  int func_count = 12;
   char * names[] = { "log", "existsInMod", "launchMod", "registerDownload",
 		     "startDownload", "cancelDownload", "downloadStatus",
 		     "downloadError", "bytesCompleted", "bytesTotal",
-		     "extractDownload"};
+		     "extractDownload", "metadata"};
   JSObjectCallAsFunctionCallback callbacks[] = { js_log, js_exists_in_mod, js_launch_mod,
 						 js_register_download, js_start_download,
 						 js_cancel_download, js_download_status,
 						 js_download_error, js_bytes_completed,
-						 js_bytes_total, js_extract_download };
+						 js_bytes_total, js_extract_download, js_metadata };
   
   js_ctx = (JSGlobalContextRef)context;
 
