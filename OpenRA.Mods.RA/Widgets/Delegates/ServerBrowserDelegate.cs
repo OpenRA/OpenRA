@@ -183,6 +183,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				if (i == 0) currentServer = game;
 
 				offset += template.Bounds.Height;
+				// Padding hack
+				if (sl.ContentHeight == 0)
+					sl.ContentHeight += 2*template.Bounds.Y;
+				
 				sl.ContentHeight += template.Bounds.Height;
 				i++;
 			}

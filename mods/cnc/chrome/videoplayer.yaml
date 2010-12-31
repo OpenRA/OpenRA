@@ -33,7 +33,7 @@ Background@VIDEOPLAYER_MENU:
 					Height:25
 					ClickThrough:false
 					X:2
-					Y:0
+					Y:2
 					Visible:false
 		Button@BUTTON_PLAYPAUSE:
 			Id:BUTTON_PLAYPAUSE

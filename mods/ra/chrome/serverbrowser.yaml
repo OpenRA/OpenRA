@@ -122,7 +122,7 @@ Background@JOINSERVER_BG:
 					Height:25
 					ClickThrough:false
 					X:2
-					Y:0
+					Y:2
 					Visible:false
 		Label@JOINSERVER_PROGRESS_TITLE:
 			Id:JOINSERVER_PROGRESS_TITLE

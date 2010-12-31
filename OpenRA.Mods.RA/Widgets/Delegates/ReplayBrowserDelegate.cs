@@ -116,6 +116,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				CurrentReplay = filename;
 
 			offset += template.Bounds.Height;
+			// Padding hack
+			if (list.ContentHeight == 0)
+				list.ContentHeight += 2*template.Bounds.Y;
+			
 			list.ContentHeight += template.Bounds.Height;
 		}
 	}

@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
+using System;
 
 namespace OpenRA.Widgets
 {
@@ -29,6 +30,7 @@ namespace OpenRA.Widgets
 		Rectangle downButtonRect;
 		Rectangle backgroundRect;
 		Rectangle scrollbarRect;
+		Rectangle thumbRect;
 		
 		public ScrollPanelWidget() : base() {}
 		protected ScrollPanelWidget(ScrollPanelWidget other)
@@ -39,6 +41,7 @@ namespace OpenRA.Widgets
 			downButtonRect = other.downButtonRect;
 			scrollbarRect = other.scrollbarRect;
 			backgroundRect = other.backgroundRect;
+			thumbRect = other.thumbRect;
 			
 			UpPressed = other.UpPressed;	
 			DownPressed = other.DownPressed;
@@ -49,20 +52,31 @@ namespace OpenRA.Widgets
 		{
 			if (!IsVisible())
 				return;
-
+			
+			// Height/ContentHeight*Height
+			var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
+			
+			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
+			var thumbOrigin = RenderBounds.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - RenderBounds.Height)));
+			
 			backgroundRect = new Rectangle(RenderBounds.X, RenderBounds.Y, RenderBounds.Width - ScrollbarWidth, RenderBounds.Height);
 			upButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y, ScrollbarWidth, ScrollbarWidth);
 			downButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, RenderBounds.Height - 2 * ScrollbarWidth);
-
-			string upButtonBg = (UpPressed) ? "dialog3" : "dialog2";
-			string downButtonBg = (DownPressed) ? "dialog3" : "dialog2";
+			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, ScrollbarHeight);
+			thumbRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
+			
+			string upButtonBg = UpPressed ? "dialog3" : "dialog2";
+			string downButtonBg = DownPressed ? "dialog3" : "dialog2";
 			string scrollbarBg = "dialog3";
+			string thumbBg = "dialog2";
 
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
 			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
 			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
+			
+			if (thumbHeight > 0)
+				WidgetUtils.DrawPanel(thumbBg, thumbRect);
 
 			var upOffset = UpPressed ? 4 : 3;
 			var downOffset = DownPressed ? 4 : 3;
@@ -91,7 +105,7 @@ namespace OpenRA.Widgets
 			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;
 			if (DownPressed) ListOffset -= ScrollVelocity;
 			
-			if (ListOffset > 0) ListOffset = 0;
+			ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
 		}
 		
 		public override bool LoseFocus (MouseInput mi)

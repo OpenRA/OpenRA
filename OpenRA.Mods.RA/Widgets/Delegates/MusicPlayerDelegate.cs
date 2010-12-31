@@ -133,7 +133,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				ml.AddChild(template);
 
 				offset += template.Bounds.Height;
+				
+				// Padding hack
+				if (ml.ContentHeight == 0)
+					ml.ContentHeight += 2*template.Bounds.Y;
+				
 				ml.ContentHeight += template.Bounds.Height;
+				
 			}
 		}
 		

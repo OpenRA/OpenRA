@@ -21,8 +21,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class LobbyDelegate : IWidgetDelegate
 	{
-		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
-		
+		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
+		ScrollPanelWidget Players;
 		Dictionary<string, string> CountryNames;
 		string MapUid;
 		Map Map;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			CurrentColorPreview1 = Game.Settings.Player.Color1;
 			CurrentColorPreview2 = Game.Settings.Player.Color2;
 
-			Players = lobby.GetWidget("PLAYERS");
+			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
@@ -73,7 +73,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
-
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
@@ -295,7 +294,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
 			// Todo: handle this nicer
 			Players.Children.Clear();
-
+			Players.ContentHeight = 0;
+			
 			int offset = 0;
 			foreach (var slot in orderManager.LobbyInfo.Slots)
 			{
@@ -448,12 +448,18 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.Id = "SLOT_{0}".F(s.Index);
 				template.Parent = Players;
 
-				template.Bounds = new Rectangle(0, offset, template.Bounds.Width, template.Bounds.Height);
+				template.Bounds = new Rectangle(template.Bounds.X, template.Bounds.Y + offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				Players.AddChild(template);
 
 				offset += template.Bounds.Height;
-			}
+				
+				// Hack to ensure correct ContentHeight
+				if (Players.ContentHeight == 0)
+					Players.ContentHeight += template.Bounds.Y;
+				
+				Players.ContentHeight += template.Bounds.Height;
+			}				
 		}
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
