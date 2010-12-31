@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -165,9 +166,32 @@ namespace OpenRA.Launcher
 			return "";
 		}
 		
-		public string httpRequest(string url)
+		struct Request 
 		{
-			return UtilityProgram.CallSimpleResponse("--download-url", url);
+			public NamedPipeClientStream Pipe;
+			public string CallbackName;
+		}
+		
+		Dictionary<Process, Request> requests = new Dictionary<Process, Request>();
+		
+		public void httpRequest(string url, string callbackName)
+		{
+			var p = UtilityProgram.Call("--download-url", url);
+			p.Exited += requestFinished;
+			var pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			pipe.Connect();
+			requests.Add(p, new Request(){ Pipe = pipe, CallbackName = callbackName });
+		}
+
+		void requestFinished(object sender, EventArgs e)
+		{
+			var p = sender as Process;
+			var request = requests[p];
+			
+			using (var reader = new StreamReader(request.Pipe))
+			{
+				document.InvokeScript(request.CallbackName, new object[]{ reader.ReadToEnd() });
+			}
 		}
 	}
 }
