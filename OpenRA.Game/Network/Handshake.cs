@@ -15,6 +15,26 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
+	public class HandshakeRequest
+	{
+		[FieldLoader.Load] public string[] Mods;
+		[FieldLoader.Load] public string Map;
+		
+		public string Serialize()
+		{
+			var data = new List<MiniYamlNode>();
+			data.Add(new MiniYamlNode("Handshake", FieldSaver.Save(this)));
+			return data.WriteToString();
+		}
+
+		public static HandshakeRequest Deserialize(string data)
+		{
+			var handshake = new HandshakeRequest();
+			FieldLoader.Load(handshake, MiniYaml.FromString(data).First().Value);
+			return handshake;
+		}
+	}
+	
 	public class HandshakeResponse
 	{
 		[FieldLoader.Load] public string[] Mods;

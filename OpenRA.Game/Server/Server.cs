@@ -167,7 +167,12 @@ namespace OpenRA.Server
 				preConns.Add(newConn);
 				
 				// Dispatch a handshake order
-				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", lobbyInfo.Serialize()).Serialize());
+				var request = new HandshakeRequest()
+				{
+					Map = lobbyInfo.GlobalSettings.Map,
+					Mods = lobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray()
+				};
+				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
 			catch (Exception) { DropClient(newConn); }
 		}

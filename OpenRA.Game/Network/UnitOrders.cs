@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 using System;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
@@ -100,18 +101,43 @@ namespace OpenRA.Network
 				
 				case "HandshakeRequest":
 				{
-					// Check valid mods/versions
-					var serverInfo = Session.Deserialize(order.TargetString);
-					var serverMods = serverInfo.GlobalSettings.Mods;
-					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods;
+					var request = HandshakeRequest.Deserialize(order.TargetString);
 				
-					// TODO: Check that the map exists on the client
+					// Check valid mods/versions
+					var serverMods = request.Mods;
+					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods;
 					
-					// Todo: Display a friendly dialog
-					if (serverMods.SymmetricDifference(localMods).Count() > 0)
-						throw new InvalidOperationException("Version mismatch. Client: `{0}`, Server: `{1}`"
-					                                    .F(string.Join(",",localMods), string.Join(",",serverMods)));
-										
+					bool valid = true;
+					if (localMods.Length != serverMods.Length)
+						valid = false;
+					else
+						foreach (var m in serverMods)
+						{
+							var parts = m.Split('@');
+							if (!localMods.Contains(parts[0]))
+							{
+								valid = false;
+								break;
+							}
+							if (parts[1] == "{DEV_VERSION}" || Mod.AllMods[parts[0]].Version == "{DEV_VERSION}")
+								continue;
+					
+							if (parts[1] != Mod.AllMods[parts[0]].Version)
+							{
+								valid = false;
+								break;
+							}
+						}
+
+					if (!valid)
+						throw new InvalidOperationException("Mod/Version mismatch. Client: `{0}`, Server: `{1}`".F(
+					                                           string.Join(",",localMods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()),
+					                                           string.Join(",",serverMods)));
+					
+					// Check that the map exists on the client
+					if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
+						throw new InvalidOperationException("Missing map {0}".F(request.Map));
+					
 					var info = new Session.Client()
 					{
 						Name = Game.Settings.Player.Name,
