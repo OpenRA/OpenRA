@@ -437,7 +437,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					spectator.IsVisible = () => slot1.Spectator || slot1.Bot != null;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
-					kickButton.IsVisible = () => Game.IsHost;
+					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
 					kickButton.OnMouseUp = mi =>
 						{
 							orderManager.IssueOrder(Order.Command("kick " + c.Slot));
