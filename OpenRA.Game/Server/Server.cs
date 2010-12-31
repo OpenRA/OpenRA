@@ -354,18 +354,23 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop)
 		{
-			conns.Remove(toDrop);
-			SendChat(toDrop, "Connection Dropped");
+			if (preConns.Contains(toDrop))
+				preConns.Remove(toDrop);
+			else
+			{
+				conns.Remove(toDrop);
+				SendChat(toDrop, "Connection Dropped");
 
-            if (GameStarted)
-                SendDisconnected(toDrop); /* Report disconnection */
+            	if (GameStarted)
+                	SendDisconnected(toDrop); /* Report disconnection */
 
-			lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				
+				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
-			DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
-			
-			if (conns.Count != 0)
-				SyncLobbyInfo();
+				if (conns.Count != 0)
+					SyncLobbyInfo();
+			}			
 
 			try
 			{
