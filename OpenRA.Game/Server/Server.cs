@@ -396,6 +396,10 @@ namespace OpenRA.Server
 				foreach( var d in conns )
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
+			// Drop any unvalidated clients
+			foreach (var c in preConns)
+				DropClient(c);
+			
 			DispatchOrders(null, 0,
 				new ServerOrder("StartGame", "").Serialize());
 
