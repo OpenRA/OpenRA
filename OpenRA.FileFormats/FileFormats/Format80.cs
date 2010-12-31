@@ -35,6 +35,8 @@ namespace OpenRA.FileFormats
             Array.Copy(src, this.offset, dest, offset, count);
             this.offset += count;
         }
+
+		public int Remaining() { return src.Length - offset; }
     }
 
 	public static class Format80
@@ -120,6 +122,26 @@ namespace OpenRA.FileFormats
 					}
 				}
 			}
+		}
+
+		public static int EncodeInto(byte[] src, byte[] dest)
+		{
+			/* quick & dirty format80 encoder -- only uses raw copy operator, terminated with a zero-run. */
+			/* this does not produce good compression, but it's valid format80 */
+			
+			var destIndex = 0;
+			var ctx = new FastByteReader(src);
+
+			do
+			{
+				var len = Math.Min(ctx.Remaining(), 0x3F);
+				dest[destIndex++] = (byte)(0x80 | len);
+				if (len > 0)
+					ctx.CopyTo(dest, destIndex, len);
+			}
+			while (!ctx.Done());
+
+			return destIndex;
 		}
 	}
 }
