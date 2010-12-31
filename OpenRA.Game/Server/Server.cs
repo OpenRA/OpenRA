@@ -177,7 +177,7 @@ namespace OpenRA.Server
 			catch (Exception) { DropClient(newConn); }
 		}
 		
-		void AcceptClient(Connection newConn, Session.Client client)
+		void ValidateClient(Connection newConn, string data)
 		{
 			try
 			{
@@ -185,10 +185,12 @@ namespace OpenRA.Server
 				{
 					Log.Write("server", "Rejected connection from {0}; game is already started.", 
 						newConn.socket.RemoteEndPoint);
-					newConn.socket.Close();
+					DropClient(newConn);
 					return;
 				}
 
+				var client = HandshakeResponse.Deserialize(data).Client;
+				
 				// Promote connection to a valid client
 				preConns.Remove(newConn);
 				conns.Add(newConn);
@@ -327,14 +329,7 @@ namespace OpenRA.Server
 				
 					break;
 				case "HandshakeResponse":
-					var response = HandshakeResponse.Deserialize(so.Data);
-					
-					// TODO: Validate password
-				
-					// Accept connection, set initial client info
-					AcceptClient(conn, response.Client);
-					SyncLobbyInfo();
-					
+					ValidateClient(conn, so.Data);					
 					break;
 				case "Chat":
 				case "TeamChat":
