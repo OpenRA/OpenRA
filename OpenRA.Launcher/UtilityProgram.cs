@@ -12,8 +12,8 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.IO.Pipes;
+using System.Text;
 
 namespace OpenRA.Launcher
 {
@@ -81,7 +81,7 @@ namespace OpenRA.Launcher
 
 		public static string CallSimpleResponse(string command, params string[] args)
 		{
-			var p = Call(command, args);
+			Call(command, args);
 			string responseString;
 			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
 			pipe.Connect();

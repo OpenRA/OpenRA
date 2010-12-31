@@ -120,7 +120,7 @@ namespace OpenRA.Launcher
 
 			using (var response = new StreamReader(pipe))
 			{
-				string s = response.ReadToEnd();
+				response.ReadToEnd();
 			}
 
 			RefreshMods();

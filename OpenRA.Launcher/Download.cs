@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see LICENSE.
+ */
+#endregion
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.IO.Pipes;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -166,7 +172,6 @@ namespace OpenRA.Launcher
 
 		void DoExtraction(object sender, DoWorkEventArgs e)
 		{
-			var bgWorker = sender as BackgroundWorker;
 			string[] args = e.Argument as string[];
 			string zipFile = args[0];
 			string destPath = args[1];
