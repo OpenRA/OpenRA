@@ -12,30 +12,34 @@
 #include <glib.h>
 #include <sys/wait.h>
 
-gboolean util_do_command_async(gchar * command, GChildWatchFunc callback)
+#include "utility.h"
+
+gboolean util_do_command_async(gchar * command, GChildWatchFunc callback, gpointer user_data)
 {
   GPid child_pid;
-  gint * out_fd = (gint *)malloc(sizeof(gint));
   gchar * spawn_args[] = { "mono", "OpenRA.Utility.exe", command, NULL };
+  callback_data * d = (callback_data *)g_malloc(sizeof(callback_data));
   gboolean result;
 
   result = g_spawn_async_with_pipes(NULL, spawn_args, NULL,
 			     G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
-			     NULL, NULL, &child_pid, NULL, out_fd, NULL, NULL);
+			     NULL, NULL, &child_pid, NULL, &(d->output_fd), NULL, NULL);
 
   if (!result)
   {
+    g_free(d);
     return FALSE;
   }
 
-  g_child_watch_add(child_pid, callback, out_fd);
+  d->user_data = user_data;
+  g_child_watch_add(child_pid, callback, d);
 
   return TRUE;
 }
 
 gboolean util_get_mod_list (GChildWatchFunc callback)
 {
-  return util_do_command_async("-l", callback);
+  return util_do_command_async("-l", callback, NULL);
 }
 
 gboolean util_do_command_blocking(gchar * command, GChildWatchFunc callback)
@@ -92,7 +96,10 @@ gint util_spawn_with_command(gchar const * command, gchar const * arg1, gchar co
 
   gchar * launch_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
 
-  g_string_printf(complete_command, "%s%s,%s", command, arg1, arg2);
+  if (arg2 == NULL)
+    g_string_printf(complete_command, "%s%s", command, arg1);
+  else
+    g_string_printf(complete_command, "%s%s,%s", command, arg1, arg2);
 
   launch_args[2] = complete_command->str;
 
@@ -117,6 +124,16 @@ gint util_do_download(gchar const * url, gchar const * dest, GPid * pid)
 gint util_do_extract(gchar const * target, gchar const * dest, GPid * pid)
 {
   return util_spawn_with_command("--extract-zip=", target, dest, pid);
+}
+
+gboolean util_do_http_request(gchar const * url, GChildWatchFunc callback, gpointer user_data)
+{
+  gboolean b;
+  GString * command = g_string_new(NULL);
+  g_string_printf(command, "--download-url=%s", url);
+  b = util_do_command_async(command->str, callback, user_data);
+  g_string_free(command, TRUE);
+  return b;
 }
 
 GString * util_get_output(int fd)

@@ -285,13 +285,13 @@ void mod_list_line(GString const * mod, gpointer user)
 
 void mod_list_callback(GPid pid, gint status, gpointer data)
 {
-  int * out_fd = (int *)data;
+  callback_data * d = (callback_data *)data;
   GString * msg = NULL;
   
-  msg = util_get_output(*out_fd);
+  msg = util_get_output(d->output_fd);
 
-  close(*out_fd);
-  free(out_fd);
+  close(d->output_fd);
+  g_free(d);
 
   if (!msg)
     return;

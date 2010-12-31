@@ -200,6 +200,12 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
   return JS_NULL;
 }
 
+typedef struct js_callback
+{
+  JSObjectRef func;
+  JSContextGroupRef ctx_group;
+} js_callback;
+
 typedef struct download_t 
 {
   gchar * key;
@@ -207,9 +213,8 @@ typedef struct download_t
   gchar * dest;
   int current_bytes;
   int total_bytes;
-  JSContextGroupRef ctx_group;
-  JSObjectRef download_progressed_func;
-  JSObjectRef extraction_progressed_func;
+  js_callback * download_progressed_cb;
+  js_callback * extraction_progressed_cb;
   JSValueRef status;
   JSValueRef error;
   GIOChannel * output_channel;
@@ -255,6 +260,8 @@ void free_download(download_t * download)
   g_free(download->key);
   g_free(download->url);
   g_free(download->dest);
+  g_free(download->download_progressed_cb);
+  g_free(download->extraction_progressed_cb);
 }
 
 JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
@@ -284,11 +291,15 @@ JSValueRef js_register_download(JSContextRef ctx, JSObjectRef func, JSObjectRef 
   free_download(download);
   memset(download, 0, sizeof(download_t));
 
-  download->ctx_group = JSContextGetGroup(ctx);
+  download->download_progressed_cb = (js_callback *)g_malloc(sizeof(js_callback));
   o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR("downloadProgressed"), NULL);
-  download->download_progressed_func = JSValueToObject(ctx, o, NULL);
+  download->download_progressed_cb->ctx_group = JSContextGetGroup(ctx);
+  download->download_progressed_cb->func = JSValueToObject(ctx, o, NULL);
+
+  download->extraction_progressed_cb = (js_callback *)g_malloc(sizeof(js_callback));
   o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR("extractProgressed"), NULL);
-  download->extraction_progressed_func = JSValueToObject(ctx, o, NULL);
+  download->extraction_progressed_cb->ctx_group = JSContextGetGroup(ctx);
+  download->extraction_progressed_cb->func = JSValueToObject(ctx, o, NULL);
 
   download->key = g_strdup(key->str);
 
@@ -332,7 +343,7 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
   JSValueRef args[1];
   JSContextRef ctx;
 
-  ctx = JSGlobalContextCreateInGroup(download->ctx_group, NULL);
+  ctx = JSGlobalContextCreateInGroup(download->download_progressed_cb->ctx_group, NULL);
  
   switch(condition)
   {
@@ -374,7 +385,7 @@ gboolean update_download_stats(GIOChannel * source, GIOCondition condition, gpoi
   }
 
   args[0] = JSValueMakeString(ctx, JS_STR(download->key));
-  JSObjectCallAsFunction(ctx, download->download_progressed_func, NULL, 1, args, NULL);
+  JSObjectCallAsFunction(ctx, download->download_progressed_cb->func, NULL, 1, args, NULL);
 
   return ret;
 }
@@ -546,7 +557,7 @@ gboolean update_extraction_progress(GIOChannel * source, GIOCondition condition,
   JSValueRef args[1];
   JSContextRef ctx;
 
-  ctx = JSGlobalContextCreateInGroup(download->ctx_group, NULL);
+  ctx = JSGlobalContextCreateInGroup(download->extraction_progressed_cb->ctx_group, NULL);
 
   switch(condition)
   {
@@ -570,7 +581,7 @@ gboolean update_extraction_progress(GIOChannel * source, GIOCondition condition,
   }
 
   args[0] = JSValueMakeString(ctx, JS_STR(download->key));
-  JSObjectCallAsFunction(ctx, download->extraction_progressed_func, NULL, 1, args, NULL);
+  JSObjectCallAsFunction(ctx, download->extraction_progressed_cb->func, NULL, 1, args, NULL);
 
   return ret;  
 }
@@ -665,7 +676,75 @@ JSValueRef js_metadata(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
   g_string_free(mod, TRUE);
   g_string_free(field, TRUE);
   return JS_NULL;
-} 
+}
+
+
+
+void request_finished(GPid pid, gint status, gpointer data)
+{
+  GString * msg;
+  JSValueRef args[1];
+  callback_data * d = (callback_data *)data;
+  js_callback * cb = (js_callback *)d->user_data;
+  JSContextRef ctx = JSGlobalContextCreateInGroup(cb->ctx_group, NULL);
+  
+  msg = util_get_output(d->output_fd);
+
+  close(d->output_fd);
+
+  if (!msg)
+  {
+    g_free(cb);
+    g_free(d);
+    return;
+  }
+
+  args[0] = JSValueMakeString(ctx, JS_STR(msg->str));
+  g_message("Request response: %s", msg->str);
+  JSObjectCallAsFunction(ctx, cb->func, NULL, 1, args, NULL);
+
+  g_string_free(msg, TRUE);
+
+  g_free(cb);
+  g_free(d);
+  g_spawn_close_pid(pid);
+}
+
+JSValueRef js_http_request(JSContextRef ctx, JSObjectRef func, JSObjectRef this,
+				size_t argc, const JSValueRef argv[], JSValueRef * exception)
+{
+  GString * url, * callbackname;
+  js_callback * cb = (js_callback *)g_malloc(sizeof(js_callback));
+  JSValueRef o;
+  
+  if (!js_check_num_args(ctx, "httpRequest", argc, 2, exception))
+    return JS_NULL;
+
+  url = js_get_cstr_from_val(ctx, argv[0]);
+
+  if (!url)
+    return JS_NULL;
+
+  callbackname = js_get_cstr_from_val(ctx, argv[1]);
+
+  if (!callbackname)
+  {
+    g_string_free(url, TRUE);
+    return JS_NULL;
+  }
+
+  o = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), JS_STR(callbackname->str), NULL);
+  cb->func = JSValueToObject(ctx, o, NULL);
+
+  cb->ctx_group = JSContextGetGroup(ctx);
+
+  util_do_http_request(url->str, request_finished, cb);
+
+  g_string_free(url, TRUE);
+  g_string_free(callbackname, TRUE);
+
+  return JS_NULL;
+}
 
 void js_add_functions(JSGlobalContextRef ctx, JSObjectRef target, char ** names, 
 		      JSObjectCallAsFunctionCallback * callbacks, size_t count)
@@ -685,16 +764,16 @@ void bind_js_bridge(WebKitWebView * view, WebKitWebFrame * frame,
   JSGlobalContextRef js_ctx;
   JSObjectRef window_obj, external_obj;
   
-  int func_count = 12;
+  int func_count = 13;
   char * names[] = { "log", "existsInMod", "launchMod", "registerDownload",
 		     "startDownload", "cancelDownload", "downloadStatus",
 		     "downloadError", "bytesCompleted", "bytesTotal",
-		     "extractDownload", "metadata"};
+		     "extractDownload", "metadata", "httpRequest"};
   JSObjectCallAsFunctionCallback callbacks[] = { js_log, js_exists_in_mod, js_launch_mod,
 						 js_register_download, js_start_download,
 						 js_cancel_download, js_download_status,
 						 js_download_error, js_bytes_completed,
-						 js_bytes_total, js_extract_download, js_metadata };
+						 js_bytes_total, js_extract_download, js_metadata, js_http_request };
   
   js_ctx = (JSGlobalContextRef)context;
 
