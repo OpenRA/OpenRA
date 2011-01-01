@@ -25,6 +25,9 @@ namespace OpenRA.Mods.RA
 	{		
 		readonly StoresOreInfo Info;
 		
+		[Sync]
+		public int Stored { get { return Player.OreCapacity == 0 ? 0 : Info.Capacity * Player.Ore / Player.OreCapacity; } }
+		
 		PlayerResources Player;
 		public StoresOre(Actor self, StoresOreInfo info)
 		{
@@ -36,21 +39,16 @@ namespace OpenRA.Mods.RA
 		
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			var ore = Stored(self);
+			var ore = Stored;
 			Player.TakeOre(ore);
 			Player = newOwner.PlayerActor.Trait<PlayerResources>();
 			Player.GiveOre(ore);
 		}
 		
-		int Stored(Actor self)
-		{
-			return Info.Capacity * Player.Ore / Player.OreCapacity;
-		}
-		
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (self.IsDead())
-				Player.TakeOre(Stored(self));	// Lose the stored ore
+				Player.TakeOre(Stored);	// Lose the stored ore
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -60,6 +58,6 @@ namespace OpenRA.Mods.RA
 					? Info.PipColor : PipType.Transparent );
 		}
 
-		public bool ShouldExplode(Actor self) { return Stored(self) > 0; }
+		public bool ShouldExplode(Actor self) { return Stored > 0; }
 	}
 }
