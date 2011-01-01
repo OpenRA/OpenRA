@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Player firedBy;
 		readonly Actor silo;
 		Animation anim;
-		float2 pos;
+		int2 pos;
 		int2 targetLocation;
 		int altitude;
 		bool goingUp = true;

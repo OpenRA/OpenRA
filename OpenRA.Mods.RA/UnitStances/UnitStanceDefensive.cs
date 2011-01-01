@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 				WaitForIdle();
 		}
 
-		protected void DefendThis(float2 target)
+		protected void DefendThis(int2 target)
 		{
 			DefendTarget = Target.FromPos(target);
 			TargetType = ETargetType.Location;

@@ -112,12 +112,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public static void DoExplosion(Actor attacker, string weapontype, float2 pos, int altitude)
+		public static void DoExplosion(Actor attacker, string weapontype, int2 pos, int altitude)
 		{
 			var args = new ProjectileArgs
 			{
-				src = pos.ToInt2(),
-				dest = pos.ToInt2(),
+				src = pos,
+				dest = pos,
 				srcAltitude = altitude,
 				destAltitude = altitude,
 				firedBy = attacker,
