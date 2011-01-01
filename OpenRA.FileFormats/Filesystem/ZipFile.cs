@@ -40,6 +40,8 @@ namespace OpenRA.FileFormats
 		public ZipFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.priority = priority;
+			this.filename = filename;
+
 			if (File.Exists(filename))
 				File.Delete(filename);
 			
