@@ -116,11 +116,10 @@ namespace OpenRA.Graphics
 		{
 			if (!actors.Any()) return;
 
-			var avgPos = (1f / actors.Count()) * actors
+			var avgPos = actors
 				.Select(a => a.CenterLocation)
-				.Aggregate((a, b) => a + b);
-
-			scrollPosition = this.NormalizeScrollPosition((avgPos.ToInt2() - screenSize / 2));
+				.Aggregate((a, b) => a + b) / actors.Count();
+			scrollPosition = this.NormalizeScrollPosition((avgPos - screenSize / 2));
 		}
 		
 		public Rectangle ViewBounds(World world)

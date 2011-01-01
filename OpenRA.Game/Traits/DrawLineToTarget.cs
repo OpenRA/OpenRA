@@ -59,7 +59,7 @@ namespace OpenRA.Traits
 
 			var p = target.CenterLocation;
 			var move = self.TraitOrDefault<IMove>();
-			var origin = move != null ? self.CenterLocation - new float2(0, move.Altitude) : self.CenterLocation;
+			var origin = move != null ? self.CenterLocation - new int2(0, move.Altitude) : self.CenterLocation;
 
 			Game.Renderer.LineRenderer.DrawLine(origin, p, c, c);
 			for (bool b = false; !b; p = origin, b = true)

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Air
 		bool isCalculated;
 		Actor dest;
 
-		float2 w1, w2, w3;	/* tangent points to turn circles */
+		int2 w1, w2, w3;	/* tangent points to turn circles */
 
 		public static Actor ChooseAirfield(Actor self)
 		{
@@ -74,9 +74,9 @@ namespace OpenRA.Mods.RA.Air
 
 			if (f.X > 0) f = -f;
 
-			w1 = c1 + f;
-			w2 = c2 + f;
-			w3 = approachStart;
+			w1 = (c1 + f).ToInt2();
+			w2 = (c2 + f).ToInt2();
+			w3 = (approachStart).ToInt2();
 
 			isCalculated = true;
 		}

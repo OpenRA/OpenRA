@@ -139,7 +139,7 @@ namespace OpenRA.Traits
 				if (cells.Any()) return cells;
 			}
 
-			return new[] { (1f / Game.CellSize * a.CenterLocation).ToInt2() };
+			return new[] { a.CenterLocation / Game.CellSize };
 		}
 
 		void RemoveActor(Actor a)

@@ -231,7 +231,7 @@ namespace OpenRA.Traits
 
 		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
 		public int2 PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos.ToInt2(); } }
-		public float2 CenterLocation { get { return PxPosition; } }
+		public int2 CenterLocation { get { return PxPosition; } }
 
 		public Actor Actor { get { return IsActor ? actor : null; } }
 		public bool IsActor { get { return actor != null && !actor.Destroyed; } }

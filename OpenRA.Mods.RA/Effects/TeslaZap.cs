@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!doneDamage)
 			{
 				if (Args.target.IsValid)
-					Args.dest = Args.target.CenterLocation.ToInt2();
+					Args.dest = Args.target.CenterLocation;
 
 				Combat.DoImpacts(Args);
 				doneDamage = true;

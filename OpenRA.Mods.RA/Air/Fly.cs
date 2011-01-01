@@ -17,11 +17,11 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class Fly : CancelableActivity
 	{
-		public readonly float2 Pos;
+		public readonly int2 Pos;
 
-		private Fly( float2 px ) { Pos = px; }
+		private Fly( int2 px ) { Pos = px; }
 		
-		public static Fly ToPx( float2 px ) { return new Fly( px ); }
+		public static Fly ToPx( int2 px ) { return new Fly( px ); }
 		public static Fly ToCell( int2 pos ) { return new Fly( Util.CenterOfCell( pos ) ); }
 
 		public override IActivity Tick(Actor self)

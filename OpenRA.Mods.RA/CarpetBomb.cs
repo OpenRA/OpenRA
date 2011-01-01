@@ -47,8 +47,8 @@ namespace OpenRA.Mods.RA
 				{
 					srcAltitude = self.Trait<IMove>().Altitude,
 					destAltitude = 0,
-					src = self.CenterLocation.ToInt2(),
-					dest = self.CenterLocation.ToInt2(),
+					src = self.CenterLocation,
+					dest = self.CenterLocation,
 					facing = self.Trait<IFacing>().Facing,
 					firedBy = self,
 					weapon = weapon

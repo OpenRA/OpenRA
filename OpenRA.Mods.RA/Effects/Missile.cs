@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly ProjectileArgs Args;
 
 		int2 offset;
-		float2 Pos;
+		int2 Pos;
 		readonly Animation anim;
 		int Facing;
 		int t;
@@ -93,12 +93,13 @@ namespace OpenRA.Mods.RA.Effects
 			var speed = Scale * Info.Speed * ((targetAltitude > 0 && Info.TurboBoost) ? 1.5f : 1f);
 
 			var angle = Facing / 128f * Math.PI;
-			var move = speed * -float2.FromAngle((float)angle);
+			// TODO: Replace float2.FromAngle with int2.FromFacing
+			var move = (speed * -float2.FromAngle((float)angle)).ToInt2();
 			Pos += move;
 
 			if (Info.Trail != null)
 				world.AddFrameEndTask(w => w.Add(
-					new Smoke(w, (Pos - 1.5f * move - new int2(0, Altitude)).ToInt2(), Info.Trail)));
+					new Smoke(w, (Pos - 1.5f * move.ToFloat2() - new int2(0, Altitude)).ToInt2(), Info.Trail)));
 
 			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
 				Explode(world);
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Args.dest = Pos.ToInt2();
+			Args.dest = Pos;
 			if (t > Info.Arm * 40)	/* don't blow up in our launcher's face! */
 				Combat.DoImpacts(Args);
 		}

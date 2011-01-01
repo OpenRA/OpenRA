@@ -34,8 +34,9 @@ namespace OpenRA.Traits
 		static float2[] fvecs = Graphics.Util.MakeArray<float2>( 32,
 			i => -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ) );
 
-		public static int GetFacing( float2 d, int currentFacing )
+		public static int GetFacing( int2 dd, int currentFacing )
 		{
+			var d = dd.ToFloat2();
 			if (float2.WithinEpsilon(d, float2.Zero, 0.001f))
 				return currentFacing;
 

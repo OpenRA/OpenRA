@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
 					+ Combat.GetTurretPosition(self, facing, Turret)
 					+ Combat.GetBarrelPosition(self, facing, Turret, barrel)).ToInt2(),
 				srcAltitude = move != null ? move.Altitude : 0,
-				dest = target.CenterLocation.ToInt2(),
+				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,
 				
 				facing = barrel.Facing + 

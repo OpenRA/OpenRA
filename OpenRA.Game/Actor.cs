@@ -27,7 +27,7 @@ namespace OpenRA
 		public readonly uint ActorID;
 
 		public int2 Location { get { return Trait<IOccupySpace>().TopLeft; } }
-		public float2 CenterLocation { get { return Trait<IHasLocation>().PxPosition; } }
+		public int2 CenterLocation { get { return Trait<IHasLocation>().PxPosition; } }
 		[Sync]
 		public Player Owner;
 
