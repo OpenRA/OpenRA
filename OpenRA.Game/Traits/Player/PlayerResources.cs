@@ -45,8 +45,6 @@ namespace OpenRA.Traits
 		public int DisplayCash;
 		public int DisplayOre;
 
-		public float GetSiloFullness() { return (float)Ore / OreCapacity; }
-
 		public void GiveOre(int num)
 		{
 			Ore += num;

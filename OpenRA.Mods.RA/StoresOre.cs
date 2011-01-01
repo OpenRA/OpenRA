@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			return Graphics.Util.MakeArray( Info.PipCount, 
-				i => (Player.GetSiloFullness() > i * 1.0f / Info.PipCount) 
+				i => ( Player.Ore * Info.PipCount > i * Player.OreCapacity ) 
 					? Info.PipColor : PipType.Transparent );
 		}
 
