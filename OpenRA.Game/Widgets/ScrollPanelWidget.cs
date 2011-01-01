@@ -122,6 +122,7 @@ namespace OpenRA.Widgets
 			return base.LoseFocus(mi);
 		}
 		
+		int2 lastMouseLocation;
 		public override bool HandleInputInner(MouseInput mi)
 		{						
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
@@ -130,20 +131,29 @@ namespace OpenRA.Widgets
 			if (!Focused)
 				return false;
 
-			UpPressed = upButtonRect.Contains(mi.Location.X, mi.Location.Y);
-			DownPressed = downButtonRect.Contains(mi.Location.X, mi.Location.Y);
-			ThumbPressed = thumbRect.Contains(mi.Location.X, mi.Location.Y);
 			if (Focused && mi.Event == MouseInputEvent.Up)
-				LoseFocus(mi);
+				return LoseFocus(mi);
 			
 			if (ThumbPressed && mi.Event == MouseInputEvent.Move)
-			{
+			{				
 				var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
 				var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
-			
-				ListOffset += (int)((Viewport.LastMousePos.Y - mi.Location.Y)*(ContentHeight - RenderBounds.Height)*1f/(ScrollbarHeight - thumbHeight));
+				var oldOffset = ListOffset;
+				ListOffset += (int)((lastMouseLocation.Y - mi.Location.Y)*(ContentHeight - RenderBounds.Height)*1f/(ScrollbarHeight - thumbHeight));
 				ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+				
+				if (oldOffset != ListOffset)
+					lastMouseLocation = mi.Location;
 			}
+			else
+			{
+				UpPressed = upButtonRect.Contains(mi.Location.X, mi.Location.Y);
+				DownPressed = downButtonRect.Contains(mi.Location.X, mi.Location.Y);
+				ThumbPressed = thumbRect.Contains(mi.Location.X, mi.Location.Y);
+				if (ThumbPressed)
+					lastMouseLocation = mi.Location;
+			}
+			
 			return (UpPressed || DownPressed || ThumbPressed);
 		}
 
