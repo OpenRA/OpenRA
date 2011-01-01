@@ -187,14 +187,20 @@ JSValueRef js_launch_mod(JSContextRef ctx, JSObjectRef func,
   }
 
   {
-    gchar * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, "SupportDir=~/.openra", NULL };
+    gchar * launch_args[] = { "mono", "OpenRA.Game.exe", NULL, NULL, "SupportDir=~/.openra", NULL };
     GString * game_mods_arg = g_string_new(NULL);
-    g_string_printf(game_mods_arg, "Game.Mods=%s", mod_list->str);
+	GString * renderer_arg = g_string_new(NULL);
+    
+	g_string_printf(game_mods_arg, "Game.Mods=%s", mod_list->str);
+
+	g_string_printf(renderer_arg, "Graphics.Renderer=%s", get_renderer() == RENDERER_GL ? "Gl" : "Cg");
 
     launch_args[2] = game_mods_arg->str;
+	launch_args[3] = renderer_arg->str;
     
     g_spawn_async(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL);
     g_string_free(game_mods_arg, TRUE);
+	g_string_free(renderer_arg, TRUE);
   }
   g_string_free(mod_list, TRUE);
   return JS_NULL;

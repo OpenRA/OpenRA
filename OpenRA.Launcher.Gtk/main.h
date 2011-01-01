@@ -16,6 +16,12 @@ enum
   N_COLUMNS
 };
 
+enum
+{
+  RENDERER_GL,
+  RENDERER_CG
+};
+
 #define MAX_NUM_MODS 64
 
 typedef struct mod_t
@@ -30,5 +36,7 @@ typedef struct mod_t
 } mod_t;
 
 mod_t * get_mod(gchar const * key);
+
+int get_renderer(void);
 
 #endif

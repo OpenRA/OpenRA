@@ -23,9 +23,12 @@ WebKitWebView * browser;
 GtkTreeStore * tree_store;
 GtkTreeView * tree;
 GdkPixbuf * generic_mod_icon;
+GtkRadioButton * gl_button, * cg_button;
 
 static mod_t mods[MAX_NUM_MODS];
 static int mod_count = 0;
+
+static int renderer = RENDERER_GL;
 
 void free_mod(mod_t * mod)
 {
@@ -383,9 +386,52 @@ void make_tree_view(void)
   gtk_tree_view_append_column(tree, name_column);
 }
 
+void renderer_callback(GPid pid, gint status, gpointer data)
+{
+  int * fd = (int *)data;
+  GString * msg;
+
+  msg = util_get_output(*fd);
+
+  close(*fd);
+  g_free(fd);
+
+  if (!msg)
+    return;
+
+  if (g_str_has_prefix(msg->str, "Error:"))
+  {
+    g_string_free(msg, TRUE);
+    return;
+  }
+
+  if (0 == strcmp(msg->str, "Gl"))
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gl_button), TRUE);
+  else
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(cg_button), TRUE);
+
+  g_string_free(msg, TRUE);
+}
+
+void renderer_changed(GtkToggleButton * widget, gpointer user_data)
+{
+  if (!gtk_toggle_button_get_active(widget))
+    return;
+
+  if (GTK_RADIO_BUTTON(widget) == gl_button)
+    renderer = RENDERER_GL;
+  else
+    renderer = RENDERER_CG;
+}
+
+int get_renderer(void)
+{
+  return renderer;
+}
+
 int main(int argc, char ** argv)
 {
-  GtkWidget * hbox;
+  GtkWidget * hbox1, * hbox2, * vbox;
 
   server_init(WEBSERVER_PORT);
   
@@ -406,14 +452,29 @@ int main(int argc, char ** argv)
  
   util_get_mod_list(mod_list_callback);
 
-  hbox = gtk_hbox_new(FALSE, 0);
+	vbox = gtk_vbox_new(FALSE, 0);
+  hbox1 = gtk_hbox_new(FALSE, 0);
+  hbox2 = gtk_hbox_new(FALSE, 0);
 
   gtk_widget_set_size_request(GTK_WIDGET(tree), 250, 0);
 
-  gtk_box_pack_end(GTK_BOX(hbox), GTK_WIDGET(browser), TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(tree), TRUE, TRUE, 0);
+  gtk_box_pack_end(GTK_BOX(hbox1), GTK_WIDGET(browser), TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox1), GTK_WIDGET(tree), TRUE, TRUE, 0);
 
-  gtk_container_add(GTK_CONTAINER(window), hbox);
+  gl_button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label(NULL, "GL Renderer"));
+  g_signal_connect(gl_button, "toggled", G_CALLBACK(renderer_changed), 0);
+  cg_button = GTK_RADIO_BUTTON(gtk_radio_button_new_with_label_from_widget(gl_button, "CG Renderer"));
+  g_signal_connect(cg_button, "toggled", G_CALLBACK(renderer_changed), 0);
+
+  util_get_setting("Graphics.Renderer", renderer_callback);
+
+  gtk_box_pack_start(GTK_BOX(hbox2), GTK_WIDGET(gl_button), FALSE, FALSE, 5);
+  gtk_box_pack_start(GTK_BOX(hbox2), GTK_WIDGET(cg_button), FALSE, FALSE, 5);
+
+  gtk_box_pack_start(GTK_BOX(vbox), hbox1, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(vbox), hbox2, FALSE, FALSE, 10);
+
+  gtk_container_add(GTK_CONTAINER(window), vbox);
 
   gtk_widget_show_all(GTK_WIDGET(window));
   g_signal_connect(window, "delete-event", G_CALLBACK(window_delete), 0);
