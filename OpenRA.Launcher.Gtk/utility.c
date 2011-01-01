@@ -88,23 +88,48 @@ gboolean util_get_setting(gchar const * setting, GChildWatchFunc callback)
   return return_val;
 }
 
-gint util_spawn_with_command(gchar const * command, gchar const * arg1, gchar const * arg2, GPid * pid)
+gchar * get_graphical_sudo_client(void)
+{
+  int num_clients = 2, i;
+  gchar * clients[] = { "gksudo", "kdesudo" };
+
+  for (i = 0; i < num_clients; i++)
+  {
+    FILE * f;
+    GString * test_path = g_string_new(NULL);
+    g_string_printf(test_path, "/usr/bin/%s", clients[i]);
+    f = fopen(test_path->str, "r");
+    g_string_free(test_path, TRUE);
+    if (f)
+      return g_strdup(clients[i]);
+  }
+  return NULL;
+}
+
+gint util_spawn_with_command(gchar const * command, gchar const * arg1, gchar const * arg2, gboolean root, GPid * pid)
 {
   GString * complete_command = g_string_new(NULL);
   gint out_fd;
   gboolean result;
 
-  gchar * launch_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
+  g_string_printf(complete_command, "%s%s,%s", command, arg1, arg2);
 
-  if (arg2 == NULL)
-    g_string_printf(complete_command, "%s%s", command, arg1);
+  if (root)
+  {
+    gchar * sudo = get_graphical_sudo_client();
+    gchar * launch_args[] = { sudo, "--", "mono", "OpenRA.Utility.exe", NULL, NULL };
+    launch_args[4] = complete_command->str;
+    result = g_spawn_async_with_pipes(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH,
+              NULL, NULL, pid, NULL, &out_fd, NULL, NULL);
+    g_free(sudo);
+  }
   else
-    g_string_printf(complete_command, "%s%s,%s", command, arg1, arg2);
-
-  launch_args[2] = complete_command->str;
-
-  result = g_spawn_async_with_pipes(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH,
-            NULL, NULL, pid, NULL, &out_fd, NULL, NULL);
+  {
+    gchar * launch_args[] = { "mono", "OpenRA.Utility.exe", NULL, NULL };
+    launch_args[2] = complete_command->str;
+    result = g_spawn_async_with_pipes(NULL, launch_args, NULL, G_SPAWN_SEARCH_PATH,
+              NULL, NULL, pid, NULL, &out_fd, NULL, NULL);
+  }
 
   g_string_free(complete_command, TRUE);
 
@@ -118,12 +143,12 @@ gint util_spawn_with_command(gchar const * command, gchar const * arg1, gchar co
 
 gint util_do_download(gchar const * url, gchar const * dest, GPid * pid)
 {
-  return util_spawn_with_command("--download-url=", url, dest, pid);
+  return util_spawn_with_command("--download-url=", url, dest, FALSE, pid);
 }
 
 gint util_do_extract(gchar const * target, gchar const * dest, GPid * pid)
 {
-  return util_spawn_with_command("--extract-zip=", target, dest, pid);
+  return util_spawn_with_command("--extract-zip=", target, dest, TRUE, pid);
 }
 
 gboolean util_do_http_request(gchar const * url, GChildWatchFunc callback, gpointer user_data)
