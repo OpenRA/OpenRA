@@ -287,7 +287,7 @@ namespace OpenRA.Widgets
 					child.Tick();
 		}
 		
-		public void AddChild(Widget child)
+		public virtual void AddChild(Widget child)
 		{
 			child.Parent = this;
 			Children.Add( child );

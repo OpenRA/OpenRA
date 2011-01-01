@@ -57,7 +57,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			var vl = bg.GetWidget<ScrollPanelWidget>("VIDEO_LIST");
 			var itemTemplate = vl.GetWidget<LabelWidget>("VIDEO_TEMPLATE");
-			int offset = itemTemplate.Bounds.Y;
 			
 			foreach (var kv in Rules.Movies)
 			{
@@ -79,14 +78,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					player.Load(video);
 					return true;
 				};
-				template.Parent = vl;
-
-				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				vl.AddChild(template);
-
-				offset += template.Bounds.Height;
-				vl.ContentHeight += template.Bounds.Height;
 			}
 		}
 	}

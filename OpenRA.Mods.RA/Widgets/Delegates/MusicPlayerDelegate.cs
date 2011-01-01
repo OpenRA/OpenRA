@@ -98,7 +98,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			var ml = bg.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
-			int offset = itemTemplate.Bounds.Y;
 			
 			if (!Rules.Music.Where(m => m.Value.Exists).Any())
 			{
@@ -122,24 +121,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 					return true;
 				};
-				template.Parent = ml;
 
-				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
-				template.IsVisible = () => true;
-				
+				template.IsVisible = () => true;				
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + Rules.Music[song].Title;
 				template.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
 
 				ml.AddChild(template);
-
-				offset += template.Bounds.Height;
-				
-				// Padding hack
-				if (ml.ContentHeight == 0)
-					ml.ContentHeight += 2*template.Bounds.Y;
-				
-				ml.ContentHeight += template.Bounds.Height;
-				
 			}
 		}
 		

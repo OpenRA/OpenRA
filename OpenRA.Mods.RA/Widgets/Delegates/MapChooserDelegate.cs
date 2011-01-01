@@ -55,7 +55,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 
 			var itemTemplate = ml.GetWidget<ContainerWidget>("MAP_TEMPLATE");
-			int offset = itemTemplate.Bounds.Y;
 			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title))
 			{
 				var map = kv.Value;
@@ -66,19 +65,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.Id = "MAP_{0}".F(map.Uid);
 				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
 				template.OnMouseDown = mi => { Map = map; return true; };
-				template.Parent = ml;
-				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + map.Title;
 				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type + "   ";
 				ml.AddChild(template);
-
-				offset += template.Bounds.Height;
-				
-				// Padding hack
-				if (ml.ContentHeight == 0)
-					ml.ContentHeight += 2*template.Bounds.Y;
-				ml.ContentHeight += template.Bounds.Height;
 			}
 		}
 	}

@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
-			sl.Children.Clear();
+			sl.ClearChildren();
 			currentServer = null;
 
 			if (games == null)
@@ -161,8 +161,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
 
-			sl.ContentHeight = 0;
-			int offset = ServerTemplate.Bounds.Y;
 			int i = 0;
             foreach (var loop in gamesWaiting)
 			{
@@ -174,20 +172,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 						game.Address);
 				template.GetBackground = () => (currentServer == game) ? "dialog2" : null;
 				template.OnMouseDown = mi => { currentServer = game; return true; };
-				template.Parent = sl;
-
-				template.Bounds = new Rectangle(template.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				sl.AddChild(template);
 
 				if (i == 0) currentServer = game;
-
-				offset += template.Bounds.Height;
-				// Padding hack
-				if (sl.ContentHeight == 0)
-					sl.ContentHeight += 2*template.Bounds.Y;
-				
-				sl.ContentHeight += template.Bounds.Height;
 				i++;
 			}
 		}

@@ -40,11 +40,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
 			CurrentReplay = null;
 
-			rl.Children.Clear();
-			rl.ContentHeight = 0;
-			var offset = template.Bounds.Y;
+			rl.ClearChildren();
 			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
-				AddReplay(rl, replayFile, template, ref offset);
+				AddReplay(rl, replayFile, template);
 
 			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
 				{
@@ -100,27 +98,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			}
 		}
 
-		void AddReplay(ScrollPanelWidget list, string filename, LabelWidget template, ref int offset)
+		void AddReplay(ScrollPanelWidget list, string filename, LabelWidget template)
 		{
 			var entry = template.Clone() as LabelWidget;
 			entry.Id = "REPLAY_";
 			entry.GetText = () => "   {0}".F(Path.GetFileName(filename));
 			entry.GetBackground = () => (CurrentReplay == filename) ? "dialog2" : null;
 			entry.OnMouseDown = mi => { CurrentReplay = filename; return true; };
-			entry.Parent = list;
-			entry.Bounds = new Rectangle(entry.Bounds.X, offset, template.Bounds.Width, template.Bounds.Height);
 			entry.IsVisible = () => true;
 			list.AddChild(entry);
-
-			if (offset == template.Bounds.Y)
-				CurrentReplay = filename;
-
-			offset += template.Bounds.Height;
-			// Padding hack
-			if (list.ContentHeight == 0)
-				list.ContentHeight += 2*template.Bounds.Y;
-			
-			list.ContentHeight += template.Bounds.Height;
 		}
 	}
 

@@ -19,6 +19,7 @@ namespace OpenRA.Widgets
 		public readonly string Background = "dialog3";
 		public readonly int ScrollbarWidth = 24;
 		public readonly float ScrollVelocity = 4f;		
+		public readonly int ItemSpacing = 2;
 		
 		public int ContentHeight = 0;
 		float ListOffset = 0;
@@ -35,16 +36,24 @@ namespace OpenRA.Widgets
 		protected ScrollPanelWidget(ScrollPanelWidget other)
 			: base(other)
 		{
-			Background = other.Background;
-			upButtonRect = other.upButtonRect;
-			downButtonRect = other.downButtonRect;
-			scrollbarRect = other.scrollbarRect;
-			backgroundRect = other.backgroundRect;
-			thumbRect = other.thumbRect;
+			throw new NotImplementedException();
+		}
+		
+		public void ClearChildren()
+		{
+			Children.Clear();
+			ContentHeight = 0;
+		}
+		
+		public override void AddChild(Widget child)
+		{
+			// Initial setup of margins/height
+			if (Children.Count == 0)
+				ContentHeight = ItemSpacing;
 			
-			UpPressed = other.UpPressed;
-			DownPressed = other.DownPressed;
-			ThumbPressed = other.ThumbPressed;
+			child.Bounds.Y += ContentHeight;
+			ContentHeight += child.Bounds.Height + ItemSpacing;
+			base.AddChild(child);
 		}
 		
 		public override void DrawInner( WorldRenderer wr ) {}

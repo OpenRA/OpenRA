@@ -293,10 +293,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
 			// Todo: handle this nicer
-			Players.Children.Clear();
-			Players.ContentHeight = 0;
+			Players.ClearChildren();
 			
-			int offset = 0;
 			foreach (var slot in orderManager.LobbyInfo.Slots)
 			{
 				var s = slot;
@@ -446,19 +444,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 
 				template.Id = "SLOT_{0}".F(s.Index);
-				template.Parent = Players;
-
-				template.Bounds = new Rectangle(template.Bounds.X, template.Bounds.Y + offset, template.Bounds.Width, template.Bounds.Height);
 				template.IsVisible = () => true;
 				Players.AddChild(template);
-
-				offset += template.Bounds.Height;
-				
-				// Hack to ensure correct ContentHeight
-				if (Players.ContentHeight == 0)
-					Players.ContentHeight += template.Bounds.Y;
-				
-				Players.ContentHeight += template.Bounds.Height;
 			}				
 		}
 

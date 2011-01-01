@@ -419,7 +419,7 @@ Background@MAP_CHOOSER:
 					Height:25
 					ClickThrough:false
 					X:2
-					Y:2
+					Y:0
 					Visible:false
 		Background@MAPCHOOSER_MAP_BG:
 			X:PARENT_RIGHT-268

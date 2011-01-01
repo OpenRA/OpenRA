@@ -28,7 +28,7 @@ Background@REPLAYBROWSER_BG:
 					Height:25
 					ClickThrough:false
 					X:2
-					Y:2
+					Y:0
 					Visible:false
 		Container@REPLAY_INFO:
 			Id:REPLAY_INFO
