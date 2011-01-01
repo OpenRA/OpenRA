@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 		public readonly bool Unsellable = false;
-		public readonly float RefundPercent = 0.5f;
+		public readonly int RefundPercent = 50;
 		
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};

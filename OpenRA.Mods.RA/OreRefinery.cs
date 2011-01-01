@@ -74,7 +74,8 @@ namespace OpenRA.Mods.RA
 			if (!Info.LocalStorage)
 				return;
 			
-			if (--nextProcessTime <= 0) {
+			if (--nextProcessTime <= 0)
+			{
 				// Convert resources to cash
 				int amount = Math.Min (Ore, Info.ProcessAmount);
 				amount = Math.Min (amount, PlayerResources.OreCapacity - PlayerResources.Ore);
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.RA
 				if (amount > 0)
 				{
 					Ore -= amount;
-					PlayerResources.GiveOre (amount);
+					PlayerResources.GiveOre(amount);
 				}
 				nextProcessTime = (PlayerPower.PowerState == PowerState.Normal)? 
 					Info.ProcessTick : Info.LowPowerProcessTick ;
@@ -125,7 +126,7 @@ namespace OpenRA.Mods.RA
 			if (!Info.LocalStorage)
 				return null;
 			
-			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * 1f / Info.Capacity > i * 1f / Info.PipCount) ? Info.PipColor : PipType.Transparent);
+			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * Info.PipCount > i * Info.Capacity) ? Info.PipColor : PipType.Transparent);
 		}
 
 		public bool ShouldExplode(Actor self) { return Ore > 0; }
