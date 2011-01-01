@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class NukeLaunch : IEffect
 	{
+		readonly Player firedBy;
 		readonly Actor silo;
 		Animation anim;
 		float2 pos;
@@ -25,8 +26,9 @@ namespace OpenRA.Mods.RA.Effects
 		bool goingUp = true;
 		string weapon;
 
-		public NukeLaunch(Actor silo, string weapon, int2 spawnOffset, int2 targetLocation)
+		public NukeLaunch(Player firedBy, Actor silo, string weapon, int2 spawnOffset, int2 targetLocation)
 		{
+			this.firedBy = firedBy;
 			this.silo = silo;
 			this.targetLocation = targetLocation;
 			this.weapon = weapon;
@@ -35,8 +37,8 @@ namespace OpenRA.Mods.RA.Effects
 			
 			if (silo == null)
 			{
-				altitude = silo.World.Map.Bounds.Height*Game.CellSize;
-				StartDescent(silo.World);
+				altitude = firedBy.World.Map.Bounds.Height*Game.CellSize;
+				StartDescent(firedBy.World);
 			}
 			else
 				pos = silo.CenterLocation + spawnOffset;
@@ -76,13 +78,14 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(silo.Owner.PlayerActor, weapon, pos, 0);
+			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos, 0);
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - 0.5f * anim.Image.size - new float2(0, altitude), "effect", (int)pos.Y);
+			yield return new Renderable(anim.Image, pos - 0.5f * anim.Image.size - new float2(0, altitude), 
+				"effect", (int)pos.Y);
 		}
 	}
 }

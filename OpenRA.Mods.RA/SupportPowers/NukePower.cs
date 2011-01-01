@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
-using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -39,12 +37,13 @@ namespace OpenRA.Mods.RA
 			// Play to everyone but the current player
 			if (self.Owner != self.World.LocalPlayer)
 				Sound.Play(Info.LaunchSound);
+
+			var npi = Info as NukePowerInfo;
 			
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-			self.World.AddFrameEndTask(w =>
-			{
-				w.Add(new NukeLaunch(self, (Info as NukePowerInfo).MissileWeapon, (Info as NukePowerInfo).SpawnOffset, order.TargetLocation));
-			});
+			self.World.AddFrameEndTask(w => w.Add(
+				new NukeLaunch(self.Owner, self, npi.MissileWeapon, npi.SpawnOffset, 
+					order.TargetLocation)));
 		}
 	}
 }
