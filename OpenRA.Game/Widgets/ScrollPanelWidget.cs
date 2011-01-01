@@ -16,10 +16,10 @@ namespace OpenRA.Widgets
 {
 	public class ScrollPanelWidget : Widget
 	{
-		public readonly string Background = "dialog3";
-		public readonly int ScrollbarWidth = 24;
-		public readonly float ScrollVelocity = 4f;		
-		public readonly int ItemSpacing = 2;
+		public string Background = "dialog3";
+		public int ScrollbarWidth = 24;
+		public float ScrollVelocity = 4f;		
+		public int ItemSpacing = 2;
 		
 		public int ContentHeight = 0;
 		float ListOffset = 0;
@@ -66,6 +66,8 @@ namespace OpenRA.Widgets
 			
 			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
 			var thumbOrigin = RenderBounds.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - RenderBounds.Height)));
+			if (thumbHeight == ScrollbarHeight)
+				thumbHeight = 0;
 			
 			backgroundRect = new Rectangle(RenderBounds.X, RenderBounds.Y, RenderBounds.Width - ScrollbarWidth, RenderBounds.Height);
 			upButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y, ScrollbarWidth, ScrollbarWidth);
@@ -73,8 +75,8 @@ namespace OpenRA.Widgets
 			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, ScrollbarHeight);
 			thumbRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 			
-			string upButtonBg = UpPressed ? "dialog3" : "dialog2";
-			string downButtonBg = DownPressed ? "dialog3" : "dialog2";
+			string upButtonBg = UpPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
+			string downButtonBg = DownPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
 			string scrollbarBg = "dialog3";
 			string thumbBg = "dialog2";
 
@@ -86,8 +88,8 @@ namespace OpenRA.Widgets
 			if (thumbHeight > 0)
 				WidgetUtils.DrawPanel(thumbBg, thumbRect);
 
-			var upOffset = UpPressed ? 4 : 3;
-			var downOffset = DownPressed ? 4 : 3;
+			var upOffset = UpPressed || thumbHeight == 0 ? 4 : 3;
+			var downOffset = DownPressed || thumbHeight == 0 ? 4 : 3;
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "up_arrow"),
 				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
