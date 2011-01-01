@@ -17,15 +17,18 @@ namespace OpenRA.FileFormats
 {
 	public class ZipFile : IFolder
 	{
-		readonly SZipFile pkg;
+		string filename;
+		SZipFile pkg;
 		int priority;
 
 		public ZipFile(string filename, int priority)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			try
 			{
-				pkg = new SZipFile(File.OpenRead(filename));
+				// pull the file into memory, dont keep it open.
+				pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
 			}
 			catch (ZipException e)
 			{
@@ -46,15 +49,18 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			var ms = new MemoryStream();
-			var z = pkg.GetInputStream(pkg.GetEntry(filename));
-			int bufSize = 2048;
-			byte[] buf = new byte[bufSize];
-			while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-				ms.Write(buf, 0, bufSize);
-			
-			ms.Seek(0, SeekOrigin.Begin);
-			return ms;
+
+			using (var z = pkg.GetInputStream(pkg.GetEntry(filename)))
+			{
+				var ms = new MemoryStream();
+				int bufSize = 2048;
+				byte[] buf = new byte[bufSize];
+				while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+					ms.Write(buf, 0, bufSize);
+
+				ms.Seek(0, SeekOrigin.Begin);
+				return ms;
+			}
 		}
 
 		public IEnumerable<uint> AllFileHashes()
@@ -75,14 +81,21 @@ namespace OpenRA.FileFormats
 		
 		public void Write(Dictionary<string, byte[]> contents)
 		{
+			pkg.Close();
+
+			pkg = SZipFile.Create(filename);
+
 			pkg.BeginUpdate();
 			// TODO: Clear existing content?
-			
+
 			foreach (var kvp in contents)
-			{
 				pkg.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
-			}
+
 			pkg.CommitUpdate();
+
+			pkg.Close();
+
+			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
 		}
 	}
 

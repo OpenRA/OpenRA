@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using OpenRA.FileFormats;
+using System.Text;
 
 namespace OpenRA
 {
@@ -202,7 +203,7 @@ namespace OpenRA
 			var root = new List<MiniYamlNode>();
 			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
 			{
-				FieldInfo f = this.GetType().GetField(field);
+				var f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
 				root.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
@@ -227,7 +228,7 @@ namespace OpenRA
 			Dictionary<string, byte[]> entries = new Dictionary<string, byte[]>();
 			entries.Add("map.bin", SaveBinaryData());
 			var s = root.WriteToString();
-			entries.Add("map.yaml", System.Text.Encoding.UTF8.GetBytes(s));
+			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
 			
 			// Saving the map to a new location
 			if (toPath != Path)
