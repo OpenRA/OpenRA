@@ -212,7 +212,7 @@ return cgbinpath and {
 			outname = '"'..outname..'"'
 			
 			local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
-			cmdline = glsl and cmdline.."-oglsl -glslWerror " or cmdline
+			cmdline = glsl and cmdline.."-oglsl -glslWerror -po PaBO2 " or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
 			cmdline = cmdline..data.domaindefs[domain]
 			cmdline = cmdline.."-o "..outname.." "
