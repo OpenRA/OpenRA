@@ -41,7 +41,7 @@ namespace OpenRA.Network
 					{
 						ActorID = a.Actor.ActorID,
 						Type = a.Actor.Info.Name,
-						Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.InternalName,
+						Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.PlayerName,
 						Trait = a.Trait.GetType().Name,
 						Hash = sync
 					});
