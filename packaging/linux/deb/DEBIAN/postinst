@@ -5,25 +5,3 @@ if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ]; then
 	update-menus
 fi
 # End automatically added section
-
-start_directory=$( pwd )
-cd /usr/share/openra
-
-anw=`zenity --question --text "Download and install RA packages?"; echo $?`
-if [ $anw = 0 ] ; then
-    mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=ra-packages,/tmp/ra-packages.zip
-    mono OpenRA.Utility.exe --extract-zip=/tmp/ra-packages.zip,ra/packages/
-    else
-    zenity --info --text "The Red Alert packages need to be manually installed before it will work.\nSee the OpenRA website for more information."
-    break
-fi
-
-
-anw=`zenity --question --text "Download and install C&amp;C packages?"; echo $?`
-if [ $anw = 0 ] ; then
-    mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=cnc-packages,/tmp/cnc-packages.zip
-    mono OpenRA.Utility.exe --extract-zip=/tmp/cnc-packages.zip,cnc/packages/
-    else
-    zenity --info --text "The C&amp;C packages need to be manually installed before it will work.\nSee the OpenRA website for more information."
-    break
-fi

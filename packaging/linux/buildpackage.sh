@@ -15,7 +15,7 @@ rm -rf root
 
 # Game files
 mkdir -p root/usr/bin/
-cp openra root/usr/bin/
+cp openra-bin root/usr/bin/openra
 mkdir -p root/usr/share/openra/
 cp -R $BUILTDIR/* "root/usr/share/openra/" || exit 3
 
@@ -24,13 +24,11 @@ rm root/usr/share/openra/OpenRA.Launcher.exe
 
 # Desktop Icons
 mkdir -p root/usr/share/applications/
-sed "s/{VERSION}/$VERSION/" openra-ra.desktop > root/usr/share/applications/openra-ra.desktop
-sed "s/{VERSION}/$VERSION/" openra-cnc.desktop > root/usr/share/applications/openra-cnc.desktop
+sed "s/{VERSION}/$VERSION/" openra.desktop > root/usr/share/applications/openra.desktop
 
 # Menu entries
 mkdir -p root/usr/share/menu/
-cp openra-ra root/usr/share/menu/
-cp openra-cnc root/usr/share/menu/
+cp openra root/usr/share/menu/
 
 # Icon images
 mkdir -p root/usr/share/pixmaps/

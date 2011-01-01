@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Version={VERSION}
+Name=OpenRA
+Comment=The OpenRA RTS engine launcher
+Icon=openra
+Exec=/usr/bin/openra
+Terminal=false
+Categories=Game;
+Name[en_NZ]=openra.desktop

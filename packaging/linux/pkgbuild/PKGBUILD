@@ -15,7 +15,6 @@ conflicts=()
 replaces=()
 backup=()
 options=()
-install=openra.install
 source=()
 noextract=()
 md5sums=()

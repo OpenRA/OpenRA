@@ -1,3 +1,2 @@
-#!/bin/sh
-cd /usr/share/openra
-mono /usr/share/openra/OpenRA.Game.exe SupportDir=~/.openra "$@"
+?package(openra):needs="X11" section="Games/Simulation" title="OpenRA"\
+command="/usr/bin/openra" icon="/usr/share/pixmaps/openra.32.xpm"

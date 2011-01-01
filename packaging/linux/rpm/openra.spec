@@ -28,38 +28,4 @@ cp -r %{root} $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-cd $RPM_BUILD_ROOT/usr/share/openra
-while true 
-do
-    read -s -n1 -p "Download and install RA packages? [Y/n]"
-    case $REPLY in
-        y|Y|"") 
-            mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=ra-packages,/tmp/ra-packages.zip
-            mono OpenRA.Utility.exe --extract-zip=/tmp/ra-packages.zip,ra/packages/
-            break;;
-        n|N)
-            echo "The RA packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=ra-packages \
-            to /usr/share/openra/mods/ra/packages before the RA mod will work." 
-            break;;
-        *) echo "Please enter y or n.";;
-    esac
-done
-
-while true 
-do
-    read -s -n1 -p "Download and install C&C packages? [Y/n]"
-    case $REPLY in
-        y|Y|"") 
-            mono OpenRA.Utility.exe --download-url=http://open-ra.org/get-dependency.php?file=cnc-packages,/tmp/cnc-packages.zip
-            mono OpenRA.Utility.exe --extract-zip=/tmp/cnc-packages.zip,cnc/packages/
-            break;;
-        n|N)
-            echo "The C&C packages will need to be manually extracted from http://open-ra.org/get-dependency.php?file=cnc-packages \
-            to /usr/share/openra/mods/cnc/packages before the C&C mod will work." 
-            break;;
-        *) echo "Please enter y or n.";;
-    esac
-done
-
 %files

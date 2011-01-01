@@ -10,7 +10,7 @@ CFLAGS	= -g -Wall
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
 tools: editor ralint seqed filex tsbuild utility
-package: fixheader core editor utility winlaunch
+package: fixheader core editor utility winlaunch gtklaunch
 mods: mod_ra mod_cnc
 all: core tools winlaunch
 clean: 
@@ -216,12 +216,13 @@ INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
 CORE = fileformats rcg rgl rnull game editor utility winlaunch
-install: all
+install: all gtklaunch
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
+	@$(INSTALL_PROGRAM) gtklaunch $(INSTALL_DIR)
 
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
@@ -251,18 +252,9 @@ install: all
 
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
-	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe SupportDir=~/.openra \"$$""@\"" >> openra
+	@echo "./gtklaunch" >> openra
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
-
-	@echo "OpenRA is now installed. You will now want to download"
-	@echo "http://open-ra.org/get-dependency.php?file=ra-packages and"
-	@echo "http://open-ra.org/get-dependency.php?file=cnc-packages"
-	@echo "and extract their contents to"
-	@echo "$(INSTALL_DIR)/mods/ra/packages and "
-	@echo "$(INSTALL_DIR)/mods/cnc/packages respectively."
-	@echo "It is also advised to install the contents of $(INSTALL_DIR)/thirdparty to the Mono Global Assembly Cache \
-	with gacutil."
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)
