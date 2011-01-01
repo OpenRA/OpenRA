@@ -5,7 +5,7 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 CC	= gcc
-CFLAGS	= -g -Wall
+CFLAGS	= -O2 -Wall
 
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
@@ -181,7 +181,7 @@ gtklaunch_SRCS		= $(shell find OpenRA.Launcher.Gtk/ -iname '*.c')
 
 gtklaunch: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
 	@echo CC launcher
-	@$(CC) $(CFLAGS) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0 libmicrohttpd) -o gtklaunch $(gtklaunch_SRCS)
+	@$(CC) $(CFLAGS) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0) -I/usr/include/ -lgcrypt -o gtklaunch $(gtklaunch_SRCS) /usr/lib/libmicrohttpd.a
 
 .PHONY: $(PHONY) $(PROGRAMS)
 
