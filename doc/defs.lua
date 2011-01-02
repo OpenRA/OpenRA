@@ -96,6 +96,8 @@ config = {
 			-- use indicator to show function calls
 			-- if spec allows
 		showfncall = true,
+		
+		tabwidth = 4,
 	},
 	
 	

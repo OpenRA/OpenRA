@@ -191,8 +191,8 @@ function CreateEditor(name)
 	editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
 
 	editor:SetUseTabs(false)
-	editor:SetTabWidth(4)
-	editor:SetIndent(4)
+	editor:SetTabWidth(ide.config.editor.tabwidth or 4)
+	editor:SetIndent(ide.config.editor.tabwidth or 4)
 	editor:SetUseTabs(true)
 	editor:SetIndentationGuides(true)
 	

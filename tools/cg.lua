@@ -94,6 +94,71 @@ return cgbinpath and {
 			end
 
 			local argregistry = {}
+			local argbuffersfixed = false
+			
+			local function fixargbuffers()
+				if (argbuffersfixed) then return end
+				
+				local argnew = {}
+				for i,v in pairs(argregistry) do
+					local buf,bufstart = string.match(i,"buf(%d+)%[(%d+)%]")
+					if (buf and bufstart) then
+						bufstart = tonumber(bufstart)/16
+						argnew["buf"..buf.."["..tostring(bufstart).."]"] = v
+					else
+						argnew[i] = v
+					end
+				end
+				argregistry = argnew
+				argbuffersfixed = true
+			end
+			
+			local function checkregistry(w)
+				local regsuccess = true
+				
+				local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
+				if (pref == "1") then
+					local descriptor = vtype.." "..vname
+
+					-- check if resource is array
+					local resstart,rescnt = string.match(resource,"c%[(%d+)%], (%d+)")
+					resstart = tonumber(resstart)
+					rescnt = tonumber(rescnt)
+					
+					-- check if resource is buffer/buffer array
+					local buf,bufstart,bufcnt = string.match(resource,"buffer%[(%d+)%]%[(%d+)%],? ?(%d*)")
+					buf = tonumber(buf)
+					bufstart = tonumber(bufstart)
+					bufcnt = tonumber(bufcnt)
+
+					-- check if texture
+					local texnum = string.match(resource,"texunit (%d+)")
+
+					local argnames = {}
+					if (rescnt) then
+						for i=0,(rescnt-1) do
+							table.insert(argnames,"c["..tostring(resstart + i).."]")
+						end
+					elseif (texnum) then
+						table.insert(argnames,"texture["..tostring(texnum).."]")
+						table.insert(argnames,"texture"..tostring(texnum))
+					elseif (buf) then
+						table.insert(argnames,"buf"..tostring(buf).."["..tostring(bufstart).."]")
+					else
+						table.insert(argnames,resource)
+					end
+
+					for i,v in ipairs(argnames) do
+						argregistry[v] = descriptor
+					end
+				elseif string.find(w,"BUFFER4") then
+					fixargbuffers()
+				else
+					regsuccess = false
+				end
+				
+				return regsuccess
+			end
 
 			local function checkargs(str)
 				local comment = "#"
@@ -109,48 +174,24 @@ return cgbinpath and {
 				return comment ~= "#" and comment
 			end
 
+			-- check declarations
 			for w in string.gmatch(tx, "[^\n]*\n") do
-				local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
-				if (pref == "1") then
-					local descriptor = vtype.." "..vname
-
-					-- check if resource is array
-					local resstart,rescnt = string.match(resource,"c%[(%d+)%], (%d+)")
-					resstart = tonumber(resstart)
-					rescnt = tonumber(rescnt)
-
-					-- check if texture
-					local texnum = string.match(resource,"texunit (%d+)")
-
-					local argnames = {}
-					if (rescnt) then
-						for i=0,(rescnt-1) do
-							table.insert(argnames,"c["..tostring(resstart + i).."]")
-						end
-					elseif (texnum) then
-						table.insert(argnames,"texture["..tostring(texnum).."]")
-						table.insert(argnames,"texture"..tostring(texnum))
-					else
-						table.insert(argnames,resource)
+				if (not checkregistry(w)) then
+					if (checkstart(w,endindent)) then
+						indent = indent - 1
 					end
-
-					for i,v in ipairs(argnames) do
-						argregistry[v] = descriptor
+					local firstchar = string.sub(w,1,1)
+					local indentstr = (firstchar ~= "  " and firstchar ~= "\t" and  string.rep("  ",indent) or "")
+					local linestr = indentstr..w
+					local argcomment = (firstchar ~= "#") and checkargs(w)
+					newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
+					newtx = newtx..linestr
+					if (checkstart(w,startindent)) then
+						indent = indent + 1
+						maxindent = math.max(maxindent,indent)
 					end
-				end
-
-				if (checkstart(w,endindent)) then
-					indent = indent - 1
-				end
-				local firstchar = string.sub(w,1,1)
-				local indentstr = (firstchar ~= "  " and firstchar ~= "\t" and  string.rep("  ",indent) or "")
-				local linestr = indentstr..w
-				local argcomment = (firstchar ~= "#") and checkargs(w)
-				newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
-				newtx = newtx..linestr
-				if (checkstart(w,startindent)) then
-					indent = indent + 1
-					maxindent = math.max(maxindent,indent)
+				else
+					newtx = newtx..w
 				end
 			end
 			

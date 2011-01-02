@@ -66,7 +66,7 @@ local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
 	end
 	if ((only and ftype ~= only) or (ignore and ignore[ftype])) then return end
 	if (subapis and not subapis[fname]) then return end
-	
+
 	local fn,err = loadfile(apifile)
 	if err then
 		print("API file '"..apifile.."' could not be loaded: "..err.."\n")
@@ -260,7 +260,7 @@ function ReloadLuaAPI()
 		end
 		interpreterapi = apinames
 	end
-	ReloadAPI("lua",nil,interpreterapi)
+	ReloadAPI("lua",interpreterapi)
 end
 
 -- by defaul load everything except lua
