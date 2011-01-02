@@ -117,6 +117,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.GetBackground = () => ((song == CurrentSong) ? "dialog2" : null);
 				template.OnMouseDown = mi =>
 				{
+					if (mi.Button != MouseButton.Left) return false;
 					CurrentSong = song;
 					bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 					return true;

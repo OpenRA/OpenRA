@@ -74,6 +74,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.GetBackground = () => ((video == Selected) ? "dialog2" : null);
 				template.OnMouseDown = mi =>
 				{
+					if (mi.Button != MouseButton.Left) return false;
 					Selected = video;
 					player.Load(video);
 					return true;

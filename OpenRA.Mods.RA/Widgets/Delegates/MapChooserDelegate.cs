@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				var template = itemTemplate.Clone() as ContainerWidget;
 				template.Id = "MAP_{0}".F(map.Uid);
 				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
-				template.OnMouseDown = mi => { Map = map; return true; };
+				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false;  Map = map; return true; };
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + map.Title;
 				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type + "   ";

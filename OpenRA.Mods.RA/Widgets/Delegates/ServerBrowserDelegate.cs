@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 						game.Name,
 						game.Address);
 				template.GetBackground = () => (currentServer == game) ? "dialog2" : null;
-				template.OnMouseDown = mi => { currentServer = game; return true; };
+				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
 				template.IsVisible = () => true;
 				sl.AddChild(template);
 

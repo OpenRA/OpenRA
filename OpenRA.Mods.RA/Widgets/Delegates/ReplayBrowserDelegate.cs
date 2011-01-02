@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			entry.Id = "REPLAY_";
 			entry.GetText = () => "   {0}".F(Path.GetFileName(filename));
 			entry.GetBackground = () => (CurrentReplay == filename) ? "dialog2" : null;
-			entry.OnMouseDown = mi => { CurrentReplay = filename; return true; };
+			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
 			entry.IsVisible = () => true;
 			list.AddChild(entry);
 		}

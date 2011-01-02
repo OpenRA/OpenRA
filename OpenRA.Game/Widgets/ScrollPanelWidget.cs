@@ -127,6 +127,9 @@ namespace OpenRA.Widgets
 		int2 lastMouseLocation;
 		public override bool HandleInputInner(MouseInput mi)
 		{						
+			if (mi.Button != MouseButton.Left)
+				return false;
+			
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
 			
