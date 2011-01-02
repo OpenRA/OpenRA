@@ -19,68 +19,63 @@ using OpenRA.Mods.RA.Move;
 namespace OpenRA.Mods.Cnc
 {
 	class TiberiumRefineryDockActionInfo : TraitInfo<TiberiumRefineryDockAction> {}
-
-	class TiberiumRefineryDockAction : IAcceptOreDockAction, INotifyDamage, INotifySold, INotifyCapture
+	class TiberiumRefineryDockAction : IAcceptOreDockAction, ITick, INotifyDamage, INotifySold, INotifyCapture
 	{
 		Actor dockedHarv = null;
 		bool preventDock = false;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
-			int2 startDock = harv.Trait<IHasLocation>().PxPosition;
-			int2 endDock = self.Trait<IHasLocation>().PxPosition + new int2(-15,8);
 			var mobile = harv.Trait<Mobile>();
 			var harvester = harv.Trait<Harvester>();
 
 			harv.QueueActivity( new Turn(112) );
+			
+			if (!preventDock)
+			{
+				harv.QueueActivity( new CallFunc( () => dockedHarv = harv, false ) );
+				harv.QueueActivity( new HarvesterDockSequence(harv, self) );
+				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );			
+			}
+			
+			// Tell the harvester to start harvesting
+			// TODO: This belongs on the harv idle activity
 			harv.QueueActivity( new CallFunc( () =>
 			{
-				if (!preventDock)
+				if (harvester.LastHarvestedCell != int2.Zero)
 				{
-					dockedHarv = harv;
-					self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-					
-					harv.QueueActivity( new Drag(startDock, endDock, 12) );
-					harv.QueueActivity( new CallFunc( () =>
-					{
-						self.World.AddFrameEndTask( w1 =>
-						{
-							if (!preventDock)
-								harvester.Visible = false;
-							harvester.Deliver(harv, self);
-						});
-					}, false ) );
-					harv.QueueActivity( new Wait(18, false ) );
-					harv.QueueActivity( new CallFunc( () => harvester.Visible = true, false ) );
-					harv.QueueActivity( new Drag(endDock, startDock, 12) );
-					harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
-					if (harvester.LastHarvestedCell != int2.Zero)
-					{
-						harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
-						harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
-					}
+					harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
+					harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
 				}
-				harv.QueueActivity( new Harvest() );	
-			}) );
+				harv.QueueActivity( new Harvest() );
+			}));
 		}
 		
-		void CancelDock(Actor self, Actor harv)
+		public void Tick(Actor self)
+		{
+			// Harvester was killed while unloading
+			if (dockedHarv != null && dockedHarv.IsDead())
+			{
+				self.Trait<RenderBuilding>().CancelCustomAnim(self);
+				dockedHarv = null;
+			}
+		}
+		
+		void CancelDock(Actor self)
 		{
 			preventDock = true;
-			if (dockedHarv == null)
-				return;
-			
-			// invisible harvester makes ceiling cat cry
-			if (!harv.IsDead())
-				harv.Trait<Harvester>().Visible = true;
+
+			// Cancel the dock sequence
+			if (dockedHarv != null && !dockedHarv.IsDead())
+				dockedHarv.CancelActivity();
 		}
 		
-		public void Selling (Actor self) { CancelDock(self, dockedHarv); }
+		public void Selling (Actor self) { CancelDock(self); }
 		public void Sold (Actor self) {}
 		
 		public void Damaged (Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				 CancelDock(self, dockedHarv);
+				 CancelDock(self);
 		}
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)

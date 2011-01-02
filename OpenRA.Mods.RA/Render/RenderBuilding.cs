@@ -90,6 +90,11 @@ namespace OpenRA.Mods.RA.Render
 				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
 
+		public void CancelCustomAnim(Actor self)
+		{
+			anim.PlayRepeating( NormalizeSequence(self, "idle") );
+		}
+		
 		public virtual void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged)

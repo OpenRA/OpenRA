@@ -81,6 +81,21 @@ namespace OpenRA.Mods.RA
 			else contents[type.info]++;
 		}
 
+		// TODO: N-tick harvester unload.
+		// Currently unloads everything in one go
+		// Returns true when unloading is complete
+		public bool TickUnload(Actor self, Actor proc)
+		{
+			if (!proc.IsInWorld)
+				return false;	// fail to deliver if there is no proc.
+
+			// TODO: Unload part of the load. Return false if the proc is full.
+			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
+			contents.Clear();
+			return true;
+		}
+		
+		
 		public void Deliver(Actor self, Actor proc)
 		{
 			if (!proc.IsInWorld)

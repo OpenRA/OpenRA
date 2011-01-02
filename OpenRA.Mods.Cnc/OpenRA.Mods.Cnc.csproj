@@ -66,6 +66,7 @@
     <Compile Include="WithRoof.cs" />
     <Compile Include="Missions\CncShellmapScript.cs" />
     <Compile Include="WithFire.cs" />
+    <Compile Include="Activities\HarvesterDockSequence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -97,4 +98,7 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/cnc/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Activities\" />
+  </ItemGroup>
 </Project>
