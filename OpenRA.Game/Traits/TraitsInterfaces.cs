@@ -122,6 +122,7 @@ namespace OpenRA.Traits
 		bool CanEnterCell(int2 location);
 		void SetPosition(Actor self, int2 cell);
 		void SetPxPosition(Actor self, int2 px);
+		void AdjustPxPosition(Actor self, int2 px);	/* works like SetPxPosition, but visual only */
 	}
 
 	public interface IMove : ITeleportable

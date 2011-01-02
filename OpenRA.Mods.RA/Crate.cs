@@ -89,6 +89,8 @@ namespace OpenRA.Mods.RA
 			SetPosition( self, Util.CellContaining( px ) );
 		}
 
+		public void AdjustPxPosition(Actor self, int2 px) { SetPxPosition(self, px); }
+
 		public bool CanEnterCell(int2 cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;

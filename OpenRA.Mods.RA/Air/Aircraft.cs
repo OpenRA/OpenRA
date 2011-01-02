@@ -69,6 +69,8 @@ namespace OpenRA.Mods.RA.Air
 			SubPxPosition = px * 1024;
 		}
 
+		public void AdjustPxPosition(Actor self, int2 px) { SetPxPosition(self, px); }
+
 		public bool AircraftCanEnter(Actor a)
 		{
 			if( self.Owner != a.Owner ) return false;

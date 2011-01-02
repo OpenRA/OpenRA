@@ -185,6 +185,11 @@ namespace OpenRA.Mods.RA.Move
             FinishedMoving(self);
         }
 
+		public void AdjustPxPosition(Actor self, int2 px)	/* visual hack only */
+		{
+			PxPosition = px;
+		}
+
         public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
 
         // Note: Returns a valid order even if the unit can't move to the target

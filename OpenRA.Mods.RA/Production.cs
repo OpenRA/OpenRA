@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 			// Set the physical position of the unit as the exit cell
 			teleportable.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
-            teleportable.SetPxPosition(newUnit, spawn);
+            teleportable.AdjustPxPosition(newUnit, spawn);
 			if (facing != null)
 				facing.Facing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, facing.Facing) : exitinfo.Facing;
 			self.World.Add(newUnit);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
             if (rp == null)
                 return exitLocation;
 
-            var mobile = self.TraitOrDefault<Mobile>();
+            var mobile = newUnit.TraitOrDefault<Mobile>();
             if (mobile != null)
             {
                 newUnit.QueueActivity(mobile.MoveTo(rp.rallyPoint, 1));
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
             }
 
             // todo: don't talk about HeliFly here.
-            var helicopter = self.TraitOrDefault<Helicopter>();
+            var helicopter = newUnit.TraitOrDefault<Helicopter>();
             if (helicopter != null)
             {
                 newUnit.QueueActivity(new HeliFly(Util.CenterOfCell(rp.rallyPoint)));
