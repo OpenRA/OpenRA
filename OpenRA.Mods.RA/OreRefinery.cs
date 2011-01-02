@@ -56,6 +56,14 @@ namespace OpenRA.Mods.RA
             return self.World.Queries.WithTrait<Harvester>()
                 .Where(a => a.Trait.LinkedProc == self);
         }
+		
+		public bool CanGiveOre(int amount)
+		{
+			if (!Info.LocalStorage)
+				return PlayerResources.CanGiveOre(amount);
+			else
+				return Ore + amount <= Info.Capacity;
+		}
 
 		public void GiveOre (int amount)
 		{

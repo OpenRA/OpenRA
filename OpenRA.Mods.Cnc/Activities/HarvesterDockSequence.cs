@@ -50,7 +50,6 @@ namespace OpenRA.Mods.Cnc
 		
 		IActivity NextActivity { get; set; }
 
-		int unloadTicks = 0;
 		public IActivity Tick(Actor self)
 		{
 			switch (state)

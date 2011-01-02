@@ -45,6 +45,11 @@ namespace OpenRA.Traits
 		public int DisplayCash;
 		public int DisplayOre;
 
+		public bool CanGiveOre(int amount)
+		{
+			return Ore + amount <= OreCapacity;
+		}
+
 		public void GiveOre(int num)
 		{
 			Ore += num;

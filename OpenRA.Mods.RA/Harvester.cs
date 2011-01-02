@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 	public class HarvesterInfo : ITraitInfo
 	{
 		public readonly int Capacity = 28;
+		public readonly int UnloadTicksPerBale = 4;
 		public readonly int PipCount = 7;
 		public readonly string[] Resources = { };
 		public readonly decimal FullyLoadedSpeed = .85m;
@@ -82,17 +83,32 @@ namespace OpenRA.Mods.RA
 		}
 
 		// TODO: N-tick harvester unload.
-		// Currently unloads everything in one go
 		// Returns true when unloading is complete
+		int currentUnloadTicks;
 		public bool TickUnload(Actor self, Actor proc)
 		{
 			if (!proc.IsInWorld)
 				return false;	// fail to deliver if there is no proc.
-
-			// TODO: Unload part of the load. Return false if the proc is full.
-			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
-			contents.Clear();
-			return true;
+			
+			// Wait until the next bale is ready
+			if (--currentUnloadTicks > 0)
+				return false;
+			
+			if (contents.Keys.Count > 0)
+			{
+				var type = contents.First().Key;
+				var iao = proc.Trait<IAcceptOre>();
+				if (!iao.CanGiveOre(type.ValuePerUnit))
+					return false;
+				
+				iao.GiveOre(type.ValuePerUnit);
+				if (--contents[type] == 0)
+					contents.Remove(type);
+				
+				currentUnloadTicks = Info.UnloadTicksPerBale;
+			}
+			
+			return contents.Count == 0;
 		}
 		
 		
