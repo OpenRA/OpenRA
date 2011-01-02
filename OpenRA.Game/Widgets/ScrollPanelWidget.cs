@@ -110,12 +110,16 @@ namespace OpenRA.Widgets
 			return EventBounds;
 		}
 		
+		void Scroll(int direction)
+		{
+			ListOffset += direction*ScrollVelocity;
+			ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+		}
+		
 		public override void Tick ()
 		{
-			if (UpPressed && ListOffset <= 0) ListOffset += ScrollVelocity;
-			if (DownPressed) ListOffset -= ScrollVelocity;
-						
-			ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+			if (UpPressed) Scroll(1);
+			if (DownPressed) Scroll(-1);
 		}
 		
 		public override bool LoseFocus (MouseInput mi)
@@ -127,6 +131,18 @@ namespace OpenRA.Widgets
 		int2 lastMouseLocation;
 		public override bool HandleInputInner(MouseInput mi)
 		{						
+			if (mi.Button == MouseButton.WheelDown)
+			{
+				Scroll(-1);
+				return true;
+			}
+			
+			if (mi.Button == MouseButton.WheelUp)
+			{
+				Scroll(1);
+				return true;
+			}
+			
 			if (mi.Button != MouseButton.Left)
 				return false;
 			

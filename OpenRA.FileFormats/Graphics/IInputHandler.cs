@@ -43,10 +43,12 @@ namespace OpenRA
 	[Flags]
 	public enum MouseButton
 	{
-		None = (int)MouseButtons.None,
-		Left = (int)MouseButtons.Left,
-		Right = (int)MouseButtons.Right,
-		Middle = (int)MouseButtons.Middle,
+		None,
+		Left,
+		Right,
+		Middle,
+		WheelDown,
+		WheelUp
 	}
 
 	[Flags]

@@ -194,7 +194,7 @@ namespace OpenRA.Widgets
 			return EventBounds.Contains(pos.ToPoint()) ? GetCursor(pos) : null;
 		}
 		
-		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough; }
+		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough && mi.Button == MouseButton.Left; }
 		
 		public static bool HandleInput(MouseInput mi)
 		{

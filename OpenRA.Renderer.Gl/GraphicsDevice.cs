@@ -139,6 +139,8 @@ namespace OpenRA.Renderer.Glsl
 			return b == Sdl.SDL_BUTTON_LEFT ? MouseButton.Left
 				: b == Sdl.SDL_BUTTON_RIGHT ? MouseButton.Right
 				: b == Sdl.SDL_BUTTON_MIDDLE ? MouseButton.Middle
+				: b == Sdl.SDL_BUTTON_WHEELDOWN ? MouseButton.WheelDown
+				: b == Sdl.SDL_BUTTON_WHEELUP ? MouseButton.WheelUp
 				: 0;
 		}
 
