@@ -37,6 +37,7 @@ Atomic:
 			Concrete: 50%
 		Explosion: 6
 		InfDeath: 4
+		ImpactSound: nukexplo
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
@@ -50,6 +51,7 @@ Atomic:
 			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
+		ImpactSound: xplobig4
 
 IonCannon:
 	Warhead@impact:
