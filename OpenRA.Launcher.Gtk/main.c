@@ -10,6 +10,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <webkit/webkit.h>
+#include <unistd.h>
 
 #include "main.h"
 #include "server.h"

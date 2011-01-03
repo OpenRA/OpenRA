@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdarg.h>
 
 #define MHD_PLATFORM_H
 #include <microhttpd.h>
