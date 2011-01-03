@@ -2,9 +2,12 @@
 V19:
 	Inherits: ^CivBuilding
 	RenderBuilding:
+	CashTrickler:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
+		Capturable: true
+		Unsellable: true
 	-DeadBuildingState:
 	Tooltip:
 		Name: Oil Derrick

@@ -49,7 +49,6 @@ namespace OpenRA.Mods.RA
 								
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
-				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
 				self.QueueActivity(new RepairBuilding(order.TargetActor));
 			}
 		}
@@ -64,7 +63,9 @@ namespace OpenRA.Mods.RA
 			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
 			{
 				if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
-
+				if (!target.HasTrait<RepairableBuilding>())
+					return false;
+				
 				IsQueued = forceQueued;
 
 				if( target.GetDamageState() == DamageState.Undamaged )
