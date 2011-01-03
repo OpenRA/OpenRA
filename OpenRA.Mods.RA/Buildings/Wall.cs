@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Buildings
 	public class WallInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
 	{
 		public readonly string[] CrushClasses = { };
-
+		public readonly string CrushSound;
 		public object Create(ActorInitializer init) { return new Wall(init.self, this); }
 	}
 
@@ -32,6 +32,10 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 		
 		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
-		public void OnCrush(Actor crusher) { self.Kill(crusher); }
+		public void OnCrush(Actor crusher)
+		{
+			self.Kill(crusher);
+			Sound.Play(info.CrushSound, self.CenterLocation);
+		}
 	}
 }

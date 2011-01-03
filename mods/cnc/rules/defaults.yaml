@@ -243,13 +243,14 @@
 		BuildSounds: hvydoor1.aud
 		Capturable: false
 		BaseNormal: no
-		DamagedSound: xplos.aud
-		DestroyedSound: xplobig4.aud
+		DamagedSound:
+		DestroyedSound:
 		Adjacent: 7
 	TargetableBuilding:
 		TargetTypes: Ground
 	Wall:
 		CrushClasses: wall
+		CrushSound: sandbag2.aud
 	LineBuild:
 		Range: 8
 	Selectable:

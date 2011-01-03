@@ -569,7 +569,10 @@ BRIK:
 		Type: Heavy
 	Wall:
 		CrushClasses: heavywall
-		
+		CrushSound:
+	Building:
+		DestroyedSound: crumble.aud
+
 GUN:
 	Inherits: ^Building
 	Valued:
