@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 
 			var itemTemplate = ml.GetWidget<ContainerWidget>("MAP_TEMPLATE");
-			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title))
+			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title).OrderBy(kv => kv.Value.PlayerCount))
 			{
 				var map = kv.Value;
 				if (!map.Selectable)
@@ -66,8 +66,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
 				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false;  Map = map; return true; };
 				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + map.Title;
-				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type + "   ";
+				template.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
+				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
+				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
 				ml.AddChild(template);
 			}
 		}
