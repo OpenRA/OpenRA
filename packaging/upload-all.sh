@@ -26,8 +26,8 @@ esac
 LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
 ./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION.deb "deblatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm "rpmlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz "archlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.i686.rpm "rpmlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-i686.pkg.tar.xz "archlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 
 if [ "$TYPE" = "release" ]; then
     wput --basename=../ -u ../VERSION ftp://$3:$4@$FTPSERVER/$FTPPATHBASE/master/

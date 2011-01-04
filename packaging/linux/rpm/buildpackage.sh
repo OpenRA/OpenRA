@@ -28,6 +28,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cd RPMS/noarch/
+cd RPMS/i686/
 mv openra-$PKGVERSION-1.i686.rpm $4
 
