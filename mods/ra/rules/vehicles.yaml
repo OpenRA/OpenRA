@@ -291,6 +291,7 @@ HARV:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
+		UnloadTicksPerBale: 1
 	Health:
 		HP: 600
 	Armor:

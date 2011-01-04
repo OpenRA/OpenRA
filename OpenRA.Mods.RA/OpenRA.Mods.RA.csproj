@@ -328,6 +328,7 @@
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
+    <Compile Include="Activities\RAHarvesterDockSequence.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

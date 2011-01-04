@@ -370,10 +370,12 @@ harv:
 		Start: 32
 		Length: 8
 		Facings: 8
-	empty:
+	dock:
 		Start: 96
-		Length: 15
-
+		Length: 8
+	dock-loop:
+		Start: 104
+		Length: 7
 1tnk:
 	idle:
 		Start: 0

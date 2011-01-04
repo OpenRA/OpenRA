@@ -13,44 +13,38 @@ using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Render;
 using System;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.RA
 {
-	public class HarvesterDockSequence : IActivity
+	public class RAHarvesterDockSequence : IActivity
 	{
 		enum State
 		{
 			Wait,
 			Turn,
-			Dragin,
 			Dock,
 			Loop,
 			Undock,
-			Dragout
+			Complete
 		};
 		
 		readonly Actor proc;
 		readonly Harvester harv;
-		readonly RenderBuilding rb;
+		readonly RenderUnit ru;
 		State state;
-		
-		int2 startDock;
-		int2 endDock;
-		public HarvesterDockSequence(Actor self, Actor proc)
+
+		public RAHarvesterDockSequence(Actor self, Actor proc)
 		{
 			this.proc = proc;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
-			rb = proc.Trait<RenderBuilding>();
-			startDock = self.Trait<IHasLocation>().PxPosition;
-			endDock = proc.Trait<IHasLocation>().PxPosition + new int2(-15,8);
+			ru = self.Trait<RenderUnit>();
 		}
 		
 		IActivity NextActivity { get; set; }
-
+                        
 		public IActivity Tick(Actor self)
 		{
 			switch (state)
@@ -58,14 +52,10 @@ namespace OpenRA.Mods.Cnc
 				case State.Wait:
 					return this;
 				case State.Turn:
-					state = State.Dragin;
-					return Util.SequenceActivities(new Turn(112), this);
-				case State.Dragin:
 					state = State.Dock;
-					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
+					return Util.SequenceActivities(new Turn(64), this);
 				case State.Dock:
-					harv.Visible = false;
-					rb.PlayCustomAnimThen(proc, "dock-start", () => {rb.PlayCustomAnimRepeating(proc, "dock-loop"); state = State.Loop;});
+					ru.PlayCustomAnimation(self, "dock", () => {ru.PlayCustomAnimRepeating(self, "dock-loop"); state = State.Loop;});
 					state = State.Wait;
 					return this;
 				case State.Loop:
@@ -73,11 +63,11 @@ namespace OpenRA.Mods.Cnc
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					rb.PlayCustomAnimThen(proc, "dock-end", () => {harv.Visible = true; state = State.Dragout;});
+					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.Complete);
 					state = State.Wait;
 					return this;
-				case State.Dragout:
-					return Util.SequenceActivities(new Drag(endDock, startDock, 12), NextActivity);
+				case State.Complete:
+					return NextActivity;
 			}
 			throw new InvalidOperationException("Invalid harvester dock state");
 		}

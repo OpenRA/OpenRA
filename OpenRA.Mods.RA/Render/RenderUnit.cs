@@ -37,7 +37,19 @@ namespace OpenRA.Mods.RA.Render
 		{
 			anim.PlayThen(newAnim, () => { anim.Play("idle"); if (after != null) after(); });
 		}
+		
+		public void PlayCustomAnimRepeating(Actor self, string name)
+		{
+			anim.PlayThen(name,
+				() => { PlayCustomAnimRepeating(self, name); });
+		}
 
+		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
+		{
+			anim.PlayBackwardsThen(name,
+				() => { anim.PlayRepeating("idle"); a(); });
+		}
+		
 		bool isSmoking;
 		bool canSmoke;
 

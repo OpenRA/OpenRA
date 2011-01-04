@@ -17,42 +17,72 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {
-	class OreRefineryDockActionInfo : TraitInfo<OreRefineryDockAction> {}
+	public class OreRefineryDockActionInfo : TraitInfo<OreRefineryDockAction> {}
 
-	class OreRefineryDockAction : IAcceptOreDockAction, INotifyCapture
+	public class OreRefineryDockAction : IAcceptOreDockAction, INotifyCapture
 	{
-	
+		public virtual IActivity DockSequence(Actor harv, Actor self)
+		{
+			return new RAHarvesterDockSequence(harv, self);
+		}
+		
 		Actor dockedHarv = null;
+		bool preventDock = false;
 		public void OnDock(Actor self, Actor harv, DeliverResources dockOrder)
 		{
+			var mobile = harv.Trait<Mobile>();
 			var harvester = harv.Trait<Harvester>();
-
-			if (harv.Trait<IFacing>().Facing != 64)
-				harv.QueueActivity (new Turn (64));
 			
-			harv.QueueActivity (new CallFunc (() =>
+			if (!preventDock)
 			{
-				dockedHarv = harv;
-				var renderUnit = harv.Trait<RenderUnit> ();
-				if (renderUnit.anim.CurrentSequence.Name != "empty")
-					renderUnit.PlayCustomAnimation (harv, "empty", () =>
-					{
-						harvester.Deliver(harv, self);
-						harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
-
-						if (harvester.LastHarvestedCell != int2.Zero)
-						{
-							var mobile = harv.Trait<Mobile>();
-							harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
-							harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
-						}
-						harv.QueueActivity( new Harvest() );
-					});
+				harv.QueueActivity( new CallFunc( () => dockedHarv = harv, false ) );
+				harv.QueueActivity( DockSequence(harv, self) );
+				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );			
+			}
+			
+			// Tell the harvester to start harvesting
+			// TODO: This belongs on the harv idle activity
+			harv.QueueActivity( new CallFunc( () =>
+			{
+				if (harvester.LastHarvestedCell != int2.Zero)
+				{
+					harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
+					harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
+				}
+				harv.QueueActivity( new Harvest() );
 			}));
 		}
 		
+		public void Tick(Actor self)
+		{
+			// Harvester was killed while unloading
+			if (dockedHarv != null && dockedHarv.IsDead())
+			{
+				self.Trait<RenderBuilding>().CancelCustomAnim(self);
+				dockedHarv = null;
+			}
+		}
+		
+		void CancelDock(Actor self)
+		{
+			preventDock = true;
+
+			// Cancel the dock sequence
+			if (dockedHarv != null && !dockedHarv.IsDead())
+				dockedHarv.CancelActivity();
+		}
+		
+		public void Selling (Actor self) { CancelDock(self); }
+		public void Sold (Actor self) {}
+		
+		public void Damaged (Actor self, AttackInfo e)
+		{
+			if (e.DamageState == DamageState.Dead)
+				 CancelDock(self);
+		}
+		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
-		{		
+		{
 			if (dockedHarv != null)
 				dockedHarv.ChangeOwner(newOwner);
 		}
