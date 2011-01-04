@@ -434,7 +434,10 @@ int main(int argc, char ** argv)
 {
   GtkWidget * hbox1, * hbox2, * vbox;
 
-  int res = chdir("../share/openra");
+  int res = chdir("/usr/share/openra");
+
+  if (0 != res)
+    res = chdir("/usr/local/share/openra");
 
   if (0 != res)
   {

@@ -1,4 +1,3 @@
-
 [Desktop Entry]
 Type=Application
 Version={VERSION}
@@ -8,4 +7,3 @@ Icon=openra
 Exec=/usr/bin/openra
 Terminal=false
 Categories=Game;
-Name[en_NZ]=openra.desktop
