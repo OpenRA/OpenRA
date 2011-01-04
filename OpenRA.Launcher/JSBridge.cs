@@ -176,9 +176,10 @@ namespace OpenRA.Launcher
 		
 		public void httpRequest(string url, string callbackName)
 		{
-			var p = UtilityProgram.Call("--download-url", url);
+			string pipename = UtilityProgram.GetPipeName();
+			var p = UtilityProgram.Call("--download-url", pipename, url);
 			p.Exited += requestFinished;
-			var pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();
 			requests.Add(p, new Request(){ Pipe = pipe, CallbackName = callbackName });
 		}
