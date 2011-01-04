@@ -5,7 +5,7 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 CC	= gcc
-CFLAGS	= -O2 -Wall
+CFLAGS	= -O2 -Wall -m32
 
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
@@ -222,7 +222,6 @@ install: all gtklaunch
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
-	@$(INSTALL_PROGRAM) gtklaunch $(INSTALL_DIR)
 
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
@@ -249,11 +248,8 @@ install: all gtklaunch
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 
-	@echo "#!/bin/sh" > openra
-	@echo "cd "$(datadir)"/openra" >> openra
-	@echo "./gtklaunch" >> openra
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) -T gtklaunch $(BIN_INSTALL_DIR)/openra
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)

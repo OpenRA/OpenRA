@@ -434,6 +434,14 @@ int main(int argc, char ** argv)
 {
   GtkWidget * hbox1, * hbox2, * vbox;
 
+  int res = chdir("../share/openra");
+
+  if (0 != res)
+  {
+    g_error("Couldn't change to OpenRA working directory");
+    return 1;
+  }
+
   server_init(WEBSERVER_PORT);
   
   gtk_init(&argc, &argv);
@@ -453,7 +461,7 @@ int main(int argc, char ** argv)
  
   util_get_mod_list(mod_list_callback);
 
-	vbox = gtk_vbox_new(FALSE, 0);
+  vbox = gtk_vbox_new(FALSE, 0);
   hbox1 = gtk_hbox_new(FALSE, 0);
   hbox2 = gtk_hbox_new(FALSE, 0);
 

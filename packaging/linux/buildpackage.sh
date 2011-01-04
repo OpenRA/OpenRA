@@ -15,12 +15,13 @@ rm -rf root
 
 # Game files
 mkdir -p root/usr/bin/
-cp openra-bin root/usr/bin/openra
+cp -T $BUILTDIR/gtklaunch root/usr/bin/openra
 mkdir -p root/usr/share/openra/
 cp -R $BUILTDIR/* "root/usr/share/openra/" || exit 3
 
 # Remove unneeded files
 rm root/usr/share/openra/OpenRA.Launcher.exe
+rm root/usr/share/openra/gtklaunch
 
 # Desktop Icons
 mkdir -p root/usr/share/applications/
