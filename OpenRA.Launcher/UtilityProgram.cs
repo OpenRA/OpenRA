@@ -56,6 +56,11 @@ namespace OpenRA.Launcher
 
 	static class UtilityProgram
 	{
+		public static string GetPipeName()
+		{
+			return "OpenRA.Utility" + Guid.NewGuid().ToString();
+		}	
+		
 		static string BuildArgs(string command, string[] args)
 		{
 			StringBuilder arguments = new StringBuilder();
@@ -66,11 +71,11 @@ namespace OpenRA.Launcher
 			return arguments.ToString();
 		}
 
-		public static Process Call(string command, params string[] args)
+		public static Process Call(string command, string pipename, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe";
+			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe=" + pipename;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
 						
@@ -81,9 +86,10 @@ namespace OpenRA.Launcher
 
 		public static string CallSimpleResponse(string command, params string[] args)
 		{
-			Call(command, args);
+			string pipename = GetPipeName();
+			Call(command, pipename, args);
 			string responseString;
-			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();
 			using (var response = new StreamReader(pipe))
 			{
@@ -93,11 +99,11 @@ namespace OpenRA.Launcher
 			return responseString;
 		}
 
-		public static Process CallWithAdmin(string command, params string[] args)
+		public static Process CallWithAdmin(string command, string pipename, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe";
+			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe=" + pipename;
 			p.StartInfo.Verb = "runas";
 
 			try

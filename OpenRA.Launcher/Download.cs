@@ -107,10 +107,11 @@ namespace OpenRA.Launcher
 			string[] args = e.Argument as string[];
 			string url = args[0];
 			string dest = args[1];
-			var p = UtilityProgram.Call("--download-url", url, dest);
+			string pipename = UtilityProgram.GetPipeName();
+			var p = UtilityProgram.Call("--download-url", pipename, url, dest);
 			Regex r = new Regex(@"(\d{1,3})% (\d+)/(\d+) bytes");
 
-			NamedPipeClientStream pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();
 
 			using (var response = new StreamReader(pipe))
@@ -176,8 +177,9 @@ namespace OpenRA.Launcher
 			string zipFile = args[0];
 			string destPath = args[1];
 
-			var p = UtilityProgram.CallWithAdmin("--extract-zip", zipFile, destPath);
-			var pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			string pipename = UtilityProgram.GetPipeName();
+			var p = UtilityProgram.CallWithAdmin("--extract-zip", pipename, zipFile, destPath);
+			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 
 			pipe.Connect();
 

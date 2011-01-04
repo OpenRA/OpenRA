@@ -112,8 +112,9 @@ namespace OpenRA.Launcher
 		private void InstallMod(object sender, EventArgs e)
 		{
 			if (installModDialog.ShowDialog() != DialogResult.OK) return;
-			var p = UtilityProgram.CallWithAdmin("--extract-zip", installModDialog.FileName, "");
-			var pipe = new NamedPipeClientStream(".", "OpenRA.Utility", PipeDirection.In);
+			string pipename = UtilityProgram.GetPipeName();
+			var p = UtilityProgram.CallWithAdmin("--extract-zip", pipename, installModDialog.FileName, "");
+			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();
 
 			p.WaitForExit();
@@ -198,6 +199,11 @@ namespace OpenRA.Launcher
 				Renderer = "Gl";
 			else
 				Renderer = "Cg";
+		}
+		
+		void formClosing(object sender, FormClosingEventArgs e)
+		{
+			
 		}
 	}
 }

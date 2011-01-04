@@ -150,6 +150,7 @@
 			this.Name = "Launcher";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "OpenRA Launcher";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.formClosing);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
