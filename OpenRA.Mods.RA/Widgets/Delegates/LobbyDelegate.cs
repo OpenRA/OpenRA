@@ -427,7 +427,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 							
 					Session.Slot slot1 = slot;
 					color.IsVisible = () => !slot1.Spectator;
-					//colorBlock.IsVisible = () => !slot1.Spectator;
 					faction.IsVisible = () => !slot1.Spectator;
 					factionname.IsVisible = () => !slot1.Spectator;
 					factionflag.IsVisible = () => !slot1.Spectator;
