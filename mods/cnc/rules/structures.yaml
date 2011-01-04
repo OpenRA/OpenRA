@@ -78,13 +78,12 @@ PROC:
 	RevealsShroud:
 		Range: 6
 	Bib:
-	OreRefinery:
+	TiberiumRefinery:
 		DockOffset: 0,2
 	StoresOre:
 		PipColor: Green
 		PipCount: 15
 		Capacity: 1500
-	TiberiumRefineryDockAction:
 	CustomSellValue:
 		Value: 500
 	FreeActor:

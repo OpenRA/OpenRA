@@ -274,7 +274,6 @@
     <Compile Include="GivesExperience.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="ReplaceWithActor.cs" />
-    <Compile Include="OreRefineryDockAction.cs" />
     <Compile Include="StoresOre.cs" />
     <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />

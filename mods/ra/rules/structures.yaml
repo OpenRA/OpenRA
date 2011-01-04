@@ -627,7 +627,6 @@ PROC:
 		Range: 6
 	Bib:
 	OreRefinery:
-	OreRefineryDockAction:
 	StoresOre:
 		PipCount: 17
 		Capacity: 2000

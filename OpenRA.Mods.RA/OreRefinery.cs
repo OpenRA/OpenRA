@@ -14,10 +14,13 @@ using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Move;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
-	class OreRefineryInfo : ITraitInfo
+	public class OreRefineryInfo : ITraitInfo
 	{
 		public readonly bool LocalStorage = false;
 		public readonly int PipCount = 0;
@@ -28,10 +31,10 @@ namespace OpenRA.Mods.RA
 		public readonly int ProcessAmount = 50;
 		public readonly int LowPowerProcessTick = 50;
 
-		public object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
+		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier
+	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
@@ -43,6 +46,17 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public int Ore = 0;
 
+		[Sync]
+		Actor dockedHarv = null;
+		[Sync]
+		bool preventDock = false;
+		
+		public int2 DeliverOffset { get { return Info.DockOffset; } }
+		public virtual IActivity DockSequence(Actor harv, Actor self)
+		{
+			return new RAHarvesterDockSequence(harv, self);
+		}
+		
 		public OreRefinery (Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
@@ -77,8 +91,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		void CancelDock(Actor self)
+		{
+			preventDock = true;
+
+			// Cancel the dock sequence
+			if (dockedHarv != null && !dockedHarv.IsDead())
+				dockedHarv.CancelActivity();
+		}
+		
 		public void Tick (Actor self)
 		{
+			// Harvester was killed while unloading
+			if (dockedHarv != null && dockedHarv.IsDead())
+			{
+				self.Trait<RenderBuilding>().CancelCustomAnim(self);
+				dockedHarv = null;
+			}
+			
 			if (!Info.LocalStorage)
 				return;
 			
@@ -101,18 +131,45 @@ namespace OpenRA.Mods.RA
 		public void Damaged (Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
+			{
+				CancelDock(self);
 				foreach (var harv in GetLinkedHarvesters())
 					harv.Trait.UnlinkProc(harv.Actor, self);
+			}
 		}
 
-		public int2 DeliverOffset {get{ return Info.DockOffset; }}
 		public void OnDock (Actor harv, DeliverResources dockOrder)
 		{
-			self.Trait<IAcceptOreDockAction>().OnDock(self, harv, dockOrder);
+			var mobile = harv.Trait<Mobile>();
+			var harvester = harv.Trait<Harvester>();
+			
+			if (!preventDock)
+			{
+				harv.QueueActivity( new CallFunc( () => dockedHarv = harv, false ) );
+				harv.QueueActivity( DockSequence(harv, self) );
+				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );			
+			}
+			
+			// Tell the harvester to start harvesting
+			// TODO: This belongs on the harv idle activity
+			harv.QueueActivity( new CallFunc( () =>
+			{
+				if (harvester.LastHarvestedCell != int2.Zero)
+				{
+					harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
+					harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
+				}
+				harv.QueueActivity( new Harvest() );
+			}));
 		}
+		
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{		
+			// Steal any docked harv too
+			if (dockedHarv != null)
+				dockedHarv.ChangeOwner(newOwner);
+			
 			// Unlink any non-docked harvs
             foreach (var harv in GetLinkedHarvesters())
                 if (harv.Actor.Owner == oldOwner)
@@ -122,7 +179,7 @@ namespace OpenRA.Mods.RA
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
-		public void Selling (Actor self) {}
+		public void Selling (Actor self) { CancelDock(self); }
 		public void Sold (Actor self)
 		{
             foreach (var harv in GetLinkedHarvesters())

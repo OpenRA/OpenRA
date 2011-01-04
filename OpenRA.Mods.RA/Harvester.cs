@@ -111,16 +111,6 @@ namespace OpenRA.Mods.RA
 			return contents.Count == 0;
 		}
 		
-		
-		public void Deliver(Actor self, Actor proc)
-		{
-			if (!proc.IsInWorld)
-				return;	// fail to deliver if there is no proc.
-
-			proc.Trait<IAcceptOre>().GiveOre(contents.Sum(kv => kv.Key.ValuePerUnit * kv.Value));
-			contents.Clear();
-		}
-		
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

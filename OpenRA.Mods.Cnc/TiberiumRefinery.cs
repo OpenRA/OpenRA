@@ -18,9 +18,15 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.Cnc
 {
-	class TiberiumRefineryDockActionInfo : TraitInfo<TiberiumRefineryDockAction> {}
-	class TiberiumRefineryDockAction : OreRefineryDockAction
+	class TiberiumRefineryInfo : OreRefineryInfo
 	{
+		public override object Create(ActorInitializer init) { return new TiberiumRefinery(init.self, this); }
+	}
+	class TiberiumRefinery : OreRefinery
+	{
+		public TiberiumRefinery(Actor self, TiberiumRefineryInfo info)
+			: base(self, info as OreRefineryInfo) {}
+		
 		public override IActivity DockSequence(Actor harv, Actor self)
 		{
 			return new HarvesterDockSequence(harv, self);
