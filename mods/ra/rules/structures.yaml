@@ -729,8 +729,9 @@ AFLD:
 	RevealsShroud:
 		Range: 7
 	Exit@1:
-		SpawnOffset: 0,-4
+		SpawnOffset: 0,4
 		ExitCell: 1,1
+		Facing:192
 	Production:
 		Produces: Plane
 	PrimaryBuilding:
