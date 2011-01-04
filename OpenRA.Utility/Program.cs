@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
 using System.IO.Pipes;
+using System.Security.AccessControl;
 
 namespace OpenRA.Utility
 {
@@ -56,11 +57,11 @@ namespace OpenRA.Utility
 				if (principal.IsInRole(WindowsBuiltInRole.Administrator))
 				{
 					var ps = new PipeSecurity();
-					ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, System.Security.AccessControl.AccessControlType.Allow));
-					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024, 1024, ps);
+					ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, AccessControlType.Allow));
+					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024*1024, 1024*1024, ps);
 				}
 				else
-					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out);
+					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024*1024,1024*1024,null);
 
 				pipe.WaitForConnection();
 				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });

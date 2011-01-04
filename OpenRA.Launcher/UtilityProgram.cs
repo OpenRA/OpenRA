@@ -71,13 +71,19 @@ namespace OpenRA.Launcher
 			return arguments.ToString();
 		}
 
-		public static Process Call(string command, string pipename, params string[] args)
+		public static Process Call(string command, string pipename, EventHandler onExit, params string[] args)
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
 			p.StartInfo.Arguments = BuildArgs(command, args) + " --pipe=" + pipename;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
+
+			if (onExit != null)
+			{
+				p.EnableRaisingEvents = true;
+				p.Exited += onExit;
+			}
 						
 			p.Start();
 
@@ -87,7 +93,7 @@ namespace OpenRA.Launcher
 		public static string CallSimpleResponse(string command, params string[] args)
 		{
 			string pipename = GetPipeName();
-			Call(command, pipename, args);
+			Call(command, pipename, null, args);
 			string responseString;
 			NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();

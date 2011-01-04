@@ -169,13 +169,22 @@ namespace OpenRA.Launcher
 		public void httpRequest(string url, string callbackName)
 		{
 			string pipename = UtilityProgram.GetPipeName();
-			var p = UtilityProgram.Call("--download-url", pipename, url);
 			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
-			p.Exited += (_, e) =>
+
+			var p = UtilityProgram.Call("--download-url", pipename, 
+				(_, e) =>
 				{
+					
 					using (var reader = new StreamReader(pipe))
-						document.InvokeScript(callbackName, new object[] { reader.ReadToEnd() });
-				};
+					{
+						var data = reader.ReadToEnd();
+						/* debug */
+						MessageBox.Show(
+							string.Format("Finished HTTP Request -- {0},{1} => {2}",
+								url, callbackName, data));
+						document.InvokeScript(callbackName, new object[] { data });
+					}
+				}, url);
 			
 			pipe.Connect();
 		}

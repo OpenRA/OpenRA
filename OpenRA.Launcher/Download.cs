@@ -108,7 +108,7 @@ namespace OpenRA.Launcher
 			string url = args[0];
 			string dest = args[1];
 			string pipename = UtilityProgram.GetPipeName();
-			var p = UtilityProgram.Call("--download-url", pipename, url, dest);
+			var p = UtilityProgram.Call("--download-url", pipename, null, url, dest);
 			Regex r = new Regex(@"(\d{1,3})% (\d+)/(\d+) bytes");
 
 			NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
