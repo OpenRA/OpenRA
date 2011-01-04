@@ -29,10 +29,9 @@ namespace OpenRA.Mods.RA.Buildings
 		
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
-		public readonly string DamagedSound = "kaboom1.aud";
-		public readonly string DestroyedSound = "kaboom22.aud";
 
-		public object Create(ActorInitializer init) { return new Building(init); }
+
+		public object Create(ActorInitializer init) { return new Building(init, this); }
 
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, int2 topLeft)
 		{
@@ -73,11 +72,11 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public int2 PxPosition { get { return ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2; } }
 
-		public Building(ActorInitializer init)
+		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			this.self = init.self;
 			this.topLeft = init.Get<LocationInit,int2>();
-			this.Info = self.Info.Traits.Get<BuildingInfo>();
+			this.Info = info;
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 		
@@ -95,12 +94,6 @@ namespace OpenRA.Mods.RA.Buildings
 			// Power plants lose power with damage
 			if (Info.Power > 0)
 				PlayerPower.UpdateActor(self, GetPowerUsage());
-			
-			if (e.DamageState == DamageState.Dead)
-			{
-				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(10, self.CenterLocation, 1);
-				Sound.Play(Info.DestroyedSound, self.CenterLocation);
-			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)

@@ -187,6 +187,7 @@
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
 		SellSounds: cashturn.aud
+	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
 	Buildable:
@@ -208,6 +209,7 @@
 		Notification: strclost.aud
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	ShakeOnDeath:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -243,8 +245,6 @@
 		BuildSounds: hvydoor1.aud
 		Capturable: false
 		BaseNormal: no
-		DamagedSound:
-		DestroyedSound:
 		Adjacent: 7
 	TargetableBuilding:
 		TargetTypes: Ground
@@ -311,8 +311,9 @@
 	BelowUnits:
 	Health:
 		HP: 1000
-	Building:
+	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
+	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4

@@ -1135,7 +1135,7 @@ BRIK:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
-	Building:
+	SoundOnDamageTransition:
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud
 	Health:

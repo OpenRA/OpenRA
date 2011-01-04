@@ -569,8 +569,8 @@ BRIK:
 		Type: Heavy
 	Wall:
 		CrushClasses: heavywall
-		CrushSound:
-	Building:
+		-CrushSound:
+	SoundOnDamageTransition:
 		DestroyedSound: crumble.aud
 
 GUN:

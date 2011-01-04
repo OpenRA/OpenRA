@@ -35,24 +35,14 @@ namespace OpenRA.Mods.RA.Render
 		{
 			if (!e.DamageStateChanged) return;
 
-			var bi = self.Info.Traits.Get<BuildingInfo>();
-
 			if (e.DamageState == DamageState.Medium && anim.HasSequence("scratched-idle"))
 				seqName = "scratched-idle";
 			else if (e.DamageState <= DamageState.Medium)
 				seqName = "idle";
 			else if (e.DamageState == DamageState.Critical && anim.HasSequence("critical-idle"))
-			{
 				seqName = "critical-idle";
-				if (e.DamageState > e.PreviousDamageState)
-					Sound.Play(bi.DamagedSound, self.CenterLocation);
-			}
 			else if (e.DamageState <= DamageState.Critical)
-			{
 				seqName = "damaged-idle";
-				if (e.DamageState > e.PreviousDamageState)
-					Sound.Play(bi.DamagedSound, self.CenterLocation);
-			}
 
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}

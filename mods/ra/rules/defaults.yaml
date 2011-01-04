@@ -130,6 +130,9 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+	SoundOnDamageTransition:
+		DamagedSound: kaboom1.aud
+		DestroyedSound: kaboom22.aud
 	RenderBuilding:
 	RepairableBuilding:
 	EmitInfantryOnSell:
@@ -141,6 +144,7 @@
 		Notification: strucap1.aud
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	ShakeOnDeath:
 
 ^Wall:
 	AppearsOnRadar:
@@ -150,9 +154,10 @@
 		BuildSounds: placbldg.aud
 		Capturable: false
 		BaseNormal: no
+		Adjacent: 7
+	SoundOnDamageTransition:
 		DamagedSound: sandbag2.aud
 		DestroyedSound: sandbag2.aud
-		Adjacent: 7
 	Wall:
 		CrushClasses: wall
 	LineBuild:
