@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly float URepairPercent = 0.2f;
 		public readonly int URepairStep = 10;
-		public readonly float RepairRate = 0.016f;
+		public readonly int Interval = 24;
 	}
 
 	public class RepairsUnits { }

@@ -30,12 +30,14 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				var health = self.TraitOrDefault<Health>();
 				if (health == null) return NextActivity;
-				
-				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
+
 				var repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
-				var costPerHp = (repairsUnits.URepairPercent * unitCost) / health.MaxHP;
+				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				var hpToRepair = Math.Min(host.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, health.MaxHP - health.HP);
-				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
+				var costPerHp = (repairsUnits.URepairPercent * unitCost) / health.MaxHP;
+				var fullRepairCost = (int)(repairsUnits.URepairPercent * unitCost);
+				var cost = fullRepairCost * hpToRepair / health.MaxHP;
+
 				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.RA.Activities
 					host.Trait<RenderBuilding>()
 						.PlayCustomAnim(host, "active");
 
-				remainingTicks = (int)(repairsUnits.RepairRate * 60 * 25);
+				remainingTicks = repairsUnits.Interval;
 			}
 			else
 				--remainingTicks;
