@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Drawing.Imaging;
 
 namespace OpenRA.Editor
 {
@@ -60,7 +61,7 @@ namespace OpenRA.Editor
 			loadedMapName = mapname;
 
 			Game.modData = new ModData(currentMod);
-			
+
 			// load the map
 			var map = new Map(mapname);
 
@@ -206,6 +207,13 @@ namespace OpenRA.Editor
 			}
 
 			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+
+			propertiesToolStripMenuItem.Enabled = true;
+			resizeToolStripMenuItem.Enabled = true;
+			spawnpointsToolStripMenuItem.Enabled = true;
+			saveToolStripMenuItem.Enabled = true;
+			saveAsToolStripMenuItem.Enabled = true;
+			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
 		}
 
 		void ResizeClicked(object sender, EventArgs e)
@@ -223,9 +231,9 @@ namespace OpenRA.Editor
 					return;
 
 				surface1.Map.ResizeCordon((int)rd.cordonLeft.Value,
-				                       (int)rd.cordonTop.Value,
-				                       (int)rd.cordonRight.Value,
-				                       (int)rd.cordonBottom.Value);
+									   (int)rd.cordonTop.Value,
+									   (int)rd.cordonRight.Value,
+									   (int)rd.cordonBottom.Value);
 
 				if ((int)rd.width.Value != surface1.Map.MapSize.X || (int)rd.height.Value != surface1.Map.MapSize.Y)
 				{
@@ -243,7 +251,7 @@ namespace OpenRA.Editor
 				SaveAsClicked(sender, e);
 			else
 			{
-				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;				
+				surface1.Map.PlayerCount = surface1.Map.Waypoints.Count;
 				surface1.Map.Save(loadedMapName);
 				dirty = false;
 			}
@@ -313,7 +321,7 @@ namespace OpenRA.Editor
 				pd.desc.Text = surface1.Map.Description;
 				pd.author.Text = surface1.Map.Author;
 				pd.selectable.Checked = surface1.Map.Selectable;
-                pd.useAsShellmap.Checked = surface1.Map.UseAsShellmap;
+				pd.useAsShellmap.Checked = surface1.Map.UseAsShellmap;
 
 				if (DialogResult.OK != pd.ShowDialog())
 					return;
@@ -322,7 +330,7 @@ namespace OpenRA.Editor
 				surface1.Map.Description = pd.desc.Text;
 				surface1.Map.Author = pd.author.Text;
 				surface1.Map.Selectable = pd.selectable.Checked;
-                surface1.Map.UseAsShellmap = pd.useAsShellmap.Checked;
+				surface1.Map.UseAsShellmap = pd.useAsShellmap.Checked;
 			}
 		}
 
@@ -341,7 +349,7 @@ namespace OpenRA.Editor
 			using (var ofd = new OpenFileDialog { Filter = "Legacy maps (*.ini;*.mpr)|*.ini;*.mpr" })
 				if (DialogResult.OK == ofd.ShowDialog())
 				{
-					Directory.SetCurrentDirectory( currentDirectory );
+					Directory.SetCurrentDirectory(currentDirectory);
 					/* massive hack: we should be able to call NewMap() with the imported Map object,
 					 * but something's not right internally in it, unless loaded via the real maploader */
 
@@ -380,31 +388,13 @@ namespace OpenRA.Editor
 			pb.Show();
 		}
 
-        private void mnuMinimapToPNG_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                saveFileDialog.InitialDirectory = new string[] { Environment.CurrentDirectory, "maps" }
-.Aggregate(Path.Combine);
-            
-            FileInfo file = new FileInfo(loadedMapName + ".png");
-            string name = file.Name;
-            saveFileDialog.FileName = name;
+		void ExportMinimap(object sender, EventArgs e)
+		{
+			saveFileDialog.InitialDirectory = Path.Combine(Environment.CurrentDirectory, "maps");
+			saveFileDialog.FileName = Path.ChangeExtension(loadedMapName, ".png");
 
-            saveFileDialog.ShowDialog();
-            if (saveFileDialog.FileName == "")
-            {
-                saveFileDialog.FileName = name;
-            }
-            else
-            {
-                Bitmap png = new Bitmap(pmMiniMap.Image);
-
-                png.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png); 
-            }
-            
-            }
-            catch { }
-        }
+			if (DialogResult.OK == saveFileDialog.ShowDialog())
+				pmMiniMap.Image.Save(saveFileDialog.FileName);
+		}
 	}
 }
