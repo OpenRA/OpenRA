@@ -97,7 +97,7 @@
         // Returns 2 if basic files plus music are installed
         function packagesInstalled()
         {
-            if (window.external.existsInMod("packages/conquer.mix","ra") != 1)
+            if (window.external.existsInMod("packages/redalert.mix","ra") != 1)
                 return 0;
             return (window.external.existsInMod("packages/scores.mix","ra") == 1) ? 2 : 1;
         }
