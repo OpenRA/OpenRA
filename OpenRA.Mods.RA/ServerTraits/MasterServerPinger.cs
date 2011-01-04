@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Server
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame
 	{
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
-												// of leeway.
+		// of leeway.
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
 		public void Tick(S server)
 		{
@@ -29,10 +29,10 @@ namespace OpenRA.Mods.RA.Server
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
 						server.SendChat(null, masterServerMessages.Dequeue());
-			
+
 		}
-		
-		
+
+
 		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
 		public void GameStarted(S server) { PingMasterServer(server); }
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Server
 		static string masterServerUrl = Game.Settings.Server.MasterServer;
 		static int externalPort = Game.Settings.Server.ExternalPort;
 		static bool isInitialPing = true;
-		
+
 		static volatile bool isBusy;
 		static Queue<string> masterServerMessages = new Queue<string>();
 		public static void PingMasterServer(S server)
@@ -61,13 +61,14 @@ namespace OpenRA.Mods.RA.Server
 
 						using (var wc = new WebClient())
 						{
-							 wc.DownloadData(
-								masterServerUrl + url.F(
-								externalPort, Uri.EscapeUriString(server.Name),
-								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
-								server.lobbyInfo.Clients.Count,
-								string.Join(",", server.lobbyInfo.GlobalSettings.Mods),
-								server.lobbyInfo.GlobalSettings.Map));
+							wc.Proxy = null;
+							wc.DownloadData(
+							   masterServerUrl + url.F(
+							   externalPort, Uri.EscapeUriString(server.Name),
+							   server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
+							   server.lobbyInfo.Clients.Count,
+							   string.Join(",", server.lobbyInfo.GlobalSettings.Mods),
+							   server.lobbyInfo.GlobalSettings.Map));
 
 							if (isInitialPing)
 							{
@@ -77,11 +78,11 @@ namespace OpenRA.Mods.RA.Server
 							}
 						}
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						Log.Write("server", ex.ToString());
-						lock( masterServerMessages )
-							masterServerMessages.Enqueue( "Master server communication failed." );
+						lock (masterServerMessages)
+							masterServerMessages.Enqueue("Master server communication failed.");
 					}
 
 					isBusy = false;

@@ -62,6 +62,7 @@ namespace OpenRA.Server
 		static string GetData(Uri uri)
 		{
 			var wc = new WebClient();
+			wc.Proxy = null;
 			var data = wc.DownloadData(uri);
 			return Encoding.UTF8.GetString(data);
 		}

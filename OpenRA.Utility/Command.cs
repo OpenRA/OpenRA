@@ -118,11 +118,11 @@ namespace OpenRA.Utility
 			string[] args = argValue.Split(',');
 			string url = args[0];
 			WebClient wc = new WebClient();
+			wc.Proxy = null;
 
 			if (args.Length == 1)
 			{
 				wc.DownloadStringCompleted += DownloadStringCompleted;
-				
 				wc.DownloadStringAsync(new Uri(url));
 			}
 			else if (args.Length == 2)

@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 				var ns = s.GetStream();
 				var sw = new StreamWriter(ns);
 
-				sw.Write("GET {0} HTTP/1.1\r\nHost:{1}\r\n\r\n", uri.PathAndQuery, uri.Host);
+				sw.Write("GET {0} HTTP/1.0\r\nHost:{1}\r\n\r\n", uri.PathAndQuery, uri.Host);
 				sw.Flush();
 
 				var br = new BinaryReader(ns);
