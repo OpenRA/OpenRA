@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 
 namespace OpenRA
 {
@@ -43,21 +42,21 @@ namespace OpenRA
 	[Flags]
 	public enum MouseButton
 	{
-		None,
-		Left,
-		Right,
-		Middle,
-		WheelDown,
-		WheelUp
+		None = 0,
+		Left = 1,
+		Right = 2,
+		Middle = 4,
+		WheelDown = 8,
+		WheelUp = 16
 	}
 
 	[Flags]
 	public enum Modifiers
 	{
-		None = (int)Keys.None,
-		Shift = (int)Keys.Shift,
-		Alt = (int)Keys.Alt,
-		Ctrl = (int)Keys.Control,
+		None = 0,
+		Shift = 1,
+		Alt = 2,
+		Ctrl = 4,
 	}
 
 	public enum KeyInputEvent { Down, Up };
