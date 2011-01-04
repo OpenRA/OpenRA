@@ -165,34 +165,19 @@ namespace OpenRA.Launcher
 			
 			return "";
 		}
-		
-		struct Request 
-		{
-			public NamedPipeClientStream Pipe;
-			public string CallbackName;
-		}
-		
-		Dictionary<int, Request> requests = new Dictionary<int, Request>();
-		
+
 		public void httpRequest(string url, string callbackName)
 		{
 			string pipename = UtilityProgram.GetPipeName();
 			var p = UtilityProgram.Call("--download-url", pipename, url);
-			p.Exited += requestFinished;
 			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
-			pipe.Connect();
-			requests.Add(p.Id, new Request(){ Pipe = pipe, CallbackName = callbackName });
-		}
-
-		void requestFinished(object sender, EventArgs e)
-		{
-			var p = sender as Process;
-			var request = requests[p.Id];
+			p.Exited += (_, e) =>
+				{
+					using (var reader = new StreamReader(pipe))
+						document.InvokeScript(callbackName, new object[] { reader.ReadToEnd() });
+				};
 			
-			using (var reader = new StreamReader(request.Pipe))
-			{
-				document.InvokeScript(request.CallbackName, new object[]{ reader.ReadToEnd() });
-			}
+			pipe.Connect();
 		}
 	}
 }
