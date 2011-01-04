@@ -23,11 +23,11 @@ cp openra.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target noarch -bb SPECS/openra.spec
+rpmbuild --target i686 -bb SPECS/openra.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
 cd RPMS/noarch/
-mv openra-$PKGVERSION-1.noarch.rpm $4
+mv openra-$PKGVERSION-1.i686.rpm $4
 

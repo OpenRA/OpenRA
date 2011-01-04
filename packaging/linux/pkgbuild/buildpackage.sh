@@ -18,5 +18,5 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-mv openra-$PKGVERSION-1-any.pkg.tar.xz $3
+mv openra-$PKGVERSION-1-i686.pkg.tar.xz $3
 

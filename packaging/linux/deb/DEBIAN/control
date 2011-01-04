@@ -1,6 +1,6 @@
 Package: openra
 Version: {VERSION}
-Architecture: all
+Architecture: i686
 Maintainer: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Uploaders: Maikel van den Hout <ma1kelvdh@gmail.com>, Paul Chote <sleipnir@sleipnirstuff.com>
 Installed-Size: {SIZE}	
