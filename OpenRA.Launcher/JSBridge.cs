@@ -172,7 +172,7 @@ namespace OpenRA.Launcher
 			public string CallbackName;
 		}
 		
-		Dictionary<Process, Request> requests = new Dictionary<Process, Request>();
+		Dictionary<int, Request> requests = new Dictionary<int, Request>();
 		
 		public void httpRequest(string url, string callbackName)
 		{
@@ -181,13 +181,13 @@ namespace OpenRA.Launcher
 			p.Exited += requestFinished;
 			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
 			pipe.Connect();
-			requests.Add(p, new Request(){ Pipe = pipe, CallbackName = callbackName });
+			requests.Add(p.Id, new Request(){ Pipe = pipe, CallbackName = callbackName });
 		}
 
 		void requestFinished(object sender, EventArgs e)
 		{
 			var p = sender as Process;
-			var request = requests[p];
+			var request = requests[p.Id];
 			
 			using (var reader = new StreamReader(request.Pipe))
 			{
