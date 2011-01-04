@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -66,6 +66,7 @@
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\Vertex.cs" />
+    <Compile Include="HttpUtil.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="MiniYaml.cs" />
     <Compile Include="Mod.cs" />
@@ -117,7 +118,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Filesystem\" />
-  </ItemGroup>
 </Project>
