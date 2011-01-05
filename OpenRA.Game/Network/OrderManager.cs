@@ -132,8 +132,13 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame, int index)
 		{
-			var order = frameData.OrdersForFrame( world, frame ).ElementAt(index);
-			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, order.Order.ToString()));
+			var orders = frameData.OrdersForFrame( world, frame );
+			
+			// Invalid index
+			if (index >= orders.Count())
+				OutOfSync(frame);
+			
+			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
 		
 		void OutOfSync(int frame)
