@@ -25,10 +25,10 @@ esac
 
 LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-i386.deb "deblatest32" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$VERSION-i386.deb "deblatest32" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 ./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.i686.rpm "rpmlatest32" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 ./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-i686.pkg.tar.xz "archlatest32" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-amd64.deb "deblatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh linux "$VERSION" $PKGDIR/openra-$VERSION-amd64.deb "deblatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 ./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.x86_64.rpm "rpmlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 ./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-x86_64.pkg.tar.xz "archlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
 

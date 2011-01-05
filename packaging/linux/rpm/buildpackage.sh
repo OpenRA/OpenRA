@@ -21,10 +21,11 @@ cp openra.spec openra$ARCH.spec
 sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra$ARCH.spec
 rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra$ARCH.spec
+sed -i "s/{ARCH}/$ARCH/" openra$ARCH.spec
 
 for x in `find $rootdir -type f`
 do
-    y="/${x#$rootdir}"
+    y="${x#$rootdir}"
     sed -i "/%files/ a $y" openra$ARCH.spec
 done
 
