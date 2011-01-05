@@ -178,10 +178,6 @@ namespace OpenRA.Launcher
 					using (var reader = new StreamReader(pipe))
 					{
 						var data = reader.ReadToEnd();
-						/* debug */
-						MessageBox.Show(
-							string.Format("Finished HTTP Request -- {0},{1} => {2}",
-								url, callbackName, data));
 						document.InvokeScript(callbackName, new object[] { data });
 					}
 				}, url);
