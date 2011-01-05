@@ -180,7 +180,7 @@ namespace OpenRA.Widgets
 		public string GetCursorOuter(int2 pos)
 		{
 			// Is the cursor on top of us?
-			if (!(IsVisible() && GetEventBounds().Contains(pos.ToPoint())))
+			if (!(IsVisible() && GetEventBounds().Contains(pos)))
 				return null;
 			
 			// Do any of our children specify a cursor?
@@ -191,7 +191,7 @@ namespace OpenRA.Widgets
 					return cc;
 			}
 
-			return EventBounds.Contains(pos.ToPoint()) ? GetCursor(pos) : null;
+			return EventBounds.Contains(pos) ? GetCursor(pos) : null;
 		}
 		
 		public static bool HandleInput(MouseInput mi)

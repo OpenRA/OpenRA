@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.
 
-			if (!mapRect.Contains(mi.Location.ToPointF()))
+			if (!mapRect.Contains(mi.Location))
 				return false;
 
 			var loc = MinimapPixelToCell(mi.Location);

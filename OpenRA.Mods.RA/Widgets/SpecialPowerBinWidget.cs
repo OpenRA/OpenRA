@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{			
 			if (mi.Event == MouseInputEvent.Down)
 			{
-				var action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
+				var action = buttons.Where(a => a.First.Contains(mi.Location))
 				.Select(a => a.Second).FirstOrDefault();
 				if (action == null)
 					return false;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var drawPos = new float2(rectBounds.X + 5, y);
 				var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
 
-				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
+				if (rect.Contains(Viewport.LastMousePos))
 				{
 					var pos = drawPos.ToInt2();					
 					var tl = new int2(pos.X-3,pos.Y-3);

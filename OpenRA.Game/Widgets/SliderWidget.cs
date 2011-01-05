@@ -88,7 +88,7 @@ namespace OpenRA.Widgets
 
 				case MouseInputEvent.Down:
 					{
-						if (thumbRect.Contains(mi.Location.ToPoint()))
+						if (thumbRect.Contains(mi.Location))
 						{
 							isMoving = true;
 							lastMouseLocation = mi.Location;
@@ -103,7 +103,7 @@ namespace OpenRA.Widgets
 																					   : Math.Floor((pos - delta) * (Ticks - 1)));
 							OnChange(targetTick / (Ticks - 1));
 
-							if (thumbRect.Contains(mi.Location.ToPoint()))
+							if (thumbRect.Contains(mi.Location))
 							{
 								isMoving = true;
 								lastMouseLocation = mi.Location;
@@ -119,7 +119,7 @@ namespace OpenRA.Widgets
 							{
 								OnChange(newOffset);
 
-								if (thumbRect.Contains(mi.Location.ToPoint()))
+								if (thumbRect.Contains(mi.Location))
 								{
 									isMoving = true;
 									lastMouseLocation = mi.Location;

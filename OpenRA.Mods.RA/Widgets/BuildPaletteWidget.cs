@@ -162,10 +162,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 			
-			var action = tabs.Where(a => a.First.Contains(mi.Location.ToPoint()))
+			var action = tabs.Where(a => a.First.Contains(mi.Location))
 				.Select(a => a.Second).FirstOrDefault();
 			if (action == null && paletteOpen)
-				action = buttons.Where(a => a.First.Contains(mi.Location.ToPoint()))
+				action = buttons.Where(a => a.First.Contains(mi.Location))
 					.Select(a => a.Second).FirstOrDefault();
 			
 			if (action == null)
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA.Widgets
 				
 				var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
-				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
+				if (rect.Contains(Viewport.LastMousePos))
 					tooltipItem = item.Name;
 
 				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
@@ -412,7 +412,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var rect = new Rectangle((int)x,(int)y,(int)tabWidth,(int)tabHeight);
 				tabs.Add(Pair.New(rect, HandleTabClick(queue, world)));
 
-				if (rect.Contains(Viewport.LastMousePos.ToPoint()))
+				if (rect.Contains(Viewport.LastMousePos))
 				{
 					var text = queue.Info.Type;
 					var sz = Game.Renderer.BoldFont.Measure(text);

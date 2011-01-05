@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Drawing;
 
 namespace OpenRA
 {
@@ -94,6 +95,16 @@ namespace OpenRA
 				return max;
 			else
 				return val;
+		}
+		
+		public static bool Contains(this Rectangle r, int2 p)
+		{
+			return r.Contains(p.ToPoint());
+		}
+		
+		public static bool Contains(this RectangleF r, int2 p)
+		{
+			return r.Contains(p.ToPointF());
 		}
 	}
 }
