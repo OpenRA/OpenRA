@@ -34,7 +34,8 @@ namespace OpenRA.Widgets
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
 		public override void DrawInner( WorldRenderer wr ) {}
 		
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: ViewportScrollController doesn't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{									
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))

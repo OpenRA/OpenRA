@@ -33,8 +33,6 @@ namespace OpenRA.Widgets
 		}
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
-		public override bool HandleInputInner(MouseInput mi) { return true; }
-
 		public int2 ConvertToPreview(MapStub map, int2 point)
 		{
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));

@@ -51,8 +51,6 @@ namespace OpenRA.Widgets
 			return composing ? false : base.LoseFocus(mi);
 		}
 
-		public override bool HandleInputInner(MouseInput mi) { return false; }
-
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Up) return false;

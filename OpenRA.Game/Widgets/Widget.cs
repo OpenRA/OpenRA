@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 		// Common Funcs that most widgets will want
 		public Func<MouseInput, bool> OnMouseDown = mi => false;
 		public Func<MouseInput, bool> OnMouseUp = mi => false;
-		public Func<MouseInput, bool> OnMouseMove = mi => false;
+		public Action<MouseInput> OnMouseMove = mi => {};
 		public Func<KeyInput, bool> OnKeyPress = e => false;
 
 		public Func<bool> IsVisible;
@@ -222,22 +222,21 @@ namespace OpenRA.Widgets
 				if (child.HandleMouseInputOuter(mi))
 					return true;
 
-			// Do any widgety behavior (button click etc)
-			// Return false if it can't handle any user actions
-			if (!HandleInputInner(mi))
-				return false;
-			
-			// Apply any special logic added by delegates; they return true if they caught the input
-			if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
-			if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
-			if (mi.Event == MouseInputEvent.Move && OnMouseMove(mi)) return true;
-			
-			return true;
+			return HandleMouseInput(mi);
 		}
 		
 		// Hack: Don't eat mouse input that others want
 		// TODO: Solve this properly
-		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough && mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Move; }
+		public virtual bool HandleMouseInput(MouseInput mi)
+		{
+			// Apply any special logic added by delegates; they return true if they caught the input
+			if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
+			if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
+			if (mi.Event == MouseInputEvent.Move)
+				OnMouseMove(mi);
+			
+			return false;
+		}
 		
 		public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
 		public virtual bool HandleKeyPressOuter(KeyInput e)

@@ -129,7 +129,8 @@ namespace OpenRA.Widgets
 		}
 		
 		int2 lastMouseLocation;
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: ScrollPanelWidget doesn't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{						
 			if (mi.Button == MouseButton.WheelDown)
 			{

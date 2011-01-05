@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			return base.LoseFocus(mi);
 		}
 
-		public override bool HandleInputInner(MouseInput mi)
+		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
 				return false;
@@ -55,15 +55,27 @@ namespace OpenRA.Widgets
 			// Only fire the onMouseUp order if we successfully lost focus, and were pressed
 			if (Focused && mi.Event == MouseInputEvent.Up)
 			{
-				var wasPressed = Depressed;
-				return (LoseFocus(mi) && wasPressed);
+				LoseFocus(mi);
+				return OnMouseUp(mi);
 			}
 
 			if (mi.Event == MouseInputEvent.Down)
-				Depressed = true;
+			{
+				// OnMouseDown returns false if the button shouldn't be pressed
+				if (!OnMouseDown(mi))
+					Depressed = true;
+				else
+					LoseFocus(mi);
+			}
+			
 			else if (mi.Event == MouseInputEvent.Move && Focused)
+			{
 				Depressed = RenderBounds.Contains(mi.Location.X, mi.Location.Y);
-
+				
+				// All widgets should recieve MouseMove events
+				OnMouseMove(mi);
+			}
+			
 			return Depressed;
 		}
 
@@ -120,11 +132,9 @@ namespace OpenRA.Widgets
 
 		public static void ShowDropPanel(Widget w, Widget panel, IEnumerable<Widget> dismissAfter, Func<bool> onDismiss)
 		{
+			// Mask to prevent any clicks from being sent to other widgets
 			var fullscreenMask = new ContainerWidget();
-			// Don't use initializers - breaks on mono 2.6.7
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
-			fullscreenMask.ClickThrough = false;
-			fullscreenMask.Visible = true;
 			Widget.RootWidget.AddChild(fullscreenMask);
 			
 			Action HideDropDown = () =>
@@ -139,13 +149,12 @@ namespace OpenRA.Widgets
 			fullscreenMask.OnMouseDown = mi =>
 			{
 				if (onDismiss()) HideDropDown();
-				return false;
+				return true;
 			};
-			
+			fullscreenMask.OnMouseUp = mi => true;
+
 			var oldBounds = panel.Bounds;
 			panel.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, oldBounds.Width, oldBounds.Height);
-			panel.ClickThrough = false;
-			panel.Visible = true;
 			panel.OnMouseUp = mi => true;
 			
 			foreach (var ww in dismissAfter)
@@ -175,14 +184,11 @@ namespace OpenRA.Widgets
 				dismissAfter.Add(ww);
 				ww.ClickThrough = false;
 				ww.IsVisible = () => true;
-				ww.OnMouseMove = mi =>
+				ww.OnMouseMove = mi => items.Do(lw =>
 				{
-					items.Do(lw =>
-					{
-						lw.Background = null; ww.Background = "dialog2";
-					}); return true;
-				};
-
+					lw.Background = null; ww.Background = "dialog2";
+				});
+	
 				dropDown.AddChild(ww);
 				items.Add(ww);
 			}

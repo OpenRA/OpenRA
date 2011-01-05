@@ -41,9 +41,13 @@ namespace OpenRA.Widgets
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
 
-		public override bool HandleInputInner(MouseInput mi)
+		public override bool HandleMouseInput(MouseInput mi)
 		{
-			return mi.Button == MouseButton.Left;
+			// Checkboxes require lmb
+			if (mi.Button != MouseButton.Left)
+				return false;
+			
+			return base.HandleMouseInput(mi);
 		}
 
 		public CheckboxWidget() : base() { }

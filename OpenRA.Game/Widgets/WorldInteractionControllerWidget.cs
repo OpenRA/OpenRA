@@ -47,7 +47,8 @@ namespace OpenRA.Widgets
 		
 		float2 dragStart, dragEnd;
 
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: WorldInteractionController doesn't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{			
 			var xy = Game.viewport.ViewToWorld(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
@@ -75,6 +76,7 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 				ApplyOrders(world, xy, mi);
+			
 			return true;
 		}
 		

@@ -53,7 +53,8 @@ namespace OpenRA.Mods.RA.Widgets
 			get { return buttons.Any() ? buttons.Select(b => b.First).Aggregate(Rectangle.Union) : Bounds; }
 		}
 		
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: SpecialPowerBin doesn't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{			
 			if (mi.Event == MouseInputEvent.Down)
 			{

@@ -42,13 +42,14 @@ namespace OpenRA.Widgets
 			return lose;
 		}
 
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: TextFieldWidgets don't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
 			// Lose focus if they click outside the box; return false so the next widget can grab this event
-			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location.X, mi.Location.Y) && LoseFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location) && LoseFocus(mi))
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))

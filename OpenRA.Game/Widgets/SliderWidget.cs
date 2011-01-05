@@ -63,7 +63,8 @@ namespace OpenRA.Widgets
 			Offset = ((newOffset - Little) / Spread).Clamp(0f, 1f);
 		}
 
-		public override bool HandleInputInner(MouseInput mi)
+		// TODO: SliderWidget doesn't support delegate methods for mouse input
+		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
 				return false;
