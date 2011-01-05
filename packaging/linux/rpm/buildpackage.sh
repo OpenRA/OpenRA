@@ -16,21 +16,23 @@ fi
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
 
-sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra.spec
+cp openra.spec openra$ARCH.spec
+
+sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra$ARCH.spec
 rootdir=`readlink -f $2`
-sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
+sed -i "s|{ROOT_DIR}|$rootdir|" openra$ARCH.spec
 
 for x in `find $rootdir -type f`
 do
     y="/${x#$rootdir}"
-    sed -i "/%files/ a $y" openra.spec
+    sed -i "/%files/ a $y" openra$ARCH.spec
 done
 
-cp openra.spec "$3/SPECS/"
+cp openra$ARCH.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target $ARCH -bb SPECS/openra.spec
+rpmbuild --target $ARCH -bb SPECS/openra$ARCH.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
