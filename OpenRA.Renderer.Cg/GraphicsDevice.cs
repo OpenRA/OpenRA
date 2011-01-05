@@ -138,7 +138,7 @@ namespace OpenRA.Renderer.Cg
 
 		MouseButton lastButtonBits = (MouseButton)0;
 
-		static MouseButton MakeButton( byte b )
+		MouseButton MakeButton( byte b )
 		{
 			return b == Sdl.SDL_BUTTON_LEFT ? MouseButton.Left
 				: b == Sdl.SDL_BUTTON_RIGHT ? MouseButton.Right
@@ -148,7 +148,7 @@ namespace OpenRA.Renderer.Cg
 				: 0;
 		}
 
-		static Modifiers MakeModifiers( int raw )
+		Modifiers MakeModifiers( int raw )
 		{
 			return ( ( raw & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
 				 | ( ( raw & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
