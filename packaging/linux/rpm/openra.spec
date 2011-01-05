@@ -12,7 +12,7 @@ Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Requires: mono-core mono-devel SDL openal mesa-dri-drivers-experimental gtk2 webkitgtk
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
-Buildroot: /tmp/openra{ARCH}
+Buildroot: /tmp/openra
 
 %description
 A multiplayer reimplementation of the Command & Conquer: Red Alert game 
