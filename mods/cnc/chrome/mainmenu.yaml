@@ -73,7 +73,6 @@ Background@MAINMENU_BG:
 			Text:Video Player
 			Bold:True
 Background@PERF_BG:
-	ClickThrough:true
 	Id:PERF_BG
 	Background:dialog4
 	Delegate:PerfDebugDelegate
@@ -218,7 +217,6 @@ Background@MUSIC_MENU:
 					Id:MUSIC_TEMPLATE
 					Width:PARENT_RIGHT-28
 					Height:25
-					ClickThrough:false
 					X:2
 					Y:0
 					Visible:false

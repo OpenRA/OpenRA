@@ -27,7 +27,6 @@ namespace OpenRA.Widgets
 		public string Height = "0";
 		public string Delegate = null;
 		public string EventHandler = null;
-		public bool ClickThrough = true;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
 
@@ -63,7 +62,6 @@ namespace OpenRA.Widgets
 		 	Width = widget.Width;
 			Height = widget.Height;
 		 	Delegate = widget.Delegate;
-		 	ClickThrough = widget.ClickThrough;
 		 	Visible = widget.Visible;
 			
 			Bounds = widget.Bounds;

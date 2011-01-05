@@ -167,14 +167,9 @@ namespace OpenRA.Widgets
 		
 		public static void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
 		{
-			var dropDown = new ScrollPanelWidget()
-			{
-				Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100),
-				Visible = true,
-				ClickThrough = false,
-				OnMouseUp = mi => true,
-				ItemSpacing = 1
-			};
+			var dropDown = new ScrollPanelWidget();
+			dropDown.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100);
+			dropDown.ItemSpacing = 1;
 
 			List<LabelWidget> items = new List<LabelWidget>();
 			List<Widget> dismissAfter = new List<Widget>();
@@ -182,8 +177,6 @@ namespace OpenRA.Widgets
 			{
 				var ww = ft(t, dropDown.Bounds.Width - dropDown.ScrollbarWidth);
 				dismissAfter.Add(ww);
-				ww.ClickThrough = false;
-				ww.IsVisible = () => true;
 				ww.OnMouseMove = mi => items.Do(lw =>
 				{
 					lw.Background = null; ww.Background = "dialog2";

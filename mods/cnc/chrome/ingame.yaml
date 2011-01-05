@@ -204,7 +204,6 @@ Container@INGAME_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT - 30
 			Width: 760
 			Height: 200
-			ClickThrough: True
 			DrawBackground: False
 			RemoveTime:250
 		ChatEntry@CHAT_ENTRY:
@@ -213,7 +212,6 @@ Container@INGAME_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
 			Height: 30
-			ClickThrough: True
 		Background@DEVELOPERMODE_BG:
 			Id:DEVELOPERMODE_BG
 			Delegate:DeveloperModeDelegate
@@ -414,7 +412,6 @@ Container@OBSERVER_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT - 30
 			Width: 760
 			Height: 200
-			ClickThrough: True
 			DrawBackground: False
 			RemoveTime:250
 		ChatEntry@CHAT_ENTRY:
@@ -423,7 +420,6 @@ Container@OBSERVER_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
 			Height: 30
-			ClickThrough: True
 Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT

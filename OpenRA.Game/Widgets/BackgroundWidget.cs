@@ -15,7 +15,8 @@ namespace OpenRA.Widgets
 	public class BackgroundWidget : Widget
 	{
 		public readonly string Background = "dialog";
-		
+		public readonly bool ClickThrough = false;
+
 		public override void DrawInner( WorldRenderer wr )
 		{
 			WidgetUtils.DrawPanel(Background, RenderBounds);
@@ -23,10 +24,16 @@ namespace OpenRA.Widgets
 		
 		public BackgroundWidget() : base() { }
 
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return !ClickThrough;
+		}
+		
 		protected BackgroundWidget(BackgroundWidget other)
 			: base(other)
 		{
 			Background = other.Background;
+			ClickThrough = other.ClickThrough;
 		}
 
 		public override Widget Clone() { return new BackgroundWidget(this); }

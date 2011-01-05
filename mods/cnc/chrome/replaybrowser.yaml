@@ -26,7 +26,6 @@ Background@REPLAYBROWSER_BG:
 					Id:REPLAY_TEMPLATE
 					Width:PARENT_RIGHT-28
 					Height:25
-					ClickThrough:false
 					X:2
 					Y:0
 					Visible:false
