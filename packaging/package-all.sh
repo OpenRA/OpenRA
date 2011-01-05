@@ -76,10 +76,15 @@ echo "Creating packages..."
 
 (
     cd linux
-    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" "x86" &> package.log
     if [ $? -ne 0 ]; then
         echo "linux package build failed, refer to linux/package.log."
     fi
+    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" "x64" &> package.log
+    if [ $? -ne 0 ]; then
+        echo "linux package build failed, refer to linux/package.log."
+    fi
+
 ) &
 wait
 

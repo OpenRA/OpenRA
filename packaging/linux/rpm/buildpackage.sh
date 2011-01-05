@@ -1,9 +1,16 @@
 #!/bin/bash
 E_BADARGS=85
-if [ $# -ne "4" ]
+if [ $# -ne "5" ]
 then
-    echo "Usage: `basename $0` version root-dir packaging-dir outputdir"
+    echo "Usage: `basename $0` version root-dir packaging-dir outputdir arch"
     exit $E_BADARGS
+fi
+
+if [ $5 -eq "x64" ]
+then
+	ARCH=x86_64
+else
+	ARCH=i386
 fi
 
 # Replace any dashes in the version string with periods
@@ -23,11 +30,11 @@ cp openra.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target i686 -bb SPECS/openra.spec
+rpmbuild --target $ARCH -bb SPECS/openra.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cd RPMS/i686/
-mv openra-$PKGVERSION-1.i686.rpm $4
+cd RPMS/$ARCH/
+mv openra-$PKGVERSION-1.$ARCH.rpm $4
 

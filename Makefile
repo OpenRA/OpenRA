@@ -5,12 +5,13 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 CC	= gcc
-CFLAGS	= -O2 -Wall -m32
+CFLAGS	= -O2 -Wall
+CFLAGS32 = $(CFLAGS) -m32
 
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
 tools: editor ralint seqed filex tsbuild utility
-package: fixheader core editor utility winlaunch gtklaunch
+package: fixheader core editor utility winlaunch gtklaunch gtklaunch32
 mods: mod_ra mod_cnc
 all: core tools winlaunch
 clean: 
@@ -183,6 +184,10 @@ gtklaunch: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
 	@echo CC launcher
 	@$(CC) $(CFLAGS) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0) -I/usr/include/ -lgcrypt -o gtklaunch $(gtklaunch_SRCS) /usr/lib/libmicrohttpd.a
 
+gtklaunch32: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
+	@echo CC launcher32
+	@$(CC) $(CFLAGS32) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0) -I/usr/include/ -lgcrypt -o gtklaunch32 $(gtklaunch_SRCS) /usr/lib/libmicrohttpd.a
+
 .PHONY: $(PHONY) $(PROGRAMS)
 
 #
@@ -216,6 +221,7 @@ INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
 CORE = fileformats rcg rgl rnull game editor utility winlaunch
+
 install: all gtklaunch
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)

@@ -1,8 +1,8 @@
 #!/bin/bash
 # OpenRA packaging master script for linux packages
 
-if [ $# -ne "3" ]; then
-	echo "Usage: `basename $0` version files-dir outputdir"
+if [ $# -ne "4" ]; then
+	echo "Usage: `basename $0` version files-dir outputdir arch"
     exit 1
 fi
 
@@ -15,13 +15,19 @@ rm -rf root
 
 # Game files
 mkdir -p root/usr/bin/
-cp -T $BUILTDIR/gtklaunch root/usr/bin/openra
+if [ $4 -eq "x64" ]; then
+	cp -T $BUILTDIR/gtklaunch root/usr/bin/openra
+else
+	cp -T $BUILTDIR/gtklaunch32 root/usr/bin/openra
+fi
+
 mkdir -p root/usr/share/openra/
 cp -R $BUILTDIR/* "root/usr/share/openra/" || exit 3
 
 # Remove unneeded files
 rm root/usr/share/openra/OpenRA.Launcher.exe
 rm root/usr/share/openra/gtklaunch
+rm root/usr/share/openra/gtklaunch32
 
 # Desktop Icons
 mkdir -p root/usr/share/applications/
@@ -40,7 +46,7 @@ cp -r hicolor root/usr/share/icons/
 (
     echo "Building Debian package."
     cd deb
-    ./buildpackage.sh "$VERSION" ../root "$PACKAGEDIR" &> package.log
+    ./buildpackage.sh "$VERSION" ../root "$PACKAGEDIR" $4 &> package.log
     if [ $? -ne 0 ]; then
         echo "Debian package build failed, refer to $PWD/package.log."
     fi
@@ -49,7 +55,7 @@ cp -r hicolor root/usr/share/icons/
 (
     echo "Building Arch-Linux package."
     cd pkgbuild
-    sh buildpackage.sh "$VERSION" ../root "$PACKAGEDIR" &> package.log
+    sh buildpackage.sh "$VERSION" ../root "$PACKAGEDIR" $4 &> package.log
     if [ $? -ne 0 ]; then
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
@@ -58,7 +64,7 @@ cp -r hicolor root/usr/share/icons/
 (
     echo "Building RPM package."
     cd rpm
-    sh buildpackage.sh "$VERSION" ../root ~/rpmbuild "$PACKAGEDIR" &> package.log
+    sh buildpackage.sh "$VERSION" ../root ~/rpmbuild "$PACKAGEDIR" $4 &> package.log
     if [ $? -ne 0 ]; then
         echo "RPM package build failed, refer to $PWD/package.log."
     fi
