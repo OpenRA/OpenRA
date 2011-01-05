@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
+using System.Reflection;
 
 namespace OpenRA.Widgets
 {
@@ -19,7 +20,12 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public int baseLine = 1;
 		public bool Bold = false;
-		public Func<bool> Checked = () => false;
+		public Func<bool> IsChecked = () => false;
+		public event Action<bool> OnChange = _ => {};
+		
+		object boundObject;
+		bool boundReadOnly;
+		FieldInfo boundField;
 		
 		public override void DrawInner( WorldRenderer wr )
 		{
@@ -35,19 +41,37 @@ namespace OpenRA.Widgets
 				new float2(rect.Left + rect.Height * 1.5f, 
 					pos.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
 
-			if (Checked())
+			if ((boundObject != null && (bool)boundField.GetValue(boundObject)) || IsChecked())
 				WidgetUtils.DrawRGBA(
 					ChromeProvider.GetImage("checkbox", "checked"),
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
+		
+		public void Bind(object obj, string field) { Bind(obj, field, false); }
+		public void BindReadOnly(object obj, string field) { Bind(obj, field, true); }
+		void Bind(object obj, string field, bool readOnly)
+		{
+			boundObject = obj;
+			boundReadOnly = readOnly;
+			boundField = obj.GetType().GetField(field);
+		}
 
+		// TODO: SliderWidget doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			// Checkboxes require lmb
-			if (mi.Button != MouseButton.Left)
+			if (mi.Button != MouseButton.Left || mi.Event != MouseInputEvent.Down)
 				return false;
 			
-			return base.HandleMouseInput(mi);
+			bool newVal = !IsChecked();
+			if (boundObject != null && !boundReadOnly)
+			{
+				newVal = !(bool)boundField.GetValue(boundObject);
+				boundField.SetValue(boundObject, newVal);
+			}
+
+			OnChange(newVal);
+			return true;
 		}
 
 		public CheckboxWidget() : base() { }
@@ -56,7 +80,6 @@ namespace OpenRA.Widgets
 			: base(other)
 		{
 			Text = other.Text;
-			Checked = other.Checked;
 		}
 
 		public override Widget Clone() { return new CheckboxWidget(this); }

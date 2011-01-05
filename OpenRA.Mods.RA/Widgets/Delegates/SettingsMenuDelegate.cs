@@ -46,13 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
             name.OnEnterKey = () => { name.LoseFocus(); return true; };
 
-            var edgeScroll = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
-            edgeScroll.Checked = () => Game.Settings.Game.ViewportEdgeScroll;
-            edgeScroll.OnMouseDown = mi =>
-            {
-                Game.Settings.Game.ViewportEdgeScroll ^= true;
-                return true;
-            };
+			general.GetWidget<CheckboxWidget>("EDGE_SCROLL").Bind(Game.Settings.Game, "ViewportEdgeScroll");
             
             // Added scroll sensitivity - Gecko	
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
@@ -63,21 +57,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
             }
 
-            var inverseScroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
-            inverseScroll.Checked = () => Game.Settings.Game.InverseDragScroll;
-            inverseScroll.OnMouseDown = mi =>
-            {
-                Game.Settings.Game.InverseDragScroll ^= true;
-                return true;
-            };
+			general.GetWidget<CheckboxWidget>("INVERSE_SCROLL").Bind(Game.Settings.Game, "InverseDragScroll");
+			general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE").Bind(Game.Settings.Game, "TeamChatToggle");
 
-			var teamChatToggle = general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE");
-			teamChatToggle.Checked = () => Game.Settings.Game.TeamChatToggle;
-			teamChatToggle.OnMouseDown = mi =>
-			{
-				Game.Settings.Game.TeamChatToggle ^= true;
-				return true;
-			};
 			
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
@@ -95,14 +77,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
+			display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX").Bind(Game.Settings.Game, "TeamChatToggle");
+
 			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
-			fullscreen.Checked = () => {return Game.Settings.Graphics.Mode != WindowMode.Windowed;};
-			fullscreen.OnMouseDown = mi =>
-			{
-				Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
-				return true;
-			};
-			
+			fullscreen.IsChecked = () => Game.Settings.Graphics.Mode != WindowMode.Windowed;
+			fullscreen.OnChange += c => Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+	
 			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
 			Game.Settings.Graphics.WindowedSize.X = (Game.Settings.Graphics.WindowedSize.X < Game.Settings.Graphics.MinResolution.X)?
 				Game.Settings.Graphics.MinResolution.X : Game.Settings.Graphics.WindowedSize.X;
@@ -141,22 +121,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
-			var perfdebug = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
-			perfdebug.Checked = () => {return Game.Settings.Debug.PerfGraph;};
-			perfdebug.OnMouseDown = mi =>
-			{
-				Game.Settings.Debug.PerfGraph ^= true;
-				return true;
-			};
-			
-			var timedebug = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
-			timedebug.Checked = () => {return Game.Settings.Game.MatchTimer;};
-			timedebug.OnMouseDown = mi => 
-			{
-				Game.Settings.Game.MatchTimer ^= true;
-				return true;
-			};
-			
+			debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX").Bind(Game.Settings.Debug, "PerfGraph");
+			debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX").Bind(Game.Settings.Game, "MatchTimer");
+
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
 				Widget.CloseWindow();

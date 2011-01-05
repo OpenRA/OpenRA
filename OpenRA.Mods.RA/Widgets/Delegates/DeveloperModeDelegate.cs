@@ -39,67 +39,33 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").Checked = 
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().DisableShroud;
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").OnMouseDown = mi => 
-			{
-				world.IssueOrder(new Order("DevShroud", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
+			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").BindReadOnly(devTrait, "DisableShroud");
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").OnChange += _ => Order(world, "DevShroud");
+	
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").BindReadOnly(devTrait, "UnitInfluenceDebug");
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").OnChange += _ => Order(world, "DevUnitDebug");
 			
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").Checked =
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnitInfluenceDebug;
-			devmodeBG.GetWidget("CHECKBOX_UNITDEBUG").OnMouseDown = mi => 
-			{
-				world.IssueOrder(new Order("DevUnitDebug", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
-			
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").Checked = 
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug;
-			devmodeBG.GetWidget("CHECKBOX_PATHDEBUG").OnMouseDown = mi => 
-			{
-				world.IssueOrder(new Order("DevPathDebug", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
-			
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").BindReadOnly(devTrait, "PathDebug");
+			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").OnChange += _ => Order(world, "DevPathDebug");
+
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_CASH").OnMouseUp = mi =>
 			{
 				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 				return true;
 			};
 			
-			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").Checked =
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastBuild;
-			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").OnMouseDown = mi =>
-			{
-				world.IssueOrder(new Order("DevFastBuild", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};	
+			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").BindReadOnly(devTrait, "FastBuild");
+			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_BUILD").OnChange += _ => Order(world, "DevFastBuild");
 
-			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").Checked = 
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().FastCharge;
-			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").OnMouseDown = mi =>
-			{
-				world.IssueOrder(new Order("DevFastCharge", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
+			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").BindReadOnly(devTrait, "FastCharge");
+			devmodeBG.GetWidget<CheckboxWidget>("INSTANT_CHARGE").OnChange += _ => Order(world, "DevFastCharge");
+
+			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").BindReadOnly(devTrait, "AllTech");
+			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").OnChange += _ => Order(world, "DevEnableTech");
 			
-			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").Checked = 
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().AllTech;
-			devmodeBG.GetWidget<CheckboxWidget>("ENABLE_TECH").OnMouseDown = mi =>
-			{
-				world.IssueOrder(new Order("DevEnableTech", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
-
-			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").Checked =
-				() => world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnlimitedPower;
-			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").OnMouseDown = mi =>
-			{
-				world.IssueOrder(new Order("DevUnlimitedPower", world.LocalPlayer.PlayerActor, false));
-				return true;
-			};
+			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").BindReadOnly(devTrait, "UnlimitedPower");
+			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").OnChange += _ => Order(world, "DevUnlimitedPower");
 
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
 			{
@@ -108,6 +74,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 				
 			devModeButton.IsVisible = () => { return world.LobbyInfo.GlobalSettings.AllowCheats; };
+		}
+		
+		public void Order(World world, string order)
+		{
+			world.IssueOrder(new Order(order, world.LocalPlayer.PlayerActor, false));	
 		}
 	}
 }

@@ -41,18 +41,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name;
 			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Checked = () => settings.Server.AdvertiseOnline;
-			cs.GetWidget("CHECKBOX_ONLINE").OnMouseDown = mi => {
-				settings.Server.AdvertiseOnline ^= true;
-				settings.Save();
-				return true;	
-			};
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Checked = () => settings.Server.AllowCheats;
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").OnMouseDown = mi => {
-				settings.Server.AllowCheats ^=true;
-				settings.Save();
-				return true;
-			};
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Bind(settings.Server, "AdvertiseOnline");
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").OnChange += _ => settings.Save();
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Bind(settings.Server, "AllowCheats");
+			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").OnChange += _ => settings.Save();
 		}
 	}
 }

@@ -102,16 +102,14 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				Game.Disconnect();
 				return true;
 			};
-
+			
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
-			lockTeamsCheckbox.IsVisible = () => lockTeamsCheckbox.Visible && true;
-			lockTeamsCheckbox.Checked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.OnMouseDown = mi =>
+			lockTeamsCheckbox.BindReadOnly(orderManager.LobbyInfo.GlobalSettings, "LockTeams");
+			lockTeamsCheckbox.OnChange += _ =>
 			{
 				if (Game.IsHost)
 					orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
-				return true;
 			};
 			
 			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
@@ -400,8 +398,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.Checked = () => c.State == Session.ClientState.Ready;
-					status.OnMouseDown = CycleReady;
+					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					status.OnChange += CycleReady;
 					
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 					
@@ -432,8 +430,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.Checked = () => c.State == Session.ClientState.Ready;
-					if (c.Index == orderManager.LocalClient.Index) status.OnMouseDown = CycleReady;
+					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					if (c.Index == orderManager.LocalClient.Index)
+						status.OnChange += CycleReady;
 
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 							
@@ -462,10 +461,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 
-		bool CycleReady(MouseInput mi)
+		void CycleReady(bool ready)
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
-			return true;
 		}
 	}
 }
