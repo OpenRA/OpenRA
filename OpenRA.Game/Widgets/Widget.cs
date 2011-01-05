@@ -194,10 +194,6 @@ namespace OpenRA.Widgets
 			return EventBounds.Contains(pos.ToPoint()) ? GetCursor(pos) : null;
 		}
 		
-		// Hack: Don't eat mouse input that others want
-		// TODO: Solve this properly
-		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough && mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Move; }
-		
 		public static bool HandleInput(MouseInput mi)
 		{
 			bool handled = false;
@@ -238,7 +234,10 @@ namespace OpenRA.Widgets
 			
 			return true;
 		}
-				
+		
+		// Hack: Don't eat mouse input that others want
+		// TODO: Solve this properly
+		public virtual bool HandleInputInner(MouseInput mi) { return !ClickThrough && mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Move; }
 		
 		public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
 		public virtual bool HandleKeyPressOuter(KeyInput e)

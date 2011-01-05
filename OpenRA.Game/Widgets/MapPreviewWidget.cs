@@ -19,10 +19,7 @@ namespace OpenRA.Widgets
 {
 	public class MapPreviewWidget : Widget
 	{
-		public int SpawnClickRadius = 50;
-		
 		public Func<MapStub> Map = () => null;
-		public Action<int> OnSpawnClick = spawn => {};
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
 		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 
@@ -32,37 +29,17 @@ namespace OpenRA.Widgets
 		{
 			lastMap = other.lastMap;
 			Map = other.Map;
-			OnSpawnClick = other.OnSpawnClick;
 			SpawnColors = other.SpawnColors;
 		}
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
-		
+		public override bool HandleInputInner(MouseInput mi) { return true; }
+
 		public int2 ConvertToPreview(MapStub map, int2 point)
 		{
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));
 		}
 		
-		public override bool HandleInputInner(MouseInput mi)
-		{			
-			var map = Map();
-			if (map == null)
-				return false;
-			
-			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
-			{			
-				var p = map.Waypoints
-					.Select((sp, i) => Pair.New(ConvertToPreview(map, sp.Value), i))
-					.Where(a => (a.First - mi.Location).LengthSquared < SpawnClickRadius)
-					.Select(a => a.Second + 1)
-					.FirstOrDefault();
-				OnSpawnClick(p);
-				return true;
-			}
-
-			return false;
-		}
-
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
 		MapStub lastMap;

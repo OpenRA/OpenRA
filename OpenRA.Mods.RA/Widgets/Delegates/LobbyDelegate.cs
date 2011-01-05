@@ -49,12 +49,24 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;
-			mapPreview.OnSpawnClick = sp =>
+			mapPreview.OnMouseDown = mi =>
 			{
-				if (orderManager.LocalClient.State == Session.ClientState.Ready) return;
-				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
-				if (sp == 0 || !owned)
-					orderManager.IssueOrder(Order.Command("spawn {0}".F(sp)));
+				var map = mapPreview.Map();
+				if (map == null || mi.Button != MouseButton.Left
+				    || orderManager.LocalClient.State == Session.ClientState.Ready)
+					return false;
+
+				var p = map.Waypoints
+					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp.Value), i))
+					.Where(a => (a.First - mi.Location).LengthSquared < 64)
+					.Select(a => a.Second + 1)
+					.FirstOrDefault();
+
+				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
+				if (p == 0 || !owned)
+					orderManager.IssueOrder(Order.Command("spawn {0}".F(p)));
+				
+				return true;
 			};
 
 			mapPreview.SpawnColors = () =>
