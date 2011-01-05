@@ -33,10 +33,8 @@ namespace OpenRA.Mods.RA.Activities
 
 				var repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
 				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
-				var hpToRepair = Math.Min(host.Info.Traits.Get<RepairsUnitsInfo>().URepairStep, health.MaxHP - health.HP);
-				var costPerHp = (repairsUnits.URepairPercent * unitCost) / health.MaxHP;
-				var fullRepairCost = (int)(repairsUnits.URepairPercent * unitCost);
-				var cost = fullRepairCost * hpToRepair / health.MaxHP;
+				var hpToRepair = Math.Min(repairsUnits.HpPerStep, health.MaxHP - health.HP);
+				var cost = (hpToRepair * unitCost * repairsUnits.ValuePercentage) / (health.MaxHP * 100);
 
 				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{

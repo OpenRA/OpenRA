@@ -14,9 +14,9 @@ namespace OpenRA.Mods.RA
 {
 	public class RepairsUnitsInfo : TraitInfo<RepairsUnits>
 	{
-		public readonly float URepairPercent = 0.2f;
-		public readonly int URepairStep = 10;
-		public readonly int Interval = 24;
+		public readonly int ValuePercentage = 20; // charge 20% of the unit value to fully repair
+		public readonly int HpPerStep = 10;
+		public readonly int Interval = 24; // Ticks
 	}
 
 	public class RepairsUnits { }
