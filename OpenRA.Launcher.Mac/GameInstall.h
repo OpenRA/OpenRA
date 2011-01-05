@@ -12,12 +12,12 @@
 @class Controller;
 @interface GameInstall : NSObject {
 	NSString *gamePath;
-	Controller *controller;
+	NSString *monoPath;
 	NSMutableDictionary *downloadTasks;
 }
 @property(readonly) NSString *gamePath;
 
--(id)initWithPath:(NSString *)path;
+-(id)initWithGamePath:(NSString *)gamepath monoPath:(NSString *)monopath;
 -(void)launchMod:(NSString *)mod;
 - (NSString *)runUtilityQuery:(NSString *)arg;
 - (NSArray *)installedMods;

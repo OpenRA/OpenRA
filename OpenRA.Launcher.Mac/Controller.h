@@ -21,6 +21,7 @@
 	NSMutableArray *httpRequests;
 	NSMutableDictionary *downloads;
 	BOOL hasMono;
+	NSString *monoPath;
 	
 	IBOutlet NSWindow *window;
 	IBOutlet NSOutlineView *outlineView;
@@ -37,5 +38,5 @@
 - (void)fetchURL:(NSString *)url withCallback:(NSString *)cb;
 - (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
 - (Download *)downloadWithKey:(NSString *)key;
-- (BOOL)hasSupportedMono;
+- (BOOL)initMono;
 @end

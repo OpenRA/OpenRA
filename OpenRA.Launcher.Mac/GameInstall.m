@@ -13,12 +13,13 @@
 @implementation GameInstall
 @synthesize gamePath;
 
--(id)initWithPath:(NSString *)path
+-(id)initWithGamePath:(NSString *)gamepath monoPath:(NSString *)monopath
 {
 	self = [super init];
 	if (self != nil)
 	{
-		gamePath = [path retain];
+		gamePath = [gamepath retain];
+		monoPath = [monopath retain];
 		downloadTasks = [[NSMutableDictionary alloc] init];
 	}
 	return self;
@@ -27,6 +28,7 @@
 - (void)dealloc
 {
 	[gamePath release]; gamePath = nil;
+	[monoPath release]; monoPath = nil;
 	[downloadTasks release]; downloadTasks = nil;
 	[super dealloc];
 }
@@ -98,7 +100,7 @@
 	// First argument is the directory to run in
 	// Second...Nth arguments are passed to OpenRA.Game.exe
 	// Launcher wrapper sets mono --debug, gl renderer and support dir.
-	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath,
+	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath, monoPath,
 						[NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 						[NSString stringWithFormat:@"Game.Mods=%@",mod],
 					nil];
@@ -132,7 +134,7 @@
 	
 	NSTask *task = [[NSTask alloc] init];
     [task setCurrentDirectoryPath:gamePath];
-    [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
+    [task setLaunchPath:monoPath];
     [task setArguments:taskArgs];
 	[task setStandardOutput:outPipe];
 	[task setStandardError:[task standardOutput]];
@@ -156,7 +158,7 @@
 	[taskArgs addObject:arg];
 	
     [task setCurrentDirectoryPath:gamePath];
-    [task setLaunchPath:@"/Library/Frameworks/Mono.framework/Commands/mono"];
+    [task setLaunchPath:monoPath];
     [task setArguments:taskArgs];
 	[task setStandardOutput:pipe];
 	

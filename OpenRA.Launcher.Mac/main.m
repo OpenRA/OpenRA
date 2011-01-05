@@ -20,11 +20,11 @@ int main(int argc, char *argv[])
 
 		/* Command line args for mono */
 		char *args[] = {
-			"/Library/Frameworks/Mono.framework/Commands/mono",
+			argv[3],
 			"--debug",
 			"OpenRA.Game.exe",
-			argv[3],
 			argv[4],
+			argv[5],
 			NULL
 		};
 		
