@@ -17,16 +17,16 @@ else
 fi
 
 # Copy template files into a clean build directory (required)
-mkdir root
-cp -R DEBIAN root
-cp -R $rootdir/usr root
+mkdir root$ARCH
+cp -R DEBIAN root$ARCH
+cp -R $rootdir/usr root$ARCH
 
 # Create the control and changelog files from templates
-sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" | sed "s/{ARCH}/$ARCH/" > root/DEBIAN/control
-sed "s/{VERSION}/$VERSION/" DEBIAN/changelog > root/DEBIAN/changelog
+sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" | sed "s/{ARCH}/$ARCH/" > root$ARCH/DEBIAN/control
+sed "s/{VERSION}/$VERSION/" DEBIAN/changelog > root$ARCH/DEBIAN/changelog
 
 # Build it in the temp directory, but place the finished deb in our starting directory
-pushd root
+pushd root$ARCH
 
 # Calculate md5sums and clean up the /usr/ part of them
 md5sum `find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g' > DEBIAN/md5sums
@@ -36,5 +36,5 @@ dpkg-deb -b . $3/openra-$VERSION-$ARCH.deb
 
 # Clean up
 popd
-rm -rf root
+rm -rf root$ARCH
 
