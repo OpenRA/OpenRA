@@ -22,6 +22,7 @@ rm OpenRA.app/Contents/Resources/OpenRA.ico
 rm OpenRA.app/Contents/Resources/OpenRA.Editor.exe
 rm OpenRA.app/Contents/Resources/OpenRA.Launcher.exe
 rm OpenRA.app/Contents/Resources/gtklaunch
+rm OpenRA.app/Contents/Resources/gtklaunch32
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app

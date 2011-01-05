@@ -6,7 +6,7 @@ then
     exit $E_BADARGS
 fi
 
-if [ $5 -eq "x64" ]
+if [ $5 = "x64" ]
 then
 	ARCH=x86_64
 else

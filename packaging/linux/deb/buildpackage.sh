@@ -9,7 +9,7 @@ fi
 VERSION=$1
 rootdir=`readlink -f $2`
 PACKAGE_SIZE=`du --apparent-size -c $rootdir/usr | grep "total" | awk '{print $1}'`
-if [ $4 -eq "x64" ]
+if [ $4 = "x64" ]
 then
 	ARCH=amd64
 else

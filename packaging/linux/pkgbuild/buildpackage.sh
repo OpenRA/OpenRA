@@ -6,11 +6,12 @@ then
     exit $E_BADARGS
 fi
 
-if [ $4 -eq "x64" ]
+if [ $4 = "x64" ]
 then
 	ARCH=x86_64
 else
 	ARCH=i686
+fi
 
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`

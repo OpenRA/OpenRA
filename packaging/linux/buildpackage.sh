@@ -15,7 +15,7 @@ rm -rf root
 
 # Game files
 mkdir -p root/usr/bin/
-if [ $4 -eq "x64" ]; then
+if [ $4 = "x64" ]; then
 	cp -T $BUILTDIR/gtklaunch root/usr/bin/openra
 else
 	cp -T $BUILTDIR/gtklaunch32 root/usr/bin/openra
