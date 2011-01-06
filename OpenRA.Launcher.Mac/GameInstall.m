@@ -58,8 +58,8 @@
 		if ([kv count] < 2)
 			continue;
 		
-		id key = [kv objectAtIndex:0];
-		id value = [kv objectAtIndex:1];
+		id key = [[kv objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		id value = [[kv objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		
 		if ([key isEqualToString:@"Error"])
 		{	
@@ -75,7 +75,7 @@
 				id path = [gamePath stringByAppendingPathComponent:[NSString stringWithFormat:@"mods/%@",current]];
 				[ret setObject:[Mod modWithId:current fields:fields path:path] forKey:current];
 			}
-			NSLog(@"Parsing mod %@",value);
+			NSLog(@"Parsing mod `%@`",value);
 			current = value;
 			fields = [NSMutableDictionary dictionary];			
 		}

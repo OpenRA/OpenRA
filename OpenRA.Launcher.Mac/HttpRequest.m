@@ -25,7 +25,6 @@
 	self = [super init];
 	if (self != nil)
 	{
-		NSLog(@"Requesting url `%@` with callback:`%@`",aURL, aCallback);
 		url = [aURL retain];
 		callback = [aCallback retain];
 		game = [aGame retain];
