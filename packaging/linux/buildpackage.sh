@@ -53,6 +53,8 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
     fi
 ) &
 
+if [ $4 = 'x86' ]
+then
 (
     echo "Building Arch-Linux package."
     cd pkgbuild
@@ -61,6 +63,7 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
 ) &
+fi
      
 (
     echo "Building RPM package."
