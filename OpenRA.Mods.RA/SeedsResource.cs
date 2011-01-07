@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 				// Todo: Valid terrain should be specified in the resource
 				if (cell != null && self.World.Map.IsInMap(cell.Value) && 
 					(resLayer.GetResource(cell.Value) == resourceType 
-					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(cell.Value))))
+					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
 					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
 
 				ticks = info.Interval;

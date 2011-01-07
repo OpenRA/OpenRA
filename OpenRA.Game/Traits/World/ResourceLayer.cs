@@ -58,14 +58,17 @@ namespace OpenRA.Traits
 			for (int x = map.Bounds.Left; x < map.Bounds.Right; x++)
 				for (int y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
 				{
-					// Todo: Valid terrain should be specified in the resource
-					if (!AllowResourceAt(new int2(x,y)))
-						continue;
-					
-					content[x, y].type = resourceTypes.FirstOrDefault(
+                    var type = resourceTypes.FirstOrDefault(
 						r => r.info.ResourceType == w.Map.MapResources[x, y].type);
-					if (content[x, y].type != null)
-						content[x, y].image = ChooseContent(content[x, y].type);
+
+                    if (type == null)
+                        continue;
+
+					if (!AllowResourceAt(type, new int2(x,y)))
+						continue;
+
+                    content[x, y].type = type;
+					content[x, y].image = ChooseContent(type);
 				}
 
 			for (int x = map.Bounds.Left; x < map.Bounds.Right; x++)
@@ -77,13 +80,13 @@ namespace OpenRA.Traits
 					}
 		}
 
-		public bool AllowResourceAt( int2 a )
-		{
-			if( !world.Map.IsInMap( a.X, a.Y ) ) return false;
-			if( !world.GetTerrainInfo( a ).Buildable ) return false;
-			if( world.WorldActor.Trait<UnitInfluence>().AnyUnitsAt( a ) ) return false;
-			return true;
-		}
+        public bool AllowResourceAt(ResourceType rt, int2 a)
+        {
+            if (!world.Map.IsInMap(a.X, a.Y)) return false;
+            if (!rt.info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type)) return false;
+            if (!rt.info.AllowUnderActors && world.WorldActor.Trait<UnitInfluence>().AnyUnitsAt(a)) return false;
+            return true;
+        }
 
 		Sprite[] ChooseContent(ResourceType t)
 		{

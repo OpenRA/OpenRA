@@ -111,6 +111,8 @@ World:
 		ValuePerUnit: 30
 		Name: Tiberium
 		PipColor: Green
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
 	ResourceType@blue-tib:
 		ResourceType: 2
 		Palette: terrain
@@ -120,6 +122,8 @@ World:
 		Name: Blue Tiberium
 		# todo: add a blue pip.
 		PipColor: Red
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		Types:sc1,sc2,sc3,sc4,sc5,sc6

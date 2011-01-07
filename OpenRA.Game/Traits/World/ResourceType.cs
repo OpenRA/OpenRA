@@ -22,6 +22,9 @@ namespace OpenRA.Traits
 		public readonly string Name = null;
 		public readonly string TerrainType = "Ore";
 
+        public readonly string[] AllowedTerrainTypes = { };
+        public readonly bool AllowUnderActors = false;
+
 		public Sprite[][] Sprites;
 		public int PaletteIndex;
 
