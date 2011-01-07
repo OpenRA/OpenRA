@@ -194,6 +194,11 @@ namespace OpenRA
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
+		
+		public static Dictionary<String, Mod> CurrentMods
+		{
+			get { return Mod.AllMods.Where( k => orderManager.LobbyInfo.GlobalSettings.Mods.Contains( k.Key )).ToDictionary( k => k.Key, k => k.Value ); }
+		}
 
 		static Modifiers modifiers;
 		public static Modifiers GetModifierKeys() { return modifiers; }

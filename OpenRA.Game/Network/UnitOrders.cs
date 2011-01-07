@@ -103,37 +103,6 @@ namespace OpenRA.Network
 				{
 					var request = HandshakeRequest.Deserialize(order.TargetString);
 				
-					// Check valid mods/versions
-					var serverMods = request.Mods;
-					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods;
-					
-					bool valid = true;
-					if (localMods.Length != serverMods.Length)
-						valid = false;
-					else
-						foreach (var m in serverMods)
-						{
-							var parts = m.Split('@');
-							if (!localMods.Contains(parts[0]))
-							{
-								valid = false;
-								break;
-							}
-							if (parts[1] == "{DEV_VERSION}" || Mod.AllMods[parts[0]].Version == "{DEV_VERSION}")
-								continue;
-					
-							if (parts[1] != Mod.AllMods[parts[0]].Version)
-							{
-								valid = false;
-								break;
-							}
-						}
-
-					if (!valid)
-						throw new InvalidOperationException("Mod/Version mismatch. Client: `{0}`, Server: `{1}`".F(
-					                                           string.Join(",",localMods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()),
-					                                           string.Join(",",serverMods)));
-					
 					// Check that the map exists on the client
 					if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
 						throw new InvalidOperationException("Missing map {0}".F(request.Map));
@@ -149,6 +118,7 @@ namespace OpenRA.Network
 						State = Session.ClientState.NotReady
 					};
 				
+					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray();
 					var response = new HandshakeResponse()
 					{
 						Client = info,

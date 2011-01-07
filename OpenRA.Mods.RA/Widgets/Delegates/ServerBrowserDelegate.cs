@@ -149,8 +149,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return;
 			}
 
-            // only "waiting for players"
-            var gamesWaiting = games.Where(g => g.State == 1);
+            var gamesWaiting = games.Where(g => CanJoin(g));
 
             if (gamesWaiting.Count() == 0)
 			{
@@ -179,6 +178,22 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				i++;
 			}
 		}
+		
+		bool CanJoin(GameServer game)
+		{
+			//"waiting for players"
+			if (game.State != 1)
+				return false;
+			
+			// Mods won't match if there are a different number
+			if (Game.CurrentMods.Count != game.Mods.Count())
+				return false;
+			
+			return game.Mods.All( m => m.Contains('@')) &&  game.Mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1]))
+				.All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
+				     (kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
+		}
+		
 	}
 
 	public class DirectConnectDelegate : IWidgetDelegate
