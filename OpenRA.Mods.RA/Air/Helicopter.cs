@@ -130,22 +130,22 @@ namespace OpenRA.Mods.RA.Air
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
-				.Select(h => GetRepulseForce(self, h, h.Trait<Helicopter>()))
+				.Select(h => GetRepulseForce(self, h))
 				.Aggregate(int2.Zero, (a, b) => a + b);
 
-			int RepulsionFacing = Util.GetFacing( f.ToFloat2(), -1 );
+			int RepulsionFacing = Util.GetFacing( f, -1 );
 			if( RepulsionFacing != -1 )
 				aircraft.TickMove( 1024 * aircraft.MovementSpeed, RepulsionFacing );
 		}
 
 		// Returns an int2 in subPx units
-		public int2 GetRepulseForce(Actor self, Actor h, Aircraft hAir)
+		public int2 GetRepulseForce(Actor self, Actor h)
 		{
 			if (self == h)
 				return int2.Zero;
-			if( hAir.Altitude < Altitude )
+			if( h.Trait<Helicopter>().Altitude < Altitude )
 				return int2.Zero;
-			var d = (self.CenterLocation - h.CenterLocation).ToInt2();
+			var d = self.CenterLocation - h.CenterLocation;
 			
 			if (d.Length > Info.IdealSeparation)
 				return int2.Zero;
