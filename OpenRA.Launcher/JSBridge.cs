@@ -55,7 +55,7 @@ namespace OpenRA.Launcher
 			modList.Add(m);
 			if (!allMods.ContainsKey(m))
 			{
-				System.Windows.Forms.MessageBox.Show("allMods does not contain " + m);
+				MessageBox.Show("allMods does not contain " + m);
 				return false;
 			}
 			while (!string.IsNullOrEmpty(allMods[m].Requires))
@@ -174,11 +174,11 @@ namespace OpenRA.Launcher
 			var p = UtilityProgram.Call("--download-url", pipename, 
 				(_, e) =>
 				{
-					
 					using (var reader = new StreamReader(pipe))
 					{
 						var data = reader.ReadToEnd();
-						document.InvokeScript(callbackName, new object[] { data });
+                        Form.ActiveForm.Invoke((Delegate)(Action)(() =>
+                            document.InvokeScript(callbackName, new object[] { data })));
 					}
 				}, url);
 			
