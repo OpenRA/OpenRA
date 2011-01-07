@@ -22,8 +22,6 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo
 	{
-		public readonly int InstabilityMagnitude = 1024;
-		public readonly int InstabilityTicks = 5;	
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
 
@@ -122,7 +120,6 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 		
-		int offsetTicks = 0;
 		public void Tick(Actor self)
 		{
 			var aircraft = self.Trait<Aircraft>();
@@ -133,44 +130,29 @@ namespace OpenRA.Mods.RA.Air
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
-				.Select(h => self.Trait<Helicopter>().GetRepulseForce(self, h, h.Trait<Helicopter>()))
-				.Aggregate(float2.Zero, (a, b) => a + b);
+				.Select(h => GetRepulseForce(self, h, h.Trait<Helicopter>()))
+				.Aggregate(int2.Zero, (a, b) => a + b);
 
-			RepulsionFacing = Util.GetFacing( f, -1 );
+			int RepulsionFacing = Util.GetFacing( f.ToFloat2(), -1 );
 			if( RepulsionFacing != -1 )
 				aircraft.TickMove( 1024 * aircraft.MovementSpeed, RepulsionFacing );
-
-			if (--offsetTicks <= 0)
-			{
-				InstabilityFacing = Util.GetFacing( self.World.SharedRandom.Gauss2D( 5 ), -1 );
-				if( InstabilityFacing != -1 )
-					aircraft.TickMove( Info.InstabilityMagnitude, InstabilityFacing );
-
-				aircraft.Altitude += (int)(Info.InstabilityMagnitude / 1024 * self.World.SharedRandom.Gauss1D(5));
-				offsetTicks = Info.InstabilityTicks;
-			}
 		}
 
-		[Sync]
-		int RepulsionFacing;
-		[Sync]
-		int InstabilityFacing;
-
-		const float Epsilon = .5f;
-		public float2 GetRepulseForce(Actor self, Actor h, Aircraft hAir)
+		// Returns an int2 in subPx units
+		public int2 GetRepulseForce(Actor self, Actor h, Aircraft hAir)
 		{
 			if (self == h)
-				return float2.Zero;
+				return int2.Zero;
 			if( hAir.Altitude < Altitude )
-				return float2.Zero;
-			var d = self.CenterLocation - h.CenterLocation;
+				return int2.Zero;
+			var d = (self.CenterLocation - h.CenterLocation).ToInt2();
 			
 			if (d.Length > Info.IdealSeparation)
-				return float2.Zero;
+				return int2.Zero;
 
-			if (d.LengthSquared < Epsilon)
-				return float2.FromAngle((float)self.World.SharedRandom.NextDouble() * 3.14f);
-			return (5 / d.LengthSquared) * d;
+			if (d.LengthSquared < 1)
+				return Aircraft.SubPxVector[self.World.SharedRandom.Next(255)];
+			return (5120 / d.LengthSquared) * d;
 		}
 	}
 }

@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA.Air
 			return Info.LandableTerrainTypes.Contains(type);
 		}
 		
-		static readonly int2[] SubPxVector = 
+		public static readonly int2[] SubPxVector = 
 		{
 			new int2( 0, 1024 ),
 			new int2( 25, 1023 ),
