@@ -69,6 +69,19 @@ namespace OpenRA.Graphics
 			}
 		}
 
+        public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
+        {
+            if (offset > 0)
+            {
+                DrawText(text, location + new float2(-offset, 0), bg);
+                DrawText(text, location + new float2(offset, 0), bg);
+                DrawText(text, location + new float2(0, -offset), bg);
+                DrawText(text, location + new float2(0, offset), bg);
+            }
+
+            DrawText(text, location, fg);
+        }
+
 		public int2 Measure(string text)
 		{
 			return new int2((int)text.Split( '\n' ).Max( s => s.Sum(a => glyphs[Pair.New(a, Color.White)].Advance)), text.Split('\n').Count()*size);

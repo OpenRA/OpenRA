@@ -25,6 +25,7 @@ namespace OpenRA.Widgets
 		string content = "";
 		bool composing = false;
 		bool teamChat = false;
+        public readonly bool UseContrast = false;
 
 		readonly OrderManager orderManager;
 		[ObjectCreator.UseCtor]
@@ -40,8 +41,8 @@ namespace OpenRA.Widgets
 				var text = teamChat ? "Chat (Team): " : "Chat (All): ";
 				var w = Game.Renderer.BoldFont.Measure(text).X;
 
-				Game.Renderer.BoldFont.DrawText(text, RenderOrigin + new float2(3, 7), Color.White);
-				Game.Renderer.RegularFont.DrawText(content, RenderOrigin + new float2(3 + w, 7), Color.White);
+				Game.Renderer.BoldFont.DrawTextWithContrast(text, RenderOrigin + new float2(3, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
+				Game.Renderer.RegularFont.DrawTextWithContrast(content, RenderOrigin + new float2(3 + w, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 		}
 		
