@@ -123,6 +123,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var debug = bg.GetWidget("DEBUG_PANE");
 			debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX").Bind(Game.Settings.Debug, "PerfGraph");
 			debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX").Bind(Game.Settings.Game, "MatchTimer");
+            debug.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX").Bind(Game.Settings.Debug, "SanityCheckUnsyncedCode");
 
 			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();

@@ -34,6 +34,7 @@ namespace OpenRA.GameRules
 		public bool BotDebug = false;
 		public bool PerfGraph = false;
 		public float LongTickThreshold = 0.001f;
+        public bool SanityCheckUnsyncedCode = false;
 	}
 
 	public class GraphicSettings

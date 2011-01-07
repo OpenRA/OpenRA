@@ -140,9 +140,11 @@ namespace OpenRA
 		public static T CheckSyncUnchanged<T>( World world, Func<T> fn )
 		{
 			if( world == null ) return fn();
-			int sync = world.SyncHash();
+            var shouldCheckSync = Game.Settings.Debug.SanityCheckUnsyncedCode;
+			int sync = shouldCheckSync ? world.SyncHash() : 0;
 			bool prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;
+
 			try
 			{
 				return fn();
@@ -150,7 +152,7 @@ namespace OpenRA
 			finally
 			{
 				inUnsyncedCode = prevInUnsyncedCode;
-				if( sync != world.SyncHash() )
+				if( shouldCheckSync && sync != world.SyncHash() )
 					throw new InvalidOperationException( "CheckSyncUnchanged: sync-changing code may not run here" );
 			}
 		}
