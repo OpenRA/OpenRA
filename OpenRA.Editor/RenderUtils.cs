@@ -96,14 +96,9 @@ namespace OpenRA.Editor
 		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
 		{
 			var ri = info.Traits.Get<RenderSimpleInfo>();
-			string image = null;
-			if (ri.OverrideTileset != null)
-				for (int i = 0; i < ri.OverrideTileset.Length; i++)
-					if (ri.OverrideTileset[i] == tileset.Id)
-						image = ri.OverrideImage[i];
-
-			image = image ?? ri.Image ?? info.Name;
-			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
+            var image = RenderSimple.GetImage(info, tileset.Id);
+			
+            using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);
 				var bitmap = RenderShp(shp, p);
