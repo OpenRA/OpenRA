@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		{
 			var paletteName = "{0}{1}".F( info.BaseName, owner.Index );
 			var newpal = new Palette(wr.GetPalette(info.BasePalette),
-			                 new PlayerColorRemap(owner.Color, owner.Color2, info.PaletteFormat));
+			                 new PlayerColorRemap(owner.ColorRamp, info.PaletteFormat));
 			wr.AddPalette(paletteName, newpal);
 		}
 	}

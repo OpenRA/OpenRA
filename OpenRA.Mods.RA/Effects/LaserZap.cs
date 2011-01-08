@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEffect Create(ProjectileArgs args) 
 		{
-			Color c = UsePlayerColor ? args.firedBy.Owner.Color : Color.Red;
+			Color c = UsePlayerColor ? args.firedBy.Owner.ColorRamp.GetColor(0) : Color.Red;
 			return new LaserZap(args, BeamRadius, c);
 		}
 	}

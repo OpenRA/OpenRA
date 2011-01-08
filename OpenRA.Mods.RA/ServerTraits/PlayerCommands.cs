@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Server
 {		
@@ -84,8 +85,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						var c = s.Split(',').Select(cc => int.Parse(cc)).ToArray();
-						client.Color1 = Color.FromArgb(c[0],c[1],c[2]);
-						client.Color2 = Color.FromArgb(c[3],c[4],c[5]);
+						client.ColorRamp = new ColorRamp((byte)c[0], (byte)c[1], (byte)c[2], (byte)c[3]);
 						server.SyncLobbyInfo();		
 						return true;
 					}}

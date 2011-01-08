@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 			if (Info.UsePlayerColor)
 			{
-				var ownerColor = Color.FromArgb(255, self.Owner.Color);
+				var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
 				TrailColor = PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
 			}
 		}

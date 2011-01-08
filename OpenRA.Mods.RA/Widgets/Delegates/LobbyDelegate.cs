@@ -26,9 +26,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		Dictionary<string, string> CountryNames;
 		string MapUid;
 		Map Map;
-		
-		public static Color CurrentColorPreview1;
-		public static Color CurrentColorPreview2;
+
+        public static ColorRamp CurrentColorPreview;
 
 		readonly OrderManager orderManager;
 		[ObjectCreator.UseCtor]
@@ -38,8 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
 			
-			CurrentColorPreview1 = Game.Settings.Player.Color1;
-			CurrentColorPreview2 = Game.Settings.Player.Color2;
+			CurrentColorPreview = Game.Settings.Player.ColorRamp;
 
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
@@ -79,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
 					if (client == null)
 						continue;
-					sc.Add(spawns.ElementAt(i - 1), client.Color1);
+					sc.Add(spawns.ElementAt(i - 1), client.ColorRamp.GetColor(0));
 				}
 				return sc;
 			};
@@ -152,19 +150,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
 		{
-			var c1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
-			var c2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
-			
-			Game.Settings.Player.Color1 = c1;
-			Game.Settings.Player.Color2 = c2;
+			var ramp = new ColorRamp((byte) (hf*255), (byte) (sf*255), (byte) (lf*255), (byte)(r*255));
+			Game.Settings.Player.ColorRamp = ramp;
 			Game.Settings.Save();
-			orderManager.IssueOrder(Order.Command("color {0},{1},{2},{3},{4},{5}".F(c1.R,c1.G,c1.B,c2.R,c2.G,c2.B)));
+			orderManager.IssueOrder(Order.Command("color {0}".F(ramp)));
 		}
 		
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
-			CurrentColorPreview1 = PlayerColorRemap.ColorFromHSL(hf, sf, lf);
-			CurrentColorPreview2 = PlayerColorRemap.ColorFromHSL(hf, sf, r * lf);
+            CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
 		}
 
 		void UpdateCurrentMap()
@@ -274,16 +268,16 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.SetOffset(orderManager.LocalClient.Color1.GetHue()/360f);
+			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
 			
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-			satSlider.SetOffset(orderManager.LocalClient.Color1.GetSaturation());
+            satSlider.SetOffset(orderManager.LocalClient.ColorRamp.S / 255f);
 
-			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER"); 
-			lumSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness());
+			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
+            lumSlider.SetOffset(orderManager.LocalClient.ColorRamp.L / 255f);
 			
 			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-			rangeSlider.SetOffset(orderManager.LocalClient.Color1.GetBrightness() == 0 ? 0 : orderManager.LocalClient.Color2.GetBrightness()/orderManager.LocalClient.Color1.GetBrightness());
+            rangeSlider.SetOffset(orderManager.LocalClient.ColorRamp.R / 255f);
 			
 			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
@@ -382,7 +376,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					color.OnMouseUp = _ => ShowColorDropDown(s, color);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => c.Color1;
+					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<ButtonWidget>("FACTION");
 					faction.OnMouseDown = _ => ShowRaceDropDown(s, faction);
@@ -417,7 +411,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					template = RemotePlayerTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => c.Color1;
+					color.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<LabelWidget>("FACTION");
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");

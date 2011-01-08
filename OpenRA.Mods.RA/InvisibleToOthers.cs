@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		
 		public Color RadarColorOverride(Actor self)
 		{
-			return Color.FromArgb(128, self.Owner.Color);
+			return Color.FromArgb(128, self.Owner.ColorRamp.GetColor(0));
 		}
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

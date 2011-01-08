@@ -58,8 +58,9 @@ namespace OpenRA.GameRules
 	public class PlayerSettings
 	{
 		public string Name = "Newbie";
-		public Color Color1 = Color.FromArgb(255,160,238);
-		public Color Color2 = Color.FromArgb(68,0,56);
+		[Obsolete] public Color Color1 = Color.FromArgb(255,160,238); 
+		[Obsolete] public Color Color2 = Color.FromArgb(68,0,56);
+        public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		public string LastServer = "localhost:1234";
 	}
 	

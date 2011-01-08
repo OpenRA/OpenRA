@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			if (mod != null)
 				return mod.RadarColorOverride(self);
 			
-			return self.Owner.Color;
+			return self.Owner.ColorRamp.GetColor(0);
 		}
 	}
 }

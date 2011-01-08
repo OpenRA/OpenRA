@@ -50,9 +50,8 @@ namespace OpenRA.Mods.RA
 					/* spawn a bot in this slot, "owned" by the host */
 
 					/* pick a random color for the bot */
-					var hue = (float)w.SharedRandom.NextDouble();
-					w.Map.Players[slot.MapPlayer].Color = PlayerColorRemap.ColorFromHSL(hue, 1.0f, 0.7f);
-					w.Map.Players[slot.MapPlayer].Color2 = PlayerColorRemap.ColorFromHSL(hue, 1.0f, 0.2f);
+					var hue = (byte)w.SharedRandom.Next(256);
+                    w.Map.Players[slot.MapPlayer].ColorRamp = new ColorRamp(hue, 255, 180, 25);
 
 					/* todo: pick a random name from the pool */
 

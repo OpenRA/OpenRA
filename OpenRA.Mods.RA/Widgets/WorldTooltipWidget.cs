@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (text2 != "")
 			{
 				Game.Renderer.RegularFont.DrawText(text2,
-					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.Color);
+					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.ColorRamp.GetColor(0));
 				
 				Game.Renderer.RegularFont.DrawText(text3,
 					new float2(Viewport.LastMousePos.X + 65 + sz2.X, Viewport.LastMousePos.Y + 50), Color.White);

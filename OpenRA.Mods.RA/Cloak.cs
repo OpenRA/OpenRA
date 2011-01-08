@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA
 		
 		public Color RadarColorOverride(Actor self)
 		{
-			var c = self.Owner.Color;
+			var c = self.Owner.ColorRamp.GetColor(0);
 			if (self.Owner == self.World.LocalPlayer && Cloaked)
 				c = Color.FromArgb(128, c);
 			return c;

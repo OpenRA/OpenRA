@@ -28,8 +28,7 @@ namespace OpenRA
 		public WinState WinState = WinState.Undefined;
 
 		public readonly string Palette;
-		public readonly Color Color;
-		public readonly Color Color2;
+        public readonly ColorRamp ColorRamp;
 
 		public readonly string PlayerName;
 		public readonly string InternalName;
@@ -50,8 +49,7 @@ namespace OpenRA
 			Index = index;
 			Palette = "player" + index;
 
-			Color = pr.Color;
-			Color2 = pr.Color2;
+			ColorRamp = pr.ColorRamp;
 			ClientIndex = 0;		/* it's a map player, "owned" by host */
 
 			PlayerName = InternalName = pr.Name;
@@ -70,8 +68,7 @@ namespace OpenRA
 			World = world;
 			Index = index;
 			Palette = "player" + index;
-			Color = client.Color1;
-			Color2 = client.Color2;
+            ColorRamp = client.ColorRamp;
 			PlayerName = client.Name;
 
 			InternalName = pr.Name;

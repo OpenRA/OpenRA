@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Widgets.Delegates;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -31,8 +31,7 @@ namespace OpenRA.Mods.RA
 		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
-			  new PlayerColorRemap(LobbyDelegate.CurrentColorPreview1,
-				  LobbyDelegate.CurrentColorPreview2, format));
+			  new PlayerColorRemap(LobbyDelegate.CurrentColorPreview, format));
 		}
 	}
 }
