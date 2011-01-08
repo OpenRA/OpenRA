@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA.Render
         /* get around unverifiability */
         IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, string tileset)
         {
-            return base.BuildingPreview(building, tileset);
+            return base.RenderPreview(building, tileset);
         }
 
-		public override IEnumerable<Renderable> BuildingPreview(ActorInfo building, string Tileset)
+		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
 		{
 			foreach (var r in BaseBuildingPreview(building, Tileset))
 				yield return r;

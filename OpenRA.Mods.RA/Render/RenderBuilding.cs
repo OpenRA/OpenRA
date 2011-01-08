@@ -24,12 +24,11 @@ namespace OpenRA.Mods.RA.Render
 		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init);}
 		
-		public virtual IEnumerable<Renderable> BuildingPreview(ActorInfo building, string Tileset)
+		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
 		{
-			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
-			anim.PlayRepeating("idle");
-			var rb = building.Traits.Get<RenderBuildingInfo>();
-			yield return new Renderable(anim.Image, rb.Origin + 0.5f*anim.Image.size*(1 - Scale), rb.Palette, 0, Scale);
+            var rb = building.Traits.Get<RenderBuildingInfo>();
+            return base.RenderPreview(building, Tileset)
+                .Select(a => a.WithPos(a.Pos + rb.Origin));
 		}
 	}
 

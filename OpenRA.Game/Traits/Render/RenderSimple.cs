@@ -22,6 +22,14 @@ namespace OpenRA.Traits
 		public readonly string Palette = null;
 		public readonly float Scale = 1f;
 		public abstract object Create(ActorInitializer init);
+
+        public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
+        {
+            var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+            anim.PlayRepeating("idle");
+            var rb = building.Traits.Get<RenderSimpleInfo>();
+            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), rb.Palette, 0, Scale);
+        }
 	}
 
 	public abstract class RenderSimple : IRender, ITick
