@@ -25,6 +25,7 @@ namespace OpenRA
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
 		public CursorSheetBuilder CursorSheetBuilder;
+        public SpriteLoader SpriteLoader;
 
 		public ModData( params string[] mods )
 		{		
@@ -103,7 +104,7 @@ namespace OpenRA
 				|| previousMapHadSequences || map.Sequences.Count > 0)
 			{
 				SheetBuilder = new SheetBuilder( TextureChannel.Red );
-				SpriteLoader.Initialize( Rules.TileSets[map.Tileset], SheetBuilder );
+                SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset], SheetBuilder);
 				CursorSheetBuilder = new CursorSheetBuilder( this );
 				CursorProvider.Initialize(Manifest.Cursors);
 				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);

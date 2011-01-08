@@ -16,7 +16,7 @@ namespace OpenRA.Graphics
 	public class ShroudRenderer
 	{
 		Traits.Shroud shroud;
-		Sprite[] shadowBits = SpriteLoader.LoadAllSprites("shadow");
+		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
 		
 		bool dirty = true;

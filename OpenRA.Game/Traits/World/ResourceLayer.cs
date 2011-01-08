@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 
 			resourceTypes = w.WorldActor.TraitsImplementing<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
-				rt.info.Sprites = rt.info.SpriteNames.Select(a => SpriteLoader.LoadAllSprites(a)).ToArray();
+				rt.info.Sprites = rt.info.SpriteNames.Select(a => Game.modData.SpriteLoader.LoadAllSprites(a)).ToArray();
 
 			var map = w.Map;
 

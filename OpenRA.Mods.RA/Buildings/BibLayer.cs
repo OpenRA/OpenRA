@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public BibLayer(Actor self, BibLayerInfo info)
 		{
 			this.info = info;
-			bibSprites = info.BibTypes.Select(x => SpriteLoader.LoadAllSprites(x)).ToArray();
+			bibSprites = info.BibTypes.Select(x => Game.modData.SpriteLoader.LoadAllSprites(x)).ToArray();
 			
 			self.World.ActorAdded +=
 				a => { if (a.HasTrait<Bib>()) DoBib(a,true); };

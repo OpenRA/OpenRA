@@ -13,25 +13,25 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	public static class SpriteLoader
+	public class SpriteLoader
 	{
-		public static void Initialize( TileSet tileset, SheetBuilder sheetBuilder )
+		public SpriteLoader( TileSet tileset, SheetBuilder sheetBuilder )
 		{
 			exts = tileset.Extensions;
             SheetBuilder = sheetBuilder;
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
-        static SheetBuilder SheetBuilder;
-		static Cache<string, Sprite[]> sprites;
-		static string[] exts;
+        readonly SheetBuilder SheetBuilder;
+		readonly Cache<string, Sprite[]> sprites;
+		readonly string[] exts;
 
-		static Sprite[] LoadSprites(string filename)
+		Sprite[] LoadSprites(string filename)
 		{
 			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
 			return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
-		public static Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
+		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
 	}
 }

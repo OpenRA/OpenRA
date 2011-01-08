@@ -70,7 +70,8 @@ namespace OpenRA.Mods.RA.Widgets
 				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
 				.ToDictionary(
 					u => u.Name,
-					u => SpriteLoader.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
+					u => Game.modData.SpriteLoader.LoadAllSprites(
+                        u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
 		}
 		
 		public override Rectangle EventBounds
