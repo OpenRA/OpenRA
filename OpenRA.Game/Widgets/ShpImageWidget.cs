@@ -60,7 +60,7 @@ namespace OpenRA.Widgets
 		
 			if (image != cachedImage || frame != cachedFrame)
 			{
-				sprite = SpriteSheetBuilder.LoadAllSprites(image)[frame];
+				sprite = SpriteLoader.LoadAllSprites(image)[frame];
 				cachedImage = image;
 				cachedFrame = frame;
 			}

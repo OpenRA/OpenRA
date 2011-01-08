@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 			Name = name;
 			var d = info.NodesDict;
 			
-			sprites = SpriteSheetBuilder.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
+			sprites = SpriteLoader.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
 			start = int.Parse(d["Start"].Value);
 
 			if (!d.ContainsKey("Length"))

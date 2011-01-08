@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public SmudgeLayer(SmudgeLayerInfo info)
 		{
 			this.Info = info;
-			smudgeSprites = Info.Types.Select(x => SpriteSheetBuilder.LoadAllSprites(x)).ToArray();
+			smudgeSprites = Info.Types.Select(x => SpriteLoader.LoadAllSprites(x)).ToArray();
 		}
 		
 		public void WorldLoaded(World w)

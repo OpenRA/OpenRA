@@ -103,7 +103,7 @@ namespace OpenRA
 				|| previousMapHadSequences || map.Sequences.Count > 0)
 			{
 				SheetBuilder = new SheetBuilder( TextureChannel.Red );
-				SpriteSheetBuilder.Initialize( Rules.TileSets[map.Tileset] );
+				SpriteLoader.Initialize( Rules.TileSets[map.Tileset], SheetBuilder );
 				CursorSheetBuilder = new CursorSheetBuilder( this );
 				CursorProvider.Initialize(Manifest.Cursors);
 				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);

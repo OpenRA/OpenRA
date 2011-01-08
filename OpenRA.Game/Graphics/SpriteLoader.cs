@@ -13,21 +13,23 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	public static class SpriteSheetBuilder
+	public static class SpriteLoader
 	{
-		public static void Initialize( TileSet tileset )
+		public static void Initialize( TileSet tileset, SheetBuilder sheetBuilder )
 		{
 			exts = tileset.Extensions;
+            SheetBuilder = sheetBuilder;
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
+        static SheetBuilder SheetBuilder;
 		static Cache<string, Sprite[]> sprites;
 		static string[] exts;
 
 		static Sprite[] LoadSprites(string filename)
 		{
 			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-			return shp.Select(a => Game.modData.SheetBuilder.Add(a.Image, shp.Size)).ToArray();
+			return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
 		public static Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }

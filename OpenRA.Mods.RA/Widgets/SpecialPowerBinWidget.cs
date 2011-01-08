@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets
 					.Select(u => u.Image).Distinct()
 					.ToDictionary(
 						u => u,
-						u => SpriteSheetBuilder.LoadAllSprites(u)[0]);
+						u => SpriteLoader.LoadAllSprites(u)[0]);
 			
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
