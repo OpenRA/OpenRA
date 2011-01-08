@@ -25,6 +25,8 @@ namespace OpenRA.Traits
 		public readonly string BuildingCannotPlaceAudio = "nodeply1.aud";
 		public readonly string UnitSelectAudio = "train1.aud";
 		public readonly string UnitReadyAudio = "unitrdy1.aud";
+		public readonly string UnitReadyBlockedAudio = "nobuild1.aud";
+		
 		public readonly string OnHoldAudio = "onhold1.aud";
 		public readonly string CancelledAudio = "cancld1.aud";
 		public readonly string NewOptions = "newopt1.aud";

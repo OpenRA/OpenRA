@@ -145,23 +145,31 @@ namespace OpenRA.Mods.RA
 					if (!BuildableItems().Any(b => b.Name == order.TargetString))
 						return;	/* you can't build that!! */
 				
-					bool hasPlayedSound = false;
-					
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
+						bool hasPlayedSound = false;
 						BeginProduction(new ProductionItem(this, order.TargetString, (int)time, cost,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
 										var isBuilding = unit.Traits.Contains<BuildingInfo>();
-										if (!hasPlayedSound)
+										var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+										
+										if (isBuilding && !hasPlayedSound)
 										{
-											var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-											Sound.PlayToPlayer(order.Player, isBuilding ? eva.BuildingReadyAudio : eva.UnitReadyAudio);
+											Sound.PlayToPlayer(order.Player, eva.BuildingReadyAudio);
 											hasPlayedSound = true;
 										}
-										if (!isBuilding)
-											BuildUnit(order.TargetString);
+										else if (!isBuilding)
+										{
+											if (BuildUnit(order.TargetString))
+												Sound.PlayToPlayer(order.Player, eva.UnitReadyAudio);
+											else if (!hasPlayedSound && time > 0)
+											{
+												Sound.PlayToPlayer(order.Player, eva.UnitReadyBlockedAudio);
+												hasPlayedSound = true;
+											}
+										}
 									})));
 					}
 					break;
@@ -233,18 +241,23 @@ namespace OpenRA.Mods.RA
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)
-		protected virtual void BuildUnit( string name )
+		// Returns false if the unit can't be built
+		protected virtual bool BuildUnit( string name )
 		{			
 			// Cannot produce if i'm dead
 			if (!self.IsInWorld || self.IsDead())
 			{
 				CancelProduction(name, 1);
-				return;
+				return true;
 			}
 			
 			var sp = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).FirstOrDefault();
 			if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
-					FinishProduction();
+			{
+				FinishProduction();
+				return true;
+			}
+			return false;
 		}
 	}
 

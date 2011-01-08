@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			return QueueActive ? base.BuildableItems() : None;
 		}
 		
-		protected override void BuildUnit( string name )
+		protected override bool BuildUnit( string name )
 		{			
 			// Find a production structure to build this actor
 			var producers = self.World.Queries.OwnedBy[self.Owner]
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 			if (producers.Count() == 0)
 			{
 				CancelProduction(name,1);
-				return;
+				return true;
 			}
 			
 			foreach (var p in producers)
@@ -67,9 +67,10 @@ namespace OpenRA.Mods.RA
 				if (p.Trait.Produce(p.Actor, Rules.Info[ name ]))
 				{
 					FinishProduction();
-					break;
+					return true;
 				}
 			}
+			return false;
 		}
 	}
 }
