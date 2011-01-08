@@ -139,6 +139,7 @@ namespace OpenRA
 					} break;
 
 				case 3:
+                case 4:
 					{
 						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 						{
@@ -170,6 +171,15 @@ namespace OpenRA
 				}
 			}
 
+            // Color1/Color2 -> ColorRamp
+            if (MapFormat == 3)
+                foreach (var mp in Players)
+                    mp.Value.ColorRamp = new ColorRamp(
+                        (byte)((mp.Value.Color.GetHue() / 360.0f) * 255),
+                        (byte)(mp.Value.Color.GetSaturation() * 255),
+                        (byte)(mp.Value.Color.GetBrightness() * 255),
+                        (byte)(mp.Value.Color2.GetBrightness() * 255));
+
 			// Smudges
 			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
 			{
@@ -198,7 +208,7 @@ namespace OpenRA
 		{			
 			Console.WriteLine("Saving map to path {0}",toPath);
 			// Todo: save to a zip file in the support dir by default
-			MapFormat = 3;
+			MapFormat = 4;
 			
 			var root = new List<MiniYamlNode>();
 			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
