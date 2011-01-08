@@ -51,13 +51,11 @@ namespace OpenRA.Mods.RA
 			{
 				var cs = target.Trait<Chronoshiftable>();
 				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
-				// TODO: CanChronoshiftTo() can't be used in synced code, but not checking this here 
-                // leaves it open to exploitation.
-				// if (cs.CanChronoshiftTo(target, targetCell)) ...
-
                 var cpi = Info as ChronoshiftPowerInfo;
-                cs.Teleport(target, targetCell,
-                    cpi.Duration * 25, cpi.KillCargo, self);
+
+				if (cs.CanChronoshiftTo(target, targetCell, true))
+                    cs.Teleport(target, targetCell,
+                        cpi.Duration * 25, cpi.KillCargo, self);
 			}
 		}
 
@@ -217,7 +215,7 @@ namespace OpenRA.Mods.RA
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + xy - sourceLocation;
-					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell);
+					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell, false);
 					var tile = canEnter ? validTile : invalidTile;
 					tile.DrawAt( wr, Game.CellSize * targetCell, "terrain" );
 				}
@@ -229,7 +227,7 @@ namespace OpenRA.Mods.RA
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					var targetCell = unit.Location + xy - sourceLocation;
-					if (unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell))
+					if (unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell, false))
 					{
 						canTeleport = true;
 						break;
