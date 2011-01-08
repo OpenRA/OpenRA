@@ -51,13 +51,13 @@ namespace OpenRA.Mods.RA
 			{
 				var cs = target.Trait<Chronoshiftable>();
 				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
-				// TODO: Fix CanChronoshiftTo desync
-				if (cs.CanChronoshiftTo(target, targetCell))
-					target.Trait<Chronoshiftable>().Teleport(target,
-					                                         targetCell,
-					                                         (Info as ChronoshiftPowerInfo).Duration * 25,
-					                                         (Info as ChronoshiftPowerInfo).KillCargo,
-					                                         self);
+				// TODO: CanChronoshiftTo() can't be used in synced code, but not checking this here 
+                // leaves it open to exploitation.
+				// if (cs.CanChronoshiftTo(target, targetCell)) ...
+
+                var cpi = Info as ChronoshiftPowerInfo;
+                cs.Teleport(target, targetCell,
+                    cpi.Duration * 25, cpi.KillCargo, self);
 			}
 		}
 
