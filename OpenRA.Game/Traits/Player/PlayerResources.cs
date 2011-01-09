@@ -19,19 +19,21 @@ namespace OpenRA.Traits
 		public readonly int InitialOre = 0;
 		public readonly int AdviceInterval = 250;
 
-		public object Create(ActorInitializer init) { return new PlayerResources(init.self); }
+		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
 	}
 
 	public class PlayerResources : ITick
 	{
-		Player Owner;
+		readonly Player Owner;
 		int AdviceInterval;
-		public PlayerResources(Actor self)
+
+		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
 			Owner = self.Owner;
-			Cash = self.Info.Traits.Get<PlayerResourcesInfo>().InitialCash;
-			Ore = self.Info.Traits.Get<PlayerResourcesInfo>().InitialOre;
-			AdviceInterval = self.Info.Traits.Get<PlayerResourcesInfo>().AdviceInterval;
+
+			Cash = info.InitialCash;
+			Ore = info.InitialOre;
+			AdviceInterval = info.AdviceInterval;
 		}
 
 		[Sync]
