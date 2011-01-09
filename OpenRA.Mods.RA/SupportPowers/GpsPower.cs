@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA
 	class GpsPower : SupportPower, INotifyDamage
 	{
 		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info) { }
+
+		[Sync]
 		public bool Granted;
 
 		public override void Charged(Actor self, string key)
