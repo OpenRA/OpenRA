@@ -53,7 +53,8 @@ namespace OpenRA.Mods.RA.Render
 
 		public void BuildingComplete( Actor self )
 		{
-			roof.Play( NormalizeSequence(self, "idle-top") );
+			roof.Play(NormalizeSequence(self,
+				self.GetDamageState() > DamageState.Heavy ? "damaged-idle-top" : "idle-top"));
 			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 24 } );
 		}
 
@@ -71,11 +72,14 @@ namespace OpenRA.Mods.RA.Render
 		public override void Damaged(Actor self, AttackInfo e)
 		{
 			if (!e.DamageStateChanged) return;
-			
-			if (e.DamageState >= DamageState.Heavy)
-				roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
-			else
-				roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-",""));
+
+			if (roof.CurrentSequence != null)
+			{
+				if (e.DamageState >= DamageState.Heavy)
+					roof.ReplaceAnim("damaged-" + roof.CurrentSequence.Name);
+				else
+					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-", ""));
+			}
 		}
 
 		public void UnitProduced(Actor self, Actor other, int2 exit)
