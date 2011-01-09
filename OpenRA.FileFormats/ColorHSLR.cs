@@ -24,7 +24,7 @@ namespace OpenRA.FileFormats
         /* returns a color along the Lum ramp */
         public Color GetColor( float t )
         {
-            return ColorFromHSL( H / 255f, S / 255f, float2.Lerp( L, R, t ) / 255f );
+            return ColorFromHSL( H / 255f, S / 255f, float2.Lerp( L / 255f, L*R / (255f * 255f), t ) );
         }
 
         public override string ToString()
