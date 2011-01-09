@@ -95,8 +95,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				// Todo: Add an error dialog explaining why we aren't letting them join
 				// Or even better, reject them server side and display the error in the connection failed dialog.
 
+				var serverMods = currentServer.Mods.Select(m => m.Split('@')[0]);
+
 				// Don't bother joining a server with different mods... its only going to crash
-				if (currentServer.Mods.SymmetricDifference(Game.modData.Manifest.Mods).Any())
+				if (serverMods.SymmetricDifference(Game.modData.Manifest.Mods).Any())
 				{
 					System.Console.WriteLine("Player has different mods to server; not connecting to avoid crash");
 					System.Console.WriteLine("FIX THIS BUG YOU NOOB!");
@@ -124,7 +126,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		string GenerateModsLabel()
 		{
-			return string.Join("\n", currentServer.Mods.Select(m => 
+			return string.Join("\n", currentServer.Mods
+				.Select( m => m.Split('@')[0] )
+				.Select(m => 
 			       Mod.AllMods.ContainsKey(m) ? string.Format("{0} ({1})", Mod.AllMods[m].Title, Mod.AllMods[m].Version)
 			                                   : string.Format("Unknown Mod: {0}",m)).ToArray());
 		}
