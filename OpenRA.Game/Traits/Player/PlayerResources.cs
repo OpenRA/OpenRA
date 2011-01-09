@@ -97,6 +97,8 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
+			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+
 			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<IStoreOre>()
 				.Sum(a => a.Trait.Capacity);
 			
@@ -106,7 +108,7 @@ namespace OpenRA.Traits
 			if (--nextSiloAdviceTime <= 0)
 			{
 				if (Ore > 0.8*OreCapacity)
-					Owner.GiveAdvice(Owner.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().SilosNeeded);
+					Owner.GiveAdvice(eva.SilosNeeded);
 				
 				nextSiloAdviceTime = AdviceInterval;
 			}
@@ -115,7 +117,7 @@ namespace OpenRA.Traits
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
 
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
