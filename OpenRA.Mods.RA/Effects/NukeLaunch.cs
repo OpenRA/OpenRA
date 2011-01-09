@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA.Effects
 	public class NukeLaunch : IEffect
 	{
 		readonly Player firedBy;
-		readonly Actor silo;
 		Animation anim;
 		int2 pos;
 		int2 targetLocation;
@@ -29,7 +28,6 @@ namespace OpenRA.Mods.RA.Effects
 		public NukeLaunch(Player firedBy, Actor silo, string weapon, int2 spawnOffset, int2 targetLocation)
 		{
 			this.firedBy = firedBy;
-			this.silo = silo;
 			this.targetLocation = targetLocation;
 			this.weapon = weapon;
 			anim = new Animation(weapon);
