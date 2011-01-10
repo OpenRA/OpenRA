@@ -29,7 +29,13 @@ namespace OpenRA.Launcher
 		}
 		Dictionary<string, Download> downloads = new Dictionary<string,Download>();
 
+		readonly Control hostControl;
 		HtmlDocument document = null;
+
+		public JSBridge(Control hostControl)
+		{
+			this.hostControl = hostControl;
+		}
 
 		public HtmlDocument Document
 		{
@@ -177,7 +183,7 @@ namespace OpenRA.Launcher
 					using (var reader = new StreamReader(pipe))
 					{
 						var data = reader.ReadToEnd();
-                        Form.ActiveForm.Invoke((Delegate)(Action)(() =>
+                        hostControl.Invoke((Delegate)(Action)(() =>
                             document.InvokeScript(callbackName, new object[] { data })));
 					}
 				}, url);

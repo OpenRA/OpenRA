@@ -30,7 +30,7 @@ namespace OpenRA.Launcher
 
 			Util.UacShield(installButton);
 
-			webBrowser.ObjectForScripting = new JSBridge();
+			webBrowser.ObjectForScripting = new JSBridge(this);
 			webBrowser.DocumentCompleted += (o, e) =>
 				{
 					var b = o as WebBrowser;
