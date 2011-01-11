@@ -44,7 +44,9 @@ return {
 	
 	keywords = {
 		[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 
-		double vector vec matrix half half2 half3 half4 int2 int3 
+		float1x2 float2x1 float2x2 float2x3 float3x2 float1x3 float3x1 float4x1 float1x4
+		float2x4 float4x2
+		double vector vec matrix half half2 half3 half4 int2 int3 uint uint2 uint3 uint4
 		int4 bool bool2 bool3 bool4 mat string struct typedef matrix 
 		usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY isampler 
 		isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY sampler sampler1D 

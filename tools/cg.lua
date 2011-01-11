@@ -82,19 +82,22 @@ return cgbinpath and {
 				"IF","REP","ELSE",
 			}
 			local endindent = {
-				"ENDIF","ENDREP","ELSE",
+				"ENDIF","ENDREP","ELSE","END",
 			}
 
-			local function checkstart(str,tab)
-				local res = false
+			local function checknesting(str,tab)
+				local res
 				for i,v in ipairs(tab) do
-					res = res or ((string.find(str,v) or 0) == 1)
+					res = res or ((string.find(str,v) or 0) == 1) and v
 				end
 				return res
 			end
 
 			local argregistry = {}
 			local argbuffersfixed = false
+			
+			local registercc
+			local registermem
 			
 			local function fixargbuffers()
 				if (argbuffersfixed) then return end
@@ -153,6 +156,15 @@ return cgbinpath and {
 					end
 				elseif string.find(w,"BUFFER4") then
 					fixargbuffers()
+				elseif string.find(w,"TEMP") then
+					--TEMP R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11;
+					--TEMP RC, HC;
+					--TEMP lmem[9];
+					registercc = registercc or 0
+					for i in string.gmatch(w,"C") do
+						registercc  = registercc + 1
+					end
+					registermem = tonumber(string.match(w,"lmem%[(%d+)%]"))
 				else
 					regsuccess = false
 				end
@@ -173,39 +185,84 @@ return cgbinpath and {
 
 				return comment ~= "#" and comment
 			end
+			
+			local registerlevels = {{}}
+			local function checkregisters(str,indent)
+				local cur = registerlevels[indent+1]
+				for i in string.gmatch(str,"R(%d+)") do
+					cur[i] = true
+				end
+			end
+			
+			local function clearregisters(indent)
+				registerlevels[indent+1] = {}
+			end
+			
+			local function outputregisters(indent)
+				local tab = registerlevels[indent+1]
+				local out = {}
+				for i,v in pairs(tab) do
+					table.insert(out,i)
+				end
+				table.sort(out)
+				local cnt = #out
+				local str = string.rep("  ",indent).."# "..tostring(cnt).." R used: "
+				for i,v in ipairs(out) do
+					str = str..tostring(v)..((i==cnt) and "" or ", ")
+				end
+				return str.."\n"
+			end
 
 			-- check declarations
+			local lastline = ""
 			for w in string.gmatch(tx, "[^\n]*\n") do
 				if (not checkregistry(w)) then
-					if (checkstart(w,endindent)) then
+					
+					
+					if (checknesting(w,endindent)) then
+						newtx = newtx..outputregisters(indent)
 						indent = indent - 1
 					end
+					
 					local firstchar = string.sub(w,1,1)
 					local indentstr = (firstchar ~= "  " and firstchar ~= "\t" and  string.rep("  ",indent) or "")
 					local linestr = indentstr..w
 					local argcomment = (firstchar ~= "#") and checkargs(w)
+					
+					checkregisters(w,indent)
+					
 					newtx = newtx..(argcomment and (indentstr..argcomment.."\n") or "")
 					newtx = newtx..linestr
-					if (checkstart(w,startindent)) then
+					
+					if (checknesting(w,startindent)) then
 						indent = indent + 1
 						maxindent = math.max(maxindent,indent)
+						clearregisters(indent)
 					end
 				else
 					newtx = newtx..w
 				end
+				lastline = w
 			end
 			
-			newtx = newtx.."# "..maxindent.." maximum nesting level\n"
+			local registers = tonumber(string.match(lastline, "(%d+) R%-regs")) or 0
+			registermem = registermem or 0
+			registercc = registercc or 0
+			local stats = "# "..tostring(registercc).." C-regs, "..tostring(registermem).." L-regs\n"
+			stats = stats.."# "..tostring(registercc + registermem + registers).." maximum registers\n"
+			stats = stats.."# "..maxindent.." maximum nesting level\n"
+			newtx = newtx..stats
 			
-			return newtx
+			return newtx,lastline..stats
 		end
 		
 		local function beautifyAsmFile(filePath)
 			local file_text = ""
+			local statlines = ""
 			local handle = io.open(filePath, "rb")
 			if handle then
 				file_text = handle:read("*a")
-				file_text = beautifyAsm(file_text)
+				file_text,statlines = beautifyAsm(file_text)
 				handle:close()
 			end
 			
@@ -216,7 +273,7 @@ return cgbinpath and {
 				handle:write(file_text)
 				handle:close()
 			end
-			
+			return statlines
 		end
 		
 		
@@ -293,8 +350,8 @@ return cgbinpath and {
 				if (string.find(str," 0 errors.")) then
 					postfunc = function() 
 						-- beautify asm
-						beautifyAsmFile(outname:sub(2,-2))
-						
+						local statlines = beautifyAsmFile(outname:sub(2,-2))
+						DisplayOutput(statlines)
 						
 						-- optionally run perf process
 						local cgperfgpu = ide.config.cgperfgpu or "G80"
