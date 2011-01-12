@@ -45,9 +45,9 @@ return {
 	keywords = {
 		[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 
 		float1x2 float2x1 float2x2 float2x3 float3x2 float1x3 float3x1 float4x1 float1x4
-		float2x4 float4x2
-		double vector vec matrix half half2 half3 half4 int2 int3 uint uint2 uint3 uint4
-		int4 bool bool2 bool3 bool4 mat string struct typedef matrix 
+		float2x4 float4x2 double1x4 double4x4 double4x2 double4x3 double3x4 double2x4 double1x4
+		double half half2 half3 half4 int2 int3 uint uint2 uint3 uint4
+		int4 bool bool2 bool3 bool4 string struct typedef
 		usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY isampler 
 		isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY sampler sampler1D 
 		sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY texture texture1D texture2D 
@@ -55,7 +55,7 @@ return {
 		usamplerBUF isamplerBUF samplerBUF
 		extern false for if in inline inout out pass pixelshader 
 		return shared static string technique true uniform vector vertexshader void 
-		volatile while asm bool compile const auto break case catch 
+		volatile while asm compile const auto break case catch 
 		char class const_cast continue default delete dynamic_cast enum explicit friend 
 		goto long mutable namespace new operator private protected public register 
 		reinterpret_case short signed sizeof static_cast switch template this throw try 
@@ -95,35 +95,7 @@ return {
 		FOGCOLOR FOGDISTANCE CAMERAWORLDPOS CAMERAWORLDDIR
 		
 		CENTROID FLAT NOPERSPECTIVE FACE PRIMITIVEID VERTEXID
-		
-		x y z w 
-		xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy 
-		xxzz xxzw xxwx xxwy xxwz xxww xyxx xyxy xyxz xyxw 
-		xyyx xyyy xyyz xyyw xyzx xyzy xyzz xyzw xywx xywy 
-		xywz xyww xzxx xzxy xzxz xzxw xzyx xzyy xzyz xzyw 
-		xzzx xzzy xzzz xzzw xzwx xzwy xzwz xzww xwxx xwxy 
-		xwxz xwxw xwyx xwyy xwyz xwyw xwzx xwzy xwzz xwzw 
-		xwwx xwwy xwwz xwww yxxx yxxy yxxz yxxw yxyx yxyy 
-		yxyz yxyw yxzx yxzy yxzz yxzw yxwx yxwy yxwz yxww 
-		yyxx yyxy yyxz yyxw yyyx yyyy yyyz yyyw yyzx yyzy 
-		yyzz yyzw yywx yywy yywz yyww yzxx yzxy yzxz yzxw 
-		yzyx yzyy yzyz yzyw yzzx yzzy yzzz yzzw yzwx yzwy 
-		yzwz yzww ywxx ywxy ywxz ywxw ywyx ywyy ywyz ywyw 
-		ywzx ywzy ywzz ywzw ywwx ywwy ywwz ywww zxxx zxxy 
-		zxxz zxxw zxyx zxyy zxyz zxyw zxzx zxzy zxzz zxzw 
-		zxwx zxwy zxwz zxww zyxx zyxy zyxz zyxw zyyx zyyy 
-		zyyz zyyw zyzx zyzy zyzz zyzw zywx zywy zywz zyww 
-		zzxx zzxy zzxz zzxw zzyx zzyy zzyz zzyw zzzx zzzy 
-		zzzz zzzw zzwx zzwy zzwz zzww zwxx zwxy zwxz zwxw 
-		zwyx zwyy zwyz zwyw zwzx zwzy zwzz zwzw zwwx zwwy 
-		zwwz zwww wxxx wxxy wxxz wxxw wxyx wxyy wxyz wxyw 
-		wxzx wxzy wxzz wxzw wxwx wxwy wxwz wxww wyxx wyxy 
-		wyxz wyxw wyyx wyyy wyyz wyyw wyzx wyzy wyzz wyzw 
-		wywx wywy wywz wyww wzxx wzxy wzxz wzxw wzyx wzyy 
-		wzyz wzyw wzzx wzzy wzzz wzzw wzwx wzwy wzwz wzww 
-		wwxx wwxy wwxz wwxw wwyx wwyy wwyz wwyw wwzx wwzy 
-		wwzz wwzw wwwx wwwy wwwz wwww xy xz yz xyz 
-		xw yw xyw zw xzw yzw xyzw ]],
+		]],
 
 		},
 	}

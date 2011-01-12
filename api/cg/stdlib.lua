@@ -153,22 +153,22 @@ unpack_2half = fn "interprets the single float as 2 16-bit floats and returns th
 pack_2half = fn "packs the floats into a single storing as 16-bit floats.(only nv/gp4 profiles) - (float)(float2)"
 
 local keyw = 
-[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 double vector vec matrix
-half half2 half3 half4
-int2 int3 int4
-bool bool2 bool3 bool4
-mat string struct typedef matrix
+[[int half float float3 float4 float2 float3x3 float3x4 float4x3 float4x4 
+float1x2 float2x1 float2x2 float2x3 float3x2 float1x3 float3x1 float4x1 float1x4
+float2x4 float4x2 double1x4 double4x4 double4x2 double4x3 double3x4 double2x4 double1x4
+double half half2 half3 half4 int2 int3 uint uint2 uint3 uint4
+int4 bool bool2 bool3 bool4 string struct typedef
 usampler usampler1D usampler2D usampler3D usamplerRECT usamplerCUBE isampler1DARRAY usampler2DARRAY usamplerCUBEARRAY
 isampler isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY
 usamplerBUF isamplerBUF samplerBUF
 sampler sampler1D sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY
 texture texture1D texture2D texture3D textureRECT textureCUBE texture1DARRAY texture2DARRAY textureCUBEARRAY
 
-decl do double else extern false for if in inline inout out pass
+decl do else extern false for if in inline inout out pass
 pixelshader return shared static string technique true
 uniform vector vertexshader void volatile while
 
-asm bool compile const auto break case catch char class const_cast continue default delete
+asm compile const auto break case catch char class const_cast continue default delete
 dynamic_cast enum explicit friend goto long mutable namespace new operator private protected
 public register reinterpret_case short signed sizeof static_cast switch template this throw
 try typename union unsigned using virtual
