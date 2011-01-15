@@ -185,6 +185,8 @@ namespace OpenRA.Server
 				{
 					Log.Write("server", "Rejected connection from {0}; game is already started.", 
 						newConn.socket.RemoteEndPoint);
+					
+					SendOrderTo(newConn, "ServerError", "The game has already started");
 					DropClient(newConn);
 					return;
 				}
@@ -194,7 +196,6 @@ namespace OpenRA.Server
 				var mods = handshake.Mods;
 				
 				// Check that the client has compatable mods
-				
 				var valid = mods.All( m => m.Contains('@')) && //valid format
 				            mods.Count() == Game.CurrentMods.Count() &&  //same number
 				            mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
@@ -203,6 +204,8 @@ namespace OpenRA.Server
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.", 
 						newConn.socket.RemoteEndPoint);
+					
+					SendOrderTo(newConn, "ServerError", "Your mods don't match the server");
 					DropClient(newConn);
 					return;
 				}

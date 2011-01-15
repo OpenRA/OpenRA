@@ -129,7 +129,10 @@ namespace OpenRA.Mods.RA.Server
 						{
 							var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
 							if (occupantConn != null)
+							{
+								server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
 								server.DropClient(occupantConn);
+							}
 						}
 
 						server.SyncLobbyInfo();
