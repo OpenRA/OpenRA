@@ -241,7 +241,8 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Noone in that slot." );
 							return true;
 						}
-
+						
+						server.SendOrderTo(connToKick, "ServerError", "You have been kicked from the server");
 						server.DropClient(connToKick);
 
 						server.SyncLobbyInfo();

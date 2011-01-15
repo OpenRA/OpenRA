@@ -310,10 +310,15 @@ namespace OpenRA.Server
 		
 		public void SendChatTo(Connection conn, string text)
 		{
-			DispatchOrdersToClient(conn, 0, 0,
-				new ServerOrder("Chat", text).Serialize());
+			SendOrderTo(conn, "Chat", text);
 		}
 
+		public void SendOrderTo(Connection conn, string order, string data)
+		{
+			DispatchOrdersToClient(conn, 0, 0,
+				new ServerOrder(order, data).Serialize());
+		}
+		
         public void SendChat(Connection asConn, string text)
         {
             DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());

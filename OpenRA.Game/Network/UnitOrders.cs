@@ -38,7 +38,7 @@ namespace OpenRA.Network
 
 			switch (order.OrderString)
 			{
-			case "Chat":
+				case "Chat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
@@ -128,7 +128,9 @@ namespace OpenRA.Network
 					orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
 					break;
 				}
-				
+				case "ServerError":
+					orderManager.ServerError = order.TargetString;
+				break;
 				case "SyncInfo":
 					{
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);

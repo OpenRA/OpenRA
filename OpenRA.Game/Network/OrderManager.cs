@@ -27,6 +27,7 @@ namespace OpenRA.Network
 
 		public readonly string Host;
 		public readonly int Port;
+		public string ServerError;
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;

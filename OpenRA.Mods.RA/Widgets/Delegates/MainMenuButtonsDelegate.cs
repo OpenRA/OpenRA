@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 							break;
 						case ConnectionState.NotConnected:
 							Widget.OpenWindow( "CONNECTION_FAILED_BG",
-								new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
+								new Dictionary<string, object> { { "orderManager", orderManager } } );
 							break;
 						case ConnectionState.Connected:
 							var lobby = Widget.OpenWindow( "SERVER_LOBBY", new Dictionary<string, object> { { "orderManager", orderManager } } );
