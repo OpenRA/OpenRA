@@ -36,7 +36,7 @@ return cgbinpath and {
 		}
 		data.profiles = {
 			[ID "cg.profile.arb"]  = {"arbvp1","arbfp1",false,false,false,ext=".glp"},
-			[ID "cg.profile.glsl"] = {"glslv","glslf",false,false,false,ext=".glsl"},
+			[ID "cg.profile.glsl"] = {"glslv","glslf","glslg",false,false,ext=".glsl"},
 			[ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,ext=".glp",nvperf=true},
 			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp",nvperf=true},
 			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp"},
@@ -361,7 +361,7 @@ return cgbinpath and {
 									["vp40"] = " -profile vp40",
 									["fp40"] = " -profile fp40"},
 							}
-						if (hasperf and profile.nvperf and (domain == 1 or domain == 2)
+						if (hasperf and (not glsl) and profile.nvperf and (domain == 1 or domain == 2)
 								and profiletypes[cgperfgpu])
 						then
 							local domaintypes = {"cg_vp","cg_fp",}
