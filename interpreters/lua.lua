@@ -5,8 +5,6 @@ return {
 		fcmdline = function(filepath) 
 				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
 				local code = ([[
-					--require 'lfs'
-					print("OK");
 					xpcall(function() dofile '%s' end,
 						function(err) print(debug.traceback(err)) end)
 				]]):format(filepath:gsub("\\","/"))
