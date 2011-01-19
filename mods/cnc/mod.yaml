@@ -56,6 +56,7 @@ Assemblies:
 	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
+	mods/cnc/chrome/gameinit.yaml
 	mods/cnc/chrome/ingame.yaml
 	mods/cnc/chrome/mainmenu.yaml
 	mods/cnc/chrome/videoplayer.yaml

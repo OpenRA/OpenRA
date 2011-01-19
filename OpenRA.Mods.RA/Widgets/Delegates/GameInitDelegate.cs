@@ -15,6 +15,8 @@ using OpenRA.Server;
 using OpenRA.Widgets;
 using System.Diagnostics;
 using System;
+using System.Net;
+using System.ComponentModel;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -25,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		[ObjectCreator.UseCtor]
 		public GameInitDelegate([ObjectCreator.Param] Widget widget)
 		{
-			Info = widget.GetWidget<GameInitInfoWidget>("INFO");
+			Info = (widget as GameInitInfoWidget);
 			Game.ConnectionStateChanged += orderManager =>
 			{
 				Widget.CloseWindow();
@@ -56,23 +58,36 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				ContinueLoading(widget);
 			else
 			{
-				widget.GetWidget("INIT_DOWNLOAD").OnMouseUp = mi =>
-				{
-					ContinueLoading(widget);
-					return true;
-				};
-				
-				widget.GetWidget("INIT_FROMCD").OnMouseUp = mi =>
-				{
-					SelectDisk(path => System.Console.WriteLine(path));
-					return true;
-				};
-								
-				widget.GetWidget("INIT_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+				ShowInstallMethodDialog();
 			}
 		}
 		
+		void ShowInstallMethodDialog()
+		{
+			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
+			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
+			window.GetWidget("FROMCD").OnMouseUp = mi =>
+			{
+				SelectDisk(path => System.Console.WriteLine(path));
+				return true;
+			};
+					
+			window.GetWidget("QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+		}
 		
+		void ShowDownloadDialog()
+		{
+			var window = Widget.OpenWindow("INIT_DOWNLOAD");        
+			var status = window.GetWidget<LabelWidget>("STATUS");
+			status.GetText = () => "Initializing...";
+			
+			var dl = DownloadUrl(Info.PackageURL, Info.PackagePath,
+	            (_,i) => status.GetText = () => "{0}% {1}/{2} bytes".F(i.ProgressPercentage, i.BytesReceived, i.TotalBytesToReceive),
+	            (_,i) => status.GetText = () => "Download Complete");
+			
+			window.GetWidget("CANCEL").OnMouseUp = mi => { CancelDownload(dl); ShowInstallMethodDialog(); return true; };
+		}
+				
 		void SelectDisk(Action<string> withPath)
 		{
 			Process p = new Process();
@@ -93,6 +108,25 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Game.LoadShellMap();
 			Widget.RootWidget.Children.Remove(widget);
 			Widget.OpenWindow("MAINMENU_BG");
+		}
+				
+		public static WebClient DownloadUrl(string url, string path, DownloadProgressChangedEventHandler onProgress, AsyncCompletedEventHandler onComplete)
+		{
+			WebClient wc = new WebClient();
+			wc.Proxy = null;
+
+			wc.DownloadProgressChanged += onProgress;
+			wc.DownloadFileCompleted += onComplete;
+			wc.DownloadFileCompleted += (_,a) => {};
+			wc.DownloadFileAsync(new Uri(url), path);
+			Game.OnQuit += () => CancelDownload(wc);
+			return wc;
+		}
+		
+		public static void CancelDownload(WebClient wc)
+		{
+			Game.OnQuit -= () => CancelDownload(wc);
+			wc.CancelAsync();
 		}
 	}
 }

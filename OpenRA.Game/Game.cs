@@ -252,7 +252,7 @@ namespace OpenRA
 
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
-			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "MAINMENU_INIT" );
+			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
 		}
 		
 		public static void LoadShellMap()
@@ -273,6 +273,7 @@ namespace OpenRA
         }
 
 		static bool quit;
+		public static event Action OnQuit = () => {};
 		internal static void Run()
 		{
 			while (!quit)
@@ -280,6 +281,7 @@ namespace OpenRA
 				Tick( orderManager, viewport );
 				Application.DoEvents();
 			}
+			OnQuit();
 		}
 
 		public static void Exit() { quit = true; }
