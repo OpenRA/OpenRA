@@ -20,37 +20,28 @@ namespace OpenRA.Graphics
 	public static class CursorProvider
 	{
 		static Dictionary<string, CursorSequence> cursors;
-
-		public static void Initialize(string[] sequenceFiles)
-		{
-			// TODO: Convert cursor definitions to yaml and parse cursor palette info
-			Game.modData.Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
-			
-			cursors = new Dictionary<string, CursorSequence>();
-			
-			foreach (var f in sequenceFiles)
-				LoadSequenceSource(f);
-			
-		}
-
-		static void LoadSequenceSource(string filename)
-		{
-			XmlDocument document = new XmlDocument();
-			document.Load(FileSystem.Open(filename));
 				
-			foreach (XmlElement eCursor in document.SelectNodes("/sequences/cursor"))
-				LoadSequencesForCursor(eCursor);
+		public static void Initialize(string[] sequenceFiles)
+		{	
+			cursors = new Dictionary<string, CursorSequence>();
+			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.Merge));
+			
+			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
+				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), false));
+
+			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
+				LoadSequencesForCursor(s.Key, s.Value);
 		}
 
-		static void LoadSequencesForCursor(XmlElement eCursor)
+		static void LoadSequencesForCursor(string cursorSrc, MiniYaml cursor)
 		{
 			Game.modData.LoadScreen.Display();
-			string cursorSrc = eCursor.GetAttribute("src");
-			string palette = eCursor.GetAttribute("palette");
 
-			foreach (XmlElement eSequence in eCursor.SelectNodes("./sequence"))
-				cursors.Add(eSequence.GetAttribute("name"), new CursorSequence(cursorSrc, palette, eSequence));
-
+			foreach (var sequence in cursor.Nodes)
+			{
+				Console.WriteLine(sequence.Key);
+				cursors.Add(sequence.Key, new CursorSequence(cursorSrc, cursor.Value, sequence.Value));
+			}
 		}
 		
 		public static bool HasCursorSequence(string cursor)

@@ -9,6 +9,7 @@
 #endregion
 
 using System.Xml;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
@@ -25,24 +26,27 @@ namespace OpenRA.Graphics
 
 		Sprite[] sprites;
 
-		public CursorSequence(string cursorSrc, string palette, XmlElement e)
+		public CursorSequence(string cursorSrc, string palette, MiniYaml info)
 		{
 			sprites = Game.modData.CursorSheetBuilder.LoadAllSprites(cursorSrc);
+			var d = info.NodesDict;
 
-			start = int.Parse(e.GetAttribute("start"));
+			start = int.Parse(d["start"].Value);
 			this.palette = palette;
 			
-			if (e.GetAttribute("length") == "*" || e.GetAttribute("end") == "*")
+			if ((d.ContainsKey("length") && d["length"].Value == "*") || (d.ContainsKey("end") && d["end"].Value == "*"))
 				length = sprites.Length - start;
-			else if (e.HasAttribute("length"))
-				length = int.Parse(e.GetAttribute("length"));
-			else if (e.HasAttribute("end"))
-				length = int.Parse(e.GetAttribute("end")) - start;
+			else if (d.ContainsKey("length"))
+				length = int.Parse(d["length"].Value);
+			else if (d.ContainsKey("end"))
+				length = int.Parse(d["end"].Value) - start;
 			else
 				length = 1;
-
-			int.TryParse( e.GetAttribute("x"), out Hotspot.X );
-			int.TryParse( e.GetAttribute("y"), out Hotspot.Y );
+			
+			if (d.ContainsKey("x"))
+				int.TryParse(d["x"].Value, out Hotspot.X );
+			if (d.ContainsKey("y"))
+				int.TryParse(d["y"].Value, out Hotspot.Y );
 		}
 
 		public Sprite GetSprite(int frame)

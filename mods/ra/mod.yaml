@@ -42,7 +42,7 @@ Sequences:
 	mods/ra/sequences.yaml
 
 Cursors:
-	mods/ra/cursors.xml
+	mods/ra/cursors.yaml
 
 Chrome:
 	mods/ra/chrome.xml
