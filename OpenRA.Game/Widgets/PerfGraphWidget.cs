@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public PerfGraphWidget() : base() { }
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var rect = RenderBounds;
 			float2 origin = Game.viewport.Location + new float2(rect.Right, rect.Bottom);

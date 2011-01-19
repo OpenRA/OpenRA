@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
 			GetBackground = other.GetBackground;
 		}
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{		
 			var bg = GetBackground();
 

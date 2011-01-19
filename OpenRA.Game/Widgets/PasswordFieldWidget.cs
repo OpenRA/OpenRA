@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 		public PasswordFieldWidget() : base() {}
 		protected PasswordFieldWidget(PasswordFieldWidget widget) : base(widget) {}
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			DrawWithString(new string('*', Text.Length));
 		}

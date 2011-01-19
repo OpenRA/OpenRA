@@ -26,10 +26,12 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 
 		readonly World world;
+		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
-		public SpecialPowerBinWidget( [ObjectCreator.Param] World world )
+		public SpecialPowerBinWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 		}
 		
 		public override void Initialize()
@@ -70,7 +72,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}		
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			buttons.Clear();
 
@@ -140,24 +142,24 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 
 				}
-				WidgetUtils.DrawSHP(image, drawPos, wr);
+				WidgetUtils.DrawSHP(image, drawPos, worldRenderer);
 
 				clock.PlayFetchIndex("idle",
 					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 				clock.Tick();
 
-				WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
+				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 
 				if (sp.Ready)
 				{
 					ready.Play("ready");
-					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
+					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), worldRenderer);
 				}
 				else if (!sp.Active)
 				{
 					ready.Play("hold");
-					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), wr);
+					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), worldRenderer);
 				}
 				
 				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));

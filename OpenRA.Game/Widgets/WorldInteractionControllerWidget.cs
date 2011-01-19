@@ -21,13 +21,15 @@ namespace OpenRA.Widgets
 	public class WorldInteractionControllerWidget : Widget
 	{
 		readonly World world;
+		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
-		public WorldInteractionControllerWidget( [ObjectCreator.Param] World world )
+		public WorldInteractionControllerWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 		}
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var selbox = SelectionBox;
 			if (selbox == null) return;
@@ -40,9 +42,9 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
-
+			
 			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
-				wr.DrawSelectionBox(u, Color.Yellow);
+				worldRenderer.DrawSelectionBox(u, Color.Yellow);
 		}
 		
 		float2 dragStart, dragEnd;

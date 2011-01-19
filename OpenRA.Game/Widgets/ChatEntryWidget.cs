@@ -34,7 +34,7 @@ namespace OpenRA.Widgets
 			this.orderManager = orderManager;
 		}
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			if (composing)
 			{

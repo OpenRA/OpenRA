@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 		bool boundReadOnly;
 		FieldInfo boundField;
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var font = Bold ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var pos = RenderOrigin;

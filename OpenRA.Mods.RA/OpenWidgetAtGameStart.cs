@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World world)
 		{
 			if (world.LocalPlayer != null)
-				world.OpenWindow(Info.Widget);
+				Game.OpenWindow(world, Info.Widget);
 			else if (Info.ObserverWidget != null)
-				world.OpenWindow(Info.ObserverWidget);
+				Game.OpenWindow(world, Info.ObserverWidget);
 		}
 	}
 }

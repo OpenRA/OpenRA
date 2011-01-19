@@ -12,38 +12,45 @@ namespace OpenRA.Mods.RA.Widgets
 	public class StrategicProgressWidget : Widget
 	{
 		bool Initialised = false;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+		[ObjectCreator.UseCtor]
+		public StrategicProgressWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		{ 
+			IsVisible = () => true;
+			this.world = world;
+			this.worldRenderer = worldRenderer;
+		}
 
-		public StrategicProgressWidget() { IsVisible = () => true; }
-
-		public override void DrawInner(WorldRenderer wr)
+		public override void DrawInner()
 		{
 			if (!Initialised)
-				Init(wr);
+				Init();
 			
 			if (!IsVisible()) return;
 			int2 offset = int2.Zero;
 
-			var svc = wr.world.players.Select(p => p.Value.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
+			var svc = world.players.Select(p => p.Value.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
 			var totalWidth = (svc.Total + svc.TotalCritical)*32;
 			int curX = -(totalWidth / 2);
 
-			foreach (var a in wr.world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && !a.TraitOrDefault<StrategicPoint>().Critical))
+			foreach (var a in world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && !a.TraitOrDefault<StrategicPoint>().Critical))
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				
-				if (a.Owner == wr.world.LocalPlayer || (a.Owner.Stances[wr.world.LocalPlayer] == Stance.Ally && wr.world.LocalPlayer.Stances[a.Owner] == Stance.Ally)) 
+				if (a.Owner == worldRenderer.world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally)) 
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				curX += 32;
 			}
 
-			foreach (var a in wr.world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical))
+			foreach (var a in world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical))
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				
-				if (a.Owner == wr.world.LocalPlayer || (a.Owner.Stances[wr.world.LocalPlayer] == Stance.Ally && wr.world.LocalPlayer.Stances[a.Owner] == Stance.Ally))
+				if (a.Owner == world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
@@ -52,17 +59,15 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			offset += new int2(0, 32);
 			
-			var pendingWinner = FindFirstWinningPlayer(wr.world);
+			var pendingWinner = FindFirstWinningPlayer(world);
 			if (pendingWinner == null) return;
 			svc = pendingWinner.PlayerActor.TraitOrDefault<StrategicVictoryConditions>();
 
-			if (wr.world.LocalPlayer == null)
-			{
-			}else
+			if (world.LocalPlayer != null)
 			{
 				var tc = "";
 
-				if (pendingWinner != wr.world.LocalPlayer && (pendingWinner.Stances[wr.world.LocalPlayer] != Stance.Ally || wr.world.LocalPlayer.Stances[pendingWinner] != Stance.Ally))
+				if (pendingWinner != world.LocalPlayer && (pendingWinner.Stances[world.LocalPlayer] != Stance.Ally || world.LocalPlayer.Stances[pendingWinner] != Stance.Ally))
 				{
 					// losing
 					tc = "Strategic defeat in " +
@@ -109,9 +114,9 @@ namespace OpenRA.Mods.RA.Widgets
 			return shortestPlayer;
 		}
 
-		private void Init(WorldRenderer wr)
+		private void Init()
 		{
-			IsVisible = () => (wr.world.Actors.Where(a => a.HasTrait<StrategicVictoryConditions>()).Any() && wr.world.Actors.Where(a => a.HasTrait<StrategicPoint>()).Any());
+			IsVisible = () => (world.Actors.Where(a => a.HasTrait<StrategicVictoryConditions>()).Any() && world.Actors.Where(a => a.HasTrait<StrategicPoint>()).Any());
 			Initialised = true;
 		}
 	}

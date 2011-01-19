@@ -92,7 +92,14 @@ namespace OpenRA
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
-
+		
+		
+		// Hacky workaround for orderManager visibility
+		public static Widget OpenWindow(World world, string widget)
+		{
+			return Widget.OpenWindow(widget, new Dictionary<string,object>{{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
+		}
+		
 		static void Tick( OrderManager orderManager, Viewport viewPort )
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)

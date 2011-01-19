@@ -56,8 +56,8 @@ namespace OpenRA.Widgets
 			base.AddChild(child);
 		}
 		
-		public override void DrawInner( WorldRenderer wr ) {}
-		public override void Draw( WorldRenderer wr )
+		public override void DrawInner() {}
+		public override void Draw()
 		{
 			if (!IsVisible())
 				return;
@@ -98,7 +98,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);
 
 			foreach (var child in Children)
-				child.Draw( wr );
+				child.Draw();
 
 			Game.Renderer.DisableScissor();
 		}

@@ -17,7 +17,7 @@ namespace OpenRA.Widgets
 		public readonly string Background = "dialog";
 		public readonly bool ClickThrough = false;
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			WidgetUtils.DrawPanel(Background, RenderBounds);
 		}

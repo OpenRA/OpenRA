@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
 		static Sprite UnownedSpawn = null;
 		static Sprite OwnedSpawn = null;
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			if (UnownedSpawn == null)
 				UnownedSpawn = ChromeProvider.GetImage("spawnpoints", "unowned");

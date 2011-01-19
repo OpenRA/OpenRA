@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -30,10 +31,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
         public static ColorRamp CurrentColorPreview;
 
 		readonly OrderManager orderManager;
+		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
-		internal LobbyDelegate( [ObjectCreator.Param( "widget" )] Widget lobby, [ObjectCreator.Param] OrderManager orderManager )
+		internal LobbyDelegate( [ObjectCreator.Param( "widget" )] Widget lobby, [ObjectCreator.Param] OrderManager orderManager, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
+			this.worldRenderer = worldRenderer;
+			
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			UpdateCurrentMap();
 			
@@ -266,7 +270,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (Map.Players[s.MapPlayer].LockColor)
 				return false;
 			
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), null, "COLOR_CHOOSER" );
+			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
 			

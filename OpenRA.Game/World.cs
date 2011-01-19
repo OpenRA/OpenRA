@@ -117,12 +117,6 @@ namespace OpenRA
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 				wlh.WorldLoaded(this);
 		}
-
-		// Hacky workaround for orderManager visibility
-		public Widget OpenWindow(string widget)
-		{
-			return Widget.OpenWindow(widget, new Dictionary<string,object>{{"world", this}, { "orderManager", orderManager }});
-		}
 		
 		public Actor CreateActor( string name, TypeDictionary initDict )
 		{

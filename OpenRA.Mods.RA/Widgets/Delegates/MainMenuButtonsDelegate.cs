@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 								new Dictionary<string, object> { { "orderManager", orderManager } } );
 							break;
 						case ConnectionState.Connected:
-							var lobby = Widget.OpenWindow( "SERVER_LOBBY", new Dictionary<string, object> { { "orderManager", orderManager } } );
+							var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
 							lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
 							lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
 							lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;

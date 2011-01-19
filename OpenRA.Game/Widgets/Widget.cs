@@ -266,15 +266,15 @@ namespace OpenRA.Widgets
 			return false;
 		}
 		
-		public abstract void DrawInner( WorldRenderer wr );
+		public abstract void DrawInner();
 		
-		public virtual void Draw( WorldRenderer wr )
+		public virtual void Draw()
 		{
 			if (IsVisible())
 			{
-				DrawInner( wr );
+				DrawInner();
 				foreach (var child in Children)
-					child.Draw( wr );
+					child.Draw();
 			}
 		}
 		
@@ -337,9 +337,9 @@ namespace OpenRA.Widgets
 			RootWidget.Tick();
 		}
 		
-		public static void DoDraw( WorldRenderer wr )
+		public static void DoDraw()
 		{
-			RootWidget.Draw( wr );
+			RootWidget.Draw();
 		}
 	}
 
@@ -358,7 +358,7 @@ namespace OpenRA.Widgets
 			GetBackground = other.GetBackground;
 		}
 
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var bg = GetBackground();
 			if (bg != null)

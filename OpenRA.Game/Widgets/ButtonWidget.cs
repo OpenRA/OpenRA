@@ -84,7 +84,7 @@ namespace OpenRA.Widgets
 		public override int2 ChildOrigin { get { return RenderOrigin + 
 				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
@@ -114,9 +114,9 @@ namespace OpenRA.Widgets
 		{
 		}
 
-		public override void DrawInner(WorldRenderer wr)
+		public override void DrawInner()
 		{
-			base.DrawInner(wr);
+			base.DrawInner();
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
 			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");

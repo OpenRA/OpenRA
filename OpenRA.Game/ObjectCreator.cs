@@ -77,7 +77,9 @@ namespace OpenRA
 			{
 				var attrs = p[ i ].GetCustomAttributes<ParamAttribute>();
 				if( attrs.Length != 1 ) throw new InvalidOperationException( "ObjectCreator: argument in [UseCtor] doesn't have [Param]" );
-				a[ i ] = args[ attrs[ 0 ].ParamName ?? p[i].Name ];
+				var key = attrs[ 0 ].ParamName ?? p[i].Name;
+				if ( !args.ContainsKey(key) ) throw new InvalidOperationException("ObjectCreator: key `{0}' not found".F(key));
+				a[ i ] = args[ key ];
 			}
 			return ctor.Invoke( a );
 		}

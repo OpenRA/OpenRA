@@ -34,7 +34,7 @@ namespace OpenRA.Widgets
 			: base(widget) { }
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);

@@ -48,11 +48,13 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly string BuildPaletteClose = "bleep13.aud";
 		public readonly string TabClick = "ramenu1.aud";
 
+		readonly WorldRenderer worldRenderer;
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public BuildPaletteWidget( [ObjectCreator.Param] World world )
+		public BuildPaletteWidget( [ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer )
 		{
 			this.world = world;
+			this.worldRenderer = worldRenderer;
 		}
 
 		public override void Initialize()
@@ -178,15 +180,16 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		int paletteHeight = 0;
 		int numActualRows = 0;
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{	
 			if (!IsVisible()) return;
 			// todo: fix
-			paletteHeight = DrawPalette(wr, world, CurrentQueue);
+			
+			paletteHeight = DrawPalette(CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);
 		}
 
-		int DrawPalette(WorldRenderer wr, World world, ProductionQueue queue)
+		int DrawPalette(ProductionQueue queue)
 		{
 			buttons.Clear();
 			if (queue == null) return 0;
@@ -220,7 +223,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
 				var drawPos = new float2(rect.Location);
-				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, wr);
+				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, worldRenderer);
 				
 				var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 
@@ -235,7 +238,7 @@ namespace OpenRA.Mods.RA.Widgets
 						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
 					clock.Tick();
-					WidgetUtils.DrawSHP(clock.Image, drawPos, wr);
+					WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 
 					if (firstOfThis.Done)
 					{
@@ -274,7 +277,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (x != 0) y++;
 
 			foreach (var ob in overlayBits)
-				WidgetUtils.DrawSHP(ob.First, ob.Second, wr);
+				WidgetUtils.DrawSHP(ob.First, ob.Second, worldRenderer);
 
 			// Tooltip
 			if (tooltipItem != null && !paletteAnimating && paletteOpen)

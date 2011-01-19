@@ -201,7 +201,7 @@ namespace OpenRA.Widgets
 				Game.Renderer.DisableScissor();
 		}
 		
-		public override void DrawInner( WorldRenderer wr )
+		public override void DrawInner()
 		{
 			DrawWithString(Text);
 		}
