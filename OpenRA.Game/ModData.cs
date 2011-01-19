@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -54,6 +55,7 @@ namespace OpenRA
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 			CursorProvider.Initialize(Manifest.Cursors);
+			Palette.Update(new IPaletteModifier[]{});
 		}
 
 		public Map PrepareMap(string uid)
