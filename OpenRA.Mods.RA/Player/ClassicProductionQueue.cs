@@ -24,8 +24,8 @@ namespace OpenRA.Mods.RA
 	{
 		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
 			: base(self, self, info as ProductionQueueInfo) {}
-				
-		[Sync] bool QueueActive = true;
+		
+		[Sync] bool QueueActive = false;
 		public override void Tick( Actor self )
 		{
 			QueueActive = self.World.Queries.OwnedBy[self.Owner].WithTrait<Production>()

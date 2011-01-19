@@ -26,16 +26,17 @@ namespace OpenRA.Mods.RA.Widgets
 		public int Columns = 3;
 		public int Rows = 5;
 		
-		ProductionQueue CurrentQueue = null;
-		List<ProductionQueue> VisibleQueues = new List<ProductionQueue>();
+		ProductionQueue CurrentQueue;
+		List<ProductionQueue> VisibleQueues;
 
 		bool paletteOpen = false;
 		Dictionary<string, Sprite> iconSprites;
 		
-		static float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
-		static float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
-		static float2 paletteOrigin = paletteClosedOrigin;
-		const int paletteAnimationLength = 7;
+		float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
+		float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
+		float2 paletteOrigin;
+		
+		int paletteAnimationLength = 7;
 		int paletteAnimationFrame = 0;
 		bool paletteAnimating = false;
 		
@@ -55,25 +56,21 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-		}
-
-		public override void Initialize()
-		{
-			base.Initialize();
-
+						
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
-
+			paletteOrigin = paletteClosedOrigin;
+			VisibleQueues = new List<ProductionQueue>();
+			CurrentQueue = null;
+			
 			iconSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
 				.ToDictionary(
 					u => u.Name,
 					u => SpriteSheetBuilder.LoadAllSprites(u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
-
-			IsVisible = () => { return CurrentQueue != null || (CurrentQueue == null && !paletteOpen); };
 		}
 		
 		public override Rectangle EventBounds
@@ -142,6 +139,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (!paletteOpen)
 				paletteAnimating = true;
+			
 			paletteOpen = true;
 			CurrentQueue = queue;
 		}
@@ -178,112 +176,112 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 		
-		int paletteHeight = 0;
-		int numActualRows = 0;
 		public override void DrawInner()
 		{	
 			if (!IsVisible()) return;
 			// todo: fix
 			
-			paletteHeight = DrawPalette(CurrentQueue);
+			int paletteHeight = DrawPalette(CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);
 		}
-
+		
+		int numActualRows = 5;
 		int DrawPalette(ProductionQueue queue)
 		{
 			buttons.Clear();
-			if (queue == null) return 0;
 			
 			string paletteCollection = "palette-" + world.LocalPlayer.Country.Race;
 			float2 origin = new float2(paletteOrigin.X + 9, paletteOrigin.Y + 9);
-						
-			// Collect info
 			var x = 0;
 			var y = 0;
-			var buildableItems = queue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-			var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-
-			var overlayBits = new List<Pair<Sprite, float2>>();
-			numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
-
-			// Palette Background
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
-			for (var w = 0; w < numActualRows; w++)
-				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage(paletteCollection, "bg-" + (w % 4).ToString()),
-					new float2(origin.X - 9, origin.Y + 48 * w));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
-				new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
-
-
-			// Icons
-			string tooltipItem = null;
-			var isBuildingSomething = queue.CurrentItem() != null;
-			foreach (var item in allBuildables)
+			
+			if (queue != null)
 			{
-				var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
-				var drawPos = new float2(rect.Location);
-				WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, worldRenderer);
-				
-				var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
-
-				if (rect.Contains(Viewport.LastMousePos))
-					tooltipItem = item.Name;
-
-				var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
-
-				if (firstOfThis != null)
+				var buildableItems = queue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+	
+				var overlayBits = new List<Pair<Sprite, float2>>();
+				numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
+	
+				// Palette Background
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "top"), new float2(origin.X - 9, origin.Y - 9));
+				for (var w = 0; w < numActualRows; w++)
+					WidgetUtils.DrawRGBA(
+						ChromeProvider.GetImage(paletteCollection, "bg-" + (w % 4).ToString()),
+						new float2(origin.X - 9, origin.Y + 48 * w));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
+					new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
+	
+	
+				// Icons
+				string tooltipItem = null;
+				var isBuildingSomething = queue.CurrentItem() != null;
+				foreach (var item in allBuildables)
 				{
-					clock.PlayFetchIndex("idle",
-						() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
-							* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
-					clock.Tick();
-					WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
-
-					if (firstOfThis.Done)
+					var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
+					var drawPos = new float2(rect.Location);
+					WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, worldRenderer);
+					
+					var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
+	
+					if (rect.Contains(Viewport.LastMousePos))
+						tooltipItem = item.Name;
+	
+					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
+	
+					if (firstOfThis != null)
 					{
-						ready.Play("ready");
-						overlayBits.Add(Pair.New(ready.Image, overlayPos));
-					}
-					else if (firstOfThis.Paused)
-					{
-						ready.Play("hold");
-						overlayBits.Add(Pair.New(ready.Image, overlayPos));
-					}
-
-					var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
-					if (repeats > 1 || queue.CurrentItem() != firstOfThis)
-					{
-						var offset = -22;
-						var digits = repeats.ToString();
-						foreach (var d in digits)
+						clock.PlayFetchIndex("idle",
+							() => (firstOfThis.TotalTime - firstOfThis.RemainingTime)
+								* (clock.CurrentSequence.Length - 1) / firstOfThis.TotalTime);
+						clock.Tick();
+						WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+	
+						if (firstOfThis.Done)
 						{
-							ready.PlayFetchIndex("groups", () => d - '0');
-							ready.Tick();
-							overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
-							offset += 6;
+							ready.Play("ready");
+							overlayBits.Add(Pair.New(ready.Image, overlayPos));
+						}
+						else if (firstOfThis.Paused)
+						{
+							ready.Play("hold");
+							overlayBits.Add(Pair.New(ready.Image, overlayPos));
+						}
+	
+						var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
+						if (repeats > 1 || queue.CurrentItem() != firstOfThis)
+						{
+							var offset = -22;
+							var digits = repeats.ToString();
+							foreach (var d in digits)
+							{
+								ready.PlayFetchIndex("groups", () => d - '0');
+								ready.Tick();
+								overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
+								offset += 6;
+							}
 						}
 					}
+					else
+						if (!buildableItems.Any(a => a.Name == item.Name) || isBuildingSomething)
+							overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
+	
+					var closureName = buildableItems.Any(a => a.Name == item.Name) ? item.Name : null;
+					buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
+	
+					if (++x == Columns) { x = 0; y++; }
 				}
-				else
-					if (!buildableItems.Any(a => a.Name == item.Name) || isBuildingSomething)
-						overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
-
-				var closureName = buildableItems.Any(a => a.Name == item.Name) ? item.Name : null;
-				buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
-
-				if (++x == Columns) { x = 0; y++; }
+				if (x != 0) y++;
+	
+				foreach (var ob in overlayBits)
+					WidgetUtils.DrawSHP(ob.First, ob.Second, worldRenderer);
+	
+				// Tooltip
+				if (tooltipItem != null && !paletteAnimating && paletteOpen)
+					DrawProductionTooltip(world, tooltipItem, 
+						new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
 			}
-			if (x != 0) y++;
-
-			foreach (var ob in overlayBits)
-				WidgetUtils.DrawSHP(ob.First, ob.Second, worldRenderer);
-
-			// Tooltip
-			if (tooltipItem != null && !paletteAnimating && paletteOpen)
-				DrawProductionTooltip(world, tooltipItem, 
-					new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
-
+			
 			// Palette Dock
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-top"),
 				new float2(Game.viewport.Width - 14, origin.Y - 23));
