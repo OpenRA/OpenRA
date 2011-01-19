@@ -253,12 +253,12 @@ namespace OpenRA
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "MAINMENU_INIT" );
-			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
 		
 		public static void LoadShellMap()
 		{
 			StartGame(ChooseShellmap());
+			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
 		
         static string ChooseShellmap()
