@@ -17,18 +17,18 @@
 												  forKey:@"gamepath"]];
 }
 
-- (void)awakeFromNib
-{	
-	gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
-
-	hasMono = [self initMono];
-	
-	NSLog(@"%d, %@",hasMono, monoPath);
-}
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	if (!hasMono)
+	gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
+	NSArray *args = [[NSProcessInfo processInfo] arguments];
+	
+	// Ingame requests for native dialogs
+	if ([args containsObject:@"--filepicker"])
+		[self launchFilePicker:args];
+	
+	
+	// Try and launch the game
+	if (![self initMono])
 	{
 		NSAlert *alert = [NSAlert alertWithMessageText:@"Mono Framework"
 										 defaultButton:@"Download Mono"
@@ -42,72 +42,35 @@
 		
 		[[NSApplication sharedApplication] terminate:self];
 	}
-	else
-	{
-		[self launchMod:@"cnc"];
-		[NSApp terminate: nil];
-	}
+	
+	[self launchMod:@"cnc"];
+	[NSApp terminate: nil];
 }
 
-- (BOOL)initMono
+- (void)launchFilePicker:(NSArray *)args
 {
-	// Find the users mono
-	NSPipe *outPipe = [NSPipe pipe];
-	NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/usr/bin/which"];
-    [task setArguments:[NSMutableArray arrayWithObject:@"mono"]];
-	[task setStandardOutput:outPipe];
-	[task setStandardError:[task standardOutput]];
-    [task launch];
+	NSOpenPanel *op = [NSOpenPanel openPanel];
+	[op setAllowsMultipleSelection:NO];
 	
-	NSData *data = [[outPipe fileHandleForReading] readDataToEndOfFile];
-	[task waitUntilExit];
-    [task release];
+	NSUInteger a = [args indexOfObject:@"--title"];
+	if (a != NSNotFound)
+		[op setTitle:[args objectAtIndex:a+1]];
 	
-	NSString *temp = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
-	// Remove whitespace and resolve symlinks
-	monoPath = [[[temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
-				 stringByResolvingSymlinksInPath] retain];
-			
-	if (![monoPath length])
-		return NO;
+	a = [args indexOfObject:@"--message"];
+	if (a != NSNotFound)
+		[op setMessage:[args objectAtIndex:a+1]];
 	
-	// Find the mono version
-	outPipe = [NSPipe pipe];
-	task = [[NSTask alloc] init];
-    [task setLaunchPath:monoPath];
-    [task setArguments:[NSMutableArray arrayWithObject:@"--version"]];
-	[task setStandardOutput:outPipe];
-	[task setStandardError:[task standardOutput]];
-    [task launch];
+	a = [args indexOfObject:@"--directory"];
+	if (a != NSNotFound)
+		[op setDirectory:[[args objectAtIndex:a+1] stringByExpandingTildeInPath]];
 	
-	data = [[outPipe fileHandleForReading] readDataToEndOfFile];
-	[task waitUntilExit];
-    [task release];
+	if ([op runModal] == NSFileHandlingPanelOKButton)
+		printf("%s\n", [[[op URL] path] UTF8String]);
 	
-	NSString *ret = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-	
-	int major = 0;
-	int minor = 0;
-	int point = 0;
-	sscanf([ret UTF8String], "Mono JIT compiler version %d.%d.%d", &major, &minor, &point);
-	[ret release];
-	NSLog(@"mono %d.%d.%d: %@",major,minor,point,monoPath);
-	
-	return (major > 2 ||
-			(major == 2 && minor > 6) ||
-			(major == 2 && minor == 6 && point >= 7));
+	[NSApp terminate: nil];	
 }
 
-- (void)dealloc
-{
-	[monoPath release]; monoPath = nil;
-	[gamePath release]; gamePath = nil;
-	[super dealloc];
-}
-
-
--(void)launchMod:(NSString *)mod
+-(void) launchMod:(NSString *)mod
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	
@@ -140,10 +103,61 @@
 		SetFrontProcess(&psn);
 }
 
-#pragma mark Application delegates
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+
+- (BOOL)initMono
 {
-	return YES;
+	// Find the users mono
+	NSPipe *outPipe = [NSPipe pipe];
+	NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/which"];
+    [task setArguments:[NSMutableArray arrayWithObject:@"mono"]];
+	[task setStandardOutput:outPipe];
+	[task setStandardError:[task standardOutput]];
+    [task launch];
+	
+	NSData *data = [[outPipe fileHandleForReading] readDataToEndOfFile];
+	[task waitUntilExit];
+    [task release];
+	
+	NSString *temp = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
+	// Remove whitespace and resolve symlinks
+	monoPath = [[[temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+				 stringByResolvingSymlinksInPath] retain];
+	
+	if (![monoPath length])
+		return NO;
+	
+	// Find the mono version
+	outPipe = [NSPipe pipe];
+	task = [[NSTask alloc] init];
+    [task setLaunchPath:monoPath];
+    [task setArguments:[NSMutableArray arrayWithObject:@"--version"]];
+	[task setStandardOutput:outPipe];
+	[task setStandardError:[task standardOutput]];
+    [task launch];
+	
+	data = [[outPipe fileHandleForReading] readDataToEndOfFile];
+	[task waitUntilExit];
+    [task release];
+	
+	NSString *ret = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+	
+	int major = 0;
+	int minor = 0;
+	int point = 0;
+	sscanf([ret UTF8String], "Mono JIT compiler version %d.%d.%d", &major, &minor, &point);
+	[ret release];
+	
+	return (major > 2 ||
+			(major == 2 && minor > 6) ||
+			(major == 2 && minor == 6 && point >= 7));
+}
+
+- (void)dealloc
+{
+	[monoPath release]; monoPath = nil;
+	[gamePath release]; gamePath = nil;
+	[super dealloc];
 }
 
 @end

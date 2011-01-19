@@ -10,13 +10,12 @@
 
 @interface Controller : NSObject
 {
-	BOOL hasMono;
 	NSString *monoPath;
 	NSString *gamePath;
 
 	IBOutlet NSWindow *window;
 }
-
+- (void)launchFilePicker:(NSArray *)args;
 - (void)launchMod:(NSString *)mod;
 - (BOOL)initMono;
 @end
