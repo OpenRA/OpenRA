@@ -7,36 +7,16 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
-@class Mod;
-@class SidebarEntry;
-@class GameInstall;
-@class JSBridge;
-@class Download;
+
 @interface Controller : NSObject
 {
-	SidebarEntry *sidebarItems;
-	GameInstall *game;
-	NSDictionary *allMods;
-	NSMutableArray *httpRequests;
-	NSMutableDictionary *downloads;
 	BOOL hasMono;
 	NSString *monoPath;
-	
+	NSString *gamePath;
+
 	IBOutlet NSWindow *window;
-	IBOutlet NSOutlineView *outlineView;
-	IBOutlet WebView *webView;
 }
-@property(readonly) NSDictionary *allMods;
-@property(readonly) WebView *webView;
 
 - (void)launchMod:(NSString *)mod;
-- (void)populateModInfo;
-- (SidebarEntry *)sidebarModsTree;
-- (SidebarEntry *)sidebarOtherTree;
-
-- (void)fetchURL:(NSString *)url withCallback:(NSString *)cb;
-- (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
-- (Download *)downloadWithKey:(NSString *)key;
 - (BOOL)initMono;
 @end

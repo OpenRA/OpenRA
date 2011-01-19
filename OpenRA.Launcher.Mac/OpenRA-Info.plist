@@ -9,9 +9,9 @@
 	<key>CFBundleIconFile</key>
 	<string>OpenRA.icns</string>
 	<key>CFBundleName</key>
-	<string>OpenRA Launcher</string>
+	<string>OpenRA</string>
 	<key>CFBundleDisplayName</key>
-	<string>OpenRA Launcher</string>
+	<string>OpenRA</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.open-ra.launcher</string>
 	<key>CFBundleInfoDictionaryVersion</key>

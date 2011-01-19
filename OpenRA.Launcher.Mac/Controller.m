@@ -7,17 +7,8 @@
  */
 
 #import "Controller.h"
-#import "Mod.h"
-#import "SidebarEntry.h"
-#import "GameInstall.h"
-#import "ImageAndTextCell.h"
-#import "JSBridge.h"
-#import "Download.h"
-#import "HttpRequest.h"
 
 @implementation Controller
-@synthesize allMods;
-@synthesize webView;
 
 + (void)initialize
 {
@@ -28,43 +19,11 @@
 
 - (void)awakeFromNib
 {	
-	NSString *gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
+	gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
 
 	hasMono = [self initMono];
 	
 	NSLog(@"%d, %@",hasMono, monoPath);
-	if (hasMono)
-	{
-		game = [[GameInstall alloc] initWithGamePath:gamePath monoPath:monoPath];
-		[[JSBridge sharedInstance] setController:self];
-		downloads = [[NSMutableDictionary alloc] init];
-		httpRequests = [[NSMutableArray alloc] init];
-		
-		NSTableColumn *col = [outlineView tableColumnWithIdentifier:@"mods"];
-		ImageAndTextCell *imageAndTextCell = [[[ImageAndTextCell alloc] init] autorelease];
-		[col setDataCell:imageAndTextCell];
-		
-		sidebarItems = [[SidebarEntry headerWithTitle:@""] retain];
-		[self populateModInfo];
-		id modsRoot = [self sidebarModsTree];
-		[sidebarItems addChild:modsRoot];
-		//id otherRoot = [self sidebarOtherTree];
-		//[sidebarItems addChild:otherRoot];
-		
-		
-		[outlineView reloadData];
-		[outlineView expandItem:modsRoot expandChildren:YES];
-		
-		if ([[modsRoot children] count] > 0)
-		{
-			id firstMod = [[modsRoot children] objectAtIndex:0];
-			int row = [outlineView rowForItem:firstMod];
-			[outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-			[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [firstMod url]]];
-		}
-		
-		//[outlineView expandItem:otherRoot expandChildren:YES];
-	}
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -77,18 +36,17 @@
 										   otherButton:nil
 							 informativeTextWithFormat:@"OpenRA requires the Mono Framework version 2.6.7 or later."];
 		
-		[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(monoAlertEnded:code:context:) contextInfo:NULL];
+		
+		if ([alert runModal] == NSAlertDefaultReturn)
+			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.go-mono.com/mono-downloads/download.html"]];
+		
+		[[NSApplication sharedApplication] terminate:self];
 	}
-}
-
-- (void)monoAlertEnded:(NSAlert *)alert
-				  code:(int)button
-			   context:(void *)v
-{
-	if (button == NSAlertDefaultReturn)
-		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.go-mono.com/mono-downloads/download.html"]];
-	
-	[[NSApplication sharedApplication] terminate:self];
+	else
+	{
+		[self launchMod:@"cnc"];
+		[NSApp terminate: nil];
+	}
 }
 
 - (BOOL)initMono
@@ -143,203 +101,49 @@
 
 - (void)dealloc
 {
-	[sidebarItems release]; sidebarItems = nil;
-	[downloads release]; downloads = nil;
-	[httpRequests release]; httpRequests = nil;
 	[monoPath release]; monoPath = nil;
+	[gamePath release]; gamePath = nil;
 	[super dealloc];
 }
 
-- (void)populateModInfo
-{
-	// Get info for all installed mods
-	[allMods autorelease];
-	allMods = [[game infoForMods:[game installedMods]] retain];	
-}
 
-- (SidebarEntry *)sidebarModsTree
+-(void)launchMod:(NSString *)mod
 {
-	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"MODS"];
-	for (id key in allMods)
-	{	
-		id aMod = [allMods objectForKey:key];
-		if ([aMod standalone])
-		{
-			id path = [[game gamePath] stringByAppendingPathComponent:@"mods"];
-			id child = [SidebarEntry entryWithMod:aMod allMods:allMods basePath:path];
-			[rootItem addChild:child];
-		}
-	}
+	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	
-	return rootItem;
-}
-
-- (SidebarEntry *)sidebarOtherTree
-{
-	SidebarEntry *rootItem = [SidebarEntry headerWithTitle:@"OTHER"];
-	[rootItem addChild:[SidebarEntry entryWithTitle:@"Support" url:nil icon:nil]];
-	[rootItem addChild:[SidebarEntry entryWithTitle:@"Credits" url:nil icon:nil]];
+	// First argument is the directory to run in
+	// Second...Nth arguments are passed to OpenRA.Game.exe
+	// Launcher wrapper sets mono --debug, gl renderer and support dir.
+	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath, monoPath,
+					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
+					 [NSString stringWithFormat:@"Game.Mods=%@",mod],
+					 nil];
 	
-	return rootItem;
-}
-
-- (void)launchMod:(NSString *)mod
-{
-	[game launchMod:mod];
-}
-
-- (BOOL)registerDownload:(NSString *)key withURL:(NSString *)url filePath:(NSString *)path;
-{
-	if ([downloads objectForKey:key] != nil)
-		return NO;
+	FSRef appRef;
+	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
 	
-	[downloads setObject:[Download downloadWithURL:url filename:path key:key game:game]
-				  forKey:key];
-	return YES;
-}
-
-- (Download *)downloadWithKey:(NSString *)key
-{
-	return [downloads objectForKey:key];
-}
-
-- (void)fetchURL:(NSString *)url withCallback:(NSString *)cb
-{
-	// Clean up any completed requests
-	for (int i = [httpRequests count] - 1; i >= 0; i--)
-		if ([[httpRequests objectAtIndex:i] terminated])
-			[httpRequests removeObjectAtIndex:i];
+	// Set the launch parameters
+	LSApplicationParameters params;
+	params.version = 0;
+	params.flags = kLSLaunchDefaults | kLSLaunchNewInstance;
+	params.application = &appRef;
+	params.asyncLaunchRefCon = NULL;
+	params.environment = NULL; // CFDictionaryRef of environment variables; could be useful
+	params.argv = (CFArrayRef)args;
+	params.initialEvent = NULL;
 	
-	// Create request
-	[httpRequests addObject:[HttpRequest requestWithURL:url callback:cb game:game]];
-}
-
-#pragma mark Sidebar Datasource and Delegate
-- (NSInteger)outlineView:(NSOutlineView *)anOutlineView numberOfChildrenOfItem:(id)item
-{
-	// Can be called before awakeFromNib; return nothing
-	if (sidebarItems == nil)
-		return 0;
+	ProcessSerialNumber psn;
+	OSStatus err = LSOpenApplication(&params, &psn);
 	
-	// Root item
-	if (item == nil)
-		return [[sidebarItems children] count];
-
-	return [[item children] count];
+	// Bring the game window to the front
+	if (err == noErr)
+		SetFrontProcess(&psn);
 }
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
-{
-	return (item == nil) ? YES : [[item children] count] != 0;
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView
-			child:(NSInteger)index
-		   ofItem:(id)item
-{
-	if (item == nil)
-		return [[sidebarItems children] objectAtIndex:index];
-	
-	return [[item children] objectAtIndex:index];
-}
-
--(BOOL)outlineView:(NSOutlineView*)outlineView isGroupItem:(id)item
-{	
-	if (item == nil)
-		return NO;
-	
-	return [item isHeader];
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView
-objectValueForTableColumn:(NSTableColumn *)tableColumn
-		   byItem:(id)item
-{
-	return [item title];
-}
-
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item;
-{	
-	// don't allow headers to be selected
-	if ([item isHeader] || [item url] == nil)
-		return NO;
-	
-	[[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[item url]]];
-
-	return YES;
-}
-
-- (void)outlineView:(NSOutlineView *)olv willDisplayCell:(NSCell*)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
-{
-	if ([[tableColumn identifier] isEqualToString:@"mods"])
-	{
-		if ([cell isKindOfClass:[ImageAndTextCell class]])
-		{
-			[(ImageAndTextCell*)cell setImage:[item icon]];
-		}
-	}
-}
-
-#pragma mark WebView delegates
-- (void)webView:(WebView *)sender didClearWindowObject:(WebScriptObject *)windowObject forFrame:(WebFrame *)frame
-{
-	// Cancel any in progress http requests
-	for (HttpRequest *r in httpRequests)
-		[r cancel];
-	
-	[windowObject setValue:[JSBridge sharedInstance] forKey:@"external"];
-}
-
-- (void)webView:(WebView *)webView addMessageToConsole:(NSDictionary *)dictionary
-{
-	NSLog(@"%@",dictionary);
-}
-
 
 #pragma mark Application delegates
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
 	return YES;
-}
-
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
-{
-	int count = 0;
-	for (NSString *key in downloads)
-		if ([[(Download *)[downloads objectForKey:key] status] isEqualToString:@"DOWNLOADING"])
-			count++;
-	
-	if (count == 0)
-		return NSTerminateNow;
-	
-	NSString *format = count == 1 ? @"1 download is" : [NSString stringWithFormat:@"%d downloads are",count];
-	NSAlert *alert = [NSAlert alertWithMessageText:@"Are you sure you want to quit?"
-									 defaultButton:@"Wait"
-								   alternateButton:@"Quit"
-									   otherButton:nil
-						 informativeTextWithFormat:@"%@ in progress and will be cancelled if you quit.", format];
-	
-	[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(quitAlertEnded:code:context:) contextInfo:NULL];
-	return NSTerminateLater;
-}
-
-- (void)quitAlertEnded:(NSAlert *)alert
-			  code:(int)button
-		   context:(void *)v
-{
-	NSApplicationTerminateReply reply = (button == NSAlertDefaultReturn) ? NSTerminateCancel : NSTerminateNow;
-	[[NSApplication sharedApplication] replyToApplicationShouldTerminate:reply];
-}
-
-- (void)applicationWillTerminate:(NSNotification *)aNotification
-{
-	// Cancel all in-progress downloads
-	for (NSString *key in downloads)
-	{	
-		Download *d = [downloads objectForKey:key];
-		if ([[d status] isEqualToString:@"DOWNLOADING"])
-			[d cancel];
-	}
 }
 
 @end

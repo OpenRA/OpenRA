@@ -11,16 +11,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		DA38212212925344003B0BB5 /* JSBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = DA38212112925344003B0BB5 /* JSBridge.m */; };
-		DA7D85671295E92900E58547 /* Download.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D85661295E92900E58547 /* Download.m */; };
 		DA81FA821290F5C800C48F2F /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FA811290F5C800C48F2F /* Controller.m */; };
-		DA81FAAA1290FA0000C48F2F /* Mod.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FAA91290FA0000C48F2F /* Mod.m */; };
-		DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */; };
 		DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA81FBDB12910E4900C48F2F /* OpenRA.icns */; };
-		DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FC3E12911E2B00C48F2F /* GameInstall.m */; };
 		DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9295A612921DF900EDB02E /* WebKit.framework */; };
-		DA9296901292328200EDB02E /* SidebarEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = DA92968F1292328200EDB02E /* SidebarEntry.m */; };
-		DAA3F31C12CBF60D00E214BF /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA3F31B12CBF60D00E214BF /* HttpRequest.m */; };
 		DAB887F5129E5D6C00C99407 /* SDL in Resources */ = {isa = PBXBuildFile; fileRef = DAB887EE129E5D6100C99407 /* SDL */; };
 /* End PBXBuildFile section */
 
@@ -34,24 +27,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* OpenRA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenRA-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA38212012925344003B0BB5 /* JSBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBridge.h; sourceTree = "<group>"; };
-		DA38212112925344003B0BB5 /* JSBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBridge.m; sourceTree = "<group>"; };
-		DA7D85651295E92900E58547 /* Download.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Download.h; sourceTree = "<group>"; };
-		DA7D85661295E92900E58547 /* Download.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Download.m; sourceTree = "<group>"; };
 		DA81FA801290F5C800C48F2F /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		DA81FA811290F5C800C48F2F /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
-		DA81FAA81290FA0000C48F2F /* Mod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mod.h; sourceTree = "<group>"; };
-		DA81FAA91290FA0000C48F2F /* Mod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mod.m; sourceTree = "<group>"; };
-		DA81FB9112910A8B00C48F2F /* ImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTextCell.h; sourceTree = "<group>"; };
-		DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTextCell.m; sourceTree = "<group>"; };
 		DA81FBDB12910E4900C48F2F /* OpenRA.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRA.icns; sourceTree = "<group>"; };
-		DA81FC3D12911E2B00C48F2F /* GameInstall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInstall.h; sourceTree = "<group>"; };
-		DA81FC3E12911E2B00C48F2F /* GameInstall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameInstall.m; sourceTree = "<group>"; };
 		DA9295A612921DF900EDB02E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		DA92968E1292328200EDB02E /* SidebarEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarEntry.h; sourceTree = "<group>"; };
-		DA92968F1292328200EDB02E /* SidebarEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarEntry.m; sourceTree = "<group>"; };
-		DAA3F31A12CBF60D00E214BF /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
-		DAA3F31B12CBF60D00E214BF /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
 		DAB887EE129E5D6100C99407 /* SDL */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = SDL; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,22 +50,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DA81FB9112910A8B00C48F2F /* ImageAndTextCell.h */,
-				DA81FB9212910A8B00C48F2F /* ImageAndTextCell.m */,
 				DA81FA801290F5C800C48F2F /* Controller.h */,
 				DA81FA811290F5C800C48F2F /* Controller.m */,
-				DA81FAA81290FA0000C48F2F /* Mod.h */,
-				DA81FAA91290FA0000C48F2F /* Mod.m */,
-				DA81FC3D12911E2B00C48F2F /* GameInstall.h */,
-				DA81FC3E12911E2B00C48F2F /* GameInstall.m */,
-				DA7D85651295E92900E58547 /* Download.h */,
-				DA7D85661295E92900E58547 /* Download.m */,
-				DA92968E1292328200EDB02E /* SidebarEntry.h */,
-				DA92968F1292328200EDB02E /* SidebarEntry.m */,
-				DA38212112925344003B0BB5 /* JSBridge.m */,
-				DA38212012925344003B0BB5 /* JSBridge.h */,
-				DAA3F31A12CBF60D00E214BF /* HttpRequest.h */,
-				DAA3F31B12CBF60D00E214BF /* HttpRequest.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -228,13 +193,6 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				DA81FA821290F5C800C48F2F /* Controller.m in Sources */,
-				DA81FAAA1290FA0000C48F2F /* Mod.m in Sources */,
-				DA81FB9312910A8B00C48F2F /* ImageAndTextCell.m in Sources */,
-				DA81FC3F12911E2B00C48F2F /* GameInstall.m in Sources */,
-				DA9296901292328200EDB02E /* SidebarEntry.m in Sources */,
-				DA38212212925344003B0BB5 /* JSBridge.m in Sources */,
-				DA7D85671295E92900E58547 /* Download.m in Sources */,
-				DAA3F31C12CBF60D00E214BF /* HttpRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

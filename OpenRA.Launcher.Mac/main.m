@@ -44,7 +44,12 @@ int main(int argc, char *argv[])
 			sprintf(buf,"%s:%s",argv[2], old);
 			setenv("DYLD_LIBRARY_PATH", buf, 1);
 		}
-
+		
+		// Hide the menubar if we are running fullscreen
+		// TODO: HACK: Parse the settings.yaml / commandline args for fullscreen options
+		if (YES)
+			[NSMenu setMenuBarVisible:NO];
+		
 		/* Exec mono */
 		execve(args[0], args, environ);
 	}
