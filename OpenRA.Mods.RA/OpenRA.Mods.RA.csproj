@@ -328,6 +328,7 @@
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
+    <Compile Include="Widgets\Delegates\RAInitDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

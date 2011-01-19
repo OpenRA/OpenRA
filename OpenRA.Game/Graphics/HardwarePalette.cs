@@ -51,6 +51,9 @@ namespace OpenRA.Graphics
 		
 		public void AddPalette(string name, Palette p)
 		{
+			if (palettes.ContainsKey(name))
+				throw new InvalidOperationException("Palette {0} has already been defined".F(name));
+			
 			palettes.Add(name, p);
 			indices.Add(name, allocated++);
 		}

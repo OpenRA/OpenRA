@@ -1,9 +1,28 @@
+Background@MAINMENU_INIT:
+	Id:MAINMENU_INIT
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:250
+	Height:330
+	Visible:true
+	Delegate:RAInitDelegate
+	Children:
+		Button@FINISH_INIT:
+			Id:FINISH_INIT
+			X:45
+			Y:70
+			Width:160
+			Height:25
+			Text:START
+			Bold:True
+				
 Background@MAINMENU_BG:
 	Id:MAINMENU_BG
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:250
 	Height:330
+	Visible:true
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Label@MAINMENU_LABEL_TITLE:

@@ -18,8 +18,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MainMenuButtonsDelegate : IWidgetDelegate
 	{
-		static bool FirstInit = true;
-
 		[ObjectCreator.UseCtor]
 		public MainMenuButtonsDelegate([ObjectCreator.Param] Widget widget)
 		{
@@ -30,37 +28,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("MAINMENU_BUTTON_MUSIC").OnMouseUp = mi => { Widget.OpenWindow("MUSIC_MENU"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_REPLAY_VIEWER").OnMouseUp = mi => { Widget.OpenWindow("REPLAYBROWSER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
-
-			if (FirstInit)
-			{
-				FirstInit = false;
-				Game.ConnectionStateChanged += orderManager =>
-				{
-					Widget.CloseWindow();
-					switch( orderManager.Connection.ConnectionState )
-					{
-						case ConnectionState.PreConnecting:
-							Widget.OpenWindow("MAINMENU_BG");
-							break;
-						case ConnectionState.Connecting:
-							Widget.OpenWindow( "CONNECTING_BG",
-								new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
-							break;
-						case ConnectionState.NotConnected:
-							Widget.OpenWindow( "CONNECTION_FAILED_BG",
-								new Dictionary<string, object> { { "orderManager", orderManager } } );
-							break;
-						case ConnectionState.Connected:
-							var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
-							lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
-							lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
-							lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
-							lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
-							//r.GetWidget("INGAME_ROOT").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();	
-							break;
-					}
-				};
-			}
 		}
 	}
 }

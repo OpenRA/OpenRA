@@ -26,7 +26,7 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public CursorSheetBuilder CursorSheetBuilder;
 		public SpriteLoader SpriteLoader;
-		public readonly HardwarePalette Palette;
+		public HardwarePalette Palette { get; private set; }
 		
 		public ModData( params string[] mods )
 		{		
@@ -38,7 +38,12 @@ namespace OpenRA
 			
 			AvailableMaps = FindMaps( Manifest.Mods );
 			WidgetLoader = new WidgetLoader( this );
+		}
+		
+		void LoadHackyPalettes()
+		{
 			Palette = new HardwarePalette();
+			Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
 		}
 		
 		public void Sucks()
@@ -48,15 +53,19 @@ namespace OpenRA
 
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders) FileSystem.Mount(dir);
-			//foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
-						
-			Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
+			
 			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
 			
 			SpriteLoader = new SpriteLoader(new[]{".shp"}, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
+			LoadHackyPalettes();
+		}
+		
+		public void LoadPackages()
+		{
+			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
 		}
 		
         public static IEnumerable<string> FindMapsIn(string dir)
@@ -124,6 +133,7 @@ namespace OpenRA
 			}
 
 			previousMapHadSequences = map.Sequences.Count > 0;
+							LoadHackyPalettes();
 
 			return map;
 		}

@@ -253,15 +253,17 @@ namespace OpenRA
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
-			//StartGame(ChooseShellmap());
-
-			// TODO: unhardcode this
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
-			Widget.OpenWindow("MAINMENU_BG");
+			Widget.OpenWindow("MAINMENU_INIT");
 
 			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
-
+		
+		public static void LoadShellMap()
+		{
+			StartGame(ChooseShellmap());
+		}
+		
         static string ChooseShellmap()
         {
             var shellmaps =  modData.AvailableMaps
