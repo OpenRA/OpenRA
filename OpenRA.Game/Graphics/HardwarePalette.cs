@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	class HardwarePalette
+	public class HardwarePalette
 	{
 		public const int MaxPalettes = 64;
 		int allocated = 0;
@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 		Dictionary<string, Palette> palettes;
 		Dictionary<string, int> indices;
 		
-		public HardwarePalette(Map map)
+		public HardwarePalette()
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();

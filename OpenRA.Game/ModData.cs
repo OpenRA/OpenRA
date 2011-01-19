@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -25,8 +25,9 @@ namespace OpenRA
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
 		public CursorSheetBuilder CursorSheetBuilder;
-        public SpriteLoader SpriteLoader;
-
+		public SpriteLoader SpriteLoader;
+		public readonly HardwarePalette Palette;
+		
 		public ModData( params string[] mods )
 		{		
 			Manifest = new Manifest( mods );
@@ -35,15 +36,27 @@ namespace OpenRA
 			LoadScreen.Init();
 			LoadScreen.Display();
 			
+			AvailableMaps = FindMaps( Manifest.Mods );
+			WidgetLoader = new WidgetLoader( this );
+			Palette = new HardwarePalette();
+		}
+		
+		public void Sucks()
+		{
             // all this manipulation of static crap here is nasty and breaks 
             // horribly when you use ModData in unexpected ways.
 
-			FileSystem.LoadFromManifest( Manifest );
+			FileSystem.UnmountAll();
+			foreach (var dir in Manifest.Folders) FileSystem.Mount(dir);
+			//foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
+						
+			Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
 			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
-			AvailableMaps = FindMaps( mods );
-			WidgetLoader = new WidgetLoader( this );
+			
+			SpriteLoader = new SpriteLoader(new[]{".shp"}, SheetBuilder);
+			CursorProvider.Initialize(Manifest.Cursors);
 		}
 		
         public static IEnumerable<string> FindMapsIn(string dir)
@@ -53,7 +66,6 @@ namespace OpenRA
             if (!Directory.Exists(dir))
                 return NoMaps;
 
-            // todo: look for compressed maps too.
             return Directory.GetDirectories(dir)
                 .Concat(Directory.GetFiles(dir, "*.zip"))
                 .Concat(Directory.GetFiles(dir, "*.oramap"));
@@ -104,7 +116,7 @@ namespace OpenRA
 				|| previousMapHadSequences || map.Sequences.Count > 0)
 			{
 				SheetBuilder = new SheetBuilder( TextureChannel.Red );
-                SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset], SheetBuilder);
+				SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
 				CursorSheetBuilder = new CursorSheetBuilder( this );
 				CursorProvider.Initialize(Manifest.Cursors);
 				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);

@@ -109,7 +109,7 @@ namespace OpenRA
 			}
 
 			Tick( orderManager );
-			if( orderManager.world != worldRenderer.world )
+			if( worldRenderer != null && orderManager.world != worldRenderer.world )
 				Tick( worldRenderer.world.orderManager );
 
 			using (new PerfSample("render"))
@@ -244,13 +244,16 @@ namespace OpenRA
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mods));
 			
 			modData = new ModData( mods );
+			modData.Sucks();
+			
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 
 			JoinLocal();
+			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
-			StartGame(ChooseShellmap());
+			//StartGame(ChooseShellmap());
 
 			// TODO: unhardcode this
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );

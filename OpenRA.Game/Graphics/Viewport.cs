@@ -84,11 +84,12 @@ namespace OpenRA.Graphics
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
 		{
 			renderer.BeginFrame(scrollPosition);
+			if (wr != null)
+				wr.Draw();
 			
-			wr.Draw();
 			Widget.DoDraw();
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-			new Cursor(cursorName).Draw(wr, (int)cursorFrame, Viewport.LastMousePos + Location); 
+			new Cursor(cursorName).Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
 
 			renderer.EndFrame( inputHandler );
 		}

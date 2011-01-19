@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 			uiOverlay = new UiOverlay();
-			palette = new HardwarePalette(world.Map);
+			this.palette = Game.modData.Palette;
 
 			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
 				pal.Trait.InitPalette( this );
