@@ -18,11 +18,14 @@ using System;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
-	public class RAInitDelegate : IWidgetDelegate
+	public class GameInitDelegate : IWidgetDelegate
 	{
+		GameInitInfoWidget Info;
+		
 		[ObjectCreator.UseCtor]
-		public RAInitDelegate([ObjectCreator.Param] Widget widget)
+		public GameInitDelegate([ObjectCreator.Param] Widget widget)
 		{
+			Info = widget.GetWidget<GameInitInfoWidget>("INFO");
 			Game.ConnectionStateChanged += orderManager =>
 			{
 				Widget.CloseWindow();
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 			};
 			
-			if (FileSystem.Exists("fake.mix"))
+			if (FileSystem.Exists(Info.TestFile))
 				ContinueLoading(widget);
 			else
 			{
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			Process p = new Process();
 			p.StartInfo.FileName = "OpenRA.Launcher.Mac/build/Release/OpenRA.app/Contents/MacOS/OpenRA";
-			p.StartInfo.Arguments = "--filepicker --title \"Select CD\" --message \"Select the Red Alert CD\" --require-directory --button-text \"Select\"";
+			p.StartInfo.Arguments = "--filepicker --title \"Select CD\" --message \"Select the {0} CD\" --require-directory --button-text \"Select\"".F(Info.GameTitle);
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
 			p.EnableRaisingEvents = true;

@@ -46,7 +46,7 @@ Sequences:
 	mods/cnc/sequences/misc.yaml
 
 Cursors:
-	mods/cnc/cursors.xml
+	mods/cnc/cursors.yaml
 
 Chrome:
 	mods/cnc/chrome.xml

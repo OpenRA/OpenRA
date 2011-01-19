@@ -5,8 +5,12 @@ Background@MAINMENU_INIT:
 	Width:250
 	Height:330
 	Visible:true
-	Delegate:RAInitDelegate
+	Delegate:GameInitDelegate
 	Children:
+		GameInitInfo:
+			Id:INFO
+			TestFile: fakefile.mix
+			GameTitle: Red Alert
 		Label@MAINMENU_LABEL_TITLE:
 			Id:MAINMENU_LABEL_TITLE
 			X:0
