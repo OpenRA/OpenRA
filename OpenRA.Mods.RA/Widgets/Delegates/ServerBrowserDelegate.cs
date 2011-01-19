@@ -92,26 +92,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				if (currentServer == null)
 					return false;
 
-				// Todo: Add an error dialog explaining why we aren't letting them join
-				// Or even better, reject them server side and display the error in the connection failed dialog.
-
-				var serverMods = currentServer.Mods.Select(m => m.Split('@')[0]);
-
-				// Don't bother joining a server with different mods... its only going to crash
-				if (serverMods.SymmetricDifference(Game.modData.Manifest.Mods).Any())
-				{
-					System.Console.WriteLine("Player has different mods to server; not connecting to avoid crash");
-					System.Console.WriteLine("FIX THIS BUG YOU NOOB!");
-					return false;
-				}
-
-				// Prevent user joining a full server
-				if (CurrentMap() != null && currentServer.Players >= CurrentMap().PlayerCount)
-				{
-					System.Console.WriteLine("Server is full; not connecting");
-					return false;
-				}
-
 				Widget.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
 				return true;
