@@ -65,8 +65,7 @@ namespace OpenRA.Renderer.Cg
 				windowFlags |= Sdl.SDL_FULLSCREEN;
 				break;
 			case WindowMode.PseudoFullscreen:
-				// pseudo-fullscreen only reliably works on windows; fall back to fullscreen for everyone else
-				windowFlags |= ( Environment.OSVersion.Platform == PlatformID.Win32NT ) ? Sdl.SDL_NOFRAME : Sdl.SDL_FULLSCREEN;
+				windowFlags |= Sdl.SDL_NOFRAME;
 				Environment.SetEnvironmentVariable( "SDL_VIDEO_WINDOW_POS", "0,0" );
 				break;
 			default:
