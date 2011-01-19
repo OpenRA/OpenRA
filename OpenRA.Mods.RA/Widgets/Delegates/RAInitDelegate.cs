@@ -45,18 +45,17 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
 						lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
 						lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
-						//r.GetWidget("INGAME_ROOT").GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();	
 						break;
 				}
 			};
 			
 			if (FileSystem.Exists("fake.mix"))
-				ContinueLoading();
+				ContinueLoading(widget);
 			else
 			{
 				widget.GetWidget("INIT_DOWNLOAD").OnMouseUp = mi =>
 				{
-					ContinueLoading();
+					ContinueLoading(widget);
 					return true;
 				};
 				
@@ -86,10 +85,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			p.Start();
 		}
 		
-		void ContinueLoading()
+		void ContinueLoading(Widget widget)
 		{
-			Game.modData.LoadPackages();
 			Game.LoadShellMap();
+			Widget.RootWidget.Children.Remove(widget);
 			Widget.OpenWindow("MAINMENU_BG");
 		}
 	}

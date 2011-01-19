@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		[ObjectCreator.UseCtor]
 		public MainMenuButtonsDelegate([ObjectCreator.Param] Widget widget)
 		{
-			// Main menu is the default window
+			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
 			widget.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi => { Widget.OpenWindow("JOINSERVER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => { Widget.OpenWindow("CREATESERVER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => { Widget.OpenWindow("SETTINGS_MENU"); return true; };

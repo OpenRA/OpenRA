@@ -244,7 +244,7 @@ namespace OpenRA
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mods));
 			
 			modData = new ModData( mods );
-			modData.Sucks();
+			modData.LoadInitialAssets();
 			
 			Sound.Initialize();
 			PerfHistory.items["render"].hasNormalTick = false;
@@ -252,10 +252,7 @@ namespace OpenRA
 
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
-
-			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "MAINMENU_INIT" );
-
 			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
 		

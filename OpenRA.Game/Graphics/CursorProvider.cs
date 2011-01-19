@@ -23,10 +23,14 @@ namespace OpenRA.Graphics
 
 		public static void Initialize(string[] sequenceFiles)
 		{
+			// TODO: Convert cursor definitions to yaml and parse cursor palette info
+			Game.modData.Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
+			
 			cursors = new Dictionary<string, CursorSequence>();
 			
 			foreach (var f in sequenceFiles)
 				LoadSequenceSource(f);
+			
 		}
 
 		static void LoadSequenceSource(string filename)

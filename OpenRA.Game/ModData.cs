@@ -27,6 +27,7 @@ namespace OpenRA
 		public CursorSheetBuilder CursorSheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public HardwarePalette Palette { get; private set; }
+		IFolder previousMapMount = null;
 		
 		public ModData( params string[] mods )
 		{		
@@ -39,33 +40,45 @@ namespace OpenRA
 			AvailableMaps = FindMaps( Manifest.Mods );
 			WidgetLoader = new WidgetLoader( this );
 		}
-		
-		void LoadHackyPalettes()
-		{
-			Palette = new HardwarePalette();
-			Palette.AddPalette("cursor", new Palette( FileSystem.Open( "cursor.pal" ), false ));
-		}
-		
-		public void Sucks()
-		{
-            // all this manipulation of static crap here is nasty and breaks 
-            // horribly when you use ModData in unexpected ways.
-
-			FileSystem.UnmountAll();
-			foreach (var dir in Manifest.Folders) FileSystem.Mount(dir);
 			
+		public void LoadInitialAssets()
+		{
+			// all this manipulation of static crap here is nasty and breaks 
+            // horribly when you use ModData in unexpected ways.
+			FileSystem.UnmountAll();
+			foreach (var dir in Manifest.Folders)
+				FileSystem.Mount(dir);
+			
+			Palette = new HardwarePalette();
 			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );
 			CursorSheetBuilder = new CursorSheetBuilder( this );
-			
-			SpriteLoader = new SpriteLoader(new[]{".shp"}, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
-			LoadHackyPalettes();
 		}
-		
-		public void LoadPackages()
+
+		public Map PrepareMap(string uid)
 		{
-			foreach (var pkg in Manifest.Packages) FileSystem.Mount(pkg);
+			LoadScreen.Display();
+			if (!AvailableMaps.ContainsKey(uid))
+				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
+			var map = new Map(AvailableMaps[uid].Path);
+
+			// Maps may contain custom assets
+			// TODO: why are they lowest priority? they should be highest.
+			if (previousMapMount != null) FileSystem.Unmount(previousMapMount);
+			previousMapMount = FileSystem.OpenPackage(map.Path, int.MaxValue);
+			FileSystem.Mount(previousMapMount);
+			
+			// Reinit all our assets
+			LoadInitialAssets();
+			foreach (var pkg in Manifest.Packages)
+				FileSystem.Mount(pkg);
+		
+			Rules.LoadRules(Manifest, map);
+			SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
+			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
+			
+			return map;
 		}
 		
         public static IEnumerable<string> FindMapsIn(string dir)
@@ -97,46 +110,6 @@ namespace OpenRA
 			return ret;
 		}
 		
-		string cachedTileset = null;
-		bool previousMapHadSequences = true;
-		IFolder previousMapMount = null;
-
-		public Map PrepareMap(string uid)
-		{
-			LoadScreen.Display();
-
-			if (!AvailableMaps.ContainsKey(uid))
-				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
-			
-			var map = new Map(AvailableMaps[uid].Path);
-
-			// unload the previous map mount if we have one
-			if (previousMapMount != null) FileSystem.Unmount(previousMapMount);
-
-			// Adds the map its container to the FileSystem
-			// allowing the map to use custom assets
-			// Container should have the lowest priority of all (ie int max)
-			// Store a reference so we can unload it next time
-			previousMapMount = FileSystem.OpenPackage(map.Path, int.MaxValue);
-			FileSystem.Mount(previousMapMount);
-			Rules.LoadRules(Manifest, map);
-
-			if (map.Tileset != cachedTileset
-				|| previousMapHadSequences || map.Sequences.Count > 0)
-			{
-				SheetBuilder = new SheetBuilder( TextureChannel.Red );
-				SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
-				CursorSheetBuilder = new CursorSheetBuilder( this );
-				CursorProvider.Initialize(Manifest.Cursors);
-				SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-				cachedTileset = map.Tileset;
-			}
-
-			previousMapHadSequences = map.Sequences.Count > 0;
-							LoadHackyPalettes();
-
-			return map;
-		}
 	}
 	
 	public interface ILoadScreen { void Display(); void Init(); }
