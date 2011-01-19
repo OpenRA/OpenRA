@@ -5,7 +5,7 @@
  * as published by the Free Software Foundation. For more information,
  * see LICENSE.
  */
-
+#import "main.h"
 #import "Controller.h"
 
 @implementation Controller
@@ -43,13 +43,17 @@
 		[[NSApplication sharedApplication] terminate:self];
 	}
 	
-	[self launchMod:@"cnc"];
+	[self launchMod:@"ra"];
 	[NSApp terminate: nil];
 }
 
 - (void)launchFilePicker:(NSArray *)args
 {
+	hide_menubar_if_necessary();
+	[NSApp activateIgnoringOtherApps:YES];
+	
 	NSOpenPanel *op = [NSOpenPanel openPanel];
+	[op setLevel:CGShieldingWindowLevel()];
 	[op setAllowsMultipleSelection:NO];
 	
 	NSUInteger a = [args indexOfObject:@"--title"];
@@ -63,6 +67,18 @@
 	a = [args indexOfObject:@"--directory"];
 	if (a != NSNotFound)
 		[op setDirectory:[[args objectAtIndex:a+1] stringByExpandingTildeInPath]];
+	
+	a = [args indexOfObject:@"--require-directory"];
+	if (a != NSNotFound)
+	{
+		[op setCanChooseFiles:NO];
+		[op setCanChooseDirectories:YES];
+	}
+	
+	a = [args indexOfObject:@"--button-text"];
+	if (a != NSNotFound)
+		[op setPrompt:[[args objectAtIndex:a+1] stringByExpandingTildeInPath]];
+	
 	
 	if ([op runModal] == NSFileHandlingPanelOKButton)
 		printf("%s\n", [[[op URL] path] UTF8String]);

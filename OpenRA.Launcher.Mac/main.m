@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "main.h"
 
 extern char **environ;
 int main(int argc, char *argv[])
@@ -45,15 +46,20 @@ int main(int argc, char *argv[])
 			setenv("DYLD_LIBRARY_PATH", buf, 1);
 		}
 		
-		// Hide the menubar if we are running fullscreen
-		// TODO: HACK: Parse the settings.yaml / commandline args for fullscreen options
-		if (YES)
-			[NSMenu setMenuBarVisible:NO];
-		
+
+		hide_menubar_if_necessary();
 		/* Exec mono */
 		execve(args[0], args, environ);
 	}
 	
 	/* Else, start the launcher */
 	return NSApplicationMain(argc,  (const char **) argv);
+}
+
+// Hide the menubar and dock if we are running fullscreen
+void hide_menubar_if_necessary()
+{
+	// TODO: HACK: Parse the settings.yaml / commandline args for fullscreen options
+	if (YES)
+		[NSMenu setMenuBarVisible:NO];
 }

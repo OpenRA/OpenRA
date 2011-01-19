@@ -7,15 +7,39 @@ Background@MAINMENU_INIT:
 	Visible:true
 	Delegate:RAInitDelegate
 	Children:
-		Button@FINISH_INIT:
-			Id:FINISH_INIT
+		Label@MAINMENU_LABEL_TITLE:
+			Id:MAINMENU_LABEL_TITLE
+			X:0
+			Y:20
+			Width:250
+			Height:25
+			Text:Install Game Content
+			Align:Center
+			Bold:True
+		Button@INIT_DOWNLOAD:
+			Id:INIT_DOWNLOAD
 			X:45
 			Y:70
 			Width:160
 			Height:25
-			Text:START
+			Text:Download
 			Bold:True
-				
+		Button@INIT_FROMCD:
+			Id:INIT_FROMCD
+			X:45
+			Y:110
+			Width:160
+			Height:25
+			Text:From CD
+			Bold:True
+		Button@INIT_QUIT:
+			Id:INIT_QUIT
+			X:45
+			Y:150
+			Width:160
+			Height:25
+			Text:Quit
+			Bold:True
 Background@MAINMENU_BG:
 	Id:MAINMENU_BG
 	X:(WINDOW_RIGHT - WIDTH)/2

@@ -254,7 +254,7 @@ namespace OpenRA
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
-			Widget.OpenWindow("MAINMENU_INIT");
+			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "MAINMENU_INIT" );
 
 			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
