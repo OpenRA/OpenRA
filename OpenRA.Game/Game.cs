@@ -219,6 +219,8 @@ namespace OpenRA
 												+ Path.DirectorySeparatorChar + "OpenRA";
 
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
+			FileSystem.SpecialPackageRoot = args.GetValue("SpecialPackageRoot", "");
+			
 			Settings = new Settings(SupportDir + "settings.yaml", args);
 
 			Settings.Save();
