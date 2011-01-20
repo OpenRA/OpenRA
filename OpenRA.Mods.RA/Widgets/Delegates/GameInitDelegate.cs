@@ -18,6 +18,7 @@ using System;
 using System.Net;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -69,22 +70,64 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
 			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
-			window.GetWidget("FROMCD").OnMouseUp = mi =>
-			{
-				PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path => System.Console.WriteLine(path));
-				return true;
-			};
+			window.GetWidget("FROMCD").OnMouseUp = mi => PromptForCD();
 					
 			window.GetWidget("QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
 		}
 		
+		bool PromptForCD()
+		{
+			PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path =>
+			{
+				if (!string.IsNullOrEmpty(path))
+					Game.RunAfterTick(() => InstallFromCD(path));
+			});
+			return true;
+		}
+		
+		void InstallFromCD(string path)
+		{
+			window = Widget.OpenWindow("INIT_COPY");
+			var status = window.GetWidget<LabelWidget>("STATUS");
+			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
+			
+			// TODO: Handle cancelling copy
+			// TODO: Make the progress bar indeterminate
+			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
+			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
+			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
+
+			status.GetText = () => "Copying...";
+			var error = false;
+			Action<string> parseOutput = s => 
+		    {
+		    	if (s.Substring(0,5) == "Error")
+				{
+					error = true;
+					ShowDownloadError(s);
+				}
+				if (s.Substring(0,6) == "Status")
+					window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
+			};
+			
+			Action onComplete = () =>
+			{
+				if (!error)
+					Game.RunAfterTick(() => ContinueLoading(Info));
+			};
+			
+			if (Info.InstallMode == "ra")
+				CopyRAFiles(path, parseOutput, onComplete);
+			else 
+				ShowDownloadError("Installing from CD not supported");
+		}
+
 		void ShowDownloadDialog()
 		{
-			window = Widget.OpenWindow("INIT_DOWNLOAD");        
+			window = Widget.OpenWindow("INIT_DOWNLOAD");
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-			
 			// Save the package to a temp file
 			var file = Path.GetTempPath() + Path.DirectorySeparatorChar + Path.GetRandomFileName();					
 			Action<DownloadProgressChangedEventArgs> onDownloadChange = i =>
@@ -102,18 +145,24 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					// Automatically extract
 					status.GetText = () => "Extracting...";
 					var error = false;
-					Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath,
-				        s => 
-					    {
-					    	if (s.Substring(0,5) == "Error")
-							{
-								error = true;
-								ShowDownloadError(s);
-							}
-							if (s.Substring(0,6) == "Status")
-								window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
-						},
-						() => {if (!error) Game.RunAfterTick(() => ContinueLoading(Info));}));
+					Action<string> parseOutput = s => 
+				    {
+				    	if (s.Substring(0,5) == "Error")
+						{
+							error = true;
+							ShowDownloadError(s);
+						}
+						if (s.Substring(0,6) == "Status")
+							window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
+					};
+					
+					Action onComplete = () =>
+					{
+						if (!error)
+							Game.RunAfterTick(() => ContinueLoading(Info));
+					};
+					
+					Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath, parseOutput, onComplete));
 				}
 			};
 			
@@ -188,6 +237,35 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			onComplete();
 		}
 		
+		public static void CopyRAFiles(string cdPath, Action<string> parseOutput, Action onComplete)
+		{
+			
+			Process p = new Process();
+			p.StartInfo.FileName = "OpenRA.Utility.exe";
+			p.StartInfo.Arguments = "\"--install-ra-packages={0}\"".F(cdPath);
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.RedirectStandardOutput = true;
+			p.Start();
+			
+			var t = new Thread( _ =>
+			{
+				using (var reader = p.StandardOutput)
+				{
+					// This is wrong, chrisf knows why
+					while (!p.HasExited)
+					{
+						string s = reader.ReadLine();
+						if (string.IsNullOrEmpty(s)) continue;
+						parseOutput(s);
+					}
+				}
+				onComplete();
+			}) { IsBackground = true };
+			t.Start();
+			
+		}
+		
 		public static void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
 		{
 			Process p = new Process();
@@ -195,10 +273,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			p.StartInfo.Arguments = "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : "");
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.RedirectStandardOutput = true;
 			p.EnableRaisingEvents = true;
 			p.Exited += (_,e) =>
 			{
-				withPath(p.StandardOutput.ReadToEnd());
+				withPath(p.StandardOutput.ReadToEnd().Trim());
 			};
 			p.Start();
 		}

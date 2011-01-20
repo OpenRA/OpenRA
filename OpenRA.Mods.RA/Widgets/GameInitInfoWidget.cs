@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public string GameTitle;
 		public string PackageURL;
 		public string PackagePath;
+		public string InstallMode;
 
 		public override void DrawInner() {}
 	}

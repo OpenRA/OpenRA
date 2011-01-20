@@ -4,6 +4,7 @@ GameInitInfo@INIT_SETUP:
 	GameTitle: Command & Conquer
 	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
 	PackagePath:cnc/packages/
+	InstallMode:cnc
 	Delegate:GameInitDelegate
 
 Background@INIT_CHOOSEINSTALL:
@@ -33,7 +34,7 @@ Background@INIT_CHOOSEINSTALL:
 			Y:70
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Content can be downloaded automatically or installed from CD.
+			Text:Content can be downloaded, or copied from the install CD.
 			Align:Center
 		Button@DOWNLOAD:
 			Id:DOWNLOAD
@@ -113,4 +114,50 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Visible: false
 			Text:Extract
+			Bold:True
+
+Background@INIT_COPY:
+	Id:INIT_COPY
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Copying C&C Content
+			Align:Center
+			Bold:True
+		ProgressBar@PROGRESS:
+			Id:PROGRESS
+			X:50
+			Y:55
+			Width:PARENT_RIGHT - 100
+			Height:25
+		Label@STATUS:
+			Id:STATUS
+			X:50
+			Y:80
+			Width:PARENT_RIGHT - 100
+			Height:25
+			Align:Left
+		Button@RETRY:
+			Id:RETRY
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Visible: false
+			Text:Retry
+			Bold:True
+		Button@CANCEL:
+			Id:CANCEL
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
 			Bold:True
