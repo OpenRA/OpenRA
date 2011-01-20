@@ -23,9 +23,6 @@ namespace OpenRA.FileFormats
 
 		public ActorReference( string type, Dictionary<string, MiniYaml> inits )
 		{
-			if (Rules.Info != null && !Rules.Info.ContainsKey(type))
-				throw new InvalidDataException("Unknown actor: `{0}'".F(type));
-			
 			Type = type;
 			InitDict = new TypeDictionary();
 			foreach( var i in inits )

@@ -246,11 +246,16 @@ namespace OpenRA
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 			
+			InitializeWithMods(Settings.Game.Mods);
+		}
+		
+		public static void InitializeWithMods(string[] mods)
+		{
 			// Discard any invalid mods
-			var mods = Settings.Game.Mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
-			Console.WriteLine("Loading mods: {0}",string.Join(",",mods));
+			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
+			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
 			
-			modData = new ModData( mods );
+			modData = new ModData( mm );
 			modData.LoadInitialAssets();
 			
 			Sound.Initialize();
