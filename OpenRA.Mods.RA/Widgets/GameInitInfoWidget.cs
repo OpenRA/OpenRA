@@ -19,7 +19,6 @@ namespace OpenRA.Mods.RA.Widgets
 		public string TestFile;
 		public string GameTitle;
 		public string PackageURL;
-		public string PackageName;
 		public string PackagePath;
 
 		public override void DrawInner() {}

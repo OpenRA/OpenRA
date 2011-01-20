@@ -1,9 +1,9 @@
 GameInitInfo@INIT_SETUP:
 	Id:INIT_SETUP
-	TestFile: conquer.mix
-	GameTitle: Command & Conquer
-	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackagePath:cnc/packages/
+	TestFile: redalert.mix
+	GameTitle: Red Alert
+	PackageURL:http://open-ra.org/get-dependency.php?file=ra-packages
+	PackagePath:ra/packages/
 	Delegate:GameInitDelegate
 
 Background@INIT_CHOOSEINSTALL:
@@ -26,7 +26,7 @@ Background@INIT_CHOOSEINSTALL:
 			Y:50
 			Width:PARENT_RIGHT
 			Height:25
-			Text:OpenRA requires the original C&C game content.
+			Text:OpenRA requires the original Red Alert game content.
 			Align:Center
 		Label@DESC2:
 			X:0
@@ -72,7 +72,7 @@ Background@INIT_DOWNLOAD:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Downloading C&C Content
+			Text:Downloading Red Alert Content
 			Align:Center
 			Bold:True
 		ProgressBar@PROGRESS:

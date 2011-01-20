@@ -17,8 +17,6 @@ using System.Diagnostics;
 using System;
 using System.Net;
 using System.ComponentModel;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
@@ -86,43 +84,40 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-			// TODO: Download to a temp location or the support dir
-			var file = Info.PackageName;
 			
-			var dl = new Download(Info.PackageURL, file,
-	            i => {
-					status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
-					progress.Percentage = i.ProgressPercentage;
-				},
-	            (i, cancelled) => {
-					System.Console.WriteLine("here");
-					if (i.Error != null)
-					{
-						System.Console.WriteLine("here2");
-						ShowDownloadError(i.Error.Message);
-					}
-					else if (!cancelled)
-					{
-						System.Console.WriteLine("here3");
-						// Automatically extract
-						status.GetText = () => "Extracting...";
-						var error = false;
-						Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath,
-					        s => 
-						    {
-						    	if (s.Substring(0,5) == "Error")
-								{
-									error = true;
-									ShowDownloadError(s);
-								}
-								if (s.Substring(0,6) == "Status")
-									window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
-							},
-							() => {if (!error) Game.RunAfterTick(() => ContinueLoading(Info));}));
-					}
+			// Save the package to a temp file
+			var file = Path.GetTempPath() + Path.DirectorySeparatorChar + Path.GetRandomFileName();					
+			Action<DownloadProgressChangedEventArgs> onDownloadChange = i =>
+			{
+				status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
+				progress.Percentage = i.ProgressPercentage;
+			};
+			
+			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+			{
+				if (i.Error != null)
+					ShowDownloadError(i.Error.Message);
+				else if (!cancelled)
+				{
+					// Automatically extract
+					status.GetText = () => "Extracting...";
+					var error = false;
+					Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath,
+				        s => 
+					    {
+					    	if (s.Substring(0,5) == "Error")
+							{
+								error = true;
+								ShowDownloadError(s);
+							}
+							if (s.Substring(0,6) == "Status")
+								window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
+						},
+						() => {if (!error) Game.RunAfterTick(() => ContinueLoading(Info));}));
 				}
-			);
+			};
 			
+			var dl = new Download(Info.PackageURL, file, onDownloadChange, onDownloadComplete);
 			window.GetWidget("CANCEL").OnMouseUp = mi => { dl.Cancel(); ShowInstallMethodDialog(); return true; };
 			window.GetWidget("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); return true; };
 		}
