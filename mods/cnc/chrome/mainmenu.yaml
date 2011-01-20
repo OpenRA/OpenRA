@@ -72,28 +72,29 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Video Player
 			Bold:True
-		Background@QUICKMODSWITCHER_BG:
-			Background: dialog4
-			X:(WINDOW_RIGHT - PARENT_LEFT - WIDTH - 10)
-			Y:10 - PARENT_TOP
-			Width:205
-			Height:35
-			Children:
-				Label@TITLE:
-					X:8
-					Y:3
-					Width:PARENT_RIGHT
-					Height:25
-					Text:Mod:
-					Align:Left
-					Bold:True
-				DropDownButton@QUICKMODSWITCHER:
-					Id:QUICKMODSWITCHER
-					Text:Team
-					Width:150
-					Height:25
-					X:50
-					Y:5		
+Background@QUICKMODSWITCHER:
+	Id:QUICKMODSWITCHER
+	Background: dialog4
+	X:(WINDOW_RIGHT - PARENT_LEFT - WIDTH - 10)
+	Y:10 - PARENT_TOP
+	Width:205
+	Height:35
+	Children:
+		Label@TITLE:
+			X:8
+			Y:3
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Mod:
+			Align:Left
+			Bold:True
+		DropDownButton@SWITCHER:
+			Id:SWITCHER
+			Text:Team
+			Width:150
+			Height:25
+			X:50
+			Y:5		
 Background@PERF_BG:
 	Id:PERF_BG
 	Background:dialog4

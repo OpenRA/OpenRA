@@ -31,7 +31,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("MAINMENU_BUTTON_REPLAY_VIEWER").OnMouseUp = mi => { Widget.OpenWindow("REPLAYBROWSER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
 			
-			var selector = widget.GetWidget<ButtonWidget>("QUICKMODSWITCHER");
+			var switcher = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "QUICKMODSWITCHER" );
+			var selector = switcher.GetWidget<ButtonWidget>("SWITCHER");
 			selector.OnMouseDown = _ => ShowModsDropDown(selector);
 			selector.GetText = ActiveModTitle;
 		}
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 					
 				dropDownOptions.Add(new Pair<string, Action>( kv.Value.Title,
-					() => Game.InitializeWithMods( modList.ToArray() ) ));
+					() => Game.RunAfterTick(() => Game.InitializeWithMods( modList.ToArray() ) )));
 			}
 				                    
 			DropDownButtonWidget.ShowDropDown( selector,

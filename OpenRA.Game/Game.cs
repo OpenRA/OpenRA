@@ -102,7 +102,6 @@ namespace OpenRA
 		
 		static object syncroot = new object();
 		static Action tickActions = () => {};
-
 		public static void RunAfterTick(Action a) { lock(syncroot) tickActions += a; }
 		static void Tick( OrderManager orderManager, Viewport viewPort )
 		{
@@ -251,9 +250,19 @@ namespace OpenRA
 		
 		public static void InitializeWithMods(string[] mods)
 		{
+			// Clear static state if we have switched mods
+			LobbyInfoChanged = () => {};
+			AddChatLine = (a,b,c) => {};
+			worldRenderer = null;
+			if (server != null)
+				server.Shutdown();
+			if (orderManager != null)
+				orderManager.Dispose();
+			
 			// Discard any invalid mods
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
+
 			
 			modData = new ModData( mm );
 			modData.LoadInitialAssets();
