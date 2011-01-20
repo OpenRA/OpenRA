@@ -9,6 +9,8 @@
 #endregion
 
 using OpenRA.Widgets;
+using System;
+using OpenRA.Mods.RA.Widgets.Delegates;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -19,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public string PackageURL;
 		public string PackageName;
 		public string PackagePath;
-		
+
 		public override void DrawInner() {}
 	}
 }

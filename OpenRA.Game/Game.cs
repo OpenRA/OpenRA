@@ -100,6 +100,10 @@ namespace OpenRA
 			return Widget.OpenWindow(widget, new Dictionary<string,object>{{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
 		}
 		
+		static object syncroot = new object();
+		static Action tickActions = () => {};
+
+		public static void RunAfterTick(Action a) { lock(syncroot) tickActions += a; }
 		static void Tick( OrderManager orderManager, Viewport viewPort )
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
@@ -123,6 +127,9 @@ namespace OpenRA
 			PerfHistory.items["batches"].Tick();
 
 			MasterServerQuery.Tick();
+			Action a;
+			lock(syncroot) { a = tickActions; tickActions = () => {}; }
+			a();
 		}
 
 		private static void Tick( OrderManager orderManager )

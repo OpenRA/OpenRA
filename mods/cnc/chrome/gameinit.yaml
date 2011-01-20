@@ -2,10 +2,9 @@ GameInitInfo@INIT_SETUP:
 	Id:INIT_SETUP
 	TestFile: conquer.mix
 	GameTitle: Command & Conquer
-#	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackageURL:http://localhost/~paul/cnc-packages.zip
+	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
 	PackageName:cnc-packages.zip
-	PackagePath:mods/cnc/packages
+	PackagePath:cnc/packages/
 	Delegate:GameInitDelegate
 
 Background@INIT_CHOOSEINSTALL:
@@ -105,7 +104,6 @@ Background@INIT_DOWNLOAD:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Visible: false
 			Text:Cancel
 			Bold:True
 		Button@EXTRACT:

@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		public GameInitDelegate([ObjectCreator.Param] Widget widget)
 		{
 			Info = (widget as GameInitInfoWidget);
+
 			Game.ConnectionStateChanged += orderManager =>
 			{
 				Widget.CloseWindow();
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
 			window.GetWidget("FROMCD").OnMouseUp = mi =>
 			{
-				SelectDisk(path => System.Console.WriteLine(path));
+				PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path => System.Console.WriteLine(path));
 				return true;
 			};
 					
@@ -84,53 +85,43 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window = Widget.OpenWindow("INIT_DOWNLOAD");        
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
-			
-			
+			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
 			// TODO: Download to a temp location or the support dir
 			var file = Info.PackageName;
 			
-			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-			
-			window.GetWidget<ButtonWidget>("EXTRACT").OnMouseUp = mi =>
-			{ 
-				if (ExtractZip(file, Info.PackagePath))
-					ContinueLoading(Info);
-				return true;
-			};
-			
-
-			if (File.Exists(file))
-			{
-				window.GetWidget<ButtonWidget>("EXTRACT").IsVisible = () => true;
-				status.GetText = () => "Download Cached";
-				progress.Percentage = 100;
-			}
-			else
-			{
-				var dl = DownloadUrl(Info.PackageURL, file,
-		            (_,i) => {
-						status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
-						progress.Percentage = i.ProgressPercentage;
-					},
-		            (_,i) => {
-						if (i.Error != null)
-						{
-							ShowDownloadError(i.Error.Message);
-						}
-						else
-						{
-							status.GetText = () => "Download Complete";
-							window.GetWidget<ButtonWidget>("EXTRACT").IsVisible = () => true;
-							window.GetWidget("CANCEL").IsVisible = () => false;
-						}
+			var dl = DownloadUrl(Info.PackageURL, file,
+	            (_,i) => {
+					status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
+					progress.Percentage = i.ProgressPercentage;
+				},
+	            (_,i) => {
+					if (i.Error != null)
+					{
+						ShowDownloadError(i.Error.Message);
 					}
-				);
-				window.GetWidget("CANCEL").IsVisible = () => true;
-				window.GetWidget("RETRY").IsVisible = () => true;
-				
-				window.GetWidget("CANCEL").OnMouseUp = mi => { dl.CancelAsync(); ShowInstallMethodDialog(); return true; };
-				window.GetWidget("RETRY").OnMouseUp = mi => { dl.CancelAsync(); ShowDownloadDialog(); return true; };
-			}
+					else
+					{
+						// Automatically extract
+						status.GetText = () => "Extracting...";
+						var error = false;
+						Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath,
+					        s => 
+						    {
+						    	if (s.Substring(0,5) == "Error")
+								{
+									error = true;
+									ShowDownloadError(s);
+								}
+								if (s.Substring(0,6) == "Status")
+									window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
+							},
+							() => {if (!error) Game.RunAfterTick(() => ContinueLoading(Info));}));
+					}
+				}
+			);
+			
+			window.GetWidget("CANCEL").OnMouseUp = mi => { dl.CancelAsync(); ShowInstallMethodDialog(); return true; };
+			window.GetWidget("RETRY").OnMouseUp = mi => { dl.CancelAsync(); ShowDownloadDialog(); return true; };
 		}
 		
 		void ShowDownloadError(string e)
@@ -140,69 +131,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => true;
 		}
 				
-		// TODO: This needs to live on a different process if we want to run it as root
-		public bool ExtractZip(string zipFile, string path)
-		{
-			if (!File.Exists(zipFile)) { ShowDownloadError("Download Corrupted"); return false; }
-			List<string> extracted = new List<string>();
-			try
-			{
-				ZipEntry entry;
-				var z = new ZipInputStream(File.OpenRead(zipFile));
-				while ((entry = z.GetNextEntry()) != null)
-				{
-					if (!entry.IsFile) continue;			
-					if (!Directory.Exists(Path.Combine(path, Path.GetDirectoryName(entry.Name))))
-						Directory.CreateDirectory(Path.Combine(path, Path.GetDirectoryName(entry.Name)));
-					
-					window.GetWidget<LabelWidget>("STATUS").GetText = () => "Status: Extracting {0}".F(entry.Name);
-					
-					var destPath = path + Path.DirectorySeparatorChar + entry.Name;
-					Console.WriteLine("Extracting to {0}",destPath);
-					extracted.Add(path);
-					using (var f = File.Create(destPath))
-					{
-						int bufSize = 2048;
-						byte[] buf = new byte[bufSize];
-						while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-							f.Write(buf, 0, bufSize);
-					}
-				}
-				z.Close();
-			}
-			catch (SharpZipBaseException)
-			{
-				foreach(var f in extracted)
-					File.Delete(f);
-				
-				ShowDownloadError("Download Corrupted");
-				return false;
-			}
-			return true;
-		}
-		
-		void SelectDisk(Action<string> withPath)
-		{
-			Process p = new Process();
-			p.StartInfo.FileName = "OpenRA.Launcher.Mac/build/Release/OpenRA.app/Contents/MacOS/OpenRA";
-			p.StartInfo.Arguments = "--filepicker --title \"Select CD\" --message \"Select the {0} CD\" --require-directory --button-text \"Select\"".F(Info.GameTitle);
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.EnableRaisingEvents = true;
-			p.Exited += (_,e) =>
-			{
-				withPath(p.StandardOutput.ReadToEnd());
-			};
-			p.Start();
-		}
-		
 		void ContinueLoading(Widget widget)
 		{
 			Game.LoadShellMap();
 			Widget.RootWidget.Children.Remove(widget);
 			Widget.OpenWindow("MAINMENU_BG");
 		}
-				
+		
 		public static WebClient DownloadUrl(string url, string path, DownloadProgressChangedEventHandler onProgress, AsyncCompletedEventHandler onComplete)
 		{
 			WebClient wc = new WebClient();
@@ -214,6 +149,44 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			wc.DownloadFileAsync(new Uri(url), path);
 			Game.OnQuit += () => wc.CancelAsync();
 			return wc;
+		}
+		
+		public static void ExtractZip(string zipFile, string path, Action<string> parseOutput, Action onComplete)
+		{
+			Process p = new Process();
+			p.StartInfo.FileName = "OpenRA.Utility.exe";
+			p.StartInfo.Arguments = "\"--extract-zip={0},{1}\"".F(zipFile, path);
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.CreateNoWindow = true;
+			p.StartInfo.RedirectStandardOutput = true;
+			p.Start();
+			
+			using (var reader = p.StandardOutput)
+			{
+				// This is wrong, chrisf knows why
+				while (!p.HasExited)
+				{
+					string s = reader.ReadLine();
+					if (string.IsNullOrEmpty(s)) continue;
+					parseOutput(s);
+				}
+			}
+			onComplete();
+		}
+		
+		public static void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
+		{
+			Process p = new Process();
+			p.StartInfo.FileName = "OpenRA.Launcher.Mac/build/Release/OpenRA.app/Contents/MacOS/OpenRA";
+			p.StartInfo.Arguments = "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : "");
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.CreateNoWindow = true;
+			p.EnableRaisingEvents = true;
+			p.Exited += (_,e) =>
+			{
+				withPath(p.StandardOutput.ReadToEnd());
+			};
+			p.Start();
 		}
 	}
 }
