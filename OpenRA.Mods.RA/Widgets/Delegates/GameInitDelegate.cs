@@ -81,8 +81,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
 			
+			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
+
 			var dl = DownloadUrl(Info.PackageURL, Info.PackagePath,
-	            (_,i) => status.GetText = () => "{0}% {1}/{2} bytes".F(i.ProgressPercentage, i.BytesReceived, i.TotalBytesToReceive),
+	            (_,i) => {
+					status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
+					progress.Percentage = i.ProgressPercentage;
+				},
 	            (_,i) => status.GetText = () => "Download Complete");
 			
 			window.GetWidget("CANCEL").OnMouseUp = mi => { CancelDownload(dl); ShowInstallMethodDialog(); return true; };

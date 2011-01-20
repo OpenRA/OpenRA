@@ -75,7 +75,8 @@ Background@INIT_DOWNLOAD:
 			Text:Downloading C&C Content
 			Align:Center
 			Bold:True
-		TextField@PROGRESS:
+		ProgressBar@PROGRESS:
+			Id:PROGRESS
 			X:50
 			Y:65
 			Width:PARENT_RIGHT - 100
