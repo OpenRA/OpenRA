@@ -223,18 +223,21 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			p.StartInfo.CreateNoWindow = true;
 			p.StartInfo.RedirectStandardOutput = true;
 			p.Start();
-			
-			using (var reader = p.StandardOutput)
+			var t = new Thread( _ =>
 			{
-				// This is wrong, chrisf knows why
-				while (!p.HasExited)
+				using (var reader = p.StandardOutput)
 				{
-					string s = reader.ReadLine();
-					if (string.IsNullOrEmpty(s)) continue;
-					parseOutput(s);
+					// This is wrong, chrisf knows why
+					while (!p.HasExited)
+					{
+						string s = reader.ReadLine();
+						if (string.IsNullOrEmpty(s)) continue;
+						parseOutput(s);
+					}
 				}
-			}
-			onComplete();
+				onComplete();
+			}) { IsBackground = true };
+			t.Start();
 		}
 		
 		public static void CopyRAFiles(string cdPath, Action<string> parseOutput, Action onComplete)
