@@ -12,7 +12,7 @@ namespace OpenRA.FileFormats
 		public string Description;
 		public string Version;
 		public string Author;
-		public string[] RequiresMods;
+		public string Requires;
 		public bool Standalone = false;
 
 		public static readonly Dictionary<string, Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
@@ -27,9 +27,7 @@ namespace OpenRA.FileFormats
 
 				var yaml = new MiniYaml(null, MiniYaml.FromFile("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"));
 				if (!yaml.NodesDict.ContainsKey("Metadata"))
-				{
 					continue;
-				}
 
 				ret.Add(m, FieldLoader.Load<Mod>(yaml.NodesDict["Metadata"]));
 			}
