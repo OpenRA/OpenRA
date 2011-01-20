@@ -89,18 +89,21 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			// TODO: Download to a temp location or the support dir
 			var file = Info.PackageName;
 			
-			var dl = DownloadUrl(Info.PackageURL, file,
-	            (_,i) => {
+			var dl = new Download(Info.PackageURL, file,
+	            i => {
 					status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
 					progress.Percentage = i.ProgressPercentage;
 				},
-	            (_,i) => {
+	            (i, cancelled) => {
+					System.Console.WriteLine("here");
 					if (i.Error != null)
 					{
+						System.Console.WriteLine("here2");
 						ShowDownloadError(i.Error.Message);
 					}
-					else
+					else if (!cancelled)
 					{
+						System.Console.WriteLine("here3");
 						// Automatically extract
 						status.GetText = () => "Extracting...";
 						var error = false;
@@ -120,8 +123,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 			);
 			
-			window.GetWidget("CANCEL").OnMouseUp = mi => { dl.CancelAsync(); ShowInstallMethodDialog(); return true; };
-			window.GetWidget("RETRY").OnMouseUp = mi => { dl.CancelAsync(); ShowDownloadDialog(); return true; };
+			window.GetWidget("CANCEL").OnMouseUp = mi => { dl.Cancel(); ShowInstallMethodDialog(); return true; };
+			window.GetWidget("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); return true; };
 		}
 		
 		void ShowDownloadError(string e)
@@ -138,17 +141,33 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Widget.OpenWindow("MAINMENU_BG");
 		}
 		
-		public static WebClient DownloadUrl(string url, string path, DownloadProgressChangedEventHandler onProgress, AsyncCompletedEventHandler onComplete)
+		
+		// General support methods
+		public class Download
 		{
-			WebClient wc = new WebClient();
-			wc.Proxy = null;
-
-			wc.DownloadProgressChanged += onProgress;
-			wc.DownloadFileCompleted += onComplete;
-			wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => wc.CancelAsync();};
-			wc.DownloadFileAsync(new Uri(url), path);
-			Game.OnQuit += () => wc.CancelAsync();
-			return wc;
+			WebClient wc;
+			bool cancelled;
+			
+			public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs, bool> onComplete)
+			{
+				wc = new WebClient();
+				wc.Proxy = null;
+	
+				wc.DownloadProgressChanged += (_,a) => onProgress(a);
+				wc.DownloadFileCompleted += (_,a) => onComplete(a, cancelled);
+				
+				Game.OnQuit += () => Cancel();
+				wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => Cancel();};
+				
+				wc.DownloadFileAsync(new Uri(url), path); 
+			}
+			
+			public void Cancel()
+			{
+				Game.OnQuit -= () => Cancel();
+				wc.CancelAsync();
+				cancelled = true;
+			}
 		}
 		
 		public static void ExtractZip(string zipFile, string path, Action<string> parseOutput, Action onComplete)

@@ -49,9 +49,9 @@
 
 - (void)launchFilePicker:(NSArray *)args
 {
-	hide_menubar_if_necessary();
 	[NSApp activateIgnoringOtherApps:YES];
-	
+	hide_menubar_if_necessary();
+
 	NSOpenPanel *op = [NSOpenPanel openPanel];
 	[op setLevel:CGShieldingWindowLevel()];
 	[op setAllowsMultipleSelection:NO];
