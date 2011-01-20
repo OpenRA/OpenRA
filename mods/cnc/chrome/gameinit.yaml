@@ -1,9 +1,11 @@
 GameInitInfo@INIT_SETUP:
 	Id:INIT_SETUP
-	TestFile: fakefile.mix
+	TestFile: conquer.mix
 	GameTitle: Command & Conquer
-	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackagePath:cnc-packages.zip
+#	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
+	PackageURL:http://localhost/~paul/cnc-packages.zip
+	PackageName:cnc-packages.zip
+	PackagePath:mods/cnc/packages
 	Delegate:GameInitDelegate
 
 Background@INIT_CHOOSEINSTALL:
@@ -78,21 +80,40 @@ Background@INIT_DOWNLOAD:
 		ProgressBar@PROGRESS:
 			Id:PROGRESS
 			X:50
-			Y:65
+			Y:55
 			Width:PARENT_RIGHT - 100
 			Height:25
 		Label@STATUS:
 			Id:STATUS
 			X:50
-			Y:PARENT_BOTTOM - 50
+			Y:80
 			Width:PARENT_RIGHT - 100
 			Height:25
 			Align:Left
+		Button@RETRY:
+			Id:RETRY
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Visible: false
+			Text:Retry
+			Bold:True
 		Button@CANCEL:
 			Id:CANCEL
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
+			Visible: false
 			Text:Cancel
+			Bold:True
+		Button@EXTRACT:
+			Id:EXTRACT
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Visible: false
+			Text:Extract
 			Bold:True

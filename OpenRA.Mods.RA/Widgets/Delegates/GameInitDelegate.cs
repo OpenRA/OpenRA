@@ -17,12 +17,16 @@ using System.Diagnostics;
 using System;
 using System.Net;
 using System.ComponentModel;
+using ICSharpCode.SharpZipLib;
+using ICSharpCode.SharpZipLib.Zip;
+using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class GameInitDelegate : IWidgetDelegate
 	{
 		GameInitInfoWidget Info;
+		Widget window;
 		
 		[ObjectCreator.UseCtor]
 		public GameInitDelegate([ObjectCreator.Param] Widget widget)
@@ -64,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		void ShowInstallMethodDialog()
 		{
-			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
+			window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
 			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
 			window.GetWidget("FROMCD").OnMouseUp = mi =>
 			{
@@ -77,22 +81,106 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		void ShowDownloadDialog()
 		{
-			var window = Widget.OpenWindow("INIT_DOWNLOAD");        
+			window = Widget.OpenWindow("INIT_DOWNLOAD");        
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
 			
-			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-
-			var dl = DownloadUrl(Info.PackageURL, Info.PackagePath,
-	            (_,i) => {
-					status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
-					progress.Percentage = i.ProgressPercentage;
-				},
-	            (_,i) => status.GetText = () => "Download Complete");
 			
-			window.GetWidget("CANCEL").OnMouseUp = mi => { CancelDownload(dl); ShowInstallMethodDialog(); return true; };
+			// TODO: Download to a temp location or the support dir
+			var file = Info.PackageName;
+			
+			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
+			
+			window.GetWidget<ButtonWidget>("EXTRACT").OnMouseUp = mi =>
+			{ 
+				if (ExtractZip(file, Info.PackagePath))
+					ContinueLoading(Info);
+				return true;
+			};
+			
+
+			if (File.Exists(file))
+			{
+				window.GetWidget<ButtonWidget>("EXTRACT").IsVisible = () => true;
+				status.GetText = () => "Download Cached";
+				progress.Percentage = 100;
+			}
+			else
+			{
+				var dl = DownloadUrl(Info.PackageURL, file,
+		            (_,i) => {
+						status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
+						progress.Percentage = i.ProgressPercentage;
+					},
+		            (_,i) => {
+						if (i.Error != null)
+						{
+							ShowDownloadError(i.Error.Message);
+						}
+						else
+						{
+							status.GetText = () => "Download Complete";
+							window.GetWidget<ButtonWidget>("EXTRACT").IsVisible = () => true;
+							window.GetWidget("CANCEL").IsVisible = () => false;
+						}
+					}
+				);
+				window.GetWidget("CANCEL").IsVisible = () => true;
+				window.GetWidget("RETRY").IsVisible = () => true;
+				
+				window.GetWidget("CANCEL").OnMouseUp = mi => { dl.CancelAsync(); ShowInstallMethodDialog(); return true; };
+				window.GetWidget("RETRY").OnMouseUp = mi => { dl.CancelAsync(); ShowDownloadDialog(); return true; };
+			}
+		}
+		
+		void ShowDownloadError(string e)
+		{
+			window.GetWidget<LabelWidget>("STATUS").GetText = () => e;
+			window.GetWidget<ButtonWidget>("RETRY").IsVisible = () => true;
+			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => true;
 		}
 				
+		// TODO: This needs to live on a different process if we want to run it as root
+		public bool ExtractZip(string zipFile, string path)
+		{
+			if (!File.Exists(zipFile)) { ShowDownloadError("Download Corrupted"); return false; }
+			List<string> extracted = new List<string>();
+			try
+			{
+				ZipEntry entry;
+				var z = new ZipInputStream(File.OpenRead(zipFile));
+				while ((entry = z.GetNextEntry()) != null)
+				{
+					if (!entry.IsFile) continue;			
+					if (!Directory.Exists(Path.Combine(path, Path.GetDirectoryName(entry.Name))))
+						Directory.CreateDirectory(Path.Combine(path, Path.GetDirectoryName(entry.Name)));
+					
+					window.GetWidget<LabelWidget>("STATUS").GetText = () => "Status: Extracting {0}".F(entry.Name);
+					
+					var destPath = path + Path.DirectorySeparatorChar + entry.Name;
+					Console.WriteLine("Extracting to {0}",destPath);
+					extracted.Add(path);
+					using (var f = File.Create(destPath))
+					{
+						int bufSize = 2048;
+						byte[] buf = new byte[bufSize];
+						while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+							f.Write(buf, 0, bufSize);
+					}
+				}
+				z.Close();
+			}
+			catch (SharpZipBaseException)
+			{
+				foreach(var f in extracted)
+					File.Delete(f);
+				
+				ShowDownloadError("Download Corrupted");
+				return false;
+			}
+			return true;
+		}
+		
 		void SelectDisk(Action<string> withPath)
 		{
 			Process p = new Process();
@@ -122,16 +210,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			wc.DownloadProgressChanged += onProgress;
 			wc.DownloadFileCompleted += onComplete;
-			wc.DownloadFileCompleted += (_,a) => {};
+			wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => wc.CancelAsync();};
 			wc.DownloadFileAsync(new Uri(url), path);
-			Game.OnQuit += () => CancelDownload(wc);
+			Game.OnQuit += () => wc.CancelAsync();
 			return wc;
-		}
-		
-		public static void CancelDownload(WebClient wc)
-		{
-			Game.OnQuit -= () => CancelDownload(wc);
-			wc.CancelAsync();
 		}
 	}
 }

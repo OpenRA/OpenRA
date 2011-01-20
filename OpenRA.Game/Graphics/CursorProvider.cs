@@ -38,10 +38,7 @@ namespace OpenRA.Graphics
 			Game.modData.LoadScreen.Display();
 
 			foreach (var sequence in cursor.Nodes)
-			{
-				Console.WriteLine(sequence.Key);
 				cursors.Add(sequence.Key, new CursorSequence(cursorSrc, cursor.Value, sequence.Value));
-			}
 		}
 		
 		public static bool HasCursorSequence(string cursor)
