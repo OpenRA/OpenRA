@@ -90,12 +90,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window = Widget.OpenWindow("INIT_COPY");
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-			
+			progress.Indeterminate = true;
+
 			// TODO: Handle cancelling copy
-			// TODO: Make the progress bar indeterminate
+			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
 			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
 			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
-			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
 
 			status.GetText = () => "Copying...";
 			var error = false;
@@ -144,6 +144,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				{
 					// Automatically extract
 					status.GetText = () => "Extracting...";
+					progress.Indeterminate = true;
 					var error = false;
 					Action<string> parseOutput = s => 
 				    {
