@@ -16,11 +16,11 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class GameInitInfoWidget : Widget
 	{
-		public string TestFile;
-		public string GameTitle;
-		public string PackageURL;
-		public string PackagePath;
-		public string InstallMode;
+		public string TestFile = "";
+		public string GameTitle = "";
+		public string PackageURL = "";
+		public string PackagePath = "";
+		public string InstallMode = "";
 
 		public override void DrawInner() {}
 	}
