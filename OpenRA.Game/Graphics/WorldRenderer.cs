@@ -29,14 +29,13 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
-
+			this.palette = Game.modData.Palette;
+			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
+				pal.Trait.InitPalette( this );
+			
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 			uiOverlay = new UiOverlay();
-			this.palette = Game.modData.Palette;
-
-			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
-				pal.Trait.InitPalette( this );
 		}
 		
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }

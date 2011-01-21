@@ -48,7 +48,7 @@ namespace OpenRA.Graphics
 					Sprite tile = tileMapping[map.MapTiles[i, j]];
 					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
 					// before the palettes are created. Therefore assumes that "terrain" is the first palette to be defined
-					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, 0, nv, ni, tile.size);
+					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, Game.modData.Palette.GetPaletteIndex("terrain"), nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
 					
