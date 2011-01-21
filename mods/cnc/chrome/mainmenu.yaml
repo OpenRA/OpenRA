@@ -78,7 +78,7 @@ Background@QUICKMODSWITCHER:
 	X:(WINDOW_RIGHT - PARENT_LEFT - WIDTH - 10)
 	Y:10 - PARENT_TOP
 	Width:205
-	Height:35
+	Height:65
 	Children:
 		Label@TITLE:
 			X:8
@@ -94,7 +94,15 @@ Background@QUICKMODSWITCHER:
 			Width:150
 			Height:25
 			X:50
-			Y:5		
+			Y:5
+		Label@VERSION:
+			Id:VERSION
+			X:50
+			Y:30
+			Width:150
+			Height:25
+			Align:Center
+			Bold:True
 Background@PERF_BG:
 	Id:PERF_BG
 	Background:dialog4

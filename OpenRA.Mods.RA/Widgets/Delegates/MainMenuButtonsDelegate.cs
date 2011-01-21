@@ -31,16 +31,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("MAINMENU_BUTTON_REPLAY_VIEWER").OnMouseUp = mi => { Widget.OpenWindow("REPLAYBROWSER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
 			
-			var switcher = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "QUICKMODSWITCHER" );
-			var selector = switcher.GetWidget<ButtonWidget>("SWITCHER");
-			selector.OnMouseDown = _ => ShowModsDropDown(selector);
-			selector.GetText = ActiveModTitle;
+			var selector = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "QUICKMODSWITCHER" );
+			var switcher = selector.GetWidget<ButtonWidget>("SWITCHER");
+			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
+			switcher.GetText = ActiveModTitle;
+			selector.GetWidget<LabelWidget>("VERSION").GetText = ActiveModVersion;
 		}
 		
 		string ActiveModTitle()
 		{
 			var mod = Game.modData.Manifest.Mods[0];
 			return Mod.AllMods[mod].Title;
+		}
+		
+		string ActiveModVersion()
+		{
+			var mod = Game.modData.Manifest.Mods[0];
+			return Mod.AllMods[mod].Version;
 		}
 		
 		bool ShowModsDropDown(ButtonWidget selector)
