@@ -29,6 +29,8 @@ namespace OpenRA
 {
 	public static class Game
 	{
+		public static Utilities Utilities;
+		
 		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
 		public static ModData modData;
@@ -227,8 +229,9 @@ namespace OpenRA
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
 			FileSystem.SpecialPackageRoot = args.GetValue("SpecialPackageRoot", "");
 			
+			Utilities = new Utilities(args.GetValue("NativeUtilityPath", "."));
+			
 			Settings = new Settings(SupportDir + "settings.yaml", args);
-
 			Settings.Save();
 
 			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;

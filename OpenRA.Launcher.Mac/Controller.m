@@ -36,14 +36,13 @@
 										   otherButton:nil
 							 informativeTextWithFormat:@"OpenRA requires the Mono Framework version 2.6.7 or later."];
 		
-		
 		if ([alert runModal] == NSAlertDefaultReturn)
 			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.go-mono.com/mono-downloads/download.html"]];
 		
 		[[NSApplication sharedApplication] terminate:self];
 	}
 	
-	[self launchMod:@"ra"];
+	[self launchMod:@"cnc"];
 	[NSApp terminate: nil];
 }
 
@@ -94,6 +93,7 @@
 	// Second...Nth arguments are passed to OpenRA.Game.exe
 	// Launcher wrapper sets mono --debug, gl renderer and support dir.
 	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath, monoPath,
+					 [NSString stringWithFormat:@"NativeUtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
 					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 					 [NSString stringWithFormat:@"Game.Mods=%@",mod],
 					 nil];
@@ -113,7 +113,7 @@
 	
 	ProcessSerialNumber psn;
 	OSStatus err = LSOpenApplication(&params, &psn);
-	
+
 	// Bring the game window to the front
 	if (err == noErr)
 		SetFrontProcess(&psn);

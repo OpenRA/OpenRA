@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		bool PromptForCD()
 		{
-			PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path =>
+			Game.Utilities.PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path =>
 			{
 				if (!string.IsNullOrEmpty(path))
 					Game.RunAfterTick(() => InstallFromCD(path));
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			if (Info.InstallMode == "ra")
-				CopyRAFiles(path, parseOutput, onComplete);
+				Game.Utilities.CopyRAFiles(path, parseOutput, onComplete);
 			else 
 				ShowDownloadError("Installing from CD not supported");
 		}
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 							Game.RunAfterTick(() => ContinueLoading(Info));
 					};
 					
-					Game.RunAfterTick(() => ExtractZip(file, Info.PackagePath, parseOutput, onComplete));
+					Game.RunAfterTick(() => Game.Utilities.ExtractZip(file, Info.PackagePath, parseOutput, onComplete));
 				}
 			};
 			
@@ -185,7 +185,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Widget.RootWidget.Children.Remove(widget);
 			Widget.OpenWindow("MAINMENU_BG");
 		}
-		
 		
 		// General support methods
 		public class Download
@@ -213,77 +212,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				wc.CancelAsync();
 				cancelled = true;
 			}
-		}
-		
-		public static void ExtractZip(string zipFile, string path, Action<string> parseOutput, Action onComplete)
-		{
-			Process p = new Process();
-			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = "\"--extract-zip={0},{1}\"".F(zipFile, path);
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.Start();
-			var t = new Thread( _ =>
-			{
-				using (var reader = p.StandardOutput)
-				{
-					// This is wrong, chrisf knows why
-					while (!p.HasExited)
-					{
-						string s = reader.ReadLine();
-						if (string.IsNullOrEmpty(s)) continue;
-						parseOutput(s);
-					}
-				}
-				onComplete();
-			}) { IsBackground = true };
-			t.Start();
-		}
-		
-		public static void CopyRAFiles(string cdPath, Action<string> parseOutput, Action onComplete)
-		{
-			
-			Process p = new Process();
-			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = "\"--install-ra-packages={0}\"".F(cdPath);
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.Start();
-			
-			var t = new Thread( _ =>
-			{
-				using (var reader = p.StandardOutput)
-				{
-					// This is wrong, chrisf knows why
-					while (!p.HasExited)
-					{
-						string s = reader.ReadLine();
-						if (string.IsNullOrEmpty(s)) continue;
-						parseOutput(s);
-					}
-				}
-				onComplete();
-			}) { IsBackground = true };
-			t.Start();
-			
-		}
-		
-		public static void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
-		{
-			Process p = new Process();
-			p.StartInfo.FileName = "OpenRA.Launcher.Mac/build/Release/OpenRA.app/Contents/MacOS/OpenRA";
-			p.StartInfo.Arguments = "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : "");
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.EnableRaisingEvents = true;
-			p.Exited += (_,e) =>
-			{
-				withPath(p.StandardOutput.ReadToEnd().Trim());
-			};
-			p.Start();
 		}
 	}
 }

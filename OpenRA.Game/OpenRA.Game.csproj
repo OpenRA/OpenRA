@@ -182,6 +182,7 @@
     <Compile Include="Graphics\ShroudRenderer.cs" />
     <Compile Include="Network\Handshake.cs" />
     <Compile Include="Widgets\ProgressBarWidget.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -13,8 +13,8 @@ extern char **environ;
 int main(int argc, char *argv[])
 {
 	/* When launching a mod, the arguments are of the form 
-	 * --launch <game dir> <support dir option> <mod option> */
-	if (argc >= 5 && strcmp(argv[1], "--launch") == 0)
+	 * --launch <game dir> <mono path> <utility path> <support dir option> <mod option> */
+	if (argc >= 6 && strcmp(argv[1], "--launch") == 0)
 	{
 		/* Change into the game dir */
 		chdir(argv[2]);
@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 			"OpenRA.Game.exe",
 			argv[4],
 			argv[5],
+			argv[6],
 			NULL
 		};
 		
