@@ -37,14 +37,13 @@ namespace OpenRA.Utility
 				{
 					if (seen.Contains(m)) continue;
 
-					if (mods[m].RequiresMods == null)
+					if (string.IsNullOrEmpty(mods[m].Requires))
 					{
 						Console.WriteLine(m);
 						seen.Add(m);
 						continue;
 					}
-
-					if (seen.Contains(mods[m].RequiresMods[0]))
+					if (seen.Contains(mods[m].Requires))
 					{
 						Console.WriteLine(m);
 						seen.Add(m);
@@ -79,7 +78,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("  Version: {0}", mod.Version);
 				Console.WriteLine("  Author: {0}", mod.Author);
 				Console.WriteLine("  Description: {0}", mod.Description);
-				Console.WriteLine("  Requires: {0}", mod.RequiresMods == null ? "" : string.Join(",", mod.RequiresMods));
+				Console.WriteLine("  Requires: {0}", mod.Requires);
 				Console.WriteLine("  Standalone: {0}", mod.Standalone.ToString());
 			}
 		}
