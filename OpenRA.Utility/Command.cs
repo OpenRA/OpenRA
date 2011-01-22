@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Windows.Forms;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
@@ -113,6 +114,21 @@ namespace OpenRA.Utility
 				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
 			}
 			Console.WriteLine("Status: Completed");
+		}
+		
+		public static void DisplayFilepicker(string[] args)
+		{
+			if (args.Length < 2)
+			{
+				Console.WriteLine("Error: Invalid syntax");
+				return;
+			}
+			
+			var dialog = new OpenFileDialog();
+			dialog.Title = args[1];
+			
+			if (dialog.ShowDialog() == DialogResult.OK)
+				Console.WriteLine(dialog.FileName);
 		}
 
 		public static void Settings(string[] args)

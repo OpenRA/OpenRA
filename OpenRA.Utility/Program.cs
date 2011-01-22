@@ -30,6 +30,7 @@ namespace OpenRA.Utility
 			argCallbacks.Add("--extract-zip", Command.ExtractZip);
 			argCallbacks.Add("--install-ra-packages", Command.InstallRAPackages);
 			argCallbacks.Add("--install-cnc-packages", Command.InstallCncPackages);
+			argCallbacks.Add("--display-filepicker", Command.DisplayFilepicker);
 			argCallbacks.Add("--settings-value", Command.Settings);
 
 			if (args.Length == 0) { PrintUsage(); return; }

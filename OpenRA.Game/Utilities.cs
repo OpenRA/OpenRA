@@ -33,11 +33,9 @@ namespace OpenRA
 			ExecuteUtilityAsync("--install-ra-packages \"{0}\"".F(cdPath), parseOutput, onComplete);
 		}
 		
-		public void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
+		public void PromptFilepathAsync(string title, Action<string> withPath)
 		{
-			ExecuteUtility("--display-filepicker --title \"{0}\" --message \"{1}\" \"{2}\" --button-text \"Select\""
-			               .F(title, message, directory ? "--require-directory" : ""),
-			               withPath);
+			ExecuteUtility("--display-filepicker \"{0}\"".F(title), withPath);
 		}
 	
 		void ExecuteUtility(string args, Action<string> onComplete)

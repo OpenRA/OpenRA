@@ -78,30 +78,10 @@
 	[op setLevel:CGShieldingWindowLevel()];
 	[op setAllowsMultipleSelection:NO];
 	
-	NSUInteger a = [args indexOfObject:@"--title"];
+	NSUInteger a = [args indexOfObject:@"--display-filepicker"];
 	if (a != NSNotFound)
 		[op setTitle:[args objectAtIndex:a+1]];
-	
-	a = [args indexOfObject:@"--message"];
-	if (a != NSNotFound)
-		[op setMessage:[args objectAtIndex:a+1]];
-	
-	a = [args indexOfObject:@"--directory"];
-	if (a != NSNotFound)
-		[op setDirectory:[[args objectAtIndex:a+1] stringByExpandingTildeInPath]];
-	
-	a = [args indexOfObject:@"--require-directory"];
-	if (a != NSNotFound)
-	{
-		[op setCanChooseFiles:NO];
-		[op setCanChooseDirectories:YES];
-	}
-	
-	a = [args indexOfObject:@"--button-text"];
-	if (a != NSNotFound)
-		[op setPrompt:[[args objectAtIndex:a+1] stringByExpandingTildeInPath]];
-	
-	
+		
 	if ([op runModal] == NSFileHandlingPanelOKButton)
 		printf("%s\n", [[[op URL] path] UTF8String]);
 	
@@ -116,7 +96,7 @@
 	// Second...Nth arguments are passed to OpenRA.Game.exe
 	// Launcher wrapper sets mono --debug, gl renderer and support dir.
 	NSArray *args = [NSArray arrayWithObjects:@"--launch", gamePath, monoPath,
-					 [NSString stringWithFormat:@"NativeUtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
+					 [NSString stringWithFormat:@"UtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
 					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 					 [NSString stringWithFormat:@"Game.Mods=%@",mod],
 					 nil];

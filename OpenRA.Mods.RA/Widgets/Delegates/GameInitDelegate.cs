@@ -125,10 +125,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		bool PromptForCD()
 		{
-			Game.Utilities.PromptFilepathAsync("Select CD", "Select the {0} CD".F(Info.GameTitle), true, path =>
+			Game.Utilities.PromptFilepathAsync("Select MAIN.MIX on the CD", path =>
 			{
 				if (!string.IsNullOrEmpty(path))
-					Game.RunAfterTick(() => InstallFromCD(path));
+					Game.RunAfterTick(() => InstallFromCD(Path.GetDirectoryName(path)));
 			});
 			return true;
 		}

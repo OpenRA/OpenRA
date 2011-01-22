@@ -161,8 +161,8 @@ PHONY += fixheader
 utility_SRCS		= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
-utility_DEPS        = $(fileformats_TARGET) thirdparty/ICSharpCode.SharpZipLib.dll
-utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS)
+utility_DEPS        = $(fileformats_TARGET)
+utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
