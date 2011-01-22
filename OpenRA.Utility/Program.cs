@@ -27,11 +27,14 @@ namespace OpenRA.Utility
 		static void Main(string[] args)
 		{
 			argCallbacks = new Dictionary<string, ArgCallback>();
-			argCallbacks.Add("--extract-zip", Command.ExtractZip);
-			argCallbacks.Add("--install-ra-packages", Command.InstallRAPackages);
-			argCallbacks.Add("--install-cnc-packages", Command.InstallCncPackages);
+			argCallbacks.Add("--extract-zip-inner", Command.ExtractZip);
+			argCallbacks.Add("--install-ra-packages-inner", Command.InstallRAPackages);
+			argCallbacks.Add("--install-cnc-packages-inner", Command.InstallCncPackages);
 			argCallbacks.Add("--display-filepicker", Command.DisplayFilepicker);
 			argCallbacks.Add("--settings-value", Command.Settings);
+			argCallbacks.Add("--install-ra-packages", Command.AuthenticateAndInstallRAPackages);
+			argCallbacks.Add("--install-cnc-packages", Command.AuthenticateAndInstallCncPackages);
+			argCallbacks.Add("--extract-zip", Command.AuthenticateAndExtractZip);
 
 			if (args.Length == 0) { PrintUsage(); return; }
 

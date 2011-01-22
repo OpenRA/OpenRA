@@ -13,6 +13,9 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO.Pipes;
 
 namespace OpenRA.Utility
 {
@@ -60,6 +63,40 @@ namespace OpenRA.Utility
 				}
 			}
 			z.Close();
+		}
+		
+		public static string GetPipeName()
+		{
+			return "OpenRA.Utility" + Guid.NewGuid().ToString();
+		}	
+		
+		public static void CallWithAdmin(string command)
+		{			
+			string pipename = Util.GetPipeName();
+			var p = new Process();
+			p.StartInfo.FileName = "OpenRA.Utility.exe";
+			p.StartInfo.Arguments = command + " --pipe=" + pipename;
+			p.StartInfo.Verb = "runas";
+
+			try
+			{
+				p.Start();
+			}
+			catch (Win32Exception e)
+			{
+				if (e.NativeErrorCode == 1223) //ERROR_CANCELLED
+					return;
+				throw e;
+			}
+			
+			var pipe = new NamedPipeClientStream(".", pipename, PipeDirection.In);
+			pipe.Connect();
+
+			using (var reader = new StreamReader(pipe))
+			{
+				while (!p.HasExited)
+					Console.Write(reader.ReadLine());
+			}
 		}
 	}
 }

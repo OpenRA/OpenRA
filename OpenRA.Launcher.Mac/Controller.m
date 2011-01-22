@@ -58,14 +58,14 @@
 - (void)extractZip:(NSArray *)args
 {
 	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-	NSArray *a = [NSArray arrayWithObjects:@"--extract-zip", [args objectAtIndex:2], [args objectAtIndex:3], nil];
+	NSArray *a = [NSArray arrayWithObjects:@"--extract-zip-inner", [args objectAtIndex:2], [args objectAtIndex:3], nil];
 	[self runUtilityWithArgs:a];
 }
 
 - (void)installRAPackages:(NSArray *)args
 {
 	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages", [args objectAtIndex:2], nil];
+	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages-inner", [args objectAtIndex:2], nil];
 	[self runUtilityWithArgs:a];
 }
 
