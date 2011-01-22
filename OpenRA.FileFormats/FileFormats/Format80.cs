@@ -142,6 +142,8 @@ namespace OpenRA.FileFormats
 			}
 			while (!ctx.Done());
 
+			ms.WriteByte(0x80);	// terminator -- 0-length run.
+
 			return ms.ToArray();
 		}
 	}
