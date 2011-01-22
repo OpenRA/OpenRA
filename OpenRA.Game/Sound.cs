@@ -36,9 +36,13 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(rawData, 1, 16, 22050);
 		}
 
-		public static void Initialize()
+		public static void Create()
 		{
 			soundEngine = new OpenAlSoundEngine();
+		}
+		
+		public static void Initialize()
+		{
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
 			currentMusic = null;

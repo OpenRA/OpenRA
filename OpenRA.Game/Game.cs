@@ -248,6 +248,7 @@ namespace OpenRA
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 			
+			Sound.Create();
 			InitializeWithMods(Settings.Game.Mods);
 		}
 		
@@ -265,12 +266,13 @@ namespace OpenRA
 			// Discard any invalid mods
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
-
+			
+			Sound.Initialize();
 			
 			modData = new ModData( mm );
 			modData.LoadInitialAssets();
 			
-			Sound.Initialize();
+			
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 
