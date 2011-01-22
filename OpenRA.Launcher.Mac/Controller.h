@@ -16,6 +16,10 @@
 	IBOutlet NSWindow *window;
 }
 - (void)launchFilePicker:(NSArray *)args;
+- (void)extractZip:(NSArray *)args;
+- (void)installRaPackages:(NSArray *)args;
 - (void)launchMod:(NSString *)mod;
 - (BOOL)initMono;
+- (void)runUtilityWithArg:(NSString *)arg;
+- (void)utilityResponded:(NSNotification *)n;
 @end

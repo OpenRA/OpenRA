@@ -16,35 +16,34 @@ namespace OpenRA
 {
 	public class Utilities
 	{
-		readonly string NativeUtility;
-		readonly string Utility = "OpenRA.Utility.exe";
+		readonly string Utility;
 		
-		public Utilities(string nativeUtility)
+		public Utilities(string utility)
 		{
-			NativeUtility = nativeUtility;
+			Utility = utility;
 		}
 	
 		public void ExtractZipAsync(string zipFile, string path, Action<string> parseOutput, Action onComplete)
 		{
-			ExecuteUtilityAsync(Utility, "\"--extract-zip={0},{1}\"".F(zipFile, path), parseOutput, onComplete);
+			ExecuteUtilityAsync("\"--extract-zip {0} {1}\"".F(zipFile, path), parseOutput, onComplete);
 		}
 		
 		public void InstallRAFilesAsync(string cdPath, Action<string> parseOutput, Action onComplete)
 		{
-			ExecuteUtilityAsync(Utility, "\"--install-ra-packages={0}\"".F(cdPath), parseOutput, onComplete);
+			ExecuteUtilityAsync("\"--install-ra-packages {0}\"".F(cdPath), parseOutput, onComplete);
 		}
 		
 		public void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
 		{
-			ExecuteUtility(NativeUtility,
-			               "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : ""),
+			ExecuteUtility("--display-filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\""
+			               .F(title, message, directory ? "--require-directory" : ""),
 			               withPath);
 		}
 	
-		void ExecuteUtility(string executable, string args, Action<string> onComplete)
+		void ExecuteUtility(string args, Action<string> onComplete)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = executable;
+			p.StartInfo.FileName = Utility;
 			p.StartInfo.Arguments = args;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
@@ -57,10 +56,10 @@ namespace OpenRA
 			p.Start();
 		}
 		
-		void ExecuteUtilityAsync(string executable, string args, Action<string> parseOutput, Action onComplete)
+		void ExecuteUtilityAsync(string args, Action<string> parseOutput, Action onComplete)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = executable;
+			p.StartInfo.FileName = Utility;
 			p.StartInfo.Arguments = args;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;

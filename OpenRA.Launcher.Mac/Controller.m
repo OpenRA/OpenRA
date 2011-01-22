@@ -23,10 +23,10 @@
 	NSArray *args = [[NSProcessInfo processInfo] arguments];
 	
 	// Ingame requests for native dialogs
-	if ([args containsObject:@"--filepicker"])
+	if ([args containsObject:@"--display-filepicker"])
 		[self launchFilePicker:args];
 	
-	
+
 	// Try and launch the game
 	if (![self initMono])
 	{
@@ -42,8 +42,27 @@
 		[[NSApplication sharedApplication] terminate:self];
 	}
 	
+	// Extract a zip file
+	if ([args containsObject:@"--extract-zip"])
+		[self extractZip:args];
+	
+	// Install ra packages from cd
+	if ([args containsObject:@"--install-ra-packages"])
+		[self installRaPackages:args];
+	
+	
 	[self launchMod:@"cnc"];
 	[NSApp terminate: nil];
+}
+
+- (void)extractZip:(NSArray *)args
+{
+	[self runUtilityWithArg:[NSString stringWithFormat:@"--extract-zip=%@,%@",[args objectAtIndex:2],[args objectAtIndex:3]]];
+}
+
+- (void)installRaPackages:(NSArray *)args
+{
+	[self runUtilityWithArg:[NSString stringWithFormat:@"--install-ra-packages=%@",[args objectAtIndex:2]]];
 }
 
 - (void)launchFilePicker:(NSArray *)args
@@ -85,7 +104,7 @@
 	[NSApp terminate: nil];	
 }
 
--(void) launchMod:(NSString *)mod
+-(void)launchMod:(NSString *)mod
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	
@@ -168,6 +187,46 @@
 			(major == 2 && minor > 6) ||
 			(major == 2 && minor == 6 && point >= 7));
 }
+
+
+- (void)runUtilityWithArg:(NSString *)arg
+{
+	NSTask *task = [[[NSTask alloc] init] autorelease];
+	NSPipe *pipe = [NSPipe pipe];
+	
+    NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
+	[taskArgs addObject:arg];
+		
+    [task setCurrentDirectoryPath:gamePath];
+    [task setLaunchPath:monoPath];
+    [task setArguments:taskArgs];
+	[task setStandardOutput:pipe];
+	
+	NSFileHandle *readHandle = [pipe fileHandleForReading];
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self
+		   selector:@selector(utilityResponded:)
+			   name:NSFileHandleReadCompletionNotification
+			 object:readHandle];
+    [task launch];
+	[readHandle readInBackgroundAndNotify];
+	[task waitUntilExit];
+	
+	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
+	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
+}
+
+- (void)utilityResponded:(NSNotification *)n
+{
+	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
+	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
+	printf("%s", [response UTF8String]);
+	
+	// Keep reading
+	if ([n object] != nil)
+		[[n object] readInBackgroundAndNotify];
+}
+
 
 - (void)dealloc
 {

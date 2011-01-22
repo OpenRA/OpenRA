@@ -229,7 +229,7 @@ namespace OpenRA
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
 			FileSystem.SpecialPackageRoot = args.GetValue("SpecialPackageRoot", "");
 			
-			Utilities = new Utilities(args.GetValue("NativeUtilityPath", "."));
+			Utilities = new Utilities(args.GetValue("UtilityPath", "OpenRA.Utility.exe"));
 			
 			Settings = new Settings(SupportDir + "settings.yaml", args);
 			Settings.Save();
