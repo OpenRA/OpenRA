@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.IO;
 
 namespace OpenRA.FileFormats
 {
@@ -124,24 +125,24 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public static int EncodeInto(byte[] src, byte[] dest)
+		public static byte[] Encode(byte[] src)
 		{
 			/* quick & dirty format80 encoder -- only uses raw copy operator, terminated with a zero-run. */
 			/* this does not produce good compression, but it's valid format80 */
 			
-			var destIndex = 0;
 			var ctx = new FastByteReader(src);
+			var ms = new MemoryStream();
 
 			do
 			{
 				var len = Math.Min(ctx.Remaining(), 0x3F);
-				dest[destIndex++] = (byte)(0x80 | len);
-				if (len > 0)
-					ctx.CopyTo(dest, destIndex, len);
+				ms.WriteByte((byte)(0x80 | len));
+				while (len-- > 0)
+					ms.WriteByte(ctx.ReadByte());
 			}
 			while (!ctx.Done());
 
-			return destIndex;
+			return ms.ToArray();
 		}
 	}
 }

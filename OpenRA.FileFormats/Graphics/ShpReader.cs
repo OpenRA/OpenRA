@@ -26,6 +26,8 @@ namespace OpenRA.FileFormats
 
 		public byte[] Image;
 
+		public ImageHeader() { }
+
 		public ImageHeader( BinaryReader reader )
 		{
 			Offset = reader.ReadUInt32();
@@ -34,6 +36,15 @@ namespace OpenRA.FileFormats
 
 			RefOffset = reader.ReadUInt16();
 			RefFormat = (Format)reader.ReadUInt16();
+		}
+
+		public static readonly int SizeOnDisk = 8;
+
+		public void WriteTo(BinaryWriter writer)
+		{
+			writer.Write(Offset | ((uint)Format << 24));
+			writer.Write((ushort)RefOffset);
+			writer.Write((ushort)RefFormat);
 		}
 	}
 
