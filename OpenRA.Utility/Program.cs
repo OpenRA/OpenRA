@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
@@ -19,38 +20,26 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
-		static KeyValuePair<string, string> SplitArgs(string arg)
-		{
-			int i = arg.IndexOf('=');
-			if (i < 0) return new KeyValuePair<string, string>(arg, "");
-			return new KeyValuePair<string, string>(arg.Substring(0, i), arg.Substring(i + 1));
-		}
-
-		delegate void ArgCallback(string argValue);
+		delegate void ArgCallback(string[] args);
 
 		static Dictionary<string, ArgCallback> argCallbacks;
 
 		static void Main(string[] args)
 		{
 			argCallbacks = new Dictionary<string, ArgCallback>();
-			argCallbacks.Add("--list-mods", Command.ListMods);
-			argCallbacks.Add("-l", Command.ListMods);
-			argCallbacks.Add("--mod-info", Command.ListModInfo);
-			argCallbacks.Add("-i", Command.ListModInfo);
-			argCallbacks.Add("--download-url", Command.DownloadUrl);
 			argCallbacks.Add("--extract-zip", Command.ExtractZip);
 			argCallbacks.Add("--install-ra-packages", Command.InstallRAPackages);
 			argCallbacks.Add("--install-cnc-packages", Command.InstallCncPackages);
 			argCallbacks.Add("--settings-value", Command.Settings);
 
 			if (args.Length == 0) { PrintUsage(); return; }
-			var arg = SplitArgs(args[0]);
 
 			bool piping = false;
-			if (args.Length > 1 && SplitArgs(args[1]).Key == "--pipe")
+			var i = Array.IndexOf(args, "--pipe");
+			if (args.Length > 1 && i >= 0)
 			{
 				piping = true;
-				string pipename = SplitArgs(args[1]).Value;
+				string pipename = args[i+1];
 				NamedPipeServerStream pipe;
 				var id = WindowsIdentity.GetCurrent();
 				var principal = new WindowsPrincipal(id);
@@ -68,8 +57,8 @@ namespace OpenRA.Utility
 			}
 
 			ArgCallback callback;
-			if (argCallbacks.TryGetValue(arg.Key, out callback))
-				callback(arg.Value);
+			if (argCallbacks.TryGetValue(args[0], out callback))
+				callback(args);
 			else
 				PrintUsage();
 
@@ -79,15 +68,12 @@ namespace OpenRA.Utility
 
 		static void PrintUsage()
 		{
-			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION]");
+			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
-			Console.WriteLine("  -l,--list-mods                   List currently installed mods");
-			Console.WriteLine("  -i=MODS,--mod-info=MODS          List metadata for MODS (comma separated list of mods)");
-			Console.WriteLine("  --download-url=URL,DEST          Download a file from URL to DEST (omit DEST to print to stdout)");
-			Console.WriteLine("  --extract-zip=ZIPFILE,PATH       Extract the zip ZIPFILE to DEST (relative to openra dir)");
-			Console.WriteLine("  --install-ra-packages=PATH       Install required packages for RA from CD to PATH");
-			Console.WriteLine("  --install-cnc-packages=PATH      Install required packages for C&C from CD to PATH");
-			Console.WriteLine("  --settings-value=SUPPORTDIR,KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
+			Console.WriteLine("  --extract-zip ZIPFILE PATH       Extract the zip ZIPFILE to DEST (relative to openra dir)");
+			Console.WriteLine("  --install-ra-packages PATH       Install required packages for RA from CD to PATH");
+			Console.WriteLine("  --install-cnc-packages PATH      Install required packages for C&C from CD to PATH");
+			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
 		}
 	}
 }

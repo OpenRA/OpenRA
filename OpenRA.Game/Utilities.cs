@@ -25,17 +25,17 @@ namespace OpenRA
 	
 		public void ExtractZipAsync(string zipFile, string path, Action<string> parseOutput, Action onComplete)
 		{
-			ExecuteUtilityAsync("\"--extract-zip {0} {1}\"".F(zipFile, path), parseOutput, onComplete);
+			ExecuteUtilityAsync("--extract-zip \"{0}\" \"{1}\"".F(zipFile, path), parseOutput, onComplete);
 		}
 		
 		public void InstallRAFilesAsync(string cdPath, Action<string> parseOutput, Action onComplete)
 		{
-			ExecuteUtilityAsync("\"--install-ra-packages {0}\"".F(cdPath), parseOutput, onComplete);
+			ExecuteUtilityAsync("--install-ra-packages \"{0}\"".F(cdPath), parseOutput, onComplete);
 		}
 		
 		public void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
 		{
-			ExecuteUtility("--display-filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\""
+			ExecuteUtility("--display-filepicker --title \"{0}\" --message \"{1}\" \"{2}\" --button-text \"Select\""
 			               .F(title, message, directory ? "--require-directory" : ""),
 			               withPath);
 		}

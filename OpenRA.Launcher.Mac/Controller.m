@@ -48,7 +48,7 @@
 	
 	// Install ra packages from cd
 	if ([args containsObject:@"--install-ra-packages"])
-		[self installRaPackages:args];
+		[self installRAPackages:args];
 	
 	
 	[self launchMod:@"cnc"];
@@ -57,12 +57,16 @@
 
 - (void)extractZip:(NSArray *)args
 {
-	[self runUtilityWithArg:[NSString stringWithFormat:@"--extract-zip=%@,%@",[args objectAtIndex:2],[args objectAtIndex:3]]];
+	// Todo: check if we can write to the requested dir, escalate priviledges if required.
+	NSArray *a = [NSArray arrayWithObjects:@"--extract-zip", [args objectAtIndex:2], [args objectAtIndex:3], nil];
+	[self runUtilityWithArgs:a];
 }
 
-- (void)installRaPackages:(NSArray *)args
+- (void)installRAPackages:(NSArray *)args
 {
-	[self runUtilityWithArg:[NSString stringWithFormat:@"--install-ra-packages=%@",[args objectAtIndex:2]]];
+	// Todo: check if we can write to the requested dir, escalate priviledges if required.
+	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages", [args objectAtIndex:2], nil];
+	[self runUtilityWithArgs:a];
 }
 
 - (void)launchFilePicker:(NSArray *)args
@@ -189,13 +193,13 @@
 }
 
 
-- (void)runUtilityWithArg:(NSString *)arg
+- (void)runUtilityWithArgs:(NSArray *)args
 {
 	NSTask *task = [[[NSTask alloc] init] autorelease];
 	NSPipe *pipe = [NSPipe pipe];
 	
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
-	[taskArgs addObject:arg];
+	[taskArgs addObjectsFromArray:args];
 		
     [task setCurrentDirectoryPath:gamePath];
     [task setLaunchPath:monoPath];

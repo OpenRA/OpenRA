@@ -22,81 +22,23 @@ namespace OpenRA.Utility
 {
 	static class Command
 	{
-		public static void ListMods(string _)
+		public static void ExtractZip(string[] args)
 		{
-			var mods = Mod.AllMods;
-			List<string> seen = new List<string>(mods.Where(x => x.Value.Standalone).Select(x => x.Key));
-			List<string> remaining = new List<string>(mods.Where(x => !x.Value.Standalone).Select(x => x.Key));
-			foreach(var m in seen)
-				Console.WriteLine(m);
-
-			int oldSeenSize = 0;
-			while (true)
+			if (args.Length < 3)
 			{
-				foreach (var m in remaining)
-				{
-					if (seen.Contains(m)) continue;
-
-					if (string.IsNullOrEmpty(mods[m].Requires))
-					{
-						Console.WriteLine(m);
-						seen.Add(m);
-						continue;
-					}
-					if (seen.Contains(mods[m].Requires))
-					{
-						Console.WriteLine(m);
-						seen.Add(m);
-					}
-				}
-
-				if (oldSeenSize == seen.Count) break;
-				oldSeenSize = seen.Count;
-			}
-
-			foreach(var m in remaining.Where(x => !seen.Contains(x)))
-				Console.WriteLine(m);
-		}
-
-		public static void ListModInfo(string modList)
-		{
-			string[] mods = modList.Split(',');
-			foreach (var m in mods)
-			{
-				var mod = Mod.AllMods
-					.Where(x => x.Key.Equals(m))
-					.Select(x => x.Value)
-					.FirstOrDefault();
-				if (mod == null)
-				{
-					Console.WriteLine("Error: Mod `{0}` is not installed or could not be found.", m);
-					return;
-				}
-
-				Console.WriteLine("Mod: {0}", m);
-				Console.WriteLine("  Title: {0}", mod.Title);
-				Console.WriteLine("  Version: {0}", mod.Version);
-				Console.WriteLine("  Author: {0}", mod.Author);
-				Console.WriteLine("  Description: {0}", mod.Description);
-				Console.WriteLine("  Requires: {0}", mod.Requires);
-				Console.WriteLine("  Standalone: {0}", mod.Standalone.ToString());
-			}
-		}
-
-		public static void ExtractZip(string argValue)
-		{
-			string[] args = argValue.Split(',');
-			
-			if (args.Length != 2)
-			{
-				Console.WriteLine("Error: invalid syntax");
+				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			string zipFile = args[0];
-			string path = args[1];
 			
-			if (!File.Exists(zipFile)) { Console.WriteLine("Error: Could not find {0}", zipFile); return; }
-			string dest = "mods{0}{1}".F(Path.DirectorySeparatorChar,path);
+			var zipFile = args[1];
+			var dest = args[2];
+			
+			if (!File.Exists(zipFile))
+			{
+				Console.WriteLine("Error: Could not find {0}", zipFile);
+				return;
+			}
+			
 			List<string> extracted = new List<string>();
 			try
 			{
@@ -112,68 +54,15 @@ namespace OpenRA.Utility
 			Console.WriteLine("Status: Completed");
 		}
 		
-		public static void DownloadUrl(string argValue)
+		public static void InstallRAPackages(string[] args)
 		{
-			string[] args = argValue.Split(',');
-			string url = args[0];
-			WebClient wc = new WebClient();
-			wc.Proxy = null;
-
-			if (args.Length == 1)
+			if (args.Length < 2)
 			{
-				wc.DownloadStringCompleted += DownloadStringCompleted;
-				wc.DownloadStringAsync(new Uri(url));
-			}
-			else if (args.Length == 2)
-			{
-				string path = args[1].Replace("~",Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-				
-				wc.DownloadProgressChanged += DownloadProgressChanged;
-				wc.DownloadFileCompleted += DownloadFileCompleted;
-	
-				Console.WriteLine("Downloading {0} to {1}", url, path);
-				Console.WriteLine("Status: Initializing");
-			
-				wc.DownloadFileAsync(new Uri(url), path);
-			}
-			else
-			{
-				Console.WriteLine("Error: invalid syntax");
+				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			
-			while (!completed)
-				Thread.Sleep(500);
-		}
 
-		static bool completed = false;
-
-		static void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-		{
-			if (e.Error != null)
-				Console.WriteLine("Error: {0}", e.Error.Message);
-			else
-				Console.WriteLine(e.Result);
-			completed = true;
-		}
-		
-		static void DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-		{
-			if (e.Error != null)
-				Console.WriteLine("Error: {0}", e.Error.Message);
-			else
-				Console.WriteLine("Status: Completed");
-			completed = true;
-		}
-
-		static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-		{
-			Console.WriteLine("Status: {0}% {1}/{2} bytes", e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive);
-		}
-
-		public static void InstallRAPackages(string path)
-		{
-			var basePath = "{0}{1}".F(path, Path.DirectorySeparatorChar);
+			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
 			var toPath = "mods{0}ra{0}packages{0}".F(Path.DirectorySeparatorChar);
 			var directCopy = new string[] {"INSTALL/REDALERT.MIX"};
 			var extract = new string[] {"conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
@@ -195,9 +84,15 @@ namespace OpenRA.Utility
 			Console.WriteLine("Status: Completed");
 		}
 
-		public static void InstallCncPackages(string path)
+		public static void InstallCncPackages(string[] args)
 		{
-			var basePath = "{0}{1}".F(path, Path.DirectorySeparatorChar);
+			if (args.Length < 2)
+			{
+				Console.WriteLine("Error: Invalid syntax");
+				return;
+			}
+			
+			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
 			var toPath = "mods{0}cnc{0}packages{0}".F(Path.DirectorySeparatorChar);
 			var directCopy = new string[] {"CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
 											   "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
@@ -220,13 +115,15 @@ namespace OpenRA.Utility
 			Console.WriteLine("Status: Completed");
 		}
 
-		public static void Settings(string argValue)
+		public static void Settings(string[] args)
 		{
-			string[] args = argValue.Split(',');
-
-			if (args.Length < 2) { return; }
+			if (args.Length < 3)
+			{
+				Console.WriteLine("Error: Invalid syntax");
+				return;
+			}
 			
-			string expandedPath = args[0].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+			string expandedPath = args[1].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 			
 			string settingsFile = expandedPath + Path.DirectorySeparatorChar + "settings.yaml";
 			if (!File.Exists(settingsFile))
@@ -236,14 +133,14 @@ namespace OpenRA.Utility
 			}
 			
 			List<MiniYamlNode> settingsYaml = MiniYaml.FromFile(settingsFile);
-			Queue<String> settingKey = new Queue<string>(args[1].Split('.'));
+			Queue<String> settingKey = new Queue<string>(args[2].Split('.'));
 
 			string s = settingKey.Dequeue();
 			MiniYaml n = settingsYaml.Where(x => x.Key == s).Select(x => x.Value).FirstOrDefault();
 
 			if (n == null)
 			{
-				Console.WriteLine("Error: Could not find {0} in {1}", args[1], settingsFile);
+				Console.WriteLine("Error: Could not find {0} in {1}", args[2], settingsFile);
 				return;
 			}
 
@@ -252,7 +149,7 @@ namespace OpenRA.Utility
 				s = settingKey.Dequeue();
 				if (!n.NodesDict.TryGetValue(s, out n))
 				{
-					Console.WriteLine("Error: Could not find {0} in {1}", args[1], settingsFile);
+					Console.WriteLine("Error: Could not find {0} in {1}", args[2], settingsFile);
 					return;
 				}
 			}
