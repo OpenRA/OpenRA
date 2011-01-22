@@ -24,37 +24,44 @@ namespace OpenRA
 			NativeUtility = nativeUtility;
 		}
 	
-		public void ExtractZip(string zipFile, string path, Action<string> parseOutput, Action onComplete)
+		public void ExtractZipAsync(string zipFile, string path, Action<string> parseOutput, Action onComplete)
+		{
+			ExecuteUtilityAsync(Utility, "\"--extract-zip={0},{1}\"".F(zipFile, path), parseOutput, onComplete);
+		}
+		
+		public void InstallRAFilesAsync(string cdPath, Action<string> parseOutput, Action onComplete)
+		{
+			ExecuteUtilityAsync(Utility, "\"--install-ra-packages={0}\"".F(cdPath), parseOutput, onComplete);
+		}
+		
+		public void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
+		{
+			ExecuteUtility(NativeUtility,
+			               "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : ""),
+			               withPath);
+		}
+	
+		void ExecuteUtility(string executable, string args, Action<string> onComplete)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = Utility;
-			p.StartInfo.Arguments = "\"--extract-zip={0},{1}\"".F(zipFile, path);
+			p.StartInfo.FileName = executable;
+			p.StartInfo.Arguments = args;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
 			p.StartInfo.RedirectStandardOutput = true;
-			p.Start();
-			var t = new Thread( _ =>
+			p.EnableRaisingEvents = true;
+			p.Exited += (_,e) =>
 			{
-				using (var reader = p.StandardOutput)
-				{
-					// This is wrong, chrisf knows why
-					while (!p.HasExited)
-					{
-						string s = reader.ReadLine();
-						if (string.IsNullOrEmpty(s)) continue;
-						parseOutput(s);
-					}
-				}
-				onComplete();
-			}) { IsBackground = true };
-			t.Start();
+				onComplete(p.StandardOutput.ReadToEnd().Trim());
+			};
+			p.Start();
 		}
 		
-		public void CopyRAFiles(string cdPath, Action<string> parseOutput, Action onComplete)
+		void ExecuteUtilityAsync(string executable, string args, Action<string> parseOutput, Action onComplete)
 		{
 			Process p = new Process();
-			p.StartInfo.FileName = Utility;
-			p.StartInfo.Arguments = "\"--install-ra-packages={0}\"".F(cdPath);
+			p.StartInfo.FileName = executable;
+			p.StartInfo.Arguments = args;
 			p.StartInfo.UseShellExecute = false;
 			p.StartInfo.CreateNoWindow = true;
 			p.StartInfo.RedirectStandardOutput = true;
@@ -75,22 +82,6 @@ namespace OpenRA
 				onComplete();
 			}) { IsBackground = true };
 			t.Start();	
-		}
-		
-		public void PromptFilepathAsync(string title, string message, bool directory, Action<string> withPath)
-		{
-			Process p = new Process();
-			p.StartInfo.FileName = NativeUtility;
-			p.StartInfo.Arguments = "--filepicker --title \"{0}\" --message \"{1}\" {2} --button-text \"Select\"".F(title, message, directory ? "--require-directory" : "");
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.EnableRaisingEvents = true;
-			p.Exited += (_,e) =>
-			{
-				withPath(p.StandardOutput.ReadToEnd().Trim());
-			};
-			p.Start();
 		}
 	}
 }

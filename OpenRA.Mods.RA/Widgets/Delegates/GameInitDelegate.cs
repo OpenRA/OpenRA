@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			if (Info.InstallMode == "ra")
-				Game.Utilities.CopyRAFiles(path, parseOutput, onComplete);
+				Game.Utilities.InstallRAFilesAsync(path, parseOutput, onComplete);
 			else 
 				ShowDownloadError("Installing from CD not supported");
 		}
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 							Game.RunAfterTick(() => ContinueLoading(Info));
 					};
 					
-					Game.RunAfterTick(() => Game.Utilities.ExtractZip(file, Info.PackagePath, parseOutput, onComplete));
+					Game.RunAfterTick(() => Game.Utilities.ExtractZipAsync(file, Info.PackagePath, parseOutput, onComplete));
 				}
 			};
 			
