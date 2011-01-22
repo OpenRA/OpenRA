@@ -32,7 +32,7 @@ namespace OpenRA.FileFormats.Graphics
 					ih.WriteTo(bw);
 				}
 
-				var eof = new ImageHeader { Format = Format.Format80, Offset = (uint)dataOffset };
+				var eof = new ImageHeader { Offset = (uint)dataOffset };
 				eof.WriteTo(bw);
 
 				var allZeroes = new ImageHeader { };
