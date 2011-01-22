@@ -175,17 +175,17 @@ namespace OpenRA.Utility
 		
 		public static void AuthenticateAndExtractZip(string[] args)
 		{			
-			Util.CallWithAdmin("--extract-zip \"{0}\" \"{1}\"".F(args[1], args[2]));
+			Util.CallWithAdmin("--extract-zip-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
 		}
 		
 		public static void AuthenticateAndInstallRAPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-ra-packages \"{0}\"".F(args[1]));
+			Util.CallWithAdmin("--install-ra-packages-inner \"{0}\"".F(args[1]));
 		}
 		
 		public static void AuthenticateAndInstallCncPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-cnc-packages \"{0}\"".F(args[1]));
+			Util.CallWithAdmin("--install-cnc-packages-inner \"{0}\"".F(args[1]));
 		}
 	}
 }
