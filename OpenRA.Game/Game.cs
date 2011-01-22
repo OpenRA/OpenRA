@@ -278,6 +278,8 @@ namespace OpenRA
 
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
+			
+			Widget.RootWidget.RemoveChildren();
 			modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
 		}
 		
