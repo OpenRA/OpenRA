@@ -141,8 +141,8 @@ namespace OpenRA.Widgets
 			
 			Action HideDropDown = () =>
 			{
-				Widget.RootWidget.Children.Remove(fullscreenMask);
-				Widget.RootWidget.Children.Remove(panel);
+				Widget.RootWidget.RemoveChild(fullscreenMask);
+				Widget.RootWidget.RemoveChild(panel);
 			};
 			
 			HideDropDown += () => Game.BeforeGameStart -= HideDropDown;

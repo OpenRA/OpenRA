@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
-			sl.ClearChildren();
+			sl.RemoveChildren();
 			currentServer = null;
 
 			if (games == null)

@@ -28,13 +28,13 @@ namespace OpenRA.Widgets
 		public string Delegate = null;
 		public string EventHandler = null;
 		public bool Visible = true;
+		
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Calculated internally
 		public Rectangle Bounds;
 		public Widget Parent = null;
 
-		static List<string> Delegates = new List<string>();
 		public static Stack<Widget> WindowList = new Stack<Widget>();
 		
 		// Common Funcs that most widgets will want
@@ -121,20 +121,14 @@ namespace OpenRA.Widgets
 								   height);
 		}
 
-		public void PostInit( Dictionary<string, object> args )
+		public void PostInit(Dictionary<string, object> args)
 		{
 			if( Delegate != null )
 			{
-				args[ "widget" ] = this;
-				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>( Delegate, args );
-				args.Remove( "widget" );
+				args["widget"] = this;
+				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args);
+				args.Remove("widget");
 			}
-		}
-		
-		public void InitDelegates()
-		{
-			foreach(var d in Delegates)
-				Game.CreateObject<IWidgetDelegate>(d);
 		}
 		
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
@@ -290,6 +284,8 @@ namespace OpenRA.Widgets
 			child.Parent = this;
 			Children.Add( child );
 		}
+		public virtual void RemoveChild(Widget child) {	Children.Remove(child);	}
+		public virtual void RemoveChildren() { Children.Clear(); }
 		
 		public Widget GetWidget(string id)
 		{

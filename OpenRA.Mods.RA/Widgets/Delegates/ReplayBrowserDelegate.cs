@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
 			CurrentReplay = null;
 
-			rl.ClearChildren();
+			rl.RemoveChildren();
 			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
 				AddReplay(rl, replayFile, template);
 

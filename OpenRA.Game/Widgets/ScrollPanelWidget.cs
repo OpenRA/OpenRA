@@ -39,10 +39,10 @@ namespace OpenRA.Widgets
 			throw new NotImplementedException();
 		}
 		
-		public void ClearChildren()
+		public override void RemoveChildren()
 		{
-			Children.Clear();
 			ContentHeight = 0;
+			base.RemoveChildren();
 		}
 		
 		public override void AddChild(Widget child)

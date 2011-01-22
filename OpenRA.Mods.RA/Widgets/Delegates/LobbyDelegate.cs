@@ -301,7 +301,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
 			// Todo: handle this nicer
-			Players.ClearChildren();
+			Players.RemoveChildren();
 			
 			foreach (var slot in orderManager.LobbyInfo.Slots)
 			{
