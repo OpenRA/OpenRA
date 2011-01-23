@@ -145,6 +145,14 @@ Background@MUSIC_MENU:
 			Text:Music
 			Align:Center
 			Bold:True
+		Button@BUTTON_INSTALL:
+			Id:BUTTON_INSTALL
+			X:20
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Install Music
+			Bold:True
 		Button@BUTTON_CLOSE:
 			Id:BUTTON_CLOSE
 			X:PARENT_RIGHT - 180
