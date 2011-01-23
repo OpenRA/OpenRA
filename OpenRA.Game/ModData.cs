@@ -21,7 +21,7 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
-		public readonly Dictionary<string, MapStub> AvailableMaps;
+		public Dictionary<string, MapStub> AvailableMaps {get; private set;}
 		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
@@ -37,9 +37,12 @@ namespace OpenRA
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen);
 			LoadScreen.Init();
 			LoadScreen.Display();
-			
-			AvailableMaps = FindMaps( Manifest.Mods );
 			WidgetLoader = new WidgetLoader( this );
+		}
+		
+		public void ReloadMaps()
+		{
+			AvailableMaps = FindMaps( Manifest.Mods );
 		}
 			
 		public void LoadInitialAssets()
@@ -50,6 +53,7 @@ namespace OpenRA
 			foreach (var dir in Manifest.Folders)
 				FileSystem.Mount(dir);
 			
+			ReloadMaps();
 			Palette = new HardwarePalette();
 			ChromeProvider.Initialize( Manifest.Chrome );
 			SheetBuilder = new SheetBuilder( TextureChannel.Red );

@@ -13,13 +13,16 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
+using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MapChooserDelegate : IWidgetDelegate
 	{
 		MapStub Map = null;
-
+		Widget scrollpanel;
+		Widget itemTemplate;
+		
 		[ObjectCreator.UseCtor]
 		internal MapChooserDelegate(
 			[ObjectCreator.Param( "widget" )] Widget bg,
@@ -31,7 +34,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			else
 				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 
-			var ml = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			bg.GetWidget<MapPreviewWidget>("MAPCHOOSER_MAP_PREVIEW").Map = () => Map;
 			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
 			bg.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => Map.Author;
@@ -41,20 +43,28 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
 			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
 
-			bg.GetWidget("BUTTON_OK").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
 			{
 				orderManager.IssueOrder(Order.Command("map " + Map.Uid));
 				Widget.CloseWindow();
 				return true;
 			};
 
-			bg.GetWidget("BUTTON_CANCEL").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi =>
 			{
 				Widget.CloseWindow();
 				return true;
 			};
-
-			var itemTemplate = ml.GetWidget<ContainerWidget>("MAP_TEMPLATE");
+			
+			bg.GetWidget<ButtonWidget>("BUTTON_INSTALL").OnMouseUp = mi => InstallMap();
+			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
+			itemTemplate = scrollpanel.GetWidget<ContainerWidget>("MAP_TEMPLATE");
+			EnumerateMaps();
+		}
+		
+		void EnumerateMaps()
+		{
+			scrollpanel.RemoveChildren();
 			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title).OrderBy(kv => kv.Value.PlayerCount))
 			{
 				var map = kv.Value;
@@ -69,8 +79,35 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
 				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
 				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
-				ml.AddChild(template);
+				scrollpanel.AddChild(template);
 			}
+		}
+		
+		bool InstallMap()
+		{
+			Game.Utilities.PromptFilepathAsync("Select MAIN.MIX on the CD", path =>
+			{
+				if (!string.IsNullOrEmpty(path))
+					Game.RunAfterTick(() => InstallMapInner(path));
+			});
+			return true;
+		}
+		
+		void InstallMapInner(string path)
+		{
+			var toPath = "{0}{1}maps{1}{2}{1}{3}"
+			          .F(Game.SupportDir,Path.DirectorySeparatorChar, 
+			             Game.modData.Manifest.Mods[0],
+			             Path.GetFileName(path));
+			
+			// Create directory if required
+			var dir = Path.GetDirectoryName(toPath);
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
+			
+			File.Copy(path, toPath, true);
+			Game.modData.ReloadMaps();
+			EnumerateMaps();
 		}
 	}
 }
