@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		bool InstallMap()
 		{
-			Game.Utilities.PromptFilepathAsync("Select MAIN.MIX on the CD", path =>
+			Game.Utilities.PromptFilepathAsync("Select an OpenRA map file", path =>
 			{
 				if (!string.IsNullOrEmpty(path))
 					Game.RunAfterTick(() => InstallMapInner(path));
@@ -105,6 +105,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
 			
+			// TODO: Attempt to mount the map and verify that
+			// it is a valid Game.modData.Manifest.Mods[0] map.
 			File.Copy(path, toPath, true);
 			Game.modData.ReloadMaps();
 			EnumerateMaps();
