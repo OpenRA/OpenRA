@@ -35,6 +35,8 @@ namespace OpenRA.FileFormats
 		{
 			this.path = path;
 			this.priority = priority;
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
 		}
 
 		public Stream GetContent(string filename)

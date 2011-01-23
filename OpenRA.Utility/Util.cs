@@ -71,6 +71,68 @@ namespace OpenRA.Utility
 		}	
 		
 		public static void CallWithAdmin(string command)
+		{
+			switch (Environment.OSVersion.Platform)
+			{
+			case PlatformID.Unix:
+				if (File.Exists("/usr/bin/gksudo"))
+					CallWithAdminGnome(command);
+				else if (File.Exists("/usr/bin/kdesudo"))
+					CallWithAdminKDE(command);
+				else
+					CallWithAdminWindows(command);
+				break;
+			default:
+				CallWithAdminWindows(command);
+				break;
+			}
+		}
+		
+		static void CallWithAdminGnome(string command)
+		{
+			var p = new Process();
+			p.StartInfo.FileName = "/usr/bin/gksudo";
+			p.StartInfo.Arguments = "--description \"OpenRA Utility App\" -- mono OpenRA.Utility.exe " + command;
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.RedirectStandardOutput = true;
+			p.Start();
+			
+			using (var reader = p.StandardOutput)
+			{
+				while (!p.HasExited)
+				{
+					string line = reader.ReadLine();
+					if (string.IsNullOrEmpty(line)) continue;
+					if (line.Equals("GNOME_SUDO_PASSGNOME_SUDO_PASSSorry, try again.")) //gksudo is slightly moronic
+					{
+						Console.WriteLine("Error: Could not elevate process");
+						return;
+					}
+					else
+						Console.WriteLine(line);
+				}
+			}
+		}
+		
+		static void CallWithAdminKDE(string command)
+		{
+			var p = new Process();
+			p.StartInfo.FileName = "/usr/bin/kdesudo";
+			p.StartInfo.Arguments = "-d -- mono OpenRA.Utility.exe " + command;
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.RedirectStandardOutput = true;
+			p.Start();
+			
+			using (var reader = p.StandardOutput)
+			{
+				while(!p.HasExited)
+				{
+					Console.WriteLine(reader.ReadLine());
+				}
+			}
+		}
+		
+		static void CallWithAdminWindows(string command)
 		{			
 			string pipename = Util.GetPipeName();
 			var p = new Process();
