@@ -85,6 +85,9 @@ Player:
 	PlayerColorPalette:
 		BasePalette: terrain
 	SurrenderOnDisconnect:
+	DebugResourceCash:
+	DebugResourceOre:
+	DebugResourceOreCapacity:
 
 World:	
 	OpenWidgetAtGameStart:
