@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		#endregion
 	}
 
-	public abstract class UnitStance : ITick, IResolveOrder, ISelectionColorModifier, IPostRenderSelection
+	public abstract class UnitStance : ITick, IResolveOrder, ISelectionColorModifier, IPostRenderSelection, ISync
 	{
 		[Sync]
 		public int NextScanTime;

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
-	public class RepairableBuilding : ITick, IResolveOrder
+	public class RepairableBuilding : ITick, IResolveOrder, ISync
 	{
 		[Sync]
 		bool isRepairing = false;

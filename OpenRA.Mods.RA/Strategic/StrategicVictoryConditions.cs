@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.self, this); }	
 	}
 
-	public class StrategicVictoryConditions : ITick
+	public class StrategicVictoryConditions : ITick, ISync
 	{
 		[Sync] public Actor Self;
 		public StrategicVictoryConditionsInfo Info;

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Interval = 8;
 	}
 
-	class Burns : ITick
+	class Burns : ITick, ISync
 	{
 		[Sync]
 		int ticks;

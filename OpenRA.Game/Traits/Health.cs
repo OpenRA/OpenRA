@@ -23,7 +23,7 @@ namespace OpenRA.Traits
 
 	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead };
 	
-	public class Health
+	public class Health : ISync
 	{
 		public readonly HealthInfo Info;
 		

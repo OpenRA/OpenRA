@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips, 
 		IRenderModifier, IExplodeModifier, IOrderVoice,
-		ISpeedModifier
+		ISpeedModifier, ISync
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		

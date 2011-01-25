@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new GainsExperience(init.self, this); }
 	}
 
-	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, IRenderModifier
+	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, IRenderModifier, ISync
 	{
 		readonly Actor self;
 		readonly int[] Levels;

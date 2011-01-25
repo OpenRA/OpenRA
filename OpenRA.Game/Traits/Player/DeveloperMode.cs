@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
 	
-	public class DeveloperMode : IResolveOrder
+	public class DeveloperMode : IResolveOrder, ISync
 	{
 		DeveloperModeInfo Info;
 		[Sync] public bool FastCharge;

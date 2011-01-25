@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	class IronCurtainableInfo : TraitInfo<IronCurtainable> { }
 
-	class IronCurtainable : IDamageModifier, ITick
+	class IronCurtainable : IDamageModifier, ITick, ISync
 	{
 		[Sync]
 		int RemainingTicks = 0;

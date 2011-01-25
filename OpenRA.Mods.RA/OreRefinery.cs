@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier
+	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier, ISync
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;

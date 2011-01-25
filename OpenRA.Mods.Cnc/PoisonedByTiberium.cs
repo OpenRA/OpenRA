@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc
 		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
 
-	class PoisonedByTiberium : ITick
+	class PoisonedByTiberium : ITick, ISync
 	{
 		PoisonedByTiberiumInfo info;
 		[Sync] int poisonTicks;

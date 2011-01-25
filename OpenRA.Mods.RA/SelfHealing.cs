@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 		public readonly float HealIfBelow = .5f;
 	}
 
-	class SelfHealing : ITick
+	class SelfHealing : ITick, ISync
 	{
 		[Sync]
 		int ticks;

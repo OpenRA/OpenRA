@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick
+	public class Turreted : ITick, ISync
 	{
 		[Sync]
 		public int turretFacing = 0;

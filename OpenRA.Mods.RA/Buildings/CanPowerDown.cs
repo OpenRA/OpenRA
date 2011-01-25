@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new CanPowerDown(init); }
 	}
 
-	public class CanPowerDown : IResolveOrder, IDisable
+	public class CanPowerDown : IResolveOrder, IDisable, ISync
 	{
 		[Sync]
 		bool disabled = false;

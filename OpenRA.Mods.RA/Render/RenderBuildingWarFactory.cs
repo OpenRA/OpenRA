@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold
+	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold, ISync
 	{
 		public Animation roof;
 		[Sync]

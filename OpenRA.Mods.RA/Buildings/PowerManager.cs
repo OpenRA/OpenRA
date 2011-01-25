@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new PowerManager(init, this); }
 	}
 
-	public class PowerManager : ITick
+	public class PowerManager : ITick, ISync
 	{
 		PowerManagerInfo Info;
 		Player Player;

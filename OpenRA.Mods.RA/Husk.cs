@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Husk( init ); }
 	}
 
-	class Husk : IOccupySpace, IFacing
+	class Husk : IOccupySpace, IFacing, ISync
 	{
 		[Sync]
 		int2 location;

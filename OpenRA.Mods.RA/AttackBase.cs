@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 		public abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
 	{
 		[Sync]
 		int nextScanTime = 0;

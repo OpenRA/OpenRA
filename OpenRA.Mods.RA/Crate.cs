@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable
+	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync
 	{
 		readonly Actor self;
 		[Sync]

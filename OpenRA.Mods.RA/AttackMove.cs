@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool JustMove = false;
 	}
 
-	class AttackMove : IResolveOrder, IOrderVoice, ITick
+	class AttackMove : IResolveOrder, IOrderVoice, ITick, ISync
 	{
 		[Sync] public int2 TargetLocation = int2.Zero; 
 

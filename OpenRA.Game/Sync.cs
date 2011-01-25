@@ -17,6 +17,7 @@ using OpenRA.FileFormats;
 namespace OpenRA
 {
 	public class SyncAttribute : Attribute { }
+	public interface ISync { }	/* marker interface */
 
 	public static class Sync
 	{

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] RearmBuildings = { "fix" };
 	}
 
-	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection
+	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
 		/* [Sync] when sync can cope with arrays! */ 
 		public int2[] minefield = null;

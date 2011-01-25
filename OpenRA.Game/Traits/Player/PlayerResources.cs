@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceCash(init.self); }
 	}
-	public class DebugResourceCash
+	public class DebugResourceCash : ISync
 	{
 		readonly Actor self;
 		public DebugResourceCash(Actor self){this.self = self;}
@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOre(init.self); }
 	}
-	public class DebugResourceOre
+	public class DebugResourceOre : ISync
 	{
 		readonly Actor self;
 		public DebugResourceOre(Actor self){this.self = self;}
@@ -48,14 +48,14 @@ namespace OpenRA.Traits
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOreCapacity(init.self); }
 	}
-	public class DebugResourceOreCapacity
+	public class DebugResourceOreCapacity : ISync
 	{
 		readonly Actor self;
 		public DebugResourceOreCapacity(Actor self){this.self = self;}
 		[Sync] public int foo { get { return self.Trait<PlayerResources>().OreCapacity; } }
 	}
 	
-	public class PlayerResources : ITick
+	public class PlayerResources : ITick, ISync
 	{
 		readonly Player Owner;
 		int AdviceInterval;

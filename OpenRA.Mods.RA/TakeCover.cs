@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	class TakeCoverInfo : TraitInfo<TakeCover>, ITraitPrerequisite<RenderInfantryInfo> { }
 
 	// infantry prone behavior
-	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier
+	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
 	{
 		const int defaultProneTime = 100;	/* ticks, =4s */
 		const float proneDamage = .5f;

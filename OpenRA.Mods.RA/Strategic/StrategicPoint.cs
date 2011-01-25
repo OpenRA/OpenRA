@@ -13,7 +13,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StrategicPoint(init.self, this); }
 	}
 
-	public class StrategicPoint : INotifyCapture, ITick
+	public class StrategicPoint : INotifyCapture, ITick, ISync
 	{
 		[Sync] public Actor Self;
 		[Sync] public bool Critical;

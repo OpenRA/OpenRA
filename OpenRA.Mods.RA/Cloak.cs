@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyDamage, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier
+	public class Cloak : IRenderModifier, INotifyDamage, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
 	{
 		[Sync]
 		int remainingTime;

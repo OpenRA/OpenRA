@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftableInfo : TraitInfo<Chronoshiftable> { }
 
-	public class Chronoshiftable : ITick
+	public class Chronoshiftable : ITick, ISync
 	{
 		// Return-to-sender logic
 		[Sync]

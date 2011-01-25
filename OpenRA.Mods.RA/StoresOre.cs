@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 
-	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier, IStoreOre
+	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier, IStoreOre, ISync
 	{		
 		readonly StoresOreInfo Info;
 		

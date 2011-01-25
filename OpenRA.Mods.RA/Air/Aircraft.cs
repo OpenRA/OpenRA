@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftFacing(init.self); }
 	}
-	public class DebugAircraftFacing
+	public class DebugAircraftFacing : ISync
 	{
 		readonly Actor self;
 		public DebugAircraftFacing(Actor self){this.self = self;}
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
 	}
-	public class DebugAircraftSubPxX
+	public class DebugAircraftSubPxX : ISync
 	{
 		readonly Actor self;
 		public DebugAircraftSubPxX(Actor self){this.self = self;}
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
 	}
-	public class DebugAircraftSubPxY
+	public class DebugAircraftSubPxY : ISync
 	{
 		readonly Actor self;
 		public DebugAircraftSubPxY(Actor self){this.self = self;}
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
 	}
-	public class DebugAircraftAltitude
+	public class DebugAircraftAltitude : ISync
 	{
 		readonly Actor self;
 		public DebugAircraftAltitude(Actor self){this.self = self;}
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Air
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
 
-	public class Aircraft : IMove, IFacing, IOccupySpace
+	public class Aircraft : IMove, IFacing, IOccupySpace, ISync
 	{
 		protected readonly Actor self;
 		[Sync]

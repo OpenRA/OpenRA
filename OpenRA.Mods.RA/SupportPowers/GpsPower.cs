@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyDamage
+	class GpsPower : SupportPower, INotifyDamage, ISync
 	{
 		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info) { }
 

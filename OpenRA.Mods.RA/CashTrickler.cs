@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Amount = 3;
 	}
 
-	class CashTrickler : ITick
+	class CashTrickler : ITick, ISync
 	{
 		[Sync]
 		int ticks;

@@ -15,7 +15,8 @@ namespace OpenRA.Traits
 	{
 		public object Create(ActorInitializer init) { return new SharesCell(init); }
 	}
-	public class SharesCell : IOffsetCenterLocation
+
+	public class SharesCell : IOffsetCenterLocation, ISync
 	{
 		[Sync]
 		public int Position;

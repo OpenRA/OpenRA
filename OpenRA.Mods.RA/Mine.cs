@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
 
-	class Mine : ICrushable, IOccupySpace
+	class Mine : ICrushable, IOccupySpace, ISync
 	{
 		readonly Actor self;
 		readonly MineInfo info;

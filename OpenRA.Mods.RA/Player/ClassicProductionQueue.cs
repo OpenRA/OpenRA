@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
 
-	public class ClassicProductionQueue : ProductionQueue
+	public class ClassicProductionQueue : ProductionQueue, ISync
 	{
 		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
 			: base(self, self, info as ProductionQueueInfo) {}

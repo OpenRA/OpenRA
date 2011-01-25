@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new LimitedAmmo(this); }
 	}
 
-	public class LimitedAmmo : INotifyAttack, IPips
+	public class LimitedAmmo : INotifyAttack, IPips, ISync
 	{
 		[Sync]
 		int ammo;

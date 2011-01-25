@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Move
         }
     }
 
-    public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge, ISync
     {
         public readonly Actor self;
         public readonly MobileInfo Info;

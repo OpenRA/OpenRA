@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, IOccupySpace, INotifyCapture
+	public class Building : INotifyDamage, IResolveOrder, IOccupySpace, INotifyCapture, ISync
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;

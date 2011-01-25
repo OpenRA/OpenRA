@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 	/// 
 	/// Will fire only when fired upon
 	/// </summary>
-	public class UnitStanceDefensive : UnitStance, INotifyDamage
+	public class UnitStanceDefensive : UnitStance, INotifyDamage, ISync
 	{
 		public enum ETargetType
 		{
