@@ -195,7 +195,7 @@ namespace OpenRA
 					ret += n++ * (int)(1+a.ActorID) * Sync.CalculateSyncHash(a);
 
 				// hash all the traits that tick
-				foreach (var x in traitDict.ActorsWithTraitMultiple<object>(this))
+				foreach (var x in traitDict.ActorsWithTraitMultiple<ISync>(this))
 					ret += n++*(int) (1+x.Actor.ActorID)*Sync.CalculateSyncHash(x.Trait);
 
 				// Hash the shared rng
