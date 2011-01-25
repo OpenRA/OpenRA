@@ -120,6 +120,10 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: aunitl1.aud
+	DebugAircraftFacing:
+	DebugAircraftSubPxX:
+	DebugAircraftSubPxY:
+	DebugAircraftAltitude:
 
 ^Building:
 	AppearsOnRadar:

@@ -15,6 +15,50 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
+	public class DebugAircraftFacingInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new DebugAircraftFacing(init.self); }
+	}
+	public class DebugAircraftFacing
+	{
+		readonly Actor self;
+		public DebugAircraftFacing(Actor self){this.self = self;}
+		[Sync] public int foo { get { return self.Trait<Aircraft>().Facing; } }
+	}
+	
+	public class DebugAircraftSubPxXInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
+	}
+	public class DebugAircraftSubPxX
+	{
+		readonly Actor self;
+		public DebugAircraftSubPxX(Actor self){this.self = self;}
+		[Sync] public int foo { get { return self.Trait<Aircraft>().SubPxPosition.X; } }
+	}
+	
+	public class DebugAircraftSubPxYInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
+	}
+	public class DebugAircraftSubPxY
+	{
+		readonly Actor self;
+		public DebugAircraftSubPxY(Actor self){this.self = self;}
+		[Sync] public int foo { get { return self.Trait<Aircraft>().SubPxPosition.Y; } }
+	}
+	
+	public class DebugAircraftAltitudeInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
+	}
+	public class DebugAircraftAltitude
+	{
+		readonly Actor self;
+		public DebugAircraftAltitude(Actor self){this.self = self;}
+		[Sync] public int Facing { get { return self.Trait<Aircraft>().Altitude; } }
+	}
+	
 	public class AircraftInfo : ITraitInfo
 	{
 		public readonly int CruiseAltitude = 30;
