@@ -31,9 +31,6 @@ namespace OpenRA.Traits
 				return ( facing - rot ) & 0xFF;
 		}
 
-		static int2[] fvecs = Graphics.Util.MakeArray<int2>( 32,
-			i => (-1024*float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f )).ToInt2() );
-
 		public static int GetFacing( int2 d, int currentFacing )
 		{
 			if (d == int2.Zero)
@@ -145,6 +142,41 @@ namespace OpenRA.Traits
                 items.Remove(t);
             }
         }
-
-	}
+		
+		static int2[] fvecs =
+		{		
+			new int2( 0, -1331 ),
+			new int2( -199, -1305 ),
+			new int2( -391, -1229 ),
+			new int2( -568, -1106 ),
+			new int2( -724, -941 ),
+			new int2( -851, -739 ),
+			new int2( -946, -509 ),
+			new int2( -1004, -259 ),
+			new int2( -1024, 0 ),
+			new int2( -1004, 259 ),
+			new int2( -946, 509 ),
+			new int2( -851, 739 ),
+			new int2( -724, 941 ),
+			new int2( -568, 1106 ),
+			new int2( -391, 1229 ),
+			new int2( -199, 1305 ),
+			new int2( 0, 1331 ),
+			new int2( 199, 1305 ),
+			new int2( 391, 1229 ),
+			new int2( 568, 1106 ),
+			new int2( 724, 941 ),
+			new int2( 851, 739 ),
+			new int2( 946, 509 ),
+			new int2( 1004, 259 ),
+			new int2( 1024, 0 ),
+			new int2( 1004, -259 ),
+			new int2( 946, -509 ),
+			new int2( 851, -739 ),
+			new int2( 724, -941 ),
+			new int2( 568, -1106 ),
+			new int2( 391, -1229 ),
+			new int2( 199, -1305 )
+		};
+		}
 }
