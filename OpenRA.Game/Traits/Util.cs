@@ -31,21 +31,20 @@ namespace OpenRA.Traits
 				return ( facing - rot ) & 0xFF;
 		}
 
-		static float2[] fvecs = Graphics.Util.MakeArray<float2>( 32,
-			i => -float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f ) );
+		static int2[] fvecs = Graphics.Util.MakeArray<int2>( 32,
+			i => (-1024*float2.FromAngle( i / 16.0f * (float)Math.PI ) * new float2( 1f, 1.3f )).ToInt2() );
 
-		public static int GetFacing( int2 dd, int currentFacing )
+		public static int GetFacing( int2 d, int currentFacing )
 		{
-			var d = dd.ToFloat2();
-			if (float2.WithinEpsilon(d, float2.Zero, 0.001f))
+			if (d == int2.Zero)
 				return currentFacing;
 
 			int highest = -1;
-			float highestDot = -1.0f;
+			int highestDot = -1;
 
 			for( int i = 0 ; i < fvecs.Length ; i++ )
 			{
-				float dot = float2.Dot( fvecs[ i ], d );
+				int dot = int2.Dot( fvecs[ i ], d );
 				if( dot > highestDot )
 				{
 					highestDot = dot;

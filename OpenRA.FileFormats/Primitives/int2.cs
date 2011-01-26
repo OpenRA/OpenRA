@@ -78,5 +78,8 @@ namespace OpenRA
 			return new int2(Math.Min(r.Right, Math.Max(X, r.Left)),
 			                Math.Min(r.Bottom, Math.Max(Y, r.Top)));
 		}
+		
+		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }
+
 	}
 }
