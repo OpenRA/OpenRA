@@ -125,6 +125,7 @@ extern char **environ;
 					 monoPath,
 					 [NSString stringWithFormat:@"UtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
 					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
+					 [NSString stringWithFormat:@"SpecialPackageRoot=%@/",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 					 nil];
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
