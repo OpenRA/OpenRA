@@ -80,7 +80,7 @@ namespace OpenRA.Utility
 				else if (File.Exists("/usr/bin/kdesudo"))
 					CallWithAdminKDE(command);
 				else
-					CallWithAdminWindows(command);
+					CallWithoutAdmin(command);
 				break;
 			default:
 				CallWithAdminWindows(command);
@@ -158,6 +158,24 @@ namespace OpenRA.Utility
 			{
 				while (!p.HasExited)
 					Console.Write(reader.ReadLine());
+			}
+		}
+		
+		static void CallWithoutAdmin(string command)
+		{
+			var p = new Process();
+			p.StartInfo.FileName = "mono";
+			p.StartInfo.Arguments = "OpenRA.Utility.exe " + command;
+			p.StartInfo.UseShellExecute = false;
+			p.StartInfo.RedirectStandardOutput = true;
+			p.Start();
+			
+			using (var reader = p.StandardOutput)
+			{
+				while(!p.HasExited)
+				{
+					Console.WriteLine(reader.ReadLine());
+				}
 			}
 		}
 	}
