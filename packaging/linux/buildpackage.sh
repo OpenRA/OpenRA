@@ -1,34 +1,25 @@
 #!/bin/bash
 # OpenRA packaging master script for linux packages
 
-if [ $# -ne "4" ]; then
-	echo "Usage: `basename $0` version files-dir outputdir arch"
+if [ $# -ne "3" ]; then
+	echo "Usage: `basename $0` version files-dir outputdir"
     exit 1
 fi
 
 VERSION=$1
 BUILTDIR=$2
 PACKAGEDIR=$3
-ROOTDIR=root$4
+ROOTDIR=root
 
 # Clean up
 rm -rf $ROOTDIR
 
 # Game files
 mkdir -p $ROOTDIR/usr/bin/
-if [ $4 = "x64" ]; then
-	cp -T $BUILTDIR/gtklaunch $ROOTDIR/usr/bin/openra
-else
-	cp -T $BUILTDIR/gtklaunch32 $ROOTDIR/usr/bin/openra
-fi
+cp -T openra-bin root/usr/bin/openra
 
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
-
-# Remove unneeded files
-rm $ROOTDIR/usr/share/openra/OpenRA.Launcher.exe
-rm $ROOTDIR/usr/share/openra/gtklaunch
-rm $ROOTDIR/usr/share/openra/gtklaunch32
 
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
@@ -47,28 +38,25 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
 (
     echo "Building Debian package."
     cd deb
-    ./buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" $4 &> package.log
+    ./buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Debian package build failed, refer to $PWD/package.log."
     fi
 ) &
 
-if [ $4 = 'x86' ]
-then
 (
     echo "Building Arch-Linux package."
     cd pkgbuild
-    sh buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" $4 &> package.log
+    sh buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
 ) &
-fi
      
 (
     echo "Building RPM package."
     cd rpm
-    sh buildpackage.sh "$VERSION" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR" $4 &> package.log
+    sh buildpackage.sh "$VERSION" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "RPM package build failed, refer to $PWD/package.log."
     fi

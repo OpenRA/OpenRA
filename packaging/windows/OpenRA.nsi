@@ -75,7 +75,6 @@ SectionEnd
 
 Section "Client" Client
 	SetOutPath "$INSTDIR"
-	File "${SRCDIR}\OpenRA.Launcher.exe"
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
@@ -92,8 +91,6 @@ Section "Client" Client
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Launcher.lnk" $OUTDIR\OpenRA.Launcher.exe "" \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \

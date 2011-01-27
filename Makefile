@@ -4,16 +4,12 @@ DEFINE      = DEBUG;TRACE
 COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll
 PHONY		= core tools package all mods clean distclean
 
-CC	= gcc
-CFLAGS	= -O2 -Wall
-CFLAGS32 = $(CFLAGS) -m32
-
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc
 tools: editor ralint seqed filex tsbuild utility
-package: fixheader core editor utility winlaunch gtklaunch gtklaunch32
+package: fixheader core editor utility
 mods: mod_ra mod_cnc
-all: core tools winlaunch
+all: core tools
 clean: 
 	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 distclean: clean
@@ -166,28 +162,6 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.Shar
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
-# Windows launcher
-winlaunch_SRCS		= $(shell find OpenRA.Launcher/ -iname '*.cs')
-winlaunch_TARGET	= OpenRA.Launcher.exe
-winlaunch_KIND		= winexe
-winlaunch_LIBS		= $(COMMON_LIBS) System.Windows.Forms.dll
-winlaunch_EXTRA		= -resource:OpenRA.Launcher.Launcher.resources
-PROGRAMS 			+= winlaunch
-OpenRA.Launcher.Launcher.resources:
-	resgen2 OpenRA.Launcher/Launcher.resx OpenRA.Launcher.Launcher.resources 1> /dev/null
-winlaunch: OpenRA.Launcher.Launcher.resources $(winlaunch_TARGET)
-
-gtklaunch_HEADERS 	= $(shell find OpenRA.Launcher.Gtk/ -iname '*.h')
-gtklaunch_SRCS		= $(shell find OpenRA.Launcher.Gtk/ -iname '*.c')
-
-gtklaunch: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
-	@echo CC launcher
-	@$(CC) $(CFLAGS) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0) -I/usr/include/ -lgcrypt -o gtklaunch $(gtklaunch_SRCS) /usr/lib/libmicrohttpd.a
-
-gtklaunch32: $(gtklaunch_HEADERS) $(gtklaunch_SRCS)
-	@echo CC launcher32
-	@$(CC) $(CFLAGS32) $(shell pkg-config --cflags --libs gtk+-2.0 webkit-1.0) -I/usr/include/ -lgcrypt -o gtklaunch32 $(gtklaunch_SRCS) /usr/lib/libmicrohttpd.a
-
 .PHONY: $(PHONY) $(PROGRAMS)
 
 #
@@ -220,9 +194,9 @@ BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
-CORE = fileformats rcg rgl rnull game editor utility winlaunch
+CORE = fileformats rcg rgl rnull game editor utility
 
-install: all gtklaunch
+install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
@@ -254,8 +228,12 @@ install: all gtklaunch
 	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 
+	@echo "#!/bin/sh" > openra
+	@echo "cd "$(datadir)"/openra" >> openra
+	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe SupportDir=~/.openra \"$$""@\"" >> openra
+
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -T gtklaunch $(BIN_INSTALL_DIR)/openra
+	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)

@@ -1,42 +1,33 @@
 #!/bin/bash
 E_BADARGS=85
-if [ $# -ne "5" ]
+if [ $# -ne "4" ]
 then
-    echo "Usage: `basename $0` version root-dir packaging-dir outputdir arch"
+    echo "Usage: `basename $0` version root-dir packaging-dir outputdir"
     exit $E_BADARGS
-fi
-
-if [ $5 = "x64" ]
-then
-	ARCH=x86_64
-else
-	ARCH=i386
 fi
 
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo $1 | sed "s/-/\\./g"`
 
-cp openra.spec openra$ARCH.spec
-
-sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra$ARCH.spec
+sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra.spec
 rootdir=`readlink -f $2`
-sed -i "s|{ROOT_DIR}|$rootdir|" openra$ARCH.spec
+sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
 
 for x in `find $rootdir -type f`
 do
     y="${x#$rootdir}"
-    sed -i "/%files/ a $y" openra$ARCH.spec
+    sed -i "/%files/ a $y" openra.spec
 done
 
-cp openra$ARCH.spec "$3/SPECS/"
+cp openra.spec "$3/SPECS/"
 
 cd "$3"
 
-rpmbuild --target $ARCH --buildroot /tmp/openra$ARCH/ -bb SPECS/openra$ARCH.spec
+rpmbuild --target noarch --buildroot /tmp/openra/ -bb SPECS/openra.spec
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cd RPMS/$ARCH/
-mv openra-$PKGVERSION-1.$ARCH.rpm $4
+cd RPMS/noarch/
+mv openra-$PKGVERSION-1.noarch.rpm $4
 
