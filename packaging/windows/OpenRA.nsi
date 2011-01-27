@@ -91,9 +91,7 @@ Section "Client" Client
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Red Alert.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=ra" \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA - Command & Conquer.lnk" $OUTDIR\OpenRA.Game.exe "Game.Mods=cnc" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
@@ -110,9 +108,7 @@ Section "Editor" Editor
 	
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor (RA).lnk" $OUTDIR\OpenRA.Editor.exe "ra" \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor (CNC).lnk" $OUTDIR\OpenRA.Editor.exe "cnc" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor.lnk" $OUTDIR\OpenRA.Editor.exe \
 			"$OUTDIR\OpenRA.ico" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
@@ -135,16 +131,6 @@ SectionGroup /e "Mods"
 			CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
 			RMDir /r "$TEMP\ra-packages"
 		SectionEnd
-		Section "Download content" RA_Content
-			AddSize 6584
-			IfFileExists "$INSTDIR\mods\ra\packages\redalert.mix" done dlcontent
-			dlcontent:
-				SetOutPath "$OUTDIR\packages"
-				!insertmacro DownloadDependency "ra-packages" "ra-packages.zip"
-				ZipDLL::extractall "ra-packages.zip" "$OUTDIR"
-				Delete ra-packages.zip
-			done:
-		SectionEnd
 	SectionGroupEnd
 	SectionGroup "Command & Conquer" CNC
 		Section "-CNC_Core"
@@ -164,16 +150,6 @@ SectionGroup /e "Mods"
 			CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
 			RMDir /r "$TEMP\cnc-packages"
 			SectionEnd
-		Section "Download content" CNC_Content
-			AddSize 4621
-			IfFileExists "$INSTDIR\mods\cnc\packages\conquer.mix" done dlcontent
-			dlcontent:
-				SetOutPath "$OUTDIR\packages"
-				!insertmacro DownloadDependency "cnc-packages" "cnc-packages.zip"
-				ZipDLL::extractall "cnc-packages.zip" "$OUTDIR"
-				Delete cnc-packages.zip
-			done:
-		SectionEnd
 	SectionGroupEnd
 SectionGroupEnd
 
@@ -291,7 +267,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\INSTALL
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
-	Delete $INSTDIR\settings-netplay-*.ini
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL.dll
 	Delete $INSTDIR\cg.dll
