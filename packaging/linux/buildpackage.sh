@@ -25,13 +25,6 @@ cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 mkdir -p $ROOTDIR/usr/share/applications/
 sed "s/{VERSION}/$VERSION/" openra.desktop > $ROOTDIR/usr/share/applications/openra.desktop
 
-# Menu entries
-mkdir -p $ROOTDIR/usr/share/menu/
-cp openra $ROOTDIR/usr/share/menu/
-
-# Icon images
-mkdir -p $ROOTDIR/usr/share/pixmaps/
-cp openra.32.xpm $ROOTDIR/usr/share/pixmaps/
 mkdir -p $ROOTDIR/usr/share/icons/
 cp -r hicolor $ROOTDIR/usr/share/icons/
 

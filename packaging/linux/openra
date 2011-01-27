@@ -1,2 +1,0 @@
-?package(openra):needs="X11" section="Games/Simulation" title="OpenRA"\
-command="/usr/bin/openra" icon="/usr/share/pixmaps/openra.32.xpm"
