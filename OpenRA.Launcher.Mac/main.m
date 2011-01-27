@@ -7,60 +7,52 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "main.h"
 
 extern char **environ;
 int main(int argc, char *argv[])
 {
 	/* When launching a mod, the arguments are of the form 
 	 * --launch <game dir> <mono path> <utility path> <support dir option> <mod option> */
-	if (argc >= 6 && strcmp(argv[1], "--launch") == 0)
+	if (argc >= 8 && strcmp(argv[1], "--launch") == 0)
 	{
 		/* Change into the game dir */
-		chdir(argv[2]);
+		chdir(argv[3]);
 
 		/* Command line args for mono */
 		char *args[] = {
-			argv[3],
+			argv[4],
 			"--debug",
 			"OpenRA.Game.exe",
-			argv[4],
 			argv[5],
 			argv[6],
+			argv[7],
 			NULL
 		};
 		
 		/* add game dir to DYLD_LIBRARY_PATH */
 		char *old = getenv("DYLD_LIBRARY_PATH");
 		if (old == NULL)
-			setenv("DYLD_LIBRARY_PATH", argv[2], 1);
+			setenv("DYLD_LIBRARY_PATH", argv[3], 1);
 		else
 		{
 			char buf[512];
-			int len = strlen(argv[2]) + strlen(old) + 2;
+			int len = strlen(argv[3]) + strlen(old) + 2;
 			if (len > 512)
 			{
 				NSLog(@"Insufficient DYLD_LIBRARY_PATH buffer length. Wanted %d, had 512", len);
 				exit(1);
 			}
-			sprintf(buf,"%s:%s",argv[2], old);
+			sprintf(buf,"%s:%s",argv[3], old);
 			setenv("DYLD_LIBRARY_PATH", buf, 1);
 		}
 		
-
-		hide_menubar_if_necessary();
+		if (strcmp(argv[2], "--hide-menubar") == 0)
+			[NSMenu setMenuBarVisible:NO];
+		
 		/* Exec mono */
 		execve(args[0], args, environ);
 	}
 	
 	/* Else, start the launcher */
 	return NSApplicationMain(argc,  (const char **) argv);
-}
-
-// Hide the menubar and dock if we are running fullscreen
-void hide_menubar_if_necessary()
-{
-	// TODO: HACK: Parse the settings.yaml / commandline args for fullscreen options
-	if (YES)
-		[NSMenu setMenuBarVisible:NO];
 }

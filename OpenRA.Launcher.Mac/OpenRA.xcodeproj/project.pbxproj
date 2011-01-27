@@ -27,7 +27,6 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* OpenRA-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OpenRA-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OpenRA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRA.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA134CC412E6F131009AA0EF /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		DA81FA801290F5C800C48F2F /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		DA81FA811290F5C800C48F2F /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
 		DA81FBDB12910E4900C48F2F /* OpenRA.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = OpenRA.icns; sourceTree = "<group>"; };
@@ -100,7 +99,6 @@
 			children = (
 				256AC3F00F4B6AF500CF3369 /* OpenRA_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				DA134CC412E6F131009AA0EF /* main.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";

@@ -22,4 +22,5 @@
 - (BOOL)initMono;
 - (void)runUtilityWithArgs:(NSArray *)arg;
 - (void)utilityResponded:(NSNotification *)n;
+- (BOOL)shouldHideMenubar;
 @end
