@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
+using OpenRA;
 
 namespace OpenRA.Utility
 {
@@ -138,39 +139,12 @@ namespace OpenRA.Utility
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			
+			var section = args[2].Split('.')[0];
+			var field = args[2].Split('.')[1];
 			string expandedPath = args[1].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-			
-			string settingsFile = expandedPath + Path.DirectorySeparatorChar + "settings.yaml";
-			if (!File.Exists(settingsFile))
-			{
-				Console.WriteLine("Error: Could not locate settings file at {0}", settingsFile);
-				return;
-			}
-			
-			List<MiniYamlNode> settingsYaml = MiniYaml.FromFile(settingsFile);
-			Queue<String> settingKey = new Queue<string>(args[2].Split('.'));
-
-			string s = settingKey.Dequeue();
-			MiniYaml n = settingsYaml.Where(x => x.Key == s).Select(x => x.Value).FirstOrDefault();
-
-			if (n == null)
-			{
-				Console.WriteLine("Error: Could not find {0} in {1}", args[2], settingsFile);
-				return;
-			}
-
-			while (settingKey.Count > 0)
-			{
-				s = settingKey.Dequeue();
-				if (!n.NodesDict.TryGetValue(s, out n))
-				{
-					Console.WriteLine("Error: Could not find {0} in {1}", args[2], settingsFile);
-					return;
-				}
-			}
-
-			Console.WriteLine(n.Value);
+			var settings = new OpenRA.GameRules.Settings(expandedPath + Path.DirectorySeparatorChar + "settings.yaml", new Arguments(new string[]{}));
+			var result = settings.Sections[section].GetType().GetField(field).GetValue(settings.Sections[section]);
+			Console.WriteLine(result);
 		}
 		
 		public static void AuthenticateAndExtractZip(string[] args)

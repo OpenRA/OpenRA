@@ -93,7 +93,7 @@ namespace OpenRA.GameRules
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
 		
-		Dictionary<string, object> Sections;
+		public Dictionary<string, object> Sections;
 		public Settings(string file, Arguments args)
 		{			
 			SettingsFile = file;
@@ -107,6 +107,7 @@ namespace OpenRA.GameRules
 				{"Debug", Debug}
 			};
 			
+			
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;
@@ -118,7 +119,7 @@ namespace OpenRA.GameRules
 			
 			if (File.Exists(SettingsFile))
 			{
-				Console.WriteLine("Loading settings file {0}",SettingsFile);
+				//Console.WriteLine("Loading settings file {0}",SettingsFile);
 				var yaml = MiniYaml.DictFromFile(SettingsFile);
 				
 				foreach (var kv in Sections)
