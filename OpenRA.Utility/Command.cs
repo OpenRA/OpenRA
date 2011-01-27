@@ -80,7 +80,7 @@ namespace OpenRA.Utility
 					Console.WriteLine("Error: Could not find "+file);
 					return;
 				}
-				Console.WriteLine("Status: Extracting {0}", file);
+				Console.WriteLine("Status: Extracting {0}", Path.GetFileName(file).ToLower());
 				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
 			}
 			Console.WriteLine("Status: Completed");
@@ -108,10 +108,10 @@ namespace OpenRA.Utility
 			{
 				if (!File.Exists(basePath+file))
 				{
-					Console.WriteLine("Error: Could not find "+file);
+					Console.WriteLine("Error: Could not find "+file.ToLower());
 					return;
 				}
-				Console.WriteLine("Status: Extracting {0}", file);
+				Console.WriteLine("Status: Extracting {0}", Path.GetFileName(file).ToLower());
 				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
 			}
 			Console.WriteLine("Status: Completed");
@@ -154,12 +154,12 @@ namespace OpenRA.Utility
 		
 		public static void AuthenticateAndInstallRAPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-ra-packages-inner \"{0}\"".F(args[1]));
+			Util.CallWithAdmin("--install-ra-packages-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
 		}
 		
 		public static void AuthenticateAndInstallCncPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-cnc-packages-inner \"{0}\"".F(args[1]));
+			Util.CallWithAdmin("--install-cnc-packages-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
 		}
 	}
 }
