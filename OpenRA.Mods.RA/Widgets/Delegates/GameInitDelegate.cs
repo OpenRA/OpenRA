@@ -26,7 +26,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	public class GameInitDelegate : IWidgetDelegate
 	{
 		GameInitInfoWidget Info;
-		Widget window;
 		
 		[ObjectCreator.UseCtor]
 		public GameInitDelegate([ObjectCreator.Param] Widget widget)
@@ -116,7 +115,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		void ShowInstallMethodDialog()
 		{
-			window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
+			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
 			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
 			window.GetWidget("FROMCD").OnMouseUp = mi => PromptForCD();
 					
@@ -135,7 +134,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		void InstallFromCD(string path)
 		{
-			window = Widget.OpenWindow("INIT_COPY");
+			var window = Widget.OpenWindow("INIT_COPY");
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
 			progress.Indeterminate = true;
@@ -152,7 +151,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		    	if (s.Substring(0,5) == "Error")
 				{
 					error = true;
-					ShowDownloadError(s);
+					ShowDownloadError(window, s);
 				}
 				if (s.Substring(0,6) == "Status")
 					window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
@@ -167,12 +166,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (Info.InstallMode == "ra")
 				Game.Utilities.InstallRAFilesAsync(path, FileSystem.SpecialPackageRoot+Info.PackagePath, parseOutput, onComplete);
 			else 
-				ShowDownloadError("Installing from CD not supported");
+				ShowDownloadError(window, "Installing from CD not supported");
 		}
 
 		void ShowDownloadDialog()
 		{
-			window = Widget.OpenWindow("INIT_DOWNLOAD");
+			var window = Widget.OpenWindow("INIT_DOWNLOAD");
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
@@ -187,7 +186,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
 			{
 				if (i.Error != null)
-					ShowDownloadError(i.Error.Message);
+					ShowDownloadError(window, i.Error.Message);
 				else if (!cancelled)
 				{
 					// Automatically extract
@@ -199,7 +198,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				    	if (s.Substring(0,5) == "Error")
 						{
 							error = true;
-							ShowDownloadError(s);
+							ShowDownloadError(window, s);
 						}
 						if (s.Substring(0,6) == "Status")
 							window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
@@ -220,11 +219,14 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); return true; };
 		}
 		
-		void ShowDownloadError(string e)
+		void ShowDownloadError(Widget window, string e)
 		{
-			window.GetWidget<LabelWidget>("STATUS").GetText = () => e;
-			window.GetWidget<ButtonWidget>("RETRY").IsVisible = () => true;
-			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => true;
+			if (window.GetWidget<LabelWidget>("STATUS") != null)	/* ugh */
+			{
+				window.GetWidget<LabelWidget>("STATUS").GetText = () => e;
+				window.GetWidget<ButtonWidget>("RETRY").IsVisible = () => true;
+				window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => true;
+			}
 		}
 				
 		void ContinueLoading(Widget widget)
