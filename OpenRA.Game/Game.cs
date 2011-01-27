@@ -266,6 +266,8 @@ namespace OpenRA
 			// Discard any invalid mods
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
+			Settings.Game.Mods = mm;
+			Settings.Save();
 			
 			Sound.Initialize();
 			

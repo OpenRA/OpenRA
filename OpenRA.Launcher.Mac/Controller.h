@@ -18,7 +18,7 @@
 - (void)launchFilePicker:(NSArray *)args;
 - (void)extractZip:(NSArray *)args;
 - (void)installRAPackages:(NSArray *)args;
-- (void)launchMod:(NSString *)mod;
+- (void)launch;
 - (BOOL)initMono;
 - (void)runUtilityWithArgs:(NSArray *)arg;
 - (void)utilityResponded:(NSNotification *)n;

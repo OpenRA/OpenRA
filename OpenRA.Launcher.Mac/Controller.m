@@ -50,7 +50,7 @@ extern char **environ;
 		[self installRAPackages:args];
 	
 	else 
-		[self launchMod:@"cnc"];
+		[self launch];
 	
 	[NSApp terminate: nil];
 }
@@ -112,7 +112,7 @@ extern char **environ;
 	return ![response isEqualToString:@"Windowed\n"];
 }
 
--(void)launchMod:(NSString *)mod
+-(void)launch
 {
 	// Use LaunchServices because neither NSTask or NSWorkspace support Info.plist _and_ arguments pre-10.6
 	
@@ -125,7 +125,6 @@ extern char **environ;
 					 monoPath,
 					 [NSString stringWithFormat:@"UtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
 					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
-					 [NSString stringWithFormat:@"Game.Mods=%@",mod],
 					 nil];
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
