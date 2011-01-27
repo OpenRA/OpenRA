@@ -57,14 +57,14 @@ namespace OpenRA.Utility
 		
 		public static void InstallRAPackages(string[] args)
 		{
-			if (args.Length < 2)
+			if (args.Length < 3)
 			{
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
 
 			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
-			var toPath = "mods{0}ra{0}packages{0}".F(Path.DirectorySeparatorChar);
+			var toPath = args[2];
 			var directCopy = new string[] {"INSTALL/REDALERT.MIX"};
 			var extract = new string[] {"conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
 										"scores.mix", "snow.mix", "interior.mix", "temperat.mix"};
@@ -87,14 +87,14 @@ namespace OpenRA.Utility
 
 		public static void InstallCncPackages(string[] args)
 		{
-			if (args.Length < 2)
+			if (args.Length < 3)
 			{
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
 			
 			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
-			var toPath = "mods{0}cnc{0}packages{0}".F(Path.DirectorySeparatorChar);
+			var toPath = args[2];
 			var directCopy = new string[] {"CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
 											   "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
 			var extract = new string[] {"cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix"};

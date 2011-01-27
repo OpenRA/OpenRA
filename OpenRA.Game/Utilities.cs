@@ -28,9 +28,9 @@ namespace OpenRA
 			ExecuteUtilityAsync("--extract-zip \"{0}\" \"{1}\"".F(zipFile, path), parseOutput, onComplete);
 		}
 		
-		public void InstallRAFilesAsync(string cdPath, Action<string> parseOutput, Action onComplete)
+		public void InstallRAFilesAsync(string cdPath, string path, Action<string> parseOutput, Action onComplete)
 		{
-			ExecuteUtilityAsync("--install-ra-packages \"{0}\"".F(cdPath), parseOutput, onComplete);
+			ExecuteUtilityAsync("--install-ra-packages \"{0}\" \"{1}\"".F(cdPath, path), parseOutput, onComplete);
 		}
 		
 		public void PromptFilepathAsync(string title, Action<string> withPath)
