@@ -15,7 +15,8 @@ namespace OpenRA.Mods.RA
 {
 	class IdleAnimationInfo : ITraitInfo, ITraitPrerequisite<RenderInfantryInfo>
 	{
-		public readonly int IdleWaitTicks = 50;
+		public readonly int MinIdleWaitTicks = 30;
+		public readonly int MaxIdleWaitTicks = 110;
 		public readonly string[] Animations = {};
 		public object Create(ActorInitializer init) { return new IdleAnimation(this); }
 	}
@@ -56,7 +57,15 @@ namespace OpenRA.Mods.RA
 				var ri = self.TraitOrDefault<RenderInfantry>();
 
 				if (ri.anim.HasSequence(sequence))
-					ri.anim.PlayThen(sequence, () => state = IdleState.None);
+				{
+					var previousSequence = ri.anim.CurrentSequence.Name;
+					ri.anim.PlayThen(sequence,
+						() =>
+						{
+							state = IdleState.None; 
+							ri.anim.PlayRepeating(previousSequence);
+						});
+				}
 				else
 					state = IdleState.None;
 			}
@@ -69,7 +78,7 @@ namespace OpenRA.Mods.RA
 			
 			state = IdleState.Waiting;
 			sequence = Info.Animations.Random(self.World.SharedRandom);
-			delay = Info.IdleWaitTicks;
+			delay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
 		}
 	}
 }
