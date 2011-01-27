@@ -28,14 +28,31 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
-			currentMod = mods.FirstOrDefault() ?? "ra";
-
-			Text = "OpenRA Editor (mod:{0})".F(currentMod);
-
-			Game.modData = new ModData(currentMod);
-
-			Rules.LoadRules(Game.modData.Manifest, new Map());
-
+			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
+			
+			toolStripComboBox1.SelectedIndexChanged += (_, e) => 
+			{
+				tilePalette.SuspendLayout();
+				actorPalette.SuspendLayout();
+				resourcePalette.SuspendLayout();
+				tilePalette.Controls.Clear();
+				actorPalette.Controls.Clear();
+				resourcePalette.Controls.Clear();
+				tilePalette.ResumeLayout();
+				actorPalette.ResumeLayout();
+				resourcePalette.ResumeLayout();
+				surface1.Bind(null, null, null);
+				pmMiniMap.Image = null;
+				currentMod = toolStripComboBox1.SelectedItem as string;
+				
+				Text = "OpenRA Editor (mod:{0})".F(currentMod);
+				Game.modData = new ModData(currentMod);
+				Rules.LoadRules(Game.modData.Manifest, new Map());
+				loadedMapName = null;
+			};
+			
+			toolStripComboBox1.SelectedItem = "ra";
+			
 			surface1.AfterChange += OnMapChanged;
 			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
 		}
