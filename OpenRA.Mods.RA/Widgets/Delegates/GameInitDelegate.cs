@@ -62,55 +62,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				ContinueLoading(widget);
 			else
 			{
+				MainMenuButtonsDelegate.DisplayModSelector();
 				ShowInstallMethodDialog();
 			}
-			
-			var selector = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "QUICKMODSWITCHER" );
-			var switcher = selector.GetWidget<ButtonWidget>("SWITCHER");
-			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
-			switcher.GetText = ActiveModTitle;
-			selector.GetWidget<LabelWidget>("VERSION").GetText = ActiveModVersion;	
-		}
-		
-		string ActiveModTitle()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Title;
-		}
-		
-		string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
-		}
-		
-		bool ShowModsDropDown(ButtonWidget selector)
-		{
-			var dropDownOptions = new List<Pair<string, Action>>();
-			
-			foreach (var kv in Mod.AllMods)
-			{
-				var modList = new List<string>() { kv.Key };
-				var m = kv.Key;
-				while (!string.IsNullOrEmpty(Mod.AllMods[m].Requires))
-				{
-					m = Mod.AllMods[m].Requires;
-					modList.Add(m);
-				}
-					
-				dropDownOptions.Add(new Pair<string, Action>( kv.Value.Title,
-					() => Game.RunAfterTick(() => Game.InitializeWithMods( modList.ToArray() ) )));
-			}
-				                    
-			DropDownButtonWidget.ShowDropDown( selector,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = "  {0}".F(ac.First),
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
-			return true;
 		}
 		
 		void ShowInstallMethodDialog()
@@ -232,7 +186,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		void ContinueLoading(Widget widget)
 		{
 			Game.LoadShellMap();
-			Widget.RootWidget.Children.Remove(widget);
+			Widget.RootWidget.RemoveChildren();
 			Widget.OpenWindow("MAINMENU_BG");
 		}
 		
