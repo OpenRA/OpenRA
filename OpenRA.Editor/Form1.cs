@@ -26,6 +26,8 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
+			var currentMod = mods.FirstOrDefault() ?? "ra";
+
 			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
 			
 			toolStripComboBox1.SelectedIndexChanged += (_, e) => 
@@ -49,7 +51,7 @@ namespace OpenRA.Editor
 				loadedMapName = null;
 			};
 			
-			toolStripComboBox1.SelectedItem = "ra";
+			toolStripComboBox1.SelectedItem = currentMod;
 			
 			surface1.AfterChange += OnMapChanged;
 			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
