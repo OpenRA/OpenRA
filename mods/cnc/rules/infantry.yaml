@@ -179,10 +179,10 @@ RMBO:
 		HP: 200
 	RevealsShroud:
 		Range: 5
-	AttackFrontal:
-		PrimaryWeapon: Sniper
 	TakeCover:
 	C4Demolition:
 		C4Delay: .03
+	AttackFrontal:
+		PrimaryWeapon: Sniper
 	IdleAnimation:
 		Animations: idle1,idle2,idle3
