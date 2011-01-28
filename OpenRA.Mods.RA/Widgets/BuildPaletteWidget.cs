@@ -333,7 +333,6 @@ namespace OpenRA.Mods.RA.Widgets
 		void HandleBuildPalette( World world, string item, bool isLmb )
 		{
 			var unit = Rules.Info[item];
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			var producing = CurrentQueue.AllQueued().FirstOrDefault( a => a.Item == item );
 
 			if (isLmb)
@@ -365,7 +364,7 @@ namespace OpenRA.Mods.RA.Widgets
 					// instant cancel of things we havent really started yet, and things that are finished
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
 					{
-						Sound.Play(eva.CancelledAudio);
+						Sound.Play(CurrentQueue.Info.CancelledAudio);
 						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 						if (Game.GetModifierKeys().HasModifier(Modifiers.Shift) &&
 							Game.GetModifierKeys().HasModifier(Modifiers.Ctrl))
@@ -376,7 +375,7 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 					else
 					{
-						Sound.Play(eva.OnHoldAudio);
+						Sound.Play(CurrentQueue.Info.OnHoldAudio);
 						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, true));
 					}
 				}
@@ -385,11 +384,7 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		void StartProduction( World world, string item )
 		{
-			var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			var unit = Rules.Info[item];
-
-			Sound.Play(unit.Traits.Contains<BuildingInfo>() ? eva.BuildingSelectAudio : eva.UnitSelectAudio);
-						
+			Sound.Play(CurrentQueue.Info.QueuedAudio);
 			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item, 
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}

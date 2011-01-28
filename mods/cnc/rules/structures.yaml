@@ -28,10 +28,18 @@ FACT:
 		Type: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: constru1.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 	ProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: constru1.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 	BaseBuilding:
 
 NUKE:
@@ -158,7 +166,10 @@ PYLE:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -188,10 +199,14 @@ HAND:
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
-	ProductionQueue@Infantry:
+	ProductionQueue:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 
 AFLD:
 	Inherits: ^Building
@@ -226,10 +241,14 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
-	ProductionQueue@Vehicle:
+	ProductionQueue:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 
 WEAP:
 	Inherits: ^Building
@@ -265,10 +284,14 @@ WEAP:
 		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
-	ProductionQueue@Vehicle:
+	ProductionQueue:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
 
 HQ:
 	RequiresPower:
@@ -387,11 +410,15 @@ HPAD:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	ProductionQueue@Plane:
+	ProductionQueue:
 		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-	
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
+
 EYE:
 	RequiresPower:
 	CanPowerDown:

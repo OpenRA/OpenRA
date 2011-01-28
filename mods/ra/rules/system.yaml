@@ -4,10 +4,14 @@ Player:
 		Type: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: abldgin1.aud
+		ReadyAudio: conscmp1.aud
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		QueuedAudio: abldgin1.aud
+		ReadyAudio: conscmp1.aud
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4

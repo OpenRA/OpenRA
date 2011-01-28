@@ -21,6 +21,13 @@ namespace OpenRA.Mods.RA
 		public readonly string Type = null;
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
+		
+		public readonly string ReadyAudio = "unitrdy1.aud";
+		public readonly string BlockedAudio = "nobuild1.aud";
+		public readonly string QueuedAudio = "train1.aud";
+		public readonly string OnHoldAudio = "onhold1.aud";
+		public readonly string CancelledAudio = "cancld1.aud";
+		
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
@@ -153,20 +160,19 @@ namespace OpenRA.Mods.RA
 									_ =>
 									{
 										var isBuilding = unit.Traits.Contains<BuildingInfo>();
-										var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 										
 										if (isBuilding && !hasPlayedSound)
 										{
-											Sound.PlayToPlayer(order.Player, eva.BuildingReadyAudio);
+											Sound.PlayToPlayer(order.Player, Info.ReadyAudio);
 											hasPlayedSound = true;
 										}
 										else if (!isBuilding)
 										{
 											if (BuildUnit(order.TargetString))
-												Sound.PlayToPlayer(order.Player, eva.UnitReadyAudio);
+												Sound.PlayToPlayer(order.Player, Info.ReadyAudio);
 											else if (!hasPlayedSound && time > 0)
 											{
-												Sound.PlayToPlayer(order.Player, eva.UnitReadyBlockedAudio);
+												Sound.PlayToPlayer(order.Player, Info.BlockedAudio);
 												hasPlayedSound = true;
 											}
 										}
