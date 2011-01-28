@@ -26,7 +26,7 @@ namespace OpenRA.Editor
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
-			var currentMod = mods.FirstOrDefault() ?? "ra";
+			currentMod = mods.FirstOrDefault() ?? "ra";
 
 			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
 			
@@ -47,6 +47,7 @@ namespace OpenRA.Editor
 				
 				Text = "OpenRA Editor (mod:{0})".F(currentMod);
 				Game.modData = new ModData(currentMod);
+				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 				loadedMapName = null;
 			};
@@ -77,8 +78,6 @@ namespace OpenRA.Editor
 
 			loadedMapName = mapname;
 
-			Game.modData = new ModData(currentMod);
-
 			// load the map
 			var map = new Map(mapname);
 
@@ -100,9 +99,6 @@ namespace OpenRA.Editor
 			resourcePalette.Controls.Clear();
 
 			loadedMapName = null;
-
-			Game.modData = new ModData(currentMod);
-
 			PrepareMapResources(Game.modData.Manifest, map);
 
 			MakeDirty();
