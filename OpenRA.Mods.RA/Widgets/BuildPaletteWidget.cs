@@ -496,6 +496,8 @@ namespace OpenRA.Mods.RA.Widgets
         bool DoBuildingHotkey(char c, World world)
         {
 			if (!paletteOpen) return false;
+			if (CurrentQueue == null) return false;
+
             var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == c.ToString());
 
             if ( toBuild != null )
