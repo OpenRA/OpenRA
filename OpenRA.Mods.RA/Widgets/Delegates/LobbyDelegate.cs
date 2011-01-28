@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
-			lockTeamsCheckbox.BindReadOnly(orderManager.LobbyInfo.GlobalSettings, "LockTeams");
+			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
 			lockTeamsCheckbox.OnChange += _ =>
 			{
 				if (Game.IsHost)

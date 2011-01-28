@@ -49,6 +49,7 @@ namespace OpenRA.Widgets
 		
 		public void Bind(object obj, string field) { Bind(obj, field, false); }
 		public void BindReadOnly(object obj, string field) { Bind(obj, field, true); }
+
 		void Bind(object obj, string field, bool readOnly)
 		{
 			boundObject = obj;
@@ -56,7 +57,7 @@ namespace OpenRA.Widgets
 			boundField = obj.GetType().GetField(field);
 		}
 
-		// TODO: SliderWidget doesn't support delegate methods for mouse input
+		// TODO: CheckboxWidget doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			// Checkboxes require lmb
