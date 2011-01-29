@@ -131,7 +131,7 @@ namespace OpenRA.Editor
 					};
 
 					var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = t.Key };
-					ibox.Click += (_, e) => surface1.SetBrush(brushTemplate);
+					ibox.Click += (_, e) => surface1.SetTool(new BrushTool(brushTemplate));
 
 					var template = t.Value;
 					tilePalette.Controls.Add(ibox);
@@ -164,7 +164,7 @@ namespace OpenRA.Editor
 					};
 
 
-					ibox.Click += (_, e) => surface1.SetActor(template);
+					ibox.Click += (_, e) => surface1.SetTool(new ActorTool(template));
 
 					actorPalette.Controls.Add(ibox);
 
@@ -197,7 +197,7 @@ namespace OpenRA.Editor
 
 
 
-					ibox.Click += (_, e) => surface1.SetResource(template);
+					ibox.Click += (_, e) => surface1.SetTool(new ResourceTool(template));
 
 					resourcePalette.Controls.Add(ibox);
 
@@ -347,7 +347,7 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void SpawnPointsClicked(object sender, EventArgs e) { surface1.SetWaypoint(new WaypointTemplate()); }
+		void SpawnPointsClicked(object sender, EventArgs e) { surface1.SetTool(new WaypointTool(new WaypointTemplate())); }
 		void Form1_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = true; }
 		void Form1_KeyUp(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = false; }
 

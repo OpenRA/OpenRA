@@ -17,6 +17,8 @@ using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
+using SGraphics = System.Drawing.Graphics;
+
 namespace OpenRA.Editor
 {
 	class Surface : Control
@@ -24,15 +26,14 @@ namespace OpenRA.Editor
 		public Map Map { get; private set; }
 		public TileSet TileSet { get; private set; }
 		public Palette Palette { get; private set; }
-		int2 Offset;
+		public int2 Offset;
 
-		float Zoom = 1.0f;
+		public int2 GetOffset() { return Offset; }
 
-		BrushTemplate Brush;
-		ActorTemplate Actor;
-		ResourceTemplate Resource;
-		WaypointTemplate Waypoint;
+		public float Zoom = 1.0f;
 
+		ITool Tool;
+		
 		public bool IsPanning;
 		public event Action AfterChange = () => { };
 		public event Action<string> MousePositionChanged = _ => { };
@@ -40,20 +41,19 @@ namespace OpenRA.Editor
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
 
+		public Keys GetModifiers() { return ModifierKeys; }
+
 		public void Bind(Map m, TileSet ts, Palette p)
 		{
 			Map = m;
 			TileSet = ts;
 			Palette = p;
-			Brush = null;
 			PlayerPalettes = null;
 			Chunks.Clear();
+			Tool = null;
 		}
 
-		public void SetBrush(BrushTemplate brush) { Actor = null; Brush = brush; Resource = null; Waypoint = null; }
-		public void SetActor(ActorTemplate actor) { Brush = null; Actor = actor; Resource = null; Waypoint = null; }
-		public void SetResource(ResourceTemplate resource) { Brush = null; Actor = null; Resource = resource; Waypoint = null; }
-		public void SetWaypoint(WaypointTemplate waypoint) { Brush = null; Actor = null; Resource = null; Waypoint = waypoint; }
+		public void SetTool(ITool tool) { Tool = tool; }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
@@ -65,7 +65,7 @@ namespace OpenRA.Editor
 			ResourceTemplates = templates.ToDictionary(a => a.Info.ResourceType);
 		}
 
-		Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
+		public Dictionary<int2, Bitmap> Chunks = new Dictionary<int2, Bitmap>();
 
 		public Surface()
 			: base()
@@ -139,101 +139,8 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void FloodFillWithBrush(int2 pos)
-		{
-			var queue = new Queue<int2>();
-			var replace = Map.MapTiles[pos.X, pos.Y];
-			var touched = new bool[Map.MapSize.X, Map.MapSize.Y];
-
-			Action<int, int> MaybeEnqueue = (x, y) =>
-				{
-					if (Map.IsInMap(x, y) && !touched[x, y])
-					{
-						queue.Enqueue(new int2(x, y));
-						touched[x, y] = true;
-					}
-				};
-
-			queue.Enqueue(pos);
-			while (queue.Count > 0)
-			{
-				var p = queue.Dequeue();
-				if (!Map.MapTiles[p.X, p.Y].Equals(replace))
-					continue;
-
-				var a = FindEdge(p, new int2(-1, 0), replace);
-				var b = FindEdge(p, new int2(1, 0), replace);
-
-				for (var x = a.X; x <= b.X; x++)
-				{
-					Map.MapTiles[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, image = (byte)0, index = (byte)0 };
-					if (Map.MapTiles[x, p.Y - 1].Equals(replace))
-						MaybeEnqueue(x, p.Y - 1);
-					if (Map.MapTiles[x, p.Y + 1].Equals(replace))
-						MaybeEnqueue(x, p.Y + 1);
-				}
-			}
-
-			/* todo: optimize */
-			foreach (var ch in Chunks.Values) ch.Dispose();
-			Chunks.Clear();
-
-			AfterChange();
-		}
-
-		int2 FindEdge(int2 p, int2 d, TileReference<ushort, byte> replace)
-		{
-			for (; ; )
-			{
-				var q = p + d;
-				if (!Map.IsInMap(q)) return p;
-				if (!Map.MapTiles[q.X, q.Y].Equals(replace)) return p;
-				p = q;
-			}
-		}
-
-		void DrawWithBrush()
-		{
-			// change the bits in the map
-			var tile = TileSet.Tiles[Brush.N];
-			var template = TileSet.Templates[Brush.N];
-			var pos = GetBrushLocation();
-
-			if (ModifierKeys == Keys.Shift)
-			{
-				FloodFillWithBrush(pos);
-				return;
-			}
-
-			for (var u = 0; u < template.Size.X; u++)
-				for (var v = 0; v < template.Size.Y; v++)
-				{
-					if (Map.IsInMap(new int2(u, v) + pos))
-					{
-						var z = u + v * template.Size.X;
-						if (tile.TileBitmapBytes[z] != null)
-							Map.MapTiles[u + pos.X, v + pos.Y] =
-								new TileReference<ushort, byte>
-								{
-									type = Brush.N,
-									index = template.PickAny ? byte.MaxValue : (byte)z,
-									image = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
-								};
-
-						var ch = new int2((pos.X + u) / ChunkSize, (pos.Y + v) / ChunkSize);
-						if (Chunks.ContainsKey(ch))
-						{
-							Chunks[ch].Dispose();
-							Chunks.Remove(ch);
-						}
-					}
-				}
-
-			AfterChange();
-		}
-
 		int wpid;
-		string NextWpid()
+		public string NextWpid()
 		{
 			for (; ; )
 			{
@@ -245,10 +152,7 @@ namespace OpenRA.Editor
 
 		void DrawWithWaypoint()
 		{
-			var k = Map.Waypoints.FirstOrDefault(a => a.Value == GetBrushLocation());
-			if (k.Key != null) Map.Waypoints.Remove(k.Key);
-
-			Map.Waypoints.Add(NextWpid(), GetBrushLocation());
+			
 
 			AfterChange();
 		}
@@ -264,11 +168,8 @@ namespace OpenRA.Editor
 				BrushLocation.Y < 0)
 				return;
 
-			Actor = null;
-			Brush = null;
-			Resource = null;
-			Waypoint = null;
-
+			Tool = null;
+			
 			var key = Map.Actors.FirstOrDefault(a => a.Value.Location() == BrushLocation);
 			if (key.Key != null) Map.Actors.Remove(key.Key);
 
@@ -291,16 +192,13 @@ namespace OpenRA.Editor
 
 		void Draw()
 		{
-			if (Brush != null) DrawWithBrush();
-			if (Actor != null) DrawWithActor();
-			if (Resource != null) DrawWithResource();
-			if (Waypoint != null) DrawWithWaypoint();
-
+			if (Tool != null) Tool.Apply(this);
+			
 			AfterChange();
 		}
 
 		int id;
-		string NextActorName()
+		public string NextActorName()
 		{
 			for (; ; )
 			{
@@ -309,39 +207,10 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void DrawWithActor()
-		{
-			if (Map.Actors.Any(a => a.Value.Location() == GetBrushLocation()))
-				return;
-
-			var owner = "Neutral";
-			var id = NextActorName();
-			Map.Actors[id] = new ActorReference(Actor.Info.Name.ToLowerInvariant())
-			{
-				new LocationInit( GetBrushLocation() ),
-				new OwnerInit( owner)
-			};
-
-			AfterChange();
-		}
-
-		System.Random r = new System.Random();
+		public System.Random random = new System.Random();
 		void DrawWithResource()
 		{
-			Map.MapResources[GetBrushLocation().X, GetBrushLocation().Y]
-				= new TileReference<byte, byte>
-				{
-					type = (byte)Resource.Info.ResourceType,
-					index = (byte)r.Next(Resource.Info.SpriteNames.Length),
-					image = (byte)Resource.Value
-				};
-
-			var ch = new int2((GetBrushLocation().X) / ChunkSize, (GetBrushLocation().Y) / ChunkSize);
-			if (Chunks.ContainsKey(ch))
-			{
-				Chunks[ch].Dispose();
-				Chunks.Remove(ch);
-			}
+			
 
 			AfterChange();
 		}
@@ -361,7 +230,7 @@ namespace OpenRA.Editor
 			Invalidate();
 		}
 
-		const int ChunkSize = 8;		// 8x8 chunks ==> 192x192 bitmaps.
+		public const int ChunkSize = 8;		// 8x8 chunks ==> 192x192 bitmaps.
 
 		Bitmap RenderChunk(int u, int v)
 		{
@@ -414,14 +283,14 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		int2 GetBrushLocation()
+		public int2 GetBrushLocation()
 		{
 			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
 			return new int2(vX / TileSet.TileSize, vY / TileSet.TileSize);
 		}
 
-		void DrawActor(System.Drawing.Graphics g, int2 p, ActorTemplate t, ColorPalette cp)
+		public void DrawActor(SGraphics g, int2 p, ActorTemplate t, ColorPalette cp)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
 
@@ -442,7 +311,7 @@ namespace OpenRA.Editor
 			if (cp != null) t.Bitmap.Palette = restorePalette;
 		}
 
-		void DrawImage(System.Drawing.Graphics g, Bitmap bmp, int2 location)
+		public void DrawImage(SGraphics g, Bitmap bmp, int2 location)
 		{
 			float OffsetX = bmp.Width / 2 - TileSet.TileSize / 2;
 			float DrawX = TileSet.TileSize * location.X * Zoom + Offset.X - OffsetX;
@@ -530,27 +399,10 @@ namespace OpenRA.Editor
 					TileSet.TileSize * wp.Value.Y * Zoom + Offset.Y + 4,
 					(TileSet.TileSize - 8) * Zoom, (TileSet.TileSize - 8) * Zoom);
 
-			if (Brush != null)
-				e.Graphics.DrawImage(Brush.Bitmap,
-					TileSet.TileSize * GetBrushLocation().X * Zoom + Offset.X,
-					TileSet.TileSize * GetBrushLocation().Y * Zoom + Offset.Y,
-					Brush.Bitmap.Width * Zoom,
-					Brush.Bitmap.Height * Zoom);
-
-			if (Actor != null)
-				DrawActor(e.Graphics, GetBrushLocation(), Actor, null);	/* todo: include the player 
-																		 * in the brush so we can color new buildings too */
-
-			if (Resource != null)
-				DrawImage(e.Graphics, Resource.Bitmap, GetBrushLocation());
-
-			if (Waypoint != null)
-				e.Graphics.DrawRectangle(Pens.LimeGreen,
-					TileSet.TileSize * GetBrushLocation().X * Zoom + Offset.X + 4,
-					TileSet.TileSize * GetBrushLocation().Y * Zoom + Offset.Y + 4,
-					(TileSet.TileSize - 8) * Zoom, (TileSet.TileSize - 8) * Zoom);
-
-			if (Brush == null && Actor == null && Resource == null)
+			if (Tool != null)
+				Tool.Preview(this, e.Graphics);
+				
+			if (Tool == null)
 			{
 				var x = Map.Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 				if (x.Key != null)
