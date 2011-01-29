@@ -257,7 +257,7 @@
 		Priority: 1
 	RenderBuildingWall:
 		HasMakeAnimation: false
-		Palette: terrain
+		Palette: staticterrain
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -267,7 +267,7 @@
 	Tooltip:
 		Name: Tree
 	RenderBuilding:
-		Palette: terrain
+		Palette: staticterrain
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -281,7 +281,7 @@
 	Tooltip:
 		Name: Rock
 	RenderBuilding:
-		Palette: terrain
+		Palette: staticterrain
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2

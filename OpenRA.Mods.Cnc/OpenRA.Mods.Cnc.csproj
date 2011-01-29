@@ -67,6 +67,7 @@
     <Compile Include="WithFire.cs" />
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="TiberiumRefinery.cs" />
+    <Compile Include="CncWaterPaletteRotation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

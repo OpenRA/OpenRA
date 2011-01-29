@@ -13,11 +13,13 @@ using OpenRA.Traits;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.Cnc
 {
-	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> {}
-	class WaterPaletteRotation : ITick, IPaletteModifier
+	class CncWaterPaletteRotationInfo : TraitInfo<CncWaterPaletteRotation> {}
+
+	class CncWaterPaletteRotation : ITick, IPaletteModifier
 	{
+				
 		float t = 0;
 		public void Tick(Actor self)
 		{
@@ -25,18 +27,14 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
-		{
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
-			foreach (var pal in palettes)
-			{
-				if (excludePalettes.Contains(pal.Key))
-					continue;
-				
-				var copy = (uint[])pal.Value.Values.Clone();
-				var rotate = (int)t % 7;
-				for (int i = 0; i < 7; i++)
-					pal.Value.SetColor(0x60 + (rotate + i) % 7, copy[0x60 + i]);
-			}
+		{	
+			// Only modify the terrain palette
+			var pal = palettes["terrain"];
+							
+			var copy = (uint[])pal.Values.Clone();
+			var rotate = (int)t % 7;
+			for (int i = 0; i < 7; i++)
+				pal.SetColor(0x20 + (rotate + i) % 7, copy[0x20 + i]);			
 		}
 	}
 }
