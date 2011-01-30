@@ -14,7 +14,6 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
 
