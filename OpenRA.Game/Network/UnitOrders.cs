@@ -148,6 +148,9 @@ namespace OpenRA.Network
 
 				case "SetStance":
 					{
+						if (Game.orderManager.LobbyInfo.GlobalSettings.LockTeams)
+							return;
+
 						var targetPlayer = order.Player.World.players[order.TargetLocation.X];
 						var newStance = (Stance)order.TargetLocation.Y;
 
