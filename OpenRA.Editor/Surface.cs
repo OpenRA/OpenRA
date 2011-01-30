@@ -270,7 +270,7 @@ namespace OpenRA.Editor
 			DrawImage(g, t.Bitmap, p, centered, cp);
 		}
 
-		public void DrawImage(SGraphics g, Bitmap bmp, int2 location, bool centered, ColorPalette cp)
+		float2 GetDrawPosition(int2 location, Bitmap bmp, bool centered)
 		{
 			float OffsetX = centered ? bmp.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * location.X * Zoom + Offset.X - OffsetX;
@@ -278,10 +278,15 @@ namespace OpenRA.Editor
 			float OffsetY = centered ? bmp.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - OffsetY;
 
-			float width = bmp.Width * Zoom;
-			float height = bmp.Height * Zoom;
-			RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
-			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
+			return new float2(DrawX, DrawY);
+		}
+
+		public void DrawImage(SGraphics g, Bitmap bmp, int2 location, bool centered, ColorPalette cp)
+		{
+			var drawPos = GetDrawPosition(location, bmp, centered);
+
+			var sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
+			var destRect = new RectangleF(drawPos.X, drawPos.Y, bmp.Width * Zoom, bmp.Height * Zoom);
 
 			var restorePalette = bmp.Palette;
 			if (cp != null) bmp.Palette = cp;
@@ -292,15 +297,10 @@ namespace OpenRA.Editor
 		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
-
-			float OffsetX = centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
-			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
-
-			float OffsetY = centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
-			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
-
+			var drawPos = GetDrawPosition(p, t.Bitmap, centered);
+			
 			g.DrawRectangle(CordonPen,
-				DrawX, DrawY,
+				drawPos.X, drawPos.Y,
 				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);
 		}
 
@@ -339,8 +339,8 @@ namespace OpenRA.Editor
 
 					Bitmap bmp = Chunks[x];
 
-					float DrawX = TileSet.TileSize * 1f * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
-					float DrawY = TileSet.TileSize * 1f * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
+					float DrawX = TileSet.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					float DrawY = TileSet.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
 					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
 					RectangleF destRect = new RectangleF(DrawX, DrawY, bmp.Width * Zoom, bmp.Height * Zoom);
 					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
