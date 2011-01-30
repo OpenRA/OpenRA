@@ -660,11 +660,10 @@ SAM:
 		ROT: 30
 		InitialFacing: 0
 	RenderBuildingTurreted:
-	AttackTurreted:
+	AttackPopupTurreted:
 		PrimaryWeapon: Nike
 	AutoTarget:
 	-RenderBuilding:
-	-DeadBuildingState:
 	RenderRangeCircle:
 	
 GTWR:

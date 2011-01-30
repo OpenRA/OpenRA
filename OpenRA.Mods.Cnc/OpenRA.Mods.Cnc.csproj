@@ -68,6 +68,7 @@
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="CncWaterPaletteRotation.cs" />
+    <Compile Include="AttackPopupTurreted.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

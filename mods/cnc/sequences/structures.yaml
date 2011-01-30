@@ -341,12 +341,30 @@ gun:
 		Length: *
 
 sam:
+	closed-idle:
+		Start:0
+	opening:
+		Start: 1
+		Length: 16
 	idle:
 		Start: 17
 		Facings: 32
+	closing:
+		Start: 50
+		Length: 14
+	damaged-closed-idle:
+		Start:64
+	damaged-opening:
+		Start: 65
+		Length: 16
 	damaged-idle:
 		Start: 81
 		Facings: 32
+	damaged-closing:
+		Start: 114
+		Length: 14
+	dead:
+		Start: 128
 	make: sammake
 		Start: 0
 		Length: 20
