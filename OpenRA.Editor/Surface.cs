@@ -150,13 +150,6 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void DrawWithWaypoint()
-		{
-			
-
-			AfterChange();
-		}
-
 		void Erase()
 		{
 			// Crash preventing
