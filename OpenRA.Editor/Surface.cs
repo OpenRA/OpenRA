@@ -186,25 +186,6 @@ namespace OpenRA.Editor
 		void Draw()
 		{
 			if (Tool != null) Tool.Apply(this);
-			
-			AfterChange();
-		}
-
-		int id;
-		public string NextActorName()
-		{
-			for (; ; )
-			{
-				var possible = "Actor{0}".F(id++);
-				if (!Map.Actors.ContainsKey(possible)) return possible;
-			}
-		}
-
-		public System.Random random = new System.Random();
-		void DrawWithResource()
-		{
-			
-
 			AfterChange();
 		}
 

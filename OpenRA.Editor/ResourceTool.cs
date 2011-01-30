@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileFormats;
 
 using SGraphics = System.Drawing.Graphics;
@@ -26,7 +27,7 @@ namespace OpenRA.Editor
 				= new TileReference<byte, byte>
 				{
 					type = (byte)Resource.Info.ResourceType,
-					index = (byte)surface.random.Next(Resource.Info.SpriteNames.Length),
+					index = (byte)random.Next(Resource.Info.SpriteNames.Length),
 					image = (byte)Resource.Value
 				};
 
@@ -44,5 +45,7 @@ namespace OpenRA.Editor
 		{
 			surface.DrawImage(g, Resource.Bitmap, surface.GetBrushLocation());
 		}
+
+		Random random = new Random();
 	}
 }

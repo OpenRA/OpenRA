@@ -34,12 +34,22 @@ namespace OpenRA.Editor
 				return;
 
 			var owner = "Neutral";
-			var id = surface.NextActorName();
+			var id = NextActorName(surface);
 			surface.Map.Actors[id] = new ActorReference(Actor.Info.Name.ToLowerInvariant())
 			{
 				new LocationInit( surface.GetBrushLocation() ),
 				new OwnerInit( owner)
 			};
+		}
+
+		string NextActorName(Surface surface)
+		{
+			var id = 0;
+			for (; ; )
+			{
+				var possible = "Actor{0}".F(id++);
+				if (!surface.Map.Actors.ContainsKey(possible)) return possible;
+			}
 		}
 	}
 }
