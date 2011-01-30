@@ -10,9 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
