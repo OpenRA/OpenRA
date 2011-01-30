@@ -58,12 +58,11 @@ namespace OpenRA.Mods.RA
 
 				if (ri.anim.HasSequence(sequence))
 				{
-					var previousSequence = ri.anim.CurrentSequence.Name;
 					ri.anim.PlayThen(sequence,
 						() =>
 						{
 							state = IdleState.None; 
-							ri.anim.PlayRepeating(previousSequence);
+							ri.anim.PlayRepeating("stand");
 						});
 				}
 				else
