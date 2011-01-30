@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class SpecialPowerBinWidget : Widget
 	{
-		static Dictionary<string, Sprite> spsprites;
+		Dictionary<string, Sprite> spsprites;
 		Animation ready;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
@@ -38,12 +38,11 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			base.Initialize();
 
-			if (spsprites == null)
-				spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
-					.Select(u => u.Image).Distinct()
-					.ToDictionary(
-						u => u,
-						u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
+			spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
+				.Select(u => u.Image).Distinct()
+				.ToDictionary(
+					u => u,
+					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
 			
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
