@@ -114,43 +114,39 @@ Section "Editor" Editor
 SectionEnd
 
 SectionGroup /e "Mods"
-	SectionGroup "Red Alert" RA
-		Section "-RA_Core"
-			CreateDirectory "$TEMP\ra-packages"
-			CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
-			RMDir /r "$INSTDIR\mods\ra"
-			SetOutPath "$INSTDIR\mods\ra"
-			File "${SRCDIR}\mods\ra\*.*"
-			File /r "${SRCDIR}\mods\ra\maps"
-			File /r "${SRCDIR}\mods\ra\chrome"
-			File /r "${SRCDIR}\mods\ra\bits"
-			File /r "${SRCDIR}\mods\ra\rules"
-			File /r "${SRCDIR}\mods\ra\tilesets"
-			File /r "${SRCDIR}\mods\ra\uibits"
-			CreateDirectory "$INSTDIR\mods\ra\packages"
-			CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
-			RMDir /r "$TEMP\ra-packages"
-		SectionEnd
-	SectionGroupEnd
-	SectionGroup "Command & Conquer" CNC
-		Section "-CNC_Core"
-			CreateDirectory "$TEMP\cnc-packages"
-			CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
-			RMDir /r "$INSTDIR\mods\cnc"
-			SetOutPath "$INSTDIR\mods\cnc"
-			File "${SRCDIR}\mods\cnc\*.*"
-			File /r "${SRCDIR}\mods\cnc\maps"
-			File /r "${SRCDIR}\mods\cnc\chrome"
-			File /r "${SRCDIR}\mods\cnc\bits"
-			File /r "${SRCDIR}\mods\cnc\rules"
-			File /r "${SRCDIR}\mods\cnc\sequences"
-			File /r "${SRCDIR}\mods\cnc\tilesets"
-			File /r "${SRCDIR}\mods\cnc\uibits"
-			CreateDirectory "$INSTDIR\mods\cnc\packages"
-			CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
-			RMDir /r "$TEMP\cnc-packages"
-			SectionEnd
-	SectionGroupEnd
+	Section "Red Alert" RA
+		CreateDirectory "$TEMP\ra-packages"
+		CopyFiles /SILENT "$INSTDIR\mods\ra\packages\*.mix" "$TEMP\ra-packages"
+		RMDir /r "$INSTDIR\mods\ra"
+		SetOutPath "$INSTDIR\mods\ra"
+		File "${SRCDIR}\mods\ra\*.*"
+		File /r "${SRCDIR}\mods\ra\maps"
+		File /r "${SRCDIR}\mods\ra\chrome"
+		File /r "${SRCDIR}\mods\ra\bits"
+		File /r "${SRCDIR}\mods\ra\rules"
+		File /r "${SRCDIR}\mods\ra\tilesets"
+		File /r "${SRCDIR}\mods\ra\uibits"
+		CreateDirectory "$INSTDIR\mods\ra\packages"
+		CopyFiles /SILENT "$TEMP\ra-packages\*.mix" "$INSTDIR\mods\ra\packages"
+		RMDir /r "$TEMP\ra-packages"
+	SectionEnd
+	Section "Command & Conquer" CNC
+		CreateDirectory "$TEMP\cnc-packages"
+		CopyFiles /SILENT "$INSTDIR\mods\cnc\packages\*.mix" "$TEMP\cnc-packages"
+		RMDir /r "$INSTDIR\mods\cnc"
+		SetOutPath "$INSTDIR\mods\cnc"
+		File "${SRCDIR}\mods\cnc\*.*"
+		File /r "${SRCDIR}\mods\cnc\maps"
+		File /r "${SRCDIR}\mods\cnc\chrome"
+		File /r "${SRCDIR}\mods\cnc\bits"
+		File /r "${SRCDIR}\mods\cnc\rules"
+		File /r "${SRCDIR}\mods\cnc\sequences"
+		File /r "${SRCDIR}\mods\cnc\tilesets"
+		File /r "${SRCDIR}\mods\cnc\uibits"
+		CreateDirectory "$INSTDIR\mods\cnc\packages"
+		CopyFiles /SILENT "$TEMP\cnc-packages\*.mix" "$INSTDIR\mods\cnc\packages"
+		RMDir /r "$TEMP\cnc-packages"
+	SectionEnd
 SectionGroupEnd
 
 ;***************************
