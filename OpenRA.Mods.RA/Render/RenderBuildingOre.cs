@@ -17,18 +17,25 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init); }
 	}
 
-	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete
+	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
+		PlayerResources PlayerResources;
+		
 		public RenderBuildingOre( ActorInitializer init )
 			: base(init)
 		{
+			PlayerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public void BuildingComplete( Actor self )
 		{
-			var pr = self.Owner.PlayerActor.Trait<PlayerResources>();
 			anim.PlayFetchIndex( "idle", 
-				() => (49 * pr.Ore) / (10*pr.OreCapacity));
+				() => (49 * PlayerResources.Ore) / (10*PlayerResources.OreCapacity));
+		}
+		
+		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{		
+			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 	}
 }
