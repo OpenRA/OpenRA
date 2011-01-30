@@ -26,7 +26,7 @@ namespace OpenRA.Editor
 			var k = surface.Map.Waypoints.FirstOrDefault(a => a.Value == surface.GetBrushLocation());
 			if (k.Key != null) surface.Map.Waypoints.Remove(k.Key);
 
-			surface.Map.Waypoints.Add(surface.NextWpid(), surface.GetBrushLocation());
+			surface.Map.Waypoints.Add(NextWpid(surface), surface.GetBrushLocation());
 		}
 
 		public void Preview(Surface surface, SGraphics g)
@@ -35,6 +35,17 @@ namespace OpenRA.Editor
 					surface.TileSet.TileSize * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X + 4,
 					surface.TileSet.TileSize * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y + 4,
 					(surface.TileSet.TileSize - 8) * surface.Zoom, (surface.TileSet.TileSize - 8) * surface.Zoom);
+		}
+
+		public string NextWpid(Surface surface)
+		{
+			int wpid = 0;
+			for (; ; )
+			{
+				var a = "wp{0}".F(wpid++);
+				if (!surface.Map.Waypoints.ContainsKey(a))
+					return a;
+			}
 		}
 	}
 }

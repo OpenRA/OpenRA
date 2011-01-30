@@ -139,17 +139,6 @@ namespace OpenRA.Editor
 			}
 		}
 
-		int wpid;
-		public string NextWpid()
-		{
-			for (; ; )
-			{
-				var a = "wp{0}".F(wpid++);
-				if (!Map.Waypoints.ContainsKey(a))
-					return a;
-			}
-		}
-
 		void Erase()
 		{
 			// Crash preventing
