@@ -294,6 +294,29 @@ Container@INGAME_ROOT:
 					Width:200
 					Height:20
 					Text: Give Exploration
+		Background@PERF_BG:
+			ClickThrough:true
+			Id:PERF_BG
+			Background:dialog4
+			Delegate:PerfDebugDelegate
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
+			Children:
+				PerfGraph@GRAPH:
+					Id:GRAPH
+					X:5
+					Y:5
+					Width:200
+					Height:200
+				Label@TEXT:
+					Id:TEXT
+					Bold: false
+					X:20
+					Y:205
+					Width:170
+					Height:40
 Container@OBSERVER_ROOT:
 	Id:OBSERVER_ROOT
 	Visible:true
@@ -422,6 +445,29 @@ Container@OBSERVER_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
 			Height: 30
+		Background@PERF_BG:
+			ClickThrough:true
+			Id:PERF_BG
+			Background:dialog4
+			Delegate:PerfDebugDelegate
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
+			Children:
+				PerfGraph@GRAPH:
+					Id:GRAPH
+					X:5
+					Y:5
+					Width:200
+					Height:200
+				Label@TEXT:
+					Id:TEXT
+					Bold: false
+					X:20
+					Y:205
+					Width:170
+					Height:40
 Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT
