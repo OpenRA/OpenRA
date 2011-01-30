@@ -200,6 +200,7 @@
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />
+    <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activities\CancelableActivity.cs" />
