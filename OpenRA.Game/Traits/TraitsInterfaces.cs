@@ -215,10 +215,19 @@ namespace OpenRA.Traits
 	public struct Target		// a target: either an actor, or a fixed location.
 	{
 		Actor actor;
+		Player owner;
 		int2 pos;
 		bool valid;
 
-		public static Target FromActor(Actor a) { return new Target { actor = a, valid = (a != null) }; }
+		public static Target FromActor(Actor a)
+		{
+			return new Target
+			{
+				actor = a,
+				valid = (a != null),
+				owner = (a != null) ? a.Owner : null
+			};
+		}
 		public static Target FromPos(int2 p) { return new Target { pos = p, valid = true }; }
 		public static Target FromCell(int2 c) { return new Target { pos = Util.CenterOfCell(c), valid = true }; }
 		public static Target FromOrder(Order o)
@@ -230,7 +239,7 @@ namespace OpenRA.Traits
 
 		public static readonly Target None = new Target();
 
-		public bool IsValid { get { return valid && (actor == null || actor.IsInWorld); } }
+		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && actor.Owner == owner)); } }
 		public int2 PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
 		public int2 CenterLocation { get { return PxPosition; } }
 
