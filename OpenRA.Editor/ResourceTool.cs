@@ -43,7 +43,7 @@ namespace OpenRA.Editor
 
 		public void Preview(Surface surface, SGraphics g)
 		{
-			surface.DrawImage(g, Resource.Bitmap, surface.GetBrushLocation());
+			surface.DrawImage(g, Resource.Bitmap, surface.GetBrushLocation(), false, null);
 		}
 
 		Random random = new Random();

@@ -267,37 +267,26 @@ namespace OpenRA.Editor
 		public void DrawActor(SGraphics g, int2 p, ActorTemplate t, ColorPalette cp)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
-
-			float OffsetX = centered ? t.Bitmap.Width / 2 - TileSet.TileSize / 2 : 0;
-			float DrawX = TileSet.TileSize * p.X * Zoom + Offset.X - OffsetX;
-
-			float OffsetY = centered ? t.Bitmap.Height / 2 - TileSet.TileSize / 2 : 0;
-			float DrawY = TileSet.TileSize * p.Y * Zoom + Offset.Y - OffsetY;
-
-			float width = t.Bitmap.Width * Zoom;
-			float height = t.Bitmap.Height * Zoom;
-			RectangleF sourceRect = new RectangleF(0, 0, t.Bitmap.Width, t.Bitmap.Height);
-			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
-
-			var restorePalette = t.Bitmap.Palette;
-			if (cp != null) t.Bitmap.Palette = cp;
-			g.DrawImage(t.Bitmap, destRect, sourceRect, GraphicsUnit.Pixel);
-			if (cp != null) t.Bitmap.Palette = restorePalette;
+			DrawImage(g, t.Bitmap, p, centered, cp);
 		}
 
-		public void DrawImage(SGraphics g, Bitmap bmp, int2 location)
+		public void DrawImage(SGraphics g, Bitmap bmp, int2 location, bool centered, ColorPalette cp)
 		{
-			float OffsetX = bmp.Width / 2 - TileSet.TileSize / 2;
+			float OffsetX = centered ? bmp.Width / 2 - TileSet.TileSize / 2 : 0;
 			float DrawX = TileSet.TileSize * location.X * Zoom + Offset.X - OffsetX;
 
-			float OffsetY = bmp.Height / 2 - TileSet.TileSize / 2;
+			float OffsetY = centered ? bmp.Height / 2 - TileSet.TileSize / 2 : 0;
 			float DrawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - OffsetY;
 
 			float width = bmp.Width * Zoom;
 			float height = bmp.Height * Zoom;
 			RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
 			RectangleF destRect = new RectangleF(DrawX, DrawY, width, height);
+
+			var restorePalette = bmp.Palette;
+			if (cp != null) bmp.Palette = cp;
 			g.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
+			if (cp != null) bmp.Palette = restorePalette;
 		}
 
 		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
