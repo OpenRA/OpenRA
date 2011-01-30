@@ -17,9 +17,9 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new RequiresPower(init.self); }
 	}
 
-	class RequiresPower : IDisable
+	class RequiresPower : IDisable, INotifyCapture
 	{
-		readonly PowerManager power;
+		PowerManager power;
 		public RequiresPower( Actor self )
 		{
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
@@ -28,6 +28,11 @@ namespace OpenRA.Mods.RA.Buildings
 		public bool Disabled
 		{
 			get { return power.PowerProvided < power.PowerDrained; }
+		}
+		
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }

@@ -17,13 +17,13 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new CanPowerDown(init); }
 	}
 
-	public class CanPowerDown : IResolveOrder, IDisable, ISync
+	public class CanPowerDown : IResolveOrder, IDisable, INotifyCapture, ISync
 	{
 		[Sync]
 		bool disabled = false;
 		int normalPower = 0;
-		readonly PowerManager PowerManager;
-		readonly TechTree TechTree;
+		PowerManager PowerManager;
+		TechTree TechTree;
 		
 		public CanPowerDown(ActorInitializer init)
 		{
@@ -46,6 +46,12 @@ namespace OpenRA.Mods.RA.Buildings
 				// Rebuild the tech tree; some support powers require active buildings
 				TechTree.Update();
 			}
+		}
+		
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			PowerManager = newOwner.PlayerActor.Trait<PowerManager>();
+			TechTree = newOwner.PlayerActor.Trait<TechTree>();
 		}
 	}
 }

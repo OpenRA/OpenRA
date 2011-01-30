@@ -31,12 +31,12 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
-		readonly PowerManager PlayerPower;
-		readonly PlayerResources PlayerResources;
+		PowerManager PlayerPower;
+		PlayerResources PlayerResources;
 		
 		// TODO: sync these
 		// A list of things we are currently building
@@ -63,6 +63,14 @@ namespace OpenRA.Mods.RA
 				if (buildable)
 					ttc.Add( a.Name, a.Traits.Get<BuildableInfo>().Prerequisites.ToList(), this );
 			}
+		}
+		
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
+			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			Queue.Clear();
+			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
 		}
 		
 		IEnumerable<ActorInfo> AllBuildables(string category)
