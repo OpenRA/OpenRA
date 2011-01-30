@@ -40,6 +40,8 @@ namespace OpenRA.Mods.RA.Buildings
 			if (order.OrderString == "Repair")
 			{
 				isRepairing = !isRepairing;
+				if (isRepairing)
+					Sound.PlayToPlayer(self.Owner, self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().Repairing);
 			}
 		}
 

@@ -28,6 +28,7 @@ namespace OpenRA.Traits
 		public readonly string EnablePower = "bleep12.aud";
 
 		// Eva speech
+		public readonly string Repairing = "repair1.aud";
 		public readonly string LowPower = "lopower1.aud";
 		public readonly string SilosNeeded = "silond1.aud";
 		public readonly string PrimaryBuildingSelected = "pribldg1.aud";
