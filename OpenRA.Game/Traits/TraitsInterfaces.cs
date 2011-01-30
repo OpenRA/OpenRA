@@ -61,6 +61,7 @@ namespace OpenRA.Traits
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, int2 exit); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
+	public interface INotifyOtherCaptured { void OnActorCaptured(Actor self, Actor captured, Actor captor, Player oldOwner, Player newOwner); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 	public interface IStoreOre { int Capacity { get; }}
 
