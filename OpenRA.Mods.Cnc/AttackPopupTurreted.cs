@@ -31,18 +31,21 @@ namespace OpenRA.Mods.Cnc
 		enum PopupState
 		{
 			Open,
+			Rotating,
 			Transitioning,
 			Closed
 		};
 		
 		protected Target target;
 		AttackPopupTurretedInfo Info;
+		Turreted Turret;
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
 		
 		public AttackPopupTurreted(Actor self, AttackPopupTurretedInfo info) : base(self)
 		{
 			Info = info;
+			Turret = self.Trait<Turreted>();
 		}
 
 		protected override bool CanAttack( Actor self, Target target )
@@ -69,9 +72,8 @@ namespace OpenRA.Mods.Cnc
 				return false;
 			}
 			
-			var turreted = self.Trait<Turreted>();
-			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
-			if( turreted.desiredFacing != turreted.turretFacing )
+			Turret.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, Turret.turretFacing );
+			if( Turret.desiredFacing != Turret.turretFacing )
 				return false;
 
 			return true;
@@ -87,12 +89,18 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
 			{
+				Turret.desiredFacing = 0;
+				State = PopupState.Rotating;
+			}
+			else if (State == PopupState.Rotating && Turret.turretFacing == 0)
+			{
 				State = PopupState.Transitioning;
 				var rb = self.Trait<RenderBuilding>();
 				rb.PlayCustomAnimThen(self, "closing", () =>
 				{
 					State = PopupState.Closed;
 					rb.PlayCustomAnimRepeating(self, "closed-idle");
+					Turret.desiredFacing = null;
 				});
 			}
 		}
