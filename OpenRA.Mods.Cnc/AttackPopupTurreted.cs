@@ -17,6 +17,7 @@ using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Mods.RA;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init.self, this ); }
 	}
 
-	class AttackPopupTurreted : AttackBase, INotifyBuildComplete, INotifyIdle
+	class AttackPopupTurreted : AttackBase, INotifyBuildComplete, INotifyIdle, IDamageModifier
 	{
 		enum PopupState
 		{
@@ -120,7 +121,12 @@ namespace OpenRA.Mods.Cnc
 
 		bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
-
+		
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		{
+			return State == PopupState.Closed ? 0.5f : 1;
+		}
+		
 		class AttackActivity : CancelableActivity
 		{
 			readonly Target target;
