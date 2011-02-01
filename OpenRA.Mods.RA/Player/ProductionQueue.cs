@@ -38,9 +38,22 @@ namespace OpenRA.Mods.RA
 		PowerManager PlayerPower;
 		PlayerResources PlayerResources;
 		
-		// TODO: sync these
 		// A list of things we are currently building
 		public List<ProductionItem> Queue = new List<ProductionItem>();
+		
+		
+		[Sync]
+		public int QueueLength { get { return Queue.Count; } }
+		[Sync]
+		public int CurrentRemainingCost { get { return QueueLength == 0 ? 0 : Queue[0].RemainingCost; } }
+		[Sync]
+		public int CurrentRemainingTime { get { return QueueLength == 0 ? 0 : Queue[0].RemainingTime; } }
+		[Sync]
+		public int CurrentSlowdown { get { return QueueLength == 0 ? 0 : Queue[0].slowdown; } }
+		[Sync]
+		public bool CurrentPaused { get { return QueueLength == 0 ? false : Queue[0].Paused; } }
+		[Sync]
+		public bool CurrentDone { get { return QueueLength == 0 ? false : Queue[0].Done; } }
 		
 		// A list of things we could possibly build, even if our race doesn't normally get it
 		public Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
@@ -293,7 +306,7 @@ namespace OpenRA.Mods.RA
 
 		public bool Paused = false, Done = false;
 		public Action OnComplete;
-		int slowdown = 0;
+		public int slowdown = 0;
 
 		public ProductionItem(ProductionQueue queue, string item, int time, int cost, Action onComplete)
 		{
