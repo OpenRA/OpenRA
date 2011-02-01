@@ -635,6 +635,7 @@ GUN:
 		Range: 3
 SAM:
 	Inherits: ^Building
+	RequiresPower:
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -695,6 +696,7 @@ GTWR:
 	
 ATWR:
 	Inherits: ^Building
+	RequiresPower:
 	Valued:
 		Cost: 1000
 	Tooltip:
