@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer && Level > 0)
 			{
 				RankAnim.Tick();	// hack
-				var bounds = self.GetBounds(true);
+				var bounds = self.GetBounds(false);
 				yield return new Renderable(RankAnim.Image,
 					new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", (int)self.CenterLocation.Y);
 			}

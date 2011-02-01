@@ -88,7 +88,11 @@ namespace OpenRA
 			var sprites = TraitsImplementing<IRender>().SelectMany(x => x.Render(this));
 			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
 		}
-
+		
+		// When useAltitude = true, the bounding box is extended
+		// vertically to altitude = 0 to support FindUnitsInCircle queries
+		// When false, the bounding box is given for the actor
+		// at its current altitude
 		public RectangleF GetBounds(bool useAltitude)
 		{
 			var size = Size.Value;
@@ -98,12 +102,14 @@ namespace OpenRA
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 				loc += new float2(si.Bounds[2], si.Bounds[3]);
 
-			if (useAltitude)
+			var move = TraitOrDefault<IMove>();
+			if (move != null)
 			{
-				var move = TraitOrDefault<IMove>();
-				if (move != null) loc -= new float2(0, move.Altitude);
+				loc -= new float2(0, move.Altitude);
+				if (useAltitude)
+					size = new float2(size.X, size.Y + move.Altitude);
 			}
-
+		
 			return new RectangleF(loc.X, loc.Y, size.X, size.Y);
 		}
 

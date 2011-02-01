@@ -248,7 +248,7 @@ namespace OpenRA.Mods.RA
 
 		private void RenderStance(Actor self)
 		{
-			var bounds = self.GetBounds(true);
+			var bounds = self.GetBounds(false);
 			var loc = new float2(bounds.Left, bounds.Top) + new float2(0, 1);
 			var max = Math.Max(bounds.Height, bounds.Width);
 

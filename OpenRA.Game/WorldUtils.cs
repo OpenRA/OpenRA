@@ -45,7 +45,7 @@ namespace OpenRA
 
 				var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
-				var inBox = actors.Where(x => x.GetBounds(false).IntersectsWith(rect));
+				var inBox = actors.Where(x => x.GetBounds(true).IntersectsWith(rect));
 
 				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
 			}

@@ -30,7 +30,7 @@ namespace OpenRA.Traits
 		
 		public void RenderAfterWorld (WorldRenderer wr, Actor self)
 		{
-			var bounds = self.GetBounds(true);
+			var bounds = self.GetBounds(false);
 			Color selectionColor = Color.White;
 
 			var xy = new float2(bounds.Left, bounds.Top);
