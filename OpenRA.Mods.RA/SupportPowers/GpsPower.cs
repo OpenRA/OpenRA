@@ -59,10 +59,9 @@ namespace OpenRA.Mods.RA
 
 		void RefreshGps(Actor self)
 		{
-			if (self.Owner == self.World.LocalPlayer)
-				self.World.LocalShroud.Disabled = self.World.Queries.WithTrait<GpsPower>()
-					.Any(p => p.Actor.Owner.Stances[self.Owner] == Stance.Ally &&
-						p.Trait.Granted);
+			self.World.LocalShroud.Disabled = self.World.Queries.WithTrait<GpsPower>()
+				.Any(p => p.Actor.Owner.Stances[self.Owner] == Stance.Ally &&
+					p.Trait.Granted);
 		}
 	}
 }
