@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Cnc
 	class AttackPopupTurretedInfo : AttackBaseInfo
 	{
 		public int CloseDelay = 125;
+		public int DefaultFacing = 0;
+		public float ClosedDamageMultiplier = 0.5f;
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init.self, this ); }
 	}
 
@@ -90,10 +92,10 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
 			{
-				Turret.desiredFacing = 0;
+				Turret.desiredFacing = Info.DefaultFacing;
 				State = PopupState.Rotating;
 			}
-			else if (State == PopupState.Rotating && Turret.turretFacing == 0)
+			else if (State == PopupState.Rotating && Turret.turretFacing == Info.DefaultFacing)
 			{
 				State = PopupState.Transitioning;
 				var rb = self.Trait<RenderBuilding>();
@@ -124,7 +126,7 @@ namespace OpenRA.Mods.Cnc
 		
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
-			return State == PopupState.Closed ? 0.5f : 1;
+			return State == PopupState.Closed ? Info.ClosedDamageMultiplier : 1f;
 		}
 		
 		class AttackActivity : CancelableActivity
