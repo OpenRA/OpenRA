@@ -41,7 +41,9 @@ namespace OpenRA.Mods.RA.Effects
 		readonly ProjectileArgs Args;
 
 		int2 offset;
-		int2 Pos;
+		public int2 SubPxPosition;
+		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		
 		readonly Animation anim;
 		int Facing;
 		int t;
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
-			Pos = Args.src;
+			SubPxPosition = 1024*Args.src;
 			Altitude = Args.srcAltitude;
 			Facing = Args.facing;
 
@@ -65,49 +67,55 @@ namespace OpenRA.Mods.RA.Effects
 				anim.PlayRepeating("idle");
 			}
 		}
-
+		
+		// In pixels
 		const int MissileCloseEnough = 7;
-		const float Scale = .2f;
-
+		
+		
 		public void Tick( World world )
 		{
 			t += 40;
 
-			var targetPosition = Args.target.CenterLocation + offset;
-
+			// In pixels
+			var dist = Args.target.CenterLocation + offset - PxPosition;
+			
 			var targetAltitude = 0;
 			if (Args.target.IsValid && Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
 				targetAltitude =  Args.target.Actor.Trait<IMove>().Altitude;
+			
 			Altitude += Math.Sign(targetAltitude - Altitude);
-
+			
 			Facing = Traits.Util.TickFacing(Facing,
-				Traits.Util.GetFacing(targetPosition - Pos, Facing),
+				Traits.Util.GetFacing(dist, Facing),
 				Info.ROT);
 
 			anim.Tick();
 
-			var dist = targetPosition - Pos;
 			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || !Args.target.IsValid )
 				Explode(world);
-
-			var speed = Scale * Info.Speed * ((targetAltitude > 0 && Info.TurboBoost) ? 1.5f : 1f);
-
-			var angle = Facing / 128f * Math.PI;
-			// TODO: Replace float2.FromAngle with int2.FromFacing
-			var move = (speed * -float2.FromAngle((float)angle)).ToInt2();
-			Pos += move;
+			
+			// TODO: Replace this with a lookup table
+			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))*1024).ToInt2();
+			
+			var move = Info.Speed * dir;
+			if (targetAltitude > 0 && Info.TurboBoost)
+				move = (move * 3) / 2;
+			move = move / 5;
+						
+			SubPxPosition += move;
 
 			if (Info.Trail != null)
-				world.AddFrameEndTask(w => w.Add(
-					new Smoke(w, (Pos - 1.5f * move.ToFloat2() - new int2(0, Altitude)).ToInt2(), Info.Trail)));
-
+			{
+				var sp = (SubPxPosition - (move * 3) / 2) / 1024 - new int2(0, Altitude);
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, sp, Info.Trail)));
+			}
+			
 			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
 				Explode(world);
 
 			if (!Info.High)		// check for hitting a wall
 			{
-				var cell = Traits.Util.CellContaining(Pos);
-
+				var cell = Traits.Util.CellContaining(PxPosition);
 				if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any(
 					a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
@@ -117,15 +125,15 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Args.dest = Pos;
+			Args.dest = PxPosition;
 			if (t > Info.Arm * 40)	/* don't blow up in our launcher's face! */
 				Combat.DoImpacts(Args);
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, Pos - 0.5f * anim.Image.size - new float2(0, Altitude), 
-				Args.weapon.Underwater ? "shadow" : "effect", (int)Pos.Y);
+			yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude), 
+				Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 		}
 	}
 }
