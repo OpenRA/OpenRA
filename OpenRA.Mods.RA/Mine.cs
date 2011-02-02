@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA
 		
 		public int2 TopLeft { get { return location; } }
 
-		public IEnumerable<int2> OccupiedCells() { yield return TopLeft; }
+		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
 		public int2 PxPosition { get { return Util.CenterOfCell( location ); } }
 	}
 

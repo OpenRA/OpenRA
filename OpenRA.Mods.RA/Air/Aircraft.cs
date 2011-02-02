@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -135,8 +136,8 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 		
-		int2[] noCells = new int2[] { };
-		public IEnumerable<int2> OccupiedCells() { return noCells; }
+		Pair<int2, SubCell>[] noCells = new Pair<int2, SubCell>[] { };
+		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { return noCells; }
 
 		public void TickMove( int speed, int facing )
 		{

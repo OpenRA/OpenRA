@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (Space == null)
 					Space = self.Trait<IOccupySpace>();
-				return Space.OccupiedCells();
+				return Space.OccupiedCells().Select(c => c.First);
 			}
 		}
 		

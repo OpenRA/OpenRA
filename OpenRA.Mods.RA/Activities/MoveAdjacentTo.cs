@@ -39,8 +39,8 @@ namespace OpenRA.Mods.RA.Activities
 			};
 			foreach( var cell in target.Trait<IOccupySpace>().OccupiedCells() )
 			{
-				ps1.AddInitialCell( cell );
-				if( ( mobile.toCell - cell ).LengthSquared <= 2 )
+				ps1.AddInitialCell( cell.First );
+				if( ( mobile.toCell - cell.First ).LengthSquared <= 2 )
 					return NextActivity;
 			}
 			ps1.heuristic = PathSearch.DefaultEstimator( mobile.toCell );

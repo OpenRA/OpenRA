@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public int2 TopLeft { get { return Location; } }
-		public IEnumerable<int2> OccupiedCells() { return new int2[] { Location }; }
+		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
 
 		public int2 PxPosition { get; private set; }
 

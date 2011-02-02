@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -110,9 +111,9 @@ namespace OpenRA.Mods.RA.Buildings
 			get { return topLeft; }
 		}
 
-		public IEnumerable<int2> OccupiedCells()
+		public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
 		{
-			return FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft );
+			return FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft ).Select(c => Pair.New(c, SubCell.FullCell));
 		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)

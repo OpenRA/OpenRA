@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.RA
 		public bool TargetableBy(Actor self, Actor byActor) { return true; }
 		public IEnumerable<int2> TargetableCells( Actor self )
 		{
-			return self.Trait<Building>().OccupiedCells();
+			return self.Trait<Building>().OccupiedCells().Select(c => c.First);
 		}
 	}
 }

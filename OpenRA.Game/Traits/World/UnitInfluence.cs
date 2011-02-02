@@ -26,9 +26,10 @@ namespace OpenRA.Traits
 		class InfluenceNode
 		{
 			public InfluenceNode next;
+			public SubCell subCell;
 			public Actor actor;
 		}
-
+	
 		InfluenceNode[,] influence;
 		Map map;
 
@@ -51,21 +52,32 @@ namespace OpenRA.Traits
 
 		public bool AnyUnitsAt(int2 a)
 		{
-			return /*map.IsInMap(a) && */influence[ a.X, a.Y ] != null;
+			return influence[ a.X, a.Y ] != null;
+		}
+		
+		public bool AnyUnitsAt(int2 a, SubCell sub)
+		{		
+			var node = influence[ a.X, a.Y ];
+			while (node != null)
+			{
+				if (node.subCell == sub) return true;
+				node = node.next;
+			}
+			return false;
 		}
 
 		public void Add( Actor self, IOccupySpace unit )
 		{
 			if (unit != null)
 				foreach( var c in unit.OccupiedCells() )
-					influence[ c.X, c.Y ] = new InfluenceNode { next = influence[ c.X, c.Y ], actor = self };
+					influence[ c.First.X, c.First.Y ] = new InfluenceNode { next = influence[ c.First.X, c.First.Y ], subCell = c.Second, actor = self };
 		}
 
 		public void Remove( Actor self, IOccupySpace unit )
 		{
 			if (unit != null)
 				foreach (var c in unit.OccupiedCells())
-					RemoveInner( ref influence[ c.X, c.Y ], self );
+					RemoveInner( ref influence[ c.First.X, c.First.Y ], self );
 		}
 
 		void RemoveInner( ref InfluenceNode influenceNode, Actor toRemove )

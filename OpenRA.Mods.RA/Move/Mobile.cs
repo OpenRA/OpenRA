@@ -271,13 +271,17 @@ namespace OpenRA.Mods.RA.Move
 
         public int2 TopLeft { get { return toCell; } }
 
-        public IEnumerable<int2> OccupiedCells()
+        public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
         {
-            return (fromCell == toCell)
-                ? new[] { fromCell }
-                : CanEnterCell(toCell)
-                    ? new[] { toCell }
-                    : new[] { fromCell, toCell };
+            if (fromCell == toCell)
+				yield return Pair.New(fromCell, SubCell.FullCell);
+			else if (CanEnterCell(toCell))
+				yield return Pair.New(toCell, SubCell.FullCell);
+			else
+			{
+				yield return Pair.New(fromCell, SubCell.FullCell);
+				yield return Pair.New(toCell, SubCell.FullCell);
+			}
         }
 
         public bool CanEnterCell(int2 p)

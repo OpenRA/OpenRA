@@ -81,11 +81,21 @@ namespace OpenRA.Traits
 	{
 		int2 PxPosition { get; }
 	}
+	
+	public enum SubCell
+	{
+		FullCell,
+		TopLeft,
+		TopRight,
+		Center,
+		BottomLeft,
+		BottomRight
+	}
 
 	public interface IOccupySpace : IHasLocation
 	{
 		int2 TopLeft { get; }
-		IEnumerable<int2> OccupiedCells();
+		IEnumerable<Pair<int2, SubCell>> OccupiedCells();
 	}
 	
 	public static class IOccupySpaceExts
@@ -96,10 +106,10 @@ namespace OpenRA.Traits
 			var nearestDistance = int.MaxValue;
 			foreach( var cell in ios.OccupiedCells() )
 			{
-				var dist = ( other - cell ).LengthSquared;
+				var dist = ( other - cell.First ).LengthSquared;
 				if( dist < nearestDistance )
 				{
-					nearest = cell;
+					nearest = cell.First;
 					nearestDistance = dist;
 				}
 			}
