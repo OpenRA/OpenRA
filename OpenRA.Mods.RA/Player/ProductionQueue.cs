@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, ISync
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
@@ -40,8 +40,7 @@ namespace OpenRA.Mods.RA
 		
 		// A list of things we are currently building
 		public List<ProductionItem> Queue = new List<ProductionItem>();
-		
-		
+				
 		[Sync]
 		public int QueueLength { get { return Queue.Count; } }
 		[Sync]

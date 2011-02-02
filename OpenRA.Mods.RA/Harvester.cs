@@ -43,6 +43,12 @@ namespace OpenRA.Mods.RA
 		
 		[Sync]
 		public int2 LastHarvestedCell = int2.Zero;
+				
+		[Sync]
+		public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
+		
+		[Sync]
+		int currentUnloadTicks;
 		
 		readonly HarvesterInfo Info;
 		public Harvester(Actor self, HarvesterInfo info)
@@ -82,9 +88,7 @@ namespace OpenRA.Mods.RA
 			else contents[type.info]++;
 		}
 
-		// TODO: N-tick harvester unload.
 		// Returns true when unloading is complete
-		int currentUnloadTicks;
 		public bool TickUnload(Actor self, Actor proc)
 		{
 			if (!proc.IsInWorld)
