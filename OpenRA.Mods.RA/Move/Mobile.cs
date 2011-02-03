@@ -78,10 +78,10 @@ namespace OpenRA.Mods.RA.Move
 		
 		public readonly Dictionary<SubCell, int2> SubCellOffsets = new Dictionary<SubCell, int2>()
 		{
-			{SubCell.TopLeft, new int2(-6,-6)},
+			{SubCell.TopLeft, new int2(-7,-6)},
 			{SubCell.TopRight, new int2(6,-6)},
 			{SubCell.Center, new int2(0,0)},
-			{SubCell.BottomLeft, new int2(-6,6)},
+			{SubCell.BottomLeft, new int2(-7,6)},
 			{SubCell.BottomRight, new int2(6,6)},
 			{SubCell.FullCell, new int2(0,0)},
 		};
