@@ -434,24 +434,3 @@ namespace OpenRA.Mods.RA.Move
         public IActivity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
     }
 }
-
-namespace OpenRA.Traits
-{
-	public class SubCellInit : IActorInit<SubCell>
-	{
-		[FieldFromYamlKey]
-		public readonly int value = 0;
-		
-		public SubCellInit() { }
-		
-		public SubCellInit( int init )
-		{
-			value = init;
-		}
-		
-		public SubCell Value( World world )
-		{
-			return (SubCell)value;	
-		}
-	}
-}

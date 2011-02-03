@@ -408,7 +408,7 @@ namespace OpenRA.Editor
 				};
 				
 				if (section == "INFANTRY")
-					actor.Add(new SubcellInit(int.Parse(parts[4])));
+					actor.Add(new SubCellInit(int.Parse(parts[4])));
 				
 				Map.Actors.Add("Actor" + ActorCount++,actor);
 					
