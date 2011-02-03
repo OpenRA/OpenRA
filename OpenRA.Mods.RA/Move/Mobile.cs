@@ -40,6 +40,8 @@ namespace OpenRA.Mods.RA.Move
         public readonly int Speed = 1;
         [FieldLoader.Load]
         public readonly bool OnRails = false;
+		[FieldLoader.Load]
+		public readonly bool SharesCell = true;
 
         public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -73,16 +75,29 @@ namespace OpenRA.Mods.RA.Move
 
             return TerrainSpeeds[type].Cost;
         }
-
+		
+		public readonly Dictionary<SubCell, int2> SubCellOffsets = new Dictionary<SubCell, int2>()
+		{
+			{SubCell.TopLeft, new int2(-6,-6)},
+			{SubCell.TopRight, new int2(6,6)},
+			{SubCell.Center, new int2(0,0)},
+			{SubCell.BottomLeft, new int2(-6,6)},
+			{SubCell.BottomRight, new int2(6,6)},
+			{SubCell.FullCell, new int2(0,0)},
+		};
+		
         public bool CanEnterCell(World world, UnitInfluence uim, int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
             if (MovementCostForCell(world, cell) == int.MaxValue)
                 return false;
-
+			
+			if (SharesCell && uim.HasFreeSubCell(cell))
+				return true;
+			
             var blockingActors = uim.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
             if (checkTransientActors && blockingActors.Count > 0)
             {
-                // We can enter a cell with nonshareable units only if we can crush all of them
+                // Non-sharable unit can enter a cell with shareable units only if it can crush all of them
                 if (Crushes == null)
                     return false;
 
@@ -109,6 +124,8 @@ namespace OpenRA.Mods.RA.Move
 
         int __facing;
         int2 __fromCell, __toCell;
+		SubCell __fromSubCell, __toSubCell;
+		
         int __altitude;
 
         [Sync]
@@ -159,11 +176,16 @@ namespace OpenRA.Mods.RA.Move
             this.Info = info;
 
             uim = self.World.WorldActor.Trait<UnitInfluence>();
-
+			__toSubCell = __fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
+			if (init.Contains<SubCellInit>())
+			{
+				this.__fromSubCell = this.__toSubCell = init.Get<SubCellInit, SubCell>();
+			}
+			
             if (init.Contains<LocationInit>())
             {
                 this.__fromCell = this.__toCell = init.Get<LocationInit, int2>();
-                this.PxPosition = Util.CenterOfCell(fromCell);
+                this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[__fromSubCell];
             }
 
             this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -173,7 +195,7 @@ namespace OpenRA.Mods.RA.Move
         public void SetPosition(Actor self, int2 cell)
         {
             SetLocation(cell, cell);
-            PxPosition = Util.CenterOfCell(fromCell);
+            PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[__fromSubCell];
             FinishedMoving(self);
         }
 
@@ -411,4 +433,25 @@ namespace OpenRA.Mods.RA.Move
         public IActivity MoveWithinRange(Target target, int range) { return new Move(target, range); }
         public IActivity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
     }
+}
+
+namespace OpenRA.Traits
+{
+	public class SubCellInit : IActorInit<SubCell>
+	{
+		[FieldFromYamlKey]
+		public readonly int value = 0;
+		
+		public SubCellInit() { }
+		
+		public SubCellInit( int init )
+		{
+			value = init;
+		}
+		
+		public SubCell Value( World world )
+		{
+			return (SubCell)value;	
+		}
+	}
 }

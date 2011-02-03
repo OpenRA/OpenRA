@@ -148,7 +148,6 @@ namespace OpenRA.Traits
 		int InitialFacing { get; }
 	}
 	
-	public interface IOffsetCenterLocation { float2 CenterOffset { get; } }
 	public interface ICrushable
 	{
 		void OnCrush(Actor crusher);

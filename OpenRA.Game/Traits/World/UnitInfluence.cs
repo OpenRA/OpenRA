@@ -49,6 +49,15 @@ namespace OpenRA.Traits
 			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
 				yield return i.actor;
 		}
+		
+		public bool HasFreeSubCell(int2 a)
+		{
+			if (!AnyUnitsAt(a))
+				return true;
+			
+			return new[]{SubCell.BottomLeft, SubCell.BottomRight, SubCell.Center,
+				SubCell.TopLeft, SubCell.TopRight}.Any(b => !AnyUnitsAt(a,b));
+		}
 
 		public bool AnyUnitsAt(int2 a)
 		{
@@ -60,7 +69,7 @@ namespace OpenRA.Traits
 			var node = influence[ a.X, a.Y ];
 			while (node != null)
 			{
-				if (node.subCell == sub) return true;
+				if (node.subCell == sub || node.subCell == SubCell.FullCell) return true;
 				node = node.next;
 			}
 			return false;
