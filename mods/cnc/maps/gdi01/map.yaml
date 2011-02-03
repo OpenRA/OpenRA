@@ -341,98 +341,98 @@ Actors:
 		Health: 1
 		Facing: 0
 		ActorStance: Guard
-		Subcell: 2
+		SubCell: 2
 	Actor89: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
 		ActorStance: Guard
-		Subcell: 4
+		SubCell: 4
 	Actor90: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
 		ActorStance: Guard
-		Subcell: 3
+		SubCell: 3
 	Actor91: e1
 		Location: 56,55
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
 		ActorStance: Guard
-		Subcell: 1
+		SubCell: 1
 	Actor92: e1
 		Location: 57,45
 		Owner: BadGuy
 		Health: 1
 		Facing: 160
 		ActorStance: Guard
-		Subcell: 2
+		SubCell: 2
 	Actor93: e1
 		Location: 56,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 192
 		ActorStance: Guard
-		Subcell: 2
+		SubCell: 2
 	Actor94: e1
 		Location: 48,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
 		ActorStance: Guard
-		Subcell: 3
+		SubCell: 3
 	Actor95: e1
 		Location: 59,45
 		Owner: BadGuy
 		Health: 1
 		Facing: 160
 		ActorStance: Guard
-		Subcell: 1
+		SubCell: 1
 	Actor96: e1
 		Location: 46,50
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
 		ActorStance: Guard
-		Subcell: 3
+		SubCell: 3
 	Actor97: e1
 		Location: 48,47
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
 		ActorStance: Guard
-		Subcell: 1
+		SubCell: 1
 	Actor98: e1
 		Location: 38,43
 		Owner: BadGuy
 		Health: 1
 		Facing: 128
 		ActorStance: Guard
-		Subcell: 4
+		SubCell: 4
 	Actor99: e1
 		Location: 38,43
 		Owner: BadGuy
 		Health: 1
 		Facing: 128
 		ActorStance: Guard
-		Subcell: 1
+		SubCell: 1
 	Actor100: e1
 		Location: 48,41
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
 		ActorStance: Guard
-		Subcell: 2
+		SubCell: 2
 	Actor101: e1
 		Location: 41,39
 		Owner: BadGuy
 		Health: 1
 		Facing: 96
 		ActorStance: Hunt
-		Subcell: 4
+		SubCell: 4
 
 Waypoints:
 	spawn27: 51,47
