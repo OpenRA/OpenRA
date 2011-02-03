@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Move
 		public readonly Dictionary<SubCell, int2> SubCellOffsets = new Dictionary<SubCell, int2>()
 		{
 			{SubCell.TopLeft, new int2(-6,-6)},
-			{SubCell.TopRight, new int2(6,6)},
+			{SubCell.TopRight, new int2(6,-6)},
 			{SubCell.Center, new int2(0,0)},
 			{SubCell.BottomLeft, new int2(-6,6)},
 			{SubCell.BottomRight, new int2(6,6)},
@@ -155,12 +155,14 @@ namespace OpenRA.Mods.RA.Move
         [Sync]
         public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-        public void SetLocation(int2 from, int2 to)
+        public void SetLocation(int2 from, SubCell fromSub, int2 to, SubCell toSub)
         {
             if (fromCell == from && toCell == to) return;
             RemoveInfluence();
             __fromCell = from;
             __toCell = to;
+			__fromSubCell = fromSub;
+			__toSubCell = toSub;
             AddInfluence();
         }
 
@@ -194,7 +196,7 @@ namespace OpenRA.Mods.RA.Move
 
         public void SetPosition(Actor self, int2 cell)
         {
-            SetLocation(cell, cell);
+            SetLocation(cell,__fromSubCell, cell,__fromSubCell);
             PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[__fromSubCell];
             FinishedMoving(self);
         }
@@ -202,7 +204,7 @@ namespace OpenRA.Mods.RA.Move
         public void SetPxPosition(Actor self, int2 px)
         {
             var cell = Util.CellContaining(px);
-            SetLocation(cell, cell);
+            SetLocation(cell,__fromSubCell, cell,__fromSubCell);
             PxPosition = px;
             FinishedMoving(self);
         }

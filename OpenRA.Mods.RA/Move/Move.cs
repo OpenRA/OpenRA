@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Move
 {
@@ -132,16 +133,16 @@ namespace OpenRA.Mods.RA.Move
 			if( nextCell == null )
 				return this;
 
-			int2 dir = nextCell.Value - mobile.fromCell;
+			int2 dir = nextCell.Value.First - mobile.fromCell;
 			var firstFacing = Util.GetFacing( dir, mobile.Facing );
 			if( firstFacing != mobile.Facing )
 			{
-				path.Add( nextCell.Value );
+				path.Add( nextCell.Value.First );
 				return Util.SequenceActivities( new Turn( firstFacing ), this );
 			}
 			else
 			{
-				mobile.SetLocation( mobile.fromCell, nextCell.Value );
+				mobile.SetLocation( mobile.fromCell, mobile.__fromSubCell, nextCell.Value.First, nextCell.Value.Second );
 				var move = new MoveFirstHalf(
 					this,
 					Util.CenterOfCell( mobile.fromCell ),
@@ -183,7 +184,7 @@ namespace OpenRA.Mods.RA.Move
 				nudge.OnNudge(blocker, self);
 		}
 
-		int2? PopPath( Actor self, Mobile mobile )
+		Pair<int2, SubCell>? PopPath( Actor self, Mobile mobile )
 		{
 			if( path.Count == 0 ) return null;
 			var nextCell = path[ path.Count - 1 ];
@@ -229,7 +230,9 @@ namespace OpenRA.Mods.RA.Move
 			hasNudged = false;
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
-			return nextCell;
+			
+			var subCell = self.World.WorldActor.Trait<UnitInfluence>().GetFreeSubcell(nextCell, mobile.__fromSubCell);
+			return Pair.New(nextCell, subCell);
 		}
 
 		protected override bool OnCancel( Actor self )
@@ -335,22 +338,23 @@ namespace OpenRA.Mods.RA.Move
 				var nextCell = parent.PopPath( self, mobile );
 				if( nextCell != null )
 				{
-					if( ( nextCell - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
+					if( ( nextCell.Value.First - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
 					{
 						var ret = new MoveFirstHalf(
 							move,
 							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
-							Util.BetweenCells( mobile.toCell, nextCell.Value ),
+							Util.BetweenCells( mobile.toCell, nextCell.Value.First ),
 						    mobile.__fromSubCell,
-				    		mobile.__toSubCell,
+				    		nextCell.Value.Second,
 							mobile.Facing,
-							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.Facing ) ),
+							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value.First - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
-						mobile.SetLocation( mobile.toCell, nextCell.Value );
+						
+						mobile.SetLocation( mobile.toCell, mobile.__toSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
 					}
 					else
-						parent.path.Add( nextCell.Value );
+						parent.path.Add( nextCell.Value.First );
 				}
 				var ret2 = new MoveSecondHalf(
 					move,
@@ -361,7 +365,7 @@ namespace OpenRA.Mods.RA.Move
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
-				mobile.SetLocation( mobile.toCell, mobile.toCell );
+				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
 				return ret2;
 			}
 		}
@@ -376,7 +380,7 @@ namespace OpenRA.Mods.RA.Move
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
 				mobile.PxPosition = Util.CenterOfCell( mobile.toCell );
-				mobile.SetLocation( mobile.toCell, mobile.toCell );
+				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
 				mobile.FinishedMoving(self);
 				return null;
 			}

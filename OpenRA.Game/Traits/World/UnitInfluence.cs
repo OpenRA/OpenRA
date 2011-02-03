@@ -55,8 +55,14 @@ namespace OpenRA.Traits
 			if (!AnyUnitsAt(a))
 				return true;
 			
-			return new[]{SubCell.BottomLeft, SubCell.BottomRight, SubCell.Center,
-				SubCell.TopLeft, SubCell.TopRight}.Any(b => !AnyUnitsAt(a,b));
+			return new[]{SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight}.Any(b => !AnyUnitsAt(a,b));
+		}
+		
+		public SubCell GetFreeSubcell(int2 a, SubCell preferred)
+		{
+			return new[]{preferred, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight}.First(b => !AnyUnitsAt(a,b));
 		}
 
 		public bool AnyUnitsAt(int2 a)
