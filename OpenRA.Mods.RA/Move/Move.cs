@@ -146,6 +146,8 @@ namespace OpenRA.Mods.RA.Move
 					this,
 					Util.CenterOfCell( mobile.fromCell ),
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
+				    mobile.__fromSubCell,
+				    mobile.__toSubCell,
 					mobile.Facing,
 					mobile.Facing,
 					0 );
@@ -249,15 +251,18 @@ namespace OpenRA.Mods.RA.Move
 		{
 			public readonly Move move;
 			public readonly int2 from, to;
+			public readonly SubCell fromSubCell, toSubCell;
 			public readonly int fromFacing, toFacing;
 			public int moveFraction;
 			public readonly int moveFractionTotal;
 
-			public MovePart( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+			public MovePart( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
 			{
 				this.move = move;
 				this.from = from;
 				this.to = to;
+				this.fromSubCell = fromSubCell;
+				this.toSubCell = toSubCell;
 				this.fromFacing = fromFacing;
 				this.toFacing = toFacing;
 				this.moveFraction = startingFraction;
@@ -302,7 +307,7 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
-				mobile.PxPosition = int2.Lerp( from, to, moveFraction, moveFractionTotal );
+				mobile.PxPosition = int2.Lerp( from + mobile.Info.SubCellOffsets[fromSubCell], to + mobile.Info.SubCellOffsets[toSubCell], moveFraction, moveFractionTotal );
 
 				if( moveFraction >= moveFractionTotal )
 					mobile.Facing = toFacing & 0xFF;
@@ -320,8 +325,8 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
-				: base( move, from, to, fromFacing, toFacing, startingFraction )
+			public MoveFirstHalf( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromSubCell, toSubCell, fromFacing, toFacing, startingFraction )
 			{
 			}
 
@@ -336,6 +341,8 @@ namespace OpenRA.Mods.RA.Move
 							move,
 							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 							Util.BetweenCells( mobile.toCell, nextCell.Value ),
+						    mobile.__fromSubCell,
+				    		mobile.__toSubCell,
 							mobile.Facing,
 							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
@@ -349,6 +356,8 @@ namespace OpenRA.Mods.RA.Move
 					move,
 					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
 					Util.CenterOfCell( mobile.toCell ),
+				    mobile.__fromSubCell,
+				    mobile.__toSubCell,
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
@@ -359,8 +368,8 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
-				: base( move, from, to, fromFacing, toFacing, startingFraction )
+			public MoveSecondHalf( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromSubCell, toSubCell, fromFacing, toFacing, startingFraction )
 			{
 			}
 

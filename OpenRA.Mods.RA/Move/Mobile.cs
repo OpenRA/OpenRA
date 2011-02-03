@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Move
         [FieldLoader.Load]
         public readonly bool OnRails = false;
 		[FieldLoader.Load]
-		public readonly bool SharesCell = true;
+		public readonly bool SharesCell = false;
 
         public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA.Move
 
         int __facing;
         int2 __fromCell, __toCell;
-		SubCell __fromSubCell, __toSubCell;
+		public SubCell __fromSubCell, __toSubCell;
 		
         int __altitude;
 
@@ -296,13 +296,13 @@ namespace OpenRA.Mods.RA.Move
         public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
         {
             if (fromCell == toCell)
-				yield return Pair.New(fromCell, SubCell.FullCell);
+				yield return Pair.New(fromCell, __fromSubCell);
 			else if (CanEnterCell(toCell))
-				yield return Pair.New(toCell, SubCell.FullCell);
+				yield return Pair.New(toCell, __toSubCell);
 			else
 			{
-				yield return Pair.New(fromCell, SubCell.FullCell);
-				yield return Pair.New(toCell, SubCell.FullCell);
+				yield return Pair.New(fromCell, __fromSubCell);
+				yield return Pair.New(toCell, __toSubCell);
 			}
         }
 

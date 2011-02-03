@@ -63,6 +63,7 @@
 		Range: 4
 	Mobile:
 		Crushes: apmine, crate
+		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90
 			Rough: 80
