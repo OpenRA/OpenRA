@@ -59,10 +59,24 @@ namespace OpenRA.Traits
 				SubCell.BottomLeft, SubCell.BottomRight}.Any(b => !AnyUnitsAt(a,b));
 		}
 		
+		// This is only used inside Move, when we *know* that we can enter the cell.
+		// If the cell contains something crushable, a naive check of 'is it empty' will fail.
+		// Infantry can currently only crush crates/mines which take a whole cell, so we will ignore
+		// the SubCell.FullCell case and hope that someone doesn't introduce subcell units
+		// crushing other subcell units in the future.
 		public SubCell GetFreeSubcell(int2 a, SubCell preferred)
 		{
-			return new[]{preferred, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.First(b => !AnyUnitsAt(a,b));
+			return new[]{ preferred, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
+			{
+				var node = influence[ a.X, a.Y ];
+				while (node != null)
+				{
+					if (node.subCell == b) return false;
+					node = node.next;
+				}
+				return true;
+			});
 		}
 
 		public bool AnyUnitsAt(int2 a)
