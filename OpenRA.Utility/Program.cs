@@ -19,7 +19,6 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
-		static Dictionary<string, Action<string[]>> actions;
 		const int PipeBufferSize = 1024 * 1024;
 
 		static PipeSecurity MakePipeSecurity()
@@ -35,7 +34,7 @@ namespace OpenRA.Utility
 
 		static void Main(string[] args)
 		{
-			actions = new Dictionary<string, Action<string[]>>()
+			var actions = new Dictionary<string, Action<string[]>>()
 			{
 				{ "--extract-zip-inner", Command.ExtractZip },
 				{ "--install-ra-packages-inner", Command.InstallRAPackages },
