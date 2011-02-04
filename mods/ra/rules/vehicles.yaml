@@ -514,6 +514,7 @@ SS:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	-DetectCloaked:
 
 MSUB:
 	Inherits: ^Ship
@@ -555,6 +556,7 @@ MSUB:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
+	-DetectCloaked:
 
 DD:
 	Inherits: ^Ship
