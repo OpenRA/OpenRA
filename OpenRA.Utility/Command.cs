@@ -70,7 +70,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("Status: Extracting {0}", file.ToLowerInvariant());
 				File.Copy(
 					Path.Combine(fromPath, file),
-					Path.Combine(toPath, file.ToLowerInvariant()), true);
+					Path.Combine(toPath, Path.GetFileName(file).ToLowerInvariant()), true);
 			}
 
 			Console.WriteLine("Status: Completed");

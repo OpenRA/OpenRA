@@ -65,7 +65,7 @@ extern char **environ;
 - (void)installRAPackages:(NSArray *)args
 {
 	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages-inner", [args objectAtIndex:2], nil];
+	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages-inner", [args objectAtIndex:2], [args objectAtIndex:3], nil];
 	[self runUtilityWithArgs:a];
 }
 
