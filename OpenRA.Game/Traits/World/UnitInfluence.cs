@@ -47,7 +47,8 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(a)) yield break;
 
 			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
-				yield return i.actor;
+				if (!i.actor.Destroyed && !i.actor.IsDead())
+					yield return i.actor;
 		}
 		
 		public bool HasFreeSubCell(int2 a)
