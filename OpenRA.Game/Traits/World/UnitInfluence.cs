@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(a)) yield break;
 
 			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
-				if (!i.actor.Destroyed && !i.actor.IsDead())
+				if (!i.actor.Destroyed)
 					yield return i.actor;
 		}
 		
@@ -67,6 +67,9 @@ namespace OpenRA.Traits
 		// crushing other subcell units in the future.
 		public SubCell GetFreeSubcell(int2 a, SubCell preferred)
 		{
+			if (preferred == SubCell.FullCell)
+				return preferred;
+			
 			return new[]{ preferred, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
 			{
