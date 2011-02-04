@@ -150,7 +150,7 @@ PYLE:
 		Dimensions: 2,2
 		Capturable: true
 	Health:
-		HP: 800
+		HP: 500
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -190,7 +190,7 @@ HAND:
 		Dimensions: 2,3
 		Capturable: true
 	Health:
-		HP: 800
+		HP: 500
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -270,7 +270,7 @@ WEAP:
 		Dimensions: 3,3
 		Capturable: true
 	Health:
-		HP: 400
+		HP: 1000
 	Armor: 
 		Type: Light
 	RevealsShroud:

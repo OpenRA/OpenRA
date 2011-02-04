@@ -164,7 +164,7 @@ Rockets:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
@@ -172,7 +172,7 @@ Rockets:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 40
 
 Rockets.Bike: 
 	ROF: 60
@@ -195,7 +195,7 @@ Rockets.Bike:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 30%
 			Light: 75%
 			Concrete: 30%
@@ -203,7 +203,7 @@ Rockets.Bike:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 15
+		Damage: 30
 		
 Rockets.Orca: 
 	ROF: 300
@@ -225,7 +225,7 @@ Rockets.Orca:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
@@ -233,7 +233,7 @@ Rockets.Orca:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 20
+		Damage: 30
 
 Flamethrower: 
 	ROF: 50
