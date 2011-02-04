@@ -145,10 +145,8 @@ namespace OpenRA.Mods.RA.Move
 				mobile.SetLocation( mobile.fromCell, mobile.__fromSubCell, nextCell.Value.First, nextCell.Value.Second );
 				var move = new MoveFirstHalf(
 					this,
-					Util.CenterOfCell( mobile.fromCell ),
-					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
-				    mobile.__fromSubCell,
-				    mobile.__toSubCell,
+					Util.CenterOfCell( mobile.fromCell ) + mobile.Info.SubCellOffsets[mobile.__fromSubCell],
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell] ) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0 );
@@ -254,18 +252,15 @@ namespace OpenRA.Mods.RA.Move
 		{
 			public readonly Move move;
 			public readonly int2 from, to;
-			public readonly SubCell fromSubCell, toSubCell;
 			public readonly int fromFacing, toFacing;
 			public int moveFraction;
 			public readonly int moveFractionTotal;
 
-			public MovePart( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
+			public MovePart( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
 			{
 				this.move = move;
 				this.from = from;
 				this.to = to;
-				this.fromSubCell = fromSubCell;
-				this.toSubCell = toSubCell;
 				this.fromFacing = fromFacing;
 				this.toFacing = toFacing;
 				this.moveFraction = startingFraction;
@@ -310,7 +305,7 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation( Actor self, Mobile mobile )
 			{
-				mobile.PxPosition = int2.Lerp( from + mobile.Info.SubCellOffsets[fromSubCell], to + mobile.Info.SubCellOffsets[toSubCell], moveFraction, moveFractionTotal );
+				mobile.PxPosition = int2.Lerp( from, to, moveFraction, moveFractionTotal );
 
 				if( moveFraction >= moveFractionTotal )
 					mobile.Facing = toFacing & 0xFF;
@@ -328,8 +323,8 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
-				: base( move, from, to, fromSubCell, toSubCell, fromFacing, toFacing, startingFraction )
+			public MoveFirstHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
 
@@ -342,10 +337,8 @@ namespace OpenRA.Mods.RA.Move
 					{
 						var ret = new MoveFirstHalf(
 							move,
-							Util.BetweenCells( mobile.fromCell, mobile.toCell ),
-							Util.BetweenCells( mobile.toCell, nextCell.Value.First ),
-						    mobile.__fromSubCell,
-				    		nextCell.Value.Second,
+							Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell]) / 2,
+							Util.BetweenCells( mobile.toCell, nextCell.Value.First ) + (mobile.Info.SubCellOffsets[mobile.__toSubCell] + mobile.Info.SubCellOffsets[nextCell.Value.Second]) / 2,
 							mobile.Facing,
 							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value.First - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
@@ -358,13 +351,12 @@ namespace OpenRA.Mods.RA.Move
 				}
 				var ret2 = new MoveSecondHalf(
 					move,
-					Util.BetweenCells( mobile.fromCell, mobile.toCell ),
-					Util.CenterOfCell( mobile.toCell ),
-				    mobile.__fromSubCell,
-				    mobile.__toSubCell,
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell]) / 2,
+					Util.CenterOfCell( mobile.toCell ) + mobile.Info.SubCellOffsets[mobile.__toSubCell],
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
+				
 				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
 				return ret2;
 			}
@@ -372,8 +364,8 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf( Move move, int2 from, int2 to, SubCell fromSubCell, SubCell toSubCell, int fromFacing, int toFacing, int startingFraction )
-				: base( move, from, to, fromSubCell, toSubCell, fromFacing, toFacing, startingFraction )
+			public MoveSecondHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
+				: base( move, from, to, fromFacing, toFacing, startingFraction )
 			{
 			}
 
