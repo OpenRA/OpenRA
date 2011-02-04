@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,6 +24,8 @@ namespace OpenRA.Mods.RA
 		public readonly string Type = "Scorch";
 		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
 		public readonly int[] Depths = {1,1,1,1,1,1};
+		public readonly int SmokePercentage = 25;
+		public readonly string SmokeType = "smoke_m";
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
@@ -54,6 +57,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (!world.GetTerrainInfo(loc).AcceptSmudge)
 				return;
+			
+			if (Game.CosmeticRandom.Next(0,100) <= Info.SmokePercentage)
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, Traits.Util.CenterOfCell(loc), Info.SmokeType)));
 
 			// No smudge; create a new one
 			if (!tiles.ContainsKey(loc))
