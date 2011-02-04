@@ -51,6 +51,15 @@ namespace OpenRA.Traits
 					yield return i.actor;
 		}
 		
+		public IEnumerable<Actor> GetUnitsAt( int2 a, SubCell sub )
+		{
+			if (!map.IsInMap(a)) yield break;
+
+			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
+				if (!i.actor.Destroyed && (i.subCell == sub || i.subCell == SubCell.FullCell))
+					yield return i.actor;
+		}
+		
 		public bool HasFreeSubCell(int2 a)
 		{
 			if (!AnyUnitsAt(a))
@@ -58,29 +67,6 @@ namespace OpenRA.Traits
 			
 			return new[]{SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.Any(b => !AnyUnitsAt(a,b));
-		}
-		
-		// This is only used inside Move, when we *know* that we can enter the cell.
-		// If the cell contains something crushable, a naive check of 'is it empty' will fail.
-		// Infantry can currently only crush crates/mines which take a whole cell, so we will ignore
-		// the SubCell.FullCell case and hope that someone doesn't introduce subcell units
-		// crushing other subcell units in the future.
-		public SubCell GetFreeSubcell(int2 a, SubCell preferred)
-		{
-			if (preferred == SubCell.FullCell)
-				return preferred;
-			
-			return new[]{ preferred, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
-			{
-				var node = influence[ a.X, a.Y ];
-				while (node != null)
-				{
-					if (node.subCell == b) return false;
-					node = node.next;
-				}
-				return true;
-			});
 		}
 
 		public bool AnyUnitsAt(int2 a)
@@ -90,12 +76,10 @@ namespace OpenRA.Traits
 		
 		public bool AnyUnitsAt(int2 a, SubCell sub)
 		{		
-			var node = influence[ a.X, a.Y ];
-			while (node != null)
-			{
-				if (node.subCell == sub || node.subCell == SubCell.FullCell) return true;
-				node = node.next;
-			}
+			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
+				if (i.subCell == sub || i.subCell == SubCell.FullCell)
+					return true;
+
 			return false;
 		}
 

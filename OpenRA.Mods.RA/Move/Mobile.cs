@@ -307,7 +307,31 @@ namespace OpenRA.Mods.RA.Move
 				yield return Pair.New(toCell, __toSubCell);
 			}
         }
-
+		
+		public SubCell GetDesiredSubcell(int2 a)
+		{
+			if (!Info.SharesCell)
+				return SubCell.FullCell;
+			
+			// Prioritise the current subcell
+			return new[]{ __fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
+			{
+				var blockingActors = uim.GetUnitsAt(a,b);
+				if (blockingActors.Count() > 0)
+	            {
+	                // Non-sharable unit can enter a cell with shareable units only if it can crush all of them
+	                if (Info.Crushes == null)
+	                    return false;
+	
+	                if (blockingActors.Any(c => !(c.HasTrait<ICrushable>() &&
+	                                             c.TraitsImplementing<ICrushable>().Any(d => d.CrushClasses.Intersect(Info.Crushes).Any()))))
+	                    return false;
+	            }
+				return true;
+			});
+		}
+		
         public bool CanEnterCell(int2 p)
         {
             return CanEnterCell(p, null, true);

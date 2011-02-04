@@ -229,7 +229,7 @@ namespace OpenRA.Mods.RA.Move
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
 			
-			var subCell = self.World.WorldActor.Trait<UnitInfluence>().GetFreeSubcell(nextCell, mobile.__fromSubCell);
+			var subCell = mobile.GetDesiredSubcell(nextCell);
 			return Pair.New(nextCell, subCell);
 		}
 
