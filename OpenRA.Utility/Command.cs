@@ -11,14 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.FileFormats;
-using OpenRA;
+using OpenRA.GameRules;
 
 namespace OpenRA.Utility
 {
@@ -55,6 +51,30 @@ namespace OpenRA.Utility
 			}
 			Console.WriteLine("Status: Completed");
 		}
+
+		static void InstallPackages(string fromPath, string toPath,
+			string[] filesToCopy, string[] filesToExtract, string packageToMount)
+		{
+			if (!Directory.Exists(toPath))
+				Directory.CreateDirectory(toPath);
+
+			Util.ExtractFromPackage(fromPath, packageToMount, filesToExtract, toPath);
+			foreach (var file in filesToCopy)
+			{
+				if (!File.Exists(Path.Combine(fromPath, file)))
+				{
+					Console.WriteLine("Error: Could not find {0}", file);
+					return;
+				}
+
+				Console.WriteLine("Status: Extracting {0}", file.ToLowerInvariant());
+				File.Copy(
+					Path.Combine(fromPath, file),
+					Path.Combine(toPath, file.ToLowerInvariant()), true);
+			}
+
+			Console.WriteLine("Status: Completed");
+		}
 		
 		public static void InstallRAPackages(string[] args)
 		{
@@ -64,26 +84,11 @@ namespace OpenRA.Utility
 				return;
 			}
 
-			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
-			var toPath = args[2];
-			var directCopy = new string[] {"INSTALL/REDALERT.MIX"};
-			var extract = new string[] {"conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
-										"scores.mix", "snow.mix", "interior.mix", "temperat.mix"};
-			if (!Directory.Exists(toPath))
-				Directory.CreateDirectory(toPath);
-			
-			Util.ExtractFromPackage(basePath, "MAIN.MIX", extract, toPath);
-			foreach (var file in directCopy)
-			{
-				if (!File.Exists(basePath+file))
-				{
-					Console.WriteLine("Error: Could not find "+file);
-					return;
-				}
-				Console.WriteLine("Status: Extracting {0}", Path.GetFileName(file).ToLower());
-				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
-			}
-			Console.WriteLine("Status: Completed");
+			InstallPackages(args[1], args[2],
+				new string[] { "INSTALL/REDALERT.MIX" },
+				new string[] { "conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
+					"scores.mix", "snow.mix", "interior.mix", "temperat.mix" },
+				"MAIN.MIX");
 		}
 
 		public static void InstallCncPackages(string[] args)
@@ -93,28 +98,12 @@ namespace OpenRA.Utility
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			
-			var basePath = "{0}{1}".F(args[1], Path.DirectorySeparatorChar);
-			var toPath = args[2];
-			var directCopy = new string[] {"CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
-											   "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
-			var extract = new string[] {"cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix"};
-			
-			if (!Directory.Exists(toPath))
-				Directory.CreateDirectory(toPath);
-			
-			Util.ExtractFromPackage(basePath+"INSTALL", "SETUP.Z", extract, toPath);
-			foreach (var file in directCopy)
-			{
-				if (!File.Exists(basePath+file))
-				{
-					Console.WriteLine("Error: Could not find "+file.ToLower());
-					return;
-				}
-				Console.WriteLine("Status: Extracting {0}", Path.GetFileName(file).ToLower());
-				File.Copy(basePath+file,toPath+Path.GetFileName(file).ToLower(), true);
-			}
-			Console.WriteLine("Status: Completed");
+
+			InstallPackages(args[1], args[2],
+				new string[] { "CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
+					"SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" },
+				new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" },
+				"INSTALL/SETUP.Z");
 		}
 		
 		public static void DisplayFilepicker(string[] args)
@@ -142,7 +131,7 @@ namespace OpenRA.Utility
 			var section = args[2].Split('.')[0];
 			var field = args[2].Split('.')[1];
 			string expandedPath = args[1].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-			var settings = new OpenRA.GameRules.Settings(expandedPath + Path.DirectorySeparatorChar + "settings.yaml", new Arguments(new string[]{}));
+			var settings = new Settings(expandedPath + Path.DirectorySeparatorChar + "settings.yaml", Arguments.Empty);
 			var result = settings.Sections[section].GetType().GetField(field).GetValue(settings.Sections[section]);
 			Console.WriteLine(result);
 		}

@@ -17,7 +17,9 @@ namespace OpenRA
 	{
 		Dictionary<string, string> args = new Dictionary<string, string>();
 
-		public Arguments(IEnumerable<string> src)
+		public static Arguments Empty { get { return new Arguments(); } }
+
+		public Arguments(params string[] src)
 		{
 			Regex regex = new Regex("([^=]+)=(.*)");
 			foreach (string s in src)
@@ -26,7 +28,7 @@ namespace OpenRA
 				if (m == null || !m.Success)
 					continue;
 
-				args.Add(m.Groups[1].Value, m.Groups[2].Value);
+				args[m.Groups[1].Value] = m.Groups[2].Value;
 			}
 		}
 
