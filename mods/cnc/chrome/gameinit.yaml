@@ -35,7 +35,7 @@ Background@INIT_CHOOSEINSTALL:
 			Width:PARENT_RIGHT
 			Height:25
 #			Text:Content can be downloaded, or copied from the install CD.
-			Text:A 4.4MB download is required. 
+			Text:A 6.1MB download is required. 
 			Align:Center
 		Button@DOWNLOAD:
 			Id:DOWNLOAD
