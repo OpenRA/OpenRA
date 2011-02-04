@@ -57,6 +57,7 @@
 ^Infantry:
 	AppearsOnRadar:
 	Health:
+		Radius: 3
 	Armor:
 		Type: None
 	RevealsShroud:
