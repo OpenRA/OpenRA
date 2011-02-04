@@ -56,7 +56,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			bg.GetWidget<ButtonWidget>("BUTTON_INSTALL").OnMouseUp = mi => InstallMap();
+			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => false;
+			//bg.GetWidget<ButtonWidget>("BUTTON_INSTALL").OnMouseUp = mi => InstallMap();
 			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ContainerWidget>("MAP_TEMPLATE");
 			EnumerateMaps();

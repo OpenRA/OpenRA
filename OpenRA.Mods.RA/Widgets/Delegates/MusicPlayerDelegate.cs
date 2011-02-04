@@ -31,14 +31,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			var installed = Rules.Music.Count(m => m.Value.Exists) > 1;
-			
+			/*
 			// Hack around some mix packages including hellmarch for ra
 			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => !installed;
 			bg.GetWidget("BUTTON_INSTALL").OnMouseUp = mi => {
 				return true;
 			};
+			*/
+			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => false;
 			
-
 			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
 			{
 				if (CurrentSong == null)
