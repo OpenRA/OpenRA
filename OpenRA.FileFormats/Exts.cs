@@ -24,10 +24,10 @@ namespace OpenRA
 			return string.Format(fmt, args);
 		}
 
-		public static void Do<T>( this IEnumerable<T> e, Action<T> fn )
+		public static void Do<T>(this IEnumerable<T> e, Action<T> fn)
 		{
-			foreach( var ee in e )
-				fn( ee );
+			foreach (var ee in e)
+				fn(ee);
 		}
 
 		public static IEnumerable<string> GetNamespaces(this Assembly a)
@@ -75,16 +75,16 @@ namespace OpenRA
 			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
 		}
 
-		public static T[] GetCustomAttributes<T>( this MemberInfo mi, bool inherit )
+		public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)
 			where T : class
 		{
-			return (T[])mi.GetCustomAttributes( typeof( T ), inherit );
+			return (T[])mi.GetCustomAttributes(typeof(T), inherit);
 		}
 
-		public static T[] GetCustomAttributes<T>( this ParameterInfo mi )
+		public static T[] GetCustomAttributes<T>(this ParameterInfo mi)
 			where T : class
 		{
-			return (T[])mi.GetCustomAttributes( typeof( T ), true );
+			return (T[])mi.GetCustomAttributes(typeof(T), true);
 		}
 
 		public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
@@ -96,12 +96,12 @@ namespace OpenRA
 			else
 				return val;
 		}
-		
+
 		public static bool Contains(this Rectangle r, int2 p)
 		{
 			return r.Contains(p.ToPoint());
 		}
-		
+
 		public static bool Contains(this RectangleF r, int2 p)
 		{
 			return r.Contains(p.ToPointF());

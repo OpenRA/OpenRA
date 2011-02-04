@@ -19,13 +19,23 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
-		delegate void ArgCallback(string[] args);
+		static Dictionary<string, Action<string[]>> actions;
+		const int PipeBufferSize = 1024 * 1024;
 
-		static Dictionary<string, ArgCallback> argCallbacks;
+		static PipeSecurity MakePipeSecurity()
+		{
+			var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+			if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+				return null;	// no special pipe security required
+
+			var ps = new PipeSecurity();
+			ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, AccessControlType.Allow));
+			return ps;	
+		}
 
 		static void Main(string[] args)
 		{
-			argCallbacks = new Dictionary<string, ArgCallback>()
+			actions = new Dictionary<string, Action<string[]>>()
 			{
 				{ "--extract-zip-inner", Command.ExtractZip },
 				{ "--install-ra-packages-inner", Command.InstallRAPackages },
@@ -44,28 +54,22 @@ namespace OpenRA.Utility
 			if (args.Length > 1 && i >= 0)
 			{
 				piping = true;
-				string pipename = args[i+1];
-				NamedPipeServerStream pipe;
-				var id = WindowsIdentity.GetCurrent();
-				var principal = new WindowsPrincipal(id);
-				if (principal.IsInRole(WindowsBuiltInRole.Administrator))
-				{
-					var ps = new PipeSecurity();
-					ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, AccessControlType.Allow));
-					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024*1024, 1024*1024, ps);
-				}
-				else
-					pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.None, 1024*1024,1024*1024,null);
+				var pipename = args[i + 1];
+
+				var pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1,
+					PipeTransmissionMode.Byte, PipeOptions.None, PipeBufferSize, PipeBufferSize,
+					MakePipeSecurity());
 
 				pipe.WaitForConnection();
 				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
 			}
 
-			ArgCallback callback;
-			if (argCallbacks.TryGetValue(args[0], out callback))
-				callback(args);
-			else
+			
+			var action = WithDefault( null, () => actions[args[0]]);
+			if (action == null)
 				PrintUsage();
+			else
+				action(args);
 
 			if (piping)
 				Console.Out.Close();
@@ -79,6 +83,12 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --install-ra-packages PATH       Install required packages for RA from CD to PATH");
 			Console.WriteLine("  --install-cnc-packages PATH      Install required packages for C&C from CD to PATH");
 			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
+		}
+
+		static T WithDefault<T>(T def, Func<T> f)
+		{
+			try { return f(); }
+			catch { return def; }
 		}
 	}
 }
