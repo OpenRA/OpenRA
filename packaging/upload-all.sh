@@ -7,30 +7,24 @@ TYPE=`echo $TAG | grep -o "^[a-z]\\+"`
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 FTPPATHBASE="openra.res0l.net"
 
-case "$TYPE" in
-    "release") 
-        FTPPATH="$FTPPATHBASE/releases"
-        ;;
-    "playtest") 
-        FTPPATH="$FTPPATHBASE/playtests"
-        ;;
-    *)
-        msg "\E[31m" "Unrecognized tag prefix $TYPE"
-        exit 1
-        ;;
-esac
+FTPPATH="$FTPPATHBASE/assets/downloads"
 
-./uploader.sh windows "$VERSION" $PKGDIR/OpenRA-$VERSION.exe "latest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh mac "$VERSION" $PKGDIR/OpenRA-$VERSION.zip "latest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+mv $PKGDIR/OpenRA-$VERSION.exe $PKGDIR/OpenRA-$TYPE$VERSION.exe
+./uploader.sh windows $PKGDIR/OpenRA-$TYPE$VERSION.exe "$FTPSERVER" "$FTPPATH" "$3" "$4"
+mv $PKGDIR/OpenRA-$VERSION.zip $PKGDIR/OpenRA-$TYPE$VERSION.zip
+./uploader.sh mac $PKGDIR/OpenRA-$TYPE$VERSION.zip "$FTPSERVER" "$FTPPATH" "$3" "$4"
 
 LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$VERSION.deb "deblatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm "rpmlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
-./uploader.sh linux "$VERSION" $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz "archlatest" "$FTPSERVER" "$FTPPATH" "$3" "$4"
+mv $PKGDIR/openra-$VERSION.deb $PKGDIR/openra-$TYPE$VERSION.deb
+./uploader.sh linux/deb $PKGDIR/openra-$TYPE$VERSION.deb "$FTPSERVER" "$FTPPATH" "$3" "$4"
+mv $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm $PKGDIR/openra-$TYPE$VERSION-1.noarch.rpm
+./uploader.sh linux/rpm $PKGDIR/openra-$TYPE$VERSION-1.noarch.rpm "$FTPSERVER" "$FTPPATH" "$3" "$4"
+mv $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz $PKGDIR/openra-$TYPE$VERSION-1-any.pkg.tar.xz
+./uploader.sh linux/arch $PKGDIR/openra-$TYPE$VERSION-1-any.pkg.tar.xz "$FTPSERVER" "$FTPPATH" "$3" "$4"
 
 if [ "$TYPE" = "release" ]; then
     wput --basename=../ -u ../VERSION ftp://$3:$4@$FTPSERVER/$FTPPATHBASE/master/
-    cp ../VERSION ../srclatest.txt
-    wput --basename=../ -u ../srclatest.txt ftp://$3:$4@$FTPSERVER/$FTPPATH/linux/
 fi
+
+wget http://$FTPSERVER/home/syncdownloads
