@@ -45,7 +45,7 @@ function StylesGetDefault()
 		caret			= nil,
 		caretlinebg		= nil,
 		fold			= nil,
-		whitespace 		= nil,
+		whitespace 		= {fg = {180, 180, 180},},
 		
 		-- indicators
 		fncall			= {fg = {175,175,255}, st= wxstc.wxSTC_INDIC_BOX},
@@ -98,12 +98,12 @@ local specialmapping = {
 			if (style.fg) then
 				editor:SetWhitespaceForeground(1,wx.wxColour(unpack(style.fg)))
 			else
-				editor:SetWhitespaceForeground(0)
+				--editor:SetWhitespaceForeground(0)
 			end
 			if (style.bg) then
 				editor:SetWhitespaceBackground(1,wx.wxColour(unpack(style.bg)))
 			else
-				editor:SetWhitespaceBackground(0)
+				--editor:SetWhitespaceBackground(0)
 			end
 		end,
 		

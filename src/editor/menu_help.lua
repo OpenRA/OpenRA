@@ -6,8 +6,6 @@ local menuBar  = frame.menuBar
 
 local helpMenu = wx.wxMenu{
 		{ ID_ABOUT,      "&About\tF1",       "About Estrela Editor" },
-		{},
-		{ ID "help.todo",      "&Todo\tShift-F1",       "Todo list" }
 		}
 menuBar:Append(helpMenu, "&Help")
 
@@ -32,7 +30,7 @@ function DisplayAbout(event)
 		  <tr>
 			<td bgcolor = "#4747A1">
 			<b>Estrela Editor</b><br>
-			<b><font color='#ffffff'>Copyright &copy; 2008 Luxinia DevTeam</font></b>
+			<b><font color='#ffffff'>Copyright &copy; 2008-2011 Luxinia DevTeam</font></b>
 			<p>
 			<font size=-1>
 			  <table cellpadding = 0 cellspacing = 0 width = "100%">
@@ -46,14 +44,14 @@ function DisplayAbout(event)
 				</tr>
 			  </table>
 			<font size = 1>
-				Licenced under wxWindows Library Licence, Version 3.
+				Licenced under The MIT License.
 			</font>
 			</font>
 			</td>
 		  </tr>
 		  <tr>
 			<td bgcolor = "#4747A1">
-			<b>Original wxLua IDE</b><br>
+			<b>wxLua</b><br>
 			<b>Copyright &copy; 2002-2005 Lomtick Software</b>
 			<p>
 			<font size=-1>
@@ -109,6 +107,4 @@ function DisplayAbout(event)
 end
 
 frame:Connect(ID_ABOUT, wx.wxEVT_COMMAND_MENU_SELECTED, DisplayAbout)
-frame:Connect(ID "help.todo", wx.wxEVT_COMMAND_MENU_SELECTED, function()
-	LoadFile "doc/todo.txt"
-end)
+

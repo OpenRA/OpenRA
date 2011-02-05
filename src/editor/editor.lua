@@ -193,8 +193,9 @@ function CreateEditor(name)
 	editor:SetUseTabs(false)
 	editor:SetTabWidth(ide.config.editor.tabwidth or 4)
 	editor:SetIndent(ide.config.editor.tabwidth or 4)
-	editor:SetUseTabs(true)
+	editor:SetUseTabs(ide.config.editor.usetabs and true or false)
 	editor:SetIndentationGuides(true)
+	editor:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
 	
 	editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 	

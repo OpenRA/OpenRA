@@ -32,6 +32,38 @@ char_Sp  = string.byte(" ")
 string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
 stringset_File = '[^"%?%*:\\/<>|]'
 
+function FileLines(f)
+  local CHUNK_SIZE = 1024
+  local buffer = ""
+  local pos_beg = 1
+  return function()
+    local pos, chars
+    while 1 do
+      pos, chars = buffer:match('()([\r\n].)', pos_beg)
+      if pos or not f then
+        break
+      elseif f then
+        local chunk = f:read(CHUNK_SIZE)
+        if chunk then
+          buffer = buffer:sub(pos_beg) .. chunk
+          pos_beg = 1
+        else
+          f = nil
+        end
+      end
+    end
+    if not pos then
+      pos = #buffer
+    elseif chars == '\r\n' then
+      pos = pos + 1
+    end
+    local line = buffer:sub(pos_beg, pos)
+    pos_beg = pos + 1
+    if #line > 0 then
+      return line
+    end    
+  end
+end
 
 function PrependStringToArray(t, s, maxstrings)
 	if string.len(s) == 0 then return end

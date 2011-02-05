@@ -33,7 +33,7 @@ styles = {
 	caret			= {fg = {250,250,250},},
 	caretlinebg		= {fg = {180,220,140},bg = {24,44,44},},
 	fold			= nil,
-	whitespace 		= {fg = {224,224,224},bg = {24,24,24},},
+	whitespace 		= {fg = {54,54,54},},
 	
 	fncall			= {fg = {75,75,150}, st= wxstc.wxSTC_INDIC_BOX},
 }

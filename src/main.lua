@@ -23,7 +23,9 @@ ide = {
 		path = {
 			projectdir = "",
 		}, 
-		editor = {},
+		editor = {
+			usetabs = true,
+		},
 		outputshell = {},
 		
 		styles = StylesGetDefault(),

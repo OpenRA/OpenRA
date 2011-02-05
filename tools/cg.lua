@@ -6,11 +6,13 @@ return cgbinpath and {
 	fninit = function(frame,menuBar)
 
 		local myMenu = wx.wxMenu{
-			{ ID "cg.profile.arb",		"&ARB VP/FP",	"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.glsl",		"ARB &GLSL",		"ARB vertex/fragment program profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.nv40",		"NV VP/FP&40",	"NV vertex/fragment program sm3 profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.gp4",		"NV &GP4",		"NV vertex/fragment program sm4 profile", wx.wxITEM_CHECK },
-			{ ID "cg.profile.gp5",		"NV &GP5",		"NV vertex/fragment program sm5 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.arb",		"&ARB VP/FP",	"ARB program profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.glsl",		"ARB &GLSL",	"ARB GLSL program profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.nv40",		"NV VP/FP&40",	"NV program sm3 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gp4",		"NV &GP4",		"NV program sm4 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gp5",		"NV &GP5",		"NV program sm5 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.dx_2x",	"DX SM&2_x",	"DirectX sm2_x profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.dx_3",		"DX SM&3_0",	"DirectX sm3_0 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
 			{ },
@@ -21,6 +23,7 @@ return cgbinpath and {
 			{ ID "cg.compile.tesseval",		"Compile T.Eval",	"Compile T.Eval program (select entry word)" },
 			{ },
 			{ ID "cg.format.asm",		"Annotate ASM",	"indent and add comments to Cg ASM output" },
+			{ ID "cg.format.master",	"Build from master",	"Creates a new cg file from a master containing special include instrctions." },
 		}
 		menuBar:Append(myMenu, "&CgCompiler")
 
@@ -35,11 +38,13 @@ return cgbinpath and {
 			[ID "cg.compile.tesseval"] = 5,
 		}
 		data.profiles = {
-			[ID "cg.profile.arb"]  = {"arbvp1","arbfp1",false,false,false,ext=".glp"},
+			[ID "cg.profile.arb"]  = {"arbvp1","arbfp1",false,false,false,ext=".glp", asm=true,},
 			[ID "cg.profile.glsl"] = {"glslv","glslf","glslg",false,false,ext=".glsl"},
-			[ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,ext=".glp",nvperf=true},
-			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp",nvperf=true},
-			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp"},
+			[ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,ext=".glp",nvperf=true, asm=true,},
+			[ID "cg.profile.gp4"]  = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp",nvperf=true, asm=true,},
+			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp", asm=true,},
+			[ID "cg.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,ext=".txt"},
+			[ID "cg.profile.dx_3"]  = {"vs_3_0","ps_3_0",false,false,false,ext=".txt"},
 		}
 		data.domaindefs = {
 			" -D_VERTEX_ ",
@@ -73,6 +78,93 @@ return cgbinpath and {
 		local fn = wx.wxFileName(cgbinpath..perfexe)
 		local hasperf = fn:FileExists()
 
+
+		-- master file generator
+		
+		local function buildFromMaster(filenamein, filenameout)
+			local path = GetPathWithSep(filenamein)
+			if (not filenameout) then
+				local name = filenamein:GetName()
+				name = name:match("(.+).master$")
+				if (not name) then return end
+				filenameout = path..name.."."..filenamein:GetExt()
+			end
+			
+			local masterfile = io.open(filenamein:GetFullPath(), "rb")
+			local outfile = io.open(filenameout, "wb")
+			
+			local function out(str)
+				--str = string.match(str,"
+				return str
+			end
+			
+			local function handleInclude(fname,defs)
+				local defcnt = 0
+				for i,v in pairs(defs) do
+					defcnt = defcnt + 1
+				end
+				
+				local incfile = io.open(path..fname, "rb")
+				if (defcnt > 0) then
+					local write = nil
+					for line in FileLines(incfile) do
+						if (write) then
+							local cap = string.match(line,"#endif%s+//%s*([%w_]+)")
+							if (cap == write) then 
+								outfile:write("//$"..write.." END$\n")
+								break
+							end
+							outfile:write(line)
+						else
+							local cap = string.match(line,"#ifdef%s+([%w_]+)")
+							if (cap and defs[cap]) then
+								write = cap
+								outfile:write("//$"..write.." BEGIN$\n")
+							end
+						end
+					end
+				else
+					for line in FileLines(incfile) do
+						outfile:write(line)
+					end
+				end
+				
+				incfile:close()
+			end
+			
+			DisplayOutput("Cg Master Generating...\n")
+			local master = nil
+			for line in FileLines(masterfile) do
+				local masterbegin = string.find(line,'//$MASTER-INCLUDE-BEGIN$',nil, true)
+				local masterend = string.find(line,'//$MASTER-INCLUDE-END$', nil, true)
+				if (masterbegin) then
+					master = {}
+					outfile:write(line)
+				elseif(masterend) then
+					master = nil
+				end
+					
+				if (master) then
+					local linein  = " "..line
+					local defadd  = string.match(linein,'[^/]#define ([_%w]+)')
+					local defrem  = string.match(linein,'[^/]#undef ([_%w]+)')
+					if (defadd) then master[defadd] = true end
+					if (defrem) then master[defrem] = nil end
+					DisplayOutput(defadd,defrem, "\n")
+					
+					local incfile = string.match(linein,'[^/]#include "(.+)"')
+					if (incfile) then
+						handleInclude(incfile, master, "\n")
+					end
+				else
+					outfile:write(line)
+				end
+			end
+			DisplayOutput("Written:",filenameout,"\n")
+			outfile:close()
+			masterfile:close()
+		end
+		
 		
 		local function beautifyAsm(tx)
 			local newtx = ""
@@ -350,8 +442,10 @@ return cgbinpath and {
 				if (string.find(str," 0 errors.")) then
 					postfunc = function() 
 						-- beautify asm
-						local statlines = beautifyAsmFile(outname:sub(2,-2))
-						DisplayOutput(statlines)
+						if (profile.asm) then
+							local statlines = beautifyAsmFile(outname:sub(2,-2))
+							DisplayOutput(statlines)
+						end
 						
 						-- optionally run perf process
 						local cgperfgpu = ide.config.cgperfgpu or "G80"
@@ -398,6 +492,14 @@ return cgbinpath and {
 				local newtx = beautifyAsm( curedit:GetText() )
 
 				curedit:SetText(newtx)
+			end)
+
+
+		-- master file
+		frame:Connect(ID "cg.format.master", wx.wxEVT_COMMAND_MENU_SELECTED,
+			function(even)
+				local filename,info = GetEditorFileAndCurInfo()
+				buildFromMaster(filename)
 			end)
 	end,
 

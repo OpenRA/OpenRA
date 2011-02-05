@@ -32,7 +32,7 @@ styles = {
 	caret			= nil,
 	caretlinebg		= nil,
 	fold			= nil,
-	whitespace 		= nil,
+	whitespace 		= {fg = {180, 180, 180,},},
 	
 	fncall			= {fg = {175,175,255}, st= wxstc.wxSTC_INDIC_BOX},
 }

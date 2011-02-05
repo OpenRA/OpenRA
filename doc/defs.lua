@@ -98,6 +98,8 @@ config = {
 		showfncall = true,
 		
 		tabwidth = 4,
+		usetabs = true, -- if false then spaces are used
+		whitespace = false,
 	},
 	
 	
