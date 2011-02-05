@@ -229,7 +229,7 @@ namespace OpenRA.Mods.RA.Move
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
 			
-			var subCell = mobile.GetDesiredSubcell(nextCell);
+			var subCell = mobile.GetDesiredSubcell(nextCell, ignoreBuilding);
 			return Pair.New(nextCell, subCell);
 		}
 

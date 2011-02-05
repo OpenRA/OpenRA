@@ -308,7 +308,7 @@ namespace OpenRA.Mods.RA.Move
 			}
         }
 		
-		public SubCell GetDesiredSubcell(int2 a)
+		public SubCell GetDesiredSubcell(int2 a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
 				return SubCell.FullCell;
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.RA.Move
 			return new[]{ __fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
 			{
-				var blockingActors = uim.GetUnitsAt(a,b);
+				var blockingActors = uim.GetUnitsAt(a,b).Where(c => c != ignoreActor);
 				if (blockingActors.Count() > 0)
 	            {
 	                // Non-sharable unit can enter a cell with shareable units only if it can crush all of them
