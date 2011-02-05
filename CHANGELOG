@@ -1,3 +1,52 @@
+Pending for Next Release (as of 1ee788f0958c641cfdec5f44b63ac5bdbbdda6d1):
+	Engine:
+		Informative drop messages - user is notified of kick vs game has started vs server unavailable
+		Fixed render errors with the build palette on the first game tick
+		Improved sync check performance
+		Shp writing capabilities for mod tools
+		Fixed desync due to floating point calculations in unit facing
+		Fixed idle animations
+		Removed launchers on all platforms
+		Asset download/install is now performed ingame
+		Mod selector is now available from the main menu
+		Fixed `lock teams' checkbox
+		Lots of misc. engine refactoring
+		Fixed exploit allowing stance changes when teams are locked
+		Fix crash when capturing last enemy silo
+		Fix units continuing to attack a building after it has been captured
+		Fix floating point issues with missiles (manifests as broken torpedos in ra)
+		Fix location calculation for flying units (manifests as invincible helicopters in cnc)
+		Infantry stack 5-to-a-cell like the original games
+		Craters and scorches smoke for a limited time
+		
+	C&C:
+		Fixed commando c4
+		Fixed Airfield production notification ("Reinforcements have arrived")
+		Fixed palette bugs with Oil Derricks and walls
+		Fixed tech tree bugs after capturing enemy productions structures
+		"Repairing" eva
+		Proper "pop up" SAM sites. Closed SAMs receive a 50% armor bonus.
+		SAM sites require power to operate
+		Advanced Guard Tower requires power to operate
+		Support structures no longer grant build radius
+		Lower Barracks/Hand health
+		Increase Weapons Factory health
+		Increase rocket bike damage
+	
+	RA:
+		Game assets can be installed from one of the Red Alert cds
+		"Repairing" eva
+		GPS is now shared between allies
+		Submarines are no longer visible to everyone
+		Fixed paradrop flare, spyplane from capturing KOTH points
+		Map: Nuclear Winter (nudalz, ra)
+		Map: Seaside (nudalz, ra)
+		
+	Editor:
+		Ability to switch mods after launch
+		Refactor hardcoded tools into a generic interface
+
+
 20110109
 	Launchers:
 	    New GTK based launcher for linux.
