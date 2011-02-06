@@ -284,6 +284,11 @@ namespace OpenRA.Mods.RA.Move
             {
                 self.CancelActivity();
             }
+			
+			if (order.OrderString == "Scatter")
+            {
+                OnNudge(self, self);
+            }
         }
 
         public string VoicePhraseForOrder(Actor self, Order order)

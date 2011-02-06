@@ -14,6 +14,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public char AttackMoveKey = 'a';
 		public char StopKey = 's';
+		public char ScatterKey = 'x';
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -46,6 +47,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (e.KeyChar == StopKey)
 					return PerformStop();
+				
+				if (e.KeyChar == ScatterKey)
+					return PerformScatter();
 			}
 			
 			return false;
@@ -64,6 +68,15 @@ namespace OpenRA.Mods.RA.Widgets
 			/* issue a stop order to everyone. */
 			foreach (var a in World.Selection.Actors)
 				World.IssueOrder(new Order("Stop", a, false));
+
+			return true;
+		}
+		
+		bool PerformScatter()
+		{
+			/* issue a stop order to everyone. */
+			foreach (var a in World.Selection.Actors)
+				World.IssueOrder(new Order("Scatter", a, false));
 
 			return true;
 		}
