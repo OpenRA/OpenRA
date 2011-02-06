@@ -14,11 +14,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public char AttackMoveKey = 'a';
 		public char StopKey = 's';
-		public char HoldGroundKey = 'g'; // Hold (G)round
-		public char DefensiveKey = 'd'; // (D)efensive
-		public char AggressiveKey = 'a'; // (A)ggressive
-		public char ReturnFireKey = 'r'; // (R)eturn Fire
-		public char HoldFireKey = 'h'; // (h)old fire
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -52,55 +47,9 @@ namespace OpenRA.Mods.RA.Widgets
 				if (e.KeyChar == StopKey)
 					return PerformStop();
 			}
-
-/*			// command: GuardStance
-			if (e.KeyChar == HoldGroundKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
-			{
-				return EnableStance<UnitStanceHoldGround>();
-			}
-
-			// command: AggressiveStance
-			if (e.KeyChar == AggressiveKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
-			{
-				return EnableStance<UnitStanceAggressive>();
-			}
-
-			// stance: Return Fire
-			// description: Fires only when fired upon, stops firing if no longer under attack
-			if (e.KeyChar == ReturnFireKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
-			{
-				return EnableStance<UnitStanceReturnFire>();
-			}
-
-			// stance: Hold Fire
-			// description: Prevents attacking (ie no autotarget is being done)
-			if (e.KeyChar == HoldFireKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
-			{
-				return EnableStance<UnitStanceHoldFire>();
-			}
-
-			// stance: Defensive
-			if (e.KeyChar == DefensiveKey && (e.Modifiers.HasModifier(Modifiers.Alt)))
-			{
-				return EnableStance<UnitStanceDefensive>();
-			}	*/
 			
 			return false;
 		}
-
-		//bool EnableStance<T>() where T : UnitStance
-		//{
-		//    if (World.Selection.Actors.Count() == 0)
-		//        return false;
-
-		//    var traits =
-		//        World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.TraitOrDefault<T>() != null && !UnitStance.IsActive<T>(a)).
-		//            Select(a => new Pair<Actor, T>(a, a.TraitOrDefault<T>()) );
-			
-		//    World.AddFrameEndTask(w => traits.Do(p => UnitStance.OrderStance(p.First, p.Second)));
-
-		//    return traits.Any();
-		//}
 
 		bool PerformAttackMove()
 		{

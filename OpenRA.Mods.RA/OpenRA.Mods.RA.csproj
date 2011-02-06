@@ -64,8 +64,6 @@
     <Compile Include="Strategic\StrategicVictoryConditions.cs" />
     <Compile Include="Strategic\StrategicPoint.cs" />
     <Compile Include="ProximityCapturable.cs" />
-    <Compile Include="UnitStances\UnitStanceDefensive.cs" />
-    <Compile Include="UnitStances\UnitStanceAggressive.cs" />
     <Compile Include="Air\Fly.cs" />
     <Compile Include="Air\FlyAttack.cs" />
     <Compile Include="Air\FlyTimed.cs" />
@@ -87,7 +85,6 @@
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
-    <Compile Include="UnitStances\UnitStance.cs" />
     <Compile Include="AttackBase.cs" />
     <Compile Include="AttackMove.cs" />
     <Compile Include="BaseBuilding.cs" />
@@ -102,10 +99,6 @@
     <Compile Include="Buildings\Sell.cs" />
     <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
-    <Compile Include="UnitStances\AssignUnitStance.cs" />
-    <Compile Include="UnitStances\UnitStanceHoldFire.cs" />
-    <Compile Include="UnitStances\UnitStanceReturnFire.cs" />
-    <Compile Include="UnitStances\UnitStanceHoldGround.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
