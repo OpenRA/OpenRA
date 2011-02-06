@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA
 {
 	public class OreRefineryInfo : ITraitInfo
 	{
-		public readonly bool LocalStorage = false;
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Red;
 		public readonly int2 DockOffset = new int2 (1, 2);
@@ -34,15 +33,12 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IPips, IExplodeModifier, ISync
+	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IExplodeModifier, ISync
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
 		PlayerResources PlayerResources;
-		PowerManager PlayerPower;
 
-		[Sync]
-		int nextProcessTime = 0;
 		[Sync]
 		public int Ore = 0;
 
@@ -62,7 +58,6 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 			Info = info;
 			PlayerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
-			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
         public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
@@ -73,22 +68,12 @@ namespace OpenRA.Mods.RA
 		
 		public bool CanGiveOre(int amount)
 		{
-			if (!Info.LocalStorage)
-				return PlayerResources.CanGiveOre(amount);
-			else
-				return Ore + amount <= Info.Capacity;
+			return PlayerResources.CanGiveOre(amount);
 		}
 
-		public void GiveOre (int amount)
+		public void GiveOre(int amount)
 		{
-			if (!Info.LocalStorage)
-				PlayerResources.GiveOre(amount);
-			else
-			{
-				Ore += amount;
-				if (Ore > Info.Capacity)
-					Ore = Info.Capacity;
-			}
+			PlayerResources.GiveOre(amount);
 		}
 
 		void CancelDock(Actor self)
@@ -107,24 +92,6 @@ namespace OpenRA.Mods.RA
 			{
 				self.Trait<RenderBuilding>().CancelCustomAnim(self);
 				dockedHarv = null;
-			}
-			
-			if (!Info.LocalStorage)
-				return;
-			
-			if (--nextProcessTime <= 0)
-			{
-				// Convert resources to cash
-				int amount = Math.Min (Ore, Info.ProcessAmount);
-				amount = Math.Min (amount, PlayerResources.OreCapacity - PlayerResources.Ore);
-				
-				if (amount > 0)
-				{
-					Ore -= amount;
-					PlayerResources.GiveOre(amount);
-				}
-				nextProcessTime = (PlayerPower.PowerState == PowerState.Normal)? 
-					Info.ProcessTick : Info.LowPowerProcessTick ;
 			}
 		}
 
@@ -176,7 +143,6 @@ namespace OpenRA.Mods.RA
                     harv.Trait.UnlinkProc(harv.Actor, self);
 
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public void Selling (Actor self) { CancelDock(self); }
@@ -184,14 +150,6 @@ namespace OpenRA.Mods.RA
 		{
             foreach (var harv in GetLinkedHarvesters())
                 harv.Trait.UnlinkProc(harv.Actor, self);
-		}
-
-		public IEnumerable<PipType> GetPips (Actor self)
-		{
-			if (!Info.LocalStorage)
-				return null;
-			
-			return Graphics.Util.MakeArray (Info.PipCount, i => (Ore * Info.PipCount > i * Info.Capacity) ? Info.PipColor : PipType.Transparent);
 		}
 
 		public bool ShouldExplode(Actor self) { return Ore > 0; }
