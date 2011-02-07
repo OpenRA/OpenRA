@@ -30,11 +30,21 @@ do
 	local cnt = 1
 	local maxcnt = 10
 	
-	-- todo config specifc ignore/priority list
+	local tools = {}
 	for name,tool in pairs(ide.tools) do
+		if (tool.exec and tool.exec.name) then
+			tool.fname = name
+			table.insert(tools,tool)
+		end
+	end
+	
+	table.sort(tools,function(a,b) return a.exec.name < b.exec.name end)
+	
+	-- todo config specifc ignore/priority list
+	for i,tool in ipairs(tools) do
 		local exec = tool.exec
 		if (exec and cnt < maxcnt and exec.name and exec.fn and exec.description) then
-			local id = ID("tools.exec."..name)
+			local id = ID("tools.exec."..tool.fname)
 			table.insert(toolArgs,{id , exec.name.."\tCtrl-"..cnt, exec.description})
 			-- flag it
 			tool._execid = id
