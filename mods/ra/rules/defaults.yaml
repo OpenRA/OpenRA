@@ -130,7 +130,6 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: aunitl1.aud
-<<<<<<< HEAD
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
