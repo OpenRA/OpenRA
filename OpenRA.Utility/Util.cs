@@ -137,7 +137,8 @@ namespace OpenRA.Utility
 			string pipename = Util.GetPipeName();
 			var p = new Process();
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
-			p.StartInfo.Arguments = command + " --pipe=" + pipename;
+			p.StartInfo.Arguments = command + " --pipe " + pipename;
+			p.StartInfo.CreateNoWindow = true;
 			p.StartInfo.Verb = "runas";
 
 			try
@@ -157,7 +158,7 @@ namespace OpenRA.Utility
 			using (var reader = new StreamReader(pipe))
 			{
 				while (!p.HasExited)
-					Console.Write(reader.ReadLine());
+					Console.WriteLine(reader.ReadLine());
 			}
 		}
 		
@@ -173,9 +174,7 @@ namespace OpenRA.Utility
 			using (var reader = p.StandardOutput)
 			{
 				while(!p.HasExited)
-				{
 					Console.WriteLine(reader.ReadLine());
-				}
 			}
 		}
 	}
