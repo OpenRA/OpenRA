@@ -1,4 +1,4 @@
-Pending for Next Release (as of 1ee788f0958c641cfdec5f44b63ac5bdbbdda6d1):
+20110207
 	Engine:
 		Informative drop messages - user is notified of kick vs game has started vs server unavailable
 		Fixed render errors with the build palette on the first game tick
@@ -18,6 +18,7 @@ Pending for Next Release (as of 1ee788f0958c641cfdec5f44b63ac5bdbbdda6d1):
 		Fix location calculation for flying units (manifests as invincible helicopters in cnc)
 		Infantry stack 5-to-a-cell like the original games
 		Craters and scorches smoke for a limited time
+		Added a scatter key (bound to `x')
 		
 	C&C:
 		Fixed commando c4
@@ -32,6 +33,7 @@ Pending for Next Release (as of 1ee788f0958c641cfdec5f44b63ac5bdbbdda6d1):
 		Lower Barracks/Hand health
 		Increase Weapons Factory health
 		Increase rocket bike damage
+		New Map: Crossing the Rubicon (Arcturus)
 	
 	RA:
 		Game assets can be installed from one of the Red Alert cds
@@ -39,8 +41,8 @@ Pending for Next Release (as of 1ee788f0958c641cfdec5f44b63ac5bdbbdda6d1):
 		GPS is now shared between allies
 		Submarines are no longer visible to everyone
 		Fixed paradrop flare, spyplane from capturing KOTH points
-		Map: Nuclear Winter (nudalz, ra)
-		Map: Seaside (nudalz, ra)
+		New Map: Nuclear Winter (nudalz)
+		New Map: Seaside (nudalz)
 		
 	Editor:
 		Ability to switch mods after launch
