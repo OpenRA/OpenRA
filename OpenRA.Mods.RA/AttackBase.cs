@@ -38,6 +38,14 @@ namespace OpenRA.Mods.RA
 		public readonly float ScanTimeSpread = .5f;
 
 		public abstract object Create(ActorInitializer init);
+
+		public float GetMaximumRange()
+		{
+			var priRange = PrimaryWeapon != null ? Rules.Weapons[PrimaryWeapon.ToLowerInvariant()].Range : 0;
+			var secRange = SecondaryWeapon != null ? Rules.Weapons[SecondaryWeapon.ToLowerInvariant()].Range : 0;
+
+			return Math.Max(priRange, secRange);
+		}
 	}
 
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
