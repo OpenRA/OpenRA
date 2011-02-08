@@ -167,12 +167,12 @@ namespace OpenRA.Graphics
 
 		public void DrawRangeCircle(Color c, float2 location, float range)
 		{
-			var prev = location + Game.CellSize * range * float2.FromAngle(0);
-			for (var i = 1; i <= 32; i++)
+			for (var i = 0; i < 32; i++)
 			{
-				var pos = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
-				Game.Renderer.LineRenderer.DrawLine(prev, pos, c, c);
-				prev = pos;
+				var start = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
+				var end = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * (i + 0.7)) / 16);
+				
+				Game.Renderer.LineRenderer.DrawLine(start, end, c, c);
 			}
 		}
 
