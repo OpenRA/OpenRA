@@ -10,7 +10,6 @@ fi
 SRCDIR=$(readlink -f $(dirname $0)/../)
 BUILTDIR="${SRCDIR}/packaging/built"
 TAG=$1
-VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 OUTPUTDIR=$(readlink -f $2)
 
 # Build the code and push the files into a clean dir
@@ -75,7 +74,7 @@ echo "Creating packages..."
 
 (
     cd linux
-    sh buildpackage.sh "$VERSION" "$BUILTDIR" "$OUTPUTDIR" &> package.log
+    sh buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "linux package build failed, refer to linux/package.log."
     fi

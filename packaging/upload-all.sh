@@ -5,17 +5,15 @@ PKGDIR=$2
 
 TYPE=`echo $TAG | grep -o "^[a-z]\\+"`
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
-FTPPATHBASE="openra.res0l.net"
+LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
+FTPPATHBASE="openra.res0l.net"
 FTPPATH="$FTPPATHBASE/assets/downloads"
 
 ./uploader.sh windows $PKGDIR/OpenRA-$TAG.exe "$FTPSERVER" "$FTPPATH" "$3" "$4"
 ./uploader.sh mac $PKGDIR/OpenRA-$TAG.zip "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh linux/deb $PKGDIR/openra_${LINUXVERSION}_all.deb "$FTPSERVER" "$FTPPATH" "$3" "$4"
 
-LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
-
-mv $PKGDIR/openra-$VERSION.deb $PKGDIR/openra-$TYPE$VERSION.deb
-./uploader.sh linux/deb $PKGDIR/openra-$TYPE$VERSION.deb "$FTPSERVER" "$FTPPATH" "$3" "$4"
 mv $PKGDIR/openra-$LINUXVERSION-1.noarch.rpm $PKGDIR/openra-$TYPE$VERSION-1.noarch.rpm
 ./uploader.sh linux/rpm $PKGDIR/openra-$TYPE$VERSION-1.noarch.rpm "$FTPSERVER" "$FTPPATH" "$3" "$4"
 mv $PKGDIR/openra-$LINUXVERSION-1-any.pkg.tar.xz $PKGDIR/openra-$TYPE$VERSION-1-any.pkg.tar.xz

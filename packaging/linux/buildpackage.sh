@@ -6,7 +6,8 @@ if [ $# -ne "3" ]; then
     exit 1
 fi
 
-VERSION=$1
+TAG=$1
+VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 BUILTDIR=$2
 PACKAGEDIR=$3
 ROOTDIR=root
@@ -31,7 +32,7 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
 (
     echo "Building Debian package."
     cd deb
-    ./buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" &> package.log
+    ./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Debian package build failed, refer to $PWD/package.log."
     fi
