@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
 	{
-		//public readonly string RangeCircleType;
+		public readonly string RangeCircleType = null;
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation)
 		{
@@ -29,6 +29,10 @@ namespace OpenRA.Mods.RA
 				Color.FromArgb(128, Color.Yellow),
 				centerLocation,
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
+
+			foreach (var a in w.Queries.OwnedBy[w.LocalPlayer].WithTrait<RenderRangeCircle>())
+				if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
+					a.Trait.RenderBeforeWorld(wr, a.Actor);
 		}
 	}
 
