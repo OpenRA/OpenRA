@@ -5,7 +5,7 @@ PKGDIR=$2
 
 TYPE=`echo $TAG | grep -o "^[a-z]\\+"`
 VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
-LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
+LINUXVERSION=`echo $TAG | sed "s/-/\\./g"`
 
 FTPPATHBASE="openra.res0l.net"
 FTPPATH="$FTPPATHBASE/assets/downloads"
