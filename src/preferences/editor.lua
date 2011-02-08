@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 preferencesDialog.addCategory {
 	category = "editor";
 	title = "Editor";

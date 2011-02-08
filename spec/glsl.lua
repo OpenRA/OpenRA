@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 return {
 	exts = {"glsl","vert","frag",},
 	lexer = wxstc.wxSTC_LEX_CPP,

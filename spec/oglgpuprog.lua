@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 return {
 	-- unfortunately no good lexer 
 	-- ASM comments start with ;

@@ -1,3 +1,7 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- ----------------------------------------------------------------------------
 -- Initialize the wxConfig for loading/saving the preferences
 

@@ -1,3 +1,7 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- Generate a unique new wxWindowID
 local ID_IDCOUNTER = wx.wxID_HIGHEST + 1
 function NewID()

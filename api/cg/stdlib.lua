@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- function helpers
 local self = ...
 local function key (str)

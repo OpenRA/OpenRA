@@ -1,4 +1,7 @@
--- ---------------------------------------------------------------------------
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- Create the Debug menu and attach the callback functions
 
 

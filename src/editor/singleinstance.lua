@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 --[[ single instance
  open an UDP port - if it fails it is either because 
   - Estrela is running already

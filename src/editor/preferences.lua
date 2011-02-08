@@ -1,6 +1,7 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- the preferences dialog
-
-
 
 preferencesDialog = {
 	category = {};

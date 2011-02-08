@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- CONNECTING STUFF
 
 -- force all the wxEVT_UPDATE_UI handlers to be called

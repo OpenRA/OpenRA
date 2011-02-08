@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 return {
 	exts = {"htm","html"},
 	lexer = wxstc.wxSTC_LEX_HTML,

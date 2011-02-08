@@ -1,6 +1,8 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 local cgprofile = ide.config.cgprofile or "gp4"
-
 
 return cgbinpath and {
 	fninit = function(frame,menuBar)

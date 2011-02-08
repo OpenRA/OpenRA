@@ -1,3 +1,8 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+--          David Manura
+---------------------------------------------------------
+
 -- Equivalent to C's "cond ? a : b", all terms will be evaluated
 function iff(cond, a, b) if cond then return a else return b end end
 
@@ -32,6 +37,7 @@ char_Sp  = string.byte(" ")
 string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
 stringset_File = '[^"%?%*:\\/<>|]'
 
+-- http://lua-users.org/wiki/EnhancedFileLines
 function FileLines(f)
   local CHUNK_SIZE = 1024
   local buffer = ""

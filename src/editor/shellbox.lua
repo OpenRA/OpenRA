@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- 
 --	shellbox - a lua testbed environment within estrela
 --

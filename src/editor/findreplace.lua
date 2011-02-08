@@ -1,3 +1,6 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
 ide.findReplace = {
 	dialog           = nil,   -- the wxDialog for find/replace
 	replace          = false, -- is it a find or replace dialog

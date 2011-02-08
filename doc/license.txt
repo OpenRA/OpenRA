@@ -33,7 +33,7 @@ http://wxlua.sourceforge.net/
 
 Pre-Built binaries for wxLua/WxWindows
 
-
+Original wxLua Lua sample IDE:
   Lomtick Software
   J. Winwood & John Labenski
   luascript at thersgb.net
@@ -93,7 +93,7 @@ code and/or adjust the licensing conditions notice accordingly.
   
 2. Lua License
 =============================================================================
-Copyright: © 1994-2006 Lua.org, PUC-Rio.
+Copyright: Â© 1994-2006 Lua.org, PUC-Rio.
 Homepage: http://www.lua.org
 License:  http://www.lua.org/copyright.html
 

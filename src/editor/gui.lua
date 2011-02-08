@@ -1,4 +1,7 @@
--- ----------------------------------------------------------------------------
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+--          Lomtik Software (J. Winwood & John Labenski)
+---------------------------------------------------------
+
 -- Global variables
 -- Markers for editor marker margin
 BREAKPOINT_MARKER         = 1

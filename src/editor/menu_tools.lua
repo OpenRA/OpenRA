@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 local frame    = ide.frame
 local menuBar  = frame.menuBar
 

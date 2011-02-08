@@ -1,3 +1,7 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 local frame    = ide.frame
 local menuBar  = frame.menuBar
 local vsplitter= frame.vsplitter

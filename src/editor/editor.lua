@@ -1,3 +1,6 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
 local wxkeywords       = nil    -- a string of the keywords for scintilla of wxLua's wx.XXX items
 
 local in_evt_focus     = false  -- true when in editor focus event to avoid recursion

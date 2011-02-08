@@ -1,4 +1,5 @@
--- language specification
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
 
 return {
 	exts = {"lua"},

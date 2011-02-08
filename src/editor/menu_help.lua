@@ -1,3 +1,7 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- ---------------------------------------------------------------------------
 -- Create the Help menu and attach the callback functions
 
@@ -51,7 +55,7 @@ function DisplayAbout(event)
 		  </tr>
 		  <tr>
 			<td bgcolor = "#4747A1">
-			<b>wxLua</b><br>
+			<b>based on wxLua editor sample</b><br>
 			<b>Copyright &copy; 2002-2005 Lomtick Software</b>
 			<p>
 			<font size=-1>
@@ -67,7 +71,7 @@ function DisplayAbout(event)
 				</tr>
 			  </table>
 			<font size = 1>
-				Licenced under wxWindows Library Licence, Version 3.
+				wxLua binding licenced under wxWindows Library Licence, Version 3.
 			</font>
 			</font>
 			</td>

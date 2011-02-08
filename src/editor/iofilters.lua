@@ -1,3 +1,5 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
 
 ide.iofilters["GermanUtf8Ascii"] = {
 
@@ -47,7 +49,7 @@ end,
 --üäß
 
 for i,filter in pairs(ide.iofilters) do
-	assert(filter.output("",filter.input("","äöüÄÖÜß")),"â€â€äöüÄÖÜß","UTF8-ANSI conversion failed: "..(i))
+	assert(filter.output("",filter.input("","äöüÄÖÜß")),"Ã¢â‚¬Å¾Ã¢â‚¬ÂäöüÄÖÜß","UTF8-ANSI conversion failed: "..(i))
 end
 
 -- which: "input" or "output"

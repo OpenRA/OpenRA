@@ -1,6 +1,8 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 local dxpath = os.getenv("DXSDK_DIR")
 local dxprofile = ide.config.dxprofile or "dx_4"
-
 
 return dxpath and {
 	fninit = function(frame,menuBar)

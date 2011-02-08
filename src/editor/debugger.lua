@@ -1,3 +1,6 @@
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
 local debugger = {}
 
 --debuggerServer     = nil    -- wxLuaDebuggerServer object when debugging, else nil

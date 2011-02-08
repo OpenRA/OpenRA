@@ -1,4 +1,7 @@
--- ---------------------------------------------------------------------------
+-- authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 -- Create the File menu and attach the callback functions
 
 local frame    = ide.frame

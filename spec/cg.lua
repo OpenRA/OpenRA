@@ -1,3 +1,6 @@
+-- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
+---------------------------------------------------------
+
 return {
 	exts = {"cg","cgh","fx","fxh","cgfx","cgfxh",},
 	lexer = wxstc.wxSTC_LEX_CPP,
