@@ -13,6 +13,8 @@ return cgbinpath and {
 			{ ID "cg.profile.gp5",		"NV &GP5",		"NV program sm5 profile", wx.wxITEM_CHECK },
 			{ ID "cg.profile.dx_2x",	"DX SM&2_x",	"DirectX sm2_x profile", wx.wxITEM_CHECK },
 			{ ID "cg.profile.dx_3",		"DX SM&3_0",	"DirectX sm3_0 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.dx_4",		"DX SM&4_0",	"DirectX sm4_0 profile", wx.wxITEM_CHECK },
+			{ ID "cg.profile.dx_5",		"DX SM&5_0",		"DirectX sm5_0 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
 			{ },
@@ -45,6 +47,8 @@ return cgbinpath and {
 			[ID "cg.profile.gp5"]  = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp", asm=true,},
 			[ID "cg.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,ext=".txt"},
 			[ID "cg.profile.dx_3"]  = {"vs_3_0","ps_3_0",false,false,false,ext=".txt"},
+			[ID "cg.profile.dx_4"]  = {"vs_4_0","ps_4_0","gs_4_0",false,false,ext=".txt"},
+			[ID "cg.profile.dx_5"]  = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0",ext=".txt"},
 		}
 		data.domaindefs = {
 			" -D_VERTEX_ ",
