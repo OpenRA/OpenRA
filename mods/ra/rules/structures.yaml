@@ -319,6 +319,7 @@ AGUN:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
+		RangeCircleType: aa
 
 DOME:
 	RequiresPower:
@@ -497,6 +498,7 @@ SAM:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
+		RangeCircleType: aa
 	RequiresPower:
 	CanPowerDown:
 
