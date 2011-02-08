@@ -1,9 +1,9 @@
 #!/bin/bash
-ARGS=3
+ARGS=1
 E_BADARGS=85
 
 if [ $# -ne "$ARGS" ]; then
-  echo "Usage: `basename $0` tag username password"
+  echo "Usage: `basename $0` tag"
   exit $E_BADARGS
 fi
 
@@ -61,7 +61,7 @@ fi
 
 ./package-all.sh $TAG ~/openra-package/packages/
 
-./upload-all.sh $TAG ~/openra-package/packages $2 $3
+./upload-all.sh $TAG ~/openra-package/packages
 
 popd &> /dev/null # packaging
 popd &> /dev/null # $_gitname-build
