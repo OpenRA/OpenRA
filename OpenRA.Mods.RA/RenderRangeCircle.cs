@@ -14,7 +14,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle> { }
+	public interface IPlaceBuildingDecoration
+	{
+		void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation);
+	}
+
+	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
+	{
+		public readonly string RangeCircleType;
+
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation)
+		{
+			wr.DrawRangeCircle(
+				Color.FromArgb(128, Color.Yellow),
+				centerLocation, 3	/* hack: get this from the ActorInfo, but it's nontrivial currently */);
+		}
+	}
+
 	class RenderRangeCircle : IPreRenderSelection
 	{
 		public void RenderBeforeWorld(WorldRenderer wr, Actor self)

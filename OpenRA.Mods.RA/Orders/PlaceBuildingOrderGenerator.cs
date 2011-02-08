@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
@@ -70,6 +70,10 @@ namespace OpenRA.Mods.RA.Orders
 		{
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
+
+			var actorInfo = Rules.Info[Building];
+			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
+				dec.Render(wr, world, actorInfo, Traits.Util.CenterOfCell(position));	/* hack hack */
 			
 			var cells = new Dictionary<int2, bool>();
 			// Linebuild for walls.
