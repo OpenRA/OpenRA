@@ -41,7 +41,7 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
 (
     echo "Building Arch-Linux package."
     cd pkgbuild
-    sh buildpackage.sh "$VERSION" ../$ROOTDIR "$PACKAGEDIR" &> package.log
+    sh buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
@@ -50,7 +50,7 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
 (
     echo "Building RPM package."
     cd rpm
-    sh buildpackage.sh "$VERSION" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR" &> package.log
+    sh buildpackage.sh "$TAG" ../$ROOTDIR ~/rpmbuild "$PACKAGEDIR" &> package.log
     if [ $? -ne 0 ]; then
         echo "RPM package build failed, refer to $PWD/package.log."
     fi
