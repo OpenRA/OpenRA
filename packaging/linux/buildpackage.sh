@@ -18,9 +18,9 @@ rm -rf $ROOTDIR
 # Game files
 mkdir -p $ROOTDIR/usr/bin/
 cp -T openra-bin root/usr/bin/openra
-
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
+cp -T OpenRA.Utility.sh $ROOTDIR/usr/share/openra/
 
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
