@@ -4,7 +4,7 @@
 authenticate () {
     if command -v gksudo > /dev/null; then
         gksudo --description "OpenRA Installer" -- mono OpenRA.Utility.exe $@ || echo "Error: Permission denied."
-    elif command -v kdesu > /dev/null; then
+    elif command -v kdesudo > /dev/null; then
         kdesudo -d -- mono OpenRA.Utility.exe $@ || echo "Error: Permission denied."
     else
         # Try running without escalating
