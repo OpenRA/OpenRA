@@ -2,7 +2,7 @@
 # OpenRA packaging script for Mac OSX
 
 if [ $# -ne "3" ]; then
-	echo "Usage: `basename $0` version files-dir outputdir"
+	echo "Usage: `basename $0` tag files-dir outputdir"
     exit 1
 fi
 

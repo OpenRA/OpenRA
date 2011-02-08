@@ -9,10 +9,8 @@ FTPPATHBASE="openra.res0l.net"
 
 FTPPATH="$FTPPATHBASE/assets/downloads"
 
-mv $PKGDIR/OpenRA-$VERSION.exe $PKGDIR/OpenRA-$TYPE$VERSION.exe
-./uploader.sh windows $PKGDIR/OpenRA-$TYPE$VERSION.exe "$FTPSERVER" "$FTPPATH" "$3" "$4"
-mv $PKGDIR/OpenRA-$VERSION.zip $PKGDIR/OpenRA-$TYPE$VERSION.zip
-./uploader.sh mac $PKGDIR/OpenRA-$TYPE$VERSION.zip "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh windows $PKGDIR/OpenRA-$TAG.exe "$FTPSERVER" "$FTPPATH" "$3" "$4"
+./uploader.sh mac $PKGDIR/OpenRA-$TAG.zip "$FTPSERVER" "$FTPPATH" "$3" "$4"
 
 LINUXVERSION=`echo $VERSION | sed "s/-/\\./g"`
 
