@@ -9,9 +9,8 @@ fi
 # Resolve the absolute source path from the location of this script
 SRCDIR=$(readlink -f $(dirname $0)/../)
 BUILTDIR="${SRCDIR}/packaging/built"
-# TODO: Shift this into the checkout-and-build script
-#VERSION=`echo $1 | grep -o "[0-9]\\+-\\?[0-9]\\?"`
-VERSION=$1
+TAG=$1
+VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 OUTPUTDIR=$(readlink -f $2)
 
 # Build the code and push the files into a clean dir
@@ -28,7 +27,7 @@ find . -path "*.mdb" -delete
 # they are now installed to the game directory instead of placed in the gac
 FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.Renderer.Cg.dll \
 OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf \
-cg glsl mods/ra mods/cnc COPYING HACKING INSTALL"
+cg glsl mods/ra mods/cnc COPYING HACKING INSTALL CHANGELOG"
 
 echo "Copying files..."
 for i in $FILES; do
@@ -45,8 +44,8 @@ cp thirdparty/ICSharpCode.SharpZipLib.dll packaging/built
 cp OpenRA.Game/OpenRA.ico packaging/built
 
 # Update mod versions
-sed "s/{DEV_VERSION}/$VERSION/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.yaml
-sed "s/{DEV_VERSION}/$VERSION/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
+sed "s/{DEV_VERSION}/$TAG/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.yaml
+sed "s/{DEV_VERSION}/$TAG/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
  
 
 #
