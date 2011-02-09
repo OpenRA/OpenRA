@@ -21,7 +21,7 @@ cp -R $rootdir/usr root
 # Create the control and changelog files from templates
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > root/DEBIAN/control
 sed "s/{VERSION}/$VERSION/" DEBIAN/changelog > root/DEBIAN/changelog
-
+cat ./root/usr/share/openra/CHANGELOG >> root/DEBIAN/changelog
 # Build it in the temp directory, but place the finished deb in our starting directory
 pushd root
 
