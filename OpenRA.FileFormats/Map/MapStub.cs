@@ -37,14 +37,14 @@ namespace OpenRA.FileFormats
 		[FieldLoader.Load] public string[] StartPoints;
 		public int PlayerCount { get { return StartPoints.Count(); } }
 		[FieldLoader.LoadUsing( "LoadWaypoints" )]
-		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
-		
-		
+		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();		
 		public IEnumerable<int2> SpawnPoints{ get { return Waypoints.Where(kv => StartPoints.Contains(kv.Key)).Select(kv => kv.Value); } }
 		
+		[FieldLoader.Load] public Rectangle Bounds;
+		
+		// TODO: Remove these once we stop supporting MapFormat < 5
 		[FieldLoader.Load] public int2 TopLeft;
 		[FieldLoader.Load] public int2 BottomRight;
-		public Rectangle Bounds;
 		
 		public MapStub() {} // Hack for the editor - not used for anything important
 		
@@ -55,12 +55,14 @@ namespace OpenRA.FileFormats
 			var yaml = MiniYaml.FromStream(Container.GetContent("map.yaml"));
 			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
 			
-			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
             Uid = ComputeHash();
 			
 			// Upgrade maps to define StartPoints
 			if (MapFormat < 5)
+			{
 				StartPoints = Waypoints.Select(kv => kv.Key).ToArray();
+				Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
+			}
 		}
 
         string ComputeHash()

@@ -132,8 +132,7 @@ namespace OpenRA.Editor
 			Map.Tileset = Truncate(map.GetValue("Theater", "TEMPERAT"), 8);
 			Map.MapSize.X = MapSize;
 			Map.MapSize.Y = MapSize;
-			Map.TopLeft = new int2(XOffset, YOffset);
-			Map.BottomRight = new int2(XOffset + Width, YOffset + Height);
+			Map.Bounds = Rectangle.FromLTRB(XOffset, YOffset, XOffset + Width, YOffset + Height);
 			Map.Selectable = true;
 
 			if (legacyMapFormat == IniMapFormat.RedAlert)

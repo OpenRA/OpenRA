@@ -178,7 +178,12 @@ namespace OpenRA.FileFormats
                     yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
                 return new float2(xx, yy);
             }
-
+			else if (fieldType == typeof(Rectangle))
+            {
+                var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                return new Rectangle(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
+            }
+			
 			UnknownFieldAction("[Type] {0}".F(x),fieldType);
 			return null;
 		}
@@ -295,7 +300,12 @@ namespace OpenRA.FileFormats
 					((int)c.G).Clamp(0, 255),
 					((int)c.B).Clamp(0, 255));
 			}
-
+			else if (f.FieldType == typeof(Rectangle))
+			{
+				var r = (Rectangle)v;
+				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
+			}
+			
 			return f.FieldType.IsArray
 				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
 				: v.ToString();

@@ -236,8 +236,7 @@ namespace OpenRA
 				"Author",
 				"Tileset",
 				"MapSize",
-				"TopLeft",
-				"BottomRight",
+				"Bounds",
 				"UseAsShellmap",
 				"Type",
 				"StartPoints"
@@ -394,9 +393,7 @@ namespace OpenRA
 		
 		public void ResizeCordon(int left, int top, int right, int bottom)
 		{
-			TopLeft = new int2(left, top);
-			BottomRight = new int2(right, bottom);
-			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
+			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
 		}
 	}
 }
