@@ -163,8 +163,6 @@ namespace OpenRA.Editor
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.ToArray();
 
-			Map.PlayerCount = wp.Count();
-
 			foreach (var kv in wp)
 				Map.Waypoints.Add("spawn" + kv.First, kv.Second);
 		}

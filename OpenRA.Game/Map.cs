@@ -23,8 +23,6 @@ namespace OpenRA
 	public class Map : MapStub
 	{
 		// Yaml map data
-		[FieldLoader.Load] public int MapFormat;
-
 		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
@@ -63,7 +61,6 @@ namespace OpenRA
 				Description = "Describe your map here",
 				Author = "Your name here",
 				MapSize = new int2(1, 1),
-				PlayerCount = 0,
 				Tileset = tileset,
 				MapResources = new TileReference<byte, byte>[1, 1],
 				MapTiles = new TileReference<ushort, byte>[1, 1] 
@@ -229,7 +226,24 @@ namespace OpenRA
 			MapFormat = 5;
 			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in new string[] {"Selectable", "MapFormat", "RequiresMod", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
+			var fields = new string[]
+			{
+				"Selectable",
+				"MapFormat",
+				"RequiresMod",
+				"Title",
+				"Description",
+				"Author",
+				"Tileset",
+				"MapSize",
+				"TopLeft",
+				"BottomRight",
+				"UseAsShellmap",
+				"Type",
+				"StartPoints"
+			};
+			
+			foreach (var field in fields)
 			{
 				var f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;

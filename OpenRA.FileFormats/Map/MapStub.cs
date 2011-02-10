@@ -23,6 +23,7 @@ namespace OpenRA.FileFormats
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
+		[FieldLoader.Load] public int MapFormat;
 		[FieldLoader.Load] public bool Selectable;
         [FieldLoader.Load] public bool UseAsShellmap;
 		[FieldLoader.Load] public string RequiresMod;
@@ -31,12 +32,15 @@ namespace OpenRA.FileFormats
 		[FieldLoader.Load] public string Type = "Conquest";
 		[FieldLoader.Load] public string Description;
 		[FieldLoader.Load] public string Author;
-		[FieldLoader.Load] public int PlayerCount;
 		[FieldLoader.Load] public string Tileset;
-
+		
+		[FieldLoader.Load] public string[] StartPoints;
+		public int PlayerCount { get { return StartPoints.Count(); } }
 		[FieldLoader.LoadUsing( "LoadWaypoints" )]
 		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();
-		public IEnumerable<int2> SpawnPoints { get { return Waypoints.Select(kv => kv.Value); } }
+		
+		
+		public IEnumerable<int2> SpawnPoints{ get { return Waypoints.Where(kv => StartPoints.Contains(kv.Key)).Select(kv => kv.Value); } }
 		
 		[FieldLoader.Load] public int2 TopLeft;
 		[FieldLoader.Load] public int2 BottomRight;
@@ -53,6 +57,10 @@ namespace OpenRA.FileFormats
 			
 			Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
             Uid = ComputeHash();
+			
+			// Upgrade maps to define StartPoints
+			if (MapFormat < 5)
+				StartPoints = Waypoints.Select(kv => kv.Key).ToArray();
 		}
 
         string ComputeHash()
@@ -75,6 +83,7 @@ namespace OpenRA.FileFormats
 				string[] loc = wp.Value.Value.Split( ',' );
 				ret.Add( wp.Key, new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) );
 			}
+			
 			return ret;
 		}
 	}
