@@ -211,7 +211,7 @@ namespace OpenRA
 		
 		public static Dictionary<String, Mod> CurrentMods
 		{
-			get { return Mod.AllMods.Where( k => orderManager.LobbyInfo.GlobalSettings.Mods.Contains( k.Key )).ToDictionary( k => k.Key, k => k.Value ); }
+			get { return Mod.AllMods.Where( k => modData.Manifest.Mods.Contains( k.Key )).ToDictionary( k => k.Key, k => k.Value ); }
 		}
 
 		static Modifiers modifiers;

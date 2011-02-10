@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.Linq;
 using System.IO;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Editor
 {
@@ -24,6 +25,7 @@ namespace OpenRA.Editor
 			if (args.Length >= 2 && args[0] == "--convert")
 			{
 				Game.modData = new ModData(args[1]);
+				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 				UpgradeMaps(args[1]);
 				return;
@@ -44,7 +46,7 @@ namespace OpenRA.Editor
 			foreach (var path in ModData.FindMapsIn(MapFolderPath))
             {
                 var map = new Map(path);
-				map.Save(path+".oramap");
+				map.Save(path);
             }
 		}
 		
