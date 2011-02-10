@@ -25,6 +25,7 @@ namespace OpenRA.FileFormats
 		public string Uid { get; protected set; }
 		[FieldLoader.Load] public bool Selectable;
         [FieldLoader.Load] public bool UseAsShellmap;
+		[FieldLoader.Load] public string RequiresMod;
 
 		[FieldLoader.Load] public string Title;
 		[FieldLoader.Load] public string Type = "Conquest";

@@ -321,6 +321,7 @@ namespace OpenRA.Editor
 					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
 						(int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
 					map.Players.Add("Neutral", new PlayerReference("Neutral", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+					map.Players.Add("Creeps", new PlayerReference("Creeps", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 					NewMap(map);
 				}
 			}
@@ -372,7 +373,10 @@ namespace OpenRA.Editor
 					var map = LegacyMapImporter.Import(ofd.FileName);
 					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
-
+					
+					map.Players.Add("Creeps", new PlayerReference("Creeps",
+						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+					
 					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */

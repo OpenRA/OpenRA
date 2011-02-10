@@ -140,6 +140,7 @@ namespace OpenRA
 
 				case 3:
                 case 4:
+				case 5:
 					{
 						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 						{
@@ -165,21 +166,40 @@ namespace OpenRA
 						Name = "Multi{0}".F(index),
 						Race = "Random",
 						Playable = true,
-						DefaultStartingUnits = true
+						DefaultStartingUnits = true,
+						Enemies = new[]{"Creeps"}
 					};
 					Players.Add(p.Name, p);
 				}
 			}
 
             // Color1/Color2 -> ColorRamp
-            if (MapFormat == 3)
+            if (MapFormat < 4)
                 foreach (var mp in Players)
                     mp.Value.ColorRamp = new ColorRamp(
                         (byte)((mp.Value.Color.GetHue() / 360.0f) * 255),
                         (byte)(mp.Value.Color.GetSaturation() * 255),
                         (byte)(mp.Value.Color.GetBrightness() * 255),
                         (byte)(mp.Value.Color2.GetBrightness() * 255));
-
+			
+			
+			// Creep player / Required Mod
+			if (MapFormat < 5)
+			{
+				RequiresMod = Game.CurrentMods.Keys.First();
+				
+				foreach (var mp in Players.Where(p => !p.Value.NonCombatant && !p.Value.Enemies.Contains("Creeps")))
+					mp.Value.Enemies = mp.Value.Enemies.Concat(new[] {"Creeps"}).ToArray();
+				
+				Players.Add("Creeps", new PlayerReference
+				{
+					Name = "Creeps",
+					Race = "Random",
+					NonCombatant = true,
+					Enemies = Players.Keys.Where(k => k != "Neutral").ToArray()
+				});
+			}
+			
 			// Smudges
 			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
 			{
@@ -206,12 +226,10 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{			
-			Console.WriteLine("Saving map to path {0}",toPath);
-			// Todo: save to a zip file in the support dir by default
-			MapFormat = 4;
+			MapFormat = 5;
 			
 			var root = new List<MiniYamlNode>();
-			foreach (var field in new string[] {"Selectable", "MapFormat", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
+			foreach (var field in new string[] {"Selectable", "MapFormat", "RequiresMod", "Title", "Description", "Author", "PlayerCount", "Tileset", "MapSize", "TopLeft", "BottomRight", "UseAsShellmap", "Type"})
 			{
 				var f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
