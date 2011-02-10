@@ -68,6 +68,9 @@ namespace OpenRA.Renderer.Cg
 				windowFlags |= Sdl.SDL_NOFRAME;
 				Environment.SetEnvironmentVariable( "SDL_VIDEO_WINDOW_POS", "0,0" );
 				break;
+			case WindowMode.Windowed:
+				Environment.SetEnvironmentVariable( "SDL_VIDEO_CENTERED", "1" );
+				break;
 			default:
 				break;
 			}
