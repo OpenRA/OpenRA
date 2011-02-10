@@ -16,69 +16,77 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackMoveInfo : TraitInfo<AttackMove>
+	class AttackMoveInfo : ITraitInfo
 	{
 		public readonly bool JustMove = false;
+		
+		public object Create(ActorInitializer init) { return new AttackMove(init.self, this); }
 	}
 
-	class AttackMove : IResolveOrder, IOrderVoice, ITick, ISync
+	class AttackMove : IResolveOrder, IOrderVoice, INotifyIdle, ISync
 	{
-		[Sync] public int2 TargetLocation = int2.Zero; 
-
-		[Sync] public bool AttackMoving = false;
-
+		[Sync] public int2 _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : int2.Zero; } }
+		public int2? TargetLocation = null; 
+		
+		readonly Mobile mobile;
+		readonly AttackMoveInfo Info;
+		
+		public AttackMove(Actor self, AttackMoveInfo info)
+		{
+			Info = info;
+			mobile = self.Trait<Mobile>();
+		}
+		
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "AttackMove")
 				return "AttackMove";
-
 			return null;
 		}
-
+		
+		
+		void Activate(Actor self)
+		{
+			self.CancelActivity();
+			self.QueueActivity(new AttackMoveActivity(mobile.MoveTo(TargetLocation.Value, 1)));
+			self.SetTargetLine(Target.FromCell(TargetLocation.Value), Color.Red);
+		}
+		
+		public void TickIdle(Actor self)
+		{
+			if (TargetLocation.HasValue)
+				Activate(self);
+		}
+		
 		public void ResolveOrder(Actor self, Order order)
 		{
+			TargetLocation = null;
 			if (order.OrderString == "AttackMove")
 			{
-				
-				self.CancelActivity();
-				//if we are just moving, we don't turn on attackmove and this becomes a regular move order
-				if (self.Info.Traits.Get<AttackMoveInfo>().JustMove)
-				{
-					self.QueueActivity(self.Trait<Mobile>().MoveTo(order.TargetLocation, 1));
-					AttackMoving = false;
-				}
+				if (Info.JustMove)
+					mobile.ResolveOrder(self, new Order("Move", order));
 				else
 				{
-					self.QueueActivity(new AttackMoveActivity(order.TargetLocation));
-					AttackMoving = true;
-					TargetLocation = order.TargetLocation;
+					TargetLocation = mobile.NearestMoveableCell(order.TargetLocation);
+					Activate(self);
 				}
-				
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-			}
-			else
-			{
-				AttackMoving = false;
 			}
 		}
 
 		class AttackMoveActivity : CancelableActivity
 		{
-			readonly int2 target;
 			IActivity inner;
-			public AttackMoveActivity( int2 target ) { this.target = target; }
+			public AttackMoveActivity( IActivity inner ) { this.inner = inner; }
 
 			public override IActivity Tick( Actor self )
 			{
 				self.Trait<AttackBase>().ScanAndAttack(self, true);
 
 				if( inner == null )
-				{
-					if( IsCanceled )
-						return NextActivity;
-					inner = self.Trait<Mobile>().MoveTo( target, 1 );
-				}
+					return NextActivity;
+				
 				inner = Util.RunActivity( self, inner );
+				
 				return this;
 			}
 
@@ -88,18 +96,6 @@ namespace OpenRA.Mods.RA
 					inner.Cancel( self );
 				return base.OnCancel( self );
 			}
-		}
-
-		public void Tick(Actor self)
-		{
-			if (!self.IsInWorld) return;
-
-			if (AttackMoving && self.IsIdle)
-			{
-				self.CancelActivity();
-				self.QueueActivity(new AttackMoveActivity(TargetLocation));
-			}
-
 		}
 	}
 }

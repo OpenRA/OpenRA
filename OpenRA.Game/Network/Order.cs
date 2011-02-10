@@ -57,14 +57,18 @@ namespace OpenRA
 			this.Queued = queued;
 			this.ExtraLocation = extraLocation;
 		}
-
+		
 		// For scripting special powers
 		public Order() 
 			: this(null, null, null, int2.Zero, null, false, int2.Zero) { }
 		
 		public Order(string orderString, Actor subject, bool queued) 
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
-
+		
+		public Order(string orderstring, Order order)
+			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
+			       order.TargetString, order.Queued, order.ExtraLocation) {}
+		
 		public byte[] Serialize()
 		{
 			if (IsImmediate)		/* chat, whatever */

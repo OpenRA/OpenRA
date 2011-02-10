@@ -324,6 +324,7 @@
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Widgets\GameInitInfoWidget.cs" />
     <Compile Include="Widgets\Delegates\GameInitDelegate.cs" />
+    <Compile Include="AttackWander.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

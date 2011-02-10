@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Air
 				return int2.Zero;
 
 			if (d.LengthSquared < 1)
-				return Aircraft.SubPxVector[self.World.SharedRandom.Next(255)];
+				return Util.SubPxVector[self.World.SharedRandom.Next(255)];
 			return (5120 / d.LengthSquared) * d;
 		}
 	}
