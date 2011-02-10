@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			canSmoke = self.Info.Traits.Get<RenderUnitInfo>().Smokes;
 
-			anim.Play("idle");
+			anim.PlayRepeating("idle");
 
 			if (canSmoke)
 				anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
