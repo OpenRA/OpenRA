@@ -203,6 +203,7 @@ VICE:
 	AttackWander:
 	-RenderInfantry:
 	RenderUnit:
+		Smokes: False
 	WithMuzzleFlash:
 	Armor:
 		Type: Wood
