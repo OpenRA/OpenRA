@@ -126,6 +126,7 @@
 		Notification: unitlost.aud
 	ProximityCaptor:
 		Types:Infantry
+	SpawnViceroid:
 
 ^CivInfantry:
 	Inherits: ^Infantry

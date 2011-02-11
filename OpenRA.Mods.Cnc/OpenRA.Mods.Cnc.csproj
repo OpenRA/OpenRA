@@ -69,6 +69,7 @@
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="CncWaterPaletteRotation.cs" />
     <Compile Include="AttackPopupTurreted.cs" />
+    <Compile Include="SpawnViceroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

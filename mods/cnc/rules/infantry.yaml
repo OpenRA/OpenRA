@@ -19,7 +19,7 @@ E1:
 		PrimaryWeapon: M16
 	TakeCover:
 	IdleAnimation:
-		Animations: idle1,idle2,idle3	
+		Animations: idle1,idle2,idle3,idle4	
 E2:
 	Inherits: ^Infantry
 	Valued:
@@ -206,3 +206,4 @@ VICE:
 	WithMuzzleFlash:
 	Armor:
 		Type: Wood
+	-PoisonedByTiberium:
