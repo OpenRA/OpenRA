@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.FileFormats
+namespace OpenRA
 {
 	public class MapStub
 	{
@@ -34,11 +36,10 @@ namespace OpenRA.FileFormats
 		[FieldLoader.Load] public string Author;
 		[FieldLoader.Load] public string Tileset;
 		
-		[FieldLoader.Load] public string[] StartPoints;
-		public int PlayerCount { get { return StartPoints.Count(); } }
-		[FieldLoader.LoadUsing( "LoadWaypoints" )]
-		public Dictionary<string, int2> Waypoints = new Dictionary<string, int2>();		
-		public IEnumerable<int2> SpawnPoints{ get { return Waypoints.Where(kv => StartPoints.Contains(kv.Key)).Select(kv => kv.Value); } }
+		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
+
+		public int PlayerCount { get { return SpawnPoints.Count(); } }
+		public IEnumerable<int2> SpawnPoints { get { return Actors.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
 		
 		[FieldLoader.Load] public Rectangle Bounds;
 				
@@ -50,14 +51,27 @@ namespace OpenRA.FileFormats
 			Container = FileSystem.OpenPackage(path, int.MaxValue);
 			var yaml = new MiniYaml( null, MiniYaml.FromStream(Container.GetContent("map.yaml")) );
 			FieldLoader.Load(this, yaml);
-			
             Uid = ComputeHash();
 			
-			// Upgrade maps to define StartPoints
+			// Load actors
+			foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
+				Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
+			
+			// Upgrade map to format 5
 			if (MapFormat < 5)
 			{
+				// Define RequiresMod for map installer
+				RequiresMod = Game.CurrentMods.Keys.First();
 				
-				StartPoints = Waypoints.Select(kv => kv.Key).ToArray();
+				// Add waypoint actors
+				foreach( var wp in yaml.NodesDict[ "Waypoints" ].NodesDict )
+				{
+					string[] loc = wp.Value.Value.Split( ',' );
+					var a = new ActorReference("mpspawn");
+					a.Add(new LocationInit(new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) )));
+					Actors.Add(wp.Key, a);
+				}
+									
 				var TopLeft = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["TopLeft"].Value);
 				var BottomRight = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["BottomRight"].Value);
 				Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
@@ -75,17 +89,5 @@ namespace OpenRA.FileFormats
             using (var csp = SHA1.Create())
                 return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
         }
-
-		static object LoadWaypoints( MiniYaml y )
-		{
-			var ret = new Dictionary<string, int2>();
-			foreach( var wp in y.NodesDict[ "Waypoints" ].NodesDict )
-			{
-				string[] loc = wp.Value.Value.Split( ',' );
-				ret.Add( wp.Key, new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) );
-			}
-			
-			return ret;
-		}
 	}
 }

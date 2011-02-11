@@ -347,7 +347,6 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void SpawnPointsClicked(object sender, EventArgs e) { surface1.SetTool(new WaypointTool(new WaypointTemplate())); }
 		void Form1_KeyDown(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = true; }
 		void Form1_KeyUp(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Space) surface1.IsPanning = false; }
 

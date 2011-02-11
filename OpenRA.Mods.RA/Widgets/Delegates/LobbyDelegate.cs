@@ -58,8 +58,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				    || orderManager.LocalClient.State == Session.ClientState.Ready)
 					return false;
 
-				var p = map.Waypoints
-					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp.Value), i))
+				var p = map.SpawnPoints
+					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();

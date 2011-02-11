@@ -97,12 +97,12 @@ namespace OpenRA.Mods.Cnc
 						{
 							new OwnerInit( Players["BadGuy"] ),
 							new FacingInit( 0 ),
-							new LocationInit ( Map.Waypoints["nod0"] ),
+							new LocationInit ( Actors["nod0"].Location ),
 						});
 						var mobile = a.Trait<Mobile>();
-						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod1"], 2 ) );
-						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod2"], 2 ) );
-						a.QueueActivity( mobile.MoveTo( Map.Waypoints["nod3"], 2 ) );
+						a.QueueActivity( mobile.MoveTo( Actors["nod1"].Location, 2 ) );
+						a.QueueActivity( mobile.MoveTo( Actors["nod2"].Location, 2 ) );
+						a.QueueActivity( mobile.MoveTo( Actors["nod3"].Location, 2 ) );
 						// Todo: Queue hunt order
 					}
 				});
@@ -127,8 +127,8 @@ namespace OpenRA.Mods.Cnc
 			if (ticks == 25*5)
 			{
 				ReinforceFromSea(self.World, 
-				                 Map.Waypoints["lstStart"],
-				                 Map.Waypoints["lstEnd"],
+				                 Actors["lstStart"].Location,
+				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"e1","e1","e1"});
 			}
@@ -136,8 +136,8 @@ namespace OpenRA.Mods.Cnc
 			if (ticks == 25*15)
 			{
 				ReinforceFromSea(self.World, 
-				                 Map.Waypoints["lstStart"],
-				                 Map.Waypoints["lstEnd"],
+				                 Actors["lstStart"].Location,
+				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"e1","e1","e1"});
 			}
@@ -145,8 +145,8 @@ namespace OpenRA.Mods.Cnc
 			if (ticks == 25*30)
 			{
 				ReinforceFromSea(self.World, 
-				                 Map.Waypoints["lstStart"],
-				                 Map.Waypoints["lstEnd"],
+				                 Actors["lstStart"].Location,
+				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"jeep"});
 			}
@@ -154,8 +154,8 @@ namespace OpenRA.Mods.Cnc
 			if (ticks == 25*60)
 			{
 				ReinforceFromSea(self.World, 
-				                 Map.Waypoints["lstStart"],
-				                 Map.Waypoints["lstEnd"],
+				                 Actors["lstStart"].Location,
+				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"jeep"});
 			}
@@ -167,8 +167,8 @@ namespace OpenRA.Mods.Cnc
 		{
 			var self = Actors[ "Gunboat" ];
 			var mobile = self.Trait<Mobile>();
-			self.QueueActivity(mobile.ScriptedMove( Map.Waypoints["gunboatLeft"] ));
-			self.QueueActivity(mobile.ScriptedMove( Map.Waypoints["gunboatRight"] ));
+			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatLeft"].Location ));
+			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatRight"].Location ));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		

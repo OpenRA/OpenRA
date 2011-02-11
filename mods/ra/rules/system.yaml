@@ -329,3 +329,9 @@ powerproxy.sonarpulse:
 		OneShot: yes
 		EndChargeSound: pulse1.aud
 		SelectTargetSound: slcttgt1.aud
+
+mpspawn:
+	Waypoint:
+
+waypoint:
+	Waypoint:

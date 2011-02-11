@@ -193,3 +193,9 @@ CRATE:
 	BelowUnits:
 	ProximityCaptor:
 		Types:Crate
+
+mpspawn:
+	Waypoint:
+
+waypoint:
+	Waypoint:

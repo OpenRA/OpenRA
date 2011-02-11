@@ -24,7 +24,6 @@ namespace OpenRA
 	{
 		// Yaml map data
 		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
-		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
 		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
 
 		// Rules overrides
@@ -93,13 +92,7 @@ namespace OpenRA
 			// Use release-20110207 to convert older maps to format 4
 			if (MapFormat < 4)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
-			
-			
-			// Define RequiresMod for map installer
-			if (MapFormat < 5)
-				RequiresMod = Game.CurrentMods.Keys.First();
-
-			
+						
 			// Load players
 			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 			{
@@ -125,7 +118,7 @@ namespace OpenRA
 			/* hack: make some slots. */
 			if (!Players.Any(p => p.Value.Playable))
 			{
-				for (int index = 0; index < Waypoints.Count; index++)
+				for (int index = 0; index < SpawnPoints.Count(); index++)
 				{
 					var p = new PlayerReference
 					{
@@ -138,11 +131,7 @@ namespace OpenRA
 					Players.Add(p.Name, p);
 				}
 			}
-			
-			// Load actors
-			foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-				Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
-			
+						
 			// Smudges
 			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
 			{
@@ -205,7 +194,6 @@ namespace OpenRA
 					x.Key,
 					x.Value.Save() ) ).ToList() ) );
 
-			root.Add(new MiniYamlNode("Waypoints", MiniYaml.FromDictionary<string, int2>( Waypoints )));
 			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>( Smudges )));
 			root.Add(new MiniYamlNode("Rules", null, Rules));
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));

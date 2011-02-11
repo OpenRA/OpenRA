@@ -416,15 +416,6 @@
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(139, 6);
 			// 
-			// spawnpointsToolStripMenuItem
-			// 
-			this.spawnpointsToolStripMenuItem.Enabled = false;
-			this.spawnpointsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("spawnpointsToolStripMenuItem.Image")));
-			this.spawnpointsToolStripMenuItem.Name = "spawnpointsToolStripMenuItem";
-			this.spawnpointsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-			this.spawnpointsToolStripMenuItem.Text = "&Spawnpoints";
-			this.spawnpointsToolStripMenuItem.Click += new System.EventHandler(this.SpawnPointsClicked);
-			// 
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {

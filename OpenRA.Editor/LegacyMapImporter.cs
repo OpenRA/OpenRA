@@ -156,14 +156,19 @@ namespace OpenRA.Editor
 			foreach (var p in Players)
 				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
 			
-			var wp = file.GetSection("Waypoints")
+			var wps = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key),
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.ToArray();
-
-			foreach (var kv in wp)
-				Map.Waypoints.Add("spawn" + kv.First, kv.Second);
+			
+			// Add waypoint actors
+			foreach( var kv in wps )
+			{
+				var a = new ActorReference("mpspawn");
+				a.Add(new LocationInit(kv.Second));
+				Map.Actors.Add("spawn" + kv.First, a);
+			}
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)

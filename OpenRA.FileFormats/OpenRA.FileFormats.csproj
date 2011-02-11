@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,7 +102,6 @@
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
     <Compile Include="Primitives\int2.cs" />
-    <Compile Include="Map\MapStub.cs" />
     <Compile Include="Map\SmudgeReference.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Graphics\VqaReader.cs" />

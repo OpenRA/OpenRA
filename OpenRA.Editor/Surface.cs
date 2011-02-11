@@ -166,9 +166,6 @@ namespace OpenRA.Editor
 				}
 			}
 
-			var k = Map.Waypoints.FirstOrDefault(a => a.Value == BrushLocation);
-			if (k.Key != null) Map.Waypoints.Remove(k.Key);
-
 			AfterChange();
 		}
 
@@ -344,12 +341,6 @@ namespace OpenRA.Editor
 			foreach (var ar in Map.Actors)
 				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
 					GetPaletteForActor(ar.Value));
-
-			foreach (var wp in Map.Waypoints)
-				e.Graphics.DrawRectangle(Pens.LimeGreen,
-					TileSet.TileSize * wp.Value.X * Zoom + Offset.X + 4,
-					TileSet.TileSize * wp.Value.Y * Zoom + Offset.Y + 4,
-					(TileSet.TileSize - 8) * Zoom, (TileSet.TileSize - 8) * Zoom);
 
 			if (Tool != null)
 				Tool.Preview(this, e.Graphics);

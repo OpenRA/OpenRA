@@ -48,17 +48,16 @@ namespace OpenRA.Mods.RA
 			
 			if (ticks == 0)
 			{
-				var w = Map.Waypoints;
-				LoopTrack(Actors["boat1"], w["tl1"], w["tr1"]);
-				LoopTrack(Actors["boat3"], w["tl1"], w["tr1"]);
-				LoopTrack(Actors["boat2"], w["tl3"], w["tr3"]);
-				LoopTrack(Actors["boat4"], w["tl3"], w["tr3"]);
+				LoopTrack(Actors["boat1"], Actors["tl1"].Location, Actors["tr1"].Location);
+				LoopTrack(Actors["boat3"], Actors["tl1"].Location, Actors["tr1"].Location);
+				LoopTrack(Actors["boat2"], Actors["tl3"].Location, Actors["tr3"].Location);
+				LoopTrack(Actors["boat4"], Actors["tl3"].Location, Actors["tr3"].Location);
 				CreateUnitsInTransport(Actors["lst1"], new string[] {"htnk"});
 				CreateUnitsInTransport(Actors["lst2"], new string[] {"mcv"});
 				CreateUnitsInTransport(Actors["lst3"], new string[] {"htnk"});
-				LoopTrack(Actors["lst1"], w["tl2"], w["tr2"]);
-				LoopTrack(Actors["lst2"], w["tl2"], w["tr2"]);
-				LoopTrack(Actors["lst3"], w["tl2"], w["tr2"]);
+				LoopTrack(Actors["lst1"], Actors["tl2"].Location, Actors["tr2"].Location);
+				LoopTrack(Actors["lst2"], Actors["tl2"].Location, Actors["tr2"].Location);
+				LoopTrack(Actors["lst3"], Actors["tl2"].Location, Actors["tr2"].Location);
 			}
 			
 			ticks++;
