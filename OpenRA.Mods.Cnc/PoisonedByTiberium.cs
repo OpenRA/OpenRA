@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc
 	{	
 		[WeaponReference]
 		public readonly string Weapon = "Tiberium";
-		public readonly string[] Resources = { "Tiberium" };
+		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
 
 		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}
