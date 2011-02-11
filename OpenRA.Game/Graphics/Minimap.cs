@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
-						var type = tileset.GetTerrainType(map.MapTiles[mapX, mapY]);
+						var type = tileset.GetTerrainType(map.MapTiles.Value[mapX, mapY]);
 						if (!tileset.Terrain.ContainsKey(type))
 							throw new InvalidDataException("Tileset {0} lacks terraintype {1}".F(tileset.Id, type));
 					
@@ -80,11 +80,11 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;	
-						if (map.MapResources[mapX, mapY].type == 0)
+						if (map.MapResources.Value[mapX, mapY].type == 0)
 							continue;
 					
 						var res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
-								.Where(t => t.ResourceType == map.MapResources[mapX, mapY].type)
+								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].type)
 								.Select(t => t.TerrainType).FirstOrDefault();
 						if (res == null)
 							continue;

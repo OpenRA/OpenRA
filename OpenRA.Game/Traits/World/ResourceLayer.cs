@@ -59,7 +59,7 @@ namespace OpenRA.Traits
 				for (int y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
 				{
                     var type = resourceTypes.FirstOrDefault(
-						r => r.info.ResourceType == w.Map.MapResources[x, y].type);
+						r => r.info.ResourceType == w.Map.MapResources.Value[x, y].type);
 
                     if (type == null)
                         continue;

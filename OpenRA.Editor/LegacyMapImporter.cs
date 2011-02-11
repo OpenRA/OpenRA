@@ -117,6 +117,7 @@ namespace OpenRA.Editor
 		
 		public void ConvertIniMap(string iniFile)
 		{
+			
 			var file = new IniFile(FileSystem.Open(iniFile));
 			var basic = file.GetSection("Basic");
 			var map = file.GetSection("Map");
@@ -134,7 +135,7 @@ namespace OpenRA.Editor
 			Map.MapSize.Y = MapSize;
 			Map.Bounds = Rectangle.FromLTRB(XOffset, YOffset, XOffset + Width, YOffset + Height);
 			Map.Selectable = true;
-
+			/*
 			if (legacyMapFormat == IniMapFormat.RedAlert)
 			{
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
@@ -147,7 +148,7 @@ namespace OpenRA.Editor
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
 			}
-
+			*/
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
@@ -232,7 +233,7 @@ namespace OpenRA.Editor
 
 			return ret;
 		}
-
+		/*
 		void UnpackRATileData(MemoryStream ms)
 		{
 			Map.MapTiles = new TileReference<ushort, byte>[MapSize, MapSize];
@@ -312,7 +313,7 @@ namespace OpenRA.Editor
 						Map.MapTiles[i, j].index = byte.MaxValue;
 				}
 		}
-
+		
 		void ReadCncOverlay(IniFile file)
 		{
 			IniSection overlay = file.GetSection("OVERLAY", true);
@@ -340,7 +341,7 @@ namespace OpenRA.Editor
 						});
 			}
 		}
-
+		*/
 		void ReadCncTrees(IniFile file)
 		{
 			IniSection terrain = file.GetSection("TERRAIN", true);

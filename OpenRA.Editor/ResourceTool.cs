@@ -23,7 +23,7 @@ namespace OpenRA.Editor
 
 		public void Apply(Surface surface)
 		{
-			surface.Map.MapResources[surface.GetBrushLocation().X, surface.GetBrushLocation().Y]
+			surface.Map.MapResources.Value[surface.GetBrushLocation().X, surface.GetBrushLocation().Y]
 				= new TileReference<byte, byte>
 				{
 					type = (byte)Resource.Info.ResourceType,

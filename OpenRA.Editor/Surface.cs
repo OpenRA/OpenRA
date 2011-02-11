@@ -155,9 +155,9 @@ namespace OpenRA.Editor
 			var key = Map.Actors.FirstOrDefault(a => a.Value.Location() == BrushLocation);
 			if (key.Key != null) Map.Actors.Remove(key.Key);
 
-			if (Map.MapResources[BrushLocation.X, BrushLocation.Y].type != 0)
+			if (Map.MapResources.Value[BrushLocation.X, BrushLocation.Y].type != 0)
 			{
-				Map.MapResources[BrushLocation.X, BrushLocation.Y] = new TileReference<byte, byte>();
+				Map.MapResources.Value[BrushLocation.X, BrushLocation.Y] = new TileReference<byte, byte>();
 				var ch = new int2((BrushLocation.X) / ChunkSize, (BrushLocation.Y) / ChunkSize);
 				if (Chunks.ContainsKey(ch))
 				{
@@ -209,7 +209,7 @@ namespace OpenRA.Editor
 				for (var i = 0; i < ChunkSize; i++)
 					for (var j = 0; j < ChunkSize; j++)
 					{
-						var tr = Map.MapTiles[u * ChunkSize + i, v * ChunkSize + j];
+						var tr = Map.MapTiles.Value[u * ChunkSize + i, v * ChunkSize + j];
 						var tile = TileSet.Tiles[tr.type];
 						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
 						var rawImage = tile.TileBitmapBytes[index];
@@ -217,9 +217,9 @@ namespace OpenRA.Editor
 							for (var y = 0; y < TileSet.TileSize; y++)
 								p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = Palette.GetColor(rawImage[x + TileSet.TileSize * y]).ToArgb();
 
-						if (Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type != 0)
+						if (Map.MapResources.Value[u * ChunkSize + i, v * ChunkSize + j].type != 0)
 						{
-							var resourceImage = ResourceTemplates[Map.MapResources[u * ChunkSize + i, v * ChunkSize + j].type].Bitmap;
+							var resourceImage = ResourceTemplates[Map.MapResources.Value[u * ChunkSize + i, v * ChunkSize + j].type].Bitmap;
 							var srcdata = resourceImage.LockBits(new Rectangle(0, 0, resourceImage.Width, resourceImage.Height),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 

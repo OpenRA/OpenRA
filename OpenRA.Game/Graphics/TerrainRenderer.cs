@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 			Vertex[] vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
 			ushort[] indices = new ushort[6 * map.Bounds.Height * map.Bounds.Width];
 
-			terrainSheet = tileMapping[map.MapTiles[map.Bounds.Left, map.Bounds.Top]].sheet;
+			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 
 			int nv = 0;
 			int ni = 0;
@@ -45,14 +45,14 @@ namespace OpenRA.Graphics
 			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
 				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
 				{
-					Sprite tile = tileMapping[map.MapTiles[i, j]];
+					Sprite tile = tileMapping[map.MapTiles.Value[i, j]];
 					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
 					// before the palettes are created. Therefore assumes that "terrain" is the first palette to be defined
 					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, Game.modData.Palette.GetPaletteIndex("terrain"), nv, ni, tile.size);
 					nv += 4;
 					ni += 6;
 					
-					if (tileMapping[map.MapTiles[i, j]].sheet != terrainSheet)
+					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
 						throw new InvalidOperationException("Terrain sprites span multiple sheets");
 				}
 

@@ -64,7 +64,7 @@ namespace OpenRA
 		public static string GetTerrainType(this World world, int2 cell)
 		{
 			var custom = world.Map.CustomTerrain[cell.X, cell.Y];
-			return custom != null ? custom : world.TileSet.GetTerrainType(world.Map.MapTiles[cell.X, cell.Y]);
+			return custom != null ? custom : world.TileSet.GetTerrainType(world.Map.MapTiles.Value[cell.X, cell.Y]);
 		}
 		
 		public static TerrainTypeInfo GetTerrainInfo(this World world, int2 cell)

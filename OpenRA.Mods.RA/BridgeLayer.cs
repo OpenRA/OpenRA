@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			// Loop through the map looking for templates to overlay
 			for (int i = w.Map.Bounds.Left; i < w.Map.Bounds.Right; i++)
 				for (int j = w.Map.Bounds.Top; j < w.Map.Bounds.Bottom; j++)
-					if (BridgeTypes.Keys.Contains(w.Map.MapTiles[i, j].type))
+					if (BridgeTypes.Keys.Contains(w.Map.MapTiles.Value[i, j].type))
 							ConvertBridgeToActor(w, i, j);
 			
 			// Link adjacent (long)-bridges so that artwork is updated correctly
@@ -66,8 +66,8 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.MapTiles[i, j].type;
-			var index = w.Map.MapTiles[i, j].index;
+			var tile = w.Map.MapTiles.Value[i, j].type;
+			var index = w.Map.MapTiles.Value[i, j].index;
 			var template = w.TileSet.Templates[tile];
 			var ni = i - index % template.Size.X;
 			var nj = j - index / template.Size.X;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 				var y = nj + ind / template.Size.X;
 				
 				// This isn't the bridge you're looking for
-				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].index != ind)
+				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles.Value[x, y].index != ind)
 					continue;
 								
 				subTiles.Add(new int2(x,y),ind);

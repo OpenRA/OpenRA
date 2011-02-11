@@ -42,8 +42,8 @@ namespace OpenRA
 		public byte TileFormat = 1;
 		[FieldLoader.Load] public int2 MapSize;
 
-		public TileReference<ushort, byte>[,] MapTiles;
-		public TileReference<byte, byte>[,] MapResources;
+		public Lazy<TileReference<ushort, byte>[,]> MapTiles;
+		public Lazy<TileReference<byte, byte>[,]> MapResources;
 		public string [,] CustomTerrain;
 
 		public Map()
@@ -61,12 +61,12 @@ namespace OpenRA
 				Author = "Your name here",
 				MapSize = new int2(1, 1),
 				Tileset = tileset,
-				MapResources = new TileReference<byte, byte>[1, 1],
-				MapTiles = new TileReference<ushort, byte>[1, 1] 
+				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
+				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1]
 				{ { new TileReference<ushort, byte> { 
 					type = tile.Key, 
 					index = (byte)0 }
-				} },
+				} })
 			};
 			
 			return map;
@@ -152,8 +152,10 @@ namespace OpenRA
 			// Voices
 			Voices = (yaml.NodesDict.ContainsKey("Voices")) ? yaml.NodesDict["Voices"].Nodes : new List<MiniYamlNode>();
 
-			CustomTerrain = new string[MapSize.X, MapSize.Y];			
-			LoadBinaryData();
+			CustomTerrain = new string[MapSize.X, MapSize.Y];
+			
+			MapTiles = Lazy.New(() => LoadMapTiles());
+			MapResources = Lazy.New(() => LoadResourceTiles());
 		}
 
 		public void Save(string toPath)
@@ -234,9 +236,10 @@ namespace OpenRA
 
 			return ret;
 		}
-
-		public void LoadBinaryData()
+		
+		public TileReference<ushort, byte>[,] LoadMapTiles()
 		{
+			var tiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
 			using (var dataStream = Container.GetContent("map.bin"))
 			{
 				if (ReadByte(dataStream) != 1)
@@ -249,8 +252,6 @@ namespace OpenRA
 				if (width != MapSize.X || height != MapSize.Y)
 					throw new InvalidDataException("Invalid tile data");
 
-				MapTiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
-				MapResources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
 
 				// Load tile data
 				for (int i = 0; i < MapSize.X; i++)
@@ -261,8 +262,31 @@ namespace OpenRA
 						if (index == byte.MaxValue)
 							index = (byte)(i % 4 + (j % 4) * 4);
 
-						MapTiles[i, j] = new TileReference<ushort, byte>(tile, index);
+						tiles[i, j] = new TileReference<ushort, byte>(tile, index);
 					}
+			}
+			return tiles;
+		}
+		
+		public TileReference<byte, byte>[,] LoadResourceTiles()
+		{
+			var resources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
+
+			using (var dataStream = Container.GetContent("map.bin"))
+			{
+				if (ReadByte(dataStream) != 1)
+					throw new InvalidDataException("Unknown binary map format");
+
+				// Load header info
+				var width = ReadWord(dataStream);
+				var height = ReadWord(dataStream);
+
+				if (width != MapSize.X || height != MapSize.Y)
+					throw new InvalidDataException("Invalid tile data");
+				
+				// Skip past tile data
+				for (var i = 0; i < 3*MapSize.X*MapSize.Y; i++)
+					ReadByte(dataStream);
 
 				// Load resource data
 				for (int i = 0; i < MapSize.X; i++)
@@ -270,9 +294,10 @@ namespace OpenRA
 				{
 					byte type = ReadByte(dataStream);
 					byte index = ReadByte(dataStream);
-					MapResources[i, j] = new TileReference<byte, byte>(type, index);
+					resources[i, j] = new TileReference<byte, byte>(type, index);
 				}
 			}
+			return resources;
 		}
 
 		public byte[] SaveBinaryData()
@@ -289,17 +314,17 @@ namespace OpenRA
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapTiles[i, j].type);
-						var PickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles[i, j].type].PickAny;
-						writer.Write(PickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles[i, j].index);
+						writer.Write(MapTiles.Value[i, j].type);
+						var PickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].type].PickAny;
+						writer.Write(PickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].index);
 					}
 
 				// Resource data	
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapResources[i, j].type);
-						writer.Write(MapResources[i, j].index);
+						writer.Write(MapResources.Value[i, j].type);
+						writer.Write(MapResources.Value[i, j].index);
 					}
 			}
 			return dataStream.ToArray();
@@ -327,8 +352,8 @@ namespace OpenRA
 
 		public void Resize(int width, int height)		// editor magic.
 		{
-			MapTiles = ResizeArray(MapTiles, MapTiles[0, 0], width, height);
-			MapResources = ResizeArray(MapResources, MapResources[0, 0], width, height);
+			MapTiles = Lazy.New(() => ResizeArray(MapTiles.Value, MapTiles.Value[0, 0], width, height));
+			MapResources = Lazy.New(() => ResizeArray(MapResources.Value, MapResources.Value[0, 0], width, height));
 			MapSize = new int2(width, height);
 		}
 		

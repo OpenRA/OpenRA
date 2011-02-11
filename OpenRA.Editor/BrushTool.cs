@@ -43,7 +43,7 @@ namespace OpenRA.Editor
 					{
 						var z = u + v * template.Size.X;
 						if (tile.TileBitmapBytes[z] != null)
-							surface.Map.MapTiles[u + pos.X, v + pos.Y] =
+							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
 								new TileReference<ushort, byte>
 								{
 									type = Brush.N,
@@ -72,7 +72,7 @@ namespace OpenRA.Editor
 		void FloodFillWithBrush(Surface s, int2 pos)
 		{
 			var queue = new Queue<int2>();
-			var replace = s.Map.MapTiles[pos.X, pos.Y];
+			var replace = s.Map.MapTiles.Value[pos.X, pos.Y];
 			var touched = new bool[s.Map.MapSize.X, s.Map.MapSize.Y];
 
 			Action<int, int> MaybeEnqueue = (x, y) =>
@@ -88,7 +88,7 @@ namespace OpenRA.Editor
 			while (queue.Count > 0)
 			{
 				var p = queue.Dequeue();
-				if (!s.Map.MapTiles[p.X, p.Y].Equals(replace))
+				if (!s.Map.MapTiles.Value[p.X, p.Y].Equals(replace))
 					continue;
 
 				var a = FindEdge(s, p, new int2(-1, 0), replace);
@@ -96,10 +96,10 @@ namespace OpenRA.Editor
 
 				for (var x = a.X; x <= b.X; x++)
 				{
-					s.Map.MapTiles[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, index = (byte)0 };
-					if (s.Map.MapTiles[x, p.Y - 1].Equals(replace))
+					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, index = (byte)0 };
+					if (s.Map.MapTiles.Value[x, p.Y - 1].Equals(replace))
 						MaybeEnqueue(x, p.Y - 1);
-					if (s.Map.MapTiles[x, p.Y + 1].Equals(replace))
+					if (s.Map.MapTiles.Value[x, p.Y + 1].Equals(replace))
 						MaybeEnqueue(x, p.Y + 1);
 				}
 			}
@@ -115,7 +115,7 @@ namespace OpenRA.Editor
 			{
 				var q = p + d;
 				if (!s.Map.IsInMap(q)) return p;
-				if (!s.Map.MapTiles[q.X, q.Y].Equals(replace)) return p;
+				if (!s.Map.MapTiles.Value[q.X, q.Y].Equals(replace)) return p;
 				p = q;
 			}
 		}
