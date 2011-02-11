@@ -96,7 +96,7 @@ namespace OpenRA.Editor
 			{"white",Pair.New(Color.FromArgb(255,255,255),Color.FromArgb(75,75,75))},
 			{"black",Pair.New(Color.FromArgb(80,80,80),Color.FromArgb(5,5,5))},
 		};
-		
+				
 		int MapSize;
 		int ActorCount = 0;
 		Map Map = new Map();
@@ -436,8 +436,11 @@ namespace OpenRA.Editor
 				OwnsWorld = (section == "Neutral"),
 				NonCombatant = (section == "Neutral"),
 				Race = (isRA) ? ((section == "BadGuy") ? "soviet" : "allies") : ((section == "BadGuy") ? "nod" : "gdi"),
-				Color = color.First,
-				Color2 = color.Second,
+				ColorRamp = new ColorRamp(
+                        (byte)((color.First.GetHue() / 360.0f) * 255),
+                        (byte)(color.First.GetSaturation() * 255),
+                        (byte)(color.First.GetBrightness() * 255),
+                        (byte)(color.Second.GetBrightness() * 255))
 			};
 			
 			var Neutral = new List<string>(){"Neutral"};

@@ -89,69 +89,39 @@ namespace OpenRA
 			// 'Simple' metadata
 			FieldLoader.Load( this, yaml );
 
+			// Support for formats 1-3 dropped 2011-02-11.
+			// Use release-20110207 to convert older maps to format 4
+			if (MapFormat < 4)
+				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
+			
+			
+			// Define RequiresMod for map installer
+			if (MapFormat < 5)
+				RequiresMod = Game.CurrentMods.Keys.First();
 
-			// Players & Actors -- this has changed several times.
-			//	- Be backwards compatible wherever possible.
-			//	- Loading a map then saving it out upgrades to latest.
-			// Minimum criteria for dropping a format:
-			//	- There are no maps of this format left in tree
-
-			switch (MapFormat)
+			
+			// Load players
+			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 			{
-				case 1:
-					{
-						Players.Add("Neutral", new PlayerReference("Neutral", "allies", true, true));
-
-						int actors = 0;
-						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-						{
-							string[] vals = kv.Value.Value.Split(' ');
-							string[] loc = vals[2].Split(',');
-							Actors.Add("Actor" + actors++, new ActorReference(vals[0])
-							{
-								new LocationInit( new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) ) ),
-								new OwnerInit( "Neutral" ),
-							});
-						}
-					} break;
-
-				case 2:
-					{
-						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
-						{
-							var player = new PlayerReference(kv.Value);
-							Players.Add(player.Name, player);
-						}
-
-						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-						{
-							var oldActorReference = FieldLoader.Load<Format2ActorReference>(kv.Value);
-							Actors.Add(oldActorReference.Id, new ActorReference(oldActorReference.Type)
-							{
-								new LocationInit( oldActorReference.Location ),
-								new OwnerInit( oldActorReference.Owner )
-							});
-						}
-					} break;
-
-				case 3:
-                case 4:
-				case 5:
-					{
-						foreach (var kv in yaml.NodesDict["Players"].NodesDict)
-						{
-							var player = new PlayerReference(kv.Value);
-							Players.Add(player.Name, player);
-						}
-
-						foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-							Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
-					} break;
-
-				default:
-					throw new InvalidDataException("Map format {0} is not supported.".F(MapFormat));
+				var player = new PlayerReference(kv.Value);
+				Players.Add(player.Name, player);
 			}
 
+			// Creep player
+			if (MapFormat < 5)
+			{				
+				foreach (var mp in Players.Where(p => !p.Value.NonCombatant && !p.Value.Enemies.Contains("Creeps")))
+					mp.Value.Enemies = mp.Value.Enemies.Concat(new[] {"Creeps"}).ToArray();
+				
+				Players.Add("Creeps", new PlayerReference
+				{
+					Name = "Creeps",
+					Race = "Random",
+					NonCombatant = true,
+					Enemies = Players.Keys.Where(k => k != "Neutral").ToArray()
+				});
+			}
+			
 			/* hack: make some slots. */
 			if (!Players.Any(p => p.Value.Playable))
 			{
@@ -168,33 +138,10 @@ namespace OpenRA
 					Players.Add(p.Name, p);
 				}
 			}
-
-            // Color1/Color2 -> ColorRamp
-            if (MapFormat < 4)
-                foreach (var mp in Players)
-                    mp.Value.ColorRamp = new ColorRamp(
-                        (byte)((mp.Value.Color.GetHue() / 360.0f) * 255),
-                        (byte)(mp.Value.Color.GetSaturation() * 255),
-                        (byte)(mp.Value.Color.GetBrightness() * 255),
-                        (byte)(mp.Value.Color2.GetBrightness() * 255));
 			
-			
-			// Creep player / Required Mod
-			if (MapFormat < 5)
-			{
-				RequiresMod = Game.CurrentMods.Keys.First();
-				
-				foreach (var mp in Players.Where(p => !p.Value.NonCombatant && !p.Value.Enemies.Contains("Creeps")))
-					mp.Value.Enemies = mp.Value.Enemies.Concat(new[] {"Creeps"}).ToArray();
-				
-				Players.Add("Creeps", new PlayerReference
-				{
-					Name = "Creeps",
-					Race = "Random",
-					NonCombatant = true,
-					Enemies = Players.Keys.Where(k => k != "Neutral").ToArray()
-				});
-			}
+			// Load actors
+			foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
+				Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
 			
 			// Smudges
 			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)

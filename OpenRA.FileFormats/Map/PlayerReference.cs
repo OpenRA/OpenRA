@@ -27,8 +27,6 @@ namespace OpenRA.FileFormats
 		public string Race;
 		
 		public bool LockColor = false;
-		public Color Color = Color.FromArgb(238,238,238);
-		public Color Color2 = Color.FromArgb(44,28,24);
         public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		
 		public int InitialCash = 0;
