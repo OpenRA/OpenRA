@@ -1,6 +1,6 @@
-Selectable: false
+Selectable: False
 
-MapFormat: 3
+MapFormat: 4
 
 Title: Gdi 01
 
@@ -18,39 +18,59 @@ TopLeft: 35,39
 
 BottomRight: 62,62
 
+UseAsShellmap: False
+
+Type: Conquest
+
 Players:
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Palette:
-		Race: nod
 		OwnsWorld: False
 		NonCombatant: False
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: nod
+		LockColor: False
 		Color: 255,255,20,0
 		Color2: 255,56,0,0
+		ColorRamp: 3,255,127,28
 		InitialCash: 0
 		Allies: BadGuy
 		Enemies: GoodGuy
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Playable: yes
-		Race: gdi
-		LockRace: true
+		Palette:
 		OwnsWorld: False
 		NonCombatant: False
-		LockColor: true
+		Playable: True
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: True
+		Race: gdi
+		LockColor: True
 		Color: 255,246,214,121
 		Color2: 255,40,32,8
+		ColorRamp: 31,222,183,24
 		InitialCash: 20
 		Allies: GoodGuy
 		Enemies: BadGuy
 	PlayerReference@Neutral:
 		Name: Neutral
 		Palette:
-		Race: gdi
 		OwnsWorld: True
 		NonCombatant: True
+		Playable: False
+		DefaultStartingUnits: False
+		AllowBots: True
+		LockRace: False
+		Race: gdi
+		LockColor: False
 		Color: 255,238,238,238
 		Color2: 255,44,28,24
+		ColorRamp: 0,0,238,34
 		InitialCash: 0
 		Allies:
 		Enemies:
@@ -455,7 +475,6 @@ Rules:
 		Gdi01Script:
 	Player:
 		-ConquestVictoryConditions:
-
 	PROC.proxy:
 		-Buildable:
 	SILO:
@@ -488,3 +507,9 @@ Rules:
 		-Buildable:
 	RMBO:
 		-Buildable:
+
+Sequences:
+
+Weapons:
+
+Voices:
