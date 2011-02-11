@@ -135,7 +135,12 @@ namespace OpenRA.Editor
 			Map.MapSize.Y = MapSize;
 			Map.Bounds = Rectangle.FromLTRB(XOffset, YOffset, XOffset + Width, YOffset + Height);
 			Map.Selectable = true;
-			/*
+			
+			Map.Smudges = Lazy.New(() => new List<SmudgeReference>());
+			Map.Actors = Lazy.New(() => new Dictionary<string, ActorReference>());
+			Map.MapResources = Lazy.New(() => new TileReference<byte, byte>[MapSize, MapSize]);
+			Map.MapTiles = Lazy.New(() => new TileReference<ushort, byte>[MapSize, MapSize]);
+			
 			if (legacyMapFormat == IniMapFormat.RedAlert)
 			{
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
@@ -153,7 +158,7 @@ namespace OpenRA.Editor
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
-			*/
+			
 			foreach (var p in Players)
 				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
 			
@@ -163,15 +168,15 @@ namespace OpenRA.Editor
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.ToArray();
 			
-			/*
+			
 			// Add waypoint actors
 			foreach( var kv in wps )
 			{
 				var a = new ActorReference("mpspawn");
 				a.Add(new LocationInit(kv.Second));
-				Map.Actors.Add("spawn" + kv.First, a);
+				Map.Actors.Value.Add("spawn" + kv.First, a);
 			}
-			*/
+			
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
@@ -235,30 +240,24 @@ namespace OpenRA.Editor
 
 			return ret;
 		}
-		/*
+		
 		void UnpackRATileData(MemoryStream ms)
 		{
-			Map.MapTiles = new TileReference<ushort, byte>[MapSize, MapSize];
 			for (int i = 0; i < MapSize; i++)
 				for (int j = 0; j < MapSize; j++)
-					Map.MapTiles[i, j] = new TileReference<ushort, byte>();
+					Map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
 
 			for (int j = 0; j < MapSize; j++)
 				for (int i = 0; i < MapSize; i++)
-					Map.MapTiles[i, j].type = ReadWord(ms);
+					Map.MapTiles.Value[i, j].type = ReadWord(ms);
 
 			for (int j = 0; j < MapSize; j++)
 				for (int i = 0; i < MapSize; i++)
-				{
-					Map.MapTiles[i, j].index = ReadByte(ms);
-					if (Map.MapTiles[i, j].type == 0xff || Map.MapTiles[i, j].type == 0xffff)
-						Map.MapTiles[i, j].index = byte.MaxValue;
-				}
+					Map.MapTiles.Value[i, j].index = ReadByte(ms);
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
 		{
-			Map.MapResources = new TileReference<byte, byte>[MapSize, MapSize];
 			for (int j = 0; j < MapSize; j++)
 				for (int i = 0; i < MapSize; i++)
 				{
@@ -268,10 +267,10 @@ namespace OpenRA.Editor
 					if (o != 255 && overlayResourceMapping.ContainsKey(raOverlayNames[o]))
 						res = overlayResourceMapping[raOverlayNames[o]];
 
-					Map.MapResources[i, j] = new TileReference<byte, byte>(res.First, res.Second);
+					Map.MapResources.Value[i, j] = new TileReference<byte, byte>(res.First, res.Second);
 
 					if (o != 255 && overlayActorMapping.ContainsKey(raOverlayNames[o]))
-						Map.Actors.Add("Actor" + ActorCount++,
+						Map.Actors.Value.Add("Actor" + ActorCount++,
 							new ActorReference(overlayActorMapping[raOverlayNames[o]]) 
 							{ 
 								new LocationInit( new int2(i, j) ),
@@ -289,7 +288,7 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
 				var loc = int.Parse(kv.Key);
-				Map.Actors.Add("Actor" + ActorCount++, 
+				Map.Actors.Value.Add("Actor" + ActorCount++, 
 					new ActorReference(kv.Value.ToLowerInvariant())
 					{
 						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
@@ -300,19 +299,15 @@ namespace OpenRA.Editor
 
 		void UnpackCncTileData(Stream ms)
 		{
-			Map.MapTiles = new TileReference<ushort, byte>[MapSize, MapSize];
 			for (int i = 0; i < MapSize; i++)
 				for (int j = 0; j < MapSize; j++)
-					Map.MapTiles[i, j] = new TileReference<ushort, byte>();
+					Map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
 
 			for (int j = 0; j < MapSize; j++)
 				for (int i = 0; i < MapSize; i++)
 				{
-					Map.MapTiles[i, j].type = ReadByte(ms);
-					Map.MapTiles[i, j].index = ReadByte(ms);
-
-					if (Map.MapTiles[i, j].type == 0xff)
-						Map.MapTiles[i, j].index = byte.MaxValue;
+					Map.MapTiles.Value[i, j].type = ReadByte(ms);
+					Map.MapTiles.Value[i, j].index = ReadByte(ms);
 				}
 		}
 		
@@ -322,7 +317,6 @@ namespace OpenRA.Editor
 			if (overlay == null)
 				return;
 
-			Map.MapResources = new TileReference<byte, byte>[MapSize, MapSize];
 			foreach (KeyValuePair<string, string> kv in overlay)
 			{
 				var loc = int.Parse(kv.Key);
@@ -332,10 +326,10 @@ namespace OpenRA.Editor
 				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
 					res = overlayResourceMapping[kv.Value.ToLower()];
 
-				Map.MapResources[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
+				Map.MapResources.Value[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
 
 				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
-					Map.Actors.Add("Actor" + ActorCount++, 
+					Map.Actors.Value.Add("Actor" + ActorCount++, 
 						new ActorReference(overlayActorMapping[kv.Value.ToLower()])
 						{
 							new LocationInit(cell),
@@ -353,7 +347,7 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
 				var loc = int.Parse(kv.Key);
-				Map.Actors.Add("Actor" + ActorCount++,
+				Map.Actors.Value.Add("Actor" + ActorCount++,
 					new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
 					{
 						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
@@ -415,11 +409,11 @@ namespace OpenRA.Editor
 				if (section == "INFANTRY")
 					actor.Add(new SubCellInit(int.Parse(parts[4])));
 				
-				Map.Actors.Add("Actor" + ActorCount++,actor);
+				Map.Actors.Value.Add("Actor" + ActorCount++,actor);
 					
 			}
 		}
-		*/
+		
 		void LoadSmudges(IniFile file, string section)
 		{
 			foreach (var s in file.GetSection(section, true))
@@ -427,7 +421,7 @@ namespace OpenRA.Editor
 				//loc=type,loc,depth
 				var parts = s.Value.Split(',');
 				var loc = int.Parse(parts[1]);
-				Map.Smudges.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), int.Parse(parts[2])));
+				Map.Smudges.Value.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), int.Parse(parts[2])));
 			}
 		}
 		

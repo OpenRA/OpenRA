@@ -48,7 +48,7 @@ namespace OpenRA
 		
 		// Yaml map data
 		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
-		public List<SmudgeReference> Smudges = new List<SmudgeReference>();
+		public Lazy<List<SmudgeReference>> Smudges;
 
 		// Rules overrides
 		public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
@@ -91,7 +91,8 @@ namespace OpenRA
 					type = tile.Key, 
 					index = (byte)0 }
 				} }),
-				Actors = Lazy.New(() => new Dictionary<string, ActorReference>())
+				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
+				Smudges = Lazy.New(() => new List<SmudgeReference>())
 			};
 			
 			return map;
@@ -191,12 +192,19 @@ namespace OpenRA
 			}
 						
 			// Smudges
-			foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
+			Smudges = Lazy.New(() =>
 			{
-				string[] vals = kv.Key.Split(' ');
-				string[] loc = vals[1].Split(',');
-				Smudges.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), int.Parse(vals[2])));
-			}
+				var ret = new List<SmudgeReference>();
+				foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
+				{
+					string[] vals = kv.Key.Split(' ');
+					string[] loc = vals[1].Split(',');
+					ret.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), int.Parse(vals[2])));
+				}
+				
+				return ret;
+			});
+			
 
 			// Rules
 			Rules = yaml.NodesDict["Rules"].Nodes;
@@ -254,7 +262,7 @@ namespace OpenRA
 					x.Key,
 					x.Value.Save() ) ).ToList() ) );
 
-			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>( Smudges )));
+			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>( Smudges.Value )));
 			root.Add(new MiniYamlNode("Rules", null, Rules));
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));

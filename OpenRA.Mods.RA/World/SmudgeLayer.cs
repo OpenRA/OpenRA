@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			tiles = new Dictionary<int2,TileReference<byte,byte>>();
 			
 			// Add map smudges
-			foreach (var s in w.Map.Smudges.Where( s => Info.Types.Contains(s.Type )))
+			foreach (var s in w.Map.Smudges.Value.Where( s => Info.Types.Contains(s.Type )))
 				tiles.Add(s.Location,new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
 				                                                  (byte)s.Depth));
 		}
