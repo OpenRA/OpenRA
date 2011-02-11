@@ -25,6 +25,12 @@ e1:
 		Start: 144
 		Length: 4
 		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 128
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
 	standup:
 		Start: 176
 		Length: 2
@@ -45,6 +51,11 @@ e1:
 		Start: 289
 		Length: 22
 		Tick: 120
+	cheer:
+		Start: 460
+		Length: 3
+		Facings: 8
+		Tick: 120
 	# Dancing
 	idle4:
 		Start: 517
@@ -60,12 +71,12 @@ e1:
 		Start: 390
 		Length: 8
 		Tick: 80
-	# Fly through air and explode
+	# Fly and explode in air
 	die3:
 		Start: 398
 		Length: 8
 		Tick: 80
-	# Fly higher through air and explode
+	# Fly through air squish on ground
 	die4:
 		Start: 406
 		Length: 12
@@ -95,6 +106,16 @@ e2:
 		Start: 64
 		Length: 20
 		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 224
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 272
+		Length: 2
+		Facings: 8
 	crawl:
 		Start: 240
 		Length: 4
@@ -111,6 +132,11 @@ e2:
 		Start: 400
 		Length: 13
 		Tick: 120
+	cheer:
+		Start: 588
+		Length: 3
+		Facings: 8
+		Tick: 120
 	# Shot
 	die1:
 		Start: 509
@@ -121,12 +147,12 @@ e2:
 		Start: 518
 		Length: 8
 		Tick: 80
-	# Fly through air
+	# Fly and explode in air
 	die3:
 		Start: 526
 		Length: 8
 		Tick: 80
-	# Fly higher through air
+	# Fly through air squish on ground
 	die4:
 		Start: 534
 		Length: 12
@@ -156,6 +182,16 @@ e3:
 		Start: 64
 		Length: 8
 		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 128
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 176
+		Length: 2
+		Facings: 8
 	crawl:
 		Start: 144
 		Length: 4
@@ -172,22 +208,41 @@ e3:
 		Start: 289
 		Length: 14
 		Tick: 120
+	cheer:
+		Start: 476
+		Length: 3
+		Facings: 8
+		Tick: 120	
+	# Shot
 	die1:
 		Start: 397
 		Length: 9
+		Tick: 80
+	# Explode
 	die2:
 		Start: 406
 		Length: 8
+		Tick: 80
+	# Fly and explode in air
 	die3:
 		Start: 414
 		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
 	die4:
 		Start: 422
 		Length: 12
+		Tick: 80
+	# Burn
 	die5:
 		Start: 434
 		Length: 18
-
+		Tick: 80
+	# Tib
+	die6:
+		Start: 382
+		Length: 11
+		Tick: 80
 e4:
 	stand:
 		Start: 0
@@ -202,6 +257,16 @@ e4:
 	shoot:
 		Start: 64
 		Length: 16
+		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 240
+		Length: 2
 		Facings: 8
 	crawl:
 		Start: 208
@@ -219,21 +284,41 @@ e4:
 		Start: 400
 		Length: 16
 		Tick: 120
-	die5:
-		Start: 546
-		Length: 18
-	die4:
-		Start: 534
-		Length: 12
-	die3:
-		Start: 526
-		Length: 8
-	die2:
-		Start: 518
-		Length: 8
+	cheer:
+		Start: 588
+		Length: 3
+		Facings: 8
+		Tick: 120	
+	# Shot
 	die1:
 		Start: 509
 		Length: 9
+		Tick: 80
+	# Explode
+	die2:
+		Start: 518
+		Length: 8
+		Tick: 80
+	# Fly and explode in air
+	die3:
+		Start: 526
+		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
+	die4:
+		Start: 534
+		Length: 12
+		Tick: 80
+	# Burn
+	die5:
+		Start: 546
+		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 494
+		Length: 10
+		Tick: 80
 	muzzle: flame
 		Start: 0
 		Length: 13
@@ -254,6 +339,16 @@ e5:
 		Start: 64
 		Length: 16
 		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 240
+		Length: 2
+		Facings: 8
 	crawl:
 		Start: 208
 		Length: 4
@@ -270,21 +365,41 @@ e5:
 		Start: 400
 		Length: 16
 		Tick: 120
-	die5:
-		Start: 546
-		Length: 18
-	die4:
-		Start: 534
-		Length: 12
-	die3:
-		Start: 526
-		Length: 8
-	die2:
-		Start: 518
-		Length: 8
+	cheer:
+		Start: 588
+		Length: 3
+		Facings: 8
+		Tick: 120	
+	# Shot
 	die1:
 		Start: 509
 		Length: 9
+		Tick: 80
+	# Explode
+	die2:
+		Start: 518
+		Length: 8
+		Tick: 80
+	# Fly and explode in air
+	die3:
+		Start: 526
+		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
+	die4:
+		Start: 534
+		Length: 12
+		Tick: 80
+	# Burn
+	die5:
+		Start: 546
+		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 494
+		Length: 10
+		Tick: 80
 	muzzle: chem
 		Start: 0
 		Length: 13
@@ -301,6 +416,16 @@ e6:
 		Start: 16
 		Length: 6
 		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 66
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 114
+		Length: 2
+		Facings: 8
 	crawl:
 		Start: 82
 		Length: 4
@@ -313,341 +438,42 @@ e6:
 		Start: 200
 		Length: 6
 		Tick: 120
-	die5:
-		Start: 182
-		Length: 18
-	die4:
-		Start: 170
-		Length: 12
-	die3:
-		Start: 162
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	# Shot
+	die1:
+		Start: 146
 		Length: 8
+		Tick: 80
+	# Explode
 	die2:
 		Start: 154
 		Length: 8
-	die1:
-		Start: 145
-		Length: 9
-
-c1:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
+		Tick: 80
+	# Fly and explode in air
 	die3:
-		Start: 337
+		Start: 162
 		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
 	die4:
-		Start: 345
+		Start: 170
 		Length: 12
+		Tick: 80
+	# Burn
 	die5:
-		Start: 357
+		Start: 182
 		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 130
+		Length: 4
+		Tick: 80
 
-c2:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c3:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c4:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c5:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c6:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c7:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c8:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c9:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
-
-c10:
-	stand:
-		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
-	run:
-		Start: 56
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 205
-		Length: 4
-		Facings: 8
-	die1:
-		Start: 172
-		Length: 4
-	die2:
-		Start: 329
-		Length: 8
-	die3:
-		Start: 337
-		Length: 8
-	die4:
-		Start: 345
-		Length: 12
-	die5:
-		Start: 357
-		Length: 18
 
 rmbo:
 	stand:
@@ -663,6 +489,16 @@ rmbo:
 	shoot:
 		Start: 64
 		Length: 4
+		Facings: 8
+	# stand -> prone transition
+	liedown:
+		Start: 96
+		Length: 2
+		Facings: 8
+	# prone -> stand transition
+	standup:
+		Start: 144
+		Length: 2
 		Facings: 8
 	crawl:
 		Start: 112
@@ -684,21 +520,541 @@ rmbo:
 		Start: 224
 		Length: 15
 		Tick: 120
-	die5:
-		Start: 354
-		Length: 18
-	die4:
-		Start: 342
-		Length: 12
-	die3:
-		Start: 334
+	cheer:
+		Start: 396
+		Length: 3
+		Facings: 8
+		Tick: 120
+	# Shot
+	die1:
+		Start: 318
 		Length: 8
+		Tick: 80
+	# Explode
 	die2:
 		Start: 326
 		Length: 8
+		Tick: 80
+	# Fly and explode in air
+	die3:
+		Start: 334
+		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
+	die4:
+		Start: 342
+		Length: 12
+		Tick: 80
+	# Burn
+	die5:
+		Start: 354
+		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 308
+		Length: 4
+		Tick: 80
+
+
+c1:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
 	die1:
-		Start: 317
-		Length: 9
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+c2:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c3:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c4:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c5:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c6:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c7:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c8:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c9:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+
+c10:
+	stand:
+		Start: 0
+		Facings: 8
+	crawl:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
 
 fire:
 	1: fire1
