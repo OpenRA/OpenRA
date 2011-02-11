@@ -148,12 +148,12 @@ namespace OpenRA.Editor
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
 			}
-			*/
+			
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
-
+			*/
 			foreach (var p in Players)
 				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
 			
@@ -163,6 +163,7 @@ namespace OpenRA.Editor
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.ToArray();
 			
+			/*
 			// Add waypoint actors
 			foreach( var kv in wps )
 			{
@@ -170,6 +171,7 @@ namespace OpenRA.Editor
 				a.Add(new LocationInit(kv.Second));
 				Map.Actors.Add("spawn" + kv.First, a);
 			}
+			*/
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
@@ -341,7 +343,7 @@ namespace OpenRA.Editor
 						});
 			}
 		}
-		*/
+		
 		void ReadCncTrees(IniFile file)
 		{
 			IniSection terrain = file.GetSection("TERRAIN", true);
@@ -417,7 +419,7 @@ namespace OpenRA.Editor
 					
 			}
 		}
-
+		*/
 		void LoadSmudges(IniFile file, string section)
 		{
 			foreach (var s in file.GetSection(section, true))

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
-			foreach (var actorReference in world.Map.Actors)
+			foreach (var actorReference in world.Map.Actors.Value)
 			{
 				var initDict = actorReference.Value.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());

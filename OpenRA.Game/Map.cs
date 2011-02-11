@@ -38,10 +38,10 @@ namespace OpenRA
 		[FieldLoader.Load] public string Author;
 		[FieldLoader.Load] public string Tileset;
 		
-		public Dictionary<string, ActorReference> Actors = new Dictionary<string, ActorReference>();
+		public Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return SpawnPoints.Count(); } }
-		public IEnumerable<int2> SpawnPoints { get { return Actors.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
+		public IEnumerable<int2> SpawnPoints { get { return Actors.Value.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
 		
 		[FieldLoader.Load] public Rectangle Bounds;
 				
@@ -90,7 +90,8 @@ namespace OpenRA
 				{ { new TileReference<ushort, byte> { 
 					type = tile.Key, 
 					index = (byte)0 }
-				} })
+				} }),
+				Actors = Lazy.New(() => new Dictionary<string, ActorReference>())
 			};
 			
 			return map;
@@ -120,11 +121,28 @@ namespace OpenRA
 			if (MapFormat < 4)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 			
-			// Load actors
-			foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
-				Actors.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
 			
-						
+			Actors = Lazy.New(() =>
+			{
+				var ret =  new Dictionary<string, ActorReference>();
+				// Load actors
+				foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
+					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
+				
+				// Add waypoint actors
+
+				if (MapFormat < 5)
+					foreach( var wp in yaml.NodesDict[ "Waypoints" ].NodesDict )
+					{
+						string[] loc = wp.Value.Value.Split( ',' );
+						var a = new ActorReference("mpspawn");
+						a.Add(new LocationInit(new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) )));
+						ret.Add(wp.Key, a);
+					}
+				
+				return ret;
+			});
+			
 			// Load players
 			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 			{
@@ -137,16 +155,7 @@ namespace OpenRA
 			{
 				// Define RequiresMod for map installer
 				RequiresMod = Game.CurrentMods.Keys.First();
-				
-				// Add waypoint actors
-				foreach( var wp in yaml.NodesDict[ "Waypoints" ].NodesDict )
-				{
-					string[] loc = wp.Value.Value.Split( ',' );
-					var a = new ActorReference("mpspawn");
-					a.Add(new LocationInit(new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) )));
-					Actors.Add(wp.Key, a);
-				}
-									
+													
 				var TopLeft = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["TopLeft"].Value);
 				var BottomRight = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["BottomRight"].Value);
 				Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);		
@@ -241,7 +250,7 @@ namespace OpenRA
 					FieldSaver.Save( p.Value ) ) ).ToList() ) );
 
 			root.Add( new MiniYamlNode( "Actors", null,
-				Actors.Select( x => new MiniYamlNode(
+				Actors.Value.Select( x => new MiniYamlNode(
 					x.Key,
 					x.Value.Save() ) ).ToList() ) );
 

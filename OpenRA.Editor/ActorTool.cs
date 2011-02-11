@@ -30,12 +30,12 @@ namespace OpenRA.Editor
 
 		public void Apply(Surface surface)
 		{
-			if (surface.Map.Actors.Any(a => a.Value.Location() == surface.GetBrushLocation()))
+			if (surface.Map.Actors.Value.Any(a => a.Value.Location() == surface.GetBrushLocation()))
 				return;
 
 			var owner = "Neutral";
 			var id = NextActorName(surface);
-			surface.Map.Actors[id] = new ActorReference(Actor.Info.Name.ToLowerInvariant())
+			surface.Map.Actors.Value[id] = new ActorReference(Actor.Info.Name.ToLowerInvariant())
 			{
 				new LocationInit( surface.GetBrushLocation() ),
 				new OwnerInit( owner)
@@ -48,7 +48,7 @@ namespace OpenRA.Editor
 			for (; ; )
 			{
 				var possible = "Actor{0}".F(id++);
-				if (!surface.Map.Actors.ContainsKey(possible)) return possible;
+				if (!surface.Map.Actors.Value.ContainsKey(possible)) return possible;
 			}
 		}
 	}

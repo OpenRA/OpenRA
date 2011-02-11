@@ -152,8 +152,8 @@ namespace OpenRA.Editor
 
 			Tool = null;
 			
-			var key = Map.Actors.FirstOrDefault(a => a.Value.Location() == BrushLocation);
-			if (key.Key != null) Map.Actors.Remove(key.Key);
+			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == BrushLocation);
+			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
 
 			if (Map.MapResources.Value[BrushLocation.X, BrushLocation.Y].type != 0)
 			{
@@ -338,7 +338,7 @@ namespace OpenRA.Editor
 				Map.Bounds.Width * TileSet.TileSize * Zoom,
 				Map.Bounds.Height * TileSet.TileSize * Zoom);
 
-			foreach (var ar in Map.Actors)
+			foreach (var ar in Map.Actors.Value)
 				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
 					GetPaletteForActor(ar.Value));
 
@@ -347,7 +347,7 @@ namespace OpenRA.Editor
 				
 			if (Tool == null)
 			{
-				var x = Map.Actors.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 				if (x.Key != null)
 					DrawActorBorder(e.Graphics, x.Value.Location(), ActorTemplates[x.Value.Type]);
 			}
