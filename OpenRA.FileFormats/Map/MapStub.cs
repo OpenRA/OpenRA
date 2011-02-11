@@ -41,26 +41,25 @@ namespace OpenRA.FileFormats
 		public IEnumerable<int2> SpawnPoints{ get { return Waypoints.Where(kv => StartPoints.Contains(kv.Key)).Select(kv => kv.Value); } }
 		
 		[FieldLoader.Load] public Rectangle Bounds;
-		
-		// TODO: Remove these once we stop supporting MapFormat < 5
-		[FieldLoader.Load] public int2 TopLeft;
-		[FieldLoader.Load] public int2 BottomRight;
-		
+				
 		public MapStub() {} // Hack for the editor - not used for anything important
 		
 		public MapStub(string path)
 		{
 			Path = path;
 			Container = FileSystem.OpenPackage(path, int.MaxValue);
-			var yaml = MiniYaml.FromStream(Container.GetContent("map.yaml"));
-			FieldLoader.Load( this, new MiniYaml( null, yaml ) );
+			var yaml = new MiniYaml( null, MiniYaml.FromStream(Container.GetContent("map.yaml")) );
+			FieldLoader.Load(this, yaml);
 			
             Uid = ComputeHash();
 			
 			// Upgrade maps to define StartPoints
 			if (MapFormat < 5)
 			{
+				
 				StartPoints = Waypoints.Select(kv => kv.Key).ToArray();
+				var TopLeft = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["TopLeft"].Value);
+				var BottomRight = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["BottomRight"].Value);
 				Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);
 			}
 		}
