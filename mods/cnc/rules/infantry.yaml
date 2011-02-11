@@ -199,7 +199,10 @@ VICE:
 	Health:
 		HP: 400
 	AttackFrontal:
-		PrimaryWeapon: Laser
+		PrimaryWeapon: Chemspray
 	AttackWander:
 	-RenderInfantry:
 	RenderUnit:
+	WithMuzzleFlash:
+	Armor:
+		Type: Wood

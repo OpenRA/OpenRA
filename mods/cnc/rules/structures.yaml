@@ -229,8 +229,6 @@ AFLD:
 		Capturable: true
 	Health:
 		HP: 1000
-	Armor: 
-		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Bib:
@@ -271,8 +269,6 @@ WEAP:
 		Capturable: true
 	Health:
 		HP: 1000
-	Armor: 
-		Type: Light
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -481,8 +477,6 @@ TMPL:
 		Capturable: true
 	Health:
 		HP: 2000
-	Armor: 
-		Type: Light
 	RevealsShroud:
 		Range: 6
 	Bib:
@@ -519,7 +513,7 @@ OBLI:
 	Health:
 		HP: 400
 	Armor: 
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
@@ -554,7 +548,7 @@ CYCL:
 	Health:
 		HP: 300
 	Armor: 
-		Type: None
+		Type: Light
 
 SBAG:
 	Inherits: ^Wall
@@ -574,7 +568,7 @@ SBAG:
 	Health:
 		HP: 250
 	Armor: 
-		Type: None
+		Type: Light
 
 BRIK:
 	Inherits: ^Wall
@@ -619,8 +613,6 @@ GUN:
 		BaseNormal: no
 	Health:
 		HP: 400
-	Armor: 
-		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -721,7 +713,7 @@ ATWR:
 	Health:
 		HP: 800
 	Armor: 
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 8
 	AttackOmni:

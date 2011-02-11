@@ -32,9 +32,9 @@ Atomic:
 		Ore: true
 		Versus: 
 			None: 90%
+			Wood: 60%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		Explosion: 6
 		InfDeath: 4
 		ImpactSound: nukexplo
@@ -46,9 +46,9 @@ Atomic:
 		Ore: true
 		Versus: 
 			None: 90%
+			Wood: 60%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
 		ImpactSound: xplobig4
@@ -60,9 +60,9 @@ IonCannon:
 		Ore: true
 		Versus: 
 			None: 90%
+			Wood: 60%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		InfDeath: 4
 	Warhead@area:
 		DamageModel: PerCell
@@ -72,9 +72,9 @@ IonCannon:
 		Ore: true
 		Versus: 
 			None: 90%
+			Wood: 60%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		Delay: 3
 		InfDeath: 4
 
@@ -88,10 +88,10 @@ Sniper:
 		Damage: 100
 		Spread: 1
 		Versus: 
+			None: 100%
 			Wood: 5%
 			Light: 5%
 			Heavy: 5%
-			Concrete: 5%
 		InfDeath: 1
 
 HighV: 
@@ -104,10 +104,10 @@ HighV:
 		Damage: 20
 		Spread: 3
 		Versus: 
+			None: 100%
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 
@@ -120,10 +120,10 @@ Pistol:
 	Warhead:
 		Spread: 3
 		Versus: 
+			None: 100%
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 		Damage: 1
@@ -137,10 +137,10 @@ M16:
 	Warhead:
 		Spread: 3
 		Versus: 
+			None: 100%
 			Wood: 25%
 			Light: 30%
 			Heavy: 10%
-			Concrete: 10%
 		Explosion: 1
 		InfDeath: 1
 		Damage: 15
@@ -167,7 +167,7 @@ Rockets:
 			None: 50%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -198,7 +198,7 @@ Rockets.Bike:
 			None: 50%
 			Wood: 30%
 			Light: 75%
-			Concrete: 30%
+			Heavy: 30%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -228,7 +228,7 @@ Rockets.Orca:
 			None: 50%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -245,9 +245,9 @@ Flamethrower:
 		Spread: 8
 		Versus: 
 			None: 90%
+			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		InfDeath: 4
 		ImpactSound: flamer2
 		SmudgeType: Scorch
@@ -263,9 +263,9 @@ BigFlamer:
 		Spread: 8
 		Versus: 
 			None: 90%
+			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
@@ -325,7 +325,7 @@ Grenade:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -345,7 +345,7 @@ Grenade:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -365,7 +365,7 @@ Grenade:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -386,7 +386,7 @@ Grenade:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -406,7 +406,7 @@ TurretGun:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -436,7 +436,7 @@ MissilePack:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -465,7 +465,7 @@ MissilePack:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos
@@ -508,7 +508,6 @@ MachineGun:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 25%
 		InfDeath: 1
 		Explosion: 1
 		Damage: 15
@@ -580,9 +579,9 @@ Napalm:
 		Spread: 8
 		Versus: 
 			None: 90%
+			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
@@ -594,9 +593,9 @@ Napalm.Crate:
 		Spread: 4
 		Versus: 
 			None: 90%
+			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
 		InfDeath: 4
 		Explosion: 3
 		ImpactSound: flamer2
@@ -638,7 +637,7 @@ Nike:
 			None: 30%
 			Wood: 75%
 			Light: 75%
-			Concrete: 50%
+			Heavy: 50%
 		InfDeath: 3
 		Explosion: 4
 		ImpactSound: xplos

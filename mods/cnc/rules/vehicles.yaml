@@ -198,7 +198,8 @@ BIKE:
 		Speed: 13
 	Health:
 		HP: 120
-		Armor: none
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 7
 	AttackFrontal:
@@ -500,7 +501,7 @@ HELI:
 	Health:
 		HP: 125
 	Armor:
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
@@ -534,7 +535,7 @@ ORCA:
 	Health:
 		HP: 100
 	Armor:
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
@@ -560,7 +561,7 @@ C17:
 	Health:
 		HP: 25
 	Armor:
-		Type: Light
+		Type: Heavy
 	RenderUnit:
 	WithShadow:
 	Cargo:
@@ -583,7 +584,7 @@ A10:
 	Health:
 		HP: 60
 	Armor:
-		Type: Light
+		Type: Heavy
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
@@ -646,7 +647,7 @@ LST:
 	Health:
 		HP: 400
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	RenderUnit:

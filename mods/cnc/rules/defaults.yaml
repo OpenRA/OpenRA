@@ -323,7 +323,7 @@
 	Health:
 		HP: 140
 	Armor: 
-		Type: Heavy
+		Type: Light
 	Husk:
 	Selectable: 
 		Priority: -1
