@@ -54,26 +54,32 @@ e1:
 	die1:
 		Start: 381
 		Length: 9
+		Tick: 80
 	# Explode
 	die2:
 		Start: 390
 		Length: 8
+		Tick: 80
 	# Fly through air and explode
 	die3:
 		Start: 398
 		Length: 8
+		Tick: 80
 	# Fly higher through air and explode
 	die4:
 		Start: 406
 		Length: 12
+		Tick: 80
 	# Burn
 	die5:
 		Start: 418
 		Length: 18
+		Tick: 80
 	# Tib
 	die6:
 		Start: 366
 		Length: 11
+		Tick: 80
 e2:
 	stand:
 		Start: 0
@@ -109,26 +115,32 @@ e2:
 	die1:
 		Start: 509
 		Length: 9
+		Tick: 80
 	# Explode
 	die2:
 		Start: 518
 		Length: 8
+		Tick: 80
 	# Fly through air
 	die3:
 		Start: 526
 		Length: 8
+		Tick: 80
 	# Fly higher through air
 	die4:
 		Start: 534
 		Length: 12
+		Tick: 80
 	# Burn
 	die5:
 		Start: 546
 		Length: 18
+		Tick: 80
 	# Tib
 	die6:
 		Start: 494
 		Length: 11
+		Tick: 80
 e3:
 	stand:
 		Start: 0
