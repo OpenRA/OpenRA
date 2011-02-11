@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 		}
 
-		MapStub CurrentMap()
+		Map CurrentMap()
 		{
 			return (currentServer == null || !Game.modData.AvailableMaps.ContainsKey(currentServer.Map))
 				? null : Game.modData.AvailableMaps[currentServer.Map];

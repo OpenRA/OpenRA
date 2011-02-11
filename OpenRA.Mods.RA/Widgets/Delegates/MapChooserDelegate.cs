@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 {
 	public class MapChooserDelegate : IWidgetDelegate
 	{
-		MapStub Map = null;
+		Map Map = null;
 		Widget scrollpanel;
 		Widget itemTemplate;
 		

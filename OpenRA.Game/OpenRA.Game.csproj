@@ -184,7 +184,6 @@
     <Compile Include="Widgets\ProgressBarWidget.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Traits\Waypoint.cs" />
-    <Compile Include="MapStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

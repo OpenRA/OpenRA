@@ -19,9 +19,9 @@ namespace OpenRA.Widgets
 {
 	public class MapPreviewWidget : Widget
 	{
-		public Func<MapStub> Map = () => null;
+		public Func<Map> Map = () => null;
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
-		static Cache<MapStub,Bitmap> PreviewCache = new Cache<MapStub, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
+		static Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 
 		public MapPreviewWidget() : base() { }
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -33,14 +33,14 @@ namespace OpenRA.Widgets
 		}
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
-		public int2 ConvertToPreview(MapStub map, int2 point)
+		public int2 ConvertToPreview(Map map, int2 point)
 		{
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));
 		}
 		
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
-		MapStub lastMap;
+		Map lastMap;
 		Rectangle MapRect;
 		float PreviewScale = 0;
 		static Sprite UnownedSpawn = null;

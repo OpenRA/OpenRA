@@ -21,7 +21,7 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
-		public Dictionary<string, MapStub> AvailableMaps {get; private set;}
+		public Dictionary<string, Map> AvailableMaps {get; private set;}
 		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
@@ -99,15 +99,15 @@ namespace OpenRA
                 .Concat(Directory.GetFiles(dir, "*.oramap"));
         }
 
-		Dictionary<string, MapStub> FindMaps(string[] mods)
+		Dictionary<string, Map> FindMaps(string[] mods)
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
 				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Game.SupportDir, p))));
 			
-			Dictionary<string, MapStub> ret = new Dictionary<string, MapStub>();
+			Dictionary<string, Map> ret = new Dictionary<string, Map>();
 			foreach (var path in paths)
 			{
-				var map = new MapStub(path);
+				var map = new Map(path);
 				if (ret.ContainsKey(map.Uid))
 					System.Console.WriteLine("Ignoring duplicate map: {0}", path);
 				else

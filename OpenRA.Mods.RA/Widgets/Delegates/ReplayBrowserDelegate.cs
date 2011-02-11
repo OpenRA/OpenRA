@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		MapStub MapStubFromSummary(ReplaySummary rs)
+		Map MapFromSummary(ReplaySummary rs)
 		{
 			if (rs.LobbyInfo == null)
 				return null;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					try
 					{
 						var summary = new ReplaySummary(currentReplay);
-						var mapStub = MapStubFromSummary(summary);
+						var mapStub = MapFromSummary(summary);
 
 						widget.GetWidget<LabelWidget>("DURATION").GetText =
 							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
