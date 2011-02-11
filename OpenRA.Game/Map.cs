@@ -279,7 +279,11 @@ namespace OpenRA
 				// Load resource data
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
-						MapResources[i, j] = new TileReference<byte, byte>(ReadByte(dataStream), ReadByte(dataStream));
+				{
+					byte type = ReadByte(dataStream);
+					byte index = ReadByte(dataStream);
+					MapResources[i, j] = new TileReference<byte, byte>(type, index);
+				}
 			}
 		}
 

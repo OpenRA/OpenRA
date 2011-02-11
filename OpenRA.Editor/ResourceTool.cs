@@ -27,7 +27,7 @@ namespace OpenRA.Editor
 				= new TileReference<byte, byte>
 				{
 					type = (byte)Resource.Info.ResourceType,
-					index = (byte)Resource.Value
+					index = (byte)random.Next(Resource.Info.SpriteNames.Length)
 				};
 
 			var ch = new int2((surface.GetBrushLocation().X) / Surface.ChunkSize, 
