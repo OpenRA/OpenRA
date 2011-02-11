@@ -66,8 +66,7 @@ namespace OpenRA
 				MapTiles = new TileReference<ushort, byte>[1, 1] 
 				{ { new TileReference<ushort, byte> { 
 					type = tile.Key, 
-					image = (byte)(tile.Value.PickAny ? 0xffu : 0), 
-					index = (byte)(tile.Value.PickAny ? 0xffu : 0) }
+					index = (byte)0 }
 				} },
 			};
 			
@@ -324,8 +323,10 @@ namespace OpenRA
 					{
 						ushort tile = ReadWord(dataStream);
 						byte index = ReadByte(dataStream);
-						byte image = (index == byte.MaxValue) ? (byte)(i % 4 + (j % 4) * 4) : index;
-						MapTiles[i, j] = new TileReference<ushort, byte>(tile, index, image);
+						if (index == byte.MaxValue)
+							index = (byte)(i % 4 + (j % 4) * 4);
+
+						MapTiles[i, j] = new TileReference<ushort, byte>(tile, index);
 					}
 
 				// Load resource data
@@ -350,7 +351,8 @@ namespace OpenRA
 					for (int j = 0; j < MapSize.Y; j++)
 					{
 						writer.Write(MapTiles[i, j].type);
-						writer.Write(MapTiles[i, j].index);
+						var PickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles[i, j].type].PickAny;
+						writer.Write(PickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles[i, j].index);
 					}
 
 				// Resource data	

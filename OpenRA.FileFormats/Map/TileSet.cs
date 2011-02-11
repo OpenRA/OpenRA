@@ -136,7 +136,7 @@ namespace OpenRA.FileFormats
 		{
 			Terrain tile;
 			if( Tiles.TryGetValue( r.type, out tile ) )
-				return tile.TileBitmapBytes[ r.image ];
+				return tile.TileBitmapBytes[ r.index ];
 			
 			byte[] missingTile = new byte[ TileSize * TileSize ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
@@ -149,7 +149,7 @@ namespace OpenRA.FileFormats
 		{
 			var tt = Templates[r.type].Tiles;
 			string ret;
-			if (!tt.TryGetValue(r.image, out ret))
+			if (!tt.TryGetValue(r.index, out ret))
 				return "Clear"; // Default walkable
 			return ret;
 		}

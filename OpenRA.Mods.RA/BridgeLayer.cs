@@ -67,10 +67,10 @@ namespace OpenRA.Mods.RA
 			
 			// Correlate the tile "image" aka subtile with its position to find the template origin
 			var tile = w.Map.MapTiles[i, j].type;
-			var image = w.Map.MapTiles[i, j].image;
+			var index = w.Map.MapTiles[i, j].index;
 			var template = w.TileSet.Templates[tile];
-			var ni = i - image % template.Size.X;
-			var nj = j - image / template.Size.X;
+			var ni = i - index % template.Size.X;
+			var nj = j - index / template.Size.X;
 			
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
 			var bridge = w.CreateActor(BridgeTypes[tile].First, new TypeDictionary
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 				var y = nj + ind / template.Size.X;
 				
 				// This isn't the bridge you're looking for
-				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].image != ind)
+				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles[x, y].index != ind)
 					continue;
 								
 				subTiles.Add(new int2(x,y),ind);

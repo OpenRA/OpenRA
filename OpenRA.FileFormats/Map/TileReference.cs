@@ -14,20 +14,11 @@ namespace OpenRA.FileFormats
 	{
 		public T type;
 		public U index;
-		public U image;
 		
 		public TileReference(T t, U i)
 		{
 			type = t;
 			index = i;
-			image = i;
-		}
-		
-		public TileReference(T t, U i, U im)
-		{
-			type = t;
-			index = i;
-			image = im;
 		}
 
 		public override int GetHashCode() { return type.GetHashCode() ^ index.GetHashCode(); }

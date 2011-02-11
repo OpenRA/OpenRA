@@ -72,9 +72,9 @@ namespace OpenRA.Mods.RA
 			var tile = tiles[loc];
 			// Existing smudge; make it deeper
 			int depth = Info.Depths[tile.type-1];
-			if (tile.image < depth - 1)
+			if (tile.index < depth - 1)
 			{
-				tile.image++;
+				tile.index++;
 				tiles[loc] = tile;	// struct semantics.
 			}
 		}
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 				if (localPlayer != null && !localPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type- 1][kv.Value.image].DrawAt( wr,
+				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt( wr,
 						Game.CellSize * kv.Key, "terrain");
 			}
 		}

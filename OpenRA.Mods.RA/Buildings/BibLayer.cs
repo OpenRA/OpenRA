@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (!world.LocalShroud.IsExplored(kv.Key))
 					continue;
 
-				bibSprites[kv.Value.type - 1][kv.Value.image].DrawAt( wr,
+				bibSprites[kv.Value.type - 1][kv.Value.index].DrawAt( wr,
 					Game.CellSize * kv.Key, "terrain");
 			}
 		}
