@@ -1,10 +1,10 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2010 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
- * see LICENSE.
+ * see COPYING.
  */
 #endregion
 
@@ -128,7 +128,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var window = Widget.OpenWindow("INIT_DOWNLOAD");
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			status.GetText = () => "Initializing...";
-			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
+			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
+
 			// Save the package to a temp file
 			var file = Path.GetTempPath() + Path.DirectorySeparatorChar + Path.GetRandomFileName();					
 			Action<DownloadProgressChangedEventArgs> onDownloadChange = i =>
