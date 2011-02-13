@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyDamage, ISync
+	class GpsPower : SupportPower, INotifyDamage, ISync, INotifyStanceChanged
 	{
 		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info) { }
 
@@ -63,6 +63,11 @@ namespace OpenRA.Mods.RA
 				self.World.LocalShroud.Disabled = self.World.Queries.WithTrait<GpsPower>()
 					.Any(p => p.Actor.Owner.Stances[self.World.LocalPlayer] == Stance.Ally &&
 						p.Trait.Granted);
+		}
+
+		public void StanceChanged(Actor self, Player a, Player b, Stance oldStance, Stance newStance)
+		{
+			RefreshGps(self);
 		}
 	}
 }
