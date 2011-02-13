@@ -91,7 +91,10 @@ namespace OpenRA.Utility
 			p.StartInfo.FileName = "OpenRA.Utility.exe";
 			p.StartInfo.Arguments = command + " --pipe " + pipename;
 			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.Verb = "runas";
+
+			// do we support elevation?
+			if (Environment.OSVersion.Version >= new Version(6,0))
+				p.StartInfo.Verb = "runas";
 
 			try
 			{
