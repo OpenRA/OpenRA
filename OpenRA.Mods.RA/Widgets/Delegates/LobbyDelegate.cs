@@ -113,6 +113,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
 			};
+
+			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
+			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
+			allowCheats.OnChange += _ =>
+			{
+				if (Game.IsHost)
+					orderManager.IssueOrder(Order.Command(
+						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
+			};
 			
 			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
 			startGameButton.OnMouseUp = mi =>

@@ -64,7 +64,6 @@ namespace OpenRA.Server
 			lobbyInfo = new Session( settings.Game.Mods );
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
-			lobbyInfo.GlobalSettings.AllowCheats = settings.Server.AllowCheats;
 			lobbyInfo.GlobalSettings.ServerName = settings.Server.Name;
 			
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())

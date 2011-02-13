@@ -330,7 +330,7 @@ Background@SERVER_LOBBY:
 		Button@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
 			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-189
+			Y:PARENT_BOTTOM-189+25
 			Width:120
 			Height:25
 			Text:Disconnect
@@ -342,6 +342,13 @@ Background@SERVER_LOBBY:
 			Width: 80
 			Height: 20
 			Text: Lock Teams
+		Checkbox@ALLOWCHEATS_CHECKBOX:
+			Id:ALLOWCHEATS_CHECKBOX
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-229+25
+			Width: 80
+			Height: 20
+			Text: Allow Cheats
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
 	Background:dialog2

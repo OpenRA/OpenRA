@@ -43,8 +43,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
 			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Bind(settings.Server, "AdvertiseOnline");
 			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").OnChange += _ => settings.Save();
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").Bind(settings.Server, "AllowCheats");
-			cs.GetWidget<CheckboxWidget>("CHECKBOX_CHEATS").OnChange += _ => settings.Save();
 		}
 	}
 }

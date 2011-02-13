@@ -226,6 +226,19 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "allowcheats",
+					s =>
+					{
+						if (conn.PlayerIndex != 0)
+						{
+							server.SendChatTo( conn, "Only the host can set that option" );
+							return true;
+						}
+						
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.AllowCheats);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "kick",
 					s => 
 					{
