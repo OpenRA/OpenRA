@@ -229,4 +229,5 @@ namespace OpenRA.Traits
 	}
 
 	public interface INotifyKeyPress { bool KeyPressed(Actor self, KeyInput e); }
+	public interface INotifyStanceChanged { void StanceChanged(Player a, Player b, Stance oldStance, Stance newStance); }
 }
