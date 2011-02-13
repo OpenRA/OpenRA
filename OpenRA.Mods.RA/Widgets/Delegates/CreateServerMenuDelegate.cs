@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name;
+			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name ?? "";
 			cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
 			cs.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Bind(settings.Server, "AdvertiseOnline");
