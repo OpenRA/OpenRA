@@ -9,13 +9,13 @@
 #endregion
 
 using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.FileFormats;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Pipes;
+using ICSharpCode.SharpZipLib.Zip;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Utility
 {
