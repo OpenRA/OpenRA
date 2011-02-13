@@ -16,8 +16,8 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public class RepairableBuildingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{
-		public readonly float RepairPercent = 0.2f;
-		public readonly float RepairRate = 0.016f;
+		public readonly int RepairPercent = 20;
+		public readonly int RepairInterval = 24;
 		public readonly int RepairStep = 7;
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
@@ -54,10 +54,9 @@ namespace OpenRA.Mods.RA.Buildings
 			{
 				var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 				var buildingValue = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
-				
-				var costPerHp = (Info.RepairPercent * buildingValue) / Health.MaxHP;
+
 				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
-				var cost = (int)Math.Ceiling(costPerHp * hpToRepair);
+				var cost = (hpToRepair * Info.RepairPercent * buildingValue) / (Health.MaxHP * 100);
 				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
@@ -71,7 +70,7 @@ namespace OpenRA.Mods.RA.Buildings
 					isRepairing = false;
 					return;
 				}
-				remainingTicks = (int)(Info.RepairRate * 60 * 25);
+				remainingTicks = Info.RepairInterval;
 			}
 			else
 				--remainingTicks;
