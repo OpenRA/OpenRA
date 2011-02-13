@@ -66,6 +66,7 @@
     <Compile Include="FieldLoader.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
+    <Compile Include="Graphics\PngLoader.cs" />
     <Compile Include="Graphics\ShpWriter.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="HttpUtil.cs" />
