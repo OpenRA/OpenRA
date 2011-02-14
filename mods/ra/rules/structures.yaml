@@ -943,6 +943,7 @@ FIX:
 	RallyPoint:
 	IronCurtainable:
 	RepairsUnits:
+		Interval: 10
 
 FACF:
 	Inherits: ^Building
