@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 			PlayerPower = playerActor.Trait<PowerManager>();
 			
 			Race = self.Owner.Country.Race;
-			Produceable = InitTech();
+			Produceable = InitTech(playerActor);
 		}
 		
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
@@ -76,13 +76,13 @@ namespace OpenRA.Mods.RA
 			Queue.Clear();
 
 			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
-			Produceable = InitTech();
+			Produceable = InitTech(self.Owner.PlayerActor);
 		}
 
-		Dictionary<ActorInfo, ProductionState> InitTech()
+		Dictionary<ActorInfo, ProductionState> InitTech(Actor playerActor)
 		{
 			var tech = new Dictionary<ActorInfo, ProductionState>();
-			var ttc = self.Owner.PlayerActor.Trait<TechTree>();
+			var ttc = playerActor.Trait<TechTree>();
 
 			foreach (var a in AllBuildables(Info.Type))
 			{
