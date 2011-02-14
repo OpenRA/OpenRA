@@ -37,6 +37,7 @@ namespace OpenRA.Mods.RA
 		public ProductionQueueInfo Info;
 		PowerManager PlayerPower;
 		PlayerResources PlayerResources;
+		string Race;
 		
 		// A list of things we are currently building
 		public List<ProductionItem> Queue = new List<ProductionItem>();
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.RA
 		public bool CurrentDone { get { return QueueLength == 0 ? false : Queue[0].Done; } }
 		
 		// A list of things we could possibly build, even if our race doesn't normally get it
-		public Dictionary<ActorInfo, ProductionState> Produceable = new Dictionary<ActorInfo, ProductionState>();
+		public Dictionary<ActorInfo, ProductionState> Produceable;
 
 		public ProductionQueue( Actor self, Actor playerActor, ProductionQueueInfo info )
 		{
@@ -64,17 +65,8 @@ namespace OpenRA.Mods.RA
 			PlayerResources = playerActor.Trait<PlayerResources>();
 			PlayerPower = playerActor.Trait<PowerManager>();
 			
-			var ttc = playerActor.Trait<TechTree>();
-			
-			foreach (var a in AllBuildables(Info.Type))
-			{
-				var bi = a.Traits.Get<BuildableInfo>();
-				// Can our race build this by satisfying normal prereqs?
-				var buildable = bi.Owner.Contains(self.Owner.Country.Race);
-				Produceable.Add( a, new ProductionState(){ Visible = buildable && !bi.Hidden } );
-				if (buildable)
-					ttc.Add( a.Name, a.Traits.Get<BuildableInfo>().Prerequisites.ToList(), this );
-			}
+			Race = self.Owner.Country.Race;
+			Produceable = InitTech();
 		}
 		
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
@@ -82,7 +74,27 @@ namespace OpenRA.Mods.RA
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			Queue.Clear();
+
 			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
+			Produceable = InitTech();
+		}
+
+		Dictionary<ActorInfo, ProductionState> InitTech()
+		{
+			var tech = new Dictionary<ActorInfo, ProductionState>();
+			var ttc = self.Owner.PlayerActor.Trait<TechTree>();
+
+			foreach (var a in AllBuildables(Info.Type))
+			{
+				var bi = a.Traits.Get<BuildableInfo>();
+				// Can our race build this by satisfying normal prereqs?
+				var buildable = bi.Owner.Contains(Race);
+				tech.Add(a, new ProductionState() { Visible = buildable && !bi.Hidden });
+				if (buildable)
+					ttc.Add(a.Name, a.Traits.Get<BuildableInfo>().Prerequisites.ToList(), this);
+			}
+
+			return tech;
 		}
 		
 		IEnumerable<ActorInfo> AllBuildables(string category)
