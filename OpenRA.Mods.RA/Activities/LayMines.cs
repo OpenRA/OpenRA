@@ -52,12 +52,13 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities( new Wait(20), this ); // a little wait after placing each mine, for show
 			}
 
-			for (var n = 0; n < 20; n++)		// dont get stuck forever here
-			{
-				var p = ml.minefield.Random(self.World.SharedRandom);
-				if (ShouldLayMine(self, p))
-					return Util.SequenceActivities( mobile.MoveTo(p, 0), this );
-			}
+			if (ml.minefield.Length > 0)
+				for (var n = 0; n < 20; n++)		// dont get stuck forever here
+				{
+					var p = ml.minefield.Random(self.World.SharedRandom);
+					if (ShouldLayMine(self, p))
+						return Util.SequenceActivities( mobile.MoveTo(p, 0), this );
+				}
 
 			// todo: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
 
