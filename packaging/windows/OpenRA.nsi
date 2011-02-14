@@ -92,7 +92,7 @@ Section "Client" Client
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA.lnk" $OUTDIR\OpenRA.Game.exe "" \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
+			"$OUTDIR\OpenRA.Game.exe" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 	
 	SetOutPath "$INSTDIR\cg"
@@ -108,8 +108,8 @@ Section "Editor" Editor
 	
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor.lnk" $OUTDIR\OpenRA.Editor.exe \
-			"$OUTDIR\OpenRA.ico" "" "" "" ""
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\OpenRA Editor.lnk" $OUTDIR\OpenRA.Editor.exe "" \
+			"$OUTDIR\OpenRA.Editor.exe" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
