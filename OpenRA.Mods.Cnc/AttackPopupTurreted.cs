@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
 		public float ClosedDamageMultiplier = 0.5f;
-		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init.self, this ); }
+		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init, this ); }
 	}
 
 	class AttackPopupTurreted : AttackBase, INotifyBuildComplete, INotifyIdle, IDamageModifier
@@ -45,10 +45,17 @@ namespace OpenRA.Mods.Cnc
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
 		
-		public AttackPopupTurreted(Actor self, AttackPopupTurretedInfo info) : base(self)
+		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
 		{
 			Info = info;
-			Turret = self.Trait<Turreted>();
+			Turret = init.self.Trait<Turreted>();
+			if (init.Contains<SkipMakeAnimsInit>())
+			{
+				State = PopupState.Closed;
+				init.self.Trait<RenderBuilding>()
+					.PlayCustomAnimRepeating(init.self, "closed-idle");
+				Turret.desiredFacing = null;
+			}
 		}
 
 		protected override bool CanAttack( Actor self, Target target )
