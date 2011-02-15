@@ -418,8 +418,11 @@ namespace OpenRA
 
 		public void Resize(int width, int height)		// editor magic.
 		{
-			MapTiles = Lazy.New(() => ResizeArray(MapTiles.Value, MapTiles.Value[0, 0], width, height));
-			MapResources = Lazy.New(() => ResizeArray(MapResources.Value, MapResources.Value[0, 0], width, height));
+			var oldMapTiles = MapTiles.Value;
+			var oldMapResources = MapResources.Value;
+
+			MapTiles = Lazy.New(() => ResizeArray(oldMapTiles, oldMapTiles[0, 0], width, height));
+			MapResources = Lazy.New(() => ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
 			MapSize = new int2(width, height);
 		}
 		
