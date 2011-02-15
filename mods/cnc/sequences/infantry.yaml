@@ -561,10 +561,6 @@ c1:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -609,10 +605,6 @@ c1:
 c2:
 	stand:
 		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -660,10 +652,6 @@ c3:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -710,10 +698,6 @@ c4:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -759,10 +743,6 @@ c4:
 c5:
 	stand:
 		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -814,10 +794,6 @@ c6:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic-run:
-		Start: 8
-		Length: 6
-		Facings: 8
 	run:
 		Start: 56
 		Length: 6
@@ -859,10 +835,6 @@ c6:
 c7:
 	stand:
 		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -910,10 +882,6 @@ c8:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -960,10 +928,6 @@ c9:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
-		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
@@ -1009,10 +973,6 @@ c9:
 c10:
 	stand:
 		Start: 0
-		Facings: 8
-	crawl:
-		Start: 8
-		Length: 6
 		Facings: 8
 	panic-run:
 		Start: 8
