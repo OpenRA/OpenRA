@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc
 		
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead && e.Warhead.InfDeath == Info.InfDeath
+			if (e.DamageState == DamageState.Dead && e.Warhead != null && e.Warhead.InfDeath == Info.InfDeath
 			    	&& self.World.SharedRandom.Next(100) <= Info.Probability)
 				self.World.AddFrameEndTask(w =>
 					{
