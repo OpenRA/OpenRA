@@ -131,6 +131,7 @@
 ^CivInfantry:
 	Inherits: ^Infantry
 	-Buildable:
+	-AutoTarget:
 	AppearsOnRadar:
 	Selectable:
 		Voice: CivilianMaleVoice
@@ -142,16 +143,17 @@
 	Mobile:
 		Speed: 4
 	Health:
-		HP: 20
+		HP: 25
 	RevealsShroud:
 		Range: 2
 	AttackFrontal:
 		PrimaryWeapon: Pistol
-#	ActorLostNotification:
-#		Notification: civdead1.aud
-#		NotifyAll: true
+	ActorLostNotification:
+		Notification: civdead1.aud
+		NotifyAll: true
 	ProximityCaptor:
 		Types:CivilianInfantry
+	ScaredyCat:
 
 ^Plane:
 	AppearsOnRadar:

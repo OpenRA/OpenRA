@@ -565,7 +565,7 @@ c1:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -614,7 +614,7 @@ c2:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -664,7 +664,7 @@ c3:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -714,7 +714,7 @@ c4:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -764,7 +764,7 @@ c5:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -814,7 +814,7 @@ c6:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -864,7 +864,7 @@ c7:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -914,7 +914,7 @@ c8:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -964,7 +964,7 @@ c9:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -1014,7 +1014,7 @@ c10:
 		Start: 8
 		Length: 6
 		Facings: 8
-	panic:
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8

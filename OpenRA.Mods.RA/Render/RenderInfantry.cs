@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
 	{
+		public bool Panicked = false;
 		public enum AnimationState
 		{
 			Idle,
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-
+			
 			// If path is blocked, we can have !isMoving and !idle
 			// Need to handle this case specially
 			if (!mobile.IsMoving && State == AnimationState.Moving)
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 			else if (State != AnimationState.Moving && mobile.IsMoving)
 			{
 				State = AnimationState.Moving;
-				anim.PlayRepeating("run");
+				anim.PlayRepeating(Panicked ? "panic-run" : "run");
 			}
 		}
 		
