@@ -54,10 +54,8 @@ namespace OpenRA.Mods.RA.Move
 				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, mi, target, from, true)
-						.WithCustomBlocker(AvoidUnitsNear(from, 4, self)),
+					PathSearch.FromPoint(world, mi, target, from, true),
 					PathSearch.FromPoint(world, mi, from, target, true)
-						.WithCustomBlocker(AvoidUnitsNear(from, 4, self))
 						.InReverse());
 
 				CheckSanePath2(pb, from, target);
@@ -77,22 +75,12 @@ namespace OpenRA.Mods.RA.Move
 					.Where( t => mi.CanEnterCell(self.World, t, null, true));
 
                 var path = FindBidiPath(
-                    PathSearch.FromPoints(world, mi, tilesInRange, src, true)
-                        .WithCustomBlocker(AvoidUnitsNear(src, 4, self)),
+                    PathSearch.FromPoints(world, mi, tilesInRange, src, true),
                     PathSearch.FromPoint(world, mi, src, target, true)
-                        .WithCustomBlocker(AvoidUnitsNear(src, 4, self))
                         .InReverse());
                 
                 return path;
 			}
-		}
-		
-		public Func<int2, bool> AvoidUnitsNear(int2 p, int dist, Actor self)
-		{
-			return q =>
-				p != q &&
-				((p - q).LengthSquared < dist * dist) &&
-				(world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(q).Any(a => a.Group != self.Group));
 		}
 
 		public List<int2> FindPath( PathSearch search )
