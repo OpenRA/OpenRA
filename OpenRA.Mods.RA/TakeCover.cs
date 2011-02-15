@@ -14,17 +14,25 @@ using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class TakeCoverInfo : TraitInfo<TakeCover>, ITraitPrerequisite<RenderInfantryInfo> { }
+	class TakeCoverInfo : ITraitInfo, ITraitPrerequisite<RenderInfantryInfo>
+	{
+		public readonly int ProneTime = 100;	/* ticks, =4s */
+		public readonly float ProneDamage = .5f;
+		public readonly decimal ProneSpeed = .5m;
+		public object Create(ActorInitializer init) { return new TakeCover(this); }
+	}
 
-	// infantry prone behavior
+	// Infantry prone behavior
 	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
 	{
-		const int defaultProneTime = 100;	/* ticks, =4s */
-		const float proneDamage = .5f;
-		const decimal proneSpeed = .5m;
-
+		TakeCoverInfo Info;
 		[Sync]
 		int remainingProneTime = 0;
+		
+		public TakeCover(TakeCoverInfo info)
+		{
+			Info = info;
+		}
 
 		public bool IsProne { get { return remainingProneTime > 0; } }
 
@@ -33,7 +41,10 @@ namespace OpenRA.Mods.RA
 			if (e.Damage > 0) /* Don't go prone when healed */
 			{
 				if (e.Warhead == null || !e.Warhead.PreventProne)
-					remainingProneTime = defaultProneTime;
+				{
+					remainingProneTime = Info.ProneTime;
+					self.Trait<RenderInfantry>().Prone = true;
+				}
 			}
 		}
 
@@ -42,41 +53,20 @@ namespace OpenRA.Mods.RA
 			if (!IsProne)
 				return;
 			
-			remainingProneTime--;
-			
-			var ri = self.Trait<RenderInfantry>();
-			
-			// Mobile.IsMoving isn't set to true until after the first move tick
-			// so we need a hack here to prevent a single frame of stand state
-			
-			if (IsProne && (ri.State == RenderInfantry.AnimationState.Idle || 
-			                ri.State == RenderInfantry.AnimationState.Waiting ||
-			                ri.anim.CurrentSequence.Name == "stand"))
-				ri.anim.PlayFetchIndex("crawl", () => 0);
-			else if (!IsProne && (ri.State == RenderInfantry.AnimationState.Idle || 
-			                ri.State == RenderInfantry.AnimationState.Waiting ||
-			                ri.anim.CurrentSequence.Name == "stand"))
-				ri.anim.Play("stand");
-			
-			if (ri.anim.CurrentSequence.Name == "run" && IsProne)
-				ri.anim.ReplaceAnim("crawl");
-			else if (ri.anim.CurrentSequence.Name == "crawl" && !IsProne)
-				ri.anim.ReplaceAnim("run");
-			
-			if (ri.anim.CurrentSequence.Name == "shoot" && IsProne)
-				ri.anim.ReplaceAnim("prone-shoot");
-			else if (ri.anim.CurrentSequence.Name == "prone-shoot" && !IsProne)
-				ri.anim.ReplaceAnim("shoot");
+			//var ri = self.Trait<RenderInfantry>();
+
+			if (--remainingProneTime <= 0)
+				self.Trait<RenderInfantry>().Prone = false;
 		}
 		
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
-			return IsProne ? proneDamage : 1f;
+			return IsProne ? Info.ProneDamage : 1f;
 		}
 
 		public decimal GetSpeedModifier()
 		{
-			return IsProne ? proneSpeed : 1m;
+			return IsProne ? Info.ProneSpeed : 1m;
 		}
 	}
 }

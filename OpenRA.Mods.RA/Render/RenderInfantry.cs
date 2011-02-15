@@ -24,6 +24,9 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
 	{
 		public bool Panicked = false;
+		public bool Prone = false;
+		bool wasProne = false;
+		
 		public enum AnimationState
 		{
 			Idle,
@@ -32,12 +35,23 @@ namespace OpenRA.Mods.RA.Render
 			Waiting
 		};
 		
+		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
+		{
+			var prefix = Prone ? "prone-" :
+						 Panicked ? "panic-" : "";
+			
+			if (anim.HasSequence(prefix + baseSequence))
+				return prefix + baseSequence;
+			else
+				return baseSequence;
+		}
+		
 		public AnimationState State { get; private set; }
 		Mobile mobile;
 		public RenderInfantry(Actor self)
 			: base(self, () => self.Trait<IFacing>().Facing)
 		{
-			anim.Play("stand");
+			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			State = AnimationState.Idle;
 			mobile = self.Trait<Mobile>();
 		}
@@ -45,35 +59,35 @@ namespace OpenRA.Mods.RA.Render
 		public void Attacking(Actor self, Target target)
 		{
 			State = AnimationState.Attacking;
-			if (anim.HasSequence("shoot"))
-				anim.PlayThen("shoot", () => State = AnimationState.Idle);
-			else if (anim.HasSequence("heal"))
-				anim.PlayThen("heal", () => State = AnimationState.Idle);
+			if (anim.HasSequence(NormalizeInfantrySequence(self, "shoot")))
+				anim.PlayThen(NormalizeInfantrySequence(self, "shoot"), () => State = AnimationState.Idle);
+			else if (anim.HasSequence(NormalizeInfantrySequence(self, "heal")))
+				anim.PlayThen(NormalizeInfantrySequence(self, "heal"), () => State = AnimationState.Idle);
 		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
 			
-			// If path is blocked, we can have !isMoving and !idle
-			// Need to handle this case specially
-			if (!mobile.IsMoving && State == AnimationState.Moving)
+			if ((State == AnimationState.Moving || wasProne != Prone) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
-				anim.Play("stand");
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			}
-			else if (State != AnimationState.Moving && mobile.IsMoving)
+			else if ((State != AnimationState.Moving || wasProne != Prone) && mobile.IsMoving)
 			{
 				State = AnimationState.Moving;
-				anim.PlayRepeating(Panicked ? "panic-run" : "run");
+				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
 			}
+			
+			wasProne = Prone;
 		}
 		
 		public void TickIdle(Actor self)
 		{
 			if (State != AnimationState.Idle)
 			{
-				anim.Play("stand");
+				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 				State = AnimationState.Idle;
 			}
 		}
