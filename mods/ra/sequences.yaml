@@ -1823,3 +1823,13 @@ bubbles:
 		Start: 0
 		Length: *
 		Tick: 220
+
+mpspawn:
+	idle:
+		Start: 0
+		Length: *
+
+waypoint:
+	idle:
+		Start: 0
+		Length: *

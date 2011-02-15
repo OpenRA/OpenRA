@@ -339,8 +339,9 @@ namespace OpenRA.Editor
 				Map.Bounds.Height * TileSet.TileSize * Zoom);
 
 			foreach (var ar in Map.Actors.Value)
-				DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
-					GetPaletteForActor(ar.Value));
+				if (ActorTemplates.ContainsKey(ar.Value.Type))
+					DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
+						GetPaletteForActor(ar.Value));
 
 			if (Tool != null)
 				Tool.Preview(this, e.Graphics);

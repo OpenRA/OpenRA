@@ -207,3 +207,12 @@ bomblet:
 		Start: 0
 		Length: *
 
+mpspawn:
+	idle:
+		Start: 0
+		Length: *
+
+waypoint:
+	idle:
+		Start: 0
+		Length: *

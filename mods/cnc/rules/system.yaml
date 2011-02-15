@@ -196,6 +196,8 @@ CRATE:
 
 mpspawn:
 	Waypoint:
+	RenderEditorOnly:
 
 waypoint:
 	Waypoint:
+	RenderEditorOnly:
