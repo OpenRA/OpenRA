@@ -223,7 +223,6 @@ namespace OpenRA.Editor
 
 			propertiesToolStripMenuItem.Enabled = true;
 			resizeToolStripMenuItem.Enabled = true;
-			spawnpointsToolStripMenuItem.Enabled = true;
 			saveToolStripMenuItem.Enabled = true;
 			saveAsToolStripMenuItem.Enabled = true;
 			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
@@ -395,12 +394,6 @@ namespace OpenRA.Editor
 				case DialogResult.No: break;
 				case DialogResult.Cancel: e.Cancel = true; break;
 			}
-		}
-
-		private void layersFloaterToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var pb = new PaletteBox();
-			pb.Show();
 		}
 
 		void ExportMinimap(object sender, EventArgs e)

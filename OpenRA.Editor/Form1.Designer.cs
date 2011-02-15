@@ -62,10 +62,6 @@
 			this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.spawnpointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.layersFloaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -258,7 +254,6 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.mapToolStripMenuItem,
-            this.toolsToolStripMenuItem,
             this.toolStripComboBox1,
             this.toolStripLabel1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -386,9 +381,7 @@
 			// 
 			this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.propertiesToolStripMenuItem,
-            this.resizeToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.spawnpointsToolStripMenuItem});
+            this.resizeToolStripMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
 			this.mapToolStripMenuItem.Text = "&Map";
@@ -398,7 +391,7 @@
 			this.propertiesToolStripMenuItem.Enabled = false;
 			this.propertiesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("propertiesToolStripMenuItem.Image")));
 			this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-			this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+			this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.propertiesToolStripMenuItem.Text = "&Properties...";
 			this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesClicked);
 			// 
@@ -407,30 +400,9 @@
 			this.resizeToolStripMenuItem.Enabled = false;
 			this.resizeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("resizeToolStripMenuItem.Image")));
 			this.resizeToolStripMenuItem.Name = "resizeToolStripMenuItem";
-			this.resizeToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+			this.resizeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.resizeToolStripMenuItem.Text = "&Resize...";
 			this.resizeToolStripMenuItem.Click += new System.EventHandler(this.ResizeClicked);
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(139, 6);
-			// 
-			// toolsToolStripMenuItem
-			// 
-			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.layersFloaterToolStripMenuItem});
-			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 23);
-			this.toolsToolStripMenuItem.Text = "Tools";
-			this.toolsToolStripMenuItem.Visible = false;
-			// 
-			// layersFloaterToolStripMenuItem
-			// 
-			this.layersFloaterToolStripMenuItem.Name = "layersFloaterToolStripMenuItem";
-			this.layersFloaterToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-			this.layersFloaterToolStripMenuItem.Text = "Layers floater";
-			this.layersFloaterToolStripMenuItem.Click += new System.EventHandler(this.layersFloaterToolStripMenuItem_Click);
 			// 
 			// toolStripComboBox1
 			// 
@@ -483,9 +455,9 @@
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "OpenRA Editor";
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
@@ -547,10 +519,6 @@
 		private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem resizeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem spawnpointsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem layersFloaterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
 		private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
 

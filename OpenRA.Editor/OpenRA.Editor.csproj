@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -76,12 +76,6 @@
     <Compile Include="NewMapDialog.Designer.cs">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="PaletteBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PaletteBox.Designer.cs">
-      <DependentUpon>PaletteBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="PropertiesDialog.cs">
       <SubType>Form</SubType>
@@ -98,9 +92,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NewMapDialog.resx">
       <DependentUpon>NewMapDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PaletteBox.resx">
-      <DependentUpon>PaletteBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropertiesDialog.resx">
       <DependentUpon>PropertiesDialog.cs</DependentUpon>
