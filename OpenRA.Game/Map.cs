@@ -242,7 +242,6 @@ namespace OpenRA
 				"Bounds",
 				"UseAsShellmap",
 				"Type",
-				"StartPoints"
 			};
 			
 			foreach (var field in fields)
