@@ -8,12 +8,12 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
-using System.IO;
-using System;
 
 namespace OpenRA.Renderer.Cg
 {
