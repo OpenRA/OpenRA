@@ -108,6 +108,8 @@ editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
 editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_FLAGS		= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
+
 PROGRAMS 			+= editor
 OpenRA.Editor.MapSelect.resources:
 	resgen2 OpenRA.Editor/MapSelect.resx OpenRA.Editor.MapSelect.resources 1> /dev/null
