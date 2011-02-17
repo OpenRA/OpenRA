@@ -27,7 +27,7 @@ namespace OpenRA.FileFormats
 		public string Race;
 		
 		public bool LockColor = false;
-        public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
+        public ColorRamp ColorRamp = new ColorRamp(0,0,238,34);
 		
 		public int InitialCash = 0;
 		public string[] Allies = {};
