@@ -497,7 +497,11 @@ e1:
 		Start: 64
 		Length: 8
 		Facings: 8
-	crawl:
+	prone-stand:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
@@ -590,7 +594,11 @@ e3:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
@@ -636,7 +644,11 @@ e6:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 82
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 82
 		Length: 4
 		Facings: 8
@@ -706,7 +718,11 @@ medi:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 130
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
@@ -1065,7 +1081,11 @@ e2:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 240
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 240
 		Length: 4
 		Facings: 8
@@ -1164,7 +1184,11 @@ spy:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 144
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
@@ -1219,7 +1243,11 @@ e7:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 128
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 128
 		Length: 4
 		Facings: 8
@@ -1269,7 +1297,11 @@ e4:
 	die6: electro
 		Start: 0
 		Length: *
-	crawl:
+	prone-stand:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
@@ -1629,7 +1661,11 @@ c1:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
+	panic-stand:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -1664,7 +1700,11 @@ c2:
 	stand:
 		Start: 0
 		Facings: 8
-	crawl:
+	panic-stand:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
@@ -1771,7 +1811,11 @@ shok:
 	stand3:
 		Start: 192
 		Length: 16
-	crawl:
+	prone-stand:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
