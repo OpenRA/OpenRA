@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderInfantryInfo : RenderSimpleInfo
+	public class RenderInfantryInfo : RenderSimpleInfo, ITraitPrerequisite<MobileInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
@@ -37,8 +37,7 @@ namespace OpenRA.Mods.RA.Render
 		};
 
 		public bool Panicked = false;
-		public bool Prone = false;
-		bool wasProne = false;
+		protected bool dirty = false;
 		
 		RenderInfantryInfo Info;
 		string idleSequence;
@@ -46,8 +45,7 @@ namespace OpenRA.Mods.RA.Render
 		
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
-			var prefix = Prone ? "prone-" :
-						 Panicked ? "panic-" : "";
+			var prefix = Panicked ? "panic-" : "";
 			
 			if (anim.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
@@ -57,7 +55,7 @@ namespace OpenRA.Mods.RA.Render
 		
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return Info.IdleAnimations.Length > 0 && !Prone && !Panicked;
+			return Info.IdleAnimations.Length > 0 && !Panicked;
 		}
 		
 		public AnimationState State { get; private set; }
@@ -84,17 +82,17 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			
-			if ((State == AnimationState.Moving || wasProne != Prone) && !mobile.IsMoving)
+			if ((State == AnimationState.Moving || dirty) && !mobile.IsMoving)
 			{
 				State = AnimationState.Waiting;
 				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			}
-			else if ((State != AnimationState.Moving || wasProne != Prone) && mobile.IsMoving)
+			else if ((State != AnimationState.Moving || dirty) && mobile.IsMoving)
 			{
 				State = AnimationState.Moving;
 				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
 			}
-			wasProne = Prone;
+			dirty = false;
 		}
 		
 		public void TickIdle(Actor self)

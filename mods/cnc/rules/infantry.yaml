@@ -17,8 +17,7 @@ E1:
 		HP: 50
 	AttackFrontal:
 		PrimaryWeapon: M16
-	TakeCover:
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3,idle4	
 E2:
 	Inherits: ^Infantry
@@ -42,8 +41,7 @@ E2:
 		PrimaryWeapon: Grenade
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 15
-	TakeCover:	
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	
 E3:
@@ -67,8 +65,7 @@ E3:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 0,0,0,-10
 		FireDelay: 5
-	TakeCover:
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 E4:
@@ -93,9 +90,8 @@ E4:
 		PrimaryWeapon: Flamethrower
 		PrimaryOffset: 0,0,0,-5
 		FireDelay: 3
-	TakeCover:
 	WithMuzzleFlash:
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 E5:
@@ -120,10 +116,9 @@ E5:
 		PrimaryWeapon: Chemspray
 		PrimaryOffset: 0,0,0,-5
 		FireDelay: 3
-	TakeCover:
 	WithMuzzleFlash:
 	-PoisonedByTiberium:
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 E6:
@@ -143,7 +138,6 @@ E6:
 		Speed: 4
 	Health:
 		HP: 25
-	TakeCover:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -151,7 +145,7 @@ E6:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
 RMBO:
@@ -175,12 +169,11 @@ RMBO:
 		HP: 200
 	RevealsShroud:
 		Range: 5
-	TakeCover:
 	C4Demolition:
 		C4Delay: .03
 	AttackFrontal:
 		PrimaryWeapon: Sniper
-	RenderInfantry:
+	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3
 
 VICE:
@@ -204,3 +197,4 @@ VICE:
 	Armor:
 		Type: Wood
 	-PoisonedByTiberium:
+	-TakeCover:

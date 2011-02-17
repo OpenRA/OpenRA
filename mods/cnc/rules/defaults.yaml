@@ -112,7 +112,8 @@
 		TargetTypes: Ground
 	Buildable:
 		Queue: Infantry
-	RenderInfantry:
+	TakeCover:
+	RenderInfantryProne:
 	AutoTarget:
 	AttackMove:
 	Passenger:
@@ -132,6 +133,9 @@
 	Inherits: ^Infantry
 	-Buildable:
 	-AutoTarget:
+	-TakeCover:
+	-RenderInfantryProne:
+	RenderInfantry:
 	AppearsOnRadar:
 	Selectable:
 		Voice: CivilianMaleVoice

@@ -14,7 +14,7 @@ using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class TakeCoverInfo : ITraitInfo, ITraitPrerequisite<RenderInfantryInfo>
+	public class TakeCoverInfo : ITraitInfo
 	{
 		public readonly int ProneTime = 100;	/* ticks, =4s */
 		public readonly float ProneDamage = .5f;
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// Infantry prone behavior
-	class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
+	public class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
 	{
 		TakeCoverInfo Info;
 		[Sync]
@@ -38,25 +38,14 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0) /* Don't go prone when healed */
-			{
-				if (e.Warhead == null || !e.Warhead.PreventProne)
-				{
-					remainingProneTime = Info.ProneTime;
-					self.Trait<RenderInfantry>().Prone = true;
-				}
-			}
+			if (e.Damage > 0 && e.Warhead == null || !e.Warhead.PreventProne) /* Don't go prone when healed */
+				remainingProneTime = Info.ProneTime;
 		}
 
 		public void Tick(Actor self)
 		{
-			if (!IsProne)
-				return;
-			
-			//var ri = self.Trait<RenderInfantry>();
-
-			if (--remainingProneTime <= 0)
-				self.Trait<RenderInfantry>().Prone = false;
+			if (IsProne)
+				remainingProneTime--;
 		}
 		
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
@@ -67,6 +56,47 @@ namespace OpenRA.Mods.RA
 		public decimal GetSpeedModifier()
 		{
 			return IsProne ? Info.ProneSpeed : 1m;
+		}
+	}
+	
+	class RenderInfantryProneInfo : RenderInfantryInfo, ITraitPrerequisite<TakeCoverInfo>
+	{
+		public override object Create(ActorInitializer init) { return new RenderInfantryProne(init.self, this); }
+	}
+
+	class RenderInfantryProne : RenderInfantry
+	{
+		readonly TakeCover tc;
+		bool wasProne;
+		
+		public RenderInfantryProne(Actor self, RenderInfantryProneInfo info)
+			: base(self, info)
+		{
+			tc = self.Trait<TakeCover>();
+		}
+		
+		protected override string NormalizeInfantrySequence(Actor self, string baseSequence)
+		{
+			var prefix = tc != null && tc.IsProne ? "prone-" : "";
+			
+			if (anim.HasSequence(prefix + baseSequence))
+				return prefix + baseSequence;
+			else
+				return baseSequence;
+		}
+		
+		protected override bool AllowIdleAnimation(Actor self)
+		{
+			return base.AllowIdleAnimation(self) && !tc.IsProne;
+		}
+		
+		public override void Tick (Actor self)
+		{
+			if (wasProne != tc.IsProne)
+				dirty = true;
+			
+			wasProne = tc.IsProne;
+			base.Tick(self);
 		}
 	}
 }
