@@ -46,6 +46,11 @@ namespace OpenRA.Editor
 			foreach (var path in ModData.FindMapsIn(MapFolderPath))
             {
                 var map = new Map(path);
+				// Touch the lazy bits to initialize them
+				var foo = map.Actors.Value.Count;
+				foo = map.Smudges.Value.Count;
+				var bar = map.MapResources.Value[0,0];
+				var baz = map.MapTiles.Value[0,0];
 				map.Save(path);
             }
 		}
