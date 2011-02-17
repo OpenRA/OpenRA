@@ -23,8 +23,8 @@ DOG:
 	AttackLeap:
 		PrimaryWeapon: DogJaw
 		CanAttackGround: no
-	IdleAnimation:
-		Animations: idle1,idle2
+	RenderInfantry:
+		IdleAnimations: idle1,idle2
 
 E1:
 	Inherits: ^Infantry
@@ -48,8 +48,9 @@ E1:
 	AttackFrontal:
 		PrimaryWeapon: M1Carbine
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 E2:
 	Inherits: ^Infantry
@@ -75,8 +76,9 @@ E2:
 		PrimaryOffset: 0,0,0,-13
 		FireDelay: 15
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 E3:
 	Inherits: ^Infantry
@@ -102,8 +104,9 @@ E3:
 		SecondaryWeapon: Dragon
 		PrimaryOffset: 0,0,0,-13
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 E4:
 	Inherits: ^Infantry
@@ -129,8 +132,9 @@ E4:
 		PrimaryOffset: 0,0,0,-7
 		FireDelay: 8
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 E6:
 	Inherits: ^Infantry
@@ -160,8 +164,9 @@ E6:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 SPY:
 	Inherits: ^Infantry
@@ -187,15 +192,14 @@ SPY:
 		Range: 5
 	Passenger:
 		PipType: Yellow
-	RenderSpy:
 	TakeCover:
 	Spy:
-	-RenderInfantry:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderSpy:
+		IdleAnimations: idle1,idle2
 
 E7:
 	Inherits: ^Infantry
@@ -227,8 +231,9 @@ E7:
 		PrimaryWeapon: Colt45
 		SecondaryWeapon: Colt45
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 MEDI:
 	Inherits: ^Infantry
@@ -261,8 +266,9 @@ MEDI:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 
 C1:
 	Inherits: ^Infantry
@@ -281,7 +287,6 @@ C1:
 		Range: 2
 	AttackFrontal:
 		PrimaryWeapon: Pistol
-	-ProximityCaptor:
 	ProximityCaptor:
 		Types:CivilianInfantry
 
@@ -329,5 +334,6 @@ SHOK:
 	AttackFrontal:
 		PrimaryWeapon: PortaTesla
 	TakeCover:
-	IdleAnimation:
-		Animations: idle1,idle2
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
