@@ -32,14 +32,8 @@ namespace OpenRA.Mods.RA.Render
 			Idle,
 			Attacking,
 			Moving,
-			Waiting
-		};
-		
-		enum IdleState
-		{
-			None,
 			Waiting,
-			Active
+			IdleAnimating
 		};
 
 		public bool Panicked = false;
@@ -49,7 +43,6 @@ namespace OpenRA.Mods.RA.Render
 		RenderInfantryInfo Info;
 		string idleSequence;
 		int idleDelay;
-		IdleState idleState;
 		
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
@@ -62,6 +55,11 @@ namespace OpenRA.Mods.RA.Render
 				return baseSequence;
 		}
 		
+		protected virtual bool AllowIdleAnimation(Actor self)
+		{
+			return Info.IdleAnimations.Length > 0 && !Prone && !Panicked;
+		}
+		
 		public AnimationState State { get; private set; }
 		Mobile mobile;
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
@@ -69,7 +67,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
-			State = AnimationState.Idle;
+			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
 		}
 
@@ -96,50 +94,35 @@ namespace OpenRA.Mods.RA.Render
 				State = AnimationState.Moving;
 				anim.PlayRepeating(NormalizeInfantrySequence(self, "run"));
 			}
-			
 			wasProne = Prone;
-			
-			if (!self.IsIdle)
-			{
-				idleState = IdleState.None;
-				return;
-			}
-			
-			if (idleState == IdleState.Active)
-				return;
-				
-			else if (idleDelay > 0 && --idleDelay == 0)
-			{
-				idleState = IdleState.Active;
-
-				if (anim.HasSequence(idleSequence))
-				{
-					anim.PlayThen(idleSequence,
-						() =>
-						{
-							idleState = IdleState.None; 
-							anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
-						});
-				}
-				else
-					idleState = IdleState.None;
-			}
 		}
 		
 		public void TickIdle(Actor self)
 		{
-			if (State != AnimationState.Idle)
+			if (State != AnimationState.Idle && State != AnimationState.IdleAnimating)
 			{
 				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 				State = AnimationState.Idle;
+				
+				if (Info.IdleAnimations.Length > 0)
+				{
+					idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
+					idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
+				}
 			}
-
-			if (idleState != IdleState.None || Info.IdleAnimations.Length == 0)
-				return;
-			
-			idleState = IdleState.Waiting;
-			idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
-			idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
+			else if (AllowIdleAnimation(self) && idleDelay > 0 && --idleDelay == 0)
+			{
+				if (anim.HasSequence(idleSequence))
+				{
+					State = AnimationState.IdleAnimating;
+					anim.PlayThen(idleSequence,
+						() =>
+						{
+							anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
+							State = AnimationState.Waiting;
+						});
+				}
+			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
