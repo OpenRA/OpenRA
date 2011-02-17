@@ -175,26 +175,3 @@ RMBO:
 		PrimaryWeapon: Sniper
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3
-
-VICE:
-	Inherits: ^Infantry
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Viceroid
-		Icon: rmboicnh
-	Mobile:
-		Speed: 5
-	Health:
-		HP: 400
-	AttackFrontal:
-		PrimaryWeapon: Chemspray
-	AttackWander:
-	-RenderInfantry:
-	RenderUnit:
-		Smokes: False
-	WithMuzzleFlash:
-	Armor:
-		Type: Wood
-	-PoisonedByTiberium:
-	-TakeCover:
