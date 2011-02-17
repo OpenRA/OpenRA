@@ -18,15 +18,15 @@ namespace OpenRA.Mods.RA.Render
 {
 	public class RenderInfantryInfo : RenderSimpleInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self); }
+		public readonly int MinIdleWaitTicks = 30;
+		public readonly int MaxIdleWaitTicks = 110;
+		public readonly string[] IdleAnimations = {};
+		
+		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
 	}
 
 	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
 	{
-		public bool Panicked = false;
-		public bool Prone = false;
-		bool wasProne = false;
-		
 		public enum AnimationState
 		{
 			Idle,
@@ -34,6 +34,22 @@ namespace OpenRA.Mods.RA.Render
 			Moving,
 			Waiting
 		};
+		
+		enum IdleState
+		{
+			None,
+			Waiting,
+			Active
+		};
+
+		public bool Panicked = false;
+		public bool Prone = false;
+		bool wasProne = false;
+		
+		RenderInfantryInfo Info;
+		string idleSequence;
+		int idleDelay;
+		IdleState idleState;
 		
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
@@ -48,9 +64,10 @@ namespace OpenRA.Mods.RA.Render
 		
 		public AnimationState State { get; private set; }
 		Mobile mobile;
-		public RenderInfantry(Actor self)
+		public RenderInfantry(Actor self, RenderInfantryInfo info)
 			: base(self, () => self.Trait<IFacing>().Facing)
 		{
+			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			State = AnimationState.Idle;
 			mobile = self.Trait<Mobile>();
@@ -81,6 +98,32 @@ namespace OpenRA.Mods.RA.Render
 			}
 			
 			wasProne = Prone;
+			
+			if (!self.IsIdle)
+			{
+				idleState = IdleState.None;
+				return;
+			}
+			
+			if (idleState == IdleState.Active)
+				return;
+				
+			else if (idleDelay > 0 && --idleDelay == 0)
+			{
+				idleState = IdleState.Active;
+
+				if (anim.HasSequence(idleSequence))
+				{
+					anim.PlayThen(idleSequence,
+						() =>
+						{
+							idleState = IdleState.None; 
+							anim.PlayRepeating(NormalizeInfantrySequence(self, "stand"));
+						});
+				}
+				else
+					idleState = IdleState.None;
+			}
 		}
 		
 		public void TickIdle(Actor self)
@@ -90,8 +133,14 @@ namespace OpenRA.Mods.RA.Render
 				anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 				State = AnimationState.Idle;
 			}
+
+			if (idleState != IdleState.None || Info.IdleAnimations.Length == 0)
+				return;
+			
+			idleState = IdleState.Waiting;
+			idleSequence = Info.IdleAnimations.Random(self.World.SharedRandom);
+			idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
 		}
-		
 
 		public void Damaged(Actor self, AttackInfo e)
 		{

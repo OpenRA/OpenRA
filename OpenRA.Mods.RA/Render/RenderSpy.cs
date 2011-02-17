@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderSpyInfo : RenderInfantryInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderSpy(init.self); }
+		public override object Create(ActorInitializer init) { return new RenderSpy(init.self, this); }
 	}
 
 	class RenderSpy : RenderInfantry, IRenderModifier, IIssueOrder, IResolveOrder, IOrderVoice
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Render
 		Player disguisedAsPlayer;
 		string disguisedAsSprite;
 
-		public RenderSpy(Actor self) : base(self) { }
+		public RenderSpy(Actor self, RenderInfantryInfo info) : base(self, info) { }
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
