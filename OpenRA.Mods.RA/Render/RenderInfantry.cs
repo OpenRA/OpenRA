@@ -36,7 +36,6 @@ namespace OpenRA.Mods.RA.Render
 			IdleAnimating
 		};
 
-		public bool Panicked = false;
 		protected bool dirty = false;
 		
 		RenderInfantryInfo Info;
@@ -45,17 +44,12 @@ namespace OpenRA.Mods.RA.Render
 		
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
-			var prefix = Panicked ? "panic-" : "";
-			
-			if (anim.HasSequence(prefix + baseSequence))
-				return prefix + baseSequence;
-			else
-				return baseSequence;
+			return baseSequence;
 		}
 		
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return Info.IdleAnimations.Length > 0 && !Panicked;
+			return Info.IdleAnimations.Length > 0;
 		}
 		
 		public AnimationState State { get; private set; }

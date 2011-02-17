@@ -135,7 +135,6 @@
 	-AutoTarget:
 	-TakeCover:
 	-RenderInfantryProne:
-	RenderInfantry:
 	AppearsOnRadar:
 	Selectable:
 		Voice: CivilianMaleVoice
@@ -158,6 +157,7 @@
 	ProximityCaptor:
 		Types:CivilianInfantry
 	ScaredyCat:
+	RenderInfantryPanic:	
 
 ^Plane:
 	AppearsOnRadar:
