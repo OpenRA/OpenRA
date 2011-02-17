@@ -254,7 +254,7 @@ namespace OpenRA
 			root.Add( new MiniYamlNode( "Players", null,
 				Players.Select( p => new MiniYamlNode(
 					"PlayerReference@{0}".F( p.Key ),
-					FieldSaver.Save( p.Value ) ) ).ToList() ) );
+					FieldSaver.SaveDifferences( p.Value, new PlayerReference() ) ) ).ToList() ) );
 
 			root.Add( new MiniYamlNode( "Actors", null,
 				Actors.Value.Select( x => new MiniYamlNode(
