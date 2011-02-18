@@ -55,7 +55,7 @@ return {
 		isampler1D isampler2D isampler3D isamplerRECT isamplerCUBE isampler1DARRAY isampler2DARRAY isamplerCUBEARRAY sampler sampler1D 
 		sampler2D sampler3D samplerRECT samplerCUBE sampler1DARRAY sampler2DARRAY samplerCUBEARRAY texture texture1D texture2D 
 		texture3D textureRECT textureCUBE texture1DARRAY texture2DARRAY textureCUBEARRAY decl do double else 
-		usamplerBUF isamplerBUF samplerBUF
+		usamplerBUF isamplerBUF samplerBUF samplerRBUF
 		extern false for if in inline inout out pass pixelshader 
 		return shared static string technique true uniform vector vertexshader void 
 		volatile while asm compile const auto break case catch 
@@ -75,7 +75,7 @@ return {
 		tex2DARRAYproj tex2DARRAYsize tex2Dbias tex2Dcmpbias tex2Dcmplod tex2Dfetch tex2Dlod tex2Dproj tex2Dsize tex3D 
 		tex3Dbias tex3Dfetch tex3Dlod tex3Dproj tex3Dsize texBUF texBUFsize texCUBE texCUBEARRAY texCUBEARRAYsize 
 		texCUBEbias texCUBElod texCUBEproj texCUBEsize texRECT texRECTbias texRECTfetch texRECTlod texRECTproj texRECTsize 
-		texBUF texBUFsize
+		texBUF texBUFsize texRBUF texRBUFsize
 		unpack_4ubyte pack_4ubyte unpack_4byte pack_4byte unpack_2ushort pack_2ushort
 		unpack_2half pack_2half
 		

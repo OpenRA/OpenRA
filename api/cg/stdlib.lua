@@ -114,6 +114,9 @@ tex3Dsize = fn "returns the size of a given texture image for a given level of d
 texBUF = fn "performs an unfiltered texture lookup in a given texture buffer sampler. (only gp4 profiles) - (float4)(samplerBUF, int s)"
 texBUFsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(samplerBUF, int lod)"
 
+texRBUF = fn "performs a multi-sampled texture lookup in a renderbuffer. (only gp4 profiles) - (float4)(samplerRBUF, int2 s, int sample)"
+texRBUFsize = fn "returns the size of a given renderbuffer. (only gp4 profiles) - (int2)(samplerBUF)"
+
 texCUBE = fn "performs a texture lookup in a given CUBE sampler and, in some cases, a shadow comparison (float4 coord). May also use pre computed derivatives if those are provided. Texeloffset only in gp4 or higher profiles. - (float4)(samplerCUBE, float3/float4 s, |float3 dx, dy|)"
 texCUBEbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler1D, float4 s, [int texeloffset])"
 texCUBElod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler1D, float4 s, [int texeloffset])"
