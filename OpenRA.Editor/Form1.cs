@@ -21,12 +21,12 @@ namespace OpenRA.Editor
 {
 	public partial class Form1 : Form
 	{
-		public Form1(string[] mods)
+		public Form1(string[] args)
 		{
 			InitializeComponent();
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
-			currentMod = mods.FirstOrDefault() ?? "ra";
+			currentMod = args.FirstOrDefault() ?? "ra";
 
 			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
 			
@@ -56,6 +56,9 @@ namespace OpenRA.Editor
 			
 			surface1.AfterChange += OnMapChanged;
 			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
+			
+			if (args.Length >= 2)
+				LoadMap(args[1]);
 		}
 
 		void OnMapChanged()
