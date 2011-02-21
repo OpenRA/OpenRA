@@ -31,6 +31,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int ROT = 5;
 		public readonly int RangeLimit = 0;
 		public readonly bool TurboBoost = false;
+		public readonly int TrailInterval = 2;
 
 		public IEffect Create(ProjectileArgs args) { return new Missile( this, args ); }
 	}
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.RA.Effects
 		
 		// In pixels
 		const int MissileCloseEnough = 7;
-		
+		int ticksToNextSmoke;
 		
 		public void Tick( World world )
 		{
@@ -107,7 +108,12 @@ namespace OpenRA.Mods.RA.Effects
 			if (Info.Trail != null)
 			{
 				var sp = (SubPxPosition - (move * 3) / 2) / 1024 - new int2(0, Altitude);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, sp, Info.Trail)));
+
+				if (--ticksToNextSmoke < 0)
+				{
+					world.AddFrameEndTask(w => w.Add(new Smoke(w, sp, Info.Trail)));
+					ticksToNextSmoke = Info.TrailInterval;
+				}
 			}
 			
 			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
