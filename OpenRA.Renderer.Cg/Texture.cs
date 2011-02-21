@@ -34,6 +34,16 @@ namespace OpenRA.Renderer.Cg
 			SetData(bitmap);
 		}
 
+		void PrepareTexture()
+		{
+			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
+			GraphicsDevice.CheckGlError();
+			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
+			GraphicsDevice.CheckGlError();
+		}
+
 		public void SetData(byte[] colors, int width, int height)
 		{
 			if (!IsPowerOf2(width) || !IsPowerOf2(height))
@@ -45,12 +55,7 @@ namespace OpenRA.Renderer.Cg
 				{
 					IntPtr intPtr = new IntPtr((void*)ptr);
 
-					Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
+					PrepareTexture();
 					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
@@ -72,13 +77,8 @@ namespace OpenRA.Renderer.Cg
 				fixed (uint* ptr = &colors[0,0])
 				{
 					IntPtr intPtr = new IntPtr((void *) ptr);
-					
-					Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
-					Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-					GraphicsDevice.CheckGlError();
+
+					PrepareTexture();
 					Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
@@ -94,18 +94,12 @@ namespace OpenRA.Renderer.Cg
 				bitmap = new Bitmap(bitmap, new Size(NextPowerOf2(bitmap.Width), NextPowerOf2(bitmap.Height)));
 			}
 
-			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
-			GraphicsDevice.CheckGlError();
-
 			var bits = bitmap.LockBits(
 				new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadOnly,
 				PixelFormat.Format32bppArgb);
 			
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_BASE_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
-			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
-			GraphicsDevice.CheckGlError();
+			PrepareTexture(); 
 			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, bits.Width, bits.Height,
 				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
 			GraphicsDevice.CheckGlError();
