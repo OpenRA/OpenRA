@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool Shadow = false;
 		public readonly bool Proximity = false;
 		public readonly float Angle = 0;
+		public readonly int TrailInterval = 2;
 
 		public IEffect Create(ProjectileArgs args) { return new Bullet( this, args ); }
 	}
@@ -83,6 +84,8 @@ namespace OpenRA.Mods.RA.Effects
 				: rawFacing + scale * attitude);
 		}
 
+		int ticksToNextSmoke;
+
 		public void Tick( World world )
 		{
 			t += 40;
@@ -101,8 +104,12 @@ namespace OpenRA.Mods.RA.Effects
 					? (pos - new float2(0, GetAltitude()))
 					: pos;
 
-				world.AddFrameEndTask(w => w.Add(
-					new Smoke(w, highPos.ToInt2(), Info.Trail)));
+				if (--ticksToNextSmoke < 0)
+				{
+					world.AddFrameEndTask(w => w.Add(
+						new Smoke(w, highPos.ToInt2(), Info.Trail)));
+					ticksToNextSmoke = Info.TrailInterval;
+				}
 			}
 
 			if (!Info.High)		// check for hitting a wall

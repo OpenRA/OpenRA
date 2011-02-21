@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 	class SmokeTrailWhenDamagedInfo : ITraitInfo
 	{
 		public readonly int[] Offset = { 0, 0 };
-		public readonly int Interval = 1;
+		public readonly int Interval = 3;
 
 		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
 	}
