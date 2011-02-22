@@ -20,15 +20,21 @@ namespace OpenRA.Renderer.Glsl
 	public class Texture : ITexture
 	{
 		internal int texture;
+		internal int memory;
+		GraphicsDevice dev;
 		
 		public Texture(GraphicsDevice dev)
 		{
+			this.dev = dev;
+
 			Gl.glGenTextures(1, out texture);
 			GraphicsDevice.CheckGlError();
 		}
 		
 		public Texture(GraphicsDevice dev, Bitmap bitmap)
 		{
+			this.dev = dev;
+
 			Gl.glGenTextures(1, out texture);
 			GraphicsDevice.CheckGlError();
 			SetData(bitmap);
@@ -49,6 +55,18 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAX_LEVEL, 0);
 			GraphicsDevice.CheckGlError();
 		}
+
+		void UpdateMemoryUsage( int newSize )
+		{
+			if (newSize == memory)
+				return;
+
+			dev.GpuMemoryUsed -= memory;
+			memory = newSize;
+			dev.GpuMemoryUsed += memory;
+
+			Log.Write("debug", "GPU Memory: {0:F2} MiB", dev.GpuMemoryUsed / 1024 / 1024f);
+		}
 		
 		public void SetData(byte[] colors, int width, int height)
 		{
@@ -65,7 +83,9 @@ namespace OpenRA.Renderer.Glsl
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
 				}
-			}			
+			}
+
+			UpdateMemoryUsage(colors.Length);
 		}
 
 		// An array of RGBA
@@ -87,7 +107,9 @@ namespace OpenRA.Renderer.Glsl
 						0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
 					GraphicsDevice.CheckGlError();
 				}
-			}			
+			}
+
+			UpdateMemoryUsage(width * height * sizeof(uint));
 		}
 		
 		public void SetData(Bitmap bitmap)
@@ -108,6 +130,8 @@ namespace OpenRA.Renderer.Glsl
 				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
 			GraphicsDevice.CheckGlError();
 			bitmap.UnlockBits(bits);
+
+			UpdateMemoryUsage(bitmap.Width * bitmap.Height * sizeof(uint));
 		}
 
 		bool IsPowerOf2(int v)

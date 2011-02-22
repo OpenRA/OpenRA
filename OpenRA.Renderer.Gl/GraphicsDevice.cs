@@ -311,5 +311,7 @@ namespace OpenRA.Renderer.Glsl
 		public ITexture CreateTexture() { return new Texture( this ); }
 		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( this, bitmap ); }
 		public IShader CreateShader( string name ) { return new Shader( this, name ); }
+
+		public int GpuMemoryUsed { get; internal set; }
 	}
 }
