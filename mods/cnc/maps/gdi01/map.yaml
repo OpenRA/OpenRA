@@ -1,6 +1,8 @@
 Selectable: False
 
-MapFormat: 4
+MapFormat: 5
+
+RequiresMod: cnc
 
 Title: Gdi 01
 
@@ -8,15 +10,11 @@ Description: Describe your map here
 
 Author: Westwood Studios
 
-PlayerCount: 10
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
 
-TopLeft: 35,39
-
-BottomRight: 62,62
+Bounds: 35,39,27,23
 
 UseAsShellmap: False
 
@@ -25,55 +23,30 @@ Type: Conquest
 Players:
 	PlayerReference@BadGuy:
 		Name: BadGuy
-		Palette:
-		OwnsWorld: False
-		NonCombatant: False
-		Playable: False
-		DefaultStartingUnits: False
-		AllowBots: True
-		LockRace: False
 		Race: nod
-		LockColor: False
-		Color: 255,255,20,0
-		Color2: 255,56,0,0
 		ColorRamp: 3,255,127,28
-		InitialCash: 0
 		Allies: BadGuy
-		Enemies: GoodGuy
+		Enemies: GoodGuy,Creeps
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
-		Palette:
-		OwnsWorld: False
-		NonCombatant: False
 		Playable: True
-		DefaultStartingUnits: False
-		AllowBots: True
 		LockRace: True
 		Race: gdi
 		LockColor: True
-		Color: 255,246,214,121
-		Color2: 255,40,32,8
 		ColorRamp: 31,222,183,24
 		InitialCash: 20
 		Allies: GoodGuy
-		Enemies: BadGuy
+		Enemies: BadGuy,Creeps
 	PlayerReference@Neutral:
 		Name: Neutral
-		Palette:
 		OwnsWorld: True
 		NonCombatant: True
-		Playable: False
-		DefaultStartingUnits: False
-		AllowBots: True
-		LockRace: False
 		Race: gdi
-		LockColor: False
-		Color: 255,238,238,238
-		Color2: 255,44,28,24
-		ColorRamp: 0,0,238,34
-		InitialCash: 0
-		Allies:
-		Enemies:
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: Random
+		Enemies: BadGuy,GoodGuy
 
 Actors:
 	Actor0: sbag
@@ -453,17 +426,33 @@ Actors:
 		Facing: 96
 		ActorStance: Hunt
 		SubCell: 4
-
-Waypoints:
-	spawn27: 51,47
-	nod0: 36,39
-	nod1: 37,46
-	nod2: 38,55
-	nod3: 52,52
-	gunboatRight: 61,59
-	gunboatLeft: 35,59
-	lstStart: 54,61
-	lstEnd: 54,56
+	spawn27: mpspawn
+		Location: 51,47
+		Owner: Neutral
+	nod0: mpspawn
+		Location: 36,39
+		Owner: Neutral
+	nod1: mpspawn
+		Location: 37,46
+		Owner: Neutral
+	nod2: mpspawn
+		Location: 38,55
+		Owner: Neutral
+	nod3: mpspawn
+		Location: 52,52
+		Owner: Neutral
+	gunboatRight: mpspawn
+		Location: 61,59
+		Owner: Neutral
+	gunboatLeft: mpspawn
+		Location: 35,59
+		Owner: Neutral
+	lstStart: mpspawn
+		Location: 54,61
+		Owner: Neutral
+	lstEnd: mpspawn
+		Location: 54,56
+		Owner: Neutral
 
 Smudges:
 
