@@ -122,6 +122,12 @@ namespace OpenRA
 			if (MapFormat < 4)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 			
+			// Load players
+			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
+			{
+				var player = new PlayerReference(kv.Value);
+				Players.Add(player.Name, player);
+			}
 			
 			Actors = Lazy.New(() =>
 			{
@@ -138,18 +144,14 @@ namespace OpenRA
 						string[] loc = wp.Value.Value.Split( ',' );
 						var a = new ActorReference("mpspawn");
 						a.Add(new LocationInit(new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) )));
+						a.Add(new OwnerInit(Players.First(p => p.Value.OwnsWorld).Key));
 						ret.Add(wp.Key, a);
 					}
 				
 				return ret;
 			});
 			
-			// Load players
-			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
-			{
-				var player = new PlayerReference(kv.Value);
-				Players.Add(player.Name, player);
-			}
+
 
 			// Upgrade map to format 5
 			if (MapFormat < 5)
