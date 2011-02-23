@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -245,7 +245,7 @@
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
     <Compile Include="ThrowsParticles.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="DefaultShellmapScript.cs" />
+    <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Turreted.cs" />
     <Compile Include="Buildings\Wall.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
