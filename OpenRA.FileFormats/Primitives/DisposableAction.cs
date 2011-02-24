@@ -14,22 +14,27 @@ namespace OpenRA
 {
 	public class DisposableAction : IDisposable
 	{
-		public DisposableAction(Action a) { this.a = a; }
+		public DisposableAction(Action onDispose, Action onFinalize)
+		{
+			this.onDispose = onDispose;
+			this.onFinalize = onFinalize;
+		}
 
-		Action a;
+		Action onDispose;
+		Action onFinalize;
 		bool disposed;
 
 		public void Dispose()
 		{
 			if (disposed) return;
 			disposed = true;
-			a();
+			onDispose();
 			GC.SuppressFinalize(this);
 		}
 
 		~DisposableAction()
 		{
-			Dispose();
+			onFinalize();
 		}
 	}
 }

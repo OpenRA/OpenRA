@@ -32,10 +32,10 @@ namespace OpenRA.Mods.RA
 		{
 			reservedFor = forActor;
 
-			return new DisposableAction(() =>
-				{
-					reservedFor = null;
-				});
+			return new DisposableAction(() => { reservedFor = null; },
+										() => Game.RunAfterTick(() => 
+			                        {throw new InvalidOperationException("Attempted to finalize an undisposed DisposableAction");})
+			);
 		}
 
 		public static bool IsReserved(Actor a)
