@@ -37,11 +37,11 @@ namespace OpenRA.Mods.RA.Air
 			{
 				dest = ChooseAirfield(self);
 			}
-
+			
+			var plane = self.Trait<Plane>();
 			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
 			{
-				var plane = self.Trait<Plane>();
 				plane.UnReserve();
 				plane.reservation = res.Reserve(self);
 			}
@@ -77,6 +77,7 @@ namespace OpenRA.Mods.RA.Air
 			w1 = (c1 + f).ToInt2();
 			w2 = (c2 + f).ToInt2();
 			w3 = (approachStart).ToInt2();
+			plane.RTBPathHash = w1 + w2 + w3;
 
 			isCalculated = true;
 		}

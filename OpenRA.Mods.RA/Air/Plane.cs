@@ -25,10 +25,12 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, INotifyDamage
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, INotifyDamage, ISync
 	{
 		public IDisposable reservation;
-
+		[Sync]
+		public int2 RTBPathHash;
+		
 		public Plane( ActorInitializer init, PlaneInfo info ) : base( init, info ) { }
 
 		bool firstTick = true;
