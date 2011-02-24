@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, INotifyDamage
 	{
 		public IDisposable reservation;
 
@@ -83,6 +83,12 @@ namespace OpenRA.Mods.RA.Air
 				reservation.Dispose();
 				reservation = null;
 			}
+		}
+		
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (e.DamageState == DamageState.Dead)
+				UnReserve();
 		}
 		
 		public void ResolveOrder(Actor self, Order order)
