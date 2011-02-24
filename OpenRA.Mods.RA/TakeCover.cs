@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0 && e.Warhead == null || !e.Warhead.PreventProne) /* Don't go prone when healed */
+			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
 				remainingProneTime = Info.ProneTime;
 		}
 
