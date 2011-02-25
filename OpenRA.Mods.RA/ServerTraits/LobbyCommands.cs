@@ -184,6 +184,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
+						slotData.Closed = false;
 						slotData.Bot = string.Join(" ", parts.Skip(1).ToArray() );
 
 						server.SyncLobbyInfo();
