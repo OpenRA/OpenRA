@@ -30,14 +30,13 @@ namespace OpenRA.Mods.RA.Air
 
 	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public IDisposable reservation;
 		HelicopterInfo Info;
 
 		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info ) 
 		{
 			Info = info;
 		}
-
+		
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

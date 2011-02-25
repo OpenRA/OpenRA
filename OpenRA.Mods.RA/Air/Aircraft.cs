@@ -75,8 +75,26 @@ namespace OpenRA.Mods.RA.Air
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
 
-	public class Aircraft : IMove, IFacing, IOccupySpace, ISync
+	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyDamage
 	{
+		public IDisposable reservation;
+		
+		public void UnReserve()
+		{
+			if (reservation != null)
+			{
+				reservation.Dispose();
+				reservation = null;
+			}
+		}
+		
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (e.DamageState == DamageState.Dead)
+				UnReserve();
+		}
+		
+		
 		protected readonly Actor self;
 		[Sync]
 		public int Facing { get; set; }
