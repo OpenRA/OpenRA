@@ -407,5 +407,11 @@ namespace OpenRA.Editor
 			if (DialogResult.OK == saveFileDialog.ShowDialog())
 				pmMiniMap.Image.Save(saveFileDialog.FileName);
 		}
+
+		void showActorNamesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			showActorNamesToolStripMenuItem.Checked ^= true;
+			surface1.ShowActorNames = showActorNamesToolStripMenuItem.Checked;
+		}
 	}
 }

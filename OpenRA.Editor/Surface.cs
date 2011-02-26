@@ -35,6 +35,8 @@ namespace OpenRA.Editor
 		ITool Tool;
 		
 		public bool IsPanning;
+		public bool ShowActorNames;
+
 		public event Action AfterChange = () => { };
 		public event Action<string> MousePositionChanged = _ => { };
 
@@ -339,9 +341,20 @@ namespace OpenRA.Editor
 				Map.Bounds.Height * TileSet.TileSize * Zoom);
 
 			foreach (var ar in Map.Actors.Value)
+			{
 				if (ActorTemplates.ContainsKey(ar.Value.Type))
 					DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
 						GetPaletteForActor(ar.Value));
+			}
+
+			if (ShowActorNames)
+				foreach (var ar in Map.Actors.Value)
+					if (!ar.Key.StartsWith("Actor"))	// if it has a custom name
+						e.Graphics.DrawStringContrast(Font, ar.Key,
+							(int)(ar.Value.Location().X * TileSet.TileSize * Zoom + Offset.X),
+							(int)(ar.Value.Location().Y * TileSet.TileSize * Zoom + Offset.Y),
+							Brushes.White,
+							Brushes.Black);
 
 			if (Tool != null)
 				Tool.Preview(this, e.Graphics);
@@ -360,6 +373,16 @@ namespace OpenRA.Editor
 		public static int2 Location(this ActorReference ar)
 		{
 			return ar.InitDict.Get<LocationInit>().value;
+		}
+
+		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)
+		{
+			g.DrawString(s, f, bg, x - 1, y - 1);
+			g.DrawString(s, f, bg, x + 1, y - 1);
+			g.DrawString(s, f, bg, x - 1, y + 1);
+			g.DrawString(s, f, bg, x + 1, y + 1);
+
+			g.DrawString(s, f, fg, x, y);
 		}
 	}
 }
