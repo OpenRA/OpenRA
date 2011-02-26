@@ -41,11 +41,12 @@ namespace OpenRA.Mods.RA.Air
 				if (self.Trait<IMove>().Altitude == 0)
 				{	
 					/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
-					var res = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-						.Select( a => a.TraitOrDefault<Reservable>() ).FirstOrDefault( a => a != null );
+					var afld = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
+						.FirstOrDefault( a => a.HasTrait<Reservable>() );
+					var res = afld.Trait<Reservable>();
 
 					if (res != null)
-						reservation = res.Reserve(self);
+						reservation = res.Reserve(afld, self);
 				}
 			}
 		}

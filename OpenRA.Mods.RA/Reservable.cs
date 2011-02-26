@@ -28,13 +28,14 @@ namespace OpenRA.Mods.RA
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
-		public IDisposable Reserve(Actor forActor)
+		public IDisposable Reserve(Actor self, Actor forActor)
 		{
 			reservedFor = forActor;
 
-			return new DisposableAction(() => { reservedFor = null; },
+			return new DisposableAction(() => reservedFor = null,
 										() => Game.RunAfterTick(() => 
-			                        {throw new InvalidOperationException("Attempted to finalize an undisposed DisposableAction");})
+			                            {throw new InvalidOperationException("Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})"
+			                                                            .F(forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID));})
 			);
 		}
 
