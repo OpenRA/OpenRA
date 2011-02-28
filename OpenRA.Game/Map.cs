@@ -377,6 +377,11 @@ namespace OpenRA
 				writer.Write((ushort)MapSize.X);
 				writer.Write((ushort)MapSize.Y);
 
+				if (!OpenRA.Rules.TileSets.ContainsKey(Tileset))
+					throw new InvalidOperationException(
+						"Tileset used by the map ({0}) does not exist in this mod. Valid tilesets are: {1}"
+						.F(Tileset, string.Join(",", OpenRA.Rules.TileSets.Keys.ToArray())));
+
 				// Tile data
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
