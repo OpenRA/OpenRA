@@ -414,7 +414,7 @@ namespace OpenRA.Editor
 				pmMiniMap.Image.Save(saveFileDialog.FileName);
 		}
 
-		void showActorNamesToolStripMenuItem_Click(object sender, EventArgs e)
+		void ShowActorNamesClicked(object sender, EventArgs e)
 		{
 			showActorNamesToolStripMenuItem.Checked ^= true;
 			surface1.ShowActorNames = showActorNamesToolStripMenuItem.Checked;

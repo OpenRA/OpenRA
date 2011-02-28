@@ -449,7 +449,7 @@
 			this.showActorNamesToolStripMenuItem.Name = "showActorNamesToolStripMenuItem";
 			this.showActorNamesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
 			this.showActorNamesToolStripMenuItem.Text = "Show Actor &Names";
-			this.showActorNamesToolStripMenuItem.Click += new System.EventHandler(this.showActorNamesToolStripMenuItem_Click);
+			this.showActorNamesToolStripMenuItem.Click += new System.EventHandler(this.ShowActorNamesClicked);
 			// 
 			// Form1
 			// 
