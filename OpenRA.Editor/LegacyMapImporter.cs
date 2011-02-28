@@ -365,54 +365,65 @@ namespace OpenRA.Editor
 				//Structures: num=owner,type,health,location,turret-facing,trigger
 				//Units: num=owner,type,health,location,facing,action,trigger
 				//Infantry: num=owner,type,health,location,subcell,action,facing,trigger
-				var parts = s.Value.Split(',');
-				var loc = int.Parse(parts[3]);
-				if (parts[0] == "")
-					parts[0] = "Neutral";
-				
-				
-				if (!Players.Contains(parts[0]))
-					Players.Add(parts[0]);
-				
-				var stance = ActorStance.Stance.None;
-				switch(parts[5])
+
+				try
 				{
-					case "Area Guard":
-					case "Guard":
-						stance = ActorStance.Stance.Guard;
-					break;
-					case "Defend Base":
-						stance = ActorStance.Stance.Defend;
-					break;
-					case "Hunt":
-					case "Rampage":
-					case "Attack Base":
-					case "Attack Units":
-					case "Attack Civil.":
-					case "Attack Tarcom":
-						stance = ActorStance.Stance.Hunt;
-					break;
-					case "Retreat":
-					case "Return":
-						stance = ActorStance.Stance.Retreat;
-					break;
-					// do we care about `Harvest' and `Sticky'?
+
+					var parts = s.Value.Split(',');
+					var loc = int.Parse(parts[3]);
+					if (parts[0] == "")
+						parts[0] = "Neutral";
+
+
+					if (!Players.Contains(parts[0]))
+						Players.Add(parts[0]);
+
+					var stance = ActorStance.Stance.None;
+					switch (parts[5])
+					{
+						case "Area Guard":
+						case "Guard":
+							stance = ActorStance.Stance.Guard;
+							break;
+						case "Defend Base":
+							stance = ActorStance.Stance.Defend;
+							break;
+						case "Hunt":
+						case "Rampage":
+						case "Attack Base":
+						case "Attack Units":
+						case "Attack Civil.":
+						case "Attack Tarcom":
+							stance = ActorStance.Stance.Hunt;
+							break;
+						case "Retreat":
+						case "Return":
+							stance = ActorStance.Stance.Retreat;
+							break;
+						// do we care about `Harvest' and `Sticky'?
+					}
+
+					var actor = new ActorReference(parts[1].ToLowerInvariant())
+					{
+						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new OwnerInit(parts[0]),
+						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo)/256),
+						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
+						new ActorStanceInit(stance),
+					};
+
+					if (section == "INFANTRY")
+						actor.Add(new SubCellInit(int.Parse(parts[4])));
+
+					if (!Rules.Info.ContainsKey(parts[1].ToLowerInvariant()))
+						errorHandler("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
+					else
+						Map.Actors.Value.Add("Actor" + ActorCount++, actor);
 				}
-				
-				var actor = new ActorReference(parts[1].ToLowerInvariant())
+				catch (Exception)
 				{
-					new LocationInit(new int2(loc % MapSize, loc / MapSize)),
-					new OwnerInit(parts[0]),
-					new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo)/256),
-					new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
-					new ActorStanceInit(stance),
-				};
-				
-				if (section == "INFANTRY")
-					actor.Add(new SubCellInit(int.Parse(parts[4])));
-				
-				Map.Actors.Value.Add("Actor" + ActorCount++,actor);
-					
+					errorHandler("Malformed actor definition: `{0}`".F(s));
+				}
 			}
 		}
 		
