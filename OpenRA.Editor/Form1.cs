@@ -377,8 +377,9 @@ namespace OpenRA.Editor
 						using (var eld = new ErrorListDialog(errors))
 							eld.ShowDialog();
 
-					map.Players.Add("Neutral", new PlayerReference("Neutral",
-						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+					if (!map.Players.ContainsKey("Neutral"))
+						map.Players.Add("Neutral", new PlayerReference("Neutral",
+							Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 					
 					map.Players.Add("Creeps", new PlayerReference("Creeps",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
