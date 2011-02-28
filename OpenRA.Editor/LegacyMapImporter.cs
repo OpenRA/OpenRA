@@ -101,15 +101,17 @@ namespace OpenRA.Editor
 		int ActorCount = 0;
 		Map Map = new Map();
 		List<string> Players = new List<string>();
+		Action<string> errorHandler;
 		
-		LegacyMapImporter(string filename)
+		LegacyMapImporter(string filename, Action<string> errorHandler)
 		{
+			this.errorHandler = errorHandler;
 			ConvertIniMap(filename);
 		}
 
-		public static Map Import(string filename)
+		public static Map Import(string filename, Action<string> errorHandler)
 		{
-			var converter = new LegacyMapImporter(filename);
+			var converter = new LegacyMapImporter(filename, errorHandler);
 			return converter.Map;
 		}
 

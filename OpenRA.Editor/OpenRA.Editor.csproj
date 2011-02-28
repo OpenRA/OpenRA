@@ -56,6 +56,12 @@
     <Compile Include="ActorTemplate.cs" />
     <Compile Include="ActorTool.cs" />
     <Compile Include="BrushTool.cs" />
+    <Compile Include="ErrorListDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorListDialog.Designer.cs">
+      <DependentUpon>ErrorListDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

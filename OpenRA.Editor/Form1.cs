@@ -370,7 +370,14 @@ namespace OpenRA.Editor
 					var savePath = Path.Combine(Path.GetTempPath(), "OpenRA.Import");
 					Directory.CreateDirectory(savePath);
 
-					var map = LegacyMapImporter.Import(ofd.FileName);
+					var errors = new List<string>();
+
+					var map = LegacyMapImporter.Import(ofd.FileName, a => errors.Add(a));
+
+					if (errors.Count > 0)
+						using (var eld = new ErrorListDialog(errors))
+							eld.ShowDialog();
+
 					map.Players.Add("Neutral", new PlayerReference("Neutral",
 						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
 					
