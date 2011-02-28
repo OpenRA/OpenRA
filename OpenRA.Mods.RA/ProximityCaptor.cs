@@ -25,9 +25,6 @@ namespace OpenRA.Mods.RA
 
 		public string[] Types;
 
-		[Sync]
-		public int Hash { get { return string.Join(",", Types).GetHashCode(); } }
-
 		public ProximityCaptor(ProximityCaptorInfo info)
 		{
 			Info = info;
