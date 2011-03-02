@@ -50,6 +50,13 @@ namespace OpenRA.Traits
 			DrawPips(wr, self, xY);
 			DrawTags(wr, self, new float2(.5f * (bounds.Left + bounds.Right), bounds.Top));
 			DrawUnitPath(self);
+
+			foreach (var extraBar in self.TraitsImplementing<ISelectionBar>())
+			{
+				DrawSelectionBar(self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
+				xy.Y += 4;
+				Xy.Y += 4;
+			}
 		}
 		
 		void DrawSelectionBox(Actor self, float2 xy, float2 Xy, float2 xY, float2 XY, Color c)
@@ -64,6 +71,29 @@ namespace OpenRA.Traits
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
 		}
+
+		void DrawSelectionBar(Actor self, float2 xy, float2 Xy, float value, Color barColor)
+		{
+			if (!self.IsInWorld) return;
+
+			var health = self.TraitOrDefault<Health>();
+			if (health == null || health.IsDead) return;
+
+			var c = Color.FromArgb(128, 30, 30, 30);
+			var c2 = Color.FromArgb(128, 10, 10, 10);
+
+			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
+
+			var z = float2.Lerp(xy, Xy, value);
+
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
+
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), barColor, barColor);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), barColor2, barColor2);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
+		}
 		
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
@@ -74,8 +104,6 @@ namespace OpenRA.Traits
 			
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-//			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
-//			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
 			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
 							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
@@ -92,8 +120,6 @@ namespace OpenRA.Traits
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
-//			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
-//			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);

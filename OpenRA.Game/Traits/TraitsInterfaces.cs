@@ -127,6 +127,7 @@ namespace OpenRA.Traits
 	public interface IPaletteModifier { void AdjustPalette(Dictionary<string,Palette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 	public interface ITags { IEnumerable<TagType> GetTags(); }
+	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
 	public interface ITeleportable : IHasLocation /* crap name! */
 	{
