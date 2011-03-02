@@ -177,7 +177,7 @@ V2RL:
 		Prerequisites: weap,fix
 		Owner: soviet
 	Valued:
-		Cost: 1200
+		Cost: 1150
 	Tooltip:
 		Name: Heavy Tank
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
