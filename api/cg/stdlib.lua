@@ -134,8 +134,8 @@ tex1DARRAY = fn "performs a texture lookup in a given 1D sampler array and, in s
 tex1DARRAYbias = fn "performs a texture lookup with bias in a given sampler (as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
 tex1DARRAYcmpbias = fn "performs a texture lookup with bias and shadow compare in a given sampler (layer as .y, compare as .z, bias as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
 tex1DARRAYcmplod = fn "performs a texture lookup with a specified level of detail and a shadow compare in a given sampler (compare as .z, lod as .w).  - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
-tex1DARRAYfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .w). - (float4)(sampler1DARRAY, int4 s, [int texeloffset])"
-tex1DARRAYlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .w) - (float4)(sampler1DARRAY, float4 s, [int texeloffset])"
+tex1DARRAYfetch = fn "performs an unfiltered texture lookup in a given sampler (lod as .z). - (float4)(sampler1DARRAY, int3 s, [int texeloffset])"
+tex1DARRAYlod = fn "performs a texture lookup with a specified level of detail in a given sampler (lod as .z) - (float4)(sampler1DARRAY, float3 s, [int texeloffset])"
 tex1DARRAYproj = fn "performs a texture lookup with projection in a given sampler. May perform a shadow comparison if argument for shadow comparison is provided. (shadow in .z for float3 coord, proj in .z or .w) - (float4)(sampler1DARRAY, float3/float4 s, [int texeloff])"
 tex1DARRAYsize = fn "returns the size of a given texture image for a given level of detail. (only gp4 profiles) - (int3)(sampler1DARRAY, int lod)"
 

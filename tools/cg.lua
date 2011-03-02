@@ -33,6 +33,7 @@ return cgbinpath and {
 
 		local data = {}
 		data.customarg = false
+		data.custom = ""
 		data.profid = ID ("cg.profile."..cgprofile)
 		data.domains = {
 			[ID "cg.compile.vertex"]   = 1,
@@ -396,7 +397,8 @@ return cgbinpath and {
 			if (not profile[domain]) then return end
 			
 			-- popup for custom input
-			local args = data.customarg and wx.wxGetTextFromUser("Compiler Args") or ""
+			data.custom = data.customarg and wx.wxGetTextFromUser("Compiler Args","Cg",data.custom) or data.custom
+			local args = data.customarg and data.custom or ""
 			args = args:len() > 0 and args or nil
 
 			local fullname = filename:GetFullPath()
