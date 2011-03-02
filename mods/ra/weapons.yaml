@@ -476,7 +476,7 @@ MammothTusk:
 		Speed: 12
 		High: true
 		Angle: .1
-		Inaccuracy: 80
+		Inaccuracy: 40
 		Image: 120MM
 	Warhead:
 		Spread: 10
