@@ -67,10 +67,11 @@ namespace OpenRA.Mods.RA.Activities
 			self.World.AddFrameEndTask(w =>
 			{
 				if (actor.Destroyed) return;
-				w.Add(actor);
 
 				var mobile = actor.Trait<Mobile>();
 				mobile.SetPosition(actor, self.Location);
+
+				w.Add(actor);
 				actor.CancelActivity();
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
 				actor.SetTargetLine(Target.FromCell(exitTile.Value), Color.Green, false);
