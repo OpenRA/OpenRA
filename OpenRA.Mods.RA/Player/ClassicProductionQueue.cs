@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA
 			
 			base.Tick(self);
 		}
-		
-		ActorInfo[] None = new ActorInfo[]{};
+
+		static ActorInfo[] None = { };
 		public override IEnumerable<ActorInfo> AllItems()
 		{
 			return QueueActive ? base.AllItems() : None;
