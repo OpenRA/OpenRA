@@ -121,7 +121,7 @@ namespace OpenRA.Traits
 				DisplayHp = hp;
 
 			if (DisplayHp > hp)
-				DisplayHp = (DisplayHp + 2 * hp) / 3;
+				DisplayHp = (2 * DisplayHp + hp) / 3;
 		}
 	}
 	
