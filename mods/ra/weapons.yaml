@@ -1010,6 +1010,7 @@ FLAK-23:
 	ValidTargets: Air,Ground
 	Projectile: Bullet
 		Speed: 100
+		High: true
 	Warhead:
 		Spread: 5
 		Versus: 
