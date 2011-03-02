@@ -11,7 +11,6 @@
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
-using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -22,6 +21,8 @@ namespace OpenRA.Mods.RA
 		public readonly string UnitType = "badr.bomber";
 		[ActorReference]
 		public readonly string FlareType = null;
+
+		public readonly int FlareTime = 25 * 60 * 2;	// 2 minutes
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.self, this); }
 	}
@@ -40,6 +41,12 @@ namespace OpenRA.Mods.RA
 					new LocationInit( order.TargetLocation ),
 					new OwnerInit( self.Owner ),
 				}) : null;
+
+				if (flare != null)
+				{
+					flare.QueueActivity(new Wait(info.FlareTime));
+					flare.QueueActivity(new RemoveSelf());
+				}
 			
 				var a = w.CreateActor(info.UnitType, new TypeDictionary
 			    {

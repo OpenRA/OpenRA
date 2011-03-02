@@ -8,11 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Orders;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -24,6 +23,8 @@ namespace OpenRA.Mods.RA
 		public string UnitType = "badr";
 		[ActorReference]
 		public string FlareType = "flare";
+
+		public readonly int FlareTime = 25 * 60 * 2;	// 2 minutes
 
 		public override object Create(ActorInitializer init) { return new ParatroopersPower(init.self, this); }
 	}
@@ -46,6 +47,12 @@ namespace OpenRA.Mods.RA
 					new OwnerInit( self.Owner ),
 				}) : null;
 
+				if (flare != null)
+				{
+					flare.QueueActivity(new Wait(info.FlareTime));
+					flare.QueueActivity(new RemoveSelf());
+				}
+
 				var a = w.CreateActor(info.UnitType, new TypeDictionary 
 				{
 					new LocationInit( startPos ),
@@ -56,7 +63,7 @@ namespace OpenRA.Mods.RA
 				
 				a.CancelActivity();
 				a.QueueActivity(new FlyCircle(order.TargetLocation));
-				a.Trait<ParaDrop>().SetLZ(order.TargetLocation, flare);
+				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)

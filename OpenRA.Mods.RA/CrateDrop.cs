@@ -55,14 +55,14 @@ namespace OpenRA.Mods.RA
 			var threshold = 100;
 			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
 
-			for (var n = 0; n < threshold; n++ )
+			for (var n = 0; n < threshold; n++)
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
-				
+
 				// Is this valid terrain?
 				var terrainType = self.World.GetTerrainType(p);
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
-				
+
 				// Don't drop on any actors
 				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
 				if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(p).Any()) continue;
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 						});
 						plane.CancelActivity();
 						plane.QueueActivity(new FlyCircle(p));
-						plane.Trait<ParaDrop>().SetLZ(p, null);
+						plane.Trait<ParaDrop>().SetLZ(p);
 						plane.Trait<Cargo>().Load(plane, crate);
 					});
 				return;

@@ -10,9 +10,9 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.RA
 {
@@ -22,16 +22,14 @@ namespace OpenRA.Mods.RA
 		public readonly string ChuteSound = "chute1.aud";
 	}
 
-	public class ParaDrop : ITick, INotifyDamage
+	public class ParaDrop : ITick
 	{
 		readonly List<int2> droppedAt = new List<int2>();
 		int2 lz;
-		Actor flare;
 
-		public void SetLZ( int2 lz, Actor flare )
+		public void SetLZ(int2 lz)
 		{
 			this.lz = lz;
-			this.flare = flare;
 			droppedAt.Clear();
 		}
 
@@ -77,28 +75,6 @@ namespace OpenRA.Mods.RA
 			self.CancelActivity();
 			self.QueueActivity(new FlyOffMap { Interruptible = false });
 			self.QueueActivity(new RemoveSelf());
-
-			if (flare != null)
-			{
-				flare.CancelActivity();
-				flare.QueueActivity(new Wait(300));
-				flare.QueueActivity(new RemoveSelf());
-				flare = null;
-			}
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
-			{
-				if (flare != null)
-				{
-					flare.CancelActivity();
-					flare.QueueActivity(new Wait(300));
-					flare.QueueActivity(new RemoveSelf());
-					flare = null;
-				}
-			}
 		}
 	}
 }
