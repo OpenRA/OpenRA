@@ -72,9 +72,10 @@ namespace OpenRA.Traits
 			var health = self.TraitOrDefault<Health>();
 			if (health == null || health.IsDead) return;
 			
-			var c = Color.Gray;
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
+			var c = Color.FromArgb(128, 30, 30, 30);
+			var c2 = Color.FromArgb(128, 10, 10, 10);
+//			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), xy + new float2(0, -4), c, c);
+//			Game.Renderer.LineRenderer.DrawLine(Xy + new float2(0, -2), Xy + new float2(0, -4), c, c);
 
 			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
 							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
@@ -86,13 +87,32 @@ namespace OpenRA.Traits
 				healthColor.B / 2);
 
 			var z = float2.Lerp(xy, Xy, health.HPFraction);
+			
 
-			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
+			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
+//			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), Xy + new float2(0, -4), c, c);
+//			Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
+
+			if (health.DisplayHp != health.HP)
+			{
+				var deltaColor = Color.OrangeRed;
+				var deltaColor2 = Color.FromArgb(
+					255,
+					deltaColor.R / 2,
+					deltaColor.G / 2,
+					deltaColor.B / 2);
+				var zz = float2.Lerp(xy, Xy, (float)health.DisplayHp / health.MaxHP);
+
+				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -3), zz + new float2(0, -3), deltaColor, deltaColor);
+				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), zz + new float2(0, -2), deltaColor2, deltaColor2);
+				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), zz + new float2(0, -4), deltaColor2, deltaColor2);
+			}
 		}
 
 		void DrawControlGroup(WorldRenderer wr, Actor self, float2 basePosition)

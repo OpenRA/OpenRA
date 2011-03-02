@@ -23,12 +23,14 @@ namespace OpenRA.Traits
 
 	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead };
 	
-	public class Health : ISync
+	public class Health : ISync, ITick
 	{
 		public readonly HealthInfo Info;
 		
 		[Sync]
 		int hp;
+
+		public int DisplayHp { get; private set; }
 		
 		public Health(ActorInitializer init, HealthInfo info)
 		{
@@ -111,6 +113,15 @@ namespace OpenRA.Traits
 			}
 
 			if (hp > MaxHP)	hp = MaxHP;
+		}
+
+		public void Tick(Actor self)
+		{
+			if (hp > DisplayHp)
+				DisplayHp = hp;
+
+			if (DisplayHp > hp)
+				DisplayHp = (DisplayHp + 2 * hp) / 3;
 		}
 	}
 	
