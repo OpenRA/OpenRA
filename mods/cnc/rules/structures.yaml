@@ -41,6 +41,7 @@ FACT:
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
 	BaseBuilding:
+	ProductionBar:
 
 NUKE:
 	Inherits: ^Building
@@ -171,6 +172,8 @@ PYLE:
 		ReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
+	ProductionBar:
+	
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -208,6 +211,7 @@ HAND:
 		ReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
+	ProductionBar:
 
 AFLD:
 	Inherits: ^Building
@@ -248,6 +252,7 @@ AFLD:
 		ReadyAudio:
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
+	ProductionBar:
 
 WEAP:
 	Inherits: ^Building
@@ -289,6 +294,7 @@ WEAP:
 		ReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
+	ProductionBar:
 
 HQ:
 	RequiresPower:
@@ -415,6 +421,7 @@ HPAD:
 		ReadyAudio: unitredy.aud
 		OnHoldAudio: onhold1.aud
 		CancelledAudio: cancel1.aud
+	ProductionBar:
 
 EYE:
 	RequiresPower:

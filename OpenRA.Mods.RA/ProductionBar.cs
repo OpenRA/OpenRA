@@ -26,12 +26,12 @@ namespace OpenRA.Mods.RA
 
 		public float GetValue()
 		{
-			var queue = self.TraitOrDefault<ProductionQueue>();
+			var queue = self.TraitsImplementing<ProductionQueue>().FirstOrDefault(q => q.CurrentItem() != null);
 			if (queue == null)
 			{
 				var produces = self.Trait<Production>().Info.Produces;
 				queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.First(q => produces.Contains(q.Info.Type));
+					.FirstOrDefault(q => produces.Contains(q.Info.Type));
 			}
 
 			if (queue == null || queue.CurrentItem() == null)
