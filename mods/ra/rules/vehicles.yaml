@@ -139,7 +139,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: weap
+		Prerequisites: weap,fix
 		Owner: allies
 	Valued:
 		Cost: 850
@@ -174,7 +174,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: weap
+		Prerequisites: weap,fix
 		Owner: soviet
 	Valued:
 		Cost: 1200
@@ -209,7 +209,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: weap,stek
+		Prerequisites: weap,fix,stek
 		Owner: soviet
 	Valued:
 		Cost: 1800
