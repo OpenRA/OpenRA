@@ -923,7 +923,7 @@ FIX:
 		Owner: allies,soviet
 		Hotkey: d
 	Valued:
-		Cost: 700
+		Cost: 1000
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
