@@ -116,6 +116,7 @@ SPEN:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
+	ProductionBar:
 
 SYRD:
 	InfiltrateForSupportPower:
@@ -171,6 +172,7 @@ SYRD:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 	RallyPoint:
+	ProductionBar:
 
 IRON:
 	RequiresPower:
@@ -573,6 +575,7 @@ WEAP:
 		Produces: Vehicle
 	PrimaryBuilding:
 	IronCurtainable:
+	ProductionBar:
 
 FACT:
 	Inherits: ^Building
@@ -603,6 +606,8 @@ FACT:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 96
+	ProductionBar:
+		
 PROC:
 	Inherits: ^Building
 	Buildable:
@@ -705,6 +710,7 @@ HPAD:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
+	ProductionBar:
 
 AFLD:
 	Inherits: ^Building
@@ -755,6 +761,8 @@ AFLD:
 		Prerequisites: AFLD
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
+	ProductionBar:
+	
 POWR:
 	Inherits: ^Building
 	Buildable:
@@ -875,6 +883,7 @@ BARR:
 		Produces: Infantry
 	PrimaryBuilding:
 	IronCurtainable:
+	ProductionBar:
 
 TENT:
 	Inherits: ^Building
@@ -913,6 +922,7 @@ TENT:
 		Produces: Infantry
 	PrimaryBuilding:
 	IronCurtainable:
+	ProductionBar:
 
 FIX:
 	Inherits: ^Building

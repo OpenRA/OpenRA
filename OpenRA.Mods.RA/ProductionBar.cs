@@ -9,16 +9,37 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ProductionBarInfo : TraitInfo<ProductionBar> { }
+	class ProductionBarInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new ProductionBar( init.self ); }
+	}
 
 	class ProductionBar : ISelectionBar
 	{
-		public float GetValue() { return .5f; }
+		Actor self;
+		public ProductionBar(Actor self) { this.self = self; }
 
-		public Color GetColor() { return Color.CadetBlue; }
+		public float GetValue()
+		{
+			var queue = self.TraitOrDefault<ProductionQueue>();
+			if (queue == null)
+			{
+				var produces = self.Trait<Production>().Info.Produces;
+				queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
+					.First(q => produces.Contains(q.Info.Type));
+			}
+
+			if (queue == null || queue.CurrentItem() == null)
+				return 0f;
+
+			return 1 - (float)queue.CurrentItem().RemainingCost / queue.CurrentItem().TotalCost;
+		}
+
+		public Color GetColor() { return Color.SkyBlue; }
 	}
 }

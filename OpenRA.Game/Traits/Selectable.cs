@@ -53,9 +53,13 @@ namespace OpenRA.Traits
 
 			foreach (var extraBar in self.TraitsImplementing<ISelectionBar>())
 			{
-				DrawSelectionBar(self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
-				xy.Y += 4;
-				Xy.Y += 4;
+				var value = extraBar.GetValue();
+				if (value != 0)
+				{
+					xy.Y += 4;
+					Xy.Y += 4;
+					DrawSelectionBar(self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
+				}
 			}
 		}
 		
