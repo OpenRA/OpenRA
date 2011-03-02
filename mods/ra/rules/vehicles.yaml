@@ -251,7 +251,7 @@ ARTY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: weap
+		Prerequisites: weap, dome
 		Owner: allies
 	Valued:
 		Cost: 600
@@ -373,14 +373,14 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: weap,tent
-		Owner: allies
+		Owner: soviet
 	Valued:
-		Cost: 800
+		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
 		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 200
+		HP: 300
 	Armor:
 		Type: Heavy
 	Mobile:
