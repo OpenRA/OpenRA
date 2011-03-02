@@ -852,7 +852,7 @@ HELI:
 		Cost: 2000
 	Tooltip:
 		Name: Longbow
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
 	Health:
 		HP: 120
 	Armor:
@@ -876,7 +876,7 @@ HELI:
 		Smokes: no
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 6
+		Ammo: 8
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
@@ -892,16 +892,16 @@ HIND:
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
-		Cost: 1500
+		Cost: 1000
 	Tooltip:
 		Name: Hind
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
-		HP: 120
+		HP: 150
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12
+		Range: 10
 	AttackHeli:
 		PrimaryWeapon: ChainGun
 		SecondaryWeapon: ChainGun
