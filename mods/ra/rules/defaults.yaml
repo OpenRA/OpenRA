@@ -3,10 +3,10 @@
 	Mobile:
 		Crushes: atmine, crate
 		TerrainSpeeds:
-			Clear: 60
+			Clear: 80
 			Rough: 40
 			Road: 100
-			Ore: 90
+			Ore: 70
 			Beach: 40
 		ROT: 5
 	Selectable: 
@@ -73,7 +73,7 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
-			Ore: 100
+			Ore: 80
 			Beach: 80
 	Selectable:
 		Voice: GenericVoice
