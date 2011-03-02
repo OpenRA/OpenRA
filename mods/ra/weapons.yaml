@@ -138,8 +138,10 @@ Maverick:
 		Damage: 60
 		
 FireballLauncher:
-	ROF: 45
+	ROF: 65
 	Range: 4
+	Burst: 2
+	BurstDelay: 20
 	Projectile: Bullet
 		Speed: 12
 		Trail: fb2
