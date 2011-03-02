@@ -22,6 +22,7 @@ ZSU-23:
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 100
+		High: true
 	Warhead:
 		Spread: 5
 		Versus: 
