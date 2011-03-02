@@ -270,6 +270,7 @@ TSLA:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -304,6 +305,7 @@ AGUN:
 		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -368,6 +370,7 @@ PBOX:
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -395,6 +398,7 @@ HBOX:
 		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
+		BaseNormal: no
 	Health:
 		HP: 600
 	Armor:
@@ -422,6 +426,7 @@ GUN:
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -40
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -454,6 +459,7 @@ FTUR:
 		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -20
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -484,6 +490,7 @@ SAM:
 		Power: -20
 		Footprint: xx
 		Dimensions: 2,1
+		BaseNormal: no
 	Health:
 		HP: 400
 	Armor:
@@ -662,6 +669,7 @@ SILO:
 	Building:
 		Power: -10
 		Capturable: true
+		BaseNormal: no
 	Health:
 		HP: 300
 	Armor:
