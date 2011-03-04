@@ -79,6 +79,9 @@ E2:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+	Explodes:
+		Weapon: UnitExplodeSmall
+		Chance: 50		
 
 E3:
 	Inherits: ^Infantry
