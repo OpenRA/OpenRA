@@ -19,6 +19,8 @@ namespace OpenRA.Mods.RA
 		public readonly string Weapon = "UnitExplode";
 		[WeaponReference]
 		public readonly string EmptyWeapon = "UnitExplode";
+
+		public readonly int Chance = 100;
 	}
 
 	class Explodes : INotifyDamage
@@ -27,6 +29,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (e.DamageState == DamageState.Dead)
 			{
+				if (self.World.SharedRandom.Next(100) > self.Info.Traits.Get<ExplodesInfo>().Chance)
+					return;
+
 				var weapon = ChooseWeaponForExplosion(self);
 				if (weapon != null)
 				{
