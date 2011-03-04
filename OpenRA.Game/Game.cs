@@ -365,5 +365,10 @@ namespace OpenRA
 			server = new Server.Server(modData, settings, map);
 			JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
 		}
+
+		public static bool IsCurrentWorld(World world)
+		{
+			return orderManager != null && orderManager.world == world;
+		}
 	}
 }
