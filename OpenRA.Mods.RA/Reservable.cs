@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			if (reservedFor == null) 
 				return;		/* nothing to do */
 
-			if (!reservedFor.IsInWorld || reservedFor.IsDead())	// todo: replace with Target.IsValid?
+			if (!Target.FromActor( reservedFor ).IsValid)
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
