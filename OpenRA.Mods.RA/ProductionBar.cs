@@ -26,6 +26,10 @@ namespace OpenRA.Mods.RA
 
 		public float GetValue()
 		{
+			// only people we like should see our production status.
+			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] != Stance.Ally)
+				return 0;
+
 			var queue = self.TraitsImplementing<ProductionQueue>().FirstOrDefault(q => q.CurrentItem() != null);
 			if (queue == null)
 			{
