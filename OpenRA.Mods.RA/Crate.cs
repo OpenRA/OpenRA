@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 /*
  * Crates left to implement:
@@ -95,7 +96,13 @@ namespace OpenRA.Mods.RA
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
 			var type = self.World.GetTerrainType(cell);
-			return Info.TerrainTypes.Contains(type);
+			if (!Info.TerrainTypes.Contains(type))
+				return false;
+
+			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null) return false;
+			if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any()) return false;
+
+			return true;
 		}
 
 		public void SetPosition(Actor self, int2 cell)
