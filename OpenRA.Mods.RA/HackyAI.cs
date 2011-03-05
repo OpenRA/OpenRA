@@ -256,9 +256,6 @@ namespace OpenRA.Mods.RA
 		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		//This is purely to identify production buildings that don't have a rally point set.
-		List<Actor> activeProductionBuildings = new List<Actor>();
-
 		bool IsHumanPlayer(Player p) { return !p.IsBot && !p.NonCombatant; }
 
 		bool HasHumanPlayers()
@@ -288,7 +285,6 @@ namespace OpenRA.Mods.RA
 			activeUnits.RemoveAll(a => a.Destroyed);
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
 			attackForce.RemoveAll(a => a.Destroyed);
-			activeProductionBuildings.RemoveAll(a => a.Destroyed);
 
 			// don't select harvesters.
 			var newUnits = self.World.Queries.OwnedBy[p]
@@ -320,32 +316,39 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
+		bool IsRallyPointValid(int2 x)
+		{
+			return world.IsCellBuildable(x, false);
+		}
+
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
-			var newProdBuildings = self.World.Queries.OwnedBy[p]
-				.Where(a => (a.TraitOrDefault<RallyPoint>() != null
-					&& !activeProductionBuildings.Contains(a)
-					)).ToArray();
+			var buildings = self.World.Queries.OwnedBy[p].WithTrait<RallyPoint>()
+				.Where(rp => !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
-			foreach (var a in newProdBuildings)
+			if (buildings.Length > 0)
+				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
+					p.PlayerName, buildings.Length);
+
+
+			foreach (var a in buildings)
 			{
-				activeProductionBuildings.Add(a);
-				int2 newRallyPoint = ChooseRallyLocationNear(a.Location);
-				newRallyPoint.X += 4;
-				newRallyPoint.Y += 4;
-				world.IssueOrder(new Order("SetRallyPoint", a, false) { TargetLocation = newRallyPoint });
+				int2 newRallyPoint = ChooseRallyLocationNear(a.Actor.Location);
+				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = newRallyPoint });
 			}
 		}
 
 		//won't work for shipyards...
 		int2 ChooseRallyLocationNear(int2 startPos)
 		{
-			Random r = new Random();
-			foreach (var t in world.FindTilesInCircle(startPos, 8))
-				if (world.IsCellBuildable(t, false) && t != startPos && r.Next(64) == 0)
-					return t;
+			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8).Where(x => world.IsCellBuildable(x, false)).ToArray();
+			if (possibleRallyPoints.Length == 0)
+			{
+				Game.Debug("Bot Bug: No possible rallypoint near {0}", startPos);
+				return startPos;
+			}
 
-			return startPos;		// i don't know where to put it.
+			return possibleRallyPoints.Random(random);
 		}
 
 		int2? ChooseDestinationNear(Actor a, int2 desiredMoveTarget)

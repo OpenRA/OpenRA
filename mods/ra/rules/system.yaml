@@ -67,17 +67,18 @@ Player:
 		BuildingFractions:
 			proc: 30%
 			tent: 1%
+			barr: 1%
 			weap: 1%
 			pbox: 5%
 			gun: 15%
 			ftur: 10%
-			tsla: 15%
+			tsla: 10%
+			fix: 0.1%
 			dome: 1%
 			agun: 5%
 			sam: 1%
 			atek: 1%
 			stek: 1%
-			fix: 0.1%
 		UnitsToBuild:
 			1tnk: 0%
 			2tnk: 0%
