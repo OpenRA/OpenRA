@@ -366,6 +366,10 @@ JEEP:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
+	Cargo:
+		Types: Infantry
+		Passengers: 1
+		UnloadFacing: 220
 
 APC:
 	Inherits: ^Tank
