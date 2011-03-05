@@ -260,7 +260,7 @@ TSLA:
 		BuildPaletteOrder: 70
 		Prerequisites: weap
 		Owner: soviet
-		Hotkey: t
+		Hotkey: u
 	Valued:
 		Cost: 1500
 	Tooltip:
