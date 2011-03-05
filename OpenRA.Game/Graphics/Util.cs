@@ -63,13 +63,13 @@ namespace OpenRA.Graphics
 			indices[ni + 4] = (ushort)(nv + 3);
 		}
 
+		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
-			var masks = new int[] { 2, 1, 0, 3 };	// hack, our channel order is nuts.
 			var data = dest.sheet.Data;
 			var srcStride = dest.bounds.Width;
 			var destStride = dest.sheet.Size.Width * 4;
-			var destOffset = destStride * dest.bounds.Top + dest.bounds.Left * 4 + masks[(int)dest.channel];
+			var destOffset = destStride * dest.bounds.Top + dest.bounds.Left * 4 + channelMasks[(int)dest.channel];
 			var destSkip = destStride - 4 * srcStride;
 			var height = dest.bounds.Height;
 
