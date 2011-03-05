@@ -9,6 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
+using System;
+using System.Drawing;
 
 namespace OpenRA.FileFormats
 {
@@ -23,8 +25,8 @@ namespace OpenRA.FileFormats
 			Second = second;
 		}
 
-		static IEqualityComparer<T> tc = EqualityComparer<T>.Default;
-		static IEqualityComparer<U> uc = EqualityComparer<U>.Default;
+		internal static IEqualityComparer<T> tc = EqualityComparer<T>.Default;
+		internal static IEqualityComparer<U> uc = EqualityComparer<U>.Default;
 
 		public static bool operator ==(Pair<T, U> a, Pair<T, U> b)
 		{
@@ -55,8 +57,6 @@ namespace OpenRA.FileFormats
 		public static T AsFirst(Pair<T, U> p) { return p.First; }
 		public static U AsSecond(Pair<T, U> p) { return p.Second; }
 
-        public Pair<U, T> Swap() { return Pair.New(Second, First); }
-
 		public override string ToString()
 		{
 			return "({0},{1})".F(First, Second);
@@ -65,6 +65,18 @@ namespace OpenRA.FileFormats
 
     public static class Pair
     {
-        public static Pair<T, U> New<T, U>(T t, U u) { return new Pair<T, U>(t, u); }
+		public static Pair<T, U> New<T, U>(T t, U u) { return new Pair<T, U>(t, u); }
+		
+		static Pair()
+		{
+			Pair<char,Color>.uc = new ColorEqualityComparer();
+		}
+
+		// avoid the default crappy one
+		class ColorEqualityComparer : IEqualityComparer<Color>
+		{
+			public bool Equals(Color x, Color y) { return x.ToArgb() == y.ToArgb(); }
+			public int GetHashCode(Color obj) { return obj.GetHashCode(); }
+		}
     }
 }
