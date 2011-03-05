@@ -86,16 +86,21 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
+			if (self.Owner == self.World.LocalPlayer && Level > 0)
+				return InnerModifyRender(self, rs);
+			else
+				return rs;
+		}
+
+		IEnumerable<Renderable> InnerModifyRender(Actor self, IEnumerable<Renderable> rs)
+		{
 			foreach (var r in rs)
 				yield return r;
 
-			if (self.Owner == self.World.LocalPlayer && Level > 0)
-			{
-				RankAnim.Tick();	// hack
-				var bounds = self.GetBounds(false);
-				yield return new Renderable(RankAnim.Image,
-					new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", (int)self.CenterLocation.Y);
-			}
+			RankAnim.Tick();	// hack
+			var bounds = self.GetBounds(false);
+			yield return new Renderable(RankAnim.Image,
+				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", (int)self.CenterLocation.Y);
 		}
 	}
 }
