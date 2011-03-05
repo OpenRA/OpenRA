@@ -102,19 +102,13 @@ namespace OpenRA.Widgets
 			orders.Do( o => world.IssueOrder( o ) );
 			
 			// Find an actor with a phrase to say
-			var done = false;
 			foreach (var o in orders)
 			{
 				if (o.Subject.Destroyed) continue;
 				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
-				{
-					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), o.Subject, o.Subject.Owner.Country.Race))
-					{
-						done = true;
-						break;
-					}
-				}
-				if (done) break;
+					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), 
+						o.Subject, o.Subject.Owner.Country.Race))
+						return;
 			}
 		}
 		
