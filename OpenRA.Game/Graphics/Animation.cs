@@ -48,12 +48,21 @@ namespace OpenRA.Graphics
 
 		public void Play( string sequenceName )
 		{
-			PlayThen(sequenceName, () => { });
+			PlayThen(sequenceName, null);
 		}
 
 		public void PlayRepeating( string sequenceName )
 		{
-			PlayThen( sequenceName, () => PlayRepeating( CurrentSequence.Name ) );
+			backwards = false;
+			tickAlways = false;
+			CurrentSequence = SequenceProvider.GetSequence(name, sequenceName);
+			frame = 0;
+			tickFunc = () =>
+			{
+				++frame;
+				if (frame >= CurrentSequence.Length)
+					frame = 0;
+			};
 		}
 
 		public bool ReplaceAnim(string sequenceName)
@@ -68,7 +77,6 @@ namespace OpenRA.Graphics
 
 		public void PlayThen( string sequenceName, Action after )
 		{
-			after = after ?? ( () => { } );
 			backwards = false;
 			tickAlways = false;
 			CurrentSequence = SequenceProvider.GetSequence( name, sequenceName );
@@ -80,7 +88,7 @@ namespace OpenRA.Graphics
 				{
 					frame = CurrentSequence.Length - 1;
 					tickFunc = () => { };
-					after();
+					if (after != null) after();
 				}
 			};
 		}
