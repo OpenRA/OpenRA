@@ -57,7 +57,8 @@ namespace OpenRA.Graphics
 			palettes.Add(name, p);
 			indices.Add(name, allocated++);
 		}
-		
+
+		uint[,] data = new uint[MaxPalettes, 256];
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			var copy = palettes.ToDictionary(p => p.Key, p => new Palette(p.Value));
@@ -65,7 +66,6 @@ namespace OpenRA.Graphics
 			foreach (var mod in paletteMods)
 				mod.AdjustPalette(copy);
 			
-			var data = new uint[MaxPalettes,256];
 			foreach (var pal in copy)
 			{
 				var j = indices[pal.Key];
