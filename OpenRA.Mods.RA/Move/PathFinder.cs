@@ -87,12 +87,13 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				while (!search.queue.Empty)
-				{
-					var p = search.Expand( world );
-					if (search.heuristic(p) == 0)
-						return MakePath(search.cellInfo, p);
-				}
+				using(search)
+					while (!search.queue.Empty)
+					{
+						var p = search.Expand(world);
+						if (search.heuristic(p) == 0)
+							return MakePath(search.cellInfo, p);
+					}
 
 				// no path exists
 				return new List<int2>();
@@ -123,20 +124,22 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
-				{
-					/* make some progress on the first search */
-					var p = fromSrc.Expand( world );
+				using (fromSrc)
+				using (fromDest)
+					while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
+					{
+						/* make some progress on the first search */
+						var p = fromSrc.Expand(world);
 
-					if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
-						return MakeBidiPath(fromSrc, fromDest, p);
+						if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+							return MakeBidiPath(fromSrc, fromDest, p);
 
-					/* make some progress on the second search */
-					var q = fromDest.Expand( world );
+						/* make some progress on the second search */
+						var q = fromDest.Expand(world);
 
-					if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
-						return MakeBidiPath(fromSrc, fromDest, q);
-				}
+						if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
+							return MakeBidiPath(fromSrc, fromDest, q);
+					}
 
 				return new List<int2>();
 			}

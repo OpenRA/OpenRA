@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
-	public class PathSearch
+	public class PathSearch : IDisposable
 	{
 		World world;
 		public CellInfo[ , ] cellInfo;
@@ -193,13 +193,45 @@ namespace OpenRA.Mods.RA.Move
 			return search;
 		}
 
+		static readonly Queue<CellInfo[,]> cellInfoPool = new Queue<CellInfo[,]>();
+
+		static CellInfo[,] GetFromPool()
+		{
+			lock (cellInfoPool)
+				return cellInfoPool.Dequeue();
+		}
+
+		static void PutBackIntoPool(CellInfo[,] ci)
+		{
+			lock (cellInfoPool)
+				cellInfoPool.Enqueue(ci);
+		}
+
 		CellInfo[ , ] InitCellInfo()
 		{
-			var cellInfo = new CellInfo[ world.Map.MapSize.X, world.Map.MapSize.Y ];
+			CellInfo[,] result = null;
+			while (cellInfoPool.Count > 0)
+			{
+				var cellInfo = GetFromPool();
+				if (cellInfo.GetUpperBound(0) != world.Map.MapSize.X - 1 ||
+					cellInfo.GetUpperBound(1) != world.Map.MapSize.Y - 1)
+				{
+					Game.Debug("Discarding old pooled CellInfo of wrong size.");
+					continue;
+				}
+
+				result = cellInfo;
+				break;
+			}
+
+			if (result == null)
+				result  = new CellInfo[ world.Map.MapSize.X, world.Map.MapSize.Y ];
+
 			for( int x = 0 ; x < world.Map.MapSize.X ; x++ )
 				for( int y = 0 ; y < world.Map.MapSize.Y ; y++ )
-					cellInfo[ x, y ] = new CellInfo( int.MaxValue, new int2( x, y ), false );
-			return cellInfo;
+					result[ x, y ] = new CellInfo( int.MaxValue, new int2( x, y ), false );
+
+			return result;
 		}
 
 		public static Func<int2, int> DefaultEstimator( int2 destination )
@@ -212,5 +244,19 @@ namespace OpenRA.Mods.RA.Move
 				return (3400 * diag / 24) + (100 * straight);
 			};
 		}
+
+		bool disposed;
+		public void Dispose()
+		{
+			if (disposed)
+				return;
+
+			disposed = true;
+			GC.SuppressFinalize(this);
+			PutBackIntoPool(cellInfo);
+			cellInfo = null;
+		}
+
+		~PathSearch() { Dispose(); }
 	}
 }
