@@ -70,6 +70,7 @@ namespace OpenRA.Mods.RA
 				DoUncloak();
 		}
 
+		static readonly Renderable[] Nothing = { };
 		public IEnumerable<Renderable>
 			ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.RA
 			if (Cloaked && IsVisible(self))
 				return rs.Select(a => a.WithPalette("shadow"));
 			else
-				return new Renderable[] { };
+				return Nothing;
 		}
 
 		public void Tick(Actor self)
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.RA
 
 		public bool IsVisible(Actor self)
 		{
-			if (!Cloaked || self.Owner == self.World.LocalPlayer || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+			if (!Cloaked || self.Owner == self.World.LocalPlayer || self.World.LocalPlayer == null || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return true;
 			
 			return self.World.Queries.WithTrait<DetectCloaked>().Any(a => (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
