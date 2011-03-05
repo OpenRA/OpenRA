@@ -21,13 +21,15 @@ namespace OpenRA
 
 		ITraitContainer InnerGet( Type t )
 		{
-			return traits.GetOrAdd( t, CreateTraitContainer );
+			return traits.GetOrAdd( t, doCreateTraitContainer );
 		}
 
+		// construct this delegate once.
+		static Func<Type, ITraitContainer> doCreateTraitContainer = CreateTraitContainer;
 		static ITraitContainer CreateTraitContainer( Type t )
 		{
 			return (ITraitContainer)typeof( TraitContainer<> ).MakeGenericType( t )
-				.GetConstructor( new Type[ 0 ] ).Invoke( new object[ 0 ] );
+				.GetConstructor( Type.EmptyTypes ).Invoke( null );
 		}
 
 		public void AddTrait( Actor actor, object val )
