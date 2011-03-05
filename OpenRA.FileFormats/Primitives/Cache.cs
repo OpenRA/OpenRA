@@ -16,16 +16,20 @@ namespace OpenRA.FileFormats
 {
 	public class Cache<T, U> : IEnumerable<KeyValuePair<T, U>>
 	{
-		Dictionary<T, U> hax = new Dictionary<T, U>();
+		Dictionary<T, U> hax;
 		Func<T,U> loader;
 
-		public Cache(Func<T,U> loader)
+		public Cache(Func<T,U> loader, IEqualityComparer<T> c)
 		{
+			hax = new Dictionary<T, U>(c);
 			if (loader == null)
 				throw new ArgumentNullException();
 
 			this.loader = loader;
 		}
+
+		public Cache(Func<T, U> loader)
+			: this(loader, EqualityComparer<T>.Default) { }
 
 		public U this[T key]
 		{
