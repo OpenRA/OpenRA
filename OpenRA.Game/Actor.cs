@@ -60,10 +60,13 @@ namespace OpenRA
 					return new float2(si.Bounds[0], si.Bounds[1]);
 
 				// auto size from render
-				var firstSprite = TraitsImplementing<IRender>().SelectMany(x => x.Render(this)).FirstOrDefault();
+				var firstSprite = TraitsImplementing<IRender>().SelectMany(ApplyIRender).FirstOrDefault();
 				if (firstSprite.Sprite == null) return float2.Zero;
                 return firstSprite.Sprite.size * firstSprite.Scale;
 			});
+
+			ApplyIRender = x => x.Render(this);
+			ApplyRenderModifier = (m, p) => p.ModifyRender(this, m);
 		}
 
 		public void Tick()
@@ -82,11 +85,14 @@ namespace OpenRA
 
         OpenRA.FileFormats.Lazy<float2> Size;
 
+		// note: these delegates are cached to avoid massive allocation.
+		Func<IRender, IEnumerable<Renderable>> ApplyIRender;
+		Func<IEnumerable<Renderable>, IRenderModifier, IEnumerable<Renderable>> ApplyRenderModifier;
 		public IEnumerable<Renderable> Render()
 		{
 			var mods = TraitsImplementing<IRenderModifier>();
-			var sprites = TraitsImplementing<IRender>().SelectMany(x => x.Render(this));
-			return mods.Aggregate(sprites, (m, p) => p.ModifyRender(this, m));
+			var sprites = TraitsImplementing<IRender>().SelectMany(ApplyIRender);
+			return mods.Aggregate(sprites, ApplyRenderModifier);
 		}
 		
 		// When useAltitude = true, the bounding box is extended
