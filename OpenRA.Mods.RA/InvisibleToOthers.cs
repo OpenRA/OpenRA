@@ -27,11 +27,12 @@ namespace OpenRA.Mods.RA
 		{
 			return Color.FromArgb(128, self.Owner.ColorRamp.GetColor(0));
 		}
-		
+
+		static readonly Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			return self.World.LocalPlayer == self.Owner
-				? r : new Renderable[] { };
+				? r : Nothing;
 		}
 	}
 }
