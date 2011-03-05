@@ -451,7 +451,7 @@ FTUR:
 		BuildPaletteOrder: 20
 		Prerequisites: barr
 		Owner: soviet
-		Hotkey: f
+		Hotkey: t
 	Valued:
 		Cost: 600
 	Tooltip:
