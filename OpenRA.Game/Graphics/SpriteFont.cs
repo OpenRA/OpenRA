@@ -29,7 +29,8 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException("FT_New_Face failed");
 
 			FT.FT_Set_Pixel_Sizes(face, 0, (uint)size);
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph,
+				Pair<char,Color>.EqualityComparer);
 
 			// setup a 1-channel SheetBuilder for our private use
 			if (builder == null) builder = new SheetBuilder(TextureChannel.Alpha);

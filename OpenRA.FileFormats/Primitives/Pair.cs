@@ -61,6 +61,14 @@ namespace OpenRA.FileFormats
 		{
 			return "({0},{1})".F(First, Second);
 		}
+
+		class PairEqualityComparer : IEqualityComparer<Pair<T, U>>
+		{
+			public bool Equals(Pair<T, U> x, Pair<T, U> y) { return x == y; }
+			public int GetHashCode(Pair<T, U> obj) { return obj.GetHashCode(); }
+		}
+
+		public static IEqualityComparer<Pair<T, U>> EqualityComparer { get { return new PairEqualityComparer(); } }
 	}
 
     public static class Pair
