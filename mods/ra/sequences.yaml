@@ -438,6 +438,9 @@ jeep:
 		Start: 0
 		Length: 6
 		Facings: 8
+	unload:
+		Start: 0
+		Facings: 32
 
 apc:
 	idle:
