@@ -100,16 +100,8 @@ namespace OpenRA.Widgets
 
 			var orders = world.OrderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
 			orders.Do( o => world.IssueOrder( o ) );
-			
-			// Find an actor with a phrase to say
-			foreach (var o in orders)
-			{
-				if (o.Subject.Destroyed) continue;
-				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
-					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o), 
-						o.Subject, o.Subject.Owner.Country.Race))
-						return;
-			}
+
+			world.PlayVoiceForOrders(orders);
 		}
 		
 		public override string GetCursor(int2 pos)

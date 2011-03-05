@@ -15,6 +15,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public char AttackMoveKey = 'a';
 		public char StopKey = 's';
 		public char ScatterKey = 'x';
+		public char DeployKey = 'f';
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -50,10 +51,15 @@ namespace OpenRA.Mods.RA.Widgets
 				
 				if (e.KeyChar == ScatterKey)
 					return PerformScatter();
+
+				if (e.KeyChar == DeployKey)
+					return PerformDeploy();
 			}
 			
 			return false;
 		}
+
+		// todo: take ALL this garbage and route it through the OrderTargeter stuff.
 
 		bool PerformAttackMove()
 		{
@@ -63,21 +69,28 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
+		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
+		{
+			var orders = World.Selection.Actors.Select(f).ToArray();
+			foreach (var o in orders) World.IssueOrder(o);
+			World.PlayVoiceForOrders(orders);
+		}
+
 		bool PerformStop()
 		{
-			/* issue a stop order to everyone. */
-			foreach (var a in World.Selection.Actors)
-				World.IssueOrder(new Order("Stop", a, false));
-
+			PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
 			return true;
 		}
 		
 		bool PerformScatter()
 		{
-			/* issue a stop order to everyone. */
-			foreach (var a in World.Selection.Actors)
-				World.IssueOrder(new Order("Scatter", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false)); 
+			return true;
+		}
 
+		bool PerformDeploy()
+		{
+			PerformKeyboardOrderOnSelection(a => new Order("Deploy", a, false)); 
 			return true;
 		}
 	}

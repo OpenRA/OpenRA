@@ -125,5 +125,18 @@ namespace OpenRA
 			var v = a.Info.Traits.Get<SelectableInfo>().Voice;
 			return (v == null) ? null : Rules.Voices[v];
 		}
+
+		public static void PlayVoiceForOrders(this World w, Order[] orders)
+		{
+			// Find an actor with a phrase to say
+			foreach (var o in orders)
+			{
+				if (o.Subject.Destroyed) continue;
+				foreach (var v in o.Subject.TraitsImplementing<IOrderVoice>())
+					if (Sound.PlayVoice(v.VoicePhraseForOrder(o.Subject, o),
+						o.Subject, o.Subject.Owner.Country.Race))
+						return;
+			}
+		}
 	}
 }
