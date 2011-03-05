@@ -31,6 +31,9 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
+			foreach( var u in SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * dragStart ))
+				worldRenderer.DrawRollover( u );
+
 			var selbox = SelectionBox;
 			if (selbox == null) return;
 

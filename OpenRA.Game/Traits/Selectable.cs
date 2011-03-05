@@ -50,7 +50,24 @@ namespace OpenRA.Traits
 			DrawPips(wr, self, xY);
 			DrawTags(wr, self, new float2(.5f * (bounds.Left + bounds.Right), bounds.Top));
 			DrawUnitPath(self);
+			DrawExtraBars(self, xy, Xy);
+		}
 
+		public void DrawRollover(WorldRenderer wr, Actor self)
+		{
+			var bounds = self.GetBounds(false);
+			
+			var xy = new float2(bounds.Left, bounds.Top);
+			var Xy = new float2(bounds.Right, bounds.Top);
+			var xY = new float2(bounds.Left, bounds.Bottom);
+			var XY = new float2(bounds.Right, bounds.Bottom);
+
+			DrawHealthBar(self, xy, Xy);
+			DrawExtraBars(self, xy, Xy);
+		}
+
+		void DrawExtraBars(Actor self, float2 xy, float2 Xy)
+		{
 			foreach (var extraBar in self.TraitsImplementing<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();

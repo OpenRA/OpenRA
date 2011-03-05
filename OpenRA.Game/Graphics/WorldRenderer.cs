@@ -143,7 +143,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
 			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
-				}
+		}
+
+		public void DrawRollover(Actor unit)
+		{
+			var selectable = unit.TraitOrDefault<Selectable>();
+			if (selectable != null)
+				selectable.DrawRollover(this, unit);
+		}
 
 		public void DrawLocus(Color c, int2[] cells)
 		{
