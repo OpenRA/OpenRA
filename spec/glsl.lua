@@ -56,7 +56,7 @@ return {
 		isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
 		sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
 		sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
-		usamplerBuffer isamplerBuffer samplerBuffer
+		usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
 		in out inout uniform const centroid sample attribute varying patch
 		return switch case for do while if else break continue main
 		layout location vertices line_strip triangle_strip max_vertices stream
