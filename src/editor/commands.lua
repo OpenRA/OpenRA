@@ -63,6 +63,10 @@ function LoadFile(filePath, editor, file_must_exist)
 	editor:MarkerDeleteAll(BREAKPOINT_MARKER)
 	editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
 	editor:AppendText(file_text)
+	if (ide.config.editor.autotabs) then
+		local found = string.find(file_text,"\t") ~= nil
+		editor:SetUseTabs(found)
+	end
 	
 	editor:EmptyUndoBuffer()
 	local id = editor:GetId()

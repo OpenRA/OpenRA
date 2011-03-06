@@ -26,6 +26,7 @@ ide = {
 		}, 
 		editor = {
 			usetabs = true,
+			autotabs = true,
 		},
 		outputshell = {},
 		
