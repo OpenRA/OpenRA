@@ -8,10 +8,10 @@ return {
 					xpcall(function() dofile '%s' end,
 						function(err) print(debug.traceback(err)) end)
 				]]):format(filepath:gsub("\\","/"))
-				return '"'..mainpath..'/lualibs/lua.exe" -e "'..code..'"'
+				return '"'..mainpath..'/bin/lua.exe" -e "'..code..'"'
 			end,
 		fprojdir = function(fname) 
-				return ide.editorFilename..'/lualibs/' --fname:GetPath(wx.wxPATH_GET_VOLUME)
+				return fname:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		capture = true,
 		fworkdir = function (filepath) 

@@ -77,9 +77,8 @@ int main (int argc, char *argv[])
 	SetCurrentDirectory(buffer);
 
 
-	SetDllDirectory(".\\lualibs\\");
+	SetDllDirectory(".\\bin\\");
 	hinstLib = LoadLibrary("lua5.1.dll");
-	SetDllDirectory(".\\lualibs\\wx\\");
 	if (hinstLib != NULL)
     {
 		luaL_newstate = (voidfunc*) GetProcAddress(hinstLib, "luaL_newstate");
