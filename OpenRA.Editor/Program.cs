@@ -10,9 +10,9 @@
 
 using System;
 using System.Globalization;
-using System.Windows.Forms;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Editor
@@ -47,10 +47,10 @@ namespace OpenRA.Editor
             {
                 var map = new Map(path);
 				// Touch the lazy bits to initialize them
-				var foo = map.Actors.Value.Count;
-				foo = map.Smudges.Value.Count;
-				var bar = map.MapResources.Value[0,0];
-				var baz = map.MapTiles.Value[0,0];
+                map.Actors.Force();
+                map.Smudges.Force();
+                map.MapTiles.Force();
+                map.MapResources.Force();
 				map.Save(path);
             }
 		}

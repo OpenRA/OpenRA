@@ -37,6 +37,11 @@ namespace OpenRA.FileFormats
 				return value;
 			}
 		}
+
+        public void Force()
+        {
+            var ignored = Value;
+        }
 	}
 
 	public static class Lazy
