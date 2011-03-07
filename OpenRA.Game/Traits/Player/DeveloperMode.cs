@@ -21,6 +21,7 @@ namespace OpenRA.Traits
 		public bool PathDebug = false;
 		public bool UnitInfluenceDebug = false;
 		public bool UnlimitedPower;
+        public bool BuildAnywhere;
 		
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -35,16 +36,18 @@ namespace OpenRA.Traits
 		[Sync] public bool PathDebug;
 		[Sync] public bool UnitInfluenceDebug;
 		[Sync] public bool UnlimitedPower;
+        [Sync] public bool BuildAnywhere;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
 			Info = info;
-			FastBuild = Info.FastBuild;
-			FastCharge = Info.FastCharge;
-			DisableShroud = Info.DisableShroud;
-			PathDebug = Info.PathDebug;
+			FastBuild = info.FastBuild;
+			FastCharge = info.FastCharge;
+			DisableShroud = info.DisableShroud;
+			PathDebug = info.PathDebug;
 			UnitInfluenceDebug = info.UnitInfluenceDebug;
 			UnlimitedPower = info.UnlimitedPower;
+            BuildAnywhere = info.BuildAnywhere;
 		}
 		
 		public void ResolveOrder (Actor self, Order order)
@@ -101,6 +104,11 @@ namespace OpenRA.Traits
 						UnlimitedPower ^= true;
 						break;
 					}
+                case "DevBuildAnywhere":
+                    {
+                        BuildAnywhere ^= true;
+                        break;
+                    }
 				default:
 					return;
 			}

@@ -220,7 +220,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:350
-			Height:360
+			Height:370
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -287,10 +287,17 @@ Container@INGAME_ROOT:
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Unlimited Power
+				Checkbox@BUILD_ANYWHERE
+					Id:BUILD_ANYWHERE
+					X:30
+					Y:290
+					Width:PARENT_RIGHT - 30
+					Height:20
+					Text:Build Anywhere
 				Button@GIVE_EXPLORATION
 					Id:GIVE_EXPLORATION
 					X:30
-					Y:290
+					Y:320
 					Width:200
 					Height:20
 					Text: Give Exploration

@@ -67,6 +67,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").BindReadOnly(devTrait, "UnlimitedPower");
 			devmodeBG.GetWidget<CheckboxWidget>("UNLIMITED_POWER").OnChange += _ => Order(world, "DevUnlimitedPower");
 
+            devmodeBG.GetWidget<CheckboxWidget>("BUILD_ANYWHERE").BindReadOnly(devTrait, "BuildAnywhere");
+            devmodeBG.GetWidget<CheckboxWidget>("BUILD_ANYWHERE").OnChange += _ => Order(world, "DevBuildAnywhere");
+
 			devmodeBG.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnMouseUp = mi =>
 			{
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
