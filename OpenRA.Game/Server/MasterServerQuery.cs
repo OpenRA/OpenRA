@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
@@ -76,7 +77,13 @@ namespace OpenRA.Server
 		public readonly int State = 0;
 		public readonly int Players = 0;
 		public readonly string Map = null;
-		public readonly string[] Mods = { };
+		public readonly string[] Mods = { }; 
 		public readonly int TTL = 0;
+		
+		public Dictionary<string, string> UsefulMods {
+			get {
+				return Mods.Where(v => v.Contains('@')).ToDictionary(v => v.Split('@')[0], v => v.Split('@')[1]);
+			}	
+		}
 	}
 }

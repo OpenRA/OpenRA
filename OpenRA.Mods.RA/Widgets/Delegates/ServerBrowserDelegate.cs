@@ -105,11 +105,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		string GenerateModsLabel()
 		{
-			return string.Join("\n", currentServer.Mods
-				.Select( m => m.Split('@')[0] )
+			return string.Join("\n", currentServer.UsefulMods
 				.Select(m => 
-			       Mod.AllMods.ContainsKey(m) ? string.Format("{0} ({1})", Mod.AllMods[m].Title, Mod.AllMods[m].Version)
-			                                   : string.Format("Unknown Mod: {0}",m)).ToArray());
+			       Mod.AllMods.ContainsKey(m.Key) ? string.Format("{0} ({1})", Mod.AllMods[m.Key].Title, m.Value)
+			                                   : string.Format("Unknown Mod: {0}",m.Key)).ToArray());
 		}
 
 		void RefreshServerList(IEnumerable<GameServer> games)
