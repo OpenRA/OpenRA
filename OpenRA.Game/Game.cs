@@ -267,7 +267,9 @@ namespace OpenRA
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
 			Settings.Game.Mods = mm;
 			Settings.Save();
-			
+
+			Sound.StopMusic();
+			Sound.StopVideo();
 			Sound.Initialize();
 			
 			modData = new ModData( mm );
