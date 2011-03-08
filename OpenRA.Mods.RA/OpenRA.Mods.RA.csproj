@@ -328,6 +328,7 @@
     <Compile Include="Widgets\Delegates\GameInitDelegate.cs" />
     <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
+    <Compile Include="Widgets\SidebarButtonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
