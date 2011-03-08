@@ -57,7 +57,7 @@ namespace OpenRA.FileFormats.Graphics
 	public interface IIndexBuffer
 	{
 		void Bind();
-		void SetData( ushort[] indices, int length );
+		void SetData( uint[] indices, int length );
 	}
 
 	public interface IShader

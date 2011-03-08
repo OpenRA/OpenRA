@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 		IShader shader;
 
 		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
-		ushort[] indices = new ushort[Renderer.TempBufferSize];
+		uint[] indices = new uint[Renderer.TempBufferSize];
 		Sheet currentSheet = null;
 		int nv = 0, ni = 0;
 

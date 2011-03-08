@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 		Renderer renderer;
 
 		Vertex[] vertices = new Vertex[ Renderer.TempBufferSize ];
-		ushort[] indices = new ushort[ Renderer.TempBufferSize ];
+		uint[] indices = new uint[ Renderer.TempBufferSize ];
 		int nv = 0, ni = 0;
 
 		public LineRenderer( Renderer renderer )

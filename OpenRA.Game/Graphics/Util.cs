@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		public static void FastCreateQuad(Vertex[] vertices, ushort[] indices, float2 o, Sprite r, int palette, int nv, int ni, float2 size)
+		public static void FastCreateQuad(Vertex[] vertices, uint[] indices, float2 o, Sprite r, int palette, int nv, int ni, float2 size)
 		{
 			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
 
@@ -57,10 +57,10 @@ namespace OpenRA.Graphics
 			vertices[nv + 3] = new Vertex(new float2(o.X + size.X, o.Y + size.Y), 
 				r.FastMapTextureCoords(3), attrib);
 
-			indices[ni] = (ushort)(nv);
-			indices[ni + 1] = indices[ni + 3] = (ushort)(nv + 1);
-			indices[ni + 2] = indices[ni + 5] = (ushort)(nv + 2);
-			indices[ni + 4] = (ushort)(nv + 3);
+			indices[ni] = (uint)(nv);
+			indices[ni + 1] = indices[ni + 3] = (uint)(nv + 1);
+			indices[ni + 2] = indices[ni + 5] = (uint)(nv + 2);
+			indices[ni + 4] = (uint)(nv + 3);
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.

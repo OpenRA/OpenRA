@@ -54,7 +54,7 @@ namespace OpenRA.Renderer.Null
 	public class NullIndexBuffer : IIndexBuffer
 	{
 		public void Bind() {}
-		public void SetData(ushort[] indices, int length) {}
+		public void SetData(uint[] indices, int length) {}
 	}
 	
 	public class NullShader : IShader

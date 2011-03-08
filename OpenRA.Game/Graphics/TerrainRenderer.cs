@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
 			Vertex[] vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
-			ushort[] indices = new ushort[6 * map.Bounds.Height * map.Bounds.Width];
+			uint[] indices = new uint[6 * map.Bounds.Height * map.Bounds.Width];
 
 			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 

@@ -12,6 +12,8 @@ using System;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 
+using ElemType = System.UInt32;
+
 namespace OpenRA.Renderer.Glsl
 {
 	public class IndexBuffer : IIndexBuffer, IDisposable
@@ -24,18 +26,18 @@ namespace OpenRA.Renderer.Glsl
 			GraphicsDevice.CheckGlError();
 			Bind();
 			Gl.glBufferData(Gl.GL_ELEMENT_ARRAY_BUFFER,
-				new IntPtr(2 * size),
-				new ushort[ size ],
+				new IntPtr(sizeof(ElemType) * size),
+				new ElemType[ size ],
 				Gl.GL_DYNAMIC_DRAW);
 			GraphicsDevice.CheckGlError();
 		}
 
-		public void SetData(ushort[] data, int length)
+		public void SetData(ElemType[] data, int length)
 		{
 			Bind();
 			Gl.glBufferSubData(Gl.GL_ELEMENT_ARRAY_BUFFER,
 				IntPtr.Zero,
-				new IntPtr(2 * length),
+				new IntPtr(sizeof(ElemType) * length),
 				data);
 			GraphicsDevice.CheckGlError();
 		}

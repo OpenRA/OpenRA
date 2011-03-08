@@ -273,14 +273,14 @@ namespace OpenRA.Renderer.Glsl
 		public void DrawIndexedPrimitives( PrimitiveType pt, Range<int> vertices, Range<int> indices )
 		{
 			Gl.glDrawElements( ModeFromPrimitiveType( pt ), indices.End - indices.Start,
-			Gl.GL_UNSIGNED_SHORT, new IntPtr( indices.Start * 2 ) );
+			Gl.GL_UNSIGNED_INT, new IntPtr( indices.Start * 4 ) );
 			CheckGlError();
 		}
 
 		public void DrawIndexedPrimitives( PrimitiveType pt, int numVerts, int numPrimitives )
 		{
 			Gl.glDrawElements( ModeFromPrimitiveType( pt ), numPrimitives * IndicesPerPrimitive( pt ),
-			Gl.GL_UNSIGNED_SHORT, IntPtr.Zero );
+			Gl.GL_UNSIGNED_INT, IntPtr.Zero);
 			CheckGlError();
 		}
 
