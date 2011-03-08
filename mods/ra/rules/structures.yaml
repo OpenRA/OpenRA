@@ -35,6 +35,8 @@ MSLO:
 		SpawnOffset: 10,0
 	CanPowerDown:
 	RequiresPower:
+	SupportPowerChargeBar:
+	
 GAP:
 	RequiresPower:
 	CanPowerDown:
@@ -211,6 +213,7 @@ IRON:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
+	SupportPowerChargeBar:
 
 PDOX:
 	RequiresPower:
@@ -250,6 +253,7 @@ PDOX:
 		EndChargeSound: chrordy1.aud
 		Duration: 30
 		KillCargo: yes
+	SupportPowerChargeBar:
 
 TSLA:
 	RequiresPower:
@@ -546,6 +550,7 @@ ATEK:
 		LongDesc: Reveals the entire map
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
+	SupportPowerChargeBar:
 
 WEAP:
 	Inherits: ^Building
@@ -770,6 +775,7 @@ AFLD:
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
+	SupportPowerChargeBar:
 	
 POWR:
 	Inherits: ^Building

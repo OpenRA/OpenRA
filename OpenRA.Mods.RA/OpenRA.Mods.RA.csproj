@@ -102,6 +102,7 @@
     <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="ProximityCaptor.cs" />
+    <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />

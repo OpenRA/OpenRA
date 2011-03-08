@@ -35,6 +35,11 @@ namespace OpenRA.Mods.RA
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
 		}
+
+		static string MakeKey(SupportPower sp)
+		{
+			return sp.Info.AllowMultiple ? sp.Info.OrderName + "_" + sp.self.ActorID : sp.Info.OrderName;
+		}
 		
 		void ActorAdded(Actor a)
 		{
@@ -43,7 +48,7 @@ namespace OpenRA.Mods.RA
 			
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
-				var key = (t.Info.AllowMultiple) ? t.Info.OrderName+"_"+a.ActorID : t.Info.OrderName;
+				var key = MakeKey(t);
 				
 				if (Powers.ContainsKey(key))
 				{
@@ -70,7 +75,7 @@ namespace OpenRA.Mods.RA
 			
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
-				var key = (t.Info.AllowMultiple) ? t.Info.OrderName+"_"+a.ActorID : t.Info.OrderName;
+				var key = MakeKey(t);
 				Powers[key].Instances.Remove(t);
 				if (Powers[key].Instances.Count == 0 && !Powers[key].Disabled)
 					Powers.Remove(key);
@@ -94,6 +99,17 @@ namespace OpenRA.Mods.RA
 		{
 			if (Powers.ContainsKey(key))
 				Powers[key].Target();
+		}
+
+		static readonly SupportPowerInstance[] NoInstances; 
+
+		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
+		{
+			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
+				return NoInstances;
+
+			return a.TraitsImplementing<SupportPower>()
+				.Select(t => Powers[MakeKey(t)]);
 		}
 		
 		public class SupportPowerInstance
