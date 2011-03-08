@@ -329,6 +329,7 @@
     <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="Widgets\SidebarButtonWidget.cs" />
+    <Compile Include="Widgets\RadarWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
