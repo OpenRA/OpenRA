@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -23,6 +24,11 @@ namespace OpenRA.Mods.RA
 		{
 			foreach (var actorReference in world.Map.Actors.Value)
 			{
+				// if there is no real player associated, dont spawn it.
+				var ownerName = actorReference.Value.InitDict.Get<OwnerInit>().PlayerName;
+				if (!world.players.Values.Any(p => p.InternalName == ownerName))
+					continue;
+
 				var initDict = actorReference.Value.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
 				Actors[actorReference.Key] = world.CreateActor(actorReference.Value.Type, initDict);
