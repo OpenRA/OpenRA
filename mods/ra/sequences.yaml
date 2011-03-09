@@ -1880,3 +1880,40 @@ waypoint:
 	idle:
 		Start: 0
 		Length: *
+
+boxes01:
+	idle:
+		Start: 0
+		Length: *
+boxes02:
+	idle:
+		Start: 0
+		Length: *
+boxes03:
+	idle:
+		Start: 0
+		Length: *
+boxes04:
+	idle:
+		Start: 0
+		Length: *
+boxes05:
+	idle:
+		Start: 0
+		Length: *
+boxes06:
+	idle:
+		Start: 0
+		Length: *
+boxes07:
+	idle:
+		Start: 0
+		Length: *
+boxes08:
+	idle:
+		Start: 0
+		Length: *
+boxes09:
+	idle:
+		Start: 0
+		Length: *
