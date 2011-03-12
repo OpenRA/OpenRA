@@ -43,6 +43,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (e.Modifiers == Modifiers.None)
 			{
+                if (e.KeyChar == '\b' || e.KeyChar == (char)127)
+                    return CycleBases();
+
 				if (e.KeyChar == AttackMoveKey)
 					return PerformAttackMove();
 
@@ -95,5 +98,24 @@ namespace OpenRA.Mods.RA.Widgets
             PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
 			return true;
 		}
+
+        bool CycleBases()
+        {
+            var bases = World.Queries.OwnedBy[World.LocalPlayer].WithTrait<BaseBuilding>().ToArray();
+            if (!bases.Any()) return true;
+
+            var next = bases
+                .Select(b => b.Actor)
+                .SkipWhile(b => !World.Selection.Actors.Contains(b))
+                .Skip(1)
+                .FirstOrDefault();
+
+            if (next == null)
+                next = bases.Select(b => b.Actor).First();
+
+            World.Selection.Combine(World, new Actor[] { next }, false, true);
+            Game.viewport.Center(World.Selection.Actors);
+            return true;
+        }
 	}
 }

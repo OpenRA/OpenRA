@@ -195,7 +195,6 @@ World:
 	Shroud:
 	PathFinder:
 	ValidateOrder:
-	GotoNextBase:
 
 MINP:
 	Mine:

@@ -229,7 +229,6 @@ namespace OpenRA.Traits
 		bool TargetableBy(Actor self, Actor byActor);
 	}
 
-	public interface INotifyKeyPress { bool KeyPressed(Actor self, KeyInput e); }
 	public interface INotifyStanceChanged { void StanceChanged(Actor self, Player a, Player b, 
 		Stance oldStance, Stance newStance); }
 }

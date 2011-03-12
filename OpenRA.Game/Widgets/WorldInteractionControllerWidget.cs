@@ -134,9 +134,6 @@ namespace OpenRA.Widgets
 
 				bool handled = false;
 
-				foreach (var t in world.WorldActor.TraitsImplementing<INotifyKeyPress>())
-					handled = (t.KeyPressed(world.WorldActor, e)) ? true : handled;
-
 				if (handled) return true;
 			}
 			return false;
