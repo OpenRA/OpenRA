@@ -18,27 +18,15 @@ namespace OpenRA.Graphics
 {
 	class MappedImage
 	{
-		public readonly Rectangle rect;
-		public readonly string Src;
-		public readonly string Name;
+		public readonly Rectangle rect = Rectangle.Empty;
+		public readonly string src;
 
-		public MappedImage(string defaultSrc, XmlElement e)
-		{
-			Src = (e.HasAttribute("src")) ? e.GetAttribute("src") : defaultSrc;
-			Name = e.GetAttribute("name");
-			if (Src == null)
-				throw new InvalidDataException("Image src missing");
-
-			rect = new Rectangle(int.Parse(e.GetAttribute("x")),
-								 int.Parse(e.GetAttribute("y")),
-								 int.Parse(e.GetAttribute("width")),
-								 int.Parse(e.GetAttribute("height")));
-		}
-		
 		public MappedImage(string defaultSrc, MiniYaml info)
 		{
-			Src = defaultSrc;
+			FieldLoader.LoadField(this, "rect", info.Value);
 			FieldLoader.Load(this, info);
+			if (src == null)
+				src = defaultSrc;
 		}
 
 		public Sprite GetImage(Sheet s)
@@ -49,8 +37,8 @@ namespace OpenRA.Graphics
 		public MiniYaml Save(string defaultSrc)
 		{
 			var root = new List<MiniYamlNode>();
-			if (defaultSrc != Src)
-				root.Add(new MiniYamlNode("src", Src));
+			if (defaultSrc != src)
+				root.Add(new MiniYamlNode("src", src));
 			
 			return new MiniYaml(FieldSaver.FormatValue( this, this.GetType().GetField("rect") ), root);
 		}

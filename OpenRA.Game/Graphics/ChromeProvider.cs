@@ -11,12 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
-	
 	public static class ChromeProvider
 	{
 		struct Collection
@@ -34,11 +32,14 @@ namespace OpenRA.Graphics
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
-
-			foreach (var f in chromeFiles)
-				LoadChromeSource(f);
 			
-			Save("foo.yaml");
+			if (chromeFiles.Length == 0)
+				return;
+
+			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.Merge);
+
+			foreach (var c in chrome)
+				LoadCollection(c.Key, c.Value);
 		}
 		
 		public static void Save(string file)
@@ -59,24 +60,16 @@ namespace OpenRA.Graphics
 			return new MiniYaml(collection.src, root);
 		}
 
-		static void LoadChromeSource(string filename)
+		static void LoadCollection(string name, MiniYaml yaml)
 		{
-			XmlDocument document = new XmlDocument();
-			document.Load(FileSystem.Open(filename));
-			foreach (XmlElement eCollection in document.SelectNodes("/chrome/collection"))
-				LoadChromeForCollection(eCollection);
-		}
-
-		static void LoadChromeForCollection(XmlElement eCollection)
-		{
-			string elementName = eCollection.GetAttribute("name");
-			string defaultSrc = (eCollection.HasAttribute("src") ? eCollection.GetAttribute("src") : null);
-
-			var images = eCollection.SelectNodes("./image").OfType<XmlElement>()
-				.Select(e => new MappedImage(defaultSrc, e))
-				.ToDictionary(s => s.Name);
+			Game.modData.LoadScreen.Display();			
+			var collection = new Collection()
+			{
+				src = yaml.Value,
+				regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
+			};
 			
-			collections.Add(elementName, new Collection() {src = defaultSrc, regions = images});
+			collections.Add(name, collection);
 		}
 
 		public static Sprite GetImage(string collection, string image)
@@ -92,15 +85,15 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException(
 					"Collection `{0}` does not have an image `{1}`".F(collection, image));
 			}
-
+			
 			// Cached sheet
 			Sheet sheet;
-			if (cachedSheets.ContainsKey(mi.Src))
-				sheet = cachedSheets[mi.Src];
+			if (cachedSheets.ContainsKey(mi.src))
+				sheet = cachedSheets[mi.src];
 			else
 			{
-				sheet = new Sheet(mi.Src);
-				cachedSheets.Add(mi.Src, sheet);
+				sheet = new Sheet(mi.src);
+				cachedSheets.Add(mi.src, sheet);
 			}
 
 			// Cache the sprite

@@ -45,7 +45,7 @@ Cursors:
 	mods/ra/cursors.yaml
 
 Chrome:
-	mods/ra/chrome.xml
+	mods/ra/chrome.yaml
 	
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
