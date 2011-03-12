@@ -31,11 +31,14 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
-			foreach( var u in SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * dragStart ))
-				worldRenderer.DrawRollover( u );
-
 			var selbox = SelectionBox;
-			if (selbox == null) return;
+            if (selbox == null)
+            {
+                foreach (var u in SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * dragStart))
+                    worldRenderer.DrawRollover(u);
+
+                return;
+            }
 
 			var a = selbox.Value.First;
 			var b = new float2(selbox.Value.Second.X - a.X, 0);
@@ -45,9 +48,9 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
-			
-			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
-				worldRenderer.DrawSelectionBox(u, Color.Yellow);
+
+            foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
+                worldRenderer.DrawRollover(u);
 		}
 		
 		float2 dragStart, dragEnd;
@@ -139,6 +142,7 @@ namespace OpenRA.Widgets
 			return false;
 		}
 		
+        static readonly Actor[] NoActors = {};
 		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)
 		{
 			return world.FindUnits(a, b)
@@ -146,7 +150,7 @@ namespace OpenRA.Widgets
 				.GroupBy(x => (x.Owner == world.LocalPlayer) ? x.Info.Traits.Get<SelectableInfo>().Priority : 0)
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
-				.DefaultIfEmpty( new Actor[] {} )
+				.DefaultIfEmpty( NoActors )
 				.FirstOrDefault();
 		}
 	}
