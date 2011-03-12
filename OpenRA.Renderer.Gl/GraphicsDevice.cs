@@ -78,15 +78,6 @@ namespace OpenRA.Renderer.Glsl
 			Sdl.SDL_EnableKeyRepeat( Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL );
 
 			CheckGlError();
-
-			windowSize = new Size( width, height );
-
-			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
-			CheckGlError();
-			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
-			CheckGlError();
-			
-			Sdl.SDL_SetModState( 0 );
 			
 			// Test for required extensions
 			var required = new string[]
@@ -105,6 +96,17 @@ namespace OpenRA.Renderer.Glsl
 				Log.Write("graphics", extensions);
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
 			}
+			
+			windowSize = new Size( width, height );
+
+			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
+			CheckGlError();
+			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
+			CheckGlError();
+			
+			Sdl.SDL_SetModState( 0 );
+			
+
 		}
 
 		public void EnableScissor( int left, int top, int width, int height )
