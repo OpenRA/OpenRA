@@ -90,7 +90,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformDeploy()
 		{
-			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false)); 
+            /* hack: two orders here -- DeployTransform and Unload. */
+			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
+            PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
 			return true;
 		}
 	}
