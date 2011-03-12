@@ -60,11 +60,13 @@ Players:
 Actors:
 	wp7: mpspawn
 		Location: 73,33
+		Owner: Neutral
 	Actor5: mpspawn
 		Location: 17,20
 		Owner: Neutral
 	wp1: mpspawn
 		Location: 73,20
+		Owner: Neutral		
 	Actor7: mpspawn
 		Location: 63,27
 		Owner: Neutral
