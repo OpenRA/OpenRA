@@ -64,6 +64,9 @@ namespace OpenRA.Widgets
 		
 		public int ClosestCursorPosition(int x)
 		{
+			if (Text == null)
+				return 0;
+			
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var textSize = font.Measure(Text);
 			
@@ -141,6 +144,9 @@ namespace OpenRA.Widgets
 			}
 			else if (!char.IsControl(c))
 			{
+				if (Text == null)
+					Text = "";
+				
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
 
