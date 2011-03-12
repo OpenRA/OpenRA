@@ -38,20 +38,6 @@ namespace OpenRA
 			return Game.modData.SheetBuilder.Add(data, new Size(Game.CellSize, Game.CellSize));
 		}
 
-		public void Draw( WorldRenderer wr, World world )
-		{
-			if( world.LocalPlayer == null ) return;
-			if (world.LocalPlayer.PlayerActor.Trait<DeveloperMode>().UnitInfluenceDebug)
-			{
-				var uim = world.WorldActor.Trait<UnitInfluence>();
-				
-				for (var i = world.Map.Bounds.Left; i < world.Map.Bounds.Right; i++)
-					for (var j = world.Map.Bounds.Top; j < world.Map.Bounds.Bottom; j++)	
-						if (uim.GetUnitsAt(new int2(i, j)).Any())
-							unitDebug.DrawAt(wr, Game.CellSize * new float2(i, j), "terrain");
-			}
-		}
-
 		public void DrawGrid( WorldRenderer wr, Dictionary<int2, bool> cells )
 		{
 			foreach( var c in cells )
