@@ -116,7 +116,7 @@ return dxpath and {
 			cmdline = dxpath.."/Utilities/bin/x86/fxc.exe"..cmdline
 			
 			-- run compiler process
-			RunCommandLine(cmdline,nil,true,nil,nil)
+			CommandLineRun(cmdline,nil,true,nil,nil)
 		end
 		
 		frame:Connect(ID "dx.compile.vertex",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)

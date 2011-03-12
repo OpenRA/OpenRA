@@ -230,14 +230,11 @@ interpreter = {
 		name = "",
 		description = "",
 		api = {"apifile_without_extension"} -- optional to limit loaded apis
-		fcmdline = function(filepath) 
+		frun = function(self,wfilename) 
 				return "execommand"
 			end,
-		fprojdir = function(fname)
+		fprojdir = function(self,wfilename)
 				return "projpath_from_filename"	-- optional
 			end,
-		fworkdir = function(filepath) end, -- can return workdir
-		capture = false,	-- capture output 
-		nohide  = true,		-- dont hide dosbox
 }
 

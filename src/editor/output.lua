@@ -49,9 +49,9 @@ local streamins   = {}
 local streamerrs  = {}
 local customprocs = {}
 
-local function customrunning(exename) 
+function CommandLineRunning(uid) 
 	for pid,custom in pairs(customprocs) do
-		if (custom.exename == exename and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+		if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
 			return true
 		end
 	end
@@ -59,14 +59,28 @@ local function customrunning(exename)
 	return false
 end
 
-function RunCommandLine(cmd,wdir,tooutput,nohide,stringcallback)
+function CommandLineToShell(uid,state)
+	for pid,custom in pairs(customprocs) do
+		if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+			if (streamins[pid])  then streamins[pid].toshell  = state end
+			if (streamerrs[pid]) then streamerrs[pid].toshell = state end
+			return true
+		end
+	end
+end
+
+function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
+	if (not cmd) then return true end
+
 	local exename = string.gsub(cmd, "\\", "/")
 	exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
 	exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
+	
+	uid = uid or exename
 
-	if (customrunning(exename)) then
+	if (CommandLineRunning(uid)) then
 		DisplayOutput("Conflicting Process still running: "..cmd.."\n")
-		return
+		return true 
 	end
 
 	DisplayOutput("Running program: "..cmd.."\n")
@@ -102,10 +116,10 @@ function RunCommandLine(cmd,wdir,tooutput,nohide,stringcallback)
 	if not pid or pid == -1 then
 		DisplayOutputNoMarker("Unknown ERROR Running program!\n")
 		customproc = nil
-		return
+		return true
 	else
-		DisplayOutputNoMarker("Process: "..exename.." pid:"..tostring(pid).."\n")
-		customprocs[pid] = {proc=customproc,exename=exename}
+		DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
+		customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
 	end
 	
 	local streamin  = proc and proc:GetInputStream()
@@ -117,7 +131,6 @@ function RunCommandLine(cmd,wdir,tooutput,nohide,stringcallback)
 		streamerrs[pid] = {stream=streamerr, callback=stringcallback}
 	end
 	
-	--DisplayOutputNoMarker("Process streams: "..tostring(streamin).."/"..tostring(streamerr).."\n")
 end
 
 local function getStreams()
@@ -129,7 +142,11 @@ local function getStreams()
 				if (v.callback) then
 					str,pfn = v.callback(str)
 				end
-				DisplayOutputNoMarker(str)
+				if (v.toshell) then
+					DisplayShell(str)
+				else
+					DisplayOutputNoMarker(str)
+				end
 				pfn = pfn and pfn()
 			end
 		end	
@@ -145,6 +162,9 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 				getStreams()
 				streamins[pid] = nil
 				streamerrs[pid] = nil
+				if (customprocs[pid].endcallback) then
+					customprocs[pid].endcallback()
+				end
 				customprocs[pid] = nil
 				DisplayOutput("proc end "..pid.."\n")
 			end

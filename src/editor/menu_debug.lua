@@ -38,10 +38,10 @@ assert(lastinterpreter,"no interpreters defined")
 local debugMenu = wx.wxMenu{
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
 		{ },
-		{ ID_COMPILE,          "&Compile\tF7",           "Test compile the Lua program" },
-		{ ID_RUN,              "&Run\tF6",               "Execute the current file" },
-		{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
-		{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
+		{ ID_COMPILE,          "&Compile\tF7",           "Test compile the Lua file" },
+		{ ID_RUN,              "&Run\tF6",               "Execute the current project/file" },
+		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
+		--{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
 		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
 		{ ID_STOP_DEBUG,       "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
@@ -89,7 +89,8 @@ UpdateProjectDir(ide.config.path.projectdir)
 -- interpreter setup
 local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  or 
 							ID ("debug.interpreter."..lastinterpreter)
-	
+ide.config.interpreterClass = interpreters[curinterpreterid]
+
 	menuBar:Check(curinterpreterid, true)
 	
 	local function selectInterpreter (id)
@@ -99,6 +100,7 @@ local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  o
 		menuBar:Check(id, true)
 		curinterpreterid = id
 		ide.config.interpreter = interpreters[id].fname
+		ide.config.interpreterClass = interpreters[id]
 		ReloadLuaAPI()
 	end
 	
@@ -155,7 +157,7 @@ local function projFromFile(event)
 	local fn       = wx.wxFileName(filepath)
 	fn:Normalize() -- want absolute path for dialog
 	
-	UpdateProjectDir(interpreters[curinterpreterid].fprojdir(fn))
+	UpdateProjectDir(interpreters[curinterpreterid]:fprojdir(fn))
 end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
@@ -194,23 +196,9 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 			end
 			
 			local id = editor:GetId();
-			local filepath = openDocuments[id].filePath
+			local wfilename = wx.wxFileName(openDocuments[id].filePath)
 			local interpreter = interpreters[curinterpreterid]
-			local cmd = interpreter.fcmdline(filepath)
-			if (not cmd) then
-				return
-			end
-			
-			local wdir = interpreter.fworkdir(filepath)
-			local capture = interpreter.capture
-			local projectdir = ide.config.path.projectdir
-			--DisplayOutput("Running program: "..cmd.." in "..projectdir.."\n")
-			--local cwd = wx.wxGetCwd()
-			--wx.wxFileName().SetCwd(projectdir)
-			
-			RunCommandLine(cmd,wdir,capture,interpreter.nohide)
-			--wx.wxFileName().SetCwd(cwd)
-
+			interpreter:frun(wfilename)
 		end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 		function (event)

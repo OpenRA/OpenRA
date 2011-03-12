@@ -8,6 +8,11 @@
 local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
 local out = shellbox.output
 local code = shellbox.input
+local remote = shellbox.remote
+
+local remotesend
+local remoteuid
+
 local frame = ide.frame
 out:SetFont(ide.ofont)
 out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
@@ -29,11 +34,10 @@ local function shellPrint(...)
 	out:SetReadOnly(true)
 end
 
+DisplayShell = shellPrint
 
-
-local env
 local function createenv ()
-	env = {}
+	local env = {}
 	setmetatable(env,{__index = _G})
 	
 	local function luafilename(level)
@@ -104,9 +108,10 @@ local function createenv ()
 	env.RELFILE = relativeFilename
 	env.RELPATH = relativeFilepath
 	
+	return env
 end
 
-createenv()
+local env = createenv()
 
 code:SetBufferedDraw(true)
 code:SetFont(ide.ofont)
@@ -126,10 +131,13 @@ local accel = wx.wxAcceleratorTable{
 }
 code:SetAcceleratorTable(accel)
 
-function ExecuteShellboxCode (ev,filePath)
+function ShellExecuteCode(ev,wfilename)
 	local fn,err
-	if (filePath) then
-		fn,err = loadfile(filePath)
+	if (wfilename) then
+		fn,err = loadfile(wfilename:GetFullPath())
+	elseif(remotesend and remote:IsChecked()) then
+		local tx = code:GetText()
+		remotesend(tx)
 	else
 		local tx = code:GetText()
 		fn,err = loadstring(tx)
@@ -145,6 +153,15 @@ function ExecuteShellboxCode (ev,filePath)
 	end
 end
 
+function ShellSupportRemote(client,uid)
+	remote:Enable(client and true or false)
+	remotesend = client
+	remoteuid  = client and uid
+	if (not client) then
+		remote:SetValue(false)
+	end
+end
+
 shellbox:Connect(wxstc.wxEVT_STC_CHARADDED,
 	function (event)
 		frame:SetStatusText("Execute your code pressing CTRL+ENTER or erase it all with CTRL+ALT+DEL")
@@ -152,5 +169,10 @@ shellbox:Connect(wxstc.wxEVT_STC_CHARADDED,
 frame:Connect(ID "shellbox.eraseall", wx.wxEVT_COMMAND_MENU_SELECTED, function()
 	code:SetText ""
 end)
-frame:Connect(ID "shellbox.execute", wx.wxEVT_COMMAND_MENU_SELECTED, ExecuteShellboxCode)
-shellbox:Connect(ID "shellbox.run",wx.wxEVT_COMMAND_BUTTON_CLICKED, ExecuteShellboxCode)
+frame:Connect(ID "shellbox.execute", wx.wxEVT_COMMAND_MENU_SELECTED, ShellExecuteCode)
+shellbox:Connect(ID "shellbox.run",wx.wxEVT_COMMAND_BUTTON_CLICKED, ShellExecuteCode)
+shellbox:Connect(ID "shellbox.remote",wx.wxEVT_COMMAND_CHECKBOX_CLICKED, function(event)
+	if (remotesend) then 
+		CommandLineToShell(remoteuid,event:IsChecked())
+	end
+	end)

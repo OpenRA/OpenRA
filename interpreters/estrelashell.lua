@@ -2,7 +2,7 @@ return {
 		name = "Estrela Shell",
 		description = "Estrela Lua Shell",
 		api = {"wx","baselib"},
-		fcmdline = function(filepath) 
+		frun = function(self,wfilename) 
 				-- set shellbox for focus
 				local bottomnotebook = ide.frame.vsplitter.splitter.bottomnotebook
 				bottomnotebook:SetSelection(1)
@@ -13,15 +13,9 @@ return {
 					shellLog:SetReadOnly(true)
 				end
 				
-				ExecuteShellboxCode(nil,filepath)
-				return nil
+				ShellExecuteCode(nil,wfilename)
 			end,
-		fprojdir = function(fname)
-				return fname:GetPath(wx.wxPATH_GET_VOLUME)
+		fprojdir = function(self,wfilename)
+				return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
-		fworkdir = function(filepath) 
-				return filepath:GetPath(wx.wxPATH_GET_VOLUME)
-			end, 
-		capture = false,
-		nohide  = true,
 	}

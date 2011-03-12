@@ -8,7 +8,7 @@ return {
 		fn = function(wxfname,projectdir)
 			local cmd = 'p4 edit "'..wxfname:GetFullPath()..'"'
 			
-			RunCommandLine(cmd,nil,true)
+			CommandLineRun(cmd,nil,true)
 		end,
 	},
 }

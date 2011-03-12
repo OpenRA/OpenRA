@@ -473,7 +473,7 @@ return cgbinpath and {
 							cmdline = cmdline..' "'..fullname..'"'
 
 							cmdline = cgbinpath..perfexe..cmdline
-							RunCommandLine(cmdline,nil,true,nil,nvperfcallback)
+							CommandLineRun(cmdline,nil,true,nil,nvperfcallback)
 						end
 					end
 				end
@@ -482,7 +482,7 @@ return cgbinpath and {
 			end
 
 			-- run compiler process
-			RunCommandLine(cmdline,nil,true,nil,compilecallback)
+			CommandLineRun(cmdline,nil,true,nil,compilecallback)
 			
 
 		end

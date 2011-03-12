@@ -2,21 +2,19 @@ return {
 		name = "Luxinia",
 		description = "Luxinia project",
 		api = {"luxiniaapi","baselib"},
-		fcmdline = function(filepath) 
+		fcmdline = function(self,wfilename) 
 				local projdir = ide.config.path.projectdir
 				local endstr = projdir and projdir:len()>0
 							and " -p "..projdir or ""
 				
-				local fname = GetFileNameExt(filepath)
+				local fname = wfilename:GetFullName()
 				endstr = endstr..(fname and (" -t "..fname) or "")
 				
-				return ide.config.path.luxinia..'luxinia.exe --nologo'..endstr
+				local cmd = ide.config.path.luxinia..'luxinia.exe --nologo'..endstr
+				CommandLineRun(cmd,ide.config.path.luxinia,true,true)
 			end,
-		fworkdir = function() end, -- overriden by luxinia anyway
-		capture = true,
-		nohide  = true,
-		fprojdir = function(fname)
-				local path = GetPathWithSep(fname)
+		fprojdir = function(self,wfilename)
+				local path = GetPathWithSep(wfilename)
 				fname = wx.wxFileName(path)
 				
 				while ((not wx.wxFileExists(path.."main.lua")) and (fname:GetDirCount() > 0)) do
