@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
 
             int k = 0;
-			foreach (var item in PerfHistory.items.Values)
+			foreach (var item in PerfHistory.items.Values.ToArray())
 			{
 				int n = 0;
 				item.Samples().Aggregate((a, b) =>
