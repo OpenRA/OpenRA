@@ -59,8 +59,6 @@ namespace OpenRA.Traits
 			
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
-			var xY = new float2(bounds.Left, bounds.Bottom);
-			var XY = new float2(bounds.Right, bounds.Bottom);
 
 			DrawHealthBar(self, xy, Xy);
 			DrawExtraBars(self, xy, Xy);
