@@ -109,7 +109,6 @@
     <Compile Include="Traits\World\SpatialBins.cs" />
     <Compile Include="Traits\World\Country.cs" />
     <Compile Include="Actor.cs" />
-    <Compile Include="Cursor.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Game.cs" />

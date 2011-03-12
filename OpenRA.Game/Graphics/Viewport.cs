@@ -87,7 +87,11 @@ namespace OpenRA.Graphics
 			
 			Widget.DoDraw();
 			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-			new Cursor(cursorName).Draw((int)cursorFrame, Viewport.LastMousePos + Location); 
+            var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
+
+            cursorSequence.GetSprite((int)cursorFrame).DrawAt(
+                Viewport.LastMousePos + Location - cursorSequence.Hotspot,
+                Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette));
 
 			renderer.EndFrame( inputHandler );
 		}
