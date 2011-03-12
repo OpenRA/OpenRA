@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 			// create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
 			{
-				var player = new Player(w, kv.Value, mapPlayerIndex--);
+				var player = new Player(w, null, kv.Value, mapPlayerIndex--);
 				w.AddPlayer(player);
 				if (kv.Value.OwnsWorld)
 					w.WorldActor.Owner = player;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 
 					/* todo: pick a random name from the pool */
 
-					var player = new Player(w, w.Map.Players[slot.MapPlayer], playerIndex++);
+					var player = new Player(w, null, w.Map.Players[slot.MapPlayer], playerIndex++);
 					w.AddPlayer(player);
 					
 					/* activate the bot option that's selected! */
