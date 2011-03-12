@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,7 +16,6 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Support;
 using OpenRA.Traits;
-using System;
 
 namespace OpenRA
 {
