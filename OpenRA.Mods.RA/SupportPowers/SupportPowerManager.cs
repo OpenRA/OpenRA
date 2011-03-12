@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 				Powers[key].Target();
 		}
 
-		static readonly SupportPowerInstance[] NoInstances; 
+		static readonly SupportPowerInstance[] NoInstances = {}; 
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
