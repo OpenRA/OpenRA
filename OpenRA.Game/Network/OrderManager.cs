@@ -157,6 +157,18 @@ namespace OpenRA.Network
 			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame( NetFrameNumber ); }
 		}
 
+        static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] {};
+        public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
+        {
+            get
+            {
+                return NetFrameNumber >= 1
+                    ? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+                        .Select(a => LobbyInfo.ClientWithIndex(a))
+                    : NoClients;
+            }
+        }
+
 		public void Tick()
 		{
 			if( !IsReadyForNextFrame )
