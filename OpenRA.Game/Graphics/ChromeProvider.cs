@@ -16,20 +16,47 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
+	
 	public static class ChromeProvider
 	{
-		static Dictionary<string, Dictionary<string, MappedImage>> collections;
+		struct Collection
+		{
+			public string src;
+			public Dictionary<string, MappedImage> regions;
+		}
+	
+		static Dictionary<string, Collection> collections;
 		static Dictionary<string, Sheet> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
 
 		public static void Initialize(params string[] chromeFiles)
 		{
-			collections = new Dictionary<string, Dictionary<string, MappedImage>>();
+			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 
 			foreach (var f in chromeFiles)
 				LoadChromeSource(f);
+			
+			Save("foo.yaml");
+		}
+		
+		public static void Save(string file)
+		{
+			var root = new List<MiniYamlNode>();
+			foreach (var kv in collections)
+				root.Add(new MiniYamlNode(kv.Key, SaveCollection(kv.Value)));
+			
+			root.WriteToFile(file);
+		}
+		
+		static MiniYaml SaveCollection(Collection collection)
+		{
+			var root = new List<MiniYamlNode>();
+			foreach (var kv in collection.regions)
+				root.Add(new MiniYamlNode(kv.Key, kv.Value.Save(collection.src)));
+			
+			return new MiniYaml(collection.src, root);
 		}
 
 		static void LoadChromeSource(string filename)
@@ -48,8 +75,8 @@ namespace OpenRA.Graphics
 			var images = eCollection.SelectNodes("./image").OfType<XmlElement>()
 				.Select(e => new MappedImage(defaultSrc, e))
 				.ToDictionary(s => s.Name);
-
-			collections.Add(elementName, images);
+			
+			collections.Add(elementName, new Collection() {src = defaultSrc, regions = images});
 		}
 
 		public static Sprite GetImage(string collection, string image)
@@ -59,7 +86,7 @@ namespace OpenRA.Graphics
 				return cachedSprites[collection][image];
 
 			MappedImage mi;
-			try { mi = collections[collection][image]; }
+			try { mi = collections[collection].regions[image]; }
 			catch (KeyNotFoundException)
 			{
 				throw new InvalidOperationException(

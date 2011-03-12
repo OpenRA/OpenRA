@@ -1,0 +1,216 @@
+chrome-allies: chrome-allies.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-allies: chrome-allies.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+
+power-allies: chrome-allies.png
+	power-indicator: 187,4,4,7
+
+palette-allies: chrome-allies.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-allies: chrome-allies.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+chrome-soviet: chrome-soviet.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-soviet: chrome-soviet.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+	power-indicator: 187,4,4,7
+
+power-soviet: chrome-soviet.png
+	power-indicator: 187,4,4,7
+
+palette-soviet: chrome-soviet.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-soviet: chrome-soviet.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+tabs-selected: tabs.png
+	allies-Building: 0,0,27,41
+	allies-Defense: 0,40,27,41
+	allies-Infantry: 0,80,27,41
+	allies-Vehicle: 0,120,27,41
+	allies-Plane: 0,160,27,41
+	allies-Ship: 0,200,27,41
+	soviet-Building: 80,0,27,41
+	soviet-Defense: 80,40,27,41
+	soviet-Infantry: 80,80,27,41
+	soviet-Vehicle: 80,120,27,41
+	soviet-Plane: 80,160,27,41
+	soviet-Ship: 80,200,27,41
+
+tabs-ready: tabs.png
+	allies-Building: 27,0,27,41
+	allies-Defense: 27,40,27,41
+	allies-Infantry: 27,80,27,41
+	allies-Vehicle: 27,120,27,41
+	allies-Plane: 27,160,27,41
+	allies-Ship: 27,200,27,41
+	soviet-Building: 107,0,27,41
+	soviet-Defense: 107,40,27,41
+	soviet-Infantry: 107,80,27,41
+	soviet-Vehicle: 107,120,27,41
+	soviet-Plane: 107,160,27,41
+	soviet-Ship: 107,200,27,41
+
+tabs-normal: tabs.png
+	allies-Building: 54,0,27,41
+	allies-Defense: 54,40,27,41
+	allies-Infantry: 54,80,27,41
+	allies-Vehicle: 54,120,27,41
+	allies-Plane: 54,160,27,41
+	allies-Ship: 54,200,27,41
+	soviet-Building: 134,0,27,41
+	soviet-Defense: 134,40,27,41
+	soviet-Infantry: 134,80,27,41
+	soviet-Vehicle: 134,120,27,41
+	soviet-Plane: 134,160,27,41
+	soviet-Ship: 134,200,27,41
+
+dialog2: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 594,0,1,1
+	corner-bl: 512,82,1,1
+	corner-br: 594,82,1,1
+
+dialog3: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 722,0,1,1
+	corner-bl: 640,82,1,1
+	corner-br: 722,82,1,1
+
+dialog4: dialog.png
+	border-t: 773,0,52,6
+	border-b: 773,58,52,6
+	border-l: 768,5,6,54
+	border-r: 826,5,6,54
+	corner-tl: 768,0,6,6
+	corner-tr: 826,0,6,6
+	corner-bl: 768,58,6,6
+	corner-br: 826,58,6,6
+	background: 773,5,52,52
+
+dialog: dialog.png
+	background: 0,0,480,480
+	border-r: 489,0,9,192
+	border-l: 480,0,9,192
+	border-b: 0,489,191,9
+	border-t: 0,480,191,9
+	corner-tl: 191,480,9,9
+	corner-tr: 200,480,9,9
+	corner-bl: 191,489,9,9
+	corner-br: 200,489,9,9
+
+spawnpoints: spawnpoints.png
+	unowned: 528,128,16,16
+	owned: 512,128,16,16
+
+strategic: strategic.png
+	unowned: 0,0,32,32
+	critical_unowned: 0,32,32,32
+	enemy_owned: 32,32,32,32
+	player_owned: 96,0,32,32
+
+sell-button: buttons.png
+	normal: 0,0,34,28
+	pressed: 34,0,34,28
+	disabled: 68,0,34,28
+
+repair-button: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	disabled: 68,28,34,28
+
+power-button: buttons.png
+	normal: 0,56,34,28
+	pressed: 34,56,34,28
+	disabled: 68,56,34,28
+
+flags: buttons.png
+	allies: 30,84,30,15
+	soviet: 0,84,30,15
+	random: 60,84,30,15
+	spectator: 60,84,30,15
+
+music: musicplayer.png
+	pause: 0,0,25,25
+	stop: 28,0,25,25
+	play: 56,0,25,25
+	next: 84,0,25,25
+	prev: 112,0,25,25
+
+scrollbar: buttons.png
+	down_arrow: 16,112,16,16
+	up_arrow: 32,112,16,16
+
+checkbox: buttons.png
+	checked: 0,112,16,16
+

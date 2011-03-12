@@ -1,0 +1,216 @@
+chrome-gdi: chrome-gdi.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-gdi: chrome-gdi.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+	power-indicator: 187,4,4,7
+
+power-gdi: chrome-gdi.png
+	power-indicator: 187,4,4,7
+
+palette-gdi: chrome-gdi.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-gdi: chrome-gdi.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+chrome-nod: chrome-nod.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-nod: chrome-nod.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+	power-indicator: 187,4,4,7
+
+power-nod: chrome-nod.png
+	power-indicator: 187,4,4,7
+
+palette-nod: chrome-nod.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-nod: chrome-nod.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+tabs-selected: tabs.png
+	gdi-Building: 0,0,27,41
+	gdi-Defense: 0,40,27,41
+	gdi-Infantry: 0,80,27,41
+	gdi-Vehicle: 0,120,27,41
+	gdi-Plane: 0,160,27,41
+	gdi-Ship: 0,200,27,41
+	nod-Building: 80,0,27,41
+	nod-Defense: 80,40,27,41
+	nod-Infantry: 80,80,27,41
+	nod-Vehicle: 80,120,27,41
+	nod-Plane: 80,160,27,41
+	nod-Ship: 80,200,27,41
+
+tabs-ready: tabs.png
+	gdi-Building: 27,0,27,41
+	gdi-Defense: 27,40,27,41
+	gdi-Infantry: 27,80,27,41
+	gdi-Vehicle: 27,120,27,41
+	gdi-Plane: 27,160,27,41
+	gdi-Ship: 27,200,27,41
+	nod-Building: 107,0,27,41
+	nod-Defense: 107,40,27,41
+	nod-Infantry: 107,80,27,41
+	nod-Vehicle: 107,120,27,41
+	nod-Plane: 107,160,27,41
+	nod-Ship: 107,200,27,41
+
+tabs-normal: tabs.png
+	gdi-Building: 54,0,27,41
+	gdi-Defense: 54,40,27,41
+	gdi-Infantry: 54,80,27,41
+	gdi-Vehicle: 54,120,27,41
+	gdi-Plane: 54,160,27,41
+	gdi-Ship: 54,200,27,41
+	nod-Building: 134,0,27,41
+	nod-Defense: 134,40,27,41
+	nod-Infantry: 134,80,27,41
+	nod-Vehicle: 134,120,27,41
+	nod-Plane: 134,160,27,41
+	nod-Ship: 134,200,27,41
+
+dialog: dialog.png
+	background: 46,46,36,36
+	border-r: 82,46,46,36
+	border-l: 0,46,46,36
+	border-b: 46,82,36,46
+	border-t: 46,0,36,46
+	corner-tl: 0,0,46,46
+	corner-tr: 82,0,46,46
+	corner-bl: 0,82,46,46
+	corner-br: 82,82,46,46
+
+dialog2: dialog2.png
+	background: 1,1,126,126
+	border-r: 127,1,1,126
+	border-l: 0,1,1,126
+	border-b: 1,127,126,1
+	border-t: 1,0,126,1
+	corner-tl: 0,0,1,1
+	corner-tr: 82,0,1,1
+	corner-bl: 0,82,1,1
+	corner-br: 82,82,1,1
+
+dialog3: dialog3.png
+	background: 1,1,126,126
+	border-r: 127,1,1,126
+	border-l: 0,1,1,126
+	border-b: 1,127,126,1
+	border-t: 1,0,126,1
+	corner-tl: 0,0,1,1
+	corner-tr: 82,0,1,1
+	corner-bl: 0,82,1,1
+	corner-br: 82,82,1,1
+
+dialog4: dialog4.png
+	border-t: 5,0,52,6
+	border-b: 5,58,52,6
+	border-l: 0,5,6,54
+	border-r: 58,5,6,54
+	corner-tl: 0,0,6,6
+	corner-tr: 58,0,6,6
+	corner-bl: 0,58,6,6
+	corner-br: 58,58,6,6
+	background: 5,5,52,52
+
+spawnpoints: spawnpoints.png
+	unowned: 16,0,16,16
+	owned: 0,0,16,16
+
+sell-button: buttons.png
+	normal: 0,0,34,28
+	pressed: 34,0,34,28
+	disabled: 68,0,34,28
+
+repair-button: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	disabled: 68,28,34,28
+
+power-button: buttons.png
+	normal: 0,56,34,28
+	pressed: 34,56,34,28
+	disabled: 68,56,34,28
+
+flags: buttons.png
+	gdi: 30,84,30,15
+	nod: 0,84,30,15
+	random: 60,84,30,15
+
+music: musicplayer.png
+	pause: 0,0,25,25
+	stop: 28,0,25,25
+	play: 56,0,25,25
+	next: 84,0,25,25
+	prev: 112,0,25,25
+
+scrollbar: buttons.png
+	down_arrow: 16,112,16,16
+	up_arrow: 32,112,16,16
+
+checkbox: buttons.png
+	checked: 0,112,16,16
+
+strategic: strategic.png
+	unowned: 0,0,32,32
+	critical_unowned: 0,32,32,32
+	enemy_owned: 32,32,32,32
+	player_owned: 96,0,32,32
+

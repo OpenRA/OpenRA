@@ -11,12 +11,14 @@
 using System.Drawing;
 using System.IO;
 using System.Xml;
+using OpenRA.FileFormats;
+using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
 	class MappedImage
 	{
-		readonly Rectangle rect;
+		public readonly Rectangle rect;
 		public readonly string Src;
 		public readonly string Name;
 
@@ -32,10 +34,25 @@ namespace OpenRA.Graphics
 								 int.Parse(e.GetAttribute("width")),
 								 int.Parse(e.GetAttribute("height")));
 		}
+		
+		public MappedImage(string defaultSrc, MiniYaml info)
+		{
+			Src = defaultSrc;
+			FieldLoader.Load(this, info);
+		}
 
 		public Sprite GetImage(Sheet s)
 		{
 			return new Sprite(s, rect, TextureChannel.Alpha);
+		}
+		
+		public MiniYaml Save(string defaultSrc)
+		{
+			var root = new List<MiniYamlNode>();
+			if (defaultSrc != Src)
+				root.Add(new MiniYamlNode("src", Src));
+			
+			return new MiniYaml(FieldSaver.FormatValue( this, this.GetType().GetField("rect") ), root);
 		}
 	}
 }
