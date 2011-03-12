@@ -20,59 +20,33 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderSpy(init.self, this); }
 	}
 
-	class RenderSpy : RenderInfantryProne, IRenderModifier, IIssueOrder, IResolveOrder, IOrderVoice
+	class RenderSpy : RenderInfantryProne, IRenderModifier
 	{
-		Player disguisedAsPlayer;
 		string disguisedAsSprite;
-
-		public RenderSpy(Actor self, RenderSpyInfo info) : base(self, info) { }
+		Spy spy;
+		
+		public RenderSpy(Actor self, RenderSpyInfo info) : base(self, info) 
+		{ 
+			spy = self.Trait<Spy>();
+			disguisedAsSprite = spy.disguisedAsSprite;
+		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return disguisedAsPlayer != null ? r.Select(a => a.WithPalette(disguisedAsPlayer.Palette)) : r;
+			return spy.disguisedAsPlayer != null ? r.Select(a => a.WithPalette(spy.disguisedAsPlayer.Palette)) : r;
 		}
 
 		public override void Tick(Actor self)
 		{
-			base.Tick(self);
-		}
-
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Disguise")
+			if (spy.disguisedAsSprite != disguisedAsSprite)
 			{
-				var target = order.TargetActor == self ? null : order.TargetActor;
-				if (target != null && target.IsInWorld)
-				{
-					disguisedAsPlayer = target.Owner;
-					disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);
+				disguisedAsSprite = spy.disguisedAsSprite;
+				if (disguisedAsSprite != null)
 					anim.ChangeImage(disguisedAsSprite, "stand");
-				}
 				else
-				{
-					disguisedAsPlayer = null;
-					disguisedAsSprite = null;
 					anim.ChangeImage(GetImage(self), "stand");
-				}
 			}
-		}
-
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get { yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 5, "ability", true, true ); }
-		}
-
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
-		{
-			if( order.OrderID == "Disguise" )
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			return null;
-		}
-
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			return order.OrderString == "Disguise" ? "Attack" : null;
+			base.Tick(self);
 		}
 	}
 }
