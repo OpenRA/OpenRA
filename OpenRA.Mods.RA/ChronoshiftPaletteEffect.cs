@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 
 	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
 	{
-		const int chronoEffectLength = 20;
+		const int chronoEffectLength = 60;
 		int remainingFrames;
 
 		public void Enable()
