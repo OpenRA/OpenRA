@@ -189,20 +189,24 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
 
-			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
-			{
-				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-				var cpts = address.Split(':').ToArray();
-				if (cpts.Length != 2)
-					return true;
+            dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
+            {
+                var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
+                var cpts = address.Split(':').ToArray();
+                if (cpts.Length < 1 || cpts.Length > 2)
+                    return true;
 
-				Game.Settings.Player.LastServer = address;
-				Game.Settings.Save();
+                int port;
+                if (cpts.Length != 2 || !int.TryParse(cpts[1], out port))
+                    port = 1234;
 
-				Widget.CloseWindow();
-				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
-				return true;
-			};
+                Game.Settings.Player.LastServer = address;
+                Game.Settings.Save();
+
+                Widget.CloseWindow();
+                Game.JoinServer(cpts[0], port);
+                return true;
+            };
 
 			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
 			{
