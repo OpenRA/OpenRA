@@ -53,39 +53,36 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actor == null)
 				return;
 		
-			var text = actor.Info.Traits.Contains<TooltipInfo>()
+			var name = actor.Info.Traits.Contains<TooltipInfo>()
 				? actor.Info.Traits.Get<TooltipInfo>().Name
 				: actor.Info.Name;
-			var text2 = (actor.Owner.NonCombatant)
+			var owner = (actor.Owner.NonCombatant)
 				? "" : "{0}".F(actor.Owner.PlayerName);
-			var text3 = (actor.Owner == world.LocalPlayer || actor.Owner.NonCombatant)
+			var stance = (actor.Owner == world.LocalPlayer || actor.Owner.NonCombatant)
 				? "" : " ({0})".F(world.LocalPlayer.Stances[actor.Owner]);
 
-			var sz = Game.Renderer.BoldFont.Measure(text);
-			var sz2 = Game.Renderer.RegularFont.Measure(text2);
-			var sz3 = Game.Renderer.RegularFont.Measure(text3);
+			var nameSize = Game.Renderer.BoldFont.Measure(name);
+			var ownerSize = Game.Renderer.RegularFont.Measure(owner);
+			var stanceSize = Game.Renderer.RegularFont.Measure(stance);
 						
-			sz.X = Math.Max(sz.X, sz2.X + sz3.X + 35);
+			var panelSize = new int2(Math.Max(nameSize.X, ownerSize.X + stanceSize.X + 35) + 20, nameSize.Y + 24);
 
-			if (text2 != "") sz.Y += sz2.Y + 2;
-
-			sz.X += 20;
-			sz.Y += 24;
+			if (owner != "") panelSize.Y += ownerSize.Y + 2;
 
 			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
 				Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
-				Viewport.LastMousePos.X + sz.X + 20, Viewport.LastMousePos.Y + sz.Y + 20));
+				Viewport.LastMousePos.X + panelSize.X + 20, Viewport.LastMousePos.Y + panelSize.Y + 20));
 
-			Game.Renderer.BoldFont.DrawText(text,
+			Game.Renderer.BoldFont.DrawText(name,
 				new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
 			
-			if (text2 != "")
+			if (owner != "")
 			{
-				Game.Renderer.RegularFont.DrawText(text2,
+				Game.Renderer.RegularFont.DrawText(owner,
 					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.ColorRamp.GetColor(0));
 				
-				Game.Renderer.RegularFont.DrawText(text3,
-					new float2(Viewport.LastMousePos.X + 65 + sz2.X, Viewport.LastMousePos.Y + 50), Color.White);
+				Game.Renderer.RegularFont.DrawText(stance,
+					new float2(Viewport.LastMousePos.X + 65 + ownerSize.X, Viewport.LastMousePos.Y + 50), Color.White);
 
 				WidgetUtils.DrawRGBA(
 					ChromeProvider.GetImage("flags", actor.Owner.Country.Race),
