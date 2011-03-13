@@ -51,11 +51,23 @@ Players:
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: Random
-		Enemies: Multi0,Multi1,Multi2,Multi3
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5
 
 Actors:
 	wp7: mpspawn
