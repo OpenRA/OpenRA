@@ -214,7 +214,14 @@ namespace OpenRA.Mods.RA.Move
 			PxPosition = px;
 		}
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
+        public IEnumerable<IOrderTargeter> Orders
+        {
+            get
+            {
+                yield return new MoveOrderTargeter(Info);
+                yield return new PaletteOnlyOrderTargeter("Stop");
+            }
+        }
 
 		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
