@@ -1,3 +1,91 @@
+Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
+	Engine:
+		Display range circles when placing defenses
+		Support a hostile creeps player for viceroids / dinosaurs / ants / etc
+		General refactoring and performance fixes
+		Fix crashes caused by blank game title / direct connect server textfields
+		Fix GPS behavior when alliances change.
+		Stop/Scatter/Deploy orders give audio feedback
+		"Allow cheats" option moved into the game lobby, visible to all players
+		"Build anywhere" developer mode option
+		Improved pathfinding when collecting crates or crushing walls.
+		Refactor idle / prone infantry animations
+		Improve missile trail effects
+		Actors without health are not considered as dead
+		Health bars show recent damage as it is inflicted
+		Production structures and special powers show selection bars showing progress
+		Mouseover units to display healthbars etc
+		Fix shroud glitch when units exit transports
+		Fix bots jamming up their production structures
+		Direct connect will assume port 1234 if none is given
+		Chrome image mapping definitions changed from xml to yaml
+		Water explosion animations are not used for airborne explosions over water
+		Fix rendering of very large maps
+		Report GPU memory usage to debug.log
+		Massive improvements in repeated allocation / deallocation of memory
+		Fixed a desync with repairing buildings
+		Fixed a desync with aircraft (it now crashes deterministically instead)
+		Fixed a desync with KOTH maps
+		Fixed a bug where a slot is shown as closed when it contains a bot
+		Fix crash when spawning map actors owned by a nonexisting player
+		Fix crash when changing mod while playing music
+		Fix crash with perf graph
+
+	C&C:
+		Viceroids! Infantry killed by tiberium or chem warriors may turn into viceroids
+		Fixed death animations
+		Blue tiberium damages infantry
+		Map-placed SAM sites start closed
+		Engineers capturing enemy buildings gives enemy tech
+		Buildings emit minigunners and engineers when sold (no more technicians / civilians)
+		Civilians panic when attacked
+		Fix a rare crash with harvester docking
+		Fix a rare crash with stealth tank
+		New Map: East vs West 3 by pchote
+		Removed Maps: Wargames, Yellowstone II
+	
+	RA:
+		Service depots repair units faster
+		Fix crash when telling a minelayer to create an empty minefield
+		Fixed interior tileset boxes
+		New Map: Styrian Mountains by ReFlex
+		New Map: Convergence by Arcturus
+		Updated Map: Seaside by nudalz
+		Longbow ammo increased from 6 to 8, description fixed
+		Hind cost decreased from 1500 to 1000, hp increased from 100 to 150, range decreased from 12 to 10
+		Service depot cost increased to from 700 to 1000
+		Radar dome cost increased from 1000 to 1400
+		Artillery now requires war factor and radar dome, inaccuracy decreased from 80 to 40
+		APC moved from Allies to Soviets, hp increased from 200 to 300, price increased from 800 to 850
+		Medium / Heavy / Mammoth tanks now require service depot to build
+		Heavy tank cost reduced from 1200 to 1150
+		Flame turret rate of fire increased from 45 to 65, fires 2 bursts
+		AA guns, flak trucks can now fire over walls
+		Jeeps can carry a single passenger
+		Base defenses no longer provide ground control
+		Vehicle speed on clear ground increased, speed on ore reduced
+		Grenadiers have a 50% chance of exploding when killed
+		Spys are ignored by enemy units when disguised, tooltips show as disguised unit
+		Fix crates being paradropped inside trees, buildings
+		Production hotkey for flame turret changed to t, tesla coil to u
+
+	Editor:
+		New map format (version 5). Maps < Version 4 are no longer supported by the editor or game.
+		Waypoints and MP start locations are now actors
+		Importing C&C/RA maps fixed
+		New png loader to support future tools
+		Editor uses the correct icon under mono
+		Editor only saves non-default values for PlayerReferences in map files
+		Default player colours has been returned to neutral grey.
+		Maps can be loaded from the commandline
+		Option to show actor names
+	
+	Packaging:
+		Rename .deb package to use debian naming conventions
+		Improve linux package installation / elevation prompts (uses zenity, require mono >= 2.6.7)
+		Fix package installation crash on windows xp
+		Windowed mode now launches in the center of the screen under Windows
+
 20110207
 	Engine:
 		Informative drop messages - user is notified of kick vs game has started vs server unavailable
