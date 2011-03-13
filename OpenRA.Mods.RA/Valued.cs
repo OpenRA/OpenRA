@@ -17,14 +17,33 @@ namespace OpenRA.Mods.RA
 		public readonly int Cost = 0;
 	}
 
-	public class TooltipInfo : TraitInfo<Tooltip>
+	public class TooltipInfo : ITraitInfo
 	{
 		public readonly string Description = "";
 		public readonly string Name = "";
 		public readonly string Icon = null;
 		public readonly string[] AlternateName = { };
-	}
+	
+		public virtual object Create (ActorInitializer init) { return new Tooltip(init.self, this); }
+}
 	
 	public class Valued { }
-	public class Tooltip { }
+	
+	public class Tooltip : IToolTip 
+	{
+		Actor self;
+		TooltipInfo Info;
+		
+		public string Name() { return Info.Name; }
+		
+		public Player Owner() { return self.Owner; }
+			
+		public Stance Stance() { return self.World.LocalPlayer.Stances[self.Owner]; }
+		
+		public Tooltip( Actor self, TooltipInfo info )
+		{
+			this.self = self;
+			Info = info;
+		}
+	}
 }

@@ -19,12 +19,67 @@ using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
+	class SpyToolTipInfo : TooltipInfo, ITraitPrerequisite<SpyInfo>
+	{
+		public override object Create (ActorInitializer init) { return new SpyToolTip(init.self, this); }
+	}
+	
+	class SpyToolTip : IToolTip
+	{
+		Actor self;
+		TooltipInfo Info;
+		Spy spy;
+		
+		public string Name()
+		{ 
+			if (spy.Disguised)
+			{
+				if (self.Owner == self.World.LocalPlayer)
+					return "{0} ({1})".F(Info.Name, spy.disguisedAsName);
+				return spy.disguisedAsName;
+			}
+			return Info.Name; 
+		}
+		
+		public Player Owner()
+		{ 
+			if (spy.Disguised)
+			{
+				if (self.Owner == self.World.LocalPlayer)
+					return self.Owner;
+				return spy.disguisedAsPlayer;
+			}
+			return self.Owner; 
+		}
+			
+		public Stance Stance()
+		{ 
+			if (spy.Disguised)
+			{
+				if (self.Owner == self.World.LocalPlayer)
+					return self.World.LocalPlayer.Stances[self.Owner]; 
+				return self.World.LocalPlayer.Stances[spy.disguisedAsPlayer];
+			}
+			return self.World.LocalPlayer.Stances[self.Owner]; 
+		}
+		
+		public SpyToolTip( Actor self, TooltipInfo info )
+		{
+			this.self = self;
+			Info = info;
+			spy = self.Trait<Spy>();
+		}
+	}
+	
+	
 	class SpyInfo : TraitInfo<Spy> { }
 
 	class Spy : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public Player disguisedAsPlayer;
-		public string disguisedAsSprite;
+		public string disguisedAsSprite, disguisedAsName;
+		
+		public bool Disguised {  get { return disguisedAsPlayer != null; }	}
 		
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -57,13 +112,17 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Disguise")
 			{
 				var target = order.TargetActor == self ? null : order.TargetActor;
+				
 				if (target != null && target.IsInWorld)
 				{
-					disguisedAsPlayer = target.Owner;
+					var tooltip = target.Trait<Tooltip>();
+					disguisedAsName = tooltip.Name();
+					disguisedAsPlayer = tooltip.Owner();
 					disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);
 				}
 				else
 				{
+					disguisedAsName = null;
 					disguisedAsPlayer = null;
 					disguisedAsSprite = null;
 				}

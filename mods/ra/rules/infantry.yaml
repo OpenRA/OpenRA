@@ -181,7 +181,7 @@ SPY:
 		BuiltAt: tent
 	Valued:
 		Cost: 500
-	Tooltip:
+	SpyToolTip:
 		Name: Spy
 		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
 	Selectable:

@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -53,14 +54,12 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actor == null)
 				return;
 		
-			var name = actor.Info.Traits.Contains<TooltipInfo>()
-				? actor.Info.Traits.Get<TooltipInfo>().Name
-				: actor.Info.Name;
-			var owner = (actor.Owner.NonCombatant)
-				? "" : "{0}".F(actor.Owner.PlayerName);
-			var stance = (actor.Owner == world.LocalPlayer || actor.Owner.NonCombatant)
-				? "" : " ({0})".F(world.LocalPlayer.Stances[actor.Owner]);
-
+			var tooltip = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
+			
+			var name = tooltip != null ? tooltip.Name() : actor.Info.Name;
+			var owner = (tooltip != null && !tooltip.Owner().NonCombatant) ? "{0}".F(tooltip.Owner().PlayerName) : "";
+			var stance = (tooltip != null && tooltip.Owner() != actor.World.LocalPlayer && !tooltip.Owner().NonCombatant) ? " ({0})".F(tooltip.Stance()) : "";
+			
 			var nameSize = Game.Renderer.BoldFont.Measure(name);
 			var ownerSize = Game.Renderer.RegularFont.Measure(owner);
 			var stanceSize = Game.Renderer.RegularFont.Measure(stance);

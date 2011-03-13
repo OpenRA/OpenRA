@@ -64,7 +64,13 @@ namespace OpenRA.Traits
 	public interface INotifyOtherCaptured { void OnActorCaptured(Actor self, Actor captured, Actor captor, Player oldOwner, Player newOwner); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
 	public interface IStoreOre { int Capacity { get; }}
-
+	public interface IToolTip 
+	{ 
+		string Name();
+		Player Owner();
+		Stance Stance();
+	}
+	
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface INudge { void OnNudge(Actor self, Actor nudger); }
