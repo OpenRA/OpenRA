@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * attack.GetMaximumRange());
 
 			var target = inRange
-				.Where(a => a != self && self.Owner.Stances[a.Owner] == Stance.Ally)
+				.Where(a => a != self && a.AppearsFriendlyTo(self))
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))

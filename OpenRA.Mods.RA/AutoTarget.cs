@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker))) return;
 
 			// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
-			if (self.Owner.Stances[e.Attacker.Owner] == Stance.Ally) return;
+			if (e.Attacker.AppearsFriendlyTo(self)) return;
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 

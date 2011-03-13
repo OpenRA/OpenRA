@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 				
 				if (target != null && target.IsInWorld)
 				{
-					var tooltip = target.Trait<Tooltip>();
+					var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
 					disguisedAsName = tooltip.Name();
 					disguisedAsPlayer = tooltip.Owner();
 					disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);

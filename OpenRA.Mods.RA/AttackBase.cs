@@ -222,7 +222,7 @@ namespace OpenRA.Mods.RA
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
 
 			return inRange
-				.Where(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Enemy)
+				.Where(a => a.Owner != null && a.AppearsHostileTo(self))
 				.Where(a => !a.HasTrait<AutoTargetIgnore>())
 				.Where(a => HasAnyValidWeapons(Target.FromActor(a)))
 				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
