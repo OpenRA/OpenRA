@@ -216,7 +216,7 @@ namespace OpenRA.Mods.RA.Move
 				if (cellInfo.GetUpperBound(0) != world.Map.MapSize.X - 1 ||
 					cellInfo.GetUpperBound(1) != world.Map.MapSize.Y - 1)
 				{
-					Game.Debug("Discarding old pooled CellInfo of wrong size.");
+                    Log.Write("debug", "Discarding old pooled CellInfo of wrong size.");
 					continue;
 				}
 
