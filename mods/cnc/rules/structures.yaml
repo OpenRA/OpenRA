@@ -332,6 +332,7 @@ HQ:
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
 		UnitType: a10
+	SupportPowerChargeBar:
 
 NUK2:
 	Inherits: ^Building
@@ -461,7 +462,8 @@ EYE:
 		EndChargeSound: ionredy1.aud
 		LaunchSound: ion1.aud
 		SelectTargetSound: select1.aud
-	
+	SupportPowerChargeBar:
+
 TMPL:
 	RequiresPower:
 	CanPowerDown:
@@ -497,6 +499,7 @@ TMPL:
 		SelectTargetSound: select1.aud
 		LaunchSound: nukemisl.aud
 		MissileWeapon: atomic
+	SupportPowerChargeBar:
 
 OBLI:
 	RequiresPower:
