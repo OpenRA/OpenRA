@@ -295,7 +295,6 @@
     <Compile Include="HackyAI.cs" />
     <Compile Include="RALoadScreen.cs" />
     <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="World\GotoNextBase.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
