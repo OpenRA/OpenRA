@@ -143,9 +143,9 @@ function ShellExecuteCode(ev,wfilename)
 		fn,err = loadstring(tx)
 	end
 
-	if not fn then
+	if fn==nil and err then
 		shellPrint("Error: "..err)
-	else
+	elseif fn then
 		setfenv(fn,env)
 		xpcall(fn,function(err)
 			shellPrint(debug.traceback(err))

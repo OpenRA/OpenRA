@@ -7,7 +7,8 @@ return {
 			if (not CommandLineRunning(self:fuid(wfilename))) then return end
 			local init = dofile(ide.config.path.luxinia2.."/../comserver/client.lua")
 			local fenv = {}
-			fenv.print = DisplayOutput
+			setmetatable(fenv,{__index = _G})
+			fenv.print = function(...) DisplayOutput(...); DisplayOutput("\n"); end
 			
 			setfenv(init,fenv)
 			local client = init()
@@ -37,7 +38,7 @@ return {
 				
 				local cmd = luxdir..'/luajit.exe ../main.lua -s'..args
 				
-				if(CommandLineRun(cmd,ide.config.path.luxinia2,true,false,nil,self:fuid(wfilename),
+				if(CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
 					function() ShellSupportRemote(nil) end)) then return end
 				
 				local client = self:finitclient()
