@@ -41,8 +41,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			CurrentReplay = null;
 
 			rl.RemoveChildren();
-			foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
-				AddReplay(rl, replayFile, template);
+			if (Directory.Exists(replayDir))
+				foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
+					AddReplay(rl, replayFile, template);
 
 			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
 				{
