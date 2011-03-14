@@ -50,3 +50,8 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
 OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.config
 *.resources
+
+# other crap
+Logs/
+Replays/
+settings.yaml
