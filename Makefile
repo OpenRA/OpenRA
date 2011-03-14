@@ -5,9 +5,9 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
-core: game renderers mod_ra mod_cnc
-tools: editor ralint seqed filex tsbuild utility
-package: fixheader core editor utility
+core: game renderers mod_ra mod_cnc utility
+tools: editor ralint seqed filex tsbuild
+package: fixheader core editor
 mods: mod_ra mod_cnc
 all: core tools
 clean: 
