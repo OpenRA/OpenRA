@@ -38,15 +38,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			if (!World.Selection.Actors.Any())
-				return false;
-
 			if (e.Modifiers == Modifiers.None)
 			{
-                if (e.KeyChar == '\b' || e.KeyChar == (char)127)
+				if (e.KeyChar == '\b' || e.KeyChar == (char)127)
                     return CycleBases();
-
-				if (e.KeyChar == AttackMoveKey)
+				
+				if (!World.Selection.Actors.Any())
+					return false;
+				
+            	if (e.KeyChar == AttackMoveKey)
 					return PerformAttackMove();
 
 				if (e.KeyChar == StopKey)
