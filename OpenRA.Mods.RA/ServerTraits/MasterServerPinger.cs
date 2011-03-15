@@ -37,16 +37,16 @@ namespace OpenRA.Mods.RA.Server
 		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
 		public void GameStarted(S server) { PingMasterServer(server); }
 
-		static int lastPing = 0;
+		int lastPing = 0;
 		// Todo: use the settings passed to the server instead
-		static bool isInternetServer = Game.Settings.Server.AdvertiseOnline;
-		static string masterServerUrl = Game.Settings.Server.MasterServer;
-		static int externalPort = Game.Settings.Server.ExternalPort;
-		static bool isInitialPing = true;
+		bool isInternetServer = Game.Settings.Server.AdvertiseOnline;
+		string masterServerUrl = Game.Settings.Server.MasterServer;
+		int externalPort = Game.Settings.Server.ExternalPort;
+		bool isInitialPing = true;
 		
-		static volatile bool isBusy;
-		static Queue<string> masterServerMessages = new Queue<string>();
-		public static void PingMasterServer(S server)
+		volatile bool isBusy;
+		Queue<string> masterServerMessages = new Queue<string>();
+		public void PingMasterServer(S server)
 		{
 			if (isBusy || !isInternetServer) return;
 
