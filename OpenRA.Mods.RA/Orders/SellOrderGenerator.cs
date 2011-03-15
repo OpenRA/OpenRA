@@ -32,12 +32,9 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Owner == world.LocalPlayer
-						&& a.HasTrait<Building>()
-						&& a.HasTrait<Selectable>()).FirstOrDefault();
-
-				var building = underCursor != null ? underCursor.Info.Traits.Get<BuildingInfo>() : null;
-
-				if (building != null && !building.Unsellable)
+					    && a.HasTrait<Sellable>()).FirstOrDefault();
+				
+				if (underCursor != null)
 					yield return new Order("Sell", underCursor, false);
 			}
 		}

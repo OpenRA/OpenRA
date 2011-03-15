@@ -24,17 +24,18 @@ namespace OpenRA.Mods.RA.Buildings
 		void DoSell(Actor self)
 		{
 			var h = self.TraitOrDefault<Health>();
-			var bi = self.Info.Traits.Get<BuildingInfo>();
+			var si = self.Info.Traits.Get<SellableInfo>();
 			var pr = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			
 			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
 			
-			var refund = (cost * bi.RefundPercent * (h == null ? 1 : h.HP)) / (100 * (h == null ? 1 : h.MaxHP));			
+			var refund = (cost * si.RefundPercent * (h == null ? 1 : h.HP)) / (100 * (h == null ? 1 : h.MaxHP));			
 			pr.GiveCash(refund);
 			
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
+			
 			self.Destroy();
 		}
 
