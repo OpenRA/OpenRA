@@ -1,61 +1,48 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
 using System;
 using OpenRA.Traits;
+
 namespace OpenRA.Mods.RA
 {
 	public static class ActorExts
 	{
-		public static bool AppearsFriendlyTo(this Actor self, Player toPlayer) 
-		{ 
-			if (self.HasTrait<Spy>())
-			{
-				if (self.Trait<Spy>().Disguised)
-				{
-					//TODO: check if we can see through disguise
-					if ( toPlayer.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Ally)
-						return true;
-				}
-				else 
-				{
-					if (toPlayer.Stances[self.Owner] == Stance.Ally)
-						return true;
-				}
-				return false;
-			}
-			return toPlayer.Stances[self.Owner] == Stance.Ally;
+		static bool IsDisguisedSpy( this Actor a )
+		{
+			return a.HasTrait<Spy>() && a.Trait<Spy>().Disguised;
 		}
 		
-		public static bool AppearsHostileTo(this Actor self, Player toPlayer) 
-		{ 
-			if (self.HasTrait<Spy>())
-			{
-				if (toPlayer.Stances[self.Owner] == Stance.Ally)
-					return false;
-				
-				if (self.Trait<Spy>().Disguised)
-				{
-					//TODO: check if we can see through disguise
-                    if (toPlayer.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Enemy)
-						return true;
-				}
-				else 
-				{
-                    if (toPlayer.Stances[self.Owner] == Stance.Enemy)
-						return true;
-				}
-				return false;
-			}
-            return toPlayer.Stances[self.Owner] == Stance.Enemy;
+		public static bool AppearsFriendlyTo(this Actor self, Actor toActor) 
+		{
+			var stance = toActor.Owner.Stances[ self.Owner ];
+			
+			if (self.IsDisguisedSpy() && !toActor.HasTrait<IgnoresDisguise>())
+				if ( toActor.Owner.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Ally)
+					return true;
+
+			return stance == Stance.Ally;
 		}
+		
+		public static bool AppearsHostileTo(this Actor self, Actor toActor) 
+		{ 
+			var stance = toActor.Owner.Stances[ self.Owner ];
+			if (stance == Stance.Ally)
+				return false;		/* otherwise, we'll hate friendly disguised spies */
+			
+			if (self.IsDisguisedSpy() && !toActor.HasTrait<IgnoresDisguise>())
+				if (toActor.Owner.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Enemy)
+					return true;
 
-        public static bool AppearsHostileTo(this Actor self, Actor toActor)
-        {
-            return AppearsHostileTo(self, toActor.Owner);
-        }
-
-        public static bool AppearsFriendlyTo(this Actor self, Actor toActor)
-        {
-            return AppearsFriendlyTo(self, toActor.Owner);
-        }
+			return stance == Stance.Enemy;
+		}
 	}
 }
 

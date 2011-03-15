@@ -134,4 +134,7 @@ namespace OpenRA.Mods.RA
 			return order.OrderString == "Disguise" ? "Attack" : null;
 		}
 	}
+	
+	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
+	class IgnoresDisguise {}
 }

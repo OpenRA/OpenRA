@@ -25,6 +25,7 @@ DOG:
 		CanAttackGround: no
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
+	IgnoresDisguise:
 
 E1:
 	Inherits: ^Infantry
