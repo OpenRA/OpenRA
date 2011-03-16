@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 	
 	class SpyInfo : TraitInfo<Spy> { }
 
-	class Spy : IIssueOrder, IResolveOrder, IOrderVoice
+	class Spy : IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier
 	{
 		public Player disguisedAsPlayer;
 		public string disguisedAsSprite, disguisedAsName;
@@ -132,6 +132,15 @@ namespace OpenRA.Mods.RA
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Disguise" ? "Attack" : null;
+		}
+
+		public Color RadarColorOverride(Actor self)
+		{
+			if (!Disguised || self.World.LocalPlayer == null || 
+				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+				return self.Owner.ColorRamp.GetColor(0);
+
+			return disguisedAsPlayer.ColorRamp.GetColor(0);
 		}
 	}
 	
