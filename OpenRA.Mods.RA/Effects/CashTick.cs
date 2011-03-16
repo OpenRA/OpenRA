@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Effects
 	class CashTick : IEffect
 	{
 		string s;
-		int lifetime = 50;
+		int lifetime;
 		int remaining;
 		int velocity;
 		float2 pos;

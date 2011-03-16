@@ -17,6 +17,7 @@ using OpenRA.Traits;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Mods.RA.Move;
 using System.Drawing;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -25,10 +26,11 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Red;
 		public readonly int2 DockOffset = new int2 (1, 2);
-		public readonly int Capacity = 0;
-		public readonly int ProcessTick = 25;
-		public readonly int ProcessAmount = 50;
-		public readonly int LowPowerProcessTick = 50;
+		
+		public readonly bool ShowTicks = true;
+		public readonly int TickLifetime = 30;
+		public readonly int TickVelocity = 2;
+		public readonly int TickRate = 10;
 
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
@@ -38,7 +40,10 @@ namespace OpenRA.Mods.RA
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
 		PlayerResources PlayerResources;
-
+		
+		int currentDisplayTick = 0;
+		int currentDisplayValue = 0;
+		
 		[Sync]
 		public int Ore = 0;
 
@@ -74,6 +79,8 @@ namespace OpenRA.Mods.RA
 		public void GiveOre(int amount)
 		{
 			PlayerResources.GiveOre(amount);
+			if (Info.ShowTicks)
+				currentDisplayValue += amount;
 		}
 
 		void CancelDock(Actor self)
@@ -92,6 +99,15 @@ namespace OpenRA.Mods.RA
 			{
 				self.Trait<RenderBuilding>().CancelCustomAnim(self);
 				dockedHarv = null;
+			}
+			
+			if (Info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
+			{
+				var temp = currentDisplayValue;
+				if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+					self.World.AddFrameEndTask(w => w.Add(new CashTick(temp, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.ColorRamp.GetColor(0))));
+				currentDisplayTick = Info.TickRate;
+				currentDisplayValue = 0;
 			}
 		}
 
