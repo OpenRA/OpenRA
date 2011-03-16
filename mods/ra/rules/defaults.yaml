@@ -163,6 +163,7 @@
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types:Building
+	Sellable:
 
 ^Wall:
 	AppearsOnRadar:
@@ -193,6 +194,7 @@
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types:Wall
+	Sellable:
 
 ^CivBuilding:
 	Inherits: ^Building

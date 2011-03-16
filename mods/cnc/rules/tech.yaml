@@ -8,7 +8,6 @@ V19:
 		Footprint: x
 		Dimensions: 1,1
 		Capturable: true
-		Unsellable: true
 	-DeadBuildingState:
 	Tooltip:
 		Name: Oil Derrick
