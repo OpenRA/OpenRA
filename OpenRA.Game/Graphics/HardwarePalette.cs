@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 {
 	public class HardwarePalette
 	{
-		public const int MaxPalettes = 64;
+		public const int MaxPalettes = 256;
 		int allocated = 0;
 		
 		ITexture texture;
