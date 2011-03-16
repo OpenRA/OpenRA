@@ -14,6 +14,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };
 		public readonly decimal[] SpeedModifier = { 1.1m, 1.15m, 1.2m, 1.5m };
-		public object Create(ActorInitializer init) { return new GainsExperience(init.self, this); }
+		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
 	public class GainsExperience : IFirepowerModifier, ISpeedModifier, IDamageModifier, IRenderModifier, ISync
@@ -33,14 +34,22 @@ namespace OpenRA.Mods.RA
 		readonly GainsExperienceInfo Info;
 		readonly Animation RankAnim;
 
-		public GainsExperience(Actor self, GainsExperienceInfo info)
+		public GainsExperience(ActorInitializer init, GainsExperienceInfo info)
 		{
-			this.self = self;
+			self = init.self;
 			this.Info = info;
 			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
 			Levels = Info.CostThreshold.Select(t => (int)(t * cost)).ToArray();
 			RankAnim = new Animation("rank");
 			RankAnim.PlayFetchIndex("rank", () => Level - 1);
+
+			if (init.Contains<ExperienceInit>())
+			{
+				Experience = init.Get<ExperienceInit, int>();
+
+				while (Level < Levels.Length && Experience >= Levels[Level])
+					Level++;
+			}
 		}
 
 		[Sync]
@@ -50,7 +59,7 @@ namespace OpenRA.Mods.RA
 
 		public void GiveOneLevel()
 		{
-			if (Level < Levels.Count())
+			if (Level < Levels.Length)
 				GiveExperience(Levels[Level] - Experience);
 		}
 
@@ -58,7 +67,7 @@ namespace OpenRA.Mods.RA
 		{
 			Experience += amount;
 
-			while (Level < Levels.Count() && Experience >= Levels[Level])
+			while (Level < Levels.Length && Experience >= Levels[Level])
 			{
 				Level++;
 
@@ -101,6 +110,24 @@ namespace OpenRA.Mods.RA
 			var bounds = self.GetBounds(false);
 			yield return new Renderable(RankAnim.Image,
 				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", (int)self.CenterLocation.Y);
+		}
+	}
+
+	class ExperienceInit : IActorInit<int>
+	{
+		[FieldFromYamlKey]
+		public readonly int value = 0;
+
+		public ExperienceInit() { }
+
+		public ExperienceInit(int init)
+		{
+			value = init;
+		}
+
+		public int Value(World world)
+		{
+			return value;
 		}
 	}
 }
