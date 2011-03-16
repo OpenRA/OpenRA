@@ -330,7 +330,8 @@
     <Compile Include="Widgets\SidebarButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="ActorExts.cs" />
-    <Compile Include="Buildings\Sellable.cs" />
+	<Compile Include="Effects\CashTick.cs" />
+    <Compile Include="Effects\CashTick.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

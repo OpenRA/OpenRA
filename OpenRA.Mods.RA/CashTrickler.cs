@@ -9,27 +9,39 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class CashTricklerInfo : TraitInfo<CashTrickler>
+	class CashTricklerInfo : ITraitInfo
 	{
 		public readonly int Period = 10;
 		public readonly int Amount = 3;
+		public readonly bool ShowTicks = true;
+		public readonly int TickLifetime = 30;
+		public readonly int TickVelocity = 2;
+		
+		public object Create (ActorInitializer init) { return new CashTrickler(this); }
 	}
 
 	class CashTrickler : ITick, ISync
 	{
 		[Sync]
 		int ticks;
-
+		CashTricklerInfo Info;
+		public CashTrickler(CashTricklerInfo info)
+		{
+			Info = info;
+		}
+		
 		public void Tick(Actor self)
 		{
 			if (--ticks < 0)
 			{
-				var info = self.Info.Traits.Get<CashTricklerInfo>();
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
-				ticks = info.Period;
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Info.Amount);
+				ticks = Info.Period;
+				if (Info.ShowTicks)
+					self.World.AddFrameEndTask(w => w.Add(new CashTick(Info.Amount, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.ColorRamp.GetColor(0))));
 			}
 		}
 	}
