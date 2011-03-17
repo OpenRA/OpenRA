@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA
 		public readonly string Description = "";
 		public readonly string Name = "";
 		public readonly string Icon = null;
-		public readonly string[] AlternateName = { };
 	
 		public virtual object Create (ActorInitializer init) { return new Tooltip(init.self, this); }
 }

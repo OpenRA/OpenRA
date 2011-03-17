@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Buildings
 		
 		public void ActorChanged(Actor a)
 		{
-			if (a.Owner == player && a.HasTrait<Building>())
+			if (a.Owner == player && a.HasTrait<ITechTreePrerequisite>())
 				Update();
 		}
 				
@@ -59,17 +59,13 @@ namespace OpenRA.Mods.RA.Buildings
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
 			if (player == null)
 				return ret;
+			
 
-            foreach (var b in player.World.ActorsWithTrait<BuildingInfo>()
-                .Where(a => a.Actor.Owner == player).Select(a => a.Actor))
-            {
-                ret[b.Info.Name].Add(b);
-                var tt = b.Info.Traits.GetOrDefault<TooltipInfo>();
-                if (tt != null)
-                    foreach (var alt in tt.AlternateName)
-                        ret[alt].Add(b);
-            }
-
+            foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
+                	.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
+				foreach (var p in b.Trait.ProvidesPrerequisites)
+					ret[ p ].Add( b.Actor );
+			
 			return ret;
 		}
 		
@@ -114,5 +110,27 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		void PrerequisitesAvailable(string key);
 		void PrerequisitesUnavailable(string key);
+	}
+	
+	public interface ITechTreePrerequisite
+	{
+		IEnumerable<string> ProvidesPrerequisites {get;}
+	}
+	
+	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
+	{
+		public string Prerequisite;
+		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(this);}
+	}
+
+	public class ProvidesCustomPrerequisite : ITechTreePrerequisite
+	{
+		ProvidesCustomPrerequisiteInfo Info;
+		public IEnumerable<string> ProvidesPrerequisites { get { yield return Info.Prerequisite; } }
+
+		public ProvidesCustomPrerequisite(ProvidesCustomPrerequisiteInfo info)
+		{
+			Info = info;
+		}
 	}
 }

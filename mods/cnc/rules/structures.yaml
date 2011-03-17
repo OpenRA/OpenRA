@@ -51,6 +51,8 @@ NUKE:
 		Name: Power Plant
 		Icon: nukeicnh
 		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
@@ -75,7 +77,7 @@ PROC:
 		Description: Processes raw Tiberium into useable resources
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: nuke
+		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
 		Power: -30
@@ -140,10 +142,11 @@ PYLE:
 		Name: Barracks
 		Icon: pyleicnh
 		Description: Trains infantry
-		AlternateName: @Barracks
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: nuke
+		Prerequisites: anypower
 		Owner: gdi
 	Building:
 		Power: -20
@@ -182,10 +185,11 @@ HAND:
 		Name: Hand of Nod
 		Icon: handicnh
 		Description: Trains infantry
-		AlternateName: @Barracks
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: nuke
+		Prerequisites: anypower
 		Owner: nod
 	Building:
 		Power: -20
@@ -220,8 +224,9 @@ AFLD:
 	Tooltip:
 		Name: Airstrip
 		Icon: afldicnh
-		AlternateName: @Vehicle Production
 		Description: Provides a dropzone for vehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: vehicleproduction
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
@@ -261,8 +266,9 @@ WEAP:
 	Tooltip:
 		Name: Weapons Factory
 		Icon: weapicnh
-		AlternateName: @Vehicle Production
 		Description: Assembly point for vehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: vehicleproduction
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
@@ -342,6 +348,8 @@ NUK2:
 		Name: Advanced Power Plant
 		Icon:nuk2icnh
 		Description: Provides more power, cheaper than the \nstandard Power Plant
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: hq
@@ -367,7 +375,7 @@ FIX:
 		Description: Repairs vehicles and allows the\nconstruction of additional bases.
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: @Vehicle Production
+		Prerequisites: vehicleproduction
 		Owner: gdi,nod
 	Building:
 		Power: -30
@@ -394,7 +402,7 @@ HPAD:
 		Description: Produces and reloads helicopters
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: @Barracks
+		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
 		Power: -10
@@ -434,7 +442,6 @@ EYE:
 		Name: Advanced Communications Center
 		Icon: eyeicnh
 		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
-		AlternateName: @Superweapon
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -474,7 +481,6 @@ TMPL:
 		Name: Temple of Nod
 		Icon: tmplicnh
 		Description: Place of worship and secret missile silo.\nRequires power to operate.
-		AlternateName: @Superweapon
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -616,7 +622,7 @@ GUN:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: @Barracks
+		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
 		Power: -20
@@ -684,7 +690,7 @@ GTWR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
-		Prerequisites: @Barracks
+		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
 		Power: -10

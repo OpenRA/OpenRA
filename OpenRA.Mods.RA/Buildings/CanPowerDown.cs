@@ -23,12 +23,10 @@ namespace OpenRA.Mods.RA.Buildings
 		bool disabled = false;
 		int normalPower = 0;
 		PowerManager PowerManager;
-		TechTree TechTree;
 		
 		public CanPowerDown(ActorInitializer init)
 		{
 			PowerManager = init.self.Owner.PlayerActor.Trait<PowerManager>();
-			TechTree = init.self.Owner.PlayerActor.Trait<TechTree>();
 			normalPower = init.self.Info.Traits.Get<BuildingInfo>().Power;
 		}
 		public bool Disabled { get { return disabled; } }
@@ -42,16 +40,12 @@ namespace OpenRA.Mods.RA.Buildings
 				Sound.PlayToPlayer(self.Owner, disabled ? eva.EnablePower : eva.DisablePower);
 				
 				PowerManager.UpdateActor(self, disabled ? 0 : normalPower);
-				
-				// Rebuild the tech tree; some support powers require active buildings
-				TechTree.Update();
 			}
 		}
 		
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			PowerManager = newOwner.PlayerActor.Trait<PowerManager>();
-			TechTree = newOwner.PlayerActor.Trait<TechTree>();
 		}
 	}
 }

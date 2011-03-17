@@ -9,7 +9,7 @@ MSLO:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
-		Prerequisites: @Tech Center
+		Prerequisites: techcenter
 		Owner: soviet,allies
 	Building:
 		Power: -100
@@ -76,7 +76,7 @@ SPEN:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: @Power Plant
+		Prerequisites: anypower
 		Owner: soviet
 		Hotkey: y
 	TargetableBuilding:
@@ -127,7 +127,7 @@ SYRD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
-		Prerequisites: @Power Plant
+		Prerequisites: anypower
 		Owner: allies
 		Hotkey: y
 	Valued:
@@ -528,7 +528,8 @@ ATEK:
 	Tooltip:
 		Name: Allied Tech Center
 		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
-		AlternateName: @Tech Center
+	ProvidesCustomPrerequisite:
+		Prerequisite: techcenter
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -625,7 +626,7 @@ PROC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Prerequisites: @Power Plant
+		Prerequisites: anypower
 		Owner: allies,soviet
 		Hotkey: e
 	Valued:
@@ -789,7 +790,8 @@ POWR:
 	Tooltip:
 		Name: Power Plant
 		Description: Provides power for other structures
-		AlternateName: @Power Plant
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
 	Building:
 		Power: 100
 		Footprint: xx xx
@@ -817,7 +819,8 @@ APWR:
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power, cheaper than the \nstandard Power Plant
-		AlternateName: @Power Plant
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
 	Building:
 		Power: 200
 		Footprint: ___ xxx xxx
@@ -845,7 +848,8 @@ STEK:
 	Tooltip:
 		Name: Soviet Tech Center
 		Description: Provides Soviet advanced technologies
-		AlternateName: @Tech Center
+	ProvidesCustomPrerequisite:
+		Prerequisite: techcenter
 	Building:
 		Power: -100
 		Footprint: xxx xxx
@@ -865,7 +869,7 @@ BARR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: @Power Plant
+		Prerequisites: anypower
 		Owner: soviet
 		Hotkey: b
 	Valued:
@@ -873,7 +877,8 @@ BARR:
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Produces infantry
-		AlternateName: @Barracks
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -904,7 +909,7 @@ TENT:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: @Power Plant
+		Prerequisites: anypower
 		Owner: allies
 		Hotkey: b
 	Valued:
@@ -912,7 +917,8 @@ TENT:
 	Tooltip:
 		Name: Allied Barracks
 		Description: Produces infantry
-		AlternateName: @Barracks
+	ProvidesCustomPrerequisite:
+		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1031,7 +1037,7 @@ SYRF:
 		Name: Fake Shipyard
 #	Buildable:
 #		BuildPaletteOrder: 900
-#		Prerequisites: @Power Plant
+#		Prerequisites: anypower
 #		Owner: allies
 #		Cost: 50
 #		Description: Fake Shipyard

@@ -210,7 +210,7 @@ E7:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 110
-		Prerequisites: @Tech Center, @Barracks
+		Prerequisites: techcenter, barracks
 		Owner: allies,soviet
 		BuiltAt: barr,tent
 	Valued:

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ISync
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ISync, ITechTreePrerequisite
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -73,7 +73,9 @@ namespace OpenRA.Mods.RA.Buildings
 		PowerManager PlayerPower;
 
 		public int2 PxPosition { get { return ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2; } }
-
+		
+		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
+		
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			this.self = init.self;
