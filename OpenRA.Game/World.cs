@@ -208,45 +208,14 @@ namespace OpenRA
 		{
 			readonly World world;
 
-			public readonly Cache<Player, OwnedByCachedView> OwnedBy;
-
 			public AllQueries( World world )
 			{
 				this.world = world;
-				OwnedBy = new Cache<Player, OwnedByCachedView>(p => new OwnedByCachedView(world, world.actors, x => x.Owner == p));
 			}
 
 			public IEnumerable<TraitPair<T>> WithTrait<T>()
 			{
 				return world.traitDict.ActorsWithTraitMultiple<T>( world );
-			}
-
-			static CachedView<Actor, TraitPair<T>> WithTraitInner<T>( Set<Actor> set, TypeDictionary hasTrait )
-			{
-				var ret = hasTrait.GetOrDefault<CachedView<Actor, TraitPair<T>>>();
-				if( ret != null )
-					return ret;
-				ret = new CachedView<Actor, TraitPair<T>>(
-					set,
-					x => x.HasTrait<T>(),
-					x => new TraitPair<T> { Actor = x, Trait = x.Trait<T>() } );
-				hasTrait.Add( ret );
-				return ret;
-			}
-
-			public class OwnedByCachedView : CachedView<Actor, Actor>
-			{
-				readonly TypeDictionary hasTrait = new TypeDictionary();
-
-				public OwnedByCachedView( World world, Set<Actor> set, Func<Actor, bool> include )
-					: base( set, include, a => a )
-				{
-				}
-
-				public CachedView<Actor, TraitPair<T>> WithTrait<T>()
-				{
-					return WithTraitInner<T>( this, hasTrait );
-				}
 			}
 		}
 

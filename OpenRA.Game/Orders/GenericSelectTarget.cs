@@ -83,9 +83,8 @@ namespace OpenRA.Orders
 
 		public override void Tick(World world)
 		{
-			var hasStructure = world.Queries.OwnedBy[world.LocalPlayer]
-					.WithTrait<T>()
-					.Any();
+			var hasStructure = world.Queries.WithTrait<T>()
+                .Any( a => a.Actor.Owner == world.LocalPlayer );
 
 			if (!hasStructure)
 				world.CancelInputMode();

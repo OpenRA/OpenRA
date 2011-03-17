@@ -60,14 +60,16 @@ namespace OpenRA.Mods.RA.Buildings
 			if (player == null)
 				return ret;
 
-			foreach( var b in player.World.Queries.OwnedBy[player].Where( x=>x.Info.Traits.Contains<BuildingInfo>() ) )
-			{
-				ret[ b.Info.Name ].Add( b );
-				var tt = b.Info.Traits.GetOrDefault<TooltipInfo>();
-				if( tt != null )
-					foreach( var alt in tt.AlternateName )
-						ret[ alt ].Add( b );
-			}
+            foreach (var b in player.World.Queries.WithTrait<BuildingInfo>()
+                .Where(a => a.Actor.Owner == player).Select(a => a.Actor))
+            {
+                ret[b.Info.Name].Add(b);
+                var tt = b.Info.Traits.GetOrDefault<TooltipInfo>();
+                if (tt != null)
+                    foreach (var alt in tt.AlternateName)
+                        ret[alt].Add(b);
+            }
+
 			return ret;
 		}
 		

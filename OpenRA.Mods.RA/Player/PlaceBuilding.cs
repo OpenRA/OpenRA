@@ -95,7 +95,8 @@ namespace OpenRA.Mods.RA
 			if (bi == null)
 				return;
 			
-			var producers = self.World.Queries.OwnedBy[ self.Owner ].WithTrait<Production>()
+			var producers = self.World.Queries.WithTrait<Production>()
+                               .Where( x => x.Actor.Owner == self.Owner )
 							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
 							   .ToList();
 			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )

@@ -21,13 +21,15 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 			
-			var hasAnything = self.World.Queries.OwnedBy[self.Owner]
-				.WithTrait<MustBeDestroyed>().Any();
+			var hasAnything = self.World.Queries.WithTrait<MustBeDestroyed>()
+                .Any( a => a.Actor.Owner == self.Owner );
 
 			if (!hasAnything && !self.Owner.NonCombatant)
 				Surrender(self);
 			
-			var others = self.World.players.Where( p => !p.Value.NonCombatant && p.Value != self.Owner && p.Value.Stances[self.Owner] != Stance.Ally );
+			var others = self.World.players.Where( p => !p.Value.NonCombatant 
+                && p.Value != self.Owner && p.Value.Stances[self.Owner] != Stance.Ally );
+
 			if (others.Count() == 0) return;	
 			
 			if(others.All(p => p.Value.WinState == WinState.Lost))
@@ -46,8 +48,9 @@ namespace OpenRA.Mods.RA
 			self.Owner.WinState = WinState.Lost;
 			
 			Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
-			foreach (var a in self.World.Queries.OwnedBy[self.Owner])
-				a.Kill(a);
+
+            foreach (var a in self.World.Actors.Where(a => a.Owner == self.Owner))
+                a.Kill(a);
 
 			if (self.Owner == self.World.LocalPlayer)
 				self.World.LocalShroud.Disabled = true;

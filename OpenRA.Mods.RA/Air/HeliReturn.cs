@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Air
 		static Actor ChooseHelipad(Actor self)
 		{
 			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
-			return self.World.Queries.OwnedBy[self.Owner].FirstOrDefault(
+			return self.World.Actors.Where( a => a.Owner == self.Owner ).FirstOrDefault(
 				a => rearmBuildings.Contains(a.Info.Name) &&
 					!Reservable.IsReserved(a));
 		}

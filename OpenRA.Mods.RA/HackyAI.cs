@@ -111,9 +111,9 @@ namespace OpenRA.Mods.RA
 			this.p = p;
 			enabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
-			builders = new BaseBuilder[] {
-				new BaseBuilder( this, "Building", ChooseBuildingToBuild ),
-				new BaseBuilder( this, "Defense", ChooseDefenseToBuild ) };
+            builders = new BaseBuilder[] {
+				new BaseBuilder( this, "Building", q => ChooseBuildingToBuild(q, true) ),
+				new BaseBuilder( this, "Defense", q => ChooseBuildingToBuild(q, false) ) };
 		}
 
 		int GetPowerProvidedBy(ActorInfo building)
@@ -137,38 +137,23 @@ namespace OpenRA.Mods.RA
 				playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
 		}
 
-		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
+		ActorInfo ChooseBuildingToBuild(ProductionQueue queue, bool buildPower)
 		{
 			var buildableThings = queue.BuildableItems();
 
 			if (!HasAdequatePower())	/* try to maintain 20% excess power */
 			{
+                if (!buildPower) return null;
+
 				/* find the best thing we can build which produces power */
 				return buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
 					.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
 			}
 
-			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
-				.Select(a => a.Actor.Info.Name).ToArray();
-
-
-			foreach (var frac in Info.BuildingFractions)
-				if (buildableThings.Any(b => b.Name == frac.Key))
-					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
-						return Rules.Info[frac.Key];
-
-			return null;
-		}
-
-		ActorInfo ChooseDefenseToBuild(ProductionQueue queue)
-		{
-			if (!HasAdequatePower())
-				return null;
-
-			var buildableThings = queue.BuildableItems();
-
-			var myBuildings = p.World.Queries.OwnedBy[p].WithTrait<Building>()
-				.Select(a => a.Actor.Info.Name).ToArray();
+            var myBuildings = p.World.Queries
+                .WithTrait<Building>()
+                .Where( a => a.Actor.Owner == p )
+                .Select(a => a.Actor.Info.Name).ToArray();
 
 			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
@@ -287,9 +272,10 @@ namespace OpenRA.Mods.RA
 			attackForce.RemoveAll(a => a.Destroyed);
 
 			// don't select harvesters.
-			var newUnits = self.World.Queries.OwnedBy[p]
-				.Where(a => a.HasTrait<IMove>() && a.Info != Rules.Info["harv"]
-					&& !activeUnits.Contains(a)).ToArray();
+			var newUnits = self.World.Queries.WithTrait<IMove>()
+				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"]
+					&& !activeUnits.Contains(a.Actor))
+                    .Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
 			{
@@ -323,8 +309,9 @@ namespace OpenRA.Mods.RA
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
-			var buildings = self.World.Queries.OwnedBy[p].WithTrait<RallyPoint>()
-				.Where(rp => !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
+			var buildings = self.World.Queries.WithTrait<RallyPoint>()
+				.Where(rp => rp.Actor.Owner == p && 
+                    !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
 			if (buildings.Length > 0)
 				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
@@ -396,8 +383,8 @@ namespace OpenRA.Mods.RA
 		void DeployMcv(Actor self)
 		{
 			/* find our mcv and deploy it */
-			var mcv = self.World.Queries.OwnedBy[p]
-				.FirstOrDefault(a => a.Info == Rules.Info["mcv"]);
+            var mcv = self.World.Actors
+                .FirstOrDefault(a => a.Owner == p && a.Info == Rules.Info["mcv"]);
 
 			if (mcv != null)
 			{

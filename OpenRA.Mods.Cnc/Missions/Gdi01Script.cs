@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Cnc
 					started = true;
 				}));
 		}
+
+        // THIS IS SHIT
 		
 		public void OnVictory(World w)
 		{
@@ -54,7 +56,8 @@ namespace OpenRA.Mods.Cnc
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", () =>
+			w.WorldActor.QueueActivity(new CallFunc(
+                () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", () =>
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
@@ -69,7 +72,8 @@ namespace OpenRA.Mods.Cnc
 			
 			w.WorldActor.CancelActivity();
 			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(() => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", () =>
+			w.WorldActor.QueueActivity(new CallFunc(
+                () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", () =>
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
@@ -109,7 +113,7 @@ namespace OpenRA.Mods.Cnc
 			}
 			// GoodGuy win conditions
 			// BadGuy is dead
-			int badcount = self.World.Queries.OwnedBy[Players["BadGuy"]].Count(a => !a.IsDead());
+            var badcount = self.World.Actors.Count(a => a.Owner == Players["BadGuy"] && !a.IsDead());
 			if (badcount != lastBadCount)
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
@@ -120,7 +124,8 @@ namespace OpenRA.Mods.Cnc
 			}
 			
 			//GoodGuy lose conditions
-			if (self.World.Queries.OwnedBy[Players["GoodGuy"]].Count( a => !a.IsDead()) == 0)
+            var goodCount = self.World.Actors.Count(a => a.Owner == Players["GoodGuy"] && !a.IsDead());
+			if (goodCount == 0)
 				OnLose(self.World);
 			
 			// GoodGuy reinforcements

@@ -126,7 +126,7 @@ namespace OpenRA.Traits
 			}
 			// Is now our ally; add unit vis
 			if (newStance == Stance.Ally)
-				foreach (var a in w.Queries.OwnedBy[player])
+				foreach (var a in w.Actors.Where( a => a.Owner == player ))
 					AddActor(a);
 		}
 

@@ -50,7 +50,8 @@ namespace OpenRA.Mods.RA.Orders
 
 		public static bool PlayerIsAllowedToRepair( World world )
 		{		
-			return world.Queries.OwnedBy[ world.LocalPlayer ].WithTrait<AllowsBuildingRepair>().Any();
+			return world.Queries.WithTrait<AllowsBuildingRepair>()
+                .Any(a => a.Actor.Owner == world.LocalPlayer);
 		}
 
 		public void RenderAfterWorld( WorldRenderer wr, World world ) { }

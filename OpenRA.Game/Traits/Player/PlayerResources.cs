@@ -132,7 +132,8 @@ namespace OpenRA.Traits
 		{
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 
-			OreCapacity = self.World.Queries.OwnedBy[Owner].WithTrait<IStoreOre>()
+			OreCapacity = self.World.Queries.WithTrait<IStoreOre>()
+                .Where(a => a.Actor.Owner == Owner)
 				.Sum(a => a.Trait.Capacity);
 			
 			if (Ore > OreCapacity)

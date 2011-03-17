@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -24,11 +25,13 @@ namespace OpenRA.Mods.RA.Air
 
 		public static Actor ChooseAirfield(Actor self)
 		{
-			return self.World.Queries.OwnedBy[self.Owner]
-				.Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Info.Name)
-					&& !Reservable.IsReserved(a))
-				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-				.FirstOrDefault();
+            return self.World.Queries.WithTrait<BuildingInfo>()
+                .Where(a => a.Actor.Owner == self.Owner)
+                .Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Actor.Info.Name)
+                    && !Reservable.IsReserved(a.Actor))
+                .OrderBy(a => (a.Actor.CenterLocation - self.CenterLocation).LengthSquared)
+                .Select(a => a.Actor)
+                .FirstOrDefault();
 		}
 
 		void Calculate(Actor self)

@@ -28,7 +28,8 @@ namespace OpenRA.Mods.RA
 		[Sync] bool QueueActive = false;
 		public override void Tick( Actor self )
 		{
-			QueueActive = self.World.Queries.OwnedBy[self.Owner].WithTrait<Production>()
+			QueueActive = self.World.Queries.WithTrait<Production>()
+                .Where(x => x.Actor.Owner == self.Owner)
 				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
 				.Any();
 			
@@ -49,8 +50,9 @@ namespace OpenRA.Mods.RA
 		protected override bool BuildUnit( string name )
 		{			
 			// Find a production structure to build this actor
-			var producers = self.World.Queries.OwnedBy[self.Owner]
+			var producers = self.World.Queries
 				.WithTrait<Production>()
+                .Where(x => x.Actor.Owner == self.Owner)
 				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
 

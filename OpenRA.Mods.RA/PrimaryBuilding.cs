@@ -54,10 +54,12 @@ namespace OpenRA.Mods.RA
 				return;
 			}
 
+            // THIS IS SHIT
 			// Cancel existing primaries
 			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
-				foreach (var b in self.World.Queries.OwnedBy[self.Owner]
+				foreach (var b in self.World.Queries
 					.WithTrait<PrimaryBuilding>()
+                    .Where(a => a.Actor.Owner == self.Owner)
 					.Where(x => x.Trait.IsPrimary
 						&& (x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(p))))
 					b.Trait.SetPrimaryProducer(b.Actor, false);

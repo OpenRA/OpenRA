@@ -64,17 +64,18 @@ namespace OpenRA.Mods.RA
 		
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
-			var refs = self.World.Queries.OwnedBy[self.Owner]
-				.Where(x => x != ignore && x.HasTrait<IAcceptOre>())
-				.ToList();
+            var refs = self.World.Queries.WithTrait<IAcceptOre>()
+                .Where(x => x.Actor != ignore && x.Actor.Owner == self.Owner)
+                .ToList();
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi,
-					refs.Select(r => r.Location + r.Trait<IAcceptOre>().DeliverOffset),
+                    refs.Select(r => r.Actor.Location + r.Trait.DeliverOffset),
 					self.Location, false));
 			path.Reverse();
 			if (path.Count != 0)
-				return refs.FirstOrDefault(x => x.Location + x.Trait<IAcceptOre>().DeliverOffset == path[0]);
+				return refs.Where(x => x.Actor.Location + x.Trait.DeliverOffset == path[0])
+                    .Select(a => a.Actor).FirstOrDefault();
 			else
 				return null;
 		}

@@ -165,9 +165,9 @@ namespace OpenRA.Mods.RA.Widgets
 		int updateTicks = 0;
 		public override void Tick()
 		{
-			var hasRadarNew = world.Queries.OwnedBy[world.LocalPlayer]
-				.WithTrait<ProvidesRadar>()
-				.Any(a => a.Trait.IsActive);
+            var hasRadarNew = world.Queries
+                .WithTrait<ProvidesRadar>()
+                .Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 			
 			if (hasRadarNew != hasRadar)
 				radarAnimating = true;
