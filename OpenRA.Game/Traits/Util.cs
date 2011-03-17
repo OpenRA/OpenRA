@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Support;
 using System.Collections.Generic;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Traits
 {
@@ -103,13 +104,13 @@ namespace OpenRA.Traits
 			return new Renderable(s, loc.Round(), pal, (int)self.CenterLocation.Y);
 		}
 
-		public static IActivity SequenceActivities(params IActivity[] acts)
+		public static Activity SequenceActivities(params Activity[] acts)
 		{
 			return acts.Reverse().Aggregate(
 				(next, a) => { a.Queue( next ); return a; });
 		}
 
-		public static IActivity RunActivity( Actor self, IActivity act )
+		public static Activity RunActivity( Actor self, Activity act )
 		{
 			while( act != null )
 			{

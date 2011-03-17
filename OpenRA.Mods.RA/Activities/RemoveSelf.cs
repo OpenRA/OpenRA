@@ -13,9 +13,9 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class RemoveSelf : CancelableActivity
+	public class RemoveSelf : Activity
 	{
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			self.Destroy();

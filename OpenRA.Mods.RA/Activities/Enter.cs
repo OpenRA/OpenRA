@@ -17,12 +17,12 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Enter : CancelableActivity
+	public class Enter : Activity
 	{
 		readonly Actor target;
 		public Enter( Actor target ) { this.target = target; }
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if( IsCanceled || target.Destroyed || !target.IsInWorld )
 				return NextActivity;

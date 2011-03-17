@@ -14,13 +14,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class CaptureActor : CancelableActivity
+	class CaptureActor : Activity
 	{
 		Actor target;
 
 		public CaptureActor(Actor target) { this.target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;

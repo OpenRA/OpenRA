@@ -13,14 +13,14 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class FlyAttack : CancelableActivity
+	public class FlyAttack : Activity
 	{
 		readonly Target Target;
-		IActivity inner;
+		Activity inner;
 
 		public FlyAttack(Target target) { Target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if( !Target.IsValid )
 				Cancel( self );
@@ -52,13 +52,13 @@ namespace OpenRA.Mods.RA.Air
 		}
 	}
 
-	public class FlyAttackLoop : CancelableActivity
+	public class FlyAttackLoop : Activity
 	{
 		int2 Target;
 
 		public FlyAttackLoop(int2 target) { Target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if( IsCanceled ) return NextActivity;
 

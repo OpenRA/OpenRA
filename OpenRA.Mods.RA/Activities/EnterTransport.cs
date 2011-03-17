@@ -13,7 +13,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class EnterTransport : CancelableActivity
+	class EnterTransport : Activity
 	{
 		public Actor transport;
 
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.transport = transport;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (transport == null || !transport.IsInWorld) return NextActivity;

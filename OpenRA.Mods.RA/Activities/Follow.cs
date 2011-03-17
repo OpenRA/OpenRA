@@ -14,7 +14,7 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Follow : CancelableActivity
+	public class Follow : Activity
 	{
 		Target Target;
 		int Range;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			Range = range;
 		}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
 			if (!Target.IsValid) return NextActivity;

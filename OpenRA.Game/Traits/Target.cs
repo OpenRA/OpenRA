@@ -12,6 +12,8 @@ namespace OpenRA.Traits
 {
 	public struct Target		// a target: either an actor, or a fixed location.
 	{
+		public static Target[] NoTargets = {};
+		
 		Actor actor;
 		Player owner;
 		int2 pos;

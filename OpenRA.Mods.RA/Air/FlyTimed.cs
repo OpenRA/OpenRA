@@ -13,13 +13,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class FlyTimed : CancelableActivity
+	public class FlyTimed : Activity
 	{
 		int remainingTicks;
 
 		public FlyTimed(int ticks) { remainingTicks = ticks; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if( IsCanceled ) return NextActivity;
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
@@ -29,11 +29,11 @@ namespace OpenRA.Mods.RA.Air
 		}
 	}
 
-	public class FlyOffMap : CancelableActivity
+	public class FlyOffMap : Activity
 	{
 		public bool Interruptible = true;
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			if (IsCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;

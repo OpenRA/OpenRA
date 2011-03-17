@@ -13,14 +13,15 @@ using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Move;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Harvest : CancelableActivity
+	public class Harvest : Activity
 	{
 		bool isHarvesting = false;
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if( isHarvesting ) return this;
 			if( IsCanceled ) return NextActivity;
@@ -73,6 +74,11 @@ namespace OpenRA.Mods.RA.Activities
 				        .FromPoint(self.Location));
 				}));
 			self.QueueActivity(new Harvest());
+		}
+		
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
+		{
+			yield return Target.FromPos(self.Location);
 		}
 	}
 }

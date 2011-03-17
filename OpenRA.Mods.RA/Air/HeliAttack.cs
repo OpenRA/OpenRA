@@ -15,12 +15,12 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class HeliAttack : CancelableActivity
+	public class HeliAttack : Activity
 	{
 		Target target;
 		public HeliAttack( Target target ) { this.target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (!target.IsValid) return NextActivity;

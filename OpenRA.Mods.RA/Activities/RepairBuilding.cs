@@ -14,13 +14,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class RepairBuilding : CancelableActivity
+	class RepairBuilding : Activity
 	{
 		Actor target;
 
 		public RepairBuilding(Actor target) { this.target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;

@@ -16,7 +16,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Transform : CancelableActivity
+	class Transform : Activity
 	{
 		public readonly string ToActor = null;
 		public int2 Offset = new int2(0,0);
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.ToActor = toActor;
 		}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
 			

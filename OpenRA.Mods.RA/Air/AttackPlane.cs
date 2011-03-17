@@ -10,6 +10,7 @@
 
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public AttackPlane(Actor self, AttackPlaneInfo info) : base(self, info) { }
 
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new FlyAttack( newTarget );
 		}

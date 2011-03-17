@@ -203,14 +203,6 @@ namespace OpenRA.Traits
         IBotInfo Info { get; }
     }
 
-    public interface IActivity
-    {
-        IActivity Tick(Actor self);
-        void Cancel(Actor self);
-        void Queue(IActivity activity);
-        IEnumerable<float2> GetCurrentPath();
-    }
-
     public interface IRenderOverlay { void Render(WorldRenderer wr); }
     public interface INotifyIdle { void TickIdle(Actor self); }
 

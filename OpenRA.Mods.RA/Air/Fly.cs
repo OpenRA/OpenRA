@@ -15,7 +15,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class Fly : CancelableActivity
+	public class Fly : Activity
 	{
 		public readonly int2 Pos;
 
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Air
 		public static Fly ToPx( int2 px ) { return new Fly( px ); }
 		public static Fly ToCell( int2 pos ) { return new Fly( Util.CenterOfCell( pos ) ); }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
@@ -47,9 +47,9 @@ namespace OpenRA.Mods.RA.Air
 			return this;
 		}
 
-		public override IEnumerable<float2> GetCurrentPath()
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
-			yield return Pos;
+			yield return Target.FromPos(Pos);
 		}
 	}
 

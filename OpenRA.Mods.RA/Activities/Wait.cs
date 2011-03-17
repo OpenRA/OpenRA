@@ -13,7 +13,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Wait : CancelableActivity
+	public class Wait : Activity
 	{
 		int remainingTicks;
 		bool interruptable = true;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.interruptable = interruptable;
 		}
 		
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (remainingTicks-- == 0) return NextActivity;
 			return this;

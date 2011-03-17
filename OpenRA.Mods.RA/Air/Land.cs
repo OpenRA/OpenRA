@@ -15,13 +15,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class Land : CancelableActivity
+	public class Land : Activity
 	{
 		Target Target;
 
 		public Land(Target t) { Target = t; }
 		
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (!Target.IsValid)
 				Cancel(self);

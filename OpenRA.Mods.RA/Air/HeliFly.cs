@@ -15,7 +15,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	class HeliFly : CancelableActivity
+	class HeliFly : Activity
 	{
 		public readonly int2 Dest;
 		public HeliFly(int2 dest)
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Air
 			Dest = dest;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)	return NextActivity;
 
@@ -50,9 +50,9 @@ namespace OpenRA.Mods.RA.Air
 			return this;
 		}
 
-		public override IEnumerable<float2> GetCurrentPath()
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
-			yield return Dest;
+			yield return Target.FromPos(Dest);
 		}
 	}
 }

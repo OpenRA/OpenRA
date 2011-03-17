@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Cnc
 			}
 		}
 		
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new AttackActivity( newTarget );
 		}
@@ -137,12 +137,12 @@ namespace OpenRA.Mods.Cnc
 			return State == PopupState.Closed ? Info.ClosedDamageMultiplier : 1f;
 		}
 		
-		class AttackActivity : CancelableActivity
+		class AttackActivity : Activity
 		{
 			readonly Target target;
 			public AttackActivity( Target newTarget ) { this.target = newTarget; }
 
-			public override IActivity Tick( Actor self )
+			public override Activity Tick( Actor self )
 			{
 				if( IsCanceled || !target.IsValid ) return NextActivity;
 

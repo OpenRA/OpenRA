@@ -457,11 +457,11 @@ namespace OpenRA.Mods.RA.Move
             }
         }
 
-        public IActivity ScriptedMove(int2 cell) { return new Move(cell); }
-        public IActivity MoveTo(int2 cell, int nearEnough) { return new Move(cell, nearEnough); }
-        public IActivity MoveTo(int2 cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
-        public IActivity MoveWithinRange(Actor target, int range) { return new Move(target, range); }
-        public IActivity MoveWithinRange(Target target, int range) { return new Move(target, range); }
-        public IActivity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
+        public Activity ScriptedMove(int2 cell) { return new Move(cell); }
+        public Activity MoveTo(int2 cell, int nearEnough) { return new Move(cell, nearEnough); }
+        public Activity MoveTo(int2 cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
+        public Activity MoveWithinRange(Actor target, int range) { return new Move(target, range); }
+        public Activity MoveWithinRange(Target target, int range) { return new Move(target, range); }
+        public Activity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
     }
 }

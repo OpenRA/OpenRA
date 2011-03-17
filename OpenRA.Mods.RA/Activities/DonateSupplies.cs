@@ -15,7 +15,7 @@ using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Activities
 {
-    class DonateSupplies : CancelableActivity
+    class DonateSupplies : Activity
     {
         Actor target;
         int payload;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
             this.payload = payload;
         }
 
-        public override IActivity Tick(Actor self)
+        public override Activity Tick(Actor self)
         {
             if (IsCanceled) return NextActivity;
             if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;

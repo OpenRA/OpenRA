@@ -16,9 +16,9 @@ using OpenRA.Mods.RA.Buildings;
 		
 namespace OpenRA.Mods.RA.Activities
 {
-	class Sell : CancelableActivity
+	class Sell : Activity
 	{
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			var h = self.TraitOrDefault<Health>();
 			var si = self.Info.Traits.Get<SellableInfo>();

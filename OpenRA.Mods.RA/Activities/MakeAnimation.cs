@@ -16,7 +16,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class MakeAnimation : CancelableActivity
+	class MakeAnimation : Activity
 	{
 		readonly bool Reversed;
 		
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 		
 		bool complete = false;
 		bool started = false;
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
 			if (!started)

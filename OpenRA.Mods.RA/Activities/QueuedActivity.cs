@@ -11,26 +11,24 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class QueuedActivity : IActivity
+	public class QueuedActivity : Activity
 	{
 		public QueuedActivity(Action<QueuedActivity> a) { this.a = a; }
 
 		public QueuedActivity(Action<QueuedActivity> a, bool interruptable)
 		{
 			this.a = a;
-			this.interruptable = interruptable;
 		}
 
 		Action<QueuedActivity> a;
-		private bool interruptable = true;
-		public IActivity NextActivity { get; set; }
 
-		public IActivity Tick(Actor self) { return Run(self); }
+		public override Activity Tick(Actor self) { return Run(self); }
 
-		public IActivity Run(Actor self)
+		public Activity Run(Actor self)
 		{
 			if (a != null)
 				a(this);
@@ -38,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			return NextActivity;
 		}
 
-		public void Insert(IActivity activity)
+		public void Insert( Activity activity )
 		{
 			if (activity == null)
 				return;
@@ -46,29 +44,12 @@ namespace OpenRA.Mods.RA.Activities
 			NextActivity = activity;
 		}
 
-		public void Cancel(Actor self)
-		{
-			if (!interruptable)
-				return;
-			
-			a = null;
-			NextActivity = null;
-		}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
-
-		public IEnumerable<float2> GetCurrentPath()
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
 			if (NextActivity != null)
-				foreach (var path in NextActivity.GetCurrentPath())
+				foreach (var target in NextActivity.GetTargetQueue(self))
 				{
-					yield return path;
+					yield return target;
 				}
 
 			yield break;

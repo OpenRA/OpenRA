@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Move;
 namespace OpenRA.Mods.RA.Activities
 {
 	/* non-turreted attack */
-	public class Attack : CancelableActivity
+	public class Attack : Activity
 	{
 		protected Target Target;
 		ITargetable targetable;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public Attack(Target target, int range) : this(target, range, true) {}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			var attack = self.Trait<AttackBase>();
 
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Activities
 			return ret;
 		}
 
-		protected virtual IActivity InnerTick( Actor self, AttackBase attack )
+		protected virtual Activity InnerTick( Actor self, AttackBase attack )
 		{
 			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();

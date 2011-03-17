@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class ReturnToBase : CancelableActivity
+	public class ReturnToBase : Activity
 	{
 		bool isCalculated;
 		Actor dest;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Air
 			this.dest = dest;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (!isCalculated)

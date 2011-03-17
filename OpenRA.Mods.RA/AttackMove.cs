@@ -73,12 +73,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		class AttackMoveActivity : CancelableActivity
+		class AttackMoveActivity : Activity
 		{
-			IActivity inner;
-			public AttackMoveActivity( IActivity inner ) { this.inner = inner; }
+			Activity inner;
+			public AttackMoveActivity( Activity inner ) { this.inner = inner; }
 
-			public override IActivity Tick( Actor self )
+			public override Activity Tick( Actor self )
 			{
 				self.Trait<AutoTarget>().ScanAndAttack(self, true, false);
 

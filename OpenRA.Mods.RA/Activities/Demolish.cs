@@ -15,7 +15,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Demolish : CancelableActivity
+	class Demolish : Activity
 	{
 		Actor target;
 		int delay;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.delay = delay;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;

@@ -32,17 +32,17 @@ namespace OpenRA.Mods.RA
 			return base.CanAttack( self, target ) && !isBuilding;
 		}
 
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new SetTarget( newTarget );
 		}
 
-		class SetTarget : CancelableActivity
+		class SetTarget : Activity
 		{
 			readonly Target target;
 			public SetTarget( Target target ) { this.target = target; }
 
-			public override IActivity Tick( Actor self )
+			public override Activity Tick( Actor self )
 			{
 				if( IsCanceled || !target.IsValid )
 					return NextActivity;

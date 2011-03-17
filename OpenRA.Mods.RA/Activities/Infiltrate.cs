@@ -14,12 +14,12 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Infiltrate : CancelableActivity
+	class Infiltrate : Activity
 	{
 		Actor target;
 		public Infiltrate(Actor target) { this.target = target; }
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;

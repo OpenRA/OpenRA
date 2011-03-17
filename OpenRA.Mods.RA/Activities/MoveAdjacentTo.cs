@@ -14,7 +14,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class MoveAdjacentTo : CancelableActivity
+	public class MoveAdjacentTo : Activity
 	{
 		readonly Actor target;
 
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.target = target;
 		}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if( IsCanceled || target.Destroyed || !target.IsInWorld) return NextActivity;
 

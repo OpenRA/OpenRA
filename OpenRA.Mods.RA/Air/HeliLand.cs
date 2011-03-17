@@ -13,13 +13,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
-	class HeliLand : CancelableActivity
+	class HeliLand : Activity
 	{
 		public HeliLand(bool requireSpace) { this.requireSpace = requireSpace; }
 
 		bool requireSpace;
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			var aircraft = self.Trait<Aircraft>();

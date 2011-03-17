@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			DoAttack( self, target );
 		}
 
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new AttackActivity( newTarget );
 		}
@@ -64,12 +64,12 @@ namespace OpenRA.Mods.RA
 		bool buildComplete = false;
 		public void BuildingComplete(Actor self) { buildComplete = true; }
 
-		class AttackActivity : CancelableActivity
+		class AttackActivity : Activity
 		{
 			readonly Target target;
 			public AttackActivity( Target newTarget ) { this.target = newTarget; }
 
-			public override IActivity Tick( Actor self )
+			public override Activity Tick( Actor self )
 			{
 				if( IsCanceled || !target.IsValid ) return NextActivity;
 

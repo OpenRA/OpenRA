@@ -11,10 +11,11 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class CallFunc : IActivity
+	public class CallFunc : Activity
 	{
 		public CallFunc(Action a) { this.a = a; }
 		public CallFunc(Action a, bool interruptable)
@@ -25,33 +26,30 @@ namespace OpenRA.Mods.RA.Activities
 		
 		Action a;
 		bool interruptable;
-		IActivity NextActivity { get; set; }
 
-		public IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (a != null) a();
 			return NextActivity;
 		}
 
-		public void Cancel(Actor self)
+		protected override bool OnCancel(Actor self)
 		{
 			if (!interruptable)
-				return;
+				return false;
 			
 			a = null;
-			NextActivity = null;
+			return true;
 		}
 
-		public void Queue( IActivity activity )
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
+			if (NextActivity != null)
+				foreach (var target in NextActivity.GetTargetQueue(self))
+				{
+					yield return target;
+				}
 
-		public IEnumerable<float2> GetCurrentPath()
-		{
 			yield break;
 		}
 	}

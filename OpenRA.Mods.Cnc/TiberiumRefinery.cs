@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 		public TiberiumRefinery(Actor self, TiberiumRefineryInfo info)
 			: base(self, info as OreRefineryInfo) {}
 		
-		public override IActivity DockSequence(Actor harv, Actor self)
+		public override Activity DockSequence(Actor harv, Actor self)
 		{
 			return new HarvesterDockSequence(harv, self);
 		}

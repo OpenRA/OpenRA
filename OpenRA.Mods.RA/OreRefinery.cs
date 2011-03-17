@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.RA
 		bool preventDock = false;
 		
 		public int2 DeliverOffset { get { return Info.DockOffset; } }
-		public virtual IActivity DockSequence(Actor harv, Actor self)
+		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
 			return new RAHarvesterDockSequence(harv, self);
 		}

@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 			if( weapon == null )

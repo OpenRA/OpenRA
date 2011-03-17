@@ -15,13 +15,13 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Rearm : CancelableActivity
+	public class Rearm : Activity
 	{
 		int remainingTicks = ticksPerPip;
 
 		const int ticksPerPip = 25 * 2;
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();

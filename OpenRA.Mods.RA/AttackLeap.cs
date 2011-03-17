@@ -11,6 +11,7 @@
 using System;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(new Leap(self, target));
 		}
 
-		public override IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			var weapon = ChooseWeaponForTarget(newTarget);
 			if( weapon == null )

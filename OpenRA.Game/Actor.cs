@@ -31,7 +31,7 @@ namespace OpenRA
 		[Sync]
 		public Player Owner;
 
-		private IActivity currentActivity;
+		private Activity currentActivity;
 		public Group Group;
 
 		internal Actor(World world, string name, TypeDictionary initDict )
@@ -121,7 +121,14 @@ namespace OpenRA
 
 		public bool IsInWorld { get; internal set; }
 
-		public void QueueActivity( IActivity nextActivity )
+		public void QueueActivity( bool queued, Activity nextActivity )
+		{
+			if( !queued )
+				CancelActivity();
+			QueueActivity( nextActivity );
+		}
+
+		public void QueueActivity( Activity nextActivity )
 		{
 			if( currentActivity == null )
 				currentActivity = nextActivity;
@@ -135,7 +142,7 @@ namespace OpenRA
 				currentActivity.Cancel( this );
 		}
 
-		public IActivity GetCurrentActivity()
+		public Activity GetCurrentActivity()
 		{
 			return currentActivity;
 		}

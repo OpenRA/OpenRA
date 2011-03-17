@@ -15,15 +15,13 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class DeliverResources : IActivity
+	public class DeliverResources : Activity
 	{
-		IActivity NextActivity { get; set; }
-
 		bool isDocking;
 
 		public DeliverResources() { }
 
-		public IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if( NextActivity != null )
 				return NextActivity;
@@ -51,21 +49,20 @@ namespace OpenRA.Mods.RA.Activities
 			return Util.SequenceActivities( new Wait(10), this );
 		}
 
-		public void Cancel(Actor self)
+		protected override bool OnCancel(Actor self)
 		{
 			// TODO: allow canceling of deliver orders?
+			return false;
 		}
 
-		public void Queue( IActivity activity )
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
+			if (NextActivity != null)
+				foreach (var target in NextActivity.GetTargetQueue(self))
+				{
+					yield return target;
+				}
 
-		public IEnumerable<float2> GetCurrentPath()
-		{
 			yield break;
 		}
 	}

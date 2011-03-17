@@ -17,7 +17,7 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class UnloadCargo : CancelableActivity
+	public class UnloadCargo : Activity
 	{
 		int2? ChooseExitTile(Actor self, Actor cargo)
 		{
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			return null;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Air
 		}
 	}
 
-	class FallToEarth : CancelableActivity
+	class FallToEarth : Activity
 	{
 		int acceleration = 0;
 		int spin = 0;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Air
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
-		public override IActivity Tick(Actor self)
+		public override Activity Tick(Actor self)
 		{
 			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude <= 0)

@@ -10,13 +10,12 @@
 
 using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Move
 {
-	public class Drag : IActivity
+	public class Drag : Activity
 	{
-		IActivity NextActivity { get; set; }
-
 		int2 endLocation;
 		int2 startLocation;
 		int length;
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.RA.Move
 		}
 		
 		int ticks = 0;
-		public IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
 			mobile.PxPosition = int2.Lerp(startLocation, endLocation, ticks, length - 1);
@@ -43,19 +42,14 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public void Cancel(Actor self) {	}
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
+		protected override bool OnCancel(Actor self) 
+		{	
+			return false;
 		}
 
-		public IEnumerable<float2> GetCurrentPath()
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
-			yield return endLocation;
+			yield return Target.FromPos(endLocation);
 		}
 	}
 }

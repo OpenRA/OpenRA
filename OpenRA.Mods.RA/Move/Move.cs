@@ -19,7 +19,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Move
 {
-	class Move : CancelableActivity
+	class Move : Activity
 	{
 		int2? destination;
 		int nearEnough;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Move
 			return path;
 		}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
 
@@ -239,16 +239,16 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public override IEnumerable<float2> GetCurrentPath()
+		public override IEnumerable<Target> GetTargetQueue( Actor self )
 		{
 			if( path != null )
-				return Enumerable.Reverse(path).Select( c => (float2)Util.CenterOfCell(c) );
+				return Enumerable.Reverse(path).Select( c => Target.FromCell(c) );
 			if( destination != null )
-				return new float2[] { destination.Value };
-			return new float2[ 0 ];
+				return new Target[] { Target.FromPos(destination.Value) };
+			return Target.NoTargets;
 		}
 
-		abstract class MovePart : IActivity
+		abstract class MovePart : Activity
 		{
 			public readonly Move move;
 			public readonly int2 from, to;
@@ -267,17 +267,17 @@ namespace OpenRA.Mods.RA.Move
 				this.moveFractionTotal = ( ( to - from ) * 3 ).Length;
 			}
 
-			public void Cancel( Actor self )
+			protected override bool OnCancel( Actor self )
 			{
-				move.Cancel( self );
+				return move.OnCancel( self );
 			}
 
-			public void Queue( IActivity activity )
+			public override void Queue( Activity activity )
 			{
 				move.Queue( activity );
 			}
 
-			public IActivity Tick( Actor self )
+			public override Activity Tick( Actor self )
 			{
 				var mobile = self.Trait<Mobile>();
 				var ret = InnerTick( self, mobile );
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Move
 				return ret;
 			}
 
-			IActivity InnerTick( Actor self, Mobile mobile )
+			Activity InnerTick( Actor self, Mobile mobile )
 			{
 				moveFraction += mobile.MovementSpeedForCell(self, mobile.toCell);
 				if( moveFraction <= moveFractionTotal )
@@ -315,9 +315,9 @@ namespace OpenRA.Mods.RA.Move
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
 
-			public IEnumerable<float2> GetCurrentPath()
+			public override IEnumerable<Target> GetTargetQueue( Actor self )
 			{
-				return move.GetCurrentPath();
+				return move.GetTargetQueue(self);
 			}
 		}
 

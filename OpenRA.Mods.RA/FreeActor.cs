@@ -10,6 +10,7 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.RA
 					});
 
 					if (info.InitialActivity != null)
-						a.QueueActivity(Game.CreateObject<IActivity>(info.InitialActivity));
+						a.QueueActivity(Game.CreateObject<Activity>(info.InitialActivity));
 				});
 		}
 	}

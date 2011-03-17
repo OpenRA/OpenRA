@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -172,7 +173,7 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
 		}
 
-		public abstract IActivity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
+		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
 		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }

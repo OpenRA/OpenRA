@@ -237,12 +237,12 @@ namespace OpenRA.Traits
 			if (activity != null && mobile != null)
 			{
 				var alt = new float2(0, -mobile.Altitude);
-				var path = activity.GetCurrentPath();
+				var targets = activity.GetTargetQueue(self);
 				var start = self.CenterLocation + alt;
 
 				var c = Color.Green;
 
-				foreach (var step in path)
+				foreach (var step in targets.Select(p => p.CenterLocation))
 				{
 					var stp = step + alt;
 					Game.Renderer.LineRenderer.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);

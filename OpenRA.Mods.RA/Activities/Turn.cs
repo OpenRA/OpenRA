@@ -14,7 +14,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Turn : CancelableActivity
+	public class Turn : Activity
 	{
 		int desiredFacing;
 
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public override IActivity Tick( Actor self )
+		public override Activity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
 			var facing = self.Trait<IFacing>();
