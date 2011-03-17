@@ -37,7 +37,7 @@ namespace OpenRA.Network
 			report.Frame = orderManager.NetFrameNumber;
 			report.SyncedRandom = orderManager.world.SharedRandom.Last;
 			report.Traits.Clear();
-			foreach (var a in orderManager.world.Queries.WithTrait<ISync>())
+			foreach (var a in orderManager.world.ActorsWithTrait<ISync>())
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)

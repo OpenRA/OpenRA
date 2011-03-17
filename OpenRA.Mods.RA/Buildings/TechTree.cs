@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (player == null)
 				return ret;
 
-            foreach (var b in player.World.Queries.WithTrait<BuildingInfo>()
+            foreach (var b in player.World.ActorsWithTrait<BuildingInfo>()
                 .Where(a => a.Actor.Owner == player).Select(a => a.Actor))
             {
                 ret[b.Info.Name].Add(b);

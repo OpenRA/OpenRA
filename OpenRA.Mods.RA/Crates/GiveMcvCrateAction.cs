@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Crates
 			if (base.GetSelectionShares(collector) == 0)
 				return 0;	// there's some other really good reason why we shouldn't give this.
 
-			var hasBase = self.World.Queries.WithTrait<BaseBuilding>()
+			var hasBase = self.World.ActorsWithTrait<BaseBuilding>()
                 .Any(a => a.Actor.Owner == collector.Owner);
 
 			return hasBase ? info.SelectionShares : 

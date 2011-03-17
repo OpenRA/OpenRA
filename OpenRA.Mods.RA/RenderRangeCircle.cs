@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 				centerLocation,
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
 
-			foreach (var a in w.Queries.WithTrait<RenderRangeCircle>())
+			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
                 if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 				    if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 					    a.Trait.RenderBeforeWorld(wr, a.Actor);

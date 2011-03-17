@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return true;
 
-			return self.World.Queries.WithTrait<DetectCloaked>().Any(a =>
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
 				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
 				(self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}

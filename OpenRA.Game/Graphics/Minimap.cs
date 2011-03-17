@@ -136,7 +136,7 @@ namespace OpenRA.Graphics
 			{
 				int* c = (int*)bitmapData.Scan0;
 
-				foreach (var t in world.Queries.WithTrait<IRadarSignature>())
+				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
 					if (!world.LocalShroud.IsVisible(t.Actor))
 						continue;

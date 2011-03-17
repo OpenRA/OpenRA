@@ -24,7 +24,7 @@ namespace OpenRA.Scripting
 				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
 			
 			// Trigger screen desaturate effect
-			foreach (var a in world.Queries.WithTrait<ChronoshiftPaletteEffect>())
+			foreach (var a in world.ActorsWithTrait<ChronoshiftPaletteEffect>())
 				a.Trait.Enable();
 			
 			Sound.Play("chrono2.aud", units.First().First.CenterLocation);

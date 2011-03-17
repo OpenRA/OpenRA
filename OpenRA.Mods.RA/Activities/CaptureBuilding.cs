@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 				foreach (var t in target.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(target, self, oldOwner, self.Owner);
 
-				foreach (var t in self.World.Queries.WithTrait<INotifyOtherCaptured>())
+				foreach (var t in self.World.ActorsWithTrait<INotifyOtherCaptured>())
 					t.Trait.OnActorCaptured(t.Actor, target, self, oldOwner, self.Owner);
 
 				self.Destroy();

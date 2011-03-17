@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (p == Self.Owner || (p.Stances[Self.Owner] == Stance.Ally && Self.Owner.Stances[p] == Stance.Ally))
 				{
-					total += Self.World.Queries.WithTrait<StrategicPoint>()
+					total += Self.World.ActorsWithTrait<StrategicPoint>()
                         .Where(a => a.Actor.Owner == p)
                         .Count(a => a.Trait.Critical == critical);
 				}

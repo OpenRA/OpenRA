@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 		
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
-            var refs = self.World.Queries.WithTrait<IAcceptOre>()
+            var refs = self.World.ActorsWithTrait<IAcceptOre>()
                 .Where(x => x.Actor != ignore && x.Actor.Owner == self.Owner)
                 .ToList();
 			var mi = self.Info.Traits.Get<MobileInfo>();

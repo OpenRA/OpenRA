@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 
         public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
         {
-            return self.World.Queries.WithTrait<Harvester>()
+            return self.World.ActorsWithTrait<Harvester>()
                 .Where(a => a.Trait.LinkedProc == self);
         }
 		

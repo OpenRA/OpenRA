@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
 				return false;
 
-			var isJammed = self.World.Queries.WithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
+			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
 				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
 
 			return !isJammed;

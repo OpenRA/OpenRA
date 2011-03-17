@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			VisibleQueues.Clear();
 			
-			var queues = world.Queries.WithTrait<ProductionQueue>()
+			var queues = world.ActorsWithTrait<ProductionQueue>()
 				.Where(p => p.Actor.Owner == world.LocalPlayer)
 				.Select(p => p.Trait);
 			

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 			if (!Cloak.Cloaked || self.Owner == byActor.Owner || self.Owner.Stances[byActor.Owner] == Stance.Ally)
 				return true;
 			
-			return self.World.Queries.WithTrait<DetectCloaked>().Any(a => (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}
 
 		public virtual string[] TargetTypes { get { return info.TargetTypes; } }

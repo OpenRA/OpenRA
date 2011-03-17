@@ -83,7 +83,7 @@ namespace OpenRA.Orders
 
 		public override void Tick(World world)
 		{
-			var hasStructure = world.Queries.WithTrait<T>()
+			var hasStructure = world.ActorsWithTrait<T>()
                 .Any( a => a.Actor.Owner == world.LocalPlayer );
 
 			if (!hasStructure)

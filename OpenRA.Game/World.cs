@@ -100,8 +100,6 @@ namespace OpenRA
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			LocalShroud = WorldActor.Trait<Shroud>();
 			
-			Queries = new AllQueries(this);
-			
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
 				cmp.CreatePlayers(this);		
@@ -160,7 +158,7 @@ namespace OpenRA
 			if (!DisableTick)
 			{
 				actors.Do( x => x.Tick() );
-				Queries.WithTrait<ITick>().DoTimed( x =>
+				ActorsWithTrait<ITick>().DoTimed( x =>
 				{
 					x.Trait.Tick( x.Actor );
 				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
@@ -204,22 +202,10 @@ namespace OpenRA
 			}
 		}
 
-		public class AllQueries
-		{
-			readonly World world;
-
-			public AllQueries( World world )
-			{
-				this.world = world;
-			}
-
-			public IEnumerable<TraitPair<T>> WithTrait<T>()
-			{
-				return world.traitDict.ActorsWithTraitMultiple<T>( world );
-			}
-		}
-
-		public AllQueries Queries;
+        public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
+        {
+            return traitDict.ActorsWithTraitMultiple<T>(this);
+        }
 	}
 
 	public struct TraitPair<T>

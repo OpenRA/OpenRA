@@ -190,7 +190,7 @@ namespace OpenRA.Network
 			if (target == w.LocalPlayer)
 				w.WorldActor.Trait<Shroud>().UpdatePlayerStance(w, p, oldStance, s);
 
-			foreach (var nsc in w.Queries.WithTrait<INotifyStanceChanged>())
+			foreach (var nsc in w.ActorsWithTrait<INotifyStanceChanged>())
 				nsc.Trait.StanceChanged(nsc.Actor, p, target, oldStance, s);
 		}
 	}

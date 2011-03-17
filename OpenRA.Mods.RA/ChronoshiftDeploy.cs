@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 				Sound.Play("chrotnk1.aud", Game.CellSize * order.TargetLocation.ToFloat2());
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
 
-				foreach (var a in self.World.Queries.WithTrait<ChronoshiftPaletteEffect>())
+				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 					a.Trait.Enable();
 			}
 		}

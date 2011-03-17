@@ -150,8 +150,8 @@ namespace OpenRA.Mods.RA
 					.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
 			}
 
-            var myBuildings = p.World.Queries
-                .WithTrait<Building>()
+            var myBuildings = p.World
+                .ActorsWithTrait<Building>()
                 .Where( a => a.Actor.Owner == p )
                 .Select(a => a.Actor.Info.Name).ToArray();
 
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.RA
 			attackForce.RemoveAll(a => a.Destroyed);
 
 			// don't select harvesters.
-			var newUnits = self.World.Queries.WithTrait<IMove>()
+			var newUnits = self.World.ActorsWithTrait<IMove>()
 				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"]
 					&& !activeUnits.Contains(a.Actor))
                     .Select(a => a.Actor).ToArray();
@@ -309,7 +309,7 @@ namespace OpenRA.Mods.RA
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
-			var buildings = self.World.Queries.WithTrait<RallyPoint>()
+			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == p && 
                     !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.RA
 		private void BuildRandom(string category)
 		{
 			// Pick a free queue
-			var queue = world.Queries.WithTrait<ProductionQueue>()
+			var queue = world.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == p &&
 					   a.Trait.Info.Type == category &&
 					   a.Trait.CurrentItem() == null)
@@ -447,7 +447,7 @@ namespace OpenRA.Mods.RA
 			public void Tick()
 			{
 				// Pick a free queue
-				var queue = ai.world.Queries.WithTrait<ProductionQueue>()
+				var queue = ai.world.ActorsWithTrait<ProductionQueue>()
 					.Where(a => a.Actor.Owner == ai.p && a.Trait.Info.Type == category)
 					.Select(a => a.Trait)
 					.FirstOrDefault();

@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets
 
         bool CycleBases()
         {
-            var bases = World.Queries.WithTrait<BaseBuilding>()
+            var bases = World.ActorsWithTrait<BaseBuilding>()
                 .Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
             if (!bases.Any()) return true;
 

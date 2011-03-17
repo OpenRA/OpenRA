@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Buildings
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?
-					if (world.Queries.WithTrait<LineBuild>().Any(a => (a.Actor.Info.Name == name && a.Actor.Location.X == cell.X && a.Actor.Location.Y == cell.Y)))
+					if (world.ActorsWithTrait<LineBuild>().Any(a => (a.Actor.Info.Name == name && a.Actor.Location.X == cell.X && a.Actor.Location.Y == cell.Y)))
 						dirs[d] = i; // Cell contains actor of correct type
 					else
 						dirs[d] = -1; // Cell is blocked by another actor type

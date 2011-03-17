@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public static Actor ChooseAirfield(Actor self)
 		{
-            return self.World.Queries.WithTrait<BuildingInfo>()
+            return self.World.ActorsWithTrait<BuildingInfo>()
                 .Where(a => a.Actor.Owner == self.Owner)
                 .Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Actor.Info.Name)
                     && !Reservable.IsReserved(a.Actor))

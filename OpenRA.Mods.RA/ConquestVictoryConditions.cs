@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 			
-			var hasAnything = self.World.Queries.WithTrait<MustBeDestroyed>()
+			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
                 .Any( a => a.Actor.Owner == self.Owner );
 
 			if (!hasAnything && !self.Owner.NonCombatant)

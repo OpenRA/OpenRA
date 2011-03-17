@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (altitude <= 0)
 				{
 					// Trigger screen desaturate effect
-					foreach (var a in world.Queries.WithTrait<NukePaletteEffect>())
+					foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
 						a.Trait.Enable();
 					
 					Explode(world);
