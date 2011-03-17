@@ -15,6 +15,7 @@ using OpenRA.Server;
 using OpenRA.Widgets;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -71,7 +72,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 					
 				dropDownOptions.Add(new Pair<string, Action>( kv.Value.Title,
-					() => Game.RunAfterTick(() => Game.InitializeWithMods( modList.ToArray() ) )));
+					() =>
+					{
+						if (Game.CurrentMods.Keys.ToArray().SymmetricDifference(modList.ToArray()).Any()) 
+							Game.RunAfterTick(() => Game.InitializeWithMods( modList.ToArray() ) );
+					}
+				));
 			}
 				                    
 			DropDownButtonWidget.ShowDropDown( selector,
