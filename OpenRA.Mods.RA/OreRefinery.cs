@@ -63,6 +63,7 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 			Info = info;
 			PlayerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			currentDisplayTick = Info.TickRate;
 		}
 
         public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
