@@ -78,7 +78,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: weap,dome
+		Prerequisites: dome
 		Owner: soviet
 	Valued:
 		Cost: 700
@@ -106,7 +106,6 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: weap
 		Owner: allies
 	Valued:
 		Cost: 700
@@ -139,7 +138,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: weap,fix
+		Prerequisites: fix
 		Owner: allies
 	Valued:
 		Cost: 850
@@ -174,7 +173,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: weap,fix
+		Prerequisites: fix
 		Owner: soviet
 	Valued:
 		Cost: 1150
@@ -209,7 +208,7 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: weap,fix,stek
+		Prerequisites: fix,stek
 		Owner: soviet
 	Valued:
 		Cost: 1800
@@ -251,7 +250,7 @@ ARTY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: weap, dome
+		Prerequisites: dome
 		Owner: allies
 	Valued:
 		Cost: 600
@@ -278,7 +277,7 @@ HARV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: weap,proc
+		Prerequisites: proc
 		Owner: allies,soviet
 	Valued:
 		Cost: 1100
@@ -308,7 +307,7 @@ MCV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Prerequisites: weap,fix
+		Prerequisites: fix
 		Owner: allies,soviet
 	Valued:
 		Cost: 2000
@@ -342,7 +341,6 @@ JEEP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: weap
 		Owner: allies
 	Valued:
 		Cost: 500
@@ -376,7 +374,6 @@ APC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: weap
 		Owner: soviet
 	Valued:
 		Cost: 850
@@ -408,7 +405,7 @@ MNLY.AP:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: weap,fix
+		Prerequisites: fix
 		Owner: soviet
 	Valued:
 		Cost: 800
@@ -439,7 +436,7 @@ MNLY.AT:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: weap,fix
+		Prerequisites: fix
 		Owner: allies
 	Valued:
 		Cost: 800
@@ -1039,7 +1036,6 @@ FTRK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: weap
 		Owner: soviet
 	Valued:
 		Cost: 600

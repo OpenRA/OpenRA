@@ -32,9 +32,7 @@ E1:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: @Barracks
 		Owner: allies,soviet
-		BuiltAt: barr,tent
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -60,7 +58,6 @@ E2:
 		BuildPaletteOrder: 10
 		Owner: soviet
 		Prerequisites: barr
-		BuiltAt: barr
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -90,8 +87,6 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies,soviet
-		Prerequisites: @Barracks
-		BuiltAt: barr,tent
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -117,9 +112,8 @@ E4:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: stek, @Barracks
+		Prerequisites: stek
 		Owner: soviet
-		BuiltAt: barr,tent
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -146,8 +140,6 @@ E6:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: soviet,allies
-		Prerequisites: @Barracks
-		BuiltAt: barr,tent
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -179,7 +171,6 @@ SPY:
 		BuildPaletteOrder: 60
 		Prerequisites: dome, tent
 		Owner: allies
-		BuiltAt: tent
 	Valued:
 		Cost: 500
 	SpyToolTip:
@@ -210,9 +201,8 @@ E7:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 110
-		Prerequisites: techcenter, barracks
+		Prerequisites: techcenter
 		Owner: allies,soviet
-		BuiltAt: barr,tent
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -246,7 +236,6 @@ MEDI:
 		BuildPaletteOrder: 20
 		Owner: allies
 		Prerequisites: tent
-		BuiltAt: tent
 	Valued:
 		Cost: 800
 	Tooltip:

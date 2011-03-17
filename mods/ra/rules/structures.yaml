@@ -877,8 +877,6 @@ BARR:
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -917,8 +915,6 @@ TENT:
 	Tooltip:
 		Name: Allied Barracks
 		Description: Produces infantry
-	ProvidesCustomPrerequisite:
-		Prerequisite: barracks
 	Building:
 		Power: -20
 		Footprint: xx xx
