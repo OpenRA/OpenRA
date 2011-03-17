@@ -20,19 +20,8 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int RefundPercent = 50;
 	}
 	
-	class Sellable : IIssueOrder, IResolveOrder
+	class Sellable : IResolveOrder
 	{
-		public IEnumerable<IOrderTargeter> Orders 
-		{
-			get { yield return new PaletteOnlyOrderTargeter("Sell"); }
-		}
-		
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
-		{
-			/* todo: make this work */
-			throw new NotImplementedException();
-		}
-		
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Sell")
