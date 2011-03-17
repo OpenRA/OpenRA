@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Air
 			if (res != null)
 			{
 				plane.UnReserve();
-				plane.reservation = res.Reserve(dest, self);
+				plane.reservation = res.Reserve(dest, self, plane);
 			}
 
 			var landPos = dest.CenterLocation;

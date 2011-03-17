@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Reservable.IsReserved(order.TargetActor)) return;
 				var res = order.TargetActor.TraitOrDefault<Reservable>();
 				if (res != null)
-					reservation = res.Reserve(order.TargetActor, self);
+					reservation = res.Reserve(order.TargetActor, self, this);
 
 				var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 				var offset = exit != null ? exit.SpawnOffset : int2.Zero;

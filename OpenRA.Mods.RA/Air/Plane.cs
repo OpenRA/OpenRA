@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Air
 					{
 						var res = afld.Trait<Reservable>();
 						if (res != null)
-							reservation = res.Reserve(afld, self);
+							reservation = res.Reserve(afld, self, this);
 					}
 				}
 			}
