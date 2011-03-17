@@ -238,7 +238,7 @@ namespace OpenRA.Renderer.Glsl
 						{
 							Event = KeyInputEvent.Down,
 							Modifiers = mods,
-							KeyChar = (char)e.key.keysym.unicode,
+							UnicodeChar = (char)e.key.keysym.unicode,
 							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
 							VirtKey = e.key.keysym.sym
 						};
@@ -253,7 +253,7 @@ namespace OpenRA.Renderer.Glsl
 						{
 							Event = KeyInputEvent.Up,
 							Modifiers = mods,
-							KeyChar = (char)e.key.keysym.unicode,
+							UnicodeChar = (char)e.key.keysym.unicode,
 							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
 							VirtKey = e.key.keysym.sym
 						};

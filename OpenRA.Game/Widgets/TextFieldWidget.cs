@@ -95,10 +95,10 @@ namespace OpenRA.Widgets
 			if (!Focused)
 				return false;
 
-			if (e.KeyChar == '\r' && OnEnterKey())
+			if ((e.KeyName == "return" || e.KeyName == "enter") && OnEnterKey())
 				return true;
 
-			if (e.KeyChar == '\t' && OnTabKey())
+			if (e.KeyName == "tab" && OnTabKey())
 				return true;
 
 			if (e.KeyName == "left")
@@ -126,31 +126,29 @@ namespace OpenRA.Widgets
 				return true;
 			}
 
-			TypeChar(e.KeyChar);
+			TypeChar(e);
 			return true;
 		}
 
-		public void TypeChar(char c)
+		public void TypeChar(KeyInput key)
 		{
-			// backspace
-			if (c == '\b' || c == 0x7f)
+			if (Text == null)
+				Text = "";
+			
+			if (key.KeyName == "backspace" && Text.Length > 0 && CursorPosition > 0)
 			{
-				if (Text.Length > 0 && CursorPosition > 0)
-				{
-					Text = Text.Remove(CursorPosition - 1, 1);
-
-					CursorPosition--;
-				}
+				Text = Text.Remove(CursorPosition - 1, 1);
+				CursorPosition--;
 			}
-			else if (!char.IsControl(c))
-			{
-				if (Text == null)
-					Text = "";
-				
+			else if (key.KeyName == "delete" && Text.Length > 0 && CursorPosition < Text.Length - 1)
+				Text = Text.Remove(CursorPosition, 1);
+		
+			else if (key.IsValidInput())
+			{	
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
 
-				Text = Text.Insert(CursorPosition, c.ToString());
+				Text = Text.Insert(CursorPosition, key.UnicodeChar.ToString());
 
 				CursorPosition++;
 			}

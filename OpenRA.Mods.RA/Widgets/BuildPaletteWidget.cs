@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 			}
 
-			return DoBuildingHotkey(Char.ToLowerInvariant(e.KeyChar), world);
+			return DoBuildingHotkey(e.KeyName, world);
 		}
 		
 		// TODO: BuildPaletteWidget doesn't support delegate methods for mouse input
@@ -499,12 +499,12 @@ namespace OpenRA.Mods.RA.Widgets
 				p.ToInt2(), Color.White);
 		}
 
-        bool DoBuildingHotkey(char c, World world)
+        bool DoBuildingHotkey(string key, World world)
         {
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-            var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == c.ToString());
+            var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
 
             if ( toBuild != null )
 			{

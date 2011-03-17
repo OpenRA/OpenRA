@@ -63,7 +63,7 @@ namespace OpenRA
 	public struct KeyInput
 	{
 		public KeyInputEvent Event;
-		public char KeyChar;
+		public char UnicodeChar;
 		public string KeyName;
 		public Modifiers Modifiers;
 		public int VirtKey;

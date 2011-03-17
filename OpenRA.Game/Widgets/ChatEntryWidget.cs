@@ -56,7 +56,7 @@ namespace OpenRA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
 			
-			if (e.KeyChar == '\r')
+			if (e.KeyName == "return" || e.KeyName == "enter" )
 			{
 				if (composing)
 				{
@@ -94,15 +94,15 @@ namespace OpenRA.Widgets
 
 			if (composing)
 			{
-				if (e.KeyChar == '\b' || e.KeyChar == 0x7f)
+				if (e.KeyName == "backspace")
 				{
 					if (content.Length > 0)
 						content = content.Remove(content.Length - 1);
 					return true;
 				}
-				else if (!char.IsControl(e.KeyChar))
+				else if (e.IsValidInput())
 				{
-					content += e.KeyChar;
+					content += e.UnicodeChar.ToString();
 					return true;
 				}
 

@@ -12,10 +12,11 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public World World { get { return OrderManager.world; } }
 
-		public char AttackMoveKey = 'a';
-		public char StopKey = 's';
-		public char ScatterKey = 'x';
-		public char DeployKey = 'f';
+		public string AttackMoveKey = "a";
+		public string StopKey = "s";
+		public string ScatterKey = "x";
+		public string DeployKey = "f";
+		public string BaseCycleKey = "backspace";
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -40,22 +41,22 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (e.Modifiers == Modifiers.None)
 			{
-				if (e.KeyChar == '\b' || e.KeyChar == (char)127)
+				if (e.KeyName == BaseCycleKey)
                     return CycleBases();
 				
 				if (!World.Selection.Actors.Any())
 					return false;
 				
-            	if (e.KeyChar == AttackMoveKey)
+            	if (e.KeyName == AttackMoveKey)
 					return PerformAttackMove();
 
-				if (e.KeyChar == StopKey)
+				if (e.KeyName == StopKey)
 					return PerformStop();
 				
-				if (e.KeyChar == ScatterKey)
+				if (e.KeyName == ScatterKey)
 					return PerformScatter();
 
-				if (e.KeyChar == DeployKey)
+				if (e.KeyName == DeployKey)
 					return PerformDeploy();
 			}
 			
