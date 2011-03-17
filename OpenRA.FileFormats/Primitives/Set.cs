@@ -45,22 +45,4 @@ namespace OpenRA.Collections
 			return GetEnumerator();
 		}
 	}
-
-	public class CachedView<T,U> : Set<U>
-	{
-		public CachedView( Set<T> set, Func<T, bool> include, Func<T, U> store )
-			: this( set, include, x => new[] { store( x ) } )
-		{
-		}
-
-		public CachedView( Set<T> set, Func<T,bool> include, Func<T,IEnumerable<U>> store )
-		{
-			foreach( var t in set )
-				if( include( t ) )
-					store( t ).Do( x => Add( x ) );
-
-			set.OnAdd += obj => { if( include( obj ) ) store( obj ).Do( x => Add( x ) ); };
-			set.OnRemove += obj => { if( include( obj ) ) store( obj ).Do( x => Remove( x ) ); };
-		}
-	}
 }
