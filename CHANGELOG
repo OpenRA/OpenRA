@@ -1,10 +1,8 @@
-Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
+Changes as of playtest-20110318
 	Engine:
 		Display range circles when placing defenses
 		Support a hostile creeps player for viceroids / dinosaurs / ants / etc
 		General refactoring and performance fixes
-		Fix crashes caused by blank game title / direct connect server textfields
-		Fix GPS behavior when alliances change.
 		Stop/Scatter/Deploy orders give audio feedback
 		"Allow cheats" option moved into the game lobby, visible to all players
 		"Build anywhere" developer mode option
@@ -30,6 +28,14 @@ Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
 		Fix crash when spawning map actors owned by a nonexisting player
 		Fix crash when changing mod while playing music
 		Fix crash with perf graph
+		Fix crash in replay viewer if replays directory doesn't exist
+		Fix crash when selling civilian buildings
+		Fix crashes caused by blank game title / direct connect server textfields
+		Oil derricks and harvester unloading shows cash indicator
+		Prerequisites system refactoring to allow non-building prerequisites
+		Fix shift+tab not cycling the build tabs
+		Fix bogus keyboard input in text fields
+		Don't change mods if the same one is selected in the dropdown
 
 	C&C:
 		Viceroids! Infantry killed by tiberium or chem warriors may turn into viceroids
@@ -68,6 +74,8 @@ Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
 		Spys are ignored by enemy units when disguised, tooltips show as disguised unit
 		Fix crates being paradropped inside trees, buildings
 		Production hotkey for flame turret changed to t, tesla coil to u
+		Disguised spys now appear correctly on radar and tooltips
+		Fix GPS behavior when alliances change.
 
 	Editor:
 		New map format (version 5). Maps < Version 4 are no longer supported by the editor or game.
@@ -79,6 +87,7 @@ Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
 		Default player colours has been returned to neutral grey.
 		Maps can be loaded from the commandline
 		Option to show actor names
+		Support for veteran / elite actors to be defined in the map yaml
 	
 	Packaging:
 		Rename .deb package to use debian naming conventions
@@ -131,7 +140,6 @@ Changes as of adb2ab5ec0aebfe676030223e4badd773f43a670
 		Fixed paradrop flare, spyplane from capturing KOTH points
 		New Map: Nuclear Winter (nudalz)
 		New Map: Seaside (nudalz)
-		
 	Editor:
 		Ability to switch mods after launch
 		Refactor hardcoded tools into a generic interface
