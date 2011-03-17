@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public class Building : INotifyDamage, IResolveOrder, IOccupySpace, INotifyCapture, ISync
+	public class Building : INotifyDamage, IOccupySpace, INotifyCapture, ISync
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
@@ -98,15 +98,6 @@ namespace OpenRA.Mods.RA.Buildings
 				PlayerPower.UpdateActor(self, GetPowerUsage());
 		}
 
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Sell")
-			{
-				self.CancelActivity();
-				self.QueueActivity(new Sell());
-			}
-		}
-		
 		public int2 TopLeft
 		{
 			get { return topLeft; }
