@@ -154,6 +154,7 @@ namespace OpenRA.Renderer.Cg
 		{
 			return ( ( raw & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
 				 | ( ( raw & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
+				 | ( ( raw & Sdl.KMOD_META ) != 0 ? Modifiers.Meta : 0 )
 				 | ( ( raw & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
 		}
 

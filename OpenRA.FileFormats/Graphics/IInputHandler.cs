@@ -57,6 +57,7 @@ namespace OpenRA
 		Shift = 1,
 		Alt = 2,
 		Ctrl = 4,
+		Meta = 8,
 	}
 
 	public enum KeyInputEvent { Down, Up };
