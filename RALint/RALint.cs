@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -27,8 +28,6 @@ namespace RALint
 			++errors;
 		}
 
-        static Dictionary<string, int> ValidPrereqs = new Dictionary<string, int>();
-
 		static int Main(string[] args)
 		{
 			try
@@ -40,12 +39,6 @@ namespace RALint
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 				Game.modData = new ModData(args);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
-
-				// all the @something names which actually EXIST.
-				//var psuedoPrereqs = Rules.Info.Values.Select(a => a.Traits.GetOrDefault<TooltipInfo>()).Where(b => b != null)
-				//    .Select(b => b.AlternateName).Where(n => n != null).SelectMany(a => a).Select(a => a.ToLowerInvariant()).Distinct();
-
-				//ValidPrereqs = Rules.Info.Keys.Concat(psuedoPrereqs).ToDictionary(a => a, a => 0);
 
 				foreach (var actorInfo in Rules.Info)
 					foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
@@ -72,7 +65,7 @@ namespace RALint
 			foreach (var field in actualType.GetFields())
 			{
 				if (field.HasAttribute<ActorReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, ValidPrereqs, "actor");
+					CheckReference(actorInfo, traitInfo, field, Rules.Info, "actor");
 				if (field.HasAttribute<WeaponReferenceAttribute>())
 					CheckReference(actorInfo, traitInfo, field, Rules.Weapons, "weapon");
 				if (field.HasAttribute<VoiceReferenceAttribute>())
