@@ -66,7 +66,7 @@ namespace OpenRA
 
 		public void DoControlGroup(World world, int group, Modifiers mods)
 		{
-			if (mods.HasModifier(Modifiers.Ctrl))
+			if (mods.HasModifier(Game.Settings.Keyboard.ControlGroupModifier))
 			{
 				if (actors.Count == 0)
 					return;
