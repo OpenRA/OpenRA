@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -60,6 +60,8 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="Buildings\Sellable.cs" />
+    <Compile Include="Effects\CashTick.cs" />
     <Compile Include="ProductionBar.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
@@ -330,8 +332,6 @@
     <Compile Include="Widgets\SidebarButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="ActorExts.cs" />
-	<Compile Include="Effects\CashTick.cs" />
-    <Compile Include="Effects\CashTick.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
