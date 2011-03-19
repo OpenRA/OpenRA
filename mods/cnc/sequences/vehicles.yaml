@@ -61,7 +61,10 @@ heli:
 	slow-rotor: lrotor
 		Start: 4
 		Length: 8
-
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 orca:
 	idle:
 		Start: 0

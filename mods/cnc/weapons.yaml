@@ -110,6 +110,22 @@ HighV:
 			Heavy: 25%
 		InfDeath: 1
 		Explosion: 1
+HighV.Heli: 
+	ROF: 40
+	Range: 4
+	Report: GUN8
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Damage: 40
+		Spread: 3
+		Versus: 
+			None: 100%
+			Wood: 50%
+			Light: 50%
+			Heavy: 25%
+		InfDeath: 1
+		Explosion: 1
 
 Pistol: 
 	ROF: 7

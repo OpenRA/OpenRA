@@ -505,11 +505,10 @@ HELI:
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
-		PrimaryWeapon: HighV
-		SecondaryWeapon: HighV
-		PrimaryOffset: -5,0,0,2
-		SecondaryOffset: 5,0,0,2
+		PrimaryWeapon: HighV.Heli
+		PrimaryOffset: 0,-10,0,3
 		FacingTolerance: 20
+	WithMuzzleFlash:
 	RenderUnitRotor:
 		PrimaryOffset: 0,0,0,-2
 	WithShadow:
