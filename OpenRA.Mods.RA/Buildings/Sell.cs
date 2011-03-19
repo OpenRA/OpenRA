@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -35,6 +36,9 @@ namespace OpenRA.Mods.RA.Buildings
 			
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
+
+            if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+                self.World.AddFrameEndTask(w => w.Add(new CashTick(refund, 30, 2, self.CenterLocation, self.Owner.ColorRamp.GetColor(0))));
 			
 			self.Destroy();
 		}
