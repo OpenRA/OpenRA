@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 
 		public ITexture PaletteTexture;
 
-        public readonly SpriteFont RegularFont, BoldFont, TitleFont, TinyFont;
+        public readonly SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont;
 
 		internal const int TempBufferSize = 8192;
 		const int TempBufferCount = 8;
@@ -59,7 +59,8 @@ namespace OpenRA.Graphics
 			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
 			TitleFont = new SpriteFont("titles.ttf", 48);
             TinyFont = new SpriteFont("FreeSans.ttf", 10);
-
+			TinyBoldFont = new SpriteFont("FreeSansBold.ttf", 10);
+			
 			for( int i = 0 ; i < TempBufferCount ; i++ )
 			{
 				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );

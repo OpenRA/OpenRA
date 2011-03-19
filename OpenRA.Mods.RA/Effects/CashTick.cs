@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.color = color;
 			this.lifetime = lifetime;
 			this.velocity = velocity;
-			s = "${0}".F(value);
-			this.pos = pos - 0.5f*Game.Renderer.BoldFont.Measure(s).ToFloat2();
+			s = "{0}${1}".F(value < 0 ? "-" : "+", value);
+			this.pos = pos - 0.5f*Game.Renderer.TinyBoldFont.Measure(s).ToFloat2();
 			remaining = lifetime;
 		}
 
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			Game.Renderer.BoldFont.DrawTextWithContrast(s, pos - Game.viewport.Location, color, Color.Black,1);
+			Game.Renderer.TinyBoldFont.DrawTextWithContrast(s, pos - Game.viewport.Location, color, Color.Black,1);
 			yield break;
 		}
 	}

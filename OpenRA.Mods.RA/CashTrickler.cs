@@ -15,11 +15,11 @@ namespace OpenRA.Mods.RA
 {
 	class CashTricklerInfo : ITraitInfo
 	{
-		public readonly int Period = 10;
-		public readonly int Amount = 3;
+		public readonly int Period = 50;
+		public readonly int Amount = 15;
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
-		public readonly int TickVelocity = 2;
+		public readonly int TickVelocity = 1;
 		
 		public object Create (ActorInitializer init) { return new CashTrickler(this); }
 	}
