@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 				});
 				
 				a.CancelActivity();
-				a.QueueActivity(new FlyCircle(order.TargetLocation));
+				a.QueueActivity(new FlyAttackLoop(order.TargetLocation));
 				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();

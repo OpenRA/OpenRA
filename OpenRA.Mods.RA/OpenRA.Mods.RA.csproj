@@ -60,6 +60,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
+    <Compile Include="Air\FlyCircle.cs" />
     <Compile Include="Buildings\Sellable.cs" />
     <Compile Include="Effects\CashTick.cs" />
     <Compile Include="ProductionBar.cs" />

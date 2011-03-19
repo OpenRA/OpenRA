@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 							new AltitudeInit( Rules.Info["badr"].Traits.Get<AircraftInfo>().CruiseAltitude ),
 						});
 						plane.CancelActivity();
-						plane.QueueActivity(new FlyCircle(p));
+						plane.QueueActivity(new FlyAttackLoop(p));
 						plane.Trait<ParaDrop>().SetLZ(p);
 						plane.Trait<Cargo>().Load(plane, crate);
 					});

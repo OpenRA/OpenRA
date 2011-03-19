@@ -52,11 +52,11 @@ namespace OpenRA.Mods.RA.Air
 		}
 	}
 
-	public class FlyCircle : CancelableActivity
+	public class FlyAttackLoop : CancelableActivity
 	{
 		int2 Target;
 
-		public FlyCircle(int2 target) { Target = target; }
+		public FlyAttackLoop(int2 target) { Target = target; }
 
 		public override IActivity Tick(Actor self)
 		{
