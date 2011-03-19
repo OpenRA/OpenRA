@@ -89,6 +89,7 @@ namespace OpenRA.Mods.RA.Air
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();
 				self.QueueActivity(Fly.ToCell(target));
+                self.QueueActivity(new FlyCircle());
 			}
 
 			else if (order.OrderString == "Enter")
