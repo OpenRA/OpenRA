@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Air
 
 			if (order.OrderString == "Move")
 			{
-				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+				var target = self.World.ClampToWorld(order.TargetLocation);
 				
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();

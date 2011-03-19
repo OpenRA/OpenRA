@@ -276,7 +276,7 @@ namespace OpenRA.Mods.RA.Move
         {
             if (order.OrderString == "Move")
             {
-                var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+                var target = self.World.ClampToWorld(order.TargetLocation);
                 PerformMove(self, target, order.Queued && !self.IsIdle);
             }
 

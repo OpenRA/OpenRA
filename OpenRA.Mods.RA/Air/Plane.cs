@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Air
 			{
 				UnReserve();
 				
-				var target = order.TargetLocation.Clamp(self.World.Map.Bounds);
+				var target = self.World.ClampToWorld(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();
 				self.QueueActivity(Fly.ToCell(target));
