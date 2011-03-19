@@ -8,6 +8,8 @@ V19:
 		Footprint: x
 		Dimensions: 1,1
 		Capturable: true
+	RevealsShroud:
+		Range: 3
 	-DeadBuildingState:
 	Tooltip:
 		Name: Oil Derrick
