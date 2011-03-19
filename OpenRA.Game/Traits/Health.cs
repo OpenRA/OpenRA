@@ -36,7 +36,9 @@ namespace OpenRA.Traits
 		{
 			Info = info;
 			MaxHP = info.HP;
-			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>()*MaxHP) : MaxHP;
+
+            hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>() * MaxHP) : MaxHP;
+            DisplayHp = hp;
 		}
 		
 		public int HP { get { return hp; } }
