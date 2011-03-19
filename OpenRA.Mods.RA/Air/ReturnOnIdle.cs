@@ -8,9 +8,10 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -33,9 +34,29 @@ namespace OpenRA.Mods.RA.Air
 			}
 			else
 			{
-				//Game.Debug("Plane has nowhere to land; flying away");
-				self.QueueActivity(new FlyOffMap());
-				self.QueueActivity(new RemoveSelf());
+                // nowhere to land, pick something friendly and circle over it.
+
+                // i'd prefer something we own
+                var someBuilding = self.World.ActorsWithTrait<Building>()
+                    .Select( a => a.Actor )
+                    .FirstOrDefault(a => a.Owner == self.Owner);
+
+                // failing that, something unlikely to shoot at us
+                if (someBuilding == null)
+                    someBuilding = self.World.ActorsWithTrait<Building>()
+                        .Select( a => a.Actor )
+                        .FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally);
+
+                if (someBuilding == null)
+                {
+                    // ... going down the garden to eat worms ... 
+                    self.QueueActivity(new FlyOffMap());
+                    self.QueueActivity(new RemoveSelf());
+                    return;
+                }
+
+                self.QueueActivity(Fly.ToCell(someBuilding.Location));
+                self.QueueActivity(new FlyCircle());
 			}
 		}
 	}
