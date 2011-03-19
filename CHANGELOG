@@ -1,4 +1,4 @@
-Changes as of playtest-20110318
+20110320
 	Engine:
 		Display range circles when placing defenses
 		Support a hostile creeps player for viceroids / dinosaurs / ants / etc
@@ -31,11 +31,13 @@ Changes as of playtest-20110318
 		Fix crash in replay viewer if replays directory doesn't exist
 		Fix crash when selling civilian buildings
 		Fix crashes caused by blank game title / direct connect server textfields
-		Oil derricks and harvester unloading shows cash indicator
+		Oil derricks, harvester unloading, selling structures shows cash indicator
 		Prerequisites system refactoring to allow non-building prerequisites
 		Fix shift+tab not cycling the build tabs
 		Fix bogus keyboard input in text fields
 		Don't change mods if the same one is selected in the dropdown
+		Support for remapping the control group addition modifier (ctrl) to any modifier key
+		Fix helicopters flying 1 cell off the right or bottom of the map
 
 	C&C:
 		Viceroids! Infantry killed by tiberium or chem warriors may turn into viceroids
@@ -49,6 +51,8 @@ Changes as of playtest-20110318
 		Fix a rare crash with stealth tank
 		New Map: East vs West 3 by pchote
 		Removed Maps: Wargames, Yellowstone II
+		Oil Derricks have a small sight range
+		Apaches have a muzzleflash
 	
 	RA:
 		Service depots repair units faster
@@ -76,6 +80,8 @@ Changes as of playtest-20110318
 		Production hotkey for flame turret changed to t, tesla coil to u
 		Disguised spys now appear correctly on radar and tooltips
 		Fix GPS behavior when alliances change.
+		Aircraft now fly to a target location and circle instead of returning to base
+		Aircraft no longer fly off the map if their Airfield is destroyed
 
 	Editor:
 		New map format (version 5). Maps < Version 4 are no longer supported by the editor or game.
