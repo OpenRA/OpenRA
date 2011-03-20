@@ -178,10 +178,10 @@ return cgbinpath and {
 			local indent = 0
 			local maxindent = 0
 			local startindent = {
-				"IF","REP","ELSE",
+				"IF","REP","ELSE","LOOP",
 			}
 			local endindent = {
-				"ENDIF","ENDREP","ELSE","END",
+				"ENDIF","ENDREP","ELSE","ENDLOOP","END",
 			}
 
 			local function checknesting(str,tab)
