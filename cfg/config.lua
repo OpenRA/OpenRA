@@ -1,12 +1,11 @@
--- path where luxinia resides in, a "luxinia.exe" is appended automaticly
 local luxpath = os.getenv("LUXINIA")
 path.luxinia = luxpath and luxpath.."/" or "../../engine/"
+local luxpath2 = os.getenv("LUXINIA2")
+path.luxinia2 = luxpath2 and luxpath2.."/" or "../luxinia2/runtime/bin_Windows_x86/"
 
 editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
-
-interpreter = "luxinia"
 
 filehistorylength = 20
 
