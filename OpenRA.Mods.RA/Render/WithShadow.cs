@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.Render
 {
 	class WithShadowInfo : TraitInfo<WithShadow> {}
 

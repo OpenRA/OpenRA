@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -221,7 +221,6 @@
     <Compile Include="Render\RenderFlare.cs" />
     <Compile Include="Render\RenderInfantry.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
-    <Compile Include="Render\RenderUnitRotor.cs" />
     <Compile Include="Render\RenderUnitSpinner.cs" />
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairsUnits.cs" />
@@ -267,8 +266,6 @@
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
-    <Compile Include="WithMuzzleFlash.cs" />
-    <Compile Include="WithShadow.cs" />
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="GainsExperience.cs" />
     <Compile Include="GivesExperience.cs" />
@@ -333,6 +330,9 @@
     <Compile Include="Widgets\SidebarButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="ActorExts.cs" />
+    <Compile Include="Render\WithRotor.cs" />
+    <Compile Include="Render\WithMuzzleFlash.cs" />
+    <Compile Include="Render\WithShadow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

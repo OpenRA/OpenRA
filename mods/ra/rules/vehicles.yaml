@@ -830,9 +830,12 @@ TRAN:
 		ROT: 5
 		Speed: 12
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
-	RenderUnitRotor:
-		PrimaryOffset: 0,14,0,-8
-		SecondaryOffset: 0,-14,0,-5
+	RenderUnit:
+	WithRotor@PRIMARY:
+		Offset: 0,14,0,-8
+	WithRotor@SECONDARY:
+		Id: rotor_2
+		Offset: 0,-14,0,-5
 	WithShadow:
 	Cargo:
 		Types: Infantry
@@ -872,9 +875,10 @@ HELI:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 16
-	RenderUnitRotor:
-		PrimaryOffset: 0,0,0,-2
+	RenderUnit:
 		Smokes: no
+	WithRotor:
+		Offset: 0,0,0,-2
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
@@ -915,8 +919,9 @@ HIND:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 12
-	RenderUnitRotor:
+	RenderUnit:
 		Smokes: no
+	WithRotor:
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 24

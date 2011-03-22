@@ -15,12 +15,12 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc
 {
-	class WithRoofInfo : ITraitInfo
+	public class WithRoofInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithRoof(init.self); }
 	}
 
-	class WithRoof
+	public class WithRoof
 	{
 		public WithRoof(Actor self)
 		{

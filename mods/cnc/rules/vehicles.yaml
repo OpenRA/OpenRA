@@ -473,9 +473,12 @@ TRAN:
 		Type: Light
 	RevealsShroud:
 		Range: 8
-	RenderUnitRotor:
-		PrimaryOffset: 0,14,0,-4
-		SecondaryOffset: 0,-14,0,-2
+	RenderUnit:
+	WithRotor@PRIMARY:
+		Offset: 0,14,0,-4
+	WithRotor@SECONDARY:
+		Id: rotor_2
+		Offset: 0,-14,0,-2
 	WithShadow:
 	Cargo:
 		Types: Infantry
@@ -508,9 +511,10 @@ HELI:
 		PrimaryWeapon: HighV.Heli
 		PrimaryOffset: 0,-10,0,3
 		FacingTolerance: 20
+	RenderUnit:
+	WithRotor:
+		Offset: 0,0,0,-2
 	WithMuzzleFlash:
-	RenderUnitRotor:
-		PrimaryOffset: 0,0,0,-2
 	WithShadow:
 	FallsToEarth:
 	AutoTarget:
