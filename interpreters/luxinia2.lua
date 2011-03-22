@@ -28,7 +28,7 @@ return {
 						self:finitclient()
 					end
 					-- try to communicate with server
-					self.fclient("dofile("..wfilename:GetFullPath()..")")
+					self.fclient("dofile([["..wfilename:GetFullPath().."]])")
 					return
 				end
 				
