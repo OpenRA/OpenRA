@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			if (e.Modifiers == Modifiers.None)
+			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
 				if (e.KeyName == BaseCycleKey)
                     return CycleBases();
