@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA
 {
-	class AutoTargetInfo : TraitInfo<AutoTarget>
+	class AutoTargetInfo : TraitInfo<AutoTarget>, ITraitPrerequisite<AttackBaseInfo>
 	{
 		public readonly bool AllowMovement = true;
 	}

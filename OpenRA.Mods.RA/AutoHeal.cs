@@ -14,7 +14,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class AutoHealInfo : TraitInfo<AutoHeal> { }
+	class AutoHealInfo : TraitInfo<AutoHeal>, ITraitPrerequisite<AttackBaseInfo> { }
 
 	class AutoHeal : INotifyIdle
 	{
