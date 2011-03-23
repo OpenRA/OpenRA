@@ -11,16 +11,32 @@
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
-	class AutoTargetInfo : TraitInfo<AutoTarget>, ITraitPrerequisite<AttackBaseInfo>
+	public class AutoTargetInfo : ITraitInfo, ITraitPrerequisite<AttackBaseInfo>
 	{
 		public readonly bool AllowMovement = true;
+		public readonly int ScanRadius = -1;
+		
+		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
 
-	class AutoTarget : INotifyIdle, INotifyDamage
+	public class AutoTarget : INotifyIdle, INotifyDamage, ITick
 	{
+		readonly AutoTargetInfo Info;
+		readonly AttackBase attack;
+		
+		[Sync]
+		int nextScanTime = 0;
+		
+		public AutoTarget(Actor self, AutoTargetInfo info)
+		{
+			Info = info;
+			attack = self.Trait<AttackBase>();
+		}
+		
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (!self.IsIdle) return;
@@ -35,20 +51,58 @@ namespace OpenRA.Mods.RA
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
-			self.Trait<AttackBase>().AttackTarget(Target.FromActor(e.Attacker), false, self.Info.Traits.Get<AutoTargetInfo>().AllowMovement);
+			attack.AttackTarget(Target.FromActor(e.Attacker), false, Info.AllowMovement);
 		}
 
 		public void TickIdle(Actor self)
 		{
-			var attack = self.Trait<AttackBase>();
-			var target = attack.ScanForTarget(self, null);
+			var target = ScanForTarget(self, null);
 			if (target != null)
 			{
 				self.SetTargetLine(Target.FromActor(target), Color.Red, false);
 				self.QueueActivity(attack.GetAttackActivity(self,
 					Target.FromActor(target),
-					self.Info.Traits.Get<AutoTargetInfo>().AllowMovement));
+					Info.AllowMovement));
 			}
+		}
+		
+		public void Tick(Actor self)
+		{
+			--nextScanTime;
+		}
+
+		public Actor ScanForTarget(Actor self, Actor currentTarget)
+		{
+			var range = Info.ScanRadius > 0 ? Info.ScanRadius : attack.GetMaximumRange();
+			
+			if (self.IsIdle || currentTarget == null || !Combat.IsInRange(self.CenterLocation, range, currentTarget))
+				if(nextScanTime <= 0)
+					return ChooseTarget(self, range);
+
+			return currentTarget;
+		}
+		
+		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
+		{
+			var targetActor = ScanForTarget(self, null);
+			if (targetActor != null)
+				attack.AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
+		}
+
+		Actor ChooseTarget(Actor self, float range)
+		{
+			var info = self.Info.Traits.Get<AttackBaseInfo>();
+			nextScanTime = (int)(25 * (info.ScanTimeAverage +
+				(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
+
+			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+
+			return inRange
+				.Where(a => a.Owner != null && a.AppearsHostileTo(self))
+				.Where(a => !a.HasTrait<AutoTargetIgnore>())
+				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
+				.FirstOrDefault();
 		}
 	}
 

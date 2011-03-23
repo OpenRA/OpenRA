@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 
 			public override IActivity Tick( Actor self )
 			{
-				self.Trait<AttackBase>().ScanAndAttack(self, true);
+				self.Trait<AutoTarget>().ScanAndAttack(self, true, false);
 
 				if( inner == null )
 					return NextActivity;

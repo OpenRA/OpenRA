@@ -50,9 +50,6 @@ namespace OpenRA.Mods.RA
 
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
 	{
-		[Sync]
-		int nextScanTime = 0;
-
 		public bool IsAttacking { get; internal set; }
 
 		public List<Weapon> Weapons = new List<Weapon>();
@@ -99,8 +96,6 @@ namespace OpenRA.Mods.RA
 
 		public virtual void Tick(Actor self)
 		{
-			--nextScanTime;
-
 			foreach (var w in Weapons)
 				w.Tick();
 
@@ -188,45 +183,6 @@ namespace OpenRA.Mods.RA
 		{
 			if( !target.IsValid ) return;
 			self.QueueActivity(queued, GetAttackActivity(self, target, allowMove));
-		}
-
-		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
-		{
-			var targetActor = ScanForTarget(self, null);
-			if (targetActor != null)
-				AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
-		}
-
-		public Actor ScanForTarget(Actor self, Actor currentTarget)
-		{
-			var range = GetMaximumRange();
-
-			if (self.IsIdle || currentTarget == null || !Combat.IsInRange(self.CenterLocation, range, currentTarget))
-				if(nextScanTime <= 0)
-					return ChooseTarget(self, range);
-
-			return currentTarget;
-		}
-
-		public void ScanAndAttack(Actor self, bool allowMovement)
-		{
-			ScanAndAttack(self, allowMovement, false);
-		}
-
-		Actor ChooseTarget(Actor self, float range)
-		{
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			nextScanTime = (int)(25 * (info.ScanTimeAverage +
-				(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
-
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
-
-			return inRange
-				.Where(a => a.Owner != null && a.AppearsHostileTo(self))
-				.Where(a => !a.HasTrait<AutoTargetIgnore>())
-				.Where(a => HasAnyValidWeapons(Target.FromActor(a)))
-				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-				.FirstOrDefault();
 		}
 
 		class AttackOrderTargeter : IOrderTargeter

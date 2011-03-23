@@ -270,6 +270,7 @@ VICE:
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:
+		ScanRadius: 4
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
