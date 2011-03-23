@@ -18,8 +18,13 @@ namespace OpenRA.Mods.RA.Activities
 	class Demolish : CancelableActivity
 	{
 		Actor target;
-
-		public Demolish( Actor target ) { this.target = target; }
+		int delay;
+		
+		public Demolish( Actor target, int delay )
+		{
+			this.target = target;
+			this.delay = delay;
+		}
 
 		public override IActivity Tick(Actor self)
 		{
@@ -29,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(25 * 2,
+			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay,
 				() => { if (target.IsInWorld) target.Kill(self); })));
 			return NextActivity;
 		}

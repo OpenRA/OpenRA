@@ -175,7 +175,7 @@ RMBO:
 	AutoTarget:
 		ScanRadius: 5
 	C4Demolition:
-		C4Delay: .03
+		C4Delay: 45
 	AttackFrontal:
 		PrimaryWeapon: Sniper
 	RenderInfantryProne:

@@ -19,13 +19,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class C4DemolitionInfo : TraitInfo<C4Demolition>
+	class C4DemolitionInfo : ITraitInfo
 	{
-		public readonly float C4Delay = 0;
+		public readonly int C4Delay = 45; // 1.8 seconds
+		public object Create(ActorInitializer init) { return new C4Demolition(this); }
 	}
 
 	class C4Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly C4DemolitionInfo Info;
+		
+		public C4Demolition(C4DemolitionInfo info)
+		{
+			Info = info;
+		}
+		
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new UnitTraitOrderTargeter<Building>( "C4", 6, "c4", true, false ); }
@@ -48,8 +56,7 @@ namespace OpenRA.Mods.RA
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
-				//self.QueueActivity(new Move(order.TargetActor.Location, order.TargetActor));
-				self.QueueActivity(new Demolish(order.TargetActor));
+				self.QueueActivity(new Demolish(order.TargetActor, Info.C4Delay));
 				self.QueueActivity(mobile.MoveTo(self.Location, 0));
 			}
 		}
