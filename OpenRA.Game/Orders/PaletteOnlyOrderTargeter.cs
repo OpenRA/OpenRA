@@ -32,5 +32,6 @@ namespace OpenRA.Orders
         }
 
         public bool IsQueued { get { return false; } }
+        public bool IsImmediate { get { return true; } }
     }
 }

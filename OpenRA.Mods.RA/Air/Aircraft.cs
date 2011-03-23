@@ -264,7 +264,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
-
+		public bool IsImmediate { get { return false; } }
 		public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
 			return false;

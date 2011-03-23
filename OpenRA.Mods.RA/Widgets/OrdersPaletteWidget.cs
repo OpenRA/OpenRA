@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-    public class OrdersPaletteWidget : ContainerWidget
+    public class OrdersPaletteWidget : BackgroundWidget
     {
         readonly World world;
 
@@ -39,7 +39,18 @@ namespace OpenRA.Mods.RA.Widgets
 				var child = new SidebarButtonWidget(world)
 				{
 					Bounds = new Rectangle(x, 0, 32, 32),
-					OnMouseUp = mi => { Game.Debug("OrderButton: {0}",s); IssueOrder(a => new Order(s.OrderID, a, false)); return true; },
+					OnMouseUp = mi => { 
+                        Game.Debug("OrderButton: {0}",s.OrderID);
+
+                        if (s.IsImmediate)
+                            IssueOrder(a => new Order(s.OrderID, a, false));
+                        else
+                        {
+                            // do something else.
+                            Game.Debug("TODO: Non-immediate order via palette!");
+                        }
+                        return true; 
+                    },
 					Image = "opal-button"
 				};
 				AddChild(child);
