@@ -8,13 +8,16 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-    class OrdersPaletteWidget : LabelWidget
+    public class OrdersPaletteWidget : ContainerWidget
     {
         readonly World world;
 
@@ -23,20 +26,50 @@ namespace OpenRA.Mods.RA.Widgets
             : base()
         {
             this.world = world;
-            GetText = GetOrderPaletteText;
         }
+		
+		// Giant hack
+		public void Update()
+		{
+			RemoveChildren();
+			int x = 0;
+			foreach (var o in GetOrders())
+			{
+				var s = o; // Closure fail
+				var child = new SidebarButtonWidget(world)
+				{
+					Bounds = new Rectangle(x, 0, 32, 32),
+					OnMouseUp = mi => { Game.Debug("OrderButton: {0}",s); IssueOrder(a => new Order(s.OrderID, a, false)); return true; },
+					Image = "opal-button"
+				};
+				AddChild(child);
+				x += 32;
+			}	
+		}
+		
+		void IssueOrder(Func<Actor, Order> f)
+		{
+			var orders = world.Selection.Actors.Select(f).ToArray();
+			foreach (var o in orders) world.IssueOrder(o);
+			world.PlayVoiceForOrders(orders);
+		}
 
-        string GetOrderPaletteText()
+        List<IOrderTargeter> GetOrders()
         {
-            var possibleOrders = world.Selection.Actors
+            return world.Selection.Actors
                 .Where(a => !a.Destroyed && a.Owner == a.World.LocalPlayer)
                 .SelectMany(a => a.TraitsImplementing<IIssueOrder>())
-                .SelectMany(io => io.Orders)
-                .Select(ot => ot.OrderID)
-                .Distinct();
-
-            return "Orders: \n"
-                + string.Join("", possibleOrders.Select(ot => "- {0}\n".F(ot)).ToArray());
+                .SelectMany(io => io.Orders).Distinct().ToList();
         }
     }
+	
+	public class UpdateOrderPaletteInfo : TraitInfo<UpdateOrderPalette> {}
+
+	public class UpdateOrderPalette : INotifySelection
+	{
+		public void SelectionChanged()
+		{
+			Widget.RootWidget.GetWidget<OrdersPaletteWidget>("ORDERS_PALETTE").Update();
+		}
+	}
 }

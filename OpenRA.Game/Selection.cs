@@ -25,6 +25,11 @@ namespace OpenRA
 				ns.SelectionChanged();
 		}
 
+		public void Remove(Actor a)
+		{
+			actors.Remove(a);
+		}
+		
 		public bool Contains(Actor a)
 		{
 			return actors.AsEnumerable().Contains(a);

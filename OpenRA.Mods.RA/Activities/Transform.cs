@@ -72,7 +72,10 @@ namespace OpenRA.Mods.RA.Activities
 					nt.OnTransformed(a);
 
 				if (selected)
+				{
+					w.Selection.Remove(self);
 					w.Selection.Add(w, a);
+				}
 			});
 
 			return this;
