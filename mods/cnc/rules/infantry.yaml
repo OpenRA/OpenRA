@@ -172,6 +172,8 @@ RMBO:
 		HP: 200
 	RevealsShroud:
 		Range: 5
+	AutoTarget:
+		ScanRadius: 5
 	C4Demolition:
 		C4Delay: .03
 	AttackFrontal:

@@ -88,6 +88,8 @@
 		Type: None
 	RevealsShroud:
 		Range: 4
+	AutoTarget:
+		ScanRadius: 4
 	Mobile:
 		Crushes: crate
 		SharesCell: true
@@ -108,7 +110,7 @@
 		Queue: Infantry
 	TakeCover:
 	RenderInfantryProne:
-	AutoTarget:
+
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
