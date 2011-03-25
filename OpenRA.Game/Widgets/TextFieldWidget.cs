@@ -116,6 +116,18 @@ namespace OpenRA.Widgets
 
 				return true;
 			}
+			
+			if (e.KeyName == "home")
+			{
+				CursorPosition = 0;
+				return true;
+			}
+			
+			if (e.KeyName == "end")
+			{
+				CursorPosition = Text.Length;
+				return true;
+			}
 
 			if (e.KeyName == "delete")
 			{
