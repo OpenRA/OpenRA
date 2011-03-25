@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Cnc
 				init.self.Trait<RenderBuilding>()
 					.PlayCustomAnimRepeating(init.self, "closed-idle");
 				Turret.desiredFacing = null;
+				buildComplete = true;
 			}
 		}
 
