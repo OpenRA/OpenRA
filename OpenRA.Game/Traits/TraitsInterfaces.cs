@@ -58,6 +58,7 @@ namespace OpenRA.Traits
     public interface ICustomUnitOrderGenerator : IOrderGenerator {};
 	public interface INotifySold { void Selling( Actor self );  void Sold( Actor self ); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
+	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, int2 exit); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }

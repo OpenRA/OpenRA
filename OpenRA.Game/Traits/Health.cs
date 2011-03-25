@@ -87,20 +87,27 @@ namespace OpenRA.Traits
 			damage = (int)(damage * modifier);
 
 			hp -= damage;
-
-            foreach (var nd in self.TraitsImplementing<INotifyDamage>().Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
-				nd.Damaged(self, new AttackInfo
-				{
-					Attacker = attacker,
-					Damage = damage,
-					DamageState = this.DamageState,
-					PreviousDamageState = oldState,
-					DamageStateChanged = this.DamageState != oldState,
-					Warhead = warhead,
-                    PreviousHealth = hp + damage < 0 ? 0 : hp + damage,
-                    Health = hp
-				});
-
+			var ai = new AttackInfo
+			{
+				Attacker = attacker,
+				Damage = damage,
+				DamageState = this.DamageState,
+				PreviousDamageState = oldState,
+				DamageStateChanged = this.DamageState != oldState,
+				Warhead = warhead,
+                PreviousHealth = hp + damage < 0 ? 0 : hp + damage,
+                Health = hp
+			};
+			
+            foreach (var nd in self.TraitsImplementing<INotifyDamage>()
+			         .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+				nd.Damaged(self, ai);
+			
+			if (attacker != null && attacker.IsInWorld && !attacker.IsDead())
+				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
+			         .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+				nd.AppliedDamage(attacker, self, ai);
+			
 			if (hp <= 0)
 			{
 				hp = 0;

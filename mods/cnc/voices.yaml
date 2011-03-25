@@ -30,7 +30,7 @@ CivilianFemaleVoice:
 
 CommandoVoice: 
 	Voices:
-		Select: rokroll1,yeah1,yes1,yo1
+		Select: yeah1,yes1,yo1
 		Move: cmon1,onit1,gotit1
 		Attack: onit1,gotit1
 		Demolish: bombit1

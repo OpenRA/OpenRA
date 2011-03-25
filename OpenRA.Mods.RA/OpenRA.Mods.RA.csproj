@@ -333,6 +333,7 @@
     <Compile Include="Render\WithRotor.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
     <Compile Include="Render\WithShadow.cs" />
+    <Compile Include="AnnounceOnBuild.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
