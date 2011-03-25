@@ -70,24 +70,4 @@ namespace OpenRA.Orders
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
-
-	// variant that requires a tag trait (T) to be present on some actor owned
-	// by the activating player
-	public class GenericSelectTargetWithBuilding<T> : GenericSelectTarget
-	{
-		public GenericSelectTargetWithBuilding(Actor subject, string order, string cursor)
-			: base(subject, order, cursor) { }
-
-		public GenericSelectTargetWithBuilding(Actor subject, string order, string cursor, MouseButton button)
-			: base(subject, order, cursor, button) { }
-
-		public override void Tick(World world)
-		{
-			var hasStructure = world.ActorsWithTrait<T>()
-                .Any( a => a.Actor.Owner == world.LocalPlayer );
-
-			if (!hasStructure)
-				world.CancelInputMode();
-		}
-	}
 }
