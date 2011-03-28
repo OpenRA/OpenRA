@@ -37,6 +37,45 @@ char_Sp  = string.byte(" ")
 string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
 stringset_File = '[^"%?%*:\\/<>|]'
 
+function StripCommentsC(tx)
+	local out = ""
+	local lastc = ""
+	local skip
+	local skipline
+	local skipmulti
+	local tx = string.gsub(tx, "\r\n", "\n")
+	for c in tx:gmatch(".") do
+		local oc = c
+		local tu = lastc..c
+		skip = c == '/'
+		
+		if ( not (skipmulti or skipline)) then
+			if (tu == "//") then
+				skipline = true
+			elseif (tu == "/*") then
+				skipmulti = true
+				c = ""
+			elseif (lastc == '/') then
+				oc = tu
+			end
+		elseif (skipmulti and tu == "*/") then
+			skipmulti = false
+			c = ""
+		elseif (skipline and lastc == "\n") then
+			out = out.."\n"
+			skipline = false
+		end
+		
+		lastc = c
+		if (not (skip or skipline or skipmulti)) then
+			out = out..oc
+		end
+	end
+	
+	return out..lastc
+end
+
+
 -- http://lua-users.org/wiki/EnhancedFileLines
 function FileLines(f)
   local CHUNK_SIZE = 1024
