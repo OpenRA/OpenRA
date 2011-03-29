@@ -222,6 +222,7 @@ namespace OpenRA.Mods.RA
 				//e.g. ClearAreaAroundSpawnPoints();
 				//e.g. start repairing damaged buildings.
 				BuildRandom("Vehicle");
+                BuildRandom("Vehicle");
 				BuildRandom("Infantry");
 				BuildRandom("Plane");
 			}
@@ -237,6 +238,8 @@ namespace OpenRA.Mods.RA
 		//A bunch of hardcoded lists to keep track of which units are doing what.
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
 		List<Actor> attackForce = new List<Actor>();
+        bool attackForceMoving = false;
+        int2? attackTarget;
 
 		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
@@ -255,6 +258,8 @@ namespace OpenRA.Mods.RA
 			// 2. human.
 			// 3. not dead.
 
+            
+
 			var possibleTargets = world.WorldActor.Trait<MPStartLocations>().Start
 					.Where(kv => kv.Key != p && (!HasHumanPlayers() || IsHumanPlayer(kv.Key))
 						&& p.WinState == WinState.Undefined)
@@ -270,10 +275,10 @@ namespace OpenRA.Mods.RA
 			activeUnits.RemoveAll(a => a.Destroyed);
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
 			attackForce.RemoveAll(a => a.Destroyed);
-
+            
 			// don't select harvesters.
 			var newUnits = self.World.ActorsWithTrait<IMove>()
-				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"]
+				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"] && a.Actor.Info != Rules.Info["mcv"]
 					&& !activeUnits.Contains(a.Actor))
                     .Select(a => a.Actor).ToArray();
 
@@ -286,20 +291,86 @@ namespace OpenRA.Mods.RA
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
-			if (unitsHangingAroundTheBase.Count >= Info.SquadSize)
+			if (unitsHangingAroundTheBase.Count >= 1)
 			{
 				BotDebug("Launch an attack.");
 
-				var attackTarget = ChooseEnemyTarget();
-				if (attackTarget == null)
-					return;
+                if (attackForce.Count == 0)
+                {
+                    attackTarget = ChooseEnemyTarget();
+                    if (attackTarget == null)
+                        return;
+                }
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (TryToAttackMove(a, attackTarget.Value))
 						attackForce.Add(a);
 
+                attackForceMoving = true;
 				unitsHangingAroundTheBase.Clear();
 			}
+
+            // If we have any attackers, let them scan for enemy units and stop and regroup if they spot any
+            if (attackForce.Count > 0 )
+            {
+                bool foundEnemy = false;
+                foreach (var a1 in attackForce)
+                {
+                    List<Actor> enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10).Where(unit => IsHumanPlayer(unit.Owner) ).ToList();
+                    if (enemyUnits.Count > 0)
+                    {
+                        //BotDebug("Found enemy "+enemyUnits.First().Info.Name);
+                        // Found enemy units nearby.
+                        foundEnemy = true;
+                        Actor enemy = enemyUnits.First();
+
+                        // Which of the attackers is nearest?
+                        foreach (var e in enemyUnits)
+                        {
+                            int x, y;
+                            int oldx, oldy;
+                            x = e.Location.X - a1.Location.X;
+                            y = e.Location.Y - a1.Location.Y;
+
+                            oldx = enemy.Location.X - a1.Location.X;
+                            oldy = enemy.Location.Y - a1.Location.Y;
+
+                            if (Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)) < Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2)))
+                                enemy = e;
+                        }
+                        
+                        // Check how many own units we have gathered nearby...
+                        List<Actor> ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2).Where(unit => unit.Owner == p).ToList();
+                        if (ownUnits.Count < Info.SquadSize)
+                        {
+                            // Not enough to attack. Send more units.
+                            world.IssueOrder(new Order("Stop", a1, false) { });
+                            foreach (var a2 in attackForce)
+                            {
+                                if (a2 != a1)
+                                    world.IssueOrder(new Order("AttackMove", a2, false) { TargetLocation = a1.Location });
+                            }
+                        }
+                        else
+                        {
+                            // We have gathered sufficient units. Attack the nearest enemy unit.
+                            foreach (var a2 in attackForce)
+                            {
+                                world.IssueOrder(new Order("Attack", a2, false) { TargetActor = enemy });
+
+                            }
+                        }
+                        return;
+                    }
+                }
+                /*
+                if (foundEnemy == false)
+                {
+                    attackTarget = ChooseEnemyTarget();
+                    foreach (var a in attackForce)
+                        TryToAttackMove(a, attackTarget.Value);
+                }*/
+            }
 		}
 
 		bool IsRallyPointValid(int2 x)
