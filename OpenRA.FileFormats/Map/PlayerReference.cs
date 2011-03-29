@@ -38,13 +38,5 @@ namespace OpenRA.FileFormats
 		{
 			FieldLoader.Load(this, my);
 		}
-		
-		public PlayerReference(string name, string race, bool ownsworld, bool noncombatant)
-		{
-			Name = name;
-			Race = race;
-			OwnsWorld = ownsworld;
-			NonCombatant = noncombatant;
-		}
 	}
 }

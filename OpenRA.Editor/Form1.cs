@@ -87,8 +87,13 @@ namespace OpenRA.Editor
 			// upgrade maps that have no player definitions. editor doesnt care,
 			// but this breaks the game pretty badly.
 			if (map.Players.Count == 0)
-				map.Players.Add("Neutral", new PlayerReference("Neutral",
-						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+				map.Players.Add("Neutral", new PlayerReference
+				{
+					Name = "Neutral",
+					Race = Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race,
+					OwnsWorld = true,
+					NonCombatant = true
+				});
 
 			PrepareMapResources(Game.modData.Manifest, map);
 
@@ -321,8 +326,22 @@ namespace OpenRA.Editor
 					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
 					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
 						(int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
-					map.Players.Add("Neutral", new PlayerReference("Neutral", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
-					map.Players.Add("Creeps", new PlayerReference("Creeps", Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+					
+					map.Players.Add("Neutral", new PlayerReference
+					{
+						Name = "Neutral",
+						Race = Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race,
+						OwnsWorld = true,
+						NonCombatant = true
+					});
+					
+					map.Players.Add("Creeps", new PlayerReference
+					{
+						Name = "Creeps",
+						Race = Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race,
+						NonCombatant = true
+					});
+
 					NewMap(map);
 				}
 			}
@@ -376,14 +395,23 @@ namespace OpenRA.Editor
 					if (errors.Count > 0)
 						using (var eld = new ErrorListDialog(errors))
 							eld.ShowDialog();
-
+				
 					if (!map.Players.ContainsKey("Neutral"))
-						map.Players.Add("Neutral", new PlayerReference("Neutral",
-							Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
+						map.Players.Add("Neutral", new PlayerReference
+						{
+							Name = "Neutral",
+							Race = Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race,
+							OwnsWorld = true,
+							NonCombatant = true
+						});
 					
-					map.Players.Add("Creeps", new PlayerReference("Creeps",
-						Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race, true, true));
-					
+					map.Players.Add("Creeps", new PlayerReference
+					{
+						Name = "Creeps",
+						Race = Rules.Info["world"].Traits.WithInterface<CountryInfo>().First().Race,
+						NonCombatant = true
+					});
+				
 					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
