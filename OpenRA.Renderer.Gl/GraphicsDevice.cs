@@ -92,6 +92,7 @@ namespace OpenRA.Renderer.Glsl
 			{
 				Log.AddChannel("graphics", "graphics.log");
 				Log.Write("graphics", "Unsupported GPU: Missing extensions.");
+				Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
 				Log.Write("graphics", "Available extensions:");
 				Log.Write("graphics", extensions);
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
