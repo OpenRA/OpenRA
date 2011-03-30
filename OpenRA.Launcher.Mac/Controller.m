@@ -58,14 +58,16 @@ extern char **environ;
 - (void)extractZip:(NSArray *)args
 {
 	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-	NSArray *a = [NSArray arrayWithObjects:@"--extract-zip-inner", [args objectAtIndex:2], [args objectAtIndex:3], nil];
+    NSMutableArray *a = [NSMutableArray arrayWithArray:args];
+    [a replaceObjectAtIndex:0 withObject:@"--extract-zip-inner"];
 	[self runUtilityWithArgs:a];
 }
 
 - (void)installRAPackages:(NSArray *)args
 {
 	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-	NSArray *a = [NSArray arrayWithObjects:@"--install-ra-packages-inner", [args objectAtIndex:2], [args objectAtIndex:3], nil];
+    NSMutableArray *a = [NSMutableArray arrayWithArray:args];
+    [a replaceObjectAtIndex:0 withObject:@"--install-ra-packages-inner"];
 	[self runUtilityWithArgs:a];
 }
 

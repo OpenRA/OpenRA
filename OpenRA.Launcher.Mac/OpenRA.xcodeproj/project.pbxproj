@@ -13,7 +13,6 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DA81FA821290F5C800C48F2F /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = DA81FA811290F5C800C48F2F /* Controller.m */; };
 		DA81FBDC12910E4900C48F2F /* OpenRA.icns in Resources */ = {isa = PBXBuildFile; fileRef = DA81FBDB12910E4900C48F2F /* OpenRA.icns */; };
-		DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA9295A612921DF900EDB02E /* WebKit.framework */; };
 		DAB887F5129E5D6C00C99407 /* SDL in Resources */ = {isa = PBXBuildFile; fileRef = DAB887EE129E5D6100C99407 /* SDL */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				DA9295A712921DF900EDB02E /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +233,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = OpenRA;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -253,7 +253,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = OpenRA;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
