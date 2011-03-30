@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+\﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -141,9 +141,13 @@ namespace OpenRA.FileFormats
 					output[offset++] = (byte)t;
 					output[offset++] = (byte)(t >> 8);
 		
-					t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
-					output[offset++] = (byte)t;
-					output[offset++] = (byte)(t >> 8);
+					if (offset < outputSize)
+					{ 
+						/* possible that only half of the final byte is used! */
+						t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
+						output[offset++] = (byte)t;
+						output[offset++] = (byte)(t >> 8);
+					}
 				}
 
 				dataSize -= 8 + chunk.CompressedSize;
