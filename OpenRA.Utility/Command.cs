@@ -27,7 +27,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			
+
 			var zipFile = args[1];
 			var dest = args[2];
 			
@@ -128,6 +128,7 @@ namespace OpenRA.Utility
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
+			
 			var section = args[2].Split('.')[0];
 			var field = args[2].Split('.')[1];
 			string expandedPath = args[1].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -138,17 +139,26 @@ namespace OpenRA.Utility
 		
 		public static void AuthenticateAndExtractZip(string[] args)
 		{			
-			Util.CallWithAdmin("--extract-zip-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
+			var cmd = "--extract-zip-inner ";
+			for (var i = 1; i < args.Length; i++)
+				cmd += "\"{0}\" ".F(args[i]);
+			Util.CallWithAdmin(cmd);
 		}
 		
 		public static void AuthenticateAndInstallRAPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-ra-packages-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
+			var cmd = "--install-ra-packages-inner ";
+			for (var i = 1; i < args.Length; i++)
+				cmd += "\"{0}\" ".F(args[i]);
+			Util.CallWithAdmin(cmd);
 		}
 		
 		public static void AuthenticateAndInstallCncPackages(string[] args)
 		{			
-			Util.CallWithAdmin("--install-cnc-packages-inner \"{0}\" \"{1}\"".F(args[1], args[2]));
+			var cmd = "--install-cnc-packages-inner ";
+			for (var i = 1; i < args.Length; i++)
+				cmd += "\"{0}\" ".F(args[i]);
+			Util.CallWithAdmin(cmd);
 		}
 	}
 }

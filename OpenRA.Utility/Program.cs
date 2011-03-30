@@ -70,7 +70,6 @@ namespace OpenRA.Utility
 			}
 			try
 			{
-				throw new InvalidOperationException("foo");
 				var action = WithDefault( null, () => actions[args[0]]);
 				if (action == null)
 					PrintUsage();
@@ -80,7 +79,12 @@ namespace OpenRA.Utility
 			catch( Exception e )
 			{
 				Log.AddChannel("utility", "utility.log");
+				Log.Write("utility", "Received args: {0}", string.Join(" ", args));
 				Log.Write("utility", "{0}", e.ToString());
+				
+				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
+				if (piping)
+					Console.Out.Close();
 				throw;
 			}
 
