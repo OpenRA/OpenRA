@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);
 		}
-	}
+    }
 
 	public class ConnectionFailedDelegate : IWidgetDelegate
 	{

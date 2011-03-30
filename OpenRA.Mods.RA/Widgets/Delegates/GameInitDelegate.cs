@@ -23,7 +23,7 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
-	public class GameInitDelegate : IWidgetDelegate
+	public class GameInitDelegate : IWidgetDelegateEx
 	{
 		GameInitInfoWidget Info;
 		
@@ -31,42 +31,45 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		public GameInitDelegate([ObjectCreator.Param] Widget widget)
 		{
 			Info = (widget as GameInitInfoWidget);
-
-			Game.ConnectionStateChanged += orderManager =>
-			{
-				Widget.CloseWindow();
-				switch( orderManager.Connection.ConnectionState )
-				{
-					case ConnectionState.PreConnecting:
-						Widget.OpenWindow("MAINMENU_BG");
-						break;
-					case ConnectionState.Connecting:
-						Widget.OpenWindow( "CONNECTING_BG",
-							new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } } );
-						break;
-					case ConnectionState.NotConnected:
-						Widget.OpenWindow( "CONNECTION_FAILED_BG",
-							new Dictionary<string, object> { { "orderManager", orderManager } } );
-						break;
-					case ConnectionState.Connected:
-						var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
-						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
-						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
-						lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
-						lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
-						lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
-						break;
-				}
-			};
-			
-			if (FileSystem.Exists(Info.TestFile))
-				ContinueLoading(widget);
-			else
-			{
-				MainMenuButtonsDelegate.DisplayModSelector();
-				ShowInstallMethodDialog();
-			}
 		}
+
+        public void Init()
+        {
+            Game.ConnectionStateChanged += orderManager =>
+            {
+                Widget.CloseWindow();
+                switch (orderManager.Connection.ConnectionState)
+                {
+                    case ConnectionState.PreConnecting:
+                        Widget.OpenWindow("MAINMENU_BG");
+                        break;
+                    case ConnectionState.Connecting:
+                        Widget.OpenWindow("CONNECTING_BG",
+                            new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } });
+                        break;
+                    case ConnectionState.NotConnected:
+                        Widget.OpenWindow("CONNECTION_FAILED_BG",
+                            new Dictionary<string, object> { { "orderManager", orderManager } });
+                        break;
+                    case ConnectionState.Connected:
+                        var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
+                        lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+                        lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
+                        lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
+                        lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
+                        lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
+                        break;
+                }
+            };
+
+            if (FileSystem.Exists(Info.TestFile))
+                ContinueLoading();
+            else
+            {
+                MainMenuButtonsDelegate.DisplayModSelector();
+                ShowInstallMethodDialog();
+            }
+        }
 		
 		void ShowInstallMethodDialog()
 		{
@@ -114,8 +117,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			Action onComplete = () =>
 			{
-				if (!error)
-					Game.RunAfterTick(() => ContinueLoading(Info));
+                if (!error)
+                    Game.RunAfterTick(ContinueLoading);
 			};
 			
 			if (Info.InstallMode == "ra")
@@ -151,19 +154,19 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					var error = false;
 					Action<string> parseOutput = s => 
 				    {
-				    	if (s.Substring(0,5) == "Error")
+				    	if (s.StartsWith("Error"))
 						{
 							error = true;
 							ShowDownloadError(window, s);
 						}
-						if (s.Substring(0,6) == "Status")
+						if (s.StartsWith("Status"))
 							window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
 					};
 					
 					Action onComplete = () =>
 					{
 						if (!error)
-							Game.RunAfterTick(() => ContinueLoading(Info));
+							Game.RunAfterTick(ContinueLoading);
 					};
 					
 					Game.RunAfterTick(() => Game.Utilities.ExtractZipAsync(file, FileSystem.SpecialPackageRoot+Info.PackagePath, parseOutput, onComplete));
@@ -185,7 +188,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			}
 		}
 				
-		void ContinueLoading(Widget widget)
+		void ContinueLoading()
 		{
 			Game.LoadShellMap();
 			Widget.RootWidget.RemoveChildren();
@@ -219,5 +222,5 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				cancelled = true;
 			}
 		}
-	}
+    }
 }

@@ -40,8 +40,9 @@ namespace OpenRA
 
 			MiniYaml parent;
 			allUnits.TryGetValue( inherits.Value, out parent );
-			if( parent == null )
-				return null;
+            if (parent == null)
+                throw new InvalidOperationException(
+                    "Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
 
 			return parent;
 		}

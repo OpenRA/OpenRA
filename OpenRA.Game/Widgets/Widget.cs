@@ -17,352 +17,365 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public abstract class Widget
-	{
-		// Info defined in YAML
-		public string Id = null;
-		public string X = "0";
-		public string Y = "0";
-		public string Width = "0";
-		public string Height = "0";
-		public string Delegate = null;
-		public string EventHandler = null;
-		public bool Visible = true;
-		
-		public readonly List<Widget> Children = new List<Widget>();
+    public abstract class Widget
+    {
+        // Info defined in YAML
+        public string Id = null;
+        public string X = "0";
+        public string Y = "0";
+        public string Width = "0";
+        public string Height = "0";
+        public string Delegate = null;
+        public string EventHandler = null;
+        public bool Visible = true;
 
-		// Calculated internally
-		public Rectangle Bounds;
-		public Widget Parent = null;
+        public readonly List<Widget> Children = new List<Widget>();
 
-		public static Stack<Widget> WindowList = new Stack<Widget>();
-		
-		// Common Funcs that most widgets will want
-		public Func<MouseInput, bool> OnMouseDown = mi => false;
-		public Func<MouseInput, bool> OnMouseUp = mi => false;
-		public Action<MouseInput> OnMouseMove = mi => {};
-		public Func<KeyInput, bool> OnKeyPress = e => false;
+        // Calculated internally
+        public Rectangle Bounds;
+        public Widget Parent = null;
 
-		public Func<bool> IsVisible;
+        public static Stack<Widget> WindowList = new Stack<Widget>();
 
-		public Widget() { IsVisible = () => Visible; }
+        // Common Funcs that most widgets will want
+        public Func<MouseInput, bool> OnMouseDown = mi => false;
+        public Func<MouseInput, bool> OnMouseUp = mi => false;
+        public Action<MouseInput> OnMouseMove = mi => { };
+        public Func<KeyInput, bool> OnKeyPress = e => false;
 
-		public static Widget RootWidget
-		{
-			get { return rootWidget; }
-			set { rootWidget = value; }
-		}
-		private static Widget rootWidget = new ContainerWidget();
-		
-		public Widget(Widget widget)
-		{	
-			Id = widget.Id;
-			X = widget.X;
-		 	Y = widget.Y;
-		 	Width = widget.Width;
-			Height = widget.Height;
-		 	Delegate = widget.Delegate;
-		 	Visible = widget.Visible;
-			
-			Bounds = widget.Bounds;
-			Parent = widget.Parent;
-			
-			OnMouseDown = widget.OnMouseDown;
-			OnMouseUp = widget.OnMouseUp;
-			OnMouseMove = widget.OnMouseMove;
-			OnKeyPress = widget.OnKeyPress;
+        public Func<bool> IsVisible;
 
-			IsVisible = widget.IsVisible;
-			
-			foreach(var child in widget.Children)
-				AddChild(child.Clone());
-		}
+        public Widget() { IsVisible = () => Visible; }
 
-		public virtual Widget Clone()
-		{
-			throw new InvalidOperationException("Widget type `{0}` is not cloneable.".F(GetType().Name));
-		}
+        public static Widget RootWidget
+        {
+            get { return rootWidget; }
+            set { rootWidget = value; }
+        }
+        private static Widget rootWidget = new ContainerWidget();
 
-		public virtual int2 RenderOrigin
-		{
-			get
-			{
-				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
-				return new int2(Bounds.X, Bounds.Y) + offset;
-			}
-		}
+        public Widget(Widget widget)
+        {
+            Id = widget.Id;
+            X = widget.X;
+            Y = widget.Y;
+            Width = widget.Width;
+            Height = widget.Height;
+            Delegate = widget.Delegate;
+            Visible = widget.Visible;
 
-		public virtual int2 ChildOrigin	{ get { return RenderOrigin; } }
-		public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
+            Bounds = widget.Bounds;
+            Parent = widget.Parent;
 
-		public virtual void Initialize()
-		{
-			// Parse the YAML equations to find the widget bounds
-			var parentBounds = (Parent == null)
-				? new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height)
-				: Parent.Bounds;
+            OnMouseDown = widget.OnMouseDown;
+            OnMouseUp = widget.OnMouseUp;
+            OnMouseMove = widget.OnMouseMove;
+            OnKeyPress = widget.OnKeyPress;
 
-			var substitutions = new Dictionary<string, int>();
-			substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
-			substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
-			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
-			substitutions.Add("PARENT_LEFT", parentBounds.Left);
-			substitutions.Add("PARENT_TOP", parentBounds.Top);
-			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-			int width = Evaluator.Evaluate(Width, substitutions);
-			int height = Evaluator.Evaluate(Height, substitutions);
+            IsVisible = widget.IsVisible;
 
-			substitutions.Add("WIDTH", width);
-			substitutions.Add("HEIGHT", height);
+            foreach (var child in widget.Children)
+                AddChild(child.Clone());
+        }
 
-			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
-								   Evaluator.Evaluate(Y, substitutions),
-								   width,
-								   height);
-		}
+        public virtual Widget Clone()
+        {
+            throw new InvalidOperationException("Widget type `{0}` is not cloneable.".F(GetType().Name));
+        }
 
-		public void PostInit(Dictionary<string, object> args)
-		{
-			if( Delegate != null )
-			{
-				args["widget"] = this;
-				Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args);
-				args.Remove("widget");
-			}
-		}
-		
-		public virtual Rectangle EventBounds { get { return RenderBounds; } }
-		public virtual Rectangle GetEventBounds()
-		{
-			return Children
-				.Where(c => c.IsVisible())
-				.Select(c => c.GetEventBounds())
-				.Aggregate(EventBounds, Rectangle.Union);
-		}
-		
-		public static Widget SelectedWidget;
-		public bool Focused { get { return SelectedWidget == this; } }
-		public virtual bool TakeFocus(MouseInput mi)
-		{
-			if (Focused)
-				return true;
-			
-			if (SelectedWidget != null && !SelectedWidget.LoseFocus(mi))
-				return false;
-			SelectedWidget = this;
-			return true;
-		}
-		
-		// Remove focus from this widget; return false if you don't want to give it up
-		public virtual bool LoseFocus(MouseInput mi)
-		{
-			// Some widgets may need to override focus depending on mouse click
-			return LoseFocus();
-		}
-		
-		public virtual bool LoseFocus()
-		{
-			if (SelectedWidget == this)
-				SelectedWidget = null;
-			
-			return true;
-		}
-		
-		public virtual string GetCursor(int2 pos) { return "default"; }
-		public string GetCursorOuter(int2 pos)
-		{
-			// Is the cursor on top of us?
-			if (!(IsVisible() && GetEventBounds().Contains(pos)))
-				return null;
-			
-			// Do any of our children specify a cursor?
-			foreach (var child in Children.OfType<Widget>().Reverse())
-			{
-				var cc = child.GetCursorOuter(pos);
-				if (cc != null)
-					return cc;
-			}
+        public virtual int2 RenderOrigin
+        {
+            get
+            {
+                var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
+                return new int2(Bounds.X, Bounds.Y) + offset;
+            }
+        }
 
-			return EventBounds.Contains(pos) ? GetCursor(pos) : null;
-		}
-		
-		public static bool HandleInput(MouseInput mi)
-		{
-			bool handled = false;
-			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
-				handled = true;
-			
-			if (!handled && RootWidget.HandleMouseInputOuter(mi))
-				handled = true;
+        public virtual int2 ChildOrigin { get { return RenderOrigin; } }
+        public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
 
-			if (mi.Event == MouseInputEvent.Move)
-			{
-				Viewport.LastMousePos = mi.Location;
-				Viewport.TicksSinceLastMove = 0;
-			}
-			return handled;
-		}
-		
-		public bool HandleMouseInputOuter(MouseInput mi)
-		{
-			// Are we able to handle this event?
-			if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location.X,mi.Location.Y))))
-				return false;
-			
-			// Send the event to the deepest children first and bubble up if unhandled
-			foreach (var child in Children.OfType<Widget>().Reverse())
-				if (child.HandleMouseInputOuter(mi))
-					return true;
+        public virtual void Initialize()
+        {
+            // Parse the YAML equations to find the widget bounds
+            var parentBounds = (Parent == null)
+                ? new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height)
+                : Parent.Bounds;
 
-			return HandleMouseInput(mi);
-		}
-		
-		// Hack: Don't eat mouse input that others want
-		// TODO: Solve this properly
-		public virtual bool HandleMouseInput(MouseInput mi)
-		{
-			// Apply any special logic added by delegates; they return true if they caught the input
-			if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
-			if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
-			if (mi.Event == MouseInputEvent.Move)
-				OnMouseMove(mi);
-			
-			return false;
-		}
-		
-		public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
-		public virtual bool HandleKeyPressOuter(KeyInput e)
-		{			
-			if (!IsVisible())
-				return false;
-			
-			// Can any of our children handle this?
-			foreach (var child in Children)
-				if (child.HandleKeyPressOuter(e))
-					return true;
+            var substitutions = new Dictionary<string, int>();
+            substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
+            substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
+            substitutions.Add("PARENT_RIGHT", parentBounds.Width);
+            substitutions.Add("PARENT_LEFT", parentBounds.Left);
+            substitutions.Add("PARENT_TOP", parentBounds.Top);
+            substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+            int width = Evaluator.Evaluate(Width, substitutions);
+            int height = Evaluator.Evaluate(Height, substitutions);
 
-			// Do any widgety behavior (enter text etc)
-			var handled = HandleKeyPressInner(e);
-			
-			// Apply any special logic added by delegates; they return true if they caught the input
-			if (OnKeyPress(e)) return true;
-			
-			return handled;
-		}
-		
-		public static bool HandleKeyPress(KeyInput e)
-		{
-			if (SelectedWidget != null)
-				return SelectedWidget.HandleKeyPressOuter(e);
-			
-			if (RootWidget.HandleKeyPressOuter(e))
-				return true;
-			return false;
-		}
-		
-		public abstract void DrawInner();
-		
-		public virtual void Draw()
-		{
-			if (IsVisible())
-			{
-				DrawInner();
-				foreach (var child in Children)
-					child.Draw();
-			}
-		}
-		
-		public virtual void Tick()
-		{
-			if (IsVisible())
-				foreach (var child in Children)
-					child.Tick();
-		}
-		
-		public virtual void AddChild(Widget child)
-		{
-			child.Parent = this;
-			Children.Add( child );
-		}
-		public virtual void RemoveChild(Widget child) {	Children.Remove(child);	}
-		public virtual void RemoveChildren() { Children.Clear(); }
-		
-		public Widget GetWidget(string id)
-		{
-			if (this.Id == id)
-				return this;
-			
-			foreach (var child in Children)
-			{
-				var w = child.GetWidget(id);
-				if (w != null)
-					return w;
-			}
-			return null;
-		}
+            substitutions.Add("WIDTH", width);
+            substitutions.Add("HEIGHT", height);
 
-		public T GetWidget<T>(string id) where T : Widget
-		{
-			var widget = GetWidget(id);
-			return (widget != null)? (T) widget : null;
-		}
-		
-		public static void CloseWindow()
-		{
-			RootWidget.Children.Remove( WindowList.Pop() );
-			if( WindowList.Count > 0 )
-				rootWidget.Children.Add( WindowList.Peek() );
-		}
+            Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
+                                   Evaluator.Evaluate(Y, substitutions),
+                                   width,
+                                   height);
+        }
 
-		public static Widget OpenWindow( string id )
-		{
-			return OpenWindow( id, new Dictionary<string, object>() );
-		}
+        public void PostInit(Dictionary<string, object> args)
+        {
+            if (Delegate == null)
+                return;
 
-		public static Widget OpenWindow(string id, Dictionary<string, object> args )
-		{
-			var window = Game.modData.WidgetLoader.LoadWidget( args, rootWidget, id );
-			if( WindowList.Count > 0 )
-				rootWidget.Children.Remove( WindowList.Peek() );
-			WindowList.Push( window );
-			return window;
-		}
-		
-		public static void DoTick()
-		{
-			RootWidget.Tick();
-		}
-		
-		public static void DoDraw()
-		{
-			RootWidget.Draw();
-		}
-	}
+            args["widget"] = this;
 
-	public class ContainerWidget : Widget {
-		public Func<string> GetBackground;
-		public string Background = null;
-		
-		public ContainerWidget() : base()
-		{
-			GetBackground = () => Background;
-		}
-		
-		public ContainerWidget(ContainerWidget other) : base(other)
-		{
-			Background = other.Background;
-			GetBackground = other.GetBackground;
-		}
+            var iwd = Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args)
+                as IWidgetDelegateEx;
+            if (iwd != null)
+                iwd.Init();
 
-		public override void DrawInner()
-		{
-			var bg = GetBackground();
-			if (bg != null)
-				WidgetUtils.DrawPanel(bg, RenderBounds );
-		}
-		
-		public override string GetCursor(int2 pos) { return null; }
-		public override Widget Clone() { return new ContainerWidget(this); }
-	}
-	public interface IWidgetDelegate { }
+            args.Remove("widget");
+        }
+
+        public virtual Rectangle EventBounds { get { return RenderBounds; } }
+        public virtual Rectangle GetEventBounds()
+        {
+            return Children
+                .Where(c => c.IsVisible())
+                .Select(c => c.GetEventBounds())
+                .Aggregate(EventBounds, Rectangle.Union);
+        }
+
+        public static Widget SelectedWidget;
+        public bool Focused { get { return SelectedWidget == this; } }
+        public virtual bool TakeFocus(MouseInput mi)
+        {
+            if (Focused)
+                return true;
+
+            if (SelectedWidget != null && !SelectedWidget.LoseFocus(mi))
+                return false;
+            SelectedWidget = this;
+            return true;
+        }
+
+        // Remove focus from this widget; return false if you don't want to give it up
+        public virtual bool LoseFocus(MouseInput mi)
+        {
+            // Some widgets may need to override focus depending on mouse click
+            return LoseFocus();
+        }
+
+        public virtual bool LoseFocus()
+        {
+            if (SelectedWidget == this)
+                SelectedWidget = null;
+
+            return true;
+        }
+
+        public virtual string GetCursor(int2 pos) { return "default"; }
+        public string GetCursorOuter(int2 pos)
+        {
+            // Is the cursor on top of us?
+            if (!(IsVisible() && GetEventBounds().Contains(pos)))
+                return null;
+
+            // Do any of our children specify a cursor?
+            foreach (var child in Children.OfType<Widget>().Reverse())
+            {
+                var cc = child.GetCursorOuter(pos);
+                if (cc != null)
+                    return cc;
+            }
+
+            return EventBounds.Contains(pos) ? GetCursor(pos) : null;
+        }
+
+        public static bool HandleInput(MouseInput mi)
+        {
+            bool handled = false;
+            if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (!handled && RootWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (mi.Event == MouseInputEvent.Move)
+            {
+                Viewport.LastMousePos = mi.Location;
+                Viewport.TicksSinceLastMove = 0;
+            }
+            return handled;
+        }
+
+        public bool HandleMouseInputOuter(MouseInput mi)
+        {
+            // Are we able to handle this event?
+            if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location.X, mi.Location.Y))))
+                return false;
+
+            // Send the event to the deepest children first and bubble up if unhandled
+            foreach (var child in Children.OfType<Widget>().Reverse())
+                if (child.HandleMouseInputOuter(mi))
+                    return true;
+
+            return HandleMouseInput(mi);
+        }
+
+        // Hack: Don't eat mouse input that others want
+        // TODO: Solve this properly
+        public virtual bool HandleMouseInput(MouseInput mi)
+        {
+            // Apply any special logic added by delegates; they return true if they caught the input
+            if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
+            if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
+            if (mi.Event == MouseInputEvent.Move)
+                OnMouseMove(mi);
+
+            return false;
+        }
+
+        public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
+        public virtual bool HandleKeyPressOuter(KeyInput e)
+        {
+            if (!IsVisible())
+                return false;
+
+            // Can any of our children handle this?
+            foreach (var child in Children)
+                if (child.HandleKeyPressOuter(e))
+                    return true;
+
+            // Do any widgety behavior (enter text etc)
+            var handled = HandleKeyPressInner(e);
+
+            // Apply any special logic added by delegates; they return true if they caught the input
+            if (OnKeyPress(e)) return true;
+
+            return handled;
+        }
+
+        public static bool HandleKeyPress(KeyInput e)
+        {
+            if (SelectedWidget != null)
+                return SelectedWidget.HandleKeyPressOuter(e);
+
+            if (RootWidget.HandleKeyPressOuter(e))
+                return true;
+            return false;
+        }
+
+        public abstract void DrawInner();
+
+        public virtual void Draw()
+        {
+            if (IsVisible())
+            {
+                DrawInner();
+                foreach (var child in Children)
+                    child.Draw();
+            }
+        }
+
+        public virtual void Tick()
+        {
+            if (IsVisible())
+                foreach (var child in Children)
+                    child.Tick();
+        }
+
+        public virtual void AddChild(Widget child)
+        {
+            child.Parent = this;
+            Children.Add(child);
+        }
+        public virtual void RemoveChild(Widget child) { Children.Remove(child); }
+        public virtual void RemoveChildren() { Children.Clear(); }
+
+        public Widget GetWidget(string id)
+        {
+            if (this.Id == id)
+                return this;
+
+            foreach (var child in Children)
+            {
+                var w = child.GetWidget(id);
+                if (w != null)
+                    return w;
+            }
+            return null;
+        }
+
+        public T GetWidget<T>(string id) where T : Widget
+        {
+            var widget = GetWidget(id);
+            return (widget != null) ? (T)widget : null;
+        }
+
+        public static void CloseWindow()
+        {
+            RootWidget.Children.Remove(WindowList.Pop());
+            if (WindowList.Count > 0)
+                rootWidget.Children.Add(WindowList.Peek());
+        }
+
+        public static Widget OpenWindow(string id)
+        {
+            return OpenWindow(id, new Dictionary<string, object>());
+        }
+
+        public static Widget OpenWindow(string id, Dictionary<string, object> args)
+        {
+            var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
+            if (WindowList.Count > 0)
+                rootWidget.Children.Remove(WindowList.Peek());
+            WindowList.Push(window);
+            return window;
+        }
+
+        public static void DoTick()
+        {
+            RootWidget.Tick();
+        }
+
+        public static void DoDraw()
+        {
+            RootWidget.Draw();
+        }
+    }
+
+    public class ContainerWidget : Widget
+    {
+        public Func<string> GetBackground;
+        public string Background = null;
+
+        public ContainerWidget()
+            : base()
+        {
+            GetBackground = () => Background;
+        }
+
+        public ContainerWidget(ContainerWidget other)
+            : base(other)
+        {
+            Background = other.Background;
+            GetBackground = other.GetBackground;
+        }
+
+        public override void DrawInner()
+        {
+            var bg = GetBackground();
+            if (bg != null)
+                WidgetUtils.DrawPanel(bg, RenderBounds);
+        }
+
+        public override string GetCursor(int2 pos) { return null; }
+        public override Widget Clone() { return new ContainerWidget(this); }
+    }
+
+    public interface IWidgetDelegate { }
+    public interface IWidgetDelegateEx : IWidgetDelegate
+    {
+        void Init();
+    }
 }
