@@ -31,7 +31,7 @@ namespace OpenRA.Utility
 			ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, AccessControlType.Allow));
 			return ps;	
 		}
-
+		
 		static void Main(string[] args)
 		{
 			var actions = new Dictionary<string, Action<string[]>>()
@@ -62,13 +62,27 @@ namespace OpenRA.Utility
 				pipe.WaitForConnection();
 				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
 			}
-
-			
-			var action = WithDefault( null, () => actions[args[0]]);
-			if (action == null)
-				PrintUsage();
-			else
-				action(args);
+			i = Array.IndexOf(args, "--SupportDir");
+			if (args.Length > 1 && i >= 0)
+			{
+				Log.LogPath = args[i+1] + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar;
+				Console.WriteLine("LogPath: {0}", Log.LogPath);
+			}
+			try
+			{
+				throw new InvalidOperationException("foo");
+				var action = WithDefault( null, () => actions[args[0]]);
+				if (action == null)
+					PrintUsage();
+				else
+					action(args);
+			}
+			catch( Exception e )
+			{
+				Log.AddChannel("utility", "utility.log");
+				Log.Write("utility", "{0}", e.ToString());
+				throw;
+			}
 
 			if (piping)
 				Console.Out.Close();
