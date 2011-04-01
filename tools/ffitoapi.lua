@@ -2,6 +2,8 @@
 ---------------------------------------------------------
 
 local function ffiToApi(ffidef)
+	local str = ffidef
+	str = ffidef:match("(%-%-%[%[.+%]%])")
 	local header = ffidef:match("[^\r\n]+")
 	ffidef = StripCommentsC(ffidef)
 
@@ -14,7 +16,8 @@ local function ffiToApi(ffidef)
 	local function registerfunc()
 		local fn = curfunc
 		-- parse args
-		fn.ARGS = fn.ARGS:match("(.-);")
+		local args = fn.ARGS:match("%(%s*(.-)%s*%);")
+		fn.ARGS = "("..args..")"
 		
 		-- skip return void types
 		fn.RET = fn.RET == "void" and "" or fn.RET
@@ -25,8 +28,14 @@ local function ffiToApi(ffidef)
 		curfunc = nil
 	end
 	for l in ffidef:gmatch("[^\r\n]+") do 
+		-- extern void func(blubb);
+		-- extern void ( * func )(blubb);
+		-- void func(blubb);
+		-- void ( * func )(blubb);
 		local typedef = l:match("typedef%s+")
-		local ret,name,args = string.match(typedef and "" or l,"([_%w]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%(.*)")
+		local ret,name,args = string.match(typedef and "" or l,
+			"[_%w]-%s*([_%w]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
+			-- FIXME pattern doesnt recognize multiline args
 		if (not (curfunc or typedef) and (ret and name and args)) then
 			curfunc = {RET=ret,NAME=name,ARGS=args}
 			if (args:match(";")) then
@@ -62,8 +71,9 @@ local function ffiToApi(ffidef)
 		return str
 	end
 	
-	local str =
-[[--auto-generated api from ffi headers
+	str = str..[[
+
+--auto-generated api from ffi headers
 
 local api = {
 ]]
@@ -77,7 +87,7 @@ local api = {
 [[  ["$NAME$"] = { type ='function', 
       description = "$DESCR$", 
       returns = "$RET$",
-      args = "$ARG$", },
+      args = "$ARGS$", },
 ]]
 	str = serialize(str,value,values)
 	str = serialize(str,keyword,enums)
