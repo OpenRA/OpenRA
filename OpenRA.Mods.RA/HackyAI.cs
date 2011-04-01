@@ -238,7 +238,6 @@ namespace OpenRA.Mods.RA
 		//A bunch of hardcoded lists to keep track of which units are doing what.
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
 		List<Actor> attackForce = new List<Actor>();
-        bool attackForceMoving = false;
         int2? attackTarget;
 
 		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
@@ -291,7 +290,7 @@ namespace OpenRA.Mods.RA
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
-			if (unitsHangingAroundTheBase.Count >= 1)
+			if (unitsHangingAroundTheBase.Count >= Info.SquadSize)
 			{
 				BotDebug("Launch an attack.");
 
@@ -306,7 +305,6 @@ namespace OpenRA.Mods.RA
 					if (TryToAttackMove(a, attackTarget.Value))
 						attackForce.Add(a);
 
-                attackForceMoving = true;
 				unitsHangingAroundTheBase.Clear();
 			}
 
@@ -322,22 +320,7 @@ namespace OpenRA.Mods.RA
                         //BotDebug("Found enemy "+enemyUnits.First().Info.Name);
                         // Found enemy units nearby.
                         foundEnemy = true;
-                        Actor enemy = enemyUnits.First();
-
-                        // Which of the attackers is nearest?
-                        foreach (var e in enemyUnits)
-                        {
-                            int x, y;
-                            int oldx, oldy;
-                            x = e.Location.X - a1.Location.X;
-                            y = e.Location.Y - a1.Location.Y;
-
-                            oldx = enemy.Location.X - a1.Location.X;
-                            oldy = enemy.Location.Y - a1.Location.Y;
-
-                            if (Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)) < Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2)))
-                                enemy = e;
-                        }
+                        var enemy = enemyUnits.OrderBy( e => (e.Location - a1.Location).LengthSquared ).First();
                         
                         // Check how many own units we have gathered nearby...
                         List<Actor> ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2).Where(unit => unit.Owner == p).ToList();
@@ -363,13 +346,13 @@ namespace OpenRA.Mods.RA
                         return;
                     }
                 }
-                /*
+                
                 if (foundEnemy == false)
                 {
                     attackTarget = ChooseEnemyTarget();
                     foreach (var a in attackForce)
                         TryToAttackMove(a, attackTarget.Value);
-                }*/
+                }
             }
 		}
 
