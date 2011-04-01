@@ -99,8 +99,8 @@ local api = {
 
 	local class =
 [[
-["$NAME$"] = {
-	type = 'class'
+$NAME$ = {
+	type = 'class',
 	description = "$DESCR$",
 	childs = $API$,
 }
