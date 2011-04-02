@@ -30,6 +30,26 @@ namespace OpenRA.Mods.RA.Widgets
             this.world = world;
         }
 		
+		public void DrawOrderButtonTooltip(IOrderTargeter order, Rectangle rect)
+		{
+			rect = rect.InflateBy(3, 3, 3, 3);
+			var pos = new int2(rect.Left, rect.Top);
+			var border = WidgetUtils.GetBorderSizes("dialog4");
+
+			var height = 50;
+			var width = 200;
+			var tl = pos - new int2(0, height);
+
+			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[0], 0, 0),
+				PanelSides.Bottom | PanelSides.Left | PanelSides.Right);
+				
+			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X, tl.Y, rect.Width+border[3], height+border[1]),
+				PanelSides.Top | PanelSides.Left);
+			
+			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X+rect.Width-border[2], tl.Y, width, height),
+				PanelSides.Top | PanelSides.Right | PanelSides.Bottom);
+		}
+		
 		// Giant hack
 		public void Update()
 		{
@@ -51,7 +71,8 @@ namespace OpenRA.Mods.RA.Widgets
 
                         return true; 
                     },
-					Image = "opal-button"
+					Image = "opal-button",
+					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);
 				x += 32;
