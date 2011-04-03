@@ -260,3 +260,4 @@
 		HP: 1000
 	ProximityCaptor:
 		Types:Bridge
+	AutoTargetIgnore:
