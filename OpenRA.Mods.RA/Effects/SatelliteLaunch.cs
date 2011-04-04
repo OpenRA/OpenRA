@@ -21,10 +21,12 @@ namespace OpenRA.Mods.RA.Effects
 		Actor a;
 		Animation doors = new Animation("atek");
 		float2 doorOffset = new float2(-4,0);
+		int2 pos;
 
 		public SatelliteLaunch(Actor a)
 		{
 			this.a = a;
+			pos = a.CenterLocation;
 			doors.PlayThen("active",
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 		}
@@ -35,14 +37,14 @@ namespace OpenRA.Mods.RA.Effects
 			
 			if (++frame == 19)
 			{
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(a.CenterLocation - .5f * doors.Image.size + doorOffset)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos - .5f * doors.Image.size + doorOffset)));
 			}
 		}
 		
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(doors.Image,
-				a.CenterLocation - .5f * doors.Image.size + doorOffset, "effect", (int)doorOffset.Y);
+				pos - .5f * doors.Image.size + doorOffset, "effect", (int)doorOffset.Y);
 		}
 	}
 }
