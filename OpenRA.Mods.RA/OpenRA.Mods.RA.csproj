@@ -52,9 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\CaptureBuilding.cs" />
+    <Compile Include="Activities\DonateSupplies.cs" />
     <Compile Include="Activities\QueuedActivity.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="ProximityCaptor.cs" />
+    <Compile Include="SupplyTruck.cs" />
     <Compile Include="SupportPowers\SupportPowerChargeBar.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="Combat.cs" />
