@@ -464,15 +464,27 @@ MNLY.AT:
 
 TRUK:
 	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Prerequisites: weap
+		Owner: allies, soviet
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Supply Truck
+		Description: Transports cash to other players.\n  Unarmed
 	Health:
 		HP: 110
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 10
+		Speed: 7
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
+	SupplyTruck:
+		Payload: 500
 
 SS:
 	Inherits: ^Ship

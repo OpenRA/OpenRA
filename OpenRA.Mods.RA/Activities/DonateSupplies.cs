@@ -1,0 +1,44 @@
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made 
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Linq;
+using OpenRA.Traits;
+using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Effects; // for CashTick
+
+namespace OpenRA.Mods.RA.Activities
+{
+    class DonateSupplies : CancelableActivity
+    {
+        Actor target;
+        int payload;
+
+        public DonateSupplies(Actor target, int payload) 
+        { 
+            this.target = target;
+            this.payload = payload;
+        }
+
+        public override IActivity Tick(Actor self)
+        {
+            if (IsCanceled) return NextActivity;
+            if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
+            if (!target.Trait<IOccupySpace>().OccupiedCells().Any(x => x.First == self.Location))
+                return NextActivity;
+          
+            target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+            self.Destroy();
+            self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, target.Owner.ColorRamp.GetColor(0))));
+
+            return this;
+        }
+
+    }
+}
