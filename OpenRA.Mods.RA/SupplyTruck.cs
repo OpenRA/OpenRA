@@ -55,9 +55,7 @@ namespace OpenRA.Mods.RA
         {
             if (order.OrderString == "SupplyTruck")
             {
-                // Green target line, possibly change.
                 self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
-
                 self.CancelActivity();
                 self.QueueActivity(new Enter(order.TargetActor));
                 self.QueueActivity(new DonateSupplies(order.TargetActor, payload));
@@ -74,14 +72,12 @@ namespace OpenRA.Mods.RA
             public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
             {
                 if (!base.CanTargetActor(self, target, forceAttack, forceMove, forceQueued, ref cursor)) return false;
-                if (target.AppearsHostileTo(self)) return false;
+                if (target.AppearsHostileTo(self)) return false;               
+                if (!target.HasTrait<AcceptsSupplies>()) return false;
 
                 IsQueued = forceQueued;
                 return true;
             }
-
         }
-
-
     }
 }

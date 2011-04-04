@@ -63,7 +63,7 @@ GAP:
 	RevealsShroud:
 		Range: 10
 	IronCurtainable:
-
+	
 SPEN:
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
@@ -119,7 +119,7 @@ SPEN:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
-
+	
 SYRD:
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
@@ -214,7 +214,7 @@ IRON:
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 	SupportPowerChargeBar:
-
+	
 PDOX:
 	RequiresPower:
 	CanPowerDown:
@@ -254,7 +254,8 @@ PDOX:
 		Duration: 30
 		KillCargo: yes
 	SupportPowerChargeBar:
-
+	-AcceptsSupplies:
+	
 TSLA:
 	RequiresPower:
 	CanPowerDown:
@@ -289,7 +290,8 @@ TSLA:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-
+	-AcceptsSupplies:
+	
 AGUN:
 	RequiresPower:
 	CanPowerDown:
@@ -328,7 +330,8 @@ AGUN:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-
+	-AcceptsSupplies:
+	
 DOME:
 	RequiresPower:
 	CanPowerDown:
@@ -386,6 +389,7 @@ PBOX:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
+	-AcceptsSupplies:
 
 HBOX:
 	Inherits: ^Building
@@ -414,6 +418,7 @@ HBOX:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
+	-AcceptsSupplies:
 
 GUN:
 	Inherits: ^Building
@@ -447,7 +452,8 @@ GUN:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-
+	-AcceptsSupplies:
+	
 FTUR:
 	Inherits: ^Building
 	Buildable:
@@ -476,6 +482,7 @@ FTUR:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
+	-AcceptsSupplies:
 
 SAM:
 	Inherits: ^Building
@@ -514,7 +521,8 @@ SAM:
 		RangeCircleType: aa
 	RequiresPower:
 	CanPowerDown:
-
+	-AcceptsSupplies:
+	
 ATEK:
 	Inherits: ^Building
 	Buildable:

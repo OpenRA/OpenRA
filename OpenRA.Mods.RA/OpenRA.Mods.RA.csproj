@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\CaptureBuilding.cs" />

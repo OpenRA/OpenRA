@@ -470,7 +470,7 @@ TRUK:
 		Prerequisites: weap
 		Owner: allies, soviet
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Supply Truck
 		Description: Transports cash to other players.\n  Unarmed
@@ -479,7 +479,7 @@ TRUK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 7
+		Speed: 9
 	RevealsShroud:
 		Range: 3
 	RenderUnit:

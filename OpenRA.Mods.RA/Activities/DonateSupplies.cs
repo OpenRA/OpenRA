@@ -11,7 +11,7 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.Mods.RA.Effects; // for CashTick
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -39,6 +39,5 @@ namespace OpenRA.Mods.RA.Activities
 
             return this;
         }
-
     }
 }
