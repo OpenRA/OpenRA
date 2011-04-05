@@ -22,6 +22,7 @@ namespace OpenRA.FileFormats
 		public struct SourceLocation
 		{
 			public string Filename; public int Line;
+            public override string ToString() { return "{0}:{1}".F(Filename, Line); }
 		}
 
 		public SourceLocation Location;
@@ -53,6 +54,11 @@ namespace OpenRA.FileFormats
 			: this( k, new MiniYaml( v, n ), loc )
 		{
 		}
+
+        public override string ToString()
+        {
+            return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
+        }
 	}
 
 	public class MiniYaml
@@ -95,7 +101,7 @@ namespace OpenRA.FileFormats
 				var level = line.Length - t.Length;
 
 				if (levels.Count <= level)
-					throw new InvalidOperationException("Bad indent in miniyaml");
+					throw new YamlException("Bad indent in miniyaml");
 				while (levels.Count > level + 1)
 					levels.RemoveAt(levels.Count - 1);
 
@@ -171,7 +177,8 @@ namespace OpenRA.FileFormats
 			var bDict = b.ToDictionary( x => x.Key );
 			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
 
-			var noInherit = keys.Where( x => x.Length > 0 && x[ 0 ] == '-' ).Select( x => x.Substring( 1 ) ).ToList();
+            var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
+                .ToDictionary(x => x.Substring(1), x => false);
 
 			foreach( var key in keys )
 			{
@@ -179,10 +186,11 @@ namespace OpenRA.FileFormats
 				aDict.TryGetValue( key, out aa );
 				bDict.TryGetValue( key, out bb );
 
-				if( noInherit.Contains( key ) )
+				if( noInherit.ContainsKey( key ) )
 				{
-					if( aa != null )
-						ret.Add( aa );
+			//		if( aa != null )
+			//			ret.Add( aa );
+                    noInherit[key] = true;
 				}
 				else
 				{
@@ -191,6 +199,10 @@ namespace OpenRA.FileFormats
 					ret.Add( merged );
 				}
 			}
+
+            if (noInherit.ContainsValue(false))
+                throw new YamlException("Bogus yaml removals: {0}".F(
+                    string.Join(", ", noInherit.Where(x => !x.Value).Select(x => x.Key).ToArray())));
 
 			return ret;
 		}
@@ -237,4 +249,9 @@ namespace OpenRA.FileFormats
 			}
 		}
 	}
+
+    public class YamlException : Exception
+    {
+        public YamlException(string s) : base(s) { }
+    }
 }
