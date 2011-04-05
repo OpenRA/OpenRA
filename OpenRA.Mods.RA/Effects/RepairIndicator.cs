@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA.Effects
 		Actor a;
 		Animation anim = new Animation("select");
 
-		public RepairIndicator(Actor a) 
+		public RepairIndicator(Actor a, int frames) 
 		{ 
-			this.a = a; anim.PlayRepeating("repair"); 
-			framesLeft = a.Info.Traits.Get<RepairableBuildingInfo>().RepairInterval / 2;
+			this.a = a; anim.PlayRepeating("repair");
+            framesLeft = frames;
 		}
 
 		public void Tick( World world )
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (a.IsInWorld)
+			if (!a.Destroyed)
 				yield return new Renderable(anim.Image, 
 					a.CenterLocation - .5f * anim.Image.size, "chrome", (int)a.CenterLocation.Y);
 		}

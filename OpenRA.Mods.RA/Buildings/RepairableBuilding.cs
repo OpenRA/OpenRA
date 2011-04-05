@@ -63,13 +63,17 @@ namespace OpenRA.Mods.RA.Buildings
 					return;
 				}
 
-				self.World.AddFrameEndTask(w => w.Add(new RepairIndicator(self)));
+				self.World.AddFrameEndTask(
+                    w => w.Add(new RepairIndicator(self, Info.RepairInterval / 2)));
+
 				self.InflictDamage(self, -hpToRepair, null);
+
 				if (Health.DamageState == DamageState.Undamaged)
 				{
 					isRepairing = false;
 					return;
 				}
+
 				remainingTicks = Info.RepairInterval;
 			}
 			else
