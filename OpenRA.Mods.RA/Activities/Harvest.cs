@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.QueueActivity(new Harvest());
 		}
 		
-		public override IEnumerable<Target> GetTargetQueue( Actor self )
+		public override IEnumerable<Target> GetTargets( Actor self )
 		{
 			yield return Target.FromPos(self.Location);
 		}

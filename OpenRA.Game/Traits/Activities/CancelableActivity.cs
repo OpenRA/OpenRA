@@ -32,10 +32,19 @@ namespace OpenRA.Traits.Activities
 			else
 				NextActivity = activity;
 		}
-
-		public virtual IEnumerable<Target> GetTargetQueue( Actor self )
+		
+		public virtual IEnumerable<Target> GetTargets( Actor self )
 		{
 			yield break;
+		}
+	}
+	
+	public static class ActivityExts
+	{
+		public static IEnumerable<Target> GetTargetQueue( this Actor self )
+		{
+			return self.GetCurrentActivity().Iterate( u => u.NextActivity ).TakeWhile( u => u != null )
+				.SelectMany( u => u.GetTargets( self ) );
 		}
 	}
 }

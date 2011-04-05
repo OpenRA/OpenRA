@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Air
 			return this;
 		}
 
-		public override IEnumerable<Target> GetTargetQueue( Actor self )
+		public override IEnumerable<Target> GetTargets( Actor self )
 		{
 			yield return Target.FromPos(Dest);
 		}

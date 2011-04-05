@@ -54,16 +54,5 @@ namespace OpenRA.Mods.RA.Activities
 			// TODO: allow canceling of deliver orders?
 			return false;
 		}
-
-		public override IEnumerable<Target> GetTargetQueue( Actor self )
-		{
-			if (NextActivity != null)
-				foreach (var target in NextActivity.GetTargetQueue(self))
-				{
-					yield return target;
-				}
-
-			yield break;
-		}
 	}
 }

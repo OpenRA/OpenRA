@@ -239,7 +239,7 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
-		public override IEnumerable<Target> GetTargetQueue( Actor self )
+		public override IEnumerable<Target> GetTargets( Actor self )
 		{
 			if( path != null )
 				return Enumerable.Reverse(path).Select( c => Target.FromCell(c) );
@@ -315,9 +315,9 @@ namespace OpenRA.Mods.RA.Move
 
 			protected abstract MovePart OnComplete( Actor self, Mobile mobile, Move parent );
 
-			public override IEnumerable<Target> GetTargetQueue( Actor self )
+			public override IEnumerable<Target> GetTargets( Actor self )
 			{
-				return move.GetTargetQueue(self);
+				return move.GetTargets(self);
 			}
 		}
 

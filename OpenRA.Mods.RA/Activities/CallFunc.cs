@@ -41,16 +41,5 @@ namespace OpenRA.Mods.RA.Activities
 			a = null;
 			return true;
 		}
-
-		public override IEnumerable<Target> GetTargetQueue( Actor self )
-		{
-			if (NextActivity != null)
-				foreach (var target in NextActivity.GetTargetQueue(self))
-				{
-					yield return target;
-				}
-
-			yield break;
-		}
 	}
 }

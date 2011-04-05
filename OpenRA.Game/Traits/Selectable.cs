@@ -237,7 +237,7 @@ namespace OpenRA.Traits
 			if (activity != null && mobile != null)
 			{
 				var alt = new float2(0, -mobile.Altitude);
-				var targets = activity.GetTargetQueue(self);
+				var targets = activity.GetTargets(self);
 				var start = self.CenterLocation + alt;
 
 				var c = Color.Green;
