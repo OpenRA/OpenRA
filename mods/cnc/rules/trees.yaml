@@ -6,7 +6,6 @@ SPLIT2:
 		ResourceType:Tiberium
 	Tooltip:
 		Name: Blossom Tree
-	-Selectable:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 
@@ -18,7 +17,6 @@ SPLIT3:
 		ResourceType:Tiberium
 	Tooltip:
 		Name: Blossom Tree
-	-Selectable:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 
