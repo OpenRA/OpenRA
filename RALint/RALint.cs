@@ -30,6 +30,7 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
+            Console.WriteLine("This is teh sucks");
 			try
 			{
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
@@ -43,6 +44,17 @@ namespace RALint
 				foreach (var actorInfo in Rules.Info)
 					foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
 						CheckTrait(actorInfo.Value, traitInfo);
+
+                foreach (var customPassType in Game.modData.ObjectCreator
+                    .GetTypesImplementing<ILintPass>())
+                {
+                    var customPass = (ILintPass)Game.modData.ObjectCreator
+                        .CreateBasic(customPassType);
+
+                    Console.WriteLine("CustomPass: {0}".F(customPassType.ToString()));
+
+                    customPass.Run(EmitError);
+                }
 
 				if (errors > 0)
 				{
