@@ -30,7 +30,6 @@ namespace RALint
 
 		static int Main(string[] args)
 		{
-            Console.WriteLine("This is teh sucks");
 			try
 			{
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
