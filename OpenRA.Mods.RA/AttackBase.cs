@@ -182,7 +182,8 @@ namespace OpenRA.Mods.RA
 		public void AttackTarget( Target target, bool queued, bool allowMove )
 		{
 			if( !target.IsValid ) return;
-			self.QueueActivity(queued, GetAttackActivity(self, target, allowMove));
+			if (!queued) self.CancelActivity();
+			self.QueueActivity(GetAttackActivity(self, target, allowMove));
 		}
 
 		class AttackOrderTargeter : IOrderTargeter
