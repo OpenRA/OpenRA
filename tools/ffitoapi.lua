@@ -27,7 +27,10 @@ local function ffiToApi(ffidef)
 		table.insert(funcs,curfunc)
 		curfunc = nil
 	end
-	for l in ffidef:gmatch("[^\r\n]+") do 
+	
+	local outer = ffidef:gsub("(%b{})","{}")
+	
+	for l in outer:gmatch("[^\r\n]+") do 
 		-- extern void func(blubb);
 		-- extern void ( * func )(blubb);
 		-- void func(blubb);
@@ -47,13 +50,13 @@ local function ffiToApi(ffidef)
 				registerfunc()
 			end
 		elseif (not typedef) then
-			local name = l:match("([_%w]+)%s*;")
+			local name,val = l:match("static%s+const%s+[_%w]+%s+([_%w]+)%s*=%s*([_%w]+)%s*")
+			local name = name or l:match("([_%w]+)%s*;")
 			if (name) then
-				table.insert(values,{NAME=name, DESCR= ""})
+				table.insert(values,{NAME=name, DESCR=val or ""})
 			end
 		end
 	end
-	print ("functions",#funcs)
 	
 	-- search for enums
 	for def in ffidef:gmatch("enum[_%w%s\r\n]*(%b{})[_%w%s\r\n]*;") do
@@ -61,8 +64,7 @@ local function ffiToApi(ffidef)
 			table.insert(enums,{NAME=enum})
 		end
 	end
-	print ("enums",#enums)
-
+	
 	-- serialize api string
 	local function serialize(str,id,tab)
 		for i,k in ipairs(tab) do
