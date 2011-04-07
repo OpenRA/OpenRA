@@ -61,13 +61,15 @@ local api = {
       returns = "(CUresult)",
       args = "(CUdevice *pDevice, HGPUNV hGpu)", },
 }
-cugl = {
-	type = 'class',
-	description = "Cuda GL Interop",
-	childs = api,
-}
-cuGL = {
-	type = 'class',
-	description = "Cuda GL Interop",
-	childs = api,
+return {
+	cugl = {
+		type = 'lib',
+		description = "Cuda GL Interop",
+		childs = api,
+	},
+	cuGL = {
+		type = 'lib',
+		description = "Cuda GL Interop",
+		childs = api,
+	},
 }

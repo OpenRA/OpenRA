@@ -2,11 +2,6 @@
 ---------------------------------------------------------
 
 -- function helpers
-local self = ...
-local function key (str)
-	self[str] = {type="keyword"}
-	return key
-end
 
 local function fn (description) 
 	local description2,returns,args = description:match("(.+)%-%s*(%b())%s*(%b())")
@@ -23,6 +18,7 @@ local function val (description)
 end
 -- docs
 
+local api = {
 table = {
 	description = "Table functions",
 	type = "lib",
@@ -33,7 +29,7 @@ table = {
 		maxn = fn "Returns the largest positive numerical index of the given table, or zero if the table has no positive numerical indices. - (number)(table)",
 		sort = fn "Sorts table elements in a given order, in-place, from table[1] to table[n], where n is the length of the table. - ()(table,[comp])"
 	}
-}
+},
 
 math = {
 	type = "lib",
@@ -70,41 +66,36 @@ math = {
 		tan = fn "Returns the tangent of x (assumed to be in radians).",
 		tanh = fn "Returns the hyperbolic tangent of x. "
 	}
-}
+},
 
+pairs = fn "returns an iterator function for the given table - (function)(table)",
+ipairs = fn "returns an iterator function for the given table - (function)(table)",
+xpcall = fn "calls a function in protected mode - (boolean success, [error string / result])(called,errorfunc)",
+pcall = fn "calls a function in protected mode - (boolean success, [error string / result])(called, args ...)",
+print = fn "prints out the arguments - ()(...)",
+assert = fn "error checking, if first arg is false, error message is thrown - (result)(compute,errormsg)",
+collectgarbage = fn "garbage collector manipulation - (...)(...)",
+dofile = fn "compile and execute a file - (...)(...)",
+error = fn "raise an error - (...)(...)",
+getfenv = fn "get the function environment for a function - (...)(...)",
+getmetatable = fn "not yet - (...)(...)",
+load  = fn "not yet - (...)(...)",
+loadfile  = fn "not yet - (...)(...)",
+loadstring  = fn "not yet - (...)(...)",
+next  = fn "not yet - (...)(...)",
+rawequal  = fn "not yet - (...)(...)",
+rawget  = fn "not yet - (...)(...)",
+rawset  = fn "not yet - (...)(...)",
+select  = fn "not yet - (...)(...)",
+setfenv  = fn "not yet - (...)(...)",
+setmetatable  = fn "not yet - (...)(...)",
+tonumber  = fn "not yet - (...)(...)",
+tostring  = fn "not yet - (...)(...)",
+type  = fn "not yet - (...)(...)",
+unpack  = fn "not yet - (...)(...)",
 
-pairs = fn "returns an iterator function for the given table - (function)(table)"
-ipairs = fn "returns an iterator function for the given table - (function)(table)"
-xpcall = fn "calls a function in protected mode - (boolean success, [error string / result])(called,errorfunc)"
-pcall = fn "calls a function in protected mode - (boolean success, [error string / result])(called, args ...)"
-print = fn "prints out the arguments - ()(...)"
-assert = fn "error checking, if first arg is false, error message is thrown - (result)(compute,errormsg)"
-collectgarbage = fn "garbage collector manipulation - (...)(...)"
-dofile = fn "compile and execute a file - (...)(...)"
-error = fn "raise an error - (...)(...)"
-getfenv = fn "get the function environment for a function - (...)(...)"
-getmetatable = fn "not yet - (...)(...)"
-load  = fn "not yet - (...)(...)"
-loadfile  = fn "not yet - (...)(...)"
-loadstring  = fn "not yet - (...)(...)"
-next  = fn "not yet - (...)(...)"
-rawequal  = fn "not yet - (...)(...)"
-rawget  = fn "not yet - (...)(...)"
-rawset  = fn "not yet - (...)(...)"
-select  = fn "not yet - (...)(...)"
-setfenv  = fn "not yet - (...)(...)"
-setmetatable  = fn "not yet - (...)(...)"
-tonumber  = fn "not yet - (...)(...)"
-tostring  = fn "not yet - (...)(...)"
-type  = fn "not yet - (...)(...)"
-unpack  = fn "not yet - (...)(...)"
-
--- keywords - shouldn't be left out
-key "local" "not" "if" "elseif" "else" "end" "do" "while" "repeat" "function" "until" "or"
-	"or" "and" "then" "true" "false" "return" "break" "in"
-
-module = fn "Creates a module. - (?)(name,...)"
-require = fn "Loads the given module. - (?)(name)"
+module = fn "Creates a module. - (?)(name,...)",
+require = fn "Loads the given module. - (?)(name)",
 
 package = {
 	type = "table",
@@ -117,7 +108,7 @@ package = {
 		preload = val "A table to store loaders for specific modules (see require). ",
 		seeall = fn "Sets a metatable for module with its __index field referring to the global environment, so that this module inherits values from the global environment. To be used as an option to function module. - (?)(module)"
 	}
-}
+},
 
 string = {
 	type = "lib",
@@ -138,7 +129,7 @@ string = {
 		sub = fn "Returns the substring of s that starts at i and continues until j; i and j may be negative. If j is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call string.sub(s,1,j) returns a prefix of s with length j, and string.sub(s, -i) returns a suffix of s with length i. - (str)(s, i [, j])",
 		upper = fn "Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.  - (str)(str)",
 	}
-}
+},
 
 coroutine = {
 	type = "lib",
@@ -151,7 +142,7 @@ coroutine = {
 		wrap = fn 'Creates a new coroutine, with body f. f must be a Lua function. Returns a function that resumes the coroutine each time it is called. Any arguments passed to the function behave as the extra arguments to resume. Returns the same values returned by resume, except the first boolean. In case of error, propagates the error. - (function)(function)',
 		yield = fn 'Suspends the execution of the calling coroutine. The coroutine cannot be running a C function, a metamethod, or an iterator. Any arguments to yield are passed as extra results to resume. - (...)(...)'
 	}
-}
+},
 
 io = {
 	type = "lib",
@@ -172,7 +163,7 @@ io = {
 		setvbuf = fn'Sets the buffering mode for an output file.  - (?)(mode [, size])',
 		
 	}
-}
+},
 
 os = {
 	type = "lib",
@@ -190,4 +181,15 @@ os = {
 		time = fn'Returns the current time when called without arguments, or a time representing the date and time specified by the given table. This table must have fields year, month, and day, and may have fields hour, min, sec, and isdst (for a description of these fields, see the os.date function). - (time)([table])',
 		tmpname = fn'Returns a string with a file name that can be used for a temporary file. The file must be explicitly opened before its use and explicitly removed when no longer needed.  - (string)()',
 	}
+},
 }
+
+local function key (str)
+	api[str] = {type="keyword"}
+	return key
+end
+-- keywords - shouldn't be left out
+key "local" "not" "if" "elseif" "else" "end" "do" "while" "repeat" "function" "until" "or"
+	"or" "and" "then" "true" "false" "return" "break" "in"
+
+return api

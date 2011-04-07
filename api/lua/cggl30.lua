@@ -113,19 +113,19 @@ typedef enum
 
 local api = {
   ["CGGLenum"] = { type ='value', description = "", },
-  ["CG_GL_MATRIX_IDENTITY"] = { type ='keyword', },
-  ["CG_GL_MATRIX_TRANSPOSE"] = { type ='keyword', },
-  ["CG_GL_MATRIX_INVERSE"] = { type ='keyword', },
-  ["CG_GL_MATRIX_INVERSE_TRANSPOSE"] = { type ='keyword', },
-  ["CG_GL_MODELVIEW_MATRIX"] = { type ='keyword', },
-  ["CG_GL_PROJECTION_MATRIX"] = { type ='keyword', },
-  ["CG_GL_TEXTURE_MATRIX"] = { type ='keyword', },
-  ["CG_GL_MODELVIEW_PROJECTION_MATRIX"] = { type ='keyword', },
-  ["CG_GL_VERTEX"] = { type ='keyword', },
-  ["CG_GL_FRAGMENT"] = { type ='keyword', },
-  ["CG_GL_GEOMETRY"] = { type ='keyword', },
-  ["CG_GL_TESSELLATION_CONTROL"] = { type ='keyword', },
-  ["CG_GL_TESSELLATION_EVALUATION"] = { type ='keyword', },
+  ["CG_GL_MATRIX_IDENTITY"] = { type ='value', },
+  ["CG_GL_MATRIX_TRANSPOSE"] = { type ='value', },
+  ["CG_GL_MATRIX_INVERSE"] = { type ='value', },
+  ["CG_GL_MATRIX_INVERSE_TRANSPOSE"] = { type ='value', },
+  ["CG_GL_MODELVIEW_MATRIX"] = { type ='value', },
+  ["CG_GL_PROJECTION_MATRIX"] = { type ='value', },
+  ["CG_GL_TEXTURE_MATRIX"] = { type ='value', },
+  ["CG_GL_MODELVIEW_PROJECTION_MATRIX"] = { type ='value', },
+  ["CG_GL_VERTEX"] = { type ='value', },
+  ["CG_GL_FRAGMENT"] = { type ='value', },
+  ["CG_GL_GEOMETRY"] = { type ='value', },
+  ["CG_GL_TESSELLATION_CONTROL"] = { type ='value', },
+  ["CG_GL_TESSELLATION_EVALUATION"] = { type ='value', },
   ["cgGLIsProfileSupported"] = { type ='function', 
       description = "", 
       returns = "(CGbool)",
@@ -471,13 +471,15 @@ local api = {
       returns = "(GLuint)",
       args = "(CGbuffer buffer)", },
 }
-cggl = {
-	type = 'class',
-	description = "Cg OpenGL runtime",
-	childs = api,
-}
-cgGL = {
-	type = 'class',
-	description = "Cg OpenGL runtime",
-	childs = api,
+return {
+	cggl = {
+		type = 'lib',
+		description = "Cg OpenGL runtime",
+		childs = api,
+	},
+	cgGL = {
+		type = 'lib',
+		description = "Cg OpenGL runtime",
+		childs = api,
+	},
 }

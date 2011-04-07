@@ -1,7 +1,7 @@
 return {
 		name = "Estrela Shell",
 		description = "Estrela Lua Shell",
-		api = {"wx","baselib"},
+		api = {"wxwidgets","baselib"},
 		frun = function(self,wfilename) 
 				-- set shellbox for focus
 				local bottomnotebook = ide.frame.vsplitter.splitter.bottomnotebook

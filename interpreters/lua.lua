@@ -1,7 +1,7 @@
 return {
 		name = "Lua",
 		description = "Commandline Lua interpreter",
-		api = {"wx","baselib"},
+		api = {"wxwidgets","baselib"},
 		frun = function(self,wfilename) 
 				local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
 				local filepath = wfilename:GetFullPath()

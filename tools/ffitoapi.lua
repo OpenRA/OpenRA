@@ -56,7 +56,7 @@ local function ffiToApi(ffidef)
 				table.insert(values,{NAME=name, DESCR=val or ""})
 			end
 		end
-	end
+	end 
 	
 	-- search for enums
 	for def in ffidef:gmatch("enum[_%w%s\r\n]*(%b{})[_%w%s\r\n]*;") do
@@ -82,8 +82,8 @@ local api = {
 	local value = 
 [[  ["$NAME$"] = { type ='value', description = "$DESCR$", },
 ]]
-	local keyword = 
-[[  ["$NAME$"] = { type ='keyword', },
+	local enum = 
+[[  ["$NAME$"] = { type ='value', },
 ]]
 	local funcdef =
 [[  ["$NAME$"] = { type ='function', 
@@ -92,20 +92,22 @@ local api = {
       args = "$ARGS$", },
 ]]
 	str = serialize(str,value,values)
-	str = serialize(str,keyword,enums)
+	str = serialize(str,enum,enums)
 	str = serialize(str,funcdef,funcs)
 
 	str = str..[[
 }
+
+return {
 ]]
 
 	local class =
 [[
-$NAME$ = {
-	type = 'class',
-	description = "$DESCR$",
-	childs = $API$,
-}
+  $NAME$ = {
+    type = 'lib',
+    description = "$DESCR$",
+    childs = $API$,
+  },
 ]]
 
 	local description = header:match("|%s*(.*)")
@@ -117,6 +119,9 @@ $NAME$ = {
 	end
 
 	str = serialize(str,class,classes)
+	str = str..[[
+}
+]]
 
 	return str
 end

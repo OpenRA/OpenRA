@@ -151,29 +151,30 @@ config = {
 }
 
 
-
-
 -- api definition
 -- ----------------------------------------------------
+-- hierarchy encoded into children
 
 api = {
- -- global space words
- ["identifier"] = {
-	-- "function", "class", "keyword", "value"
-	type = "function",
-	
-	description = "this does something",
-	
-	-- only for functions
-	args = "(blah,blubb)",
-	returns = "(foo)",
-	
-	-- children in the class hierarchy
-	childs = {
-	--.. same as identifier
-	}
- },
- --["identifier"] ... 
+	-- global space words, e.g "table"
+	identifier = {
+		-- "function", "class", "keyword", "value", "lib"
+		type = "function",
+		
+		description = "this does something",
+		
+		-- only for functions
+		args = "(blah,blubb)",
+		returns = "(foo)",
+		
+		-- children in the class hierarchy
+		childs = {
+		--.. same as identifier
+		}
+	},
+	other = {
+	--...
+	},
 }
 
 

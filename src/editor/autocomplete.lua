@@ -41,26 +41,6 @@ end
 ----------
 -- API loading
 
-local function key ()
-	return {type="keyword"}
-end
-
-local function fn (description) 
-	local description2,returns,args = description:match("(.+)%-%s*(%b())%s*(%b())")
-	if not description2 then
-		return {type="function",description=description,
-			returns="(?)"} 
-	end
-	return {type="function",description=description2,
-		returns=returns:gsub("^%s+",""):gsub("%s+$",""), args = args} 
-end
-
-local function val (description)
-	return {type="value",description = description}
-end
-
-
-
 local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
 	local ftype,fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
 	if not ftype then
@@ -75,15 +55,22 @@ local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
 		print("API file '"..apifile.."' could not be loaded: "..err.."\n")
 		return
 	end
+	local mt
 	local env = apis[ftype] or newAPI()
 	apis[ftype] = env
 	env = env.ac.childs
-	setfenv(fn,env)
-	xpcall(function()fn(env)end, function(err)
+	local suc,res = xpcall(function()return fn(env)end, function(err)
 		DisplayOutput("Error while loading API file: "..apifile..":\n")
 		DisplayOutput(debug.traceback(err))
 		DisplayOutput("\n")
 	end)
+	
+	if (suc and res) then
+		for i,v in pairs(res) do
+			env[i] = v
+		end
+	end
+	
 end
 
 local function loadallAPIs (only,subapis,ignore)
@@ -96,30 +83,6 @@ local function loadallAPIs (only,subapis,ignore)
 		end
 	end
 end
-
--- Lua wx specific
-local function applyWXAPI(subapis) 
-	if (subapis and not subapis["wx"]) then return end
-	
-	apis.lua.ac.childs.wx = {
-		type = "lib",
-		description = "WX lib",
-		childs = {}
-	}
-	
-	local wxchilds = apis.lua.ac.childs.wx.childs
-	for key in pairs(wx) do
-		wxchilds[key] = {
-			type = "function",
-			description = "unknown",
-			returns = "unknown",
-		}
-	end
-	
-end
-
-
- 
 
 ---------
 -- ToolTip and reserved words list
@@ -245,10 +208,6 @@ end
 function ReloadAPI(only,subapis)
 	newAPI(apis[only])
 	loadallAPIs(only,subapis)
-	
-	if (only == "lua") then
-		applyWXAPI(subapis)
-	end
 	GenerateAPIInfo(only,ignore)
 end
 
