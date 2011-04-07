@@ -27,7 +27,8 @@
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Vehicle
-		
+	GivesBounty:
+
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
@@ -57,6 +58,7 @@
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Tank
+	GivesBounty:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -93,6 +95,7 @@
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Infantry
+	GivesBounty:
 
 ^Ship:
 	AppearsOnRadar:
@@ -115,6 +118,7 @@
 		Notification: navylst1.aud
 	ProximityCaptor:
 		Types:Ship
+	GivesBounty:
 
 ^Plane:
 	AppearsOnRadar:
@@ -139,6 +143,7 @@
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
+	GivesBounty:
 
 ^Building:
 	AppearsOnRadar:
@@ -168,6 +173,7 @@
 		Types:Building
 	Sellable:
 	AcceptsSupplies:
+	GivesBounty:
 
 ^Wall:
 	AppearsOnRadar:

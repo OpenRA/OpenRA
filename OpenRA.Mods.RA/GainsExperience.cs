@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		int Experience = 0;
 		[Sync]
-		int Level = 0;
+		public int Level { get; private set; }
 
 		public void GiveOneLevel()
 		{
