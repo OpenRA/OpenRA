@@ -25,11 +25,9 @@ namespace OpenRA.Mods.RA
 
     class SupplyTruck : IIssueOrder, IResolveOrder, IOrderVoice
     {
-        int payload;
         SupplyTruckInfo Info;
         public SupplyTruck(SupplyTruckInfo info)
         {
-            payload = info.Payload;
             Info = info;
         }
 
@@ -58,7 +56,7 @@ namespace OpenRA.Mods.RA
                 self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
                 self.CancelActivity();
                 self.QueueActivity(new Enter(order.TargetActor));
-                self.QueueActivity(new DonateSupplies(order.TargetActor, payload));
+                self.QueueActivity(new DonateSupplies(order.TargetActor, Info.Payload));
             }
         }
 

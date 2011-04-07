@@ -18,15 +18,13 @@ namespace OpenRA.Mods.RA.Effects
 	class SatelliteLaunch : IEffect
 	{
 		int frame = 0;
-		Actor a;
 		Animation doors = new Animation("atek");
 		float2 doorOffset = new float2(-4,0);
-		int2 pos;
+		float2 pos;
 
 		public SatelliteLaunch(Actor a)
 		{
-			this.a = a;
-			pos = a.CenterLocation;
+			pos = a.CenterLocation - .5f * doors.Image.size + doorOffset;
 			doors.PlayThen("active",
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 		}
@@ -37,14 +35,13 @@ namespace OpenRA.Mods.RA.Effects
 			
 			if (++frame == 19)
 			{
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos - .5f * doors.Image.size + doorOffset)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos)));
 			}
 		}
 		
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(doors.Image,
-				pos - .5f * doors.Image.size + doorOffset, "effect", (int)doorOffset.Y);
+			yield return new Renderable(doors.Image, pos, "effect", (int)doorOffset.Y);
 		}
 	}
 }

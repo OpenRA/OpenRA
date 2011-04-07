@@ -45,7 +45,7 @@ namespace OpenRA.FileFormats.Graphics
 					var length = IPAddress.NetworkToHostOrder(br.ReadInt32());
 					var type = Encoding.UTF8.GetString(br.ReadBytes(4));
 					var content = br.ReadBytes(length);
-					var crc = br.ReadInt32();
+					/*var crc = */br.ReadInt32();
 
 					using (var ms = new MemoryStream(content))
 					using (var cr = new BinaryReader(ms))
@@ -59,7 +59,7 @@ namespace OpenRA.FileFormats.Graphics
 									var bitDepth = cr.ReadByte();
 									var colorType = (PngColorType)cr.ReadByte();
 									var compression = cr.ReadByte();
-									var filter = cr.ReadByte();
+									/*var filter = */cr.ReadByte();
 									var interlace = cr.ReadByte();
 
 									if (compression != 0) throw new InvalidDataException("Compression method not supported");
@@ -102,8 +102,8 @@ namespace OpenRA.FileFormats.Graphics
 									using (var ns = new MemoryStream(data.ToArray()))
 									{
 										// 'zlib' flags bytes; confuses the DeflateStream.
-										var flags = (byte)ns.ReadByte();
-										var moreFlags = (byte)ns.ReadByte();
+										/*var flags = (byte)*/ns.ReadByte();
+										/*var moreFlags = (byte)*/ns.ReadByte();
 
 										using (var ds = new DeflateStream(ns, CompressionMode.Decompress))
 										using (var dr = new BinaryReader(ds))

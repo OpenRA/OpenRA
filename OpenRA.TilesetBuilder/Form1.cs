@@ -121,7 +121,7 @@ namespace OpenRA.TilesetBuilder
 			// Create a Tileset definition
 			// Todo: Pull this info from the gui
 			var tilesetFile = "tileset-arrakis.yaml";
-			var mixFile = "arrakis.mix";
+			//var mixFile = "arrakis.mix";
 			var tileset = new TileSet()
 			{
 				Name = "Arrakis",
@@ -177,12 +177,13 @@ namespace OpenRA.TilesetBuilder
 			tileset.Save(Path.Combine(dir, tilesetFile));
 			throw new NotImplementedException("NotI");
 			//PackageWriter.CreateMix(Path.Combine(dir, mixFile),fileList);
-			
+			/*
 			// Cleanup
 			foreach (var file in fileList)
 				File.Delete(file);
 			
 			Console.WriteLine("Finished export");
+			*/
 		}
 		
 		string ExportPalette(List<Color> p, string file)

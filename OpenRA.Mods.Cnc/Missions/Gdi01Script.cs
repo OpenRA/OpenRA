@@ -28,11 +28,9 @@ namespace OpenRA.Mods.Cnc
 	{		
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;
-		Map Map;
 				
 		public void WorldLoaded(World w)
 		{
-			Map = w.Map;
 			Players = w.players.Values.ToDictionary(p => p.InternalName);
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			var b = w.Map.Bounds;

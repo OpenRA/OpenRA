@@ -16,13 +16,12 @@ namespace OpenRA
 {
 	public class UiOverlay
 	{
-		Sprite buildOk, buildBlocked, unitDebug;
+		Sprite buildOk, buildBlocked;
 
 		public UiOverlay()
 		{
 			buildOk = SynthesizeTile(0x0f);
 			buildBlocked = SynthesizeTile(0x08);
-			unitDebug = SynthesizeTile(0x04);
 		}
 
 		public static Sprite SynthesizeTile(byte paletteIndex)

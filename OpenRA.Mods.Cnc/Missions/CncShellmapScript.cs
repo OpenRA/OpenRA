@@ -24,11 +24,9 @@ namespace OpenRA.Mods.RA
 	{		
 		Dictionary<string, Actor> Actors;
 		static int2 ViewportOrigin;
-		Map Map;
 
 		public void WorldLoaded(World w)
 		{
-			Map = w.Map;
 			var b = w.Map.Bounds;
 			ViewportOrigin = new int2(b.Left + b.Width/2, b.Top + b.Height/2);
 			Game.MoveViewport(ViewportOrigin);

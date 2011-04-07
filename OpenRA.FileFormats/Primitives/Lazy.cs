@@ -40,7 +40,9 @@ namespace OpenRA.FileFormats
 
         public void Force()
         {
-            var ignored = Value;
+            #pragma warning disable 0168
+			var ignored = Value;
+			#pragma warning restore 0168
         }
 	}
 

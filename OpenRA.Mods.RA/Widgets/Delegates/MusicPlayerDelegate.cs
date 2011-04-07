@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return true;
 			};
 			
-			var installed = Rules.Music.Count(m => m.Value.Exists) > 1;
 			/*
+			var installed = Rules.Music.Count(m => m.Value.Exists) > 1;
 			// Hack around some mix packages including hellmarch for ra
 			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => !installed;
 			bg.GetWidget("BUTTON_INSTALL").OnMouseUp = mi => {

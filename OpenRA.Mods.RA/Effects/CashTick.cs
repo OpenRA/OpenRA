@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA.Effects
 	class CashTick : IEffect
 	{
 		string s;
-		int lifetime;
 		int remaining;
 		int velocity;
 		float2 pos;
@@ -27,7 +26,6 @@ namespace OpenRA.Mods.RA.Effects
 		public CashTick(int value, int lifetime, int velocity, float2 pos, Color color)
 		{
 			this.color = color;
-			this.lifetime = lifetime;
 			this.velocity = velocity;
 			s = "{0}${1}".F(value < 0 ? "-" : "+", value);
 			this.pos = pos - 0.5f*Game.Renderer.TinyBoldFont.Measure(s).ToFloat2();
