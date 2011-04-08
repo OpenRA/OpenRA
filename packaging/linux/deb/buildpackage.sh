@@ -29,7 +29,7 @@ pushd root
 md5sum `find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g' > DEBIAN/md5sums
 
 # Start building, the file should appear in the output directory
-dpkg-deb -b . $3/openra_${VERSION}_all.deb
+fakeroot dpkg-deb -b . $3
 
 # Clean up
 popd
