@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 			Mods = mods;
 			var yaml = mods
 				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
-				.Aggregate(MiniYaml.Merge);
+				.Aggregate(MiniYaml.MergeLiberal);
 			
 			// Todo: Use fieldloader
 			Folders = YamlList(yaml, "Folders");

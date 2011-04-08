@@ -36,7 +36,7 @@ namespace OpenRA.Graphics
 			if (chromeFiles.Length == 0)
 				return;
 
-			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.Merge);
+			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
 
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);

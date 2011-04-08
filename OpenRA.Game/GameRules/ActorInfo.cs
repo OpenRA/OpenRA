@@ -68,7 +68,7 @@ namespace OpenRA
 			var parent = GetParent( node, allUnits );
             if (parent != null)
             {
-                var result = MiniYaml.Merge(node, MergeWithParent(parent, allUnits));
+                var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
 
                 // strip the '-'
                 result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));

@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 		public static void Initialize(string[] sequenceFiles)
 		{	
 			cursors = new Dictionary<string, CursorSequence>();
-			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.Merge));
+			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
 				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), false));

@@ -164,7 +164,17 @@ namespace OpenRA.FileFormats
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), "<no filename available>");
 		}
 
-		public static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b )
+        public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+        {
+            return Merge(a, b, false);
+        }
+
+        public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
+        {
+            return Merge(a, b, true);
+        }
+
+		static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors )
 		{
 			if( a.Count == 0 )
 				return b;
@@ -188,18 +198,21 @@ namespace OpenRA.FileFormats
 
 				if( noInherit.ContainsKey( key ) )
 				{
-			//		if( aa != null )
-			//			ret.Add( aa );
+                    if (!throwErrors)
+                        if (aa != null)
+                            ret.Add(aa);
+
                     noInherit[key] = true;
 				}
 				else
 				{
 					var loc = aa == null ? default( MiniYamlNode.SourceLocation ) : aa.Location;
-					var merged = ( aa == null || bb == null ) ? aa ?? bb : new MiniYamlNode( key, Merge( aa.Value, bb.Value ), loc );
+					var merged = ( aa == null || bb == null ) ? aa ?? bb : new MiniYamlNode( key, Merge( aa.Value, bb.Value, throwErrors ), loc );
 					ret.Add( merged );
 				}
 			}
 
+            if (throwErrors)
             if (noInherit.ContainsValue(false))
                 throw new YamlException("Bogus yaml removals: {0}".F(
                     string.Join(", ", noInherit.Where(x => !x.Value).Select(x => x.Key).ToArray())));
@@ -207,14 +220,24 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
-		public static MiniYaml Merge( MiniYaml a, MiniYaml b )
+        public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
+        {
+            return Merge(a, b, false);
+        }
+
+        public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
+        {
+            return Merge(a, b, true);
+        }
+
+		static MiniYaml Merge( MiniYaml a, MiniYaml b, bool throwErrors )
 		{
 			if( a == null )
 				return b;
 			if( b == null )
 				return a;
 
-			return new MiniYaml( a.Value ?? b.Value, Merge( a.Nodes, b.Nodes ) );
+			return new MiniYaml( a.Value ?? b.Value, Merge( a.Nodes, b.Nodes, throwErrors ) );
 		}
 
 		public IEnumerable<string> ToLines(string name)
