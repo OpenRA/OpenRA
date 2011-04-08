@@ -136,6 +136,9 @@
 	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
+	EjectOnDeath:
+		PilotActor: E1
+		SuccessRate: 50
 
 ^Building:
 	AppearsOnRadar:

@@ -34,6 +34,7 @@ BADR:
 	SmokeTrailWhenDamaged@1:
 		Offset: -11, -11
 		Interval: 2
+	-EjectOnDeath:
 
 BADR.bomber:
 	CarpetBomb:
@@ -72,6 +73,7 @@ BADR.bomber:
 	SmokeTrailWhenDamaged@1:
 		Offset: -11, -11
 		Interval: 2
+	-EjectOnDeath:
 
 V2RL:
 	Inherits: ^Vehicle
