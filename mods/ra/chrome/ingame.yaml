@@ -245,13 +245,13 @@ Container@INGAME_ROOT:
 					Height:20
 					Width:PARENT_RIGHT - 30
 					Text:Disable Shroud
-				Checkbox@CHECKBOX_UNITDEBUG:
-					Id:CHECKBOX_UNITDEBUG
+				Button@GIVE_EXPLORATION
+					Id:GIVE_EXPLORATION
 					X:30
 					Y:80
-					Width:PARENT_RIGHT - 30
+					Width:200
 					Height:20
-					Text:Show Occupied Cells
+					Text: Give Exploration
 				Checkbox@CHECKBOX_PATHDEBUG:
 					Id:CHECKBOX_PATHDEBUG
 					X:30
@@ -301,13 +301,6 @@ Container@INGAME_ROOT:
 					Width:PARENT_RIGHT - 30
 					Height:20
 					Text:Build Anywhere
-				Button@GIVE_EXPLORATION
-					Id:GIVE_EXPLORATION
-					X:30
-					Y:320
-					Width:200
-					Height:20
-					Text: Give Exploration
 		Background@PERF_BG:
 			ClickThrough:true
 			Id:PERF_BG

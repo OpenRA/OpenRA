@@ -19,7 +19,6 @@ namespace OpenRA.Traits
 		public bool FastCharge = false;
 		public bool DisableShroud = false;
 		public bool PathDebug = false;
-		public bool UnitInfluenceDebug = false;
 		public bool UnlimitedPower;
         public bool BuildAnywhere;
 		
@@ -34,7 +33,6 @@ namespace OpenRA.Traits
 		[Sync] public bool FastBuild;
 		[Sync] public bool DisableShroud;
 		[Sync] public bool PathDebug;
-		[Sync] public bool UnitInfluenceDebug;
 		[Sync] public bool UnlimitedPower;
         [Sync] public bool BuildAnywhere;
 
@@ -45,7 +43,6 @@ namespace OpenRA.Traits
 			FastCharge = info.FastCharge;
 			DisableShroud = info.DisableShroud;
 			PathDebug = info.PathDebug;
-			UnitInfluenceDebug = info.UnitInfluenceDebug;
 			UnlimitedPower = info.UnlimitedPower;
             BuildAnywhere = info.BuildAnywhere;
 		}
@@ -86,11 +83,6 @@ namespace OpenRA.Traits
 				case "DevPathDebug":
 					{
 						PathDebug ^= true;
-						break;
-					}
-				case "DevUnitDebug":
-					{
-						UnitInfluenceDebug ^= true;
 						break;
 					}
 				case "DevGiveExploration":

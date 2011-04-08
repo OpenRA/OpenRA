@@ -43,9 +43,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").BindReadOnly(devTrait, "DisableShroud");
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD").OnChange += _ => Order(world, "DevShroud");
 	
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").BindReadOnly(devTrait, "UnitInfluenceDebug");
-			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_UNITDEBUG").OnChange += _ => Order(world, "DevUnitDebug");
-			
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").BindReadOnly(devTrait, "PathDebug");
 			devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_PATHDEBUG").OnChange += _ => Order(world, "DevPathDebug");
 
