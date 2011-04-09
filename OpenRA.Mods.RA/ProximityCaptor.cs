@@ -23,23 +23,11 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly ProximityCaptorInfo Info;
 
-		public string[] Types;
-
-		public ProximityCaptor(ProximityCaptorInfo info)
-		{
-			Info = info;
-
-			Types = info.Types.Select(t => t.ToLowerInvariant()).OrderBy(t => t).ToArray();
-		}
+        public ProximityCaptor(ProximityCaptorInfo info) { Info = info; }
 
 		public bool HasAny(string[] typesList)
 		{
-			return typesList.Select(t => t.ToLowerInvariant()).Any(flag => Types.Contains(flag));
-		}
-
-		public bool HasAll(string[] typesList)
-		{
-			return typesList.Select(t => t.ToLowerInvariant()).All(flag => Types.Contains(flag));
+			return typesList.Any(flag => Info.Types.Contains(flag));
 		}
 	}
 }
