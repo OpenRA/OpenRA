@@ -13,6 +13,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
@@ -79,7 +80,10 @@ namespace OpenRA.Mods.RA
 				if (self.HasTrait<IFacing>())
 					self.QueueActivity(new Turn(Info.Facing));
 				
-				self.QueueActivity(new Transform(self, Info.IntoActor, Info.Offset, Info.Facing, Info.TransformSounds));
+				if (self.HasTrait<RenderBuilding>() && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+					self.QueueActivity(new MakeAnimation(self, true));
+				
+				self.QueueActivity(new Transform(self, Info.IntoActor) {Offset = Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds});
 			}
 		}
 	}

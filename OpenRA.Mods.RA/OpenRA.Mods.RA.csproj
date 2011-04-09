@@ -341,6 +341,7 @@
     <Compile Include="Render\WithShadow.cs" />
     <Compile Include="AnnounceOnBuild.cs" />
     <Compile Include="Capturable.cs" />
+    <Compile Include="Activities\MakeAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -18,69 +18,45 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Transform : CancelableActivity
 	{
-		string actor = null;
-		int2 offset;
-		string[] sounds = null;		
-		int facing;
+		public readonly string ToActor = null;
+		public int2 Offset = new int2(0,0);
+		public int Facing = 96;
+		public string[] Sounds = {};	
 		
-		RenderBuilding rb;
-		public Transform(Actor self, string toActor, int2 offset, int facing, string[] sounds)
+		public Transform(Actor self, string toActor)
 		{
-			this.actor = toActor;
-			this.offset = offset;
-			this.sounds = sounds;
-			this.facing = facing;
-			rb = self.TraitOrDefault<RenderBuilding>();
+			this.ToActor = toActor;
 		}
 
-		void DoTransform(Actor self)
+		public override IActivity Tick( Actor self )
 		{
-			// Hack: repeat the first frame of the make anim instead
-			// of flashing the full structure for a frame
-			if (rb != null)
-				rb.PlayCustomAnim(self, "make");
+			if (IsCanceled) return NextActivity;
 			
 			self.World.AddFrameEndTask(w =>
 			{
 				var selected = w.Selection.Contains(self);
 
 				self.Destroy();
-				foreach (var s in sounds)
+				foreach (var s in Sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 
 				var init = new TypeDictionary
 				{
-					new LocationInit( self.Location + offset ),
+					new LocationInit( self.Location + Offset ),
 					new OwnerInit( self.Owner ),
-					new FacingInit( facing ),
+					new FacingInit( Facing ),
 				};
-				if (self.HasTrait<Health>())
-					init.Add( new HealthInit( self.Trait<Health>().HPFraction ));
+				var health = self.TraitOrDefault<Health>();
+				// TODO: fix potential desync from HPFraction
+				if (health != null)
+					init.Add( new HealthInit( health.HPFraction ));
 				
-				var a = w.CreateActor( actor, init );
+				var a = w.CreateActor( ToActor, init );
 				
 				if (selected)
 					w.Selection.Add(w, a);
 			});
-		}
-		
-		bool started = false;
-		public override IActivity Tick( Actor self )
-		{
-			if (IsCanceled) return NextActivity;
-			if (started) return this;
 			
-			if (rb == null)
-				DoTransform(self);
-			else
-			{
-				rb.PlayCustomAnimBackwards(self, "make", () => DoTransform(self));
-				
-				foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-				
-				started = true;	
-			}
 			return this;
 		}
 	}
