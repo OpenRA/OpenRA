@@ -15,6 +15,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -32,6 +33,8 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int RangeLimit = 0;
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;
+        public readonly int ContrailLength = 0;
+        public readonly bool ContrailUsePlayerColor = true;
 
 		public IEffect Create(ProjectileArgs args) { return new Missile( this, args ); }
 	}
@@ -49,6 +52,7 @@ namespace OpenRA.Mods.RA.Effects
 		int Facing;
 		int t;
 		int Altitude;
+        ContrailHistory Trail;
 
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
@@ -67,6 +71,10 @@ namespace OpenRA.Mods.RA.Effects
 				anim = new Animation(Info.Image, () => Facing);
 				anim.PlayRepeating("idle");
 			}
+
+            if (Info.ContrailLength > 0)
+                Trail = new ContrailHistory(Info.ContrailLength, 
+                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Color.White);
 		}
 		
 		// In pixels
@@ -126,6 +134,9 @@ namespace OpenRA.Mods.RA.Effects
 					a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
 			}
+
+            if (Trail != null)
+                Trail.Tick(PxPosition - new float2(0,Altitude));
 		}
 
 		void Explode(World world)
@@ -140,6 +151,9 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude), 
 				Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
+
+            if (Trail != null)
+                Trail.Render(Args.firedBy);
 		}
 	}
 }

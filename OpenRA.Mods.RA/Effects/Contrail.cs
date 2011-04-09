@@ -34,17 +34,11 @@ namespace OpenRA.Mods.RA
 
         ContrailHistory history;
 
-        static Color ChooseColor(Actor self)
-        {
-            var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
-            return PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
-        }
-
 		public Contrail(Actor self, ContrailInfo info)
 		{
 			Info = info;
 			ContrailTurret = new Turret(Info.ContrailOffset);
-            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ChooseColor(self) : Color.White);
+            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Color.White);
 		}
 
 		public void Tick(Actor self)
@@ -64,6 +58,12 @@ namespace OpenRA.Mods.RA
         List<float2> positions = new List<float2>();
         readonly int TrailLength;
         readonly Color Color;
+
+        public static Color ChooseColor(Actor self)
+        {
+            var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
+            return PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
+        }
 
         public ContrailHistory(int trailLength, Color color)
         {
