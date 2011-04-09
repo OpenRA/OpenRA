@@ -42,26 +42,35 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted)
-		{
-			ZipEntry entry;
-			while ((entry = z.GetNextEntry()) != null)
-			{
-				if (!entry.IsFile) continue;
+        static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)
+        {
+            for (; ; )
+            {
+                var e = z.GetNextEntry();
+                if (e != null) yield return e; else break;
+            }
+        }
 
-				Console.WriteLine("Status: Extracting {0}", entry.Name);
-				if (!Directory.Exists(Path.Combine(destPath, Path.GetDirectoryName(entry.Name))))
-					Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
-				var path = destPath + Path.DirectorySeparatorChar + entry.Name;
-				extracted.Add(path);
-				using (var f = File.Create(path))
-				{
-					int bufSize = 2048;
-					byte[] buf = new byte[bufSize];
-					while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-						f.Write(buf, 0, bufSize);
-				}
-			}
+        public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted)
+		{
+            foreach (var entry in z.GetEntries())
+            {
+                if (!entry.IsFile) continue;
+
+                Console.WriteLine("Status: Extracting {0}", entry.Name);
+                Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
+                var path = Path.Combine(destPath, entry.Name);
+                extracted.Add(path);
+
+                using (var f = File.Create(path))
+                {
+                    int bufSize = 2048;
+                    byte[] buf = new byte[bufSize];
+                    while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+                        f.Write(buf, 0, bufSize);
+                }
+            }
+
 			z.Close();
 		}
 		
