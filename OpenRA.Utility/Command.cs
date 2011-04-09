@@ -105,21 +105,19 @@ namespace OpenRA.Utility
 				new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" },
 				"INSTALL/SETUP.Z");
 		}
-		
-		public static void DisplayFilepicker(string[] args)
-		{
-			if (args.Length < 2)
-			{
-				Console.WriteLine("Error: Invalid syntax");
-				return;
-			}
-			
-			var dialog = new OpenFileDialog();
-			dialog.Title = args[1];
-			
-			if (dialog.ShowDialog() == DialogResult.OK)
-				Console.WriteLine(dialog.FileName);
-		}
+
+        public static void DisplayFilepicker(string[] args)
+        {
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Error: Invalid syntax");
+                return;
+            }
+
+            using (var dialog = new OpenFileDialog() { Title = args[1] })
+                if (dialog.ShowDialog() == DialogResult.OK)
+                    Console.WriteLine(dialog.FileName);
+        }
 
 		public static void Settings(string[] args)
 		{
@@ -136,29 +134,16 @@ namespace OpenRA.Utility
 			var result = settings.Sections[section].GetType().GetField(field).GetValue(settings.Sections[section]);
 			Console.WriteLine(result);
 		}
-		
-		public static void AuthenticateAndExtractZip(string[] args)
-		{			
-			var cmd = "--extract-zip-inner ";
-			for (var i = 1; i < args.Length; i++)
-				cmd += "\"{0}\" ".F(args[i]);
-			Util.CallWithAdmin(cmd);
-		}
-		
-		public static void AuthenticateAndInstallRAPackages(string[] args)
-		{			
-			var cmd = "--install-ra-packages-inner ";
-			for (var i = 1; i < args.Length; i++)
-				cmd += "\"{0}\" ".F(args[i]);
-			Util.CallWithAdmin(cmd);
-		}
-		
-		public static void AuthenticateAndInstallCncPackages(string[] args)
-		{			
-			var cmd = "--install-cnc-packages-inner ";
-			for (var i = 1; i < args.Length; i++)
-				cmd += "\"{0}\" ".F(args[i]);
-			Util.CallWithAdmin(cmd);
-		}
+
+        static void AuthenticateAndExecute(string cmd, string[] args)
+        {
+            for (var i = 1; i < args.Length; i++)
+                cmd += " \"{0}\"".F(args[i]);
+            Util.CallWithAdmin(cmd);
+        }
+
+        public static void AuthenticateAndExtractZip(string[] args) { AuthenticateAndExecute("--extract-zip-inner", args); }
+		public static void AuthenticateAndInstallRAPackages(string[] args) { AuthenticateAndExecute( "--install-ra-packages-inner", args ); }
+		public static void AuthenticateAndInstallCncPackages(string[] args) { AuthenticateAndExecute( "--install-cnc-packages-inner", args ); }
 	}
 }
