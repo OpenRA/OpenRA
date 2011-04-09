@@ -58,6 +58,7 @@ namespace OpenRA.Mods.RA
         List<float2> positions = new List<float2>();
         readonly int TrailLength;
         readonly Color Color;
+        readonly int StartSkip;
 
         public static Color ChooseColor(Actor self)
         {
@@ -66,9 +67,13 @@ namespace OpenRA.Mods.RA
         }
 
         public ContrailHistory(int trailLength, Color color)
+            : this(trailLength, color, 0) { }
+
+        public ContrailHistory(int trailLength, Color color, int startSkip)
         {
             this.TrailLength = trailLength;
             this.Color = color;
+            this.StartSkip = startSkip;
         }
 
         public void Tick(float2 currentPos)
@@ -84,7 +89,7 @@ namespace OpenRA.Mods.RA
             Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R,
                                             trailStart.G, trailStart.B);
 
-            for (int i = positions.Count - 1; i >= 1; --i)
+            for (int i = positions.Count - 1 - StartSkip; i >= 1; --i)
             {
                 var conPos = positions[i];
                 var nextPos = positions[i - 1];

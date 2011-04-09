@@ -119,7 +119,8 @@ Maverick:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Inaccuracy: 12
 		Image: DRAGON
 		ROT: 5
@@ -266,6 +267,7 @@ Dragon:
 		Shadow: false
 		Proximity: true
 		Trail: smokey
+		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
@@ -295,7 +297,8 @@ Hellfire:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
@@ -452,7 +455,8 @@ MammothTusk:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 5
@@ -481,6 +485,7 @@ MammothTusk:
 		Angle: .1
 		Inaccuracy: 40
 		Image: 120MM
+		ContrailLength: 30
 	Warhead:
 		Spread: 10
 		Versus: 
@@ -616,7 +621,8 @@ Nike:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Image: MISSILE
 		ROT: 25
 		RangeLimit: 50
@@ -644,7 +650,8 @@ RedEye:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Image: MISSILE
 		ROT: 20
 		RangeLimit: 30
@@ -673,6 +680,7 @@ RedEye:
 		Angle: .1
 		Inaccuracy: 120
 		Image: 120MM
+		ContrailLength: 30
 	Warhead:
 		Spread: 3
 		Versus: 
@@ -701,6 +709,7 @@ SubMissile:
 		Inaccuracy: 70
 		Image: MISSILE
 		Trail: smokey
+		ContrailLength: 30
 	Warhead:
 		Spread: 10
 		Versus: 
@@ -727,7 +736,8 @@ Stinger:
 		High: true
 		Shadow: false
 		Proximity: true
-		Trail: smokey
+#		Trail: smokey
+		ContrailLength: 10
 		Image: DRAGON
 		ROT: 20
 		RangeLimit: 50
@@ -753,11 +763,11 @@ TorpTube:
 	ValidTargets: Water, Underwater
 	Underwater: yes
 	Burst: 2
-	BurstDelay: 1
+	BurstDelay: 20
 	Projectile: Missile
 		Image: MISSILE
 		Arm: 3
-		Speed: 6
+		Speed: 10
 		Trail: bubbles
 		ROT: 1
 		RangeLimit: 160
@@ -771,7 +781,7 @@ TorpTube:
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 90
+		Damage: 180
 		
 2Inch:
 	ROF: 60

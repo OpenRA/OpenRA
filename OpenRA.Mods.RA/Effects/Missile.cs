@@ -34,7 +34,8 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;
         public readonly int ContrailLength = 0;
-        public readonly bool ContrailUsePlayerColor = true;
+        public readonly bool ContrailUsePlayerColor = false;
+        public readonly int ContrailDelay = 1;
 
 		public IEffect Create(ProjectileArgs args) { return new Missile( this, args ); }
 	}
@@ -54,28 +55,31 @@ namespace OpenRA.Mods.RA.Effects
 		int Altitude;
         ContrailHistory Trail;
 
-		public Missile(MissileInfo info, ProjectileArgs args)
-		{
-			Info = info;
-			Args = args;
+        public Missile(MissileInfo info, ProjectileArgs args)
+        {
+            Info = info;
+            Args = args;
 
-			SubPxPosition = 1024*Args.src;
-			Altitude = Args.srcAltitude;
-			Facing = Args.facing;
+            SubPxPosition = 1024 * Args.src;
+            Altitude = Args.srcAltitude;
+            Facing = Args.facing;
 
-			if (info.Inaccuracy > 0)
-				offset = (info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+            if (info.Inaccuracy > 0)
+                offset = (info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 
-			if (Info.Image != null)
-			{
-				anim = new Animation(Info.Image, () => Facing);
-				anim.PlayRepeating("idle");
-			}
+            if (Info.Image != null)
+            {
+                anim = new Animation(Info.Image, () => Facing);
+                anim.PlayRepeating("idle");
+            }
 
             if (Info.ContrailLength > 0)
-                Trail = new ContrailHistory(Info.ContrailLength, 
-                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Color.White);
-		}
+            {
+                Trail = new ContrailHistory(Info.ContrailLength,
+                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Color.White,
+                    Info.ContrailDelay);
+            }
+        }
 		
 		// In pixels
 		const int MissileCloseEnough = 7;
@@ -149,8 +153,9 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude), 
-				Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
+            if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(PxPosition.ToFloat2())))
+			    yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude), 
+				    Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 
             if (Trail != null)
                 Trail.Render(Args.firedBy);

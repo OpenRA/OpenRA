@@ -14,6 +14,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -30,6 +31,9 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool Proximity = false;
 		public readonly float Angle = 0;
 		public readonly int TrailInterval = 2;
+        public readonly int ContrailLength = 0;
+        public readonly bool ContrailUsePlayerColor = false;
+        public readonly int ContrailDelay = 1;
 
 		public IEffect Create(ProjectileArgs args) { return new Bullet( this, args ); }
 	}
@@ -43,6 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 		Animation anim;
 
 		const int BaseBulletSpeed = 100;		/* pixels / 40ms frame */
+        ContrailHistory Trail;
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
@@ -60,6 +65,13 @@ namespace OpenRA.Mods.RA.Effects
 				anim = new Animation(Info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
 			}
+
+            if (Info.ContrailLength > 0)
+            {
+                Trail = new ContrailHistory(Info.ContrailLength,
+                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Color.White,
+                    Info.ContrailDelay);
+            }
 		}
 
 		int TotalTime() { return (Args.dest - Args.src).Length * BaseBulletSpeed / Info.Speed; }
@@ -94,7 +106,6 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (t > TotalTime()) Explode( world );
 
-			if (Info.Trail != null)
 			{
 				var at = (float)t / TotalTime();
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
@@ -104,12 +115,15 @@ namespace OpenRA.Mods.RA.Effects
 					? (pos - new float2(0, GetAltitude()))
 					: pos;
 
-				if (--ticksToNextSmoke < 0)
+				if (Info.Trail != null && --ticksToNextSmoke < 0)
 				{
 					world.AddFrameEndTask(w => w.Add(
 						new Smoke(w, highPos.ToInt2(), Info.Trail)));
 					ticksToNextSmoke = Info.TrailInterval;
 				}
+
+                if (Trail != null)
+                    Trail.Tick(highPos);
 			}
 
 			if (!Info.High)		// check for hitting a wall
@@ -129,29 +143,35 @@ namespace OpenRA.Mods.RA.Effects
 
 		const float height = .1f;
 
-		public IEnumerable<Renderable> Render()
-		{
-			if (anim != null)
-			{
-				var at = (float)t / TotalTime();
+        public IEnumerable<Renderable> Render()
+        {
+            if (anim != null)
+            {
+                var at = (float)t / TotalTime();
 
-				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
+                var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
+                var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
 
-				if (Info.High || Info.Angle > 0)
-				{
-					if (Info.Shadow)
-						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow", (int)pos.Y);
+                if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(pos)))
+                {
+                    if (Info.High || Info.Angle > 0)
+                    {
+                        if (Info.Shadow)
+                            yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow", (int)pos.Y);
 
-					var highPos = pos - new float2(0, GetAltitude());
+                        var highPos = pos - new float2(0, GetAltitude());
 
-					yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette, (int)pos.Y);
-				}
-				else
-					yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
-						Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette, (int)pos.Y);
-			}
-		}
+                        yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette, (int)pos.Y);
+                    }
+                    else
+                        yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
+                            Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette, (int)pos.Y);
+                }
+            }
+
+            if (Trail != null)
+                Trail.Render(Args.firedBy);
+        }
 
 		void Explode( World world )
 		{
