@@ -11,7 +11,6 @@ FACT:
 		Power: 15
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		Capturable: true
 	Health:
 		HP: 1750
 	RevealsShroud:
@@ -60,7 +59,6 @@ NUKE:
 		Power: 100
 		Footprint: x_ xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 400
 	RevealsShroud:
@@ -83,7 +81,6 @@ PROC:
 		Power: -30
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 900
 	RevealsShroud:
@@ -121,7 +118,6 @@ SILO:
 		Power: -10
 		Footprint: xx
 		Dimensions: 2,1
-		Capturable: true
 		BaseNormal: no
 	Health:
 		HP: 300
@@ -153,7 +149,6 @@ PYLE:
 		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 500
 	RevealsShroud:
@@ -196,7 +191,6 @@ HAND:
 		Power: -20
 		Footprint: __ xx xx
 		Dimensions: 2,3
-		Capturable: true
 	Health:
 		HP: 500
 	RevealsShroud:
@@ -236,7 +230,6 @@ AFLD:
 		Power: -30
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
-		Capturable: true
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -278,7 +271,6 @@ WEAP:
 		Power: -30
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -321,7 +313,6 @@ HQ:
 		Power: -40
 		Footprint: x_ xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -359,7 +350,6 @@ NUK2:
 		Power: 200
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 600
 	RevealsShroud:
@@ -382,7 +372,6 @@ FIX:
 		Power: -30
 		Footprint: _x_ xxx =x=
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 800
 	RevealsShroud:
@@ -409,7 +398,6 @@ HPAD:
 		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 800
 	RevealsShroud:
@@ -451,7 +439,6 @@ EYE:
 		Power: -200
 		Footprint: x_ xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -490,7 +477,6 @@ TMPL:
 		Power: -150
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 2000
 	RevealsShroud:

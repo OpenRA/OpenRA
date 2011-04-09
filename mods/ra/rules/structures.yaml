@@ -55,7 +55,6 @@ GAP:
 		Power: -60
 		Footprint: _ x
 		Dimensions: 1,2
-		Capturable: true
 	Health:
 		HP: 1000
 	Armor:
@@ -85,7 +84,6 @@ SPEN:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
@@ -141,7 +139,6 @@ SYRD:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
@@ -195,7 +192,6 @@ IRON:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 400
 	Armor:
@@ -234,7 +230,6 @@ PDOX:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 400
 	Armor:
@@ -351,7 +346,6 @@ DOME:
 		Power: -40
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 1000
 	Armor:
@@ -542,7 +536,6 @@ ATEK:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 400
 	Armor:
@@ -578,7 +571,6 @@ WEAP:
 		Power: -30
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		Capturable: true
 	Health:
 		HP: 1500
 	Armor:
@@ -604,7 +596,6 @@ FACT:
 		Power: 0
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 1000
 	Armor:
@@ -646,7 +637,6 @@ PROC:
 		Power: -30
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 900
 	Armor:
@@ -682,7 +672,6 @@ SILO:
 		Description: Stores excess harvested Ore
 	Building:
 		Power: -10
-		Capturable: true
 		BaseNormal: no
 	Health:
 		HP: 300
@@ -715,7 +704,6 @@ HPAD:
 		Power: -10
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 800
 	Armor:
@@ -751,7 +739,6 @@ AFLD:
 		Power: -20
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		Capturable: true
 	Health:
 		HP: 1000
 	Armor:
@@ -804,7 +791,6 @@ POWR:
 		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 400
 	Armor:
@@ -833,7 +819,6 @@ APWR:
 		Power: 200
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 700
 	Armor:
@@ -862,7 +847,6 @@ STEK:
 		Power: -100
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		Capturable: true
 	Health:
 		HP: 600
 	Armor:
@@ -889,7 +873,6 @@ BARR:
 		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 800
 	Armor:
@@ -927,7 +910,6 @@ TENT:
 		Power: -20
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 	Health:
 		HP: 800
 	Armor:
@@ -965,7 +947,6 @@ FIX:
 		Power: -30
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
-		Capturable: true
 	Health:
 		HP: 800
 	Armor:
@@ -992,7 +973,6 @@ FACF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 		BaseNormal: no
 	Health:
 		HP: 30
@@ -1019,7 +999,6 @@ WEAF:
 		Power: -2
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		Capturable: true
 		BaseNormal: no
 	Health:
 		HP: 30
@@ -1053,7 +1032,6 @@ SYRF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
@@ -1074,7 +1052,6 @@ SPEF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		Capturable: true
 		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
@@ -1105,7 +1082,6 @@ DOMF:
 		Power: -2
 		Footprint: xx xx
 		Dimensions: 2,2
-		Capturable: true
 		BaseNormal: no
 	Health:
 		HP: 30

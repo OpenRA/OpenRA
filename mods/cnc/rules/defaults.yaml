@@ -220,6 +220,7 @@
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	Sellable:
+	Capturable:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -232,6 +233,7 @@
 		Type: Wood
 	Building:
 	-RepairableBuilding:
+	-Capturable:
 	Tooltip:
 		Name: Civilian Building
 
@@ -252,7 +254,6 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: hvydoor1.aud
-		Capturable: false
 		BaseNormal: no
 		Adjacent: 7
 	TargetableBuilding:

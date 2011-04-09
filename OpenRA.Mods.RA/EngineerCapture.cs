@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
@@ -17,15 +18,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerCaptureInfo : TraitInfo<EngineerCapture> {}
+	class EngineerCaptureInfo : ITraitInfo
+	{
+		public string[] CaptureClasses = {"Building"};
+		public object Create(ActorInitializer init) { return new EngineerCapture(this); }
+	}
+	
 	class EngineerCapture : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		public readonly EngineerCaptureInfo Info;
+		public EngineerCapture(EngineerCaptureInfo info)
+		{
+			Info = info;
+		}
+		
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<Building>( "CaptureBuilding", 5, true, false,
-					_ => true, target => target.Info.Traits.Get<BuildingInfo>().Capturable );
+				yield return new EnterOrderTargeter<Capturable>( "CaptureBuilding", 5, true, false,
+					_ => true, target => target.Info.Traits.Get<CapturableInfo>().CaptureClasses.Intersect(Info.CaptureClasses).Any() );
 			}
 		}
 

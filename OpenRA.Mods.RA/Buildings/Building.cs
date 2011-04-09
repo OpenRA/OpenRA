@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly bool BaseNormal = true;
 		public readonly bool WaterBound = false;
 		public readonly int Adjacent = 2;
-		public readonly bool Capturable = false;
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 		
