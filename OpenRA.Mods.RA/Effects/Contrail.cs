@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly int[] ContrailOffset = {0, 0};
 
 		public readonly int TrailLength = 20;
+        public readonly Color Color = Color.White;
 		public readonly bool UsePlayerColor = true;
 
 		public object Create(ActorInitializer init) { return new Contrail(init.self, this); }
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.RA
 		{
 			Info = info;
 			ContrailTurret = new Turret(Info.ContrailOffset);
-            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Color.White);
+            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Info.Color);
 		}
 
 		public void Tick(Actor self)

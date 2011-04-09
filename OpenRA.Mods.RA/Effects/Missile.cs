@@ -34,6 +34,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;
         public readonly int ContrailLength = 0;
+        public readonly Color ContrailColor = Color.White;
         public readonly bool ContrailUsePlayerColor = false;
         public readonly int ContrailDelay = 1;
 
@@ -76,7 +77,7 @@ namespace OpenRA.Mods.RA.Effects
             if (Info.ContrailLength > 0)
             {
                 Trail = new ContrailHistory(Info.ContrailLength,
-                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Color.White,
+                    Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Info.ContrailColor,
                     Info.ContrailDelay);
             }
         }
