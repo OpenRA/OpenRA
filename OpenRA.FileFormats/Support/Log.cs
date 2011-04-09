@@ -34,33 +34,38 @@ namespace OpenRA
 			set
 			{
 				LogPathPrefix = value;				
-				if (!Directory.Exists(LogPathPrefix))
-					Directory.CreateDirectory(LogPathPrefix);
+				Directory.CreateDirectory(LogPathPrefix);
 			}
 		}
-		
-		public static void AddChannel(string channelName, string filename)
-		{
-			if (channels.ContainsKey(channelName)) return;
-			
-			var i = 0;
-			var f = filename;
-			while (File.Exists(LogPathPrefix + filename))
-				try 
-				{
-					StreamWriter writer = File.CreateText(LogPathPrefix + filename);
-					writer.AutoFlush = true;
-					channels.Add(channelName, new ChannelInfo() { Filename = filename, Writer = writer });
-					return;
-				}
-				catch (IOException) { filename = f + ".{0}".F(++i); }
-			
-			//if no logs exist, just make it
-			StreamWriter w = File.CreateText(LogPathPrefix + filename);
-			w.AutoFlush = true;
-			channels.Add(channelName, new ChannelInfo() { Filename = filename, Writer = w });
-			
-		}
+
+        static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
+        {
+            for(var i = 0;; i++ )
+                yield return Path.Combine(LogPathPrefix, 
+                    i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+        }
+
+        public static void AddChannel(string channelName, string baseFilename)
+        {
+            if (channels.ContainsKey(channelName)) return;
+
+            foreach (var filename in FilenamesForChannel(channelName, baseFilename))
+                try
+                {
+                    var writer = File.CreateText(filename);
+                    writer.AutoFlush = true;
+
+                    channels.Add(channelName,
+                        new ChannelInfo()
+                        {
+                            Filename = filename,
+                            Writer = writer
+                        });
+
+                    return;
+                }
+                catch (IOException) { }
+        }
 
 		public static void Write(string channel, string format, params object[] args)
 		{
