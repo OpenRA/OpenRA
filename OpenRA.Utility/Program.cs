@@ -48,26 +48,25 @@ namespace OpenRA.Utility
 
 			if (args.Length == 0) { PrintUsage(); return; }
 
-			bool piping = false;
-			var i = Array.IndexOf(args, "--pipe");
-			if (args.Length > 1 && i >= 0)
-			{
-				piping = true;
-				var pipename = args[i + 1];
+            var pipename = GetNamedArg(args, "--pipe");
+            var piping = pipename != null;
+            if (pipename != null)
+            {
+                var pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1,
+                    PipeTransmissionMode.Byte, PipeOptions.None, PipeBufferSize, PipeBufferSize,
+                    MakePipeSecurity());
 
-				var pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1,
-					PipeTransmissionMode.Byte, PipeOptions.None, PipeBufferSize, PipeBufferSize,
-					MakePipeSecurity());
+                pipe.WaitForConnection();
+                Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
+            }
 
-				pipe.WaitForConnection();
-				Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
-			}
-			i = Array.IndexOf(args, "--SupportDir");
-			if (args.Length > 1 && i >= 0)
-			{
-				Log.LogPath = args[i+1] + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar;
-				Console.WriteLine("LogPath: {0}", Log.LogPath);
-			}
+            var supportDir = GetNamedArg(args, "--SupportDir");
+            if (supportDir != null)
+            {
+                Log.LogPath = supportDir + Path.DirectorySeparatorChar + "Logs" + Path.DirectorySeparatorChar;
+                Console.WriteLine("LogPath: {0}", Log.LogPath);
+            }
+
 			try
 			{
 				var action = WithDefault( null, () => actions[args[0]]);
@@ -107,5 +106,17 @@ namespace OpenRA.Utility
 			try { return f(); }
 			catch { return def; }
 		}
+
+        static string GetNamedArg(string[] args, string arg)
+        {
+            if (args.Length < 2)
+                return null;
+
+            var i = Array.IndexOf(args, arg);
+            if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
+                return null;
+
+            return args[i + 1];
+        }
 	}
 }
