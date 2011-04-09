@@ -19,13 +19,11 @@ namespace OpenRA.Mods.RA.Activities
 	class MakeAnimation : CancelableActivity
 	{
 		readonly bool Reversed;
-		readonly RenderBuilding rb;
 		
 		public MakeAnimation(Actor self) : this(self, false) {}
 		public MakeAnimation(Actor self, bool reversed)
 		{
 			Reversed = reversed;
-			rb = self.Trait<RenderBuilding>();
 		}
 		
 		bool complete = false;
@@ -35,6 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled) return NextActivity;
 			if (!started)
 			{
+				var rb = self.Trait<RenderBuilding>();
 				started = true;
 				if (Reversed)
 				{

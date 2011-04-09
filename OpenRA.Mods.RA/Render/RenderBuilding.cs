@@ -15,6 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -58,10 +59,17 @@ namespace OpenRA.Mods.RA.Render
 			: base(init.self, baseFacing)
 		{
 			var self = init.self;
-			if( init.Contains<SkipMakeAnimsInit>() || !self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
-				anim.PlayThen( "idle", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
+			
+			// Work around a bogus crash
+			anim.PlayRepeating( NormalizeSequence(self, "idle") );
+			
+			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
+			{
+				self.QueueActivity(new MakeAnimation(self));
+				self.QueueActivity(new CallFunc(() => self.World.AddFrameEndTask( _ => Complete( self ) )));
+			}
 			else
-				anim.PlayThen( "make", () => self.World.AddFrameEndTask( _ => Complete( self ) ) );
+				Complete( self );
 		}
 
 		void Complete( Actor self )
