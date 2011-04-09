@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Mods.RA.Activities;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA
 {
 	class SellableInfo : TraitInfo<Sellable> 
 	{
@@ -27,6 +29,12 @@ namespace OpenRA.Mods.RA.Buildings
 			if (order.OrderString == "Sell")
 			{
 				self.CancelActivity();
+				if (self.HasTrait<RenderBuilding>() && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+					self.QueueActivity(new MakeAnimation(self, true));
+				
+				foreach( var ns in self.TraitsImplementing<INotifySold>() )
+					ns.Selling( self );
+				
 				self.QueueActivity(new Sell());
 			}
 		}

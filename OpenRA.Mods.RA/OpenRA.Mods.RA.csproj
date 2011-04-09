@@ -64,7 +64,6 @@
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Air\FlyCircle.cs" />
     <Compile Include="Air\EjectOnDeath.cs" />
-    <Compile Include="Buildings\Sellable.cs" />
     <Compile Include="Effects\CashTick.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
@@ -106,7 +105,6 @@
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\PowerManager.cs" />
-    <Compile Include="Buildings\Sell.cs" />
     <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="ProximityCaptor.cs" />
@@ -342,6 +340,8 @@
     <Compile Include="AnnounceOnBuild.cs" />
     <Compile Include="Capturable.cs" />
     <Compile Include="Activities\MakeAnimation.cs" />
+    <Compile Include="Activities\Sell.cs" />
+    <Compile Include="Sellable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

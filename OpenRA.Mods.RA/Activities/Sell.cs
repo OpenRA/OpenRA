@@ -11,18 +11,14 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
-
-namespace OpenRA.Mods.RA.Buildings
+using OpenRA.Traits.Activities;
+using OpenRA.Mods.RA.Buildings;
+		
+namespace OpenRA.Mods.RA.Activities
 {
-	class Sell : IActivity
+	class Sell : CancelableActivity
 	{
-		IActivity NextActivity { get; set; }
-
-		bool started;
-
-		int framesRemaining;
-
-		void DoSell(Actor self)
+		public override IActivity Tick(Actor self)
 		{
 			var h = self.TraitOrDefault<Health>();
 			var si = self.Info.Traits.Get<SellableInfo>();
@@ -41,42 +37,10 @@ namespace OpenRA.Mods.RA.Buildings
                 self.World.AddFrameEndTask(w => w.Add(new CashTick(refund, 30, 2, self.CenterLocation, self.Owner.ColorRamp.GetColor(0))));
 			
 			self.Destroy();
-		}
-
-		public IActivity Tick(Actor self)
-		{
-			if( !started )
-			{
-				framesRemaining = self.Trait<RenderSimple>().anim.HasSequence("make") 
-					? self.Trait<RenderSimple>().anim.GetSequence( "make" ).Length : 0;
-
-				foreach( var ns in self.TraitsImplementing<INotifySold>() )
-					ns.Selling( self );
-
-				started = true;
-			}
-			else if( framesRemaining <= 0 )
-				DoSell( self );
-
-			else
-				--framesRemaining;
-
 			return this;
 		}
 
-		public void Cancel(Actor self) { /* never gonna give you up.. */ }
-
-		public void Queue( IActivity activity )
-		{
-			if( NextActivity != null )
-				NextActivity.Queue( activity );
-			else
-				NextActivity = activity;
-		}
-
-		public IEnumerable<float2> GetCurrentPath()
-		{
-			yield break;
-		}
+		// Not actually cancellable
+		protected override bool OnCancel( Actor self ) { return false; }
 	}
 }
