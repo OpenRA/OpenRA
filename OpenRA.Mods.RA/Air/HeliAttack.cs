@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var attack = self.Trait<AttackHeli>();
-			var range = attack.GetMaximumRange() - 1;
+			var range = attack.GetMaximumRange() * 0.625f;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
