@@ -8,18 +8,14 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRA.FileFormats;
-using OpenRA.Network;
-using OpenRA.Server;
-using OpenRA.Widgets;
-using System.Diagnostics;
 using System;
-using System.Net;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
-using System.Drawing;
+using System.Net;
+using OpenRA.FileFormats;
+using OpenRA.Network;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
