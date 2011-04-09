@@ -32,7 +32,7 @@ namespace OpenRA.Utility
 
 			foreach (string s in files)
 			{
-				var destFile = "{0}{1}{2}".F(destPath, Path.DirectorySeparatorChar, s);
+				var destFile = Path.Combine(destPath, s);
 				using (var sourceStream = FileSystem.Open(s))
 				using (var destStream = File.Create(destFile))
 				{
