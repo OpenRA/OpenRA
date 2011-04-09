@@ -8,10 +8,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
-using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -27,9 +27,6 @@ namespace OpenRA.Mods.RA
 
     public class ProximityCapturable : ITick, ISync
     {
-        [Sync]
-        public Player Owner { get { return Captured ? Self.Owner : OriginalOwner; } }
-
         [Sync]
         public readonly Player OriginalOwner;
 
@@ -66,10 +63,10 @@ namespace OpenRA.Mods.RA
             }
 
             // if the area must be clear, and there is more than 1 player nearby => return ownership to default
-            if (Info.MustBeClear && !IsClear(self, Owner, OriginalOwner))
+            if (Info.MustBeClear && !IsClear(self, self.Owner, OriginalOwner))
             {
                 // Revert Ownership
-                ChangeOwnership(self, Owner, OriginalOwner);
+                ChangeOwnership(self, self.Owner, OriginalOwner);
                 return;
             }
 
@@ -81,12 +78,12 @@ namespace OpenRA.Mods.RA
 
                 if (captor != null) // got one
                 {
-                    ChangeOwnership(self, captor, Owner);
+                    ChangeOwnership(self, captor, self.Owner);
                     return;
                 }
 
                 // Revert Ownership otherwise
-                ChangeOwnership(self, Owner, OriginalOwner);
+                ChangeOwnership(self, self.Owner, OriginalOwner);
             }
         }
 
@@ -145,12 +142,14 @@ namespace OpenRA.Mods.RA
 
         IEnumerable<Actor> UnitsInRange()
         {
-            return Self.World.FindUnitsInCircle(Self.CenterLocation, Game.CellSize * Info.Range);
+            return Self.World.FindUnitsInCircle(Self.CenterLocation, Game.CellSize * Info.Range)
+                .Where(a => a.IsInWorld && a != Self && !a.Destroyed)
+                .Where(a => !a.Owner.NonCombatant);
         }
 
         bool IsClear(Actor self, Player currentOwner, Player originalOwner)
         {
-            return UnitsInRange().Where(a => !a.Destroyed && a.IsInWorld && a != self && !a.Owner.NonCombatant && a.Owner != originalOwner)
+            return UnitsInRange().Where(a => a.Owner != originalOwner)
                 .Where(a => a.Owner != currentOwner)
                 .Where(a => CanBeCapturedBy(a))
                 .All(a => AreMutualAllies(a.Owner, currentOwner));
@@ -160,7 +159,7 @@ namespace OpenRA.Mods.RA
         bool IsStillInRange(Actor self)
         {
             return UnitsInRange()
-                .Where(a => a.Owner == self.Owner && !a.Destroyed && a.IsInWorld && a != self)
+                .Where(a => a.Owner == self.Owner)
                 .Where(a => CanBeCapturedBy(a))
                 .Any();
         }
@@ -168,9 +167,7 @@ namespace OpenRA.Mods.RA
         IEnumerable<Actor> CaptorsInRange(Actor self)
         {
             return UnitsInRange()
-                .Where(a => a.Owner != OriginalOwner && !a.Destroyed && a.IsInWorld && a != self)
-                .Where(a => !a.Owner.PlayerRef.OwnsWorld)
-                .Where(a => !a.Owner.PlayerRef.NonCombatant)
+                .Where(a => a.Owner != OriginalOwner)
                 .Where(a => CanBeCapturedBy(a));
         }
 
