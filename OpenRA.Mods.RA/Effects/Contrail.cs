@@ -30,26 +30,21 @@ namespace OpenRA.Mods.RA
 	{
 		private ContrailInfo Info = null;
 
-		private List<float2> positions = new List<float2>();
-
 		private Turret ContrailTurret = null;
 
-		private int TrailLength = 0;
-		private Color TrailColor = Color.White;
+        ContrailHistory history;
+
+        static Color ChooseColor(Actor self)
+        {
+            var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
+            return PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
+        }
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
 			Info = info;
-
 			ContrailTurret = new Turret(Info.ContrailOffset);
-
-			TrailLength = Info.TrailLength;
-
-			if (Info.UsePlayerColor)
-			{
-				var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
-				TrailColor = PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
-			}
+            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ChooseColor(self) : Color.White);
 		}
 
 		public void Tick(Actor self)
@@ -57,37 +52,53 @@ namespace OpenRA.Mods.RA
 			var facing = self.Trait<IFacing>();
 			var altitude = new float2(0, self.Trait<IMove>().Altitude);
 
-			float2 pos = self.CenterLocation - Combat.GetTurretPosition(self, facing, ContrailTurret) - altitude;
-		
-			positions.Add(pos);
-
-			if (positions.Count >= TrailLength)
-			{
-				positions.RemoveAt(0);
-			}
+			var pos = self.CenterLocation - Combat.GetTurretPosition(self, facing, ContrailTurret) - altitude;
+            history.Tick(pos);
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
-		{
-			Color trailStart = TrailColor;
-			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R,
-											trailStart.G, trailStart.B);
-
-			for (int i = positions.Count - 1; i >= 1; --i)
-			{
-				var conPos = positions[i];
-				var nextPos = positions[i - 1];
-
-				if (self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
-					self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
-				{
-					Game.Renderer.LineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
-
-					trailStart = trailEnd;
-					trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R,
-												trailStart.G, trailStart.B);
-				}
-			}
-		}
+        public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }
 	}
+
+    class ContrailHistory
+    {
+        List<float2> positions = new List<float2>();
+        readonly int TrailLength;
+        readonly Color Color;
+
+        public ContrailHistory(int trailLength, Color color)
+        {
+            this.TrailLength = trailLength;
+            this.Color = color;
+        }
+
+        public void Tick(float2 currentPos)
+        {
+            positions.Add(currentPos);
+            if (positions.Count >= TrailLength)
+                positions.RemoveAt(0);
+        }
+
+        public void Render(Actor self)
+        {
+            Color trailStart = Color;
+            Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R,
+                                            trailStart.G, trailStart.B);
+
+            for (int i = positions.Count - 1; i >= 1; --i)
+            {
+                var conPos = positions[i];
+                var nextPos = positions[i - 1];
+
+                if (self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
+                    self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
+                {
+                    Game.Renderer.LineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
+
+                    trailStart = trailEnd;
+                    trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R,
+                                                trailStart.G, trailStart.B);
+                }
+            }
+        }
+    }
 }
