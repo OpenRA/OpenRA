@@ -675,6 +675,8 @@ LTNK.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	TransformOnCapture:
+		IntoActor: ltnk
 
 MTNK.Husk:
 	Inherits: ^Husk
@@ -688,6 +690,8 @@ MTNK.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	TransformOnCapture:
+		IntoActor: mtnk
 
 HTNK.Husk:
 	Inherits: ^Husk
@@ -701,6 +705,8 @@ HTNK.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	TransformOnCapture:
+		IntoActor: htnk
 
 MSAM.Husk:
 	Inherits: ^Husk
@@ -714,6 +720,8 @@ MSAM.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	TransformOnCapture:
+		IntoActor: msam
 
 MLRS.Husk:
 	Inherits: ^Husk
@@ -727,3 +735,5 @@ MLRS.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+	TransformOnCapture:
+		IntoActor: mlrs

@@ -21,7 +21,8 @@ namespace OpenRA.Mods.RA.Activities
 		public readonly string ToActor = null;
 		public int2 Offset = new int2(0,0);
 		public int Facing = 96;
-		public string[] Sounds = {};	
+		public string[] Sounds = {};
+		public int ForceHealthPercentage = 0;
 		
 		public Transform(Actor self, string toActor)
 		{
@@ -47,10 +48,14 @@ namespace OpenRA.Mods.RA.Activities
 					new FacingInit( Facing ),
 				};
 				var health = self.TraitOrDefault<Health>();
-				// TODO: fix potential desync from HPFraction
 				if (health != null)
-					init.Add( new HealthInit( health.HPFraction ));
-				
+				{
+					// TODO: Fix bogus health init
+					if (ForceHealthPercentage > 0)
+						init.Add( new HealthInit( ForceHealthPercentage * 1f / 100 ));
+					else
+						init.Add( new HealthInit( health.HPFraction ));
+				}
 				var a = w.CreateActor( ToActor, init );
 				
 				if (selected)

@@ -337,6 +337,7 @@
     <Compile Include="Render\WithShadow.cs" />
     <Compile Include="AnnounceOnBuild.cs" />
     <Compile Include="Capturable.cs" />
+    <Compile Include="TransformOnCapture.cs" />
     <Compile Include="Activities\MakeAnimation.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Sellable.cs" />
