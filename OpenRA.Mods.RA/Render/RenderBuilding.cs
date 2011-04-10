@@ -64,12 +64,10 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 			
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
-			{
 				self.QueueActivity(new MakeAnimation(self));
-				self.QueueActivity(new CallFunc(() => self.World.AddFrameEndTask( _ => Complete( self ) )));
-			}
-			else
-				Complete( self );
+			
+			// Can't call Complete() from ctor because other traits haven't been inited yet
+			self.QueueActivity(new CallFunc(() => self.World.AddFrameEndTask( _ => Complete( self ) )));
 		}
 
 		void Complete( Actor self )
