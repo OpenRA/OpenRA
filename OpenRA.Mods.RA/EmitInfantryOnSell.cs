@@ -17,8 +17,8 @@ namespace OpenRA.Mods.RA
 {
 	class EmitInfantryOnSellInfo : TraitInfo<EmitInfantryOnSell>
 	{
-		public readonly float ValueFraction = .4f;
-		public readonly float MinHpFraction = .3f;
+		public readonly float ValuePercent = 40;
+		public readonly float MinHpPercent = 30;
 
 		[ActorReference]
 		public readonly string[] ActorTypes = { "e1" };
@@ -36,8 +36,11 @@ namespace OpenRA.Mods.RA
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 			
 			var health = self.TraitOrDefault<Health>();
-			var hpFraction = (health == null) ? 1f : health.HPFraction;
-			var dudesValue = (int)(hpFraction * info.ValueFraction * cost);
+			var dudesValue = info.ValuePercent * cost;
+			if (health != null)
+				dudesValue = dudesValue*health.HP / health.MaxHP;
+			dudesValue /= 100;
+			
 			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
 

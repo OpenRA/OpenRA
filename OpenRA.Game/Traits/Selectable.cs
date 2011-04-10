@@ -133,7 +133,7 @@ namespace OpenRA.Traits
 				healthColor.G / 2,
 				healthColor.B / 2);
 
-			var z = float2.Lerp(xy, Xy, health.HPFraction);
+			var z = float2.Lerp(xy, Xy, (float)health.HP / health.MaxHP);
 			
 
 			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);

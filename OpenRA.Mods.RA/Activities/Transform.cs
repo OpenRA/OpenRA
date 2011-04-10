@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Activities
 					if (ForceHealthPercentage > 0)
 						init.Add( new HealthInit( ForceHealthPercentage * 1f / 100 ));
 					else
-						init.Add( new HealthInit( health.HPFraction ));
+						init.Add( new HealthInit( (float)health.HP / health.MaxHP ));
 				}
 				var a = w.CreateActor( ToActor, init );
 				

@@ -12,31 +12,36 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SelfHealingInfo : TraitInfo<SelfHealing>, ITraitPrerequisite<HealthInfo>
+	class SelfHealingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;
 		public readonly float HealIfBelow = .5f;
+		
+		public virtual object Create(ActorInitializer init) { return new SelfHealing(this); }
 	}
 
 	class SelfHealing : ITick, ISync
 	{
 		[Sync]
 		int ticks;
+		SelfHealingInfo Info;
+		
+		public SelfHealing(SelfHealingInfo info) { Info = info; }
 
 		public void Tick(Actor self)
 		{
 			if (self.IsDead())
 				return;
 			
-			var info = self.Info.Traits.Get<SelfHealingInfo>();
-			if (self.Trait<Health>().HPFraction >= info.HealIfBelow)
+			var health = self.Trait<Health>();
+			if (health.HP >= Info.HealIfBelow*health.MaxHP)
 				return;
 
 			if (--ticks <= 0)
 			{
-				ticks = info.Ticks;
-				self.InflictDamage(self, -info.Step, null);
+				ticks = Info.Ticks;
+				self.InflictDamage(self, -Info.Step, null);
 			}
 		}
 	}
