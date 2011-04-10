@@ -55,7 +55,6 @@
     <Compile Include="AcceptsSupplies.cs" />
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
-    <Compile Include="Activities\CaptureBuilding.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
     <Compile Include="Activities\QueuedActivity.cs" />
     <Compile Include="Activities\DeliverOre.cs" />
@@ -207,7 +206,6 @@
     <Compile Include="Effects\InvulnEffect.cs" />
     <Compile Include="Effects\Parachute.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
-    <Compile Include="EngineerCapture.cs" />
     <Compile Include="SupportPowers\GpsPower.cs" />
     <Compile Include="InfiltrateForSupportPower.cs" />
     <Compile Include="IronCurtainable.cs" />
@@ -342,6 +340,8 @@
     <Compile Include="Activities\MakeAnimation.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Sellable.cs" />
+    <Compile Include="Captures.cs" />
+    <Compile Include="Activities\CaptureActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -16,7 +16,10 @@ namespace OpenRA.Mods.RA
 {
 	public class CapturableInfo : TraitInfo<Capturable>
 	{
-		public readonly string[] CaptureClasses = {"Building"};
+		public readonly string Type = "building";
+		public readonly bool AllowAllies = false;
+		public readonly bool AllowNeutral = false;
+		public readonly bool AllowEnemies = true;
 	}
 
 	public class Capturable {}

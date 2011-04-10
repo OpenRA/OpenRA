@@ -14,11 +14,11 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class CaptureBuilding : CancelableActivity
+	class CaptureActor : CancelableActivity
 	{
 		Actor target;
 
-		public CaptureBuilding(Actor target) { this.target = target; }
+		public CaptureActor(Actor target) { this.target = target; }
 
 		public override IActivity Tick(Actor self)
 		{

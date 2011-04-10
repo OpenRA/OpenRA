@@ -144,7 +144,7 @@ E6:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	EngineerCapture:
+	Captures:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
