@@ -196,8 +196,8 @@ CENTROID FLAT NOPERSPECTIVE FACE PRIMITIVEID VERTEXID
 ]]
 
 -- keywords - shouldn't be left out
-for w in keyw:gmatch("([a-zA-Z_0-9]+)") do
-	api[str] = {type="keyword"}
+for w in keyw:gmatch("([_%w]+)") do
+	api[w] = {type="keyword"}
 end
 
 return api
