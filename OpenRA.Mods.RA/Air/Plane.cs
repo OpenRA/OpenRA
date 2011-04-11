@@ -103,9 +103,11 @@ namespace OpenRA.Mods.RA.Air
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(
-					info.RearmBuildings.Contains(order.TargetActor.Info.Name)
-						? (IActivity)new Rearm() : new Repair(order.TargetActor));
+				
+				if (Info.RearmBuildings.Contains(order.TargetActor.Info.Name))
+				    self.QueueActivity( new Rearm() );
+				if (Info.RepairBuildings.Contains(order.TargetActor.Info.Name))
+				    self.QueueActivity( new Repair( order.TargetActor ));
 			}
 			else if (order.OrderString == "Stop")
 			{
