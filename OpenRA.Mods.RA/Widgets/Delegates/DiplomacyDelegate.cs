@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 		int validPlayers = 0;
 		readonly World world;
+		
 		[ObjectCreator.UseCtor]
 		public DiplomacyDelegate( [ObjectCreator.Param] World world )
 		{
@@ -30,6 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
 			var diplomacy = root.GetWidget("INGAME_DIPLOMACY_BUTTON");
+			
 			diplomacy.OnMouseUp = mi =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
