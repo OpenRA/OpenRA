@@ -299,7 +299,6 @@ function AddDynamicWords (editor)
 	end
 end
 
-
 ------------
 -- Final Autocomplete
 
@@ -311,16 +310,26 @@ local function buildcache(childs)
 	local t = cache[childs]
 	
 	for key, info in pairs(childs) do
+		
 		local kl = key:lower()
-		--DisplayOutput("1> cache:"..kl.."\n")
 		for i=0,#key do 
 			local k = kl:sub(1,i)
 			t[k] = t[k] or {}
-			t[k][#t[k]+1] = key
+			table.insert(t[k],key)
 		end
+		-- find camel case / _ separated
+--		for ks in string.gmatch(key,"([A-Z%d]*[a-z%d]*_?)") do
+--			local k = ks:sub(1,1):lower()
+--			t[k] = t[k] or {}
+--			table.insert(t[k],key)
+--		end
 	end
 	
 	return t
+end
+
+function ClearAutoCompCache()
+	cache = {}
 end
 
 -- make syntype dependent
@@ -333,20 +342,19 @@ function CreateAutoCompList(editor,key)
 	-- ignore keywords
 	if tip.keys[key] then return end
 	
-	-- search in api autocomplete list
-	-- track recursion depth
-	local depth = 0
-	
+	-- override class based on assign cache
 	UpdateAssignCache(editor)
-	
 	if (editor.assignscache) then
-		local id,rest = key:match("([%w_.]+):(.*)")
+		local id,rest = key:match("([%w_%.]+):(.*)")
 		-- replace for lookup
 		if (id and rest) then
 			key = (editor.assignscache.assigns[id] or id)..":"..rest
 		end
 	end
 	
+	-- search in api autocomplete list
+	-- track recursion depth
+	local depth = 0
 	local function findtab (rest,tab)
 		local key,krest = rest:match("([%w_]+)(.*)")
 		
@@ -364,24 +372,22 @@ function CreateAutoCompList(editor,key)
 	if not (tab and tab.childs) then return end
 	
 	if (depth < 1) then
-		local obj,krest = rest:match("([a-zA-Z0-9_]+)[:%.]([a-zA-Z0-9_]+)%s*$")
+		local obj,krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
 		if (krest) then
 			if (#krest < 3) then return end
 			tab = tip.finfo
-			rest = krest:gsub("[^a-zA-Z0-9_]","")
+			rest = krest:gsub("[^%w_]","")
 		else
-			rest = rest:gsub("[^a-zA-Z0-9_]","")
+			rest = rest:gsub("[^%w_]","")
 		end
 	else
-		rest = rest:gsub("[^a-zA-Z0-9_]","")
+		rest = rest:gsub("[^%w_]","")
 	end
 
 	-- final list (cached)
 	local complete = buildcache(tab.childs or tab)
 
-	
-	
-	local last = key : match "([a-zA-Z0-9_]+)%s*$"
+	local last = key : match "([%w_]+)%s*$"
 		
 
 	-- build dynamic word list 
