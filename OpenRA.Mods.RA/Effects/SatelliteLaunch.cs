@@ -24,9 +24,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public SatelliteLaunch(Actor a)
 		{
-			pos = a.CenterLocation - .5f * doors.Image.size + doorOffset;
 			doors.PlayThen("active",
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
+			
+			pos = a.CenterLocation - .5f * doors.Image.size + doorOffset;
 		}
 
 		public void Tick( World world )
