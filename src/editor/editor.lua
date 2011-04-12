@@ -237,6 +237,12 @@ function CreateEditor(name)
 	editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, wxstc.wxSTC_MARK_TCORNER,  wx.wxWHITE, grey)
 	grey:delete()
 	
+	editor:AutoCompSetIgnoreCase(ide.config.acandtip.ignorecase)
+	if (ide.config.acandtip.strategy > 0) then
+		editor:AutoCompSetAutoHide(0)
+		editor:AutoCompStops([[ \n\t=-+():.,;*/!"'$%&~'#°^@?´`<>][|}{]])
+	end
+	
 	editor.ev = {}
 
 	editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,

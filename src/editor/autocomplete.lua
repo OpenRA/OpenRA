@@ -305,24 +305,36 @@ end
 local cache = {}
 local function buildcache(childs)
 	if cache[childs] then return cache[childs] end
-	--DisplayOutput("1> build cache\n")
 	cache[childs] = {}
 	local t = cache[childs]
+	local ex = ide.config.acandtip.strategy > 0
 	
 	for key, info in pairs(childs) do
-		
+		local used = {}
+		--
 		local kl = key:lower()
 		for i=0,#key do 
 			local k = kl:sub(1,i)
 			t[k] = t[k] or {}
+			used[k] = true
 			table.insert(t[k],key)
 		end
-		-- find camel case / _ separated
---		for ks in string.gmatch(key,"([A-Z%d]*[a-z%d]*_?)") do
---			local k = ks:sub(1,1):lower()
---			t[k] = t[k] or {}
---			table.insert(t[k],key)
---		end
+		if (ex) then
+			-- find camel case / _ separated subwords
+			-- glfwGetGammaRamp -> g, gg, ggr
+			-- GL_POINT_SPRIT -> g, gp, gps
+			local last = ""
+			for ks in string.gmatch(key,"([A-Z%d]*[a-z%d]*_?)") do
+				local k = last..(ks:sub(1,1):lower())
+				last = k
+				
+				t[k] = t[k] or {}
+				if (not used[k]) then
+					used[k] = true
+					table.insert(t[k],key)
+				end
+			end
+		end
 	end
 	
 	return t

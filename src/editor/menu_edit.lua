@@ -138,16 +138,15 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 					break
 				end
 			end
-			
 			local complete = linetx:sub(acstart,localpos) : gsub("%s","")
 			-- know now which string is to be completed
-			
-			--DisplayOutput("> "..complete.."\n")
 			
 			local userList = CreateAutoCompList(editor,complete)
 			if userList and string.len(userList) > 0 then
 				editor:UserListShow(1, userList)
 				--ShowList(userList)
+			elseif (editor:AutoCompActive()) then
+				editor:AutoCompCancel()
 			end
 		end)
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)

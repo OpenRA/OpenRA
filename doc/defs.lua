@@ -131,6 +131,11 @@ config = {
 		-- tooltips are compact during typing
 		nodynwords = false,
 		-- no dynamic words (user entered words)
+		ignorecase = false,
+		-- ignores case when performing comparison with autocomplete list
+		strategy = 0,
+		-- 0: is string comparison (default)
+		-- 1: substring leading characters (camel case or _ separated)
 	}
 		
 	savebak = false,

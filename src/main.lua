@@ -37,6 +37,8 @@ ide = {
 		autocomplete = true,
 		acandtip = {
 			shorttip = false,
+			ignorecase = false,
+			strategy = 0,
 		},
 		
 		filehistorylength = 20,
