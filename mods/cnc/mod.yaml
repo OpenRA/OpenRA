@@ -37,6 +37,8 @@ Rules:
 	mods/cnc/rules/trees.yaml
 	mods/cnc/rules/civilian.yaml
 	mods/cnc/rules/tech.yaml
+	mods/cnc/rules/ships.yaml
+	mods/cnc/rules/aircraft.yaml
 
 Sequences:
 	mods/cnc/sequences/structures.yaml

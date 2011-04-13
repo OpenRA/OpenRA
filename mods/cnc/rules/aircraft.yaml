@@ -1,0 +1,151 @@
+TRAN:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Chinook Transport
+		Icon:tranicnh
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: hpad
+		BuiltAt: hpad
+		Owner: gdi,nod
+	Helicopter:
+		LandWhenIdle: true
+		ROT: 5
+		Speed: 15
+		InitialFacing: 0
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+	Health:
+		HP: 90
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 8
+	RenderUnit:
+	WithRotor@PRIMARY:
+		Offset: 0,14,0,-4
+	WithRotor@SECONDARY:
+		Id: rotor_2
+		Offset: 0,-14,0,-2
+	WithShadow:
+	Cargo:
+		Types: Infantry
+		Passengers: 5
+	FallsToEarth:
+
+HELI:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Apache Longbow
+		Icon: heliicnh
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, hq
+		BuiltAt: hpad
+		Owner: nod
+	Helicopter:
+		ROT: 4
+		Speed: 20
+	Health:
+		HP: 125
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 8
+	AttackHeli:
+		PrimaryWeapon: HighV.Heli
+		PrimaryOffset: 0,-10,0,3
+		FacingTolerance: 20
+	RenderUnit:
+	WithRotor:
+		Offset: 0,0,0,-2
+	WithMuzzleFlash:
+	WithShadow:
+	FallsToEarth:
+	AutoTarget:
+
+ORCA:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Orca
+		Icon: orcaicnh
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, hq
+		BuiltAt: hpad
+		Owner: gdi
+	Helicopter:
+		ROT: 4
+		Speed: 20
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 8
+	AttackHeli:
+		PrimaryWeapon: Rockets.Orca
+		SecondaryWeapon: Rockets.Orca
+		PrimaryOffset: -5,0,0,2
+		SecondaryOffset: 5,0,0,2
+		FacingTolerance: 20
+	RenderUnit:
+	WithShadow:
+	FallsToEarth:
+	AutoTarget:
+
+C17:
+	ParaDrop:
+		LZRange: 1
+	Inherits: ^Plane
+	Tooltip:
+		Name: Supply Aircraft
+	Plane:
+		ROT: 5
+		Speed: 25
+	Health:
+		HP: 25
+	Armor:
+		Type: Heavy
+	RenderUnit:
+	WithShadow:
+	Cargo:
+#		Types: Infantry, Vehicle
+		Passengers: 10
+	Invulnerable:
+	-Selectable:
+	-TargetableUnit:
+	-GainsExperience:
+	FlyAwayOnIdle:
+
+A10:
+	Inherits: ^Plane
+	Tooltip:
+		Name: A10 Bomber
+		Icon: a10icnh
+	Plane:
+		ROT: 4
+		Speed: 25
+	Health:
+		HP: 60
+	Armor:
+		Type: Heavy
+	RenderUnit:
+	WithShadow:
+	LimitedAmmo:
+		Ammo: 10
+	CarpetBomb:
+		Weapon: Napalm
+		Range: 3
+	-Selectable:
+	-GainsExperience:
+	FlyAwayOnIdle:
+

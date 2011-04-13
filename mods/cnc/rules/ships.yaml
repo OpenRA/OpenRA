@@ -1,0 +1,64 @@
+BOAT:
+	Inherits: ^Ship
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Gunboat
+		Icon: boaticnh
+	Health:
+		HP: 700
+	Armor:
+		Type: Heavy
+	Mobile:
+		InitialFacing:64
+		ROT: 4
+		Speed: 2
+		OnRails: true
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+		PrimaryWeapon: BoatMissile
+		PrimaryOffset: 0,-15,0,-4
+		PrimaryLocalOffset: -3,-5,0,3,-5,0,0,-5,0
+	RenderGunboat:
+	AutoTarget:
+		AllowMovement: false
+
+LST:
+	Inherits: ^Ship
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Landing Craft
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 100
+			River: 100
+		InitialFacing:0
+		ROT: 4
+		Speed: 10
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+	WithRoof:
+	RenderCargo:
+	-Selectable:
+	Cargo:
+		Types: Infantry, Vehicle
+		Passengers: 5
+	AttackMove:
+		JustMove: true
+
