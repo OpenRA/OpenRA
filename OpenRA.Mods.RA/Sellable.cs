@@ -24,10 +24,12 @@ namespace OpenRA.Mods.RA
 	
 	class Sellable : IResolveOrder
 	{
+		bool selling = false;
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Sell")
+			if (order.OrderString == "Sell" && !selling)
 			{
+				selling = true;
 				self.CancelActivity();
 				if (self.HasTrait<RenderBuilding>() && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
 					self.QueueActivity(new MakeAnimation(self, true));
