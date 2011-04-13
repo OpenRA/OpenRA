@@ -134,8 +134,9 @@ config = {
 		ignorecase = false,
 		-- ignores case when performing comparison with autocomplete list
 		strategy = 0,
-		-- 0: is string comparison (default)
+		-- 0: is string comparison 
 		-- 1: substring leading characters (camel case or _ separated)
+		-- 2: leading + any correctly ordered fragments (default)
 	}
 		
 	savebak = false,

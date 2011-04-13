@@ -303,12 +303,45 @@ end
 -- Final Autocomplete
 
 local cache = {}
-local function buildcache(childs)
-	if cache[childs] then return cache[childs] end
-	cache[childs] = {}
-	local t = cache[childs]
-	local ex = ide.config.acandtip.strategy > 0
+local laststrategy
+local function getAutoCompApiList(childs,fragment)
+	fragment = fragment:lower()
+	local strategy = ide.config.acandtip.strategy 
+	if (laststrategy ~= strategy) then cache = {}; laststrategy = strategy end
 	
+	if (strategy == 2) then
+		local wlist = cache[childs]
+		if not wlist then 
+			wlist = " "
+			for i,v in pairs(childs) do
+				wlist = wlist..i.." "
+			end
+			cache[childs] = wlist
+		end
+		
+		local ret = {}
+		local g = string.gmatch
+		local pat = fragment ~= "" and ("%s"..fragment:gsub(".",
+			function(c) 
+				local l = c:lower()..c:upper()
+				return "["..l.."][^"..l.." ]*" 
+			end).." ") or " [%w_]+ "
+		
+		for c in g(wlist,pat) do
+			table.insert(ret,c)
+		end
+		
+		return ret
+	end
+	
+	if cache[childs] then 
+		return cache[childs][fragment]
+	end
+	
+	local t = {}
+	cache[childs] = t
+	
+	local sub = strat == 1
 	for key, info in pairs(childs) do
 		local used = {}
 		--
@@ -319,7 +352,7 @@ local function buildcache(childs)
 			used[k] = true
 			table.insert(t[k],key)
 		end
-		if (ex) then
+		if (sub) then
 			-- find camel case / _ separated subwords
 			-- glfwGetGammaRamp -> g, gg, ggr
 			-- GL_POINT_SPRIT -> g, gp, gps
@@ -396,11 +429,8 @@ function CreateAutoCompList(editor,key)
 		rest = rest:gsub("[^%w_]","")
 	end
 
-	-- final list (cached)
-	local complete = buildcache(tab.childs or tab)
-
-	local last = key : match "([%w_]+)%s*$"
-		
+	local last = key:match "([%w_]+)%s*$"
+	
 
 	-- build dynamic word list 
 	-- only if api search couldnt descend
@@ -417,21 +447,50 @@ function CreateAutoCompList(editor,key)
 			dw = " " .. table.concat(list," ")
 		end
 	end
-	
+
+	-- list from api
+	local apilist = getAutoCompApiList(tab.childs or tab,rest)
 	local compstr = ""
-	if complete and complete[rest:lower()] then
-		local list = complete[rest:lower()]
-		
+	if apilist then
 		if (#rest > 0) then
-			table.sort(list,function(a,b)
-				local ma,mb = a:sub(1,#rest)==last, b:sub(1,#rest)==rest
-				if (ma and mb) or (not ma and not mb) then return a<b end
-				return ma
-			end)
+			local strategy = ide.config.acandtip.strategy
+			
+			if (strategy == 2 and #apilist < 128) then
+				local pat = rest:gsub(".",function(c) 
+					local l = c:lower()..c:upper()
+					return "["..l.."]([^"..l.." ]*)" 
+				end)
+
+				local g = string.gsub
+				table.sort(apilist,function(a,b)
+					local ma,mb = 0,0
+					g(a,pat,function(...)
+						local l = {...}
+						for i,v in ipairs(l) do
+							ma = ma + ((v=="") and 0 or 1)
+						end
+					end)
+					g(b,pat,function(...)
+						local l = {...}
+						for i,v in ipairs(l) do
+							mb = mb + ((v=="") and 0 or 1)
+						end
+					end)
+					
+					if (ma == mb) then return a:lower()<b:lower() end
+					return ma<mb
+				end)
+			else
+				table.sort(apilist,function(a,b)
+					local ma,mb = a:sub(1,#rest)==rest, b:sub(1,#rest)==rest
+					if (ma and mb) or (not ma and not mb) then return a<b end
+					return ma
+				end)
+			end
 		else
-			table.sort(list)
+			table.sort(apilist)
 		end
-		compstr = table.concat(list," ")
+		compstr = table.concat(apilist," ")
 	end
 	
 	-- concat final, list complete first

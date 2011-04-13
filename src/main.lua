@@ -38,7 +38,7 @@ ide = {
 		acandtip = {
 			shorttip = false,
 			ignorecase = false,
-			strategy = 0,
+			strategy = 2,
 		},
 		
 		filehistorylength = 20,
