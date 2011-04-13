@@ -37,6 +37,7 @@ Rules:
 	mods/ra/rules/infantry.yaml
 	mods/ra/rules/civilian.yaml
 	mods/ra/rules/trees.yaml
+	mods/ra/rules/aircraft.yaml
 
 Sequences:
 	mods/ra/sequences.yaml
