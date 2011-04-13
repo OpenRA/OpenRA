@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Server
 				{
 					try
 					{
-						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}";
+						var url = "ping.php?port={0}&name={1}&state={2}&players={3}&mods={4}&map={5}&maxplayers={6}";
 						if (isInitialPing) url += "&new=1";
 
 						using (var wc = new WebClient())
@@ -69,7 +69,8 @@ namespace OpenRA.Mods.RA.Server
 								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
 								server.lobbyInfo.Clients.Count,
 								string.Join(",", Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).ToArray()),
-								server.lobbyInfo.GlobalSettings.Map));
+								server.lobbyInfo.GlobalSettings.Map,
+								server.lobbyInfo.Slots.Count( s => !s.Spectator )));
 
 							if (isInitialPing)
 							{
