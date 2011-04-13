@@ -38,6 +38,7 @@ Rules:
 	mods/ra/rules/civilian.yaml
 	mods/ra/rules/trees.yaml
 	mods/ra/rules/aircraft.yaml
+	mods/ra/rules/ships.yaml
 
 Sequences:
 	mods/ra/sequences.yaml
