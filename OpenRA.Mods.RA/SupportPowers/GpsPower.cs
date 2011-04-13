@@ -24,10 +24,14 @@ namespace OpenRA.Mods.RA
 
 	class GpsPower : SupportPower, INotifyKilled, ISync, INotifyStanceChanged, INotifySold
 	{
-		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info) { }
-
 		[Sync]
 		public bool Granted;
+
+		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info)
+		{
+			Granted = self.World.ActorsWithTrait<GpsPower>()
+				.Any(p => p.Actor.Owner == self.Owner && p.Trait.Granted);
+		}
 
 		public override void Charged(Actor self, string key)
 		{
@@ -44,7 +48,17 @@ namespace OpenRA.Mods.RA
 
                 /* there is only one shroud, but it is misleadingly available through Player.Shroud */
 				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25,
-					() => { Granted = true; RefreshGps(self); }));
+					() => {
+						var ateks = self.World.ActorsWithTrait<GpsPower>();
+						foreach (TraitPair<GpsPower> i in ateks)
+						{
+							if (i.Actor.Owner == self.Owner)
+							{
+								i.Trait.Granted = true;
+							}
+						}
+						RefreshGps(self);
+					}));
 			});
 		}
 
