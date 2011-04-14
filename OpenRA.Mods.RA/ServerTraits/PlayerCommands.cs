@@ -71,6 +71,12 @@ namespace OpenRA.Mods.RA.Server
 							return false;
 						}
 						
+						if (server.lobbyInfo.Slots[client.Slot].Spectator)
+						{
+							server.SendChatTo( conn, "Can't select a spawnpoint as a spectator" );
+							return false;
+						}
+
 						if (server.lobbyInfo.Clients.Where( c => c != client ).Any( c => (c.SpawnPoint == spawnPoint) && (c.SpawnPoint != 0) ))
 						{
 							server.SendChatTo( conn, "You can't be at the same spawn point as another player" );

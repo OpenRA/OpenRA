@@ -74,19 +74,6 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
-				{ "spectator",
-					s =>
-						{
-							var slotData = server.lobbyInfo.Slots.Where(ax => ax.Spectator && !server.lobbyInfo.Clients.Any(l => l.Slot == ax.Index)).FirstOrDefault();
-							if (slotData == null)
-								return true;
-	
-							client.Slot = slotData.Index;
-							S.SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
-
-						server.SyncLobbyInfo();
-						return true;
-					}},	
 				{ "slot",
 					s =>
 					{
@@ -101,6 +88,10 @@ namespace OpenRA.Mods.RA.Server
 						client.Slot = slot;
 						S.SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
 						
+						// if we're entering a spectator slot, relinquish our spawnpoint.
+						if (slotData.Spectator)
+							client.SpawnPoint = 0;
+
 						server.SyncLobbyInfo();
 						return true;
 					}},
