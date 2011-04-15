@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -11,9 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -76,7 +78,7 @@ namespace OpenRA.Mods.RA.Air
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
 	}
 
-	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled
+	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled, IIssueOrder, IOrderVoice
 	{
 		public IDisposable reservation;
 		
@@ -183,5 +185,51 @@ namespace OpenRA.Mods.RA.Air
 			if (Info.RepairBuildings.Contains(name))
 				self.QueueActivity(new Repair(a));
 		}
+
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
+			{
+				yield return new EnterOrderTargeter<Building>("Enter", 5, false, true,
+					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
+
+				yield return new AircraftMoveOrderTargeter();
+			}
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			if (order.OrderID == "Enter")
+				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+
+			if (order.OrderID == "Move")
+				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
+
+			return null;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
+		}
+	}
+
+	class AircraftMoveOrderTargeter : IOrderTargeter
+	{
+		public string OrderID { get { return "Move"; } }
+		public int OrderPriority { get { return 4; } }
+
+		public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		{
+			return false;
+		}
+
+		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		{
+			IsQueued = forceQueued;
+			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
+			return true;
+		}
+		public bool IsQueued { get; protected set; }
 	}
 }

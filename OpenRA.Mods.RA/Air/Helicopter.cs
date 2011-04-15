@@ -8,14 +8,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
@@ -28,7 +23,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
 	}
 
-	class Helicopter : Aircraft, ITick, IIssueOrder, IResolveOrder, IOrderVoice
+	class Helicopter : Aircraft, ITick, IResolveOrder
 	{
 		HelicopterInfo Info;
 		bool firstTick = true;
@@ -36,33 +31,6 @@ namespace OpenRA.Mods.RA.Air
 		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info ) 
 		{
 			Info = info;
-		}
-		
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get
-			{
-				yield return new EnterOrderTargeter<Building>( "Enter", 5, false, true,
-					target => AircraftCanEnter( target ), target => !Reservable.IsReserved( target ) );
-
-				yield return new AircraftMoveOrderTargeter();
-			}
-		}
-
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
-		{
-			if( order.OrderID == "Enter" )
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if( order.OrderID == "Move" )
-				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
-
-			return null;
-		}
-
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
 		
 		public void ResolveOrder(Actor self, Order order)

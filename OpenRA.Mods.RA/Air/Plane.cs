@@ -8,12 +8,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
@@ -23,7 +19,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, ISync
+	public class Plane : Aircraft, IResolveOrder, ITick, ISync
 	{
 		[Sync]
 		public int2 RTBPathHash;
@@ -50,33 +46,6 @@ namespace OpenRA.Mods.RA.Air
 					}
 				}
 			}
-		}
-
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get
-			{
-				yield return new EnterOrderTargeter<Building>( "Enter", 5, false, true,
-					target => AircraftCanEnter( target ), target => !Reservable.IsReserved( target ) );
-
-				yield return new AircraftMoveOrderTargeter();
-			}
-		}
-
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
-		{
-			if( order.OrderID == "Enter" )
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if( order.OrderID == "Move" )
-				return new Order( order.OrderID, self, queued ) { TargetLocation = Util.CellContaining( target.CenterLocation ) };
-
-			return null;
-		}
-
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -116,24 +85,5 @@ namespace OpenRA.Mods.RA.Air
 				UnReserve();
 			}
 		}
-	}
-
-	class AircraftMoveOrderTargeter : IOrderTargeter
-	{
-		public string OrderID { get { return "Move"; } }
-		public int OrderPriority { get { return 4; } }
-
-		public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
-		{
-			return false;
-		}
-
-		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
-		{
-			IsQueued = forceQueued;
-			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
-			return true;
-		}
-		public bool IsQueued { get; protected set; }
 	}
 }
