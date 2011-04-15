@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
 
-	public class Cloak : IRenderModifier, INotifyDamage, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
+	public class Cloak : IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
 	{
 		[Sync]
 		int remainingTime;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void Attacking(Actor self, Target target) { DoUncloak(); }
-		public void Damaged(Actor self, AttackInfo e)
+		public void DamageStateChanged(Actor self, AttackInfo e)
 		{			
 			canCloak = (e.DamageState < DamageState.Critical);
 			if (Cloaked && !canCloak)

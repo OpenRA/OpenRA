@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamage, IRenderModifier
+	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
 	{
 		readonly RenderBuildingInfo Info;
 		
@@ -96,11 +96,8 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 		}
 		
-		public virtual void Damaged(Actor self, AttackInfo e)
+		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged)
-				return;
-			
 			if (e.DamageState == DamageState.Dead)
 				foreach (var t in FootprintUtils.UnpathableTiles( self.Info.Name, self.Info.Traits.Get<BuildingInfo>(), self.Location ))
 				{

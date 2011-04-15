@@ -30,7 +30,6 @@ namespace OpenRA.Traits
         public int Damage;
         public DamageState DamageState;
         public DamageState PreviousDamageState;
-        public bool DamageStateChanged;
     }
 
     public interface ITick { void Tick(Actor self); }
@@ -57,6 +56,7 @@ namespace OpenRA.Traits
     public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
     public interface INotifySold { void Selling(Actor self); void Sold(Actor self); }
     public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
+    public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
     public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
     public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
     public interface INotifyBuildComplete { void BuildingComplete(Actor self); }

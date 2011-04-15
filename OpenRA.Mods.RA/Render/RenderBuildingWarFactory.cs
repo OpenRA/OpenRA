@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, INotifyDamage, ITick, INotifyProduction, INotifySold, ISync
+	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
 	{
 		public Animation roof;
 		[Sync]
@@ -69,10 +69,8 @@ namespace OpenRA.Mods.RA.Render
 			}
 		}
 
-		public override void Damaged(Actor self, AttackInfo e)
+		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
-
 			if (roof.CurrentSequence != null)
 			{
 				if (e.DamageState >= DamageState.Heavy)

@@ -28,10 +28,8 @@ namespace OpenRA.Mods.RA.Render
 			anim.Play( "idle" );
 		}
 
-		public override void Damaged(Actor self, AttackInfo e)
+		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
-
 			if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 				anim.ReplaceAnim("damaged-idle");
 			else if (e.DamageState < DamageState.Heavy)

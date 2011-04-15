@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new SoundOnDamageTransition(this);}
 	}
 
-	public class SoundOnDamageTransition : INotifyDamage
+	public class SoundOnDamageTransition : INotifyDamageStateChanged
 	{
 		readonly SoundOnDamageTransitionInfo Info;
 		public SoundOnDamageTransition( SoundOnDamageTransitionInfo info )
@@ -34,11 +34,8 @@ namespace OpenRA.Mods.RA.Render
 			Info = info;
 		}
 
-		public virtual void Damaged(Actor self, AttackInfo e)
+		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged)
-				return;
-			
 			if (e.DamageState == DamageState.Dead)
 				Sound.Play(Info.DestroyedSound, self.CenterLocation);
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)

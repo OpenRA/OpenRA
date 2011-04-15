@@ -19,9 +19,11 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self); }
 	}
 
-	class RenderGunboat : RenderSimple, INotifyDamage
+	class RenderGunboat : RenderSimple, INotifyDamage, INotifyDamageStateChanged
 	{
 		IFacing facing;
+		bool isSmoking = false;
+
 		public RenderGunboat(Actor self)
 			: base(self, () => self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing : 0)
 		{
@@ -49,21 +51,19 @@ namespace OpenRA.Mods.RA.Render
 			base.Tick(self);
 		}
 		
-		bool isSmoking;
+		public void DamageStateChanged(Actor self, AttackInfo e)
+		{
+			if (e.DamageState >= DamageState.Critical)
+				lastDamage = "-critical";
+			else if (e.DamageState >= DamageState.Heavy)
+				lastDamage = "-damaged";
+			else if (e.DamageState < DamageState.Heavy)
+				lastDamage = "";
+			anim.ReplaceAnim(lastDir+lastDamage);
+		}
+
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// Damagestate
-			if (e.DamageStateChanged)
-			{			
-				if (e.DamageState >= DamageState.Critical)
-					lastDamage = "-critical";
-				else if (e.DamageState >= DamageState.Heavy)
-					lastDamage = "-damaged";
-				else if (e.DamageState < DamageState.Heavy)
-					lastDamage = "";
-				anim.ReplaceAnim(lastDir+lastDamage);
-			}
-			
 			// Smoking
 			if (e.DamageState < DamageState.Heavy) return;
 			if (isSmoking) return;

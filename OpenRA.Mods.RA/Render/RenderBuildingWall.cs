@@ -35,10 +35,8 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayFetchIndex(seqName, () => adjacentWalls);
 		}
 		
-		public override void Damaged(Actor self, AttackInfo e)
+		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (!e.DamageStateChanged) return;
-
 			if (e.DamageState == DamageState.Medium && anim.HasSequence("scratched-idle"))
 				seqName = "scratched-idle";
 			else if (e.DamageState <= DamageState.Medium)

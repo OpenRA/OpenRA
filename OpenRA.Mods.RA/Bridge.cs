@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class Bridge: IRenderAsTerrain, INotifyDamage
+	class Bridge: IRenderAsTerrain, INotifyDamageStateChanged
 	{
 		static string cachedTileset;
 		static Cache<TileReference<ushort,byte>, Sprite> sprites;
@@ -192,14 +192,11 @@ namespace OpenRA.Mods.RA
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged)
-			{
-				UpdateState();
-				if (northNeighbour != null) northNeighbour.UpdateState();
-				if (southNeighbour != null) southNeighbour.UpdateState();
-			}
+			UpdateState();
+			if (northNeighbour != null) northNeighbour.UpdateState();
+			if (southNeighbour != null) southNeighbour.UpdateState();
 		}
 	}
 }
