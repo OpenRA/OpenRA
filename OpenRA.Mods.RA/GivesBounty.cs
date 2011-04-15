@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 		public readonly int LevelMod = 125;
 	}
 
-	class GivesBounty : INotifyDamage
+	class GivesBounty : INotifyKilled
 	{
 
 		int GetMultiplier(Actor self)
@@ -34,26 +34,22 @@ namespace OpenRA.Mods.RA
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-			{
-				var info = self.Info.Traits.Get<GivesBountyInfo>();
-				// Prevent TK from giving Bounty
-				if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[self.Owner] == Stance.Ally)
-					return;
+			var info = self.Info.Traits.Get<GivesBountyInfo>();
+			// Prevent TK from giving Bounty
+			if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[self.Owner] == Stance.Ally)
+				return;
 
-				var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
-				var cost = valued != null ? valued.Cost : 0;
-				// 2 hundreds because of GetMultiplier and info.Percentage.
-				var bounty = (int)(cost * GetMultiplier(self) * info.Percentage / 10000);
+			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
+			var cost = valued != null ? valued.Cost : 0;
+			// 2 hundreds because of GetMultiplier and info.Percentage.
+			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 
-				if (e.Attacker.World.LocalPlayer != null && e.Attacker.Owner.Stances[e.Attacker.World.LocalPlayer] == Stance.Ally)
-					e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(bounty, 20, 1, self.CenterLocation, e.Attacker.Owner.ColorRamp.GetColor(0))));
+			if (e.Attacker.World.LocalPlayer != null && e.Attacker.Owner.Stances[e.Attacker.World.LocalPlayer] == Stance.Ally)
+				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(bounty, 20, 1, self.CenterLocation, e.Attacker.Owner.ColorRamp.GetColor(0))));
 
-				e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
-				
-			}
+			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
 		}
 
 	}

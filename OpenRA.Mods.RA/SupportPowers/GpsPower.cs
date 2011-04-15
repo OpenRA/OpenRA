@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyDamage, ISync, INotifyStanceChanged, INotifySold
+	class GpsPower : SupportPower, INotifyKilled, ISync, INotifyStanceChanged, INotifySold
 	{
 		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info) { }
 
@@ -48,20 +48,9 @@ namespace OpenRA.Mods.RA
 			});
 		}
 
-		public void Selling(Actor self)
-		{
-			DisableGps();
-		}
-
+		public void Selling(Actor self) { DisableGps(); }
 		public void Sold(Actor self) { }
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			if (e.DamageState == DamageState.Dead)
-			{
-                DisableGps();
-			}
-		}
+		public void Killed(Actor self, AttackInfo e) { DisableGps(); }
 
 		void DisableGps()
 		{

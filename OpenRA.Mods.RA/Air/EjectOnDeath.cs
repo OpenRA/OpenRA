@@ -21,36 +21,27 @@ namespace OpenRA.Mods.RA
 		public readonly string ChuteSound = "chute1.aud";
 	}
 
-	public class EjectOnDeath : INotifyDamage
+	public class EjectOnDeath : INotifyKilled
 	{
-		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (self.IsDead())
+			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
+			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(), new TypeDictionary { new OwnerInit(self.Owner) });
+			var r = self.World.SharedRandom.Next(1, 100);
+			var aircraft = self.Trait<IMove>();
+
+			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10)
 			{
-				var a = self;
-				var info = self.Info.Traits.Get<EjectOnDeathInfo>();
-				var pilot = a.World.CreateActor(false, info.PilotActor.ToLowerInvariant(), new TypeDictionary { new OwnerInit(a.Owner) });
-				var r = self.World.SharedRandom.Next(1, 100);
-				var aircraft = a.Trait<IMove>();
+				var rs = pilot.Trait<RenderSimple>();
+				self.World.AddFrameEndTask(w => w.Add(
+						new Parachute(pilot.Owner, rs.anim.Name,
+							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
+							aircraft.Altitude, pilot)));
 
-				if (IsSuitableCell(pilot, a.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10)
-				{
-					var rs = pilot.Trait<RenderSimple>();
-					
-
-					a.World.AddFrameEndTask(w => w.Add(
-							new Parachute(pilot.Owner, rs.anim.Name,
-								Util.CenterOfCell(Util.CellContaining(a.CenterLocation)),
-								aircraft.Altitude, pilot)));
-
-					Sound.Play(info.ChuteSound, a.CenterLocation);
-				}
-				else
-				{
-					pilot.Destroy();
-				}
+				Sound.Play(info.ChuteSound, self.CenterLocation);
 			}
+			else
+				pilot.Destroy();
 		}
 
 		bool IsSuitableCell(Actor actorToDrop, int2 p)

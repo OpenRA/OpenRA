@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ActorLostNotification(this); }
 	}
 
-	class ActorLostNotification : INotifyDamage
+	class ActorLostNotification : INotifyKilled
 	{
 		ActorLostNotificationInfo Info;
 		public ActorLostNotification(ActorLostNotificationInfo info)
@@ -28,15 +28,11 @@ namespace OpenRA.Mods.RA
 			Info = info;
 		}
 		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-			{
-				var player = (Info.NotifyAll) ? self.World.LocalPlayer : self.Owner;
-				Sound.PlayToPlayer(player, Info.Notification);
-			}
+			var player = (Info.NotifyAll) ? self.World.LocalPlayer : self.Owner;
+			Sound.PlayToPlayer(player, Info.Notification);
 		}
-
 	}
 }
 

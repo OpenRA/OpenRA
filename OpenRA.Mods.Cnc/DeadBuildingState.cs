@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc
 		public object Create(ActorInitializer init) { return new DeadBuildingState(init.self, this); }
 	}
 
-	class DeadBuildingState : INotifyDamage
+	class DeadBuildingState : INotifyKilled
 	{
 		DeadBuildingStateInfo info;
 		RenderSimple rs;
@@ -31,18 +31,15 @@ namespace OpenRA.Mods.Cnc
 			self.Trait<Health>().RemoveOnDeath = !rs.anim.HasSequence("dead");
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageStateChanged && e.DamageState == DamageState.Dead)
-			{
-				if (!rs.anim.HasSequence("dead")) return;
-				rs.anim.PlayRepeating("dead");
-				if (!info.Zombie)
-					self.World.AddFrameEndTask(
-						w => w.Add(
-							new DelayedAction(info.LingerTime,
-								() => self.Destroy())));
-			}
+			if (!rs.anim.HasSequence("dead")) return;
+			rs.anim.PlayRepeating("dead");
+			if (!info.Zombie)
+				self.World.AddFrameEndTask(
+					w => w.Add(
+						new DelayedAction(info.LingerTime,
+							() => self.Destroy())));
 		}
 	}
 }

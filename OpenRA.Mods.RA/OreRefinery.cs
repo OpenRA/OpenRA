@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new OreRefinery(init.self, this); }
 	}
 
-	public class OreRefinery : ITick, IAcceptOre, INotifyDamage, INotifySold, INotifyCapture, IExplodeModifier, ISync
+	public class OreRefinery : ITick, IAcceptOre, INotifyKilled, INotifySold, INotifyCapture, IExplodeModifier, ISync
 	{
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
@@ -110,14 +110,11 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void Damaged (Actor self, AttackInfo e)
+		public void Killed (Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-			{
-				CancelDock(self);
-				foreach (var harv in GetLinkedHarvesters())
-					harv.Trait.UnlinkProc(harv.Actor, self);
-			}
+			CancelDock(self);
+			foreach (var harv in GetLinkedHarvesters())
+				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
 		public void OnDock (Actor harv, DeliverResources dockOrder)

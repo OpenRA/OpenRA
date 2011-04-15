@@ -23,17 +23,14 @@ namespace OpenRA.Mods.RA.Air
 		public readonly bool Moves = false;
 	}
 
-	class FallsToEarth : INotifyDamage
+	class FallsToEarth : INotifyKilled
 	{
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (self.IsDead())
-			{
-				self.Trait<Health>().RemoveOnDeath = false;
+			self.Trait<Health>().RemoveOnDeath = false;
 
-				self.CancelActivity();
-				self.QueueActivity(new FallToEarth(self, self.Info.Traits.Get<FallsToEarthInfo>()));
-			}
+			self.CancelActivity();
+			self.QueueActivity(new FallToEarth(self, self.Info.Traits.Get<FallsToEarthInfo>()));
 		}
 	}
 

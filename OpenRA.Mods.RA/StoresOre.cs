@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new StoresOre(init.self, this); }
 	}
 
-	class StoresOre : IPips, INotifyCapture, INotifyDamage, IExplodeModifier, IStoreOre, ISync
+	class StoresOre : IPips, INotifyCapture, INotifyKilled, IExplodeModifier, IStoreOre, ISync
 	{		
 		readonly StoresOreInfo Info;
 		
@@ -45,10 +45,9 @@ namespace OpenRA.Mods.RA
 			Player.GiveOre(ore);
 		}
 		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (self.IsDead())
-				Player.TakeOre(Stored);	// Lose the stored ore
+			Player.TakeOre(Stored);	// Lose the stored ore
 		}
 		
 		public IEnumerable<PipType> GetPips(Actor self)

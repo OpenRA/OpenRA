@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
 	}
 
-	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, INotifyDamage, ISync
+	public class Plane : Aircraft, IIssueOrder, IResolveOrder, IOrderVoice, ITick, ISync
 	{
 		[Sync]
 		public int2 RTBPathHash;

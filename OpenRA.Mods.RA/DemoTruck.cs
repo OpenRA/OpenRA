@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA
 {
 	class DemoTruckInfo : TraitInfo<DemoTruck> { }
 
-	class DemoTruck : Chronoshiftable, INotifyDamage
+	class DemoTruck : Chronoshiftable, INotifyKilled
 	{
 		// Explode on chronoshift
 		public override bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
@@ -24,10 +24,9 @@ namespace OpenRA.Mods.RA
 		}
 
 		// Fire primary on death
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-				Detonate(self, e.Attacker);
+			Detonate(self, e.Attacker);
 		}
 
 		public void Detonate(Actor self, Actor detonatedBy)

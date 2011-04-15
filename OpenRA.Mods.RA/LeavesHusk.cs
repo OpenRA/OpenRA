@@ -19,30 +19,29 @@ namespace OpenRA.Mods.RA
 		public readonly string HuskActor = null;
 	}
 
-	class LeavesHusk : INotifyDamage
+	class LeavesHusk : INotifyKilled
 	{
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-				self.World.AddFrameEndTask(w =>
+			self.World.AddFrameEndTask(w =>
+				{
+					var info = self.Info.Traits.Get<LeavesHuskInfo>();
+					var td = new TypeDictionary 
 					{
-						var info = self.Info.Traits.Get<LeavesHuskInfo>();
-						var td = new TypeDictionary 
-						{
-							new LocationInit( self.Location ),
-							new OwnerInit( self.Owner ),
-							new SkipMakeAnimsInit()
-						};
-						
-						if (self.HasTrait<IFacing>())
-							td.Add(new FacingInit( self.Trait<IFacing>().Facing ));
+						new LocationInit( self.Location ),
+						new OwnerInit( self.Owner ),
+						new SkipMakeAnimsInit()
+					};
+					
+					if (self.HasTrait<IFacing>())
+						td.Add(new FacingInit( self.Trait<IFacing>().Facing ));
 
-						var husk = w.CreateActor(info.HuskActor, td);
-						var turreted = self.TraitOrDefault<Turreted>();
-						if (turreted != null)
-							foreach (var p in husk.TraitsImplementing<ThrowsParticle>())
-								p.InitialFacing = turreted.turretFacing;
-					});
+					var husk = w.CreateActor(info.HuskActor, td);
+					var turreted = self.TraitOrDefault<Turreted>();
+					if (turreted != null)
+						foreach (var p in husk.TraitsImplementing<ThrowsParticle>())
+							p.InitialFacing = turreted.turretFacing;
+				});
 		}
 	}
 }

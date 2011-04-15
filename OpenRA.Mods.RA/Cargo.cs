@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Cargo( init.self ); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyDamage
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled
 	{
 		readonly Actor self;
 		List<Actor> cargo = new List<Actor>();
@@ -145,14 +145,11 @@ namespace OpenRA.Mods.RA
 			cargo.Add(a);
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if( e.DamageStateChanged && e.DamageState == DamageState.Dead )
-			{
-				foreach( var c in cargo )
-					c.Destroy();
-				cargo.Clear();
-			}
+			foreach( var c in cargo )
+				c.Destroy();
+			cargo.Clear();
 		}
 	}
 }

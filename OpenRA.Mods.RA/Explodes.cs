@@ -23,22 +23,19 @@ namespace OpenRA.Mods.RA
 		public readonly int Chance = 100;
 	}
 
-	class Explodes : INotifyDamage
+	class Explodes : INotifyKilled
 	{
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-			{
-				if (self.World.SharedRandom.Next(100) > self.Info.Traits.Get<ExplodesInfo>().Chance)
-					return;
+			if (self.World.SharedRandom.Next(100) > self.Info.Traits.Get<ExplodesInfo>().Chance)
+				return;
 
-				var weapon = ChooseWeaponForExplosion(self);
-				if (weapon != null)
-				{
-					var move = self.TraitOrDefault<IMove>();
-					var altitude = move != null ? move.Altitude : 0;
-					Combat.DoExplosion(e.Attacker, weapon, self.CenterLocation, altitude);
-				}
+			var weapon = ChooseWeaponForExplosion(self);
+			if (weapon != null)
+			{
+				var move = self.TraitOrDefault<IMove>();
+				var altitude = move != null ? move.Altitude : 0;
+				Combat.DoExplosion(e.Attacker, weapon, self.CenterLocation, altitude);
 			}
 		}
 

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc
 		public object Create(ActorInitializer init) { return new SpawnViceroid(this); }
 	}
 
-	class SpawnViceroid : INotifyDamage
+	class SpawnViceroid : INotifyKilled
 	{
 		readonly SpawnViceroidInfo Info;
 		
@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Cnc
 			Info = info;
 		}
 		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead && e.Warhead != null && e.Warhead.InfDeath == Info.InfDeath
+			if (e.Warhead != null && e.Warhead.InfDeath == Info.InfDeath
 			    	&& self.World.SharedRandom.Next(100) <= Info.Probability)
 				self.World.AddFrameEndTask(w =>
 					{

@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	class ReservableInfo : TraitInfo<Reservable> {}
 
-	public class Reservable : ITick, INotifyDamage, INotifyCapture, INotifySold
+	public class Reservable : ITick, INotifyKilled, INotifyCapture, INotifySold
 	{
 		Actor reservedFor;
 		Aircraft herp;
@@ -52,9 +52,9 @@ namespace OpenRA.Mods.RA
 			return res != null && res.reservedFor != null;
 		}
 		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (herp != null && e.DamageStateChanged && e.DamageState == DamageState.Dead)
+			if (herp != null)
 				herp.UnReserve();
 		}
 		

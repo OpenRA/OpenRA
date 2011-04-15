@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderInfantry(init.self, this); }
 	}
 
-	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyDamage, INotifyIdle
+	public class RenderInfantry : RenderSimple, INotifyAttack, INotifyKilled, INotifyIdle
 	{
 		public enum AnimationState
 		{
@@ -117,14 +117,11 @@ namespace OpenRA.Mods.RA.Render
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-			{
-				var death = e.Warhead != null ? e.Warhead.InfDeath : 0;
-				Sound.PlayVoice("Die", self, self.Owner.Country.Race);
-				self.World.AddFrameEndTask(w => w.Add(new Corpse(self, death)));
-			}
+			var death = e.Warhead != null ? e.Warhead.InfDeath : 0;
+			Sound.PlayVoice("Die", self, self.Owner.Country.Race);
+			self.World.AddFrameEndTask(w => w.Add(new Corpse(self, death)));
 		}
 	}
 }

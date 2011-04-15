@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new ShakeOnDeath(this); }
 	}
 
-	public class ShakeOnDeath : INotifyDamage
+	public class ShakeOnDeath : INotifyKilled
 	{
 		readonly ShakeOnDeathInfo Info;
 		public ShakeOnDeath(ShakeOnDeathInfo info)
@@ -29,10 +29,9 @@ namespace OpenRA.Mods.RA.Buildings
 			this.Info = info;
 		}
 		
-		public void Damaged(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(Info.Intensity, self.CenterLocation, 1);
+			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(Info.Intensity, self.CenterLocation, 1);
 		}
 	}
 }
