@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingWallInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWall( init, this ); }
 	}
 
 	class RenderBuildingWall : RenderBuilding, INotifyBuildComplete
@@ -24,8 +24,8 @@ namespace OpenRA.Mods.RA.Render
 		string seqName;
 		int adjacentWalls = 0;
 		
-		public RenderBuildingWall( ActorInitializer init )
-			: base(init)
+		public RenderBuildingWall( ActorInitializer init, RenderBuildingInfo info )
+			: base(init, info)
 		{
 			seqName = "idle";
 		}

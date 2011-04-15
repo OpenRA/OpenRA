@@ -14,15 +14,15 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingOreInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init, this); }
 	}
 
 	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
 		PlayerResources PlayerResources;
 		
-		public RenderBuildingOre( ActorInitializer init )
-			: base(init)
+		public RenderBuildingOre( ActorInitializer init, RenderBuildingInfo info )
+			: base(init, info)
 		{
 			PlayerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
-		{		
+		{
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 	}

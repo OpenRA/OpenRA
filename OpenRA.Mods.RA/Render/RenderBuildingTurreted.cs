@@ -15,15 +15,13 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingTurretedInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted( init ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted( init, this ); }
 	}
 
 	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
 	{
-		public RenderBuildingTurreted( ActorInitializer init )
-			: base(init, () => init.self.Trait<Turreted>().turretFacing)
-		{
-		}
+		public RenderBuildingTurreted( ActorInitializer init, RenderBuildingInfo info )
+			: base(init, info, () => init.self.Trait<Turreted>().turretFacing) { }
 
 		public void BuildingComplete( Actor self )
 		{

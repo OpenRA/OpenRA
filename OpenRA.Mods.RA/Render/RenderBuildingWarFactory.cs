@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderWarFactoryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderWarFactory(init); }
+		public override object Create(ActorInitializer init) { return new RenderWarFactory( init, this ); }
 
         /* get around unverifiability */
         IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, string tileset)
@@ -45,8 +45,8 @@ namespace OpenRA.Mods.RA.Render
 		[Sync]
 		int2 openExit;
 
-		public RenderWarFactory(ActorInitializer init)
-			: base(init)
+		public RenderWarFactory(ActorInitializer init, RenderBuildingInfo info)
+			: base(init, info)
 		{
 			roof = new Animation(GetImage(init.self));
 		}

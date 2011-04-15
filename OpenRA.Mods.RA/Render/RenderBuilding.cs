@@ -23,43 +23,27 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public readonly bool HasMakeAnimation = true;
 		public readonly float2 Origin = float2.Zero;
-		public override object Create(ActorInitializer init) { return new RenderBuilding(init);}
+		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 		
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
 		{
-            var rb = building.Traits.Get<RenderBuildingInfo>();
             return base.RenderPreview(building, Tileset)
-                .Select(a => a.WithPos(a.Pos + rb.Origin));
+                .Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
 		}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold, IRenderModifier
 	{
-		readonly float2 Origin;
+		readonly RenderBuildingInfo Info;
 		
-		public RenderBuilding( ActorInitializer init )
-			: this( init, () => 0 )
-		{
-			Origin = init.self.Info.Traits.Get<RenderBuildingInfo>().Origin;
-		}
-
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
-		{
-			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
-			foreach (var a in r)
-			{
-				var ret = a.WithPos(a.Pos - Origin);
-				yield return ret;
-				if (disabled)
-					yield return ret.WithPalette("disabled").WithZOffset(1);
-			}
-		}
+		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info )
+			: this(init, info, () => 0) { }
 		
-		public RenderBuilding( ActorInitializer init, Func<int> baseFacing )
+		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing )
 			: base(init.self, baseFacing)
 		{
+			Info = info;
 			var self = init.self;
-			
 			// Work around a bogus crash
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 			
@@ -69,7 +53,19 @@ namespace OpenRA.Mods.RA.Render
 			// Can't call Complete() from ctor because other traits haven't been inited yet
 			self.QueueActivity(new CallFunc(() => self.World.AddFrameEndTask( _ => Complete( self ) )));
 		}
-
+		
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			foreach (var a in r)
+			{
+				var ret = a.WithPos(a.Pos - Info.Origin);
+				yield return ret;
+				if (disabled)
+					yield return ret.WithPalette("disabled").WithZOffset(1);
+			}
+		}
+		
 		void Complete( Actor self )
 		{
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
@@ -119,7 +115,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public virtual void Selling( Actor self )
 		{
-			if( self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation )
+			if( Info.HasMakeAnimation )
 				anim.PlayBackwardsThen( "make", null );
 			
 			foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
