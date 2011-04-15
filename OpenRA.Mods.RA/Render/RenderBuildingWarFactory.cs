@@ -87,10 +87,11 @@ namespace OpenRA.Mods.RA.Render
 			roof.PlayThen(NormalizeSequence(self, "build-top"), () => { isOpen = true; openExit = exit; });
 		}
 
-		public override void Selling( Actor self )
+		public void Selling(Actor self)
 		{
-			self.Trait<RenderSimple>().anims.Remove( "roof" );
-			base.Selling(self);
+			self.Trait<RenderSimple>().anims.Remove("roof");
 		}
+		
+		public void Sold(Actor self) { }
 	}
 }

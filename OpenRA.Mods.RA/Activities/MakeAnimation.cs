@@ -37,8 +37,10 @@ namespace OpenRA.Mods.RA.Activities
 				started = true;
 				if (Reversed)
 				{
-					foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-						Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
+					var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
+					if (bi != null)
+						foreach (var s in bi.SellSounds)
+							Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 					
 					// PlayCustomAnim is required to stop a frame of the normal state after the anim completes
 					rb.PlayCustomAnimBackwards(self, "make", () => {rb.PlayCustomAnim(self, "make"); complete = true;});

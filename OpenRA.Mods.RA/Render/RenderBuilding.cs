@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamage, INotifySold, IRenderModifier
+	public class RenderBuilding : RenderSimple, INotifyDamage, IRenderModifier
 	{
 		readonly RenderBuildingInfo Info;
 		
@@ -112,16 +112,5 @@ namespace OpenRA.Mods.RA.Render
 			else if (e.DamageState < DamageState.Heavy)
 				anim.ReplaceAnim("idle");
 		}
-
-		public virtual void Selling( Actor self )
-		{
-			if( Info.HasMakeAnimation )
-				anim.PlayBackwardsThen( "make", null );
-			
-			foreach (var s in self.Info.Traits.Get<BuildingInfo>().SellSounds)
-					Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-		}
-
-		public void Sold(Actor self) {}
 	}
 }
