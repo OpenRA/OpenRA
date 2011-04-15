@@ -83,10 +83,7 @@ namespace OpenRA.Traits
 
     public interface IVisibilityModifier { bool IsVisible(Actor self); }
     public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-    public interface IHasLocation
-    {
-        int2 PxPosition { get; }
-    }
+	public interface IHasLocation { int2 PxPosition { get; } }
 
     public enum SubCell
     {
@@ -143,10 +140,7 @@ namespace OpenRA.Traits
         void AdjustPxPosition(Actor self, int2 px);	/* works like SetPxPosition, but visual only */
     }
 
-    public interface IMove : ITeleportable
-    {
-        int Altitude { get; set; }
-    }
+	public interface IMove : ITeleportable { int Altitude { get; set; } }
 
     public interface IFacing
     {
