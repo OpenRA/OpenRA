@@ -98,16 +98,12 @@ namespace OpenRA.Mods.RA.Air
 
 				UnReserve();
 
-				var info = self.Info.Traits.Get<PlaneInfo>();
 				self.SetTargetLine(Target.FromOrder(order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				
-				if (info.RearmBuildings.Contains(order.TargetActor.Info.Name))
-				    self.QueueActivity( new Rearm() );
-				if (info.RepairBuildings.Contains(order.TargetActor.Info.Name))
-				    self.QueueActivity( new Repair( order.TargetActor ));
+
+				QueueResupplyActivities(order.TargetActor);
 			}
 			else if (order.OrderString == "Stop")
 			{

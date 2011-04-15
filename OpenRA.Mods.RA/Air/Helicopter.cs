@@ -104,11 +104,8 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
 				self.QueueActivity(new Turn(Info.InitialFacing));
 				self.QueueActivity(new HeliLand(false));
-				
-				if (Info.RearmBuildings.Contains(order.TargetActor.Info.Name))
-				    self.QueueActivity( new Rearm() );
-				if (Info.RepairBuildings.Contains(order.TargetActor.Info.Name))
-				    self.QueueActivity( new Repair( order.TargetActor ));
+
+				QueueResupplyActivities(order.TargetActor);
 			}
 
 			if (order.OrderString == "Stop")

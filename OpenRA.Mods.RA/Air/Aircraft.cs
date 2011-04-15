@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -172,6 +173,15 @@ namespace OpenRA.Mods.RA.Air
 
 			var type = self.World.GetTerrainType(cell);
 			return Info.LandableTerrainTypes.Contains(type);
+		}
+
+		public void QueueResupplyActivities(Actor a)
+		{
+			var name = a.Info.Name;
+			if (Info.RearmBuildings.Contains(name))
+				self.QueueActivity(new Rearm());
+			if (Info.RepairBuildings.Contains(name))
+				self.QueueActivity(new Repair(a));
 		}
 	}
 }
