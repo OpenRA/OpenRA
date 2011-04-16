@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Server
 					s => 
 					{
 						int spawnPoint;
-						if (!int.TryParse(s, out spawnPoint) || spawnPoint < 0 || spawnPoint > 8) //TODO: SET properly!
+						if (!int.TryParse(s, out spawnPoint) || spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Count())
 						{
 							Log.Write("server", "Invalid spawn point: {0}", s);
 							return false;
