@@ -27,15 +27,16 @@ namespace OpenRA.Mods.RA.Activities
 		
 		public override Activity Tick(Actor self)
 		{
-			if (remainingTicks-- == 0) return NextActivity;
-			return this;
+			return (remainingTicks-- == 0) ? NextActivity: this;
 		}
 
-		protected override bool OnCancel( Actor self )
+		public override void Cancel( Actor self )
 		{
-			if( !interruptable ) return false;
+			if( !interruptable )
+				return;
+
 			remainingTicks = 0;
-			return true;
+			base.Cancel(self);
 		}
 	}
 }

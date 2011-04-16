@@ -73,6 +73,7 @@ namespace OpenRA.Mods.RA.Air
 			return this;
 		}
 
-		protected override bool OnCancel(Actor self) { return false; }
+		// Cannot be cancelled
+		public override void Cancel( Actor self ) { }
 	}
 }

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 			return this;
 		}
 
-		// Not actually cancellable
-		protected override bool OnCancel( Actor self ) { return false; }
+		// Cannot be cancelled
+		public override void Cancel( Actor self ) { }
 	}
 }

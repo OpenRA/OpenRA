@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick( Actor self )
 		{
+			// TODO: wtf is this?
 			if( NextActivity != null )
 				return NextActivity;
 
@@ -48,11 +49,8 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			return Util.SequenceActivities( new Wait(10), this );
 		}
-
-		protected override bool OnCancel(Actor self)
-		{
-			// TODO: allow canceling of deliver orders?
-			return false;
-		}
+		
+		// Cannot be cancelled
+		public override void Cancel(Actor self) { }
 	}
 }

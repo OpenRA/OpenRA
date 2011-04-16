@@ -36,14 +36,17 @@ namespace OpenRA.Mods.RA.Air
 		public override Activity Tick(Actor self)
 		{
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-			if (IsCanceled || !self.World.Map.IsInMap(self.Location)) return NextActivity;
+			if (IsCanceled || !self.World.Map.IsInMap(self.Location))
+				return NextActivity;
+
 			FlyUtil.Fly(self, targetAltitude);
 			return this;
 		}
 
-		protected override bool OnCancel( Actor self )
+		public override void Cancel( Actor self )
 		{
-			return Interruptible;
+			if (Interruptible)
+				base.Cancel(self);
 		}
 	}
 }

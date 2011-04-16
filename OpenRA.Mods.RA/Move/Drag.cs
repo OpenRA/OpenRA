@@ -42,14 +42,12 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		protected override bool OnCancel(Actor self) 
-		{	
-			return false;
-		}
-
 		public override IEnumerable<Target> GetTargets( Actor self )
 		{
 			yield return Target.FromPos(endLocation);
 		}
+
+		// Cannot be cancelled
+		public override void Cancel( Actor self ) { }
 	}
 }

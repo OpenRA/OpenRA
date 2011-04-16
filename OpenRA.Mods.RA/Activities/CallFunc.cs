@@ -33,13 +33,10 @@ namespace OpenRA.Mods.RA.Activities
 			return NextActivity;
 		}
 
-		protected override bool OnCancel(Actor self)
+		public override void Cancel(Actor self)
 		{
-			if (!interruptable)
-				return false;
-			
-			a = null;
-			return true;
+			if (interruptable)
+				base.Cancel(self);
 		}
 	}
 }

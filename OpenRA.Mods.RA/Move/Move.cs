@@ -233,10 +233,10 @@ namespace OpenRA.Mods.RA.Move
 			return Pair.New(nextCell, subCell);
 		}
 
-		protected override bool OnCancel( Actor self )
+		public override void Cancel( Actor self )
 		{
 			path = new List<int2>();
-			return true;
+			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets( Actor self )
@@ -267,9 +267,10 @@ namespace OpenRA.Mods.RA.Move
 				this.moveFractionTotal = ( ( to - from ) * 3 ).Length;
 			}
 
-			protected override bool OnCancel( Actor self )
+			public override void Cancel( Actor self )
 			{
-				return move.OnCancel( self );
+				move.Cancel( self );
+				base.Cancel( self );
 			}
 
 			public override void Queue( Activity activity )

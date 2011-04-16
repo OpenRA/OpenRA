@@ -80,10 +80,10 @@ namespace OpenRA.Mods.Cnc
 			throw new InvalidOperationException("Invalid harvester dock state");
 		}
 
-		protected override bool OnCancel(Actor self)
+		public override void Cancel(Actor self)
 		{
 			state = State.Undock;
-			return true;
+			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets( Actor self )

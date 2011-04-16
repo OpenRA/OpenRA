@@ -30,7 +30,6 @@ namespace OpenRA.Mods.RA.Activities
 		bool started = false;
 		public override Activity Tick( Actor self )
 		{
-			if (IsCanceled) return NextActivity;
 			if (!started)
 			{
 				var rb = self.Trait<RenderBuilding>();
@@ -51,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 			return complete ? NextActivity : this;
 		}
 		
-		// Not actually cancellable
-		protected override bool OnCancel( Actor self ) { return false; }
+		// Cannot be cancelled
+		public override void Cancel( Actor self ) { }
 	}
 }

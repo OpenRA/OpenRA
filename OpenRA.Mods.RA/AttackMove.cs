@@ -90,11 +90,12 @@ namespace OpenRA.Mods.RA
 				return this;
 			}
 
-			protected override bool OnCancel( Actor self )
+			public override void Cancel( Actor self )
 			{
 				if( inner != null )
 					inner.Cancel( self );
-				return base.OnCancel( self );
+
+				base.Cancel( self );
 			}
 		}
 	}
