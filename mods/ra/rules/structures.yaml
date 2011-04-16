@@ -578,8 +578,8 @@ WEAP:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderWarFactory:
 	-RenderBuilding:
+	RenderBuildingWarFactory:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 5,0
@@ -1005,9 +1005,9 @@ WEAF:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderWarFactory:
-		Image: WEAP
 	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: WEAP
 	Fake:
 	IronCurtainable:
 	-EmitInfantryOnSell:

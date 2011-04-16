@@ -15,9 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderWarFactoryInfo : RenderBuildingInfo
+	class RenderBuildingWarFactoryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderWarFactory( init, this ); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
 
         /* get around unverifiability */
         IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, string tileset)
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	class RenderWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
+	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
 	{
 		public Animation roof;
 		[Sync]
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Render
 		[Sync]
 		int2 openExit;
 
-		public RenderWarFactory(ActorInitializer init, RenderBuildingInfo info)
+		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info)
 		{
 			roof = new Animation(GetImage(init.self));

@@ -277,7 +277,7 @@ WEAP:
 		Range: 4
 	Bib:
 	-RenderBuilding:
-	RenderWarFactory:
+	RenderBuildingWarFactory:
 	RallyPoint:
 		RallyPoint: 0,3
 	Exit@1:
