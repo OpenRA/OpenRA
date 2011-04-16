@@ -22,10 +22,15 @@ cp -R $rootdir/usr root
 rm root/usr/share/openra/FreeSans.ttf
 rm root/usr/share/openra/FreeSansBold.ttf
 
-# Create the control and changelog files from templates
+# Put the copyright and changelog in /usr/share/doc/openra/
+mkdir -p root/usr/share/doc/openra/
+cp copyright root/usr/share/doc/openra/copyright
+sed "s/{VERSION}/$VERSION/" changelog > root/usr/share/doc/openra/changelog
+cat ./root/usr/share/openra/CHANGELOG >> root/usr/share/doc/openra/changelog
+
+# Create the control file
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > root/DEBIAN/control
-sed "s/{VERSION}/$VERSION/" DEBIAN/changelog > root/DEBIAN/changelog
-cat ./root/usr/share/openra/CHANGELOG >> root/DEBIAN/changelog
+
 # Build it in the temp directory, but place the finished deb in our starting directory
 pushd root
 
