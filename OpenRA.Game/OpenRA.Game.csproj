@@ -182,6 +182,7 @@
     <Compile Include="Widgets\ProgressBarWidget.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Traits\Waypoint.cs" />
+    <Compile Include="Traits\Activities\Activity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -203,7 +204,6 @@
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="TraitDictionary.cs" />
-    <Compile Include="Traits\Activities\CancelableActivity.cs" />
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\ScrollingTextWidget.cs" />
   </ItemGroup>
