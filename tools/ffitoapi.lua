@@ -35,11 +35,12 @@ local function ffiToApi(ffidef)
 		-- extern void ( * func )(blubb);
 		-- void func(blubb);
 		-- void ( * func )(blubb);
-		local typedef = l:match("typedef%s+")
+		local typedef = l:match("typedef")
 		local ret,name,args = string.match(typedef and "" or l,
-			"[_%w]-%s*([_%w]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
+			"%s*([_%w%*%s]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
 			-- FIXME pattern doesnt recognize multiline args
 		if (not (curfunc or typedef) and (ret and name and args)) then
+			ret = ret:gsub("^%s*extern%s*","")
 			curfunc = {RET=ret,NAME=name,ARGS=args}
 			if (args:match(";")) then
 				registerfunc()

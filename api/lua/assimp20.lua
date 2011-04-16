@@ -394,14 +394,6 @@ typedef struct aiScene {
   uint mNumCameras;
   aiCamera** mCameras;
 } aiScene;
-void aiLogStreamCallback( char* message, char* user );
-size_t aiFileWriteProc( aiFile*, char*, size_t, size_t );
-size_t aiFileReadProc( aiFile*, char*, size_t, size_t );
-size_t aiFileTellProc( aiFile* );
-void aiFileFlushProc( aiFile* );
-aiReturn aiFileSeek( aiFile*, size_t, aiOrigin );
-aiFile* aiFileOpenProc( aiFileIO*, char*, char* );
-void aiFileCloseProc( aiFileIO*, aiFile* );
 aiScene* aiImportFile( char* pFile, uint pFile );
 aiScene* aiImportFileEx( char* pFile, uint pFlags, aiFileIO* pFS );
 aiScene* aiImportFileFromMemory( char* pBuffer, uint pLength, uint pFlags, char* pHint );
@@ -575,34 +567,22 @@ local api = {
   ["aiProcess_OptimizeGraph"] = { type ='value', },
   ["aiProcess_FlipUVs"] = { type ='value', },
   ["aiProcess_FlipWindingOrder"] = { type ='value', },
-  ["aiLogStreamCallback"] = { type ='function', 
+  ["aiImportFile"] = { type ='function', 
       description = "", 
-      returns = "()",
-      args = "(char* message, char* user)", },
-  ["aiFileWriteProc"] = { type ='function', 
+      returns = "(aiScene*)",
+      args = "(char* pFile, uint pFile)", },
+  ["aiImportFileEx"] = { type ='function', 
       description = "", 
-      returns = "(size_t)",
-      args = "(aiFile*, char*, size_t, size_t)", },
-  ["aiFileReadProc"] = { type ='function', 
+      returns = "(aiScene*)",
+      args = "(char* pFile, uint pFlags, aiFileIO* pFS)", },
+  ["aiImportFileFromMemory"] = { type ='function', 
       description = "", 
-      returns = "(size_t)",
-      args = "(aiFile*, char*, size_t, size_t)", },
-  ["aiFileTellProc"] = { type ='function', 
+      returns = "(aiScene*)",
+      args = "(char* pBuffer, uint pLength, uint pFlags, char* pHint)", },
+  ["aiApplyPostProcessing"] = { type ='function', 
       description = "", 
-      returns = "(size_t)",
-      args = "(aiFile*)", },
-  ["aiFileFlushProc"] = { type ='function', 
-      description = "", 
-      returns = "()",
-      args = "(aiFile*)", },
-  ["aiFileSeek"] = { type ='function', 
-      description = "", 
-      returns = "(aiReturn)",
-      args = "(aiFile*, size_t, aiOrigin)", },
-  ["aiFileCloseProc"] = { type ='function', 
-      description = "", 
-      returns = "()",
-      args = "(aiFileIO*, aiFile*)", },
+      returns = "(aiScene*)",
+      args = "(aiScene* pScene, uint pFlags)", },
   ["aiGetPredefinedLogStream"] = { type ='function', 
       description = "", 
       returns = "(aiLogStream)",
@@ -627,6 +607,10 @@ local api = {
       description = "", 
       returns = "()",
       args = "(aiScene* pScene)", },
+  ["aiGetErrorString"] = { type ='function', 
+      description = "", 
+      returns = "(char*)",
+      args = "()", },
   ["aiIsExtensionSupported"] = { type ='function', 
       description = "", 
       returns = "(aiBool)",
@@ -719,6 +703,10 @@ local api = {
       description = "", 
       returns = "(aiReturn)",
       args = "(aiMaterial* mat, aiTextureType type, uint index, aiString* path, aiTextureMapping* mapping , uint* uvindex , float* blend , aiTextureOp* op , aiTextureMapMode* mapmode)", },
+  ["aiGetLegalString"] = { type ='function', 
+      description = "", 
+      returns = "(char*)",
+      args = "()", },
   ["aiGetVersionMinor"] = { type ='function', 
       description = "", 
       returns = "(uint)",
