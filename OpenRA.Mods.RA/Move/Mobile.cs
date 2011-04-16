@@ -246,30 +246,32 @@ namespace OpenRA.Mods.RA.Move
             // Couldn't find a cell
             return target;
         }
+		
+		void PerformMoveInner(Actor self, int2 targetLocation, bool queued)
+		{
+			int2 currentLocation = NearestMoveableCell(targetLocation);
 
+            if (!CanEnterCell(currentLocation))
+            {
+                if (queued) self.CancelActivity();
+                return;
+            }
+
+            if (!queued) self.CancelActivity();
+
+            ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
+
+            self.QueueActivity(new Move(currentLocation, 8));
+
+            self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
+		}
+		
         protected void PerformMove(Actor self, int2 targetLocation, bool queued)
         {
-            var ph = new QueuedActivity(
-                (qa) =>
-                {
-                    int2 currentLocation = NearestMoveableCell(targetLocation);
-
-                    if (!CanEnterCell(currentLocation))
-                    {
-                        if (queued) self.CancelActivity();
-                        return;
-                    }
-
-                    if (!queued) self.CancelActivity();
-
-                    ticksBeforePathing = avgTicksBeforePathing + self.World.SharedRandom.Next(-spreadTicksBeforePathing, spreadTicksBeforePathing);
-
-                    qa.Insert(new Move(currentLocation, 8));
-
-                    self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
-                });
-
-            self.QueueActivity(queued ? ph : ph.Run(self));
+            if (queued)
+				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, queued)));
+			else
+				PerformMoveInner(self, targetLocation, queued);
         }
 
         public void ResolveOrder(Actor self, Order order)
