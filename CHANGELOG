@@ -1,3 +1,43 @@
+NEW:
+	Engine:
+		Fix hotkeys firing on both key down and key up
+		Allow C4 delay to be configurable
+		Text field support for home and end keys
+		Fix world actor being owned by Creeps player (causing Neutral to be hostile) on new maps
+		Include gpu vendor string in graphics.log for unsupported cards
+		Fix crash with some aud files
+		Fix a rare crash when a repairing building is killed
+		Improvements to HackyAI
+		Generalize capture logic to work for any actor types
+		Support RA2-style missile trails
+		Fix helicopters failing to attack targets in some situations
+		Fix 'exploit detected' when using hotkeys on another players units
+		Relinquish spawn point in the game lobby when entering a spectator slot
+		Fix maps with >8 spawnpoints in the game lobby
+		Yaml loader crashes correctly when trying to inherit from a nonexistant actor
+		Yaml loader crashes correctly when trying to remove a nonexistant trait
+		Many other general engine improvements
+		
+	C&C:
+		Fix Viceroid target-scan radius
+		Fix map-placed SAM-sites not being able to attack
+		Commando voice clip when built
+		Commando voice clip after kills
+		Capturable/repairable unit husks with an engineer
+	
+	RA:
+		Fix several bugs related to GPS
+		New unit: Supply truck for donating funds to another player
+		Pilots (sometimes) parachute from shot down planes
+		Bounties on killed units
+		Use RA2 style missile trails
+		New map: Pressure by seru
+		
+	Packaging:
+		Fix several Utility crashes
+		Utility writes a log to support dir when crashing
+		Fix incorrect ownership of files in deb package
+
 20110320
 	Engine:
 		Display range circles when placing defenses
