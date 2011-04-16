@@ -4,7 +4,7 @@ Architecture: all
 Maintainer: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Uploaders: Maikel van den Hout <ma1kelvdh@gmail.com>, Paul Chote <sleipnir@sleipnirstuff.com>
 Installed-Size: {SIZE}	
-Depends: libopenal1, mono-runtime (>= 2.6.7), libmono-winforms2.0-cil, libfreetype6, libsdl1.2debian, libgl1-mesa-glx, libgl1-mesa-dri, libmono-i18n2.0-cil
+Depends: libopenal1, mono-runtime (>= 2.6.7), libmono-winforms2.0-cil, libfreetype6, libsdl1.2debian, libgl1-mesa-glx, libgl1-mesa-dri, libmono-i18n2.0-cil, ttf-freefont
 Section: games
 Priority: extra
 Homepage: http://www.open-ra.org/

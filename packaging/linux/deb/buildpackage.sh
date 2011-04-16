@@ -18,6 +18,10 @@ mkdir root
 cp -R DEBIAN root
 cp -R $rootdir/usr root
 
+# Remove duplicate fonts provided by ttf-freefont
+rm root/usr/share/openra/FreeSans.ttf
+rm root/usr/share/openra/FreeSansBold.ttf
+
 # Create the control and changelog files from templates
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > root/DEBIAN/control
 sed "s/{VERSION}/$VERSION/" DEBIAN/changelog > root/DEBIAN/changelog
