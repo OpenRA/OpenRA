@@ -50,13 +50,7 @@ namespace OpenRA.Mods.Cnc
 			Info = info;
 			Turret = init.self.Trait<Turreted>();
 			if (init.Contains<SkipMakeAnimsInit>())
-			{
-				State = PopupState.Closed;
-				init.self.Trait<RenderBuilding>()
-					.PlayCustomAnimRepeating(init.self, "closed-idle");
-				Turret.desiredFacing = null;
 				buildComplete = true;
-			}
 		}
 
 		protected override bool CanAttack( Actor self, Target target )
@@ -130,7 +124,18 @@ namespace OpenRA.Mods.Cnc
 		}
 
 		bool buildComplete = false;
-		public void BuildingComplete(Actor self) { buildComplete = true; }
+		public void BuildingComplete(Actor self)
+		{
+			// Set true for SkipMakeAnimsInit
+			if (buildComplete)
+			{
+				State = PopupState.Closed;
+				self.Trait<RenderBuilding>()
+					.PlayCustomAnimRepeating(self, "closed-idle");
+				Turret.desiredFacing = null;
+			}
+			buildComplete = true;
+		}
 		
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
