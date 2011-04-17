@@ -12,10 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Move
 {
@@ -56,15 +56,6 @@ namespace OpenRA.Mods.RA.Move
 			this.destination = destination;
 			this.nearEnough = 0;
 			this.ignoreBuilding = ignoreBuilding;
-		}
-
-		public Move( Actor target, int range )
-		{
-			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-				mobile.toCell, target.Location,
-				range, self );
-			this.destination = null;
-			this.nearEnough = range;
 		}
 
 		public Move(Target target, int range)
