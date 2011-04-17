@@ -22,6 +22,12 @@ cp -R $rootdir/usr root
 rm root/usr/share/openra/FreeSans.ttf
 rm root/usr/share/openra/FreeSansBold.ttf
 
+# Binaries go in /usr/games
+mv root/usr/bin/ root/usr/games/
+sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/share/applications/openra.desktop > temp
+mv temp root/usr/share/applications/openra.desktop
+rm temp
+
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p root/usr/share/doc/openra/
 cp copyright root/usr/share/doc/openra/copyright
@@ -47,5 +53,5 @@ fakeroot dpkg-deb -b . $3
 
 # Clean up
 popd
-#rm -rf root
+rm -rf root
 
