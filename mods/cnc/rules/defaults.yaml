@@ -150,6 +150,8 @@
 		NotifyAll: true
 	ScaredyCat:
 	RenderInfantryPanic:	
+	AttackMove:
+		JustMove: yes
 
 ^Plane:
 	AppearsOnRadar:
