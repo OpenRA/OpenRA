@@ -314,7 +314,9 @@ namespace OpenRA.Mods.RA
                 bool foundEnemy = false;
                 foreach (var a1 in attackForce)
                 {
-                    List<Actor> enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10).Where(unit => IsHumanPlayer(unit.Owner) ).ToList();
+                    var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
+						.Where(unit => IsHumanPlayer(unit.Owner) ).ToList();
+
                     if (enemyUnits.Count > 0)
                     {
                         //BotDebug("Found enemy "+enemyUnits.First().Info.Name);
@@ -323,36 +325,34 @@ namespace OpenRA.Mods.RA
                         var enemy = enemyUnits.OrderBy( e => (e.Location - a1.Location).LengthSquared ).First();
                         
                         // Check how many own units we have gathered nearby...
-                        List<Actor> ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2).Where(unit => unit.Owner == p).ToList();
+                        var ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2)
+							.Where(unit => unit.Owner == p).ToList();
                         if (ownUnits.Count < Info.SquadSize)
                         {
                             // Not enough to attack. Send more units.
                             world.IssueOrder(new Order("Stop", a1, false) { });
-                            foreach (var a2 in attackForce)
-                            {
+
+							foreach (var a2 in attackForce)
                                 if (a2 != a1)
                                     world.IssueOrder(new Order("AttackMove", a2, false) { TargetLocation = a1.Location });
-                            }
                         }
                         else
                         {
                             // We have gathered sufficient units. Attack the nearest enemy unit.
                             foreach (var a2 in attackForce)
-                            {
                                 world.IssueOrder(new Order("Attack", a2, false) { TargetActor = enemy });
-
-                            }
                         }
                         return;
                     }
                 }
-                
-                if (foundEnemy == false)
-                {
-                    attackTarget = ChooseEnemyTarget();
-                    foreach (var a in attackForce)
-                        TryToAttackMove(a, attackTarget.Value);
-                }
+
+				if (!foundEnemy)
+				{
+					attackTarget = ChooseEnemyTarget();
+					if (attackTarget != null)
+						foreach (var a in attackForce)
+							TryToAttackMove(a, attackTarget.Value);
+				}
             }
 		}
 
