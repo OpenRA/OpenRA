@@ -25,8 +25,13 @@ rm root/usr/share/openra/FreeSansBold.ttf
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p root/usr/share/doc/openra/
 cp copyright root/usr/share/doc/openra/copyright
-sed "s/{VERSION}/$VERSION/" changelog > root/usr/share/doc/openra/changelog
+CHANGES=`cat ./root/usr/share/openra/CHANGELOG`
+DATE=`date -R`
+
+echo -e "openra (${VERSION}) unstable; urgency=low\n" > root/usr/share/doc/openra/changelog
 cat ./root/usr/share/openra/CHANGELOG >> root/usr/share/doc/openra/changelog
+echo -e "\n\n-- Paul Chote <sleipnir@sleipnirstuff.com> ${DATE}" >> root/usr/share/doc/openra/changelog
+gzip -9 root/usr/share/doc/openra/changelog
 
 # Create the control file
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > root/DEBIAN/control
@@ -42,5 +47,5 @@ fakeroot dpkg-deb -b . $3
 
 # Clean up
 popd
-rm -rf root
+#rm -rf root
 
