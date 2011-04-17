@@ -180,7 +180,7 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
 		$$($(1)_EXTRA) \
 		$$($(1)_SRCS)
 	@test -e fixheader.exe && mono fixheader.exe $$(@) || ``
-	@chmod a-x $$(@)
+	@test `echo $$(@) | sed 's/^.*\.//'` = "dll" && chmod a-x $$(@) || ``
 endef
 
 $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
