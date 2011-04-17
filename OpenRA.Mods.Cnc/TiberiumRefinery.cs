@@ -41,9 +41,10 @@ namespace OpenRA.Mods.Cnc
 		[Sync]
 		public bool Visible = true;
 
+		static readonly Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return Visible ? r : new Renderable[] { };
+			return Visible ? r : Nothing;
 		}
 	}
 }
