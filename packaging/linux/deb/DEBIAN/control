@@ -7,8 +7,12 @@ Depends: libopenal1, mono-runtime (>= 2.6.7), libmono-winforms2.0-cil, libfreety
 Section: games
 Priority: extra
 Homepage: http://www.open-ra.org/
-Description: A multiplayer reimplementation of the Command & Conquer: Red Alert game engine in .NET/Mono.
+Description: A multiplayer re-envisioning of Westwood Studios' C&C and C&C: Red Alert
  .
- Please note: OpenRA is currently at an alpha release stage. Releases may be buggy 
- or unstable. If you have any problems, please report them to the IRC channel (#openra on 
- irc.freenode.net) or the bug-tracker (http://bugs.open-ra.org).
+ OpenRA is a Libre/Free Real Time Strategy game engine supporting early
+ Westwood games like Command & Conquer and Command & Conquer: Red Alert.
+ The engine is designed from the ground up to be extremely moddable and
+ natively supports user-created maps and mods.
+ Support can be obtained from our IRC channel (#openra on irc.freenode.net),
+ our forum (http://www.sleipnirstuff.com/forum/viewforum.php?f=80), and our
+ bug tracker (http://bugs.open-ra.org).
