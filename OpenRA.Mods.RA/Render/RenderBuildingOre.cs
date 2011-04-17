@@ -29,8 +29,10 @@ namespace OpenRA.Mods.RA.Render
 
 		public void BuildingComplete( Actor self )
 		{
-			anim.PlayFetchIndex( "idle", 
-				() => (49 * PlayerResources.Ore) / (10*PlayerResources.OreCapacity));
+			anim.PlayFetchIndex("idle",
+				() => PlayerResources.OreCapacity != 0
+					? (49 * PlayerResources.Ore) / (10 * PlayerResources.OreCapacity)
+					: 0);
 		}
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)

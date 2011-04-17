@@ -18,14 +18,9 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted( init, this ); }
 	}
 
-	class RenderBuildingTurreted : RenderBuilding, INotifyBuildComplete
+	class RenderBuildingTurreted : RenderBuilding
 	{
 		public RenderBuildingTurreted( ActorInitializer init, RenderBuildingInfo info )
 			: base(init, info, () => init.self.Trait<Turreted>().turretFacing) { }
-
-		public void BuildingComplete( Actor self )
-		{
-			anim.Play( "idle" );
-		}
 	}
 }
