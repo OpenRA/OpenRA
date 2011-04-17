@@ -390,10 +390,10 @@ function CreateAutoCompList(editor,key)
 	-- override class based on assign cache
 	UpdateAssignCache(editor)
 	if (editor.assignscache) then
-		local id,rest = key:match("([%w_%.]+):(.*)")
+		local id,sep,rest = key:match("([%w_%.]+)%s*([:%.])%s*(.*)")
 		-- replace for lookup
 		if (id and rest) then
-			key = (editor.assignscache.assigns[id] or id)..":"..rest
+			key = (editor.assignscache.assigns[id] or id)..sep..rest
 		end
 	end
 	
