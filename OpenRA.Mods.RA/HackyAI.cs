@@ -302,7 +302,7 @@ namespace OpenRA.Mods.RA
 				}
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (TryToAttackMove(a, attackTarget.Value))
+					if (TryToMove(a, attackTarget.Value, true))
 						attackForce.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
@@ -351,7 +351,7 @@ namespace OpenRA.Mods.RA
 					attackTarget = ChooseEnemyTarget();
 					if (attackTarget != null)
 						foreach (var a in attackForce)
-							TryToAttackMove(a, attackTarget.Value);
+							TryToMove(a, attackTarget.Value, true);
 				}
 			}
 		}
@@ -414,23 +414,12 @@ namespace OpenRA.Mods.RA
 
 		//try very hard to find a valid move destination near the target.
 		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
-		bool TryToMove(Actor a, int2 desiredMoveTarget)
+		bool TryToMove(Actor a, int2 desiredMoveTarget, bool attackMove)
 		{
 			var xy = ChooseDestinationNear(a, desiredMoveTarget);
 			if (xy == null)
 				return false;
-			world.IssueOrder(new Order("Move", a, false) { TargetLocation = xy.Value });
-			return true;
-		}
-
-		//try very hard to find a valid move destination near the target.
-		//(Don't accept a move onto the subject's current position. maybe this is already not allowed? )
-		bool TryToAttackMove(Actor a, int2 desiredMoveTarget)
-		{
-			var xy = ChooseDestinationNear(a, desiredMoveTarget);
-			if (xy == null)
-				return false;
-			world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = xy.Value });
+			world.IssueOrder(new Order(attackMove ? "AttackMove" : "Move", a, false) { TargetLocation = xy.Value });
 			return true;
 		}
 
