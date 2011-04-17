@@ -50,6 +50,7 @@ HARV:
 		Resources: Tiberium, Blue Tiberium
 		PipCount: 5
 		Capacity: 28
+	HarvesterDocking:
 	Mobile:
 		Speed: 6
 	Health:

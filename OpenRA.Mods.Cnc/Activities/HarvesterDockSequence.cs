@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Cnc
 		
 		readonly Actor proc;
 		readonly Harvester harv;
+		readonly HarvesterDocking dock;
 		readonly RenderBuilding rb;
 		State state;
 		
@@ -44,6 +45,7 @@ namespace OpenRA.Mods.Cnc
 			this.proc = proc;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
+			dock = self.Trait<HarvesterDocking>();
 			rb = proc.Trait<RenderBuilding>();
 			startDock = self.Trait<IHasLocation>().PxPosition;
 			endDock = proc.Trait<IHasLocation>().PxPosition + new int2(-15,8);
@@ -62,7 +64,7 @@ namespace OpenRA.Mods.Cnc
 					state = State.Dock;
 					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
 				case State.Dock:
-					harv.Visible = false;
+					dock.Visible = false;
 					rb.PlayCustomAnimThen(proc, "dock-start", () => {rb.PlayCustomAnimRepeating(proc, "dock-loop"); state = State.Loop;});
 					state = State.Wait;
 					return this;
@@ -71,7 +73,7 @@ namespace OpenRA.Mods.Cnc
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					rb.PlayCustomAnimThen(proc, "dock-end", () => {harv.Visible = true; state = State.Dragout;});
+					rb.PlayCustomAnimThen(proc, "dock-end", () => {dock.Visible = true; state = State.Dragout;});
 					state = State.Wait;
 					return this;
 				case State.Dragout:

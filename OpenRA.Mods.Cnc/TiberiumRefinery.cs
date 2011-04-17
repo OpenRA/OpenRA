@@ -15,14 +15,16 @@ using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Move;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.Cnc
 {
-	class TiberiumRefineryInfo : OreRefineryInfo
+	public class TiberiumRefineryInfo : OreRefineryInfo
 	{
 		public override object Create(ActorInitializer init) { return new TiberiumRefinery(init.self, this); }
 	}
-	class TiberiumRefinery : OreRefinery
+
+	public class TiberiumRefinery : OreRefinery
 	{
 		public TiberiumRefinery(Actor self, TiberiumRefineryInfo info)
 			: base(self, info as OreRefineryInfo) {}
@@ -30,6 +32,18 @@ namespace OpenRA.Mods.Cnc
 		public override Activity DockSequence(Actor harv, Actor self)
 		{
 			return new HarvesterDockSequence(harv, self);
+		}
+	}
+
+	public class HarvesterDockingInfo : TraitInfo<HarvesterDocking> { }
+	public class HarvesterDocking : IRenderModifier
+	{
+		[Sync]
+		public bool Visible = true;
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			return Visible ? r : new Renderable[] { };
 		}
 	}
 }

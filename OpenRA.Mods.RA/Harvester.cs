@@ -30,14 +30,10 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips, 
-		IRenderModifier, IExplodeModifier, IOrderVoice,
-		ISpeedModifier, ISync
+		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		
-		[Sync]
-		public bool Visible = true;
-		
+
 		[Sync]
 		public Actor LinkedProc = null;
 		
@@ -209,11 +205,6 @@ namespace OpenRA.Mods.RA
 
 			for (int i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
-		}
-				
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
-		{
-			return Visible ? r : new Renderable[] { };
 		}
 
 		public bool ShouldExplode(Actor self) { return !IsEmpty; }
