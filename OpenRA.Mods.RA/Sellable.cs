@@ -30,13 +30,15 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Sell" && !selling)
 			{
 				selling = true;
-				self.CancelActivity();
-				if (self.HasTrait<RenderBuilding>() && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-					self.QueueActivity(new MakeAnimation(self, true));
 				
 				foreach( var ns in self.TraitsImplementing<INotifySold>() )
 					ns.Selling( self );
 				
+				self.CancelActivity();
+				
+				var rb = self.TraitOrDefault<RenderBuilding>();
+				if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+					self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
 				self.QueueActivity(new Sell());
 			}
 		}

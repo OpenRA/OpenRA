@@ -13,17 +13,20 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using System;
 
 namespace OpenRA.Mods.RA.Activities
 {
 	class MakeAnimation : Activity
 	{
 		readonly bool Reversed;
+		readonly Action OnComplete;
 		
-		public MakeAnimation(Actor self) : this(self, false) {}
-		public MakeAnimation(Actor self, bool reversed)
+		public MakeAnimation(Actor self, Action onComplete) : this(self, false, onComplete) {}
+		public MakeAnimation(Actor self, bool reversed, Action onComplete)
 		{
 			Reversed = reversed;
+			OnComplete = onComplete;
 		}
 		
 		bool complete = false;
@@ -41,11 +44,10 @@ namespace OpenRA.Mods.RA.Activities
 						foreach (var s in bi.SellSounds)
 							Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
 					
-					// PlayCustomAnim is required to stop a frame of the normal state after the anim completes
-					rb.PlayCustomAnimBackwards(self, "make", () => {rb.PlayCustomAnim(self, "make"); complete = true;});
+					rb.PlayCustomAnimBackwards(self, "make", () => { OnComplete(); complete = true;});
 				}
 				else
-					rb.PlayCustomAnimThen(self, "make", () => complete = true);
+					rb.PlayCustomAnimThen(self, "make", () => { OnComplete(); complete = true;});
 			}
 			return complete ? NextActivity : this;
 		}

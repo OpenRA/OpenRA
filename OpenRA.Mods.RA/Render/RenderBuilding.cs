@@ -47,11 +47,11 @@ namespace OpenRA.Mods.RA.Render
 			// Work around a bogus crash
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 			
+			// Can't call Complete() directly from ctor because other traits haven't been inited yet
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
-				self.QueueActivity(new MakeAnimation(self));
-			
-			// Can't call Complete() from ctor because other traits haven't been inited yet
-			self.QueueActivity(new CallFunc(() => Complete(self)));
+				self.QueueActivity(new MakeAnimation(self, () => Complete(self)));
+			else 
+				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)

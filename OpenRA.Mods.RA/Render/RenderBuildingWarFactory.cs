@@ -44,18 +44,22 @@ namespace OpenRA.Mods.RA.Render
 		bool isOpen;
 		[Sync]
 		int2 openExit;
-
+		
+		bool buildComplete;
 		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info)
 		{
 			roof = new Animation(GetImage(init.self));
+			var offset = new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 24 };
+			offset.DisableFunc = () => !buildComplete;
+			anims.Add("roof", offset);
 		}
 
 		public void BuildingComplete( Actor self )
 		{
 			roof.Play(NormalizeSequence(self,
 				self.GetDamageState() > DamageState.Heavy ? "damaged-idle-top" : "idle-top"));
-			self.Trait<RenderSimple>().anims.Add( "roof", new RenderSimple.AnimationWithOffset( roof ) { ZOffset = 24 } );
+			buildComplete = true;
 		}
 
 		public override void Tick(Actor self)
@@ -89,7 +93,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Selling(Actor self)
 		{
-			self.Trait<RenderSimple>().anims.Remove("roof");
+			anims.Remove("roof");
 		}
 		
 		public void Sold(Actor self) { }

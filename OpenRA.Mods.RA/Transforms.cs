@@ -80,8 +80,9 @@ namespace OpenRA.Mods.RA
 				if (self.HasTrait<IFacing>())
 					self.QueueActivity(new Turn(Info.Facing));
 				
-				if (self.HasTrait<RenderBuilding>() && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-					self.QueueActivity(new MakeAnimation(self, true));
+				var rb = self.TraitOrDefault<RenderBuilding>();
+				if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+					self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
 				
 				self.QueueActivity(new Transform(self, Info.IntoActor) {Offset = Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds});
 			}
