@@ -7,8 +7,9 @@ then
     echo "Usage: `basename $0` version root-dir outputdir"
     exit $E_BADARGS
 fi
-
-VERSION=`echo $1 | sed "s/-/\\./g"`
+DATE=`echo $1 | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+TYPE=`echo $1 | grep -o "^[a-z]*"`
+VERSION=$DATE.$TYPE
 
 rootdir=`readlink -f $2`
 PACKAGE_SIZE=`du --apparent-size -c $rootdir/usr | grep "total" | awk '{print $1}'`
