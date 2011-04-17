@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
+	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier, INotifyKilled
 	{
 		readonly RenderBuildingInfo Info;
 		
@@ -98,16 +98,18 @@ namespace OpenRA.Mods.RA.Render
 		
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Dead)
-				foreach (var t in FootprintUtils.UnpathableTiles( self.Info.Name, self.Info.Traits.Get<BuildingInfo>(), self.Location ))
-				{
-					var cell = t; // required: c# fails at bindings
-					self.World.AddFrameEndTask(w => w.Add(new Explosion(w, Traits.Util.CenterOfCell(cell), "building", false, 0)));
-				}
-			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
+			if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 				anim.ReplaceAnim("damaged-idle");
 			else if (e.DamageState < DamageState.Heavy)
 				anim.ReplaceAnim("idle");
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			var bi = self.Info.Traits.Get<BuildingInfo>();
+			FootprintUtils.UnpathableTiles(self.Info.Name, bi, self.Location).Do(
+				t => self.World.AddFrameEndTask(
+					w => w.Add(new Explosion(w, Traits.Util.CenterOfCell(t), "building", false, 0))));
 		}
 	}
 }

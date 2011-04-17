@@ -78,6 +78,8 @@ namespace OpenRA.Mods.RA.Render
 				else
 					roof.ReplaceAnim(roof.CurrentSequence.Name.Replace("damaged-", ""));
 			}
+
+			base.DamageStateChanged(self, e);
 		}
 
 		public void UnitProduced(Actor self, Actor other, int2 exit)
