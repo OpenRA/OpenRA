@@ -40,6 +40,8 @@ SS:
 	IronCurtainable:
 	RepairableNear:
 	-DetectCloaked:
+	AttackMove:
+		JustMove: yes
 
 MSUB:
 	Inherits: ^Ship
@@ -82,6 +84,8 @@ MSUB:
 	IronCurtainable:
 	RepairableNear:
 	-DetectCloaked:
+	AttackMove:
+		JustMove: yes
 
 DD:
 	Inherits: ^Ship

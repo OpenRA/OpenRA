@@ -61,7 +61,7 @@ namespace OpenRA
 		// For scripting special powers
 		public Order() 
 			: this(null, null, null, int2.Zero, null, false, int2.Zero) { }
-		
+				 
 		public Order(string orderString, Actor subject, bool queued) 
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
 		

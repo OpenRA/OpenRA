@@ -410,6 +410,8 @@ TRUK:
 	RenderUnit:
 	SupplyTruck:
 		Payload: 500
+	AttackMove:
+		JustMove: yes
 
 1TNK.Husk:
 	Inherits: ^Husk
