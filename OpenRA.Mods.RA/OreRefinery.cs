@@ -120,27 +120,13 @@ namespace OpenRA.Mods.RA
 
 		public void OnDock (Actor harv, DeliverResources dockOrder)
 		{
-			var mobile = harv.Trait<Mobile>();
-			var harvester = harv.Trait<Harvester>();
-			
 			if (!preventDock)
 			{
 				harv.QueueActivity( new CallFunc( () => dockedHarv = harv, false ) );
 				harv.QueueActivity( DockSequence(harv, self) );
 				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );			
 			}
-			
-			// Tell the harvester to start harvesting
-			// TODO: This belongs on the harv idle activity
-			harv.QueueActivity( new CallFunc( () =>
-			{
-				if (harvester.LastHarvestedCell != int2.Zero)
-				{
-					harv.QueueActivity( mobile.MoveTo(harvester.LastHarvestedCell, 5) );
-					harv.SetTargetLine(Target.FromCell(harvester.LastHarvestedCell), Color.Red, false);
-				}
-				harv.QueueActivity( new Harvest() );
-			}));
+			harv.QueueActivity( new CallFunc( () => harv.Trait<Harvester>().ContinueHarvesting(harv) ) );
 		}
 		
 		

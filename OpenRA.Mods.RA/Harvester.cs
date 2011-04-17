@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public Actor LinkedProc = null;
 		
-		[Sync]
-		public int2 LastHarvestedCell = int2.Zero;
+		public int2? LastHarvestedCell = null;
 				
 		[Sync]
 		public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
@@ -62,6 +61,17 @@ namespace OpenRA.Mods.RA
 			LinkedProc = ClosestProc(self, ignore);
 		}
 		
+		public void ContinueHarvesting(Actor self)
+		{
+			if (LastHarvestedCell.HasValue)
+			{
+				var mobile = self.Trait<Mobile>();
+				self.QueueActivity( mobile.MoveTo(LastHarvestedCell.Value, 5) );
+				self.SetTargetLine(Target.FromCell(LastHarvestedCell.Value), Color.Red, false);
+			}
+			self.QueueActivity( new Harvest() );
+		}
+
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
             var refs = self.World.ActorsWithTrait<IAcceptOre>()
