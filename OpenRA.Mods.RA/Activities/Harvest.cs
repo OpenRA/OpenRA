@@ -17,7 +17,36 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	public class Harvest : Activity
+	public class FindResources : Activity
+	{
+		public override Activity Tick( Actor self )
+		{
+			if( IsCanceled ) return NextActivity;
+			if( NextActivity != null ) return NextActivity;
+			var harv = self.Trait<Harvester>();
+			if( harv.IsFull )
+				return Util.SequenceActivities( new DeliverResources(), NextActivity );
+
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			var mobile = self.Trait<Mobile>();
+			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var res = self.World.WorldActor.Trait<ResourceLayer>();
+			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, true)
+						.WithHeuristic(loc => (res.GetResource(loc) != null && harvInfo.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
+				        .FromPoint(self.Location));
+
+			if (path.Count == 0)
+				return NextActivity;
+			return Util.SequenceActivities( mobile.MoveTo(path[0], 1), new HarvestResource(), this );
+		}
+
+		public override IEnumerable<Target> GetTargets( Actor self )
+		{
+			yield return Target.FromPos(self.Location);
+		}
+	}
+
+	public class HarvestResource : Activity
 	{
 		bool isHarvesting = false;
 
@@ -25,21 +54,24 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if( isHarvesting ) return this;
 			if( IsCanceled ) return NextActivity;
-			if( NextActivity != null ) return NextActivity;
-
 			var harv = self.Trait<Harvester>();
 			harv.LastHarvestedCell = self.Location;
 
 			if( harv.IsFull )
-				return Util.SequenceActivities( new DeliverResources(), NextActivity );
-
-			if (HarvestThisTile(self))
-				return this;
-			else
-			{
-				FindMoreResource(self);
 				return NextActivity;
+
+			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
+			var resource = self.World.WorldActor.Trait<ResourceLayer>().Harvest(self.Location);
+			if (resource == null)
+				return NextActivity;
+
+			if (renderUnit.anim.CurrentSequence.Name != "harvest")
+			{
+				isHarvesting = true;
+				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
 			}
+			harv.AcceptResource(resource);
+			return this;
 		}
 
 		bool HarvestThisTile(Actor self)
@@ -58,27 +90,6 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			harv.AcceptResource(resource);
 			return true;
-		}
-
-		void FindMoreResource(Actor self)
-		{
-			var mobile = self.Trait<Mobile>();
-			var res = self.World.WorldActor.Trait<ResourceLayer>();
-			var harv = self.Info.Traits.Get<HarvesterInfo>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
-			self.QueueActivity(mobile.MoveTo(
-				() =>
-				{
-					return self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, true)
-						.WithHeuristic(loc => (res.GetResource(loc) != null && harv.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
-				        .FromPoint(self.Location));
-				}));
-			self.QueueActivity(new Harvest());
-		}
-		
-		public override IEnumerable<Target> GetTargets( Actor self )
-		{
-			yield return Target.FromPos(self.Location);
 		}
 	}
 }

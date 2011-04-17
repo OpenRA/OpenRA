@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity( mobile.MoveTo(LastHarvestedCell.Value, 5) );
 				self.SetTargetLine(Target.FromCell(LastHarvestedCell.Value), Color.Red, false);
 			}
-			self.QueueActivity( new Harvest() );
+			self.QueueActivity( new FindResources() );
 		}
 
 		Actor ClosestProc(Actor self, Actor ignore)
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
-				self.QueueActivity(new Harvest());
+				self.QueueActivity(new FindResources());
 			}
 			else if (order.OrderString == "Deliver")
 			{
