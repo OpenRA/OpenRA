@@ -274,12 +274,12 @@ namespace OpenRA.Mods.RA
 			activeUnits.RemoveAll(a => a.Destroyed);
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
 			attackForce.RemoveAll(a => a.Destroyed);
-            
+
 			// don't select harvesters.
 			var newUnits = self.World.ActorsWithTrait<IMove>()
 				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"] && a.Actor.Info != Rules.Info["mcv"]
 					&& !activeUnits.Contains(a.Actor))
-                    .Select(a => a.Actor).ToArray();
+					.Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
 			{
@@ -294,12 +294,12 @@ namespace OpenRA.Mods.RA
 			{
 				BotDebug("Launch an attack.");
 
-                if (attackForce.Count == 0)
-                {
-                    attackTarget = ChooseEnemyTarget();
-                    if (attackTarget == null)
-                        return;
-                }
+				if (attackForce.Count == 0)
+				{
+					attackTarget = ChooseEnemyTarget();
+					if (attackTarget == null)
+						return;
+				}
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (TryToAttackMove(a, attackTarget.Value))
@@ -308,43 +308,43 @@ namespace OpenRA.Mods.RA
 				unitsHangingAroundTheBase.Clear();
 			}
 
-            // If we have any attackers, let them scan for enemy units and stop and regroup if they spot any
-            if (attackForce.Count > 0 )
-            {
-                bool foundEnemy = false;
-                foreach (var a1 in attackForce)
-                {
-                    var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
-						.Where(unit => IsHumanPlayer(unit.Owner) ).ToList();
+			// If we have any attackers, let them scan for enemy units and stop and regroup if they spot any
+			if (attackForce.Count > 0)
+			{
+				bool foundEnemy = false;
+				foreach (var a1 in attackForce)
+				{
+					var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
+						.Where(unit => IsHumanPlayer(unit.Owner)).ToList();
 
-                    if (enemyUnits.Count > 0)
-                    {
-                        //BotDebug("Found enemy "+enemyUnits.First().Info.Name);
-                        // Found enemy units nearby.
-                        foundEnemy = true;
-                        var enemy = enemyUnits.OrderBy( e => (e.Location - a1.Location).LengthSquared ).First();
-                        
-                        // Check how many own units we have gathered nearby...
-                        var ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2)
+					if (enemyUnits.Count > 0)
+					{
+						//BotDebug("Found enemy "+enemyUnits.First().Info.Name);
+						// Found enemy units nearby.
+						foundEnemy = true;
+						var enemy = enemyUnits.OrderBy(e => (e.Location - a1.Location).LengthSquared).First();
+
+						// Check how many own units we have gathered nearby...
+						var ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2)
 							.Where(unit => unit.Owner == p).ToList();
-                        if (ownUnits.Count < Info.SquadSize)
-                        {
-                            // Not enough to attack. Send more units.
-                            world.IssueOrder(new Order("Stop", a1, false) { });
+						if (ownUnits.Count < Info.SquadSize)
+						{
+							// Not enough to attack. Send more units.
+							world.IssueOrder(new Order("Stop", a1, false) { });
 
 							foreach (var a2 in attackForce)
-                                if (a2 != a1)
-                                    world.IssueOrder(new Order("AttackMove", a2, false) { TargetLocation = a1.Location });
-                        }
-                        else
-                        {
-                            // We have gathered sufficient units. Attack the nearest enemy unit.
-                            foreach (var a2 in attackForce)
-                                world.IssueOrder(new Order("Attack", a2, false) { TargetActor = enemy });
-                        }
-                        return;
-                    }
-                }
+								if (a2 != a1)
+									world.IssueOrder(new Order("AttackMove", a2, false) { TargetLocation = a1.Location });
+						}
+						else
+						{
+							// We have gathered sufficient units. Attack the nearest enemy unit.
+							foreach (var a2 in attackForce)
+								world.IssueOrder(new Order("Attack", a2, false) { TargetActor = enemy });
+						}
+						return;
+					}
+				}
 
 				if (!foundEnemy)
 				{
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.RA
 						foreach (var a in attackForce)
 							TryToAttackMove(a, attackTarget.Value);
 				}
-            }
+			}
 		}
 
 		bool IsRallyPointValid(int2 x)
