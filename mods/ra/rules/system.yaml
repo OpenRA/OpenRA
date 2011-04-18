@@ -93,6 +93,7 @@ Player:
 	DebugResourceCash:
 	DebugResourceOre:
 	DebugResourceOreCapacity:
+	GpsWatcher:
 
 World:	
 	OpenWidgetAtGameStart:

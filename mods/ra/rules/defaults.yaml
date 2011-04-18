@@ -28,6 +28,8 @@
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
+	GpsDot:
+		String:O
 
 ^Tank:
 	AppearsOnRadar:
@@ -59,6 +61,8 @@
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
+	GpsDot:
+		String:O
 
 ^Infantry:
 	AppearsOnRadar:
@@ -96,6 +100,8 @@
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
+	GpsDot:
+		String:o
 
 ^Ship:
 	AppearsOnRadar:
@@ -119,6 +125,8 @@
 	ProximityCaptor:
 		Types:Ship
 	GivesBounty:
+	GpsDot:
+		String:O
 
 ^Plane:
 	AppearsOnRadar:
@@ -144,6 +152,8 @@
 		PilotActor: E1
 		SuccessRate: 50
 	GivesBounty:
+	GpsDot:
+		String:O
 
 ^Building:
 	AppearsOnRadar:

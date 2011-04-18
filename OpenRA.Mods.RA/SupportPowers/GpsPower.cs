@@ -9,12 +9,76 @@
 #endregion
 
 using System.Linq;
+using System.Drawing;
+using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	class GpsWatcherInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init)
+		{
+			return new GpsWatcher(init);
+		}
+	}
+
+	class GpsWatcher : ISync
+	{
+		Actor self;
+		bool Launched = false;
+		List<Actor> actors = new List<Actor> { };
+		[Sync]
+		public bool GrantedAllies = false;
+		[Sync]
+		public bool Granted = false;
+		
+
+		public GpsWatcher(ActorInitializer init)
+		{
+			self = init.self;
+		}
+
+		public void GpsRem(Actor self)
+		{
+			actors.Remove(self);
+			RefreshGps(self);
+		}
+
+		public void GpsAdd(Actor self)
+		{
+			actors.Add(self);
+			RefreshGps(self);
+		}
+
+		public void Launch(Actor self, SupportPowerInfo info)
+		{
+			self.World.Add(new DelayedAction((info as GpsPowerInfo).RevealDelay * 25,
+					() =>
+					{
+						Launched = true;
+						RefreshGps(self);
+					}));
+		}
+
+		public void RefreshGps(Actor self)
+		{
+			Granted = (actors.Count > 0 && Launched);
+			GrantedAllies = self.World.ActorsWithTrait<GpsWatcher>().Any(p =>
+					p.Actor.Owner.Stances[self.Owner] == Stance.Ally && p.Trait.Granted);
+
+			if (self.World.LocalPlayer == null)
+				return;
+
+			if ((Granted || GrantedAllies) && self.World.LocalPlayer == self.Owner)
+			{
+				self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
+			}
+		}
+	}
+
 	class GpsPowerInfo : SupportPowerInfo
 	{
 		public readonly int RevealDelay = 0;
@@ -22,15 +86,14 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, ISync, INotifyStanceChanged, INotifySold
+	class GpsPower : SupportPower, INotifyKilled, ISync, INotifyStanceChanged, INotifySold, INotifyCapture
 	{
-		[Sync]
-		public bool Granted;
+		GpsWatcher owner;
 
 		public GpsPower(Actor self, GpsPowerInfo info) : base(self, info)
 		{
-			Granted = self.World.ActorsWithTrait<GpsPower>()
-				.Any(p => p.Actor.Owner == self.Owner && p.Trait.Granted);
+			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
+			owner.GpsAdd(self);
 		}
 
 		public override void Charged(Actor self, string key)
@@ -46,43 +109,31 @@ namespace OpenRA.Mods.RA
 
 				w.Add(new SatelliteLaunch(self));
 
-                /* there is only one shroud, but it is misleadingly available through Player.Shroud */
-				w.Add(new DelayedAction((Info as GpsPowerInfo).RevealDelay * 25,
-					() => {
-						var ateks = self.World.ActorsWithTrait<GpsPower>();
-						foreach (TraitPair<GpsPower> i in ateks)
-						{
-							if (i.Actor.Owner == self.Owner)
-							{
-								i.Trait.Granted = true;
-							}
-						}
-						RefreshGps(self);
-					}));
+				owner.Launch(self, Info);
 			});
 		}
 
-		public void Selling(Actor self) { DisableGps(); }
-		public void Sold(Actor self) { }
-		public void Killed(Actor self, AttackInfo e) { DisableGps(); }
+		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
 
-		void DisableGps()
-		{
-			Granted = false;
-			RefreshGps(self);
-		}
+		public void Selling(Actor self) {}
+		public void Sold(Actor self) { RemoveGps(self); }
 
-		void RefreshGps(Actor self)
+		void RemoveGps(Actor self)
 		{
-			if (self.World.LocalPlayer != null)
-				self.World.LocalShroud.Disabled = self.World.ActorsWithTrait<GpsPower>()
-					.Any(p => p.Actor.Owner.Stances[self.World.LocalPlayer] == Stance.Ally &&
-						p.Trait.Granted);
+			// Extra function just in case something needs to be added later
+			owner.GpsRem(self);
 		}
 
 		public void StanceChanged(Actor self, Player a, Player b, Stance oldStance, Stance newStance)
 		{
-			RefreshGps(self);
+			owner.RefreshGps(self);
+		}
+		
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			RemoveGps(self);
+			owner = captor.Owner.PlayerActor.Trait<GpsWatcher>();
+			owner.GpsAdd(self);
 		}
 	}
 }
