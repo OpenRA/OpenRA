@@ -53,21 +53,4 @@ namespace OpenRA.Mods.RA.Air
 			base.Cancel( self );
 		}
 	}
-
-	public class FlyAttackLoop : Activity
-	{
-		int2 Target;
-
-		public FlyAttackLoop(int2 target) { Target = target; }
-
-		public override Activity Tick(Actor self)
-		{
-			if( IsCanceled ) return NextActivity;
-
-			return Util.SequenceActivities(
-				Fly.ToCell(Target),
-				new FlyTimed(50),
-				this);
-		}
-	}
 }
