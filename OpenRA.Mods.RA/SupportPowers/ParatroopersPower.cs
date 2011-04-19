@@ -62,12 +62,13 @@ namespace OpenRA.Mods.RA
 				});
 				
 				a.CancelActivity();
-				a.QueueActivity(new FlyAttackLoop(order.TargetLocation));
+				a.QueueActivity(new FlyAttack(Target.FromOrder(order)));
 				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary { new OwnerInit( a.Owner ) }));
+					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(), 
+						new TypeDictionary { new OwnerInit( a.Owner ) }));
 			});
 		}
 	}
