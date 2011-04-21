@@ -49,8 +49,11 @@ pushd root
 # Calculate md5sums and clean up the /usr/ part of them
 md5sum `find . -type f | grep -v '^[.]/DEBIAN/'` | sed 's/\.\/usr\//usr\//g' > DEBIAN/md5sums
 
+# Replace any dashes in the version string with periods
+PKGVERSION=`echo $1 | sed "s/-/\\./g"`
+
 # Start building, the file should appear in the output directory
-fakeroot dpkg-deb -b . $3
+fakeroot dpkg-deb -b . $3/openra_${PKGVERSION}_all.deb
 
 # Clean up
 popd
