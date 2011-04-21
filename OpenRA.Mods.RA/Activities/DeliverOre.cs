@@ -40,14 +40,14 @@ namespace OpenRA.Mods.RA.Activities
 			var iao = proc.Trait<IAcceptOre>();
 			
 			if( self.Location != proc.Location + iao.DeliverOffset )
-			{
 				return Util.SequenceActivities( mobile.MoveTo(proc.Location + iao.DeliverOffset, 0), this );
-			}
-			else if (!isDocking)
+
+			if (!isDocking)
 			{
 				isDocking = true;
 				iao.OnDock(self, this);
 			}
+			
 			return Util.SequenceActivities( new Wait(10), this );
 		}
 		
