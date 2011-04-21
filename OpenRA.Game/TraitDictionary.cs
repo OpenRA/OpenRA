@@ -23,6 +23,12 @@ namespace OpenRA
 		{
 			return traits.GetOrAdd( t, doCreateTraitContainer );
 		}
+		
+		public void PrintReport()
+		{
+			foreach( var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0) )
+				Console.WriteLine ("{0}: {1}", t.Key.Name, t.Value.Queries );
+		}
 
 		// construct this delegate once.
 		static Func<Type, ITraitContainer> doCreateTraitContainer = CreateTraitContainer;
@@ -90,12 +96,17 @@ namespace OpenRA
 		{
 			void Add( Actor actor, object trait );
 			void RemoveActor( uint actor );
+				
+			int Queries { get; }
 		}
 
 		class TraitContainer<T> : ITraitContainer
 		{
 			List<Actor> actors = new List<Actor>();
 			List<T> traits = new List<T>();
+			int queries;
+				
+			public int Queries { get { return queries; } }
 
 			public void Add( Actor actor, object trait )
 			{
@@ -106,6 +117,7 @@ namespace OpenRA
 
 			public T Get( uint actor )
 			{
+				++queries;
 				var index = actors.BinarySearchMany( actor );
 				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					throw new InvalidOperationException( string.Format( "TraitDictionary does not contain instance of type `{0}`", typeof( T ) ) );
@@ -117,6 +129,7 @@ namespace OpenRA
 
 			public T GetOrDefault( uint actor )
 			{
+				++queries;
 				var index = actors.BinarySearchMany( actor );
 				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					return default( T );
@@ -127,6 +140,7 @@ namespace OpenRA
 
 			public IEnumerable<T> GetMultiple( uint actor )
 			{
+				++queries;
 				var index = actors.BinarySearchMany( actor );
 				while( index < actors.Count && actors[ index ].ActorID == actor )
 				{
@@ -137,6 +151,7 @@ namespace OpenRA
 
 			public IEnumerable<TraitPair<T>> All()
 			{
+				++queries;
 				for( int i = 0 ; i < actors.Count ; i++ )
 					yield return new TraitPair<T> { Actor = actors[ i ], Trait = traits[ i ] };
 			}

@@ -326,6 +326,8 @@ namespace OpenRA
 
 		public static void Disconnect()
 		{
+			orderManager.world.traitDict.PrintReport();
+			
 			if (IsHost && server != null)
 				server.Shutdown();
 
