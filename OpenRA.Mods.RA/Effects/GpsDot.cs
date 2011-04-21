@@ -46,6 +46,9 @@ namespace OpenRA.Mods.RA.Effects
 		public void Tick(World world)
 		{
 			show = false;
+
+			if (self.Destroyed)
+				world.AddFrameEndTask(w => w.Remove(this));
 			
 			if (world.LocalPlayer == null)
 				return;
