@@ -653,7 +653,7 @@ PROC:
 		Value: 600
 	FreeActor:
 		Actor: HARV
-		InitialActivity: Harvest
+		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
 
