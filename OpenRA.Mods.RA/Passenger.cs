@@ -13,26 +13,25 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {
-	class PassengerInfo : ITraitInfo
+	public class PassengerInfo : ITraitInfo
 	{
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
 
-		public object Create( ActorInitializer init ) { return new Passenger( init.self, this ); }
+		public object Create( ActorInitializer init ) { return new Passenger( this ); }
 	}
 
     public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly Actor self;
 		readonly PassengerInfo info;
-		public Passenger( Actor self, PassengerInfo info ) { this.self = self; this.info = info; }
+		public Passenger( PassengerInfo info ) { this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -80,13 +79,12 @@ namespace OpenRA.Mods.RA
 				
 				self.SetTargetLine(Target.FromOrder(order), Color.Green);
 								
-				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}
 
-		public PipType ColorOfCargoPip( Actor self ) { return info.PipType; }
+		public PipType ColorOfCargoPip() { return info.PipType; }
 	}
 }

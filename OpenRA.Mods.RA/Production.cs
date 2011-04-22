@@ -11,10 +11,9 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
-using OpenRA.Traits.Activities;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

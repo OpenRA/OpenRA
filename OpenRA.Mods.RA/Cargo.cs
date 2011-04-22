@@ -21,19 +21,18 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 
-		public object Create( ActorInitializer init ) { return new Cargo( init.self ); }
+		public object Create( ActorInitializer init ) { return new Cargo( init.self, this ); }
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled
 	{
 		readonly Actor self;
+		readonly CargoInfo info;
+		
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
-		public Cargo( Actor self )
-		{
-			this.self = self;
-		}
+		public Cargo( Actor self, CargoInfo info ) { this.self = self; this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -103,20 +102,10 @@ namespace OpenRA.Mods.RA
 			return "Move";
 		}
 		
-		public bool IsFull(Actor self)
-		{
-			return cargo.Count == self.Info.Traits.Get<CargoInfo>().Passengers;
-		}
+		public bool IsFull(Actor self) { return cargo.Count == info.Passengers;	}
+		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
-		public bool IsEmpty(Actor self)
-		{
-			return cargo.Count == 0;
-		}
-
-		public Actor Peek(Actor self)
-		{
-			return cargo[0];
-		}
+		public Actor Peek(Actor self) {	return cargo[0]; }
 		
 		public Actor Unload(Actor self)
 		{
@@ -127,17 +116,12 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<PipType> GetPips( Actor self )
 		{
-			var numPips = self.Info.Traits.Get<CargoInfo>().Passengers;
+			var numPips = info.Passengers;
 			for (var i = 0; i < numPips; i++)
 				if (i >= cargo.Count)
 					yield return PipType.Transparent;
 				else
-					yield return GetPipForPassenger(cargo[i]);
-		}
-
-		static PipType GetPipForPassenger(Actor a)
-		{
-			return a.Trait<Passenger>().ColorOfCargoPip( a );
+					yield return cargo[i].Trait<Passenger>().ColorOfCargoPip();
 		}
 
 		public void Load(Actor self, Actor a)
