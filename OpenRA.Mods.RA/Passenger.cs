@@ -25,13 +25,14 @@ namespace OpenRA.Mods.RA
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
 
-		public object Create( ActorInitializer init ) { return new Passenger( init.self ); }
+		public object Create( ActorInitializer init ) { return new Passenger( init.self, this ); }
 	}
 
     public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
-		public Passenger( Actor self ) { this.self = self; }
+		readonly PassengerInfo info;
+		public Passenger( Actor self, PassengerInfo info ) { this.self = self; this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -52,9 +53,8 @@ namespace OpenRA.Mods.RA
 
 		bool IsCorrectCargoType( Actor target )
 		{
-			var pi = self.Info.Traits.Get<PassengerInfo>();
 			var ci = target.Info.Traits.Get<CargoInfo>();
-			return ci.Types.Contains( pi.CargoType );
+			return ci.Types.Contains( info.CargoType );
 		}
 
 		bool CanEnter( Actor target )
@@ -82,14 +82,11 @@ namespace OpenRA.Mods.RA
 								
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveTo(order.TargetActor.Location, 1));
+				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}
 
-		public PipType ColorOfCargoPip( Actor self )
-		{
-			return self.Info.Traits.Get<PassengerInfo>().PipType;
-		}
+		public PipType ColorOfCargoPip( Actor self ) { return info.PipType; }
 	}
 }
