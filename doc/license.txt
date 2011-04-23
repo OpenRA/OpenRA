@@ -1,4 +1,4 @@
-1.Estrela Editor License
+﻿1.Estrela Editor License
 =============================================================================
 
 Estrela Editor sources are released under the MIT License
@@ -114,36 +114,3 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 SOFTWARE. 
-
-4. LuaFileSystem
-=============================================================================
-LuaFileSystem was designed by Roberto Ierusalimschy, André Carregal and Tomás 
-Guisasola as part of the Kepler Project, which holds its copyright.
-Homepage: http://www.keplerproject.org/luafilesystem/index.html
-License:  http://www.keplerproject.org/luafilesystem/license.html
-=============================================================================
-
-5. LuaSockets
-=============================================================================
-Copyright: © 2004-2006 Diego Nehab. All rights reserved.
-Homepage: http://www.cs.princeton.edu/~diego/professional/luasocket/
-License:  http://www.lua.org/copyright.html (same as LUA)
-=============================================================================
-
-6. ZMQ
-=============================================================================
-Copyright: © 2007-2011 iMatix Corporation and Contributors
-Homepage: http://www.zeromq.org/
-License:  http://www.zeromq.org/area:licensing
-
-Lua ZMQ
-Copyright: © 2011 by Robert G. Jakabosky
-Homepage: https://github.com/Neopallium/lua-zmq
-=============================================================================
-
-7. MojoShader
-=============================================================================
-Copyright: © 2008-2010 Ryan C. Gordon
-Homepage: http://icculus.org/mojoshader/
-License:  http://hg.icculus.org/icculus/mojoshader/raw-file/tip/LICENSE.txt
-=============================================================================
