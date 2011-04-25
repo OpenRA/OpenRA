@@ -7,6 +7,19 @@ local function ffiToApi(ffidef)
   local header = ffidef:match("[^\r\n]+")
   ffidef = StripCommentsC(ffidef)
   
+  local description = header:match("|%s*(.*)")
+  local descrprefixes = header:match("(.-)%s*|")
+  local prefixes = {}
+  for prefix in descrprefixes:gmatch("([_%w]+)") do
+    table.insert(prefixes,prefix)
+  end
+  if (not prefixes[1]) then return end
+  
+  local ns = prefixes[1]
+  
+  
+  local lktypes = {}
+  
   local function gencontent(tx)
     local enums = {}
     local funcs = {}
@@ -22,9 +35,16 @@ local function ffiToApi(ffidef)
       fn.ARGS = "("..args..")"
       
       -- skip return void types
-      fn.RET = fn.RET == "void" and "" or fn.RET
-      fn.RET = "("..fn.RET..")"
+      local what = fn.RET == "void" and "" or fn.RET
+      fn.RET = "("..what..")"
       fn.DESCR = ""
+      if (what ~= "") then
+        what = what:gsub("const%s","")
+        what = what:gsub("static%s","")
+        what = what:gsub("%s","")
+        what = what:gsub("%s%*","*")
+        fn.TYPE = what
+      end
       
       table.insert(funcs,curfunc)
       curfunc = nil
@@ -54,8 +74,27 @@ local function ffiToApi(ffidef)
         if (typ and name) then
           local name,rest = name:match("([_%w]+)(.*)")
           rest = rest and rest:gsub("%s","") or ""
-          local datatype = typ..(rest:match("%[") and "[]" or "")
-          table.insert(values,{NAME=name, DESCR=(typ..rest..(val and (" = "..val) or "")), TYPE = '"'..datatype..'"',})
+          local what = typ..(rest:gsub("%b[]","*"))
+          what = what:gsub("const%s","")
+          what = what:gsub("static%s","")
+          what = what:gsub("%s","")
+          what = what:gsub("%s%*","*")
+          table.insert(values,{NAME=name, DESCR=(typ..rest..(val and (" = "..val) or "")), TYPE = what,})
+        end
+      elseif(typedef) then
+        -- typedef struct  lxgTextureUpdate_s * lxgTextureUpdatePTR;
+        -- typedef float lxVector2[2];
+        local what,name = l:match("typedef%s+([_%w%s%*]-)%s+([_%w%[%]]+)%s*;")
+        if (what and name) then
+          what = what:gsub("const%s","")
+          what = what:gsub("static%s","")
+          what = what:gsub("%s+"," ")
+          what = what:gsub("%s+%*","*")
+          local name,rest = name:match("([_%w]+)(.*)")
+          rest = rest and rest:gsub("%s","") or ""
+          if (what and name) then
+            lktypes[name] = what..(rest:gsub("%b[]","*"))
+          end
         end
       end
     end 
@@ -69,10 +108,35 @@ local function ffiToApi(ffidef)
     
     -- search for classes
     for class,def,final in tx:gmatch("struct%s+([_%w]*)[%s\r\n]*(%b{})([_%w%s\r\n]*);") do
-      class = final:match("[_%w]+") or class
-      table.insert(classes,{NAME=class,DESCR = "",content = gencontent(def:sub(2,-2))})
+      final = final:match("[_%w]+")
+      if (final) then
+        lktypes["struct "..class] = ns.."."..final
+        lktypes[ns.."."..final] = ns.."."..final
+      else
+        lktypes["struct "..class] = ns.."."..class
+        lktypes[ns.."."..class] = ns.."."..class
+      end
+      table.insert(classes,{NAME= final or class,DESCR = "",content = gencontent(def:sub(2,-2))})
     end
     
+    local function fixtypes(tab)
+      for i,v in ipairs(tab) do
+        local vt = v.TYPE
+        if (vt) then
+          local nt = vt
+          repeat
+            vt = nt
+            local typ,qual = nt:match("([_%w%.%s+]+)(%**)")
+            nt = (lktypes[typ] or typ)..(qual or "")
+          until nt==vt
+          v.TYPE = '"'..nt..'"'
+        else
+          v.TYPE = "nil"
+        end
+      end
+    end
+    fixtypes(values)
+    fixtypes(funcs)
     
     return (#classes > 0 or #funcs > 0 or #enums > 0 or #values > 0) and 
       {classes=classes,funcs=funcs, enums=enums, values=values}
@@ -112,6 +176,7 @@ local api =
 [[##["$NAME$"] = { type ='function', 
 ##  description = "$DESCR$", 
 ##  returns = "$RET$",
+##  valuetype = $TYPE$,
 ##  args = "$ARGS$", },
 ]]
     str = serialize(str,value,content.values or {},lvl)
@@ -151,12 +216,9 @@ return {
     childs = $API$,
   },
 ]]
-
-  local description = header:match("|%s*(.*)")
-  local prefixes = header:match("(.-)%s*|")
-  local libs = {}
   
-  for prefix in prefixes:gmatch("([_%w]+)") do 
+  local libs = {}
+  for i,prefix in ipairs(prefixes) do
     local p = {NAME=prefix, DESCR = description, API="api"}
     table.insert(libs,p)
   end

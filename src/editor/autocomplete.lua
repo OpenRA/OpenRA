@@ -318,15 +318,14 @@ local function getAutoCompApiList(childs,fragment)
 			end
 			cache[childs] = wlist
 		end
-		
 		local ret = {}
 		local g = string.gmatch
-		local pat = fragment ~= "" and ("%s"..fragment:gsub(".",
+		local pat = fragment ~= "" and ("%s("..fragment:gsub(".",
 			function(c) 
 				local l = c:lower()..c:upper()
-				return "["..l.."][^"..l.." ]*" 
-			end).." ") or " [%w_]+ "
-		
+				return "["..l.."][%w_]*" 
+			end)..")") or "([%w_]+)"
+		pat = pat:gsub("%s","")
 		for c in g(wlist,pat) do
 			table.insert(ret,c)
 		end
