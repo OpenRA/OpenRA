@@ -47,13 +47,15 @@ local function ffiToApi(ffidef)
         curfunc = {RET=ret,NAME=name,ARGS=args}
         registerfunc()
       elseif (not typedef) then
-        local typ,name,val = l:match("%s*([_%w%s%*]-)%s*([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
+        local typ,name,val = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
         if (not (typ and name and val)) then
-              typ,name     = l:match("%s*([_%w%s%*]-)%s*([_%w%[%]]+)[\r\n%s]*;")
+              typ,name     = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]%:%s]+)[\r\n%s]*;")
         end
         if (typ and name) then
           local name,rest = name:match("([_%w]+)(.*)")
-          table.insert(values,{NAME=name, DESCR=typ..rest..(val and (" = "..val) or "")})
+          rest = rest and rest:gsub("%s","") or ""
+          local datatype = typ..(rest:match("%[") and "[]" or "")
+          table.insert(values,{NAME=name, DESCR=(typ..rest..(val and (" = "..val) or "")), TYPE = '"'..datatype..'"',})
         end
       end
     end 
@@ -101,7 +103,7 @@ local api =
 ]],"##",string.rep("  ",lvl))
 
     local value = 
-[[##["$NAME$"] = { type ='value', description = "$DESCR$", },
+[[##["$NAME$"] = { type ='value', description = "$DESCR$", valuetype = $TYPE$, },
 ]]
     local enum = 
 [[##["$NAME$"] = { type ='value', },
