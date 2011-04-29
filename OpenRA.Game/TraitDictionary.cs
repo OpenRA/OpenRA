@@ -26,8 +26,9 @@ namespace OpenRA
 		
 		public void PrintReport()
 		{
-			foreach( var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0) )
-				Console.WriteLine ("{0}: {1}", t.Key.Name, t.Value.Queries );
+			Log.AddChannel("traitreport", "traitreport.log");
+			foreach (var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0))
+				Log.Write("traitreport", "{0}: {1}", t.Key.Name, t.Value.Queries);
 		}
 
 		// construct this delegate once.
