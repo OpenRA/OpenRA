@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
-			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(), new TypeDictionary { new OwnerInit(self.Owner) });
+			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(), 
+				new TypeDictionary { new OwnerInit(self.Owner) });
 			var r = self.World.SharedRandom.Next(1, 100);
 			var aircraft = self.Trait<IMove>();
 
