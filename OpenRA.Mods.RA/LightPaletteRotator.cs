@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -23,12 +24,13 @@ namespace OpenRA.Mods.RA
 			t += .5f;
 		}
 		
+		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker" };
+
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker"};
 			foreach (var pal in palettes)
 			{
-				if (excludePalettes.Contains(pal.Key))
+				if (ExcludePalettes.Contains(pal.Key))
 					continue;
 				
 				var rotate = (int)t % 18;
