@@ -27,8 +27,7 @@ namespace OpenRA.Traits
         {
             var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
             anim.PlayRepeating("idle");
-            var rb = building.Traits.Get<RenderSimpleInfo>();
-            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), rb.Palette, 0, Scale);
+            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette, 0, Scale);
         }
 	}
 
