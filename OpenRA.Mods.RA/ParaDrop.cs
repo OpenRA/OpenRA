@@ -52,11 +52,10 @@ namespace OpenRA.Mods.RA
 					droppedAt.Add(self.Location);
 
 					var a = cargo.Unload(self);
-					var rs = a.Trait<RenderSimple>();
 
 					var aircraft = self.Trait<IMove>();
 					self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(self.Owner, rs.anim.Name,
+						new Parachute(self.Owner,
 							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
 							aircraft.Altitude, a)));
 

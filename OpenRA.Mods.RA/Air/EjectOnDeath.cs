@@ -33,9 +33,8 @@ namespace OpenRA.Mods.RA
 
 			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10)
 			{
-				var rs = pilot.Trait<RenderSimple>();
 				self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(pilot.Owner, rs.anim.Name,
+						new Parachute(pilot.Owner,
 							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
 							aircraft.Altitude, pilot)));
 

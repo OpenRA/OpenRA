@@ -28,12 +28,15 @@ namespace OpenRA.Mods.RA.Effects
 		float altitude;
 		const float fallRate = .3f;
 
-		public Parachute(Player owner, string image, float2 location, int altitude, Actor cargo)
+		public Parachute(Player owner, float2 location, int altitude, Actor cargo)
 		{
 			this.location = location;
 			this.altitude = altitude;
 			this.cargo = cargo;
 			this.owner = owner;
+
+			var rs = cargo.Trait<RenderSimple>();
+			var image = rs.anim.Name;
 
 			anim = new Animation(image);
 			if (anim.HasSequence("idle"))
