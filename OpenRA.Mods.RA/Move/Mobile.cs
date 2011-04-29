@@ -12,13 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
-using System.Diagnostics;
-using OpenRA.Orders;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Move
 {
