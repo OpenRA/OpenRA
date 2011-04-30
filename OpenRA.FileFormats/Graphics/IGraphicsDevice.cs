@@ -64,7 +64,6 @@ namespace OpenRA.FileFormats.Graphics
 	{
 		void SetValue( string name, float x, float y );
 		void SetValue( string param, ITexture texture );
-		void Commit();
 		void Render( Action a );
 	}
 

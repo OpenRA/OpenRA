@@ -89,7 +89,6 @@ namespace OpenRA.Graphics
 			s.SetValue( "Scroll", (int) scroll.X, (int) scroll.Y );
 			s.SetValue( "r1", r1.X, r1.Y );
 			s.SetValue( "r2", r2.X, r2.Y );
-			s.Commit();
 		}
 
 		public void EndFrame( IInputHandler inputHandler )

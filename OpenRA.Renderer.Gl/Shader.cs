@@ -9,12 +9,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
-using System.Text;
-using System.Collections.Generic;
 
 namespace OpenRA.Renderer.Glsl
 {
@@ -141,7 +141,5 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glUniform2fARB(param,x,y);
 			GraphicsDevice.CheckGlError();
 		}
-
-		public void Commit() { }
 	}
 }

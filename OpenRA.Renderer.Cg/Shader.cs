@@ -12,7 +12,6 @@ using System;
 using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
-using Tao.Cg;
 
 namespace OpenRA.Renderer.Cg
 {
@@ -81,7 +80,5 @@ namespace OpenRA.Renderer.Cg
 			if (param != IntPtr.Zero)
 				Tao.Cg.CgGl.cgGLSetParameter2f(param, x, y);
 		}
-
-		public void Commit() { }
 	}
 }
