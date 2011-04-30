@@ -1,4 +1,4 @@
-﻿1.Estrela Editor License
+﻿Estrela Editor License
 =============================================================================
 
 Estrela Editor sources are released under the MIT License
@@ -27,7 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-2. wxLua License
+wxLua License
 =============================================================================
 http://wxlua.sourceforge.net/
 
@@ -91,7 +91,7 @@ If you do not wish that, you must delete the exception notice from such
 code and/or adjust the licensing conditions notice accordingly.
 
   
-3. Lua License
+Lua License
 =============================================================================
 Copyright: © 1994-2006 Lua.org, PUC-Rio.
 Homepage: http://www.lua.org
@@ -114,3 +114,36 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
 SOFTWARE. 
+
+LuaFileSystem
+=============================================================================
+LuaFileSystem was designed by Roberto Ierusalimschy, André Carregal and Tomás 
+Guisasola as part of the Kepler Project, which holds its copyright.
+Homepage: http://www.keplerproject.org/luafilesystem/index.html
+License:  http://www.keplerproject.org/luafilesystem/license.html
+=============================================================================
+
+LuaSockets
+=============================================================================
+Copyright: © 2004-2006 Diego Nehab. All rights reserved.
+Homepage: http://www.cs.princeton.edu/~diego/professional/luasocket/
+License:  http://www.lua.org/copyright.html (same as LUA)
+=============================================================================
+
+ZMQ
+=============================================================================
+Copyright: © 2007-2011 iMatix Corporation and Contributors
+Homepage: http://www.zeromq.org/
+License:  http://www.zeromq.org/area:licensing
+
+LuaZMQ
+Copyright: © 2011 by Robert G. Jakabosky
+Homepage: https://github.com/Neopallium/lua-zmq
+=============================================================================
+
+MojoShader
+=============================================================================
+Copyright: © 2008-2010 Ryan C. Gordon
+Homepage: http://icculus.org/mojoshader/
+License:  http://hg.icculus.org/icculus/mojoshader/raw-file/tip/LICENSE.txt
+=============================================================================
