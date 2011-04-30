@@ -1,6 +1,8 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
+local statusBar = ide.frame.statusBar
+
 ------------
 -- API
 
@@ -66,6 +68,15 @@ local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
 	end)
 	
 	if (suc and res) then
+		local function gennames(tab,prefix)
+			for i,v in pairs(tab) do
+				v.classname = (prefix and (prefix..".") or "")..i
+				if(v.childs) then
+					gennames(v.childs,v.classname)
+				end
+			end
+		end
+		gennames(res)
 		for i,v in pairs(res) do
 			env[i] = v
 		end
@@ -187,9 +198,45 @@ function UpdateAssignCache(editor)
 	end
 end
 
+-- assumes a tidied up string (no spaces, braces..)
+local function resolveAssign(editor,tx)
+	local ac = editor.api.ac
+	local assigns = editor.assignscache and editor.assignscache.assigns
+	local function getclass(tab,a)
+		local key,rest = a:match("([%w_]+)[%.:](.*)")
+		if (key and rest and tab.childs and tab.childs[key]) then
+			return getclass(tab.childs[key],rest)
+		end
+		if (tab.valuetype) then
+			return getclass(ac,tab.valuetype.."."..a)
+		end
+		return tab,a
+	end
+	
+	local classname
+	local c = ""
+	if (assigns) then
+		-- find assign
+		for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
+			
+			local old = classname
+			classname = classname or (assigns[c..w])
+			if (s ~= "" and old ~= classname) then
+				c = classname..s
+			else
+				c = c..w..s
+			end
+		end
+	else
+		c = tx
+	end
+	-- then work from api
+	return getclass(ac,c)
+end
+
 function GetTipInfo(editor, content, short)
-	local caller = content:match("([a-zA-Z_0-9]+)%(%s*$")
-	local class  = caller and content:match("([a-zA-Z_0-9%.]+)[%.:]"..caller.."%(%s*$")
+	local caller = content:match("([%w_]+)%(%s*$")
+	local class  = caller and content:match("([%w_%.]+)[%.:]"..caller.."%(%s*$")
 	local tip = editor.api.tip
 		
 	local classtab = short and tip.shortfinfoclass or tip.finfoclass
@@ -249,7 +296,7 @@ local function addDynamicWord (api,word )
 		table.insert(dynamicwords[k], word)
 	end
 end
-function removeDynamicWord (word)
+local function removeDynamicWord (word)
 	local cnt = dywordentries[word]
 	if not cnt then return end
 	
@@ -269,7 +316,7 @@ function removeDynamicWord (word)
 		dywordentries[word] = cnt - 1
 	end
 end
-function purgeDynamicWordlist ()
+local function purgeDynamicWordlist ()
 	dywordentries = {}
 	dynamicwords = {}
 end
@@ -386,8 +433,10 @@ function CreateAutoCompList(editor,key)
 	-- ignore keywords
 	if tip.keys[key] then return end
 	
-	-- override class based on assign cache
 	UpdateAssignCache(editor)
+	
+--[[
+	-- override class based on assign cache
 	if (editor.assignscache) then
 		local id,sep,rest = key:match("([%w_%.]+)%s*([:%.])%s*(.*)")
 		-- replace for lookup
@@ -412,10 +461,16 @@ function CreateAutoCompList(editor,key)
 		
 		return tab,rest
 	end
-	local tab,rest = findtab (key,ac)
-	if not (tab and tab.childs) then return end
+]]
+	local tab,rest = resolveAssign(editor,key)
+	local progress = tab and tab.childs
+	statusBar:SetStatusText(progress and tab.classname or "",1)
+	if not (progress) then return end
 	
-	if (depth < 1) then
+	
+	--DisplayOutput("AC",tab.classname,rest,"\n")
+	
+	if (tab == ac) then
 		local obj,krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
 		if (krest) then
 			if (#krest < 3) then return end
@@ -435,7 +490,7 @@ function CreateAutoCompList(editor,key)
 	-- only if api search couldnt descend
 	-- ie we couldnt find matching sub items
 	local dw = ""
-	if (depth < 1) then
+	if (tab == ac) then
 		if dynamicwords[last] then
 			local list = dynamicwords[last]
 			table.sort(list,function(a,b)

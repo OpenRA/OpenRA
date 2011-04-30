@@ -6,7 +6,7 @@ return {
   lexer = wxstc.wxSTC_LEX_LUA,
   apitype = "lua",
   linecomment = "--",
-  sep = "[%.:]",
+  sep = "%.:",
   isfncall = function(str)
       return string.find(str,"([A-Za-z0-9_]+)%s*%(")
     end,

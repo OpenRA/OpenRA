@@ -110,7 +110,7 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			local editor = GetEditor()
-			if (editor == nil) then return end
+			if (editor == nil or not editor.spec) then return end
 			
 			-- retrieve the current line and get a string to the current cursor position in the line
 			local pos = editor:GetCurrentPos()
@@ -119,6 +119,17 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 			local linestart = editor:PositionFromLine(line)
 			local localpos = pos-linestart
 			
+			
+			local lt = linetx:sub(1,localpos)
+			lt = lt:gsub("%s*("..editor.spec.sep..")%s*",function(a) return a end)
+			lt = lt:gsub("%s*%b[]%s*","")
+			lt = lt:gsub("%s*%b()%s*","")
+			lt = lt:gsub("%s*%b{}%s*","")
+			lt = lt:match("[^%[%(%s]*$")
+			lt = lt:gsub("%s","")
+			
+			
+			--[[
 			local acstart = 1
 			local state = ""
 			for i=localpos,1,-1 do -- find out what should be completed
@@ -138,10 +149,12 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
 					break
 				end
 			end
-			local complete = linetx:sub(acstart,localpos) : gsub("%s","")
+			local lt = linetx:sub(acstart,localpos) : gsub("%s","")
+			]]
+			
 			-- know now which string is to be completed
 			
-			local userList = CreateAutoCompList(editor,complete)
+			local userList = CreateAutoCompList(editor,lt)
 			if userList and string.len(userList) > 0 then
 				editor:UserListShow(1, userList)
 				--ShowList(userList)

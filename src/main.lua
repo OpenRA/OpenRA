@@ -167,7 +167,7 @@ local function loadSpecs()
 	end
 	
 	for n,spec in pairs(ide.specs) do
-		spec.sep = spec.sep or "\1"
+		spec.sep = spec.sep or ""
 		spec.iscomment = {}
 		spec.iskeyword0 = {}
 		if (spec.lexerstyleconvert) then

@@ -5,6 +5,7 @@ return {
 	exts = {"cg","cgh","fx","fxh","cgfx","cgfxh",},
 	lexer = wxstc.wxSTC_LEX_CPP,
 	apitype = "cg",
+	sep = "%.",
 	linecomment = "//",
 	
 	isfndef = function(str)

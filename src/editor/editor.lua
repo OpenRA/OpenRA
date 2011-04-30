@@ -8,6 +8,7 @@ local editorID         = 100    -- window id to create editor pages with, increm
 
 local openDocuments 	= ide.openDocuments
 local ignoredFilesList 	= ide.ignoredFilesList
+local statusBar = ide.frame.statusBar
 local notebook			= ide.frame.vsplitter.splitter.notebook
 local funclist			= ide.frame.toolBar.funclist
 local edcfg 			= ide.config.editor
@@ -29,6 +30,7 @@ end
 function SetEditorSelection(selection)
 	local editor = GetEditor(selection)
 	UpdateStatusText(editor) -- update even if nil
+	statusBar:SetStatusText("",1)
 	ide.frame:SetTitle(GetFileTitle(editor))
 	
 	if editor then
@@ -85,7 +87,7 @@ function UpdateStatusText(editor)
 	if ide.frame then
 		for n = 1, 3 do
 			if (texts[n] ~= statusTextTable[n]) then
-				ide.frame:SetStatusText(texts[n], n)
+				statusBar:SetStatusText(texts[n], n+1)
 				statusTextTable[n] = texts[n]
 			end
 		end
@@ -312,28 +314,9 @@ function CreateEditor(name)
 					
 				elseif ide.config.autocomplete then -- code completion prompt
 					
-					local cnt = 0
-					local sep = false
-					local state = ""
-					for i=localpos,1,-1 do
-						local c = linetx:sub(i,i)
-						if c:match("[A-Za-z0-9_]") then
-							if state == "space" then break end
-							cnt = cnt + 1
-							state = "word"
-						elseif c:match(editor.spec.sep) then
-							if sep then break end
-							state = "break"
-							cnt = cnt + 1
-							sep = true
-						elseif c:match "%s" then 
-							state = "space"
-						else
-							break
-						end
-					end
+					local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
 					
-					if (cnt > 1)  then
+					if (trigger and (#trigger > 1 or trigger:match("[%.:]")))  then
 						-- defined in menu_edit.lua
 						local commandEvent = wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
 															   ID_AUTOCOMPLETE)

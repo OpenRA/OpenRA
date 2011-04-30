@@ -59,10 +59,10 @@ local frame            = nil    -- wxFrame the main top level window
 frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "Estrela Editor")
 
 menuBar = wx.wxMenuBar()
-statusBar = frame:CreateStatusBar( 4 )
+statusBar = frame:CreateStatusBar( 5 )
 local status_txt_width = statusBar:GetTextExtent("OVRW")
-frame:SetStatusWidths({-1, status_txt_width, status_txt_width, status_txt_width*5})
-frame:SetStatusText("Welcome to Estrela Editor")
+statusBar:SetStatusWidths({-1, status_txt_width*6, status_txt_width, status_txt_width, status_txt_width*5})
+statusBar:SetStatusText("Welcome to Estrela Editor")
 
 frame:DragAcceptFiles(true)
 frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
@@ -204,6 +204,7 @@ toolBar.funclist = funclist
 
 frame.vsplitter = vsplitter
 frame.toolBar = 	toolBar
+frame.statusBar = statusBar
 frame.menuBar = 	menuBar
 
 ide.frame = frame

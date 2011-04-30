@@ -5,6 +5,7 @@ return {
 	exts = {"glsl","vert","frag",},
 	lexer = wxstc.wxSTC_LEX_CPP,
 	apitype = "glsl",
+	sep = "%.",
 	linecomment = "//",
 	
 	isfndef = function(str)
