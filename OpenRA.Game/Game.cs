@@ -14,7 +14,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -308,10 +307,8 @@ namespace OpenRA
 		internal static void Run()
 		{
 			while (!quit)
-			{
 				Tick( orderManager, viewport );
-				Application.DoEvents();
-			}
+
 			OnQuit();
 		}
 
