@@ -18,7 +18,9 @@ local function ffiToApi(ffidef)
   local ns = prefixes[1]
   
   
-  local lktypes = {}
+  local lktypes = {
+    ["string"] = "string",
+  }
   
   local function gencontent(tx)
     local enums = {}
@@ -36,13 +38,10 @@ local function ffiToApi(ffidef)
       
       -- skip return void types
       local what = fn.RET == "void" and "" or fn.RET
+      what = what:match("%s*(.-)%s*$")
       fn.RET = "("..what..")"
       fn.DESCR = ""
       if (what ~= "") then
-        what = what:gsub("const%s","")
-        what = what:gsub("static%s","")
-        what = what:gsub("%s","")
-        what = what:gsub("%s%*","*")
         fn.TYPE = what
       end
       
@@ -67,19 +66,16 @@ local function ffiToApi(ffidef)
         curfunc = {RET=ret,NAME=name,ARGS=args}
         registerfunc()
       elseif (not typedef) then
-        local typ,name,val = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
-        if (not (typ and name and val)) then
-              typ,name     = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]%:%s]+)[\r\n%s]*;")
+        local typ,names,val = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
+        if (not (typ and names and val)) then
+              typ,names     = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]%:%s,]+)[\r\n%s]*;")
         end
-        if (typ and name) then
-          local name,rest = name:match("([_%w]+)(.*)")
-          rest = rest and rest:gsub("%s","") or ""
-          local what = typ..(rest:gsub("%b[]","*"))
-          what = what:gsub("const%s","")
-          what = what:gsub("static%s","")
-          what = what:gsub("%s","")
-          what = what:gsub("%s%*","*")
-          table.insert(values,{NAME=name, DESCR=(typ..rest..(val and (" = "..val) or "")), TYPE = what,})
+        if (typ and names) then
+          for name,rest in names:gmatch("([_%w]+)([^,]*)") do
+            rest = rest and rest:gsub("%s","") or ""
+            local what = typ..(rest:gsub("%b[]","*"))
+            table.insert(values,{NAME=name, DESCR=(typ..rest..(val and (" = "..val) or "")), TYPE = what,})
+          end
         end
       elseif(typedef) then
         -- typedef struct  lxgTextureUpdate_s * lxgTextureUpdatePTR;
@@ -111,6 +107,7 @@ local function ffiToApi(ffidef)
       final = final:match("[_%w]+")
       if (final) then
         lktypes["struct "..class] = ns.."."..final
+        lktypes[final] = ns.."."..final
         lktypes[ns.."."..final] = ns.."."..final
       else
         lktypes["struct "..class] = ns.."."..class
@@ -118,32 +115,44 @@ local function ffiToApi(ffidef)
       end
       table.insert(classes,{NAME= final or class,DESCR = "",content = gencontent(def:sub(2,-2))})
     end
-    
-    local function fixtypes(tab)
-      for i,v in ipairs(tab) do
-        local vt = v.TYPE
-        if (vt) then
-          local nt = vt
-          repeat
-            vt = nt
-            local typ,qual = nt:match("([_%w%.%s+]+)(%**)")
-            nt = (lktypes[typ] or typ)..(qual or "")
-          until nt==vt
-          v.TYPE = '"'..nt..'"'
-        else
-          v.TYPE = "nil"
-        end
-      end
-    end
-    fixtypes(values)
-    fixtypes(funcs)
-    
+
     return (#classes > 0 or #funcs > 0 or #enums > 0 or #values > 0) and 
       {classes=classes,funcs=funcs, enums=enums, values=values}
   end
-  
+
   local content = gencontent(ffidef)
-  
+  local function fixtypes(tab)
+    for i,v in ipairs(tab) do
+      local vt = v.TYPE
+      if (vt) then
+        local nt = vt
+
+        repeat
+          nt = nt:match("%s*(.-)%s*$")
+          nt = nt:gsub("%s+"," ")
+          nt = nt:gsub("%s%*","*")
+          nt = nt == "const char*" and "string" or nt
+          nt = nt:gsub("%*","")
+          nt = nt:gsub("const%s","")
+          nt = nt:gsub("static%s","")
+          vt = nt
+          local typ,qual = nt:match("([_%w%.%s]+)(%**)")
+          nt = (lktypes[typ] or "")..(qual or "")
+        until nt==vt
+        v.TYPE = nt ~= "" and '"'..nt..'"' or "nil"
+      else
+        v.TYPE = "nil"
+      end
+    end
+  end
+  local function fixcontent(tab)
+    fixtypes(tab.values)
+    fixtypes(tab.funcs)
+    for i,v in ipairs(tab.classes) do
+      fixcontent(v.content)
+    end
+  end
+  fixcontent(content)
   
   str = str..[[
   

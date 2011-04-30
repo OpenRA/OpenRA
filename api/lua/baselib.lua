@@ -9,8 +9,13 @@ local function fn (description)
 		return {type="function",description=description,
 			returns="(?)"} 
 	end
+	returns = returns:gsub("^%s+",""):gsub("%s+$","")
+	local ret = returns:sub(2,-2)
+	local vt = ret:match("^%[?string") and "string" 
+	vt = vt or ret:match("^%[?table") and "table"
+	vt = vt or ret:match("^%[?file") and "io"
 	return {type="function",description=description2,
-		returns=returns:gsub("^%s+",""):gsub("%s+$",""), args = args} 
+		returns=returns, args = args, valuetype = vt} 
 end
 
 local function val (description)
@@ -89,9 +94,9 @@ rawset  = fn "not yet - (...)(...)",
 select  = fn "not yet - (...)(...)",
 setfenv  = fn "not yet - (...)(...)",
 setmetatable  = fn "not yet - (...)(...)",
-tonumber  = fn "not yet - (...)(...)",
-tostring  = fn "not yet - (...)(...)",
-type  = fn "not yet - (...)(...)",
+tonumber  = fn "not yet - (number)(...)",
+tostring  = fn "not yet - (string)(...)",
+type  = fn "not yet - (string)(...)",
 unpack  = fn "not yet - (...)(...)",
 
 module = fn "Creates a module. - (?)(name,...)",
@@ -114,20 +119,20 @@ string = {
 	type = "lib",
 	description = "string lib",
 	childs = {
-		byte = fn "Returns the internal numerical codes of the characters s[i], s[i+1], ···, s[j]. The default value for i is 1; the default value for j is i. - (number)(s [, i [, j]])",
-		char = fn "Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numerical code equal to its corresponding argument. - (...)(...)",
-		dump = fn "Returns a string containing a binary representation of the given function, so that a later loadstring on this string returns a copy of the function. function must be a Lua function without upvalues. - (str)(func)",
-		find = fn "Looks for the first match of pattern in the string s. If it finds a match, then find returns the indices of s where this occurrence starts and ends; otherwise, it returns nil. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative. A value of true as a fourth, optional argument plain turns off the pattern matching facilities, so the function does a plain \"find substring\" operation, with no characters in pattern being considered \"magic\". Note that if plain is given, then init must be given as well. - (?)(s, pattern [, init [, plain]])",
-		format = fn "Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string). The format string follows the same rules as the printf family of standard C functions. The only differences are that the options/modifiers *, l, L, n, p, and h are not supported and that there is an extra option, q. The q option formats a string in a form suitable to be safely read back by the Lua interpreter: the string is written between double quotes, and all double quotes, newlines, embedded zeros, and backslashes in the string are correctly escaped when written. - (str)(formatstring, ···)",
-		gmatch = fn "Returns an iterator function that, each time it is called, returns the next captures from pattern over string s. - (func)(s, pattern)",
-		gsub = fn "Returns a copy of s in which all occurrences of the pattern have been replaced by a replacement string specified by repl, which may be a string, a table, or a function. gsub also returns, as its second value, the total number of substitutions made. - (?)(s, pattern, repl [, n])",
-		len = fn "Receives a string and returns its length. The empty string '' has length 0. Embedded zeros are counted, so 'a\\000bc\\000' has length 5. - (n)(s)",
-		lower = fn "Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale. - (str)(str)",
-		match = fn "Looks for the first match of pattern in the string s. If it finds one, then match returns the captures from the pattern; otherwise it returns nil. If pattern specifies no captures, then the whole match is returned. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative. - (...)(s, pattern [, init])",
-		rep = fn "Returns a string that is the concatenation of n copies of the string s. - (s)(s, n)",
-		reverse = fn "Returns a string that is the string s reversed. - (str)(str)",
-		sub = fn "Returns the substring of s that starts at i and continues until j; i and j may be negative. If j is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call string.sub(s,1,j) returns a prefix of s with length j, and string.sub(s, -i) returns a suffix of s with length i. - (str)(s, i [, j])",
-		upper = fn "Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.  - (str)(str)",
+		byte = fn "Returns the internal numerical codes of the characters s[i], s[i+1], ···, s[j]. The default value for i is 1; the default value for j is i. - (number)(string [, i [, j]])",
+		char = fn "Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numerical code equal to its corresponding argument. - (string)(...)",
+		dump = fn "Returns a string containing a binary representation of the given function, so that a later loadstring on this string returns a copy of the function. function must be a Lua function without upvalues. - (string)(func)",
+		find = fn "Looks for the first match of pattern in the string s. If it finds a match, then find returns the indices of s where this occurrence starts and ends; otherwise, it returns nil. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative. A value of true as a fourth, optional argument plain turns off the pattern matching facilities, so the function does a plain \"find substring\" operation, with no characters in pattern being considered \"magic\". Note that if plain is given, then init must be given as well. - (number,number)(string, pattern [, init [, plain]])",
+		format = fn "Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string). The format string follows the same rules as the printf family of standard C functions. The only differences are that the options/modifiers *, l, L, n, p, and h are not supported and that there is an extra option, q. The q option formats a string in a form suitable to be safely read back by the Lua interpreter: the string is written between double quotes, and all double quotes, newlines, embedded zeros, and backslashes in the string are correctly escaped when written. - (string)(formatstring, ···)",
+		gmatch = fn "Returns an iterator function that, each time it is called, returns the next captures from pattern over string s. - (func)(string, pattern)",
+		gsub = fn "Returns a copy of s in which all occurrences of the pattern have been replaced by a replacement string specified by repl, which may be a string, a table, or a function. gsub also returns, as its second value, the total number of substitutions made. - (string,number)(string, pattern, repl [, n])",
+		len = fn "Receives a string and returns its length. The empty string '' has length 0. Embedded zeros are counted, so 'a\\000bc\\000' has length 5. - (number)(string)",
+		lower = fn "Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale. - (string)(string)",
+		match = fn "Looks for the first match of pattern in the string s. If it finds one, then match returns the captures from the pattern; otherwise it returns nil. If pattern specifies no captures, then the whole match is returned. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative. - (string,...)(string, pattern [, init])",
+		rep = fn "Returns a string that is the concatenation of n copies of the string s. - (string)(string s, n)",
+		reverse = fn "Returns a string that is the string s reversed. - (string)(string)",
+		sub = fn "Returns the substring of s that starts at i and continues until j; i and j may be negative. If j is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call string.sub(s,1,j) returns a prefix of s with length j, and string.sub(s, -i) returns a suffix of s with length i. - (string)(string, i [, j])",
+		upper = fn "Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.  - (string)(string)",
 	}
 },
 
@@ -149,15 +154,15 @@ io = {
 	description = "The I/O library provides two different styles for file manipulation. The first one uses implicit file descriptors; that is, there are operations to set a default input file and a default output file, and all input/output operations are over these default files. The second style uses explicit file descriptors. ",
 	childs = {
 		close = fn'Equivalent to file:close(). Without a file, closes the default output file. - ()([file])',
-		flush = fn'Equivalent to file:flush over the default output file. - ()()',
+		flush = fn'Equivalent to file:flush over the default output file. - ()([file])',
 		input = fn'When called with a file name, it opens the named file (in text mode), and sets its handle as the default input file. When called with a file handle, it simply sets this file handle as the default input file. When called without parameters, it returns the current default input file. - ([in])([file])',
 		lines = fn'Opens the given file name in read mode and returns an iterator function that, each time it is called, returns a new line from the file. - (function)([file])',
-		open = fn'This function opens a file, in the mode specified in the string mode. It returns a new file handle, or, in case of errors, nil plus an error message. - (handle,[errormsg])(filename,[mode])',
+		open = fn'This function opens a file, in the mode specified in the string mode. It returns a new file handle, or, in case of errors, nil plus an error message. - (file,[errormsg])(filename,[mode])',
 		output = fn'Similar to io.input, but operates over the default output file. - ([file])([file])',
 		popen = fn'Starts program prog in a separated process and returns a file handle that you can use to read data from this program (if mode is "r", the default) or to write data to this program (if mode is "w"). - (file)([prog, [mode]])',
-		read = fn'Reads the file file, according to the given formats, which specify what to read. For each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line (see below).  - (...)(...)',
+		read = fn'Reads the file file, according to the given formats, which specify what to read. For each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line (see below).  - (string)(...)',
 		tmpfile = fn'Returns a handle for a temporary file. This file is opened in update mode and it is automatically removed when the program ends. - (file)()',
-		type = fn'Checks whether obj is a valid file handle. Returns the string "file" if obj is an open file handle, "closed file" if obj is a closed file handle, or nil if obj is not a file handle. - (type)(file)',
+		type = fn'Checks whether obj is a valid file handle. Returns the string "file" if obj is an open file handle, "closed file" if obj is a closed file handle, or nil if obj is not a file handle. - (string)(file)',
 		write = fn'Writes the value of each of its arguments to the file. The arguments must be strings or numbers. To write other values, use tostring or string.format before write. - (?)(...)',
 		seek = fn'Sets and gets the file position, measured from the beginning of the file, to the position given by offset plus a base specified by the string whence - (?)([whence] [, offset])',
 		setvbuf = fn'Sets the buffering mode for an output file.  - (?)(mode [, size])',
@@ -174,7 +179,7 @@ os = {
 		difftime = fn'Returns the number of seconds from time t1 to time t2. In POSIX, Windows, and some other systems, this value is exactly t2-t1. - (time)(t2,t1)',
 		execute = fn'This function is equivalent to the C function system. It passes command to be executed by an operating system shell. It returns a status code, which is system-dependent. If command is absent, then it returns nonzero if a shell is available and zero otherwise. - (return)([cmd])',
 		exit = fn'Calls the C function exit, with an optional code, to terminate the host program. The default value for code is the success code. - ()([code])',
-		getenv = fn'Returns the value of the process environment variable varname, or nil if the variable is not defined. - ([value])(varname)',
+		getenv = fn'Returns the value of the process environment variable varname, or nil if the variable is not defined. - ([string])(varname)',
 		remove = fn'Deletes the file or directory with the given name. Directories must be empty to be removed. If this function fails, it returns nil, plus a string describing the error. - (success,[error])(filename)',
 		rename = fn'Renames file or directory named oldname to newname. If this function fails, it returns nil, plus a string describing the error. - (success,[error])(oldname, newname)',
 		setlocale = fn'Sets the current locale of the program. locale is a string specifying a locale; category is an optional string describing which category to change: "all", "collate", "ctype", "monetary", "numeric", or "time"; the default category is "all". The function returns the name of the new locale, or nil if the request cannot be honored.  - ([string])(locale [, category])',

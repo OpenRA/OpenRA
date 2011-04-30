@@ -40,36 +40,40 @@ CUresult cuGraphicsGLRegisterImage(CUgraphicsResource *pCudaResource, GLuint ima
 
 typedef void* HGPUNV;
 CUresult cuWGLGetDevice(CUdevice *pDevice, HGPUNV hGpu);
-]]
+]]  
 --auto-generated api from ffi headers
-
-local api = {
+local api =
+  {
   ["cuGLCtxCreate_v2"] = { type ='function', 
-      description = "", 
-      returns = "(CUresult)",
-      args = "(CUcontext *pCtx, unsigned int Flags, CUdevice device)", },
+    description = "", 
+    returns = "(CUresult)",
+    valuetype = nil,
+    args = "(CUcontext *pCtx, unsigned int Flags, CUdevice device)", },
   ["cuGraphicsGLRegisterBuffer"] = { type ='function', 
-      description = "", 
-      returns = "(CUresult)",
-      args = "(CUgraphicsResource *pCudaResource, GLuint buffer, unsigned int Flags)", },
+    description = "", 
+    returns = "(CUresult)",
+    valuetype = nil,
+    args = "(CUgraphicsResource *pCudaResource, GLuint buffer, unsigned int Flags)", },
   ["cuGraphicsGLRegisterImage"] = { type ='function', 
-      description = "", 
-      returns = "(CUresult)",
-      args = "(CUgraphicsResource *pCudaResource, GLuint image, GLenum target, unsigned int Flags)", },
+    description = "", 
+    returns = "(CUresult)",
+    valuetype = nil,
+    args = "(CUgraphicsResource *pCudaResource, GLuint image, GLenum target, unsigned int Flags)", },
   ["cuWGLGetDevice"] = { type ='function', 
-      description = "", 
-      returns = "(CUresult)",
-      args = "(CUdevice *pDevice, HGPUNV hGpu)", },
-}
+    description = "", 
+    returns = "(CUresult)",
+    valuetype = nil,
+    args = "(CUdevice *pDevice, HGPUNV hGpu)", },
+  }
 return {
-	cugl = {
-		type = 'lib',
-		description = "Cuda GL Interop",
-		childs = api,
-	},
-	cuGL = {
-		type = 'lib',
-		description = "Cuda GL Interop",
-		childs = api,
-	},
+  cugl = {
+    type = 'lib',
+    description = "Cuda GL Interop",
+    childs = api,
+  },
+  cuGL = {
+    type = 'lib',
+    description = "Cuda GL Interop",
+    childs = api,
+  },
 }
