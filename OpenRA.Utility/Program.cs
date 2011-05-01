@@ -44,6 +44,8 @@ namespace OpenRA.Utility
 				{ "--install-ra-packages", Command.AuthenticateAndInstallRAPackages },
 				{ "--install-cnc-packages", Command.AuthenticateAndInstallCncPackages },
 				{ "--extract-zip", Command.AuthenticateAndExtractZip },
+				{ "--shp", Command.ConvertPngToShp },
+				{ "--png", Command.ConvertShpToPng },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
@@ -99,6 +101,8 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --install-ra-packages PATH       Install required packages for RA from CD to PATH");
 			Console.WriteLine("  --install-cnc-packages PATH      Install required packages for C&C from CD to PATH");
 			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
+			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
+			Console.WriteLine("  --png SHPFILE                    Convert a SHP to a PNG containing all of its frames");
 		}
 
 		static T WithDefault<T>(T def, Func<T> f)

@@ -24,7 +24,8 @@ namespace OpenRA.FileFormats.Graphics
 	{
 		public static Bitmap Load(string filename)
 		{
-			return Load(File.OpenRead(filename));
+			using (var s = File.OpenRead(filename))
+				return Load(s);
 		}
 
 		public static Bitmap Load(Stream s)

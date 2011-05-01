@@ -174,5 +174,11 @@ namespace OpenRA.FileFormats
 		{
 			return GetEnumerator();
 		}
+
+		public static ShpReader Load(string filename)
+		{
+			using (var s = File.OpenRead(filename))
+				return new ShpReader(s);
+		}
 	}
 }
