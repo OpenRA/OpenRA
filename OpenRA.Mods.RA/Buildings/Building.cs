@@ -45,11 +45,13 @@ namespace OpenRA.Mods.RA.Buildings
 
 			var nearnessCandidates = new List<int2>();
 
+			var bi = world.WorldActor.Trait<BuildingInfluence>();
+			
 			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
 			{
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
-					var at = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt( new int2( x, y ) );
+					var at = bi.GetBuildingAt( new int2( x, y ) );
 					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
 						nearnessCandidates.Add( new int2( x, y ) );
 				}
