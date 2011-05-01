@@ -8,9 +8,11 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -28,13 +30,20 @@ namespace OpenRA.Mods.RA.Activities
 			if( IsCanceled || target.Destroyed || !target.IsInWorld) return NextActivity;
 
 			var mobile = self.Trait<Mobile>();
+
+			var cells = target.Trait<IOccupySpace>().OccupiedCells().ToArray();
+			if (cells.Length == 0)
+				cells = new OpenRA.FileFormats.Pair<int2, SubCell>[] {
+					Pair.New(target.Location, SubCell.FullCell) };
+
 			var ps1 = new PathSearch( self.World, mobile.Info )
 			{
 				checkForBlocked = true,
 				heuristic = location => 0,
 				inReverse = true
 			};
-			foreach( var cell in target.Trait<IOccupySpace>().OccupiedCells() )
+
+			foreach( var cell in cells )
 			{
 				ps1.AddInitialCell( cell.First );
 				if( ( mobile.toCell - cell.First ).LengthSquared <= 2 )
