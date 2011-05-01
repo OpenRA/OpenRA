@@ -28,6 +28,8 @@ namespace OpenRA.Traits
 		
 		public void Tick(Actor self)
 		{	
+			// todo: don't tick all the time.
+
 			if (previousLocation != self.Location)
 			{
 				previousLocation = self.Location;
