@@ -19,10 +19,6 @@ mkdir root
 cp -R DEBIAN root
 cp -R $rootdir/usr root
 
-# Remove duplicate fonts provided by ttf-freefont
-rm root/usr/share/openra/FreeSans.ttf
-rm root/usr/share/openra/FreeSansBold.ttf
-
 # Binaries go in /usr/games
 mv root/usr/bin/ root/usr/games/
 sed "s/\/usr\/bin\//\/usr\/games\//" root/usr/share/applications/openra.desktop > temp
