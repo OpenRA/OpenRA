@@ -28,6 +28,12 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 		}
 
+		bool AreMutualAllies(Player a, Player b)
+		{
+			return a.Stances[b] == Stance.Ally &&
+				b.Stances[a] == Stance.Ally;
+		}
+
 		public override void DrawInner()
 		{
 			if (!Initialised)
@@ -41,24 +47,24 @@ namespace OpenRA.Mods.RA.Widgets
 			var totalWidth = (svc.Total + svc.TotalCritical)*32;
 			int curX = -(totalWidth / 2);
 
-			foreach (var a in world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && !a.TraitOrDefault<StrategicPoint>().Critical))
+			foreach (var a in world.ActorsWithTrait<StrategicPoint>().Where(a => a.Trait.Critical))
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				
-				if (a.Owner == world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally)) 
+
+				if (a.Actor.Owner == world.LocalPlayer || AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				else if (!a.Owner.NonCombatant)
+				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				curX += 32;
 			}
 
-			foreach (var a in world.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical))
+			foreach (var a in world.ActorsWithTrait<StrategicPoint>().Where(a => !a.Trait.Critical))
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				
-				if (a.Owner == world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally))
+
+				if (a.Actor.Owner == world.LocalPlayer || AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				else if (!a.Owner.NonCombatant)
+				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				
 				curX += 32;
@@ -67,22 +73,22 @@ namespace OpenRA.Mods.RA.Widgets
 			
 			var pendingWinner = FindFirstWinningPlayer(world);
 			if (pendingWinner == null) return;
-			svc = pendingWinner.PlayerActor.TraitOrDefault<StrategicVictoryConditions>();
+			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
 
 			if (world.LocalPlayer != null)
 			{
 				var tc = "";
 
-				if (pendingWinner != world.LocalPlayer && (pendingWinner.Stances[world.LocalPlayer] != Stance.Ally || world.LocalPlayer.Stances[pendingWinner] != Stance.Ally))
+				if (pendingWinner != world.LocalPlayer && !AreMutualAllies(pendingWinner, world.LocalPlayer))
 				{
 					// losing
 					tc = "Strategic defeat in " +
-						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WidgetUtils.FormatTime(svc.CriticalTicksLeft) : WidgetUtils.FormatTime(svc.TicksLeft));
+						 ((winnerSvc.CriticalTicksLeft > winnerSvc.TicksLeft) ? WidgetUtils.FormatTime(winnerSvc.CriticalTicksLeft) : WidgetUtils.FormatTime(winnerSvc.TicksLeft));
 				}else
 				{
 					// winning
 					tc = "Strategic victory in " +
-						 ((svc.CriticalTicksLeft > svc.TicksLeft) ? WidgetUtils.FormatTime(svc.CriticalTicksLeft) : WidgetUtils.FormatTime(svc.TicksLeft));
+						 ((winnerSvc.CriticalTicksLeft > winnerSvc.TicksLeft) ? WidgetUtils.FormatTime(winnerSvc.CriticalTicksLeft) : WidgetUtils.FormatTime(winnerSvc.TicksLeft));
 				}
 
 				var size = Game.Renderer.BoldFont.Measure(tc);
@@ -102,7 +108,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			foreach (var p in world.players.Select(p => p.Value).Where(p => !p.NonCombatant))
 			{
-				var svc = p.PlayerActor.TraitOrDefault<StrategicVictoryConditions>();
+				var svc = p.PlayerActor.Trait<StrategicVictoryConditions>();
 
 				if (svc.HoldingCritical && svc.CriticalTicksLeft > 0 && svc.CriticalTicksLeft < shortest)
 				{
