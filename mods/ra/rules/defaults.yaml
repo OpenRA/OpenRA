@@ -156,6 +156,7 @@
 		String:Plane
 
 ^Helicopter:
+	Inherits: ^Plane
 	GpsDot:
 		String:Helicopter
 
