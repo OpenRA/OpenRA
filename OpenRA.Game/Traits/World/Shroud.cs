@@ -120,7 +120,7 @@ namespace OpenRA.Traits
 			// No longer our ally; remove unit vis
 			if (oldStance == Stance.Ally)
 			{
-				var toRemove = new List<Actor>(vis.Select(a => a.Key).Where(a => a.Owner == player));
+				var toRemove = vis.Select(a => a.Key).Where(a => a.Owner == player).ToList();
 				foreach (var a in toRemove)
 					RemoveActor(a);
 			}
