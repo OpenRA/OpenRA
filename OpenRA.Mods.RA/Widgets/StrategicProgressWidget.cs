@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using System;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -38,13 +39,13 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (!Initialised)
 				Init();
-			
+
 			if (!IsVisible()) return;
 			int2 offset = int2.Zero;
 
 			var svc = world.players.Select(p => p.Value.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
-			var totalWidth = (svc.Total + svc.TotalCritical)*32;
+			var totalWidth = (svc.Total + svc.TotalCritical) * 32;
 			int curX = -(totalWidth / 2);
 
 			foreach (var a in world.ActorsWithTrait<StrategicPoint>().Where(a => a.Trait.Critical))
@@ -66,38 +67,26 @@ namespace OpenRA.Mods.RA.Widgets
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				
+
 				curX += 32;
 			}
 			offset += new int2(0, 32);
-			
+
+			if (world.LocalPlayer == null) return;
 			var pendingWinner = FindFirstWinningPlayer(world);
 			if (pendingWinner == null) return;
 			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
 
-			if (world.LocalPlayer != null)
-			{
-				var tc = "";
+			var isVictory = pendingWinner == world.LocalPlayer || !AreMutualAllies(pendingWinner, world.LocalPlayer);
+			var tc = "Strategic {0} in {1}".F(
+				isVictory ? "victory" : "defeat",
+				WidgetUtils.FormatTime(Math.Max(winnerSvc.CriticalTicksLeft, winnerSvc.TicksLeft)));
 
-				if (pendingWinner != world.LocalPlayer && !AreMutualAllies(pendingWinner, world.LocalPlayer))
-				{
-					// losing
-					tc = "Strategic defeat in " +
-						 ((winnerSvc.CriticalTicksLeft > winnerSvc.TicksLeft) ? WidgetUtils.FormatTime(winnerSvc.CriticalTicksLeft) : WidgetUtils.FormatTime(winnerSvc.TicksLeft));
-				}else
-				{
-					// winning
-					tc = "Strategic victory in " +
-						 ((winnerSvc.CriticalTicksLeft > winnerSvc.TicksLeft) ? WidgetUtils.FormatTime(winnerSvc.CriticalTicksLeft) : WidgetUtils.FormatTime(winnerSvc.TicksLeft));
-				}
+			var size = Game.Renderer.BoldFont.Measure(tc);
 
-				var size = Game.Renderer.BoldFont.Measure(tc);
-
-				Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2 + 1, RenderBounds.Top + 1), Color.Black);
-				Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top), Color.WhiteSmoke);
-				offset += new int2(0, size.Y + 1);
-			}
-
+			Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2 + 1, RenderBounds.Top + 1), Color.Black);
+			Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top), Color.WhiteSmoke);
+			offset += new int2(0, size.Y + 1);
 		}
 
 		public Player FindFirstWinningPlayer(World world)
