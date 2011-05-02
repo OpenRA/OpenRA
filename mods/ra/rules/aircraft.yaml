@@ -179,7 +179,7 @@ YAK:
 		
 
 TRAN:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 110
@@ -218,7 +218,7 @@ TRAN:
 		Explosion: UnitExplode
 
 HELI:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 90
@@ -262,7 +262,7 @@ HELI:
 		Offset: 0,-10
 
 HIND:
-	Inherits: ^Plane
+	Inherits: ^Helicopter
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 90

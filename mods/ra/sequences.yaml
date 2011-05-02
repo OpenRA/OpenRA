@@ -1917,3 +1917,16 @@ boxes09:
 	idle:
 		Start: 0
 		Length: *
+
+gpsdot:
+	Infantry:
+		Start: 0
+	Vehicle:
+		Start: 1
+	Ship:
+		Start: 2
+	Helicopter:
+		Start: 3
+	Plane:
+		Start: 4
+

@@ -12,29 +12,33 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {
 	class GpsDotInfo : ITraitInfo
 	{
-		public readonly string String = "o";
+		public readonly string String = "Infantry";
 		public object Create(ActorInitializer init)
 		{
 			return new GpsDot(init, String);
 		}
 	}
+
 	class GpsDot : IEffect
 	{
-		string s;
 		int2 loc;
 		Color color;
 		Actor self;
 		GpsWatcher watcher;
 		bool show = false;
+		Animation anim;
 
 		public GpsDot(ActorInitializer init, string s)
 		{
-			this.s = s;
+			anim = new Animation("gpsdot");
+			anim.PlayRepeating(s);
+
 			self = init.self;
 			loc = self.CenterLocation;
 			color = self.Owner.ColorRamp.GetColor(0);
@@ -67,9 +71,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if(show)
-				Game.Renderer.TinyBoldFont.DrawTextWithContrast(s, loc - Game.viewport.Location, color, Color.Black, 1);
-			yield break;
+			if (show)
+				yield return Traits.Util.Centered(self, anim.Image, self.CenterLocation.ToFloat2());
 		}
 	}
 }

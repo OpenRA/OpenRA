@@ -29,7 +29,7 @@
 		Types:Vehicle
 	GivesBounty:
 	GpsDot:
-		String:O
+		String:Vehicle
 
 ^Tank:
 	AppearsOnRadar:
@@ -62,7 +62,7 @@
 		Types:Tank
 	GivesBounty:
 	GpsDot:
-		String:O
+		String:Vehicle
 
 ^Infantry:
 	AppearsOnRadar:
@@ -101,7 +101,7 @@
 		Types:Infantry
 	GivesBounty:
 	GpsDot:
-		String:o
+		String:Infantry
 
 ^Ship:
 	AppearsOnRadar:
@@ -126,7 +126,7 @@
 		Types:Ship
 	GivesBounty:
 	GpsDot:
-		String:O
+		String:Ship
 
 ^Plane:
 	AppearsOnRadar:
@@ -153,7 +153,11 @@
 		SuccessRate: 50
 	GivesBounty:
 	GpsDot:
-		String:O
+		String:Plane
+
+^Helicopter:
+	GpsDot:
+		String:Helicopter
 
 ^Building:
 	AppearsOnRadar:
