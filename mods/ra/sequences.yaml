@@ -1929,4 +1929,6 @@ gpsdot:
 		Start: 3
 	Plane:
 		Start: 4
+	Harvester:
+		Start: 5
 

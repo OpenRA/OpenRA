@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (show)
+			if (show && !self.Destroyed)
 				yield return Traits.Util.Centered(self, anim.Image, self.CenterLocation.ToFloat2());
 		}
 	}

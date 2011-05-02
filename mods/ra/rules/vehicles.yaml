@@ -226,6 +226,8 @@ HARV:
 		Range: 4
 	RenderUnit:
 	-AttackMove:
+	GpsDot:
+		String:Harvester
 
 MCV:
 	Inherits: ^Vehicle
