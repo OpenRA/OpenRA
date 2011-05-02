@@ -72,7 +72,8 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			if (show && !self.Destroyed)
-				yield return Traits.Util.Centered(self, anim.Image, self.CenterLocation.ToFloat2());
+				yield return Traits.Util.Centered(self, anim.Image, self.CenterLocation.ToFloat2())
+					.WithScale(1.5f);
 		}
 	}
 }
