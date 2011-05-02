@@ -8,11 +8,8 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -23,13 +20,12 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		bool Initialised = false;
 		readonly World world;
-		readonly WorldRenderer worldRenderer;
+
 		[ObjectCreator.UseCtor]
-		public StrategicProgressWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public StrategicProgressWidget([ObjectCreator.Param] World world)
 		{ 
 			IsVisible = () => true;
 			this.world = world;
-			this.worldRenderer = worldRenderer;
 		}
 
 		public override void DrawInner()
@@ -49,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				
-				if (a.Owner == worldRenderer.world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally)) 
+				if (a.Owner == world.LocalPlayer || (a.Owner.Stances[world.LocalPlayer] == Stance.Ally && world.LocalPlayer.Stances[a.Owner] == Stance.Ally)) 
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
@@ -124,9 +120,12 @@ namespace OpenRA.Mods.RA.Widgets
 			return shortestPlayer;
 		}
 
-		private void Init()
+		void Init()
 		{
-			IsVisible = () => (world.Actors.Where(a => a.HasTrait<StrategicVictoryConditions>()).Any() && world.Actors.Where(a => a.HasTrait<StrategicPoint>()).Any());
+			var visible = world.ActorsWithTrait<StrategicVictoryConditions>().Any() &&
+				world.ActorsWithTrait<StrategicPoint>().Any();
+
+			IsVisible = () => visible;
 			Initialised = true;
 		}
 	}
