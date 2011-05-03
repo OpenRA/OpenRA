@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 			foreach( var a in anims.Values )
 				if( a.DisableFunc == null || !a.DisableFunc() )
 				{
-					Renderable ret = a.Image( self ).WithPalette(Palette(self.Owner));
+					Renderable ret = a.Image(self, Palette(self.Owner));
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f*ret.Sprite.size*(1 - Info.Scale));
 					yield return ret;
@@ -118,10 +118,12 @@ namespace OpenRA.Traits
 				this.DisableFunc = d;
 			}
 
-			public Renderable Image( Actor self )
+			public Renderable Image( Actor self, string pal )
 			{
-				var r = Util.Centered( self, Animation.Image, self.CenterLocation 
-					+ (OffsetFunc != null ? OffsetFunc() : float2.Zero) );
+            	var loc = self.CenterLocation - 0.5f * Animation.Image.size
+					+ (OffsetFunc != null ? OffsetFunc() : float2.Zero);
+				var r = new Renderable(Animation.Image, loc, pal, (int)self.CenterLocation.Y);
+				
 				return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
 			}
 

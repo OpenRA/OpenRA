@@ -96,14 +96,6 @@ namespace OpenRA.Traits
 		public static float2 RelOffset(this int[] offset) { return new float2(offset[0], offset[1]); }
 		public static float2 AbsOffset(this int[] offset) { return new float2(offset.ElementAtOrDefault(2), offset.ElementAtOrDefault(3)); }
 
-		public static Renderable Centered(Actor self, Sprite s, float2 location)
-		{
-			var pal = "player{0}".F(self.Owner == null ? 0 : self.Owner.Index);
-            var loc = location - 0.5f * s.size;
-
-			return new Renderable(s, loc.Round(), pal, (int)self.CenterLocation.Y);
-		}
-
 		public static Activity SequenceActivities(params Activity[] acts)
 		{
 			return acts.Reverse().Aggregate(

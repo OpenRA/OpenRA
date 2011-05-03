@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class GpsDotInfo : ITraitInfo
+	class GpsDotInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
 	{
 		public readonly string String = "Infantry";
 		public object Create(ActorInitializer init)
@@ -27,10 +27,9 @@ namespace OpenRA.Mods.RA.Effects
 
 	class GpsDot : IEffect
 	{
-		int2 loc;
-		Color color;
 		Actor self;
 		GpsWatcher watcher;
+		RenderSimple rs;
 		bool show = false;
 		Animation anim;
 
@@ -40,8 +39,7 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayRepeating(s);
 
 			self = init.self;
-			loc = self.CenterLocation;
-			color = self.Owner.ColorRamp.GetColor(0);
+			rs = self.Trait<RenderSimple>();
 			self.World.AddFrameEndTask(w => w.Add(this));
 			if(self.World.LocalPlayer != null)
 				watcher = self.World.LocalPlayer.PlayerActor.Trait<GpsWatcher>();
@@ -65,14 +63,13 @@ namespace OpenRA.Mods.RA.Effects
 				)
 			{
 				show = true;
-				loc = self.CenterLocation;
 			}
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
 			if (show && !self.Destroyed)
-				yield return Traits.Util.Centered(self, anim.Image, self.CenterLocation.ToFloat2())
+				yield return new Renderable(anim.Image, self.CenterLocation - 0.5f * anim.Image.size, rs.Palette(self.Owner), (int)self.CenterLocation.Y)
 					.WithScale(1.5f);
 		}
 	}

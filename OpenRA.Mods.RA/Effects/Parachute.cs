@@ -24,7 +24,6 @@ namespace OpenRA.Mods.RA.Effects
 		readonly float2 location;
 		
 		readonly Actor cargo;
-		readonly Player owner;
 
 		float altitude;
 		const float fallRate = .3f;
@@ -34,7 +33,6 @@ namespace OpenRA.Mods.RA.Effects
 			this.location = location;
 			this.altitude = altitude;
 			this.cargo = cargo;
-			this.owner = owner;
 
 			var rs = cargo.Trait<RenderSimple>();
 			var image = rs.anim.Name;
