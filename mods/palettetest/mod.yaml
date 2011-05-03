@@ -1,0 +1,11 @@
+Metadata:
+	Title: Player Palette Test
+	Description: Replaces the mcv artwork with the d2k mcv
+	Version: a0001
+	Author: The OpenRA Developers
+	Requires: ra
+
+Folders:
+	mods/palettetest
+Rules:
+	mods/palettetest/mcv.yaml

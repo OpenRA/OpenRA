@@ -1,0 +1,13 @@
+MCV:
+	RenderUnit:
+		PlayerPalette: d2kplayer
+
+Player:
+	PlayerColorPalette@d2k:
+		BasePalette: d2k
+		BaseName: d2kplayer
+		PaletteFormat: d2k
+World:
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: d2k.pal
