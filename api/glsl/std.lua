@@ -186,7 +186,7 @@ invocations
 origin_upper_left pixel_center_integer
 smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
 gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
-subroutine
+subroutine gl_Position
 gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexcoord0 gl_MultiTexcoord1
 gl_MultiTexcoord2 gl_MultiTexcoord3 gl_MultiTexcoord4 gl_MultiTexcoord5 gl_MultiTexcoord6
 gl_MultiTexcoord7 gl_FogCoord gl_PointSize gl_ClipDistance
