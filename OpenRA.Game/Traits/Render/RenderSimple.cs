@@ -20,14 +20,15 @@ namespace OpenRA.Traits
 		public readonly string[] OverrideTileset = null;
 		public readonly string[] OverrideImage = null;
 		public readonly string Palette = null;
+		public readonly string PlayerPalette = "player";
 		public readonly float Scale = 1f;
 		public abstract object Create(ActorInitializer init);
 
-        public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
+        public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
         {
             var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
             anim.PlayRepeating("idle");
-            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette, 0, Scale);
+            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette ?? PlayerPalette+owner.Index, 0, Scale);
         }
 	}
 
@@ -62,17 +63,17 @@ namespace OpenRA.Traits
 			anims.Add( "", new Animation( GetImage(self), baseFacing ) );
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
 		}
-
+		
+		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette+p.Index; }
 		public virtual IEnumerable<Renderable> Render( Actor self )
 		{
-
 			foreach( var a in anims.Values )
 				if( a.DisableFunc == null || !a.DisableFunc() )
 				{
-					Renderable ret = a.Image( self );
+					Renderable ret = a.Image( self ).WithPalette(Palette(self.Owner));
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f*ret.Sprite.size*(1 - Info.Scale));
-					yield return ( Info.Palette == null ) ? ret : ret.WithPalette(Info.Palette);
+					yield return ret;
 				}
 		}
 

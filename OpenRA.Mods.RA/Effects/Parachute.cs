@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA.Effects
 	public class Parachute : IEffect
 	{
 		readonly Animation anim;
+		readonly string palette;
 		readonly Animation paraAnim;
 		readonly float2 location;
 		
@@ -37,7 +38,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			var rs = cargo.Trait<RenderSimple>();
 			var image = rs.anim.Name;
-
+			palette = rs.Palette(owner);
+			
 			anim = new Animation(image);
 			if (anim.HasSequence("idle"))
 				anim.PlayFetchIndex("idle", () => 0);
@@ -70,8 +72,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			var pos = location - new float2(0, altitude);
 			yield return new Renderable(anim.Image, location - .5f * anim.Image.size, "shadow", 0);
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, owner.Palette, 2);
-			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size, owner.Palette, 3);
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, 2);
+			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size, palette, 3);
 		}
 	}
 }

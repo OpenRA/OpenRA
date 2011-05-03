@@ -207,7 +207,7 @@ namespace OpenRA.Mods.RA
 					var targetCell = unit.Location + xy - sourceLocation;
 					foreach (var r in unit.Render())
 						r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
-							wr.GetPaletteIndex(r.Palette ?? unit.Owner.Palette),
+							wr.GetPaletteIndex(r.Palette),
 					        r.Scale*r.Sprite.size);
 				}
 				

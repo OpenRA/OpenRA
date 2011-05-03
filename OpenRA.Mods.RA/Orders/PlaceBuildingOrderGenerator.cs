@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Orders
 			Building = name;
 			
 			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
-								.RenderPreview(Rules.Info[Building], producer.World.Map.Tileset);
+								.RenderPreview(Rules.Info[Building], producer.World.Map.Tileset, producer.Owner);
 		}
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				foreach (var r in Preview)
 					r.Sprite.DrawAt(Game.CellSize*topLeft + r.Pos,
-					                wr.GetPaletteIndex(r.Palette ?? world.LocalPlayer.Palette),
+					                wr.GetPaletteIndex(r.Palette),
 					                r.Scale*r.Sprite.size);
 				
 				var res = world.WorldActor.Trait<ResourceLayer>();

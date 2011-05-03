@@ -23,11 +23,12 @@ namespace OpenRA.Mods.RA.Effects
 		RA.RallyPoint rp;
 		public Animation flag = new Animation("rallypoint");
 		public Animation circles = new Animation("rallypoint");
-		
+		readonly string palette;
 		public RallyPoint(Actor building) 
 		{ 
 			this.building = building;
 			rp = building.Trait<RA.RallyPoint>();
+			palette = building.Trait<RenderSimple>().Palette(building.Owner);
 			flag.PlayRepeating("flag");
 			circles.Play("circles");
 		}
@@ -54,11 +55,11 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = Traits.Util.CenterOfCell(rp.rallyPoint);
 				yield return new Renderable(circles.Image, 
 					pos - .5f * circles.Image.size, 
-					building.Owner.Palette, (int)pos.Y);
+					palette, (int)pos.Y);
 
 				yield return new Renderable(flag.Image, 
 					pos + new float2(-1,-17), 
-					building.Owner.Palette, (int)pos.Y);
+					palette, (int)pos.Y);
 			}
 		}
 	}

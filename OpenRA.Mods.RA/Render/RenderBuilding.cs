@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Render
 		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 		
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset)
+		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
 		{
-            return base.RenderPreview(building, Tileset)
+            return base.RenderPreview(building, Tileset, owner)
                 .Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
 		}
 	}

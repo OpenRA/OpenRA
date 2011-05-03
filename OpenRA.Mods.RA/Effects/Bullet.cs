@@ -162,11 +162,11 @@ namespace OpenRA.Mods.RA.Effects
 
                         var highPos = pos - new float2(0, GetAltitude());
 
-                        yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, Args.firedBy.Owner.Palette, (int)pos.Y);
+                        yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, "effect", (int)pos.Y);
                     }
                     else
                         yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
-                            Args.weapon.Underwater ? "shadow" : Args.firedBy.Owner.Palette, (int)pos.Y);
+                            Args.weapon.Underwater ? "shadow" : "effect", (int)pos.Y);
                 }
             }
 
