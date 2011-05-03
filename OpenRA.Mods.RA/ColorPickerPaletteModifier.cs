@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Widgets.Delegates;
@@ -16,14 +17,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ColorPickerPaletteModifierInfo : TraitInfo<ColorPickerPaletteModifier> {}
+	class ColorPickerPaletteModifierInfo : ITraitInfo
+	{
+		public string PlayerPalette = "player";
+		public object Create( ActorInitializer init ) { return new ColorPickerPaletteModifier( this ); }
+	}
 	
 	class ColorPickerPaletteModifier : IPalette, IPaletteModifier
 	{	
+		ColorPickerPaletteModifierInfo Info;
 		PaletteFormat format;
+		
+		public ColorPickerPaletteModifier(ColorPickerPaletteModifierInfo info) { Info = info; }
+		
 		public void InitPalette( WorldRenderer wr )
 		{
-			var info = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			var info = Rules.Info["player"].Traits.WithInterface<PlayerColorPaletteInfo>()
+				.Where(p => p.BaseName == Info.PlayerPalette)
+				.First();
 			format = info.PaletteFormat;
 			wr.AddPalette("colorpicker", wr.GetPalette(info.BasePalette));
 		}
