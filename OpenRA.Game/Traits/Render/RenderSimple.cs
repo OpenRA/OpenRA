@@ -120,9 +120,10 @@ namespace OpenRA.Traits
 
 			public Renderable Image( Actor self, string pal )
 			{
-            	var loc = self.CenterLocation - 0.5f * Animation.Image.size
+				var p = self.CenterLocation;
+            	var loc = p - 0.5f * Animation.Image.size
 					+ (OffsetFunc != null ? OffsetFunc() : float2.Zero);
-				var r = new Renderable(Animation.Image, loc, pal, (int)self.CenterLocation.Y);
+				var r = new Renderable(Animation.Image, loc, pal, p.Y);
 				
 				return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
 			}

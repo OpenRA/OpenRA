@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 			RankAnim.Tick();	// hack
 			var bounds = self.GetBounds(false);
 			yield return new Renderable(RankAnim.Image,
-				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", (int)self.CenterLocation.Y);
+				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", self.CenterLocation.Y);
 		}
 	}
 

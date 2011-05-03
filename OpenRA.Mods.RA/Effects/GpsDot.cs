@@ -69,8 +69,11 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			if (show && !self.Destroyed)
-				yield return new Renderable(anim.Image, self.CenterLocation - 0.5f * anim.Image.size, rs.Palette(self.Owner), (int)self.CenterLocation.Y)
+			{
+				var p = self.CenterLocation;
+				yield return new Renderable(anim.Image, p - 0.5f * anim.Image.size, rs.Palette(self.Owner), p.Y)
 					.WithScale(1.5f);
+			}
 		}
 	}
 }
