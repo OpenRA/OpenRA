@@ -25,9 +25,24 @@ namespace OpenRA
 
 		public readonly World World;
 		public readonly uint ActorID;
+		
+		IOccupySpace OccupiesSpace;
+		IHasLocation HasLocation;
 
-		public int2 Location { get { return Trait<IOccupySpace>().TopLeft; } }
-		public int2 CenterLocation { get { return Trait<IHasLocation>().PxPosition; } }
+		public int2 Location
+		{ get {
+			if (OccupiesSpace == null)
+				OccupiesSpace = Trait<IOccupySpace>();
+			return OccupiesSpace.TopLeft;
+		}}
+		
+		public int2 CenterLocation
+		{ get {
+			if (HasLocation == null)
+				HasLocation = Trait<IHasLocation>();
+			return HasLocation.PxPosition;
+		}}
+		
 		[Sync]
 		public Player Owner;
 
