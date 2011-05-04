@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (!hasTicked)
 			{
-				var oneCell = new float2(Game.CellSize, Game.CellSize);
+				var oneCell = new int2(Game.CellSize, Game.CellSize);
 				var adjWalls = self.World.FindUnits(self.CenterLocation - oneCell, self.CenterLocation + oneCell)
 					.Where(a => a.Info == self.Info && a != self);
 

@@ -110,6 +110,9 @@ namespace OpenRA.Graphics
 			return ViewToWorld(mi.Location);
 		}
 		
+		public int2 ViewToWorldPx(int2 loc) { return loc + Location.ToInt2(); }
+		public int2 ViewToWorldPx(MouseInput mi) { return ViewToWorldPx(mi.Location); }
+		
 		public void Center(float2 loc)
 		{
 			scrollPosition = this.NormalizeScrollPosition((Game.CellSize*loc - screenSize / 2).ToInt2());

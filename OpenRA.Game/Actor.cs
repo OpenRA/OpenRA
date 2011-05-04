@@ -28,8 +28,8 @@ namespace OpenRA
 		IOccupySpace OccupiesSpace;
 		IHasLocation HasLocation;
 		Lazy<IMove> Move;
-		public Cached<RectangleF> Bounds;
-		public Cached<RectangleF> ExtendedBounds;
+		public Cached<Rectangle> Bounds;
+		public Cached<Rectangle> ExtendedBounds;
 
 		public int2 Location
 		{ get {
@@ -76,12 +76,12 @@ namespace OpenRA
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				if (si != null && si.Bounds != null)
-					return new float2(si.Bounds[0], si.Bounds[1]);
+					return new int2(si.Bounds[0], si.Bounds[1]);
 
 				// auto size from render
 				var firstSprite = TraitsImplementing<IRender>().SelectMany(ApplyIRender).FirstOrDefault();
-				if (firstSprite.Sprite == null) return float2.Zero;
-                return firstSprite.Sprite.size * firstSprite.Scale;
+				if (firstSprite.Sprite == null) return int2.Zero;
+                return (firstSprite.Sprite.size * firstSprite.Scale).ToInt2();
 			});
 
 			ApplyIRender = x => x.Render(this);
@@ -104,7 +104,7 @@ namespace OpenRA
 			get { return currentActivity == null; }
 		}
 
-        OpenRA.FileFormats.Lazy<float2> Size;
+        OpenRA.FileFormats.Lazy<int2> Size;
 
 		// note: these delegates are cached to avoid massive allocation.
 		Func<IRender, IEnumerable<Renderable>> ApplyIRender;
@@ -120,24 +120,27 @@ namespace OpenRA
 		// vertically to altitude = 0 to support FindUnitsInCircle queries
 		// When false, the bounding box is given for the actor
 		// at its current altitude
-		RectangleF CalculateBounds(bool useAltitude)
+		Rectangle CalculateBounds(bool useAltitude)
 		{
 			var size = Size.Value;
-			var loc = CenterLocation - 0.5f * size;
+			var loc = CenterLocation - size / 2;
 			
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
-				loc += new float2(si.Bounds[2], si.Bounds[3]);
+			{
+				loc.X += si.Bounds[2];
+				loc.Y += si.Bounds[3];
+			}
 
 			var move = Move.Value;
 			if (move != null)
 			{
-				loc -= new float2(0, move.Altitude);
+				loc.Y -= move.Altitude;
 				if (useAltitude)
-					size = new float2(size.X, size.Y + move.Altitude);
+					size = new int2(size.X, size.Y + move.Altitude);
 			}
 		
-			return new RectangleF(loc.X, loc.Y, size.X, size.Y);
+			return new Rectangle(loc.X, loc.Y, size.X, size.Y);
 		}
 
 		public bool IsInWorld { get; internal set; }

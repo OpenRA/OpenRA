@@ -23,27 +23,27 @@ namespace OpenRA
 	{
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
-			var loc = mouseLocation + Game.viewport.Location;
+			var loc = Game.viewport.ViewToWorldPx(mouseLocation);
 			return FindUnits(world, loc, loc).Where(a => world.LocalShroud.IsVisible(a));
 		}
 
-		public static IEnumerable<Actor> FindUnits(this World world, float2 a, float2 b)
+		public static IEnumerable<Actor> FindUnits(this World world, int2 a, int2 b)
 		{
 			var u = float2.Min(a, b).ToInt2();
 			var v = float2.Max(a, b).ToInt2();
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, float2 a, float r)
+		public static IEnumerable<Actor> FindUnitsInCircle(this World world, int2 a, int r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
-				var min = a - new float2(r, r);
-				var max = a + new float2(r, r);
+				var min = a - new int2(r, r);
+				var max = a + new int2(r, r);
 
 				var actors = world.FindUnits(min, max);
 
-				var rect = new RectangleF(min.X, min.Y, max.X - min.X, max.Y - min.Y);
+				var rect = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
 
 				var inBox = actors.Where(x => x.ExtendedBounds.Value.IntersectsWith(rect));
 

@@ -54,10 +54,10 @@ namespace OpenRA.Traits
 				if (bounds.Left >= Game.CellSize * self.World.Map.Bounds.Right) continue;
 				if (bounds.Top >= Game.CellSize * self.World.Map.Bounds.Bottom) continue;
 
-				var i1 = Math.Max(0, (int)bounds.Left / scale);
-				var i2 = Math.Min(bins.GetUpperBound(0), (int)bounds.Right / scale);
-				var j1 = Math.Max(0, (int)bounds.Top / scale);
-				var j2 = Math.Min(bins.GetUpperBound(1), (int)bounds.Bottom / scale);
+				var i1 = Math.Max(0, bounds.Left / scale);
+				var i2 = Math.Min(bins.GetUpperBound(0), bounds.Right / scale);
+				var j1 = Math.Max(0, bounds.Top / scale);
+				var j2 = Math.Min(bins.GetUpperBound(1), bounds.Bottom / scale);
 				
 				for (var j = j1; j <= j2; j++)
 					for (var i = i1; i <= i2; i++)
@@ -77,7 +77,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)
 		{
-			var r = RectangleF.FromLTRB(a.X, a.Y, b.X, b.Y);
+			var r = Rectangle.FromLTRB(a.X, a.Y, b.X, b.Y);
 
 			return ActorsInBins(a.X / scale, b.X / scale, a.Y / scale, b.Y / scale)
 				.Distinct()

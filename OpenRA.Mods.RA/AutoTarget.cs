@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 			nextScanTime = (int)(25 * (info.ScanTimeAverage +
 				(self.World.SharedRandom.NextDouble() * 2 - 1) * info.ScanTimeSpread));
 
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, Game.CellSize * range);
+			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
 			return inRange
 				.Where(a => a.Owner != null && a.AppearsHostileTo(self))

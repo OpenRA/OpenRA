@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,7 +16,6 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
-using System;
 
 namespace OpenRA.Widgets
 {
@@ -23,6 +23,7 @@ namespace OpenRA.Widgets
 	{
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
@@ -35,7 +36,7 @@ namespace OpenRA.Widgets
 			var selbox = SelectionBox;
             if (selbox == null)
             {
-                foreach (var u in SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * dragStart))
+                foreach (var u in SelectActorsInBox(world, dragStart, dragStart))
                     worldRenderer.DrawRollover(u);
 
                 return;
@@ -54,12 +55,12 @@ namespace OpenRA.Widgets
                 worldRenderer.DrawRollover(u);
 		}
 		
-		float2 dragStart, dragEnd;
+		int2 dragStart, dragEnd;
 
 		// TODO: WorldInteractionController doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{			
-			var xy = Game.viewport.ViewToWorld(mi);
+			var xy = Game.viewport.ViewToWorldPx(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				dragStart = dragEnd = xy;
@@ -73,7 +74,7 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					var newSelection = SelectActorsInBox(world, Game.CellSize * dragStart, Game.CellSize * xy);
+					var newSelection = SelectActorsInBox(world, dragStart, xy);
 					world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 				}
 
@@ -89,20 +90,20 @@ namespace OpenRA.Widgets
 			return true;
 		}
 		
-		public Pair<float2, float2>? SelectionBox
+		public Pair<int2, int2>? SelectionBox
 		{
 			get
 			{
 				if (dragStart == dragEnd) return null;
-				return Pair.New(Game.CellSize * dragStart, Game.CellSize * dragEnd);
+				return Pair.New(dragStart, dragEnd);
 			}
 		}
 		
-		public void ApplyOrders(World world, float2 xy, MouseInput mi)
+		public void ApplyOrders(World world, int2 xy, MouseInput mi)
 		{
 			if (world.OrderGenerator == null) return;
 
-			var orders = world.OrderGenerator.Order(world, xy.ToInt2(), mi).ToArray();
+			var orders = world.OrderGenerator.Order(world, Traits.Util.CellContaining(xy), mi).ToArray();
 			orders.Do( o => world.IssueOrder( o ) );
 
 			world.PlayVoiceForOrders(orders);
@@ -119,6 +120,7 @@ namespace OpenRA.Widgets
 					Modifiers = Game.GetModifierKeys()
 				};
 
+				// TODO: fix this up.
 				return world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
 			} );
 		}
@@ -141,7 +143,7 @@ namespace OpenRA.Widgets
 		}
 		
         static readonly Actor[] NoActors = {};
-		IEnumerable<Actor> SelectActorsInBox(World world, float2 a, float2 b)
+		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b)
 		{
 			return world.FindUnits(a, b)
 				.Where( x => x.HasTrait<Selectable>() && world.LocalShroud.IsVisible(x) )
