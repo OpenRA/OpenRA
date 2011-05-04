@@ -17,29 +17,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GpsWatcherInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init)
-		{
-			return new GpsWatcher(init);
-		}
-	}
-
+	class GpsWatcherInfo : TraitInfo<GpsWatcher> { }
+	
 	class GpsWatcher : ISync
 	{
-		Actor self;
 		bool Launched = false;
 		List<Actor> actors = new List<Actor> { };
 		[Sync]
 		public bool GrantedAllies = false;
 		[Sync]
 		public bool Granted = false;
-		
-
-		public GpsWatcher(ActorInitializer init)
-		{
-			self = init.self;
-		}
 
 		public void GpsRem(Actor self)
 		{
