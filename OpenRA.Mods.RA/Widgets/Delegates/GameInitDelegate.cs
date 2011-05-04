@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using ICSharpCode.SharpZipLib;
+using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -147,25 +149,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					// Automatically extract
 					status.GetText = () => "Extracting...";
 					progress.Indeterminate = true;
-					var error = false;
-					Action<string> parseOutput = s => 
-				    {
-				    	if (s.StartsWith("Error"))
-						{
-							error = true;
-							ShowDownloadError(window, s);
-						}
-						if (s.StartsWith("Status"))
-							window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
-					};
-					
-					Action onComplete = () =>
-					{
-						if (!error)
-							Game.RunAfterTick(ContinueLoading);
-					};
-					
-					Game.RunAfterTick(() => Game.Utilities.ExtractZipAsync(file, FileSystem.SpecialPackageRoot+Info.PackagePath, parseOutput, onComplete));
+
+					if (ExtractZip(window, file, FileSystem.SpecialPackageRoot+Info.PackagePath))
+						Game.RunAfterTick(ContinueLoading);
+				
 				}
 			};
 			
@@ -218,5 +205,64 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				cancelled = true;
 			}
 		}
+		
+		bool ExtractZip(Widget window, string zipFile, string dest)
+		{
+			if (!File.Exists(zipFile))
+			{
+				ShowDownloadError(window, "Invalid path: "+zipFile);
+				return false;
+			}
+			var status = window.GetWidget<LabelWidget>("STATUS");
+			List<string> extracted = new List<string>();
+			try
+			{
+				new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest, extracted, s => status.GetText = () => "Extracting "+s);
+			}
+			catch (SharpZipBaseException)
+			{
+				foreach(var f in extracted)
+					File.Delete(f);
+				ShowDownloadError(window, "Archive corrupt: "+zipFile);
+				return false;
+			}
+			status.GetText = () => "Extraction complete";
+			return true;
+		}
     }
+	
+	static class InstallUtils
+	{
+        static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)
+        {
+            for (; ; )
+            {
+                var e = z.GetNextEntry();
+                if (e != null) yield return e; else break;
+            }
+        }
+
+        public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted, Action<string> Extracting)
+		{
+            foreach (var entry in z.GetEntries())
+            {
+                if (!entry.IsFile) continue;
+
+				Extracting(entry.Name);
+                Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
+                var path = Path.Combine(destPath, entry.Name);
+                extracted.Add(path);
+
+                using (var f = File.Create(path))
+                {
+                    int bufSize = 2048;
+                    byte[] buf = new byte[bufSize];
+                    while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+                        f.Write(buf, 0, bufSize);
+                }
+            }
+
+			z.Close();
+		}
+	}
 }

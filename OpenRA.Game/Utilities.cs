@@ -22,11 +22,6 @@ namespace OpenRA
 		{
 			Utility = utility;
 		}
-	
-		public void ExtractZipAsync(string zipFile, string path, Action<string> parseOutput, Action onComplete)
-		{
-			ExecuteUtilityAsync("--extract-zip \"{0}\" \"{1}\"".F(zipFile, path), parseOutput, onComplete);
-		}
 		
 		public void InstallRAFilesAsync(string cdPath, string path, Action<string> parseOutput, Action onComplete)
 		{
