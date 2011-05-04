@@ -19,25 +19,25 @@ namespace OpenRA.Mods.RA.Render
 
 	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
-		PlayerResources PlayerResources;
+		PlayerResources playerResources;
 		
 		public RenderBuildingOre( ActorInitializer init, RenderBuildingInfo info )
 			: base(init, info)
 		{
-			PlayerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
+			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public void BuildingComplete( Actor self )
 		{
 			anim.PlayFetchIndex("idle",
-				() => PlayerResources.OreCapacity != 0
-					? (49 * PlayerResources.Ore) / (10 * PlayerResources.OreCapacity)
+				() => playerResources.OreCapacity != 0
+					? (49 * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 		}
 		
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 	}
 }
