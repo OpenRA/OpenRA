@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 
 		public void DrawSelectionBox(Actor selectedUnit, Color c)
 		{
-			var bounds = selectedUnit.GetBounds(false);
+			var bounds = selectedUnit.Bounds.Value;
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);

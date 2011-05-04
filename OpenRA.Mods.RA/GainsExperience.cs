@@ -107,8 +107,7 @@ namespace OpenRA.Mods.RA
 			foreach (var r in rs)
 				yield return r;
 
-			RankAnim.Tick();	// hack
-			var bounds = self.GetBounds(false);
+			var bounds = self.Bounds.Value;
 			yield return new Renderable(RankAnim.Image,
 				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", self.CenterLocation.Y);
 		}

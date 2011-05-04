@@ -28,6 +28,8 @@ namespace OpenRA
 		IOccupySpace OccupiesSpace;
 		IHasLocation HasLocation;
 		Lazy<IMove> Move;
+		public Cached<RectangleF> Bounds;
+		public Cached<RectangleF> ExtendedBounds;
 
 		public int2 Location
 		{ get {
@@ -84,10 +86,16 @@ namespace OpenRA
 
 			ApplyIRender = x => x.Render(this);
 			ApplyRenderModifier = (m, p) => p.ModifyRender(this, m);
+			
+			Bounds = Cached.New( () => CalculateBounds(false) );
+			ExtendedBounds = Cached.New( () => CalculateBounds(true) );
 		}
 
 		public void Tick()
 		{
+			Bounds.Invalidate();
+			ExtendedBounds.Invalidate();
+			
 			currentActivity = Util.RunActivity( this, currentActivity );
 		}
 
@@ -112,7 +120,7 @@ namespace OpenRA
 		// vertically to altitude = 0 to support FindUnitsInCircle queries
 		// When false, the bounding box is given for the actor
 		// at its current altitude
-		public RectangleF GetBounds(bool useAltitude)
+		RectangleF CalculateBounds(bool useAltitude)
 		{
 			var size = Size.Value;
 			var loc = CenterLocation - 0.5f * size;

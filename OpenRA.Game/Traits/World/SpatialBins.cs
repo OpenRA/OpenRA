@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 
 			foreach (var a in self.World.ActorsWithTrait<IHasLocation>())
 			{
-				var bounds = a.Actor.GetBounds(true);
+				var bounds = a.Actor.ExtendedBounds.Value;
 
 				if (bounds.Right <= Game.CellSize * self.World.Map.Bounds.Left) continue;
 				if (bounds.Bottom <= Game.CellSize * self.World.Map.Bounds.Top) continue;
@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 
 			return ActorsInBins(a.X / scale, b.X / scale, a.Y / scale, b.Y / scale)
 				.Distinct()
-				.Where(u => u.IsInWorld && u.GetBounds(true).IntersectsWith(r));
+				.Where(u => u.IsInWorld && u.ExtendedBounds.Value.IntersectsWith(r));
 		}
 	}
 }
