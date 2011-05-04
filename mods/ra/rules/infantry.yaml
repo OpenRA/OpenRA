@@ -127,7 +127,7 @@ E4:
 		Speed: 3
 	AttackFrontal:
 		PrimaryWeapon: Flamer
-		PrimaryOffset: 0,0,0,-7
+		PrimaryOffset: 0,-10,0,-8
 		FireDelay: 8
 	TakeCover:
 	-RenderInfantry:
@@ -326,6 +326,7 @@ SHOK:
 		Range: 4
 	AttackFrontal:
 		PrimaryWeapon: PortaTesla
+		PrimaryOffset: 0,-10,0,-8
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
