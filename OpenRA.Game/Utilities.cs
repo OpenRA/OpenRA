@@ -23,11 +23,6 @@ namespace OpenRA
 			Utility = utility;
 		}
 		
-		public void InstallRAFilesAsync(string cdPath, string path, Action<string> parseOutput, Action onComplete)
-		{
-			ExecuteUtilityAsync("--install-ra-packages \"{0}\" \"{1}\"".F(cdPath, path), parseOutput, onComplete);
-		}
-		
 		public void PromptFilepathAsync(string title, Action<string> withPath)
 		{
 			ExecuteUtility("--display-filepicker \"{0}\"".F(title), withPath);
@@ -47,33 +42,6 @@ namespace OpenRA
 				onComplete(p.StandardOutput.ReadToEnd().Trim());
 			};
 			p.Start();
-		}
-		
-		void ExecuteUtilityAsync(string args, Action<string> parseOutput, Action onComplete)
-		{
-			Process p = new Process();
-			p.StartInfo.FileName = Utility;
-			p.StartInfo.Arguments = "{0} --SupportDir \"{1}\"".F(args, Game.SupportDir);
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.Start();
-			
-			var t = new Thread( _ =>
-			{
-				using (var reader = p.StandardOutput)
-				{
-					// This is wrong, chrisf knows why
-					while (!p.HasExited)
-					{
-						string s = reader.ReadLine();
-						if (string.IsNullOrEmpty(s)) continue;
-						parseOutput(s);
-					}
-				}
-				onComplete();
-			}) { IsBackground = true };
-			t.Start();	
 		}
 	}
 }

@@ -91,7 +91,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		void InstallFromCD(string path)
 		{
 			var window = Widget.OpenWindow("INIT_COPY");
-			var status = window.GetWidget<LabelWidget>("STATUS");
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
 			progress.Indeterminate = true;
 
@@ -99,30 +98,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
 			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
 			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
-
-			status.GetText = () => "Copying...";
-			var error = false;
-			Action<string> parseOutput = s => 
-		    {
-		    	if (s.Substring(0,5) == "Error")
-				{
-					error = true;
-					ShowDownloadError(window, s);
-				}
-				if (s.Substring(0,6) == "Status")
-					window.GetWidget<LabelWidget>("STATUS").GetText = () => s.Substring(7).Trim();
-			};
 			
-			Action onComplete = () =>
-			{
-                if (!error)
-                    Game.RunAfterTick(ContinueLoading);
-			};
-			
-			if (Info.InstallMode == "ra")
-				Game.Utilities.InstallRAFilesAsync(path, FileSystem.SpecialPackageRoot+Info.PackagePath, parseOutput, onComplete);
-			else 
+			if (Info.InstallMode != "ra")
 				ShowDownloadError(window, "Installing from CD not supported");
+			else if (InstallRAPackages(window, path, FileSystem.SpecialPackageRoot+Info.PackagePath))
+			    Game.RunAfterTick(ContinueLoading);
 		}
 
 		void ShowDownloadDialog()
@@ -213,6 +193,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				ShowDownloadError(window, "Invalid path: "+zipFile);
 				return false;
 			}
+			
 			var status = window.GetWidget<LabelWidget>("STATUS");
 			List<string> extracted = new List<string>();
 			try
@@ -223,11 +204,66 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			{
 				foreach(var f in extracted)
 					File.Delete(f);
-				ShowDownloadError(window, "Archive corrupt: "+zipFile);
+				ShowDownloadError(window, "Archive corrupt");
 				return false;
 			}
 			status.GetText = () => "Extraction complete";
 			return true;
+		}
+
+		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
+		bool ExtractFromPackage(Widget window, string srcPath, string package, string[] files, string destPath)
+		{
+			var status = window.GetWidget<LabelWidget>("STATUS");
+
+			if (!Directory.Exists(destPath))
+				Directory.CreateDirectory(destPath);
+			
+			if (!Directory.Exists(srcPath)) { ShowDownloadError(window, "Cannot find "+package); return false; }
+			FileSystem.Mount(srcPath);
+			if (!FileSystem.Exists(package)) { ShowDownloadError(window, "Cannot find "+package); return false; }
+			FileSystem.Mount(package);
+
+			foreach (string s in files)
+			{
+				var destFile = Path.Combine(destPath, s);
+				using (var sourceStream = FileSystem.Open(s))
+				using (var destStream = File.Create(destFile))
+				{
+					status.GetText = () => "Extracting "+s;
+					destStream.Write(sourceStream.ReadAllBytes());
+				}
+			}
+			
+			status.GetText = () => "Extraction complete";
+			return true;
+		}
+		
+		bool CopyFiles(Widget window, string srcPath, string[] files, string destPath)
+		{
+			var status = window.GetWidget<LabelWidget>("STATUS");
+
+			foreach (var file in files)
+			{
+				var fromPath = Path.Combine(srcPath, file);
+				if (!File.Exists(fromPath))
+				{
+					ShowDownloadError(window, "Cannot find "+file);
+					return false;
+				}
+				status.GetText = () => "Extracting "+file.ToLowerInvariant();
+				File.Copy(fromPath,	Path.Combine(destPath, Path.GetFileName(file).ToLowerInvariant()), true);
+			}
+			return true;
+		}
+		
+		bool InstallRAPackages(Widget window, string source, string dest)
+		{
+			if (!CopyFiles(window, Path.Combine(source, "INSTALL"), new string[] {"REDALERT.MIX"}, dest))
+				return false;
+			return ExtractFromPackage(window, source, "MAIN.MIX",
+				new string[] { "conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
+					"scores.mix", "snow.mix", "interior.mix", "temperat.mix" }, dest);
 		}
     }
 	
