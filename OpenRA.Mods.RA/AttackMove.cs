@@ -76,11 +76,19 @@ namespace OpenRA.Mods.RA
 		class AttackMoveActivity : Activity
 		{
 			Activity inner;
+			int scanTicks;
+			
+			const int ScanInterval = 7;
+			
 			public AttackMoveActivity( Activity inner ) { this.inner = inner; }
 
 			public override Activity Tick( Actor self )
 			{
-				self.Trait<AutoTarget>().ScanAndAttack(self, true, false);
+				if (--scanTicks <= 0)
+				{
+					self.Trait<AutoTarget>().ScanAndAttack(self, true, false);
+					scanTicks = ScanInterval;
+				}
 
 				if( inner == null )
 					return NextActivity;
