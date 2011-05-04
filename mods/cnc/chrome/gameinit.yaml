@@ -34,14 +34,11 @@ Background@INIT_CHOOSEINSTALL:
 			Y:70
 			Width:PARENT_RIGHT
 			Height:25
-#			Text:Content can be downloaded, or copied from the install CD.
-			Text:A 6.1MB download is required. 
+			Text:Content can be downloaded, or copied from the install CD.
 			Align:Center
 		Button@DOWNLOAD:
 			Id:DOWNLOAD
-#			X:PARENT_RIGHT - 420
-#			Y:PARENT_BOTTOM - 45
-			X:PARENT_RIGHT - 280
+			X:PARENT_RIGHT - 420
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
@@ -54,7 +51,6 @@ Background@INIT_CHOOSEINSTALL:
 			Width:120
 			Height:25
 			Text:From CD
-			Visible:false
 			Bold:True
 		Button@QUIT:
 			Id:QUIT

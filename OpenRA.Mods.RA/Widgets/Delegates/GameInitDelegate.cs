@@ -60,14 +60,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
                 }
             };
 
-            if (FileSystem.Exists(Info.TestFile))
-                ContinueLoading();
+			TestAndContinue();
+        }
+		
+		void TestAndContinue()
+		{
+			if (FileSystem.Exists(Info.TestFile))
+			{
+				Game.LoadShellMap();
+				Widget.RootWidget.RemoveChildren();
+				Widget.OpenWindow("MAINMENU_BG");
+			}
             else
             {
                 MainMenuButtonsDelegate.DisplayModSelector();
                 ShowInstallMethodDialog();
             }
-        }
+		}
 		
 		void ShowInstallMethodDialog()
 		{
@@ -99,10 +108,20 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
 			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
 			
-			if (Info.InstallMode != "ra")
-				ShowDownloadError(window, "Installing from CD not supported");
-			else if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
-			    Game.RunAfterTick(ContinueLoading);
+			switch (Info.InstallMode)
+			{
+				case "ra":
+					if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
+			    		Game.RunAfterTick(TestAndContinue);
+				break;
+				case "cnc":
+					if (InstallCncPackages(window, path, Info.ResolvedPackagePath))
+			    		Game.RunAfterTick(TestAndContinue);
+				break;
+				default:
+					ShowDownloadError(window, "Installing from CD not supported");
+				break;
+			}
 		}
 
 		void ShowDownloadDialog()
@@ -131,7 +150,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					progress.Indeterminate = true;
 
 					if (ExtractZip(window, file, Info.ResolvedPackagePath))
-						Game.RunAfterTick(ContinueLoading);
+						Game.RunAfterTick(TestAndContinue);
 				
 				}
 			};
@@ -149,13 +168,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				window.GetWidget<ButtonWidget>("RETRY").IsVisible = () => true;
 				window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => true;
 			}
-		}
-				
-		void ContinueLoading()
-		{
-			Game.LoadShellMap();
-			Widget.RootWidget.RemoveChildren();
-			Widget.OpenWindow("MAINMENU_BG");
 		}
 		
 		// General support methods
@@ -264,6 +276,17 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			return ExtractFromPackage(window, source, "MAIN.MIX",
 				new string[] { "conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
 					"scores.mix", "snow.mix", "interior.mix", "temperat.mix" }, dest);
+		}
+		
+		bool InstallCncPackages(Widget window, string source, string dest)
+		{
+			if (!CopyFiles(window, source,
+		    		new string[] { "CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
+						"SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"},
+					dest))
+				return false;
+			return ExtractFromPackage(window, source, "INSTALL/SETUP.Z",
+				new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" }, dest);
 		}
     }
 	

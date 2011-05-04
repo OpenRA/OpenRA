@@ -72,7 +72,6 @@ namespace OpenRA.FileFormats
 
 		public static void Mount(string name)
 		{
-			var start = name;
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 			
