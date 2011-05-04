@@ -96,14 +96,14 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			var producers = self.World.ActorsWithTrait<Production>()
-                               .Where( x => x.Actor.Owner == self.Owner )
-							   .Where( x => x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
-							   .ToList();
+				.Where( x => x.Actor.Owner == self.Owner
+				    && x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
+					.ToList();
 			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )
 				.FirstOrDefault();
 
 			if( producer.Actor != null )
-				producer.Actor.TraitsImplementing<RenderSimple>().First().PlayCustomAnim( producer.Actor, "build" );
+				producer.Actor.Trait<RenderSimple>().PlayCustomAnim( producer.Actor, "build" );
 		}
 
 		static int GetNumBuildables(Player p)
