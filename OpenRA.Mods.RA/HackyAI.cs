@@ -64,6 +64,9 @@ namespace OpenRA.Mods.RA
 				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));
 			return ret;
 		}
+		
+		[FieldLoader.Load]
+		public readonly int AssignRolesInterval = 20;
 
 		public object Create(ActorInitializer init) { return new HackyAI(this); }
 	}
@@ -266,6 +269,8 @@ namespace OpenRA.Mods.RA
 
 			return possibleTargets.Any() ? possibleTargets.Random(random) : (int2?)null;
 		}
+		
+		int assignRolesTicks = 0;
 
 		void AssignRolesToIdleUnits(Actor self)
 		{
@@ -274,6 +279,11 @@ namespace OpenRA.Mods.RA
 			activeUnits.RemoveAll(a => a.Destroyed);
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
 			attackForce.RemoveAll(a => a.Destroyed);
+			
+			if (--assignRolesTicks > 0)
+				return;
+			else
+				assignRolesTicks = Info.AssignRolesInterval;
 
 			// don't select harvesters.
 			var newUnits = self.World.ActorsWithTrait<IMove>()
