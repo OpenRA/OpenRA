@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
+	public class ResourceLayerInfo : TraitInfo<ResourceLayer>, Requires<UnitInfluenceInfo> { }
 
 	public class ResourceLayer: IRenderOverlay, IWorldLoaded
 	{

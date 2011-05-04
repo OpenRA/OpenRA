@@ -116,8 +116,9 @@ namespace OpenRA.Mods.RA
 			PxPosition = Util.CenterOfCell(cell);
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
-			if (seq != self.Trait<RenderSimple>().anim.CurrentSequence.Name)
-				self.Trait<RenderSimple>().anim.PlayRepeating(seq);
+			var rs = self.Trait<RenderSimple>();
+			if (seq != rs.anim.CurrentSequence.Name)
+				rs.anim.PlayRepeating(seq);
 
 			if( self.IsInWorld )
 				uim.Add(self, this);
