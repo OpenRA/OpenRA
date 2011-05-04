@@ -123,7 +123,12 @@ namespace OpenRA.FileFormats
 						
 						len -= copy;
 						next += (ushort)copy;
-						Array.Copy(outBuffer, source, outBuffer, dest, copy);
+
+						// copy with old-fashioned memcpy semantics
+						// in case of overlapping ranges. this is NOT
+						// the same as Array.Copy()
+						while( copy-- > 0 )
+							outBuffer[dest++] = outBuffer[source++];
 						
 						// Flush window to outstream
 						if (next == MAXWIN)
