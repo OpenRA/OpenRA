@@ -225,7 +225,7 @@ namespace OpenRA
 												+ Path.DirectorySeparatorChar + "OpenRA";
 
 			SupportDir = args.GetValue("SupportDir", defaultSupport);
-			FileSystem.SpecialPackageRoot = args.GetValue("SpecialPackageRoot", "");
+			FileSystem.SupportDir = SupportDir;
 			
 			Utilities = new Utilities(args.GetValue("UtilityPath", "OpenRA.Utility.exe"));
 			

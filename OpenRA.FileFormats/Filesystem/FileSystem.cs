@@ -19,7 +19,7 @@ namespace OpenRA.FileFormats
 	public static class FileSystem
 	{
 		static List<IFolder> mountedFolders = new List<IFolder>();
-		public static string SpecialPackageRoot = "";
+		public static string SupportDir = "."; // Default to "current dir" if we aren't told otherwise
 
 		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 
@@ -72,12 +72,13 @@ namespace OpenRA.FileFormats
 
 		public static void Mount(string name)
 		{
+			var start = name;
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 			
-			// paths starting with $ are relative to SpecialPackageRoot
-			if (name.StartsWith("$"))
-				name = SpecialPackageRoot+name.Substring(1);
+			// paths starting with ^ are relative to the support dir
+			if (name.StartsWith("^"))
+				name = FileSystem.SupportDir+name.Substring(1);
 			
 			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
 

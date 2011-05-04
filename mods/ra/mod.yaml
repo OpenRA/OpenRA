@@ -7,10 +7,11 @@ Metadata:
 
 Folders:
 	.
-	mods/ra
-	mods/ra/bits
-	mods/ra/uibits
-	$mods/ra/packages
+	./mods/ra
+	./mods/ra/bits
+	./mods/ra/uibits
+	~./mods/ra/packages
+	~^/packages/ra
 
 Packages:
 	~main.mix

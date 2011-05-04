@@ -6,10 +6,11 @@ Metadata:
 	Standalone: true
 Folders:
 	.
-	mods/cnc
-	mods/cnc/bits
-	mods/cnc/uibits
-	$mods/cnc/packages
+	./mods/cnc
+	./mods/cnc/bits
+	./mods/cnc/uibits
+	~./mods/cnc/packages
+	~^/packages/cnc
 
 Packages:
 	overrides.mix

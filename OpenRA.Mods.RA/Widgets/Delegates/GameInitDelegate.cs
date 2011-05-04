@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			if (Info.InstallMode != "ra")
 				ShowDownloadError(window, "Installing from CD not supported");
-			else if (InstallRAPackages(window, path, FileSystem.SpecialPackageRoot+Info.PackagePath))
+			else if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
 			    Game.RunAfterTick(ContinueLoading);
 		}
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					status.GetText = () => "Extracting...";
 					progress.Indeterminate = true;
 
-					if (ExtractZip(window, file, FileSystem.SpecialPackageRoot+Info.PackagePath))
+					if (ExtractZip(window, file, Info.ResolvedPackagePath))
 						Game.RunAfterTick(ContinueLoading);
 				
 				}

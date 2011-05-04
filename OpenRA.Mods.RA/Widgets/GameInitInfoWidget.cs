@@ -11,6 +11,7 @@
 using OpenRA.Widgets;
 using System;
 using OpenRA.Mods.RA.Widgets.Delegates;
+using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -21,6 +22,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public string PackageURL = "";
 		public string PackagePath = "";
 		public string InstallMode = "";
+		
+		public string ResolvedPackagePath { get { return PackagePath.Replace("^", Game.SupportDir); } }
 
 		public override void DrawInner() {}
 	}

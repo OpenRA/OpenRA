@@ -3,7 +3,7 @@ GameInitInfo@INIT_SETUP:
 	TestFile: conquer.mix
 	GameTitle: Command & Conquer
 	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackagePath:mods/cnc/packages/
+	PackagePath:^/packages/cnc
 	InstallMode:cnc
 	Delegate:GameInitDelegate
 
