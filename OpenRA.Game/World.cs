@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Orders;
 using OpenRA.Traits;
+using OpenRA.Support;
 using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA
@@ -157,7 +158,15 @@ namespace OpenRA
 			// Todo: Expose this as an order so it can be synced
 			if (!DisableTick)
 			{
-				actors.Do( x => x.Tick() );
+				using( new PerfSample("tick_idle") )
+					foreach( var ni in ActorsWithTrait<INotifyIdle>() )
+						if (ni.Actor.IsIdle)
+							ni.Trait.TickIdle(ni.Actor);
+				
+				using( new PerfSample("tick_activities") )
+					foreach( var a in actors )
+						a.Tick();
+				
 				ActorsWithTrait<ITick>().DoTimed( x =>
 				{
 					x.Trait.Tick( x.Actor );
