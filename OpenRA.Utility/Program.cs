@@ -36,14 +36,8 @@ namespace OpenRA.Utility
 		{
 			var actions = new Dictionary<string, Action<string[]>>()
 			{
-				{ "--extract-zip-inner", Command.ExtractZip },
-				{ "--install-ra-packages-inner", Command.InstallRAPackages },
-				{ "--install-cnc-packages-inner", Command.InstallCncPackages },
 				{ "--display-filepicker", Command.DisplayFilepicker },
 				{ "--settings-value", Command.Settings },
-				{ "--install-ra-packages", Command.AuthenticateAndInstallRAPackages },
-				{ "--install-cnc-packages", Command.AuthenticateAndInstallCncPackages },
-				{ "--extract-zip", Command.AuthenticateAndExtractZip },
 				{ "--shp", Command.ConvertPngToShp },
 				{ "--png", Command.ConvertShpToPng },
 			};
@@ -97,9 +91,6 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
-			Console.WriteLine("  --extract-zip ZIPFILE PATH       Extract the zip ZIPFILE to DEST (relative to openra dir)");
-			Console.WriteLine("  --install-ra-packages PATH       Install required packages for RA from CD to PATH");
-			Console.WriteLine("  --install-cnc-packages PATH      Install required packages for C&C from CD to PATH");
 			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
 			Console.WriteLine("  --png SHPFILE                    Convert a SHP to a PNG containing all of its frames");
