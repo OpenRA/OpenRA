@@ -377,11 +377,9 @@ namespace OpenRA.Mods.RA.Widgets
 					{
 						Sound.Play(CurrentQueue.Info.CancelledAudio);
 						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
-						if (Game.GetModifierKeys().HasModifier(Modifiers.Shift) &&
-							Game.GetModifierKeys().HasModifier(Modifiers.Ctrl))
-						{
+						
+						if (Game.GetModifierKeys().HasModifier(Modifiers.Shift | Modifiers.Ctrl))
 							numberToCancel = -1; //cancel all
-						}
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}
 					else
@@ -518,25 +516,12 @@ namespace OpenRA.Mods.RA.Widgets
          
 		void TabChange(bool shift)
         {
-            int size = VisibleQueues.Count();
-            if (size > 0)
-            {
-                int current = VisibleQueues.IndexOf(CurrentQueue);
-                if (!shift)
-                {
-                    if (current + 1 >= size)
-                        SetCurrentTab(VisibleQueues.FirstOrDefault());
-                    else
-                        SetCurrentTab(VisibleQueues[current + 1]);
-                }
-                else
-                {
-                    if (current - 1 < 0)
-                        SetCurrentTab(VisibleQueues.LastOrDefault());
-                    else
-                        SetCurrentTab(VisibleQueues[current - 1]);
-                }
-            }
+			var queues = VisibleQueues.Concat(VisibleQueues);
+			if (shift) queues.Reverse();
+			var nextQueue = queues.SkipWhile( q => q != CurrentQueue )
+				.ElementAtOrDefault(1);
+			if (nextQueue != null)
+				SetCurrentTab( nextQueue );
         }
 	}
 }
