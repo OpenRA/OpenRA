@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class ClassicProductionQueueInfo : ProductionQueueInfo, ITraitPrerequisite<TechTreeInfo>, ITraitPrerequisite<PowerManagerInfo>, ITraitPrerequisite<PlayerResourcesInfo>
+	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>
 	{
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}

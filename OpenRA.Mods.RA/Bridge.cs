@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class BridgeInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	class BridgeInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly bool Long = false;
 		

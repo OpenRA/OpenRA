@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithMuzzleFlashInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}

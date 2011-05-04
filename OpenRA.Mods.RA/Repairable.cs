@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
 	{ 
 		public readonly string[] RepairBuildings = { "fix" };
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }

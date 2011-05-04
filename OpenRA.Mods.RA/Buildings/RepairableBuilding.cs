@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	public class RepairableBuildingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	public class RepairableBuildingInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;

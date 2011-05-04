@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 	
-	class RenderInfantryProneInfo : RenderInfantryInfo, ITraitPrerequisite<TakeCoverInfo>
+	class RenderInfantryProneInfo : RenderInfantryInfo, Requires<TakeCoverInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderInfantryProne(init.self, this); }
 	}

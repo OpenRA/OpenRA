@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SelfHealingInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	class SelfHealingInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly int Step = 5;
 		public readonly int Ticks = 5;

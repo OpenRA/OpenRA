@@ -9,13 +9,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
-	class TargetableBuildingInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
+	class TargetableBuildingInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] TargetTypes = { };
 		public object Create( ActorInitializer init ) { return new TargetableBuilding( this ); }

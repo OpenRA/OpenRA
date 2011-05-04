@@ -18,7 +18,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	public class GainsExperienceInfo : ITraitInfo, ITraitPrerequisite<ValuedInfo>
+	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };

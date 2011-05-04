@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class RepairableNearInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>
+	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		[ActorReference]
 		public readonly string[] Buildings = { "spen", "syrd" };

@@ -22,7 +22,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, ITraitPrerequisite<OpenWidgetAtGameStartInfo> { }
+	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<OpenWidgetAtGameStartInfo> { }
 
 	class Gdi01Script: IWorldLoaded, ITick
 	{		

@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class RallyPointInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	class RallyPointInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public readonly int[] RallyPoint = { 1, 3 };
 

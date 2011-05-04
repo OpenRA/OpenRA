@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 	
-	class RenderInfantryPanicInfo : RenderInfantryInfo, ITraitPrerequisite<ScaredyCatInfo>
+	class RenderInfantryPanicInfo : RenderInfantryInfo, Requires<ScaredyCatInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderInfantryPanic(init.self, this); }
 	}

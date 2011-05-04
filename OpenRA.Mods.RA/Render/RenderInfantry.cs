@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderInfantryInfo : RenderSimpleInfo, ITraitPrerequisite<MobileInfo>
+	public class RenderInfantryInfo : RenderSimpleInfo, Requires<MobileInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;

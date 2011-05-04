@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class GpsDotInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	class GpsDotInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public readonly string String = "Infantry";
 		public object Create(ActorInitializer init)

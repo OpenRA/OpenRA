@@ -114,7 +114,7 @@ namespace OpenRA
 			return info
 				.GetType()
 				.GetInterfaces()
-				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( ITraitPrerequisite<> ) )
+				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( Requires<> ) )
 				.Select( t => t.GetGenericArguments()[ 0 ] )
 				.ToList();
 		}

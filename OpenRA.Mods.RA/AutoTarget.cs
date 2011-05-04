@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
-	public class AutoTargetInfo : ITraitInfo, ITraitPrerequisite<AttackBaseInfo>
+	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly bool AllowMovement = true;
 		public readonly int ScanRadius = -1;

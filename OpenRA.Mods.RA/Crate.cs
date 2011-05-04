@@ -27,7 +27,7 @@ TimeQuake=3,TQUAKE              ; time quake
 
 namespace OpenRA.Mods.RA
 {
-	class CrateInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	class CrateInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
 		public readonly string[] TerrainTypes = { };

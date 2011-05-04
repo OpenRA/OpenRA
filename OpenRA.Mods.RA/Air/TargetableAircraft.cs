@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-    public class TargetableAircraftInfo : TargetableUnitInfo, ITraitPrerequisite<AircraftInfo>
+    public class TargetableAircraftInfo : TargetableUnitInfo, Requires<AircraftInfo>
     {
         public readonly string[] GroundedTargetTypes = { };
         public override object Create(ActorInitializer init) { return new TargetableAircraft(init.self, this); }

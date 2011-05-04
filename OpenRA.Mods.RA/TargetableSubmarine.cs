@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TargetableSubmarineInfo : TargetableUnitInfo, ITraitPrerequisite<CloakInfo>
+	public class TargetableSubmarineInfo : TargetableUnitInfo, Requires<CloakInfo>
 	{
 		public readonly string[] CloakedTargetTypes = {};
 		public override object Create( ActorInitializer init ) { return new TargetableSubmarine(init.self, this); }

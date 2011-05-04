@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class WithRoofInfo : ITraitInfo, ITraitPrerequisite<RenderSimpleInfo>
+	public class WithRoofInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithRoof(init.self); }
 	}

@@ -8,15 +8,15 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
-using System;
-using System.Linq;
 
 namespace OpenRA.Mods.Cnc
 {
-	class RenderCargoInfo : ITraitInfo, ITraitPrerequisite<CargoInfo>
+	class RenderCargoInfo : ITraitInfo, Requires<CargoInfo>
 	{
 		public object Create(ActorInitializer init) { return new RenderCargo(init.self); }
 	}

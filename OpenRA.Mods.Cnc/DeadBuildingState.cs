@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class DeadBuildingStateInfo : ITraitInfo, ITraitPrerequisite<HealthInfo>, ITraitPrerequisite<RenderSimpleInfo>
+	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSimpleInfo>
 	{
 		public readonly int LingerTime = 20;
 		public readonly bool Zombie = false; // Civilian structures stick around after death

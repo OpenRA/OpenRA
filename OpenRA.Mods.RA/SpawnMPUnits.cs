@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, ITraitPrerequisite<MPStartLocationsInfo> {}
+	class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, Requires<MPStartLocationsInfo> {}
 
 	class SpawnMPUnits : IWorldLoaded
 	{

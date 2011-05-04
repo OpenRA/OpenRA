@@ -8,15 +8,15 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using System.Collections.Generic;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
-	public class SupportPowerManagerInfo : ITraitInfo, ITraitPrerequisite<DeveloperModeInfo>
+	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
 	{
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}

@@ -19,7 +19,7 @@ using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class SpyToolTipInfo : TooltipInfo, ITraitPrerequisite<SpyInfo>
+	class SpyToolTipInfo : TooltipInfo, Requires<SpyInfo>
 	{
 		public override object Create (ActorInitializer init) { return new SpyToolTip(init.self, this); }
 	}

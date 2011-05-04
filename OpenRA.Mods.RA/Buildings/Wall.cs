@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	public class WallInfo : ITraitInfo, ITraitPrerequisite<BuildingInfo>
+	public class WallInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] CrushClasses = { };
 		public readonly string CrushSound;
