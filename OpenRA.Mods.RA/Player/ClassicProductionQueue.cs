@@ -23,15 +23,15 @@ namespace OpenRA.Mods.RA
 	public class ClassicProductionQueue : ProductionQueue, ISync
 	{
 		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
-			: base(self, self, info as ProductionQueueInfo) {}
+			: base(self, self, info) {}
 		
-		[Sync] bool QueueActive = false;
+		[Sync] bool isActive = false;
+		
 		public override void Tick( Actor self )
 		{
-			QueueActive = self.World.ActorsWithTrait<Production>()
-                .Where(x => x.Actor.Owner == self.Owner)
-				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
-				.Any();
+			isActive = self.World.ActorsWithTrait<Production>()
+                .Any(x => x.Actor.Owner == self.Owner 
+				     && x.Trait.Info.Produces.Contains(Info.Type));
 			
 			base.Tick(self);
 		}
@@ -39,21 +39,20 @@ namespace OpenRA.Mods.RA
 		static ActorInfo[] None = { };
 		public override IEnumerable<ActorInfo> AllItems()
 		{
-			return QueueActive ? base.AllItems() : None;
+			return isActive ? base.AllItems() : None;
 		}
 
 		public override IEnumerable<ActorInfo> BuildableItems()
 		{
-			return QueueActive ? base.BuildableItems() : None;
+			return isActive ? base.BuildableItems() : None;
 		}
 		
 		protected override bool BuildUnit( string name )
 		{			
 			// Find a production structure to build this actor
-			var producers = self.World
-				.ActorsWithTrait<Production>()
-                .Where(x => x.Actor.Owner == self.Owner)
-				.Where(x => x.Trait.Info.Produces.Contains(Info.Type))
+			var producers = self.World.ActorsWithTrait<Production>()
+                .Where(x => x.Actor.Owner == self.Owner 
+				       && x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
 
 			if (producers.Count() == 0)
