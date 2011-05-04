@@ -28,6 +28,7 @@ namespace OpenRA
 		
 		IOccupySpace OccupiesSpace;
 		IHasLocation HasLocation;
+		Lazy<IMove> Move;
 
 		public int2 Location
 		{ get {
@@ -67,6 +68,8 @@ namespace OpenRA
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
+			
+			Move = Lazy.New( () => TraitOrDefault<IMove>() );
 
 			Size = Lazy.New(() =>
 			{
@@ -123,7 +126,7 @@ namespace OpenRA
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 				loc += new float2(si.Bounds[2], si.Bounds[3]);
 
-			var move = TraitOrDefault<IMove>();
+			var move = Move.Value;
 			if (move != null)
 			{
 				loc -= new float2(0, move.Altitude);
