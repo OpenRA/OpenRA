@@ -197,8 +197,8 @@ namespace OpenRA.Mods.RA.Widgets
 			
 			if (queue != null)
 			{
-				var buildableItems = queue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+				var buildableItems = queue.BuildableItems().ToArray();
+				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
 	
 				var overlayBits = new List<Pair<Sprite, float2>>();
 				numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
