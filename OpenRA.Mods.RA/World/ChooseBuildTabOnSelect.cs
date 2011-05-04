@@ -45,9 +45,9 @@ namespace OpenRA.Mods.RA.Widgets
 			var types = world.Selection.Actors.Where(a => a.IsInWorld && (a.World.LocalPlayer == a.Owner))
 											  .SelectMany(a => a.TraitsImplementing<Production>())
 											  .SelectMany(t => t.Info.Produces)
-											  .Distinct();
+											  .ToArray();
 
-			if (types.Count() == 0)
+			if (types.Length == 0)
 				return;	
 
 			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
