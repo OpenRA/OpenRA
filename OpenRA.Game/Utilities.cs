@@ -30,18 +30,21 @@ namespace OpenRA
 	
 		void ExecuteUtility(string args, Action<string> onComplete)
 		{
-			Process p = new Process();
-			p.StartInfo.FileName = Utility;
-			p.StartInfo.Arguments = "{0} --SupportDir \"{1}\"".F(args, Game.SupportDir);
-			p.StartInfo.UseShellExecute = false;
-			p.StartInfo.CreateNoWindow = true;
-			p.StartInfo.RedirectStandardOutput = true;
-			p.EnableRaisingEvents = true;
-			p.Exited += (_,e) =>
+			try
 			{
-				onComplete(p.StandardOutput.ReadToEnd().Trim());
-			};
-			p.Start();
+				Process p = new Process();
+				p.StartInfo.FileName = Utility;
+				p.StartInfo.Arguments = "{0} --SupportDir \"{1}\"".F(args, Game.SupportDir);
+				p.StartInfo.UseShellExecute = false;
+				p.StartInfo.RedirectStandardOutput = true;
+				p.EnableRaisingEvents = true;
+				p.Exited += (_,e) =>
+				{
+					onComplete(p.StandardOutput.ReadToEnd().Trim());
+				};
+				p.Start();
+			}
+			catch(System.ComponentModel.Win32Exception) {} // Don't crash if the process fails
 		}
 	}
 }

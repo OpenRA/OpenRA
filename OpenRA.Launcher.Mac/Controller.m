@@ -40,35 +40,10 @@ extern char **environ;
 	// Ingame requests for native dialogs
 	if ([args containsObject:@"--display-filepicker"])
 		[self launchFilePicker:args];
-	
-	// Extract a zip file
-	else if ([args containsObject:@"--extract-zip"])
-		[self extractZip:args];
-	
-	// Install ra packages from cd
-	else if ([args containsObject:@"--install-ra-packages"])
-		[self installRAPackages:args];
-	
 	else 
 		[self launch];
 	
 	[NSApp terminate: nil];
-}
-
-- (void)extractZip:(NSArray *)args
-{
-	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-    NSMutableArray *a = [NSMutableArray arrayWithArray:args];
-    [a replaceObjectAtIndex:0 withObject:@"--extract-zip-inner"];
-	[self runUtilityWithArgs:a];
-}
-
-- (void)installRAPackages:(NSArray *)args
-{
-	// Todo: check if we can write to the requested dir, escalate priviledges if required.
-    NSMutableArray *a = [NSMutableArray arrayWithArray:args];
-    [a replaceObjectAtIndex:0 withObject:@"--install-ra-packages-inner"];
-	[self runUtilityWithArgs:a];
 }
 
 - (void)launchFilePicker:(NSArray *)args
@@ -109,6 +84,20 @@ extern char **environ;
 	NSFileHandle *readHandle = [pipe fileHandleForReading];
 	[task launch];
 	[task waitUntilExit];
+    
+    if ([task terminationStatus] != 0)
+    {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"Error"
+										 defaultButton:@"Quit"
+									   alternateButton:nil
+										   otherButton:nil
+							 informativeTextWithFormat:@"OpenRA.Utility.exe returned an error and cannot continue."];
+		
+        [alert runModal];
+		[[NSApplication sharedApplication] terminate:self];
+
+    }
+    
 	NSString *response = [[[NSString alloc] initWithData:[readHandle readDataToEndOfFile]
 										   encoding: NSUTF8StringEncoding] autorelease];
 	return ![response isEqualToString:@"Windowed\n"];
@@ -125,9 +114,8 @@ extern char **environ;
 					 [self shouldHideMenubar] ? @"--hide-menubar" : @"--no-hide-menubar",
 					 gamePath,
 					 monoPath,
-					 [NSString stringWithFormat:@"UtilityPath=%@", [[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]],
+					 [NSString stringWithFormat:@"UtilityPath=%@", [[NSBundle mainBundle] executablePath]],
 					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
-					 [NSString stringWithFormat:@"SpecialPackageRoot=%@/",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 					 nil];
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
@@ -199,46 +187,6 @@ extern char **environ;
 			(major == 2 && minor > 6) ||
 			(major == 2 && minor == 6 && point >= 7));
 }
-
-
-- (void)runUtilityWithArgs:(NSArray *)args
-{
-	NSTask *task = [[[NSTask alloc] init] autorelease];
-	NSPipe *pipe = [NSPipe pipe];
-	
-    NSMutableArray *taskArgs = [NSMutableArray arrayWithObject:@"OpenRA.Utility.exe"];
-	[taskArgs addObjectsFromArray:args];
-		
-    [task setCurrentDirectoryPath:gamePath];
-    [task setLaunchPath:monoPath];
-    [task setArguments:taskArgs];
-	[task setStandardOutput:pipe];
-	
-	NSFileHandle *readHandle = [pipe fileHandleForReading];
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self
-		   selector:@selector(utilityResponded:)
-			   name:NSFileHandleReadCompletionNotification
-			 object:readHandle];
-    [task launch];
-	[readHandle readInBackgroundAndNotify];
-	[task waitUntilExit];
-	
-	[nc removeObserver:self name:NSFileHandleReadCompletionNotification object:[[task standardOutput] fileHandleForReading]];
-	[nc removeObserver:self name:NSTaskDidTerminateNotification object:task];
-}
-
-- (void)utilityResponded:(NSNotification *)n
-{
-	NSData *data = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
-	NSString *response = [[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
-	printf("%s", [response UTF8String]);
-	
-	// Keep reading
-	if ([n object] != nil)
-		[[n object] readInBackgroundAndNotify];
-}
-
 
 - (void)dealloc
 {

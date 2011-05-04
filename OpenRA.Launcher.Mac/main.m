@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
 	/* When launching a mod, the arguments are of the form 
 	 * --launch <game dir> <mono path> <utility path> <support dir option> <mod option> */
-	if (argc >= 8 && strcmp(argv[1], "--launch") == 0)
+	if (argc >= 7 && strcmp(argv[1], "--launch") == 0)
 	{
 		/* Change into the game dir */
 		chdir(argv[3]);
@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 			"OpenRA.Game.exe",
 			argv[5],
 			argv[6],
-			argv[7],
 			NULL
 		};
 		
@@ -52,7 +51,6 @@ int main(int argc, char *argv[])
 		/* Exec mono */
 		execve(args[0], args, environ);
 	}
-	
-	/* Else, start the launcher */
-	return NSApplicationMain(argc,  (const char **) argv);
+	else /* Else, start the launcher */
+        return NSApplicationMain(argc,  (const char **) argv);
 }

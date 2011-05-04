@@ -16,11 +16,7 @@
 	IBOutlet NSWindow *window;
 }
 - (void)launchFilePicker:(NSArray *)args;
-- (void)extractZip:(NSArray *)args;
-- (void)installRAPackages:(NSArray *)args;
 - (void)launch;
 - (BOOL)initMono;
-- (void)runUtilityWithArgs:(NSArray *)arg;
-- (void)utilityResponded:(NSNotification *)n;
 - (BOOL)shouldHideMenubar;
 @end
