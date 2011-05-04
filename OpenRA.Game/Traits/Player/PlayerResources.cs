@@ -22,37 +22,40 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
 	}
 	
-	public class DebugResourceCashInfo : ITraitInfo
+	public class DebugResourceCashInfo : ITraitInfo, Requires<PlayerResourcesInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceCash(init.self); }
 	}
+	
 	public class DebugResourceCash : ISync
 	{
-		readonly Actor self;
-		public DebugResourceCash(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<PlayerResources>().Cash; } }
+		readonly PlayerResources pr;
+		public DebugResourceCash(Actor self) { pr = self.Trait<PlayerResources>(); }
+		[Sync] public int foo { get { return pr.Cash; } }
 	}
 	
-	public class DebugResourceOreInfo : ITraitInfo
+	public class DebugResourceOreInfo : ITraitInfo, Requires<PlayerResourcesInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOre(init.self); }
 	}
+	
 	public class DebugResourceOre : ISync
 	{
-		readonly Actor self;
-		public DebugResourceOre(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<PlayerResources>().Ore; } }
+		readonly PlayerResources pr;
+		public DebugResourceOre(Actor self) { pr = self.Trait<PlayerResources>(); }
+		[Sync] public int foo { get { return pr.Ore; } }
 	}
 	
 	public class DebugResourceOreCapacityInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOreCapacity(init.self); }
 	}
+	
 	public class DebugResourceOreCapacity : ISync
 	{
-		readonly Actor self;
-		public DebugResourceOreCapacity(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<PlayerResources>().OreCapacity; } }
+		readonly PlayerResources pr;
+		public DebugResourceOreCapacity(Actor self) { pr = self.Trait<PlayerResources>(); }
+		[Sync] public int foo { get { return pr.OreCapacity; } }
 	}
 	
 	public class PlayerResources : ITick, ISync

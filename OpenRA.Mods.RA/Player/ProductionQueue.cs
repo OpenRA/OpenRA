@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
 		PowerManager PlayerPower;
-		PlayerResources PlayerResources;
+		PlayerResources playerResources;
 		string Race;
 		
 		// A list of things we are currently building
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			this.Info = info;
-			PlayerResources = playerActor.Trait<PlayerResources>();
+			playerResources = playerActor.Trait<PlayerResources>();
 			PlayerPower = playerActor.Trait<PowerManager>();
 			
 			Race = self.Owner.Country.Race;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
-			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			Queue.Clear();
 
 			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
@@ -160,11 +160,11 @@ namespace OpenRA.Mods.RA
 		{		
 			while( Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item) )
 			{
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
+				playerResources.GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
 				FinishProduction();
 			}
 			if( Queue.Count > 0 )
-				Queue[ 0 ].Tick( PlayerResources, PlayerPower );
+				Queue[ 0 ].Tick( playerResources, PlayerPower );
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -256,8 +256,7 @@ namespace OpenRA.Mods.RA
 			else if (lastIndex == 0)
 			{
 				var item = Queue[0];
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(
-					item.TotalCost - item.RemainingCost);	// refund what has been paid
+				playerResources.GiveCash(item.TotalCost - item.RemainingCost);	// refund what has been paid
 				FinishProduction();
 			}
 		}
