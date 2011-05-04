@@ -58,10 +58,7 @@ namespace OpenRA.Utility
 
             var supportDir = GetNamedArg(args, "--SupportDir");
             if (supportDir != null)
-            {
                 Log.LogPath = Path.Combine(supportDir.Replace("\"", ""), "Logs");
-                Console.WriteLine("LogPath: {0}", Log.LogPath);
-            }
 
 			try
 			{

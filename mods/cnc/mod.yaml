@@ -10,7 +10,7 @@ Folders:
 	./mods/cnc/bits
 	./mods/cnc/uibits
 	~./mods/cnc/packages
-	~^/packages/cnc
+	~^/Content/cnc
 
 Packages:
 	overrides.mix

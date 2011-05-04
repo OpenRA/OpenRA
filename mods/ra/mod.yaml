@@ -11,7 +11,7 @@ Folders:
 	./mods/ra/bits
 	./mods/ra/uibits
 	~./mods/ra/packages
-	~^/packages/ra
+	~^/Content/ra
 
 Packages:
 	~main.mix

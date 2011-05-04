@@ -3,7 +3,7 @@ GameInitInfo@INIT_SETUP:
 	TestFile: redalert.mix
 	GameTitle: Red Alert
 	PackageURL:http://open-ra.org/get-dependency.php?file=ra-packages
-	PackagePath:^/packages/ra
+	PackagePath:^/Content/ra
 	InstallMode:ra
 	Delegate:GameInitDelegate
 

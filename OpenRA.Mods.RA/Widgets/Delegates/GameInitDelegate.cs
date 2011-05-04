@@ -18,6 +18,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
+using System.Threading;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -108,20 +109,24 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
 			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
 			
-			switch (Info.InstallMode)
+			var t = new Thread( _ =>
 			{
-				case "ra":
-					if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
-			    		Game.RunAfterTick(TestAndContinue);
-				break;
-				case "cnc":
-					if (InstallCncPackages(window, path, Info.ResolvedPackagePath))
-			    		Game.RunAfterTick(TestAndContinue);
-				break;
-				default:
-					ShowDownloadError(window, "Installing from CD not supported");
-				break;
-			}
+				switch (Info.InstallMode)
+				{
+					case "ra":
+						if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
+				    		Game.RunAfterTick(TestAndContinue);
+					break;
+					case "cnc":
+						if (InstallCncPackages(window, path, Info.ResolvedPackagePath))
+				    		Game.RunAfterTick(TestAndContinue);
+					break;
+					default:
+						ShowError(window, "Installing from CD not supported");
+					break;
+				}
+			}) { IsBackground = true };
+			t.Start();
 		}
 
 		void ShowDownloadDialog()
@@ -142,7 +147,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
 			{
 				if (i.Error != null)
-					ShowDownloadError(window, i.Error.Message);
+					ShowError(window, i.Error.Message);
 				else if (!cancelled)
 				{
 					// Automatically extract
@@ -151,7 +156,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 					if (ExtractZip(window, file, Info.ResolvedPackagePath))
 						Game.RunAfterTick(TestAndContinue);
-				
 				}
 			};
 			
@@ -160,7 +164,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			window.GetWidget("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); return true; };
 		}
 		
-		void ShowDownloadError(Widget window, string e)
+		void ShowError(Widget window, string e)
 		{
 			if (window.GetWidget<LabelWidget>("STATUS") != null)	/* ugh */
 			{
@@ -202,7 +206,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			if (!File.Exists(zipFile))
 			{
-				ShowDownloadError(window, "Invalid path: "+zipFile);
+				ShowError(window, "Invalid path: "+zipFile);
 				return false;
 			}
 			
@@ -216,7 +220,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			{
 				foreach(var f in extracted)
 					File.Delete(f);
-				ShowDownloadError(window, "Archive corrupt");
+				ShowError(window, "Archive corrupt");
 				return false;
 			}
 			status.GetText = () => "Extraction complete";
@@ -231,9 +235,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
 			
-			if (!Directory.Exists(srcPath)) { ShowDownloadError(window, "Cannot find "+package); return false; }
+			if (!Directory.Exists(srcPath)) { ShowError(window, "Cannot find "+package); return false; }
 			FileSystem.Mount(srcPath);
-			if (!FileSystem.Exists(package)) { ShowDownloadError(window, "Cannot find "+package); return false; }
+			if (!FileSystem.Exists(package)) { ShowError(window, "Cannot find "+package); return false; }
 			FileSystem.Mount(package);
 
 			foreach (string s in files)
@@ -260,7 +264,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				var fromPath = Path.Combine(srcPath, file);
 				if (!File.Exists(fromPath))
 				{
-					ShowDownloadError(window, "Cannot find "+file);
+					ShowError(window, "Cannot find "+file);
 					return false;
 				}
 				status.GetText = () => "Extracting "+file.ToLowerInvariant();
