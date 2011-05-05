@@ -88,10 +88,13 @@ namespace OpenRA.Renderer.Glsl
 			};
 			
 			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
-			if (required.Any(r => !extensions.Contains(r)))
+			var missingExtensions = required.Where( r => !extensions.Contains(r) ).ToArray();
+			
+			if (missingExtensions.Any())
 			{
 				Log.AddChannel("graphics", "graphics.log");
-				Log.Write("graphics", "Unsupported GPU: Missing extensions.");
+				Log.Write("graphics", "Unsupported GPU: Missing extensions: {0}",
+				          string.Join(",", missingExtensions));
 				Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
 				Log.Write("graphics", "Available extensions:");
 				Log.Write("graphics", extensions);
