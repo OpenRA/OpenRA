@@ -16,6 +16,7 @@ using OpenRA.Widgets;
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.RA.Widgets.Delegates
 {
@@ -36,6 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
 			
+			mainMenu.GetWidget("SOLO_BUTTON").OnMouseUp = mi => { StartSkirmishGame(); return true; };
 			mainMenu.GetWidget("MULTIPLAYER_BUTTON").OnMouseUp = mi => { Menu = MenuType.Multiplayer; return true; };
 			mainMenu.GetWidget("SETTINGS_BUTTON").OnMouseUp = mi => { Menu = MenuType.Settings; return true; };
 			mainMenu.GetWidget("QUIT_BUTTON").OnMouseUp = mi => { Game.Exit(); return true; };
@@ -51,6 +53,19 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
 			settingsMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
+		}
+		
+		
+		void StartSkirmishGame()
+		{
+			var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
+			
+			var settings = Game.Settings;
+			settings.Server.Name = "Skirmish Game";
+			// TODO: we want to prevent binding a port altogether
+			settings.Server.ListenPort = 1234;
+			settings.Server.ExternalPort = 1234;
+			Game.CreateAndJoinServer(settings, map);
 		}
 	}
 }
