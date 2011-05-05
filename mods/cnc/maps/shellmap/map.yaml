@@ -1013,6 +1013,7 @@ Rules:
 		-MPStartLocations:
 		-CrateSpawner:
 		CncShellmapScript:
+		DesaturatedPaletteEffect:
 	LST:
 		Mobile:
 			Speed: 3
