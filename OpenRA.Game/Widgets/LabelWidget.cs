@@ -50,6 +50,7 @@ namespace OpenRA.Widgets
 			Color = other.Color;
 			Contrast = other.Contrast;
 			ContrastColor = other.ContrastColor;
+			WordWrap = other.WordWrap;
 			GetText = other.GetText;
 			GetBackground = other.GetBackground;
 		}
@@ -104,56 +105,8 @@ namespace OpenRA.Widgets
 				position += new int2(Bounds.Width - textSize.X,0);
 
 			if (WordWrap)
-			{
-				if (textSize.X > Bounds.Width)
-				{
-					string[] lines = text.Split('\n');
-					List<string> newLines = new List<string>();
-					int i = 0;
-					string line = lines[i++];
-					while (true)		// TODO: WTF IS THIS SHIT?
-					{
-						newLines.Add(line);
-						int2 m = font.Measure(line);
-						int spaceIndex = 0, start = line.Length - 1;
-						
-						if (m.X <= Bounds.Width)
-						{
-							if (i < lines.Length - 1)
-							{
-								line = lines[i++];
-								continue;
-							}
-							else
-								break;
-						}
+				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
-						while (m.X > Bounds.Width)
-						{
-							if (-1 == (spaceIndex = line.LastIndexOf(' ', start)))
-								break;
-							start = spaceIndex - 1;
-							m = font.Measure(line.Substring(0, spaceIndex));
-						}
-
-						if (spaceIndex != -1)
-						{
-							newLines.RemoveAt(newLines.Count - 1);
-							newLines.Add(line.Substring(0, spaceIndex));
-							line = line.Substring(spaceIndex + 1);
-						}
-						else if (i < lines.Length - 1)
-						{
-							line = lines[i++];
-							continue;
-						}
-						else
-							break;
-					}
-					text = string.Join("\n", newLines.ToArray());
-				}
-			}
-			
 			if (Contrast)
 				font.DrawTextWithContrast(text, position, Color, ContrastColor, 2);
 			else

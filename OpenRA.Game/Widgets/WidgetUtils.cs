@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Widgets
 {
@@ -139,6 +140,59 @@ namespace OpenRA.Widgets
 				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
 			else
 				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
+		}
+		
+		public static string WrapText(string text, int width, SpriteFont font)
+		{
+			int2 textSize = font.Measure(text);
+			if (textSize.X > width)
+			{
+				string[] lines = text.Split('\n');
+				List<string> newLines = new List<string>();
+				int i = 0;
+				string line = lines[i++];
+				while (true)
+				{
+					newLines.Add(line);
+					int2 m = font.Measure(line);
+					int spaceIndex = 0, start = line.Length - 1;
+					
+					if (m.X <= width)
+					{
+						if (i < lines.Length - 1)
+						{
+							line = lines[i++];
+							continue;
+						}
+						else
+							break;
+					}
+
+					while (m.X > width)
+					{
+						if (-1 == (spaceIndex = line.LastIndexOf(' ', start)))
+							break;
+						start = spaceIndex - 1;
+						m = font.Measure(line.Substring(0, spaceIndex));
+					}
+
+					if (spaceIndex != -1)
+					{
+						newLines.RemoveAt(newLines.Count - 1);
+						newLines.Add(line.Substring(0, spaceIndex));
+						line = line.Substring(spaceIndex + 1);
+					}
+					else if (i < lines.Length - 1)
+					{
+						line = lines[i++];
+						continue;
+					}
+					else
+						break;
+				}
+				return string.Join("\n", newLines.ToArray());
+			}
+			return text;
 		}
 	}
 
