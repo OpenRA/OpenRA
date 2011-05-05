@@ -313,7 +313,8 @@ namespace OpenRA.Widgets
 
         public static void CloseWindow()
         {
-            RootWidget.Children.Remove(WindowList.Pop());
+            if (WindowList.Count > 0)
+				RootWidget.Children.Remove(WindowList.Pop());
             if (WindowList.Count > 0)
                 rootWidget.Children.Add(WindowList.Peek());
         }
@@ -330,6 +331,11 @@ namespace OpenRA.Widgets
                 rootWidget.Children.Remove(WindowList.Peek());
             WindowList.Push(window);
             return window;
+        }
+		
+		public static Widget LoadWidget(string id)
+        {
+            return Game.modData.WidgetLoader.LoadWidget(new Dictionary<string, object>(), rootWidget, id);
         }
 
         public static void DoTick()

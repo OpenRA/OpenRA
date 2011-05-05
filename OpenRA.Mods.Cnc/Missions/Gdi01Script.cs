@@ -59,6 +59,8 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.LoadWidget("MENU_BACKGROUND");
 			})));
 		}
 		
@@ -75,6 +77,8 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.LoadWidget("MENU_BACKGROUND");
 			})));
 		}
 		

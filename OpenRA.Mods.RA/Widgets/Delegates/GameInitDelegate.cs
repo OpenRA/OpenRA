@@ -34,33 +34,64 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
         public void Init()
         {
-            Game.ConnectionStateChanged += orderManager =>
-            {
-                Widget.CloseWindow();
-                switch (orderManager.Connection.ConnectionState)
-                {
-                    case ConnectionState.PreConnecting:
-                        Widget.OpenWindow("MAINMENU_BG");
-                        break;
-                    case ConnectionState.Connecting:
-                        Widget.OpenWindow("CONNECTING_BG",
-                            new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } });
-                        break;
-                    case ConnectionState.NotConnected:
-                        Widget.OpenWindow("CONNECTION_FAILED_BG",
-                            new Dictionary<string, object> { { "orderManager", orderManager } });
-                        break;
-                    case ConnectionState.Connected:
-                        var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
-                        lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
-                        lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
-                        lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
-                        lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
-                        lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
-                        break;
-                }
-            };
-
+            if (Info.InstallMode == "cnc")
+			{
+				Game.ConnectionStateChanged += orderManager =>
+	            {
+	                Widget.CloseWindow();
+	                switch (orderManager.Connection.ConnectionState)
+	                {
+	                    case ConnectionState.PreConnecting:
+	                        Widget.OpenWindow("MENU_BACKGROUND");
+	                        break;
+	                    case ConnectionState.Connecting:
+	                        Widget.OpenWindow("CONNECTING_BG",
+	                            new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } });
+	                        break;
+	                    case ConnectionState.NotConnected:
+	                        Widget.OpenWindow("CONNECTION_FAILED_BG",
+	                            new Dictionary<string, object> { { "orderManager", orderManager } });
+	                        break;
+	                    case ConnectionState.Connected:
+	                        var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
+	                        lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+	                        lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
+	                        lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
+	                        lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
+	                        lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
+	                        break;
+	                }
+	            };
+			}
+			else
+			{		
+				Game.ConnectionStateChanged += orderManager =>
+	            {
+	                Widget.CloseWindow();
+	                switch (orderManager.Connection.ConnectionState)
+	                {
+	                    case ConnectionState.PreConnecting:
+	                        Widget.LoadWidget("MAINMENU_BG");
+	                        break;
+	                    case ConnectionState.Connecting:
+	                        Widget.OpenWindow("CONNECTING_BG",
+	                            new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } });
+	                        break;
+	                    case ConnectionState.NotConnected:
+	                        Widget.OpenWindow("CONNECTION_FAILED_BG",
+	                            new Dictionary<string, object> { { "orderManager", orderManager } });
+	                        break;
+	                    case ConnectionState.Connected:
+	                        var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
+	                        lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
+	                        lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
+	                        lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
+	                        lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
+	                        lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
+	                        break;
+	                }
+	            };
+			}
 			TestAndContinue();
         }
 		
@@ -70,7 +101,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			{
 				Game.LoadShellMap();
 				Widget.RootWidget.RemoveChildren();
-				Widget.OpenWindow("MAINMENU_BG");
+				if (Info.InstallMode == "cnc")
+					Widget.LoadWidget("MENU_BACKGROUND");
+				else
+					Widget.OpenWindow("MAINMENU_BG");
 			}
             else
             {

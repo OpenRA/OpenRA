@@ -102,6 +102,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			disconnectButton.OnMouseUp = mi =>
 			{
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.OpenWindow("MAINMENU_BG");
 				return true;
 			};
 			

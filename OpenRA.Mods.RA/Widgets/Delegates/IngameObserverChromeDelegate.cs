@@ -30,6 +30,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			optionsBG.GetWidget("DISCONNECT").OnMouseUp = mi => {
 				optionsBG.Visible = false;
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.OpenWindow("MAINMENU_BG");
 				return true;
 			};
 			

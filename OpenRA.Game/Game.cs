@@ -329,9 +329,6 @@ namespace OpenRA
 			var shellmap = ChooseShellmap();
 			JoinLocal();
 			StartGame(shellmap);
-
-			Widget.CloseWindow();
-			Widget.OpenWindow("MAINMENU_BG");
 		}
 
 		public static T CreateObject<T>( string name )

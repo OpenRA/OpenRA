@@ -24,6 +24,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.OpenWindow("MAINMENU_BG");
 				return true;
 			};
 
@@ -42,6 +44,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;
 				Game.Disconnect();
+				Widget.CloseWindow();
+				Widget.OpenWindow("MAINMENU_BG");
 				return true;
 			};
 			widget.GetWidget("CONNECTION_BUTTON_RETRY").OnMouseUp = mi => {
