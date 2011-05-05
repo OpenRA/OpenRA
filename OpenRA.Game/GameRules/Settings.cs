@@ -61,6 +61,9 @@ namespace OpenRA.GameRules
 		public int2 FullscreenSize = new int2(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
 		public int2 WindowedSize = new int2(1024, 768);
 		public readonly int2 MinResolution = new int2(800, 600);
+		
+		public int BatchSize = 8192;
+		public int NumTempBuffers = 8;
 	}
 	
 	public class SoundSettings

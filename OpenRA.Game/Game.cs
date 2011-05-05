@@ -258,7 +258,6 @@ namespace OpenRA
 
 			FileSystem.Mount("."); // Needed to access shaders
 			Renderer.Initialize( Game.Settings.Graphics.Mode );
-			Renderer.SheetSize = Settings.Game.SheetSize;
 			Renderer = new Renderer();
 			
 			Console.WriteLine("Available mods:");

@@ -24,6 +24,8 @@ namespace OpenRA.Graphics
 	public class Renderer
 	{
 		internal static int SheetSize;
+		internal static int TempBufferSize;
+		internal static int TempBufferCount;
 
 		internal IShader SpriteShader { get; private set; }    /* note: shared shader params */
 		internal IShader LineShader { get; private set; }
@@ -37,15 +39,16 @@ namespace OpenRA.Graphics
 
 		public ITexture PaletteTexture;
 
-		internal const int TempBufferSize = 8192;
-		const int TempBufferCount = 8;
-
-		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
+		Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
 
 		public Dictionary<string, SpriteFont> Fonts;
 		
 		public Renderer()
 		{
+			TempBufferSize = Game.Settings.Graphics.BatchSize;
+			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
+			SheetSize = Game.Settings.Game.SheetSize;	// TODO: move to Graphics.
+			
 			SpriteShader = device.CreateShader("world-shp");
 			LineShader = device.CreateShader("world-line");
 			RgbaSpriteShader = device.CreateShader("chrome-rgba");
@@ -57,7 +60,7 @@ namespace OpenRA.Graphics
 			LineRenderer = new LineRenderer(this);
 			
 			for( int i = 0 ; i < TempBufferCount ; i++ )
-				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
+				tempBuffers.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
 		}
 		
 		public void InitializeFonts(Manifest m)
@@ -149,15 +152,12 @@ namespace OpenRA.Graphics
 
 		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
 		{
-			var ret = tempBuffersV.Dequeue();
-			tempBuffersV.Enqueue( ret );
+			var ret = tempBuffers.Dequeue();
+			tempBuffers.Enqueue( ret );
 			return ret;
 		}
 
-		public interface IBatchRenderer
-		{
-			void Flush();
-		}
+		public interface IBatchRenderer	{ void Flush();	}
 
 		static IBatchRenderer currentBatchRenderer;
 		public static IBatchRenderer CurrentBatchRenderer
