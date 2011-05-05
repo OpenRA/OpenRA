@@ -4,6 +4,7 @@ Container@MAINMENU_BG:
 	Y:0
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
+	Delegate:CncMenuLogic
 	Children:
 		Image@RETICLE:
 			X:(WINDOW_RIGHT-WIDTH)/2
@@ -18,20 +19,29 @@ Container@MAINMENU_BG:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 			Background:shellmapborder
-		Container@BUTTON_CONTAINER:
-			Id:BUTTON_CONTAINER
+		Container@MAIN_BUTTONS:
+			Id:MAIN_BUTTONS
 			X:(WINDOW_RIGHT-WIDTH)/2
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
 			Width:740
 			Height:35
 			Children:	
+				Label@TITLE:
+					X:0
+					Y:0-30
+					Width:PARENT_RIGHT
+					Height:20
+					Text:Main Menu
+					Align:Center
+					Bold:True
+					Contrast:True
 				Button@SOLO_BUTTON:
 					Id:SOLO_BUTTON
 					X:0
 					Y:0
 					Width:140
 					Height:35
-					Text:Solo Play
+					Text:Skirmish
 					Bold:True
 				Button@MULTIPLAYER_BUTTON:
 					Id:MULTIPLAYER_BUTTON
@@ -64,6 +74,55 @@ Container@MAINMENU_BG:
 					Width:140
 					Height:35
 					Text:Quit
+					Bold:True
+		Container@MULTIPLAYER_BUTTONS:
+			Id:MULTIPLAYER_BUTTONS
+			X:(WINDOW_RIGHT-WIDTH)/2
+			Y:WINDOW_BOTTOM-33-HEIGHT-10
+			Width:740
+			Height:35
+			Visible:false
+			Children:
+				Label@TITLE:
+					X:0
+					Y:0-30
+					Width:PARENT_RIGHT
+					Height:20
+					Text:Multiplayer
+					Align:Center
+					Bold:True
+					Contrast:True
+				Button@CREATE_BUTTON:
+					Id:CREATE_BUTTON
+					X:0
+					Y:0
+					Width:140
+					Height:35
+					Text:Create Server
+					Bold:True
+				Button@JOIN_BUTTON:
+					Id:JOIN_BUTTON
+					X:150
+					Y:0
+					Width:140
+					Height:35
+					Text:Find Server
+					Bold:True
+				Button@DIRECTCONNECT_BUTTON:
+					Id:DIRECTCONNECT_BUTTON
+					X:300
+					Y:0
+					Width:140
+					Height:35
+					Text:Direct Connect
+					Bold:True
+				Button@BACK_BUTTON:
+					Id:BACK_BUTTON
+					X:600
+					Y:0
+					Width:140
+					Height:35
+					Text:Back
 					Bold:True
 Background@QUICKMODSWITCHER:
 	Id:QUICKMODSWITCHER

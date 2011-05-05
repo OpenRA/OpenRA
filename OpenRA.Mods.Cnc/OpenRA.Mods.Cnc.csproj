@@ -70,6 +70,7 @@
     <Compile Include="CncWaterPaletteRotation.cs" />
     <Compile Include="AttackPopupTurreted.cs" />
     <Compile Include="SpawnViceroid.cs" />
+    <Compile Include="Widgets\CncMenuLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -103,5 +104,6 @@ cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Activities\" />
+    <Folder Include="Widgets\" />
   </ItemGroup>
 </Project>
