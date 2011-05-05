@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
+using System.IO;
 
 namespace OpenRA
 {
@@ -28,7 +29,11 @@ namespace OpenRA
 
 		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, string w )
 		{
-			return LoadWidget( args, parent, widgets[ w ] );
+			MiniYamlNode ret;
+			if (!widgets.TryGetValue(w, out ret))
+				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
+			
+			return LoadWidget( args, parent, ret );
 		}
 
 		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, MiniYamlNode node)
