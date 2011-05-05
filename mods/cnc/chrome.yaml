@@ -1,6 +1,7 @@
 shellmap: reticle.png
 	reticle: 0,0,512,512
-
+logo: logo.png
+	logo:0,0,128,128
 chrome-gdi: chrome-gdi.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
@@ -140,16 +141,16 @@ dialog: dialog.png
 	corner-bl: 0,82,46,46
 	corner-br: 82,82,46,46
 
-dialog2: dialog2.png
-	background: 1,1,126,126
-	border-r: 127,1,1,126
-	border-l: 0,1,1,126
-	border-b: 1,127,126,1
-	border-t: 1,0,126,1
-	corner-tl: 0,0,1,1
-	corner-tr: 82,0,1,1
-	corner-bl: 0,82,1,1
-	corner-br: 82,82,1,1
+dialog2: uibuttons.png
+	background: 2,2,124,124
+	border-r: 126,2,2,124
+	border-l: 0,2,2,124
+	border-b: 2,126,124,2
+	border-t: 2,0,124,2
+	corner-tl: 0,0,2,2
+	corner-tr: 126,0,2,2
+	corner-bl: 0,126,2,2
+	corner-br: 126,126,2,2
 
 dialog3: dialog3.png
 	background: 1,1,126,126
