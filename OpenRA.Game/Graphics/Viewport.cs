@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Widgets;
+using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
@@ -34,7 +35,7 @@ namespace OpenRA.Graphics
 
 		public void Scroll(float2 delta)
 		{
-			this.Scroll(delta, false);
+			Scroll(delta, false);
 		}
 		
 		public void Scroll(float2 delta, bool ignoreBorders)
@@ -85,13 +86,16 @@ namespace OpenRA.Graphics
 			if (wr != null)
 				wr.Draw();
 			
-			Widget.DoDraw();
-			var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-            var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
-
-            cursorSequence.GetSprite((int)cursorFrame).DrawAt(
-                Viewport.LastMousePos + Location - cursorSequence.Hotspot,
-                Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette));
+			using( new PerfSample("render_widgets") )
+			{
+				Widget.DoDraw();
+				var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+	            var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
+	
+	            cursorSequence.GetSprite((int)cursorFrame).DrawAt(
+	                Viewport.LastMousePos + Location - cursorSequence.Hotspot,
+	                Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette));
+			}
 
 			renderer.EndFrame( inputHandler );
 		}
