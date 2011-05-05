@@ -1,9 +1,9 @@
-Background@MAINMENU_BG:
+Container@MAINMENU_BG:
 	Id:MAINMENU_BG
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:250
-	Height:330
+	X:0
+	Y:0
+	Width:WINDOW_RIGHT
+	Height:WINDOW_BOTTOM
 	Delegate:MainMenuButtonsDelegate
 	Children:
 		Label@MAINMENU_LABEL_TITLE:
@@ -62,15 +62,6 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Quit
-			Bold:True
-		Button@MAINMENU_BUTTON_VIDEOPLAYER:
-			Id:MAINMENU_BUTTON_VIDEOPLAYER
-			Visible:false
-			X:45
-			Y:260
-			Width:160
-			Height:25
-			Text:Video Player
 			Bold:True
 Background@QUICKMODSWITCHER:
 	Id:QUICKMODSWITCHER
