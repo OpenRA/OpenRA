@@ -274,17 +274,9 @@ namespace OpenRA.Renderer.Glsl
 			CheckGlError();
 		}
 
-		public void DrawIndexedPrimitives( PrimitiveType pt, Range<int> vertices, Range<int> indices )
+		public void DrawPrimitives( PrimitiveType pt, int firstVertex, int numVertices )
 		{
-			Gl.glDrawElements( ModeFromPrimitiveType( pt ), indices.End - indices.Start,
-				Gl.GL_UNSIGNED_INT, new IntPtr( indices.Start * 4 ) );
-			CheckGlError();
-		}
-
-		public void DrawIndexedPrimitives( PrimitiveType pt, int numVerts, int numPrimitives )
-		{
-			Gl.glDrawElements( ModeFromPrimitiveType( pt ), numPrimitives * IndicesPerPrimitive( pt ),
-				Gl.GL_UNSIGNED_INT, IntPtr.Zero);
+			Gl.glDrawArrays( ModeFromPrimitiveType( pt ), firstVertex, numVertices );
 			CheckGlError();
 		}
 
@@ -295,6 +287,7 @@ namespace OpenRA.Renderer.Glsl
 			case PrimitiveType.PointList: return Gl.GL_POINTS;
 			case PrimitiveType.LineList: return Gl.GL_LINES;
 			case PrimitiveType.TriangleList: return Gl.GL_TRIANGLES;
+			case PrimitiveType.QuadList: return Gl.GL_QUADS;
 			}
 			throw new NotImplementedException();
 		}
@@ -306,12 +299,12 @@ namespace OpenRA.Renderer.Glsl
 			case PrimitiveType.PointList: return 1;
 			case PrimitiveType.LineList: return 2;
 			case PrimitiveType.TriangleList: return 3;
+			case PrimitiveType.QuadList: return 4;
 			}
 			throw new NotImplementedException();
 		}
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer( int size ) { return new VertexBuffer<Vertex>( this, size ); }
-		public IIndexBuffer CreateIndexBuffer( int size ) { return new IndexBuffer( this, size ); }
 		public ITexture CreateTexture() { return new Texture( this ); }
 		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( this, bitmap ); }
 		public IShader CreateShader( string name ) { return new Shader( this, name ); }

@@ -39,22 +39,14 @@ namespace OpenRA.Renderer.Null
 			ih.ModifierKeys(Modifiers.None);
 		}
 
-		public void DrawIndexedPrimitives(PrimitiveType pt, Range<int> vertices, Range<int> indices) { }
-		public void DrawIndexedPrimitives(PrimitiveType pt, int numVerts, int numPrimitives) { }
+		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices) { }
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new NullVertexBuffer<Vertex>(); }
-		public IIndexBuffer CreateIndexBuffer(int size) { return new NullIndexBuffer(); }
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
 
 		public int GpuMemoryUsed { get { return 0; } }
-	}
-	
-	public class NullIndexBuffer : IIndexBuffer
-	{
-		public void Bind() {}
-		public void SetData(uint[] indices, int length) {}
 	}
 	
 	public class NullShader : IShader

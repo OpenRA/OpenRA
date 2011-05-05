@@ -19,7 +19,6 @@ namespace OpenRA.Graphics
 	class TerrainRenderer
 	{
 		IVertexBuffer<Vertex> vertexBuffer;
-		IIndexBuffer indexBuffer;
 		Sheet terrainSheet;
 
 		World world;
@@ -30,27 +29,23 @@ namespace OpenRA.Graphics
 			this.world = world;
 			this.map = world.Map;
 
-			Size tileSize = new Size( Game.CellSize, Game.CellSize );
+			var tileSize = new Size( Game.CellSize, Game.CellSize );
 			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
 				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
-			Vertex[] vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
-			uint[] indices = new uint[6 * map.Bounds.Height * map.Bounds.Width];
+			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
 
 			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 
 			int nv = 0;
-			int ni = 0;
 			
 			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
 				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
 				{
-					Sprite tile = tileMapping[map.MapTiles.Value[i, j]];
-					// TODO: The zero below should explicitly refer to the terrain palette, but this code is called
-					// before the palettes are created. Therefore assumes that "terrain" is the first palette to be defined
-					Util.FastCreateQuad(vertices, indices, Game.CellSize * new float2(i, j), tile, Game.modData.Palette.GetPaletteIndex("terrain"), nv, ni, tile.size);
+					var tile = tileMapping[map.MapTiles.Value[i, j]];
+					// TODO: move GetPaletteIndex out of the inner loop.
+					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, Game.modData.Palette.GetPaletteIndex("terrain"), nv, tile.size);
 					nv += 4;
-					ni += 6;
 					
 					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
 						throw new InvalidOperationException("Terrain sprites span multiple sheets");
@@ -58,14 +53,10 @@ namespace OpenRA.Graphics
 
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer( vertices.Length );
 			vertexBuffer.SetData( vertices, nv );
-
-			indexBuffer = Game.Renderer.Device.CreateIndexBuffer( indices.Length );
-			indexBuffer.SetData( indices, ni );
 		}
 
 		public void Draw( WorldRenderer wr, Viewport viewport )
 		{
-			int indicesPerRow = map.Bounds.Width * 6;
 			int verticesPerRow = map.Bounds.Width * 4;
 
 			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize + 2);
@@ -93,10 +84,9 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.SpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
 			Game.Renderer.SpriteShader.Render(() =>
-				Game.Renderer.DrawBatch(vertexBuffer, indexBuffer,
-					new Range<int>(verticesPerRow * firstRow, verticesPerRow * lastRow),
-					new Range<int>(indicesPerRow * firstRow, indicesPerRow * lastRow),
-					PrimitiveType.TriangleList, Game.Renderer.SpriteShader));
+				Game.Renderer.DrawBatch(vertexBuffer,
+					verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
+					PrimitiveType.QuadList));
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render( wr );

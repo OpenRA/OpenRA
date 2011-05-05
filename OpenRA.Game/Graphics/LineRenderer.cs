@@ -18,8 +18,7 @@ namespace OpenRA.Graphics
 		Renderer renderer;
 
 		Vertex[] vertices = new Vertex[ Renderer.TempBufferSize ];
-		uint[] indices = new uint[ Renderer.TempBufferSize ];
-		int nv = 0, ni = 0;
+		int nv = 0;
 
 		public LineRenderer( Renderer renderer )
 		{
@@ -28,19 +27,16 @@ namespace OpenRA.Graphics
 
 		public void Flush()
 		{
-			if( ni > 0 )
+			if( nv > 0 )
 			{
 				renderer.LineShader.Render( () =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
-					var ib = renderer.GetTempIndexBuffer();
 					vb.SetData( vertices, nv );
-					ib.SetData( indices, ni );
-					renderer.DrawBatch( vb, ib,
-					nv, ni / 2, PrimitiveType.LineList );
+					renderer.DrawBatch( vb,	0, nv, PrimitiveType.LineList );
 				} );
 
-				nv = 0; ni = 0;
+				nv = 0;
 			}
 		}
 
@@ -48,30 +44,22 @@ namespace OpenRA.Graphics
 		{
 			Renderer.CurrentBatchRenderer = this;
 
-			if( ni + 2 > Renderer.TempBufferSize )
-				Flush();
 			if( nv + 2 > Renderer.TempBufferSize )
 				Flush();
 
-			indices[ ni++ ] = (ushort)nv;
-
 			vertices[ nv++ ] = new Vertex( start,
-			new float2( startColor.R / 255.0f, startColor.G / 255.0f ),
-			new float2( startColor.B / 255.0f, startColor.A / 255.0f ) );
-
-			indices[ ni++ ] = (ushort)nv;
+				new float2( startColor.R / 255.0f, startColor.G / 255.0f ),
+				new float2( startColor.B / 255.0f, startColor.A / 255.0f ) );
 
 			vertices[ nv++ ] = new Vertex( end,
-			new float2( endColor.R / 255.0f, endColor.G / 255.0f ),
-			new float2( endColor.B / 255.0f, endColor.A / 255.0f ) );
+				new float2( endColor.R / 255.0f, endColor.G / 255.0f ),
+				new float2( endColor.B / 255.0f, endColor.A / 255.0f ) );
 		}
 		
 		public void FillRect( RectangleF r, Color color )
 		{
 			for (float y = r.Top; y < r.Bottom; y++)
-			{
 				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
-			}
 		}
 	}
 }

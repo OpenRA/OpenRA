@@ -18,9 +18,8 @@ namespace OpenRA.Graphics
 		IShader shader;
 
 		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
-		uint[] indices = new uint[Renderer.TempBufferSize];
 		Sheet currentSheet = null;
-		int nv = 0, ni = 0;
+		int nv = 0;
 
 		public SpriteRenderer(Renderer renderer, IShader shader)
 		{
@@ -33,23 +32,17 @@ namespace OpenRA.Graphics
 
 		public void Flush()
 		{
-			if (ni > 0)
+			if (nv > 0)
 			{
 				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
-					var ib = renderer.GetTempIndexBuffer();
 					vb.SetData(vertices, nv);
-					ib.SetData(indices, ni);
-					renderer.DrawBatch(vb, ib,
-						new Range<int>(0, nv),
-						new Range<int>(0, ni),
-						PrimitiveType.TriangleList,
-						shader);
+					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
 				});
 
-				nv = 0; ni = 0;
+				nv = 0;
 				currentSheet = null;
 			}
 		}
@@ -73,12 +66,10 @@ namespace OpenRA.Graphics
 
 			if( nv + 4 > Renderer.TempBufferSize )
 				Flush();
-			if( ni + 6 > Renderer.TempBufferSize )
-				Flush();
 
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, indices, location.ToInt2(), s, paletteIndex, nv, ni, size);
-			nv += 4; ni += 6;
+			Util.FastCreateQuad(vertices, location.ToInt2(), s, paletteIndex, nv, size);
+			nv += 4;
 		}
 		
 		

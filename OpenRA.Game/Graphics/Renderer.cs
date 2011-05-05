@@ -41,7 +41,6 @@ namespace OpenRA.Graphics
 		const int TempBufferCount = 8;
 
 		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
-		Queue<IIndexBuffer> tempBuffersI = new Queue<IIndexBuffer>();
 
 		public Renderer()
 		{
@@ -62,10 +61,7 @@ namespace OpenRA.Graphics
 			TinyBoldFont = new SpriteFont("FreeSansBold.ttf", 10);
 			
 			for( int i = 0 ; i < TempBufferCount ; i++ )
-			{
 				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
-				tempBuffersI.Enqueue( device.CreateIndexBuffer( TempBufferSize ) );
-			}
 		}
 
 		internal IGraphicsDevice Device { get { return device; } }
@@ -83,7 +79,7 @@ namespace OpenRA.Graphics
 			SetShaderParams( WorldSpriteShader, r1, r2, scroll );
 		}
 
-		private void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
+		void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
 		{
 			s.SetValue( "Palette", PaletteTexture );
 			s.SetValue( "Scroll", (int) scroll.X, (int) scroll.Y );
@@ -97,27 +93,12 @@ namespace OpenRA.Graphics
 			device.Present( inputHandler );
 		}
 
-		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
-			Range<int> vertexRange, Range<int> indexRange, PrimitiveType type, IShader shader)
+		public void DrawBatch<T>(IVertexBuffer<T> vertices,
+			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct
 		{
 			vertices.Bind();
-			indices.Bind();
-
-			device.DrawIndexedPrimitives(type, vertexRange, indexRange);
-
-			PerfHistory.Increment("batches", 1);
-		}
-
-		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices,
-			int vertexPool, int numPrimitives, PrimitiveType type)
-			where T : struct
-		{
-			vertices.Bind();
-			indices.Bind();
-
-			device.DrawIndexedPrimitives(type, vertexPool, numPrimitives);
-
+			device.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 		
@@ -165,13 +146,6 @@ namespace OpenRA.Graphics
 		{
 			var ret = tempBuffersV.Dequeue();
 			tempBuffersV.Enqueue( ret );
-			return ret;
-		}
-
-		internal IIndexBuffer GetTempIndexBuffer()
-		{
-			var ret = tempBuffersI.Dequeue();
-			tempBuffersI.Enqueue( ret );
 			return ret;
 		}
 

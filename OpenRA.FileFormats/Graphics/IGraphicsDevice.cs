@@ -30,7 +30,6 @@ namespace OpenRA.FileFormats.Graphics
 	public interface IGraphicsDevice
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
-		IIndexBuffer CreateIndexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
 		ITexture CreateTexture();
 		IShader CreateShader( string name );
@@ -41,8 +40,7 @@ namespace OpenRA.FileFormats.Graphics
 		void Clear( Color color );
 		void Present( IInputHandler inputHandler );
 
-		void DrawIndexedPrimitives( PrimitiveType type, Range<int> vertexRange, Range<int> indexRange );
-		void DrawIndexedPrimitives( PrimitiveType type, int vertexPool, int numPrimitives );
+		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
 
 		void EnableScissor( int left, int top, int width, int height );
 		void DisableScissor();
@@ -52,12 +50,6 @@ namespace OpenRA.FileFormats.Graphics
 	{
 		void Bind();
 		void SetData( T[] vertices, int length );
-	}
-
-	public interface IIndexBuffer
-	{
-		void Bind();
-		void SetData( uint[] indices, int length );
 	}
 
 	public interface IShader
@@ -79,6 +71,7 @@ namespace OpenRA.FileFormats.Graphics
         PointList, 
         LineList, 
         TriangleList,
+		QuadList,
     }
 
 	public struct Range<T>
