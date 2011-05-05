@@ -13,6 +13,12 @@ Container@MAINMENU_BG:
 			Height:512
 			ImageCollection:shellmap
 			ImageName:reticle
+		Background@BORDER:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+			Background:shellmapborder
 		Button@MAINMENU_BUTTON_JOIN:
 			Id:MAINMENU_BUTTON_JOIN
 			X:45

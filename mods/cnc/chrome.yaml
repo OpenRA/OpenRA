@@ -173,6 +173,17 @@ dialog4: dialog4.png
 	corner-br: 58,58,6,6
 	background: 5,5,52,52
 
+shellmapborder: shellmap-border.png
+	border-t: 33,0,62,33
+	border-b: 33,95,62,33
+	border-l: 0,33,33,62
+	border-r: 95,33,33,62
+	corner-tl: 0,0,33,33
+	corner-tr: 95,0,33,33
+	corner-bl: 0,95,33,33
+	corner-br: 95,95,33,33
+	background: 33,33,62,62
+
 spawnpoints: spawnpoints.png
 	unowned: 16,0,16,16
 	owned: 0,0,16,16
