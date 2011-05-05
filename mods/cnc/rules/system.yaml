@@ -44,9 +44,9 @@ Player:
 	SurrenderOnDisconnect:
 	
 World:
-	OpenWidgetAtGameStart:
-		Widget: INGAME_ROOT
-		ObserverWidget: OBSERVER_ROOT
+#	OpenWidgetAtGameStart:
+#		Widget: INGAME_ROOT
+#		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
 	NukePaletteEffect:
 	CncWaterPaletteRotation:

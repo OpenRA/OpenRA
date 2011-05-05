@@ -60,13 +60,9 @@ Assemblies:
 
 ChromeLayout:
 	mods/cnc/chrome/gameinit.yaml
-	mods/cnc/chrome/ingame.yaml
 	mods/cnc/chrome/mainmenu.yaml
-	mods/cnc/chrome/videoplayer.yaml
-	mods/cnc/chrome/settings.yaml
-	mods/cnc/chrome/gamelobby.yaml
 	mods/cnc/chrome/serverbrowser.yaml
-	mods/cnc/chrome/replaybrowser.yaml
+	mods/cnc/chrome/directconnect.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
