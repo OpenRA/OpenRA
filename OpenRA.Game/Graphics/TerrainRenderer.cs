@@ -39,12 +39,14 @@ namespace OpenRA.Graphics
 
 			int nv = 0;
 			
+			var terrainPalette = Game.modData.Palette.GetPaletteIndex("terrain");
+			
 			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
 				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
 				{
 					var tile = tileMapping[map.MapTiles.Value[i, j]];
 					// TODO: move GetPaletteIndex out of the inner loop.
-					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, Game.modData.Palette.GetPaletteIndex("terrain"), nv, tile.size);
+					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, terrainPalette, nv, tile.size);
 					nv += 4;
 					
 					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
