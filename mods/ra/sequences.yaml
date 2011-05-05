@@ -1506,7 +1506,7 @@ u2:
 		Facings: 16
 
 crate:
-	idle: wcrate
+	idle: scrate
 		Start: 0
 	water: wwcrate
 		Start: 0
