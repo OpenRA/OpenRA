@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="buttons.svg"
-   inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/shellmap-border.png"
+   inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/uibuttons.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -28,15 +28,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="38.797739"
+     inkscape:cx="-5.452261"
      inkscape:cy="49.497475"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1386"
-     inkscape:window-height="856"
+     inkscape:window-width="1626"
+     inkscape:window-height="1006"
      inkscape:window-x="54"
-     inkscape:window-y="0"
+     inkscape:window-y="22"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
@@ -56,11 +56,24 @@
      id="layer1"
      transform="translate(0,-924.3622)">
     <rect
-       style="fill:#2b0000;fill-opacity:0.50196078;stroke:#800000;stroke-width:2;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#2b0000;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3776"
-       width="126"
-       height="126"
-       x="1"
-       y="925.36218" />
+       width="63"
+       height="63"
+       x="0.5"
+       y="988.86218"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="924.86218"
+       x="0.5"
+       height="63"
+       width="63"
+       id="rect3759"
+       style="fill:#560000;fill-opacity:0.87843138;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   </g>
 </svg>
