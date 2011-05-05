@@ -8,11 +8,11 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.IO;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Graphics;
-using System;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Null.NullGraphicsDevice))]
 

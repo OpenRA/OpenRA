@@ -112,16 +112,19 @@ namespace OpenRA.Graphics
 
 		public static Size Resolution { get { return device.WindowSize; } }
 
-		internal static void Initialize( OpenRA.FileFormats.Graphics.WindowMode windowMode )
+		internal static void Initialize( WindowMode windowMode )
 		{
 			var resolution = GetResolution( windowMode );
-			device = CreateDevice( Assembly.LoadFile( Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(Game.Settings.Graphics.Renderer) ) ), resolution.Width, resolution.Height, windowMode, false );
+			var rendererPath = Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(Game.Settings.Graphics.Renderer) );
+			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode, false );
 		}
 
 		static Size GetResolution(WindowMode windowmode)
 		{
 			var desktopResolution = Screen.PrimaryScreen.Bounds.Size;
-			var customSize = (windowmode == WindowMode.Windowed) ? Game.Settings.Graphics.WindowedSize : Game.Settings.Graphics.FullscreenSize;
+			var customSize = (windowmode == WindowMode.Windowed) 
+				? Game.Settings.Graphics.WindowedSize 
+				: Game.Settings.Graphics.FullscreenSize;
 			
 			if (customSize.X > 0 && customSize.Y > 0)
 			{
