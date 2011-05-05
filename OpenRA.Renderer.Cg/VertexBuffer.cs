@@ -9,13 +9,14 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 
 namespace OpenRA.Renderer.Cg
 {
-	public class VertexBuffer<T> : IVertexBuffer<T>, IDisposable
+	public class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct
 	{
 		int buffer;
@@ -31,6 +32,9 @@ namespace OpenRA.Renderer.Cg
 				Gl.GL_DYNAMIC_DRAW);
 			GraphicsDevice.CheckGlError();
 		}
+		
+		void FinalizeInner() { Gl.glDeleteBuffers( 1, ref buffer ); }
+		~VertexBuffer() { Game.RunAfterTick( FinalizeInner ); }
 
 		public void SetData(T[] data, int length)
 		{
@@ -51,17 +55,5 @@ namespace OpenRA.Renderer.Cg
 			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), new IntPtr(12));
 			GraphicsDevice.CheckGlError();
 		}
-
-		bool disposed;
-		public void Dispose()
-		{
-			if (disposed) return;
-			GC.SuppressFinalize(this);
-			Gl.glDeleteBuffers(1, ref buffer);
-			GraphicsDevice.CheckGlError();
-			disposed = true;
-		}
-
-		//~VertexBuffer() { Dispose(); }
 	}
 }

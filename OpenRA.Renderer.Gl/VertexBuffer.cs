@@ -15,7 +15,7 @@ using Tao.OpenGl;
 
 namespace OpenRA.Renderer.Glsl
 {
-	public class VertexBuffer<T> : IVertexBuffer<T>, IDisposable
+	public class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct
 	{
 		int buffer;
@@ -52,16 +52,7 @@ namespace OpenRA.Renderer.Glsl
 			GraphicsDevice.CheckGlError();
 		}
 
-		bool disposed;
-		public void Dispose()
-		{
-			if (disposed) return;
-			GC.SuppressFinalize(this);
-			Gl.glDeleteBuffers(1, ref buffer);
-			GraphicsDevice.CheckGlError();
-			disposed = true;
-		}
-
-		//~VertexBuffer() { Dispose(); }
+		void FinalizeInner() { Gl.glDeleteBuffers( 1, ref buffer ); }
+		~VertexBuffer() { Game.RunAfterTick( FinalizeInner ); }
 	}
 }

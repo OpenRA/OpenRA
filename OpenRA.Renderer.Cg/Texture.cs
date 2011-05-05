@@ -33,6 +33,9 @@ namespace OpenRA.Renderer.Cg
 			GraphicsDevice.CheckGlError();
 			SetData(bitmap);
 		}
+		
+		void FinalizeInner() { Gl.glDeleteTextures( 1, ref texture ); }
+		~Texture() { Game.RunAfterTick( FinalizeInner ); }
 
 		void PrepareTexture()
 		{

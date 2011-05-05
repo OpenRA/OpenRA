@@ -40,6 +40,9 @@ namespace OpenRA.Renderer.Glsl
 			SetData(bitmap);
 		}
 
+		void FinalizeInner() { UpdateMemoryUsage(0); Gl.glDeleteTextures(1, ref texture); }
+		~Texture() { Game.RunAfterTick(FinalizeInner); }
+
 		void PrepareTexture()
 		{
 			GraphicsDevice.CheckGlError();
