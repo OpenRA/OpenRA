@@ -6,15 +6,13 @@ Container@MAINMENU_BG:
 	Height:WINDOW_BOTTOM
 	Delegate:MainMenuButtonsDelegate
 	Children:
-		Label@MAINMENU_LABEL_TITLE:
-			Id:MAINMENU_LABEL_TITLE
-			X:0
-			Y:20
-			Width:250
-			Height:25
-			Text:OpenRA Main Menu
-			Align:Center
-			Bold:True
+		Image@RETICLE:
+			X:(WINDOW_RIGHT-WIDTH)/2
+			Y:(WINDOW_BOTTOM-HEIGHT)/2
+			Width:512
+			Height:512
+			ImageCollection:shellmap
+			ImageName:reticle
 		Button@MAINMENU_BUTTON_JOIN:
 			Id:MAINMENU_BUTTON_JOIN
 			X:45

@@ -1,3 +1,6 @@
+shellmap: reticle.png
+	reticle: 0,0,512,512
+
 chrome-gdi: chrome-gdi.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
