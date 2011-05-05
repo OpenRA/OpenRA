@@ -19,8 +19,8 @@ Container@MAINMENU_BG:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 			Background:shellmapborder
-		Container@MAIN_BUTTONS:
-			Id:MAIN_BUTTONS
+		Container@MAIN_MENU:
+			Id:MAIN_MENU
 			X:(WINDOW_RIGHT-WIDTH)/2
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
 			Width:740
@@ -51,22 +51,22 @@ Container@MAINMENU_BG:
 					Height:35
 					Text:Multiplayer
 					Bold:True
+				Button@SETTINGS_BUTTON:
+					Id:SETTINGS_BUTTON
+					X:300
+					Y:0
+					Width:140
+					Height:35
+					Text:Settings
+					Bold:True
 				Button@REPLAY_BUTTON:
 					Id:REPLAY_BUTTON
-					X:300
+					X:450
 					Y:0
 					Width:140
 					Height:35
 					Text: Replays
 					Bold: True
-				Button@SETTINGS_BUTTON:
-					Id:SETTINGS_BUTTON
-					X:450
-					Y:0
-					Width:140
-					Height:35
-					Text:Options
-					Bold:True
 				Button@QUIT_BUTTON:
 					Id:QUIT_BUTTON
 					X:600
@@ -75,8 +75,8 @@ Container@MAINMENU_BG:
 					Height:35
 					Text:Quit
 					Bold:True
-		Container@MULTIPLAYER_BUTTONS:
-			Id:MULTIPLAYER_BUTTONS
+		Container@MULTIPLAYER_MENU:
+			Id:MULTIPLAYER_MENU
 			X:(WINDOW_RIGHT-WIDTH)/2
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
 			Width:740
@@ -115,6 +115,55 @@ Container@MAINMENU_BG:
 					Width:140
 					Height:35
 					Text:Direct Connect
+					Bold:True
+				Button@BACK_BUTTON:
+					Id:BACK_BUTTON
+					X:600
+					Y:0
+					Width:140
+					Height:35
+					Text:Back
+					Bold:True
+		Container@SETTINGS_MENU:
+			Id:SETTINGS_MENU
+			X:(WINDOW_RIGHT-WIDTH)/2
+			Y:WINDOW_BOTTOM-33-HEIGHT-10
+			Width:740
+			Height:35
+			Visible:False
+			Children:	
+				Label@TITLE:
+					X:0
+					Y:0-30
+					Width:PARENT_RIGHT
+					Height:20
+					Text:Settings
+					Align:Center
+					Bold:True
+					Contrast:True
+				Button@MODS_BUTTON:
+					Id:MODS_BUTTON
+					X:0
+					Y:0
+					Width:140
+					Height:35
+					Text:Mods
+					Bold:True
+				Button@MUSIC_BUTTON:
+					Id:MUSIC_BUTTON
+					X:150
+					Y:0
+					Width:140
+					Height:35
+					Text:Music
+					Bold:True
+				Button@PREFERENCES_BUTTON:
+					Id:PREFERENCES_BUTTON
+					X:300
+					Y:0
+					Width:140
+					Height:35
+					Text:Preferences
 					Bold:True
 				Button@BACK_BUTTON:
 					Id:BACK_BUTTON

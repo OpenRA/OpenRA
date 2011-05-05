@@ -33,17 +33,24 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		public CncMenuLogic([ObjectCreator.Param] Widget widget)
 		{
 			// Root level menu
-			var mainButtons = widget.GetWidget("MAIN_BUTTONS");
-			mainButtons.IsVisible = () => Menu == MenuType.Main;
+			var mainMenu = widget.GetWidget("MAIN_MENU");
+			mainMenu.IsVisible = () => Menu == MenuType.Main;
 			
-			mainButtons.GetWidget("MULTIPLAYER_BUTTON").OnMouseUp = mi => { Menu = MenuType.Multiplayer; return true; };
-			mainButtons.GetWidget("QUIT_BUTTON").OnMouseUp = mi => { Game.Exit(); return true; };
+			mainMenu.GetWidget("MULTIPLAYER_BUTTON").OnMouseUp = mi => { Menu = MenuType.Multiplayer; return true; };
+			mainMenu.GetWidget("SETTINGS_BUTTON").OnMouseUp = mi => { Menu = MenuType.Settings; return true; };
+			mainMenu.GetWidget("QUIT_BUTTON").OnMouseUp = mi => { Game.Exit(); return true; };
 			
 			// Multiplayer menu
-			var multiplayerButtons = widget.GetWidget("MULTIPLAYER_BUTTONS");
-			multiplayerButtons.IsVisible = () => Menu == MenuType.Multiplayer;
+			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
+			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 			
-			multiplayerButtons.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
+			multiplayerMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
+			
+			// Settings menu
+			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
+			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
+			
+			settingsMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
 		}
 	}
 }
