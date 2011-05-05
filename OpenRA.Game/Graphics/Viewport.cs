@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 			scrollPosition = newScrollPosition;
 		}
 		
-		private int2 NormalizeScrollPosition(int2 newScrollPosition)
+		int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
 			return newScrollPosition.Clamp(adjustedMapBounds);
 		}
@@ -97,7 +97,10 @@ namespace OpenRA.Graphics
 	                Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette));
 			}
 
-			renderer.EndFrame( inputHandler );
+			using( new PerfSample("render_flip") )
+			{
+				renderer.EndFrame( inputHandler );
+			}
 		}
 
 		public void Tick()
@@ -109,6 +112,7 @@ namespace OpenRA.Graphics
 		{
 			return (1f / Game.CellSize) * (loc.ToFloat2() + Location);
 		}
+		
 		public float2 ViewToWorld(MouseInput mi)
 		{
 			return ViewToWorld(mi.Location);

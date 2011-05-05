@@ -148,6 +148,7 @@ namespace OpenRA
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
 			PerfHistory.items["render_widgets"].Tick();
+			PerfHistory.items["render_flip"].Tick();
 
 			afterTickActions.PerformActions();
 		}
@@ -303,6 +304,7 @@ namespace OpenRA
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["render_widgets"].hasNormalTick = false;
+			PerfHistory.items["render_flip"].hasNormalTick = false;
 
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
