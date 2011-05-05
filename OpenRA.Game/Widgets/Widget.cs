@@ -292,6 +292,7 @@ namespace OpenRA.Widgets
             child.Parent = this;
             Children.Add(child);
         }
+		
         public virtual void RemoveChild(Widget child) { Children.Remove(child); }
         public virtual void RemoveChildren() { Children.Clear(); }
 

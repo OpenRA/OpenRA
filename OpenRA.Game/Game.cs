@@ -153,7 +153,7 @@ namespace OpenRA
 			afterTickActions.PerformActions();
 		}
 
-		private static void Tick( OrderManager orderManager )
+		static void Tick( OrderManager orderManager )
 		{
 			int t = Environment.TickCount;
 			int dt = t - orderManager.LastTickTime;
