@@ -25,6 +25,7 @@ namespace OpenRA.Widgets
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public bool Bold = false;
+		public bool Contrast = false;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<string> GetBackground;
@@ -42,6 +43,7 @@ namespace OpenRA.Widgets
 			Text = other.Text;
 			Align = other.Align;
 			Bold = other.Bold;
+			Contrast = other.Contrast;
 			GetText = other.GetText;
 			GetBackground = other.GetBackground;
 		}
@@ -123,8 +125,11 @@ namespace OpenRA.Widgets
 					text = string.Join("\n", newLines.ToArray());
 				}
 			}
-
-			font.DrawText(text, position, Color.White);
+			
+			if (Contrast)
+				font.DrawTextWithContrast(text, position, Color.White, Color.Black, 2);
+			else
+				font.DrawText(text, position, Color.White);
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
