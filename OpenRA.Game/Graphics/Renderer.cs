@@ -135,12 +135,13 @@ namespace OpenRA.Graphics
 
 		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
 		{
+			var argTypes = new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) };
+			var argValues = new object[] { width, height, window, vsync };
+			
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
-			{
-				return (IGraphicsDevice)r.Type.GetConstructor( new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) } )
-					.Invoke( new object[] { width, height, window, vsync } );
-			}
-			throw new NotImplementedException();
+				return (IGraphicsDevice)r.Type.GetConstructor( argTypes ).Invoke( argValues );
+			
+			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
 		}
 
 		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
