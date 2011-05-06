@@ -57,7 +57,7 @@ namespace OpenRA.Widgets
 			boundField = obj.GetType().GetField(field);
 		}
 
-		// TODO: CheckboxWidget doesn't support delegate methods for mouse input
+		// TODO: CheckboxWidget doesn't support raising events for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			// Checkboxes require lmb
