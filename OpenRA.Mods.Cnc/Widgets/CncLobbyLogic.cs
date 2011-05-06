@@ -32,10 +32,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		// Must be set only once on game start
 		// TODO: This is stupid
-		static bool staticSetup;
-		
-		
-		public static void GameStartingStub()
+		static bool staticSetup;		
+		enum StaticCrap { LobbyInfo, BeforeGameStart, AddChatLine }
+		static void StaticCrapChanged(StaticCrap type, Color a, string b, string c)
 		{
 			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
 			
@@ -47,22 +46,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (lobbyLogic == null)
 				return;
 			
-			lobbyLogic.onGameStart();
-		}
-		
-		public static void UpdateCurrentMapStub()
-		{
-			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
-			
-			// The panel may not be open anymore
-            if (panel == null)
-                return;
-			
-			var lobbyLogic = panel.DelegateObject as CncLobbyLogic;
-			if (lobbyLogic == null)
-				return;
-			
-			lobbyLogic.UpdateCurrentMap();			
+			switch (type)
+			{
+				case StaticCrap.LobbyInfo:
+					lobbyLogic.UpdateCurrentMap();
+					lobbyLogic.UpdatePlayerList();
+				break;
+				case StaticCrap.BeforeGameStart:
+					lobbyLogic.onGameStart();
+				break;
+				case StaticCrap.AddChatLine:
+					panel.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(a,b,c);
+				break;
+			}	
 		}
 		
 		readonly Action onGameStart;
@@ -82,12 +78,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (!staticSetup)
 			{
 				staticSetup = true;
-				Game.LobbyInfoChanged += UpdateCurrentMapStub;
-				Game.BeforeGameStart += GameStartingStub;
+				Game.LobbyInfoChanged += () => StaticCrapChanged(StaticCrap.LobbyInfo, Color.Beige, null, null);
+				Game.BeforeGameStart += () => StaticCrapChanged(StaticCrap.BeforeGameStart, Color.PapayaWhip, null, null);
+				Game.AddChatLine += (a,b,c) => StaticCrapChanged(StaticCrap.AddChatLine, a, b, c);
 			}
 			
 			UpdateCurrentMap();
-			
 			CurrentColorPreview = Game.Settings.Player.ColorRamp;
 
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
@@ -182,9 +178,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			// Todo: Only show if the map requirements are met for player slots
 			startGameButton.IsVisible = () => Game.IsHost;
-			Game.LobbyInfoChanged += UpdatePlayerList;
-			
-			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
 
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
