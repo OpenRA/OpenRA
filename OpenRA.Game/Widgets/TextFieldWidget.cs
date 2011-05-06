@@ -20,6 +20,10 @@ namespace OpenRA.Widgets
 		public int MaxLength = 0;
 		public bool Bold = false;
 		public int VisualHeight = 1;
+		public string Background = "dialog3";
+		public int LeftMargin = 5;
+		public int RightMargin = 5;
+		
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
 		public Action OnLoseFocus = () => { };
@@ -70,9 +74,9 @@ namespace OpenRA.Widgets
 			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
 			var textSize = font.Measure(Text);
 			
-			var start = RenderOrigin.X + margin;
-			if (textSize.X > Bounds.Width - 2 * margin && Focused)
-				start += Bounds.Width - 2 * margin - textSize.X;
+			var start = RenderOrigin.X + LeftMargin;
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && Focused)
+				start += Bounds.Width - LeftMargin - RightMargin - textSize.X;
 			
 			int minIndex = -1;
 			int minValue = int.MaxValue;
@@ -179,7 +183,6 @@ namespace OpenRA.Widgets
 			base.Tick();
 		}
 		
-		int margin = 5;
 		public virtual void DrawWithString(string text)
 		{
 			if (text == null) text = "";
@@ -193,19 +196,19 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(text);
 			var cursorPosition = font.Measure(text.Substring(0,CursorPosition));
 			
-			WidgetUtils.DrawPanel("dialog3",
+			WidgetUtils.DrawPanel(Background,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
 
 			// Inset text by the margin and center vertically
-			var textPos = pos + new int2(margin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
+			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
 
 			// Right align when editing and scissor when the text overflows
-			if (textSize.X > Bounds.Width - 2 * margin)
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
 			{
 				if (Focused)
-					textPos += new int2(Bounds.Width - 2 * margin - textSize.X, 0);
+					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
-				Game.Renderer.EnableScissor(pos.X + margin, pos.Y, Bounds.Width - 2 * margin, Bounds.Bottom);
+				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y, Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
 			}
 
 			font.DrawText(text, textPos, Color.White);
@@ -213,7 +216,7 @@ namespace OpenRA.Widgets
 			if (showCursor && Focused)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), Color.White);
 
-			if (textSize.X > Bounds.Width - 2 * margin)
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
 				Game.Renderer.DisableScissor();
 		}
 		
