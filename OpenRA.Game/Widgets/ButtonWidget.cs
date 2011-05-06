@@ -120,12 +120,14 @@ namespace OpenRA.Widgets
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
 			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
+			var rb = RenderBounds;
+			
 			WidgetUtils.DrawRGBA( image,
-				stateOffset + new float2( RenderBounds.Right - RenderBounds.Height + 4, 
-					RenderBounds.Top + (RenderBounds.Height - image.bounds.Height) / 2 ));
+				stateOffset + new float2( rb.Right - rb.Height + 4, 
+					rb.Top + (rb.Height - image.bounds.Height) / 2 ));
 
-			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + RenderBounds.Right - RenderBounds.Height,
-				stateOffset.Y + RenderBounds.Top + 3, 1, RenderBounds.Height - 6),
+			WidgetUtils.FillRectWithColor(new Rectangle(stateOffset.X + rb.Right - rb.Height,
+				stateOffset.Y + rb.Top + 3, 1, rb.Height - 6),
 				Color.White);
 		}
 
