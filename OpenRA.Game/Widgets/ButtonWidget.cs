@@ -93,7 +93,7 @@ namespace OpenRA.Widgets
 			var text = GetText();
 
 			font.DrawText(text,
-				new int2(RenderOrigin.X + UsableWidth / 2, RenderOrigin.Y + Bounds.Height / 2)
+				RenderOrigin + new int2(UsableWidth / 2, Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2) + stateOffset, Color.White);
 		}
