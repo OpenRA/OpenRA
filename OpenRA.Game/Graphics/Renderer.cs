@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 
 		public ITexture PaletteTexture;
 
-        public readonly SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont;
+        public readonly SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont, BigBoldFont;
 
 		internal const int TempBufferSize = 8192;
 		const int TempBufferCount = 8;
@@ -57,6 +57,7 @@ namespace OpenRA.Graphics
 			RegularFont = new SpriteFont("FreeSans.ttf", 14);
 			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
 			TitleFont = new SpriteFont("titles.ttf", 48);
+			BigBoldFont = new SpriteFont("FreeSansBold.ttf", 24);
             TinyFont = new SpriteFont("FreeSans.ttf", 10);
 			TinyBoldFont = new SpriteFont("FreeSansBold.ttf", 10);
 			
