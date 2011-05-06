@@ -72,8 +72,9 @@ namespace OpenRA.Mods.RA.Buildings
 		readonly int2 topLeft;
 
 		PowerManager PlayerPower;
+		int2 pxPosition;
 
-		public int2 PxPosition { get { return ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2; } }
+		public int2 PxPosition { get { return pxPosition; } }
 		
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
 		
@@ -83,6 +84,10 @@ namespace OpenRA.Mods.RA.Buildings
 			this.topLeft = init.Get<LocationInit,int2>();
 			this.Info = info;
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
+			
+			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
+				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+			pxPosition = ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2;
 		}
 		
 		public int GetPowerUsage()
@@ -106,10 +111,8 @@ namespace OpenRA.Mods.RA.Buildings
 			get { return topLeft; }
 		}
 
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
-		{
-			return FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft ).Select(c => Pair.New(c, SubCell.FullCell));
-		}
+		Pair<int2,SubCell>[] occupiedCells;
+		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { return occupiedCells; }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
