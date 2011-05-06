@@ -74,7 +74,7 @@ namespace OpenRA.Widgets
 			{
 				Depressed = RenderBounds.Contains(mi.Location.X, mi.Location.Y);
 				
-				// All widgets should recieve MouseMove events
+				// All widgets should receive MouseMove events
 				OnMouseMove(mi);
 			}
 			
