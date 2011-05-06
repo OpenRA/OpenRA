@@ -74,6 +74,7 @@ namespace OpenRA.Mods.RA.Buildings
 		PowerManager PlayerPower;
 		int2 pxPosition;
 
+		public int2 TopLeft	{ get { return topLeft; } }
 		public int2 PxPosition { get { return pxPosition; } }
 		
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
@@ -104,11 +105,6 @@ namespace OpenRA.Mods.RA.Buildings
 			// Power plants lose power with damage
 			if (Info.Power > 0)
 				PlayerPower.UpdateActor(self, GetPowerUsage());
-		}
-
-		public int2 TopLeft
-		{
-			get { return topLeft; }
 		}
 
 		Pair<int2,SubCell>[] occupiedCells;
