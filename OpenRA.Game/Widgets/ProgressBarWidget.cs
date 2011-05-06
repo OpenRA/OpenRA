@@ -10,8 +10,8 @@
 
 using System;
 using System.Drawing;
-using OpenRA.Graphics;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -30,10 +30,11 @@ namespace OpenRA.Widgets
 
 		public override void DrawInner()
 		{
-			WidgetUtils.DrawPanel("dialog3", RenderBounds);
+			var rb = RenderBounds;
+			WidgetUtils.DrawPanel("dialog3", rb);
 			Rectangle barRect = Indeterminate ? 
-				new Rectangle(RenderBounds.X + 2  + (int)((RenderBounds.Width - 4)*(-Math.Cos(Math.PI*2*indeterminateTick/100) + 1)*3/8), RenderBounds.Y + 2, (RenderBounds.Width - 4) / 4, RenderBounds.Height - 4) : 
-				new Rectangle(RenderBounds.X + 2, RenderBounds.Y + 2, Percentage * (RenderBounds.Width - 4) / 100, RenderBounds.Height - 4);
+				new Rectangle(rb.X + 2  + (int)((rb.Width - 4)*(-Math.Cos(Math.PI*2*indeterminateTick/100) + 1)*3/8), rb.Y + 2, (rb.Width - 4) / 4, rb.Height - 4) : 
+				new Rectangle(rb.X + 2, rb.Y + 2, Percentage * (rb.Width - 4) / 100, rb.Height - 4);
 			
 			if (barRect.Width > 0)
 				WidgetUtils.DrawPanel("dialog2", barRect);
