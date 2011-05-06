@@ -36,13 +36,14 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
         {
             if (Info.InstallMode == "cnc")
 			{
+				/*
 				Game.ConnectionStateChanged += orderManager =>
 	            {
 	                Widget.CloseWindow();
 	                switch (orderManager.Connection.ConnectionState)
 	                {
 	                    case ConnectionState.PreConnecting:
-	                        Widget.OpenWindow("MENU_BACKGROUND");
+	                        Widget.LoadWidget("MENU_BACKGROUND");
 	                        break;
 	                    case ConnectionState.Connecting:
 	                        Widget.OpenWindow("CONNECTING_BG",
@@ -62,6 +63,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	                        break;
 	                }
 	            };
+	            */
 			}
 			else
 			{		

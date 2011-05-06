@@ -100,6 +100,18 @@ namespace OpenRA
 		{
 			return Widget.OpenWindow(widget, new Dictionary<string,object>{{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
 		}
+		
+		// Who came up with the great idea of making these things
+		// impossible for the things that want them to access them directly?
+		public static Widget OpenWindow(string widget, Dictionary<string, object> args)
+		{
+			return Widget.OpenWindow(widget, new Dictionary<string,object>(args)
+			{
+				{ "world", worldRenderer.world },
+				{ "orderManager", orderManager },
+				{ "worldRenderer", worldRenderer },
+			});
+		}
 
 		static ActionQueue afterTickActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { afterTickActions.Add(a); }
@@ -316,19 +328,27 @@ namespace OpenRA
 		{
 			AddChatLine(Color.White, "Debug", String.Format(s,args)); 
 		}
-
+		
+		// TODO: Fix ra relying on this behavior, then make this sane
 		public static void Disconnect()
+		{
+			DisconnectOnly();
+			var shellmap = ChooseShellmap();
+			StartGame(shellmap);
+		}
+		
+		public static void DisconnectOnly()
 		{
 			if (orderManager.world != null)
 				orderManager.world.traitDict.PrintReport();
 			
 			if (IsHost && server != null)
+			{
+				Console.WriteLine("Closing server");
 				server.Shutdown();
-
-			orderManager.Dispose();
-			var shellmap = ChooseShellmap();
+			}
 			JoinLocal();
-			StartGame(shellmap);
+			orderManager.Dispose();
 		}
 
 		public static T CreateObject<T>( string name )

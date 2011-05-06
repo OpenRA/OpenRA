@@ -29,18 +29,63 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Map Map;
 
         public static ColorRamp CurrentColorPreview;
-
+		
+		// Must be set only once on game start
+		// TODO: This is stupid
+		static bool staticSetup;
+		
+		
+		public static void GameStartingStub()
+		{
+			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
+			
+			// The panel may not be open anymore
+            if (panel == null)
+                return;
+			
+			var lobbyLogic = panel.DelegateObject as CncLobbyLogic;
+			if (lobbyLogic == null)
+				return;
+			
+			lobbyLogic.onGameStart();
+		}
+		
+		public static void UpdateCurrentMapStub()
+		{
+			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
+			
+			// The panel may not be open anymore
+            if (panel == null)
+                return;
+			
+			var lobbyLogic = panel.DelegateObject as CncLobbyLogic;
+			if (lobbyLogic == null)
+				return;
+			
+			lobbyLogic.UpdateCurrentMap();			
+		}
+		
+		readonly Action onGameStart;
 		readonly OrderManager orderManager;
 		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
 		                       [ObjectCreator.Param] OrderManager orderManager,
+		                       [ObjectCreator.Param] Action onExit,
+		                       [ObjectCreator.Param] Action onStart,
 		                       [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
+			this.onGameStart = onStart;
 			
-			Game.LobbyInfoChanged += UpdateCurrentMap;
+			if (!staticSetup)
+			{
+				staticSetup = true;
+				Game.LobbyInfoChanged += UpdateCurrentMapStub;
+				Game.BeforeGameStart += GameStartingStub;
+			}
+			
 			UpdateCurrentMap();
 			
 			CurrentColorPreview = Game.Settings.Player.ColorRamp;
@@ -103,9 +148,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
 			disconnectButton.OnMouseUp = mi =>
 			{
-				Game.Disconnect();
-				Widget.CloseWindow();
-				Widget.LoadWidget("MENU_BACKGROUND");
+				onExit();
 				return true;
 			};
 			

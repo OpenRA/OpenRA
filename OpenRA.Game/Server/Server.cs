@@ -111,6 +111,7 @@ namespace OpenRA.Server
 					if (shutdown)
 						break;
 				}
+				Console.WriteLine("Server loop finished");
 				
 				GameStarted = false;
 				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())

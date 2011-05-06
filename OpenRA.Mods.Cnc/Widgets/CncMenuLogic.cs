@@ -51,11 +51,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			multiplayerMenu.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("SERVERBROWSER_PANEL",
-				                new Dictionary<string, object>()
-				                {
-									{"onExit", new Action(() => {Menu = MenuType.Multiplayer; Widget.CloseWindow();})}
-								});
+				Widget.OpenWindow("SERVERBROWSER_PANEL", new Dictionary<string, object>()
+                {
+					{"onExit", new Action(() => {Menu = MenuType.Multiplayer; Widget.CloseWindow();})}
+				});
 				return true;
 			};
 			
@@ -77,6 +76,28 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settings.Server.ListenPort = 1234;
 			settings.Server.ExternalPort = 1234;
 			Game.CreateAndJoinServer(settings, map);
+			
+			Menu = MenuType.None;
+			
+			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
+			{
+				// Returning to main menu
+				{"onExit", new Action(() =>
+					{
+						Game.DisconnectOnly();
+						Menu = MenuType.Main;
+						Widget.CloseWindow();
+					})
+				},
+				
+				// Starting a game: remove all shellmap ui
+				{"onStart", new Action(() =>
+					{
+						Widget.CloseWindow();
+						Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
+					})
+				}
+			});
 		}
 	}
 }
