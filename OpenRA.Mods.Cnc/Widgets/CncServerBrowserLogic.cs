@@ -57,30 +57,27 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			
 			// Menu buttons
-			panel.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
+			panel.GetWidget<CncMenuButtonWidget>("REFRESH_BUTTON").OnClick = () =>
 			{
 				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
 				currentServer = null;
 
 				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
-
-				return true;
 			};
 			
 			var join = panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !ServerBrowserDelegate.CanJoin(currentServer);
-			join.OnMouseUp = mi =>
+			join.OnClick = () =>
 			{
 				if (currentServer == null)
-					return false;
+					return;
 
 				Widget.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
-				return true;
 			};
 			
-			panel.GetWidget("BACK_BUTTON").OnMouseUp = mi => { onExit(); return true; };
+			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
 			
 			// Server list
 			serverTemplate = sl.GetWidget("SERVER_TEMPLATE");

@@ -38,31 +38,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
 			
-			mainMenu.GetWidget("SOLO_BUTTON").OnMouseUp = mi => { StartSkirmishGame(); return true; };
-			mainMenu.GetWidget("MULTIPLAYER_BUTTON").OnMouseUp = mi => { Menu = MenuType.Multiplayer; return true; };
-			mainMenu.GetWidget("SETTINGS_BUTTON").OnMouseUp = mi => { Menu = MenuType.Settings; return true; };
-			mainMenu.GetWidget("QUIT_BUTTON").OnMouseUp = mi => { Game.Exit(); return true; };
+			mainMenu.GetWidget<CncMenuButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
+			mainMenu.GetWidget<CncMenuButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
+			mainMenu.GetWidget<CncMenuButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
+			mainMenu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 			
 			// Multiplayer menu
 			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 			
-			multiplayerMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
-			multiplayerMenu.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
+			multiplayerMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			multiplayerMenu.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new Dictionary<string, object>()
                 {
-					{"onExit", new Action(() => {Menu = MenuType.Multiplayer; Widget.CloseWindow();})}
+					{"onExit", new Action(() => { Menu = MenuType.Multiplayer; Widget.CloseWindow(); })}
 				});
-				return true;
 			};
 			
 			// Settings menu
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
-			settingsMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
+			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
 		

@@ -17,10 +17,20 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncMenuButtonWidget : ButtonWidget
 	{
-		public CncMenuButtonWidget() : base() { }
-		protected CncMenuButtonWidget(CncMenuButtonWidget widget)	: base(widget) { }
-
 		public Func<bool> IsDisabled = () => false;
+		public Action OnClick = () => {};
+		
+		public CncMenuButtonWidget()
+			: base()
+		{
+			OnMouseUp = mi => { OnClick(); return true; };
+		}
+		
+		protected CncMenuButtonWidget(CncMenuButtonWidget widget)
+			: base(widget)
+		{
+			OnMouseUp = mi => { OnClick(); return true; };
+		}
 		
 		public override int2 ChildOrigin { get { return RenderOrigin; } }
 		public override void DrawInner()

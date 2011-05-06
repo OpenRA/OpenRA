@@ -132,21 +132,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
-			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
-			mapButton.OnMouseUp = mi =>
-			{
-				Widget.OpenWindow( "MAP_CHOOSER", new Dictionary<string, object> { { "orderManager", orderManager }, { "mapName", MapUid } } );
-				return true;
-			};
-
+			var mapButton = lobby.GetWidget<CncMenuButtonWidget>("CHANGEMAP_BUTTON");
+			mapButton.OnClick = () => Widget.OpenWindow( "MAP_CHOOSER", new Dictionary<string, object>{ { "orderManager", orderManager }, { "mapName", MapUid } } );
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
-			disconnectButton.OnMouseUp = mi =>
-			{
-				onExit();
-				return true;
-			};
+			var disconnectButton = lobby.GetWidget<CncMenuButtonWidget>("DISCONNECT_BUTTON");
+			disconnectButton.OnClick = onExit;
 			
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
@@ -166,14 +157,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			};
 			
-			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
-			startGameButton.OnMouseUp = mi =>
+			var startGameButton = lobby.GetWidget<CncMenuButtonWidget>("START_GAME_BUTTON");
+			startGameButton.OnClick = () =>
 			{
 				mapButton.Visible = false;
 				disconnectButton.Visible = false;
 				lockTeamsCheckbox.Visible = false;
 				orderManager.IssueOrder(Order.Command("startgame"));
-				return true;
 			};
 			
 			// Todo: Only show if the map requirements are met for player slots
