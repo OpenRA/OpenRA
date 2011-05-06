@@ -107,7 +107,7 @@ namespace OpenRA.Widgets
 					List<string> newLines = new List<string>();
 					int i = 0;
 					string line = lines[i++];
-					while (true)
+					while (true)		// TODO: WTF IS THIS SHIT?
 					{
 						newLines.Add(line);
 						int2 m = font.Measure(line);
