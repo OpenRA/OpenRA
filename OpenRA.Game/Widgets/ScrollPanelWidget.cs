@@ -62,18 +62,20 @@ namespace OpenRA.Widgets
 			if (!IsVisible())
 				return;
 			
-			var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
+			var rb = RenderBounds;
 			
-			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
-			var thumbOrigin = RenderBounds.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - RenderBounds.Height)));
+			var ScrollbarHeight = rb.Height - 2 * ScrollbarWidth;
+			
+			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(rb.Height*1f/ContentHeight, 1f));
+			var thumbOrigin = rb.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - rb.Height)));
 			if (thumbHeight == ScrollbarHeight)
 				thumbHeight = 0;
 			
-			backgroundRect = new Rectangle(RenderBounds.X, RenderBounds.Y, RenderBounds.Width - ScrollbarWidth, RenderBounds.Height);
-			upButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y, ScrollbarWidth, ScrollbarWidth);
-			downButtonRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, RenderBounds.Y + ScrollbarWidth, ScrollbarWidth, ScrollbarHeight);
-			thumbRect = new Rectangle(RenderBounds.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
+			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth, rb.Height);
+			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
+			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
+			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth, ScrollbarWidth, ScrollbarHeight);
+			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 			
 			string upButtonBg = UpPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
 			string downButtonBg = DownPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
