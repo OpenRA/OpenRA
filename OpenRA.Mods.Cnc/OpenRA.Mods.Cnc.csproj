@@ -73,6 +73,7 @@
     <Compile Include="Widgets\CncMenuLogic.cs" />
     <Compile Include="Widgets\CncServerBrowserLogic.cs" />
     <Compile Include="Widgets\CncMenuButton.cs" />
+    <Compile Include="Widgets\CncLobbyLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
