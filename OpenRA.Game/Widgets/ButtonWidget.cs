@@ -52,7 +52,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
 
-			// Only fire the onMouseUp order if we successfully lost focus, and were pressed
+			// Only fire the onMouseUp event if we successfully lost focus, and were pressed
 			if (Focused && mi.Event == MouseInputEvent.Up)
 			{
 				if (Depressed)
