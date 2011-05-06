@@ -160,11 +160,12 @@ namespace OpenRA.Widgets
 			
 			if (ThumbPressed && mi.Event == MouseInputEvent.Move)
 			{				
-				var ScrollbarHeight = RenderBounds.Height - 2 * ScrollbarWidth;
-				var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(RenderBounds.Height*1f/ContentHeight, 1f));
+				var rb = RenderBounds;
+				var ScrollbarHeight = rb.Height - 2 * ScrollbarWidth;
+				var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(rb.Height*1f/ContentHeight, 1f));
 				var oldOffset = ListOffset;
-				ListOffset += (int)((lastMouseLocation.Y - mi.Location.Y)*(ContentHeight - RenderBounds.Height)*1f/(ScrollbarHeight - thumbHeight));
-				ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+				ListOffset += (int)((lastMouseLocation.Y - mi.Location.Y)*(ContentHeight - rb.Height)*1f/(ScrollbarHeight - thumbHeight));
+				ListOffset = Math.Min(0,Math.Max(rb.Height - ContentHeight, ListOffset));
 				
 				if (oldOffset != ListOffset)
 					lastMouseLocation = mi.Location;
