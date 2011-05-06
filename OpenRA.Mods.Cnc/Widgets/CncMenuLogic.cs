@@ -18,7 +18,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 
-namespace OpenRA.Mods.RA.Widgets.Delegates
+namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncMenuLogic : IWidgetDelegate
 	{
@@ -46,7 +46,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			// Multiplayer menu
 			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
-			
 			
 			multiplayerMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
 			multiplayerMenu.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>

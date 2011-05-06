@@ -61,14 +61,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
+				currentServer = null;
 
 				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
 
 				return true;
 			};
 			
-			var join = panel.GetWidget("JOIN_BUTTON");
-			join.IsVisible = () => currentServer != null && ServerBrowserDelegate.CanJoin(currentServer);
+			var join = panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON");
+			join.IsDisabled = () => currentServer == null || !ServerBrowserDelegate.CanJoin(currentServer);
 			join.OnMouseUp = mi =>
 			{
 				if (currentServer == null)

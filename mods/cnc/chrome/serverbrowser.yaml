@@ -6,10 +6,17 @@ Container@SERVERBROWSER_PANEL:
 	Width:740
 	Height:535
 	Children:
+		Label@TITLE:
+			Text:Find Server
+			Width:740
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
 		Background@bg:
 			Width:740
 			Height:500
-			Background:panel
+			Background:panel-black
 			Children:
 				ScrollPanel@SERVER_LIST:
 					Id:SERVER_LIST
@@ -62,7 +69,7 @@ Container@SERVERBROWSER_PANEL:
 							Y:0
 							Text:Title
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@MAP:
 							Id:MAP
 							X:PARENT_RIGHT-450
@@ -70,7 +77,7 @@ Container@SERVERBROWSER_PANEL:
 							Width:250
 							Height:25									
 							Text:Map
-							Bold:true
+							Font:Bold
 						Label@PLAYERS:
 							Id:PLAYERS
 							X:PARENT_RIGHT-200
@@ -78,7 +85,7 @@ Container@SERVERBROWSER_PANEL:
 							Width:50
 							Height:25
 							Text:Players
-							Bold:true
+							Font:Bold
 						Label@IP:
 							Id:IP
 							Width:140
@@ -86,122 +93,124 @@ Container@SERVERBROWSER_PANEL:
 							Align:Center
 							Height:25
 							Text:Address
-							Bold:true
+							Font:Bold
 				Label@PROGRESS_LABEL:
 					Id:PROGRESS_LABEL
 					X:22
-					Y:150
+					Y:165
 					Width:710
 					Height:25
+					Font:Bold
 					Align:Center
 					Visible:false
-				Container@SERVER_INFO:
-					Id:SERVER_INFO
+				Background@INFO_BG:
 					X:15
 					Y:345
 					Width:710
 					Height:140
-					Visible:false
 					Background:dialog2
 					Children:
-						MapPreview@MAP_PREVIEW:
-							Id:MAP_PREVIEW
-							X:10
-							Y:10
-							Width:128
-							Height:128
-						Container@STATS_BIN
-							X:200
-							Y:30
-							Width:150
+						Container@SERVER_INFO:
+							Id:SERVER_INFO
+							Width:PARENT_RIGHT
+							Height:PARENT_BOTTOM
+							Visible:false
+							Background:panel-darkred
 							Children:
-								Label@SERVER_IP_LABEL:
-									Id:SERVER_IP_LABEL
-									X:0
-									Y:0
-									Align:Right
-									Width:70
-									Height:20
-									Text:Server:
-									Bold:True
-								Label@SERVER_IP:
-									Id:SERVER_IP
-									X:70
-									Y:0
-									Align:Left
-									Width:70
-									Height:20
-								Label@MAP_PLAYERS_LABEL:
-									Id:MAP_PLAYERS_LABEL
-									X:0
-									Y:20
-									Align:Right
-									Width:70
-									Height:20
-									Text:Players:
-									Bold:True
-								Label@MAP_PLAYERS:
-									Id:MAP_PLAYERS
-									X:70
-									Y:20
-									Align:Left
-									Width:70
-									Height:20
-								Label@MAP_TITLE_LABEL:
-									Id:MAP_TITLE_LABEL
-									X:0
-									Y:40
-									Align:Right
-									Width:70
-									Height:20
-									Text:Map:
-									Bold:True
-								Label@MAP_TITLE:
-									Id:MAP_TITLE
-									X:70
-									Y:40
-									Align:Left
-									Width:70
-									Height:20
-								Label@SERVER_MODS_LABEL:
-									Id:SERVER_MODS_LABEL
-									X:0
-									Y:60
-									Align:Right
-									Width:70
-									Height:20
-									Text:Mods:
-									Bold:True
-								Label@SERVER_MODS:
-									Id:SERVER_MODS
-									X:70
-									Y:63
-									Align:Left
-									VAlign:Top
-									Width:70
-									Height:20
-		Button@JOIN_BUTTON:
+								MapPreview@MAP_PREVIEW:
+									Id:MAP_PREVIEW
+									X:10
+									Y:10
+									Width:128
+									Height:128
+								Container@STATS_BIN:
+									X:200
+									Y:30
+									Width:150
+									Children:
+										Label@SERVER_IP_LABEL:
+											Id:SERVER_IP_LABEL
+											X:0
+											Y:0
+											Align:Right
+											Width:70
+											Height:20
+											Text:Server:
+											Font:Bold
+										Label@SERVER_IP:
+											Id:SERVER_IP
+											X:70
+											Y:0
+											Align:Left
+											Width:70
+											Height:20
+										Label@MAP_PLAYERS_LABEL:
+											Id:MAP_PLAYERS_LABEL
+											X:0
+											Y:20
+											Align:Right
+											Width:70
+											Height:20
+											Text:Players:
+											Font:Bold
+										Label@MAP_PLAYERS:
+											Id:MAP_PLAYERS
+											X:70
+											Y:20
+											Align:Left
+											Width:70
+											Height:20
+										Label@MAP_TITLE_LABEL:
+											Id:MAP_TITLE_LABEL
+											X:0
+											Y:40
+											Align:Right
+											Width:70
+											Height:20
+											Text:Map:
+											Font:Bold
+										Label@MAP_TITLE:
+											Id:MAP_TITLE
+											X:70
+											Y:40
+											Align:Left
+											Width:70
+											Height:20
+										Label@SERVER_MODS_LABEL:
+											Id:SERVER_MODS_LABEL
+											X:0
+											Y:60
+											Align:Right
+											Width:70
+											Height:20
+											Text:Mods:
+											Font:Bold
+										Label@SERVER_MODS:
+											Id:SERVER_MODS
+											X:70
+											Y:63
+											Align:Left
+											VAlign:Top
+											Width:70
+											Height:20
+		CncMenuButton@JOIN_BUTTON:
 			Id:JOIN_BUTTON
 			X:0
 			Y:499
 			Width:140
 			Height:35
-			Visible: false
 			Text:Join
-			Bold:True
-		Button@REFRESH_BUTTON:
+		CncMenuButton@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
 			X:450
 			Y:499
 			Width:140
 			Height:35
 			Text:Refresh
-			Bold:True
-		Button@BACK_BUTTON:
+		CncMenuButton@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:600
 			Y:499
 			Width:140
 			Height:35
 			Text:Back
-			Bold:True

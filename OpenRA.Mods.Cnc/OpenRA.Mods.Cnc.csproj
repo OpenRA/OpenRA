@@ -72,6 +72,7 @@
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="Widgets\CncMenuLogic.cs" />
     <Compile Include="Widgets\CncServerBrowserLogic.cs" />
+    <Compile Include="Widgets\CncMenuButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

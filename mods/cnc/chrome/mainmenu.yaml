@@ -36,48 +36,43 @@ Container@MENU_BACKGROUND:
 							Height:20
 							Text:Main Menu
 							Align:Center
-							Bold:True
+							Font:Bold
 							Contrast:True
-						Button@SOLO_BUTTON:
+						CncMenuButton@SOLO_BUTTON:
 							Id:SOLO_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Skirmish
-							Bold:True
-						Button@MULTIPLAYER_BUTTON:
+						CncMenuButton@MULTIPLAYER_BUTTON:
 							Id:MULTIPLAYER_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Multiplayer
-							Bold:True
-						Button@SETTINGS_BUTTON:
+						CncMenuButton@SETTINGS_BUTTON:
 							Id:SETTINGS_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Settings
-							Bold:True
-						Button@REPLAY_BUTTON:
+						CncMenuButton@REPLAY_BUTTON:
 							Id:REPLAY_BUTTON
 							X:450
 							Y:0
 							Width:140
 							Height:35
 							Text: Replays
-							Bold: True
-						Button@QUIT_BUTTON:
+						CncMenuButton@QUIT_BUTTON:
 							Id:QUIT_BUTTON
 							X:600
 							Y:0
 							Width:140
 							Height:35
 							Text:Quit
-							Bold:True
 				Container@MULTIPLAYER_MENU:
 					Id:MULTIPLAYER_MENU
 					Width:PARENT_RIGHT
@@ -90,40 +85,36 @@ Container@MENU_BACKGROUND:
 							Height:20
 							Text:Multiplayer
 							Align:Center
-							Bold:True
+							Font:Bold
 							Contrast:True
-						Button@CREATE_BUTTON:
+						CncMenuButton@CREATE_BUTTON:
 							Id:CREATE_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Create Server
-							Bold:True
-						Button@JOIN_BUTTON:
+						CncMenuButton@JOIN_BUTTON:
 							Id:JOIN_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Find Server
-							Bold:True
-						Button@DIRECTCONNECT_BUTTON:
+						CncMenuButton@DIRECTCONNECT_BUTTON:
 							Id:DIRECTCONNECT_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Direct Connect
-							Bold:True
-						Button@BACK_BUTTON:
+						CncMenuButton@BACK_BUTTON:
 							Id:BACK_BUTTON
 							X:600
 							Y:0
 							Width:140
 							Height:35
 							Text:Back
-							Bold:True
 				Container@SETTINGS_MENU:
 					Id:SETTINGS_MENU
 					Width:PARENT_RIGHT
@@ -136,40 +127,36 @@ Container@MENU_BACKGROUND:
 							Height:20
 							Text:Settings
 							Align:Center
-							Bold:True
+							Font:Bold
 							Contrast:True
-						Button@MODS_BUTTON:
+						CncMenuButton@MODS_BUTTON:
 							Id:MODS_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Mods
-							Bold:True
-						Button@MUSIC_BUTTON:
+						CncMenuButton@MUSIC_BUTTON:
 							Id:MUSIC_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Music
-							Bold:True
-						Button@PREFERENCES_BUTTON:
+						CncMenuButton@PREFERENCES_BUTTON:
 							Id:PREFERENCES_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Preferences
-							Bold:True
-						Button@BACK_BUTTON:
+						CncMenuButton@BACK_BUTTON:
 							Id:BACK_BUTTON
 							X:600
 							Y:0
 							Width:140
 							Height:35
 							Text:Back
-							Bold:True
 Background@QUICKMODSWITCHER:
 	Id:QUICKMODSWITCHER
 	Background: dialog4
@@ -186,7 +173,7 @@ Background@QUICKMODSWITCHER:
 			Height:25
 			Text:Mod:
 			Align:Left
-			Bold:True
+			Font:Bold
 		DropDownButton@SWITCHER:
 			Id:SWITCHER
 			Text:Team
@@ -201,7 +188,7 @@ Background@QUICKMODSWITCHER:
 			Width:150
 			Height:25
 			Align:Center
-			Bold:True
+			Font:Bold
 Background@PERF_BG:
 	Id:PERF_BG
 	Background:dialog4
@@ -240,7 +227,7 @@ Background@MUSIC_MENU:
 			Height:25
 			Text:Music
 			Align:Center
-			Bold:True
+			Font:Bold
 		Button@BUTTON_INSTALL:
 			Id:BUTTON_INSTALL
 			X:20
@@ -248,7 +235,7 @@ Background@MUSIC_MENU:
 			Width:160
 			Height:25
 			Text:Install Music
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CLOSE:
 			Id:BUTTON_CLOSE
 			X:PARENT_RIGHT - 180
@@ -256,7 +243,7 @@ Background@MUSIC_MENU:
 			Width:160
 			Height:25
 			Text:Close
-			Bold:True
+			Font:Bold
 		Container@BUTTONS:
 			X:PARENT_RIGHT - 150
 			Y:50
