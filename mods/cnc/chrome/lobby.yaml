@@ -307,20 +307,14 @@ Container@SERVER_LOBBY:
 							Text:Ready
 							Align:Left
 							Bold:True
-				ChatDisplay@CHAT_DISPLAY:
-					Id:CHAT_DISPLAY
-					X:15
-					Y:285
-					Width:PARENT_RIGHT - 30
-					Height:PARENT_BOTTOM - 55 - 275
-					Notification: beepy2.aud
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					X:15
-					Y:PARENT_BOTTOM - 15 - HEIGHT
-					LeftMargin:50
+					Y:PARENT_BOTTOM - HEIGHT - 15
 					Width:PARENT_RIGHT - 30
 					Height:25
+					LeftMargin:50
+					Background: panel-darkred
 					Children:
 						Label@LABEL_CHATTYPE:
 							Id:LABEL_CHATTYPE
@@ -329,6 +323,38 @@ Container@SERVER_LOBBY:
 							Height:25
 							Align:Right
 							Text:Chat:
+				ScrollPanel@CHAT_DISPLAY:
+					Id:CHAT_DISPLAY
+					X:15
+					Y:285
+					Width:PARENT_RIGHT - 30
+					Height:PARENT_BOTTOM - 324
+					ItemSpacing:2
+					Children:
+						Container@CHAT_TEMPLATE:
+							Id:CHAT_TEMPLATE
+							Width:PARENT_RIGHT-28
+							Height:14
+							X:2
+							Y:0
+							Visible:false
+							Children:
+								Label@TIME:
+									Id:TIME
+									X:5
+									Width:50
+									Height:14
+								Label@NAME:
+									Id:NAME
+									X:55
+									Width:50
+									Height:14
+								Label@TEXT:
+									Id:TEXT
+									X:65
+									Height:14
+									Width:PARENT_RIGHT - 100 - 10
+									WordWrap:true
 		CncMenuButton@START_GAME_BUTTON:
 			Id:START_GAME_BUTTON
 			X:0

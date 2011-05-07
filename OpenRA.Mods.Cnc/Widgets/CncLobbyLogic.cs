@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncLobbyLogic : IWidgetDelegate
 	{
 		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
+		ScrollPanelWidget chatPanel;
+		Widget chatTemplate;
+		
 		ScrollPanelWidget Players;
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					lobbyLogic.onGameStart();
 				break;
 				case StaticCrap.AddChatLine:
-					panel.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(a,b,c);
+					lobbyLogic.AddChatLine(a,b,c);
 				break;
 			}	
 		}
@@ -160,7 +163,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				gameStarting = true;
 				orderManager.IssueOrder(Order.Command("startgame"));
 			};
-
+			
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
@@ -181,6 +184,40 @@ namespace OpenRA.Mods.Cnc.Widgets
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
+			
+			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
+			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
+		}
+		
+		public void AddChatLine(Color c, string from, string text)
+		{
+			var name = from+":";
+			var font = Game.Renderer.RegularFont;
+			var nameSize = font.Measure(from);
+			
+			var template = chatTemplate.Clone() as ContainerWidget;
+			template.IsVisible = () => true;
+			
+			var time = System.DateTime.Now;
+			template.GetWidget<LabelWidget>("TIME").GetText = () => "[{0:D2}:{1:D2}]".F(time.Hour, time.Minute);
+			
+			var p = template.GetWidget<LabelWidget>("NAME");
+			p.Color = c;
+			p.GetText = () => name;
+			p.Bounds.Width = nameSize.X;
+			
+			var t = template.GetWidget<LabelWidget>("TEXT");
+			t.Bounds.X += nameSize.X;
+			t.Bounds.Width -= nameSize.X;
+			
+			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
+			text = WidgetUtils.WrapText(text, t.Bounds.Width, font);
+			t.GetText = () => text;
+			var oldHeight = t.Bounds.Height;
+			t.Bounds.Height = font.Measure(text).Y;
+			template.Bounds.Height += (t.Bounds.Height - oldHeight);
+			
+			chatPanel.AddChild(template);
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
