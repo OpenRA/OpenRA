@@ -55,8 +55,8 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Settings
-						CncMenuButton@REPLAY_BUTTON:
-							Id:REPLAY_BUTTON
+						CncMenuButton@REPLAYS_BUTTON:
+							Id:REPLAYS_BUTTON
 							X:450
 							Y:0
 							Width:140

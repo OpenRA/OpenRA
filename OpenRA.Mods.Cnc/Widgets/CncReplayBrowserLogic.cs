@@ -15,25 +15,23 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Widgets.Delegates;
 
-namespace OpenRA.Mods.RA.Widgets.Delegates
+namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class ReplayBrowserDelegate : IWidgetDelegate
+	public class CncReplayBrowserLogic : IWidgetDelegate
 	{
 		Widget widget; 
 
 		[ObjectCreator.UseCtor]
-		public ReplayBrowserDelegate( [ObjectCreator.Param] Widget widget )
+		public CncReplayBrowserLogic([ObjectCreator.Param] Widget widget,
+		                             [ObjectCreator.Param] Action onExit,
+		                             [ObjectCreator.Param] Action onStart)
 		{
 			this.widget = widget;
 
-			widget.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
-				{
-					Widget.CloseWindow();
-					return true;
-				};
+			widget.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = onExit;
 
-			/* find some replays? */
 			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
@@ -44,16 +42,17 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (Directory.Exists(replayDir))
 				foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
 					AddReplay(rl, replayFile, template);
-
-			widget.GetWidget("WATCH_BUTTON").OnMouseUp = mi =>
+			
+			var watch = widget.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
+			watch.IsDisabled = () => currentReplay == null;
+			watch.OnClick = () =>
+			{
+				if (currentReplay != null)
 				{
-					if (currentReplay != null)
-					{
-						Widget.CloseWindow();
-						Game.JoinReplay(CurrentReplay);
-					}
-					return true;
-				};
+					Game.JoinReplay(CurrentReplay);
+					onStart();
+				}
+			};
 
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
@@ -108,44 +107,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
 			entry.IsVisible = () => true;
 			list.AddChild(entry);
-		}
-	}
-
-	/* a maze of twisty little hacks,... */
-	public class ReplaySummary
-	{
-		public readonly int Duration;
-		public readonly Session LobbyInfo;
-
-		public ReplaySummary(string filename)
-		{
-			var lastFrame = 0;
-			var hasSeenGameStart = false;
-			var lobbyInfo = null as Session;
-			using (var conn = new ReplayConnection(filename))
-				conn.Receive((client, packet) =>
-					{
-						var frame = BitConverter.ToInt32(packet, 0);
-						if (packet.Length == 5 && packet[4] == 0xBF)
-							return;	// disconnect
-						else if (packet.Length >= 5 && packet[4] == 0x65)
-							return;	// sync
-						else if (frame == 0)
-						{
-							/* decode this to recover lobbyinfo, etc */
-							var orders = packet.ToOrderList(null);
-							foreach (var o in orders)
-								if (o.OrderString == "StartGame")
-									hasSeenGameStart = true;
-								else if (o.OrderString == "SyncInfo" && !hasSeenGameStart)
-									lobbyInfo = Session.Deserialize(o.TargetString);
-						}
-						else
-							lastFrame = Math.Max(lastFrame, frame);
-					});
-
-			Duration = lastFrame;
-			LobbyInfo = lobbyInfo;
 		}
 	}
 }

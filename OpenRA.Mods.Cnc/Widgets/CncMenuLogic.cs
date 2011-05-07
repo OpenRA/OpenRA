@@ -40,6 +40,17 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			mainMenu.GetWidget<CncMenuButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
 			mainMenu.GetWidget<CncMenuButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
+			
+			mainMenu.GetWidget<CncMenuButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("REPLAYBROWSER_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => { Menu = MenuType.Main; Widget.CloseWindow(); }) },
+					{ "onStart", new Action(RemoveShellmapUI) }
+				});
+			};
+			
 			mainMenu.GetWidget<CncMenuButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
 			mainMenu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 			
@@ -74,15 +85,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
+		void RemoveShellmapUI()
+		{
+			Widget.CloseWindow();
+			Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
+		}
+		
 		void OpenLobbyPanel()
 		{
-			// Starting a game: remove all shellmap ui
-			Action onStart = () =>
-			{
-				Widget.CloseWindow();
-				Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
-			};
-			
 			// Quit the lobby: disconnect and restore menu
 			Action onLobbyClose = () =>
 			{
@@ -95,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
 			{
 				{ "onExit", onLobbyClose },
-				{ "onStart", onStart }
+				{ "onStart", new Action(RemoveShellmapUI) }
 			});
 		}
 		
