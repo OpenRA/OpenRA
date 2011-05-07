@@ -58,18 +58,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		Map MapFromSummary(ReplaySummary rs)
-		{
-			if (rs.LobbyInfo == null)
-				return null;
-			
-			var map = rs.LobbyInfo.GlobalSettings.Map;
-			if (!Game.modData.AvailableMaps.ContainsKey(map))
-				return null;
-
-			return Game.modData.AvailableMaps[map];
-		}
-
 		string currentReplay = null;
 		string CurrentReplay
 		{
@@ -82,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					try
 					{
 						var summary = new ReplaySummary(currentReplay);
-						var mapStub = MapFromSummary(summary);
+						var mapStub = summary.Map();
 
 						widget.GetWidget<LabelWidget>("DURATION").GetText =
 							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
@@ -146,6 +134,18 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			Duration = lastFrame;
 			LobbyInfo = lobbyInfo;
+		}
+
+		public Map Map()
+		{
+			if (LobbyInfo == null)
+				return null;
+
+			var map = LobbyInfo.GlobalSettings.Map;
+			if (!Game.modData.AvailableMaps.ContainsKey(map))
+				return null;
+
+			return Game.modData.AvailableMaps[map];
 		}
 	}
 }

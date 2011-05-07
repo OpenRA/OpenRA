@@ -35,16 +35,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
+			var template = widget.GetWidget("REPLAY_TEMPLATE");
 			CurrentReplay = null;
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
-				foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
+			{
+				var files = Directory.GetFiles(replayDir, "*.rep").Reverse();
+				foreach (var replayFile in files)
 					AddReplay(rl, replayFile, template);
 			
+				CurrentReplay = files.FirstOrDefault();
+			}
+
 			var watch = widget.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => currentReplay == null;
+			watch.IsDisabled = () => currentReplay == null || currentMap == null;
 			watch.OnClick = () =>
 			{
 				if (currentReplay != null)
@@ -57,19 +62,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		Map MapFromSummary(ReplaySummary rs)
-		{
-			if (rs.LobbyInfo == null)
-				return null;
-			
-			var map = rs.LobbyInfo.GlobalSettings.Map;
-			if (!Game.modData.AvailableMaps.ContainsKey(map))
-				return null;
-
-			return Game.modData.AvailableMaps[map];
-		}
-
 		string currentReplay = null;
+		Map currentMap = null;
 		string CurrentReplay
 		{
 			get { return currentReplay; }
@@ -81,29 +75,33 @@ namespace OpenRA.Mods.Cnc.Widgets
 					try
 					{
 						var summary = new ReplaySummary(currentReplay);
-						var mapStub = MapFromSummary(summary);
+						currentMap = summary.Map();
 
 						widget.GetWidget<LabelWidget>("DURATION").GetText =
 							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-						widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
+						widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
 						widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
-							() => mapStub != null ? mapStub.Title : "(Unknown Map)";
+							() => currentMap != null ? currentMap.Title : "(Unknown Map)";
+
+						var players = summary.LobbyInfo.Slots.Count(s => summary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
+						widget.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 					}
 					catch(Exception e)
 					{
 						Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
 						currentReplay = null;
+						currentMap = null;
 					}
 				}
 			}
 		}
 
-		void AddReplay(ScrollPanelWidget list, string filename, LabelWidget template)
+		void AddReplay(ScrollPanelWidget list, string filename, Widget template)
 		{
-			var entry = template.Clone() as LabelWidget;
-			entry.Id = "REPLAY_";
-			entry.GetText = () => "   {0}".F(Path.GetFileName(filename));
-			entry.GetBackground = () => (CurrentReplay == filename) ? "dialog2" : null;
+			var entry = template.Clone() as ContainerWidget;
+			var f = Path.GetFileName(filename);
+			entry.GetWidget<LabelWidget>("TITLE").GetText = () => f;
+			entry.GetBackground = () => (CurrentReplay == filename) ? "panel-darkred" : null;
 			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
 			entry.IsVisible = () => true;
 			list.AddChild(entry);

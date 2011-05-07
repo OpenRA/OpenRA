@@ -2,52 +2,64 @@ Container@REPLAYBROWSER_PANEL:
 	Id:REPLAYBROWSER_PANEL
 	Delegate:CncReplayBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 500)/2
-	Width:740
-	Height:535
+	Y:(WINDOW_BOTTOM - 300)/2
+	Width:520
+	Height:335
 	Children:
 		Label@TITLE:
-			Width:740
+			Width:520
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
 			Text:Replay Viewer
 		Background@bg:
-			Width:740
-			Height:500
+			Width:520
+			Height:300
 			Background:panel-black
 			Children:
 				CncScrollPanel@REPLAY_LIST:
 					Id:REPLAY_LIST
 					X:15
-					Y:50
-					Width:390
-					Height:300
+					Y:15
+					Width:286
+					Height:270
 					Children:
-						Label@REPLAY_TEMPLATE:
+						Container@REPLAY_TEMPLATE:
 							Id:REPLAY_TEMPLATE
-							Width:PARENT_RIGHT-28
+							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
 							Y:0
 							Visible:false
-				Container@REPLAY_INFO:
-					Id:REPLAY_INFO
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
-					Visible:false
+							Children:
+								Label@TITLE:
+									X:10
+									Id:TITLE
+									Width:PARENT_RIGHT-20
+									Height:25
+				Background@MAP_BG:
+					X:PARENT_RIGHT-WIDTH-15
+					Y:15
+					Width:194
+					Height:194
+					Background:panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
 							Id:MAP_PREVIEW
-							X:PARENT_RIGHT-241
-							Y:30
+							X:1
+							Y:1
 							Width:192
 							Height:192
+				Container@REPLAY_INFO:
+					Id:REPLAY_INFO
+					X:PARENT_RIGHT-WIDTH-15
+					Y:219
+					Width:194
+					Height:56
+					Visible:false
+					Children:
 						Label@MAP_TITLE_LABEL:
-							Id:MAP_TITLE_LABEL
-							X:PARENT_RIGHT - 200 - WIDTH
-							Y:250
 							Align:Right
 							Width:70
 							Height:20
@@ -55,15 +67,11 @@ Container@REPLAYBROWSER_PANEL:
 							Bold:True
 						Label@MAP_TITLE:
 							Id:MAP_TITLE
-							X:PARENT_RIGHT - 195
-							Y:250
-							Align:Left
+							X:75
 							Width:70
 							Height:20
 						Label@DURATION_LABEL:
-							Id:DURATION_LABEL
-							X:PARENT_RIGHT - 200 - WIDTH
-							Y:270
+							Y:20
 							Align:Right
 							Width:70
 							Height:20
@@ -71,22 +79,34 @@ Container@REPLAYBROWSER_PANEL:
 							Bold:True
 						Label@DURATION:
 							Id:DURATION
-							X:PARENT_RIGHT - 195
-							Y:270
-							Align:Left
+							X:75
+							Y:20
 							Width:70
 							Height:20
-				CncMenuButton@WATCH_BUTTON:
-					Id:WATCH_BUTTON
-					X:0
-					Y:499
-					Width:140
-					Height:35
-					Text:Watch
+						Label@PLAYERS_LABEL:
+							Y:40
+							Align:Right
+							Width:70
+							Height:20
+							Text:Players:
+							Bold:True
+						Label@PLAYERS:
+							Id:PLAYERS
+							X:75
+							Y:40
+							Width:70
+							Height:20
 				CncMenuButton@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON
-					X:600
-					Y:499
+					X:0
+					Y:299
 					Width:140
 					Height:35
 					Text:Back
+				CncMenuButton@WATCH_BUTTON:
+					Id:WATCH_BUTTON
+					X:380
+					Y:299
+					Width:140
+					Height:35
+					Text:Watch
