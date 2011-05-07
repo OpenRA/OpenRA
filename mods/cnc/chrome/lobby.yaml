@@ -109,7 +109,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:390
 									Y:0
-								Checkbox@STATUS:
+								CncCheckbox@STATUS:
 									Id:STATUS
 									X:448
 									Y:2
@@ -139,7 +139,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								Button@KICK:
+								CncMenuButton@KICK:
 									Id:KICK
 									Text:X
 									Width:25
@@ -181,7 +181,7 @@ Container@SERVER_LOBBY:
 									Align:Center
 									X:390
 									Y:0
-								Checkbox@STATUS:
+								CncCheckbox@STATUS:
 									Id:STATUS
 									X:448
 									Y:2
@@ -211,9 +211,10 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								Button@JOIN:
+								CncMenuButton@JOIN:
 									Id:JOIN
 									Text:Play in this slot
+									Font:Regular
 									Width:278
 									Height:25
 									X:160
@@ -242,9 +243,10 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:0
 									Y:0
-								Button@JOIN:
+								CncMenuButton@JOIN:
 									Id:JOIN
 									Text:Play in this slot
+									Font:Regular
 									Width:278
 									Height:25
 									X:160

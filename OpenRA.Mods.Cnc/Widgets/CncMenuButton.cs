@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public Func<bool> IsDisabled = () => false;
 		public Action OnClick = () => {};
+		public Renderer.FontType Font = Renderer.FontType.Bold;
 		
 		public CncMenuButtonWidget()
 			: base()
@@ -26,29 +27,32 @@ namespace OpenRA.Mods.Cnc.Widgets
 			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 		}
 		
-		protected CncMenuButtonWidget(CncMenuButtonWidget widget)
-			: base(widget)
+		protected CncMenuButtonWidget(CncMenuButtonWidget other)
+			: base(other)
 		{
 			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
+			Font = other.Font;
 		}
 		
 		public override int2 ChildOrigin { get { return RenderOrigin; } }
 		public override void DrawInner()
 		{
-			var font = Game.Renderer.BoldFont;
+			var rb = RenderBounds;
+			var font = Game.Renderer.Fonts[Font];
 			var state = IsDisabled() ? "button-disabled" : 
 						Depressed ? "button-pressed" : 
-						RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : 
+						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
 						"button";
 			
-			WidgetUtils.DrawPanel(state, RenderBounds);
+			WidgetUtils.DrawPanel(state, rb);
 			var text = GetText();
 
 			font.DrawText(text,
-				new int2(RenderOrigin.X + UsableWidth / 2, RenderOrigin.Y + Bounds.Height / 2)
+				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2), IsDisabled() ? Color.Gray : Color.White);
 		}
+		public override Widget Clone() { return new CncMenuButtonWidget(this); }
 	}
 	
 	public class CncCheckboxWidget : CncMenuButtonWidget
@@ -81,6 +85,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					ChromeProvider.GetImage("checkbox", "checked"),
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
+		public override Widget Clone() { return new CncCheckboxWidget(this); }
 	}
 	
 	public class CncScrollPanelWidget : ScrollPanelWidget
@@ -148,6 +153,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			ListOffset = Math.Min(0,Bounds.Height - ContentHeight);
 		}
+		public override Widget Clone() { return new CncScrollPanelWidget(this); }
+
 	}
 }
 

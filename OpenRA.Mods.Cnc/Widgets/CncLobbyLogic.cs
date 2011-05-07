@@ -464,9 +464,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 					team.OnMouseDown = _ => ShowTeamDropDown(team);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					var status = template.GetWidget<CncCheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
-					status.OnChange += CycleReady;
+					status.OnClick += CycleReady;
 					
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 					
@@ -496,10 +496,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var team = template.GetWidget<LabelWidget>("TEAM");
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					var status = template.GetWidget<CncCheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index)
-						status.OnChange += CycleReady;
+						status.OnClick += CycleReady;
 
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 							
@@ -528,7 +528,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 
-		void CycleReady(bool ready)
+		void CycleReady()
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
 		}
