@@ -108,7 +108,7 @@ Container@SERVERBROWSER_PANEL:
 					Y:345
 					Width:710
 					Height:140
-					Background:dialog2
+					Background:panel-gray
 					Children:
 						Container@SERVER_INFO:
 							Id:SERVER_INFO

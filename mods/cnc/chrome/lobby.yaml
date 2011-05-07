@@ -23,7 +23,7 @@ Container@SERVER_LOBBY:
 					Y:30
 					Width:194
 					Height:194
-					Background:panel-darkred
+					Background:panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
 							Id:MAP_PREVIEW
