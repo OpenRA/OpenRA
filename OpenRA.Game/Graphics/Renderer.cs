@@ -42,6 +42,9 @@ namespace OpenRA.Graphics
 
 		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
 
+		public enum FontType { Regular, Bold, Title, Tiny, TinyBold, BigBold }
+		public Dictionary<FontType, SpriteFont> Fonts;
+
 		public Renderer()
 		{
 			SpriteShader = device.CreateShader("world-shp");
@@ -60,6 +63,16 @@ namespace OpenRA.Graphics
 			BigBoldFont = new SpriteFont("FreeSansBold.ttf", 24);
             TinyFont = new SpriteFont("FreeSans.ttf", 10);
 			TinyBoldFont = new SpriteFont("FreeSansBold.ttf", 10);
+			
+			Fonts = new Dictionary<FontType, SpriteFont>()
+			{
+				{FontType.Regular, RegularFont},
+				{FontType.Bold, BoldFont},
+				{FontType.Title, TitleFont},
+				{FontType.Tiny, TinyFont},
+				{FontType.TinyBold, TinyBoldFont},
+				{FontType.BigBold, BigBoldFont}
+			};
 			
 			for( int i = 0 ; i < TempBufferCount ; i++ )
 				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );

@@ -19,12 +19,11 @@ namespace OpenRA.Widgets
 	{
 		public enum TextAlign { Left, Center, Right }
 		public enum TextVAlign { Top, Middle, Bottom }
-		public enum LabelFont { Regular, Bold, Title, Tiny, TinyBold, BigBold }
 		public string Text = null;
 		public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
-		public LabelFont Font = LabelFont.Regular;
+		public Renderer.FontType Font = Renderer.FontType.Regular;
 		public Color Color = Color.White;
 		public bool Bold = false; // Legacy flag. TODO: Remove
 		public bool Contrast = false;
@@ -62,29 +61,10 @@ namespace OpenRA.Widgets
 			if (bg != null)
 				WidgetUtils.DrawPanel(bg, RenderBounds );
 			
-			if (Font == LabelFont.Regular && Bold)
-				Font = LabelFont.Bold;
+			if (Font == Renderer.FontType.Regular && Bold)
+				Font = Renderer.FontType.Bold;
 			
-			// TODO: Hardcoded font types are stupid
-			SpriteFont font = Game.Renderer.RegularFont;
-			switch (Font)
-			{
-				case LabelFont.Bold:
-					font = Game.Renderer.BoldFont;
-				break;
-				case LabelFont.Tiny:
-					font = Game.Renderer.TinyFont;
-				break;
-				case LabelFont.TinyBold:
-					font = Game.Renderer.TinyBoldFont;
-				break;
-				case LabelFont.Title:
-					font = Game.Renderer.TitleFont;
-				break;
-				case LabelFont.BigBold:
-					font = Game.Renderer.BigBoldFont;
-				break;
-			}
+			SpriteFont font = Game.Renderer.Fonts[Font];
 			var text = GetText();
 			if (text == null)
 				return;
