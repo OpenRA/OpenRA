@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		}
 		
 		[ObjectCreator.UseCtor]
-		public CncServerBrowserLogic( [ObjectCreator.Param] Widget widget, [ObjectCreator.Param] Action onExit )
+		public CncServerBrowserLogic([ObjectCreator.Param] Widget widget,
+		                            [ObjectCreator.Param] Action onExit)
 		{
 			var panel = widget.GetWidget("SERVERBROWSER_PANEL");
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
@@ -186,6 +187,38 @@ namespace OpenRA.Mods.Cnc.Widgets
 				return;
 			
 			browserLogic.RefreshServerList(games);
+		}
+	}
+	
+	public class CncDirectConnectLogic : IWidgetDelegate
+	{
+		[ObjectCreator.UseCtor]
+		public CncDirectConnectLogic([ObjectCreator.Param] Widget widget,
+		                             [ObjectCreator.Param] Action onExit,
+		                             [ObjectCreator.Param] Action openLobby)
+		{
+			var panel = widget.GetWidget("DIRECTCONNECT_PANEL");
+			var ip = panel.GetWidget<TextFieldWidget>("IP");
+			var port = panel.GetWidget<TextFieldWidget>("PORT");
+			
+			var last = Game.Settings.Player.LastServer.Split(':').ToArray();
+			ip.Text = last.Length > 1 ? last[0] : "localhost";
+			port.Text = last.Length > 2 ? last[1] : "1234";
+
+            panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
+            {
+                int p;
+				if (!int.TryParse(port.Text, out p))
+					p = 1234;
+				
+				Game.Settings.Player.LastServer = "{0}:{1}".F(ip.Text, p);
+                Game.Settings.Save();
+				
+                Game.JoinServer(ip.Text,p);
+				openLobby();
+            };
+
+			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
 		}
 	}
 }

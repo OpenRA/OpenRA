@@ -57,6 +57,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
+			multiplayerMenu.GetWidget<CncMenuButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("DIRECTCONNECT_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => { Menu = MenuType.Multiplayer; Widget.CloseWindow(); }) },
+					{ "openLobby", new Action(OpenLobbyPanel) }
+				});
+			};		
+			
 			// Settings menu
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
@@ -64,6 +74,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
+		void OpenLobbyPanel()
+		{
+			// Starting a game: remove all shellmap ui
+			Action onStart = () =>
+			{
+				Widget.CloseWindow();
+				Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
+			};
+			
+			// Quit the lobby: disconnect and restore menu
+			Action onLobbyClose = () =>
+			{
+				Game.DisconnectOnly();
+				Menu = MenuType.Main;
+				Widget.CloseWindow();
+			};
+			
+			Menu = MenuType.None;
+			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
+			{
+				{ "onExit", onLobbyClose },
+				{ "onStart", onStart }
+			});
+		}
 		
 		void StartSkirmishGame()
 		{
@@ -76,27 +110,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settings.Server.ExternalPort = 1234;
 			Game.CreateAndJoinServer(settings, map);
 			
-			Menu = MenuType.None;
-			
-			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
-			{
-				// Returning to main menu
-				{"onExit", new Action(() =>
-					{
-						Game.DisconnectOnly();
-						Menu = MenuType.Main;
-						Widget.CloseWindow();
-					})
-				},
-				
-				// Starting a game: remove all shellmap ui
-				{"onStart", new Action(() =>
-					{
-						Widget.CloseWindow();
-						Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
-					})
-				}
-			});
+			OpenLobbyPanel();
 		}
 	}
 }

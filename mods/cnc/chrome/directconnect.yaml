@@ -1,122 +1,60 @@
-Background@DIRECTCONNECT_BG:
-	Id:DIRECTCONNECT_BG
-	Delegate:DirectConnectDelegate
+Container@DIRECTCONNECT_PANEL:
+	Id:DIRECTCONNECT_PANEL
+	Delegate:CncDirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:400
-	Height:155
+	Y:(WINDOW_BOTTOM - 90)/2
+	Width:370
+	Height:125
 	Children:
-		Label@DIRECTCONNECT_LABEL_TITLE:
-			Id:DIRECTCONNECT_LABEL_TITLE
-			X:0
-			Y:20
-			Width:400
-			Height:25
-			Text:Direct Connect
+		Label@TITLE:
+			Width:PARENT_RIGHT
+			Y:0-25
+			Font:BigBold
+			Contrast:true
 			Align:Center
-			Bold:True
-		Label@ADDRESS_LABEL:
-			Id:ADDRESS_LABEL
-			X:50
-			Y:59
-			Width:95
-			Height:25
-			Align:Right
-			Text:Server Address:
-		TextField@SERVER_ADDRESS:
-			Id:SERVER_ADDRESS
-			X:150
-			Y:60
-			Width:200
-			MaxLength:50
-			Height:25
-		Button@JOIN_BUTTON:
+			Text:Connect to Server
+		Background@bg:
+			Width:370
+			Height:90
+			Background:panel-black
+			Children:
+				Label@ADDRESS_LABEL:
+					X:50
+					Y:14
+					Width:95
+					Height:25
+					Align:Right
+					Text:Address:
+				TextField@SERVER_ADDRESS:
+					Id:IP
+					X:150
+					Y:15
+					Width:200
+					Height:25
+				Label@ADDRESS_LABEL:
+					X:50
+					Y:49
+					Width:95
+					Height:25
+					Align:Right
+					Text:Port:
+				TextField@PORT:
+					Id:PORT
+					X:150
+					Y:50
+					Width:200
+					Height:25
+		CncMenuButton@JOIN_BUTTON:
 			Id:JOIN_BUTTON
-			X:130
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
+			X:0
+			Y:89
+			Width:140
+			Height:35
 			Text:Join
-			Bold:True
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
-			X:260
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Cancel
-			Bold:True
-Background@CONNECTION_FAILED_BG:
-	Id:CONNECTION_FAILED_BG
-	Delegate:ConnectionFailedDelegate
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:450
-	Height:150
-	Children:
-		Label@CONNECTION_FAILED_TITLE:
-			Id:CONNECTION_FAILED_TITLE
-			X:0
-			Y:20
-			Width:450
-			Height:25
-			Text:Connection Failed
-			Align:Center
-			Bold:True
-		Label@CONNECTION_FAILED_DESC:
-			Id:CONNECTION_FAILED_DESC
-			X:0
-			Y:60
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
-			Align:Center
-		Button@CONNECTION_BUTTON_RETRY:
-			Id:CONNECTION_BUTTON_RETRY
-			X:PARENT_RIGHT - 360
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Retry
-			Bold:True
-		Button@CONNECTION_BUTTON_CANCEL:
-			Id:CONNECTION_BUTTON_CANCEL
-			X:PARENT_RIGHT - 180
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Cancel
-			Bold:True
-Background@CONNECTING_BG:
-	Id:CONNECTING_BG
-	Delegate:ConnectionDialogsDelegate
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:450
-	Height:150
-	Children:
-		Label@CONNECTING_TITLE:
-			Id:CONNECTING_TITLE
-			X:0
-			Y:20
-			Width:450
-			Height:25
-			Text:Connecting
-			Align:Center
-			Bold:True
-		Label@CONNECTING_DESC:
-			Id:CONNECTING_DESC
-			X:0
-			Y:60
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
-			Align:Center
-		Button@CONNECTION_BUTTON_ABORT:
-			Id:CONNECTION_BUTTON_ABORT
-			X:PARENT_RIGHT - 180
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Abort
-			Bold:True
+		CncMenuButton@BACK_BUTTON:
+			Id:BACK_BUTTON
+			X:230
+			Y:89
+			Width:140
+			Height:35
+			Text:Back
