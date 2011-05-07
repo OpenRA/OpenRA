@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncLobbyLogic : IWidgetDelegate
 	{
 		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
-		ScrollPanelWidget chatPanel;
+		CncScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 		
 		ScrollPanelWidget Players;
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				return true;
 			};
 			
-			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
+			chatPanel = lobby.GetWidget<CncScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
 		}
 		
@@ -218,6 +218,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			template.Bounds.Height += (t.Bounds.Height - oldHeight);
 			
 			chatPanel.AddChild(template);
+			chatPanel.ScrollToBottom();
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)

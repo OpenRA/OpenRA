@@ -22,15 +22,15 @@ namespace OpenRA.Widgets
 		public int ItemSpacing = 2;
 		
 		public int ContentHeight = 0;
-		float ListOffset = 0;
-		bool UpPressed = false;
-		bool DownPressed = false;
-		bool ThumbPressed = false;
-		Rectangle upButtonRect;
-		Rectangle downButtonRect;
-		Rectangle backgroundRect;
-		Rectangle scrollbarRect;
-		Rectangle thumbRect;
+		protected float ListOffset = 0;
+		protected bool UpPressed = false;
+		protected bool DownPressed = false;
+		protected bool ThumbPressed = false;
+		protected Rectangle upButtonRect;
+		protected Rectangle downButtonRect;
+		protected Rectangle backgroundRect;
+		protected Rectangle scrollbarRect;
+		protected Rectangle thumbRect;
 		
 		public ScrollPanelWidget() : base() {}
 		protected ScrollPanelWidget(ScrollPanelWidget other)
@@ -115,7 +115,7 @@ namespace OpenRA.Widgets
 		void Scroll(int direction)
 		{
 			ListOffset += direction*ScrollVelocity;
-			ListOffset = Math.Min(0,Math.Max(RenderBounds.Height - ContentHeight, ListOffset));
+			ListOffset = Math.Min(0,Math.Max(Bounds.Height - ContentHeight, ListOffset));
 		}
 		
 		public override void Tick ()
