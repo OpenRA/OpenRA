@@ -23,13 +23,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public CncMenuButtonWidget()
 			: base()
 		{
-			OnMouseUp = mi => { OnClick(); return true; };
+			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 		}
 		
 		protected CncMenuButtonWidget(CncMenuButtonWidget widget)
 			: base(widget)
 		{
-			OnMouseUp = mi => { OnClick(); return true; };
+			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 		}
 		
 		public override int2 ChildOrigin { get { return RenderOrigin; } }
@@ -48,6 +48,38 @@ namespace OpenRA.Mods.Cnc.Widgets
 				new int2(RenderOrigin.X + UsableWidth / 2, RenderOrigin.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
 				font.Measure(text).Y / 2), IsDisabled() ? Color.Gray : Color.White);
+		}
+	}
+	
+	public class CncCheckboxWidget : CncMenuButtonWidget
+	{
+		public CncCheckboxWidget()
+			: base() { }
+		protected CncCheckboxWidget(CncCheckboxWidget widget)
+			: base(widget) { }
+		
+		public Func<bool> IsChecked = () => false;
+		public int baseLine = 1;
+
+		public override void DrawInner()
+		{
+			var state = IsDisabled() ? "button-disabled" : 
+				Depressed ? "button-pressed" : 
+				RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : 
+				"button";
+			
+			var font = Game.Renderer.BoldFont;
+			var rect = RenderBounds;
+			WidgetUtils.DrawPanel(state, new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height)));
+
+			var textSize = font.Measure(Text);
+			font.DrawText(Text,
+				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
+
+			if (IsChecked())
+				WidgetUtils.DrawRGBA(
+					ChromeProvider.GetImage("checkbox", "checked"),
+					new float2(rect.Left + 2, rect.Top + 2));
 		}
 	}
 }

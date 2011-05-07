@@ -139,35 +139,27 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var disconnectButton = lobby.GetWidget<CncMenuButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = onExit;
 			
-			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
+			var gameStarting = false;
+			var lockTeamsCheckbox = lobby.GetWidget<CncCheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.OnChange += _ =>
-			{
-				if (Game.IsHost)
-					orderManager.IssueOrder(Order.Command(
+			lockTeamsCheckbox.IsDisabled = () => !Game.IsHost || gameStarting;
+			lockTeamsCheckbox.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
-			};
-
-			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
+		
+			var allowCheats = lobby.GetWidget<CncCheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-			allowCheats.OnChange += _ =>
-			{
-				if (Game.IsHost)
-					orderManager.IssueOrder(Order.Command(
+			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting;
+			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
-			};
-			
+				
 			var startGameButton = lobby.GetWidget<CncMenuButtonWidget>("START_GAME_BUTTON");
+			startGameButton.IsVisible = () => Game.IsHost;
+			startGameButton.IsDisabled = () => gameStarting;
 			startGameButton.OnClick = () =>
 			{
-				mapButton.Visible = false;
-				disconnectButton.Visible = false;
-				lockTeamsCheckbox.Visible = false;
+				gameStarting = true;
 				orderManager.IssueOrder(Order.Command("startgame"));
 			};
-			
-			// Todo: Only show if the map requirements are met for player slots
-			startGameButton.IsVisible = () => Game.IsHost;
 
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");

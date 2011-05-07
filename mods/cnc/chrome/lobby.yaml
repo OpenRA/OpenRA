@@ -31,14 +31,14 @@ Container@SERVER_LOBBY:
 							Y:1
 							Width:192
 							Height:192
-				Checkbox@LOCKTEAMS_CHECKBOX:
+				CncCheckbox@LOCKTEAMS_CHECKBOX:
 					Id:LOCKTEAMS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:230
 					Width:80
 					Height:20
 					Text: Lock Teams
-				Checkbox@ALLOWCHEATS_CHECKBOX:
+				CncCheckbox@ALLOWCHEATS_CHECKBOX:
 					Id:ALLOWCHEATS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:255
