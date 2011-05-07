@@ -24,7 +24,12 @@ namespace OpenRA
 		{
 			foreach( var file in modData.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
 				foreach( var w in file )
-					widgets.Add( w.Key.Substring( w.Key.IndexOf( '@' ) + 1 ), w );
+				{
+					var key = w.Key.Substring( w.Key.IndexOf( '@' ) + 1 );
+					if (widgets.ContainsKey(key))
+						throw new InvalidDataException("Widget has duplicate Key `{0}`".F(w.Key));
+					widgets.Add( key, w );
+				}
 		}
 
 		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, string w )
