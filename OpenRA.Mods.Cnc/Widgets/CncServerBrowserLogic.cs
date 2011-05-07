@@ -89,14 +89,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 			
+			// Map preview
+			var preview = panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+			preview.Map = () => CurrentMap();
+			preview.IsVisible = () => CurrentMap() != null;
 			
 			// Server info
 			var infoPanel = panel.GetWidget("SERVER_INFO");
 			infoPanel.IsVisible = () => currentServer != null;
-			var preview = infoPanel.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
-			preview.Map = () => CurrentMap();
-			preview.IsVisible = () => CurrentMap() != null;
-
 			infoPanel.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
 			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserDelegate.GenerateModsLabel(currentServer);
 			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var game = loop;
 				
 				var template = serverTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (currentServer == game) ? "dialog2" : null;
+				template.GetBackground = () => (currentServer == game) ? "panel-darkred" : null;
 				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;

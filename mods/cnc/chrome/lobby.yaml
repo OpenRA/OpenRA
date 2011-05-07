@@ -335,7 +335,7 @@ Container@SERVER_LOBBY:
 					Children:
 						Container@CHAT_TEMPLATE:
 							Id:CHAT_TEMPLATE
-							Width:PARENT_RIGHT-28
+							Width:PARENT_RIGHT-27
 							Height:14
 							X:2
 							Y:0
@@ -357,27 +357,27 @@ Container@SERVER_LOBBY:
 									Height:14
 									Width:PARENT_RIGHT - 100 - 10
 									WordWrap:true
-		CncMenuButton@START_GAME_BUTTON:
-			Id:START_GAME_BUTTON
+		CncMenuButton@DISCONNECT_BUTTON:
+			Id:DISCONNECT_BUTTON
 			X:0
 			Y:499
 			Width:140
 			Height:35
-			Text:Start Game
+			Text:Leave Game
 		CncMenuButton@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
-			X:150
+			X:450
 			Y:499
 			Width:140
 			Height:35
 			Text:Change Map
-		CncMenuButton@DISCONNECT_BUTTON:
-			Id:DISCONNECT_BUTTON
+		CncMenuButton@START_GAME_BUTTON:
+			Id:START_GAME_BUTTON
 			X:600
 			Y:499
 			Width:140
 			Height:35
-			Text:Leave Game
+			Text:Start Game
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
 	Background:dialog2

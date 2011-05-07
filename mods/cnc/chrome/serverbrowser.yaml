@@ -23,11 +23,11 @@ Container@SERVERBROWSER_PANEL:
 					X:15
 					Y:30
 					Width:710
-					Height:300
+					Height:315
 					Children:
 						Container@SERVER_TEMPLATE:
 							Id:SERVER_TEMPLATE
-							Width:PARENT_RIGHT-28
+							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
 							Y:0
@@ -103,102 +103,102 @@ Container@SERVERBROWSER_PANEL:
 					Font:Bold
 					Align:Center
 					Visible:false
-				Background@INFO_BG:
+				Background@MAP_BG:
 					X:15
-					Y:345
-					Width:710
-					Height:140
+					Y:355
+					Width:130
+					Height:130
 					Background:panel-gray
 					Children:
-						Container@SERVER_INFO:
-							Id:SERVER_INFO
-							Width:PARENT_RIGHT
-							Height:PARENT_BOTTOM
-							Visible:false
+						MapPreview@MAP_PREVIEW:
+							Id:MAP_PREVIEW
+							X:1
+							Y:1
+							Width:128
+							Height:128
+				Container@SERVER_INFO:
+					Id:SERVER_INFO
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Visible:false
+					Children:
+						Container@STATS_BIN:
+							X:150
+							Y:375
+							Width:150
 							Children:
-								MapPreview@MAP_PREVIEW:
-									Id:MAP_PREVIEW
-									X:10
-									Y:10
-									Width:128
-									Height:128
-								Container@STATS_BIN:
-									X:200
-									Y:30
-									Width:150
-									Children:
-										Label@SERVER_IP_LABEL:
-											Id:SERVER_IP_LABEL
-											X:0
-											Y:0
-											Align:Right
-											Width:70
-											Height:20
-											Text:Server:
-											Font:Bold
-										Label@SERVER_IP:
-											Id:SERVER_IP
-											X:70
-											Y:0
-											Align:Left
-											Width:70
-											Height:20
-										Label@MAP_PLAYERS_LABEL:
-											Id:MAP_PLAYERS_LABEL
-											X:0
-											Y:20
-											Align:Right
-											Width:70
-											Height:20
-											Text:Players:
-											Font:Bold
-										Label@MAP_PLAYERS:
-											Id:MAP_PLAYERS
-											X:70
-											Y:20
-											Align:Left
-											Width:70
-											Height:20
-										Label@MAP_TITLE_LABEL:
-											Id:MAP_TITLE_LABEL
-											X:0
-											Y:40
-											Align:Right
-											Width:70
-											Height:20
-											Text:Map:
-											Font:Bold
-										Label@MAP_TITLE:
-											Id:MAP_TITLE
-											X:70
-											Y:40
-											Align:Left
-											Width:70
-											Height:20
-										Label@SERVER_MODS_LABEL:
-											Id:SERVER_MODS_LABEL
-											X:0
-											Y:60
-											Align:Right
-											Width:70
-											Height:20
-											Text:Mods:
-											Font:Bold
-										Label@SERVER_MODS:
-											Id:SERVER_MODS
-											X:70
-											Y:63
-											Align:Left
-											VAlign:Top
-											Width:70
-											Height:20
-		CncMenuButton@JOIN_BUTTON:
-			Id:JOIN_BUTTON
+								Label@SERVER_IP_LABEL:
+									Id:SERVER_IP_LABEL
+									X:0
+									Y:0
+									Align:Right
+									Width:70
+									Height:20
+									Text:Server:
+									Font:Bold
+								Label@SERVER_IP:
+									Id:SERVER_IP
+									X:70
+									Y:0
+									Align:Left
+									Width:70
+									Height:20
+								Label@MAP_PLAYERS_LABEL:
+									Id:MAP_PLAYERS_LABEL
+									X:0
+									Y:20
+									Align:Right
+									Width:70
+									Height:20
+									Text:Players:
+									Font:Bold
+								Label@MAP_PLAYERS:
+									Id:MAP_PLAYERS
+									X:70
+									Y:20
+									Align:Left
+									Width:70
+									Height:20
+								Label@MAP_TITLE_LABEL:
+									Id:MAP_TITLE_LABEL
+									X:0
+									Y:40
+									Align:Right
+									Width:70
+									Height:20
+									Text:Map:
+									Font:Bold
+								Label@MAP_TITLE:
+									Id:MAP_TITLE
+									X:70
+									Y:40
+									Align:Left
+									Width:70
+									Height:20
+								Label@SERVER_MODS_LABEL:
+									Id:SERVER_MODS_LABEL
+									X:0
+									Y:60
+									Align:Right
+									Width:70
+									Height:20
+									Text:Mods:
+									Font:Bold
+								Label@SERVER_MODS:
+									Id:SERVER_MODS
+									X:70
+									Y:63
+									Align:Left
+									VAlign:Top
+									Width:70
+									Height:20
+		CncMenuButton@BACK_BUTTON:
+			Id:BACK_BUTTON
 			X:0
 			Y:499
 			Width:140
 			Height:35
-			Text:Join
+			Text:Back
 		CncMenuButton@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
 			X:450
@@ -206,10 +206,10 @@ Container@SERVERBROWSER_PANEL:
 			Width:140
 			Height:35
 			Text:Refresh
-		CncMenuButton@BACK_BUTTON:
-			Id:BACK_BUTTON
+		CncMenuButton@JOIN_BUTTON:
+			Id:JOIN_BUTTON
 			X:600
 			Y:499
 			Width:140
 			Height:35
-			Text:Back
+			Text:Join

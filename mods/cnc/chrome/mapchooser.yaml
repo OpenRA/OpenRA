@@ -40,7 +40,7 @@ Container@MAP_CHOOSER:
 					Children:
 						Container@MAP_TEMPLATE:
 							Id:MAP_TEMPLATE
-							Width:PARENT_RIGHT-28
+							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
 							Y:0
