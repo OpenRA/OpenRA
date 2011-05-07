@@ -58,7 +58,7 @@ namespace OpenRA.Utility
 			Console.WriteLine();
 			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
-			Console.WriteLine("  --png SHPFILE                    Convert a SHP to a PNG containing all of its frames");
+			Console.WriteLine("  --png SHPFILE PALETTE            Convert a SHP to a PNG containing all of its frames");
 		}
 
 		static T WithDefault<T>(T def, Func<T> f)

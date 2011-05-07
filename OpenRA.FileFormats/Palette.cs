@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 
 namespace OpenRA.FileFormats
@@ -70,6 +71,17 @@ namespace OpenRA.FileFormats
 		public Palette(Palette p)
 		{
 			colors = (uint[])p.colors.Clone();
+		}
+		
+		public ColorPalette AsSystemPalette()
+		{
+			ColorPalette pal;
+			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
+				pal = b.Palette;
+			
+			for (var i = 0; i < 256; i++)
+				pal.Entries[i] = GetColor(i);
+			return pal;
 		}
 	}
 

@@ -18,17 +18,6 @@ namespace OpenRA.Editor
 {
 	static class RenderUtils
 	{
-		public static ColorPalette MakeSystemPalette(Palette p)
-		{
-			ColorPalette pal;
-			using (var b = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
-				pal = b.Palette;
-			
-			for (var i = 0; i < 256; i++)
-				pal.Entries[i] = p.GetColor(i);
-			return pal;
-		}
-
 		public static Bitmap RenderTemplate(TileSet ts, ushort n, Palette p)
 		{
 			var template = ts.Templates[n];
@@ -37,7 +26,7 @@ namespace OpenRA.Editor
 			var bitmap = new Bitmap(ts.TileSize * template.Size.X, ts.TileSize * template.Size.Y,
 				PixelFormat.Format8bppIndexed);
 
-			bitmap.Palette = MakeSystemPalette(p);
+			bitmap.Palette = p.AsSystemPalette();
 
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
@@ -74,7 +63,7 @@ namespace OpenRA.Editor
 
 			var bitmap = new Bitmap(shp.Width, shp.Height, PixelFormat.Format8bppIndexed);
 
-			bitmap.Palette = MakeSystemPalette(p);
+			bitmap.Palette = p.AsSystemPalette();
 
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
@@ -133,7 +122,7 @@ namespace OpenRA.Editor
 				var frame = shp[shp.ImageCount - 1];
 
 				var bitmap = new Bitmap(shp.Width, shp.Height, PixelFormat.Format8bppIndexed);
-				bitmap.Palette = MakeSystemPalette(p);
+				bitmap.Palette = p.AsSystemPalette();
 				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 					ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
