@@ -35,14 +35,14 @@ Container@SERVER_LOBBY:
 					Id:LOCKTEAMS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:230
-					Width:80
+					Width:130
 					Height:20
 					Text: Lock Teams
 				CncCheckbox@ALLOWCHEATS_CHECKBOX:
 					Id:ALLOWCHEATS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:255
-					Width:80
+					Width:130
 					Height:20
 					Text: Allow Cheats
 				ScrollPanel@PLAYERS:
