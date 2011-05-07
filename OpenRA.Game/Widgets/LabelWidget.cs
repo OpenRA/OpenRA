@@ -20,14 +20,15 @@ namespace OpenRA.Widgets
 		public enum TextAlign { Left, Center, Right }
 		public enum TextVAlign { Top, Middle, Bottom }
 		public enum LabelFont { Regular, Bold, Title, Tiny, TinyBold, BigBold }
-		
 		public string Text = null;
 		public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public LabelFont Font = LabelFont.Regular;
-		public bool Bold = false;
+		public Color Color = Color.White;
+		public bool Bold = false; // Legacy flag. TODO: Remove
 		public bool Contrast = false;
+		public Color ContrastColor = Color.Black;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<string> GetBackground;
@@ -45,7 +46,10 @@ namespace OpenRA.Widgets
 			Text = other.Text;
 			Align = other.Align;
 			Bold = other.Bold;
+			Font = other.Font;
+			Color = other.Color;
 			Contrast = other.Contrast;
+			ContrastColor = other.ContrastColor;
 			GetText = other.GetText;
 			GetBackground = other.GetBackground;
 		}
@@ -151,9 +155,9 @@ namespace OpenRA.Widgets
 			}
 			
 			if (Contrast)
-				font.DrawTextWithContrast(text, position, Color.White, Color.Black, 2);
+				font.DrawTextWithContrast(text, position, Color, ContrastColor, 2);
 			else
-				font.DrawText(text, position, Color.White);
+				font.DrawText(text, position, Color);
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
