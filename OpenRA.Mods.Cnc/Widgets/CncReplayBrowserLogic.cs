@@ -22,21 +22,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncReplayBrowserLogic : IWidgetDelegate
 	{
-		Widget widget; 
+		Widget panel; 
 
 		[ObjectCreator.UseCtor]
 		public CncReplayBrowserLogic([ObjectCreator.Param] Widget widget,
 		                             [ObjectCreator.Param] Action onExit,
 		                             [ObjectCreator.Param] Action onStart)
 		{
-			this.widget = widget;
+			panel = widget.GetWidget("REPLAYBROWSER_PANEL");
 
-			widget.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = onExit;
 
-			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
+			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = widget.GetWidget("REPLAY_TEMPLATE");
+			var template = panel.GetWidget("REPLAY_TEMPLATE");
 			CurrentReplay = null;
 
 			rl.RemoveChildren();
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CurrentReplay = files.FirstOrDefault();
 			}
 
-			var watch = widget.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
+			var watch = panel.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => currentReplay == null || currentMap == null;
 			watch.OnClick = () =>
 			{
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				}
 			};
 
-			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
+			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
 		string currentReplay = null;
@@ -78,14 +78,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 						var summary = new ReplaySummary(currentReplay);
 						currentMap = summary.Map();
 
-						widget.GetWidget<LabelWidget>("DURATION").GetText =
+						panel.GetWidget<LabelWidget>("DURATION").GetText =
 							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-						widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
-						widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+						panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
+						panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
 							() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
 						var players = summary.LobbyInfo.Slots.Count(s => summary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
-						widget.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+						panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 					}
 					catch(Exception e)
 					{

@@ -30,17 +30,17 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Dictionary<string, string> CountryNames;
 		string MapUid;
 		Map Map;
-
-        public static ColorRamp CurrentColorPreview;
 		
-		// Must be set only once on game start
-		// TODO: This is stupid
+		readonly Action OnGameStart;
+		readonly Action onExit;
+		readonly OrderManager orderManager;
+		readonly WorldRenderer worldRenderer;
+		
+        public static ColorRamp CurrentColorPreview;
 		static bool staticSetup;
-
 		public static CncLobbyLogic GetHandler()
 		{
 			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
-			// The panel may not be open anymore
             if (panel == null)
                 return null;
 			
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (handler == null)
 				return;
 			
-			handler.onGameStart();
+			handler.OnGameStart();
 		}
 
 		static void AddChatLineStub(Color c, string from, string text)
@@ -84,7 +84,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			handler.ConnectionStateChanged(om);
 		}
 
-
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -98,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
 					{
 						{ "onExit", onExit },
-						{ "onStart", onGameStart }
+						{ "onStart", OnGameStart }
 					});
 				});
 				
@@ -118,11 +117,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 		}
 
-		readonly Action onGameStart;
-		readonly Action onExit;
-		readonly OrderManager orderManager;
-		readonly WorldRenderer worldRenderer;
-
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
 		                       [ObjectCreator.Param] OrderManager orderManager,
@@ -132,7 +126,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
-			this.onGameStart = onStart;
+			this.OnGameStart = onStart;
 			this.onExit = onExit;
 			
 			if (!staticSetup)

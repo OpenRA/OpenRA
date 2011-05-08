@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		// Prevent repeated additions of RefreshServerList to the master server
 		static bool masterServerSetup;
-		
-		GameServer currentServer = null;
+
+		GameServer currentServer;
 		Widget serverTemplate;
 		
 		enum SearchStatus

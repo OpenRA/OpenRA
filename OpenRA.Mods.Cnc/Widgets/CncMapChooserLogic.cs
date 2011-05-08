@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncMapChooserLogic : IWidgetDelegate
 	{
-		Map map = null;
+		Map map;
 		Widget scrollpanel;
 		Widget itemTemplate;
 		
