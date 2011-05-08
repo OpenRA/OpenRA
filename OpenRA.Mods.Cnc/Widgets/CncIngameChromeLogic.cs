@@ -80,13 +80,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 	
 	public class CncIngameMenuLogic : IWidgetDelegate
 	{
+		Widget menu;
+		
 		[ObjectCreator.UseCtor]
 		public CncIngameMenuLogic([ObjectCreator.Param] Widget widget,
 		                          [ObjectCreator.Param] World world,
 		                          [ObjectCreator.Param] Action onExit)
 		{
-			var menu = widget.GetWidget("INGAME_MENU");
-			menu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = () =>
+			menu = widget.GetWidget("INGAME_MENU");
+			var onQuit = (Action)(() =>
 			{
 				Game.DisconnectOnly();
 				
@@ -94,13 +96,45 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Game.LoadShellMap();
 				Widget.RootWidget.RemoveChildren();
 				Widget.LoadWidget("MENU_BACKGROUND", new Dictionary<string, object>());
-			};
+			});
+			
+			var doNothing = (Action)(() => {});
+			
+			menu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = () =>
+				PromptConfirmAction("Exit Game", "Are you sure you want to leave the game?", onQuit, doNothing);
+			
+			var onSurrender = (Action)(() => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false)));
+			var surrenderButton = menu.GetWidget<CncMenuButtonWidget>("SURRENDER_BUTTON");
+			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
+			surrenderButton.OnClick = () =>
+				PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 			
 			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{
 				Widget.RootWidget.RemoveChild(menu);
-				onExit();	
+				onExit();
 			};
+		}
+		
+		public void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
+		{
+			var prompt = menu.GetWidget("CONFIRM_PROMPT");
+			
+			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
+			
+			prompt.GetWidget<CncMenuButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
+			{
+				prompt.IsVisible = () => false;
+				onConfirm();
+			};
+			
+			prompt.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				prompt.IsVisible = () => false;
+				onCancel();
+			};
+			prompt.IsVisible = () => true;
 		}
 	}
 }

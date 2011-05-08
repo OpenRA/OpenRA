@@ -52,3 +52,44 @@ Container@INGAME_MENU:
 					Width:140
 					Height:35
 					Text:Resume
+		Container@CONFIRM_PROMPT:
+			Id:CONFIRM_PROMPT
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - 90)/2
+			Width:370
+			Height:125
+			Visible:false
+			Children:
+				Label@PROMPT_TITLE:
+					Id:PROMPT_TITLE
+					Width:PARENT_RIGHT
+					Y:0-25
+					Font:BigBold
+					Contrast:true
+					Align:Center
+				Background@bg:
+					Width:370
+					Height:90
+					Background:panel-black
+					Children:
+						Label@PROMPT_TEXT:
+							Id:PROMPT_TEXT
+							Y:(PARENT_BOTTOM-HEIGHT)/2
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Bold
+							WordWrap:true
+							Align:Center
+				CncMenuButton@CANCEL_BUTTON:
+					Id:CANCEL_BUTTON
+					Y:89
+					Width:140
+					Height:35
+					Text:Cancel
+				CncMenuButton@CONFIRM_BUTTON:
+					Id:CONFIRM_BUTTON
+					X:230
+					Y:89
+					Width:140
+					Height:35
+					Text:Confirm
