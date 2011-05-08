@@ -88,12 +88,34 @@ namespace OpenRA.Mods.Cnc.Widgets
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
-			// TODO: Show a connection failed dialog
 			if (om.Connection.ConnectionState == ConnectionState.NotConnected)
-				onExit();
-			
-			//Widget.CloseWindow();
-            //Widget.OpenWindow("CONNECTION_FAILED_BG", new Dictionary<string, object> { { "orderManager", orderManager } });
+			{
+				// Show connection failed dialog
+				Widget.CloseWindow();
+				
+				Action onConnect = new Action(() => 
+				{
+					Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
+					{
+						{ "onExit", onExit },
+						{ "onStart", onGameStart }
+					});
+				});
+				
+				Action onRetry = new Action(() =>
+				{
+					Widget.CloseWindow();
+					CncConnectingLogic.Connect(om.Host, om.Port, onConnect, onExit);
+				});
+				
+				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new Dictionary<string, object>()
+	            {
+					{ "onAbort", onExit },
+					{ "onRetry", onRetry },
+					{ "host", om.Host },
+					{ "port", om.Port }
+				});	
+			}
 		}
 
 		readonly Action onGameStart;

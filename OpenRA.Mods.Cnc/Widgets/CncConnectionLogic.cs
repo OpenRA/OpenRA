@@ -19,6 +19,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		static bool staticSetup;
 		Action onConnect, onRetry, onAbort;
+		string host;
+		int port;
 		
 		static void ConnectionStateChangedStub(OrderManager om)
 		{
@@ -47,17 +49,23 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new Dictionary<string, object>()
 	            {
 					{ "onAbort", onAbort },
-					{ "onRetry", onRetry }
+					{ "onRetry", onRetry },
+					{ "host", host },
+					{ "port", port }
 				});
 			}
 		}
 		
 		[ObjectCreator.UseCtor]
 		public CncConnectingLogic([ObjectCreator.Param] Widget widget,
+		                          [ObjectCreator.Param] string host,
+	                              [ObjectCreator.Param] int port,
 		                          [ObjectCreator.Param] Action onConnect,
 		                          [ObjectCreator.Param] Action onRetry,
 		                          [ObjectCreator.Param] Action onAbort)
 		{
+			this.host = host;
+			this.port = port;
 			this.onConnect = onConnect;
 			this.onRetry = onRetry;
 			this.onAbort = onAbort;
@@ -70,8 +78,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var panel = widget.GetWidget("CONNECTING_PANEL");
 			panel.GetWidget<CncMenuButtonWidget>("ABORT_BUTTON").OnClick = onAbort;
 			
-			//widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
-			//	"Connecting to {0}:{1}...".F(host, port);
+			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
+				"Connecting to {0}:{1}...".F(host, port);
 		}
 		
 		public static void Connect(string host, int port, Action onConnect, Action onAbort)
@@ -79,6 +87,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.JoinServer(host, port);
 			Widget.OpenWindow("CONNECTING_PANEL", new Dictionary<string, object>()
             {
+				{ "host", host },
+				{ "port", port },
 				{ "onConnect", onConnect },
 				{ "onAbort", onAbort },
 				{ "onRetry", new Action(() => { Widget.CloseWindow(); Connect(host, port, onConnect, onAbort); }) }
@@ -90,14 +100,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{	
 		[ObjectCreator.UseCtor]
 		public CncConnectionFailedLogic([ObjectCreator.Param] Widget widget,
-		                          [ObjectCreator.Param] Action onRetry,
-		                          [ObjectCreator.Param] Action onAbort)
+		                          		[ObjectCreator.Param] string host,
+		                                [ObjectCreator.Param] int port,
+		                                [ObjectCreator.Param] Action onRetry,
+		                          		[ObjectCreator.Param] Action onAbort)
 		{
 			var panel = widget.GetWidget("CONNECTIONFAILED_PANEL");
 			panel.GetWidget<CncMenuButtonWidget>("ABORT_BUTTON").OnClick = onAbort;
 			panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON").OnClick = onRetry;
 			
-			//widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
-			//	"Connecting to {0}:{1}...".F(host, port);
+			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
+				"Could not connect to {0}:{1}".F(host, port);
 		}
     }}
