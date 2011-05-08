@@ -11,9 +11,10 @@ Container@INGAME_MENU:
 			Height:512
 			ImageCollection:shellmap
 			ImageName:reticle
-		ScanLine:	
+		Background@SCANLINES:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
+			Background:panel-scanline
 		Background@BORDER:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM

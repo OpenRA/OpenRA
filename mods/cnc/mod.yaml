@@ -53,6 +53,7 @@ Cursors:
 
 Chrome:
 	mods/cnc/chrome.yaml
+	mods/cnc/chrome-ingame.yaml
 	
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll

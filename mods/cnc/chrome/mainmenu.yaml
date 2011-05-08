@@ -11,6 +11,10 @@ Container@MENU_BACKGROUND:
 			Height:512
 			ImageCollection:shellmap
 			ImageName:reticle
+		Background@SCANLINES:
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+			Background:panel-scanline
 		Background@BORDER:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
