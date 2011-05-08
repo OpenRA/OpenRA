@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
-			
+			panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
 			
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();

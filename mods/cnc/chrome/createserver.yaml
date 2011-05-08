@@ -2,9 +2,9 @@ Container@CREATESERVER_PANEL:
 	Id:CREATESERVER_PANEL
 	Delegate:CncServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 224)/2
+	Y:(WINDOW_BOTTOM - 260)/2
 	Width:604
-	Height:254
+	Height:295
 	Children:
 		Label@TITLE:
 			Text:Create Server
@@ -15,7 +15,7 @@ Container@CREATESERVER_PANEL:
 			Align:Center
 		Background@bg:
 			Width:604
-			Height:224
+			Height:260
 			Background:panel-black
 			Children:
 				Background@MAP_BG:
@@ -31,6 +31,14 @@ Container@CREATESERVER_PANEL:
 							Y:1
 							Width:192
 							Height:192
+				Label@MAP_NAME:
+					Id:MAP_NAME
+					X:PARENT_RIGHT-WIDTH-15
+					Y:220
+					Width:194
+					Height:25
+					Align:Center
+					Font:Bold
 				Label@SERVER_NAME_LABEL:
 					X:15
 					Y:14
@@ -61,9 +69,23 @@ Container@CREATESERVER_PANEL:
 					MaxLength:50
 					Height:25
 					Text:Describe your server here
-				Label@LISTEN_PORT_LABEL:
+				Label@SERVER_PASSWORD_LABEL:
 					X:15
 					Y:84
+					Width:90
+					Height:25
+					Align:Right
+					Text:Password:
+				TextField@SERVER_PASSWORD:
+					Id:SERVER_PASSWORD
+					X:110
+					Y:85
+					Width:275
+					MaxLength:50
+					Height:25
+				Label@LISTEN_PORT_LABEL:
+					X:15
+					Y:119
 					Width:90
 					Height:25
 					Align: Right
@@ -71,7 +93,7 @@ Container@CREATESERVER_PANEL:
 				TextField@LISTEN_PORT:
 					Id:LISTEN_PORT
 					X:110
-					Y:85
+					Y:120
 					Width:50
 					MaxLength:5
 					Height:25
@@ -79,20 +101,20 @@ Container@CREATESERVER_PANEL:
 				Checkbox@CHECKBOX_ONLINE:
 					Id:CHECKBOX_ONLINE
 					X:110
-					Y:120
+					Y:155
 					Width:275
 					Height:20
-					Text:Advertise Online*
+					Text:Advertise Online
 				Label@PORT_FORWARDING:
 					X:140
-					Y:145
+					Y:180
 					Width:220
 					WordWrap:true
 					Font:Tiny
-					Text:*You must forward an external port from your router to your computer before other players will be able to join your server.
+					Text:You must forward an external port from your router to your computer before other players will be able to join your server.
 				Label@EXTERNAL_PORT_LABEL:
 					X:15
-					Y:183
+					Y:219
 					Width:90
 					Height:25
 					Align:Right
@@ -100,7 +122,7 @@ Container@CREATESERVER_PANEL:
 				TextField@EXTERNAL_PORT:
 					Id:EXTERNAL_PORT
 					X:110
-					Y:184
+					Y:220
 					Width:50
 					MaxLength:5
 					Height:25
@@ -108,21 +130,21 @@ Container@CREATESERVER_PANEL:
 		CncMenuButton@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:0
-			Y:223
+			Y:259
 			Width:140
 			Height:35
 			Text:Back
 		CncMenuButton@MAP_BUTTON:
 			Id:MAP_BUTTON
 			X:314
-			Y:223
+			Y:259
 			Width:140
 			Height:35
 			Text:Change Map
 		CncMenuButton@CREATE_BUTTON:
 			Id:CREATE_BUTTON
 			X:464
-			Y:223
+			Y:259
 			Width:140
 			Height:35
 			Text:Create
