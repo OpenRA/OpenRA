@@ -15,6 +15,7 @@ using OpenRA.FileFormats;
 using OpenRA.Server;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA.Widgets.Delegates;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -164,7 +165,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var game = loop;
 				
 				var template = serverTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (currentServer == game) ? "panel-darkred" : null;
+				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (currentServer == game) ? "button-pressed" : null);
 				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;

@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA.Widgets.Delegates;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var entry = template.Clone() as ContainerWidget;
 			var f = Path.GetFileName(filename);
 			entry.GetWidget<LabelWidget>("TITLE").GetText = () => f;
-			entry.GetBackground = () => (CurrentReplay == filename) ? "panel-darkred" : null;
+			entry.GetBackground = () => (entry.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (CurrentReplay == filename) ? "button-pressed" : null);
 			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
 			entry.IsVisible = () => true;
 			list.AddChild(entry);

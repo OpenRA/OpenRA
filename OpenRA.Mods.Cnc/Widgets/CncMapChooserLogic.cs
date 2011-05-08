@@ -15,6 +15,7 @@ using OpenRA.Network;
 using OpenRA.Widgets;
 using System.IO;
 using System;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					continue;
 
 				var template = itemTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => ((Map == map) ? "panel-darkred" : null);
+				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (Map == map) ? "button-pressed" : null);
 				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false;  Map = map; return true; };
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
