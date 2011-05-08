@@ -71,7 +71,6 @@ Container@CREATESERVER_PANEL:
 					Width:275
 					MaxLength:50
 					Height:25
-					Text:Describe your server here
 				Label@SERVER_PASSWORD_LABEL:
 					X:15
 					Y:84

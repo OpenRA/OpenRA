@@ -46,13 +46,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			if (string.IsNullOrEmpty(Game.Settings.Server.LastMap) || !Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.LastMap, out map))
+				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
 			panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
 			
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
-
+			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
+			
 			var externalPort = panel.GetWidget<CncTextFieldWidget>("EXTERNAL_PORT");
 			externalPort.Text = settings.Server.ExternalPort.ToString();
 			externalPort.IsDisabled = () => !advertiseOnline;
@@ -60,6 +63,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var advertiseCheckbox = panel.GetWidget<CncCheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
+			
+			// Disable these until we have some logic behind them
+			panel.GetWidget<CncTextFieldWidget>("SERVER_DESC").IsDisabled = () => true;
+			panel.GetWidget<CncTextFieldWidget>("SERVER_PASSWORD").IsDisabled = () => true;
 		}
 	
 		void CreateAndJoin()
@@ -68,6 +75,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.Settings.Server.ListenPort = int.Parse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 			Game.Settings.Server.ExternalPort = int.Parse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
+			Game.Settings.Server.LastMap = map.Uid;
 			Game.Settings.Save();
 
 			Game.CreateServer(Game.Settings, map.Uid);

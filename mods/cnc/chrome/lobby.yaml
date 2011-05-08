@@ -309,22 +309,6 @@ Container@SERVER_LOBBY:
 							Text:Ready
 							Align:Left
 							Bold:True
-				CncTextField@CHAT_TEXTFIELD:
-					Id:CHAT_TEXTFIELD
-					X:15
-					Y:PARENT_BOTTOM - HEIGHT - 15
-					Width:PARENT_RIGHT - 30
-					Height:25
-					LeftMargin:50
-					Background: panel-darkred
-					Children:
-						Label@LABEL_CHATTYPE:
-							Id:LABEL_CHATTYPE
-							Y:0-1
-							Width:45
-							Height:25
-							Align:Right
-							Text:Chat:
 				CncScrollPanel@CHAT_DISPLAY:
 					Id:CHAT_DISPLAY
 					X:15
@@ -357,6 +341,22 @@ Container@SERVER_LOBBY:
 									Height:14
 									Width:PARENT_RIGHT - 100 - 10
 									WordWrap:true
+				CncTextField@CHAT_TEXTFIELD:
+					Id:CHAT_TEXTFIELD
+					X:15
+					Y:PARENT_BOTTOM - HEIGHT - 15
+					Width:PARENT_RIGHT - 30
+					Height:25
+					LeftMargin:50
+					Background: panel-darkred
+					Children:
+						Label@LABEL_CHATTYPE:
+							Id:LABEL_CHATTYPE
+							Y:0-1
+							Width:45
+							Height:25
+							Align:Right
+							Text:Chat:
 		CncMenuButton@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
 			X:0
