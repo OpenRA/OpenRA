@@ -35,38 +35,72 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		// Must be set only once on game start
 		// TODO: This is stupid
-		static bool staticSetup;		
-		enum StaticCrap { LobbyInfo, BeforeGameStart, AddChatLine }
-		static void StaticCrapChanged(StaticCrap type, Color a, string b, string c)
+		static bool staticSetup;
+
+		public static CncLobbyLogic GetHandler()
 		{
 			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
-			
 			// The panel may not be open anymore
             if (panel == null)
-                return;
+                return null;
 			
-			var lobbyLogic = panel.DelegateObject as CncLobbyLogic;
-			if (lobbyLogic == null)
+			return panel.DelegateObject as CncLobbyLogic;
+		}
+
+		static void LobbyInfoChangedStub()
+		{
+			var handler = GetHandler();
+			if (handler == null)
 				return;
 			
-			switch (type)
-			{
-				case StaticCrap.LobbyInfo:
-					lobbyLogic.UpdateCurrentMap();
-					lobbyLogic.UpdatePlayerList();
-				break;
-				case StaticCrap.BeforeGameStart:
-					lobbyLogic.onGameStart();
-				break;
-				case StaticCrap.AddChatLine:
-					lobbyLogic.AddChatLine(a,b,c);
-				break;
-			}	
+			handler.UpdateCurrentMap();
+			handler.UpdatePlayerList();
 		}
-		
+
+		static void BeforeGameStartStub()
+		{
+			var handler = GetHandler();
+			if (handler == null)
+				return;
+			
+			handler.onGameStart();
+		}
+
+		static void AddChatLineStub(Color c, string from, string text)
+		{
+			var handler = GetHandler();
+			if (handler == null)
+				return;
+			
+			handler.AddChatLine(c, from, text);
+		}
+
+		static void ConnectionStateChangedStub(OrderManager om)
+		{
+			var handler = GetHandler();
+			if (handler == null)
+				return;
+			
+			handler.ConnectionStateChanged(om);
+		}
+
+
+		// Listen for connection failures
+		void ConnectionStateChanged(OrderManager om)
+		{
+			// TODO: Show a connection failed dialog
+			if (om.Connection.ConnectionState == ConnectionState.NotConnected)
+				onExit();
+			
+			//Widget.CloseWindow();
+            //Widget.OpenWindow("CONNECTION_FAILED_BG", new Dictionary<string, object> { { "orderManager", orderManager } });
+		}
+
 		readonly Action onGameStart;
+		readonly Action onExit;
 		readonly OrderManager orderManager;
 		readonly WorldRenderer worldRenderer;
+
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
 		                       [ObjectCreator.Param] OrderManager orderManager,
@@ -77,13 +111,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
 			this.onGameStart = onStart;
+			this.onExit = onExit;
 			
 			if (!staticSetup)
 			{
 				staticSetup = true;
-				Game.LobbyInfoChanged += () => StaticCrapChanged(StaticCrap.LobbyInfo, Color.Beige, null, null);
-				Game.BeforeGameStart += () => StaticCrapChanged(StaticCrap.BeforeGameStart, Color.PapayaWhip, null, null);
-				Game.AddChatLine += (a,b,c) => StaticCrapChanged(StaticCrap.AddChatLine, a, b, c);
+				Game.LobbyInfoChanged += LobbyInfoChangedStub;
+				Game.BeforeGameStart += BeforeGameStartStub;
+				Game.AddChatLine += AddChatLineStub;
+				Game.ConnectionStateChanged += ConnectionStateChangedStub;
 			}
 			
 			UpdateCurrentMap();

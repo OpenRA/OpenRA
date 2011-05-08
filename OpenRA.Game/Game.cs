@@ -356,9 +356,14 @@ namespace OpenRA
 			return modData.ObjectCreator.CreateObject<T>( name );
 		}
 
-		public static void CreateAndJoinServer(Settings settings, string map)
+		public static void CreateServer(Settings settings, string map)
 		{
 			server = new Server.Server(modData, settings, map);
+		}
+
+		public static void CreateAndJoinServer(Settings settings, string map)
+		{
+			CreateServer(settings, map);
 			JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
 		}
 

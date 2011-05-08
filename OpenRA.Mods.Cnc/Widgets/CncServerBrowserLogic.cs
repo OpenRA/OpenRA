@@ -49,9 +49,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 					return "";
 			}
 		}
-		
+
 		[ObjectCreator.UseCtor]
 		public CncServerBrowserLogic([ObjectCreator.Param] Widget widget,
+		                            [ObjectCreator.Param] Action openLobby,
 		                            [ObjectCreator.Param] Action onExit)
 		{
 			var panel = widget.GetWidget("SERVERBROWSER_PANEL");
@@ -74,8 +75,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (currentServer == null)
 					return;
 
-				Widget.CloseWindow();
-				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
+				string host = currentServer.Address.Split(':')[0];
+				int port = int.Parse(currentServer.Address.Split(':')[1]);
+
+				CncConnectingLogic.Connect(host, port, openLobby, onExit);
 			};
 			
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
@@ -189,7 +192,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			browserLogic.RefreshServerList(games);
 		}
 	}
-	
+
 	public class CncDirectConnectLogic : IWidgetDelegate
 	{
 		[ObjectCreator.UseCtor]
@@ -198,24 +201,24 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                             [ObjectCreator.Param] Action openLobby)
 		{
 			var panel = widget.GetWidget("DIRECTCONNECT_PANEL");
-			var ip = panel.GetWidget<TextFieldWidget>("IP");
-			var port = panel.GetWidget<TextFieldWidget>("PORT");
+			var ipField = panel.GetWidget<TextFieldWidget>("IP");
+			var portField = panel.GetWidget<TextFieldWidget>("PORT");
 			
 			var last = Game.Settings.Player.LastServer.Split(':').ToArray();
-			ip.Text = last.Length > 1 ? last[0] : "localhost";
-			port.Text = last.Length > 2 ? last[1] : "1234";
+			ipField.Text = last.Length > 1 ? last[0] : "localhost";
+			portField.Text = last.Length > 2 ? last[1] : "1234";
 
             panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
             {
-                int p;
-				if (!int.TryParse(port.Text, out p))
-					p = 1234;
+                int port;
+				if (!int.TryParse(portField.Text, out port))
+					port = 1234;
 				
-				Game.Settings.Player.LastServer = "{0}:{1}".F(ip.Text, p);
+				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
                 Game.Settings.Save();
 				
-                Game.JoinServer(ip.Text,p);
-				openLobby();
+				Widget.CloseWindow();
+				CncConnectingLogic.Connect(ipField.Text, port, openLobby, onExit);
             };
 
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;

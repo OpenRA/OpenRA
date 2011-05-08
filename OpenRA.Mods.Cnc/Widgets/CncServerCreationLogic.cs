@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		Widget panel;
 		Action onCreate;
+		Action onExit;
 		Map map;
 		bool advertiseOnline;
 		[ObjectCreator.UseCtor]
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			panel = widget.GetWidget("CREATESERVER_PANEL");
 			onCreate = openLobby;
+			this.onExit = onExit;
 			
 			var settings = Game.Settings;
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
@@ -68,9 +70,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Save();
 
-			Game.CreateAndJoinServer(Game.Settings, map.Uid);
+			Game.CreateServer(Game.Settings, map.Uid);
 			Widget.CloseWindow();
-			onCreate();
+			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}
 	}
 }
