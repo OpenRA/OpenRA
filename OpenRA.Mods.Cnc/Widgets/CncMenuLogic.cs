@@ -17,6 +17,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -32,8 +33,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 		MenuType Menu = MenuType.Main;
 		
 		[ObjectCreator.UseCtor]
-		public CncMenuLogic([ObjectCreator.Param] Widget widget)
+		public CncMenuLogic([ObjectCreator.Param] Widget widget,
+		                    [ObjectCreator.Param] World world)
 		{
+			world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = true;
+			
 			// Root level menu
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
@@ -105,7 +109,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		void RemoveShellmapUI()
 		{
 			Widget.CloseWindow();
-			Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
+			var root = Widget.RootWidget.GetWidget("MENU_BACKGROUND");
+			root.Parent.RemoveChild(root);
 		}
 		
 		void OpenLobbyPanel(MenuType menu)

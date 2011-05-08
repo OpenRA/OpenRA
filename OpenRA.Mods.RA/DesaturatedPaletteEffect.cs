@@ -19,9 +19,12 @@ namespace OpenRA.Mods.RA
 
 	public class DesaturatedPaletteEffect : IPaletteModifier
 	{
-		// Doing this every frame is stupid
+		public bool Active;
+
+		// TODO: Doing this every frame is stupid
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
+			if (!Active) return;
 			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
 			foreach (var pal in palettes)
 			{

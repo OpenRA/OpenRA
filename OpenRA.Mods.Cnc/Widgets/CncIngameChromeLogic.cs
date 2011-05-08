@@ -13,6 +13,7 @@ using OpenRA.Widgets;
 using System.Drawing;
 using System.Collections.Generic;
 using System;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -88,6 +89,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                          [ObjectCreator.Param] Action onExit)
 		{
 			menu = widget.GetWidget("INGAME_MENU");
+			world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = true;
+
 			var onQuit = (Action)(() =>
 			{
 				Game.DisconnectOnly();
@@ -109,6 +112,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{
 				Widget.RootWidget.RemoveChild(menu);
+				world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = false;
 				onExit();
 			};
 		}

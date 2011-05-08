@@ -1013,7 +1013,6 @@ Rules:
 		-MPStartLocations:
 		-CrateSpawner:
 		CncShellmapScript:
-		DesaturatedPaletteEffect:
 		LoadWidgetAtGameStart:
 			Widget:MENU_BACKGROUND
 	LST:
