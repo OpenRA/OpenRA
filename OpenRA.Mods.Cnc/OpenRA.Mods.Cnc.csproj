@@ -75,6 +75,7 @@
     <Compile Include="Widgets\CncMenuButton.cs" />
     <Compile Include="Widgets\CncLobbyLogic.cs" />
     <Compile Include="Widgets\CncReplayBrowserLogic.cs" />
+    <Compile Include="Widgets\CncServerCreationLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

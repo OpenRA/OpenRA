@@ -64,7 +64,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new Dictionary<string, object>()
                 {
-					{"onExit", new Action(() => { Menu = MenuType.Multiplayer; Widget.CloseWindow(); })}
+					{"onExit", new Action(ReturnToMultiplayerMenu)},
+					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Main)) }
+				});
+			};
+			
+			multiplayerMenu.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("CREATESERVER_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(ReturnToMultiplayerMenu) },
+					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
 				});
 			};
 			
@@ -73,8 +84,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("DIRECTCONNECT_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(() => { Menu = MenuType.Multiplayer; Widget.CloseWindow(); }) },
-					{ "openLobby", new Action(OpenLobbyPanel) }
+					{ "onExit", new Action(ReturnToMultiplayerMenu) },
+					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
 				});
 			};		
 			
@@ -85,19 +96,25 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
+		void ReturnToMultiplayerMenu()
+		{
+			Menu = MenuType.Multiplayer;
+			Widget.CloseWindow();
+		}
+		
 		void RemoveShellmapUI()
 		{
 			Widget.CloseWindow();
 			Widget.RootWidget.RemoveChild(Widget.RootWidget.GetWidget("MENU_BACKGROUND"));
 		}
 		
-		void OpenLobbyPanel()
+		void OpenLobbyPanel(MenuType menu)
 		{
 			// Quit the lobby: disconnect and restore menu
 			Action onLobbyClose = () =>
 			{
 				Game.DisconnectOnly();
-				Menu = MenuType.Main;
+				Menu = menu;
 				Widget.CloseWindow();
 			};
 			
@@ -120,7 +137,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settings.Server.ExternalPort = 1234;
 			Game.CreateAndJoinServer(settings, map);
 			
-			OpenLobbyPanel();
+			OpenLobbyPanel(MenuType.Main);
 		}
 	}
 }

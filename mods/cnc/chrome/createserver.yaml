@@ -1,0 +1,95 @@
+Container@CREATESERVER_PANEL:
+	Id:CREATESERVER_PANEL
+	Delegate:CncServerCreationLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 500)/2
+	Width:740
+	Height:535
+	Children:
+		Label@TITLE:
+			Text:Create Server
+			Width:740
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+		Background@bg:
+			Width:740
+			Height:500
+			Background:panel-black
+			Children:
+				Label@GAME_TITLE_LABEL:
+					Id:GAME_TITLE_LABEL
+					X:50
+					Y:59
+					Width:95
+					Height:25
+					Align: Right
+					Text:Game Title:
+				TextField@GAME_TITLE:
+					Id:GAME_TITLE
+					X:150
+					Y:60
+					Width:210
+					MaxLength:50
+					Height:25
+					Text:OpenRA Game
+				Label@EXTERNAL_PORT_LABEL:
+					Id:EXTERNAL_PORT_LABEL
+					X:50
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:External Port:
+				TextField@EXTERNAL_PORT:
+					Id:EXTERNAL_PORT
+					X:150
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+					Text:OpenRA Game
+				Label@LISTEN_PORT_LABEL:
+					Id:LISTEN_PORT_LABEL
+					X:210
+					Y:94
+					Width:95
+					Height:25
+					Align: Right
+					Text:Listen Port:
+				TextField@LISTEN_PORT:
+					Id:LISTEN_PORT
+					X:310
+					Y:95
+					Width:50
+					MaxLength:5
+					Height:25
+				Checkbox@CHECKBOX_ONLINE:
+					Id:CHECKBOX_ONLINE
+					X:165
+					Y:130
+					Width:300
+					Height:20
+					Text:Advertise game Online
+		CncMenuButton@BACK_BUTTON:
+			Id:BACK_BUTTON
+			X:0
+			Y:499
+			Width:140
+			Height:35
+			Text:Back
+		CncMenuButton@MAP_BUTTON:
+			Id:MAP_BUTTON
+			X:450
+			Y:499
+			Width:140
+			Height:35
+			Text:Change Map
+		CncMenuButton@CREATE_BUTTON:
+			Id:CREATE_BUTTON
+			X:600
+			Y:499
+			Width:140
+			Height:35
+			Text:Create
