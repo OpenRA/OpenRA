@@ -21,33 +21,31 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncMapChooserLogic : IWidgetDelegate
 	{
-		Map Map = null;
+		Map map = null;
 		Widget scrollpanel;
 		Widget itemTemplate;
 		
 		[ObjectCreator.UseCtor]
 		internal CncMapChooserLogic([ObjectCreator.Param] Widget widget,
-		                            [ObjectCreator.Param] Map initialMap,
+		                            [ObjectCreator.Param] string initialMap,
 		                            [ObjectCreator.Param] Action onExit,
 		                            [ObjectCreator.Param] Action<Map> onSelect)
 		{
-			if (initialMap != null)
-				Map = initialMap;
-			else
-				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			if (string.IsNullOrEmpty(initialMap) || ! Game.modData.AvailableMaps.TryGetValue(initialMap, out map))
+				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 			
 			var panel = widget.GetWidget("MAPCHOOSER_PANEL");
 			
-			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => Map;
-			panel.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
-			panel.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => Map.Author;
-			panel.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => Map.Description;
-			panel.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => Map.Description != null;
-			panel.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Bounds.Width, Map.Bounds.Height);
-			panel.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
-			panel.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
+			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
+			panel.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => map.Title;
+			panel.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => map.Author;
+			panel.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => map.Description;
+			panel.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => map.Description != null;
+			panel.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(map.Bounds.Width, map.Bounds.Height);
+			panel.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[map.Tileset].Name;
+			panel.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => map.PlayerCount.ToString();
 
-			panel.GetWidget<CncMenuButtonWidget>("BUTTON_OK").OnClick = () => onSelect(Map);
+			panel.GetWidget<CncMenuButtonWidget>("BUTTON_OK").OnClick = () => onSelect(map);
 			panel.GetWidget<CncMenuButtonWidget>("BUTTON_CANCEL").OnClick = onExit;
 			
 			panel.GetWidget<CncMenuButtonWidget>("BUTTON_INSTALL").IsDisabled = () => true;
@@ -63,17 +61,17 @@ namespace OpenRA.Mods.Cnc.Widgets
 			scrollpanel.RemoveChildren();
 			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title).OrderBy(kv => kv.Value.PlayerCount))
 			{
-				var map = kv.Value;
-				if (!map.Selectable)
+				var m = kv.Value;
+				if (!m.Selectable)
 					continue;
 
 				var template = itemTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (Map == map) ? "button-pressed" : null);
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false;  Map = map; return true; };
+				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (m == map) ? "button-pressed" : null);
+				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; map = m; return true; };
 				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
-				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
-				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
+				template.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
+				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);
+				template.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
 				scrollpanel.AddChild(template);
 			}
 		}

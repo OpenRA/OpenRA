@@ -142,7 +142,7 @@ Container@CREATESERVER_PANEL:
 			Y:259
 			Width:140
 			Height:35
-			Text:Change Map
+			Text:Choose Map
 		CncMenuButton@CREATE_BUTTON:
 			Id:CREATE_BUTTON
 			X:464

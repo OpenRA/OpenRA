@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
 				{
-					{ "initialMap", Map },
+					{ "initialMap", Map.Uid },
 					{ "onExit", new Action(() => Widget.CloseWindow()) },
 					{ "onSelect", onSelect }
 				});
