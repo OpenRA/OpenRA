@@ -20,6 +20,9 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class TeslaZapInfo : IProjectileInfo
 	{
+		public readonly string Image = "litning";
+		public readonly int BrightZaps = 1;
+		public readonly int DimZaps = 2;
 		public IEffect Create(ProjectileArgs args) { return new TeslaZap( this, args ); }
 	}
 
@@ -29,18 +32,18 @@ namespace OpenRA.Mods.RA.Effects
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
 
-		const int numZaps = 3;
-
 		readonly List<Renderable> renderables = new List<Renderable>();
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
 			Args = args;
-			var bright = SequenceProvider.GetSequence("litning", "bright");
-			var dim = SequenceProvider.GetSequence("litning", "dim");
+			var bright = SequenceProvider.GetSequence(info.Image, "bright");
+			var dim = SequenceProvider.GetSequence(info.Image, "dim");
 
-			for (var n = 0; n < numZaps; n++)
-				renderables.AddRange(DrawZapWandering(args.src, args.dest, n == numZaps - 1 ? bright : dim));
+			for( var n = 0; n < info.DimZaps; n++ )
+				renderables.AddRange(DrawZapWandering(args.src, args.dest, dim));
+			for( var n = 0; n < info.BrightZaps; n++ )
+				renderables.AddRange(DrawZapWandering(args.src, args.dest, bright));
 		}
 
 		public void Tick( World world )
