@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				string host = currentServer.Address.Split(':')[0];
 				int port = int.Parse(currentServer.Address.Split(':')[1]);
 
+				Widget.CloseWindow();
 				CncConnectingLogic.Connect(host, port, openLobby, onExit);
 			};
 			
