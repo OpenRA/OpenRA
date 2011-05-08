@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		Widget panel;
 		Action onCreate;
+		Map map;
 		[ObjectCreator.UseCtor]
 		public CncServerCreationLogic([ObjectCreator.Param] Widget widget,
 		                              [ObjectCreator.Param] Action onExit,
@@ -31,9 +32,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
 			panel.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 			
-			panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").IsDisabled = () => true;
-
-			panel.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name ?? "";
+			//panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").IsDisabled = () => true;
+			
+			map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
+			
+			
+			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
 			panel.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Bind(settings.Server, "AdvertiseOnline");
