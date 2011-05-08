@@ -50,7 +50,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
-			panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
+
+			var externalPort = panel.GetWidget<CncTextFieldWidget>("EXTERNAL_PORT");
+			externalPort.Text = settings.Server.ExternalPort.ToString();
+			externalPort.IsDisabled = () => !advertiseOnline;
 
 			var advertiseCheckbox = panel.GetWidget<CncCheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
