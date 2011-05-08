@@ -1014,7 +1014,8 @@ Rules:
 		-CrateSpawner:
 		CncShellmapScript:
 		DesaturatedPaletteEffect:
-		-OpenWidgetAtGameStart:
+		LoadWidgetAtGameStart:
+			Widget:MENU_BACKGROUND
 	LST:
 		Mobile:
 			Speed: 3

@@ -112,6 +112,16 @@ namespace OpenRA
 				{ "worldRenderer", worldRenderer },
 			});
 		}
+		
+		public static Widget LoadWidget(World world, string widget, Dictionary<string, object> args)
+		{
+			return Widget.LoadWidget(widget, new Dictionary<string,object>(args)
+			{
+				{ "world", world },
+				{ "orderManager", orderManager },
+				{ "worldRenderer", worldRenderer },
+			});
+		}
 
 		static ActionQueue afterTickActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { afterTickActions.Add(a); }

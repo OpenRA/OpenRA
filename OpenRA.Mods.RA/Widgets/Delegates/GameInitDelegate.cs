@@ -71,11 +71,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (FileSystem.Exists(Info.TestFile))
 			{
 				Game.LoadShellMap();
-				Widget.RootWidget.RemoveChildren();
-				if (Info.InstallMode == "cnc")
-					Widget.LoadWidget("MENU_BACKGROUND", new Dictionary<string, object>());
-				else
+				if (Info.InstallMode != "cnc")
+				{
+					Widget.RootWidget.RemoveChildren();
 					Widget.OpenWindow("MAINMENU_BG");
+				}
 			}
             else
             {

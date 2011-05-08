@@ -10,9 +10,11 @@
 
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
+	// Legacy crap
 	public class OpenWidgetAtGameStartInfo : ITraitInfo
 	{
 		public readonly string Widget = "INGAME_ROOT";
@@ -38,6 +40,27 @@ namespace OpenRA.Mods.RA
 				Game.OpenWindow(world, Info.Widget);
 			else if (Info.ObserverWidget != null)
 				Game.OpenWindow(world, Info.ObserverWidget);
+		}
+	}
+
+	// New version
+	public class LoadWidgetAtGameStartInfo : ITraitInfo
+	{
+		public readonly string Widget = null;
+		public object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
+	}
+
+	public class LoadWidgetAtGameStart: IWorldLoaded
+	{
+		readonly LoadWidgetAtGameStartInfo Info;
+		public LoadWidgetAtGameStart(LoadWidgetAtGameStartInfo Info)
+		{
+			this.Info = Info;
+		}
+
+		public void WorldLoaded(World world)
+		{
+			Game.LoadWidget(world, Info.Widget, new Dictionary<string, object>());
 		}
 	}
 }

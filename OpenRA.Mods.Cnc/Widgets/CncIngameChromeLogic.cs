@@ -91,11 +91,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var onQuit = (Action)(() =>
 			{
 				Game.DisconnectOnly();
-				
-				// This is stupid. It should be handled by the shellmap
-				Game.LoadShellMap();
 				Widget.RootWidget.RemoveChildren();
-				Widget.LoadWidget("MENU_BACKGROUND", new Dictionary<string, object>());
+				Game.LoadShellMap();
 			});
 			
 			var doNothing = (Action)(() => {});
