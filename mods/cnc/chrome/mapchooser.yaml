@@ -1,6 +1,6 @@
-Container@MAP_CHOOSER:
-	Id:MAP_CHOOSER
-	Delegate:MapChooserDelegate
+Container@MAPCHOOSER_PANEL:
+	Id:MAPCHOOSER_PANEL
+	Delegate:CncMapChooserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
 	Width:740
@@ -26,7 +26,7 @@ Container@MAP_CHOOSER:
 					Background:panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							Id:MAPCHOOSER_MAP_PREVIEW
+							Id:MAP_PREVIEW
 							X:1
 							Y:1
 							Width:192

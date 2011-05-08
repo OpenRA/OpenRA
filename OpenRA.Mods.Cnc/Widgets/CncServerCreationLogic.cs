@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using OpenRA.Widgets;
 using System;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -20,6 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Widget panel;
 		Action onCreate;
 		Map map;
+		bool advertiseOnline;
 		[ObjectCreator.UseCtor]
 		public CncServerCreationLogic([ObjectCreator.Param] Widget widget,
 		                              [ObjectCreator.Param] Action onExit,
@@ -31,8 +33,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var settings = Game.Settings;
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
 			panel.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
-			
-			//panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").IsDisabled = () => true;
+
+			panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").OnClick = () =>
+			{
+				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
+				{
+					{ "initialMap", map },
+					{ "onExit", new Action(() => Widget.CloseWindow()) },
+					{ "onSelect", new Action<Map>(m => { map = m; Widget.CloseWindow(); }) }
+				});
+			};
 			
 			map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
@@ -41,20 +51,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text = settings.Server.ExternalPort.ToString();
-			panel.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").Bind(settings.Server, "AdvertiseOnline");
-			panel.GetWidget<CheckboxWidget>("CHECKBOX_ONLINE").OnChange += _ => settings.Save();
+
+			var advertiseCheckbox = panel.GetWidget<CncCheckboxWidget>("ADVERTISE_CHECKBOX");
+			advertiseCheckbox.IsChecked = () => advertiseOnline;
+			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 		}
 	
 		void CreateAndJoin()
 		{
-			var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
-			
-			Game.Settings.Server.Name = panel.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
+			Game.Settings.Server.Name = panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text;
 			Game.Settings.Server.ListenPort = int.Parse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 			Game.Settings.Server.ExternalPort = int.Parse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
+			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Save();
 
-			Game.CreateAndJoinServer(Game.Settings, map);
+			Game.CreateAndJoinServer(Game.Settings, map.Uid);
 			Widget.CloseWindow();
 			onCreate();
 		}

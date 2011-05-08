@@ -136,7 +136,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget<CncMenuButtonWidget>("CHANGEMAP_BUTTON");
-			mapButton.OnClick = () => Widget.OpenWindow( "MAP_CHOOSER", new Dictionary<string, object>{ { "orderManager", orderManager }, { "mapName", MapUid } } );
+			mapButton.OnClick = () =>
+			{
+				var onSelect = new Action<Map>(m =>
+				{
+					orderManager.IssueOrder(Order.Command("map " + m.Uid));
+					Widget.CloseWindow();
+				});
+
+				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
+				{
+					{ "initialMap", Map },
+					{ "onExit", new Action(() => Widget.CloseWindow()) },
+					{ "onSelect", onSelect }
+				});
+			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
 			var disconnectButton = lobby.GetWidget<CncMenuButtonWidget>("DISCONNECT_BUTTON");
