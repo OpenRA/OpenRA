@@ -58,9 +58,9 @@ namespace OpenRA.Mods.Cnc
                 () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", () =>
 			{
 				Sound.StopMusic();
-				Game.Disconnect();
-				Widget.CloseWindow();
-				Widget.LoadWidget("MENU_BACKGROUND");
+				//Game.Disconnect();
+				//Widget.CloseWindow();
+				//Widget.LoadWidget("MENU_BACKGROUND");
 			})));
 		}
 		
@@ -76,9 +76,9 @@ namespace OpenRA.Mods.Cnc
                 () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", () =>
 			{
 				Sound.StopMusic();
-				Game.Disconnect();
-				Widget.CloseWindow();
-				Widget.LoadWidget("MENU_BACKGROUND");
+				//Game.Disconnect();
+				//Widget.CloseWindow();
+				//Widget.LoadWidget("MENU_BACKGROUND");
 			})));
 		}
 		

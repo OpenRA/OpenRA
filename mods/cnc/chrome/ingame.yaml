@@ -1,21 +1,15 @@
 Container@INGAME_ROOT:
 	Id:INGAME_ROOT
-	Delegate:IngameChromeDelegate
+	Delegate:CncIngameChromeLogic
 	Children:
 		WorldInteractionController:
 			Id:INTERACTION_CONTROLLER
-			X:0
-			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		ViewportScrollController:
-			X:0
-			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		WorldCommand:
-			X:0
-			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
@@ -45,7 +39,6 @@ Container@INGAME_ROOT:
 					Bold:True
 		SpecialPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
-			X:0
 			Y:25
 		BuildPalette@INGAME_BUILD_PALETTE:
 			Id:INGAME_BUILD_PALETTE
@@ -56,26 +49,26 @@ Container@INGAME_ROOT:
 			TabClick: button.aud
 			BuildPaletteOpen: appear1.aud 
 			BuildPaletteClose: appear1.aud
-		Button@INGAME_OPTIONS_BUTTON:
-			Id:INGAME_OPTIONS_BUTTON
-			X:0
-			Y:0
-			Width:160
-			Height:25
+		CncMenuButton@OPTIONS_BUTTON:
+			Id:OPTIONS_BUTTON
+			X:5
+			Y:5
+			Width:140
+			Height:35
 			Text:Options
 			Bold:True
-		Button@INGAME_DIPLOMACY_BUTTON:
-			Id:INGAME_DIPLOMACY_BUTTON
-			X:162
-			Y:0
-			Width:160
-			Height:25
+		CncMenuButton@DIPLOMACY_BUTTON:
+			Id:DIPLOMACY_BUTTON
+			X:150
+			Y:5
+			Width:140
+			Height:35
 			Text:Diplomacy
 			Bold:True
-		Button@INGAME_DEVELOPERMODE_BUTTON:
-			Id:INGAME_DEVELOPERMODE_BUTTON
-			X:324
-			Y:0
+		CncMenuButton@DEVELOPERMODE_BUTTON:
+			Id:DEVELOPERMODE_BUTTON
+			X:295
+			Y:5
 			Width:160
 			Height:25
 			Text:Developer Mode
@@ -115,89 +108,6 @@ Container@INGAME_ROOT:
 					Description:Repair
 					LongDesc:Repair damaged buildings
 		WorldTooltip:
-		Background@INGAME_OPTIONS_BG:
-			Id:INGAME_OPTIONS_BG
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:300
-			Height:320
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Options
-					Align:Center
-					Bold:True
-				Button@RESUME:
-					Id:RESUME
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:60
-					Width:160
-					Height:25
-					Text:Resume
-					Bold:True
-				Button@SETTINGS:
-					Id:SETTINGS
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:100
-					Width:160
-					Height:25
-					Text:Settings
-					Bold:True
-				Button@MUSIC:
-					Id:MUSIC
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:140
-					Width:160
-					Height:25
-					Text:Music
-					Bold:True					
-				Button@SURRENDER:
-					Id:SURRENDER
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:180
-					Width:160
-					Height:25
-					Text:Surrender
-					Bold:True
-				Button@DISCONNECT:
-					Id:DISCONNECT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:220
-					Width:160
-					Height:25
-					Text:Disconnect
-					Bold:True
-				Button@QUIT:
-					Id:QUIT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:260
-					Width:160
-					Height:25
-					Text:Quit
-					Bold:True
-		Background@DIPLOMACY_BG:
-			Id:DIPLOMACY_BG
-			Delegate:DiplomacyDelegate
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:450
-			Height:400
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Diplomacy
-					Align:Center
-					Bold:True
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:250
@@ -214,269 +124,3 @@ Container@INGAME_ROOT:
 			Width: 760
 			Height: 30
 			UseContrast: yes
-		Background@DEVELOPERMODE_BG:
-			Id:DEVELOPERMODE_BG
-			Delegate:DeveloperModeDelegate
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:350
-			Height:370
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Developer Mode
-					Align:Center
-				Checkbox@CHECKBOX_SHROUD
-					Id:CHECKBOX_SHROUD
-					X:30
-					Y:50
-					Height:20
-					Width:PARENT_RIGHT - 30
-					Text:Disable Shroud
-				Button@GIVE_EXPLORATION
-					Id:GIVE_EXPLORATION
-					X:30
-					Y:80
-					Width:200
-					Height:20
-					Text: Give Exploration
-				Checkbox@CHECKBOX_PATHDEBUG:
-					Id:CHECKBOX_PATHDEBUG
-					X:30
-					Y:110
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Show Unit Paths
-				Button@GIVE_CASH
-					Id:GIVE_CASH
-					X:30
-					Y:140
-					Width:200
-					Height:20
-					Text: Give Cash
-				Checkbox@INSTANT_BUILD
-					Id:INSTANT_BUILD
-					X:30
-					Y:170
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Instant Build Speed
-				Checkbox@INSTANT_CHARGE
-					Id:INSTANT_CHARGE
-					X:30
-					Y:200
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Instant Charge Time (Special Powers)
-				Checkbox@ENABLE_TECH
-					Id:ENABLE_TECH
-					X:30
-					Y:230
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Build Everything
-				Checkbox@UNLIMITED_POWER
-					Id:UNLIMITED_POWER
-					X:30
-					Y:260
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Unlimited Power
-				Checkbox@BUILD_ANYWHERE
-					Id:BUILD_ANYWHERE
-					X:30
-					Y:290
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Build Anywhere
-		Background@PERF_BG:
-			ClickThrough:true
-			Id:PERF_BG
-			Background:dialog4
-			Delegate:PerfDebugDelegate
-			X:10
-			Y:WINDOW_BOTTOM - 250
-			Width: 210
-			Height: 250
-			Children:
-				PerfGraph@GRAPH:
-					Id:GRAPH
-					X:5
-					Y:5
-					Width:200
-					Height:200
-				Label@TEXT:
-					Id:TEXT
-					Bold: false
-					X:20
-					Y:205
-					Width:170
-					Height:40
-Container@OBSERVER_ROOT:
-	Id:OBSERVER_ROOT
-	Visible:true
-	Delegate:IngameObserverChromeDelegate
-	Children:
-		WorldInteractionController:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-		ViewportScrollController:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-		Timer@GAME_TIMER:
-			Id:GAME_TIMER
-			X: WINDOW_RIGHT/2
-			Y: 10
-		Background@POSTGAME_BG:
-			Id:POSTGAME_BG
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:400
-			Height:100
-			Background:dialog4
-			Visible:false
-			Children:
-				Label@TEXT:
-					Id:TEXT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
-					Width:200
-					Height:40
-					Align:Center
-					Bold:True
-		SpecialPowerBin@INGAME_POWERS_BIN:
-			Id:INGAME_POWERS_BIN
-			X:0
-			Y:25
-		Button@INGAME_OPTIONS_BUTTON:
-			Id:INGAME_OPTIONS_BUTTON
-			X:0
-			Y:0
-			Width:160
-			Height:25
-			Text:Options
-			Bold:True
-		WorldTooltip:
-		Background@INGAME_OPTIONS_BG:
-			Id:INGAME_OPTIONS_BG
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:300
-			Height:320
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Options
-					Align:Center
-					Bold:True
-				Button@RESUME:
-					Id:RESUME
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:60
-					Width:160
-					Height:25
-					Text:Resume
-					Bold:True
-				Button@SETTINGS:
-					Id:SETTINGS
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:100
-					Width:160
-					Height:25
-					Text:Settings
-					Bold:True
-				Button@MUSIC:
-					Id:MUSIC
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:140
-					Width:160
-					Height:25
-					Text:Music
-					Bold:True					
-				Button@SURRENDER:
-					Id:SURRENDER
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:180
-					Width:160
-					Height:25
-					Text:Surrender
-					Bold:True
-				Button@DISCONNECT:
-					Id:DISCONNECT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:220
-					Width:160
-					Height:25
-					Text:Disconnect
-					Bold:True
-				Button@QUIT:
-					Id:QUIT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:260
-					Width:160
-					Height:25
-					Text:Quit
-					Bold:True
-		ChatDisplay@CHAT_DISPLAY:
-			Id:CHAT_DISPLAY
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-		ChatEntry@CHAT_ENTRY:
-			Id:CHAT_ENTRY
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-		Background@PERF_BG:
-			ClickThrough:true
-			Id:PERF_BG
-			Background:dialog4
-			Delegate:PerfDebugDelegate
-			X:10
-			Y:WINDOW_BOTTOM - 250
-			Width: 210
-			Height: 250
-			Children:
-				PerfGraph@GRAPH:
-					Id:GRAPH
-					X:5
-					Y:5
-					Width:200
-					Height:200
-				Label@TEXT:
-					Id:TEXT
-					Bold: false
-					X:20
-					Y:205
-					Width:170
-					Height:40
-Background@FMVPLAYER:
-	Id:FMVPLAYER
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
-	Background:dialog4
-	Children:
-		VqaPlayer:
-			Id:PLAYER
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM

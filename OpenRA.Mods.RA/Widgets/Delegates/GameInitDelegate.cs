@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	                switch (orderManager.Connection.ConnectionState)
 	                {
 	                    case ConnectionState.PreConnecting:
-	                        Widget.LoadWidget("MAINMENU_BG");
+	                        Widget.LoadWidget("MAINMENU_BG", new Dictionary<string, object>());
 	                        break;
 	                    case ConnectionState.Connecting:
 	                        Widget.OpenWindow("CONNECTING_BG",
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				Game.LoadShellMap();
 				Widget.RootWidget.RemoveChildren();
 				if (Info.InstallMode == "cnc")
-					Widget.LoadWidget("MENU_BACKGROUND");
+					Widget.LoadWidget("MENU_BACKGROUND", new Dictionary<string, object>());
 				else
 					Widget.OpenWindow("MAINMENU_BG");
 			}
