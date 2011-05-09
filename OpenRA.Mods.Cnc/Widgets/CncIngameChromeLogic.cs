@@ -57,6 +57,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Game.AddChatLine += AddChatLineStub;
 			}
 			
+			ingameRoot.GetWidget<CncMenuButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
+
 			ingameRoot.GetWidget<CncMenuButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
@@ -108,6 +110,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
 				PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
+			
+			menu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").IsDisabled = () => true;
+			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").IsDisabled = () => true;
 			
 			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{

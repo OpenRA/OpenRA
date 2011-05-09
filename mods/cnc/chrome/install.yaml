@@ -1,3 +1,9 @@
+Background@INSTALL_BACKGROUND:
+	Id:INSTALL_BACKGROUND
+	Width:WINDOW_RIGHT
+	Height:WINDOW_BOTTOM
+	Background:shellmapborder
+
 Container@INSTALL_PANEL:
 	Id:INSTALL_PANEL
 	Delegate:CncInstallLogic
@@ -96,7 +102,6 @@ Container@INSTALL_FROMCD_PANEL:
 					Y:45
 					Width:PARENT_RIGHT - 185
 					Height:35
-					Indeterminate:true
 				Label@STATUS_LABEL:
 					Id:STATUS_LABEL
 					X:170

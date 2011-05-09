@@ -97,6 +97,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
+			settingsMenu.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").IsDisabled = () => true;
+			settingsMenu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").IsDisabled = () => true;
+			settingsMenu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").IsDisabled = () => true;
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		

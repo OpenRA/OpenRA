@@ -44,7 +44,7 @@ Container@MENU_BACKGROUND:
 							Y:0
 							Width:140
 							Height:35
-							Text:Skirmish
+							Text:Singleplayer
 						CncMenuButton@MULTIPLAYER_BUTTON:
 							Id:MULTIPLAYER_BUTTON
 							X:150

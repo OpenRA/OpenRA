@@ -39,8 +39,15 @@ Container@INGAME_MENU:
 					Width:140
 					Height:35
 					Text:Surrender
-				CncMenuButton@SETTINGS_BUTTON:
-					Id:SETTINGS_BUTTON
+				CncMenuButton@MUSIC_BUTTON:
+					Id:MUSIC_BUTTON
+					X:300
+					Y:0
+					Width:140
+					Height:35
+					Text:Music
+				CncMenuButton@PREFERENCES_BUTTON:
+					Id:PREFERENCES_BUTTON
 					X:450
 					Y:0
 					Width:140

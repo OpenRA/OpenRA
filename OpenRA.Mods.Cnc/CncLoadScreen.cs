@@ -82,6 +82,7 @@ namespace OpenRA.Mods.Cnc
 
 		void TestAndContinue()
 		{
+			Widget.RootWidget.RemoveChildren();
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
 				var args = new Dictionary<string, object>()
@@ -89,7 +90,8 @@ namespace OpenRA.Mods.Cnc
 					{ "continueLoading", (Action)(() => TestAndContinue()) },
 					{ "installData", Info }
 				};
-				Widget.OpenWindow(Info["InstallerWidget"], args);
+				Widget.LoadWidget(Info["InstallerBackgroundWidget"], args);
+				Widget.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else
 				Game.LoadShellMap();

@@ -46,6 +46,12 @@ namespace OpenRA.Widgets
 				indeterminateTick = 0;
 		}
 		
+		public void SetIndeterminate(bool value)
+		{
+			Indeterminate = value;
+			indeterminateTick = 0;
+		}
+		
 		public override Widget Clone() { return new ProgressBarWidget(this); }
 	}
 }

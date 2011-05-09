@@ -25,27 +25,32 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                       [ObjectCreator.Param] Dictionary<string,string> installData,
 		                       [ObjectCreator.Param] Action continueLoading)
 		{
-				var panel = widget.GetWidget("INSTALL_PANEL");
-				var args = new Dictionary<string, object>()
-	            {
-					{ "continueLoading", continueLoading },
-					{ "installData", installData }
-				};
-				
-				panel.GetWidget<CncMenuButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
-					Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
-				
-				panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON").OnClick = () =>
-					Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
-				
-				//panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = ShowModDialog; 
-				panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			var panel = widget.GetWidget("INSTALL_PANEL");
+			var args = new Dictionary<string, object>()
+            {
+				{ "continueLoading", continueLoading },
+				{ "installData", installData }
+			};
+
+			panel.GetWidget<CncMenuButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
+				Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
+
+			panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON").OnClick = () =>
+				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
+
+			panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+
+			// TODO:
+			panel.GetWidget<CncMenuButtonWidget>("DOWNLOAD_BUTTON").IsDisabled = () => true;
+			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").IsDisabled = () => true;
 		}
 	}
 
 	public class CncInstallFromCDLogic : IWidgetDelegate
 	{
 		Widget panel;
+		ProgressBarWidget progressBar;
+		LabelWidget statusLabel;
 		Action continueLoading;
 		
 		[ObjectCreator.UseCtor]
@@ -54,6 +59,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.continueLoading = continueLoading;
 			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
+			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			
 			var backButton = panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Widget.CloseWindow;
@@ -63,12 +70,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			retryButton.OnClick = PromptForCD;
 			retryButton.IsVisible = () => false;
 			
-			// TODO: Search obvious places (platform dependant) for CD
+			// TODO: Search obvious places (platform dependent) for CD
 			PromptForCD();
 		}
 		
 		void PromptForCD()
 		{
+			progressBar.SetIndeterminate(true);
 			Game.Utilities.PromptFilepathAsync("Select CONQUER.MIX on the C&C CD", path => Game.RunAfterTick(() => Install(path)));
 		}
 		
@@ -81,10 +89,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var extractPackage = "INSTALL/SETUP.Z";
 			var extractFiles = new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" };
 
-			var progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
-			progressBar.Indeterminate = false;
+			progressBar.SetIndeterminate(false);
 			
-			var statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			var installCounter = 0;
 			var onProgress = (Action<string>)(s =>
 			{
