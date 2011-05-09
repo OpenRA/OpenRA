@@ -10,11 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Widgets.Delegates;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -41,7 +44,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
 			// TODO:
-			panel.GetWidget<CncMenuButtonWidget>("DOWNLOAD_BUTTON").IsDisabled = () => true;
 			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").IsDisabled = () => true;
 		}
 	}
@@ -134,6 +136,95 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			}) { IsBackground = true };
 			t.Start();
+		}
+	}
+
+	public class CncDownloadPackagesLogic : IWidgetDelegate
+	{
+		Widget panel;
+		Dictionary<string,string> installData;
+		ProgressBarWidget progressBar;
+		LabelWidget statusLabel;
+		Action continueLoading;
+		
+		[ObjectCreator.UseCtor]
+		public CncDownloadPackagesLogic([ObjectCreator.Param] Widget widget,
+		                                [ObjectCreator.Param] Dictionary<string,string> installData,
+		                                [ObjectCreator.Param] Action continueLoading)
+		{
+			this.installData = installData;
+			this.continueLoading = continueLoading;
+			
+			panel = widget.GetWidget("INSTALL_DOWNLOAD_PANEL");
+			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			
+			ShowDownloadDialog();
+		}
+		
+				
+		void ShowDownloadDialog()
+		{
+			statusLabel.GetText = () => "Initializing...";		
+			progressBar.SetIndeterminate(false);
+
+			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			retryButton.IsVisible = () => false;
+			
+			var cancelButton = panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON");
+
+			// Save the package to a temp file
+			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			
+			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
+			{
+				progressBar.Percentage = i.ProgressPercentage;			
+				statusLabel.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
+			};
+			
+			Action<string> onExtractProgress = s =>
+			{
+				statusLabel.GetText = () => s;
+			};
+			
+			Action<string> onError = s =>
+			{
+				statusLabel.GetText = () => "Error: "+s;
+				retryButton.IsVisible = () => true;
+			};
+
+			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+			{
+				if (i.Error != null)
+				{
+					onError(i.Error.Message);
+					return;
+				}
+				else if (cancelled)
+				{
+					onError("Download cancelled");
+					return;
+				}
+				
+				// Automatically extract
+				statusLabel.GetText = () => "Extracting...";
+				progressBar.SetIndeterminate(true);
+				if (InstallUtils.ExtractZip(file, dest, onExtractProgress, onError))
+				{
+					Game.RunAfterTick(() =>
+					{
+						Widget.CloseWindow(); // Progress panel
+						Widget.CloseWindow(); // Install choice panel
+						continueLoading();
+					});
+				}
+			};
+			
+			var dl = new Download(installData["PackageURL"], file, onDownloadProgress, onDownloadComplete);
+			
+			cancelButton.OnClick = () => { dl.Cancel(); Widget.CloseWindow(); };
+			retryButton.OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
 		}
 	}
 }

@@ -26,30 +26,7 @@ namespace OpenRA.FileFormats
 				if (e != null) yield return e; else break;
 			}
 		}
-			
-		public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted, Action<string> Extracting)
-		{
-			foreach (var entry in z.GetEntries())
-			{
-				if (!entry.IsFile) continue;
 				
-				Extracting(entry.Name);
-				Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
-				var path = Path.Combine(destPath, entry.Name);
-				extracted.Add(path);
-				
-				using (var f = File.Create(path))
-				{
-					int bufSize = 2048;
-					byte[] buf = new byte[bufSize];
-					while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-					f.Write(buf, 0, bufSize);
-				}
-			}
-			
-			z.Close();
-		}
-		
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
 		public static bool ExtractFromPackage(string srcPath, string package, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
 		{
@@ -92,6 +69,57 @@ namespace OpenRA.FileFormats
 			}
 			onProgress("Extraction complete");
 			return true;
+		}
+		
+		public static bool ExtractZip(string zipFile, string dest, Action<string> onProgress, Action<string> onError)
+		{
+			if (!File.Exists(zipFile))
+			{
+				onError("Invalid path: "+zipFile);
+				return false;
+			}
+			
+			List<string> extracted = new List<string>();
+			try
+			{
+				var z = new ZipInputStream(File.OpenRead(zipFile));
+				z.ExtractZip(dest, extracted, s => onProgress("Extracting "+s));
+				onProgress("Extraction complete");
+			}
+			catch (SharpZipBaseException)
+			{
+				foreach(var f in extracted)
+					File.Delete(f);
+				
+				onError("Archive corrupt");
+				return false;
+			}
+			return true;
+		}
+		
+		// TODO: this belongs in FileSystem/ZipFile
+		static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted, Action<string> onProgress)
+		{
+			foreach (var entry in z.GetEntries())
+			{
+				if (!entry.IsFile) continue;
+				
+				onProgress(entry.Name);
+				
+				Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
+				var path = Path.Combine(destPath, entry.Name);
+				extracted.Add(path);
+				
+				using (var f = File.Create(path))
+				{
+					int bufSize = 2048;
+					byte[] buf = new byte[bufSize];
+					while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
+					f.Write(buf, 0, bufSize);
+				}
+			}
+			
+			z.Close();
 		}
 	}
 }

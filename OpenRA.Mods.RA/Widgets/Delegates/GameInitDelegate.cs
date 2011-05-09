@@ -142,10 +142,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
 
 			// Save the package to a temp file
-			var file = Path.GetTempPath() + Path.DirectorySeparatorChar + Path.GetRandomFileName();					
+			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 			Action<DownloadProgressChangedEventArgs> onDownloadChange = i =>
 			{
-				status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived/1024, i.TotalBytesToReceive/1024);
+				status.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
 				progress.Percentage = i.ProgressPercentage;
 			};
 			
@@ -180,28 +180,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		}
 		
 		bool ExtractZip(Widget window, string zipFile, string dest)
-		{
-			if (!File.Exists(zipFile))
-			{
-				ShowError(window, "Invalid path: "+zipFile);
-				return false;
-			}
-			
+		{	
 			var status = window.GetWidget<LabelWidget>("STATUS");
-			List<string> extracted = new List<string>();
-			try
-			{
-				new ZipInputStream(File.OpenRead(zipFile)).ExtractZip(dest, extracted, s => status.GetText = () => "Extracting "+s);
-			}
-			catch (SharpZipBaseException)
-			{
-				foreach(var f in extracted)
-					File.Delete(f);
-				ShowError(window, "Archive corrupt");
-				return false;
-			}
-			status.GetText = () => "Extraction complete";
-			return true;
+			return InstallUtils.ExtractZip( zipFile, dest,
+			                        s => status.GetText = () => s,
+			                        e => ShowError(window, e));
 		}
 
 		bool ExtractFromPackage(Widget window, string srcPath, string package, string[] files, string destPath)
@@ -216,19 +199,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		bool CopyFiles(Widget window, string srcPath, string[] files, string destPath)
 		{
 			var status = window.GetWidget<LabelWidget>("STATUS");
-
-			foreach (var file in files)
-			{
-				var fromPath = Path.Combine(srcPath, file);
-				if (!File.Exists(fromPath))
-				{
-					ShowError(window, "Cannot find "+file);
-					return false;
-				}
-				status.GetText = () => "Extracting "+file.ToLowerInvariant();
-				File.Copy(fromPath,	Path.Combine(destPath, Path.GetFileName(file).ToLowerInvariant()), true);
-			}
-			return true;
+			return InstallUtils.CopyFiles(srcPath, files, destPath,
+			                              s => status.GetText = () => s,
+			                              e => ShowError(window, e));
 		}
 		
 		bool InstallRAPackages(Widget window, string source, string dest)
