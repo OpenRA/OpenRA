@@ -10,16 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Net;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.FileFormats;
-using OpenRA.Network;
-using OpenRA.Widgets;
+using System.Linq;
 using System.Threading;
-using OpenRA.Mods.RA.Widgets;
+using OpenRA.FileFormats;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -45,6 +40,94 @@ namespace OpenRA.Mods.Cnc.Widgets
 				
 				//panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = ShowModDialog; 
 				panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+		}
+	}
+
+	public class CncInstallFromCDLogic : IWidgetDelegate
+	{
+		Widget panel;
+		Action continueLoading;
+		
+		[ObjectCreator.UseCtor]
+		public CncInstallFromCDLogic([ObjectCreator.Param] Widget widget,
+		                       [ObjectCreator.Param] Action continueLoading)
+		{
+			this.continueLoading = continueLoading;
+			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
+			
+			var backButton = panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON");
+			backButton.OnClick = Widget.CloseWindow;
+			backButton.IsVisible = () => false;
+			
+			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			retryButton.OnClick = PromptForCD;
+			retryButton.IsVisible = () => false;
+			
+			// TODO: Search obvious places (platform dependant) for CD
+			PromptForCD();
+		}
+		
+		void PromptForCD()
+		{
+			Game.Utilities.PromptFilepathAsync("Select CONQUER.MIX on the C&C CD", path => Game.RunAfterTick(() => Install(path)));
+		}
+		
+		void Install(string path)
+		{
+			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			var copyFiles = new string[] { "CONQUER.MIX", "DESERT.MIX",
+					"GENERAL.MIX", "SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
+			
+			var extractPackage = "INSTALL/SETUP.Z";
+			var extractFiles = new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" };
+
+			var progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
+			progressBar.Indeterminate = false;
+			
+			var statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			var installCounter = 0;
+			var onProgress = (Action<string>)(s =>
+			{
+				progressBar.Percentage = installCounter*100/(copyFiles.Count() + extractFiles.Count());
+				installCounter++;
+				
+				statusLabel.GetText = () => s;
+			});
+			
+			var onError = (Action<string>)(s =>
+			{
+				statusLabel.GetText = () => "Error: "+s;
+				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
+				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+			});
+			
+			string source;
+			try 
+			{
+				source = Path.GetDirectoryName(path);
+			}
+			catch (ArgumentException)
+			{
+				onError("Invalid path selected");
+				return;
+			}
+			
+			var t = new Thread( _ =>
+			{
+				if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+				return;
+			
+				if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+			    	return;
+				
+				Game.RunAfterTick(() =>
+				{
+					Widget.CloseWindow(); // Progress panel
+					Widget.CloseWindow(); // Install choice panel
+					continueLoading();
+				});
+			}) { IsBackground = true };
+			t.Start();
 		}
 	}
 }

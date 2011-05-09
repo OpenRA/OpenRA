@@ -204,32 +204,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			return true;
 		}
 
-		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
 		bool ExtractFromPackage(Widget window, string srcPath, string package, string[] files, string destPath)
 		{
 			var status = window.GetWidget<LabelWidget>("STATUS");
-
-			if (!Directory.Exists(destPath))
-				Directory.CreateDirectory(destPath);
 			
-			if (!Directory.Exists(srcPath)) { ShowError(window, "Cannot find "+package); return false; }
-			FileSystem.Mount(srcPath);
-			if (!FileSystem.Exists(package)) { ShowError(window, "Cannot find "+package); return false; }
-			FileSystem.Mount(package);
-
-			foreach (string s in files)
-			{
-				var destFile = Path.Combine(destPath, s);
-				using (var sourceStream = FileSystem.Open(s))
-				using (var destStream = File.Create(destFile))
-				{
-					status.GetText = () => "Extracting "+s;
-					destStream.Write(sourceStream.ReadAllBytes());
-				}
-			}
-			
-			status.GetText = () => "Extraction complete";
-			return true;
+			return InstallUtils.ExtractFromPackage(srcPath, package, files, destPath,
+			                                       s => status.GetText = () => s,
+			                                       e => ShowError(window, e));
 		}
 		
 		bool CopyFiles(Widget window, string srcPath, string[] files, string destPath)
@@ -295,41 +276,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Game.OnQuit -= () => Cancel();
 			wc.CancelAsync();
 			cancelled = true;
-		}
-	}
-
-	static class InstallUtils
-	{
-        static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)
-        {
-            for (; ; )
-            {
-                var e = z.GetNextEntry();
-                if (e != null) yield return e; else break;
-            }
-        }
-
-        public static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted, Action<string> Extracting)
-		{
-            foreach (var entry in z.GetEntries())
-            {
-                if (!entry.IsFile) continue;
-
-				Extracting(entry.Name);
-                Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
-                var path = Path.Combine(destPath, entry.Name);
-                extracted.Add(path);
-
-                using (var f = File.Create(path))
-                {
-                    int bufSize = 2048;
-                    byte[] buf = new byte[bufSize];
-                    while ((bufSize = z.Read(buf, 0, buf.Length)) > 0)
-                        f.Write(buf, 0, bufSize);
-                }
-            }
-
-			z.Close();
 		}
 	}
 }

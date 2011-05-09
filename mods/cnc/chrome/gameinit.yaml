@@ -65,7 +65,59 @@ Container@INSTALL_PANEL:
 			Width:140
 			Height:35
 			Text:Use CD
-
+Container@INSTALL_FROMCD_PANEL:
+	Id:INSTALL_FROMCD_PANEL
+	Delegate:CncInstallFromCDLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 150)/2
+	Width:640
+	Height:150
+	Children:
+		Label@TITLE:
+			Width:PARENT_RIGHT
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Installing from CD
+		Background@bg:
+			Width:640
+			Height:150
+			Background:panel-black
+			Children:
+				Image@INSTALL:
+					X:11
+					Y:11
+					ImageCollection: install
+					ImageName: logo
+				ProgressBar@PROGRESS_BAR:
+					Id:PROGRESS_BAR
+					X:170
+					Y:45
+					Width:PARENT_RIGHT - 185
+					Height:35
+					Indeterminate:true
+				Label@STATUS_LABEL:
+					Id:STATUS_LABEL
+					X:170
+					Y:85
+					Width:PARENT_RIGHT - 185
+					Height:25
+					Align:Left
+					Text:Waiting for CD
+		CncMenuButton@BACK_BUTTON:
+			Id:BACK_BUTTON
+			Y:149
+			Width:140
+			Height:35
+			Text:Back
+		CncMenuButton@RETRY_BUTTON:
+			Id:RETRY_BUTTON
+			X:500
+			Y:149
+			Width:140
+			Height:35
+			Text:Retry
 Background@INIT_DOWNLOAD:
 	Id:INIT_DOWNLOAD
 	X:(WINDOW_RIGHT - WIDTH)/2
@@ -119,50 +171,4 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Visible: false
 			Text:Extract
-			Bold:True
-
-Background@INIT_COPY:
-	Id:INIT_COPY
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:500
-	Height:160
-	Children:
-		Label@TITLE:
-			X:0
-			Y:20
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Copying C&C Content
-			Align:Center
-			Bold:True
-		ProgressBar@PROGRESS:
-			Id:PROGRESS
-			X:50
-			Y:55
-			Width:PARENT_RIGHT - 100
-			Height:25
-		Label@STATUS:
-			Id:STATUS
-			X:50
-			Y:80
-			Width:PARENT_RIGHT - 100
-			Height:25
-			Align:Left
-		Button@RETRY:
-			Id:RETRY
-			X:PARENT_RIGHT - 280
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Visible: false
-			Text:Retry
-			Bold:True
-		Button@CANCEL:
-			Id:CANCEL
-			X:PARENT_RIGHT - 140
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Cancel
 			Bold:True

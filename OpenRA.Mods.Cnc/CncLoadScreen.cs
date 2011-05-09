@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Cnc
 					{ "continueLoading", (Action)(() => TestAndContinue()) },
 					{ "installData", Info }
 				};
-				Game.modData.WidgetLoader.LoadWidget(args, Widget.RootWidget, Info["InstallerWidget"]);
+				Widget.OpenWindow(Info["InstallerWidget"], args);
 			}
 			else
 				Game.LoadShellMap();

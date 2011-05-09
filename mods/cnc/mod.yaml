@@ -96,7 +96,6 @@ LoadScreen: CncLoadScreen
 	InstallerWidget: INSTALL_PANEL
 	TestFile: conquer.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackagePath: ^/Content/cnc
 
 ServerTraits:
 	PlayerCommands
