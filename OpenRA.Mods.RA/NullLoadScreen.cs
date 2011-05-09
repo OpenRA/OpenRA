@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	public class NullLoadScreen : ILoadScreen
 	{
-		public void Init() {}
+		public void Init(Dictionary<string, string> info) {}
 		public void Display()
 		{
 			if (Game.Renderer == null)

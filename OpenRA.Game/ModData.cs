@@ -35,8 +35,8 @@ namespace OpenRA
 		{		
 			Manifest = new Manifest( mods );
 			ObjectCreator = new ObjectCreator( Manifest );
-			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen);
-			LoadScreen.Init();
+			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
+			LoadScreen.Init(Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader( this );
 		}
@@ -122,8 +122,8 @@ namespace OpenRA
 	
 	public interface ILoadScreen
 	{
+		void Init(Dictionary<string, string> info);
 		void Display();
-		void Init();
 		void StartGame();
 	}
 }

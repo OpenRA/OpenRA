@@ -1,67 +1,65 @@
-GameInitInfo@INIT_SETUP:
-	Id:INIT_SETUP
-	TestFile: conquer.mix
-	GameTitle: Command & Conquer
-	PackageURL:http://open-ra.org/get-dependency.php?file=cnc-packages
-	PackagePath:^/Content/cnc
-	InstallMode:cnc
-	Delegate:GameInitDelegate
-
-Background@INIT_CHOOSEINSTALL:
-	Id:INIT_CHOOSEINSTALL
+Container@INSTALL_PANEL:
+	Id:INSTALL_PANEL
+	Delegate:CncInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:500
-	Height:160
+	Y:(WINDOW_BOTTOM - 150)/2
+	Width:640
+	Height:150
 	Children:
 		Label@TITLE:
-			X:0
-			Y:20
 			Width:PARENT_RIGHT
-			Height:25
-			Text:Install Required
+			Y:0-25
+			Font:BigBold
+			Contrast:true
 			Align:Center
-			Bold:True
-		Label@DESC1:
-			X:0
-			Y:65
-			Width:PARENT_RIGHT
-			Height:25
-			Text:OpenRA requires the original C&C game content.
-			Align:Center
-		Label@DESC2:
-			X:0
-			Y:70
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Content can be downloaded, or copied from the install CD.
-			Visible:false
-			Align:Center
-		Button@DOWNLOAD:
-			Id:DOWNLOAD
-			X:PARENT_RIGHT - 280
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Download
-			Bold:True
-		Button@FROMCD:
-			Id:FROMCD
-			X:PARENT_RIGHT - 420
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Visible:false
-			Text:From CD
-			Bold:True
-		Button@QUIT:
-			Id:QUIT
-			X:PARENT_RIGHT - 140
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
+			Text:Install Game Content
+		Background@bg:
+			Width:640
+			Height:150
+			Background:panel-black
+			Children:
+				Label@INFO:
+					X:165
+					Y:40
+					Width:PARENT_RIGHT-30
+					Height:25
+					Text:OpenRA requires the original C&C content files.
+					Font:Bold
+				Label@INFO:
+					X:165
+					Y:70
+					Width:PARENT_RIGHT-180
+					Height:25
+					WordWrap:true
+					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CD.
+					Font:Bold
+		CncMenuButton@QUIT_BUTTON:
+			Id:QUIT_BUTTON
+			Y:149
+			Width:140
+			Height:35
 			Text:Quit
-			Bold:True
+		CncMenuButton@MODS_BUTTON:
+			Id:MODS_BUTTON
+			X:150
+			Y:149
+			Width:140
+			Height:35
+			Text:Change Mod
+		CncMenuButton@DOWNLOAD_BUTTON:
+			Id:DOWNLOAD_BUTTON
+			X:350
+			Y:149
+			Width:140
+			Height:35
+			Text:Download
+		CncMenuButton@INSTALL_BUTTON:
+			Id:INSTALL_BUTTON
+			X:500
+			Y:149
+			Width:140
+			Height:35
+			Text:Use CD
 
 Background@INIT_DOWNLOAD:
 	Id:INIT_DOWNLOAD

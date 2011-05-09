@@ -380,6 +380,8 @@ namespace OpenRA.Widgets
     }
 
     public interface IWidgetDelegate { }
+	
+	// TODO: This can die once ra init is sane
     public interface IWidgetDelegateEx : IWidgetDelegate
     {
         void Init();

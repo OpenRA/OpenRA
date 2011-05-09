@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		
 		Renderer r;
 		SpriteFont Font;
-		public void Init()
+		public void Init(Dictionary<string, string> info)
 		{
 			// Avoid standard loading mechanisms so we
 			// can display loadscreen as early as possible

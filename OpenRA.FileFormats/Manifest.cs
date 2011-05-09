@@ -21,7 +21,7 @@ namespace OpenRA.FileFormats
 			Mods, Folders, Packages, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Music, Movies, TileSets, ChromeMetrics;
-		public readonly string LoadScreen;
+		public readonly MiniYaml LoadScreen;
 		public readonly int TileSize = 24;
 
 		public Manifest(string[] mods)
@@ -47,8 +47,7 @@ namespace OpenRA.FileFormats
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
-
-			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value.Value;
+			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value;
 			
 			if (yaml.FirstOrDefault( x => x.Key == "TileSize" ) != null)
 				TileSize = int.Parse(yaml.First( x => x.Key == "TileSize" ).Value.Value);

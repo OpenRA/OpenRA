@@ -179,34 +179,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			}
 		}
 		
-		// General support methods
-		public class Download
-		{
-			WebClient wc;
-			bool cancelled;
-			
-			public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs, bool> onComplete)
-			{
-				wc = new WebClient();
-				wc.Proxy = null;
-	
-				wc.DownloadProgressChanged += (_,a) => onProgress(a);
-				wc.DownloadFileCompleted += (_,a) => onComplete(a, cancelled);
-				
-				Game.OnQuit += () => Cancel();
-				wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => Cancel();};
-				
-				wc.DownloadFileAsync(new Uri(url), path); 
-			}
-			
-			public void Cancel()
-			{
-				Game.OnQuit -= () => Cancel();
-				wc.CancelAsync();
-				cancelled = true;
-			}
-		}
-		
 		bool ExtractZip(Widget window, string zipFile, string dest)
 		{
 			if (!File.Exists(zipFile))
@@ -299,6 +271,33 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		}
     }
 	
+	public class Download
+	{
+		WebClient wc;
+		bool cancelled;
+		
+		public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs, bool> onComplete)
+		{
+			wc = new WebClient();
+			wc.Proxy = null;
+
+			wc.DownloadProgressChanged += (_,a) => onProgress(a);
+			wc.DownloadFileCompleted += (_,a) => onComplete(a, cancelled);
+			
+			Game.OnQuit += () => Cancel();
+			wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => Cancel();};
+			
+			wc.DownloadFileAsync(new Uri(url), path); 
+		}
+		
+		public void Cancel()
+		{
+			Game.OnQuit -= () => Cancel();
+			wc.CancelAsync();
+			cancelled = true;
+		}
+	}
+
 	static class InstallUtils
 	{
         static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)

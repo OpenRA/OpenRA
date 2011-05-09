@@ -79,6 +79,7 @@
     <Compile Include="Widgets\CncMapChooserLogic.cs" />
     <Compile Include="Widgets\CncConnectionLogic.cs" />
     <Compile Include="Widgets\CncIngameChromeLogic.cs" />
+    <Compile Include="Widgets\CncInstallLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

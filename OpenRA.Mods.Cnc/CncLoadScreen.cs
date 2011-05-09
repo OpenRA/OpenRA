@@ -14,6 +14,8 @@ using System.Linq;
 using OpenRA.Support;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using OpenRA.FileFormats;
+using System;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -25,6 +27,7 @@ namespace OpenRA.Mods.Cnc
 												"Splitting Atoms..."
 		};
 		
+		Dictionary<string,string> Info;
 		Stopwatch lastLoadScreen = new Stopwatch();
 		Rectangle StripeRect, BgRect;
 		Sprite Stripe, Logo, Bg;
@@ -32,8 +35,9 @@ namespace OpenRA.Mods.Cnc
 		
 		Renderer r;
 		SpriteFont Font;
-		public void Init()
+		public void Init(Dictionary<string, string> info)
 		{
+			Info = info;
 			// Avoid standard loading mechanisms so we
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
@@ -73,8 +77,22 @@ namespace OpenRA.Mods.Cnc
 		
 		public void StartGame()
 		{
-			Widget.RootWidget.RemoveChildren();
-			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
+			TestAndContinue();
+		}
+
+		void TestAndContinue()
+		{
+			if (!FileSystem.Exists(Info["TestFile"]))
+			{
+				var args = new Dictionary<string, object>()
+				{
+					{ "continueLoading", (Action)(() => TestAndContinue()) },
+					{ "installData", Info }
+				};
+				Game.modData.WidgetLoader.LoadWidget(args, Widget.RootWidget, Info["InstallerWidget"]);
+			}
+			else
+				Game.LoadShellMap();
 		}
 	}
 }
