@@ -91,7 +91,7 @@ namespace OpenRA.FileFormats
 				foreach(var f in extracted)
 					File.Delete(f);
 				
-				onError("Archive corrupt");
+				onError("Invalid archive");
 				return false;
 			}
 			return true;

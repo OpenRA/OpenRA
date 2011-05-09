@@ -166,8 +166,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		void ShowDownloadDialog()
 		{
 			statusLabel.GetText = () => "Initializing...";		
-			progressBar.SetIndeterminate(false);
-
+			progressBar.SetIndeterminate(true);
 			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
 			retryButton.IsVisible = () => false;
 			
@@ -179,6 +178,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{
+				if (progressBar.Indeterminate)
+					progressBar.SetIndeterminate(false);
+
 				progressBar.Percentage = i.ProgressPercentage;			
 				statusLabel.GetText = () => "Downloading {1}/{2} kB ({0}%)".F(i.ProgressPercentage, i.BytesReceived / 1024, i.TotalBytesToReceive / 1024);
 			};
@@ -193,12 +195,26 @@ namespace OpenRA.Mods.Cnc.Widgets
 				statusLabel.GetText = () => "Error: "+s;
 				retryButton.IsVisible = () => true;
 			};
-
+			
 			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
 			{
 				if (i.Error != null)
 				{
-					onError(i.Error.Message);
+					var message = i.Error.Message;
+					var except = i.Error as System.Net.WebException;
+					if (except != null)
+					{
+						Console.WriteLine("{0}",except.Status);
+						
+						if (except.Status == WebExceptionStatus.ProtocolError)
+							message = "File not found on remote server";
+						else if (except.Status == WebExceptionStatus.NameResolutionFailure ||
+						         except.Status == WebExceptionStatus.Timeout ||
+						         except.Status == WebExceptionStatus.ConnectFailure)
+							message = "Cannot connect to remote server";
+					}
+					
+					onError(message);
 					return;
 				}
 				else if (cancelled)
