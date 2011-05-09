@@ -70,6 +70,12 @@ namespace OpenRA.Mods.Cnc
 			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.Black);
 			r.EndFrame( new NullInputHandler() );
 		}
+		
+		public void StartGame()
+		{
+			Widget.RootWidget.RemoveChildren();
+			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
+		}
 	}
 }
 

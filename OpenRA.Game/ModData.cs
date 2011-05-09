@@ -120,5 +120,10 @@ namespace OpenRA
 		
 	}
 	
-	public interface ILoadScreen { void Display(); void Init(); }
+	public interface ILoadScreen
+	{
+		void Display();
+		void Init();
+		void StartGame();
+	}
 }

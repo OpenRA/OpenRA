@@ -8,6 +8,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using OpenRA.Widgets;
+
 namespace OpenRA.Mods.RA
 {
 	public class NullLoadScreen : ILoadScreen
@@ -21,6 +24,12 @@ namespace OpenRA.Mods.RA
 			// Draw a black screen
 			Game.Renderer.BeginFrame(float2.Zero);
 			Game.Renderer.EndFrame( new NullInputHandler() );
+		}
+		
+		public void StartGame()
+		{
+			Widget.RootWidget.RemoveChildren();
+			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
 		}
 	}
 }

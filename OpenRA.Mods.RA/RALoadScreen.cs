@@ -47,7 +47,6 @@ namespace OpenRA.Mods.RA
 			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
 		}
 
-		
 		public void Display()
 		{
 			if (r == null)
@@ -66,6 +65,12 @@ namespace OpenRA.Mods.RA
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
 			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
 			r.EndFrame( new NullInputHandler() );
+		}
+		
+		public void StartGame()
+		{
+			Widget.RootWidget.RemoveChildren();
+			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
 		}
 	}
 }
