@@ -18,17 +18,22 @@ Container@INSTALL_PANEL:
 			Height:150
 			Background:panel-black
 			Children:
+				Image@INSTALL:
+					X:11
+					Y:11
+					ImageCollection: install
+					ImageName: logo
 				Label@INFO:
-					X:165
-					Y:40
+					X:170
+					Y:35
 					Width:PARENT_RIGHT-30
 					Height:25
 					Text:OpenRA requires the original C&C content files.
 					Font:Bold
 				Label@INFO:
-					X:165
+					X:170
 					Y:70
-					Width:PARENT_RIGHT-180
+					Width:PARENT_RIGHT-185
 					Height:25
 					WordWrap:true
 					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CD.

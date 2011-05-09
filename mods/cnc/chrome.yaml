@@ -1,6 +1,7 @@
 shellmap: reticle.png
 	reticle: 0,0,512,512
-logo: logo.png
+
+install: install.png
 	logo:0,0,128,128
 
 dialog: uibuttons.png
