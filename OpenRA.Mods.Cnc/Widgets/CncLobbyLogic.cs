@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 						() => orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot.Index, bot))))));
 			}
 
-			DropDownButtonWidget.ShowDropDown( name,
+			CncDropDownButtonWidget.ShowDropDown( name,
 				dropDownOptions,
 				(ac, w) => new LabelWidget
 				{
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					() => orderManager.IssueOrder( Order.Command("race "+cc.Key) )) );
 			};
 
-			DropDownButtonWidget.ShowDropDown( race,
+			CncDropDownButtonWidget.ShowDropDown( race,
 				dropDownOptions,
 				(ac, w) =>
 			    {
@@ -391,7 +391,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					() => orderManager.IssueOrder( Order.Command("team "+ii) )) );
 			};
 
-			DropDownButtonWidget.ShowDropDown( team,
+			CncDropDownButtonWidget.ShowDropDown( team,
 				dropDownOptions,
 				(ac, w) => new LabelWidget
 				{
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 			UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 
-			DropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() {colorChooser.GetWidget("BUTTON_OK")}, () => {
+			CncDropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() {colorChooser.GetWidget("BUTTON_OK")}, () => {
 				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				return true;

@@ -8,11 +8,12 @@
  */
 #endregion
 
-
 using System;
-using OpenRA.Widgets;
-using OpenRA.Graphics;
+using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Graphics;
+using OpenRA.Widgets;
+
 namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncMenuButtonWidget : ButtonWidget
@@ -91,7 +92,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncScrollPanelWidget : ScrollPanelWidget
 	{
 		public CncScrollPanelWidget()
-			: base() { }
+			: base()
+		{
+			Background = "panel-gray";
+		}
 		
 		protected CncScrollPanelWidget(CncScrollPanelWidget widget)
 			: base(widget) { }
@@ -129,7 +133,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					thumbRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
 
 			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
-			WidgetUtils.DrawPanel("panel-gray", backgroundRect);
+			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
 			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
 			
@@ -237,7 +241,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public CncSliderWidget() : base() { } 
 		public CncSliderWidget(CncSliderWidget other) : base(other) { } 
 		
-		
 		public override Widget Clone() { return new CncSliderWidget(this); }
 		public override void DrawInner()
 		{
@@ -267,6 +270,71 @@ namespace OpenRA.Mods.Cnc.Widgets
 				"button";
 			
 			WidgetUtils.DrawPanel(state, tr);
+		}
+	}
+	
+	public class CncDropDownButtonWidget : DropDownButtonWidget
+	{
+		public Func<bool> IsDisabled = () => false;
+		public Renderer.FontType Font = Renderer.FontType.Bold;
+
+		public CncDropDownButtonWidget() : base() { }
+		protected CncDropDownButtonWidget(CncDropDownButtonWidget other) : base(other)
+		{
+			Font = other.Font;
+		}
+		public override Widget Clone() { return new CncDropDownButtonWidget(this); }
+
+		public override void DrawInner()
+		{
+			var rb = RenderBounds;
+			var state = IsDisabled() ? "button-disabled" : 
+						Depressed ? "button-pressed" : 
+						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
+						"button";
+			
+			WidgetUtils.DrawPanel(state, rb);
+			
+			var font = Game.Renderer.Fonts[Font];
+			var text = GetText();
+			font.DrawText(text,
+				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
+					- new int2(font.Measure(text).X / 2,
+				font.Measure(text).Y / 2), IsDisabled() ? Color.Gray : Color.White);
+			
+			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
+			WidgetUtils.DrawRGBA( image, new float2(rb.Right - rb.Height + 4, 
+			                                        rb.Top + (rb.Height - image.bounds.Height) / 2));
+
+			WidgetUtils.FillRectWithColor(new Rectangle(rb.Right - rb.Height, rb.Top + 3, 1, rb.Height - 6),
+				Color.White);
+		}
+		
+		public static new void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
+		{
+			var dropDown = new CncScrollPanelWidget();
+			dropDown.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100);
+			dropDown.ItemSpacing = 1;
+			dropDown.Background = "panel-black";
+
+			List<LabelWidget> items = new List<LabelWidget>();
+			List<Widget> dismissAfter = new List<Widget>();
+			foreach (var t in ts)
+			{
+				var ww = ft(t, dropDown.Bounds.Width - dropDown.ScrollbarWidth);
+				dismissAfter.Add(ww);
+				ww.OnMouseMove = mi => items.Do(lw =>
+				{
+					lw.Background = null;
+					ww.Background = "button-hover";
+				});
+	
+				dropDown.AddChild(ww);
+				items.Add(ww);
+			}
+			
+			dropDown.Bounds.Height = Math.Min(150, dropDown.ContentHeight);
+			ShowDropPanel(w, dropDown, dismissAfter, () => true);
 		}
 	}
 }

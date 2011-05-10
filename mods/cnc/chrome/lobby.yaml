@@ -66,15 +66,13 @@ Container@SERVER_LOBBY:
 									Text:Name
 									Width:150
 									Height:25
-									X:0
-									Y:0
 									MaxLength:16
-								DropDownButton@COLOR:
+								CncDropDownButton@COLOR:
 									Id:COLOR
 									Width:80
 									Height:25
 									X:160
-									Y:0
+									Font:Regular
 									Children:
 										ColorBlock@COLORBLOCK:
 											Id:COLORBLOCK
@@ -82,12 +80,12 @@ Container@SERVER_LOBBY:
 											Y:6
 											Width:PARENT_RIGHT-35
 											Height:PARENT_BOTTOM-12
-								DropDownButton@FACTION:
+								CncDropDownButton@FACTION:
 									Id:FACTION
 									Width:130
 									Height:25
 									X:250
-									Y:0
+									Font:Regular
 									Children:
 										Image@FACTIONFLAG:
 											Id:FACTIONFLAG
@@ -102,13 +100,13 @@ Container@SERVER_LOBBY:
 											Height:25
 											X:40
 											Y:0
-								DropDownButton@TEAM:
+								CncDropDownButton@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:48
 									Height:25
 									X:390
-									Y:0
+									Font:Regular
 								CncCheckbox@STATUS:
 									Id:STATUS
 									X:448
@@ -236,13 +234,12 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
-								DropDownButton@NAME:
+								CncDropDownButton@NAME:
 									Id:NAME
 									Text:Name
 									Width:150
 									Height:25
-									X:0
-									Y:0
+									Font:Regular
 								CncMenuButton@JOIN:
 									Id:JOIN
 									Text:Play in this slot
