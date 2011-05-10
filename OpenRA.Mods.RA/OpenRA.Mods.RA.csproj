@@ -198,7 +198,6 @@
     <Compile Include="FreeActor.cs" />
     <Compile Include="Air\Helicopter.cs" />
     <Compile Include="Husk.cs" />
-    <Compile Include="InvisibleToOthers.cs" />
     <Compile Include="LeavesHusk.cs" />
     <Compile Include="LightPaletteRotator.cs" />
     <Compile Include="OreRefinery.cs" />
@@ -346,6 +345,7 @@
     <Compile Include="Sellable.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="Activities\CaptureActor.cs" />
+    <Compile Include="InvisibleToEnemy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

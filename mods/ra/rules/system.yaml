@@ -207,7 +207,7 @@ MINP:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
-	InvisibleToOthers:
+	InvisibleToEnemy:
 	Tooltip:
 		Name: Anti-Personnel Mine
 	ProximityCaptor:
@@ -222,7 +222,7 @@ MINV:
 		HP: 1
 	RenderUnit:
 	BelowUnits:
-	InvisibleToOthers:
+	InvisibleToEnemy:
 	Tooltip:
 		Name: Anti-Tank Mine
 	ProximityCaptor:

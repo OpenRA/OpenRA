@@ -14,9 +14,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class InvisibleToOthersInfo : TraitInfo<InvisibleToOthers> { }
+	class InvisibleToEnemyInfo : TraitInfo<InvisibleToEnemy> { }
 
-	class InvisibleToOthers : IRenderModifier, IVisibilityModifier, IRadarColorModifier
+	class InvisibleToEnemy : IRenderModifier, IVisibilityModifier, IRadarColorModifier
 	{
 		public bool IsVisible(Actor self)
 		{
@@ -25,13 +25,14 @@ namespace OpenRA.Mods.RA
 		
 		public Color RadarColorOverride(Actor self)
 		{
+			// todo: why is making this half-opaque conflated with hiding the actor from non-allies?
 			return Color.FromArgb(128, self.Owner.ColorRamp.GetColor(0));
 		}
 
 		static readonly Renderable[] Nothing = { };
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return self.World.LocalPlayer == self.Owner
+			return self.World.LocalPlayer == null || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally
 				? r : Nothing;
 		}
 	}
