@@ -37,7 +37,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
 			var template = panel.GetWidget("REPLAY_TEMPLATE");
-			CurrentReplay = null;
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
@@ -46,54 +45,49 @@ namespace OpenRA.Mods.Cnc.Widgets
 				foreach (var replayFile in files)
 					AddReplay(rl, replayFile, template);
 			
-				CurrentReplay = files.FirstOrDefault();
+				SelectReplay(files.FirstOrDefault());
 			}
 
 			var watch = panel.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => currentReplay == null || currentMap == null;
+			watch.IsDisabled = () => currentSummary == null || currentMap == null || currentSummary.Duration == 0;
 			watch.OnClick = () =>
 			{
-				if (currentReplay != null)
+				if (currentSummary != null)
 				{
-					Game.JoinReplay(CurrentReplay);
+					Game.JoinReplay(currentSummary.Filename);
 					onStart();
 				}
 			};
 
-			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
+			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentSummary != null;
 		}
-
-		string currentReplay = null;
-		Map currentMap = null;
-		string CurrentReplay
+		
+		ReplaySummary currentSummary;
+		Map currentMap;
+		void SelectReplay(string filename)
 		{
-			get { return currentReplay; }
-			set
+			if (filename == null)
+				return;
+
+			try
 			{
-				currentReplay = value;
-				if (currentReplay != null)
-				{
-					try
-					{
-						var summary = new ReplaySummary(currentReplay);
-						currentMap = summary.Map();
+				currentSummary = new ReplaySummary(filename);
+				currentMap = currentSummary.Map();
 
-						panel.GetWidget<LabelWidget>("DURATION").GetText =
-							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-						panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
-						panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
-							() => currentMap != null ? currentMap.Title : "(Unknown Map)";
+				panel.GetWidget<LabelWidget>("DURATION").GetText =
+					() => WidgetUtils.FormatTime(currentSummary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
+				panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
-						var players = summary.LobbyInfo.Slots.Count(s => summary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
-						panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
-					}
-					catch(Exception e)
-					{
-						Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
-						currentReplay = null;
-						currentMap = null;
-					}
-				}
+				var players = currentSummary.LobbyInfo.Slots.Count(s => currentSummary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
+				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+			}
+			catch(Exception e)
+			{
+				Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
+				currentSummary = null;
+				currentMap = null;
 			}
 		}
 
@@ -102,8 +96,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var entry = template.Clone() as ContainerWidget;
 			var f = Path.GetFileName(filename);
 			entry.GetWidget<LabelWidget>("TITLE").GetText = () => f;
-			entry.GetBackground = () => (entry.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (CurrentReplay == filename) ? "button-pressed" : null);
-			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
+			entry.GetBackground = () => (entry.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (currentSummary != null && currentSummary.Filename == filename) ? "button-pressed" : null);
+			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; SelectReplay(filename); return true; };
 			entry.IsVisible = () => true;
 			list.AddChild(entry);
 		}

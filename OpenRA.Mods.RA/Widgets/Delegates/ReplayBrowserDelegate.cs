@@ -102,11 +102,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	/* a maze of twisty little hacks,... */
 	public class ReplaySummary
 	{
+		public readonly string Filename;
 		public readonly int Duration;
 		public readonly Session LobbyInfo;
 
 		public ReplaySummary(string filename)
 		{
+			Filename = filename;
 			var lastFrame = 0;
 			var hasSeenGameStart = false;
 			var lobbyInfo = null as Session;
