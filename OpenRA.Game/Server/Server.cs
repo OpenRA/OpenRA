@@ -73,18 +73,22 @@ namespace OpenRA.Server
 				Log.Write("server","- {0}", m);
 			
 			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
-			
-			try
-			{
-				listener.Start();
-			}
-			catch (Exception)
-			{
-				throw new InvalidOperationException( "Unable to start server: port is already in use" );
-			}
 
 			new Thread( _ =>
 			{
+				while (true)
+				{
+					try
+					{
+						listener.Start();
+						break;
+					}
+					catch (Exception)
+					{
+						Thread.Sleep(100);
+					}
+				}
+
 				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for( ; ; )
 				{
@@ -94,7 +98,9 @@ namespace OpenRA.Server
 					foreach( var c in preConns ) checkRead.Add( c.socket );
 					
 					Socket.Select( checkRead, null, null, timeout );
-
+					if (shutdown)
+						break;
+					
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
 						else if (preConns.Count > 0)
@@ -110,7 +116,6 @@ namespace OpenRA.Server
 					if (shutdown)
 						break;
 				}
-				Console.WriteLine("Server loop finished");
 				
 				GameStarted = false;
 				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())

@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
 			                           Game.Settings.Server.LoopbackPort,
 			                           new Action(() => OpenLobbyPanel(MenuType.Main)),
-			                           new Action(() => ReturnToMenu(MenuType.Main)));
+			                           new Action(() => { Game.CloseServer(); ReturnToMenu(MenuType.Main); }));
 		}
 	}
 }

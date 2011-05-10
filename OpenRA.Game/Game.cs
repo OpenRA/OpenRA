@@ -350,14 +350,15 @@ namespace OpenRA
 		{
 			if (orderManager.world != null)
 				orderManager.world.traitDict.PrintReport();
-			
-			if (IsHost && server != null)
-			{
-				Console.WriteLine("Closing server");
-				server.Shutdown();
-			}
+			CloseServer();
 			JoinLocal();
 			orderManager.Dispose();
+		}
+		
+		public static void CloseServer()
+		{
+			if (server != null)
+				server.Shutdown();
 		}
 
 		public static T CreateObject<T>( string name )
