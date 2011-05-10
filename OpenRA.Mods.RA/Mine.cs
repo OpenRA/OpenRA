@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			if (crusher.HasTrait<MineImmune>() && crusher.Owner == self.Owner)
+			if (crusher.HasTrait<MineImmune>() || self.Owner.Stances[crusher.Owner] == Stance.Ally)
 				return;
 
 			var info = self.Info.Traits.Get<MineInfo>();
