@@ -2,14 +2,80 @@ Container@INGAME_ROOT:
 	Id:INGAME_ROOT
 	Delegate:CncIngameChromeLogic
 	Children:
+		Container@PLAYER_WIDGETS:
+			Id:PLAYER_WIDGETS
+			Visible:false
+			Children:
+				WorldCommand:
+					Width:WINDOW_RIGHT
+					Height:WINDOW_BOTTOM
+				Background@POSTGAME_BG:
+					Id:POSTGAME_BG
+					X:(WINDOW_RIGHT - WIDTH)/2
+					Y:(WINDOW_BOTTOM - HEIGHT)/2
+					Width:400
+					Height:100
+					Background:dialog4
+					Visible:false
+					Children:
+						Label@TEXT:
+							Id:TEXT
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:(PARENT_BOTTOM - HEIGHT)/2
+							Width:200
+							Height:40
+							Align:Center
+							Bold:True
+				SpecialPowerBin@INGAME_POWERS_BIN:
+					Id:INGAME_POWERS_BIN
+					Y:25
+				BuildPalette@INGAME_BUILD_PALETTE:
+					Id:INGAME_BUILD_PALETTE
+					X:WINDOW_RIGHT - 250
+					Y:280
+					Width:250
+					Height:500
+					TabClick: button.aud
+					BuildPaletteOpen: appear1.aud 
+					BuildPaletteClose: appear1.aud
+				RadarBin@INGAME_RADAR_BIN:
+					Id:INGAME_RADAR_BIN
+					WorldInteractionController:INTERACTION_CONTROLLER
+				PowerBin@INGAME_POWER_BIN:
+					Id:INGAME_POWER_BIN
+				MoneyBin@INGAME_MONEY_BIN:
+					Id:INGAME_MONEY_BIN
+					X:WINDOW_RIGHT - WIDTH
+					Y:0
+					Width:320
+					Height: 32
+					SplitOreAndCash: yes
+					Children:
+						OrderButton@SELL:
+							Id:SELL
+							Delegate:OrderButtonsChromeDelegate
+							X:39
+							Y:0
+							Width:30
+							Height:30
+							Image:sell
+							Description:Sell
+							LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
+						OrderButton@REPAIR:
+							Id:REPAIR
+							Delegate:OrderButtonsChromeDelegate
+							X:75
+							Y:0
+							Width:30
+							Height:30
+							Image:repair
+							Description:Repair
+							LongDesc:Repair damaged buildings
 		WorldInteractionController:
 			Id:INTERACTION_CONTROLLER
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		ViewportScrollController:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-		WorldCommand:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
@@ -20,35 +86,6 @@ Container@INGAME_ROOT:
 			Id:STRATEGIC_PROGRESS
 			X: WINDOW_RIGHT/2
 			Y: 40
-		Background@POSTGAME_BG:
-			Id:POSTGAME_BG
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:400
-			Height:100
-			Background:dialog4
-			Visible:false
-			Children:
-				Label@TEXT:
-					Id:TEXT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
-					Width:200
-					Height:40
-					Align:Center
-					Bold:True
-		SpecialPowerBin@INGAME_POWERS_BIN:
-			Id:INGAME_POWERS_BIN
-			Y:25
-		BuildPalette@INGAME_BUILD_PALETTE:
-			Id:INGAME_BUILD_PALETTE
-			X:WINDOW_RIGHT - 250
-			Y:280
-			Width:250
-			Height:500
-			TabClick: button.aud
-			BuildPaletteOpen: appear1.aud 
-			BuildPaletteClose: appear1.aud
 		CncMenuButton@OPTIONS_BUTTON:
 			Id:OPTIONS_BUTTON
 			X:5
@@ -74,39 +111,6 @@ Container@INGAME_ROOT:
 			Text:Developer Mode
 			Visible:false
 			Bold:True
-		RadarBin@INGAME_RADAR_BIN:
-			Id:INGAME_RADAR_BIN
-			WorldInteractionController:INTERACTION_CONTROLLER
-		PowerBin@INGAME_POWER_BIN:
-			Id:INGAME_POWER_BIN
-		MoneyBin@INGAME_MONEY_BIN:
-			Id:INGAME_MONEY_BIN
-			X:WINDOW_RIGHT - WIDTH
-			Y:0
-			Width:320
-			Height: 32
-			SplitOreAndCash: yes
-			Children:
-				OrderButton@SELL:
-					Id:SELL
-					Delegate:OrderButtonsChromeDelegate
-					X:39
-					Y:0
-					Width:30
-					Height:30
-					Image:sell
-					Description:Sell
-					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
-				OrderButton@REPAIR:
-					Id:REPAIR
-					Delegate:OrderButtonsChromeDelegate
-					X:75
-					Y:0
-					Width:30
-					Height:30
-					Image:repair
-					Description:Repair
-					LongDesc:Repair damaged buildings
 		WorldTooltip:
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY

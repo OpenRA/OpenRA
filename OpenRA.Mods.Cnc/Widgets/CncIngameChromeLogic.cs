@@ -21,19 +21,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		static bool staticSetup;
 		Widget ingameRoot;
-		
-		public static CncIngameChromeLogic GetHandler()
+
+		static void AddChatLineStub(Color c, string from, string text)
 		{
 			var panel = Widget.RootWidget.GetWidget("INGAME_ROOT");
             if (panel == null)
-                return null;
+                return;
 			
-			return panel.DelegateObject as CncIngameChromeLogic;
-		}
-		
-		static void AddChatLineStub(Color c, string from, string text)
-		{
-			var handler = GetHandler();
+			var handler = panel.DelegateObject as CncIngameChromeLogic;
 			if (handler == null)
 				return;
 			
@@ -57,8 +52,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Game.AddChatLine += AddChatLineStub;
 			}
 			
-			ingameRoot.GetWidget<CncMenuButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
+			if (world.LocalPlayer != null)
+				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
+			ingameRoot.GetWidget<CncMenuButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
 			ingameRoot.GetWidget<CncMenuButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
