@@ -23,9 +23,8 @@ namespace OpenRA.Mods.RA.Activities
 			var h = self.TraitOrDefault<Health>();
 			var si = self.Info.Traits.Get<SellableInfo>();
 			var pr = self.Owner.PlayerActor.Trait<PlayerResources>();
-			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			
-			var cost = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
+			var cost = self.GetSellValue();
 			
 			var refund = (cost * si.RefundPercent * (h == null ? 1 : h.HP)) / (100 * (h == null ? 1 : h.MaxHP));			
 			pr.GiveCash(refund);

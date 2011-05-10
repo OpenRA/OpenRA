@@ -10,6 +10,7 @@
 
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
@@ -21,7 +22,6 @@ namespace OpenRA.Mods.RA
 
 	class GivesBounty : INotifyKilled
 	{
-
 		int GetMultiplier(Actor self)
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 			if (gainsExp == null)
 				return 100;
 
-			var slevel = self.Trait<GainsExperience>().Level;
+			var slevel = gainsExp.Level;
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
 		}
 
@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA
 			if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[self.Owner] == Stance.Ally)
 				return;
 
-			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
-			var cost = valued != null ? valued.Cost : 0;
+			var cost = self.GetSellValue();
 			// 2 hundreds because of GetMultiplier and info.Percentage.
 			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 

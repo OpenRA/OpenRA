@@ -52,8 +52,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			if (remainingTicks == 0)
 			{
-				var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-				var buildingValue = csv != null ? csv.Value : self.Info.Traits.Get<ValuedInfo>().Cost;
+				var buildingValue = self.GetSellValue();
 
 				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
 				var cost = (hpToRepair * Info.RepairPercent * buildingValue) / (Health.MaxHP * 100);

@@ -21,4 +21,18 @@ namespace OpenRA.Mods.RA.Buildings
 	}
 
 	public class CustomSellValue { }
+
+	public static class CustomSellValueExts
+	{
+		public static int GetSellValue( this Actor a )
+		{
+			var csv = a.Info.Traits.GetOrDefault<CustomSellValueInfo>();		
+			if (csv != null) return csv.Value;
+
+			var valued = a.Info.Traits.GetOrDefault<ValuedInfo>();
+			if (valued != null) return valued.Cost;
+			
+			return 0;
+		}
+	}
 }
