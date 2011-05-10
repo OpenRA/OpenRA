@@ -105,15 +105,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			infoPanel.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
 			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserDelegate.GenerateModsLabel(currentServer);
 			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
-			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () =>
-			{
-				if (currentServer == null)
-					return "";
-				string ret = currentServer.Players.ToString();
-				if (CurrentMap() != null)
-					ret += "/" + CurrentMap().PlayerCount.ToString();
-				return ret;
-			};
+			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
 			
 			// Master server should be set up *once*
 			if (!masterServerSetup)
@@ -122,6 +114,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 				MasterServerQuery.OnComplete += games => RefreshServerListStub(games);
 			}
 			MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
+		}
+		
+		string GetPlayersLabel(GameServer game)
+		{
+			if (game == null)
+				return "";
+			
+			var map = GetMap(game.Map);
+			return map == null ? "{0}".F(currentServer.Players) : "{0} / {1}".F(currentServer.Players, map.PlayerCount);
 		}
 
 		Map CurrentMap()
@@ -169,8 +170,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
 				template.IsVisible = () => true;
 				template.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
+				// TODO: Use game.MapTitle once the server supports it
 				template.GetWidget<LabelWidget>("MAP").GetText = () => {var map = GetMap(game.Map); return map == null ? "Unknown" : map.Title;};
-				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0} / {1}".F(game.Players, -1);
+				// TODO: Use game.MaxPlayers once the server supports it
+				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
 				template.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
 				sl.AddChild(template);
 
