@@ -26,7 +26,6 @@ namespace OpenRA.Widgets
         public string Width = "0";
         public string Height = "0";
         public string Delegate = null;
-        public string EventHandler = null;
         public bool Visible = true;
 
         public readonly List<Widget> Children = new List<Widget>();
