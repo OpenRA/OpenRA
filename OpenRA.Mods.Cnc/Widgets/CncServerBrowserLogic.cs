@@ -11,22 +11,54 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Mods.RA.Widgets.Delegates;
 using OpenRA.Server;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA.Widgets.Delegates;
-using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
+	public class ServerList
+	{
+		public static void Query(Action<GameServer[]> onComplete)
+		{
+			var masterServerUrl = Game.Settings.Server.MasterServer;
+			new Thread(() =>
+			{
+				GameServer[] games = null;
+				try
+				{
+					var str = GetData(new Uri(masterServerUrl + "list.php"));
+
+					var yaml = MiniYaml.FromString(str);
+
+					games = yaml.Select(a => FieldLoader.Load<GameServer>(a.Value))
+						.Where(gs => gs.Address != null).ToArray();
+				}
+				catch { }
+				
+				Game.RunAfterTick(() => onComplete(games));
+			}) { IsBackground = true }.Start();
+		}
+
+		static string GetData(Uri uri)
+		{
+			var wc = new WebClient();
+			wc.Proxy = null;
+			var data = wc.DownloadData(uri);
+			return Encoding.UTF8.GetString(data);
+		}
+	}
+	
 	public class CncServerBrowserLogic : IWidgetDelegate
 	{
-		// Prevent repeated additions of RefreshServerList to the master server
-		static bool masterServerSetup;
-
 		GameServer currentServer;
 		Widget serverTemplate;
-		
+		bool refreshing;
 		enum SearchStatus
 		{
 			Fetching,
@@ -60,13 +92,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			
 			// Menu buttons
-			panel.GetWidget<CncMenuButtonWidget>("REFRESH_BUTTON").OnClick = () =>
+			var refreshButton = panel.GetWidget<CncMenuButtonWidget>("REFRESH_BUTTON");
+			refreshButton.IsDisabled = () => refreshing;
+			refreshButton.OnClick = () =>
 			{
 				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
-				currentServer = null;
-
-				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
+				currentServer = null;				
+				ServerList.Query(games => RefreshServerList(panel, games));
+				refreshing = true;
 			};
 			
 			var join = panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON");
@@ -107,13 +141,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
 			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
 			
-			// Master server should be set up *once*
-			if (!masterServerSetup)
-			{
-				masterServerSetup = true;
-				MasterServerQuery.OnComplete += games => RefreshServerListStub(games);
-			}
-			MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
+			refreshing = true;
+			ServerList.Query(games => RefreshServerList(panel, games));
 		}
 		
 		string GetPlayersLabel(GameServer game)
@@ -136,10 +165,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				? null : Game.modData.AvailableMaps[uid];
 		}
 		
-		public void RefreshServerList(IEnumerable<GameServer> games)
+		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
-			var sl = Widget.RootWidget.GetWidget("SERVERBROWSER_PANEL")
-				.GetWidget<ScrollPanelWidget>("SERVER_LIST");
+			refreshing = false;
+			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			
 			sl.RemoveChildren();
 			currentServer = null;
@@ -180,21 +209,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (i == 0) currentServer = game;
 				i++;
 			}
-		}
-		
-		static void RefreshServerListStub(IEnumerable<GameServer> games)
-		{
-			var panel = Widget.RootWidget.GetWidget("SERVERBROWSER_PANEL");
-			
-			// The panel may not be open anymore
-            if (panel == null)
-                return;
-			
-			var browserLogic = panel.DelegateObject as CncServerBrowserLogic;
-			if (browserLogic == null)
-				return;
-			
-			browserLogic.RefreshServerList(games);
 		}
 	}
 

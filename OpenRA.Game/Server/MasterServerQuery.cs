@@ -19,7 +19,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Server
 {
-    public static class MasterServerQuery
+    // TODO: This can die once ra is sane
+	public static class MasterServerQuery
 	{
 		public static event Action<GameServer[]> OnComplete = _ => { };
 		public static event Action<string> OnVersion = _ => { };
