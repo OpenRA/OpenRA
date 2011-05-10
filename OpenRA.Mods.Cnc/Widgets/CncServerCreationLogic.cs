@@ -71,14 +71,24 @@ namespace OpenRA.Mods.Cnc.Widgets
 	
 		void CreateAndJoin()
 		{
-			Game.Settings.Server.Name = panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text;
-			Game.Settings.Server.ListenPort = int.Parse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
-			Game.Settings.Server.ExternalPort = int.Parse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
+			var name = panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text;
+			int listenPort, externalPort;
+			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
+				listenPort = 1234;
+			
+			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
+				externalPort = 1234;
+			
+			// Save new settings
+			Game.Settings.Server.Name = name;
+			Game.Settings.Server.ListenPort = listenPort;
+			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Server.LastMap = map.Uid;
 			Game.Settings.Save();
-
-			Game.CreateServer(Game.Settings, map.Uid);
+			
+			// Create and join the server
+			Game.CreateServer(listenPort, name, map.Uid);
 			Widget.CloseWindow();
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}

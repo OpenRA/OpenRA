@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.FileFormats;
+using System.Net;
 using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Widgets;
@@ -68,8 +69,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new Dictionary<string, object>()
                 {
-					{"onExit", new Action(ReturnToMultiplayerMenu)},
-					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Main)) }
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Multiplayer)) },
+					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
 				});
 			};
 			
@@ -78,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("CREATESERVER_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(ReturnToMultiplayerMenu) },
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Multiplayer)) },
 					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
 				});
 			};
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("DIRECTCONNECT_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(ReturnToMultiplayerMenu) },
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Multiplayer)) },
 					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
 				});
 			};		
@@ -103,9 +104,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
-		void ReturnToMultiplayerMenu()
+		void ReturnToMenu(MenuType menu)
 		{
-			Menu = MenuType.Multiplayer;
+			Menu = menu;
 			Widget.CloseWindow();
 		}
 		
@@ -118,18 +119,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		void OpenLobbyPanel(MenuType menu)
 		{
-			// Quit the lobby: disconnect and restore menu
-			Action onLobbyClose = () =>
-			{
-				Game.DisconnectOnly();
-				Menu = menu;
-				Widget.CloseWindow();
-			};
-			
 			Menu = MenuType.None;
 			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
 			{
-				{ "onExit", onLobbyClose },
+				{ "onExit", new Action(() => { Game.DisconnectOnly(); ReturnToMenu(menu); }) },
 				{ "onStart", new Action(RemoveShellmapUI) }
 			});
 		}
@@ -138,14 +131,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
 			
-			var settings = Game.Settings;
-			settings.Server.Name = "Skirmish Game";
-			// TODO: we want to prevent binding a port altogether
-			settings.Server.ListenPort = 1234;
-			settings.Server.ExternalPort = 1234;
-			Game.CreateAndJoinServer(settings, map);
-			
-			OpenLobbyPanel(MenuType.Main);
+			Game.CreateLocalServer(map);
+			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
+			                           Game.Settings.Server.LoopbackPort,
+			                           new Action(() => OpenLobbyPanel(MenuType.Main)),
+			                           new Action(() => ReturnToMenu(MenuType.Main)));
 		}
 	}
 }

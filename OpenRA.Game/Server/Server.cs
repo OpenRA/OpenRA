@@ -49,22 +49,21 @@ namespace OpenRA.Server
 			shutdown = true;
 		}
 		
-		public Server(ModData modData, Settings settings, string map)
+		public Server(IPAddress ip, int port, string serverName, string[] mods, string map, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
-
-			listener = new TcpListener(IPAddress.Any, settings.Server.ListenPort);
-			Name = settings.Server.Name;
+			listener = new TcpListener(ip, port);
+			Name = serverName;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
 			
-			lobbyInfo = new Session( settings.Game.Mods );
+			lobbyInfo = new Session( mods );
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = map;
-			lobbyInfo.GlobalSettings.ServerName = settings.Server.Name;
+			lobbyInfo.GlobalSettings.ServerName = serverName;
 			
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);

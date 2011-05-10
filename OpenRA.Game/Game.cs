@@ -364,16 +364,20 @@ namespace OpenRA
 		{
 			return modData.ObjectCreator.CreateObject<T>( name );
 		}
-
-		public static void CreateServer(Settings settings, string map)
+		
+		public static void CreateServer(int port, string name, string map)
 		{
-			server = new Server.Server(modData, settings, map);
+			server = new Server.Server(IPAddress.Any, port, name, Settings.Game.Mods, map, modData);
 		}
-
-		public static void CreateAndJoinServer(Settings settings, string map)
+		
+		public static void CreateLocalServer(string map)
 		{
-			CreateServer(settings, map);
-			JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
+			server = new Server.Server(IPAddress.Loopback,
+			                           Game.Settings.Server.LoopbackPort,
+			                           "Skirmish Game",
+			                           Game.Settings.Game.Mods,
+			                           map,
+			                           modData);
 		}
 
 		public static bool IsCurrentWorld(World world)

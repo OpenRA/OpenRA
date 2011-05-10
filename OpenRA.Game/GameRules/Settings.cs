@@ -22,8 +22,9 @@ namespace OpenRA.GameRules
 	public class ServerSettings
 	{
 		public string Name = "OpenRA Game";
-		public int ListenPort = 1234;
-		public int ExternalPort = 1234;
+		public int LoopbackPort = 1234; // Port used for soloplay servers
+		public int ListenPort = 1234; // Port that we listen on
+		public int ExternalPort = 1234; // Router port that the master server forwards people to
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
