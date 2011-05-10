@@ -229,5 +229,45 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override Widget Clone() { return new CncTextFieldWidget(this); }
 	}
+	
+	public class CncSliderWidget : SliderWidget
+	{
+		public Func<bool> IsDisabled = () => false;
+		
+		public CncSliderWidget() : base() { } 
+		public CncSliderWidget(CncSliderWidget other) : base(other) { } 
+		
+		
+		public override Widget Clone() { return new CncSliderWidget(this); }
+		public override void DrawInner()
+		{
+			if (!IsVisible())
+				return;
+			
+			var tr = thumbRect;
+			var trackWidth = RenderBounds.Width - tr.Width;
+			var trackOrigin = RenderBounds.X + tr.Width / 2;
+			var trackRect = new Rectangle(trackOrigin - 1, RenderBounds.Y + (RenderBounds.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
+
+			// Tickmarks (hacked until we have real art)
+			for (int i = 0; i < Ticks; i++)
+			{
+				var tickRect = new Rectangle(trackOrigin - 1 + (int)(i * trackWidth * 1f / (Ticks - 1)),
+						  RenderBounds.Y + RenderBounds.Height / 2, 2, RenderBounds.Height / 2);
+				WidgetUtils.DrawPanel("button-hover", tickRect);
+			}
+			
+			// Track
+			WidgetUtils.DrawPanel("button-pressed", trackRect);
+
+			// Thumb
+			var state = IsDisabled() ? "button-disabled" : 
+				isMoving ? "button-pressed" : 
+				tr.Contains(Viewport.LastMousePos) ? "button-hover" : 
+				"button";
+			
+			WidgetUtils.DrawPanel(state, tr);
+		}
+	}
 }
 

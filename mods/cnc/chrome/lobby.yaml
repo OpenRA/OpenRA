@@ -380,14 +380,14 @@ Container@SERVER_LOBBY:
 			Text:Start Game
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
-	Background:dialog2
-	Width:310
+	Background:panel-black
+	Width:315
 	Height:120
 	Children:
-		Button@BUTTON_OK:
+		CncMenuButton@BUTTON_OK:
 			Id:BUTTON_OK
 			X:210
-			Y:85
+			Y:80
 			Width:90
 			Height:25
 			Text:Ok
@@ -395,17 +395,18 @@ Background@COLOR_CHOOSER:
 		ShpImage@FACT:
 			Id:FACT
 			X:220
-			Y:10
+			Y:15
 			Image:fact
 			Palette:colorpicker
 		Label@HUE_LABEL:
-			X:0
+			X:5
 			Y:5
 			Width:40
 			Height:20
-			Align: Right
-			Text: Hue:
-		Slider@HUE:
+			Align:Right
+			Text:Hue:
+			Font:Bold
+		CncSlider@HUE:
 			Id:HUE_SLIDER
 			X:43
 			Y:10
@@ -413,13 +414,14 @@ Background@COLOR_CHOOSER:
 			Height:20
 			Ticks:5
 		Label@SAT_LABEL:
-			X:0
+			X:5
 			Y:30
 			Width:40
 			Height:20
-			Align: Right
-			Text: Sat:	
-		Slider@SAT:
+			Align:Right
+			Text:Sat:
+			Font:Bold
+		CncSlider@SAT:
 			Id:SAT_SLIDER
 			X:43
 			Y:35
@@ -427,13 +429,14 @@ Background@COLOR_CHOOSER:
 			Height:20
 			Ticks:5
 		Label@LUM_LABEL:
-			X:0
+			X:5
 			Y:55
 			Width:40
 			Height:20
-			Align: Right
-			Text: Lum:	
-		Slider@LUM:
+			Align:Right
+			Text:Lum:
+			Font:Bold
+		CncSlider@LUM:
 			Id:LUM_SLIDER
 			X:43
 			Y:60
@@ -442,13 +445,14 @@ Background@COLOR_CHOOSER:
 			Ticks:5
 			Range:0.2,1
 		Label@RANGE_LABEL:
-			X:0
+			X:5
 			Y:80
 			Width:40
 			Height:20
-			Align: Right
-			Text: Ran:	
-		Slider@RANGE:
+			Align:Right
+			Text:Ran:
+			Font:Bold
+		CncSlider@RANGE:
 			Id:RANGE_SLIDER
 			X:43
 			Y:85

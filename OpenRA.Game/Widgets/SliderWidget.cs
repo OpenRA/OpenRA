@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 		private float Offset = 0;
 
 		int2 lastMouseLocation;
-		bool isMoving = false;
+		protected bool isMoving = false;
 
 		public SliderWidget()
 			: base()
@@ -159,7 +159,7 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new SliderWidget(this); }
 
-		Rectangle thumbRect
+		protected Rectangle thumbRect
 		{
 			get
 			{
