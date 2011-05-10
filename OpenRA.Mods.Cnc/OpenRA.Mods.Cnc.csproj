@@ -80,6 +80,7 @@
     <Compile Include="Widgets\CncConnectionLogic.cs" />
     <Compile Include="Widgets\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\CncInstallLogic.cs" />
+    <Compile Include="Widgets\CncMusicPlayerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

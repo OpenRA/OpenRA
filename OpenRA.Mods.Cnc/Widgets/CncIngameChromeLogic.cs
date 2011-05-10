@@ -89,7 +89,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			menu = widget.GetWidget("INGAME_MENU");
 			world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = true;
-
+			
+			bool hideButtons = false;
+			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
+			
 			var onQuit = (Action)(() =>
 			{
 				Game.DisconnectOnly();
@@ -108,7 +111,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			surrenderButton.OnClick = () =>
 				PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 			
-			menu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").IsDisabled = () => true;
+			menu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			{
+				hideButtons = true;
+				Widget.OpenWindow("MUSIC_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => { hideButtons = false; Widget.CloseWindow(); }) },
+				});
+			};
+			
 			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").IsDisabled = () => true;
 			
 			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
