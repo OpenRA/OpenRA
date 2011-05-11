@@ -16,6 +16,9 @@ using OpenRA.Support;
 using OpenRA.Widgets;
 using OpenRA.Traits;
 using OpenRA.Graphics;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -39,7 +42,26 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Func<bool> noMusic = () => !installed;
 			
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
-			panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON").IsDisabled = () => true;
+			
+			Action<string> afterInstall = path =>
+			{
+				// Mount the new mixfile and rebuild the scores list
+				try
+				{
+					FileSystem.Mount(path);
+					Rules.Music.Do(m => m.Value.Reload());
+				}
+				catch (Exception) { }
+				
+				installed = Rules.Music.Where(m => m.Value.Exists).Any();
+				BuildMusicTable(panel);
+			};
+			
+			var installButton = panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON");
+			installButton.OnClick = () =>
+				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new Dictionary<string, object>() {{ "afterInstall", afterInstall }});
+			installButton.IsVisible = () => music.Length < 2; // Hack around ra shipping (only) hellmarch by default
+			
 			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;
 
 			var playButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_PLAY");
@@ -162,6 +184,93 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var songs = Game.Settings.Sound.Shuffle ? random : music;
 			return songs.Reverse().SkipWhile(m => m != currentSong)
 				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+		}
+	}
+	
+	
+	public class CncInstallMusicLogic : IWidgetDelegate
+	{
+		Widget panel;
+		ProgressBarWidget progressBar;
+		LabelWidget statusLabel;
+		Action<string> afterInstall;
+		
+		[ObjectCreator.UseCtor]
+		public CncInstallMusicLogic([ObjectCreator.Param] Widget widget,
+		                       [ObjectCreator.Param] Action<string> afterInstall)
+		{
+			this.afterInstall = afterInstall;
+			panel = widget.GetWidget("INSTALL_MUSIC_PANEL");
+			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			
+			var backButton = panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON");
+			backButton.OnClick = Widget.CloseWindow;
+			backButton.IsVisible = () => false;
+			
+			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			retryButton.OnClick = PromptForCD;
+			retryButton.IsVisible = () => false;
+			
+			// TODO: Search obvious places (platform dependent) for CD
+			PromptForCD();
+		}
+		
+		void PromptForCD()
+		{
+			progressBar.SetIndeterminate(true);
+			statusLabel.GetText = () => "Waiting for file";
+			Game.Utilities.PromptFilepathAsync("Select SCORES.MIX on the C&C CD", path => Game.RunAfterTick(() => Install(path)));
+		}
+		
+		void Install(string path)
+		{
+			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			
+			var onError = (Action<string>)(s =>
+			{
+				progressBar.SetIndeterminate(false);
+				statusLabel.GetText = () => "Error: "+s;
+				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
+				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+			});
+			
+			// Mount the package and check that it contains the correct files
+			try
+			{
+				var mixFile = new MixFile(path, 0);
+				
+				if (!mixFile.Exists("aoi.aud"))
+				{
+					onError("Not the C&C SCORES.MIX");
+					return;
+				}
+				
+				statusLabel.GetText = () => "Installing";
+				var t = new Thread( _ =>
+				{
+					var destPath = Path.Combine(dest, "scores.mix");
+					try
+					{
+						File.Copy(path, destPath, true);
+					}
+					catch (Exception)
+					{
+						onError("File copy failed");
+					}
+					
+					Game.RunAfterTick(() =>
+					{
+						Widget.CloseWindow(); // Progress panel
+						afterInstall(destPath);
+					});
+				}) { IsBackground = true };
+				t.Start();
+			}
+			catch (Exception)
+			{
+				onError("Invalid mix file");
+			}
 		}
 	}
 }

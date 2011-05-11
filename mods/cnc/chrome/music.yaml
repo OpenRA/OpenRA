@@ -183,3 +183,56 @@ Container@MUSIC_PANEL:
 			Width:140
 			Height:35
 			Text:Install Music
+
+Container@INSTALL_MUSIC_PANEL:
+	Id:INSTALL_MUSIC_PANEL
+	Delegate:CncInstallMusicLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 150)/2
+	Width:640
+	Height:150
+	Children:
+		Label@TITLE:
+			Width:PARENT_RIGHT
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Install Music
+		Background@bg:
+			Width:640
+			Height:150
+			Background:panel-black
+			Children:
+				Image@INSTALL:
+					X:11
+					Y:11
+					ImageCollection: install
+					ImageName: logo
+				ProgressBar@PROGRESS_BAR:
+					Id:PROGRESS_BAR
+					X:170
+					Y:45
+					Width:PARENT_RIGHT - 185
+					Height:35
+				Label@STATUS_LABEL:
+					Id:STATUS_LABEL
+					X:170
+					Y:85
+					Width:PARENT_RIGHT - 185
+					Height:25
+					Align:Left
+					Text:Waiting for file
+		CncMenuButton@BACK_BUTTON:
+			Id:BACK_BUTTON
+			Y:149
+			Width:140
+			Height:35
+			Text:Back
+		CncMenuButton@RETRY_BUTTON:
+			Id:RETRY_BUTTON
+			X:500
+			Y:149
+			Width:140
+			Height:35
+			Text:Retry

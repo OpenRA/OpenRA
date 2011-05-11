@@ -16,14 +16,23 @@ namespace OpenRA.GameRules
 	{
 		public readonly string Filename = null;
 		public readonly string Title = null;
-		public readonly int Length = 0; // seconds
-		public readonly bool Exists = false;
+		public int Length { get; private set; } // seconds
+		public bool Exists { get; private set; }
 
 		public MusicInfo( string key, MiniYaml value )
 		{
 			Filename = key+".aud";
 			Title = value.Value;
 
+			if (!FileSystem.Exists(Filename))
+				return;
+			
+			Exists = true;
+			Length = (int)AudLoader.SoundLength(FileSystem.Open(Filename));
+		}
+		
+		public void Reload()
+		{
 			if (!FileSystem.Exists(Filename))
 				return;
 			
