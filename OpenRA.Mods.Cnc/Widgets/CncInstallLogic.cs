@@ -44,7 +44,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
 			// TODO:
-			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").IsDisabled = () => true;
+			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
+			{
+				Widget.OpenWindow("MODS_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(Widget.CloseWindow) },
+					{ "onSwitch", new Action(Widget.CloseWindow) },
+				});
+			};
 		}
 	}
 

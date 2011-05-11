@@ -98,13 +98,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
-			settingsMenu.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").IsDisabled = () => true;
+			settingsMenu.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("MODS_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Settings)) },
+					{ "onSwitch", new Action(RemoveShellmapUI) }
+				});
+			};
+			
 			settingsMenu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("MUSIC_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(() => ReturnToMenu(MenuType.Main)) },
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Settings)) },
 				});
 			};
 			

@@ -18,6 +18,7 @@ namespace OpenRA.FileFormats
 {
 	public class Mod
 	{
+		public string Id;
 		public string Title;
 		public string Description;
 		public string Version;
@@ -40,6 +41,7 @@ namespace OpenRA.FileFormats
 					continue;
 
 				ret.Add(m, FieldLoader.Load<Mod>(yaml.NodesDict["Metadata"]));
+				ret[m].Id = m;
 			}
 			return ret;
 		}
