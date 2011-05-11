@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BuildMachineOSBuild</key>
-	<string>10J869</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
@@ -26,20 +24,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>DTCompiler</key>
-	<string></string>
-	<key>DTPlatformBuild</key>
-	<string>4A304a</string>
-	<key>DTPlatformVersion</key>
-	<string>GM</string>
-	<key>DTSDKBuild</key>
-	<string>4A304a</string>
-	<key>DTSDKName</key>
-	<string>macosx10.6</string>
-	<key>DTXcode</key>
-	<string>0400</string>
-	<key>DTXcodeBuild</key>
-	<string>4A304a</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.5</string>
 	<key>NSMainNibFile</key>
