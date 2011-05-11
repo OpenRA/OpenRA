@@ -273,6 +273,11 @@ namespace OpenRA
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => {};
 			AddChatLine = (a,b,c) => {};
+			ConnectionStateChanged = om => {};
+			BeforeGameStart = () => {};
+			AfterGameStart = w => {};
+			afterTickActions = new ActionQueue();
+			
 			worldRenderer = null;
 			if (server != null)
 				server.Shutdown();
