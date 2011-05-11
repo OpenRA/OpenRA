@@ -318,11 +318,11 @@
 	TargetableUnit:
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	Capturable:
-		Type: husk
-		AllowAllies: true
-		AllowNeutral: true
-		AllowEnemies: true
+#	Capturable:
+#		Type: husk
+#		AllowAllies: true
+#		AllowNeutral: true
+#		AllowEnemies: true
 
 ^Bridge:
 	Tooltip:
