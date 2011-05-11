@@ -1,4 +1,4 @@
-NEW:
+20110511:
 	Engine:
 		Fix hotkeys firing on both key down and key up
 		Allow C4 delay to be configurable
@@ -16,27 +16,25 @@ NEW:
 		Fix maps with >8 spawnpoints in the game lobby
 		Yaml loader crashes correctly when trying to inherit from a nonexistant actor
 		Yaml loader crashes correctly when trying to remove a nonexistant trait
+		Modding support for multiple player palettes
+		Fix several crashes when installing packages
 		Many other general engine improvements
-		
 	C&C:
 		Fix Viceroid target-scan radius
 		Fix map-placed SAM-sites not being able to attack
 		Commando voice clip when built
 		Commando voice clip after kills
-		Capturable/repairable unit husks with an engineer
-	
 	RA:
-		Fix several bugs related to GPS
 		New unit: Supply truck for donating funds to another player
 		Pilots (sometimes) parachute from shot down planes
 		Bounties on killed units
 		Use RA2 style missile trails
+		New GPS logic
 		New map: Pressure by seru
-		
 	Packaging:
-		Fix several Utility crashes
 		Utility writes a log to support dir when crashing
-		Fix incorrect ownership of files in deb package
+		Support for Ubuntu 11.04
+		Fix osx crash when run from a path with spaces
 
 20110320
 	Engine:
