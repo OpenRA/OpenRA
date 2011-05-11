@@ -24,7 +24,7 @@ Background@INIT_CHOOSEINSTALL:
 			Bold:True
 		Label@DESC1:
 			X:0
-			Y:50
+			Y:65
 			Width:PARENT_RIGHT
 			Height:25
 			Text:OpenRA requires the original C&C game content.
@@ -35,10 +35,11 @@ Background@INIT_CHOOSEINSTALL:
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Content can be downloaded, or copied from the install CD.
+			Visible:false
 			Align:Center
 		Button@DOWNLOAD:
 			Id:DOWNLOAD
-			X:PARENT_RIGHT - 420
+			X:PARENT_RIGHT - 280
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
@@ -46,10 +47,11 @@ Background@INIT_CHOOSEINSTALL:
 			Bold:True
 		Button@FROMCD:
 			Id:FROMCD
-			X:PARENT_RIGHT - 280
+			X:PARENT_RIGHT - 420
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
+			Visible:false
 			Text:From CD
 			Bold:True
 		Button@QUIT:
