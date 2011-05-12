@@ -34,9 +34,11 @@ namespace OpenRA.GameRules
 	public class DebugSettings
 	{
 		public bool BotDebug = false;
+		public bool PerfText = false;
 		public bool PerfGraph = false;
 		public float LongTickThreshold = 0.001f;
         public bool SanityCheckUnsyncedCode = false;
+		public int Samples = 25;
 	}
 
 	public class GraphicSettings

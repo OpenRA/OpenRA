@@ -157,3 +157,28 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Back
+		Container@PERFORMANCE_INFO:
+			Id:PERFORMANCE_INFO
+			Delegate:CncPerfDebugLogic
+			Children:
+				Label@PERF_TEXT:
+					Id:PERF_TEXT
+					X:40
+					Y:40
+					Width:170
+					Height:40
+					Contrast:true
+					VAlign:Top
+				Background@GRAPH_BG:
+					Id:PERF_GRAPH
+					X:WINDOW_RIGHT-WIDTH-31
+					Y:31
+					Width:220
+					Height:220
+					Background:panel-black
+					Children:
+						PerfGraph@GRAPH:
+							X:10
+							Y:10
+							Width:200
+							Height:200

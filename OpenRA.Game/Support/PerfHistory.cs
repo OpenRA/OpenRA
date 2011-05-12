@@ -79,6 +79,20 @@ namespace OpenRA.Support
 			}
 		}
 
+		public double Average(int count)
+		{
+			int i = 0;
+			int n = head;
+			double sum = 0;
+			while (i < count && n != tail)
+			{
+				if (--n < 0) n = samples.Length - 1;
+				sum += samples[n];
+				i++;
+			}
+			return sum / i;
+		}
+
 		public double LastValue
 		{
 			get
