@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Cnc
 			Widget.RootWidget.RemoveChildren();
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
-				var args = new Dictionary<string, object>()
+				var args = new WidgetArgs()
 				{
-					{ "continueLoading", (Action)(() => TestAndContinue()) },
+					{ "continueLoading", () => TestAndContinue() },
 					{ "installData", Info }
 				};
 				Widget.LoadWidget(Info["InstallerBackgroundWidget"], args);

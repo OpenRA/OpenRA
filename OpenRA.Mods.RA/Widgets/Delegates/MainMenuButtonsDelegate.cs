@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		[ObjectCreator.UseCtor]
 		public MainMenuButtonsDelegate([ObjectCreator.Param] Widget widget)
 		{
-			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "PERF_BG" );
+			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "PERF_BG" );
 			widget.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp = mi => { Widget.OpenWindow("JOINSERVER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => { Widget.OpenWindow("CREATESERVER_BG"); return true; };
 			widget.GetWidget("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => { Widget.OpenWindow("SETTINGS_MENU"); return true; };
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		
 		public static void DisplayModSelector()
 		{
-			var selector = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "QUICKMODSWITCHER" );
+			var selector = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "QUICKMODSWITCHER" );
 			var switcher = selector.GetWidget<ButtonWidget>("SWITCHER");
 			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
 			switcher.GetText = ActiveModTitle;

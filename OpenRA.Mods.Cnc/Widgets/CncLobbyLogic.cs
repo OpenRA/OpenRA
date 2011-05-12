@@ -92,22 +92,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 				// Show connection failed dialog
 				Widget.CloseWindow();
 				
-				Action onConnect = new Action(() => 
+				Action onConnect = () => 
 				{
-					Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
+					Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 					{
 						{ "onExit", onExit },
 						{ "onStart", OnGameStart }
 					});
-				});
+				};
 				
-				Action onRetry = new Action(() =>
+				Action onRetry = () =>
 				{
 					Widget.CloseWindow();
 					CncConnectingLogic.Connect(om.Host, om.Port, onConnect, onExit);
-				});
+				};
 				
-				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 	            {
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry },
@@ -197,10 +197,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 					Game.Settings.Save();
 				});
 
-				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
+				Widget.OpenWindow( "MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", Map.Uid },
-					{ "onExit", new Action(() => {}) },
+					{ "onExit", () => {} },
 					{ "onSelect", onSelect }
 				});
 			};
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (Map.Players[s.MapPlayer].LockColor)
 				return false;
 			
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
+			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
 			

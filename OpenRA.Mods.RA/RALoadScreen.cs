@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 		public void StartGame()
 		{
 			Widget.RootWidget.RemoveChildren();
-			Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>(), Widget.RootWidget, "INIT_SETUP" );
+			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "INIT_SETUP" );
 		}
 	}
 }

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			var installButton = panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
-				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new Dictionary<string, object>() {{ "afterInstall", afterInstall }});
+				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {{ "afterInstall", afterInstall }});
 			installButton.IsVisible = () => music.Length < 2; // Hack around ra shipping (only) hellmarch by default
 			
 			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;

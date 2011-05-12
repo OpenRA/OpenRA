@@ -50,10 +50,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			mainMenu.GetWidget<CncMenuButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("REPLAYBROWSER_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Main) },
-					{ "onStart", new Action(RemoveShellmapUI) }
+					{ "onExit", () => Menu = MenuType.Main },
+					{ "onStart", RemoveShellmapUI }
 				});
 			};
 			
@@ -68,30 +68,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 			multiplayerMenu.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("SERVERBROWSER_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Multiplayer) },
-					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
+					{ "onExit", () => Menu = MenuType.Multiplayer },
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
 				});
 			};
 			
 			multiplayerMenu.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("CREATESERVER_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("CREATESERVER_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Multiplayer) },
-					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
+					{ "onExit", () => Menu = MenuType.Multiplayer },
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
 				});
 			};
 			
 			multiplayerMenu.GetWidget<CncMenuButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("DIRECTCONNECT_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Multiplayer) },
-					{ "openLobby", new Action(() => OpenLobbyPanel(MenuType.Multiplayer)) }
+					{ "onExit", () => Menu = MenuType.Multiplayer },
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
 				});
 			};		
 			
@@ -102,28 +102,28 @@ namespace OpenRA.Mods.Cnc.Widgets
 			settingsMenu.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("MODS_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Settings) },
-					{ "onSwitch", new Action(RemoveShellmapUI) }
+					{ "onExit", () => Menu = MenuType.Settings },
+					{ "onSwitch", RemoveShellmapUI }
 				});
 			};
 			
 			settingsMenu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("MUSIC_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Settings) },
+					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};
 			
 			settingsMenu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("SETTINGS_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => Menu = MenuType.Settings) },
+					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
@@ -138,10 +138,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		void OpenLobbyPanel(MenuType menu)
 		{
 			Menu = MenuType.None;
-			Game.OpenWindow("SERVER_LOBBY", new Dictionary<string, object>()
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 			{
-				{ "onExit", new Action(() => { Game.DisconnectOnly(); Menu = menu; }) },
-				{ "onStart", new Action(RemoveShellmapUI) }
+				{ "onExit", () => { Game.DisconnectOnly(); Menu = menu; } },
+				{ "onStart", RemoveShellmapUI }
 			});
 		}
 		
@@ -152,8 +152,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.CreateLocalServer(map);
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
 			                           Game.Settings.Server.LoopbackPort,
-			                           new Action(() => OpenLobbyPanel(MenuType.Main)),
-			                           new Action(() => { Game.CloseServer(); Menu = MenuType.Main; }));
+			                           () => OpenLobbyPanel(MenuType.Main),
+			                           () => { Game.CloseServer(); Menu = MenuType.Main; });
 		}
 	}
 }

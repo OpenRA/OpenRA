@@ -59,8 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ingameRoot.GetWidget<CncMenuButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
-				var onExit = new Action(() => {ingameRoot.IsVisible = () => true;});
-				Widget.LoadWidget("INGAME_MENU", new Dictionary<string, object>() {{ "world", world }, { "onExit", onExit }});
+				Widget.LoadWidget("INGAME_MENU", new WidgetArgs() {{ "world", world }, { "onExit", () => ingameRoot.IsVisible = () => true }});
 			};
 			
 			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
@@ -93,19 +92,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
 			
-			var onQuit = (Action)(() =>
+			Action onQuit = () =>
 			{
 				Game.DisconnectOnly();
 				Widget.RootWidget.RemoveChildren();
 				Game.LoadShellMap();
-			});
+			};
 			
-			var doNothing = (Action)(() => {});
+			Action doNothing = () => {};
 			
 			menu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				PromptConfirmAction("Quit", "Are you sure you want to quit?", onQuit, doNothing);
 			
-			var onSurrender = (Action)(() => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false)));
+			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.GetWidget<CncMenuButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
@@ -114,18 +113,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 			menu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
-				Widget.OpenWindow("MUSIC_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => hideButtons = false) },
+					{ "onExit", () => hideButtons = false },
 				});
 			};
 			
 			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
-				Widget.OpenWindow("SETTINGS_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => hideButtons = false) },
+					{ "onExit", () => hideButtons = false },
 				});
 			};
 			

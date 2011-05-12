@@ -42,15 +42,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	                switch (orderManager.Connection.ConnectionState)
 	                {
 	                    case ConnectionState.PreConnecting:
-	                        Widget.LoadWidget("MAINMENU_BG", new Dictionary<string, object>());
+	                        Widget.LoadWidget("MAINMENU_BG", new WidgetArgs());
 	                        break;
 	                    case ConnectionState.Connecting:
 	                        Widget.OpenWindow("CONNECTING_BG",
-	                            new Dictionary<string, object> { { "host", orderManager.Host }, { "port", orderManager.Port } });
+	                            new WidgetArgs() { { "host", orderManager.Host }, { "port", orderManager.Port } });
 	                        break;
 	                    case ConnectionState.NotConnected:
 	                        Widget.OpenWindow("CONNECTION_FAILED_BG",
-	                            new Dictionary<string, object> { { "orderManager", orderManager } });
+	                            new WidgetArgs() { { "orderManager", orderManager } });
 	                        break;
 	                    case ConnectionState.Connected:
 	                        var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");

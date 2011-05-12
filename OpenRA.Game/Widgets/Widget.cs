@@ -121,7 +121,7 @@ namespace OpenRA.Widgets
                                    height);
         }
 
-        public void PostInit(Dictionary<string, object> args)
+        public void PostInit(WidgetArgs args)
         {
             if (Delegate == null)
                 return;
@@ -322,10 +322,10 @@ namespace OpenRA.Widgets
 
         public static Widget OpenWindow(string id)
         {
-            return OpenWindow(id, new Dictionary<string, object>());
+            return OpenWindow(id, new WidgetArgs());
         }
 
-        public static Widget OpenWindow(string id, Dictionary<string, object> args)
+        public static Widget OpenWindow(string id, WidgetArgs args)
         {
             var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
             if (WindowList.Count > 0)
@@ -334,7 +334,7 @@ namespace OpenRA.Widgets
             return window;
         }
 		
-		public static Widget LoadWidget(string id, Dictionary<string, object> args)
+		public static Widget LoadWidget(string id, WidgetArgs args)
         {
             return Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
         }
@@ -378,7 +378,14 @@ namespace OpenRA.Widgets
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new ContainerWidget(this); }
     }
-
+	
+	public class WidgetArgs : Dictionary<string, object>
+	{
+		public WidgetArgs() : base() { }
+		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
+		public void Add(string key, Action val) { base.Add(key, val); }
+	}
+	
     public interface IWidgetDelegate { }
 	
 	// TODO: This can die once ra init is sane

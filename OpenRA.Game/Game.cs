@@ -98,14 +98,14 @@ namespace OpenRA
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
 		{
-			return Widget.OpenWindow(widget, new Dictionary<string,object>{{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
+			return Widget.OpenWindow(widget, new WidgetArgs() {{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
 		}
 		
 		// Who came up with the great idea of making these things
 		// impossible for the things that want them to access them directly?
-		public static Widget OpenWindow(string widget, Dictionary<string, object> args)
+		public static Widget OpenWindow(string widget, WidgetArgs args)
 		{
-			return Widget.OpenWindow(widget, new Dictionary<string,object>(args)
+			return Widget.OpenWindow(widget, new WidgetArgs(args)
 			{
 				{ "world", worldRenderer.world },
 				{ "orderManager", orderManager },
@@ -113,9 +113,9 @@ namespace OpenRA
 			});
 		}
 		
-		public static Widget LoadWidget(World world, string widget, Dictionary<string, object> args)
+		public static Widget LoadWidget(World world, string widget, WidgetArgs args)
 		{
-			return Widget.LoadWidget(widget, new Dictionary<string,object>(args)
+			return Widget.LoadWidget(widget, new WidgetArgs(args)
 			{
 				{ "world", world },
 				{ "orderManager", orderManager },

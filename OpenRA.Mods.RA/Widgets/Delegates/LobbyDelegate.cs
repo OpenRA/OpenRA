@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi =>
 			{
-				Widget.OpenWindow( "MAP_CHOOSER", new Dictionary<string, object> { { "orderManager", orderManager }, { "mapName", MapUid } } );
+				Widget.OpenWindow( "MAP_CHOOSER", new WidgetArgs() { { "orderManager", orderManager }, { "mapName", MapUid } } );
 				return true;
 			};
 
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			if (Map.Players[s.MapPlayer].LockColor)
 				return false;
 			
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new Dictionary<string,object>() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
+			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
 			

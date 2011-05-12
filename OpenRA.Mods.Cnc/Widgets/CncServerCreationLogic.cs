@@ -38,10 +38,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").OnClick = () =>
 			{
-				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
+				Widget.OpenWindow( "MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", map.Uid },
-					{ "onExit", new Action(() => {}) },
+					{ "onExit", () => {} },
 					{ "onSelect", new Action<Map>(m => map = m) }
 				});
 			};

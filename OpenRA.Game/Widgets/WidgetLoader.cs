@@ -32,7 +32,7 @@ namespace OpenRA
 				}
 		}
 
-		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, string w )
+		public Widget LoadWidget( WidgetArgs args, Widget parent, string w )
 		{
 			MiniYamlNode ret;
 			if (!widgets.TryGetValue(w, out ret))
@@ -41,7 +41,7 @@ namespace OpenRA
 			return LoadWidget( args, parent, ret );
 		}
 
-		public Widget LoadWidget( Dictionary<string, object> args, Widget parent, MiniYamlNode node)
+		public Widget LoadWidget( WidgetArgs args, Widget parent, MiniYamlNode node)
 		{
 			var widget = NewWidget(node.Key, args);
 			
@@ -63,7 +63,7 @@ namespace OpenRA
 			return widget;
 		}
 
-		Widget NewWidget(string widgetType, Dictionary<string, object> args)
+		Widget NewWidget(string widgetType, WidgetArgs args)
 		{
 			widgetType = widgetType.Split('@')[0];
 			return Game.modData.ObjectCreator.CreateObject<Widget>(widgetType + "Widget", args);

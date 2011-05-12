@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                       [ObjectCreator.Param] Action continueLoading)
 		{
 			var panel = widget.GetWidget("INSTALL_PANEL");
-			var args = new Dictionary<string, object>()
+			var args = new WidgetArgs()
             {
-				{ "continueLoading", new Action(() => { Widget.CloseWindow(); continueLoading(); }) },
+				{ "continueLoading", () => { Widget.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 
@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// TODO:
 			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
-				Widget.OpenWindow("MODS_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
                 {
-					{ "onExit", new Action(() => {}) },
+					{ "onExit", () => {} },
 					// Close this panel
-					{ "onSwitch", new Action(Widget.CloseWindow) },
+					{ "onSwitch", Widget.CloseWindow },
 				});
 			};
 		}

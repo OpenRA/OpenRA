@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				// Show connection failed dialog
 				Widget.CloseWindow();
-				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new Dictionary<string, object>()
+				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 	            {
 					{ "onAbort", onAbort },
 					{ "onRetry", onRetry },
@@ -85,13 +85,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public static void Connect(string host, int port, Action onConnect, Action onAbort)
 		{
 			Game.JoinServer(host, port);
-			Widget.OpenWindow("CONNECTING_PANEL", new Dictionary<string, object>()
+			Widget.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
             {
 				{ "host", host },
 				{ "port", port },
 				{ "onConnect", onConnect },
 				{ "onAbort", onAbort },
-				{ "onRetry", new Action(() => Connect(host, port, onConnect, onAbort)) }
+				{ "onRetry", () => Connect(host, port, onConnect, onAbort) }
 			});
 		}
     }
