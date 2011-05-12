@@ -220,21 +220,25 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			progressBar.SetIndeterminate(true);
 			statusLabel.GetText = () => "Waiting for file";
-			Game.Utilities.PromptFilepathAsync("Select SCORES.MIX on the C&C CD", path => Game.RunAfterTick(() => Install(path)));
+			Game.Utilities.PromptFilepathAsync("Select SCORES.MIX on the C&C CD", path => Install(path));
 		}
 		
-		void Install(string path)
+		public void OnError(string message)
 		{
-			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
-			
-			var onError = (Action<string>)(s =>
+			Game.RunAfterTick(() => 
 			{
 				progressBar.SetIndeterminate(false);
-				statusLabel.GetText = () => "Error: "+s;
+				statusLabel.GetText = () => "Error: "+message;
 				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
 				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
 			});
-			
+		}
+
+		void Install(string path)
+		{
+			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			Game.RunAfterTick(() => statusLabel.GetText = () => "Installing");
+
 			// Mount the package and check that it contains the correct files
 			try
 			{
@@ -242,34 +246,33 @@ namespace OpenRA.Mods.Cnc.Widgets
 				
 				if (!mixFile.Exists("aoi.aud"))
 				{
-					onError("Not the C&C SCORES.MIX");
+					OnError("Not the C&C SCORES.MIX");
 					return;
 				}
 				
-				statusLabel.GetText = () => "Installing";
 				var t = new Thread( _ =>
 				{
 					var destPath = Path.Combine(dest, "scores.mix");
 					try
 					{
 						File.Copy(path, destPath, true);
+						Game.RunAfterTick(() =>
+						{
+							Widget.CloseWindow(); // Progress panel
+							afterInstall(destPath);
+						});
 					}
-					catch
+					catch (Exception e)
 					{
-						onError("File copy failed");
+						OnError("File copy failed");
+						Log.Write("debug", e.Message);
 					}
-					
-					Game.RunAfterTick(() =>
-					{
-						Widget.CloseWindow(); // Progress panel
-						afterInstall(destPath);
-					});
 				}) { IsBackground = true };
 				t.Start();
 			}
 			catch
 			{
-				onError("Invalid mix file");
+				OnError("Invalid mix file");
 			}
 		}
 	}

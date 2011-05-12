@@ -112,9 +112,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			var onError = (Action<string>)(s =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
-				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
-				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+				Game.RunAfterTick(() => 
+				{
+					statusLabel.GetText = () => "Error: "+s;
+					panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
+					panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+				});
 			});
 			
 			string source;
@@ -194,13 +197,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			Action<string> onExtractProgress = s =>
 			{
-				statusLabel.GetText = () => s;
+					Game.RunAfterTick(() => statusLabel.GetText = () => s);
 			};
 			
 			Action<string> onError = s =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
-				retryButton.IsVisible = () => true;
+				Game.RunAfterTick(() => 
+				{
+					statusLabel.GetText = () => "Error: "+s;
+					retryButton.IsVisible = () => true;
+				});
 			};
 			
 			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
@@ -211,8 +217,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var except = i.Error as System.Net.WebException;
 					if (except != null)
 					{
-						Console.WriteLine("{0}",except.Status);
-						
 						if (except.Status == WebExceptionStatus.ProtocolError)
 							message = "File not found on remote server";
 						else if (except.Status == WebExceptionStatus.NameResolutionFailure ||
