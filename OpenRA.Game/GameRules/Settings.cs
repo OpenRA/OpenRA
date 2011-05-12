@@ -28,7 +28,20 @@ namespace OpenRA.GameRules
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
-		public string LastMap = null;
+		public string Map = null;
+		
+		public ServerSettings() { }
+		public ServerSettings(ServerSettings other)
+		{
+			Name = other.Name;
+			LoopbackPort = other.LoopbackPort;
+			ListenPort = other.ListenPort;
+			ExternalPort = other.ExternalPort;
+			AdvertiseOnline = other.AdvertiseOnline;
+			MasterServer = other.MasterServer;
+			AllowCheats = other.AllowCheats;
+			Map = other.Map;
+		}
 	}
 	
 	public class DebugSettings

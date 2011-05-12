@@ -193,11 +193,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var onSelect = new Action<Map>(m =>
 				{
 					orderManager.IssueOrder(Order.Command("map " + m.Uid));
-					Game.Settings.Server.LastMap = m.Uid;
+					Game.Settings.Server.Map = m.Uid;
 					Game.Settings.Save();
 				});
 
-				Widget.OpenWindow( "MAPCHOOSER_PANEL", new WidgetArgs()
+				Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", Map.Uid },
 					{ "onExit", () => {} },

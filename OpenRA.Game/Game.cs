@@ -372,20 +372,23 @@ namespace OpenRA
 			return modData.ObjectCreator.CreateObject<T>( name );
 		}
 		
-		public static void CreateServer(string name, string map, int port, bool advertiseOnline, int externalPort)
+		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(IPAddress.Any, port, name, Settings.Game.Mods, map, advertiseOnline, externalPort, modData);
+			server = new Server.Server(IPAddress.Any, settings.ListenPort, Game.Settings.Game.Mods, settings, modData);
 		}
 		
 		public static void CreateLocalServer(string map)
 		{
+			var settings = new ServerSettings()
+			{
+				Name = "Skirmish Game",
+				AdvertiseOnline = false,
+				Map = map
+			};
 			server = new Server.Server(IPAddress.Loopback,
 			                           Game.Settings.Server.LoopbackPort,
-			                           "Skirmish Game",
 			                           Game.Settings.Game.Mods,
-			                           map,
-			                           false,
-			                           0,
+			                           settings,
 			                           modData);
 		}
 

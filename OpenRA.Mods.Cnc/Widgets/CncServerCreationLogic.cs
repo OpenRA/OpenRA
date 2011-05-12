@@ -13,6 +13,7 @@ using System.Net;
 using OpenRA.Widgets;
 using System;
 using System.Collections.Generic;
+using OpenRA.GameRules;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").OnClick = () =>
 			{
-				Widget.OpenWindow( "MAPCHOOSER_PANEL", new WidgetArgs()
+				Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", map.Uid },
 					{ "onExit", () => {} },
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			if (string.IsNullOrEmpty(Game.Settings.Server.LastMap) || !Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.LastMap, out map))
+			if (string.IsNullOrEmpty(Game.Settings.Server.Map) || !Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.Map, out map))
 				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
 			
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
@@ -84,11 +85,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.Settings.Server.ListenPort = listenPort;
 			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-			Game.Settings.Server.LastMap = map.Uid;
+			Game.Settings.Server.Map = map.Uid;
 			Game.Settings.Save();
+
+			// Take a copy so that subsequent changes don't affect the server
+			var settings = new ServerSettings(Game.Settings.Server);
 			
 			// Create and join the server
-			Game.CreateServer(name, map.Uid, listenPort, advertiseOnline, externalPort);
+			Game.CreateServer(settings);
 			Widget.CloseWindow();
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}

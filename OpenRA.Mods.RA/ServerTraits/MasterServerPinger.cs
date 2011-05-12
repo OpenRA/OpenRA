@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Server
 		Queue<string> masterServerMessages = new Queue<string>();
 		public void PingMasterServer(S server)
 		{
-			if (isBusy || !server.AdvertiseOnline) return;
+			if (isBusy || !server.Settings.AdvertiseOnline) return;
 
 			lastPing = Environment.TickCount;
 			isBusy = true;
@@ -60,8 +60,8 @@ namespace OpenRA.Mods.RA.Server
 						{
 							wc.Proxy = null;
 							 wc.DownloadData(
-								Game.Settings.Server.MasterServer + url.F(
-								server.ExternalPort, Uri.EscapeUriString(server.Name),
+								server.Settings.MasterServer + url.F(
+								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
 								server.lobbyInfo.Clients.Count,
 								string.Join(",", Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).ToArray()),
