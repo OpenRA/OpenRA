@@ -32,7 +32,7 @@ Container@INGAME_MENU:
 					Y:0
 					Width:140
 					Height:35
-					Text:Exit Game
+					Text:Quit
 				CncMenuButton@SURRENDER_BUTTON:
 					Id:SURRENDER_BUTTON
 					X:150

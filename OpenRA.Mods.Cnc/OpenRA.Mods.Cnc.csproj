@@ -84,6 +84,7 @@
     <Compile Include="CncColorPickerPaletteModifier.cs" />
     <Compile Include="Widgets\CncModBrowserLogic.cs" />
     <Compile Include="Widgets\CncPerfDebugLogic.cs" />
+    <Compile Include="Widgets\CncSettingsLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

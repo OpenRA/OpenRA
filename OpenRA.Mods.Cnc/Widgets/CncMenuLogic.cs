@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -117,7 +118,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			settingsMenu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").IsDisabled = () => true;
+			settingsMenu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("SETTINGS_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => ReturnToMenu(MenuType.Settings)) },
+				});
+			};
 			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		

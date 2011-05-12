@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var doNothing = (Action)(() => {});
 			
 			menu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = () =>
-				PromptConfirmAction("Exit Game", "Are you sure you want to leave the game?", onQuit, doNothing);
+				PromptConfirmAction("Quit", "Are you sure you want to quit?", onQuit, doNothing);
 			
 			var onSurrender = (Action)(() => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false)));
 			var surrenderButton = menu.GetWidget<CncMenuButtonWidget>("SURRENDER_BUTTON");
@@ -120,7 +120,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").IsDisabled = () => true;
+			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
+			{
+				hideButtons = true;
+				Widget.OpenWindow("SETTINGS_PANEL", new Dictionary<string, object>()
+                {
+					{ "onExit", new Action(() => hideButtons = false) },
+				});
+			};
 			
 			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{
