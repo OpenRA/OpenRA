@@ -38,6 +38,10 @@ namespace OpenRA.Server
 		public Session lobbyInfo;
 		public bool GameStarted = false;
 		public string Name;
+		public IPAddress Ip {get; private set;}
+		public int Port {get; private set;}
+		public int ExternalPort {get; private set;}
+		public bool AdvertiseOnline {get; private set;}
 		int randomSeed;
 
 		public ModData ModData;
@@ -49,13 +53,17 @@ namespace OpenRA.Server
 			shutdown = true;
 		}
 		
-		public Server(IPAddress ip, int port, string serverName, string[] mods, string map, ModData modData)
+		public Server(IPAddress ip, int port, string serverName, string[] mods, string map, bool advertiseOnline, int externalPort, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
+			Ip = ip;
+			Port = port;
+			ExternalPort = externalPort;
 			listener = new TcpListener(ip, port);
 			Name = serverName;
 			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
+			AdvertiseOnline = advertiseOnline;
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );

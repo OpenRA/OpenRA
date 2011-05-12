@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Game.Settings.Save();
 			
 			// Create and join the server
-			Game.CreateServer(listenPort, name, map.Uid);
+			Game.CreateServer(name, map.Uid, listenPort, advertiseOnline, externalPort);
 			Widget.CloseWindow();
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}

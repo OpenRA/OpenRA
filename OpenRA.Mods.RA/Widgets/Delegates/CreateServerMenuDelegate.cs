@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				settings.Server.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
 				settings.Save();
 				
-				Game.CreateServer(settings.Server.ListenPort, settings.Server.Name, map);
+				Game.CreateServer(settings.Server.Name, map,settings.Server.ListenPort, settings.Server.AdvertiseOnline, settings.Server.ExternalPort);
 				Game.JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
 				return true;
 			};
