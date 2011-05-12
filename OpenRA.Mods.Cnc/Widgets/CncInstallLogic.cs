@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new Dictionary<string, object>()
             {
-				{ "continueLoading", continueLoading },
+				{ "continueLoading", new Action(() => { Widget.CloseWindow(); continueLoading(); }) },
 				{ "installData", installData }
 			};
 
@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				Widget.OpenWindow("MODS_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(Widget.CloseWindow) },
+					{ "onExit", new Action(() => {}) },
+					// Close this panel
 					{ "onSwitch", new Action(Widget.CloseWindow) },
 				});
 			};
@@ -137,8 +138,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				
 				Game.RunAfterTick(() =>
 				{
-					Widget.CloseWindow(); // Progress panel
-					Widget.CloseWindow(); // Install choice panel
+					Widget.CloseWindow();
 					continueLoading();
 				});
 			}) { IsBackground = true };
@@ -237,8 +237,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{
 					Game.RunAfterTick(() =>
 					{
-						Widget.CloseWindow(); // Progress panel
-						Widget.CloseWindow(); // Install choice panel
+						Widget.CloseWindow();
 						continueLoading();
 					});
 				}

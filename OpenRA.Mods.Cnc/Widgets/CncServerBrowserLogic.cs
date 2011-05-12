@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CncConnectingLogic.Connect(ipField.Text, port, openLobby, onExit);
             };
 
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 		}
 	}
 }

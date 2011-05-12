@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				hideButtons = true;
 				Widget.OpenWindow("MUSIC_PANEL", new Dictionary<string, object>()
                 {
-					{ "onExit", new Action(() => { hideButtons = false; Widget.CloseWindow(); }) },
+					{ "onExit", new Action(() => hideButtons = false) },
 				});
 			};
 			

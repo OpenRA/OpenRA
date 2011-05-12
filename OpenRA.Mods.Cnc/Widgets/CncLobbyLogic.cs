@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
-			this.OnGameStart = onStart;
+			this.OnGameStart = () => { Widget.CloseWindow(); onStart(); };
 			this.onExit = onExit;
 			
 			if (!staticSetup)
@@ -195,20 +195,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 					orderManager.IssueOrder(Order.Command("map " + m.Uid));
 					Game.Settings.Server.LastMap = m.Uid;
 					Game.Settings.Save();
-					Widget.CloseWindow();
 				});
 
 				Widget.OpenWindow( "MAPCHOOSER_PANEL", new Dictionary<string, object>
 				{
 					{ "initialMap", Map.Uid },
-					{ "onExit", new Action(() => Widget.CloseWindow()) },
+					{ "onExit", new Action(() => {}) },
 					{ "onSelect", onSelect }
 				});
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
 			var disconnectButton = lobby.GetWidget<CncMenuButtonWidget>("DISCONNECT_BUTTON");
-			disconnectButton.OnClick = onExit;
+			disconnectButton.OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			var gameStarting = false;
 			var lockTeamsCheckbox = lobby.GetWidget<CncCheckboxWidget>("LOCKTEAMS_CHECKBOX");

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			panel = widget.GetWidget("REPLAYBROWSER_PANEL");
 
-			panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 
 			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (currentSummary != null)
 				{
 					Game.JoinReplay(currentSummary.Filename);
+					Widget.CloseWindow();
 					onStart();
 				}
 			};

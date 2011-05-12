@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
 			Func<bool> noMusic = () => !installed;
 			
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			Action<string> afterInstall = path =>
 			{
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					{
 						File.Copy(path, destPath, true);
 					}
-					catch (Exception)
+					catch
 					{
 						onError("File copy failed");
 					}
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				}) { IsBackground = true };
 				t.Start();
 			}
-			catch (Exception)
+			catch
 			{
 				onError("Invalid mix file");
 			}

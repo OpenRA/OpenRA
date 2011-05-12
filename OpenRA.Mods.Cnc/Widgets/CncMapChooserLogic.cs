@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[map.Tileset].Name;
 			panel.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => map.PlayerCount.ToString();
 
-			panel.GetWidget<CncMenuButtonWidget>("BUTTON_OK").OnClick = () => onSelect(map);
-			panel.GetWidget<CncMenuButtonWidget>("BUTTON_CANCEL").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
+			panel.GetWidget<CncMenuButtonWidget>("BUTTON_CANCEL").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			panel.GetWidget<CncMenuButtonWidget>("BUTTON_INSTALL").IsDisabled = () => true;
 			panel.GetWidget<CncMenuButtonWidget>("BUTTON_INSTALL").OnClick = () => InstallMap();
