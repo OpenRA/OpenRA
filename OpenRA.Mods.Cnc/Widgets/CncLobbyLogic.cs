@@ -594,39 +594,45 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                           [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			var panel = widget.GetWidget("COLOR_CHOOSER");
+			ramp = initialRamp;
 			var hueSlider = panel.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.SetOffset(initialRamp.H / 255f);
-			
 			var satSlider = panel.GetWidget<SliderWidget>("SAT_SLIDER");
-            satSlider.SetOffset(initialRamp.S / 255f);
-
 			var lumSlider = panel.GetWidget<SliderWidget>("LUM_SLIDER");
-            lumSlider.SetOffset(initialRamp.L / 255f);
-			
-			var rangeSlider = panel.GetWidget<SliderWidget>("RANGE_SLIDER");
-            rangeSlider.SetOffset(initialRamp.R / 255f);
-
-			panel.GetWidget<CncMenuButtonWidget>("SAVE_BUTTON").OnClick = () =>
-			{
-				onSelect(ramp);
-			};
 			
 			Action sliderChanged = () => 
 			{
 				ramp = new ColorRamp((byte)(255*hueSlider.GetOffset()),
 				                     (byte)(255*satSlider.GetOffset()),
 				                     (byte)(255*lumSlider.GetOffset()),
-				                     (byte)(255*rangeSlider.GetOffset()));
+				                     10);
 				onChange(ramp);
 			};
 				         
 			hueSlider.OnChange += _ => sliderChanged();
 			satSlider.OnChange += _ => sliderChanged();
 			lumSlider.OnChange += _ => sliderChanged();
-			rangeSlider.OnChange += _ => sliderChanged();
 			
+			Action updateSliders = () =>
+			{
+				hueSlider.SetOffset(ramp.H / 255f);
+				satSlider.SetOffset(ramp.S / 255f);
+				lumSlider.SetOffset(ramp.L / 255f);
+			};
+			
+			panel.GetWidget<CncMenuButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
+			panel.GetWidget<CncMenuButtonWidget>("RANDOM_BUTTON").OnClick = () => 
+			{
+				var hue = (byte)Game.CosmeticRandom.Next(255);
+				var sat = (byte)Game.CosmeticRandom.Next(255);
+				var lum = (byte)Game.CosmeticRandom.Next(51,255);
+				
+				ramp = new ColorRamp(hue, sat, lum, 10);
+				updateSliders();
+				sliderChanged();
+			};
+
 			// Set the initial state
-			sliderChanged();
+			updateSliders();
 		}
 	}
 }

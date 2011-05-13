@@ -380,15 +380,23 @@ Background@COLOR_CHOOSER:
 	Delegate:CncColorPickerLogic
 	Background:panel-black
 	Width:315
-	Height:120
+	Height:130
 	Children:
 		CncMenuButton@SAVE_BUTTON:
 			Id:SAVE_BUTTON
 			X:210
-			Y:80
+			Y:90
 			Width:90
 			Height:25
 			Text:Save
+			Bold:True
+		CncMenuButton@RANDOM_BUTTON:
+			Id:RANDOM_BUTTON
+			X:15
+			Y:90
+			Width:90
+			Height:25
+			Text:Random
 			Bold:True
 		ShpImage@FACT:
 			Id:FACT
@@ -442,19 +450,3 @@ Background@COLOR_CHOOSER:
 			Height:20
 			Ticks:5
 			Range:0.2,1
-		Label@RANGE_LABEL:
-			X:5
-			Y:80
-			Width:40
-			Height:20
-			Align:Right
-			Text:Ran:
-			Font:Bold
-		CncSlider@RANGE:
-			Id:RANGE_SLIDER
-			X:43
-			Y:85
-			Width:160
-			Height:20
-			Ticks:5
-			Range:0,0.25
