@@ -31,11 +31,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 		string MapUid;
 		Map Map;
 		
+		CncColorPickerPaletteModifier PlayerPalettePreview;
+
 		readonly Action OnGameStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
 		
-        public static ColorRamp CurrentColorPreview;
 		static bool staticSetup;
 		public static CncLobbyLogic GetHandler()
 		{
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
+		                       [ObjectCreator.Param] World world, // Shellmap world
 		                       [ObjectCreator.Param] OrderManager orderManager,
 		                       [ObjectCreator.Param] Action onExit,
 		                       [ObjectCreator.Param] Action onStart)
@@ -136,8 +138,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 			
 			UpdateCurrentMap();
-			CurrentColorPreview = Game.Settings.Player.ColorRamp;
-
+			PlayerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
+			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
@@ -399,7 +401,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			Action<ColorRamp> onChange = c =>
 			{
-				CurrentColorPreview = c;
+				PlayerPalettePreview.Ramp = c;
 			};
 			
 			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
@@ -408,8 +410,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "onChange", onChange },
 				{ "initialRamp", orderManager.LocalClient.ColorRamp }
 			});
-			
-			Console.WriteLine(colorChooser.Id);
 			
 			CncDropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() { colorChooser.GetWidget("SAVE_BUTTON") }, () => true);
 			return true;

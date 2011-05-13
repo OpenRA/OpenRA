@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Cnc
 	{	
 		CncColorPickerPaletteModifierInfo Info;
 		PaletteFormat format;
+		public ColorRamp Ramp;
 		
 		public CncColorPickerPaletteModifier(CncColorPickerPaletteModifierInfo info) { Info = info; }
 		
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Cnc
 		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
-			  new PlayerColorRemap(CncLobbyLogic.CurrentColorPreview, format));
+			  new PlayerColorRemap(Ramp, format));
 		}
 	}
 }
