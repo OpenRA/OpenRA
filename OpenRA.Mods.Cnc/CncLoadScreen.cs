@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc
 					{ "continueLoading", () => TestAndContinue() },
 					{ "installData", Info }
 				};
-				Widget.LoadWidget(Info["InstallerBackgroundWidget"], args);
+				Widget.LoadWidget(Info["InstallerBackgroundWidget"], Widget.RootWidget, args);
 				Widget.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else

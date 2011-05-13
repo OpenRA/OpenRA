@@ -402,7 +402,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CurrentColorPreview = c;
 			};
 			
-			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", new WidgetArgs()
+			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onSelect", onSelect },
 				{ "onChange", onChange },

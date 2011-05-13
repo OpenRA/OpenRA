@@ -114,14 +114,14 @@ namespace OpenRA
 		}
 		
 		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
-		public static Widget LoadWidget(World world, string widget, WidgetArgs args)
+		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
 		{
 			return Game.modData.WidgetLoader.LoadWidget(new WidgetArgs(args)
 			{
 				{ "world", world },
 				{ "orderManager", orderManager },
 				{ "worldRenderer", worldRenderer },
-			}, null, widget);
+			}, parent, id);
 		}
 
 		static ActionQueue afterTickActions = new ActionQueue();

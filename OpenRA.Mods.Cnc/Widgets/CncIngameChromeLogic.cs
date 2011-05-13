@@ -59,7 +59,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ingameRoot.GetWidget<CncMenuButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
-				Widget.LoadWidget("INGAME_MENU", new WidgetArgs() {{ "world", world }, { "onExit", () => ingameRoot.IsVisible = () => true }});
+				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
+				{
+					{ "onExit", () => ingameRoot.IsVisible = () => true }
+				});
 			};
 			
 			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");

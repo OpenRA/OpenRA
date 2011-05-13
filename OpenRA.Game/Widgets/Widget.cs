@@ -334,9 +334,9 @@ namespace OpenRA.Widgets
             return window;
         }
 		
-		public static Widget LoadWidget(string id, WidgetArgs args)
+		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
         {
-            return Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
+            return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
         }
 
         public static void DoTick()

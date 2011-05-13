@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	                switch (orderManager.Connection.ConnectionState)
 	                {
 	                    case ConnectionState.PreConnecting:
-	                        Widget.LoadWidget("MAINMENU_BG", new WidgetArgs());
+	                    	Widget.LoadWidget("MAINMENU_BG", Widget.RootWidget, new WidgetArgs());
 	                        break;
 	                    case ConnectionState.Connecting:
 	                        Widget.OpenWindow("CONNECTING_BG",

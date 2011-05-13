@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
-			Widget.RootWidget.AddChild(Game.LoadWidget(world, Info.Widget, new WidgetArgs()));
+			Game.LoadWidget(world, Info.Widget, Widget.RootWidget, new WidgetArgs());
 		}
 	}
 }
