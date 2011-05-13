@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly Action OnGameStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
-		readonly WorldRenderer worldRenderer;
 		
         public static ColorRamp CurrentColorPreview;
 		static bool staticSetup;
@@ -121,11 +120,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
 		                       [ObjectCreator.Param] OrderManager orderManager,
 		                       [ObjectCreator.Param] Action onExit,
-		                       [ObjectCreator.Param] Action onStart,
-		                       [ObjectCreator.Param] WorldRenderer worldRenderer)
+		                       [ObjectCreator.Param] Action onStart)
 		{
 			this.orderManager = orderManager;
-			this.worldRenderer = worldRenderer;
 			this.OnGameStart = () => { Widget.CloseWindow(); onStart(); };
 			this.onExit = onExit;
 			
@@ -287,19 +284,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			chatPanel.AddChild(template);
 			chatPanel.ScrollToBottom();
 		}
-		
-		void UpdatePlayerColor(float hf, float sf, float lf, float r)
-		{
-			var ramp = new ColorRamp((byte) (hf*255), (byte) (sf*255), (byte) (lf*255), (byte)(r*255));
-			Game.Settings.Player.ColorRamp = ramp;
-			Game.Settings.Save();
-			orderManager.IssueOrder(Order.Command("color {0}".F(ramp)));
-		}
-		
-		void UpdateColorPreview(float hf, float sf, float lf, float r)
-		{
-            CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
-		}
 
 		void UpdateCurrentMap()
 		{
@@ -406,30 +390,28 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (Map.Players[s.MapPlayer].LockColor)
 				return false;
 			
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
-			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
+			Action<ColorRamp> onSelect = c =>
+			{
+				Game.Settings.Player.ColorRamp = c;
+				Game.Settings.Save();
+				orderManager.IssueOrder(Order.Command("color {0}".F(c)));
+			};
 			
-			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-            satSlider.SetOffset(orderManager.LocalClient.ColorRamp.S / 255f);
-
-			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-            lumSlider.SetOffset(orderManager.LocalClient.ColorRamp.L / 255f);
+			Action<ColorRamp> onChange = c =>
+			{
+				CurrentColorPreview = c;
+			};
 			
-			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-            rangeSlider.SetOffset(orderManager.LocalClient.ColorRamp.R / 255f);
-			
-			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-
-			CncDropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() {colorChooser.GetWidget("BUTTON_OK")}, () => {
-				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				return true;
+			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", new WidgetArgs()
+			{
+				{ "onSelect", onSelect },
+				{ "onChange", onChange },
+				{ "initialRamp", orderManager.LocalClient.ColorRamp }
 			});
+			
+			Console.WriteLine(colorChooser.Id);
+			
+			CncDropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() { colorChooser.GetWidget("SAVE_BUTTON") }, () => true);
 			return true;
 		}
 		
@@ -598,6 +580,53 @@ namespace OpenRA.Mods.Cnc.Widgets
 		void CycleReady()
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
+		}
+	}
+	
+	public class CncColorPickerLogic : IWidgetDelegate
+	{
+		ColorRamp ramp;
+		[ObjectCreator.UseCtor]
+		public CncColorPickerLogic([ObjectCreator.Param] Widget widget,
+		                           [ObjectCreator.Param] ColorRamp initialRamp,
+		                           [ObjectCreator.Param] Action<ColorRamp> onChange,
+		                           [ObjectCreator.Param] Action<ColorRamp> onSelect,
+		                           [ObjectCreator.Param] WorldRenderer worldRenderer)
+		{
+			var panel = widget.GetWidget("COLOR_CHOOSER");
+			var hueSlider = panel.GetWidget<SliderWidget>("HUE_SLIDER");
+			hueSlider.SetOffset(initialRamp.H / 255f);
+			
+			var satSlider = panel.GetWidget<SliderWidget>("SAT_SLIDER");
+            satSlider.SetOffset(initialRamp.S / 255f);
+
+			var lumSlider = panel.GetWidget<SliderWidget>("LUM_SLIDER");
+            lumSlider.SetOffset(initialRamp.L / 255f);
+			
+			var rangeSlider = panel.GetWidget<SliderWidget>("RANGE_SLIDER");
+            rangeSlider.SetOffset(initialRamp.R / 255f);
+
+			panel.GetWidget<CncMenuButtonWidget>("SAVE_BUTTON").OnClick = () =>
+			{
+				onSelect(ramp);
+			};
+			
+			Action sliderChanged = () => 
+			{
+				ramp = new ColorRamp((byte)(255*hueSlider.GetOffset()),
+				                     (byte)(255*satSlider.GetOffset()),
+				                     (byte)(255*lumSlider.GetOffset()),
+				                     (byte)(255*rangeSlider.GetOffset()));
+				onChange(ramp);
+			};
+				         
+			hueSlider.OnChange += _ => sliderChanged();
+			satSlider.OnChange += _ => sliderChanged();
+			lumSlider.OnChange += _ => sliderChanged();
+			rangeSlider.OnChange += _ => sliderChanged();
+			
+			// Set the initial state
+			sliderChanged();
 		}
 	}
 }

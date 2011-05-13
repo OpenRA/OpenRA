@@ -377,17 +377,18 @@ Container@SERVER_LOBBY:
 			Text:Start Game
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
+	Delegate:CncColorPickerLogic
 	Background:panel-black
 	Width:315
 	Height:120
 	Children:
-		CncMenuButton@BUTTON_OK:
-			Id:BUTTON_OK
+		CncMenuButton@SAVE_BUTTON:
+			Id:SAVE_BUTTON
 			X:210
 			Y:80
 			Width:90
 			Height:25
-			Text:Ok
+			Text:Save
 			Bold:True
 		ShpImage@FACT:
 			Id:FACT
