@@ -102,6 +102,8 @@
 	GivesBounty:
 	GpsDot:
 		String:Infantry
+	ParachuteAttachment:
+		Offset: 0,-10
 
 ^Ship:
 	AppearsOnRadar:

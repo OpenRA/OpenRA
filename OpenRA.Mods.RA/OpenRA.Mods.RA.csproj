@@ -346,6 +346,7 @@
     <Compile Include="Captures.cs" />
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="InvisibleToEnemy.cs" />
+    <Compile Include="ParachuteAttachment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

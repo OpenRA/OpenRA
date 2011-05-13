@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		
 		readonly Actor cargo;
 
+		int2 offset;
 		float altitude;
 		const float fallRate = .3f;
 
@@ -44,9 +45,13 @@ namespace OpenRA.Mods.RA.Effects
 			else
 				anim.PlayFetchIndex("stand", () => 0);
 			anim.Tick();
+			
+			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
 
-			paraAnim = new Animation("parach");
+			paraAnim = new Animation(pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
+			
+			if (pai != null) offset = pai.Offset;
 		}
 
 		public void Tick(World world)
@@ -71,7 +76,7 @@ namespace OpenRA.Mods.RA.Effects
 			var pos = location - new float2(0, altitude);
 			yield return new Renderable(anim.Image, location - .5f * anim.Image.size, "shadow", 0);
 			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, 2);
-			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size, palette, 3);
+			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, palette, 3);
 		}
 	}
 }
