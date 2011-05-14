@@ -123,6 +123,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Menu = MenuType.None;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
                 {
+					{ "world", world },
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};

@@ -57,7 +57,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
             }
 
-			general.GetWidget<CheckboxWidget>("INVERSE_SCROLL").Bind(Game.Settings.Game, "InverseDragScroll");
+			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
+			
+			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
+			inversescroll.OnChange += c => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
+	
 			general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE").Bind(Game.Settings.Game, "TeamChatToggle");
 
 			

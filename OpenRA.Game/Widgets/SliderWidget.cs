@@ -20,6 +20,9 @@ namespace OpenRA.Widgets
 		public Func<float> GetOffset;
 		public int Ticks = 0;
 		public int TrackHeight = 5;
+		
+		// TODO: Changing this breaks the semantics of Get/SetOffset
+		// This is bogus
 		public float2 Range = new float2(0f, 1f);
 		
 		private float Offset = 0;

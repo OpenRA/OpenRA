@@ -127,6 +127,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				hideButtons = true;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
                 {
+					{ "world", world },
 					{ "onExit", () => hideButtons = false },
 				});
 			};

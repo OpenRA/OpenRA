@@ -61,7 +61,7 @@ Container@SETTINGS_PANEL:
 					Text:Debug
 					Align:Center
 				CncCheckbox@PERFINFO_CHECKBOX:
-					Id:PERFINFO_CHECKBOX
+					Id:PERFTEXT_CHECKBOX
 					X:15
 					Y:120
 					Width:300
@@ -76,14 +76,14 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Show Performance Graph
-				CncCheckbox@GAMETIME_CHECKBOX:
-					Id:GAMETIME_CHECKBOX
+				CncCheckbox@MATCHTIME_CHECKBOX:
+					Id:MATCHTIME_CHECKBOX
 					X:15
 					Y:180
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Show Game Time Counter 
+					Text:Show Match Timer 
 				CncCheckbox@CHECKUNSYNCED_CHECKBOX:
 					Id:CHECKUNSYNCED_CHECKBOX
 					X:15
@@ -114,36 +114,39 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Regular
 					Text:Windowed
-				Label@At:
-					Text:@
-					Font:Bold
-					X:575
-					Y:39
-					Height:25
-					Width:25
-					Align:Center
-				CncTextField@SCREEN_WIDTH:
-					Id:SCREEN_WIDTH
-					X:600
-					Y:40
-					Width:45
-					Height:25
-					MaxLength:5
-				Label@X:
-					Text:x
-					Font:Bold
-					X:645
-					Y:39
-					Height:25
-					Width:25
-					Align:Center
-				CncTextField@SCREEN_HEIGHT:
-					Id:SCREEN_HEIGHT
-					X:670
-					Y:40
-					Width:45
-					Height:25
-					MaxLength:5
+				Container@WINDOWRES:
+					Id:WINDOW_RESOLUTION
+					Children:
+						Label@At:
+							Text:@
+							Font:Bold
+							X:575
+							Y:39
+							Height:25
+							Width:25
+							Align:Center
+						CncTextField@SCREEN_WIDTH:
+							Id:WINDOW_WIDTH
+							X:600
+							Y:40
+							Width:45
+							Height:25
+							MaxLength:5
+						Label@X:
+							Text:x
+							Font:Bold
+							X:645
+							Y:39
+							Height:25
+							Width:25
+							Align:Center
+						CncTextField@SCREEN_HEIGHT:
+							Id:WINDOW_HEIGHT
+							X:670
+							Y:40
+							Width:45
+							Height:25
+							MaxLength:5
 				Label@VIDEO_DESC:
 					X:375
 					Y:65
@@ -194,7 +197,7 @@ Container@SETTINGS_PANEL:
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Disable Shellmap Music
+					Text:Shellmap Music
 		Background@INPUT_CONTROLS:
 			Id:INPUT_CONTROLS
 			Width:740
@@ -209,8 +212,8 @@ Container@SETTINGS_PANEL:
 					X:15
 					Y:20
 					Width:340
-				CncCheckbox@CLASSIC_ORDERS:
-					Id:CLASSIC_ORDERS
+				CncCheckbox@CLASSICORDERS_CHECKBOX:
+					Id:CLASSICORDERS_CHECKBOX
 					X:15
 					Y:35
 					Width:250
@@ -230,16 +233,16 @@ Container@SETTINGS_PANEL:
 					Width:95
 					Height:25
 					Text:Scroll Speed:
-				CncSlider@SCROLL_SPEED:
-					Id:SCROLL_SPEED
+				CncSlider@SCROLLSPEED_SLIDER:
+					Id:SCROLLSPEED_SLIDER
 					X:100
 					Y:120
 					Width:240
 					Height:20
 					Ticks:5
 					Range:10,50
-				CncCheckbox@EDGE_SCROLL:
-					Id:EDGE_SCROLL
+				CncCheckbox@EDGESCROLL_CHECKBOX:
+					Id:EDGESCROLL_CHECKBOX
 					X:15
 					Y:150
 					Width:130
@@ -262,22 +265,22 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Regular
 					Text:Enabled
-				Label@MULTITOUCH_SCROLL_LABEL:
-					X:15
-					Y:210
-					Width:160
-					Height:20
-					Font:Regular
-					Text:Multitouch Scrolling:
-					Align:Right
-				CncDropDownButton@MULTITOUCH_SCROLL:
-					Id:MULTITOUCH_SCROLL
-					X:180
-					Y:210
-					Width:100
-					Height:25
-					Font:Regular
-					Text:Enabled
+#				Label@MULTITOUCH_SCROLL_LABEL:
+#					X:15
+#					Y:210
+#					Width:160
+#					Height:20
+#					Font:Regular
+#					Text:Multitouch Scrolling:
+#					Align:Right
+#				CncDropDownButton@MULTITOUCH_SCROLL:
+#					Id:MULTITOUCH_SCROLL
+#					X:180
+#					Y:210
+#					Width:100
+#					Height:25
+#					Font:Regular
+#					Text:Enabled
 				Label@KEYBOARD_TITLE:
 					X:375
 					Y:20
@@ -285,36 +288,51 @@ Container@SETTINGS_PANEL:
 					Font:Bold
 					Text:Keyboard Input
 					Align:Center
-				CncCheckbox@TEAMCHAT_TOGGLE:
-					Id:TEAMCHAT_TOGGLE
+				CncCheckbox@TEAMCHAT_CHECKBOX:
+					Id:TEAMCHAT_CHECKBOX
 					X:375
 					Y:35
 					Width:240
 					Height:20
 					Font:Regular
 					Text:Shift-Enter Toggles Team Chat
-				Label@BINDING_LABEL:
-					Font:Bold
+				Label@GROUP_MODIFIER_LABEL:
 					X:375
-					Y:60
-					Width:200
-					Height:25
-					Align:Center
-					Text:Action
-				Label@KEY_LABEL:
-					Font:Bold
-					X:640
-					Y:60
-					Width:30
-					Height:25
+					Y:65
+					Width:160
+					Height:20
+					Font:Regular
+					Text:Group Addition Modifier:
 					Align:Right
-					Text:Key
-				CncScrollPanel@KEYBINDINGS:
-					Id:KEYBINDINGS
-					X:375
-					Y:85
-					Width:350
-					Height:150
+				CncDropDownButton@GROUPADD_MODIFIER:
+					Id:GROUPADD_MODIFIER
+					X:540
+					Y:65
+					Width:100
+					Height:25
+					Font:Regular
+#				Label@BINDING_LABEL:
+#					Font:Bold
+#					X:375
+#					Y:60
+#					Width:200
+#					Height:25
+#					Align:Center
+#					Text:Action
+#				Label@KEY_LABEL:
+#					Font:Bold
+#					X:640
+#					Y:60
+#					Width:30
+#					Height:25
+#					Align:Right
+#					Text:Key
+#				CncScrollPanel@KEYBINDINGS:
+#					Id:KEYBINDINGS
+#					X:375
+#					Y:85
+#					Width:350
+#					Height:150
 		CncMenuButton@GENERAL_BUTTON:
 			Id:GENERAL_BUTTON
 			Y:249
@@ -328,13 +346,13 @@ Container@SETTINGS_PANEL:
 			Width:140
 			Height:35
 			Text:Input
-		CncMenuButton@RESET_BUTTON:
-			Id:RESET_BUTTON
+		CncMenuButton@CANCEL_BUTTON:
+			Id:CANCEL_BUTTON
 			X:450
 			Y:249
 			Width:140
 			Height:35
-			Text:Reset
+			Text:Cancel
 		CncMenuButton@SAVE_BUTTON:
 			Id:SAVE_BUTTON
 			X:600

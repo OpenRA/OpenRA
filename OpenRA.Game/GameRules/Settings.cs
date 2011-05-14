@@ -81,17 +81,19 @@ namespace OpenRA.GameRules
 		public string LastServer = "localhost:1234";
 	}
 	
+	public enum MouseScrollType { Disabled, Standard, Inverted }
 	public class GameSettings
 	{
 		public string[] Mods = { "ra" };
 		public bool MatchTimer = true;
+		public bool ShellmapMusic = true;
 		
 		// Chat settings
 		public bool TeamChatToggle = false;
 
 		// Behaviour settings
         public bool ViewportEdgeScroll = true;
-        public bool InverseDragScroll = false;
+        public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public float ViewportEdgeScrollStep = 10f;
 
 		// Internal game settings

@@ -37,11 +37,15 @@ namespace OpenRA.Widgets
 		// TODO: ViewportScrollController doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{									
+			var scrolltype = Game.Settings.Game.MouseScroll;
+			if (scrolltype == OpenRA.GameRules.MouseScrollType.Disabled)
+				return false;
+			
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
-                int InverseScroll = Game.Settings.Game.InverseDragScroll ? -1 : 1;
-                Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * InverseScroll);
+                var d = scrolltype == OpenRA.GameRules.MouseScrollType.Inverted ? -1 : 1;
+                Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
 				return true;
 			}
 			return false;
