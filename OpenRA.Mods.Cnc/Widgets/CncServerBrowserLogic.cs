@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CncConnectingLogic.Connect(host, port, openLobby, onExit);
 			};
 			
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = onExit;
+			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			// Server list
 			serverTemplate = sl.GetWidget("SERVER_TEMPLATE");
