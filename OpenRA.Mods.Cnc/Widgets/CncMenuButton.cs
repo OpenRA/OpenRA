@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : 
 				"button";
 			
-			var font = Game.Renderer.BoldFont;
+			var font = Game.Renderer.Fonts[Font];
 			var rect = RenderBounds;
 			WidgetUtils.DrawPanel(state, new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height)));
 
@@ -257,11 +257,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var tickRect = new Rectangle(trackOrigin - 1 + (int)(i * trackWidth * 1f / (Ticks - 1)),
 						  RenderBounds.Y + RenderBounds.Height / 2, 2, RenderBounds.Height / 2);
-				WidgetUtils.DrawPanel("button-hover", tickRect);
+				WidgetUtils.DrawPanel("panel-gray", tickRect);
 			}
 			
 			// Track
-			WidgetUtils.DrawPanel("button-pressed", trackRect);
+			WidgetUtils.DrawPanel("panel-gray", trackRect);
 
 			// Thumb
 			var state = IsDisabled() ? "button-disabled" : 
