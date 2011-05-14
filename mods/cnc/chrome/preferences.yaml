@@ -1,226 +1,344 @@
-Background@SETTINGS_PANEL:
+Container@SETTINGS_PANEL:
 	Id:SETTINGS_PANEL
 	Delegate:CncSettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM- HEIGHT)/2
-	Width: 450
-	Height: 350
+	Y:(WINDOW_BOTTOM - 250)/2
+	Width:740
+	Height:535
 	Children:
-		Label@SETTINGS_LABEL_TITLE:
-			Id:SETTINGS_LABEL_TITLE
-			X:0
-			Y:20
-			Width:450
-			Height:25
-			Text:Settings
+		Label@TITLE:
+			Width:740
+			Y:0-25
+			Font:BigBold
+			Contrast:true
 			Align:Center
-			Bold:True
-		CncMenuButton@BUTTON_CLOSE:
-			Id:BUTTON_CLOSE
-			X:PARENT_RIGHT - 180
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Close
-			Bold:True
-		Container@TAB_CONTAINER:
-			Id:TAB_CONTAINER
-			X:0
-			Y:50
-			Width:PARENT_RIGHT
-			Height:25
+			Text:Settings
+		Background@GENERAL_CONTROLS:
+			Id:GENERAL_CONTROLS
+			Width:740
+			Height:250
+			Background:panel-black
 			Children:
-				Button@GENERAL:
-					Id:GENERAL
-					X:45
-					Y:0
-					Width:90
+				Label@TITLE:
+					X:15
+					Y:20
+					Font:Bold
+					Text:Player Profile
+					Align:Center
+					Width:340
+				Label@NAME_LABEL:
+					X:15
+					Y:39
+					Width:45
 					Height:25
-					Text:General
-					Bold:True
-				Button@AUDIO:
-					Id:AUDIO
-					X:135
-					Y:0
-					Width:90
+					Align:Right
+					Text:Name:
+				CncTextField@NAME_TEXTFIELD:
+					Id:NAME_TEXTFIELD
+					X:65
+					Y:40
+					Width:205
 					Height:25
-					Text:Audio
-					Bold:True
-				Button@DISPLAY:
-					Id:DISPLAY
-					X:225
-					Y:0
-					Width:90
-					Height:25
-					Text:Display
-					Bold:True
-				Button@DEBUG:
-					Id:DEBUG
-					X:315
-					Y:0
-					Width:90
-					Height:25
-					Text:Debug
-					Bold:True
-		Container@GENERAL_PANE:
-			Id:GENERAL_PANE
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: true
-			Children:
-				Label@SETTINGS_PLAYER_NAME:
-					Id:SETTINGS_PLAYER_NAME
-					X:0
-					Y:10
-					Text: Player Name:
-				TextField@NAME:
-					Id:NAME
-					Text:Name
-					Width:139
-					Height:25
-					X:90
-					Y:0
 					MaxLength:16
-				Checkbox@EDGE_SCROLL:
-					Id:EDGE_SCROLL
-					X:0
-					Y:30
+				CncDropDownButton@COLOR:
+					Id:COLOR_DROPDOWN
+					X:275
+					Y:40
+					Width:80
+					Height:25
+					Children:
+						ColorBlock@COLORBLOCK:
+							Id:COLORBLOCK
+							X:5
+							Y:6
+							Width:PARENT_RIGHT-35
+							Height:PARENT_BOTTOM-12
+				Label@DEBUG_TITLE:
+					X:15
+					Y:100
+					Width:340
+					Font:Bold
+					Text:Debug
+					Align:Center
+				CncCheckbox@PERFINFO_CHECKBOX:
+					Id:PERFINFO_CHECKBOX
+					X:15
+					Y:120
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Performance Text
+				CncCheckbox@PERFGRAPH_CHECKBOX:
+					Id:PERFGRAPH_CHECKBOX
+					X:15
+					Y:150
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Performance Graph
+				CncCheckbox@GAMETIME_CHECKBOX:
+					Id:GAMETIME_CHECKBOX
+					X:15
+					Y:180
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Show Game Time Counter 
+				CncCheckbox@CHECKUNSYNCED_CHECKBOX:
+					Id:CHECKUNSYNCED_CHECKBOX
+					X:15
+					Y:210
+					Width:300
+					Height:20
+					Font:Regular
+					Text:Check Sync around Unsynced Code
+				Label@VIDEO_TITLE:
+					Y:20
+					X:375
+					Font:Bold
+					Text:Video
+					Align:Center
+					Width:340
+				Label@MODE_LABEL:
+					X:375
+					Y:39
+					Width:45
+					Height:25
+					Align:Right
+					Text:Mode:
+				CncDropDownButton@MODE_DROPDOWN:
+					Id:MODE_DROPDOWN
+					X:425
+					Y:40
+					Width:150
+					Height:25
+					Font:Regular
+					Text:Windowed
+				Label@At:
+					Text:@
+					Font:Bold
+					X:575
+					Y:39
+					Height:25
+					Width:25
+					Align:Center
+				CncTextField@SCREEN_WIDTH:
+					Id:SCREEN_WIDTH
+					X:600
+					Y:40
+					Width:45
+					Height:25
+					MaxLength:5
+				Label@X:
+					Text:x
+					Font:Bold
+					X:645
+					Y:39
+					Height:25
+					Width:25
+					Align:Center
+				CncTextField@SCREEN_HEIGHT:
+					Id:SCREEN_HEIGHT
+					X:670
+					Y:40
+					Width:45
+					Height:25
+					MaxLength:5
+				Label@VIDEO_DESC:
+					X:375
+					Y:65
+					Width:340
+					Height:25
+					Font:Tiny
+					Align:Center
+					Text:Video changes will be applied after the game is restarted
+				Label@AUDIO_TITLE:
+					X:375
+					Y:120
+					Width:340
+					Font:Bold
+					Text:Audio
+					Align:Center
+				Label@SOUND_LABEL:
+					X:375
+					Y:135
+					Width:95
+					Height:25
+					Align:Right
+					Text:Sound Volume:
+				CncSlider@SOUND_SLIDER:
+					Id:SOUND_SLIDER
+					X:475
+					Y:140
+					Width:240
+					Height:20
+					Ticks:5
+				Label@MUSIC_LABEL:
+					X:375
+					Y:165
+					Width:95
+					Height:25
+					Align:Right
+					Text:Music Volume:
+				CncSlider@MUSIC_SLIDER:
+					Id:MUSIC_SLIDER
+					X:475
+					Y:170
+					Width:240
+					Height:20
+					Ticks:5
+				CncCheckbox@SHELLMAP_MUSIC:
+					Id:SHELLMAP_MUSIC
+					X:375
+					Y:200
 					Width:200
 					Height:20
-					Text: Enable Edge Scrolling
-				Label@EDGE_SCROLL_AMOUNT_LABEL:
-					Id:EDGE_SCROLL_AMOUNT_LABEL
-					X:0
-					Y:70
-					Text: Scroll Speed
-				Slider@EDGE_SCROLL_AMOUNT:
-					Id:EDGE_SCROLL_AMOUNT
-					X:130
-					Y:60
+					Font:Regular
+					Text:Disable Shellmap Music
+		Background@INPUT_CONTROLS:
+			Id:INPUT_CONTROLS
+			Width:740
+			Height:250
+			Background:panel-black
+			Visible:false
+			Children:
+				Label@MOUSE_TITLE:
+					Font:Bold
+					Text:Mouse Input
+					Align:Center
+					X:15
+					Y:20
+					Width:340
+				CncCheckbox@CLASSIC_ORDERS:
+					Id:CLASSIC_ORDERS
+					X:15
+					Y:35
 					Width:250
+					Height:20
+					Font:Regular
+					Text:Left-Click Orders (Coming soon!)
+				Label@SCROLL_TITLE:
+					Font:Bold
+					Text:Scroll Behavior
+					Align:Center
+					X:20
+					Y:100
+					Width:335
+				Label@SCROLL_SPEED_LABEL:
+					X:10
+					Y:115
+					Width:95
+					Height:25
+					Text:Scroll Speed:
+				CncSlider@SCROLL_SPEED:
+					Id:SCROLL_SPEED
+					X:100
+					Y:120
+					Width:240
 					Height:20
 					Ticks:5
 					Range:10,50
-				Checkbox@INVERSE_SCROLL:
-					Id:INVERSE_SCROLL
-					X:0
-					Y:90
-					Width:200
+				CncCheckbox@EDGE_SCROLL:
+					Id:EDGE_SCROLL
+					X:15
+					Y:150
+					Width:130
 					Height:20
-					Text: Invert Mouse Drag Scrolling
-				Checkbox@TEAMCHAT_TOGGLE:
+					Font:Regular
+					Text:Edge Scrolling
+				Label@MOUSE_SCROLL_LABEL:
+					X:15
+					Y:180
+					Width:160
+					Height:20
+					Font:Regular
+					Text:Middle-Mouse Scrolling:
+					Align:Right
+				CncDropDownButton@MOUSE_SCROLL:
+					Id:MOUSE_SCROLL
+					X:180
+					Y:180
+					Width:100
+					Height:25
+					Font:Regular
+					Text:Enabled
+				Label@MULTITOUCH_SCROLL_LABEL:
+					X:15
+					Y:210
+					Width:160
+					Height:20
+					Font:Regular
+					Text:Multitouch Scrolling:
+					Align:Right
+				CncDropDownButton@MULTITOUCH_SCROLL:
+					Id:MULTITOUCH_SCROLL
+					X:180
+					Y:210
+					Width:100
+					Height:25
+					Font:Regular
+					Text:Enabled
+				Label@KEYBOARD_TITLE:
+					X:375
+					Y:20
+					Width:340
+					Font:Bold
+					Text:Keyboard Input
+					Align:Center
+				CncCheckbox@TEAMCHAT_TOGGLE:
 					Id:TEAMCHAT_TOGGLE
-					X:0
-					Y:120
-					Width:200
+					X:375
+					Y:35
+					Width:240
 					Height:20
-					Text: Shift-Enter Toggles Team Chat
-		Container@AUDIO_PANE:
-			Id:AUDIO_PANE
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
-			Children:
-				Label@SOUND_VOLUME_LABEL:
-					Id:SOUND_VOLUME_LABEL
-					X:0
-					Y:10
-					Text: Sound Volume		
-				Slider@SOUND_VOLUME:
-					Id:SOUND_VOLUME
-					X:100
-					Y:0
-					Width:250
-					Height:20
-					Ticks:5
-				Label@MUSIC_VOLUME_LABEL:
-					Id:MUSIC_VOLUME_LABEL
-					X:0
-					Y:40
-					Text: Music Volume
-				Slider@MUSIC_VOLUME:
-					Id:MUSIC_VOLUME
-					X:100
-					Y:30
-					Width:250
-					Height:20
-					Ticks:5
-		Container@DISPLAY_PANE:
-			Id:DISPLAY_PANE
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
-			Children:
-				Checkbox@FULLSCREEN_CHECKBOX:
-					Id:FULLSCREEN_CHECKBOX
-					X:0
-					Y:0
-					Width:300
-					Height:20
-					Text:Fullscreen
-				Label@RESOLUTION_LABEL:
-					Id:RESOLUTION_LABEL
-					X:0
-					Y:50
-					Text: Window Resolution:
-				TextField@SCREEN_WIDTH:
-					Id:SCREEN_WIDTH
-					Text:Width
-					Width:50
-					Height:25
-					X:130
-					Y:40
-					MaxLength:5
-				Label@X:
-					Id:X
-					Text:x
-					X:185
-					Y:50
-				TextField@SCREEN_HEIGHT:
-					Id:SCREEN_HEIGHT
-					Text:Height
-					Width:50
-					Height:25
-					X:195
-					Y:40
-					MaxLength:5
-				Label@RESTART:
-					Id:RESTART
-					Text: Restart Game To Apply Changes
-					X:0
-					Y:PARENT_BOTTOM - 30
-		Container@DEBUG_PANE:
-			Id:DEBUG_PANE
-			X:37
-			Y:100
-			Width:PARENT_RIGHT - 37
-			Height:PARENT_BOTTOM - 100
-			Visible: false
-			Children:
-				Checkbox@PERFDEBUG_CHECKBOX:
-					Id:PERFDEBUG_CHECKBOX
-					X:0
-					Y:0
-					Width:300
-					Height:20
-					Text:Show Performance Information
-				Checkbox@GAMETIME_CHECKBOX:
-					Id:GAMETIME_CHECKBOX
-					X:0
-					Y:30
-					Width:300
-					Height:20
-					Text:Show Game Time Counter 
-				Checkbox@CHECKUNSYNCED_CHECKBOX:
-					Id:CHECKUNSYNCED_CHECKBOX
-					X:0
+					Font:Regular
+					Text:Shift-Enter Toggles Team Chat
+				Label@BINDING_LABEL:
+					Font:Bold
+					X:375
 					Y:60
-					Width:300
-					Height:20
-					Text:Check Sync around Unsynced Code
+					Width:200
+					Height:25
+					Align:Center
+					Text:Action
+				Label@KEY_LABEL:
+					Font:Bold
+					X:640
+					Y:60
+					Width:30
+					Height:25
+					Align:Right
+					Text:Key
+				CncScrollPanel@KEYBINDINGS:
+					Id:KEYBINDINGS
+					X:375
+					Y:85
+					Width:350
+					Height:150
+		CncMenuButton@GENERAL_BUTTON:
+			Id:GENERAL_BUTTON
+			Y:249
+			Width:140
+			Height:35
+			Text:General
+		CncMenuButton@INPUT_BUTTON:
+			Id:INPUT_BUTTON
+			X:150
+			Y:249
+			Width:140
+			Height:35
+			Text:Input
+		CncMenuButton@RESET_BUTTON:
+			Id:RESET_BUTTON
+			X:450
+			Y:249
+			Width:140
+			Height:35
+			Text:Reset
+		CncMenuButton@SAVE_BUTTON:
+			Id:SAVE_BUTTON
+			X:600
+			Y:249
+			Width:140
+			Height:35
+			Text:Save
