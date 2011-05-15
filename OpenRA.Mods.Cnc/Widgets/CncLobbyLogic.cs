@@ -253,6 +253,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			chatPanel = lobby.GetWidget<CncScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
+			
+			lobby.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			{
+				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
+                {
+					{ "onExit", () => {} },
+				});
+			};
 		}
 		
 		public void AddChatLine(Color c, string from, string text)

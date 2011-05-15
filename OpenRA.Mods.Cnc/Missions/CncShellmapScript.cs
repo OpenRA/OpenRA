@@ -18,12 +18,22 @@ using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {
-	class CncShellmapScriptInfo : TraitInfo<CncShellmapScript> { }
+	class CncShellmapScriptInfo : ITraitInfo
+	{
+		public string Music = "otp";
+		public object Create(ActorInitializer init) { return new CncShellmapScript(this); }
+	}
 
 	class CncShellmapScript: IWorldLoaded, ITick
 	{		
+		CncShellmapScriptInfo Info;
 		Dictionary<string, Actor> Actors;
 		static int2 ViewportOrigin;
+
+		public CncShellmapScript(CncShellmapScriptInfo info)
+		{
+			Info = info;
+		}
 
 		public void WorldLoaded(World w)
 		{
@@ -32,7 +42,20 @@ namespace OpenRA.Mods.RA
 			Game.MoveViewport(ViewportOrigin);
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
-			Sound.SoundVolumeModifier = 0.25f;
+			// Mute world sounds
+			Sound.SoundVolumeModifier = 0f;
+
+			LoopMusic();
+		}
+
+		void LoopMusic()
+		{
+			if (!Game.Settings.Game.ShellmapMusic ||
+			    	Info.Music == null ||
+			    	!Rules.Music[Info.Music].Exists)
+				return;
+
+			Sound.PlayMusicThen(Rules.Music[Info.Music].Filename, () => LoopMusic());
 		}
 		
 		int ticks = 0;

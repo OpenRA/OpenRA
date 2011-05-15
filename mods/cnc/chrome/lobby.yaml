@@ -361,6 +361,13 @@ Container@SERVER_LOBBY:
 			Width:140
 			Height:35
 			Text:Leave Game
+		CncMenuButton@MUSIC_BUTTON:
+			Id:MUSIC_BUTTON
+			X:300
+			Y:499
+			Width:140
+			Height:35
+			Text:Music
 		CncMenuButton@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
 			X:450
