@@ -73,16 +73,16 @@ Container@MAPCHOOSER_PANEL:
 							Y:0
 							Text:Title
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@PLAYERS:
 							Text:Players
-							Bold:true
+							Font:Bold
 							Width:50
 							X:294
 							Height:25
 						Label@TYPE:
 							Text:Type
-							Bold:true
+							Font:Bold
 							Width:50
 							X:410
 							Height:25
@@ -100,7 +100,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Title:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_TITLE:
 							Id:CURMAP_TITLE
 							X:75
@@ -116,7 +116,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Author:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_AUTHOR:
 							Id:CURMAP_AUTHOR
 							X:75
@@ -133,7 +133,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Size:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_SIZE:
 							Id:CURMAP_SIZE
 							X:75
@@ -149,7 +149,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Theater:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_THEATER:
 							Id:CURMAP_THEATER
 							X:75
@@ -165,7 +165,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Players:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_PLAYERS:
 							Id:CURMAP_PLAYERS
 							X:75
@@ -181,7 +181,7 @@ Container@MAPCHOOSER_PANEL:
 							Width:70
 							Height:20
 							Text:Desc:
-							Bold:True
+							Font:Bold
 						Label@CURMAP_DESC:
 							Id:CURMAP_DESC
 							X:75

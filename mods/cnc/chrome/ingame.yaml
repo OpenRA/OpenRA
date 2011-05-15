@@ -24,7 +24,6 @@ Container@INGAME_ROOT:
 			Width:140
 			Height:35
 			Text:Options
-			Bold:True
 		CncMenuButton@DIPLOMACY_BUTTON:
 			Id:DIPLOMACY_BUTTON
 			X:150
@@ -32,7 +31,6 @@ Container@INGAME_ROOT:
 			Width:140
 			Height:35
 			Text:Diplomacy
-			Bold:True
 		CncMenuButton@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
 			X:295
@@ -40,7 +38,6 @@ Container@INGAME_ROOT:
 			Width:160
 			Height:35
 			Text:Cheats
-			Bold:True
 		WorldTooltip:
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
@@ -98,7 +95,7 @@ Container@INGAME_ROOT:
 							Width:200
 							Height:40
 							Align:Center
-							Bold:True
+							Font:Bold
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
 					Y:25

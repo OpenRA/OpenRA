@@ -121,7 +121,7 @@ Container@SERVER_LOBBY:
 									X:160
 									Y:0
 									Align:Center
-									Bold:True
+									Font:Bold
 						Container@TEMPLATE_REMOTE:
 							Id:TEMPLATE_REMOTE
 							X:5
@@ -144,7 +144,7 @@ Container@SERVER_LOBBY:
 									Height:23
 									X:125
 									Y:2
-									Bold:Yes
+									Font:Bold
 								ColorBlock@COLOR:
 									Id:COLOR
 									X:165
@@ -193,7 +193,7 @@ Container@SERVER_LOBBY:
 									X:160
 									Y:0
 									Align:Center
-									Bold:True
+									Font:Bold
 						Container@TEMPLATE_EMPTY:
 							Id:TEMPLATE_EMPTY
 							X:5
@@ -225,7 +225,7 @@ Container@SERVER_LOBBY:
 									X:160
 									Y:0
 									Align:Center
-									Bold:True
+									Font:Bold
 						Container@TEMPLATE_EMPTY_HOST:
 							Id:TEMPLATE_EMPTY_HOST
 							X:5
@@ -256,7 +256,7 @@ Container@SERVER_LOBBY:
 									X:160
 									Y:0
 									Align:Center
-									Bold:True
+									Font:Bold
 				Container@LABEL_CONTAINER:
 					X:25
 					Y:5
@@ -269,7 +269,7 @@ Container@SERVER_LOBBY:
 							Y:0
 							Text:Name
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@LABEL_LOBBY_COLOR:
 							Id:LABEL_LOBBY_COLOR
 							Width:80
@@ -278,7 +278,7 @@ Container@SERVER_LOBBY:
 							Y:0
 							Text:Color
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@LABEL_LOBBY_FACTION:
 							Id:LABEL_LOBBY_FACTION
 							Width:130
@@ -287,7 +287,7 @@ Container@SERVER_LOBBY:
 							Y:0
 							Text:Faction
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@LABEL_LOBBY_TEAM:
 							Id:LABEL_LOBBY_TEAM
 							Width:48
@@ -296,7 +296,7 @@ Container@SERVER_LOBBY:
 							Y:0
 							Text:Team
 							Align:Center
-							Bold:True
+							Font:Bold
 						Label@LABEL_LOBBY_STATUS:
 							Id:LABEL_LOBBY_STATUS
 							X:448
@@ -305,7 +305,7 @@ Container@SERVER_LOBBY:
 							Height:25
 							Text:Ready
 							Align:Left
-							Bold:True
+							Font:Bold
 				CncScrollPanel@CHAT_DISPLAY:
 					Id:CHAT_DISPLAY
 					X:15
@@ -396,7 +396,6 @@ Background@COLOR_CHOOSER:
 			Width:90
 			Height:25
 			Text:Save
-			Bold:True
 		CncMenuButton@RANDOM_BUTTON:
 			Id:RANDOM_BUTTON
 			X:15
@@ -404,7 +403,6 @@ Background@COLOR_CHOOSER:
 			Width:90
 			Height:25
 			Text:Random
-			Bold:True
 		ShpImage@FACT:
 			Id:FACT
 			X:220

@@ -64,7 +64,7 @@ Container@REPLAYBROWSER_PANEL:
 							Width:70
 							Height:20
 							Text:Map:
-							Bold:True
+							Font:Bold
 						Label@MAP_TITLE:
 							Id:MAP_TITLE
 							X:75
@@ -76,7 +76,7 @@ Container@REPLAYBROWSER_PANEL:
 							Width:70
 							Height:20
 							Text:Duration:
-							Bold:True
+							Font:Bold
 						Label@DURATION:
 							Id:DURATION
 							X:75
@@ -89,7 +89,7 @@ Container@REPLAYBROWSER_PANEL:
 							Width:70
 							Height:20
 							Text:Players:
-							Bold:True
+							Font:Bold
 						Label@PLAYERS:
 							Id:PLAYERS
 							X:75
