@@ -1,0 +1,90 @@
+Container@CHEATS_PANEL:
+	Id:CHEATS_PANEL
+	Delegate:CncCheatsLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 110)/2
+	Width:590
+	Height:145
+	Children:
+		Label@TITLE:
+			Width:590
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Cheats
+		Background@bg:
+			Width:590
+			Height:110
+			Background:panel-black
+			Children:
+				CncCheckbox@INSTANT_BUILD:
+					Id:INSTANT_BUILD_CHECKBOX
+					X:15
+					Y:15
+					Width:200
+					Height:20
+					Text:Instant Build Speed
+				CncCheckbox@ENABLE_TECH:
+					Id:ENABLE_TECH_CHECKBOX
+					X:15
+					Y:45
+					Width:200
+					Height:20
+					Text:Build Everything
+				CncCheckbox@BUILD_ANYWHERE:
+					Id:BUILD_ANYWHERE_CHECKBOX
+					X:15
+					Y:75
+					Width:200
+					Height:20
+					Text:Build Anywhere
+				CncCheckbox@UNLIMITED_POWER:
+					Id:UNLIMITED_POWER_CHECKBOX
+					X:200
+					Y:15
+					Width:200
+					Height:20
+					Text:Unlimited Power
+				CncCheckbox@INSTANT_CHARGE:
+					Id:INSTANT_CHARGE_CHECKBOX
+					X:200
+					Y:45
+					Width:200
+					Height:20
+					Text:Instant Charge Time				
+				CncCheckbox@CHECKBOX_SHROUD:
+					Id:SHROUD_CHECKBOX
+					X:400
+					Y:15
+					Height:20
+					Width:200
+					Text:Disable Shroud
+				CncCheckbox@CHECKBOX_PATHDEBUG:
+					Id:PATHDEBUG_CHECKBOX
+					X:400
+					Y:45
+					Width:200
+					Height:20
+					Text:Show Unit Paths
+		CncMenuButton@CLOSE_BUTTON:
+			Id:CLOSE_BUTTON
+			X:0
+			Y:109
+			Width:140
+			Height:35
+			Text:Close
+		CncMenuButton@GIVE_CASH:
+			Id:GIVE_CASH_BUTTON
+			X:300
+			Y:109
+			Width:140
+			Height:35
+			Text:Give Cash
+		CncMenuButton@GIVE_EXPLORATION:
+			Id:GIVE_EXPLORATION_BUTTON
+			X:450
+			Y:109
+			Width:140
+			Height:35
+			Text:Give Exploration

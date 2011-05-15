@@ -33,14 +33,13 @@ Container@INGAME_ROOT:
 			Height:35
 			Text:Diplomacy
 			Bold:True
-		CncMenuButton@DEVELOPERMODE_BUTTON:
-			Id:DEVELOPERMODE_BUTTON
+		CncMenuButton@CHEATS_BUTTON:
+			Id:CHEATS_BUTTON
 			X:295
 			Y:5
 			Width:160
-			Height:25
-			Text:Developer Mode
-			Visible:false
+			Height:35
+			Text:Cheats
 			Bold:True
 		WorldTooltip:
 		ChatDisplay@CHAT_DISPLAY:

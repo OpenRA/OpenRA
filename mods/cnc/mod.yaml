@@ -75,6 +75,7 @@ ChromeLayout:
 	mods/cnc/chrome/music.yaml
 	mods/cnc/chrome/modchooser.yaml
 	mods/cnc/chrome/preferences.yaml
+	mods/cnc/chrome/cheats.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml

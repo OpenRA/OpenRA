@@ -65,6 +65,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
+			var cheatsButton = ingameRoot.GetWidget<CncMenuButtonWidget>("CHEATS_BUTTON");
+			cheatsButton.OnClick = () => Game.OpenWindow("CHEATS_PANEL", new WidgetArgs());
+			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
+			
 			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
 			postgameBG.IsVisible = () =>
 			{

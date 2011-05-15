@@ -85,6 +85,7 @@
     <Compile Include="Widgets\CncModBrowserLogic.cs" />
     <Compile Include="Widgets\CncPerfDebugLogic.cs" />
     <Compile Include="Widgets\CncSettingsLogic.cs" />
+    <Compile Include="Widgets\CncCheatsLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
