@@ -4,29 +4,51 @@ shellmap: reticle.png
 install: install.png
 	logo:0,0,128,128
 
-dialog: uibuttons.png
-	background: 2,2,60,60
-	border-r: 62,2,2,60
-	border-l: 0,2,2,60
-	border-b: 2,62,60,2
-	border-t: 2,0,60,2
-	corner-tl: 0,0,2,2
-	corner-tr: 62,0,2,2
-	corner-bl: 0,62,2,2
-	corner-br: 62,62,2,2
+button: chrome.png
+	background: 2,194,60,60
+	border-r: 62,194,2,60
+	border-l: 0,194,2,60
+	border-b: 2,254,60,2
+	border-t: 2,192,60,2
+	corner-tl: 0,192,2,2
+	corner-tr: 62,192,2,2
+	corner-bl: 0,254,2,2
+	corner-br: 62,254,2,2
 
-button-hover: uibuttons.png
-	background: 2,2,60,60
-	border-r: 62,2,2,60
-	border-l: 0,2,2,60
-	border-b: 2,62,60,2
-	border-t: 2,0,60,2
-	corner-tl: 0,0,2,2
-	corner-tr: 62,0,2,2
-	corner-bl: 0,62,2,2
-	corner-br: 62,62,2,2
+button-hover: chrome.png
+	background: 2,130,60,60
+	border-r: 62,132,2,60
+	border-l: 0,130,2,60
+	border-b: 2,190,60,2
+	border-t: 2,128,60,2
+	corner-tl: 0,128,2,2
+	corner-tr: 62,128,2,2
+	corner-bl: 0,190,2,2
+	corner-br: 62,190,2,2
 
-button-disabled: uibuttons.png
+button-disabled: chrome.png
+	background: 66,130,60,60
+	border-r: 126,130,2,60
+	border-l: 64,130,2,60
+	border-b: 66,190,60,2
+	border-t: 66,128,60,2
+	corner-tl: 64,128,2,2
+	corner-tr: 126,128,2,2
+	corner-bl: 64,190,2,2
+	corner-br: 126,190,2,2
+
+button-pressed: chrome.png
+	background: 66,194,60,60
+	border-r: 126,194,2,60
+	border-l: 64,194,2,60
+	border-b: 66,254,60,2
+	border-t: 66,192,60,2
+	corner-tl: 64,192,2,2
+	corner-tr: 126,192,2,2
+	corner-bl: 64,254,2,2
+	corner-br: 126,254,2,2
+
+panel-black: chrome.png
 	background: 66,2,60,60
 	border-r: 126,2,2,60
 	border-l: 64,2,2,60
@@ -37,18 +59,7 @@ button-disabled: uibuttons.png
 	corner-bl: 64,62,2,2
 	corner-br: 126,62,2,2
 
-button-pressed: uibuttons.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
-
-button: uibuttons.png
+panel-darkred: chrome.png
 	background: 2,66,60,60
 	border-r: 62,66,2,60
 	border-l: 0,66,2,60
@@ -59,18 +70,7 @@ button: uibuttons.png
 	corner-bl: 0,126,2,2
 	corner-br: 62,126,2,2
 
-dialog2: panel.png
-	background: 2,66,60,60
-	border-r: 62,66,2,60
-	border-l: 0,66,2,60
-	border-b: 2,126,60,2
-	border-t: 2,64,60,2
-	corner-tl: 0,64,2,2
-	corner-tr: 62,64,2,2
-	corner-bl: 0,126,2,2
-	corner-br: 62,126,2,2
-
-dialog3: panel.png
+panel-gray: chrome.png
 	background: 66,66,60,60
 	border-r: 126,66,2,60
 	border-l: 64,66,2,60
@@ -81,49 +81,27 @@ dialog3: panel.png
 	corner-bl: 64,126,2,2
 	corner-br: 126,126,2,2
 
-panel-black: panel.png
-	background: 66,2,60,60
-	border-r: 126,2,2,60
-	border-l: 64,2,2,60
-	border-b: 66,62,60,2
-	border-t: 66,0,60,2
-	corner-tl: 64,0,2,2
-	corner-tr: 126,0,2,2
-	corner-bl: 64,62,2,2
-	corner-br: 126,62,2,2
+panel-scanline: chrome.png
+	background: 2,2,60,60
+	border-r: 62,2,2,60
+	border-l: 0,2,2,60
+	border-b: 2,62,60,2
+	border-t: 2,0,60,2
+	corner-tl: 0,0,2,2
+	corner-tr: 62,0,2,2
+	corner-bl: 0,62,2,2
+	corner-br: 62,62,2,2
 
-panel-darkred: panel.png
-	background: 2,66,60,60
-	border-r: 62,66,2,60
-	border-l: 0,66,2,60
-	border-b: 2,126,60,2
-	border-t: 2,64,60,2
-	corner-tl: 0,64,2,2
-	corner-tr: 62,64,2,2
-	corner-bl: 0,126,2,2
-	corner-br: 62,126,2,2
-
-panel-gray: panel.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
-
-panel-scanline: panel.png
-	background: 130,2,60,60
-	border-r: 190,2,2,60
-	border-l: 128,2,2,60
-	border-b: 130,62,60,2
-	border-t: 130,0,60,2
-	corner-tl: 128,0,2,2
-	corner-tr: 190,0,2,2
-	corner-bl: 128,62,2,2
-	corner-br: 190,62,2,2
+shellmapborder: chrome.png
+	border-t: 161,128,62,33
+	border-b: 161,223,62,33
+	border-l: 128,161,33,62
+	border-r: 223,161,33,62
+	corner-tl: 128,128,33,33
+	corner-tr: 223,128,33,33
+	corner-bl: 128,223,33,33
+	corner-br: 223,223,33,33
+	background: 161,161,62,62
 
 dialog4: dialog4.png
 	border-t: 5,0,52,6
@@ -135,17 +113,6 @@ dialog4: dialog4.png
 	corner-bl: 0,58,6,6
 	corner-br: 58,58,6,6
 	background: 5,5,52,52
-
-shellmapborder: shellmap-border.png
-	border-t: 33,0,62,33
-	border-b: 33,95,62,33
-	border-l: 0,33,33,62
-	border-r: 95,33,33,62
-	corner-tl: 0,0,33,33
-	corner-tr: 95,0,33,33
-	corner-bl: 0,95,33,33
-	corner-br: 95,95,33,33
-	background: 33,33,62,62
 
 music: musicplayer.png
 	pause: 0,0,25,25
