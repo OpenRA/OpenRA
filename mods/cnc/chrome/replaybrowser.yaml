@@ -25,7 +25,7 @@ Container@REPLAYBROWSER_PANEL:
 					Width:286
 					Height:270
 					Children:
-						Container@REPLAY_TEMPLATE:
+						ScrollItem@REPLAY_TEMPLATE:
 							Id:REPLAY_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25

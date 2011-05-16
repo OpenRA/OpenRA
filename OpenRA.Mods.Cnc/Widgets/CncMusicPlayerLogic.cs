@@ -104,28 +104,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 			random = music.Shuffle(Game.CosmeticRandom).ToArray();
 			
 			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
-			var itemTemplate = ml.GetWidget<ContainerWidget>("MUSIC_TEMPLATE");
+			var itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
 			
 			foreach (var s in music)
 			{
 				var song = s;
 				if (currentSong == null)
 					currentSong = song;
-
-				var template = itemTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (song == currentSong) ? "button-pressed" : null);
-				template.OnMouseDown = mi =>
-				{
-					if (mi.Button != MouseButton.Left) return false;
-					currentSong = song;
-					Play();
-					return true;
-				};
-
-				template.IsVisible = () => true;				
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
-				template.GetWidget<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
-				ml.AddChild(template);
+				
+				var item = ScrollItemWidget.Setup(itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); });
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
+				item.GetWidget<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
+				ml.AddChild(item);
 			}
 		}
 		

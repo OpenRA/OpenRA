@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncServerBrowserLogic : IWidgetDelegate
 	{
 		GameServer currentServer;
-		Widget serverTemplate;
+		ScrollItemWidget serverTemplate;
 		bool refreshing;
 		enum SearchStatus
 		{
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			// Server list
-			serverTemplate = sl.GetWidget("SERVER_TEMPLATE");
+			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
 			
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
@@ -194,17 +194,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var game = loop;
 				
-				var template = serverTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (currentServer == game) ? "button-pressed" : null);
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
-				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
+				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
 				// TODO: Use game.MapTitle once the server supports it
-				template.GetWidget<LabelWidget>("MAP").GetText = () => {var map = GetMap(game.Map); return map == null ? "Unknown" : map.Title;};
+				item.GetWidget<LabelWidget>("MAP").GetText = () => {var map = GetMap(game.Map); return map == null ? "Unknown" : map.Title;};
 				// TODO: Use game.MaxPlayers once the server supports it
-				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
-				template.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
-				sl.AddChild(template);
+				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
+				item.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
+				sl.AddChild(item);
 
 				if (i == 0) currentServer = game;
 				i++;

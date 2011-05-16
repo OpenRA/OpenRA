@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		Map map;
 		Widget scrollpanel;
-		Widget itemTemplate;
+		ScrollItemWidget itemTemplate;
 		
 		[ObjectCreator.UseCtor]
 		internal CncMapChooserLogic([ObjectCreator.Param] Widget widget,
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<CncMenuButtonWidget>("BUTTON_INSTALL").OnClick = () => InstallMap();
 			
 			scrollpanel = panel.GetWidget<ScrollPanelWidget>("MAP_LIST");
-			itemTemplate = scrollpanel.GetWidget<ContainerWidget>("MAP_TEMPLATE");
+			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
 			EnumerateMaps();
 		}
 		
@@ -65,14 +65,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (!m.Selectable)
 					continue;
 
-				var template = itemTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (m == map) ? "button-pressed" : null);
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; map = m; return true; };
-				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
-				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);
-				template.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
-				scrollpanel.AddChild(template);
+				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
+				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);
+				item.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
+				scrollpanel.AddChild(item);
 			}
 		}
 		

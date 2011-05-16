@@ -58,19 +58,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			currentMod = Mod.AllMods[Game.modData.Manifest.Mods[0]];
 			
 			// Mod list
-			var modTemplate = modList.GetWidget("MOD_TEMPLATE");
+			var modTemplate = modList.GetWidget<ScrollItemWidget>("MOD_TEMPLATE");
 			
 			foreach (var m in Mod.AllMods)
 			{
 				var mod = m.Value;
-				var template = modTemplate.Clone() as ContainerWidget;
-				template.GetBackground = () => (template.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (currentMod == mod) ? "button-pressed" : null);
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentMod = mod; return true; };
-				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => mod.Title;
-				template.GetWidget<LabelWidget>("VERSION").GetText = () => mod.Version;
-				template.GetWidget<LabelWidget>("AUTHOR").GetText = () => mod.Author;
-				modList.AddChild(template);
+				var item = ScrollItemWidget.Setup(modTemplate, () => currentMod == mod, () => currentMod = mod);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => mod.Title;
+				item.GetWidget<LabelWidget>("VERSION").GetText = () => mod.Version;
+				item.GetWidget<LabelWidget>("AUTHOR").GetText = () => mod.Author;
+				modList.AddChild(item);
 			}
 				
 				

@@ -25,13 +25,12 @@ Container@SERVERBROWSER_PANEL:
 					Width:710
 					Height:315
 					Children:
-						Container@SERVER_TEMPLATE:
+						ScrollItem@SERVER_TEMPLATE:
 							Id:SERVER_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
 							Y:0
-							Visible:false
 							Children:
 								Label@TITLE:
 									X:10

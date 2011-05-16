@@ -25,7 +25,7 @@ Container@MUSIC_PANEL:
 					Width:330
 					Height:275
 					Children:
-						Container@MUSIC_TEMPLATE:
+						ScrollItem@MUSIC_TEMPLATE:
 							Id:MUSIC_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25

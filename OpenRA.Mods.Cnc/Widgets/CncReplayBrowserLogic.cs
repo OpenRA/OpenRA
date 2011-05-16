@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = panel.GetWidget("REPLAY_TEMPLATE");
+			var template = panel.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
@@ -92,15 +92,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 		}
 
-		void AddReplay(ScrollPanelWidget list, string filename, Widget template)
+		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
-			var entry = template.Clone() as ContainerWidget;
+			var item = ScrollItemWidget.Setup(template,
+			                                  () => currentSummary != null && currentSummary.Filename == filename,
+			                                  () => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
-			entry.GetWidget<LabelWidget>("TITLE").GetText = () => f;
-			entry.GetBackground = () => (entry.RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : (currentSummary != null && currentSummary.Filename == filename) ? "button-pressed" : null);
-			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; SelectReplay(filename); return true; };
-			entry.IsVisible = () => true;
-			list.AddChild(entry);
+			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
+			list.AddChild(item);
 		}
 	}
 }

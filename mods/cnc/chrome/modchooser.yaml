@@ -25,7 +25,7 @@ Container@MODS_PANEL:
 					Width:710
 					Height:455
 					Children:
-						Container@MOD_TEMPLATE:
+						ScrollItem@MOD_TEMPLATE:
 							Id:MOD_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25

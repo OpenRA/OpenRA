@@ -337,5 +337,43 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ShowDropPanel(w, dropDown, dismissAfter, () => true);
 		}
 	}
+	
+	public class ScrollItemWidget : CncMenuButtonWidget
+	{
+		public ScrollItemWidget()
+			: base()
+		{
+			IsVisible = () => false;
+		}
+		
+		protected ScrollItemWidget(ScrollItemWidget other)
+			: base(other)
+		{
+			IsVisible = () => false;
+		}
+		
+		public Func<bool> IsSelected = () => false;
+
+		public override void DrawInner()
+		{
+			var state = IsSelected() ? "button-pressed" : 
+				RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : 
+				null;
+			
+			if (state != null)
+				WidgetUtils.DrawPanel(state, RenderBounds);
+		}
+		
+		public override Widget Clone() { return new ScrollItemWidget(this); }
+				
+		public static ScrollItemWidget Setup(ScrollItemWidget template, Func<bool> isSelected, Action onClick)
+		{
+			var w = template.Clone() as ScrollItemWidget;
+			w.IsVisible = () => true;
+			w.IsSelected = isSelected;
+			w.OnClick = onClick;
+			return w;
+		}
+	}
 }
 
