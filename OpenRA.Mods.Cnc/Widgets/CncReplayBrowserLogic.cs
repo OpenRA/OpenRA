@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var files = Directory.GetFiles(replayDir, "*.rep").Reverse();
 				foreach (var replayFile in files)
 					AddReplay(rl, replayFile, template);
-			
+
 				SelectReplay(files.FirstOrDefault());
 			}
 
@@ -59,9 +59,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentSummary != null;
 		}
-		
+
 		ReplaySummary currentSummary;
 		Map currentMap;
+
 		void SelectReplay(string filename)
 		{
 			if (filename == null)
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var players = currentSummary.LobbyInfo.Slots.Count(s => currentSummary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
 				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
 				currentSummary = null;

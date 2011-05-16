@@ -46,6 +46,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					ChromeProvider.GetImage("checkbox", "checked"),
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
+
 		public override Widget Clone() { return new CncCheckboxWidget(this); }
 	}
 	
@@ -243,6 +244,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			Font = other.Font;
 		}
+
 		public override Widget Clone() { return new CncDropDownButtonWidget(this); }
 
 		public override void DrawInner()

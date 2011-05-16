@@ -8,21 +8,20 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
-using OpenRA.Graphics;
-
 namespace OpenRA.Widgets
 {
 	public class PasswordFieldWidget : TextFieldWidget
 	{
 		public PasswordFieldWidget() : base() {}
 		protected PasswordFieldWidget(PasswordFieldWidget widget) : base(widget) {}
+
+		// TODO: Mouse interaction is wrong with this.
 		
 		public override void DrawInner()
 		{
 			DrawWithString(new string('*', Text.Length));
 		}
+
 		public override Widget Clone() { return new PasswordFieldWidget(this); }
 	}
 }

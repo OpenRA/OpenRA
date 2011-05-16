@@ -10,13 +10,19 @@
 
 using System;
 using System.Drawing;
-using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
 	public class TextFieldWidget : Widget
 	{
-		public string Text = "";
+		string text = "";
+		public string Text
+		{
+			get { return text; }
+			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
+		}
+
 		public int MaxLength = 0;
 		public bool Bold = false;
 		public int VisualHeight = 1;
@@ -68,10 +74,8 @@ namespace OpenRA.Widgets
 		
 		public int ClosestCursorPosition(int x)
 		{
-			if (Text == null)
-				return 0;
-			
 			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
+
 			var textSize = font.Measure(Text);
 			
 			var start = RenderOrigin.X + LeftMargin;
@@ -135,10 +139,8 @@ namespace OpenRA.Widgets
 
 			if (e.KeyName == "delete")
 			{
-				if (Text.Length > 0 && CursorPosition < Text.Length)
-				{
+				if (CursorPosition < Text.Length)
 					Text = Text.Remove(CursorPosition, 1);
-				}
 				return true;
 			}
 
@@ -148,16 +150,11 @@ namespace OpenRA.Widgets
 
 		public void TypeChar(KeyInput key)
 		{
-			if (Text == null)
-				Text = "";
-			
-			if (key.KeyName == "backspace" && Text.Length > 0 && CursorPosition > 0)
+			if (key.KeyName == "backspace" && CursorPosition > 0)
 			{
-				Text = Text.Remove(CursorPosition - 1, 1);
 				CursorPosition--;
-			}
-			else if (key.KeyName == "delete" && Text.Length > 0 && CursorPosition < Text.Length - 1)
 				Text = Text.Remove(CursorPosition, 1);
+			}
 		
 			else if (key.IsValidInput())
 			{	
@@ -172,6 +169,7 @@ namespace OpenRA.Widgets
 
 		protected int blinkCycle = 10;
 		protected bool showCursor = true;
+
 		public override void Tick()
 		{
 			if (--blinkCycle <= 0)
@@ -185,13 +183,8 @@ namespace OpenRA.Widgets
 		
 		public virtual void DrawWithString(string text)
 		{
-			if (text == null) text = "";
-			
 			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var pos = RenderOrigin;
-
-			if (CursorPosition > text.Length)
-				CursorPosition = text.Length;
 
 			var textSize = font.Measure(text);
 			var cursorPosition = font.Measure(text.Substring(0,CursorPosition));
@@ -208,7 +201,8 @@ namespace OpenRA.Widgets
 				if (Focused)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
-				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y, Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
+				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y, 
+					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
 			}
 
 			font.DrawText(text, textPos, Color.White);

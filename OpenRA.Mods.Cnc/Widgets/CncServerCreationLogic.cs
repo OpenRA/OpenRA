@@ -43,20 +43,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{
 					{ "initialMap", map.Uid },
 					{ "onExit", () => {} },
-					{ "onSelect", new Action<Map>(m => map = m) }
+					{ "onSelect", (Action<Map>)(m => map = m) }
 				});
 			};
-			
-			if (string.IsNullOrEmpty(Game.Settings.Server.Map) || !Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.Map, out map))
+
+			if (string.IsNullOrEmpty(Game.Settings.Server.Map) ||
+				!Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.Map, out map))
 				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
-			
+
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
 			panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
-			
+
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
-			
+
 			var externalPort = panel.GetWidget<CncTextFieldWidget>("EXTERNAL_PORT");
 			externalPort.Text = settings.Server.ExternalPort.ToString();
 			externalPort.IsDisabled = () => !advertiseOnline;
