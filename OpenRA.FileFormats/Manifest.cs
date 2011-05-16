@@ -28,10 +28,10 @@ namespace OpenRA.FileFormats
 		public Manifest(string[] mods)
 		{
 			Mods = mods;
-			var yaml = mods
+			var yaml = new MiniYaml(null, mods
 				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
-				.Aggregate(MiniYaml.MergeLiberal);
-			
+				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
+
 			// Todo: Use fieldloader
 			Folders = YamlList(yaml, "Folders");
 			Packages = YamlList(yaml, "Packages");
@@ -48,21 +48,20 @@ namespace OpenRA.FileFormats
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
-			LoadScreen = yaml.First( x => x.Key == "LoadScreen" ).Value;
-			Fonts = yaml.First( x => x.Key == "Fonts" ).Value
-				.NodesDict.ToDictionary(x => x.Key, x => Pair.New(x.Value.NodesDict["Font"].Value,
+		
+			LoadScreen = yaml["LoadScreen"];
+			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key, x => Pair.New(x.Value.NodesDict["Font"].Value,
 				                                                  int.Parse(x.Value.NodesDict["Size"].Value)));
-			if (yaml.FirstOrDefault( x => x.Key == "TileSize" ) != null)
-				TileSize = int.Parse(yaml.First( x => x.Key == "TileSize" ).Value.Value);
+			if (yaml.ContainsKey("TileSize"))
+				TileSize = int.Parse(yaml["TileSize"].Value);
 		}
 
-		static string[] YamlList(List<MiniYamlNode> ys, string key)
+		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
-			var y = ys.FirstOrDefault( x => x.Key == key );
-			if( y == null )
+			if (!yaml.ContainsKey(key))
 				return new string[ 0 ];
 
-			return y.Value.NodesDict.Keys.ToArray();
+			return yaml[key].NodesDict.Keys.ToArray();
 		}
 	}
 }
