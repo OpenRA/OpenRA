@@ -10,16 +10,19 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
 	public class SliderWidget : Widget
 	{
+		public Func<bool> IsDisabled = () => false;
 		public event Action<float> OnChange;
 		public Func<float> GetOffset;
 		public int Ticks = 0;
 		public int TrackHeight = 5;
-		
+
+
 		// TODO: Changing this breaks the semantics of Get/SetOffset
 		// This is bogus
 		public float2 Range = new float2(0f, 1f);
@@ -177,8 +180,9 @@ namespace OpenRA.Widgets
 			if (!IsVisible())
 				return;
 
-			var trackWidth = RenderBounds.Width - thumbRect.Width;
-			var trackOrigin = RenderBounds.X + thumbRect.Width / 2;
+			var tr = thumbRect;
+			var trackWidth = RenderBounds.Width - tr.Width;
+			var trackOrigin = RenderBounds.X + tr.Width / 2;
 			var trackRect = new Rectangle(trackOrigin - 1, RenderBounds.Y + (RenderBounds.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
 
 			// Tickmarks (hacked until we have real art)
@@ -186,13 +190,19 @@ namespace OpenRA.Widgets
 			{
 				var tickRect = new Rectangle(trackOrigin - 1 + (int)(i * trackWidth * 1f / (Ticks - 1)),
 						  RenderBounds.Y + RenderBounds.Height / 2, 2, RenderBounds.Height / 2);
-				WidgetUtils.DrawPanel("dialog2", tickRect);
+				WidgetUtils.DrawPanel("slider-tick", tickRect);
 			}
+
 			// Track
-			WidgetUtils.DrawPanel("dialog3", trackRect);
+			WidgetUtils.DrawPanel("slider-track", trackRect);
 
 			// Thumb
-			WidgetUtils.DrawPanel("dialog2", thumbRect);
+			var state = IsDisabled() ? "button-disabled" :
+				isMoving ? "button-pressed" :
+				tr.Contains(Viewport.LastMousePos) ? "button-hover" :
+				"button";
+
+			WidgetUtils.DrawPanel(state, tr);
 		}
 	}
 }

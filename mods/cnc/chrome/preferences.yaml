@@ -169,7 +169,7 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Sound Volume:
-				CncSlider@SOUND_SLIDER:
+				Slider@SOUND_SLIDER:
 					Id:SOUND_SLIDER
 					X:475
 					Y:140
@@ -183,7 +183,7 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Music Volume:
-				CncSlider@MUSIC_SLIDER:
+				Slider@MUSIC_SLIDER:
 					Id:MUSIC_SLIDER
 					X:475
 					Y:170
@@ -233,7 +233,7 @@ Container@SETTINGS_PANEL:
 					Width:95
 					Height:25
 					Text:Scroll Speed:
-				CncSlider@SCROLLSPEED_SLIDER:
+				Slider@SCROLLSPEED_SLIDER:
 					Id:SCROLLSPEED_SLIDER
 					X:100
 					Y:120

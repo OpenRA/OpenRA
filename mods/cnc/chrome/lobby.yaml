@@ -416,7 +416,7 @@ Background@COLOR_CHOOSER:
 			Align:Right
 			Text:Hue:
 			Font:Bold
-		CncSlider@HUE:
+		Slider@HUE:
 			Id:HUE_SLIDER
 			X:43
 			Y:10
@@ -431,7 +431,7 @@ Background@COLOR_CHOOSER:
 			Align:Right
 			Text:Sat:
 			Font:Bold
-		CncSlider@SAT:
+		Slider@SAT:
 			Id:SAT_SLIDER
 			X:43
 			Y:35
@@ -446,7 +446,7 @@ Background@COLOR_CHOOSER:
 			Align:Right
 			Text:Lum:
 			Font:Bold
-		CncSlider@LUM:
+		Slider@LUM:
 			Id:LUM_SLIDER
 			X:43
 			Y:60
