@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (world.LocalPlayer != null)
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
-			ingameRoot.GetWidget<CncMenuButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
-			ingameRoot.GetWidget<CncMenuButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
+			ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
+			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
 				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			var cheatsButton = ingameRoot.GetWidget<CncMenuButtonWidget>("CHEATS_BUTTON");
+			var cheatsButton = ingameRoot.GetWidget<ButtonWidget>("CHEATS_BUTTON");
 			cheatsButton.OnClick = () => Game.OpenWindow("CHEATS_PANEL", new WidgetArgs());
 			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
 			
@@ -108,16 +108,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			Action doNothing = () => {};
 			
-			menu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = () =>
+			menu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				PromptConfirmAction("Quit", "Are you sure you want to quit?", onQuit, doNothing);
 			
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-			var surrenderButton = menu.GetWidget<CncMenuButtonWidget>("SURRENDER_BUTTON");
+			var surrenderButton = menu.GetWidget<ButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
 				PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 			
-			menu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			menu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			menu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
+			menu.GetWidget<ButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			menu.GetWidget<CncMenuButtonWidget>("RESUME_BUTTON").OnClick = () => 
+			menu.GetWidget<ButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{
 				Widget.RootWidget.RemoveChild(menu);
 				world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = false;
@@ -151,13 +151,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
 			
-			prompt.GetWidget<CncMenuButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
+			prompt.GetWidget<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
 			{
 				prompt.IsVisible = () => false;
 				onConfirm();
 			};
 			
-			prompt.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			prompt.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
 				prompt.IsVisible = () => false;
 				onCancel();

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 			
 			var panel = widget.GetWidget("CONNECTING_PANEL");
-			panel.GetWidget<CncMenuButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
+			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
 			
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);
@@ -106,8 +106,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                          		[ObjectCreator.Param] Action onAbort)
 		{
 			var panel = widget.GetWidget("CONNECTIONFAILED_PANEL");
-			panel.GetWidget<CncMenuButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
-			panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON").OnClick = () => { Widget.CloseWindow(); onRetry(); };
+			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
+			panel.GetWidget<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Widget.CloseWindow(); onRetry(); };
 			
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(host, port);

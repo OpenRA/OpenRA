@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.onExit = onExit;
 			
 			var settings = Game.Settings;
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
-			panel.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
-			panel.GetWidget<CncMenuButtonWidget>("MAP_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("MAP_BUTTON").OnClick = () =>
 			{
 				Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{

@@ -26,35 +26,35 @@ Container@INGAME_MENU:
 			Width:740
 			Height:35
 			Children:
-				CncMenuButton@QUIT_BUTTON:
+				Button@QUIT_BUTTON:
 					Id:QUIT_BUTTON
 					X:0
 					Y:0
 					Width:140
 					Height:35
 					Text:Quit
-				CncMenuButton@SURRENDER_BUTTON:
+				Button@SURRENDER_BUTTON:
 					Id:SURRENDER_BUTTON
 					X:150
 					Y:0
 					Width:140
 					Height:35
 					Text:Surrender
-				CncMenuButton@MUSIC_BUTTON:
+				Button@MUSIC_BUTTON:
 					Id:MUSIC_BUTTON
 					X:300
 					Y:0
 					Width:140
 					Height:35
 					Text:Music
-				CncMenuButton@PREFERENCES_BUTTON:
+				Button@PREFERENCES_BUTTON:
 					Id:PREFERENCES_BUTTON
 					X:450
 					Y:0
 					Width:140
 					Height:35
 					Text:Settings
-				CncMenuButton@RESUME_BUTTON:
+				Button@RESUME_BUTTON:
 					Id:RESUME_BUTTON
 					X:600
 					Y:0
@@ -89,13 +89,13 @@ Container@INGAME_MENU:
 							Font:Bold
 							WordWrap:true
 							Align:Center
-				CncMenuButton@CANCEL_BUTTON:
+				Button@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON
 					Y:89
 					Width:140
 					Height:35
 					Text:Cancel
-				CncMenuButton@CONFIRM_BUTTON:
+				Button@CONFIRM_BUTTON:
 					Id:CONFIRM_BUTTON
 					X:230
 					Y:89

@@ -35,16 +35,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "installData", installData }
 			};
 
-			panel.GetWidget<CncMenuButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
 				Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
-			panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
-			panel.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			panel.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
 			// TODO:
-			panel.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
                 {
@@ -72,11 +72,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			
-			var backButton = panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON");
+			var backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Widget.CloseWindow;
 			backButton.IsVisible = () => false;
 			
-			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
 			retryButton.OnClick = PromptForCD;
 			retryButton.IsVisible = () => false;
 			
@@ -177,10 +177,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			statusLabel.GetText = () => "Initializing...";		
 			progressBar.SetIndeterminate(true);
-			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
 			retryButton.IsVisible = () => false;
 			
-			var cancelButton = panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON");
+			var cancelButton = panel.GetWidget<ButtonWidget>("CANCEL_BUTTON");
 
 			// Save the package to a temp file
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());

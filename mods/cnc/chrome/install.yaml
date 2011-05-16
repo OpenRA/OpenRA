@@ -44,27 +44,27 @@ Container@INSTALL_PANEL:
 					WordWrap:true
 					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CD.
 					Font:Bold
-		CncMenuButton@QUIT_BUTTON:
+		Button@QUIT_BUTTON:
 			Id:QUIT_BUTTON
 			Y:149
 			Width:140
 			Height:35
 			Text:Quit
-		CncMenuButton@MODS_BUTTON:
+		Button@MODS_BUTTON:
 			Id:MODS_BUTTON
 			X:150
 			Y:149
 			Width:140
 			Height:35
 			Text:Change Mod
-		CncMenuButton@DOWNLOAD_BUTTON:
+		Button@DOWNLOAD_BUTTON:
 			Id:DOWNLOAD_BUTTON
 			X:350
 			Y:149
 			Width:140
 			Height:35
 			Text:Download
-		CncMenuButton@INSTALL_BUTTON:
+		Button@INSTALL_BUTTON:
 			Id:INSTALL_BUTTON
 			X:500
 			Y:149
@@ -111,13 +111,13 @@ Container@INSTALL_FROMCD_PANEL:
 					Height:25
 					Align:Left
 					Text:Waiting for CD
-		CncMenuButton@BACK_BUTTON:
+		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			Y:149
 			Width:140
 			Height:35
 			Text:Back
-		CncMenuButton@RETRY_BUTTON:
+		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
 			X:500
 			Y:149
@@ -164,13 +164,13 @@ Container@INSTALL_DOWNLOAD_PANEL:
 					Height:25
 					Align:Left
 					Text:Initialising...
-		CncMenuButton@CANCEL_BUTTON:
+		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			Y:149
 			Width:140
 			Height:35
 			Text:Cancel
-		CncMenuButton@RETRY_BUTTON:
+		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
 			X:500
 			Y:149

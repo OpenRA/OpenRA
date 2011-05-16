@@ -17,21 +17,21 @@ Container@INGAME_ROOT:
 			Id:STRATEGIC_PROGRESS
 			X: WINDOW_RIGHT/2
 			Y: 40
-		CncMenuButton@OPTIONS_BUTTON:
+		Button@OPTIONS_BUTTON:
 			Id:OPTIONS_BUTTON
 			X:5
 			Y:5
 			Width:140
 			Height:35
 			Text:Options
-		CncMenuButton@DIPLOMACY_BUTTON:
+		Button@DIPLOMACY_BUTTON:
 			Id:DIPLOMACY_BUTTON
 			X:150
 			Y:5
 			Width:140
 			Height:35
 			Text:Diplomacy
-		CncMenuButton@CHEATS_BUTTON:
+		Button@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
 			X:295
 			Y:5

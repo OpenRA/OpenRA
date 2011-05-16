@@ -67,21 +67,21 @@ Container@CHEATS_PANEL:
 					Width:200
 					Height:20
 					Text:Show Unit Paths
-		CncMenuButton@CLOSE_BUTTON:
+		Button@CLOSE_BUTTON:
 			Id:CLOSE_BUTTON
 			X:0
 			Y:109
 			Width:140
 			Height:35
 			Text:Close
-		CncMenuButton@GIVE_CASH:
+		Button@GIVE_CASH:
 			Id:GIVE_CASH_BUTTON
 			X:300
 			Y:109
 			Width:140
 			Height:35
 			Text:Give Cash
-		CncMenuButton@GIVE_EXPLORATION:
+		Button@GIVE_EXPLORATION:
 			Id:GIVE_EXPLORATION_BUTTON
 			X:450
 			Y:109

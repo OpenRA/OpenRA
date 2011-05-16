@@ -26,7 +26,7 @@ Container@CONNECTING_PANEL:
 					Text:Connecting...
 					Font:Bold
 					Align:Center
-		CncMenuButton@ABORT_BUTTON:
+		Button@ABORT_BUTTON:
 			Id:ABORT_BUTTON
 			X:230
 			Y:89
@@ -62,13 +62,13 @@ Container@CONNECTIONFAILED_PANEL:
 					Text:Failed to connect
 					Font:Bold
 					Align:Center
-		CncMenuButton@RETRY_BUTTON:
+		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
 			Y:89
 			Width:140
 			Height:35
 			Text:Retry
-		CncMenuButton@ABORT_BUTTON:
+		Button@ABORT_BUTTON:
 			Id:ABORT_BUTTON
 			X:230
 			Y:89

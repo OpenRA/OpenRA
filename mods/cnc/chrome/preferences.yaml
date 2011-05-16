@@ -333,27 +333,27 @@ Container@SETTINGS_PANEL:
 #					Y:85
 #					Width:350
 #					Height:150
-		CncMenuButton@GENERAL_BUTTON:
+		Button@GENERAL_BUTTON:
 			Id:GENERAL_BUTTON
 			Y:249
 			Width:140
 			Height:35
 			Text:General
-		CncMenuButton@INPUT_BUTTON:
+		Button@INPUT_BUTTON:
 			Id:INPUT_BUTTON
 			X:150
 			Y:249
 			Width:140
 			Height:35
 			Text:Input
-		CncMenuButton@CANCEL_BUTTON:
+		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			X:450
 			Y:249
 			Width:140
 			Height:35
 			Text:Cancel
-		CncMenuButton@SAVE_BUTTON:
+		Button@SAVE_BUTTON:
 			Id:SAVE_BUTTON
 			X:600
 			Y:249

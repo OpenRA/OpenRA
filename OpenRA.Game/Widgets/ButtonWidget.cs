@@ -18,24 +18,32 @@ namespace OpenRA.Widgets
 	public class ButtonWidget : Widget
 	{
 		public string Text = "";
-		public bool Bold = false;
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.GetInt("ButtonDepth");
+		public string Font = ChromeMetrics.GetString("ButtonFont");
 		public Func<string> GetText;
+		public Func<bool> IsDisabled = () => false;
+		public Action OnClick = () => {};
+		
+		[Obsolete] public bool Bold = false;
 
+		
 		public ButtonWidget()
 			: base()
 		{
 			GetText = () => { return Text; };
+			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 		}
 
 		protected ButtonWidget(ButtonWidget widget)
 			: base(widget)
 		{
 			Text = widget.Text;
+			Font = widget.Font;
 			Depressed = widget.Depressed;
 			VisualHeight = widget.VisualHeight;
 			GetText = widget.GetText;
+			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 		}
 
 		public override bool LoseFocus(MouseInput mi)
@@ -86,16 +94,24 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
-			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
-			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds);
-
+			var rb = RenderBounds;
+			if (Font == "Regular" && Bold)
+				Font = "Bold";
+			
+			var font = Game.Renderer.Fonts[Font];
+			var state = IsDisabled() ? "button-disabled" : 
+						Depressed ? "button-pressed" : 
+						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
+						"button";
+			
+			WidgetUtils.DrawPanel(state, rb);
 			var text = GetText();
-
+			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			
 			font.DrawText(text,
-				RenderOrigin + new int2(UsableWidth / 2, Bounds.Height / 2)
+				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
-				font.Measure(text).Y / 2) + stateOffset, Color.White);
+				font.Measure(text).Y / 2) + stateOffset, IsDisabled() ? Color.Gray : Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }

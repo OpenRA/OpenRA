@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
-			var mapButton = lobby.GetWidget<CncMenuButtonWidget>("CHANGEMAP_BUTTON");
+			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnClick = () =>
 			{
 				var onSelect = new Action<Map>(m =>
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var disconnectButton = lobby.GetWidget<CncMenuButtonWidget>("DISCONNECT_BUTTON");
+			var disconnectButton = lobby.GetWidget<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			var gameStarting = false;
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 				
-			var startGameButton = lobby.GetWidget<CncMenuButtonWidget>("START_GAME_BUTTON");
+			var startGameButton = lobby.GetWidget<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
 			startGameButton.IsDisabled = () => gameStarting;
 			startGameButton.OnClick = () =>
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			chatPanel = lobby.GetWidget<CncScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
 			
-			lobby.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
                 {
@@ -627,8 +627,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				lumSlider.SetOffset(ramp.L / 255f);
 			};
 			
-			panel.GetWidget<CncMenuButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
-			panel.GetWidget<CncMenuButtonWidget>("RANDOM_BUTTON").OnClick = () => 
+			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
+			panel.GetWidget<ButtonWidget>("RANDOM_BUTTON").OnClick = () => 
 			{
 				var hue = (byte)Game.CosmeticRandom.Next(255);
 				var sat = (byte)Game.CosmeticRandom.Next(255);

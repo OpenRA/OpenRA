@@ -96,14 +96,14 @@ Container@REPLAYBROWSER_PANEL:
 							Y:40
 							Width:70
 							Height:20
-				CncMenuButton@CANCEL_BUTTON:
+				Button@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON
 					X:0
 					Y:299
 					Width:140
 					Height:35
 					Text:Back
-				CncMenuButton@WATCH_BUTTON:
+				Button@WATCH_BUTTON:
 					Id:WATCH_BUTTON
 					X:380
 					Y:299

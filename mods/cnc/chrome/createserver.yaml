@@ -129,21 +129,21 @@ Container@CREATESERVER_PANEL:
 					MaxLength:5
 					Height:25
 					Text:1234
-		CncMenuButton@BACK_BUTTON:
+		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:0
 			Y:259
 			Width:140
 			Height:35
 			Text:Back
-		CncMenuButton@MAP_BUTTON:
+		Button@MAP_BUTTON:
 			Id:MAP_BUTTON
 			X:314
 			Y:259
 			Width:140
 			Height:35
 			Text:Choose Map
-		CncMenuButton@CREATE_BUTTON:
+		Button@CREATE_BUTTON:
 			Id:CREATE_BUTTON
 			X:464
 			Y:259

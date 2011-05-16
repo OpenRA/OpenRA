@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			panel = widget.GetWidget("REPLAYBROWSER_PANEL");
 
-			panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 
 			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				SelectReplay(files.FirstOrDefault());
 			}
 
-			var watch = panel.GetWidget<CncMenuButtonWidget>("WATCH_BUTTON");
+			var watch = panel.GetWidget<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => currentSummary == null || currentMap == null || currentSummary.Duration == 0;
 			watch.OnClick = () =>
 			{

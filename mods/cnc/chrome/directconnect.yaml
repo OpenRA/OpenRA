@@ -44,14 +44,14 @@ Container@DIRECTCONNECT_PANEL:
 					Y:50
 					Width:200
 					Height:25
-		CncMenuButton@BACK_BUTTON:
+		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:0
 			Y:89
 			Width:140
 			Height:35
 			Text:Back
-		CncMenuButton@JOIN_BUTTON:
+		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
 			X:230
 			Y:89

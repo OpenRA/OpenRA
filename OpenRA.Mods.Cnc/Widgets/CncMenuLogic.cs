@@ -44,10 +44,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
 			
-			mainMenu.GetWidget<CncMenuButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
-			mainMenu.GetWidget<CncMenuButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
+			mainMenu.GetWidget<ButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
+			mainMenu.GetWidget<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
 			
-			mainMenu.GetWidget<CncMenuButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
+			mainMenu.GetWidget<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
@@ -57,15 +57,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			mainMenu.GetWidget<CncMenuButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
-			mainMenu.GetWidget<CncMenuButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			mainMenu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
+			mainMenu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 			
 			// Multiplayer menu
 			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 			
-			multiplayerMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
-			multiplayerMenu.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			multiplayerMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			multiplayerMenu.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs()
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			multiplayerMenu.GetWidget<CncMenuButtonWidget>("CREATE_BUTTON").OnClick = () =>
+			multiplayerMenu.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("CREATESERVER_PANEL", new WidgetArgs()
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			multiplayerMenu.GetWidget<CncMenuButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
+			multiplayerMenu.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs()
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
-			settingsMenu.GetWidget<CncMenuButtonWidget>("MODS_BUTTON").OnClick = () =>
+			settingsMenu.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			settingsMenu.GetWidget<CncMenuButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			settingsMenu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			settingsMenu.GetWidget<CncMenuButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
+			settingsMenu.GetWidget<ButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};
-			settingsMenu.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			settingsMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 		}
 		
 		void RemoveShellmapUI()

@@ -191,21 +191,21 @@ Container@SERVERBROWSER_PANEL:
 									VAlign:Top
 									Width:70
 									Height:20
-		CncMenuButton@BACK_BUTTON:
+		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:0
 			Y:499
 			Width:140
 			Height:35
 			Text:Back
-		CncMenuButton@REFRESH_BUTTON:
+		Button@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
 			X:450
 			Y:499
 			Width:140
 			Height:35
 			Text:Refresh
-		CncMenuButton@JOIN_BUTTON:
+		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
 			X:600
 			Y:499

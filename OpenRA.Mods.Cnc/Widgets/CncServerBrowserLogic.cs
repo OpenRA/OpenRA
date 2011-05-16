@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			
 			// Menu buttons
-			var refreshButton = panel.GetWidget<CncMenuButtonWidget>("REFRESH_BUTTON");
+			var refreshButton = panel.GetWidget<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => refreshing;
 			refreshButton.OnClick = () =>
 			{
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				refreshing = true;
 			};
 			
-			var join = panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON");
+			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !ServerBrowserDelegate.CanJoin(currentServer);
 			join.OnClick = () =>
 			{
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CncConnectingLogic.Connect(host, port, openLobby, onExit);
 			};
 			
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			// Server list
 			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ipField.Text = last.Length > 1 ? last[0] : "localhost";
 			portField.Text = last.Length > 2 ? last[1] : "1234";
 
-            panel.GetWidget<CncMenuButtonWidget>("JOIN_BUTTON").OnClick = () =>
+            panel.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
             {
                 int port;
 				if (!int.TryParse(portField.Text, out port))
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				CncConnectingLogic.Connect(ipField.Text, port, openLobby, onExit);
             };
 
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 		}
 	}
 }

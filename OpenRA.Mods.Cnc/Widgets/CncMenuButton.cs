@@ -16,47 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class CncMenuButtonWidget : ButtonWidget
-	{
-		public Func<bool> IsDisabled = () => false;
-		public Action OnClick = () => {};
-		public string Font = "Bold";
-		
-		public CncMenuButtonWidget()
-			: base()
-		{
-			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
-		}
-		
-		protected CncMenuButtonWidget(CncMenuButtonWidget other)
-			: base(other)
-		{
-			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
-			Font = other.Font;
-		}
-		
-		public override int2 ChildOrigin { get { return RenderOrigin; } }
-		public override void DrawInner()
-		{
-			var rb = RenderBounds;
-			var font = Game.Renderer.Fonts[Font];
-			var state = IsDisabled() ? "button-disabled" : 
-						Depressed ? "button-pressed" : 
-						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
-						"button";
-			
-			WidgetUtils.DrawPanel(state, rb);
-			var text = GetText();
-
-			font.DrawText(text,
-				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
-					- new int2(font.Measure(text).X / 2,
-				font.Measure(text).Y / 2), IsDisabled() ? Color.Gray : Color.White);
-		}
-		public override Widget Clone() { return new CncMenuButtonWidget(this); }
-	}
-	
-	public class CncCheckboxWidget : CncMenuButtonWidget
+	public class CncCheckboxWidget : ButtonWidget
 	{
 		public CncCheckboxWidget()
 			: base() { }
@@ -338,7 +298,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		}
 	}
 	
-	public class ScrollItemWidget : CncMenuButtonWidget
+	public class ScrollItemWidget : ButtonWidget
 	{
 		public ScrollItemWidget()
 			: base()

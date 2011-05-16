@@ -38,35 +38,35 @@ Container@MENU_BACKGROUND:
 							Align:Center
 							Font:Bold
 							Contrast:True
-						CncMenuButton@SOLO_BUTTON:
+						Button@SOLO_BUTTON:
 							Id:SOLO_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Singleplayer
-						CncMenuButton@MULTIPLAYER_BUTTON:
+						Button@MULTIPLAYER_BUTTON:
 							Id:MULTIPLAYER_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Multiplayer
-						CncMenuButton@SETTINGS_BUTTON:
+						Button@SETTINGS_BUTTON:
 							Id:SETTINGS_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Settings
-						CncMenuButton@REPLAYS_BUTTON:
+						Button@REPLAYS_BUTTON:
 							Id:REPLAYS_BUTTON
 							X:450
 							Y:0
 							Width:140
 							Height:35
 							Text: Replays
-						CncMenuButton@QUIT_BUTTON:
+						Button@QUIT_BUTTON:
 							Id:QUIT_BUTTON
 							X:600
 							Y:0
@@ -87,28 +87,28 @@ Container@MENU_BACKGROUND:
 							Align:Center
 							Font:Bold
 							Contrast:True
-						CncMenuButton@CREATE_BUTTON:
+						Button@CREATE_BUTTON:
 							Id:CREATE_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Create Server
-						CncMenuButton@JOIN_BUTTON:
+						Button@JOIN_BUTTON:
 							Id:JOIN_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Find Server
-						CncMenuButton@DIRECTCONNECT_BUTTON:
+						Button@DIRECTCONNECT_BUTTON:
 							Id:DIRECTCONNECT_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Direct Connect
-						CncMenuButton@BACK_BUTTON:
+						Button@BACK_BUTTON:
 							Id:BACK_BUTTON
 							X:600
 							Y:0
@@ -129,28 +129,28 @@ Container@MENU_BACKGROUND:
 							Align:Center
 							Font:Bold
 							Contrast:True
-						CncMenuButton@MODS_BUTTON:
+						Button@MODS_BUTTON:
 							Id:MODS_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Mods
-						CncMenuButton@MUSIC_BUTTON:
+						Button@MUSIC_BUTTON:
 							Id:MUSIC_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Music
-						CncMenuButton@PREFERENCES_BUTTON:
+						Button@PREFERENCES_BUTTON:
 							Id:PREFERENCES_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Preferences
-						CncMenuButton@BACK_BUTTON:
+						Button@BACK_BUTTON:
 							Id:BACK_BUTTON
 							X:600
 							Y:0

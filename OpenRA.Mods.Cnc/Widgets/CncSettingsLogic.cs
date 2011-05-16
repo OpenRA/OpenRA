@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var panel = widget.GetWidget("SETTINGS_PANEL");
 					
 			// General pane
-			var generalButton = panel.GetWidget<CncMenuButtonWidget>("GENERAL_BUTTON");
+			var generalButton = panel.GetWidget<ButtonWidget>("GENERAL_BUTTON");
 			generalButton.OnClick = () => Settings = PanelType.General;
 			generalButton.IsDisabled = () => Settings == PanelType.General;
 			
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var inputPane = panel.GetWidget("INPUT_CONTROLS");
 			inputPane.IsVisible = () => Settings == PanelType.Input;
 
-			var inputButton = panel.GetWidget<CncMenuButtonWidget>("INPUT_BUTTON");
+			var inputButton = panel.GetWidget<ButtonWidget>("INPUT_BUTTON");
 			inputButton.OnClick = () => Settings = PanelType.Input;
 			inputButton.IsDisabled = () => Settings == PanelType.Input;
 			
@@ -151,13 +151,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			groupModifierDropdown.GetText = () => groupAddModifier.ToString();
 			
 			
-			panel.GetWidget<CncMenuButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
 				Widget.CloseWindow();
 				onExit();
 			};
 			
-			panel.GetWidget<CncMenuButtonWidget>("SAVE_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () =>
 			{
 				var s = Game.Settings;
 				s.Player.Name = nameTextfield.Text;

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			var panel = widget.GetWidget("MODS_PANEL");
 			var modList = panel.GetWidget<ScrollPanelWidget>("MOD_LIST");
-			var loadButton = panel.GetWidget<CncMenuButtonWidget>("LOAD_BUTTON");
+			var loadButton = panel.GetWidget<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () =>
 			{
 				// TODO: This is crap
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 			loadButton.IsDisabled = () => currentMod.Id == Game.CurrentMods.Keys.First();
 						
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			currentMod = Mod.AllMods[Game.modData.Manifest.Mods[0]];
 			
 			// Mod list

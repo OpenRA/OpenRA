@@ -137,7 +137,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								CncMenuButton@KICK:
+								Button@KICK:
 									Id:KICK
 									Text:X
 									Width:25
@@ -209,7 +209,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								CncMenuButton@JOIN:
+								Button@JOIN:
 									Id:JOIN
 									Text:Play in this slot
 									Font:Regular
@@ -240,7 +240,7 @@ Container@SERVER_LOBBY:
 									Width:150
 									Height:25
 									Font:Regular
-								CncMenuButton@JOIN:
+								Button@JOIN:
 									Id:JOIN
 									Text:Play in this slot
 									Font:Regular
@@ -354,28 +354,28 @@ Container@SERVER_LOBBY:
 							Height:25
 							Align:Right
 							Text:Chat:
-		CncMenuButton@DISCONNECT_BUTTON:
+		Button@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
 			X:0
 			Y:499
 			Width:140
 			Height:35
 			Text:Leave Game
-		CncMenuButton@MUSIC_BUTTON:
+		Button@MUSIC_BUTTON:
 			Id:MUSIC_BUTTON
 			X:300
 			Y:499
 			Width:140
 			Height:35
 			Text:Music
-		CncMenuButton@CHANGEMAP_BUTTON:
+		Button@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
 			X:450
 			Y:499
 			Width:140
 			Height:35
 			Text:Change Map
-		CncMenuButton@START_GAME_BUTTON:
+		Button@START_GAME_BUTTON:
 			Id:START_GAME_BUTTON
 			X:600
 			Y:499
@@ -389,14 +389,14 @@ Background@COLOR_CHOOSER:
 	Width:315
 	Height:130
 	Children:
-		CncMenuButton@SAVE_BUTTON:
+		Button@SAVE_BUTTON:
 			Id:SAVE_BUTTON
 			X:210
 			Y:90
 			Width:90
 			Height:25
 			Text:Save
-		CncMenuButton@RANDOM_BUTTON:
+		Button@RANDOM_BUTTON:
 			Id:RANDOM_BUTTON
 			X:15
 			Y:90

@@ -189,21 +189,21 @@ Container@MAPCHOOSER_PANEL:
 							Width:117
 							Height:20
 							WordWrap:True
-				CncMenuButton@BUTTON_CANCEL:
+				Button@BUTTON_CANCEL:
 					Id:BUTTON_CANCEL
 					X:0
 					Y:499
 					Width:140
 					Height:35
 					Text:Cancel
-				CncMenuButton@BUTTON_INSTALL:
+				Button@BUTTON_INSTALL:
 					Id:BUTTON_INSTALL
 					X:450
 					Y:499
 					Width:140
 					Height:35
 					Text:Install Map
-				CncMenuButton@BUTTON_OK:
+				Button@BUTTON_OK:
 					Id:BUTTON_OK
 					X:600
 					Y:499

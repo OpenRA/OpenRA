@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
 			
 			
-			panel.GetWidget<CncMenuButtonWidget>("GIVE_CASH_BUTTON").OnClick = () => 
+			panel.GetWidget<ButtonWidget>("GIVE_CASH_BUTTON").OnClick = () => 
 				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 			
 			var fastBuildCheckbox = panel.GetWidget<CncCheckboxWidget>("INSTANT_BUILD_CHECKBOX");
@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			buildAnywhereCheckbox.IsChecked = () => devTrait.BuildAnywhere;
 			buildAnywhereCheckbox.OnClick = () => Order(world, "DevBuildAnywhere");
 			
-			panel.GetWidget<CncMenuButtonWidget>("GIVE_EXPLORATION_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("GIVE_EXPLORATION_BUTTON").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
 			
-			panel.GetWidget<CncMenuButtonWidget>("CLOSE_BUTTON").OnClick = Widget.CloseWindow;
+			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = Widget.CloseWindow;
 		}
 		
 		public void Order(World world, string order)

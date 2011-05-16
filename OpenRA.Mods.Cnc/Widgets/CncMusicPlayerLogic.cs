@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
 			Func<bool> noMusic = () => !installed;
 			
-			panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			Action<string> afterInstall = path =>
 			{
@@ -57,30 +57,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 				BuildMusicTable(panel);
 			};
 			
-			var installButton = panel.GetWidget<CncMenuButtonWidget>("INSTALL_BUTTON");
+			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
 				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {{ "afterInstall", afterInstall }});
 			installButton.IsVisible = () => music.Length < 2; // Hack around ra shipping (only) hellmarch by default
 			
 			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;
 
-			var playButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_PLAY");
+			var playButton = panel.GetWidget<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;
 			
-			var pauseButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_PAUSE");
+			var pauseButton = panel.GetWidget<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = Pause;
 			pauseButton.IsDisabled = noMusic;
 
-			var stopButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_STOP");
+			var stopButton = panel.GetWidget<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = Stop;
 			stopButton.IsDisabled = noMusic;
 			
-			var nextButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_NEXT");
+			var nextButton = panel.GetWidget<ButtonWidget>("BUTTON_NEXT");
 			nextButton.OnClick = () => { currentSong = GetNextSong(); Play(); };
 			nextButton.IsDisabled = noMusic;
 			
-			var prevButton = panel.GetWidget<CncMenuButtonWidget>("BUTTON_PREV");
+			var prevButton = panel.GetWidget<ButtonWidget>("BUTTON_PREV");
 			prevButton.OnClick = () => { currentSong = GetPrevSong(); Play(); };
 			prevButton.IsDisabled = noMusic;
 			
@@ -194,11 +194,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			
-			var backButton = panel.GetWidget<CncMenuButtonWidget>("BACK_BUTTON");
+			var backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Widget.CloseWindow;
 			backButton.IsVisible = () => false;
 			
-			var retryButton = panel.GetWidget<CncMenuButtonWidget>("RETRY_BUTTON");
+			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
 			retryButton.OnClick = PromptForCD;
 			retryButton.IsVisible = () => false;
 			
