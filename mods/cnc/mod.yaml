@@ -92,3 +92,6 @@ ServerTraits:
 	PlayerCommands
 	LobbyCommands
 	MasterServerPinger
+
+ChromeMetrics:
+	mods/cnc/metrics.yaml

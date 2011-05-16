@@ -86,3 +86,6 @@ ServerTraits:
 	PlayerCommands
 	LobbyCommands
 	MasterServerPinger
+
+ChromeMetrics:
+	mods/ra/metrics.yaml

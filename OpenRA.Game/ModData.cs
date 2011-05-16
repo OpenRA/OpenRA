@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -44,22 +45,23 @@ namespace OpenRA
 		{
 			AvailableMaps = FindMaps( Manifest.Mods );
 		}
-			
+
 		public void LoadInitialAssets()
 		{
 			// all this manipulation of static crap here is nasty and breaks 
-            // horribly when you use ModData in unexpected ways.
+			// horribly when you use ModData in unexpected ways.
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				FileSystem.Mount(dir);
-			
+
 			ReloadMaps();
 			Palette = new HardwarePalette();
-			ChromeProvider.Initialize( Manifest.Chrome );
-			SheetBuilder = new SheetBuilder( TextureChannel.Red );
-			CursorSheetBuilder = new CursorSheetBuilder( this );
+			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
+			ChromeProvider.Initialize(Manifest.Chrome);
+			SheetBuilder = new SheetBuilder(TextureChannel.Red);
+			CursorSheetBuilder = new CursorSheetBuilder(this);
 			CursorProvider.Initialize(Manifest.Cursors);
-			Palette.Update(new IPaletteModifier[]{});
+			Palette.Update(new IPaletteModifier[] { });
 		}
 
 		public Map PrepareMap(string uid)

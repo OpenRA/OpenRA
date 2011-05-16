@@ -204,6 +204,7 @@
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="TraitDictionary.cs" />
+    <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\ScrollingTextWidget.cs" />
   </ItemGroup>
