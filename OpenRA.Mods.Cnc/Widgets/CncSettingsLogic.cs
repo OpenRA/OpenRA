@@ -90,10 +90,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			windowModeDropdown.GetText = () => windowMode == WindowMode.Windowed ? "Windowed" : windowMode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
 			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => windowMode == WindowMode.Windowed;
-			var windowWidth = generalPane.GetWidget<CncTextFieldWidget>("WINDOW_WIDTH");
+			var windowWidth = generalPane.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
 			
-			var windowHeight = generalPane.GetWidget<CncTextFieldWidget>("WINDOW_HEIGHT");
+			var windowHeight = generalPane.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
 
 			// Audio

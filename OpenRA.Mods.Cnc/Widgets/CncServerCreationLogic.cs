@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
 
-			var externalPort = panel.GetWidget<CncTextFieldWidget>("EXTERNAL_PORT");
+			var externalPort = panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT");
 			externalPort.Text = settings.Server.ExternalPort.ToString();
 			externalPort.IsDisabled = () => !advertiseOnline;
 
@@ -67,8 +67,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 
 			// Disable these until we have some logic behind them
-			panel.GetWidget<CncTextFieldWidget>("SERVER_DESC").IsDisabled = () => true;
-			panel.GetWidget<CncTextFieldWidget>("SERVER_PASSWORD").IsDisabled = () => true;
+			panel.GetWidget<TextFieldWidget>("SERVER_DESC").IsDisabled = () => true;
+			panel.GetWidget<TextFieldWidget>("SERVER_PASSWORD").IsDisabled = () => true;
 		}
 
 		void CreateAndJoin()

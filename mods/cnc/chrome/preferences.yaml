@@ -33,7 +33,7 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Name:
-				CncTextField@NAME_TEXTFIELD:
+				TextField@NAME_TEXTFIELD:
 					Id:NAME_TEXTFIELD
 					X:65
 					Y:40
@@ -125,7 +125,7 @@ Container@SETTINGS_PANEL:
 							Height:25
 							Width:25
 							Align:Center
-						CncTextField@SCREEN_WIDTH:
+						TextField@SCREEN_WIDTH:
 							Id:WINDOW_WIDTH
 							X:600
 							Y:40
@@ -140,7 +140,7 @@ Container@SETTINGS_PANEL:
 							Height:25
 							Width:25
 							Align:Center
-						CncTextField@SCREEN_HEIGHT:
+						TextField@SCREEN_HEIGHT:
 							Id:WINDOW_HEIGHT
 							X:670
 							Y:40

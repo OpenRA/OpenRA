@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
@@ -24,9 +25,7 @@ namespace OpenRA.Widgets
 		}
 
 		public int MaxLength = 0;
-		public bool Bold = false;
 		public int VisualHeight = 1;
-		public string Background = "dialog3";
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 		
@@ -34,6 +33,13 @@ namespace OpenRA.Widgets
 		public Func<bool> OnTabKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public int CursorPosition { get; protected set; }
+		
+		public Func<bool> IsDisabled = () => false;
+		public Color TextColor = Color.White;
+		public Color DisabledColor = Color.Gray;
+		public string Font = "Regular";
+		
+		[Obsolete] public bool Bold = false;
 
 		public TextFieldWidget() : base() {}
 		protected TextFieldWidget(TextFieldWidget widget)
@@ -42,6 +48,9 @@ namespace OpenRA.Widgets
 			Text = widget.Text;
 			MaxLength = widget.MaxLength;
 			Bold = widget.Bold;
+			Font = widget.Font;
+			TextColor = widget.TextColor;
+			DisabledColor = widget.DisabledColor;
 			VisualHeight = widget.VisualHeight;
 		}
 
@@ -55,6 +64,9 @@ namespace OpenRA.Widgets
 		// TODO: TextFieldWidgets don't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (IsDisabled())
+				return false;
+
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
@@ -74,8 +86,10 @@ namespace OpenRA.Widgets
 		
 		public int ClosestCursorPosition(int x)
 		{
-			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
+			if (Font == "Regular" && Bold)
+				Font = "Bold";
 
+			var font = Game.Renderer.Fonts[Font];
 			var textSize = font.Measure(Text);
 			
 			var start = RenderOrigin.X + LeftMargin;
@@ -97,6 +111,9 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
+			if (IsDisabled())
+				return false;
+
 			if (e.Event == KeyInputEvent.Up) return false;
 			
 			// Only take input if we are focused
@@ -183,13 +200,22 @@ namespace OpenRA.Widgets
 		
 		public virtual void DrawWithString(string text)
 		{
-			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
+			if (Font == "Regular" && Bold)
+				Font = "Bold";
+
+			var font = Game.Renderer.Fonts[Font];
 			var pos = RenderOrigin;
 
 			var textSize = font.Measure(text);
 			var cursorPosition = font.Measure(text.Substring(0,CursorPosition));
 			
-			WidgetUtils.DrawPanel(Background,
+			var disabled = IsDisabled();
+			var state = disabled ? "textfield-disabled" :
+				Focused ? "textfield-focused" :
+				RenderBounds.Contains(Viewport.LastMousePos) ? "textfield-hover" :
+				"textfield";
+
+			WidgetUtils.DrawPanel(state,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
 
 			// Inset text by the margin and center vertically
@@ -204,9 +230,10 @@ namespace OpenRA.Widgets
 				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y, 
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
 			}
-
-			font.DrawText(text, textPos, Color.White);
 			
+			var color = disabled ? DisabledColor : TextColor;
+			font.DrawText(text, textPos, color);
+
 			if (showCursor && Focused)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), Color.White);
 

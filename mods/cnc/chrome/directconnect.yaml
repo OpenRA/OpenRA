@@ -25,7 +25,7 @@ Container@DIRECTCONNECT_PANEL:
 					Height:25
 					Align:Right
 					Text:Address:
-				CncTextField@SERVER_ADDRESS:
+				TextField@SERVER_ADDRESS:
 					Id:IP
 					X:150
 					Y:15
@@ -38,7 +38,7 @@ Container@DIRECTCONNECT_PANEL:
 					Height:25
 					Align:Right
 					Text:Port:
-				CncTextField@PORT:
+				TextField@PORT:
 					Id:PORT
 					X:150
 					Y:50

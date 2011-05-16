@@ -49,7 +49,7 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Align:Right
 					Text:Server Name:
-				CncTextField@SERVER_NAME:
+				TextField@SERVER_NAME:
 					Id:SERVER_NAME
 					X:110
 					Y:15
@@ -64,7 +64,7 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Align:Right
 					Text:Description:
-				CncTextField@SERVER_DESC:
+				TextField@SERVER_DESC:
 					Id:SERVER_DESC
 					X:110
 					Y:50
@@ -78,7 +78,7 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Align:Right
 					Text:Password:
-				CncTextField@SERVER_PASSWORD:
+				TextField@SERVER_PASSWORD:
 					Id:SERVER_PASSWORD
 					X:110
 					Y:85
@@ -92,7 +92,7 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Align: Right
 					Text:Port:
-				CncTextField@LISTEN_PORT:
+				TextField@LISTEN_PORT:
 					Id:LISTEN_PORT
 					X:110
 					Y:120
@@ -121,7 +121,7 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Align:Right
 					Text:External Port:
-				CncTextField@EXTERNAL_PORT:
+				TextField@EXTERNAL_PORT:
 					Id:EXTERNAL_PORT
 					X:110
 					Y:220
