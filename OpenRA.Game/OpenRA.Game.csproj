@@ -100,7 +100,6 @@
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Exts.cs" />
-    <Compile Include="Server\MasterServerQuery.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Sound.cs" />
@@ -198,10 +197,12 @@
     <Compile Include="ModData.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Network\FrameData.cs" />
+    <Compile Include="Network\GameServer.cs" />
     <Compile Include="Network\ReplayConnection.cs" />
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
+    <Compile Include="Network\ServerList.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />
     <Compile Include="Traits\SubcellInit.cs" />
     <Compile Include="Traits\Target.cs" />

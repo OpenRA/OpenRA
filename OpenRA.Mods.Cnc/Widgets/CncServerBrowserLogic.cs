@@ -11,49 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Mods.RA.Widgets.Delegates;
-using OpenRA.Server;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
-{
-	public class ServerList
-	{
-		public static void Query(Action<GameServer[]> onComplete)
-		{
-			var masterServerUrl = Game.Settings.Server.MasterServer;
-			new Thread(() =>
-			{
-				GameServer[] games = null;
-				try
-				{
-					var str = GetData(new Uri(masterServerUrl + "list.php"));
-
-					var yaml = MiniYaml.FromString(str);
-
-					games = yaml.Select(a => FieldLoader.Load<GameServer>(a.Value))
-						.Where(gs => gs.Address != null).ToArray();
-				}
-				catch { }
-				
-				Game.RunAfterTick(() => onComplete(games));
-			}) { IsBackground = true }.Start();
-		}
-
-		static string GetData(Uri uri)
-		{
-			var wc = new WebClient();
-			wc.Proxy = null;
-			var data = wc.DownloadData(uri);
-			return Encoding.UTF8.GetString(data);
-		}
-	}
-	
+{	
 	public class CncServerBrowserLogic : IWidgetDelegate
 	{
 		GameServer currentServer;

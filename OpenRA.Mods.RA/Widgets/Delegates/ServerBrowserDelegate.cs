@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Widgets;
 
@@ -28,15 +29,13 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			var bg = widget.GetWidget("JOINSERVER_BG");
 
-			MasterServerQuery.OnComplete += games => RefreshServerList(games);
-
 			bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 			bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
 
 			bg.Children.RemoveAll(a => GameButtons.Contains(a));
 			GameButtons.Clear();
 
-			MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
+			ServerList.Query(RefreshServerList);
 
 			bg.GetWidget("SERVER_INFO").IsVisible = () => currentServer != null;
 			var preview = bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
@@ -68,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				bg.Children.RemoveAll(a => GameButtons.Contains(a));
 				GameButtons.Clear();
 
-				MasterServerQuery.Refresh(Game.Settings.Server.MasterServer);
+				ServerList.Query(RefreshServerList);
 
 				return true;
 			};

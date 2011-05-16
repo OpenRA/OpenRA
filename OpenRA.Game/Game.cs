@@ -18,7 +18,6 @@ using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
-using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -148,8 +147,6 @@ namespace OpenRA
 
 			PerfHistory.items["render"].Tick();
 			PerfHistory.items["batches"].Tick();
-
-			MasterServerQuery.Tick();
 
 			afterTickActions.PerformActions();
 		}
