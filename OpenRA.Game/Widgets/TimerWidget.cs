@@ -26,10 +26,10 @@ namespace OpenRA.Widgets
 		public override void DrawInner()
 		{
 			var s = WidgetUtils.FormatTime(Game.LocalTick);
-			var size = Game.Renderer.TitleFont.Measure(s);
+			var size = Game.Renderer.Fonts["Title"].Measure(s);
             var pos = new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top - 20);
 
-            Game.Renderer.TitleFont.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
+            Game.Renderer.Fonts["Title"].DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets
 					var m = pos + new int2(rect.Width, rect.Height);
 					var br = pos + new int2(rect.Width, rect.Height + 20);
 
-					var u = Game.Renderer.RegularFont.Measure(GetLongDesc().Replace("\\n", "\n"));
+					var u = Game.Renderer.Fonts["Regular"].Measure(GetLongDesc().Replace("\\n", "\n"));
 
 					br.X -= u.X;
 					br.Y += u.Y;
@@ -65,10 +65,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 					pos.X = br.X + 8;
 					pos.Y = m.Y + 8;
-					Game.Renderer.BoldFont.DrawText(GetDescription(), pos, Color.White);
+					Game.Renderer.Fonts["Bold"].DrawText(GetDescription(), pos, Color.White);
 
 					pos += new int2(0, 20);
-					Game.Renderer.RegularFont.DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
+					Game.Renderer.Fonts["Regular"].DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
 			}
 			
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y));

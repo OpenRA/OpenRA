@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 			if (bg != null)
 				WidgetUtils.DrawPanel(bg, RenderBounds);
 
-			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var text = GetText();
 			if (text == null)
 				return;

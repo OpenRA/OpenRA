@@ -38,13 +38,13 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!world.LocalPlayer.Shroud.IsExplored(cell))
 			{
 				var utext = "Unexplored Terrain";
-				var usz = Game.Renderer.BoldFont.Measure(utext) + new int2(20, 24);
+				var usz = Game.Renderer.Fonts["Bold"].Measure(utext) + new int2(20, 24);
 				
 				WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
 					Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
 					Viewport.LastMousePos.X + usz.X + 20, Viewport.LastMousePos.Y + usz.Y + 20));
 	
-				Game.Renderer.BoldFont.DrawText(utext,
+				Game.Renderer.Fonts["Bold"].DrawText(utext,
 					new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
 					
 				return;
@@ -60,9 +60,9 @@ namespace OpenRA.Mods.RA.Widgets
 			var owner = (tooltip != null && !tooltip.Owner().NonCombatant) ? "{0}".F(tooltip.Owner().PlayerName) : "";
 			var stance = (tooltip != null && tooltip.Owner() != actor.World.LocalPlayer && !tooltip.Owner().NonCombatant) ? " ({0})".F(tooltip.Stance()) : "";
 			
-			var nameSize = Game.Renderer.BoldFont.Measure(name);
-			var ownerSize = Game.Renderer.RegularFont.Measure(owner);
-			var stanceSize = Game.Renderer.RegularFont.Measure(stance);
+			var nameSize = Game.Renderer.Fonts["Bold"].Measure(name);
+			var ownerSize = Game.Renderer.Fonts["Regular"].Measure(owner);
+			var stanceSize = Game.Renderer.Fonts["Regular"].Measure(stance);
 						
 			var panelSize = new int2(Math.Max(nameSize.X, ownerSize.X + stanceSize.X + 35) + 20, nameSize.Y + 24);
 
@@ -72,15 +72,15 @@ namespace OpenRA.Mods.RA.Widgets
 				Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
 				Viewport.LastMousePos.X + panelSize.X + 20, Viewport.LastMousePos.Y + panelSize.Y + 20));
 
-			Game.Renderer.BoldFont.DrawText(name,
+			Game.Renderer.Fonts["Bold"].DrawText(name,
 				new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
 			
 			if (owner != "")
 			{
-				Game.Renderer.RegularFont.DrawText(owner,
+				Game.Renderer.Fonts["Regular"].DrawText(owner,
 					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.ColorRamp.GetColor(0));
 				
-				Game.Renderer.RegularFont.DrawText(stance,
+				Game.Renderer.Fonts["Regular"].DrawText(stance,
 					new float2(Viewport.LastMousePos.X + 65 + ownerSize.X, Viewport.LastMousePos.Y + 50), Color.White);
 
 				WidgetUtils.DrawRGBA(

@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
-			var font = Bold ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var font = Bold ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var pos = RenderOrigin;
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location,

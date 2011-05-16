@@ -86,7 +86,7 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
-			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			WidgetUtils.DrawPanel(Depressed ? "dialog3" : "dialog2", RenderBounds);
 

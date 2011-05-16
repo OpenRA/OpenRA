@@ -422,12 +422,12 @@ namespace OpenRA.Mods.RA.Widgets
 				if (rect.Contains(Viewport.LastMousePos))
 				{
 					var text = queue.Info.Type;
-					var sz = Game.Renderer.BoldFont.Measure(text);
+					var sz = Game.Renderer.Fonts["Bold"].Measure(text);
 					WidgetUtils.DrawPanelPartial("dialog4",
 						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
 						PanelSides.All);
 
-					Game.Renderer.BoldFont.DrawText(text, 
+					Game.Renderer.Fonts["Bold"].DrawText(text, 
 						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
 				}
 
@@ -437,8 +437,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
-			Game.Renderer.BoldFont.DrawText(text, 
-				pos - new int2(Game.Renderer.BoldFont.Measure(text).X, 0), c);
+			Game.Renderer.Fonts["Bold"].DrawText(text, 
+				pos - new int2(Game.Renderer.Fonts["Bold"].Measure(text).X, 0), c);
 		}
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
@@ -454,12 +454,12 @@ namespace OpenRA.Mods.RA.Widgets
 			var cost = info.Traits.Get<ValuedInfo>().Cost;
 			var canBuildThis = CurrentQueue.CanBuild(info);
 			
-			var longDescSize = Game.Renderer.RegularFont.Measure(tooltip.Description.Replace("\\n", "\n")).Y;
+			var longDescSize = Game.Renderer.Fonts["Regular"].Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
 			
-			Game.Renderer.BoldFont.DrawText(
+			Game.Renderer.Fonts["Bold"].DrawText(
 				tooltip.Name + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
 			                                       p.ToInt2() + new int2(5, 5), Color.White);
 
@@ -484,7 +484,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
-				Game.Renderer.RegularFont.DrawText(
+				Game.Renderer.Fonts["Regular"].DrawText(
 					"Requires {0}".F(string.Join(", ", prereqs.ToArray())), 
 					p.ToInt2(),
 					Color.White);
@@ -493,7 +493,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 
 			p += new int2(0, 15);
-			Game.Renderer.RegularFont.DrawText(tooltip.Description.Replace("\\n", "\n"), 
+			Game.Renderer.Fonts["Regular"].DrawText(tooltip.Description.Replace("\\n", "\n"), 
 				p.ToInt2(), Color.White);
 		}
 

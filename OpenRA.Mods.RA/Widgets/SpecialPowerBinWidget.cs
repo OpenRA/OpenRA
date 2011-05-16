@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Widgets
 						br += new int2(0,20);
 					
 					if (sp.Info.LongDesc != null)
-						br += Game.Renderer.RegularFont.Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
+						br += Game.Renderer.Fonts["Regular"].Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
 					else
 						br += new int2(300,0);
 
@@ -125,19 +125,19 @@ namespace OpenRA.Mods.RA.Widgets
 						PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
 					
 					pos += new int2(77, 5);
-					Game.Renderer.BoldFont.DrawText(sp.Info.Description, pos, Color.White);
+					Game.Renderer.Fonts["Bold"].DrawText(sp.Info.Description, pos, Color.White);
 					
 					if (sp.TotalTime > 0)
 					{
 						pos += new int2(0,20);
-						Game.Renderer.BoldFont.DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.Renderer.BoldFont.DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						Game.Renderer.Fonts["Bold"].DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
+						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
 					}
 					
 					if (sp.Info.LongDesc != null)
 					{
 						pos += new int2(0, 20);
-						Game.Renderer.RegularFont.DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
+						Game.Renderer.Fonts["Regular"].DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 					}
 
 				}

@@ -71,7 +71,7 @@ namespace OpenRA.Widgets
 			if (Text == null)
 				return 0;
 			
-			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var textSize = font.Measure(Text);
 			
 			var start = RenderOrigin.X + LeftMargin;
@@ -187,7 +187,7 @@ namespace OpenRA.Widgets
 		{
 			if (text == null) text = "";
 			
-			var font = (Bold) ? Game.Renderer.BoldFont : Game.Renderer.RegularFont;
+			var font = (Bold) ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
 			var pos = RenderOrigin;
 
 			if (CursorPosition > text.Length)

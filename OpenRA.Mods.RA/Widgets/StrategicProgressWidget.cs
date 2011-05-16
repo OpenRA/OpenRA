@@ -82,10 +82,10 @@ namespace OpenRA.Mods.RA.Widgets
 				isVictory ? "victory" : "defeat",
 				WidgetUtils.FormatTime(Math.Max(winnerSvc.CriticalTicksLeft, winnerSvc.TicksLeft)));
 
-			var size = Game.Renderer.BoldFont.Measure(tc);
+			var size = Game.Renderer.Fonts["Bold"].Measure(tc);
 
-			Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2 + 1, RenderBounds.Top + 1), Color.Black);
-			Game.Renderer.BoldFont.DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top), Color.WhiteSmoke);
+			Game.Renderer.Fonts["Bold"].DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2 + 1, RenderBounds.Top + 1), Color.Black);
+			Game.Renderer.Fonts["Bold"].DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top), Color.WhiteSmoke);
 			offset += new int2(0, size.Y + 1);
 		}
 

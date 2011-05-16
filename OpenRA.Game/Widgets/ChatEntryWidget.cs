@@ -39,10 +39,10 @@ namespace OpenRA.Widgets
 			if (composing)
 			{
 				var text = teamChat ? "Chat (Team): " : "Chat (All): ";
-				var w = Game.Renderer.BoldFont.Measure(text).X;
+				var w = Game.Renderer.Fonts["Bold"].Measure(text).X;
 
-				Game.Renderer.BoldFont.DrawTextWithContrast(text, RenderOrigin + new float2(3, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
-				Game.Renderer.RegularFont.DrawTextWithContrast(content, RenderOrigin + new float2(3 + w, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
+				Game.Renderer.Fonts["Bold"].DrawTextWithContrast(text, RenderOrigin + new float2(3, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
+				Game.Renderer.Fonts["Regular"].DrawTextWithContrast(content, RenderOrigin + new float2(3 + w, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 		}
 		

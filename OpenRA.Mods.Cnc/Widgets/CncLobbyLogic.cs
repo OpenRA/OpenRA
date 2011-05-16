@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public void AddChatLine(Color c, string from, string text)
 		{
 			var name = from+":";
-			var font = Game.Renderer.RegularFont;
+			var font = Game.Renderer.Fonts["Regular"];
 			var nameSize = font.Measure(from);
 			
 			var template = chatTemplate.Clone() as ContainerWidget;

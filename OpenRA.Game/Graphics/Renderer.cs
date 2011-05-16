@@ -42,10 +42,8 @@ namespace OpenRA.Graphics
 
 		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
 
-        public SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont, BigBoldFont;
 		public Dictionary<string, SpriteFont> Fonts;
 		
-
 		public Renderer()
 		{
 			SpriteShader = device.CreateShader("world-shp");
@@ -65,14 +63,6 @@ namespace OpenRA.Graphics
 		public void InitializeFonts(Manifest m)
 		{
 			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second));
-			
-			// TODO: Remove these
-			RegularFont = Fonts["Regular"];
-			BoldFont = Fonts["Bold"];
-			TitleFont = Fonts["Title"];
-			BigBoldFont = Fonts["BigBold"];
-            TinyFont = Fonts["Tiny"];
-			TinyBoldFont = Fonts["TinyBold"];
 		}
 		
 		internal IGraphicsDevice Device { get { return device; } }

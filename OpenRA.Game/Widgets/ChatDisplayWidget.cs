@@ -52,13 +52,13 @@ namespace OpenRA.Widgets
 				if (!string.IsNullOrEmpty(line.Owner))
 				{
 					var owner = line.Owner + ":";
-					inset = Game.Renderer.RegularFont.Measure(owner).X + 10;
+					inset = Game.Renderer.Fonts["Regular"].Measure(owner).X + 10;
 
-					Game.Renderer.RegularFont.DrawTextWithContrast(owner, chatpos, 
+					Game.Renderer.Fonts["Regular"].DrawTextWithContrast(owner, chatpos, 
                         line.Color, Color.Black, UseContrast ? 1 : 0);
 				}
 
-                Game.Renderer.RegularFont.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0), 
+                Game.Renderer.Fonts["Regular"].DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0), 
                     Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 
