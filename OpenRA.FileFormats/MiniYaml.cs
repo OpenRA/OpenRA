@@ -66,7 +66,20 @@ namespace OpenRA.FileFormats
 		public string Value;
 		public List<MiniYamlNode> Nodes;
 
-		public Dictionary<string, MiniYaml> NodesDict { get { return Nodes.ToDictionary( x => x.Key, x => x.Value ); } }
+		public Dictionary<string, MiniYaml> NodesDict
+		{
+			get
+			{
+				var ret = new Dictionary<string, MiniYaml>();
+				foreach (var y in Nodes)
+				{
+					if (ret.ContainsKey(y.Key))
+						throw new InvalidDataException("Duplicate key `{0}' in MiniYaml".F(y.Key));
+					ret.Add(y.Key, y.Value);
+				}
+				return ret;
+			}
+		}
 
 		public MiniYaml( string value ) : this( value, null ) { }
 
