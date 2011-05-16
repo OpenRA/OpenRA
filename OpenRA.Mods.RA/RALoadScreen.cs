@@ -31,14 +31,12 @@ namespace OpenRA.Mods.RA
 		float2 LogoPos;
 		
 		Renderer r;
-		SpriteFont Font;
 		public void Init(Dictionary<string, string> info)
 		{
 			// Avoid standard loading mechanisms so we
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
-			Font = r.BoldFont;
 			
 			var s = new Sheet("mods/ra/uibits/loadscreen.png");
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
@@ -58,12 +56,12 @@ namespace OpenRA.Mods.RA
 			
 			lastLoadScreen.Reset();
 			var text = Comments.Random(Game.CosmeticRandom);
-			var textSize = Font.Measure(text);
+			var textSize = r.Fonts["Bold"].Measure(text);
 			
 			r.BeginFrame(float2.Zero);
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
-			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
+			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
 			r.EndFrame( new NullInputHandler() );
 		}
 		

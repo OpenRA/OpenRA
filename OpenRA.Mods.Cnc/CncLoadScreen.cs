@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Cnc
 		float2 LogoPos;
 		
 		Renderer r;
-		SpriteFont Font;
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
@@ -42,7 +41,6 @@ namespace OpenRA.Mods.Cnc
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
-			Font = r.BoldFont;
 			
 			var s = new Sheet("mods/cnc/uibits/loadscreen.png");
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
@@ -65,13 +63,13 @@ namespace OpenRA.Mods.Cnc
 			
 			lastLoadScreen.Reset();
 			var text = Comments.Random(Game.CosmeticRandom);
-			var textSize = Font.Measure(text);
+			var textSize = r.Fonts["Bold"].Measure(text);
 			
 			r.BeginFrame(float2.Zero);
 			WidgetUtils.FillRectWithSprite(BgRect, Bg);
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
-			Font.DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.Black);
+			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.Black);
 			r.EndFrame( new NullInputHandler() );
 		}
 		

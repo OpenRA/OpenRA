@@ -14,8 +14,10 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
+using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -35,15 +37,14 @@ namespace OpenRA.Graphics
 
 		public ITexture PaletteTexture;
 
-        public readonly SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont, BigBoldFont;
-
 		internal const int TempBufferSize = 8192;
 		const int TempBufferCount = 8;
 
 		Queue<IVertexBuffer<Vertex>> tempBuffersV = new Queue<IVertexBuffer<Vertex>>();
 
-		public enum FontType { Regular, Bold, Title, Tiny, TinyBold, BigBold }
-		public Dictionary<FontType, SpriteFont> Fonts;
+        public SpriteFont RegularFont, BoldFont, TitleFont, TinyFont, TinyBoldFont, BigBoldFont;
+		public Dictionary<string, SpriteFont> Fonts;
+		
 
 		public Renderer()
 		{
@@ -56,28 +57,24 @@ namespace OpenRA.Graphics
 			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
 			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
 			LineRenderer = new LineRenderer(this);
-
-			RegularFont = new SpriteFont("FreeSans.ttf", 14);
-			BoldFont = new SpriteFont("FreeSansBold.ttf", 14);
-			TitleFont = new SpriteFont("titles.ttf", 48);
-			BigBoldFont = new SpriteFont("FreeSansBold.ttf", 24);
-            TinyFont = new SpriteFont("FreeSans.ttf", 10);
-			TinyBoldFont = new SpriteFont("FreeSansBold.ttf", 10);
-			
-			Fonts = new Dictionary<FontType, SpriteFont>()
-			{
-				{FontType.Regular, RegularFont},
-				{FontType.Bold, BoldFont},
-				{FontType.Title, TitleFont},
-				{FontType.Tiny, TinyFont},
-				{FontType.TinyBold, TinyBoldFont},
-				{FontType.BigBold, BigBoldFont}
-			};
 			
 			for( int i = 0 ; i < TempBufferCount ; i++ )
 				tempBuffersV.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
 		}
-
+		
+		public void InitializeFonts(Manifest m)
+		{
+			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second));
+			
+			// TODO: Remove these
+			RegularFont = Fonts["Regular"];
+			BoldFont = Fonts["Bold"];
+			TitleFont = Fonts["Title"];
+			BigBoldFont = Fonts["BigBold"];
+            TinyFont = Fonts["Tiny"];
+			TinyBoldFont = Fonts["TinyBold"];
+		}
+		
 		internal IGraphicsDevice Device { get { return device; } }
 
 		public void BeginFrame(float2 scroll)

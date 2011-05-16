@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 		[Obsolete] public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
-		public Renderer.FontType Font = Renderer.FontType.Regular;
+		public string Font = "Regular";
 		public Color Color = Color.White;
 		public bool Bold = false; // Legacy flag. TODO: Remove
 		public bool Contrast = false;
@@ -61,8 +61,8 @@ namespace OpenRA.Widgets
 			if (bg != null)
 				WidgetUtils.DrawPanel(bg, RenderBounds );
 			
-			if (Font == Renderer.FontType.Regular && Bold)
-				Font = Renderer.FontType.Bold;
+			if (Font == "Regular" && Bold)
+				Font = "Bold";
 			
 			SpriteFont font = Game.Renderer.Fonts[Font];
 			var text = GetText();

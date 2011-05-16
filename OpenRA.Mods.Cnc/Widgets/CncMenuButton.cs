@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public Func<bool> IsDisabled = () => false;
 		public Action OnClick = () => {};
-		public Renderer.FontType Font = Renderer.FontType.Bold;
+		public string Font = "Bold";
 		
 		public CncMenuButtonWidget()
 			: base()
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncDropDownButtonWidget : DropDownButtonWidget
 	{
 		public Func<bool> IsDisabled = () => false;
-		public Renderer.FontType Font = Renderer.FontType.Bold;
+		public string Font = "Bold";
 
 		public CncDropDownButtonWidget() : base() { }
 		protected CncDropDownButtonWidget(CncDropDownButtonWidget other) : base(other)
