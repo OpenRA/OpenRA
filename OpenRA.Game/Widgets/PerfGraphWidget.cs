@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA.Widgets

@@ -8,9 +8,9 @@
  */
 #endregion
 
+using System;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using System;
 
 namespace OpenRA.Mods.RA.Render
 {

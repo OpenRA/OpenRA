@@ -8,14 +8,14 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
-using System.Collections.Generic;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Render;
-using System;
 
 namespace OpenRA.Mods.Cnc
 {

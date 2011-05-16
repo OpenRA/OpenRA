@@ -10,12 +10,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using OpenRA.Support;
-using OpenRA.Graphics;
-using OpenRA.Widgets;
 using OpenRA.FileFormats;
-using System;
+using OpenRA.Graphics;
+using OpenRA.Support;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {

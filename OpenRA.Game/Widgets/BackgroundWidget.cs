@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.Graphics;
-
 namespace OpenRA.Widgets
 {
 	public class BackgroundWidget : Widget

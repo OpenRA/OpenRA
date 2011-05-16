@@ -8,12 +8,10 @@
  */
 #endregion
 
-using OpenRA.Traits;
-using OpenRA.Widgets;
-using System.Drawing;
-using System.Collections.Generic;
 using System;
+using System.Drawing;
 using OpenRA.Mods.RA;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

@@ -13,10 +13,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
-using OpenRA.FileFormats;
 using System.Text;
+using OpenRA.FileFormats;
 
 namespace OpenRA
 {

@@ -18,8 +18,6 @@
  */
 #endregion
 
-using System;
-using OpenRA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

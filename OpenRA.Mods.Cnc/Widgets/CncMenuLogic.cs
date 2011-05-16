@@ -8,18 +8,10 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRA.FileFormats;
-using System.Net;
-using OpenRA.Network;
-using OpenRA.Server;
-using OpenRA.Widgets;
-using System;
-using System.Drawing;
 using System.Linq;
-using OpenRA.GameRules;
+using System.Net;
 using OpenRA.Mods.RA;
-using OpenRA.Support;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

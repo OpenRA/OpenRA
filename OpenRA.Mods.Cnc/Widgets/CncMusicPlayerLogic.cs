@@ -9,16 +9,13 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.Support;
-using OpenRA.Widgets;
-using OpenRA.Traits;
-using OpenRA.Graphics;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

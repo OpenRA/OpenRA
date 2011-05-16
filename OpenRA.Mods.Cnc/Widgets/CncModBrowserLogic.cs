@@ -11,13 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Widgets.Delegates;
-using OpenRA.Server;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets

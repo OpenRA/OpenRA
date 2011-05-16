@@ -9,12 +9,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

@@ -16,8 +16,8 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.FileFormats;
-using OpenRA.Widgets;
 using OpenRA.Mods.RA.Widgets.Delegates;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

@@ -8,9 +8,9 @@
  */
 #endregion
 
-using OpenRA.Traits;
-using OpenRA.FileFormats;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {

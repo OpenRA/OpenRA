@@ -12,10 +12,9 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
-using OpenRA.Mods.RA.Air;
 
 namespace OpenRA.Mods.Cnc
 {

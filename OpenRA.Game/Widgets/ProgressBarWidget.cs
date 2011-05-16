@@ -10,8 +10,6 @@
 
 using System;
 using System.Drawing;
-using System.Collections.Generic;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {

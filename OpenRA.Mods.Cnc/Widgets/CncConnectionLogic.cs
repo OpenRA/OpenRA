@@ -8,10 +8,9 @@
  */
 #endregion
 
+using System;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using System;
-using System.Collections.Generic;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {

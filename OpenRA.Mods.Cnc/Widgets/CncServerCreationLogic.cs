@@ -8,12 +8,11 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using System.Net;
-using OpenRA.Widgets;
-using System;
-using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -24,15 +23,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Action onExit;
 		Map map;
 		bool advertiseOnline;
+
 		[ObjectCreator.UseCtor]
 		public CncServerCreationLogic([ObjectCreator.Param] Widget widget,
-		                              [ObjectCreator.Param] Action onExit,
-		                              [ObjectCreator.Param] Action openLobby)
+									  [ObjectCreator.Param] Action onExit,
+									  [ObjectCreator.Param] Action openLobby)
 		{
 			panel = widget.GetWidget("CREATESERVER_PANEL");
 			onCreate = openLobby;
 			this.onExit = onExit;
-			
+
 			var settings = Game.Settings;
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			panel.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
@@ -64,22 +64,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var advertiseCheckbox = panel.GetWidget<CncCheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
-			
+
 			// Disable these until we have some logic behind them
 			panel.GetWidget<CncTextFieldWidget>("SERVER_DESC").IsDisabled = () => true;
 			panel.GetWidget<CncTextFieldWidget>("SERVER_PASSWORD").IsDisabled = () => true;
 		}
-	
+
 		void CreateAndJoin()
 		{
 			var name = panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text;
 			int listenPort, externalPort;
 			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
 				listenPort = 1234;
-			
+
 			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
 				externalPort = 1234;
-			
+
 			// Save new settings
 			Game.Settings.Server.Name = name;
 			Game.Settings.Server.ListenPort = listenPort;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			// Take a copy so that subsequent changes don't affect the server
 			var settings = new ServerSettings(Game.Settings.Server);
-			
+
 			// Create and join the server
 			Game.CreateServer(settings);
 			Widget.CloseWindow();

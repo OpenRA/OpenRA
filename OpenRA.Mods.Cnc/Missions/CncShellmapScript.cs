@@ -10,11 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.RA.Air;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

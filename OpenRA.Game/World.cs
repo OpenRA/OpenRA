@@ -15,8 +15,8 @@ using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Orders;
-using OpenRA.Traits;
 using OpenRA.Support;
+using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA

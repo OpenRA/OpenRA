@@ -9,25 +9,22 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.Network;
-using OpenRA.Widgets;
-using OpenRA.Mods.RA.Widgets.Delegates;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Widgets.Delegates;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncReplayBrowserLogic : IWidgetDelegate
 	{
-		Widget panel; 
+		Widget panel;
 
 		[ObjectCreator.UseCtor]
 		public CncReplayBrowserLogic([ObjectCreator.Param] Widget widget,
-		                             [ObjectCreator.Param] Action onExit,
-		                             [ObjectCreator.Param] Action onStart)
+									 [ObjectCreator.Param] Action onExit,
+									 [ObjectCreator.Param] Action onStart)
 		{
 			panel = widget.GetWidget("REPLAYBROWSER_PANEL");
 
