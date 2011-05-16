@@ -183,6 +183,7 @@
     <Compile Include="Utilities.cs" />
     <Compile Include="Traits\Waypoint.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />
+    <Compile Include="Widgets\ScrollItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
