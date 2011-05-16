@@ -1,99 +1,14 @@
-clock:
-	idle: hclock
+fire:
+	1: fire1
+		Start: 0
+		Length: *
+	2: fire2
 		Start: 0
 		Length: *
 
 120mm:
 	idle:
 		Start: 0
-
-atomicup:
-	idle:
-		Start: 0
-		Length: *
-
-atomicdn:
-	idle:
-		Start: 0
-		Length: *
-
-explosion:
-	1: piff
-		Start: 0
-		Length: *
-	2: piffpiff
-		Start: 0
-		Length: *
-	3: napalm2
-		Start: 0
-		Length: *
-	4: veh-hit3
-		Start: 0
-		Length: *
-	5: veh-hit2
-		Start: 0
-		Length: *
-	6: atomsfx
-		Start: 0
-		Length: *
-	6w: atomsfx
-		Start: 0
-		Length: *
-	1w: piff
-		Start: 0
-		Length: *
-	2w: piffpiff
-		Start: 0
-		Length: *
-	3w: napalm2
-		Start: 0
-		Length: *
-	4w: veh-hit3
-		Start: 0
-		Length: *
-	5w: veh-hit2
-		Start: 0
-		Length: *
-	8: art-exp1
-		Start: 0
-		Length: *
-	building: fball1
-		Start: 0
-		Length: *
-
-pips:
-	ready: hpips
-		Start: 3
-	hold: hpips
-		Start: 4
-	pip-empty: hpips
-		Start: 0
-	pip-green: hpips
-		Start: 1
-	pip-yellow: hpips
-		Start: 5
-	pip-gray: hpips
-		Start: 6
-	pip-red: hpips
-		Start: 7
-	tag-primary: hpips
-		Start: 2
-	groups: pdigits
-		Start: 0
-		Length: *
-
-rank:
-	rank:
-		Start: 0
-		Length: *
-
-rallypoint:
-	flag:flagfly
-		Start: 0
-		Length: *
-	circles:fpls
-		Start: 0
-		Length: *
 
 smoke_m:
 	idle:
@@ -131,26 +46,65 @@ patriot:
 		Start: 0
 		Facings: 32
 
-moveflsh:
-	idle:
+explosion:
+	1: piff
+		Start: 0
+		Length: *
+	2: piffpiff
+		Start: 0
+		Length: *
+	3: napalm2
+		Start: 0
+		Length: *
+	4: veh-hit3
+		Start: 0
+		Length: *
+	5: veh-hit2
+		Start: 0
+		Length: *
+	1w: piff
+		Start: 0
+		Length: *
+	2w: piffpiff
+		Start: 0
+		Length: *
+	3w: napalm2
+		Start: 0
+		Length: *
+	4w: veh-hit3
+		Start: 0
+		Length: *
+	5w: veh-hit2
+		Start: 0
+		Length: *
+	8: art-exp1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	6: atomsfx
+		Start: 0
+		Length: *
+	6w: atomsfx
+		Start: 0
+		Length: *
+rank:
+	rank:
 		Start: 0
 		Length: *
 
-miss:
-	idle:
+rallypoint:
+	flag:flagfly
 		Start: 0
-	damaged-idle:
-		Start: 2
+		Length: *
+	circles:fpls
+		Start: 0
+		Length: *
 
 select:
 	repair:
 		Start: 2
-
-tabs:
-	left-normal: htabs
-		Start: 0
-	left-pressed: htabs
-		Start: 1
 
 crate:
 	idle: wcrate
@@ -189,7 +143,18 @@ crate-effects:
 		Length: *
 		Tick: 200
 
-ionsfx:
+miss:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+atomicup:
+	idle:
+		Start: 0
+		Length: *
+
+atomicdn:
 	idle:
 		Start: 0
 		Length: *
@@ -199,6 +164,11 @@ atomic:
 		Start: 0
 		Length: *
 	down: atomicdn
+		Start: 0
+		Length: *
+
+ionsfx:
+	idle:
 		Start: 0
 		Length: *
 
@@ -214,5 +184,30 @@ mpspawn:
 
 waypoint:
 	idle:
+		Start: 0
+		Length: *
+
+clock:
+	idle: hclock
+		Start: 0
+		Length: *
+pips:
+	ready: hpips
+		Start: 3
+	hold: hpips
+		Start: 4
+	pip-empty: hpips
+		Start: 0
+	pip-green: hpips
+		Start: 1
+	pip-yellow: hpips
+		Start: 5
+	pip-gray: hpips
+		Start: 6
+	pip-red: hpips
+		Start: 7
+	tag-primary: hpips
+		Start: 2
+	groups: pdigits
 		Start: 0
 		Length: *
