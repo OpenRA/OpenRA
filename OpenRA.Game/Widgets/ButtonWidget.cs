@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 		public string Text = "";
 		public bool Bold = false;
 		public bool Depressed = false;
-		public int VisualHeight = 1;
+		public int VisualHeight = ChromeMetrics.GetInt("ButtonDepth");
 		public Func<string> GetText;
 
 		public ButtonWidget()
