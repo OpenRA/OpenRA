@@ -66,16 +66,28 @@ namespace OpenRA.FileFormats
 			return t;
 		}
 
+		static readonly object[] NoIndexes = {};
 		public static void LoadField( object self, string key, string value )
 		{
 			var field = self.GetType().GetField( key.Trim() );
 
-			if( field == null )
-				UnknownFieldAction( key.Trim(), self.GetType() );
-			else if( field.HasAttribute<FieldFromYamlKeyAttribute>() )
+			if( field != null )
+			{
+				if (!field.HasAttribute<FieldFromYamlKeyAttribute>())
+					field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
 				return;
-			else
-				field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
+			}
+			
+			var prop = self.GetType().GetProperty( key.Trim() );
+
+			if (prop != null)
+			{
+				if (!prop.HasAttribute<FieldFromYamlKeyAttribute>())
+					prop.SetValue(self, GetValue(prop.Name, prop.PropertyType, value), NoIndexes);
+				return;
+			}
+
+			UnknownFieldAction( key.Trim(), self.GetType() );
 		}
 
 		public static object GetValue( string field, Type fieldType, string x )
@@ -100,7 +112,7 @@ namespace OpenRA.FileFormats
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(x.Replace("%",""),  System.Globalization.NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+				if (float.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
 					return res * (x.Contains( '%' ) ? 0.01f : 1f);
 				return InvalidValueAction(x,fieldType, field);
 			}
@@ -108,7 +120,7 @@ namespace OpenRA.FileFormats
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(x.Replace("%",""),  System.Globalization.NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+				if (decimal.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
 					return res * (x.Contains( '%' ) ? 0.01m : 1m);
 				return InvalidValueAction(x,fieldType, field);
 			}
