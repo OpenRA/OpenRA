@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncLobbyLogic : IWidgetDelegate
 	{
 		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
-		CncScrollPanelWidget chatPanel;
+		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 		
 		ScrollPanelWidget Players;
@@ -251,7 +251,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				return true;
 			};
 			
-			chatPanel = lobby.GetWidget<CncScrollPanelWidget>("CHAT_DISPLAY");
+			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
 			
 			lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>

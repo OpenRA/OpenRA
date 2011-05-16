@@ -31,7 +31,7 @@ Container@MAPCHOOSER_PANEL:
 							Y:1
 							Width:192
 							Height:192
-				CncScrollPanel@MAP_LIST:
+				ScrollPanel@MAP_LIST:
 					Id:MAP_LIST
 					X:15
 					Y:30

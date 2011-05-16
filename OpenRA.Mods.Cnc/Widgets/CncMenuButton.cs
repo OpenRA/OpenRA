@@ -49,79 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override Widget Clone() { return new CncCheckboxWidget(this); }
 	}
-	
-	public class CncScrollPanelWidget : ScrollPanelWidget
-	{
-		public CncScrollPanelWidget()
-			: base()
-		{
-			Background = "panel-gray";
-		}
 		
-		protected CncScrollPanelWidget(CncScrollPanelWidget widget)
-			: base(widget) { }
-		
-		public override void Draw()
-		{
-			if (!IsVisible())
-				return;
-			
-			var rb = RenderBounds;
-			
-			var ScrollbarHeight = rb.Height - 2 * ScrollbarWidth;
-			
-			var thumbHeight = ContentHeight == 0 ? 0 : (int)(ScrollbarHeight*Math.Min(rb.Height*1f/ContentHeight, 1f));
-			var thumbOrigin = rb.Y + ScrollbarWidth + (int)((ScrollbarHeight - thumbHeight)*(-1f*ListOffset/(ContentHeight - rb.Height)));
-			if (thumbHeight == ScrollbarHeight)
-				thumbHeight = 0;
-			
-			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth + 1, rb.Height);
-			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
-			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
-			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
-			
-			string upButtonBg = (thumbHeight == 0 || ListOffset >= 0) ? "button-disabled" :
-					UpPressed ? "button-pressed" : 
-					upButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-			
-			string downButtonBg = (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight) ? "button-disabled" :
-					DownPressed ? "button-pressed" : 
-					downButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-			
-			string scrollbarBg = "panel-gray";
-			string thumbBg = (Focused && thumbRect.Contains(Viewport.LastMousePos)) ? "button-pressed" : 
-					thumbRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-
-			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
-			WidgetUtils.DrawPanel(Background, backgroundRect);
-			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
-			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
-			
-			if (thumbHeight > 0)
-				WidgetUtils.DrawPanel(thumbBg, thumbRect);
-
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "up_arrow"),
-				new float2(upButtonRect.Left + 4, upButtonRect.Top + 4));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
-				new float2(downButtonRect.Left + 4, downButtonRect.Top + 4));
-
-			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);
-
-			foreach (var child in Children)
-				child.Draw();
-
-			Game.Renderer.DisableScissor();
-		}
-		
-		public void ScrollToBottom()
-		{
-			ListOffset = Math.Min(0,Bounds.Height - ContentHeight);
-		}
-
-		public override Widget Clone() { return new CncScrollPanelWidget(this); }
-	}
-	
 	public class CncSliderWidget : SliderWidget
 	{
 		public Func<bool> IsDisabled = () => false;
@@ -163,45 +91,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 	
 	public class CncDropDownButtonWidget : DropDownButtonWidget
 	{
-		public Func<bool> IsDisabled = () => false;
-		public string Font = "Bold";
-
 		public CncDropDownButtonWidget() : base() { }
-		protected CncDropDownButtonWidget(CncDropDownButtonWidget other) : base(other)
-		{
-			Font = other.Font;
-		}
-
+		protected CncDropDownButtonWidget(CncDropDownButtonWidget other) : base(other) { }
 		public override Widget Clone() { return new CncDropDownButtonWidget(this); }
 
-		public override void DrawInner()
-		{
-			var rb = RenderBounds;
-			var state = IsDisabled() ? "button-disabled" : 
-						Depressed ? "button-pressed" : 
-						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
-						"button";
-			
-			WidgetUtils.DrawPanel(state, rb);
-			
-			var font = Game.Renderer.Fonts[Font];
-			var text = GetText();
-			font.DrawText(text,
-				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
-					- new int2(font.Measure(text).X / 2,
-				font.Measure(text).Y / 2), IsDisabled() ? Color.Gray : Color.White);
-			
-			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
-			WidgetUtils.DrawRGBA( image, new float2(rb.Right - rb.Height + 4, 
-			                                        rb.Top + (rb.Height - image.bounds.Height) / 2));
-
-			WidgetUtils.FillRectWithColor(new Rectangle(rb.Right - rb.Height, rb.Top + 3, 1, rb.Height - 6),
-				Color.White);
-		}
-		
 		public static new void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
 		{
-			var dropDown = new CncScrollPanelWidget();
+			var dropDown = new ScrollPanelWidget();
 			dropDown.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100);
 			dropDown.ItemSpacing = 1;
 			dropDown.Background = "panel-black";

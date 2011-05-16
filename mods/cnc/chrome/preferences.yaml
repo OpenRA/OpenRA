@@ -327,7 +327,7 @@ Container@SETTINGS_PANEL:
 #					Height:25
 #					Align:Right
 #					Text:Key
-#				CncScrollPanel@KEYBINDINGS:
+#				ScrollPanel@KEYBINDINGS:
 #					Id:KEYBINDINGS
 #					X:375
 #					Y:85

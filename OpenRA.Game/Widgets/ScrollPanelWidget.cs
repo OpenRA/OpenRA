@@ -16,11 +16,11 @@ namespace OpenRA.Widgets
 {
 	public class ScrollPanelWidget : Widget
 	{
-		public string Background = "dialog3";
 		public int ScrollbarWidth = 24;
 		public float ScrollVelocity = 4f;		
 		public int ItemSpacing = 2;
-		
+		public int ButtonDepth = ChromeMetrics.GetInt("ButtonDepth");
+		public string Background = "scrollpanel-bg";
 		public int ContentHeight = 0;
 		protected float ListOffset = 0;
 		protected bool UpPressed = false;
@@ -71,16 +71,24 @@ namespace OpenRA.Widgets
 			if (thumbHeight == ScrollbarHeight)
 				thumbHeight = 0;
 			
-			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth, rb.Height);
+			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth+1, rb.Height);
 			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
 			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth, ScrollbarWidth, ScrollbarHeight);
+			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 			
-			string upButtonBg = UpPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
-			string downButtonBg = DownPressed || thumbHeight == 0 ? "dialog3" : "dialog2";
-			string scrollbarBg = "dialog3";
-			string thumbBg = "dialog2";
+			
+			string upButtonBg = (thumbHeight == 0 || ListOffset >= 0) ? "button-disabled" :
+					UpPressed ? "button-pressed" : 
+					upButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
+			
+			string downButtonBg = (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight) ? "button-disabled" :
+					DownPressed ? "button-pressed" : 
+					downButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
+			
+			string scrollbarBg = "scrollpanel-bg";
+			string thumbBg = (Focused && thumbRect.Contains(Viewport.LastMousePos)) ? "button-pressed" : 
+					thumbRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
 
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
@@ -89,9 +97,11 @@ namespace OpenRA.Widgets
 			
 			if (thumbHeight > 0)
 				WidgetUtils.DrawPanel(thumbBg, thumbRect);
-
-			var upOffset = UpPressed || thumbHeight == 0 ? 4 : 3;
-			var downOffset = DownPressed || thumbHeight == 0 ? 4 : 3;
+			
+			var upOffset = !UpPressed || thumbHeight == 0 || ListOffset >= 0 ? 4 : 4 + ButtonDepth;
+			var downOffset = !DownPressed || thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight
+				? 4 : 4 + ButtonDepth;
+			
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "up_arrow"),
 				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
@@ -116,6 +126,11 @@ namespace OpenRA.Widgets
 		{
 			ListOffset += direction*ScrollVelocity;
 			ListOffset = Math.Min(0,Math.Max(Bounds.Height - ContentHeight, ListOffset));
+		}
+		
+		public void ScrollToBottom()
+		{
+			ListOffset = Math.Min(0,Bounds.Height - ContentHeight);
 		}
 		
 		public override void Tick ()

@@ -45,7 +45,7 @@ Container@SERVER_LOBBY:
 					Width:130
 					Height:20
 					Text: Allow Cheats
-				CncScrollPanel@PLAYERS:
+				ScrollPanel@PLAYERS:
 					Id:PLAYERS
 					X:15
 					Y:30
@@ -306,7 +306,7 @@ Container@SERVER_LOBBY:
 							Text:Ready
 							Align:Left
 							Font:Bold
-				CncScrollPanel@CHAT_DISPLAY:
+				ScrollPanel@CHAT_DISPLAY:
 					Id:CHAT_DISPLAY
 					X:15
 					Y:285

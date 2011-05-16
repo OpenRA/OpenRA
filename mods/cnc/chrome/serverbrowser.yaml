@@ -18,7 +18,7 @@ Container@SERVERBROWSER_PANEL:
 			Height:500
 			Background:panel-black
 			Children:
-				CncScrollPanel@SERVER_LIST:
+				ScrollPanel@SERVER_LIST:
 					Id:SERVER_LIST
 					X:15
 					Y:30

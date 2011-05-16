@@ -18,7 +18,7 @@ Container@MUSIC_PANEL:
 			Height:400
 			Background:panel-black
 			Children:
-				CncScrollPanel@MUSIC_LIST:
+				ScrollPanel@MUSIC_LIST:
 					Id:MUSIC_LIST
 					X:15
 					Y:30

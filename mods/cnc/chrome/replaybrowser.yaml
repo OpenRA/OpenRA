@@ -18,7 +18,7 @@ Container@REPLAYBROWSER_PANEL:
 			Height:300
 			Background:panel-black
 			Children:
-				CncScrollPanel@REPLAY_LIST:
+				ScrollPanel@REPLAY_LIST:
 					Id:REPLAY_LIST
 					X:15
 					Y:15

@@ -18,7 +18,7 @@ Container@MODS_PANEL:
 			Height:500
 			Background:panel-black
 			Children:
-				CncScrollPanel@MOD_LIST:
+				ScrollPanel@MOD_LIST:
 					Id:MOD_LIST
 					X:15
 					Y:30
