@@ -352,8 +352,8 @@ namespace OpenRA.Widgets
 
     public class ContainerWidget : Widget
     {
-        public Func<string> GetBackground;
-        public string Background = null;
+        [Obsolete] public Func<string> GetBackground;
+        [Obsolete] public string Background = null;
 
         public ContainerWidget()
             : base()
@@ -389,7 +389,7 @@ namespace OpenRA.Widgets
     public interface IWidgetDelegate { }
 	
 	// TODO: This can die once ra init is sane
-    public interface IWidgetDelegateEx : IWidgetDelegate
+    [Obsolete] public interface IWidgetDelegateEx : IWidgetDelegate
     {
         void Init();
     }

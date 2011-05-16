@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 		public enum TextAlign { Left, Center, Right }
 		public enum TextVAlign { Top, Middle, Bottom }
 		public string Text = null;
-		public string Background = null;
+		[Obsolete] public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public Renderer.FontType Font = Renderer.FontType.Regular;
@@ -30,7 +30,7 @@ namespace OpenRA.Widgets
 		public Color ContrastColor = Color.Black;
 		public bool WordWrap = false;
 		public Func<string> GetText;
-		public Func<string> GetBackground;
+		[Obsolete] public Func<string> GetBackground;
 		
 		public LabelWidget()
 			: base()

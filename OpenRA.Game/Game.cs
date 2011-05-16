@@ -346,7 +346,7 @@ namespace OpenRA
 		}
 		
 		// TODO: Fix ra relying on this behavior, then make this sane
-		public static void Disconnect()
+		[Obsolete] public static void Disconnect()
 		{
 			DisconnectOnly();
 			var shellmap = ChooseShellmap();
