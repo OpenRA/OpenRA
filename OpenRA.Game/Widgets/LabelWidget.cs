@@ -24,13 +24,14 @@ namespace OpenRA.Widgets
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = "Regular";
 		public Color Color = Color.White;
-		public bool Bold = false; // Legacy flag. TODO: Remove
 		public bool Contrast = false;
 		public Color ContrastColor = Color.Black;
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		[Obsolete] public Func<string> GetBackground;
 		
+		[Obsolete] public bool Bold = false; // Legacy flag. TODO: Remove
+
 		public LabelWidget()
 			: base()
 		{
