@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			mouseScroll = Game.Settings.Game.MouseScroll;
 			var mouseScrollDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnMouseUp = _ => ShowMouseScrollDropdown(mouseScrollDropdown);
+			mouseScrollDropdown.OnClick = () => ShowMouseScrollDropdown(mouseScrollDropdown);
 			mouseScrollDropdown.GetText = () => mouseScroll.ToString();
 			
 			var teamchat = Game.Settings.Game.TeamChatToggle;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			groupAddModifier = Game.Settings.Keyboard.ControlGroupModifier;
 			var groupModifierDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("GROUPADD_MODIFIER");
-			groupModifierDropdown.OnMouseUp = _ => ShowGroupModifierDropdown(groupModifierDropdown);
+			groupModifierDropdown.OnClick = () => ShowGroupModifierDropdown(groupModifierDropdown);
 			groupModifierDropdown.GetText = () => groupAddModifier.ToString();
 			
 			
@@ -214,31 +214,32 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "initialRamp", playerColor }
 			});
 			
-			color.DisplayPanel(colorChooser);
+			color.AttachPanel(colorChooser);
 		}
 		
-		bool ShowGroupModifierDropdown(Widget dropdown)
+		void ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
 		{
-			var dropDownOptions = new List<Pair<string, Action>>()
-			{
-				Pair.New("Ctrl", new Action(() => groupAddModifier = Modifiers.Ctrl)),
-				Pair.New("Alt", new Action(() => groupAddModifier = Modifiers.Alt)),
-				Pair.New("Shift", new Action(() => groupAddModifier = Modifiers.Shift)),
-				// TODO: Display this as Cmd on osx once we have platform detection
-				Pair.New("Meta", new Action(() => groupAddModifier = Modifiers.Meta)),
-			};
+			var panel = Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()) as ScrollPanelWidget;
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			
+			var options = new List<Pair<string, Modifiers>>()
+			{
+				Pair.New("Ctrl", Modifiers.Ctrl),
+				Pair.New("Alt", Modifiers.Alt),
+				Pair.New("Shift", Modifiers.Shift),
+				// TODO: Display this as Cmd on osx once we have platform detection
+				Pair.New("Meta", Modifiers.Meta)
+			};
 
-			CncDropDownButtonWidget.ShowDropDown(dropdown,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = ac.First,
-					Align = LabelWidget.TextAlign.Center,
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
-			return true;
+			foreach (var o in options)
+			{
+				var key = o;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => groupAddModifier == key.Second, () => { groupAddModifier = key.Second; dropdown.RemovePanel(); });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => key.First;
+				panel.AddChild(item);
+			}
+			panel.Bounds.Height = panel.ContentHeight;
+			dropdown.AttachPanel(panel);
 		}
 		
 		bool ShowWindowModeDropdown(Widget dropdown)

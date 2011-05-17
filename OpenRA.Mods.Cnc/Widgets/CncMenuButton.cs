@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel = fullscreenMask = null;
 		}
 		
-		public void DisplayPanel(Widget p)
+		public void AttachPanel(Widget p)
 		{
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");

@@ -420,7 +420,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "initialRamp", orderManager.LocalClient.ColorRamp }
 			});
 			
-			color.DisplayPanel(colorChooser);
+			color.AttachPanel(colorChooser);
 		}
 		
 		void UpdatePlayerList()
