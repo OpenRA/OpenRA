@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			playerPalettePreview.Ramp = playerColor;
 			
 			var colorDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("COLOR_DROPDOWN");
-			colorDropdown.OnClick = () => ShowColorPicker(colorDropdown);
+			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown);
 			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerColor.GetColor(0);
 			
 			// Debug
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Video
 			windowMode = Game.Settings.Graphics.Mode;
 			var windowModeDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnClick = () => ShowWindowModeDropdown(windowModeDropdown);
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown);
 			windowModeDropdown.GetText = () => windowMode == WindowMode.Windowed ? "Windowed" : windowMode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
 			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => windowMode == WindowMode.Windowed;
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			mouseScroll = Game.Settings.Game.MouseScroll;
 			var mouseScrollDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnClick = () => ShowMouseScrollDropdown(mouseScrollDropdown);
+			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown);
 			mouseScrollDropdown.GetText = () => mouseScroll.ToString();
 			
 			var teamchat = Game.Settings.Game.TeamChatToggle;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			groupAddModifier = Game.Settings.Keyboard.ControlGroupModifier;
 			var groupModifierDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("GROUPADD_MODIFIER");
-			groupModifierDropdown.OnClick = () => ShowGroupModifierDropdown(groupModifierDropdown);
+			groupModifierDropdown.OnMouseDown = _ => ShowGroupModifierDropdown(groupModifierDropdown);
 			groupModifierDropdown.GetText = () => groupAddModifier.ToString();
 			
 			
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 		}
 		
-		void ShowColorPicker(CncDropDownButtonWidget color)
+		bool ShowColorPicker(CncDropDownButtonWidget color)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
@@ -215,9 +215,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			});
 			
 			color.AttachPanel(colorChooser);
+			return true;
 		}
 		
-		void ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
+		bool ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -226,27 +227,28 @@ namespace OpenRA.Mods.Cnc.Widgets
 			});
 
 			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
-			var options = new List<Pair<string, Modifiers>>()
+			var options = new Dictionary<string, Modifiers>()
 			{
-				Pair.New("Ctrl", Modifiers.Ctrl),
-				Pair.New("Alt", Modifiers.Alt),
-				Pair.New("Shift", Modifiers.Shift),
+				{ "Ctrl", Modifiers.Ctrl },
+				{ "Alt", Modifiers.Alt },
+				{ "Shift", Modifiers.Shift },
 				// TODO: Display this as Cmd on osx once we have platform detection
-				Pair.New("Meta", Modifiers.Meta)
+				{ "Meta", Modifiers.Meta }
 			};
 
-			foreach (var o in options)
+			foreach (var option in options)
 			{
-				var key = o;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => groupAddModifier == key.Second, () => { groupAddModifier = key.Second; dropdown.RemovePanel(); });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => key.First;
+				var o = option;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => groupAddModifier == o.Value, () => { groupAddModifier = o.Value; dropdown.RemovePanel(); });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
 				panel.AddChild(item);
 			}
 			panel.Bounds.Height = panel.ContentHeight;
 			dropdown.AttachPanel(panel);
+			return true;
 		}
 		
-		void ShowWindowModeDropdown(CncDropDownButtonWidget dropdown)
+		bool ShowWindowModeDropdown(CncDropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -255,44 +257,53 @@ namespace OpenRA.Mods.Cnc.Widgets
 			});
 
 			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
-			var options = new List<Pair<string, WindowMode>>()
+			var options = new Dictionary<string, WindowMode>()
 			{
-				Pair.New("Pseudo-Fullscreen", WindowMode.PseudoFullscreen),
-				Pair.New("Fullscreen",WindowMode.Fullscreen),
-				Pair.New("Windowed", WindowMode.Windowed),
+				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
+				{ "Fullscreen", WindowMode.Fullscreen },
+				{ "Windowed", WindowMode.Windowed },
 			};
 
-			foreach (var o in options)
+			foreach (var option in options)
 			{
-				var key = o;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => windowMode == key.Second, () => { windowMode = key.Second; dropdown.RemovePanel(); });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => key.First;
+				var o = option;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => windowMode == o.Value, () => { windowMode = o.Value; dropdown.RemovePanel(); });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
 				panel.AddChild(item);
 			}
 			
 			panel.Bounds.Height = panel.ContentHeight;
 			dropdown.AttachPanel(panel);
+			return true;
 		}
 		
 		
-		bool ShowMouseScrollDropdown(Widget dropdown)
+		bool ShowMouseScrollDropdown(CncDropDownButtonWidget dropdown)
 		{
-			var dropDownOptions = new List<Pair<string, Action>>()
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
+			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
 			{
-				Pair.New("Disabled", new Action(() => mouseScroll = MouseScrollType.Disabled)),
-				Pair.New("Standard", new Action(() => mouseScroll = MouseScrollType.Standard)),
-				Pair.New("Inverted", new Action(() => mouseScroll = MouseScrollType.Inverted)),
+				{ "substitutions", substitutions }
+			});
+
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			var options = new Dictionary<string, MouseScrollType>()
+			{
+				{ "Disabled", MouseScrollType.Disabled },
+				{ "Standard", MouseScrollType.Standard },
+				{ "Inverted", MouseScrollType.Inverted },
 			};
 			
-			CncDropDownButtonWidget.ShowDropDown(dropdown,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = ac.First,
-					Align = LabelWidget.TextAlign.Center,
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
+			foreach (var option in options)
+			{
+				var o = option;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => mouseScroll == o.Value, () => { mouseScroll = o.Value; dropdown.RemovePanel(); });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
+				panel.AddChild(item);
+			}
+			
+			panel.Bounds.Height = panel.ContentHeight;
+			dropdown.AttachPanel(panel);
 			return true;
 		}
 	}

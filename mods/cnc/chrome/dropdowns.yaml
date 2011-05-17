@@ -75,6 +75,7 @@ Background@COLOR_CHOOSER:
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Id:LABEL_DROPDOWN_TEMPLATE
 	Width:DROPDOWN_WIDTH
+	Background:panel-black
 	Children:
 		ScrollItem@TEMPLATE:
 			Id:TEMPLATE
@@ -85,7 +86,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Visible:false
 			Children:
 				Label@LABEL:
-					X:10
 					Id:LABEL
+					X:10
 					Width:PARENT_RIGHT-20
 					Height:25

@@ -309,96 +309,123 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			return orderManager.LobbyInfo.ClientInSlot( slot );
 		}
-
-		bool ShowSlotDropDown(Session.Slot slot, ButtonWidget name, bool showBotOptions)
+		
+		class SlotDropDownOption
 		{
-			var dropDownOptions = new List<Pair<string, Action>>
+			public string Title;
+			public string Order;
+			public Func<bool> Selected;
+			
+			public SlotDropDownOption(string title, string order, Func<bool> selected)
 			{
-				new Pair<string, Action>( "Open",
-					() => orderManager.IssueOrder( Order.Command( "slot_open " + slot.Index )  )),
-				new Pair<string, Action>( "Closed",
-					() => orderManager.IssueOrder( Order.Command( "slot_close " + slot.Index ) )),
-			};
-
-			if (showBotOptions)
-			{
-				var bots = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
-				bots.Do(bot =>
-					dropDownOptions.Add(new Pair<string, Action>("Bot: {0}".F(bot),
-						() => orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot.Index, bot))))));
+				Title = title;
+				Order = order;
+				Selected = selected;
 			}
-
-			CncDropDownButtonWidget.ShowDropDown( name,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = "  {0}".F(ac.First),
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
+		}
+		
+		bool ShowSlotDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot, bool showBotOptions)
+		{
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
+			var panel = (ScrollPanelWidget)Widget.LoadWidget("LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			{
+				{ "substitutions", substitutions }
+			});
+			
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			var options = new List<SlotDropDownOption>()
+			{
+				new SlotDropDownOption("Open", "slot_open "+slot.Index, () => (!slot.Closed && slot.Bot == null)),
+				new SlotDropDownOption("Closed", "slot_close "+slot.Index, () => slot.Closed)
+			};
+			
+			if (showBotOptions)
+				foreach (var bot in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
+					options.Add(new SlotDropDownOption("Bot: {0}".F(bot), "slot_bot {0} {1}".F(slot.Index, bot), () => slot.Bot == bot));
+			
+			foreach (var option in options)
+			{
+				var o = option;
+				var item = ScrollItemWidget.Setup(itemTemplate, o.Selected, 
+				                                  () => {
+														orderManager.IssueOrder(Order.Command(o.Order));
+														dropdown.RemovePanel();
+												  });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
+				panel.AddChild(item);
+			}
+			
+			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
+			dropdown.AttachPanel(panel);
 			return true;
 		}
 		
-		bool ShowRaceDropDown(Session.Slot s, ButtonWidget race)
+		bool ShowRaceDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot)
 		{
-			if (Map.Players[s.MapPlayer].LockRace)
+			if (Map.Players[slot.MapPlayer].LockRace)
 				return false;
-
-			var dropDownOptions = new List<Pair<string, Action>>();
+			
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
+			var panel = (ScrollPanelWidget)Widget.LoadWidget("RACE_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			{
+				{ "substitutions", substitutions }
+			});
+			
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			
 			foreach (var c in CountryNames)
 			{
-				var cc = c;
-				dropDownOptions.Add(new Pair<string, Action>( cc.Key,
-					() => orderManager.IssueOrder( Order.Command("race "+cc.Key) )) );
-			};
-
-			CncDropDownButtonWidget.ShowDropDown( race,
-				dropDownOptions,
-				(ac, w) =>
-			    {
-					var ret = new LabelWidget
-					{
-						Bounds = new Rectangle(0, 0, w, 24),
-						Text = "          {0}".F(CountryNames[ac.First]),
-						OnMouseUp = mi => { ac.Second(); return true; },
-					};
-				
-					ret.AddChild(new ImageWidget
-					{
-						Bounds = new Rectangle(5, 5, 40, 15),
-						GetImageName = () => ac.First,
-						GetImageCollection = () => "flags",
-					});
-					return ret;
-				});
+				var race = c;
+				var sr = GetClientInSlot(slot).Country;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => sr == race.Key, 
+				                                  () => {
+														orderManager.IssueOrder(Order.Command("race "+race.Key));
+														dropdown.RemovePanel();
+												  });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => race.Value;
+				var flag = item.GetWidget<ImageWidget>("FLAG");
+				flag.GetImageCollection = () => "flags";
+				flag.GetImageName = () => race.Key;
+				panel.AddChild(item);
+			}
+			
+			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
+			dropdown.AttachPanel(panel);
 			return true;
 		}
-		
-		bool ShowTeamDropDown(ButtonWidget team)
+				
+		bool ShowTeamDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot)
 		{
-			var dropDownOptions = new List<Pair<string, Action>>();
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
+			var panel = (ScrollPanelWidget)Widget.LoadWidget("TEAM_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			{
+				{ "substitutions", substitutions }
+			});
+			
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			
 			for (int i = 0; i <= Map.PlayerCount; i++)
 			{
 				var ii = i;
-				dropDownOptions.Add(new Pair<string, Action>( ii == 0 ? "-" : ii.ToString(),
-					() => orderManager.IssueOrder( Order.Command("team "+ii) )) );
+				var c = GetClientInSlot(slot);
+				var item = ScrollItemWidget.Setup(itemTemplate, () => c.Team == ii, 
+				                                  () => {
+														orderManager.IssueOrder(Order.Command("team "+ii));
+														dropdown.RemovePanel();
+												  });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				panel.AddChild(item);
 			};
-
-			CncDropDownButtonWidget.ShowDropDown( team,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = "  {0}".F(ac.First),
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
+			
+			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
+			dropdown.AttachPanel(panel);
 			return true;
 		}
 		
-		void ShowColorDropDown(Session.Slot s, CncDropDownButtonWidget color)
+		bool ShowColorDropDown(Session.Slot s, CncDropDownButtonWidget color)
 		{
 			if (Map.Players[s.MapPlayer].LockColor)
-				return;
+				return true;
 			
 			Action<ColorRamp> onSelect = c =>
 			{
@@ -421,6 +448,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			});
 			
 			color.AttachPanel(colorChooser);
+			return true;
 		}
 		
 		void UpdatePlayerList()
@@ -442,18 +470,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 						if (slot.Spectator)
 						{
 							template = EmptySlotTemplateHost.Clone();
-							var name = template.GetWidget<ButtonWidget>("NAME");
+							var name = template.GetWidget<CncDropDownButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : "Open";
-							name.OnMouseDown = _ => ShowSlotDropDown(s, name, false);
+							name.OnMouseDown = _ => ShowSlotDropDown(name, s, false);
 							var btn = template.GetWidget<ButtonWidget>("JOIN");
 							btn.GetText = () =>  "Spectate in this slot";							
 						}
 						else
 						{
 							template = EmptySlotTemplateHost.Clone();
-							var name = template.GetWidget<ButtonWidget>("NAME");
+							var name = template.GetWidget<CncDropDownButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
-							name.OnMouseDown = _ => ShowSlotDropDown(s, name, Map.Players[ s.MapPlayer ].AllowBots);
+							name.OnMouseDown = _ => ShowSlotDropDown(name, s, Map.Players[ s.MapPlayer ].AllowBots);
 						}
 					}
 					else
@@ -503,13 +531,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					name.OnLoseFocus = () => name.OnEnterKey();
 
 					var color = template.GetWidget<CncDropDownButtonWidget>("COLOR");
-					color.OnClick = () => ShowColorDropDown(s, color);
+					color.OnMouseDown = _ => ShowColorDropDown(s, color);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
-					var faction = template.GetWidget<ButtonWidget>("FACTION");
-					faction.OnMouseDown = _ => ShowRaceDropDown(s, faction);
+					var faction = template.GetWidget<CncDropDownButtonWidget>("FACTION");
+					faction.OnMouseDown = _ => ShowRaceDropDown(faction, s);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
@@ -517,8 +545,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 					factionflag.GetImageName = () => c.Country;
 					factionflag.GetImageCollection = () => "flags";
 
-					var team = template.GetWidget<ButtonWidget>("TEAM");
-					team.OnMouseDown = _ => ShowTeamDropDown(team);
+					var team = template.GetWidget<CncDropDownButtonWidget>("TEAM");
+					team.OnMouseDown = _ => ShowTeamDropDown(team, s);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
