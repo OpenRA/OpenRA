@@ -28,14 +28,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void DrawInner()
 		{
-			var state = IsDisabled() ? "button-disabled" : 
-				Depressed ? "button-pressed" : 
-				RenderBounds.Contains(Viewport.LastMousePos) ? "button-hover" : 
-				"button";
-			
 			var font = Game.Renderer.Fonts[Font];
 			var rect = RenderBounds;
-			WidgetUtils.DrawPanel(state, new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height)));
+			ButtonWidget.DrawBackground(new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height)),
+			                            IsDisabled(), Depressed, RenderBounds.Contains(Viewport.LastMousePos));
 
 			var textSize = font.Measure(Text);
 			font.DrawText(Text,

@@ -99,15 +99,10 @@ namespace OpenRA.Widgets
 				Font = "Bold";
 			
 			var font = Game.Renderer.Fonts[Font];
-			var state = IsDisabled() ? "button-disabled" : 
-						Depressed ? "button-pressed" : 
-						rb.Contains(Viewport.LastMousePos) ? "button-hover" : 
-						"button";
-			
-			WidgetUtils.DrawPanel(state, rb);
 			var text = GetText();
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
+			DrawBackground(rb, IsDisabled(), Depressed, rb.Contains(Viewport.LastMousePos));
 			font.DrawText(text,
 				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
 					- new int2(font.Measure(text).X / 2,
@@ -116,6 +111,16 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new ButtonWidget(this); }
 		public virtual int UsableWidth { get { return Bounds.Width; } }
+		
+		public static void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+		{
+			var state = disabled ? "button-disabled" : 
+						pressed ? "button-pressed" : 
+						hover ? "button-hover" : 
+						"button";
+			
+			WidgetUtils.DrawPanel(state, rect);
+		}
 	}
 
 	public class DropDownButtonWidget : ButtonWidget

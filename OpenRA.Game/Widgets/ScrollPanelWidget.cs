@@ -77,26 +77,16 @@ namespace OpenRA.Widgets
 			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 			
-			
-			string upButtonBg = (thumbHeight == 0 || ListOffset >= 0) ? "button-disabled" :
-					UpPressed ? "button-pressed" : 
-					upButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-			
-			string downButtonBg = (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight) ? "button-disabled" :
-					DownPressed ? "button-pressed" : 
-					downButtonRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-			
-			string scrollbarBg = "scrollpanel-bg";
-			string thumbBg = (Focused && thumbRect.Contains(Viewport.LastMousePos)) ? "button-pressed" : 
-					thumbRect.Contains(Viewport.LastMousePos) ? "button-hover" : "button";
-
 			WidgetUtils.DrawPanel(Background, backgroundRect);
-			WidgetUtils.DrawPanel(upButtonBg, upButtonRect);
-			WidgetUtils.DrawPanel(downButtonBg, downButtonRect);
-			WidgetUtils.DrawPanel(scrollbarBg, scrollbarRect);
+			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
+			ButtonWidget.DrawBackground(upButtonRect, (thumbHeight == 0 || ListOffset >= 0), 
+			                            UpPressed, upButtonRect.Contains(Viewport.LastMousePos));
+			ButtonWidget.DrawBackground(downButtonRect, (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight), 
+			                            DownPressed, downButtonRect.Contains(Viewport.LastMousePos));
 			
 			if (thumbHeight > 0)
-				WidgetUtils.DrawPanel(thumbBg, thumbRect);
+				ButtonWidget.DrawBackground(thumbRect, false, (Focused && thumbRect.Contains(Viewport.LastMousePos)),
+				                            thumbRect.Contains(Viewport.LastMousePos));
 			
 			var upOffset = !UpPressed || thumbHeight == 0 || ListOffset >= 0 ? 4 : 4 + ButtonDepth;
 			var downOffset = !DownPressed || thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight
