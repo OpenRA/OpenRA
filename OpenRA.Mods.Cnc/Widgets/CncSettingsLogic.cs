@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Video
 			windowMode = Game.Settings.Graphics.Mode;
 			var windowModeDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseUp = _ => ShowWindowModeDropdown(windowModeDropdown);
+			windowModeDropdown.OnClick = () => ShowWindowModeDropdown(windowModeDropdown);
 			windowModeDropdown.GetText = () => windowMode == WindowMode.Windowed ? "Windowed" : windowMode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
 			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => windowMode == WindowMode.Windowed;
@@ -220,7 +220,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		void ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
 			{
 				{ "substitutions", substitutions }
@@ -247,25 +246,32 @@ namespace OpenRA.Mods.Cnc.Widgets
 			dropdown.AttachPanel(panel);
 		}
 		
-		bool ShowWindowModeDropdown(Widget dropdown)
+		void ShowWindowModeDropdown(CncDropDownButtonWidget dropdown)
 		{
-			var dropDownOptions = new List<Pair<string, Action>>()
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
+			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
 			{
-				Pair.New("Pseudo-Fullscreen", new Action(() => windowMode = WindowMode.PseudoFullscreen)),
-				Pair.New("Fullscreen", new Action(() => windowMode = WindowMode.Fullscreen)),
-				Pair.New("Windowed", new Action(() => windowMode = WindowMode.Windowed)),
+				{ "substitutions", substitutions }
+			});
+
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			var options = new List<Pair<string, WindowMode>>()
+			{
+				Pair.New("Pseudo-Fullscreen", WindowMode.PseudoFullscreen),
+				Pair.New("Fullscreen",WindowMode.Fullscreen),
+				Pair.New("Windowed", WindowMode.Windowed),
 			};
+
+			foreach (var o in options)
+			{
+				var key = o;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => windowMode == key.Second, () => { windowMode = key.Second; dropdown.RemovePanel(); });
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => key.First;
+				panel.AddChild(item);
+			}
 			
-			CncDropDownButtonWidget.ShowDropDown(dropdown,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = ac.First,
-					Align = LabelWidget.TextAlign.Center,
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
-			return true;
+			panel.Bounds.Height = panel.ContentHeight;
+			dropdown.AttachPanel(panel);
 		}
 		
 		

@@ -110,40 +110,39 @@ Container@SETTINGS_PANEL:
 					Id:MODE_DROPDOWN
 					X:425
 					Y:40
-					Width:150
+					Width:170
 					Height:25
 					Font:Regular
 					Text:Windowed
 				Container@WINDOWRES:
 					Id:WINDOW_RESOLUTION
+					X:595
+					Y:40
 					Children:
 						Label@At:
 							Text:@
 							Font:Bold
-							X:575
-							Y:39
+							Y:0-1
 							Height:25
 							Width:25
 							Align:Center
 						TextField@SCREEN_WIDTH:
 							Id:WINDOW_WIDTH
-							X:600
-							Y:40
+							X:25
 							Width:45
 							Height:25
 							MaxLength:5
 						Label@X:
 							Text:x
 							Font:Bold
-							X:645
-							Y:39
+							X:70
+							Y:0-1
 							Height:25
-							Width:25
+							Width:15
 							Align:Center
 						TextField@SCREEN_HEIGHT:
 							Id:WINDOW_HEIGHT
-							X:670
-							Y:40
+							X:85
 							Width:45
 							Height:25
 							MaxLength:5
