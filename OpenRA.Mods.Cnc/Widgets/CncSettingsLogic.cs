@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			playerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
 			playerPalettePreview.Ramp = playerColor;
 			
-			var colorDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("COLOR_DROPDOWN");
+			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR_DROPDOWN");
 			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown);
 			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerColor.GetColor(0);
 			
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			// Video
 			windowMode = Game.Settings.Graphics.Mode;
-			var windowModeDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("MODE_DROPDOWN");
+			var windowModeDropdown = generalPane.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown);
 			windowModeDropdown.GetText = () => windowMode == WindowMode.Windowed ? "Windowed" : windowMode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			edgescrollCheckbox.OnClick = () => edgescroll ^= true;
 			
 			mouseScroll = Game.Settings.Game.MouseScroll;
-			var mouseScrollDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("MOUSE_SCROLL");
+			var mouseScrollDropdown = inputPane.GetWidget<DropDownButtonWidget>("MOUSE_SCROLL");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown);
 			mouseScrollDropdown.GetText = () => mouseScroll.ToString();
 			
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			teamchatCheckbox.OnClick = () => teamchat ^= true;
 			
 			groupAddModifier = Game.Settings.Keyboard.ControlGroupModifier;
-			var groupModifierDropdown = inputPane.GetWidget<CncDropDownButtonWidget>("GROUPADD_MODIFIER");
+			var groupModifierDropdown = inputPane.GetWidget<DropDownButtonWidget>("GROUPADD_MODIFIER");
 			groupModifierDropdown.OnMouseDown = _ => ShowGroupModifierDropdown(groupModifierDropdown);
 			groupModifierDropdown.GetText = () => groupAddModifier.ToString();
 			
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 		}
 		
-		bool ShowColorPicker(CncDropDownButtonWidget color)
+		bool ShowColorPicker(DropDownButtonWidget color)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 		
-		bool ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
+		bool ShowGroupModifierDropdown(DropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 		
-		bool ShowWindowModeDropdown(CncDropDownButtonWidget dropdown)
+		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		}
 		
 		
-		bool ShowMouseScrollDropdown(CncDropDownButtonWidget dropdown)
+		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()

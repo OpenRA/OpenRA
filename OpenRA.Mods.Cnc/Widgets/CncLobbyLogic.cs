@@ -324,7 +324,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 		}
 		
-		bool ShowSlotDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot, bool showBotOptions)
+		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, bool showBotOptions)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Widget.LoadWidget("LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -360,7 +360,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 		
-		bool ShowRaceDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot)
+		bool ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Slot slot)
 		{
 			if (Map.Players[slot.MapPlayer].LockRace)
 				return false;
@@ -394,7 +394,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 				
-		bool ShowTeamDropDown(CncDropDownButtonWidget dropdown, Session.Slot slot)
+		bool ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Slot slot)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			var panel = (ScrollPanelWidget)Widget.LoadWidget("TEAM_DROPDOWN_TEMPLATE", null, new WidgetArgs()
@@ -422,7 +422,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 		
-		bool ShowColorDropDown(Session.Slot s, CncDropDownButtonWidget color)
+		bool ShowColorDropDown(DropDownButtonWidget color, Session.Slot s)
 		{
 			if (Map.Players[s.MapPlayer].LockColor)
 				return true;
@@ -470,7 +470,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 						if (slot.Spectator)
 						{
 							template = EmptySlotTemplateHost.Clone();
-							var name = template.GetWidget<CncDropDownButtonWidget>("NAME");
+							var name = template.GetWidget<DropDownButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : "Open";
 							name.OnMouseDown = _ => ShowSlotDropDown(name, s, false);
 							var btn = template.GetWidget<ButtonWidget>("JOIN");
@@ -479,7 +479,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 						else
 						{
 							template = EmptySlotTemplateHost.Clone();
-							var name = template.GetWidget<CncDropDownButtonWidget>("NAME");
+							var name = template.GetWidget<DropDownButtonWidget>("NAME");
 							name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
 							name.OnMouseDown = _ => ShowSlotDropDown(name, s, Map.Players[ s.MapPlayer ].AllowBots);
 						}
@@ -530,13 +530,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					};
 					name.OnLoseFocus = () => name.OnEnterKey();
 
-					var color = template.GetWidget<CncDropDownButtonWidget>("COLOR");
-					color.OnMouseDown = _ => ShowColorDropDown(s, color);
+					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
+					color.OnMouseDown = _ => ShowColorDropDown(color, s);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
-					var faction = template.GetWidget<CncDropDownButtonWidget>("FACTION");
+					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.OnMouseDown = _ => ShowRaceDropDown(faction, s);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
@@ -545,7 +545,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					factionflag.GetImageName = () => c.Country;
 					factionflag.GetImageCollection = () => "flags";
 
-					var team = template.GetWidget<CncDropDownButtonWidget>("TEAM");
+					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
 					team.OnMouseDown = _ => ShowTeamDropDown(team, s);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 

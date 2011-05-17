@@ -184,6 +184,7 @@
     <Compile Include="Traits\Waypoint.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />
     <Compile Include="Widgets\ScrollItem.cs" />
+    <Compile Include="Widgets\DropDownButtonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

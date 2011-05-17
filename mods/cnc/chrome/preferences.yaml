@@ -40,7 +40,7 @@ Container@SETTINGS_PANEL:
 					Width:205
 					Height:25
 					MaxLength:16
-				CncDropDownButton@COLOR:
+				DropDownButton@COLOR:
 					Id:COLOR_DROPDOWN
 					X:275
 					Y:40
@@ -106,7 +106,7 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Align:Right
 					Text:Mode:
-				CncDropDownButton@MODE_DROPDOWN:
+				DropDownButton@MODE_DROPDOWN:
 					Id:MODE_DROPDOWN
 					X:425
 					Y:40
@@ -256,7 +256,7 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Middle-Mouse Scrolling:
 					Align:Right
-				CncDropDownButton@MOUSE_SCROLL:
+				DropDownButton@MOUSE_SCROLL:
 					Id:MOUSE_SCROLL
 					X:180
 					Y:180
@@ -272,7 +272,7 @@ Container@SETTINGS_PANEL:
 #					Font:Regular
 #					Text:Multitouch Scrolling:
 #					Align:Right
-#				CncDropDownButton@MULTITOUCH_SCROLL:
+#				DropDownButton@MULTITOUCH_SCROLL:
 #					Id:MULTITOUCH_SCROLL
 #					X:180
 #					Y:210
@@ -303,7 +303,7 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Group Addition Modifier:
 					Align:Right
-				CncDropDownButton@GROUPADD_MODIFIER:
+				DropDownButton@GROUPADD_MODIFIER:
 					Id:GROUPADD_MODIFIER
 					X:540
 					Y:65

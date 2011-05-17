@@ -67,7 +67,7 @@ Container@SERVER_LOBBY:
 									Width:150
 									Height:25
 									MaxLength:16
-								CncDropDownButton@COLOR:
+								DropDownButton@COLOR:
 									Id:COLOR
 									Width:80
 									Height:25
@@ -80,7 +80,7 @@ Container@SERVER_LOBBY:
 											Y:6
 											Width:PARENT_RIGHT-35
 											Height:PARENT_BOTTOM-12
-								CncDropDownButton@FACTION:
+								DropDownButton@FACTION:
 									Id:FACTION
 									Width:130
 									Height:25
@@ -100,7 +100,7 @@ Container@SERVER_LOBBY:
 											Height:25
 											X:40
 											Y:0
-								CncDropDownButton@TEAM:
+								DropDownButton@TEAM:
 									Id:TEAM
 									Text:Team
 									Width:48
@@ -234,7 +234,7 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
-								CncDropDownButton@NAME:
+								DropDownButton@NAME:
 									Id:NAME
 									Text:Name
 									Width:150

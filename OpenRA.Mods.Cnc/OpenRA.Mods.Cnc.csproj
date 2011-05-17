@@ -72,7 +72,6 @@
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="Widgets\CncMenuLogic.cs" />
     <Compile Include="Widgets\CncServerBrowserLogic.cs" />
-    <Compile Include="Widgets\CncMenuButton.cs" />
     <Compile Include="Widgets\CncLobbyLogic.cs" />
     <Compile Include="Widgets\CncReplayBrowserLogic.cs" />
     <Compile Include="Widgets\CncServerCreationLogic.cs" />
