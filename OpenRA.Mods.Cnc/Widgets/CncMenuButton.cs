@@ -22,32 +22,40 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public CncDropDownButtonWidget() : base() { }
 		protected CncDropDownButtonWidget(CncDropDownButtonWidget other) : base(other) { }
 		public override Widget Clone() { return new CncDropDownButtonWidget(this); }
-
-		public static new void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
+		
+		Widget panel;
+		Widget fullscreenMask;
+		
+		public void RemovePanel()
 		{
-			var dropDown = new ScrollPanelWidget();
-			dropDown.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100);
-			dropDown.ItemSpacing = 1;
-			dropDown.Background = "panel-black";
-
-			List<LabelWidget> items = new List<LabelWidget>();
-			List<Widget> dismissAfter = new List<Widget>();
-			foreach (var t in ts)
-			{
-				var ww = ft(t, dropDown.Bounds.Width - dropDown.ScrollbarWidth);
-				dismissAfter.Add(ww);
-				ww.OnMouseMove = mi => items.Do(lw =>
-				{
-					lw.Background = null;
-					ww.Background = "button-hover";
-				});
-	
-				dropDown.AddChild(ww);
-				items.Add(ww);
-			}
+			Widget.RootWidget.RemoveChild(fullscreenMask);
+			Widget.RootWidget.RemoveChild(panel);
+			Game.BeforeGameStart -= RemovePanel;
+			panel = fullscreenMask = null;
+		}
+		
+		public void DisplayPanel(Widget p)
+		{
+			if (panel != null)
+				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
+			panel = p;
 			
-			dropDown.Bounds.Height = Math.Min(150, dropDown.ContentHeight);
-			ShowDropPanel(w, dropDown, dismissAfter, () => true);
+			// Mask to prevent any clicks from being sent to other widgets
+			fullscreenMask = new ContainerWidget();
+			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+			Widget.RootWidget.AddChild(fullscreenMask);
+			Game.BeforeGameStart += RemovePanel;
+
+			fullscreenMask.OnMouseDown = mi =>
+			{
+				RemovePanel();
+				return true;
+			};
+			fullscreenMask.OnMouseUp = mi => true;
+
+			var oldBounds = panel.Bounds;
+			panel.Bounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y + Bounds.Height, oldBounds.Width, oldBounds.Height);
+			Widget.RootWidget.AddChild(panel);
 		}
 	}
 }

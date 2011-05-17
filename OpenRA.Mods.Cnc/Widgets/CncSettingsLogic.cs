@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			playerPalettePreview.Ramp = playerColor;
 			
 			var colorDropdown = generalPane.GetWidget<CncDropDownButtonWidget>("COLOR_DROPDOWN");
-			colorDropdown.OnMouseUp = _ => ShowColorPicker(colorDropdown);
+			colorDropdown.OnClick = () => ShowColorPicker(colorDropdown);
 			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerColor.GetColor(0);
 			
 			// Debug
@@ -194,11 +194,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 		}
 		
-		bool ShowColorPicker(Widget colorDropdown)
+		void ShowColorPicker(CncDropDownButtonWidget color)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
 				playerColor = c;
+				color.RemovePanel();
 			};
 			
 			Action<ColorRamp> onChange = c =>
@@ -213,8 +214,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "initialRamp", playerColor }
 			});
 			
-			CncDropDownButtonWidget.ShowDropPanel(colorDropdown, colorChooser, new List<Widget>() { colorChooser.GetWidget("SAVE_BUTTON") }, () => true);
-			return true;
+			color.DisplayPanel(colorChooser);
 		}
 		
 		bool ShowGroupModifierDropdown(Widget dropdown)

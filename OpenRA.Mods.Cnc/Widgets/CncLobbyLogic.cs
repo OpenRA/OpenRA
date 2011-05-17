@@ -395,15 +395,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return true;
 		}
 		
-		bool ShowColorDropDown(Session.Slot s, ButtonWidget color)
+		void ShowColorDropDown(Session.Slot s, CncDropDownButtonWidget color)
 		{
 			if (Map.Players[s.MapPlayer].LockColor)
-				return false;
+				return;
 			
 			Action<ColorRamp> onSelect = c =>
 			{
 				Game.Settings.Player.ColorRamp = c;
 				Game.Settings.Save();
+				color.RemovePanel();
 				orderManager.IssueOrder(Order.Command("color {0}".F(c)));
 			};
 			
@@ -419,8 +420,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "initialRamp", orderManager.LocalClient.ColorRamp }
 			});
 			
-			CncDropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() { colorChooser.GetWidget("SAVE_BUTTON") }, () => true);
-			return true;
+			color.DisplayPanel(colorChooser);
 		}
 		
 		void UpdatePlayerList()
@@ -502,8 +502,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 					};
 					name.OnLoseFocus = () => name.OnEnterKey();
 
-					var color = template.GetWidget<ButtonWidget>("COLOR");
-					color.OnMouseUp = _ => ShowColorDropDown(s, color);
+					var color = template.GetWidget<CncDropDownButtonWidget>("COLOR");
+					color.OnClick = () => ShowColorDropDown(s, color);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
