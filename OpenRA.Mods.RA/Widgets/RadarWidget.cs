@@ -42,9 +42,9 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 		}
 		
-		public override void Initialize()
+		public override void Initialize(WidgetArgs args)
 		{
-			base.Initialize();
+			base.Initialize(args);
 
 			var size = Math.Max(world.Map.Bounds.Width, world.Map.Bounds.Height);
 			previewScale = Math.Min(RenderBounds.Width * 1f / world.Map.Bounds.Width, RenderBounds.Height * 1f / world.Map.Bounds.Height);

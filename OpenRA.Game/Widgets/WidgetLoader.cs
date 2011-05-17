@@ -52,7 +52,7 @@ namespace OpenRA
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);
 
-			widget.Initialize();
+			widget.Initialize(args);
 
 			foreach (var child in node.Value.Nodes)
 				if (child.Key == "Children")

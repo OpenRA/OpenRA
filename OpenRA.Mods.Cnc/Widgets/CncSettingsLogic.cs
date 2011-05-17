@@ -219,9 +219,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		void ShowGroupModifierDropdown(CncDropDownButtonWidget dropdown)
 		{
-			var panel = Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()) as ScrollPanelWidget;
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
 			
+			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			{
+				{ "substitutions", substitutions }
+			});
+
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			var options = new List<Pair<string, Modifiers>>()
 			{
 				Pair.New("Ctrl", Modifiers.Ctrl),

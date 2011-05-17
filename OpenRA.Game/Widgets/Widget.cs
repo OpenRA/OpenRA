@@ -95,14 +95,17 @@ namespace OpenRA.Widgets
         public virtual int2 ChildOrigin { get { return RenderOrigin; } }
         public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
 
-        public virtual void Initialize()
+        public virtual void Initialize(WidgetArgs args)
         {
             // Parse the YAML equations to find the widget bounds
             var parentBounds = (Parent == null)
                 ? new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height)
                 : Parent.Bounds;
 
-            var substitutions = new Dictionary<string, int>();
+			var substitutions = args.ContainsKey("substitutions") ?
+				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
+				new Dictionary<string, int>();
+
             substitutions.Add("WINDOW_RIGHT", Game.viewport.Width);
             substitutions.Add("WINDOW_BOTTOM", Game.viewport.Height);
             substitutions.Add("PARENT_RIGHT", parentBounds.Width);

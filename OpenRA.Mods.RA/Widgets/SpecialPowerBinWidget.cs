@@ -34,9 +34,9 @@ namespace OpenRA.Mods.RA.Widgets
 			this.worldRenderer = worldRenderer;
 		}
 		
-		public override void Initialize()
+		public override void Initialize(WidgetArgs args)
 		{
-			base.Initialize();
+			base.Initialize(args);
 
 			spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
 				.Select(u => u.Image).Distinct()
