@@ -155,14 +155,14 @@ Container@MUSIC_PANEL:
 					Height:25
 					Align:Center
 					Font:Bold
-				CncCheckbox@SHUFFLE:
+				Checkbox@SHUFFLE:
 					Id:SHUFFLE
 					X:15
 					Y:PARENT_BOTTOM-15-HEIGHT
 					Width:85
 					Height:20
 					Text:Shuffle
-				CncCheckbox@REPEAT:
+				Checkbox@REPEAT:
 					Id:REPEAT
 					X:PARENT_RIGHT-15-WIDTH
 					Y:PARENT_BOTTOM-15-HEIGHT

@@ -31,14 +31,14 @@ Container@SERVER_LOBBY:
 							Y:1
 							Width:192
 							Height:192
-				CncCheckbox@LOCKTEAMS_CHECKBOX:
+				Checkbox@LOCKTEAMS_CHECKBOX:
 					Id:LOCKTEAMS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:230
 					Width:130
 					Height:20
 					Text: Lock Teams
-				CncCheckbox@ALLOWCHEATS_CHECKBOX:
+				Checkbox@ALLOWCHEATS_CHECKBOX:
 					Id:ALLOWCHEATS_CHECKBOX
 					X:PARENT_RIGHT-209
 					Y:255
@@ -107,7 +107,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:390
 									Font:Regular
-								CncCheckbox@STATUS:
+								Checkbox@STATUS:
 									Id:STATUS
 									X:448
 									Y:2
@@ -179,7 +179,7 @@ Container@SERVER_LOBBY:
 									Align:Center
 									X:390
 									Y:0
-								CncCheckbox@STATUS:
+								Checkbox@STATUS:
 									Id:STATUS
 									X:448
 									Y:2

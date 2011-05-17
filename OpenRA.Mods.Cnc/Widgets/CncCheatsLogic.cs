@@ -32,11 +32,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var panel = widget.GetWidget("CHEATS_PANEL");
 			
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
-			var shroudCheckbox = panel.GetWidget<CncCheckboxWidget>("SHROUD_CHECKBOX");
+			var shroudCheckbox = panel.GetWidget<CheckboxWidget>("SHROUD_CHECKBOX");
 			shroudCheckbox.IsChecked = () => devTrait.DisableShroud;
 			shroudCheckbox.OnClick = () => Order(world, "DevShroud");
 			
-			var pathCheckbox = panel.GetWidget<CncCheckboxWidget>("PATHDEBUG_CHECKBOX");
+			var pathCheckbox = panel.GetWidget<CheckboxWidget>("PATHDEBUG_CHECKBOX");
 			pathCheckbox.IsChecked = () => devTrait.PathDebug;
 			pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
 			
@@ -44,23 +44,23 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<ButtonWidget>("GIVE_CASH_BUTTON").OnClick = () => 
 				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 			
-			var fastBuildCheckbox = panel.GetWidget<CncCheckboxWidget>("INSTANT_BUILD_CHECKBOX");
+			var fastBuildCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_BUILD_CHECKBOX");
 			fastBuildCheckbox.IsChecked = () => devTrait.FastBuild;
 			fastBuildCheckbox.OnClick = () => Order(world, "DevFastBuild");
 			
-			var fastChargeCheckbox = panel.GetWidget<CncCheckboxWidget>("INSTANT_CHARGE_CHECKBOX");
+			var fastChargeCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_CHARGE_CHECKBOX");
 			fastChargeCheckbox.IsChecked = () => devTrait.FastCharge;
 			fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
 
-			var allTechCheckbox = panel.GetWidget<CncCheckboxWidget>("ENABLE_TECH_CHECKBOX");
+			var allTechCheckbox = panel.GetWidget<CheckboxWidget>("ENABLE_TECH_CHECKBOX");
 			allTechCheckbox.IsChecked = () => devTrait.AllTech;
 			allTechCheckbox.OnClick = () => Order(world, "DevEnableTech");
 			
-			var powerCheckbox = panel.GetWidget<CncCheckboxWidget>("UNLIMITED_POWER_CHECKBOX");
+			var powerCheckbox = panel.GetWidget<CheckboxWidget>("UNLIMITED_POWER_CHECKBOX");
 			powerCheckbox.IsChecked = () => devTrait.UnlimitedPower;
 			powerCheckbox.OnClick = () => Order(world, "DevUnlimitedPower");
 
-			var buildAnywhereCheckbox = panel.GetWidget<CncCheckboxWidget>("BUILD_ANYWHERE_CHECKBOX");
+			var buildAnywhereCheckbox = panel.GetWidget<CheckboxWidget>("BUILD_ANYWHERE_CHECKBOX");
 			buildAnywhereCheckbox.IsChecked = () => devTrait.BuildAnywhere;
 			buildAnywhereCheckbox.OnClick = () => Order(world, "DevBuildAnywhere");
 			

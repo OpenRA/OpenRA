@@ -81,11 +81,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			prevButton.OnClick = () => { currentSong = GetPrevSong(); Play(); };
 			prevButton.IsDisabled = noMusic;
 			
-			var shuffleCheckbox = panel.GetWidget<CncCheckboxWidget>("SHUFFLE");
+			var shuffleCheckbox = panel.GetWidget<CheckboxWidget>("SHUFFLE");
 			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;
 			shuffleCheckbox.OnClick = () => Game.Settings.Sound.Shuffle ^= true;
 			
-			var repeatCheckbox = panel.GetWidget<CncCheckboxWidget>("REPEAT");
+			var repeatCheckbox = panel.GetWidget<CheckboxWidget>("REPEAT");
 			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
 			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
 

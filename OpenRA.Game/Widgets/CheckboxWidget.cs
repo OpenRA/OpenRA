@@ -15,40 +15,32 @@ using System.Reflection;
 
 namespace OpenRA.Widgets
 {
-	public class CheckboxWidget : Widget
+	public class CheckboxWidget : ButtonWidget
 	{
-		public string Text = "";
-		public int baseLine = 1;
-		public bool Bold = false;
 		public Func<bool> IsChecked = () => false;
-		public event Action<bool> OnChange = _ => {};
+		public int BaseLine = 1;
 		
 		object boundObject;
 		bool boundReadOnly;
 		FieldInfo boundField;
+		[Obsolete] public event Action<bool> OnChange = _ => {};
 		
-		public override void DrawInner()
+		public CheckboxWidget()
+			: base()
 		{
-			var font = Bold ? Game.Renderer.Fonts["Bold"] : Game.Renderer.Fonts["Regular"];
-			var pos = RenderOrigin;
-			var rect = RenderBounds;
-			var check = new Rectangle(rect.Location,
-					new Size(Bounds.Height, Bounds.Height));
-			WidgetUtils.DrawPanel("dialog3", check);
-
-			var textSize = font.Measure(Text);
-			font.DrawText(Text,
-				new float2(rect.Left + rect.Height * 1.5f, 
-					pos.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
-
-			if ((boundObject != null && (bool)boundField.GetValue(boundObject)) || IsChecked())
-				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage("checkbox", "checked"),
-					new float2(rect.Left + 2, rect.Top + 2));
+			OnClick = OldClickBehavior;
+			IsChecked = () => (boundObject != null && (bool)boundField.GetValue(boundObject));
 		}
 		
-		public void Bind(object obj, string field) { Bind(obj, field, false); }
-		public void BindReadOnly(object obj, string field) { Bind(obj, field, true); }
+		protected CheckboxWidget(CheckboxWidget widget)
+			: base(widget)
+		{
+			OnClick = OldClickBehavior;
+			IsChecked = () => (boundObject != null && (bool)boundField.GetValue(boundObject));
+		}
+		
+		[Obsolete] public void Bind(object obj, string field) { Bind(obj, field, false); }
+		[Obsolete] public void BindReadOnly(object obj, string field) { Bind(obj, field, true); }
 
 		void Bind(object obj, string field, bool readOnly)
 		{
@@ -56,14 +48,9 @@ namespace OpenRA.Widgets
 			boundReadOnly = readOnly;
 			boundField = obj.GetType().GetField(field);
 		}
-
-		// TODO: CheckboxWidget doesn't support raising events for mouse input
-		public override bool HandleMouseInput(MouseInput mi)
+		
+		void OldClickBehavior()
 		{
-			// Checkboxes require lmb
-			if (mi.Button != MouseButton.Left || mi.Event != MouseInputEvent.Down)
-				return false;
-			
 			bool newVal = !IsChecked();
 			if (boundObject != null && !boundReadOnly)
 			{
@@ -72,15 +59,31 @@ namespace OpenRA.Widgets
 			}
 
 			OnChange(newVal);
-			return true;
 		}
-
-		public CheckboxWidget() : base() { }
-
-		protected CheckboxWidget(CheckboxWidget other)
-			: base(other)
+		
+		public override void DrawInner()
 		{
-			Text = other.Text;
+			if (Font == "Regular" && Bold)
+				Font = "Bold";
+			
+			var font = Game.Renderer.Fonts[Font];
+			var rect = RenderBounds;
+			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
+			var state = IsDisabled() ? "checkbox-disabled" : 
+						Depressed ? "checkbox-pressed" : 
+						RenderBounds.Contains(Viewport.LastMousePos) ? "checkbox-hover" : 
+						"checkbox";
+			
+			WidgetUtils.DrawPanel(state, check);
+			
+			var textSize = font.Measure(Text);
+			font.DrawText(Text,
+				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2), Color.White);
+
+			if (IsChecked() || Depressed)
+				WidgetUtils.DrawRGBA(
+					ChromeProvider.GetImage("checkbox-bits", Depressed ? "pressed" : "checked"),
+					new float2(rect.Left + 2, rect.Top + 2));
 		}
 
 		public override Widget Clone() { return new CheckboxWidget(this); }

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			externalPort.Text = settings.Server.ExternalPort.ToString();
 			externalPort.IsDisabled = () => !advertiseOnline;
 
-			var advertiseCheckbox = panel.GetWidget<CncCheckboxWidget>("ADVERTISE_CHECKBOX");
+			var advertiseCheckbox = panel.GetWidget<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 

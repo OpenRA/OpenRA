@@ -100,7 +100,7 @@ Container@CREATESERVER_PANEL:
 					MaxLength:5
 					Height:25
 					Text:1234
-				CncCheckbox@ADVERTISE_CHECKBOX:
+				Checkbox@ADVERTISE_CHECKBOX:
 					Id:ADVERTISE_CHECKBOX
 					X:110
 					Y:155

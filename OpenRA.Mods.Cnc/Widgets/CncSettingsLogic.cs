@@ -64,22 +64,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			// Debug
 			var perftext = Game.Settings.Debug.PerfText;
-			var perftextCheckbox = generalPane.GetWidget<CncCheckboxWidget>("PERFTEXT_CHECKBOX");
+			var perftextCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFTEXT_CHECKBOX");
 			perftextCheckbox.IsChecked = () => perftext;
 			perftextCheckbox.OnClick = () => perftext ^= true;
 			
 			var perfgraph = Game.Settings.Debug.PerfGraph;
-			var perfgraphCheckbox = generalPane.GetWidget<CncCheckboxWidget>("PERFGRAPH_CHECKBOX");
+			var perfgraphCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFGRAPH_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => perfgraph;
 			perfgraphCheckbox.OnClick = () => perfgraph ^= true;
 			
 			var matchtimer = Game.Settings.Game.MatchTimer;
-			var matchtimerCheckbox = generalPane.GetWidget<CncCheckboxWidget>("MATCHTIME_CHECKBOX");
+			var matchtimerCheckbox = generalPane.GetWidget<CheckboxWidget>("MATCHTIME_CHECKBOX");
 			matchtimerCheckbox.IsChecked = () => matchtimer;
 			matchtimerCheckbox.OnClick = () => matchtimer ^= true;
 			
 			var checkunsynced = Game.Settings.Debug.SanityCheckUnsyncedCode;
-			var checkunsyncedCheckbox = generalPane.GetWidget<CncCheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
+			var checkunsyncedCheckbox = generalPane.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => checkunsynced;
 			checkunsyncedCheckbox.OnClick = () => checkunsynced ^= true;
 			
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			musicSlider.SetOffset(musicVolume);
 			
 			var shellmapMusic = Game.Settings.Game.ShellmapMusic;
-			var shellmapMusicCheckbox = generalPane.GetWidget<CncCheckboxWidget>("SHELLMAP_MUSIC");
+			var shellmapMusicCheckbox = generalPane.GetWidget<CheckboxWidget>("SHELLMAP_MUSIC");
 			shellmapMusicCheckbox.IsChecked = () => shellmapMusic;
 			shellmapMusicCheckbox.OnClick = () => shellmapMusic ^= true;
 			
@@ -122,8 +122,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var inputButton = panel.GetWidget<ButtonWidget>("INPUT_BUTTON");
 			inputButton.OnClick = () => Settings = PanelType.Input;
 			inputButton.IsDisabled = () => Settings == PanelType.Input;
-			
-			inputPane.GetWidget<CncCheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
+				
+			inputPane.GetWidget<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
 			
 			var scrollStrength = Game.Settings.Game.ViewportEdgeScrollStep;
 			var scrollSlider = inputPane.GetWidget<SliderWidget>("SCROLLSPEED_SLIDER");
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			scrollSlider.SetOffset(scrollStrength);
 			
 			var edgescroll = Game.Settings.Game.ViewportEdgeScroll;
-			var edgescrollCheckbox = inputPane.GetWidget<CncCheckboxWidget>("EDGESCROLL_CHECKBOX");
+			var edgescrollCheckbox = inputPane.GetWidget<CheckboxWidget>("EDGESCROLL_CHECKBOX");
 			edgescrollCheckbox.IsChecked = () => edgescroll;
 			edgescrollCheckbox.OnClick = () => edgescroll ^= true;
 			
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			mouseScrollDropdown.GetText = () => mouseScroll.ToString();
 			
 			var teamchat = Game.Settings.Game.TeamChatToggle;
-			var teamchatCheckbox = inputPane.GetWidget<CncCheckboxWidget>("TEAMCHAT_CHECKBOX");
+			var teamchatCheckbox = inputPane.GetWidget<CheckboxWidget>("TEAMCHAT_CHECKBOX");
 			teamchatCheckbox.IsChecked = () => teamchat;
 			teamchatCheckbox.OnClick = () => teamchat ^= true;
 			

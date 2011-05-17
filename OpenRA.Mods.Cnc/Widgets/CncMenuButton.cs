@@ -13,39 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using System.Reflection;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class CncCheckboxWidget : ButtonWidget
-	{
-		public CncCheckboxWidget()
-			: base() { }
-		protected CncCheckboxWidget(CncCheckboxWidget widget)
-			: base(widget) { }
-		
-		public Func<bool> IsChecked = () => false;
-		public int baseLine = 1;
-
-		public override void DrawInner()
-		{
-			var font = Game.Renderer.Fonts[Font];
-			var rect = RenderBounds;
-			ButtonWidget.DrawBackground(new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height)),
-			                            IsDisabled(), Depressed, RenderBounds.Contains(Viewport.LastMousePos));
-
-			var textSize = font.Measure(Text);
-			font.DrawText(Text,
-				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - baseLine + (Bounds.Height - textSize.Y)/2), Color.White);
-
-			if (IsChecked())
-				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage("checkbox", "checked"),
-					new float2(rect.Left + 2, rect.Top + 2));
-		}
-
-		public override Widget Clone() { return new CncCheckboxWidget(this); }
-	}
-	
 	public class CncDropDownButtonWidget : DropDownButtonWidget
 	{
 		public CncDropDownButtonWidget() : base() { }

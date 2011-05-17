@@ -209,13 +209,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			disconnectButton.OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			var gameStarting = false;
-			var lockTeamsCheckbox = lobby.GetWidget<CncCheckboxWidget>("LOCKTEAMS_CHECKBOX");
+			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
 			lockTeamsCheckbox.IsDisabled = () => !Game.IsHost || gameStarting;
 			lockTeamsCheckbox.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
 		
-			var allowCheats = lobby.GetWidget<CncCheckboxWidget>("ALLOWCHEATS_CHECKBOX");
+			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
@@ -521,7 +521,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					team.OnMouseDown = _ => ShowTeamDropDown(team);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
-					var status = template.GetWidget<CncCheckboxWidget>("STATUS");
+					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					status.OnClick += CycleReady;
 					
@@ -553,7 +553,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var team = template.GetWidget<LabelWidget>("TEAM");
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
-					var status = template.GetWidget<CncCheckboxWidget>("STATUS");
+					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick += CycleReady;
