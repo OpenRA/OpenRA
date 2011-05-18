@@ -10,16 +10,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.GameRules;
-using OpenRA.FileFormats.Graphics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
+using OpenRA.GameRules;
 
 namespace OpenRA.Utility
 {

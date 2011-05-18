@@ -16,6 +16,7 @@ namespace OpenRA.Utility
 {
 	class Program
 	{
+		[STAThread]
 		static void Main(string[] args)
 		{
 			var actions = new Dictionary<string, Action<string[]>>()
