@@ -219,6 +219,8 @@ namespace OpenRA
 
 		internal static void Initialize(Arguments args)
 		{
+			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
 			var defaultSupport = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
