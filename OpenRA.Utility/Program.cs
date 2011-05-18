@@ -11,27 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
-using System.Security.AccessControl;
-using System.Security.Principal;
 
 namespace OpenRA.Utility
 {
 	class Program
 	{
-		const int PipeBufferSize = 1024 * 1024;
-
-		static PipeSecurity MakePipeSecurity()
-		{
-			var principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
-			if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
-				return null;	// no special pipe security required
-
-			var ps = new PipeSecurity();
-			ps.AddAccessRule(new PipeAccessRule("EVERYONE", (PipeAccessRights)2032031, AccessControlType.Allow));
-			return ps;	
-		}
-		
 		static void Main(string[] args)
 		{
 			var actions = new Dictionary<string, Action<string[]>>()
@@ -43,18 +27,6 @@ namespace OpenRA.Utility
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
-
-            var pipename = GetNamedArg(args, "--pipe");
-            var piping = pipename != null;
-            if (pipename != null)
-            {
-                var pipe = new NamedPipeServerStream(pipename, PipeDirection.Out, 1,
-                    PipeTransmissionMode.Byte, PipeOptions.None, PipeBufferSize, PipeBufferSize,
-                    MakePipeSecurity());
-
-                pipe.WaitForConnection();
-                Console.SetOut(new StreamWriter(pipe) { AutoFlush = true });
-            }
 
             var supportDir = GetNamedArg(args, "--SupportDir");
             if (supportDir != null)
@@ -75,13 +47,8 @@ namespace OpenRA.Utility
 				Log.Write("utility", "{0}", e.ToString());
 				
 				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
-				if (piping)
-					Console.Out.Close();
 				throw;
 			}
-
-			if (piping)
-				Console.Out.Close();
 		}
 
 		static void PrintUsage()
