@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc
 			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa", 
 			    () => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
-					Sound.PlayMusic(Rules.Music["aoi"].Filename);
+					Sound.PlayMusic(Rules.Music["aoi"]);
 					started = true;
 				}));
 		}

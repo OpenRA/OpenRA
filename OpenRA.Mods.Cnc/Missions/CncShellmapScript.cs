@@ -51,10 +51,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (!Game.Settings.Game.ShellmapMusic ||
 			    	Info.Music == null ||
-			    	!Rules.Music[Info.Music].Exists)
+			    	!Rules.Music.ContainsKey(Info.Music))
 				return;
 
-			Sound.PlayMusicThen(Rules.Music[Info.Music].Filename, () => LoopMusic());
+			Sound.PlayMusicThen(Rules.Music[Info.Music], () => LoopMusic());
 		}
 		
 		int ticks = 0;

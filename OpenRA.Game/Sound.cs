@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 using OpenRA.Traits;
 using Tao.OpenAl;
 
@@ -24,7 +25,7 @@ namespace OpenRA
 		static ISoundSource rawSource;
 		static ISound music;
 		static ISound video;
-		static string currentMusic;
+		static MusicInfo currentMusic;
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -106,28 +107,30 @@ namespace OpenRA
 
 		static Action OnMusicComplete;
 		public static bool MusicPlaying { get; private set; }
-
-		public static void PlayMusic(string name)
+		public static MusicInfo CurrentMusic { get { return currentMusic; } }
+		
+		public static void PlayMusic(MusicInfo m)
 		{
-			PlayMusicThen(name, () => { });
+			PlayMusicThen(m, () => { });
 		}
-		public static void PlayMusicThen(string name, Action then)
+		
+		public static void PlayMusicThen(MusicInfo m, Action then)
 		{
+			if (m == null || !m.Exists)
+				return;
+			
 			OnMusicComplete = then;
 
-			if (name == "" || name == null)
-				return;
-
-			if (name == currentMusic && music != null)
+			if (m == currentMusic && music != null)
 			{
 				soundEngine.PauseSound(music, false);
 				return;
 			}
 			StopMusic();
 
-			currentMusic = name;
+			currentMusic = m;
 			MusicPlaying = true;
-			var sound = sounds[name];
+			var sound = sounds[m.Filename];
 			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 		}
 

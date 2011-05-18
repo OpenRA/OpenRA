@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				if (CurrentSong == null)
 					return true;
 				
-				Sound.PlayMusicThen(Rules.Music[CurrentSong].Filename,
+				Sound.PlayMusicThen(Rules.Music[CurrentSong],
 				      () => bg.GetWidget(Game.Settings.Sound.Repeat ? "BUTTON_PLAY" : "BUTTON_NEXT").OnMouseUp(new MouseInput()));
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;

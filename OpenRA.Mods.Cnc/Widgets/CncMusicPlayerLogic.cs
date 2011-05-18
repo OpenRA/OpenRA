@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -22,10 +23,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class CncMusicPlayerLogic : IWidgetDelegate
 	{
 		bool installed;
-		string currentSong = null;
+		MusicInfo currentSong = null;
 		Widget panel;
-		string[] music;
-		string[] random;
+		MusicInfo[] music;
+		MusicInfo[] random;
 
 		[ObjectCreator.UseCtor]
 		public CncMusicPlayerLogic([ObjectCreator.Param] Widget widget,
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel = widget.GetWidget("MUSIC_PANEL");
 			BuildMusicTable(panel);
 
-			currentSong = GetNextSong();
+			currentSong = Sound.CurrentMusic ?? GetNextSong();
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
 			Func<bool> noMusic = () => !installed;
 			
@@ -91,13 +92,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			panel.GetWidget<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" : 
 					"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
-					    							  Rules.Music[currentSong].Length / 60, Rules.Music[currentSong].Length % 60);
+					    							  currentSong.Length / 60, currentSong.Length % 60);
 		}
 	
 		void BuildMusicTable(Widget panel)
 		{
-			music = Rules.Music.Where(a => a.Value.Exists)
-				.Select(a => a.Key).ToArray();
+			music = Rules.Music.Where(a => a.Value.Exists).Select(a => a.Value).ToArray();
 			random = music.Shuffle(Game.CosmeticRandom).ToArray();
 			
 			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					currentSong = song;
 				
 				var item = ScrollItemWidget.Setup(itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); });
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => song.Title;
 				item.GetWidget<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
 				ml.AddChild(item);
 			}
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (currentSong == null)
 				return;
 			
-			Sound.PlayMusicThen(Rules.Music[currentSong].Filename, () =>
+			Sound.PlayMusicThen(currentSong, () =>
 			{
 				if (!Game.Settings.Sound.Repeat)
 					currentSong = GetNextSong();
@@ -147,13 +147,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget("BUTTON_PLAY").Visible = true;		
 		}
 		
-		string SongLengthLabel(string song)
+		string SongLengthLabel(MusicInfo song)
 		{
-			return "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60,
-			                         Rules.Music[song].Length % 60);
+			return "{0:D1}:{1:D2}".F(song.Length / 60, song.Length % 60);
 		}
 		
-		string GetNextSong()
+		MusicInfo GetNextSong()
 		{
 			if (!music.Any())
 				return null;
@@ -163,14 +162,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
 		}
 
-		string GetPrevSong()
+		MusicInfo GetPrevSong()
 		{
 			if (!music.Any())
 				return null;
 			
 			var songs = Game.Settings.Sound.Shuffle ? random : music;
 			return songs.Reverse().SkipWhile(m => m != currentSong)
-				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault();
 		}
 	}
 	
