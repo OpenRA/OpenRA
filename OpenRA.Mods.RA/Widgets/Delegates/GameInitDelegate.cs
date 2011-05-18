@@ -224,31 +224,4 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" }, dest);
 		}
     }
-	
-	public class Download
-	{
-		WebClient wc;
-		bool cancelled;
-		
-		public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs, bool> onComplete)
-		{
-			wc = new WebClient();
-			wc.Proxy = null;
-
-			wc.DownloadProgressChanged += (_,a) => onProgress(a);
-			wc.DownloadFileCompleted += (_,a) => onComplete(a, cancelled);
-			
-			Game.OnQuit += () => Cancel();
-			wc.DownloadFileCompleted += (_,a) => {Game.OnQuit -= () => Cancel();};
-			
-			wc.DownloadFileAsync(new Uri(url), path); 
-		}
-		
-		public void Cancel()
-		{
-			Game.OnQuit -= () => Cancel();
-			wc.CancelAsync();
-			cancelled = true;
-		}
-	}
 }
