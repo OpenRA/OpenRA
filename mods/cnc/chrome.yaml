@@ -141,6 +141,7 @@ dialog: uibuttons.png
 	corner-bl: 0,62,2,2
 	corner-br: 62,62,2,2
 
+# Pressed button
 dialog3: uibuttons.png
 	background: 2,2,60,60
 	border-r: 62,2,2,60
@@ -152,6 +153,7 @@ dialog3: uibuttons.png
 	corner-bl: 0,62,2,2
 	corner-br: 62,62,2,2
 
+# Normal buttton
 dialog2: uibuttons.png
 	background: 2,66,60,60
 	border-r: 62,66,2,60
@@ -162,6 +164,18 @@ dialog2: uibuttons.png
 	corner-tr: 62,64,2,2
 	corner-bl: 0,126,2,2
 	corner-br: 62,126,2,2
+
+# Panel background
+panel: uibuttons.png
+	background: 66,2,60,60
+	border-r: 126,2,2,60
+	border-l: 64,2,2,60
+	border-b: 66,62,60,2
+	border-t: 66,0,60,2
+	corner-tl: 64,0,2,2
+	corner-tr: 126,0,2,2
+	corner-bl: 64,62,2,2
+	corner-br: 126,62,2,2
 
 dialog4: dialog4.png
 	border-t: 5,0,52,6

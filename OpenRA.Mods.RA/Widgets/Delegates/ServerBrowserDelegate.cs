@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			preview.IsVisible = () => CurrentMap() != null;
 
 			bg.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
-			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => GenerateModsLabel();
+			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => GenerateModsLabel(currentServer);
 			bg.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
 			bg.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () =>
 			{
@@ -103,9 +103,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				? null : Game.modData.AvailableMaps[currentServer.Map];
 		}
 		
-		string GenerateModsLabel()
+		public static string GenerateModsLabel(GameServer s)
 		{
-			return string.Join("\n", currentServer.UsefulMods
+			return string.Join("\n", s.UsefulMods
 				.Select(m => 
 			       Mod.AllMods.ContainsKey(m.Key) ? string.Format("{0} ({1})", Mod.AllMods[m.Key].Title, m.Value)
 			                                   : string.Format("Unknown Mod: {0}",m.Key)).ToArray());
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			}
 		}
 		
-		bool CanJoin(GameServer game)
+		public static bool CanJoin(GameServer game)
 		{
 			//"waiting for players"
 			if (game.State != 1)

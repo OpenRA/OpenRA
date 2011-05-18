@@ -26,6 +26,7 @@ namespace OpenRA.Widgets
         public string Width = "0";
         public string Height = "0";
         public string Delegate = null;
+		public IWidgetDelegate DelegateObject {get; private set;}
         public bool Visible = true;
 
         public readonly List<Widget> Children = new List<Widget>();
@@ -127,8 +128,8 @@ namespace OpenRA.Widgets
 
             args["widget"] = this;
 
-            var iwd = Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args)
-                as IWidgetDelegateEx;
+            DelegateObject = Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args);
+            var iwd = DelegateObject as IWidgetDelegateEx;
             if (iwd != null)
                 iwd.Init();
 

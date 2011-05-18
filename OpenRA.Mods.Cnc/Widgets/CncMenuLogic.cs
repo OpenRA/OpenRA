@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		{
 			Main,
 			Multiplayer,
-			Settings
+			Settings,
+			None
 		}
 		MenuType Menu = MenuType.Main;
 		
@@ -46,7 +47,18 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 			
+			
 			multiplayerMenu.GetWidget("BACK_BUTTON").OnMouseUp = mi => { Menu = MenuType.Main; return true; };
+			multiplayerMenu.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
+			{
+				Menu = MenuType.None;
+				Widget.OpenWindow("SERVERBROWSER_PANEL",
+				                new Dictionary<string, object>()
+				                {
+									{"onExit", new Action(() => {Menu = MenuType.Multiplayer; Widget.CloseWindow();})}
+								});
+				return true;
+			};
 			
 			// Settings menu
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");

@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="-5.452261"
+     inkscape:cx="30.297739"
      inkscape:cy="49.497475"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -75,5 +75,15 @@
        width="63"
        id="rect3759"
        style="fill:#560000;fill-opacity:0.87843138;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="924.86218"
+       x="64.5"
+       height="63"
+       width="63"
+       id="rect2984"
+       style="fill:#000000;fill-opacity:0.75111109;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none" />
   </g>
 </svg>
