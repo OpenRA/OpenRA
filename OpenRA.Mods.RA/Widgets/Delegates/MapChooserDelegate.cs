@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		void InstallMapInner(string path)
 		{
 			var toPath = "{0}{1}maps{1}{2}{1}{3}"
-			          .F(Game.SupportDir,Path.DirectorySeparatorChar, 
+			          .F(Platform.SupportDir,Path.DirectorySeparatorChar, 
 			             Game.modData.Manifest.Mods[0],
 			             Path.GetFileName(path));
 			

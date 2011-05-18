@@ -45,7 +45,7 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static bool HasInputFocus = false;
-		
+
 		public static void MoveViewport(float2 loc)
 		{
 			viewport.Center(loc);
@@ -54,7 +54,7 @@ namespace OpenRA
 		public static void JoinServer(string host, int port)
 		{
 			var replayFilename = ChooseReplayFilename();
-			string path = Path.Combine( Game.SupportDir, "Replays" );
+			string path = Path.Combine( Platform.SupportDir, "Replays" );
 			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
 			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
 
@@ -223,18 +223,12 @@ namespace OpenRA
 
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
-			var defaultSupport = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-												+ Path.DirectorySeparatorChar + "OpenRA";
-
-			SupportDir = args.GetValue("SupportDir", defaultSupport);
-			FileSystem.SupportDir = SupportDir;
-			
 			Utilities = new Utilities(args.GetValue("UtilityPath", "OpenRA.Utility.exe"));
 			
-			Settings = new Settings(SupportDir + "settings.yaml", args);
+			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 			Settings.Save();
 
-			Log.LogPath = SupportDir + "Logs" + Path.DirectorySeparatorChar;
+			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
@@ -338,25 +332,6 @@ namespace OpenRA
 
 			Widget.CloseWindow();
 			Widget.OpenWindow("MAINMENU_BG");
-		}
-
-		static string baseSupportDir = null;
-		public static string SupportDir
-		{
-			set
-			{
-				var dir = value;
-
-				// Expand paths relative to the personal directory
-				if (dir.ElementAt(0) == '~')
-					dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + dir.Substring(1);
-
-				if (!Directory.Exists(dir))
-					Directory.CreateDirectory(dir);
-
-				baseSupportDir = dir + Path.DirectorySeparatorChar;
-			}
-			get { return baseSupportDir; }
 		}
 
 		public static T CreateObject<T>( string name )

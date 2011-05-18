@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			/* find some replays? */
 			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
-			var replayDir = Path.Combine(Game.SupportDir, "Replays");
+			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
 			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
 			CurrentReplay = null;

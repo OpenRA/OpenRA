@@ -34,7 +34,7 @@ namespace OpenRA
 			{
 				Process p = new Process();
 				p.StartInfo.FileName = Utility;
-				p.StartInfo.Arguments = "{0} --SupportDir \"{1}\"".F(args, Game.SupportDir);
+				p.StartInfo.Arguments = args;
 				p.StartInfo.UseShellExecute = false;
 				p.StartInfo.RedirectStandardOutput = true;
 				p.EnableRaisingEvents = true;

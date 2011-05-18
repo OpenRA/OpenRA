@@ -199,7 +199,6 @@
     <Compile Include="Network\Session.cs" />
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Network\SyncReport.cs" />
-    <Compile Include="Platform.cs" />
     <Compile Include="Traits\EditorAppearance.cs" />
     <Compile Include="Traits\SubcellInit.cs" />
     <Compile Include="Traits\Target.cs" />

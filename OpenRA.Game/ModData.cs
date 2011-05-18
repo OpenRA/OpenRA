@@ -102,7 +102,7 @@ namespace OpenRA
 		Dictionary<string, Map> FindMaps(string[] mods)
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
-				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Game.SupportDir, p))));
+				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
 			
 			Dictionary<string, Map> ret = new Dictionary<string, Map>();
 			foreach (var path in paths)
