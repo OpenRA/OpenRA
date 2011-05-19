@@ -88,6 +88,7 @@
     <Compile Include="Widgets\CncInstallFromCDLogic.cs" />
     <Compile Include="Widgets\CncDownloadPackagesLogic.cs" />
     <Compile Include="CncMenuPaletteEffect.cs" />
+    <Compile Include="Widgets\CncIngameMenuLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
