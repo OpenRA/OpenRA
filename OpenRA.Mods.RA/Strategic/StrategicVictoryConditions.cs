@@ -205,7 +205,7 @@ namespace OpenRA.Mods.RA
 				}
 				else if (p.WinState == WinState.Undefined)
 				{
-					cvc.Surrender(p.PlayerActor);
+					cvc.Lose(p.PlayerActor);
 				}
 			}
 		}

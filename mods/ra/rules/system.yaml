@@ -31,6 +31,8 @@ Player:
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
+		WinNotification:misnwon1.aud
+		LoseNotification:misnlst1.aud
 	PowerManager:
 	PlayerResources:
 		InitialCash: 5000

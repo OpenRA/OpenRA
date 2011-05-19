@@ -3,6 +3,8 @@ Player:
 	TechTree:
 	SupportPowerManager:
 	ConquestVictoryConditions:
+		WinNotification:accom1.aud
+		LoseNotification:fail1.aud
 	PowerManager:
 	PlayerResources:
 		InitialCash: 5000

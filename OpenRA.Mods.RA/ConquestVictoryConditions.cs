@@ -13,10 +13,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class ConquestVictoryConditionsInfo : TraitInfo<ConquestVictoryConditions> { }
+	public class ConquestVictoryConditionsInfo : ITraitInfo
+	{
+		public string WinNotification = null;
+		public string LoseNotification = null;
+		
+		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(this); }
+	}
 
 	public class ConquestVictoryConditions : ITick, IResolveOrder
 	{
+		ConquestVictoryConditionsInfo Info;
+		public ConquestVictoryConditions(ConquestVictoryConditionsInfo info) { Info = info; }
+		
 		public void Tick(Actor self)
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
@@ -25,7 +34,7 @@ namespace OpenRA.Mods.RA
                 .Any( a => a.Actor.Owner == self.Owner );
 
 			if (!hasAnything && !self.Owner.NonCombatant)
-				Surrender(self);
+				Lose(self);
 			
 			var others = self.World.players.Where( p => !p.Value.NonCombatant 
                 && p.Value != self.Owner && p.Value.Stances[self.Owner] != Stance.Ally );
@@ -39,10 +48,10 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Surrender")
-				Surrender(self);
+				Lose(self);
 		}
 
-		public void Surrender(Actor self)
+		public void Lose(Actor self)
 		{
 			if (self.Owner.WinState == WinState.Lost) return;
 			self.Owner.WinState = WinState.Lost;
@@ -53,7 +62,10 @@ namespace OpenRA.Mods.RA
                 a.Kill(a);
 
 			if (self.Owner == self.World.LocalPlayer)
+			{
 				self.World.LocalShroud.Disabled = true;
+				Sound.Play(Info.LoseNotification);
+			}
 		}
 		
 		public void Win(Actor self)	
@@ -63,7 +75,10 @@ namespace OpenRA.Mods.RA
 			
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
 			if (self.Owner == self.World.LocalPlayer)
+			{
 				self.World.LocalShroud.Disabled = true;
+				Sound.Play(Info.WinNotification);
+			}
 		}
 	}
 
