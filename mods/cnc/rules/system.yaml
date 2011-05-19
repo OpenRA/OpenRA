@@ -46,7 +46,7 @@ Player:
 World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
-	DesaturatedPaletteEffect:
+	CncMenuPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:
 	CncWaterPaletteRotation:

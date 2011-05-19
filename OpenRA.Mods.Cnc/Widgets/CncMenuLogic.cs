@@ -30,8 +30,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public CncMenuLogic([ObjectCreator.Param] Widget widget,
 		                    [ObjectCreator.Param] World world)
 		{
-			world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = true;
-			
+			world.WorldActor.Trait<CncMenuPaletteEffect>()
+				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
+
 			// Root level menu
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;

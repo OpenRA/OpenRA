@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public CncIngameChromeLogic([ObjectCreator.Param] Widget widget,
 		                            [ObjectCreator.Param] World world )
 		{
+			world.WorldActor.Trait<CncMenuPaletteEffect>()
+				.Fade(CncMenuPaletteEffect.EffectType.None);
+			
 			ingameRoot = widget.GetWidget("INGAME_ROOT");
 			if (!staticSetup)
 			{
@@ -92,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                          [ObjectCreator.Param] Action onExit)
 		{
 			menu = widget.GetWidget("INGAME_MENU");
-			world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = true;
+			world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
@@ -137,7 +140,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			menu.GetWidget<ButtonWidget>("RESUME_BUTTON").OnClick = () => 
 			{
 				Widget.RootWidget.RemoveChild(menu);
-				world.WorldActor.Trait<DesaturatedPaletteEffect>().Active = false;
+				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
 				onExit();
 			};
 		}
