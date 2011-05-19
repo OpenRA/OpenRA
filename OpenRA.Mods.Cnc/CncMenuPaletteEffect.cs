@@ -15,21 +15,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class CncMenuPaletteEffectInfo : TraitInfo<CncMenuPaletteEffect> { }
+	public class CncMenuPaletteEffectInfo : ITraitInfo
+	{
+		public readonly int FadeLength = 10;
+		
+		public object Create(ActorInitializer init) { return new CncMenuPaletteEffect(this); }
+	}
 
 	public class CncMenuPaletteEffect : IPaletteModifier, ITick
 	{		
 		public enum EffectType { None, Black, Desaturated }
-
-		const int effectLength = 10;
-		int remainingFrames;
+		public readonly CncMenuPaletteEffectInfo Info;
 		
+		int remainingFrames;
 		EffectType from = EffectType.Black;
 		EffectType to = EffectType.Black;
 		
+		public CncMenuPaletteEffect(CncMenuPaletteEffectInfo info) { Info = info; }
 		public void Fade(EffectType type)
 		{
-			remainingFrames = effectLength;
+			remainingFrames = Info.FadeLength;
 			from = to;
 			to = type;
 		}
@@ -76,7 +81,7 @@ namespace OpenRA.Mods.Cnc
 					else
 					{
 						var f = ColorForEffect(from, orig);
-						pal.Value.SetColor(x, OpenRA.Graphics.Util.Lerp((float)remainingFrames / effectLength, t, f));
+						pal.Value.SetColor(x, OpenRA.Graphics.Util.Lerp((float)remainingFrames / Info.FadeLength, t, f));
 					}
 				}
 			}

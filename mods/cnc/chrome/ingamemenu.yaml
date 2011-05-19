@@ -32,7 +32,7 @@ Container@INGAME_MENU:
 					Y:0
 					Width:140
 					Height:35
-					Text:Quit
+					Text:Abort Mission
 				Button@SURRENDER_BUTTON:
 					Id:SURRENDER_BUTTON
 					X:150
@@ -87,7 +87,6 @@ Container@INGAME_MENU:
 							Width:PARENT_RIGHT
 							Height:25
 							Font:Bold
-							WordWrap:true
 							Align:Center
 				Button@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON

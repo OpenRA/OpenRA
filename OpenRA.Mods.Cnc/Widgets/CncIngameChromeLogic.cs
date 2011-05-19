@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -94,23 +95,34 @@ namespace OpenRA.Mods.Cnc.Widgets
 		                          [ObjectCreator.Param] World world,
 		                          [ObjectCreator.Param] Action onExit)
 		{
+			var resumeDisabled = false;
 			menu = widget.GetWidget("INGAME_MENU");
-			world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.Desaturated);
+			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
+			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
 			
+			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
 			{
-				Game.DisconnectOnly();
-				Widget.RootWidget.RemoveChildren();
-				Game.LoadShellMap();
+				Sound.Play("batlcon1.aud");
+				resumeDisabled = true;
+				world.WorldActor.QueueActivity(new Wait(30));
+				world.WorldActor.QueueActivity(new CallFunc(() => mpe.Fade(CncMenuPaletteEffect.EffectType.Black)));
+				world.WorldActor.QueueActivity(new Wait(mpe.Info.FadeLength));
+				world.WorldActor.QueueActivity(new CallFunc(() =>
+				{
+						Game.DisconnectOnly();
+						Widget.RootWidget.RemoveChildren();
+						Game.LoadShellMap();
+				}));
 			};
 			
 			Action doNothing = () => {};
 			
 			menu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
-				PromptConfirmAction("Quit", "Are you sure you want to quit?", onQuit, doNothing);
+				PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
 			
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.GetWidget<ButtonWidget>("SURRENDER_BUTTON");
@@ -137,7 +149,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			
-			menu.GetWidget<ButtonWidget>("RESUME_BUTTON").OnClick = () => 
+			var resumeButton = menu.GetWidget<ButtonWidget>("RESUME_BUTTON");
+			resumeButton.IsDisabled = () => resumeDisabled;
+			resumeButton.OnClick = () => 
 			{
 				Widget.RootWidget.RemoveChild(menu);
 				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
