@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Cnc
 		Dictionary<string,string> Info;
 		Stopwatch lastLoadScreen = new Stopwatch();
 		Sprite[] ss;
+		float2 nodPos, gdiPos;
+		Sprite nodLogo, gdiLogo;
 		Rectangle Bounds;
 		Renderer r;
 		NullInputHandler nih = new NullInputHandler();
@@ -47,6 +49,10 @@ namespace OpenRA.Mods.Cnc
 				new Sprite(s, new Rectangle(128,223,33,33), TextureChannel.Alpha),
 				new Sprite(s, new Rectangle(223,223,33,33), TextureChannel.Alpha)
 			};
+			nodLogo = new Sprite(s, new Rectangle(0,256,256,256), TextureChannel.Alpha);
+			gdiLogo = new Sprite(s, new Rectangle(256,256,256,256), TextureChannel.Alpha);
+			nodPos =  new float2(Renderer.Resolution.Width/3 - 256, Renderer.Resolution.Height/2 - 128);
+			gdiPos =  new float2(Renderer.Resolution.Width*2/3, Renderer.Resolution.Height/2 - 128);
 		}
 		
 		public void Display()
@@ -63,6 +69,8 @@ namespace OpenRA.Mods.Cnc
 			var textSize = font.Measure(text);
 			
 			r.BeginFrame(float2.Zero);
+			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
+			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			DrawBorder();
 			font.DrawText(text, new float2((Renderer.Resolution.Width - textSize.X) / 2, (Renderer.Resolution.Height - textSize.Y) / 2), Color.White);
 			r.EndFrame( nih );
