@@ -18,20 +18,14 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Cnc
 {
 	public class CncLoadScreen : ILoadScreen
-	{	
-		static string[] Comments = new[] {	"Filling Crates...", "Charging Capacitors...", "Reticulating Splines...",
-												"Planting Trees...", "Building Bridges...", "Aging Empires...",
-												"Compiling EVA...", "Constructing Pylons...", "Activating Skynet...",
-												"Splitting Atoms..."
-		};
-		
+	{
 		Dictionary<string,string> Info;
 		Stopwatch lastLoadScreen = new Stopwatch();
-		Rectangle StripeRect, BgRect;
-		Sprite Stripe, Logo, Bg;
-		float2 LogoPos;
-		
+		Sprite[] ss;
+		Rectangle Bounds;
 		Renderer r;
+		NullInputHandler nih = new NullInputHandler();
+		
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
@@ -40,15 +34,20 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 			
-			var s = new Sheet("mods/cnc/uibits/loadscreen.png");
-			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
-			Bg = new Sprite(s, new Rectangle(0,256,512,256), TextureChannel.Alpha);
-			BgRect = new Rectangle(0, 0, Renderer.Resolution.Width, Renderer.Resolution.Height);
-			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
-			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);
-			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
+			var s = new Sheet("mods/cnc/uibits/chrome.png");
+			Bounds = new Rectangle(0,0,Renderer.Resolution.Width, Renderer.Resolution.Height);
+			ss = new Sprite[]
+			{
+				new Sprite(s, new Rectangle(161,128,62,33), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(161,223,62,33), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(128,161,33,62), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(223,161,33,62), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(128,128,33,33), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(223,128,33,33), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(128,223,33,33), TextureChannel.Alpha),
+				new Sprite(s, new Rectangle(223,223,33,33), TextureChannel.Alpha)
+			};
 		}
-
 		
 		public void Display()
 		{
@@ -58,17 +57,53 @@ namespace OpenRA.Mods.Cnc
 			// Update text at most every 0.5 seconds
 			if (lastLoadScreen.ElapsedTime() < 0.5)
 				return;
-			
+			var font = r.Fonts["BigBold"];
+			var text = "Connecting to EVA...";
 			lastLoadScreen.Reset();
-			var text = Comments.Random(Game.CosmeticRandom);
-			var textSize = r.Fonts["Bold"].Measure(text);
+			var textSize = font.Measure(text);
 			
 			r.BeginFrame(float2.Zero);
-			WidgetUtils.FillRectWithSprite(BgRect, Bg);
-			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
-			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
-			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.Black);
-			r.EndFrame( new NullInputHandler() );
+			DrawBorder();
+			font.DrawText(text, new float2((Renderer.Resolution.Width - textSize.X) / 2, (Renderer.Resolution.Height - textSize.Y) / 2), Color.White);
+			r.EndFrame( nih );
+		}
+		
+		
+		void DrawBorder()
+		{
+			// Left border
+			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left,
+								 Bounds.Top + (int)ss[0].size.Y,
+								 (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+				   ss[2]);
+
+			// Right border
+			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
+								 Bounds.Top + (int)ss[0].size.Y,
+								 (int)ss[2].size.X,
+								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+				   ss[3]);
+
+			// Top border
+			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
+								 Bounds.Top,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 (int)ss[0].size.Y),
+				   ss[0]);
+
+			// Bottom border
+			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
+								Bounds.Bottom - (int)ss[1].size.Y,
+								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+								 (int)ss[0].size.Y),
+				   ss[1]);
+
+
+			WidgetUtils.DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
+			WidgetUtils.DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
+			WidgetUtils.DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
+			WidgetUtils.DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
 		}
 		
 		public void StartGame()

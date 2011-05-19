@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA
 			Sound.SoundVolumeModifier = 0f;
 
 			LoopMusic();
+			
+			SetViewport();
 		}
 
 		void LoopMusic()
@@ -57,14 +59,18 @@ namespace OpenRA.Mods.RA
 			Sound.PlayMusicThen(Rules.Music[Info.Music], () => LoopMusic());
 		}
 		
+		void SetViewport()
+		{
+			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
+			var loc = ViewportOrigin + new float2(-15,4) * float2.FromAngle( (float)t );
+			Game.viewport.Center(loc);
+		}
+		
 		int ticks = 0;
 		float speed = 4f;
 		public void Tick(Actor self)
 		{
-			var loc = new float2(
-				(float)(-System.Math.Sin((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 15f + ViewportOrigin.X),
-				(float)(0.4f*System.Math.Cos((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 10f + ViewportOrigin.Y));
-			Game.MoveViewport(loc);
+			SetViewport();
 			
 			if (ticks == 0)
 			{
