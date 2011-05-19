@@ -1,8 +1,22 @@
-Background@INSTALL_BACKGROUND:
+Container@INSTALL_BACKGROUND:
 	Id:INSTALL_BACKGROUND
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Background:shellmapborder
+	Children:
+		Image@NOD:
+			X:WINDOW_RIGHT/3-256
+			Y:(WINDOW_BOTTOM-256)/2
+			ImageCollection:logos
+			ImageName:nod-load
+		Image@NOD:
+			X:2*WINDOW_RIGHT/3
+			Y:(WINDOW_BOTTOM-256)/2
+			ImageCollection:logos
+			ImageName:gdi-load
+		Background:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Background:shellmapborder
 
 Container@INSTALL_PANEL:
 	Id:INSTALL_PANEL
@@ -27,8 +41,8 @@ Container@INSTALL_PANEL:
 				Image@INSTALL:
 					X:11
 					Y:11
-					ImageCollection: install
-					ImageName: logo
+					ImageCollection:logos
+					ImageName:install
 				Label@INFO:
 					X:170
 					Y:35
@@ -95,8 +109,8 @@ Container@INSTALL_FROMCD_PANEL:
 				Image@INSTALL:
 					X:11
 					Y:11
-					ImageCollection: install
-					ImageName: logo
+					ImageCollection:logos
+					ImageName:install
 				ProgressBar@PROGRESS_BAR:
 					Id:PROGRESS_BAR
 					X:170
@@ -148,8 +162,8 @@ Container@INSTALL_DOWNLOAD_PANEL:
 				Image@INSTALL:
 					X:11
 					Y:11
-					ImageCollection: install
-					ImageName: logo
+					ImageCollection:logos
+					ImageName:install
 				ProgressBar@PROGRESS_BAR:
 					Id:PROGRESS_BAR
 					X:170

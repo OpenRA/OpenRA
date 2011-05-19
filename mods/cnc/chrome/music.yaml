@@ -212,8 +212,8 @@ Container@INSTALL_MUSIC_PANEL:
 				Image@INSTALL:
 					X:11
 					Y:11
-					ImageCollection: install
-					ImageName: logo
+					ImageCollection:logos
+					ImageName:install
 				ProgressBar@PROGRESS_BAR:
 					Id:PROGRESS_BAR
 					X:170

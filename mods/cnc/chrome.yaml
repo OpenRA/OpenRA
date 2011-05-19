@@ -1,8 +1,10 @@
 shellmap: reticle.png
 	reticle: 0,0,512,512
 
-install: install.png
-	logo:0,0,128,128
+logos: chrome.png
+	install:128,0,128,128
+	nod-load:0,256,256,256
+	gdi-load:256,256,256,256
 
 button: chrome.png
 	background: 2,194,60,60
