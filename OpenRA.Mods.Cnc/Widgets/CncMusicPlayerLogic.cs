@@ -93,6 +93,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" : 
 					"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
 					    							  currentSong.Length / 60, currentSong.Length % 60);
+			panel.GetWidget<LabelWidget>("TITLE_LABEL").GetText = () => (currentSong == null) ? "" : currentSong.Title;
+			
+			var musicSlider = panel.GetWidget<SliderWidget>("MUSIC_SLIDER");
+			musicSlider.OnChange += x => { Sound.MusicVolume = x; };
+			musicSlider.GetOffset = () => { return Sound.MusicVolume; };
+			musicSlider.SetOffset(Sound.MusicVolume);
 		}
 	
 		void BuildMusicTable(Widget panel)
@@ -102,7 +108,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
-			
+			ml.RemoveChildren();
+
 			foreach (var s in music)
 			{
 				var song = s;

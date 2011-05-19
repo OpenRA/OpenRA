@@ -73,33 +73,29 @@ Container@MUSIC_PANEL:
 							Align:Right
 							Font:Bold
 				Container@BUTTONS:
-					X:(PARENT_RIGHT-WIDTH)/2
-					Y:320
+					X:15
+					Y:PARENT_BOTTOM-HEIGHT-40
 					Width:170
 					Children:
 						Button@BUTTON_PREV:
 							Id:BUTTON_PREV
-							Width:35
-							Height:35
+							Width:25
+							Height:25
 							Children:
 								Image@IMAGE_PREV:
 									Id:IMAGE_PREV
-									X:5
-									Y:5
 									Width:25
 									Height:25
 									ImageCollection:music
 									ImageName:prev
 						Button@BUTTON_PLAY:
 							Id:BUTTON_PLAY
-							X:45
-							Width:35
-							Height:35
+							X:35
+							Width:25
+							Height:25
 							Children:
 								Image@IMAGE_PLAY:
 									Id:IMAGE_PLAY
-									X:5
-									Y:5
 									Width:25
 									Height:25
 									ImageCollection:music
@@ -107,50 +103,59 @@ Container@MUSIC_PANEL:
 						Button@BUTTON_PAUSE:
 							Id:BUTTON_PAUSE
 							Visible:false
-							X:45
-							Width:35
-							Height:35
+							X:35
+							Width:25
+							Height:25
 							Children:
 								Image@IMAGE_PAUSE:
 									Id:IMAGE_PAUSE
-									X:5
-									Y:5
 									Width:25
 									Height:25
 									ImageCollection:music
 									ImageName:pause
 						Button@BUTTON_STOP:
 							Id:BUTTON_STOP
-							X:90
-							Width:35
-							Height:35
+							X:70
+							Width:25
+							Height:25
 							Children:
 								Image@IMAGE_STOP:
 									Id:IMAGE_STOP
-									X:5
-									Y:5
 									Width:25
 									Height:25
 									ImageCollection:music
 									ImageName:stop
 						Button@BUTTON_NEXT:
 							Id:BUTTON_NEXT
-							X:135
-							Width:35
-							Height:35
+							X:105
+							Width:25
+							Height:25
 							Children:
 								Image@IMAGE_NEXT:
 									Id:IMAGE_NEXT
-									X:5
-									Y:5
 									Width:25
 									Height:25
 									ImageCollection:music
-									ImageName:next
+									ImageName:next									
+						Slider@MUSIC_SLIDER:
+							Id:MUSIC_SLIDER
+							X:145
+							Y:3
+							Width:185
+							Height:20
+							Ticks:5
+				Label@TITLE_LABEL:
+					Id:TITLE_LABEL
+					X:(PARENT_RIGHT-WIDTH)/2
+					Y:305
+					Width:140
+					Height:25
+					Align:Center
+					Font:Bold
 				Label@TIME_LABEL:
 					Id:TIME_LABEL
 					X:(PARENT_RIGHT-WIDTH)/2
-					Y:PARENT_BOTTOM-13-HEIGHT
+					Y:325
 					Width:140
 					Height:25
 					Align:Center
@@ -158,14 +163,14 @@ Container@MUSIC_PANEL:
 				Checkbox@SHUFFLE:
 					Id:SHUFFLE
 					X:15
-					Y:PARENT_BOTTOM-15-HEIGHT
+					Y:320
 					Width:85
 					Height:20
 					Text:Shuffle
 				Checkbox@REPEAT:
 					Id:REPEAT
 					X:PARENT_RIGHT-15-WIDTH
-					Y:PARENT_BOTTOM-15-HEIGHT
+					Y:320
 					Width:70
 					Height:20
 					Text:Loop
