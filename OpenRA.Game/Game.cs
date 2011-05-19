@@ -221,6 +221,7 @@ namespace OpenRA
 			Widget.SelectedWidget = null;
 
 			orderManager.LocalFrameNumber = 0;
+			orderManager.LastTickTime = Environment.TickCount;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
 			AfterGameStart( orderManager.world );
@@ -313,7 +314,6 @@ namespace OpenRA
 		public static void LoadShellMap()
 		{
 			StartGame(ChooseShellmap());
-			Game.orderManager.LastTickTime = Environment.TickCount;
 		}
 		
         static string ChooseShellmap()
