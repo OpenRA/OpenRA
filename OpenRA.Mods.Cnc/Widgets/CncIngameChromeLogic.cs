@@ -13,6 +13,7 @@ using System.Drawing;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA.Activities;
+using System.Linq;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -57,7 +58,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (world.LocalPlayer != null)
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
-			ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON").IsDisabled = () => true;
+			var diplomacyButton = ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON");
+			var diplomacyAvailable = world.players.Values.Any(a => a != world.LocalPlayer && !a.NonCombatant);
+			diplomacyButton.IsDisabled = () => !diplomacyAvailable;
+			diplomacyButton.OnClick = () => Game.OpenWindow("DIPLOMACY_PANEL", new WidgetArgs());
+
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				ingameRoot.IsVisible = () => false;
