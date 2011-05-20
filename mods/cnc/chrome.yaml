@@ -309,6 +309,10 @@ music: chrome.png
 	next: 256,16,16,16
 	prev: 272,16,16,16
 
+spawnpoints: chrome.png
+	unowned: 272,32,16,16
+	owned: 256,32,16,16
+
 scrollbar: buttons.png
 	down_arrow: 16,112,16,16
 	up_arrow: 32,112,16,16

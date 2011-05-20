@@ -126,10 +126,6 @@ tabs-normal: tabs.png
 	nod-Plane: 134,160,27,41
 	nod-Ship: 134,200,27,41
 
-spawnpoints: spawnpoints.png
-	unowned: 16,0,16,16
-	owned: 0,0,16,16
-
 sell-button: buttons.png
 	normal: 0,0,34,28
 	pressed: 34,0,34,28

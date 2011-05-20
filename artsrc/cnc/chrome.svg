@@ -54,9 +54,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.6081373"
-     inkscape:cx="289.81961"
-     inkscape:cy="494.58461"
+     inkscape:zoom="4"
+     inkscape:cx="197.6475"
+     inkscape:cy="442.41251"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -75,7 +75,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -556,5 +556,23 @@
        id="path4133"
        d="m 280,556.36218 -8,8 0,0 8,8 z"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       style="fill:#800000;fill-opacity:1;stroke:#3f0000;stroke-width:0.99999994000000003;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="M 264 32.5 C 259.85786 32.499386 256.50061 35.857864 256.5 40 C 256.49939 44.142136 259.85786 47.499386 264 47.5 C 268.14214 47.500614 271.49939 44.142136 271.5 40 C 271.5 35.858298 268.1417 32.500614 264 32.5 z M 264 34.5 C 267.03725 34.50045 269.5 36.962752 269.5 40 C 269.49955 43.037566 267.03757 45.50045 264 45.5 C 260.96243 45.49955 258.49955 43.037566 258.5 40 C 258.50045 36.962434 260.96243 34.49955 264 34.5 z "
+       transform="translate(0,540.3622)"
+       id="path4279" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="6.2831853"
+       sodipodi:start="0.00014815468"
+       transform="matrix(0.90203431,0,0,0.77317229,22.750015,541.2837)"
+       d="m 290.17741,50.543926 a 4.9887238,5.8201776 0 1 1 0,-8.62e-4"
+       sodipodi:ry="5.8201776"
+       sodipodi:rx="4.9887238"
+       sodipodi:cy="50.543064"
+       sodipodi:cx="285.18869"
+       id="path4289"
+       style="fill:#000000;fill-opacity:0.75294119;stroke:#800000;stroke-width:1.19743048999999990;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       sodipodi:type="arc" />
   </g>
 </svg>
