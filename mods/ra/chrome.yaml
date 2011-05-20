@@ -209,7 +209,9 @@ music: musicplayer.png
 
 scrollbar: buttons.png
 	down_arrow: 16,112,16,16
+	down_pressed: 16,112,16,16
 	up_arrow: 32,112,16,16
+	up_pressed: 32,112,16,16
 
 # A copy of dialog3
 progressbar-bg: dialog.png

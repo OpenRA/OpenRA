@@ -88,13 +88,14 @@ namespace OpenRA.Widgets
 				ButtonWidget.DrawBackground(thumbRect, false, (Focused && thumbRect.Contains(Viewport.LastMousePos)),
 				                            thumbRect.Contains(Viewport.LastMousePos));
 			
-			var upOffset = !UpPressed || thumbHeight == 0 || ListOffset >= 0 ? 4 : 4 + ButtonDepth;
-			var downOffset = !DownPressed || thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight
-				? 4 : 4 + ButtonDepth;
+			var upDisabled = thumbHeight == 0 || ListOffset >= 0;
+			var downDisabled = thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight;
+			var upOffset = !UpPressed || upDisabled ? 4 : 4 + ButtonDepth;
+			var downOffset = !DownPressed || downDisabled ? 4 : 4 + ButtonDepth;
 			
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "up_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", UpPressed || upDisabled ? "up_pressed" : "up_arrow"),
 				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", "down_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", DownPressed || downDisabled ? "down_pressed" : "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
 			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);

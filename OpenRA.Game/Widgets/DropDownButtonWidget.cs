@@ -35,7 +35,7 @@ namespace OpenRA.Widgets
 			base.DrawInner();
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
-			var image = ChromeProvider.GetImage("scrollbar", "down_arrow");
+			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
 			var rb = RenderBounds;
 			
 			WidgetUtils.DrawRGBA( image,

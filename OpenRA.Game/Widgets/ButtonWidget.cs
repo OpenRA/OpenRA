@@ -95,18 +95,18 @@ namespace OpenRA.Widgets
 		public override void DrawInner()
 		{
 			var rb = RenderBounds;
+			var disabled = IsDisabled();
 			if (Font == "Regular" && Bold)
 				Font = "Bold";
 			
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();
+			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
-			DrawBackground(rb, IsDisabled(), Depressed, rb.Contains(Viewport.LastMousePos));
-			font.DrawText(text,
-				new int2(rb.X + UsableWidth / 2, rb.Y + Bounds.Height / 2)
-					- new int2(font.Measure(text).X / 2,
-				font.Measure(text).Y / 2) + stateOffset, IsDisabled() ? Color.Gray : Color.White);
+			DrawBackground(rb, disabled, Depressed, rb.Contains(Viewport.LastMousePos));
+			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
+			              disabled ? Color.Gray : Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }
