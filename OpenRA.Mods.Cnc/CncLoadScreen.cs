@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Cnc
 		Dictionary<string,string> Info;
 		Stopwatch lastLoadScreen = new Stopwatch();
 		Sprite[] ss;
-		float2 nodPos, gdiPos;
-		Sprite nodLogo, gdiLogo;
+		float2 nodPos, gdiPos, evaPos;
+		Sprite nodLogo, gdiLogo, evaLogo;
 		Rectangle Bounds;
 		Renderer r;
 		NullInputHandler nih = new NullInputHandler();
@@ -51,8 +51,10 @@ namespace OpenRA.Mods.Cnc
 			};
 			nodLogo = new Sprite(s, new Rectangle(0,256,256,256), TextureChannel.Alpha);
 			gdiLogo = new Sprite(s, new Rectangle(256,256,256,256), TextureChannel.Alpha);
-			nodPos =  new float2(Renderer.Resolution.Width/3 - 256, Renderer.Resolution.Height/2 - 128);
-			gdiPos =  new float2(Renderer.Resolution.Width*2/3, Renderer.Resolution.Height/2 - 128);
+			evaLogo = new Sprite(s, new Rectangle(256,64,128,64), TextureChannel.Alpha);
+			nodPos = new float2(Renderer.Resolution.Width/3 - 256, Renderer.Resolution.Height/2 - 128);
+			gdiPos = new float2(Renderer.Resolution.Width*2/3, Renderer.Resolution.Height/2 - 128);
+			evaPos = new float2(Renderer.Resolution.Width-43-128, 43);
 		}
 		
 		public void Display()
@@ -71,6 +73,7 @@ namespace OpenRA.Mods.Cnc
 			r.BeginFrame(float2.Zero);
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
+			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 			DrawBorder();
 			font.DrawText(text, new float2((Renderer.Resolution.Width - textSize.X) / 2, (Renderer.Resolution.Height - textSize.Y) / 2), Color.White);
 			r.EndFrame( nih );

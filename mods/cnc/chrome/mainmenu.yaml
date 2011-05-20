@@ -11,10 +11,13 @@ Container@MENU_BACKGROUND:
 			Height:512
 			ImageCollection:shellmap
 			ImageName:reticle
-		Background@SCANLINES:
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-			Background:panel-scanline
+		Image@EVA:
+			X:WINDOW_RIGHT-128-43
+			Y:43
+			Width:128
+			Height:64
+			ImageCollection:logos
+			ImageName:eva
 		Background@BORDER:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM

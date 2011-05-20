@@ -13,6 +13,13 @@ Container@INSTALL_BACKGROUND:
 			Y:(WINDOW_BOTTOM-256)/2
 			ImageCollection:logos
 			ImageName:gdi-load
+		Image@EVA:
+			X:WINDOW_RIGHT-128-43
+			Y:43
+			Width:128
+			Height:64
+			ImageCollection:logos
+			ImageName:eva
 		Background:
 			Width:PARENT_RIGHT
 			Height:PARENT_BOTTOM

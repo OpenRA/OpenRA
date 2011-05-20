@@ -3,6 +3,7 @@ shellmap: reticle.png
 
 logos: chrome.png
 	install:128,0,128,128
+	eva:256,64,128,64
 	nod-load:0,256,256,256
 	gdi-load:256,256,256,256
 
