@@ -149,8 +149,24 @@ namespace OpenRA
 				
 				return ret;
 			});
-			
 
+
+			/* hack: make some slots. */
+			if (!Players.Any(p => p.Value.Playable))
+			{
+				for (int index = 0; index < SpawnPoints.Count(); index++)
+				{
+					var p = new PlayerReference
+					{
+						Name = "Multi{0}".F(index),
+						Race = "Random",
+						Playable = true,
+						DefaultStartingUnits = true,
+						Enemies = new[] { "Creeps" }
+					};
+					Players.Add(p.Name, p);
+				}
+			}
 
 			// Upgrade map to format 5
 			if (MapFormat < 5)
@@ -171,25 +187,8 @@ namespace OpenRA
 					Name = "Creeps",
 					Race = "Random",
 					NonCombatant = true,
-					Enemies = Players.Keys.Where(k => k != "Neutral").ToArray()
+					Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
 				});
-			}
-			
-			/* hack: make some slots. */
-			if (!Players.Any(p => p.Value.Playable))
-			{
-				for (int index = 0; index < SpawnPoints.Count(); index++)
-				{
-					var p = new PlayerReference
-					{
-						Name = "Multi{0}".F(index),
-						Race = "Random",
-						Playable = true,
-						DefaultStartingUnits = true,
-						Enemies = new[]{"Creeps"}
-					};
-					Players.Add(p.Name, p);
-				}
 			}
 						
 			// Smudges
