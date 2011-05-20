@@ -79,62 +79,72 @@ Container@MUSIC_PANEL:
 					Children:
 						Button@BUTTON_PREV:
 							Id:BUTTON_PREV
-							Width:25
-							Height:25
+							Width:26
+							Height:26
 							Children:
 								Image@IMAGE_PREV:
 									Id:IMAGE_PREV
-									Width:25
-									Height:25
+									X:5
+									Y:5
+									Width:16
+									Height:16
 									ImageCollection:music
 									ImageName:prev
 						Button@BUTTON_PLAY:
 							Id:BUTTON_PLAY
 							X:35
-							Width:25
-							Height:25
+							Width:26
+							Height:26
 							Children:
 								Image@IMAGE_PLAY:
 									Id:IMAGE_PLAY
-									Width:25
-									Height:25
+									X:5
+									Y:5
+									Width:16
+									Height:16
 									ImageCollection:music
 									ImageName:play
 						Button@BUTTON_PAUSE:
 							Id:BUTTON_PAUSE
 							Visible:false
 							X:35
-							Width:25
-							Height:25
+							Width:26
+							Height:26
 							Children:
 								Image@IMAGE_PAUSE:
 									Id:IMAGE_PAUSE
-									Width:25
-									Height:25
+									X:5
+									Y:5
+									Width:16
+									Height:16
 									ImageCollection:music
 									ImageName:pause
 						Button@BUTTON_STOP:
 							Id:BUTTON_STOP
 							X:70
-							Width:25
-							Height:25
+							Width:26
+							Height:26
 							Children:
 								Image@IMAGE_STOP:
 									Id:IMAGE_STOP
-									Width:25
-									Height:25
+									X:5
+									Y:5
+									Width:16
+									Height:16
 									ImageCollection:music
 									ImageName:stop
 						Button@BUTTON_NEXT:
 							Id:BUTTON_NEXT
 							X:105
-							Width:25
-							Height:25
+							Width:26
+							Height:26
 							Children:
 								Image@IMAGE_NEXT:
 									Id:IMAGE_NEXT
-									Width:25
-									Height:25
+									X:5
+									Y:5
+									Width:16
+									Height:16
 									ImageCollection:music
 									ImageName:next									
 						Slider@MUSIC_SLIDER:

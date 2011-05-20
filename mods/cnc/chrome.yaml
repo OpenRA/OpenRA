@@ -302,12 +302,12 @@ dialog4: dialog4.png
 	corner-br: 58,58,6,6
 	background: 5,5,52,52
 
-music: musicplayer.png
-	pause: 0,0,25,25
-	stop: 28,0,25,25
-	play: 56,0,25,25
-	next: 84,0,25,25
-	prev: 112,0,25,25
+music: chrome.png
+	pause: 256,0,16,16
+	stop: 272,0,16,16
+	play: 288,0,16,16
+	next: 256,16,16,16
+	prev: 272,16,16,16
 
 scrollbar: buttons.png
 	down_arrow: 16,112,16,16
