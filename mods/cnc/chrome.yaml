@@ -232,10 +232,6 @@ checkbox-pressed: chrome.png
 	corner-bl: 64,254,2,2
 	corner-br: 126,254,2,2
 
-checkbox-bits: buttons.png
-	checked: 0,112,16,16
-	pressed: 0,128,16,16
-
 panel-black: chrome.png
 	background: 66,2,60,60
 	border-r: 126,2,2,60
@@ -313,9 +309,15 @@ spawnpoints: chrome.png
 	unowned: 272,32,16,16
 	owned: 256,32,16,16
 
-scrollbar: buttons.png
-	down_arrow: 16,112,16,16
-	up_arrow: 32,112,16,16
+checkbox-bits: chrome.png
+	checked: 288,16,16,16
+	pressed: 288,32,16,16
+
+scrollbar: chrome.png
+	down_arrow: 304,0,16,16
+	down_pressed: 304,32,16,16
+	up_arrow: 304,16,16,16
+	up_pressed: 304,48,16,16
 
 strategic: strategic.png
 	unowned: 0,0,32,32
