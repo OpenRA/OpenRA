@@ -87,6 +87,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
 				onExit();
 			};
+
+			menu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
 		}
 		
 		public void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)

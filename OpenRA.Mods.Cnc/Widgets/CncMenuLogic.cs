@@ -121,6 +121,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				});
 			};
 			settingsMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			
+			widget.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
 		}
 		
 		void RemoveShellmapUI()
