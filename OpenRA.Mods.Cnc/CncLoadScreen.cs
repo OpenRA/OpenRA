@@ -20,10 +20,12 @@ namespace OpenRA.Mods.Cnc
 	public class CncLoadScreen : ILoadScreen
 	{
 		Dictionary<string,string> Info;
-		Stopwatch lastLoadScreen = new Stopwatch();
+		Stopwatch loadTimer = new Stopwatch();
 		Sprite[] ss;
-		float2 nodPos, gdiPos, evaPos;
-		Sprite nodLogo, gdiLogo, evaLogo;
+		string text;
+		int loadTick;
+		float2 nodPos, gdiPos, evaPos, textPos;
+		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle Bounds;
 		Renderer r;
 		NullInputHandler nih = new NullInputHandler();
@@ -55,27 +57,39 @@ namespace OpenRA.Mods.Cnc
 			nodPos = new float2(Renderer.Resolution.Width/3 - 256, Renderer.Resolution.Height/2 - 128);
 			gdiPos = new float2(Renderer.Resolution.Width*2/3, Renderer.Resolution.Height/2 - 128);
 			evaPos = new float2(Renderer.Resolution.Width-43-128, 43);
+			
+			brightBlock = new Sprite(s, new Rectangle(320,0,16,35), TextureChannel.Alpha);
+			dimBlock = new Sprite(s, new Rectangle(336,0,16,35), TextureChannel.Alpha);
 		}
 		
 		public void Display()
 		{
-			if (r == null)
+			if (r == null || loadTimer.ElapsedTime() < 0.25)
 				return;
+			loadTimer.Reset();
 			
-			// Update text at most every 0.5 seconds
-			if (lastLoadScreen.ElapsedTime() < 0.5)
-				return;
-			var font = r.Fonts["BigBold"];
-			var text = "Connecting to EVA...";
-			lastLoadScreen.Reset();
-			var textSize = font.Measure(text);
-			
+			loadTick = ++loadTick % 8;
 			r.BeginFrame(float2.Zero);
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 			DrawBorder();
-			font.DrawText(text, new float2((Renderer.Resolution.Width - textSize.X) / 2, (Renderer.Resolution.Height - textSize.Y) / 2), Color.White);
+			
+			var barY = Renderer.Resolution.Height-78;
+			text = "Loading";
+			var textSize = r.Fonts["BigBold"].Measure(text);
+			textPos = new float2((Renderer.Resolution.Width - textSize.X) / 2, barY);
+			r.Fonts["BigBold"].DrawText(text, textPos, Color.DarkRed);
+
+			for (var i = 0; i <= 8; i++)
+			{
+				var block = loadTick == i ? brightBlock : dimBlock;
+				r.RgbaSpriteRenderer.DrawSprite(block,
+					new float2(Renderer.Resolution.Width/2 - 114 - i*32, barY));
+				r.RgbaSpriteRenderer.DrawSprite(block,
+					new float2(Renderer.Resolution.Width/2 + 114 + i*32-16, barY));
+			}
+			
 			r.EndFrame( nih );
 		}
 		

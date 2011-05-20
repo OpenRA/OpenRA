@@ -54,9 +54,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="280.3593"
-     inkscape:cy="454.1963"
+     inkscape:zoom="4"
+     inkscape:cx="293.08008"
+     inkscape:cy="512.48057"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -101,51 +101,46 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-540.3622)">
-    <g
-       transform="translate(0,-255.99998)"
-       id="layer1-3"
-       inkscape:label="Layer 1">
-      <rect
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
-         y="988.86218"
-         x="0.5"
-         height="63"
-         width="63"
-         id="rect3776-3"
-         style="fill:#2b0000;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none" />
-      <rect
-         style="fill:#560000;fill-opacity:0.87843137;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3759"
-         width="63"
-         height="63"
-         x="0.5"
-         y="924.86218"
-         inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
-         inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90" />
-      <rect
-         style="fill:#2b2b2b;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect2984-3"
-         width="63"
-         height="63"
-         x="64.5"
-         y="924.86218"
-         inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
-         inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90" />
-      <rect
-         style="fill:#0f0000;fill-opacity:0.87843137;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="rect3753"
-         width="63"
-         height="63"
-         x="64.5"
-         y="988.86218"
-         inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
-         inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90" />
-    </g>
+    <rect
+       style="fill:#2b0000;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3776-3"
+       width="63"
+       height="63"
+       x="0.5"
+       y="732.86218"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="668.86218"
+       x="0.5"
+       height="63"
+       width="63"
+       id="rect3759"
+       style="fill:#560000;fill-opacity:0.87843137;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="668.86218"
+       x="64.5"
+       height="63"
+       width="63"
+       id="rect2984-3"
+       style="fill:#2b2b2b;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="732.86218"
+       x="64.5"
+       height="63"
+       width="63"
+       id="rect3753"
+       style="fill:#0f0000;fill-opacity:0.87843137;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     <rect
        style="fill:#2b0000;fill-opacity:0.87843137;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3776"
@@ -499,7 +494,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccsccccccccccccccccccccccscsssscs" />
     <g
-       transform="translate(128,-372.30568)"
+       transform="translate(128,-382.30568)"
        id="layer1-36"
        inkscape:label="Layer 1">
       <path
@@ -658,5 +653,27 @@
        sodipodi:start="0.00014815468"
        sodipodi:end="6.2831853"
        sodipodi:open="true" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="540.86218"
+       x="336.5"
+       height="34"
+       width="15"
+       id="rect3999"
+       style="fill:#0f0000;fill-opacity:0.87843138;stroke:#800000;stroke-width:0.99999987999999995;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       style="fill:#560000;fill-opacity:0.87843137;stroke:#c00000;stroke-width:0.99999988;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4001"
+       width="15"
+       height="34"
+       x="320.5"
+       y="540.86218"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:transform-center-x="1.4142136"
+       inkscape:transform-center-y="40.134013" />
   </g>
 </svg>
