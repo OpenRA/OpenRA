@@ -4,12 +4,12 @@ Container@INSTALL_BACKGROUND:
 	Height:WINDOW_BOTTOM
 	Children:
 		Image@NOD:
-			X:WINDOW_RIGHT/3-256
+			X:WINDOW_RIGHT/2-384
 			Y:(WINDOW_BOTTOM-256)/2
 			ImageCollection:logos
 			ImageName:nod-load
 		Image@NOD:
-			X:2*WINDOW_RIGHT/3
+			X:WINDOW_RIGHT/2+128
 			Y:(WINDOW_BOTTOM-256)/2
 			ImageCollection:logos
 			ImageName:gdi-load

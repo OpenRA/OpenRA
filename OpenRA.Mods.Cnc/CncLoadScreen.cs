@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Cnc
 			nodLogo = new Sprite(s, new Rectangle(0,256,256,256), TextureChannel.Alpha);
 			gdiLogo = new Sprite(s, new Rectangle(256,256,256,256), TextureChannel.Alpha);
 			evaLogo = new Sprite(s, new Rectangle(256,64,128,64), TextureChannel.Alpha);
-			nodPos = new float2(Renderer.Resolution.Width/3 - 256, Renderer.Resolution.Height/2 - 128);
-			gdiPos = new float2(Renderer.Resolution.Width*2/3, Renderer.Resolution.Height/2 - 128);
+			nodPos = new float2(Renderer.Resolution.Width/2 - 384, Renderer.Resolution.Height/2 - 128);
+			gdiPos = new float2(Renderer.Resolution.Width/2 + 128, Renderer.Resolution.Height/2 - 128);
 			evaPos = new float2(Renderer.Resolution.Width-43-128, 43);
 			
 			brightBlock = new Sprite(s, new Rectangle(320,0,16,35), TextureChannel.Alpha);
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc
 			text = "Loading";
 			var textSize = r.Fonts["BigBold"].Measure(text);
 			textPos = new float2((Renderer.Resolution.Width - textSize.X) / 2, barY);
-			r.Fonts["BigBold"].DrawText(text, textPos, Color.DarkRed);
+			r.Fonts["BigBold"].DrawText(text, textPos, Color.Gray);
 
 			for (var i = 0; i <= 8; i++)
 			{
