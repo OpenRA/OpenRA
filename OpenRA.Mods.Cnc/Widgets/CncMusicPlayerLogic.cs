@@ -27,13 +27,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Widget panel;
 		MusicInfo[] music;
 		MusicInfo[] random;
+		
+		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
 		public CncMusicPlayerLogic([ObjectCreator.Param] Widget widget,
 		                           [ObjectCreator.Param] Action onExit)
 		{
 			panel = widget.GetWidget("MUSIC_PANEL");
-			BuildMusicTable(panel);
+			
+			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
+			itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
+			
+			BuildMusicTable(ml);
 
 			currentSong = Sound.CurrentMusic ?? GetNextSong();
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
@@ -52,7 +58,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				catch (Exception) { }
 				
 				installed = Rules.Music.Where(m => m.Value.Exists).Any();
-				BuildMusicTable(panel);
+				BuildMusicTable(ml);
 			};
 			
 			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
@@ -101,15 +107,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			musicSlider.SetOffset(Sound.MusicVolume);
 		}
 	
-		void BuildMusicTable(Widget panel)
+		void BuildMusicTable(Widget list)
 		{
 			music = Rules.Music.Where(a => a.Value.Exists).Select(a => a.Value).ToArray();
 			random = music.Shuffle(Game.CosmeticRandom).ToArray();
 			
-			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
-			var itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
-			ml.RemoveChildren();
-
+			list.RemoveChildren();
 			foreach (var s in music)
 			{
 				var song = s;
@@ -119,7 +122,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var item = ScrollItemWidget.Setup(itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); });
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => song.Title;
 				item.GetWidget<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
-				ml.AddChild(item);
+				list.AddChild(item);
 			}
 		}
 		
