@@ -16,6 +16,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -118,7 +119,8 @@ namespace OpenRA
 
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
-			if (MapFormat < 4)
+			// Use release-20110511 to convert older maps to format 5
+			if (MapFormat < 5)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 			
 			// Load players
@@ -136,60 +138,8 @@ namespace OpenRA
 					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
 				
 				// Add waypoint actors
-
-				if (MapFormat < 5)
-					foreach( var wp in yaml.NodesDict[ "Waypoints" ].NodesDict )
-					{
-						string[] loc = wp.Value.Value.Split( ',' );
-						var a = new ActorReference("mpspawn");
-						a.Add(new LocationInit(new int2( int.Parse( loc[ 0 ] ), int.Parse( loc[ 1 ] ) )));
-						a.Add(new OwnerInit(Players.First(p => p.Value.OwnsWorld).Key));
-						ret.Add(wp.Key, a);
-					}
-				
 				return ret;
 			});
-
-
-			/* hack: make some slots. */
-			if (!Players.Any(p => p.Value.Playable))
-			{
-				for (int index = 0; index < SpawnPoints.Count(); index++)
-				{
-					var p = new PlayerReference
-					{
-						Name = "Multi{0}".F(index),
-						Race = "Random",
-						Playable = true,
-						DefaultStartingUnits = true,
-						Enemies = new[] { "Creeps" }
-					};
-					Players.Add(p.Name, p);
-				}
-			}
-
-			// Upgrade map to format 5
-			if (MapFormat < 5)
-			{
-				// Define RequiresMod for map installer
-				RequiresMod = Game.CurrentMods.Keys.First();
-													
-				var TopLeft = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["TopLeft"].Value);
-				var BottomRight = (int2)FieldLoader.GetValue( "", typeof(int2), yaml.NodesDict["BottomRight"].Value);
-				Bounds = Rectangle.FromLTRB(TopLeft.X, TopLeft.Y, BottomRight.X, BottomRight.Y);		
-				
-				// Creep player
-				foreach (var mp in Players.Where(p => !p.Value.NonCombatant && !p.Value.Enemies.Contains("Creeps")))
-					mp.Value.Enemies = mp.Value.Enemies.Concat(new[] {"Creeps"}).ToArray();
-				
-				Players.Add("Creeps", new PlayerReference
-				{
-					Name = "Creeps",
-					Race = "Random",
-					NonCombatant = true,
-					Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
-				});
-			}
 						
 			// Smudges
 			Smudges = Lazy.New(() =>
@@ -446,5 +396,42 @@ namespace OpenRA
             using (var csp = SHA1.Create())
                 return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
         }
+
+		public void MakeDefaultPlayers()
+		{
+			Players.Clear();
+
+			var firstRace = OpenRA.Rules.Info["world"].Traits
+				.WithInterface<CountryInfo>().First().Race;
+
+			Players.Add("Neutral", new PlayerReference
+			{
+				Name = "Neutral",
+				Race = firstRace,
+				OwnsWorld = true,
+				NonCombatant = true
+			});
+
+			for (int index = 0; index < SpawnPoints.Count(); index++)
+			{
+				var p = new PlayerReference
+				{
+					Name = "Multi{0}".F(index),
+					Race = "Random",
+					Playable = true,
+					DefaultStartingUnits = true,
+					Enemies = new[] { "Creeps" }
+				};
+				Players.Add(p.Name, p);
+			}
+
+			Players.Add("Creeps", new PlayerReference
+			{
+				Name = "Creeps",
+				Race = firstRace,
+				NonCombatant = true,
+				Enemies = Players.Where(p => p.Value.Playable).Select(p => p.Key).ToArray()
+			});
+		}
 	}
 }
