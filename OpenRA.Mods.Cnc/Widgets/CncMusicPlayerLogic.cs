@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
+using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -214,6 +215,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		void PromptForCD()
 		{
+			if (Game.Settings.Graphics.Mode == WindowMode.Fullscreen)
+			{
+				statusLabel.GetText = () => "Error: Installing from Fullscreen mode is not supported";
+				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+				return;
+			}
+
 			progressBar.SetIndeterminate(true);
 			statusLabel.GetText = () => "Waiting for file";
 			Game.Utilities.PromptFilepathAsync("Select SCORES.MIX on the C&C CD", path => Install(path));
