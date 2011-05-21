@@ -586,7 +586,7 @@ BRIK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
-		Prerequisites: fact
+		Prerequisites: vehicleproduction
 		Owner: gdi,nod
 	Health:
 		HP: 1000
