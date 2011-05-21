@@ -151,6 +151,9 @@ FTNK:
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
+	Explodes:
+		Weapon: BigFlamer
+		EmptyWeapon: BigFlamer
 
 BGGY:
 	Inherits: ^Vehicle
