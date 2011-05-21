@@ -28,7 +28,8 @@ MCV:
 		NoTransformSounds: deploy1.aud
 	RenderUnit:
 	MustBeDestroyed:
-	-AttackMove:
+	AttackMove:
+		JustMove:true
 	BaseBuilding:
 
 HARV:
@@ -60,7 +61,8 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
-	-AttackMove:
+	AttackMove:
+		JustMove:true
 
 APC:
 	Inherits: ^Tank
