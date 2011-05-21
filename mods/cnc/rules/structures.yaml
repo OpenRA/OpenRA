@@ -68,7 +68,7 @@ NUKE:
 PROC:
 	Inherits: ^Building
 	Valued:
-		Cost: 1700
+		Cost: 1500
 	Tooltip:
 		Name: Tiberium Refinery
 		Icon: procicnh
@@ -79,7 +79,7 @@ PROC:
 		Owner: gdi,nod
 	Building:
 		Power: -30
-		Footprint: xxx xxx ===
+		Footprint: _x_ xxx ===
 		Dimensions: 3,3
 	Health:
 		HP: 900
@@ -94,7 +94,7 @@ PROC:
 		PipCount: 15
 		Capacity: 1500
 	CustomSellValue:
-		Value: 500
+		Value: 300
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources

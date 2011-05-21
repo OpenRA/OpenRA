@@ -34,7 +34,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1400
+		Cost: 1200
 	Tooltip:
 		Name: Harvester
 		Icon: harvicnh
