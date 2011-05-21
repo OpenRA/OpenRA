@@ -98,7 +98,7 @@ Container@INGAME_ROOT:
 							Font:Bold
 				SpecialPowerBin@INGAME_POWERS_BIN:
 					Id:INGAME_POWERS_BIN
-					Y:25
+					Y:50
 				BuildPalette@INGAME_BUILD_PALETTE:
 					Id:INGAME_BUILD_PALETTE
 					X:WINDOW_RIGHT - 250
