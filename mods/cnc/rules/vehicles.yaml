@@ -31,6 +31,8 @@ MCV:
 	AttackMove:
 		JustMove:true
 	BaseBuilding:
+	LeavesHusk:
+		HuskActor: MCV.Husk
 
 HARV:
 	Inherits: ^Tank
@@ -63,6 +65,8 @@ HARV:
 	RenderUnit:
 	AttackMove:
 		JustMove:true
+	LeavesHusk:
+		HuskActor: HARV.Husk
 
 APC:
 	Inherits: ^Tank
@@ -96,6 +100,8 @@ APC:
 		Types: Infantry
 		Passengers: 5
 		UnloadFacing: 220
+	LeavesHusk:
+		HuskActor: APC.Husk
 
 ARTY:
 	Inherits: ^Tank
@@ -123,6 +129,8 @@ ARTY:
 	RenderUnit:
 	Explodes:
 	AutoTarget:
+	LeavesHusk:
+		HuskActor: ARTY.Husk
 
 FTNK:
 	Inherits: ^Tank
@@ -156,6 +164,8 @@ FTNK:
 	Explodes:
 		Weapon: BigFlamer
 		EmptyWeapon: BigFlamer
+	LeavesHusk:
+		HuskActor: FTNK.Husk
 
 BGGY:
 	Inherits: ^Vehicle
@@ -186,7 +196,9 @@ BGGY:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
-	
+	LeavesHusk:
+		HuskActor: BGGY.Husk
+
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
@@ -214,6 +226,8 @@ BIKE:
 		PrimaryLocalOffset: -4,0,25,4,0,-25
 	RenderUnit:
 	AutoTarget:
+	LeavesHusk:
+		HuskActor: BIKE.Husk
 	
 JEEP:
 	Inherits: ^Vehicle
@@ -244,7 +258,9 @@ JEEP:
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
-	
+	LeavesHusk:
+		HuskActor: JEEP.Husk
+
 LTNK:
 	Inherits: ^Tank
 	Valued:
@@ -272,7 +288,7 @@ LTNK:
 		Recoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: LTNK.Husk
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -305,7 +321,7 @@ MTNK:
 		Recoil: 3
 	RenderUnitTurreted:
 	AutoTarget:
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: MTNK.Husk
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -345,7 +361,7 @@ HTNK:
 	RenderUnitTurreted:
 	AutoTarget:
 	SelfHealing:
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: HTNK.Husk
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -385,7 +401,7 @@ MSAM:
 		AlignIdleTurrets: true
 	RenderUnitTurretedAim:
 	AutoTarget:
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: MSAM.Husk
 
 MLRS:
@@ -420,7 +436,7 @@ MLRS:
 		AlignIdleTurrets: true
 	RenderUnitTurretedAim:
 	AutoTarget:
-	LeavesHusk: 
+	LeavesHusk:
 		HuskActor: MLRS.Husk
 
 STNK:
@@ -453,78 +469,5 @@ STNK:
 	RenderUnit:
 	AutoTarget:
 	TargetableUnit:
-
-LTNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Light Tank)
-		Icon: ltnkicnh
-	RenderUnit:
-		Image: ltnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-	TransformOnCapture:
-		IntoActor: ltnk
-
-MTNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Medium Tank)
-		Icon: mtnkicnh
-	RenderUnit:
-		Image: mtnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-	TransformOnCapture:
-		IntoActor: mtnk
-
-HTNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Mammoth Tank)
-		Icon: htnkicnh
-	RenderUnit:
-		Image: htnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-	TransformOnCapture:
-		IntoActor: htnk
-
-MSAM.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Rocket Launcher)
-		Icon: msamicnh
-	RenderUnit:
-		Image: msam
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-	TransformOnCapture:
-		IntoActor: msam
-
-MLRS.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (SSM Launcher)
-		Icon: mlrsicnh
-	RenderUnit:
-		Image: mlrs
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-	TransformOnCapture:
-		IntoActor: mlrs
+	LeavesHusk:
+		HuskActor: STNK.Husk

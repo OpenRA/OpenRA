@@ -41,6 +41,7 @@ Rules:
 	mods/cnc/rules/tech.yaml
 	mods/cnc/rules/ships.yaml
 	mods/cnc/rules/aircraft.yaml
+	mods/cnc/rules/husks.yaml
 
 Sequences:
 	mods/cnc/sequences/structures.yaml
