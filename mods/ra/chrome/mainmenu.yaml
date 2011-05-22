@@ -64,15 +64,6 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:Quit
 			Font:Bold
-		Button@MAINMENU_BUTTON_VIDEOPLAYER:
-			Id:MAINMENU_BUTTON_VIDEOPLAYER
-			Visible:false
-			X:45
-			Y:260
-			Width:200
-			Height:25
-			Text:Video Player
-			Font:Bold
 Background@QUICKMODSWITCHER:
 	Id:QUICKMODSWITCHER
 	Background: dialog4
