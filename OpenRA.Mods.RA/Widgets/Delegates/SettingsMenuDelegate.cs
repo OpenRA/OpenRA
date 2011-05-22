@@ -45,9 +45,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					Game.Settings.Player.Name = name.Text;
 			};
             name.OnEnterKey = () => { name.LoseFocus(); return true; };
-
-			general.GetWidget<CheckboxWidget>("EDGE_SCROLL").Bind(Game.Settings.Game, "ViewportEdgeScroll");
-            
+			
+			var edgescrollCheckbox = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
+			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
+			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
+			
             // Added scroll sensitivity - Gecko	
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
             if (edgeScrollSlider != null) // Backwards compatible - Gecko
@@ -58,12 +60,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
             }
 
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
-			
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
-			inversescroll.OnChange += c => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
+			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
 	
-			general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE").Bind(Game.Settings.Game, "TeamChatToggle");
-
+			var teamchatCheckbox = general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE");
+			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
+			teamchatCheckbox.OnClick = () => Game.Settings.Game.TeamChatToggle ^= true;
 			
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
@@ -81,11 +83,10 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
-			display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX").Bind(Game.Settings.Game, "TeamChatToggle");
 
 			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
 			fullscreen.IsChecked = () => Game.Settings.Graphics.Mode != WindowMode.Windowed;
-			fullscreen.OnChange += c => Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+			fullscreen.OnClick = () => Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
 	
 			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
 			Game.Settings.Graphics.WindowedSize.X = (Game.Settings.Graphics.WindowedSize.X < Game.Settings.Graphics.MinResolution.X)?
@@ -125,14 +126,23 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
-			debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX").Bind(Game.Settings.Debug, "PerfGraph");
-			debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX").Bind(Game.Settings.Game, "MatchTimer");
-            debug.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX").Bind(Game.Settings.Debug, "SanityCheckUnsyncedCode");
+			
 
-			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
+			var perfgraphCheckbox = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
+			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
+			perfgraphCheckbox.OnClick = () => Game.Settings.Debug.PerfGraph ^= true;
+			
+			var matchtimerCheckbox = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
+			matchtimerCheckbox.IsChecked = () => Game.Settings.Game.MatchTimer;
+			matchtimerCheckbox.OnClick = () => Game.Settings.Game.MatchTimer ^= true;
+			
+			var checkunsyncedCheckbox = debug.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
+			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
+			checkunsyncedCheckbox.OnClick = () => Game.Settings.Debug.SanityCheckUnsyncedCode ^= true;
+	
+			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick = () => {
 				Game.Settings.Save();
 				Widget.CloseWindow();
-				return true;
 			};
 		}
 		
