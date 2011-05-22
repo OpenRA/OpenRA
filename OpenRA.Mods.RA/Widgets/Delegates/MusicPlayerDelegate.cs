@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			};
 			
 			var ml = bg.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
-			var itemTemplate = ml.GetWidget<LabelWidget>("MUSIC_TEMPLATE");
+			var itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
 			
 			if (!Rules.Music.Where(m => m.Value.Exists).Any())
 			{
@@ -114,23 +114,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				var song = kv.Key;
 				if (CurrentSong == null)
 					CurrentSong = song;
-
-				var template = itemTemplate.Clone() as LabelWidget;
-				template.Id = "SONG_{0}".F(song);
-				template.GetBackground = () => ((song == CurrentSong) ? "dialog2" : null);
-				template.OnMouseDown = mi =>
-				{
-					if (mi.Button != MouseButton.Left) return false;
-					CurrentSong = song;
-					bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
-					return true;
-				};
-
-				template.IsVisible = () => true;				
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => "   " + Rules.Music[song].Title;
-				template.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
-
-				ml.AddChild(template);
+				
+				var item = ScrollItemWidget.Setup(itemTemplate, () => CurrentSong == song, () => { CurrentSong = song; bg.GetWidget("BUTTON_PLAY").OnMouseUp(new MouseInput()); });
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
+				item.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
+				ml.AddChild(item);
 			}
 		}
 		

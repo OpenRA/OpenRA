@@ -245,9 +245,9 @@ Background@MUSIC_MENU:
 			Width:280
 			Height:140
 			Children:
-				Label@MUSIC_TEMPLATE:
+				ScrollItem@MUSIC_TEMPLATE:
 					Id:MUSIC_TEMPLATE
-					Width:PARENT_RIGHT-28
+					Width:PARENT_RIGHT-27
 					Height:25
 					X:2
 					Y:0
