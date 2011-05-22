@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		[ObjectCreator.UseCtor]
 		public CncCheatsLogic([ObjectCreator.Param] Widget widget,
+		                      [ObjectCreator.Param] Action onExit,
 		                      [ObjectCreator.Param] World world)
 		{
 			var panel = widget.GetWidget("CHEATS_PANEL");
@@ -67,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			panel.GetWidget<ButtonWidget>("GIVE_EXPLORATION_BUTTON").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
 			
-			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = Widget.CloseWindow;
+			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 		}
 		
 		public void Order(World world, string order)

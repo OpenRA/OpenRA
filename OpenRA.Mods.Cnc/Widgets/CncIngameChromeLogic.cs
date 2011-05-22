@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class CncIngameChromeLogic : IWidgetDelegate
 	{
+		enum MenuType { None, Diplomacy, Cheats }
+		MenuType menu = MenuType.None;
+		
 		static bool staticSetup;
 		Widget ingameRoot;
 
@@ -61,10 +64,23 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var diplomacyButton = ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON");
 			var diplomacyAvailable = world.players.Values.Any(a => a != world.LocalPlayer && !a.NonCombatant);
 			diplomacyButton.IsDisabled = () => !diplomacyAvailable;
-			diplomacyButton.OnClick = () => Game.OpenWindow("DIPLOMACY_PANEL", new WidgetArgs());
-
+			diplomacyButton.OnClick = () => 
+			{
+				if (menu != MenuType.None)
+					Widget.CloseWindow();
+				
+				menu = MenuType.Diplomacy;
+				Game.OpenWindow("DIPLOMACY_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
+			};
+			
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
+				if (menu != MenuType.None)
+				{
+					Widget.CloseWindow();
+					menu = MenuType.None;
+				}
+				
 				ingameRoot.IsVisible = () => false;
 				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
 				{
@@ -73,7 +89,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 			
 			var cheatsButton = ingameRoot.GetWidget<ButtonWidget>("CHEATS_BUTTON");
-			cheatsButton.OnClick = () => Game.OpenWindow("CHEATS_PANEL", new WidgetArgs());
+			cheatsButton.OnClick = () =>
+			{
+				if (menu != MenuType.None)
+					Widget.CloseWindow();
+				
+				menu = MenuType.Diplomacy;
+				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
+			};
+			
 			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
 			
 			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");

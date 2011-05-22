@@ -25,11 +25,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		[ObjectCreator.UseCtor]
 		public CncDiplomacyLogic([ObjectCreator.Param] Widget widget,
-		                          [ObjectCreator.Param] World world)
+		                         [ObjectCreator.Param] Action onExit,
+		                         [ObjectCreator.Param] World world)
 		{
 			this.world = world;
 			var panel = widget.GetWidget("DIPLOMACY_PANEL");
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = Widget.CloseWindow;
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
 			var scrollpanel = panel.GetWidget<ScrollPanelWidget>("PLAYER_LIST");
 			var itemTemplate = scrollpanel.GetWidget("PLAYER_TEMPLATE");
