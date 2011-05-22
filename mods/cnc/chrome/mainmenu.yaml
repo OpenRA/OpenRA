@@ -2,7 +2,7 @@ Container@MENU_BACKGROUND:
 	Id:MENU_BACKGROUND
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Delegate:CncMenuLogic
+	Logic:CncMenuLogic
 	Children:
 		Image@RETICLE:
 			X:(WINDOW_RIGHT-WIDTH)/2
@@ -176,7 +176,7 @@ Container@MENU_BACKGROUND:
 							Text:Back
 		Container@PERFORMANCE_INFO:
 			Id:PERFORMANCE_INFO
-			Delegate:CncPerfDebugLogic
+			Logic:CncPerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
 					Id:PERF_TEXT

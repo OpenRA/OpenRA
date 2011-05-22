@@ -2,7 +2,7 @@ Container@INGAME_MENU:
 	Id:INGAME_MENU
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Delegate:CncIngameMenuLogic
+	Logic:CncIngameMenuLogic
 	Children:
 		Image@RETICLE:
 			X:(WINDOW_RIGHT-WIDTH)/2

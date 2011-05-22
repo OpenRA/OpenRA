@@ -58,7 +58,6 @@ namespace OpenRA.Widgets
 			return lose;
 		}
 
-		// TODO: TextFieldWidgets don't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (IsDisabled())

@@ -34,7 +34,6 @@ namespace OpenRA.Widgets
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
 		public override void DrawInner() {}
 		
-		// TODO: ViewportScrollController doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{									
 			var scrolltype = Game.Settings.Game.MouseScroll;

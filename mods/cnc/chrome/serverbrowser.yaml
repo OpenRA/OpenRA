@@ -1,6 +1,6 @@
 Container@SERVERBROWSER_PANEL:
 	Id:SERVERBROWSER_PANEL
-	Delegate:CncServerBrowserLogic
+	Logic:CncServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
 	Width:740

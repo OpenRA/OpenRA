@@ -1,6 +1,6 @@
 Container@SETTINGS_PANEL:
 	Id:SETTINGS_PANEL
-	Delegate:CncSettingsLogic
+	Logic:CncSettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 250)/2
 	Width:740

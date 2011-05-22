@@ -1,6 +1,6 @@
 Container@MUSIC_PANEL:
 	Id:MUSIC_PANEL
-	Delegate:CncMusicPlayerLogic
+	Logic:CncMusicPlayerLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 400)/2
 	Width:360
@@ -201,7 +201,7 @@ Container@MUSIC_PANEL:
 
 Container@INSTALL_MUSIC_PANEL:
 	Id:INSTALL_MUSIC_PANEL
-	Delegate:CncInstallMusicLogic
+	Logic:CncInstallMusicLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640

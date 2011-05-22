@@ -157,7 +157,6 @@ namespace OpenRA.Mods.RA.Widgets
 			return DoBuildingHotkey(e.KeyName, world);
 		}
 		
-		// TODO: BuildPaletteWidget doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{			
 			if (mi.Event != MouseInputEvent.Down)

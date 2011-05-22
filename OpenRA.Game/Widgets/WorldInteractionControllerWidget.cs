@@ -57,7 +57,6 @@ namespace OpenRA.Widgets
 		
 		int2 dragStart, dragEnd;
 
-		// TODO: WorldInteractionController doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{			
 			var xy = Game.viewport.ViewToWorldPx(mi);

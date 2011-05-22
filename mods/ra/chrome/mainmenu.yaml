@@ -5,7 +5,7 @@ Background@MAINMENU_BG:
 	Width:250
 	Height:330
 	Visible:true
-	Delegate:MainMenuButtonsDelegate
+	Logic:MainMenuButtonsLogic
 	Children:
 		Label@MAINMENU_LABEL_TITLE:
 			Id:MAINMENU_LABEL_TITLE
@@ -99,7 +99,7 @@ Background@PERF_BG:
 	ClickThrough:true
 	Id:PERF_BG
 	Background:dialog4
-	Delegate:PerfDebugDelegate
+	Logic:PerfDebugLogic
 	X:10
 	Y:WINDOW_BOTTOM - 250
 	Width: 210
@@ -119,7 +119,7 @@ Background@PERF_BG:
 			Height:40
 Background@MUSIC_MENU:
 	Id:MUSIC_MENU
-	Delegate:MusicPlayerDelegate
+	Logic:MusicPlayerLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width: 450

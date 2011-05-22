@@ -1,6 +1,6 @@
 Container@DIPLOMACY_PANEL:
 	Id:DIPLOMACY_PANEL
-	Delegate:CncDiplomacyLogic
+	Logic:CncDiplomacyLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 400)/2
 	Width:450

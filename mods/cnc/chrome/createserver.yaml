@@ -3,7 +3,7 @@
 # TODO: Have the advertise checkbox en/disable the external port textfield
 Container@CREATESERVER_PANEL:
 	Id:CREATESERVER_PANEL
-	Delegate:CncServerCreationLogic
+	Logic:CncServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 260)/2
 	Width:604

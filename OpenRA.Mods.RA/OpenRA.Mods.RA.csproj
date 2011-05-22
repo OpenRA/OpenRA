@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -260,9 +260,9 @@
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
-    <Compile Include="Widgets\Delegates\IngameObserverChromeDelegate.cs" />
-    <Compile Include="Widgets\Delegates\IngameChromeDelegate.cs" />
-    <Compile Include="Widgets\Delegates\ReplayBrowserDelegate.cs" />
+    <Compile Include="Widgets\Logic\IngameObserverChromeLogic.cs" />
+    <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
+    <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />
     <Compile Include="Widgets\PowerBinWidget.cs" />
@@ -277,7 +277,7 @@
     <Compile Include="Invulnerable.cs" />
     <Compile Include="ReplaceWithActor.cs" />
     <Compile Include="StoresOre.cs" />
-    <Compile Include="Widgets\Delegates\OrderButtonsChromeDelegate.cs" />
+    <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
     <Compile Include="RadarColorFromTerrain.cs" />
     <Compile Include="EngineerRepair.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
@@ -308,17 +308,17 @@
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />
-    <Compile Include="Widgets\Delegates\ConnectionDialogsDelegate.cs" />
-    <Compile Include="Widgets\Delegates\CreateServerMenuDelegate.cs" />
-    <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
-    <Compile Include="Widgets\Delegates\DiplomacyDelegate.cs" />
-    <Compile Include="Widgets\Delegates\LobbyDelegate.cs" />
-    <Compile Include="Widgets\Delegates\MainMenuButtonsDelegate.cs" />
-    <Compile Include="Widgets\Delegates\MapChooserDelegate.cs" />
-    <Compile Include="Widgets\Delegates\MusicPlayerDelegate.cs" />
-    <Compile Include="Widgets\Delegates\PerfDebugDelegate.cs" />
-    <Compile Include="Widgets\Delegates\ServerBrowserDelegate.cs" />
-    <Compile Include="Widgets\Delegates\SettingsMenuDelegate.cs" />
+    <Compile Include="Widgets\Logic\ConnectionDialogsLogic.cs" />
+    <Compile Include="Widgets\Logic\CreateServerMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
+    <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
+    <Compile Include="Widgets\Logic\LobbyLogic.cs" />
+    <Compile Include="Widgets\Logic\MainMenuButtonsLogic.cs" />
+    <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
+    <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
+    <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
+    <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\SettingsMenuLogic.cs" />
     <Compile Include="TargetableSubmarine.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
     <Compile Include="AttackMedic.cs" />
@@ -328,7 +328,7 @@
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
     <Compile Include="Widgets\GameInitInfoWidget.cs" />
-    <Compile Include="Widgets\Delegates\GameInitDelegate.cs" />
+    <Compile Include="Widgets\Logic\GameInitLogic.cs" />
     <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="Widgets\SidebarButtonWidget.cs" />

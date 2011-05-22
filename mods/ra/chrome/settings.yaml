@@ -1,6 +1,6 @@
 Background@SETTINGS_MENU:
 	Id:SETTINGS_MENU
-	Delegate:SettingsMenuDelegate
+	Logic:SettingsMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 450

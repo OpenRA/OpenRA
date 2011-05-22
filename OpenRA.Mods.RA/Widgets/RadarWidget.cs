@@ -11,7 +11,6 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
@@ -85,7 +84,6 @@ namespace OpenRA.Mods.RA.Widgets
 			return CursorProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
 		}
 
-		// TODO: RadarWidget doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (!hasRadar || Animating) return false;

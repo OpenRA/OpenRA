@@ -5,7 +5,7 @@ GameInitInfo@INIT_SETUP:
 	PackageURL:http://open-ra.org/get-dependency.php?file=ra-packages
 	PackagePath:^/Content/ra
 	InstallMode:ra
-	Delegate:GameInitDelegate
+	Logic:GameInitLogic
 
 Background@INIT_CHOOSEINSTALL:
 	Id:INIT_CHOOSEINSTALL

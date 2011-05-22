@@ -1,6 +1,6 @@
 Container@INGAME_ROOT:
 	Id:INGAME_ROOT
-	Delegate:IngameChromeDelegate
+	Logic:IngameChromeLogic
 	Children:
 		WorldInteractionController:
 			Id:INTERACTION_CONTROLLER
@@ -93,7 +93,7 @@ Container@INGAME_ROOT:
 			Children:
 				OrderButton@SELL:
 					Id:SELL
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:3
 					Y:0
 					Width:30
@@ -103,7 +103,7 @@ Container@INGAME_ROOT:
 					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
 				OrderButton@POWER_DOWN:
 					Id:POWER_DOWN
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:39
 					Y:0
 					Width:30
@@ -113,7 +113,7 @@ Container@INGAME_ROOT:
 					LongDesc:Disable unneeded structures so their \npower can be used elsewhere
 				OrderButton@REPAIR:
 					Id:REPAIR
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:75
 					Y:0
 					Width:30
@@ -189,7 +189,7 @@ Container@INGAME_ROOT:
 					Font:Bold
 		Background@DIPLOMACY_BG:
 			Id:DIPLOMACY_BG
-			Delegate:DiplomacyDelegate
+			Logic:DiplomacyLogic
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -223,7 +223,7 @@ Container@INGAME_ROOT:
 			UseContrast: yes
 		Background@DEVELOPERMODE_BG:
 			Id:DEVELOPERMODE_BG
-			Delegate:DeveloperModeDelegate
+			Logic:DeveloperModeLogic
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:350
@@ -305,7 +305,7 @@ Container@INGAME_ROOT:
 			ClickThrough:true
 			Id:PERF_BG
 			Background:dialog4
-			Delegate:PerfDebugDelegate
+			Logic:PerfDebugLogic
 			X:10
 			Y:WINDOW_BOTTOM - 250
 			Width: 210
@@ -326,7 +326,7 @@ Container@INGAME_ROOT:
 Container@OBSERVER_ROOT:
 	Id:OBSERVER_ROOT
 	Visible:true
-	Delegate:IngameObserverChromeDelegate
+	Logic:IngameObserverChromeLogic
 	Children:
 		WorldInteractionController:
 			X:0
@@ -455,7 +455,7 @@ Container@OBSERVER_ROOT:
 			ClickThrough:true
 			Id:PERF_BG
 			Background:dialog4
-			Delegate:PerfDebugDelegate
+			Logic:PerfDebugLogic
 			X:10
 			Y:WINDOW_BOTTOM - 250
 			Width: 210

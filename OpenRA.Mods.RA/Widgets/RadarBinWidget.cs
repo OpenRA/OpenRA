@@ -7,6 +7,7 @@
  * see COPYING.
  */
 #endregion
+
 using System;
 using System.Drawing;
 using System.Linq;
@@ -84,7 +85,6 @@ namespace OpenRA.Mods.RA.Widgets
 			return CursorProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
 		}
 
-		// TODO: RadarBinWidget doesn't support delegate methods for mouse input
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (!hasRadar || radarAnimating) return false;	// we're not set up for this.

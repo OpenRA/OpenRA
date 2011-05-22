@@ -1,6 +1,6 @@
 Container@INGAME_ROOT:
 	Id:INGAME_ROOT
-	Delegate:CncIngameChromeLogic
+	Logic:CncIngameChromeLogic
 	Children:
 		WorldInteractionController:
 			Id:INTERACTION_CONTROLLER
@@ -57,7 +57,7 @@ Container@INGAME_ROOT:
 			UseContrast: yes
 		Container@PERFORMANCE_INFO:
 			Id:PERFORMANCE_INFO
-			Delegate:CncPerfDebugLogic
+			Logic:CncPerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
 					Id:PERF_TEXT
@@ -123,7 +123,7 @@ Container@INGAME_ROOT:
 					Children:
 						OrderButton@SELL:
 							Id:SELL
-							Delegate:OrderButtonsChromeDelegate
+							Logic:OrderButtonsChromeLogic
 							X:39
 							Y:0
 							Width:30
@@ -133,7 +133,7 @@ Container@INGAME_ROOT:
 							LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
 						OrderButton@REPAIR:
 							Id:REPAIR
-							Delegate:OrderButtonsChromeDelegate
+							Logic:OrderButtonsChromeLogic
 							X:75
 							Y:0
 							Width:30

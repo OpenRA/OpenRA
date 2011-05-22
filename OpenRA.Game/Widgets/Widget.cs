@@ -25,8 +25,8 @@ namespace OpenRA.Widgets
         public string Y = "0";
         public string Width = "0";
         public string Height = "0";
-        public string Delegate = null;
-		public IWidgetDelegate DelegateObject {get; private set;}
+        public string Logic = null;
+		public object LogicObject { get; private set; }
         public bool Visible = true;
 
         public readonly List<Widget> Children = new List<Widget>();
@@ -61,7 +61,7 @@ namespace OpenRA.Widgets
             Y = widget.Y;
             Width = widget.Width;
             Height = widget.Height;
-            Delegate = widget.Delegate;
+            Logic = widget.Logic;
             Visible = widget.Visible;
 
             Bounds = widget.Bounds;
@@ -126,13 +126,13 @@ namespace OpenRA.Widgets
 
         public void PostInit(WidgetArgs args)
         {
-            if (Delegate == null)
+            if (Logic == null)
                 return;
 
             args["widget"] = this;
 
-            DelegateObject = Game.modData.ObjectCreator.CreateObject<IWidgetDelegate>(Delegate, args);
-            var iwd = DelegateObject as IWidgetDelegateEx;
+            LogicObject = Game.modData.ObjectCreator.CreateObject<object>(Logic, args);
+            var iwd = LogicObject as ILogicWithInit;
             if (iwd != null)
                 iwd.Init();
 
@@ -229,7 +229,7 @@ namespace OpenRA.Widgets
         // TODO: Solve this properly
         public virtual bool HandleMouseInput(MouseInput mi)
         {
-            // Apply any special logic added by delegates; they return true if they caught the input
+            // Apply any special logic added by event handlers; they return true if they caught the input
             if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
             if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
             if (mi.Event == MouseInputEvent.Move)
@@ -252,7 +252,7 @@ namespace OpenRA.Widgets
             // Do any widgety behavior (enter text etc)
             var handled = HandleKeyPressInner(e);
 
-            // Apply any special logic added by delegates; they return true if they caught the input
+			// Apply any special logic added by event handlers; they return true if they caught the input
             if (OnKeyPress(e)) return true;
 
             return handled;
@@ -372,10 +372,9 @@ namespace OpenRA.Widgets
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}
 	
-    public interface IWidgetDelegate { }
-	
-	// TODO: This can die once ra init is sane
-    [Obsolete] public interface IWidgetDelegateEx : IWidgetDelegate
+	// TODO: you should use this anywhere you want to do 
+	// something in a logic ctor, but retain debuggability.
+    public interface ILogicWithInit
     {
         void Init();
     }

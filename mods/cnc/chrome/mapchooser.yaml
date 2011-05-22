@@ -1,6 +1,6 @@
 Container@MAPCHOOSER_PANEL:
 	Id:MAPCHOOSER_PANEL
-	Delegate:CncMapChooserLogic
+	Logic:CncMapChooserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
 	Width:740

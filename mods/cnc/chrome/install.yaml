@@ -27,7 +27,7 @@ Container@INSTALL_BACKGROUND:
 
 Container@INSTALL_PANEL:
 	Id:INSTALL_PANEL
-	Delegate:CncInstallLogic
+	Logic:CncInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640
@@ -95,7 +95,7 @@ Container@INSTALL_PANEL:
 
 Container@INSTALL_FROMCD_PANEL:
 	Id:INSTALL_FROMCD_PANEL
-	Delegate:CncInstallFromCDLogic
+	Logic:CncInstallFromCDLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640
@@ -148,7 +148,7 @@ Container@INSTALL_FROMCD_PANEL:
 
 Container@INSTALL_DOWNLOAD_PANEL:
 	Id:INSTALL_DOWNLOAD_PANEL
-	Delegate:CncDownloadPackagesLogic
+	Logic:CncDownloadPackagesLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640

@@ -1,6 +1,6 @@
 Background@REPLAYBROWSER_BG:
 	Id:REPLAYBROWSER_BG
-	Delegate:ReplayBrowserDelegate
+	Logic:ReplayBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:700

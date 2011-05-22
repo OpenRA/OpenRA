@@ -1,6 +1,6 @@
 Background@CREATESERVER_BG:
 	Id:CREATESERVER_BG
-	Delegate:CreateServerMenuDelegate
+	Logic:CreateServerMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
@@ -87,7 +87,7 @@ Background@CREATESERVER_BG:
 			Font:Bold
 Background@JOINSERVER_BG:
 	Id:JOINSERVER_BG
-	Delegate:ServerBrowserDelegate
+	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:700
@@ -242,7 +242,7 @@ Background@JOINSERVER_BG:
 			Font:Bold
 Background@DIRECTCONNECT_BG:
 	Id:DIRECTCONNECT_BG
-	Delegate:DirectConnectDelegate
+	Logic:DirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
@@ -290,7 +290,7 @@ Background@DIRECTCONNECT_BG:
 			Font:Bold
 Background@CONNECTION_FAILED_BG:
 	Id:CONNECTION_FAILED_BG
-	Delegate:ConnectionFailedDelegate
+	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450
@@ -331,7 +331,7 @@ Background@CONNECTION_FAILED_BG:
 			Font:Bold
 Background@CONNECTING_BG:
 	Id:CONNECTING_BG
-	Delegate:ConnectionDialogsDelegate
+	Logic:ConnectionDialogsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450

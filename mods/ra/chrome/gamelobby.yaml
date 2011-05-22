@@ -1,6 +1,6 @@
 Background@SERVER_LOBBY:
 	Id:SERVER_LOBBY
-	Delegate:LobbyDelegate
+	Logic:LobbyLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:800
@@ -431,7 +431,7 @@ Background@MAP_CHOOSER:
 	Id:MAP_CHOOSER
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Delegate:MapChooserDelegate
+	Logic:MapChooserLogic
 	Width:800
 	Height:600
 	Children:
