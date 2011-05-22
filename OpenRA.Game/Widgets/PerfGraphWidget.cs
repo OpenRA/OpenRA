@@ -53,9 +53,14 @@ namespace OpenRA.Widgets
                     u + new float2(12, 10 * k + 4),
                     item.c, item.c);
 
-                Game.Renderer.Fonts["Tiny"].DrawText(item.Name, new float2(rect.Left, rect.Top) + new float2(18, 10 * k - 3), Color.White);
-                Game.Renderer.Flush();
                 ++k;
+			}
+
+			k = 0;
+			foreach (var item in PerfHistory.items.Values.ToArray())
+			{
+				Game.Renderer.Fonts["Tiny"].DrawText(item.Name, new float2(rect.Left, rect.Top) + new float2(18, 10 * k - 3), Color.White);
+				++k;
 			}
 		}
 	}
