@@ -39,15 +39,12 @@ namespace OpenRA.Widgets
 		public Color DisabledColor = Color.Gray;
 		public string Font = "Regular";
 		
-		[Obsolete] public bool Bold = false;
-
 		public TextFieldWidget() : base() {}
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{
 			Text = widget.Text;
 			MaxLength = widget.MaxLength;
-			Bold = widget.Bold;
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			DisabledColor = widget.DisabledColor;
@@ -86,9 +83,6 @@ namespace OpenRA.Widgets
 		
 		public int ClosestCursorPosition(int x)
 		{
-			if (Font == "Regular" && Bold)
-				Font = "Bold";
-
 			var font = Game.Renderer.Fonts[Font];
 			var textSize = font.Measure(Text);
 			
@@ -200,9 +194,6 @@ namespace OpenRA.Widgets
 		
 		public virtual void DrawWithString(string text)
 		{
-			if (Font == "Regular" && Bold)
-				Font = "Bold";
-
 			var font = Game.Renderer.Fonts[Font];
 			var pos = RenderOrigin;
 

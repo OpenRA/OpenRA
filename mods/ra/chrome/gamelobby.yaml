@@ -13,7 +13,7 @@ Background@SERVER_LOBBY:
 			Align:Center
 			Width:800
 			Height:20
-			Bold:True
+			Font:Bold
 			Text:OpenRA Multiplayer Lobby
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
@@ -106,7 +106,7 @@ Background@SERVER_LOBBY:
 							X:160
 							Y:0
 							Align:Center
-							Bold:True
+							Font:Bold
 				Container@TEMPLATE_REMOTE:
 					Id:TEMPLATE_REMOTE
 					X:5
@@ -129,7 +129,7 @@ Background@SERVER_LOBBY:
 							Height:23
 							X:125
 							Y:2
-							Bold:Yes
+							Font:Bold
 						ColorBlock@COLOR:
 							Id:COLOR
 							X:165
@@ -178,7 +178,7 @@ Background@SERVER_LOBBY:
 							X:160
 							Y:0
 							Align:Center
-							Bold:True
+							Font:Bold
 				Container@TEMPLATE_EMPTY:
 					Id:TEMPLATE_EMPTY
 					X:5
@@ -209,7 +209,7 @@ Background@SERVER_LOBBY:
 							X:160
 							Y:0
 							Align:Center
-							Bold:True
+							Font:Bold
 				Container@TEMPLATE_EMPTY_HOST:
 					Id:TEMPLATE_EMPTY_HOST
 					X:5
@@ -240,7 +240,7 @@ Background@SERVER_LOBBY:
 							X:160
 							Y:0
 							Align:Center
-							Bold:True
+							Font:Bold
 		Container@LABEL_CONTAINER:
 			X:25
 			Y:40
@@ -253,7 +253,7 @@ Background@SERVER_LOBBY:
 					Y:0
 					Text:Name
 					Align:Center
-					Bold:True
+					Font:Bold
 				Label@LABEL_LOBBY_COLOR:
 					Id:LABEL_LOBBY_COLOR
 					Width:80
@@ -262,7 +262,7 @@ Background@SERVER_LOBBY:
 					Y:0
 					Text:Color
 					Align:Center
-					Bold:True
+					Font:Bold
 				Label@LABEL_LOBBY_FACTION:
 					Id:LABEL_LOBBY_FACTION
 					Width:130
@@ -271,7 +271,7 @@ Background@SERVER_LOBBY:
 					Y:0
 					Text:Faction
 					Align:Center
-					Bold:True
+					Font:Bold
 				Label@LABEL_LOBBY_TEAM:
 					Id:LABEL_LOBBY_TEAM
 					Width:48
@@ -280,7 +280,7 @@ Background@SERVER_LOBBY:
 					Y:0
 					Text:Team
 					Align:Center
-					Bold:True
+					Font:Bold
 				Label@LABEL_LOBBY_STATUS:
 					Id:LABEL_LOBBY_STATUS
 					X:448
@@ -289,7 +289,7 @@ Background@SERVER_LOBBY:
 					Height:25
 					Text:Ready
 					Align:Left
-					Bold:True
+					Font:Bold
 		Button@CHANGEMAP_BUTTON:
 			Id:CHANGEMAP_BUTTON
 			X:PARENT_RIGHT-154
@@ -297,7 +297,7 @@ Background@SERVER_LOBBY:
 			Width:120
 			Height:25
 			Text:Change Map
-			Bold:True
+			Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:20
@@ -326,7 +326,7 @@ Background@SERVER_LOBBY:
 			Width:120
 			Height:25
 			Text:Start Game
-			Bold:True
+			Font:Bold
 		Button@DISCONNECT_BUTTON:
 			Id:DISCONNECT_BUTTON
 			X:PARENT_RIGHT-154
@@ -334,7 +334,7 @@ Background@SERVER_LOBBY:
 			Width:120
 			Height:25
 			Text:Disconnect
-			Bold:True
+			Font:Bold
 		Checkbox@LOCKTEAMS_CHECKBOX:
 			Id:LOCKTEAMS_CHECKBOX
 			X: PARENT_RIGHT-154
@@ -362,7 +362,7 @@ Background@COLOR_CHOOSER:
 			Width:90
 			Height:25
 			Text:Ok
-			Bold:True
+			Font:Bold
 		ShpImage@FACT:
 			Id:FACT
 			X:220
@@ -442,7 +442,7 @@ Background@MAP_CHOOSER:
 			Width:800
 			Height:20
 			Text:Choose Map
-			Bold:True
+			Font:Bold
 		ScrollPanel@MAP_LIST:
 			Id:MAP_LIST
 			X:20
@@ -487,16 +487,16 @@ Background@MAP_CHOOSER:
 					Y:0
 					Text:Title
 					Align:Center
-					Bold:True
+					Font:Bold
 				Label@PLAYERS:
 					Text:Players
-					Bold:true
+					Font:Bold
 					Width:50
 					X:304
 					Height:25
 				Label@TYPE:
 					Text:Type
-					Bold:true
+					Font:Bold
 					Width:50
 					X:420
 					Height:25
@@ -527,7 +527,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Title:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_TITLE:
 					Id:CURMAP_TITLE
 					X:75
@@ -543,7 +543,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Author:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_AUTHOR:
 					Id:CURMAP_AUTHOR
 					X:75
@@ -560,7 +560,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Size:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_SIZE:
 					Id:CURMAP_SIZE
 					X:75
@@ -576,7 +576,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Theater:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_THEATER:
 					Id:CURMAP_THEATER
 					X:75
@@ -592,7 +592,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Players:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_PLAYERS:
 					Id:CURMAP_PLAYERS
 					X:75
@@ -608,7 +608,7 @@ Background@MAP_CHOOSER:
 					Width:70
 					Height:20
 					Text:Desc:
-					Bold:True
+					Font:Bold
 				Label@CURMAP_DESC:
 					Id:CURMAP_DESC
 					X:75
@@ -624,7 +624,7 @@ Background@MAP_CHOOSER:
 			Width:120
 			Height:25
 			Text:Ok
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CANCEL:
 			Id:BUTTON_CANCEL
 			X:PARENT_RIGHT-154
@@ -632,7 +632,7 @@ Background@MAP_CHOOSER:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 		Button@BUTTON_INSTALL:
 			Id:BUTTON_INSTALL
 			X:20
@@ -640,4 +640,4 @@ Background@MAP_CHOOSER:
 			Width:120
 			Height:25
 			Text:Install Map
-			Bold:True
+			Font:Bold

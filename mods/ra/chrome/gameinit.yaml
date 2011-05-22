@@ -21,7 +21,7 @@ Background@INIT_CHOOSEINSTALL:
 			Height:25
 			Text:Install Required
 			Align:Center
-			Bold:True
+			Font:Bold
 		Label@DESC1:
 			X:0
 			Y:65
@@ -44,7 +44,7 @@ Background@INIT_CHOOSEINSTALL:
 			Width:120
 			Height:25
 			Text:Download
-			Bold:True
+			Font:Bold
 		Button@FROMCD:
 			Id:FROMCD
 			X:PARENT_RIGHT - 420
@@ -53,7 +53,7 @@ Background@INIT_CHOOSEINSTALL:
 			Height:25
 			Text:From CD
 			Visible:false
-			Bold:True
+			Font:Bold
 		Button@QUIT:
 			Id:QUIT
 			X:PARENT_RIGHT - 140
@@ -61,7 +61,7 @@ Background@INIT_CHOOSEINSTALL:
 			Width:120
 			Height:25
 			Text:Quit
-			Bold:True
+			Font:Bold
 
 Background@INIT_DOWNLOAD:
 	Id:INIT_DOWNLOAD
@@ -77,7 +77,7 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Text:Downloading Red Alert Content
 			Align:Center
-			Bold:True
+			Font:Bold
 		ProgressBar@PROGRESS:
 			Id:PROGRESS
 			X:50
@@ -99,7 +99,7 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Visible: false
 			Text:Retry
-			Bold:True
+			Font:Bold
 		Button@CANCEL:
 			Id:CANCEL
 			X:PARENT_RIGHT - 140
@@ -107,7 +107,7 @@ Background@INIT_DOWNLOAD:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 		Button@EXTRACT:
 			Id:EXTRACT
 			X:PARENT_RIGHT - 140
@@ -116,7 +116,7 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Visible: false
 			Text:Extract
-			Bold:True
+			Font:Bold
 
 Background@INIT_COPY:
 	Id:INIT_COPY
@@ -132,7 +132,7 @@ Background@INIT_COPY:
 			Height:25
 			Text:Copying Red Alert Content
 			Align:Center
-			Bold:True
+			Font:Bold
 		ProgressBar@PROGRESS:
 			Id:PROGRESS
 			X:50
@@ -154,7 +154,7 @@ Background@INIT_COPY:
 			Height:25
 			Visible: false
 			Text:Retry
-			Bold:True
+			Font:Bold
 		Button@CANCEL:
 			Id:CANCEL
 			X:PARENT_RIGHT - 140
@@ -162,4 +162,4 @@ Background@INIT_COPY:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold

@@ -63,9 +63,6 @@ namespace OpenRA.Widgets
 		
 		public override void DrawInner()
 		{
-			if (Font == "Regular" && Bold)
-				Font = "Bold";
-			
 			var font = Game.Renderer.Fonts[Font];
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));

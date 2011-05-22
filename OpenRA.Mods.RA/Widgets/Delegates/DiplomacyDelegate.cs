@@ -43,7 +43,8 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			Game.AfterGameStart += _ => validPlayers = world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
-
+		
+		// This is shit
 		void LayoutDialog(Widget bg)
 		{
 			bg.Children.RemoveAll(w => controls.Contains(w));
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var ts = new LabelWidget
 			{
-				Bold = true,
+				Font = "Bold",
 				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
 				Text = "Their Stance",
 				Align = LabelWidget.TextAlign.Left,
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var ms = new LabelWidget
 			{
-				Bold = true,
+				Font = "Bold",
 				Bounds = new Rectangle(margin + 2 * labelWidth + 20, y, labelWidth, 25),
 				Text = "My Stance",
 				Align = LabelWidget.TextAlign.Left,
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					Id = "DIPLOMACY_PLAYER_LABEL_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = LabelWidget.TextAlign.Left,
-					Bold = true,
+					Font = "Bold",
 				};
 
 				bg.AddChild(label);
@@ -98,7 +99,6 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					Id = "DIPLOMACY_PLAYER_LABEL_THEIR_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = LabelWidget.TextAlign.Left,
-					Bold = false,
 
 					GetText = () => pp.Stances[ world.LocalPlayer ].ToString(),
 				};

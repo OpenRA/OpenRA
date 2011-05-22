@@ -14,7 +14,7 @@ Background@CREATESERVER_BG:
 			Height:25
 			Text:Create Server
 			Align:Center
-			Bold:True
+			Font:Bold
 		Label@GAME_TITLE_LABEL:
 			Id:GAME_TITLE_LABEL
 			X:50
@@ -76,7 +76,7 @@ Background@CREATESERVER_BG:
 			Width:120
 			Height:25
 			Text:Create
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CANCEL:
 			Id:BUTTON_CANCEL
 			X:260
@@ -84,7 +84,7 @@ Background@CREATESERVER_BG:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 Background@JOINSERVER_BG:
 	Id:JOINSERVER_BG
 	Delegate:ServerBrowserDelegate
@@ -101,7 +101,7 @@ Background@JOINSERVER_BG:
 			Height:25
 			Text:Join Server
 			Align:Center
-			Bold:True
+			Font:Bold
 		ScrollPanel@SERVER_LIST:
 			Id:SERVER_LIST
 			X:20
@@ -147,7 +147,7 @@ Background@JOINSERVER_BG:
 					Width:70
 					Height:20
 					Text:Server:
-					Bold:True
+					Font:Bold
 				Label@SERVER_IP:
 					Id:SERVER_IP
 					X:PARENT_RIGHT - 195
@@ -163,7 +163,7 @@ Background@JOINSERVER_BG:
 					Width:70
 					Height:20
 					Text:Players:
-					Bold:True
+					Font:Bold
 				Label@MAP_PLAYERS:
 					Id:MAP_PLAYERS
 					X:PARENT_RIGHT - 195
@@ -179,7 +179,7 @@ Background@JOINSERVER_BG:
 					Width:70
 					Height:20
 					Text:Map:
-					Bold:True
+					Font:Bold
 				Label@MAP_TITLE:
 					Id:MAP_TITLE
 					X:PARENT_RIGHT - 195
@@ -195,7 +195,7 @@ Background@JOINSERVER_BG:
 					Width:70
 					Height:20
 					Text:Mods:
-					Bold:True
+					Font:Bold
 				Label@SERVER_MODS:
 					Id:SERVER_MODS
 					X:PARENT_RIGHT - 195
@@ -211,7 +211,7 @@ Background@JOINSERVER_BG:
 			Width:120
 			Height:25
 			Text:Direct Connect
-			Bold:True
+			Font:Bold
 		Button@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
 			X:160
@@ -219,7 +219,7 @@ Background@JOINSERVER_BG:
 			Width:120
 			Height:25
 			Text:Refresh
-			Bold:True
+			Font:Bold
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
 			X:PARENT_RIGHT - 140 - 130
@@ -227,7 +227,7 @@ Background@JOINSERVER_BG:
 			Width:120
 			Height:25
 			Text:Join
-			Bold:True
+			Font:Bold
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			X:PARENT_RIGHT - 140
@@ -235,7 +235,7 @@ Background@JOINSERVER_BG:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 Background@DIRECTCONNECT_BG:
 	Id:DIRECTCONNECT_BG
 	Delegate:DirectConnectDelegate
@@ -252,7 +252,7 @@ Background@DIRECTCONNECT_BG:
 			Height:25
 			Text:Direct Connect
 			Align:Center
-			Bold:True
+			Font:Bold
 		Label@ADDRESS_LABEL:
 			Id:ADDRESS_LABEL
 			X:50
@@ -275,7 +275,7 @@ Background@DIRECTCONNECT_BG:
 			Width:120
 			Height:25
 			Text:Join
-			Bold:True
+			Font:Bold
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			X:260
@@ -283,7 +283,7 @@ Background@DIRECTCONNECT_BG:
 			Width:120
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 Background@CONNECTION_FAILED_BG:
 	Id:CONNECTION_FAILED_BG
 	Delegate:ConnectionFailedDelegate
@@ -300,7 +300,7 @@ Background@CONNECTION_FAILED_BG:
 			Height:25
 			Text:Connection Failed
 			Align:Center
-			Bold:True
+			Font:Bold
 		Label@CONNECTION_FAILED_DESC:
 			Id:CONNECTION_FAILED_DESC
 			X:0
@@ -316,7 +316,7 @@ Background@CONNECTION_FAILED_BG:
 			Width:160
 			Height:25
 			Text:Retry
-			Bold:True
+			Font:Bold
 		Button@CONNECTION_BUTTON_CANCEL:
 			Id:CONNECTION_BUTTON_CANCEL
 			X:PARENT_RIGHT - 180
@@ -324,7 +324,7 @@ Background@CONNECTION_FAILED_BG:
 			Width:160
 			Height:25
 			Text:Cancel
-			Bold:True
+			Font:Bold
 Background@CONNECTING_BG:
 	Id:CONNECTING_BG
 	Delegate:ConnectionDialogsDelegate
@@ -341,7 +341,7 @@ Background@CONNECTING_BG:
 			Height:25
 			Text:Connecting
 			Align:Center
-			Bold:True
+			Font:Bold
 		Label@CONNECTING_DESC:
 			Id:CONNECTING_DESC
 			X:0
@@ -357,4 +357,4 @@ Background@CONNECTING_BG:
 			Width:160
 			Height:25
 			Text:Abort
-			Bold:True
+			Font:Bold

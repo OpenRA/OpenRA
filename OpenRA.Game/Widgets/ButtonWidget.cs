@@ -25,9 +25,6 @@ namespace OpenRA.Widgets
 		public Func<bool> IsDisabled = () => false;
 		public Action OnClick = () => {};
 		
-		[Obsolete] public bool Bold = false;
-
-		
 		public ButtonWidget()
 			: base()
 		{
@@ -96,8 +93,6 @@ namespace OpenRA.Widgets
 		{
 			var rb = RenderBounds;
 			var disabled = IsDisabled();
-			if (Font == "Regular" && Bold)
-				Font = "Bold";
 			
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();

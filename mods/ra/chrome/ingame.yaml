@@ -42,7 +42,7 @@ Container@INGAME_ROOT:
 					Width:200
 					Height:40
 					Align:Center
-					Bold:True
+					Font:Bold
 		SpecialPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
 			X:0
@@ -60,7 +60,7 @@ Container@INGAME_ROOT:
 			Width:160
 			Height:25
 			Text:Options
-			Bold:True
+			Font:Bold
 		Button@INGAME_DIPLOMACY_BUTTON:
 			Id:INGAME_DIPLOMACY_BUTTON
 			X:162
@@ -68,7 +68,7 @@ Container@INGAME_ROOT:
 			Width:160
 			Height:25
 			Text:Diplomacy
-			Bold:True
+			Font:Bold
 		Button@INGAME_DEVELOPERMODE_BUTTON:
 			Id:INGAME_DEVELOPERMODE_BUTTON
 			X:324
@@ -77,7 +77,7 @@ Container@INGAME_ROOT:
 			Height:25
 			Text:Developer Mode
 			Visible:false
-			Bold:True
+			Font:Bold
 		RadarBin@INGAME_RADAR_BIN:
 			Id:INGAME_RADAR_BIN
 			WorldInteractionController:INTERACTION_CONTROLLER
@@ -138,7 +138,7 @@ Container@INGAME_ROOT:
 					Height:25
 					Text:Options
 					Align:Center
-					Bold:True
+					Font:Bold
 				Button@RESUME:
 					Id:RESUME
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -146,7 +146,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Resume
-					Bold:True
+					Font:Bold
 				Button@SETTINGS:
 					Id:SETTINGS
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -154,7 +154,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Settings
-					Bold:True
+					Font:Bold
 				Button@MUSIC:
 					Id:MUSIC
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -162,7 +162,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Music
-					Bold:True					
+					Font:Bold					
 				Button@SURRENDER:
 					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -170,7 +170,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Surrender
-					Bold:True
+					Font:Bold
 				Button@DISCONNECT:
 					Id:DISCONNECT
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -178,7 +178,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Disconnect
-					Bold:True
+					Font:Bold
 				Button@QUIT:
 					Id:QUIT
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -186,7 +186,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Quit
-					Bold:True
+					Font:Bold
 		Background@DIPLOMACY_BG:
 			Id:DIPLOMACY_BG
 			Delegate:DiplomacyDelegate
@@ -204,7 +204,7 @@ Container@INGAME_ROOT:
 					Height:25
 					Text:Diplomacy
 					Align:Center
-					Bold:True
+					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:250
@@ -319,7 +319,6 @@ Container@INGAME_ROOT:
 					Height:200
 				Label@TEXT:
 					Id:TEXT
-					Bold: false
 					X:20
 					Y:205
 					Width:170
@@ -359,7 +358,7 @@ Container@OBSERVER_ROOT:
 					Width:200
 					Height:40
 					Align:Center
-					Bold:True
+					Font:Bold
 		SpecialPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
 			X:0
@@ -371,7 +370,7 @@ Container@OBSERVER_ROOT:
 			Width:160
 			Height:25
 			Text:Options
-			Bold:True
+			Font:Bold
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
 			Id:INGAME_OPTIONS_BG
@@ -389,7 +388,7 @@ Container@OBSERVER_ROOT:
 					Height:25
 					Text:Options
 					Align:Center
-					Bold:True
+					Font:Bold
 				Button@RESUME:
 					Id:RESUME
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -397,7 +396,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Resume
-					Bold:True
+					Font:Bold
 				Button@SETTINGS:
 					Id:SETTINGS
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -405,7 +404,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Settings
-					Bold:True
+					Font:Bold
 				Button@MUSIC:
 					Id:MUSIC
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -413,7 +412,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Music
-					Bold:True					
+					Font:Bold					
 				Button@SURRENDER:
 					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -421,7 +420,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Surrender
-					Bold:True
+					Font:Bold
 				Button@DISCONNECT:
 					Id:DISCONNECT
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -429,7 +428,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Disconnect
-					Bold:True
+					Font:Bold
 				Button@QUIT:
 					Id:QUIT
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -437,7 +436,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Quit
-					Bold:True
+					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:250
@@ -470,7 +469,6 @@ Container@OBSERVER_ROOT:
 					Height:200
 				Label@TEXT:
 					Id:TEXT
-					Bold: false
 					X:20
 					Y:205
 					Width:170

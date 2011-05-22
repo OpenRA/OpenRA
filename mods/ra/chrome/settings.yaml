@@ -14,7 +14,7 @@ Background@SETTINGS_MENU:
 			Height:25
 			Text:Settings
 			Align:Center
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CLOSE:
 			Id:BUTTON_CLOSE
 			X:PARENT_RIGHT - 180
@@ -22,7 +22,7 @@ Background@SETTINGS_MENU:
 			Width:160
 			Height:25
 			Text:Close
-			Bold:True
+			Font:Bold
 		Container@TAB_CONTAINER:
 			Id:TAB_CONTAINER
 			X:0
@@ -37,7 +37,7 @@ Background@SETTINGS_MENU:
 					Width:90
 					Height:25
 					Text:General
-					Bold:True
+					Font:Bold
 				Button@AUDIO:
 					Id:AUDIO
 					X:135
@@ -45,7 +45,7 @@ Background@SETTINGS_MENU:
 					Width:90
 					Height:25
 					Text:Audio
-					Bold:True
+					Font:Bold
 				Button@DISPLAY:
 					Id:DISPLAY
 					X:225
@@ -53,7 +53,7 @@ Background@SETTINGS_MENU:
 					Width:90
 					Height:25
 					Text:Display
-					Bold:True
+					Font:Bold
 				Button@DEBUG:
 					Id:DEBUG
 					X:315
@@ -61,7 +61,7 @@ Background@SETTINGS_MENU:
 					Width:90
 					Height:25
 					Text:Debug
-					Bold:True
+					Font:Bold
 		Container@GENERAL_PANE:
 			Id:GENERAL_PANE
 			X:37

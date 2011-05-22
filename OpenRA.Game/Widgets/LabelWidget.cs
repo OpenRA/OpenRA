@@ -30,8 +30,6 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		[Obsolete] public Func<string> GetBackground;
 		
-		[Obsolete] public bool Bold = false; // Legacy flag. TODO: Remove
-
 		public LabelWidget()
 			: base()
 		{
@@ -44,7 +42,6 @@ namespace OpenRA.Widgets
 		{
 			Text = other.Text;
 			Align = other.Align;
-			Bold = other.Bold;
 			Font = other.Font;
 			Color = other.Color;
 			Contrast = other.Contrast;
@@ -60,9 +57,6 @@ namespace OpenRA.Widgets
 
 			if (bg != null)
 				WidgetUtils.DrawPanel(bg, RenderBounds );
-			
-			if (Font == "Regular" && Bold)
-				Font = "Bold";
 			
 			SpriteFont font = Game.Renderer.Fonts[Font];
 			var text = GetText();

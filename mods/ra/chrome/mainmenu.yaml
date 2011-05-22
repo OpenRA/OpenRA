@@ -15,7 +15,7 @@ Background@MAINMENU_BG:
 			Height:25
 			Text:OpenRA Main Menu
 			Align:Center
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_JOIN:
 			Id:MAINMENU_BUTTON_JOIN
 			X:45
@@ -23,7 +23,7 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Join Game
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_CREATE:
 			Id:MAINMENU_BUTTON_CREATE
 			X:45
@@ -31,7 +31,7 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Create Game
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_SETTINGS:
 			Id:MAINMENU_BUTTON_SETTINGS
 			X:45
@@ -39,7 +39,7 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Settings
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_MUSIC:
 			Id:MAINMENU_BUTTON_MUSIC
 			X:45
@@ -47,15 +47,15 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Music
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_REPLAY_VIEWER:
 			Id:MAINMENU_BUTTON_REPLAY_VIEWER
 			X:45
 			Y:230
 			Width:160
 			Height:25
-			Text: Replay Viewer
-			Bold: True
+			Text:Replay Viewer
+			Font:Bold
 		Button@MAINMENU_BUTTON_QUIT:
 			Id:MAINMENU_BUTTON_QUIT
 			X:45
@@ -63,7 +63,7 @@ Background@MAINMENU_BG:
 			Width:160
 			Height:25
 			Text:Quit
-			Bold:True
+			Font:Bold
 		Button@MAINMENU_BUTTON_VIDEOPLAYER:
 			Id:MAINMENU_BUTTON_VIDEOPLAYER
 			Visible:false
@@ -72,7 +72,7 @@ Background@MAINMENU_BG:
 			Width:200
 			Height:25
 			Text:Video Player
-			Bold:True
+			Font:Bold
 Background@QUICKMODSWITCHER:
 	Id:QUICKMODSWITCHER
 	Background: dialog4
@@ -88,7 +88,7 @@ Background@QUICKMODSWITCHER:
 			Height:25
 			Text:Mod:
 			Align:Left
-			Bold:True
+			Font:Bold
 		DropDownButton@SWITCHER:
 			Id:SWITCHER
 			Text:Team
@@ -103,7 +103,7 @@ Background@QUICKMODSWITCHER:
 			Width:150
 			Height:25
 			Align:Center
-			Bold:True
+			Font:Bold
 Background@PERF_BG:
 	ClickThrough:true
 	Id:PERF_BG
@@ -122,7 +122,6 @@ Background@PERF_BG:
 			Height:200
 		Label@TEXT:
 			Id:TEXT
-			Bold: false
 			X:20
 			Y:205
 			Width:170
@@ -144,7 +143,7 @@ Background@MUSIC_MENU:
 			Height:25
 			Text:Music
 			Align:Center
-			Bold:True
+			Font:Bold
 		Button@BUTTON_INSTALL:
 			Id:BUTTON_INSTALL
 			X:20
@@ -152,7 +151,7 @@ Background@MUSIC_MENU:
 			Width:160
 			Height:25
 			Text:Install Music
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CLOSE:
 			Id:BUTTON_CLOSE
 			X:PARENT_RIGHT - 180
@@ -160,7 +159,7 @@ Background@MUSIC_MENU:
 			Width:160
 			Height:25
 			Text:Close
-			Bold:True
+			Font:Bold
 		Container@BUTTONS:
 			X:PARENT_RIGHT - 150
 			Y:50

@@ -13,7 +13,7 @@ Background@VIDEOPLAYER_MENU:
 			Width:PARENT_RIGHT
 			Height:20
 			Text:Video Player
-			Bold:True
+			Font:Bold
 		VqaPlayer:
 			Id:VIDEOPLAYER
 			X:30
@@ -72,4 +72,4 @@ Background@VIDEOPLAYER_MENU:
 			Width:160
 			Height:25
 			Text:Close
-			Bold:True
+			Font:Bold
