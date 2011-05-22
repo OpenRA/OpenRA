@@ -450,9 +450,9 @@ Background@MAP_CHOOSER:
 			Width:504
 			Height:474
 			Children:
-				Container@MAP_TEMPLATE:
+				ScrollItem@MAP_TEMPLATE:
 					Id:MAP_TEMPLATE
-					Width:PARENT_RIGHT-28
+					Width:PARENT_RIGHT-27
 					Height:25
 					X:2
 					Y:0

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 	{
 		Map Map = null;
 		Widget scrollpanel;
-		Widget itemTemplate;
+		ScrollItemWidget itemTemplate;
 		
 		[ObjectCreator.UseCtor]
 		internal MapChooserDelegate(
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => false;
 			//bg.GetWidget<ButtonWidget>("BUTTON_INSTALL").OnMouseUp = mi => InstallMap();
 			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
-			itemTemplate = scrollpanel.GetWidget<ContainerWidget>("MAP_TEMPLATE");
+			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
 			EnumerateMaps();
 		}
 		
@@ -71,16 +71,12 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				var map = kv.Value;
 				if (!map.Selectable)
 					continue;
-
-				var template = itemTemplate.Clone() as ContainerWidget;
-				template.Id = "MAP_{0}".F(map.Uid);
-				template.GetBackground = () => ((Map == map) ? "dialog2" : null);
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false;  Map = map; return true; };
-				template.IsVisible = () => true;
-				template.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
-				template.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
-				template.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
-				scrollpanel.AddChild(template);
+				
+				var item = ScrollItemWidget.Setup(itemTemplate, () => Map == map, () => Map = map);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
+				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
+				item.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
+				scrollpanel.AddChild(item);
 			}
 		}
 		
