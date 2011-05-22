@@ -29,24 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var panel = widget.GetWidget("MODS_PANEL");
 			var modList = panel.GetWidget<ScrollPanelWidget>("MOD_LIST");
 			var loadButton = panel.GetWidget<ButtonWidget>("LOAD_BUTTON");
-			loadButton.OnClick = () =>
-			{
-				// TODO: This is crap
-				var mods = new List<string>() { currentMod.Id };
-				var m = currentMod;
-				while (!string.IsNullOrEmpty(m.Requires))
-				{
-					m = Mod.AllMods[currentMod.Requires];
-					mods.Add(m.Id);
-				}
-				
-				Game.RunAfterTick(() => 
-				{
-					Widget.CloseWindow();
-					onSwitch();
-					Game.InitializeWithMods(mods.ToArray());
-				});
-			};
+			loadButton.OnClick = () => LoadMod(currentMod.Id, onSwitch);
 			loadButton.IsDisabled = () => currentMod.Id == Game.CurrentMods.Keys.First();
 						
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
@@ -64,17 +47,23 @@ namespace OpenRA.Mods.Cnc.Widgets
 				item.GetWidget<LabelWidget>("AUTHOR").GetText = () => mod.Author;
 				modList.AddChild(item);
 			}
-				
-				
-			/*
-			// Server info
-			var infoPanel = panel.GetWidget("SERVER_INFO");
-			infoPanel.IsVisible = () => currentServer != null;
-			infoPanel.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
-			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserDelegate.GenerateModsLabel(currentServer);
-			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
-			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
-			*/
+		}
+		
+		void LoadMod(string mod, Action onSwitch)
+		{
+			var mods = new List<string>();
+			while (!string.IsNullOrEmpty(mod))
+			{
+				mods.Add(mod);
+				mod = Mod.AllMods[mod].Requires;
+			}
+			
+			Game.RunAfterTick(() => 
+			{
+				Widget.CloseWindow();
+				onSwitch();
+				Game.InitializeWithMods(mods.ToArray());
+			});
 		}
 	}
 }

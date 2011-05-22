@@ -38,12 +38,11 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		public static void DisplayModSelector()
 		{
 			var selector = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "QUICKMODSWITCHER" );
-			var switcher = selector.GetWidget<ButtonWidget>("SWITCHER");
+			var switcher = selector.GetWidget<DropDownButtonWidget>("SWITCHER");
 			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
 			switcher.GetText = ActiveModTitle;
 			selector.GetWidget<LabelWidget>("VERSION").GetText = ActiveModVersion;	
 		}
-		
 		
 		static string ActiveModTitle()
 		{
@@ -57,37 +56,36 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			return Mod.AllMods[mod].Version;
 		}
 		
-		static bool ShowModsDropDown(ButtonWidget selector)
+		static void LoadMod(string mod)
 		{
-			var dropDownOptions = new List<Pair<string, Action>>();
-			
-			foreach (var kv in Mod.AllMods)
+			var mods = new List<string>();
+			while (!string.IsNullOrEmpty(mod))
 			{
-				var modList = new List<string>() { kv.Key };
-				var m = kv.Key;
-				while (!string.IsNullOrEmpty(Mod.AllMods[m].Requires))
-				{
-					m = Mod.AllMods[m].Requires;
-					modList.Add(m);
-				}
-					
-				dropDownOptions.Add(new Pair<string, Action>( kv.Value.Title,
-					() =>
-					{
-						if (Game.CurrentMods.Keys.ToArray().SymmetricDifference(modList.ToArray()).Any()) 
-							Game.RunAfterTick(() => Game.InitializeWithMods( modList.ToArray() ) );
-					}
-				));
+				mods.Add(mod);
+				mod = Mod.AllMods[mod].Requires;
 			}
-				                    
-			DropDownButtonWidget.ShowDropDown( selector,
-				dropDownOptions,
-				(ac, w) => new LabelWidget
-				{
-					Bounds = new Rectangle(0, 0, w, 24),
-					Text = "  {0}".F(ac.First),
-					OnMouseUp = mi => { ac.Second(); return true; },
-				});
+			
+			if (!Game.CurrentMods.Keys.ToArray().SymmetricDifference(mods.ToArray()).Any()) 
+				return;
+			
+			Game.RunAfterTick(() => 
+			{
+				Game.InitializeWithMods(mods.ToArray());
+			});
+		}
+		
+		static bool ShowModsDropDown(DropDownButtonWidget dropdown)
+		{
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (m, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => m == Game.CurrentMods.Keys.First(), 
+				                                  () => LoadMod(m));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => Mod.AllMods[m].Title;
+				return item;
+			};
+			
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, Mod.AllMods.Keys.ToList(), setupItem);
 			return true;
 		}
 		
