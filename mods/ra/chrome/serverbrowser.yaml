@@ -109,13 +109,18 @@ Background@JOINSERVER_BG:
 			Width:390
 			Height:300
 			Children:
-				Label@SERVER_TEMPLATE:
+				ScrollItem@SERVER_TEMPLATE:
 					Id:SERVER_TEMPLATE
-					Width:PARENT_RIGHT-28
+					Width:PARENT_RIGHT-27
 					Height:25
 					X:2
 					Y:0
-					Visible:false
+					Children:
+						Label@TITLE:
+							X:10
+							Id:TITLE
+							Width:200
+							Height:25
 		Label@JOINSERVER_PROGRESS_TITLE:
 			Id:JOINSERVER_PROGRESS_TITLE
 			X:150

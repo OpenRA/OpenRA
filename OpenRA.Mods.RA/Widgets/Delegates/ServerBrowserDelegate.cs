@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 		static List<Widget> GameButtons = new List<Widget>();
 
 		GameServer currentServer = null;
-		Widget ServerTemplate;
+		ScrollItemWidget ServerTemplate;
 
 		[ObjectCreator.UseCtor]
 		public ServerBrowserDelegate( [ObjectCreator.Param] Widget widget )
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
-			ServerTemplate = sl.GetWidget<LabelWidget>("SERVER_TEMPLATE");
+			ServerTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
 
 			bg.GetWidget("REFRESH_BUTTON").OnMouseUp = mi =>
 			{
@@ -146,16 +146,9 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
             foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
-				var template = ServerTemplate.Clone() as LabelWidget;
-				template.Id = "JOIN_GAME_{0}".F(i);
-				template.GetText = () => "   {0} ({1})".F(			/* /8 = hack */
-						game.Name,
-						game.Address);
-				template.GetBackground = () => (currentServer == game) ? "dialog2" : null;
-				template.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; currentServer = game; return true; };
-				template.IsVisible = () => true;
-				sl.AddChild(template);
-
+				var item = ScrollItemWidget.Setup(ServerTemplate, () => currentServer == game, () => currentServer = game);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => "{0} ({1})".F(game.Name, game.Address);
+				sl.AddChild(item);
 				if (i == 0) currentServer = game;
 				i++;
 			}
