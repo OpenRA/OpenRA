@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc
 {
 	public class CncLoadScreen : ILoadScreen
 	{
-		Dictionary<string,string> Info;
+		Dictionary<string, string> Info;
 		Stopwatch loadTimer = new Stopwatch();
 		Sprite[] ss;
 		string text;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc
 		Rectangle Bounds;
 		Renderer r;
 		NullInputHandler nih = new NullInputHandler();
-		
+
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
@@ -37,9 +37,11 @@ namespace OpenRA.Mods.Cnc
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
-			
+
+			var res = Renderer.Resolution;
+
 			var s = new Sheet("mods/cnc/uibits/chrome.png");
-			Bounds = new Rectangle(0,0,Renderer.Resolution.Width, Renderer.Resolution.Height);
+			Bounds = new Rectangle(0, 0, res.Width, res.Height);
 			ss = new Sprite[]
 			{
 				new Sprite(s, new Rectangle(161,128,62,33), TextureChannel.Alpha),
@@ -51,49 +53,51 @@ namespace OpenRA.Mods.Cnc
 				new Sprite(s, new Rectangle(128,223,33,33), TextureChannel.Alpha),
 				new Sprite(s, new Rectangle(223,223,33,33), TextureChannel.Alpha)
 			};
-			nodLogo = new Sprite(s, new Rectangle(0,256,256,256), TextureChannel.Alpha);
-			gdiLogo = new Sprite(s, new Rectangle(256,256,256,256), TextureChannel.Alpha);
-			evaLogo = new Sprite(s, new Rectangle(256,64,128,64), TextureChannel.Alpha);
-			nodPos = new float2(Renderer.Resolution.Width/2 - 384, Renderer.Resolution.Height/2 - 128);
-			gdiPos = new float2(Renderer.Resolution.Width/2 + 128, Renderer.Resolution.Height/2 - 128);
-			evaPos = new float2(Renderer.Resolution.Width-43-128, 43);
-			
-			brightBlock = new Sprite(s, new Rectangle(320,0,16,35), TextureChannel.Alpha);
-			dimBlock = new Sprite(s, new Rectangle(336,0,16,35), TextureChannel.Alpha);
+			nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
+			gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
+			evaLogo = new Sprite(s, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
+			nodPos = new float2(res.Width / 2 - 384, res.Height / 2 - 128);
+			gdiPos = new float2(res.Width / 2 + 128, res.Height / 2 - 128);
+			evaPos = new float2(res.Width - 43 - 128, 43);
+
+			brightBlock = new Sprite(s, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
+			dimBlock = new Sprite(s, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 		}
-		
+
 		public void Display()
 		{
 			if (r == null || loadTimer.ElapsedTime() < 0.25)
 				return;
 			loadTimer.Reset();
-			
+
 			loadTick = ++loadTick % 8;
 			r.BeginFrame(float2.Zero);
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 
+			var res = Renderer.Resolution;
+
 			WidgetUtils.DrawPanelPartial(ss, Bounds, PanelSides.Edges);
-			
-			var barY = Renderer.Resolution.Height-78;
+
+			var barY = res.Height - 78;
 			text = "Loading";
 			var textSize = r.Fonts["BigBold"].Measure(text);
-			textPos = new float2((Renderer.Resolution.Width - textSize.X) / 2, barY);
+			textPos = new float2((res.Width - textSize.X) / 2, barY);
 			r.Fonts["BigBold"].DrawText(text, textPos, Color.Gray);
 
 			for (var i = 0; i <= 8; i++)
 			{
 				var block = loadTick == i ? brightBlock : dimBlock;
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(Renderer.Resolution.Width/2 - 114 - i*32, barY));
+					new float2(res.Width / 2 - 114 - i * 32, barY));
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(Renderer.Resolution.Width/2 + 114 + i*32-16, barY));
+					new float2(res.Width / 2 + 114 + i * 32 - 16, barY));
 			}
-			
-			r.EndFrame( nih );
+
+			r.EndFrame(nih);
 		}
-	
+
 		public void StartGame()
 		{
 			TestAndContinue();
