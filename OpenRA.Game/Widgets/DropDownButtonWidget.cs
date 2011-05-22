@@ -84,66 +84,6 @@ namespace OpenRA.Widgets
 			Widget.RootWidget.AddChild(panel);
 		}
 		
-		[Obsolete] public static void ShowDropPanel(Widget w, Widget panel, IEnumerable<Widget> dismissAfter, Func<bool> onDismiss)
-		{
-			// Mask to prevent any clicks from being sent to other widgets
-			var fullscreenMask = new ContainerWidget();
-			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
-			Widget.RootWidget.AddChild(fullscreenMask);
-			
-			Action HideDropDown = () =>
-			{
-				Widget.RootWidget.RemoveChild(fullscreenMask);
-				Widget.RootWidget.RemoveChild(panel);
-			};
-			
-			HideDropDown += () => Game.BeforeGameStart -= HideDropDown;
-			Game.BeforeGameStart += HideDropDown;
-
-			fullscreenMask.OnMouseDown = mi =>
-			{
-				if (onDismiss()) HideDropDown();
-				return true;
-			};
-			fullscreenMask.OnMouseUp = mi => true;
-
-			var oldBounds = panel.Bounds;
-			panel.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, oldBounds.Width, oldBounds.Height);
-			panel.OnMouseUp = mi => true;
-			
-			foreach (var ww in dismissAfter)
-			{
-				var origMouseUp = ww.OnMouseUp;
-				ww.OnMouseUp = mi => { var result = origMouseUp(mi); if (onDismiss()) HideDropDown(); return result; };
-			}
-			Widget.RootWidget.AddChild(panel);
-		}
-		
-		[Obsolete] public static void ShowDropDown<T>(Widget w, IEnumerable<T> ts, Func<T, int, LabelWidget> ft)
-		{
-			var dropDown = new ScrollPanelWidget();
-			dropDown.Bounds = new Rectangle(w.RenderOrigin.X, w.RenderOrigin.Y + w.Bounds.Height, w.Bounds.Width, 100);
-			dropDown.ItemSpacing = 1;
-
-			List<LabelWidget> items = new List<LabelWidget>();
-			List<Widget> dismissAfter = new List<Widget>();
-			foreach (var t in ts)
-			{
-				var ww = ft(t, dropDown.Bounds.Width - dropDown.ScrollbarWidth);
-				dismissAfter.Add(ww);
-				ww.OnMouseMove = mi => items.Do(lw =>
-				{
-					lw.Background = null; ww.Background = "dialog2";
-				});
-	
-				dropDown.AddChild(ww);
-				items.Add(ww);
-			}
-			
-			dropDown.Bounds.Height = Math.Min(150, dropDown.ContentHeight);
-			ShowDropPanel(w, dropDown, dismissAfter, () => true);
-		}
-		
 		public void ShowDropDown<T>(string panelTemplate, int height, List<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};

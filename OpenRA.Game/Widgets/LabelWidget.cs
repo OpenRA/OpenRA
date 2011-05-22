@@ -19,7 +19,6 @@ namespace OpenRA.Widgets
 		public enum TextAlign { Left, Center, Right }
 		public enum TextVAlign { Top, Middle, Bottom }
 		public string Text = null;
-		[Obsolete] public string Background = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = "Regular";
@@ -28,13 +27,11 @@ namespace OpenRA.Widgets
 		public Color ContrastColor = Color.Black;
 		public bool WordWrap = false;
 		public Func<string> GetText;
-		[Obsolete] public Func<string> GetBackground;
 		
 		public LabelWidget()
 			: base()
 		{
 			GetText = () => Text;
-			GetBackground = () => Background;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -48,16 +45,10 @@ namespace OpenRA.Widgets
 			ContrastColor = other.ContrastColor;
 			WordWrap = other.WordWrap;
 			GetText = other.GetText;
-			GetBackground = other.GetBackground;
 		}
 
 		public override void DrawInner()
-		{		
-			var bg = GetBackground();
-
-			if (bg != null)
-				WidgetUtils.DrawPanel(bg, RenderBounds );
-			
+		{
 			SpriteFont font = Game.Renderer.Fonts[Font];
 			var text = GetText();
 			if (text == null)

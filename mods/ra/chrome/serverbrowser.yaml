@@ -127,7 +127,6 @@ Background@JOINSERVER_BG:
 			Y:PARENT_BOTTOM / 2 - HEIGHT
 			Width:150
 			Height:30
-			Background:dialog4
 			Text:Fetching games...
 			Align:Center
 		Container@SERVER_INFO:
