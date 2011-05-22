@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class ResourceLayerInfo : TraitInfo<ResourceLayer>, Requires<UnitInfluenceInfo> { }
+	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
 	public class ResourceLayer: IRenderOverlay, IWorldLoaded
 	{
@@ -84,7 +84,7 @@ namespace OpenRA.Traits
         {
             if (!world.Map.IsInMap(a.X, a.Y)) return false;
             if (!rt.info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type)) return false;
-            if (!rt.info.AllowUnderActors && world.WorldActor.Trait<UnitInfluence>().AnyUnitsAt(a)) return false;
+            if (!rt.info.AllowUnderActors && world.ActorMap.AnyUnitsAt(a)) return false;
             return true;
         }
 

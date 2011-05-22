@@ -84,13 +84,12 @@ namespace OpenRA.Orders
 
 			if( mi.Button == MouseButton.Right )
 			{
-				var uim = self.World.WorldActor.Trait<UnitInfluence>();
 				foreach( var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany( trait => trait.Orders
 						.Select( x => new { Trait = trait, Order = x } ) )
 					.OrderByDescending( x => x.Order.OrderPriority ) )
 				{
-					var actorsAt = uim.GetUnitsAt( xy ).ToList();
+					var actorsAt = self.World.ActorMap.GetUnitsAt( xy ).ToList();
 
 					string cursor = null;
 					if( underCursor != null )

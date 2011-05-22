@@ -13,15 +13,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA
 {
-	public class UnitInfluenceInfo : ITraitInfo
-	{
-		public object Create( ActorInitializer init ) { return new UnitInfluence( init.world ); }
-	}
-
-	public class UnitInfluence
+	public enum SubCell
+    {
+        FullCell,
+        TopLeft,
+        TopRight,
+        Center,
+        BottomLeft,
+        BottomRight
+    }
+	
+	public class ActorMap
 	{
 		class InfluenceNode
 		{
@@ -33,7 +39,7 @@ namespace OpenRA.Traits
 		InfluenceNode[,] influence;
 		Map map;
 
-		public UnitInfluence( World world )
+		public ActorMap( World world )
 		{
 			map = world.Map;
 			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];

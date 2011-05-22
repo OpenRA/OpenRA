@@ -83,15 +83,15 @@ namespace OpenRA.Mods.RA.Move
 			{SubCell.FullCell, new int2(0,0)},
 		};
 		
-        public bool CanEnterCell(World world, UnitInfluence uim, int2 cell, Actor ignoreActor, bool checkTransientActors)
+        public bool CanEnterCell(World world, int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
             if (MovementCostForCell(world, cell) == int.MaxValue)
                 return false;
 			
-			if (SharesCell && uim.HasFreeSubCell(cell))
+			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 			
-            var blockingActors = uim.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
+            var blockingActors = world.ActorMap.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
             if (checkTransientActors && blockingActors.Count > 0)
             {
                 // Non-sharable unit can enter a cell with shareable units only if it can crush all of them
@@ -104,12 +104,6 @@ namespace OpenRA.Mods.RA.Move
             }
 
             return true;
-        }
-
-        public bool CanEnterCell(World world, int2 cell, Actor ignoreActor, bool checkTransientActors)
-        {
-            var uim = world.WorldActor.Trait<UnitInfluence>();
-            return CanEnterCell(world, uim, cell, ignoreActor, checkTransientActors);
         }
     }
 
@@ -163,8 +157,6 @@ namespace OpenRA.Mods.RA.Move
             AddInfluence();
         }
 
-        UnitInfluence uim;
-
         const int avgTicksBeforePathing = 5;
         const int spreadTicksBeforePathing = 5;
         internal int ticksBeforePathing = 0;
@@ -174,7 +166,6 @@ namespace OpenRA.Mods.RA.Move
             this.self = init.self;
             this.Info = info;
 
-            uim = self.World.WorldActor.Trait<UnitInfluence>();
 			__toSubCell = __fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 			{
@@ -321,7 +312,7 @@ namespace OpenRA.Mods.RA.Move
 			return new[]{ __fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
 			{
-				var blockingActors = uim.GetUnitsAt(a,b).Where(c => c != ignoreActor);
+				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
 				if (blockingActors.Count() > 0)
 	            {
 	                // Non-sharable unit can enter a cell with shareable units only if it can crush all of them
@@ -343,13 +334,12 @@ namespace OpenRA.Mods.RA.Move
 
         public bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
-            var uim = self.World.WorldActor.Trait<UnitInfluence>();
-            return Info.CanEnterCell(self.World, uim, cell, ignoreActor, checkTransientActors);
+            return Info.CanEnterCell(self.World, cell, ignoreActor, checkTransientActors);
         }
 
         public void FinishedMoving(Actor self)
         {
-            var crushable = uim.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
+            var crushable = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
             foreach (var a in crushable)
             {
                 var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushClasses.Intersect(Info.Crushes).Any());
@@ -374,13 +364,13 @@ namespace OpenRA.Mods.RA.Move
         public void AddInfluence()
         {
             if (self.IsInWorld)
-                uim.Add(self, this);
+                self.World.ActorMap.Add(self, this);
         }
 
         public void RemoveInfluence()
         {
             if (self.IsInWorld)
-                uim.Remove(self, this);
+                self.World.ActorMap.Remove(self, this);
         }
 
         public void OnNudge(Actor self, Actor nudger)

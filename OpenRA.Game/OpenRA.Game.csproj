@@ -136,7 +136,6 @@
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
-    <Compile Include="Traits\World\UnitInfluence.cs" />
     <Compile Include="Network\UnitOrders.cs" />
     <Compile Include="Traits\Util.cs" />
     <Compile Include="UiOverlay.cs" />
@@ -185,6 +184,7 @@
     <Compile Include="Widgets\ScrollItem.cs" />
     <Compile Include="Widgets\DropDownButtonWidget.cs" />
     <Compile Include="Download.cs" />
+    <Compile Include="ActorMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

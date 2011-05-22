@@ -55,7 +55,8 @@ namespace OpenRA
 		public readonly Actor WorldActor;		
 		public readonly Map Map;
 		public readonly TileSet TileSet;
-
+		public readonly ActorMap ActorMap;
+		
 		public void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
 		IOrderGenerator orderGenerator_;
@@ -100,7 +101,8 @@ namespace OpenRA
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			LocalShroud = WorldActor.Trait<Shroud>();
-			
+			ActorMap = new ActorMap(this);
+
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
 				cmp.CreatePlayers(this);		

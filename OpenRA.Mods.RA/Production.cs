@@ -121,11 +121,10 @@ namespace OpenRA.Mods.RA
 
         static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
         {
-            var uim = self.World.WorldActor.Trait<UnitInfluence>();
             var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
             return mobileInfo == null || 
-                mobileInfo.CanEnterCell(self.World, uim, self.Location + s.ExitCell, self, true);
+                mobileInfo.CanEnterCell(self.World, self.Location + s.ExitCell, self, true);
         }
 	}
 }

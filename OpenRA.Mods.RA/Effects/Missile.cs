@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!Info.High)		// check for hitting a wall
 			{
 				var cell = Traits.Util.CellContaining(PxPosition);
-				if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any(
+				if (world.ActorMap.GetUnitsAt(cell).Any(
 					a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
 			}

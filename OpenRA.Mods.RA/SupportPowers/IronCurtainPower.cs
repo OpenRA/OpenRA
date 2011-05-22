@@ -48,11 +48,10 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Actor> UnitsInRange(int2 xy)
 		{
 			int range = (Info as IronCurtainPowerInfo).Range;
-			var uim = self.World.WorldActor.Trait<UnitInfluence>();
 			var tiles = self.World.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(uim.GetUnitsAt(t));
+				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
 			
 			return units.Distinct().Where(a => a.HasTrait<IronCurtainable>());
 		}

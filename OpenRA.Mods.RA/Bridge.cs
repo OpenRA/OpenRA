@@ -144,10 +144,8 @@ namespace OpenRA.Mods.RA
 
 		void KillUnitsOnBridge()
 		{
-			var uim = self.World.WorldActor.Trait<UnitInfluence>();
-
 			foreach (var c in TileSprites[currentTemplate].Keys)
-				foreach (var a in uim.GetUnitsAt(c))
+				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
 					if (a.HasTrait<IMove>() && !a.Trait<IMove>().CanEnterCell(c))
 						a.Kill(self);
 		}

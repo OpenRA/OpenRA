@@ -85,16 +85,6 @@ namespace OpenRA.Traits
     public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 	public interface IHasLocation { int2 PxPosition { get; } }
 
-    public enum SubCell
-    {
-        FullCell,
-        TopLeft,
-        TopRight,
-        Center,
-        BottomLeft,
-        BottomRight
-    }
-
     public interface IOccupySpace : IHasLocation
     {
         int2 TopLeft { get; }

@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Air
 			if (!self.World.Map.IsInMap(cell))
 				return false;
 
-			if (self.World.WorldActor.Trait<UnitInfluence>().AnyUnitsAt(cell))
+			if (self.World.ActorMap.AnyUnitsAt(cell))
 				return false;
 
 			var type = self.World.GetTerrainType(cell);

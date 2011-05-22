@@ -107,7 +107,6 @@ World:
 	NukePaletteEffect:
 	LightPaletteRotator:
 	BuildingInfluence:
-	UnitInfluence:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, br1, br2, br3

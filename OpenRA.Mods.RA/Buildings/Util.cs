@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public static bool IsCellBuildable(this World world, int2 a, bool waterBound, Actor toIgnore)
 		{
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
-			if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(a).Any(b => b != toIgnore)) return false;
+			if (world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
 			
 			if (waterBound)
 				return world.Map.IsInMap(a.X,a.Y) && world.GetTerrainInfo(a).IsWater;

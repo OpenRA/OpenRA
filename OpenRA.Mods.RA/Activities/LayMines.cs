@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Activities
 		bool ShouldLayMine(Actor self, int2 p)
 		{
 			// if there is no unit (other than me) here, we want to place a mine here
-			return !self.World.WorldActor.Trait<UnitInfluence>()
+			return !self.World.ActorMap
 				.GetUnitsAt(p).Any(a => a != self);
 		}
 

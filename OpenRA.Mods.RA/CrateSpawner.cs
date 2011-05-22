@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 				
 				// Don't spawn on any actors
 				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
-				if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(p).Any()) continue;
+				if (self.World.ActorMap.GetUnitsAt(p).Any()) continue;
 
 				self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", new TypeDictionary

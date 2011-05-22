@@ -100,17 +100,15 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null) return false;
-			if (self.World.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any()) return false;
+			if (self.World.ActorMap.GetUnitsAt(cell).Any()) return false;
 
 			return true;
 		}
 
 		public void SetPosition(Actor self, int2 cell)
 		{
-			var uim = self.World.WorldActor.Trait<UnitInfluence>();
-
 			if( self.IsInWorld )
-				uim.Remove(self, this);
+				self.World.ActorMap.Remove(self, this);
 
 			Location = cell;
 			PxPosition = Util.CenterOfCell(cell);
@@ -121,7 +119,7 @@ namespace OpenRA.Mods.RA
 				rs.anim.PlayRepeating(seq);
 
 			if( self.IsInWorld )
-				uim.Add(self, this);
+				self.World.ActorMap.Add(self, this);
 		}
 
 		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }

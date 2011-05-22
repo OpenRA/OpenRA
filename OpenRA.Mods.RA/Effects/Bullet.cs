@@ -133,7 +133,7 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = float2.Lerp(Args.src, Args.dest, at);
 				var cell = Traits.Util.CellContaining(pos);
 
-				if (world.WorldActor.Trait<UnitInfluence>().GetUnitsAt(cell).Any(
+				if (world.ActorMap.GetUnitsAt(cell).Any(
 					a => a.HasTrait<IBlocksBullets>()))
 				{
 					Args.dest = pos.ToInt2();
