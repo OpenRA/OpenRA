@@ -61,7 +61,7 @@ ChromeLayout:
 	mods/ra/chrome/gamelobby.yaml
 	mods/ra/chrome/serverbrowser.yaml
 	mods/ra/chrome/replaybrowser.yaml
-
+	mods/ra/chrome/dropdowns.yaml
 Weapons:
 	mods/ra/weapons.yaml
 	

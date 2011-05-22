@@ -333,8 +333,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			};
 			
 			if (showBotOptions)
-				foreach (var bot in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
+				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
+				{
+					var bot = b;
 					options.Add(new SlotDropDownOption("Bot: {0}".F(bot), "slot_bot {0} {1}".F(slot.Index, bot), () => slot.Bot == bot));
+				}
 			
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
