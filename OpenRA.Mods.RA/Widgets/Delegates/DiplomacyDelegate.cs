@@ -122,15 +122,20 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			}
 		}
 
-		void ShowDropDown(Player p, Widget w)
+		void ShowDropDown(Player p, DropDownButtonWidget dropdown)
 		{
-			DropDownButtonWidget.ShowDropDown(w, Enum.GetValues(typeof(Stance)).OfType<Stance>(),
-				(s, width) => new LabelWidget
-					{
-						Bounds = new Rectangle(0, 0, width, 24),
-						Text = "  {0}".F(s),
-						OnMouseUp = mi => { SetStance((ButtonWidget)w, p, s); return true; },
-					});
+			var stances = Enum.GetValues(typeof(Stance)).OfType<Stance>().ToList();
+			Func<Stance, ScrollItemWidget, ScrollItemWidget> setupItem = (s, template) =>
+			{
+				var item = ScrollItemWidget.Setup(template,
+				                                  () => s == world.LocalPlayer.Stances[ p ],
+				                                  () => SetStance(dropdown, p, s));
+				
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
+				return item;
+			};
+			
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, stances, setupItem);
 		}
 
 		void SetStance(ButtonWidget bw, Player p, Stance ss)

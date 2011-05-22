@@ -271,7 +271,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			return true;
 		}
 		
-		bool ShowColorDropDown(Session.Slot s, ButtonWidget color)
+		bool ShowColorDropDown(Session.Slot s, DropDownButtonWidget color)
 		{
 			if (Map.Players[s.MapPlayer].LockColor)
 				return false;
@@ -294,12 +294,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 			UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-
-			DropDownButtonWidget.ShowDropPanel(color, colorChooser, new List<Widget>() {colorChooser.GetWidget("BUTTON_OK")}, () => {
+			
+			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
+			{
 				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
 				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				return true;
-			});
+				color.RemovePanel();
+			};
+			
+			color.AttachPanel(colorChooser);
 			return true;
 		}
 		
@@ -382,7 +385,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					};
 					name.OnLoseFocus = () => name.OnEnterKey();
 
-					var color = template.GetWidget<ButtonWidget>("COLOR");
+					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.OnMouseUp = _ => ShowColorDropDown(s, color);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
