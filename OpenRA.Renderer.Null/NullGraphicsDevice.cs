@@ -33,7 +33,8 @@ namespace OpenRA.Renderer.Null
 
 		public void Clear(Color c) { }
 
-		public void Present(IInputHandler ih)
+		public void Present() { }
+		public void PumpInput(IInputHandler ih)
 		{
 			Game.HasInputFocus = false;
 			ih.ModifierKeys(Modifiers.None);

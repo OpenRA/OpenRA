@@ -181,9 +181,13 @@ namespace OpenRA.Renderer.Cg
 			}
 		}
 
-		public void Present( IInputHandler inputHandler )
+		public void Present()
 		{
 			Sdl.SDL_GL_SwapBuffers();
+		}
+
+		public void PumpInput( IInputHandler inputHandler )
+		{
 			Game.HasInputFocus = 0 != ( Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS );
 
 			var mods = MakeModifiers( Sdl.SDL_GetModState() );

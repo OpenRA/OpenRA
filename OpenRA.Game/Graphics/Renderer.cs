@@ -94,7 +94,8 @@ namespace OpenRA.Graphics
 		public void EndFrame( IInputHandler inputHandler )
 		{
 			Flush();
-			device.Present( inputHandler );
+			device.PumpInput(inputHandler);
+			device.Present();
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,

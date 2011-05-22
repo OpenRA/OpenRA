@@ -38,7 +38,8 @@ namespace OpenRA.FileFormats.Graphics
 		int GpuMemoryUsed { get; }
 
 		void Clear( Color color );
-		void Present( IInputHandler inputHandler );
+		void Present();
+		void PumpInput(IInputHandler inputHandler);
 
 		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
 
