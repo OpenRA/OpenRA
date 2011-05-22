@@ -99,22 +99,22 @@ namespace OpenRA.Widgets
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
-			DrawBackground(rb, disabled, Depressed, rb.Contains(Viewport.LastMousePos));
+			DrawBackground("button", rb, disabled, Depressed, rb.Contains(Viewport.LastMousePos));
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
 			              disabled ? Color.Gray : Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }
 		public virtual int UsableWidth { get { return Bounds.Width; } }
-		
-		public static void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+
+		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover)
 		{
-			var state = disabled ? "button-disabled" : 
-						pressed ? "button-pressed" : 
-						hover ? "button-hover" : 
-						"button";
+			var state = disabled ? "-disabled" : 
+						pressed ? "-pressed" : 
+						hover ? "-hover" : 
+						"";
 			
-			WidgetUtils.DrawPanel(state, rect);
+			WidgetUtils.DrawPanel(baseName + state, rect);
 		}
 	}
 }

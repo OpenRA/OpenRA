@@ -79,13 +79,13 @@ namespace OpenRA.Widgets
 			
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
-			ButtonWidget.DrawBackground(upButtonRect, (thumbHeight == 0 || ListOffset >= 0), 
+			ButtonWidget.DrawBackground("button", upButtonRect, (thumbHeight == 0 || ListOffset >= 0), 
 			                            UpPressed, upButtonRect.Contains(Viewport.LastMousePos));
-			ButtonWidget.DrawBackground(downButtonRect, (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight), 
+			ButtonWidget.DrawBackground("button", downButtonRect, (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight), 
 			                            DownPressed, downButtonRect.Contains(Viewport.LastMousePos));
 			
 			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground(thumbRect, false, (Focused && thumbRect.Contains(Viewport.LastMousePos)),
+				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, (Focused && thumbRect.Contains(Viewport.LastMousePos)),
 				                            thumbRect.Contains(Viewport.LastMousePos));
 			
 			var upDisabled = thumbHeight == 0 || ListOffset >= 0;

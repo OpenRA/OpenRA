@@ -197,7 +197,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel("slider-track", trackRect);
 
 			// Thumb
-			ButtonWidget.DrawBackground(tr, IsDisabled(), isMoving, tr.Contains(Viewport.LastMousePos));
+			ButtonWidget.DrawBackground("scrollthumb", tr, IsDisabled(), isMoving, tr.Contains(Viewport.LastMousePos));
 		}
 	}
 }
