@@ -33,6 +33,7 @@ MCV:
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
+	-GainsExperience:
 
 HARV:
 	Inherits: ^Tank
@@ -67,6 +68,7 @@ HARV:
 		JustMove:true
 	LeavesHusk:
 		HuskActor: HARV.Husk
+	-GainsExperience:
 
 APC:
 	Inherits: ^Tank
