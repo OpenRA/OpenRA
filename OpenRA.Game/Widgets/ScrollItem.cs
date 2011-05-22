@@ -15,9 +15,7 @@ using OpenRA.Graphics;
 namespace OpenRA.Widgets
 {
 	public class ScrollItemWidget : ButtonWidget
-	{
-		public int EnableHover = ChromeMetrics.GetInt("EnableHover");
-		
+	{		
 		public ScrollItemWidget()
 			: base()
 		{
@@ -37,7 +35,7 @@ namespace OpenRA.Widgets
 		public override void DrawInner()
 		{
 			var state = IsSelected() ? "scrollitem-selected" : 
-				EnableHover == 1 && RenderBounds.Contains(Viewport.LastMousePos) ? "scrollitem-hover" : 
+				RenderBounds.Contains(Viewport.LastMousePos) ? "scrollitem-hover" : 
 				null;
 			
 			if (state != null)
