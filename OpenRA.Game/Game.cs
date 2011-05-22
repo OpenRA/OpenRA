@@ -346,15 +346,7 @@ namespace OpenRA
 			AddChatLine(Color.White, "Debug", String.Format(s,args)); 
 		}
 		
-		// TODO: Fix ra relying on this behavior, then make this sane
-		[Obsolete] public static void Disconnect()
-		{
-			DisconnectOnly();
-			var shellmap = ChooseShellmap();
-			StartGame(shellmap);
-		}
-		
-		public static void DisconnectOnly()
+		public static void Disconnect()
 		{
 			if (orderManager.world != null)
 				orderManager.world.traitDict.PrintReport();

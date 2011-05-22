@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			Menu = MenuType.None;
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 			{
-				{ "onExit", () => { Game.DisconnectOnly(); Menu = menu; } },
+				{ "onExit", () => { Game.Disconnect(); Menu = menu; } },
 				{ "onStart", RemoveShellmapUI }
 			});
 		}

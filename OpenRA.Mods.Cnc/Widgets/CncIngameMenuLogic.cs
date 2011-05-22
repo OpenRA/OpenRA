@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				world.WorldActor.QueueActivity(new Wait(mpe.Info.FadeLength));
 				world.WorldActor.QueueActivity(new CallFunc(() =>
 				{
-						Game.DisconnectOnly();
+						Game.Disconnect();
 						Widget.RootWidget.RemoveChildren();
 						Game.LoadShellMap();
 				}));
