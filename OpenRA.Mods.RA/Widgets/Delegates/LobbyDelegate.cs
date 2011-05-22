@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.OnChange += _ =>
+			lockTeamsCheckbox.OnClick = () =>
 			{
 				if (Game.IsHost)
 					orderManager.IssueOrder(Order.Command(
@@ -119,21 +119,20 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-			allowCheats.OnChange += _ =>
+			allowCheats.OnClick = () =>
 			{
 				if (Game.IsHost)
 					orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			};
 			
-			var startGameButton = lobby.GetWidget("START_GAME_BUTTON");
-			startGameButton.OnMouseUp = mi =>
+			var startGameButton = lobby.GetWidget<ButtonWidget>("START_GAME_BUTTON");
+			startGameButton.OnClick = () =>
 			{
 				mapButton.Visible = false;
 				disconnectButton.Visible = false;
 				lockTeamsCheckbox.Visible = false;
 				orderManager.IssueOrder(Order.Command("startgame"));
-				return true;
 			};
 			
 			// Todo: Only show if the map requirements are met for player slots
@@ -409,7 +408,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
-					status.OnChange += CycleReady;
+					status.OnClick = CycleReady;
 					
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 					
@@ -442,7 +441,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index)
-						status.OnChange += CycleReady;
+						status.OnClick = CycleReady;
 
 					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
 							
@@ -471,7 +470,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 
-		void CycleReady(bool ready)
+		void CycleReady()
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
 		}

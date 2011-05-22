@@ -82,9 +82,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
 			};
 			
-			bg.GetWidget<CheckboxWidget>("SHUFFLE").Bind(Game.Settings.Sound, "Shuffle");
-			bg.GetWidget<CheckboxWidget>("REPEAT").Bind(Game.Settings.Sound, "Repeat");
-
+			
+			var shuffleCheckbox = bg.GetWidget<CheckboxWidget>("SHUFFLE");
+			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;
+			shuffleCheckbox.OnClick = () => Game.Settings.Sound.Shuffle ^= true;
+			
+			var repeatCheckbox = bg.GetWidget<CheckboxWidget>("REPEAT");
+			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
+			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
+			
 			bg.GetWidget<LabelWidget>("TIME").GetText = () =>
 			{
 				if (CurrentSong == null)

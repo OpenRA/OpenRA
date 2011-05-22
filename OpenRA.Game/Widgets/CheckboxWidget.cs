@@ -19,48 +19,17 @@ namespace OpenRA.Widgets
 	{
 		public Func<bool> IsChecked = () => false;
 		public int BaseLine = 1;
-		
-		object boundObject;
-		bool boundReadOnly;
-		FieldInfo boundField;
-		[Obsolete] public event Action<bool> OnChange = _ => {};
-		
+
 		public CheckboxWidget()
 			: base()
 		{
-			OnClick = OldClickBehavior;
-			IsChecked = () => (boundObject != null && (bool)boundField.GetValue(boundObject));
 		}
 		
 		protected CheckboxWidget(CheckboxWidget widget)
 			: base(widget)
 		{
-			OnClick = OldClickBehavior;
-			IsChecked = () => (boundObject != null && (bool)boundField.GetValue(boundObject));
 		}
-		
-		[Obsolete] public void Bind(object obj, string field) { Bind(obj, field, false); }
-		[Obsolete] public void BindReadOnly(object obj, string field) { Bind(obj, field, true); }
-
-		void Bind(object obj, string field, bool readOnly)
-		{
-			boundObject = obj;
-			boundReadOnly = readOnly;
-			boundField = obj.GetType().GetField(field);
-		}
-		
-		void OldClickBehavior()
-		{
-			bool newVal = !IsChecked();
-			if (boundObject != null && !boundReadOnly)
-			{
-				newVal = !(bool)boundField.GetValue(boundObject);
-				boundField.SetValue(boundObject, newVal);
-			}
-
-			OnChange(newVal);
-		}
-		
+				
 		public override void DrawInner()
 		{
 			var font = Game.Renderer.Fonts[Font];
