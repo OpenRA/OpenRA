@@ -22,12 +22,14 @@ namespace OpenRA.Widgets
 			: base()
 		{
 			IsVisible = () => false;
+			VisualHeight = 0;
 		}
 		
 		protected ScrollItemWidget(ScrollItemWidget other)
 			: base(other)
 		{
 			IsVisible = () => false;
+			VisualHeight = 0;
 		}
 		
 		public Func<bool> IsSelected = () => false;

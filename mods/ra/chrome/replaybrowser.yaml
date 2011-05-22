@@ -22,13 +22,19 @@ Background@REPLAYBROWSER_BG:
 			Width:390
 			Height:300
 			Children:
-				Label@REPLAY_TEMPLATE:
+				ScrollItem@REPLAY_TEMPLATE:
 					Id:REPLAY_TEMPLATE
-					Width:PARENT_RIGHT-28
+					Width:PARENT_RIGHT-27
 					Height:25
 					X:2
 					Y:0
 					Visible:false
+					Children:
+						Label@TITLE:
+							X:10
+							Id:TITLE
+							Width:PARENT_RIGHT-20
+							Height:25
 		Container@REPLAY_INFO:
 			Id:REPLAY_INFO
 			X:0

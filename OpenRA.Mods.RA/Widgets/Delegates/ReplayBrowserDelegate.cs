@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = widget.GetWidget<LabelWidget>("REPLAY_TEMPLATE");
+			var template = widget.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
 			CurrentReplay = null;
 
 			rl.RemoveChildren();
@@ -86,16 +86,15 @@ namespace OpenRA.Mods.RA.Widgets.Delegates
 				}
 			}
 		}
-
-		void AddReplay(ScrollPanelWidget list, string filename, LabelWidget template)
+		
+		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
-			var entry = template.Clone() as LabelWidget;
-			entry.Id = "REPLAY_";
-			entry.GetText = () => "   {0}".F(Path.GetFileName(filename));
-			entry.GetBackground = () => (CurrentReplay == filename) ? "dialog2" : null;
-			entry.OnMouseDown = mi => { if (mi.Button != MouseButton.Left) return false; CurrentReplay = filename; return true; };
-			entry.IsVisible = () => true;
-			list.AddChild(entry);
+			var item = ScrollItemWidget.Setup(template,
+			                                  () => CurrentReplay == filename,
+			                                  () => CurrentReplay = filename);
+			var f = Path.GetFileName(filename);
+			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
+			list.AddChild(item);
 		}
 	}
 
