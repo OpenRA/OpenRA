@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA
 		int Experience = 0;
 		[Sync]
 		public int Level { get; private set; }
+		public int MaxLevel { get { return Levels.Length; } }
 
 		public void GiveOneLevel()
 		{

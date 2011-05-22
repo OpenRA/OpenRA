@@ -19,7 +19,13 @@ namespace OpenRA.Mods.RA
 	{
 		public LevelUpCrateAction(Actor self, LevelUpCrateActionInfo info)
 			: base(self,info) {}
-
+		
+		public override int GetSelectionShares(Actor collector)
+		{
+			var ge = collector.TraitOrDefault<GainsExperience>();
+			return ge != null && ge.Level < ge.MaxLevel ? info.SelectionShares : 0;
+		}
+		
 		public override void Activate(Actor collector)
 		{
 			collector.World.AddFrameEndTask(w =>
