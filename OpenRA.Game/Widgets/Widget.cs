@@ -355,29 +355,11 @@ namespace OpenRA.Widgets
 
     public class ContainerWidget : Widget
     {
-        [Obsolete] public Func<string> GetBackground;
-        [Obsolete] public string Background = null;
-
-        public ContainerWidget()
-            : base()
-        {
-            GetBackground = () => Background;
-        }
-
+        public ContainerWidget() : base() { }
         public ContainerWidget(ContainerWidget other)
-            : base(other)
-        {
-            Background = other.Background;
-            GetBackground = other.GetBackground;
-        }
+            : base(other) { }
 
-        public override void DrawInner()
-        {
-            var bg = GetBackground();
-            if (bg != null)
-                WidgetUtils.DrawPanel(bg, RenderBounds);
-        }
-
+        public override void DrawInner() { }
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new ContainerWidget(this); }
     }
