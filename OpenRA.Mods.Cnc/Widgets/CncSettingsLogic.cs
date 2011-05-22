@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
@@ -220,13 +221,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		bool ShowGroupModifierDropdown(DropDownButtonWidget dropdown)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
-			{
-				{ "substitutions", substitutions }
-			});
-
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			var options = new Dictionary<string, Modifiers>()
 			{
 				{ "Ctrl", Modifiers.Ctrl },
@@ -235,58 +229,45 @@ namespace OpenRA.Mods.Cnc.Widgets
 				// TODO: Display this as Cmd on osx once we have platform detection
 				{ "Meta", Modifiers.Meta }
 			};
-
-			foreach (var option in options)
+			
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
-				var o = option;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => groupAddModifier == o.Value, () => { groupAddModifier = o.Value; dropdown.RemovePanel(); });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
-				panel.AddChild(item);
-			}
-			panel.Bounds.Height = panel.ContentHeight;
-			dropdown.AttachPanel(panel);
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => groupAddModifier == options[o],
+				                                  () => groupAddModifier = options[o]);
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+			
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 		
 		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
-			{
-				{ "substitutions", substitutions }
-			});
-
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			var options = new Dictionary<string, WindowMode>()
 			{
 				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
 				{ "Fullscreen", WindowMode.Fullscreen },
 				{ "Windowed", WindowMode.Windowed },
 			};
-
-			foreach (var option in options)
-			{
-				var o = option;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => windowMode == o.Value, () => { windowMode = o.Value; dropdown.RemovePanel(); });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
-				panel.AddChild(item);
-			}
 			
-			panel.Bounds.Height = panel.ContentHeight;
-			dropdown.AttachPanel(panel);
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => windowMode == options[o],
+				                                  () => windowMode = options[o]);
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+			
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 		
 		
 		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Game.LoadWidget(world, "LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
-			{
-				{ "substitutions", substitutions }
-			});
-
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			var options = new Dictionary<string, MouseScrollType>()
 			{
 				{ "Disabled", MouseScrollType.Disabled },
@@ -294,16 +275,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{ "Inverted", MouseScrollType.Inverted },
 			};
 			
-			foreach (var option in options)
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
-				var o = option;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => mouseScroll == o.Value, () => { mouseScroll = o.Value; dropdown.RemovePanel(); });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Key;
-				panel.AddChild(item);
-			}
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => mouseScroll == options[o],
+				                                  () => mouseScroll = options[o]);
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
 			
-			panel.Bounds.Height = panel.ContentHeight;
-			dropdown.AttachPanel(panel);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 	}

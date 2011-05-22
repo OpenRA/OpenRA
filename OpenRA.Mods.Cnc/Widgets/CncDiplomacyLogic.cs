@@ -61,29 +61,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (dropdown.IsDisabled())
 				return true;
 			
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Widget.LoadWidget("LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			var stances = Enum.GetValues(typeof(Stance)).OfType<Stance>().ToList();
+			Func<Stance, ScrollItemWidget, ScrollItemWidget> setupItem = (s, template) =>
 			{
-				{ "substitutions", substitutions }
-			});
+				var item = ScrollItemWidget.Setup(template,
+				                                  () => s == world.LocalPlayer.Stances[ pp ],
+				                                  () => world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
+				                						{ TargetLocation = new int2(pp.Index, (int)s) }));
+				
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
+				return item;
+			};
 			
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
-
-			foreach (var option in Enum.GetValues(typeof(Stance)).OfType<Stance>())
-			{
-				var o = option;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => o == world.LocalPlayer.Stances[ pp ],
-				                                  () => {
-														world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
-															false) { TargetLocation = new int2(pp.Index, (int)o) });
-														dropdown.RemovePanel();
-												  });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.ToString();
-				panel.AddChild(item);
-			}
-			
-			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
-			dropdown.AttachPanel(panel);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, stances, setupItem);
 			return true;
 		}
 	}

@@ -326,13 +326,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		
 		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, bool showBotOptions)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Widget.LoadWidget("LABEL_DROPDOWN_TEMPLATE", null, new WidgetArgs()
-			{
-				{ "substitutions", substitutions }
-			});
-			
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
 			var options = new List<SlotDropDownOption>()
 			{
 				new SlotDropDownOption("Open", "slot_open "+slot.Index, () => (!slot.Closed && slot.Bot == null)),
@@ -343,20 +336,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				foreach (var bot in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 					options.Add(new SlotDropDownOption("Bot: {0}".F(bot), "slot_bot {0} {1}".F(slot.Index, bot), () => slot.Bot == bot));
 			
-			foreach (var option in options)
+			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
-				var o = option;
-				var item = ScrollItemWidget.Setup(itemTemplate, o.Selected, 
-				                                  () => {
-														orderManager.IssueOrder(Order.Command(o.Order));
-														dropdown.RemovePanel();
-												  });
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  o.Selected, 
+				                                  () => orderManager.IssueOrder(Order.Command(o.Order)));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
-				panel.AddChild(item);
-			}
+				return item;
+			};
 			
-			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
-			dropdown.AttachPanel(panel);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 			return true;
 		}
 		
@@ -365,60 +354,37 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (Map.Players[slot.MapPlayer].LockRace)
 				return false;
 			
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Widget.LoadWidget("RACE_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			var sr = GetClientInSlot(slot).Country;
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
-				{ "substitutions", substitutions }
-			});
-			
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
-			
-			foreach (var c in CountryNames)
-			{
-				var race = c;
-				var sr = GetClientInSlot(slot).Country;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => sr == race.Key, 
-				                                  () => {
-														orderManager.IssueOrder(Order.Command("race "+race.Key));
-														dropdown.RemovePanel();
-												  });
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => race.Value;
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => sr == race, 
+				                                  () => orderManager.IssueOrder(Order.Command("race "+race)));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
 				var flag = item.GetWidget<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
-				flag.GetImageName = () => race.Key;
-				panel.AddChild(item);
-			}
+				flag.GetImageName = () => race;
+				return item;
+			};
 			
-			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
-			dropdown.AttachPanel(panel);
+			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
 			return true;
 		}
 				
 		bool ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Slot slot)
 		{
-			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", dropdown.Bounds.Width }};
-			var panel = (ScrollPanelWidget)Widget.LoadWidget("TEAM_DROPDOWN_TEMPLATE", null, new WidgetArgs()
+			var c = GetClientInSlot(slot);
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
-				{ "substitutions", substitutions }
-			});
-			
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
-			
-			for (int i = 0; i <= Map.PlayerCount; i++)
-			{
-				var ii = i;
-				var c = GetClientInSlot(slot);
-				var item = ScrollItemWidget.Setup(itemTemplate, () => c.Team == ii, 
-				                                  () => {
-														orderManager.IssueOrder(Order.Command("team "+ii));
-														dropdown.RemovePanel();
-												  });
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => c.Team == ii, 
+				                                  () => orderManager.IssueOrder(Order.Command("team "+ii)));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
-				panel.AddChild(item);
+				return item;
 			};
 			
-			panel.Bounds.Height = Math.Min(150, panel.ContentHeight);
-			dropdown.AttachPanel(panel);
+			var options = Graphics.Util.MakeArray(Map.PlayerCount, i => i).ToList();
+			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 			return true;
 		}
 		

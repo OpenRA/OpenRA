@@ -143,5 +143,28 @@ namespace OpenRA.Widgets
 			dropDown.Bounds.Height = Math.Min(150, dropDown.ContentHeight);
 			ShowDropPanel(w, dropDown, dismissAfter, () => true);
 		}
+		
+		public void ShowDropDown<T>(string panelTemplate, int height, List<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		{
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};
+			var panel = (ScrollPanelWidget)Widget.LoadWidget(panelTemplate, null, new WidgetArgs()
+				{{ "substitutions", substitutions }});
+			
+			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			panel.RemoveChildren();
+			foreach (var option in options)
+			{
+				var o = option;
+				
+				ScrollItemWidget item = setupItem(o, itemTemplate);
+				var onClick = item.OnClick;
+				item.OnClick = () => { onClick(); RemovePanel(); };
+				
+				panel.AddChild(item);
+			}
+			
+			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
+			AttachPanel(panel);
+		}
 	}
 }
