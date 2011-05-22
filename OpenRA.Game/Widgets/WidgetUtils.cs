@@ -76,58 +76,63 @@ namespace OpenRA.Widgets
 				rect.Right + r, rect.Bottom + b);
 		}
 
-		public static void DrawPanelPartial(string collection, Rectangle Bounds, PanelSides ps)
+		public static void DrawPanelPartial(string collection, Rectangle bounds, PanelSides ps)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r", "corner-tl", "corner-tr", "corner-bl", "corner-br", "background" };
 			var ss = images.Select(i => ChromeProvider.GetImage(collection, i)).ToArray();
+			DrawPanelPartial(ss, bounds, ps);
+		}
 
+		public static void DrawPanelPartial(Sprite[] ss, Rectangle bounds, PanelSides ps)
+		{
 			// Background
-			FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+			if (ps.HasFlags(PanelSides.Center))
+				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
+								 bounds.Top + (int)ss[0].size.Y,
+								 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
+								 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
 				   ss[8]);
 
 			// Left border
 			if (ps.HasFlags(PanelSides.Left))
-				FillRectWithSprite(new Rectangle(Bounds.Left,
-									 Bounds.Top + (int)ss[0].size.Y,
+				FillRectWithSprite(new Rectangle(bounds.Left,
+									 bounds.Top + (int)ss[0].size.Y,
 									 (int)ss[2].size.X,
-									 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+									 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
 					   ss[2]);
 
 			// Right border
 			if (ps.HasFlags(PanelSides.Right))
-				FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
-									 Bounds.Top + (int)ss[0].size.Y,
+				FillRectWithSprite(new Rectangle(bounds.Right - (int)ss[3].size.X,
+									 bounds.Top + (int)ss[0].size.Y,
 									 (int)ss[2].size.X,
-									 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
+									 bounds.Bottom - (int)ss[1].size.Y - bounds.Top - (int)ss[0].size.Y),
 					   ss[3]);
 
 			// Top border
 			if (ps.HasFlags(PanelSides.Top))
-				FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-									 Bounds.Top,
-									 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
+									 bounds.Top,
+									 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
 									 (int)ss[0].size.Y),
 					   ss[0]);
 
 			// Bottom border
 			if (ps.HasFlags(PanelSides.Bottom))
-				FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-									Bounds.Bottom - (int)ss[1].size.Y,
-									 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
+				FillRectWithSprite(new Rectangle(bounds.Left + (int)ss[2].size.X,
+									bounds.Bottom - (int)ss[1].size.Y,
+									 bounds.Right - (int)ss[3].size.X - bounds.Left - (int)ss[2].size.X,
 									 (int)ss[0].size.Y),
 					   ss[1]);
 
 			if (ps.HasFlags(PanelSides.Left | PanelSides.Top))
-				DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
+				DrawRGBA(ss[4], new float2(bounds.Left, bounds.Top));
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Top))
-				DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
+				DrawRGBA(ss[5], new float2(bounds.Right - ss[5].size.X, bounds.Top));
 			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom))
-				DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
+				DrawRGBA(ss[6], new float2(bounds.Left, bounds.Bottom - ss[6].size.Y));
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
-				DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
+				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].size.X, bounds.Bottom - ss[7].size.Y));
 		}
 		
 		
@@ -203,7 +208,9 @@ namespace OpenRA.Widgets
 		Top = 2,
 		Right = 4,
 		Bottom = 8,
+		Center = 16,
 
-		All = Left | Top | Right | Bottom
+		Edges = Left | Top | Right | Bottom,
+		All = Edges | Center,
 	}
 }

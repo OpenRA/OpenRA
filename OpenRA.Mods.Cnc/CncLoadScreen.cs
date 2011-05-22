@@ -73,7 +73,8 @@ namespace OpenRA.Mods.Cnc
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
-			DrawBorder();
+
+			WidgetUtils.DrawPanelPartial(ss, Bounds, PanelSides.Edges);
 			
 			var barY = Renderer.Resolution.Height-78;
 			text = "Loading";
@@ -92,45 +93,7 @@ namespace OpenRA.Mods.Cnc
 			
 			r.EndFrame( nih );
 		}
-		
-		
-		void DrawBorder()
-		{
-			// Left border
-			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
-				   ss[2]);
-
-			// Right border
-			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Right - (int)ss[3].size.X,
-								 Bounds.Top + (int)ss[0].size.Y,
-								 (int)ss[2].size.X,
-								 Bounds.Bottom - (int)ss[1].size.Y - Bounds.Top - (int)ss[0].size.Y),
-				   ss[3]);
-
-			// Top border
-			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								 Bounds.Top,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 (int)ss[0].size.Y),
-				   ss[0]);
-
-			// Bottom border
-			WidgetUtils.FillRectWithSprite(new Rectangle(Bounds.Left + (int)ss[2].size.X,
-								Bounds.Bottom - (int)ss[1].size.Y,
-								 Bounds.Right - (int)ss[3].size.X - Bounds.Left - (int)ss[2].size.X,
-								 (int)ss[0].size.Y),
-				   ss[1]);
-
-
-			WidgetUtils.DrawRGBA(ss[4], new float2(Bounds.Left, Bounds.Top));
-			WidgetUtils.DrawRGBA(ss[5], new float2(Bounds.Right - ss[5].size.X, Bounds.Top));
-			WidgetUtils.DrawRGBA(ss[6], new float2(Bounds.Left, Bounds.Bottom - ss[6].size.Y));
-			WidgetUtils.DrawRGBA(ss[7], new float2(Bounds.Right - ss[7].size.X, Bounds.Bottom - ss[7].size.Y));
-		}
-		
+	
 		public void StartGame()
 		{
 			TestAndContinue();
