@@ -45,21 +45,26 @@ namespace OpenRA.Server
 		public ModData ModData;
 		public Map Map;
 
-		bool shutdown = false;
+		volatile bool shutdown = false;
 		public void Shutdown()
 		{
 			shutdown = true;
 		}
 		
-		public Server(IPAddress ip, int port, string[] mods, ServerSettings settings, ModData modData)
+		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
+			
+			listener = new TcpListener(endpoint);
+			listener.Start();
+			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
+			Ip = localEndpoint.Address;
+			Port = localEndpoint.Port;
+
 			Settings = settings;
-			Ip = ip;
-			Port = port;
-			listener = new TcpListener(ip, port);
-			randomSeed = (int)DateTime.Now.ToBinary();
 			ModData = modData;
+
+			randomSeed = (int)DateTime.Now.ToBinary();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -80,19 +85,6 @@ namespace OpenRA.Server
 
 			new Thread( _ =>
 			{
-				while (true)
-				{
-					try
-					{
-						listener.Start();
-						break;
-					}
-					catch (Exception)
-					{
-						Thread.Sleep(100);
-					}
-				}
-
 				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for( ; ; )
 				{

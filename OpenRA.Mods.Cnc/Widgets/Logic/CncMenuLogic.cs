@@ -143,10 +143,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		void StartSkirmishGame()
 		{
 			var map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
-			
-			Game.CreateLocalServer(map);
+			var port = Game.CreateLocalServer(map);
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
-			                           Game.Settings.Server.LoopbackPort,
+			                           port,
 			                           () => OpenLobbyPanel(MenuType.Main),
 			                           () => { Game.CloseServer(); Menu = MenuType.Main; });
 		}

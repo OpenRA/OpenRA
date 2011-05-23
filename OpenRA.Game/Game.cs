@@ -368,10 +368,13 @@ namespace OpenRA
 		
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(IPAddress.Any, settings.ListenPort, Game.Settings.Game.Mods, settings, modData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
+			                           Game.Settings.Game.Mods,
+			                           settings,
+			                           modData);
 		}
 		
-		public static void CreateLocalServer(string map)
+		public static int CreateLocalServer(string map)
 		{
 			var settings = new ServerSettings()
 			{
@@ -379,11 +382,12 @@ namespace OpenRA
 				AdvertiseOnline = false,
 				Map = map
 			};
-			server = new Server.Server(IPAddress.Loopback,
-			                           Game.Settings.Server.LoopbackPort,
+			
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
 			                           Game.Settings.Game.Mods,
 			                           settings,
 			                           modData);
+			return server.Port;
 		}
 
 		public static bool IsCurrentWorld(World world)
