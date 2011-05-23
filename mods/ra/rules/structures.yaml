@@ -471,9 +471,12 @@ FTUR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6
-	AttackOmni:
+	Turreted:
+		ROT: 255
+	AttackTurreted:
 		PrimaryWeapon: FireballLauncher
-		PrimaryOffset: 0,0,12,8
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: 0,-12,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
