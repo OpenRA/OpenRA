@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 	
 	class GpsWatcher : ISync
 	{
+		[Sync]
 		bool Launched = false;
 		List<Actor> actors = new List<Actor> { };
 		[Sync]
@@ -28,41 +29,51 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		public bool Granted = false;
 
-		public void GpsRem(Actor self)
+		public void GpsRem(Actor atek)
 		{
-			actors.Remove(self);
-			RefreshGps(self);
+			actors.Remove(atek);
+			RefreshGps(atek);
 		}
 
-		public void GpsAdd(Actor self)
+		public void GpsAdd(Actor atek)
 		{
-			actors.Add(self);
-			RefreshGps(self);
+			actors.Add(atek);
+			RefreshGps(atek);
 		}
 
-		public void Launch(Actor self, SupportPowerInfo info)
+		public void Launch(Actor atek, SupportPowerInfo info)
 		{
-			self.World.Add(new DelayedAction((info as GpsPowerInfo).RevealDelay * 25,
+			atek.World.Add(new DelayedAction((info as GpsPowerInfo).RevealDelay * 25,
 					() =>
 					{
 						Launched = true;
-						RefreshGps(self);
+						RefreshGps(atek);
 					}));
 		}
 
-		public void RefreshGps(Actor self)
+		public void RefreshGps(Actor atek)
 		{
-			Granted = (actors.Count > 0 && Launched);
-			GrantedAllies = self.World.ActorsWithTrait<GpsWatcher>().Any(p =>
-					p.Actor.Owner.Stances[self.Owner] == Stance.Ally && p.Trait.Granted);
+			RefreshGranted(atek);
 
-			if (self.World.LocalPlayer == null)
+			foreach (TraitPair<GpsWatcher> i in atek.World.ActorsWithTrait<GpsWatcher>())
+			{
+				i.Trait.RefreshGranted(atek);
+			}
+
+			if (atek.World.LocalPlayer == null)
 				return;
 
-			if ((Granted || GrantedAllies) && self.World.LocalPlayer == self.Owner)
+			if ((Granted || GrantedAllies) && (atek.World.LocalPlayer.Stances[atek.Owner] == Stance.Ally))
 			{
-				self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
+				atek.World.WorldActor.Trait<Shroud>().ExploreAll(atek.World);
 			}
+		}
+
+		public void RefreshGranted(Actor atek)
+		{
+			Granted = (actors.Count > 0 && Launched);
+			GrantedAllies = atek.World.ActorsWithTrait<GpsWatcher>().Any(p =>
+					p.Actor.Owner.Stances[atek.Owner] == Stance.Ally && p.Trait.Granted);
 		}
 	}
 
