@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
 
-			damage = (int)(damage * modifier);
+			damage = damage > 0 ? (int)(damage * modifier) : damage;
 			hp = Exts.Clamp(hp - damage, 0, MaxHP);
 
 			var ai = new AttackInfo
