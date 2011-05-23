@@ -345,19 +345,11 @@ Container@SETTINGS_PANEL:
 			Width:140
 			Height:35
 			Text:Input
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
-			Key:escape
-			X:450
-			Y:249
-			Width:140
-			Height:35
-			Text:Cancel
 		Button@SAVE_BUTTON:
-			Id:SAVE_BUTTON
-			Key:return
+			Id:BACK_BUTTON
+			Key:escape
 			X:600
 			Y:249
 			Width:140
 			Height:35
-			Text:Save
+			Text:Back

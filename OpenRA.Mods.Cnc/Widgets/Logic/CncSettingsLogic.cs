@@ -27,11 +27,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		PanelType Settings = PanelType.General;
-		ColorRamp playerColor;
-		Modifiers groupAddModifier;
-		MouseScrollType mouseScroll;
-		WindowMode windowMode;
-
 		CncColorPickerPaletteModifier playerPalettePreview;
 		World world;
 		
@@ -51,69 +46,68 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var generalPane = panel.GetWidget("GENERAL_CONTROLS");
 			generalPane.IsVisible = () => Settings == PanelType.General;
 			
+			var gameSettings = Game.Settings.Game;
+			var playerSettings = Game.Settings.Player;
+			var debugSettings = Game.Settings.Debug;
+			var graphicsSettings = Game.Settings.Graphics;
+			var soundSettings = Game.Settings.Sound;
+			var keyboardSettings = Game.Settings.Keyboard;
+			
 			// Player profile
 			var nameTextfield = generalPane.GetWidget<TextFieldWidget>("NAME_TEXTFIELD");
-			nameTextfield.Text = Game.Settings.Player.Name;
+			nameTextfield.Text = playerSettings.Name;
 			
-			playerColor = Game.Settings.Player.ColorRamp;
 			playerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
-			playerPalettePreview.Ramp = playerColor;
+			playerPalettePreview.Ramp = playerSettings.ColorRamp;
 			
 			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR_DROPDOWN");
-			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown);
-			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerColor.GetColor(0);
+			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
+			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.ColorRamp.GetColor(0);
 			
 			// Debug
-			var perftext = Game.Settings.Debug.PerfText;
 			var perftextCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFTEXT_CHECKBOX");
-			perftextCheckbox.IsChecked = () => perftext;
-			perftextCheckbox.OnClick = () => perftext ^= true;
+			perftextCheckbox.IsChecked = () => debugSettings.PerfText;
+			perftextCheckbox.OnClick = () => debugSettings.PerfText ^= true;
 			
-			var perfgraph = Game.Settings.Debug.PerfGraph;
 			var perfgraphCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFGRAPH_CHECKBOX");
-			perfgraphCheckbox.IsChecked = () => perfgraph;
-			perfgraphCheckbox.OnClick = () => perfgraph ^= true;
+			perfgraphCheckbox.IsChecked = () => debugSettings.PerfGraph;
+			perfgraphCheckbox.OnClick = () => debugSettings.PerfGraph ^= true;
 			
-			var matchtimer = Game.Settings.Game.MatchTimer;
 			var matchtimerCheckbox = generalPane.GetWidget<CheckboxWidget>("MATCHTIME_CHECKBOX");
-			matchtimerCheckbox.IsChecked = () => matchtimer;
-			matchtimerCheckbox.OnClick = () => matchtimer ^= true;
+			matchtimerCheckbox.IsChecked = () => gameSettings.MatchTimer;
+			matchtimerCheckbox.OnClick = () => gameSettings.MatchTimer ^= true;
 			
-			var checkunsynced = Game.Settings.Debug.SanityCheckUnsyncedCode;
 			var checkunsyncedCheckbox = generalPane.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
-			checkunsyncedCheckbox.IsChecked = () => checkunsynced;
-			checkunsyncedCheckbox.OnClick = () => checkunsynced ^= true;
+			checkunsyncedCheckbox.IsChecked = () => debugSettings.SanityCheckUnsyncedCode;
+			checkunsyncedCheckbox.OnClick = () => debugSettings.SanityCheckUnsyncedCode ^= true;
 			
 			// Video
-			windowMode = Game.Settings.Graphics.Mode;
 			var windowModeDropdown = generalPane.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown);
-			windowModeDropdown.GetText = () => windowMode == WindowMode.Windowed ? "Windowed" : windowMode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
+			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ? 
+				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
-			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => windowMode == WindowMode.Windowed;
+			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
 			var windowWidth = generalPane.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
-			windowWidth.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
+			windowWidth.Text = graphicsSettings.WindowedSize.X.ToString();
 			
 			var windowHeight = generalPane.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
-			windowHeight.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
+			windowHeight.Text = graphicsSettings.WindowedSize.Y.ToString();
 
 			// Audio
-			var soundVolume = Game.Settings.Sound.SoundVolume;
 			var soundSlider = generalPane.GetWidget<SliderWidget>("SOUND_SLIDER");
-			soundSlider.OnChange += x => { soundVolume = x; Sound.SoundVolume = x;};
-			soundSlider.GetOffset = () => { return soundVolume; };
-			soundSlider.SetOffset(soundVolume);
+			soundSlider.OnChange += x => { soundSettings.SoundVolume = x; Sound.SoundVolume = x;};
+			soundSlider.GetOffset = () => { return soundSettings.SoundVolume; };
+			soundSlider.SetOffset(soundSettings.SoundVolume);
 			
-			var musicVolume = Game.Settings.Sound.MusicVolume;
 			var musicSlider = generalPane.GetWidget<SliderWidget>("MUSIC_SLIDER");
-			musicSlider.OnChange += x => { musicVolume = x; Sound.MusicVolume = x; };
-			musicSlider.GetOffset = () => { return musicVolume; };
-			musicSlider.SetOffset(musicVolume);
+			musicSlider.OnChange += x => { soundSettings.MusicVolume = x; Sound.MusicVolume = x; };
+			musicSlider.GetOffset = () => { return soundSettings.MusicVolume; };
+			musicSlider.SetOffset(soundSettings.MusicVolume);
 			
-			var shellmapMusic = Game.Settings.Game.ShellmapMusic;
 			var shellmapMusicCheckbox = generalPane.GetWidget<CheckboxWidget>("SHELLMAP_MUSIC");
-			shellmapMusicCheckbox.IsChecked = () => shellmapMusic;
-			shellmapMusicCheckbox.OnClick = () => shellmapMusic ^= true;
+			shellmapMusicCheckbox.IsChecked = () => gameSettings.ShellmapMusic;
+			shellmapMusicCheckbox.OnClick = () => gameSettings.ShellmapMusic ^= true;
 			
 			
 			// Input pane
@@ -126,80 +120,45 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				
 			inputPane.GetWidget<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
 			
-			var scrollStrength = Game.Settings.Game.ViewportEdgeScrollStep;
 			var scrollSlider = inputPane.GetWidget<SliderWidget>("SCROLLSPEED_SLIDER");
-			scrollSlider.OnChange += x => scrollStrength = scrollSlider.GetOffset();
-			scrollSlider.SetOffset(scrollStrength);
+			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = scrollSlider.GetOffset();
+			scrollSlider.SetOffset(gameSettings.ViewportEdgeScrollStep);
 			
-			var edgescroll = Game.Settings.Game.ViewportEdgeScroll;
 			var edgescrollCheckbox = inputPane.GetWidget<CheckboxWidget>("EDGESCROLL_CHECKBOX");
-			edgescrollCheckbox.IsChecked = () => edgescroll;
-			edgescrollCheckbox.OnClick = () => edgescroll ^= true;
+			edgescrollCheckbox.IsChecked = () => gameSettings.ViewportEdgeScroll;
+			edgescrollCheckbox.OnClick = () => gameSettings.ViewportEdgeScroll ^= true;
 			
-			mouseScroll = Game.Settings.Game.MouseScroll;
 			var mouseScrollDropdown = inputPane.GetWidget<DropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown);
-			mouseScrollDropdown.GetText = () => mouseScroll.ToString();
+			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gameSettings);
+			mouseScrollDropdown.GetText = () => gameSettings.MouseScroll.ToString();
 			
-			var teamchat = Game.Settings.Game.TeamChatToggle;
 			var teamchatCheckbox = inputPane.GetWidget<CheckboxWidget>("TEAMCHAT_CHECKBOX");
-			teamchatCheckbox.IsChecked = () => teamchat;
-			teamchatCheckbox.OnClick = () => teamchat ^= true;
+			teamchatCheckbox.IsChecked = () => gameSettings.TeamChatToggle;
+			teamchatCheckbox.OnClick = () => gameSettings.TeamChatToggle ^= true;
 			
-			groupAddModifier = Game.Settings.Keyboard.ControlGroupModifier;
 			var groupModifierDropdown = inputPane.GetWidget<DropDownButtonWidget>("GROUPADD_MODIFIER");
-			groupModifierDropdown.OnMouseDown = _ => ShowGroupModifierDropdown(groupModifierDropdown);
-			groupModifierDropdown.GetText = () => groupAddModifier.ToString();
+			groupModifierDropdown.OnMouseDown = _ => ShowGroupModifierDropdown(groupModifierDropdown, keyboardSettings);
+			groupModifierDropdown.GetText = () => keyboardSettings.ControlGroupModifier.ToString();
 			
 			
-			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
-				Widget.CloseWindow();
-				onExit();
-			};
-			
-			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () =>
-			{
-				var s = Game.Settings;
-				s.Player.Name = nameTextfield.Text;
-				s.Player.ColorRamp = playerColor;
-				
-				s.Debug.PerfText = perftext;
-				s.Debug.PerfGraph = perfgraph;
-				s.Game.MatchTimer = matchtimer;
-				s.Debug.SanityCheckUnsyncedCode = checkunsynced;
-				
-				s.Graphics.Mode = windowMode;
-				
-				int x = s.Graphics.WindowedSize.X, y = s.Graphics.WindowedSize.Y;
+				playerSettings.Name = nameTextfield.Text;
+				int x = graphicsSettings.WindowedSize.X, y = graphicsSettings.WindowedSize.Y;
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
-				s.Graphics.WindowedSize = new int2(x,y);
-				
-				s.Sound.SoundVolume = soundVolume;
-				Sound.SoundVolume = soundVolume;
-				s.Sound.MusicVolume = musicVolume;
-				Sound.MusicVolume = musicVolume;
-				s.Game.ShellmapMusic = shellmapMusic;
-				
-				
-				s.Game.ViewportEdgeScrollStep = scrollStrength;
-				s.Game.ViewportEdgeScroll = edgescroll;
-				s.Game.MouseScroll = mouseScroll;
-				
-				s.Game.TeamChatToggle = teamchat;
-				s.Keyboard.ControlGroupModifier = groupAddModifier;
-				s.Save();
+				graphicsSettings.WindowedSize = new int2(x,y);
+				Game.Settings.Save();
 				Widget.CloseWindow();
 				onExit();
 			};
 		}
 		
-		bool ShowColorPicker(DropDownButtonWidget color)
+		bool ShowColorPicker(DropDownButtonWidget color, PlayerSettings s)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
-				playerColor = c;
+				s.ColorRamp = c;
 				color.RemovePanel();
 			};
 			
@@ -212,14 +171,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				{ "onSelect", onSelect },
 				{ "onChange", onChange },
-				{ "initialRamp", playerColor }
+				{ "initialRamp", s.ColorRamp }
 			});
 			
 			color.AttachPanel(colorChooser);
 			return true;
 		}
 		
-		bool ShowGroupModifierDropdown(DropDownButtonWidget dropdown)
+		bool ShowGroupModifierDropdown(DropDownButtonWidget dropdown, KeyboardSettings s)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
@@ -233,8 +192,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => groupAddModifier == options[o],
-				                                  () => groupAddModifier = options[o]);
+				                                  () => s.ControlGroupModifier == options[o],
+				                                  () => s.ControlGroupModifier = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
@@ -243,7 +202,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			return true;
 		}
 		
-		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown)
+		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
@@ -255,8 +214,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => windowMode == options[o],
-				                                  () => windowMode = options[o]);
+				                                  () => s.Mode == options[o],
+				                                  () => s.Mode = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
@@ -266,7 +225,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 		
 		
-		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown)
+		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -278,8 +237,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => mouseScroll == options[o],
-				                                  () => mouseScroll = options[o]);
+				                                  () => s.MouseScroll == options[o],
+				                                  () => s.MouseScroll = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
