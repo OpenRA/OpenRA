@@ -299,18 +299,6 @@ namespace OpenRA.Renderer.Glsl
 			throw new NotImplementedException();
 		}
 
-		static int IndicesPerPrimitive( PrimitiveType pt )
-		{
-			switch( pt )
-			{
-			case PrimitiveType.PointList: return 1;
-			case PrimitiveType.LineList: return 2;
-			case PrimitiveType.TriangleList: return 3;
-			case PrimitiveType.QuadList: return 4;
-			}
-			throw new NotImplementedException();
-		}
-
 		public IVertexBuffer<Vertex> CreateVertexBuffer( int size ) { return new VertexBuffer<Vertex>( this, size ); }
 		public ITexture CreateTexture() { return new Texture( this ); }
 		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( this, bitmap ); }
