@@ -186,6 +186,7 @@ Container@MUSIC_PANEL:
 					Text:Loop
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			X:0
 			Y:399
 			Width:140
@@ -240,6 +241,7 @@ Container@INSTALL_MUSIC_PANEL:
 					Text:Waiting for file
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			Y:149
 			Width:140
 			Height:35

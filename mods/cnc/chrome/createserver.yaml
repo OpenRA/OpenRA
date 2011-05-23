@@ -131,6 +131,7 @@ Container@CREATESERVER_PANEL:
 					Text:1234
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			X:0
 			Y:259
 			Width:140
@@ -145,6 +146,7 @@ Container@CREATESERVER_PANEL:
 			Text:Choose Map
 		Button@CREATE_BUTTON:
 			Id:CREATE_BUTTON
+			Key:return
 			X:464
 			Y:259
 			Width:140

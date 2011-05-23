@@ -73,6 +73,7 @@ Container@INGAME_MENU:
 					Text:Settings
 				Button@RESUME_BUTTON:
 					Id:RESUME_BUTTON
+					Key:escape
 					X:600
 					Y:0
 					Width:140
@@ -107,12 +108,14 @@ Container@INGAME_MENU:
 							Align:Center
 				Button@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON
+					Key:escape
 					Y:89
 					Width:140
 					Height:35
 					Text:Cancel
 				Button@CONFIRM_BUTTON:
 					Id:CONFIRM_BUTTON
+					Key:return
 					X:230
 					Y:89
 					Width:140

@@ -82,6 +82,7 @@ Container@DIPLOMACY_PANEL:
 							Align:Center
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			Y:299
 			Width:140
 			Height:35

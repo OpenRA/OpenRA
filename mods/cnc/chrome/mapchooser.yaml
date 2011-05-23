@@ -191,6 +191,7 @@ Container@MAPCHOOSER_PANEL:
 							WordWrap:True
 				Button@BUTTON_CANCEL:
 					Id:BUTTON_CANCEL
+					Key:escape
 					X:0
 					Y:499
 					Width:140
@@ -205,6 +206,7 @@ Container@MAPCHOOSER_PANEL:
 					Text:Install Map
 				Button@BUTTON_OK:
 					Id:BUTTON_OK
+					Key:return
 					X:600
 					Y:499
 					Width:140

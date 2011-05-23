@@ -127,6 +127,7 @@ Container@MENU_BACKGROUND:
 							Text:Direct Connect
 						Button@BACK_BUTTON:
 							Id:BACK_BUTTON
+							Key:escape
 							X:600
 							Y:0
 							Width:140
@@ -169,6 +170,7 @@ Container@MENU_BACKGROUND:
 							Text:Preferences
 						Button@BACK_BUTTON:
 							Id:BACK_BUTTON
+							Key:escape
 							X:600
 							Y:0
 							Width:140

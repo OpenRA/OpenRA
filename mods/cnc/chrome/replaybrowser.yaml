@@ -98,6 +98,7 @@ Container@REPLAYBROWSER_PANEL:
 							Height:20
 				Button@CANCEL_BUTTON:
 					Id:CANCEL_BUTTON
+					Key:escape
 					X:0
 					Y:299
 					Width:140
@@ -105,6 +106,7 @@ Container@REPLAYBROWSER_PANEL:
 					Text:Back
 				Button@WATCH_BUTTON:
 					Id:WATCH_BUTTON
+					Key:return
 					X:380
 					Y:299
 					Width:140

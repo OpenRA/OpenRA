@@ -28,6 +28,7 @@ Container@CONNECTING_PANEL:
 					Align:Center
 		Button@ABORT_BUTTON:
 			Id:ABORT_BUTTON
+			Key:escape
 			X:230
 			Y:89
 			Width:140
@@ -64,12 +65,14 @@ Container@CONNECTIONFAILED_PANEL:
 					Align:Center
 		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
+			Key:return
 			Y:89
 			Width:140
 			Height:35
 			Text:Retry
 		Button@ABORT_BUTTON:
 			Id:ABORT_BUTTON
+			Key:escape
 			X:230
 			Y:89
 			Width:140

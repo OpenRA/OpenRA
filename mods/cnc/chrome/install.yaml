@@ -134,12 +134,14 @@ Container@INSTALL_FROMCD_PANEL:
 					Text:Waiting for CD
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			Y:149
 			Width:140
 			Height:35
 			Text:Back
 		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
+			Key:return
 			X:500
 			Y:149
 			Width:140
@@ -187,12 +189,14 @@ Container@INSTALL_DOWNLOAD_PANEL:
 					Text:Initialising...
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
+			Key:escape
 			Y:149
 			Width:140
 			Height:35
 			Text:Cancel
 		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
+			Key:return
 			X:500
 			Y:149
 			Width:140

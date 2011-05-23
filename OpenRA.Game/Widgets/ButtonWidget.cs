@@ -17,6 +17,7 @@ namespace OpenRA.Widgets
 {
 	public class ButtonWidget : Widget
 	{
+		public string Key = null;
 		public string Text = "";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.GetInt("ButtonDepth");
@@ -48,7 +49,16 @@ namespace OpenRA.Widgets
 			Depressed = false;
 			return base.LoseFocus(mi);
 		}
-
+		
+		public override bool HandleKeyPressInner(KeyInput e)
+		{
+			if (e.KeyName != Key || e.Modifiers != Modifiers.None || e.Event != KeyInputEvent.Down)
+				return false;
+			
+			OnClick();
+			return true;
+		}
+		
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)

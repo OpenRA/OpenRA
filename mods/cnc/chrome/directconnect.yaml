@@ -46,6 +46,7 @@ Container@DIRECTCONNECT_PANEL:
 					Height:25
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			X:0
 			Y:89
 			Width:140
@@ -53,6 +54,7 @@ Container@DIRECTCONNECT_PANEL:
 			Text:Back
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
+			Key:return
 			X:230
 			Y:89
 			Width:140

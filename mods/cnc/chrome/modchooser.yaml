@@ -80,6 +80,7 @@ Container@MODS_PANEL:
 							Font:Bold
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			X:0
 			Y:499
 			Width:140
@@ -87,6 +88,7 @@ Container@MODS_PANEL:
 			Text:Back
 		Button@LOAD_BUTTON:
 			Id:LOAD_BUTTON
+			Key:return
 			X:600
 			Y:499
 			Width:140

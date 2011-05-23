@@ -347,6 +347,7 @@ Container@SETTINGS_PANEL:
 			Text:Input
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
+			Key:escape
 			X:450
 			Y:249
 			Width:140
@@ -354,6 +355,7 @@ Container@SETTINGS_PANEL:
 			Text:Cancel
 		Button@SAVE_BUTTON:
 			Id:SAVE_BUTTON
+			Key:return
 			X:600
 			Y:249
 			Width:140

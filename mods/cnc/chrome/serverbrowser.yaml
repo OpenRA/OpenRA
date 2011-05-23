@@ -193,6 +193,7 @@ Container@SERVERBROWSER_PANEL:
 									Height:20
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
+			Key:escape
 			X:0
 			Y:499
 			Width:140
@@ -207,6 +208,7 @@ Container@SERVERBROWSER_PANEL:
 			Text:Refresh
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
+			Key:return
 			X:600
 			Y:499
 			Width:140

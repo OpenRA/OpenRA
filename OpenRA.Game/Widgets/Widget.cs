@@ -245,7 +245,7 @@ namespace OpenRA.Widgets
                 return false;
 
             // Can any of our children handle this?
-            foreach (var child in Children)
+			foreach (var child in Children.OfType<Widget>().Reverse())
                 if (child.HandleKeyPressOuter(e))
                     return true;
 

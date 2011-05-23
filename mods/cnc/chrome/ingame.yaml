@@ -19,6 +19,7 @@ Container@INGAME_ROOT:
 			Y: 40
 		Button@OPTIONS_BUTTON:
 			Id:OPTIONS_BUTTON
+			Key:escape
 			X:5
 			Y:5
 			Width:140

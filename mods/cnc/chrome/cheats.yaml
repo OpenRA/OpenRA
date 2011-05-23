@@ -69,6 +69,7 @@ Container@CHEATS_PANEL:
 					Text:Show Unit Paths
 		Button@CLOSE_BUTTON:
 			Id:CLOSE_BUTTON
+			Key:escape
 			X:0
 			Y:109
 			Width:140
