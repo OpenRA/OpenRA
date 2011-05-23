@@ -37,7 +37,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		readonly Action onExit;
 		readonly OrderManager orderManager;
 		
-		static bool staticSetup;
+		static CncLobbyLogic()
+		{
+			Game.LobbyInfoChanged += LobbyInfoChangedStub;
+			Game.BeforeGameStart += BeforeGameStartStub;
+			Game.AddChatLine += AddChatLineStub;
+			Game.ConnectionStateChanged += ConnectionStateChangedStub;
+		}
+		
 		public static CncLobbyLogic GetHandler()
 		{
 			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
@@ -127,16 +134,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { Widget.CloseWindow(); onStart(); };
 			this.onExit = onExit;
-			
-			if (!staticSetup)
-			{
-				staticSetup = true;
-				Game.LobbyInfoChanged += LobbyInfoChangedStub;
-				Game.BeforeGameStart += BeforeGameStartStub;
-				Game.AddChatLine += AddChatLineStub;
-				Game.ConnectionStateChanged += ConnectionStateChangedStub;
-			}
-			
+
 			UpdateCurrentMap();
 			PlayerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
 			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;

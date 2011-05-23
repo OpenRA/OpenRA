@@ -19,8 +19,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		enum MenuType { None, Diplomacy, Cheats }
 		MenuType menu = MenuType.None;
 		
-		static bool staticSetup;
 		Widget ingameRoot;
+		
+		static CncIngameChromeLogic()
+		{
+			Game.AddChatLine += AddChatLineStub;
+		}
 
 		static void AddChatLineStub(Color c, string from, string text)
 		{
@@ -49,11 +53,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				.Fade(CncMenuPaletteEffect.EffectType.None);
 			
 			ingameRoot = widget.GetWidget("INGAME_ROOT");
-			if (!staticSetup)
-			{
-				staticSetup = true;
-				Game.AddChatLine += AddChatLineStub;
-			}
 			
 			if (world.LocalPlayer != null)
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;

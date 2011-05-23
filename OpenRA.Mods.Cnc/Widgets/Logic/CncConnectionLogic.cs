@@ -16,10 +16,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncConnectingLogic
 	{
-		static bool staticSetup;
 		Action onConnect, onRetry, onAbort;
 		string host;
 		int port;
+		
+		static CncConnectingLogic()
+		{
+			Game.ConnectionStateChanged += ConnectionStateChangedStub;
+		}
 		
 		static void ConnectionStateChangedStub(OrderManager om)
 		{
@@ -68,11 +72,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.onConnect = onConnect;
 			this.onRetry = onRetry;
 			this.onAbort = onAbort;
-			if (!staticSetup)
-			{
-				staticSetup = true;
-				Game.ConnectionStateChanged += ConnectionStateChangedStub;
-			}
 			
 			var panel = widget.GetWidget("CONNECTING_PANEL");
 			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
