@@ -78,12 +78,14 @@ namespace OpenRA.Widgets
 			CursorPosition = ClosestCursorPosition(mi.Location.X);
 			return true;
 		}
-		
+
+		protected virtual string GetApparentText() { return text; }
 		
 		public int ClosestCursorPosition(int x)
 		{
+			var apparentText = GetApparentText();
 			var font = Game.Renderer.Fonts[Font];
-			var textSize = font.Measure(Text);
+			var textSize = font.Measure(apparentText);
 			
 			var start = RenderOrigin.X + LeftMargin;
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && Focused)
@@ -91,9 +93,9 @@ namespace OpenRA.Widgets
 			
 			int minIndex = -1;
 			int minValue = int.MaxValue;
-			for (int i = 0; i <= Text.Length; i++)
+			for (int i = 0; i <= apparentText.Length; i++)
 			{
-				var dist = Math.Abs(start + font.Measure(Text.Substring(0,i)).X - x);
+				var dist = Math.Abs(start + font.Measure(apparentText.Substring(0, i)).X - x);
 				if (dist > minValue)
 					break;
 				minValue = dist;
@@ -190,15 +192,16 @@ namespace OpenRA.Widgets
 
 			base.Tick();
 		}
-		
-		public virtual void DrawWithString(string text)
+	
+		public override void DrawInner()
 		{
+			var apparentText = GetApparentText();
 			var font = Game.Renderer.Fonts[Font];
 			var pos = RenderOrigin;
 
-			var textSize = font.Measure(text);
-			var cursorPosition = font.Measure(text.Substring(0,CursorPosition));
-			
+			var textSize = font.Measure(apparentText);
+			var cursorPosition = font.Measure(apparentText.Substring(0, CursorPosition));
+
 			var disabled = IsDisabled();
 			var state = disabled ? "textfield-disabled" :
 				Focused ? "textfield-focused" :
@@ -217,23 +220,18 @@ namespace OpenRA.Widgets
 				if (Focused)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
-				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y, 
+				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y,
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom);
 			}
-			
+
 			var color = disabled ? DisabledColor : TextColor;
-			font.DrawText(text, textPos, color);
+			font.DrawText(apparentText, textPos, color);
 
 			if (showCursor && Focused)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), Color.White);
 
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
 				Game.Renderer.DisableScissor();
-		}
-		
-		public override void DrawInner()
-		{
-			DrawWithString(Text);
 		}
 
 		public override Widget Clone() { return new TextFieldWidget(this); }
