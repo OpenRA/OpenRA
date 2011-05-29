@@ -1,3 +1,143 @@
+local funcstring = 
+[[
+get_work_dim() Returns the number of dimensions in use
+get_global_size(uint dimindx) Returns the number of global work-items specified for dimension identified by dimindx
+get_global_id(uint dimindx) Returns the unique global work-item ID value for dimension identified by dimindx
+get_local_size(uint dimindx) Returns the number of local work-items specified in dimension identified by dimindx
+get_local_id(uint dimindx) Returns the unique local work-item ID i.e. a work-item within a specific work-group for dimension identified by dimindx.
+get_num_groups(uint dimindx) Returns the number of work-groups that will execute a kernel for dimension identified by dimindx
+get_group_id(uint dimindx) Returns the work-group ID
+acos(gentype) Arc cosine function
+acosh(gentype) Inverse hyperbolic cosine
+acospi(gentype) Compute acos (x) / PI
+asin(gentype) Arc sine function
+asinh(gentype) Inverse hyperbolic sine
+asinpi(gentype x) Compute asin (x) / PI
+atan(gentype y_over_x) Arc tangent function
+atan2(gentype y, gentype x) Arc tangent of y / x
+atanh(gentype) Hyperbolic arc tangent.
+atanpi(gentype x) Compute atan (x) / PI
+atan2pi(gentype y, gentype x) Compute atan2 (y, x) / PI
+cbrt(gentype) Compute cube-root
+ceil(gentype) Round to integral value using the round to +ve infinity rounding mode
+copysign(gentype x, gentype y) Returns x with its sign changed to match the sign of y
+cos(gentype) Compute cosine
+cosh(gentype) Compute hyperbolic consine
+cospi(gentype x) Compute cos (PI*x)
+erfc(gentype) Complementary error function
+erf(gentype) Error function encountered in integrating the normal distribution
+exp(gentype x) Compute the base- e exponential of x
+exp2(gentype) Exponential base 2 function
+exp10(gentype) Exponential base 10 function
+expm1(gentype x) Compute e^x - 1.0
+fabs(gentype) Compute absolute value of a floating-point number
+fdim(gentype x, gentype y) x - y if x > y, +0 if x is less than or equal to y
+floor(gentype) Round to integral value using the round to –ve infinity rounding mode
+fma(gentype a, gentype b, gentype c) Returns the correctly rounded floating-point representation of the sum of c with the infinitely precise product of a and b
+fmax(gentype x, gentype y) Returns y if x < y, otherwise it returns x
+fmin(gentype x, gentype y) Returns y if y < x, otherwise it returns x
+fmod(gentype x, gentype y) Modulus. Returns x – y * trunc (x/y)
+fract(gentype x, gentype *iptr) Returns fmin( x – floor (x), 0x1.fffffep-1f ).
+frexp(gentype x, intn *exp) Extract mantissa and exponent from x
+hypot(gentype x, gentype y) Compute the value of the square root of x2+y2
+ilogb(gentype x) Return the exponent as an integer value
+ldexp(gentype x, intn n) Multiply x by 2 to the power n
+lgamma(gentype x) Returns the natural logarithm of the absolute value of the gamma function
+lgamma_r(gentype x, intn *signp) Returns the natural logarithm of the absolute value of the gamma function
+log(gentype) Compute natural logarithm
+log2(gentype) Compute a base 2 logarithm
+log10(gentype) Compute a base 10 logarithm
+log1p(gentype x) Compute loge(1.0 + x)
+logb(gentype x) Compute the exponent of x, which is the integral part of logr|x|
+mad(gentype a, gentype b, gentype c) Approximates a * b + c.
+modf(gentype x, gentype *iptr) Decompose a floating-point number
+nan(uintn nancode) Returns a quiet NaN
+nextafter(gentype x, gentype y) Computes the next representable single-precision floating-point value following x in the direction of y.
+pow(gentype x, gentype y) Compute x to the power y
+pown(gentype x, intn y) Compute x to the power y, where y is an integer
+powr(gentype x, gentype y) Compute x to the power y, where x is >= 0
+remainder(gentype x, gentype y) r = x - n*y, where n is the integer nearest the exact value of x/y
+remquo(gentype x, gentype y, intn *quo) r = x - n*y, where n is the integer nearest the exact value of x/y
+rint(gentype) Round to integral value (using round to nearest even rounding mode)
+rootn(gentype x, intn y) Compute x to the power 1/y
+round(gentype x) Return the integral value nearest to x rounding halfway cases away from zero
+rsqrt(gentype) Compute inverse square root
+sin(gentype) Compute sine
+sincos(gentype x, gentype *cosval) Compute sine and cosine of x
+sinh(gentype) Compute hyperbolic sine.
+sinpi(gentype x) Compute sin (PI*x)
+sqrt(gentype) Compute square root
+tan(gentype) Compute tangent
+tanh(gentype) Compute hyperbolic tangent
+tanpi(gentype x) Compute tan (PI*x)
+tgamma(gentype) Compute the gamma function
+trunc(gentype) Round to integral value using the round to zero
+abs(gentype x) Returns |x|
+abs_diff(gentype x, gentype y) Returns |x – y| without modulo overflow
+add_sat(gentype x, gentype y) Returns x + y and saturates the result
+hadd(gentype x, gentype y) Returns (x + y) >> 1
+rhadd(gentype x, gentype y) Returns (x + y + 1) >> 1
+clz(gentype x) Returns the number of leading 0-bits in x, starting at the most significant bit position.
+mad_hi(gentype a, gentype b, gentype c) Returns mul_hi(a, b) + c
+mad_sat(gentype a, gentype b, gentype c) Returns a * b + c and saturates the result
+max(gentype x, gentype y) Returns y if x < y, otherwise it returns x
+min(gentype x, gentype y) Returns y if y < x, otherwise it returns x
+mul_hi(gentype x, gentype y) Computes x * y and returns the high half of the product of x and y
+rotate(gentype v, gentype i)
+sub_sat(gentype x, gentype y) Returns x - y and saturates the result
+upsample(charn hi, ucharn lo) result[i] = ((short)hi[i] << 8) | lo[i]
+mad24(gentype x, gentype y, gentype z)
+mul24(gentype x, gentype y)
+clamp(gentype x, gentype minval, gentype maxval) Returns fmin(fmax(x, minval), maxval)
+degrees(gentype radians) Converts radians to degrees
+max(gentype x, gentype y)
+min(gentype x, gentype y)
+mix(gentype x, gentype y, gentype a) Returns the linear blend of x&y: x + (y – x) * a
+radians(gentype degrees) Converts degrees to radians
+step(gentype edge, gentype x) Returns 0.0 if x < edge, otherwise it returns 1.0
+smoothstep(genType edge0, genType edge1, genType x)
+sign(gentype x)
+cross(float4 p0, float4 p1) Returns the cross product of p0.xyz and p1.xyz.
+dot(gentype p0, gentype p1) Compute dot product
+distance(gentype p0, gentype p1) Returns the distance between p0 and p1
+length(gentype p) Return the length of vecto
+normalize(gentype p) Returns a vector in the same direction as p but with length of 1.
+fast_distance(gentype p0, gentype p1) Returns fast_length(p0 – p1).
+fast_length(gentype p) Returns the length of vector
+fast_normalize(gentype p) Returns a vector in the same direction as p but with length of 1.
+read_imagef(image2d_t image, sampler_t sampler, int2 coord)
+read_imagei(image2d_t image, sampler_t sampler, int2 coord)
+read_imageui(image2d_t image, sampler_t sampler, int2 coord)
+write_imagef(image2d_t image, int2 coord, float4 color)
+write_imagei(image2d_t image, int2 coord, int4 color)
+write_imageui(image2d_t image, int2 coord, unsigned int4 color)
+get_image_width(image2d_t image)
+get_image_width(image3d_t image)
+get_image_height(image2d_t image)
+get_image_height(image3d_t image)
+get_image_channel_data_type(image2d_t image)
+get_image_channel_data_type(image3d_t image)
+get_image_channel_order(image2d_t image)
+get_image_channel_order(image3d_t image)
+get_image_dim(image2d_t image)
+get_image_dim(image3d_t image)
+barrier(cl_mem_fence_flags flags) All work-items in a work-group executing the kernel must execute this function before any are allowed to continue execution beyond the barrier.
+mem_fence(cl_mem_fence_flags flags) Orders loads and stores of a work-item executing a kernel.
+read_mem_fence(cl_mem_fence_flags flags) Read memory barrier that orders only loads.
+write_mem_fence(cl_mem_fence_flags flags) Write memory barrier that orders only stores.
+async_work_group_copy(gentype *dst, const gentype *src, size_t num_elements, event_t event) Perform an async copy of num_elements gentype elements from src to dst.
+wait_group_events(int num_events, event_t *event_list) Wait for events that identify the async_work_group_copy operations to complete.
+prefetch(const __global gentype *p, size_t num_elements) Prefetch num_elements * sizeof(gentype) bytes into the global cache.
+vload2(size_t offset, const type *p) Read vector data from memory
+vload4(size_t offset, const type *p) Read vector data from memory
+vload8(size_t offset, const type *p) Read vector data from memory
+vload16(size_t offset, const type *p) Read vector data from memory
+vstore2(type2 data, size_t offset, type *p) Write vector data to memory
+vstore4(type4 data, size_t offset, type *p) Write vector data to memory
+vstore8(type8 data, size_t offset, type *p) Write vector data to memory
+vstore16(type16 data, size_t offset, type *p) Write vector data to memory
+]]
+
 local function fn (description) 
 	local description2,returns,args = description:match("(.+)%-%s*(%b())%s*(%b())")
 	if not description2 then

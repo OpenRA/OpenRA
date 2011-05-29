@@ -147,3 +147,14 @@ Copyright: © 2008-2010 Ryan C. Gordon
 Homepage: http://icculus.org/mojoshader/
 License:  http://hg.icculus.org/icculus/mojoshader/raw-file/tip/LICENSE.txt
 =============================================================================
+
+
+CLCC
+=============================================================================
+Copyright: © 2009 Organic Vectory B.V.
+Homepage: http://clcc.sourceforge.net/
+License:  boost
+
+CLCC was modified by Christoph Kubisch to support multiple platforms and
+output file generation.
+=============================================================================
