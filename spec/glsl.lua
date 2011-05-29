@@ -68,10 +68,10 @@ return {
 		smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
 		gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
 		subroutine gl_Position
-		gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexcoord0 gl_MultiTexcoord1
-		gl_MultiTexcoord2 gl_MultiTexcoord3 gl_MultiTexcoord4 gl_MultiTexcoord5 gl_MultiTexcoord6
-		gl_MultiTexcoord7 gl_FogCoord gl_PointSize gl_ClipDistance
-		gl_Texcoord gl_FogFragCoord gl_ClipVertex gl_in
+		gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
+		gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
+		gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
+		gl_TexCoord gl_FogFragCoord gl_ClipVertex gl_in
 		gl_PatchVerticesIn
 		gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
 		gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
