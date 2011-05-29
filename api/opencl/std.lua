@@ -154,9 +154,45 @@ end
 -- docs
 local api = {
 }
-	
-local keyw =
-		[[int uint uchar ushort half float bool double size_t ptrdiff_t intptr_t uintptr_t void
+
+
+local convtypes = [[bool char uchar short ushort int uint long ulong float double]]
+local convout = {}
+for i in convtypes:gmatch("([%w_]+)") do
+	local suffix = {"","_rte","_rtz","_rtp","_rtn"}
+	for k,t in ipairs(suffix) do
+		table.insert(convout,"convert_"..i..t)
+		table.insert(convout,"convert_"..i.."_sat"..t)
+		local vectors = {2,4,8,16}
+		for n,v in ipairs(vectors) do
+			table.insert(convout,"convert_"..i..v..t)
+			table.insert(convout,"convert_"..i..v.."_sat"..t)
+		end
+	end
+end
+convout = table.concat(convout, " ")
+
+local astypes = [[int uint uchar ushort float double size_t ptrdiff_t intptr_t uintptr_t
+		long ulong char short unsigned 
+		float2 float4 float8 float16
+		double2 double4 double8 double16
+		char2 char4 char8 char16
+		uchar2 uchar4 uchar8 uchar16
+		short2 short4 short8 short16
+		ushort2 ushort4 ushort8 ushort16
+		int2 int4 int8 int16
+		uint2 uint4 uint8 uint16
+		long2 long4 long8 long16
+		ulong2 ulong4 ulong8 ulong16]]
+
+local astypeout = {}
+for i in astypes:gmatch("([%w_]+)") do
+	table.insert(astypeout, "as_"..i)
+end
+astypeout = table.concat(astypeout, " ")
+
+local keyw = astypeout.." "..convout.." "..[[
+		int uint uchar ushort half float bool double size_t ptrdiff_t intptr_t uintptr_t void
 		long ulong char short unsigned 
 		half2 half4 half8 half16
 		float2 float4 float8 float16
@@ -209,6 +245,8 @@ local keyw =
 		get_image_dim
 		abs abs_diff add_sat clz hadd mad24 mad_hi mad_sat
 		mul24 mul_hi rhadd rotate sub_sat upsample
+		read_imagei write_imagei read_imageui write_imageui
+		read_imagef write_imagef 
 		
 		isequal isnotequal isgreater isgreaterequal isless islessequal islessgreater
 		isfinite isinf isnan isnormal isordered isunordered signbit any all bitselect select
