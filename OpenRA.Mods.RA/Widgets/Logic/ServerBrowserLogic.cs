@@ -18,8 +18,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ServerBrowserLogic
 	{
-		static List<Widget> GameButtons = new List<Widget>();
-
 		GameServer currentServer = null;
 		ScrollItemWidget ServerTemplate;
 
@@ -30,9 +28,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 			bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
-
-			bg.Children.RemoveAll(a => GameButtons.Contains(a));
-			GameButtons.Clear();
 
 			ServerList.Query(RefreshServerList);
 
@@ -62,12 +57,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
-
-				bg.Children.RemoveAll(a => GameButtons.Contains(a));
-				GameButtons.Clear();
+				sl.RemoveChildren();
+				currentServer = null;
 
 				ServerList.Query(RefreshServerList);
-
 				return true;
 			};
 
