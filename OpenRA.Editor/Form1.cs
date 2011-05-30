@@ -415,5 +415,25 @@ namespace OpenRA.Editor
 			showActorNamesToolStripMenuItem.Checked ^= true;
 			surface1.ShowActorNames = showActorNamesToolStripMenuItem.Checked;
 		}
+
+		void FixOpenAreas(object sender, EventArgs e)
+		{
+			dirty = true;
+			var r = new Random();
+
+			for (var j = surface1.Map.Bounds.Top; j < surface1.Map.Bounds.Bottom; j++)
+				for (var i = surface1.Map.Bounds.Left; i < surface1.Map.Bounds.Right; i++)
+				{
+					var tr = surface1.Map.MapTiles.Value[i, j];
+					if (tr.type == 0xff || tr.type == 0xffff || tr.type == 1 || tr.type == 2)
+						tr.index = (byte)r.Next(0, 
+							Rules.TileSets[surface1.Map.Tileset].Tiles[tr.type].TileBitmapBytes.Count);
+
+					surface1.Map.MapTiles.Value[i, j] = tr;
+				}
+
+			surface1.Chunks.Clear();
+			surface1.Invalidate();
+		}
 	}
 }
