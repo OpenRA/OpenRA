@@ -1014,7 +1014,7 @@ Rules:
 		-CrateSpawner:
 		CncShellmapScript:
 		LoadWidgetAtGameStart:
-			Widget:MENU_BACKGROUND
+			Widget: MENU_BACKGROUND
 	LST:
 		Mobile:
 			Speed: 3
