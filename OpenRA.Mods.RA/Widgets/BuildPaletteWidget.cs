@@ -376,9 +376,7 @@ namespace OpenRA.Mods.RA.Widgets
 					{
 						Sound.Play(CurrentQueue.Info.CancelledAudio);
 						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
-						
-						if (Game.GetModifierKeys().HasModifier(Modifiers.Shift | Modifiers.Ctrl))
-							numberToCancel = -1; //cancel all
+
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}
 					else
