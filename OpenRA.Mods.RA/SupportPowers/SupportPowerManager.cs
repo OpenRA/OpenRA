@@ -131,12 +131,17 @@ namespace OpenRA.Mods.RA
 				Manager = manager;
 				Key = key;
 			}
+
+			static bool InstanceDisabled(SupportPower sp)
+			{
+				return sp.self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			}
 			
 			bool notifiedCharging;
 			bool notifiedReady;
 			public void Tick()
 			{
-				Active = !Disabled && Instances.Any(i => !i.self.TraitsImplementing<IDisable>().Any(d => d.Disabled));
+				Active = !Disabled && Instances.Any(i => !InstanceDisabled(i));
 
 				if (Active)
 				{
@@ -173,7 +178,8 @@ namespace OpenRA.Mods.RA
 				if (!Ready)
 					return;
 
-				var power = Instances.First();
+				var power = Instances.First(i => !InstanceDisabled(i));
+
 				// Note: order.Subject is the *player* actor
 				power.Activate(power.self, order);
 				RemainingTime = TotalTime;
