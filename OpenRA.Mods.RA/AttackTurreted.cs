@@ -46,6 +46,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 			DoAttack( self, target );
+			IsAttacking = target.IsValid;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
