@@ -20,8 +20,8 @@ namespace OpenRA.Widgets
 	{
 		public Func<Map> Map = () => null;
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
-		static Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
-
+		Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
+		
 		public MapPreviewWidget() : base() { }
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
@@ -42,16 +42,9 @@ namespace OpenRA.Widgets
 		Map lastMap;
 		Rectangle MapRect;
 		float PreviewScale = 0;
-		static Sprite UnownedSpawn = null;
-		static Sprite OwnedSpawn = null;
 
 		public override void DrawInner()
 		{
-			if (UnownedSpawn == null)
-				UnownedSpawn = ChromeProvider.GetImage("spawnpoints", "unowned");
-			if (OwnedSpawn == null)
-				OwnedSpawn = ChromeProvider.GetImage("spawnpoints", "owned");
-			
 			var map = Map();
 			if( map == null ) return;
 			
@@ -83,16 +76,14 @@ namespace OpenRA.Widgets
 			var colors = SpawnColors();
 			foreach (var p in map.SpawnPoints)
 			{
+				var owned = colors.ContainsKey(p);
 				var pos = ConvertToPreview(map, p);
-				var sprite = UnownedSpawn;
-				var offset = new int2(-UnownedSpawn.bounds.Width/2, -UnownedSpawn.bounds.Height/2);
+				var sprite = ChromeProvider.GetImage("spawnpoints", owned ? "owned" : "unowned");
+				var offset = new int2(-sprite.bounds.Width/2, -sprite.bounds.Height/2);
 
-				if (colors.ContainsKey(p))
-				{
-					sprite = OwnedSpawn;
-					offset = new int2(-OwnedSpawn.bounds.Width/2, -OwnedSpawn.bounds.Height/2);
+				if (owned)
 					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
-				}
+				
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
 			}
 		}
