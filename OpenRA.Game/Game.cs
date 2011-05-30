@@ -205,7 +205,6 @@ namespace OpenRA
 			LobbyInfoChanged();
 		}
 
-		public static event Action<World> AfterGameStart = _ => {};
 		public static event Action BeforeGameStart = () => {};
 		internal static void StartGame(string mapUID)
 		{
@@ -223,7 +222,6 @@ namespace OpenRA
 			orderManager.LastTickTime = Environment.TickCount;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
-			AfterGameStart( orderManager.world );
 		}
 
 		public static bool IsHost
@@ -275,9 +273,8 @@ namespace OpenRA
 			AddChatLine = (a,b,c) => {};
 			ConnectionStateChanged = om => {};
 			BeforeGameStart = () => {};
-			AfterGameStart = w => {};
 			Widget.ResetAll();
-			
+
 			worldRenderer = null;
 			if (server != null)
 				server.Shutdown();

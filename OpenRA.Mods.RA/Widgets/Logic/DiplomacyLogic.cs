@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 			};
 			
-			Game.AfterGameStart += _ => validPlayers = world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
+			validPlayers = world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
 		

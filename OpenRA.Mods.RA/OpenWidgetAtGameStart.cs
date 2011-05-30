@@ -47,6 +47,7 @@ namespace OpenRA.Mods.RA
 	public class LoadWidgetAtGameStartInfo : ITraitInfo
 	{
 		public readonly string Widget = null;
+		public readonly bool ClearRootWidget = true;
 		public object Create(ActorInitializer init) { return new LoadWidgetAtGameStart(this); }
 	}
 
@@ -60,6 +61,10 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
+			// Clear any existing widget state
+			if (Info.ClearRootWidget)
+				Widget.ResetAll();
+			
 			Game.LoadWidget(world, Info.Widget, Widget.RootWidget, new WidgetArgs());
 		}
 	}
