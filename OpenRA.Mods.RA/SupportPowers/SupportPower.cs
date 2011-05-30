@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public virtual void Activate(Actor self, Order order) { }
+
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
