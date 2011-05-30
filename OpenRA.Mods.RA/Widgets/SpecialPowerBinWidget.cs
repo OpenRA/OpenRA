@@ -117,11 +117,11 @@ namespace OpenRA.Mods.RA.Widgets
 					var border = WidgetUtils.GetBorderSizes("dialog4");
 
 					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(tl.X, tl.Y, m.X + border[3], m.Y),
-						PanelSides.Left | PanelSides.Top | PanelSides.Bottom);
+						PanelSides.Left | PanelSides.Top | PanelSides.Bottom | PanelSides.Center);
 					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X - border[2], tl.Y, br.X, m.Y + border[1]),
-						PanelSides.Top | PanelSides.Right);
+						PanelSides.Top | PanelSides.Right | PanelSides.Center);
 					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X, m.Y - border[1], br.X, br.Y),
-						PanelSides.Left | PanelSides.Right | PanelSides.Bottom);
+						PanelSides.Left | PanelSides.Right | PanelSides.Bottom | PanelSides.Center);
 					
 					pos += new int2(77, 5);
 					Game.Renderer.Fonts["Bold"].DrawText(sp.Info.Description, pos, Color.White);

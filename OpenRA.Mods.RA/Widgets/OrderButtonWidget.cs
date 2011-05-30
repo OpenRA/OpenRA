@@ -53,15 +53,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 					WidgetUtils.DrawPanelPartial("dialog4", rect
 						.InflateBy(0, 0, 0, border[1]),
-						PanelSides.Top | PanelSides.Left | PanelSides.Right);
+						PanelSides.Top | PanelSides.Left | PanelSides.Right | PanelSides.Center);
 
 					WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(br.X, m.Y, pos.X - br.X, br.Y - m.Y)
 						.InflateBy(0, 0, border[3], 0),
-						PanelSides.Top | PanelSides.Left | PanelSides.Bottom);
+						PanelSides.Top | PanelSides.Left | PanelSides.Bottom | PanelSides.Center);
 
 					WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(pos.X, m.Y, m.X - pos.X, br.Y - m.Y)
 						.InflateBy(border[2], border[0], 0, 0),
-						PanelSides.Right | PanelSides.Bottom);
+						PanelSides.Right | PanelSides.Bottom | PanelSides.Center);
 
 					pos.X = br.X + 8;
 					pos.Y = m.Y + 8;
