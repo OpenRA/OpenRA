@@ -62,6 +62,9 @@ namespace OpenRA.Widgets
 			var xy = Game.viewport.ViewToWorldPx(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
+				if (!TakeFocus(mi))
+					return false;
+				
 				dragStart = dragEnd = xy;
 				ApplyOrders(world, xy, mi);
 			}
@@ -78,6 +81,7 @@ namespace OpenRA.Widgets
 				}
 
 				dragStart = dragEnd = xy;
+				LoseFocus(mi);
 			}
 
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
