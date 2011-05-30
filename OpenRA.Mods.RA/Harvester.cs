@@ -173,11 +173,6 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public void LinkProc(Actor self, Actor proc)
-		{
-			LinkedProc = proc;
-		}
-		
 		public void UnlinkProc(Actor self, Actor proc)
 		{
 			if (LinkedProc != proc)
