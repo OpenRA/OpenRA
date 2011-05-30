@@ -286,7 +286,7 @@ BigFlamer:
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
-		Damage: 40
+		Damage: 25
 
 Chemspray: 
 	ROF: 70
