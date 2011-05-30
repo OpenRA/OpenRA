@@ -379,12 +379,17 @@ PBOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
-	AttackOmni:
+	AttackTurreted:
 		PrimaryWeapon: Vulcan
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: 0,-12,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	WithMuzzleFlash:
+	Turreted:
+		ROT: 255
 
 HBOX:
 	Inherits: ^Building
@@ -408,12 +413,17 @@ HBOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
-	AttackOmni:
+	AttackTurreted:
 		PrimaryWeapon: Vulcan
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: 0,-12,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	WithMuzzleFlash:
+	Turreted:
+		ROT: 255
 
 GUN:
 	Inherits: ^Building

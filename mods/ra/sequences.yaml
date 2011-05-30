@@ -285,6 +285,10 @@ pbox:
 	make: pboxmake
 		Start: 0
 		Length: *
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 hbox:
 	damaged-idle:
@@ -294,6 +298,10 @@ hbox:
 	make: hboxmake
 		Start: 0
 		Length: *
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 gap:
 	idle:
