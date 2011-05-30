@@ -58,7 +58,8 @@ LST:
 	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
-		Passengers: 5
+		MaxWeight: 5
+		PipCount: 5
 	AttackMove:
 		JustMove: true
 

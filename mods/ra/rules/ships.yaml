@@ -190,7 +190,8 @@ LST:
 	RenderUnit:
 	Cargo:
 		Types: Infantry, Vehicle
-		Passengers: 5
+		MaxWeight: 5
+		PipCount: 5
 	IronCurtainable:
 	RepairableNear:
 	AttackMove:

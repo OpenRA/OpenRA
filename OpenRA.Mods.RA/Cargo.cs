@@ -17,7 +17,8 @@ namespace OpenRA.Mods.RA
 {
 	public class CargoInfo : ITraitInfo
 	{
-		public readonly int Passengers = 0;
+		public readonly int MaxWeight = 0;
+		public readonly int PipCount = 0;
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 
@@ -28,7 +29,8 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly CargoInfo info;
-		
+
+		int totalWeight = 0;
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
@@ -101,8 +103,8 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString != "Unload" || IsEmpty(self)) return null;			
 			return "Move";
 		}
-		
-		public bool IsFull(Actor self) { return cargo.Count == info.Passengers;	}
+
+		public bool HasSpace(int weight) { return totalWeight + weight <= info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
 		public Actor Peek(Actor self) {	return cargo[0]; }
@@ -111,22 +113,42 @@ namespace OpenRA.Mods.RA
 		{
 			var a = cargo[0];
 			cargo.RemoveAt(0);
+
+			var pi = a.Info.Traits.GetOrDefault<PassengerInfo>();
+			totalWeight -= pi != null ? pi.Weight : 1;
+
 			return a;
 		}
 
-		public IEnumerable<PipType> GetPips( Actor self )
+		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = info.Passengers;
-			for (var i = 0; i < numPips; i++)
-				if (i >= cargo.Count)
-					yield return PipType.Transparent;
+			int numPips = info.PipCount;
+
+			for (int i = 0; i < numPips; i++)
+				yield return GetPipAt(i);
+		}
+
+		PipType GetPipAt(int i)
+		{
+			var n = i * info.MaxWeight / info.PipCount;
+
+			foreach (var c in cargo)
+			{
+				var pi = c.Info.Traits.Get<PassengerInfo>();
+				if (n < pi.Weight)
+					return pi.PipType;
 				else
-					yield return cargo[i].Trait<Passenger>().ColorOfCargoPip();
+					n -= pi.Weight;
+			}
+
+			return PipType.Transparent;
 		}
 
 		public void Load(Actor self, Actor a)
 		{
 			cargo.Add(a);
+			var pi = a.Info.Traits.GetOrDefault<PassengerInfo>();
+			totalWeight += pi != null ? pi.Weight : 1;
 		}
 
 		public void Killed(Actor self, AttackInfo e)

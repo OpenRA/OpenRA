@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
+		public int Weight = 1;
 
 		public object Create( ActorInitializer init ) { return new Passenger( this ); }
 	}
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.RA
 		bool CanEnter( Actor target )
 		{
 			var cargo = target.TraitOrDefault<Cargo>();
-			return (cargo != null && !cargo.IsFull(target));
+			return cargo != null && cargo.HasSpace(info.Weight);
 		}
 		
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -81,7 +82,5 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}
-
-		public PipType ColorOfCargoPip() { return info.PipType; }
 	}
 }

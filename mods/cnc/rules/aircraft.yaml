@@ -32,7 +32,8 @@ TRAN:
 	WithShadow:
 	Cargo:
 		Types: Infantry
-		Passengers: 5
+		MaxWeight: 5
+		PipCount: 5
 	FallsToEarth:
 
 HELI:
@@ -119,7 +120,8 @@ C17:
 	WithShadow:
 	Cargo:
 #		Types: Infantry, Vehicle
-		Passengers: 10
+		MaxWeight: 10
+		PipCount: 10
 	Invulnerable:
 	-Selectable:
 	-TargetableUnit:

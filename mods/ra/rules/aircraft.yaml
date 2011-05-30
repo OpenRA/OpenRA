@@ -14,7 +14,7 @@ BADR:
 	WithShadow:
 	IronCurtainable:
 	Cargo:
-		Passengers: 10
+		MaxWeight: 10
 #		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
@@ -212,7 +212,8 @@ TRAN:
 	WithShadow:
 	Cargo:
 		Types: Infantry
-		Passengers: 5
+		MaxWeight: 5
+		PipCount: 5
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode

@@ -293,7 +293,8 @@ JEEP:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
-		Passengers: 1
+		MaxWeight: 1
+		PipCount: 1
 		UnloadFacing: 220
 
 APC:
@@ -324,7 +325,8 @@ APC:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
-		Passengers: 5
+		MaxWeight: 5
+		PipCount: 5
 		UnloadFacing: 220
 
 MNLY.AP:

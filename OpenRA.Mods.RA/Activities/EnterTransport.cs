@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (transport == null || !transport.IsInWorld) return NextActivity;
 
 			var cargo = transport.Trait<Cargo>();
-			if (cargo.IsFull(transport)) 
+			if (!cargo.HasSpace(1))
 				return NextActivity;
 			
 			

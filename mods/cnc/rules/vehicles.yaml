@@ -100,7 +100,7 @@ APC:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
-		Passengers: 5
+		MaxWeight: 5
 		UnloadFacing: 220
 	LeavesHusk:
 		HuskActor: APC.Husk
