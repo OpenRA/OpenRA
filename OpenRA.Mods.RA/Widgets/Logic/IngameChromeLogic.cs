@@ -10,16 +10,22 @@
 
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class IngameChromeLogic
 	{
+		Widget gameRoot;
+		
 		[ObjectCreator.UseCtor]
 		public IngameChromeLogic( [ObjectCreator.Param] World world )
 		{
+			Game.AddChatLine += AddChatLine;
+			Game.BeforeGameStart += UnregisterEvents;
+			
 			var r = Widget.RootWidget;
-			var gameRoot = r.GetWidget("INGAME_ROOT");
+			gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
 			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
@@ -64,10 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.Exit();
 				return true;
 			};
-			
-			Game.AddChatLine += gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
-			
-			
+
 			var postgameBG = gameRoot.GetWidget("POSTGAME_BG");
 			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
 			postgameBG.IsVisible = () =>
@@ -81,6 +84,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return (state == WinState.Undefined)? "" :
 								((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};
+		}
+		
+		public void UnregisterEvents()
+		{
+			Game.AddChatLine -= AddChatLine;
+			Game.BeforeGameStart -= UnregisterEvents;
+		}
+		
+		void AddChatLine(Color c, string from, string text)
+		{
+			gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 	}
 }

@@ -20,35 +20,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		string host;
 		int port;
 		
-		static CncConnectingLogic()
-		{
-			Game.ConnectionStateChanged += ConnectionStateChangedStub;
-		}
-		
-		static void ConnectionStateChangedStub(OrderManager om)
-		{
-			var panel = Widget.RootWidget.GetWidget("CONNECTING_PANEL");
-            if (panel == null)
-                return;
-			
-			var handler = panel.LogicObject as CncConnectingLogic;
-			if (handler == null)
-				return;
-			
-			handler.ConnectionStateChanged(om);
-		}
-		
 		void ConnectionStateChanged(OrderManager om)
 		{
 			if (om.Connection.ConnectionState == ConnectionState.Connected)
 			{
-				Widget.CloseWindow();
+				CloseWindow();
 				onConnect();
 			}
 			else if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				// Show connection failed dialog
-				Widget.CloseWindow();
+				CloseWindow();
 				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 	            {
 					{ "onAbort", onAbort },
@@ -57,6 +39,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "port", port }
 				});
 			}
+		}
+		
+		public void CloseWindow()
+		{
+			Game.ConnectionStateChanged -= ConnectionStateChanged;
+			Widget.CloseWindow();
 		}
 		
 		[ObjectCreator.UseCtor]
@@ -73,8 +61,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.onRetry = onRetry;
 			this.onAbort = onAbort;
 			
+			Game.ConnectionStateChanged += ConnectionStateChanged;
+
 			var panel = widget.GetWidget("CONNECTING_PANEL");
-			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
+			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 			
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);

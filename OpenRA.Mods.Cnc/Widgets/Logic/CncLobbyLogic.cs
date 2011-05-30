@@ -36,60 +36,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		readonly Action OnGameStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
-		
-		static CncLobbyLogic()
-		{
-			Game.LobbyInfoChanged += LobbyInfoChangedStub;
-			Game.BeforeGameStart += BeforeGameStartStub;
-			Game.AddChatLine += AddChatLineStub;
-			Game.ConnectionStateChanged += ConnectionStateChangedStub;
-		}
-		
-		public static CncLobbyLogic GetHandler()
-		{
-			var panel = Widget.RootWidget.GetWidget("SERVER_LOBBY");
-            if (panel == null)
-                return null;
-			
-			return panel.LogicObject as CncLobbyLogic;
-		}
-
-		static void LobbyInfoChangedStub()
-		{
-			var handler = GetHandler();
-			if (handler == null)
-				return;
-			
-			handler.UpdateCurrentMap();
-			handler.UpdatePlayerList();
-		}
-
-		static void BeforeGameStartStub()
-		{
-			var handler = GetHandler();
-			if (handler == null)
-				return;
-			
-			handler.OnGameStart();
-		}
-
-		static void AddChatLineStub(Color c, string from, string text)
-		{
-			var handler = GetHandler();
-			if (handler == null)
-				return;
-			
-			handler.AddChatLine(c, from, text);
-		}
-
-		static void ConnectionStateChangedStub(OrderManager om)
-		{
-			var handler = GetHandler();
-			if (handler == null)
-				return;
-			
-			handler.ConnectionStateChanged(om);
-		}
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -97,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				// Show connection failed dialog
-				Widget.CloseWindow();
+				CloseWindow();
 				
 				Action onConnect = () => 
 				{
@@ -110,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				
 				Action onRetry = () =>
 				{
-					Widget.CloseWindow();
+					CloseWindow();
 					CncConnectingLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 				
@@ -123,6 +69,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});	
 			}
 		}
+		
+		public void CloseWindow()
+		{
+			Game.LobbyInfoChanged -= UpdateCurrentMap;
+			Game.LobbyInfoChanged -= UpdatePlayerList;
+			Game.BeforeGameStart -= OnGameStart;
+			Game.AddChatLine -= AddChatLine;
+			Game.ConnectionStateChanged -= ConnectionStateChanged;
+			
+			Widget.CloseWindow();
+		}
 
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
@@ -132,8 +89,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		                       [ObjectCreator.Param] Action onStart)
 		{
 			this.orderManager = orderManager;
-			this.OnGameStart = () => { Widget.CloseWindow(); onStart(); };
+			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;
+			
+			Game.LobbyInfoChanged += UpdateCurrentMap;
+			Game.LobbyInfoChanged += UpdatePlayerList;
+			Game.BeforeGameStart += OnGameStart;
+			Game.AddChatLine += AddChatLine;
+			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			UpdateCurrentMap();
 			PlayerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
@@ -204,7 +167,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
 			var disconnectButton = lobby.GetWidget<ButtonWidget>("DISCONNECT_BUTTON");
-			disconnectButton.OnClick = () => { Widget.CloseWindow(); onExit(); };
+			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 			
 			var gameStarting = false;
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class LobbyLogic
 	{
-		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
+		Widget lobby, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost;
 		ScrollPanelWidget Players;
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -37,8 +37,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
-			
+			this.lobby = lobby;
+			Game.BeforeGameStart += CloseWindow;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
+			Game.LobbyInfoChanged += UpdatePlayerList;
 			UpdateCurrentMap();
 			
 			CurrentColorPreview = Game.Settings.Player.ColorRamp;
@@ -101,9 +103,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
 			disconnectButton.OnMouseUp = mi =>
 			{
+				CloseWindow();
 				Game.Disconnect();
 				Game.LoadShellMap();
-				Widget.CloseWindow();
 				Widget.OpenWindow("MAINMENU_BG");
 				return true;
 			};
@@ -137,10 +139,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			// Todo: Only show if the map requirements are met for player slots
 			startGameButton.IsVisible = () => Game.IsHost;
-			Game.LobbyInfoChanged += UpdatePlayerList;
 			
-			Game.AddChatLine += lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine;
-
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
@@ -161,6 +160,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
+			
+			Game.AddChatLine += AddChatLine;
+		}
+		
+		public void CloseWindow()
+		{
+			Game.LobbyInfoChanged -= UpdateCurrentMap;
+			Game.LobbyInfoChanged -= UpdatePlayerList;
+			Game.AddChatLine -= AddChatLine;
+			Game.BeforeGameStart -= CloseWindow;
+			
+			Widget.CloseWindow();
+		}
+		
+		void AddChatLine(Color c, string from, string text)
+		{
+			lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 		
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
