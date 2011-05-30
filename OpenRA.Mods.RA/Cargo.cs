@@ -38,20 +38,13 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get
-			{
-				yield return new DeployOrderTargeter( "Unload", 10, () => CanUnload( self ) );
-				yield return new UnitTraitOrderTargeter<Passenger>( "ReverseEnterTransport", 6, null, false, true );
-			}
+			get { yield return new DeployOrderTargeter( "Unload", 10, () => CanUnload( self ) ); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
 			if( order.OrderID == "Unload" )
 				return new Order( order.OrderID, self, queued );
-
-			if( order.OrderID == "ReverseEnterTransport" )
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
 		}
@@ -65,16 +58,6 @@ namespace OpenRA.Mods.RA
 				
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo());
-			}
-
-			if( order.OrderString == "ReverseEnterTransport" )
-			{
-				if( order.TargetActor != null && order.Subject.Owner == order.TargetActor.Owner )
-				{
-					var passenger = order.TargetActor.Trait<Passenger>();
-					passenger.ResolveOrder(order.TargetActor,
-						new Order("EnterTransport", order.TargetActor, false) { TargetActor = self });
-				}
 			}
 		}
 		
