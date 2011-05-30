@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Effects
 		public Animation flag = new Animation("rallypoint");
 		public Animation circles = new Animation("rallypoint");
 		readonly string palette;
+
 		public RallyPoint(Actor building) 
 		{ 
 			this.building = building;

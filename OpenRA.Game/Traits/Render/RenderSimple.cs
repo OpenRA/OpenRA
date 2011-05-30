@@ -24,18 +24,23 @@ namespace OpenRA.Traits
 		public readonly float Scale = 1f;
 		public abstract object Create(ActorInitializer init);
 
-        public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
-        {
-            var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
-            anim.PlayRepeating("idle");
-            yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette ?? PlayerPalette+owner.Index, 0, Scale);
-        }
+		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
+		{
+			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+			anim.PlayRepeating("idle");
+			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette ?? PlayerPalette + owner.Index, 0, Scale);
+		}
 	}
 
 	public abstract class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
-		public Animation anim { get { return anims[""].Animation; } protected set { anims[""].Animation = value; } }
+
+		public Animation anim
+		{
+			get { return anims[""].Animation; }
+			protected set { anims[""].Animation = value; }
+		}
 
 		public static string GetImage(ActorInfo actor, string Tileset)
 		{
@@ -44,42 +49,44 @@ namespace OpenRA.Traits
 				for (int i = 0; i < Info.OverrideTileset.Length; i++)
 					if (Info.OverrideTileset[i] == Tileset)
 						return Info.OverrideImage[i];
-			
+
 			return Info.Image ?? actor.Name;
 		}
-		
+
 		string cachedImage = null;
 		public string GetImage(Actor self)
 		{
 			if (cachedImage != null)
 				return cachedImage;
-			
+
 			return cachedImage = GetImage(self.Info, self.World.Map.Tileset);
 		}
 
 		RenderSimpleInfo Info;
+
 		public RenderSimple(Actor self, Func<int> baseFacing)
 		{
-			anims.Add( "", new Animation( GetImage(self), baseFacing ) );
+			anims.Add("", new Animation(GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
 		}
-		
-		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette+p.Index; }
-		public virtual IEnumerable<Renderable> Render( Actor self )
+
+		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette + p.Index; }
+
+		public virtual IEnumerable<Renderable> Render(Actor self)
 		{
-			foreach( var a in anims.Values )
-				if( a.DisableFunc == null || !a.DisableFunc() )
+			foreach (var a in anims.Values)
+				if (a.DisableFunc == null || !a.DisableFunc())
 				{
 					Renderable ret = a.Image(self, Palette(self.Owner));
 					if (Info.Scale != 1f)
-						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f*ret.Sprite.size*(1 - Info.Scale));
+						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;
 				}
 		}
 
 		public virtual void Tick(Actor self)
 		{
-			foreach( var a in anims.Values )
+			foreach (var a in anims.Values)
 				a.Animation.Tick();
 		}
 
@@ -106,31 +113,31 @@ namespace OpenRA.Traits
 			public Func<bool> DisableFunc;
 			public int ZOffset;
 
-			public AnimationWithOffset( Animation a )
-				: this( a, null, null )
+			public AnimationWithOffset(Animation a)
+				: this(a, null, null)
 			{
 			}
 
-			public AnimationWithOffset( Animation a, Func<float2> o, Func<bool> d )
+			public AnimationWithOffset(Animation a, Func<float2> o, Func<bool> d)
 			{
 				this.Animation = a;
 				this.OffsetFunc = o;
 				this.DisableFunc = d;
 			}
 
-			public Renderable Image( Actor self, string pal )
+			public Renderable Image(Actor self, string pal)
 			{
 				var p = self.CenterLocation;
-            	var loc = p - 0.5f * Animation.Image.size
+				var loc = p - 0.5f * Animation.Image.size
 					+ (OffsetFunc != null ? OffsetFunc() : float2.Zero);
 				var r = new Renderable(Animation.Image, loc, pal, p.Y);
-				
+
 				return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
 			}
 
-			public static implicit operator AnimationWithOffset( Animation a )
+			public static implicit operator AnimationWithOffset(Animation a)
 			{
-				return new AnimationWithOffset( a );
+				return new AnimationWithOffset(a);
 			}
 		}
 	}
