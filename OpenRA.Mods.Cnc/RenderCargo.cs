@@ -28,8 +28,7 @@ namespace OpenRA.Mods.Cnc
 		public RenderCargo(Actor self)
 		{
 			cargo = self.Trait<Cargo>();
-			if (self.HasTrait<IFacing>())
-				facing = self.Trait<IFacing>();
+			facing = self.TraitOrDefault<IFacing>();
 		}
 		
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
