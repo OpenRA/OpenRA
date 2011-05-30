@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -23,13 +22,11 @@ namespace OpenRA.Mods.RA.Effects
 		RA.RallyPoint rp;
 		public Animation flag = new Animation("rallypoint");
 		public Animation circles = new Animation("rallypoint");
-		readonly string palette;
-
+	
 		public RallyPoint(Actor building) 
 		{ 
 			this.building = building;
 			rp = building.Trait<RA.RallyPoint>();
-			palette = building.Trait<RenderSimple>().Palette(building.Owner);
 			flag.PlayRepeating("flag");
 			circles.Play("circles");
 		}
@@ -51,9 +48,12 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (building.IsInWorld && building.Owner == building.World.LocalPlayer && building.World.Selection.Actors.Contains(building))
+			if (building.IsInWorld && building.Owner == building.World.LocalPlayer 
+				&& building.World.Selection.Actors.Contains(building))
 			{
 				var pos = Traits.Util.CenterOfCell(rp.rallyPoint);
+				var palette = building.Trait<RenderSimple>().Palette(building.Owner);
+
 				yield return new Renderable(circles.Image, 
 					pos - .5f * circles.Image.size, 
 					palette, (int)pos.Y);
