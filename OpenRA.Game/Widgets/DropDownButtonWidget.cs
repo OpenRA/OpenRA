@@ -52,14 +52,22 @@ namespace OpenRA.Widgets
 		// This is crap
 		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */	
 
+		public override void Removed()
+		{
+			base.Removed();
+			RemovePanel();
+		}
+
 		public void RemovePanel()
 		{
+			if (panel == null)
+				return;
+
 			Widget.RootWidget.RemoveChild(fullscreenMask);
 			Widget.RootWidget.RemoveChild(panel);
-			Game.BeforeGameStart -= RemovePanel;
 			panel = fullscreenMask = null;
 		}
-		
+
 		public void AttachPanel(Widget p)
 		{
 			if (panel != null)
@@ -70,7 +78,6 @@ namespace OpenRA.Widgets
 			fullscreenMask = new ContainerWidget();
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
 			Widget.RootWidget.AddChild(fullscreenMask);
-			Game.BeforeGameStart += RemovePanel;
 
 			fullscreenMask.OnMouseDown = mi =>
 			{
