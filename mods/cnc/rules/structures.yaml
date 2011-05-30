@@ -686,14 +686,18 @@ GTWR:
 		HP: 600
 	RevealsShroud:
 		Range: 6
-	AttackOmni:
+	AttackTurreted:
 		PrimaryWeapon: HighV
+		PrimaryOffset: 0,0,0,-6
+		PrimaryLocalOffset:0,-6,0
 	AutoTarget:
 	DetectCloaked:
 		Range: 3
 	RenderDetectionCircle:
 	RenderRangeCircle:
-	
+	WithMuzzleFlash:
+	Turreted:
+		ROT:255
 ATWR:
 	Inherits: ^Building
 	RequiresPower:

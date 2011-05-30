@@ -379,6 +379,10 @@ gtwr:
 	make: gtwrmake
 		Start: 0
 		Length: *
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 atwr:
 	idle:

@@ -381,8 +381,7 @@ PBOX:
 		Range: 6
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: 0,-12,0
+		PrimaryLocalOffset: 0,-11,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
@@ -415,8 +414,7 @@ HBOX:
 		Range: 6
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: 0,-12,0
+		PrimaryLocalOffset: 0,-11,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
