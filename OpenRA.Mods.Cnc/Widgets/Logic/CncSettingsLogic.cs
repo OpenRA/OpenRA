@@ -51,7 +51,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var debugSettings = Game.Settings.Debug;
 			var graphicsSettings = Game.Settings.Graphics;
 			var soundSettings = Game.Settings.Sound;
-			var keyboardSettings = Game.Settings.Keyboard;
 			
 			// Player profile
 			var nameTextfield = generalPane.GetWidget<TextFieldWidget>("NAME_TEXTFIELD");
@@ -136,11 +135,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			teamchatCheckbox.IsChecked = () => gameSettings.TeamChatToggle;
 			teamchatCheckbox.OnClick = () => gameSettings.TeamChatToggle ^= true;
 			
-			var groupModifierDropdown = inputPane.GetWidget<DropDownButtonWidget>("GROUPADD_MODIFIER");
-			groupModifierDropdown.OnMouseDown = _ => ShowGroupModifierDropdown(groupModifierDropdown, keyboardSettings);
-			groupModifierDropdown.GetText = () => keyboardSettings.ControlGroupModifier.ToString();
-			
-			
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				playerSettings.Name = nameTextfield.Text;
@@ -175,30 +169,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			});
 			
 			color.AttachPanel(colorChooser);
-			return true;
-		}
-		
-		bool ShowGroupModifierDropdown(DropDownButtonWidget dropdown, KeyboardSettings s)
-		{
-			var options = new Dictionary<string, Modifiers>()
-			{
-				{ "Ctrl", Modifiers.Ctrl },
-				{ "Alt", Modifiers.Alt },
-				{ "Shift", Modifiers.Shift },
-				// TODO: Display this as Cmd on osx once we have platform detection
-				{ "Meta", Modifiers.Meta }
-			};
-			
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => s.ControlGroupModifier == options[o],
-				                                  () => s.ControlGroupModifier = options[o]);
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
-				return item;
-			};
-			
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 		

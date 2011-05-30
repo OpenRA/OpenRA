@@ -295,21 +295,6 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Shift-Enter Toggles Team Chat
-				Label@GROUP_MODIFIER_LABEL:
-					X:375
-					Y:65
-					Width:160
-					Height:20
-					Font:Regular
-					Text:Group Addition Modifier:
-					Align:Right
-				DropDownButton@GROUPADD_MODIFIER:
-					Id:GROUPADD_MODIFIER
-					X:540
-					Y:65
-					Width:100
-					Height:25
-					Font:Regular
 #				Label@BINDING_LABEL:
 #					Font:Bold
 #					X:375

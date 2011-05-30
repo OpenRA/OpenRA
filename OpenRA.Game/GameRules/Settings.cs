@@ -101,12 +101,7 @@ namespace OpenRA.GameRules
 		public int Timestep = 40;
 		public int SheetSize = 2048;
 	}
-	
-	public class KeyboardSettings
-	{
-		public Modifiers ControlGroupModifier = Modifiers.Ctrl;
-	}
-	
+		
 	public class Settings
 	{
 		string SettingsFile;
@@ -117,7 +112,6 @@ namespace OpenRA.GameRules
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
-		public KeyboardSettings Keyboard = new KeyboardSettings();
 		public Dictionary<string, object> Sections;
 		public Settings(string file, Arguments args)
 		{			
@@ -130,7 +124,6 @@ namespace OpenRA.GameRules
 				{"Graphics", Graphics},
 				{"Server", Server},
 				{"Debug", Debug},
-				{"Keyboard",Keyboard}
 			};
 			
 			

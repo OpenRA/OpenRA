@@ -66,7 +66,8 @@ namespace OpenRA
 
 		public void DoControlGroup(World world, int group, Modifiers mods)
 		{
-			if (mods.HasModifier(Game.Settings.Keyboard.ControlGroupModifier))
+			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
+			if (mods.HasModifier(addModifier))
 			{
 				if (actors.Count == 0)
 					return;
