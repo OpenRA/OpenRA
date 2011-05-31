@@ -1,3 +1,49 @@
+NEW:
+	Engine:
+		Don't show cashticks when selling walls
+		Fixed compile failures under Windows
+		Improved rendering code
+		Reliable platform detection
+		Modding support for custom fonts
+		Video memory leaks fixed
+		Improved error messages for unsupported graphics cards
+		Fixed repairing of veteran units
+		Mod support for passengers that take multiple slots
+		Powered-down superweapons are no longer activated when multiple are available
+		Rally-points change color when a building is captured
+		Fix selection box dragging behind ui elements
+		Significant general performance improvements
+		[OSX] Shortcut for adding units to groups changed from ctrl->cmd
+	C&C:
+		Completely overhauled menu system
+		Local skirmish mode
+		Hotkey support:
+			escape to toggle ingame menu
+			escape to go up a level in menus / cancel prompts
+			return to confirm prompts
+		Support for installing game data and music from CD
+		Refinery footprint changed, price decreased to $1500
+		Flame tank explodes on death, damage reduced by 40%
+		All vehicles leave husks on death
+		Concrete walls require vehicle production to build
+		MCV, Harvester, Engineer can no longer level up (via crates)
+		Fixed Rocket Launcher turret
+		Added muzzle flashes to Guard Tower
+		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk
+	Red Alert:
+		Corrected firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
+		Mod support for customizing tesla zap effect
+		Mines are visible to friendlies and spectators
+		Friendly units don't trigger mines
+		Bounties use correct unit value
+		Fixed parachute offsets
+		Added muzzle flashes to Pillbox / Camo Pillbox
+		Medic cost reduced to $500
+		Correctly grant allies GPS
+		13 new maps by buddha, hamb, seru
+	Utility:
+		Fixes for converting shp -> png
+
 20110511:
 	Engine:
 		Fix hotkeys firing on both key down and key up
