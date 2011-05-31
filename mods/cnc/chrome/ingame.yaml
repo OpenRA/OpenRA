@@ -36,7 +36,7 @@ Container@INGAME_ROOT:
 			Id:CHEATS_BUTTON
 			X:295
 			Y:5
-			Width:160
+			Width:140
 			Height:35
 			Text:Cheats
 		WorldTooltip:
