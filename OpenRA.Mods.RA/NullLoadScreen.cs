@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		
 		public void StartGame()
 		{
-			Widget.RootWidget.RemoveChildren();
+			Widget.ResetAll();
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "INIT_SETUP" );
 		}
 	}

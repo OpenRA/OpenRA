@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				world.WorldActor.QueueActivity(new CallFunc(() =>
 				{
 						Game.Disconnect();
-						Widget.RootWidget.RemoveChildren();
+						Widget.ResetAll();
 						Game.LoadShellMap();
 				}));
 			};

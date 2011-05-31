@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.LoadShellMap();
 				if (Info.InstallMode != "cnc")
 				{
-					Widget.RootWidget.RemoveChildren();
+					Widget.ResetAll();
 					Widget.OpenWindow("MAINMENU_BG");
 				}
 			}

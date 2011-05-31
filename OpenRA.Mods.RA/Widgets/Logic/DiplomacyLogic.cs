@@ -47,7 +47,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		// This is shit
 		void LayoutDialog(Widget bg)
 		{
-			bg.Children.RemoveAll(w => controls.Contains(w));
+			foreach (var c in controls)
+				bg.RemoveChild(c);
 			controls.Clear();
 
 			var y = 50;

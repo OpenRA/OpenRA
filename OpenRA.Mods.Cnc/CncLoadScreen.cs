@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc
 
 		void TestAndContinue()
 		{
-			Widget.RootWidget.RemoveChildren();
+			Widget.ResetAll();
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
 				var args = new WidgetArgs()

@@ -276,8 +276,7 @@ namespace OpenRA
 			ConnectionStateChanged = om => {};
 			BeforeGameStart = () => {};
 			AfterGameStart = w => {};
-			while (Widget.WindowList.Count > 0)
-				Widget.CloseWindow();
+			Widget.ResetAll();
 			
 			worldRenderer = null;
 			if (server != null)

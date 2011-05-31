@@ -29,13 +29,13 @@ namespace OpenRA.Widgets
 		public object LogicObject { get; private set; }
         public bool Visible = true;
 
-        public readonly List<Widget> Children = new List<Widget>();
+        protected readonly List<Widget> Children = new List<Widget>();
 
         // Calculated internally
         public Rectangle Bounds;
         public Widget Parent = null;
 
-        public static Stack<Widget> WindowList = new Stack<Widget>();
+        static Stack<Widget> WindowList = new Stack<Widget>();
 
         // Common Funcs that most widgets will want
         public Func<MouseInput, bool> OnMouseDown = mi => false;
@@ -293,9 +293,24 @@ namespace OpenRA.Widgets
             Children.Add(child);
         }
 		
-        public virtual void RemoveChild(Widget child) { Children.Remove(child); }
-        public virtual void RemoveChildren() { Children.Clear(); }
-
+        public virtual void RemoveChild(Widget child)
+		{
+			Children.Remove(child);
+			child.Removed();
+		}
+        
+		public virtual void RemoveChildren()
+		{
+			while (Children.Count > 0)
+				RemoveChild(Children[Children.Count-1]);
+		}
+		
+		public virtual void Removed()
+		{
+			foreach (var c in Children.OfType<Widget>().Reverse())
+				c.Removed();
+		}
+		
         public Widget GetWidget(string id)
         {
             if (this.Id == id)
@@ -319,9 +334,9 @@ namespace OpenRA.Widgets
         public static void CloseWindow()
         {
             if (WindowList.Count > 0)
-				RootWidget.Children.Remove(WindowList.Pop());
+				RootWidget.RemoveChild(WindowList.Pop());
             if (WindowList.Count > 0)
-                rootWidget.Children.Add(WindowList.Peek());
+                rootWidget.AddChild(WindowList.Peek());
         }
 
         public static Widget OpenWindow(string id)
@@ -333,7 +348,7 @@ namespace OpenRA.Widgets
         {
             var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
             if (WindowList.Count > 0)
-                rootWidget.Children.Remove(WindowList.Peek());
+                rootWidget.RemoveChild(WindowList.Peek());
             WindowList.Push(window);
             return window;
         }
@@ -352,6 +367,14 @@ namespace OpenRA.Widgets
         {
             RootWidget.Draw();
         }
+		
+		public static void ResetAll()
+		{
+			RootWidget.RemoveChildren();
+			
+			while (Widget.WindowList.Count > 0)
+				Widget.CloseWindow();
+		}
     }
 
     public class ContainerWidget : Widget
