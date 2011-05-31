@@ -700,6 +700,7 @@ GTWR:
 	WithMuzzleFlash:
 	Turreted:
 		ROT:255
+
 ATWR:
 	Inherits: ^Building
 	RequiresPower:
@@ -725,9 +726,12 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8
-	AttackOmni:
+	AttackTurreted:
 		PrimaryWeapon: Tomahawk
-		SecondaryWeapon: Tomahawk
+		PrimaryOffset: 0,0,5,2
+		PrimaryLocalOffset:7,-7,-25,-7,-7,25
+	Turreted:
+		ROT:255
 	AutoTarget:
 	RenderDetectionCircle:
 	DetectCloaked:

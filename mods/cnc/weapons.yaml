@@ -563,6 +563,8 @@ Tomahawk:
 	Range: 6
 	Report: ROCKET2
 	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 10
 	Projectile: Missile
 		Arm: 5
 		High: yes
