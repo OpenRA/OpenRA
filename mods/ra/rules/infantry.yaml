@@ -237,7 +237,7 @@ MEDI:
 		Owner: allies
 		Prerequisites: tent
 	Valued:
-		Cost: 800
+		Cost: 500
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
