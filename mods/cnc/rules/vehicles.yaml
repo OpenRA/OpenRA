@@ -157,9 +157,8 @@ FTNK:
 		Range: 4
 	AttackFrontal:
 		PrimaryWeapon: BigFlamer
-		PrimaryOffset: 2,-8,0,-2
-		SecondaryWeapon: BigFlamer
-		SecondaryOffset: -2,-8,0,-2
+		PrimaryOffset: 0,-5,3,2
+		PrimaryLocalOffset:2,0,0,-2,0,0
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:

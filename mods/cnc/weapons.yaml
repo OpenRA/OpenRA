@@ -275,6 +275,8 @@ BigFlamer:
 	Report: FLAMER2
 	Projectile: Bullet
 		Speed: 20
+	Burst:2
+	BurstDelay:0
 	Warhead:
 		Spread: 8
 		Versus: 
