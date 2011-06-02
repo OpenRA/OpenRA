@@ -10,6 +10,7 @@
 
 using System.Linq;
 using System.Net;
+using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			None
 		}
 		MenuType Menu = MenuType.Main;
+		Widget rootMenu;
 		
 		[ObjectCreator.UseCtor]
 		public CncMenuLogic([ObjectCreator.Param] Widget widget,
@@ -31,8 +33,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
+			
+			rootMenu = widget.GetWidget("MENU_BACKGROUND");
+			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = ActiveModVersion;
 
-			// Root level menu
+			// Menu buttons
 			var mainMenu = widget.GetWidget("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
 			
@@ -121,13 +126,18 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 			settingsMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 			
-			widget.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
+			rootMenu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
+		}
+		
+		static string ActiveModVersion()
+		{
+			var mod = Game.modData.Manifest.Mods[0];
+			return Mod.AllMods[mod].Version;
 		}
 		
 		void RemoveShellmapUI()
 		{
-			var root = Widget.RootWidget.GetWidget("MENU_BACKGROUND");
-			root.Parent.RemoveChild(root);
+			rootMenu.Parent.RemoveChild(rootMenu);
 		}
 		
 		void OpenLobbyPanel(MenuType menu)
