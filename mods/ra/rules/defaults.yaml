@@ -176,6 +176,7 @@
 		DamagedSound: kaboom1.aud
 		DestroyedSound: kaboom22.aud
 	RenderBuilding:
+	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,c1,c2,e6

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier, INotifyKilled
+	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
 	{
 		readonly RenderBuildingInfo Info;
 		
@@ -102,14 +102,6 @@ namespace OpenRA.Mods.RA.Render
 				anim.ReplaceAnim("damaged-idle");
 			else if (e.DamageState < DamageState.Heavy)
 				anim.ReplaceAnim("idle");
-		}
-
-		public void Killed(Actor self, AttackInfo e)
-		{
-			var bi = self.Info.Traits.Get<BuildingInfo>();
-			FootprintUtils.UnpathableTiles(self.Info.Name, bi, self.Location).Do(
-				t => self.World.AddFrameEndTask(
-					w => w.Add(new Explosion(w, Traits.Util.CenterOfCell(t), "building", false, 0))));
 		}
 	}
 }
