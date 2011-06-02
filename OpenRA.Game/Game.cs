@@ -375,10 +375,13 @@ namespace OpenRA
 			var settings = new ServerSettings()
 			{
 				Name = "Skirmish Game",
-				AdvertiseOnline = false,
 				Map = map
 			};
-			
+
+			// Work around a miscompile in mono 2.6.7:
+			// booleans that default to true cannot be set false by an initializer
+			settings.AdvertiseOnline = false;
+
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
 			                           Game.Settings.Game.Mods,
 			                           settings,
