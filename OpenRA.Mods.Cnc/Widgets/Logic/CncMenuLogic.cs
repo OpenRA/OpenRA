@@ -43,14 +43,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			mainMenu.GetWidget<ButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
 			mainMenu.GetWidget<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
-			
-			mainMenu.GetWidget<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
+
+			mainMenu.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
+				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
                 {
 					{ "onExit", () => Menu = MenuType.Main },
-					{ "onStart", RemoveShellmapUI }
+					{ "onSwitch", RemoveShellmapUI }
 				});
 			};
 			
@@ -96,13 +96,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 			
-			settingsMenu.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			settingsMenu.GetWidget<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
+				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
                 {
 					{ "onExit", () => Menu = MenuType.Settings },
-					{ "onSwitch", RemoveShellmapUI }
+					{ "onStart", RemoveShellmapUI }
 				});
 			};
 			

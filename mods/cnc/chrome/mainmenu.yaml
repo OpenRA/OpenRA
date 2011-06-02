@@ -82,14 +82,14 @@ Container@MENU_BACKGROUND:
 							Y:0
 							Width:140
 							Height:35
-							Text:Settings
-						Button@REPLAYS_BUTTON:
-							Id:REPLAYS_BUTTON
+							Text:Options
+						Button@MODS_BUTTON:
+							Id:MODS_BUTTON
 							X:450
 							Y:0
 							Width:140
 							Height:35
-							Text: Replays
+							Text:Mods
 						Button@QUIT_BUTTON:
 							Id:QUIT_BUTTON
 							X:600
@@ -150,17 +150,17 @@ Container@MENU_BACKGROUND:
 							Y:0-30
 							Width:PARENT_RIGHT
 							Height:20
-							Text:Settings
+							Text:Options
 							Align:Center
 							Font:Bold
 							Contrast:True
-						Button@MODS_BUTTON:
-							Id:MODS_BUTTON
+						Button@REPLAYS_BUTTON:
+							Id:REPLAYS_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
-							Text:Mods
+							Text: Replays
 						Button@MUSIC_BUTTON:
 							Id:MUSIC_BUTTON
 							X:150
@@ -174,7 +174,7 @@ Container@MENU_BACKGROUND:
 							Y:0
 							Width:140
 							Height:35
-							Text:Preferences
+							Text:Settings
 						Button@BACK_BUTTON:
 							Id:BACK_BUTTON
 							Key:escape
