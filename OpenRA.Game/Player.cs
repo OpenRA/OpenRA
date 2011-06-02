@@ -63,13 +63,19 @@ namespace OpenRA
 				ColorRamp = pr.ColorRamp;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
-				
+				IsBot = pr.Bot != null;
+
 				Country = world.GetCountries()
 					.FirstOrDefault(c => pr.Race == c.Race)
 					?? world.GetCountries().Random(world.SharedRandom);
 			}
 			
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
+
+			if (IsBot)
+				PlayerActor.TraitsImplementing<IBot>()
+							.Single(b => b.Info.Name == pr.Bot)
+							.Activate(this);
 		}
 
 		public void GiveAdvice(string advice)

@@ -45,6 +45,7 @@ namespace OpenRA.Mods.RA
 					if (client.Index == Game.LocalClientId)
 						w.SetLocalPlayer(player.Index);		// bind this one to the local player.
 				}
+				// TODO: This is shit. Merge it up into Player ctor?
 				else if (slot.Bot != null && slot.MapPlayer != null)
 				{
 					/* spawn a bot in this slot, "owned" by the host */
