@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var tl = CellToMinimapPixel(new int2((int)(Game.viewport.Location.X/Game.CellSize), (int)(Game.viewport.Location.Y/Game.CellSize)));
 				var br = CellToMinimapPixel(new int2((int)((Game.viewport.Location.X + Game.viewport.Width)/Game.CellSize), (int)((Game.viewport.Location.Y + Game.viewport.Height)/Game.CellSize)));
 				Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
-				Game.Renderer.LineRenderer.DrawRect(Game.viewport.Location + tl, Game.viewport.Location + br, Color.White);
+				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 				Game.Renderer.DisableScissor();
 			}
 		}

@@ -30,7 +30,7 @@ namespace OpenRA.Widgets
 		
 		public static void DrawSHP(Sprite s, float2 pos, WorldRenderer wr)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(s,pos, wr, "chrome");
+			Game.Renderer.SpriteRenderer.DrawSprite(s,pos, wr, "chrome");
 		}
 
 		public static void DrawPanel(string collection, Rectangle Bounds)
@@ -59,10 +59,7 @@ namespace OpenRA.Widgets
 		
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.LineRenderer.FillRect(new RectangleF(
-						Game.viewport.Location.X + r.X,
-						Game.viewport.Location.Y + r.Y,
-						r.Width, r.Height), c);
+			Game.Renderer.LineRenderer.FillRect(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
 		
 		public static int[] GetBorderSizes(string collection)

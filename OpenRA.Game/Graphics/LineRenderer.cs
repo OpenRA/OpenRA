@@ -16,20 +16,22 @@ namespace OpenRA.Graphics
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
 		Renderer renderer;
+		IShader shader;
 
 		Vertex[] vertices = new Vertex[ Renderer.TempBufferSize ];
 		int nv = 0;
 
-		public LineRenderer( Renderer renderer )
+		public LineRenderer( Renderer renderer, IShader shader )
 		{
 			this.renderer = renderer;
+			this.shader = shader;
 		}
 
 		public void Flush()
 		{
 			if( nv > 0 )
 			{
-				renderer.LineShader.Render( () =>
+				shader.Render( () =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData( vertices, nv );

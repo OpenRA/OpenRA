@@ -61,13 +61,14 @@ namespace OpenRA.Traits
 			var move = self.TraitOrDefault<IMove>();
 			var origin = move != null ? self.CenterLocation - new int2(0, move.Altitude) : self.CenterLocation;
 
-			Game.Renderer.LineRenderer.DrawLine(origin, p, c, c);
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(origin, p, c, c);
 			for (bool b = false; !b; p = origin, b = true)
 			{
-				Game.Renderer.LineRenderer.DrawLine(p + new float2(-1, -1), p + new float2(-1, 1), c, c);
-				Game.Renderer.LineRenderer.DrawLine(p + new float2(-1, 1), p + new float2(1, 1), c, c);
-				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
-				Game.Renderer.LineRenderer.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
+				wlr.DrawLine(p + new float2(-1, -1), p + new float2(-1, 1), c, c);
+				wlr.DrawLine(p + new float2(-1, 1), p + new float2(1, 1), c, c);
+				wlr.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
+				wlr.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
 			}
 		}
 	}

@@ -83,14 +83,14 @@ namespace OpenRA.Traits
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
 			var z = float2.Lerp(xy, Xy, value);
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			wlr.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
+			wlr.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
-
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), barColor, barColor);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), barColor2, barColor2);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
+			wlr.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), barColor, barColor);
+			wlr.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), barColor2, barColor2);
+			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
 		}
 		
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
@@ -114,14 +114,14 @@ namespace OpenRA.Traits
 
 			var z = float2.Lerp(xy, Xy, (float)health.HP / health.MaxHP);
 			
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
+			wlr.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
+			wlr.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
 
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), Xy + new float2(0, -2), c, c);
-
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
-			Game.Renderer.LineRenderer.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
+			wlr.DrawLine(xy + new float2(0, -3), z + new float2(0, -3), healthColor, healthColor);
+			wlr.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), healthColor2, healthColor2);
+			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), healthColor2, healthColor2);
 
 			if (health.DisplayHp != health.HP)
 			{
@@ -133,9 +133,9 @@ namespace OpenRA.Traits
 					deltaColor.B / 2);
 				var zz = float2.Lerp(xy, Xy, (float)health.DisplayHp / health.MaxHP);
 
-				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -3), zz + new float2(0, -3), deltaColor, deltaColor);
-				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -2), zz + new float2(0, -2), deltaColor2, deltaColor2);
-				Game.Renderer.LineRenderer.DrawLine(z + new float2(0, -4), zz + new float2(0, -4), deltaColor2, deltaColor2);
+				wlr.DrawLine(z + new float2(0, -3), zz + new float2(0, -3), deltaColor, deltaColor);
+				wlr.DrawLine(z + new float2(0, -2), zz + new float2(0, -2), deltaColor2, deltaColor2);
+				wlr.DrawLine(z + new float2(0, -4), zz + new float2(0, -4), deltaColor2, deltaColor2);
 			}
 		}
 
@@ -223,14 +223,15 @@ namespace OpenRA.Traits
 
 				var c = Color.Green;
 
+				var wlr = Game.Renderer.WorldLineRenderer;
 				foreach (var step in targets.Select(p => p.CenterLocation))
 				{
 					var stp = step + alt;
-					Game.Renderer.LineRenderer.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
-					Game.Renderer.LineRenderer.DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
-					Game.Renderer.LineRenderer.DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);
-					Game.Renderer.LineRenderer.DrawLine(stp + new float2(1, -1), stp + new float2(-1, -1), c, c);
-					Game.Renderer.LineRenderer.DrawLine(start, stp, c, c);
+					wlr.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
+					wlr.DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
+					wlr.DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);
+					wlr.DrawLine(stp + new float2(1, -1), stp + new float2(-1, -1), c, c);
+					wlr.DrawLine(start, stp, c, c);
 					start = stp;
 				}
 			}

@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
                 if (self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
                     self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
                 {
-                    Game.Renderer.LineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
+                    Game.Renderer.WorldLineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
 
                     trailStart = trailEnd;
                     trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R,

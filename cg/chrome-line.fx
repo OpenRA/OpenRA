@@ -1,8 +1,6 @@
-// OpenRA world lines shader
+// OpenRA gui lines shader
 // Author: C. Forbes
 //--------------------------------------------------------
-
-float2 Scroll;
 
 float2 r1, r2;		// matrix elements
 
@@ -18,7 +16,7 @@ struct VertexOut {
 
 VertexOut Simple_vp(VertexIn v) {
 	VertexOut o;
-	float2 p = (v.Position.xy - Scroll.xy) * r1 + r2;
+	float2 p = v.Position.xy * r1 + r2;
 	o.Position = float4(p.x,p.y,0,1);
 	o.Color = v.Color;
 	return o;

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Widgets
 					leftOffset.X += 1;
 					rightOffset.X -= 1;
 				}
-				Game.Renderer.LineRenderer.DrawLine(Game.viewport.Location + barStart + leftOffset, Game.viewport.Location + powerLevel + rightOffset, color, color);
+				Game.Renderer.LineRenderer.DrawLine(barStart + leftOffset, powerLevel + rightOffset, color, color);
 			}
 
 			// Power usage indicator

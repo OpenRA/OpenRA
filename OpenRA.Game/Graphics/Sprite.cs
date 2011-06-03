@@ -52,22 +52,22 @@ namespace OpenRA.Graphics
 
 		public void DrawAt( WorldRenderer wr, float2 location, string palette )
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite( this, location, wr, palette, this.size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, wr, palette, this.size );
 		}
 
 		public void DrawAt( float2 location, int paletteIndex )
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite( this, location, paletteIndex, this.size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, paletteIndex, this.size );
 		}
 
         public void DrawAt(float2 location, int paletteIndex, float scale)
         {
-            Game.Renderer.SpriteRenderer.DrawSprite(this, location, paletteIndex, this.size * scale);
+            Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, this.size * scale);
         }
 
 		public void DrawAt( float2 location, int paletteIndex, float2 size )
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite( this, location, paletteIndex, size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, paletteIndex, size );
 		}
 	}
 

@@ -42,8 +42,7 @@ namespace OpenRA.Widgets
                 return;
             }
 
-			Game.Renderer.LineRenderer.DrawRect( selbox.Value.First, selbox.Value.Second, Color.White );
-
+			Game.Renderer.WorldLineRenderer.DrawRect( selbox.Value.First, selbox.Value.Second, Color.White );
             foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
                 worldRenderer.DrawRollover(u);
 		}

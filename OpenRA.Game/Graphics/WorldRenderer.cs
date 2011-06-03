@@ -121,15 +121,16 @@ namespace OpenRA.Graphics
 			var xY = new float2(bounds.Left, bounds.Bottom);
 			var XY = new float2(bounds.Right, bounds.Bottom);
 
-			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(xy, xy + new float2(4, 0), c, c);
+			wlr.DrawLine(xy, xy + new float2(0, 4), c, c);
+			wlr.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
+			wlr.DrawLine(Xy, Xy + new float2(0, 4), c, c);
 
-			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
+			wlr.DrawLine(xY, xY + new float2(4, 0), c, c);
+			wlr.DrawLine(xY, xY + new float2(0, -4), c, c);
+			wlr.DrawLine(XY, XY + new float2(-4, 0), c, c);
+			wlr.DrawLine(XY, XY + new float2(0, -4), c, c);
 		}
 
 		public void DrawRollover(Actor unit)
@@ -142,19 +143,21 @@ namespace OpenRA.Graphics
 		public void DrawLocus(Color c, int2[] cells)
 		{
 			var dict = cells.ToDictionary(a => a, a => 0);
+			var wlr = Game.Renderer.WorldLineRenderer;
+
 			foreach (var t in dict.Keys)
 			{
 				if (!dict.ContainsKey(t + new int2(-1, 0)))
-					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
+					wlr.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(1, 0)))
-					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
+					wlr.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(0, -1)))
-					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
+					wlr.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
 						c, c);
 				if (!dict.ContainsKey(t + new int2(0, 1)))
-					Game.Renderer.LineRenderer.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
+					wlr.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
 						c, c);
 			}
 		}
@@ -166,7 +169,7 @@ namespace OpenRA.Graphics
 				var start = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
 				var end = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * (i + 0.7)) / 16);
 				
-				Game.Renderer.LineRenderer.DrawLine(start, end, c, c);
+				Game.Renderer.WorldLineRenderer.DrawLine(start, end, c, c);
 			}
 		}
 

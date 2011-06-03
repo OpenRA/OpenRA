@@ -79,8 +79,9 @@ namespace OpenRA.Mods.RA.Effects
 			float2 unit = 1.0f/(args.src - args.dest).Length*(args.src - args.dest).ToFloat2();
 			float2 norm = new float2(-unit.Y, unit.X);
 			
+			var wlr = Game.Renderer.WorldLineRenderer;
 			for (int i = -radius; i < radius; i++)
-				Game.Renderer.LineRenderer.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
+				wlr.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
 		}
 	}
 }

@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 				color = Color.Red;
 			
 			var b = RenderBounds;
-			var rect = new RectangleF(Game.viewport.Location.X + b.X,
-			                          Game.viewport.Location.Y + b.Y + (1-providedFrac)*b.Height,
+			var rect = new RectangleF(b.X,
+			                          b.Y + (1-providedFrac)*b.Height,
 			                          (float)b.Width,
 			                          providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);

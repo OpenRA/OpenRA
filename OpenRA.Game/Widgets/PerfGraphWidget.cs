@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var rect = RenderBounds;
-			float2 origin = Game.viewport.Location + new float2(rect.Right, rect.Bottom);
+			float2 origin = new float2(rect.Right, rect.Bottom);
 			float2 basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
 			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 					return b;
 				});
 
-                var u = Game.viewport.Location + new float2(rect.Left, rect.Top);
+                var u = new float2(rect.Left, rect.Top);
 
                 Game.Renderer.LineRenderer.DrawLine(
                     u + new float2(10, 10 * k + 5),

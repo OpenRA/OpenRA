@@ -26,16 +26,17 @@ namespace OpenRA.Graphics
 		internal static int SheetSize;
 		internal static int TempBufferSize;
 		internal static int TempBufferCount;
-
-		internal IShader SpriteShader { get; private set; }
+		internal IShader WorldSpriteShader { get; private set; }
+		internal IShader WorldLineShader { get; private set; }
 		internal IShader LineShader { get; private set; }
 		internal IShader RgbaSpriteShader { get; private set; }
-		internal IShader WorldSpriteShader { get; private set; }
+		internal IShader SpriteShader { get; private set; }
 
-		public SpriteRenderer SpriteRenderer { get; private set; }
-		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
+		public LineRenderer WorldLineRenderer { get; private set; }
 		public LineRenderer LineRenderer { get; private set; }
+		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
+		public SpriteRenderer SpriteRenderer { get; private set; }
 
 		public ITexture PaletteTexture;
 
@@ -48,17 +49,19 @@ namespace OpenRA.Graphics
 			TempBufferSize = Game.Settings.Graphics.BatchSize;
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
 			SheetSize = Game.Settings.Graphics.SheetSize;
-			
-			SpriteShader = device.CreateShader("world-shp");
-			LineShader = device.CreateShader("world-line");
-			RgbaSpriteShader = device.CreateShader("chrome-rgba");
-			WorldSpriteShader = device.CreateShader("chrome-shp");
 
-			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
-			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
+			WorldSpriteShader = device.CreateShader("world-shp");
+			WorldLineShader = device.CreateShader("world-line");
+			LineShader = device.CreateShader("chrome-line");
+			RgbaSpriteShader = device.CreateShader("chrome-rgba");
+			SpriteShader = device.CreateShader("chrome-shp");
+
 			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
-			LineRenderer = new LineRenderer(this);
-			
+			WorldLineRenderer = new LineRenderer(this, WorldLineShader);
+			LineRenderer = new LineRenderer(this, LineShader);
+			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
+			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
+
 			for( int i = 0 ; i < TempBufferCount ; i++ )
 				tempBuffers.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
 		}
@@ -77,10 +80,11 @@ namespace OpenRA.Graphics
 			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);
 			float2 r2 = new float2(-1, 1);
 
-			SetShaderParams( SpriteShader, r1, r2, scroll );
+			SetShaderParams( WorldSpriteShader, r1, r2, scroll );
+			SetShaderParams( WorldLineShader, r1, r2, scroll );
 			SetShaderParams( LineShader, r1, r2, scroll );
 			SetShaderParams( RgbaSpriteShader, r1, r2, scroll );
-			SetShaderParams( WorldSpriteShader, r1, r2, scroll );
+			SetShaderParams( SpriteShader, r1, r2, scroll );
 		}
 
 		void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
