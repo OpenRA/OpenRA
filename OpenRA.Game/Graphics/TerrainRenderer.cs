@@ -61,7 +61,7 @@ namespace OpenRA.Graphics
 		{
 			int verticesPerRow = map.Bounds.Width * 4;
 
-			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize + 2);
+			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize / viewport.Zoom + 2);
 
 			int firstRow = (int)(viewport.Location.Y * 1f / Game.CellSize - map.Bounds.Top);
 			int lastRow = firstRow + visibleRows;

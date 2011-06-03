@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			var text = Comments.Random(Game.CosmeticRandom);
 			var textSize = r.Fonts["Bold"].Measure(text);
 			
-			r.BeginFrame(float2.Zero);
+			r.BeginFrame(float2.Zero, 1f);
 			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);			
 			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
 			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);

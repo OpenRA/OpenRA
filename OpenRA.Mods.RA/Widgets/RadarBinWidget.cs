@@ -129,27 +129,28 @@ namespace OpenRA.Mods.RA.Widgets
 			if( world == null || world.LocalPlayer == null ) return;
 
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
-
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin);
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0));
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192));
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0));
+			var rsr = Game.Renderer.RgbaSpriteRenderer;
+			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "left"), radarOrigin);
+			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0));
+			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192));
+			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0));
 			
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
 				var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
 				var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(terrainSprite, o, s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(customTerrainSprite, o, s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(actorSprite, o, s);
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(shroudSprite, o, s);
+				rsr.DrawSprite(terrainSprite, o, s);
+				rsr.DrawSprite(customTerrainSprite, o, s);
+				rsr.DrawSprite(actorSprite, o, s);
+				rsr.DrawSprite(shroudSprite, o, s);
 
 				// Draw viewport rect
 				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength)
 				{
 					var tl = CellToMinimapPixel(new int2((int)(Game.viewport.Location.X/Game.CellSize), (int)(Game.viewport.Location.Y/Game.CellSize)));
 					var br = CellToMinimapPixel(new int2((int)((Game.viewport.Location.X + Game.viewport.Width)/Game.CellSize), (int)((Game.viewport.Location.Y + Game.viewport.Height)/Game.CellSize)));
+
 					Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
 					Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 					Game.Renderer.DisableScissor();

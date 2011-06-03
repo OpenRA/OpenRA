@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Effects
 		string s;
 		int remaining;
 		int velocity;
-		float2 pos;
+		float2 pos, offset;
 		Color color;
 		
 		public CashTick(int value, int lifetime, int velocity, float2 pos, Color color)
@@ -28,7 +28,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.color = color;
 			this.velocity = velocity;
 			s = "{0}${1}".F(value < 0 ? "-" : "+", value);
-			this.pos = pos - 0.5f*Game.Renderer.Fonts["TinyBold"].Measure(s).ToFloat2();
+			this.pos = pos;
+			offset = 0.5f*Game.Renderer.Fonts["TinyBold"].Measure(s).ToFloat2();
 			remaining = lifetime;
 		}
 
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			Game.Renderer.Fonts["TinyBold"].DrawTextWithContrast(s, pos - Game.viewport.Location, color, Color.Black,1);
+			Game.Renderer.Fonts["TinyBold"].DrawTextWithContrast(s, Game.viewport.Zoom*(pos - Game.viewport.Location) - offset, color, Color.Black,1);
 			yield break;
 		}
 	}

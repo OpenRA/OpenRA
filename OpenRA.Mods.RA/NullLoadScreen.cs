@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 				return;
 			
 			// Draw a black screen
-			Game.Renderer.BeginFrame(float2.Zero);
+			Game.Renderer.BeginFrame(float2.Zero, 1f);
 			Game.Renderer.EndFrame( new NullInputHandler() );
 		}
 		

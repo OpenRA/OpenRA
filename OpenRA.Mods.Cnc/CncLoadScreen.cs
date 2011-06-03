@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Cnc
 			loadTimer.Reset();
 
 			loadTick = ++loadTick % 8;
-			r.BeginFrame(float2.Zero);
+			r.BeginFrame(float2.Zero, 1f);
 			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);

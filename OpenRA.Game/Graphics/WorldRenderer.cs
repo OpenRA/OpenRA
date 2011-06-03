@@ -52,14 +52,12 @@ namespace OpenRA.Graphics
 
 		IEnumerable<Renderable> SpritesToRender()
 		{
-			var bounds = Game.viewport.ViewBounds(world);
+			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new SpriteComparer();
 
-			bounds.Offset((int)Game.viewport.Location.X, (int)Game.viewport.Location.Y);
-
 			var actors = world.FindUnits(
-				new int2(bounds.Left, bounds.Top),
-				new int2(bounds.Right, bounds.Bottom));
+				new int2(Game.CellSize*bounds.Left, Game.CellSize*bounds.Top),
+				new int2(Game.CellSize*bounds.Right, Game.CellSize*bounds.Bottom));
 
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
