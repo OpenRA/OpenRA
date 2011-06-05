@@ -24,15 +24,13 @@ namespace OpenRA.Mods.RA
 
 	public class LimitedAmmo : INotifyAttack, IPips, ISync
 	{
-		[Sync]
-		int ammo;
-        int ticksPerAmmo;
+        [Sync]
+        int ammo;
 		LimitedAmmoInfo Info;
 		
 		public LimitedAmmo(LimitedAmmoInfo info)
 		{
 			ammo = info.Ammo;
-            ticksPerAmmo = info.ReloadTicks;
 			Info = info;
 		}
 
@@ -45,7 +43,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-        public int ReloadTimePerAmmo() { return ticksPerAmmo; }
+        public int ReloadTimePerAmmo() { return Info.ReloadTicks; }
 
 		public void Attacking(Actor self, Target target) { --ammo; }
 
