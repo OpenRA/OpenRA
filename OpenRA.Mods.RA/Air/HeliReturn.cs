@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Air
 				new HeliFly(dest.Trait<IHasLocation>().PxPosition + offset),
 				new Turn(initialFacing),
 				new HeliLand(false),
-				new Rearm(),
+				new Rearm(self),
 				NextActivity);
 		}
 	}

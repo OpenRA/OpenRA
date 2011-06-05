@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 				return Util.SequenceActivities(
 					new Enter(rearmTarget),
 					//new Move(Util.CellContaining(rearmTarget.CenterLocation), rearmTarget),
-					new Rearm(),
+					new Rearm(self),
 					new Repair(rearmTarget),
 					this );
 			}

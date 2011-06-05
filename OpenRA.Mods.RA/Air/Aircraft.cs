@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			var name = a.Info.Name;
 			if (Info.RearmBuildings.Contains(name))
-				self.QueueActivity(new Rearm());
+				self.QueueActivity(new Rearm(self));
 			if (Info.RepairBuildings.Contains(name))
 				self.QueueActivity(new Repair(a));
 		}

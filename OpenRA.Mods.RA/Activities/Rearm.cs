@@ -17,9 +17,15 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Rearm : Activity
 	{
-		int remainingTicks = ticksPerPip;
+		
+        int ticksPerPip = 25 * 2;
+        int remainingTicks = 25 * 2;
 
-		const int ticksPerPip = 25 * 2;
+        public Rearm(Actor actor)
+        {
+            ticksPerPip = actor.TraitOrDefault<LimitedAmmo>().ReloadTimePerAmmo();
+            remainingTicks = ticksPerPip;
+        }
 
 		public override Activity Tick(Actor self)
 		{
@@ -37,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (hostBuilding != null)
 					hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
 
-				remainingTicks = ticksPerPip;
+				remainingTicks = limitedAmmo.ReloadTimePerAmmo();
 			}
 
 			return this;

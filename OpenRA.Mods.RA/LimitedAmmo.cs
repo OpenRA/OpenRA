@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int Ammo = 0;
 		public readonly int PipCount = 0;
+        public readonly int ReloadTicks = 25 * 2; // This is measured in ticks
 
 		public object Create(ActorInitializer init) { return new LimitedAmmo(this); }
 	}
@@ -25,11 +26,13 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync]
 		int ammo;
+        int ticksPerAmmo;
 		LimitedAmmoInfo Info;
 		
 		public LimitedAmmo(LimitedAmmoInfo info)
 		{
 			ammo = info.Ammo;
+            ticksPerAmmo = info.ReloadTicks;
 			Info = info;
 		}
 
@@ -41,6 +44,8 @@ namespace OpenRA.Mods.RA
 			++ammo;
 			return true;
 		}
+
+        public int ReloadTimePerAmmo() { return ticksPerAmmo; }
 
 		public void Attacking(Actor self, Target target) { --ammo; }
 

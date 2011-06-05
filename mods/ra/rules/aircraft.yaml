@@ -164,6 +164,7 @@ YAK:
 	LimitedAmmo:
 		Ammo: 18
 		PipCount: 6
+		ReloadTicks: 11
 	IronCurtainable:
 	ReturnOnIdle:
 	WithMuzzleFlash:
@@ -300,6 +301,7 @@ HIND:
 	LimitedAmmo:
 		Ammo: 24
 		PipCount: 6
+		ReloadTicks: 8
 	IronCurtainable:
 	Selectable:
 		Bounds: 38,32,0,0
