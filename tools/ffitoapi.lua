@@ -57,6 +57,7 @@ local function ffiToApi(ffidef)
       -- extern void ( * func )(blubb);
       -- void func(blubb);
       -- void ( * func )(blubb);
+      -- void * ( * func )(blubb);
       local typedef = l:match("typedef")
       local ret,name,args = string.match(typedef and "" or l,
         "%s*([_%w%*%s]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
@@ -66,9 +67,9 @@ local function ffiToApi(ffidef)
         curfunc = {RET=ret,NAME=name,ARGS=args}
         registerfunc()
       elseif (not typedef) then
-        local typ,names,val = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
+        local typ,names,val = l:match("%s*([_%w%s%*]+)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
         if (not (typ and names and val)) then
-              typ,names     = l:match("%s*([_%w%s%*]-)%s+([_%w%[%]%:%s,]+)[\r\n%s]*;")
+              typ,names     = l:match("%s*([_%w%s%*]+)%s+([_%w%[%]%:%s,]+)[\r\n%s]*;")
         end
         if (typ and names) then
           for name,rest in names:gmatch("([_%w]+)([^,]*)") do
