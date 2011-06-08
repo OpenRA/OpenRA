@@ -22,7 +22,7 @@ return dxpath and {
 			{ ID "dx.compile.domain",		"Compile &Domain",	"Compile Domain shader (select entry word)" },
 			{ ID "dx.compile.hull",		"Compile &Hull",	"Compile Hull shader (select entry word)" },
 		}
-		menuBar:Append(myMenu, "&DxCompiler")
+		menuBar:Append(myMenu, "&Dx")
 
 		local data = {}
 		data.customarg = false

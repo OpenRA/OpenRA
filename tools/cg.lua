@@ -29,7 +29,7 @@ return cgbinpath and {
 			{ ID "cg.format.asm",		"Annotate ASM",	"indent and add comments to Cg ASM output" },
 			{ ID "cg.format.master",	"Build from master",	"Creates a new cg file from a master containing special include instrctions." },
 		}
-		menuBar:Append(myMenu, "&CgCompiler")
+		menuBar:Append(myMenu, "&Cg")
 
 		local data = {}
 		data.customarg = false
