@@ -178,17 +178,16 @@ return cgbinpath and {
 			local indent = 0
 			local maxindent = 0
 			local startindent = {
-				"IF","REP","ELSE","LOOP",
+				["IF"]=true,["REP"]=true,["ELSE"]=true,["LOOP"]=true,
 			}
 			local endindent = {
-				"ENDIF","ENDREP","ELSE","ENDLOOP","END",
+				["ENDIF"]=true,["ENDREP"]=true,["ELSE"]=true,["ENDLOOP"]=true,["END"]=true,
 			}
 
 			local function checknesting(str,tab)
 				local res
-				for i,v in ipairs(tab) do
-					res = res or ((string.find(str,v) or 0) == 1) and v
-				end
+				local chk = str:match("%s*(%w+)")
+				res = chk and tab[chk] and chk
 				return res
 			end
 
