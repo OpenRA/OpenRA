@@ -226,12 +226,12 @@ namespace OpenRA.Server
 	
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
-				SendChat(newConn, "has joined the game.");
 				
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 				
 				SyncLobbyInfo();
+				SendChat(newConn, "has joined the game.");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
