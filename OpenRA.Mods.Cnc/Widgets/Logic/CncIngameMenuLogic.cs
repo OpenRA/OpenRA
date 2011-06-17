@@ -36,15 +36,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Sound.Play("batlcon1.aud");
 				resumeDisabled = true;
-				world.WorldActor.QueueActivity(new Wait(30));
-				world.WorldActor.QueueActivity(new CallFunc(() => mpe.Fade(CncMenuPaletteEffect.EffectType.Black)));
-				world.WorldActor.QueueActivity(new Wait(mpe.Info.FadeLength));
-				world.WorldActor.QueueActivity(new CallFunc(() =>
+				Game.RunAfterDelay(1200, () => mpe.Fade(CncMenuPaletteEffect.EffectType.Black));
+				Game.RunAfterDelay(1200 + 40 * mpe.Info.FadeLength, () =>
 				{
 						Game.Disconnect();
 						Widget.ResetAll();
 						Game.LoadShellMap();
-				}));
+				});
 			};
 			
 			Action doNothing = () => {};

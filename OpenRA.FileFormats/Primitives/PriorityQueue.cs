@@ -62,6 +62,7 @@ namespace OpenRA.FileFormats
 			return At(lastLevel, lastIndex);
 		}
 
+		public T Peek() { return At(0,0); }
 		public T Pop()
 		{
 			if (level == 0 && index == 0)

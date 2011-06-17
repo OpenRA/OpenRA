@@ -18,23 +18,45 @@ namespace OpenRA.FileFormats
 	public class ActionQueue
 	{
 		object syncRoot = new object();
-		Action actions = () => { };
+		PriorityQueue<DelayedAction> actions = new PriorityQueue<DelayedAction>();
 
-		public void Add(Action a)
+		public void Add(Action a) { Add(a, 0); }
+		public void Add(Action a, int delay)
 		{
 			lock (syncRoot)
-				actions += a;
+				actions.Add(new DelayedAction(a, Environment.TickCount + delay));
 		}
 
 		public void PerformActions()
 		{
-			Action a;
+			Action a = () => {};
 			lock (syncRoot)
 			{
-				a = actions; 
-				actions = () => { };
+				var t = Environment.TickCount;
+				while (!actions.Empty && actions.Peek().Time <= t)
+				{
+					var da = actions.Pop();
+					a += da.Action;
+				}
 			}
 			a();
+		}
+	}
+
+	struct DelayedAction : IComparable<DelayedAction>
+	{
+		public int Time;
+		public Action Action;
+
+		public DelayedAction(Action action, int time)
+		{
+			Action = action;
+			Time = time;
+		}
+
+		public int CompareTo(DelayedAction other)
+		{
+			return Math.Sign(Time - other.Time);
 		}
 	}
 }

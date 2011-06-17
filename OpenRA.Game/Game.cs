@@ -123,8 +123,9 @@ namespace OpenRA
 			}, parent, id);
 		}
 
-		static ActionQueue afterTickActions = new ActionQueue();
-		public static void RunAfterTick(Action a) { afterTickActions.Add(a); }
+		static ActionQueue delayedActions = new ActionQueue();
+		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
+		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
 
 		static void Tick( OrderManager orderManager, Viewport viewPort )
 		{
@@ -150,7 +151,7 @@ namespace OpenRA
 			PerfHistory.items["render_widgets"].Tick();
 			PerfHistory.items["render_flip"].Tick();
 
-			afterTickActions.PerformActions();
+			delayedActions.PerformActions();
 		}
 
 		static void Tick( OrderManager orderManager )
