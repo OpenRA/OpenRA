@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var itemTemplate = scrollpanel.GetWidget("PLAYER_TEMPLATE");
 			scrollpanel.RemoveChildren();
 			
-			foreach (var p in world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant))
+			foreach (var p in world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant))
 			{
 				Player pp = p;
 				var item = itemTemplate.Clone();
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var item = ScrollItemWidget.Setup(template,
 				                                  () => s == world.LocalPlayer.Stances[ pp ],
 				                                  () => world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
-				                						{ TargetLocation = new int2(pp.Index, (int)s) }));
+				                                  		{ TargetLocation = new int2((int)s, 0), TargetString = pp.InternalName }));
 				
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
 				return item;

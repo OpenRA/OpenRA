@@ -31,7 +31,6 @@ namespace OpenRA
 		public readonly string PlayerName;
 		public readonly string InternalName;
 		public readonly CountryInfo Country;
-		public readonly int Index;
 		public readonly bool NonCombatant = false;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerRef;
@@ -40,10 +39,9 @@ namespace OpenRA
 		public Shroud Shroud { get { return World.LocalShroud; }}
 		public World World { get; private set; }
 
-		public Player(World world, Session.Client client, PlayerReference pr, int index)
+		public Player(World world, Session.Client client, PlayerReference pr)
 		{
 			World = world;
-			Index = index;
 			InternalName = pr.Name;
 			PlayerRef = pr;
 			

@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA
 			if (!hasAnything && !self.Owner.NonCombatant)
 				Lose(self);
 			
-			var others = self.World.players.Where( p => !p.Value.NonCombatant 
-                && p.Value != self.Owner && p.Value.Stances[self.Owner] != Stance.Ally );
+			var others = self.World.Players.Where( p => !p.NonCombatant 
+                && p != self.Owner && p.Stances[self.Owner] != Stance.Ally );
 
 			if (others.Count() == 0) return;	
 			
-			if(others.All(p => p.Value.WinState == WinState.Lost))
+			if(others.All(p => p.WinState == WinState.Lost))
 				Win(self);
 		}
 

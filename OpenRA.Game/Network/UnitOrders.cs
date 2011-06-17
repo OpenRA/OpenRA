@@ -23,8 +23,8 @@ namespace OpenRA.Network
 			/* todo: this is still a hack. 
 			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,
 			 * bots,.. */
-			return world.players.Values.FirstOrDefault(
-				p => p.ClientIndex == c.Index && p.PlayerName == c.Name);
+			return world.Players.FirstOrDefault(
+				p => (p.ClientIndex == c.Index && p.PlayerRef.Playable && !p.IsBot));
 		}
 
 		public static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)
@@ -151,8 +151,8 @@ namespace OpenRA.Network
 						if (Game.orderManager.LobbyInfo.GlobalSettings.LockTeams)
 							return;
 
-						var targetPlayer = order.Player.World.players[order.TargetLocation.X];
-						var newStance = (Stance)order.TargetLocation.Y;
+						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);
+						var newStance = (Stance)order.TargetLocation.X;
 
 						SetPlayerStance(world, order.Player, targetPlayer, newStance);
 

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -35,21 +36,16 @@ namespace OpenRA
 
 		public XRandom SharedRandom;
 
-		public readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
+		public readonly List<Player> Players = new List<Player>();
 
-		public void AddPlayer(Player p) { players[p.Index] = p; }
-
-		int localPlayerIndex = -999;
-		public Player LocalPlayer
-		{
-			get { return players.ContainsKey(localPlayerIndex) ? players[localPlayerIndex] : null; }
-		}
+		public void AddPlayer(Player p) { Players.Add(p); }
+		public Player LocalPlayer { get; private set; }
 		public readonly Shroud LocalShroud;
 
-		public void SetLocalPlayer(int index)
+		public void SetLocalPlayer(string pr)
 		{			
 			if (!(orderManager.Connection is ReplayConnection))
-				localPlayerIndex = index;
+				LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
 		}
 
 		public readonly Actor WorldActor;		
@@ -108,8 +104,8 @@ namespace OpenRA
 				cmp.CreatePlayers(this);		
 			
 			// Set defaults for any unset stances
-			foreach (var p in players.Values)
-				foreach (var q in players.Values)
+			foreach (var p in Players)
+				foreach (var q in Players)
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = Stance.Neutral;		
 			

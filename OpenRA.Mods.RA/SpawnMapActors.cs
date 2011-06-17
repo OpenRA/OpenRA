@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 			{
 				// if there is no real player associated, dont spawn it.
 				var ownerName = actorReference.Value.InitDict.Get<OwnerInit>().PlayerName;
-				if (!world.players.Values.Any(p => p.InternalName == ownerName))
+				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;
 
 				var initDict = actorReference.Value.InitDict;

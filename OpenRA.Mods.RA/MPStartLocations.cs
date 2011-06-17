@@ -39,7 +39,6 @@ namespace OpenRA.Mods.RA
 					continue; // Skip spectator slots
 				var client = world.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
 				var player = FindPlayerInSlot(world, slot);
-
 				if (player == null) continue;
 
 				var spid = (client == null || client.SpawnPoint == 0)
@@ -62,7 +61,7 @@ namespace OpenRA.Mods.RA
 
 		static Player FindPlayerInSlot(World world, Session.Slot slot)
 		{
-			return world.players.Values.FirstOrDefault(p => p.PlayerRef.Name == slot.MapPlayer);
+			return world.Players.FirstOrDefault(p => p.PlayerRef.Name == slot.MapPlayer);
 		}
 		
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)

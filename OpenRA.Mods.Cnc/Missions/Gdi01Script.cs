@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 				
 		public void WorldLoaded(World w)
 		{
-			Players = w.players.Values.ToDictionary(p => p.InternalName);
+			Players = w.Players.ToDictionary(p => p.InternalName);
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
 			var b = w.Map.Bounds;
 			Game.MoveViewport(new int2(b.Left + b.Width/2, b.Top + b.Height/2));

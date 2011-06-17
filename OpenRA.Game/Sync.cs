@@ -127,7 +127,7 @@ namespace OpenRA
 		public static int hash_player( Player p )
 		{
 			if( p != null )
-				return p.Index * 0x567;
+				return (int)( p.PlayerActor.ActorID << 16 ) * 0x567;
 			return 0;
 		}
 

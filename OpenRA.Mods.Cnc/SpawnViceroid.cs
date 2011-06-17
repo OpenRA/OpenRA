@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc
 						var td = new TypeDictionary 
 						{
 							new LocationInit( self.Location ),
-							new OwnerInit( self.World.players.Values.First(p => p.InternalName == Info.Owner) )
+							new OwnerInit( self.World.Players.First(p => p.InternalName == Info.Owner) )
 						};
 						
 						if (self.HasTrait<IFacing>())

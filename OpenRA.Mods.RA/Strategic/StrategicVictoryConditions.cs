@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 		{
 			int total = 0;
 
-			foreach (var p in Self.World.players.Select(k => k.Value))
+			foreach (var p in Self.World.Players)
 			{
 				if (p == Self.Owner || (p.Stances[Self.Owner] == Stance.Ally && Self.Owner.Stances[p] == Stance.Ally))
 				{
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA
 		public void Won()
 		{
 			// Player has won
-			foreach (var p in Self.World.players.Select(k => k.Value))
+			foreach (var p in Self.World.Players)
 			{
 				var cvc = p.PlayerActor.TraitOrDefault<ConquestVictoryConditions>();
 

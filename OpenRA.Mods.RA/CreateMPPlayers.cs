@@ -21,13 +21,10 @@ namespace OpenRA.Mods.RA
 	{
 		public void CreatePlayers(World w)
 		{
-			var playerIndex = 0;
-			var mapPlayerIndex = -1;	// todo: unhack this, but people still rely on it.
-
 			// create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
 			{
-				var player = new Player(w, null, kv.Value, mapPlayerIndex--);
+				var player = new Player(w, null, kv.Value);
 				w.AddPlayer(player);
 				if (kv.Value.OwnsWorld)
 					w.WorldActor.Owner = player;
@@ -40,10 +37,10 @@ namespace OpenRA.Mods.RA
 				if (client != null)
 				{
 					/* spawn a real player in this slot. */
-					var player = new Player(w, client, w.Map.Players[slot.MapPlayer], playerIndex++);
+					var player = new Player(w, client, w.Map.Players[slot.MapPlayer]);
 					w.AddPlayer(player);
 					if (client.Index == Game.LocalClientId)
-						w.SetLocalPlayer(player.Index);		// bind this one to the local player.
+						w.SetLocalPlayer(player.InternalName);		// bind this one to the local player.
 				}
 				// TODO: This is shit. Merge it up into Player ctor?
 				else if (slot.Bot != null && slot.MapPlayer != null)
@@ -55,8 +52,7 @@ namespace OpenRA.Mods.RA
                     w.Map.Players[slot.MapPlayer].ColorRamp = new ColorRamp(hue, 255, 180, 25);
 
 					/* todo: pick a random name from the pool */
-
-					var player = new Player(w, null, w.Map.Players[slot.MapPlayer], playerIndex++);
+					var player = new Player(w, null, w.Map.Players[slot.MapPlayer]);
 					w.AddPlayer(player);
 					
 					/* activate the bot option that's selected! */
@@ -70,8 +66,8 @@ namespace OpenRA.Mods.RA
 				}
 			}
 			
-			foreach (var p in w.players.Values)
-				foreach (var q in w.players.Values)
+			foreach (var p in w.Players)
+				foreach (var q in w.Players)
 				{
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = ChooseInitialStance(p, q);
@@ -90,17 +86,16 @@ namespace OpenRA.Mods.RA
 				if (p.World.LobbyInfo.Slots[qc.Slot].Spectator) return Stance.Ally;
 			}
 
+			// Stances set via the player reference
 			if (p.PlayerRef.Allies.Contains(q.InternalName))
 				return Stance.Ally;
 			if (p.PlayerRef.Enemies.Contains(q.InternalName))
 				return Stance.Enemy;
-
-			// Hack: All map players are neutral wrt everyone else
-			if (p.Index < 0 || q.Index < 0) return Stance.Neutral;
-
-			if (p.IsBot ^ q.IsBot)
-				return Stance.Enemy;	// bots and humans hate each other
-
+			
+			// Otherwise, default to neutral for map-players
+			if (!p.PlayerRef.Playable || !q.PlayerRef.Playable) return Stance.Neutral;
+			// or enemy for bot vs human
+			if (p.IsBot ^ q.IsBot) return Stance.Enemy;
 
 			return pc.Team != 0 && pc.Team == qc.Team
 				? Stance.Ally : Stance.Enemy;

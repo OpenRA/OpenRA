@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!IsVisible()) return;
 			int2 offset = int2.Zero;
 
-			var svc = world.players.Select(p => p.Value.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
+			var svc = world.Players.Select(p => p.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
 			var totalWidth = (svc.Total + svc.TotalCritical) * 32;
 			int curX = -(totalWidth / 2);
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Widgets
 			int shortest = int.MaxValue;
 			Player shortestPlayer = null;
 
-			foreach (var p in world.players.Select(p => p.Value).Where(p => !p.NonCombatant))
+			foreach (var p in world.Players.Where(p => !p.NonCombatant))
 			{
 				var svc = p.PlayerActor.Trait<StrategicVictoryConditions>();
 

@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
 			var diplomacyButton = ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON");
-			var diplomacyAvailable = world.players.Values.Any(a => a != world.LocalPlayer && !a.NonCombatant);
+			var diplomacyAvailable = world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
 			diplomacyButton.IsDisabled = () => !diplomacyAvailable;
 			diplomacyButton.OnClick = () => 
 			{

@@ -250,7 +250,7 @@ namespace OpenRA.Mods.RA
 
 		bool HasHumanPlayers()
 		{
-			return p.World.players.Any(a => !a.Value.IsBot && !a.Value.NonCombatant);
+			return p.World.Players.Any(a => !a.IsBot && !a.NonCombatant);
 		}
 
 		int2? ChooseEnemyTarget()

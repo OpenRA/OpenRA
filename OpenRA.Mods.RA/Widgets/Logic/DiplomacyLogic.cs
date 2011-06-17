@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 			};
 			
-			validPlayers = world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
+			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
 		
@@ -79,13 +79,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			y += 35;
 
-			foreach (var p in world.players.Values.Where(a => a != world.LocalPlayer && !a.NonCombatant))
+			foreach (var p in world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant))
 			{
 				var pp = p;
 				var label = new LabelWidget
 				{
 					Bounds = new Rectangle(margin, y, labelWidth, 25),
-					Id = "DIPLOMACY_PLAYER_LABEL_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = LabelWidget.TextAlign.Left,
 					Font = "Bold",
@@ -97,7 +96,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var theirStance = new LabelWidget
 				{
 					Bounds = new Rectangle( margin + labelWidth + 10, y, labelWidth, 25),
-					Id = "DIPLOMACY_PLAYER_LABEL_THEIR_{0}".F(p.Index),
 					Text = p.PlayerName,
 					Align = LabelWidget.TextAlign.Left,
 
@@ -110,7 +108,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var myStance = new DropDownButtonWidget
 				{
 					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
-					Id = "DIPLOMACY_PLAYER_LABEL_MY_{0}".F(p.Index),
 					GetText = () => world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
@@ -145,7 +142,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;	// team changes are banned
 
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor,
-				false) { TargetLocation = new int2(p.Index, (int)ss) });
+				false) { TargetLocation = new int2((int)ss, 0), TargetString = p.InternalName });
 
 			bw.Text = ss.ToString();
 		}
