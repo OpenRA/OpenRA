@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
 				if (p == 0 || !owned)
-					orderManager.IssueOrder(Order.Command("spawn {0}".F(p)));
+					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
 				
 				return true;
 			};
@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 				                                  () => client.Country == race, 
-				                                  () => orderManager.IssueOrder(Order.Command("race "+race)));
+				                                  () => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
 				var flag = item.GetWidget<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 				                                  () => client.Team == ii, 
-				                                  () => orderManager.IssueOrder(Order.Command("team "+ii)));
+				                                  () => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
@@ -365,7 +365,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Game.Settings.Player.ColorRamp = c;
 				Game.Settings.Save();
 				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command("color {0}".F(c)));
+				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
 			};
 			
 			Action<ColorRamp> onChange = c =>
