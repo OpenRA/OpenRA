@@ -18,7 +18,8 @@ namespace OpenRA.Network
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
-		public List<Slot> Slots = new List<Slot>();
+		// Keyed by the PlayerReference id that the slot corresponds to
+		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
 		public Global GlobalSettings = new Global();
 
 		public Client ClientWithIndex(int clientID)
@@ -26,15 +27,15 @@ namespace OpenRA.Network
 			return Clients.SingleOrDefault(c => c.Index == clientID);
 		}
 
-		public Client ClientInSlot(Slot slot)
+		public Client ClientInSlot(string slot)
 		{
-			return Clients.SingleOrDefault(c => c.Slot == slot.Index);
+			return Clients.SingleOrDefault(c => c.Slot == slot);
 		}
 
-		public int FirstEmptySlot()
+		public string FirstEmptySlot()
 		{
-			return Slots.First(s => !s.Closed && ClientInSlot(s) == null
-			                   && s.Bot == null).Index;
+			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null
+			                            && s.Value.Bot == null).Key;
 		}
 
 		public enum ClientState
@@ -53,17 +54,19 @@ namespace OpenRA.Network
 			public string Name;
 			public ClientState State;
 			public int Team;
-			public int Slot;	//	which slot we're in, or -1 for `observer`.
+			public string Slot;	// slot ID, or null for observer
 		}
 
 		public class Slot
 		{
-			public int Index;
+			public string PlayerReference;	// playerReference to bind against.
 			public string Bot;	// trait name of the bot to initialize in this slot, or null otherwise.
 			public bool Closed;	// host has explicitly closed this slot.
-			public string MapPlayer;	// playerReference to bind against.
-			public bool Spectator = false; // Spectating or not
-			// todo: more stuff?
+
+			public bool AllowBots;
+			public bool LockRace;
+			public bool LockColor;
+			public bool LockTeam;
 		}
 
 		public class Global
@@ -90,7 +93,7 @@ namespace OpenRA.Network
 				clientData.Add(new MiniYamlNode("Client@{0}".F(client.Index), FieldSaver.Save(client)));
 
 			foreach (var slot in Slots)
-				clientData.Add(new MiniYamlNode("Slot@{0}".F(slot.Index), FieldSaver.Save(slot)));
+				clientData.Add(new MiniYamlNode("Slot@{0}".F(slot.Key), FieldSaver.Save(slot.Value)));
 
 			clientData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(GlobalSettings)));
 
@@ -117,7 +120,8 @@ namespace OpenRA.Network
 						break;
 
 					case "Slot":
-						session.Slots.Add(FieldLoader.Load<Session.Slot>(y.Value));
+						var s = FieldLoader.Load<Session.Slot>(y.Value);
+						session.Slots.Add(s.PlayerReference, s);
 						break;
 				}
 			}

@@ -218,9 +218,8 @@ namespace OpenRA.Server
 				client.Index = newConn.PlayerIndex;
 				client.Slot = lobbyInfo.FirstEmptySlot();
 				
-				var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
-				if (slotData != null && slotData.MapPlayer != null)
-					SyncClientToPlayerReference(client, Map.Players[slotData.MapPlayer]);
+				if (client.Slot != null)
+					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
 				
 				lobbyInfo.Clients.Add(client);
 	

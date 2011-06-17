@@ -28,19 +28,17 @@ namespace OpenRA.Mods.RA
 
 		public void WorldLoaded(World world)
 		{
-			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != -1)
+			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 				.Select(c => world.Map.SpawnPoints.ElementAt(c.SpawnPoint - 1)).ToList();
 			var available = world.Map.SpawnPoints.Except(taken).ToList();
 
 			// Set spawn
-			foreach (var slot in world.LobbyInfo.Slots)
+			foreach (var kv in world.LobbyInfo.Slots)
 			{
-				if (slot.Spectator)
-					continue; // Skip spectator slots
-				var client = world.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index);
-				var player = FindPlayerInSlot(world, slot);
+				var player = FindPlayerInSlot(world, kv.Key);
 				if (player == null) continue;
 
+				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
 					: world.Map.SpawnPoints.ElementAt(client.SpawnPoint - 1);
@@ -59,9 +57,9 @@ namespace OpenRA.Mods.RA
 				Game.viewport.Center(Start[world.LocalPlayer]);
 		}
 
-		static Player FindPlayerInSlot(World world, Session.Slot slot)
+		static Player FindPlayerInSlot(World world, string pr)
 		{
-			return world.Players.FirstOrDefault(p => p.PlayerRef.Name == slot.MapPlayer);
+			return world.Players.FirstOrDefault(p => p.PlayerRef.Name == pr);
 		}
 		
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)

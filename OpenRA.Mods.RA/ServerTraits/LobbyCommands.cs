@@ -20,8 +20,6 @@ namespace OpenRA.Mods.RA.Server
 {
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
 	{
-		public static int MaxSpectators = 4; // How many spectators to allow // @todo Expose this as an option
-
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (server.GameStarted)
@@ -77,33 +75,39 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot",
 					s =>
 					{
-						int slot;
-						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
+						if (!server.lobbyInfo.Slots.ContainsKey(s))
+						{
+							Log.Write("server", "Invalid slot: {0}", s );
+							return false;
+						}
+						var slot = server.lobbyInfo.Slots[s];
 
-						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
-						if (slotData == null || slotData.Closed || slotData.Bot != null 
-							|| server.lobbyInfo.Clients.Any( c => c.Slot == slot ))
+						if (slot.Closed || slot.Bot != null ||
+					    	server.lobbyInfo.ClientInSlot(s) != null)
 							return false;
 
-						client.Slot = slot;
-						S.SyncClientToPlayerReference(client, slotData.MapPlayer != null ? server.Map.Players[slotData.MapPlayer] : null);
-						
-						// if we're entering a spectator slot, relinquish our spawnpoint.
-						if (slotData.Spectator)
-							client.SpawnPoint = 0;
+						client.Slot = s;
+						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 
+						server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "spectate",
+					s =>
+					{
+						client.Slot = null;
+						client.SpawnPoint = 0;
 						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "slot_close",
 					s =>
 					{
-						int slot;
-						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
-
-						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
-						if (slotData == null)
+						if (!server.lobbyInfo.Slots.ContainsKey(s))
+						{
+							Log.Write("server", "Invalid slot: {0}", s );
 							return false;
+						}
 
 						if (conn.PlayerIndex != 0)
 						{
@@ -111,11 +115,8 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						slotData.Closed = true;
-						slotData.Bot = null;
-						
-						/* kick any player that's in the slot */
-						var occupant = server.lobbyInfo.Clients.FirstOrDefault( c => c.Slot == slotData.Index );
+						// kick any player that's in the slot
+						var occupant = server.lobbyInfo.ClientInSlot(s);
 						if (occupant != null)
 						{
 							var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
@@ -125,6 +126,9 @@ namespace OpenRA.Mods.RA.Server
 								server.DropClient(occupantConn);
 							}
 						}
+						var slot = server.lobbyInfo.Slots[s];
+						slot.Closed = true;
+						slot.Bot = null;
 
 						server.SyncLobbyInfo();
 						return true;
@@ -132,12 +136,11 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_open",
 					s =>
 					{
-						int slot;
-						if (!int.TryParse(s, out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
-
-						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
-						if (slotData == null)
+						if (!server.lobbyInfo.Slots.ContainsKey(s))
+						{
+							Log.Write("server", "Invalid slot: {0}", s );
 							return false;
+						}
 
 						if (conn.PlayerIndex != 0)
 						{
@@ -145,8 +148,9 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						slotData.Closed = false;
-						slotData.Bot = null;
+						var slot = server.lobbyInfo.Slots[s];
+						slot.Closed = false;
+						slot.Bot = null;
 
 						server.SyncLobbyInfo();
 						return true;
@@ -162,12 +166,11 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						int slot;
-						if (!int.TryParse(parts[0], out slot)) { Log.Write("server", "Invalid slot: {0}", s ); return false; }
-
-						var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == slot );
-						if (slotData == null)
+						if (!server.lobbyInfo.Slots.ContainsKey(parts[0]))
+						{
+							Log.Write("server", "Invalid slot: {0}", parts[0] );
 							return false;
+						}
 
 						if (conn.PlayerIndex != 0)
 						{
@@ -175,8 +178,9 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						slotData.Closed = false;
-						slotData.Bot = string.Join(" ", parts.Skip(1).ToArray() );
+						var slot = server.lobbyInfo.Slots[parts[0]];
+						slot.Bot = string.Join(" ", parts.Skip(1).ToArray() );
+						slot.Closed = false;
 
 						server.SyncLobbyInfo();
 						return true;
@@ -192,14 +196,17 @@ namespace OpenRA.Mods.RA.Server
 						server.lobbyInfo.GlobalSettings.Map = s;			
 						LoadMap(server);
 
+						// Reassign players into slots
+						int i = 0;
 						foreach(var c in server.lobbyInfo.Clients)
 						{
 							c.SpawnPoint = 0;
-							var slotData = server.lobbyInfo.Slots.FirstOrDefault( x => x.Index == c.Slot );
-							if (slotData != null && slotData.MapPlayer != null)
-								S.SyncClientToPlayerReference(c, server.Map.Players[slotData.MapPlayer]);
-				
 							c.State = Session.ClientState.NotReady;
+							c.Slot = c.Slot == null || i >= server.lobbyInfo.Slots.Count ?
+								null : server.lobbyInfo.Slots.ElementAt(i++).Key;
+
+							if (c.Slot != null)
+								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
 						}
 						
 						server.SyncLobbyInfo();
@@ -234,16 +241,17 @@ namespace OpenRA.Mods.RA.Server
 				{ "kick",
 					s => 
 					{
+
 						if (conn.PlayerIndex != 0)
 						{
 							server.SendChatTo( conn, "Only the host can kick players" );
 							return true;
 						}
 
-						int slot;
-						int.TryParse( s, out slot );
+						int clientID;
+						int.TryParse( s, out clientID );
 
-						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Slot == slot);
+						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Index == clientID);
 						if (connToKick == null) 
 						{
 							server.SendChatTo( conn, "Noone in that slot." );
@@ -252,9 +260,7 @@ namespace OpenRA.Mods.RA.Server
 						
 						server.SendOrderTo(connToKick, "ServerError", "You have been kicked from the server");
 						server.DropClient(connToKick);
-
 						server.SyncLobbyInfo();
-
 						return true;
 					}},
 			};
@@ -275,9 +281,13 @@ namespace OpenRA.Mods.RA.Server
 			if (!pr.Playable) return null;
 			return new Session.Slot
 			{
-				MapPlayer = pr.Name,
-				Bot = null,	/* todo: allow the map to specify a bot class? */
+				PlayerReference = pr.Name,
+				Bot = null,
 				Closed = false,
+				AllowBots = pr.AllowBots,
+				LockRace = pr.LockRace,
+				LockColor = pr.LockColor,
+				LockTeam = false
 			};
 		}
 
@@ -287,18 +297,7 @@ namespace OpenRA.Mods.RA.Server
 			server.lobbyInfo.Slots = server.Map.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
-				.Select((s, i) => { s.Index = i; return s; })
-				.ToList();
-
-			// Generate slots for spectators
-			for (int i = 0; i < MaxSpectators; i++)
-				server.lobbyInfo.Slots.Add(new Session.Slot
-				{
-					Spectator = true,
-					Index = server.lobbyInfo.Slots.Count(),
-					MapPlayer = null,
-					Bot = null
-				});
+				.ToDictionary(s => s.PlayerReference, s => s);
 		}
 	}
 }

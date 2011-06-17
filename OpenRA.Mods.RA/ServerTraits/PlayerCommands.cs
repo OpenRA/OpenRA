@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Server
 							return false;
 						}
 						
-						if (server.lobbyInfo.Slots[client.Slot].Spectator)
+						if (client.Slot == null)
 						{
 							server.SendChatTo( conn, "Can't select a spawnpoint as a spectator" );
 							return false;

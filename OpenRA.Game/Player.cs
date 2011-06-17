@@ -74,7 +74,7 @@ namespace OpenRA
 				if (slot != null && slot.Bot != null)
 				{
 					IsBot = true;
-					botType = pr.Bot;
+					botType = slot.Bot;
 					PlayerName = slot.Bot;
 
 					// pick a random color for the bot

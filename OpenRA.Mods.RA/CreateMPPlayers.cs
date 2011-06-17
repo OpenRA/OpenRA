@@ -31,13 +31,13 @@ namespace OpenRA.Mods.RA
 			}
 
 			// create the players which are bound through slots.
-			foreach (var slot in w.LobbyInfo.Slots)
+			foreach (var kv in w.LobbyInfo.Slots)
 			{
-				var client = w.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index && slot.MapPlayer != null);
-				if (client == null && slot.Bot == null)
+				var client = w.LobbyInfo.ClientInSlot(kv.Key);
+				if (client == null && kv.Value.Bot == null)
 					continue;
 
-				var player = new Player(w, client, slot, w.Map.Players[slot.MapPlayer]);
+				var player = new Player(w, client, kv.Value, w.Map.Players[kv.Value.PlayerReference]);
 				w.AddPlayer(player);
 
 				if (client != null && client.Index == Game.LocalClientId)
@@ -60,8 +60,8 @@ namespace OpenRA.Mods.RA
 
 			if (p.World.LobbyInfo.Slots.Count > 0)
 			{
-				if (p.World.LobbyInfo.Slots[pc.Slot].Spectator) return Stance.Ally;
-				if (p.World.LobbyInfo.Slots[qc.Slot].Spectator) return Stance.Ally;
+				if (p.PlayerRef == null) return Stance.Ally;
+				if (q.PlayerRef == null) return Stance.Ally;
 			}
 
 			// Stances set via the player reference

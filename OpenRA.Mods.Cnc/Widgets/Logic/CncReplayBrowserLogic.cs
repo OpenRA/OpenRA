@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
-				var players = currentSummary.LobbyInfo.Slots.Count(s => currentSummary.LobbyInfo.ClientInSlot(s) != null || s.Bot != null);
+				var players = currentSummary.LobbyInfo.Slots.Count(s => currentSummary.LobbyInfo.ClientInSlot(s.Key) != null || s.Value.Bot != null);
 				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 			}
 			catch (Exception e)
