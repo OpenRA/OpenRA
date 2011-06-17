@@ -30,19 +30,9 @@ namespace OpenRA.Widgets
 					data[n.Key] = n.Value.Value;
 		}
 
-		public static string GetString(string key)
+		public static T Get<T>(string key)
 		{
-			return data[key];
-		}
-
-		public static int GetInt(string key)
-		{
-			return int.Parse(data[key]);
-		}
-
-		public static bool GetBool(string key)
-		{
-			return bool.Parse(data[key]);
+			return (T)FieldLoader.GetValue( key, typeof(T), data[key] );
 		}
 	}
 }

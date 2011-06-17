@@ -20,8 +20,8 @@ namespace OpenRA.Widgets
 		public string Key = null;
 		public string Text = "";
 		public bool Depressed = false;
-		public int VisualHeight = ChromeMetrics.GetInt("ButtonDepth");
-		public string Font = ChromeMetrics.GetString("ButtonFont");
+		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
+		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
 		public Action OnClick = () => {};

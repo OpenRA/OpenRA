@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public Func<bool> IsChecked = () => false;
 		public int BaseLine = 1;
-		public bool HasPressedState = ChromeMetrics.GetBool("CheckboxPressedState");
+		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
 
 		public CheckboxWidget()
 			: base()

@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 		public int ScrollbarWidth = 24;
 		public float ScrollVelocity = 4f;		
 		public int ItemSpacing = 2;
-		public int ButtonDepth = ChromeMetrics.GetInt("ButtonDepth");
+		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
 		public int ContentHeight = 0;
 		protected float ListOffset = 0;
