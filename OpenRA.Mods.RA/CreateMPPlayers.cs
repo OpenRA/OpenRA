@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			// create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in w.Map.Players.Where(p => !p.Value.Playable))
 			{
-				var player = new Player(w, null, kv.Value);
+				var player = new Player(w, null, null, kv.Value);
 				w.AddPlayer(player);
 				if (kv.Value.OwnsWorld)
 					w.WorldActor.Owner = player;
@@ -34,36 +34,14 @@ namespace OpenRA.Mods.RA
 			foreach (var slot in w.LobbyInfo.Slots)
 			{
 				var client = w.LobbyInfo.Clients.FirstOrDefault(c => c.Slot == slot.Index && slot.MapPlayer != null);
-				if (client != null)
-				{
-					/* spawn a real player in this slot. */
-					var player = new Player(w, client, w.Map.Players[slot.MapPlayer]);
-					w.AddPlayer(player);
-					if (client.Index == Game.LocalClientId)
-						w.SetLocalPlayer(player.InternalName);		// bind this one to the local player.
-				}
-				// TODO: This is shit. Merge it up into Player ctor?
-				else if (slot.Bot != null && slot.MapPlayer != null)
-				{
-					/* spawn a bot in this slot, "owned" by the host */
+				if (client == null && slot.Bot == null)
+					continue;
 
-					/* pick a random color for the bot */
-					var hue = (byte)w.SharedRandom.Next(256);
-                    w.Map.Players[slot.MapPlayer].ColorRamp = new ColorRamp(hue, 255, 180, 25);
+				var player = new Player(w, client, slot, w.Map.Players[slot.MapPlayer]);
+				w.AddPlayer(player);
 
-					/* todo: pick a random name from the pool */
-					var player = new Player(w, null, w.Map.Players[slot.MapPlayer]);
-					w.AddPlayer(player);
-					
-					/* activate the bot option that's selected! */
-					if (Game.IsHost)
-						player.PlayerActor.TraitsImplementing<IBot>()
-							.Single(b => b.Info.Name == slot.Bot)
-							.Activate(player);
-
-					/* a bit of a hack */
-					player.IsBot = true;
-				}
+				if (client != null && client.Index == Game.LocalClientId)
+					w.SetLocalPlayer(player.InternalName);
 			}
 			
 			foreach (var p in w.Players)
