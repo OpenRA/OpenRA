@@ -537,4 +537,48 @@ rmbo:
 		Facings: 8
 	idle1:
 		Start: 192
-
+		Length: 16
+		Tick: 120
+	idle2:
+		Start: 208
+		Length: 16
+		Tick: 120
+	idle3:
+		Start: 224
+		Length: 15
+		Tick: 120
+	cheer:
+		Start: 396
+		Length: 3
+		Facings: 8
+		Tick: 120
+	# Shot
+	die1:
+		Start: 318
+		Length: 8
+		Tick: 80
+	# Explode
+	die2:
+		Start: 326
+		Length: 8
+		Tick: 80
+	# Fly and explode in air
+	die3:
+		Start: 334
+		Length: 8
+		Tick: 80
+	# Fly through air squish on ground
+	die4:
+		Start: 342
+		Length: 12
+		Tick: 80
+	# Burn
+	die5:
+		Start: 354
+		Length: 18
+		Tick: 80
+	# Tib
+	die6:
+		Start: 308
+		Length: 4
+		Tick: 80
