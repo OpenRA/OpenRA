@@ -3,3 +3,4 @@
 Metrics:
 	ButtonDepth: 1
 	ButtonFont: Regular
+	CheckboxPressedState: false

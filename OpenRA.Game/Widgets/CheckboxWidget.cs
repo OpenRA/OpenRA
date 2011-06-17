@@ -19,6 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public Func<bool> IsChecked = () => false;
 		public int BaseLine = 1;
+		public bool HasPressedState = ChromeMetrics.GetBool("CheckboxPressedState");
 
 		public CheckboxWidget()
 			: base()
@@ -36,7 +37,7 @@ namespace OpenRA.Widgets
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = IsDisabled() ? "checkbox-disabled" : 
-						Depressed ? "checkbox-pressed" : 
+						Depressed && HasPressedState ? "checkbox-pressed" : 
 						RenderBounds.Contains(Viewport.LastMousePos) ? "checkbox-hover" : 
 						"checkbox";
 			
@@ -48,7 +49,7 @@ namespace OpenRA.Widgets
 
 			if (IsChecked() || Depressed)
 				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage("checkbox-bits", Depressed ? "pressed" : "checked"),
+					ChromeProvider.GetImage("checkbox-bits", Depressed && HasPressedState ? "pressed" : "checked"),
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
 

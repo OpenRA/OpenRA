@@ -39,5 +39,10 @@ namespace OpenRA.Widgets
 		{
 			return int.Parse(data[key]);
 		}
+
+		public static bool GetBool(string key)
+		{
+			return bool.Parse(data[key]);
+		}
 	}
 }
