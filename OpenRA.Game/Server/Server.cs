@@ -216,7 +216,7 @@ namespace OpenRA.Server
 
 				// Enforce correct PlayerIndex and Slot
 				client.Index = newConn.PlayerIndex;
-				client.Slot = ChooseFreeSlot();
+				client.Slot = lobbyInfo.FirstEmptySlot();
 				
 				var slotData = lobbyInfo.Slots.FirstOrDefault( x => x.Index == client.Slot );
 				if (slotData != null && slotData.MapPlayer != null)
@@ -235,13 +235,6 @@ namespace OpenRA.Server
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
-
-		int ChooseFreeSlot()
-		{
-			return lobbyInfo.Slots.First(s => !s.Closed && s.Bot == null 
-				&& !lobbyInfo.Clients.Any( c => c.Slot == s.Index )).Index;
-		}
-		
 		
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
 		{

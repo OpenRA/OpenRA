@@ -199,6 +199,8 @@ namespace OpenRA.Widgets
 			}
 			return text;
 		}
+
+		public static Action Once( Action a ) { return () => { if (a != null) { a(); a = null; } }; }
 	}
 
 	[Flags]

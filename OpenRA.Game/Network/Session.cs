@@ -31,6 +31,12 @@ namespace OpenRA.Network
 			return Clients.SingleOrDefault(c => c.Slot == slot.Index);
 		}
 
+		public int FirstEmptySlot()
+		{
+			return Slots.First(s => !s.Closed && ClientInSlot(s) == null
+			                   && s.Bot == null).Index;
+		}
+
 		public enum ClientState
 		{
 			NotReady,

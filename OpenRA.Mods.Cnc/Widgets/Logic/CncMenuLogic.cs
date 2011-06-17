@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs()
                 {
 					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
 			};
 			
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget.OpenWindow("CREATESERVER_PANEL", new WidgetArgs()
                 {
 					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
 			};
 			
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs()
                 {
 					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer) }
+					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
 			};		
 			
@@ -140,13 +140,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			rootMenu.Parent.RemoveChild(rootMenu);
 		}
 		
-		void OpenLobbyPanel(MenuType menu)
+		void OpenLobbyPanel(MenuType menu, bool addBots)
 		{
 			Menu = MenuType.None;
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 			{
 				{ "onExit", () => { Game.Disconnect(); Menu = menu; } },
-				{ "onStart", RemoveShellmapUI }
+				{ "onStart", RemoveShellmapUI },
+				{ "addBots", addBots }
 			});
 		}
 		
@@ -156,7 +157,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var port = Game.CreateLocalServer(map);
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
 			                           port,
-			                           () => OpenLobbyPanel(MenuType.Main),
+			                           () => OpenLobbyPanel(MenuType.Main, true),
 			                           () => { Game.CloseServer(); Menu = MenuType.Main; });
 		}
 	}

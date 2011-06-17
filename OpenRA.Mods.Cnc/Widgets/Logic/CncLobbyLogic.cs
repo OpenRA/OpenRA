@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 					{
 						{ "onExit", onExit },
-						{ "onStart", OnGameStart }
+						{ "onStart", OnGameStart },
+						{ "addBots", false }
 					});
 				};
 				
@@ -86,7 +87,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		                       [ObjectCreator.Param] World world, // Shellmap world
 		                       [ObjectCreator.Param] OrderManager orderManager,
 		                       [ObjectCreator.Param] Action onExit,
-		                       [ObjectCreator.Param] Action onStart)
+		                       [ObjectCreator.Param] Action onStart,
+		                       [ObjectCreator.Param] bool addBots)
 		{
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
@@ -222,6 +224,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "onExit", () => {} },
 				});
 			};
+
+			// Add a bot on the first lobbyinfo update
+			if (addBots)
+				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
+				{
+					var slot = orderManager.LobbyInfo.FirstEmptySlot();
+					var bot = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+					if (bot != null)
+						orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot, bot)));
+				});
 		}
 		
 		public void AddChatLine(Color c, string from, string text)
