@@ -55,7 +55,8 @@ namespace OpenRA.Widgets
 			if (e.KeyName != Key || e.Modifiers != Modifiers.None || e.Event != KeyInputEvent.Down)
 				return false;
 			
-			OnClick();
+			if (!IsDisabled())
+				OnClick();
 			return true;
 		}
 		
