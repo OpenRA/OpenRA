@@ -34,8 +34,7 @@ namespace OpenRA.Network
 
 		public string FirstEmptySlot()
 		{
-			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null
-			                            && s.Value.Bot == null).Key;
+			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
 		}
 
 		public enum ClientState
@@ -55,12 +54,12 @@ namespace OpenRA.Network
 			public ClientState State;
 			public int Team;
 			public string Slot;	// slot ID, or null for observer
+			public string Bot; // Bot type, null for real clients
 		}
 
 		public class Slot
 		{
 			public string PlayerReference;	// playerReference to bind against.
-			public string Bot;	// trait name of the bot to initialize in this slot, or null otherwise.
 			public bool Closed;	// host has explicitly closed this slot.
 
 			public bool AllowBots;

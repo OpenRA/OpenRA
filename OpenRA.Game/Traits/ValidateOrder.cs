@@ -18,10 +18,18 @@ namespace OpenRA.Traits
     {
         public bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order)
         {            
-            // Drop exploiting orders
-            if (order.Subject != null && order.Subject.Owner.ClientIndex != clientId)
+			if (order.Subject == null || order.Subject.Owner == null)
+				return true;
+
+			var subjectClient = order.Subject.Owner.ClientIndex;
+
+			// Hack: Assumes bots always run on clientId 0.
+			var isBotOrder = orderManager.LobbyInfo.Clients[subjectClient].Bot != null && clientId == 0;
+
+			// Drop exploiting orders
+			if (subjectClient != clientId && !isBotOrder)
             {
-                Game.Debug("Detected exploit order from {0}: {1}".F(clientId, order.OrderString));
+                Game.Debug("Detected exploit order from client {0}: {1}".F(clientId, order.OrderString));
                 return false;
             }
 

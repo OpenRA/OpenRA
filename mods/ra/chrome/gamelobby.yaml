@@ -98,15 +98,6 @@ Background@SERVER_LOBBY:
 							Y:2
 							Width:20
 							Height:20
-						Label@SPECTATOR:
-							Id:SPECTATOR
-							Text:Spectator
-							Width:278
-							Height:25
-							X:160
-							Y:0
-							Align:Center
-							Font:Bold
 				Container@TEMPLATE_REMOTE:
 					Id:TEMPLATE_REMOTE
 					X:5
@@ -170,15 +161,6 @@ Background@SERVER_LOBBY:
 							Y:2
 							Width:20
 							Height:20
-						Label@SPECTATOR:
-							Id:SPECTATOR
-							Text:Spectator
-							Width:278
-							Height:25
-							X:160
-							Y:0
-							Align:Center
-							Font:Bold
 				Container@TEMPLATE_EMPTY:
 					Id:TEMPLATE_EMPTY
 					X:5

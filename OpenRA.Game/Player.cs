@@ -46,11 +46,13 @@ namespace OpenRA
 			PlayerRef = pr;
 			string botType = null;
 			
+			// Real player or host-created bot
 			if (client != null)
 			{
 				ClientIndex = client.Index;
             	ColorRamp = client.ColorRamp;
 				PlayerName = client.Name;
+				botType = client.Bot;
 
 				Country = world.GetCountries()
 					.FirstOrDefault(c => client.Country == c.Race)
@@ -58,36 +60,21 @@ namespace OpenRA
 			}
 			else
 			{
-				// Map player or bot
+				// Map player
 				ClientIndex = 0; 		/* it's a map player, "owned" by host */
 				ColorRamp = pr.ColorRamp;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
-				IsBot = pr.Bot != null;
 				botType = pr.Bot;
 
 				Country = world.GetCountries()
 					.FirstOrDefault(c => pr.Race == c.Race)
 					?? world.GetCountries().Random(world.SharedRandom);
-
-				// Multiplayer bot
-				if (slot != null && slot.Bot != null)
-				{
-					IsBot = true;
-					botType = slot.Bot;
-					PlayerName = slot.Bot;
-
-					// pick a random color for the bot
-					var hue = (byte)world.SharedRandom.Next(255);
-					var sat = (byte)world.SharedRandom.Next(255);
-					var lum = (byte)world.SharedRandom.Next(51,255);
-					ColorRamp = new ColorRamp(hue, sat, lum, 10);
-				}
 			}
-			
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 
-			// Enable the bot logic
+			// Enable the bot logic on the host
+			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
 			{
 				var logic = PlayerActor.TraitsImplementing<IBot>()

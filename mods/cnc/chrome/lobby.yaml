@@ -67,6 +67,14 @@ Container@SERVER_LOBBY:
 									Width:150
 									Height:25
 									MaxLength:16
+									Visible:false
+								DropDownButton@BOT_DROPDOWN:
+									Id:BOT_DROPDOWN
+									Text:Name
+									Width:150
+									Height:25
+									Font:Regular
+									Visible:false
 								DropDownButton@COLOR:
 									Id:COLOR
 									Width:80
@@ -207,38 +215,6 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:160
 									Y:0
-						Container@TEMPLATE_BOT:
-							Id:TEMPLATE_BOT
-							X:5
-							Y:0
-							Width:475
-							Height:25
-							Visible:false
-							Children:
-								DropDownButton@NAME_HOST:
-									Id:NAME_HOST
-									Text:Name
-									Width:150
-									Height:25
-									Font:Regular
-									Visible:false
-								Label@NAME:
-									Id:NAME
-									Text:Name
-									Width:145
-									Height:25
-									X:5
-									Y:0-1
-									Visible:false
-								Label@BOT:
-									Id:BOT
-									Text:Bot
-									Width:278
-									Height:25
-									X:160
-									Y:0
-									Align:Center
-									Font:Bold
 						Container@TEMPLATE_LOCAL_SPECTATOR:
 							Id:TEMPLATE_LOCAL_SPECTATOR
 							X:5

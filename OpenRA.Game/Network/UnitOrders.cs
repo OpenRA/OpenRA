@@ -21,10 +21,9 @@ namespace OpenRA.Network
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
 			/* todo: this is still a hack. 
-			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,
-			 * bots,.. */
+			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,..*/
 			return world.Players.FirstOrDefault(
-				p => (p.ClientIndex == c.Index && p.PlayerRef.Playable && !p.IsBot));
+				p => (p.ClientIndex == c.Index && p.PlayerRef.Playable));
 		}
 
 		public static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)

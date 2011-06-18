@@ -82,8 +82,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 						var slot = server.lobbyInfo.Slots[s];
 
-						if (slot.Closed || slot.Bot != null ||
-					    	server.lobbyInfo.ClientInSlot(s) != null)
+						if (slot.Closed || server.lobbyInfo.ClientInSlot(s) != null)
 							return false;
 
 						client.Slot = s;
@@ -119,17 +118,20 @@ namespace OpenRA.Mods.RA.Server
 						var occupant = server.lobbyInfo.ClientInSlot(s);
 						if (occupant != null)
 						{
-							var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
-							if (occupantConn != null)
+							if (occupant.Bot != null)
+								server.lobbyInfo.Clients.Remove(occupant);
+							else
 							{
-								server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
-								server.DropClient(occupantConn);
+								var occupantConn = server.conns.FirstOrDefault( c => c.PlayerIndex == occupant.Index );
+								if (occupantConn != null)
+								{
+									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
+									server.DropClient(occupantConn);
+								}
 							}
 						}
-						var slot = server.lobbyInfo.Slots[s];
-						slot.Closed = true;
-						slot.Bot = null;
 
+						server.lobbyInfo.Slots[s].Closed = true;
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -150,7 +152,11 @@ namespace OpenRA.Mods.RA.Server
 
 						var slot = server.lobbyInfo.Slots[s];
 						slot.Closed = false;
-						slot.Bot = null;
+
+						// Slot may have a bot in it
+						var occupant = server.lobbyInfo.ClientInSlot(s);
+						if (occupant != null && occupant.Bot != null)
+							server.lobbyInfo.Clients.Remove(occupant);
 
 						server.SyncLobbyInfo();
 						return true;
@@ -178,10 +184,30 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
+						var botType = string.Join(" ", parts.Skip(1).ToArray() );
 						var slot = server.lobbyInfo.Slots[parts[0]];
-						slot.Bot = string.Join(" ", parts.Skip(1).ToArray() );
 						slot.Closed = false;
 
+						var bot = new Session.Client()
+						{
+							Index = server.ChooseFreePlayerIndex(),
+							Name = botType,
+							Bot = botType,
+							Slot = parts[0],
+							Country = "random",
+							SpawnPoint = 0,
+							Team = 0,
+							State = Session.ClientState.NotReady
+						};
+
+						// pick a random color for the bot
+						var hue = (byte)Game.CosmeticRandom.Next(255);
+						var sat = (byte)Game.CosmeticRandom.Next(255);
+						var lum = (byte)Game.CosmeticRandom.Next(51,255);
+						bot.ColorRamp = new ColorRamp(hue, sat, lum, 10);
+
+						S.SyncClientToPlayerReference(client, server.Map.Players[parts[0]]);
+						server.lobbyInfo.Clients.Add(bot);
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -193,20 +219,29 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
-						server.lobbyInfo.GlobalSettings.Map = s;			
+						server.lobbyInfo.GlobalSettings.Map = s;
+						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
 
-						// Reassign players into slots
+						// Reassign players into new slots based on their old slots:
+						//  - Observers remain as observers
+						//  - Players who now lack a slot are made observers
+						//  - Bots who now lack a slot are dropped
+						var slots = server.lobbyInfo.Slots.Keys.ToArray();
 						int i = 0;
-						foreach(var c in server.lobbyInfo.Clients)
+						foreach (var os in oldSlots)
 						{
+							var c = server.lobbyInfo.ClientInSlot(os);
+							if (c == null)
+								continue;
+
 							c.SpawnPoint = 0;
 							c.State = Session.ClientState.NotReady;
-							c.Slot = c.Slot == null || i >= server.lobbyInfo.Slots.Count ?
-								null : server.lobbyInfo.Slots.ElementAt(i++).Key;
-
+							c.Slot = i < slots.Length ? slots[i++] : null;
 							if (c.Slot != null)
 								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+							else if (c.Bot != null)
+								server.lobbyInfo.Clients.Remove(c);
 						}
 						
 						server.SyncLobbyInfo();
@@ -282,7 +317,6 @@ namespace OpenRA.Mods.RA.Server
 			return new Session.Slot
 			{
 				PlayerReference = pr.Name,
-				Bot = null,
 				Closed = false,
 				AllowBots = pr.AllowBots,
 				LockRace = pr.LockRace,

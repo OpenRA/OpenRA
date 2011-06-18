@@ -129,10 +129,11 @@ namespace OpenRA.Server
 		 *		for manual spawnpoint choosing.
 		 *	- 256 max players is a dirty hack
 		 */
-		int ChooseFreePlayerIndex()
+		public int ChooseFreePlayerIndex()
 		{
 			for (var i = 0; i < 256; i++)
-				if (conns.All(c => c.PlayerIndex != i) && preConns.All(c => c.PlayerIndex != i))
+				if (conns.All(c => c.PlayerIndex != i) && preConns.All(c => c.PlayerIndex != i)
+				    && lobbyInfo.Clients.All(c => c.Index != i))
 					return i;
 
 			throw new InvalidOperationException("Already got 256 players");

@@ -35,7 +35,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly OrderManager orderManager;
 		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
-		internal LobbyLogic( [ObjectCreator.Param( "widget" )] Widget lobby, [ObjectCreator.Param] OrderManager orderManager, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		internal LobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
+		                    [ObjectCreator.Param] OrderManager orderManager,
+		                    [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
@@ -93,13 +95,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return sc;
 			};
 
-			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
+			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>()
+				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi =>
 			{
-				Widget.OpenWindow( "MAP_CHOOSER", new WidgetArgs() { { "orderManager", orderManager }, { "mapName", MapUid } } );
+				Widget.OpenWindow("MAP_CHOOSER", new WidgetArgs()
+				{
+					{ "orderManager", orderManager },
+					{ "mapName", MapUid }
+				});
 				return true;
 			};
 
@@ -221,11 +228,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 		
-		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot)
+		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
 			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && slot.Bot == null)),
+				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
 				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
 			};
 			
@@ -233,7 +240,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
-					options.Add(new SlotDropDownOption("Bot: {0}".F(bot), "slot_bot {0} {1}".F(slot.PlayerReference, bot), () => slot.Bot == bot));
+					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
+				                                   "slot_bot {0} {1}".F(slot.PlayerReference, bot),
+				                                   () => client != null && client.Bot == bot));
 				}
 
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -327,32 +336,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var c = orderManager.LobbyInfo.ClientInSlot(kv.Key);
 				Widget template;
 
-				if (c == null)
+				if (c == null || c.Bot != null)
 				{
 					if (Game.IsHost)
 					{
 						template = EmptySlotTemplateHost.Clone();
 						var name = template.GetWidget<DropDownButtonWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, s);
+						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
+						name.OnMouseDown = _ => ShowSlotDropDown(name, s, c);
 					}
 					else
 					{
 						template = EmptySlotTemplate.Clone();
 						var name = template.GetWidget<LabelWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (s.Bot == null) ? "Open" : s.Bot;
+						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
 					}
 
 					var join = template.GetWidget<ButtonWidget>("JOIN");
 					if (join != null)
 					{
 						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference)); return true; };
-						join.IsVisible = () => !s.Closed && s.Bot == null && orderManager.LocalClient.State != Session.ClientState.Ready;
+						join.IsVisible = () => !s.Closed && c == null && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
 					
-					var bot = template.GetWidget<LabelWidget>("BOT");
-					if (bot != null)
-						bot.IsVisible = () => s.Bot != null;
+					template.GetWidget<LabelWidget>("BOT").IsVisible = () => c != null;
 				}
 				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
@@ -401,11 +408,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					status.OnClick = CycleReady;
-					
-					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
-					
-					Session.Slot ss = s;
-					spectator.IsVisible = () => ss.Bot != null;
 				}
 				else
 				{
@@ -428,11 +430,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick = CycleReady;
-
-					var spectator = template.GetWidget<LabelWidget>("SPECTATOR");
-							
-					Session.Slot ss = s;
-					spectator.IsVisible = () => ss.Bot != null;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;

@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncLobbyLogic
 	{
-		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, BotTemplate,
-				LocalSpectatorTemplate, RemoteSpectatorTemplate, NewSpectatorTemplate;
+		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate,
+			   LocalSpectatorTemplate, RemoteSpectatorTemplate, NewSpectatorTemplate;
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 		
@@ -108,7 +108,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
 			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
-			BotTemplate = Players.GetWidget("TEMPLATE_BOT");
 			LocalSpectatorTemplate = Players.GetWidget("TEMPLATE_LOCAL_SPECTATOR");
 			RemoteSpectatorTemplate = Players.GetWidget("TEMPLATE_REMOTE_SPECTATOR");
 			NewSpectatorTemplate = Players.GetWidget("TEMPLATE_NEW_SPECTATOR");
@@ -150,7 +149,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				return sc;
 			};
 
-			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>().ToDictionary(a => a.Race, a => a.Name);
+			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>()
+				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
@@ -296,25 +296,27 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 		
-		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot)
+		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
 			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && slot.Bot == null)),
+				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
 				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
 			};
-			
+
 			if (slot.AllowBots)
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
-					options.Add(new SlotDropDownOption("Bot: {0}".F(bot), "slot_bot {0} {1}".F(slot.PlayerReference, bot), () => slot.Bot == bot));
+					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
+				                                   "slot_bot {0} {1}".F(slot.PlayerReference, bot),
+				                                   () => client != null && client.Bot == bot));
 				}
-			
+
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  o.Selected, 
+				                                  o.Selected,
 				                                  () => orderManager.IssueOrder(Order.Command(o.Order)));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
@@ -329,7 +331,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Country == race, 
+				                                  () => client.Country == race,
 				                                  () => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
 				var flag = item.GetWidget<ImageWidget>("FLAG");
@@ -347,7 +349,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Team == ii, 
+				                                  () => client.Team == ii,
 				                                  () => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
@@ -377,7 +379,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				{ "onSelect", onSelect },
 				{ "onChange", onChange },
-				{ "initialRamp", orderManager.LocalClient.ColorRamp }
+				{ "initialRamp", client.ColorRamp }
 			});
 			
 			color.AttachPanel(colorChooser);
@@ -398,7 +400,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget template;
 
 				// Empty slot
-				if (client == null && slot.Bot == null)
+				if (client == null)
 				{
 					template = EmptySlotTemplate.Clone();
 					Func<string> getText = () => slot.Closed ? "Closed" : "Open";
@@ -408,7 +410,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						var name = template.GetWidget<DropDownButtonWidget>("NAME_HOST");
 						name.IsVisible = () => true;
 						name.GetText = getText;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, slot);
+						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
 					}
 					else
 					{
@@ -421,51 +423,43 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					if (join != null)
 					{
 						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + key)); return true; };
-						join.IsVisible = () => !slot.Closed && slot.Bot == null && orderManager.LocalClient.State != Session.ClientState.Ready;
-					}
-				}
-				// Bot
-				else if (client == null && slot.Bot != null)
-				{
-					template = BotTemplate.Clone();
-					Func<string> getText = () => slot.Bot;
-					
-					if (Game.IsHost)
-					{
-						var name = template.GetWidget<DropDownButtonWidget>("NAME_HOST");
-						name.IsVisible = () => true;
-						name.GetText = getText;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, slot);
-					}
-					else
-					{
-						var name = template.GetWidget<LabelWidget>("NAME");
-						name.IsVisible = () => true;
-						name.GetText = getText;
+						join.IsVisible = () => !slot.Closed && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
 				}
 				// Editable player in slot
-				else if (client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready)
+				else if ((client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready) ||
+				         (client.Bot != null && Game.IsHost))
 				{
 					template = LocalPlayerTemplate.Clone();
-					var name = template.GetWidget<TextFieldWidget>("NAME");
-					name.Text = client.Name;
-					name.OnEnterKey = () =>
+					if (client.Bot != null)
 					{
-						name.Text = name.Text.Trim();
-						if (name.Text.Length == 0)
-							name.Text = client.Name;
+						var name = template.GetWidget<DropDownButtonWidget>("BOT_DROPDOWN");
+						name.IsVisible = () => true;
+						name.GetText = () => client.Name;
+						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
+					}
+					else
+					{
+						var name = template.GetWidget<TextFieldWidget>("NAME");
+						name.IsVisible = () => true;
+						name.Text = client.Name;
+						name.OnEnterKey = () =>
+						{
+							name.Text = name.Text.Trim();
+							if (name.Text.Length == 0)
+								name.Text = client.Name;
 
-						name.LoseFocus();
-						if (name.Text == client.Name)
+							name.LoseFocus();
+							if (name.Text == client.Name)
+								return true;
+
+							orderManager.IssueOrder(Order.Command("name " + name.Text));
+							Game.Settings.Player.Name = name.Text;
+							Game.Settings.Save();
 							return true;
-
-						orderManager.IssueOrder(Order.Command("name " + name.Text));
-						Game.Settings.Player.Name = name.Text;
-						Game.Settings.Save();
-						return true;
-					};
-					name.OnLoseFocus = () => name.OnEnterKey();
+						};
+						name.OnLoseFocus = () => name.OnEnterKey();
+					}
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor;
@@ -485,11 +479,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					factionflag.GetImageCollection = () => "flags";
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
-					team.IsDisabled = () => slot.LockTeam;
-					team.OnMouseDown = _ => { if (slot.LockTeam) return true; return ShowTeamDropDown(team, client); };
+					team.IsDisabled = () => slot.LockTeam || client.Bot != null;
+					team.OnMouseDown = _ => { if (team.IsDisabled()) return true; return ShowTeamDropDown(team, client); };
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					status.IsVisible = () => client.Bot == null;
 					status.IsChecked = () => client.State == Session.ClientState.Ready;
 					status.OnClick += CycleReady;
 				}
@@ -513,6 +508,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => client.State == Session.ClientState.Ready;
+					status.IsVisible = () => client.Bot == null;
 					if (client.Index == orderManager.LocalClient.Index)
 						status.OnClick += CycleReady;
 
@@ -661,6 +657,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Set the initial state
 			updateSliders();
+			onChange(ramp);
 		}
 	}
 }
