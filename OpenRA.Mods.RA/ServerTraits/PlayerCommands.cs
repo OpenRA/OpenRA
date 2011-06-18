@@ -54,6 +54,10 @@ namespace OpenRA.Mods.RA.Server
 						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
 							return true;
 
+						// Map has disabled race changes
+						if (server.lobbyInfo.Slots[targetClient.Slot].LockRace)
+							return true;
+
 						targetClient.Country = parts[1];
 						server.SyncLobbyInfo();
 						return true;
@@ -66,6 +70,10 @@ namespace OpenRA.Mods.RA.Server
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+							return true;
+
+						// Map has disabled team changes
+						if (server.lobbyInfo.Slots[targetClient.Slot].LockTeam)
 							return true;
 
 						int team;
@@ -114,6 +122,10 @@ namespace OpenRA.Mods.RA.Server
 
 						// Only the host can change other client's info
 						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+							return true;
+
+						// Map has disabled color changes
+						if (targetClient.Slot != null && server.lobbyInfo.Slots[targetClient.Slot].LockColor)
 							return true;
 
 						var ci = parts[1].Split(',').Select(cc => int.Parse(cc)).ToArray();
