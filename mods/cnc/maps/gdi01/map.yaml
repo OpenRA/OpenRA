@@ -34,6 +34,11 @@ Players:
 		Race: gdi
 		LockColor: True
 		ColorRamp: 31,222,183,24
+		LockTeam: True
+		Team: 0
+		LockSpawn: True
+		Spawn: 0
+		AllowBots: False
 		InitialCash: 20
 		Allies: GoodGuy
 		Enemies: BadGuy,Creeps

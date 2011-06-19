@@ -321,8 +321,8 @@ namespace OpenRA.Mods.RA.Server
 				AllowBots = pr.AllowBots,
 				LockRace = pr.LockRace,
 				LockColor = pr.LockColor,
-				LockTeam = false,
-				LockSpawn = false
+				LockTeam = pr.LockTeam,
+				LockSpawn = pr.LockSpawn
 			};
 		}
 

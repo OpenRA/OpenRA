@@ -23,13 +23,19 @@ namespace OpenRA.FileFormats
 		public string Bot = null;
 		public bool DefaultStartingUnits = false;
 		public bool AllowBots = true;
-		
+
 		public bool LockRace = false;
 		public string Race;
-		
+
 		public bool LockColor = false;
         public ColorRamp ColorRamp = new ColorRamp(0,0,238,34);
-		
+
+		public bool LockSpawn = false;
+		public int Spawn = 0;
+
+		public bool LockTeam = false;
+		public int Team = 0;
+
 		public int InitialCash = 0;
 		public string[] Allies = {};
 		public string[] Enemies = {};

@@ -244,6 +244,10 @@ namespace OpenRA.Server
                 c.ColorRamp = pr.ColorRamp;
 			if (pr.LockRace)
 				c.Country = pr.Race;
+			if (pr.LockSpawn)
+				c.SpawnPoint = pr.Spawn;
+			if (pr.LockTeam)
+				c.Team = pr.Team;
 		}
 		
 		public void UpdateInFlightFrames(Connection conn)
