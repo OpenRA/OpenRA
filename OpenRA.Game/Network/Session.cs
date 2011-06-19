@@ -66,6 +66,7 @@ namespace OpenRA.Network
 			public bool LockRace;
 			public bool LockColor;
 			public bool LockTeam;
+			public bool LockSpawn;
 		}
 
 		public class Global

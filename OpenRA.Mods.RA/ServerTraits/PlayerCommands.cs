@@ -94,7 +94,11 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						// Spectators don't need a spawnpoint
-						if (client.Slot == null)
+						if (targetClient.Slot == null)
+							return true;
+
+						// Map has disabled spawn changes
+						if (server.lobbyInfo.Slots[targetClient.Slot].LockSpawn)
 							return true;
 
 						int spawnPoint;

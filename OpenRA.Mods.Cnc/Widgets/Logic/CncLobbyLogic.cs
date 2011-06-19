@@ -355,11 +355,31 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				return item;
 			};
 			
-			var options = Graphics.Util.MakeArray(Map.PlayerCount, i => i).ToList();
+			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count()+1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 			return true;
 		}
-		
+
+		bool ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => client.SpawnPoint == ii, 
+				                                  () => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				return item;
+			};
+
+			var taken = orderManager.LobbyInfo.Clients
+				.Where(c => c.SpawnPoint != 0 && c.SpawnPoint != client.SpawnPoint && c.Slot != null)
+				.Select(c => c.SpawnPoint).ToList();
+
+			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count() + 1, i => i).Except(taken).ToList();
+			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			return true;
+		}
+
 		bool ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			Action<ColorRamp> onSelect = c =>
@@ -483,6 +503,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					team.OnMouseDown = _ => { if (team.IsDisabled()) return true; return ShowTeamDropDown(team, client); };
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
+					var spawn = template.GetWidget<DropDownButtonWidget>("SPAWN");
+					spawn.IsDisabled = () => slot.LockSpawn;
+					spawn.OnMouseDown = _ => { if (spawn.IsDisabled()) return true; return ShowSpawnDropDown(spawn, client); };
+					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
+
 					if (client.Bot == null)
 					{
 						// local player
@@ -493,7 +518,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					}
 					else // Bot
 						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
-
 				}
 				// Non-editable player in slot
 				else
