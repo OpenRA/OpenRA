@@ -33,7 +33,7 @@ namespace OpenRA
 		public readonly CountryInfo Country;
 		public readonly bool NonCombatant = false;
 		public readonly int ClientIndex;
-		public readonly PlayerReference PlayerRef;
+		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
 
 		public Shroud Shroud { get { return World.LocalShroud; }}
@@ -43,7 +43,7 @@ namespace OpenRA
 		{
 			World = world;
 			InternalName = pr.Name;
-			PlayerRef = pr;
+			PlayerReference = pr;
 			string botType = null;
 			
 			// Real player or host-created bot

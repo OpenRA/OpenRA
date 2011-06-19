@@ -23,7 +23,7 @@ namespace OpenRA.Network
 			/* todo: this is still a hack. 
 			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,..*/
 			return world.Players.FirstOrDefault(
-				p => (p.ClientIndex == c.Index && p.PlayerRef.Playable));
+				p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));
 		}
 
 		public static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)

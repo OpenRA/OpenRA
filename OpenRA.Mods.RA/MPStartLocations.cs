@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 
 		static Player FindPlayerInSlot(World world, string pr)
 		{
-			return world.Players.FirstOrDefault(p => p.PlayerRef.Name == pr);
+			return world.Players.FirstOrDefault(p => p.PlayerReference.Name == pr);
 		}
 		
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)

@@ -55,9 +55,9 @@ namespace OpenRA.Mods.RA
 			if (p == q) return Stance.Ally;
 
 			// Stances set via PlayerReference
-			if (p.PlayerRef.Allies.Contains(q.InternalName))
+			if (p.PlayerReference.Allies.Contains(q.InternalName))
 				return Stance.Ally;
-			if (p.PlayerRef.Enemies.Contains(q.InternalName))
+			if (p.PlayerReference.Enemies.Contains(q.InternalName))
 				return Stance.Enemy;
 
 			// Stances set via lobby teams
