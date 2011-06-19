@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncLobbyLogic
 	{
-		Widget LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate,
-			   LocalSpectatorTemplate, RemoteSpectatorTemplate, NewSpectatorTemplate;
+		Widget EditablePlayerTemplate, NonEditablePlayerTemplate, EmptySlotTemplate,
+			   EditableSpectatorTemplate, NonEditableSpectatorTemplate, NewSpectatorTemplate;
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 		
@@ -105,11 +105,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			PlayerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
 			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
-			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
-			RemotePlayerTemplate = Players.GetWidget("TEMPLATE_REMOTE");
+			EditablePlayerTemplate = Players.GetWidget("TEMPLATE_EDITABLE_PLAYER");
+			NonEditablePlayerTemplate = Players.GetWidget("TEMPLATE_NONEDITABLE_PLAYER");
 			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
-			LocalSpectatorTemplate = Players.GetWidget("TEMPLATE_LOCAL_SPECTATOR");
-			RemoteSpectatorTemplate = Players.GetWidget("TEMPLATE_REMOTE_SPECTATOR");
+			EditableSpectatorTemplate = Players.GetWidget("TEMPLATE_EDITABLE_SPECTATOR");
+			NonEditableSpectatorTemplate = Players.GetWidget("TEMPLATE_NONEDITABLE_SPECTATOR");
 			NewSpectatorTemplate = Players.GetWidget("TEMPLATE_NEW_SPECTATOR");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				else if ((client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready) ||
 				         (client.Bot != null && Game.IsHost))
 				{
-					template = LocalPlayerTemplate.Clone();
+					template = EditablePlayerTemplate.Clone();
 					if (client.Bot != null)
 					{
 						var name = template.GetWidget<DropDownButtonWidget>("BOT_DROPDOWN");
@@ -483,15 +483,22 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					team.OnMouseDown = _ => { if (team.IsDisabled()) return true; return ShowTeamDropDown(team, client); };
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsVisible = () => client.Bot == null;
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
-					status.OnClick += CycleReady;
+					if (client.Bot == null)
+					{
+						// local player
+						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
+						status.IsChecked = () => client.State == Session.ClientState.Ready;
+						status.IsVisible = () => true;
+						status.OnClick += CycleReady;
+					}
+					else // Bot
+						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
+
 				}
 				// Non-editable player in slot
 				else
 				{
-					template = RemotePlayerTemplate.Clone();
+					template = NonEditablePlayerTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
@@ -506,11 +513,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var team = template.GetWidget<LabelWidget>("TEAM");
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
-					status.IsVisible = () => client.Bot == null;
 					if (client.Index == orderManager.LocalClient.Index)
+					{
+						// "Ready" local player -> status still needs to be editable
+						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
+						status.IsChecked = () => client.State == Session.ClientState.Ready;
+						status.IsVisible = () => true;
 						status.OnClick += CycleReady;
+					}
+					else
+						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+							client.Bot != null || client.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
@@ -532,7 +545,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				// Editable spectator
 				if (client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready)
 				{
-					template = LocalSpectatorTemplate.Clone();
+					template = EditableSpectatorTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
 					name.Text = client.Name;
 					name.OnEnterKey = () =>
@@ -558,22 +571,29 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
+					var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
 					status.IsChecked = () => client.State == Session.ClientState.Ready;
 					status.OnClick += CycleReady;
 				}
 				// Non-editable spectator
 				else
 				{
-					template = RemoteSpectatorTemplate.Clone();
+					template = NonEditableSpectatorTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
 					if (client.Index == orderManager.LocalClient.Index)
+					{
+						// "Ready" local player -> status still needs to be editable
+						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
+						status.IsChecked = () => client.State == Session.ClientState.Ready;
+						status.IsVisible = () => true;
 						status.OnClick += CycleReady;
+					}
+					else
+						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+							client.Bot != null || client.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
