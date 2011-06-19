@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
 			var diplomacyButton = ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON");
-			var diplomacyAvailable = world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
+			var diplomacyAvailable = world.LocalPlayer != null && world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
 			diplomacyButton.IsDisabled = () => !diplomacyAvailable;
 			diplomacyButton.OnClick = () => 
 			{
@@ -84,8 +84,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				menu = MenuType.Diplomacy;
 				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
 			};
-			
-			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
+			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 			
 			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
 			postgameBG.IsVisible = () =>
