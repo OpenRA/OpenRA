@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -15,10 +16,11 @@ using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<OpenWidgetAtGameStartInfo> { }
+	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<LoadWidgetAtGameStartInfo> { }
 
 	class Gdi01Script: IWorldLoaded, ITick
 	{		
@@ -39,8 +41,6 @@ namespace OpenRA.Mods.Cnc
 					started = true;
 				}));
 		}
-
-        // THIS IS SHIT
 		
 		public void OnVictory(World w)
 		{
@@ -48,16 +48,14 @@ namespace OpenRA.Mods.Cnc
 			Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
 			Players["GoodGuy"].WinState = WinState.Won;
 			
-			w.WorldActor.CancelActivity();
-			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(
-                () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", () =>
+			Action afterFMV = () =>
 			{
 				Sound.StopMusic();
-				//Game.Disconnect();
-				//Widget.CloseWindow();
-				//Widget.LoadWidget("MENU_BACKGROUND");
-			})));
+				Game.Disconnect();
+				Widget.ResetAll();
+				Game.LoadShellMap();
+			};
+			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
 		}
 		
 		public void OnLose(World w)
@@ -66,16 +64,14 @@ namespace OpenRA.Mods.Cnc
 			Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
 			Players["GoodGuy"].WinState = WinState.Lost;
 			
-			w.WorldActor.CancelActivity();
-			w.WorldActor.QueueActivity(new Wait(125));
-			w.WorldActor.QueueActivity(new CallFunc(
-                () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", () =>
+			Action afterFMV = () =>
 			{
 				Sound.StopMusic();
-				//Game.Disconnect();
-				//Widget.CloseWindow();
-				//Widget.LoadWidget("MENU_BACKGROUND");
-			})));
+				Game.Disconnect();
+				Widget.ResetAll();
+				Game.LoadShellMap();
+			};
+			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
 		}
 		
 		int ticks = 0;
@@ -111,7 +107,8 @@ namespace OpenRA.Mods.Cnc
 			}
 			// GoodGuy win conditions
 			// BadGuy is dead
-            var badcount = self.World.Actors.Count(a => a.Owner == Players["BadGuy"] && !a.IsDead());
+            var badcount = self.World.Actors.Count(a => a != a.Owner.PlayerActor &&
+			                                       a.Owner == Players["BadGuy"] && !a.IsDead());
 			if (badcount != lastBadCount)
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
@@ -121,9 +118,10 @@ namespace OpenRA.Mods.Cnc
 					OnVictory(self.World);
 			}
 			
-			//GoodGuy lose conditions
-            var goodCount = self.World.Actors.Count(a => a.Owner == Players["GoodGuy"] && !a.IsDead());
-			if (goodCount == 0)
+			//GoodGuy lose conditions: MCV/cyard must survive
+			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
+                .Any( a => a.Actor.Owner == Players["GoodGuy"] );
+			if (!hasAnything)
 				OnLose(self.World);
 			
 			// GoodGuy reinforcements

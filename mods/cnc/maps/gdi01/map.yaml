@@ -4,9 +4,9 @@ MapFormat: 5
 
 RequiresMod: cnc
 
-Title: Gdi 01
+Title: Storm the Beachhead
 
-Description: Describe your map here
+Description: Remake of the first GDI Mission
 
 Author: Westwood Studios
 
@@ -321,7 +321,7 @@ Actors:
 		Health: 0.1875
 		Facing: 160
 		ActorStance: None
-	Actor86: mcv
+	mcv: mcv
 		Location: 56,53
 		Owner: GoodGuy
 		Health: 1
@@ -431,31 +431,31 @@ Actors:
 		Facing: 96
 		ActorStance: Hunt
 		SubCell: 4
-	spawn27: mpspawn
+	spawn27: waypoint
 		Location: 51,47
 		Owner: Neutral
-	nod0: mpspawn
+	nod0: waypoint
 		Location: 36,39
 		Owner: Neutral
-	nod1: mpspawn
+	nod1: waypoint
 		Location: 37,46
 		Owner: Neutral
-	nod2: mpspawn
+	nod2: waypoint
 		Location: 38,55
 		Owner: Neutral
-	nod3: mpspawn
+	nod3: waypoint
 		Location: 52,52
 		Owner: Neutral
-	gunboatRight: mpspawn
+	gunboatRight: waypoint
 		Location: 61,59
 		Owner: Neutral
-	gunboatLeft: mpspawn
+	gunboatLeft: waypoint
 		Location: 35,59
 		Owner: Neutral
-	lstStart: mpspawn
+	lstStart: waypoint
 		Location: 54,61
 		Owner: Neutral
-	lstEnd: mpspawn
+	lstEnd: waypoint
 		Location: 54,56
 		Owner: Neutral
 
@@ -469,8 +469,6 @@ Rules:
 		Gdi01Script:
 	Player:
 		-ConquestVictoryConditions:
-	PROC.proxy:
-		-Buildable:
 	SILO:
 		-Buildable:
 	WEAP:

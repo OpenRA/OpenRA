@@ -142,3 +142,15 @@ Container@INGAME_ROOT:
 							Image:repair
 							Description:Repair
 							LongDesc:Repair damaged buildings
+Background@FMVPLAYER:
+	Id:FMVPLAYER
+	Width:WINDOW_RIGHT
+	Height:WINDOW_BOTTOM
+	Background:dialog4
+	Children:
+		VqaPlayer:
+			Id:PLAYER
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM

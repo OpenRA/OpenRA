@@ -84,6 +84,6 @@ namespace OpenRA.Mods.RA
 
 	/* tag trait for things that must be destroyed for a short game to end */
 
-	class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
-	class MustBeDestroyed { }
+	public class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
+	public class MustBeDestroyed { }
 }
