@@ -457,7 +457,7 @@ Container@SERVER_LOBBY:
 			Text:Leave Game
 		Button@MUSIC_BUTTON:
 			Id:MUSIC_BUTTON
-			X:300
+			X:150
 			Y:499
 			Width:140
 			Height:35
