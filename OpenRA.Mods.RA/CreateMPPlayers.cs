@@ -46,37 +46,29 @@ namespace OpenRA.Mods.RA
 			
 			foreach (var p in w.Players)
 				foreach (var q in w.Players)
-				{
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = ChooseInitialStance(p, q);
-				}
 		}
 
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q) return Stance.Ally;
-			var pc = GetClientForPlayer(p);
-			var qc = GetClientForPlayer(q);
 
-			if (p.World.LobbyInfo.Slots.Count > 0)
-			{
-				if (p.PlayerRef == null) return Stance.Ally;
-				if (q.PlayerRef == null) return Stance.Ally;
-			}
-
-			// Stances set via the player reference
+			// Stances set via PlayerReference
 			if (p.PlayerRef.Allies.Contains(q.InternalName))
 				return Stance.Ally;
 			if (p.PlayerRef.Enemies.Contains(q.InternalName))
 				return Stance.Enemy;
-			
-			// Otherwise, default to neutral for map-players
-			if (!p.PlayerRef.Playable || !q.PlayerRef.Playable) return Stance.Neutral;
-			// or enemy for bot vs human
-			if (p.IsBot ^ q.IsBot) return Stance.Enemy;
 
-			return pc.Team != 0 && pc.Team == qc.Team
-				? Stance.Ally : Stance.Enemy;
+			// Stances set via lobby teams
+			var pc = GetClientForPlayer(p);
+			var qc = GetClientForPlayer(q);
+			if (pc != null && qc != null)
+				return pc.Team != 0 && pc.Team == qc.Team
+					? Stance.Ally : Stance.Enemy;
+
+			// Otherwise, default to neutral
+			return Stance.Neutral;
 		}
 
 		static Session.Client GetClientForPlayer(Player p)
