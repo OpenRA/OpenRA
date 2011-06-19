@@ -325,7 +325,7 @@ Container@SERVER_LOBBY:
 							Height:25
 							X:0
 							Y:0
-							Text:Name
+							Text:Player
 							Align:Center
 							Font:Bold
 						Label@LABEL_LOBBY_COLOR:

@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
-					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
+					options.Add(new SlotDropDownOption(bot,
 				                                   "slot_bot {0} {1}".F(slot.PlayerReference, bot),
 				                                   () => client != null && client.Bot == bot));
 				}
