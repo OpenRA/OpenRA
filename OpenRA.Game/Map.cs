@@ -40,7 +40,7 @@ namespace OpenRA
 		
 		public Lazy<Dictionary<string, ActorReference>> Actors;
 
-		public int PlayerCount { get { return SpawnPoints.Count(); } }
+		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
 		public IEnumerable<int2> SpawnPoints { get { return Actors.Value.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
 		
 		[FieldLoader.Load] public Rectangle Bounds;
