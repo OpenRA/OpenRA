@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>()
 				.ToDictionary(a => a.Race, a => a.Name);
-			CountryNames.Add("random", "Random");
+			CountryNames.Add("random", "Any");
 
 			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnClick = () =>

@@ -49,7 +49,7 @@ Container@SERVER_LOBBY:
 					Id:PLAYERS
 					X:15
 					Y:30
-					Width:504
+					Width:503
 					ItemSpacing:5
 					Height:245
 					Children:
@@ -77,9 +77,9 @@ Container@SERVER_LOBBY:
 									Visible:false
 								DropDownButton@COLOR:
 									Id:COLOR
-									Width:80
+									Width:70
 									Height:25
-									X:160
+									X:155
 									Font:Regular
 									Children:
 										ColorBlock@COLORBLOCK:
@@ -90,9 +90,9 @@ Container@SERVER_LOBBY:
 											Height:PARENT_BOTTOM-12
 								DropDownButton@FACTION:
 									Id:FACTION
-									Width:130
+									Width:100
 									Height:25
-									X:250
+									X:230
 									Font:Regular
 									Children:
 										Image@FACTIONFLAG:
@@ -110,8 +110,13 @@ Container@SERVER_LOBBY:
 											Y:0
 								DropDownButton@TEAM:
 									Id:TEAM
-									Text:Team
-									Width:48
+									Width:50
+									Height:25
+									X:335
+									Font:Regular
+								DropDownButton@SPAWN:
+									Id:SPAWN
+									Width:50
 									Height:25
 									X:390
 									Font:Regular
@@ -156,15 +161,15 @@ Container@SERVER_LOBBY:
 									Font:Bold
 								ColorBlock@COLOR:
 									Id:COLOR
-									X:165
+									X:160
 									Y:6
-									Width:45
+									Width:35
 									Height:13
 								Label@FACTION:
 									Id:FACTION
-									Width:130
+									Width:100
 									Height:25
-									X:250
+									X:230
 									Y:0
 									Children:
 										Image@FACTIONFLAG:
@@ -182,10 +187,16 @@ Container@SERVER_LOBBY:
 											Y:0
 								Label@TEAM:
 									Id:TEAM
-									Text:Team
-									Width:23
-									Height:25
 									Align:Center
+									Width:25
+									Height:25
+									X:335
+									Y:0
+								Label@SPAWN:
+									Id:SPAWN
+									Align:Center
+									Width:25
+									Height:25
 									X:390
 									Y:0
 								Image@STATUS_IMAGE:
@@ -231,9 +242,9 @@ Container@SERVER_LOBBY:
 									Id:JOIN
 									Text:Play in this slot
 									Font:Regular
-									Width:278
+									Width:315
 									Height:25
-									X:160
+									X:155
 									Y:0
 						Container@TEMPLATE_EDITABLE_SPECTATOR:
 							Id:TEMPLATE_EDITABLE_SPECTATOR
@@ -251,9 +262,9 @@ Container@SERVER_LOBBY:
 									MaxLength:16
 								DropDownButton@COLOR:
 									Id:COLOR
-									Width:80
+									Width:70
 									Height:25
-									X:160
+									X:155
 									Font:Regular
 									Children:
 										ColorBlock@COLORBLOCK:
@@ -264,9 +275,9 @@ Container@SERVER_LOBBY:
 											Height:PARENT_BOTTOM-12
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:198
+									Width:220
 									Height:25
-									X:240
+									X:225
 									Y:0
 									Align:Center
 									Font:Bold
@@ -301,15 +312,15 @@ Container@SERVER_LOBBY:
 									Font:Bold
 								ColorBlock@COLOR:
 									Id:COLOR
-									X:165
+									X:160
 									Y:6
-									Width:45
+									Width:35
 									Height:13
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:198
+									Width:220
 									Height:25
-									X:240
+									X:225
 									Y:0
 									Align:Center
 									Font:Bold
@@ -341,54 +352,50 @@ Container@SERVER_LOBBY:
 									Id:SPECTATE
 									Text:Spectate
 									Font:Regular
-									Width:278
+									Width:470
 									Height:25
-									X:160
+									X:0
 									Y:0
 				Container@LABEL_CONTAINER:
-					X:25
+					X:20
 					Y:5
 					Children:
-						Label@LABEL_LOBBY_NAME:
-							Id:LABEL_LOBBY_NAME
+						Label@NAME:
 							Width:150
 							Height:25
-							X:0
-							Y:0
 							Text:Player
 							Align:Center
 							Font:Bold
-						Label@LABEL_LOBBY_COLOR:
-							Id:LABEL_LOBBY_COLOR
-							Width:80
+						Label@COLOR:
+							Width:70
 							Height:25
-							X:160
-							Y:0
+							X:155
 							Text:Color
 							Align:Center
 							Font:Bold
-						Label@LABEL_LOBBY_FACTION:
-							Id:LABEL_LOBBY_FACTION
-							Width:130
+						Label@FACTION:
+							Width:100
 							Height:25
-							X:250
-							Y:0
+							X:230
 							Text:Faction
 							Align:Center
 							Font:Bold
-						Label@LABEL_LOBBY_TEAM:
-							Id:LABEL_LOBBY_TEAM
-							Width:48
+						Label@TEAM:
+							Width:50
 							Height:25
-							X:390
-							Y:0
+							X:335
 							Text:Team
 							Align:Center
 							Font:Bold
-						Label@LABEL_LOBBY_STATUS:
-							Id:LABEL_LOBBY_STATUS
+						Label@SPAWN:
+							Width:50
+							Height:25
+							X:390
+							Text:Spawn
+							Align:Center
+							Font:Bold
+						Label@STATUS:
 							X:448
-							Y:0
 							Width:20
 							Height:25
 							Text:Ready
