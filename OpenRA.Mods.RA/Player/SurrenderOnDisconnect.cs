@@ -24,10 +24,8 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (Disconnected) return;
-
 			var p = self.Owner;
-
+			if (Disconnected || !p.PlayerReference.Playable) return;
 			if (p.WinState == WinState.Lost || p.WinState == WinState.Won) return; /* already won or lost */
 
 			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
