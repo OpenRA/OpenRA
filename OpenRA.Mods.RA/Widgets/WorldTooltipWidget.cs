@@ -49,38 +49,41 @@ namespace OpenRA.Mods.RA.Widgets
 					
 				return;
 			}
-			
+
 			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
 			if (actor == null)
 				return;
-		
-			var tooltip = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
+
+			var itt = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
+			if (itt == null)
+				return;
 			
-			var name = tooltip != null ? tooltip.Name() : actor.Info.Name;
-			var owner = (tooltip != null && !tooltip.Owner().NonCombatant) ? "{0}".F(tooltip.Owner().PlayerName) : "";
-			var stance = (tooltip != null && tooltip.Owner() != actor.World.LocalPlayer && !tooltip.Owner().NonCombatant) ? " ({0})".F(tooltip.Stance()) : "";
-			
-			var nameSize = Game.Renderer.Fonts["Bold"].Measure(name);
-			var ownerSize = Game.Renderer.Fonts["Regular"].Measure(owner);
-			var stanceSize = Game.Renderer.Fonts["Regular"].Measure(stance);
-						
+			var owner = itt.Owner();
+			var nameText = itt.Name();
+			var ownerText = !owner.NonCombatant ? owner.PlayerName : "";
+			var stanceText = (world.LocalPlayer != null && owner != actor.World.LocalPlayer
+			                  && !owner.NonCombatant) ? " ({0})".F(itt.Stance()) : "";
+
+			var nameSize = Game.Renderer.Fonts["Bold"].Measure(nameText);
+			var ownerSize = Game.Renderer.Fonts["Regular"].Measure(ownerText);
+			var stanceSize = Game.Renderer.Fonts["Regular"].Measure(stanceText);
 			var panelSize = new int2(Math.Max(nameSize.X, ownerSize.X + stanceSize.X + 35) + 20, nameSize.Y + 24);
 
-			if (owner != "") panelSize.Y += ownerSize.Y + 2;
+			if (ownerText != "") panelSize.Y += ownerSize.Y + 2;
 
 			WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
 				Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
 				Viewport.LastMousePos.X + panelSize.X + 20, Viewport.LastMousePos.Y + panelSize.Y + 20));
 
-			Game.Renderer.Fonts["Bold"].DrawText(name,
+			Game.Renderer.Fonts["Bold"].DrawText(nameText,
 				new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
-			
-			if (owner != "")
+
+			if (ownerText != "")
 			{
-				Game.Renderer.Fonts["Regular"].DrawText(owner,
+				Game.Renderer.Fonts["Regular"].DrawText(ownerText,
 					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.ColorRamp.GetColor(0));
 				
-				Game.Renderer.Fonts["Regular"].DrawText(stance,
+				Game.Renderer.Fonts["Regular"].DrawText(stanceText,
 					new float2(Viewport.LastMousePos.X + 65 + ownerSize.X, Viewport.LastMousePos.Y + 50), Color.White);
 
 				WidgetUtils.DrawRGBA(
