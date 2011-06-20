@@ -164,7 +164,7 @@ namespace OpenRA
 					orderManager.LastTickTime += Settings.Game.Timestep;
 					Widget.DoTick();
 					var world = orderManager.world;
-					if( orderManager.GameStarted && world.LocalPlayer != null )
+					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
 					Sound.Tick();
 					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );

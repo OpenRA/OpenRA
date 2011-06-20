@@ -29,13 +29,13 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void DrawInner()
 		{
-			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null || world.LocalPlayer == null)
+			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null)
 				return;
 
 			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			if (!world.Map.IsInMap(cell)) return;
 			
-			if (!world.LocalPlayer.Shroud.IsExplored(cell))
+			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(cell))
 			{
 				var utext = "Unexplored Terrain";
 				var usz = Game.Renderer.Fonts["Bold"].Measure(utext) + new int2(20, 24);
