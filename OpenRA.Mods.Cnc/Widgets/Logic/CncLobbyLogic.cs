@@ -174,20 +174,22 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var disconnectButton = lobby.GetWidget<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
-			
+
 			var gameStarting = false;
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
 			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.IsDisabled = () => !Game.IsHost || gameStarting;
+			lockTeamsCheckbox.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+				|| orderManager.LocalClient.State == Session.ClientState.Ready;
 			lockTeamsCheckbox.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
-		
+
 			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting;
+			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+				|| orderManager.LocalClient.State == Session.ClientState.Ready;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
-				
+
 			var startGameButton = lobby.GetWidget<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
 			startGameButton.IsDisabled = () => gameStarting;
@@ -196,7 +198,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				gameStarting = true;
 				orderManager.IssueOrder(Order.Command("startgame"));
 			};
-			
+
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
@@ -424,11 +426,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				{
 					template = EmptySlotTemplate.Clone();
 					Func<string> getText = () => slot.Closed ? "Closed" : "Open";
+					var ready = orderManager.LocalClient.State == Session.ClientState.Ready;
 
 					if (Game.IsHost)
 					{
 						var name = template.GetWidget<DropDownButtonWidget>("NAME_HOST");
 						name.IsVisible = () => true;
+						name.IsDisabled = () => ready;
 						name.GetText = getText;
 						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
 					}
@@ -440,28 +444,32 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					}
 
 					var join = template.GetWidget<ButtonWidget>("JOIN");
-					if (join != null)
-					{
-						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + key)); return true; };
-						join.IsVisible = () => !slot.Closed && orderManager.LocalClient.State != Session.ClientState.Ready;
-					}
+					join.IsVisible = () => !slot.Closed;
+					join.IsDisabled = () => ready;
+					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
 				}
 				// Editable player in slot
-				else if ((client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready) ||
+				else if ((client.Index == orderManager.LocalClient.Index) ||
 				         (client.Bot != null && Game.IsHost))
 				{
 					template = EditablePlayerTemplate.Clone();
+					var botReady = (client.Bot != null && Game.IsHost
+						    && orderManager.LocalClient.State == Session.ClientState.Ready);
+					var ready = botReady || client.State == Session.ClientState.Ready;
+
 					if (client.Bot != null)
 					{
 						var name = template.GetWidget<DropDownButtonWidget>("BOT_DROPDOWN");
 						name.IsVisible = () => true;
+						name.IsDisabled = () => ready;
 						name.GetText = () => client.Name;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
+						name.OnMouseDown = _ => name.IsDisabled() ? true : ShowSlotDropDown(name, slot, client);
 					}
 					else
 					{
 						var name = template.GetWidget<TextFieldWidget>("NAME");
 						name.IsVisible = () => true;
+						name.IsDisabled = () => ready;
 						name.Text = client.Name;
 						name.OnEnterKey = () =>
 						{
@@ -482,15 +490,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					}
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
-					color.IsDisabled = () => slot.LockColor;
-					color.OnMouseDown = _ => { if (slot.LockColor) return true; return ShowColorDropDown(color, client); };
+					color.IsDisabled = () => slot.LockColor || ready;
+					color.OnMouseDown = _ => color.IsDisabled() ? true : ShowColorDropDown(color, client);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
-					faction.IsDisabled = () => slot.LockRace;
-					faction.OnMouseDown = _ => { if (slot.LockRace) return true; return ShowRaceDropDown(faction, client); };
+					faction.IsDisabled = () => slot.LockRace || ready;
+					faction.OnMouseDown = _ => faction.IsDisabled() ? true : ShowRaceDropDown(faction, client);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];
@@ -499,20 +507,20 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					factionflag.GetImageCollection = () => "flags";
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
-					team.IsDisabled = () => slot.LockTeam || client.Bot != null;
-					team.OnMouseDown = _ => { if (team.IsDisabled()) return true; return ShowTeamDropDown(team, client); };
+					team.IsDisabled = () => slot.LockTeam || ready || client.Bot != null;
+					team.OnMouseDown = _ => team.IsDisabled() ? true : ShowTeamDropDown(team, client);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
 					var spawn = template.GetWidget<DropDownButtonWidget>("SPAWN");
-					spawn.IsDisabled = () => slot.LockSpawn;
-					spawn.OnMouseDown = _ => { if (spawn.IsDisabled()) return true; return ShowSpawnDropDown(spawn, client); };
+					spawn.IsDisabled = () => slot.LockSpawn || ready;
+					spawn.OnMouseDown = _ => spawn.IsDisabled() ? true : ShowSpawnDropDown(spawn, client);
 					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
 					if (client.Bot == null)
 					{
 						// local player
 						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
-						status.IsChecked = () => client.State == Session.ClientState.Ready;
+						status.IsChecked = () => ready;
 						status.IsVisible = () => true;
 						status.OnClick += CycleReady;
 					}
@@ -540,25 +548,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var spawn = template.GetWidget<LabelWidget>("SPAWN");
 					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
-					if (client.Index == orderManager.LocalClient.Index)
-					{
-						// "Ready" local player -> status still needs to be editable
-						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
-						status.IsChecked = () => client.State == Session.ClientState.Ready;
-						status.IsVisible = () => true;
-						status.OnClick += CycleReady;
-					}
-					else
-						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
-							client.Bot != null || client.State == Session.ClientState.Ready;
+					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+						client.Bot != null || client.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
-					kickButton.OnMouseUp = mi =>
-						{
-							orderManager.IssueOrder(Order.Command("kick " + client.Index));
-							return true;
-						};
+					kickButton.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
+					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
 				template.IsVisible = () => true;
@@ -569,11 +565,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
 				Widget template;
+				var ready = client.State == Session.ClientState.Ready;
 				// Editable spectator
-				if (client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready)
+				if (client.Index == orderManager.LocalClient.Index)
 				{
 					template = EditableSpectatorTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
+					name.IsDisabled = () => ready;
 					name.Text = client.Name;
 					name.OnEnterKey = () =>
 					{
@@ -593,13 +591,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					name.OnLoseFocus = () => name.OnEnterKey();
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
-					color.OnMouseDown = _ => ShowColorDropDown(color, client);
+					color.IsDisabled = () => ready;
+					color.OnMouseDown = _ => color.IsDisabled() ? true : ShowColorDropDown(color, client);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
+					status.IsChecked = () => ready;
 					status.OnClick += CycleReady;
 				}
 				// Non-editable spectator
@@ -610,25 +609,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
 
-					if (client.Index == orderManager.LocalClient.Index)
-					{
-						// "Ready" local player -> status still needs to be editable
-						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
-						status.IsChecked = () => client.State == Session.ClientState.Ready;
-						status.IsVisible = () => true;
-						status.OnClick += CycleReady;
-					}
-					else
-						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
-							client.Bot != null || client.State == Session.ClientState.Ready;
+					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+						client.Bot != null || client.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
-					kickButton.OnMouseUp = mi =>
-						{
-							orderManager.IssueOrder(Order.Command("kick " + client.Index));
-							return true;
-						};
+					kickButton.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
+					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
 				template.IsVisible = () => true;
@@ -636,11 +623,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 
 			// Spectate button
-			if (orderManager.LocalClient.Slot != null && orderManager.LocalClient.State != Session.ClientState.Ready)
+			if (orderManager.LocalClient.Slot != null)
 			{
 				var spec = NewSpectatorTemplate.Clone();
 				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");
-				btn.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("spectate")); return true; };
+				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
+				btn.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
 				spec.IsVisible = () => true;
 				Players.AddChild(spec);
 			}

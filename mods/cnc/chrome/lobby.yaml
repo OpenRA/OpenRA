@@ -208,13 +208,6 @@ Container@SERVER_LOBBY:
 									Height:20
 									ImageCollection:checkbox-bits
 									ImageName:checked
-								Checkbox@STATUS_CHECKBOX:
-									Id:STATUS_CHECKBOX
-									Visible:false
-									X:448
-									Y:2
-									Width:20
-									Height:20
 						Container@TEMPLATE_EMPTY:
 							Id:TEMPLATE_EMPTY
 							X:5
@@ -333,13 +326,6 @@ Container@SERVER_LOBBY:
 									Height:20
 									ImageCollection:checkbox-bits
 									ImageName:checked
-								Checkbox@STATUS_CHECKBOX:
-									Id:STATUS_CHECKBOX
-									Visible:false
-									X:448
-									Y:2
-									Width:20
-									Height:20
 						Container@TEMPLATE_NEW_SPECTATOR:
 							Id:TEMPLATE_NEW_SPECTATOR
 							X:5
