@@ -184,30 +184,49 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						var botType = string.Join(" ", parts.Skip(1).ToArray() );
 						var slot = server.lobbyInfo.Slots[parts[0]];
-						slot.Closed = false;
+						var bot = server.lobbyInfo.ClientInSlot(parts[0]);
+						var botType = string.Join(" ", parts.Skip(1).ToArray() );
 
-						var bot = new Session.Client()
+						// Invalid slot
+						if (bot != null && bot.Bot == null)
 						{
-							Index = server.ChooseFreePlayerIndex(),
-							Name = botType,
-							Bot = botType,
-							Slot = parts[0],
-							Country = "random",
-							SpawnPoint = 0,
-							Team = 0,
-							State = Session.ClientState.NotReady
-						};
+							server.SendChatTo( conn, "Can't add bots to a slot with another client" );
+							return true;
+						}
 
-						// pick a random color for the bot
-						var hue = (byte)Game.CosmeticRandom.Next(255);
-						var sat = (byte)Game.CosmeticRandom.Next(255);
-						var lum = (byte)Game.CosmeticRandom.Next(51,255);
-						bot.ColorRamp = new ColorRamp(hue, sat, lum, 10);
+						slot.Closed = false;
+						if (bot == null)
+						{
+							// Create a new bot
+							bot = new Session.Client()
+							{
+								Index = server.ChooseFreePlayerIndex(),
+								Name = botType,
+								Bot = botType,
+								Slot = parts[0],
+								Country = "random",
+								SpawnPoint = 0,
+								Team = 0,
+								State = Session.ClientState.NotReady
+							};
 
-						S.SyncClientToPlayerReference(client, server.Map.Players[parts[0]]);
-						server.lobbyInfo.Clients.Add(bot);
+							// pick a random color for the bot
+							var hue = (byte)Game.CosmeticRandom.Next(255);
+							var sat = (byte)Game.CosmeticRandom.Next(255);
+							var lum = (byte)Game.CosmeticRandom.Next(51,255);
+							bot.ColorRamp = new ColorRamp(hue, sat, lum, 10);
+
+							server.lobbyInfo.Clients.Add(bot);
+						}
+						else
+						{
+							// Change the type of the existing bot
+							bot.Name = botType;
+							bot.Bot = botType;
+						}
+
+						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
 						server.SyncLobbyInfo();
 						return true;
 					}},
