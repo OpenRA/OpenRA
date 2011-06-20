@@ -33,10 +33,11 @@ namespace OpenRA.Widgets
 				
 		public override void DrawInner()
 		{
+			var disabled = IsDisabled();
 			var font = Game.Renderer.Fonts[Font];
 			var rect = RenderBounds;
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
-			var state = IsDisabled() ? "checkbox-disabled" : 
+			var state = disabled ? "checkbox-disabled" : 
 						Depressed && HasPressedState ? "checkbox-pressed" : 
 						RenderBounds.Contains(Viewport.LastMousePos) ? "checkbox-hover" : 
 						"checkbox";
@@ -47,9 +48,9 @@ namespace OpenRA.Widgets
 			font.DrawText(Text,
 				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2), Color.White);
 
-			if (IsChecked() || Depressed)
+			if (IsChecked() || (Depressed && HasPressedState && !disabled))
 				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage("checkbox-bits", Depressed && HasPressedState ? "pressed" : "checked"),
+					ChromeProvider.GetImage("checkbox-bits", HasPressedState && (Depressed || disabled)  ? "pressed" : "checked"),
 					new float2(rect.Left + 2, rect.Top + 2));
 		}
 
