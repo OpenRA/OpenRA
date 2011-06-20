@@ -537,6 +537,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var team = template.GetWidget<LabelWidget>("TEAM");
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
+					var spawn = template.GetWidget<LabelWidget>("SPAWN");
+					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
+
 					if (client.Index == orderManager.LocalClient.Index)
 					{
 						// "Ready" local player -> status still needs to be editable
