@@ -335,7 +335,7 @@
 		TargetTypes: Ground, Water
 	BelowUnits:
 	Health:
-		HP: 1000
+		HP: 500
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
