@@ -107,6 +107,10 @@ namespace OpenRA.Mods.RA
 					a => a.Key,
 					a => sprites[new TileReference<ushort,byte>(t.First, (byte)a.Value)]));
 			}
+
+			// Set the initial custom terrain types
+			foreach (var c in TileSprites[currentTemplate].Keys)
+				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
 		
 		public string GetTerrainType(int2 cell)
@@ -160,7 +164,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.Kill(self); // this changes the damagestate
 			}
-
+			var oldTempate = currentTemplate;
 			var ds = Health.DamageState;
 			currentTemplate = (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate :
 							  (ds >= DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : Info.Template;
@@ -178,6 +182,9 @@ namespace OpenRA.Mods.RA
 				else if (waterToSouth)
 					currentTemplate = Info.DestroyedPlusSouthTemplate;
 			}
+
+			if (currentTemplate == oldTempate)
+				return;
 
 			if (ds == DamageState.Dead && !dead)
 			{
