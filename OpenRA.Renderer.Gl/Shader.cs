@@ -87,14 +87,18 @@ namespace OpenRA.Renderer.Glsl
 			int nextTexUnit = 1;
 			for( int i = 0 ; i < numUniforms ; i++ )
 			{
-				int uLen, uSize, uType;
+				int uLen, uSize, uType, loc;
 				var sb = new StringBuilder(128);
 				Gl.glGetActiveUniformARB( program, i, 128, out uLen, out uSize, out uType, sb );
+				var sampler = sb.ToString();
 				GraphicsDevice.CheckGlError();
 				if( uType == Gl.GL_SAMPLER_2D_ARB )
 				{
-					samplers.Add( sb.ToString(), nextTexUnit );
-					Gl.glUniform1iARB( i, nextTexUnit );
+					samplers.Add( sampler, nextTexUnit );
+					loc = Gl.glGetUniformLocationARB(program, sampler);
+					GraphicsDevice.CheckGlError();
+					Gl.glUniform1iARB( loc, nextTexUnit );
+					GraphicsDevice.CheckGlError();
 					++nextTexUnit;
 				}
 			}
