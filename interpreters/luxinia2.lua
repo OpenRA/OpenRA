@@ -1,7 +1,7 @@
 return {
 		name = "Luxinia2",
 		description = "Luxinia2",
-		api = {"baselib","cg30","cggl30","glfw3","glewgl","assimp20","luxmath","luxgraphics",},
+		api = {"baselib","cg30","cggl30","glfw3","glewgl","assimp20","luxmath","luxgraphics","luajit2",},
 		
 		finitclient = function(self)
 			if (not CommandLineRunning(self:fuid(wfilename))) then return end
