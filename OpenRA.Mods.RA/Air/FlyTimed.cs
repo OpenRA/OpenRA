@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Air
 
 	public class FlyOffMap : Activity
 	{
-		public bool Interruptible = true;
+		public bool Interruptible = false;
 
 		public override Activity Tick(Actor self)
 		{

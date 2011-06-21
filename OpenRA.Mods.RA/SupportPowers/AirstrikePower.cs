@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 				if (flare != null)
 					a.QueueActivity(new CallFunc(() => flare.Destroy()));
 
-				a.QueueActivity(new FlyOffMap { Interruptible = false });
+				a.QueueActivity(new FlyOffMap());
 				a.QueueActivity(new RemoveSelf());
 			});
 		}

@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 					camera.QueueActivity(new Wait(25 * (Info as SpyPlanePowerInfo).RevealTime));
 					camera.QueueActivity(new RemoveSelf());
 				})));
-			plane.QueueActivity(new FlyOffMap { Interruptible = false });
+			plane.QueueActivity(new FlyOffMap());
 			plane.QueueActivity(new RemoveSelf());
 		}
 	}
