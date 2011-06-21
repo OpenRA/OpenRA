@@ -146,6 +146,10 @@ namespace OpenRA.Traits
 
 		public void Destroy(int2 p)
 		{
+			// Don't break other users of CustomTerrain if there are no resources
+			if (content[p.X, p.Y].type == null)
+				return;
+
 			content[p.X, p.Y].type = null;
 			content[p.X, p.Y].image = null;
 			content[p.X, p.Y].density = 0;
