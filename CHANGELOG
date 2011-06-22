@@ -1,22 +1,19 @@
 NEW:
 	Engine:
-		Don't show cashticks when selling walls
 		Fixed compile failures under Windows
-		Improved rendering code
-		Reliable platform detection
+		Improved platform detection
 		Modding support for custom fonts
 		Video memory leaks fixed
 		Improved error messages for unsupported graphics cards
-		Fixed repairing of veteran units
-		Mod support for passengers that take multiple slots
-		Powered-down superweapons are no longer activated when multiple are available
-		Rally-points change color when a building is captured
-		Fix selection box dragging behind ui elements
+		Improved support for Intel graphics cards
 		Significant general performance improvements
-		[OSX] Shortcut for adding units to groups changed from ctrl->cmd
+		Fix crashes when joining a game with no free player slots
+		Bots players are named after their AI type and pick better random colors
+		Map support for enforcing team and spawn choice
+		Fix resource-clearing weapons breaking custom terrain types (bridges)
 	C&C:
 		Completely overhauled menu system
-		Local skirmish mode
+		Skirmish mode (creates a local game against bots)
 		Hotkey support:
 			escape to toggle ingame menu
 			escape to go up a level in menus / cancel prompts
@@ -30,6 +27,8 @@ NEW:
 		Fixed Rocket Launcher turret
 		Added muzzle flashes to Guard Tower
 		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk
+		Server/Skirmish creation selects the last played map by default
+		Bridge HP halved
 	Red Alert:
 		Corrected firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
 		Mod support for customizing tesla zap effect
@@ -41,6 +40,17 @@ NEW:
 		Medic cost reduced to $500
 		Correctly grant allies GPS
 		13 new maps by buddha, hamb, seru
+		Improved superweapon choosing logic when multiple are available
+	Both:
+		[OSX] Shortcut for adding units to groups changed from ctrl->cmd
+		Tooltips work for spectators
+		Don't show cashticks when selling walls
+		Don't show explosions when walls are sold
+		Fix veteran units not repairing correctly at service depots
+		Rally-points change color when a building is captured
+		Fix selection box dragging behind ui elements
+		Mod support for passengers that take multiple slots
+		Fixed desync when a support aircraft is killed after completing its task
 	Utility:
 		Fixes for converting shp -> png
 
