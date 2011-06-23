@@ -731,3 +731,18 @@ Tiberium:
 		InfDeath: 5
 		Damage: 5
 		PreventProne: yes
+
+QuadCannon:
+	ROF: 10
+	Range: 7
+	Report: gun20
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 100
+		High: true
+	Warhead:
+		Spread: 5
+		Versus:
+			Light: 100%
+		Explosion: 5
+		Damage: 6

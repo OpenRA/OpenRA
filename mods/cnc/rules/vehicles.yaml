@@ -77,7 +77,7 @@ APC:
 	Tooltip:
 		Name: Armored Personnel Carrier
 		Icon: apcicnh
-		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
@@ -92,7 +92,7 @@ APC:
 	RevealsShroud:
 		Range: 5
 	AttackFrontal:
-		PrimaryWeapon: MachineGun
+		PrimaryWeapon: QuadCannon
 		PrimaryOffset: 0,0,0,-4
 		MuzzleFlash: yes
 	RenderUnit:
