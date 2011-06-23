@@ -467,7 +467,9 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 	AttackFrontal:
-		PrimaryWeapon: 227mm
+		PrimaryWeapon: 227mm.stnk
+		PrimaryOffset: 0,-5,0,-3
+		PrimaryLocalOffset:1,0,0,-1,0,0
 	RenderUnit:
 	AutoTarget:
 	TargetableUnit:

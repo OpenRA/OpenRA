@@ -490,6 +490,37 @@ MissilePack:
 		SmudgeType: Crater
 		Damage: 75
 
+227mm.stnk:
+	ROF: 80
+	Range: 8
+	Report: ROCKET1
+	Burst: 2
+	BurstDelay: 0
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Arm: 5
+		High: yes
+		Shadow: yes
+		Proximity: yes
+		Inaccuracy: 5
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 20
+		RangeLimit: 55
+	Warhead:
+		Spread: 3
+		Versus:
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Heavy: 50%
+		InfDeath: 3
+		Explosion: 4
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 75
+
 Ballistic:
 	ROF: 65
 	Range: 6
