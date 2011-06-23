@@ -507,7 +507,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					factionflag.GetImageCollection = () => "flags";
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
-					team.IsDisabled = () => slot.LockTeam || ready || client.Bot != null;
+					team.IsDisabled = () => slot.LockTeam || ready;
 					team.OnMouseDown = _ => team.IsDisabled() ? true : ShowTeamDropDown(team, client);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 

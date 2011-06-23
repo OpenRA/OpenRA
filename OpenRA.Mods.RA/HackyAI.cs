@@ -246,24 +246,14 @@ namespace OpenRA.Mods.RA
 		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		bool IsHumanPlayer(Player p) { return !p.IsBot && !p.NonCombatant; }
-
-		bool HasHumanPlayers()
-		{
-			return p.World.Players.Any(a => !a.IsBot && !a.NonCombatant);
-		}
-
 		int2? ChooseEnemyTarget()
 		{
 			// Criteria for picking an enemy:
 			// 1. not ourself.
-			// 2. human.
+			// 2. enemy.
 			// 3. not dead.
-
-            
-
 			var possibleTargets = world.WorldActor.Trait<MPStartLocations>().Start
-					.Where(kv => kv.Key != p && (!HasHumanPlayers() || IsHumanPlayer(kv.Key))
+					.Where(kv => kv.Key != p && p.Stances[kv.Key] == Stance.Enemy
 						&& p.WinState == WinState.Undefined)
 					.Select(kv => kv.Value);
 
@@ -325,7 +315,7 @@ namespace OpenRA.Mods.RA
 				foreach (var a1 in attackForce)
 				{
 					var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
-						.Where(unit => IsHumanPlayer(unit.Owner)).ToList();
+						.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 					if (enemyUnits.Count > 0)
 					{
