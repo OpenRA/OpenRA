@@ -101,6 +101,7 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
+		PipCount: 5
 		UnloadFacing: 220
 	LeavesHusk:
 		HuskActor: APC.Husk
