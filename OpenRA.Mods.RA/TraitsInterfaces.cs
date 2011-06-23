@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA
 		void GiveOre(int amount);
 		bool CanGiveOre(int amount);
 		int2 DeliverOffset { get; }
+		bool AllowDocking { get; }
 	}
 	
 	public interface IAcceptOreDockAction

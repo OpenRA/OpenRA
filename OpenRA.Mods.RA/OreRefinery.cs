@@ -51,13 +51,14 @@ namespace OpenRA.Mods.RA
 		[Sync]
 		bool preventDock = false;
 		
+		public bool AllowDocking { get { return !preventDock; } }
 		public int2 DeliverOffset { get { return Info.DockOffset; } }
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
 			return new RAHarvesterDockSequence(harv, self);
 		}
 		
-		public OreRefinery (Actor self, OreRefineryInfo info)
+		public OreRefinery(Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
 			Info = info;
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.RA
 				dockedHarv.CancelActivity();
 		}
 		
-		public void Tick (Actor self)
+		public void Tick(Actor self)
 		{
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead())
@@ -111,14 +112,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void Killed (Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo e)
 		{
 			CancelDock(self);
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void OnDock (Actor harv, DeliverResources dockOrder)
+		public void OnDock(Actor harv, DeliverResources dockOrder)
 		{
 			if (!preventDock)
 			{
@@ -130,7 +131,7 @@ namespace OpenRA.Mods.RA
 		}
 		
 		
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{		
 			// Steal any docked harv too
 			if (dockedHarv != null)
@@ -144,8 +145,8 @@ namespace OpenRA.Mods.RA
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void Selling (Actor self) { CancelDock(self); }
-		public void Sold (Actor self)
+		public void Selling(Actor self) { CancelDock(self); }
+		public void Sold(Actor self)
 		{
             foreach (var harv in GetLinkedHarvesters())
                 harv.Trait.UnlinkProc(harv.Actor, self);

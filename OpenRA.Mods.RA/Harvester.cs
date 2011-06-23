@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<IAcceptOre>( "Deliver", 5, false, true, _ => true, _ => !IsEmpty );
+				yield return new EnterOrderTargeter<IAcceptOre>("Deliver", 5, false, true, _ => true, proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -160,6 +160,10 @@ namespace OpenRA.Mods.RA
 			}
 			else if (order.OrderString == "Deliver")
 			{
+				var iao = order.TargetActor.TraitOrDefault<IAcceptOre>();
+				if (iao == null || !iao.AllowDocking)
+					return;
+
 				if (order.TargetActor != LinkedProc)
 					LinkedProc = order.TargetActor;
 				

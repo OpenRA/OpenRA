@@ -65,16 +65,29 @@ namespace OpenRA.Mods.Cnc
 					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
 				case State.Dock:
 					dock.Visible = false;
-					rb.PlayCustomAnimThen(proc, "dock-start", () => {rb.PlayCustomAnimRepeating(proc, "dock-loop"); state = State.Loop;});
-					state = State.Wait;
+					if (rb.anim.CurrentSequence.Name == "idle" || rb.anim.CurrentSequence.Name == "damaged-idle")
+					{
+						rb.PlayCustomAnimThen(proc, "dock-start", () => {rb.PlayCustomAnimRepeating(proc, "dock-loop"); state = State.Loop;});
+						state = State.Wait;
+					}
+					else
+						state = State.Loop;
 					return this;
 				case State.Loop:
 					if (harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					rb.PlayCustomAnimThen(proc, "dock-end", () => {dock.Visible = true; state = State.Dragout;});
-					state = State.Wait;
+					if (rb.anim.CurrentSequence.Name == "dock-loop" || rb.anim.CurrentSequence.Name == "damaged-dock-loop")
+					{
+						rb.PlayCustomAnimThen(proc, "dock-end", () => {dock.Visible = true; state = State.Dragout;});
+						state = State.Wait;
+					}
+					else
+					{
+						state = State.Dragout;
+						dock.Visible = true;
+					}
 					return this;
 				case State.Dragout:
 					return Util.SequenceActivities(new Drag(endDock, startDock, 12), NextActivity);
@@ -85,7 +98,6 @@ namespace OpenRA.Mods.Cnc
 		public override void Cancel(Actor self)
 		{
 			state = State.Undock;
-			base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets( Actor self )
