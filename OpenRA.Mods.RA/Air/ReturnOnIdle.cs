@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Air
                 if (someBuilding == null)
                 {
                     // ... going down the garden to eat worms ... 
-                    self.QueueActivity(new FlyOffMap() { Interruptible = true });
+                    self.QueueActivity(new FlyOffMap());
                     self.QueueActivity(new RemoveSelf());
                     return;
                 }
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public void TickIdle(Actor self)
 		{
-			self.QueueActivity(new FlyOffMap() { Interruptible = true });
+			self.QueueActivity(new FlyOffMap());
 			self.QueueActivity(new RemoveSelf());
 		}
 	}

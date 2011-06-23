@@ -31,8 +31,6 @@ namespace OpenRA.Mods.RA.Air
 
 	public class FlyOffMap : Activity
 	{
-		public bool Interruptible = false;
-
 		public override Activity Tick(Actor self)
 		{
 			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
@@ -45,8 +43,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override void Cancel( Actor self )
 		{
-			if (Interruptible)
-				base.Cancel(self);
+			base.Cancel(self);
 		}
 	}
 }
