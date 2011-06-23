@@ -117,7 +117,7 @@ ARTY:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: hq
-		Owner: gdi
+		Owner: nod
 	Mobile:
 		ROT: 2
 		Speed: 6
