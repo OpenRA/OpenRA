@@ -464,21 +464,22 @@ MissilePack:
 227mm: 
 	ROF: 80
 	Range: 8
+	Burst: 6
+	BurstDelay: 1
 	Report: ROCKET1
-	ValidTargets: Ground, Air
-	Projectile: Missile
+	ValidTargets: Ground
+	Projectile: Bullet
 		Arm: 5
 		High: yes
 		Shadow: yes
-		Proximity: yes
-		Inaccuracy: 5
+		Inaccuracy: 30
+		Angle: 0.1
 		Image: DRAGON
 		ROT: 5
 		Trail: smokey
-		Speed: 20
-		RangeLimit: 35
+		Speed: 15
 	Warhead:
-		Spread: 3
+		Spread: 10
 		Versus: 
 			None: 30%
 			Wood: 75%
@@ -488,7 +489,7 @@ MissilePack:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 75
+		Damage: 25
 
 227mm.stnk:
 	ROF: 80
