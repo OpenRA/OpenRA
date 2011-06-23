@@ -14,6 +14,7 @@ NEW:
 	C&C:
 		Completely overhauled menu system
 		Skirmish mode (creates a local game against bots)
+		Configurable bot race/team/start point
 		Hotkey support:
 			escape to toggle ingame menu
 			escape to go up a level in menus / cancel prompts
@@ -21,12 +22,15 @@ NEW:
 		Support for installing game data and music from CD
 		Refinery footprint changed, price decreased to $1500
 		Flame tank explodes on death, damage reduced by 40%
+		Stealth Tank damage increased
+		Rocket Launcher now fires 6 rockets, loses AA
+		APC becomes AA only
 		All vehicles leave husks on death
 		Concrete walls require vehicle production to build
 		MCV, Harvester, Engineer can no longer level up (via crates)
 		Fixed Rocket Launcher turret
 		Added muzzle flashes to Guard Tower
-		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk
+		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank
 		Server/Skirmish creation selects the last played map by default
 		Bridge HP halved
 	Red Alert:
@@ -41,6 +45,7 @@ NEW:
 		Correctly grant allies GPS
 		13 new maps by buddha, hamb, seru
 		Improved superweapon choosing logic when multiple are available
+		Don't show bounty for $0
 	Both:
 		[OSX] Shortcut for adding units to groups changed from ctrl->cmd
 		Tooltips work for spectators
@@ -51,6 +56,7 @@ NEW:
 		Fix selection box dragging behind ui elements
 		Mod support for passengers that take multiple slots
 		Fixed desync when a support aircraft is killed after completing its task
+		Fixed bugs with selling refineries
 	Utility:
 		Fixes for converting shp -> png
 
