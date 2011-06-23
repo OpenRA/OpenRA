@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		readonly bool Reversed;
 		readonly Action OnComplete;
+		RenderBuilding rb;
 		
 		public MakeAnimation(Actor self, Action onComplete) : this(self, false, onComplete) {}
 		public MakeAnimation(Actor self, bool reversed, Action onComplete)
@@ -33,23 +34,33 @@ namespace OpenRA.Mods.RA.Activities
 		bool started = false;
 		public override Activity Tick( Actor self )
 		{
-			if (!started)
+			if (started)
 			{
-				var rb = self.Trait<RenderBuilding>();
-				started = true;
-				if (Reversed)
+				// Don't break the actor if someone has overriden the animation prematurely
+				if (rb.anim.CurrentSequence.Name != "make")
 				{
-					var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
-					if (bi != null)
-						foreach (var s in bi.SellSounds)
-							Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
-					
-					rb.PlayCustomAnimBackwards(self, "make", () => { OnComplete(); complete = true;});
+					complete = true;
+					OnComplete();
 				}
-				else
-					rb.PlayCustomAnimThen(self, "make", () => { OnComplete(); complete = true;});
+				return complete ? NextActivity : this;
 			}
-			return complete ? NextActivity : this;
+
+			started = true;
+			rb = self.Trait<RenderBuilding>();
+			if (Reversed)
+			{
+				// TODO: These don't belong here
+				var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
+				if (bi != null)
+					foreach (var s in bi.SellSounds)
+						Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
+
+				rb.PlayCustomAnimBackwards(self, "make", () => { OnComplete(); complete = true;});
+			}
+			else
+				rb.PlayCustomAnimThen(self, "make", () => { OnComplete(); complete = true;});
+
+			return this;
 		}
 		
 		// Cannot be cancelled
