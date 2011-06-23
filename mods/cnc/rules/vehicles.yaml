@@ -411,10 +411,10 @@ MLRS:
 		Name: SSM Launcher
 		Icon: mlrsicnh
 		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
-	Buildable:
-		BuildPaletteOrder: 60
-		Prerequisites: hq
-		Owner: nod
+#	Buildable:
+#		BuildPaletteOrder: 60
+#		Prerequisites: hq
+#		Owner: nod
 	Mobile:
 		Speed: 6
 	Health:
