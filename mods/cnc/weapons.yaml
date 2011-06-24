@@ -110,10 +110,14 @@ HighV:
 			Heavy: 25%
 		InfDeath: 1
 		Explosion: 1
-HighV.Heli: 
-	ROF: 40
+
+HeliGun:
+	ROF: 20
+	Burst: 2
+	BurstDelay: 0
 	Range: 4
-	Report: GUN8
+	ValidTargets: Ground, Air
+	Report: gun5
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
