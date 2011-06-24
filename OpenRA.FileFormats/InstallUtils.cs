@@ -48,8 +48,6 @@ namespace OpenRA.FileFormats
 					destStream.Write(sourceStream.ReadAllBytes());
 				}
 			}
-			
-			onProgress("Extraction complete");
 			return true;
 		}
 		
@@ -67,7 +65,6 @@ namespace OpenRA.FileFormats
 				onProgress("Extracting "+destFile);
 				File.Copy(fromPath,	Path.Combine(destPath, destFile), true);
 			}
-			onProgress("Extraction complete");
 			return true;
 		}
 		
@@ -84,7 +81,6 @@ namespace OpenRA.FileFormats
 			{
 				var z = new ZipInputStream(File.OpenRead(zipFile));
 				z.ExtractZip(dest, extracted, s => onProgress("Extracting "+s));
-				onProgress("Extraction complete");
 			}
 			catch (SharpZipBaseException)
 			{

@@ -71,23 +71,21 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			progressBar.SetIndeterminate(false);
 			
 			var installCounter = 0;
-			var onProgress = (Action<string>)(s =>
+			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var onProgress = (Action<string>)(s => Game.RunAfterTick(() => 
 			{
-				progressBar.Percentage = installCounter*100/(copyFiles.Count() + extractFiles.Count());
+				progressBar.Percentage = installCounter*100/installTotal;
 				installCounter++;
 				
 				statusLabel.GetText = () => s;
-			});
+			}));
 			
-			var onError = (Action<string>)(s =>
+			var onError = (Action<string>)(s => Game.RunAfterTick(() => 
 			{
-				Game.RunAfterTick(() => 
-				{
-					statusLabel.GetText = () => "Error: "+s;
-					panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
-					panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
-				});
-			});
+				statusLabel.GetText = () => "Error: "+s;
+				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
+				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+			}));
 			
 			string source;
 			try 
