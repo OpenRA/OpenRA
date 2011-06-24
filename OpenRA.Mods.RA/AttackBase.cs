@@ -29,7 +29,6 @@ namespace OpenRA.Mods.RA
 		public readonly int[] SecondaryLocalOffset = { };
 		public readonly int[] PrimaryOffset = { 0, 0 };
 		public readonly int[] SecondaryOffset = null;
-		public readonly bool MuzzleFlash = false;
 		public readonly int FireDelay = 0;
 
 		public readonly bool AlignIdleTurrets = false;

@@ -94,7 +94,6 @@ APC:
 	AttackFrontal:
 		PrimaryWeapon: QuadCannon
 		PrimaryOffset: 0,0,0,-4
-		MuzzleFlash: yes
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -195,7 +194,7 @@ BGGY:
 	AttackTurreted:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,1,0,-3
-		MuzzleFlash: yes
+	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
 	LeavesHusk:
@@ -257,7 +256,7 @@ JEEP:
 	AttackTurreted:
 		PrimaryWeapon: MachineGun
 		PrimaryOffset: 0,0,0,-2
-		MuzzleFlash: yes
+	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
 	LeavesHusk:

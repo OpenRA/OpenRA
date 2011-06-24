@@ -26,7 +26,6 @@ namespace OpenRA.Mods.RA.Render
 			var facing = self.Trait<IFacing>();
 			var turreted = self.Trait<Turreted>();
 			var attack = self.TraitOrDefault<AttackBase>();
-			var attackInfo = self.Info.Traits.Get<AttackBaseInfo>();
 
 			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );
 			turretAnim.Play( "turret" );
@@ -38,17 +37,6 @@ namespace OpenRA.Mods.RA.Render
 					new AnimationWithOffset( turretAnim,
 						() => Combat.GetTurretPosition( self, facing, turret ),
 						null));
-
-				if (attackInfo.MuzzleFlash)
-				{
-					var muzzleFlash = new Animation(GetImage(self), () => turreted.turretFacing);
-					muzzleFlash.PlayFetchIndex("muzzle",
-						() => (int)(turret.Recoil * 5.9f)); /* hack: dumb crap */
-					anims.Add("muzzle_flash_{0}".F(i),
-						new AnimationWithOffset(muzzleFlash,
-							() => Combat.GetTurretPosition(self, facing, turret),
-							() => turret.Recoil <= 0));
-				}
 			}
 		}
 	}

@@ -288,7 +288,7 @@ JEEP:
 	AttackTurreted:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-2
-		MuzzleFlash: yes
+	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
 	Cargo:
@@ -319,7 +319,6 @@ APC:
 	AttackFrontal:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
-		MuzzleFlash: yes
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
