@@ -13,6 +13,8 @@ NEW:
 		Fix resource-clearing weapons breaking custom terrain types (bridges)
 	C&C:
 		Completely overhauled menu system
+		Support for installing from original game disks
+		Support for installing music from original game disks
 		Skirmish mode (creates a local game against bots)
 		Configurable bot race/team/start point
 		Hotkey support:
@@ -24,13 +26,16 @@ NEW:
 		Flame tank explodes on death, damage reduced by 40%
 		Stealth Tank damage increased
 		Rocket Launcher now fires 6 rockets, loses AA
+		Orca / Apache weapons reworked. Both now have limited volleys, but reload in the air. Both can attack other air units.
 		APC becomes AA only
+		Artillery given back to Nod
+		SSM launcher removed from Nod
 		All vehicles leave husks on death
 		Concrete walls require vehicle production to build
 		MCV, Harvester, Engineer can no longer level up (via crates)
-		Fixed Rocket Launcher turret
-		Added muzzle flashes to Guard Tower
-		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank
+		Rocket Launcher turret now raises/lowers when it is attacking
+		Added muzzle flashes to Guard Tower / SAM site
+		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank / Buggy / Orca / Apache
 		Server/Skirmish creation selects the last played map by default
 		Bridge HP halved
 	Red Alert:
