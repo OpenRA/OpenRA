@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
 		Action continueLoading;
+		ButtonWidget retryButton, backButton;
+		Widget installingContainer, insertDiskContainer;
 		
 		[ObjectCreator.UseCtor]
 		public CncInstallFromCDLogic([ObjectCreator.Param] Widget widget,
@@ -34,41 +36,43 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			
-			var backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
+			backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Widget.CloseWindow;
-			backButton.IsVisible = () => false;
 			
-			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
-			retryButton.OnClick = PromptForCD;
-			retryButton.IsVisible = () => false;
+			retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
+			retryButton.OnClick = CheckForDisk;
 			
-			// TODO: Search obvious places (platform dependent) for CD
-			PromptForCD();
+			installingContainer = panel.GetWidget("INSTALLING");
+			insertDiskContainer = panel.GetWidget("INSERT_DISK");
+			CheckForDisk();
 		}
 		
-		void PromptForCD()
+		void CheckForDisk()
 		{
-			if (Game.Settings.Graphics.Mode == WindowMode.Fullscreen)
+			var path = InstallUtils.GetMountedDisk(new [] { "GDI95", "NOD95" });
+
+			if (path != null)
+				Install(path);
+			else
 			{
-				statusLabel.GetText = () => "Error: Installing from Fullscreen mode is not supported";
-				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
-				return;
+				insertDiskContainer.IsVisible = () => true;
+				installingContainer.IsVisible = () => false;
 			}
-			
-			progressBar.SetIndeterminate(true);
-			Game.Utilities.PromptFilepathAsync("Select CONQUER.MIX on the C&C CD", path => Game.RunAfterTick(() => Install(path)));
 		}
 		
-		void Install(string path)
+		void Install(string source)
 		{
+			backButton.IsDisabled = () => true;
+			retryButton.IsDisabled = () => true;
+			insertDiskContainer.IsVisible = () => false;
+			installingContainer.IsVisible = () => true;
+
 			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
 			var copyFiles = new string[] { "CONQUER.MIX", "DESERT.MIX",
-					"GENERAL.MIX", "SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"};
+					"GENERAL.MIX", "SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" };
 			
 			var extractPackage = "INSTALL/SETUP.Z";
-			var extractFiles = new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" };
-
-			progressBar.SetIndeterminate(false);
+			var extractFiles = new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix", "transit.mix" };
 			
 			var installCounter = 0;
 			var installTotal = copyFiles.Count() + extractFiles.Count();
@@ -83,34 +87,30 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var onError = (Action<string>)(s => Game.RunAfterTick(() => 
 			{
 				statusLabel.GetText = () => "Error: "+s;
-				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
-				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
+				backButton.IsDisabled = () => false;
+				retryButton.IsDisabled = () => false;
 			}));
-			
-			string source;
-			try 
-			{
-				source = Path.GetDirectoryName(path);
-			}
-			catch (ArgumentException)
-			{
-				onError("Invalid path selected");
-				return;
-			}
 			
 			var t = new Thread( _ =>
 			{
-				if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
-				return;
-			
-				if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
-			    	return;
-				
-				Game.RunAfterTick(() =>
+				try
 				{
-					Widget.CloseWindow();
-					continueLoading();
-				});
+					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+						return;
+				
+					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+				    	return;
+
+					Game.RunAfterTick(() =>
+					{
+						Widget.CloseWindow();
+						continueLoading();
+					});
+				}
+				catch
+				{
+					onError("Installation failed");
+				}
 			}) { IsBackground = true };
 			t.Start();
 		}

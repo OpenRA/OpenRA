@@ -47,12 +47,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
-			Action<string> afterInstall = path =>
+			Action afterInstall = () =>
 			{
 				// Mount the new mixfile and rebuild the scores list
 				try
 				{
-					FileSystem.Mount(path);
+					var path = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+					FileSystem.Mount(Path.Combine(path, "scores.mix"));
+					FileSystem.Mount(Path.Combine(path, "transit.mix"));
 					Rules.Music.Do(m => m.Value.Reload());
 				}
 				catch (Exception) { }
@@ -189,94 +191,95 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action<string> afterInstall;
+		Action afterInstall;
+		ButtonWidget retryButton, backButton;
+		Widget installingContainer, insertDiskContainer;
 		
 		[ObjectCreator.UseCtor]
 		public CncInstallMusicLogic([ObjectCreator.Param] Widget widget,
-		                       [ObjectCreator.Param] Action<string> afterInstall)
+		                       [ObjectCreator.Param] Action afterInstall)
 		{
 			this.afterInstall = afterInstall;
 			panel = widget.GetWidget("INSTALL_MUSIC_PANEL");
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 			
-			var backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
+			backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Widget.CloseWindow;
-			backButton.IsVisible = () => false;
 			
-			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
-			retryButton.OnClick = PromptForCD;
-			retryButton.IsVisible = () => false;
+			retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
+			retryButton.OnClick = CheckForDisk;
 			
-			// TODO: Search obvious places (platform dependent) for CD
-			PromptForCD();
+			installingContainer = panel.GetWidget("INSTALLING");
+			insertDiskContainer = panel.GetWidget("INSERT_DISK");
+			CheckForDisk();
 		}
 		
-		void PromptForCD()
+		void CheckForDisk()
 		{
-			if (Game.Settings.Graphics.Mode == WindowMode.Fullscreen)
+			var path = InstallUtils.GetMountedDisk(new [] { "GDI95", "NOD95" });
+
+			if (path != null)
+				Install(path);
+			else
 			{
-				statusLabel.GetText = () => "Error: Installing from Fullscreen mode is not supported";
-				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
-				return;
+				insertDiskContainer.IsVisible = () => true;
+				installingContainer.IsVisible = () => false;
 			}
-
-			progressBar.SetIndeterminate(true);
-			statusLabel.GetText = () => "Waiting for file";
-			Game.Utilities.PromptFilepathAsync("Select SCORES.MIX on the C&C CD", path => Install(path));
 		}
 		
-		public void OnError(string message)
+		void Install(string source)
 		{
-			Game.RunAfterTick(() => 
-			{
-				progressBar.SetIndeterminate(false);
-				statusLabel.GetText = () => "Error: "+message;
-				panel.GetWidget("RETRY_BUTTON").IsVisible = () => true;
-				panel.GetWidget("BACK_BUTTON").IsVisible = () => true;
-			});
-		}
+			backButton.IsDisabled = () => true;
+			retryButton.IsDisabled = () => true;
+			insertDiskContainer.IsVisible = () => false;
+			installingContainer.IsVisible = () => true;
 
-		void Install(string path)
-		{
 			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
-			Game.RunAfterTick(() => statusLabel.GetText = () => "Installing");
+			var copyFiles = new string[] { "SCORES.MIX" };
+			
+			var extractPackage = "INSTALL/SETUP.Z";
+			var extractFiles = new string[] { "transit.mix" };
+			
+			var installCounter = 0;
+			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var onProgress = (Action<string>)(s => Game.RunAfterTick(() => 
+			{
+				progressBar.Percentage = installCounter*100/installTotal;
+				installCounter++;
+				
+				statusLabel.GetText = () => s;
+			}));
+			
+			var onError = (Action<string>)(s => Game.RunAfterTick(() => 
+			{
+				statusLabel.GetText = () => "Error: "+s;
+				backButton.IsDisabled = () => false;
+				retryButton.IsDisabled = () => false;
+			}));
+			
+			var t = new Thread( _ =>
+			{
+				try
+				{
+					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+						return;
+				
+					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+				    	return;
 
-			// Mount the package and check that it contains the correct files
-			try
-			{
-				var mixFile = new MixFile(path, 0);
-				
-				if (!mixFile.Exists("aoi.aud"))
-				{
-					OnError("Not the C&C SCORES.MIX");
-					return;
+					Game.RunAfterTick(() =>
+					{
+						Widget.CloseWindow();
+						afterInstall();
+					});
 				}
-				
-				var t = new Thread( _ =>
+				catch
 				{
-					var destPath = Path.Combine(dest, "scores.mix");
-					try
-					{
-						File.Copy(path, destPath, true);
-						Game.RunAfterTick(() =>
-						{
-							Widget.CloseWindow(); // Progress panel
-							afterInstall(destPath);
-						});
-					}
-					catch (Exception e)
-					{
-						OnError("File copy failed");
-						Log.Write("debug", e.Message);
-					}
-				}) { IsBackground = true };
-				t.Start();
-			}
-			catch
-			{
-				OnError("Invalid mix file");
-			}
+					onError("Installation failed");
+				}
+			}) { IsBackground = true };
+			t.Start();
 		}
 	}
 }

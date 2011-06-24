@@ -57,13 +57,13 @@ Container@INSTALL_PANEL:
 					Height:25
 					Text:OpenRA requires the original C&C content files.
 					Font:Bold
-				Label@INFO:
+				Label@INFO2:
 					X:170
 					Y:70
 					Width:PARENT_RIGHT-185
 					Height:25
 					WordWrap:true
-					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CD.
+					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
 					Font:Bold
 		Button@QUIT_BUTTON:
 			Id:QUIT_BUTTON
@@ -118,20 +118,46 @@ Container@INSTALL_FROMCD_PANEL:
 					Y:11
 					ImageCollection:logos
 					ImageName:install
-				ProgressBar@PROGRESS_BAR:
-					Id:PROGRESS_BAR
-					X:170
-					Y:45
-					Width:PARENT_RIGHT - 185
-					Height:35
-				Label@STATUS_LABEL:
-					Id:STATUS_LABEL
-					X:170
-					Y:85
-					Width:PARENT_RIGHT - 185
-					Height:25
-					Align:Left
-					Text:Waiting for CD
+				Container@INSTALLING:
+					Id:INSTALLING
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Visible: false
+					Children:
+						ProgressBar@PROGRESS_BAR:
+							Id:PROGRESS_BAR
+							X:170
+							Y:45
+							Width:PARENT_RIGHT - 185
+							Height:35
+						Label@STATUS_LABEL:
+							Id:STATUS_LABEL
+							X:170
+							Y:85
+							Width:PARENT_RIGHT - 185
+							Height:25
+							Align:Left
+				Container@INSERT_DISK:
+					Id:INSERT_DISK
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Visible: false
+					Children:
+						Label@INFO:
+							X:170
+							Y:35
+							Width:PARENT_RIGHT-30
+							Height:25
+							Text:Disk not found
+							Font:Bold
+						Label@INFO2:
+							X:170
+							Y:70
+							Width:PARENT_RIGHT-185
+							Height:25
+							WordWrap:true
+							Text:Please insert one of the Command & Conquer install CDs then click Retry.
+							Font:Bold
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			Key:escape

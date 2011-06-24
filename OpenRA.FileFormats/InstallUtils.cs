@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 
@@ -25,6 +26,15 @@ namespace OpenRA.FileFormats
 				var e = z.GetNextEntry();
 				if (e != null) yield return e; else break;
 			}
+		}
+
+		public static string GetMountedDisk(string[] volumeNames)
+		{
+			var volumes = DriveInfo.GetDrives()
+				.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
+				.Select(v => v.RootDirectory.FullName);
+
+			return volumes.FirstOrDefault(v => volumeNames.Contains(Path.GetFileName(v)));
 		}
 				
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
