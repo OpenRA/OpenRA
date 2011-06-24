@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA.Air
 			if (!target.IsValid) return NextActivity;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+			var reloads = self.TraitOrDefault<Reloads>();
+			if (limitedAmmo != null && !limitedAmmo.HasAmmo() && reloads == null)
 				return Util.SequenceActivities( new HeliReturn(), NextActivity );
 			
 			var aircraft = self.Trait<Aircraft>();

@@ -221,10 +221,11 @@ Rockets.Bike:
 		SmudgeType: Crater
 		Damage: 30
 		
-Rockets.Orca: 
-	ROF: 300
+OrcaMissiles: 
+	ROF: 10
+	Burst: 2
+	BurstDelay: 0
 	Range: 5
-	Burst: 4
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -249,7 +250,7 @@ Rockets.Orca:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 20
 
 Flamethrower: 
 	ROF: 50

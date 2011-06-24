@@ -93,11 +93,16 @@ ORCA:
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
-		PrimaryWeapon: Rockets.Orca
-		SecondaryWeapon: Rockets.Orca
-		PrimaryOffset: -5,0,0,2
-		SecondaryOffset: 5,0,0,2
+		PrimaryWeapon: OrcaMissiles
+		PrimaryOffset: 0,-10,0,5
+		PrimaryLocalOffset: -4,0,0,4,0,0
 		FacingTolerance: 20
+	LimitedAmmo:
+		Ammo: 10
+		PipCount: 5
+	Reloads:
+		Count: 2
+		Period: 75
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:

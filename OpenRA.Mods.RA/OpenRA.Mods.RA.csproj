@@ -348,6 +348,7 @@
     <Compile Include="InvisibleToEnemy.cs" />
     <Compile Include="ParachuteAttachment.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
+    <Compile Include="Reloads.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
