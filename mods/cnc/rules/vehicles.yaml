@@ -194,7 +194,7 @@ BGGY:
 		ROT: 10
 	AttackTurreted:
 		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,0,0,-2
+		PrimaryOffset: 0,1,0,-3
 		MuzzleFlash: yes
 	RenderUnitTurreted:
 	AutoTarget:
