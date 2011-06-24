@@ -664,6 +664,7 @@ SAM:
 	RenderBuildingTurreted:
 	AttackPopupTurreted:
 		PrimaryWeapon: Nike
+	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
