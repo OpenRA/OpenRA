@@ -197,13 +197,6 @@ Container@MAPCHOOSER_PANEL:
 					Width:140
 					Height:35
 					Text:Cancel
-				Button@BUTTON_INSTALL:
-					Id:BUTTON_INSTALL
-					X:450
-					Y:499
-					Width:140
-					Height:35
-					Text:Install Map
 				Button@BUTTON_OK:
 					Id:BUTTON_OK
 					Key:return

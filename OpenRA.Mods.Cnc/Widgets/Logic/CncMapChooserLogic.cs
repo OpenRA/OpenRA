@@ -44,9 +44,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
 			panel.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			
-			panel.GetWidget<ButtonWidget>("BUTTON_INSTALL").IsDisabled = () => true;
-			panel.GetWidget<ButtonWidget>("BUTTON_INSTALL").OnClick = () => InstallMap();
-			
 			scrollpanel = panel.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
 			EnumerateMaps();
@@ -67,32 +64,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
 				scrollpanel.AddChild(item);
 			}
-		}
-		
-		bool InstallMap()
-		{
-			Game.Utilities.PromptFilepathAsync("Select an OpenRA map file", path =>
-			{
-				if (!string.IsNullOrEmpty(path))
-					Game.RunAfterTick(() => InstallMapInner(path));
-			});
-			return true;
-		}
-		
-		void InstallMapInner(string path)
-		{
-			var toPath = new [] { Platform.SupportDir, "maps", Game.modData.Manifest.Mods[0], Path.GetFileName(path) }.Aggregate(Path.Combine);
-			
-			// Create directory if required
-			var dir = Path.GetDirectoryName(toPath);
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
-			
-			// TODO: Attempt to mount the map and verify that
-			// it is a valid Game.modData.Manifest.Mods[0] map.
-			File.Copy(path, toPath, true);
-			Game.modData.ReloadMaps();
-			EnumerateMaps();
 		}
 	}
 }

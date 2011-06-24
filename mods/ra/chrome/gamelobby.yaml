@@ -715,11 +715,3 @@ Background@MAP_CHOOSER:
 			Height:25
 			Text:Cancel
 			Font:Bold
-		Button@BUTTON_INSTALL:
-			Id:BUTTON_INSTALL
-			X:20
-			Y:PARENT_BOTTOM-49
-			Width:120
-			Height:25
-			Text:Install Map
-			Font:Bold
