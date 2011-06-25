@@ -129,6 +129,24 @@ MISS:
 		Type: Wood
 	Bib:
 
+OILB:
+	Inherits: ^CivBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Bib:
+	RevealsShroud:
+		Range: 3
+	Capturable:
+	Tooltip:
+		Name: Oil Derrick
+
 BR1:
 	Inherits: ^Bridge
 	Bridge:

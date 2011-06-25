@@ -5,6 +5,14 @@ fcom:
 		Start: 1
 	make:
 		Start: 0
+oilb:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+		Length: *
+	make:
+		Start: 0
 
 fact:
 	idle:
