@@ -57,14 +57,14 @@ namespace OpenRA.Mods.RA.Render
 				mf.Animation.PlayThen("muzzle", () => isShowing = false);
 		}
 
-		public virtual IEnumerable<Renderable> Render(Actor self)
+		public IEnumerable<Renderable> Render(Actor self)
 		{
 			foreach (var a in muzzleFlashes.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
 					yield return a.Image(self, "effect");
 		}
 
-		public virtual void Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			foreach (var a in muzzleFlashes.Values)
 				a.Animation.Tick();
