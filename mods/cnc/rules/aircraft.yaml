@@ -61,7 +61,7 @@ HELI:
 	AttackHeli:
 		PrimaryWeapon: HeliGun
 		PrimaryOffset: 0,-3,0,2
-		PrimaryLocalOffset: -5,0,0,5,0,0
+		PrimaryLocalOffset: -5,0,0,0,0, 5,0,0,0,0
 		FacingTolerance: 20
 	LimitedAmmo:
 		Ammo: 10
@@ -102,7 +102,7 @@ ORCA:
 	AttackHeli:
 		PrimaryWeapon: OrcaMissiles
 		PrimaryOffset: 0,-10,0,5
-		PrimaryLocalOffset: -4,0,0,4,0,0
+		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		FacingTolerance: 20
 	LimitedAmmo:
 		Ammo: 10

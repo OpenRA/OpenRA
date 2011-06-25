@@ -32,7 +32,7 @@ SS:
 		UncloakSound: subshow1.aud
 	AttackFrontal:
 		PrimaryWeapon: TorpTube
-		PrimaryLocalOffset: -4,0,0,4,0,0
+		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		FireDelay: 2
 	Selectable:
 		Bounds: 38,38
@@ -115,7 +115,7 @@ DD:
 		PrimaryWeapon: Stinger
 		SecondaryWeapon: DepthCharge
 		PrimaryOffset: 0,-8,0,-3
-		PrimaryLocalOffset: -4,0,-20,4,0,20
+		PrimaryLocalOffset: -4,0,0,0,-20, 4,0,0,0,20
 	Selectable:
 		Bounds: 38,38
 	RenderUnitTurreted:
@@ -156,8 +156,8 @@ CA:
 		SecondaryWeapon: 8Inch
 		PrimaryOffset: 0,17,0,-2
 		SecondaryOffset: 0,-17,0,-2
-		PrimaryLocalOffset: -4,-5,0,4,-5,0
-		SecondaryLocalOffset: -4,-5,0,4,-5,0
+		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		SecondaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
 		Recoil: 4
 	Selectable:
 		Bounds: 44,44

@@ -159,7 +159,7 @@ FTNK:
 	AttackFrontal:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 0,-5,3,2
-		PrimaryLocalOffset:2,0,0,-2,0,0
+		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
@@ -225,7 +225,7 @@ BIKE:
 	AttackFrontal:
 		PrimaryWeapon: Rockets.Bike
 		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: -4,0,25,4,0,-25
+		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	RenderUnit:
 	AutoTarget:
 	LeavesHusk:
@@ -357,8 +357,8 @@ HTNK:
 	AttackTurreted:
 		PrimaryWeapon: 120mmDual
 		SecondaryWeapon: MissilePack
-		PrimaryLocalOffset: -5,0,0,5,0,0
-		SecondaryLocalOffset: -9,2,25,9,2,-25
+		PrimaryLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
+		SecondaryLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
 		Recoil: 4
 	RenderUnitTurreted:
 	AutoTarget:
@@ -396,7 +396,7 @@ MSAM:
 	AttackFrontal:
 		PrimaryWeapon: 227mm
 		PrimaryOffset: 0,6,0,-3
-		PrimaryLocalOffset: 3,-5,0, -3,-5,0
+		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
 		Recoil: 0
 	RenderUnitTurretedAim:
 	AutoTarget:
@@ -429,8 +429,8 @@ MLRS:
 		PrimaryWeapon: HonestJohn
 		SecondaryWeapon: HonestJohn
 		PrimaryOffset: 0,3,0,-3
-		PrimaryLocalOffset: -4,0,0
-		SecondaryLocalOffset: 4,0,0
+		PrimaryLocalOffset: -4,0,0,0,0
+		SecondaryLocalOffset: 4,0,0,0,0
 		Recoil: 0
 		AlignIdleTurrets: true
 	RenderUnitTurretedAim:
@@ -466,7 +466,7 @@ STNK:
 	AttackFrontal:
 		PrimaryWeapon: 227mm.stnk
 		PrimaryOffset: 0,-5,0,-3
-		PrimaryLocalOffset:1,0,0,-1,0,0
+		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 	TargetableUnit:

@@ -219,7 +219,8 @@ namespace OpenRA.Mods.RA
 
 			var turretFacing = turreted != null  ? turreted.turretFacing : facing.Facing;
 
-			return GetTurretPosition(self, facing, turret) + Util.RotateVectorByFacing(barrel.Position, turretFacing, .7f);
+			return GetTurretPosition(self, facing, turret) + barrel.ScreenSpaceOffset
+				+ Util.RotateVectorByFacing(barrel.TurretSpaceOffset, turretFacing, .7f);
 		}
 
 		public static bool IsInRange( float2 attackOrigin, float range, Actor target )

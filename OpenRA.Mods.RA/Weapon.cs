@@ -18,7 +18,8 @@ namespace OpenRA.Mods.RA
 {
 	public class Barrel
 	{
-		public int2 Position;				// position in turret space
+		public int2 TurretSpaceOffset;		// position in turret space
+		public int2 ScreenSpaceOffset;		// screen-space hack to make things line up good.
 		public int Facing;					// deviation from turret facing
 	}
 
@@ -51,16 +52,17 @@ namespace OpenRA.Mods.RA
 			Turret = turret;
 
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < localOffset.Length / 3; i++)
+			for (var i = 0; i < localOffset.Length / 5; i++)
 				barrels.Add(new Barrel
 				{
-					Position = new int2(localOffset[3 * i], localOffset[3 * i + 1]),
-					Facing = localOffset[3 * i + 2]
+					TurretSpaceOffset = new int2(localOffset[5 * i], localOffset[5 * i + 1]),
+					ScreenSpaceOffset = new int2(localOffset[5 * i + 2], localOffset[5 * i + 3]),
+					Facing = localOffset[5 * i + 4]
 				});
 
 			// if no barrels specified, the default is "turret position; turret facing".
 			if (barrels.Count == 0)
-				barrels.Add(new Barrel { Position = int2.Zero, Facing = 0 });
+				barrels.Add(new Barrel { TurretSpaceOffset = int2.Zero, ScreenSpaceOffset = int2.Zero, Facing = 0 });
 
 			Barrels = barrels.ToArray();
 		}
