@@ -75,6 +75,7 @@ TileSets:
 
 Music:
 	mods/ra/music.yaml
+	mods/ra/music-cs.yaml
 
 Movies:
 	mods/ra/movies1.yaml
