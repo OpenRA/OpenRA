@@ -527,14 +527,14 @@ MissilePack:
 		SmudgeType: Crater
 		Damage: 75
 
-Ballistic:
+ArtilleryShell:
 	ROF: 65
 	Range: 6
 	Report: TNKFIRE2
 	Projectile: Bullet
 		Speed: 12
 		High: yes
-		Angle: .1
+		Angle: .09
 		Inaccuracy: 5
 		Image: 120MM
 	Warhead:

@@ -127,7 +127,8 @@ ARTY:
 	RevealsShroud:
 		Range: 6
 	AttackFrontal:
-		PrimaryWeapon: Ballistic
+		PrimaryWeapon: ArtilleryShell
+		PrimaryOffset: 0,-7,0,-3
 	RenderUnit:
 	Explodes:
 	AutoTarget:
