@@ -17,7 +17,7 @@ rm -rf $ROOTDIR
 
 # Game files
 mkdir -p $ROOTDIR/usr/bin/
-cp -T openra-bin root/usr/bin/openra
+cp -T openra-bin $ROOTDIR/usr/bin/openra
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 cp OpenRA.Utility.sh $ROOTDIR/usr/share/openra/
