@@ -255,7 +255,7 @@ JEEP:
 		ROT: 10
 	AttackTurreted:
 		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,0,0,-2
+		PrimaryOffset: 0,2,0,-4
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
