@@ -31,10 +31,8 @@ namespace OpenRA.Mods.RA.Render
 			var render = self.Trait<RenderSimple>();
 			var facing = self.TraitOrDefault<IFacing>();
 			var turreted = self.TraitOrDefault<Turreted>();
-
-			var getFacing = facing != null
-				? () => facing.Facing :
-				turreted != null ? (Func<int>)(() => turreted.turretFacing) : () => 0;
+			var getFacing = turreted != null ? () => turreted.turretFacing :
+							facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
 			foreach (var w in attack.Weapons)
 				foreach( var b in w.Barrels )
