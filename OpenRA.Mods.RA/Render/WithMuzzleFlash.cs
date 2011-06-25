@@ -20,9 +20,9 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}
 
-	class WithMuzzleFlash : INotifyAttack
+	class WithMuzzleFlash : INotifyAttack, IRender, ITick
 	{
-		List<Animation> muzzleFlashes = new List<Animation>();
+		Dictionary<string, RenderSimple.AnimationWithOffset> muzzleFlashes = new Dictionary<string, RenderSimple.AnimationWithOffset>();
 		bool isShowing;
 
 		public WithMuzzleFlash(Actor self)
@@ -43,20 +43,31 @@ namespace OpenRA.Mods.RA.Render
 					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
 					muzzleFlash.Play("muzzle");
 
-					render.anims.Add("muzzle{0}".F(muzzleFlashes.Count), new RenderSimple.AnimationWithOffset(
+					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new RenderSimple.AnimationWithOffset(
 						muzzleFlash,
 						() => Combat.GetBarrelPosition(self, facing, turret, barrel),
 						() => !isShowing));
-
-					muzzleFlashes.Add(muzzleFlash);
 				}
 		}
 
 		public void Attacking(Actor self, Target target)
 		{
 			isShowing = true;
-			foreach( var mf in muzzleFlashes )
-				mf.PlayThen("muzzle", () => isShowing = false);
+			foreach( var mf in muzzleFlashes.Values )
+				mf.Animation.PlayThen("muzzle", () => isShowing = false);
+		}
+
+		public virtual IEnumerable<Renderable> Render(Actor self)
+		{
+			foreach (var a in muzzleFlashes.Values)
+				if (a.DisableFunc == null || !a.DisableFunc())
+					yield return a.Image(self, "effect");
+		}
+
+		public virtual void Tick(Actor self)
+		{
+			foreach (var a in muzzleFlashes.Values)
+				a.Animation.Tick();
 		}
 	}
 }
