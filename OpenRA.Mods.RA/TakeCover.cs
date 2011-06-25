@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA
 		public readonly int ProneTime = 100;	/* ticks, =4s */
 		public readonly float ProneDamage = .5f;
 		public readonly decimal ProneSpeed = .5m;
+		public readonly int[] BarrelOffset = null;
 		public object Create(ActorInitializer init) { return new TakeCover(this); }
 	}
 
@@ -39,15 +40,40 @@ namespace OpenRA.Mods.RA
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
+			{
+				if (!IsProne)
+					ApplyBarrelOffset(self, true);
 				remainingProneTime = Info.ProneTime;
+			}
 		}
 
 		public void Tick(Actor self)
 		{
 			if (IsProne)
-				remainingProneTime--;
+			{
+				if (--remainingProneTime == 0)
+					ApplyBarrelOffset(self, false);
+			}
 		}
-		
+
+		public void ApplyBarrelOffset(Actor self, bool isProne)
+		{
+			if (Info.BarrelOffset == null)
+				return;
+
+			var ab = self.TraitOrDefault<AttackBase>();
+			if (ab == null)
+				return;
+
+			var sign = isProne ? 1 : -1;
+			foreach (var w in ab.Weapons)
+				foreach (var b in w.Barrels)
+				{
+					b.TurretSpaceOffset += sign*new int2(Info.BarrelOffset[0], Info.BarrelOffset[1]);
+					b.ScreenSpaceOffset += sign*new int2(Info.BarrelOffset[2], Info.BarrelOffset[3]);
+				}
+		}
+
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
 			return IsProne ? Info.ProneDamage : 1f;
@@ -90,11 +116,11 @@ namespace OpenRA.Mods.RA
 			return base.AllowIdleAnimation(self) && !tc.IsProne;
 		}
 		
-		public override void Tick (Actor self)
+		public override void Tick(Actor self)
 		{
 			if (wasProne != tc.IsProne)
 				dirty = true;
-			
+
 			wasProne = tc.IsProne;
 			base.Tick(self);
 		}
