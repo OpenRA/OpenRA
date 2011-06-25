@@ -21,9 +21,11 @@ namespace OpenRA.GameRules
 
 		public MusicInfo( string key, MiniYaml value )
 		{
-			Filename = key+".aud";
 			Title = value.Value;
 
+			var nd = value.NodesDict;
+			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
+			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key)+"."+ext;
 			if (!FileSystem.Exists(Filename))
 				return;
 			
