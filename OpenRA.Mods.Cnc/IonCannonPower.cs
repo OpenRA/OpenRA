@@ -21,6 +21,12 @@ namespace OpenRA.Mods.Cnc
 	class IonCannonPower : SupportPower
 	{
 		public IonCannonPower(Actor self, IonCannonPowerInfo info) : base(self, info) { }
+		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		{
+			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
+			return new SelectGenericPowerTarget(order, manager, "ioncannon", MouseButton.Left);
+		}
+
 		public override void Activate(Actor self, Order order)
 		{
 			self.World.AddFrameEndTask(w =>
