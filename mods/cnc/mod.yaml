@@ -29,6 +29,7 @@ Packages:
 	~movies-nod.mix
 	~movies.mix
 	~scores.mix
+	~transit.mix
 
 Rules:
 	mods/cnc/rules/defaults.yaml

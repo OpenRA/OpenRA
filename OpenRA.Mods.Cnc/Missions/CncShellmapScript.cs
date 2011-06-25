@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	class CncShellmapScriptInfo : ITraitInfo
 	{
-		public string Music = "otp";
+		public string Music = "map1";
 		public object Create(ActorInitializer init) { return new CncShellmapScript(this); }
 	}
 
