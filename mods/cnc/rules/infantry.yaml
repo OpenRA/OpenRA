@@ -91,7 +91,7 @@ E4:
 		HP: 90
 	AttackFrontal:
 		PrimaryWeapon: Flamethrower
-		PrimaryOffset: 0,0,0,-5
+		PrimaryOffset: 0,-2,2,-4
 		FireDelay: 3
 	WithMuzzleFlash:
 	RenderInfantryProne:
@@ -117,7 +117,7 @@ E5:
 		HP: 90
 	AttackFrontal:
 		PrimaryWeapon: Chemspray
-		PrimaryOffset: 0,0,0,-5
+		PrimaryOffset: 0,-2,2,-9
 		FireDelay: 3
 	WithMuzzleFlash:
 	-PoisonedByTiberium:

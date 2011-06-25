@@ -109,8 +109,8 @@
 	Buildable:
 		Queue: Infantry
 	TakeCover:
+		BarrelOffset: 0,-2,0,4
 	RenderInfantryProne:
-
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
