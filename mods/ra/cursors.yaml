@@ -119,6 +119,16 @@ Cursors:
 			length: 8
 			x: 12
 			y: 12
+		harvest:
+			start:21
+			length: 8
+			x: 12
+			y: 12
+		harvest-minimap:
+			start:134
+			length: 8
+			x: 12
+			y: 12
 		enter:
 			start:113
 			length: 3

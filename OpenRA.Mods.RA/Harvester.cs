@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA
 
 				if( res == null ) return false;
 				if( !info.Resources.Contains( res.info.Name ) ) return false;
-				cursor = "attackmove";
+				cursor = "harvest";
 				IsQueued = forceQueued;
 
 				return true;
