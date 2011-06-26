@@ -21,12 +21,12 @@ namespace OpenRA.Mods.RA.Effects
 		readonly float2 pos;
 		readonly string palette;
 
-		public Corpse(Actor fromActor, int death)
+		public Corpse(Actor fromActor, string sequence)
 		{
 			var rs = fromActor.Trait<RenderSimple>();
 			palette = rs.Palette(fromActor.Owner);
 			anim = new Animation(rs.GetImage(fromActor));
-			anim.PlayThen("die{0}".F(death + 1),
+			anim.PlayThen(sequence,
 				() => fromActor.World.AddFrameEndTask(w => w.Remove(this)));
 
 			pos = fromActor.CenterLocation;

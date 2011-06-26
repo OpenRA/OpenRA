@@ -119,9 +119,12 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var death = e.Warhead != null ? e.Warhead.InfDeath : 0;
+			// Killed by some non-standard means
+			if (e.Warhead == null)
+				return;
+
 			Sound.PlayVoice("Die", self, self.Owner.Country.Race);
-			self.World.AddFrameEndTask(w => w.Add(new Corpse(self, death)));
+			self.World.AddFrameEndTask(w => w.Add(new Corpse(self, "die{0}".F(e.Warhead.InfDeath + 1))));
 		}
 	}
 }
