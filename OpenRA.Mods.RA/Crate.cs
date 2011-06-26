@@ -56,6 +56,8 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 		}
 
+		public void WarnCrush(Actor crusher) {}
+
 		public void OnCrush(Actor crusher)
 		{
 			var shares = self.TraitsImplementing<CrateAction>().Select(

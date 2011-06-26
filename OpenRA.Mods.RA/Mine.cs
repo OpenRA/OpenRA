@@ -40,6 +40,8 @@ namespace OpenRA.Mods.RA
 			this.location = init.Get<LocationInit,int2>();
 		}
 
+		public void WarnCrush(Actor crusher) {}
+
 		public void OnCrush(Actor crusher)
 		{
 			if (crusher.HasTrait<MineImmune>() || self.Owner.Stances[crusher.Owner] == Stance.Ally)

@@ -329,6 +329,17 @@ namespace OpenRA.Mods.RA.Move
             return Info.CanEnterCell(self.World, self.Owner, cell, ignoreActor, checkTransientActors);
         }
 
+		public void EnteringCell(Actor self)
+		{
+			var crushable = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());
+            foreach (var a in crushable)
+            {
+				var crushActions = a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner));
+                foreach (var b in crushActions)
+					b.WarnCrush(self);
+			}
+		}
+
         public void FinishedMoving(Actor self)
         {
             var crushable = self.World.ActorMap.GetUnitsAt(toCell).Where(a => a != self && a.HasTrait<ICrushable>());

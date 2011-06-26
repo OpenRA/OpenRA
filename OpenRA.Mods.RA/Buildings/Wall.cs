@@ -31,7 +31,9 @@ namespace OpenRA.Mods.RA.Buildings
 			this.self = self;
 			this.info = info;
 		}
-		
+
+		public void WarnCrush(Actor crusher) {}
+
 		public bool CrushableBy(string[] crushClasses, Player crushOwner)
 		{
 			if (crushOwner.Stances[self.Owner] == Stance.Ally)

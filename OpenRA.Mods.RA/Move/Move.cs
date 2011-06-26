@@ -349,6 +349,7 @@ namespace OpenRA.Mods.RA.Move
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
 				
+				mobile.EnteringCell(self);
 				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
 				return ret2;
 			}
