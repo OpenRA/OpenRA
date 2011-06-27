@@ -114,7 +114,6 @@ namespace OpenRA.Utility
 						Marshal.Copy(frame.Image, i * srcImage.Width,
 							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), srcImage.Width);
 
-					Marshal.Copy(frame.Image, 0, data.Scan0, frame.Image.Length);
 					x += srcImage.Width;
 
 					bitmap.UnlockBits( data );
