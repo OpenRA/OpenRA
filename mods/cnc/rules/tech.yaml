@@ -2,7 +2,6 @@
 V19:
 	Inherits: ^CivBuilding
 	RenderBuilding:
-		Palette: staticterrain
 	CashTrickler:
 	Building:
 		Footprint: x
@@ -21,7 +20,6 @@ V19.Husk:
 	-DeadBuildingState:
 	-Health:
 	RenderBuilding:
-		Palette: staticterrain
 	WithFire:
 	Building:
 		Footprint: x
