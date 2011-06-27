@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = false;
+		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
 	}
 
