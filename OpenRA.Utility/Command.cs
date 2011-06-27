@@ -89,7 +89,7 @@ namespace OpenRA.Utility
 		static Palette LoadPalette( string filename )
 		{
 			using( var s = File.OpenRead( filename ) )
-				return new Palette( s, true );
+				return new Palette( s, false );
 		}
 
 		public static void ConvertShpToPng(string[] args)
