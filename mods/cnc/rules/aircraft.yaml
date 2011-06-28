@@ -43,7 +43,7 @@ HELI:
 	Tooltip:
 		Name: Apache Longbow
 		Icon: heliicnh
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, hq

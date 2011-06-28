@@ -121,7 +121,7 @@ HeliGun:
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Damage: 40
+		Damage: 20
 		Spread: 3
 		Versus: 
 			None: 100%
