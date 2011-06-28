@@ -663,7 +663,7 @@ SAM:
 		InitialFacing: 0
 	RenderBuildingTurreted:
 	AttackPopupTurreted:
-		PrimaryWeapon: Nike
+		PrimaryWeapon: SAMMissile
 	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:

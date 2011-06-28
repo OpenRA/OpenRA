@@ -673,9 +673,9 @@ Laser:
 		SmudgeType: Scorch
 		Damage: 200
 
-Nike: 
+SAMMissile:
 	ROF: 50
-	Range: 15
+	Range: 10
 	Report: ROCKET2
 	ValidTargets: Air
 	Projectile: Missile
