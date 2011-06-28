@@ -14,7 +14,6 @@ namespace OpenRA.Mods.RA
 {
 	public class BuildableInfo : ITraitInfo
 	{
-		[ActorReference]
 		public readonly string[] Prerequisites = { };
 		[ActorReference]
 		public readonly string[] BuiltAt = { };

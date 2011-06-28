@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
@@ -20,7 +21,19 @@ namespace OpenRA.Mods.RA
     {
         public void Run(Action<string> emitError)
         {
-			/* do something intelligent here. */
+			var providedPrereqs = Rules.Info.Keys.Concat( 
+				Rules.Info.SelectMany( a => a.Value.Traits
+			        .WithInterface<ProvidesCustomPrerequisiteInfo>()
+			        .Select( p => p.Prerequisite ))).ToArray();
+			
+			foreach( var i in Rules.Info )
+			{
+				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
+				if (bi != null)
+					foreach( var prereq in bi.Prerequisites )
+						if ( !providedPrereqs.Contains(prereq) )
+							emitError( "Buildable actor {0} has prereq {1} not provided by anything.".F( i.Key, prereq ) );
+			}
         }
     }
 	
