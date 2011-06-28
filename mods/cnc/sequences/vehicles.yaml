@@ -179,7 +179,10 @@ apc:
 	idle:
 		Start: 0
 		Facings: 32
-	muzzle: minigun
+	turret: apctur
+		Start: 0
+		Facings: 32
+	muzzle: apcmuz
 		Start: 0
 		Length: 6
 		Facings: 8

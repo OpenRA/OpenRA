@@ -91,11 +91,14 @@ APC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5
-	AttackFrontal:
-		PrimaryWeapon: QuadCannon
-		PrimaryOffset: 0,0,0,-4
-	RenderUnit:
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: APCGun
+		PrimaryOffset: 0,0,0,0
+		PrimaryLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
 	WithMuzzleFlash:
+	RenderUnitTurreted:
 	AutoTarget:
 	Cargo:
 		Types: Infantry

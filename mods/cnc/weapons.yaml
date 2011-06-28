@@ -749,7 +749,7 @@ Tiberium:
 		Damage: 1
 		PreventProne: yes
 
-QuadCannon:
+APCGun:
 	ROF: 10
 	Range: 7
 	Report: gun20
