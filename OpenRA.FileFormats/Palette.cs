@@ -11,6 +11,8 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System;
+using System.Reflection;
 
 namespace OpenRA.FileFormats
 {
@@ -81,6 +83,12 @@ namespace OpenRA.FileFormats
 			
 			for (var i = 0; i < 256; i++)
 				pal.Entries[i] = GetColor(i);
+
+			// hack around a mono bug -- the palette flags get set wrong.
+			if (Platform.CurrentPlatform != PlatformType.Windows)
+				typeof(ColorPalette).GetField("flags", 
+					BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pal, 1);
+			
 			return pal;
 		}
 	}
