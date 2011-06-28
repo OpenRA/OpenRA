@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class BuildableInfo : ITraitInfo
+	public class BuildableInfo : TraitInfo<Buildable>
 	{
 		public readonly string[] Prerequisites = { };
 		[ActorReference]
@@ -26,8 +26,7 @@ namespace OpenRA.Mods.RA
 		// todo: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
         public readonly string Hotkey = null;
-		public object Create(ActorInitializer init) { return new Buildable(); }
 	}
 
-	class Buildable { }
+	public class Buildable { }
 }
