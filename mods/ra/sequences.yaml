@@ -260,6 +260,10 @@ sam:
 	make: sammake
 		Start: 0
 		Length: *
+	muzzle: samfire
+		Start: 0
+		Length: 18
+		Facings: 8
 
 ftur:
 	idle:

@@ -520,6 +520,7 @@ SAM:
 	RenderBuildingTurreted:
 	AttackTurreted:
 		PrimaryWeapon: Nike
+	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
