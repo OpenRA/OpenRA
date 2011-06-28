@@ -45,7 +45,9 @@ cp OpenRA.Game/OpenRA.ico packaging/built
 # Update mod versions
 sed "s/{DEV_VERSION}/$TAG/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.yaml
 sed "s/{DEV_VERSION}/$TAG/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
- 
+
+# Remove demo.mix from cnc
+rm ./mods/cnc/bits/demo.mix
 
 #
 # Change into packaging directory and run the 
