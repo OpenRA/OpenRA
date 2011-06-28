@@ -37,13 +37,32 @@ namespace OpenRA.Renderer.Glsl
 			GL_STACK_UNDERFLOW = Gl.GL_STACK_UNDERFLOW,
 			GL_OUT_OF_MEMORY = Gl.GL_OUT_OF_MEMORY,
 			GL_TABLE_TOO_LARGE = Gl.GL_TABLE_TOO_LARGE,
+			GL_INVALID_OPERATION = Gl.GL_INVALID_OPERATION,
 		}
 
 		internal static void CheckGlError()
 		{
 			var n = Gl.glGetError();
 			if( n != Gl.GL_NO_ERROR )
-				throw new InvalidOperationException( "GL Error: " + ( (GlError)n ).ToString() );
+			{
+				var error = "GL Error: {0}\n{1}".F((GlError)n, new System.Diagnostics.StackTrace());
+				WriteGraphicsLog(error);
+				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+			}
+		}
+
+		static void WriteGraphicsLog(string message)
+		{
+			Log.AddChannel("graphics", "graphics.log");
+			Log.Write("graphics", message);
+			Log.Write("graphics", "");
+			Log.Write("graphics", "OpenGL Information:");
+			Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
+			Log.Write("graphics",  "Renderer: {0}", Gl.glGetString(Gl.GL_RENDERER));
+			Log.Write("graphics",  "GL Version: {0}", Gl.glGetString(Gl.GL_VERSION));
+			Log.Write("graphics",  "Shader Version: {0}", Gl.glGetString(Gl.GL_SHADING_LANGUAGE_VERSION));
+			Log.Write("graphics", "Available extensions:");
+			Log.Write("graphics", Gl.glGetString(Gl.GL_EXTENSIONS));
 		}
 
 		public GraphicsDevice( int width, int height, WindowMode window, bool vsync )
@@ -89,15 +108,10 @@ namespace OpenRA.Renderer.Glsl
 			
 			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
 			var missingExtensions = required.Where( r => !extensions.Contains(r) ).ToArray();
-			
+
 			if (missingExtensions.Any())
 			{
-				Log.AddChannel("graphics", "graphics.log");
-				Log.Write("graphics", "Unsupported GPU: Missing extensions: {0}",
-				          string.Join(",", missingExtensions));
-				Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
-				Log.Write("graphics", "Available extensions:");
-				Log.Write("graphics", extensions);
+				WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}".F(string.Join(",", missingExtensions)));
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
 			}
 			
