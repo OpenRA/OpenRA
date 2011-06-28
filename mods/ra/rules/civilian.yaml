@@ -93,9 +93,7 @@ BARL:
 	Selectable:
 		Priority: 0
 	-RepairableBuilding:
-	Building:
-		BaseNormal: no
-		Adjacent: 0
+	-GivesBuildableArea:
 	Health:
 		HP: 10
 	Explodes:
@@ -107,9 +105,7 @@ BRL3:
 	Selectable:
 		Priority: 0
 	-RepairableBuilding:
-	Building:
-		BaseNormal: no
-		Adjacent: 0
+	-GivesBuildableArea:
 	Health:
 		HP: 10
 	Explodes:

@@ -16,10 +16,12 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
+	public class GivesBuildableArea {}
+
 	public class BuildingInfo : ITraitInfo
 	{
 		public readonly int Power = 0;
-		public readonly bool BaseNormal = true;
 		public readonly bool WaterBound = false;
 		public readonly int Adjacent = 2;
 		public readonly string Footprint = "x";
@@ -48,14 +50,13 @@ namespace OpenRA.Mods.RA.Buildings
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 			
 			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
-			{
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
 					var at = bi.GetBuildingAt( new int2( x, y ) );
-					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.Info.Traits.Get<BuildingInfo>().BaseNormal )
+					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.HasTrait<GivesBuildableArea>() )
 						nearnessCandidates.Add( new int2( x, y ) );
 				}
-			}
+
 			var buildingTiles = FootprintUtils.Tiles( buildingName, this, topLeft ).ToList();
 			return nearnessCandidates
 				.Any( a => buildingTiles

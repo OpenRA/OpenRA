@@ -38,9 +38,9 @@ MSLO:
 	SupportPowerChargeBar:
 	
 GAP:
+	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
-	Inherits: ^Building
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -64,9 +64,9 @@ GAP:
 	IronCurtainable:
 
 SPEN:
+	Inherits: ^Building
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
-	Inherits: ^Building
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -84,9 +84,9 @@ SPEN:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
+	-GivesBuildableArea:
 	Health:
 		HP: 1000
 	Armor:
@@ -119,9 +119,9 @@ SPEN:
 	ProductionBar:
 
 SYRD:
+	Inherits: ^Building
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
-	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
@@ -139,9 +139,9 @@ SYRD:
 		Power: -30
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
+	-GivesBuildableArea:
 	Health:
 		HP: 1000
 	Armor:
@@ -174,9 +174,9 @@ SYRD:
 	ProductionBar:
 
 IRON:
-	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
+	RequiresPower:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -212,9 +212,9 @@ IRON:
 	SupportPowerChargeBar:
 
 PDOX:
+	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
-	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -252,9 +252,9 @@ PDOX:
 	-AcceptsSupplies:
 
 TSLA:
+	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
-	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
@@ -270,7 +270,7 @@ TSLA:
 		Power: -150
 		Footprint: _ x
 		Dimensions: 1,2
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -289,9 +289,9 @@ TSLA:
 	-AcceptsSupplies:
 
 AGUN:
+	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
-	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
@@ -307,7 +307,7 @@ AGUN:
 		Power: -50
 		Footprint: _ x
 		Dimensions: 1,2
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -372,7 +372,7 @@ PBOX:
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -405,7 +405,7 @@ HBOX:
 		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Building:
 		Power: -15
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 600
 	Armor:
@@ -438,7 +438,7 @@ GUN:
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -40
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -472,7 +472,7 @@ FTUR:
 		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -20
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -507,7 +507,7 @@ SAM:
 		Power: -20
 		Footprint: xx
 		Dimensions: 2,1
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -684,7 +684,7 @@ SILO:
 		Description: Stores excess harvested Ore
 	Building:
 		Power: -10
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 300
 	Armor:
@@ -985,7 +985,7 @@ FACF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 30
 	RevealsShroud:
@@ -1011,7 +1011,7 @@ WEAF:
 		Power: -2
 		Footprint: xxx xxx
 		Dimensions: 3,2
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 30
 	RevealsShroud:
@@ -1044,9 +1044,9 @@ SYRF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
+	-GivesBuildableArea:
 	Health:
 		HP: 30
 	RevealsShroud:
@@ -1064,9 +1064,9 @@ SPEF:
 		Power: -2
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-		BaseNormal: no
 		Adjacent: 8
 		WaterBound: yes
+	-GivesBuildableArea:
 	Health:
 		HP: 30
 	RevealsShroud:
@@ -1094,7 +1094,7 @@ DOMF:
 		Power: -2
 		Footprint: xx xx
 		Dimensions: 2,2
-		BaseNormal: no
+	-GivesBuildableArea:
 	Health:
 		HP: 30
 	RevealsShroud:
