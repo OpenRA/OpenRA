@@ -88,6 +88,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Text = p.PlayerName,
 					Align = LabelWidget.TextAlign.Left,
 					Font = "Bold",
+					Color = p.ColorRamp.GetColor(0),
 				};
 
 				bg.AddChild(label);
