@@ -13,14 +13,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SurrenderOnDisconnectInfo : TraitInfo<SurrenderOnDisconnect>
-	{
-
-	}
+	class SurrenderOnDisconnectInfo : TraitInfo<SurrenderOnDisconnect> {}
 
 	class SurrenderOnDisconnect : ITick
 	{
-		private bool Disconnected = false;
+		bool Disconnected = false;
 
 		public void Tick(Actor self)
 		{

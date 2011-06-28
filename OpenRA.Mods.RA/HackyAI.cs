@@ -439,7 +439,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		//Build a random unit of the given type. Not going to be needed once there is actual AI...
-		private void BuildRandom(string category)
+		void BuildRandom(string category)
 		{
 			// Pick a free queue
 			var queue = world.ActorsWithTrait<ProductionQueue>()

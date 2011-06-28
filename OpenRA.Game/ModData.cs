@@ -22,7 +22,7 @@ namespace OpenRA
 	{
 		public readonly Manifest Manifest;
 		public readonly ObjectCreator ObjectCreator;
-		public Dictionary<string, Map> AvailableMaps {get; private set;}
+		public Dictionary<string, Map> AvailableMaps { get; private set; }
 		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;

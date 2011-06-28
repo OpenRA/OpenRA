@@ -63,7 +63,7 @@ namespace OpenRA.FileFormats
 
 		public Size Size { get { return new Size(Width, Height); } }
 
-		private readonly List<ImageHeader> headers = new List<ImageHeader>();
+		readonly List<ImageHeader> headers = new List<ImageHeader>();
 
 		int recurseDepth = 0;
 
@@ -156,7 +156,7 @@ namespace OpenRA.FileFormats
 			return compressedBytes;
 		}
 
-		private byte[] CopyImageData( byte[] baseImage )
+		byte[] CopyImageData( byte[] baseImage )
 		{
 			byte[] imageData = new byte[ Width * Height ];
 			for( int i = 0 ; i < Width * Height ; i++ )

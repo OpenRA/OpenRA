@@ -26,7 +26,7 @@ namespace OpenRA
 		public int Deaths;
 		public WinState WinState = WinState.Undefined;
 
-        public readonly ColorRamp ColorRamp;
+		public readonly ColorRamp ColorRamp;
 
 		public readonly string PlayerName;
 		public readonly string InternalName;

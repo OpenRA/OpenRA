@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 		// This is bogus
 		public float2 Range = new float2(0f, 1f);
 		
-		private float Offset = 0;
+		float Offset = 0;
 
 		int2 lastMouseLocation;
 		protected bool isMoving = false;

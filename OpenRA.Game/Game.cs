@@ -32,7 +32,7 @@ namespace OpenRA
 		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
 		public static ModData modData;
-		private static WorldRenderer worldRenderer;
+		static WorldRenderer worldRenderer;
 
 		public static Viewport viewport;
 		public static Settings Settings;

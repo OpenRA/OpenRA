@@ -52,7 +52,7 @@ namespace OpenRA.Widgets
             get { return rootWidget; }
             set { rootWidget = value; }
         }
-        private static Widget rootWidget = new ContainerWidget();
+        static Widget rootWidget = new ContainerWidget();
 
         public Widget(Widget widget)
         {

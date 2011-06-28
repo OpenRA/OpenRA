@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
             }
         }
 
-        private void ChangeOwnership(Actor self, Player previousOwner, Player originalOwner)
+        void ChangeOwnership(Actor self, Player previousOwner, Player originalOwner)
         {
             self.World.AddFrameEndTask(w =>
             {
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA
             });
         }
 
-        private void ChangeOwnership(Actor self, Actor captor, Player previousOwner)
+        void ChangeOwnership(Actor self, Actor captor, Player previousOwner)
         {
             self.World.AddFrameEndTask(w =>
             {

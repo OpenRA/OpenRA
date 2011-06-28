@@ -16,7 +16,7 @@ namespace OpenRA.Widgets
 	public class ScrollingTextWidget : Widget
 	{
 		public string Text = "";
-		private string ScrollingText = "";
+		string ScrollingText = "";
 		
 		public string Background = null;
 
@@ -27,10 +27,10 @@ namespace OpenRA.Widgets
 		// ticks per single letter scroll
 		public int ScrollRate = 4;
 
-		private string ScrollBuffer = "";
+		string ScrollBuffer = "";
 
-		private int ScrollLocation = 0;
-		private int ScrollTick = 0;
+		int ScrollLocation = 0;
+		int ScrollTick = 0;
 
 		public Func<string> GetText;
 		public Func<string> GetBackground;
@@ -67,22 +67,18 @@ namespace OpenRA.Widgets
 			ScrollTick = 0;
 		}
 
-		private void UpdateScrollBuffer()
+		void UpdateScrollBuffer()
 		{
 			ScrollTick++;
 
 			if (ScrollTick < ScrollRate)
-			{
 				return;
-			}
 
 			ScrollTick = 0;
 			ScrollBuffer = "";
 
 			if (ScrollingText.Substring(ScrollingText.Length - 4, 3) != "   ")
-			{
 				ScrollingText += "   ";
-			}
 
 			int tempScrollLocation = ScrollLocation;
 			for (int i = 0; i < ScrollLength; ++i)

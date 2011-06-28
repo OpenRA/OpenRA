@@ -158,7 +158,7 @@ namespace OpenRA.FileFormats
 		}
 		
 		// Decode a code using huffman table h.  
-		private static int Decode(Huffman h, BitReader br)
+		static int Decode(Huffman h, BitReader br)
 		{
 			int code = 0; // len bits being decoded
 			int first = 0; // first code of length len

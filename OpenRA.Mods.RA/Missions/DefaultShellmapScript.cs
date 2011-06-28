@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	class DefaultShellmapScript: IWorldLoaded, ITick
 	{		
 		Dictionary<string, Actor> Actors;
-		private static int2 ViewportOrigin;
+		static int2 ViewportOrigin;
 		
 		public void WorldLoaded(World w)
 		{

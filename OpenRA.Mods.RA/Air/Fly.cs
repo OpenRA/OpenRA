@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public readonly int2 Pos;
 
-		private Fly( int2 px ) { Pos = px; }
+		Fly( int2 px ) { Pos = px; }
 		
 		public static Fly ToPx( int2 px ) { return new Fly( px ); }
 		public static Fly ToCell( int2 pos ) { return new Fly( Util.CenterOfCell( pos ) ); }

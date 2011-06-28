@@ -48,7 +48,7 @@ namespace OpenRA
 		[Sync]
 		public Player Owner;
 
-		private Activity currentActivity;
+		Activity currentActivity;
 		public Group Group;
 
 		internal Actor(World world, string name, TypeDictionary initDict )

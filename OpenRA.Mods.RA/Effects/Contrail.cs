@@ -29,9 +29,8 @@ namespace OpenRA.Mods.RA
 
 	class Contrail : ITick, IPostRender
 	{
-		private ContrailInfo Info = null;
-
-		private Turret ContrailTurret = null;
+		ContrailInfo Info = null;
+		Turret ContrailTurret = null;
 
         ContrailHistory history;
 
