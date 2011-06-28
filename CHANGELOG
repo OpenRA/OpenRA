@@ -12,58 +12,71 @@ NEW:
 		Map support for enforcing team and spawn choice
 		Fix resource-clearing weapons breaking custom terrain types (bridges)
 	C&C:
-		Completely overhauled menu system
-		Support for installing from original game disks
-		Support for installing music from original game disks
-		Skirmish mode (creates a local game against bots)
-		Configurable bot race/team/start point
-		Hotkey support:
+		Completely overhauled menu UI
+		Added support for installing from original game disks
+		Added support for installing music from original game disks
+		Added support for Covert Ops music tracks
+		Added Skirmish mode (creates a local game against bots)
+		Added Configurable bot race/team/spawns
+		Added Hotkey support:
 			escape to toggle ingame menu
 			escape to go up a level in menus / cancel prompts
 			return to confirm prompts
-		Support for installing game data and music from CD
-		Refinery footprint changed, price decreased to $1500
-		Flame tank explodes on death, damage reduced by 40%
-		Stealth Tank damage increased
-		Rocket Launcher now fires 6 rockets, loses AA
-		Orca / Apache weapons reworked. Both now have limited volleys, but reload in the air. Both can attack other air units.
-		APC becomes AA only
-		Artillery given back to Nod
-		SSM launcher removed from Nod
-		All vehicles leave husks on death
-		Concrete walls require vehicle production to build
-		MCV, Harvester, Engineer can no longer level up (via crates)
-		Rocket Launcher turret now raises/lowers when it is attacking
+		Fixed Rocket Launcher turret raising/lowering when attacking
 		Added muzzle flashes to Guard Tower / SAM site
-		Corrected firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank / Buggy / Orca / Apache
+		Fixed firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank / Buggy / Humvee / Artillery / Orca / Apache / Mammoth tank / Flame trooper / Chem trooper / Rocket trooper
+		Fixed Ion Cannon cursor
+		Fixed Apache artwork
+		Fixed uncapturable oil derricks
+		All vehicles leave husks on death
 		Server/Skirmish creation selects the last played map by default
-		Bridge HP halved
+		Balance changes:
+			Refinery footprint changed, price decreased to $1500
+			Flame tank explodes on death, damage reduced by 40%
+			Stealth Tank damage increased
+			Rocket Launcher now fires 6 rockets, loses AA
+			Orca / Apache weapons reworked. Both now have limited volleys, but reload in the air. Both can attack other air units.
+			APC becomes AA only
+			Artillery given back to Nod
+			SSM launcher removed from Nod
+			Concrete walls require vehicle production to build
+			MCV, Harvester, Engineer can no longer level up (via crates)
+			Advanced Guard Tower range increased
+			SAM Site range decreased
+			Bridge HP halved
 	Red Alert:
-		Corrected firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
-		Mod support for customizing tesla zap effect
-		Mines are visible to friendlies and spectators
-		Friendly units don't trigger mines
-		Bounties use correct unit value
+		Fixed firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
+		Fixed bounties using incorrect unit value
 		Fixed parachute offsets
-		Added muzzle flashes to Pillbox / Camo Pillbox
-		Medic cost reduced to $500
-		Correctly grant allies GPS
-		13 new maps by buddha, hamb, seru
-		Improved superweapon choosing logic when multiple are available
-		Don't show bounty for $0
+		Added muzzle flashes to Pillbox / Camo Pillbox / SAM Site
+		Fixed map reveal when an ally is granted GPS
+		Added 13 new maps by buddha, hamb, seru
+		Fixed bounties of $0 displaying
+		Added new Oil Derrick artwork
+		Added support for Counterstrike & Aftermath music tracks
+		Added player color to diplomacy panel
+		Balance changes:
+			Medic cost reduced to $500
+			Mines are visible to friendlies and spectators
+			Friendly units don't trigger mines
+			Increased reload rate for aircraft
 	Both:
-		[OSX] Shortcut for adding units to groups changed from ctrl->cmd
-		Tooltips work for spectators
-		Don't show cashticks when selling walls
-		Don't show explosions when walls are sold
-		Fix veteran units not repairing correctly at service depots
-		Rally-points change color when a building is captured
-		Fix selection box dragging behind ui elements
-		Mod support for passengers that take multiple slots
+		[OSX] Changed shortcut for adding units to groups changed from ctrl->cmd
+		Fixed Tooltips for spectators
+		Fixed cashticks when selling walls
+		Fixed show explosions when walls are sold
+		Fixed veteran units not repairing correctly at service depots
+		Fixed Rally-point color when a building is captured
+		Fixed selection box dragging behind ui elements
+		Added Mod support for passengers that take multiple slots
+		Added Mod support for custom tesla zap effects
 		Fixed desync when a support aircraft is killed after completing its task
 		Fixed bugs with selling refineries
+		Fixed superweapons being fired from disabled structures when multiple are available
 	Utility:
-		Fixes for converting shp -> png
+		Fixed --png mode for converting shp -> png
+	Editor:
+		Fixed actor rendering on OSX / Linux
 
 20110511:
 	Engine:
