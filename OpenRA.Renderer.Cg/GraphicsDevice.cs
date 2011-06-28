@@ -39,14 +39,41 @@ namespace OpenRA.Renderer.Cg
 			GL_STACK_UNDERFLOW = Gl.GL_STACK_UNDERFLOW,
 			GL_OUT_OF_MEMORY = Gl.GL_OUT_OF_MEMORY,
 			GL_TABLE_TOO_LARGE = Gl.GL_TABLE_TOO_LARGE,
+			GL_INVALID_OPERATION = Gl.GL_INVALID_OPERATION,
 		}
 
 		internal static void CheckGlError()
 		{
 			var n = Gl.glGetError();
 			if( n != Gl.GL_NO_ERROR )
-				throw new InvalidOperationException( "GL Error: " + ( (GlError)n ).ToString() );
+			{
+				var error = "GL Error: {0}\n{1}".F((GlError)n, new System.Diagnostics.StackTrace());
+				WriteGraphicsLog(error);
+				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+			}
 		}
+
+		static void WriteGraphicsLog(string message)
+		{
+			Log.AddChannel("graphics", "graphics.log");
+			Log.Write("graphics", message);
+			Log.Write("graphics", "");
+			Log.Write("graphics", "OpenGL Information:");
+			Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
+			Log.Write("graphics",  "Renderer: {0}", Gl.glGetString(Gl.GL_RENDERER));
+			Log.Write("graphics",  "GL Version: {0}", Gl.glGetString(Gl.GL_VERSION));
+			Log.Write("graphics",  "Shader Version: {0}", Gl.glGetString(Gl.GL_SHADING_LANGUAGE_VERSION));
+			Log.Write("graphics", "Available extensions:");
+			Log.Write("graphics", Gl.glGetString(Gl.GL_EXTENSIONS));
+		}
+
+		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
+		{
+			var err = Tao.Cg.Cg.cgGetError();
+			var msg = "CG Error: {0}: {1}".F(err, Tao.Cg.Cg.cgGetErrorString(err));
+			WriteGraphicsLog(msg);
+			throw new InvalidOperationException("CG Error. See graphics.log for details");
+		};
 
 		public GraphicsDevice( int width, int height, WindowMode window, bool vsync )
 		{
@@ -95,9 +122,6 @@ namespace OpenRA.Renderer.Cg
 			vertexProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_VERTEX );
 			fragmentProfile = CgGl.cgGLGetLatestProfile( CgGl.CG_GL_FRAGMENT );
 
-			//Console.WriteLine("VP Profile: " + vertexProfile);
-			//Console.WriteLine("FP Profile: " + fragmentProfile);
-
 			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
 			CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
@@ -105,14 +129,6 @@ namespace OpenRA.Renderer.Cg
 
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
 		}
-
-		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
-		{
-			var err = Tao.Cg.Cg.cgGetError();
-			var str = Tao.Cg.Cg.cgGetErrorString( err );
-			throw new InvalidOperationException(
-			string.Format( "CG Error: {0}: {1}", err, str ) );
-		};
 
 		public void EnableScissor( int left, int top, int width, int height )
 		{
