@@ -728,7 +728,7 @@ ATWR:
 	RevealsShroud:
 		Range: 8
 	AttackTurreted:
-		PrimaryWeapon: Tomahawk
+		PrimaryWeapon: TowerMissle
 		PrimaryOffset: 0,0,5,2
 		PrimaryLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
 	Turreted:

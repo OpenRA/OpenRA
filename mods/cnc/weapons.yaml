@@ -597,9 +597,9 @@ BoatMissile:
 		SmudgeType: Crater
 		Damage: 60
 
-Tomahawk: 
+TowerMissle:
 	ROF: 40
-	Range: 6
+	Range: 7
 	Report: ROCKET2
 	ValidTargets: Ground, Air
 	Burst: 2
