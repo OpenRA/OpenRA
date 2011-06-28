@@ -16,7 +16,6 @@ Folders:
 Packages:
 	overrides.mix
 	bluetib.mix
-	snow.mix
 	speech.mix
 	conquer.mix
 	sounds.mix
@@ -100,7 +99,6 @@ TileSets:
 	mods/cnc/tilesets/desert.yaml
 	mods/cnc/tilesets/winter.yaml
 	mods/cnc/tilesets/temperat.yaml
-	mods/cnc/tilesets/snow.yaml
 
 LoadScreen: CncLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
