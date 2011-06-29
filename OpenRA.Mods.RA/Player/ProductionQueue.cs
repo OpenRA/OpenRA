@@ -77,6 +77,12 @@ namespace OpenRA.Mods.RA
 
 			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
 			Produceable = InitTech(self.Owner.PlayerActor);
+
+			// Force a third(!) tech tree update to ensure that prerequisites are correct.
+			// The first two updates are triggered by adding/removing the actor when
+			// changing ownership, *before* the new techtree watchers have been set up.
+			// This is crap.
+			self.Owner.PlayerActor.Trait<TechTree>().Update();
 		}
 
 		Dictionary<ActorInfo, ProductionState> InitTech(Actor playerActor)
