@@ -120,13 +120,13 @@ crate-effects:
 	dollar: dollar
 		Start: 0
 		Length: *
-	reveal-map: earth
+	reveal-map: radarcrate
 		Start: 0
 		Length: *
 	hide-map: empulse
 		Start: 0
 		Length: *
-	heal: invun
+	heal: healcrate
 		Start: 0
 		Length: *
 	mine: mine
