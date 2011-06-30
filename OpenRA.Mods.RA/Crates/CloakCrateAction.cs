@@ -10,20 +10,21 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Crates
 {
-	class CloakCrateActionInfo : CrateActionInfo
+	public class CloakCrateActionInfo : CrateActionInfo
 	{
-		public readonly float InitialDelay = .4f;
-		public readonly float CloakDelay = 1.2f;
+		public readonly int InitialDelay = 10;
+		public readonly int CloakDelay = 30;
 		public readonly string CloakSound = "subshow1.aud";
 		public readonly string UncloakSound = "subshow1.aud";
 
 		public override object Create(ActorInitializer init) { return new CloakCrateAction(init.self, this); }
 	}
 
-	class CloakCrateAction : CrateAction
+	public class CloakCrateAction : CrateAction
 	{
 		CloakCrateActionInfo Info;
 		public CloakCrateAction(Actor self, CloakCrateActionInfo info)
@@ -37,10 +38,14 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			var cloakInfo = new CloakInfo(Info.InitialDelay, Info.CloakDelay, 
-				Info.CloakSound, Info.UncloakSound);
-
-			var cloak = cloakInfo.Create(new ActorInitializer(collector, new TypeDictionary() ));
+			var cloakInfo = new CloakInfo()
+			{
+				InitialDelay = Info.InitialDelay,
+				CloakDelay = Info.CloakDelay,
+				CloakSound = Info.CloakSound,
+				UncloakSound = Info.UncloakSound
+			};
+			var cloak = new Cloak(collector, cloakInfo);
 
 			collector.World.AddFrameEndTask(w =>
 				{

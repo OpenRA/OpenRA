@@ -179,8 +179,8 @@ CRATE:
 		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
-		InitialDelay: 5
-		CloakDelay: 5
+		InitialDelay: 125
+		CloakDelay: 125
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		Effect: stealth

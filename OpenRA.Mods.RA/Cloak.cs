@@ -18,21 +18,10 @@ namespace OpenRA.Mods.RA
 {
 	public class CloakInfo : ITraitInfo
 	{
-		public readonly float InitialDelay = .4f;	// seconds
-		public readonly float CloakDelay = 1.2f; // Seconds
-		public readonly string CloakSound = "subshow1.aud";
-		public readonly string UncloakSound = "subshow1.aud";
-
-		public CloakInfo() { }		/* only because we have other ctors */
-		
-		/* for CloakCrateAction */
-		public CloakInfo(float initialDelay, float cloakDelay, string cloakSound, string uncloakSound)
-		{
-			InitialDelay = initialDelay;
-			CloakDelay = cloakDelay;
-			CloakSound = cloakSound;
-			UncloakSound = uncloakSound;
-		}
+		public int InitialDelay = 10; // Ticks
+		public int CloakDelay = 30; // Ticks
+		public string CloakSound = "subshow1.aud";
+		public string UncloakSound = "subshow1.aud";
 
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
@@ -51,7 +40,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 			this.self = self;
 
-			remainingTime = (int)(info.InitialDelay * 25);
+			remainingTime = info.InitialDelay;
 		}
 
 		void DoUncloak()
@@ -59,7 +48,7 @@ namespace OpenRA.Mods.RA
 			if (remainingTime <= 0)
 				OnCloak();
 
-			remainingTime = Math.Max(remainingTime, (int)(info.CloakDelay * 25));
+			remainingTime = Math.Max(remainingTime, info.CloakDelay);
 		}
 
 		public void Attacking(Actor self, Target target) { DoUncloak(); }

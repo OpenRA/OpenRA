@@ -459,8 +459,8 @@ STNK:
 	RevealsShroud:
 		Range: 4
 	Cloak:
-		InitialDelay: 5
-		CloakDelay: 5
+		InitialDelay: 125
+		CloakDelay: 125
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 	AttackFrontal:

@@ -27,7 +27,7 @@ SS:
 	RenderUnit:
 	Cloak:
 		InitialDelay: 0
-		CloakDelay: 2.0
+		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 	AttackFrontal:
@@ -72,7 +72,7 @@ MSUB:
 		CloakedTargetTypes: Underwater
 	Cloak:
 		InitialDelay: 0
-		CloakDelay: 2.0
+		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 	AttackFrontal:
