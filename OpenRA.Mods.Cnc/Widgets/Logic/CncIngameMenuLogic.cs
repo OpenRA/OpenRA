@@ -88,8 +88,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				onExit();
 			};
 
-			menu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
-
 			// Mission objectives panel
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			if (iop != null && iop.ObjectivesPanel != null)

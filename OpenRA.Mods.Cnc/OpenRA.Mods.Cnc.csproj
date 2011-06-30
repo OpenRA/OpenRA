@@ -90,6 +90,7 @@
     <Compile Include="CncMenuPaletteEffect.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncDiplomacyLogic.cs" />
+    <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

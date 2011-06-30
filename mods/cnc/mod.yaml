@@ -81,6 +81,7 @@ ChromeLayout:
 	mods/cnc/chrome/cheats.yaml
 	mods/cnc/chrome/diplomacy.yaml
 	mods/cnc/chrome/dropdowns.yaml
+	mods/cnc/chrome/objectives.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
@@ -124,6 +125,9 @@ Fonts:
 	Title:
 		Font:titles.ttf
 		Size:48
+	MediumBold:
+		Font:FreeSansBold.ttf
+		Size:18
 	BigBold:
 		Font:FreeSansBold.ttf
 		Size:24
