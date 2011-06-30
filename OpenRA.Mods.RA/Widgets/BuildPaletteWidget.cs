@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		public override Rectangle EventBounds
 		{
-			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, 48 * numActualRows); }
+			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, Math.Max(48 * numActualRows, 40 * tabs.Count + 9)); }
 		}
 		
 		public override void Tick()
