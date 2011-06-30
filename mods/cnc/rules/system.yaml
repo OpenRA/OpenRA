@@ -152,6 +152,8 @@ World:
 		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
+	ConquestObjectivesPanel:
+		ObjectivesPanel: CONQUEST_OBJECTIVES
 
 CRATE:
 	Tooltip:

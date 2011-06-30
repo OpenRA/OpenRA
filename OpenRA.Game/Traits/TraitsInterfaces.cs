@@ -218,4 +218,6 @@ namespace OpenRA.Traits
     }
 
     public interface ILintPass { void Run(Action<string> emitError); }
+
+	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
 }

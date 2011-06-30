@@ -79,6 +79,8 @@ Container@INGAME_MENU:
 					Width:140
 					Height:35
 					Text:Resume
+		Container@OBJECTIVES_ROOT:
+			Id:OBJECTIVES_ROOT
 		Container@CONFIRM_PROMPT:
 			Id:CONFIRM_PROMPT
 			X:(WINDOW_RIGHT - WIDTH)/2
