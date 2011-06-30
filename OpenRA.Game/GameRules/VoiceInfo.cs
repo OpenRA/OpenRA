@@ -8,19 +8,19 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using System;
 
 namespace OpenRA.GameRules
 {
 	public class VoiceInfo
 	{
-		public readonly Dictionary<string,string[]> Variants;
-		public readonly Dictionary<string,string[]> Voices;
+		[FieldLoader.Ignore] public readonly Dictionary<string,string[]> Variants;
+		[FieldLoader.Ignore] public readonly Dictionary<string,string[]> Voices;
 		public readonly string DefaultVariant = ".aud" ;
-		[FieldLoader.Load] public readonly string[] DisableVariants = { };
+		public readonly string[] DisableVariants = { };
 
 		static Dictionary<string, string[]> Load( MiniYaml y, string name )
 		{

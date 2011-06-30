@@ -35,11 +35,9 @@ namespace OpenRA.Mods.RA
 {
 	class HackyAIInfo : IBotInfo, ITraitInfo
 	{
-		[FieldLoader.Load]
 		public readonly string Name = "Unnamed Bot";
-
-		[FieldLoader.Load]
 		public readonly int SquadSize = 8;
+		public readonly int AssignRolesInterval = 20;
 
 		string IBotInfo.Name { get { return this.Name; } }
 
@@ -64,9 +62,6 @@ namespace OpenRA.Mods.RA
 				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));
 			return ret;
 		}
-		
-		[FieldLoader.Load]
-		public readonly int AssignRolesInterval = 20;
 
 		public object Create(ActorInitializer init) { return new HackyAI(this); }
 	}

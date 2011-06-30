@@ -18,21 +18,21 @@ namespace OpenRA.GameRules
 {
 	public class WarheadInfo
 	{
-		[FieldLoader.Load] public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
+		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
 		[FieldLoader.LoadUsing( "LoadVersus" )] 
-		public readonly Dictionary<string, float> Versus; 									// damage vs each armortype
-		[FieldLoader.Load] public readonly bool Ore = false;								// can this damage ore?
-		[FieldLoader.Load] public readonly string Explosion = null;							// explosion effect to use
-		[FieldLoader.Load] public readonly string WaterExplosion = null;					// explosion effect on hitting water (usually a splash)
-		[FieldLoader.Load] public readonly string SmudgeType = null;						// type of smudge to apply
-		[FieldLoader.Load] public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
-		[FieldLoader.Load] public readonly int InfDeath = 0;								// infantry death animation to use
-		[FieldLoader.Load] public readonly string ImpactSound = null;						// sound to play on impact
-		[FieldLoader.Load] public readonly string WaterImpactSound = null;					// sound to play on impact with water
-		[FieldLoader.Load] public readonly int Damage = 0;									// how much (raw) damage to deal
-		[FieldLoader.Load] public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
-		[FieldLoader.Load] public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
-		[FieldLoader.Load] public readonly bool PreventProne = false;						// whether we should prevent prone response in infantry.
+		public readonly Dictionary<string, float> Versus; 				// damage vs each armortype
+		public readonly bool Ore = false;								// can this damage ore?
+		public readonly string Explosion = null;						// explosion effect to use
+		public readonly string WaterExplosion = null;					// explosion effect on hitting water (usually a splash)
+		public readonly string SmudgeType = null;						// type of smudge to apply
+		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
+		public readonly int InfDeath = 0;								// infantry death animation to use
+		public readonly string ImpactSound = null;						// sound to play on impact
+		public readonly string WaterImpactSound = null;					// sound to play on impact with water
+		public readonly int Damage = 0;									// how much (raw) damage to deal
+		public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
+		public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
+		public readonly bool PreventProne = false;						// whether we should prevent prone response in infantry.
 
 		public float EffectivenessAgainst(Actor self)
 		{
@@ -85,15 +85,15 @@ namespace OpenRA.GameRules
 
 	public class WeaponInfo
 	{
-		[FieldLoader.Load] public readonly float Range = 0;
-		[FieldLoader.Load] public readonly string Report = null;
-		[FieldLoader.Load] public readonly int ROF = 1;
-		[FieldLoader.Load] public readonly int Burst = 1;
-		[FieldLoader.Load] public readonly bool Charges = false;
-		[FieldLoader.Load] public readonly bool Underwater = false;
-		[FieldLoader.Load] public readonly string[] ValidTargets = { "Ground" };
-		[FieldLoader.Load] public readonly int BurstDelay = 5;
-		[FieldLoader.Load] public readonly float MinRange = 0;
+		public readonly float Range = 0;
+		public readonly string Report = null;
+		public readonly int ROF = 1;
+		public readonly int Burst = 1;
+		public readonly bool Charges = false;
+		public readonly bool Underwater = false;
+		public readonly string[] ValidTargets = { "Ground" };
+		public readonly int BurstDelay = 5;
+		public readonly float MinRange = 0;
 
 		[FieldLoader.LoadUsing( "LoadProjectile" )] public IProjectileInfo Projectile;
 		[FieldLoader.LoadUsing( "LoadWarheads" )] public List<WarheadInfo> Warheads;

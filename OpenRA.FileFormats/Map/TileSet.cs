@@ -31,10 +31,10 @@ namespace OpenRA.FileFormats
 	
 	public class TileTemplate
 	{
-		[FieldLoader.Load] public ushort Id;
-		[FieldLoader.Load] public string Image;
-		[FieldLoader.Load] public int2 Size;
-		[FieldLoader.Load] public bool PickAny;
+		public ushort Id;
+		public string Image;
+		public int2 Size;
+		public bool PickAny;
 
 		[FieldLoader.LoadUsing( "LoadTiles" )]
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();

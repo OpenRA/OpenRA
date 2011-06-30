@@ -17,8 +17,8 @@ namespace OpenRA.Network
 {
 	public class HandshakeRequest
 	{
-		[FieldLoader.Load] public string[] Mods;
-		[FieldLoader.Load] public string Map;
+		public string[] Mods;
+		public string Map;
 		
 		public string Serialize()
 		{
@@ -37,9 +37,9 @@ namespace OpenRA.Network
 	
 	public class HandshakeResponse
 	{
-		[FieldLoader.Load] public string[] Mods;
-		[FieldLoader.Load] public string Password;
-		public Session.Client Client;
+		public string[] Mods;
+		public string Password;
+		[FieldLoader.Ignore] public Session.Client Client;
 		
 		public string Serialize()
 		{

@@ -23,21 +23,13 @@ namespace OpenRA.Mods.RA.Move
     {
         [FieldLoader.LoadUsing("LoadSpeeds")]
         public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
-        [FieldLoader.Load]
         public readonly string[] Crushes;
-        [FieldLoader.Load]
         public readonly int WaitAverage = 60;
-        [FieldLoader.Load]
         public readonly int WaitSpread = 20;
-        [FieldLoader.Load]
         public readonly int InitialFacing = 128;
-        [FieldLoader.Load]
         public readonly int ROT = 255;
-        [FieldLoader.Load]
         public readonly int Speed = 1;
-        [FieldLoader.Load]
         public readonly bool OnRails = false;
-		[FieldLoader.Load]
 		public readonly bool SharesCell = false;
 
         public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }

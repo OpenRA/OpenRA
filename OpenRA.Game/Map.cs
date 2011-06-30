@@ -22,53 +22,52 @@ namespace OpenRA
 {
 	public class Map
 	{
-		protected IFolder Container;
+		[FieldLoader.Ignore] protected IFolder Container;
 		public string Path {get; protected set;}
 		
 		// Yaml map data
 		public string Uid { get; protected set; }
-		[FieldLoader.Load] public int MapFormat;
-		[FieldLoader.Load] public bool Selectable;
-        [FieldLoader.Load] public bool UseAsShellmap;
-		[FieldLoader.Load] public string RequiresMod;
+		public int MapFormat;
+		public bool Selectable;
+        public bool UseAsShellmap;
+		public string RequiresMod;
 
-		[FieldLoader.Load] public string Title;
-		[FieldLoader.Load] public string Type = "Conquest";
-		[FieldLoader.Load] public string Description;
-		[FieldLoader.Load] public string Author;
-		[FieldLoader.Load] public string Tileset;
+		public string Title;
+		public string Type = "Conquest";
+		public string Description;
+		public string Author;
+		public string Tileset;
 		
-		public Lazy<Dictionary<string, ActorReference>> Actors;
+		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
 		public IEnumerable<int2> SpawnPoints { get { return Actors.Value.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
 		
-		[FieldLoader.Load] public Rectangle Bounds;
+		public Rectangle Bounds;
 				
-		
 		// Yaml map data
-		public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
-		public Lazy<List<SmudgeReference>> Smudges;
+		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
+		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
 
 		// Rules overrides
-		public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
 
 		// Sequences overrides
-		public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
 
 		// Weapon overrides
-		public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
 
 		// Voices overrides
-		public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
 
 		// Binary map data
-		public byte TileFormat = 1;
-		[FieldLoader.Load] public int2 MapSize;
+		[FieldLoader.Ignore] public byte TileFormat = 1;
+		public int2 MapSize;
 
-		public Lazy<TileReference<ushort, byte>[,]> MapTiles;
-		public Lazy<TileReference<byte, byte>[,]> MapResources;
-		public string [,] CustomTerrain;
+		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
+		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
+		[FieldLoader.Ignore] public string [,] CustomTerrain;
 
 		public Map()
 		{

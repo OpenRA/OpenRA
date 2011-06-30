@@ -219,26 +219,22 @@ namespace OpenRA.FileFormats
 			foreach( var ff in type.GetFields() )
 			{
 				var field = ff;
-				var load = field.GetCustomAttributes<LoadAttribute>( false );
+				var ignore = field.GetCustomAttributes<IgnoreAttribute>( false );
 				var loadUsing = field.GetCustomAttributes<LoadUsingAttribute>( false );
 				var fromYamlKey = field.GetCustomAttributes<FieldFromYamlKeyAttribute>( false );
 				if( loadUsing.Length != 0 )
 					ret[ field ] = ( _1, fieldType, yaml ) => loadUsing[ 0 ].LoaderFunc( field )( yaml );
 				else if( fromYamlKey.Length != 0 )
 					ret[ field ] = ( f, ft, yaml ) => GetValue( f, ft, yaml.Value );
-				else if( load.Length != 0 )
+				else if( ignore.Length == 0 )
 					ret[ field ] = null;
 			}
-
-			if( ret.Count == 0 )
-				foreach( var f in type.GetFields() )
-					ret.Add( f, null );
 
 			return ret;
 		}
 
 		[AttributeUsage( AttributeTargets.Field )]
-		public class LoadAttribute : Attribute { }
+		public class IgnoreAttribute : Attribute { }
 
 		[AttributeUsage( AttributeTargets.Field )]
 		public class LoadUsingAttribute : Attribute
