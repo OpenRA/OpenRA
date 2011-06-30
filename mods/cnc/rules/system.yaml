@@ -179,11 +179,11 @@ CRATE:
 		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
-		InitialDelay: 125
+		InitialDelay: 15
 		CloakDelay: 125
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
-		Effect: stealth
+		Effect: cloak
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001

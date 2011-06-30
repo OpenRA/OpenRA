@@ -135,7 +135,7 @@ crate-effects:
 	redskull: rapid
 		Start: 0
 		Length: 20
-	stealth: stealth2
+	cloak: cloakcrate
 		Start: 0
 		Length: *
 	levelup: levelup
