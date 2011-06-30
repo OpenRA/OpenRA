@@ -88,12 +88,14 @@ tabs-selected: tabs.png
 	gdi-Building: 0,0,27,41
 	gdi-Defense: 0,40,27,41
 	gdi-Infantry: 0,80,27,41
+	gdi-Biolab: 0,80,27,41
 	gdi-Vehicle: 0,120,27,41
 	gdi-Plane: 0,160,27,41
 	gdi-Ship: 0,200,27,41
 	nod-Building: 80,0,27,41
 	nod-Defense: 80,40,27,41
 	nod-Infantry: 80,80,27,41
+	nod-Biolab: 80,80,27,41
 	nod-Vehicle: 80,120,27,41
 	nod-Plane: 80,160,27,41
 	nod-Ship: 80,200,27,41
@@ -102,12 +104,14 @@ tabs-ready: tabs.png
 	gdi-Building: 27,0,27,41
 	gdi-Defense: 27,40,27,41
 	gdi-Infantry: 27,80,27,41
+	gdi-Biolab: 27,80,27,41
 	gdi-Vehicle: 27,120,27,41
 	gdi-Plane: 27,160,27,41
 	gdi-Ship: 27,200,27,41
 	nod-Building: 107,0,27,41
 	nod-Defense: 107,40,27,41
 	nod-Infantry: 107,80,27,41
+	nod-Biolab: 107,80,27,41
 	nod-Vehicle: 107,120,27,41
 	nod-Plane: 107,160,27,41
 	nod-Ship: 107,200,27,41
@@ -116,12 +120,14 @@ tabs-normal: tabs.png
 	gdi-Building: 54,0,27,41
 	gdi-Defense: 54,40,27,41
 	gdi-Infantry: 54,80,27,41
+	gdi-Biolab: 54,80,27,41
 	gdi-Vehicle: 54,120,27,41
 	gdi-Plane: 54,160,27,41
 	gdi-Ship: 54,200,27,41
 	nod-Building: 134,0,27,41
 	nod-Defense: 134,40,27,41
 	nod-Infantry: 134,80,27,41
+	nod-Biolab: 134,80,27,41
 	nod-Vehicle: 134,120,27,41
 	nod-Plane: 134,160,27,41
 	nod-Ship: 134,200,27,41

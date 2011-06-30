@@ -46,6 +46,24 @@ BIO:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Bio Lab
+	Exit@1:
+		SpawnOffset: 0,-10
+		ExitCell: 0,-1
+	Production:
+		Produces: Biolab
+	ProductionQueue:
+		Type: Biolab
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: bldging1.aud
+		ReadyAudio: unitredy.aud
+		OnHoldAudio: onhold1.aud
+		CancelledAudio: cancel1.aud
+	ProductionBar:
+	Capturable:
+	-DeadBuildingState:
+	RallyPoint:
+		RallyPoint: -1,-1
 
 # Prison / Tech Center
 MISS:

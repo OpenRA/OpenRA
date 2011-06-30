@@ -6,6 +6,14 @@ vice:
 		Start: 0
 		Length: 13
 		Facings: 8
+pvice:
+	idle:
+		Start: 0
+		Length: *
+	muzzle: chem
+		Start: 0
+		Length: 13
+		Facings: 8
 e1:
 	stand:
 		Start: 0

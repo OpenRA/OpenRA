@@ -37,3 +37,10 @@ CommandoVoice:
 		Die: ramyell1
 		Build: rokroll1
 		Kill: keepem1,laugh1,lefty1
+
+DinoVoice:
+	Voices:
+		Select: dinoyes
+		Move: dinomout
+		Attack: dinoatk1
+		Die: dinodie1
