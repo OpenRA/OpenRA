@@ -730,11 +730,11 @@ HonestJohn:
 		Damage: 100
 
 Tiberium:
-	ROF: 10
+	ROF: 4
 	Warhead:
 		Spread: 1
 		InfDeath: 5
-		Damage: 5
+		Damage: 1
 		PreventProne: yes
 
 QuadCannon:
