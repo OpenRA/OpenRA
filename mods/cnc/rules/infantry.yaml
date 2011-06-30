@@ -44,7 +44,7 @@ E2:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	Explodes:
-		Weapon: UnitExplodeSmall
+		Weapon: GrenadierExplode
 		Chance: 50
 	
 E3:

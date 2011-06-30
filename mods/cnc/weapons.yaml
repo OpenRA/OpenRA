@@ -25,6 +25,19 @@ UnitExplodeSmall:
 		InfDeath: 3
 		ImpactSound: xplos
 
+GrenadierExplode:
+	Warhead:
+		Damage: 25
+		Spread: 10
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: 8
+		InfDeath: 2
+		ImpactSound: xplos
+
 Atomic:
 	Warhead@impact:
 		Damage: 1000
