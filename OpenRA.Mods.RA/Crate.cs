@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 		public void OnCrush(Actor crusher)
 		{
 			var shares = self.TraitsImplementing<CrateAction>().Select(
-				a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
+				a => Pair.New(a, a.GetSelectionShares(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 

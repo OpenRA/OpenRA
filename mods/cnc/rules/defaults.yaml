@@ -28,6 +28,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	AcceptsCloakCrate:
 
 ^Tank:
 	AppearsOnRadar:
@@ -59,6 +60,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	AcceptsCloakCrate:
 
 ^Helicopter:
 	AppearsOnRadar:

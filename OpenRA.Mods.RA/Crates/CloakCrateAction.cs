@@ -32,8 +32,8 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			return collector.HasTrait<Cloak>() 
-				? 0 : base.GetSelectionShares(collector);
+			return collector.HasTrait<AcceptsCloakCrate>() && !collector.HasTrait<Cloak>()
+				? base.GetSelectionShares(collector) : 0;
 		}
 
 		public override void Activate(Actor collector)
@@ -61,4 +61,7 @@ namespace OpenRA.Mods.RA.Crates
 			base.Activate(collector);
 		}
 	}
+
+	public class AcceptsCloakCrateInfo : TraitInfo<AcceptsCloakCrate> {}
+	public class AcceptsCloakCrate {}
 }
