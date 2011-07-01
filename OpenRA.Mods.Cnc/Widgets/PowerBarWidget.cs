@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class PowerBarWidget : Widget
 	{

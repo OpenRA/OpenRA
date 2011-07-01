@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class SiloBarWidget : Widget
 	{
