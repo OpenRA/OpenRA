@@ -94,7 +94,7 @@ World:
 	Country@nod:
 		Name: Nod
 		Race: nod
-	ChooseBuildTabOnSelect:
+#	ChooseBuildTabOnSelect:
 	BibLayer:
 	ResourceLayer:
 	ResourceType@green-tib:

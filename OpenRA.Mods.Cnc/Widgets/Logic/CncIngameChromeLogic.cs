@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -31,6 +32,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
+		}
+		
+		ProductionQueue QueueForType(World world, string type)
+		{
+			return world.ActorsWithTrait<ProductionQueue>()
+				.Where(p => p.Actor.Owner == world.LocalPlayer)
+				.Select(p => p.Trait).FirstOrDefault(p => p.Info.Type == type);
 		}
 		
 		[ObjectCreator.UseCtor]
@@ -54,6 +62,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
 					"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
+				
+				var buildPalette = playerWidgets.GetWidget<ProductionPaletteWidget>("PRODUCTION_PALETTE");
+				var queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
+				var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
+				queueTypes.GetWidget<ButtonWidget>("BUILDING").OnClick = () => queueTabs.QueueType = "Building";
+				queueTypes.GetWidget<ButtonWidget>("DEFENSE").OnClick = () => queueTabs.QueueType = "Defense";
+				queueTypes.GetWidget<ButtonWidget>("INFANTRY").OnClick = () => queueTabs.QueueType = "Infantry";
+				queueTypes.GetWidget<ButtonWidget>("VEHICLE").OnClick = () => queueTabs.QueueType = "Vehicle";
+				queueTypes.GetWidget<ButtonWidget>("AIRCRAFT").OnClick = () => queueTabs.QueueType = "Aircraft";
 			}
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{

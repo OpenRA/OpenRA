@@ -173,69 +173,54 @@ Container@INGAME_ROOT:
 							Height:25
 							Align:Center
 							Font:Bold
-						Container@PRODUCTION:
+						Container@PRODUCTION_TYPES:
+							Id:PRODUCTION_TYPES
 							X:10
 							Y:190
 							Width:170
 							Height:30
 							Children:
-								Button@BUILDINGS:
+								Button@BUILDING:
+									Id:BUILDING
 									Width:30
 									Height:30
 									Text: B
-								Button@DEFENCE:
+								Button@DEFENSE:
+									Id:DEFENSE
 									X:35
 									Width:30
 									Height:30
 									Text: D
 								Button@INFANTRY:
+									Id:INFANTRY
 									X:70
 									Width:30
 									Height:30
 									Text: I
-								Button@VEHICLES:
+								Button@VEHICLE:
+									Id:VEHICLE
 									X:105
 									Width:30
 									Height:30
 									Text: V
 								Button@AIRCRAFT:
+									Id:AIRCRAFT
 									X:140
 									Width:30
 									Height:30
 									Text: H
-				BuildPalette@INGAME_BUILD_PALETTE:
-					Id:INGAME_BUILD_PALETTE
-					X:WINDOW_RIGHT - 250
-					Y:600
-					Width:250
-					Height:500
+				ProductionTabs:
+					Id:PRODUCTION_TABS
+					PaletteWidget:PRODUCTION_PALETTE
+					X:WINDOW_RIGHT - 200
+					Y:260
+					Width:192
+					Height:15
+				ProductionPalette:
+					Id:PRODUCTION_PALETTE
+					X:WINDOW_RIGHT - 200
+					Y:275
 					TabClick: button.aud
-					BuildPaletteOpen: appear1.aud 
-					BuildPaletteClose: appear1.aud
-#				RadarBin@INGAME_RADAR_BIN:
-#					Id:INGAME_RADAR_BIN
-#					WorldInteractionController:INTERACTION_CONTROLLER
-#				PowerBin@INGAME_POWER_BIN:
-#					Id:INGAME_POWER_BIN
-#				MoneyBin@INGAME_MONEY_BIN:
-#					Id:INGAME_MONEY_BIN
-#					X:WINDOW_RIGHT - WIDTH
-#					Y:0
-#					Width:320
-#					Height: 32
-#					SplitOreAndCash: yes
-#					Children:
-#						
-#						OrderButton@REPAIR:
-#							Id:REPAIR
-#							Logic:OrderButtonsChromeLogic
-#							X:75
-#							Y:0
-#							Width:30
-#							Height:30
-#							Image:repair
-#							Description:Repair
-#							LongDesc:Repair damaged buildings
 Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT

@@ -92,6 +92,8 @@
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\PowerBarWidget.cs" />
     <Compile Include="Widgets\SiloBarWidget.cs" />
+    <Compile Include="Widgets\ProductionTabsWidget.cs" />
+    <Compile Include="Widgets\ProductionPaletteWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
