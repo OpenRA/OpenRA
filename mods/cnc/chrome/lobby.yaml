@@ -98,10 +98,10 @@ Container@SERVER_LOBBY:
 									Children:
 										Image@FACTIONFLAG:
 											Id:FACTIONFLAG
-											Width:30
-											Height:15
-											X:5
-											Y:5
+											Width:32
+											Height:16
+											X:4
+											Y:4
 										Label@FACTIONNAME:
 											Id:FACTIONNAME
 											Text:Faction

@@ -103,10 +103,10 @@ Container@CONQUEST_OBJECTIVES:
 									Height:25
 								Image@FACTIONFLAG:
 									Id:FACTIONFLAG
-									X:160
-									Y:5
-									Width:30
-									Height:15
+									X:159
+									Y:6
+									Width:32
+									Height:16
 								Label@FACTION:
 									Id:FACTION
 									X:195

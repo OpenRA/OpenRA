@@ -369,6 +369,11 @@ scrollbar: chrome.png
 	up_arrow: 304,16,16,16
 	up_pressed: 304,48,16,16
 
+flags: chrome.png
+	nod: 352,0,32,16
+	gdi: 352,16,32,16
+	random: 352,32,32,16
+
 strategic: strategic.png
 	unowned: 0,0,32,32
 	critical_unowned: 0,32,32,32

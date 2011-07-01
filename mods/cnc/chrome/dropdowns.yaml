@@ -107,10 +107,10 @@ ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 			Children:
 				Image@FLAG:
 					Id:FLAG
-					X:5
-					Y:5
-					Width:30
-					Height:15
+					X:4
+					Y:4
+					Width:32
+					Height:16
 				Label@LABEL:
 					Id:LABEL
 					X:40
