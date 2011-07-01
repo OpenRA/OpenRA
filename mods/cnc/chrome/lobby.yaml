@@ -31,6 +31,14 @@ Container@SERVER_LOBBY:
 							Y:1
 							Width:192
 							Height:192
+				Label@MAP_TITLE:
+					Id:MAP_TITLE
+					X:PARENT_RIGHT-15-WIDTH
+					Y:225
+					Width:194
+					Height:25
+					Font:Bold
+					Align:Center
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					Id:ALLOWCHEATS_CHECKBOX
 					X:PARENT_RIGHT-209

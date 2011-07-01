@@ -113,6 +113,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			NewSpectatorTemplate = Players.GetWidget("TEMPLATE_NEW_SPECTATOR");
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi =>
 			{
@@ -133,6 +134,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				
 				return true;
 			};
+
+			var mapTitle = lobby.GetWidget<LabelWidget>("MAP_TITLE");
+			mapTitle.IsVisible = () => Map != null;
+			mapTitle.GetText = () => Map.Title;
 
 			mapPreview.SpawnColors = () =>
 			{
