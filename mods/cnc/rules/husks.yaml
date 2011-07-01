@@ -135,4 +135,4 @@ STNK.Husk:
 		Name: Stealth Tank (Destroyed)
 		Icon: stnkicnh
 	RenderUnit:
-		Image: mlrs
+		Image: stnk
