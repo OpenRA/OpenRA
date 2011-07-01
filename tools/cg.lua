@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
-local cgprofile = ide.config.cgprofile or "gp4"
+local cgprofile = ide.config.cgprofile or "gp5"
 
 return cgbinpath and {
 	fninit = function(frame,menuBar)
@@ -178,16 +178,18 @@ return cgbinpath and {
 			local indent = 0
 			local maxindent = 0
 			local startindent = {
-				["IF"]=true,["REP"]=true,["ELSE"]=true,["LOOP"]=true,
+				["IF"]=true,["REP"]=true,["ELSE"]=true,["LOOP"]=true,["BB"]=true,
 			}
 			local endindent = {
-				["ENDIF"]=true,["ENDREP"]=true,["ELSE"]=true,["ENDLOOP"]=true,["END"]=true,
+				["ENDIF"]=true,["ENDREP"]=true,["ELSE"]=true,["ENDLOOP"]=true,["END"]=true,["RET"]=true,
 			}
 
 			local function checknesting(str,tab)
 				local res
-				local chk = str:match("%s*(%w+)")
+				local chk = str:match("%s*(BB)%d+.*:")
+				chk = chk or str:match("%s*(%w+)")
 				res = chk and tab[chk] and chk
+
 				return res
 			end
 
@@ -217,7 +219,8 @@ return cgbinpath and {
 			local function checkregistry(w)
 				local regsuccess = true
 				
-				local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var (%w+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
+				local vtype,vname,sem,resource,pnum,pref = string.match(w,"#var ([_%w]+) ([%[%]%._%w]+) : ([^%:]*) : ([^%:]*) : ([^%:]*) : (%d*)")
+				local funcname,subroutine = string.match(w,"#function %d+ ([_%w]+)%((%d+)%)")
 				if (pref == "1") then
 					local descriptor = vtype.." "..vname
 
@@ -252,6 +255,8 @@ return cgbinpath and {
 					for i,v in ipairs(argnames) do
 						argregistry[v] = descriptor
 					end
+				elseif (funcname and subroutine) then
+					argregistry["SUBROUTINENUM("..subroutine..")"] = "function "..funcname
 				elseif string.find(w,"BUFFER4") then
 					fixargbuffers()
 				elseif string.find(w,"TEMP") then
@@ -273,7 +278,7 @@ return cgbinpath and {
 			local function checkargs(str)
 				local comment = "#"
 				local declared = {}
-				for i in string.gmatch(str,"([%[%]%w]+)") do
+				for i in string.gmatch(str,"([%[%]%(%)%w]+)") do
 					local descr = argregistry[i]
 					if (descr and not declared[i]) then
 						comment = comment.." "..i.." = "..descr
@@ -286,6 +291,7 @@ return cgbinpath and {
 			
 			local registerlevels = {{}}
 			local function checkregisters(str,indent)
+				if (indent < 0) then return end
 				local cur = registerlevels[indent+1]
 				for i in string.gmatch(str,"R(%d+)") do
 					cur[i] = true
@@ -293,10 +299,11 @@ return cgbinpath and {
 			end
 			
 			local function clearregisters(indent)
-				registerlevels[indent+1] = {}
+				registerlevels[math.max(0,indent)+1] = {}
 			end
 			
 			local function outputregisters(indent)
+				if (indent < 0) then return "" end
 				local tab = registerlevels[indent+1]
 				local out = {}
 				for i,v in pairs(tab) do
@@ -304,6 +311,8 @@ return cgbinpath and {
 				end
 				table.sort(out)
 				local cnt = #out
+				if (cnt < 1) then return "" end
+				
 				local str = string.rep("  ",indent).."# "..tostring(cnt).." R used: "
 				for i,v in ipairs(out) do
 					str = str..tostring(v)..((i==cnt) and "" or ", ")
@@ -318,8 +327,10 @@ return cgbinpath and {
 					
 					
 					if (checknesting(w,endindent)) then
+						DisplayOutput(indent,"\n")
 						newtx = newtx..outputregisters(indent)
-						indent = indent - 1
+						if (indent == 0) then clearregisters(indent) end
+						indent = math.max(0,indent - 1)
 					end
 					
 					local firstchar = string.sub(w,1,1)
