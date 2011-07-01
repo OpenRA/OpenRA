@@ -138,6 +138,12 @@ Container@INGAME_ROOT:
 							Width:10
 							Height:152
 							Background:panel-black
+							Children:
+								PowerBar:
+									X:1
+									Y:1
+									Width:PARENT_RIGHT-2
+									Height:PARENT_BOTTOM-2
 						Label@POWERICON:
 							X:10
 							Y:170
