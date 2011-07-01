@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -39,15 +40,21 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.None);
 			
-			
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
 			
 			ingameRoot = widget.GetWidget("INGAME_ROOT");
 			
 			if (world.LocalPlayer != null)
-				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
+			{
+				var playerWidgets = widget.GetWidget("PLAYER_WIDGETS");
+				playerWidgets.IsVisible = () => true;
 
+				var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
+				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
+					"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
+			}
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				if (menu != MenuType.None)

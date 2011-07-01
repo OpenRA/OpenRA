@@ -155,12 +155,12 @@ Container@INGAME_ROOT:
 							Text:T
 							Font:Bold
 						Label@CASH:
+							Id:CASH_DISPLAY
 							Y:160
 							Width:PARENT_RIGHT
 							Height:25
 							Align:Center
 							Font:Bold
-							Text:$5000
 						Container@PRODUCTION:
 							X:10
 							Y:190
