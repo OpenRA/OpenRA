@@ -27,11 +27,15 @@ namespace OpenRA.Widgets
 		public Color ContrastColor = Color.Black;
 		public bool WordWrap = false;
 		public Func<string> GetText;
+		public Func<Color> GetColor;
+		public Func<Color> GetContrastColor;
 		
 		public LabelWidget()
 			: base()
 		{
 			GetText = () => Text;
+			GetColor = () => Color;
+			GetContrastColor = () => ContrastColor;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -45,6 +49,8 @@ namespace OpenRA.Widgets
 			ContrastColor = other.ContrastColor;
 			WordWrap = other.WordWrap;
 			GetText = other.GetText;
+			GetColor = other.GetColor;
+			GetContrastColor = other.GetContrastColor;
 		}
 
 		public override void DrawInner()
@@ -72,10 +78,12 @@ namespace OpenRA.Widgets
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
+			var color = GetColor();
+			var contrast = GetContrastColor();
 			if (Contrast)
-				font.DrawTextWithContrast(text, position, Color, ContrastColor, 2);
+				font.DrawTextWithContrast(text, position, color, contrast, 2);
 			else
-				font.DrawText(text, position, Color);
+				font.DrawText(text, position, color);
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
