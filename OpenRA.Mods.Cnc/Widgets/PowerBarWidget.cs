@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets
 			                          providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 			
-			var indicator = ChromeProvider.GetImage("powerbar-bits", "indicator");
+			var indicator = ChromeProvider.GetImage("sidebar-bits", "left-indicator");
 			
 			var drainedFrac = pm.PowerDrained / powerScaleBy;
 			lastDrainedFrac = drainedFrac = float2.Lerp(lastDrainedFrac.GetValueOrDefault(drainedFrac), drainedFrac, .3f);

@@ -380,5 +380,6 @@ strategic: strategic.png
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
 
-powerbar-bits: chrome.png
-	indicator: 320,40,11,8
+sidebar-bits: chrome.png
+	left-indicator: 320,40,11,8
+	right-indicator: 325,40,11,8
