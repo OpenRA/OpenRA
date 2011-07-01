@@ -54,22 +54,22 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2402344"
-     inkscape:cx="237.05193"
-     inkscape:cy="255.99995"
+     inkscape:zoom="3.5079126"
+     inkscape:cx="281.38029"
+     inkscape:cy="461.49752"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1386"
      inkscape:window-height="856"
-     inkscape:window-x="54"
-     inkscape:window-y="22"
-     inkscape:window-maximized="0"
+     inkscape:window-x="77"
+     inkscape:window-y="72"
+     inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
     <sodipodi:guide
        orientation="0,1"
-       position="288.14601,448.3057"
+       position="136.40591,448.05848"
        id="guide3073" />
     <sodipodi:guide
        orientation="0,1"
@@ -92,7 +92,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -673,5 +673,29 @@
        inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="m 272,590.88925 2.527,-2.527 13.473,13.47264 -2.52704,2.52731 z"
+       id="path3086"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3088"
+       d="m 288,590.88925 -2.527,-2.527 -13.473,13.47264 2.52704,2.52731 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3090"
+       d="m 288,590.88925 2.527,-2.527 13.473,13.47264 -2.52704,2.52731 z"
+       style="fill:#808080;fill-opacity:1;stroke:none" />
+    <path
+       style="fill:#808080;fill-opacity:1;stroke:none"
+       d="m 304,590.88925 -2.527,-2.527 -13.473,13.47264 2.52704,2.52731 z"
+       id="path3092"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

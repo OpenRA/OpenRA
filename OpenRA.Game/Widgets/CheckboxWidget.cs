@@ -17,20 +17,30 @@ namespace OpenRA.Widgets
 {
 	public class CheckboxWidget : ButtonWidget
 	{
+		public string CheckType = "checked";
+		public Func<string> GetCheckType;
 		public Func<bool> IsChecked = () => false;
 		public int BaseLine = 1;
+		public int CheckOffset = 2;
 		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
 
 		public CheckboxWidget()
 			: base()
 		{
+			GetCheckType = () => CheckType;
 		}
-		
-		protected CheckboxWidget(CheckboxWidget widget)
-			: base(widget)
+
+		protected CheckboxWidget(CheckboxWidget other)
+			: base(other)
 		{
+			CheckType = other.CheckType;
+			GetCheckType = other.GetCheckType;
+			IsChecked = other.IsChecked;
+			BaseLine = other.BaseLine;
+			CheckOffset = other.CheckOffset;
+			HasPressedState = other.HasPressedState;
 		}
-				
+
 		public override void DrawInner()
 		{
 			var disabled = IsDisabled();
@@ -49,9 +59,14 @@ namespace OpenRA.Widgets
 				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2), Color.White);
 
 			if (IsChecked() || (Depressed && HasPressedState && !disabled))
-				WidgetUtils.DrawRGBA(
-					ChromeProvider.GetImage("checkbox-bits", HasPressedState && (Depressed || disabled)  ? "pressed" : "checked"),
-					new float2(rect.Left + 2, rect.Top + 2));
+			{
+				var checkType = GetCheckType();
+				if (HasPressedState && (Depressed || disabled))
+					checkType += "-disabled";
+
+				var offset = new float2(rect.Left + CheckOffset, rect.Top + CheckOffset);
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("checkbox-bits", checkType), offset);
+			}
 		}
 
 		public override Widget Clone() { return new CheckboxWidget(this); }

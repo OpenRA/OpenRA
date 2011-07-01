@@ -359,7 +359,9 @@ spawnpoints: chrome.png
 
 checkbox-bits: chrome.png
 	checked: 288,16,16,16
-	pressed: 288,32,16,16
+	checked-disabled: 288,32,16,16
+	crossed: 272,48,16,16
+	crossed-disabled: 288,48,16,16
 
 scrollbar: chrome.png
 	down_arrow: 304,0,16,16
