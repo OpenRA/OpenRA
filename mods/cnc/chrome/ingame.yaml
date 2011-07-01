@@ -25,16 +25,9 @@ Container@INGAME_ROOT:
 			Width:140
 			Height:35
 			Text:Options
-		Button@DIPLOMACY_BUTTON:
-			Id:DIPLOMACY_BUTTON
-			X:150
-			Y:5
-			Width:140
-			Height:35
-			Text:Diplomacy
 		Button@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
-			X:295
+			X:150
 			Y:5
 			Width:140
 			Height:35

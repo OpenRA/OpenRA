@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncIngameChromeLogic
 	{
-		enum MenuType { None, Diplomacy, Cheats }
+		enum MenuType { None, Cheats }
 		MenuType menu = MenuType.None;
 		
 		Widget ingameRoot;
@@ -48,18 +48,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			if (world.LocalPlayer != null)
 				widget.GetWidget("PLAYER_WIDGETS").IsVisible = () => true;
 
-			var diplomacyButton = ingameRoot.GetWidget<ButtonWidget>("DIPLOMACY_BUTTON");
-			var diplomacyAvailable = world.LocalPlayer != null && world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
-			diplomacyButton.IsDisabled = () => !diplomacyAvailable;
-			diplomacyButton.OnClick = () => 
-			{
-				if (menu != MenuType.None)
-					Widget.CloseWindow();
-				
-				menu = MenuType.Diplomacy;
-				Game.OpenWindow("DIPLOMACY_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
-			};
-			
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				if (menu != MenuType.None)
@@ -81,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (menu != MenuType.None)
 					Widget.CloseWindow();
 				
-				menu = MenuType.Diplomacy;
+				menu = MenuType.Cheats;
 				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
 			};
 			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;

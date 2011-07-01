@@ -176,12 +176,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
 			var gameStarting = false;
-			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
-			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
-				|| orderManager.LocalClient.State == Session.ClientState.Ready;
-			lockTeamsCheckbox.OnClick = () => orderManager.IssueOrder(Order.Command(
-						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
 
 			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;

@@ -89,7 +89,6 @@
     <Compile Include="Widgets\Logic\CncDownloadPackagesLogic.cs" />
     <Compile Include="CncMenuPaletteEffect.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\CncDiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
