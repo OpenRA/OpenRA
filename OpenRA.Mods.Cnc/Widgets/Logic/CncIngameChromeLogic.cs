@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		MenuType menu = MenuType.None;
 		
 		Widget ingameRoot;
+		World world;
 		
 		void AddChatLine(Color c, string from, string text)
 		{
@@ -32,6 +33,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
+
+			if (world.LocalPlayer != null)
+			{
+				var queueTabs = ingameRoot.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
+				world.ActorAdded += queueTabs.ActorChanged;
+				world.ActorRemoved += queueTabs.ActorChanged;
+			}
 		}
 		
 		ProductionQueue QueueForType(World world, string type)
@@ -45,6 +53,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public CncIngameChromeLogic([ObjectCreator.Param] Widget widget,
 		                            [ObjectCreator.Param] World world )
 		{
+			this.world = world;
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.None);
 			
@@ -65,33 +74,31 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				
 				var buildPalette = playerWidgets.GetWidget<ProductionPaletteWidget>("PRODUCTION_PALETTE");
 				var queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
+
+				world.ActorAdded += queueTabs.ActorChanged;
+				world.ActorRemoved += queueTabs.ActorChanged;
+
 				var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
 
 				var buildingTab = queueTypes.GetWidget<ButtonWidget>("BUILDING");
 				buildingTab.OnClick = () => queueTabs.QueueType = "Building";
-				buildingTab.IsDisabled = () => !queueTabs.QueueCounts.ContainsKey("Building")
-					|| queueTabs.QueueCounts["Building"] == 0;
+				buildingTab.IsDisabled = () => queueTabs.Groups["Building"].Tabs.Count == 0;
 
 				var defenseTab = queueTypes.GetWidget<ButtonWidget>("DEFENSE");
 				defenseTab.OnClick = () => queueTabs.QueueType = "Defense";
-				defenseTab.IsDisabled = () => !queueTabs.QueueCounts.ContainsKey("Defense")
-					|| queueTabs.QueueCounts["Defense"] == 0;
+				defenseTab.IsDisabled = () => queueTabs.Groups["Defense"].Tabs.Count == 0;
 
 				var infantryTab = queueTypes.GetWidget<ButtonWidget>("INFANTRY");
 				infantryTab.OnClick = () => queueTabs.QueueType = "Infantry";
-				infantryTab.IsDisabled = () => !queueTabs.QueueCounts.ContainsKey("Infantry")
-					|| queueTabs.QueueCounts["Infantry"] == 0;
+				infantryTab.IsDisabled = () => queueTabs.Groups["Infantry"].Tabs.Count == 0;
 
 				var vehicleTab = queueTypes.GetWidget<ButtonWidget>("VEHICLE");
 				vehicleTab.OnClick = () => queueTabs.QueueType = "Vehicle";
-				vehicleTab.IsDisabled = () => !queueTabs.QueueCounts.ContainsKey("Vehicle")
-					|| queueTabs.QueueCounts["Vehicle"] == 0;
+				vehicleTab.IsDisabled = () => queueTabs.Groups["Vehicle"].Tabs.Count == 0;
 
 				var aircraftTab = queueTypes.GetWidget<ButtonWidget>("AIRCRAFT");
 				aircraftTab.OnClick = () => queueTabs.QueueType = "Aircraft";
-				aircraftTab.IsDisabled = () => !queueTabs.QueueCounts.ContainsKey("Aircraft")
-					|| queueTabs.QueueCounts["Aircraft"] == 0;
-
+				aircraftTab.IsDisabled = () => queueTabs.Groups["Aircraft"].Tabs.Count == 0;
 			}
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{

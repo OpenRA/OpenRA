@@ -19,6 +19,8 @@ namespace OpenRA.Mods.RA
 	public class ProductionQueueInfo : ITraitInfo
 	{
 		public readonly string Type = null;
+		public readonly string Group = null;
+
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
 		

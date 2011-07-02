@@ -53,6 +53,7 @@ BIO:
 		Produces: Biolab
 	ProductionQueue:
 		Type: Biolab
+		Group: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: bldging1.aud

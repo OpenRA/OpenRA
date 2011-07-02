@@ -19,6 +19,44 @@ using System;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
+	public class ProductionTab
+	{
+		public string Name;
+		public ProductionQueue Queue;
+	}
+
+	public class ProductionTabGroup
+	{
+		public List<ProductionTab> Tabs = new List<ProductionTab>();
+		public string Group;
+		public int CumulativeCount;
+
+		public void Update(IEnumerable<ProductionQueue> allQueues)
+		{
+			var queues = allQueues.Where(q => q.Info.Group == Group).ToList();
+			List<ProductionTab> tabs = new List<ProductionTab>();
+
+			// Remove stale queues
+			foreach (var t in Tabs)
+			{
+				if (!queues.Contains(t.Queue))
+					continue;
+
+				tabs.Add(t);
+				queues.Remove(t.Queue);
+			}
+
+			// Add new queues
+			foreach (var queue in queues)
+				tabs.Add(new ProductionTab()
+				{
+					Name = (++CumulativeCount).ToString(),
+					Queue = queue
+				});
+			Tabs = tabs;
+		}
+	}
+
 	class ProductionTabsWidget : Widget
 	{
 		string queueType;
@@ -32,9 +70,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				queueType = value;
 				ListOffset = 0;
-				ResetButtons();
 				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget)
-					.CurrentQueue = tabs.Keys.FirstOrDefault();
+					.CurrentQueue = Groups[queueType].Tabs[0].Queue;
 			}
 		}
 
@@ -42,10 +79,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public float ScrollVelocity = 4f;
 		public int TabWidth = 30;
 		public int ArrowWidth = 20;
-
-		public ProductionQueue[] AllQueues;
-		public Dictionary<string, int> QueueCounts = new Dictionary<string, int>();
-		Dictionary<ProductionQueue, Rectangle> tabs = new Dictionary<ProductionQueue, Rectangle>();
+		public Dictionary<string, ProductionTabGroup> Groups;
 
 		int ContentWidth = 0;
 		float ListOffset = 0;
@@ -53,19 +87,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 		bool rightPressed = false;
 		Rectangle leftButtonRect;
 		Rectangle rightButtonRect;
-
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
 		public ProductionTabsWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
+			Groups = Rules.Info.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
+				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
 		}
 		
 		public override void DrawInner()
 		{
 			var rb = RenderBounds;
-
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 
@@ -83,21 +117,24 @@ namespace OpenRA.Mods.Cnc.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", rightPressed || rightDisabled ? "down_pressed" : "down_arrow"),
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 
+			if (QueueType == null)
+				return;
+
+			// Draw tab buttons
 			Game.Renderer.EnableScissor(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height);
-
 			var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
-			// TODO: Draw children buttons
-			var i = 1;
-			foreach (var tab in tabs)
+			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
+			SpriteFont font = Game.Renderer.Fonts["TinyBold"];
+			ContentWidth = 0;
+			foreach (var tab in Groups[QueueType].Tabs)
 			{
-				ButtonWidget.DrawBackground("button", tab.Value, false, tab.Key == palette.CurrentQueue, tab.Value.Contains(Viewport.LastMousePos));
+				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
+				ButtonWidget.DrawBackground("button", rect, false, tab.Queue == palette.CurrentQueue, rect.Contains(Viewport.LastMousePos));
+				ContentWidth += TabWidth - 1;
 
-				SpriteFont font = Game.Renderer.Fonts["TinyBold"];
-				var text = i.ToString();
-				int2 textSize = font.Measure(text);
-				int2 position = new int2(tab.Value.X + (tab.Value.Width - textSize.X)/2, tab.Value.Y + (tab.Value.Height - textSize.Y)/2);
-				font.DrawTextWithContrast(text, position, Color.White, Color.Black, 1);
-				i++;
+				int2 textSize = font.Measure(tab.Name);
+				int2 position = new int2(rect.X + (rect.Width - textSize.X)/2, rect.Y + (rect.Height - textSize.Y)/2);
+				font.DrawTextWithContrast(tab.Name, position, Color.White, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();
@@ -109,18 +146,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ListOffset = Math.Min(0,Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth, ListOffset));
 		}
 
-		public void ResetButtons()
+		// Is added to world.ActorAdded by the SidebarLogic handler
+		public void ActorChanged(Actor a)
 		{
-			tabs.Clear();
-			ContentWidth = 0;
-			var rb = RenderBounds;
-			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
-
-			foreach (var queue in AllQueues.Where(q => q.Info.Type == QueueType))
+			if (a.HasTrait<ProductionQueue>())
 			{
-				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
-				tabs.Add(queue, rect);
-				ContentWidth += TabWidth - 1;
+				var allQueues = world.ActorsWithTrait<ProductionQueue>()
+					.Where(p => p.Actor.Owner == world.LocalPlayer && p.Actor.IsInWorld)
+					.Select(p => p.Trait).ToArray();
+				foreach (var g in Groups.Values)
+					g.Update(allQueues);
 			}
 		}
 
@@ -128,15 +163,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (leftPressed) Scroll(1);
 			if (rightPressed) Scroll(-1);
-
-			AllQueues = world.ActorsWithTrait<ProductionQueue>()
-				.Where(p => p.Actor.Owner == world.LocalPlayer)
-				.Select(p => p.Trait).ToArray();
-
-			QueueCounts = AllQueues.Select(q => q.Info.Type).Distinct()
-				.ToDictionary(t => t, t => AllQueues.Count(q => q.Info.Type == t));
-
-			ResetButtons();
 			base.Tick();
 		}
 
@@ -145,7 +171,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			leftPressed = rightPressed = false;
 			return base.LoseFocus(mi);
 		}
-		
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button == MouseButton.WheelDown)
@@ -175,16 +201,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			leftPressed = leftButtonRect.Contains(mi.Location.X, mi.Location.Y);
 			rightPressed = rightButtonRect.Contains(mi.Location.X, mi.Location.Y);
 
-			var queue = tabs.Where(a => a.Value.Contains(mi.Location))
-				.Select(a => a.Key).FirstOrDefault();
-
-			if (queue != null)
+			// Check production tabs
+			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
+			if (offsetloc.X > 0 && offsetloc.X <= ContentWidth)
 			{
 				var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
-				palette.CurrentQueue = queue;
+				palette.CurrentQueue = Groups[QueueType].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
+				return true;
 			}
 
-			return (leftPressed || rightPressed || queue != null);
+			return (leftPressed || rightPressed);
 		}
 	}
 }
