@@ -185,30 +185,35 @@ Container@INGAME_ROOT:
 									Width:30
 									Height:30
 									Text: B
+									Key: y
 								Button@DEFENSE:
 									Id:DEFENSE
 									X:35
 									Width:30
 									Height:30
 									Text: D
+									Key: u
 								Button@INFANTRY:
 									Id:INFANTRY
 									X:70
 									Width:30
 									Height:30
 									Text: I
+									Key: i
 								Button@VEHICLE:
 									Id:VEHICLE
 									X:105
 									Width:30
 									Height:30
 									Text: V
+									Key: o
 								Button@AIRCRAFT:
 									Id:AIRCRAFT
 									X:140
 									Width:30
 									Height:30
 									Text: H
+									Key: p
 				ProductionTabs:
 					Id:PRODUCTION_TABS
 					PaletteWidget:PRODUCTION_PALETTE

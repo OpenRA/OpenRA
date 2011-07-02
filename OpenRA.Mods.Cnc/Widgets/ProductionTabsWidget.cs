@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public ProductionTabsWidget( [ObjectCreator.Param] World world )
+		public ProductionTabsWidget([ObjectCreator.Param] World world)
 		{
 			this.world = world;
 			Groups = Rules.Info.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
@@ -211,6 +211,33 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 
 			return (leftPressed || rightPressed);
+		}
+
+		public override bool HandleKeyPressInner(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down) return false;
+			if (e.KeyName == "tab")
+			{
+				SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
+				return true;
+			}
+
+			return false;
+		}
+
+		public void SelectNextTab(bool reverse)
+		{
+			if (queueType == null)
+				return;
+
+			var pal = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
+			var tabs = Groups[queueType].Tabs.ToList();
+			if (reverse) tabs.Reverse();
+
+			var tab = tabs.SkipWhile(q => q.Queue != pal.CurrentQueue)
+				.Skip(1).FirstOrDefault() ?? tabs.FirstOrDefault();
+
+			pal.CurrentQueue = tab != null ? tab.Queue : null;
 		}
 
 		public void SelectQueue(ProductionQueue queue)

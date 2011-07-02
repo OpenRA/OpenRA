@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		MenuType menu = MenuType.None;
 		
 		Widget ingameRoot;
+		ProductionTabsWidget queueTabs;
 		World world;
 		
 		void AddChatLine(Color c, string from, string text)
@@ -35,19 +36,37 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
 
-			if (world.LocalPlayer != null)
+			if (queueTabs != null)
 			{
-				var queueTabs = ingameRoot.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
 				world.ActorAdded += queueTabs.ActorChanged;
 				world.ActorRemoved += queueTabs.ActorChanged;
 			}
 		}
 		
-		ProductionQueue QueueForType(World world, string type)
+		void SetupProductionGroupButton(ButtonWidget button, string group)
 		{
-			return world.ActorsWithTrait<ProductionQueue>()
-				.Where(p => p.Actor.Owner == world.LocalPlayer)
-				.Select(p => p.Trait).FirstOrDefault(p => p.Info.Type == type);
+			button.IsDisabled = () => queueTabs.Groups[group].Tabs.Count == 0;
+
+			button.OnMouseUp = mi =>
+			{
+				if (button.IsDisabled())
+					return true;
+
+				if (queueTabs.QueueType == group)
+					queueTabs.SelectNextTab(mi.Modifiers.HasModifier(Modifiers.Shift));
+				else
+					queueTabs.QueueType = group;
+
+				return true;
+			};
+
+			button.OnKeyPress = e =>
+			{
+				if (queueTabs.QueueType == group)
+					queueTabs.SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
+				else
+					queueTabs.QueueType = group;
+			};
 		}
 		
 		[ObjectCreator.UseCtor]
@@ -82,35 +101,19 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
 					"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
-				
-				var buildPalette = playerWidgets.GetWidget<ProductionPaletteWidget>("PRODUCTION_PALETTE");
-				var queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
 
+				queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
 				world.ActorAdded += queueTabs.ActorChanged;
 				world.ActorRemoved += queueTabs.ActorChanged;
 
 				var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
-
-				var buildingTab = queueTypes.GetWidget<ButtonWidget>("BUILDING");
-				buildingTab.OnClick = () => queueTabs.QueueType = "Building";
-				buildingTab.IsDisabled = () => queueTabs.Groups["Building"].Tabs.Count == 0;
-
-				var defenseTab = queueTypes.GetWidget<ButtonWidget>("DEFENSE");
-				defenseTab.OnClick = () => queueTabs.QueueType = "Defense";
-				defenseTab.IsDisabled = () => queueTabs.Groups["Defense"].Tabs.Count == 0;
-
-				var infantryTab = queueTypes.GetWidget<ButtonWidget>("INFANTRY");
-				infantryTab.OnClick = () => queueTabs.QueueType = "Infantry";
-				infantryTab.IsDisabled = () => queueTabs.Groups["Infantry"].Tabs.Count == 0;
-
-				var vehicleTab = queueTypes.GetWidget<ButtonWidget>("VEHICLE");
-				vehicleTab.OnClick = () => queueTabs.QueueType = "Vehicle";
-				vehicleTab.IsDisabled = () => queueTabs.Groups["Vehicle"].Tabs.Count == 0;
-
-				var aircraftTab = queueTypes.GetWidget<ButtonWidget>("AIRCRAFT");
-				aircraftTab.OnClick = () => queueTabs.QueueType = "Aircraft";
-				aircraftTab.IsDisabled = () => queueTabs.Groups["Aircraft"].Tabs.Count == 0;
+				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("BUILDING"), "Building");
+				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("DEFENSE"), "Defense");
+				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("INFANTRY"), "Infantry");
+				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("VEHICLE"), "Vehicle");
+				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("AIRCRAFT"), "Aircraft");
 			}
+
 			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
 			{
 				if (menu != MenuType.None)
