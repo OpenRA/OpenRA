@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				ListOffset = 0;
 				ResetButtons();
 				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget)
-					.CurrentQueue = VisibleQueues.Keys.FirstOrDefault();
+					.CurrentQueue = tabs.Keys.FirstOrDefault();
 			}
 		}
 
@@ -42,7 +42,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public float ScrollVelocity = 4f;
 		public int TabWidth = 30;
 		public int ArrowWidth = 20;
-		Dictionary<ProductionQueue, Rectangle> VisibleQueues = new Dictionary<ProductionQueue, Rectangle>();
+
+		public ProductionQueue[] AllQueues;
+		public Dictionary<string, int> QueueCounts = new Dictionary<string, int>();
+		Dictionary<ProductionQueue, Rectangle> tabs = new Dictionary<ProductionQueue, Rectangle>();
 
 		int ContentWidth = 0;
 		float ListOffset = 0;
@@ -85,14 +88,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 			// TODO: Draw children buttons
 			var i = 1;
-			foreach (var queue in VisibleQueues)
+			foreach (var tab in tabs)
 			{
-				ButtonWidget.DrawBackground("button", queue.Value, false, queue.Key == palette.CurrentQueue, queue.Value.Contains(Viewport.LastMousePos));
+				ButtonWidget.DrawBackground("button", tab.Value, false, tab.Key == palette.CurrentQueue, tab.Value.Contains(Viewport.LastMousePos));
 
 				SpriteFont font = Game.Renderer.Fonts["TinyBold"];
 				var text = i.ToString();
 				int2 textSize = font.Measure(text);
-				int2 position = new int2(queue.Value.X + (queue.Value.Width - textSize.X)/2, queue.Value.Y + (queue.Value.Height - textSize.Y)/2);
+				int2 position = new int2(tab.Value.X + (tab.Value.Width - textSize.X)/2, tab.Value.Y + (tab.Value.Height - textSize.Y)/2);
 				font.DrawTextWithContrast(text, position, Color.White, Color.Black, 1);
 				i++;
 			}
@@ -108,19 +111,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public void ResetButtons()
 		{
-			VisibleQueues.Clear();
+			tabs.Clear();
 			ContentWidth = 0;
 			var rb = RenderBounds;
 			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
-			
-			var queues = world.ActorsWithTrait<ProductionQueue>()
-				.Where(p => p.Actor.Owner == world.LocalPlayer && p.Trait.Info.Type == QueueType)
-				.Select(p => p.Trait).ToList();
-			
-			foreach (var queue in queues)
+
+			foreach (var queue in AllQueues.Where(q => q.Info.Type == QueueType))
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
-				VisibleQueues.Add(queue, rect);
+				tabs.Add(queue, rect);
 				ContentWidth += TabWidth - 1;
 			}
 		}
@@ -129,6 +128,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (leftPressed) Scroll(1);
 			if (rightPressed) Scroll(-1);
+
+			AllQueues = world.ActorsWithTrait<ProductionQueue>()
+				.Where(p => p.Actor.Owner == world.LocalPlayer)
+				.Select(p => p.Trait).ToArray();
+
+			QueueCounts = AllQueues.Select(q => q.Info.Type).Distinct()
+				.ToDictionary(t => t, t => AllQueues.Count(q => q.Info.Type == t));
 
 			ResetButtons();
 			base.Tick();
@@ -169,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			leftPressed = leftButtonRect.Contains(mi.Location.X, mi.Location.Y);
 			rightPressed = rightButtonRect.Contains(mi.Location.X, mi.Location.Y);
 
-			var queue = VisibleQueues.Where(a => a.Value.Contains(mi.Location))
+			var queue = tabs.Where(a => a.Value.Contains(mi.Location))
 				.Select(a => a.Key).FirstOrDefault();
 
 			if (queue != null)
