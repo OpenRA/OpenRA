@@ -213,13 +213,13 @@ Container@INGAME_ROOT:
 					Id:PRODUCTION_TABS
 					PaletteWidget:PRODUCTION_PALETTE
 					X:WINDOW_RIGHT - 200
-					Y:260
-					Width:192
-					Height:15
+					Y:259
+					Width:190
+					Height:20
 				ProductionPalette:
 					Id:PRODUCTION_PALETTE
 					X:WINDOW_RIGHT - 200
-					Y:275
+					Y:280
 					TabClick: button.aud
 Background@FMVPLAYER:
 	Id:FMVPLAYER
