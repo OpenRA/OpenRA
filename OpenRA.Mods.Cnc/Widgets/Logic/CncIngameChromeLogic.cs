@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -68,6 +69,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				playerWidgets.IsVisible = () => true;
 
 				var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
+
+				var sellButton = sidebarRoot.GetWidget<ButtonWidget>("SELL_BUTTON");
+				sellButton.IsDisabled = () => world.OrderGenerator is SellOrderGenerator;
+				sellButton.OnClick = () => world.ToggleInputMode<SellOrderGenerator>();
+
+				var repairButton = sidebarRoot.GetWidget<ButtonWidget>("REPAIR_BUTTON");
+				repairButton.IsDisabled = () => world.OrderGenerator is RepairOrderGenerator
+				                                || !RepairOrderGenerator.PlayerIsAllowedToRepair( world );
+				repairButton.OnClick = () => world.ToggleInputMode<RepairOrderGenerator>();
+
 				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
 					"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
@@ -114,7 +125,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "onExit", () => ingameRoot.IsVisible = () => true }
 				});
 			};
-			
+
 			var cheatsButton = ingameRoot.GetWidget<ButtonWidget>("CHEATS_BUTTON");
 			cheatsButton.OnClick = () =>
 			{

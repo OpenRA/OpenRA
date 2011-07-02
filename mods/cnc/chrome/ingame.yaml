@@ -102,16 +102,16 @@ Container@INGAME_ROOT:
 							Height:25
 							Text:Opt
 							Font:Bold
-						Button@SELL:
-							Id:SELL
+						Button@SELL_BUTTON:
+							Id:SELL_BUTTON
 							X:80
 							Y:0-24
 							Width:35
 							Height:25
 							Text:$
 							Font:Bold
-						Button@REPAIR:
-							Id:SELL
+						Button@REPAIR_BUTTON:
+							Id:REPAIR_BUTTON
 							X:120
 							Y:0-24
 							Width:35

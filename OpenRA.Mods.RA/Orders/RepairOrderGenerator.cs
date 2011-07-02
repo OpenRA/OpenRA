@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	class RepairOrderGenerator : IOrderGenerator
+	public class RepairOrderGenerator : IOrderGenerator
 	{
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
