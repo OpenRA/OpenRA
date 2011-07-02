@@ -94,7 +94,8 @@ World:
 	Country@nod:
 		Name: Nod
 		Race: nod
-#	ChooseBuildTabOnSelect:
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
 	ResourceLayer:
 	ResourceType@green-tib:

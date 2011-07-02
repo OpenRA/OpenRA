@@ -212,5 +212,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			return (leftPressed || rightPressed);
 		}
+
+		public void SelectQueue(ProductionQueue queue)
+		{
+			QueueType = queue.Info.Group;
+			Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget)
+					.CurrentQueue = queue;
+		}
 	}
 }
