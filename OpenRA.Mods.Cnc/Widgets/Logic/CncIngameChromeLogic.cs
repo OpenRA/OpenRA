@@ -52,20 +52,20 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (button.IsDisabled())
 					return true;
 
-				if (queueTabs.QueueType == group)
+				if (queueTabs.QueueGroup == group)
 					queueTabs.SelectNextTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 				else
-					queueTabs.QueueType = group;
+					queueTabs.QueueGroup = group;
 
 				return true;
 			};
 
 			button.OnKeyPress = e =>
 			{
-				if (queueTabs.QueueType == group)
+				if (queueTabs.QueueGroup == group)
 					queueTabs.SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
 				else
-					queueTabs.QueueType = group;
+					queueTabs.QueueGroup = group;
 			};
 		}
 		
