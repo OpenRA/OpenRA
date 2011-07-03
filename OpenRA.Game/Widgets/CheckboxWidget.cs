@@ -49,7 +49,7 @@ namespace OpenRA.Widgets
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
 			var state = disabled ? "checkbox-disabled" : 
 						Depressed && HasPressedState ? "checkbox-pressed" : 
-						RenderBounds.Contains(Viewport.LastMousePos) ? "checkbox-hover" : 
+						Widget.MouseOverWidget == this ? "checkbox-hover" : 
 						"checkbox";
 			
 			WidgetUtils.DrawPanel(state, check);

@@ -75,20 +75,22 @@ namespace OpenRA.Widgets
 			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
 			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
-			
+
+			var upHover = Widget.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
+			var upDisabled = thumbHeight == 0 || ListOffset >= 0;
+
+			var downHover = Widget.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
+			var downDisabled = thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight;
+
+			var thumbHover = Widget.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
-			ButtonWidget.DrawBackground("button", upButtonRect, (thumbHeight == 0 || ListOffset >= 0), 
-			                            UpPressed, upButtonRect.Contains(Viewport.LastMousePos));
-			ButtonWidget.DrawBackground("button", downButtonRect, (thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight), 
-			                            DownPressed, downButtonRect.Contains(Viewport.LastMousePos));
+			ButtonWidget.DrawBackground("button", upButtonRect, upDisabled, UpPressed, upHover);
+			ButtonWidget.DrawBackground("button", downButtonRect, downDisabled, DownPressed, downHover);
 			
 			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, (Focused && thumbRect.Contains(Viewport.LastMousePos)),
-				                            thumbRect.Contains(Viewport.LastMousePos));
+				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, Focused && thumbHover, thumbHover);
 			
-			var upDisabled = thumbHeight == 0 || ListOffset >= 0;
-			var downDisabled = thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight;
 			var upOffset = !UpPressed || upDisabled ? 4 : 4 + ButtonDepth;
 			var downOffset = !DownPressed || downDisabled ? 4 : 4 + ButtonDepth;
 			

@@ -82,6 +82,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:155
 									Font:Regular
+									IgnoreChildMouseOver: true
 									Children:
 										ColorBlock@COLORBLOCK:
 											Id:COLORBLOCK
@@ -95,6 +96,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:230
 									Font:Regular
+									IgnoreChildMouseOver: true
 									Children:
 										Image@FACTIONFLAG:
 											Id:FACTIONFLAG
@@ -260,6 +262,7 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:155
 									Font:Regular
+									IgnoreChildMouseOver: true
 									Children:
 										ColorBlock@COLORBLOCK:
 											Id:COLORBLOCK

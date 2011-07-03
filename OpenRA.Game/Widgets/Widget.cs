@@ -28,6 +28,7 @@ namespace OpenRA.Widgets
         static Widget rootWidget = new ContainerWidget();
 		static Stack<Widget> WindowList = new Stack<Widget>();
         public static Widget SelectedWidget;
+		public static Widget MouseOverWidget;
 
 		public static void CloseWindow()
         {
@@ -68,7 +69,10 @@ namespace OpenRA.Widgets
 
 		public static bool DoHandleInput(MouseInput mi)
         {
-            bool handled = false;
+            if (mi.Event == MouseInputEvent.Move)
+				MouseOverWidget = null;
+
+			bool handled = false;
             if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
                 handled = true;
 
@@ -80,6 +84,7 @@ namespace OpenRA.Widgets
                 Viewport.LastMousePos = mi.Location;
                 Viewport.TicksSinceLastMove = 0;
             }
+
             return handled;
         }
 
@@ -110,6 +115,7 @@ namespace OpenRA.Widgets
         public string Logic = null;
 		public object LogicObject { get; private set; }
         public bool Visible = true;
+		public bool IgnoreChildMouseOver;
 
         // Calculated internally
         public Rectangle Bounds;
@@ -132,6 +138,7 @@ namespace OpenRA.Widgets
             Parent = widget.Parent;
 
             IsVisible = widget.IsVisible;
+			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 
             foreach (var child in widget.Children)
                 AddChild(child.Clone());
@@ -215,6 +222,7 @@ namespace OpenRA.Widgets
 
             if (SelectedWidget != null && !SelectedWidget.LoseFocus(mi))
                 return false;
+
             SelectedWidget = this;
             return true;
         }
@@ -255,14 +263,21 @@ namespace OpenRA.Widgets
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
         public bool HandleMouseInputOuter(MouseInput mi)
         {
-            // Are we able to handle this event?
+			// Are we able to handle this event?
             if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location.X, mi.Location.Y))))
                 return false;
 
+			var oldMouseOver = MouseOverWidget;
             // Send the event to the deepest children first and bubble up if unhandled
             foreach (var child in Children.OfType<Widget>().Reverse())
                 if (child.HandleMouseInputOuter(mi))
                     return true;
+
+			if (IgnoreChildMouseOver)
+				MouseOverWidget = oldMouseOver;
+
+			if (mi.Event == MouseInputEvent.Move && MouseOverWidget == null)
+				MouseOverWidget = this;
 
             return HandleMouseInput(mi);
         }

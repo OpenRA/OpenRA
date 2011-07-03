@@ -203,7 +203,7 @@ namespace OpenRA.Widgets
 			var disabled = IsDisabled();
 			var state = disabled ? "textfield-disabled" :
 				Focused ? "textfield-focused" :
-				RenderBounds.Contains(Viewport.LastMousePos) ? "textfield-hover" :
+				Widget.MouseOverWidget == this ? "textfield-hover" :
 				"textfield";
 
 			WidgetUtils.DrawPanel(state,

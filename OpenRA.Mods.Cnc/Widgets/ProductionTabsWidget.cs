@@ -107,13 +107,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 
 			var leftDisabled = ListOffset >= 0;
+			var leftHover = Widget.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
 			var rightDisabled = ListOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth;
+			var rightHover = Widget.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel("panel-black", rb);
-			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled,
-			                            leftPressed, leftButtonRect.Contains(Viewport.LastMousePos));
-			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled,
-			                            rightPressed, rightButtonRect.Contains(Viewport.LastMousePos));
+			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover);
+			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled, rightPressed, rightHover);
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "up_pressed" : "up_arrow"),
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
@@ -126,10 +126,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
 			SpriteFont font = Game.Renderer.Fonts["TinyBold"];
 			ContentWidth = 0;
+
 			foreach (var tab in Groups[queueGroup].Tabs)
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
-				ButtonWidget.DrawBackground("button", rect, false, tab.Queue == palette.CurrentQueue, rect.Contains(Viewport.LastMousePos));
+				var hover = !leftHover && !rightHover && Widget.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
+				ButtonWidget.DrawBackground("button", rect, false, tab.Queue == palette.CurrentQueue, hover);
 				ContentWidth += TabWidth - 1;
 
 				int2 textSize = font.Measure(tab.Name);

@@ -21,6 +21,7 @@ namespace OpenRA.Widgets
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
+			IgnoreChildMouseOver = true;
 		}
 		
 		protected ScrollItemWidget(ScrollItemWidget other)
@@ -28,6 +29,7 @@ namespace OpenRA.Widgets
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
+			IgnoreChildMouseOver = true;
 		}
 		
 		public Func<bool> IsSelected = () => false;
@@ -35,7 +37,7 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var state = IsSelected() ? "scrollitem-selected" : 
-				RenderBounds.Contains(Viewport.LastMousePos) ? "scrollitem-hover" : 
+				Widget.MouseOverWidget == this ? "scrollitem-hover" : 
 				null;
 			
 			if (state != null)

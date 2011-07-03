@@ -46,6 +46,7 @@ Container@SETTINGS_PANEL:
 					Y:40
 					Width:80
 					Height:25
+					IgnoreChildMouseOver: true
 					Children:
 						ColorBlock@COLORBLOCK:
 							Id:COLORBLOCK
