@@ -33,7 +33,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public readonly int Columns = 3;
 		public readonly string TabClick = "button.aud";
+		public readonly string TooltipContainer;
+		public readonly string TooltipTemplate;
+		public string TooltipActor { get; private set; }
 
+		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
 		public ProductionQueue CurrentQueue
 		{
@@ -62,7 +66,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-						
+			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
+
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			clock = new Animation("clock");
@@ -83,12 +89,36 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (CurrentQueue != null)
 				RefreshIcons();
 		}
-		
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null)
+					return;
+
+			var panel = Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "palette", this }});
+			tooltipContainer.Value.SetTooltip(panel);
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{			
+			if (mi.Event == MouseInputEvent.Move)
+			{
+				var hover = Icons.Where(i => i.Key.Contains(mi.Location))
+					.Select(i => i.Value).FirstOrDefault();
+
+				TooltipActor = hover != null ? hover.Name : null;
+				return false;
+			}
+
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
-			
+
 			var clicked = Icons.Where(i => i.Key.Contains(mi.Location))
 				.Select(i => i.Value).FirstOrDefault();
 			

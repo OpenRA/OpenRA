@@ -24,7 +24,6 @@ Container@INGAME_ROOT:
 			Width:140
 			Height:35
 			Text:Cheats
-		WorldTooltip:
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:250
@@ -180,40 +179,55 @@ Container@INGAME_ROOT:
 							Width:170
 							Height:30
 							Children:
-								Button@BUILDING:
+								TooltipButton@BUILDING:
 									Id:BUILDING
 									Width:30
 									Height:30
 									Text: B
 									Key: y
-								Button@DEFENSE:
+									TooltipText: Buildings
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: BUTTON_TOOLTIP
+								TooltipButton@DEFENSE:
 									Id:DEFENSE
 									X:35
 									Width:30
 									Height:30
 									Text: D
 									Key: u
-								Button@INFANTRY:
+									TooltipText: Defense
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: BUTTON_TOOLTIP
+								TooltipButton@INFANTRY:
 									Id:INFANTRY
 									X:70
 									Width:30
 									Height:30
 									Text: I
 									Key: i
-								Button@VEHICLE:
+									TooltipText: Infantry
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: BUTTON_TOOLTIP
+								TooltipButton@VEHICLE:
 									Id:VEHICLE
 									X:105
 									Width:30
 									Height:30
 									Text: V
 									Key: o
-								Button@AIRCRAFT:
+									TooltipText: Vehicles
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: BUTTON_TOOLTIP
+								TooltipButton@AIRCRAFT:
 									Id:AIRCRAFT
 									X:140
 									Width:30
 									Height:30
 									Text: H
 									Key: p
+									TooltipText: Aircraft
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: BUTTON_TOOLTIP
 				ProductionTabs:
 					Id:PRODUCTION_TABS
 					PaletteWidget:PRODUCTION_PALETTE
@@ -226,6 +240,11 @@ Container@INGAME_ROOT:
 					X:WINDOW_RIGHT - 204
 					Y:287
 					TabClick: button.aud
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: PRODUCTION_TOOLTIP
+		TooltipContainer:
+			Id:TOOLTIP_CONTAINER
+
 Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT

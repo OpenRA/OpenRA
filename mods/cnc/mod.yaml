@@ -80,6 +80,7 @@ ChromeLayout:
 	mods/cnc/chrome/cheats.yaml
 	mods/cnc/chrome/dropdowns.yaml
 	mods/cnc/chrome/objectives.yaml
+	mods/cnc/chrome/tooltips.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml

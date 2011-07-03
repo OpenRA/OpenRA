@@ -69,7 +69,9 @@ namespace OpenRA.Widgets
 
 		public static bool DoHandleInput(MouseInput mi)
         {
-            if (mi.Event == MouseInputEvent.Move)
+            var wasMouseOver = MouseOverWidget;
+
+			if (mi.Event == MouseInputEvent.Move)
 				MouseOverWidget = null;
 
 			bool handled = false;
@@ -84,6 +86,15 @@ namespace OpenRA.Widgets
                 Viewport.LastMousePos = mi.Location;
                 Viewport.TicksSinceLastMove = 0;
             }
+
+			if (wasMouseOver != MouseOverWidget)
+			{
+				if (wasMouseOver != null)
+					wasMouseOver.MouseExited();
+
+				if (MouseOverWidget != null)
+					MouseOverWidget.MouseEntered();
+			}
 
             return handled;
         }
@@ -268,6 +279,8 @@ namespace OpenRA.Widgets
             return EventBounds.Contains(pos) ? GetCursor(pos) : null;
         }
 
+		public virtual void MouseEntered() {}
+		public virtual void MouseExited() {}
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
         public bool HandleMouseInputOuter(MouseInput mi)
         {

@@ -1,0 +1,36 @@
+Background@PRODUCTION_TOOLTIP:
+	Id:PRODUCTION_TOOLTIP
+	Logic:ProductionTooltipLogic
+	Background:panel-black
+	Width:100
+	Height:30
+	Children:
+		Label@NAME:
+			Id:NAME
+			X:5
+			Y:5
+			Width:PARENT_RIGHT-10
+			Height:PARENT_BOTTOM-10
+			Font:Bold
+Background@BUTTON_TOOLTIP:
+	Id:BUTTON_TOOLTIP
+	Logic:ButtonTooltipLogic
+	Background:panel-black
+	Width:100
+	Height:30
+	Children:
+		Label@LABEL:
+			Id:LABEL
+			X:5
+			Y:5
+			Width:PARENT_RIGHT-10
+			Height:PARENT_BOTTOM-10
+			Font:Bold
+		Label@HOTKEY:
+			Id:HOTKEY
+			X:PARENT_RIGHT-15
+			Y:5
+			Color:255,255,0
+			Width:PARENT_RIGHT-10
+			Height:PARENT_BOTTOM-10
+			Font:Bold
