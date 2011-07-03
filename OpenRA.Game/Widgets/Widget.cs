@@ -41,7 +41,6 @@ namespace OpenRA.Widgets
         public Func<MouseInput, bool> OnMouseDown = mi => false;
         public Func<MouseInput, bool> OnMouseUp = mi => false;
         public Action<MouseInput> OnMouseMove = mi => { };
-        public Func<KeyInput, bool> OnKeyPress = e => false;
 
         public Func<bool> IsVisible;
 
@@ -70,7 +69,6 @@ namespace OpenRA.Widgets
             OnMouseDown = widget.OnMouseDown;
             OnMouseUp = widget.OnMouseUp;
             OnMouseMove = widget.OnMouseMove;
-            OnKeyPress = widget.OnKeyPress;
 
             IsVisible = widget.IsVisible;
 
@@ -251,9 +249,6 @@ namespace OpenRA.Widgets
 
             // Do any widgety behavior (enter text etc)
             var handled = HandleKeyPressInner(e);
-
-			// Apply any special logic added by event handlers; they return true if they caught the input
-            if (OnKeyPress(e)) return true;
 
             return handled;
         }

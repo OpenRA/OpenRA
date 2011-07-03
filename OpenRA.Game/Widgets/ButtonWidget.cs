@@ -25,12 +25,14 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
 		public Action OnClick = () => {};
+		public Action<KeyInput> OnKeyPress = _ => {};
 		
 		public ButtonWidget()
 			: base()
 		{
 			GetText = () => { return Text; };
 			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
+			OnKeyPress = _ => OnClick();
 		}
 
 		protected ButtonWidget(ButtonWidget widget)
@@ -42,6 +44,7 @@ namespace OpenRA.Widgets
 			VisualHeight = widget.VisualHeight;
 			GetText = widget.GetText;
 			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
+			OnKeyPress = _ => OnClick();
 		}
 
 		public override bool LoseFocus(MouseInput mi)
@@ -52,11 +55,12 @@ namespace OpenRA.Widgets
 		
 		public override bool HandleKeyPressInner(KeyInput e)
 		{
-			if (e.KeyName != Key || e.Modifiers != Modifiers.None || e.Event != KeyInputEvent.Down)
+			if (e.KeyName != Key || e.Event != KeyInputEvent.Down)
 				return false;
 			
 			if (!IsDisabled())
-				OnClick();
+				OnKeyPress(e);
+
 			return true;
 		}
 		
