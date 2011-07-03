@@ -19,7 +19,89 @@ namespace OpenRA.Widgets
 {
     public abstract class Widget
     {
-        // Info defined in YAML
+        public static Widget RootWidget
+        {
+            get { return rootWidget; }
+            set { rootWidget = value; }
+        }
+
+        static Widget rootWidget = new ContainerWidget();
+		static Stack<Widget> WindowList = new Stack<Widget>();
+        public static Widget SelectedWidget;
+
+		public static bool HandleInput(MouseInput mi)
+        {
+            bool handled = false;
+            if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (!handled && RootWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (mi.Event == MouseInputEvent.Move)
+            {
+                Viewport.LastMousePos = mi.Location;
+                Viewport.TicksSinceLastMove = 0;
+            }
+            return handled;
+        }
+
+		public static bool HandleKeyPress(KeyInput e)
+        {
+            if (SelectedWidget != null)
+                return SelectedWidget.HandleKeyPressOuter(e);
+
+            if (RootWidget.HandleKeyPressOuter(e))
+                return true;
+            return false;
+        }
+
+		public static void CloseWindow()
+        {
+            if (WindowList.Count > 0)
+				RootWidget.RemoveChild(WindowList.Pop());
+            if (WindowList.Count > 0)
+                rootWidget.AddChild(WindowList.Peek());
+        }
+
+        public static Widget OpenWindow(string id)
+        {
+            return OpenWindow(id, new WidgetArgs());
+        }
+
+        public static Widget OpenWindow(string id, WidgetArgs args)
+        {
+            var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
+            if (WindowList.Count > 0)
+                rootWidget.RemoveChild(WindowList.Peek());
+            WindowList.Push(window);
+            return window;
+        }
+
+		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
+        {
+            return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
+        }
+
+        public static void DoTick()
+        {
+            RootWidget.Tick();
+        }
+
+        public static void DoDraw()
+        {
+            RootWidget.Draw();
+        }
+
+		public static void ResetAll()
+		{
+			RootWidget.RemoveChildren();
+
+			while (Widget.WindowList.Count > 0)
+				Widget.CloseWindow();
+		}
+
+		// Info defined in YAML
         public string Id = null;
         public string X = "0";
         public string Y = "0";
@@ -29,27 +111,13 @@ namespace OpenRA.Widgets
 		public object LogicObject { get; private set; }
         public bool Visible = true;
 
-        protected readonly List<Widget> Children = new List<Widget>();
-
         // Calculated internally
         public Rectangle Bounds;
         public Widget Parent = null;
-
-        static Stack<Widget> WindowList = new Stack<Widget>();
-
-        // Common Funcs that most widgets will want
-        public Func<MouseInput, bool> OnMouseUp = mi => false;
-
-        public Func<bool> IsVisible;
-
+		public Func<bool> IsVisible;
         public Widget() { IsVisible = () => Visible; }
-
-        public static Widget RootWidget
-        {
-            get { return rootWidget; }
-            set { rootWidget = value; }
-        }
-        static Widget rootWidget = new ContainerWidget();
+        protected readonly List<Widget> Children = new List<Widget>();
+		public Func<MouseInput,bool> OnMouseUp = _ => false;
 
         public Widget(Widget widget)
         {
@@ -142,7 +210,6 @@ namespace OpenRA.Widgets
                 .Aggregate(EventBounds, Rectangle.Union);
         }
 
-        public static Widget SelectedWidget;
         public bool Focused { get { return SelectedWidget == this; } }
         public virtual bool TakeFocus(MouseInput mi)
         {
@@ -188,23 +255,6 @@ namespace OpenRA.Widgets
             return EventBounds.Contains(pos) ? GetCursor(pos) : null;
         }
 
-        public static bool HandleInput(MouseInput mi)
-        {
-            bool handled = false;
-            if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
-                handled = true;
-
-            if (!handled && RootWidget.HandleMouseInputOuter(mi))
-                handled = true;
-
-            if (mi.Event == MouseInputEvent.Move)
-            {
-                Viewport.LastMousePos = mi.Location;
-                Viewport.TicksSinceLastMove = 0;
-            }
-            return handled;
-        }
-
         public bool HandleMouseInputOuter(MouseInput mi)
         {
             // Are we able to handle this event?
@@ -244,16 +294,6 @@ namespace OpenRA.Widgets
             var handled = HandleKeyPressInner(e);
 
             return handled;
-        }
-
-        public static bool HandleKeyPress(KeyInput e)
-        {
-            if (SelectedWidget != null)
-                return SelectedWidget.HandleKeyPressOuter(e);
-
-            if (RootWidget.HandleKeyPressOuter(e))
-                return true;
-            return false;
         }
 
         public abstract void DrawInner();
@@ -318,51 +358,6 @@ namespace OpenRA.Widgets
             var widget = GetWidget(id);
             return (widget != null) ? (T)widget : null;
         }
-
-        public static void CloseWindow()
-        {
-            if (WindowList.Count > 0)
-				RootWidget.RemoveChild(WindowList.Pop());
-            if (WindowList.Count > 0)
-                rootWidget.AddChild(WindowList.Peek());
-        }
-
-        public static Widget OpenWindow(string id)
-        {
-            return OpenWindow(id, new WidgetArgs());
-        }
-
-        public static Widget OpenWindow(string id, WidgetArgs args)
-        {
-            var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
-            if (WindowList.Count > 0)
-                rootWidget.RemoveChild(WindowList.Peek());
-            WindowList.Push(window);
-            return window;
-        }
-		
-		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
-        {
-            return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
-        }
-
-        public static void DoTick()
-        {
-            RootWidget.Tick();
-        }
-
-        public static void DoDraw()
-        {
-            RootWidget.Draw();
-        }
-		
-		public static void ResetAll()
-		{
-			RootWidget.RemoveChildren();
-			
-			while (Widget.WindowList.Count > 0)
-				Widget.CloseWindow();
-		}
     }
 
     public class ContainerWidget : Widget
