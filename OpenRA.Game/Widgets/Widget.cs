@@ -159,7 +159,15 @@ namespace OpenRA.Widgets
         }
 
         public virtual int2 ChildOrigin { get { return RenderOrigin; } }
-        public virtual Rectangle RenderBounds { get { return new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height); } }
+
+		public virtual Rectangle RenderBounds
+		{
+			get
+			{
+				var ro = RenderOrigin;
+				return new Rectangle(ro.X, ro.Y, Bounds.Width, Bounds.Height);
+			}
+		}
 
         public virtual void Initialize(WidgetArgs args)
         {
