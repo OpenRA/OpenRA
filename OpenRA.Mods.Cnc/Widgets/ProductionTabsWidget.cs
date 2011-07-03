@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var rb = RenderBounds;
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
@@ -180,7 +180,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (leftPressed) Scroll(1);
 			if (rightPressed) Scroll(-1);
-			base.Tick();
 		}
 
 		public override bool LoseFocus(MouseInput mi)
@@ -230,7 +229,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return (leftPressed || rightPressed);
 		}
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event != KeyInputEvent.Down) return false;
 			if (e.KeyName == "tab")

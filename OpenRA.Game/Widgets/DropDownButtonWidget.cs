@@ -30,9 +30,9 @@ namespace OpenRA.Widgets
 		{
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
-			base.DrawInner();
+			base.Draw();
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
 			var image = ChromeProvider.GetImage("scrollbar", IsDisabled() ? "down_pressed" : "down_arrow");
@@ -130,7 +130,6 @@ namespace OpenRA.Widgets
 			return true;
         }
 
-        public override void DrawInner() { }
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new MaskWidget(this); }
     }

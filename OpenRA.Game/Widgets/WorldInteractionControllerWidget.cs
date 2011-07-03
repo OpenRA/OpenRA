@@ -31,7 +31,7 @@ namespace OpenRA.Widgets
 			this.worldRenderer = worldRenderer;
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var selbox = SelectionBox;
             if (selbox == null)
@@ -128,7 +128,7 @@ namespace OpenRA.Widgets
 			} );
 		}
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{

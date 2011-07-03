@@ -76,7 +76,7 @@ namespace OpenRA.Widgets
 			overlaySprite.sheet.Texture.SetData(overlay);
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (video == null)
 				return;
@@ -104,7 +104,7 @@ namespace OpenRA.Widgets
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
 		}
 		
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{

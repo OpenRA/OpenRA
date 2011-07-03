@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 			Percentage = widget.Percentage;
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var rb = RenderBounds;
 			WidgetUtils.DrawPanel("progressbar-bg", rb);

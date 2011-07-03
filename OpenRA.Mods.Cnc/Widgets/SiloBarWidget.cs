@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			float scaleBy = 100;
 			var max = Math.Max(pr.OreCapacity, pr.Ore);

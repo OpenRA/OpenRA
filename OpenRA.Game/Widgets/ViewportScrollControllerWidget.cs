@@ -32,7 +32,6 @@ namespace OpenRA.Widgets
 
 		public ViewportScrollControllerWidget() : base() { }
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
-		public override void DrawInner() {}
 		
 		public override bool HandleMouseInput(MouseInput mi)
 		{									
@@ -114,7 +113,7 @@ namespace OpenRA.Widgets
 			return base.LoseFocus(mi);
 		}
 		
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{			
 			switch (e.KeyName)
 			{

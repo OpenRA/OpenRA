@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			pm = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			float powerScaleBy = 100;
 			var maxPower = Math.Max(pm.PowerProvided, pm.PowerDrained);

@@ -174,7 +174,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (!IsVisible())
 				return;

@@ -37,7 +37,7 @@ namespace OpenRA
 		{
 			Sync.CheckSyncUnchanged( world, () =>
 			{
-				Widget.HandleKeyPress( input );
+				Widget.DoHandleKeyPress( input );
 			} );
 		}
 
@@ -45,7 +45,7 @@ namespace OpenRA
 		{
 			Sync.CheckSyncUnchanged( world, () =>
 			{
-				Widget.HandleInput( input );
+				Widget.DoHandleInput( input );
 			} );
 		}
 	}

@@ -104,7 +104,7 @@ namespace OpenRA.Widgets
 			return minIndex;
 		}
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (IsDisabled())
 				return false;
@@ -189,11 +189,9 @@ namespace OpenRA.Widgets
 				blinkCycle = 20;
 				showCursor ^= true;
 			}
-
-			base.Tick();
 		}
 	
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var apparentText = GetApparentText();
 			var font = Game.Renderer.Fonts[Font];

@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 			HasPressedState = other.HasPressedState;
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var disabled = IsDisabled();
 			var font = Game.Renderer.Fonts[Font];

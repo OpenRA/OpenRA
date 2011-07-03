@@ -82,8 +82,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			if (CurrentQueue != null)
 				RefreshIcons();
-
-			base.Tick();
 		}
 		
 		public override bool HandleMouseInput(MouseInput mi)
@@ -171,7 +169,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			eventBounds = Icons.Keys.Aggregate(Rectangle.Union);
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (CurrentQueue == null)
 				return;

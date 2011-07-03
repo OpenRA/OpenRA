@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			this.world = widget.world;
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var state = Depressed ? "pressed" : 
 						RenderBounds.Contains(Viewport.LastMousePos) ? "hover" : "normal";

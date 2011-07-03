@@ -29,33 +29,6 @@ namespace OpenRA.Widgets
 		static Stack<Widget> WindowList = new Stack<Widget>();
         public static Widget SelectedWidget;
 
-		public static bool HandleInput(MouseInput mi)
-        {
-            bool handled = false;
-            if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
-                handled = true;
-
-            if (!handled && RootWidget.HandleMouseInputOuter(mi))
-                handled = true;
-
-            if (mi.Event == MouseInputEvent.Move)
-            {
-                Viewport.LastMousePos = mi.Location;
-                Viewport.TicksSinceLastMove = 0;
-            }
-            return handled;
-        }
-
-		public static bool HandleKeyPress(KeyInput e)
-        {
-            if (SelectedWidget != null)
-                return SelectedWidget.HandleKeyPressOuter(e);
-
-            if (RootWidget.HandleKeyPressOuter(e))
-                return true;
-            return false;
-        }
-
 		public static void CloseWindow()
         {
             if (WindowList.Count > 0)
@@ -85,12 +58,39 @@ namespace OpenRA.Widgets
 
         public static void DoTick()
         {
-            RootWidget.Tick();
+            RootWidget.TickOuter();
         }
 
         public static void DoDraw()
         {
-            RootWidget.Draw();
+            RootWidget.DrawOuter();
+        }
+
+		public static bool DoHandleInput(MouseInput mi)
+        {
+            bool handled = false;
+            if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (!handled && RootWidget.HandleMouseInputOuter(mi))
+                handled = true;
+
+            if (mi.Event == MouseInputEvent.Move)
+            {
+                Viewport.LastMousePos = mi.Location;
+                Viewport.TicksSinceLastMove = 0;
+            }
+            return handled;
+        }
+
+		public static bool DoHandleKeyPress(KeyInput e)
+        {
+            if (SelectedWidget != null)
+                return SelectedWidget.HandleKeyPressOuter(e);
+
+            if (RootWidget.HandleKeyPressOuter(e))
+                return true;
+            return false;
         }
 
 		public static void ResetAll()
@@ -252,6 +252,7 @@ namespace OpenRA.Widgets
             return EventBounds.Contains(pos) ? GetCursor(pos) : null;
         }
 
+		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
         public bool HandleMouseInputOuter(MouseInput mi)
         {
             // Are we able to handle this event?
@@ -266,8 +267,7 @@ namespace OpenRA.Widgets
             return HandleMouseInput(mi);
         }
 
-        public virtual bool HandleMouseInput(MouseInput mi) { return false; }
-        public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
+        public virtual bool HandleKeyPress(KeyInput e) { return false; }
         public virtual bool HandleKeyPressOuter(KeyInput e)
         {
             if (!IsVisible())
@@ -279,28 +279,31 @@ namespace OpenRA.Widgets
                     return true;
 
             // Do any widgety behavior (enter text etc)
-            var handled = HandleKeyPressInner(e);
+            var handled = HandleKeyPress(e);
 
             return handled;
         }
 
-        public abstract void DrawInner();
-
-        public virtual void Draw()
+        public virtual void Draw() {}
+        public virtual void DrawOuter()
         {
             if (IsVisible())
             {
-                DrawInner();
+                Draw();
                 foreach (var child in Children)
-                    child.Draw();
+                    child.DrawOuter();
             }
         }
 
-        public virtual void Tick()
+		public virtual void Tick() {}
+        public virtual void TickOuter()
         {
             if (IsVisible())
+			{
+				Tick();
                 foreach (var child in Children)
-                    child.Tick();
+                    child.TickOuter();
+			}
         }
 
         public virtual void AddChild(Widget child)
@@ -308,25 +311,25 @@ namespace OpenRA.Widgets
             child.Parent = this;
             Children.Add(child);
         }
-		
+
         public virtual void RemoveChild(Widget child)
 		{
 			Children.Remove(child);
 			child.Removed();
 		}
-        
+
 		public virtual void RemoveChildren()
 		{
 			while (Children.Count > 0)
 				RemoveChild(Children[Children.Count-1]);
 		}
-		
+
 		public virtual void Removed()
 		{
 			foreach (var c in Children.OfType<Widget>().Reverse())
 				c.Removed();
 		}
-		
+
         public Widget GetWidget(string id)
         {
             if (this.Id == id)
@@ -354,7 +357,6 @@ namespace OpenRA.Widgets
         public ContainerWidget(ContainerWidget other)
             : base(other) { }
 
-        public override void DrawInner() { }
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new ContainerWidget(this); }
     }

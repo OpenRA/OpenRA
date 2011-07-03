@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 			this.orderManager = orderManager;
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (composing)
 			{
@@ -51,7 +51,7 @@ namespace OpenRA.Widgets
 			return composing ? false : base.LoseFocus(mi);
 		}
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
 			
@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 				return false;
 			}
 
-			return base.HandleKeyPressInner(e);
+			return false;
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null)
 				return;

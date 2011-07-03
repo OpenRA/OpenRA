@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}		
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			buttons.Clear();
 

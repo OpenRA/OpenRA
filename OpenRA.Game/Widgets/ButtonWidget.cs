@@ -59,7 +59,7 @@ namespace OpenRA.Widgets
 			return base.LoseFocus(mi);
 		}
 		
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.KeyName != Key || e.Event != KeyInputEvent.Down)
 				return false;
@@ -107,7 +107,7 @@ namespace OpenRA.Widgets
 		public override int2 ChildOrigin { get { return RenderOrigin + 
 				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
 		
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var rb = RenderBounds;
 			var disabled = IsDisabled();

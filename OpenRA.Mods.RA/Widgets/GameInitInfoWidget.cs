@@ -21,7 +21,5 @@ namespace OpenRA.Mods.RA.Widgets
 		public string InstallMode = "";
 		
 		public string ResolvedPackagePath { get { return PackagePath.Replace("^", Platform.SupportDir); } }
-
-		public override void DrawInner() {}
 	}
 }

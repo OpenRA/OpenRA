@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			eventBounds = (Icons.Count == 0) ? Rectangle.Empty : Icons.Keys.Aggregate(Rectangle.Union);
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var overlayFont = Game.Renderer.Fonts["TinyBold"];
 			var holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
@@ -101,7 +101,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Tick ()
 		{
-			base.Tick();
 			RefreshIcons();
 		}
 

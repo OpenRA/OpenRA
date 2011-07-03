@@ -101,8 +101,6 @@ namespace OpenRA.Mods.RA.Widgets
 				CurrentQueue = VisibleQueues.FirstOrDefault();
 			
 			TickPaletteAnimation(world);
-			
-			base.Tick();
 		}
 		
 		void TickPaletteAnimation(World world)
@@ -145,7 +143,7 @@ namespace OpenRA.Mods.RA.Widgets
 			CurrentQueue = queue;
 		}
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
 			if (e.KeyName == "tab")
@@ -175,7 +173,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 		
-		public override void DrawInner()
+		public override void Draw()
 		{	
 			if (!IsVisible()) return;
 			// todo: fix

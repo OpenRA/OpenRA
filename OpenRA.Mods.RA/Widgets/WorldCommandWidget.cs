@@ -35,11 +35,9 @@ namespace OpenRA.Mods.RA.Widgets
 			OrderManager = orderManager;
 		}
 
-		public override void DrawInner() { }
-
 		public override string GetCursor(int2 pos) { return null; }
 
-		public override bool HandleKeyPressInner(KeyInput e)
+		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (World == null) return false;
 			if (World.LocalPlayer == null) return false;

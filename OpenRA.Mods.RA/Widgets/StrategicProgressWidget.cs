@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets
 				b.Stances[a] == Stance.Ally;
 		}
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			if (!Initialised)
 				Init();

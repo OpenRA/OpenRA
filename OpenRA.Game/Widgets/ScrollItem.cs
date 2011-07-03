@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 		
 		public Func<bool> IsSelected = () => false;
 
-		public override void DrawInner()
+		public override void Draw()
 		{
 			var state = IsSelected() ? "scrollitem-selected" : 
 				RenderBounds.Contains(Viewport.LastMousePos) ? "scrollitem-hover" : 
