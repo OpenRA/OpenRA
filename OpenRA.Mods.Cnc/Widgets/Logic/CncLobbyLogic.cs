@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 		
-		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
+		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
 			{
@@ -322,10 +322,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 			
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-			return true;
 		}
 		
-		bool ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
@@ -340,10 +339,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 			
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
-			return true;
 		}
 				
-		bool ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
@@ -356,10 +354,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count()+1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-			return true;
 		}
 
-		bool ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
@@ -376,10 +373,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count() + 1, i => i).Except(taken).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-			return true;
 		}
 
-		bool ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
+		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
@@ -402,7 +398,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			});
 			
 			color.AttachPanel(colorChooser);
-			return true;
 		}
 		
 		void UpdatePlayerList()
@@ -460,7 +455,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						name.GetText = () => client.Name;
-						name.OnMouseDown = _ => name.IsDisabled() ? true : ShowSlotDropDown(name, slot, client);
+						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
 					}
 					else
 					{
@@ -488,14 +483,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor || ready;
-					color.OnMouseDown = _ => color.IsDisabled() ? true : ShowColorDropDown(color, client);
+					color.OnMouseDown = _ => ShowColorDropDown(color, client);
 					
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => slot.LockRace || ready;
-					faction.OnMouseDown = _ => faction.IsDisabled() ? true : ShowRaceDropDown(faction, client);
+					faction.OnMouseDown = _ => ShowRaceDropDown(faction, client);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];
@@ -505,12 +500,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
 					team.IsDisabled = () => slot.LockTeam || ready;
-					team.OnMouseDown = _ => team.IsDisabled() ? true : ShowTeamDropDown(team, client);
+					team.OnMouseDown = _ => ShowTeamDropDown(team, client);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
 					var spawn = template.GetWidget<DropDownButtonWidget>("SPAWN");
 					spawn.IsDisabled = () => slot.LockSpawn || ready;
-					spawn.OnMouseDown = _ => spawn.IsDisabled() ? true : ShowSpawnDropDown(spawn, client);
+					spawn.OnMouseDown = _ => ShowSpawnDropDown(spawn, client);
 					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
 					if (client.Bot == null)
@@ -589,7 +584,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
-					color.OnMouseDown = _ => color.IsDisabled() ? true : ShowColorDropDown(color, client);
+					color.OnMouseDown = _ => ShowColorDropDown(color, client);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);

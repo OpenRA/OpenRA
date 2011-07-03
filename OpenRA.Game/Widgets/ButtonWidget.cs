@@ -24,8 +24,7 @@ namespace OpenRA.Widgets
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
-		public Func<MouseInput, bool> OnMouseDown = mi => false;
-
+		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action OnClick = () => {};
 		public Action<KeyInput> OnKeyPress = _ => {};
 		
@@ -88,8 +87,11 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down)
 			{
 				// OnMouseDown returns false if the button shouldn't be pressed
-				if (!OnMouseDown(mi))
+				if (!IsDisabled())
+				{
+					OnMouseDown(mi);
 					Depressed = true;
+				}
 				else
 					LoseFocus(mi);
 			}

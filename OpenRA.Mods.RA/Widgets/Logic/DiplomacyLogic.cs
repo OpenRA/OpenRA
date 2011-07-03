@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					GetText = () => world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
-				myStance.OnMouseDown = mi => { ShowDropDown(pp, myStance); return true; };
+				myStance.OnMouseDown = mi => ShowDropDown(pp, myStance);
 
 				bg.AddChild(myStance);
 				controls.Add(myStance);

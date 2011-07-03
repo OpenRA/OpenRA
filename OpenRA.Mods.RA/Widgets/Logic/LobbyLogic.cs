@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 		
-		bool ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
+		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
 			{
@@ -253,10 +253,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-			return true;
 		}
 		
-		bool ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
@@ -271,10 +270,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
-			return true;
 		}
 				
-		bool ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
+		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
@@ -287,10 +285,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			var options = Graphics.Util.MakeArray(Map.PlayerCount, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-			return true;
 		}
 		
-		bool ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
+		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
@@ -319,7 +316,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			color.AttachPanel(colorChooser);
-			return true;
 		}
 		
 		void UpdatePlayerList()
@@ -383,14 +379,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => s.LockColor;
-					color.OnMouseDown = _ => { if (s.LockColor) return true; return ShowColorDropDown(color, c); };
+					color.OnMouseDown = _ => ShowColorDropDown(color, c);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => s.LockRace;
-					faction.OnMouseDown = _ => { if (s.LockRace) return true; return ShowRaceDropDown(faction, c); };
+					faction.OnMouseDown = _ => ShowRaceDropDown(faction, c);
 					
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
@@ -400,7 +396,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
 					team.IsDisabled = () => s.LockTeam;
-					team.OnMouseDown = _ => { if (s.LockTeam) return true; return ShowTeamDropDown(team, c); };
+					team.OnMouseDown = _ => ShowTeamDropDown(team, c);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");

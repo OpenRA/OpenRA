@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			});
 		}
 		
-		static bool ShowModsDropDown(DropDownButtonWidget dropdown)
+		static void ShowModsDropDown(DropDownButtonWidget dropdown)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (m, itemTemplate) =>
 			{
@@ -86,9 +86,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, Mod.AllMods.Keys.ToList(), setupItem);
-			return true;
 		}
-		
 	}
-	
 }

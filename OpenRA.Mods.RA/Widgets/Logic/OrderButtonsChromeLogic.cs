@@ -28,14 +28,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (sell != null)
 			{
 				sell.Pressed = () => world.OrderGenerator is SellOrderGenerator;
-				sell.OnMouseDown = mi => { world.ToggleInputMode<SellOrderGenerator>(); return true; };
+				sell.OnMouseDown = mi => world.ToggleInputMode<SellOrderGenerator>();
 			}
 			
 			var powerdown = moneybin.GetWidget<OrderButtonWidget>("POWER_DOWN");
 			if (powerdown != null)
 			{
 				powerdown.Pressed = () => world.OrderGenerator is PowerDownOrderGenerator;
-				powerdown.OnMouseDown = mi => { world.ToggleInputMode<PowerDownOrderGenerator>(); return true; };
+				powerdown.OnMouseDown = mi => world.ToggleInputMode<PowerDownOrderGenerator>();
 			}
 			
 			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				repair.Enabled = () => { return RepairOrderGenerator.PlayerIsAllowedToRepair( world ); };
 				repair.Pressed = () => world.OrderGenerator is RepairOrderGenerator;
-				repair.OnMouseDown = mi => { world.ToggleInputMode<RepairOrderGenerator>(); return true; };
+				repair.OnMouseDown = mi => world.ToggleInputMode<RepairOrderGenerator>();
 				repair.GetLongDesc = () => { return repair.Enabled() ? repair.LongDesc : repair.LongDesc + "\n\nRequires: Construction Yard"; };
 			}
 		}
