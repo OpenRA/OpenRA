@@ -40,7 +40,6 @@ namespace OpenRA.Widgets
         // Common Funcs that most widgets will want
         public Func<MouseInput, bool> OnMouseDown = mi => false;
         public Func<MouseInput, bool> OnMouseUp = mi => false;
-        public Action<MouseInput> OnMouseMove = mi => { };
 
         public Func<bool> IsVisible;
 
@@ -68,7 +67,6 @@ namespace OpenRA.Widgets
 
             OnMouseDown = widget.OnMouseDown;
             OnMouseUp = widget.OnMouseUp;
-            OnMouseMove = widget.OnMouseMove;
 
             IsVisible = widget.IsVisible;
 
@@ -230,8 +228,6 @@ namespace OpenRA.Widgets
             // Apply any special logic added by event handlers; they return true if they caught the input
             if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
             if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
-            if (mi.Event == MouseInputEvent.Move)
-                OnMouseMove(mi);
 
             return false;
         }
