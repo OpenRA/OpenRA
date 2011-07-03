@@ -19,7 +19,7 @@ Container@INGAME_ROOT:
 			Y: 40
 		Button@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
-			X:150
+			X:WINDOW_RIGHT-400
 			Y:5
 			Width:140
 			Height:35
@@ -47,8 +47,8 @@ Container@INGAME_ROOT:
 			Children:
 				Label@PERF_TEXT:
 					Id:PERF_TEXT
-					X:10
-					Y:45
+					X:85
+					Y:10
 					Width:170
 					Height:40
 					Contrast:true
@@ -82,9 +82,9 @@ Container@INGAME_ROOT:
 							Height:40
 							Align:Center
 							Font:Bold
-				SpecialPowerBin@INGAME_POWERS_BIN:
-					Id:INGAME_POWERS_BIN
-					Y:50
+				SupportPowers:
+					X:10
+					Y:10
 				Background@SIDEBAR_BACKGROUND:
 					Id:SIDEBAR_BACKGROUND
 					X:WINDOW_RIGHT - 204
