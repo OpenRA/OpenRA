@@ -38,7 +38,6 @@ namespace OpenRA.Widgets
         static Stack<Widget> WindowList = new Stack<Widget>();
 
         // Common Funcs that most widgets will want
-        public Func<MouseInput, bool> OnMouseDown = mi => false;
         public Func<MouseInput, bool> OnMouseUp = mi => false;
 
         public Func<bool> IsVisible;
@@ -65,7 +64,6 @@ namespace OpenRA.Widgets
             Bounds = widget.Bounds;
             Parent = widget.Parent;
 
-            OnMouseDown = widget.OnMouseDown;
             OnMouseUp = widget.OnMouseUp;
 
             IsVisible = widget.IsVisible;
@@ -226,7 +224,6 @@ namespace OpenRA.Widgets
         public virtual bool HandleMouseInput(MouseInput mi)
         {
             // Apply any special logic added by event handlers; they return true if they caught the input
-            if (mi.Event == MouseInputEvent.Down && OnMouseDown(mi)) return true;
             if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
 
             return false;

@@ -24,6 +24,8 @@ namespace OpenRA.Widgets
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
+		public Func<MouseInput, bool> OnMouseDown = mi => false;
+
 		public Action OnClick = () => {};
 		public Action<KeyInput> OnKeyPress = _ => {};
 		
@@ -43,6 +45,8 @@ namespace OpenRA.Widgets
 			Depressed = widget.Depressed;
 			VisualHeight = widget.VisualHeight;
 			GetText = widget.GetText;
+			OnMouseDown = widget.OnMouseDown;
+
 			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
 			OnKeyPress = _ => OnClick();
 		}

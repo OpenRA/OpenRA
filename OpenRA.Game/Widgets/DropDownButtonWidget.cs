@@ -18,7 +18,7 @@ namespace OpenRA.Widgets
 	public class DropDownButtonWidget : ButtonWidget
 	{
 		Widget panel;
-		Widget fullscreenMask;
+		MaskWidget fullscreenMask;
 		
 		public DropDownButtonWidget()
 			: base()
@@ -75,16 +75,10 @@ namespace OpenRA.Widgets
 			panel = p;
 			
 			// Mask to prevent any clicks from being sent to other widgets
-			fullscreenMask = new ContainerWidget();
+			fullscreenMask = new MaskWidget();
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
+			fullscreenMask.OnMouseDown = mi => RemovePanel();
 			Widget.RootWidget.AddChild(fullscreenMask);
-
-			fullscreenMask.OnMouseDown = mi =>
-			{
-				RemovePanel();
-				return true;
-			};
-			fullscreenMask.OnMouseUp = mi => true;
 
 			var oldBounds = panel.Bounds;
 			panel.Bounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y + Bounds.Height, oldBounds.Width, oldBounds.Height);
@@ -114,4 +108,30 @@ namespace OpenRA.Widgets
 			AttachPanel(panel);
 		}
 	}
+
+	public class MaskWidget : Widget
+    {
+       	public Action<MouseInput> OnMouseDown = _ => {};
+		public MaskWidget() : base() { }
+        public MaskWidget(MaskWidget other)
+            : base(other)
+		{
+			OnMouseDown = other.OnMouseDown;
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+        {
+            if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down)
+				OnMouseDown(mi);
+
+			return true;
+        }
+
+        public override void DrawInner() { }
+        public override string GetCursor(int2 pos) { return null; }
+        public override Widget Clone() { return new MaskWidget(this); }
+    }
 }

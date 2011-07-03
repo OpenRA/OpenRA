@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var map = mapPreview.Map();
 				if (map == null || mi.Button != MouseButton.Left
 				    || orderManager.LocalClient.State == Session.ClientState.Ready)
-					return false;
+					return;
 
 				var p = map.SpawnPoints
 					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp), i))
@@ -76,8 +76,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
 				if (p == 0 || !owned)
 					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
-				
-				return true;
 			};
 
 			mapPreview.SpawnColors = () =>

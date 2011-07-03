@@ -20,6 +20,8 @@ namespace OpenRA.Widgets
 	{
 		public Func<Map> Map = () => null;
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
+		public Action<MouseInput> OnMouseDown = _ => {};
+
 		Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 		
 		public MapPreviewWidget() : base() { }
@@ -31,6 +33,15 @@ namespace OpenRA.Widgets
 			SpawnColors = other.SpawnColors;
 		}
 		public override Widget Clone() { return new MapPreviewWidget(this); }
+
+		public override bool HandleMouseInput(MouseInput mi)
+        {
+			if (mi.Event != MouseInputEvent.Down)
+				return false;
+
+            OnMouseDown(mi);
+            return true;
+        }
 
 		public int2 ConvertToPreview(Map map, int2 point)
 		{
