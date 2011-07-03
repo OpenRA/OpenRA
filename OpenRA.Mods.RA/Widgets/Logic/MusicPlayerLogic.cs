@@ -24,10 +24,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var bg = Widget.RootWidget.GetWidget("MUSIC_MENU");
 			CurrentSong = GetNextSong();
 
-			bg.GetWidget("BUTTON_CLOSE").OnMouseUp = mi => {
+			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnMouseUp = mi => {
 				Game.Settings.Save();
 				Widget.CloseWindow();
-				return true;
 			};
 			
 			/*
@@ -40,46 +39,42 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			*/
 			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => false;
 			
-			bg.GetWidget("BUTTON_PLAY").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_PLAY").OnMouseUp = mi =>
 			{
 				if (CurrentSong == null)
-					return true;
+					return;
 				
 				Sound.PlayMusicThen(Rules.Music[CurrentSong],
-				      () => bg.GetWidget(Game.Settings.Sound.Repeat ? "BUTTON_PLAY" : "BUTTON_NEXT").OnMouseUp(new MouseInput()));
+				      () => bg.GetWidget<ButtonWidget>(Game.Settings.Sound.Repeat ? "BUTTON_PLAY" : "BUTTON_NEXT")
+				              .OnMouseUp(new MouseInput()));
 				bg.GetWidget("BUTTON_PLAY").Visible = false;
 				bg.GetWidget("BUTTON_PAUSE").Visible = true;
-
-				return true;
 			};
 			
-			bg.GetWidget("BUTTON_PAUSE").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_PAUSE").OnMouseUp = mi =>
 			{				
 				Sound.PauseMusic();
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
-				return true;
 			};
 			
-			bg.GetWidget("BUTTON_STOP").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_STOP").OnMouseUp = mi =>
 			{
 				Sound.StopMusic();
 				bg.GetWidget("BUTTON_PAUSE").Visible = false;
 				bg.GetWidget("BUTTON_PLAY").Visible = true;
-				
-				return true;
 			};
 			
-			bg.GetWidget("BUTTON_NEXT").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_NEXT").OnMouseUp = mi =>
 			{
 				CurrentSong = GetNextSong();
-				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
+				bg.GetWidget<ButtonWidget>("BUTTON_PLAY").OnMouseUp(mi);
 			};
 
-			bg.GetWidget("BUTTON_PREV").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_PREV").OnMouseUp = mi =>
 			{
 				CurrentSong = GetPrevSong();
-				return bg.GetWidget("BUTTON_PLAY").OnMouseUp(mi);
+				bg.GetWidget<ButtonWidget>("BUTTON_PLAY").OnMouseUp(mi);
 			};
 			
 			
@@ -115,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (CurrentSong == null)
 					CurrentSong = song;
 				
-				var item = ScrollItemWidget.Setup(itemTemplate, () => CurrentSong == song, () => { CurrentSong = song; bg.GetWidget("BUTTON_PLAY").OnMouseUp(new MouseInput()); });
+				var item = ScrollItemWidget.Setup(itemTemplate, () => CurrentSong == song, () => { CurrentSong = song; bg.GetWidget<ButtonWidget>("BUTTON_PLAY").OnMouseUp(new MouseInput()); });
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
 				item.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
 				ml.AddChild(item);

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
@@ -45,28 +46,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		
 		void SetupProductionGroupButton(ButtonWidget button, string group)
 		{
+			Action<bool> selectTab = reverse =>
+			{
+				if (queueTabs.QueueGroup == group)
+					queueTabs.SelectNextTab(reverse);
+				else
+					queueTabs.QueueGroup = group;
+			};
+
 			button.IsDisabled = () => queueTabs.Groups[group].Tabs.Count == 0;
-
-			button.OnMouseUp = mi =>
-			{
-				if (button.IsDisabled())
-					return true;
-
-				if (queueTabs.QueueGroup == group)
-					queueTabs.SelectNextTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-				else
-					queueTabs.QueueGroup = group;
-
-				return true;
-			};
-
-			button.OnKeyPress = e =>
-			{
-				if (queueTabs.QueueGroup == group)
-					queueTabs.SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
-				else
-					queueTabs.QueueGroup = group;
-			};
+			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
 		}
 		
 		[ObjectCreator.UseCtor]

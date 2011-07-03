@@ -25,6 +25,9 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
 		public Action<MouseInput> OnMouseDown = _ => {};
+        public Action<MouseInput> OnMouseUp = _ => {};
+
+		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};
 		public Action<KeyInput> OnKeyPress = _ => {};
 		
@@ -32,7 +35,7 @@ namespace OpenRA.Widgets
 			: base()
 		{
 			GetText = () => { return Text; };
-			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
+			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
 		}
 
@@ -46,7 +49,7 @@ namespace OpenRA.Widgets
 			GetText = widget.GetText;
 			OnMouseDown = widget.OnMouseDown;
 
-			OnMouseUp = mi => { if (!IsDisabled()) OnClick(); return true; };
+			OnMouseUp = mi => OnClick();
 			OnKeyPress = _ => OnClick();
 		}
 
@@ -75,19 +78,19 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
 
+			var disabled = IsDisabled();
 			// Only fire the onMouseUp event if we successfully lost focus, and were pressed
 			if (Focused && mi.Event == MouseInputEvent.Up)
 			{
-				if (Depressed)
+				if (Depressed && !disabled)
 					OnMouseUp(mi);
 				
 				return LoseFocus(mi);
 			}
-
 			if (mi.Event == MouseInputEvent.Down)
 			{
 				// OnMouseDown returns false if the button shouldn't be pressed
-				if (!IsDisabled())
+				if (!disabled)
 				{
 					OnMouseDown(mi);
 					Depressed = true;

@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
-			var mapButton = lobby.GetWidget("CHANGEMAP_BUTTON");
+			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnMouseUp = mi =>
 			{
 				Widget.OpenWindow("MAP_CHOOSER", new WidgetArgs()
@@ -105,19 +105,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "orderManager", orderManager },
 					{ "mapName", MapUid }
 				});
-				return true;
 			};
 
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var disconnectButton = lobby.GetWidget("DISCONNECT_BUTTON");
+			var disconnectButton = lobby.GetWidget<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnMouseUp = mi =>
 			{
 				CloseWindow();
 				Game.Disconnect();
 				Game.LoadShellMap();
 				Widget.OpenWindow("MAINMENU_BG");
-				return true;
 			};
 			
 			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
@@ -349,7 +347,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var join = template.GetWidget<ButtonWidget>("JOIN");
 					if (join != null)
 					{
-						join.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference)); return true; };
+						join.OnMouseUp = _ => orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference));
 						join.IsVisible = () => !s.Closed && c == null && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
 					
@@ -427,11 +425,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
-					kickButton.OnMouseUp = mi =>
-						{
-							orderManager.IssueOrder(Order.Command("kick " + c.Slot));
-							return true;
-						};
+					kickButton.OnMouseUp = mi => orderManager.IssueOrder(Order.Command("kick " + c.Slot));
 				}
 
 				template.IsVisible = () => true;
@@ -490,11 +484,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
-					kickButton.OnMouseUp = mi =>
-						{
-							orderManager.IssueOrder(Order.Command("kick " + client.Index));
-							return true;
-						};
+					kickButton.OnMouseUp = mi => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
 				template.IsVisible = () => true;
@@ -506,7 +496,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var spec = NewSpectatorTemplate.Clone();
 				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");
-				btn.OnMouseUp = _ => { orderManager.IssueOrder(Order.Command("spectate")); return true; };
+				btn.OnMouseUp = _ => orderManager.IssueOrder(Order.Command("spectate"));;
 				spec.IsVisible = () => true;
 				Players.AddChild(spec);
 			}

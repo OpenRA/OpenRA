@@ -47,14 +47,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				orderManager.IssueOrder(Order.Command("map " + Map.Uid));
 				Widget.CloseWindow();
-				return true;
 			};
 
-			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi =>
-			{
-				Widget.CloseWindow();
-				return true;
-			};
+			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi => Widget.CloseWindow();
 			
 			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");

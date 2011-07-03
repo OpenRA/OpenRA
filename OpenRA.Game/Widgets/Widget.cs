@@ -117,7 +117,6 @@ namespace OpenRA.Widgets
 		public Func<bool> IsVisible;
         public Widget() { IsVisible = () => Visible; }
         protected readonly List<Widget> Children = new List<Widget>();
-		public Func<MouseInput,bool> OnMouseUp = _ => false;
 
         public Widget(Widget widget)
         {
@@ -131,8 +130,6 @@ namespace OpenRA.Widgets
 
             Bounds = widget.Bounds;
             Parent = widget.Parent;
-
-            OnMouseUp = widget.OnMouseUp;
 
             IsVisible = widget.IsVisible;
 
@@ -269,16 +266,7 @@ namespace OpenRA.Widgets
             return HandleMouseInput(mi);
         }
 
-        // Hack: Don't eat mouse input that others want
-        // TODO: Solve this properly
-        public virtual bool HandleMouseInput(MouseInput mi)
-        {
-            // Apply any special logic added by event handlers; they return true if they caught the input
-            if (mi.Event == MouseInputEvent.Up && OnMouseUp(mi)) return true;
-
-            return false;
-        }
-
+        public virtual bool HandleMouseInput(MouseInput mi) { return false; }
         public virtual bool HandleKeyPressInner(KeyInput e) { return false; }
         public virtual bool HandleKeyPressOuter(KeyInput e)
         {

@@ -32,12 +32,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
 			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
-			
-			devModeButton.OnMouseUp = mi =>
-			{	
-				devmodeBG.Visible ^= true;
-				return true;
-			};
+			devModeButton.OnMouseUp = mi => devmodeBG.Visible ^= true;
+
 			
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 			

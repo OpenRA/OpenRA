@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget gameRoot;
 		
+		// WTF duplication
 		[ObjectCreator.UseCtor]
 		public IngameObserverChromeLogic([ObjectCreator.Param] World world)
 		{
@@ -28,42 +29,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			gameRoot = r.GetWidget("OBSERVER_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
-			r.GetWidget("INGAME_OPTIONS_BUTTON").OnMouseUp = mi => {
+			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnMouseUp = mi =>
 				optionsBG.Visible = !optionsBG.Visible;
-				return true;
-			};
 			
-			optionsBG.GetWidget("DISCONNECT").OnMouseUp = mi => {
+			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnMouseUp = mi =>
+			{
 				optionsBG.Visible = false;
 				Game.Disconnect();
 				Game.LoadShellMap();
 				Widget.CloseWindow();
 				Widget.OpenWindow("MAINMENU_BG");
-				return true;
 			};
 			
-			optionsBG.GetWidget("SETTINGS").OnMouseUp = mi => {
-				Widget.OpenWindow("SETTINGS_MENU");
-				return true;
-			};
-
-			optionsBG.GetWidget("MUSIC").OnMouseUp = mi => {
-				Widget.OpenWindow("MUSIC_MENU");
-				return true;
-			};
-			
-			optionsBG.GetWidget("RESUME").OnMouseUp = mi =>
-			{
-				optionsBG.Visible = false;
-				return true;
-			};
-
-			optionsBG.GetWidget("SURRENDER").IsVisible = () => false;
-
-			optionsBG.GetWidget("QUIT").OnMouseUp = mi => {
-				Game.Exit();
-				return true;
-			};
+			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnMouseUp = mi => Widget.OpenWindow("SETTINGS_MENU");
+			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnMouseUp = mi => Widget.OpenWindow("MUSIC_MENU");
+			optionsBG.GetWidget<ButtonWidget>("RESUME").OnMouseUp = mi => optionsBG.Visible = false;
+			optionsBG.GetWidget<ButtonWidget>("SURRENDER").IsVisible = () => false;
+			optionsBG.GetWidget<ButtonWidget>("QUIT").OnMouseUp = mi => Game.Exit();
 		}
 		
 		public void UnregisterEvents()

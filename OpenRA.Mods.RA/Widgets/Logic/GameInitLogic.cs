@@ -82,20 +82,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void ShowInstallMethodDialog()
 		{
 			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
-			window.GetWidget("DOWNLOAD").OnMouseUp = mi => { ShowDownloadDialog(); return true; };
-			window.GetWidget("FROMCD").OnMouseUp = mi => PromptForCD();
+			window.GetWidget<ButtonWidget>("DOWNLOAD").OnMouseUp = mi => ShowDownloadDialog();
+			window.GetWidget<ButtonWidget>("FROMCD").OnMouseUp = mi => PromptForCD();
 					
-			window.GetWidget("QUIT").OnMouseUp = mi => { Game.Exit(); return true; };
+			window.GetWidget<ButtonWidget>("QUIT").OnMouseUp = mi => Game.Exit();
 		}
 		
-		bool PromptForCD()
+		void PromptForCD()
 		{
 			Game.Utilities.PromptFilepathAsync("Select MAIN.MIX on the CD", path =>
 			{
 				if (!string.IsNullOrEmpty(path))
 					Game.RunAfterTick(() => InstallFromCD(Path.GetDirectoryName(path)));
 			});
-			return true;
 		}
 		
 		void InstallFromCD(string path)
@@ -106,8 +105,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// TODO: Handle cancelling copy
 			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
-			window.GetWidget("CANCEL").OnMouseUp = mi => { ShowInstallMethodDialog(); return true; };
-			window.GetWidget("RETRY").OnMouseUp = mi => PromptForCD();
+			window.GetWidget<ButtonWidget>("CANCEL").OnMouseUp = mi => ShowInstallMethodDialog();
+			window.GetWidget<ButtonWidget>("RETRY").OnMouseUp = mi => PromptForCD();
 			
 			var t = new Thread( _ =>
 			{
@@ -160,8 +159,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			var dl = new Download(Info.PackageURL, file, onDownloadChange, onDownloadComplete);
-			window.GetWidget("CANCEL").OnMouseUp = mi => { dl.Cancel(); ShowInstallMethodDialog(); return true; };
-			window.GetWidget("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); return true; };
+			window.GetWidget<ButtonWidget>("CANCEL").OnMouseUp = mi => { dl.Cancel(); ShowInstallMethodDialog(); };
+			window.GetWidget<ButtonWidget>("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); };
 		}
 		
 		void ShowError(Widget window, string e)

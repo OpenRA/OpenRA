@@ -30,14 +30,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.world = world;
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
-			var diplomacy = root.GetWidget("INGAME_DIPLOMACY_BUTTON");
+			var diplomacy = root.GetWidget<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
 			
 			diplomacy.OnMouseUp = mi =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
 				if (diplomacyBG.IsVisible())
 					LayoutDialog(diplomacyBG);
-				return true;
 			};
 			
 			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();

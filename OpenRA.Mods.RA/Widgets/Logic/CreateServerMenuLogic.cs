@@ -22,12 +22,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var settings = Game.Settings;
 
-			cs.GetWidget("BUTTON_CANCEL").OnMouseUp = mi => {
-				Widget.CloseWindow();
-				return true;
-			};
-			
-			cs.GetWidget("BUTTON_START").OnMouseUp = mi => {
+			cs.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi => Widget.CloseWindow();
+			cs.GetWidget<ButtonWidget>("BUTTON_START").OnMouseUp = mi =>
+			{
 				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 				settings.Server.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
@@ -37,7 +34,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				// Take a copy so that subsequent settings changes don't affect the server
 				Game.CreateServer(new ServerSettings(Game.Settings.Server));
 				Game.JoinServer(IPAddress.Loopback.ToString(), settings.Server.ListenPort);
-				return true;
 			};
 			
 			cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text = settings.Server.Name ?? "";
