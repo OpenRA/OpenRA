@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 using Tao.OpenGl;
@@ -118,6 +119,23 @@ namespace OpenRA.Renderer.Cg
 			Sdl.SDL_EnableKeyRepeat( Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL );
 
 			CheckGlError();
+
+			// Test for required extensions
+			var required = new string[]
+			{
+				"GL_ARB_vertex_program",
+				"GL_ARB_fragment_program",
+				"GL_ARB_vertex_buffer_object",
+			};
+
+			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
+			var missingExtensions = required.Where( r => !extensions.Contains(r) ).ToArray();
+
+			if (missingExtensions.Any())
+			{
+				WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}".F(string.Join(",", missingExtensions)));
+				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
+			}
 
 			windowSize = size;
 
