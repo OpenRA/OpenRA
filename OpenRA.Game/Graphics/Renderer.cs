@@ -12,12 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Support;
-using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -47,7 +47,7 @@ namespace OpenRA.Graphics
 		{
 			TempBufferSize = Game.Settings.Graphics.BatchSize;
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
-			SheetSize = Game.Settings.Game.SheetSize;	// TODO: move to Graphics.
+			SheetSize = Game.Settings.Graphics.SheetSize;
 			
 			SpriteShader = device.CreateShader("world-shp");
 			LineShader = device.CreateShader("world-line");

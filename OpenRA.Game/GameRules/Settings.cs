@@ -62,6 +62,7 @@ namespace OpenRA.GameRules
 		
 		public int BatchSize = 8192;
 		public int NumTempBuffers = 8;
+		public int SheetSize = 2048;
 	}
 	
 	public class SoundSettings
@@ -99,7 +100,6 @@ namespace OpenRA.GameRules
 
 		// Internal game settings
 		public int Timestep = 40;
-		public int SheetSize = 2048;
 	}
 		
 	public class Settings
