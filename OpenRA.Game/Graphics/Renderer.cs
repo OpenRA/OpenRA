@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		internal static int TempBufferSize;
 		internal static int TempBufferCount;
 
-		internal IShader SpriteShader { get; private set; }    /* note: shared shader params */
+		internal IShader SpriteShader { get; private set; }
 		internal IShader LineShader { get; private set; }
 		internal IShader RgbaSpriteShader { get; private set; }
 		internal IShader WorldSpriteShader { get; private set; }
