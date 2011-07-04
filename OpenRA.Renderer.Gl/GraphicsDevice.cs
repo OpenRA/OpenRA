@@ -11,16 +11,23 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using OpenRA.FileFormats.Graphics;
-using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Sdl;
-using System.Linq;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Glsl.GraphicsDevice))]
+[assembly: Renderer(typeof(OpenRA.Renderer.Glsl.DeviceFactory))]
 
 namespace OpenRA.Renderer.Glsl
 {
+	public class DeviceFactory : IDeviceFactory
+	{
+		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		{
+			return new GraphicsDevice( size, windowMode, vsync );
+		}
+	}
+
 	public class GraphicsDevice : IGraphicsDevice
 	{
 		Size windowSize;
@@ -65,7 +72,7 @@ namespace OpenRA.Renderer.Glsl
 			Log.Write("graphics", Gl.glGetString(Gl.GL_EXTENSIONS));
 		}
 
-		public GraphicsDevice( int width, int height, WindowMode window, bool vsync )
+		public GraphicsDevice( Size size, WindowMode window, bool vsync )
 		{
 			Console.WriteLine("Using Gl renderer");
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );
@@ -89,7 +96,7 @@ namespace OpenRA.Renderer.Glsl
 				break;
 			}
 
-			surf = Sdl.SDL_SetVideoMode( width, height, 0, Sdl.SDL_OPENGL | windowFlags );
+			surf = Sdl.SDL_SetVideoMode( size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags );
 
 			Sdl.SDL_WM_SetCaption( "OpenRA", "OpenRA" );
 			Sdl.SDL_ShowCursor( 0 );
@@ -115,7 +122,7 @@ namespace OpenRA.Renderer.Glsl
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
 			}
 			
-			windowSize = new Size( width, height );
+			windowSize = size;
 
 			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
 			CheckGlError();

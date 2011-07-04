@@ -21,10 +21,15 @@ namespace OpenRA.FileFormats.Graphics
 
 		public RendererAttribute( Type graphicsDeviceType )
 		{
-			if( !typeof( IGraphicsDevice ).IsAssignableFrom( graphicsDeviceType ) )
+			if( !typeof( IDeviceFactory ).IsAssignableFrom( graphicsDeviceType ) )
 				throw new InvalidOperationException( "Incorrect type in RendererAttribute" );
 			Type = graphicsDeviceType;
 		}
+	}
+
+	public interface IDeviceFactory
+	{
+		IGraphicsDevice Create( Size size, WindowMode windowMode, bool vsync ); 
 	}
 
 	public interface IGraphicsDevice

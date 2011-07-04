@@ -10,22 +10,29 @@
 
 using System;
 using System.Drawing;
-using System.IO;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Graphics;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Null.NullGraphicsDevice))]
+[assembly: Renderer(typeof(OpenRA.Renderer.Null.DeviceFactory))]
 
 namespace OpenRA.Renderer.Null
 {
+	public class DeviceFactory : IDeviceFactory
+	{
+		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		{
+			return new NullGraphicsDevice( size, windowMode, vsync );
+		}
+	}
+
 	public class NullGraphicsDevice : IGraphicsDevice
 	{
 		public Size WindowSize { get; internal set; }
 
-		public NullGraphicsDevice(int width, int height, WindowMode window, bool vsync)
+		public NullGraphicsDevice(Size size, WindowMode window, bool vsync)
 		{
 			Console.WriteLine("Using Null renderer");
-			WindowSize = new Size(width, height);
+			WindowSize = size;
 		}
 
 		public void EnableScissor(int left, int top, int width, int height) { }

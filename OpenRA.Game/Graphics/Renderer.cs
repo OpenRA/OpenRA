@@ -142,11 +142,11 @@ namespace OpenRA.Graphics
 
 		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
 		{
-			var argTypes = new Type[] { typeof( int ), typeof( int ), typeof( WindowMode ), typeof( bool ) };
-			var argValues = new object[] { width, height, window, vsync };
-			
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
-				return (IGraphicsDevice)r.Type.GetConstructor( argTypes ).Invoke( argValues );
+			{
+				var factory = (IDeviceFactory) r.Type.GetConstructor( Type.EmptyTypes ).Invoke( null );
+				return factory.Create( new Size( width, height ), window, vsync );
+			}
 			
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
 		}

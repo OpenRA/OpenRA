@@ -16,10 +16,18 @@ using Tao.Cg;
 using Tao.OpenGl;
 using Tao.Sdl;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Cg.GraphicsDevice))]
+[assembly: Renderer(typeof(OpenRA.Renderer.Cg.DeviceFactory))]
 
 namespace OpenRA.Renderer.Cg
 {
+	public class DeviceFactory : IDeviceFactory
+	{
+		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		{
+			return new GraphicsDevice( size, windowMode, vsync );
+		}
+	}
+
 	public class GraphicsDevice : IGraphicsDevice
 	{
 		Size windowSize;
@@ -75,7 +83,7 @@ namespace OpenRA.Renderer.Cg
 			throw new InvalidOperationException("CG Error. See graphics.log for details");
 		};
 
-		public GraphicsDevice( int width, int height, WindowMode window, bool vsync )
+		public GraphicsDevice( Size size, WindowMode window, bool vsync )
 		{
 			Console.WriteLine("Using Cg renderer");
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );
@@ -102,7 +110,7 @@ namespace OpenRA.Renderer.Cg
 				break;
 			}
 
-			surf = Sdl.SDL_SetVideoMode( width, height, 0, Sdl.SDL_OPENGL | windowFlags );
+			surf = Sdl.SDL_SetVideoMode( size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags );
 
 			Sdl.SDL_WM_SetCaption( "OpenRA", "OpenRA" );
 			Sdl.SDL_ShowCursor( 0 );
@@ -111,7 +119,7 @@ namespace OpenRA.Renderer.Cg
 
 			CheckGlError();
 
-			windowSize = new Size( width, height );
+			windowSize = size;
 
 			cgContext = Tao.Cg.Cg.cgCreateContext();
 
