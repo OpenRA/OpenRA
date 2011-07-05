@@ -126,6 +126,7 @@ namespace OpenRA.Widgets
         public string Logic = null;
 		public object LogicObject { get; private set; }
         public bool Visible = true;
+		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
         // Calculated internally
@@ -297,7 +298,7 @@ namespace OpenRA.Widgets
 			if (IgnoreChildMouseOver)
 				MouseOverWidget = oldMouseOver;
 
-			if (mi.Event == MouseInputEvent.Move && MouseOverWidget == null)
+			if (mi.Event == MouseInputEvent.Move && MouseOverWidget == null && !IgnoreMouseOver)
 				MouseOverWidget = this;
 
             return HandleMouseInput(mi);
@@ -389,9 +390,9 @@ namespace OpenRA.Widgets
 
     public class ContainerWidget : Widget
     {
-        public ContainerWidget() : base() { }
+        public ContainerWidget() : base() { IgnoreMouseOver = true; }
         public ContainerWidget(ContainerWidget other)
-            : base(other) { }
+            : base(other) { IgnoreMouseOver = true; }
 
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new ContainerWidget(this); }
