@@ -55,6 +55,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
+		public override void Draw()
+		{
+			UpdateMouseover();
+			base.Draw();
+		}
+
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
@@ -79,9 +85,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Move)
-				UpdateMouseover();
-
 			var scrolltype = Game.Settings.Game.MouseScroll;
 			if (scrolltype != OpenRA.GameRules.MouseScrollType.Disabled && mi.Event == MouseInputEvent.Move &&
 					(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
@@ -169,15 +172,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return false;
 		}
 
-		float2 cachedLocation;
 		public override void Tick()
 		{
-			if (Game.viewport.Location != cachedLocation)
-			{
-				UpdateMouseover();
-				cachedLocation = Game.viewport.Location;
-			}
-
 			Edge = ScrollDirection.None;
 			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus && Widget.MouseOverWidget == this)
 			{
