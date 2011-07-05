@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {	
 	public class CncIngameMenuLogic
 	{
-		Widget menu, prompt;
+		Widget menu;
 
 		[ObjectCreator.UseCtor]
 		public CncIngameMenuLogic([ObjectCreator.Param] Widget widget,
@@ -30,8 +30,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
-			prompt = menu.GetWidget("CONFIRM_PROMPT");
-
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
 			
@@ -83,6 +81,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			resumeButton.IsDisabled = () => resumeDisabled;
 			resumeButton.OnClick = () => 
 			{
+				Widget.CloseWindow();
 				Widget.RootWidget.RemoveChild(menu);
 				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
 				onExit();
@@ -91,29 +90,26 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Mission objectives panel
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			if (iop != null && iop.ObjectivesPanel != null)
-			{
-				var obj = Game.LoadWidget(world, iop.ObjectivesPanel, menu.GetWidget("OBJECTIVES_ROOT"), new WidgetArgs());
-				obj.IsVisible = () => !prompt.IsVisible();
-			}
+				Game.OpenWindow(world, iop.ObjectivesPanel);
 		}
 		
 		public void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
 		{
+			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
 			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
 			
 			prompt.GetWidget<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
 			{
-				prompt.IsVisible = () => false;
+				Widget.CloseWindow();
 				onConfirm();
 			};
 			
 			prompt.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
-				prompt.IsVisible = () => false;
+				Widget.CloseWindow();
 				onCancel();
 			};
-			prompt.IsVisible = () => true;
 		}
 	}
 }
