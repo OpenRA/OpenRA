@@ -68,7 +68,7 @@ namespace OpenRA.Widgets
 		public static int[] GetBorderSizes(string collection)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
-			var ss = images.Select(i => ChromeProvider.GetImage("dialog4", i)).ToArray();
+			var ss = images.Select(i => ChromeProvider.GetImage(collection, i)).ToArray();
 			return new[] { (int)ss[0].size.Y, (int)ss[1].size.Y, (int)ss[2].size.X, (int)ss[3].size.X };
 		}
 
