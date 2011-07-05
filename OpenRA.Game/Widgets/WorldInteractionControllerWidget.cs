@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
-		readonly World world;
+		protected readonly World world;
 		readonly WorldRenderer worldRenderer;
 		
 		[ObjectCreator.UseCtor]
@@ -51,7 +51,7 @@ namespace OpenRA.Widgets
 		int2 dragStart, dragEnd;
 
 		public override bool HandleMouseInput(MouseInput mi)
-		{			
+		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{

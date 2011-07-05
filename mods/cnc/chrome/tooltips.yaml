@@ -2,7 +2,36 @@ Background@SIMPLE_TOOLTIP:
 	Id:SIMPLE_TOOLTIP
 	Logic:SimpleTooltipLogic
 	Background:panel-black
-	Width:100
+	Height:25
+	Children:
+		Label@LABEL:
+			Id:LABEL
+			X:5
+			Height:23
+			Font:Bold
+
+Background@BUTTON_TOOLTIP:
+	Id:BUTTON_TOOLTIP
+	Logic:ButtonTooltipLogic
+	Background:panel-black
+	Height:25
+	Children:
+		Label@LABEL:
+			Id:LABEL
+			X:5
+			Height:23
+			Font:Bold
+		Label@HOTKEY:
+			Id:HOTKEY
+			Color:255,255,0
+			Height:23
+			Font:Bold
+
+Background@WORLD_TOOLTIP:
+	Id:WORLD_TOOLTIP
+	Logic:WorldTooltipLogic
+	Background:panel-black
+	Width:141
 	Height:25
 	Children:
 		Label@LABEL:
@@ -22,22 +51,5 @@ Background@PRODUCTION_TOOLTIP:
 			Id:NAME
 			X:5
 			Width:PARENT_RIGHT-10
-			Height:23
-			Font:Bold
-Background@BUTTON_TOOLTIP:
-	Id:BUTTON_TOOLTIP
-	Logic:ButtonTooltipLogic
-	Background:panel-black
-	Width:100
-	Height:25
-	Children:
-		Label@LABEL:
-			Id:LABEL
-			X:5
-			Height:23
-			Font:Bold
-		Label@HOTKEY:
-			Id:HOTKEY
-			Color:255,255,0
 			Height:23
 			Font:Bold

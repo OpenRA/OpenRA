@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
-
+		public override Rectangle GetEventBounds() { return Rectangle.Empty; }
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (World == null) return false;

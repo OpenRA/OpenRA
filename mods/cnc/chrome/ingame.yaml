@@ -2,10 +2,6 @@ Container@INGAME_ROOT:
 	Id:INGAME_ROOT
 	Logic:CncIngameChromeLogic
 	Children:
-		WorldInteractionController:
-			Id:INTERACTION_CONTROLLER
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
 		ViewportScrollController:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
@@ -17,6 +13,11 @@ Container@INGAME_ROOT:
 			Id:STRATEGIC_PROGRESS
 			X: WINDOW_RIGHT/2
 			Y: 40
+		TooltipWorldInteractionController:
+			Id:INTERACTION_CONTROLLER
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+			TooltipContainer:TOOLTIP_CONTAINER
 		Button@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
 			X:WINDOW_RIGHT-400
