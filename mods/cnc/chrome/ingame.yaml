@@ -71,7 +71,7 @@ Container@INGAME_ROOT:
 					Y:(WINDOW_BOTTOM - HEIGHT)/2
 					Width:400
 					Height:100
-					Background:dialog4
+					Background:panel-black
 					Visible:false
 					Children:
 						Label@TEXT:
@@ -254,7 +254,7 @@ Background@FMVPLAYER:
 	Id:FMVPLAYER
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
-	Background:dialog4
+	Background:panel-black
 	Children:
 		VqaPlayer:
 			Id:PLAYER
