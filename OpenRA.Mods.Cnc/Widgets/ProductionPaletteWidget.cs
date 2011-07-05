@@ -92,11 +92,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer == null)
-					return;
-
-			var panel = Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "palette", this }});
-			tooltipContainer.Value.SetTooltip(panel);
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "palette", this }});
 		}
 
 		public override void MouseExited()

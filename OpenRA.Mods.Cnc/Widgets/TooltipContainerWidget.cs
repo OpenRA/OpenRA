@@ -19,9 +19,11 @@ using System;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	class TooltipContainerWidget : Widget
+	public class TooltipContainerWidget : Widget
 	{
+		static readonly Action Nothing = () => {};
 		public int2 CursorOffset = new int2(0, 20);
+		public Action BeforeRender = Nothing;
 		public int TooltipDelay = 10;
 		Widget tooltip;
 
@@ -30,18 +32,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 			IsVisible = () => Viewport.TicksSinceLastMove >= TooltipDelay;
 		}
 
-		public void SetTooltip(Widget tooltip)
+		public void SetTooltip(string id, WidgetArgs args)
 		{
-			this.tooltip = tooltip;
-			RemoveChildren();
-			AddChild(tooltip);
+			RemoveTooltip();
+			tooltip = Widget.LoadWidget(id, this, new WidgetArgs(args) {{ "tooltipContainer", this }});
 		}
 
 		public void RemoveTooltip()
 		{
 			RemoveChildren();
+			BeforeRender = Nothing;
 		}
 
+		public override void Draw() { BeforeRender(); }
 		public override Rectangle GetEventBounds() { return Rectangle.Empty; }
 		public override int2 ChildOrigin
 		{

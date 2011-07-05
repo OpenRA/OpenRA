@@ -39,8 +39,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (TooltipContainer == null) return;
 			Func<string> getText = () => "Power Usage: {0}/{1}".F(pm.PowerDrained, pm.PowerProvided);
-			tooltipContainer.Value.SetTooltip(
-				Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "getText", getText }}));
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "getText", getText }});
 		}
 
 		public override void MouseExited()

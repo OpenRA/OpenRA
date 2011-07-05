@@ -18,22 +18,26 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic([ObjectCreator.Param] Widget widget,
+		                          [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
 		                          [ObjectCreator.Param] Func<string> getText)
 		{
 			var label = widget.GetWidget<LabelWidget>("LABEL");
-			var cachedWidth = 0;
+
 			var font = Game.Renderer.Fonts[label.Font];
-			label.GetText = () =>
+			var cachedWidth = 0;
+			var labelText = "";
+			tooltipContainer.BeforeRender = () =>
 			{
-				var text = getText();
-				var textWidth = font.Measure(text).X;
+				labelText = getText();
+				var textWidth = font.Measure(labelText).X;
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
 					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
 				}
-				return text;
 			};
+
+			label.GetText = () => labelText;
 		}
 	}
 }
