@@ -211,10 +211,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
 			var readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
 			var queuedOffset = new float2(4,2);
-			
+
+			// Background
 			foreach (var kv in Icons)
 				WidgetUtils.DrawPanel("panel-black", kv.Key.InflateBy(1,1,1,1));
 
+			// Icons
 			foreach (var kv in Icons)
 			{
 				var rect = kv.Key;
@@ -223,8 +225,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				WidgetUtils.DrawSHP(icon.Sprite, drawPos, worldRenderer);
 
 				// Build progress
-				var total = icon.Queued.Count;
-				if (total > 0)
+				if (icon.Queued.Count > 0)
 				{
 					var first = icon.Queued[0];
 					clock.PlayFetchIndex("idle",
@@ -232,7 +233,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
 					WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+				}
+				else if (isBuildingSomething || !buildableItems.Any(a => a.Name == icon.Name))
+					WidgetUtils.DrawSHP(cantBuild.Image, drawPos, worldRenderer);
+			}
 
+			// Overlays
+			foreach (var kv in Icons)
+			{
+				var drawPos = new float2(kv.Key.Location);
+				var total = kv.Value.Queued.Count;
+				if (total > 0)
+				{
+					var first = kv.Value.Queued[0];
 					if (first.Done)
 						overlayFont.DrawTextWithContrast("Ready",
 						                                 drawPos + readyOffset,
@@ -247,8 +260,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 						                                 drawPos + queuedOffset,
 						                                 Color.White, Color.Black, 1);
 				}
-				else if (isBuildingSomething || !buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSHP(cantBuild.Image, drawPos, worldRenderer);
 			}
 		}
 	}
