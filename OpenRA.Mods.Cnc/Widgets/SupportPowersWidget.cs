@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
-		public string TooltipPower { get; private set; }
+		public SupportPowerManager.SupportPowerInstance TooltipPower { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
@@ -136,8 +136,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				TooltipPower = Icons.Where(i => i.Key.Contains(mi.Location))
+				var power = Icons.Where(i => i.Key.Contains(mi.Location))
 					.Select(i => i.Value).FirstOrDefault();
+				TooltipPower = (power != null) ? spm.Powers[power] : null;
 				return false;
 			}
 

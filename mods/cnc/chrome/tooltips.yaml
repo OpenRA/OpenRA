@@ -69,11 +69,16 @@ Background@SUPPORT_POWER_TOOLTIP:
 	Logic:SupportPowerTooltipLogic
 	Background:panel-black
 	Width:200
-	Height:25
+	Height:45
 	Children:
 		Label@NAME:
 			Id:NAME
 			X:5
-			Width:PARENT_RIGHT-10
+			Height:23
+			Font:Bold
+		Label@TIME:
+			Id:TIME
+			X:5
+			Y:19
 			Height:23
 			Font:Bold
