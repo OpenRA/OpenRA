@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,6 +17,16 @@ using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
+	[Flags]
+	public enum ScrollDirection
+	{
+		None = 0,
+		Up = 1,
+		Left = 2,
+		Down = 4,
+		Right = 8
+	}
+
 	public class Viewport
 	{
 		readonly int2 screenSize;
@@ -162,6 +173,19 @@ namespace OpenRA.Graphics
 			
 			var b = world.LocalShroud.Bounds;
 			return (b.HasValue) ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
+		}
+	}
+
+	public static class ViewportExts
+	{
+		public static bool Includes(this ScrollDirection d, ScrollDirection s)
+		{
+			return (d & s) == s;
+		}
+
+		public static ScrollDirection Set(this ScrollDirection d, ScrollDirection s, bool val)
+		{
+			return (d.Includes(s) != val) ? d ^ s : d;
 		}
 	}
 }

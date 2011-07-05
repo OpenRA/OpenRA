@@ -15,16 +15,6 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	[Flags]
-	public enum ScrollDirection
-	{
-		None = 0,
-		Up = 1,
-		Left = 2,
-		Down = 4,
-		Right = 8
-	}
-	
 	public class ViewportScrollControllerWidget : Widget
 	{
 		public int EdgeScrollThreshold = 15;
@@ -32,8 +22,9 @@ namespace OpenRA.Widgets
 		ScrollDirection Keyboard;
 		ScrollDirection Edge;
 
-		public ViewportScrollControllerWidget() : base() { }
-		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget) : base(widget) {}
+		public ViewportScrollControllerWidget() : base() {}
+		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget)
+			: base(widget) {}
 		
 		public override bool HandleMouseInput(MouseInput mi)
 		{									
@@ -135,18 +126,5 @@ namespace OpenRA.Widgets
 		}
 		
 		public override Widget Clone() { return new ViewportScrollControllerWidget(this); }
-	}
-	
-	public static class ViewportExts
-	{	
-		public static bool Includes(this ScrollDirection d, ScrollDirection s)
-		{
-			return (d & s) == s;
-		}
-		
-		public static ScrollDirection Set(this ScrollDirection d, ScrollDirection s, bool val)
-		{
-			return (d.Includes(s) != val) ? d ^ s : d;
-		}
 	}
 }

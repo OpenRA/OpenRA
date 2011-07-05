@@ -10,7 +10,7 @@
 
 using OpenRA.Support;
 using OpenRA.Widgets;
-using T = OpenRA.Mods.Cnc.Widgets.TooltipWorldInteractionControllerWidget;
+using T = OpenRA.Mods.Cnc.Widgets.CncWorldInteractionControllerWidget;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public WorldTooltipLogic([ObjectCreator.Param] Widget widget,
-		                         [ObjectCreator.Param] TooltipWorldInteractionControllerWidget wic)
+		                         [ObjectCreator.Param] CncWorldInteractionControllerWidget wic)
 		{
 			widget.IsVisible = () => wic.TooltipType != T.WorldTooltipType.None;
 
