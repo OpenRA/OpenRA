@@ -13,14 +13,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
-	public class ProductionTooltipLogic
+	public class SupportPowerTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic([ObjectCreator.Param] Widget widget,
-		                              [ObjectCreator.Param] ProductionPaletteWidget palette)
+		public SupportPowerTooltipLogic([ObjectCreator.Param] Widget widget,
+		                                [ObjectCreator.Param] SupportPowersWidget palette)
 		{
-			widget.IsVisible = () => palette.TooltipActor != null;
-			widget.GetWidget<LabelWidget>("NAME").GetText = () => palette.TooltipActor;
+			widget.IsVisible = () => palette.TooltipPower != null;
+			widget.GetWidget<LabelWidget>("NAME").GetText = () => palette.TooltipPower;
 		}
 	}
 }

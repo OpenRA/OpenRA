@@ -103,6 +103,7 @@
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
+    <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

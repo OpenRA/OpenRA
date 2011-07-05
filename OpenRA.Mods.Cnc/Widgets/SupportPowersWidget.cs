@@ -19,13 +19,18 @@ using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	class SupportPowersWidget : Widget
+	public class SupportPowersWidget : Widget
 	{
 		public int Spacing = 10;
 
 		Dictionary<string, Sprite> iconSprites;
 		Animation clock;
 		Dictionary<Rectangle, string> Icons	= new Dictionary<Rectangle, string>();
+
+		public readonly string TooltipContainer;
+		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
+		public string TooltipPower { get; private set; }
+		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds { get { return eventBounds; } }
@@ -34,10 +39,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		[ObjectCreator.UseCtor]
 		public SupportPowersWidget([ObjectCreator.Param] World world,
-		                          [ObjectCreator.Param] WorldRenderer worldRenderer)
+		                           [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
+			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 
 			iconSprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
 				.Select(u => u.Image).Distinct()
@@ -71,9 +78,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
 			var readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
 
+			// Background
 			foreach (var kv in Icons)
 				WidgetUtils.DrawPanel("panel-black", kv.Key.InflateBy(1,1,1,1));
 
+			// Icons
 			foreach (var kv in Icons)
 			{
 				var rect = kv.Key;
@@ -87,6 +96,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 						* (clock.CurrentSequence.Length - 1) / power.TotalTime);
 				clock.Tick();
 				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+			}
+
+			// Overlays
+			foreach (var kv in Icons)
+			{
+				var power = spm.Powers[kv.Value];
+				var drawPos = new float2(kv.Key.Location);
 
 				if (power.Ready)
 					overlayFont.DrawTextWithContrast("Ready",
@@ -104,8 +120,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 			RefreshIcons();
 		}
 
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null)
+					return;
+
+			var panel = Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "palette", this }});
+			tooltipContainer.Value.SetTooltip(panel);
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Move)
+			{
+				TooltipPower = Icons.Where(i => i.Key.Contains(mi.Location))
+					.Select(i => i.Value).FirstOrDefault();
+				return false;
+			}
+
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 

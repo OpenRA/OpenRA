@@ -80,6 +80,7 @@ Container@INGAME_ROOT:
 							Align:Center
 							Font:Bold
 				SupportPowers:
+					TooltipContainer:TOOLTIP_CONTAINER
 					X:10
 					Y:10
 				Background@SIDEBAR_BACKGROUND:

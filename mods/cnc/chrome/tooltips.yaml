@@ -53,3 +53,17 @@ Background@PRODUCTION_TOOLTIP:
 			Width:PARENT_RIGHT-10
 			Height:23
 			Font:Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Id:SUPPORT_POWER_TOOLTIP
+	Logic:SupportPowerTooltipLogic
+	Background:panel-black
+	Width:200
+	Height:25
+	Children:
+		Label@NAME:
+			Id:NAME
+			X:5
+			Width:PARENT_RIGHT-10
+			Height:23
+			Font:Bold
