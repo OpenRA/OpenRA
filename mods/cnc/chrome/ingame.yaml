@@ -151,6 +151,7 @@ Container@INGAME_ROOT:
 									Y:1
 									Width:PARENT_RIGHT-2
 									Height:PARENT_BOTTOM-2
+									TooltipContainer:TOOLTIP_CONTAINER
 						Label@POWERICON:
 							X:4
 							Y:180
@@ -168,6 +169,7 @@ Container@INGAME_ROOT:
 									Y:1
 									Width:PARENT_RIGHT-2
 									Height:PARENT_BOTTOM-2
+									TooltipContainer:TOOLTIP_CONTAINER
 						Label@SILOICON:
 							X:181
 							Y:180

@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -18,6 +19,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class SiloBarWidget : Widget
 	{
+		public readonly string TooltipTemplate = "SIMPLE_TOOLTIP";
+		public readonly string TooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
+
 		public float LowStorageThreshold = 0.8f;
 		float? lastCapacityFrac;
 		float? lastStoredFrac;
@@ -27,6 +32,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public SiloBarWidget( [ObjectCreator.Param] World world )
 		{
 			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
+		}
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null) return;
+			Func<string> getText = () => "Silo Usage: {0}/{1}".F(pr.Ore, pr.OreCapacity);
+			tooltipContainer.Value.SetTooltip(
+				Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "getText", getText }}));
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public override void Draw()

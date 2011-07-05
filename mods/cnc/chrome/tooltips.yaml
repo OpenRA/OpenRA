@@ -1,3 +1,16 @@
+Background@SIMPLE_TOOLTIP:
+	Id:SIMPLE_TOOLTIP
+	Logic:SimpleTooltipLogic
+	Background:panel-black
+	Width:100
+	Height:25
+	Children:
+		Label@LABEL:
+			Id:LABEL
+			X:5
+			Height:23
+			Font:Bold
+
 Background@PRODUCTION_TOOLTIP:
 	Id:PRODUCTION_TOOLTIP
 	Logic:ProductionTooltipLogic
