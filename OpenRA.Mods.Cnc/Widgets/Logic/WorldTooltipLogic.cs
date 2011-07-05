@@ -41,6 +41,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () => 
 			{
+				if (wic == null || wic.ActorTooltip == null) return;
+
 				labelText = wic.TooltipType == Type.Unexplored ? "Unexplored Terrain" :
 					wic.ActorTooltip.Name();
 				var textWidth = font.Measure(labelText).X;
