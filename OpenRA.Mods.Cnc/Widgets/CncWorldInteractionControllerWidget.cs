@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				case "left": Keyboard = Keyboard.Set(ScrollDirection.Left, (e.Event == KeyInputEvent.Down)); return true;
 				case "right": Keyboard = Keyboard.Set(ScrollDirection.Right, (e.Event == KeyInputEvent.Down)); return true;
 			}
-			return false;
+			return base.HandleKeyPress(e);
 		}
 
 		public override void Tick()
