@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly int Columns = 3;
 		public readonly string TabClick = "button.aud";
 		public readonly string TooltipContainer;
-		public readonly string TooltipTemplate;
+		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 		public string TooltipActor { get; private set; }
 
 		Lazy<TooltipContainerWidget> tooltipContainer;

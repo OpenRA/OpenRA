@@ -92,7 +92,7 @@ Container@INGAME_ROOT:
 					Height:240
 					Background:panel-black
 					Children:
-						Button@OPTIONS_BUTTON:
+						TooltipButton@OPTIONS_BUTTON:
 							Id:OPTIONS_BUTTON
 							Key:escape
 							X:40
@@ -101,22 +101,30 @@ Container@INGAME_ROOT:
 							Height:25
 							Text:Opt
 							Font:Bold
-						Button@SELL_BUTTON:
+							TooltipText: Menu
+							TooltipContainer:TOOLTIP_CONTAINER
+						TooltipButton@SELL_BUTTON:
 							Id:SELL_BUTTON
+							Key: [
 							X:80
 							Y:0-24
 							Width:35
 							Height:25
 							Text:$
 							Font:Bold
-						Button@REPAIR_BUTTON:
+							TooltipText: Sell
+							TooltipContainer:TOOLTIP_CONTAINER
+						TooltipButton@REPAIR_BUTTON:
 							Id:REPAIR_BUTTON
+							Key: ]
 							X:120
 							Y:0-24
 							Width:35
 							Height:25
 							Text:R
 							Font:Bold
+							TooltipText: Repair
+							TooltipContainer:TOOLTIP_CONTAINER
 						Background@RADAR:
 							X:13
 							Y:5
@@ -186,8 +194,7 @@ Container@INGAME_ROOT:
 									Text: B
 									Key: y
 									TooltipText: Buildings
-									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipContainer:TOOLTIP_CONTAINER
 								TooltipButton@DEFENSE:
 									Id:DEFENSE
 									X:35
@@ -196,8 +203,7 @@ Container@INGAME_ROOT:
 									Text: D
 									Key: u
 									TooltipText: Defense
-									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipContainer:TOOLTIP_CONTAINER
 								TooltipButton@INFANTRY:
 									Id:INFANTRY
 									X:70
@@ -206,8 +212,7 @@ Container@INGAME_ROOT:
 									Text: I
 									Key: i
 									TooltipText: Infantry
-									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipContainer:TOOLTIP_CONTAINER
 								TooltipButton@VEHICLE:
 									Id:VEHICLE
 									X:105
@@ -216,8 +221,7 @@ Container@INGAME_ROOT:
 									Text: V
 									Key: o
 									TooltipText: Vehicles
-									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipContainer:TOOLTIP_CONTAINER
 								TooltipButton@AIRCRAFT:
 									Id:AIRCRAFT
 									X:140
@@ -226,8 +230,7 @@ Container@INGAME_ROOT:
 									Text: H
 									Key: p
 									TooltipText: Aircraft
-									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipContainer:TOOLTIP_CONTAINER
 				ProductionTabs:
 					Id:PRODUCTION_TABS
 					PaletteWidget:PRODUCTION_PALETTE
@@ -240,8 +243,7 @@ Container@INGAME_ROOT:
 					X:WINDOW_RIGHT - 204
 					Y:287
 					TabClick: button.aud
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: PRODUCTION_TOOLTIP
+					TooltipContainer:TOOLTIP_CONTAINER
 		TooltipContainer:
 			Id:TOOLTIP_CONTAINER
 

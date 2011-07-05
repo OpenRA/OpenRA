@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	class TooltipContainerWidget : Widget
 	{
-		public int2 CursorOffset = new int2(20, 0);
+		public int2 CursorOffset = new int2(0, 20);
 		public int TooltipDelay = 10;
 		Widget tooltip;
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (tooltip != null)
 				{
 					if (pos.X + tooltip.Bounds.Right > Game.viewport.Width)
-						pos.X -= 2*CursorOffset.X + tooltip.Bounds.Right;
+						pos.X = Game.viewport.Width - tooltip.Bounds.Right;
 				}
 
 				return pos;

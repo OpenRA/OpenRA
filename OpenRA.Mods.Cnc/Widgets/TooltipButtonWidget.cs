@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class TooltipButtonWidget : ButtonWidget
 	{
-		public readonly string TooltipTemplate;
+		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		public readonly string TooltipText;
 		public readonly string TooltipContainer;
 		Lazy<TooltipContainerWidget> tooltipContainer;
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (TooltipContainer == null)
 				return;
 
-			var panel = Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "button", this }});
-			tooltipContainer.Value.SetTooltip(panel);
+			tooltipContainer.Value.SetTooltip(
+				Widget.LoadWidget(TooltipTemplate, null, new WidgetArgs() {{ "button", this }}));
 		}
 
 		public override void MouseExited()

@@ -19,8 +19,20 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public ButtonTooltipLogic([ObjectCreator.Param] Widget widget,
 		                         [ObjectCreator.Param] TooltipButtonWidget button)
 		{
-			widget.GetWidget<LabelWidget>("LABEL").GetText = () => button.TooltipText;
-			widget.GetWidget<LabelWidget>("HOTKEY").GetText = () => button.Key;
+			var label = widget.GetWidget<LabelWidget>("LABEL");
+			var hotkey = widget.GetWidget<LabelWidget>("HOTKEY");
+
+			label.GetText = () => button.TooltipText;
+			var labelWidth = Game.Renderer.Fonts[label.Font].Measure(button.TooltipText).X;
+			label.Bounds.Width = labelWidth;
+
+			var hotkeyLabel = "({0})".F(button.Key.ToUpperInvariant());
+			hotkey.GetText = () => hotkeyLabel;
+			hotkey.Bounds.X = labelWidth + 2*label.Bounds.X;
+
+			var panelWidth = hotkey.Bounds.X + label.Bounds.X
+				+ Game.Renderer.Fonts[label.Font].Measure(hotkeyLabel).X;
+			widget.Bounds.Width = panelWidth;
 		}
 	}
 }
