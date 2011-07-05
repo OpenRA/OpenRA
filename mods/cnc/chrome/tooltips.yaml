@@ -32,14 +32,24 @@ Background@WORLD_TOOLTIP:
 	Logic:WorldTooltipLogic
 	Background:panel-black
 	Width:141
-	Height:25
 	Children:
 		Label@LABEL:
 			Id:LABEL
 			X:5
 			Height:23
 			Font:Bold
-
+		Image:
+			Id:FLAG
+			X:5
+			Y:24
+			Width:32
+			Height:16
+		Label@OWNER:
+			Id:OWNER
+			X:42
+			Y:19
+			Height:23
+			Font:Bold
 Background@PRODUCTION_TOOLTIP:
 	Id:PRODUCTION_TOOLTIP
 	Logic:ProductionTooltipLogic
