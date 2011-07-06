@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		Dictionary<string, Sprite> iconSprites;
 		Animation clock;
-		Dictionary<Rectangle, string> Icons	= new Dictionary<Rectangle, string>();
+		Dictionary<Rectangle, SupportPowerIcon> Icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override Rectangle EventBounds { get { return eventBounds; } }
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
+		readonly SpriteFont overlayFont;
+		readonly float2 holdOffset, readyOffset, timeOffset;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowersWidget([ObjectCreator.Param] World world,
@@ -53,19 +55,38 @@ namespace OpenRA.Mods.Cnc.Widgets
 					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
 
 			clock = new Animation("clock");
+
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
+			readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
+			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+		}
+
+		public class SupportPowerIcon
+		{
+			public SupportPowerManager.SupportPowerInstance Power;
+			public float2 Pos;
+			public Sprite Sprite;
 		}
 
 		public void RefreshIcons()
 		{
-			Icons = new Dictionary<Rectangle, string>();
-			var powers = spm.Powers.Where(p => !p.Value.Disabled).Select(p => p.Key);
+			Icons = new Dictionary<Rectangle, SupportPowerIcon>();
+			var powers = spm.Powers.Values.Where(p => !p.Disabled);
 
 			var i = 0;
 			var rb = RenderBounds;
-			foreach (var item in powers)
+			foreach (var p in powers)
 			{
 				var rect = new Rectangle(rb.X + 1, rb.Y + i * (48 + Spacing) + 1, 64, 48);
-				Icons.Add(rect, item);
+				var power = new SupportPowerIcon()
+				{
+					Power = p,
+					Pos = new float2(rect.Location),
+					Sprite = iconSprites[p.Info.Image]
+				};
+
+				Icons.Add(rect, power);
 				i++;
 			}
 
@@ -74,49 +95,44 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
-			var overlayFont = Game.Renderer.Fonts["TinyBold"];
-			var holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
-			var readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
-
 			// Background
-			foreach (var kv in Icons)
-				WidgetUtils.DrawPanel("panel-black", kv.Key.InflateBy(1,1,1,1));
+			foreach (var rect in Icons.Keys)
+				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1,1,1,1));
 
 			// Icons
-			foreach (var kv in Icons)
+			foreach (var p in Icons.Values)
 			{
-				var rect = kv.Key;
-				var power = spm.Powers[kv.Value];
-				var drawPos = new float2(rect.Location);
-				WidgetUtils.DrawSHP(iconSprites[power.Info.Image], drawPos, worldRenderer);
+				WidgetUtils.DrawSHP(p.Sprite, p.Pos, worldRenderer);
 
 				// Charge progress
 				clock.PlayFetchIndex("idle",
-					() => (power.TotalTime - power.RemainingTime)
-						* (clock.CurrentSequence.Length - 1) / power.TotalTime);
+					() => (p.Power.TotalTime - p.Power.RemainingTime)
+						* (clock.CurrentSequence.Length - 1) / p.Power.TotalTime);
 				clock.Tick();
-				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+				WidgetUtils.DrawSHP(clock.Image, p.Pos, worldRenderer);
 			}
 
-			// Overlays
-			foreach (var kv in Icons)
+			// Overlay
+			foreach (var p in Icons.Values)
 			{
-				var power = spm.Powers[kv.Value];
-				var drawPos = new float2(kv.Key.Location);
-
-				if (power.Ready)
+				if (p.Power.Ready)
 					overlayFont.DrawTextWithContrast("Ready",
-					                                 drawPos + readyOffset,
+					                                 p.Pos + readyOffset,
 					                                 Color.White, Color.Black, 1);
-				else if (!power.Active)
+				else if (!p.Power.Active)
 					overlayFont.DrawTextWithContrast("On Hold",
-					                                 drawPos + holdOffset,
+					                                 p.Pos + holdOffset,
+					                                 Color.White, Color.Black, 1);
+				else
+					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTime),
+					                                 p.Pos + timeOffset,
 					                                 Color.White, Color.Black, 1);
 			}
 		}
 
-		public override void Tick ()
+		public override void Tick()
 		{
+			// TODO: Only do this when the powers have changed
 			RefreshIcons();
 		}
 
@@ -136,9 +152,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				var power = Icons.Where(i => i.Key.Contains(mi.Location))
+				var icon = Icons.Where(i => i.Key.Contains(mi.Location))
 					.Select(i => i.Value).FirstOrDefault();
-				TooltipPower = (power != null) ? spm.Powers[power] : null;
+				TooltipPower = (icon != null) ? icon.Power : null;
 				return false;
 			}
 
@@ -149,7 +165,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				.Select(i => i.Value).FirstOrDefault();
 
 			if (clicked != null)
-				spm.Target(clicked);
+				spm.Target(clicked.Power.Info.OrderName);
 
 			return true;
 		}
