@@ -87,21 +87,28 @@ Background@PRODUCTION_TOOLTIP:
 			Y:39
 			Height:23
 			Font:Bold
+
 Background@SUPPORT_POWER_TOOLTIP:
 	Id:SUPPORT_POWER_TOOLTIP
 	Logic:SupportPowerTooltipLogic
 	Background:panel-black
 	Width:200
-	Height:45
+	Height:25
 	Children:
 		Label@NAME:
 			Id:NAME
 			X:5
-			Height:23
+			Height:20
 			Font:Bold
 		Label@TIME:
 			Id:TIME
+			X:20
+			Y:6
+			Font:TinyBold
+			VAlign:Top
+		Label@DESC:
+			Id:DESC
 			X:5
-			Y:19
-			Height:23
-			Font:Bold
+			Y:20
+			Font:TinyBold
+			VAlign:Top

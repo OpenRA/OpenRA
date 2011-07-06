@@ -25,10 +25,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			widget.IsVisible = () => palette.TooltipPower != null;
 			var nameLabel = widget.GetWidget<LabelWidget>("NAME");
 			var timeLabel = widget.GetWidget<LabelWidget>("TIME");
+			var descLabel = widget.GetWidget<LabelWidget>("DESC");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
+			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var name = "";
 			var time = "";
+			var desc = "";
+			var baseHeight = widget.Bounds.Height;
+			var timeOffset = timeLabel.Bounds.X;
 
 			SupportPowerManager.SupportPowerInstance lastPower = null;
 			tooltipContainer.BeforeRender = () =>
@@ -44,13 +49,19 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					return;
 
 				name = sp.Info.Description;
-				widget.Bounds.Width = 2*nameLabel.Bounds.X
-					+ Math.Max(nameFont.Measure(name).X, timeFont.Measure(time).X);
+				desc = sp.Info.LongDesc.Replace("\\n", "\n");
+				var timeWidth = timeFont.Measure(time).X;
+				var topWidth = nameFont.Measure(name).X + timeWidth + timeOffset;
+				var descSize = descFont.Measure(desc);
+				widget.Bounds.Width = 2*nameLabel.Bounds.X + Math.Max(topWidth, descSize.X);
+				widget.Bounds.Height = baseHeight + descSize.Y;
+				timeLabel.Bounds.X = widget.Bounds.Width - nameLabel.Bounds.X - timeWidth;
 				lastPower = sp;
 			};
 
 			nameLabel.GetText = () => name;
 			timeLabel.GetText = () => time;
+			descLabel.GetText = () => desc;
 		}
 	}
 }

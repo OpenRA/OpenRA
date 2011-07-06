@@ -331,8 +331,8 @@ HQ:
 	AirstrikePower:
 		Image: bombicnh
 		ChargeTime: 240
-		Description: Airstrike
-		LongDesc: Delivers a load of napalm on your target.
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
 		UnitType: a10
@@ -459,7 +459,7 @@ EYE:
 		Image: ionicnh
 		ChargeTime: 180
 		Description: Ion Cannon
-		LongDesc: Discharges the orbital Ion Cannon at your target.
+		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSound: ionchrg1.aud
 		EndChargeSound: ionredy1.aud
 		LaunchSound: ion1.aud
@@ -492,8 +492,8 @@ TMPL:
 	NukePower:
 		Image: atomicnh
 		ChargeTime: 300
-		Description: Atom Bomb
-		LongDesc: Launches a nuclear missile at a target location.
+		Description: Nuclear Strike
+		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
 		BeginChargeSound: 
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
