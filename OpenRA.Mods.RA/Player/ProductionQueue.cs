@@ -164,15 +164,15 @@ namespace OpenRA.Mods.RA
 			return Produceable.ContainsKey(actor) && Produceable[actor].Buildable;
 		}
 		
-		public virtual void Tick( Actor self )
+		public virtual void Tick(Actor self)
 		{		
-			while( Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item) )
+			while (Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item))
 			{
 				playerResources.GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
 				FinishProduction();
 			}
-			if( Queue.Count > 0 )
-				Queue[ 0 ].Tick( playerResources, PlayerPower );
+			if (Queue.Count > 0)
+				Queue[ 0 ].Tick(playerResources);
 		}
 
 		public void ResolveOrder( Actor self, Order order )
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
 						bool hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, (int)time, cost,
+						BeginProduction(new ProductionItem(this, order.TargetString, (int)time, cost, PlayerPower,
 								() => self.World.AddFrameEndTask(
 									_ =>
 									{
@@ -317,16 +317,25 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Item;
 		public readonly ProductionQueue Queue;
+		readonly PowerManager pm;
 		public readonly int TotalTime;
 		public readonly int TotalCost;
 		public int RemainingTime { get; private set; }
 		public int RemainingCost { get; private set; }
+		public int RemainingTimeActual
+		{
+			get
+			{
+				return (pm.PowerState == PowerState.Normal) ? RemainingTime :
+					RemainingTime * Queue.Info.LowPowerSlowdown;
+			}
+		}
 
 		public bool Paused = false, Done = false;
 		public Action OnComplete;
 		public int slowdown = 0;
 
-		public ProductionItem(ProductionQueue queue, string item, int time, int cost, Action onComplete)
+		public ProductionItem(ProductionQueue queue, string item, int time, int cost, PowerManager pm, Action onComplete)
 		{
 			if (time <= 0) time = 1;
 			Item = item;
@@ -334,11 +343,11 @@ namespace OpenRA.Mods.RA
 			RemainingCost = TotalCost = cost;
 			OnComplete = onComplete;
 			Queue = queue;
-
+			this.pm = pm;
 			//Log.Write("debug", "new ProductionItem: {0} time={1} cost={2}", item, time, cost);
 		}
 
-		public void Tick(PlayerResources pr, PowerManager pm)
+		public void Tick(PlayerResources pr)
 		{
 			if (Done)
 			{

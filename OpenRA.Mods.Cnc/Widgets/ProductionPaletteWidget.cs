@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public string Name;
 		public Sprite Sprite;
+		public float2 Pos;
 		public List<ProductionItem> Queued;
 	}
 
@@ -59,6 +60,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Rectangle eventBounds = Rectangle.Empty;
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
+		readonly SpriteFont overlayFont;
+		readonly float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 
 		[ObjectCreator.UseCtor]
 		public ProductionPaletteWidget([ObjectCreator.Param] World world,
@@ -79,6 +82,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 					u => u.Name,
 					u => Game.modData.SpriteLoader.LoadAllSprites(
                         u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
+
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
+			readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
+			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			queuedOffset = new float2(4,2);
 		}
 
 		public override void Tick()
@@ -185,9 +194,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var rect =  new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
 				var pi = new ProductionIcon()
 				{
+					Name = item.Name,
 					Sprite = iconSprites[item.Name],
+					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
-					Name = item.Name
 				};
 				Icons.Add(rect, pi);
 				i++;
@@ -204,22 +214,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var isBuildingSomething = CurrentQueue.CurrentItem() != null;
 			var buildableItems = CurrentQueue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
 			
-			var overlayFont = Game.Renderer.Fonts["TinyBold"];
-			var holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
-			var readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
-			var queuedOffset = new float2(4,2);
-
 			// Background
-			foreach (var kv in Icons)
-				WidgetUtils.DrawPanel("panel-black", kv.Key.InflateBy(1,1,1,1));
+			foreach (var rect in Icons.Keys)
+				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1,1,1,1));
 
 			// Icons
-			foreach (var kv in Icons)
+			foreach (var icon in Icons.Values)
 			{
-				var rect = kv.Key;
-				var icon = kv.Value;
-				var drawPos = new float2(rect.Location);
-				WidgetUtils.DrawSHP(icon.Sprite, drawPos, worldRenderer);
+				WidgetUtils.DrawSHP(icon.Sprite, icon.Pos, worldRenderer);
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -229,32 +231,36 @@ namespace OpenRA.Mods.Cnc.Widgets
 						() => (first.TotalTime - first.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
-					WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
+					WidgetUtils.DrawSHP(clock.Image, icon.Pos, worldRenderer);
 				}
 				else if (isBuildingSomething || !buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSHP(cantBuild.Image, drawPos, worldRenderer);
+					WidgetUtils.DrawSHP(cantBuild.Image, icon.Pos, worldRenderer);
 			}
 
 			// Overlays
-			foreach (var kv in Icons)
+			foreach (var icon in Icons.Values)
 			{
-				var drawPos = new float2(kv.Key.Location);
-				var total = kv.Value.Queued.Count;
+				var total = icon.Queued.Count;
 				if (total > 0)
 				{
-					var first = kv.Value.Queued[0];
+					var first = icon.Queued[0];
+					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
 						overlayFont.DrawTextWithContrast("Ready",
-						                                 drawPos + readyOffset,
+						                                 icon.Pos + readyOffset,
 						                                 Color.White, Color.Black, 1);
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast("On Hold",
-						                                 drawPos + holdOffset,
+						                                 icon.Pos + holdOffset,
+						                                 Color.White, Color.Black, 1);
+					else if (!waiting)
+						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual),
+						                                 icon.Pos + timeOffset,
 						                                 Color.White, Color.Black, 1);
 
-					if (total > 1 || (first != CurrentQueue.CurrentItem() && !first.Done))
+					if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
-						                                 drawPos + queuedOffset,
+						                                 icon.Pos + queuedOffset,
 						                                 Color.White, Color.Black, 1);
 				}
 			}
