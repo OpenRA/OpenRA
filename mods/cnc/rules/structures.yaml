@@ -412,13 +412,13 @@ HPAD:
 	Exit@1:
 		SpawnOffset: 0,-6
 	Production:
-		Produces: Plane
+		Produces: Aircraft
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
 	ProductionQueue:
-		Type: Plane
+		Type: Aircraft
 		Group: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3

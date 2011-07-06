@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public List<ProductionTab> Tabs = new List<ProductionTab>();
 		public string Group;
 		public int CumulativeCount;
+		public bool Alert { get { return Tabs.Any(t => t.Queue.CurrentDone); } }
 
 		public void Update(IEnumerable<ProductionQueue> allQueues)
 		{

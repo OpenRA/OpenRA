@@ -57,6 +57,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			button.IsDisabled = () => queueTabs.Groups[group].Tabs.Count == 0;
 			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
+
+			var chromeName = group.ToLowerInvariant();
+			var icon = button.GetWidget<ImageWidget>("ICON");
+			icon.GetImageName = () => button.IsDisabled() ? chromeName+"-disabled" :
+				queueTabs.Groups[group].Alert ? chromeName+"-alert" : chromeName;
 		}
 		
 		[ObjectCreator.UseCtor]

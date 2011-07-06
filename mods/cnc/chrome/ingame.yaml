@@ -192,46 +192,71 @@ Container@INGAME_ROOT:
 									Id:BUILDING
 									Width:30
 									Height:30
-									Text: B
 									Key: y
 									TooltipText: Buildings
 									TooltipContainer:TOOLTIP_CONTAINER
+									Children:
+										Image:
+											Id:ICON
+											X:7
+											Y:7
+											ImageCollection:production-icons
 								TooltipButton@DEFENSE:
 									Id:DEFENSE
 									X:35
 									Width:30
 									Height:30
-									Text: D
 									Key: u
 									TooltipText: Defense
 									TooltipContainer:TOOLTIP_CONTAINER
+									Children:
+										Image:
+											Id:ICON
+											X:7
+											Y:7
+											ImageCollection:production-icons
 								TooltipButton@INFANTRY:
 									Id:INFANTRY
 									X:70
 									Width:30
 									Height:30
-									Text: I
 									Key: i
 									TooltipText: Infantry
 									TooltipContainer:TOOLTIP_CONTAINER
+									Children:
+										Image:
+											Id:ICON
+											X:7
+											Y:7
+											ImageCollection:production-icons
 								TooltipButton@VEHICLE:
 									Id:VEHICLE
 									X:105
 									Width:30
 									Height:30
-									Text: V
 									Key: o
 									TooltipText: Vehicles
 									TooltipContainer:TOOLTIP_CONTAINER
+									Children:
+										Image:
+											Id:ICON
+											X:7
+											Y:7
+											ImageCollection:production-icons
 								TooltipButton@AIRCRAFT:
 									Id:AIRCRAFT
 									X:140
 									Width:30
 									Height:30
-									Text: H
 									Key: p
 									TooltipText: Aircraft
 									TooltipContainer:TOOLTIP_CONTAINER
+									Children:
+										Image:
+											Id:ICON
+											X:7
+											Y:7
+											ImageCollection:production-icons
 				ProductionTabs:
 					Id:PRODUCTION_TABS
 					PaletteWidget:PRODUCTION_PALETTE

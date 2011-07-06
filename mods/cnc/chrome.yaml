@@ -372,3 +372,23 @@ strategic: strategic.png
 sidebar-bits: chrome.png
 	left-indicator: 320,40,11,8
 	right-indicator: 325,40,11,8
+
+production-icons: chrome.png
+	building: 384,0,16,16
+	building-disabled: 400,0,16,16
+	building-alert: 416,0,16,16
+	defense: 384,16,16,16
+	defense-disabled: 400,16,16,16
+	defense-alert: 416,16,16,16
+	infantry: 384,32,16,16
+	infantry-disabled: 400,32,16,16
+	infantry-alert: 416,32,16,16
+	vehicle: 384,48,16,16
+	vehicle-disabled: 400,48,16,16
+	vehicle-alert: 416,48,16,16
+	aircraft: 432,0,16,16
+	aircraft-disabled: 448,0,16,16
+	aircraft-alert: 464,0,16,16
+	support: 432,16,16,16
+	support-disabled: 448,16,16,16
+	support-alert: 462,16,16,16

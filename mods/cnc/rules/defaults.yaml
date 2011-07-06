@@ -74,7 +74,7 @@
 		RearmBuildings:
 		LandWhenIdle: false
 	Buildable:
-		Queue: Plane
+		Queue: Aircraft
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
