@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			// Check production tabs
 			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
-			if (offsetloc.X > 0 && offsetloc.X <= ContentWidth)
+			if (offsetloc.X > 0 && offsetloc.X < ContentWidth)
 			{
 				var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 				palette.CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
