@@ -375,20 +375,31 @@ sidebar-bits: chrome.png
 
 production-icons: chrome.png
 	building: 384,0,16,16
-	building-disabled: 400,0,16,16
-	building-alert: 416,0,16,16
-	defense: 384,16,16,16
+	building-disabled: 384,16,16,16
+	building-alert: 384,32,16,16
+	defense: 400,0,16,16
 	defense-disabled: 400,16,16,16
-	defense-alert: 416,16,16,16
-	infantry: 384,32,16,16
-	infantry-disabled: 400,32,16,16
+	defense-alert: 400,32,16,16
+	infantry: 416,0,16,16
+	infantry-disabled: 416,16,16,16
 	infantry-alert: 416,32,16,16
-	vehicle: 384,48,16,16
-	vehicle-disabled: 400,48,16,16
-	vehicle-alert: 416,48,16,16
-	aircraft: 432,0,16,16
-	aircraft-disabled: 448,0,16,16
-	aircraft-alert: 464,0,16,16
-	support: 432,16,16,16
-	support-disabled: 448,16,16,16
-	support-alert: 462,16,16,16
+	vehicle: 432,0,16,16
+	vehicle-disabled: 432,16,16,16
+	vehicle-alert: 432,32,16,16
+	aircraft: 448,0,16,16
+	aircraft-disabled: 448,16,16,16
+	aircraft-alert: 448,32,16,16
+	support: 464,0,16,16
+	support-disabled: 464,16,16,16
+	support-alert: 464,32,16,16
+
+order-icons: chrome.png
+	options: 480,0,16,16
+	options-disabled: 480,16,16,16
+	options-active: 480,32,16,16
+	sell: 496,0,16,16
+	sell-disabled: 496,16,16,16
+	sell-active: 496,32,16,16
+	repair: 384,48,16,16
+	repair-disabled: 384,64,16,16
+	repair-active: 384,80,16,16

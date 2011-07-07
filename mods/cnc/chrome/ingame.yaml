@@ -94,36 +94,52 @@ Container@INGAME_ROOT:
 						TooltipButton@OPTIONS_BUTTON:
 							Id:OPTIONS_BUTTON
 							Key:escape
-							X:40
-							Y:0-24
-							Width:35
-							Height:25
-							Text:Opt
+							X:42
+							Y:0-29
+							Width:30
+							Height:30
 							Font:Bold
 							TooltipText: Menu
 							TooltipContainer:TOOLTIP_CONTAINER
+							Children:
+								Image:
+									Id:ICON
+									X:7
+									Y:7
+									ImageCollection:order-icons
+									ImageName:options
 						TooltipButton@SELL_BUTTON:
 							Id:SELL_BUTTON
 							Key: [
-							X:80
-							Y:0-24
-							Width:35
-							Height:25
-							Text:$
+							X:82
+							Y:0-29
+							Width:30
+							Height:30
 							Font:Bold
 							TooltipText: Sell
 							TooltipContainer:TOOLTIP_CONTAINER
+							Children:
+								Image:
+									Id:ICON
+									X:7
+									Y:7
+									ImageCollection:order-icons
 						TooltipButton@REPAIR_BUTTON:
 							Id:REPAIR_BUTTON
 							Key: ]
-							X:120
-							Y:0-24
-							Width:35
-							Height:25
-							Text:R
+							X:122
+							Y:0-29
+							Width:30
+							Height:30
 							Font:Bold
 							TooltipText: Repair
 							TooltipContainer:TOOLTIP_CONTAINER
+							Children:
+								Image:
+									Id:ICON
+									X:7
+									Y:7
+									ImageCollection:order-icons
 						Background@RADAR:
 							X:13
 							Y:5

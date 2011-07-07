@@ -85,13 +85,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
 
 				var sellButton = sidebarRoot.GetWidget<ButtonWidget>("SELL_BUTTON");
-				sellButton.IsDisabled = () => world.OrderGenerator is SellOrderGenerator;
 				sellButton.OnClick = () => world.ToggleInputMode<SellOrderGenerator>();
+				var sellIcon = sellButton.GetWidget<ImageWidget>("ICON");
+				sellIcon.GetImageName = () => world.OrderGenerator is SellOrderGenerator ? "sell-active" : "sell";
 
 				var repairButton = sidebarRoot.GetWidget<ButtonWidget>("REPAIR_BUTTON");
-				repairButton.IsDisabled = () => world.OrderGenerator is RepairOrderGenerator
-				                                || !RepairOrderGenerator.PlayerIsAllowedToRepair( world );
+				repairButton.IsDisabled = () => !RepairOrderGenerator.PlayerIsAllowedToRepair( world );
 				repairButton.OnClick = () => world.ToggleInputMode<RepairOrderGenerator>();
+				var repairIcon = repairButton.GetWidget<ImageWidget>("ICON");
+				repairIcon.GetImageName = () => repairButton.IsDisabled() ? "repair-disabled" :
+					world.OrderGenerator is RepairOrderGenerator ? "repair-active" : "repair";
 
 				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
