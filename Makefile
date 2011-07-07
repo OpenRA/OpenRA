@@ -7,25 +7,24 @@ PHONY		= core tools package all mods clean distclean
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc utility
 tools: editor ralint seqed filex tsbuild
-package: fixheader core editor
+package: core editor
 mods: mod_ra mod_cnc
 all: core tools
 clean: 
-	@-rm *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 distclean: clean
 
 #
 # Core binaries
 #
-fileformats_SRCS	= $(shell find OpenRA.FileFormats/ -iname '*.cs')
+fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	= OpenRA.FileFormats.dll
-#fileformats_DEPS	= fixheader
 fileformats_KIND	= library
 fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
 PROGRAMS 			= fileformats
 fileformats: $(fileformats_TARGET)
 
-game_SRCS			= $(shell find OpenRA.Game/ -iname '*.cs')
+game_SRCS			:= $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET			= OpenRA.Game.exe
 game_KIND			= winexe
 game_DEPS			= $(fileformats_TARGET) 
@@ -38,7 +37,7 @@ game: $(game_TARGET)
 #
 # Renderer dlls
 #
-rcg_SRCS			= $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
+rcg_SRCS			:= $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
 rcg_TARGET			= OpenRA.Renderer.Cg.dll
 rcg_KIND			= library
 rcg_DEPS			= $(fileformats_TARGET) $(game_TARGET)
@@ -46,7 +45,7 @@ rcg_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
 					thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
 					$(rcg_DEPS) $(game_TARGET)
 
-rgl_SRCS			= $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
+rgl_SRCS			:= $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
 rgl_TARGET			= OpenRA.Renderer.Gl.dll
 rgl_KIND			= library
 rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET)
@@ -54,8 +53,8 @@ rgl_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
 					thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
 					$(rgl_DEPS) $(game_TARGET)
 
-rnull_SRCS			= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET		= OpenRA.Renderer.Null.dll
+rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
+rnull_TARGET			= OpenRA.Renderer.Null.dll
 rnull_KIND			= library
 rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 rnull_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
@@ -67,31 +66,35 @@ renderers: $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET)
 # Official Mods
 #
 # Red Alert
-mod_ra_SRCS			= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
-mod_ra_TARGET		= mods/ra/OpenRA.Mods.RA.dll
+
+STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET)
+STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
+
+mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
+mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(fileformats_TARGET) $(game_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(mod_ra_DEPS)
+mod_ra_DEPS			= $(STD_MOD_DEPS)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS)
+mod_ra_EXTRA_CMDS		= mono RALint.exe ra
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
-#	mono RALint.exe ra
 
 # Command and Conquer
-mod_cnc_SRCS		= $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
+mod_cnc_SRCS		:= $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET		= mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND		= library
-mod_cnc_DEPS		= $(fileformats_TARGET) $(game_TARGET) $(mod_ra_TARGET)
-mod_cnc_LIBS		= $(COMMON_LIBS) $(mod_cnc_DEPS)
-PROGRAMS 			+= mod_cnc
+mod_cnc_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
+mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_cnc_EXTRA_CMDS	= mono RALint.exe cnc
+PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
-#	mono RALint.exe cnc
 
 #
 # Tools
 #
 # Sequence editor (defunct)
-seqed_SRCS			= $(shell find SequenceEditor/ -iname '*.cs')
-seqed_TARGET		= SequenceEditor.exe
+seqed_SRCS			:= $(shell find SequenceEditor/ -iname '*.cs')
+seqed_TARGET			= SequenceEditor.exe
 seqed_KIND			= winexe
 seqed_DEPS			= $(fileformats_TARGET)
 seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
@@ -102,8 +105,8 @@ SequenceEditor.Form1.resources:
 seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
 
 # Map Editor
-editor_SRCS			= $(shell find OpenRA.Editor/ -iname '*.cs')
-editor_TARGET		= OpenRA.Editor.exe
+editor_SRCS			:= $(shell find OpenRA.Editor/ -iname '*.cs')
+editor_TARGET			= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
@@ -118,8 +121,8 @@ OpenRA.Editor.Form1.resources:
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
-ralint_SRCS			= $(shell find RALint/ -iname '*.cs')
-ralint_TARGET		= RALint.exe
+ralint_SRCS			:= $(shell find RALint/ -iname '*.cs')
+ralint_TARGET			= RALint.exe
 ralint_KIND			= exe
 ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
@@ -127,8 +130,8 @@ PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
 
 # Extracts files from packages (mixfiles, zips, etc)
-filex_SRCS			= $(shell find FileExtractor/ -iname '*.cs')
-filex_TARGET		= FileExtractor.exe
+filex_SRCS			:= $(shell find FileExtractor/ -iname '*.cs')
+filex_TARGET			= FileExtractor.exe
 filex_KIND			= exe
 filex_DEPS			= $(fileformats_TARGET)
 filex_LIBS			= $(COMMON_LIBS) $(filex_DEPS)
@@ -136,7 +139,7 @@ PROGRAMS 			+= filex
 filex: $(filex_TARGET)
 
 # Builds and exports tilesets from a bitmap
-tsbuild_SRCS		= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
+tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
 tsbuild_TARGET		= TilesetBuilder.exe
 tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
@@ -151,12 +154,12 @@ tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
 # Launchers / Utilities
 #
 # Patches binary headers to work around a mono bug
-fixheader: packaging/fixheader.cs
+fixheader.exe: packaging/fixheader.cs
+	@echo CSC fixheader.exe
 	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
-PHONY += fixheader
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
-utility_SRCS		= $(shell find OpenRA.Utility/ -iname '*.cs')
+utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
 utility_DEPS        = $(fileformats_TARGET) $(game_TARGET)
@@ -171,7 +174,7 @@ utility: $(utility_TARGET)
 #
 define BUILD_ASSEMBLY
 
-$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
+$$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) fixheader.exe
 	@echo CSC $$(@)
 	@$(CSC) $$($(1)_LIBS:%=-r:%) \
 		-out:$$(@) $(CSFLAGS) $$($(1)_FLAGS) \
@@ -179,8 +182,9 @@ $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS)
 		-t:"$$($(1)_KIND)" \
 		$$($(1)_EXTRA) \
 		$$($(1)_SRCS)
-	@test -e fixheader.exe && mono fixheader.exe $$(@) || ``
+	@mono fixheader.exe $$(@) > /dev/null
 	@test `echo $$(@) | sed 's/^.*\.//'` = "dll" && chmod a-x $$(@) || ``
+	@$$($(1)_EXTRA_CMDS)
 endef
 
 $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
