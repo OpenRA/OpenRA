@@ -95,9 +95,9 @@ Container@INGAME_ROOT:
 							Id:OPTIONS_BUTTON
 							Key:escape
 							X:42
-							Y:0-29
+							Y:0-24
 							Width:30
-							Height:30
+							Height:25
 							Font:Bold
 							TooltipText: Menu
 							TooltipContainer:TOOLTIP_CONTAINER
@@ -105,16 +105,16 @@ Container@INGAME_ROOT:
 								Image:
 									Id:ICON
 									X:7
-									Y:7
+									Y:5
 									ImageCollection:order-icons
 									ImageName:options
 						TooltipButton@SELL_BUTTON:
 							Id:SELL_BUTTON
 							Key: [
 							X:82
-							Y:0-29
+							Y:0-24
 							Width:30
-							Height:30
+							Height:25
 							Font:Bold
 							TooltipText: Sell
 							TooltipContainer:TOOLTIP_CONTAINER
@@ -122,15 +122,15 @@ Container@INGAME_ROOT:
 								Image:
 									Id:ICON
 									X:7
-									Y:7
+									Y:5
 									ImageCollection:order-icons
 						TooltipButton@REPAIR_BUTTON:
 							Id:REPAIR_BUTTON
 							Key: ]
 							X:122
-							Y:0-29
+							Y:0-24
 							Width:30
-							Height:30
+							Height:25
 							Font:Bold
 							TooltipText: Repair
 							TooltipContainer:TOOLTIP_CONTAINER
@@ -138,7 +138,7 @@ Container@INGAME_ROOT:
 								Image:
 									Id:ICON
 									X:7
-									Y:7
+									Y:5
 									ImageCollection:order-icons
 						Background@RADAR:
 							X:13
