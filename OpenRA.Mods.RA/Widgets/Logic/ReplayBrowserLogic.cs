@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			this.widget = widget;
 
-			widget.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnMouseUp = mi => Widget.CloseWindow();
+			widget.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => Widget.CloseWindow();
 
 			/* find some replays? */
 			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
 					AddReplay(rl, replayFile, template);
 
-			widget.GetWidget<ButtonWidget>("WATCH_BUTTON").OnMouseUp = mi =>
+			widget.GetWidget<ButtonWidget>("WATCH_BUTTON").OnClick = () =>
 			{
 				if (currentReplay != null)
 				{
