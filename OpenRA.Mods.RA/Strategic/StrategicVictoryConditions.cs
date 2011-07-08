@@ -33,8 +33,6 @@ namespace OpenRA.Mods.RA
 		Actor self;
 		StrategicVictoryConditionsInfo info;
 
-		public float RatioRequired;
-		public float CriticalRatioRequired;
 		[Sync] public bool SplitHolds;
 		[Sync] public int TicksLeft = 0;
 		[Sync] public int CriticalTicksLeft = 0;
@@ -43,9 +41,6 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			this.info = info;
-
-			RatioRequired = info.RatioRequired;
-			CriticalRatioRequired = info.CriticalRatioRequired;
 			SplitHolds = info.SplitHolds;
 		}
 
@@ -103,7 +98,7 @@ namespace OpenRA.Mods.RA
 			{
 				var criticalOwned = 1f / TotalCritical * OwnedCritical;
 
-				return (criticalOwned >= CriticalRatioRequired);
+				return criticalOwned >= info.CriticalRatioRequired;
 			}
 		}
 
@@ -113,7 +108,7 @@ namespace OpenRA.Mods.RA
 			{
 				var owned = 1f / Total * Owned;
 
-				return (owned >= RatioRequired);
+				return owned >= info.RatioRequired;
 			}
 		}
 
