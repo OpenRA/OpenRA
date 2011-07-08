@@ -410,8 +410,8 @@ namespace OpenRA.Mods.RA
 		void DeployMcv(Actor self)
 		{
 			/* find our mcv and deploy it */
-            var mcv = self.World.Actors
-                .FirstOrDefault(a => a.Owner == p && a.Info == Rules.Info["mcv"]);
+			var mcv = self.World.Actors
+				.FirstOrDefault(a => a.Owner == p && a.Info == Rules.Info["mcv"]);
 
 			if (mcv != null)
 			{
