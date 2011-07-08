@@ -210,7 +210,6 @@ namespace OpenRA.Mods.RA
 				//e.g. ClearAreaAroundSpawnPoints();
 				//e.g. start repairing damaged buildings.
 				BuildRandom("Vehicle");
-                BuildRandom("Vehicle");
 				BuildRandom("Infantry");
 				BuildRandom("Plane");
 			}
