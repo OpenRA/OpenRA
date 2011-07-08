@@ -90,6 +90,11 @@ namespace OpenRA.FileFormats
 			UnknownFieldAction( key.Trim(), self.GetType() );
 		}
 
+		public static T GetValue<T>( string field, string value )
+		{
+			return (T) GetValue( field, typeof(T), value );
+		}
+
 		public static object GetValue( string field, Type fieldType, string x )
 		{
 			if (x != null) x = x.Trim();
