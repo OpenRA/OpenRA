@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			[ObjectCreator.Param] string host,
 			[ObjectCreator.Param] int port )
 		{
-			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_ABORT").OnMouseUp = mi => {
+			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_ABORT").OnClick = () => {
 				widget.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
 				Game.Disconnect();
 				Game.LoadShellMap();
@@ -41,14 +41,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			[ObjectCreator.Param] Widget widget,
 		    [ObjectCreator.Param] OrderManager orderManager)
 		{
-			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_CANCEL").OnMouseUp = mi => {
+			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_CANCEL").OnClick = () => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;
 				Game.Disconnect();
 				Game.LoadShellMap();
 				Widget.CloseWindow();
 				Widget.OpenWindow("MAINMENU_BG");
 			};
-			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_RETRY").OnMouseUp = mi =>
+			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_RETRY").OnClick = () =>
 				Game.JoinServer(orderManager.Host, orderManager.Port);
 
 			widget.GetWidget<LabelWidget>("CONNECTION_FAILED_DESC").GetText = () => string.IsNullOrEmpty(orderManager.ServerError) ? 
