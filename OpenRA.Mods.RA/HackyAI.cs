@@ -437,23 +437,8 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var unit = ChooseRandomUnitToBuild(queue);
-			Boolean found = false;
-			if (unit != null)
-			{
-				foreach (var un in Info.UnitsToBuild)
-				{
-					if (un.Key == unit.Name)
-					{
-						found = true;
-						break;
-					}
-				}
-
-				if (found == true)
-				{
-					world.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
-				}
-			}
+			if (unit != null && Info.UnitsToBuild.Any( u => u.Key == unit.Name ))
+				world.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
 		}
 
 		class BaseBuilder
