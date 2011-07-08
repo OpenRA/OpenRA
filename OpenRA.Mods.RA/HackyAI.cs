@@ -305,7 +305,7 @@ namespace OpenRA.Mods.RA
 					{
 						// Found enemy units nearby.
 						foundEnemy = true;
-						var enemy = enemyUnits.OrderBy(e => (e.Location - a1.Location).LengthSquared).First();
+						var enemy = enemyUnits.ClosestTo( a1.CenterLocation );
 
 						// Check how many own units we have gathered nearby...
 						var ownUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 2)

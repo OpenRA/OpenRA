@@ -101,8 +101,7 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.Owner != null && a.AppearsHostileTo(self))
 				.Where(a => !a.HasTrait<AutoTargetIgnore>())
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-				.FirstOrDefault();
+				.ClosestTo( self.CenterLocation );
 		}
 	}
 

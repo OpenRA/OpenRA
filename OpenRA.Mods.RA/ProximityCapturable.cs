@@ -174,8 +174,7 @@ namespace OpenRA.Mods.RA
         // TODO exclude other NeutralActor that arent permanent
         Actor GetInRange(Actor self)
         {
-            return CaptorsInRange(self).OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-                .FirstOrDefault();
+            return CaptorsInRange(self).ClosestTo( self.CenterLocation );
         }
 
         int CountPlayersNear(Actor self, Player ignoreMe)

@@ -25,13 +25,13 @@ namespace OpenRA.Mods.RA.Air
 
 		public static Actor ChooseAirfield(Actor self)
 		{
-            return self.World.ActorsWithTrait<Reservable>()
-                .Where(a => a.Actor.Owner == self.Owner)
-                .Where(a => self.Info.Traits.Get<PlaneInfo>().RearmBuildings.Contains(a.Actor.Info.Name)
-                    && !Reservable.IsReserved(a.Actor))
-                .OrderBy(a => (a.Actor.CenterLocation - self.CenterLocation).LengthSquared)
-                .Select(a => a.Actor)
-                .FirstOrDefault();
+			var rearmBuildings = self.Info.Traits.Get<PlaneInfo>().RearmBuildings;
+			return self.World.ActorsWithTrait<Reservable>()
+				.Where(a => a.Actor.Owner == self.Owner)
+				.Where(a => rearmBuildings.Contains(a.Actor.Info.Name)
+					&& !Reservable.IsReserved(a.Actor))
+				.Select(a => a.Actor)
+				.ClosestTo( self.CenterLocation );
 		}
 
 		void Calculate(Actor self)

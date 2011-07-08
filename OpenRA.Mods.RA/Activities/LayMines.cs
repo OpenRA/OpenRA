@@ -32,15 +32,13 @@ namespace OpenRA.Mods.RA.Activities
 				var buildings = self.Info.Traits.Get<MinelayerInfo>().RearmBuildings;
 				var rearmTarget = self.World.Actors.Where(a => a.Owner != null && self.Owner.Stances[a.Owner] == Stance.Ally
 					&& buildings.Contains(a.Info.Name))
-					.OrderBy( a => (a.Location - self.Location).LengthSquared )
-					.FirstOrDefault();
+					.ClosestTo( self.CenterLocation );
 
 				if (rearmTarget == null)
 					return new Wait(20);
 
 				return Util.SequenceActivities(
 					new Enter(rearmTarget),
-					//new Move(Util.CellContaining(rearmTarget.CenterLocation), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
 					this );

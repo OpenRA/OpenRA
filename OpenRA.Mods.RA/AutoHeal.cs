@@ -28,8 +28,7 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.HasTrait<Health>() && a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.OrderBy(a => (a.CenterLocation - self.CenterLocation).LengthSquared)
-				.FirstOrDefault();
+				.ClosestTo( self.CenterLocation );
 			
 			if( target != null )
 				self.QueueActivity(self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( target ), false ));

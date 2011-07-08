@@ -34,6 +34,11 @@ namespace OpenRA
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
 		}
 
+		public static Actor ClosestTo( this IEnumerable<Actor> actors, int2 px )
+		{
+			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
+		}
+
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, int2 a, int r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
