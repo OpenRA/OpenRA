@@ -29,10 +29,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			gameRoot = r.GetWidget("OBSERVER_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 			
-			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnMouseUp = mi =>
+			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
 			
-			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnMouseUp = mi =>
+			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
 				optionsBG.Visible = false;
 				Game.Disconnect();
@@ -41,11 +41,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Widget.OpenWindow("MAINMENU_BG");
 			};
 			
-			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnMouseUp = mi => Widget.OpenWindow("SETTINGS_MENU");
-			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnMouseUp = mi => Widget.OpenWindow("MUSIC_MENU");
-			optionsBG.GetWidget<ButtonWidget>("RESUME").OnMouseUp = mi => optionsBG.Visible = false;
+			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
+			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
+			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 			optionsBG.GetWidget<ButtonWidget>("SURRENDER").IsVisible = () => false;
-			optionsBG.GetWidget<ButtonWidget>("QUIT").OnMouseUp = mi => Game.Exit();
+			optionsBG.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 		}
 		
 		public void UnregisterEvents()
