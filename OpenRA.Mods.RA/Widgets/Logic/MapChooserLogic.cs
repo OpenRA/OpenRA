@@ -43,13 +43,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
 			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
 
-			bg.GetWidget<ButtonWidget>("BUTTON_OK").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
 			{
 				orderManager.IssueOrder(Order.Command("map " + Map.Uid));
 				Widget.CloseWindow();
 			};
 
-			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi => Widget.CloseWindow();
+			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => Widget.CloseWindow();
 			
 			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
