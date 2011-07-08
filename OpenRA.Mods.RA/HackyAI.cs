@@ -18,13 +18,9 @@ using XRandom = OpenRA.Thirdparty.Random;
 
 
 //TODO:
-// [y] never give harvesters orders
-// maybe move rally points when a rally point gets blocked (by units or buildings)
-// Don't send attack forces to your own spawn point
 // effectively clear the area around the production buildings' spawn points.
 // don't spam the build unit button, only queue one unit then wait for the backoff period.
 //    just make the build unit action only occur once every second.
-// build defense buildings
 
 // later:
 // don't build units randomly, have a method to it.
