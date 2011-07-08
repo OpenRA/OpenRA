@@ -47,7 +47,10 @@ namespace OpenRA.Widgets
 					var left = new int2(r.Right - x, r.Bottom - y);
 					if (left.X < (int)s.size.X || left.Y < (int)s.size.Y)
 					{
-						Rectangle rr = new Rectangle(s.bounds.Left,s.bounds.Top,Math.Min(left.X,(int)s.size.X),Math.Min(left.Y,(int)s.size.Y));
+						var rr = new Rectangle(s.bounds.Left,
+							s.bounds.Top,
+							Math.Min(left.X,(int)s.size.X),
+							Math.Min(left.Y,(int)s.size.Y));
 						ss = new Sprite(s.sheet,rr,s.channel);
 					}
 					DrawRGBA(ss, new float2(x, y));
