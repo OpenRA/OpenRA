@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -108,36 +109,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ml.AddChild(item);
 			}
 		}
-		
-		string GetNextSong()
+
+		string ChooseSong( IEnumerable<string> songs )
 		{
-			var songs = Rules.Music.Where(a => a.Value.Exists)
-				.Select(a => a.Key);
-			
 			if (!songs.Any())
 				return null;
-			
+
 			if (Game.Settings.Sound.Shuffle)
 				return songs.Random(Game.CosmeticRandom);
-			
+
 			return songs.SkipWhile(m => m != CurrentSong)
 				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+		}
 
+		string GetNextSong()
+		{
+			return ChooseSong( Rules.Music.Where( a => a.Value.Exists ).Select( a => a.Key ) );
 		}
 
 		string GetPrevSong()
 		{
-			var songs = Rules.Music.Where(a => a.Value.Exists)
-				.Select(a => a.Key).Reverse();
-			
-			if (!songs.Any())
-				return null;
-			
-			if (Game.Settings.Sound.Shuffle)
-				return songs.Random(Game.CosmeticRandom);
-			
-			return songs.SkipWhile(m => m != CurrentSong)
-				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+			return ChooseSong( Rules.Music.Where( a => a.Value.Exists ).Select( a => a.Key ).Reverse() );
 		}
 	}
 }
