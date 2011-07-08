@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
 			var diplomacy = root.GetWidget<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
 			
-			diplomacy.OnMouseUp = mi =>
+			diplomacy.OnClick = () =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
 				if (diplomacyBG.IsVisible())
