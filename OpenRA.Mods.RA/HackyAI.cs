@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA
 			this.p = p;
 			enabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
-            builders = new BaseBuilder[] {
+			builders = new BaseBuilder[] {
 				new BaseBuilder( this, "Building", q => ChooseBuildingToBuild(q, true) ),
 				new BaseBuilder( this, "Defense", q => ChooseBuildingToBuild(q, false) ) };
 		}
