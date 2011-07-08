@@ -22,8 +22,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var settings = Game.Settings;
 
-			cs.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnMouseUp = mi => Widget.CloseWindow();
-			cs.GetWidget<ButtonWidget>("BUTTON_START").OnMouseUp = mi =>
+			cs.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => Widget.CloseWindow();
+			cs.GetWidget<ButtonWidget>("BUTTON_START").OnClick = () =>
 			{
 				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
