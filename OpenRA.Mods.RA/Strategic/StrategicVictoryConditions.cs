@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	/// <summary>
 	/// Attach to players only kthx :)
 	/// </summary>
-	public class StrategicVictoryConditionsInfo : ITraitInfo
+	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<ConquestVictoryConditionsInfo>
 	{
 		public readonly int TicksToHold = 25 * 60 * 5; // ~5 minutes
 		public readonly bool ResetOnHoldLost = true;
@@ -116,10 +116,6 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
 
-			var cvc = self.TraitOrDefault<ConquestVictoryConditions>();
-			if (cvc == null)
-				return; // Cannot work without ConquestVictoryConditions
-
 			// See if any of the conditions are met to increase the count
 			if (TotalCritical > 0)
 			{
@@ -188,7 +184,7 @@ namespace OpenRA.Mods.RA
 			// Player has won
 			foreach (var p in self.World.Players)
 			{
-				var cvc = p.PlayerActor.TraitOrDefault<ConquestVictoryConditions>();
+				var cvc = p.PlayerActor.Trait<ConquestVictoryConditions>();
 
 				if ((p.WinState == WinState.Undefined) && (p == self.Owner || (p.Stances[self.Owner] == Stance.Ally && self.Owner.Stances[p] == Stance.Ally)))
 				{
