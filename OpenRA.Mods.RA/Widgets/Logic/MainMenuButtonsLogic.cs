@@ -25,12 +25,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public MainMenuButtonsLogic([ObjectCreator.Param] Widget widget)
 		{
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "PERF_BG" );
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnMouseUp = mi => Widget.OpenWindow("JOINSERVER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnMouseUp = mi => Widget.OpenWindow("CREATESERVER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnMouseUp = mi => Widget.OpenWindow("SETTINGS_MENU");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnMouseUp = mi => Widget.OpenWindow("MUSIC_MENU");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnMouseUp = mi => Widget.OpenWindow("REPLAYBROWSER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnMouseUp = mi => Game.Exit();
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => Widget.OpenWindow("JOINSERVER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => Widget.OpenWindow("CREATESERVER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnClick = () => Widget.OpenWindow("REPLAYBROWSER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnClick = () => Game.Exit();
 			
 			DisplayModSelector();
 		}
