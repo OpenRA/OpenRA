@@ -157,18 +157,20 @@ namespace OpenRA.Widgets
 		
 		public static string WrapText(string text, int width, SpriteFont font)
 		{
-			int2 textSize = font.Measure(text);
+			var textSize = font.Measure(text);
 			if (textSize.X > width)
 			{
-				string[] lines = text.Split('\n');
-				List<string> newLines = new List<string>();
-				int i = 0;
-				string line = lines[i++];
-				while (true)
+				var lines = text.Split('\n');
+				var newLines = new List<string>();
+				var i = 0;
+				var line = lines[i++];
+
+				for(;;)
 				{
 					newLines.Add(line);
-					int2 m = font.Measure(line);
-					int spaceIndex = 0, start = line.Length - 1;
+					var m = font.Measure(line);
+					var spaceIndex = 0;
+					var start = line.Length - 1;
 					
 					if (m.X <= width)
 					{
