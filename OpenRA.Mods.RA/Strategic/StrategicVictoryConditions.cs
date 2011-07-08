@@ -31,10 +31,8 @@ namespace OpenRA.Mods.RA
 	public class StrategicVictoryConditions : ITick, ISync
 	{
 		Actor self;
-		public StrategicVictoryConditionsInfo Info;
+		StrategicVictoryConditionsInfo info;
 
-		[Sync] public int TicksToHold;
-		[Sync] public bool ResetOnHoldLost;
 		public float RatioRequired;
 		public float CriticalRatioRequired;
 		[Sync] public bool SplitHolds;
@@ -44,10 +42,8 @@ namespace OpenRA.Mods.RA
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo info)
 		{
 			this.self = self;
-			Info = info;
+			this.info = info;
 
-			TicksToHold = info.TicksToHold;
-			ResetOnHoldLost = info.ResetOnHoldLost;
 			RatioRequired = info.RatioRequired;
 			CriticalRatioRequired = info.CriticalRatioRequired;
 			SplitHolds = info.SplitHolds;
@@ -138,7 +134,7 @@ namespace OpenRA.Mods.RA
 					if (CriticalTicksLeft == 0)
 					{
 						// First time
-						CriticalTicksLeft = TicksToHold;
+						CriticalTicksLeft = info.TicksToHold;
 					}
 					else
 					{
@@ -153,9 +149,9 @@ namespace OpenRA.Mods.RA
 				else if (CriticalTicksLeft != 0)
 				{
 					// we lost the hold :/
-					if (ResetOnHoldLost)
+					if (info.ResetOnHoldLost)
 					{
-						CriticalTicksLeft = TicksToHold; // Reset the time hold
+						CriticalTicksLeft = info.TicksToHold; // Reset the time hold
 					}
 				}
 			}
@@ -169,7 +165,7 @@ namespace OpenRA.Mods.RA
 					if (TicksLeft == 0)
 					{
 						// First time
-						TicksLeft = TicksToHold;
+						TicksLeft = info.TicksToHold;
 					}
 					else
 					{
@@ -184,9 +180,9 @@ namespace OpenRA.Mods.RA
 				else if (TicksLeft != 0)
 				{
 					// we lost the hold :/
-					if (ResetOnHoldLost)
+					if (info.ResetOnHoldLost)
 					{
-						TicksLeft = TicksToHold; // Reset the time hold
+						TicksLeft = info.TicksToHold; // Reset the time hold
 					}
 				}
 			}
