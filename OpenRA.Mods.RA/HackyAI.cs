@@ -422,17 +422,18 @@ namespace OpenRA.Mods.RA
 				BotDebug("AI: Can't find the MCV.");
 		}
 
+		internal IEnumerable<ProductionQueue> FindQueues(string category)
+		{
+			return world.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == category)
+				.Select(a => a.Trait);
+		}
+
 		//Build a random unit of the given type. Not going to be needed once there is actual AI...
 		void BuildRandom(string category)
 		{
 			// Pick a free queue
-			var queue = world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p &&
-					   a.Trait.Info.Type == category &&
-					   a.Trait.CurrentItem() == null)
-				.Select(a => a.Trait)
-				.FirstOrDefault();
-
+			var queue = FindQueues( category ).FirstOrDefault( q => q.CurrentItem() == null );
 			if (queue == null)
 				return;
 
@@ -459,11 +460,7 @@ namespace OpenRA.Mods.RA
 			public void Tick()
 			{
 				// Pick a free queue
-				var queue = ai.world.ActorsWithTrait<ProductionQueue>()
-					.Where(a => a.Actor.Owner == ai.p && a.Trait.Info.Type == category)
-					.Select(a => a.Trait)
-					.FirstOrDefault();
-
+				var queue = ai.FindQueues( category ).FirstOrDefault();
 				if (queue == null)
 					return;
 
