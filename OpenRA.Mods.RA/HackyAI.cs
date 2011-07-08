@@ -303,7 +303,6 @@ namespace OpenRA.Mods.RA
 
 					if (enemyUnits.Count > 0)
 					{
-						//BotDebug("Found enemy "+enemyUnits.First().Info.Name);
 						// Found enemy units nearby.
 						foundEnemy = true;
 						var enemy = enemyUnits.OrderBy(e => (e.Location - a1.Location).LengthSquared).First();
@@ -314,7 +313,7 @@ namespace OpenRA.Mods.RA
 						if (ownUnits.Count < Info.SquadSize)
 						{
 							// Not enough to attack. Send more units.
-							world.IssueOrder(new Order("Stop", a1, false) { });
+							world.IssueOrder(new Order("Stop", a1, false));
 
 							foreach (var a2 in attackForce)
 								if (a2 != a1)
