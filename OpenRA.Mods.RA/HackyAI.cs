@@ -283,13 +283,13 @@ namespace OpenRA.Mods.RA
 					attackTarget = ChooseEnemyTarget();
 					if (attackTarget == null)
 						return;
+
+					foreach (var a in unitsHangingAroundTheBase)
+						if (TryToMove(a, attackTarget.Value, true))
+							attackForce.Add(a);
+
+					unitsHangingAroundTheBase.Clear();
 				}
-
-				foreach (var a in unitsHangingAroundTheBase)
-					if (TryToMove(a, attackTarget.Value, true))
-						attackForce.Add(a);
-
-				unitsHangingAroundTheBase.Clear();
 			}
 
 			// If we have any attackers, let them scan for enemy units and stop and regroup if they spot any
