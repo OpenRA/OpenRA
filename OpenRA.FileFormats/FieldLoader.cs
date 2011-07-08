@@ -313,15 +313,20 @@ namespace OpenRA.FileFormats
 					((int)c.G).Clamp(0, 255),
 					((int)c.B).Clamp(0, 255));
 			}
-			else if (f.FieldType == typeof(Rectangle))
+
+			if (f.FieldType == typeof(Rectangle))
 			{
 				var r = (Rectangle)v;
 				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
 			}
-			
-			return f.FieldType.IsArray
-				? string.Join(",", ((Array)v).OfType<object>().Select(a => a.ToString()).ToArray())
-				: v.ToString();
+
+			if (f.FieldType.IsArray)
+			{
+				var elems = ((Array)v).OfType<object>();
+				return string.Join(",", elems.Select(a => a.ToString()).ToArray());
+			}
+
+			return v.ToString();
 		}
 	}
 
