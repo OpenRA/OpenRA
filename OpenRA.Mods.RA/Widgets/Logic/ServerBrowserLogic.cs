@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			ServerTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
 
-			bg.GetWidget<ButtonWidget>("REFRESH_BUTTON").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("REFRESH_BUTTON").OnClick = () =>
 			{
 				bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
@@ -63,14 +63,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ServerList.Query(RefreshServerList);
 			};
 
-			bg.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnMouseUp = mi => Widget.CloseWindow();
-			bg.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => Widget.CloseWindow();
+			bg.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
 			{
 				Widget.CloseWindow();
 				Widget.OpenWindow("DIRECTCONNECT_BG");
 			};
 
-			bg.GetWidget<ButtonWidget>("JOIN_BUTTON").OnMouseUp = mi =>
+			bg.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				if (currentServer == null)
 					return;
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
 
-            dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnMouseUp = mi =>
+            dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
             {
                 var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
                 var cpts = address.Split(':').ToArray();
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
                 Game.JoinServer(cpts[0], port);
             };
 
-			dc.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnMouseUp = mi =>
+			dc.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
 				Widget.CloseWindow();
 				Widget.OpenWindow("MAINMENU_BG");
