@@ -82,10 +82,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void ShowInstallMethodDialog()
 		{
 			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
-			window.GetWidget<ButtonWidget>("DOWNLOAD").OnMouseUp = mi => ShowDownloadDialog();
-			window.GetWidget<ButtonWidget>("FROMCD").OnMouseUp = mi => PromptForCD();
+			window.GetWidget<ButtonWidget>("DOWNLOAD").OnClick = () => ShowDownloadDialog();
+			window.GetWidget<ButtonWidget>("FROMCD").OnClick = () => PromptForCD();
 					
-			window.GetWidget<ButtonWidget>("QUIT").OnMouseUp = mi => Game.Exit();
+			window.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 		}
 		
 		void PromptForCD()
@@ -105,8 +105,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// TODO: Handle cancelling copy
 			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
-			window.GetWidget<ButtonWidget>("CANCEL").OnMouseUp = mi => ShowInstallMethodDialog();
-			window.GetWidget<ButtonWidget>("RETRY").OnMouseUp = mi => PromptForCD();
+			window.GetWidget<ButtonWidget>("CANCEL").OnClick = () => ShowInstallMethodDialog();
+			window.GetWidget<ButtonWidget>("RETRY").OnClick = () => PromptForCD();
 			
 			var t = new Thread( _ =>
 			{
@@ -159,8 +159,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			
 			var dl = new Download(Info.PackageURL, file, onDownloadChange, onDownloadComplete);
-			window.GetWidget<ButtonWidget>("CANCEL").OnMouseUp = mi => { dl.Cancel(); ShowInstallMethodDialog(); };
-			window.GetWidget<ButtonWidget>("RETRY").OnMouseUp = mi => { dl.Cancel(); ShowDownloadDialog(); };
+			window.GetWidget<ButtonWidget>("CANCEL").OnClick = () => { dl.Cancel(); ShowInstallMethodDialog(); };
+			window.GetWidget<ButtonWidget>("RETRY").OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
 		}
 		
 		void ShowError(Widget window, string e)
