@@ -66,7 +66,7 @@ namespace OpenRA.FileFormats
 					if (!syms.ContainsKey(t))
 						throw new InvalidOperationException("Substitution `{0}` undefined".F(t));
 					    
-					yield return syms[t].ToString();;
+					yield return syms[t].ToString();
 				}
 				else
 				{

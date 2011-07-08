@@ -496,7 +496,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var spec = NewSpectatorTemplate.Clone();
 				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");
-				btn.OnMouseUp = _ => orderManager.IssueOrder(Order.Command("spectate"));;
+				btn.OnMouseUp = _ => orderManager.IssueOrder(Order.Command("spectate"));
 				spec.IsVisible = () => true;
 				Players.AddChild(spec);
 			}
