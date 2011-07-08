@@ -43,21 +43,15 @@ namespace OpenRA.Mods.RA
 		[FieldLoader.LoadUsing("LoadBuildings")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
-		static object LoadUnits(MiniYaml y)
+		static object LoadActorList(MiniYaml y, string field)
 		{
-			Dictionary<string, float> ret = new Dictionary<string, float>();
-			foreach (var t in y.NodesDict["UnitsToBuild"].Nodes)
-				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));
-			return ret;
+			return y.NodesDict[field].Nodes.ToDictionary(
+				t => t.Key,
+				t => FieldLoader.GetValue<float>(field, t.Value.Value));
 		}
 
-		static object LoadBuildings(MiniYaml y)
-		{
-			Dictionary<string, float> ret = new Dictionary<string, float>();
-			foreach (var t in y.NodesDict["BuildingFractions"].Nodes)
-				ret.Add(t.Key, (float)FieldLoader.GetValue("units", typeof(float), t.Value.Value));
-			return ret;
-		}
+		static object LoadUnits(MiniYaml y) { return LoadActorList(y, "UnitsToBuild"); }
+		static object LoadBuildings(MiniYaml y) { return LoadActorList(y, "BuildingFractions"); }
 
 		public object Create(ActorInitializer init) { return new HackyAI(this); }
 	}
