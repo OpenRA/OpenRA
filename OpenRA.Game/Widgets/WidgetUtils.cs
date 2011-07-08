@@ -142,6 +142,11 @@ namespace OpenRA.Widgets
 		public static string FormatTime(int ticks)
 		{
 			var seconds = (int)Math.Ceiling(ticks / 25f);
+			return FormatTimeSeconds( seconds );
+		}
+
+		public static string FormatTimeSeconds(int seconds)
+		{
 			var minutes = seconds / 60;
 
 			if (minutes >= 60)
