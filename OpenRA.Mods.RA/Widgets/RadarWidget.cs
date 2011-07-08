@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if( world == null || world.LocalPlayer == null ) return;
+			if (world == null) return;
 
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA.Widgets
 		int updateTicks = 0;
 		public override void Tick()
 		{
-			var hasRadarNew = world
+			var hasRadarNew = world.LocalPlayer == null || world
 				.ActorsWithTrait<ProvidesRadar>()
 				.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 			

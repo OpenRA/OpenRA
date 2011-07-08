@@ -76,10 +76,33 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 			
 			ingameRoot = widget.GetWidget("INGAME_ROOT");
+			var playerRoot = ingameRoot.GetWidget("PLAYER_ROOT");
 			
-			if (world.LocalPlayer != null)
+			Action onOptionsClick = () =>
 			{
-				var playerWidgets = widget.GetWidget("PLAYER_WIDGETS");
+				if (menu != MenuType.None)
+				{
+					Widget.CloseWindow();
+					menu = MenuType.None;
+				}
+
+				ingameRoot.IsVisible = () => false;
+				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
+				{
+					{ "onExit", () => ingameRoot.IsVisible = () => true }
+				});
+			};
+
+			// Observer
+			if (world.LocalPlayer == null)
+			{
+				var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+				observerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = onOptionsClick;
+			}
+			else
+			{
+				// Real player
+				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				playerWidgets.IsVisible = () => true;
 
 				var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
@@ -110,46 +133,33 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("INFANTRY"), "Infantry");
 				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("VEHICLE"), "Vehicle");
 				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("AIRCRAFT"), "Aircraft");
+
+				playerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = onOptionsClick;
+
+				var cheatsButton = playerWidgets.GetWidget<ButtonWidget>("CHEATS_BUTTON");
+				cheatsButton.OnClick = () =>
+				{
+					if (menu != MenuType.None)
+						Widget.CloseWindow();
+
+					menu = MenuType.Cheats;
+					Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
+				};
+				cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
+
+				var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
+				postgameBG.IsVisible = () =>
+				{
+					return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
+				};
+
+				postgameBG.GetWidget<LabelWidget>("TEXT").GetText = () =>
+				{
+					var state = world.LocalPlayer.WinState;
+					return (state == WinState.Undefined)? "" :
+									((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
+				};
 			}
-
-			ingameRoot.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = () =>
-			{
-				if (menu != MenuType.None)
-				{
-					Widget.CloseWindow();
-					menu = MenuType.None;
-				}
-				
-				ingameRoot.IsVisible = () => false;
-				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
-				{
-					{ "onExit", () => ingameRoot.IsVisible = () => true }
-				});
-			};
-
-			var cheatsButton = ingameRoot.GetWidget<ButtonWidget>("CHEATS_BUTTON");
-			cheatsButton.OnClick = () =>
-			{
-				if (menu != MenuType.None)
-					Widget.CloseWindow();
-				
-				menu = MenuType.Cheats;
-				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
-			};
-			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
-			
-			var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
-			postgameBG.IsVisible = () =>
-			{
-				return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
-			};
-			
-			postgameBG.GetWidget<LabelWidget>("TEXT").GetText = () =>
-			{
-				var state = world.LocalPlayer.WinState;
-				return (state == WinState.Undefined)? "" :
-								((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
-			};
 		}
 	}
 }
