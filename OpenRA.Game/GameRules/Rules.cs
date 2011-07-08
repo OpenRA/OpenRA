@@ -48,5 +48,7 @@ namespace OpenRA
 			var yy = y.ToDictionary( x => x.Key, x => x.Value );
 			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy));
 		}
+
+		public static IEnumerable<KeyValuePair<string,MusicInfo>> InstalledMusic { get { return Music.Where( m => m.Value.Exists ); } }
 	}
 }

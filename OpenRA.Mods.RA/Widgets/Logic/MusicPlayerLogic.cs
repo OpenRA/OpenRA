@@ -88,14 +88,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var ml = bg.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
 			var itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
 			
-			if (!Rules.Music.Where(m => m.Value.Exists).Any())
+			if (!Rules.InstalledMusic.Any())
 			{
 				itemTemplate.IsVisible = () => true;
 				itemTemplate.GetWidget<LabelWidget>("TITLE").GetText = () => "No Music Installed";
 				itemTemplate.GetWidget<LabelWidget>("TITLE").Align = LabelWidget.TextAlign.Center;
 			}
 			
-			foreach (var kv in Rules.Music.Where(m => m.Value.Exists))
+			foreach (var kv in Rules.InstalledMusic)
 			{
 				var song = kv.Key;
 				if (CurrentSong == null)
@@ -122,14 +122,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
 		}
 
-		string GetNextSong()
-		{
-			return ChooseSong( Rules.Music.Where( a => a.Value.Exists ).Select( a => a.Key ) );
-		}
-
-		string GetPrevSong()
-		{
-			return ChooseSong( Rules.Music.Where( a => a.Value.Exists ).Select( a => a.Key ).Reverse() );
-		}
+		string GetNextSong() { return ChooseSong( Rules.InstalledMusic.Select( a => a.Key ) ); }
+		string GetPrevSong() { return ChooseSong( Rules.InstalledMusic.Select( a => a.Key ).Reverse() ); }
 	}
 }
