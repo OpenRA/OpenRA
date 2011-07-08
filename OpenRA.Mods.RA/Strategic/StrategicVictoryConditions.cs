@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 
 	public class StrategicVictoryConditions : ITick, ISync
 	{
-		[Sync] public Actor Self;
+		Actor self;
 		public StrategicVictoryConditionsInfo Info;
 
 		[Sync] public int TicksToHold;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo info)
 		{
-			Self = self;
+			this.self = self;
 			Info = info;
 
 			TicksToHold = info.TicksToHold;
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				return (SplitHolds) ? Self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical == false).Count() : Self.World.Actors.Where(a => a.HasTrait<StrategicPoint>()).Count();
+				return (SplitHolds) ? self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical == false).Count() : self.World.Actors.Where(a => a.HasTrait<StrategicPoint>()).Count();
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				return Self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical).Count();
+				return self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical).Count();
 			}
 		}
 
@@ -89,11 +89,11 @@ namespace OpenRA.Mods.RA
 		{
 			int total = 0;
 
-			foreach (var p in Self.World.Players)
+			foreach (var p in self.World.Players)
 			{
-				if (p == Self.Owner || (p.Stances[Self.Owner] == Stance.Ally && Self.Owner.Stances[p] == Stance.Ally))
+				if (p == self.Owner || (p.Stances[self.Owner] == Stance.Ally && self.Owner.Stances[p] == Stance.Ally))
 				{
-					total += Self.World.ActorsWithTrait<StrategicPoint>()
+					total += self.World.ActorsWithTrait<StrategicPoint>()
                         .Where(a => a.Actor.Owner == p)
                         .Count(a => a.Trait.Critical == critical);
 				}
@@ -195,11 +195,11 @@ namespace OpenRA.Mods.RA
 		public void Won()
 		{
 			// Player has won
-			foreach (var p in Self.World.Players)
+			foreach (var p in self.World.Players)
 			{
 				var cvc = p.PlayerActor.TraitOrDefault<ConquestVictoryConditions>();
 
-				if ((p.WinState == WinState.Undefined) && (p == Self.Owner || (p.Stances[Self.Owner] == Stance.Ally && Self.Owner.Stances[p] == Stance.Ally)))
+				if ((p.WinState == WinState.Undefined) && (p == self.Owner || (p.Stances[self.Owner] == Stance.Ally && self.Owner.Stances[p] == Stance.Ally)))
 				{
 					cvc.Win(p.PlayerActor);
 				}
