@@ -81,8 +81,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				if (CurrentSong == null)
 					return "";
-				return "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
-			                                                                                    Rules.Music[CurrentSong].Length / 60, Rules.Music[CurrentSong].Length % 60);
+				return "{0} / {1}".F(
+					WidgetUtils.FormatTimeSeconds( (int)Sound.MusicSeekPosition ),
+					WidgetUtils.FormatTimeSeconds( Rules.Music[CurrentSong].Length ));
 			};
 			
 			var ml = bg.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
@@ -105,7 +106,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					() => CurrentSong == song,
 					() => { CurrentSong = song; bg.GetWidget<ButtonWidget>("BUTTON_PLAY").OnClick(); });
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
-				item.GetWidget<LabelWidget>("LENGTH").GetText = () => "{0:D1}:{1:D2}".F(Rules.Music[song].Length / 60, Rules.Music[song].Length % 60);
+				item.GetWidget<LabelWidget>("LENGTH").GetText =
+					() => WidgetUtils.FormatTimeSeconds( Rules.Music[song].Length );
 				ml.AddChild(item);
 			}
 		}
