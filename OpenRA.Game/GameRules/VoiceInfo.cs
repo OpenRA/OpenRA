@@ -27,7 +27,7 @@ namespace OpenRA.GameRules
 			return y.NodesDict.ContainsKey( name )
 				? y.NodesDict[ name ].NodesDict.ToDictionary(
 					a => a.Key,
-					a => (string[])FieldLoader.GetValue( "(value)", typeof( string[] ), a.Value.Value ) )
+					a => FieldLoader.GetValue<string[]>( "(value)", a.Value.Value ) )
 				: new Dictionary<string, string[]>();
 		}
 
