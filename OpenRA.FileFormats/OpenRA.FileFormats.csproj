@@ -60,7 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorHSLR.cs" />
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
@@ -115,6 +114,7 @@
     <Compile Include="Filesystem\ZipFile.cs" />
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Primitives\Cached.cs" />
+    <Compile Include="ColorRamp.cs" />
     <Compile Include="Primitives\Bits.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
