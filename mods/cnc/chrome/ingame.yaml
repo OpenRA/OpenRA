@@ -19,7 +19,7 @@ Container@INGAME_ROOT:
 			DrawBackground: False
 			RemoveTime:250
 			UseContrast: yes
-			Notification: scold2.aud
+			Notification: scold1.aud
 		ChatEntry@CHAT_ENTRY:
 			Id:CHAT_ENTRY
 			X:250
@@ -137,6 +137,8 @@ Container@PLAYER_WIDGETS:
 					Font:Bold
 					TooltipText: Menu
 					TooltipContainer:TOOLTIP_CONTAINER
+					ClickSound:button.aud
+					ClickDisabledSound:scold2.aud
 					Children:
 						Image:
 							Id:ICON
@@ -154,6 +156,8 @@ Container@PLAYER_WIDGETS:
 					Font:Bold
 					TooltipText: Sell
 					TooltipContainer:TOOLTIP_CONTAINER
+					ClickSound:button.aud
+					ClickDisabledSound:scold2.aud
 					Children:
 						Image:
 							Id:ICON
@@ -170,6 +174,8 @@ Container@PLAYER_WIDGETS:
 					Font:Bold
 					TooltipText: Repair
 					TooltipContainer:TOOLTIP_CONTAINER
+					ClickSound:button.aud
+					ClickDisabledSound:scold2.aud
 					Children:
 						Image:
 							Id:ICON
@@ -247,6 +253,8 @@ Container@PLAYER_WIDGETS:
 							Key: y
 							TooltipText: Buildings
 							TooltipContainer:TOOLTIP_CONTAINER
+							ClickSound:button.aud
+							ClickDisabledSound:scold2.aud
 							Children:
 								Image:
 									Id:ICON
@@ -261,6 +269,8 @@ Container@PLAYER_WIDGETS:
 							Key: u
 							TooltipText: Defense
 							TooltipContainer:TOOLTIP_CONTAINER
+							ClickSound:button.aud
+							ClickDisabledSound:scold2.aud
 							Children:
 								Image:
 									Id:ICON
@@ -275,6 +285,8 @@ Container@PLAYER_WIDGETS:
 							Key: i
 							TooltipText: Infantry
 							TooltipContainer:TOOLTIP_CONTAINER
+							ClickSound:button.aud
+							ClickDisabledSound:scold2.aud
 							Children:
 								Image:
 									Id:ICON
@@ -289,6 +301,8 @@ Container@PLAYER_WIDGETS:
 							Key: o
 							TooltipText: Vehicles
 							TooltipContainer:TOOLTIP_CONTAINER
+							ClickSound:button.aud
+							ClickDisabledSound:scold2.aud
 							Children:
 								Image:
 									Id:ICON
@@ -303,6 +317,8 @@ Container@PLAYER_WIDGETS:
 							Key: p
 							TooltipText: Aircraft
 							TooltipContainer:TOOLTIP_CONTAINER
+							ClickSound:button.aud
+							ClickDisabledSound:scold2.aud
 							Children:
 								Image:
 									Id:ICON

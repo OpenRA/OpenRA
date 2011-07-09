@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			chatPanel.AddChild(template);
 			chatPanel.ScrollToBottom();
-			Sound.Play("scold2.aud");
+			Sound.Play("scold1.aud");
 		}
 
 		void UpdateCurrentMap()

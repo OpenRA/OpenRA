@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	public class ProductionPaletteWidget : Widget
 	{
 		public readonly int Columns = 3;
-		public readonly string TabClick = "button.aud";
+		public readonly string TabClick = null;
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
