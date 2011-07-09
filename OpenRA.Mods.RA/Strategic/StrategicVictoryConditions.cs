@@ -121,28 +121,13 @@ namespace OpenRA.Mods.RA
 				{
 					// Hah! We met ths critical owned condition
 					if (CriticalTicksLeft == 0)
-					{
-						// First time
-						CriticalTicksLeft = info.TicksToHold;
-					}
-					else
-					{
-						// nth time
-						if (--CriticalTicksLeft == 0)
-						{
-							// Player & allies have won!
-							Won();
-						}
-					}
+						CriticalTicksLeft = info.TicksToHold;	// crap
+					else if (--CriticalTicksLeft == 0)
+						Won();
 				}
 				else if (CriticalTicksLeft != 0)
-				{
-					// we lost the hold :/
 					if (info.ResetOnHoldLost)
-					{
 						CriticalTicksLeft = info.TicksToHold; // Reset the time hold
-					}
-				}
 			}
 
 			// See if any of the conditions are met to increase the count
@@ -152,28 +137,13 @@ namespace OpenRA.Mods.RA
 				{
 					// Hah! We met ths critical owned condition
 					if (TicksLeft == 0)
-					{
-						// First time
-						TicksLeft = info.TicksToHold;
-					}
-					else
-					{
-						// nth time
-						if (--TicksLeft == 0)
-						{
-							// Player & allies have won!
-							Won();
-						}
-					}
+						TicksLeft = info.TicksToHold; // first tick -- this is crap.
+					else if (--TicksLeft == 0)
+						Won();
 				}
 				else if (TicksLeft != 0)
-				{
-					// we lost the hold :/
 					if (info.ResetOnHoldLost)
-					{
 						TicksLeft = info.TicksToHold; // Reset the time hold
-					}
-				}
 			}
 		}
 
