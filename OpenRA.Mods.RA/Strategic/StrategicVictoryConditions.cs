@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.RA
 		Actor self;
 		StrategicVictoryConditionsInfo info;
 
-		[Sync] public bool SplitHolds;
+		[Sync] bool SplitHolds;
 		[Sync] public int TicksLeft = 0;
 		[Sync] public int CriticalTicksLeft = 0;
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.RA
 		/// </summary>
 		public int Owned
 		{
-			get { return (SplitHolds) ? CountOwnedPoints(false) : CountOwnedPoints(false) + OwnedCritical; }
+			get { return CountOwnedPoints(false) + (SplitHolds ? 0 : OwnedCritical); }
 		}
 
 		/// <summary>
@@ -60,11 +61,18 @@ namespace OpenRA.Mods.RA
 			get { return CountOwnedPoints(true); }
 		}
 
+		IEnumerable<TraitPair<StrategicPoint>> AllPoints
+		{
+			get { return self.World.ActorsWithTrait<StrategicPoint>(); }
+		}
+
 		public int Total
 		{
 			get
 			{
-				return (SplitHolds) ? self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical == false).Count() : self.World.Actors.Where(a => a.HasTrait<StrategicPoint>()).Count();
+				return SplitHolds
+					? AllPoints.Count( a => a.Trait.Critical )
+					: AllPoints.Count();
 			}
 		}
 
@@ -72,24 +80,14 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				return self.World.Actors.Where(a => !a.Destroyed && a.HasTrait<StrategicPoint>() && a.TraitOrDefault<StrategicPoint>().Critical).Count();
+				return AllPoints.Count( a => a.Trait.Critical );
 			}
 		}
 
 		public int CountOwnedPoints(bool critical)
 		{
-			int total = 0;
-
-			foreach (var p in self.World.Players)
-			{
-				if (p == self.Owner || (p.Stances[self.Owner] == Stance.Ally && self.Owner.Stances[p] == Stance.Ally))
-				{
-					total += self.World.ActorsWithTrait<StrategicPoint>()
-                        .Where(a => a.Actor.Owner == p)
-                        .Count(a => a.Trait.Critical == critical);
-				}
-			}
-			return total;
+			return AllPoints.Count( a => a.Trait.Critical == critical &&
+				WorldUtils.AreMutualAllies( self.Owner, a.Actor.Owner ));
 		}
 
 		public bool HoldingCritical
@@ -187,13 +185,9 @@ namespace OpenRA.Mods.RA
 				var cvc = p.PlayerActor.Trait<ConquestVictoryConditions>();
 
 				if (p.WinState == WinState.Undefined && WorldUtils.AreMutualAllies(self.Owner, p))
-				{
 					cvc.Win(p.PlayerActor);
-				}
 				else if (p.WinState == WinState.Undefined)
-				{
 					cvc.Lose(p.PlayerActor);
-				}
 			}
 		}
 	}
