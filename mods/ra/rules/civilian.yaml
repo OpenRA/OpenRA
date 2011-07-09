@@ -140,6 +140,10 @@ OILB:
 	RevealsShroud:
 		Range: 3
 	Capturable:
+	-Sellable:
+	CashTrickler:
+		Period: 250
+		Amount: 50
 	Tooltip:
 		Name: Oil Derrick
 
