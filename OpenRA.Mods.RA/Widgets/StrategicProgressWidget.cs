@@ -8,12 +8,12 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using System;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -27,12 +27,6 @@ namespace OpenRA.Mods.RA.Widgets
 		{ 
 			IsVisible = () => true;
 			this.world = world;
-		}
-
-		bool AreMutualAllies(Player a, Player b)
-		{
-			return a.Stances[b] == Stance.Ally &&
-				b.Stances[a] == Stance.Ally;
 		}
 
 		public override void Draw()
@@ -52,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 
-				if (a.Actor.Owner == world.LocalPlayer || AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
+				if (WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
@@ -63,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 
-				if (a.Actor.Owner == world.LocalPlayer || AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
+				if (WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
 				else if (!a.Actor.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
@@ -77,7 +71,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (pendingWinner == null) return;
 			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
 
-			var isVictory = pendingWinner == world.LocalPlayer || !AreMutualAllies(pendingWinner, world.LocalPlayer);
+			var isVictory = pendingWinner == world.LocalPlayer || !WorldUtils.AreMutualAllies(pendingWinner, world.LocalPlayer);
 			var tc = "Strategic {0} in {1}".F(
 				isVictory ? "victory" : "defeat",
 				WidgetUtils.FormatTime(Math.Max(winnerSvc.CriticalTicksLeft, winnerSvc.TicksLeft)));
