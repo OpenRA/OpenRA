@@ -11,9 +11,9 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.Cnc.Widgets;
+using OpenRA.Mods.RA;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.Cnc.Widgets
 {
 	class ProductionQueueFromSelectionInfo : ITraitInfo
 	{
