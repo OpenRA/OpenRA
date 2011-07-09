@@ -72,7 +72,7 @@ MSUB:
 		CloakedTargetTypes: Underwater
 	Cloak:
 		InitialDelay: 0
-		CloakDelay: 50
+		CloakDelay: 100
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 	AttackFrontal:
