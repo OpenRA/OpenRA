@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 
 		public static T Get<T>(string key)
 		{
-			return (T)FieldLoader.GetValue( key, typeof(T), data[key] );
+			return FieldLoader.GetValue<T>( key, data[key] );
 		}
 	}
 }

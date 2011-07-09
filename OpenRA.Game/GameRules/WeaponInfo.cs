@@ -55,7 +55,7 @@ namespace OpenRA.GameRules
 			return y.NodesDict.ContainsKey( "Versus" )
 				? y.NodesDict[ "Versus" ].NodesDict.ToDictionary(
 					a => a.Key,
-					a => (float)FieldLoader.GetValue( "(value)", typeof( float ), a.Value.Value ) )
+					a => FieldLoader.GetValue<float>( "(value)", a.Value.Value ) )
 				: new Dictionary<string, float>();
 		}
 	}
