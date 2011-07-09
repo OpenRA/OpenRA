@@ -129,12 +129,6 @@ namespace OpenRA.Mods.RA
             });
         }
 
-        static bool AreMutualAllies(Player a, Player b)
-        {
-            return a.Stances[b] == Stance.Ally &&
-                b.Stances[a] == Stance.Ally;
-        }
-
         bool CanBeCapturedBy(Actor a)
         {
             return a.HasTrait<ProximityCaptor>() && a.Trait<ProximityCaptor>().HasAny(Info.CaptorTypes);
@@ -152,7 +146,7 @@ namespace OpenRA.Mods.RA
             return UnitsInRange().Where(a => a.Owner != originalOwner)
                 .Where(a => a.Owner != currentOwner)
                 .Where(a => CanBeCapturedBy(a))
-                .All(a => AreMutualAllies(a.Owner, currentOwner));
+                .All(a => WorldUtils.AreMutualAllies(a.Owner, currentOwner));
         }
 
         // TODO exclude other NeutralActor that arent permanent
