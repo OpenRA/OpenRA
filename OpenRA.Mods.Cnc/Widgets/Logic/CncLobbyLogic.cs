@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			template.GetWidget<LabelWidget>("TIME").GetText = () => "[{0:D2}:{1:D2}]".F(time.Hour, time.Minute);
 			
 			var p = template.GetWidget<LabelWidget>("NAME");
-			p.Color = c;
+			p.GetColor = () => c;
 			p.GetText = () => name;
 			p.Bounds.Width = nameSize.X;
 			
