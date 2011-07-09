@@ -39,8 +39,8 @@ namespace OpenRA.Mods.RA.Move
             Dictionary<string, TerrainInfo> ret = new Dictionary<string, TerrainInfo>();
             foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
             {
-                var speed = (decimal)FieldLoader.GetValue("speed", typeof(decimal), t.Value.Value);
-                var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? (int)FieldLoader.GetValue("cost", typeof(int), t.Value.NodesDict["PathingCost"].Value) : (int)(10000 / speed);
+                var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
+                var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? FieldLoader.GetValue<int>("cost", t.Value.NodesDict["PathingCost"].Value) : (int)(10000 / speed);
                 ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
             }
 
