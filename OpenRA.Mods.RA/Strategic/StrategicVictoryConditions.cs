@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 		/// <summary>
 		/// Includes your allies as well
 		/// </summary>
-		public int Owned
+		int Owned
 		{
 			get { return CountOwnedPoints(false) + (SplitHolds ? 0 : OwnedCritical); }
 		}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 		/// <summary>
 		/// Includes your allies as well
 		/// </summary>
-		public int OwnedCritical
+		int OwnedCritical
 		{
 			get { return CountOwnedPoints(true); }
 		}
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public int CountOwnedPoints(bool critical)
+		int CountOwnedPoints(bool critical)
 		{
 			return AllPoints.Count( a => a.Trait.Critical == critical &&
 				WorldUtils.AreMutualAllies( self.Owner, a.Actor.Owner ));
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void Won()
+		void Won()
 		{
 			// Player has won
 			foreach (var p in self.World.Players)
