@@ -186,7 +186,7 @@ namespace OpenRA.Mods.RA
 			{
 				var cvc = p.PlayerActor.Trait<ConquestVictoryConditions>();
 
-				if ((p.WinState == WinState.Undefined) && (p == self.Owner || (p.Stances[self.Owner] == Stance.Ally && self.Owner.Stances[p] == Stance.Ally)))
+				if (p.WinState == WinState.Undefined && WorldUtils.AreMutualAllies(self.Owner, p))
 				{
 					cvc.Win(p.PlayerActor);
 				}
