@@ -720,7 +720,7 @@ SubMissile:
 		WaterExplosion: large_splash
 		InfDeath: 2
 		SmudgeType: Crater
-		Damage: 400
+		Damage: 300
 		ImpactSound: kaboom12
 		WaterImpactSound: splash9
 
