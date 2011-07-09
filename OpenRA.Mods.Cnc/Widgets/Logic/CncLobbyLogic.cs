@@ -219,7 +219,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
-			
+			chatPanel.RemoveChildren();
+
 			lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -241,32 +242,33 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		
 		public void AddChatLine(Color c, string from, string text)
 		{
-			var name = from+":";
-			var font = Game.Renderer.Fonts["Regular"];
-			var nameSize = font.Measure(from);
-			
 			var template = chatTemplate.Clone() as ContainerWidget;
-			template.IsVisible = () => true;
-			
+			var nameLabel = template.GetWidget<LabelWidget>("NAME");
+			var timeLabel = template.GetWidget<LabelWidget>("TIME");
+			var textLabel = template.GetWidget<LabelWidget>("TEXT");
+
+			var name = from+":";
+			var font = Game.Renderer.Fonts[nameLabel.Font];
+			var nameSize = font.Measure(from);
+
 			var time = System.DateTime.Now;
-			template.GetWidget<LabelWidget>("TIME").GetText = () => "[{0:D2}:{1:D2}]".F(time.Hour, time.Minute);
-			
-			var p = template.GetWidget<LabelWidget>("NAME");
-			p.GetColor = () => c;
-			p.GetText = () => name;
-			p.Bounds.Width = nameSize.X;
-			
-			var t = template.GetWidget<LabelWidget>("TEXT");
-			t.Bounds.X += nameSize.X;
-			t.Bounds.Width -= nameSize.X;
-			
+			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);
+
+			nameLabel.GetColor = () => c;
+			nameLabel.GetText = () => name;
+			nameLabel.Bounds.Width = nameSize.X;
+			textLabel.Bounds.X += nameSize.X;
+			textLabel.Bounds.Width -= nameSize.X;
+
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, t.Bounds.Width, font);
-			t.GetText = () => text;
-			var oldHeight = t.Bounds.Height;
-			t.Bounds.Height = font.Measure(text).Y;
-			template.Bounds.Height += (t.Bounds.Height - oldHeight);
-			
+			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			textLabel.GetText = () => text;
+			var oldHeight = textLabel.Bounds.Height;
+			textLabel.Bounds.Height = font.Measure(text).Y;
+			var dh = textLabel.Bounds.Height - oldHeight;
+			if (dh > 0)
+				template.Bounds.Height += dh;
+
 			chatPanel.AddChild(template);
 			chatPanel.ScrollToBottom();
 		}

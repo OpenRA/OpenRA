@@ -397,32 +397,34 @@ Container@SERVER_LOBBY:
 					Y:285
 					Width:PARENT_RIGHT - 30
 					Height:PARENT_BOTTOM - 324
-					ItemSpacing:2
+					ItemSpacing:1
 					Children:
 						Container@CHAT_TEMPLATE:
 							Id:CHAT_TEMPLATE
 							Width:PARENT_RIGHT-27
-							Height:14
+							Height:16
 							X:2
 							Y:0
-							Visible:false
 							Children:
 								Label@TIME:
 									Id:TIME
-									X:5
+									X:3
 									Width:50
-									Height:14
+									Height:15
+									VAlign:Top
 								Label@NAME:
 									Id:NAME
-									X:55
+									X:45
 									Width:50
-									Height:14
+									Height:15
+									VAlign:Top
 								Label@TEXT:
 									Id:TEXT
-									X:65
-									Height:14
-									Width:PARENT_RIGHT - 100 - 10
+									X:55
+									Width:PARENT_RIGHT - 60
+									Height:15
 									WordWrap:true
+									VAlign:Top
 				TextField@CHAT_TEXTFIELD:
 					Id:CHAT_TEXTFIELD
 					X:15
