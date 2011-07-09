@@ -41,8 +41,6 @@ namespace OpenRA.Mods.RA
 			Game.MoveViewport(ViewportOrigin);
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
-			// Mute world sounds
-			Sound.SoundVolumeModifier = 0f;
 
 			LoopMusic();
 			

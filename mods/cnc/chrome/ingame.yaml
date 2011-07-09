@@ -19,6 +19,7 @@ Container@INGAME_ROOT:
 			DrawBackground: False
 			RemoveTime:250
 			UseContrast: yes
+			Notification: scold2.aud
 		ChatEntry@CHAT_ENTRY:
 			Id:CHAT_ENTRY
 			X:250
