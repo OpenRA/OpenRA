@@ -200,6 +200,13 @@ namespace OpenRA.FileFormats
                 var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 return new Rectangle(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
             }
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
+			{
+				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var argTypes = new Type[] { typeof(string[]) };
+				var argValues = new object[] { parts };
+				return fieldType.GetConstructor(argTypes).Invoke(argValues);
+			}
 			
 			UnknownFieldAction("[Type] {0}".F(x),fieldType);
 			return null;
