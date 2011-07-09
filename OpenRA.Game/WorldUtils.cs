@@ -145,18 +145,18 @@ namespace OpenRA
 			}
 		}
 
-        public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, double time)
-        {
-            var sw = new Stopwatch();
+		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text, double time)
+		{
+			var sw = new Stopwatch();
 
-            e.Do(x =>
-            {
-                var t = sw.ElapsedTime();
-                a(x);
-                var dt = sw.ElapsedTime() - t;
-                if (dt > time)
-                    Log.Write("perf", text, x, dt * 1000, Game.LocalTick);
-            });
-        }
+			e.Do(x =>
+			{
+				var t = sw.ElapsedTime();
+				a(x);
+				var dt = sw.ElapsedTime() - t;
+				if (dt > time)
+					Log.Write("perf", text, x, dt * 1000, Game.LocalTick);
+			});
+		}
 	}
 }
