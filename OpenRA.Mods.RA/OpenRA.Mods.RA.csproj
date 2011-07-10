@@ -70,6 +70,7 @@
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
+    <Compile Include="Lint\CheckAutotargetWiring.cs" />
     <Compile Include="ProductionBar.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />

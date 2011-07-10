@@ -36,20 +36,4 @@ namespace OpenRA.Mods.RA
 			}
         }
     }
-	
-	class CheckAutotargetWiring : ILintPass
-	{
-		public void Run(Action<string> emitError)
-        {
-            foreach( var i in Rules.Info )
-			{
-				if (i.Key.StartsWith("^"))
-					continue;
-				var attackMove = i.Value.Traits.GetOrDefault<AttackMoveInfo>();
-				if (attackMove != null && !attackMove.JustMove &&
-				    !i.Value.Traits.Contains<AutoTargetInfo>())
-					emitError( "{0} has AttackMove setup without AutoTarget, and will crash when resolving that order.".F(i.Key) );
-			}
-        }
-	}
 }
