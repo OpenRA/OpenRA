@@ -142,7 +142,7 @@ namespace OpenRA.Traits
     public interface ICrushable
     {
         void OnCrush(Actor crusher);
-        IEnumerable<string> CrushClasses { get; }
+		bool CrushableBy(string[] crushClasses, Player owner);
     }
 
     public struct Renderable

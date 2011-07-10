@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
@@ -31,7 +32,14 @@ namespace OpenRA.Mods.RA.Buildings
 			this.info = info;
 		}
 		
-		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
+		public bool CrushableBy(string[] crushClasses, Player crushOwner)
+		{
+			if (crushOwner.Stances[self.Owner] == Stance.Ally)
+				return false;
+
+			return info.CrushClasses.Intersect(crushClasses).Any();
+		}
+
 		public void OnCrush(Actor crusher)
 		{
 			self.Kill(crusher);

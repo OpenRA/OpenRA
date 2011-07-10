@@ -122,6 +122,9 @@ namespace OpenRA.Mods.RA
 				self.World.ActorMap.Add(self, this);
 		}
 
-		public IEnumerable<string> CrushClasses { get { yield return "crate"; } }
+		public bool CrushableBy(string[] crushClasses, Player owner)
+		{
+			return crushClasses.Contains("crate");
+		}
 	}
 }

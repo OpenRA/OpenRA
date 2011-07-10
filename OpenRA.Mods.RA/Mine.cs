@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
@@ -48,10 +49,13 @@ namespace OpenRA.Mods.RA
 			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation, 0);
 			self.QueueActivity(new RemoveSelf());
 		}
-		
+
 		// TODO: Re-implement friendly-mine avoidance
-		public IEnumerable<string> CrushClasses { get { return info.CrushClasses; } }
-		
+		public bool CrushableBy(string[] crushClasses, Player owner)
+		{
+			return info.CrushClasses.Intersect(crushClasses).Any();
+		}
+
 		public int2 TopLeft { get { return location; } }
 
 		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
