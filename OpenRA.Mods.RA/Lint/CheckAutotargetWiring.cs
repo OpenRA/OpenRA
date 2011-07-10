@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	class CheckAutotargetWiring : ILintPass
 	{
-		public void Run(Action<string> emitError)
+		public void Run(Action<string> emitError, Action<string> emitWarning)
         {
             foreach( var i in Rules.Info )
 			{

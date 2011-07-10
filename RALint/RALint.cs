@@ -28,6 +28,11 @@ namespace RALint
 			++errors;
 		}
 
+		static void EmitWarning(string e)
+		{
+			Console.WriteLine("RALint(1,1): Warning: {0}", e);
+		}
+
 		static int Main(string[] args)
 		{
 			try
@@ -52,7 +57,7 @@ namespace RALint
 
                     Console.WriteLine("CustomPass: {0}".F(customPassType.ToString()));
 
-                    customPass.Run(EmitError);
+                    customPass.Run(EmitError, EmitWarning);
                 }
 
 				if (errors > 0)

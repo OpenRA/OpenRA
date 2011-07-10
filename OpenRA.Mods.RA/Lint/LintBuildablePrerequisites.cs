@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
     class LintBuildablePrerequisites : ILintPass
     {
-        public void Run(Action<string> emitError)
+        public void Run(Action<string> emitError, Action<string> emitWarning)
         {
 			var providedPrereqs = Rules.Info.Keys.Concat( 
 				Rules.Info.SelectMany( a => a.Value.Traits

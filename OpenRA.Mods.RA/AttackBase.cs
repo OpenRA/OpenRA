@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
 	{
 		public bool IsAttacking { get; internal set; }
 

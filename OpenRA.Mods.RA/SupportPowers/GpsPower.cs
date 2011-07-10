@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new GpsPower(init.self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, ISync, INotifyStanceChanged, INotifySold, INotifyCapture
+	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyCapture
 	{
 		GpsWatcher owner;
 

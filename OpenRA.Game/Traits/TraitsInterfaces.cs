@@ -217,7 +217,7 @@ namespace OpenRA.Traits
             Stance oldStance, Stance newStance);
     }
 
-    public interface ILintPass { void Run(Action<string> emitError); }
+    public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning); }
 
 	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
 }
