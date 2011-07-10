@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Move
 
 			var nudge = blocker.TraitOrDefault<INudge>();
 			if (nudge != null)
-				nudge.OnNudge(blocker, self);
+				nudge.OnNudge(blocker, self, false);
 		}
 
 		Pair<int2, SubCell>? PopPath( Actor self, Mobile mobile )

@@ -269,7 +269,7 @@ namespace OpenRA.Mods.RA.Move
 			
 			if (order.OrderString == "Scatter")
             {
-                OnNudge(self, self);
+                OnNudge(self, self, true);
             }
         }
 
@@ -365,15 +365,14 @@ namespace OpenRA.Mods.RA.Move
                 self.World.ActorMap.Remove(self, this);
         }
 
-        public void OnNudge(Actor self, Actor nudger)
+        public void OnNudge(Actor self, Actor nudger, bool force)
         {
             /* initial fairly braindead implementation. */
-
-            if (self.Owner.Stances[nudger.Owner] != Stance.Ally)
+            if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
                 return;		/* don't allow ourselves to be pushed around
 							 * by the enemy! */
 
-            if (!self.IsIdle)
+            if (!force && !self.IsIdle)
                 return;		/* don't nudge if we're busy doing something! */
 
             // pick an adjacent available cell.
