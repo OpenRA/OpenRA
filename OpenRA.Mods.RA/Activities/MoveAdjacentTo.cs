@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 				cells = new OpenRA.FileFormats.Pair<int2, SubCell>[] {
 					Pair.New(target.Location, SubCell.FullCell) };
 
-			var ps1 = new PathSearch( self.World, mobile.Info )
+			var ps1 = new PathSearch( self.World, mobile.Info, self.Owner )
 			{
 				checkForBlocked = true,
 				heuristic = location => 0,
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			ps1.heuristic = PathSearch.DefaultEstimator( mobile.toCell );
 
-			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, mobile.toCell, target.Location, true );
+			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, target.Location, true );
 			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath( ps1, ps2 );
 			if( ret.Count > 0 )
 				ret.RemoveAt( 0 );

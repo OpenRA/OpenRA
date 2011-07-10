@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var res = self.World.WorldActor.Trait<ResourceLayer>();
-			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, true)
+			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, self.Owner, true)
 						.WithHeuristic(loc => (res.GetResource(loc) != null && harvInfo.Resources.Contains( res.GetResource(loc).info.Name )) ? 0 : 1)
 				        .FromPoint(self.Location));
 

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Crates
 			var mi = Rules.Info[Info.Unit].Traits.GetOrDefault<MobileInfo>();
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
-					if (mi.CanEnterCell(self.World, near + new int2(i, j), null, true))
+					if (mi.CanEnterCell(self.World, self.Owner, near + new int2(i, j), null, true))
 						yield return near + new int2(i, j);
 		}
 

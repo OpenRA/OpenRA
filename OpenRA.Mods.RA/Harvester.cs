@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA
                 .ToList();
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
-				PathSearch.FromPoints(self.World, mi,
+				PathSearch.FromPoints(self.World, mi, self.Owner,
                     refs.Select(r => r.Actor.Location + r.Trait.DeliverOffset),
 					self.Location, false));
 			path.Reverse();

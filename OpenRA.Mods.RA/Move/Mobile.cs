@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Move
 			{SubCell.FullCell, new int2(0,0)},
 		};
 		
-        public bool CanEnterCell(World world, int2 cell, Actor ignoreActor, bool checkTransientActors)
+        public bool CanEnterCell(World world, Player owner, int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
             if (MovementCostForCell(world, cell) == int.MaxValue)
                 return false;
@@ -326,7 +326,7 @@ namespace OpenRA.Mods.RA.Move
 
         public bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
-            return Info.CanEnterCell(self.World, cell, ignoreActor, checkTransientActors);
+            return Info.CanEnterCell(self.World, self.Owner, cell, ignoreActor, checkTransientActors);
         }
 
         public void FinishedMoving(Actor self)

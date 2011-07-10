@@ -27,12 +27,14 @@ namespace OpenRA.Mods.RA.Move
 		public bool inReverse;
 		
 		MobileInfo mobileInfo;
+		Player owner;
 		
-		public PathSearch(World world, MobileInfo mobileInfo)
+		public PathSearch(World world, MobileInfo mobileInfo, Player owner)
 		{
 			this.world = world;
 			cellInfo = InitCellInfo();
 			this.mobileInfo = mobileInfo;
+			this.owner = owner;
 			queue = new PriorityQueue<PathDistance>();
 		}
 
@@ -103,7 +105,7 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!mobileInfo.CanEnterCell(world, newHere, ignoreBuilding, checkForBlocked))
+				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked))
 					continue;
 				
 				if (customBlock != null && customBlock(newHere))
@@ -160,16 +162,16 @@ namespace OpenRA.Mods.RA.Move
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
 		
-		public static PathSearch Search( World world, MobileInfo mi, bool checkForBlocked )
+		public static PathSearch Search( World world, MobileInfo mi, Player owner, bool checkForBlocked )
 		{
-			var search = new PathSearch(world, mi) {
+			var search = new PathSearch(world, mi, owner) {
 				checkForBlocked = checkForBlocked };
 			return search;
 		}
 		
-		public static PathSearch FromPoint( World world, MobileInfo mi, int2 from, int2 target, bool checkForBlocked )
+		public static PathSearch FromPoint( World world, MobileInfo mi, Player owner, int2 from, int2 target, bool checkForBlocked )
 		{
-			var search = new PathSearch(world, mi) {
+			var search = new PathSearch(world, mi, owner) {
 				heuristic = DefaultEstimator( target ),
 				checkForBlocked = checkForBlocked };
 
@@ -177,9 +179,9 @@ namespace OpenRA.Mods.RA.Move
 			return search;
 		}
 
-		public static PathSearch FromPoints(World world, MobileInfo mi, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
+		public static PathSearch FromPoints(World world, MobileInfo mi, Player owner, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi)
+			var search = new PathSearch(world, mi, owner)
 			{
 				heuristic = DefaultEstimator(target),
 				checkForBlocked = checkForBlocked
