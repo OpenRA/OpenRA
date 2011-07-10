@@ -6,13 +6,14 @@ NEW:
 		Video memory leaks fixed
 		Improved error messages for unsupported graphics cards
 		Improved support for Intel graphics cards
+		Write graphics.log on all graphics-related errors
 		Significant general performance improvements
 		Fix crashes when joining a game with no free player slots
 		Bots players are named after their AI type and pick better random colors
 		Map support for enforcing team and spawn choice
 		Fix resource-clearing weapons breaking custom terrain types (bridges)
 	C&C:
-		Completely overhauled menu UI
+		Completely overhauled UI
 		Added support for installing from original game disks
 		Added support for installing music from original game disks
 		Added support for Covert Ops music tracks
@@ -28,8 +29,12 @@ NEW:
 		Fixed Ion Cannon cursor
 		Fixed Apache artwork
 		Fixed uncapturable oil derricks
+		Added capturable Biolab tech structure: allows you build viceroids
 		All vehicles leave husks on death
 		Server/Skirmish creation selects the last played map by default
+		New animations for cloak and reveal map crates (from C&C Sole Survivor)
+		Added 8 new maps by Petrenko
+		Removed East vs West 2 map
 		Balance changes:
 			Refinery footprint changed, price decreased to $1500
 			Flame tank explodes on death, damage reduced by 40%
@@ -41,9 +46,14 @@ NEW:
 			SSM launcher removed from Nod
 			Concrete walls require vehicle production to build
 			MCV, Harvester, Engineer can no longer level up (via crates)
+			MCV can no longer receive Cloak crates
 			Advanced Guard Tower range increased
 			SAM Site range decreased
 			Bridge HP halved
+			Infantry tiberium avoidance factor increased by 5x
+			Decrease tiberium damage to infantry
+			Reduced Grenadier death damage
+			Infantry can be crushed by tanks
 	Red Alert:
 		Fixed firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
 		Fixed bounties using incorrect unit value
