@@ -33,7 +33,7 @@
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: wall, crate
+		Crushes: wall, crate, infantry
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 70
@@ -124,6 +124,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	SpawnViceroid:
+	CrushableInfantry:
 
 ^CivInfantry:
 	Inherits: ^Infantry

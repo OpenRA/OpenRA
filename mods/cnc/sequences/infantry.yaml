@@ -103,6 +103,9 @@ e1:
 		Start: 366
 		Length: 11
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 e2:
 	stand:
 		Start: 0
@@ -183,6 +186,9 @@ e2:
 		Start: 494
 		Length: 11
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 e3:
 	stand:
 		Start: 0
@@ -263,6 +269,9 @@ e3:
 		Start: 382
 		Length: 11
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 e4:
 	stand:
 		Start: 0
@@ -343,11 +352,13 @@ e4:
 		Start: 494
 		Length: 10
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 	muzzle: flame
 		Start: 0
 		Length: 13
 		Facings: 8
-
 e5:
 	stand:
 		Start: 0
@@ -428,11 +439,13 @@ e5:
 		Start: 494
 		Length: 10
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 	muzzle: chem
 		Start: 0
 		Length: 13
 		Facings: 8
-
 e6:
 	stand:
 		Start: 0
@@ -505,7 +518,9 @@ e6:
 		Start: 130
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 rmbo:
 	stand:
 		Start: 0
@@ -590,3 +605,6 @@ rmbo:
 		Start: 308
 		Length: 4
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1

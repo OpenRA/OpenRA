@@ -352,6 +352,7 @@
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Reloads.cs" />
     <Compile Include="AnnounceOnKill.cs" />
+    <Compile Include="CrushableInfantry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

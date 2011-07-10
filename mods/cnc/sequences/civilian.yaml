@@ -47,6 +47,9 @@ c1:
 		Start: 182
 		Length: 4
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c2:
 	stand:
 		Start: 0
@@ -96,7 +99,9 @@ c2:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c3:
 	stand:
 		Start: 0
@@ -146,7 +151,9 @@ c3:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c4:
 	stand:
 		Start: 0
@@ -196,7 +203,9 @@ c4:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c5:
 	stand:
 		Start: 0
@@ -246,7 +255,9 @@ c5:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c6:
 	stand:
 		Start: 0
@@ -296,7 +307,9 @@ c6:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c7:
 	stand:
 		Start: 0
@@ -346,7 +359,9 @@ c7:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c8:
 	stand:
 		Start: 0
@@ -396,7 +411,9 @@ c8:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c9:
 	stand:
 		Start: 0
@@ -446,7 +463,9 @@ c9:
 		Start: 182
 		Length: 4
 		Tick: 80
-
+	die-crushed: squish
+		Start: 0
+		Length: 1
 c10:
 	stand:
 		Start: 0
@@ -496,3 +515,6 @@ c10:
 		Start: 182
 		Length: 4
 		Tick: 80
+	die-crushed: squish
+		Start: 0
+		Length: 1
