@@ -84,13 +84,13 @@ namespace OpenRA
 			return ctor.Invoke( a );
 		}
 
-        public IEnumerable<Type> GetTypesImplementing<T>()
-        {
-            var it = typeof(T);
-            return ModAssemblies.Select( ma => ma.First ).Distinct()
-                .SelectMany(ma => ma.GetTypes()
-                .Where(t => t != it && it.IsAssignableFrom(t)));
-        }
+		public IEnumerable<Type> GetTypesImplementing<T>()
+		{
+			var it = typeof(T);
+			return ModAssemblies.Select( ma => ma.First ).Distinct()
+				.SelectMany(ma => ma.GetTypes()
+				.Where(t => t != it && it.IsAssignableFrom(t)));
+		}
 
 		[AttributeUsage( AttributeTargets.Parameter )]
 		public class ParamAttribute : Attribute
