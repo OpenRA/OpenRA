@@ -364,6 +364,7 @@ HTNK:
 	RenderUnitTurreted:
 	AutoTarget:
 	SelfHealing:
+		Ticks: 10
 	LeavesHusk:
 		HuskActor: HTNK.Husk
 	Explodes:
