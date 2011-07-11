@@ -135,9 +135,8 @@ namespace OpenRA.Graphics
 				desktopResolution.Width = customSize.X;
 				desktopResolution.Height = customSize.Y;
 			}
-			return new Size(
-				desktopResolution.Width,
-				desktopResolution.Height);
+
+			return desktopResolution;
 		}
 
 		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
