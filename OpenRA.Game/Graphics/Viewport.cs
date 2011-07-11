@@ -56,17 +56,12 @@ namespace OpenRA.Graphics
 		
 		public ScrollDirection GetBlockedDirections()
 		{
-			ScrollDirection blockedDirections = ScrollDirection.None;
-			if(scrollPosition.Y <= adjustedMapBounds.Top)
-				blockedDirections = blockedDirections.Set(ScrollDirection.Up, true);
-			if(scrollPosition.X <= adjustedMapBounds.Left)
-				blockedDirections = blockedDirections.Set(ScrollDirection.Left, true);
-			if(scrollPosition.Y >= adjustedMapBounds.Bottom)
-				blockedDirections = blockedDirections.Set(ScrollDirection.Down, true);
-		  	if(scrollPosition.X >= adjustedMapBounds.Right)
-				blockedDirections = blockedDirections.Set(ScrollDirection.Right, true);
-			
-			return blockedDirections;
+			var ret = ScrollDirection.None;
+			if(scrollPosition.Y <= adjustedMapBounds.Top) ret |= ScrollDirection.Up;
+			if(scrollPosition.X <= adjustedMapBounds.Left) ret |= ScrollDirection.Left;
+			if(scrollPosition.Y >= adjustedMapBounds.Bottom) ret |= ScrollDirection.Down;
+			if(scrollPosition.X >= adjustedMapBounds.Right) ret |= ScrollDirection.Right;
+			return ret;
 		}
 
 		public Viewport(int2 screenSize, Rectangle mapBounds, Renderer renderer)
