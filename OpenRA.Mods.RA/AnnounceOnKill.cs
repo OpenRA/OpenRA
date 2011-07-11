@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
@@ -12,16 +12,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class AnnounceOnBuildInfo : ITraitInfo
-	{		
-		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.self); }
-	}
+	public class AnnounceOnKillInfo : TraitInfo<AnnounceOnKill> {}
 
-	public class AnnounceOnBuild
+	public class AnnounceOnKill : INotifyAppliedDamage
 	{	
-		public AnnounceOnBuild(Actor self)
+		public void AppliedDamage(Actor self, Actor damaged, AttackInfo e)
 		{
-			Sound.PlayVoice("Build", self, self.Owner.Country.Race);
+			if (e.DamageState == DamageState.Dead)
+				Sound.PlayVoice("Kill", self, self.Owner.Country.Race);
 		}
 	}
 }
+
