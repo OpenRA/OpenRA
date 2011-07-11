@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using Tao.Cg;
 using Tao.OpenGl;
@@ -109,6 +110,17 @@ namespace OpenRA.Renderer.Cg
 				break;
 			default:
 				break;
+			}
+
+			var info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure(
+				Sdl.SDL_GetVideoInfo(), typeof(Sdl.SDL_VideoInfo));
+			Console.WriteLine("Desktop resolution: {0}x{1}",
+				info.current_w, info.current_h);
+
+			if (size.Width == 0 && size.Height == 0)
+			{
+				Console.WriteLine("No custom resolution provided, using desktop resolution");
+				size = new Size( info.current_w, info.current_h );
 			}
 
 			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);

@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using Tao.OpenGl;
 using Tao.Sdl;
@@ -96,6 +97,19 @@ namespace OpenRA.Renderer.Glsl
 				break;
 			}
 
+			var info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure(
+			Sdl.SDL_GetVideoInfo(), typeof(Sdl.SDL_VideoInfo));
+			Console.WriteLine("Desktop resolution: {0}x{1}",
+				info.current_w, info.current_h);
+
+			if (size.Width == 0 && size.Height == 0)
+			{
+				Console.WriteLine("No custom resolution provided, using desktop resolution");
+				size = new Size( info.current_w, info.current_h );
+			}
+
+			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);
+
 			surf = Sdl.SDL_SetVideoMode( size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags );
 
 			Sdl.SDL_WM_SetCaption( "OpenRA", "OpenRA" );
@@ -112,8 +126,11 @@ namespace OpenRA.Renderer.Glsl
 				"GL_ARB_fragment_shader",
 				"GL_ARB_vertex_buffer_object",
 			};
-			
+
 			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
+			if (extensions == null)
+				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
+
 			var missingExtensions = required.Where( r => !extensions.Contains(r) ).ToArray();
 
 			if (missingExtensions.Any())
