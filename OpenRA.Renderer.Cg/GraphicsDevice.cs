@@ -111,7 +111,11 @@ namespace OpenRA.Renderer.Cg
 				break;
 			}
 
+			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);
+
 			surf = Sdl.SDL_SetVideoMode( size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags );
+			if (surf == IntPtr.Zero)
+				Console.WriteLine("Failed to set video mode.");
 
 			Sdl.SDL_WM_SetCaption( "OpenRA", "OpenRA" );
 			Sdl.SDL_ShowCursor( 0 );
@@ -129,6 +133,9 @@ namespace OpenRA.Renderer.Cg
 			};
 
 			var extensions = Gl.glGetString(Gl.GL_EXTENSIONS);
+			if (extensions == null)
+				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
+
 			var missingExtensions = required.Where( r => !extensions.Contains(r) ).ToArray();
 
 			if (missingExtensions.Any())
