@@ -42,14 +42,7 @@ namespace OpenRA.Widgets
                 return;
             }
 
-			var a = selbox.Value.First;
-			var b = new float2(selbox.Value.Second.X - a.X, 0);
-			var c = new float2(0, selbox.Value.Second.Y - a.Y);
-
-			Game.Renderer.LineRenderer.DrawLine(a, a + b, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(a, a + c, Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawRect( selbox.Value.First, selbox.Value.Second, Color.White );
 
             foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
                 worldRenderer.DrawRollover(u);
