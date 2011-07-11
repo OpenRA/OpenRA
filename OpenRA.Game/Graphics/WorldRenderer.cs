@@ -112,17 +112,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		void DrawBox(RectangleF r, Color color)
-		{
-			var a = new float2(r.Left, r.Top);
-			var b = new float2(r.Right - a.X, 0);
-			var c = new float2(0, r.Bottom - a.Y);
-			Game.Renderer.LineRenderer.DrawLine(a, a + b, color, color);
-			Game.Renderer.LineRenderer.DrawLine(a + b, a + b + c, color, color);
-			Game.Renderer.LineRenderer.DrawLine(a + b + c, a + c, color, color);
-			Game.Renderer.LineRenderer.DrawLine(a, a + c, color, color);
-		}
-
 		public void DrawSelectionBox(Actor selectedUnit, Color c)
 		{
 			var bounds = selectedUnit.Bounds.Value;
