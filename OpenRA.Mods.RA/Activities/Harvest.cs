@@ -73,23 +73,5 @@ namespace OpenRA.Mods.RA.Activities
 			harv.AcceptResource(resource);
 			return this;
 		}
-
-		bool HarvestThisTile(Actor self)
-		{
-			var harv = self.Trait<Harvester>();
-			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
-
-			var resource = self.World.WorldActor.Trait<ResourceLayer>().Harvest(self.Location);
-			if (resource == null)
-				return false;
-			
-			if (renderUnit.anim.CurrentSequence.Name != "harvest")
-			{
-				isHarvesting = true;
-				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
-			}
-			harv.AcceptResource(resource);
-			return true;
-		}
 	}
 }
