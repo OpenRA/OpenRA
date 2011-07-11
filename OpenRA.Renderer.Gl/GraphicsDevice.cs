@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace OpenRA.Renderer.Glsl
 			var n = Gl.glGetError();
 			if( n != Gl.GL_NO_ERROR )
 			{
-				var error = "GL Error: {0}\n{1}".F((GlError)n, new System.Diagnostics.StackTrace());
+				var error = "GL Error: {0}\n{1}".F((GlError)n, new StackTrace());
 				WriteGraphicsLog(error);
 				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
 			}
