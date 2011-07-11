@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -37,14 +38,14 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{									
 			var scrolltype = Game.Settings.Game.MouseScroll;
-			if (scrolltype == OpenRA.GameRules.MouseScrollType.Disabled)
+			if (scrolltype == MouseScrollType.Disabled)
 				return false;
 			
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
-                var d = scrolltype == OpenRA.GameRules.MouseScrollType.Inverted ? -1 : 1;
-                Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
+				var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
+				Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
 				return true;
 			}
 			return false;
