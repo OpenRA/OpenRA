@@ -40,6 +40,16 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public void DrawRect( float2 tl, float2 br, Color c )
+		{
+			var tr = new float2( br.X, tl.Y );
+			var bl = new float2( tl.X, br.Y );
+			DrawLine( tl, tr, c, c );
+			DrawLine( tl, bl, c, c );
+			DrawLine( tr, br, c, c );
+			DrawLine( bl, br, c, c );
+		}
+
 		public void DrawLine( float2 start, float2 end, Color startColor, Color endColor )
 		{
 			Renderer.CurrentBatchRenderer = this;
