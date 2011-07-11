@@ -327,7 +327,6 @@ return cgbinpath and {
 					
 					
 					if (checknesting(w,endindent)) then
-						DisplayOutput(indent,"\n")
 						newtx = newtx..outputregisters(indent)
 						if (indent == 0) then clearregisters(indent) end
 						indent = math.max(0,indent - 1)
