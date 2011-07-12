@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Renderer.SdlCommon;
 
 namespace OpenRA.Renderer.Cg
 {
