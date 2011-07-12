@@ -25,9 +25,9 @@ namespace OpenRA.Renderer.Glsl
 {
 	public class DeviceFactory : IDeviceFactory
 	{
-		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			return new GraphicsDevice( size, windowMode, vsync );
+			return new GraphicsDevice( size, windowMode );
 		}
 	}
 
@@ -38,7 +38,7 @@ namespace OpenRA.Renderer.Glsl
 
 		public Size WindowSize { get { return windowSize; } }
 
-		public GraphicsDevice( Size size, WindowMode window, bool vsync )
+		public GraphicsDevice( Size size, WindowMode window )
 		{
 			Console.WriteLine("Using Gl renderer");
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );

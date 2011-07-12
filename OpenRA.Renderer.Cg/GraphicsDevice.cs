@@ -24,9 +24,9 @@ namespace OpenRA.Renderer.Cg
 {
 	public class DeviceFactory : IDeviceFactory
 	{
-		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			return new GraphicsDevice( size, windowMode, vsync );
+			return new GraphicsDevice( size, windowMode );
 		}
 	}
 
@@ -85,7 +85,7 @@ namespace OpenRA.Renderer.Cg
 			throw new InvalidOperationException("CG Error. See graphics.log for details");
 		};
 
-		public GraphicsDevice( Size size, WindowMode window, bool vsync )
+		public GraphicsDevice( Size size, WindowMode window )
 		{
 			Console.WriteLine("Using Cg renderer");
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );

@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats.Graphics
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create( Size size, WindowMode windowMode, bool vsync ); 
+		IGraphicsDevice Create( Size size, WindowMode windowMode ); 
 	}
 
 	public interface IGraphicsDevice

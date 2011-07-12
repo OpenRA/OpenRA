@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 			FixOSX();
 			var resolution = GetResolution( windowMode );
 			var rendererPath = Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(Game.Settings.Graphics.Renderer) );
-			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode, false );
+			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode );
 		}
 
 		static Size GetResolution(WindowMode windowmode)
@@ -136,12 +136,12 @@ namespace OpenRA.Graphics
 			return new Size(size.X, size.Y);
 		}
 
-		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window, bool vsync )
+		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window )
 		{
 			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
 			{
 				var factory = (IDeviceFactory) r.Type.GetConstructor( Type.EmptyTypes ).Invoke( null );
-				return factory.Create( new Size( width, height ), window, vsync );
+				return factory.Create( new Size( width, height ), window );
 			}
 			
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");

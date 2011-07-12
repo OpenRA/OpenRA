@@ -19,9 +19,9 @@ namespace OpenRA.Renderer.Null
 {
 	public class DeviceFactory : IDeviceFactory
 	{
-		public IGraphicsDevice Create(Size size, WindowMode windowMode, bool vsync)
+		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			return new NullGraphicsDevice( size, windowMode, vsync );
+			return new NullGraphicsDevice( size, windowMode );
 		}
 	}
 
@@ -29,7 +29,7 @@ namespace OpenRA.Renderer.Null
 	{
 		public Size WindowSize { get; internal set; }
 
-		public NullGraphicsDevice(Size size, WindowMode window, bool vsync)
+		public NullGraphicsDevice(Size size, WindowMode window)
 		{
 			Console.WriteLine("Using Null renderer");
 			WindowSize = size;
