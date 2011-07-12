@@ -14,6 +14,7 @@ using System.IO;
 using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Renderer.SdlCommon;
 using Tao.OpenGl;
 
 namespace OpenRA.Renderer.Glsl
@@ -31,15 +32,15 @@ namespace OpenRA.Renderer.Glsl
 				vertexCode = file.ReadToEnd();
 			
 			int v = Gl.glCreateShaderObjectARB(Gl.GL_VERTEX_SHADER_ARB);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glShaderSourceARB(v,1,new string[]{vertexCode},null);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glCompileShaderARB(v);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			int success;
 			Gl.glGetObjectParameterivARB(v, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in {0}{1}.vert".F(Path.DirectorySeparatorChar, type));
 			
@@ -48,41 +49,41 @@ namespace OpenRA.Renderer.Glsl
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, type))))
 				fragmentCode = file.ReadToEnd();
 			int f = Gl.glCreateShaderObjectARB(Gl.GL_FRAGMENT_SHADER_ARB);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glShaderSourceARB(f,1,new string[]{fragmentCode},null);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glCompileShaderARB(f);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			Gl.glGetObjectParameterivARB(f, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, type));
 			
 			
 			// Assemble program
 			program = Gl.glCreateProgramObjectARB();
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glAttachObjectARB(program,v);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glAttachObjectARB(program,f);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			Gl.glLinkProgramARB(program);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			Gl.glGetObjectParameterivARB(program, Gl.GL_OBJECT_LINK_STATUS_ARB, out success);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Linking error in {0} shader".F(type));
 			
 			
 			Gl.glUseProgramObjectARB(program);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			int numUniforms;
 			Gl.glGetObjectParameterivARB( program, Gl.GL_ACTIVE_UNIFORMS, out numUniforms );
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 
 			int nextTexUnit = 1;
 			for( int i = 0 ; i < numUniforms ; i++ )
@@ -91,14 +92,14 @@ namespace OpenRA.Renderer.Glsl
 				var sb = new StringBuilder(128);
 				Gl.glGetActiveUniformARB( program, i, 128, out uLen, out uSize, out uType, sb );
 				var sampler = sb.ToString();
-				GraphicsDevice.CheckGlError();
+				ErrorHandler.CheckGlError();
 				if( uType == Gl.GL_SAMPLER_2D_ARB )
 				{
 					samplers.Add( sampler, nextTexUnit );
 					loc = Gl.glGetUniformLocationARB(program, sampler);
-					GraphicsDevice.CheckGlError();
+					ErrorHandler.CheckGlError();
 					Gl.glUniform1iARB( loc, nextTexUnit );
-					GraphicsDevice.CheckGlError();
+					ErrorHandler.CheckGlError();
 					++nextTexUnit;
 				}
 			}
@@ -107,31 +108,31 @@ namespace OpenRA.Renderer.Glsl
 		public void Render(Action a)
 		{
 			Gl.glUseProgramObjectARB(program);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			// Todo: Only enable alpha blending if we need it
 			Gl.glEnable(Gl.GL_BLEND);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			a();
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glDisable(Gl.GL_BLEND);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		public void SetValue(string name, ITexture t)
 		{
 			if( t == null ) return;
 			Gl.glUseProgramObjectARB(program);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			var texture = (Texture)t;
 			int texUnit;
 			if( samplers.TryGetValue( name, out texUnit ) )
 			{
 				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB + texUnit );
-				GraphicsDevice.CheckGlError();
+				ErrorHandler.CheckGlError();
 				Gl.glBindTexture( Gl.GL_TEXTURE_2D, texture.texture );
-				GraphicsDevice.CheckGlError();
+				ErrorHandler.CheckGlError();
 				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB );
 			}
 		}
@@ -139,11 +140,11 @@ namespace OpenRA.Renderer.Glsl
 		public void SetValue(string name, float x, float y)
 		{
 			Gl.glUseProgramObjectARB(program);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 			int param = Gl.glGetUniformLocationARB(program, name);
-			GraphicsDevice.CheckGlError();			
+			ErrorHandler.CheckGlError();			
 			Gl.glUniform2fARB(param,x,y);
-			GraphicsDevice.CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 	}
 }

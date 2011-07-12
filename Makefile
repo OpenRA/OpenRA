@@ -37,30 +37,38 @@ game: $(game_TARGET)
 #
 # Renderer dlls
 #
+rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
+rsdl_TARGET			= OpenRA.Renderer.SdlCommon.dll
+rsdl_KIND			= library
+rsdl_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+rsdl_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
+					thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
+					$(rsdl_DEPS)
+
 rcg_SRCS			:= $(shell find OpenRA.Renderer.Cg/ -iname '*.cs')
 rcg_TARGET			= OpenRA.Renderer.Cg.dll
 rcg_KIND			= library
-rcg_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+rcg_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
 rcg_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
 					thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
-					$(rcg_DEPS) $(game_TARGET)
+					$(rcg_DEPS)
 
 rgl_SRCS			:= $(shell find OpenRA.Renderer.Gl/ -iname '*.cs')
 rgl_TARGET			= OpenRA.Renderer.Gl.dll
 rgl_KIND			= library
-rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET)
+rgl_DEPS			= $(fileformats_TARGET) $(game_TARGET) $(rsdl_TARGET)
 rgl_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
 					thirdparty/Tao/Tao.Cg.dll thirdparty/Tao/Tao.OpenGl.dll thirdparty/Tao/Tao.Sdl.dll \
-					$(rgl_DEPS) $(game_TARGET)
+					$(rgl_DEPS)
 
 rnull_SRCS			:= $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
 rnull_TARGET			= OpenRA.Renderer.Null.dll
 rnull_KIND			= library
 rnull_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 rnull_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
-					$(rnull_DEPS) $(game_TARGET)
-PROGRAMS 			+= rcg rgl rnull
-renderers: $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET)
+					$(rnull_DEPS)
+PROGRAMS 			+= rcg rgl rnull rsdl
+renderers: $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
 
 #
 # Official Mods

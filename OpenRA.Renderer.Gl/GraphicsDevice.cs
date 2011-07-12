@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
+using OpenRA.Renderer.SdlCommon;
 using Tao.OpenGl;
 using Tao.Sdl;
 
@@ -36,43 +37,6 @@ namespace OpenRA.Renderer.Glsl
 		IntPtr surf;
 
 		public Size WindowSize { get { return windowSize; } }
-
-		public enum GlError
-		{
-			GL_NO_ERROR = Gl.GL_NO_ERROR,
-			GL_INVALID_ENUM = Gl.GL_INVALID_ENUM,
-			GL_INVALID_VALUE = Gl.GL_INVALID_VALUE,
-			GL_STACK_OVERFLOW = Gl.GL_STACK_OVERFLOW,
-			GL_STACK_UNDERFLOW = Gl.GL_STACK_UNDERFLOW,
-			GL_OUT_OF_MEMORY = Gl.GL_OUT_OF_MEMORY,
-			GL_TABLE_TOO_LARGE = Gl.GL_TABLE_TOO_LARGE,
-			GL_INVALID_OPERATION = Gl.GL_INVALID_OPERATION,
-		}
-
-		internal static void CheckGlError()
-		{
-			var n = Gl.glGetError();
-			if( n != Gl.GL_NO_ERROR )
-			{
-				var error = "GL Error: {0}\n{1}".F((GlError)n, new StackTrace());
-				WriteGraphicsLog(error);
-				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
-			}
-		}
-
-		static void WriteGraphicsLog(string message)
-		{
-			Log.AddChannel("graphics", "graphics.log");
-			Log.Write("graphics", message);
-			Log.Write("graphics", "");
-			Log.Write("graphics", "OpenGL Information:");
-			Log.Write("graphics",  "Vendor: {0}", Gl.glGetString(Gl.GL_VENDOR));
-			Log.Write("graphics",  "Renderer: {0}", Gl.glGetString(Gl.GL_RENDERER));
-			Log.Write("graphics",  "GL Version: {0}", Gl.glGetString(Gl.GL_VERSION));
-			Log.Write("graphics",  "Shader Version: {0}", Gl.glGetString(Gl.GL_SHADING_LANGUAGE_VERSION));
-			Log.Write("graphics", "Available extensions:");
-			Log.Write("graphics", Gl.glGetString(Gl.GL_EXTENSIONS));
-		}
 
 		public GraphicsDevice( Size size, WindowMode window, bool vsync )
 		{
@@ -118,7 +82,7 @@ namespace OpenRA.Renderer.Glsl
 			Sdl.SDL_EnableUNICODE( 1 );
 			Sdl.SDL_EnableKeyRepeat( Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL );
 
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 			
 			// Test for required extensions
 			var required = new string[]
@@ -136,20 +100,19 @@ namespace OpenRA.Renderer.Glsl
 
 			if (missingExtensions.Any())
 			{
-				WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}".F(string.Join(",", missingExtensions)));
+				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
+					.F(string.Join(",", missingExtensions)));
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
 			}
 			
 			windowSize = size;
 
 			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
-			CheckGlError();
-			
-			Sdl.SDL_SetModState( 0 );
-			
+			ErrorHandler.CheckGlError();
 
+			Sdl.SDL_SetModState( 0 );
 		}
 
 		public void EnableScissor( int left, int top, int width, int height )
@@ -157,23 +120,23 @@ namespace OpenRA.Renderer.Glsl
 			if( width < 0 ) width = 0;
 			if( height < 0 ) height = 0;
 			Gl.glScissor( left, windowSize.Height - ( top + height ), width, height );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glEnable( Gl.GL_SCISSOR_TEST );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableScissor()
 		{
 			Gl.glDisable( Gl.GL_SCISSOR_TEST );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		public void Clear( Color c )
 		{
 			Gl.glClearColor( 0, 0, 0, 0 );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 			Gl.glClear( Gl.GL_COLOR_BUFFER_BIT );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		MouseButton lastButtonBits = (MouseButton)0;
@@ -317,13 +280,13 @@ namespace OpenRA.Renderer.Glsl
 				pendingMotion = null;
 			}
 
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		public void DrawPrimitives( PrimitiveType pt, int firstVertex, int numVertices )
 		{
 			Gl.glDrawArrays( ModeFromPrimitiveType( pt ), firstVertex, numVertices );
-			CheckGlError();
+			ErrorHandler.CheckGlError();
 		}
 
 		static int ModeFromPrimitiveType( PrimitiveType pt )
@@ -338,9 +301,9 @@ namespace OpenRA.Renderer.Glsl
 			throw new NotImplementedException();
 		}
 
-		public IVertexBuffer<Vertex> CreateVertexBuffer( int size ) { return new VertexBuffer<Vertex>( this, size ); }
-		public ITexture CreateTexture() { return new Texture( this ); }
-		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( this, bitmap ); }
+		public IVertexBuffer<Vertex> CreateVertexBuffer( int size ) { return new VertexBuffer<Vertex>( size ); }
+		public ITexture CreateTexture() { return new Texture(); }
+		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( bitmap ); }
 		public IShader CreateShader( string name ) { return new Shader( this, name ); }
 
 		public int GpuMemoryUsed { get; internal set; }
