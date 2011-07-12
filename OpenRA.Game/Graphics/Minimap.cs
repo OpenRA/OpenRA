@@ -11,10 +11,10 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
-using System.IO;
 
 namespace OpenRA.Graphics
 {
@@ -33,10 +33,10 @@ namespace OpenRA.Graphics
 			
 			if (!actualSize)
 			{
-				width = height = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
+				width = height = Exts.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			}
 			
-			Bitmap terrain = new Bitmap(width, height);
+			var terrain = new Bitmap(width, height);
 			
 			var bitmapData = terrain.LockBits(new Rectangle(0, 0, terrain.Width, terrain.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -57,10 +57,11 @@ namespace OpenRA.Graphics
 						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[type].Color.ToArgb();
 					}
 			}
+
 			terrain.UnlockBits(bitmapData);
 			return terrain;
 		}
-		
+
 		// Add the static resources defined in the map; if the map lives
 		// in a world use AddCustomTerrain instead
 		public static Bitmap AddStaticResources(Map map, Bitmap terrainBitmap)
@@ -92,6 +93,7 @@ namespace OpenRA.Graphics
 						*(c + (y * bitmapData.Stride >> 2) + x) = tileset.Terrain[res].Color.ToArgb();
 					}
 			}
+
 			terrain.UnlockBits(bitmapData);
 
 			return terrain;
@@ -100,8 +102,8 @@ namespace OpenRA.Graphics
 		public static Bitmap CustomTerrainBitmap(World world)
 		{
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
-			Bitmap bitmap = new Bitmap(size, size);
+			var size = Exts.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
+			var bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
@@ -120,6 +122,7 @@ namespace OpenRA.Graphics
 						*(c + (y * bitmapData.Stride >> 2) + x) = world.TileSet.Terrain[custom].Color.ToArgb();
 					}
 			}
+
 			bitmap.UnlockBits(bitmapData);
 			return bitmap;
 		}
@@ -127,8 +130,8 @@ namespace OpenRA.Graphics
 		public static Bitmap ActorsBitmap(World world)
 		{	
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
-			Bitmap bitmap = new Bitmap(size, size);
+			var size = Exts.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
+			var bitmap = new Bitmap(size, size);
 			var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 		
@@ -155,8 +158,8 @@ namespace OpenRA.Graphics
 		public static Bitmap ShroudBitmap(World world)
 		{	
 			var map = world.Map;
-			var size = Util.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
-			Bitmap bitmap = new Bitmap(size, size);
+			var size = Exts.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
+			var bitmap = new Bitmap(size, size);
 			if (world.LocalShroud.Disabled)
 				return bitmap;
 			

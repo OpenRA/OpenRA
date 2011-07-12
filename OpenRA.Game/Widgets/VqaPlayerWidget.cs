@@ -55,7 +55,7 @@ namespace OpenRA.Widgets
 			invLength = video.Framerate*1f/video.Frames;
 
 			var size = Math.Max(video.Width, video.Height);
-			var textureSize = OpenRA.Graphics.Util.NextPowerOf2(size);
+			var textureSize = Exts.NextPowerOf2(size);
 			videoSprite = new Sprite(new Sheet(new Size(textureSize,textureSize)), new Rectangle( 0, 0, video.Width, video.Height ), TextureChannel.Alpha);
 			videoSprite.sheet.Texture.SetData(video.FrameData);
 

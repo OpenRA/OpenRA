@@ -84,7 +84,7 @@ namespace OpenRA.FileFormats
 			/*var unknown3 = */reader.ReadChars(14);
 			
 			
-			var frameSize = NextPowerOf2(Math.Max(Width,Height));
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width,Height));
 			cbf = new byte[Width*Height];
 			cbp = new byte[Width*Height];
 			palette = new uint[numColors];
@@ -258,37 +258,34 @@ namespace OpenRA.FileFormats
 		}
 		
 		int cachedFrame = -1;
-		public uint[,] FrameData	{ get
+
+		void DecodeFrameData( int frame )
 		{
-			if (cachedFrame != currentFrame)
+			cachedFrame = currentFrame;
+			for (var y = 0; y < blocks.Y; y++)
+				for (var x = 0; x < blocks.X; x++)
+				{
+					var px = origData[x + y*blocks.X];
+					var mod = origData[x + (y + blocks.Y)*blocks.X];
+					for (var j = 0; j < blockHeight; j++)
+						for (var i = 0; i < blockWidth; i++)
+						{
+							var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
+							byte color = (mod == 0x0f) ? px : cbf[cbfi];
+							frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
+						}
+				}
+		}
+
+		public uint[,] FrameData
+		{
+			get
 			{
-				cachedFrame = currentFrame;
-				for (var y = 0; y < blocks.Y; y++)
-					for (var x = 0; x < blocks.X; x++)
-					{
-						var px = origData[x + y*blocks.X];
-						var mod = origData[x + (y + blocks.Y)*blocks.X];
-						for (var j = 0; j < blockHeight; j++)
-							for (var i = 0; i < blockWidth; i++)
-							{
-								var cbfi = (mod*256 + px)*8 + j*blockWidth + i;
-								byte color = (mod == 0x0f) ? px : cbf[cbfi];
-								frameData[y*blockHeight + j, x*blockWidth + i] = palette[color];
-							}
-					}
+				if (cachedFrame != currentFrame)
+					DecodeFrameData(currentFrame);
+
+				return frameData;
 			}
-			return frameData;
-		}}
-		
-		int NextPowerOf2(int v)
-		{
-			--v;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			++v;
-			return v;
 		}
 	}
 }

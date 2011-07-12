@@ -154,5 +154,16 @@ namespace OpenRA
 		{
 			for(;;) { yield return t; t = f(t); }
 		}
+
+		public static int NextPowerOf2(int v)
+		{
+			--v;
+			v |= v >> 1;
+			v |= v >> 2;
+			v |= v >> 4;
+			v |= v >> 8;
+			++v;
+			return v;
+		}
 	}
 }
