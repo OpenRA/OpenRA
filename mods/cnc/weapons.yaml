@@ -1,4 +1,3 @@
-
 UnitExplode:
 	Warhead:
 		Damage: 500
@@ -91,7 +90,7 @@ IonCannon:
 		Delay: 3
 		InfDeath: 4
 
-Sniper: 
+Sniper:
 	Report: RAMGUN2
 	ROF: 40
 	Range: 7
@@ -107,7 +106,7 @@ Sniper:
 			Heavy: 5%
 		InfDeath: 1
 
-HighV: 
+HighV:
 	ROF: 40
 	Range: 4
 	Report: GUN8
@@ -144,7 +143,7 @@ HeliGun:
 		InfDeath: 1
 		Explosion: 1
 
-Pistol: 
+Pistol:
 	ROF: 7
 	Range: 3
 	Report: GUN18
@@ -161,7 +160,7 @@ Pistol:
 		Explosion: 1
 		Damage: 1
 
-M16: 
+M16:
 	ROF: 20
 	Range: 4
 	Report: MGUN2
@@ -178,7 +177,7 @@ M16:
 		InfDeath: 1
 		Damage: 15
 
-Rockets: 
+Rockets:
 	ROF: 60
 	Range: 6
 	Report: BAZOOK1
@@ -269,7 +268,7 @@ OrcaMissiles:
 		SmudgeType: Crater
 		Damage: 20
 
-Flamethrower: 
+Flamethrower:
 	ROF: 50
 	Range: 2
 	Report: FLAMER2
@@ -287,7 +286,7 @@ Flamethrower:
 		SmudgeType: Scorch
 		Damage: 35
 
-BigFlamer: 
+BigFlamer:
 	ROF: 50
 	Range: 3.5
 	Report: FLAMER2
@@ -308,7 +307,7 @@ BigFlamer:
 		SmudgeType: Scorch
 		Damage: 25
 
-Chemspray: 
+Chemspray:
 	ROF: 70
 	Range: 2
 	Report: FLAMER2
@@ -326,7 +325,7 @@ Chemspray:
 		SmudgeType: Scorch
 		ImpactSound: xplos
 
-Grenade: 
+Grenade:
 	ROF: 50
 	Range: 5
 	Projectile: Bullet
@@ -348,7 +347,7 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 50
 
-70mm: 
+70mm:
 	ROF: 60
 	Range: 4
 	Report: TNKFIRE3
@@ -368,7 +367,7 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 25
 
-105mm: 
+105mm:
 	ROF: 50
 	Range: 4.75
 	Report: TNKFIRE4
@@ -388,7 +387,7 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 30
 
-120mm: 
+120mm:
 	ROF: 80
 	Range: 4.75
 	Report: TNKFIRE6
@@ -408,7 +407,7 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 40
 
-120mmDual: 
+120mmDual:
 	ROF: 80
 	Range: 4.75
 	Report: TNKFIRE6
@@ -429,7 +428,7 @@ Grenade:
 		SmudgeType: Crater
 		Damage: 40
 
-TurretGun: 
+TurretGun:
 	ROF: 50
 	Range: 6
 	Report: TNKFIRE6
@@ -563,7 +562,7 @@ ArtilleryShell:
 		SmudgeType: Crater
 		ImpactSound: xplos
 
-MachineGun: 
+MachineGun:
 	ROF: 30
 	Range: 4
 	Report: MGUN11
@@ -580,7 +579,7 @@ MachineGun:
 		Explosion: 1
 		Damage: 15
 
-BoatMissile: 
+BoatMissile:
 	ROF: 35
 	Range: 8
 	Burst: 2
@@ -672,7 +671,7 @@ Napalm.Crate:
 		SmudgeType: Scorch
 		Damage: 500
 
-Laser: 
+Laser:
 	ROF: 90
 	Range: 7.5
 	Charges: true
