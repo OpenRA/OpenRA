@@ -35,6 +35,7 @@ namespace OpenRA.Renderer.Glsl
 	{
 		Size windowSize;
 		IntPtr surf;
+		SdlInput input;
 
 		public Size WindowSize { get { return windowSize; } }
 
@@ -113,6 +114,8 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 
 			Sdl.SDL_SetModState( 0 );
+			
+			input = new SdlInput( surf );
 		}
 
 		public void EnableScissor( int left, int top, int width, int height )
@@ -139,49 +142,6 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 		}
 
-		MouseButton lastButtonBits = (MouseButton)0;
-
-		MouseButton MakeButton( byte b )
-		{
-			return b == Sdl.SDL_BUTTON_LEFT ? MouseButton.Left
-				: b == Sdl.SDL_BUTTON_RIGHT ? MouseButton.Right
-				: b == Sdl.SDL_BUTTON_MIDDLE ? MouseButton.Middle
-				: b == Sdl.SDL_BUTTON_WHEELDOWN ? MouseButton.WheelDown
-				: b == Sdl.SDL_BUTTON_WHEELUP ? MouseButton.WheelUp
-				: 0;
-		}
-
-		Modifiers MakeModifiers( int raw )
-		{
-			return ( ( raw & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
-				 | ( ( raw & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
-				 | ( ( raw & Sdl.KMOD_META ) != 0 ? Modifiers.Meta : 0 )
-				 | ( ( raw & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
-		}
-
-		bool HandleSpecialKey( KeyInput k )
-		{
-			switch( k.VirtKey )
-			{
-			case Sdl.SDLK_F13:
-				var path = Environment.GetFolderPath( Environment.SpecialFolder.Personal )
-					+ Path.DirectorySeparatorChar + DateTime.UtcNow.ToString( "OpenRA-yyyy-MM-ddThhmmssZ" ) + ".bmp";
-				Sdl.SDL_SaveBMP( surf, path );
-				return true;
-
-			case Sdl.SDLK_F4:
-				if( k.Modifiers.HasModifier( Modifiers.Alt ) )
-				{
-					OpenRA.Game.Exit();
-					return true;
-				}
-				return false;
-
-			default:
-				return false;
-			}
-		}
-
 		public void Present()
 		{
 			Sdl.SDL_GL_SwapBuffers();
@@ -189,98 +149,7 @@ namespace OpenRA.Renderer.Glsl
 
 		public void PumpInput( IInputHandler inputHandler )
 		{
-			Game.HasInputFocus = 0 != ( Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS );
-
-			var mods = MakeModifiers( Sdl.SDL_GetModState() );
-			inputHandler.ModifierKeys( mods );
-			MouseInput? pendingMotion = null;
-
-			Sdl.SDL_Event e;
-			while( Sdl.SDL_PollEvent( out e ) != 0 )
-			{
-				switch( e.type )
-				{
-				case Sdl.SDL_QUIT:
-					OpenRA.Game.Exit();
-					break;
-
-				case Sdl.SDL_MOUSEBUTTONDOWN:
-					{
-						if( pendingMotion != null )
-						{
-							inputHandler.OnMouseInput( pendingMotion.Value );
-							pendingMotion = null;
-						}
-
-						var button = MakeButton( e.button.button );
-						lastButtonBits |= button;
-
-						inputHandler.OnMouseInput( new MouseInput(
-							MouseInputEvent.Down, button, new int2( e.button.x, e.button.y ), mods ) );
-					} break;
-
-				case Sdl.SDL_MOUSEBUTTONUP:
-					{
-						if( pendingMotion != null )
-						{
-							inputHandler.OnMouseInput( pendingMotion.Value );
-							pendingMotion = null;
-						}
-
-						var button = MakeButton( e.button.button );
-						lastButtonBits &= ~button;
-
-						inputHandler.OnMouseInput( new MouseInput(
-							MouseInputEvent.Up, button, new int2( e.button.x, e.button.y ), mods ) );
-					} break;
-
-				case Sdl.SDL_MOUSEMOTION:
-					{
-						pendingMotion = new MouseInput(
-							MouseInputEvent.Move,
-							lastButtonBits,
-							new int2( e.motion.x, e.motion.y ),
-							mods );
-					} break;
-
-				case Sdl.SDL_KEYDOWN:
-					{
-						var keyEvent = new KeyInput
-						{
-							Event = KeyInputEvent.Down,
-							Modifiers = mods,
-							UnicodeChar = (char)e.key.keysym.unicode,
-							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
-							VirtKey = e.key.keysym.sym
-						};
-
-						if( !HandleSpecialKey( keyEvent ) )
-							inputHandler.OnKeyInput( keyEvent );
-					} break;
-
-				case Sdl.SDL_KEYUP:
-					{
-						var keyEvent = new KeyInput
-						{
-							Event = KeyInputEvent.Up,
-							Modifiers = mods,
-							UnicodeChar = (char)e.key.keysym.unicode,
-							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
-							VirtKey = e.key.keysym.sym
-						};
-
-						inputHandler.OnKeyInput( keyEvent );
-					} break;
-				}
-			}
-
-			if( pendingMotion != null )
-			{
-				inputHandler.OnMouseInput( pendingMotion.Value );
-				pendingMotion = null;
-			}
-
-			ErrorHandler.CheckGlError();
+			input.PumpInput(inputHandler);
 		}
 
 		public void DrawPrimitives( PrimitiveType pt, int firstVertex, int numVertices )
