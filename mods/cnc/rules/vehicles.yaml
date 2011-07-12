@@ -224,7 +224,7 @@ BIKE:
 	RevealsShroud:
 		Range: 7
 	AttackFrontal:
-		PrimaryWeapon: Rockets.Bike
+		PrimaryWeapon: BikeRockets
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	RenderUnit:
