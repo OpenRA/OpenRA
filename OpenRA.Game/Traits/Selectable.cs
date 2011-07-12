@@ -36,7 +36,6 @@ namespace OpenRA.Traits
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 			var xY = new float2(bounds.Left, bounds.Bottom);
-			var XY = new float2(bounds.Right, bounds.Bottom);
 
 			var colorResults = self.TraitsImplementing<ISelectionColorModifier>().Select(t => t.GetSelectionColorModifier(self, selectionColor)).Where(
 					c => c.ToArgb() != selectionColor.ToArgb());
@@ -44,7 +43,7 @@ namespace OpenRA.Traits
 			if (colorResults.Any())
 				selectionColor = colorResults.First();
 
-			DrawSelectionBox(self, xy, Xy, xY, XY, selectionColor);
+			wr.DrawSelectionBox(self, selectionColor);
 			DrawHealthBar(self, xy, Xy);
 			DrawControlGroup(wr, self, xy);
 			DrawPips(wr, self, xY);
@@ -78,19 +77,6 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		void DrawSelectionBox(Actor self, float2 xy, float2 Xy, float2 xY, float2 XY, Color c)
-		{
-			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xy, xy + new float2(0, 4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(-4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(Xy, Xy + new float2(0, 4), c, c);
-
-			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(xY, xY + new float2(0, -4), c, c);
-			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(-4, 0), c, c);
-			Game.Renderer.LineRenderer.DrawLine(XY, XY + new float2(0, -4), c, c);
-		}
-
 		void DrawSelectionBar(Actor self, float2 xy, float2 Xy, float value, Color barColor)
 		{
 			if (!self.IsInWorld) return;
