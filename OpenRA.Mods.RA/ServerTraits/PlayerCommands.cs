@@ -23,16 +23,8 @@ namespace OpenRA.Mods.RA.Server
 	{
 		public bool InterpretCommand( S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (server.GameStarted)
-			{
-				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
+			if (!LobbyCommands.ValidateCommand(server, conn, client, cmd))
 				return false;
-			}
-			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
-			{
-				server.SendChatTo(conn, "Cannot change state when marked as ready.");
-				return false;
-			}
 			
 			var dict = new Dictionary<string, Func<string, bool>>
 			{

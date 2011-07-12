@@ -20,7 +20,24 @@ namespace OpenRA.Mods.RA.Server
 {
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
 	{
-		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
+		static bool ValidateSlotCommand(S server, Connection conn, string arg, bool requiresHost)
+		{
+			if (!server.lobbyInfo.Slots.ContainsKey(arg))
+			{
+				Log.Write("server", "Invalid slot: {0}", arg );
+				return false;
+			}
+
+			if (requiresHost && conn.PlayerIndex != 0)
+			{
+				server.SendChatTo( conn, "Only the host can do that" );
+				return false;
+			}
+
+			return true;
+		}
+
+		public static bool ValidateCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (server.GameStarted)
 			{
@@ -32,6 +49,14 @@ namespace OpenRA.Mods.RA.Server
 				server.SendChatTo(conn, "Cannot change state when marked as ready.");
 				return false;
 			}
+			
+			return true;
+		}
+
+		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
+		{
+			if (!ValidateCommand(server, conn, client, cmd))
+				return false;
 			
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
@@ -102,17 +127,8 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_close",
 					s =>
 					{
-						if (!server.lobbyInfo.Slots.ContainsKey(s))
-						{
-							Log.Write("server", "Invalid slot: {0}", s );
+						if (!ValidateSlotCommand( server, conn, s, true ))
 							return false;
-						}
-
-						if (conn.PlayerIndex != 0)
-						{
-							server.SendChatTo( conn, "Only the host can alter slots" );
-							return true;
-						}
 
 						// kick any player that's in the slot
 						var occupant = server.lobbyInfo.ClientInSlot(s);
@@ -138,17 +154,8 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_open",
 					s =>
 					{
-						if (!server.lobbyInfo.Slots.ContainsKey(s))
-						{
-							Log.Write("server", "Invalid slot: {0}", s );
+						if (!ValidateSlotCommand( server, conn, s, true ))
 							return false;
-						}
-
-						if (conn.PlayerIndex != 0)
-						{
-							server.SendChatTo( conn, "Only the host can alter slots" );
-							return true;
-						}
 
 						var slot = server.lobbyInfo.Slots[s];
 						slot.Closed = false;
@@ -172,17 +179,8 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (!server.lobbyInfo.Slots.ContainsKey(parts[0]))
-						{
-							Log.Write("server", "Invalid slot: {0}", parts[0] );
+						if (!ValidateSlotCommand( server, conn, parts[0], true ))
 							return false;
-						}
-
-						if (conn.PlayerIndex != 0)
-						{
-							server.SendChatTo( conn, "Only the host can alter slots" );
-							return true;
-						}
 
 						var slot = server.lobbyInfo.Slots[parts[0]];
 						var bot = server.lobbyInfo.ClientInSlot(parts[0]);
