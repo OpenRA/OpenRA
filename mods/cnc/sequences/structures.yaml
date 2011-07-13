@@ -44,36 +44,12 @@ proc:
 		Start: 6
 		Length: 6
 		Tick: 60
-	dock-start:
-		Start: 12
-		Length: 7
-		Tick: 60
-	dock-loop:
-		Start: 19
-		Length: 5
-		Tick: 60
-	dock-end:
-		Start: 24
-		Length: 6
-		Tick: 60
 	damaged-idle:
 		Start: 30
 		Length: 6
 		Tick: 60
 	damaged-enroute:
 		Start: 36
-		Length: 6
-		Tick: 60
-	damaged-dock-start:
-		Start: 42
-		Length: 7
-		Tick: 60
-	damaged-dock-loop:
-		Start: 49
-		Length: 5
-		Tick: 60
-	damaged-dock-end:
-		Start: 54
 		Length: 6
 		Tick: 60
 	dead:

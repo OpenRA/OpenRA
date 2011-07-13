@@ -30,17 +30,4 @@ namespace OpenRA.Mods.Cnc
 			return new HarvesterDockSequence(harv, self);
 		}
 	}
-
-	public class HarvesterDockingInfo : TraitInfo<HarvesterDocking> { }
-	public class HarvesterDocking : IRenderModifier
-	{
-		[Sync]
-		public bool Visible = true;
-
-		static readonly Renderable[] Nothing = { };
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
-		{
-			return Visible ? r : Nothing;
-		}
-	}
 }

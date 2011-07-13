@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Cnc
 		
 		readonly Actor proc;
 		readonly Harvester harv;
-		readonly HarvesterDocking dock;
-		readonly RenderBuilding rb;
+		readonly RenderUnit ru;
 		State state;
 		
 		int2 startDock;
@@ -45,8 +44,7 @@ namespace OpenRA.Mods.Cnc
 			this.proc = proc;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
-			dock = self.Trait<HarvesterDocking>();
-			rb = proc.Trait<RenderBuilding>();
+			ru = self.Trait<RenderUnit>();
 			startDock = self.Trait<IHasLocation>().PxPosition;
 			endDock = proc.Trait<IHasLocation>().PxPosition + new int2(-15,8);
 		}
@@ -64,30 +62,16 @@ namespace OpenRA.Mods.Cnc
 					state = State.Dock;
 					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
 				case State.Dock:
-					dock.Visible = false;
-					if (rb.anim.CurrentSequence.Name == "idle" || rb.anim.CurrentSequence.Name == "damaged-idle")
-					{
-						rb.PlayCustomAnimThen(proc, "dock-start", () => {rb.PlayCustomAnimRepeating(proc, "dock-loop"); state = State.Loop;});
-						state = State.Wait;
-					}
-					else
-						state = State.Loop;
+					ru.PlayCustomAnimation(self, "dock", () => {ru.PlayCustomAnimRepeating(self, "dock-loop"); state = State.Loop;});
+					state = State.Wait;
 					return this;
 				case State.Loop:
 					if (harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					if (rb.anim.CurrentSequence.Name == "dock-loop" || rb.anim.CurrentSequence.Name == "damaged-dock-loop")
-					{
-						rb.PlayCustomAnimThen(proc, "dock-end", () => {dock.Visible = true; state = State.Dragout;});
-						state = State.Wait;
-					}
-					else
-					{
-						state = State.Dragout;
-						dock.Visible = true;
-					}
+					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.Dragout);
+					state = State.Wait;
 					return this;
 				case State.Dragout:
 					return Util.SequenceActivities(new Drag(endDock, startDock, 12), NextActivity);
