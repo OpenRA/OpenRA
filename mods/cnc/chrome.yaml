@@ -23,7 +23,7 @@ button: chrome.png
 
 button-hover: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
@@ -67,7 +67,7 @@ scrollthumb: chrome.png
 
 scrollthumb-hover: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
@@ -113,7 +113,7 @@ textfield: chrome.png
 # A copy of button-hover
 textfield-hover: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
@@ -161,7 +161,7 @@ progressbar-bg: chrome.png
 # A copy of button-hover
 progressbar-thumb: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
@@ -186,7 +186,7 @@ scrollpanel-bg: chrome.png
 # A copy of button-hover
 scrollitem-hover: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
@@ -247,7 +247,7 @@ checkbox: chrome.png
 # A copy of button-hover
 checkbox-hover: chrome.png
 	background: 2,130,60,60
-	border-r: 62,132,2,60
+	border-r: 62,130,2,60
 	border-l: 0,130,2,60
 	border-b: 2,190,60,2
 	border-t: 2,128,60,2
