@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		public string WinNotification = null;
 		public string LoseNotification = null;
+		public int NotificationDelay = 1500; // Milliseconds
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(this); }
 	}
 
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer)
 			{
 				self.World.LocalShroud.Disabled = true;
-				Sound.Play(Info.LoseNotification);
+				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.Play(Info.LoseNotification));
 			}
 		}
 		
@@ -76,7 +77,7 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer)
 			{
 				self.World.LocalShroud.Disabled = true;
-				Sound.Play(Info.WinNotification);
+				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.Play(Info.WinNotification));
 			}
 		}
 	}
