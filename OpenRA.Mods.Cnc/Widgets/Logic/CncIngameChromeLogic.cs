@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 		
-		void SetupProductionGroupButton(ButtonWidget button, string group)
+		void SetupProductionGroupButton(ToggleButtonWidget button, string group)
 		{
 			Action<bool> selectTab = reverse =>
 			{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			button.IsDisabled = () => queueTabs.Groups[group].Tabs.Count == 0;
 			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
-
+			button.IsToggled = () => queueTabs.QueueGroup == group;
 			var chromeName = group.ToLowerInvariant();
 			var icon = button.GetWidget<ImageWidget>("ICON");
 			icon.GetImageName = () => button.IsDisabled() ? chromeName+"-disabled" :
@@ -128,11 +128,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				world.ActorRemoved += queueTabs.ActorChanged;
 
 				var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
-				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("BUILDING"), "Building");
-				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("DEFENSE"), "Defense");
-				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("INFANTRY"), "Infantry");
-				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("VEHICLE"), "Vehicle");
-				SetupProductionGroupButton(queueTypes.GetWidget<ButtonWidget>("AIRCRAFT"), "Aircraft");
+				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("BUILDING"), "Building");
+				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("DEFENSE"), "Defense");
+				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("INFANTRY"), "Infantry");
+				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("VEHICLE"), "Vehicle");
+				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
 
 				playerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = onOptionsClick;
 

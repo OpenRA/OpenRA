@@ -61,9 +61,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="289.47924"
-     inkscape:cy="458.66173"
+     inkscape:zoom="2"
+     inkscape:cx="159.47924"
+     inkscape:cy="358.66173"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1234,5 +1234,45 @@
        id="path3178"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <rect
+       style="fill:#800000;fill-opacity:0.87843138;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3962"
+       width="31"
+       height="31"
+       x="256.5"
+       y="668.86218"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="668.86218"
+       x="288.5"
+       height="31"
+       width="31"
+       id="rect3964"
+       style="fill:#b00000;fill-opacity:0.87843138;stroke:#c00000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="700.86218"
+       x="256.5"
+       height="31"
+       width="31"
+       id="rect3966"
+       style="fill:#5c0000;fill-opacity:0.87843138;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       style="fill:#502b2b;fill-opacity:0.87843138;stroke:#800000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3968"
+       width="31"
+       height="31"
+       x="288.5"
+       y="700.86218"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

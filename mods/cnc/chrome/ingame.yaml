@@ -56,7 +56,7 @@ Container@INGAME_ROOT:
 Container@OBSERVER_WIDGETS:
 	Id:OBSERVER_WIDGETS
 	Children:
-		TooltipButton@OPTIONS_BUTTON:
+		ToggleButton@OPTIONS_BUTTON:
 			Id:OPTIONS_BUTTON
 			Key:escape
 			X:WINDOW_RIGHT-202
@@ -127,7 +127,7 @@ Container@PLAYER_WIDGETS:
 			Height:240
 			Background:panel-black
 			Children:
-				TooltipButton@OPTIONS_BUTTON:
+				ToggleButton@OPTIONS_BUTTON:
 					Id:OPTIONS_BUTTON
 					Key:escape
 					X:42
@@ -146,7 +146,7 @@ Container@PLAYER_WIDGETS:
 							Y:5
 							ImageCollection:order-icons
 							ImageName:options
-				TooltipButton@SELL_BUTTON:
+				ToggleButton@SELL_BUTTON:
 					Id:SELL_BUTTON
 					Key: [
 					X:82
@@ -164,7 +164,7 @@ Container@PLAYER_WIDGETS:
 							X:7
 							Y:5
 							ImageCollection:order-icons
-				TooltipButton@REPAIR_BUTTON:
+				ToggleButton@REPAIR_BUTTON:
 					Id:REPAIR_BUTTON
 					Key: ]
 					X:122
@@ -246,7 +246,7 @@ Container@PLAYER_WIDGETS:
 					Width:170
 					Height:30
 					Children:
-						TooltipButton@BUILDING:
+						ToggleButton@BUILDING:
 							Id:BUILDING
 							Width:30
 							Height:30
@@ -261,7 +261,7 @@ Container@PLAYER_WIDGETS:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						TooltipButton@DEFENSE:
+						ToggleButton@DEFENSE:
 							Id:DEFENSE
 							X:35
 							Width:30
@@ -277,7 +277,7 @@ Container@PLAYER_WIDGETS:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						TooltipButton@INFANTRY:
+						ToggleButton@INFANTRY:
 							Id:INFANTRY
 							X:70
 							Width:30
@@ -293,7 +293,7 @@ Container@PLAYER_WIDGETS:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						TooltipButton@VEHICLE:
+						ToggleButton@VEHICLE:
 							Id:VEHICLE
 							X:105
 							Width:30
@@ -309,7 +309,7 @@ Container@PLAYER_WIDGETS:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						TooltipButton@AIRCRAFT:
+						ToggleButton@AIRCRAFT:
 							Id:AIRCRAFT
 							X:140
 							Width:30

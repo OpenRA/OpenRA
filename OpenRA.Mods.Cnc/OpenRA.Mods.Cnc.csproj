@@ -98,12 +98,12 @@
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
-    <Compile Include="Widgets\TooltipButtonWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
+    <Compile Include="Widgets\ToggleButtonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -8,26 +8,29 @@
  */
 #endregion
 
+using System;
+using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class TooltipButtonWidget : ButtonWidget
+	public class ToggleButtonWidget : ButtonWidget
 	{
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		public readonly string TooltipText;
 		public readonly string TooltipContainer;
+		public Func<bool> IsToggled = () => false;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
-		public TooltipButtonWidget()
+		public ToggleButtonWidget()
 			: base()
 		{
 			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
-		protected TooltipButtonWidget(TooltipButtonWidget other)
+		protected ToggleButtonWidget(ToggleButtonWidget other)
 			: base(other)
 		{
 			TooltipTemplate = other.TooltipTemplate;
@@ -47,6 +50,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (TooltipContainer == null) return;
 			tooltipContainer.Value.RemoveTooltip();
+		}
+
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+		{
+			var baseName = IsToggled() ? "button-toggled" : "button";
+			ButtonWidget.DrawBackground(baseName, rect, disabled, pressed, hover);
 		}
 	}
 }

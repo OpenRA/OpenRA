@@ -117,7 +117,7 @@ namespace OpenRA.Widgets
 
 		public override int2 ChildOrigin { get { return RenderOrigin + 
 				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
-		
+
 		public override void Draw()
 		{
 			var rb = RenderBounds;
@@ -128,13 +128,18 @@ namespace OpenRA.Widgets
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			
-			DrawBackground("button", rb, disabled, Depressed, Widget.MouseOverWidget == this);
+			DrawBackground(rb, disabled, Depressed, Widget.MouseOverWidget == this);
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
 			              disabled ? Color.Gray : Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }
 		public virtual int UsableWidth { get { return Bounds.Width; } }
+
+		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+		{
+			ButtonWidget.DrawBackground("button", rect, disabled, pressed, hover);
+		}
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover)
 		{
