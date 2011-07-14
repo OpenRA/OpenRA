@@ -6,6 +6,7 @@ NEW:
 		Video memory leaks fixed
 		Improved error messages for unsupported graphics cards
 		Improved support for Intel graphics cards
+		Fixed incorrect resolution under some Linux systems
 		Write graphics.log on all graphics-related errors
 		Significant general performance improvements
 		Fix crashes when joining a game with no free player slots
@@ -25,7 +26,7 @@ NEW:
 			return to confirm prompts
 		Fixed Rocket Launcher turret raising/lowering when attacking
 		Added muzzle flashes to Guard Tower / SAM site
-		Fixed firing offsets on Flame tank / Advanced guard tower / Obelisk / Rocket Launcher / Stealth Tank / Buggy / Humvee / Artillery / Orca / Apache / Mammoth tank / Flame trooper / Chem trooper / Rocket trooper
+		Fixed firing offsets on all units and structures
 		Fixed Ion Cannon cursor
 		Fixed Apache artwork
 		Fixed uncapturable oil derricks
@@ -35,6 +36,7 @@ NEW:
 		New animations for cloak and reveal map crates (from C&C Sole Survivor)
 		Added 8 new maps by Petrenko
 		Removed East vs West 2 map
+		Fixed Harvester/Refinery docking animation beneath the fog of war
 		Balance changes:
 			Refinery footprint changed, price decreased to $1500
 			Flame tank explodes on death, damage reduced by 40%
@@ -53,6 +55,9 @@ NEW:
 			Infantry tiberium avoidance factor increased by 5x
 			Decrease tiberium damage to infantry
 			Reduced Grenadier death damage
+			Mammoth tank regen rate halved
+			Building repair speed, price doubled
+			Recon Bike damage increased 16%
 			Infantry can be crushed by tanks
 	Red Alert:
 		Fixed firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
@@ -60,18 +65,20 @@ NEW:
 		Fixed parachute offsets
 		Added muzzle flashes to Pillbox / Camo Pillbox / SAM Site
 		Fixed map reveal when an ally is granted GPS
-		Added 13 new maps by buddha, hamb, seru
+		Added 14 new maps by buddha, hamb, seru
 		Fixed bounties of $0 displaying
 		Added new Oil Derrick artwork
 		Added support for Counterstrike & Aftermath music tracks
 		Added player color to diplomacy panel
+		Added capturable oil refinery tech structure
 		Balance changes:
 			Medic cost reduced to $500
 			Mines are visible to friendlies and spectators
 			Friendly units don't trigger mines
 			Increased reload rate for aircraft
+			Missile sub submerge delay doubled, damage decreased by 25%
 	Both:
-		[OSX] Changed shortcut for adding units to groups changed from ctrl->cmd
+		Changed shortcut for adding units to groups changed from ctrl->cmd on OSX to avoid conflicting with Spaces
 		Fixed Tooltips for spectators
 		Fixed cashticks when selling walls
 		Fixed show explosions when walls are sold
@@ -83,10 +90,12 @@ NEW:
 		Fixed desync when a support aircraft is killed after completing its task
 		Fixed bugs with selling refineries
 		Fixed superweapons being fired from disabled structures when multiple are available
+		Added "Mission Accomplished" / "Mission Failed" notifications when you win or lose a multiplayer game
 	Utility:
 		Fixed --png mode for converting shp -> png
 	Editor:
 		Fixed actor rendering on OSX / Linux
+		Fixed crash relating to incorrect mix file location
 
 20110511:
 	Engine:
