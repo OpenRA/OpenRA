@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var item = itemTemplate.Clone();
 				var nameLabel = item.GetWidget<LabelWidget>("NAME");
 				nameLabel.GetText = () => pp.PlayerName;
-				nameLabel.Color = pp.ColorRamp.GetColor(0);
+				nameLabel.GetColor = () => pp.ColorRamp.GetColor(0);
 
 				var flag = item.GetWidget<ImageWidget>("FACTIONFLAG");
 				flag.GetImageName = () => pp.Country.Race;
