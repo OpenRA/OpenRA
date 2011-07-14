@@ -21,16 +21,16 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool Long = false;
 		
-		#pragma warning disable 0649
-		public readonly ushort Template;
-		public readonly ushort DamagedTemplate;
-		public readonly ushort DestroyedTemplate;
+		
+		public readonly ushort Template = 0;
+		public readonly ushort DamagedTemplate = 0;
+		public readonly ushort DestroyedTemplate = 0;
 		
 		// For long bridges
-		public readonly ushort DestroyedPlusNorthTemplate;
-		public readonly ushort DestroyedPlusSouthTemplate;
-		public readonly ushort DestroyedPlusBothTemplate;
-		#pragma warning restore 0649
+		public readonly ushort DestroyedPlusNorthTemplate = 0;
+		public readonly ushort DestroyedPlusSouthTemplate = 0;
+		public readonly ushort DestroyedPlusBothTemplate = 0;
+		
 		public readonly string[] ShorePieces = {"br1", "br2"};
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
