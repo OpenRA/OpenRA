@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public readonly int Columns = 3;
 		public readonly string TabClick = null;
+		public readonly string DisabledTabClick = null;
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
@@ -136,48 +137,56 @@ namespace OpenRA.Mods.Cnc.Widgets
 			
 			if (mi.Button == MouseButton.Left)
 			{
-				Sound.Play(TabClick);
-
 				// Pick up a completed building
 				if (first != null && first.Done && actor.Traits.Contains<BuildingInfo>())
+				{
+					Sound.Play(TabClick);
 					world.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue.self, clicked.Name);
-
+				}
 				// Resume a paused item
 				else if (first != null && first.Paused)
-					world.IssueOrder(Order.PauseProduction(CurrentQueue.self, clicked.Name, false));
-
-				// Queue a new item
-				else StartProduction(world, clicked.Name);
-			}
-
-			// Hold/Cancel an existing item
-			else if (mi.Button == MouseButton.Right && first != null)
-			{
-				Sound.Play(TabClick);
-
-				// instant cancel of things we havent started yet and things that are finished
-				if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
 				{
-					Sound.Play(CurrentQueue.Info.CancelledAudio);
-					world.IssueOrder(Order.CancelProduction(CurrentQueue.self, clicked.Name,
+					Sound.Play(TabClick);
+					world.IssueOrder(Order.PauseProduction(CurrentQueue.self, clicked.Name, false));
+				}
+				// Queue a new item
+				else if (CurrentQueue.BuildableItems().Any(a => a.Name == clicked.Name))
+				{
+					Sound.Play(TabClick);
+					Sound.Play(CurrentQueue.Info.QueuedAudio);
+					world.IssueOrder(Order.StartProduction(CurrentQueue.self, clicked.Name, 
 						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 				}
 				else
+					Sound.Play(DisabledTabClick);
+			}
+
+			// Hold/Cancel an existing item
+			else if (mi.Button == MouseButton.Right)
+			{
+				if (first != null)
 				{
-					Sound.Play(CurrentQueue.Info.OnHoldAudio);
-					world.IssueOrder(Order.PauseProduction(CurrentQueue.self, clicked.Name, true));
+					Sound.Play(TabClick);
+
+					// instant cancel of things we havent started yet and things that are finished
+					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
+					{
+						Sound.Play(CurrentQueue.Info.CancelledAudio);
+						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, clicked.Name,
+							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
+					}
+					else
+					{
+						Sound.Play(CurrentQueue.Info.OnHoldAudio);
+						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, clicked.Name, true));
+					}
 				}
+				else
+					Sound.Play(DisabledTabClick);
 			}
 			return true;
 		}
-		
-		void StartProduction( World world, string item )
-		{
-			Sound.Play(CurrentQueue.Info.QueuedAudio);
-			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item, 
-				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
-		}
-		
+
 		public void RefreshIcons()
 		{
 			Icons = new Dictionary<Rectangle, ProductionIcon>();

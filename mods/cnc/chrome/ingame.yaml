@@ -337,6 +337,7 @@ Container@PLAYER_WIDGETS:
 			X:WINDOW_RIGHT - 204
 			Y:287
 			TabClick: button.aud
+			DisabledTabClick:scold2.aud
 			TooltipContainer:TOOLTIP_CONTAINER
 Background@FMVPLAYER:
 	Id:FMVPLAYER
