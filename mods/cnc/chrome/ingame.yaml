@@ -328,6 +328,8 @@ Container@PLAYER_WIDGETS:
 		ProductionTabs:
 			Id:PRODUCTION_TABS
 			PaletteWidget:PRODUCTION_PALETTE
+			ClickSound:button.aud
+			DisabledClickSound:scold2.aud
 			X:WINDOW_RIGHT - 204
 			Y:268
 			Width:194

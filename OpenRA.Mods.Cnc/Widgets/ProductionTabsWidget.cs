@@ -76,10 +76,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 		}
 
-		public string PaletteWidget = null;
-		public float ScrollVelocity = 4f;
-		public int TabWidth = 30;
-		public int ArrowWidth = 20;
+		public readonly string PaletteWidget = null;
+		public readonly string ClickSound = null;
+		public readonly string DisabledClickSound = null;
+		public readonly float ScrollVelocity = 4f;
+		public readonly int TabWidth = 30;
+		public readonly int ArrowWidth = 20;
 		public Dictionary<string, ProductionTabGroup> Groups;
 
 		int ContentWidth = 0;
@@ -217,8 +219,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (Focused && mi.Event == MouseInputEvent.Up)
 				return LoseFocus(mi);
 
-			leftPressed = leftButtonRect.Contains(mi.Location.X, mi.Location.Y);
-			rightPressed = rightButtonRect.Contains(mi.Location.X, mi.Location.Y);
+			leftPressed = leftButtonRect.Contains(mi.Location);
+			rightPressed = rightButtonRect.Contains(mi.Location);
+			var leftDisabled = ListOffset >= 0;
+			var rightDisabled = ListOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth;
+
+			if (leftPressed || rightPressed)
+			{
+				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
+					Sound.Play(ClickSound);
+				else
+					Sound.Play(DisabledClickSound);
+			}
 
 			// Check production tabs
 			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
@@ -226,6 +238,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 				palette.CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
+				Sound.Play(ClickSound);
 				return true;
 			}
 
