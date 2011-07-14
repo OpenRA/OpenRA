@@ -134,12 +134,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Widget.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				ButtonWidget.DrawBackground("button", rect, false, tab.Queue == palette.CurrentQueue, hover);
+				var baseName = tab.Queue == palette.CurrentQueue ? "button-toggled" : "button";
+				ButtonWidget.DrawBackground(baseName, rect, false, false, hover);
 				ContentWidth += TabWidth - 1;
 
 				int2 textSize = font.Measure(tab.Name);
 				int2 position = new int2(rect.X + (rect.Width - textSize.X)/2, rect.Y + (rect.Height - textSize.Y)/2);
-				font.DrawTextWithContrast(tab.Name, position, Color.White, Color.Black, 1);
+				font.DrawTextWithContrast(tab.Name, position, tab.Queue.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();
