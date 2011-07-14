@@ -116,9 +116,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover);
 			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled, rightPressed, rightHover);
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "up_pressed" : "up_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "left_pressed" : "left_arrow"),
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", rightPressed || rightDisabled ? "down_pressed" : "down_arrow"),
+			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", rightPressed || rightDisabled ? "right_pressed" : "right_arrow"),
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 
 			// Draw tab buttons

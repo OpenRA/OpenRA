@@ -2,7 +2,7 @@ shellmap: reticle.png
 	reticle: 0,0,512,512
 
 shellmapbits: chrome.png
-	record: 256,48,16,16
+	record: 288,16,16,16
 
 logos: chrome.png
 	install:128,0,128,128
@@ -343,20 +343,24 @@ music: chrome.png
 	prev: 272,16,16,16
 
 spawnpoints: chrome.png
-	unowned: 272,32,16,16
 	owned: 256,32,16,16
+	unowned: 256,48,16,16
 
 checkbox-bits: chrome.png
-	checked: 288,16,16,16
-	checked-disabled: 288,32,16,16
-	crossed: 272,48,16,16
+	checked: 272,32,16,16
+	checked-disabled: 272,48,16,16
+	crossed: 288,32,16,16
 	crossed-disabled: 288,48,16,16
 
 scrollbar: chrome.png
 	down_arrow: 304,0,16,16
-	down_pressed: 304,32,16,16
-	up_arrow: 304,16,16,16
+	down_pressed: 304,16,16,16
+	up_arrow: 304,32,16,16
 	up_pressed: 304,48,16,16
+	right_arrow: 320,48,16,16
+	right_pressed: 336,48,16,16
+	left_arrow: 352,48,16,16
+	left_pressed: 368,48,16,16
 
 flags: chrome.png
 	nod: 352,0,32,16
