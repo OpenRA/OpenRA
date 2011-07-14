@@ -325,6 +325,7 @@ MTNK:
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		Recoil: 3
+		PrimaryLocalOffset: 0,0,0,-1,0
 	RenderUnitTurreted:
 	AutoTarget:
 	LeavesHusk:
