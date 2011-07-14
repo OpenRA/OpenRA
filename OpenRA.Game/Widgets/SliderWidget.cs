@@ -150,7 +150,7 @@ namespace OpenRA.Widgets
 					break;
 			}
 
-			return thumbRect.Contains(mi.Location.X, mi.Location.Y);
+			return thumbRect.Contains(mi.Location);
 		}
 
 		float OffsetBy(float amount)

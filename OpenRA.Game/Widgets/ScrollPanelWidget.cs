@@ -178,9 +178,9 @@ namespace OpenRA.Widgets
 			}
 			else
 			{
-				UpPressed = upButtonRect.Contains(mi.Location.X, mi.Location.Y);
-				DownPressed = downButtonRect.Contains(mi.Location.X, mi.Location.Y);
-				ThumbPressed = thumbRect.Contains(mi.Location.X, mi.Location.Y);
+				UpPressed = upButtonRect.Contains(mi.Location);
+				DownPressed = downButtonRect.Contains(mi.Location);
+				ThumbPressed = thumbRect.Contains(mi.Location);
 				if (ThumbPressed)
 					lastMouseLocation = mi.Location;
 			}

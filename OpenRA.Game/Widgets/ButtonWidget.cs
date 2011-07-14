@@ -110,7 +110,7 @@ namespace OpenRA.Widgets
 				}
 			}
 			else if (mi.Event == MouseInputEvent.Move && Focused)
-				Depressed = RenderBounds.Contains(mi.Location.X, mi.Location.Y);
+				Depressed = RenderBounds.Contains(mi.Location);
 
 			return Depressed;
 		}

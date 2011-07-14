@@ -286,7 +286,7 @@ namespace OpenRA.Widgets
         public bool HandleMouseInputOuter(MouseInput mi)
         {
 			// Are we able to handle this event?
-            if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location.X, mi.Location.Y))))
+            if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location))))
                 return false;
 
 			var oldMouseOver = MouseOverWidget;
