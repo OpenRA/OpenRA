@@ -116,8 +116,13 @@ namespace OpenRA.Graphics
 
 		public static Size Resolution { get { return device.WindowSize; } }
 
+		// Work around a bug in OSX 10.6.8 / mono 2.10.2 / SDL 1.2.14
+		// which makes the window non-interactive in Windowed/Pseudofullscreen mode.
+		static Screen FixOSX() { return Screen.PrimaryScreen; }
+
 		internal static void Initialize( WindowMode windowMode )
 		{
+			FixOSX();
 			var resolution = GetResolution( windowMode );
 			var rendererPath = Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(Game.Settings.Graphics.Renderer) );
 			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode, false );
@@ -128,7 +133,6 @@ namespace OpenRA.Graphics
 			var size = (windowmode == WindowMode.Windowed)
 				? Game.Settings.Graphics.WindowedSize 
 				: Game.Settings.Graphics.FullscreenSize;
-			
 			return new Size(size.X, size.Y);
 		}
 
