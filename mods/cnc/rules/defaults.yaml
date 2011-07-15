@@ -155,6 +155,7 @@
 	RenderInfantryPanic:	
 	AttackMove:
 		JustMove: yes
+	CrushableInfantry:
 
 ^Plane:
 	AppearsOnRadar:
