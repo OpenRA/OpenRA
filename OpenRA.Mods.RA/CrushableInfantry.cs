@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly string CrushSound = "squish2.aud";
 		public readonly string CorpseSequence = "die-crushed";
 		public readonly string[] CrushClasses = { "infantry" };
-		public readonly int WarnProbability = 90;
+		public readonly int WarnProbability = 75;
 		public object Create(ActorInitializer init) { return new CrushableInfantry(init.self, this); }
 	}
 
