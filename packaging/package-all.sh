@@ -47,7 +47,7 @@ sed "s/{DEV_VERSION}/$TAG/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.y
 sed "s/{DEV_VERSION}/$TAG/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
 
 # Remove demo.mix from cnc
-rm ./mods/cnc/bits/demo.mix
+rm ./packaging/built/mods/cnc/bits/demo.mix
 
 #
 # Change into packaging directory and run the 
