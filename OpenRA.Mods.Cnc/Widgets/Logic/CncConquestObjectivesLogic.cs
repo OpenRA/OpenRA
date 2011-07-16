@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.GetWidget<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 
 				var team = item.GetWidget<LabelWidget>("TEAM");
-				team.GetText = () => c.Team.ToString();
+				team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 				scrollpanel.AddChild(item);
 
 				item.GetWidget<LabelWidget>("KILLS").GetText = () => pp.Kills.ToString();
