@@ -25,6 +25,7 @@ BOAT:
 	RenderGunboat:
 	AutoTarget:
 		AllowMovement: false
+	WithSmoke:
 
 LST:
 	Inherits: ^Ship

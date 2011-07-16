@@ -10,7 +10,6 @@ BADR:
 		ROT: 5
 		Speed: 16
 	RenderUnit:
-		Smokes: no
 	WithShadow:
 	IronCurtainable:
 	Cargo:
@@ -53,7 +52,6 @@ BADR.bomber:
 		Ammo: 7
 	RenderUnit:
 		Image: badr
-		Smokes: no
 	WithShadow:
 	IronCurtainable:	
 	-Selectable:
@@ -108,7 +106,6 @@ MIG:
 		Speed: 20
 		RearmBuildings: afld
 	RenderUnit:
-		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
@@ -159,7 +156,6 @@ YAK:
 		ROT: 5
 		Speed: 16
 	RenderUnit:
-		Smokes: no
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 18
@@ -251,7 +247,6 @@ HELI:
 		ROT: 4
 		Speed: 16
 	RenderUnit:
-		Smokes: no
 	WithRotor:
 		Offset: 0,0,0,-2
 	WithShadow:
@@ -295,7 +290,6 @@ HIND:
 		ROT: 4
 		Speed: 12
 	RenderUnit:
-		Smokes: no
 	WithRotor:
 	WithShadow:
 	LimitedAmmo:
@@ -321,7 +315,6 @@ U2:
 		ROT: 7
 		Speed: 40
 	RenderUnit:
-		Smokes: no
 	WithShadow:
 	IronCurtainable:
 	-Selectable:

@@ -19,10 +19,9 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self); }
 	}
 
-	class RenderGunboat : RenderSimple, INotifyDamage, INotifyDamageStateChanged
+	class RenderGunboat : RenderSimple, INotifyDamageStateChanged
 	{
 		IFacing facing;
-		bool isSmoking = false;
 
 		public RenderGunboat(Actor self)
 			: base(self, () => self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing : 0)
@@ -34,7 +33,6 @@ namespace OpenRA.Mods.RA.Render
 			wake.Play("left-wake");
 			Func<float2> offset = () => new float2(((anims["wake"].Animation.CurrentSequence.Name == "left-wake") ? 1 : -1),2);
 			anims.Add( "wake", new AnimationWithOffset( wake, offset, () => false ) { ZOffset = -2 } );
-			anims.Add( "smoke", new AnimationWithOffset( new Animation( "smoke_m" ), null, () => !isSmoking ) );
 		}
 
 		string lastDir = "left";
@@ -60,20 +58,6 @@ namespace OpenRA.Mods.RA.Render
 			else if (e.DamageState < DamageState.Heavy)
 				lastDamage = "";
 			anim.ReplaceAnim(lastDir+lastDamage);
-		}
-
-		public void Damaged(Actor self, AttackInfo e)
-		{
-			// Smoking
-			if (e.DamageState < DamageState.Heavy) return;
-			if (isSmoking) return;
-
-			isSmoking = true;
-			var smoke = anims[ "smoke" ].Animation;
-			smoke.PlayThen( "idle",
-				() => smoke.PlayThen( "loop",
-					() => smoke.PlayBackwardsThen( "end",
-						() => isSmoking = false ) ) );
 		}
 	}
 }

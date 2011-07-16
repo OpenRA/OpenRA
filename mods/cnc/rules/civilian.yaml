@@ -283,5 +283,4 @@ VICE:
 		PrimaryWeapon: Chemspray
 	AttackWander:
 	RenderUnit:
-		Smokes: False
 	WithMuzzleFlash:

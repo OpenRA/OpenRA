@@ -29,6 +29,7 @@
 		Notification: unitlost.aud
 	AttackMove:
 	AcceptsCloakCrate:
+	WithSmoke:
 
 ^Tank:
 	AppearsOnRadar:
@@ -61,6 +62,7 @@
 		Notification: unitlost.aud
 	AttackMove:
 	AcceptsCloakCrate:
+	WithSmoke:
 
 ^Helicopter:
 	AppearsOnRadar:

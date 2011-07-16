@@ -30,6 +30,7 @@
 	GivesBounty:
 	GpsDot:
 		String:Vehicle
+	WithSmoke:
 
 ^Tank:
 	AppearsOnRadar:
@@ -63,6 +64,7 @@
 	GivesBounty:
 	GpsDot:
 		String:Vehicle
+	WithSmoke:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -129,6 +131,7 @@
 	GivesBounty:
 	GpsDot:
 		String:Ship
+	WithSmoke:
 
 ^Plane:
 	AppearsOnRadar:

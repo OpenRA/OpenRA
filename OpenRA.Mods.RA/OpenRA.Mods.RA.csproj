@@ -353,6 +353,7 @@
     <Compile Include="Reloads.cs" />
     <Compile Include="AnnounceOnKill.cs" />
     <Compile Include="CrushableInfantry.cs" />
+    <Compile Include="Render\WithSmoke.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
