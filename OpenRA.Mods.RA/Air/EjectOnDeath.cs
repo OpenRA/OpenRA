@@ -16,6 +16,7 @@ namespace OpenRA.Mods.RA
 {
 	public class EjectOnDeathInfo : TraitInfo<EjectOnDeath>
 	{
+		[ActorReference]
 		public readonly string PilotActor = "E1";
 		public readonly int SuccessRate = 50;
 		public readonly string ChuteSound = "chute1.aud";
