@@ -457,9 +457,9 @@ STNK:
 		Prerequisites: tmpl
 		Owner: nod
 	Mobile:
-		Speed: 15
+		Speed: 14
 	Health:
-		HP: 110
+		HP: 150
 	Armor:
 		Type: Light
 	RevealsShroud:
