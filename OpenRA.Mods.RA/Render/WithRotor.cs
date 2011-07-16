@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithRotorInfo : ITraitInfo
+	public class WithRotorInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public readonly string Id = "rotor";
 		public readonly int[] Offset = { 0, 0 };
