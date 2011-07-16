@@ -9,11 +9,11 @@
 #endregion
 
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
-using System.IO;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
