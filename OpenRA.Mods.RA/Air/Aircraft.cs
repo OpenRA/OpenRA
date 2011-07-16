@@ -120,6 +120,23 @@ namespace OpenRA.Mods.RA.Air
 			Info = info;
 		}
 
+		protected void ReserveSpawnBuilding( Actor self )
+		{
+			if (self.Trait<IMove>().Altitude != 0)
+				return;
+
+			/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
+			var afld = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
+				.FirstOrDefault( a => a.HasTrait<Reservable>() );
+
+			if (afld == null)
+				return;
+
+			var res = afld.Trait<Reservable>();
+			if (res != null)
+				reservation = res.Reserve(afld, self, this);
+		}
+
 		public int ROT { get { return Info.ROT; } }
 		
 		public int InitialFacing { get { return Info.InitialFacing; } }
