@@ -22,16 +22,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		enum MenuType { None, Cheats }
 		MenuType menu = MenuType.None;
-		
+
 		Widget ingameRoot;
 		ProductionTabsWidget queueTabs;
 		World world;
-		
+
 		void AddChatLine(Color c, string from, string text)
 		{
 			ingameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
-		
+
 		public void UnregisterEvents()
 		{
 			Game.AddChatLine -= AddChatLine;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				world.ActorRemoved += queueTabs.ActorChanged;
 			}
 		}
-		
+
 		void SetupProductionGroupButton(ToggleButtonWidget button, string group)
 		{
 			Action<bool> selectTab = reverse =>
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			icon.GetImageName = () => button.IsDisabled() ? chromeName+"-disabled" :
 				queueTabs.Groups[group].Alert ? chromeName+"-alert" : chromeName;
 		}
-		
+
 		[ObjectCreator.UseCtor]
 		public CncIngameChromeLogic([ObjectCreator.Param] Widget widget,
 		                            [ObjectCreator.Param] World world )
@@ -71,97 +71,101 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.world = world;
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.None);
-			
+
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
-			
+
 			ingameRoot = widget.GetWidget("INGAME_ROOT");
 			var playerRoot = ingameRoot.GetWidget("PLAYER_ROOT");
-			
-			Action onOptionsClick = () =>
-			{
-				if (menu != MenuType.None)
-				{
-					Widget.CloseWindow();
-					menu = MenuType.None;
-				}
-
-				ingameRoot.IsVisible = () => false;
-				Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
-				{
-					{ "onExit", () => ingameRoot.IsVisible = () => true }
-				});
-			};
 
 			// Observer
 			if (world.LocalPlayer == null)
-			{
-				var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
-				observerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = onOptionsClick;
-			}
+				InitObserverWidgets(world, playerRoot);
 			else
+				InitPlayerWidgets(world, playerRoot);
+		}
+
+		public void OptionsClicked()
+		{
+			if (menu != MenuType.None)
 			{
-				// Real player
-				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
-				playerWidgets.IsVisible = () => true;
-
-				var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
-
-				var sellButton = sidebarRoot.GetWidget<ToggleButtonWidget>("SELL_BUTTON");
-				sellButton.OnClick = () => world.ToggleInputMode<SellOrderGenerator>();
-				sellButton.IsToggled = () => world.OrderGenerator is SellOrderGenerator;
-				var sellIcon = sellButton.GetWidget<ImageWidget>("ICON");
-				sellIcon.GetImageName = () => world.OrderGenerator is SellOrderGenerator ? "sell-active" : "sell";
-
-				var repairButton = sidebarRoot.GetWidget<ToggleButtonWidget>("REPAIR_BUTTON");
-				repairButton.IsDisabled = () => !RepairOrderGenerator.PlayerIsAllowedToRepair( world );
-				repairButton.OnClick = () => world.ToggleInputMode<RepairOrderGenerator>();
-				repairButton.IsToggled = () => world.OrderGenerator is RepairOrderGenerator;
-				var repairIcon = repairButton.GetWidget<ImageWidget>("ICON");
-				repairIcon.GetImageName = () => repairButton.IsDisabled() ? "repair-disabled" :
-					world.OrderGenerator is RepairOrderGenerator ? "repair-active" : "repair";
-
-				var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
-				sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
-					"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
-
-				queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
-				world.ActorAdded += queueTabs.ActorChanged;
-				world.ActorRemoved += queueTabs.ActorChanged;
-
-				var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
-				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("BUILDING"), "Building");
-				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("DEFENSE"), "Defense");
-				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("INFANTRY"), "Infantry");
-				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("VEHICLE"), "Vehicle");
-				SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
-
-				playerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = onOptionsClick;
-
-				var cheatsButton = playerWidgets.GetWidget<ButtonWidget>("CHEATS_BUTTON");
-				cheatsButton.OnClick = () =>
-				{
-					if (menu != MenuType.None)
-						Widget.CloseWindow();
-
-					menu = MenuType.Cheats;
-					Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
-				};
-				cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
-
-				var postgameBG = ingameRoot.GetWidget("POSTGAME_BG");
-				postgameBG.IsVisible = () =>
-				{
-					return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
-				};
-
-				postgameBG.GetWidget<LabelWidget>("TEXT").GetText = () =>
-				{
-					var state = world.LocalPlayer.WinState;
-					return (state == WinState.Undefined)? "" :
-									((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
-				};
+				Widget.CloseWindow();
+				menu = MenuType.None;
 			}
+
+			ingameRoot.IsVisible = () => false;
+			Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
+			{
+				{ "onExit", () => ingameRoot.IsVisible = () => true }
+			});
+		}
+
+		public void InitObserverWidgets(World world, Widget playerRoot)
+		{
+			var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+			observerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
+		}
+
+		public void InitPlayerWidgets(World world, Widget playerRoot)
+		{
+			// Real player
+			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
+			playerWidgets.IsVisible = () => true;
+
+			var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
+
+			var sellButton = sidebarRoot.GetWidget<ToggleButtonWidget>("SELL_BUTTON");
+			sellButton.OnClick = () => world.ToggleInputMode<SellOrderGenerator>();
+			sellButton.IsToggled = () => world.OrderGenerator is SellOrderGenerator;
+			var sellIcon = sellButton.GetWidget<ImageWidget>("ICON");
+			sellIcon.GetImageName = () => world.OrderGenerator is SellOrderGenerator ? "sell-active" : "sell";
+
+			var repairButton = sidebarRoot.GetWidget<ToggleButtonWidget>("REPAIR_BUTTON");
+			repairButton.IsDisabled = () => !RepairOrderGenerator.PlayerIsAllowedToRepair( world );
+			repairButton.OnClick = () => world.ToggleInputMode<RepairOrderGenerator>();
+			repairButton.IsToggled = () => world.OrderGenerator is RepairOrderGenerator;
+			var repairIcon = repairButton.GetWidget<ImageWidget>("ICON");
+			repairIcon.GetImageName = () => repairButton.IsDisabled() ? "repair-disabled" :
+				world.OrderGenerator is RepairOrderGenerator ? "repair-active" : "repair";
+
+			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
+				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
+
+			queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
+			world.ActorAdded += queueTabs.ActorChanged;
+			world.ActorRemoved += queueTabs.ActorChanged;
+
+			var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
+			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("BUILDING"), "Building");
+			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("DEFENSE"), "Defense");
+			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("INFANTRY"), "Infantry");
+			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("VEHICLE"), "Vehicle");
+			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
+
+			playerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
+
+			var cheatsButton = playerWidgets.GetWidget<ButtonWidget>("CHEATS_BUTTON");
+			cheatsButton.OnClick = () =>
+			{
+				if (menu != MenuType.None)
+					Widget.CloseWindow();
+
+				menu = MenuType.Cheats;
+				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
+			};
+			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
+
+			var winLossWatcher = playerWidgets.GetWidget<LogicTickerWidget>("WIN_LOSS_WATCHER");
+			winLossWatcher.OnTick = () =>
+			{
+				if (world.LocalPlayer.WinState != WinState.Undefined)
+					Game.RunAfterTick(() =>
+					{
+						playerRoot.RemoveChildren();
+						InitObserverWidgets(world, playerRoot);
+					});
+			};
 		}
 	}
 }

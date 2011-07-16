@@ -105,6 +105,7 @@
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\ToggleButtonWidget.cs" />
     <Compile Include="Widgets\Logic\CncColorPickerLogic.cs" />
+    <Compile Include="Widgets\LogicTickerWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -88,6 +88,8 @@ Container@OBSERVER_WIDGETS:
 Container@PLAYER_WIDGETS:
 	Id:PLAYER_WIDGETS
 	Children:
+		LogicTicker:
+			Id:WIN_LOSS_WATCHER
 		Button@CHEATS_BUTTON:
 			Id:CHEATS_BUTTON
 			X:WINDOW_RIGHT-400
@@ -98,23 +100,6 @@ Container@PLAYER_WIDGETS:
 		WorldCommand:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
-		Background@POSTGAME_BG:
-			Id:POSTGAME_BG
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:400
-			Height:100
-			Background:panel-black
-			Visible:false
-			Children:
-				Label@TEXT:
-					Id:TEXT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
-					Width:200
-					Height:40
-					Align:Center
-					Font:Bold
 		SupportPowers:
 			TooltipContainer:TOOLTIP_CONTAINER
 			X:10
