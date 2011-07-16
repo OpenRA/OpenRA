@@ -678,7 +678,6 @@ Laser:
 	Report: OBELRAY1
 	Projectile: LaserZap
 		BeamRadius: 1
-		UsePlayerColor: true
 	Warhead:
 		Spread: 1
 		InfDeath: 4

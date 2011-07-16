@@ -21,6 +21,11 @@ smoke_m:
 		Start: 0
 		Length: 26
 
+laserfire:
+	idle:veh-hit3
+		Start: 0
+		Length: *
+
 dragon:
 	idle:
 		Start: 0
