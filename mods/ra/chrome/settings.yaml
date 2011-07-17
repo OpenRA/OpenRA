@@ -102,7 +102,8 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
-					Range:10,50
+					MinimumValue: 10
+					MaximumValue: 50
 				Checkbox@INVERSE_SCROLL:
 					Id:INVERSE_SCROLL
 					X:0

@@ -240,7 +240,8 @@ Container@SETTINGS_PANEL:
 					Width:240
 					Height:20
 					Ticks:5
-					Range:10,50
+					MinimumValue: 10
+					MaximumValue: 50
 				Checkbox@EDGESCROLL_CHECKBOX:
 					Id:EDGESCROLL_CHECKBOX
 					X:15

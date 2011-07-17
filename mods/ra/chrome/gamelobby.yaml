@@ -493,7 +493,8 @@ Background@COLOR_CHOOSER:
 			Width:160
 			Height:20
 			Ticks:5
-			Range:0.2,1
+			MinimumValue: 0.2
+			MaximumValue: 1
 		Label@RANGE_LABEL:
 			X:0
 			Y:80
@@ -508,7 +509,8 @@ Background@COLOR_CHOOSER:
 			Width:160
 			Height:20
 			Ticks:5
-			Range:0,0.25
+			MinimumValue: 0
+			MaximumValue: 0.25
 Background@MAP_CHOOSER:
 	Id:MAP_CHOOSER
 	X:(WINDOW_RIGHT - WIDTH)/2

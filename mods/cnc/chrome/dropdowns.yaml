@@ -71,7 +71,8 @@ Background@COLOR_CHOOSER:
 			Width:160
 			Height:20
 			Ticks:5
-			Range:0.2,1
+			MinimumValue: 0.2
+			MaximumValue: 1
 
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Id:LABEL_DROPDOWN_TEMPLATE

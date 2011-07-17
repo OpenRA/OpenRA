@@ -21,7 +21,8 @@ namespace OpenRA.Widgets
 		public int Ticks = 0;
 		public int TrackHeight = 5;
 
-		public float2 Range = new float2(0f, 1f);
+		public float MinimumValue = 0;
+		public float MaximumValue = 1;
 		public float Value = 0;
 
 		protected bool isMoving = false;
@@ -33,14 +34,15 @@ namespace OpenRA.Widgets
 		{
 			OnChange = other.OnChange;
 			Ticks = other.Ticks;
-			Range = other.Range;
+			MinimumValue = other.MinimumValue;
+			MaximumValue = other.MaximumValue;
 			Value = other.Value;
 			TrackHeight = other.TrackHeight;
 		}
 
 		void UpdateValue(float newValue)
 		{
-			Value = newValue.Clamp(Range.X, Range.Y);
+			Value = newValue.Clamp(MinimumValue, MaximumValue);
 			OnChange(Value);
 		}
 
@@ -74,8 +76,8 @@ namespace OpenRA.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
-		float ValueFromPx(int x) { return Range.X + (Range.Y - Range.X) * (1f * x / RenderBounds.Width); }
-		int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - Range.X) / (Range.Y - Range.X)); }
+		float ValueFromPx(int x) { return MinimumValue + (MaximumValue - MinimumValue) * (1f * x / RenderBounds.Width); }
+		int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
 
 		public override Widget Clone() { return new SliderWidget(this); }
 
