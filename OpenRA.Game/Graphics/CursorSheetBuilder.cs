@@ -28,16 +28,8 @@ namespace OpenRA.Graphics
 
 		Sprite[] LoadCursors(string filename)
         {
-			try
-			{
-				var shp = new Dune2ShpReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Select(a => modData.SheetBuilder.Add(a.Image, a.Size)).ToArray();
-			}
-			catch (IndexOutOfRangeException) // This will occur when loading a custom (RA-format) .shp
-			{
-				var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Select(a => modData.SheetBuilder.Add(a.Image, shp.Size)).ToArray();
-			}
+			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
+			return shp.Select(a => modData.SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return cursors[filename]; }
