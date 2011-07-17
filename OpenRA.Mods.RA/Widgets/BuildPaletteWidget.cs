@@ -420,13 +420,13 @@ namespace OpenRA.Mods.RA.Widgets
 				if (rect.Contains(Viewport.LastMousePos))
 				{
 					var text = queue.Info.Type;
-					var sz = Game.Renderer.Fonts["Bold"].Measure(text);
+					var font = Game.Renderer.Fonts["Bold"];
+					var sz = font.Measure(text);
 					WidgetUtils.DrawPanelPartial("dialog4",
 						Rectangle.FromLTRB((int)rect.Left - sz.X - 30, (int)rect.Top, (int)rect.Left - 5, (int)rect.Bottom),
 						PanelSides.All);
 
-					Game.Renderer.Fonts["Bold"].DrawText(text, 
-						new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
+					font.DrawText(text, new float2(rect.Left - sz.X - 20, rect.Top + 12), Color.White);
 				}
 
 				y += tabHeight;
@@ -435,8 +435,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void DrawRightAligned(string text, int2 pos, Color c)
 		{
-			Game.Renderer.Fonts["Bold"].DrawText(text, 
-				pos - new int2(Game.Renderer.Fonts["Bold"].Measure(text).X, 0), c);
+			var font = Game.Renderer.Fonts["Bold"];
+			font.DrawText(text, pos - new int2(font.Measure(text).X, 0), c);
 		}
 
 		void DrawProductionTooltip(World world, string unit, int2 pos)
