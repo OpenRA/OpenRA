@@ -15,166 +15,139 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-    public class ProximityCapturableInfo : ITraitInfo
-    {
-        public readonly bool Permanent = false;
-        public readonly int Range = 5;
-        public readonly bool MustBeClear = false;
-        public readonly string[] CaptorTypes = { "Vehicle", "Tank", "Infantry" };
+	public class ProximityCapturableInfo : ITraitInfo
+	{
+		public readonly bool Permanent = false;
+		public readonly int Range = 5;
+		public readonly bool MustBeClear = false;
+		public readonly string[] CaptorTypes = { "Vehicle", "Tank", "Infantry" };
 
-        public object Create(ActorInitializer init) { return new ProximityCapturable(init.self, this); }
-    }
+		public object Create(ActorInitializer init) { return new ProximityCapturable(init.self, this); }
+	}
 
-    public class ProximityCapturable : ITick, ISync
-    {
-        [Sync]
-        public readonly Player OriginalOwner;
+	public class ProximityCapturable : ITick, ISync
+	{
+		public readonly Player OriginalOwner;
+		public bool Captured { get { return Self.Owner != OriginalOwner; } }
 
-        public ProximityCapturableInfo Info;
+		public ProximityCapturableInfo Info;
+		public Actor Self;
 
-        [Sync]
-        public bool Captured;
+		public ProximityCapturable(Actor self, ProximityCapturableInfo info)
+		{
+			Info = info;
+			Self = self;
+			OriginalOwner = self.Owner;
+		}
 
-        public Actor Self;
+		public void Tick(Actor self)
+		{
+			if (Captured && Info.Permanent) return; // Permanent capture
 
-        public ProximityCapturable(Actor self, ProximityCapturableInfo info)
-        {
-            Info = info;
-            Self = self;
-            OriginalOwner = self.Owner;
-        }
+			if (!Captured)
+			{
+				var captor = GetInRange(self);
 
-        public void Tick(Actor self)
-        {
-            if (Captured && Info.Permanent) return; // Permanent capture
+				if (captor != null)
+					if (!Info.MustBeClear || IsClear(self, captor.Owner, OriginalOwner))
+						ChangeOwnership(self, captor);
 
-            if (!Captured)
-            {
-                var captor = GetInRange(self);
+				return;
+			}
 
-                if (captor != null)
-                {
-                    if (Info.MustBeClear && !IsClear(self, captor.Owner, OriginalOwner)) return;
+			// if the area must be clear, and there is more than 1 player nearby => return ownership to default
+			if (Info.MustBeClear && !IsClear(self, self.Owner, OriginalOwner))
+			{
+				// Revert Ownership
+				ChangeOwnership(self, OriginalOwner.PlayerActor);
+				return;
+			}
 
-                    ChangeOwnership(self, captor, OriginalOwner);
-                }
+			// See if the 'temporary' owner still is in range
+			if (!IsStillInRange(self))
+			{
+				// no.. So find a new one
+				var captor = GetInRange(self);
 
-                return;
-            }
+				if (captor != null) // got one
+				{
+					ChangeOwnership(self, captor);
+					return;
+				}
 
-            // if the area must be clear, and there is more than 1 player nearby => return ownership to default
-            if (Info.MustBeClear && !IsClear(self, self.Owner, OriginalOwner))
-            {
-                // Revert Ownership
-                ChangeOwnership(self, self.Owner, OriginalOwner);
-                return;
-            }
+				// Revert Ownership otherwise
+				ChangeOwnership(self, OriginalOwner.PlayerActor);
+			}
+		}
 
-            // See if the 'temporary' owner still is in range
-            if (!IsStillInRange(self))
-            {
-                // no.. So find a new one
-                var captor = GetInRange(self);
+		void ChangeOwnership(Actor self, Actor captor)
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.Destroyed || captor.Destroyed) return;
 
-                if (captor != null) // got one
-                {
-                    ChangeOwnership(self, captor, self.Owner);
-                    return;
-                }
+				var previousOwner = self.Owner;
 
-                // Revert Ownership otherwise
-                ChangeOwnership(self, self.Owner, OriginalOwner);
-            }
-        }
+				// momentarily remove from world so the ownership queries don't get confused
+				w.Remove(self);
+				self.Owner = captor.Owner;
+				w.Add(self);
 
-        void ChangeOwnership(Actor self, Player previousOwner, Player originalOwner)
-        {
-            self.World.AddFrameEndTask(w =>
-            {
-                if (self.Destroyed) return;
+				if (self.Owner == self.World.LocalPlayer)
+					w.Add(new FlashTarget(self));
 
-                // momentarily remove from world so the ownership queries don't get confused
-                w.Remove(self);
-                self.Owner = originalOwner;
-                w.Add(self);
+				foreach (var t in self.TraitsImplementing<INotifyCapture>())
+					t.OnCapture(self, captor, previousOwner, self.Owner);
+			});
+		}
 
-                if (self.Owner == self.World.LocalPlayer)
-                    w.Add(new FlashTarget(self));
+		bool CanBeCapturedBy(Actor a)
+		{
+			var pc = a.TraitOrDefault<ProximityCaptor>();
+			return pc != null && pc.HasAny(Info.CaptorTypes);
+		}
 
-                Captured = false;
+		IEnumerable<Actor> UnitsInRange()
+		{
+			return Self.World.FindUnitsInCircle(Self.CenterLocation, Game.CellSize * Info.Range)
+				.Where(a => a.IsInWorld && a != Self && !a.Destroyed)
+				.Where(a => !a.Owner.NonCombatant);
+		}
 
-                foreach (var t in self.TraitsImplementing<INotifyCapture>())
-                    t.OnCapture(self, self, previousOwner, self.Owner);
-            });
-        }
+		bool IsClear(Actor self, Player currentOwner, Player originalOwner)
+		{
+			return UnitsInRange().Where(a => a.Owner != originalOwner)
+				.Where(a => a.Owner != currentOwner)
+				.Where(a => CanBeCapturedBy(a))
+				.All(a => WorldUtils.AreMutualAllies(a.Owner, currentOwner));
+		}
 
-        void ChangeOwnership(Actor self, Actor captor, Player previousOwner)
-        {
-            self.World.AddFrameEndTask(w =>
-            {
-                if (self.Destroyed || (captor.Destroyed || !captor.IsInWorld)) return;
+		// TODO exclude other NeutralActor that arent permanent
+		bool IsStillInRange(Actor self)
+		{
+			return UnitsInRange()
+				.Where(a => a.Owner == self.Owner)
+				.Where(a => CanBeCapturedBy(a))
+				.Any();
+		}
 
-                // momentarily remove from world so the ownership queries don't get confused
-                w.Remove(self);
-                self.Owner = captor.Owner;
-                w.Add(self);
-
-                if (self.Owner == self.World.LocalPlayer)
-                    w.Add(new FlashTarget(self));
-
-                Captured = true;
-
-                foreach (var t in self.TraitsImplementing<INotifyCapture>())
-                    t.OnCapture(self, captor, previousOwner, self.Owner);
-            });
-        }
-
-        bool CanBeCapturedBy(Actor a)
-        {
-            return a.HasTrait<ProximityCaptor>() && a.Trait<ProximityCaptor>().HasAny(Info.CaptorTypes);
-        }
-
-        IEnumerable<Actor> UnitsInRange()
-        {
-            return Self.World.FindUnitsInCircle(Self.CenterLocation, Game.CellSize * Info.Range)
-                .Where(a => a.IsInWorld && a != Self && !a.Destroyed)
-                .Where(a => !a.Owner.NonCombatant);
-        }
-
-        bool IsClear(Actor self, Player currentOwner, Player originalOwner)
-        {
-            return UnitsInRange().Where(a => a.Owner != originalOwner)
-                .Where(a => a.Owner != currentOwner)
-                .Where(a => CanBeCapturedBy(a))
-                .All(a => WorldUtils.AreMutualAllies(a.Owner, currentOwner));
+		IEnumerable<Actor> CaptorsInRange(Actor self)
+		{
+			return UnitsInRange()
+				.Where(a => a.Owner != OriginalOwner)
+				.Where(a => CanBeCapturedBy(a));
         }
 
         // TODO exclude other NeutralActor that arent permanent
-        bool IsStillInRange(Actor self)
-        {
-            return UnitsInRange()
-                .Where(a => a.Owner == self.Owner)
-                .Where(a => CanBeCapturedBy(a))
-                .Any();
-        }
+		Actor GetInRange(Actor self)
+		{
+			return CaptorsInRange(self).ClosestTo( self.CenterLocation );
+		}
 
-        IEnumerable<Actor> CaptorsInRange(Actor self)
-        {
-            return UnitsInRange()
-                .Where(a => a.Owner != OriginalOwner)
-                .Where(a => CanBeCapturedBy(a));
-        }
-
-        // TODO exclude other NeutralActor that arent permanent
-        Actor GetInRange(Actor self)
-        {
-            return CaptorsInRange(self).ClosestTo( self.CenterLocation );
-        }
-
-        int CountPlayersNear(Actor self, Player ignoreMe)
-        {
-            return CaptorsInRange(self).Select(a => a.Owner)
-                .Distinct().Count(p => p != ignoreMe);
-        }
-    }
+		int CountPlayersNear(Actor self, Player ignoreMe)
+		{
+			return CaptorsInRange(self).Select(a => a.Owner)
+				.Distinct().Count(p => p != ignoreMe);
+		}
+	}
 }
