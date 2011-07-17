@@ -26,7 +26,6 @@ namespace OpenRA
 		public readonly WidgetLoader WidgetLoader;
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
-		public CursorSheetBuilder CursorSheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public HardwarePalette Palette { get; private set; }
 		IFolder previousMapMount = null;
@@ -59,7 +58,7 @@ namespace OpenRA
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
 			SheetBuilder = new SheetBuilder(TextureChannel.Red);
-			CursorSheetBuilder = new CursorSheetBuilder(this);
+			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
 			Palette.Update(new IPaletteModifier[] { });
 		}
