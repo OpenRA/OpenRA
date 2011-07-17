@@ -198,6 +198,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var allBuildables = queue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder).ToArray();
 	
 				var overlayBits = new List<Pair<Sprite, float2>>();
+				var textBits = new List<Pair<float2, string>>();
 				numActualRows = Math.Max((allBuildables.Count() + Columns - 1) / Columns, Rows);
 	
 				// Palette Background
@@ -224,7 +225,7 @@ namespace OpenRA.Mods.RA.Widgets
 					if (rect.Contains(Viewport.LastMousePos))
 						tooltipItem = item.Name;
 	
-					var overlayPos = drawPos + new float2((64 - ready.Image.size.X) / 2, 2);
+					var overlayPos = drawPos + new float2(32, 16);
 	
 					if (firstOfThis != null)
 					{
@@ -235,26 +236,20 @@ namespace OpenRA.Mods.RA.Widgets
 						WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 	
 						if (firstOfThis.Done)
-						{
-							ready.Play("ready");
-							overlayBits.Add(Pair.New(ready.Image, overlayPos));
-						}
+							textBits.Add( Pair.New( overlayPos, "READY" ) );
 						else if (firstOfThis.Paused)
-						{
-							ready.Play("hold");
-							overlayBits.Add(Pair.New(ready.Image, overlayPos));
-						}
+							textBits.Add( Pair.New( overlayPos, "ON HOLD" ) );
 	
 						var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
 						if (repeats > 1 || queue.CurrentItem() != firstOfThis)
 						{
-							var offset = -22;
+							var offset = -40;
 							var digits = repeats.ToString();
 							foreach (var d in digits)
 							{
 								ready.PlayFetchIndex("groups", () => d - '0');
 								ready.Tick();
-								overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, 0)));
+								overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, -14)));
 								offset += 6;
 							}
 						}
@@ -262,7 +257,7 @@ namespace OpenRA.Mods.RA.Widgets
 					else
 						if (!buildableItems.Any(a => a.Name == item.Name) || isBuildingSomething)
 							overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
-	
+
 					var closureName = buildableItems.Any(a => a.Name == item.Name) ? item.Name : null;
 					buttons.Add(Pair.New(new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height), HandleClick(closureName, world)));
 	
@@ -272,7 +267,15 @@ namespace OpenRA.Mods.RA.Widgets
 	
 				foreach (var ob in overlayBits)
 					WidgetUtils.DrawSHP(ob.First, ob.Second, worldRenderer);
-	
+
+				var font = Game.Renderer.Fonts["TinyBold"];
+				foreach (var tb in textBits)
+				{
+					var size = font.Measure(tb.Second);
+					font.DrawTextWithContrast(tb.Second, tb.First - new float2( size.X / 2, 0 ),
+						Color.White, Color.Black, 1);
+				}
+
 				// Tooltip
 				if (tooltipItem != null && !paletteAnimating && paletteOpen)
 					DrawProductionTooltip(world, tooltipItem, 
