@@ -15,6 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	public class StrategicPointInfo : TraitInfo<StrategicPoint> {}
+	public class StrategicPoint {}
+	
 	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<ConquestVictoryConditionsInfo>
 	{
 		public readonly int TicksToHold = 25 * 60 * 5; // ~5 minutes

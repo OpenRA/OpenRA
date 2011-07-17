@@ -75,8 +75,6 @@
     <Compile Include="ProductionBar.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
     <Compile Include="SmokeTrailWhenDamaged.cs" />
-    <Compile Include="Strategic\StrategicVictoryConditions.cs" />
-    <Compile Include="Strategic\StrategicPoint.cs" />
     <Compile Include="ProximityCapturable.cs" />
     <Compile Include="Air\Fly.cs" />
     <Compile Include="Air\FlyAttack.cs" />
@@ -356,6 +354,7 @@
     <Compile Include="Render\WithSmoke.cs" />
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
+    <Compile Include="StrategicVictoryConditions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
