@@ -131,7 +131,8 @@ namespace OpenRA.Mods.Cnc
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
-				                 new string[] {"e1","e1","e1"});
+				                 new string[] {"e1","e1","e1"},
+								 Players["GoodGuy"]);
 			}
 			
 			if (ticks == 25*15)
@@ -140,7 +141,8 @@ namespace OpenRA.Mods.Cnc
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
-				                 new string[] {"e1","e1","e1"});
+				                 new string[] {"e1","e1","e1"},
+								 Players["GoodGuy"]);
 			}
 			
 			if (ticks == 25*30)
@@ -149,7 +151,8 @@ namespace OpenRA.Mods.Cnc
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
-				                 new string[] {"jeep"});
+				                 new string[] {"jeep"},
+								 Players["GoodGuy"]);
 			}
 			
 			if (ticks == 25*60)
@@ -158,7 +161,8 @@ namespace OpenRA.Mods.Cnc
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
-				                 new string[] {"jeep"});
+				                 new string[] {"jeep"},
+								 Players["GoodGuy"]);
 			}
 			
 			ticks++;
@@ -173,7 +177,7 @@ namespace OpenRA.Mods.Cnc
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 		
-		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items)
+		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items, Player player)
 		{
 			world.AddFrameEndTask(w =>
 			{
@@ -182,7 +186,7 @@ namespace OpenRA.Mods.Cnc
 				var a = w.CreateActor("lst", new TypeDictionary 
 				{
 					new LocationInit( startPos ),
-					new OwnerInit( Players["GoodGuy"] ),
+					new OwnerInit( player ),
 					new FacingInit( 0 ),
 				});
 
@@ -191,7 +195,7 @@ namespace OpenRA.Mods.Cnc
 				foreach (var i in items)
 					cargo.Load(a, world.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary
 					{
-						new OwnerInit( Players["GoodGuy"] ),
+						new OwnerInit( player ),
 						new FacingInit( 0 ),
 					}));
 				
