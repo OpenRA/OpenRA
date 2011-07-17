@@ -92,14 +92,13 @@ namespace OpenRA.Mods.RA
 
 		public Actor Peek(Actor self) {	return cargo[0]; }
 		
+		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
+
 		public Actor Unload(Actor self)
 		{
 			var a = cargo[0];
 			cargo.RemoveAt(0);
-
-			var pi = a.Info.Traits.GetOrDefault<PassengerInfo>();
-			totalWeight -= pi != null ? pi.Weight : 1;
-
+			totalWeight -= GetWeight(a);
 			return a;
 		}
 
@@ -130,8 +129,7 @@ namespace OpenRA.Mods.RA
 		public void Load(Actor self, Actor a)
 		{
 			cargo.Add(a);
-			var pi = a.Info.Traits.GetOrDefault<PassengerInfo>();
-			totalWeight += pi != null ? pi.Weight : 1;
+			totalWeight += GetWeight(a);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
