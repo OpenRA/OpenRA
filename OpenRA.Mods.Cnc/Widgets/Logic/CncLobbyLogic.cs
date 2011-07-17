@@ -560,22 +560,23 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
 				Widget template;
-				var ready = client.State == Session.ClientState.Ready;
+				var c = client;
+				var ready = c.State == Session.ClientState.Ready;
 				// Editable spectator
-				if (client.Index == orderManager.LocalClient.Index)
+				if (c.Index == orderManager.LocalClient.Index)
 				{
 					template = EditableSpectatorTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
 					name.IsDisabled = () => ready;
-					name.Text = client.Name;
+					name.Text = c.Name;
 					name.OnEnterKey = () =>
 					{
 						name.Text = name.Text.Trim();
 						if (name.Text.Length == 0)
-							name.Text = client.Name;
+							name.Text = c.Name;
 
 						name.LoseFocus();
-						if (name.Text == client.Name)
+						if (name.Text == c.Name)
 							return true;
 
 						orderManager.IssueOrder(Order.Command("name " + name.Text));
@@ -587,10 +588,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
-					color.OnMouseDown = _ => ShowColorDropDown(color, client);
+					color.OnMouseDown = _ => ShowColorDropDown(color, c);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
+					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
 					status.IsChecked = () => ready;
@@ -600,17 +601,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				else
 				{
 					template = NonEditableSpectatorTemplate.Clone();
-					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
+					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => client.ColorRamp.GetColor(0);
+					color.GetColor = () => c.ColorRamp.GetColor(0);
 
 					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
-						client.Bot != null || client.State == Session.ClientState.Ready;
+						c.Bot != null || c.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
-					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
+					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
 					kickButton.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
-					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
+					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
 
 				template.IsVisible = () => true;
