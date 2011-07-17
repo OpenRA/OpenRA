@@ -228,6 +228,8 @@ HARV:
 	-AttackMove:
 	GpsDot:
 		String:Harvester
+	LeavesHusk:
+		HuskActor: HARV.Husk
 
 MCV:
 	Inherits: ^Vehicle
@@ -463,6 +465,13 @@ TRUK:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: turret
+
+HARV.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Harvester)
+	RenderUnit:
+		Image: hhusk
 
 TTNK:
 	Inherits: ^Tank

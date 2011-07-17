@@ -427,6 +427,11 @@ harvempty:
 		Start: 104
 		Length: 7
 
+hhusk:
+	idle:
+		Start: 0
+		Facings: 32
+
 1tnk:
 	idle:
 		Start: 0
