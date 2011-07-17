@@ -71,13 +71,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var audio = bg.GetWidget("AUDIO_PANE");
 			
 			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
-			soundslider.OnChange += x => { Sound.SoundVolume = x; };
-			soundslider.GetOffset = () => { return Sound.SoundVolume; };
+			soundslider.OnChange += x => Sound.SoundVolume = x;
+			soundslider.GetOffset = () => Sound.SoundVolume;
 			soundslider.SetOffset(Sound.SoundVolume);
 			
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
-			musicslider.OnChange += x => { Sound.MusicVolume = x; };
-			musicslider.GetOffset = () => { return Sound.MusicVolume; };
+			musicslider.OnChange += x => Sound.MusicVolume = x;
+			musicslider.GetOffset = () => Sound.MusicVolume;
 			musicslider.SetOffset(Sound.MusicVolume);
 			
 			
