@@ -26,7 +26,7 @@ namespace OpenRA.FileFormats
 			this.path = path;
 			this.priority = priority;
 			if (Directory.Exists(path))
-				Directory.Delete(path);
+				Directory.Delete(path, true);
 			
 			Write(contents);
 		}
