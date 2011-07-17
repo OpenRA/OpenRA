@@ -60,22 +60,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 	class ProductionTabsWidget : Widget
 	{
-		string queueGroup;
-		public string QueueGroup
-		{
-			get
-			{
-				return queueGroup;
-			}
-			set
-			{
-				queueGroup = value;
-				ListOffset = 0;
-				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget)
-					.CurrentQueue = Groups[queueGroup].Tabs[0].Queue;
-			}
-		}
-
 		public readonly string PaletteWidget = null;
 		public readonly string ClickSound = null;
 		public readonly string DisabledClickSound = null;
@@ -90,19 +74,52 @@ namespace OpenRA.Mods.Cnc.Widgets
 		bool rightPressed = false;
 		Rectangle leftButtonRect;
 		Rectangle rightButtonRect;
-		readonly World world;
+		Lazy<ProductionPaletteWidget> paletteWidget;
+		string queueGroup;
 
 		[ObjectCreator.UseCtor]
 		public ProductionTabsWidget([ObjectCreator.Param] World world)
 		{
-			this.world = world;
 			Groups = Rules.Info.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
 				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
 
 			// Only visible if the production palette has icons to display
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
+
+			paletteWidget = new Lazy<ProductionPaletteWidget>(() =>
+				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
+		}
+
+		public string QueueGroup
+		{
+			get
+			{
+				return queueGroup;
+			}
+			set
+			{
+				ListOffset = 0;
+
+				// TODO: prioritize alerted tabs
+				CurrentQueue = Groups[value].Tabs[0].Queue;
+			}
 		}
 		
+		public ProductionQueue CurrentQueue
+		{
+			get
+			{
+				return paletteWidget.Value.CurrentQueue;
+			}
+			set
+			{
+				paletteWidget.Value.CurrentQueue = value;
+				queueGroup = value != null ? value.Info.Group : null;
+
+				// TODO: Scroll tabs so selected queue is visible
+			}
+		}
+
 		public override void Draw()
 		{
 			var rb = RenderBounds;
@@ -125,7 +142,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height);
-			var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
 			SpriteFont font = Game.Renderer.Fonts["TinyBold"];
 			ContentWidth = 0;
@@ -134,7 +150,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Widget.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				var baseName = tab.Queue == palette.CurrentQueue ? "button-toggled" : "button";
+				var baseName = tab.Queue == CurrentQueue ? "button-toggled" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover);
 				ContentWidth += TabWidth - 1;
 
@@ -157,8 +173,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (a.HasTrait<ProductionQueue>())
 			{
-				var allQueues = world.ActorsWithTrait<ProductionQueue>()
-					.Where(p => p.Actor.Owner == world.LocalPlayer && p.Actor.IsInWorld)
+				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
+					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
 					.Select(p => p.Trait).ToArray();
 				foreach (var g in Groups.Values)
 					g.Update(allQueues);
@@ -166,19 +182,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if (queueGroup == null)
 					return;
 
-				var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 				// Queue destroyed, was last of type: switch to a new group
 				if (Groups[queueGroup].Tabs.Count == 0)
 				{
 					// Find a new group
-					queueGroup = Groups.Where(g => g.Value.Tabs.Count > 0)
+					var qg = Groups.Where(g => g.Value.Tabs.Count > 0)
 						.Select(g => g.Key).FirstOrDefault();
-					palette.CurrentQueue = queueGroup != null ? Groups[queueGroup].Tabs[0].Queue : null;
+					CurrentQueue = qg != null ? Groups[qg].Tabs[0].Queue : null;
 				}
 
 				// Queue destroyed, others of same type: switch to another tab
-				else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(palette.CurrentQueue))
-					palette.CurrentQueue = Groups[queueGroup].Tabs[0].Queue;
+				else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
+					CurrentQueue = Groups[queueGroup].Tabs[0].Queue;
 			}
 		}
 
@@ -237,8 +252,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
 			if (offsetloc.X > 0 && offsetloc.X < ContentWidth)
 			{
-				var palette = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
-				palette.CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
+				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
 				Sound.Play(ClickSound);
 				return true;
 			}
@@ -264,21 +278,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (queueGroup == null)
 				return;
 
-			var pal = Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget);
 			var tabs = Groups[queueGroup].Tabs.ToList();
 			if (reverse) tabs.Reverse();
 
-			var tab = tabs.SkipWhile(q => q.Queue != pal.CurrentQueue)
+			var tab = tabs.SkipWhile(q => q.Queue != CurrentQueue)
 				.Skip(1).FirstOrDefault() ?? tabs.FirstOrDefault();
 
-			pal.CurrentQueue = tab != null ? tab.Queue : null;
-		}
-
-		public void SelectQueue(ProductionQueue queue)
-		{
-			queueGroup = queue.Info.Group;
-			Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget)
-					.CurrentQueue = queue;
+			CurrentQueue = tab != null ? tab.Queue : null;
 		}
 	}
 }

@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using OpenRA.Mods.RA;
@@ -23,13 +24,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 	class ProductionQueueFromSelection : INotifySelection
 	{
-		ProductionQueueFromSelectionInfo info;
+		Lazy<ProductionTabsWidget> tabsWidget;
 		readonly World world;
 
 		public ProductionQueueFromSelection(World world, ProductionQueueFromSelectionInfo info)
 		{
 			this.world = world;
-			this.info = info;
+
+			tabsWidget = new Lazy<ProductionTabsWidget>(() =>
+				Widget.RootWidget.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget));
 		}
 
 		public void SelectionChanged()
@@ -38,9 +41,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var producer = world.Selection.Actors.FirstOrDefault(a => a.IsInWorld
 			                                                     && a.World.LocalPlayer == a.Owner
 			                                                     && a.HasTrait<ProductionQueue>());
-			if (producer != null)			
-				Widget.RootWidget.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget)
-					.SelectQueue(producer.TraitsImplementing<ProductionQueue>().First());
+			if (producer != null)
+				tabsWidget.Value.CurrentQueue = producer.TraitsImplementing<ProductionQueue>().First();
 		}
 	}
 }
