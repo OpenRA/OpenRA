@@ -15,16 +15,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	/// <summary>
-	/// Attach to players only kthx :)
-	/// </summary>
 	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<ConquestVictoryConditionsInfo>
 	{
 		public readonly int TicksToHold = 25 * 60 * 5; // ~5 minutes
 		public readonly bool ResetOnHoldLost = true;
 		public readonly float RatioRequired = 0.5f; // 50% required of all koth locations
-		public readonly float CriticalRatioRequired = 1f; // if someone owns 100% of all critical locations	
-		public readonly bool SplitHolds = true; // disallow or allow the 'holdsrequired' to include critical locations
 
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.self, this); }	
 	}
@@ -34,101 +29,27 @@ namespace OpenRA.Mods.RA
 		Actor self;
 		StrategicVictoryConditionsInfo info;
 
-		[Sync] bool SplitHolds;
 		[Sync] public int TicksLeft = 0;
-		[Sync] public int CriticalTicksLeft = 0;
 
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo info)
 		{
 			this.self = self;
 			this.info = info;
-			SplitHolds = info.SplitHolds;
 		}
 
-		/// <summary>
-		/// Includes your allies as well
-		/// </summary>
-		int Owned
-		{
-			get { return CountOwnedPoints(false) + (SplitHolds ? 0 : OwnedCritical); }
-		}
-
-		/// <summary>
-		/// Includes your allies as well
-		/// </summary>
-		int OwnedCritical
-		{
-			get { return CountOwnedPoints(true); }
-		}
-
-		IEnumerable<TraitPair<StrategicPoint>> AllPoints
+		public IEnumerable<TraitPair<StrategicPoint>> AllPoints
 		{
 			get { return self.World.ActorsWithTrait<StrategicPoint>(); }
 		}
 
-		public int Total
-		{
-			get
-			{
-				return SplitHolds
-					? AllPoints.Count( a => a.Trait.Critical )
-					: AllPoints.Count();
-			}
-		}
+		public int Total { get { return AllPoints.Count(); } }
+		int Owned {	get { return AllPoints.Count( a => WorldUtils.AreMutualAllies( self.Owner, a.Actor.Owner )); } }
 
-		public int TotalCritical
-		{
-			get
-			{
-				return AllPoints.Count( a => a.Trait.Critical );
-			}
-		}
-
-		int CountOwnedPoints(bool critical)
-		{
-			return AllPoints.Count( a => a.Trait.Critical == critical &&
-				WorldUtils.AreMutualAllies( self.Owner, a.Actor.Owner ));
-		}
-
-		public bool HoldingCritical
-		{
-			get
-			{
-				var criticalOwned = 1f / TotalCritical * OwnedCritical;
-
-				return criticalOwned >= info.CriticalRatioRequired;
-			}
-		}
-
-		public bool Holding
-		{
-			get
-			{
-				var owned = 1f / Total * Owned;
-
-				return owned >= info.RatioRequired;
-			}
-		}
+		public bool Holding { get { return Owned >= info.RatioRequired * Total; } }
 
 		public void Tick(Actor self)
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
-
-			// See if any of the conditions are met to increase the count
-			if (TotalCritical > 0)
-			{
-				if (HoldingCritical)
-				{
-					// Hah! We met ths critical owned condition
-					if (CriticalTicksLeft == 0)
-						CriticalTicksLeft = info.TicksToHold;	// crap
-					else if (--CriticalTicksLeft == 0)
-						Won();
-				}
-				else if (CriticalTicksLeft != 0)
-					if (info.ResetOnHoldLost)
-						CriticalTicksLeft = info.TicksToHold; // Reset the time hold
-			}
 
 			// See if any of the conditions are met to increase the count
 			if (Total > 0)

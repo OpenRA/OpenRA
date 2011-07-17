@@ -35,35 +35,27 @@ namespace OpenRA.Mods.RA.Widgets
 				Init();
 
 			if (!IsVisible()) return;
-			int2 offset = int2.Zero;
+
+			var rb = RenderBounds;
+			var offset = int2.Zero;
 
 			var svc = world.Players.Select(p => p.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
-			var totalWidth = (svc.Total + svc.TotalCritical) * 32;
-			int curX = -(totalWidth / 2);
+			var totalWidth = svc.Total * 32;
+			var curX = -totalWidth / 2;
 
-			foreach (var a in world.ActorsWithTrait<StrategicPoint>().Where(a => a.Trait.Critical))
+			foreach (var a in svc.AllPoints)
 			{
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(rb.Left + curX, rb.Top));
 
 				if (WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
-					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
+					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(rb.Left + curX, rb.Top));
 				else if (!a.Actor.Owner.NonCombatant)
-					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				curX += 32;
-			}
-
-			foreach (var a in world.ActorsWithTrait<StrategicPoint>().Where(a => !a.Trait.Critical))
-			{
-				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-
-				if (WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
-					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
-				else if (!a.Actor.Owner.NonCombatant)
-					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(RenderBounds.Left + curX, RenderBounds.Top));
+					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(rb.Left + curX, rb.Top));
 
 				curX += 32;
 			}
+			
 			offset += new int2(0, 32);
 
 			if (world.LocalPlayer == null) return;
@@ -74,12 +66,12 @@ namespace OpenRA.Mods.RA.Widgets
 			var isVictory = pendingWinner == world.LocalPlayer || !WorldUtils.AreMutualAllies(pendingWinner, world.LocalPlayer);
 			var tc = "Strategic {0} in {1}".F(
 				isVictory ? "victory" : "defeat",
-				WidgetUtils.FormatTime(Math.Max(winnerSvc.CriticalTicksLeft, winnerSvc.TicksLeft)));
+				WidgetUtils.FormatTime(winnerSvc.TicksLeft));
 
-			var size = Game.Renderer.Fonts["Bold"].Measure(tc);
-
-			Game.Renderer.Fonts["Bold"].DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2 + 1, RenderBounds.Top + 1), Color.Black);
-			Game.Renderer.Fonts["Bold"].DrawText(tc, offset + new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top), Color.WhiteSmoke);
+			var font = Game.Renderer.Fonts["Bold"];
+			
+			var size = font.Measure(tc);
+			font.DrawTextWithContrast(tc, offset + new float2(rb.Left - size.X / 2 + 1, rb.Top + 1), Color.White, Color.Black, 1);
 			offset += new int2(0, size.Y + 1);
 		}
 
@@ -92,12 +84,6 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var p in world.Players.Where(p => !p.NonCombatant))
 			{
 				var svc = p.PlayerActor.Trait<StrategicVictoryConditions>();
-
-				if (svc.HoldingCritical && svc.CriticalTicksLeft > 0 && svc.CriticalTicksLeft < shortest)
-				{
-					shortest = svc.CriticalTicksLeft;
-					shortestPlayer = p;
-				}
 
 				if (svc.Holding && svc.TicksLeft > 0 && svc.TicksLeft < shortest)
 				{
