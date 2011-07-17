@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			inputPane.GetWidget<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
 			
 			var scrollSlider = inputPane.GetWidget<SliderWidget>("SCROLLSPEED_SLIDER");
-			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = scrollSlider.GetOffset();
+			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = x;
 			scrollSlider.SetOffset(gameSettings.ViewportEdgeScrollStep);
 			
 			var edgescrollCheckbox = inputPane.GetWidget<CheckboxWidget>("EDGESCROLL_CHECKBOX");
