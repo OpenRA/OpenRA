@@ -50,14 +50,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
 			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
 			
-            // Added scroll sensitivity - Gecko	
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
-            if (edgeScrollSlider != null) // Backwards compatible - Gecko
-			{
-				edgeScrollSlider.SetOffset(Game.Settings.Game.ViewportEdgeScrollStep);
-                edgeScrollSlider.OnChange += _ => { Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset(); };
-				Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
-            }
+			edgeScrollSlider.SetOffset(Game.Settings.Game.ViewportEdgeScrollStep);
+            edgeScrollSlider.OnChange += _ => { Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset(); };
+			Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
 
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
@@ -79,7 +75,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			musicslider.OnChange += x => Sound.MusicVolume = x;
 			musicslider.GetOffset = () => Sound.MusicVolume;
 			musicslider.SetOffset(Sound.MusicVolume);
-			
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
@@ -125,7 +120,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
-			
 
 			var perfgraphCheckbox = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
