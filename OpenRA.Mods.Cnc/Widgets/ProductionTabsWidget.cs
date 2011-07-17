@@ -251,6 +251,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (e.Event != KeyInputEvent.Down) return false;
 			if (e.KeyName == "tab")
 			{
+				Sound.Play(ClickSound);
 				SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
 			}
