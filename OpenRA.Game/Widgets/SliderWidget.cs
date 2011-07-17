@@ -34,8 +34,8 @@ namespace OpenRA.Widgets
 			OnChange = other.OnChange;
 			Ticks = other.Ticks;
 			Range = other.Range;
+			Value = other.Value;
 			TrackHeight = other.TrackHeight;
-			isMoving = other.isMoving;
 		}
 
 		void UpdateValue(float newValue)
