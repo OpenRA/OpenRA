@@ -356,24 +356,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
-					var name = template.GetWidget<TextFieldWidget>("NAME");
-					name.Text = c.Name;
-					name.OnEnterKey = () =>
-					{
-						name.Text = name.Text.Trim();
-						if (name.Text.Length == 0)
-							name.Text = c.Name;
-
-						name.LoseFocus();
-						if (name.Text == c.Name)
-							return true;
-
-						orderManager.IssueOrder(Order.Command("name " + name.Text));
-						Game.Settings.Player.Name = name.Text;
-						Game.Settings.Save();
-						return true;
-					};
-					name.OnLoseFocus = () => name.OnEnterKey();
+					SetupNameWidget(c, template.GetWidget<TextFieldWidget>("NAME"));
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => s.LockColor;
@@ -435,56 +418,40 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Add spectators
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
+				var c = client;
 				Widget template;
 				// Editable spectator
-				if (client.Index == orderManager.LocalClient.Index && client.State != Session.ClientState.Ready)
+				if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalSpectatorTemplate.Clone();
-					var name = template.GetWidget<TextFieldWidget>("NAME");
-					name.Text = client.Name;
-					name.OnEnterKey = () =>
-					{
-						name.Text = name.Text.Trim();
-						if (name.Text.Length == 0)
-							name.Text = client.Name;
-
-						name.LoseFocus();
-						if (name.Text == client.Name)
-							return true;
-
-						orderManager.IssueOrder(Order.Command("name " + name.Text));
-						Game.Settings.Player.Name = name.Text;
-						Game.Settings.Save();
-						return true;
-					};
-					name.OnLoseFocus = () => name.OnEnterKey();
-
+					SetupNameWidget(c, template.GetWidget<TextFieldWidget>("NAME"));
+					
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
-					color.OnMouseDown = _ => ShowColorDropDown(color, client);
+					color.OnMouseDown = _ => ShowColorDropDown(color, c);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
-					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
+					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
+					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					status.OnClick += CycleReady;
 				}
 				// Non-editable spectator
 				else
 				{
 					template = RemoteSpectatorTemplate.Clone();
-					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
+					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
-					color.GetColor = () => client.ColorRamp.GetColor(0);
+					color.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => client.State == Session.ClientState.Ready;
-					if (client.Index == orderManager.LocalClient.Index)
+					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick += CycleReady;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
-					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
-					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
+					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
+					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
 
 				template.IsVisible = () => true;
@@ -500,6 +467,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				spec.IsVisible = () => true;
 				Players.AddChild(spec);
 			}
+		}
+		
+		void SetupNameWidget(Session.Client c, TextFieldWidget name)
+		{
+			name.Text = c.Name;
+			name.OnEnterKey = () =>
+			{
+				name.Text = name.Text.Trim();
+				if (name.Text.Length == 0)
+					name.Text = c.Name;
+
+				name.LoseFocus();
+				if (name.Text == c.Name)
+					return true;
+
+				orderManager.IssueOrder(Order.Command("name " + name.Text));
+				Game.Settings.Player.Name = name.Text;
+				Game.Settings.Save();
+				return true;
+			};
+			name.OnLoseFocus = () => name.OnEnterKey();
 		}
 
 		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
