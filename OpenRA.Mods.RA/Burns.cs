@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 				var anim = new Animation("fire", () => 0);
 				anim.PlayRepeating(self.Info.Traits.Get<BurnsInfo>().Anim);
 				self.Trait<RenderSimple>().anims.Add("fire",
-					new RenderSimple.AnimationWithOffset(anim, () => new float2(0, -3), null));
+					new AnimationWithOffset(anim, () => new float2(0, -3), null));
 			}
 
 			if (--ticks <= 0)

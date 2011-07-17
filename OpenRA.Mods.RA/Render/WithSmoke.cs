@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSimple>();
 
 			anim = new Animation("smoke_m");
-			rs.anims.Add("smoke", new RenderSimple.AnimationWithOffset(
+			rs.anims.Add("smoke", new AnimationWithOffset(
 				anim, null, () => !isSmoking));
 		}
 

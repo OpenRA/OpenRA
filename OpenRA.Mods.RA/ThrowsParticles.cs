@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 				var anim = new Animation(ru.GetImage(self), () => (int)facing);
 				anim.PlayRepeating(info.Anim);
 
-				ru.anims.Add(info.AnimKey, new RenderSimple.AnimationWithOffset(
+				ru.anims.Add(info.AnimKey, new AnimationWithOffset(
 					anim, () => pos - new float2(0, alt), null));
 
 				info = null;

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 
 	class WithMuzzleFlash : INotifyAttack, IRender, ITick
 	{
-		Dictionary<string, RenderSimple.AnimationWithOffset> muzzleFlashes = new Dictionary<string, RenderSimple.AnimationWithOffset>();
+		Dictionary<string, AnimationWithOffset> muzzleFlashes = new Dictionary<string, AnimationWithOffset>();
 		bool isShowing;
 
 		public WithMuzzleFlash(Actor self)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Render
 					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
 					muzzleFlash.Play("muzzle");
 
-					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new RenderSimple.AnimationWithOffset(
+					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
 						() => Combat.GetBarrelPosition(self, facing, turret, barrel),
 						() => !isShowing));
