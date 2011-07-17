@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -34,12 +35,17 @@ namespace RALint
 		{
 			try
 			{
+				var options = args.Where(a => a.StartsWith("-"));
+				var mods = args.Where(a => !options.Contains(a)).ToArray();
+				
+				var verbose = options.Contains( "-v" ) || options.Contains( "--verbose" );
+				
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-				Game.modData = new ModData(args);
+				Game.modData = new ModData(mods);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				foreach (var customPassType in Game.modData.ObjectCreator
@@ -48,7 +54,8 @@ namespace RALint
                     var customPass = (ILintPass)Game.modData.ObjectCreator
                         .CreateBasic(customPassType);
 
-                    Console.WriteLine("CustomPass: {0}".F(customPassType.ToString()));
+					if (verbose)
+                    	Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
 
                     customPass.Run(EmitError, EmitWarning);
                 }
