@@ -25,6 +25,7 @@ namespace OpenRA.Utility
 				{ "--settings-value", Command.Settings },
 				{ "--shp", Command.ConvertPngToShp },
 				{ "--png", Command.ConvertShpToPng },
+				{ "--fromd2", Command.ConvertFormat2ToFormat80 },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }

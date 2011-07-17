@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
@@ -121,6 +122,25 @@ namespace OpenRA.Utility
 
 				bitmap.Save(dest);
 			}
+		}
+		
+		public static void ConvertFormat2ToFormat80(string[] args)
+		{
+			var src = args[1];
+			var dest = args[2];
+			
+			Dune2ShpReader srcImage = null;
+			using( var s = File.OpenRead( src ) )
+				srcImage = new Dune2ShpReader(s);
+			
+			var size = srcImage.First().Size;
+			
+			if (!srcImage.All( im => im.Size == size ))
+				throw new InvalidOperationException("All the frames must be the same size to convert from Dune2 to RA");
+			
+			using( var destStream = File.Create(dest) )
+				ShpWriter.Write(destStream, size.Width, size.Height,
+					srcImage.Select( im => im.Image ));
 		}
 	}
 }
