@@ -90,6 +90,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
 		}
 
+		public void SelectNextTab(bool reverse)
+		{
+			if (queueGroup == null)
+				return;
+
+			// Prioritize alerted queues
+			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
+					.OrderByDescending(q => q.CurrentDone ? 1 : 0)
+					.ToList();
+
+			if (reverse) queues.Reverse();
+
+			CurrentQueue = queues.SkipWhile(q => q != CurrentQueue)
+				.Skip(1).FirstOrDefault() ?? queues.FirstOrDefault();
+		}
+
 		public string QueueGroup
 		{
 			get
@@ -99,9 +115,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			set
 			{
 				ListOffset = 0;
-
-				// TODO: prioritize alerted tabs
-				CurrentQueue = Groups[value].Tabs[0].Queue;
+				queueGroup = value;
+				SelectNextTab(false);
 			}
 		}
 		
@@ -184,16 +199,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 				// Queue destroyed, was last of type: switch to a new group
 				if (Groups[queueGroup].Tabs.Count == 0)
-				{
-					// Find a new group
-					var qg = Groups.Where(g => g.Value.Tabs.Count > 0)
+					QueueGroup = Groups.Where(g => g.Value.Tabs.Count > 0)
 						.Select(g => g.Key).FirstOrDefault();
-					CurrentQueue = qg != null ? Groups[qg].Tabs[0].Queue : null;
-				}
 
 				// Queue destroyed, others of same type: switch to another tab
 				else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
-					CurrentQueue = Groups[queueGroup].Tabs[0].Queue;
+					SelectNextTab(false);
 			}
 		}
 
@@ -271,20 +282,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 
 			return false;
-		}
-
-		public void SelectNextTab(bool reverse)
-		{
-			if (queueGroup == null)
-				return;
-
-			var tabs = Groups[queueGroup].Tabs.ToList();
-			if (reverse) tabs.Reverse();
-
-			var tab = tabs.SkipWhile(q => q.Queue != CurrentQueue)
-				.Skip(1).FirstOrDefault() ?? tabs.FirstOrDefault();
-
-			CurrentQueue = tab != null ? tab.Queue : null;
 		}
 	}
 }
