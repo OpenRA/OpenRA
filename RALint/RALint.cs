@@ -10,8 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -45,11 +45,7 @@ namespace RALint
 				Game.modData = new ModData(args);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
-				foreach (var actorInfo in Rules.Info)
-					foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
-						CheckTrait(actorInfo.Value, traitInfo);
-
-                foreach (var customPassType in Game.modData.ObjectCreator
+				foreach (var customPassType in Game.modData.ObjectCreator
                     .GetTypesImplementing<ILintPass>())
                 {
                     var customPass = (ILintPass)Game.modData.ObjectCreator
@@ -73,44 +69,6 @@ namespace RALint
 				EmitError("Failed with exception: {0}".F(e));
 				return 1;
 			}
-		}
-
-		static void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo)
-		{
-			var actualType = traitInfo.GetType();
-			foreach (var field in actualType.GetFields())
-			{
-				if (field.HasAttribute<ActorReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, Rules.Info, "actor");
-				if (field.HasAttribute<WeaponReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, Rules.Weapons, "weapon");
-				if (field.HasAttribute<VoiceReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, Rules.Voices, "voice");
-			}
-		}
-
-		static string[] GetFieldValues(ITraitInfo traitInfo, FieldInfo fieldInfo)
-		{
-			var type = fieldInfo.FieldType;
-			if (type == typeof(string))
-				return new string[] { (string)fieldInfo.GetValue(traitInfo) };
-			if (type == typeof(string[]))
-				return (string[])fieldInfo.GetValue(traitInfo);
-
-			EmitError("Bad type for reference on {0}.{1}. Supported types: string, string[]"
-				.F(traitInfo.GetType().Name, fieldInfo.Name));
-
-			return new string[] { };
-		}
-
-		static void CheckReference<T>(ActorInfo actorInfo, ITraitInfo traitInfo, FieldInfo fieldInfo,
-			Dictionary<string, T> dict, string type)
-		{
-			var values = GetFieldValues(traitInfo, fieldInfo);
-			foreach (var v in values)
-				if (v != null && !dict.ContainsKey(v.ToLowerInvariant()))
-					EmitError("{0}.{1}.{2}: Missing {3} `{4}`."
-						.F(actorInfo.Name, traitInfo.GetType().Name, fieldInfo.Name, type, v));
 		}
 	}
 }
