@@ -83,43 +83,42 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
+			var gs = Game.Settings.Graphics;
 
 			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
-			fullscreen.IsChecked = () => Game.Settings.Graphics.Mode != WindowMode.Windowed;
-			fullscreen.OnClick = () => Game.Settings.Graphics.Mode = (Game.Settings.Graphics.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
+			fullscreen.IsChecked = () => gs.Mode != WindowMode.Windowed;
+			fullscreen.OnClick = () => gs.Mode = (gs.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
 	
 			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
-			Game.Settings.Graphics.WindowedSize.X = (Game.Settings.Graphics.WindowedSize.X < Game.Settings.Graphics.MinResolution.X)?
-				Game.Settings.Graphics.MinResolution.X : Game.Settings.Graphics.WindowedSize.X;
-			width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
+			gs.WindowedSize.X = Math.Max(gs.WindowedSize.X, gs.MinResolution.X);
+			width.Text = gs.WindowedSize.X.ToString();
 			width.OnLoseFocus = () =>
 			{
 				try {
 					var w = int.Parse(width.Text);
-					if (w > Game.Settings.Graphics.MinResolution.X)
-						Game.Settings.Graphics.WindowedSize = new int2(w, Game.Settings.Graphics.WindowedSize.Y);
+					if (w > gs.MinResolution.X)
+						gs.WindowedSize = new int2(w, gs.WindowedSize.Y);
 				}
 				catch (FormatException) {
-					width.Text = Game.Settings.Graphics.WindowedSize.X.ToString();
+					width.Text = gs.WindowedSize.X.ToString();
 				}
 			};
 			width.OnEnterKey = () => { width.LoseFocus(); return true; };
 			
 			var height = display.GetWidget<TextFieldWidget>("SCREEN_HEIGHT");
-			Game.Settings.Graphics.WindowedSize.Y = (Game.Settings.Graphics.WindowedSize.Y < Game.Settings.Graphics.MinResolution.Y)?
-				Game.Settings.Graphics.MinResolution.Y : Game.Settings.Graphics.WindowedSize.Y;
-			height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
+			gs.WindowedSize.Y = Math.Max(gs.WindowedSize.Y, gs.MinResolution.Y);
+			height.Text = gs.WindowedSize.Y.ToString();
 			height.OnLoseFocus = () =>
 			{
 				try {
 					var h = int.Parse(height.Text);
-					if (h > Game.Settings.Graphics.MinResolution.Y)
-						Game.Settings.Graphics.WindowedSize = new int2(Game.Settings.Graphics.WindowedSize.X, h);	
+					if (h > gs.MinResolution.Y)
+						gs.WindowedSize = new int2(gs.WindowedSize.X, h);	
 					else 
-						height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
+						height.Text = gs.WindowedSize.Y.ToString();
 				}
 				catch (FormatException) {
-					height.Text = Game.Settings.Graphics.WindowedSize.Y.ToString();
+					height.Text = gs.WindowedSize.Y.ToString();
 				}
 			};
 			height.OnEnterKey = () => { height.LoseFocus(); return true; };
