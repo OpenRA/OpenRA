@@ -289,27 +289,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.SetOffset(orderManager.LocalClient.ColorRamp.H / 255f);
+			hueSlider.Value = orderManager.LocalClient.ColorRamp.H / 255f;
 			
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-            satSlider.SetOffset(orderManager.LocalClient.ColorRamp.S / 255f);
+            satSlider.Value = orderManager.LocalClient.ColorRamp.S / 255f;
 
 			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-            lumSlider.SetOffset(orderManager.LocalClient.ColorRamp.L / 255f);
+            lumSlider.Value = orderManager.LocalClient.ColorRamp.L / 255f;
 			
 			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-            rangeSlider.SetOffset(orderManager.LocalClient.ColorRamp.R / 255f);
+            rangeSlider.Value = orderManager.LocalClient.ColorRamp.R / 255f;
 			
-			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-			UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+			hueSlider.OnChange += _ => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+			satSlider.OnChange += _ => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+			lumSlider.OnChange += _ => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+			rangeSlider.OnChange += _ => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+			UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
 			
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
 			{
-				UpdateColorPreview(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
-				UpdatePlayerColor(hueSlider.GetOffset(), satSlider.GetOffset(), lumSlider.GetOffset(), rangeSlider.GetOffset());
+				UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+				UpdatePlayerColor(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
 				color.RemovePanel();
 			};
 			

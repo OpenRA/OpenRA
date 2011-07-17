@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			Action sliderChanged = () => 
 			{
-				ramp = new ColorRamp((byte)(255*hueSlider.GetOffset()),
-				                     (byte)(255*satSlider.GetOffset()),
-				                     (byte)(255*lumSlider.GetOffset()),
+				ramp = new ColorRamp((byte)(255*hueSlider.Value),
+				                     (byte)(255*satSlider.Value),
+				                     (byte)(255*lumSlider.Value),
 				                     10);
 				onChange(ramp);
 			};
@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			Action updateSliders = () =>
 			{
-				hueSlider.SetOffset(ramp.H / 255f);
-				satSlider.SetOffset(ramp.S / 255f);
-				lumSlider.SetOffset(ramp.L / 255f);
+				hueSlider.Value = ramp.H / 255f;
+				satSlider.Value = ramp.S / 255f;
+				lumSlider.Value = ramp.L / 255f;
 			};
 			
 			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);

@@ -17,160 +17,78 @@ namespace OpenRA.Widgets
 	public class SliderWidget : Widget
 	{
 		public Func<bool> IsDisabled = () => false;
-		public event Action<float> OnChange;
-		public Func<float> GetOffset;
+		public event Action<float> OnChange = _ => {};
 		public int Ticks = 0;
 		public int TrackHeight = 5;
 
-
-		// TODO: Changing this breaks the semantics of Get/SetOffset
-		// This is bogus
 		public float2 Range = new float2(0f, 1f);
-		
-		float Offset = 0;
+		public float Value = 0;
 
-		int2 lastMouseLocation;
 		protected bool isMoving = false;
 
-		public SliderWidget()
-			: base()
-		{
-			GetOffset = () =>
-			{
-				var Big = Math.Max(Range.X, Range.Y);
-				var Little = Math.Min(Range.X, Range.Y);
-				var Spread = Big - Little;
-
-				return Spread * Offset + Little;
-			};
-			OnChange = x => Offset = x.Clamp(0f, 1f);
-		}
+		public SliderWidget() : base() {}
 
 		public SliderWidget(SliderWidget other)
 			: base(other)
 		{
 			OnChange = other.OnChange;
-			GetOffset = other.GetOffset;
 			Ticks = other.Ticks;
 			Range = other.Range;
-			Offset = GetOffset();
 			TrackHeight = other.TrackHeight;
-			lastMouseLocation = other.lastMouseLocation;
 			isMoving = other.isMoving;
 		}
 
-		public void SetOffset(float newOffset)
+		void UpdateValue(float newValue)
 		{
-			var Big = Math.Max(Range.X, Range.Y);
-			var Little = Math.Min(Range.X, Range.Y);
-			var Spread = Big - Little;
-
-			Offset = ((newOffset - Little) / Spread).Clamp(0f, 1f);
+			Value = newValue.Clamp(Range.X, Range.Y);
+			OnChange(Value);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Button != MouseButton.Left)
-				return false;
-			
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
-				return false;
+			if (mi.Button != MouseButton.Left) return false;
+			if (IsDisabled()) return false;
+			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))	return false;
+			if (!Focused) return false;
 
-			if (!Focused)
-				return false;
-
-			switch (mi.Event)
+			switch( mi.Event )
 			{
-				case MouseInputEvent.Up:
-					{
-						if (Focused)
-						{
-							isMoving = false;
-							base.LoseFocus(mi);
-						}
-					}
-					break;
+			case MouseInputEvent.Up:
+				isMoving = false;
+				LoseFocus(mi);
+				break;
 
-				case MouseInputEvent.Down:
-					{
-						if (thumbRect.Contains(mi.Location))
-						{
-							isMoving = true;
-							lastMouseLocation = mi.Location;
-						}
-						else if (Ticks != 0)
-						{
-							var pos = Offset;
+			case MouseInputEvent.Down:
+				isMoving = true;
+				/* todo: handle snapping to ticks properly again */
+				/* todo: handle nudge via clicking outside the thumb */
+				UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
+				break;
 
-							// Offset slightly the direction we want to move so we don't get stuck on a tick
-							var delta = 0.001;
-							var targetTick = (float)((mi.Location.X > thumbRect.Right) ? Math.Ceiling((pos + delta) * (Ticks - 1))
-																					   : Math.Floor((pos - delta) * (Ticks - 1)));
-							OnChange(targetTick / (Ticks - 1));
-
-							if (thumbRect.Contains(mi.Location))
-							{
-								isMoving = true;
-								lastMouseLocation = mi.Location;
-							}
-							return true;
-						}
-						else // No ticks; move to the mouse position
-						{
-							var thumb = thumbRect;
-							var center = thumb.X + thumb.Width / 2;
-							var newOffset = OffsetBy((mi.Location.X - center) * 1f / (RenderBounds.Width - thumb.Width));
-							if (newOffset != Offset)
-							{
-								OnChange(newOffset);
-
-								if (thumbRect.Contains(mi.Location))
-								{
-									isMoving = true;
-									lastMouseLocation = mi.Location;
-								}
-								return true;
-							}
-						}
-					}
-					break;
-
-				case MouseInputEvent.Move:
-					{
-						if ((mi.Location.X != lastMouseLocation.X) && isMoving)
-						{
-							var newOffset = OffsetBy((mi.Location.X - lastMouseLocation.X) * 1f / (RenderBounds.Width - thumbRect.Width));
-							if (newOffset != Offset)
-							{
-								lastMouseLocation = mi.Location;
-								OnChange(newOffset);
-							}
-						}
-					}
-					break;
+			case MouseInputEvent.Move:
+				if (isMoving)
+					UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
+				break;
 			}
 
-			return thumbRect.Contains(mi.Location);
+			return ThumbRect.Contains(mi.Location);
 		}
 
-		float OffsetBy(float amount)
-		{
-			var centerPos = Offset + amount;
-			if (centerPos < 0) centerPos = 0;
-			if (centerPos > 1) centerPos = 1;
-			return centerPos;
-		}
+		float ValueFromPx(int x) { return Range.X + (Range.Y - Range.X) * (1f * x / RenderBounds.Width); }
+		int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - Range.X) / (Range.Y - Range.X)); }
 
 		public override Widget Clone() { return new SliderWidget(this); }
 
-		protected Rectangle thumbRect
+		Rectangle ThumbRect
 		{
 			get
 			{
-				var width = RenderBounds.Height;
-				var height = RenderBounds.Height;
-				var origin = (int)((RenderBounds.X + width / 2) + Offset * (RenderBounds.Width - width) - width / 2f);
-				return new Rectangle(origin, RenderBounds.Y, width, height);
+				var thumbPos = PxFromValue(Value);
+				var rb = RenderBounds;
+				var width = rb.Height;
+				var height = rb.Height;
+				var origin = (int)(rb.X + thumbPos - width/2f);
+				return new Rectangle(origin, rb.Y, width, height);
 			}
 		}
 
@@ -179,16 +97,17 @@ namespace OpenRA.Widgets
 			if (!IsVisible())
 				return;
 
-			var tr = thumbRect;
-			var trackWidth = RenderBounds.Width - tr.Width;
-			var trackOrigin = RenderBounds.X + tr.Width / 2;
-			var trackRect = new Rectangle(trackOrigin - 1, RenderBounds.Y + (RenderBounds.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
+			var tr = ThumbRect;
+			var rb = RenderBounds;
+			var trackWidth = rb.Width;
+			var trackOrigin = rb.X;
+			var trackRect = new Rectangle(trackOrigin - 1, rb.Y + (rb.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
 
 			// Tickmarks (hacked until we have real art)
 			for (int i = 0; i < Ticks; i++)
 			{
 				var tickRect = new Rectangle(trackOrigin - 1 + (int)(i * trackWidth * 1f / (Ticks - 1)),
-						  RenderBounds.Y + RenderBounds.Height / 2, 2, RenderBounds.Height / 2);
+						  rb.Y + rb.Height / 2, 2, rb.Height / 2);
 				WidgetUtils.DrawPanel("slider-tick", tickRect);
 			}
 

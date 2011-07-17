@@ -104,9 +104,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget<LabelWidget>("TITLE_LABEL").GetText = () => (currentSong == null) ? "" : currentSong.Title;
 			
 			var musicSlider = panel.GetWidget<SliderWidget>("MUSIC_SLIDER");
-			musicSlider.OnChange += x => { Sound.MusicVolume = x; };
-			musicSlider.GetOffset = () => { return Sound.MusicVolume; };
-			musicSlider.SetOffset(Sound.MusicVolume);
+			musicSlider.OnChange += x => Sound.MusicVolume = x;
+			musicSlider.Value = Sound.MusicVolume;
 		}
 	
 		void BuildMusicTable(Widget list)

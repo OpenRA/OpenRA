@@ -51,9 +51,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
 			
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
-			edgeScrollSlider.SetOffset(Game.Settings.Game.ViewportEdgeScrollStep);
-            edgeScrollSlider.OnChange += _ => { Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset(); };
-			Game.Settings.Game.ViewportEdgeScrollStep = edgeScrollSlider.GetOffset();
+			edgeScrollSlider.Value = Game.Settings.Game.ViewportEdgeScrollStep;
+            edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
 
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
@@ -68,13 +67,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
 			soundslider.OnChange += x => Sound.SoundVolume = x;
-			soundslider.GetOffset = () => Sound.SoundVolume;
-			soundslider.SetOffset(Sound.SoundVolume);
+			soundslider.Value = Sound.SoundVolume;
 			
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
 			musicslider.OnChange += x => Sound.MusicVolume = x;
-			musicslider.GetOffset = () => Sound.MusicVolume;
-			musicslider.SetOffset(Sound.MusicVolume);
+			musicslider.Value = Sound.MusicVolume;
 			
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");

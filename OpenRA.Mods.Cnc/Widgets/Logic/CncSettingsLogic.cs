@@ -96,13 +96,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Audio
 			var soundSlider = generalPane.GetWidget<SliderWidget>("SOUND_SLIDER");
 			soundSlider.OnChange += x => { soundSettings.SoundVolume = x; Sound.SoundVolume = x;};
-			soundSlider.GetOffset = () => { return soundSettings.SoundVolume; };
-			soundSlider.SetOffset(soundSettings.SoundVolume);
+			soundSlider.Value = soundSettings.SoundVolume;
 			
 			var musicSlider = generalPane.GetWidget<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => { soundSettings.MusicVolume = x; Sound.MusicVolume = x; };
-			musicSlider.GetOffset = () => { return soundSettings.MusicVolume; };
-			musicSlider.SetOffset(soundSettings.MusicVolume);
+			musicSlider.Value = soundSettings.MusicVolume;
 			
 			var shellmapMusicCheckbox = generalPane.GetWidget<CheckboxWidget>("SHELLMAP_MUSIC");
 			shellmapMusicCheckbox.IsChecked = () => gameSettings.ShellmapMusic;
@@ -120,8 +118,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			inputPane.GetWidget<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
 			
 			var scrollSlider = inputPane.GetWidget<SliderWidget>("SCROLLSPEED_SLIDER");
+			scrollSlider.Value = gameSettings.ViewportEdgeScrollStep;
 			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = x;
-			scrollSlider.SetOffset(gameSettings.ViewportEdgeScrollStep);
 			
 			var edgescrollCheckbox = inputPane.GetWidget<CheckboxWidget>("EDGESCROLL_CHECKBOX");
 			edgescrollCheckbox.IsChecked = () => gameSettings.ViewportEdgeScroll;
