@@ -224,7 +224,7 @@ HARV:
 		Speed: 6
 	RevealsShroud:
 		Range: 4
-	RenderUnit:
+	RenderHarvester:
 	-AttackMove:
 	GpsDot:
 		String:Harvester

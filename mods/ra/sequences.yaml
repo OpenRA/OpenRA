@@ -396,6 +396,37 @@ harv:
 	dock-loop:
 		Start: 104
 		Length: 7
+
+harvhalf:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	dock: harv
+		Start: 96
+		Length: 8
+	dock-loop: harv
+		Start: 104
+		Length: 7
+
+harvempty:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	dock: harv
+		Start: 96
+		Length: 8
+	dock-loop: harv
+		Start: 104
+		Length: 7
+
 1tnk:
 	idle:
 		Start: 0
