@@ -131,9 +131,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
 			perfgraphCheckbox.OnClick = () => Game.Settings.Debug.PerfGraph ^= true;
 			
-			var matchtimerCheckbox = debug.GetWidget<CheckboxWidget>("GAMETIME_CHECKBOX");
-			matchtimerCheckbox.IsChecked = () => Game.Settings.Game.MatchTimer;
-			matchtimerCheckbox.OnClick = () => Game.Settings.Game.MatchTimer ^= true;
+			Game.Settings.Game.MatchTimer = true;
 			
 			var checkunsyncedCheckbox = debug.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
