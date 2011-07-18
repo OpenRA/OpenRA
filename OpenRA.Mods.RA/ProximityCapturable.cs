@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ProximityCapturable(init.self, this); }
 	}
 
-	public class ProximityCapturable : ITick, ISync
+	public class ProximityCapturable : ITick
 	{
 		public readonly Player OriginalOwner;
 		public bool Captured { get { return Self.Owner != OriginalOwner; } }
