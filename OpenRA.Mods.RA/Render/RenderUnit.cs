@@ -21,15 +21,8 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderUnit : RenderSimple
 	{
-		static Func<int> MakeFacingFunc(Actor self)
-		{
-			var facing = self.TraitOrDefault<IFacing>();
-			if (facing == null) return () => 0;
-			return () => facing.Facing;
-		}
-
 		public RenderUnit(Actor self)
-			: base(self, MakeFacingFunc(self))
+			: base(self, RenderSimple.MakeFacingFunc(self))
 		{
 			anim.PlayRepeating("idle");
 		}

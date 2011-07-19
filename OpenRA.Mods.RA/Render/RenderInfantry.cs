@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Render
 		RenderInfantryInfo Info;
 		string idleSequence;
 		int idleDelay;
+		Mobile mobile;
 		
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
@@ -53,9 +54,9 @@ namespace OpenRA.Mods.RA.Render
 		}
 		
 		public AnimationState State { get; private set; }
-		Mobile mobile;
+		
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
-			: base(self, () => self.Trait<IFacing>().Facing)
+			: base(self, RenderSimple.MakeFacingFunc(self))
 		{
 			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);

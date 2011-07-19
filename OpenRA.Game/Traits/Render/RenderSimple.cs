@@ -34,6 +34,13 @@ namespace OpenRA.Traits
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
+		public static Func<int> MakeFacingFunc(Actor self)
+		{
+			var facing = self.TraitOrDefault<IFacing>();
+			if (facing == null) return () => 0;
+			return () => facing.Facing;
+		}
+
 		public Animation anim
 		{
 			get { return anims[""].Animation; }
