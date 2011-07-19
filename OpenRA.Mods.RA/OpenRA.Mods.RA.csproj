@@ -331,7 +331,6 @@
     <Compile Include="Widgets\Logic\GameInitLogic.cs" />
     <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
-    <Compile Include="Widgets\SidebarButtonWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="ActorExts.cs" />
     <Compile Include="Render\WithRotor.cs" />
