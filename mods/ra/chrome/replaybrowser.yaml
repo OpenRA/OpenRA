@@ -89,6 +89,7 @@ Background@REPLAYBROWSER_BG:
 			Height:25
 			Text:Watch
 			Font:Bold
+			Key:return
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			X:PARENT_RIGHT - 140
@@ -97,3 +98,4 @@ Background@REPLAYBROWSER_BG:
 			Height:25
 			Text:Cancel
 			Font:Bold
+			Key:escape
