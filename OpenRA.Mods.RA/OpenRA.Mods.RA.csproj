@@ -355,6 +355,7 @@
     <Compile Include="Render\RenderHarvester.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
+    <Compile Include="Lint\CheckTraitPrerequisites.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
