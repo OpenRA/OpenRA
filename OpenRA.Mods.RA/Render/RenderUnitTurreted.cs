@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderUnitTurretedInfo : RenderUnitInfo
+	class RenderUnitTurretedInfo : RenderUnitInfo, Requires<TurretedInfo>, Requires<AttackBaseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderUnitTurreted(init.self); }
 	}
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			var facing = self.Trait<IFacing>();
 			var turreted = self.Trait<Turreted>();
-			var attack = self.TraitOrDefault<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 
 			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );
 			turretAnim.Play( "turret" );
