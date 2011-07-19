@@ -90,7 +90,6 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:320
 			Height: 32
-			SplitOreAndCash:No
 			Children:
 				OrderButton@SELL:
 					Id:SELL
