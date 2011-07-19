@@ -10,7 +10,7 @@
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderBuildingChargeInfo : RenderBuildingInfo
+	public class RenderBuildingChargeInfo : RenderBuildingInfo
 	{
 		public readonly string ChargeAudio = "tslachg2.aud";
 		public override object Create(ActorInitializer init) { return new RenderBuildingCharge(init, this); }
@@ -19,14 +19,17 @@ namespace OpenRA.Mods.RA.Render
 	/* used for tesla */	
 	public class RenderBuildingCharge : RenderBuilding
 	{
-		public RenderBuildingCharge( ActorInitializer init, RenderBuildingInfo info )
+		RenderBuildingChargeInfo info;
+
+		public RenderBuildingCharge( ActorInitializer init, RenderBuildingChargeInfo info )
 			: base(init, info)
 		{
+			this.info = info;
 		}
 
 		public void PlayCharge(Actor self)
 		{
-			Sound.Play(self.Info.Traits.Get<RenderBuildingChargeInfo>().ChargeAudio, self.CenterLocation);
+			Sound.Play(info.ChargeAudio, self.CenterLocation);
 			anim.PlayThen(NormalizeSequence(self, "active"), 
 				() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
 		}
