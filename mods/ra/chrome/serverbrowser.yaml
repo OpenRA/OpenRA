@@ -195,6 +195,7 @@ Background@DIRECTCONNECT_BG:
 			Height:25
 			Text:Join
 			Font:Bold
+			Key:return
 		Button@CANCEL_BUTTON:
 			Id:CANCEL_BUTTON
 			X:260
@@ -203,6 +204,7 @@ Background@DIRECTCONNECT_BG:
 			Height:25
 			Text:Cancel
 			Font:Bold
+			Key:escape
 Background@CONNECTION_FAILED_BG:
 	Id:CONNECTION_FAILED_BG
 	Logic:ConnectionFailedLogic
@@ -236,6 +238,7 @@ Background@CONNECTION_FAILED_BG:
 			Height:25
 			Text:Retry
 			Font:Bold
+			Key:return
 		Button@CONNECTION_BUTTON_CANCEL:
 			Id:CONNECTION_BUTTON_CANCEL
 			X:PARENT_RIGHT - 180
@@ -244,6 +247,7 @@ Background@CONNECTION_FAILED_BG:
 			Height:25
 			Text:Cancel
 			Font:Bold
+			Key:escape
 Background@CONNECTING_BG:
 	Id:CONNECTING_BG
 	Logic:ConnectionDialogsLogic
@@ -277,3 +281,4 @@ Background@CONNECTING_BG:
 			Height:25
 			Text:Abort
 			Font:Bold
+			Key:escape
