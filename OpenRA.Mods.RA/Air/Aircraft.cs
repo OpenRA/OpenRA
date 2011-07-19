@@ -19,48 +19,48 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class DebugAircraftFacingInfo : ITraitInfo
+	public class DebugAircraftFacingInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftFacing(init.self); }
 	}
 	public class DebugAircraftFacing : ISync
 	{
-		readonly Actor self;
-		public DebugAircraftFacing(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<Aircraft>().Facing; } }
+		readonly Aircraft a;
+		public DebugAircraftFacing(Actor self){ a = self.Trait<Aircraft>(); }
+		[Sync] public int foo { get { return a.Facing; } }
 	}
 	
-	public class DebugAircraftSubPxXInfo : ITraitInfo
+	public class DebugAircraftSubPxXInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
 	}
 	public class DebugAircraftSubPxX : ISync
 	{
-		readonly Actor self;
-		public DebugAircraftSubPxX(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<Aircraft>().SubPxPosition.X; } }
+		readonly Aircraft a;
+		public DebugAircraftSubPxX(Actor self){ a = self.Trait<Aircraft>(); }
+		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
 	}
 	
-	public class DebugAircraftSubPxYInfo : ITraitInfo
+	public class DebugAircraftSubPxYInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
 	}
 	public class DebugAircraftSubPxY : ISync
 	{
-		readonly Actor self;
-		public DebugAircraftSubPxY(Actor self){this.self = self;}
-		[Sync] public int foo { get { return self.Trait<Aircraft>().SubPxPosition.Y; } }
+		readonly Aircraft a;
+		public DebugAircraftSubPxY(Actor self){ a = self.Trait<Aircraft>(); }
+		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
 	}
 	
-	public class DebugAircraftAltitudeInfo : ITraitInfo
+	public class DebugAircraftAltitudeInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
 	}
 	public class DebugAircraftAltitude : ISync
 	{
-		readonly Actor self;
-		public DebugAircraftAltitude(Actor self){this.self = self;}
-		[Sync] public int Facing { get { return self.Trait<Aircraft>().Altitude; } }
+		readonly Aircraft a;
+		public DebugAircraftAltitude(Actor self){ a = self.Trait<Aircraft>(); }
+		[Sync] public int foo { get { return a.Altitude; } }
 	}
 	
 	public class AircraftInfo : ITraitInfo
