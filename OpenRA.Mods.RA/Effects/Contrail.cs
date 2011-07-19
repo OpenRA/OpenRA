@@ -29,18 +29,16 @@ namespace OpenRA.Mods.RA
 
 	class Contrail : ITick, IPostRender
 	{
-		ContrailInfo Info = null;
-		Turret ContrailTurret = null;
+		Turret contrailTurret = null;
 		ContrailHistory history;
 		IFacing facing;
 		IMove move;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
-			Info = info;
-			ContrailTurret = new Turret(Info.ContrailOffset);
-			history = new ContrailHistory(Info.TrailLength,
-				Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Info.Color);
+			contrailTurret = new Turret(info.ContrailOffset);
+			history = new ContrailHistory(info.TrailLength,
+				info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : info.Color);
 			facing = self.Trait<IFacing>();
 			move = self.Trait<IMove>();
 		}
@@ -48,7 +46,7 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
             history.Tick(self.CenterLocation - new int2(0, move.Altitude)
-				- Combat.GetTurretPosition(self, facing, ContrailTurret));
+				- Combat.GetTurretPosition(self, facing, contrailTurret));
 		}
 
         public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }
