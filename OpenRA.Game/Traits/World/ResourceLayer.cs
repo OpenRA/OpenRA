@@ -24,10 +24,16 @@ namespace OpenRA.Traits
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 		
+		bool hasSetupPalettes;
+		
 		public void Render( WorldRenderer wr )
 		{
-			foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
-				rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
+			if (!hasSetupPalettes)
+			{
+				hasSetupPalettes = true;
+				foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
+					rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
+			}
 
 			var clip = Game.viewport.WorldBounds(world);
 			for (int x = clip.Left; x < clip.Right; x++)
