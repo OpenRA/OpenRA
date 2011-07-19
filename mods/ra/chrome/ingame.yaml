@@ -61,6 +61,7 @@ Container@INGAME_ROOT:
 			Height:25
 			Text:Options
 			Font:Bold
+			Key: escape
 		Button@INGAME_DIPLOMACY_BUTTON:
 			Id:INGAME_DIPLOMACY_BUTTON
 			X:162
