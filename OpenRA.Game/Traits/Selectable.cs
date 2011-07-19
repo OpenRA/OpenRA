@@ -31,19 +31,12 @@ namespace OpenRA.Traits
 		public void RenderAfterWorld (WorldRenderer wr, Actor self)
 		{
 			var bounds = self.Bounds.Value;
-			Color selectionColor = Color.White;
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 			var xY = new float2(bounds.Left, bounds.Bottom);
 
-			var colorResults = self.TraitsImplementing<ISelectionColorModifier>().Select(t => t.GetSelectionColorModifier(self, selectionColor)).Where(
-					c => c.ToArgb() != selectionColor.ToArgb());
-
-			if (colorResults.Any())
-				selectionColor = colorResults.First();
-
-			wr.DrawSelectionBox(self, selectionColor);
+			wr.DrawSelectionBox(self, Color.White);
 			DrawHealthBar(self, xy, Xy);
 			DrawControlGroup(wr, self, xy);
 			DrawPips(wr, self, xY);
