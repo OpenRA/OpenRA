@@ -18,17 +18,18 @@ namespace OpenRA.Mods.RA.Widgets
 	class MoneyBinWidget : Widget
 	{
 		readonly World world;
+		readonly PlayerResources playerResources;
+
 		[ObjectCreator.UseCtor]
 		public MoneyBinWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
+			playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 		}
 
 		public override void Draw()
 		{
 			if( world.LocalPlayer == null ) return;
-
-			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;
