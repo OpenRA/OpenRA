@@ -31,23 +31,24 @@ namespace OpenRA.Mods.RA
 	{
 		ContrailInfo Info = null;
 		Turret ContrailTurret = null;
-
-        ContrailHistory history;
+		ContrailHistory history;
+		IFacing facing;
+		IMove move;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
 			Info = info;
 			ContrailTurret = new Turret(Info.ContrailOffset);
-            history = new ContrailHistory(Info.TrailLength, Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Info.Color);
+			history = new ContrailHistory(Info.TrailLength,
+				Info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : Info.Color);
+			facing = self.Trait<IFacing>();
+			move = self.Trait<IMove>();
 		}
 
 		public void Tick(Actor self)
 		{
-			var facing = self.Trait<IFacing>();
-			var altitude = new float2(0, self.Trait<IMove>().Altitude);
-
-			var pos = self.CenterLocation - Combat.GetTurretPosition(self, facing, ContrailTurret) - altitude;
-            history.Tick(pos);
+            history.Tick(self.CenterLocation - new int2(0, move.Altitude)
+				- Combat.GetTurretPosition(self, facing, ContrailTurret));
 		}
 
         public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }
