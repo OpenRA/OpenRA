@@ -349,7 +349,7 @@ HTNK:
 		Prerequisites: eye
 		Owner: gdi
 	Mobile:
-		Crushes: wall, heavywall, crate
+		Crushes: wall, heavywall, crate, infantry
 		Speed: 3
 	Health:
 		HP: 600
