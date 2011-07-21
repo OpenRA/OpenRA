@@ -78,6 +78,7 @@ Section "Client" Client
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Utility.exe"
 	File "${SRCDIR}\OpenRA.FileFormats.dll"
+	File "${SRCDIR}\OpenRA.Renderer.SdlCommon.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Gl.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
