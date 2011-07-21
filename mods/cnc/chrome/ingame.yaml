@@ -194,11 +194,11 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
-				Label@POWERICON:
-					X:4
-					Y:180
-					Text:P
-					Font:Bold
+#				Label@POWERICON:
+#					X:4
+#					Y:180
+#					Text:P
+#					Font:Bold
 				Background@SILOBAR:
 					X:180
 					Y:5
@@ -212,11 +212,11 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
-				Label@SILOICON:
-					X:181
-					Y:180
-					Text:T
-					Font:Bold
+#				Label@SILOICON:
+#					X:181
+#					Y:180
+#					Text:T
+#					Font:Bold
 				Label@CASH:
 					Id:CASH_DISPLAY
 					Y:170
