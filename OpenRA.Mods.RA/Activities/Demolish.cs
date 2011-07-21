@@ -34,8 +34,16 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay,
-				() => { if (target.IsInWorld) target.Kill(self); })));
+			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+			{
+				// Invulnerable actors can't be demolished
+				var modifier = (float)target.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(self, null)).Product();
+
+				if (target.IsInWorld && modifier > 0)
+					target.Kill(self);
+			})));
 			return NextActivity;
 		}
 	}

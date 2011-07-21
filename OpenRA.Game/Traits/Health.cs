@@ -70,18 +70,19 @@ namespace OpenRA.Traits
 			}
 		}
 		
-		public void InflictDamage(Actor self, Actor attacker, int damage, WarheadInfo warhead)
+		public void InflictDamage(Actor self, Actor attacker, int damage, WarheadInfo warhead, bool ignoreModifiers)
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
 
 			var oldState = this.DamageState;
-			
 			/* apply the damage modifiers, if we have any. */
             var modifier = (float)self.TraitsImplementing<IDamageModifier>()
 				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
 
-			damage = damage > 0 ? (int)(damage * modifier) : damage;
+			if (!ignoreModifiers)
+				damage = damage > 0 ? (int)(damage * modifier) : damage;
+
 			hp = Exts.Clamp(hp - damage, 0, MaxHP);
 
 			var ai = new AttackInfo
@@ -175,16 +176,14 @@ namespace OpenRA.Traits
 		{
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
-			health.InflictDamage(self, attacker, damage, warhead);
+			health.InflictDamage(self, attacker, damage, warhead, false);
 		}
 		
 		public static void Kill(this Actor self, Actor attacker)
 		{
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
-
-			/* hack. Fix for proper */
-			health.InflictDamage(self, attacker, int.MaxValue, null);
+			health.InflictDamage(self, attacker, health.MaxHP, null, true);
 		}
 	}
 }
