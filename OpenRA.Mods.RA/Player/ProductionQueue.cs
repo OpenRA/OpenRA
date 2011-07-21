@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, ISync
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, INotifyKilled, INotifySold, ISync
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
@@ -70,12 +70,22 @@ namespace OpenRA.Mods.RA
 			Race = self.Owner.Country.Race;
 			Produceable = InitTech(playerActor);
 		}
-		
+
+		void ClearQueue()
+		{
+			if (Queue.Count == 0)
+				return;
+
+			// Refund the current item
+			playerResources.GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost);
+			Queue.Clear();
+		}
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-			Queue.Clear();
+			ClearQueue();
 
 			// Produceable contains the tech from the original owner - this is desired so we don't clear it.
 			Produceable = InitTech(self.Owner.PlayerActor);
@@ -86,6 +96,10 @@ namespace OpenRA.Mods.RA
 			// This is crap.
 			self.Owner.PlayerActor.Trait<TechTree>().Update();
 		}
+
+		public void Killed(Actor self, AttackInfo e) { ClearQueue(); }
+		public void Selling(Actor self) {}
+		public void Sold(Actor self) { ClearQueue(); }
 
 		Dictionary<ActorInfo, ProductionState> InitTech(Actor playerActor)
 		{
