@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Network;
 
 namespace OpenRA.Traits
@@ -22,6 +23,11 @@ namespace OpenRA.Traits
 				return true;
 
 			var subjectClient = order.Subject.Owner.ClientIndex;
+			if (subjectClient >= orderManager.LobbyInfo.Clients.Count || subjectClient < 0)
+			{
+				Game.Debug("Order sent to {0}: resolved ClientIndex `{1}` is out of range", order.Subject.Owner.PlayerName, subjectClient);
+				return false;
+			}
 
 			// Hack: Assumes bots always run on clientId 0.
 			var isBotOrder = orderManager.LobbyInfo.Clients[subjectClient].Bot != null && clientId == 0;
@@ -29,7 +35,7 @@ namespace OpenRA.Traits
 			// Drop exploiting orders
 			if (subjectClient != clientId && !isBotOrder)
             {
-                Game.Debug("Detected exploit order from client {0}: {1}".F(clientId, order.OrderString));
+                Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
                 return false;
             }
 
