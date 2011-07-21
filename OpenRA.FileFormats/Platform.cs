@@ -15,30 +15,19 @@ using OpenRA.FileFormats;
 
 namespace OpenRA
 {
-	public enum PlatformType
-	{
-		Unknown,
-		Windows,
-		OSX,
-		Linux
-	}
+	public enum PlatformType { Unknown, Windows, OSX, Linux }
 
 	public static class Platform
 	{
-		public static PlatformType CurrentPlatform
-		{
-			get
-			{
-				return currentPlatform.Value;
-			}
-		}
+		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 
 		static Lazy<PlatformType> currentPlatform = new Lazy<PlatformType>(GetCurrentPlatform);
 		
 		static PlatformType GetCurrentPlatform()
 		{
-				if (Environment.OSVersion.Platform == PlatformID.Win32NT) return PlatformType.Windows;
-				
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+					return PlatformType.Windows;
+
 				try
 				{
 					var psi = new ProcessStartInfo("uname", "-s");
@@ -52,26 +41,28 @@ namespace OpenRA
 						return PlatformType.OSX;
 				}
 				catch {	}
-				
+
 				return PlatformType.Unknown;
 		}
 
 		public static string SupportDir
 		{
-			get 
+			get
 			{
-				string dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+				var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
 				switch (CurrentPlatform)
 				{
-					case PlatformType.OSX:
-						dir += "/Library/Application Support/OpenRA";
-						break;
-					case PlatformType.Linux:
-						dir += "/.openra";
-						break;
-					default:
-						dir += Path.DirectorySeparatorChar + "OpenRA";
-						break;
+				case PlatformType.Windows:
+					dir += Path.DirectorySeparatorChar + "OpenRA";
+					break;
+				case PlatformType.OSX:
+					dir += "/Library/Application Support/OpenRA";
+					break;
+				case PlatformType.Linux:
+				default:
+					dir += "/.openra";
+					break;
 				}
 
 				if (!Directory.Exists(dir))
