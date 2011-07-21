@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
@@ -76,45 +78,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
+			
+			var windowModeDropdown = display.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
+			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
+				"Windowed" : gs.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 
-			var fullscreen = display.GetWidget<CheckboxWidget>("FULLSCREEN_CHECKBOX");
-			fullscreen.IsChecked = () => gs.Mode != WindowMode.Windowed;
-			fullscreen.OnClick = () => gs.Mode = (gs.Mode == WindowMode.Windowed) ? WindowMode.PseudoFullscreen : WindowMode.Windowed;
-	
-			var width = display.GetWidget<TextFieldWidget>("SCREEN_WIDTH");
-			gs.WindowedSize.X = Math.Max(gs.WindowedSize.X, gs.MinResolution.X);
-			width.Text = gs.WindowedSize.X.ToString();
-			width.OnLoseFocus = () =>
-			{
-				try {
-					var w = int.Parse(width.Text);
-					if (w > gs.MinResolution.X)
-						gs.WindowedSize = new int2(w, gs.WindowedSize.Y);
-				}
-				catch (FormatException) {
-					width.Text = gs.WindowedSize.X.ToString();
-				}
-			};
-			width.OnEnterKey = () => { width.LoseFocus(); return true; };
+			display.GetWidget("WINDOW_RESOLUTION").IsVisible = () => gs.Mode == WindowMode.Windowed;
+			var windowWidth = display.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
+			windowWidth.Text = gs.WindowedSize.X.ToString();
 			
-			var height = display.GetWidget<TextFieldWidget>("SCREEN_HEIGHT");
-			gs.WindowedSize.Y = Math.Max(gs.WindowedSize.Y, gs.MinResolution.Y);
-			height.Text = gs.WindowedSize.Y.ToString();
-			height.OnLoseFocus = () =>
-			{
-				try {
-					var h = int.Parse(height.Text);
-					if (h > gs.MinResolution.Y)
-						gs.WindowedSize = new int2(gs.WindowedSize.X, h);	
-					else 
-						height.Text = gs.WindowedSize.Y.ToString();
-				}
-				catch (FormatException) {
-					height.Text = gs.WindowedSize.Y.ToString();
-				}
-			};
-			height.OnEnterKey = () => { height.LoseFocus(); return true; };
-			
+			var windowHeight = display.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
+			windowHeight.Text = gs.WindowedSize.Y.ToString();
+
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
 
@@ -128,7 +104,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => Game.Settings.Debug.SanityCheckUnsyncedCode ^= true;
 	
-			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick = () => {
+			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
+			{
+				int x = gs.WindowedSize.X, y = gs.WindowedSize.Y;
+				int.TryParse(windowWidth.Text, out x);
+				int.TryParse(windowHeight.Text, out y);
+				gs.WindowedSize = new int2(x,y);
 				Game.Settings.Save();
 				Widget.CloseWindow();
 			};
@@ -142,6 +123,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			
 			open = id;
 			bg.GetWidget(open).Visible = true;
+			return true;
+		}
+
+		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		{
+			var options = new Dictionary<string, WindowMode>()
+			{
+				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
+				{ "Fullscreen", WindowMode.Fullscreen },
+				{ "Windowed", WindowMode.Windowed },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => s.Mode == options[o],
+				                                  () => s.Mode = options[o]);
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 	}
