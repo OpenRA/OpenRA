@@ -24,7 +24,7 @@ Background@INIT_CHOOSEINSTALL:
 			Font:Bold
 		Label@DESC1:
 			X:0
-			Y:65
+			Y:50
 			Width:PARENT_RIGHT
 			Height:25
 			Text:OpenRA requires the original Red Alert game content.
@@ -35,7 +35,6 @@ Background@INIT_CHOOSEINSTALL:
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Content can be downloaded, or copied from the install CD.
-			Visible:false
 			Align:Center
 		Button@DOWNLOAD:
 			Id:DOWNLOAD
@@ -52,7 +51,6 @@ Background@INIT_CHOOSEINSTALL:
 			Width:120
 			Height:25
 			Text:From CD
-			Visible:false
 			Font:Bold
 		Button@QUIT:
 			Id:QUIT
@@ -108,18 +106,10 @@ Background@INIT_DOWNLOAD:
 			Height:25
 			Text:Cancel
 			Font:Bold
-		Button@EXTRACT:
-			Id:EXTRACT
-			X:PARENT_RIGHT - 140
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Visible: false
-			Text:Extract
-			Font:Bold
 
-Background@INIT_COPY:
-	Id:INIT_COPY
+Background@INSTALL_FROMCD_PANEL:
+	Id:INSTALL_FROMCD_PANEL
+	Logic:RAInstallFromCDLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500
@@ -130,33 +120,56 @@ Background@INIT_COPY:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Copying Red Alert Content
+			Text:Installing from CD
 			Align:Center
 			Font:Bold
-		ProgressBar@PROGRESS:
-			Id:PROGRESS
-			X:50
-			Y:55
-			Width:PARENT_RIGHT - 100
-			Height:25
-		Label@STATUS:
-			Id:STATUS
-			X:50
-			Y:80
-			Width:PARENT_RIGHT - 100
-			Height:25
-			Align:Left
-		Button@RETRY:
-			Id:RETRY
+		Container@INSTALLING:
+			Id:INSTALLING
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					Id:PROGRESS_BAR
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					Id:STATUS_LABEL
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@INSERT_DISK:
+			Id:INSERT_DISK
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Disk not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please insert one of the Red Alert install CDs then click Retry.
+					Align:Center
+		Button@RETRY_BUTTON:
+			Id:RETRY_BUTTON
 			X:PARENT_RIGHT - 280
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Visible: false
 			Text:Retry
 			Font:Bold
-		Button@CANCEL:
-			Id:CANCEL
+		Button@BACK_BUTTON:
+			Id:BACK_BUTTON
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120

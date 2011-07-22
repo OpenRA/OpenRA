@@ -79,42 +79,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void ShowInstallMethodDialog()
 		{
 			var window = Widget.OpenWindow("INIT_CHOOSEINSTALL");
+
+			var args = new WidgetArgs()
+            {
+				{ "continueLoading", () => { Widget.CloseWindow(); TestAndContinue(); } },
+			};
+
 			window.GetWidget<ButtonWidget>("DOWNLOAD").OnClick = () => ShowDownloadDialog();
-			window.GetWidget<ButtonWidget>("FROMCD").OnClick = () => PromptForCD();
-					
-			window.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
-		}
-		
-		void PromptForCD()
-		{
-			// TODO: Automatically search for cds
-		}
-
-		void InstallFromCD(string path)
-		{
-			var window = Widget.OpenWindow("INIT_COPY");
-			var progress = window.GetWidget<ProgressBarWidget>("PROGRESS");
-			progress.Indeterminate = true;
-
-			// TODO: Handle cancelling copy
-			window.GetWidget<ButtonWidget>("CANCEL").IsVisible = () => false;
-			window.GetWidget<ButtonWidget>("CANCEL").OnClick = () => ShowInstallMethodDialog();
-			window.GetWidget<ButtonWidget>("RETRY").OnClick = () => PromptForCD();
+			window.GetWidget<ButtonWidget>("FROMCD").OnClick = () =>
+				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
 			
-			var t = new Thread( _ =>
-			{
-				switch (Info.InstallMode)
-				{
-//					case "ra":
-//						if (InstallPackages(window, path, Info.ResolvedPackagePath))
-//				    		Game.RunAfterTick(TestAndContinue);
-//					break;
-					default:
-						ShowError(window, "Installing from CD not supported");
-					break;
-				}
-			}) { IsBackground = true };
-			t.Start();
+			window.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 		}
 
 		void ShowDownloadDialog()
@@ -168,43 +143,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return InstallUtils.ExtractZip( zipFile, dest,
 			                        s => status.GetText = () => s,
 			                        e => ShowError(window, e));
-		}
-
-		bool ExtractFromPackage(Widget window, string srcPath, string package, string[] files, string destPath)
-		{
-			var status = window.GetWidget<LabelWidget>("STATUS");
-			
-			return InstallUtils.ExtractFromPackage(srcPath, package, files, destPath,
-			                                       s => status.GetText = () => s,
-			                                       e => ShowError(window, e));
-		}
-		
-		bool CopyFiles(Widget window, string srcPath, string[] files, string destPath)
-		{
-			var status = window.GetWidget<LabelWidget>("STATUS");
-			return InstallUtils.CopyFiles(srcPath, files, destPath,
-			                              s => status.GetText = () => s,
-			                              e => ShowError(window, e));
-		}
-		
-		bool InstallPackages(Widget window, string source, string dest)
-		{
-			if (!CopyFiles(window, Path.Combine(source, "INSTALL"), new string[] {"REDALERT.MIX"}, dest))
-				return false;
-			return ExtractFromPackage(window, source, "MAIN.MIX",
-				new string[] { "conquer.mix", "russian.mix", "allies.mix", "sounds.mix",
-					"scores.mix", "snow.mix", "interior.mix", "temperat.mix" }, dest);
-		}
-		
-		bool InstallCncPackages(Widget window, string source, string dest)
-		{
-			if (!CopyFiles(window, source,
-		    		new string[] { "CONQUER.MIX", "DESERT.MIX", "GENERAL.MIX", "SCORES.MIX",
-						"SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX"},
-					dest))
-				return false;
-			return ExtractFromPackage(window, source, "INSTALL/SETUP.Z",
-				new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix" }, dest);
 		}
     }
 }

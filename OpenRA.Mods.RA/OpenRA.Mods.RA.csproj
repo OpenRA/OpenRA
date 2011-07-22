@@ -355,6 +355,7 @@
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
+    <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
