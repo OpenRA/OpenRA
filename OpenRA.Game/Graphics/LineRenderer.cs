@@ -16,6 +16,7 @@ namespace OpenRA.Graphics
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
 		public float LineWidth = 1f;
+		static float2 offset = new float2(0.5f,0.5f);
 
 		Renderer renderer;
 		IShader shader;
@@ -62,11 +63,11 @@ namespace OpenRA.Graphics
 			if( nv + 2 > Renderer.TempBufferSize )
 				Flush();
 
-			vertices[ nv++ ] = new Vertex( start,
+			vertices[ nv++ ] = new Vertex( start + offset,
 				new float2( startColor.R / 255.0f, startColor.G / 255.0f ),
 				new float2( startColor.B / 255.0f, startColor.A / 255.0f ) );
 
-			vertices[ nv++ ] = new Vertex( end,
+			vertices[ nv++ ] = new Vertex( end + offset,
 				new float2( endColor.R / 255.0f, endColor.G / 255.0f ),
 				new float2( endColor.B / 255.0f, endColor.A / 255.0f ) );
 		}
