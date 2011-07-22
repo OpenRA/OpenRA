@@ -58,7 +58,8 @@ namespace OpenRA.GameRules
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
 		public int2 FullscreenSize = new int2(0,0);
 		public int2 WindowedSize = new int2(1024, 768);
-		
+		public bool PixelDouble = false;
+
 		public int BatchSize = 8192;
 		public int NumTempBuffers = 8;
 		public int SheetSize = 2048;

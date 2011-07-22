@@ -30,9 +30,10 @@ namespace OpenRA.Graphics
 	public class Viewport
 	{
 		readonly int2 screenSize;
-		int2 scrollPosition;
 		readonly Renderer renderer;
-		readonly Rectangle scrollLimits;
+		readonly Rectangle mapBounds;
+		Rectangle scrollLimits;
+		int2 scrollPosition;
 
 		// Top-left of the viewport, in world-px units
 		public float2 Location { get { return scrollPosition; } }
@@ -51,7 +52,31 @@ namespace OpenRA.Graphics
 
 		public int Width { get { return screenSize.X; } }
 		public int Height { get { return screenSize.Y; } }
-		public float Zoom = 1f;
+
+		float zoom = 1f;
+		public float Zoom
+		{
+			get
+			{
+				return zoom;
+			}
+			set
+			{
+				var oldCenter = CenterLocation;
+				zoom = value;
+
+				// Update scroll limits
+				var viewTL = (Game.CellSize*new float2(mapBounds.Left, mapBounds.Top)).ToInt2();
+				var viewBR = (Game.CellSize*new float2(mapBounds.Right, mapBounds.Bottom)).ToInt2();
+				var border = (.5f/Zoom * screenSize.ToFloat2()).ToInt2();
+				scrollLimits = Rectangle.FromLTRB(viewTL.X - border.X,
+			                                  viewTL.Y - border.Y,
+			                                  viewBR.X - border.X,
+			                                  viewBR.Y - border.Y);
+				// Re-center viewport
+				scrollPosition = NormalizeScrollPosition((oldCenter - 0.5f / Zoom * screenSize.ToFloat2()).ToInt2());
+			}
+		}
 
 		float cursorFrame = 0f;
 
@@ -94,16 +119,9 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
+			this.mapBounds = mapBounds;
 
-			var viewTL = (Game.CellSize*new float2(mapBounds.Left, mapBounds.Top)).ToInt2();
-			var viewBR = (Game.CellSize*new float2(mapBounds.Right, mapBounds.Bottom)).ToInt2();
-
-			var border = (.5f/Zoom * screenSize.ToFloat2()).ToInt2();
-			scrollLimits = Rectangle.FromLTRB(viewTL.X - border.X,
-			                                  viewTL.Y - border.Y,
-			                                  viewBR.X - border.X,
-			                                  viewBR.Y - border.Y);
-
+			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			scrollPosition = new int2(scrollLimits.Location) + new int2(scrollLimits.Size)/2;
 		}
 		
