@@ -176,6 +176,7 @@ namespace OpenRA.Editor
 			{
 				var a = new ActorReference("mpspawn");
 				a.Add(new LocationInit(kv.Second));
+				a.Add(new OwnerInit("Neutral"));
 				Map.Actors.Value.Add("spawn" + kv.First, a);
 			}
 			
