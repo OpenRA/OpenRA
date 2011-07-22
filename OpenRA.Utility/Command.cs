@@ -39,16 +39,15 @@ namespace OpenRA.Utility
 
 		public static void Settings(string[] args)
 		{
-			if (args.Length < 3)
+			if (args.Length < 2)
 			{
 				Console.WriteLine("Error: Invalid syntax");
 				return;
 			}
-			
-			var section = args[2].Split('.')[0];
-			var field = args[2].Split('.')[1];
-			string expandedPath = args[1].Replace("~", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-			var settings = new Settings(Path.Combine(expandedPath,"settings.yaml"), Arguments.Empty);
+
+			var section = args[1].Split('.')[0];
+			var field = args[1].Split('.')[1];
+			var settings = new Settings(Platform.SupportDir + "settings.yaml", Arguments.Empty);
 			var result = settings.Sections[section].GetType().GetField(field).GetValue(settings.Sections[section]);
 			Console.WriteLine(result);
 		}

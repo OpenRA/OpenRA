@@ -30,9 +30,7 @@ namespace OpenRA.Utility
 
 			if (args.Length == 0) { PrintUsage(); return; }
 
-            var supportDir = GetNamedArg(args, "--SupportDir");
-            if (supportDir != null)
-                Log.LogPath = Path.Combine(supportDir.Replace("\"", ""), "Logs");
+			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 
 			try
 			{
@@ -57,7 +55,7 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
-			Console.WriteLine("  --settings-value SUPPORTDIR KEY  Get value of KEY in SUPPORTDIR/settings.yaml");
+			Console.WriteLine("  --settings-value KEY             Get value of KEY from settings.yaml");
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
 			Console.WriteLine("  --png SHPFILE PALETTE            Convert a SHP to a PNG containing all of its frames");
 		}

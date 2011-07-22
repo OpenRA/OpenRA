@@ -74,7 +74,6 @@ extern char **environ;
 	
     NSMutableArray *taskArgs = [NSMutableArray arrayWithObjects:@"OpenRA.Utility.exe",
 								@"--settings-value",
-								[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath],
 								@"Graphics.Mode", nil];
 	
     [task setCurrentDirectoryPath:gamePath];
@@ -91,7 +90,7 @@ extern char **environ;
 										 defaultButton:@"Quit"
 									   alternateButton:nil
 										   otherButton:nil
-							 informativeTextWithFormat:@"OpenRA.Utility.exe returned an error and cannot continue."];
+							 informativeTextWithFormat:@"OpenRA.Utility returned an error and cannot continue.\n\nA log has been saved to ~/Library/Application Support/OpenRA/Logs/utility.log"];
 		
         [alert runModal];
 		[[NSApplication sharedApplication] terminate:self];
@@ -115,7 +114,6 @@ extern char **environ;
 					 gamePath,
 					 monoPath,
 					 [NSString stringWithFormat:@"UtilityPath=%@", [[NSBundle mainBundle] executablePath]],
-					 [NSString stringWithFormat:@"SupportDir=%@",[@"~/Library/Application Support/OpenRA" stringByExpandingTildeInPath]],
 					 nil];
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);
