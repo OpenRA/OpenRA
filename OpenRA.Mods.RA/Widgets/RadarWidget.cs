@@ -138,8 +138,11 @@ namespace OpenRA.Mods.RA.Widgets
 			// Draw viewport rect
 			if (hasRadar && !Animating)
 			{
-				var tl = CellToMinimapPixel(new int2((int)(Game.viewport.Location.X/Game.CellSize), (int)(Game.viewport.Location.Y/Game.CellSize)));
-				var br = CellToMinimapPixel(new int2((int)((Game.viewport.Location.X + Game.viewport.Width)/Game.CellSize), (int)((Game.viewport.Location.Y + Game.viewport.Height)/Game.CellSize)));
+				var wr = Game.viewport.WorldRect;
+				var wro = new int2(wr.X, wr.Y);
+				var tl = CellToMinimapPixel(wro);
+				var br = CellToMinimapPixel(wro + new int2(wr.Width, wr.Height));
+
 				Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
 				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 				Game.Renderer.DisableScissor();

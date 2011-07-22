@@ -38,6 +38,17 @@ namespace OpenRA.Graphics
 		public float2 Location { get { return scrollPosition; } }
 		public float2 CenterLocation { get { return scrollPosition + 0.5f/Zoom*screenSize.ToFloat2(); } }
 
+		public Rectangle WorldRect
+		{
+			get
+			{
+				return new Rectangle(scrollPosition.X / Game.CellSize,
+				                     scrollPosition.Y / Game.CellSize,
+				                     (int)(screenSize.X / Zoom / Game.CellSize),
+				                     (int)(screenSize.Y / Zoom / Game.CellSize));
+			}
+		}
+
 		public int Width { get { return screenSize.X; } }
 		public int Height { get { return screenSize.Y; } }
 		public float Zoom = 1f;
