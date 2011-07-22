@@ -22,20 +22,20 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public VertexBuffer(int size)
 		{
-			Gl.glGenBuffers(1, out buffer);
+			Gl.glGenBuffersARB(1, out buffer);
 			ErrorHandler.CheckGlError();
 			Bind();
-			Gl.glBufferData(Gl.GL_ARRAY_BUFFER,
+			Gl.glBufferDataARB(Gl.GL_ARRAY_BUFFER_ARB,
 				new IntPtr(Marshal.SizeOf(typeof(T)) * size),
 				new T[ size ],
-				Gl.GL_DYNAMIC_DRAW);
+				Gl.GL_DYNAMIC_DRAW_ARB);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetData(T[] data, int length)
 		{
 			Bind();
-			Gl.glBufferSubData(Gl.GL_ARRAY_BUFFER,
+			Gl.glBufferSubDataARB(Gl.GL_ARRAY_BUFFER_ARB,
 				IntPtr.Zero,
 				new IntPtr(Marshal.SizeOf(typeof(T)) * length),
 				data);
@@ -44,7 +44,7 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public void Bind()
 		{
-			Gl.glBindBuffer(Gl.GL_ARRAY_BUFFER, buffer);
+			Gl.glBindBufferARB(Gl.GL_ARRAY_BUFFER_ARB, buffer);
 			ErrorHandler.CheckGlError();
 			Gl.glVertexPointer(3, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
 			ErrorHandler.CheckGlError();
@@ -52,7 +52,7 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
-		void FinalizeInner() { Gl.glDeleteBuffers( 1, ref buffer ); }
+		void FinalizeInner() { Gl.glDeleteBuffersARB( 1, ref buffer ); }
 		~VertexBuffer() { Game.RunAfterTick( FinalizeInner ); }
 	}
 }
