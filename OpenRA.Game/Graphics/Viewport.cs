@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		readonly int2 screenSize;
 		int2 scrollPosition;
 		readonly Renderer renderer;
-		readonly Rectangle adjustedMapBounds;
+		readonly Rectangle scrollLimits;
 
 		// Top-left of the viewport, in world-px units
 		public float2 Location { get { return scrollPosition; } }
@@ -77,16 +77,16 @@ namespace OpenRA.Graphics
 		
 		int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
-			return newScrollPosition.Clamp(adjustedMapBounds);
+			return newScrollPosition.Clamp(scrollLimits);
 		}
 		
 		public ScrollDirection GetBlockedDirections()
 		{
 			var ret = ScrollDirection.None;
-			if(scrollPosition.Y <= adjustedMapBounds.Top) ret |= ScrollDirection.Up;
-			if(scrollPosition.X <= adjustedMapBounds.Left) ret |= ScrollDirection.Left;
-			if(scrollPosition.Y >= adjustedMapBounds.Bottom) ret |= ScrollDirection.Down;
-			if(scrollPosition.X >= adjustedMapBounds.Right) ret |= ScrollDirection.Right;
+			if(scrollPosition.Y <= scrollLimits.Top) ret |= ScrollDirection.Up;
+			if(scrollPosition.X <= scrollLimits.Left) ret |= ScrollDirection.Left;
+			if(scrollPosition.Y >= scrollLimits.Bottom) ret |= ScrollDirection.Down;
+			if(scrollPosition.X >= scrollLimits.Right) ret |= ScrollDirection.Right;
 			return ret;
 		}
 
@@ -94,11 +94,17 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			adjustedMapBounds = new Rectangle(Game.CellSize*mapBounds.X - screenSize.X/2,
-			                                       Game.CellSize*mapBounds.Y - screenSize.Y/2,
-			                                       Game.CellSize*mapBounds.Width,
-			                                       Game.CellSize*mapBounds.Height);
-			scrollPosition = new int2(adjustedMapBounds.Location) + new int2(adjustedMapBounds.Size)/2;
+
+			var viewTL = (Game.CellSize*new float2(mapBounds.Left, mapBounds.Top)).ToInt2();
+			var viewBR = (Game.CellSize*new float2(mapBounds.Right, mapBounds.Bottom)).ToInt2();
+
+			var border = (.5f/Zoom * screenSize.ToFloat2()).ToInt2();
+			scrollLimits = Rectangle.FromLTRB(viewTL.X - border.X,
+			                                  viewTL.Y - border.Y,
+			                                  viewBR.X - border.X,
+			                                  viewBR.Y - border.Y);
+
+			scrollPosition = new int2(scrollLimits.Location) + new int2(scrollLimits.Size)/2;
 		}
 		
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
