@@ -19,7 +19,6 @@
 extern char **environ;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	NSArray *args = [[NSProcessInfo processInfo] arguments];
 	gamePath = [[NSUserDefaults standardUserDefaults] stringForKey:@"gamepath"];
 	
 	// Try and launch the game
@@ -37,34 +36,8 @@ extern char **environ;
 		[[NSApplication sharedApplication] terminate:self];
 	}
 	
-	// Ingame requests for native dialogs
-	if ([args containsObject:@"--display-filepicker"])
-		[self launchFilePicker:args];
-	else 
-		[self launch];
-	
+	[self launch];
 	[NSApp terminate: nil];
-}
-
-- (void)launchFilePicker:(NSArray *)args
-{
-	[NSApp activateIgnoringOtherApps:YES];
-	
-	if ([self shouldHideMenubar])
-		[NSMenu setMenuBarVisible:NO];
-	
-	NSOpenPanel *op = [NSOpenPanel openPanel];
-	[op setLevel:CGShieldingWindowLevel()];
-	[op setAllowsMultipleSelection:NO];
-	
-	NSUInteger a = [args indexOfObject:@"--display-filepicker"];
-	if (a != NSNotFound)
-		[op setTitle:[args objectAtIndex:a+1]];
-		
-	if ([op runModal] == NSFileHandlingPanelOKButton)
-		printf("%s\n", [[[op URL] path] UTF8String]);
-	
-	[NSApp terminate: nil];	
 }
 
 - (BOOL)shouldHideMenubar
@@ -113,7 +86,6 @@ extern char **environ;
 					 [self shouldHideMenubar] ? @"--hide-menubar" : @"--no-hide-menubar",
 					 gamePath,
 					 monoPath,
-					 [NSString stringWithFormat:@"UtilityPath=%@", [[NSBundle mainBundle] executablePath]],
 					 nil];
 	FSRef appRef;
 	CFURLGetFSRef((CFURLRef)[NSURL URLWithString:[[[NSBundle mainBundle] executablePath] stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]], &appRef);

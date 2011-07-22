@@ -21,7 +21,6 @@ namespace OpenRA.Utility
 		{
 			var actions = new Dictionary<string, Action<string[]>>()
 			{
-				{ "--display-filepicker", Command.DisplayFilepicker },
 				{ "--settings-value", Command.Settings },
 				{ "--shp", Command.ConvertPngToShp },
 				{ "--png", Command.ConvertShpToPng },

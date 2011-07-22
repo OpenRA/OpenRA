@@ -13,8 +13,11 @@ int main(int argc, char *argv[])
 {
 	/* When launching a mod, the arguments are of the form 
 	 * --launch <game dir> <mono path> <utility path> <support dir option> <mod option> */
-	if (argc >= 6 && strcmp(argv[1], "--launch") == 0)
+	if (argc > 1 && strcmp(argv[1], "--launch") == 0)
 	{
+		if (argc < 5)
+			exit(1);
+
 		/* Change into the game dir */
 		chdir(argv[3]);
 
@@ -23,7 +26,6 @@ int main(int argc, char *argv[])
 			argv[4],
 			"--debug",
 			"OpenRA.Game.exe",
-			argv[5],
 			NULL
 		};
 		

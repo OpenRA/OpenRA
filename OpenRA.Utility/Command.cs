@@ -24,19 +24,6 @@ namespace OpenRA.Utility
 {
 	static class Command
 	{
-        public static void DisplayFilepicker(string[] args)
-        {
-            if (args.Length < 2)
-            {
-                Console.WriteLine("Error: Invalid syntax");
-                return;
-            }
-
-            using (var dialog = new OpenFileDialog() { Title = args[1] })
-                if (dialog.ShowDialog() == DialogResult.OK)
-                    Console.WriteLine(dialog.FileName);
-        }
-
 		public static void Settings(string[] args)
 		{
 			if (args.Length < 2)
@@ -122,7 +109,7 @@ namespace OpenRA.Utility
 				bitmap.Save(dest);
 			}
 		}
-		
+
 		public static void ConvertFormat2ToFormat80(string[] args)
 		{
 			var src = args[1];

@@ -27,8 +27,6 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		public static Utilities Utilities;
-		
 		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
 		public static ModData modData;
@@ -244,8 +242,6 @@ namespace OpenRA
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-
-			Utilities = new Utilities(args.GetValue("UtilityPath", "OpenRA.Utility.exe"));
 			
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 			Settings.Save();

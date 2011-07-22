@@ -66,11 +66,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (FileSystem.Exists(Info.TestFile))
 			{
 				Game.LoadShellMap();
-				if (Info.InstallMode != "cnc")
-				{
-					Widget.ResetAll();
-					Widget.OpenWindow("MAINMENU_BG");
-				}
+				Widget.ResetAll();
+				Widget.OpenWindow("MAINMENU_BG");
 			}
             else
             {
@@ -90,13 +87,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		
 		void PromptForCD()
 		{
-			Game.Utilities.PromptFilepathAsync("Select MAIN.MIX on the CD", path =>
-			{
-				if (!string.IsNullOrEmpty(path))
-					Game.RunAfterTick(() => InstallFromCD(Path.GetDirectoryName(path)));
-			});
+			// TODO: Automatically search for cds
 		}
-		
+
 		void InstallFromCD(string path)
 		{
 			var window = Widget.OpenWindow("INIT_COPY");
@@ -112,14 +105,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				switch (Info.InstallMode)
 				{
-					case "ra":
-						if (InstallRAPackages(window, path, Info.ResolvedPackagePath))
-				    		Game.RunAfterTick(TestAndContinue);
-					break;
-					case "cnc":
-						if (InstallCncPackages(window, path, Info.ResolvedPackagePath))
-				    		Game.RunAfterTick(TestAndContinue);
-					break;
+//					case "ra":
+//						if (InstallPackages(window, path, Info.ResolvedPackagePath))
+//				    		Game.RunAfterTick(TestAndContinue);
+//					break;
 					default:
 						ShowError(window, "Installing from CD not supported");
 					break;
@@ -198,7 +187,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			                              e => ShowError(window, e));
 		}
 		
-		bool InstallRAPackages(Widget window, string source, string dest)
+		bool InstallPackages(Widget window, string source, string dest)
 		{
 			if (!CopyFiles(window, Path.Combine(source, "INSTALL"), new string[] {"REDALERT.MIX"}, dest))
 				return false;

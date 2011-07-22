@@ -15,7 +15,6 @@
 
 	IBOutlet NSWindow *window;
 }
-- (void)launchFilePicker:(NSArray *)args;
 - (void)launch;
 - (BOOL)initMono;
 - (BOOL)shouldHideMenubar;

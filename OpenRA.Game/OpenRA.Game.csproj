@@ -177,7 +177,6 @@
     <Compile Include="Graphics\ShroudRenderer.cs" />
     <Compile Include="Network\Handshake.cs" />
     <Compile Include="Widgets\ProgressBarWidget.cs" />
-    <Compile Include="Utilities.cs" />
     <Compile Include="Traits\Waypoint.cs" />
     <Compile Include="Traits\Activities\Activity.cs" />
     <Compile Include="Widgets\ScrollItem.cs" />
