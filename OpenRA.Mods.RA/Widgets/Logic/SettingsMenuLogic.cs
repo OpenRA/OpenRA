@@ -91,6 +91,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var windowHeight = display.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = gs.WindowedSize.Y.ToString();
 
+			var pixelDoubleCheckbox = display.GetWidget<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
+			pixelDoubleCheckbox.IsChecked = () => gs.PixelDouble;
+			pixelDoubleCheckbox.OnClick = () =>
+			{
+				gs.PixelDouble ^= true;
+				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
+			};
+
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
 
