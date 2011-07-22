@@ -1,14 +1,6 @@
-GameInitInfo@INIT_SETUP:
-	Id:INIT_SETUP
-	TestFile: redalert.mix
-	GameTitle: Red Alert
-	PackageURL:http://open-ra.org/get-dependency.php?file=ra-packages
-	PackagePath:^/Content/ra
-	InstallMode:ra
-	Logic:GameInitLogic
-
-Background@INIT_CHOOSEINSTALL:
-	Id:INIT_CHOOSEINSTALL
+Background@INSTALL_PANEL:
+	Id:INSTALL_PANEL
+	Logic:RAInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500
@@ -36,24 +28,24 @@ Background@INIT_CHOOSEINSTALL:
 			Height:25
 			Text:Content can be downloaded, or copied from the install CD.
 			Align:Center
-		Button@DOWNLOAD:
-			Id:DOWNLOAD
+		Button@DOWNLOAD_BUTTON:
+			Id:DOWNLOAD_BUTTON
 			X:PARENT_RIGHT - 280
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
 			Text:Download
 			Font:Bold
-		Button@FROMCD:
-			Id:FROMCD
+		Button@INSTALL_BUTTON:
+			Id:INSTALL_BUTTON
 			X:PARENT_RIGHT - 420
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:From CD
+			Text:Use CD
 			Font:Bold
-		Button@QUIT:
-			Id:QUIT
+		Button@QUIT_BUTTON:
+			Id:QUIT_BUTTON
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -61,8 +53,9 @@ Background@INIT_CHOOSEINSTALL:
 			Text:Quit
 			Font:Bold
 
-Background@INIT_DOWNLOAD:
-	Id:INIT_DOWNLOAD
+Background@INSTALL_DOWNLOAD_PANEL:
+	Id:INSTALL_DOWNLOAD_PANEL
+	Logic:RADownloadPackagesLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500
@@ -76,21 +69,21 @@ Background@INIT_DOWNLOAD:
 			Text:Downloading Red Alert Content
 			Align:Center
 			Font:Bold
-		ProgressBar@PROGRESS:
-			Id:PROGRESS
+		ProgressBar@PROGRESS_BAR:
+			Id:PROGRESS_BAR
 			X:50
 			Y:55
 			Width:PARENT_RIGHT - 100
 			Height:25
-		Label@STATUS:
-			Id:STATUS
+		Label@STATUS_LABEL:
+			Id:STATUS_LABEL
 			X:50
 			Y:80
 			Width:PARENT_RIGHT - 100
 			Height:25
 			Align:Left
-		Button@RETRY:
-			Id:RETRY
+		Button@RETRY_BUTTON:
+			Id:RETRY_BUTTON
 			X:PARENT_RIGHT - 280
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -98,15 +91,16 @@ Background@INIT_DOWNLOAD:
 			Visible: false
 			Text:Retry
 			Font:Bold
-		Button@CANCEL:
-			Id:CANCEL
+			Key:return
+		Button@CANCEL_BUTTON:
+			Id:CANCEL_BUTTON
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
 			Text:Cancel
 			Font:Bold
-
+			Key:escape
 Background@INSTALL_FROMCD_PANEL:
 	Id:INSTALL_FROMCD_PANEL
 	Logic:RAInstallFromCDLogic
@@ -168,6 +162,7 @@ Background@INSTALL_FROMCD_PANEL:
 			Height:25
 			Text:Retry
 			Font:Bold
+			Key:return
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			X:PARENT_RIGHT - 140
@@ -176,3 +171,4 @@ Background@INSTALL_FROMCD_PANEL:
 			Height:25
 			Text:Cancel
 			Font:Bold
+			Key:escape

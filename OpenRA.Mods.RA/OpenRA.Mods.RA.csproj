@@ -327,8 +327,6 @@
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
-    <Compile Include="Widgets\GameInitInfoWidget.cs" />
-    <Compile Include="Widgets\Logic\GameInitLogic.cs" />
     <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
@@ -356,6 +354,8 @@
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\RADownloadPackagesLogic.cs" />
+    <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
