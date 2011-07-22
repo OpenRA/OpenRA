@@ -48,6 +48,7 @@ namespace OpenRA.FileFormats.Graphics
 
 		void DrawPrimitives( PrimitiveType type, int firstVertex, int numVertices );
 
+		void SetLineWidth( float width );
 		void EnableScissor( int left, int top, int width, int height );
 		void DisableScissor();
 	}

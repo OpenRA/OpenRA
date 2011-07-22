@@ -77,9 +77,11 @@ namespace OpenRA.Graphics
 		{
 			device.Clear(Color.Black);
 
+			WorldLineRenderer.LineWidth = zoom;
 			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);
 			float2 r2 = new float2(-1, 1);
 			var zr1 = zoom*r1;
+
 			SetShaderParams( WorldSpriteShader, zr1, r2, scroll );
 			SetShaderParams( WorldLineShader, zr1, r2, scroll );
 			SetShaderParams( LineShader, r1, r2, scroll );
@@ -114,6 +116,11 @@ namespace OpenRA.Graphics
 		public void Flush()
 		{
 			CurrentBatchRenderer = null;
+		}
+
+		public void SetLineWidth(float width)
+		{
+			device.SetLineWidth(width);
 		}
 
 		static IGraphicsDevice device;

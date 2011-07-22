@@ -15,6 +15,8 @@ namespace OpenRA.Graphics
 {
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
+		public float LineWidth = 1f;
+
 		Renderer renderer;
 		IShader shader;
 
@@ -35,6 +37,7 @@ namespace OpenRA.Graphics
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData( vertices, nv );
+					renderer.SetLineWidth(LineWidth);
 					renderer.DrawBatch( vb,	0, nv, PrimitiveType.LineList );
 				} );
 

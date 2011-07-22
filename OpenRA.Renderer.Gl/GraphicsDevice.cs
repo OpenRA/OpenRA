@@ -115,6 +115,12 @@ namespace OpenRA.Renderer.Glsl
 			throw new NotImplementedException();
 		}
 
+		public void SetLineWidth( float width )
+		{
+			Gl.glLineWidth(width);
+			ErrorHandler.CheckGlError();
+		}
+
 		public IVertexBuffer<Vertex> CreateVertexBuffer( int size ) { return new VertexBuffer<Vertex>( size ); }
 		public ITexture CreateTexture() { return new Texture(); }
 		public ITexture CreateTexture( Bitmap bitmap ) { return new Texture( bitmap ); }
