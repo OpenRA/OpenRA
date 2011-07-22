@@ -59,7 +59,7 @@ namespace OpenRA.Graphics
 			var newScrollPosition = scrollPosition + d;
 			
 			if(!ignoreBorders)
-				newScrollPosition = this.NormalizeScrollPosition(newScrollPosition);
+				newScrollPosition = NormalizeScrollPosition(newScrollPosition);
 
 			scrollPosition = newScrollPosition;
 		}
@@ -83,11 +83,11 @@ namespace OpenRA.Graphics
 		{
 			this.screenSize = screenSize;
 			this.renderer = renderer;
-			this.adjustedMapBounds = new Rectangle(Game.CellSize*mapBounds.X - screenSize.X/2,
+			adjustedMapBounds = new Rectangle(Game.CellSize*mapBounds.X - screenSize.X/2,
 			                                       Game.CellSize*mapBounds.Y - screenSize.Y/2,
 			                                       Game.CellSize*mapBounds.Width,
 			                                       Game.CellSize*mapBounds.Height);
-			this.scrollPosition = new int2(adjustedMapBounds.Location) + new int2(adjustedMapBounds.Size)/2;
+			scrollPosition = new int2(adjustedMapBounds.Location) + new int2(adjustedMapBounds.Size)/2;
 		}
 		
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
@@ -132,7 +132,7 @@ namespace OpenRA.Graphics
 		
 		public void Center(float2 loc)
 		{
-			scrollPosition = this.NormalizeScrollPosition((Game.CellSize*loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
+			scrollPosition = NormalizeScrollPosition((Game.CellSize*loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
 		}
 
 		public void Center(IEnumerable<Actor> actors)
@@ -142,7 +142,7 @@ namespace OpenRA.Graphics
 			var avgPos = actors
 				.Select(a => a.CenterLocation)
 				.Aggregate((a, b) => a + b) / actors.Count();
-			scrollPosition = this.NormalizeScrollPosition((avgPos - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
+			scrollPosition = NormalizeScrollPosition((avgPos - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
 		}
 		
 		// Rectangle (in viewport coords) that contains things to be drawn
