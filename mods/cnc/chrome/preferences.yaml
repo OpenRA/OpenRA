@@ -97,7 +97,7 @@ Container@SETTINGS_PANEL:
 					Y:20
 					X:375
 					Font:Bold
-					Text:Video
+					Text:Graphics
 					Align:Center
 					Width:340
 				Label@MODE_LABEL:
@@ -154,17 +154,25 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Video changes will be applied after the game is restarted
+					Text:Mode/Resolution changes will be applied after the game is restarted
+				Checkbox@PIXELDOUBLE_CHECKBOX:
+					Id:PIXELDOUBLE_CHECKBOX
+					X:375
+					Y:90
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Enable Pixel Doubling
 				Label@AUDIO_TITLE:
 					X:375
-					Y:120
+					Y:130
 					Width:340
 					Font:Bold
-					Text:Audio
+					Text:Sound
 					Align:Center
 				Label@SOUND_LABEL:
 					X:375
-					Y:135
+					Y:145
 					Width:95
 					Height:25
 					Align:Right
@@ -172,13 +180,13 @@ Container@SETTINGS_PANEL:
 				Slider@SOUND_SLIDER:
 					Id:SOUND_SLIDER
 					X:475
-					Y:140
+					Y:150
 					Width:240
 					Height:20
 					Ticks:5
 				Label@MUSIC_LABEL:
 					X:375
-					Y:165
+					Y:175
 					Width:95
 					Height:25
 					Align:Right
@@ -186,14 +194,14 @@ Container@SETTINGS_PANEL:
 				Slider@MUSIC_SLIDER:
 					Id:MUSIC_SLIDER
 					X:475
-					Y:170
+					Y:180
 					Width:240
 					Height:20
 					Ticks:5
 				Checkbox@SHELLMAP_MUSIC:
 					Id:SHELLMAP_MUSIC
 					X:375
-					Y:200
+					Y:210
 					Width:200
 					Height:20
 					Font:Regular

@@ -86,6 +86,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ? 
 				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 			
+			var pixelDoubleCheckbox = generalPane.GetWidget<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
+			pixelDoubleCheckbox.IsChecked = () => graphicsSettings.PixelDouble;
+			pixelDoubleCheckbox.OnClick = () =>
+			{
+				graphicsSettings.PixelDouble ^= true;
+				Game.viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
+			};
+
 			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
 			var windowWidth = generalPane.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = graphicsSettings.WindowedSize.X.ToString();
