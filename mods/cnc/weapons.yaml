@@ -500,7 +500,7 @@ TurretGun:
 		Damage: 40
 
 MammothMissiles:
-	ROF: 80
+	ROF: 100
 	Range: 5
 	Report: ROCKET1
 	ValidTargets: Ground, Air
