@@ -13,6 +13,27 @@ NEW:
 		Bots players are named after their AI type and pick better random colors
 		Map support for enforcing team and spawn choice
 		Fix resource-clearing weapons breaking custom terrain types (bridges)
+		Added a "Pixel double" mode to draw the world at 2x zoom.
+	Both C&C and Red Alert:
+		Fixed desync when a player surrenders
+		Fixed installing from CD
+		Added Hotkey support:
+			escape to toggle ingame menu
+			escape to go up a level in menus / cancel prompts
+			return to confirm prompts
+		Changed shortcut for adding units to groups changed from ctrl->cmd on OSX to avoid conflicting with Spaces
+		Fixed Tooltips for spectators
+		Fixed cashticks when selling walls
+		Fixed show explosions when walls are sold
+		Fixed veteran units not repairing correctly at service depots
+		Fixed Rally-point color when a building is captured
+		Fixed selection box dragging behind ui elements
+		Added Mod support for passengers that take multiple slots
+		Added Mod support for custom tesla zap effects
+		Fixed desync when a support aircraft is killed after completing its task
+		Fixed bugs with selling refineries
+		Fixed superweapons being fired from disabled structures when multiple are available
+		Added "Mission Accomplished" / "Mission Failed" notifications when you win or lose a multiplayer game
 	C&C:
 		Completely overhauled UI
 		Added support for installing from original game disks
@@ -20,10 +41,6 @@ NEW:
 		Added support for Covert Ops music tracks
 		Added Skirmish mode (creates a local game against bots)
 		Added Configurable bot race/team/spawns
-		Added Hotkey support:
-			escape to toggle ingame menu
-			escape to go up a level in menus / cancel prompts
-			return to confirm prompts
 		Fixed Rocket Launcher turret raising/lowering when attacking
 		Added muzzle flashes to Guard Tower / SAM site
 		Fixed firing offsets on all units and structures
@@ -37,13 +54,14 @@ NEW:
 		Added 8 new maps by Petrenko
 		Removed East vs West 2 map
 		Fixed Harvester/Refinery docking animation beneath the fog of war
+		Improved Obelisk laser effect
 		Balance changes:
 			Refinery footprint changed, price decreased to $1500
 			Flame tank explodes on death, damage reduced by 40%
-			Stealth Tank damage increased
+			Stealth Tank damage increased, speed decreased
 			Rocket Launcher now fires 6 rockets, loses AA
-			Orca / Apache weapons reworked. Both now have limited volleys, but reload in the air. Both can attack other air units.
-			APC becomes AA only
+			Orca / Apache weapons reworked. Both now have limited volleys, but reload in the air. Both can attack other air units
+			APC weapons reworked. Now has a turret, but can attack air units only
 			Artillery given back to Nod
 			SSM launcher removed from Nod
 			Concrete walls require vehicle production to build
@@ -55,7 +73,7 @@ NEW:
 			Infantry tiberium avoidance factor increased by 5x
 			Decrease tiberium damage to infantry
 			Reduced Grenadier death damage
-			Mammoth tank regen rate halved
+			Mammoth tank regen rate halved, Missile reload rate decreased
 			Building repair speed, price doubled
 			Recon Bike damage increased 16%
 			Infantry can be crushed by tanks
@@ -71,26 +89,13 @@ NEW:
 		Added support for Counterstrike & Aftermath music tracks
 		Added player color to diplomacy panel
 		Added capturable oil refinery tech structure
+		Added new harvester artwork for half-empty/empty states, and husk
 		Balance changes:
 			Medic cost reduced to $500
 			Mines are visible to friendlies and spectators
 			Friendly units don't trigger mines
 			Increased reload rate for aircraft
 			Missile sub submerge delay doubled, damage decreased by 25%
-	Both:
-		Changed shortcut for adding units to groups changed from ctrl->cmd on OSX to avoid conflicting with Spaces
-		Fixed Tooltips for spectators
-		Fixed cashticks when selling walls
-		Fixed show explosions when walls are sold
-		Fixed veteran units not repairing correctly at service depots
-		Fixed Rally-point color when a building is captured
-		Fixed selection box dragging behind ui elements
-		Added Mod support for passengers that take multiple slots
-		Added Mod support for custom tesla zap effects
-		Fixed desync when a support aircraft is killed after completing its task
-		Fixed bugs with selling refineries
-		Fixed superweapons being fired from disabled structures when multiple are available
-		Added "Mission Accomplished" / "Mission Failed" notifications when you win or lose a multiplayer game
 	Utility:
 		Fixed --png mode for converting shp -> png
 	Editor:
