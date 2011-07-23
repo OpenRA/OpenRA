@@ -237,13 +237,44 @@ BikeRockets:
 		SmudgeType: Crater
 		Damage: 35
 
-OrcaMissiles:
+OrcaAGMissiles:
 	ROF: 10
 	Burst: 2
 	BurstDelay: 0
 	Range: 5
 	Report: BAZOOK1
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
+	Projectile: Missile
+		Arm: 5
+		High: yes
+		Shadow: no
+		Proximity: yes
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 25
+		RangeLimit: 30
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 50%
+			Wood: 75%
+			Light: 75%
+			Heavy: 50%
+		InfDeath: 3
+		Explosion: 4
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 20
+
+OrcaAAMissiles:
+	ROF: 10
+	Burst: 2
+	BurstDelay: 0
+	Range: 5
+	Report: BAZOOK1
+	ValidTargets: Air
 	Projectile: Missile
 		Arm: 5
 		High: yes
