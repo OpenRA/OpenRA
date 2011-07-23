@@ -843,21 +843,22 @@ pips:
 		Start: 3
 	hold:
 		Start: 4
-	pip-empty:
-		Start: 0
-	pip-green:
-		Start: 1
-	pip-yellow:
-		Start: 5
-	pip-gray:
-		Start: 6
-	pip-red:
-		Start: 7
 	tag-fake:
 		Start: 18
 	tag-primary:
 		Start: 2
-
+	pip-empty: pips2
+		Start: 0
+	pip-green: pips2
+		Start: 1
+	pip-yellow: pips2
+		Start: 2
+	pip-gray: pips2
+		Start: 3
+	pip-red: pips2
+		Start: 4
+	pip-blue: pips2
+		Start: 5
 mig:
 	idle:
 		Start: 0

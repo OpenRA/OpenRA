@@ -19,7 +19,7 @@ using OpenRA.Network;
 namespace OpenRA.Traits
 {
     // depends on the order of pips in WorldRenderer.cs!
-    public enum PipType { Transparent, Green, Yellow, Red, Gray };
+    public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue };
     public enum TagType { None, Fake, Primary };
     public enum Stance { Enemy, Neutral, Ally };
 

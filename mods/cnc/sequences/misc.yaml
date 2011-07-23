@@ -197,22 +197,18 @@ clock:
 		Start: 0
 		Length: *
 pips:
-	ready: hpips
-		Start: 3
-	hold: hpips
-		Start: 4
-	pip-empty: hpips
+	pip-empty:
 		Start: 0
-	pip-green: hpips
+	pip-green:
 		Start: 1
-	pip-yellow: hpips
-		Start: 5
-	pip-gray: hpips
-		Start: 6
-	pip-red: hpips
-		Start: 7
-	tag-primary: hpips
+	pip-yellow:
 		Start: 2
+	pip-gray:
+		Start: 3
+	pip-red:
+		Start: 4
+	pip-blue:
+		Start: 5
 	groups: pdigits
 		Start: 0
 		Length: *

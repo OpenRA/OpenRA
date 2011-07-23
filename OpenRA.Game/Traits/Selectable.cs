@@ -25,9 +25,9 @@ namespace OpenRA.Traits
 	public class Selectable : IPostRenderSelection
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
-		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray" };
+		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue" };
 		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
-		
+
 		public void RenderAfterWorld (WorldRenderer wr, Actor self)
 		{
 			var bounds = self.Bounds.Value;
@@ -154,11 +154,18 @@ namespace OpenRA.Traits
 		{
 			if (self.Owner != self.World.LocalPlayer) return;
 			
-			// If a mod wants to implement a unit with multiple pip sources, then they are placed on multiple rows
-			var pipxyBase = basePosition + new float2(-12, -7); // Correct for the offset in the shp file
+			var pipSources = self.TraitsImplementing<IPips>();
+			if (pipSources.Count() == 0)
+				return;
+
+			var pipImages = new Animation("pips");
+			pipImages.PlayRepeating(pipStrings[0]);
+
+			var pipSize = pipImages.Image.size;
+			var pipxyBase = basePosition + new float2(1, -pipSize.Y);
 			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
 
-			foreach (var pips in self.TraitsImplementing<IPips>())
+			foreach (var pips in pipSources)
 			{
 				var thisRow = pips.GetPips(self);
 				if (thisRow == null)
@@ -168,19 +175,19 @@ namespace OpenRA.Traits
 
 				foreach (var pip in thisRow)
 				{
-					if (pipxyOffset.X+5 > width)
+					if (pipxyOffset.X + pipSize.X >= width)
 					{
 						pipxyOffset.X = 0;
-						pipxyOffset.Y -= 4;
+						pipxyOffset.Y -= pipSize.Y;
 					}
-					var pipImages = new Animation("pips");
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
 					pipImages.Image.DrawAt(wr, pipxyBase + pipxyOffset, "chrome");
-					pipxyOffset += new float2(4, 0);
+					pipxyOffset += new float2(pipSize.X, 0);
 				}
+
 				// Increment row
 				pipxyOffset.X = 0;
-				pipxyOffset.Y -= 5;
+				pipxyOffset.Y -= pipSize.Y + 1;
 			}
 		}
 		
