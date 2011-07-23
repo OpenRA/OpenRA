@@ -73,10 +73,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
 			var copyFiles = new string[] { "CONQUER.MIX", "DESERT.MIX",
-					"GENERAL.MIX", "SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" };
+					"SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" };
 			
 			var extractPackage = "INSTALL/SETUP.Z";
-			var extractFiles = new string[] { "cclocal.mix", "speech.mix", "tempicnh.mix", "updatec.mix", "transit.mix" };
+			var extractFiles = new string[] { "speech.mix", "tempicnh.mix", "transit.mix" };
 			
 			var installCounter = 0;
 			var installTotal = copyFiles.Count() + extractFiles.Count();
