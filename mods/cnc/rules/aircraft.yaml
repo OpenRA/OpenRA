@@ -59,9 +59,12 @@ HELI:
 	RevealsShroud:
 		Range: 8
 	AttackHeli:
-		PrimaryWeapon: HeliGun
+		PrimaryWeapon: HeliAGGun
 		PrimaryOffset: 0,-3,0,2
 		PrimaryLocalOffset: -5,0,0,0,0, 5,0,0,0,0
+		SecondaryWeapon: HeliAAGun
+		SecondaryOffset: 0,-3,0,2
+		SecondaryLocalOffset: -5,0,0,0,0, 5,0,0,0,0
 		FacingTolerance: 20
 	LimitedAmmo:
 		Ammo: 10

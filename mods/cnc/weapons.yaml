@@ -123,12 +123,32 @@ HighV:
 		InfDeath: 1
 		Explosion: 1
 
-HeliGun:
+HeliAGGun:
 	ROF: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
+	Report: gun5
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Damage: 20
+		Spread: 3
+		Versus: 
+			None: 100%
+			Wood: 50%
+			Light: 50%
+			Heavy: 25%
+		InfDeath: 1
+		Explosion: 1
+
+HeliAAGun:
+	ROF: 20
+	Burst: 2
+	BurstDelay: 0
+	Range: 4
+	ValidTargets: Air
 	Report: gun5
 	Projectile: Bullet
 		Speed: 100
