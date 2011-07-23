@@ -49,7 +49,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		
 		void CheckForDisk()
 		{
-			var path = InstallUtils.GetMountedDisk(new [] { "CD1", "CD2" });
+			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"MAIN.MIX") &&
+					File.Exists(new string[] { diskRoot, "INSTALL", "REDALERT.MIX" }.Aggregate(Path.Combine));
+
+			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
 
 			if (path != null)
 				Install(path);

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
 				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {{ "afterInstall", afterInstall }});
-			installButton.IsVisible = () => music.Length < 2; // Hack around ra shipping (only) hellmarch by default
+			installButton.IsVisible = () => music.Length < 3; // Hack around music being split between transit.mix and scores.mix
 			
 			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;
 
@@ -216,7 +216,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		
 		void CheckForDisk()
 		{
-			var path = InstallUtils.GetMountedDisk(new [] { "GDI95", "NOD95" });
+			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"CONQUER.MIX") &&
+					File.Exists(diskRoot+Path.DirectorySeparatorChar+"DESERT.MIX") &&
+					File.Exists(new string[] { diskRoot, "INSTALL", "SETUP.Z" }.Aggregate(Path.Combine));
+
+			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
 
 			if (path != null)
 				Install(path);

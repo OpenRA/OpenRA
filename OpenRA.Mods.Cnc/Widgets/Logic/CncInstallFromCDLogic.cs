@@ -49,7 +49,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		
 		void CheckForDisk()
 		{
-			var path = InstallUtils.GetMountedDisk(new [] { "GDI95", "NOD95" });
+			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"CONQUER.MIX") &&
+					File.Exists(diskRoot+Path.DirectorySeparatorChar+"DESERT.MIX") &&
+					File.Exists(new string[] { diskRoot, "INSTALL", "SETUP.Z" }.Aggregate(Path.Combine));
+
+			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
 
 			if (path != null)
 				Install(path);

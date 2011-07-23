@@ -28,15 +28,15 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public static string GetMountedDisk(string[] volumeNames)
+		public static string GetMountedDisk(Func<string, bool> isValidDisk)
 		{
 			var volumes = DriveInfo.GetDrives()
 				.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
 				.Select(v => v.RootDirectory.FullName);
 
-			return volumes.FirstOrDefault(v => volumeNames.Contains(Path.GetFileName(v)));
+			return volumes.FirstOrDefault(v => isValidDisk(v));
 		}
-				
+
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
 		public static bool ExtractFromPackage(string srcPath, string package, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
 		{
