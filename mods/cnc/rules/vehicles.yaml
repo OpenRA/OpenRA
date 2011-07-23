@@ -361,7 +361,7 @@ HTNK:
 		ROT: 2
 	AttackTurreted:
 		PrimaryWeapon: 120mmDual
-		SecondaryWeapon: MissilePack
+		SecondaryWeapon: MammothMissiles
 		PrimaryLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
 		SecondaryLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
 		Recoil: 4

@@ -203,13 +203,13 @@ Rockets:
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 6
+		ROT: 10
 		Trail: smokey
 		Speed: 35
 		RangeLimit: 40
@@ -234,13 +234,13 @@ BikeRockets:
 	Burst: 2
 	BurstDelay: 0
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 35
 		RangeLimit: 40
@@ -265,13 +265,13 @@ OrcaAGMissiles:
 	Report: BAZOOK1
 	ValidTargets: Ground
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 25
 		RangeLimit: 30
@@ -296,13 +296,13 @@ OrcaAAMissiles:
 	Report: BAZOOK1
 	ValidTargets: Air
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 25
 		RangeLimit: 30
@@ -499,20 +499,20 @@ TurretGun:
 		SmudgeType: Crater
 		Damage: 40
 
-MissilePack:
+MammothMissiles:
 	ROF: 80
 	Range: 5
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 25
 		RangeLimit: 35
@@ -567,13 +567,13 @@ MissilePack:
 	BurstDelay: 0
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 5
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 20
 		RangeLimit: 55
@@ -637,13 +637,13 @@ BoatMissile:
 	BurstDelay: 7
 	Report: ROCKET2
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 5
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 20
 		RangeLimit: 60
@@ -668,13 +668,13 @@ TowerMissle:
 	Burst: 2
 	BurstDelay: 10
 	Projectile: Missile
-		Arm: 5
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		Trail: smokey
 		Speed: 25
 		RangeLimit: 40
@@ -741,7 +741,7 @@ SAMMissile:
 	Report: ROCKET2
 	ValidTargets: Air
 	Projectile: Missile
-		Arm: 3
+		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
