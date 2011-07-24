@@ -57,6 +57,12 @@ proc:
 	make: procmake
 		Start: 0
 		Length: *
+	lights: proctwr
+		Start: 0
+		Length: 6
+	damaged-lights: proctwr
+		Start: 6
+		Length: 6
 
 silo:
 	idle:
