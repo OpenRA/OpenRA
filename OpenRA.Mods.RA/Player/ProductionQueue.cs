@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 			self.Owner.PlayerActor.Trait<TechTree>().Update();
 		}
 
-		public void Killed(Actor self, AttackInfo e) { ClearQueue(); }
+		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
 		public void Selling(Actor self) {}
 		public void Sold(Actor self) { ClearQueue(); }
 
