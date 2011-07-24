@@ -18,23 +18,30 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class MoveAdjacentTo : Activity
 	{
-		readonly Actor target;
+		readonly Target target;
 
 		public MoveAdjacentTo( Actor target )
+		{
+			this.target = Target.FromActor(target);
+		}
+
+		public MoveAdjacentTo( Target target )
 		{
 			this.target = target;
 		}
 
 		public override Activity Tick( Actor self )
 		{
-			if( IsCanceled || target.Destroyed || !target.IsInWorld) return NextActivity;
+			if( IsCanceled || !target.IsValid) return NextActivity;
 
 			var mobile = self.Trait<Mobile>();
+			Pair<int2, SubCell>[] cells = new Pair<int2, SubCell>[] {};
+			if (target.IsActor)
+				cells = target.Actor.Trait<IOccupySpace>().OccupiedCells().ToArray();
 
-			var cells = target.Trait<IOccupySpace>().OccupiedCells().ToArray();
 			if (cells.Length == 0)
 				cells = new OpenRA.FileFormats.Pair<int2, SubCell>[] {
-					Pair.New(target.Location, SubCell.FullCell) };
+					Pair.New(Util.CellContaining(target.CenterLocation), SubCell.FullCell) };
 
 			var ps1 = new PathSearch( self.World, mobile.Info, self.Owner )
 			{
@@ -51,7 +58,7 @@ namespace OpenRA.Mods.RA.Activities
 			}
 			ps1.heuristic = PathSearch.DefaultEstimator( mobile.toCell );
 
-			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, target.Location, true );
+			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, Util.CellContaining(target.CenterLocation), true );
 			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath( ps1, ps2 );
 			if( ret.Count > 0 )
 				ret.RemoveAt( 0 );

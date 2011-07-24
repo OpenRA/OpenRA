@@ -60,7 +60,6 @@
     <Compile Include="Activities\Attack.cs" />
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Activities\DonateSupplies.cs" />
-    <Compile Include="Activities\DeliverOre.cs" />
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
-    <Compile Include="Activities\Harvest.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="Explodes.cs" />
     <Compile Include="Fake.cs" />
@@ -356,6 +354,9 @@
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\RADownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
+    <Compile Include="Activities\FindResources.cs" />
+    <Compile Include="Activities\HarvestResource.cs" />
+    <Compile Include="Activities\DeliverResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

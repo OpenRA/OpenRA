@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Move;
@@ -23,7 +24,6 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick( Actor self )
 		{
-			// TODO: wtf is this?
 			if( NextActivity != null )
 				return NextActivity;
 
@@ -39,6 +39,7 @@ namespace OpenRA.Mods.RA.Activities
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptOre>();
 			
+			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if( self.Location != proc.Location + iao.DeliverOffset )
 				return Util.SequenceActivities( mobile.MoveTo(proc.Location + iao.DeliverOffset, 0), this );
 

@@ -61,9 +61,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (LastHarvestedCell.HasValue)
 			{
-				var mobile = self.Trait<Mobile>();
-				self.QueueActivity( mobile.MoveTo(LastHarvestedCell.Value, 5) );
-				self.SetTargetLine(Target.FromCell(LastHarvestedCell.Value), Color.Red, false);
+				var target = Target.FromCell(LastHarvestedCell.Value);
+				self.QueueActivity( new MoveAdjacentTo(target) );
+				self.SetTargetLine(target, Color.Red, false);
 			}
 			self.QueueActivity( new FindResources() );
 		}
@@ -152,12 +152,12 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Harvest")
 			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-				
-				var mobile = self.Trait<Mobile>();
+				var target = Target.FromOrder(order);
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
+				self.QueueActivity(new MoveAdjacentTo(target));
+				self.QueueActivity(new HarvestResource(self, order.TargetLocation));
 				self.QueueActivity(new FindResources());
+				self.SetTargetLine(target, Color.Red);
 			}
 			else if (order.OrderString == "Deliver")
 			{
