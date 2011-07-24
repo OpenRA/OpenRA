@@ -11,6 +11,7 @@ harv:
 		Start: 32
 		Length: 4
 		Facings: 8
+		Tick: 80
 	dock: harvdump
 		Start: 0
 		Length: 7

@@ -93,8 +93,10 @@ PROC:
 		TickRate: 15
 	StoresOre:
 		PipColor: Green
-		PipCount: 15
-		Capacity: 1500
+		PipCount: 18
+		Capacity: 1800
+	Selectable:
+		Bounds: 73,72
 	CustomSellValue:
 		Value: 300
 	FreeActor:
@@ -129,9 +131,11 @@ SILO:
 		Range: 4
 	RenderBuildingSilo:
 	StoresOre:
-		PipCount: 5
+		PipCount: 12
 		PipColor: Green
-		Capacity: 1000
+		Capacity: 1200
+	Selectable:
+		Bounds: 49,24
 	-RenderBuilding:
 	-EmitInfantryOnSell:
 
