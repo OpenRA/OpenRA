@@ -40,16 +40,8 @@ proc:
 		Start: 0
 		Length: 6
 		Tick: 60
-	enroute:
-		Start: 6
-		Length: 6
-		Tick: 60
 	damaged-idle:
 		Start: 30
-		Length: 6
-		Tick: 60
-	damaged-enroute:
-		Start: 36
 		Length: 6
 		Tick: 60
 	dead:
