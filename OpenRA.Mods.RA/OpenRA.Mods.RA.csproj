@@ -218,7 +218,6 @@
     <Compile Include="Passenger.cs" />
     <Compile Include="Air\Plane.cs" />
     <Compile Include="Render\RenderBuildingCharge.cs" />
-    <Compile Include="Render\RenderBuildingOre.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderFlare.cs" />
@@ -357,6 +356,7 @@
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
+    <Compile Include="Render\RenderBuildingSilo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

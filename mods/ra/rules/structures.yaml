@@ -692,7 +692,7 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-	RenderBuildingOre:
+	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
 		Capacity: 1500

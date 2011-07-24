@@ -12,16 +12,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderBuildingOreInfo : RenderBuildingInfo
+	class RenderBuildingSiloInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingOre(init, this); }
+		public override object Create(ActorInitializer init) { return new RenderBuildingSilo(init, this); }
 	}
 
-	class RenderBuildingOre : RenderBuilding, INotifyBuildComplete, INotifyCapture
+	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
 		PlayerResources playerResources;
 		
-		public RenderBuildingOre( ActorInitializer init, RenderBuildingInfo info )
+		public RenderBuildingSilo( ActorInitializer init, RenderBuildingInfo info )
 			: base(init, info)
 		{
 			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();

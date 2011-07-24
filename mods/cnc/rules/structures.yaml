@@ -127,7 +127,7 @@ SILO:
 		HP: 300
 	RevealsShroud:
 		Range: 4
-	RenderBuildingOre:
+	RenderBuildingSilo:
 	StoresOre:
 		PipCount: 5
 		PipColor: Green
