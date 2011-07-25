@@ -9,8 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,7 +25,10 @@ namespace OpenRA.Mods.RA
 	{
 		[Sync]
 		int2 location;
-		
+
+		[Sync]
+		public int2 PxPosition { get; set; }
+
 		[Sync]
 		public int Facing { get; set; }
 		public int ROT { get { return 0; } }
@@ -31,13 +36,69 @@ namespace OpenRA.Mods.RA
 
 		public Husk(ActorInitializer init)
 		{
-			this.location = init.Get<LocationInit,int2>();
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
+			var self = init.self;
+			location = init.Get<LocationInit,int2>();
+			PxPosition = init.Get<CenterLocationInit, int2>();
+			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
+
+			var speed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit,int>() : 0;
+			if (speed > 0)
+			{
+				var to = Util.CenterOfCell(location);
+				var length = (int)((to - PxPosition).Length * 3 / speed);
+                self.QueueActivity(new DragHusk(PxPosition, to, length));
+            }
 		}
 
 		public int2 TopLeft { get { return location; } }
 
 		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public int2 PxPosition { get { return Util.CenterOfCell( location ); } }
+
+		class DragHusk : Activity
+		{
+			int2 endLocation;
+			int2 startLocation;
+			int length;
+
+			public DragHusk(int2 start, int2 end, int length)
+			{
+				startLocation = start;
+				endLocation = end;
+				this.length = length;
+			}
+
+			int ticks = 0;
+			public override Activity Tick( Actor self )
+			{
+				var husk = self.Trait<Husk>();
+				husk.PxPosition = int2.Lerp(startLocation, endLocation, ticks, length - 1);
+
+				if (++ticks >= length)
+					return NextActivity;
+
+				return this;
+			}
+
+			public override IEnumerable<Target> GetTargets( Actor self ) { yield break; }
+			public override void Cancel( Actor self ) { }
+		}
+	}
+
+	public class HuskSpeedInit : IActorInit<int>
+	{
+		[FieldFromYamlKey]
+		public readonly int value = 0;
+
+		public HuskSpeedInit() { }
+
+		public HuskSpeedInit( int init )
+		{
+			value = init;
+		}
+
+		public int Value( World world )
+		{
+			return value;
+		}
 	}
 }

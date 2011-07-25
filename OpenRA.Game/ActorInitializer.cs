@@ -50,7 +50,7 @@ namespace OpenRA
 	{
 		T Value( World world );
 	}
-	
+
 	public class FacingInit : IActorInit<int>
 	{
 		[FieldFromYamlKey]
@@ -68,7 +68,7 @@ namespace OpenRA
 			return value;	
 		}
 	}
-	
+
 	public class AltitudeInit : IActorInit<int>
 	{
 		[FieldFromYamlKey]
@@ -95,6 +95,24 @@ namespace OpenRA
 		public LocationInit() { }
 
 		public LocationInit( int2 init )
+		{
+			value = init;
+		}
+
+		public int2 Value( World world )
+		{
+			return value;
+		}
+	}
+
+	public class CenterLocationInit : IActorInit<int2>
+	{
+		[FieldFromYamlKey]
+		public readonly int2 value = int2.Zero;
+
+		public CenterLocationInit() { }
+
+		public CenterLocationInit( int2 init )
 		{
 			value = init;
 		}
