@@ -11,6 +11,13 @@ Container@INGAME_MENU:
 			Height:64
 			ImageCollection:logos
 			ImageName:eva
+		Label@VERSION_LABEL:
+			Id:VERSION_LABEL
+			X:WINDOW_RIGHT-128-43
+			Y:115
+			Width:128
+			Align:Center
+			Contrast:true
 		Background@BORDER:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM

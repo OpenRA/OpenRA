@@ -9,10 +9,11 @@
 #endregion
 
 using System;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Widgets;
-using OpenRA.Traits;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Traits;
+using OpenRA.Widgets;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {	
@@ -30,6 +31,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
+			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = ActiveModVersion;
+
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
 			
@@ -92,7 +95,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			if (iop != null && iop.ObjectivesPanel != null)
 				Game.OpenWindow(world, iop.ObjectivesPanel);
 		}
-		
+
+		static string ActiveModVersion()
+		{
+			var mod = Game.modData.Manifest.Mods[0];
+			return Mod.AllMods[mod].Version;
+		}
+
 		public void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
 		{
 			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
