@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			{
 				var to = Util.CenterOfCell(location);
 				var length = (int)((to - PxPosition).Length * 3 / speed);
-                self.QueueActivity(new DragHusk(PxPosition, to, length));
+                self.QueueActivity(new DragHusk(PxPosition, to, length, this));
             }
 		}
 
@@ -56,26 +56,29 @@ namespace OpenRA.Mods.RA
 
 		class DragHusk : Activity
 		{
+			Husk husk;
 			int2 endLocation;
 			int2 startLocation;
 			int length;
 
-			public DragHusk(int2 start, int2 end, int length)
+			public DragHusk(int2 start, int2 end, int length, Husk husk)
 			{
 				startLocation = start;
 				endLocation = end;
 				this.length = length;
+				this.husk = husk;
 			}
 
 			int ticks = 0;
 			public override Activity Tick( Actor self )
 			{
-				var husk = self.Trait<Husk>();
-				husk.PxPosition = int2.Lerp(startLocation, endLocation, ticks, length - 1);
-
-				if (++ticks >= length)
+				if (ticks >= length || length <= 1)
+				{
+					husk.PxPosition = endLocation;
 					return NextActivity;
+				}
 
+				husk.PxPosition = int2.Lerp(startLocation, endLocation, ticks++, length - 1);
 				return this;
 			}
 
