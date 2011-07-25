@@ -36,6 +36,10 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 			{
+				// Can't demolish an already dead actor
+				if (target.IsDead())
+					return;
+
 				// Invulnerable actors can't be demolished
 				var modifier = (float)target.TraitsImplementing<IDamageModifier>()
 					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
