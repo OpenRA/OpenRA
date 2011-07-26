@@ -238,6 +238,7 @@
 	Inherits: ^Building
 	-DeadBuildingState:
 	-Buildable:
+	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor: 
