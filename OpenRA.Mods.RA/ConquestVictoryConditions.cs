@@ -64,7 +64,11 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer)
 			{
 				self.World.LocalShroud.Disabled = true;
-				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.Play(Info.LoseNotification));
+				Game.RunAfterDelay(Info.NotificationDelay, () =>
+				{
+					if (Game.IsCurrentWorld(self.World))
+						Sound.Play(Info.LoseNotification);
+				});
 			}
 		}
 		
