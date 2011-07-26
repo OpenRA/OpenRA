@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class WithFireInfo : ITraitInfo
+	class WithFireInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithFire(init.self); }
 	}
