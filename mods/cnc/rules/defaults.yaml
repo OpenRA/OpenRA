@@ -352,8 +352,6 @@
 	Armor: 
 		Type: Light
 	Husk:
-	Selectable: 
-		Priority: -1
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
