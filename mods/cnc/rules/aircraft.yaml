@@ -129,7 +129,7 @@ C17:
 		Name: Supply Aircraft
 	Plane:
 		ROT: 5
-		Speed: 25
+		Speed: 35
 	Health:
 		HP: 25
 	Armor:
