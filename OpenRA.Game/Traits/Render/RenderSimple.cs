@@ -17,16 +17,14 @@ namespace OpenRA.Traits
 	public abstract class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
-		public readonly string[] OverrideTileset = null;
-		public readonly string[] OverrideImage = null;
 		public readonly string Palette = null;
 		public readonly string PlayerPalette = "player";
 		public readonly float Scale = 1f;
 		public abstract object Create(ActorInitializer init);
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
+		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
-			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle");
 			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), Palette ?? PlayerPalette + owner.InternalName, 0, Scale);
 		}
@@ -42,14 +40,9 @@ namespace OpenRA.Traits
 			protected set { anims[""].Animation = value; }
 		}
 
-		public static string GetImage(ActorInfo actor, string Tileset)
+		public static string GetImage(ActorInfo actor)
 		{
 			var Info = actor.Traits.Get<RenderSimpleInfo>();
-			if (Info.OverrideTileset != null && Tileset != null)
-				for (int i = 0; i < Info.OverrideTileset.Length; i++)
-					if (Info.OverrideTileset[i] == Tileset)
-						return Info.OverrideImage[i];
-
 			return Info.Image ?? actor.Name;
 		}
 
@@ -59,7 +52,7 @@ namespace OpenRA.Traits
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = GetImage(self.Info, self.World.Map.Tileset);
+			return cachedImage = GetImage(self.Info);
 		}
 
 		RenderSimpleInfo Info;

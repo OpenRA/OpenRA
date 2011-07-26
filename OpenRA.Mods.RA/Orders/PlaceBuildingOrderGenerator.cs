@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Orders
 			Building = name;
 			
 			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
-								.RenderPreview(Rules.Info[Building], producer.World.Map.Tileset, producer.Owner);
+								.RenderPreview(Rules.Info[Building], producer.Owner);
 		}
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)

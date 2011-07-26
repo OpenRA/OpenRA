@@ -20,18 +20,18 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
 
         /* get around unverifiability */
-        IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, string tileset, Player owner)
+        IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, Player owner)
         {
-            return base.RenderPreview(building, tileset, owner);
+            return base.RenderPreview(building, owner);
         }
 
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, string Tileset, Player owner)
+		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
-			var p = BaseBuildingPreview(building, Tileset, owner);
+			var p = BaseBuildingPreview(building, owner);
 			foreach (var r in p)
 				yield return r;
 
-			var anim = new Animation(RenderSimple.GetImage(building, Tileset), () => 0);
+			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
 			var rb = building.Traits.Get<RenderBuildingInfo>();
 			yield return new Renderable(anim.Image, rb.Origin + 0.5f*anim.Image.size*(1 - Scale), p.First().Palette, 0, Scale);

@@ -84,7 +84,7 @@ namespace OpenRA.Editor
 
 		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
 		{
-            var image = RenderSimple.GetImage(info, tileset.Id);
+            var image = RenderSimple.GetImage(info);
 			
             using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
