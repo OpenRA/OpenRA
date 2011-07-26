@@ -584,15 +584,17 @@ arco.husk:
 hosp:
 	idle:
 		Start: 0
+		Length: 4
 	damaged-idle:
-		Start: 1
+		Start: 4
+		Length: 4
 	make: hospmake
 		Start: 0
 		Length: *
 
 hosp.husk:
 	idle: hosp
-		Start: 2
+		Start: 8
 
 bio:
 	idle:

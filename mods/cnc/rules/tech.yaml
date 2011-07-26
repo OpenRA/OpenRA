@@ -28,6 +28,16 @@ HOSP:
 	Tooltip:
 		Name: Hospital
 	-Capturable:
+	LeavesHusk: 
+		HuskActor: HOSP.Husk
+
+HOSP.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Hospital (Destroyed)
 
 # Bio Lab
 BIO:
