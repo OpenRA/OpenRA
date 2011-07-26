@@ -345,6 +345,8 @@ namespace OpenRA.Editor
 				if (ActorTemplates.ContainsKey(ar.Value.Type))
 					DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
 						GetPaletteForActor(ar.Value));
+				else
+					Console.WriteLine("Warning: Unknown or excluded actor: {0}", ar.Value.Type);
 			}
 
 			if (ShowActorNames)
