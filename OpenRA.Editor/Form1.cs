@@ -155,6 +155,13 @@ namespace OpenRA.Editor
 				{
 					var info = Rules.Info[a];
 					if (!info.Traits.Contains<RenderSimpleInfo>()) continue;
+
+					var etf = info.Traits.GetOrDefault<EditorTilesetFilterInfo>();
+					if (etf != null && etf.ExcludeTilesets != null
+					    && etf.ExcludeTilesets.Contains(tileset.Id)) continue;
+					if (etf != null && etf.RequireTilesets != null
+					    && !etf.RequireTilesets.Contains(tileset.Id)) continue;
+
 					var template = RenderUtils.RenderActor(info, tileset, palette);
 					var ibox = new PictureBox
 					{

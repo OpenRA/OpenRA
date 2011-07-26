@@ -184,6 +184,7 @@
     <Compile Include="Download.cs" />
     <Compile Include="ActorMap.cs" />
     <Compile Include="Graphics\AnimationWithOffset.cs" />
+    <Compile Include="Traits\EditorTilesetFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
