@@ -36,6 +36,7 @@ Rules:
 	mods/cnc/rules/vehicles.yaml
 	mods/cnc/rules/trees.yaml
 	mods/cnc/rules/civilian.yaml
+	mods/cnc/rules/civilian-desert.yaml
 	mods/cnc/rules/tech.yaml
 	mods/cnc/rules/ships.yaml
 	mods/cnc/rules/aircraft.yaml

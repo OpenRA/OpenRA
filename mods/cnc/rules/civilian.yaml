@@ -1,8 +1,5 @@
 V01:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v25
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -10,328 +7,258 @@ V01:
 		Name: Church
 	LeavesHusk: 
 		HuskActor: V01.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V01.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v25.husk
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church (Destroyed)
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V02:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v20
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	LeavesHusk: 
 		HuskActor: V02.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V02.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v20.husk
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V03:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v21
 	LeavesHusk: 
 		HuskActor: V03.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V03.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v21.husk
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V04:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v24
 	LeavesHusk: 
 		HuskActor: V04.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V04.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v24.husk
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V05:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v22
 	LeavesHusk: 
 		HuskActor: V05.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V05.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v22.husk
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V06:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v26
 	LeavesHusk: 
 		HuskActor: V06.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V06.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v26.husk
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V07:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v30
 	LeavesHusk: 
 		HuskActor: V07.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V07.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v30.husk
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V08:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v23
 	LeavesHusk: 
 		HuskActor: V08.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V08.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v23.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V09:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v27
 	LeavesHusk: 
 		HuskActor: V09.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V09.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v27.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V10:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v28
 	LeavesHusk: 
 		HuskActor: V10.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V10.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v28.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V11:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v29
 	LeavesHusk: 
 		HuskActor: V11.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V11.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v29.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V12:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v34
 	LeavesHusk: 
 		HuskActor: V12.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V12.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v34.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V13:
 	Inherits: ^CivBuilding
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v35
 	LeavesHusk: 
 		HuskActor: V13.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V13.Husk:
 	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v35.husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V14:
 	Inherits: ^CivField
 	LeavesHusk: 
 		HuskActor: V14.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V14.Husk:
 	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V15:
 	Inherits: ^CivField
 	LeavesHusk: 
 		HuskActor: V15.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V15.Husk:
 	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V16:
 	Inherits: ^CivField
 	LeavesHusk: 
 		HuskActor: V16.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V16.Husk:
 	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V17:
 	Inherits: ^CivField
 	LeavesHusk: 
 		HuskActor: V17.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V17.Husk:
 	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V18:
 	Inherits: ^CivField
 	LeavesHusk: 
 		HuskActor: V18.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V18.Husk:
 	Inherits: ^CivFieldHusk
-
-
-V31:
-	Inherits: ^CivBuilding
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v31
-	LeavesHusk: 
-		HuskActor: V31.Husk
-
-V31.Husk:
-	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v31.husk
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
-
-V32:
-	Inherits: ^CivBuilding
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v32
-	LeavesHusk: 
-		HuskActor: V32.Husk
-
-V32.Husk:
-	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v32.husk
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
-
-V33:
-	Inherits: ^CivBuilding
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v33
-	LeavesHusk: 
-		HuskActor: V33.Husk
-
-V33.Husk:
-	Inherits: ^CivBuildingHusk
-	RenderBuilding:
-		Image: v05
-		OverrideTileset: DESERT
-		OverrideImage: v33.husk
-	Building:
-		Footprint: xx
-		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 ARCO:
 	Inherits: ^CivBuilding

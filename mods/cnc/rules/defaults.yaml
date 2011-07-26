@@ -274,9 +274,6 @@
 	-Selectable:
 	Tooltip:
 		Name: Field
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v23
 	-WithBuildingExplosion:
 
 ^CivFieldHusk:
@@ -284,9 +281,6 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: _
-	RenderBuilding:
-		OverrideTileset: DESERT
-		OverrideImage: v23.husk
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	Tooltip:
