@@ -65,7 +65,10 @@ namespace OpenRA.Mods.RA
 				if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
 				if (!target.HasTrait<RepairableBuilding>())
 					return false;
-				
+
+				if (self.Owner.Stances[ target.Owner ] != Stance.Ally)
+					return false;
+
 				IsQueued = forceQueued;
 
 				if( target.GetDamageState() == DamageState.Undamaged )
