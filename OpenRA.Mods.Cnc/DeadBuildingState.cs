@@ -16,7 +16,6 @@ namespace OpenRA.Mods.Cnc
 	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSimpleInfo>
 	{
 		public readonly int LingerTime = 20;
-		public readonly bool Zombie = false; // Civilian structures stick around after death
 		public object Create(ActorInitializer init) { return new DeadBuildingState(init.self, this); }
 	}
 
@@ -35,11 +34,10 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (!rs.anim.HasSequence("dead")) return;
 			rs.anim.PlayRepeating("dead");
-			if (!info.Zombie)
-				self.World.AddFrameEndTask(
-					w => w.Add(
-						new DelayedAction(info.LingerTime,
-							() => self.Destroy())));
+			self.World.AddFrameEndTask(
+				w => w.Add(
+					new DelayedAction(info.LingerTime,
+						() => self.Destroy())));
 		}
 	}
 }
