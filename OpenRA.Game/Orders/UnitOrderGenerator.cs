@@ -19,7 +19,6 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
-
             var underCursor = world.FindUnitsAtMouse(mi.Location)
                 .Where(a => a.HasTrait<ITargetable>())
                 .OrderByDescending(
@@ -59,9 +58,8 @@ namespace OpenRA.Orders
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 				.FirstOrDefault();
 
-
 			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
-				if (underCursor != null)
+				if (underCursor != null && underCursor.HasTrait<Selectable>())
 					useSelect = true;
 
 			var orders = world.Selection.Actors
