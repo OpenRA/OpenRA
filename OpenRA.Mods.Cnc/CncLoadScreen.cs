@@ -14,6 +14,7 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Widgets;
+using OpenRA.Mods.Cnc.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -22,9 +23,8 @@ namespace OpenRA.Mods.Cnc
 		Dictionary<string, string> Info;
 		Stopwatch loadTimer = new Stopwatch();
 		Sprite[] ss;
-		string text;
 		int loadTick;
-		float2 nodPos, gdiPos, evaPos, textPos;
+		float2 nodPos, gdiPos, evaPos;
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Rectangle Bounds;
 		Renderer r;
@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			var res = Renderer.Resolution;
 
 			var s = new Sheet("mods/cnc/uibits/chrome.png");
+			var res = Renderer.Resolution;
 			Bounds = new Rectangle(0, 0, res.Width, res.Height);
 			ss = new Sprite[]
 			{
@@ -56,13 +56,18 @@ namespace OpenRA.Mods.Cnc
 			nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
 			gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
 			evaLogo = new Sprite(s, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
-			nodPos = new float2(res.Width / 2 - 384, res.Height / 2 - 128);
-			gdiPos = new float2(res.Width / 2 + 128, res.Height / 2 - 128);
-			evaPos = new float2(res.Width - 43 - 128, 43);
+			nodPos = new float2(Bounds.Width / 2 - 384, Bounds.Height / 2 - 128);
+			gdiPos = new float2(Bounds.Width / 2 + 128, Bounds.Height / 2 - 128);
+			evaPos = new float2(Bounds.Width - 43 - 128, 43);
 
 			brightBlock = new Sprite(s, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(s, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 		}
+
+		bool setup;
+		SpriteFont loadingFont, versionFont;
+		string loadingText, versionText;
+		float2 loadingPos, versionPos;
 
 		public void Display()
 		{
@@ -76,23 +81,33 @@ namespace OpenRA.Mods.Cnc
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 
-			var res = Renderer.Resolution;
-
 			WidgetUtils.DrawPanelPartial(ss, Bounds, PanelSides.Edges);
+			var barY = Bounds.Height - 78;
 
-			var barY = res.Height - 78;
-			text = "Loading";
-			var textSize = r.Fonts["BigBold"].Measure(text);
-			textPos = new float2((res.Width - textSize.X) / 2, barY);
-			r.Fonts["BigBold"].DrawText(text, textPos, Color.Gray);
+			if (!setup)
+			{
+				loadingFont = r.Fonts["BigBold"];
+				loadingText = "Loading";
+				loadingPos = new float2((Bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
+
+				versionFont = r.Fonts["Regular"];
+				versionText = CncWidgetUtils.ActiveModVersion();
+				var versionSize = versionFont.Measure(versionText);
+				versionPos = new float2(Bounds.Width - 107 - versionSize.X/2, 115 - versionSize.Y/2);
+
+				setup = true;
+			}
+
+			loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
+			versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);
 
 			for (var i = 0; i <= 8; i++)
 			{
 				var block = loadTick == i ? brightBlock : dimBlock;
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(res.Width / 2 - 114 - i * 32, barY));
+					new float2(Bounds.Width / 2 - 114 - i * 32, barY));
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(res.Width / 2 + 114 + i * 32 - 16, barY));
+					new float2(Bounds.Width / 2 + 114 + i * 32 - 16, barY));
 			}
 
 			r.EndFrame(nih);
