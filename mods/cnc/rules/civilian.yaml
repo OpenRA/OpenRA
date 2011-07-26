@@ -8,12 +8,36 @@ V01:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church
+	LeavesHusk: 
+		HuskActor: V01.Husk
+
+V01.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v25.husk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church (Destroyed)
 
 V02:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v20
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	LeavesHusk: 
+		HuskActor: V02.Husk
+
+V02.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v20.husk
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -26,6 +50,17 @@ V03:
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v21
+	LeavesHusk: 
+		HuskActor: V03.Husk
+
+V03.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v21.husk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 V04:
 	Inherits: ^CivBuilding
@@ -35,6 +70,17 @@ V04:
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v24
+	LeavesHusk: 
+		HuskActor: V04.Husk
+
+V04.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v24.husk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
 
 V05:
 	Inherits: ^CivBuilding
@@ -44,6 +90,17 @@ V05:
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v22
+	LeavesHusk: 
+		HuskActor: V05.Husk
+
+V05.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v22.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 V06:
 	Inherits: ^CivBuilding
@@ -53,6 +110,17 @@ V06:
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v26
+	LeavesHusk: 
+		HuskActor: V06.Husk
+
+V06.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v26.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 V07:
 	Inherits: ^CivBuilding
@@ -62,57 +130,142 @@ V07:
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v30
+	LeavesHusk: 
+		HuskActor: V07.Husk
+
+V07.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v30.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 V08:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v23
+	LeavesHusk: 
+		HuskActor: V08.Husk
+
+V08.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v23.husk
 
 V09:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v27
+	LeavesHusk: 
+		HuskActor: V09.Husk
+
+V09.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v27.husk
 
 V10:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v28
+	LeavesHusk: 
+		HuskActor: V10.Husk
+
+V10.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v28.husk
 
 V11:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v29
+	LeavesHusk: 
+		HuskActor: V11.Husk
+
+V11.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v29.husk
 
 V12:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v34
+	LeavesHusk: 
+		HuskActor: V12.Husk
+
+V12.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v34.husk
 
 V13:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v35
+	LeavesHusk: 
+		HuskActor: V13.Husk
+
+V13.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v35.husk
 
 V14:
 	Inherits: ^CivField
+	LeavesHusk: 
+		HuskActor: V14.Husk
+
+V14.Husk:
+	Inherits: ^CivFieldHusk
 
 V15:
 	Inherits: ^CivField
+	LeavesHusk: 
+		HuskActor: V15.Husk
+
+V15.Husk:
+	Inherits: ^CivFieldHusk
 
 V16:
 	Inherits: ^CivField
+	LeavesHusk: 
+		HuskActor: V16.Husk
+
+V16.Husk:
+	Inherits: ^CivFieldHusk
 
 V17:
 	Inherits: ^CivField
+	LeavesHusk: 
+		HuskActor: V17.Husk
+
+V17.Husk:
+	Inherits: ^CivFieldHusk
 
 V18:
 	Inherits: ^CivField
+	LeavesHusk: 
+		HuskActor: V18.Husk
+
+V18.Husk:
+	Inherits: ^CivFieldHusk
+
 
 V31:
 	Inherits: ^CivBuilding
@@ -123,6 +276,19 @@ V31:
 		Image: v05
 		OverrideTileset: DESERT
 		OverrideImage: v31
+	LeavesHusk: 
+		HuskActor: V31.Husk
+
+V31.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		Image: v05
+		OverrideTileset: DESERT
+		OverrideImage: v31.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
 V32:
 	Inherits: ^CivBuilding
 	Building:
@@ -132,6 +298,19 @@ V32:
 		Image: v05
 		OverrideTileset: DESERT
 		OverrideImage: v32
+	LeavesHusk: 
+		HuskActor: V32.Husk
+
+V32.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		Image: v05
+		OverrideTileset: DESERT
+		OverrideImage: v32.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
 V33:
 	Inherits: ^CivBuilding
 	Building:
@@ -141,13 +320,32 @@ V33:
 		Image: v05
 		OverrideTileset: DESERT
 		OverrideImage: v33
+	LeavesHusk: 
+		HuskActor: V33.Husk
+
+V33.Husk:
+	Inherits: ^CivBuildingHusk
+	RenderBuilding:
+		Image: v05
+		OverrideTileset: DESERT
+		OverrideImage: v33.husk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 ARCO:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
+	LeavesHusk: 
+		HuskActor: ARCO.Husk
+
+ARCO.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
 
 BARB:
 	Inherits: ^Wall

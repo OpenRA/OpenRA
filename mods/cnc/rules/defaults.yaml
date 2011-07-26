@@ -236,9 +236,8 @@
 
 ^CivBuilding:
 	Inherits: ^Building
+	-DeadBuildingState:
 	-Buildable:
-	DeadBuildingState:
-		Zombie: true
 	Health:
 		HP: 400
 	Armor: 
@@ -267,21 +266,32 @@
 	Inherits: ^CivBuilding
 	Capturable:
 	RepairableBuilding:
-	-DeadBuildingState:
 	RevealsShroud:
 		Range: 3
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
-	DeadBuildingState:
-		Zombie: true
 	Tooltip:
 		Name: Field
 	RenderBuilding:
 		OverrideTileset: DESERT
 		OverrideImage: v23
 	-WithBuildingExplosion:
+
+^CivFieldHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: _
+	RenderBuilding:
+		OverrideTileset: DESERT
+		OverrideImage: v23.husk
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Field (Destroyed)
+	BelowUnits:
 
 ^Wall:
 	AppearsOnRadar:
