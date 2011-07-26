@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
-			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = ActiveModVersion;
+			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = CncWidgetUtils.ActiveModVersion;
 
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
@@ -53,13 +53,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Action doNothing = () => {};
 			
 			menu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
-				PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
+				CncWidgetUtils.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
 			
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.GetWidget<ButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
-				PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
+				CncWidgetUtils.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 			
 			menu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
@@ -94,31 +94,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			if (iop != null && iop.ObjectivesPanel != null)
 				Game.OpenWindow(world, iop.ObjectivesPanel);
-		}
-
-		static string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
-		}
-
-		public void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
-		{
-			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
-			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
-			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
-			
-			prompt.GetWidget<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
-			{
-				Widget.CloseWindow();
-				onConfirm();
-			};
-			
-			prompt.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
-			{
-				Widget.CloseWindow();
-				onCancel();
-			};
 		}
 	}
 }

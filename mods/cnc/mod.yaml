@@ -76,7 +76,7 @@ ChromeLayout:
 	mods/cnc/chrome/modchooser.yaml
 	mods/cnc/chrome/preferences.yaml
 	mods/cnc/chrome/cheats.yaml
-	mods/cnc/chrome/dropdowns.yaml
+	mods/cnc/chrome/dialogs.yaml
 	mods/cnc/chrome/objectives.yaml
 	mods/cnc/chrome/tooltips.yaml
 

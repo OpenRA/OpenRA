@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
 			rootMenu = widget.GetWidget("MENU_BACKGROUND");
-			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = ActiveModVersion;
+			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = CncWidgetUtils.ActiveModVersion;
 
 			// Menu buttons
 			var mainMenu = widget.GetWidget("MAIN_MENU");
@@ -128,13 +128,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			
 			rootMenu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
 		}
-		
-		static string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
-		}
-		
+
 		void RemoveShellmapUI()
 		{
 			rootMenu.Parent.RemoveChild(rootMenu);

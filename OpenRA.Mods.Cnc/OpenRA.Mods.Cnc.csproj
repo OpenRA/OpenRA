@@ -107,6 +107,7 @@
     <Compile Include="Widgets\Logic\CncColorPickerLogic.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="RenderBuildingRefinery.cs" />
+    <Compile Include="Widgets\CncWidgetUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
