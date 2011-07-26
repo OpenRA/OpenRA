@@ -526,11 +526,13 @@ bio:
 		Start: 0
 	damaged-idle:
 		Start: 1
-	dead:
-		Start: 2
 	make: biomake
 		Start: 0
 		Length: *
+
+bio.husk:
+	idle: bio
+		Start: 2
 miss:
 	idle:
 		Start: 0

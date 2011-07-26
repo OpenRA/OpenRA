@@ -248,8 +248,28 @@
 	WithBuildingExplosion:
 	-RepairableBuilding:
 	-Capturable:
+	-Sellable:
 	Tooltip:
 		Name: Civilian Building
+
+^CivBuildingHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: _
+	RenderBuilding:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Civilian Building (Destroyed)
+
+^TechBuilding:
+	Inherits: ^CivBuilding
+	Capturable:
+	RepairableBuilding:
+	-DeadBuildingState:
+	RevealsShroud:
+		Range: 3
 
 ^CivField:
 	Inherits: ^CivBuilding
