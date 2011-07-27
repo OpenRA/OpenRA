@@ -83,7 +83,7 @@ mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
 mod_ra_DEPS			= $(STD_MOD_DEPS)
 mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS)
-mod_ra_EXTRA_CMDS		= mono RALint.exe ra
+mod_ra_EXTRA_CMDS		= mono --debug RALint.exe ra
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -93,7 +93,7 @@ mod_cnc_TARGET		= mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND		= library
 mod_cnc_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_cnc_EXTRA_CMDS	= mono RALint.exe cnc
+mod_cnc_EXTRA_CMDS	= mono --debug RALint.exe cnc
 PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
