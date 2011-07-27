@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 				this.order = order;
 				this.power = power;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
-				tile = UiOverlay.SynthesizeTile(0x04);
+				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
             public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
@@ -142,10 +142,9 @@ namespace OpenRA.Mods.RA
 				this.sourceLocation = sourceLocation;
 				this.range = (power.Info as ChronoshiftPowerInfo).Range;
 
-                // todo: this burns up more texture space every time someone uses chronoshift.
-				validTile = UiOverlay.SynthesizeTile(0x0f);
-				invalidTile = UiOverlay.SynthesizeTile(0x08);
-				sourceTile = UiOverlay.SynthesizeTile(0x04);
+				validTile = SequenceProvider.GetSequence("overlay", "target-valid").GetSprite(0);
+				invalidTile = SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
+				sourceTile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 			
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)

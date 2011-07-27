@@ -22,8 +22,6 @@ namespace OpenRA.Graphics
 		public readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
-
-		public readonly UiOverlay uiOverlay;
 		internal readonly HardwarePalette palette;
 
 		internal WorldRenderer(World world)
@@ -35,7 +33,6 @@ namespace OpenRA.Graphics
 			
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
-			uiOverlay = new UiOverlay();
 		}
 		
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }

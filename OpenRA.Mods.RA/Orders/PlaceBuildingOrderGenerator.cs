@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Orders
 		readonly string Building;
 		readonly IEnumerable<Renderable> Preview;
 		BuildingInfo BuildingInfo { get { return Rules.Info[ Building ].Traits.Get<BuildingInfo>(); } }
+		Sprite buildOk, buildBlocked;
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
@@ -31,6 +32,9 @@ namespace OpenRA.Mods.RA.Orders
 			
 			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
 								.RenderPreview(Rules.Info[Building], producer.Owner);
+
+			buildOk = SequenceProvider.GetSequence("overlay", "build-valid").GetSprite(0);
+			buildBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
@@ -95,8 +99,9 @@ namespace OpenRA.Mods.RA.Orders
 				foreach (var t in FootprintUtils.Tiles(Building, BuildingInfo, topLeft))
 					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo.WaterBound) && res.GetResource(t) == null );
 			}
-			
-			wr.uiOverlay.DrawGrid( wr, cells );
+
+			foreach( var c in cells )
+				( c.Value ? buildOk : buildBlocked ).DrawAt( wr, Game.CellSize * c.Key, "terrain" );
 		}
 
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }

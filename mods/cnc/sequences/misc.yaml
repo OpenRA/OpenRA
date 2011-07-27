@@ -212,3 +212,15 @@ pips:
 	groups: pdigits
 		Start: 0
 		Length: *
+
+overlay:
+	build-valid:
+		Start: 0
+	build-invalid:
+		Start: 1
+	target-select:
+		Start: 2
+	target-valid:
+		Start: 0
+	target-invalid:
+		Start: 1

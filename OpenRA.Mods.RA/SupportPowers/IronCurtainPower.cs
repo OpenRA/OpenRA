@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 				this.order = order;
 				this.power = power;
 				this.range = (power.Info as IronCurtainPowerInfo).Range;
-				tile = UiOverlay.SynthesizeTile(0x04);
+				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
