@@ -571,6 +571,26 @@ v35.husk:
 	idle: v35
 		Start: 2
 
+v36:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v36.husk:
+	idle: v36
+		Start: 2
+
+v37:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v37.husk:
+	idle: v37
+		Start: 2
+
 arco:
 	idle:
 		Start: 0
