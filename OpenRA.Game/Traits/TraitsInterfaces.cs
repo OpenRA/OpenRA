@@ -73,6 +73,7 @@ namespace OpenRA.Traits
 
     public interface IDisable { bool Disabled { get; } }
     public interface IExplodeModifier { bool ShouldExplode(Actor self); }
+    public interface IHuskModifier { string HuskActor(Actor self); }
     public interface INudge { void OnNudge(Actor self, Actor nudger, bool force); }
 
     public interface IRadarSignature

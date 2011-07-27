@@ -229,7 +229,10 @@ HARV:
 	GpsDot:
 		String:Harvester
 	LeavesHusk:
-		HuskActor: HARV.Husk
+		HuskActor: HARV.EmptyHusk
+	HarvesterHuskModifier:
+		FullHuskActor: HARV.FullHusk
+		FullnessThreshold: 50
 
 MCV:
 	Inherits: ^Vehicle
@@ -468,12 +471,19 @@ TRUK:
 		Speed: 6
 		AnimKey: turret
 
-HARV.Husk:
+HARV.FullHusk:
 	Inherits: ^Husk
 	Tooltip:
 		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk
+
+HARV.EmptyHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Harvester)
+	RenderUnit:
+		Image: hhusk2
 
 MCV.Husk:
 	Inherits: ^Husk

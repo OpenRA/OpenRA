@@ -8,25 +8,33 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA
 {
-	class LeavesHuskInfo : TraitInfo<LeavesHusk>
+	public class LeavesHuskInfo : ITraitInfo
 	{
 		[ActorReference]
 		public readonly string HuskActor = null;
+
+		public object Create( ActorInitializer init ) { return new LeavesHusk(this); }
 	}
 
-	class LeavesHusk : INotifyKilled
+	public class LeavesHusk : INotifyKilled
 	{
+		LeavesHuskInfo Info;
+		public LeavesHusk(LeavesHuskInfo info)
+		{
+			Info = info;
+		}
+
 		public void Killed(Actor self, AttackInfo e)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				var info = self.Info.Traits.Get<LeavesHuskInfo>();
 				var td = new TypeDictionary()
 				{
 					new LocationInit( self.Location ),
@@ -43,7 +51,11 @@ namespace OpenRA.Mods.RA
 	            if (mobile != null)
 					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location)));
 
-				var husk = w.CreateActor(info.HuskActor, td);
+				var huskActor = self.TraitsImplementing<IHuskModifier>()
+					.Select(ihm => ihm.HuskActor(self))
+					.FirstOrDefault(a => a != null);
+
+				var husk = w.CreateActor(huskActor ?? Info.HuskActor, td);
 				var turreted = self.TraitOrDefault<Turreted>();
 				if (turreted != null)
 					foreach (var p in husk.TraitsImplementing<ThrowsParticle>())

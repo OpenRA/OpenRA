@@ -437,6 +437,11 @@ hhusk:
 		Start: 0
 		Facings: 32
 
+hhusk2:
+	idle:
+		Start: 0
+		Facings: 32
+
 1tnk:
 	idle:
 		Start: 0

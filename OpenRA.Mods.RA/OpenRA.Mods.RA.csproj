@@ -357,6 +357,7 @@
     <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
+    <Compile Include="HarvesterHuskModifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
