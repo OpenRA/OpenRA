@@ -34,6 +34,7 @@ NEW:
 		Fixed bugs with selling refineries
 		Fixed superweapons being fired from disabled structures when multiple are available
 		Added "Mission Accomplished" / "Mission Failed" notifications when you win or lose a multiplayer game
+		Fixed husks jumping to the middle of a cell when a unit dies
 	C&C:
 		Completely overhauled UI
 		Added support for installing from original game disks
@@ -52,9 +53,13 @@ NEW:
 		Server/Skirmish creation selects the last played map by default
 		New animations for cloak and reveal map crates (from C&C Sole Survivor)
 		Added 8 new maps by Petrenko
+		Tweaked most existing maps
 		Removed East vs West 2 map
 		Fixed Harvester/Refinery docking animation beneath the fog of war
 		Improved Obelisk laser effect
+		Added a blue pip for harvested blue tiberium
+		Changed the Refinery tower lights to indicate the amount of stored tiberium
+		Fixed an exploit with Nod airfields on the right side of the map
 		Balance changes:
 			Refinery footprint changed, price decreased to $1500
 			Flame tank explodes on death, damage reduced by 40%
@@ -72,11 +77,13 @@ NEW:
 			Bridge HP halved
 			Infantry tiberium avoidance factor increased by 5x
 			Decrease tiberium damage to infantry
+			Rebalanced tiberium value / harvester capacity / harvesting speed
 			Reduced Grenadier death damage
 			Mammoth tank regen rate halved, Missile reload rate decreased
 			Building repair speed, price doubled
 			Recon Bike damage increased 16%
 			Infantry can be crushed by tanks
+			Removed build area radius around tech structures
 	Red Alert:
 		Fixed firing offsets on Flame trooper / Tesla trooper / Telsa tank / Tesla coil / Flame turret
 		Fixed bounties using incorrect unit value
@@ -89,7 +96,8 @@ NEW:
 		Added support for Counterstrike & Aftermath music tracks
 		Added player color to diplomacy panel
 		Added capturable oil refinery tech structure
-		Added new harvester artwork for half-empty/empty states, and husk
+		Added new harvester artwork for half-empty/empty states
+		Added new MCV husk artwork
 		Balance changes:
 			Medic cost reduced to $500
 			Mines are visible to friendlies and spectators
