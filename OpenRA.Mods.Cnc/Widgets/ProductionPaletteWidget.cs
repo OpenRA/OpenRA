@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
 		public string TooltipActor { get; private set; }
+		public readonly World world;
+
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
 		public ProductionQueue CurrentQueue
@@ -60,7 +62,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Animation cantBuild, clock;
 		Rectangle eventBounds = Rectangle.Empty;
 		readonly WorldRenderer worldRenderer;
-		readonly World world;
 		readonly SpriteFont overlayFont;
 		readonly float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 

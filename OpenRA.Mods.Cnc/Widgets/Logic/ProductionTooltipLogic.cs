@@ -9,11 +9,13 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
+using OpenRA.Support;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Support;
-using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -24,6 +26,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		                              [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
 		                              [ObjectCreator.Param] ProductionPaletteWidget palette)
 		{
+			var pm = palette.world.LocalPlayer.PlayerActor.Trait<PowerManager>();
+			var pr = palette.world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+
 			widget.IsVisible = () => palette.TooltipActor != null;
 			var nameLabel = widget.GetWidget<LabelWidget>("NAME");
 			var requiresLabel = widget.GetWidget<LabelWidget>("REQUIRES");
@@ -33,13 +38,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
-			var name = "";
-			var requires = "";
-			var power = "";
-			var time = "";
-			var cost = "";
-
 			string lastActor = null;
+
 			tooltipContainer.BeforeRender = () =>
 			{
 				var actor = palette.TooltipActor;
@@ -49,30 +49,38 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var info = Rules.Info[actor];
 				var tooltip = info.Traits.Get<TooltipInfo>();
 				var buildable = info.Traits.Get<BuildableInfo>();
-				name = tooltip.Name;
-				cost = "$: {0}".F(info.Traits.Get<ValuedInfo>().Cost);
-				time = "T: {0}".F(WidgetUtils.FormatTime(palette.CurrentQueue.GetBuildTime(actor)));
-
+				var cost = info.Traits.Get<ValuedInfo>().Cost;
 				var bi = info.Traits.GetOrDefault<BuildingInfo>();
-				power = bi != null ? "P: {0}".F(bi.Power) : "";
+
+				nameLabel.GetText = () => tooltip.Name;
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(a));
-				requires = prereqs.Any() ? "Requires {0}".F(string.Join(", ", prereqs.ToArray())) : "";
+				var requiresString = prereqs.Any() ? "Requires {0}".F(string.Join(", ", prereqs.ToArray())) : "";
+				requiresLabel.GetText = () => requiresString;
 
-				var leftWidth = Math.Max(font.Measure(name).X, requiresFont.Measure(requires).X);
-				var rightWidth = new [] {font.Measure(power).X, font.Measure(time).X, font.Measure(cost).X}.Aggregate(Math.Max);
+				var power = bi != null ? bi.Power : 0;
+				var powerString = "P: {0}".F(power);
+				powerLabel.GetText = () => powerString;
+				powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
+					? Color.White : Color.Red;
+				powerLabel.IsVisible = () => power != 0;
+
+				var timeString = "T: {0}".F(WidgetUtils.FormatTime(palette.CurrentQueue.GetBuildTime(actor)));
+				timeLabel.GetText = () => timeString;
+
+				var costString = "$: {0}".F(cost);
+				costLabel.GetText = () => costString;
+				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayOre >= cost 
+				    ? Color.White : Color.Red;
+
+				var leftWidth = Math.Max(font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X);
+				var rightWidth = new [] {font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X}.Aggregate(Math.Max);
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2*nameLabel.Bounds.X;
 				widget.Bounds.Width = leftWidth + rightWidth + 3*nameLabel.Bounds.X;
+
+				widget.Bounds.Height = power != 0 ? 65 : 45;
 				lastActor = actor;
-
-				widget.Bounds.Height = bi != null ? 65 : 45;
 			};
-
-			nameLabel.GetText = () => name;
-			requiresLabel.GetText = () => requires;
-			powerLabel.GetText = () => power;
-			timeLabel.GetText = () => time;
-			costLabel.GetText = () => cost;
 		}
 
 		static string ActorName( string a )
