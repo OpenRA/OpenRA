@@ -377,6 +377,11 @@ mcv:
 		Start: 0
 		Facings: 32
 
+mcvhusk:
+	idle:
+		Start: 0
+		Facings: 32
+
 truk:
 	idle:
 		Start: 0

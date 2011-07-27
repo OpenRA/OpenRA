@@ -264,6 +264,8 @@ MCV:
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
+	LeavesHusk:
+		HuskActor: MCV.Husk
 
 JEEP:
 	Inherits: ^Vehicle
@@ -472,6 +474,13 @@ HARV.Husk:
 		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk
+
+MCV.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (MCV)
+	RenderUnit:
+		Image: mcvhusk
 
 TTNK:
 	Inherits: ^Tank
