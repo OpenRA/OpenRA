@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 
 		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-		public float Fullness { get { return (float)contents.Values.Sum() / Info.Capacity; } }
+		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
 		
 		public void AcceptResource(ResourceType type)
 		{

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void Tick(Actor self)
 		{
-			var desiredState = (int)(harv.Fullness * (info.ImagesByFullness.Length - 1));
+			var desiredState = harv.Fullness * (info.ImagesByFullness.Length - 1) / 100;
 			var desiredImage = info.ImagesByFullness[desiredState];
 
 			if (anim.Name != desiredImage)
