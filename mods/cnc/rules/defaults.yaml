@@ -256,7 +256,7 @@
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
-		Footprint: _
+		Footprint: x
 	RenderBuilding:
 	EditorAppearance:
 		RelativeToTopLeft: yes
