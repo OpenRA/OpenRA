@@ -410,20 +410,26 @@ v19.husk:
 v20:
 	idle:
 		Start: 0
+		Length: 3
+		Tick: 120
 	damaged-idle:
-		Start: 1
+		Start: 3
+		Length: 3
+		Tick: 120
 
 v20.husk:
 	idle: v20
-		Start: 2
+		Start: 6
 
 v21:
 	idle:
 		Start: 0
 		Length: 3
+		Tick: 120
 	damaged-idle:
 		Start: 3
 		Length: 3
+		Tick: 120
 
 v21.husk:
 	idle: v21
@@ -433,9 +439,11 @@ v22:
 	idle:
 		Start: 0
 		Length: 3
+		Tick: 120
 	damaged-idle:
 		Start: 3
 		Length: 3
+		Tick: 120
 
 v22.husk:
 	idle: v22
@@ -444,12 +452,16 @@ v22.husk:
 v23:
 	idle:
 		Start: 0
+		Length: 3
+		Tick: 120
 	damaged-idle:
-		Start: 1
+		Start: 3
+		Length: 3
+		Tick: 120
 
 v23.husk:
 	idle: v23
-		Start: 2
+		Start: 6
 
 v24:
 	idle:
