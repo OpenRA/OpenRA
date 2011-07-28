@@ -108,6 +108,9 @@ namespace OpenRA.Widgets
 		{
 			return Sync.CheckSyncUnchanged( world, () =>
 			{
+				if (SelectionBox != null)
+					return null;	/* always show an arrow while selecting */
+
 				var mi = new MouseInput
 				{
 					Location = pos,
