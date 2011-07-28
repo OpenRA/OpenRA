@@ -38,7 +38,7 @@ namespace OpenRA.Renderer.Null
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }
 
-		public void Clear(Color c) { }
+		public void Clear() { }
 
 		public void Present() { }
 		public void PumpInput(IInputHandler ih)

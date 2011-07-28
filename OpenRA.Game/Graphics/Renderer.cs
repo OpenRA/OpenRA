@@ -75,7 +75,7 @@ namespace OpenRA.Graphics
 
 		public void BeginFrame(float2 scroll, float zoom)
 		{
-			device.Clear(Color.Black);
+			device.Clear();
 
 			WorldLineRenderer.LineWidth = zoom;
 			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);

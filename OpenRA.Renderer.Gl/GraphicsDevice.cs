@@ -79,7 +79,7 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 		}
 
-		public void Clear( Color c )
+		public void Clear()
 		{
 			Gl.glClearColor( 0, 0, 0, 0 );
 			ErrorHandler.CheckGlError();

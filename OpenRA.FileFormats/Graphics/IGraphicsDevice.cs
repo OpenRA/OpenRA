@@ -42,7 +42,7 @@ namespace OpenRA.FileFormats.Graphics
 		Size WindowSize { get; }
 		int GpuMemoryUsed { get; }
 
-		void Clear( Color color );
+		void Clear();
 		void Present();
 		void PumpInput(IInputHandler inputHandler);
 
