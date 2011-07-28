@@ -80,7 +80,8 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				ApplyOrders(world, xy, mi);
+				if (SelectionBox == null)	/* don't issue orders while selecting */
+					ApplyOrders(world, xy, mi);
 			
 			return true;
 		}
