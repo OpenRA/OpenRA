@@ -27,10 +27,13 @@ namespace OpenRA.Mods.RA.Render
 			var info = self.Info.Traits.Get<RenderUnitSpinnerInfo>();
 
 			var spinnerAnim = new Animation(GetImage(self));
+			var facing = self.Trait<IFacing>();
+
 			spinnerAnim.PlayRepeating("spinner");
+
 			anims.Add("spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Combat.GetTurretPosition( self, self.Trait<IFacing>(), new Turret(info.Offset)),
+				() => Combat.GetTurretPosition( self, facing, new Turret(info.Offset)),
 				null ) { ZOffset = 1 } );
 		}
 	}
