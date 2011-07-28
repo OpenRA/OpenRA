@@ -9,12 +9,15 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
 	class GiveCashCrateActionInfo : CrateActionInfo
 	{
 		public int Amount = 2000;
+		public bool UseCashTick = false;
+
 		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.self, this); }
 	}
 
@@ -29,7 +32,11 @@ namespace OpenRA.Mods.RA
 			{
 				var amount = (info as GiveCashCrateActionInfo).Amount;
 				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
+
+				if ((info as GiveCashCrateActionInfo).UseCashTick)
+					w.Add(new CashTick(amount, 20, 1, collector.CenterLocation, collector.Owner.ColorRamp.GetColor(0)));
 			});
+
 			base.Activate(collector);
 		}
 	}

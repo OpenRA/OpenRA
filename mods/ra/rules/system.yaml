@@ -237,7 +237,7 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
-		Effect: dollar
+		UseCashTick: yes
 	LevelUpCrateAction:
 		SelectionShares: 40
 	ExplodeCrateAction@fire:

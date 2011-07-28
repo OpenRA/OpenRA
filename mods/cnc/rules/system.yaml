@@ -164,7 +164,7 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 20
-		Effect: dollar
+		UseCashTick: yes
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
