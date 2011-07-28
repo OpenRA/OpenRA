@@ -249,7 +249,6 @@
     <Compile Include="TargetableUnit.cs" />
     <Compile Include="TeslaInstantKills.cs" />
     <Compile Include="Crates\ResetRadarCrateAction.cs" />
-    <Compile Include="ThrowsParticles.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Turreted.cs" />
@@ -358,6 +357,7 @@
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
     <Compile Include="HarvesterHuskModifier.cs" />
+    <Compile Include="ThrowsParticle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
