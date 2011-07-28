@@ -22,17 +22,26 @@ namespace OpenRA.Mods.RA
 
 	public class Turreted : ITick, ISync
 	{
-		[Sync]
-		public int turretFacing = 0;
+		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
 		TurretedInfo info;
 		IFacing facing;
 		
+		public static int GetInitialTurretFacing(ActorInitializer init, int def)
+		{
+			if (init.Contains<TurretFacingInit>())
+				return init.Get<TurretFacingInit,int>();
+
+			if (init.Contains<FacingInit>())
+				return init.Get<FacingInit,int>();
+
+			return def;
+		}
+
 		public Turreted(ActorInitializer init, TurretedInfo info)
 		{
 			this.info = info;
-			turretFacing = info.InitialFacing;
-			turretFacing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
+			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
 			facing = init.self.TraitOrDefault<IFacing>();
 		}
 

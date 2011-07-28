@@ -15,7 +15,7 @@ namespace OpenRA.Traits
 	{
 		public object Create(ActorInitializer init) { return new ActorStance(init); }
 	}
-	
+
 	public class ActorStance
 	{
 		// Stances modify default actor behavior
@@ -31,22 +31,12 @@ namespace OpenRA.Traits
 		// Doesn't do anything... yet
 		public ActorStance(ActorInitializer init) {}
 	}
-	
+
 	public class ActorStanceInit : IActorInit<ActorStance.Stance>
 	{
-		[FieldFromYamlKey]
-		public readonly ActorStance.Stance value = ActorStance.Stance.None;
-		
+		[FieldFromYamlKey] public readonly ActorStance.Stance value = ActorStance.Stance.None;
 		public ActorStanceInit() { }
-		
-		public ActorStanceInit( ActorStance.Stance init )
-		{
-			value = init;
-		}
-		
-		public ActorStance.Stance Value( World world )
-		{
-			return value;	
-		}
+		public ActorStanceInit( ActorStance.Stance init ) { value = init; }
+		public ActorStance.Stance Value( World world ) { return value; }
 	}
 }

@@ -133,27 +133,15 @@ namespace OpenRA.Traits
 				DisplayHp = (2 * DisplayHp + hp) / 3;
 		}
 	}
-	
-	
+
 	public class HealthInit : IActorInit<float>
 	{
-		[FieldFromYamlKey]
-		public readonly float value = 1f;
-		
+		[FieldFromYamlKey] public readonly float value = 1f;
 		public HealthInit() { }
-		
-		public HealthInit( float init )
-		{
-			value = init;
-		}
-		
-		public float Value( World world )
-		{
-			return value;	
-		}
+		public HealthInit( float init ) { value = init; }
+		public float Value( World world ) { return value; }
 	}
-	
-	
+
 	public static class HealthExts
 	{
 		public static bool IsDead(this Actor self)

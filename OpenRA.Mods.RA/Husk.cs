@@ -89,19 +89,9 @@ namespace OpenRA.Mods.RA
 
 	public class HuskSpeedInit : IActorInit<int>
 	{
-		[FieldFromYamlKey]
-		public readonly int value = 0;
-
+		[FieldFromYamlKey] public readonly int value = 0;
 		public HuskSpeedInit() { }
-
-		public HuskSpeedInit( int init )
-		{
-			value = init;
-		}
-
-		public int Value( World world )
-		{
-			return value;
-		}
+		public HuskSpeedInit( int init ) { value = init; }
+		public int Value( World world ) { return value; }
 	}
 }

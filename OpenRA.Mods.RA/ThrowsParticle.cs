@@ -14,22 +14,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ThrowsParticleInfo : ITraitInfo
+	class ThrowsParticleInfo : ITraitInfo, Requires<RenderUnitInfo>
 	{
 		public readonly string Anim = null;
 		public readonly int[] Offset = new[] { 0, 0, 0, 0 };
 		public readonly int[] Spread = new[] { 0, 0 };
 		public readonly float Speed = 20;
 		public readonly string AnimKey = null;
-		public readonly bool UseTurretFacing = true;
 		public readonly float ROT = 15;
 
-		public object Create(ActorInitializer init) { return new ThrowsParticle(this); }
+		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
 
 	class ThrowsParticle : ITick
 	{
-		ThrowsParticleInfo info;
 		float2 pos;
 		float alt;
 
@@ -40,34 +38,29 @@ namespace OpenRA.Mods.RA
 
 		const float gravity = 1.3f;
 
-		public ThrowsParticle(ThrowsParticleInfo info) { this.info = info; }
-		public float? InitialFacing = null;
-	
+		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
+		{
+			var self = init.self;
+			var ifacing = self.Trait<IFacing>();
+			var ru = self.Trait<RenderUnit>();
+
+			alt = 0;
+			facing = Turreted.GetInitialTurretFacing( init, 0 );
+			pos = Combat.GetTurretPosition(self, ifacing, new Turret(info.Offset));
+
+			v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
+			dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
+			va = info.Speed;
+
+			var anim = new Animation(ru.GetImage(self), () => (int)facing);
+			anim.PlayRepeating(info.Anim);
+
+			ru.anims.Add(info.AnimKey, new AnimationWithOffset(
+				anim, () => pos - new float2(0, alt), null));
+		}
+
 		public void Tick(Actor self)
 		{
-			if (info != null)
-			{
-				alt = 0;
-				var ifacing = self.Trait<IFacing>();
-				pos = Combat.GetTurretPosition(self, ifacing, new Turret(info.Offset));
-				var ru = self.Trait<RenderUnit>();
-
-				v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
-				dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
-				va = info.Speed;
-
-				if (!info.UseTurretFacing) InitialFacing = null;
-				facing = InitialFacing ?? ifacing.Facing;
-
-				var anim = new Animation(ru.GetImage(self), () => (int)facing);
-				anim.PlayRepeating(info.Anim);
-
-				ru.anims.Add(info.AnimKey, new AnimationWithOffset(
-					anim, () => pos - new float2(0, alt), null));
-
-				info = null;
-			}
-
 			va -= gravity;
 			alt += va;
 

@@ -43,8 +43,13 @@ namespace OpenRA.Mods.RA
 					new SkipMakeAnimsInit()
 				};
 
-				if (self.HasTrait<IFacing>())
-					td.Add(new FacingInit( self.Trait<IFacing>().Facing ));
+				var facing = self.TraitOrDefault<IFacing>();
+				if (facing != null)
+					td.Add(new FacingInit( facing.Facing ));
+
+				var turreted = self.TraitOrDefault<Turreted>();
+				if (turreted != null)
+					td.Add( new TurretFacingInit(turreted.turretFacing) );
 
 				// Allows the husk to drag to its final position
 	            var mobile = self.TraitOrDefault<Mobile>();
@@ -55,11 +60,7 @@ namespace OpenRA.Mods.RA
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				var husk = w.CreateActor(huskActor ?? Info.HuskActor, td);
-				var turreted = self.TraitOrDefault<Turreted>();
-				if (turreted != null)
-					foreach (var p in husk.TraitsImplementing<ThrowsParticle>())
-						p.InitialFacing = turreted.turretFacing;
+				w.CreateActor(huskActor ?? Info.HuskActor, td);
 			});
 		}
 	}

@@ -17,6 +17,7 @@ namespace OpenRA
 	{
 		public readonly Actor self;
 		public World world { get { return self.World; } }
+
 		internal TypeDictionary dict;
 
 		public ActorInitializer( Actor actor, TypeDictionary dict )
@@ -25,23 +26,9 @@ namespace OpenRA
 			this.dict = dict;
 		}
 
-		public T Get<T>()
-			where T : IActorInit
-		{
-			return dict.Get<T>();
-		}
-
-		public U Get<T,U>()
-			where T : IActorInit<U>
-		{
-			return dict.Get<T>().Value( world );
-		}
-		
-		public bool Contains<T>()
-			where T : IActorInit
-		{
-			return dict.Contains<T>();
-		}
+		public T Get<T>() where T : IActorInit { return dict.Get<T>(); }
+		public U Get<T,U>()	where T : IActorInit<U> { return dict.Get<T>().Value( world ); }
+		public bool Contains<T>() where T : IActorInit { return dict.Contains<T>(); }
 	}
 	
 	public interface IActorInit {}
@@ -53,91 +40,53 @@ namespace OpenRA
 
 	public class FacingInit : IActorInit<int>
 	{
-		[FieldFromYamlKey]
-		public readonly int value = 128;
-		
+		[FieldFromYamlKey] public readonly int value = 128;
 		public FacingInit() { }
-		
-		public FacingInit( int init )
-		{
-			value = init;
-		}
-		
-		public int Value( World world )
-		{
-			return value;	
-		}
+		public FacingInit( int init ) { value = init; }
+		public int Value( World world ) { return value; }
+	}
+
+	public class TurretFacingInit : IActorInit<int>
+	{
+		[FieldFromYamlKey] public readonly int value = 128;
+		public TurretFacingInit() { }
+		public TurretFacingInit( int init ) { value = init; }
+		public int Value( World world ) { return value; }
 	}
 
 	public class AltitudeInit : IActorInit<int>
 	{
-		[FieldFromYamlKey]
-		public readonly int value = 0;
-		
+		[FieldFromYamlKey] public readonly int value = 0;
 		public AltitudeInit() { }
-		
-		public AltitudeInit( int init )
-		{
-			value = init;
-		}
-		
-		public int Value( World world )
-		{
-			return value;	
-		}
+		public AltitudeInit( int init ) { value = init; }
+		public int Value( World world ) { return value; }
 	}
 
 	public class LocationInit : IActorInit<int2>
 	{
-		[FieldFromYamlKey]
-		public readonly int2 value = int2.Zero;
-
+		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
 		public LocationInit() { }
-
-		public LocationInit( int2 init )
-		{
-			value = init;
-		}
-
-		public int2 Value( World world )
-		{
-			return value;
-		}
+		public LocationInit( int2 init ) { value = init; }
+		public int2 Value( World world ) { return value; }
 	}
 
 	public class CenterLocationInit : IActorInit<int2>
 	{
-		[FieldFromYamlKey]
-		public readonly int2 value = int2.Zero;
-
+		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
 		public CenterLocationInit() { }
-
-		public CenterLocationInit( int2 init )
-		{
-			value = init;
-		}
-
-		public int2 Value( World world )
-		{
-			return value;
-		}
+		public CenterLocationInit( int2 init ) { value = init; }
+		public int2 Value( World world ) { return value; }
 	}
 
 	public class OwnerInit : IActorInit<Player>
 	{
-		[FieldFromYamlKey]
-		public readonly string PlayerName = "Neutral";
+		[FieldFromYamlKey] public readonly string PlayerName = "Neutral";
 		Player player;
 
 		public OwnerInit() { }
+		public OwnerInit( string playerName ) { this.PlayerName = playerName; }
 
-		public OwnerInit( string playerName )
-		{
-			this.PlayerName = playerName;
-		}
-
-		public OwnerInit( Player player )
-		{
+		public OwnerInit( Player player ) {
 			this.player = player;
 			this.PlayerName = player.InternalName;
 		}
