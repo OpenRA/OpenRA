@@ -10,6 +10,7 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+
 namespace OpenRA.Traits
 {	
 	public class PlayerColorPaletteInfo : ITraitInfo
@@ -25,6 +26,7 @@ namespace OpenRA.Traits
 	{
 		readonly Player owner;
 		readonly PlayerColorPaletteInfo info;
+
 		public PlayerColorPalette( Player owner, PlayerColorPaletteInfo info )
 		{
 			this.owner = owner;

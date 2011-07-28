@@ -14,13 +14,14 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public abstract class RenderSimpleInfo : ITraitInfo
+	public class RenderSimpleInfo : ITraitInfo
 	{
 		public readonly string Image = null;
 		public readonly string Palette = null;
 		public readonly string PlayerPalette = "player";
 		public readonly float Scale = 1f;
-		public abstract object Create(ActorInitializer init);
+
+		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
 		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
@@ -30,7 +31,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public abstract class RenderSimple : IRender, ITick
+	public class RenderSimple : IRender, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
@@ -68,6 +69,11 @@ namespace OpenRA.Traits
 		{
 			anims.Add("", new Animation(GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
+		}
+
+		public RenderSimple(Actor self) : this( self, MakeFacingFunc(self) )
+		{
+			anim.PlayRepeating("idle");
 		}
 
 		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette + p.InternalName; }

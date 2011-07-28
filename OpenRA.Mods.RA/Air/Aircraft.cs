@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftFacing(init.self); }
 	}
+
 	public class DebugAircraftFacing : ISync
 	{
 		readonly Aircraft a;
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
 	}
+
 	public class DebugAircraftSubPxX : ISync
 	{
 		readonly Aircraft a;
@@ -45,6 +47,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
 	}
+
 	public class DebugAircraftSubPxY : ISync
 	{
 		readonly Aircraft a;
@@ -56,6 +59,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
 	}
+
 	public class DebugAircraftAltitude : ISync
 	{
 		readonly Aircraft a;
@@ -63,7 +67,7 @@ namespace OpenRA.Mods.RA.Air
 		[Sync] public int foo { get { return a.Altitude; } }
 	}
 	
-	public class AircraftInfo : ITraitInfo
+	public class AircraftInfo : ITraitInfo, IFacingInfo
 	{
 		public readonly int CruiseAltitude = 30;
 		[ActorReference]

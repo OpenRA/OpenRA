@@ -267,11 +267,12 @@
 		Types:Tree
 
 ^Husk:
+	Husk:
+	RenderUnit:
 	Health:
 		HP: 140
 	Armor:
 		Type: Heavy
-	Husk:
 	Selectable: 
 		Priority: -1
 	HiddenUnderFog:

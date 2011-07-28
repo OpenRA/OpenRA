@@ -19,7 +19,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Move
 {
-    public class MobileInfo : ITraitInfo
+    public class MobileInfo : ITraitInfo, IFacingInfo
     {
         [FieldLoader.LoadUsing("LoadSpeeds")]
         public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;

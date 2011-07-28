@@ -205,7 +205,7 @@ MINP:
 		AvoidFriendly: yes
 	Health:
 		HP: 1
-	RenderUnit:
+	RenderSimple:
 	BelowUnits:
 	InvisibleToEnemy:
 	Tooltip:
@@ -220,7 +220,7 @@ MINV:
 		AvoidFriendly: yes
 	Health:
 		HP: 1
-	RenderUnit:
+	RenderSimple:
 	BelowUnits:
 	InvisibleToEnemy:
 	Tooltip:
@@ -283,7 +283,7 @@ CRATE:
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Unit: 4tnk
-	RenderUnit:
+	RenderSimple:
 	BelowUnits:
 	ProximityCaptor:
 		Types:Crate

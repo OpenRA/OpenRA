@@ -92,7 +92,7 @@ namespace OpenRA
 			while (t.Count != 0)
 			{
 				var prereqs = PrerequisitesOf(t[index]);
-				var unsatisfied = prereqs.Where(n => !ret.Any(x => x.GetType() == n || x.GetType().IsSubclassOf(n)));
+				var unsatisfied = prereqs.Where(n => !ret.Any(x => x.GetType() == n || n.IsAssignableFrom(x.GetType())));
 				if (!unsatisfied.Any())
 				{
 					ret.Add(t[index]);

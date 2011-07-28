@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderUnitInfo : RenderSimpleInfo
+	public class RenderUnitInfo : RenderSimpleInfo, Requires<IFacingInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderUnit(init.self); }
 	}

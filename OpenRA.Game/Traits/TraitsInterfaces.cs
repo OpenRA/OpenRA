@@ -132,12 +132,14 @@ namespace OpenRA.Traits
 
 	public interface IMove : ITeleportable { int Altitude { get; set; } }
 
-    public interface IFacing
-    {
-        int ROT { get; }
-        int Facing { get; set; }
-        int InitialFacing { get; }
-    }
+	public interface IFacing
+	{
+		int ROT { get; }
+		int Facing { get; set; }
+		int InitialFacing { get; }
+	}
+
+	public interface IFacingInfo {}		/* tag interface for infoclasses whose corresponding trait has IFacing */
 
     public interface ICrushable
     {
@@ -181,7 +183,7 @@ namespace OpenRA.Traits
 
     public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
-    public interface Requires<T> where T : ITraitInfo { }
+    public interface Requires<T> where T : class { }
 
     public interface INotifySelection { void SelectionChanged(); }
     public interface IWorldLoaded { void WorldLoaded(World w); }

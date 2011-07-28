@@ -16,7 +16,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class HuskInfo : ITraitInfo
+	class HuskInfo : ITraitInfo, IFacingInfo
 	{
 		public object Create( ActorInitializer init ) { return new Husk( init ); }
 	}

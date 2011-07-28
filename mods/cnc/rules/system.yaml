@@ -190,7 +190,7 @@ CRATE:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
 		Unit: mcv
-	RenderUnit:
+	RenderSimple:
 	BelowUnits:
 
 mpspawn:
