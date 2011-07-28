@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
@@ -20,6 +21,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			var mod = Game.modData.Manifest.Mods[0];
 			return Mod.AllMods[mod].Version;
+		}
+
+		public static string ChooseInitialMap(string map)
+		{
+			var availableMaps = Game.modData.AvailableMaps;
+			if (string.IsNullOrEmpty(map) || !availableMaps.ContainsKey(map))
+				return availableMaps.First(m => m.Value.Selectable).Key;
+
+			return map;
 		}
 
 		public static void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)

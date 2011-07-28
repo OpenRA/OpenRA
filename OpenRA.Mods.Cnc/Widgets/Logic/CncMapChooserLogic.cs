@@ -27,8 +27,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		                            [ObjectCreator.Param] Action onExit,
 		                            [ObjectCreator.Param] Action<Map> onSelect)
 		{
-			if (string.IsNullOrEmpty(initialMap) || ! Game.modData.AvailableMaps.TryGetValue(initialMap, out map))
-				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			map = Game.modData.AvailableMaps[ CncWidgetUtils.ChooseInitialMap(initialMap) ];
 			
 			var panel = widget.GetWidget("MAPCHOOSER_PANEL");
 			
@@ -48,16 +47,19 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
 			EnumerateMaps();
 		}
-		
+
 		void EnumerateMaps()
 		{
 			scrollpanel.RemoveChildren();
-			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title).OrderBy(kv => kv.Value.PlayerCount))
+
+			var maps = Game.modData.AvailableMaps
+				.Where( kv => kv.Value.Selectable )
+				.OrderBy( kv => kv.Value.PlayerCount )
+				.ThenBy( kv => kv.Value.Title );
+
+			foreach (var kv in maps)
 			{
 				var m = kv.Value;
-				if (!m.Selectable)
-					continue;
-
 				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
 				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);

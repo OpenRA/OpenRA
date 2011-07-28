@@ -47,9 +47,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			if (string.IsNullOrEmpty(Game.Settings.Server.Map) ||
-				!Game.modData.AvailableMaps.TryGetValue(Game.Settings.Server.Map, out map))
-				map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			map = Game.modData.AvailableMaps[ CncWidgetUtils.ChooseInitialMap(Game.Settings.Server.Map) ];
 
 			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
 			panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
