@@ -381,16 +381,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			Action<ColorRamp> onSelect = c =>
 			{
-				Game.Settings.Player.ColorRamp = c;
-				Game.Settings.Save();
+				if (client.Bot == null)
+				{
+					Game.Settings.Player.ColorRamp = c;
+					Game.Settings.Save();
+				}
+
 				color.RemovePanel();
 				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
 			};
 			
-			Action<ColorRamp> onChange = c =>
-			{
-				PlayerPalettePreview.Ramp = c;
-			};
+			Action<ColorRamp> onChange = c => PlayerPalettePreview.Ramp = c;
 			
 			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
