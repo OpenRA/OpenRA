@@ -17,17 +17,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GpsWatcherInfo : TraitInfo<GpsWatcher> { }
+	class GpsWatcherInfo : ITraitInfo
+	{
+		public object Create (ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
+	}
 	
 	class GpsWatcher : ISync
 	{
-		[Sync]
-		bool Launched = false;
+		[Sync] bool Launched = false;
+		[Sync] public bool GrantedAllies = false;
+		[Sync] public bool Granted = false;
+		Player owner;
+
 		List<Actor> actors = new List<Actor> { };
-		[Sync]
-		public bool GrantedAllies = false;
-		[Sync]
-		public bool Granted = false;
+
+		public GpsWatcher( Player owner ) { this.owner = owner; }
 
 		public void GpsRem(Actor atek)
 		{
@@ -53,27 +57,23 @@ namespace OpenRA.Mods.RA
 
 		public void RefreshGps(Actor atek)
 		{
-			RefreshGranted(atek);
+			RefreshGranted();
 
 			foreach (TraitPair<GpsWatcher> i in atek.World.ActorsWithTrait<GpsWatcher>())
-			{
-				i.Trait.RefreshGranted(atek);
-			}
+				i.Trait.RefreshGranted();
 
 			if (atek.World.LocalPlayer == null)
 				return;
 
 			if ((Granted || GrantedAllies) && (atek.World.LocalPlayer.Stances[atek.Owner] == Stance.Ally))
-			{
 				atek.World.WorldActor.Trait<Shroud>().ExploreAll(atek.World);
-			}
 		}
 
-		public void RefreshGranted(Actor atek)
+		void RefreshGranted()
 		{
 			Granted = (actors.Count > 0 && Launched);
-			GrantedAllies = atek.World.ActorsWithTrait<GpsWatcher>().Any(p =>
-					p.Actor.Owner.Stances[atek.Owner] == Stance.Ally && p.Trait.Granted);
+			GrantedAllies = owner.World.ActorsWithTrait<GpsWatcher>().Any(p =>
+					p.Actor.Owner.Stances[owner] == Stance.Ally && p.Trait.Granted);
 		}
 	}
 
