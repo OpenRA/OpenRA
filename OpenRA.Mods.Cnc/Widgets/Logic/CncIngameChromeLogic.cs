@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			ingameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 
-		public void UnregisterEvents()
+		void UnregisterEvents()
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;

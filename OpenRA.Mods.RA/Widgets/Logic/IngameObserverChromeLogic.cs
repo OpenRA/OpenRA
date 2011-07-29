@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 		}
 		
-		public void UnregisterEvents()
+		void UnregisterEvents()
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;

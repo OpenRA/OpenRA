@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 		
-		public void UnregisterEvents()
+		void UnregisterEvents()
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
