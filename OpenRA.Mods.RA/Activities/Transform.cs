@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
@@ -55,6 +56,11 @@ namespace OpenRA.Mods.RA.Activities
 					else
 						init.Add( new HealthInit( (float)health.HP / health.MaxHP ));
 				}
+
+				var cargo = self.TraitOrDefault<Cargo>();
+				if (cargo != null)
+					init.Add( new CargoInit( cargo.Passengers.ToArray() ) );
+
 				var a = w.CreateActor( ToActor, init );
 
 				if (selected)
