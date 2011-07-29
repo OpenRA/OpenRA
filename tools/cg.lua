@@ -3,6 +3,7 @@
 
 local cgbinpath = ide.config.path.cgbin or os.getenv("CG_BIN_PATH")
 local cgprofile = ide.config.cgprofile or "gp5"
+local cgglsles  = ide.config.cgglsles
 
 return cgbinpath and {
 	fninit = function(frame,menuBar)
@@ -19,6 +20,7 @@ return cgbinpath and {
 			{ ID "cg.profile.dx_5",		"DX SM&5_0",		"DirectX sm5_0 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
+			{ ID "cg.profile.gles",		"GLSL-ES",		"When GLSL file is source use GLSL-ES path", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.vertex",		"Compile &Vertex\tCtrl-U",		"Compile Vertex program (select entry word)" },
 			{ ID "cg.compile.fragment",		"Compile &Fragment\tCtrl-I",	"Compile Fragment program (select entry word)" },
@@ -35,6 +37,7 @@ return cgbinpath and {
 		data.customarg = false
 		data.custom = ""
 		data.profid = ID ("cg.profile."..cgprofile)
+		data.gles = cgglsles and true or false
 		data.domains = {
 			[ID "cg.compile.vertex"]   = 1,
 			[ID "cg.compile.fragment"] = 2,
@@ -70,6 +73,8 @@ return cgbinpath and {
 			menuBar:Check(id, true)
 			data.profid = id
 		end
+		
+		menuBar:Check(ID "cg.profile.gles", data.gles)
 
 		local function evSelectProfile (event)
 			local chose = event:GetId()
@@ -390,6 +395,11 @@ return cgbinpath and {
 					function(event)
 						data.customarg = event:IsChecked()
 					end)
+					
+		frame:Connect(ID "cg.compile.gles",wx.wxEVT_COMMAND_MENU_SELECTED,
+					function(event)
+						data.gles = event:IsChecked()
+					end)
 		-- Compile
 		local function evCompile(event)
 			local filename,info = GetEditorFileAndCurInfo()
@@ -418,8 +428,10 @@ return cgbinpath and {
 			outname = outname..profile[domain]..profile.ext
 			outname = '"'..outname..'"'
 			
+			local cmdglsl = data.gles and "-ogles -glslWerror " or "-oglsl -glslWerror -po PaBO2 "
+			
 			local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
-			cmdline = glsl and cmdline.."-oglsl -glslWerror -po PaBO2 " or cmdline
+			cmdline = glsl and cmdline..cmdglsl or cmdline
 			cmdline = args and cmdline..args.." " or cmdline
 			cmdline = cmdline..data.domaindefs[domain]
 			cmdline = cmdline.."-o "..outname.." "
