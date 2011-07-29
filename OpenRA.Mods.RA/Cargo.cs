@@ -9,6 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 
-		public object Create( ActorInitializer init ) { return new Cargo( init.self, this ); }
+		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled
@@ -34,7 +36,17 @@ namespace OpenRA.Mods.RA
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
-		public Cargo( Actor self, CargoInfo info ) { this.self = self; this.info = info; }
+		public Cargo( ActorInitializer init, CargoInfo info )
+		{
+			this.self = init.self;
+			this.info = info;
+
+			if (init.Contains<CargoInit>())
+			{
+				cargo = init.Get<CargoInit,Actor[]>().ToList();
+				totalWeight = cargo.Sum( c => GetWeight(c) );
+			}
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -149,4 +161,12 @@ namespace OpenRA.Mods.RA
 
 	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
 	public interface INotifyPassengerExited { void PassengerExited(Actor self, Actor passenger); }
+
+	public class CargoInit : IActorInit<Actor[]>
+	{
+		[FieldFromYamlKey] public readonly Actor[] value = {};
+		public CargoInit() { }
+		public CargoInit( Actor[] init ) { value = init; }
+		public Actor[] Value( World world ) { return value; }
+	}
 }

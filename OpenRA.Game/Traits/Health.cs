@@ -97,7 +97,6 @@ namespace OpenRA.Traits
 			         .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
-
 			if (DamageState != oldState)
 				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
