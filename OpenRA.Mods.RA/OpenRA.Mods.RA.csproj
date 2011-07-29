@@ -324,6 +324,7 @@
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="TransformOnCapture.cs" />
+    <Compile Include="TransformOnPassenger.cs" />
     <Compile Include="Transforms.cs" />
     <Compile Include="Turreted.cs" />
     <Compile Include="Valued.cs" />
