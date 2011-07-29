@@ -99,6 +99,10 @@ namespace OpenRA.Mods.RA
 			var a = cargo[0];
 			cargo.RemoveAt(0);
 			totalWeight -= GetWeight(a);
+
+			foreach( var npe in self.TraitsImplementing<INotifyPassengerExited>() )
+				npe.PassengerExited( self, a );
+
 			return a;
 		}
 
@@ -130,6 +134,9 @@ namespace OpenRA.Mods.RA
 		{
 			cargo.Add(a);
 			totalWeight += GetWeight(a);
+
+			foreach( var npe in self.TraitsImplementing<INotifyPassengerEntered>() )
+				npe.PassengerEntered( self, a );
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -139,4 +146,7 @@ namespace OpenRA.Mods.RA
 			cargo.Clear();
 		}
 	}
+
+	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
+	public interface INotifyPassengerExited { void PassengerExited(Actor self, Actor passenger); }
 }
