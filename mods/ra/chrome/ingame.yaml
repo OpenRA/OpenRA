@@ -279,7 +279,7 @@ Container@INGAME_ROOT:
 					Y:200
 					Width:PARENT_RIGHT - 30
 					Height:20
-					Text:Instant Charge Time (Special Powers)
+					Text:Support Powers Charge Instantly
 				Checkbox@ENABLE_TECH
 					Id:ENABLE_TECH
 					X:30
