@@ -237,15 +237,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var bot = b;
 					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
-				                                   "slot_bot {0} {1}".F(slot.PlayerReference, bot),
-				                                   () => client != null && client.Bot == bot));
+						"slot_bot {0} {1}".F(slot.PlayerReference, bot),
+						() => client != null && client.Bot == bot));
 				}
 
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  o.Selected, 
-				                                  () => orderManager.IssueOrder(Order.Command(o.Order)));
+					o.Selected,
+					() => orderManager.IssueOrder(Order.Command(o.Order)));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
 			};
@@ -258,8 +258,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Country == race,
-				                                  () => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
+					() => client.Country == race,
+					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
 				var flag = item.GetWidget<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
@@ -275,8 +275,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Team == ii,
-				                                  () => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
+					() => client.Team == ii,
+					() => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
