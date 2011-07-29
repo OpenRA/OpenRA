@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			self.TraitsImplementing<ITeleportable>().FirstOrDefault().SetPosition(self, destination);
+			self.Trait<ITeleportable>().SetPosition(self, destination);
 			return NextActivity;
 		}
 	}
