@@ -117,15 +117,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.LoadShellMap();
 				Widget.OpenWindow("MAINMENU_BG");
 			};
-			
-			var lockTeamsCheckbox = lobby.GetWidget<CheckboxWidget>("LOCKTEAMS_CHECKBOX");
-			lockTeamsCheckbox.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.LockTeams;
-			lockTeamsCheckbox.OnClick = () =>
-			{
-				if (Game.IsHost)
-					orderManager.IssueOrder(Order.Command(
-						"lockteams {0}".F(!orderManager.LobbyInfo.GlobalSettings.LockTeams)));
-			};
 
 			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
@@ -141,7 +132,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				mapButton.Visible = false;
 				disconnectButton.Visible = false;
-				lockTeamsCheckbox.Visible = false;
 				orderManager.IssueOrder(Order.Command("startgame"));
 			};
 			

@@ -417,17 +417,10 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Disconnect
 			Font:Bold
-		Checkbox@LOCKTEAMS_CHECKBOX:
-			Id:LOCKTEAMS_CHECKBOX
-			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-229
-			Width: 80
-			Height: 20
-			Text: Lock Teams
 		Checkbox@ALLOWCHEATS_CHECKBOX:
 			Id:ALLOWCHEATS_CHECKBOX
 			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-229+25
+			Y: PARENT_BOTTOM-229
 			Width: 80
 			Height: 20
 			Text: Allow Cheats

@@ -91,7 +91,6 @@ namespace OpenRA.Mods.RA
 						var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
 						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
 						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
-						lobby.GetWidget("LOCKTEAMS_CHECKBOX").Visible = true;
 						lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
 						lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
 						break;
