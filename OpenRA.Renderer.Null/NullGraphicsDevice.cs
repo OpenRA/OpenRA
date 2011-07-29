@@ -39,8 +39,8 @@ namespace OpenRA.Renderer.Null
 		public void DisableScissor() { }
 
 		public void Clear() { }
-
 		public void Present() { }
+
 		public void PumpInput(IInputHandler ih)
 		{
 			Game.HasInputFocus = false;
