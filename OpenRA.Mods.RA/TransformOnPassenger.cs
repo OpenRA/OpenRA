@@ -14,7 +14,6 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
@@ -37,8 +36,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (info.PassengerTypes.Contains(passenger.Info.Name) && transformTo != null)
 			{
-				self.CancelActivity();
-				self.QueueActivity( new Transform(self, transformTo) { Facing = self.Trait<IFacing>().Facing } );
+				self.World.AddFrameEndTask( w =>
+				{
+					self.CancelActivity();
+					self.QueueActivity( new Transform(self, transformTo) { Facing = self.Trait<IFacing>().Facing } );
+				});
 			}
 		}
 
