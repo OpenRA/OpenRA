@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Crates
 	{
 		[ActorReference]
 		public readonly string Unit = null;
+		public readonly string Owner = null;
 
 		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.self, this); }
 	}
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.RA.Crates
 
 			// this unit is not buildable by the collector's country, so
 			// don't give them free ones either.
-			if (bi != null && !bi.Owner.Contains(collector.Owner.Country.Race)) return 0;
+			if (Info.Owner == null && bi != null && !bi.Owner.Contains(collector.Owner.Country.Race)) return 0;
 
 			// avoid dumping tanks in the sea, and ships on dry land.
 			if (!GetSuitableCells(collector.Location).Any()) return 0;
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.RA.Crates
 					w => w.CreateActor(Info.Unit, new TypeDictionary
 				    {
 						new LocationInit( location.Value ),
-						new OwnerInit( collector.Owner )
+						new OwnerInit( Info.Owner ?? collector.Owner.InternalName )
 					}));
 
 			base.Activate(collector);
