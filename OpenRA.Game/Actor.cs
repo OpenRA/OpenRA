@@ -24,26 +24,26 @@ namespace OpenRA
 
 		public readonly World World;
 		public readonly uint ActorID;
-		
-		IOccupySpace OccupiesSpace;
+
+		Lazy<IOccupySpace> occupySpace;
 		IHasLocation HasLocation;
 		Lazy<IMove> Move;
 		public Cached<Rectangle> Bounds;
 		public Cached<Rectangle> ExtendedBounds;
 
-		public int2 Location
-		{ get {
-			if (OccupiesSpace == null)
-				OccupiesSpace = Trait<IOccupySpace>();
-			return OccupiesSpace.TopLeft;
-		}}
+		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
+
+		public int2 Location { get { return occupySpace.Value.TopLeft; } }
 		
 		public int2 CenterLocation
-		{ get {
-			if (HasLocation == null)
-				HasLocation = Trait<IHasLocation>();
-			return HasLocation.PxPosition;
-		}}
+		{
+			get
+			{
+				if (HasLocation == null)
+					HasLocation = Trait<IHasLocation>();
+				return HasLocation.PxPosition;
+			}
+		}
 		
 		[Sync]
 		public Player Owner;
@@ -59,6 +59,8 @@ namespace OpenRA
 			ActorID = world.NextAID();
 			if( initDict.Contains<OwnerInit>() )
 				Owner = init.Get<OwnerInit,Player>();
+
+			occupySpace = Lazy.New( () => TraitOrDefault<IOccupySpace>() );
 
 			if (name != null)
 			{

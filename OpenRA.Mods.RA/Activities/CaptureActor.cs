@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 			
-			if( !target.Trait<IOccupySpace>().OccupiedCells().Any( x => x.First == self.Location ) )
+			if( !target.OccupiesSpace.OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
 			// todo: clean this up

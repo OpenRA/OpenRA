@@ -44,8 +44,8 @@ namespace OpenRA
 			map = world.Map;
 			influence = new InfluenceNode[world.Map.MapSize.X, world.Map.MapSize.Y];
 
-			world.ActorAdded += a => Add( a, a.TraitOrDefault<IOccupySpace>() );
-			world.ActorRemoved += a => Remove( a, a.TraitOrDefault<IOccupySpace>() );
+			world.ActorAdded += a => Add( a, a.OccupiesSpace );
+			world.ActorRemoved += a => Remove( a, a.OccupiesSpace );
 		}
 
 		public IEnumerable<Actor> GetUnitsAt( int2 a )
@@ -71,8 +71,8 @@ namespace OpenRA
 			if (!AnyUnitsAt(a))
 				return true;
 			
-			return new[]{SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.Any(b => !AnyUnitsAt(a,b));
+			return new[]{ SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight }.Any(b => !AnyUnitsAt(a,b));
 		}
 
 		public bool AnyUnitsAt(int2 a)

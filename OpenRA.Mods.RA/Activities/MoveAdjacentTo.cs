@@ -35,12 +35,12 @@ namespace OpenRA.Mods.RA.Activities
 			if( IsCanceled || !target.IsValid) return NextActivity;
 
 			var mobile = self.Trait<Mobile>();
-			Pair<int2, SubCell>[] cells = new Pair<int2, SubCell>[] {};
+			var cells = new Pair<int2, SubCell>[] {};
 			if (target.IsActor)
-				cells = target.Actor.Trait<IOccupySpace>().OccupiedCells().ToArray();
+				cells = target.Actor.OccupiesSpace.OccupiedCells().ToArray();
 
 			if (cells.Length == 0)
-				cells = new OpenRA.FileFormats.Pair<int2, SubCell>[] {
+				cells = new [] {
 					Pair.New(Util.CellContaining(target.CenterLocation), SubCell.FullCell) };
 
 			var ps1 = new PathSearch( self.World, mobile.Info, self.Owner )

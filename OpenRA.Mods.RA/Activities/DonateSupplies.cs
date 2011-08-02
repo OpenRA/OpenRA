@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Activities
         {
             if (IsCanceled) return NextActivity;
             if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
-            if (!target.Trait<IOccupySpace>().OccupiedCells().Any(x => x.First == self.Location))
+            if (!target.OccupiesSpace.OccupiedCells().Any(x => x.First == self.Location))
                 return NextActivity;
           
             target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);

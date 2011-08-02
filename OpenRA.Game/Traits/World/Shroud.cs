@@ -132,7 +132,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<int2> GetVisOrigins(Actor a)
 		{
-			var ios = a.TraitOrDefault<IOccupySpace>();
+			var ios = a.OccupiesSpace;
 			if (ios != null)
 			{
 				var cells = ios.OccupiedCells();
