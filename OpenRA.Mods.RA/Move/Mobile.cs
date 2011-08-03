@@ -259,27 +259,27 @@ namespace OpenRA.Mods.RA.Move
         public void ResolveOrder(Actor self, Order order)
         {
             if (order.OrderString == "Move")
-            {
-                var target = self.World.ClampToWorld(order.TargetLocation);
-                PerformMove(self, target, order.Queued && !self.IsIdle);
-            }
+                PerformMove(self, self.World.ClampToWorld(order.TargetLocation),
+					order.Queued && !self.IsIdle);
 
             if (order.OrderString == "Stop")
-            {
                 self.CancelActivity();
-            }
 			
 			if (order.OrderString == "Scatter")
-            {
                 OnNudge(self, self, true);
-            }
         }
 
         public string VoicePhraseForOrder(Actor self, Order order)
         {
-            if (order.OrderString == "Move" || order.OrderString == "Scatter")
-                return "Move";
-            return null;
+			switch( order.OrderString )
+			{
+			case "Move":
+			case "Scatter":
+			case "Stop":
+				return "Move";
+			default:
+				return null;
+			}
         }
 
         public int2 TopLeft { get { return toCell; } }
