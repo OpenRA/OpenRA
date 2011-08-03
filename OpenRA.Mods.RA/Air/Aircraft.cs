@@ -231,7 +231,14 @@ namespace OpenRA.Mods.RA.Air
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Move" || order.OrderString == "Enter") ? "Move" : null;
+			switch( order.OrderString )
+			{
+			case "Move":
+			case "Enter":
+			case "ReturnToBase":
+				return "Move";
+			default: return null;
+			}
 		}
 	}
 

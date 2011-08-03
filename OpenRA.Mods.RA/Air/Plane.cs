@@ -68,6 +68,12 @@ namespace OpenRA.Mods.RA.Air
 				UnReserve();
 				self.CancelActivity();
 			}
+			else if (order.OrderString == "ReturnToBase")
+			{
+				UnReserve();
+				self.CancelActivity();
+				self.QueueActivity(new ReturnToBase(self,null));
+			}
 			else
 			{
 				// Game.Debug("Unreserve due to unhandled order: {0}".F(order.OrderString));

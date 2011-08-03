@@ -76,6 +76,12 @@ namespace OpenRA.Mods.RA.Air
 				QueueResupplyActivities(order.TargetActor);
 			}
 
+			if (order.OrderString == "ReturnToBase")
+			{
+				self.CancelActivity();
+				self.QueueActivity( new HeliReturn() );
+			}
+
 			if (order.OrderString == "Stop")
 			{
 				self.CancelActivity();
