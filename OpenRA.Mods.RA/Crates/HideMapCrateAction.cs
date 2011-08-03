@@ -22,6 +22,16 @@ namespace OpenRA.Mods.RA
 		public HideMapCrateAction(Actor self, HideMapCrateActionInfo info)
 			: base(self, info) {}
 
+		public override int GetSelectionShares (Actor collector)
+		{
+			// don't ever hide the map for people who have GPS.
+			var gpsWatcher = collector.Owner.PlayerActor.TraitOrDefault<GpsWatcher>();
+			if (gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies))
+				return 0;
+
+			return base.GetSelectionShares (collector);
+		}
+
 		public override void Activate(Actor collector)
 		{
 			base.Activate(collector);
