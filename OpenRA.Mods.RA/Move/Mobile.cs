@@ -275,7 +275,7 @@ namespace OpenRA.Mods.RA.Move
 
         public string VoicePhraseForOrder(Actor self, Order order)
         {
-            if (order.OrderString == "Move")
+            if (order.OrderString == "Move" || order.OrderString == "Scatter")
                 return "Move";
             return null;
         }
