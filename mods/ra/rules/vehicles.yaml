@@ -49,7 +49,8 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 25mm
-		Recoil: 2
+		PrimaryRecoil: 2
+		PrimaryRecoilRecovery: 0.5
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -82,7 +83,8 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 90mm
-		Recoil: 3
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.9
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -117,7 +119,9 @@ V2RL:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 105mm
-		Recoil: 3
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.9
+		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -155,7 +159,9 @@ V2RL:
 		SecondaryWeapon: MammothTusk
 		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
 		SecondaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-		Recoil: 4
+		PrimaryRecoil: 4
+		PrimaryRecoilRecovery: 0.7
+		SecondaryRecoil: 1
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -544,7 +550,7 @@ FTRK:
 	AttackTurreted:
 		PrimaryWeapon: FLAK-23
 		PrimaryOffset: 0,5,0,-4
-		Recoil: 2
+		PrimaryRecoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:

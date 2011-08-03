@@ -25,15 +25,19 @@ namespace OpenRA.Mods.RA
 
 	public class Turret
 	{
-		public float Recoil = 0.0f;			// remaining recoil fraction
+		public float Recoil = 0.0f;			// remaining recoil
+		public float RecoilRecovery = 0.2f;	// recoil recovery rate
 		public int2 UnitSpacePosition;		// where, in the unit's local space.
 		public int2 ScreenSpacePosition;	// screen-space hack to make things line up good.
 
-		public Turret(int[] offset)
+		public Turret(int[] offset, float recoilRecovery)
 		{
 			ScreenSpacePosition = offset.AbsOffset().ToInt2();
 			UnitSpacePosition = offset.RelOffset().ToInt2();
+			RecoilRecovery = recoilRecovery;
 		}
+
+		public Turret(int[] offset) : this(offset, 0) {}
 	}
 
 	public class Weapon
@@ -41,15 +45,17 @@ namespace OpenRA.Mods.RA
 		public WeaponInfo Info;
 		public int FireDelay = 0;			// time (in frames) until the weapon can fire again
 		public int Burst = 0;				// burst counter
+		public int Recoil = 0;
 
 		public Barrel[] Barrels;			// where projectiles are spawned, in local turret space.
 		public Turret Turret;				// where this weapon is mounted -- possibly shared
 
-		public Weapon(string weaponName, Turret turret, int[] localOffset)
+		public Weapon(string weaponName, Turret turret, int[] localOffset, int recoil)
 		{
 			Info = Rules.Weapons[weaponName.ToLowerInvariant()];
 			Burst = Info.Burst;
 			Turret = turret;
+			Recoil = recoil;
 
 			var barrels = new List<Barrel>();
 			for (var i = 0; i < localOffset.Length / 5; i++)
@@ -72,7 +78,7 @@ namespace OpenRA.Mods.RA
 		public void Tick()
 		{
 			if (FireDelay > 0) --FireDelay;
-			Turret.Recoil = Math.Max(0f, Turret.Recoil - .2f);
+			Turret.Recoil = Math.Max(0f, Turret.Recoil - Turret.RecoilRecovery);
 		}
 
 		public bool IsValidAgainst(World world, Target target)
@@ -85,7 +91,7 @@ namespace OpenRA.Mods.RA
 
 		public void FiredShot()
 		{
-			Turret.Recoil = 1;
+			Turret.Recoil = this.Recoil;
 
 			if (--Burst > 0)
 				FireDelay = Info.BurstDelay;

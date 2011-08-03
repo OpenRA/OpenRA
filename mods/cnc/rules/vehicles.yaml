@@ -291,7 +291,8 @@ LTNK:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 70mm
-		Recoil: 2
+		PrimaryRecoil: 2
+		PrimaryRecoilRecovery: 0.4
 		PrimaryLocalOffset: 0,3,0,-2,0
 	RenderUnitTurreted:
 	AutoTarget:
@@ -325,7 +326,8 @@ MTNK:
 		ROT: 5
 	AttackTurreted:
 		PrimaryWeapon: 120mm
-		Recoil: 3
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.6
 		PrimaryLocalOffset: 0,0,0,-1,0
 	RenderUnitTurreted:
 	AutoTarget:
@@ -365,7 +367,9 @@ HTNK:
 		SecondaryWeapon: MammothMissiles
 		PrimaryLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
 		SecondaryLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
-		Recoil: 4
+		PrimaryRecoil: 4
+		SecondaryRecoil: 1
+		PrimaryRecoilRecovery: 1
 	RenderUnitTurreted:
 	AutoTarget:
 	SelfHealing:
@@ -404,7 +408,6 @@ MSAM:
 		PrimaryWeapon: 227mm
 		PrimaryOffset: 0,6,0,-3
 		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
-		Recoil: 0
 	RenderUnitTurretedAim:
 	AutoTarget:
 	LeavesHusk:
@@ -438,7 +441,6 @@ MLRS:
 		PrimaryOffset: 0,3,0,-3
 		PrimaryLocalOffset: -4,0,0,0,0
 		SecondaryLocalOffset: 4,0,0,0,0
-		Recoil: 0
 		AlignIdleTurrets: true
 	RenderUnitTurretedAim:
 	AutoTarget:

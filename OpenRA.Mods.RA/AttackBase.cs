@@ -24,7 +24,10 @@ namespace OpenRA.Mods.RA
 		public readonly string PrimaryWeapon = null;
 		[WeaponReference]
 		public readonly string SecondaryWeapon = null;
-		public readonly int Recoil = 0;
+		public readonly int PrimaryRecoil = 0;
+		public readonly int SecondaryRecoil = 0;
+		public readonly float PrimaryRecoilRecovery = 0.2f;
+		public readonly float SecondaryRecoilRecovery = 0.2f;
 		public readonly int[] PrimaryLocalOffset = { };
 		public readonly int[] SecondaryLocalOffset = { };
 		public readonly int[] PrimaryOffset = { 0, 0 };
@@ -62,17 +65,17 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 
-			Turrets.Add(new Turret(info.PrimaryOffset));
+			Turrets.Add(new Turret(info.PrimaryOffset, info.PrimaryRecoilRecovery));
 			if (info.SecondaryOffset != null)
-				Turrets.Add(new Turret(info.SecondaryOffset));
+				Turrets.Add(new Turret(info.SecondaryOffset, info.SecondaryRecoilRecovery));
 
 			if (info.PrimaryWeapon != null)
 				Weapons.Add(new Weapon(info.PrimaryWeapon, 
-					Turrets[0], info.PrimaryLocalOffset));
+					Turrets[0], info.PrimaryLocalOffset, info.PrimaryRecoil));
 
 			if (info.SecondaryWeapon != null)
 				Weapons.Add(new Weapon(info.SecondaryWeapon, 
-					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset));
+					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset, info.SecondaryRecoil));
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)

@@ -158,7 +158,10 @@ CA:
 		SecondaryOffset: 0,-17,0,-2
 		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
 		SecondaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		Recoil: 4
+		PrimaryRecoil: 4
+		SecondaryRecoil: 4
+		PrimaryRecoilRecovery: 0.8
+		SecondaryRecoilRecovery: 0.8
 	Selectable:
 		Bounds: 44,44
 	RenderUnitTurreted:
