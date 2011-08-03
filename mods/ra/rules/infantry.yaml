@@ -271,7 +271,7 @@ C1:
 	Valued:
 		Cost: 70
 	Tooltip:
-		Name: Technician
+		Name: Civilian
 	Health:
 		HP: 20
 	Mobile:
@@ -291,7 +291,7 @@ C2:
 	Valued:
 		Cost: 70
 	Tooltip:
-		Name: Technician
+		Name: Civilian
 	Health:
 		HP: 20
 	Mobile:
