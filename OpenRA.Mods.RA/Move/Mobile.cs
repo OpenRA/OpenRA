@@ -40,7 +40,9 @@ namespace OpenRA.Mods.RA.Move
             foreach (var t in y.NodesDict["TerrainSpeeds"].Nodes)
             {
                 var speed = FieldLoader.GetValue<decimal>("speed", t.Value.Value);
-                var cost = t.Value.NodesDict.ContainsKey("PathingCost") ? FieldLoader.GetValue<int>("cost", t.Value.NodesDict["PathingCost"].Value) : (int)(10000 / speed);
+                var cost = t.Value.NodesDict.ContainsKey("PathingCost")
+					? FieldLoader.GetValue<int>("cost", t.Value.NodesDict["PathingCost"].Value)
+					: (int)(10000 / speed);
                 ret.Add(t.Key, new TerrainInfo { Speed = speed, Cost = cost });
             }
 
