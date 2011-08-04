@@ -1130,9 +1130,11 @@ e2:
 	idle1:
 		Start: 384
 		Length: 14
+		Tick: 120
 	idle2:
 		Start: 399
 		Length: 16
+		Tick: 120
 	die1:
 		Start: 416
 		Length: 8
