@@ -209,7 +209,7 @@ BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
-CORE = fileformats rcg rgl rnull game editor utility
+CORE = fileformats rcg rgl rsdl rnull game editor utility
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
