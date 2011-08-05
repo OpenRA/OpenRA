@@ -220,7 +220,7 @@ HELI:
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 90
-		Prerequisites: hpad
+		Prerequisites: hpad, atek
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
