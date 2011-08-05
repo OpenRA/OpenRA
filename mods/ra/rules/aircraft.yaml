@@ -235,8 +235,8 @@ HELI:
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
-		PrimaryWeapon: Hellfire
-		SecondaryWeapon: Hellfire
+		PrimaryWeapon: HellfireAG
+		SecondaryWeapon: HellfireAA
 		PrimaryOffset: -5,0,0,2
 		SecondaryOffset: 5,0,0,2
 		FacingTolerance: 20
