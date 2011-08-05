@@ -1165,7 +1165,7 @@ BRIK:
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud
 	Health:
-		HP: 1000
+		HP: 500
 	Armor:
 		Type: Concrete
 	Wall:

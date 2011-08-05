@@ -523,6 +523,7 @@ MammothTusk:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
+			Concrete: 50%
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
