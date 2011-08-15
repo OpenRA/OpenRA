@@ -145,7 +145,8 @@ namespace OpenRA.Mods.RA
 
 			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
-					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length)
+					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length &&
+					    playerPower.ExcessPower >= Rules.Info[frac.Key].Traits.Get<BuildingInfo>().Power)
 						return Rules.Info[frac.Key];
 
 			return null;

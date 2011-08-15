@@ -28,10 +28,12 @@ namespace OpenRA.Mods.RA.Buildings
 		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
-	
+
 		[Sync] int totalDrained;
 		public int PowerDrained { get { return totalDrained; } }
-		
+
+		public int ExcessPower { get { return totalProvided - totalDrained; } }
+
 		public PowerManager(ActorInitializer init, PowerManagerInfo info)
 		{
 			Info = info;
