@@ -30,7 +30,6 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
 
-
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, int2 topLeft)

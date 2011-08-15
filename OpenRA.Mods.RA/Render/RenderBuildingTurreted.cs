@@ -8,12 +8,13 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderBuildingTurretedInfo : RenderBuildingInfo
+	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted( init, this ); }
 	}
@@ -21,6 +22,12 @@ namespace OpenRA.Mods.RA.Render
 	class RenderBuildingTurreted : RenderBuilding
 	{
 		public RenderBuildingTurreted( ActorInitializer init, RenderBuildingInfo info )
-			: base(init, info, () => init.self.Trait<Turreted>().turretFacing) { }
+			: base(init, info, MakeTurretFacingFunc(init.self)) { }
+
+		static Func<int> MakeTurretFacingFunc(Actor self)
+		{
+			var turreted = self.Trait<Turreted>();
+			return () => turreted.turretFacing;
+		}
 	}
 }
