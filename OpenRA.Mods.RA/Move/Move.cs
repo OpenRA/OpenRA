@@ -133,11 +133,11 @@ namespace OpenRA.Mods.RA.Move
 			}
 			else
 			{
-				mobile.SetLocation( mobile.fromCell, mobile.__fromSubCell, nextCell.Value.First, nextCell.Value.Second );
+				mobile.SetLocation( mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second );
 				var move = new MoveFirstHalf(
 					this,
-					Util.CenterOfCell( mobile.fromCell ) + mobile.Info.SubCellOffsets[mobile.__fromSubCell],
-					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell] ) / 2,
+					Util.CenterOfCell( mobile.fromCell ) + mobile.Info.SubCellOffsets[mobile.fromSubCell],
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.fromSubCell] + mobile.Info.SubCellOffsets[mobile.toSubCell] ) / 2,
 					mobile.Facing,
 					mobile.Facing,
 					0 );
@@ -316,41 +316,50 @@ namespace OpenRA.Mods.RA.Move
 		class MoveFirstHalf : MovePart
 		{
 			public MoveFirstHalf( Move move, int2 from, int2 to, int fromFacing, int toFacing, int startingFraction )
-				: base( move, from, to, fromFacing, toFacing, startingFraction )
+				: base( move, from, to, fromFacing, toFacing, startingFraction ) { }
+
+			static bool IsTurn( Mobile mobile, int2 nextCell )
 			{
+				return nextCell - mobile.toCell !=
+					mobile.toCell - mobile.fromCell;
 			}
 
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
+				var fromSubcellOffset = mobile.Info.SubCellOffsets[mobile.fromSubCell];
+				var toSubcellOffset = mobile.Info.SubCellOffsets[mobile.toSubCell];
+
 				var nextCell = parent.PopPath( self, mobile );
 				if( nextCell != null )
 				{
-					if( ( nextCell.Value.First - mobile.toCell ) != ( mobile.toCell - mobile.fromCell ) )
+					if(IsTurn(mobile, nextCell.Value.First))
 					{
+						var nextSubcellOffset = mobile.Info.SubCellOffsets[nextCell.Value.Second];
 						var ret = new MoveFirstHalf(
 							move,
-							Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell]) / 2,
-							Util.BetweenCells( mobile.toCell, nextCell.Value.First ) + (mobile.Info.SubCellOffsets[mobile.__toSubCell] + mobile.Info.SubCellOffsets[nextCell.Value.Second]) / 2,
+							Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (fromSubcellOffset + toSubcellOffset) / 2,
+							Util.BetweenCells( mobile.toCell, nextCell.Value.First ) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
 							Util.GetNearestFacing( mobile.Facing, Util.GetFacing( nextCell.Value.First - mobile.toCell, mobile.Facing ) ),
 							moveFraction - moveFractionTotal );
-						
-						mobile.SetLocation( mobile.toCell, mobile.__toSubCell, nextCell.Value.First, nextCell.Value.Second);
+
+						mobile.SetLocation( mobile.toCell, mobile.toSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
 					}
-					else
-						parent.path.Add( nextCell.Value.First );
+
+					parent.path.Add( nextCell.Value.First );
 				}
+
 				var ret2 = new MoveSecondHalf(
 					move,
-					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (mobile.Info.SubCellOffsets[mobile.__fromSubCell] + mobile.Info.SubCellOffsets[mobile.__toSubCell]) / 2,
-					Util.CenterOfCell( mobile.toCell ) + mobile.Info.SubCellOffsets[mobile.__toSubCell],
+					Util.BetweenCells( mobile.fromCell, mobile.toCell ) + (fromSubcellOffset + toSubcellOffset) / 2,
+					Util.CenterOfCell( mobile.toCell ) + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
 				
 				mobile.EnteringCell(self);
-				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
+				mobile.SetLocation( mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell );
 				return ret2;
 			}
 		}
@@ -365,7 +374,7 @@ namespace OpenRA.Mods.RA.Move
 			protected override MovePart OnComplete( Actor self, Mobile mobile, Move parent )
 			{
 				mobile.PxPosition = Util.CenterOfCell( mobile.toCell );
-				mobile.SetLocation( mobile.toCell, mobile.__toSubCell, mobile.toCell, mobile.__toSubCell );
+				mobile.SetLocation( mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell );
 				mobile.FinishedMoving(self);
 				return null;
 			}

@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA.Move
 
         int __facing;
         int2 __fromCell, __toCell;
-		public SubCell __fromSubCell, __toSubCell;
+		public SubCell fromSubCell, toSubCell;
 		
         int __altitude;
 
@@ -146,8 +146,8 @@ namespace OpenRA.Mods.RA.Move
             RemoveInfluence();
             __fromCell = from;
             __toCell = to;
-			__fromSubCell = fromSub;
-			__toSubCell = toSub;
+			fromSubCell = fromSub;
+			toSubCell = toSub;
             AddInfluence();
         }
 
@@ -160,16 +160,16 @@ namespace OpenRA.Mods.RA.Move
             this.self = init.self;
             this.Info = info;
 
-			__toSubCell = __fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
+			toSubCell = fromSubCell = info.SharesCell ? SubCell.Center : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 			{
-				this.__fromSubCell = this.__toSubCell = init.Get<SubCellInit, SubCell>();
+				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
 			}
 			
             if (init.Contains<LocationInit>())
             {
                 this.__fromCell = this.__toCell = init.Get<LocationInit, int2>();
-                this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[__fromSubCell];
+                this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[fromSubCell];
             }
 
             this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -178,15 +178,15 @@ namespace OpenRA.Mods.RA.Move
 
         public void SetPosition(Actor self, int2 cell)
         {
-            SetLocation(cell,__fromSubCell, cell,__fromSubCell);
-            PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[__fromSubCell];
+            SetLocation(cell,fromSubCell, cell,fromSubCell);
+            PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[fromSubCell];
             FinishedMoving(self);
         }
 
         public void SetPxPosition(Actor self, int2 px)
         {
             var cell = Util.CellContaining(px);
-            SetLocation(cell,__fromSubCell, cell,__fromSubCell);
+            SetLocation(cell,fromSubCell, cell,fromSubCell);
             PxPosition = px;
             FinishedMoving(self);
         }
@@ -287,13 +287,13 @@ namespace OpenRA.Mods.RA.Move
         public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
         {
             if (fromCell == toCell)
-				yield return Pair.New(fromCell, __fromSubCell);
+				yield return Pair.New(fromCell, fromSubCell);
 			else if (CanEnterCell(toCell))
-				yield return Pair.New(toCell, __toSubCell);
+				yield return Pair.New(toCell, toSubCell);
 			else
 			{
-				yield return Pair.New(fromCell, __fromSubCell);
-				yield return Pair.New(toCell, __toSubCell);
+				yield return Pair.New(fromCell, fromSubCell);
+				yield return Pair.New(toCell, toSubCell);
 			}
         }
 		
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.RA.Move
 				return SubCell.FullCell;
 			
 			// Prioritise the current subcell
-			return new[]{ __fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
 			{
 				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
