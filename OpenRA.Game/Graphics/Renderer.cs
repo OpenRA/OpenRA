@@ -133,7 +133,9 @@ namespace OpenRA.Graphics
 
 		internal static void Initialize( WindowMode windowMode )
 		{
-			FixOSX();
+			if (Platform.CurrentPlatform == PlatformType.OSX)
+				FixOSX();
+
 			var resolution = GetResolution( windowMode );
 			var rendererPath = Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(Game.Settings.Graphics.Renderer) );
 			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode );
