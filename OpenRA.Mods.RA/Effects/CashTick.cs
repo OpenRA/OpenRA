@@ -22,13 +22,18 @@ namespace OpenRA.Mods.RA.Effects
 		int velocity;
 		float2 pos, offset;
 		Color color;
-		
+
+		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
+
 		public CashTick(int value, int lifetime, int velocity, float2 pos, Color color)
+			: this( FormatCashAmount(value), lifetime, velocity, pos, color ) { }
+
+		public CashTick(string value, int lifetime, int velocity, float2 pos, Color color)
 		{
 			this.color = color;
 			this.velocity = velocity;
-			s = "{0}${1}".F(value < 0 ? "-" : "+", value);
 			this.pos = pos;
+			s = value;
 			offset = 0.5f*Game.Renderer.Fonts["TinyBold"].Measure(s).ToFloat2();
 			remaining = lifetime;
 		}
