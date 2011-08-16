@@ -17,22 +17,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CncShellmapScriptInfo : ITraitInfo
-	{
-		public string Music = "map1";
-		public object Create(ActorInitializer init) { return new CncShellmapScript(this); }
-	}
+	class CncShellmapScriptInfo : TraitInfo<CncShellmapScript> { }
 
 	class CncShellmapScript: IWorldLoaded, ITick
 	{		
-		CncShellmapScriptInfo Info;
 		Dictionary<string, Actor> Actors;
 		static int2 ViewportOrigin;
-
-		public CncShellmapScript(CncShellmapScriptInfo info)
-		{
-			Info = info;
-		}
 
 		public void WorldLoaded(World w)
 		{
@@ -42,30 +32,19 @@ namespace OpenRA.Mods.RA
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
-			LoopMusic();
-			
 			SetViewport();
 		}
 
-		void LoopMusic()
-		{
-			if (!Game.Settings.Game.ShellmapMusic ||
-			    	Info.Music == null ||
-			    	!Rules.Music.ContainsKey(Info.Music))
-				return;
-
-			Sound.PlayMusicThen(Rules.Music[Info.Music], () => LoopMusic());
-		}
-		
 		void SetViewport()
 		{
 			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
 			var loc = ViewportOrigin + new float2(-15,4) * float2.FromAngle( (float)t );
 			Game.viewport.Center(loc);
 		}
-		
+
 		int ticks = 0;
 		float speed = 4f;
+
 		public void Tick(Actor self)
 		{
 			SetViewport();

@@ -358,6 +358,7 @@
     <Compile Include="HarvesterHuskModifier.cs" />
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="Crates\HideMapCrateAction.cs" />
+    <Compile Include="World\PlayMusicOnMapLoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

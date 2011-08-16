@@ -1012,6 +1012,9 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		-CrateSpawner:
+		PlayMusicOnMapLoad:
+			Music: map1
+			Loop: true
 		CncShellmapScript:
 		LoadWidgetAtGameStart:
 			Widget: MENU_BACKGROUND
