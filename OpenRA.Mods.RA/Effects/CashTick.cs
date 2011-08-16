@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA.Effects
 {
@@ -22,6 +23,7 @@ namespace OpenRA.Mods.RA.Effects
 		int velocity;
 		float2 pos, offset;
 		Color color;
+		SpriteFont font;
 
 		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
 
@@ -34,7 +36,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.velocity = velocity;
 			this.pos = pos;
 			s = value;
-			offset = 0.5f*Game.Renderer.Fonts["TinyBold"].Measure(s).ToFloat2();
+			font = Game.Renderer.Fonts["TinyBold"];
+			offset = 0.5f*font.Measure(s).ToFloat2();
 			remaining = lifetime;
 		}
 
@@ -47,7 +50,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			Game.Renderer.Fonts["TinyBold"].DrawTextWithContrast(s, Game.viewport.Zoom*(pos - Game.viewport.Location) - offset, color, Color.Black,1);
+			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos - Game.viewport.Location) - offset, color, Color.Black,1);
 			yield break;
 		}
 	}
