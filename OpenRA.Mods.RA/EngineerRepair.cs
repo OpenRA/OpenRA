@@ -56,13 +56,11 @@ namespace OpenRA.Mods.RA
 		class EngineerRepairOrderTargeter : UnitTraitOrderTargeter<Building>
 		{
 			public EngineerRepairOrderTargeter()
-				: base( "EngineerRepair", 6, "goldwrench", false, true )
-			{
-			}
+				: base( "EngineerRepair", 6, "goldwrench", false, true ) { }
 
-			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
-				if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
+				if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
 				if (!target.HasTrait<RepairableBuilding>())
 					return false;
 

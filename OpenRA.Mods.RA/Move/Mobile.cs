@@ -433,12 +433,12 @@ namespace OpenRA.Mods.RA.Move
             public int OrderPriority { get { return 4; } }
             public bool IsQueued { get; protected set; }
 
-            public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+            public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
             {
                 return false;
             }
 
-            public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+            public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
             {
                 IsQueued = forceQueued;
                 cursor = "move";

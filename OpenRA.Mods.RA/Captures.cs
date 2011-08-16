@@ -75,9 +75,9 @@ namespace OpenRA.Mods.RA
 			this.captureTypes = captureTypes;
 		}
 
-		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetActor( self, target, forceAttack, forceMove, forceQueued, ref cursor ) ) return false;
+			if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
 			
 			var ci = target.Info.Traits.Get<CapturableInfo>();
 			var playerRelationship = self.Owner.Stances[ target.Owner ];

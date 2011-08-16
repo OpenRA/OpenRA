@@ -90,13 +90,12 @@ namespace OpenRA.Orders
 					var actorsAt = self.World.ActorMap.GetUnitsAt( xy ).ToList();
 					
 					var forceAttack = mi.Modifiers.HasModifier(Modifiers.Ctrl);
-					var forceMove = mi.Modifiers.HasModifier(Modifiers.Alt);
 					var forceQueue = mi.Modifiers.HasModifier(Modifiers.Shift);
 					string cursor = null;
 					if( underCursor != null )
-						if (o.Order.CanTargetActor(self, underCursor, forceAttack, forceMove, forceQueue, ref cursor))
+						if (o.Order.CanTargetActor(self, underCursor, forceAttack, forceQueue, ref cursor))
 							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
-					if (o.Order.CanTargetLocation(self, xy, actorsAt, forceAttack, forceMove, forceQueue, ref cursor))
+					if (o.Order.CanTargetLocation(self, xy, actorsAt, forceAttack, forceQueue, ref cursor))
 						return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
 				}
 			}

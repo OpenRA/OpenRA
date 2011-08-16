@@ -219,12 +219,12 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get { return "Harvest";}}
 			public int OrderPriority { get { return 10; } }
 
-			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				return false;
 			}
 
-			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				// Don't leak info about resources under the shroud
 				if (!self.World.LocalShroud.IsExplored(location)) return false;

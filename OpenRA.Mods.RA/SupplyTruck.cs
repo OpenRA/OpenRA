@@ -67,9 +67,9 @@ namespace OpenRA.Mods.RA
             {
             }
 
-            public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueued, ref string cursor)
+            public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
             {
-                if (!base.CanTargetActor(self, target, forceAttack, forceMove, forceQueued, ref cursor)) return false;
+                if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor)) return false;
                 if (target.AppearsHostileTo(self)) return false;               
                 if (!target.HasTrait<AcceptsSupplies>()) return false;
 

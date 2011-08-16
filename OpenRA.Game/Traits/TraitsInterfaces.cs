@@ -45,8 +45,8 @@ namespace OpenRA.Traits
     {
         string OrderID { get; }
         int OrderPriority { get; }
-        bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueue, ref string cursor);
-        bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceMove, bool forceQueue, ref string cursor);
+        bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor);
+        bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor);
         bool IsQueued { get; }
     }
 
