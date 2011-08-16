@@ -34,6 +34,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Name = "Unnamed Bot";
 		public readonly int SquadSize = 8;
 		public readonly int AssignRolesInterval = 20;
+		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
 
 		string IBotInfo.Name { get { return this.Name; } }
 
@@ -64,6 +65,7 @@ namespace OpenRA.Mods.RA
 		int ticks;
 		Player p;
 		PowerManager playerPower;
+		readonly BuildingInfo rallypointTestBuilding;		// temporary hack
 
 		int2 baseCenter;
 		XRandom random = new XRandom(); //we do not use the synced random number generator.
@@ -76,6 +78,8 @@ namespace OpenRA.Mods.RA
 		public HackyAI(HackyAIInfo Info)
 		{
 			this.Info = Info;
+			// temporary hack.
+			this.rallypointTestBuilding = Rules.Info[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
 		}
 
 		enum BuildState
@@ -342,7 +346,9 @@ namespace OpenRA.Mods.RA
 
 		bool IsRallyPointValid(int2 x)
 		{
-			return world.IsCellBuildable(x, false);
+			// this is actually WRONG as soon as HackyAI is building units with a variety of
+			// movement capabilities. (has always been wrong)
+			return world.IsCellBuildable(x, rallypointTestBuilding);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
@@ -366,7 +372,7 @@ namespace OpenRA.Mods.RA
 		//won't work for shipyards...
 		int2 ChooseRallyLocationNear(int2 startPos)
 		{
-			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8).Where(x => world.IsCellBuildable(x, false)).ToArray();
+			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8).Where(IsRallyPointValid).ToArray();
 			if (possibleRallyPoints.Length == 0)
 			{
 				Game.Debug("Bot Bug: No possible rallypoint near {0}", startPos);

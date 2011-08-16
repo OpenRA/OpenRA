@@ -22,13 +22,14 @@ namespace OpenRA.Mods.RA.Orders
 		readonly Actor Producer;
 		readonly string Building;
 		readonly IEnumerable<Renderable> Preview;
-		BuildingInfo BuildingInfo { get { return Rules.Info[ Building ].Traits.Get<BuildingInfo>(); } }
+		readonly BuildingInfo BuildingInfo;
 		Sprite buildOk, buildBlocked;
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
 			Building = name;
+			BuildingInfo = Rules.Info[Building].Traits.Get<BuildingInfo>();
 			
 			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
 								.RenderPreview(Rules.Info[Building], producer.Owner);
@@ -97,7 +98,7 @@ namespace OpenRA.Mods.RA.Orders
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);
 				foreach (var t in FootprintUtils.Tiles(Building, BuildingInfo, topLeft))
-					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo.WaterBound) && res.GetResource(t) == null );
+					cells.Add( t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo) && res.GetResource(t) == null );
 			}
 
 			foreach( var c in cells )

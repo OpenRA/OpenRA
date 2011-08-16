@@ -147,7 +147,6 @@ namespace OpenRA.TilesetBuilder
 			var terraintype = new TerrainTypeInfo()
 			{
 				Type = "Clear",
-				Buildable = true,
 				AcceptSmudge = true,
 				IsWater = false,
 				Color = Color.White

@@ -207,6 +207,7 @@
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
 		SellSounds: cashturn.aud
+		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
@@ -295,6 +296,7 @@
 		Footprint: x
 		BuildSounds: hvydoor1.aud
 		Adjacent: 7
+		TerrainTypes: Clear,Road
 	TargetableBuilding:
 		TargetTypes: Ground
 	Wall:

@@ -85,7 +85,7 @@ SPEN:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
-		WaterBound: yes
+		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
@@ -140,7 +140,7 @@ SYRD:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
-		WaterBound: yes
+		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
@@ -1046,7 +1046,7 @@ SYRF:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
-		WaterBound: yes
+		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
 		HP: 30
@@ -1066,7 +1066,7 @@ SPEF:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 		Adjacent: 8
-		WaterBound: yes
+		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
 		HP: 30

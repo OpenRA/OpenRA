@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Buildings
 	public class BuildingInfo : ITraitInfo
 	{
 		public readonly int Power = 0;
-		public readonly bool WaterBound = false;
+		public readonly string[] TerrainTypes = {};
 		public readonly int Adjacent = 2;
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);

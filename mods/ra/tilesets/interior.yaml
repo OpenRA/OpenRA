@@ -7,53 +7,43 @@ General:
 Terrain:
 	TerrainType@Clear:
 		Type: Clear
-		Buildable: True
 		AcceptSmudge: True
 		Color: 40, 68, 40
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
-		Buildable: False
 		AcceptSmudge: False
 		Color: 92, 116, 164
 	TerrainType@Road:
 		Type: Road
-		Buildable: True
 		AcceptSmudge: True
 		Color: 88, 116, 116
 	TerrainType@Rock:
 		Type: Rock
-		Buildable: False
 		AcceptSmudge: False
 		Color: 68, 68, 60
 	TerrainType@Tree:
 		Type: Tree
-		Buildable: False
 		AcceptSmudge: False
 		Color: 28, 32, 36
 	TerrainType@River:
 		Type: River
-		Buildable: False
 		AcceptSmudge: False
 		Color: 92, 140, 180
 	TerrainType@Rough:
 		Type: Rough
-		Buildable: False
 		AcceptSmudge: True
 		Color: 68, 68, 60
 	TerrainType@Wall:
 		Type: Wall
-		Buildable: False
 		AcceptSmudge: True
 		Color: 208, 192, 160
 	TerrainType@Beach:
 		Type: Beach
-		Buildable: False
 		AcceptSmudge: False
 		Color: 176, 156, 120
 	TerrainType@Ore:
 		Type: Ore
-		Buildable: False
 		AcceptSmudge: True
 		Color: 148, 128, 96
 
