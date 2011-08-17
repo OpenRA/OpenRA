@@ -58,8 +58,8 @@ return {
 		sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
 		sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
 		usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
-		in out inout uniform const centroid sample attribute varying patch
-		return switch case for do while if else break continue main
+		in out inout uniform const centroid sample attribute varying patch index true false
+		return switch case for do while if else break continue main inline
 		layout location vertices line_strip triangle_strip max_vertices stream
 		triangles quads equal_spacing isolines fractional_even_spacing lines points
 		fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
@@ -82,16 +82,16 @@ return {
 		image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
 		uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
 		iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
-		size1x8 size1x16 size1x32 size2x16 size4x32
+		size1x8 size1x16 size1x32 size2x32 size4x32
 		]],
 
 		[[discard 
 		radians degrees sin cos tan asin acos atan sinh cosh tanh asinh acosh atanh
 		pow exp log exp2 log2 sqrt inversesqrt abs sign floor trunc round
 		roundEven ceil fract mod modf min max mix step isnan isinf clamp smoothstep
-		floatBitsToInt intBitsToFloat fma frexp ldexp 
-		packUnorm2x16 packUnorm4x7 packSnorm4x8
-		unpackUnorm2x16 unpackUnorm4x7 unpackSnorm4x8
+		floatBitsToInt intBitsToFloat uintBitsToFloat fma frexp ldexp 
+		packUnorm2x16 packUnorm4x8 packSnorm4x8
+		unpackUnorm2x16 unpackUnorm4x8 unpackSnorm4x8
 		packDouble2x32 unpackDouble2x32
 		length distance dot cross normalize ftransform faceforward
 		reflect refract
