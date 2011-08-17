@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 return {
-	exts = {"glsl","vert","frag","geom","cont","eval"},
+	exts = {"glsl","vert","frag","geom","cont","eval", "glslv", "glslf"},
 	lexer = wxstc.wxSTC_LEX_CPP,
 	apitype = "glsl",
 	sep = "%.",
