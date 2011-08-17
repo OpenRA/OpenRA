@@ -61,7 +61,7 @@ return {
 		in out inout uniform const centroid sample attribute varying patch index true false
 		return switch case for do while if else break continue main inline
 		layout location vertices line_strip triangle_strip max_vertices stream
-		triangles quads equal_spacing isolines fractional_even_spacing
+		triangles quads equal_spacing isolines fractional_even_spacing lines points
 		fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
 		invocations
 		origin_upper_left pixel_center_integer
