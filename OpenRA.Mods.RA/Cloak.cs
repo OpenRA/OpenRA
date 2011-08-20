@@ -28,13 +28,12 @@ namespace OpenRA.Mods.RA
 
 	public class Cloak : IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
 	{
-		[Sync]
-		int remainingTime;
-		[Sync]
-		bool canCloak = true;
-		
+		[Sync] int remainingTime;
+		[Sync] bool canCloak = true;
+
 		Actor self;
 		CloakInfo info;
+
 		public Cloak(Actor self, CloakInfo info)
 		{
 			this.info = info;
@@ -43,25 +42,29 @@ namespace OpenRA.Mods.RA
 			remainingTime = info.InitialDelay;
 		}
 
-		void DoUncloak()
-		{
-			if (remainingTime <= 0)
-				OnCloak();
+		public void Uncloak() { Uncloak(info.CloakDelay); }
 
-			remainingTime = Math.Max(remainingTime, info.CloakDelay);
+		public void Uncloak(int time)
+		{
+			if (Cloaked)
+				Sound.Play(info.UncloakSound, self.CenterLocation);
+
+			remainingTime = Math.Max(remainingTime, time);
 		}
 
-		public void Attacking(Actor self, Target target) { DoUncloak(); }
+		public void Attacking(Actor self, Target target) { Uncloak(); }
+
+		public bool Cloaked { get { return remainingTime <= 0; } }
+
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{			
 			canCloak = (e.DamageState < DamageState.Critical);
-			if (Cloaked && !canCloak)
-				DoUncloak();
+			if (!canCloak) Uncloak();
 		}
 
 		static readonly Renderable[] Nothing = { };
-		public IEnumerable<Renderable>
-			ModifyRender(Actor self, IEnumerable<Renderable> rs)
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
 		{
 			if (remainingTime > 0)
 				return rs;
@@ -76,20 +79,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (remainingTime > 0 && canCloak)
 				if (--remainingTime <= 0)
-					OnCloak();
+					Sound.Play(info.CloakSound, self.CenterLocation);
 		}
-
-		void OnUncloak()
-		{
-			Sound.Play(info.UncloakSound, self.CenterLocation);
-		}
-
-		void OnCloak()
-		{
-			Sound.Play(info.CloakSound, self.CenterLocation);
-		}
-
-		public bool Cloaked { get { return remainingTime == 0; } }
 
 		public bool IsVisible(Actor self)
 		{
@@ -109,12 +100,6 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer && Cloaked)
 				c = Color.FromArgb(128, c);
 			return c;
-		}
-		
-		public void Decloak(int time)
-		{
-			DoUncloak();
-			remainingTime = Math.Max(remainingTime, time);
 		}
 	}
 }
