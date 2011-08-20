@@ -103,10 +103,21 @@ namespace OpenRA
 			public string Owner = null;
 		}
 		
+		void AssertExists(string filename)
+		{
+			using(var s = Container.GetContent(filename))
+				if (s == null)
+					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
+		}
+
 		public Map(string path)
 		{
 			Path = path;
 			Container = FileSystem.OpenPackage(path, int.MaxValue);
+
+			AssertExists("map.yaml");
+			AssertExists("map.bin");
+
 			var yaml = new MiniYaml( null, MiniYaml.FromStream(Container.GetContent("map.yaml")) );
 			FieldLoader.Load(this, yaml);
             Uid = ComputeHash();
