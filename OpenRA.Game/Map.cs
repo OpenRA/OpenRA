@@ -77,6 +77,8 @@ namespace OpenRA
 		public static Map FromTileset(string tileset)
 		{
 			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
+			var tileRef = new TileReference<ushort,byte> { type = tile.Key, index = (byte)0 };
+			
 			Map map = new Map()
 			{
 				Title = "Name your map here",
@@ -85,11 +87,7 @@ namespace OpenRA
 				MapSize = new int2(1, 1),
 				Tileset = tileset,
 				MapResources = Lazy.New(() => new TileReference<byte, byte>[1, 1]),
-				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1]
-				{ { new TileReference<ushort, byte> { 
-					type = tile.Key, 
-					index = (byte)0 }
-				} }),
+				MapTiles = Lazy.New(() => new TileReference<ushort, byte>[1, 1] { { tileRef } }),
 				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
 				Smudges = Lazy.New(() => new List<SmudgeReference>())
 			};
