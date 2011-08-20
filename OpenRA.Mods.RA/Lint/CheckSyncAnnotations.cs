@@ -31,12 +31,14 @@ namespace OpenRA.Mods.RA
 		bool HasAnySyncFields(Type t)
 		{
 			var flags = BindingFlags.Public | BindingFlags.NonPublic
-				| BindingFlags.Instance | BindingFlags.FlattenHierarchy;
+				| BindingFlags.Instance;
 
 			var fs = t.GetFields(flags);
 			var ps = t.GetProperties(flags);
+
 			return fs.Any(f => f.HasAttribute<SyncAttribute>()) ||
-				ps.Any(p => p.HasAttribute<SyncAttribute>());
+				ps.Any(p => p.HasAttribute<SyncAttribute>()) ||
+				HasAnySyncFields(t.BaseType);
 		}
 	}
 }
