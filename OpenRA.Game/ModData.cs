@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -105,14 +106,19 @@ namespace OpenRA
             var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
 				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
 			
-			Dictionary<string, Map> ret = new Dictionary<string, Map>();
+			var ret = new Dictionary<string, Map>();
 			foreach (var path in paths)
 			{
-				var map = new Map(path);
-				if (ret.ContainsKey(map.Uid))
-					System.Console.WriteLine("Ignoring duplicate map: {0}", path);
-				else
+				try
+				{
+					var map = new Map(path);
 					ret.Add(map.Uid, map);
+				}
+				catch(Exception e)
+				{
+					Console.WriteLine("Failed to load map: {0}", path);
+					Console.WriteLine("Details: {0}", e.ToString());
+				}
 			}
 			return ret;
 		}
