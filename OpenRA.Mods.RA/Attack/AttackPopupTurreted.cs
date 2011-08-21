@@ -34,14 +34,14 @@ namespace OpenRA.Mods.RA
 
 		protected Target target;
 		AttackPopupTurretedInfo Info;
-		Turreted Turret;
+		Turreted turret;
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
 		{
 			Info = info;
-			Turret = init.self.Trait<Turreted>();
+			turret = init.self.Trait<Turreted>();
 			if (init.Contains<SkipMakeAnimsInit>())
 				buildComplete = true;
 		}
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 				return false;
 			}
 
-			if (!Turret.FaceTarget(self,target)) return false;
+			if (!turret.FaceTarget(self,target)) return false;
 
 			return true;
 		}
@@ -85,10 +85,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
 			{
-				Turret.desiredFacing = Info.DefaultFacing;
+				turret.desiredFacing = Info.DefaultFacing;
 				State = PopupState.Rotating;
 			}
-			else if (State == PopupState.Rotating && Turret.turretFacing == Info.DefaultFacing)
+			else if (State == PopupState.Rotating && turret.turretFacing == Info.DefaultFacing)
 			{
 				State = PopupState.Transitioning;
 				var rb = self.Trait<RenderBuilding>();
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA
 				{
 					State = PopupState.Closed;
 					rb.PlayCustomAnimRepeating(self, "closed-idle");
-					Turret.desiredFacing = null;
+					turret.desiredFacing = null;
 				});
 			}
 		}
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
 				State = PopupState.Closed;
 				self.Trait<RenderBuilding>()
 					.PlayCustomAnimRepeating(self, "closed-idle");
-				Turret.desiredFacing = null;
+				turret.desiredFacing = null;
 			}
 			buildComplete = true;
 		}
