@@ -29,7 +29,6 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public HardwarePalette Palette { get; private set; }
-		IFolder previousMapMount = null;
 		
 		public ModData( params string[] mods )
 		{		
@@ -40,21 +39,18 @@ namespace OpenRA
 			LoadScreen.Display();
 			WidgetLoader = new WidgetLoader( this );
 		}
-		
-		public void ReloadMaps()
-		{
-			AvailableMaps = FindMaps( Manifest.Mods );
-		}
 
 		public void LoadInitialAssets()
 		{
 			// all this manipulation of static crap here is nasty and breaks 
 			// horribly when you use ModData in unexpected ways.
+
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				FileSystem.Mount(dir);
 
-			ReloadMaps();
+			AvailableMaps = FindMaps(Manifest.Mods);
+
 			Palette = new HardwarePalette();
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
@@ -70,17 +66,14 @@ namespace OpenRA
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			var map = new Map(AvailableMaps[uid].Path);
-
-			// Maps may contain custom assets
-			// TODO: why are they lowest priority? they should be highest.
-			if (previousMapMount != null) FileSystem.Unmount(previousMapMount);
-			previousMapMount = FileSystem.OpenPackage(map.Path, int.MaxValue);
-			FileSystem.Mount(previousMapMount);
 			
 			// Reinit all our assets
 			LoadInitialAssets();
 			foreach (var pkg in Manifest.Packages)
 				FileSystem.Mount(pkg);
+
+			// Mount map package so custom assets can be used. TODO: check priority.
+			FileSystem.Mount(FileSystem.OpenPackage(map.Path, int.MaxValue));
 		
 			Rules.LoadRules(Manifest, map);
 			SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
