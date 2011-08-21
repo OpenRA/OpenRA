@@ -46,6 +46,8 @@ namespace OpenRA.Mods.RA.Widgets
 			return Color.LimeGreen;
 		}
 
+		const float PowerBarLerpFactor = .2f;
+
 		public override void Draw()
 		{
 			if( world.LocalPlayer == null ) return;
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Current power supply
 			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerProvided / powerScaleBy);
-			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
+			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, PowerBarLerpFactor);
 			var powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = GetPowerColor(power);
@@ -92,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets
 			// Power usage indicator
 			var indicator = ChromeProvider.GetImage( powerCollection, "power-indicator");
 			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerDrained / powerScaleBy);
-			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
+			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, PowerBarLerpFactor);
 			var powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel);
