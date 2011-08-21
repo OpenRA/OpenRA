@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
 			return inRange
-				.Where(a => a.Owner != null && a.AppearsHostileTo(self))
+				.Where(a => a.AppearsHostileTo(self))
 				.Where(a => !a.HasTrait<AutoTargetIgnore>())
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.ClosestTo( self.CenterLocation );
