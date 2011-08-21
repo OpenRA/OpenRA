@@ -96,7 +96,6 @@
     <Compile Include="Activities\Turn.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
-    <Compile Include="AttackBase.cs" />
     <Compile Include="AttackMove.cs" />
     <Compile Include="BaseBuilding.cs" />
     <Compile Include="Buildable.cs" />
@@ -158,13 +157,8 @@
     <Compile Include="Render\RenderUnitTurreted.cs" />
     <Compile Include="Buildings\RepairableBuilding.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
-    <Compile Include="AttackFrontal.cs" />
     <Compile Include="Air\AttackHeli.cs" />
-    <Compile Include="AttackLeap.cs" />
-    <Compile Include="AttackOmni.cs" />
     <Compile Include="Air\AttackPlane.cs" />
-    <Compile Include="AttackTesla.cs" />
-    <Compile Include="AttackTurreted.cs" />
     <Compile Include="AutoHeal.cs" />
     <Compile Include="AutoTarget.cs" />
     <Compile Include="BelowUnits.cs" />
@@ -316,13 +310,11 @@
     <Compile Include="Widgets\Logic\SettingsMenuLogic.cs" />
     <Compile Include="TargetableSubmarine.cs" />
     <Compile Include="Effects\RallyPoint.cs" />
-    <Compile Include="AttackMedic.cs" />
     <Compile Include="Activities\Heal.cs" />
     <Compile Include="SupportPowers\SupportPowerManager.cs" />
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
     <Compile Include="Activities\RAHarvesterDockSequence.cs" />
-    <Compile Include="AttackWander.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="ActorExts.cs" />
@@ -359,7 +351,15 @@
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="Crates\HideMapCrateAction.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
-    <Compile Include="AttackPopupTurreted.cs" />
+    <Compile Include="Attack\AttackBase.cs" />
+    <Compile Include="Attack\AttackFrontal.cs" />
+    <Compile Include="Attack\AttackLeap.cs" />
+    <Compile Include="Attack\AttackMedic.cs" />
+    <Compile Include="Attack\AttackOmni.cs" />
+    <Compile Include="Attack\AttackPopupTurreted.cs" />
+    <Compile Include="Attack\AttackTesla.cs" />
+    <Compile Include="Attack\AttackTurreted.cs" />
+    <Compile Include="Attack\AttackWander.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
