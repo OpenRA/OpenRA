@@ -50,5 +50,11 @@ namespace OpenRA.Mods.RA
 			var df = desiredFacing ?? ( facing != null ? facing.Facing : turretFacing );
 			turretFacing = Util.TickFacing(turretFacing, df, info.ROT);
 		}
+
+		public bool FaceTarget( Actor self, Target target )
+		{
+			desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turretFacing );
+			return turretFacing == desiredFacing;
+		}
 	}
 }

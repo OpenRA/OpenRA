@@ -39,9 +39,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			if (!target.IsValid) return false;
-			turret.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turret.turretFacing );
-			if( turret.desiredFacing != turret.turretFacing )
-				return false;
+			if (!turret.FaceTarget(self, target)) return false;
 
 			return base.CanAttack( self, target );
 		}

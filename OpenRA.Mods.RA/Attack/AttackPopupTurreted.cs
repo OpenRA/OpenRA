@@ -70,9 +70,7 @@ namespace OpenRA.Mods.RA
 				return false;
 			}
 
-			Turret.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, Turret.turretFacing );
-			if( Turret.desiredFacing != Turret.turretFacing )
-				return false;
+			if (!Turret.FaceTarget(self,target)) return false;
 
 			return true;
 		}
