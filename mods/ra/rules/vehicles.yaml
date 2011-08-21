@@ -501,6 +501,8 @@ MCV.Husk:
 		Name: Husk (MCV)
 	RenderUnit:
 		Image: mcvhusk
+	Selectable:
+		Bounds: 42,42
 
 TTNK:
 	Inherits: ^Tank
