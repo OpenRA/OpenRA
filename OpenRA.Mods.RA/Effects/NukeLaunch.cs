@@ -63,13 +63,7 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				altitude -= 10;
 				if (altitude <= 0)
-				{
-					// Trigger screen desaturate effect
-					foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
-						a.Trait.Enable();
-					
 					Explode(world);
-				}
 			}
 		}
 
@@ -78,6 +72,9 @@ namespace OpenRA.Mods.RA.Effects
 			world.AddFrameEndTask(w => w.Remove(this));
 			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos, 0);
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
+
+			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
+				a.Trait.Enable();
 		}
 
 		public IEnumerable<Renderable> Render()
