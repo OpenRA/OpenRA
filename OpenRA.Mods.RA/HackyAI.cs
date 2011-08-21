@@ -377,8 +377,8 @@ namespace OpenRA.Mods.RA
 
 		int2? ChooseDestinationNear(Actor a, int2 desiredMoveTarget)
 		{
-			if (!a.HasTrait<IMove>())
-				return null;
+			var move = a.TraitOrDefault<IMove>();
+			if (move == null) return null;
 
 			int2 xy;
 			int loopCount = 0; //avoid infinite loops.
@@ -390,7 +390,7 @@ namespace OpenRA.Mods.RA
 				loopCount++;
 				range = Math.Max(range, loopCount / 2);
 				if (loopCount > 10) return null;
-			} while (!a.Trait<IMove>().CanEnterCell(xy) && xy != a.Location);
+			} while (!move.CanEnterCell(xy) && xy != a.Location);
 
 			return xy;
 		}
