@@ -58,8 +58,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			postgameText.GetText = () =>
 			{
 				var state = world.LocalPlayer.WinState;
-				return (state == WinState.Undefined)? "" :
-								((state == WinState.Lost)? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
+				return state == WinState.Undefined ? "" :
+								(state == WinState.Lost ? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};
 		}
 		
