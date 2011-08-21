@@ -97,11 +97,6 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
-		{
-			return new AttackActivity( newTarget );
-		}
-
 		public override void ResolveOrder(Actor self, Order order)
 		{
 			base.ResolveOrder(self, order);
@@ -126,34 +121,6 @@ namespace OpenRA.Mods.RA
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
 			return State == PopupState.Closed ? Info.ClosedDamageMultiplier : 1f;
-		}
-
-		class AttackActivity : Activity
-		{
-			readonly Target target;
-			public AttackActivity( Target newTarget ) { this.target = newTarget; }
-
-			public override Activity Tick( Actor self )
-			{
-				if( IsCanceled || !target.IsValid ) return NextActivity;
-
-				if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
-					return this;
-
-				var attack = self.Trait<AttackPopupTurreted>();
-				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-				var weapon = attack.ChooseWeaponForTarget(target);
-				if (weapon != null)
-				{
-					attack.target = target;
-
-					if (self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-						return Util.SequenceActivities(
-							new Follow( target, Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ),
-							this );
-				}
-				return NextActivity;
-			}
 		}
 	}
 }
