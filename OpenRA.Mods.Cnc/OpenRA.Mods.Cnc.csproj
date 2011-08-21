@@ -68,7 +68,6 @@
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="CncWaterPaletteRotation.cs" />
-    <Compile Include="AttackPopupTurreted.cs" />
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncServerBrowserLogic.cs" />

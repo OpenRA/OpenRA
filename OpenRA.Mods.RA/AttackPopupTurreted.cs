@@ -11,7 +11,6 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
@@ -19,7 +18,7 @@ using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.RA
 {
 	class AttackPopupTurretedInfo : AttackBaseInfo
 	{
@@ -31,20 +30,14 @@ namespace OpenRA.Mods.Cnc
 
 	class AttackPopupTurreted : AttackBase, INotifyBuildComplete, INotifyIdle, IDamageModifier
 	{
-		enum PopupState
-		{
-			Open,
-			Rotating,
-			Transitioning,
-			Closed
-		};
-		
+		enum PopupState { Open, Rotating, Transitioning, Closed };
+
 		protected Target target;
 		AttackPopupTurretedInfo Info;
 		Turreted Turret;
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
-		
+
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
 		{
 			Info = info;
@@ -57,13 +50,13 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (State == PopupState.Transitioning)
 				return false;
-			
+
 			if( self.HasTrait<Building>() && !buildComplete )
 				return false;
-			
+
 			if (!base.CanAttack( self, target ))
 				return false;
-			
+
 			IdleTicks = 0;
 			if (State == PopupState.Closed)
 			{
@@ -76,7 +69,7 @@ namespace OpenRA.Mods.Cnc
 				});
 				return false;
 			}
-			
+
 			Turret.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, Turret.turretFacing );
 			if( Turret.desiredFacing != Turret.turretFacing )
 				return false;
@@ -89,7 +82,7 @@ namespace OpenRA.Mods.Cnc
 			base.Tick(self);
 			DoAttack( self, target );
 		}
-		
+
 		public void TickIdle(Actor self)
 		{
 			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
@@ -109,7 +102,7 @@ namespace OpenRA.Mods.Cnc
 				});
 			}
 		}
-		
+
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
 			return new AttackActivity( newTarget );
@@ -136,12 +129,12 @@ namespace OpenRA.Mods.Cnc
 			}
 			buildComplete = true;
 		}
-		
+
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
 			return State == PopupState.Closed ? Info.ClosedDamageMultiplier : 1f;
 		}
-		
+
 		class AttackActivity : Activity
 		{
 			readonly Target target;

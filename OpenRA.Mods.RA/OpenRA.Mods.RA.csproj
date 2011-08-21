@@ -359,6 +359,7 @@
     <Compile Include="ThrowsParticle.cs" />
     <Compile Include="Crates\HideMapCrateAction.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
+    <Compile Include="AttackPopupTurreted.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
