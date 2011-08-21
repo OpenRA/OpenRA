@@ -379,38 +379,12 @@ namespace OpenRA.Editor
 					if (!Players.Contains(parts[0]))
 						Players.Add(parts[0]);
 
-					var stance = ActorStance.Stance.None;
-					switch (parts[5])
-					{
-						case "Area Guard":
-						case "Guard":
-							stance = ActorStance.Stance.Guard;
-							break;
-						case "Defend Base":
-							stance = ActorStance.Stance.Defend;
-							break;
-						case "Hunt":
-						case "Rampage":
-						case "Attack Base":
-						case "Attack Units":
-						case "Attack Civil.":
-						case "Attack Tarcom":
-							stance = ActorStance.Stance.Hunt;
-							break;
-						case "Retreat":
-						case "Return":
-							stance = ActorStance.Stance.Retreat;
-							break;
-						// do we care about `Harvest' and `Sticky'?
-					}
-
 					var actor = new ActorReference(parts[1].ToLowerInvariant())
 					{
 						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
 						new OwnerInit(parts[0]),
 						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo)/256),
 						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
-						new ActorStanceInit(stance),
 					};
 
 					if (section == "INFANTRY")
@@ -441,17 +415,17 @@ namespace OpenRA.Editor
 		
 		void LoadPlayer(IniFile file, string section, bool isRA)
 		{			
-			var c = (section == "BadGuy") ? "red" :
-						(isRA) ? "blue" : "gold";
+			var c = section == "BadGuy" ? "red" :
+						isRA ? "blue" : "gold";
 			
 			var color = namedColorMapping[c];
 			
 			var pr = new PlayerReference
 			{
 				Name = section,
-				OwnsWorld = (section == "Neutral"),
-				NonCombatant = (section == "Neutral"),
-				Race = (isRA) ? ((section == "BadGuy") ? "soviet" : "allies") : ((section == "BadGuy") ? "nod" : "gdi"),
+				OwnsWorld = section == "Neutral",
+				NonCombatant = section == "Neutral",
+				Race = isRA ? (section == "BadGuy" ? "soviet" : "allies") : (section == "BadGuy" ? "nod" : "gdi"),
 				ColorRamp = new ColorRamp(
                         (byte)((color.First.GetHue() / 360.0f) * 255),
                         (byte)(color.First.GetSaturation() * 255),
@@ -459,7 +433,7 @@ namespace OpenRA.Editor
                         (byte)(color.Second.GetBrightness() * 255))
 			};
 			
-			var Neutral = new List<string>(){"Neutral"};
+			var Neutral = new [] {"Neutral"};
 			foreach (var s in file.GetSection(section, true))
 			{
 				Console.WriteLine(s.Key);

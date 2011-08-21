@@ -168,7 +168,6 @@
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="GameRules\Settings.cs" />
     <Compile Include="Support\Arguments.cs" />
-    <Compile Include="Traits\ActorStance.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
