@@ -97,14 +97,6 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public override void ResolveOrder(Actor self, Order order)
-		{
-			base.ResolveOrder(self, order);
-
-			if (order.OrderString == "Stop")
-				target = Target.None;
-		}
-
 		public override void BuildingComplete(Actor self)
 		{
 			// Set true for SkipMakeAnimsInit
