@@ -38,7 +38,8 @@ namespace OpenRA.Mods.RA.Activities
 					return new Wait(20);
 
 				return Util.SequenceActivities(
-					new Enter(rearmTarget),
+					new MoveAdjacentTo(rearmTarget),
+					mobile.MoveTo(Traits.Util.CellContaining(rearmTarget.CenterLocation), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
 					this );
