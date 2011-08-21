@@ -19,11 +19,14 @@ namespace OpenRA.Mods.RA.Widgets
 	public class PowerBinWidget : Widget
 	{
 		// Power bar 
-		static float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
-		static Size powerSize = new Size(138, 5);
+		float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
+		Size powerSize = new Size(138, 5);
+
 		float? lastPowerProvidedPos;
 		float? lastPowerDrainedPos;
 		string powerCollection;
+
+		readonly string RadarBin = "INGAME_RADAR_BIN";
 
 		readonly World world;
 		[ObjectCreator.UseCtor]
@@ -32,21 +35,29 @@ namespace OpenRA.Mods.RA.Widgets
 			this.world = world;
 		}
 
+		static Color GetPowerColor(PowerManager pm)
+		{
+			if (pm.PowerState == PowerState.Critical) return Color.Red;
+			if (pm.PowerState == PowerState.Low) return Color.Orange;
+			return Color.LimeGreen;
+		}
+
 		public override void Draw()
 		{
 			if( world.LocalPlayer == null ) return;
+
+			var radarBin = Widget.RootWidget.GetWidget<RadarBinWidget>(RadarBin);
 
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 
 			var power = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 
 			// Nothing to draw
-			if (power.PowerProvided == 0
-				&& power.PowerDrained == 0)
+			if (power.PowerProvided == 0 && power.PowerDrained == 0)
 				return;
 
 			// Draw bar horizontally
-			var barStart = powerOrigin + RadarBinWidget.radarOrigin;
+			var barStart = powerOrigin + radarBin.RadarOrigin;
 			var barEnd = barStart + new float2(powerSize.Width, 0);
 
 			float powerScaleBy = 100;
@@ -58,11 +69,7 @@ namespace OpenRA.Mods.RA.Widgets
 			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
 			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
-			var color = Color.LimeGreen;
-			if (power.PowerState == PowerState.Low)
-				color = Color.Orange;
-			if (power.PowerState == PowerState.Critical)
-				color = Color.Red;
+			var color = GetPowerColor(power);
 
 			var colorDark = Graphics.Util.Lerp(0.25f, color, Color.Black);
 			for (int i = 0; i < powerSize.Height; i++)

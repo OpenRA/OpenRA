@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
-		public static float2 radarOrigin = radarClosedOrigin;
+		float2 radarOrigin = radarClosedOrigin;
 		float radarMinimapHeight;
 		const int radarSlideAnimationLength = 15;
 		const int radarActivateAnimationLength = 5;
@@ -40,6 +40,9 @@ namespace OpenRA.Mods.RA.Widgets
 		Sprite customTerrainSprite;
 		Sprite actorSprite;
 		Sprite shroudSprite;
+
+		/* hack to expose this to other broken widgets which rely on it */
+		public float2 RadarOrigin { get { return radarOrigin; } }
 
 		readonly World world;
 		[ObjectCreator.UseCtor]
