@@ -235,10 +235,8 @@ namespace OpenRA.Mods.RA.Widgets
 						clock.Tick();
 						WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 	
-						if (firstOfThis.Done)
-							textBits.Add( Pair.New( overlayPos, "READY" ) );
-						else if (firstOfThis.Paused)
-							textBits.Add( Pair.New( overlayPos, "ON HOLD" ) );
+						if (queue.CurrentItem() == firstOfThis)
+							textBits.Add( Pair.New( overlayPos, GetOverlayForItem(firstOfThis) ) );
 	
 						var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
 						if (repeats > 1 || queue.CurrentItem() != firstOfThis)
@@ -295,7 +293,14 @@ namespace OpenRA.Mods.RA.Widgets
 
 			return 48 * y + 9;
 		}
-		
+
+		string GetOverlayForItem(ProductionItem item)
+		{
+			if (item.Paused) return "ON HOLD";
+			if (item.Done) return "READY";
+			return WidgetUtils.FormatTime(item.RemainingTimeActual);
+		}
+
 		Action<MouseInput> HandleClick(string name, World world)
 		{
 			return mi => {
