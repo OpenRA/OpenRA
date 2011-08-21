@@ -18,7 +18,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackTurretedInfo : AttackBaseInfo
+	class AttackTurretedInfo : AttackBaseInfo, Requires<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackTurreted( init.self ); }
 	}
@@ -26,7 +26,12 @@ namespace OpenRA.Mods.RA
 	class AttackTurreted : AttackBase, INotifyBuildComplete
 	{
 		protected Target target;
-		public AttackTurreted(Actor self) : base(self) { }
+		protected Turreted turret;
+
+		public AttackTurreted(Actor self) : base(self)
+		{
+			turret = self.Trait<Turreted>();
+		}
 
 		protected override bool CanAttack( Actor self, Target target )
 		{
@@ -34,9 +39,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			if (!target.IsValid) return false;
-			var turreted = self.Trait<Turreted>();
-			turreted.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turreted.turretFacing );
-			if( turreted.desiredFacing != turreted.turretFacing )
+			turret.desiredFacing = Util.GetFacing( target.CenterLocation - self.CenterLocation, turret.turretFacing );
+			if( turret.desiredFacing != turret.turretFacing )
 				return false;
 
 			return base.CanAttack( self, target );
