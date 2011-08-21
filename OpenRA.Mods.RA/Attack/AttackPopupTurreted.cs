@@ -71,12 +71,6 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public override void Tick(Actor self)
-		{
-			base.Tick(self);
-			DoAttack( self, target );
-		}
-
 		public void TickIdle(Actor self)
 		{
 			if (State == PopupState.Open && IdleTicks++ > Info.CloseDelay)
