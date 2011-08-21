@@ -190,6 +190,7 @@ ChainGun:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
+		High: true
 	Warhead:
 		Spread: 3
 		Versus: 
@@ -209,6 +210,7 @@ ChainGun.Yak:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
+		High: true
 	Warhead:
 		Spread: 3
 		Versus: 
