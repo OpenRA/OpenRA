@@ -64,12 +64,13 @@ namespace OpenRA.Mods.RA.Widgets
 
 			float powerScaleBy = 100;
 			var maxPower = Math.Max(power.PowerProvided, power.PowerDrained);
+
 			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
 
 			// Current power supply
 			var powerLevelTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerProvided / powerScaleBy);
 			lastPowerProvidedPos = float2.Lerp(lastPowerProvidedPos.GetValueOrDefault(powerLevelTemp), powerLevelTemp, .3f);
-			float2 powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
+			var powerLevel = new float2(lastPowerProvidedPos.Value, barStart.Y);
 
 			var color = GetPowerColor(power);
 
@@ -77,8 +78,8 @@ namespace OpenRA.Mods.RA.Widgets
 			for (int i = 0; i < powerSize.Height; i++)
 			{
 				color = (i - 1 < powerSize.Height / 2) ? color : colorDark;
-				float2 leftOffset = new float2(0, i);
-				float2 rightOffset = new float2(0, i);
+				var leftOffset = new float2(0, i);
+				var rightOffset = new float2(0, i);
 				// Indent corners
 				if ((i == 0 || i == powerSize.Height - 1) && powerLevel.X - barStart.X > 1)
 				{
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var indicator = ChromeProvider.GetImage( powerCollection, "power-indicator");
 			var powerDrainedTemp = barStart.X + (barEnd.X - barStart.X) * (power.PowerDrained / powerScaleBy);
 			lastPowerDrainedPos = float2.Lerp(lastPowerDrainedPos.GetValueOrDefault(powerDrainedTemp), powerDrainedTemp, .3f);
-			float2 powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
+			var powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel);
 		}
