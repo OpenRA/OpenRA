@@ -27,12 +27,16 @@ namespace OpenRA.Mods.RA.Widgets
 		string powerCollection;
 
 		readonly string RadarBin = "INGAME_RADAR_BIN";
-
+		readonly PowerManager power;
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
 		public PowerBinWidget( [ObjectCreator.Param] World world )
 		{
 			this.world = world;
+
+			if (world.LocalPlayer != null)
+				power = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 		}
 
 		static Color GetPowerColor(PowerManager pm)
@@ -49,8 +53,6 @@ namespace OpenRA.Mods.RA.Widgets
 			var radarBin = Widget.RootWidget.GetWidget<RadarBinWidget>(RadarBin);
 
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
-
-			var power = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 
 			// Nothing to draw
 			if (power.PowerProvided == 0 && power.PowerDrained == 0)
