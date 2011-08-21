@@ -82,13 +82,6 @@ namespace OpenRA.Mods.RA
 			this.rallypointTestBuilding = Rules.Info[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
 		}
 
-		enum BuildState
-		{
-			ChooseItem,
-			WaitForProduction,
-			WaitForFeedback,
-		}
-
 		const int MaxBaseDistance = 15;
 
 		public static void BotDebug(string s, params object[] args)
@@ -450,6 +443,8 @@ namespace OpenRA.Mods.RA
 
 		class BaseBuilder
 		{
+			enum BuildState	{ ChooseItem, WaitForProduction, WaitForFeedback }
+			
 			BuildState state = BuildState.WaitForFeedback;
 			string category;
 			HackyAI ai;
