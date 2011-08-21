@@ -47,7 +47,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () => 
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			optionsBG.GetWidget("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
-			optionsBG.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 
 			var postgameBG = gameRoot.GetWidget("POSTGAME_BG");
 			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");

@@ -45,7 +45,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
 			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 			optionsBG.GetWidget<ButtonWidget>("SURRENDER").IsVisible = () => false;
-			optionsBG.GetWidget<ButtonWidget>("QUIT").OnClick = () => Game.Exit();
 		}
 		
 		void UnregisterEvents()

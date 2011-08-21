@@ -127,7 +127,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
-			Height:320
+			Height:295
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -177,15 +177,7 @@ Container@INGAME_ROOT:
 					Y:220
 					Width:160
 					Height:25
-					Text:Disconnect
-					Font:Bold
-				Button@QUIT:
-					Id:QUIT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:260
-					Width:160
-					Height:25
-					Text:Quit
+					Text:Abort Mission
 					Font:Bold
 		Background@DIPLOMACY_BG:
 			Id:DIPLOMACY_BG
@@ -377,7 +369,7 @@ Container@OBSERVER_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
-			Height:320
+			Height:295
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -427,15 +419,7 @@ Container@OBSERVER_ROOT:
 					Y:220
 					Width:160
 					Height:25
-					Text:Disconnect
-					Font:Bold
-				Button@QUIT:
-					Id:QUIT
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:260
-					Width:160
-					Height:25
-					Text:Quit
+					Text:Abort Mission
 					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
