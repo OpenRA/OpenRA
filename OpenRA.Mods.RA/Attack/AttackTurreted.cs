@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA
 	{
 		protected Target target;
 		protected Turreted turret;
+		protected bool buildComplete;
 
 		public AttackTurreted(Actor self) : base(self)
 		{
@@ -64,8 +65,7 @@ namespace OpenRA.Mods.RA
 				target = Target.None;
 		}
 
-		bool buildComplete = false;
-		public void BuildingComplete(Actor self) { buildComplete = true; }
+		public virtual void BuildingComplete(Actor self) { buildComplete = true; }
 
 		class AttackActivity : Activity
 		{

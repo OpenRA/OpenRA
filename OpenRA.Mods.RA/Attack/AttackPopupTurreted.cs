@@ -20,7 +20,7 @@ using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {
-	class AttackPopupTurretedInfo : AttackBaseInfo
+	class AttackPopupTurretedInfo : AttackTurretedInfo
 	{
 		public int CloseDelay = 125;
 		public int DefaultFacing = 0;
@@ -28,22 +28,18 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted( init, this ); }
 	}
 
-	class AttackPopupTurreted : AttackBase, INotifyBuildComplete, INotifyIdle, IDamageModifier
+	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed };
 
-		protected Target target;
 		AttackPopupTurretedInfo Info;
-		Turreted turret;
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
 		{
 			Info = info;
-			turret = init.self.Trait<Turreted>();
-			if (init.Contains<SkipMakeAnimsInit>())
-				buildComplete = true;
+			buildComplete = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		protected override bool CanAttack( Actor self, Target target )
@@ -114,8 +110,7 @@ namespace OpenRA.Mods.RA
 				target = Target.None;
 		}
 
-		bool buildComplete = false;
-		public void BuildingComplete(Actor self)
+		public override void BuildingComplete(Actor self)
 		{
 			// Set true for SkipMakeAnimsInit
 			if (buildComplete)
