@@ -14,6 +14,8 @@ NEW:
 		Map support for enforcing team and spawn choice
 		Fix resource-clearing weapons breaking custom terrain types (bridges)
 		Added a "Pixel double" mode to draw the world at 2x zoom.
+		Fixed broken mounting of map packages
+		Fixed crashes when loading broken maps
 	Both C&C and Red Alert:
 		Fixed desync when a player surrenders
 		Fixed installing from CD
@@ -35,6 +37,8 @@ NEW:
 		Fixed superweapons being fired from disabled structures when multiple are available
 		Added "Mission Accomplished" / "Mission Failed" notifications when you win or lose a multiplayer game
 		Fixed husks jumping to the middle of a cell when a unit dies
+		Fixed decloak sound never being used
+		Improved HackyAI power management
 	C&C:
 		Completely overhauled UI
 		Added support for installing from original game disks
@@ -60,6 +64,7 @@ NEW:
 		Added a blue pip for harvested blue tiberium
 		Changed the Refinery tower lights to indicate the amount of stored tiberium
 		Fixed an exploit with Nod airfields on the right side of the map
+		Fixed bot color being saved as player color in lobby
 		Balance changes:
 			Refinery footprint changed, price decreased to $1500
 			Flame tank explodes on death, damage reduced by 40%
@@ -92,18 +97,30 @@ NEW:
 		Fixed map reveal when an ally is granted GPS
 		Added 14 new maps by buddha, hamb, seru
 		Fixed bounties of $0 displaying
+		Removed 3 obsolete maps
+		Fixed Minelayers not entering the Service Depot properly
+		Fixed Hind, Yak weapons being blocked by walls
+		Fixed phantom radar bin on subsequent games
 		Added new Oil Derrick artwork
 		Added support for Counterstrike & Aftermath music tracks
 		Added player color to diplomacy panel
 		Added capturable oil refinery tech structure
 		Added new harvester artwork for half-empty/empty states
 		Added new MCV husk artwork
+		Fixed spy disguise not working
+		Fixed hellfire missiles splashing back against helicopters
+		Fixed animation speed for Grenadier idle animations
+		Removed Lock Teams option
+		Fixed cursor while dragging selection box
+		Fixed accidental order issuing while dragging selection box
 		Balance changes:
 			Medic cost reduced to $500
 			Mines are visible to friendlies and spectators
 			Friendly units don't trigger mines
 			Increased reload rate for aircraft
 			Missile sub submerge delay doubled, damage decreased by 25%
+			Longbow now requires Allied Tech Center
+			Reduced wall health
 	Utility:
 		Fixed --png mode for converting shp -> png
 	Editor:
