@@ -711,7 +711,7 @@ RedEye:
 		Speed: 12
 		High: true
 		Angle: .1
-		Inaccuracy: 120
+		Inaccuracy: 80
 		Image: 120MM
 		ContrailLength: 30
 	Warhead:
