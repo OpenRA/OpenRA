@@ -22,11 +22,12 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int BeamRadius = 1;
 		public readonly int BeamDuration = 10;
 		public readonly bool UsePlayerColor = false;
+		public readonly Color Color = Color.Red;
 		public readonly string Explosion = "laserfire";
 
 		public IEffect Create(ProjectileArgs args) 
 		{
-			Color c = UsePlayerColor ? args.firedBy.Owner.ColorRamp.GetColor(0) : Color.Red;
+			var c = UsePlayerColor ? args.firedBy.Owner.ColorRamp.GetColor(0) : Color;
 			return new LaserZap(args, BeamRadius, c, BeamDuration, Explosion);
 		}
 	}
