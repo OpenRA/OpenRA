@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 				.ClosestTo( self.CenterLocation );
 			
 			if( target != null )
-				self.QueueActivity(self.Trait<AttackBase>().GetAttackActivity(self, Target.FromActor( target ), false ));
+				self.QueueActivity(attack.GetAttackActivity(self, Target.FromActor( target ), false ));
 		}
 	}
 }
