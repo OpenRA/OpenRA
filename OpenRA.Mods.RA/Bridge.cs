@@ -186,15 +186,15 @@ namespace OpenRA.Mods.RA
 			if (currentTemplate == oldTempate)
 				return;
 
+			// Update map
+			foreach (var c in TileSprites[currentTemplate].Keys)
+				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
+
 			if (ds == DamageState.Dead && !dead)
 			{
 				dead = true;
 				KillUnitsOnBridge();
 			}
-
-			// Update map
-			foreach (var c in TileSprites[currentTemplate].Keys)
-				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
