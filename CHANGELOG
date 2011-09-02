@@ -16,6 +16,8 @@ NEW:
 		Added a "Pixel double" mode to draw the world at 2x zoom.
 		Fixed broken mounting of map packages
 		Fixed crashes when loading broken maps
+		Fixed units being left alive but stranded on destroyed bridges
+		Fixed husks being created on water
 	Both C&C and Red Alert:
 		Fixed desync when a player surrenders
 		Fixed installing from CD
@@ -95,7 +97,7 @@ NEW:
 		Fixed parachute offsets
 		Added muzzle flashes to Pillbox / Camo Pillbox / SAM Site
 		Fixed map reveal when an ally is granted GPS
-		Added 14 new maps by buddha, hamb, seru
+		Added 16 new maps by buddha, hamb, seru
 		Fixed bounties of $0 displaying
 		Removed 3 obsolete maps
 		Fixed Minelayers not entering the Service Depot properly
@@ -121,6 +123,7 @@ NEW:
 			Missile sub submerge delay doubled, damage decreased by 25%
 			Longbow now requires Allied Tech Center
 			Reduced wall health
+			Increased cruiser accuracy
 	Utility:
 		Fixed --png mode for converting shp -> png
 	Editor:
