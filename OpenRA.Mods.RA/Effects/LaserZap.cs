@@ -28,27 +28,27 @@ namespace OpenRA.Mods.RA.Effects
 		public IEffect Create(ProjectileArgs args) 
 		{
 			var c = UsePlayerColor ? args.firedBy.Owner.ColorRamp.GetColor(0) : Color;
-			return new LaserZap(args, BeamRadius, c, BeamDuration, Explosion);
+			return new LaserZap(args, this, c);
 		}
 	}
 
 	class LaserZap : IEffect
 	{
 		ProjectileArgs args;
-		readonly int radius;
+		LaserZapInfo info;
 		int ticks = 0;
-		int beamTicks; // Duration of beam
 		Color color;
-		bool doneDamage = false;
+		bool doneDamage;
 		Animation explosion;
 		
-		public LaserZap(ProjectileArgs args, int radius, Color color, int beamTicks, string explosion)
+		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
 		{
 			this.args = args;
+			this.info = info;
 			this.color = color;
-			this.radius = radius;
-			this.beamTicks = beamTicks;
-			this.explosion = new Animation(explosion);
+
+			if (info.Explosion != null)
+				this.explosion = new Animation(info.Explosion);
 		}
 
 		public void Tick(World world)
@@ -59,29 +59,37 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				explosion.PlayThen("idle",
-					() => world.AddFrameEndTask(w => w.Remove(this)));
+				if (explosion != null)
+					explosion.PlayThen("idle",
+						() => world.AddFrameEndTask(w => w.Remove(this)));
 				Combat.DoImpacts(args);
 				doneDamage = true;
 			}
 			++ticks;
-			explosion.Tick();
+
+			if (explosion != null)
+				explosion.Tick();
+			else
+				if (ticks >= info.BeamDuration)
+					world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(explosion.Image, args.dest - .5f * explosion.Image.size, "effect", (int)args.dest.Y);
+			if (explosion != null)
+				yield return new Renderable(explosion.Image,
+					args.dest - .5f * explosion.Image.size, "effect", (int)args.dest.Y);
 
-			if (ticks >= beamTicks)
+			if (ticks >= info.BeamDuration)
 				yield break;
 
-			Color rc = Color.FromArgb((beamTicks-ticks)*255/beamTicks, color);
-			
-			float2 unit = 1.0f/(args.src - args.dest).Length*(args.src - args.dest).ToFloat2();
-			float2 norm = new float2(-unit.Y, unit.X);
-			
+			var rc = Color.FromArgb((info.BeamDuration - ticks)*255/info.BeamDuration, color);
+
+			var dir = 1.0f/(args.src - args.dest).Length*(args.src - args.dest).ToFloat2();
+			var norm = new float2(-dir.Y, dir.X);
+
 			var wlr = Game.Renderer.WorldLineRenderer;
-			for (int i = -radius; i < radius; i++)
+			for (int i = -info.BeamRadius; i < info.BeamRadius; i++)
 				wlr.DrawLine(args.src + i * norm, args.dest + i * norm, rc, rc);
 		}
 	}
