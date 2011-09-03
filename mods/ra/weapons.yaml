@@ -324,7 +324,7 @@ HellfireAA:
 	Report: MISSILE6
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 30
+		Speed: 45
 		Arm: 2
 		High: true
 		Shadow: false
