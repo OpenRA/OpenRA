@@ -400,7 +400,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
-					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Slot));
+					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
 
 				template.IsVisible = () => true;
