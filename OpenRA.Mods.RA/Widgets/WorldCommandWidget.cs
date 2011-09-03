@@ -76,7 +76,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformAttackMove()
 		{
-			World.OrderGenerator = new GenericSelectTarget(World.Selection.Actors, "AttackMove", 
+			var actors = World.Selection.Actors
+				.Where(a => a.Owner == World.LocalPlayer).ToArray();
+
+			if (actors.Length > 0)
+				World.OrderGenerator = new GenericSelectTarget(actors, "AttackMove", 
 				"attackmove", MouseButton.Right);
 
 			return true;
