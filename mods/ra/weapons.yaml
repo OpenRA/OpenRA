@@ -645,7 +645,7 @@ TeslaZap:
 		Damage: 100
 		
 Nike:
-	ROF: 20
+	ROF: 15
 	Range: 7.5
 	Report: MISSILE1
 	ValidTargets: Air
