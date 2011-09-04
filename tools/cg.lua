@@ -20,7 +20,7 @@ return cgbinpath and {
 			{ ID "cg.profile.dx_5",		"DX SM&5_0",		"DirectX sm5_0 profile", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.input",	"&Custom Args\tCtrl-L",		"when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
-			{ ID "cg.profile.gles",		"GLSL-ES",		"When GLSL file is source use GLSL-ES path", wx.wxITEM_CHECK },
+			{ ID "cg.compile.gles",		"GLSL-ES",		"When GLSL file is source use GLSL-ES path", wx.wxITEM_CHECK },
 			{ },
 			{ ID "cg.compile.vertex",		"Compile &Vertex\tCtrl-U",		"Compile Vertex program (select entry word)" },
 			{ ID "cg.compile.fragment",		"Compile &Fragment\tCtrl-I",	"Compile Fragment program (select entry word)" },
@@ -74,7 +74,7 @@ return cgbinpath and {
 			data.profid = id
 		end
 		
-		menuBar:Check(ID "cg.profile.gles", data.gles)
+		menuBar:Check(ID "cg.compile.gles", data.gles)
 
 		local function evSelectProfile (event)
 			local chose = event:GetId()
@@ -428,7 +428,7 @@ return cgbinpath and {
 			outname = outname..profile[domain]..profile.ext
 			outname = '"'..outname..'"'
 			
-			local cmdglsl = data.gles and "-ogles -glslWerror " or "-oglsl -glslWerror -po PaBO2 "
+			local cmdglsl = data.gles and "-ogles -glslWerror -DGL_ES" or "-oglsl -glslWerror -po PaBO2 "
 			
 			local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
 			cmdline = glsl and cmdline..cmdglsl or cmdline

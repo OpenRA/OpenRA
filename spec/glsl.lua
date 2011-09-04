@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 
 return {
-	exts = {"glsl","vert","frag","geom","cont","eval"},
+	exts = {"glsl","vert","frag","geom","cont","eval", "glslv", "glslf"},
 	lexer = wxstc.wxSTC_LEX_CPP,
 	apitype = "glsl",
 	sep = "%.",
@@ -67,7 +67,7 @@ return {
 		origin_upper_left pixel_center_integer
 		smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
 		gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
-		subroutine gl_Position
+		subroutine gl_Position gl_FragCoord
 		gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
 		gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
 		gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
@@ -111,6 +111,30 @@ return {
 		texelFetchOffset texelFetch textureProjLod textureProjLodOffset
 		textureGrad textureGradOffset textureProjGrad textureProjGradOffset
 		textureGather textureGatherOffset
+		texture2D texture1D texture3D textureCube texture2DRect
+		texture1DProj texture1DLod texture1DProjLod
+		texture2DProj texture2DLod texture2DProjLod
+		texture3DProj texture3DLod texture3DProjLod
+		textureCubeLod
+		shadow1D shadow2D
+		shadow1DProj shadow1DLod shadow1DProjLod
+		shadow2DProj shadow2DLod shadow2DProjLod
+		texelFetch1D texelFetch2D texelFetch3D texelFetch2DRect texelFetch1DArray texelFetch2DArray texelFetchBuffer
+		textureSizeBuffer textureSize1D textureSize2D textureSize3D textureSizeCube textureSize2DRect
+		textureSize1DArray textureSize2DArray
+		texture1DArray texture1DArrayLod
+		texture2DArray texture2DArrayLod
+		shadow1DArray shadow1DArrayLod shadow2DArray shadowCube
+		texture1DGrad texture1DProjGrad texture1DProjGrad texture1DArrayGrad
+		texture2DGrad texture2DProjGrad texture2DProjGrad texture2DArrayGrad
+		texture3DGrad texture3DProjGrad textureCubeGrad
+		shadow1DGrad shadow1DProjGrad shadow1DArrayGrad shadow2DGrad shadow2DProjGrad shadow2DArrayGrad
+		texture2DRectGrad texture2DRectProjGrad texture2DRectProjGrad shadow2DRectGrad shadow2DRectProjGrad
+		shadowCubeGrad
+		texture1DOffset texture1DProjOffset texture1DLodOffset texture1DProjLodOffset
+		texture2DOffset texture2DProjOffset texture2DLodOffset texture2DProjLodOffset
+		texture3DOffset texture3DProjOffset texture3DLodOffset texture3DProjLodOffset
+		
 		imageLoad imageStore
 		imageAtomicAdd imageAtomicMin imageAtomicMax
 		imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
