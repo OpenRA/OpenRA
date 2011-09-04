@@ -18,6 +18,8 @@ NEW:
 		Fixed crashes when loading broken maps
 		Fixed units being left alive but stranded on destroyed bridges
 		Fixed husks being created on water
+		Fixed AttackMove trying to send orders to units owned by others
+		Made LaserZap more flexible for modders
 	Both C&C and Red Alert:
 		Fixed desync when a player surrenders
 		Fixed installing from CD
@@ -115,6 +117,7 @@ NEW:
 		Removed Lock Teams option
 		Fixed cursor while dragging selection box
 		Fixed accidental order issuing while dragging selection box
+		Fixed lobby "kick" buttons
 		Balance changes:
 			Medic cost reduced to $500
 			Mines are visible to friendlies and spectators
@@ -124,6 +127,8 @@ NEW:
 			Longbow now requires Allied Tech Center
 			Reduced wall health
 			Increased cruiser accuracy
+			Increased Longbow missile speed by 50%
+			Increased SAM Site rate of fire
 	Utility:
 		Fixed --png mode for converting shp -> png
 	Editor:
