@@ -33,7 +33,7 @@ local function ffiToApi(ffidef)
     local function registerfunc()
       local fn = curfunc
       -- parse args
-      local args = fn.ARGS:match("%(%s*(.-)%s*%);")
+      local args = fn.ARGS:match("%(%s*(.-)%s*%)%s*;") or ""
       fn.ARGS = "("..args..")"
       
       -- skip return void types
