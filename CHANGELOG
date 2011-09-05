@@ -1,4 +1,4 @@
-NEW:
+20110906:
 	Engine:
 		Fixed compile failures under Windows
 		Improved platform detection
