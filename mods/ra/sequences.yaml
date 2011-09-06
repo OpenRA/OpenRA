@@ -1540,6 +1540,12 @@ select:
 	repair:
 		Start: 2
 
+poweroff:
+	offline:
+		Start: 0
+		Length: *
+		Tick: 160
+
 tabs:
 	left-normal:
 		Start: 0

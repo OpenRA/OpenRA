@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -40,6 +41,10 @@ namespace OpenRA.Mods.RA.Buildings
 				Sound.PlayToPlayer(self.Owner, disabled ? eva.EnablePower : eva.DisablePower);
 				
 				PowerManager.UpdateActor(self, disabled ? 0 : normalPower);
+
+				if (disabled)
+					self.World.AddFrameEndTask(
+						w => w.Add(new PowerdownIndicator(self)));
 			}
 		}
 		
