@@ -1,3 +1,7 @@
+NEW:
+	Red Alert:
+		Added naval transport
+
 20110906:
 	Engine:
 		Fixed compile failures under Windows
