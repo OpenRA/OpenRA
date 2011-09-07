@@ -7,6 +7,7 @@ obj
 *.suo
 *.user
 *.sln.cache
+*.manifest
 mods/*/*.dll
 
 # Red Alert binary files
