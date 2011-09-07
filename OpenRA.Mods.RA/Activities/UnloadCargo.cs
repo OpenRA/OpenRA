@@ -63,16 +63,23 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 
 			var actor = cargo.Unload(self);
+			var exitPx = Util.CenterOfCell(exitTile.Value);
+			var currentPx = Util.CenterOfCell(self.Location);
 
 			self.World.AddFrameEndTask(w =>
 			{
 				if (actor.Destroyed) return;
 
 				var mobile = actor.Trait<Mobile>();
-				mobile.SetPosition(actor, self.Location);
+				mobile.Facing = Util.GetFacing( exitPx - currentPx, mobile.Facing );
+				mobile.SetPosition(actor, exitTile.Value);
+				mobile.AdjustPxPosition(actor, currentPx);
+				var speed = mobile.MovementSpeedForCell(actor, exitTile.Value);
+				var length = speed > 0 ? ((int)(exitPx - currentPx).Length * 3 / speed) : 0;
 
 				w.Add(actor);
 				actor.CancelActivity();
+				actor.QueueActivity(new Drag(currentPx, exitPx, length));
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
 				actor.SetTargetLine(Target.FromCell(exitTile.Value), Color.Green, false);
 			});

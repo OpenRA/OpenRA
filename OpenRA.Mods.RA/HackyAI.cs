@@ -149,24 +149,6 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-		IEnumerable<int2> Neighbours(int2 c)
-		{
-			/* only return 4-neighbors for now, maybe add 8s later. */
-			yield return c;
-			yield return new int2(c.X - 1, c.Y);
-			yield return new int2(c.X + 1, c.Y);
-			yield return new int2(c.X, c.Y - 1);
-			yield return new int2(c.X, c.Y + 1);
-		}
-
-		IEnumerable<int2> ExpandFootprint(IEnumerable<int2> cells)
-		{
-			var result = new Dictionary<int2, bool>();
-			foreach (var c in cells.SelectMany(c => Neighbours(c)))
-				result[c] = true;
-			return result.Keys;
-		}
-
 		bool NoBuildingsUnder(IEnumerable<int2> cells)
 		{
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
@@ -181,8 +163,8 @@ namespace OpenRA.Mods.RA
 				foreach (var t in world.FindTilesInCircle(baseCenter, k))
 					if (world.CanPlaceBuilding(item.Item, bi, t, null))
 						if (bi.IsCloseEnoughToBase(world, p, item.Item, t))
-							if (NoBuildingsUnder(ExpandFootprint( 
-								FootprintUtils.Tiles( item.Item, bi, t ))))
+							if (NoBuildingsUnder(Util.ExpandFootprint(
+								FootprintUtils.Tiles( item.Item, bi, t ), false)))
 								return t;
 
 			return null;		// i don't know where to put it.

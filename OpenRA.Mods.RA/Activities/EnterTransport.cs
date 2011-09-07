@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 			
 			// Todo: Queue a move order to the transport? need to be
 			// careful about units that can't path to the transport
-			if ((transport.Location - self.Location).Length > 1)
+			if ((transport.Location - self.Location).LengthSquared > 2)
 				return NextActivity;
 			
 			cargo.Load(transport, self);

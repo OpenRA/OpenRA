@@ -136,6 +136,43 @@ namespace OpenRA.Traits
             }
         }
 		
+		static IEnumerable<int2> Neighbours(int2 c, bool allowDiagonal)
+		{
+			yield return c;
+			yield return new int2(c.X - 1, c.Y);
+			yield return new int2(c.X + 1, c.Y);
+			yield return new int2(c.X, c.Y - 1);
+			yield return new int2(c.X, c.Y + 1);
+
+			if (allowDiagonal)
+			{
+				yield return new int2(c.X - 1, c.Y - 1);
+				yield return new int2(c.X + 1, c.Y - 1);
+				yield return new int2(c.X - 1, c.Y + 1);
+				yield return new int2(c.X + 1, c.Y + 1);
+			}
+		}
+
+		public static IEnumerable<int2> ExpandFootprint(IEnumerable<int2> cells, bool allowDiagonal)
+		{
+			var result = new Dictionary<int2, bool>();
+			foreach (var c in cells.SelectMany(c => Neighbours(c, allowDiagonal)))
+				result[c] = true;
+			return result.Keys;
+		}
+
+		public static IEnumerable<int2> AdjacentCells( Target target )
+		{
+			var cells = target.IsActor
+				? target.Actor.OccupiesSpace.OccupiedCells().Select(c => c.First).ToArray()
+				: new int2[] {};
+
+			if (cells.Length == 0)
+				cells = new [] { Util.CellContaining(target.CenterLocation) };
+
+			return Util.ExpandFootprint(cells, true);
+		}
+
 		static int2[] fvecs =
 		{		
 			new int2( 0, -1331 ),
