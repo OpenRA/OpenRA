@@ -18,27 +18,37 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class RepairIndicator : IEffect
 	{
-		int framesLeft;
-		Actor a;
-		Animation anim = new Animation("select");
+		Actor building;
+		Player player;
+		Animation anim = new Animation("allyrepair");
 
-		public RepairIndicator(Actor a, int frames) 
-		{ 
-			this.a = a; anim.PlayRepeating("repair");
-            framesLeft = frames;
+		public RepairIndicator(Actor building, Player player)
+		{
+			this.building = building;
+			this.player = player;
+			anim.PlayRepeating("repair");
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
-			if (--framesLeft == 0 || !a.IsInWorld || a.IsDead())
+			if (!building.IsInWorld ||
+				building.IsDead() ||
+				building.Trait<RepairableBuilding>().Repairer == null ||
+				building.Trait<RepairableBuilding>().Repairer != player)
 				world.AddFrameEndTask(w => w.Remove(this));
+
+			anim.Tick();
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (!a.Destroyed)
-				yield return new Renderable(anim.Image, 
-					a.CenterLocation - .5f * anim.Image.size, "chrome", (int)a.CenterLocation.Y);
+			if (!building.Destroyed)
+			{
+				var palette = building.Trait<RenderSimple>().Palette(player);
+
+				yield return new Renderable(anim.Image,
+					building.CenterLocation - .5f * anim.Image.size, palette, (int)building.CenterLocation.Y);
+			}
 		}
 	}
 }

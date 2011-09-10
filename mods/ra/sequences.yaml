@@ -1546,6 +1546,12 @@ poweroff:
 		Length: *
 		Tick: 160
 
+allyrepair:
+	repair:
+		Start: 0
+		Length: *
+		Tick: 160
+
 tabs:
 	left-normal:
 		Start: 0

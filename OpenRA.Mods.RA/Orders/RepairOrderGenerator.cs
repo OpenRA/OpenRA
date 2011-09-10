@@ -31,36 +31,36 @@ namespace OpenRA.Mods.RA.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.Where(a => a.Owner == world.LocalPlayer && a.HasTrait<RepairableBuilding>()).FirstOrDefault();
+					.Where(a => a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && a.HasTrait<RepairableBuilding>()).FirstOrDefault();
 
 				if (underCursor == null)
 					yield break;
-				
+
 				if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>()
-				    && underCursor.GetDamageState() > DamageState.Undamaged)
-					yield return new Order("Repair", underCursor, false);
+					&& underCursor.GetDamageState() > DamageState.Undamaged)
+					yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
 			}
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
-			if( !PlayerIsAllowedToRepair( world ) )
+			if (!PlayerIsAllowedToRepair(world))
 				world.CancelInputMode();
 		}
 
-		public static bool PlayerIsAllowedToRepair( World world )
-		{		
+		public static bool PlayerIsAllowedToRepair(World world)
+		{
 			return world.ActorsWithTrait<AllowsBuildingRepair>()
-                .Any(a => a.Actor.Owner == world.LocalPlayer);
+				 .Any(a => a.Actor.AppearsFriendlyTo(world.LocalPlayer.PlayerActor));
 		}
 
-		public void RenderAfterWorld( WorldRenderer wr, World world ) { }
-		public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
+		public void RenderAfterWorld(WorldRenderer wr, World world) { }
+		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
 		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(world, xy, mi).Any() 
+			return OrderInner(world, xy, mi).Any()
 				? "repair" : "repair-blocked";
 		}
 	}

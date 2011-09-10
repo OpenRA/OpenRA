@@ -6,6 +6,7 @@ Player:
 		WinNotification:accom1.aud
 		LoseNotification:fail1.aud
 	PowerManager:
+	AllyRepair:
 	PlayerResources:
 		InitialCash: 5000
 	ActorGroupProxy:

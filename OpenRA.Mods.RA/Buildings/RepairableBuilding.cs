@@ -22,11 +22,11 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
-	public class RepairableBuilding : ITick, IResolveOrder, ISync
+	public class RepairableBuilding : ITick, ISync
 	{
 		[Sync]
-		bool isRepairing = false;
-		
+		public Player Repairer = null;
+
 		Health Health;
 		RepairableBuildingInfo Info;
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
@@ -34,42 +34,56 @@ namespace OpenRA.Mods.RA.Buildings
 			Health = self.Trait<Health>();
 			Info = info;
 		}
-		
-		public void ResolveOrder(Actor self, Order order)
+
+		public void RepairBuilding(Actor self, Player p)
 		{
-			if (order.OrderString == "Repair")
+			if (self.HasTrait<RepairableBuilding>())
 			{
-				isRepairing = !isRepairing;
-				if (isRepairing)
-					Sound.PlayToPlayer(self.Owner, self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().Repairing);
+				if (self.AppearsFriendlyTo(p.PlayerActor))
+				{
+					if (Repairer == p)
+						Repairer = null;
+
+					else
+					{
+						Repairer = p;
+						Sound.PlayToPlayer(Repairer, p.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().Repairing);
+
+						self.World.AddFrameEndTask(
+							w => w.Add(new RepairIndicator(self, p)));
+					}
+				}
 			}
 		}
 
 		int remainingTicks;
 		public void Tick(Actor self)
 		{
-			if (!isRepairing) return;
+			if (Repairer == null) return;
 
 			if (remainingTicks == 0)
 			{
+				if (Repairer.WinState != WinState.Undefined)
+				{
+					Repairer = null;
+					return;
+				}
+
 				var buildingValue = self.GetSellValue();
 
 				var hpToRepair = Math.Min(Info.RepairStep, Health.MaxHP - Health.HP);
 				var cost = (hpToRepair * Info.RepairPercent * buildingValue) / (Health.MaxHP * 100);
-				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
+				if (!Repairer.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
 				{
 					remainingTicks = 1;
 					return;
 				}
 
-				self.World.AddFrameEndTask(
-                    w => w.Add(new RepairIndicator(self, Info.RepairInterval / 2)));
-
 				self.InflictDamage(self, -hpToRepair, null);
 
 				if (Health.DamageState == DamageState.Undamaged)
 				{
-					isRepairing = false;
+					Repairer = null;
 					return;
 				}
 
@@ -79,7 +93,7 @@ namespace OpenRA.Mods.RA.Buildings
 				--remainingTicks;
 		}
 	}
-	public class AllowsBuildingRepairInfo : TraitInfo<AllowsBuildingRepair> {}
-	public class AllowsBuildingRepair {}
+	public class AllowsBuildingRepairInfo : TraitInfo<AllowsBuildingRepair> { }
+	public class AllowsBuildingRepair { }
 
 }

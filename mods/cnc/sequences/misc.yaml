@@ -111,6 +111,12 @@ select:
 	repair:
 		Start: 2
 
+allyrepair:
+	repair:
+		Start: 0
+		Length: *
+		Tick: 160
+
 crate:
 	idle: wcrate
 		Start: 0
