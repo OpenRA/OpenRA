@@ -42,54 +42,63 @@ Player:
 	HackyAI@EasyAI:
 		Name:Easy AI
 		BuildingFractions:
-			proc: 20%
-			barr: 5%
-			tent: 5%
-			weap: 5%
-			pbox: 5%
-			gun: 5%
+			proc: 30%
+			powr: 35%
+			barr: 1%
+			tent: 1%
+			weap: 1%
+			pbox: 7%
+			gun: 7%
 			tsla: 5%
-			ftur: 5%
-			agun: 1%
-			sam: 1%
+			ftur: 10%
+			agun: 5%
+			sam: 5%
 			atek: 1%
 			stek: 1%
-			fix: 1%
-			dome: 1%
-			hbox: 5%
+			fix: 0.1%
+			dome: 10%
 		UnitsToBuild:
-			e1: 0%
-			e2: 0%
-			e3: 0%
-			1tnk: 0%
-			2tnk: 0%
-			3tnk: 0%
-		SquadSize: 3
+			e1: 50%
+			e3: 10%
+			apc: 30%
+			jeep: 40%
+			arty: 15%
+			v2rl: 40%
+			ftrk: 50%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+		SquadSize: 10
 	HackyAI@NormalAI:
 		Name:Normal AI
 		BuildingFractions:
 			proc: 30%
+			powr: 35%
 			tent: 1%
 			barr: 1%
 			weap: 1%
-			pbox: 5%
-			gun: 15%
+			pbox: 7%
+			gun: 7%
 			ftur: 10%
-			tsla: 10%
+			tsla: 5%
 			fix: 0.1%
-			dome: 1%
+			dome: 10%
 			agun: 5%
 			sam: 1%
 			atek: 1%
 			stek: 1%
 		UnitsToBuild:
-			1tnk: 0%
-			2tnk: 0%
-			3tnk: 0%
-			4tnk: 0%
-			arty: 0%
-			v2rl: 0%
-		SquadSize: 5
+			e1: 50%
+			e3: 10%
+			apc: 30%
+			jeep: 40%
+			arty: 15%
+			v2rl: 40%
+			ftrk: 50%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+		SquadSize: 15
 	PlayerColorPalette:
 		BasePalette: terrain
 	SurrenderOnDisconnect:
