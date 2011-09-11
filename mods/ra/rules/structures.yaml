@@ -68,7 +68,7 @@ SPEN:
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
-		Cost: 650
+		Cost: 800
 	Tooltip:
 		Name: Sub Pen
 		Description: Produces and repairs submarines and \ntransports
