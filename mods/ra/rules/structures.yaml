@@ -129,7 +129,7 @@ SYRD:
 		Owner: allies
 		Hotkey: y
 	Valued:
-		Cost: 650
+		Cost: 1000
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships
