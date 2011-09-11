@@ -6,7 +6,7 @@ PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc utility
-tools: editor ralint seqed filex tsbuild
+tools: editor ralint seqed tsbuild
 package: core editor
 mods: mod_ra mod_cnc
 all: core tools
@@ -136,15 +136,6 @@ ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
 PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
-
-# Extracts files from packages (mixfiles, zips, etc)
-filex_SRCS			:= $(shell find FileExtractor/ -iname '*.cs')
-filex_TARGET			= FileExtractor.exe
-filex_KIND			= exe
-filex_DEPS			= $(fileformats_TARGET)
-filex_LIBS			= $(COMMON_LIBS) $(filex_DEPS)
-PROGRAMS 			+= filex
-filex: $(filex_TARGET)
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')

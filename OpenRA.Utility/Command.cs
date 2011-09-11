@@ -128,5 +128,24 @@ namespace OpenRA.Utility
 				ShpWriter.Write(destStream, size.Width, size.Height,
 					srcImage.Select( im => im.Image ));
 		}
+
+		public static void ExtractFiles(string[] args)
+		{
+			var mods = args[1].Split(',');
+			var files = args.Skip(2);
+
+			var manifest = new Manifest(mods);
+			FileSystem.LoadFromManifest(manifest);
+
+			foreach( var f in files )
+			{
+				var src = FileSystem.Open(f);
+				if (src == null)
+					throw new InvalidOperationException("File not found: {0}".F(f));
+				var data = src.ReadAllBytes();
+
+				File.WriteAllBytes( f, data );
+			}
+		}
 	}
 }

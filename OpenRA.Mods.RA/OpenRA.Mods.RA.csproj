@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -302,7 +302,6 @@
     <Compile Include="Widgets\Logic\ConnectionDialogsLogic.cs" />
     <Compile Include="Widgets\Logic\CreateServerMenuLogic.cs" />
     <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
-    <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuButtonsLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
