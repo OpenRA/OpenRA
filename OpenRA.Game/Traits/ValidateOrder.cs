@@ -22,18 +22,20 @@ namespace OpenRA.Traits
 			if (order.Subject == null || order.Subject.Owner == null)
 				return true;
 
-			var subjectClient = order.Subject.Owner.ClientIndex;
-			if (subjectClient >= orderManager.LobbyInfo.Clients.Count || subjectClient < 0)
+			var subjectClientId = order.Subject.Owner.ClientIndex;
+			var subjectClient = orderManager.LobbyInfo.ClientWithIndex(subjectClientId);
+
+			if (subjectClient == null)
 			{
-				Game.Debug("Order sent to {0}: resolved ClientIndex `{1}` is out of range", order.Subject.Owner.PlayerName, subjectClient);
+				Game.Debug("Order sent to {0}: resolved ClientIndex `{1}` doesn't exist", order.Subject.Owner.PlayerName, subjectClientId);
 				return false;
 			}
 
 			// Hack: Assumes bots always run on clientId 0.
-			var isBotOrder = orderManager.LobbyInfo.Clients[subjectClient].Bot != null && clientId == 0;
+			var isBotOrder = subjectClient.Bot != null && clientId == 0;
 
 			// Drop exploiting orders
-			if (subjectClient != clientId && !isBotOrder)
+			if (subjectClientId != clientId && !isBotOrder)
             {
                 Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
                 return false;
