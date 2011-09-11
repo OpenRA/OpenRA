@@ -92,7 +92,7 @@ DD:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 70
-		Prerequisites: syrd
+		Prerequisites: syrd,dome
 		BuiltAt: syrd
 		Owner: allies
 	Valued:
