@@ -977,6 +977,7 @@ UnitExplode:
 			Light: 60%
 			Heavy: 25%
 		Explosion: self_destruct
+		WaterExplosion: large_splash
 		InfDeath: 3
 		ImpactSound: kaboom22
 
