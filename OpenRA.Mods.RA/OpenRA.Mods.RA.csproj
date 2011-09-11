@@ -295,7 +295,6 @@
     <Compile Include="Scripting\Media.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
-    <Compile Include="ServerTraits\PlayerCommands.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="Scripting\RASpecialPowers.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />

@@ -89,7 +89,6 @@ LoadScreen: RALoadScreen
 	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
 
 ServerTraits:
-	PlayerCommands
 	LobbyCommands
 	MasterServerPinger
 

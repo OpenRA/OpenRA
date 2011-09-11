@@ -106,7 +106,6 @@ LoadScreen: CncLoadScreen
 	PackageURL: http://open-ra.org/get-dependency.php?file=cnc-packages
 
 ServerTraits:
-	PlayerCommands
 	LobbyCommands
 	MasterServerPinger
 
