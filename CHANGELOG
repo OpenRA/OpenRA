@@ -1,6 +1,21 @@
 NEW:
+	Engine:
+		Fixed broken client IDs if players drop before the game starts
+		Converted FileExtractor into --extract cmdlet for Utility.
+	Both Mods:
+		Allow building repair by allies
+		Use player color to show who is repairing a building
 	Red Alert:
 		Added naval transport
+		Added an indicator over powered down buildings
+		Aircraft crashing into water now use large_splash
+		New map: Classic DropZone (Holloweye)
+		New map: DropZone Battle of Tikiaki (Knivesron)
+		New map: Seven Stairs (Tirili)
+		New map: Contact (Nukem)
+		New map: Encounter (Nukem)
+		New map: Mass Confliction (Nukem)
+		New map: Calm before the Storm (Nukem)
 
 20110906:
 	Engine:
