@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 using XRandom = OpenRA.Thirdparty.Random;
 
 
@@ -239,18 +240,23 @@ namespace OpenRA.Mods.RA
 			else
 				assignRolesTicks = Info.AssignRolesInterval;
 
-			// don't select harvesters.
 			var newUnits = self.World.ActorsWithTrait<IMove>()
-				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["harv"] && a.Actor.Info != Rules.Info["mcv"]
+				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["mcv"]
 					&& !activeUnits.Contains(a.Actor))
 					.Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
 			{
 				BotDebug("AI: Found a newly built unit");
-				unitsHangingAroundTheBase.Add(a);
+				if (a.Info == Rules.Info["harv"])
+					a.QueueActivity(new FindResources());
+
+				else
+					unitsHangingAroundTheBase.Add(a);
+
 				activeUnits.Add(a);
 			}
+			
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
