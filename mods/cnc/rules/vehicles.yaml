@@ -55,7 +55,6 @@ HARV:
 		Resources: Tiberium, Blue Tiberium
 		PipCount: 5
 		Capacity: 15
-		UnloadTicksPerBale: 6
 	Mobile:
 		Speed: 6
 	Health:

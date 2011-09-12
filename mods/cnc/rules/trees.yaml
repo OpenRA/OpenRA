@@ -4,7 +4,7 @@ SPLIT2:
 		Palette: staticterrain
 	SeedsResource:
 		ResourceType:Tiberium
-		Interval: 60
+		Interval: 55
 	Tooltip:
 		Name: Blossom Tree
 	RadarColorFromTerrain:
@@ -16,7 +16,7 @@ SPLIT3:
 		Palette: staticterrain
 	SeedsResource:
 		ResourceType:Tiberium
-		Interval: 60
+		Interval: 55
 	Tooltip:
 		Name: Blossom Tree
 	RadarColorFromTerrain:
