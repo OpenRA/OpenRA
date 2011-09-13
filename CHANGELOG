@@ -9,6 +9,8 @@ NEW:
 		Added naval transport
 		Added an indicator over powered down buildings
 		Aircraft crashing into water now use large_splash
+		Destroyer now requires Radar Dome
+		Increased cost of Shipyard and Sub Pen
 		New map: Classic DropZone (Holloweye)
 		New map: DropZone Battle of Tikiaki (Knivesron)
 		New map: Seven Stairs (Tirili)
@@ -16,6 +18,11 @@ NEW:
 		New map: Encounter (Nukem)
 		New map: Mass Confliction (Nukem)
 		New map: Calm before the Storm (Nukem)
+	C&C:
+		Slightly increased Tiberium growth rate
+		Increased harvester unload time
+		Reduced Tiberium value by 20%
+
 
 20110906:
 	Engine:
