@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Orders
 		public static bool PlayerIsAllowedToRepair(World world)
 		{
 			return world.ActorsWithTrait<AllowsBuildingRepair>()
-				 .Any(a => a.Actor.AppearsFriendlyTo(world.LocalPlayer.PlayerActor));
+				 .Any(a => a.Actor.Owner == world.LocalPlayer);
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
