@@ -44,11 +44,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VertexBuffer.cs" />
     <Compile Include="ErrorHandler.cs" />
-    <Compile Include="Texture.cs" />
-    <Compile Include="SdlInput.cs" />
     <Compile Include="SdlGraphics.cs" />
+    <Compile Include="SdlInput.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
