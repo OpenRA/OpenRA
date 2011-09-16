@@ -74,11 +74,12 @@ namespace OpenRA.Mods.RA
 				if (order.TargetActor == null) return;
 				if (!CanEnter(order.TargetActor)) return;
 				if (!IsCorrectCargoType(order.TargetActor)) return;
-				
-				self.SetTargetLine(Target.FromOrder(order), Color.Green);
+
+				var target = Target.FromOrder(order);
+				self.SetTargetLine(target, Color.Green);
 								
 				self.CancelActivity();
-				self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
+				self.QueueActivity(new MoveAdjacentTo(target));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));
 			}
 		}

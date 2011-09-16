@@ -21,7 +21,6 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		readonly Target target;
 
-		public MoveAdjacentTo( Actor target ) { this.target = Target.FromActor(target); }
 		public MoveAdjacentTo( Target target ) { this.target = target; }
 
 		public override Activity Tick( Actor self )

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			var nearest = target.OccupiesSpace.NearestCellTo( mobile.toCell );
 			if( ( nearest - mobile.toCell ).LengthSquared > 2 )
-				return Util.SequenceActivities( new MoveAdjacentTo( target ), this );
+				return Util.SequenceActivities( new MoveAdjacentTo( Target.FromActor(target) ), this );
 
 			return Util.SequenceActivities( mobile.MoveTo( nearest, target ), NextActivity );
 		}

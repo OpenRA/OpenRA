@@ -60,29 +60,30 @@ namespace OpenRA.Mods.RA
 			var li = self.TraitOrDefault<LimitedAmmo>();
 			return (Health.DamageState > DamageState.Undamaged || (li != null && !li.FullAmmo()) );
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Repair" && CanRepair()) ? "Move" : null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
 			{
 				if( !CanRepairAt( order.TargetActor ) || !CanRepair() )
 					return;
-				
+
 				var mobile = self.Trait<Mobile>();
-				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-				self.SetTargetLine(Target.FromOrder(order), Color.Green);
-								
+				var target = Target.FromOrder(order);
+				self.SetTargetLine(target, Color.Green);
+
 				self.CancelActivity();
-                self.QueueActivity(new MoveAdjacentTo(order.TargetActor));
+				self.QueueActivity(new MoveAdjacentTo(target));
 				self.QueueActivity(mobile.MoveTo(Traits.Util.CellContaining(order.TargetActor.CenterLocation), order.TargetActor));
 				self.QueueActivity(new Rearm(self));
 				self.QueueActivity(new Repair(order.TargetActor));
 
+				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
 				if (rp != null)
 					self.QueueActivity(new CallFunc(() => 
 					{
