@@ -8,10 +8,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using System.Drawing;
+using System.Collections.Generic;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Move;
@@ -20,36 +20,61 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class FindResources : Activity
 	{
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
-			if( IsCanceled || NextActivity != null) return NextActivity;
+			if (IsCanceled || NextActivity != null) return NextActivity;
 
 			var harv = self.Trait<Harvester>();
-			if( harv.IsFull )
-				return Util.SequenceActivities( new DeliverResources(), NextActivity );
+			if (harv.IsFull)
+				return Util.SequenceActivities(new DeliverResources(), NextActivity);
 
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			var mobile = self.Trait<Mobile>();
+			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var res = self.World.WorldActor.Trait<ResourceLayer>();
-
-			Func<int2, bool> canHarvest = loc => loc != self.Location &&
-				res.GetResource(loc) != null &&
-				harvInfo.Resources.Contains( res.GetResource(loc).info.Name );
-
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(PathSearch.Search(self.World, mobileInfo, self.Owner, true)
-						.WithHeuristic(loc => canHarvest(loc) ? 0 : 1)
-				        .FromPoint(self.Location));
+						.WithHeuristic(loc => (res.GetResource(loc) != null && harvInfo.Resources.Contains(res.GetResource(loc).info.Name)) ? 0 : 1)
+						.FromPoint(self.Location));
 
 			if (path.Count == 0)
 				return NextActivity;
 
 			self.SetTargetLine(Target.FromCell(path[0]), Color.Red, false);
-			return Util.SequenceActivities( new MoveAdjacentTo(Target.FromCell(path[0])), new HarvestResource(self, path[0]), this );
+			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), this);
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromPos(self.Location);
+		}
+	}
+
+	public class HarvestResource : Activity
+	{
+		bool isHarvesting = false;
+
+		public override Activity Tick(Actor self)
+		{
+			if (isHarvesting) return this;
+			if (IsCanceled) return NextActivity;
+			var harv = self.Trait<Harvester>();
+			harv.LastHarvestedCell = self.Location;
+
+			if (harv.IsFull)
+				return NextActivity;
+
+			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
+			var resource = self.World.WorldActor.Trait<ResourceLayer>().Harvest(self.Location);
+			if (resource == null)
+				return NextActivity;
+
+			if (renderUnit.anim.CurrentSequence.Name != "harvest")
+			{
+				isHarvesting = true;
+				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
+			}
+			harv.AcceptResource(resource);
+			return this;
 		}
 	}
 }
