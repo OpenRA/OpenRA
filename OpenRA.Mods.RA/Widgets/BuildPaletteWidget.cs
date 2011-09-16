@@ -51,6 +51,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
 		public BuildPaletteWidget( [ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer )
 		{
@@ -213,7 +214,6 @@ namespace OpenRA.Mods.RA.Widgets
 	
 				// Icons
 				string tooltipItem = null;
-				var isBuildingSomething = queue.CurrentItem() != null;
 				foreach (var item in allBuildables)
 				{
 					var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.RA.Widgets
 						}
 					}
 					else
-						if (!buildableItems.Any(a => a.Name == item.Name) || isBuildingSomething)
+						if (!buildableItems.Any(a => a.Name == item.Name))
 							overlayBits.Add(Pair.New(cantBuild.Image, drawPos));
 
 					var closureName = buildableItems.Any(a => a.Name == item.Name) ? item.Name : null;
