@@ -5,6 +5,7 @@ NEW:
 	Both Mods:
 		Allow building repair by allies
 		Use player color to show who is repairing a building
+		Only units/structures being built or queued are shaded in the production palette
 	Red Alert:
 		Added naval transport
 		Added an indicator over powered down buildings
@@ -18,6 +19,10 @@ NEW:
 		New map: Encounter (Nukem)
 		New map: Mass Confliction (Nukem)
 		New map: Calm before the Storm (Nukem)
+		New map: Baywatch (Nukem)
+		New map: Winter Warzone (Nukem)
+		New map: Paramount (Nukem)
+		New map: Free Coasts (Ihptru)
 	C&C:
 		Slightly increased Tiberium growth rate
 		Increased harvester unload time
