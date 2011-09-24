@@ -40,8 +40,10 @@ namespace OpenRA.FileFormats
 				if (!yaml.NodesDict.ContainsKey("Metadata"))
 					continue;
 
-				ret.Add(m, FieldLoader.Load<Mod>(yaml.NodesDict["Metadata"]));
-				ret[m].Id = m;
+				var mod = FieldLoader.Load<Mod>(yaml.NodesDict["Metadata"]);
+				mod.Id = m;
+
+				ret.Add(m, mod);
 			}
 			return ret;
 		}
