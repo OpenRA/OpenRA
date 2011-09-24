@@ -23,10 +23,10 @@ namespace OpenRA.Graphics
 		public static void Initialize(string[] sequenceFiles, List<MiniYamlNode> sequenceNodes)
 		{
 			units = new Dictionary<string, Dictionary<string, Sequence>>();
-			if (sequenceFiles.Length == 0)
-				return;
 
-			var sequences = sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
+			var sequences = sequenceFiles
+				.Select(s => MiniYaml.FromFile(s))
+				.Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
 
 			foreach (var s in sequences)
 				LoadSequencesForUnit(s.Key, s.Value);
