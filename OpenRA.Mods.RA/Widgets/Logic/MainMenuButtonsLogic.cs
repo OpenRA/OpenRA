@@ -8,14 +8,10 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRA.FileFormats;
-using OpenRA.Network;
-using OpenRA.Server;
-using OpenRA.Widgets;
 using System;
-using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
