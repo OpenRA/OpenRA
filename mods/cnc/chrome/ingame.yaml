@@ -5,7 +5,7 @@ Container@INGAME_ROOT:
 		Timer@GAME_TIMER:
 			Id:GAME_TIMER
 			X: WINDOW_RIGHT/2
-			Y: 10
+			Y: 0-10
 		StrategicProgress@STRATEGIC_PROGRESS:
 			Id:STRATEGIC_PROGRESS
 			X: WINDOW_RIGHT/2
