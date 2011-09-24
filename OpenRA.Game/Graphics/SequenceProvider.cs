@@ -41,15 +41,6 @@ namespace OpenRA.Graphics
 			} catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art	
 		}
 
-		public static MiniYaml SaveSequencesForUnit(string unitname)
-		{
-			var ret = new List<MiniYamlNode>();
-			foreach (var s in units[unitname])
-				ret.Add(new MiniYamlNode(s.Key, s.Value.Save()));
-			
-			return new MiniYaml(null, ret);
-		}
-		
 		public static Sequence GetSequence(string unitName, string sequenceName)
 		{
 			try { return units[unitName][sequenceName]; }
