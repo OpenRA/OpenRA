@@ -18,22 +18,20 @@ namespace OpenRA.Mods.Cnc
 
 	class CncWaterPaletteRotation : ITick, IPaletteModifier
 	{
-				
 		float t = 0;
-		public void Tick(Actor self)
-		{
-			t += .25f;
-		}
+
+		public void Tick(Actor self) { t += .25f; }
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
-		{	
+		{
 			// Only modify the terrain palette
 			var pal = palettes["terrain"];
-							
+
 			var copy = (uint[])pal.Values.Clone();
 			var rotate = (int)t % 7;
+
 			for (int i = 0; i < 7; i++)
-				pal.SetColor(0x20 + (rotate + i) % 7, copy[0x20 + i]);			
+				pal.SetColor(0x20 + (rotate + i) % 7, copy[0x20 + i]);
 		}
 	}
 }
