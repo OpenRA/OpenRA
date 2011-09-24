@@ -116,10 +116,7 @@ namespace OpenRA.Mods.Cnc
 			r.EndFrame(nih);
 		}
 
-		public void StartGame()
-		{
-			TestAndContinue();
-		}
+		public void StartGame() { TestAndContinue(); }
 
 		void TestAndContinue()
 		{
