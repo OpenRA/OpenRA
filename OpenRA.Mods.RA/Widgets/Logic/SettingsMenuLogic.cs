@@ -120,13 +120,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Widget.CloseWindow();
 			};
 		}
-		
+
 		string open = null;
+
 		bool FlipToTab(string id)
 		{
 			if (open != null)
 				bg.GetWidget(open).Visible = false;
-			
+
 			open = id;
 			bg.GetWidget(open).Visible = true;
 			return true;
@@ -144,8 +145,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => s.Mode == options[o],
-				                                  () => s.Mode = options[o]);
+					() => s.Mode == options[o],
+					() => s.Mode = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
