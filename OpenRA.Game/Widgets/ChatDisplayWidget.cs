@@ -33,16 +33,20 @@ namespace OpenRA.Widgets
 			: base(widget) { }
 
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
+
 		public override void Draw()
 		{
 			var pos = RenderOrigin;
 			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
 			var chatpos = new int2(chatLogArea.X + 10, chatLogArea.Bottom - 6);
-			
+
 			if (DrawBackground)
 				WidgetUtils.DrawPanel("dialog3", chatLogArea);
-			
+
+			var font = Game.Renderer.Fonts["Regular"];
+
 			Game.Renderer.EnableScissor(chatLogArea.Left, chatLogArea.Top, chatLogArea.Width, chatLogArea.Height);
+
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
 				chatpos.Y -= 20;
@@ -51,30 +55,30 @@ namespace OpenRA.Widgets
 				if (!string.IsNullOrEmpty(line.Owner))
 				{
 					var owner = line.Owner + ":";
-					inset = Game.Renderer.Fonts["Regular"].Measure(owner).X + 10;
+					inset = font.Measure(owner).X + 10;
 
-					Game.Renderer.Fonts["Regular"].DrawTextWithContrast(owner, chatpos, 
+					font.DrawTextWithContrast(owner, chatpos, 
                         line.Color, Color.Black, UseContrast ? 1 : 0);
 				}
 
-                Game.Renderer.Fonts["Regular"].DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0), 
+                font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0), 
                     Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 
 			Game.Renderer.DisableScissor();
 		}
-		
+
 		public void AddLine(Color c, string from, string text)
 		{
 			recentLines.Add(new ChatLine { Color = c, Owner = from, Text = text });
 			ticksUntilRemove = RemoveTime;
-			
+
 			if (Notification != null)
 				Sound.Play(Notification);
 
 			while (recentLines.Count > logLength) recentLines.RemoveAt(0);
 		}
-		
+
 		public void RemoveLine()
 		{
 			if (recentLines.Count > 0) recentLines.RemoveAt(0);	
