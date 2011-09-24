@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -353,8 +353,8 @@
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarBinWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
-    <Compile Include="Widgets\SpecialPowerBinWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
+    <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />

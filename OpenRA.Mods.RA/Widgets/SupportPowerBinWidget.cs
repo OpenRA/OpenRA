@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-	class SpecialPowerBinWidget : Widget
+	class SupportPowerBinWidget : Widget
 	{
 		Dictionary<string, Sprite> spsprites;
 		Animation ready;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public SpecialPowerBinWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public SupportPowerBinWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;

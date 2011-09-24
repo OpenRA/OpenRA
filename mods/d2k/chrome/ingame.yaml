@@ -34,7 +34,7 @@ Container@INGAME_ROOT:
 					Height:40
 					Align:Center
 					Bold:True
-		SpecialPowerBin@INGAME_POWERS_BIN:
+		SupportPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
 			X:0
 			Y:25
