@@ -35,10 +35,12 @@ namespace OpenRA.Graphics
 		static void LoadSequencesForUnit(string unit, MiniYaml sequences)
 		{
 			Game.modData.LoadScreen.Display();
-			try {
+			try
+			{
 				var seq = sequences.NodesDict.ToDictionary(x => x.Key, x => new Sequence(unit,x.Key,x.Value));
 				units.Add(unit, seq);
-			} catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art	
+			}
+			catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art
 		}
 
 		public static Sequence GetSequence(string unitName, string sequenceName)
