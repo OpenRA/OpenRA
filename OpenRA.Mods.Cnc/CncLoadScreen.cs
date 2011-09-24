@@ -33,16 +33,17 @@ namespace OpenRA.Mods.Cnc
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
+
 			// Avoid standard loading mechanisms so we
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
 
-
 			var s = new Sheet("mods/cnc/uibits/chrome.png");
 			var res = Renderer.Resolution;
 			Bounds = new Rectangle(0, 0, res.Width, res.Height);
-			ss = new Sprite[]
+
+			ss = new []
 			{
 				new Sprite(s, new Rectangle(161,128,62,33), TextureChannel.Alpha),
 				new Sprite(s, new Rectangle(161,223,62,33), TextureChannel.Alpha),
@@ -53,6 +54,7 @@ namespace OpenRA.Mods.Cnc
 				new Sprite(s, new Rectangle(128,223,33,33), TextureChannel.Alpha),
 				new Sprite(s, new Rectangle(223,223,33,33), TextureChannel.Alpha)
 			};
+
 			nodLogo = new Sprite(s, new Rectangle(0, 256, 256, 256), TextureChannel.Alpha);
 			gdiLogo = new Sprite(s, new Rectangle(256, 256, 256, 256), TextureChannel.Alpha);
 			evaLogo = new Sprite(s, new Rectangle(256, 64, 128, 64), TextureChannel.Alpha);
@@ -73,6 +75,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			if (r == null || loadTimer.ElapsedTime() < 0.25)
 				return;
+
 			loadTimer.Reset();
 
 			loadTick = ++loadTick % 8;
@@ -91,7 +94,7 @@ namespace OpenRA.Mods.Cnc
 				loadingPos = new float2((Bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 
 				versionFont = r.Fonts["Regular"];
-				versionText = CncWidgetUtils.ActiveModVersion();
+				versionText = WidgetUtils.ActiveModVersion();
 				var versionSize = versionFont.Measure(versionText);
 				versionPos = new float2(Bounds.Width - 107 - versionSize.X/2, 115 - versionSize.Y/2);
 

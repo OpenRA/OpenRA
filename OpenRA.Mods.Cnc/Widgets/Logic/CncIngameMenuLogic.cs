@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 			
-			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = CncWidgetUtils.ActiveModVersion;
+			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
 
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;

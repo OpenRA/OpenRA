@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 
 			rootMenu = widget.GetWidget("MENU_BACKGROUND");
-			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = CncWidgetUtils.ActiveModVersion;
+			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
 
 			// Menu buttons
 			var mainMenu = widget.GetWidget("MAIN_MENU");

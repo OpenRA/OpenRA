@@ -40,20 +40,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var selector = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "QUICKMODSWITCHER" );
 			var switcher = selector.GetWidget<DropDownButtonWidget>("SWITCHER");
 			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
-			switcher.GetText = ActiveModTitle;
-			selector.GetWidget<LabelWidget>("VERSION").GetText = ActiveModVersion;	
-		}
-		
-		static string ActiveModTitle()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Title;
-		}
-		
-		static string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
+			switcher.GetText = WidgetUtils.ActiveModTitle;
+			selector.GetWidget<LabelWidget>("VERSION").GetText = WidgetUtils.ActiveModVersion;	
 		}
 		
 		static void LoadMod(string mod)
@@ -64,23 +52,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				mods.Add(mod);
 				mod = Mod.AllMods[mod].Requires;
 			}
-			
-			if (!Game.CurrentMods.Keys.ToArray().SymmetricDifference(mods.ToArray()).Any()) 
-				return;
-			
-			Game.RunAfterTick(() => 
-			{
-				Game.InitializeWithMods(mods.ToArray());
-			});
+
+			if (Game.CurrentMods.Keys.ToArray().SymmetricDifference(mods.ToArray()).Any()) 
+				Game.RunAfterTick(() => Game.InitializeWithMods(mods.ToArray()));
 		}
-		
+
 		static void ShowModsDropDown(DropDownButtonWidget dropdown)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (m, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => m == Game.CurrentMods.Keys.First(), 
-				                                  () => LoadMod(m));
+					() => m == Game.CurrentMods.Keys.First(), 
+					() => LoadMod(m));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => Mod.AllMods[m].Title;
 				return item;
 			};

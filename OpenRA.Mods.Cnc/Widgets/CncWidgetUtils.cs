@@ -17,12 +17,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public static class CncWidgetUtils
 	{
-		public static string ActiveModVersion()
-		{
-			var mod = Game.modData.Manifest.Mods[0];
-			return Mod.AllMods[mod].Version;
-		}
-
 		public static string ChooseInitialMap(string map)
 		{
 			var availableMaps = Game.modData.AvailableMaps;
@@ -37,13 +31,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
 			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
-			
+
 			prompt.GetWidget<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
 			{
 				Widget.CloseWindow();
 				onConfirm();
 			};
-			
+
 			prompt.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
 				Widget.CloseWindow();

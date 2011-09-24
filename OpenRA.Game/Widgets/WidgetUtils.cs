@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -208,6 +209,18 @@ namespace OpenRA.Widgets
 		}
 
 		public static Action Once( Action a ) { return () => { if (a != null) { a(); a = null; } }; }
+
+		public static string ActiveModVersion()
+		{
+			var mod = Game.modData.Manifest.Mods[0];
+			return Mod.AllMods[mod].Version;
+		}
+
+		public static string ActiveModTitle()
+		{
+			var mod = Game.modData.Manifest.Mods[0];
+			return Mod.AllMods[mod].Title;
+		}
 	}
 
 	[Flags]
