@@ -27,13 +27,14 @@ namespace OpenRA.Mods.RA.Widgets
 
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+
 		[ObjectCreator.UseCtor]
 		public SpecialPowerBinWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 		}
-		
+
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.ToDictionary(
 					u => u,
 					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
-			
+
 			ready = new Animation("pips");
 			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			get { return buttons.Any() ? buttons.Select(b => b.First).Aggregate(Rectangle.Union) : Bounds; }
 		}
-		
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{			
 			if (mi.Event == MouseInputEvent.Down)
@@ -66,21 +67,21 @@ namespace OpenRA.Mods.RA.Widgets
 				action(mi);
 				return true;
 			}
-			
+
 			return false;
 		}		
-		
+
 		public override void Draw()
 		{
 			buttons.Clear();
 
 			if( world.LocalPlayer == null ) return;
-			
+
 			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			var powers = manager.Powers.Where(p => !p.Value.Disabled);
 			var numPowers = powers.Count();
 			if (numPowers == 0) return;
-			
+
 			var rectBounds = RenderBounds;
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
@@ -90,7 +91,7 @@ namespace OpenRA.Mods.RA.Widgets
 			// Hack Hack Hack
 			rectBounds.Width = 69;
 			rectBounds.Height = 10 + numPowers * 51 + 21;
-			
+
 			var y = rectBounds.Y + 10;
 			foreach (var kv in powers)
 			{
@@ -106,9 +107,10 @@ namespace OpenRA.Mods.RA.Widgets
 					var tl = new int2(pos.X-3,pos.Y-3);
 					var m = new int2(pos.X+64+3,pos.Y+48+3);
 					var br = tl + new int2(64+3+20,40);
+
 					if (sp.TotalTime > 0)
 						br += new int2(0,20);
-					
+
 					if (sp.Info.LongDesc != null)
 						br += Game.Renderer.Fonts["Regular"].Measure(sp.Info.LongDesc.Replace("\\n", "\n"));
 					else
@@ -138,8 +140,8 @@ namespace OpenRA.Mods.RA.Widgets
 						pos += new int2(0, 20);
 						Game.Renderer.Fonts["Regular"].DrawText(sp.Info.LongDesc.Replace("\\n", "\n"), pos, Color.White);
 					}
-
 				}
+
 				WidgetUtils.DrawSHP(image, drawPos, worldRenderer);
 
 				clock.PlayFetchIndex("idle",
@@ -149,17 +151,13 @@ namespace OpenRA.Mods.RA.Widgets
 
 				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 
-				if (sp.Ready)
+				var overlay = sp.Ready ? "ready" : sp.Active ? null : "hold";
+				if (overlay != null)
 				{
-					ready.Play("ready");
+					ready.Play(overlay);
 					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), worldRenderer);
 				}
-				else if (!sp.Active)
-				{
-					ready.Play("hold");
-					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), worldRenderer);
-				}
-				
+
 				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));
 
 				y += 51;
