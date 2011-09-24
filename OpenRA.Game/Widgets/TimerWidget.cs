@@ -9,14 +9,11 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
 	public class TimerWidget : Widget
 	{
-		public Stopwatch Stopwatch;
-
 		public override void Draw()
 		{
 			var s = WidgetUtils.FormatTime(Game.LocalTick);
