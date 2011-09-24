@@ -50,13 +50,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		
 		void LoadMod(string mod, Action onSwitch)
 		{
-			var mods = new List<string>();
-			while (!string.IsNullOrEmpty(mod))
-			{
-				mods.Add(mod);
-				mod = Mod.AllMods[mod].Requires;
-			}
-			
+			var mods = Mod.AllMods[mod].WithPrerequisites();
+
 			Game.RunAfterTick(() => 
 			{
 				Widget.CloseWindow();

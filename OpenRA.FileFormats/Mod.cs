@@ -47,5 +47,12 @@ namespace OpenRA.FileFormats
 			}
 			return ret;
 		}
+
+		public string[] WithPrerequisites()
+		{
+			return Id.Iterate(m => AllMods[m].Requires)
+				.TakeWhile(m => m != null)
+				.ToArray();
+		}
 	}
 }

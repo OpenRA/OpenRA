@@ -46,12 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		
 		static void LoadMod(string mod)
 		{
-			var mods = new List<string>();
-			while (!string.IsNullOrEmpty(mod))
-			{
-				mods.Add(mod);
-				mod = Mod.AllMods[mod].Requires;
-			}
+			var mods = Mod.AllMods[mod].WithPrerequisites();
 
 			if (Game.CurrentMods.Keys.ToArray().SymmetricDifference(mods.ToArray()).Any()) 
 				Game.RunAfterTick(() => Game.InitializeWithMods(mods.ToArray()));
