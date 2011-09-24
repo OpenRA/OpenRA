@@ -59,6 +59,10 @@ namespace OpenRA.Graphics
 
 		public static bool HasSequence(string unit, string seq)
 		{
+			if (!units.ContainsKey(unit))
+				throw new InvalidOperationException(
+					"Unit `{0}` does not have any sequences defined.".F(unit));
+
 			return units[unit].ContainsKey(seq);
 		}
 	}
