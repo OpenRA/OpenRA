@@ -33,10 +33,11 @@ namespace OpenRA.FileFormats
 			var ret = new Dictionary<string, Mod>();
 			foreach (var m in mods)
 			{
-				if (!File.Exists("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"))
+				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate( Path.Combine );
+				if (!File.Exists(yamlPath))
 					continue;
 
-				var yaml = new MiniYaml(null, MiniYaml.FromFile("mods" + Path.DirectorySeparatorChar + m + Path.DirectorySeparatorChar + "mod.yaml"));
+				var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
 				if (!yaml.NodesDict.ContainsKey("Metadata"))
 					continue;
 
