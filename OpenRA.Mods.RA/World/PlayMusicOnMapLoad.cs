@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 		{
 			var onComplete = Info.Loop ? (Action)PlayMusic : () => {};
 
-			if (Game.Settings.Game.ShellmapMusic &&
+			if (Game.Settings.Sound.ShellmapMusic &&
 			    Rules.Music.ContainsKey(Info.Music))
 				Sound.PlayMusicThen(Rules.Music[Info.Music], onComplete);
 		}
