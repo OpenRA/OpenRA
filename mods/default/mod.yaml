@@ -3,7 +3,6 @@ Metadata:
 	Description: Minimal template for creating a base mod
 	Version: a0001
 	Author: The OpenRA Developers
-	Standalone: true
 
 Folders:
 	.

@@ -3,7 +3,6 @@ Metadata:
 	Description: Work in progress d2k port
 	Version: a0001
 	Author: The OpenRA Developers
-	Standalone: true
 
 Folders:
 	.

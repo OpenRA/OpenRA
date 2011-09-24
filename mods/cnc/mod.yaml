@@ -3,7 +3,6 @@ Metadata:
 	Description: OpenRA Reimagining of the classic game
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
-	Standalone: true
 
 Folders:
 	.

@@ -24,7 +24,6 @@ namespace OpenRA.FileFormats
 		public string Version;
 		public string Author;
 		public string Requires;
-		public bool Standalone = false;
 
 		public static readonly Dictionary<string, Mod> AllMods = ValidateMods(Directory.GetDirectories("mods").Select(x => x.Substring(5)).ToArray());
 
