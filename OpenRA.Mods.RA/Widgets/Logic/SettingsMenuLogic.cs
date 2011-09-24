@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
-				int x = gs.WindowedSize.X, y = gs.WindowedSize.Y;
+				int x, y;
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);

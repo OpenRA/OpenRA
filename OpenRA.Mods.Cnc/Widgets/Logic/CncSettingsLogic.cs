@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				playerSettings.Name = nameTextfield.Text;
-				int x = graphicsSettings.WindowedSize.X, y = graphicsSettings.WindowedSize.Y;
+				int x, y;
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				graphicsSettings.WindowedSize = new int2(x,y);
