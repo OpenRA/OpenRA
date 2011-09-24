@@ -28,8 +28,9 @@ namespace OpenRA.GameRules
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
 		public string Map = null;
-		
+
 		public ServerSettings() { }
+
 		public ServerSettings(ServerSettings other)
 		{
 			Name = other.Name;
@@ -41,7 +42,7 @@ namespace OpenRA.GameRules
 			Map = other.Map;
 		}
 	}
-	
+
 	public class DebugSettings
 	{
 		public bool BotDebug = false;
@@ -64,7 +65,7 @@ namespace OpenRA.GameRules
 		public int NumTempBuffers = 8;
 		public int SheetSize = 2048;
 	}
-	
+
 	public class SoundSettings
 	{
 		public float SoundVolume = 0.5f;
@@ -73,27 +74,23 @@ namespace OpenRA.GameRules
 		public bool Shuffle = false;
 		public bool Repeat = false;
 	}
-	
+
 	public class PlayerSettings
 	{
 		public string Name = "Newbie";
-		[Obsolete] public Color Color1 = Color.FromArgb(255,160,238); 
-		[Obsolete] public Color Color2 = Color.FromArgb(68,0,56);
         public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		public string LastServer = "localhost:1234";
 	}
-	
+
 	public enum MouseScrollType { Disabled, Standard, Inverted }
+
 	public class GameSettings
 	{
 		public string[] Mods = { "ra" };
-		public bool MatchTimer = true;
 		public bool ShellmapMusic = true;
-		
-		// Chat settings
+
 		public bool TeamChatToggle = false;
 
-		// Behaviour settings
         public bool ViewportEdgeScroll = true;
         public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public float ViewportEdgeScrollStep = 10f;

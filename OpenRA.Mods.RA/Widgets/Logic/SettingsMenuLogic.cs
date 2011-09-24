@@ -74,11 +74,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
 			musicslider.OnChange += x => Sound.MusicVolume = x;
 			musicslider.Value = Sound.MusicVolume;
-			
+
 			// Display
 			var display = bg.GetWidget("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
-			
+
 			var windowModeDropdown = display.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
 			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			display.GetWidget("WINDOW_RESOLUTION").IsVisible = () => gs.Mode == WindowMode.Windowed;
 			var windowWidth = display.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = gs.WindowedSize.X.ToString();
-			
+
 			var windowHeight = display.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = gs.WindowedSize.Y.ToString();
 
@@ -105,13 +105,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var perfgraphCheckbox = debug.GetWidget<CheckboxWidget>("PERFDEBUG_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
 			perfgraphCheckbox.OnClick = () => Game.Settings.Debug.PerfGraph ^= true;
-			
-			Game.Settings.Game.MatchTimer = true;
-			
+
 			var checkunsyncedCheckbox = debug.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => Game.Settings.Debug.SanityCheckUnsyncedCode ^= true;
-	
+
 			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
 				int x = gs.WindowedSize.X, y = gs.WindowedSize.Y;

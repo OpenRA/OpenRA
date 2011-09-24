@@ -16,11 +16,6 @@ namespace OpenRA.Widgets
 	public class TimerWidget : Widget
 	{
 		public Stopwatch Stopwatch;
-		
-		public TimerWidget ()
-		{
-			IsVisible = () => Game.Settings.Game.MatchTimer;
-		}
 
 		public override void Draw()
 		{

@@ -77,18 +77,10 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Show Performance Graph
-				Checkbox@MATCHTIME_CHECKBOX:
-					Id:MATCHTIME_CHECKBOX
-					X:15
-					Y:180
-					Width:300
-					Height:20
-					Font:Regular
-					Text:Show Match Timer 
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					Id:CHECKUNSYNCED_CHECKBOX
 					X:15
-					Y:210
+					Y:180
 					Width:300
 					Height:20
 					Font:Regular
