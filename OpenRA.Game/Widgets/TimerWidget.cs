@@ -18,9 +18,10 @@ namespace OpenRA.Widgets
 		{
 			var s = WidgetUtils.FormatTime(Game.LocalTick);
 			var font = Game.Renderer.Fonts["Title"];
-            var pos = new float2(RenderBounds.Left - font.Measure(s).X / 2, RenderBounds.Top - 20);
+			var rb = RenderBounds;
+			var pos = new float2(rb.Left - font.Measure(s).X / 2, rb.Top - 20);
 
-            font.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
+			font.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
 		}
 	}
 }
