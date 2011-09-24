@@ -146,8 +146,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (chatTextField.Text.Length == 0)
 					return true;
 
-				var order = (teamChat) ? Order.TeamChat(chatTextField.Text) : Order.Chat(chatTextField.Text);
-				orderManager.IssueOrder(order);
+				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
 				chatTextField.Text = "";
 				return true;
 			};

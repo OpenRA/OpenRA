@@ -16,9 +16,6 @@ namespace OpenRA.Widgets
 	// a dirty hack of a widget, which likes to steal the focus when \r is pressed, and then
 	// refuse to give it up until \r is pressed again.
 
-	// this emulates the previous chat support, with one improvement: shift+enter can toggle the
-	// team/all mode *while* composing, not just on beginning to compose.
-
 	public class ChatEntryWidget : Widget
 	{
 		string content = "";
@@ -27,6 +24,7 @@ namespace OpenRA.Widgets
         public readonly bool UseContrast = false;
 
 		readonly OrderManager orderManager;
+
 		[ObjectCreator.UseCtor]
 		internal ChatEntryWidget( [ObjectCreator.Param] OrderManager orderManager )
 		{
@@ -44,8 +42,9 @@ namespace OpenRA.Widgets
 				Game.Renderer.Fonts["Regular"].DrawTextWithContrast(content, RenderOrigin + new float2(3 + w, 7), Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 		}
-		
+
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
+
 		public override bool LoseFocus(MouseInput mi)
 		{
 			return composing ? false : base.LoseFocus(mi);
@@ -67,9 +66,7 @@ namespace OpenRA.Widgets
 
 					composing = false;
 					if (content != "")
-						orderManager.IssueOrder(teamChat
-							? Order.TeamChat(content)
-							: Order.Chat(content));
+						orderManager.IssueOrder(Order.Chat(teamChat, content));
 					content = "";
 
 					LoseFocus();
@@ -79,14 +76,8 @@ namespace OpenRA.Widgets
 				{
 					TakeFocus(new MouseInput());
 					composing = true;
-					if (Game.Settings.Game.TeamChatToggle)
-					{
-						teamChat ^= e.Modifiers.HasModifier(Modifiers.Shift);
-					}
-					else
-					{
-						teamChat = e.Modifiers.HasModifier(Modifiers.Shift);
-					}
+					teamChat = (Game.Settings.Game.TeamChatToggle && teamChat)
+						^ e.Modifiers.HasModifier(Modifiers.Shift);
 					return true;
 				}
 			}

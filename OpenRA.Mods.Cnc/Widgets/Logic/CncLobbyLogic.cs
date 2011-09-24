@@ -198,13 +198,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
+
 			chatTextField.OnEnterKey = () =>
 			{
 				if (chatTextField.Text.Length == 0)
 					return true;
 
-				var order = (teamChat) ? Order.TeamChat(chatTextField.Text) : Order.Chat(chatTextField.Text);
-				orderManager.IssueOrder(order);
+				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
 				chatTextField.Text = "";
 				return true;
 			};

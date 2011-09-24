@@ -189,21 +189,17 @@ namespace OpenRA
 
 		// Named constructors for Orders.
 		// Now that Orders are resolved by individual Actors, these are weird; you unpack orders manually, but not pack them.
-		public static Order Chat(string text)
+
+		public static Order Chat(bool team, string text)
 		{
-			return new Order("Chat", null, false) { IsImmediate = true, TargetString = text};
+			return new Order(team ? "TeamChat" : "Chat", null, false) { IsImmediate = true, TargetString = text};
 		}
 
-		public static Order TeamChat(string text)
-		{
-			return new Order("TeamChat", null, false) { IsImmediate = true, TargetString = text };
-		}
-		
 		public static Order HandshakeResponse(string text)
 		{
 			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
 		}
-		
+
 		public static Order Command(string text)
 		{
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
