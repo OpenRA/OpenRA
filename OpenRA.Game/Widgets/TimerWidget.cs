@@ -17,10 +17,10 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var s = WidgetUtils.FormatTime(Game.LocalTick);
-			var size = Game.Renderer.Fonts["Title"].Measure(s);
-            var pos = new float2(RenderBounds.Left - size.X / 2, RenderBounds.Top - 20);
+			var font = Game.Renderer.Fonts["Title"];
+            var pos = new float2(RenderBounds.Left - font.Measure(s).X / 2, RenderBounds.Top - 20);
 
-            Game.Renderer.Fonts["Title"].DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
+            font.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
 		}
 	}
 }
