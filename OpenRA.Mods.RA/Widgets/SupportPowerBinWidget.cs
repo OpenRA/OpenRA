@@ -85,8 +85,8 @@ namespace OpenRA.Mods.RA.Widgets
 			var rectBounds = RenderBounds;
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-top"),new float2(rectBounds.X,rectBounds.Y));
 			for (var i = 1; i < numPowers; i++)
-				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
-			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world,"specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
+				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
+			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
 			// Hack Hack Hack
 			rectBounds.Width = 69;

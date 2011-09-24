@@ -50,8 +50,8 @@ Container@INGAME_MENU:
 					Width:140
 					Height:35
 					Text:Music
-				Button@PREFERENCES_BUTTON:
-					Id:PREFERENCES_BUTTON
+				Button@SETTINGS_BUTTON:
+					Id:SETTINGS_BUTTON
 					X:450
 					Y:0
 					Width:140

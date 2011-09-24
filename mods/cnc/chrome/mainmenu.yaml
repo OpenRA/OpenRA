@@ -168,8 +168,8 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Music
-						Button@PREFERENCES_BUTTON:
-							Id:PREFERENCES_BUTTON
+						Button@SETTINGS_BUTTON:
+							Id:SETTINGS_BUTTON
 							X:300
 							Y:0
 							Width:140

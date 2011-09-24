@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 			
-			menu.GetWidget<ButtonWidget>("PREFERENCES_BUTTON").OnClick = () =>
+			menu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
