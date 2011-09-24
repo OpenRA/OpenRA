@@ -50,7 +50,7 @@ namespace OpenRA.Widgets
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
 				chatpos.Y -= 20;
-				int inset = 0;
+				var inset = 0;
 
 				if (!string.IsNullOrEmpty(line.Owner))
 				{
@@ -83,12 +83,12 @@ namespace OpenRA.Widgets
 		{
 			if (recentLines.Count > 0) recentLines.RemoveAt(0);	
 		}
-		
+
 		public void ClearChat()
 		{
 			recentLines = new List<ChatLine>();	
 		}
-		
+
 		public override void Tick()
 		{
 			if (RemoveTime == 0) return;
@@ -104,6 +104,5 @@ namespace OpenRA.Widgets
 	{
 		public Color Color = Color.White;
 		public string Owner, Text;
-		public bool wrapped = false;
 	}
 }
