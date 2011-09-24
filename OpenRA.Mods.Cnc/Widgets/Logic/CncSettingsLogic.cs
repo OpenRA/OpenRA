@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			return true;
 		}
 
-		bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
