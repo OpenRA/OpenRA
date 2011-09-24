@@ -133,7 +133,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		public static bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{

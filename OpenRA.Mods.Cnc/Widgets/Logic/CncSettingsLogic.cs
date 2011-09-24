@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Video
 			var windowModeDropdown = generalPane.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
+			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
 			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ? 
 				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 
@@ -158,28 +159,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			});
 
 			color.AttachPanel(colorChooser);
-			return true;
-		}
-
-		bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
-		{
-			var options = new Dictionary<string, WindowMode>()
-			{
-				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
-				{ "Fullscreen", WindowMode.Fullscreen },
-				{ "Windowed", WindowMode.Windowed },
-			};
-
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => s.Mode == options[o],
-					() => s.Mode = options[o]);
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
-				return item;
-			};
-
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
 		}
 
