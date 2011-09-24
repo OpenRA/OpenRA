@@ -29,9 +29,6 @@ namespace OpenRA.Widgets
 		public ChatDisplayWidget()
 			: base() { }
 
-		protected ChatDisplayWidget(Widget widget)
-			: base(widget) { }
-
 		public override Rectangle EventBounds { get { return Rectangle.Empty; } }
 
 		public override void Draw()
@@ -96,8 +93,6 @@ namespace OpenRA.Widgets
 			ticksUntilRemove = RemoveTime;
 			RemoveLine();
 		}
-
-		public override Widget Clone() { return new ChatDisplayWidget(this); }
 	}
 
 	class ChatLine
