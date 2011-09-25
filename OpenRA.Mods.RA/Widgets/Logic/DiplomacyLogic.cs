@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		int validPlayers = 0;
 		readonly World world;
-		
+
 		[ObjectCreator.UseCtor]
 		public DiplomacyLogic( [ObjectCreator.Param] World world )
 		{
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
-		
+
 		// This is shit
 		void LayoutDialog(Widget bg)
 		{

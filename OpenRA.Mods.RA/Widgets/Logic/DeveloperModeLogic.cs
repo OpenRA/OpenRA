@@ -34,7 +34,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
 			devModeButton.OnClick = () => devmodeBG.Visible ^= true;
 
-			
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 			
 			var shroudCheckbox = devmodeBG.GetWidget<CheckboxWidget>("CHECKBOX_SHROUD");
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				
 			devModeButton.IsVisible = () => { return world.LobbyInfo.GlobalSettings.AllowCheats; };
 		}
-		
+
 		public void Order(World world, string order)
 		{
 			world.IssueOrder(new Order(order, world.LocalPlayer.PlayerActor, false));	

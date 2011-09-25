@@ -17,20 +17,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class IngameChromeLogic
 	{
 		Widget gameRoot;
-		
+
 		[ObjectCreator.UseCtor]
 		public IngameChromeLogic( [ObjectCreator.Param] World world )
 		{
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
-			
+
 			var r = Widget.RootWidget;
 			gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
-			
+
 			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
-			
+
 			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
 				optionsBG.Visible = false;
@@ -39,11 +39,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Widget.CloseWindow();
 				Widget.OpenWindow("MAINMENU_BG");
 			};
-			
+
 			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
 			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
 			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
-			
+
 			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () => 
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			optionsBG.GetWidget("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
 			};
-			
+
 			postgameText.GetText = () =>
 			{
 				var state = world.LocalPlayer.WinState;
@@ -62,13 +62,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 								(state == WinState.Lost ? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};
 		}
-		
+
 		void UnregisterEvents()
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
 		}
-		
+
 		void AddChatLine(Color c, string from, string text)
 		{
 			gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
