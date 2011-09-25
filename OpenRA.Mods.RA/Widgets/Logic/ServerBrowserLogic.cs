@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 			}
 
-            var gamesWaiting = games.Where(g => CanJoin(g));
+            var gamesWaiting = games.Where(g => g.CanJoin());
 
             if (gamesWaiting.Count() == 0)
 			{
@@ -134,28 +134,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => "{0} ({1})".F(game.Name, game.Address);
 				sl.AddChild(item);
 			}
-		}
-
-		static bool AreVersionsCompatible(string a, string b)
-		{
-			/* dev versions are assumed compatible; if you're using one,
-			 * we trust that you know what you're doing. */
-
-			return a == "{DEV_VERSION}" || b == "{DEV_VERSION}" || a == b;
-		}
-
-		public static bool CanJoin(GameServer game)
-		{
-			//"waiting for players"
-			if (game.State != 1)
-				return false;
-
-			// Mods won't match if there are a different number
-			if (Game.CurrentMods.Count != game.Mods.Count())
-				return false;
-
-			return game.Mods.All( m => m.Contains('@')) && game.Mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1]))
-				.All(kv => Game.CurrentMods.ContainsKey(kv.First) && AreVersionsCompatible(kv.Second, Game.CurrentMods[kv.First].Version));
 		}
 	}
 }

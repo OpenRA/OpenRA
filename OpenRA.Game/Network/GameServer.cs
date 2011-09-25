@@ -33,5 +33,27 @@ namespace OpenRA.Network
 					.ToDictionary(v => v.Split('@')[0], v => v.Split('@')[1]);
 			}
 		}
+
+		static bool AreVersionsCompatible(string a, string b)
+		{
+			/* dev versions are assumed compatible; if you're using one,
+			 * we trust that you know what you're doing. */
+
+			return a == "{DEV_VERSION}" || b == "{DEV_VERSION}" || a == b;
+		}
+
+		public bool CanJoin()
+		{
+			//"waiting for players"
+			if (State != 1)
+				return false;
+
+			// Mods won't match if there are a different number
+			if (Game.CurrentMods.Count != Mods.Count())
+				return false;
+
+			return UsefulMods.All(m => Game.CurrentMods.ContainsKey(m.Key)
+				&& AreVersionsCompatible(m.Value, Game.CurrentMods[m.Key].Version));
+		}
 	}
 }

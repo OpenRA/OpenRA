@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
-			join.IsDisabled = () => currentServer == null || !ServerBrowserLogic.CanJoin(currentServer);
+			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
 			join.OnClick = () =>
 			{
 				if (currentServer == null)
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				return;
 			}
 
-            var gamesWaiting = games.Where(g => ServerBrowserLogic.CanJoin(g));
+            var gamesWaiting = games.Where(g => g.CanJoin());
 
             if (gamesWaiting.Count() == 0)
 			{
