@@ -107,6 +107,7 @@
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
+    <Compile Include="Widgets\Logic\CncDirectConnectLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
