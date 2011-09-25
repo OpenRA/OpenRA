@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,14 +23,14 @@ namespace OpenRA.Widgets
 	{
 		protected readonly World world;
 		readonly WorldRenderer worldRenderer;
-		
+
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 		}
-		
+
 		public override void Draw()
 		{
 			var selbox = SelectionBox;
@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
             foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
                 worldRenderer.DrawRollover(u);
 		}
-		
+
 		int2 dragStart, dragEnd;
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -56,7 +56,7 @@ namespace OpenRA.Widgets
 			{
 				if (!TakeFocus(mi))
 					return false;
-				
+
 				dragStart = dragEnd = xy;
 				ApplyOrders(world, xy, mi);
 			}
@@ -82,10 +82,10 @@ namespace OpenRA.Widgets
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 				if (SelectionBox == null)	/* don't issue orders while selecting */
 					ApplyOrders(world, xy, mi);
-			
+
 			return true;
 		}
-		
+
 		public Pair<int2, int2>? SelectionBox
 		{
 			get
@@ -94,7 +94,7 @@ namespace OpenRA.Widgets
 				return Pair.New(dragStart, dragEnd);
 			}
 		}
-		
+
 		public void ApplyOrders(World world, int2 xy, MouseInput mi)
 		{
 			if (world.OrderGenerator == null) return;
@@ -104,7 +104,7 @@ namespace OpenRA.Widgets
 
 			world.PlayVoiceForOrders(orders);
 		}
-		
+
 		public override string GetCursor(int2 pos)
 		{
 			return Sync.CheckSyncUnchanged( world, () =>
@@ -140,7 +140,7 @@ namespace OpenRA.Widgets
 			}
 			return false;
 		}
-		
+
         static readonly Actor[] NoActors = {};
 		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b)
 		{

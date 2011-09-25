@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Air
 		public DebugAircraftFacing(Actor self){ a = self.Trait<Aircraft>(); }
 		[Sync] public int foo { get { return a.Facing; } }
 	}
-	
+
 	public class DebugAircraftSubPxXInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Air
 		public DebugAircraftSubPxX(Actor self){ a = self.Trait<Aircraft>(); }
 		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
 	}
-	
+
 	public class DebugAircraftSubPxYInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Air
 		public DebugAircraftSubPxY(Actor self){ a = self.Trait<Aircraft>(); }
 		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
 	}
-	
+
 	public class DebugAircraftAltitudeInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Air
 		public DebugAircraftAltitude(Actor self){ a = self.Trait<Aircraft>(); }
 		[Sync] public int foo { get { return a.Altitude; } }
 	}
-	
+
 	public class AircraftInfo : ITraitInfo, IFacingInfo
 	{
 		public readonly int CruiseAltitude = 30;
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Air
 	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled, IIssueOrder, IOrderVoice
 	{
 		public IDisposable reservation;
-		
+
 		public void UnReserve()
 		{
 			if (reservation != null)
@@ -94,13 +94,13 @@ namespace OpenRA.Mods.RA.Air
 				reservation = null;
 			}
 		}
-		
+
 		public void Killed(Actor self, AttackInfo e)
 		{
 			UnReserve();
 		}
-		
-		
+
+
 		protected readonly Actor self;
 		[Sync]
 		public int Facing { get; set; }
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA.Air
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
 				this.SubPxPosition = 1024 * Util.CenterOfCell( init.Get<LocationInit, int2>() );
-			
+
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
 			Info = info;
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		public int ROT { get { return Info.ROT; } }
-		
+
 		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		public void SetPosition(Actor self, int2 cell)
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.RA.Air
 				return (int)ret;
 			}
 		}
-		
+
 		Pair<int2, SubCell>[] noCells = new Pair<int2, SubCell>[] { };
 		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { return noCells; }
 

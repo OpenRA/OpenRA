@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Editor
         {
             MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
 				.Aggregate(Path.Combine);
-			
+
 			InitializeComponent();
 			MapIconsList.Images.Add(pictureBox1.Image);
         }
@@ -34,7 +34,7 @@ namespace OpenRA.Editor
         {
             MapList.Items.Clear();
             txtPathOut.Text = MapFolderPath;
-			
+
             foreach (var map in ModData.FindMapsIn(MapFolderPath))
             {
                 ListViewItem map1 = new ListViewItem();
@@ -43,7 +43,7 @@ namespace OpenRA.Editor
                 map1.ImageIndex = 0;
                 MapList.Items.Add(map1);
             }
-            
+
 			// hack
 			if (txtNew.Text != "unnamed")
                 MapList.Items[0].Selected = true;
@@ -62,7 +62,7 @@ namespace OpenRA.Editor
                 txtTheater.Text = map.Tileset;
                 txtDesc.Text = map.Description;
 				pbMinimap.Image = null;
-				
+
                 try
                 {
 					pbMinimap.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));

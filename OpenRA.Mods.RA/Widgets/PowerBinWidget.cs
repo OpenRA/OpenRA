@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	public class PowerBinWidget : Widget
 	{
-		// Power bar 
+		// Power bar
 		float2 powerOrigin = new float2(42, 205); // Relative to radarOrigin
 		Size powerSize = new Size(138, 5);
 

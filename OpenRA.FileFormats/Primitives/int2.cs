@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -56,7 +56,7 @@ namespace OpenRA
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		public override string ToString() { return string.Format("{0},{1}", X, Y); }
-		
+
 		// Change endianness of a uint32
 		public static uint Swap(uint orig)
 		{
@@ -72,13 +72,13 @@ namespace OpenRA
 		{
 			return a + ( b - a ) * mul / div;
 		}
-		
+
 		public int2 Clamp(Rectangle r)
 		{
 			return new int2(Math.Min(r.Right, Math.Max(X, r.Left)),
 			                Math.Min(r.Bottom, Math.Max(Y, r.Top)));
 		}
-		
+
 		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }
 
 	}

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,16 +30,16 @@ namespace OpenRA.Mods.RA.Server
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
 						server.SendChat(null, masterServerMessages.Dequeue());
-			
+
 		}
-		
-		
+
+
 		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
 		public void GameStarted(S server) { PingMasterServer(server); }
 
 		int lastPing = 0;
 		bool isInitialPing = true;
-		
+
 		volatile bool isBusy;
 		Queue<string> masterServerMessages = new Queue<string>();
 		public void PingMasterServer(S server)

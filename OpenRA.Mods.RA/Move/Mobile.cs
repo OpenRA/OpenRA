@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Move
 
             return TerrainSpeeds[type].Cost;
         }
-		
+
 		public readonly Dictionary<SubCell, int2> SubCellOffsets = new Dictionary<SubCell, int2>()
 		{
 			{SubCell.TopLeft, new int2(-7,-6)},
@@ -76,15 +76,15 @@ namespace OpenRA.Mods.RA.Move
 			{SubCell.BottomRight, new int2(6,6)},
 			{SubCell.FullCell, new int2(0,0)},
 		};
-		
+
         public bool CanEnterCell(World world, Player owner, int2 cell, Actor ignoreActor, bool checkTransientActors)
         {
             if (MovementCostForCell(world, cell) == int.MaxValue)
                 return false;
-			
+
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
-			
+
             var blockingActors = world.ActorMap.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
             if (checkTransientActors && blockingActors.Count > 0)
             {
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Move
         int __facing;
         int2 __fromCell, __toCell;
 		public SubCell fromSubCell, toSubCell;
-		
+
         int __altitude;
 
         [Sync]
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Move
 			{
 				this.fromSubCell = this.toSubCell = init.Get<SubCellInit, SubCell>();
 			}
-			
+
             if (init.Contains<LocationInit>())
             {
                 this.__fromCell = this.__toCell = init.Get<LocationInit, int2>();
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.RA.Move
             // Couldn't find a cell
             return target;
         }
-		
+
 		void PerformMoveInner(Actor self, int2 targetLocation, bool queued)
 		{
 			int2 currentLocation = NearestMoveableCell(targetLocation);
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.RA.Move
 
             self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
 		}
-		
+
         protected void PerformMove(Actor self, int2 targetLocation, bool queued)
         {
             if (queued)
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.RA.Move
 
             if (order.OrderString == "Stop")
                 self.CancelActivity();
-			
+
 			if (order.OrderString == "Scatter")
                 OnNudge(self, self, true);
         }
@@ -296,15 +296,15 @@ namespace OpenRA.Mods.RA.Move
 				yield return Pair.New(toCell, toSubCell);
 			}
         }
-		
+
 		public SubCell GetDesiredSubcell(int2 a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
 				return SubCell.FullCell;
-			
+
 			// Prioritise the current subcell
 			return new[]{ fromSubCell, SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
-				SubCell.BottomLeft, SubCell.BottomRight}.First(b => 
+				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
 			{
 				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
 				if (blockingActors.Count() > 0)
@@ -320,7 +320,7 @@ namespace OpenRA.Mods.RA.Move
 				return true;
 			});
 		}
-		
+
         public bool CanEnterCell(int2 p)
         {
             return CanEnterCell(p, null, true);

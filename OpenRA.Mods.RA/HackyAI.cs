@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA
 
 			return possibleTargets.Any() ? possibleTargets.Random(random) : (int2?)null;
 		}
-		
+
 		int assignRolesTicks = 0;
 
 		void AssignRolesToIdleUnits(Actor self)
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA
 			activeUnits.RemoveAll(a => a.Destroyed);
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed);
 			attackForce.RemoveAll(a => a.Destroyed);
-			
+
 			if (--assignRolesTicks > 0)
 				return;
 			else
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.RA
 
 				activeUnits.Add(a);
 			}
-			
+
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
-				.Where(rp => rp.Actor.Owner == p && 
+				.Where(rp => rp.Actor.Owner == p &&
                     !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
 			if (buildings.Length > 0)
@@ -432,7 +432,7 @@ namespace OpenRA.Mods.RA
 		class BaseBuilder
 		{
 			enum BuildState	{ ChooseItem, WaitForProduction, WaitForFeedback }
-			
+
 			BuildState state = BuildState.WaitForFeedback;
 			string category;
 			HackyAI ai;

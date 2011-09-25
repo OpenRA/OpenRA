@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,15 +21,15 @@ namespace OpenRA.Mods.Cnc
 		public string PlayerPalette = "player";
 		public object Create( ActorInitializer init ) { return new CncColorPickerPaletteModifier( this ); }
 	}
-	
+
 	class CncColorPickerPaletteModifier : IPalette, IPaletteModifier
-	{	
+	{
 		CncColorPickerPaletteModifierInfo Info;
 		PaletteFormat format;
 		public ColorRamp Ramp;
-		
+
 		public CncColorPickerPaletteModifier(CncColorPickerPaletteModifierInfo info) { Info = info; }
-		
+
 		public void InitPalette( WorldRenderer wr )
 		{
 			var info = Rules.Info["player"].Traits.WithInterface<PlayerColorPaletteInfo>()

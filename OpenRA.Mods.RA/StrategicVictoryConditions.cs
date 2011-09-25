@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -17,14 +17,14 @@ namespace OpenRA.Mods.RA
 {
 	public class StrategicPointInfo : TraitInfo<StrategicPoint> {}
 	public class StrategicPoint {}
-	
+
 	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<ConquestVictoryConditionsInfo>
 	{
 		public readonly int TicksToHold = 25 * 60 * 5; // ~5 minutes
 		public readonly bool ResetOnHoldLost = true;
 		public readonly float RatioRequired = 0.5f; // 50% required of all koth locations
 
-		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.self, this); }	
+		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.self, this); }
 	}
 
 	public class StrategicVictoryConditions : ITick, ISync

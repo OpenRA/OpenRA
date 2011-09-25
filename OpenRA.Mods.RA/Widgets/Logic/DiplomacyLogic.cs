@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -31,14 +31,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
 			var diplomacy = root.GetWidget<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
-			
+
 			diplomacy.OnClick = () =>
 			{
 				diplomacyBG.Visible = !diplomacyBG.Visible;
 				if (diplomacyBG.IsVisible())
 					LayoutDialog(diplomacyBG);
 			};
-			
+
 			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
 		}
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				bg.AddChild(myStance);
 				controls.Add(myStance);
-				
+
 				y += 35;
 			}
 		}
@@ -128,11 +128,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(template,
 				                                  () => s == world.LocalPlayer.Stances[ p ],
 				                                  () => SetStance(dropdown, p, s));
-				
+
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
 				return item;
 			};
-			
+
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, stances, setupItem);
 		}
 

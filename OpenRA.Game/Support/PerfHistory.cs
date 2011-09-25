@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -17,15 +17,15 @@ namespace OpenRA.Support
 {
 	public static class PerfHistory
 	{
-		static readonly Color[] colors = { Color.Red, Color.Green, 
-											 Color.Orange, Color.Yellow, 
-											 Color.Fuchsia, Color.Lime, 
-											 Color.LightBlue, Color.Blue, 
+		static readonly Color[] colors = { Color.Red, Color.Green,
+											 Color.Orange, Color.Yellow,
+											 Color.Fuchsia, Color.Lime,
+											 Color.LightBlue, Color.Blue,
 											 Color.White, Color.Teal };
 		static int nextColor;
 
 		public static Cache<string, PerfItem> items = new Cache<string, PerfItem>(
-			s => 
+			s =>
 			{
 				var x = new PerfItem(s, colors[nextColor++]);
 				if (nextColor >= colors.Length) nextColor = 0;

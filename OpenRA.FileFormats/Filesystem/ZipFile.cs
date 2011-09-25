@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -44,7 +44,7 @@ namespace OpenRA.FileFormats
 
 			if (File.Exists(filename))
 				File.Delete(filename);
-			
+
 			pkg = SZipFile.Create(filename);
 			Write(contents);
 		}
@@ -70,7 +70,7 @@ namespace OpenRA.FileFormats
 			foreach(ZipEntry entry in pkg)
 				yield return PackageEntry.HashFilename(entry.Name);
 		}
-		
+
 		public bool Exists(string filename)
 		{
 			return pkg.GetEntry(filename) != null;
@@ -80,7 +80,7 @@ namespace OpenRA.FileFormats
 		{
 			get { return 500 + priority; }
 		}
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			pkg.Close();
@@ -108,7 +108,7 @@ namespace OpenRA.FileFormats
 		{
 			this.data = data;
 		}
-		
+
 		public Stream GetSource()
 		{
 			return new MemoryStream(data);

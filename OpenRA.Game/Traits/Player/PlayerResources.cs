@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,43 +21,43 @@ namespace OpenRA.Traits
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
 	}
-	
+
 	public class DebugResourceCashInfo : ITraitInfo, Requires<PlayerResourcesInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceCash(init.self); }
 	}
-	
+
 	public class DebugResourceCash : ISync
 	{
 		readonly PlayerResources pr;
 		public DebugResourceCash(Actor self) { pr = self.Trait<PlayerResources>(); }
 		[Sync] public int foo { get { return pr.Cash; } }
 	}
-	
+
 	public class DebugResourceOreInfo : ITraitInfo, Requires<PlayerResourcesInfo>
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOre(init.self); }
 	}
-	
+
 	public class DebugResourceOre : ISync
 	{
 		readonly PlayerResources pr;
 		public DebugResourceOre(Actor self) { pr = self.Trait<PlayerResources>(); }
 		[Sync] public int foo { get { return pr.Ore; } }
 	}
-	
+
 	public class DebugResourceOreCapacityInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new DebugResourceOreCapacity(init.self); }
 	}
-	
+
 	public class DebugResourceOreCapacity : ISync
 	{
 		readonly PlayerResources pr;
 		public DebugResourceOreCapacity(Actor self) { pr = self.Trait<PlayerResources>(); }
 		[Sync] public int foo { get { return pr.OreCapacity; } }
 	}
-	
+
 	public class PlayerResources : ITick, ISync
 	{
 		readonly Player Owner;
@@ -74,7 +74,7 @@ namespace OpenRA.Traits
 
 		[Sync]
 		public int Cash;
-		
+
 		[Sync]
 		public int Ore;
 		[Sync]
@@ -91,39 +91,39 @@ namespace OpenRA.Traits
 		public void GiveOre(int num)
 		{
 			Ore += num;
-			
+
 			if (Ore > OreCapacity)
 			{
 				nextSiloAdviceTime = 0;
 				Ore = OreCapacity;
 			}
 		}
-		
+
 		public bool TakeOre(int num)
 		{
 			if (Ore < num) return false;
 			Ore -= num;
-			
+
 			return true;
 		}
-		
+
 		public void GiveCash(int num)
 		{
 			Cash += num;
 		}
-		
+
 		public bool TakeCash(int num)
-		{			
+		{
 			if (Cash + Ore < num) return false;
-			
+
 			// Spend ore before cash
 			Ore -= num;
 			if (Ore < 0)
 			{
 				Cash += Ore;
-				Ore = 0;	
+				Ore = 0;
 			}
-			
+
 			return true;
 		}
 
@@ -138,23 +138,23 @@ namespace OpenRA.Traits
 			OreCapacity = self.World.ActorsWithTrait<IStoreOre>()
                 .Where(a => a.Actor.Owner == Owner)
 				.Sum(a => a.Trait.Capacity);
-			
+
 			if (Ore > OreCapacity)
 				Ore = OreCapacity;
-			
+
 			if (--nextSiloAdviceTime <= 0)
 			{
 				if (Ore > 0.8*OreCapacity)
 					Owner.GiveAdvice(eva.SilosNeeded);
-				
+
 				nextSiloAdviceTime = AdviceInterval;
 			}
-			
+
 			var diff = Math.Abs(Cash - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);
 
-			
+
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
@@ -165,7 +165,7 @@ namespace OpenRA.Traits
 				DisplayCash -= move;
 				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
-			
+
 			diff = Math.Abs(Ore - DisplayOre);
 			move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
 					displayCashDeltaPerFrame), diff);

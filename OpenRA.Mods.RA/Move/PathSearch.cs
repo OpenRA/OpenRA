@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,10 +25,10 @@ namespace OpenRA.Mods.RA.Move
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
 		public bool inReverse;
-		
+
 		MobileInfo mobileInfo;
 		Player owner;
-		
+
 		public PathSearch(World world, MobileInfo mobileInfo, Player owner)
 		{
 			this.world = world;
@@ -61,19 +61,19 @@ namespace OpenRA.Mods.RA.Move
 			heuristic = h;
 			return this;
 		}
-		
+
 		public PathSearch WithoutLaneBias()
 		{
 			LaneBias = 0;
 			return this;
 		}
-		
+
 		public PathSearch FromPoint(int2 from)
 		{
 			AddInitialCell( from );
 			return this;
 		}
-		
+
 		int LaneBias = 1;
 
 		public int2 Expand( World world )
@@ -86,10 +86,10 @@ namespace OpenRA.Mods.RA.Move
 					p = queue.Pop();
 
 			cellInfo[p.Location.X, p.Location.Y].Seen = true;
-			
+
 			var thisCost = mobileInfo.MovementCostForCell(world, p.Location);
 
-			if (thisCost == int.MaxValue) 
+			if (thisCost == int.MaxValue)
 				return p.Location;
 
 			foreach( int2 d in directions )
@@ -101,16 +101,16 @@ namespace OpenRA.Mods.RA.Move
 					continue;
 
 				var costHere = mobileInfo.MovementCostForCell(world, newHere);
-				
+
 				if (costHere == int.MaxValue)
 					continue;
 
 				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked))
 					continue;
-				
+
 				if (customBlock != null && customBlock(newHere))
 					continue;
-				
+
 				var est = heuristic( newHere );
 				if( est == int.MaxValue )
 					continue;
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA.Move
 				cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
 
 				queue.Add( new PathDistance( newCost + est, newHere ) );
-				
+
 			}
 			return p.Location;
 		}
@@ -161,14 +161,14 @@ namespace OpenRA.Mods.RA.Move
 			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
 			queue.Add( new PathDistance( heuristic( location ), location ) );
 		}
-		
+
 		public static PathSearch Search( World world, MobileInfo mi, Player owner, bool checkForBlocked )
 		{
 			var search = new PathSearch(world, mi, owner) {
 				checkForBlocked = checkForBlocked };
 			return search;
 		}
-		
+
 		public static PathSearch FromPoint( World world, MobileInfo mi, Player owner, int2 from, int2 target, bool checkForBlocked )
 		{
 			var search = new PathSearch(world, mi, owner) {

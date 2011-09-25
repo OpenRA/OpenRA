@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 
 			start = int.Parse(d["start"].Value);
 			this.palette = palette;
-			
+
 			if ((d.ContainsKey("length") && d["length"].Value == "*") || (d.ContainsKey("end") && d["end"].Value == "*"))
 				length = sprites.Length - start;
 			else if (d.ContainsKey("length"))
@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 				length = int.Parse(d["end"].Value) - start;
 			else
 				length = 1;
-			
+
 			if (d.ContainsKey("x"))
 				int.TryParse(d["x"].Value, out Hotspot.X );
 			if (d.ContainsKey("y"))

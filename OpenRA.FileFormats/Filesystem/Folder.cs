@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -27,10 +27,10 @@ namespace OpenRA.FileFormats
 			this.priority = priority;
 			if (Directory.Exists(path))
 				Directory.Delete(path, true);
-			
+
 			Write(contents);
 		}
-		
+
 		public Folder(string path, int priority)
 		{
 			this.path = path;
@@ -50,7 +50,7 @@ namespace OpenRA.FileFormats
 			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
 				yield return PackageEntry.HashFilename( Path.GetFileName(filename) );
 		}
-		
+
 		public bool Exists(string filename)
 		{
 			return File.Exists(Path.Combine(path,filename));
@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 		{
 			get { return priority; }
 		}
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			if (!Directory.Exists(path))

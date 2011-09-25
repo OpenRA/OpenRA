@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,14 +21,14 @@ namespace OpenRA.Mods.RA
 		public readonly string InitialActivity = null;
 		public readonly int2 SpawnOffset = int2.Zero;
 		public readonly int Facing = 0;
-		
+
 		public object Create( ActorInitializer init ) { return new FreeActor(init.self, this); }
 	}
 
 	public class FreeActor
 	{
 		public FreeActor(Actor self, FreeActorInfo info)
-		{			
+		{
 			self.World.AddFrameEndTask(
 				w =>
 				{

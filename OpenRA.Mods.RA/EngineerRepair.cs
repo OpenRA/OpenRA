@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -39,14 +39,14 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "EngineerRepair"
 			        && order.TargetActor.GetDamageState() > DamageState.Undamaged) ? "Attack" : null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "EngineerRepair"
 			    && order.TargetActor.GetDamageState() > DamageState.Undamaged)
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
-								
+
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
 				self.QueueActivity(new RepairBuilding(order.TargetActor));

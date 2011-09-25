@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -39,12 +39,12 @@ namespace OpenRA.Editor
 			{ "gold02", new Pair<byte,byte>(1,1) },
 			{ "gold03", new Pair<byte,byte>(1,2) },
 			{ "gold04", new Pair<byte,byte>(1,3) },
-			
+
 			{ "gem01", new Pair<byte,byte>(2,0) },
 			{ "gem02", new Pair<byte,byte>(2,1) },
 			{ "gem03", new Pair<byte,byte>(2,2) },
 			{ "gem04", new Pair<byte,byte>(2,3) },
-			
+
 			// cnc tiberium
 			{ "ti1", new Pair<byte,byte>(1,0) },
 			{ "ti2", new Pair<byte,byte>(1,1) },
@@ -67,7 +67,7 @@ namespace OpenRA.Editor
 			{"brik","brik"},
 			{"fenc","fenc"},
 			{"wood","wood"},
-			
+
 			// Fields
 			{"v12","v12"},
 			{"v13","v13"},
@@ -76,12 +76,12 @@ namespace OpenRA.Editor
 			{"v16","v16"},
 			{"v17","v17"},
 			{"v18","v18"},
-			
+
 			// Crates
 //			{"wcrate","crate"},
 //			{"scrate","crate"},
 		};
-		
+
 		// todo: fix this -- will have bitrotted pretty badly.
 		static Dictionary<string,Pair<Color,Color>> namedColorMapping = new Dictionary<string, Pair<Color, Color>>()
 		{
@@ -96,13 +96,13 @@ namespace OpenRA.Editor
 			{"white",Pair.New(Color.FromArgb(255,255,255),Color.FromArgb(75,75,75))},
 			{"black",Pair.New(Color.FromArgb(80,80,80),Color.FromArgb(5,5,5))},
 		};
-				
+
 		int MapSize;
 		int ActorCount = 0;
 		Map Map = new Map();
 		List<string> Players = new List<string>();
 		Action<string> errorHandler;
-		
+
 		LegacyMapImporter(string filename, Action<string> errorHandler)
 		{
 			this.errorHandler = errorHandler;
@@ -116,10 +116,10 @@ namespace OpenRA.Editor
 		}
 
 		enum IniMapFormat { RedAlert = 3, /* otherwise, cnc (2 variants exist, we don't care to differentiate) */ };
-		
+
 		public void ConvertIniMap(string iniFile)
 		{
-			
+
 			var file = new IniFile(FileSystem.Open(iniFile));
 			var basic = file.GetSection("Basic");
 			var map = file.GetSection("Map");
@@ -137,12 +137,12 @@ namespace OpenRA.Editor
 			Map.MapSize.Y = MapSize;
 			Map.Bounds = Rectangle.FromLTRB(XOffset, YOffset, XOffset + Width, YOffset + Height);
 			Map.Selectable = true;
-			
+
 			Map.Smudges = Lazy.New(() => new List<SmudgeReference>());
 			Map.Actors = Lazy.New(() => new Dictionary<string, ActorReference>());
 			Map.MapResources = Lazy.New(() => new TileReference<byte, byte>[MapSize, MapSize]);
 			Map.MapTiles = Lazy.New(() => new TileReference<ushort, byte>[MapSize, MapSize]);
-			
+
 			if (legacyMapFormat == IniMapFormat.RedAlert)
 			{
 				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
@@ -155,22 +155,22 @@ namespace OpenRA.Editor
 				ReadCncOverlay(file);
 				ReadCncTrees(file);
 			}
-			
+
 			LoadActors(file, "STRUCTURES");
 			LoadActors(file, "UNITS");
 			LoadActors(file, "INFANTRY");
 			LoadSmudges(file, "SMUDGE");
-			
+
 			foreach (var p in Players)
 				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
-			
+
 			var wps = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
 					.Select(kv => Pair.New(int.Parse(kv.Key),
 						LocationFromMapOffset(int.Parse(kv.Value), MapSize)))
 					.ToArray();
-			
-			
+
+
 			// Add waypoint actors
 			foreach( var kv in wps )
 			{
@@ -179,7 +179,7 @@ namespace OpenRA.Editor
 				a.Add(new OwnerInit("Neutral"));
 				Map.Actors.Value.Add("spawn" + kv.First, a);
 			}
-			
+
 		}
 
 		static int2 LocationFromMapOffset(int offset, int mapSize)
@@ -243,7 +243,7 @@ namespace OpenRA.Editor
 
 			return ret;
 		}
-		
+
 		void UnpackRATileData(MemoryStream ms)
 		{
 			for (int i = 0; i < MapSize; i++)
@@ -274,10 +274,10 @@ namespace OpenRA.Editor
 
 					if (o != 255 && overlayActorMapping.ContainsKey(raOverlayNames[o]))
 						Map.Actors.Value.Add("Actor" + ActorCount++,
-							new ActorReference(overlayActorMapping[raOverlayNames[o]]) 
-							{ 
+							new ActorReference(overlayActorMapping[raOverlayNames[o]])
+							{
 								new LocationInit( new int2(i, j) ),
-								new OwnerInit( "Neutral" ) 
+								new OwnerInit( "Neutral" )
 							});
 				}
 		}
@@ -291,7 +291,7 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in terrain)
 			{
 				var loc = int.Parse(kv.Key);
-				Map.Actors.Value.Add("Actor" + ActorCount++, 
+				Map.Actors.Value.Add("Actor" + ActorCount++,
 					new ActorReference(kv.Value.ToLowerInvariant())
 					{
 						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
@@ -313,7 +313,7 @@ namespace OpenRA.Editor
 					Map.MapTiles.Value[i, j].index = ReadByte(ms);
 				}
 		}
-		
+
 		void ReadCncOverlay(IniFile file)
 		{
 			IniSection overlay = file.GetSection("OVERLAY", true);
@@ -332,7 +332,7 @@ namespace OpenRA.Editor
 				Map.MapResources.Value[cell.X, cell.Y] = new TileReference<byte, byte>(res.First, res.Second);
 
 				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
-					Map.Actors.Value.Add("Actor" + ActorCount++, 
+					Map.Actors.Value.Add("Actor" + ActorCount++,
 						new ActorReference(overlayActorMapping[kv.Value.ToLower()])
 						{
 							new LocationInit(cell),
@@ -340,7 +340,7 @@ namespace OpenRA.Editor
 						});
 			}
 		}
-		
+
 		void ReadCncTrees(IniFile file)
 		{
 			IniSection terrain = file.GetSection("TERRAIN", true);
@@ -401,7 +401,7 @@ namespace OpenRA.Editor
 				}
 			}
 		}
-		
+
 		void LoadSmudges(IniFile file, string section)
 		{
 			foreach (var s in file.GetSection(section, true))
@@ -412,14 +412,14 @@ namespace OpenRA.Editor
 				Map.Smudges.Value.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % MapSize, loc / MapSize), int.Parse(parts[2])));
 			}
 		}
-		
+
 		void LoadPlayer(IniFile file, string section, bool isRA)
-		{			
+		{
 			var c = section == "BadGuy" ? "red" :
 						isRA ? "blue" : "gold";
-			
+
 			var color = namedColorMapping[c];
-			
+
 			var pr = new PlayerReference
 			{
 				Name = section,
@@ -432,7 +432,7 @@ namespace OpenRA.Editor
                         (byte)(color.First.GetBrightness() * 255),
                         (byte)(color.Second.GetBrightness() * 255))
 			};
-			
+
 			var Neutral = new [] {"Neutral"};
 			foreach (var s in file.GetSection(section, true))
 			{
@@ -448,7 +448,7 @@ namespace OpenRA.Editor
 					break;
 				}
 			}
-			
+
 			Map.Players.Add(section, pr);
 		}
 

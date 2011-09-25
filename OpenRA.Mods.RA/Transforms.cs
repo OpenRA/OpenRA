@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly int Facing = 96;
 		public readonly string[] TransformSounds = {};
 		public readonly string[] NoTransformSounds = {};
-		
+
 		public virtual object Create(ActorInitializer init) { return new Transforms(init.self, this); }
 	}
 
@@ -34,19 +34,19 @@ namespace OpenRA.Mods.RA
 		Actor self;
 		TransformsInfo Info;
 		BuildingInfo bi;
-		
+
 		public Transforms(Actor self, TransformsInfo info)
 		{
 			this.self = self;
 			Info = info;
 			bi = Rules.Info[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "DeployTransform") ? "Move" : null;
 		}
-		
+
 		bool CanDeploy()
 		{
 			return (bi == null || self.World.CanPlaceBuilding(Info.IntoActor, bi, self.Location + Info.Offset, self));
@@ -76,14 +76,14 @@ namespace OpenRA.Mods.RA
 					return;
 				}
 				self.CancelActivity();
-				
+
 				if (self.HasTrait<IFacing>())
 					self.QueueActivity(new Turn(Info.Facing));
-				
+
 				var rb = self.TraitOrDefault<RenderBuilding>();
 				if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
 					self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
-				
+
 				self.QueueActivity(new Transform(self, Info.IntoActor) {Offset = Info.Offset, Facing = Info.Facing, Sounds = Info.TransformSounds});
 			}
 		}

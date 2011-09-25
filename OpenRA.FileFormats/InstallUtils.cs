@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -42,7 +42,7 @@ namespace OpenRA.FileFormats
 		{
 			if (!Directory.Exists(destPath))
 				Directory.CreateDirectory(destPath);
-			
+
 			if (!Directory.Exists(srcPath)) { onError("Cannot find "+package); return false; }
 			FileSystem.Mount(srcPath);
 			if (!FileSystem.Exists(package)) { onError("Cannot find "+package); return false; }
@@ -60,7 +60,7 @@ namespace OpenRA.FileFormats
 			}
 			return true;
 		}
-		
+
 		public static bool CopyFiles(string srcPath, string[] files, string destPath, Action<string> onProgress, Action<string> onError)
 		{
 			foreach (var file in files)
@@ -77,7 +77,7 @@ namespace OpenRA.FileFormats
 			}
 			return true;
 		}
-		
+
 		public static bool ExtractZip(string zipFile, string dest, Action<string> onProgress, Action<string> onError)
 		{
 			if (!File.Exists(zipFile))
@@ -85,7 +85,7 @@ namespace OpenRA.FileFormats
 				onError("Invalid path: "+zipFile);
 				return false;
 			}
-			
+
 			List<string> extracted = new List<string>();
 			try
 			{
@@ -96,26 +96,26 @@ namespace OpenRA.FileFormats
 			{
 				foreach(var f in extracted)
 					File.Delete(f);
-				
+
 				onError("Invalid archive");
 				return false;
 			}
 			return true;
 		}
-		
+
 		// TODO: this belongs in FileSystem/ZipFile
 		static void ExtractZip(this ZipInputStream z, string destPath, List<string> extracted, Action<string> onProgress)
 		{
 			foreach (var entry in z.GetEntries())
 			{
 				if (!entry.IsFile) continue;
-				
+
 				onProgress(entry.Name);
-				
+
 				Directory.CreateDirectory(Path.Combine(destPath, Path.GetDirectoryName(entry.Name)));
 				var path = Path.Combine(destPath, entry.Name);
 				extracted.Add(path);
-				
+
 				using (var f = File.Create(path))
 				{
 					int bufSize = 2048;
@@ -124,7 +124,7 @@ namespace OpenRA.FileFormats
 					f.Write(buf, 0, bufSize);
 				}
 			}
-			
+
 			z.Close();
 		}
 	}

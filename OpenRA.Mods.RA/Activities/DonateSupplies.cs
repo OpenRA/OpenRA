@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Activities
         Actor target;
         int payload;
 
-        public DonateSupplies(Actor target, int payload) 
-        { 
+        public DonateSupplies(Actor target, int payload)
+        {
             this.target = target;
             this.payload = payload;
         }
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
             if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
             if (!target.OccupiesSpace.OccupiedCells().Any(x => x.First == self.Location))
                 return NextActivity;
-          
+
             target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
             self.Destroy();
 			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)

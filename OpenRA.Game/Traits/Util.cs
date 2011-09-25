@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -81,7 +81,7 @@ namespace OpenRA.Traits
 				(cosAngle * v.X + sinAngle * v.Y),
 				ecc * (cosAngle * v.Y - sinAngle * v.X));
 		}
-			
+
 		public static int2 CenterOfCell(int2 loc)
 		{
 			return new int2( Game.CellSize / 2, Game.CellSize / 2 ) + Game.CellSize * loc;
@@ -135,7 +135,7 @@ namespace OpenRA.Traits
                 items.Remove(t);
             }
         }
-		
+
 		static IEnumerable<int2> Neighbours(int2 c, bool allowDiagonal)
 		{
 			yield return c;
@@ -174,7 +174,7 @@ namespace OpenRA.Traits
 		}
 
 		static int2[] fvecs =
-		{		
+		{
 			new int2( 0, -1331 ),
 			new int2( -199, -1305 ),
 			new int2( -391, -1229 ),
@@ -208,9 +208,9 @@ namespace OpenRA.Traits
 			new int2( 391, -1229 ),
 			new int2( 199, -1305 )
 		};
-		
-		
-		public static readonly int2[] SubPxVector = 
+
+
+		public static readonly int2[] SubPxVector =
 		{
 			new int2( 0, 1024 ),
 			new int2( 25, 1023 ),

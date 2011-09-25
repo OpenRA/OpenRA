@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -37,14 +37,14 @@ namespace OpenRA
 			MiniYamlNode ret;
 			if (!widgets.TryGetValue(w, out ret))
 				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
-			
+
 			return LoadWidget( args, parent, ret );
 		}
 
 		public Widget LoadWidget( WidgetArgs args, Widget parent, MiniYamlNode node)
 		{
 			var widget = NewWidget(node.Key, args);
-			
+
 			if (parent != null)
 				parent.AddChild( widget );
 

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -36,15 +36,15 @@ namespace OpenRA.GameRules
 		public VoiceInfo( MiniYaml y )
 		{
 			FieldLoader.Load( this, y );
-			Variants = Load(y, "Variants"); 
+			Variants = Load(y, "Variants");
 			Voices = Load(y, "Voices");
-			
+
 			if (!Voices.ContainsKey("Attack"))
 				Voices.Add("Attack", Voices["Move"]);
 
 			if (!Voices.ContainsKey("AttackMove"))
 				Voices.Add("AttackMove", Voices["Move"]);
-			
+
 			Pools = Lazy.New(() => Voices.ToDictionary( a => a.Key, a => new VoicePool(a.Value) ));
 		}
 	}

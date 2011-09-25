@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -35,13 +35,13 @@ namespace OpenRA.Mods.RA
 			else
 				return self.OccupiesSpace.OccupiedCells().Select(c => c.First);
 		}
-		
+
 		public Color RadarSignatureColor(Actor self)
 		{
 			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 			if (mod != null)
 				return mod.RadarColorOverride(self);
-			
+
 			return self.Owner.ColorRamp.GetColor(0);
 		}
 	}

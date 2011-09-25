@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -32,7 +32,7 @@ namespace OpenRA.FileFormats
 			uint signature = reader.ReadUInt32();
 			if (signature != 0x8C655D13)
 				throw new InvalidDataException("Not an Installshield package");
-			
+
 			reader.ReadBytes(8);
 			/*var FileCount = */reader.ReadUInt16();
 			reader.ReadBytes(4);
@@ -41,7 +41,7 @@ namespace OpenRA.FileFormats
 			var TOCAddress = reader.ReadInt32();
 			reader.ReadBytes(4);
 			var DirCount = reader.ReadUInt16();
-			
+
 			// Parse the directory list
 			s.Seek(TOCAddress, SeekOrigin.Begin);
 			BinaryReader TOCreader = new BinaryReader(s);
@@ -56,15 +56,15 @@ namespace OpenRA.FileFormats
 			var ChunkSize = reader.ReadUInt16();
 			var NameLength = reader.ReadUInt16();
 			reader.ReadChars(NameLength); //var DirName = new String(reader.ReadChars(NameLength));
-			
+
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 6);
-			
+
 			// Parse files
 			for (var i = 0; i < FileCount; i++)
 				ParseFile(reader);
 		}
-		
+
 		uint AccumulatedData = 0;
 		void ParseFile(BinaryReader reader)
 		{
@@ -79,11 +79,11 @@ namespace OpenRA.FileFormats
 			var hash = PackageEntry.HashFilename(FileName);
 			index.Add(hash, new PackageEntry(hash,AccumulatedData, CompressedSize));
 			AccumulatedData += CompressedSize;
-			
+
 			// Skip to the end of the chunk
 			reader.ReadBytes(ChunkSize - NameLength - 30);
 		}
-		
+
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;
@@ -93,7 +93,7 @@ namespace OpenRA.FileFormats
 			s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
 			byte[] data = new byte[ e.Length ];
 			s.Read( data, 0, (int)e.Length );
-			
+
 			return new MemoryStream(Blast.Decompress(data));
 		}
 
@@ -106,7 +106,7 @@ namespace OpenRA.FileFormats
 		{
 			return index.Keys;
 		}
-		
+
 		public bool Exists(string filename)
 		{
 			return index.ContainsKey(PackageEntry.HashFilename(filename));
@@ -117,7 +117,7 @@ namespace OpenRA.FileFormats
 		{
 			get { return 2000 + priority; }
 		}
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			throw new NotImplementedException("Cannot save InstallShieldPackages.");

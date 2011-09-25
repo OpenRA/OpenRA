@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new Teleport(chronoshiftOrigin));
 			}
 		}
-		
+
 		// Can't be used in synced code, except with ignoreVis.
         public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation, bool ignoreVis)
         {
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;
 			chronoshiftReturnTicks = duration;
-			
+
 			// Kill cargo
 			if (killCargo && self.HasTrait<Cargo>())
 			{
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA
 			// Set up the teleport
 			self.CancelActivity();
 			self.QueueActivity(new Teleport(targetLocation));
-			
+
 			return true;
 		}
 	}

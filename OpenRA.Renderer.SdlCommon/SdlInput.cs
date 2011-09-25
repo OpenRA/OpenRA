@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
 * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
-* This file is part of OpenRA, which is free software. It is made 
+* This file is part of OpenRA, which is free software. It is made
 * available to you under the terms of the GNU General Public License
 * as published by the Free Software Foundation. For more information,
 * see COPYING.
@@ -20,7 +20,7 @@ namespace OpenRA.Renderer.SdlCommon
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
 		IntPtr surface;
-		
+
 		public SdlInput( IntPtr surface ) { this.surface = surface; }
 
 		MouseButton MakeButton( byte b )
@@ -40,7 +40,7 @@ namespace OpenRA.Renderer.SdlCommon
 				 | ( ( raw & Sdl.KMOD_META ) != 0 ? Modifiers.Meta : 0 )
 				 | ( ( raw & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
 		}
-		
+
 		public void PumpInput( IInputHandler inputHandler )
 		{
 			Game.HasInputFocus = 0 != ( Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS );

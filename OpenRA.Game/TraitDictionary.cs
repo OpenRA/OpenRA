@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA
 		{
 			return traits.GetOrAdd( t, doCreateTraitContainer );
 		}
-		
+
 		public void PrintReport()
 		{
 			Log.AddChannel("traitreport", "traitreport.log");
@@ -97,7 +97,7 @@ namespace OpenRA
 		{
 			void Add( Actor actor, object trait );
 			void RemoveActor( uint actor );
-				
+
 			int Queries { get; }
 		}
 
@@ -106,7 +106,7 @@ namespace OpenRA
 			List<Actor> actors = new List<Actor>();
 			List<T> traits = new List<T>();
 			int queries;
-				
+
 			public int Queries { get { return queries; } }
 
 			public void Add( Actor actor, object trait )

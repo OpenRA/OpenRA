@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 				{
 					self.World.CancelInputMode();
 				}
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud", self.CenterLocation);
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 		{
 			return (order.OrderString == "ChronoshiftDeploy" && chargeTick <= 0) ? "Move" : null;
 		}
-		
+
 		// Display 5 pips indicating the current charge status
 		public IEnumerable<PipType> GetPips(Actor self)
 		{

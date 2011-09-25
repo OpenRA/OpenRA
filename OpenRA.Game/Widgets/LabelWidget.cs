@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,7 +29,7 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
-		
+
 		public LabelWidget()
 			: base()
 		{
@@ -59,16 +59,16 @@ namespace OpenRA.Widgets
 			var text = GetText();
 			if (text == null)
 				return;
-			
+
 			int2 textSize = font.Measure(text);
 			int2 position = RenderOrigin;
 
 			if (VAlign == TextVAlign.Middle)
 				position += new int2(0, (Bounds.Height - textSize.Y)/2);
-			
+
 			if (VAlign == TextVAlign.Bottom)
 				position += new int2(0, Bounds.Height - textSize.Y);
-		
+
 			if (Align == TextAlign.Center)
 				position += new int2((Bounds.Width - textSize.X)/2, 0);
 

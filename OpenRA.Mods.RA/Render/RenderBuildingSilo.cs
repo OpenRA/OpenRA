@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Render
 	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
 		PlayerResources playerResources;
-		
+
 		public RenderBuildingSilo( ActorInitializer init, RenderBuildingInfo info )
 			: base(init, info)
 		{
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 					? (49 * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 		}
-		
+
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();

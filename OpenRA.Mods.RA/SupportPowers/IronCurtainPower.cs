@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectTarget(order, manager, this);
 		}
-		
+
 		public override void Activate(Actor self, Order order)
 		{
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
@@ -52,10 +52,10 @@ namespace OpenRA.Mods.RA
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
-			
+
 			return units.Distinct().Where(a => a.HasTrait<IronCurtainable>());
 		}
-		
+
 		class SelectTarget : IOrderGenerator
 		{
 			readonly IronCurtainPower power;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
-			
+
 			public SelectTarget(string order, SupportPowerManager manager, IronCurtainPower power)
 			{
 				this.manager = manager;
@@ -75,11 +75,11 @@ namespace OpenRA.Mods.RA
 
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
-				world.CancelInputMode();				
+				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
 					yield return new Order(order, manager.self, false) { TargetLocation = xy };
 			}
-			
+
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 		Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
 
 		public Dictionary<string, SpriteFont> Fonts;
-		
+
 		public Renderer()
 		{
 			TempBufferSize = Game.Settings.Graphics.BatchSize;
@@ -65,12 +65,12 @@ namespace OpenRA.Graphics
 			for( int i = 0 ; i < TempBufferCount ; i++ )
 				tempBuffers.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
 		}
-		
+
 		public void InitializeFonts(Manifest m)
 		{
 			Fonts = m.Fonts.ToDictionary(x => x.Key, x => new SpriteFont(x.Value.First, x.Value.Second));
 		}
-		
+
 		internal IGraphicsDevice Device { get { return device; } }
 
 		public void BeginFrame(float2 scroll, float zoom)
@@ -112,7 +112,7 @@ namespace OpenRA.Graphics
 			device.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
-		
+
 		public void Flush()
 		{
 			CurrentBatchRenderer = null;
@@ -144,7 +144,7 @@ namespace OpenRA.Graphics
 		static Size GetResolution(WindowMode windowmode)
 		{
 			var size = (windowmode == WindowMode.Windowed)
-				? Game.Settings.Graphics.WindowedSize 
+				? Game.Settings.Graphics.WindowedSize
 				: Game.Settings.Graphics.FullscreenSize;
 			return new Size(size.X, size.Y);
 		}
@@ -156,7 +156,7 @@ namespace OpenRA.Graphics
 				var factory = (IDeviceFactory) r.Type.GetConstructor( Type.EmptyTypes ).Invoke( null );
 				return factory.Create( new Size( width, height ), window );
 			}
-			
+
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
 		}
 

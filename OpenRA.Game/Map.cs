@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA
 	{
 		[FieldLoader.Ignore] protected IFolder Container;
 		public string Path {get; protected set;}
-		
+
 		// Yaml map data
 		public string Uid { get; protected set; }
 		public int MapFormat;
@@ -37,14 +37,14 @@ namespace OpenRA
 		public string Description;
 		public string Author;
 		public string Tileset;
-		
+
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
 		public IEnumerable<int2> SpawnPoints { get { return Actors.Value.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
-		
+
 		public Rectangle Bounds;
-				
+
 		// Yaml map data
 		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
@@ -73,12 +73,12 @@ namespace OpenRA
 		{
 			// Do nothing; not a valid map (editor hack)
 		}
-		
+
 		public static Map FromTileset(string tileset)
 		{
 			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
 			var tileRef = new TileReference<ushort,byte> { type = tile.Key, index = (byte)0 };
-			
+
 			Map map = new Map()
 			{
 				Title = "Name your map here",
@@ -91,7 +91,7 @@ namespace OpenRA
 				Actors = Lazy.New(() => new Dictionary<string, ActorReference>()),
 				Smudges = Lazy.New(() => new List<SmudgeReference>())
 			};
-			
+
 			return map;
 		}
 
@@ -102,7 +102,7 @@ namespace OpenRA
 			public int2 Location = int2.Zero;
 			public string Owner = null;
 		}
-		
+
 		void AssertExists(string filename)
 		{
 			using(var s = Container.GetContent(filename))
@@ -121,7 +121,7 @@ namespace OpenRA
 			var yaml = new MiniYaml( null, MiniYaml.FromStream(Container.GetContent("map.yaml")) );
 			FieldLoader.Load(this, yaml);
             Uid = ComputeHash();
-						
+
 			// 'Simple' metadata
 			FieldLoader.Load( this, yaml );
 
@@ -130,25 +130,25 @@ namespace OpenRA
 			// Use release-20110511 to convert older maps to format 5
 			if (MapFormat < 5)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
-			
+
 			// Load players
 			foreach (var kv in yaml.NodesDict["Players"].NodesDict)
 			{
 				var player = new PlayerReference(kv.Value);
 				Players.Add(player.Name, player);
 			}
-			
+
 			Actors = Lazy.New(() =>
 			{
 				var ret =  new Dictionary<string, ActorReference>();
 				// Load actors
 				foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
 					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
-				
+
 				// Add waypoint actors
 				return ret;
 			});
-						
+
 			// Smudges
 			Smudges = Lazy.New(() =>
 			{
@@ -159,10 +159,10 @@ namespace OpenRA
 					string[] loc = vals[1].Split(',');
 					ret.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), int.Parse(vals[2])));
 				}
-				
+
 				return ret;
 			});
-			
+
 
 			// Rules
 			Rules = yaml.NodesDict["Rules"].Nodes;
@@ -172,20 +172,20 @@ namespace OpenRA
 
 			// Weapons
 			Weapons = (yaml.NodesDict.ContainsKey("Weapons")) ? yaml.NodesDict["Weapons"].Nodes : new List<MiniYamlNode>();
-			
+
 			// Voices
 			Voices = (yaml.NodesDict.ContainsKey("Voices")) ? yaml.NodesDict["Voices"].Nodes : new List<MiniYamlNode>();
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];
-			
+
 			MapTiles = Lazy.New(() => LoadMapTiles());
 			MapResources = Lazy.New(() => LoadResourceTiles());
 		}
 
 		public void Save(string toPath)
-		{			
+		{
 			MapFormat = 5;
-			
+
 			var root = new List<MiniYamlNode>();
 			var fields = new string[]
 			{
@@ -201,7 +201,7 @@ namespace OpenRA
 				"UseAsShellmap",
 				"Type",
 			};
-			
+
 			foreach (var field in fields)
 			{
 				var f = this.GetType().GetField(field);
@@ -224,22 +224,22 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 			root.Add(new MiniYamlNode("Voices", null, Voices));
-			
+
 			Dictionary<string, byte[]> entries = new Dictionary<string, byte[]>();
 			entries.Add("map.bin", SaveBinaryData());
 			var s = root.WriteToString();
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
-			
+
 			// Saving the map to a new location
 			if (toPath != Path)
 			{
 				Path = toPath;
-				
+
 				// Create a new map package
 				// TODO: Add other files (resources, rules) to the entries list
 				Container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
 			}
-			
+
 			// Update existing package
 			Container.Write(entries);
 		}
@@ -259,7 +259,7 @@ namespace OpenRA
 
 			return ret;
 		}
-		
+
 		public TileReference<ushort, byte>[,] LoadMapTiles()
 		{
 			var tiles = new TileReference<ushort, byte>[MapSize.X, MapSize.Y];
@@ -290,7 +290,7 @@ namespace OpenRA
 			}
 			return tiles;
 		}
-		
+
 		public TileReference<byte, byte>[,] LoadResourceTiles()
 		{
 			var resources = new TileReference<byte, byte>[MapSize.X, MapSize.Y];
@@ -306,7 +306,7 @@ namespace OpenRA
 
 				if (width != MapSize.X || height != MapSize.Y)
 					throw new InvalidDataException("Invalid tile data");
-				
+
 				// Skip past tile data
 				for (var i = 0; i < 3*MapSize.X*MapSize.Y; i++)
 					ReadByte(dataStream);
@@ -347,7 +347,7 @@ namespace OpenRA
 						writer.Write(PickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].index);
 					}
 
-				// Resource data	
+				// Resource data
 				for (int i = 0; i < MapSize.X; i++)
 					for (int j = 0; j < MapSize.Y; j++)
 					{
@@ -387,12 +387,12 @@ namespace OpenRA
 			MapResources = Lazy.New(() => ResizeArray(oldMapResources, oldMapResources[0, 0], width, height));
 			MapSize = new int2(width, height);
 		}
-		
+
 		public void ResizeCordon(int left, int top, int right, int bottom)
 		{
 			Bounds = Rectangle.FromLTRB(left, top, right, bottom);
 		}
-		
+
 		string ComputeHash()
         {
             // UID is calculated by taking an SHA1 of the yaml and binary data

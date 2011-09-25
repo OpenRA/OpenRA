@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,46 +23,46 @@ namespace OpenRA.Mods.RA
 	{
 		public override object Create (ActorInitializer init) { return new SpyToolTip(init.self, this); }
 	}
-	
+
 	class SpyToolTip : IToolTip
 	{
 		Actor self;
 		TooltipInfo Info;
 		Spy spy;
-		
+
 		public string Name()
-		{ 
+		{
 			if (spy.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					return "{0} ({1})".F(Info.Name, spy.disguisedAsName);
 				return spy.disguisedAsName;
 			}
-			return Info.Name; 
+			return Info.Name;
 		}
-		
+
 		public Player Owner()
-		{ 
+		{
 			if (spy.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
 					return self.Owner;
 				return spy.disguisedAsPlayer;
 			}
-			return self.Owner; 
+			return self.Owner;
 		}
-			
+
 		public Stance Stance()
-		{ 
+		{
 			if (spy.Disguised)
 			{
 				if (self.Owner == self.World.LocalPlayer)
-					return self.World.LocalPlayer.Stances[self.Owner]; 
+					return self.World.LocalPlayer.Stances[self.Owner];
 				return self.World.LocalPlayer.Stances[spy.disguisedAsPlayer];
 			}
-			return self.World.LocalPlayer.Stances[self.Owner]; 
+			return self.World.LocalPlayer.Stances[self.Owner];
 		}
-		
+
 		public SpyToolTip( Actor self, TooltipInfo info )
 		{
 			this.self = self;
@@ -70,22 +70,22 @@ namespace OpenRA.Mods.RA
 			spy = self.Trait<Spy>();
 		}
 	}
-	
-	
+
+
 	class SpyInfo : TraitInfo<Spy> { }
 
 	class Spy : IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier
 	{
 		public Player disguisedAsPlayer;
 		public string disguisedAsSprite, disguisedAsName;
-		
+
 		public bool Disguised {  get { return disguisedAsPlayer != null; }	}
-		
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get 
-			{ 
-				yield return new UnitTraitOrderTargeter<IAcceptSpy>( "SpyInfiltrate", 5, "enter", true, false ); 
+			get
+			{
+				yield return new UnitTraitOrderTargeter<IAcceptSpy>( "SpyInfiltrate", 5, "enter", true, false );
 				yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 5, "ability", true, true );
 			}
 		}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "SpyInfiltrate")
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
 				self.QueueActivity(new Infiltrate(order.TargetActor));
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Disguise")
 			{
 				var target = order.TargetActor == self ? null : order.TargetActor;
-				
+
 				if (target != null && target.IsInWorld)
 				{
 					var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA
 				}
 			}
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Disguise" ? "Attack" : null;
@@ -136,14 +136,14 @@ namespace OpenRA.Mods.RA
 
 		public Color RadarColorOverride(Actor self)
 		{
-			if (!Disguised || self.World.LocalPlayer == null || 
+			if (!Disguised || self.World.LocalPlayer == null ||
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return self.Owner.ColorRamp.GetColor(0);
 
 			return disguisedAsPlayer.ColorRamp.GetColor(0);
 		}
 	}
-	
+
 	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
 	class IgnoresDisguise {}
 }

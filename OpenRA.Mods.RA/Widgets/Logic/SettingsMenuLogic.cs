@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,34 +24,34 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			bg = Widget.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.GetWidget<ContainerWidget>("TAB_CONTAINER");
-			
+
 			//Tabs
 			tabs.GetWidget<ButtonWidget>("GENERAL").OnClick = () => FlipToTab("GENERAL_PANE");
 			tabs.GetWidget<ButtonWidget>("AUDIO").OnClick = () => FlipToTab("AUDIO_PANE");
 			tabs.GetWidget<ButtonWidget>("DISPLAY").OnClick = () => FlipToTab("DISPLAY_PANE");
 			tabs.GetWidget<ButtonWidget>("DEBUG").OnClick = () => FlipToTab("DEBUG_PANE");
 			FlipToTab("GENERAL_PANE");
-			
+
 			//General
 			var general = bg.GetWidget("GENERAL_PANE");
-			
+
 			var name = general.GetWidget<TextFieldWidget>("NAME");
 			name.Text = Game.Settings.Player.Name;
 			name.OnLoseFocus = () =>
 			{
 				name.Text = name.Text.Trim();
-		
+
 				if (name.Text.Length == 0)
 					name.Text = Game.Settings.Player.Name;
 				else
 					Game.Settings.Player.Name = name.Text;
 			};
             name.OnEnterKey = () => { name.LoseFocus(); return true; };
-			
+
 			var edgescrollCheckbox = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
 			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
 			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
-			
+
             var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
 			edgeScrollSlider.Value = Game.Settings.Game.ViewportEdgeScrollStep;
             edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
@@ -59,18 +59,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
 			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
-	
+
 			var teamchatCheckbox = general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE");
 			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
 			teamchatCheckbox.OnClick = () => Game.Settings.Game.TeamChatToggle ^= true;
-			
+
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
-			
+
 			var soundslider = audio.GetWidget<SliderWidget>("SOUND_VOLUME");
 			soundslider.OnChange += x => Sound.SoundVolume = x;
 			soundslider.Value = Sound.SoundVolume;
-			
+
 			var musicslider = audio.GetWidget<SliderWidget>("MUSIC_VOLUME");
 			musicslider.OnChange += x => Sound.MusicVolume = x;
 			musicslider.Value = Sound.MusicVolume;

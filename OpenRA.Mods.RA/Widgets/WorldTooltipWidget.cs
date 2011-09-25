@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -34,19 +34,19 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			if (!world.Map.IsInMap(cell)) return;
-			
+
 			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(cell))
 			{
 				var utext = "Unexplored Terrain";
 				var usz = Game.Renderer.Fonts["Bold"].Measure(utext) + new int2(20, 24);
-				
+
 				WidgetUtils.DrawPanel("dialog4", Rectangle.FromLTRB(
 					Viewport.LastMousePos.X + 20, Viewport.LastMousePos.Y + 20,
 					Viewport.LastMousePos.X + usz.X + 20, Viewport.LastMousePos.Y + usz.Y + 20));
-	
+
 				Game.Renderer.Fonts["Bold"].DrawText(utext,
 					new float2(Viewport.LastMousePos.X + 30, Viewport.LastMousePos.Y + 30), Color.White);
-					
+
 				return;
 			}
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var itt = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
 			if (itt == null)
 				return;
-			
+
 			var owner = itt.Owner();
 			var nameText = itt.Name();
 			var ownerText = !owner.NonCombatant ? owner.PlayerName : "";
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				Game.Renderer.Fonts["Regular"].DrawText(ownerText,
 					new float2(Viewport.LastMousePos.X + 65, Viewport.LastMousePos.Y + 50), actor.Owner.ColorRamp.GetColor(0));
-				
+
 				Game.Renderer.Fonts["Regular"].DrawText(stanceText,
 					new float2(Viewport.LastMousePos.X + 65 + ownerSize.X, Viewport.LastMousePos.Y + 50), Color.White);
 

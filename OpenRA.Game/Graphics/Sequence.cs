@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			srcOverride = info.Value;
 			Name = name;
 			var d = info.NodesDict;
-			
+
 			sprites = Game.modData.SpriteLoader.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
 			start = int.Parse(d["Start"].Value);
 
@@ -54,27 +54,27 @@ namespace OpenRA.Graphics
 			else
 				tick = 40;
 		}
-		
+
 		public MiniYaml Save()
 		{
 			var root = new List<MiniYamlNode>();
-			
+
 			root.Add(new MiniYamlNode("Start", start.ToString()));
-			
+
 			if (length > 1 && (start != 0 || length != sprites.Length - start))
 				root.Add(new MiniYamlNode("Length", length.ToString()));
 			else if (length > 1 && length == sprites.Length - start)
 				root.Add(new MiniYamlNode("Length", "*"));
-			
+
 			if (facings > 1)
 				root.Add(new MiniYamlNode("Facings", facings.ToString()));
-			
+
 			if (tick != 40)
-				root.Add(new MiniYamlNode("Tick", tick.ToString()));		
-			
+				root.Add(new MiniYamlNode("Tick", tick.ToString()));
+
 			return new MiniYaml(srcOverride, root);
 		}
-		
+
 		public Sprite GetSprite( int frame )
 		{
 			return GetSprite( frame, 0 );

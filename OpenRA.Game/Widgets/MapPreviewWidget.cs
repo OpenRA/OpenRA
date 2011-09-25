@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 		public Action<MouseInput> OnMouseDown = _ => {};
 
 		Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
-		
+
 		public MapPreviewWidget() : base() { }
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
@@ -47,7 +47,7 @@ namespace OpenRA.Widgets
 		{
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));
 		}
-		
+
 		Sheet mapChooserSheet;
 		Sprite mapChooserSprite;
 		Map lastMap;
@@ -58,7 +58,7 @@ namespace OpenRA.Widgets
 		{
 			var map = Map();
 			if( map == null ) return;
-			
+
 			if (lastMap != map)
 			{
 				lastMap = map;
@@ -70,7 +70,7 @@ namespace OpenRA.Widgets
 
 				mapChooserSheet.Texture.SetData( preview );
 				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Bounds.Width, map.Bounds.Height ), TextureChannel.Alpha );
-				
+
 				// Update map rect
 				PreviewScale = Math.Min(RenderBounds.Width * 1.0f / map.Bounds.Width, RenderBounds.Height * 1.0f / map.Bounds.Height);
 				var size = Math.Max(map.Bounds.Width, map.Bounds.Height);
@@ -94,7 +94,7 @@ namespace OpenRA.Widgets
 
 				if (owned)
 					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
-				
+
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
 			}
 		}

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -28,12 +28,12 @@ namespace OpenRA.Mods.RA
 	class C4Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly C4DemolitionInfo Info;
-		
+
 		public C4Demolition(C4DemolitionInfo info)
 		{
 			Info = info;
 		}
-		
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new UnitTraitOrderTargeter<Building>( "C4", 6, "c4", true, false ); }
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "C4")
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-				
+
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(mobile.MoveTo(self.Location, 0));
 			}
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "C4") ? "Attack" : null;

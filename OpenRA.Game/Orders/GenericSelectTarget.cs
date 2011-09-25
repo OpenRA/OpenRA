@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,10 +30,10 @@ namespace OpenRA.Orders
 			expectedButton = button;
 		}
 
-		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor) 
+		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
 			: this(subjects, order, cursor, MouseButton.Left)
 		{
-			
+
 		}
 
 		public GenericSelectTarget(Actor subject, string order, string cursor)

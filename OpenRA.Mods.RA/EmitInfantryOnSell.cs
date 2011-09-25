@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -34,13 +34,13 @@ namespace OpenRA.Mods.RA
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
 			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
-			
+
 			var health = self.TraitOrDefault<Health>();
 			var dudesValue = info.ValuePercent * cost;
 			if (health != null)
 				dudesValue = dudesValue*health.HP / health.MaxHP;
 			dudesValue /= 100;
-			
+
 			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = Rules.Info[a].Traits.Get<ValuedInfo>().Cost }).ToArray();
 
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 				eligibleLocations.Remove(loc);
 				dudesValue -= at.Cost;
 
-				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary                                             
+				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
 				{
 					new LocationInit( loc ),
 					new OwnerInit( self.Owner ),

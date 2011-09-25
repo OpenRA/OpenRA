@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -19,13 +19,13 @@ namespace OpenRA.Mods.RA
 	{
 		public LevelUpCrateAction(Actor self, LevelUpCrateActionInfo info)
 			: base(self,info) {}
-		
+
 		public override int GetSelectionShares(Actor collector)
 		{
 			var ge = collector.TraitOrDefault<GainsExperience>();
 			return ge != null && ge.Level < ge.MaxLevel ? info.SelectionShares : 0;
 		}
-		
+
 		public override void Activate(Actor collector)
 		{
 			collector.World.AddFrameEndTask(w =>

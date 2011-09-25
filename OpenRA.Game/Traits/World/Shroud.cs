@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 	{
 		Map map;
 		World world;
-		
+
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		Rectangle? exploredBounds;
@@ -34,12 +34,12 @@ namespace OpenRA.Traits
 			get { return disabled || world.LocalPlayer == null; }
 			set { disabled = value; Dirty(); }
 		}
-		
+
 		public Rectangle? Bounds
 		{
 			get { return Disabled ? null : exploredBounds; }
 		}
-		
+
 		public event Action Dirty = () => { };
 
 		public Shroud(World world)
@@ -76,8 +76,8 @@ namespace OpenRA.Traits
 		{
 			if (!a.HasTrait<RevealsShroud>())
 				return;
-						
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
+
+			if (a.Owner == null || a.Owner.World.LocalPlayer == null
 			    || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
 			if (vis.ContainsKey(a))
@@ -111,12 +111,12 @@ namespace OpenRA.Traits
 			if (!Disabled)
 				Dirty();
 		}
-		
+
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
 		{
 			if (oldStance == newStance)
 				return;
-			
+
 			// No longer our ally; remove unit vis
 			if (oldStance == Stance.Ally)
 			{
@@ -152,14 +152,14 @@ namespace OpenRA.Traits
 					--visibleCells[q.X, q.Y];
 
 			vis.Remove(a);
-			
+
 			if (!Disabled)
 				Dirty();
 		}
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null 
+			if (a.Owner == null || a.Owner.World.LocalPlayer == null
 			    || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
 			RemoveActor(a); AddActor(a);
@@ -176,7 +176,7 @@ namespace OpenRA.Traits
 			if (!Disabled)
 				Dirty();
 		}
-		
+
 		public void ExploreAll(World world)
 		{
 			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
@@ -197,16 +197,16 @@ namespace OpenRA.Traits
 			if (!Disabled)
 				Dirty();
 		}
-		
+
 		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
 		public bool IsExplored(int x, int y)
 		{
 			if (!map.IsInMap(x, y))
 				return false;
-			
+
 			if (Disabled)
 				return true;
-			
+
 			return exploredCells[x,y];
 		}
 
@@ -215,7 +215,7 @@ namespace OpenRA.Traits
 		{
 			if (Disabled)
 				return true;
-			
+
 			// Visibility is allowed to extend beyond the map cordon so that
 			// the fog tiles are not visible at the edge of the world
 			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
@@ -223,13 +223,13 @@ namespace OpenRA.Traits
 
 			return visibleCells[x,y] != 0;
 		}
-		
+
 		// Actors are hidden under shroud, but not under fog by default
 		public bool IsVisible(Actor a)
 		{
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
-			
+
 			return Disabled || a.Owner == a.World.LocalPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 	}

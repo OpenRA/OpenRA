@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,23 +21,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
-			
+
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");
-			
+
 			var sell = moneybin.GetWidget<OrderButtonWidget>("SELL");
 			if (sell != null)
 			{
 				sell.Pressed = () => world.OrderGenerator is SellOrderGenerator;
 				sell.OnMouseDown = mi => world.ToggleInputMode<SellOrderGenerator>();
 			}
-			
+
 			var powerdown = moneybin.GetWidget<OrderButtonWidget>("POWER_DOWN");
 			if (powerdown != null)
 			{
 				powerdown.Pressed = () => world.OrderGenerator is PowerDownOrderGenerator;
 				powerdown.OnMouseDown = mi => world.ToggleInputMode<PowerDownOrderGenerator>();
 			}
-			
+
 			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
 			if (repair != null)
 			{

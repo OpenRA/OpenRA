@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,7 +20,7 @@ namespace OpenRA.Network
 	{
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
-			/* todo: this is still a hack. 
+			/* todo: this is still a hack.
 			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,..*/
 			return world.Players.FirstOrDefault(
 				p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));
@@ -97,15 +97,15 @@ namespace OpenRA.Network
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map);
 						break;
 					}
-				
+
 				case "HandshakeRequest":
 				{
 					var request = HandshakeRequest.Deserialize(order.TargetString);
-				
+
 					// Check that the map exists on the client
 					if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
 						throw new InvalidOperationException("Missing map {0}".F(request.Map));
-					
+
 					var info = new Session.Client()
 					{
 						Name = Game.Settings.Player.Name,
@@ -115,7 +115,7 @@ namespace OpenRA.Network
 						Team = 0,
 						State = Session.ClientState.NotReady
 					};
-				
+
 					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray();
 					var response = new HandshakeResponse()
 					{
@@ -123,7 +123,7 @@ namespace OpenRA.Network
 						Mods = localMods,
 						Password = "Foo"
 					};
-				
+
 					orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
 					break;
 				}
@@ -157,7 +157,7 @@ namespace OpenRA.Network
 
 						Game.Debug("{0} has set diplomatic stance vs {1} to {2}".F(
 							order.Player.PlayerName, targetPlayer.PlayerName, newStance));
-				
+
 						// automatically declare war reciprocally
 						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
 						{

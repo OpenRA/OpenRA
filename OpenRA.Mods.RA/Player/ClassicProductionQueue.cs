@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,15 +24,15 @@ namespace OpenRA.Mods.RA
 	{
 		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
 			: base(self, self, info) {}
-		
+
 		[Sync] bool isActive = false;
-		
+
 		public override void Tick( Actor self )
 		{
 			isActive = self.World.ActorsWithTrait<Production>()
-                .Any(x => x.Actor.Owner == self.Owner 
+                .Any(x => x.Actor.Owner == self.Owner
 				     && x.Trait.Info.Produces.Contains(Info.Type));
-			
+
 			base.Tick(self);
 		}
 
@@ -46,12 +46,12 @@ namespace OpenRA.Mods.RA
 		{
 			return isActive ? base.BuildableItems() : None;
 		}
-		
+
 		protected override bool BuildUnit( string name )
-		{			
+		{
 			// Find a production structure to build this actor
 			var producers = self.World.ActorsWithTrait<Production>()
-                .Where(x => x.Actor.Owner == self.Owner 
+                .Where(x => x.Actor.Owner == self.Owner
 				       && x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
 
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 				CancelProduction(name,1);
 				return true;
 			}
-			
+
 			foreach (var p in producers)
 			{
 				if (IsDisabledBuilding(p.Actor)) continue;

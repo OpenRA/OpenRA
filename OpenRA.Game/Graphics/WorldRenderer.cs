@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,15 +30,15 @@ namespace OpenRA.Graphics
 			this.palette = Game.modData.Palette;
 			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
 				pal.Trait.InitPalette( this );
-			
+
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 		}
-		
+
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
 		public Palette GetPalette(string name) { return palette.GetPalette(name); }
 		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
-		
+
 		class SpriteComparer : IComparer<Renderable>
 		{
 			public int Compare(Renderable x, Renderable y)
@@ -79,9 +79,9 @@ namespace OpenRA.Graphics
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
 						t.RenderBeforeWorld(this, a);
-			
+
 			Game.Renderer.Flush();
-			
+
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
@@ -98,7 +98,7 @@ namespace OpenRA.Graphics
 
 			shroudRenderer.Draw( this );
 			Game.Renderer.DisableScissor();
-			
+
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
@@ -163,7 +163,7 @@ namespace OpenRA.Graphics
 			{
 				var start = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * i) / 16);
 				var end = location + Game.CellSize * range * float2.FromAngle((float)(Math.PI * (i + 0.7)) / 16);
-				
+
 				Game.Renderer.WorldLineRenderer.DrawLine(start, end, c, c);
 			}
 		}

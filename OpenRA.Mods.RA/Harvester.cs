@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,34 +29,34 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, 
+	public class Harvester : IIssueOrder, IResolveOrder, IPips,
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
 		[Sync]
 		public Actor LinkedProc = null;
-		
+
 		public int2? LastHarvestedCell = null;
-				
+
 		[Sync]
 		public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
-		
+
 		[Sync]
 		int currentUnloadTicks;
-		
+
 		readonly HarvesterInfo Info;
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
 			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
 		}
-		
+
 		public void ChooseNewProc(Actor self, Actor ignore)
 		{
 			LinkedProc = ClosestProc(self, ignore);
 		}
-		
+
 		public void ContinueHarvesting(Actor self)
 		{
 			if (LastHarvestedCell.HasValue)
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
-		
+
 		public void AcceptResource(ResourceType type)
 		{
 			if (!contents.ContainsKey(type.info)) contents[type.info] = 1;
@@ -101,28 +101,28 @@ namespace OpenRA.Mods.RA
 		{
 			if (!proc.IsInWorld)
 				return false;	// fail to deliver if there is no proc.
-			
+
 			// Wait until the next bale is ready
 			if (--currentUnloadTicks > 0)
 				return false;
-			
+
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
 				var iao = proc.Trait<IAcceptOre>();
 				if (!iao.CanGiveOre(type.ValuePerUnit))
 					return false;
-				
+
 				iao.GiveOre(type.ValuePerUnit);
 				if (--contents[type] == 0)
 					contents.Remove(type);
-				
+
 				currentUnloadTicks = Info.UnloadTicksPerBale;
 			}
-			
+
 			return contents.Count == 0;
 		}
-		
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 		{
 			return (order.OrderString == "Harvest" || (order.OrderString == "Deliver" && !IsEmpty)) ? "Move" : null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
@@ -166,17 +166,17 @@ namespace OpenRA.Mods.RA
 
 				if (order.TargetActor != LinkedProc)
 					LinkedProc = order.TargetActor;
-				
+
 				if (IsEmpty)
 					return;
-				
+
 				self.SetTargetLine(Target.FromOrder(order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
 		}
-		
+
 		public void UnlinkProc(Actor self, Actor proc)
 		{
 			if (LinkedProc != proc)
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.RA
 
 			return PipType.Transparent;
 		}
-		
+
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			int numPips = Info.PipCount;

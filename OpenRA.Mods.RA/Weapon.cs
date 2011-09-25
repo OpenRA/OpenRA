@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		public void CheckFire(Actor self, AttackBase attack, IMove move, IFacing facing, Target target)
-		{		
+		{
 			if (FireDelay > 0) return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 				return;
 			if( Combat.IsInRange( self.CenterLocation, Info.MinRange, target ) )
 				return;
-			
+
 			if (!IsValidAgainst(self.World, target)) return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
@@ -132,8 +132,8 @@ namespace OpenRA.Mods.RA
 				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,
-				
-				facing = barrel.Facing + 
+
+				facing = barrel.Facing +
 					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
 					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 					 .Select(a => a.GetFirepowerModifier())
 					 .Product()
 			};
-			
+
 			attack.ScheduleDelayedAction( attack.FireDelay( self, target, self.Info.Traits.Get<AttackBaseInfo>() ), () =>
 			{
 				if (args.weapon.Projectile != null)

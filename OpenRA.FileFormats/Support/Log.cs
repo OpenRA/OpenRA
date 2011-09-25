@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -33,7 +33,7 @@ namespace OpenRA
 			get { return LogPathPrefix; }
 			set
 			{
-				LogPathPrefix = value;				
+				LogPathPrefix = value;
 				Directory.CreateDirectory(LogPathPrefix);
 			}
 		}
@@ -41,7 +41,7 @@ namespace OpenRA
         static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
         {
             for(var i = 0;; i++ )
-                yield return Path.Combine(LogPathPrefix, 
+                yield return Path.Combine(LogPathPrefix,
                     i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
         }
 

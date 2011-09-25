@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets
 	public class RadarBinWidget : Widget
 	{
 		public string WorldInteractionController = null;
-		
+
 		static float2 radarOpenOrigin = new float2(Game.viewport.Width - 215, 29);
 		static float2 radarClosedOrigin = new float2(Game.viewport.Width - 215, -166);
 		float2 radarOrigin = radarClosedOrigin;
@@ -31,11 +31,11 @@ namespace OpenRA.Mods.RA.Widgets
 		bool radarAnimating = false;
 		bool hasRadar = false;
 		string radarCollection;
-		
+
 		float previewScale = 0;
 		RectangleF mapRect = Rectangle.Empty;
 		int2 previewOrigin;
-		
+
 		Sprite terrainSprite;
 		Sprite customTerrainSprite;
 		Sprite actorSprite;
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA.Widgets
 			actorSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			shroudSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 		}
-		
+
 		public override string GetCursor(int2 pos)
-		{		
+		{
 			if (world == null || !hasRadar)
 				return null;
-						
+
 			var loc = MinimapPixelToCell(pos);
 
 			var mi = new MouseInput
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var cursor = world.OrderGenerator.GetCursor( world, loc, mi );
 			if (cursor == null)
 				return "default";
-			
+
 			return CursorProvider.HasCursorSequence(cursor+"-minimap") ? cursor+"-minimap" : cursor;
 		}
 
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Widgets
 			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "right"), radarOrigin + new float2(201, 0));
 			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "bottom"), radarOrigin + new float2(0, 192));
 			rsr.DrawSprite(ChromeProvider.GetImage(radarCollection, "bg"), radarOrigin + new float2(9, 0));
-			
+
 			// Don't draw the radar if the tray is moving
 			if (radarAnimationFrame >= radarSlideAnimationLength)
 			{
@@ -169,12 +169,12 @@ namespace OpenRA.Mods.RA.Widgets
             var hasRadarNew = world
                 .ActorsWithTrait<ProvidesRadar>()
                 .Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
-			
+
 			if (hasRadarNew != hasRadar)
 				radarAnimating = true;
-			
+
 			hasRadar = hasRadarNew;
-			
+
 			// Build the radar image
 			if (hasRadar)
 			{
@@ -184,17 +184,17 @@ namespace OpenRA.Mods.RA.Widgets
 					updateTicks = 12;
 					customTerrainSprite.sheet.Texture.SetData(Minimap.CustomTerrainBitmap(world));
 				}
-				
+
 				if (updateTicks == 8)
 					actorSprite.sheet.Texture.SetData(Minimap.ActorsBitmap(world));
-				
+
 				if (updateTicks == 4)
 					shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
 			}
-			
+
 			if (!radarAnimating)
 				return;
-			
+
 			// Increment frame
 			if (hasRadar)
 				radarAnimationFrame++;
@@ -223,12 +223,12 @@ namespace OpenRA.Mods.RA.Widgets
 			if (radarAnimationFrame == (hasRadar ? radarSlideAnimationLength + radarActivateAnimationLength : 0))
 				radarAnimating = false;
 		}
-				
+
 		int2 CellToMinimapPixel(int2 p)
 		{
 			return new int2((int)(mapRect.X +previewScale*(p.X - world.Map.Bounds.Left)), (int)(mapRect.Y + previewScale*(p.Y - world.Map.Bounds.Top)));
 		}
-		
+
 		int2 MinimapPixelToCell(int2 p)
 		{
 			return new int2(world.Map.Bounds.Left + (int)((p.X - mapRect.X)/previewScale), world.Map.Bounds.Top + (int)((p.Y - mapRect.Y)/previewScale));

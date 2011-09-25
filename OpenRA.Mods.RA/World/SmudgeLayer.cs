@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class SmudgeLayer: IRenderOverlay, IWorldLoaded
-	{		
+	{
 		public SmudgeLayerInfo Info;
 		Dictionary<int2,TileReference<byte,byte>> tiles;
 		Sprite[][] smudgeSprites;
@@ -41,23 +41,23 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 			smudgeSprites = Info.Types.Select(x => Game.modData.SpriteLoader.LoadAllSprites(x)).ToArray();
 		}
-		
+
 		public void WorldLoaded(World w)
 		{
 			world = w;
 			tiles = new Dictionary<int2,TileReference<byte,byte>>();
-			
+
 			// Add map smudges
 			foreach (var s in w.Map.Smudges.Value.Where( s => Info.Types.Contains(s.Type )))
 				tiles.Add(s.Location,new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
 				                                                  (byte)s.Depth));
 		}
-		
+
 		public void AddSmudge(int2 loc)
 		{
 			if (!world.GetTerrainInfo(loc).AcceptSmudge)
 				return;
-			
+
 			if (Game.CosmeticRandom.Next(0,100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, Traits.Util.CenterOfCell(loc), Info.SmokeType)));
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 				tiles.Add(loc, new TileReference<byte,byte>(st,(byte)0));
 				return;
 			}
-			
+
 			var tile = tiles[loc];
 			// Existing smudge; make it deeper
 			int depth = Info.Depths[tile.type-1];
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 				tiles[loc] = tile;	// struct semantics.
 			}
 		}
-		
+
 		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.WorldBounds(world);

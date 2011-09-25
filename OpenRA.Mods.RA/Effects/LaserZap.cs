@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly Color Color = Color.Red;
 		public readonly string Explosion = "laserfire";
 
-		public IEffect Create(ProjectileArgs args) 
+		public IEffect Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.firedBy.Owner.ColorRamp.GetColor(0) : Color;
 			return new LaserZap(args, this, c);
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Effects
 		Color color;
 		bool doneDamage;
 		Animation explosion;
-		
+
 		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
 		{
 			this.args = args;

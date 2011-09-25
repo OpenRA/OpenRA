@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Render
 		public readonly bool HasMakeAnimation = true;
 		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
-		
+
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
             return base.RenderPreview(building, owner)
@@ -35,10 +35,10 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
 	{
 		readonly RenderBuildingInfo Info;
-		
+
 		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info )
 			: this(init, info, () => 0) { }
-		
+
 		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing )
 			: base(init.self, baseFacing)
 		{
@@ -46,14 +46,14 @@ namespace OpenRA.Mods.RA.Render
 			var self = init.self;
 			// Work around a bogus crash
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
-			
+
 			// Can't call Complete() directly from ctor because other traits haven't been inited yet
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
 				self.QueueActivity(new MakeAnimation(self, () => Complete(self)));
-			else 
+			else
 				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
-		
+
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 					yield return ret.WithPalette("disabled").WithZOffset(1);
 			}
 		}
-		
+
 		void Complete( Actor self )
 		{
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayThen(NormalizeSequence(self, name),
 				() => { anim.PlayRepeating(NormalizeSequence(self, "idle")); a(); });
 		}
-		
+
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
 			anim.PlayThen(NormalizeSequence(self, name),
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 		}
-		
+
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)

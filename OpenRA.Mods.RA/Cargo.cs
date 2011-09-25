@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -55,26 +55,26 @@ namespace OpenRA.Mods.RA
 			{
 				if (!CanUnload(self))
 					return;
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new UnloadCargo());
 			}
 		}
-		
+
 		bool CanUnload(Actor self)
 		{
 			if (IsEmpty(self))
 				return false;
-			
+
 			// Cannot unload mid-air
 			var move = self.TraitOrDefault<IMove>();
 			if (move != null && move.Altitude > 0)
 				return false;
-			
+
 			// Todo: Check if there is a free tile to unload to
 			return true;
 		}
-		
+
 		public string CursorForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "Unload") return null;
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Unload" || IsEmpty(self)) return null;			
+			if (order.OrderString != "Unload" || IsEmpty(self)) return null;
 			return "Move";
 		}
 
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 
 		public Actor Peek(Actor self) {	return cargo[0]; }
-		
+
 		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
 
 		public Actor Unload(Actor self)

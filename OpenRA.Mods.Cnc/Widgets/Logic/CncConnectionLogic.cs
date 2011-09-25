@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Action onConnect, onRetry, onAbort;
 		string host;
 		int port;
-		
+
 		void ConnectionStateChanged(OrderManager om)
 		{
 			if (om.Connection.ConnectionState == ConnectionState.Connected)
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			}
 		}
-		
+
 		public void CloseWindow()
 		{
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
 			Widget.CloseWindow();
 		}
-		
+
 		[ObjectCreator.UseCtor]
 		public CncConnectingLogic([ObjectCreator.Param] Widget widget,
 		                          [ObjectCreator.Param] string host,
@@ -60,16 +60,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.onConnect = onConnect;
 			this.onRetry = onRetry;
 			this.onAbort = onAbort;
-			
+
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			var panel = widget.GetWidget("CONNECTING_PANEL");
 			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
-			
+
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);
 		}
-		
+
 		public static void Connect(string host, int port, Action onConnect, Action onAbort)
 		{
 			Game.JoinServer(host, port);
@@ -83,9 +83,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			});
 		}
     }
-	
+
 	public class CncConnectionFailedLogic
-	{	
+	{
 		[ObjectCreator.UseCtor]
 		public CncConnectionFailedLogic([ObjectCreator.Param] Widget widget,
 		                          		[ObjectCreator.Param] string host,
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var panel = widget.GetWidget("CONNECTIONFAILED_PANEL");
 			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
 			panel.GetWidget<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Widget.CloseWindow(); onRetry(); };
-			
+
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(host, port);
 		}

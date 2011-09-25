@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA
 					.Cast<int2?>().FirstOrDefault();
 
 				// Todo: Valid terrain should be specified in the resource
-				if (cell != null && self.World.Map.IsInMap(cell.Value) && 
-					(resLayer.GetResource(cell.Value) == resourceType 
+				if (cell != null && self.World.Map.IsInMap(cell.Value) &&
+					(resLayer.GetResource(cell.Value) == resourceType
 					|| (resLayer.GetResource(cell.Value) == null && resLayer.AllowResourceAt(resourceType, cell.Value))))
 					resLayer.AddResource(resourceType, cell.Value.X, cell.Value.Y, 1);
 

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Render
 			var move = self.Trait<IMove>();
 
 			var shadowSprites = r.Select(a => a.WithPalette("shadow"));
-			var flyingSprites = (move.Altitude <= 0) ? r 
+			var flyingSprites = (move.Altitude <= 0) ? r
 				: r.Select(a => a.WithPos(a.Pos - new float2(0, move.Altitude)).WithZOffset(move.Altitude));
 
 			return shadowSprites.Concat(flyingSprites);

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,8 +29,8 @@ namespace OpenRA.Editor
 			currentMod = args.FirstOrDefault() ?? "ra";
 
 			toolStripComboBox1.Items.AddRange(Mod.AllMods.Keys.ToArray());
-			
-			toolStripComboBox1.SelectedIndexChanged += (_, e) => 
+
+			toolStripComboBox1.SelectedIndexChanged += (_, e) =>
 			{
 				tilePalette.SuspendLayout();
 				actorPalette.SuspendLayout();
@@ -44,19 +44,19 @@ namespace OpenRA.Editor
 				surface1.Bind(null, null, null);
 				pmMiniMap.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
-				
+
 				Text = "OpenRA Editor (mod:{0})".F(currentMod);
 				Game.modData = new ModData(currentMod);
 				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 				loadedMapName = null;
 			};
-			
+
 			toolStripComboBox1.SelectedItem = currentMod;
-			
+
 			surface1.AfterChange += OnMapChanged;
 			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
-			
+
 			if (args.Length >= 2)
 				LoadMap(args[1]);
 		}
@@ -366,7 +366,7 @@ namespace OpenRA.Editor
 
 		void ImportLegacyMapClicked(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog { RestoreDirectory = true, 
+			using (var ofd = new OpenFileDialog { RestoreDirectory = true,
 				Filter = "Legacy maps (*.ini;*.mpr)|*.ini;*.mpr" })
 				if (DialogResult.OK == ofd.ShowDialog())
 				{
@@ -385,7 +385,7 @@ namespace OpenRA.Editor
 							eld.ShowDialog();
 
 					map.MakeDefaultPlayers();
-				
+
 					map.Save(savePath);
 					LoadMap(savePath);
 					loadedMapName = null;	/* editor needs to think this hasnt been saved */
@@ -433,7 +433,7 @@ namespace OpenRA.Editor
 				{
 					var tr = surface1.Map.MapTiles.Value[i, j];
 					if (tr.type == 0xff || tr.type == 0xffff || tr.type == 1 || tr.type == 2)
-						tr.index = (byte)r.Next(0, 
+						tr.index = (byte)r.Next(0,
 							Rules.TileSets[surface1.Map.Tileset].Tiles[tr.type].TileBitmapBytes.Count);
 
 					surface1.Map.MapTiles.Value[i, j] = tr;

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -19,7 +19,7 @@ namespace OpenRA.GameRules
 	public class WarheadInfo
 	{
 		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
-		[FieldLoader.LoadUsing( "LoadVersus" )] 
+		[FieldLoader.LoadUsing( "LoadVersus" )]
 		public readonly Dictionary<string, float> Versus; 				// damage vs each armortype
 		public readonly bool Ore = false;								// can this damage ore?
 		public readonly string Explosion = null;						// explosion effect to use
@@ -40,7 +40,7 @@ namespace OpenRA.GameRules
 			if (health == null) return 0f;
 			var armor = self.Info.Traits.GetOrDefault<ArmorInfo>();
 			if (armor == null || armor.Type == null) return 1;
-			
+
 			float versus;
 			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1;
 		}
@@ -49,7 +49,7 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load( this, yaml );
 		}
-		
+
 		static object LoadVersus( MiniYaml y )
 		{
 			return y.NodesDict.ContainsKey( "Versus" )
@@ -59,7 +59,7 @@ namespace OpenRA.GameRules
 				: new Dictionary<string, float>();
 		}
 	}
-	
+
 
 
 	public enum DamageModel

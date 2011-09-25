@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget lobby, LocalPlayerTemplate, RemotePlayerTemplate, EmptySlotTemplate, EmptySlotTemplateHost,
 			   LocalSpectatorTemplate, RemoteSpectatorTemplate, NewSpectatorTemplate;
-		
+
 		ScrollPanelWidget Players;
 		Dictionary<string, string> CountryNames;
 		string MapUid;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			UpdateCurrentMap();
-			
+
 			CurrentColorPreview = Game.Settings.Player.ColorRamp;
 
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			};
-			
+
 			var startGameButton = lobby.GetWidget<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.OnClick = () =>
 			{
@@ -134,10 +134,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				disconnectButton.Visible = false;
 				orderManager.IssueOrder(Order.Command("startgame"));
 			};
-			
+
 			// Todo: Only show if the map requirements are met for player slots
 			startGameButton.IsVisible = () => Game.IsHost;
-			
+
 			bool teamChat = false;
 			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
@@ -157,25 +157,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
-			
+
 			Game.AddChatLine += AddChatLine;
 		}
-		
+
 		public void CloseWindow()
 		{
 			Game.LobbyInfoChanged -= UpdateCurrentMap;
 			Game.LobbyInfoChanged -= UpdatePlayerList;
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= CloseWindow;
-			
+
 			Widget.CloseWindow();
 		}
-		
+
 		void AddChatLine(Color c, string from, string text)
 		{
 			lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
-		
+
 		void UpdatePlayerColor(float hf, float sf, float lf, float r)
 		{
 			var ramp = new ColorRamp((byte) (hf*255), (byte) (sf*255), (byte) (lf*255), (byte)(r*255));
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Save();
 			orderManager.IssueOrder(Order.Command("color {0} {1}".F(orderManager.LocalClient.Index, ramp)));
 		}
-		
+
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
             CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
@@ -198,13 +198,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
-		
+
 		class SlotDropDownOption
 		{
 			public string Title;
 			public string Order;
 			public Func<bool> Selected;
-			
+
 			public SlotDropDownOption(string title, string order, Func<bool> selected)
 			{
 				Title = title;
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Selected = selected;
 			}
 		}
-		
+
 		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
 				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
 			};
-			
+
 			if (slot.AllowBots)
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
@@ -238,10 +238,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
 			};
-			
+
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
-		
+
 		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
@@ -255,10 +255,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				flag.GetImageName = () => race;
 				return item;
 			};
-			
+
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
 		}
-				
+
 		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
@@ -269,23 +269,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
-			
+
 			var options = Graphics.Util.MakeArray(Map.PlayerCount, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
-		
+
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
 			hueSlider.Value = orderManager.LocalClient.ColorRamp.H / 255f;
-			
+
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
             satSlider.Value = orderManager.LocalClient.ColorRamp.S / 255f;
 
 			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
             lumSlider.Value = orderManager.LocalClient.ColorRamp.L / 255f;
-			
+
 			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
             rangeSlider.Value = orderManager.LocalClient.ColorRamp.R / 255f;
 
@@ -296,23 +296,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			lumSlider.OnChange += _ => updateColorPreview();
 			rangeSlider.OnChange += _ => updateColorPreview();
 			updateColorPreview();
-			
+
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
 			{
 				updateColorPreview();
 				UpdatePlayerColor(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
 				color.RemovePanel();
 			};
-			
+
 			color.AttachPanel(colorChooser);
 		}
-		
+
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
 			// Todo: handle this nicer
 			Players.RemoveChildren();
-			
+
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
 				var s = kv.Value;
@@ -341,7 +341,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference));
 						join.IsVisible = () => !s.Closed && c == null && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
-					
+
 					template.GetWidget<LabelWidget>("BOT").IsVisible = () => c != null;
 				}
 				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => s.LockRace;
 					faction.OnMouseDown = _ => ShowRaceDropDown(faction, c);
-					
+
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
@@ -405,7 +405,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				template.IsVisible = () => true;
 				Players.AddChild(template);
 			}
-			
+
 			// Add spectators
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					template = LocalSpectatorTemplate.Clone();
 					SetupNameWidget(c, template.GetWidget<TextFieldWidget>("NAME"));
-					
+
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.OnMouseDown = _ => ShowColorDropDown(color, c);
 
@@ -459,7 +459,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Players.AddChild(spec);
 			}
 		}
-		
+
 		void SetupNameWidget(Session.Client c, TextFieldWidget name)
 		{
 			name.Text = c.Name;

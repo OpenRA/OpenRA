@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -34,7 +34,7 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 
 		public int2 Location { get { return occupySpace.Value.TopLeft; } }
-		
+
 		public int2 CenterLocation
 		{
 			get
@@ -44,7 +44,7 @@ namespace OpenRA
 				return HasLocation.PxPosition;
 			}
 		}
-		
+
 		[Sync]
 		public Player Owner;
 
@@ -71,7 +71,7 @@ namespace OpenRA
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
-			
+
 			Move = Lazy.New( () => TraitOrDefault<IMove>() );
 
 			Size = Lazy.New(() =>
@@ -88,7 +88,7 @@ namespace OpenRA
 
 			ApplyIRender = x => x.Render(this);
 			ApplyRenderModifier = (m, p) => p.ModifyRender(this, m);
-			
+
 			Bounds = Cached.New( () => CalculateBounds(false) );
 			ExtendedBounds = Cached.New( () => CalculateBounds(true) );
 		}
@@ -97,7 +97,7 @@ namespace OpenRA
 		{
 			Bounds.Invalidate();
 			ExtendedBounds.Invalidate();
-			
+
 			currentActivity = Util.RunActivity( this, currentActivity );
 		}
 
@@ -117,7 +117,7 @@ namespace OpenRA
 			var sprites = TraitsImplementing<IRender>().SelectMany(ApplyIRender);
 			return mods.Aggregate(sprites, ApplyRenderModifier);
 		}
-		
+
 		// When useAltitude = true, the bounding box is extended
 		// vertically to altitude = 0 to support FindUnitsInCircle queries
 		// When false, the bounding box is given for the actor
@@ -126,7 +126,7 @@ namespace OpenRA
 		{
 			var size = Size.Value;
 			var loc = CenterLocation - size / 2;
-			
+
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 			{
@@ -141,7 +141,7 @@ namespace OpenRA
 				if (useAltitude)
 					size = new int2(size.X, size.Y + move.Altitude);
 			}
-		
+
 			return new Rectangle(loc.X, loc.Y, size.X, size.Y);
 		}
 

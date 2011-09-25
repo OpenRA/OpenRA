@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -18,11 +18,11 @@ namespace OpenRA.Thirdparty
 	{
 		uint[] mt = new uint[624];
 		int index = 0;
-		
+
 		public int Last;
 
 		public Random() : this(Environment.TickCount) { }
-		
+
 		public Random(int seed)
 		{
 			mt[0] = (uint)seed;

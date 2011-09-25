@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled) return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
-			
+
 			if( !target.OccupiesSpace.OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Activities
 				w.Remove(target);
 				target.Owner = self.Owner;
 				w.Add(target);
-				
+
 				foreach (var t in target.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(target, self, oldOwner, self.Owner);
 

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Activities
 		public int Facing = 96;
 		public string[] Sounds = {};
 		public int ForceHealthPercentage = 0;
-		
+
 		public Transform(Actor self, string toActor)
 		{
 			this.ToActor = toActor;
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override Activity Tick( Actor self )
 		{
 			if (IsCanceled) return NextActivity;
-			
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var selected = w.Selection.Contains(self);
@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA.Activities
 						init.Add( new HealthInit( (float)health.HP / health.MaxHP ));
 				}
 				var a = w.CreateActor( ToActor, init );
-				
+
 				if (selected)
 					w.Selection.Add(w, a);
 			});
-			
+
 			return this;
 		}
 	}

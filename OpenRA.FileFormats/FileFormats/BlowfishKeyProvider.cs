@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -385,7 +385,7 @@ namespace OpenRA.FileFormats
         void dec_bignum(uint[] n, uint len)
         {
             int i = 0;
-            while ((--n[i] == 0xffffffff) && (--len > 0)) 
+            while ((--n[i] == 0xffffffff) && (--len > 0))
                 i++;
         }
 
@@ -495,7 +495,7 @@ namespace OpenRA.FileFormats
             uint[] n3 = new uint[64];
 
             uint a = (pubkey.len - 1) / 8;
-            while (a + 1 <= pre_len) 
+            while (a + 1 <= pre_len)
             {
                 init_bignum(n2, 0, 64);
                 fixed( uint * pn2 = &n2[0] )

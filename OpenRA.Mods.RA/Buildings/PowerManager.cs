@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Buildings
 		PowerManagerInfo Info;
 		Player Player;
 		DeveloperMode devMode;
-		
+
 		Dictionary<Actor, int> PowerDrain = new Dictionary<Actor, int>();
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
@@ -38,14 +38,14 @@ namespace OpenRA.Mods.RA.Buildings
 		{
 			Info = info;
 			Player = init.self.Owner;
-			
+
 			init.world.ActorAdded += ActorAdded;
 			init.world.ActorRemoved += ActorRemoved;
 
 			devMode = init.self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
 		}
-		
+
 		void ActorAdded(Actor a)
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Buildings
 			PowerDrain.Add(a, a.Trait<Building>().GetPowerUsage());
 			UpdateTotals();
 		}
-		
+
 		void ActorRemoved(Actor a)
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Buildings
 			PowerDrain.Remove(a);
 			UpdateTotals();
 		}
-		
+
 		void UpdateTotals()
 		{
 			totalProvided = 0;
@@ -78,16 +78,16 @@ namespace OpenRA.Mods.RA.Buildings
 			if (devMode.UnlimitedPower)
 				totalProvided = 1000000;
 		}
-		
+
 		public void UpdateActor(Actor a, int newPower)
 		{
 			if (a.Owner != Player || !a.HasTrait<Building>())
 				return;
-		
+
 			PowerDrain[a] = newPower;
 			UpdateTotals();
 		}
-		
+
 		int nextPowerAdviceTime = 0;
 		bool wasLowPower = false;
 		bool wasHackEnabled;
@@ -104,16 +104,16 @@ namespace OpenRA.Mods.RA.Buildings
 			if (lowPower && !wasLowPower)
 				nextPowerAdviceTime = 0;
 			wasLowPower = lowPower;
-			
+
 			if (--nextPowerAdviceTime <= 0)
 			{
 				if (lowPower)
 					Player.GiveAdvice(Rules.Info["world"].Traits.Get<EvaAlertsInfo>().LowPower);
-				
+
 				nextPowerAdviceTime = Info.AdviceInterval;
 			}
 		}
-		
+
 		public PowerState PowerState
 		{
 			get {

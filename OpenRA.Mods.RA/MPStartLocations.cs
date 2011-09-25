@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int InitialExploreRange = 5;
 	}
-	
+
 	public class MPStartLocations : IWorldLoaded
 	{
 		public Dictionary<Player, int2> Start = new Dictionary<Player, int2>();
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.RA
 
 				Start.Add(player, spid);
 			}
-			
+
 			// Explore allied shroud
 			foreach (var p in Start)
 				if ((world.LocalPlayer != null ) &&(p.Key == world.LocalPlayer || p.Key.Stances[world.LocalPlayer] == Stance.Ally))
 					world.WorldActor.Trait<Shroud>().Explore(world, p.Value,
 						world.WorldActor.Info.Traits.Get<MPStartLocationsInfo>().InitialExploreRange);
-			
+
 			// Set viewport
 			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
 				Game.viewport.Center(Start[world.LocalPlayer]);
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 		{
 			return world.Players.FirstOrDefault(p => p.PlayerReference.Name == pr);
 		}
-		
+
 		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)
 		{
 			if (available.Count == 0)

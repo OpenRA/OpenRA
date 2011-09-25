@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 		public bool Cloaked { get { return remainingTime <= 0; } }
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
-		{			
+		{
 			canCloak = (e.DamageState < DamageState.Critical);
 			if (!canCloak) Uncloak();
 		}
@@ -84,8 +84,8 @@ namespace OpenRA.Mods.RA
 
 		public bool IsVisible(Actor self)
 		{
-			if (!Cloaked || self.Owner == self.World.LocalPlayer || 
-				self.World.LocalPlayer == null || 
+			if (!Cloaked || self.Owner == self.World.LocalPlayer ||
+				self.World.LocalPlayer == null ||
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return true;
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
 				(self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}
-		
+
 		public Color RadarColorOverride(Actor self)
 		{
 			var c = self.Owner.ColorRamp.GetColor(0);

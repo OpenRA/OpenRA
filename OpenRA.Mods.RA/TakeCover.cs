@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		TakeCoverInfo Info;
 		[Sync]
 		int remainingProneTime = 0;
-		
+
 		public TakeCover(TakeCoverInfo info)
 		{
 			Info = info;
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			return IsProne ? Info.ProneSpeed : 1m;
 		}
 	}
-	
+
 	class RenderInfantryProneInfo : RenderInfantryInfo, Requires<TakeCoverInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderInfantryProne(init.self, this); }
@@ -94,28 +94,28 @@ namespace OpenRA.Mods.RA
 	{
 		readonly TakeCover tc;
 		bool wasProne;
-		
+
 		public RenderInfantryProne(Actor self, RenderInfantryProneInfo info)
 			: base(self, info)
 		{
 			tc = self.Trait<TakeCover>();
 		}
-		
+
 		protected override string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
 			var prefix = tc != null && tc.IsProne ? "prone-" : "";
-			
+
 			if (anim.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
 			else
 				return baseSequence;
 		}
-		
+
 		protected override bool AllowIdleAnimation(Actor self)
 		{
 			return base.AllowIdleAnimation(self) && !tc.IsProne;
 		}
-		
+
 		public override void Tick(Actor self)
 		{
 			if (wasProne != tc.IsProne)

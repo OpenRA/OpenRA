@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -56,20 +56,20 @@ namespace OpenRA.Mods.RA.Widgets
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
-		{			
+		{
 			if (mi.Event == MouseInputEvent.Down)
 			{
 				var action = buttons.Where(a => a.First.Contains(mi.Location))
 				.Select(a => a.Second).FirstOrDefault();
 				if (action == null)
 					return false;
-		
+
 				action(mi);
 				return true;
 			}
 
 			return false;
-		}		
+		}
 
 		public override void Draw()
 		{
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (rect.Contains(Viewport.LastMousePos))
 				{
-					var pos = drawPos.ToInt2();					
+					var pos = drawPos.ToInt2();
 					var tl = new int2(pos.X-3,pos.Y-3);
 					var m = new int2(pos.X+64+3,pos.Y+48+3);
 					var br = tl + new int2(64+3+20,40);
@@ -124,17 +124,17 @@ namespace OpenRA.Mods.RA.Widgets
 						PanelSides.Top | PanelSides.Right | PanelSides.Center);
 					WidgetUtils.DrawPanelPartial("dialog4", Rectangle.FromLTRB(m.X, m.Y - border[1], br.X, br.Y),
 						PanelSides.Left | PanelSides.Right | PanelSides.Bottom | PanelSides.Center);
-					
+
 					pos += new int2(77, 5);
 					Game.Renderer.Fonts["Bold"].DrawText(sp.Info.Description, pos, Color.White);
-					
+
 					if (sp.TotalTime > 0)
 					{
 						pos += new int2(0,20);
 						Game.Renderer.Fonts["Bold"].DrawText(WidgetUtils.FormatTime(sp.RemainingTime).ToString(), pos, Color.White);
-						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);			
+						Game.Renderer.Fonts["Bold"].DrawText("/ {0}".F(WidgetUtils.FormatTime(sp.TotalTime)), pos + new int2(45,0), Color.White);
 					}
-					
+
 					if (sp.Info.LongDesc != null)
 					{
 						pos += new int2(0, 20);
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Widgets
 				y += 51;
 			}
 		}
-		
+
 		Action<MouseInput> HandleSupportPower(string key, SupportPowerManager manager)
 		{
 			return mi => { if (mi.Button == MouseButton.Left) manager.Target(key); };

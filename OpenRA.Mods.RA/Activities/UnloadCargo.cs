@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,12 +24,12 @@ namespace OpenRA.Mods.RA.Activities
 			// is anyone still hogging this tile?
 			if (self.World.ActorMap.GetUnitsAt(self.Location).Count() > 1)
 				return null;
-			
+
 			var mobile = cargo.Trait<Mobile>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
-					if ((i != 0 || j != 0) && 
+					if ((i != 0 || j != 0) &&
 						mobile.CanEnterCell(self.Location + new int2(i, j)))
 						return self.Location + new int2(i, j);
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Activities
 				ru.PlayCustomAnimation(self, "unload", null);
 
 			var exitTile = ChooseExitTile(self, cargo.Peek(self));
-			if (exitTile == null) 
+			if (exitTile == null)
 				return this;
 
 			var actor = cargo.Unload(self);

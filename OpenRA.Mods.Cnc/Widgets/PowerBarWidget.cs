@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -63,22 +63,22 @@ namespace OpenRA.Mods.Cnc.Widgets
 				color = Color.Orange;
 			if (pm.PowerState == PowerState.Critical)
 				color = Color.Red;
-			
+
 			var b = RenderBounds;
 			var rect = new RectangleF(b.X,
 			                          b.Y + (1-providedFrac)*b.Height,
 			                          (float)b.Width,
 			                          providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
-			
+
 			var indicator = ChromeProvider.GetImage("sidebar-bits", "left-indicator");
-			
+
 			var drainedFrac = pm.PowerDrained / powerScaleBy;
 			lastDrainedFrac = drainedFrac = float2.Lerp(lastDrainedFrac.GetValueOrDefault(drainedFrac), drainedFrac, .3f);
-			
+
 			float2 pos = new float2(b.X + b.Width - indicator.size.X,
 			                        b.Y + (1-drainedFrac)*b.Height - indicator.size.Y / 2);
-			
+
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
 		}
 	}

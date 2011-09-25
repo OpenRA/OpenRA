@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -87,24 +87,24 @@ namespace OpenRA.Graphics
 		{
 			Scroll(delta, false);
 		}
-		
+
 		public void Scroll(float2 delta, bool ignoreBorders)
 		{
 			// Convert from world-px to viewport-px
 			var d = (1f/Zoom*delta).ToInt2();
 			var newScrollPosition = scrollPosition + d;
-			
+
 			if(!ignoreBorders)
 				newScrollPosition = NormalizeScrollPosition(newScrollPosition);
 
 			scrollPosition = newScrollPosition;
 		}
-		
+
 		int2 NormalizeScrollPosition(int2 newScrollPosition)
 		{
 			return newScrollPosition.Clamp(scrollLimits);
 		}
-		
+
 		public ScrollDirection GetBlockedDirections()
 		{
 			var ret = ScrollDirection.None;
@@ -124,13 +124,13 @@ namespace OpenRA.Graphics
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			scrollPosition = new int2(scrollLimits.Location) + new int2(scrollLimits.Size)/2;
 		}
-		
+
 		public void DrawRegions( WorldRenderer wr, IInputHandler inputHandler )
 		{
 			renderer.BeginFrame(scrollPosition, Zoom);
 			if (wr != null)
 				wr.Draw();
-			
+
 			using( new PerfSample("render_widgets") )
 			{
 				Widget.DoDraw();
@@ -154,17 +154,17 @@ namespace OpenRA.Graphics
 		{
 			cursorFrame += 0.5f;
 		}
-		
+
 		// Convert from viewport coords to cell coords (not px)
 		public float2 ViewToWorld(MouseInput mi) { return ViewToWorld(mi.Location); }
 		public float2 ViewToWorld(int2 loc)
 		{
 			return (1f / Game.CellSize) * (1f/Zoom*loc.ToFloat2() + Location);
 		}
-		
+
 		public int2 ViewToWorldPx(int2 loc) { return (1f/Zoom*loc.ToFloat2() + Location).ToInt2(); }
 		public int2 ViewToWorldPx(MouseInput mi) { return ViewToWorldPx(mi.Location); }
-		
+
 		public void Center(float2 loc)
 		{
 			scrollPosition = NormalizeScrollPosition((Game.CellSize*loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
@@ -179,7 +179,7 @@ namespace OpenRA.Graphics
 				.Aggregate((a, b) => a + b) / actors.Count();
 			scrollPosition = NormalizeScrollPosition((avgPos - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
 		}
-		
+
 		// Rectangle (in viewport coords) that contains things to be drawn
 		public Rectangle ViewBounds(World world)
 		{
@@ -195,7 +195,7 @@ namespace OpenRA.Graphics
 
 		int2 cachedScroll = new int2(int.MaxValue, int.MaxValue);
 		Rectangle cachedRect;
-		
+
 		// Rectangle (in cell coords) of cells that are currently visible on the screen
 		public Rectangle WorldBounds(World world)
 		{
@@ -208,7 +208,7 @@ namespace OpenRA.Graphics
 				cachedRect = Rectangle.Intersect(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y), world.Map.Bounds);
 				cachedScroll = scrollPosition;
 			}
-			
+
 			var b = world.LocalShroud.Bounds;
 			return (b.HasValue) ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
 		}

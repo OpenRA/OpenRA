@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
-		/* [Sync] when sync can cope with arrays! */ 
+		/* [Sync] when sync can cope with arrays! */
 		public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 				}
 
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
-					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() 
+					.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>()
 						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 					.FirstOrDefault();
 
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 					return;
 
 				var movement = minelayer.Trait<IMove>();
-				var minefield = GetMinefieldCells(minefieldStart, lastMousePos, 
+				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();
 
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
-			
+
 			if (minefield != null)
 				wr.DrawLocus(Color.Cyan, minefield);
 		}
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (!self.World.Map.IsInMap(location))
 					return false;
-				
+
 				cursor = "ability";
 				IsQueued = forceQueued;
 

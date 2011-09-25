@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
 * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
-* This file is part of OpenRA, which is free software. It is made 
+* This file is part of OpenRA, which is free software. It is made
 * available to you under the terms of the GNU General Public License
 * as published by the Free Software Foundation. For more information,
 * see COPYING.
@@ -54,14 +54,14 @@ namespace OpenRA.Renderer.Cg
 		{
 			Console.WriteLine("Using Cg renderer");
 			windowSize = size;
-			
+
 			var extensions = new string[]
 			{
 				"GL_ARB_vertex_program",
 				"GL_ARB_fragment_program",
 				"GL_ARB_vertex_buffer_object",
 			};
-			
+
 			surf = SdlGraphics.InitializeSdlGl(ref windowSize, window, extensions);
 
 			cgContext = Tao.Cg.Cg.cgCreateContext();
@@ -79,7 +79,7 @@ namespace OpenRA.Renderer.Cg
 			ErrorHandler.CheckGlError();
 
 			Sdl.SDL_SetModState( 0 );	// i have had enough.
-			
+
 			input = new SdlInput( surf );
 		}
 

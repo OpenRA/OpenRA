@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			perfRoot.GetWidget("PERF_GRAPH").IsVisible = () => Game.Settings.Debug.PerfGraph;
 			var text = perfRoot.GetWidget<LabelWidget>("PERF_TEXT");
 			text.IsVisible = () => Game.Settings.Debug.PerfText;
-			text.GetText = () => 
+			text.GetText = () =>
 				"Tick {0} @ {1:F1} ms\nRender {2} @ {3:F1} ms\nBatches: {4}".F(
 				Game.LocalTick, PerfHistory.items["tick_time"].Average(Game.Settings.Debug.Samples),
 				Game.RenderFrame, PerfHistory.items["render"].Average(Game.Settings.Debug.Samples),

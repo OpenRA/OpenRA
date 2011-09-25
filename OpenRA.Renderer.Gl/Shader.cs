@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,25 +25,25 @@ namespace OpenRA.Renderer.Glsl
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 
 		public Shader(GraphicsDevice dev, string type)
-		{			
+		{
 			// Vertex shader
 			string vertexCode;
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.vert".F(Path.DirectorySeparatorChar, type))))
 				vertexCode = file.ReadToEnd();
-			
+
 			int v = Gl.glCreateShaderObjectARB(Gl.GL_VERTEX_SHADER_ARB);
 			ErrorHandler.CheckGlError();
 			Gl.glShaderSourceARB(v,1,new string[]{vertexCode},null);
 			ErrorHandler.CheckGlError();
 			Gl.glCompileShaderARB(v);
 			ErrorHandler.CheckGlError();
-			
+
 			int success;
 			Gl.glGetObjectParameterivARB(v, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in {0}{1}.vert".F(Path.DirectorySeparatorChar, type));
-			
+
 			// Fragment shader
 			string fragmentCode;
 			using (var file = new StreamReader(FileSystem.Open("glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, type))))
@@ -54,13 +54,13 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 			Gl.glCompileShaderARB(f);
 			ErrorHandler.CheckGlError();
-			
+
 			Gl.glGetObjectParameterivARB(f, Gl.GL_OBJECT_COMPILE_STATUS_ARB, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Compile error in glsl{0}{1}.frag".F(Path.DirectorySeparatorChar, type));
-			
-			
+
+
 			// Assemble program
 			program = Gl.glCreateProgramObjectARB();
 			ErrorHandler.CheckGlError();
@@ -68,19 +68,19 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 			Gl.glAttachObjectARB(program,f);
 			ErrorHandler.CheckGlError();
-			
+
 			Gl.glLinkProgramARB(program);
 			ErrorHandler.CheckGlError();
-			
+
 			Gl.glGetObjectParameterivARB(program, Gl.GL_OBJECT_LINK_STATUS_ARB, out success);
 			ErrorHandler.CheckGlError();
 			if (success == 0)
 				throw new InvalidProgramException("Linking error in {0} shader".F(type));
-			
-			
+
+
 			Gl.glUseProgramObjectARB(program);
 			ErrorHandler.CheckGlError();
-			
+
 			int numUniforms;
 			Gl.glGetObjectParameterivARB( program, Gl.GL_ACTIVE_UNIFORMS, out numUniforms );
 			ErrorHandler.CheckGlError();
@@ -136,13 +136,13 @@ namespace OpenRA.Renderer.Glsl
 				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB );
 			}
 		}
-		
+
 		public void SetValue(string name, float x, float y)
 		{
 			Gl.glUseProgramObjectARB(program);
 			ErrorHandler.CheckGlError();
 			int param = Gl.glGetUniformLocationARB(program, name);
-			ErrorHandler.CheckGlError();			
+			ErrorHandler.CheckGlError();
 			Gl.glUniform2fARB(param,x,y);
 			ErrorHandler.CheckGlError();
 		}

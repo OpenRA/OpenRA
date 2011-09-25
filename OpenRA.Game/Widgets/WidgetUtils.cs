@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,12 +23,12 @@ namespace OpenRA.Widgets
 		{
 			return ChromeProvider.GetImage("chrome-" + world.LocalPlayer.Country.Race, name);
 		}
-		
+
 		public static void DrawRGBA(Sprite s, float2 pos)
 		{
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s,pos);
 		}
-		
+
 		public static void DrawSHP(Sprite s, float2 pos, WorldRenderer wr)
 		{
 			Game.Renderer.SpriteRenderer.DrawSprite(s,pos, wr, "chrome");
@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 		{
 			DrawPanelPartial(collection, Bounds, PanelSides.All);
 		}
-		
+
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
 		{
 			for (var x = r.Left; x < r.Right; x += (int)s.size.X)
@@ -57,12 +57,12 @@ namespace OpenRA.Widgets
 					DrawRGBA(ss, new float2(x, y));
 				}
 		}
-		
+
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
 			Game.Renderer.LineRenderer.FillRect(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
-		
+
 		public static int[] GetBorderSizes(string collection)
 		{
 			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
@@ -135,8 +135,8 @@ namespace OpenRA.Widgets
 			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom))
 				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].size.X, bounds.Bottom - ss[7].size.Y));
 		}
-		
-		
+
+
 		public static string FormatTime(int ticks)
 		{
 			var seconds = (int)Math.Ceiling(ticks / 25f);
@@ -152,7 +152,7 @@ namespace OpenRA.Widgets
 			else
 				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
 		}
-		
+
 		public static string WrapText(string text, int width, SpriteFont font)
 		{
 			var textSize = font.Measure(text);
@@ -169,7 +169,7 @@ namespace OpenRA.Widgets
 					var m = font.Measure(line);
 					var spaceIndex = 0;
 					var start = line.Length - 1;
-					
+
 					if (m.X <= width)
 					{
 						if (i < lines.Length - 1)

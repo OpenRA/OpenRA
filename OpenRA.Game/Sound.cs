@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -41,7 +41,7 @@ namespace OpenRA
 		{
 			soundEngine = new OpenAlSoundEngine();
 		}
-		
+
 		public static void Initialize()
 		{
 			sounds = new Cache<string, ISoundSource>(LoadSound);
@@ -70,7 +70,7 @@ namespace OpenRA
 		public static ISound Play(string name, float2 pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
 		public static ISound PlayToPlayer(Player player, string name) { return Play( player, name, true, float2.Zero, 1); }
 		public static ISound PlayToPlayer(Player player, string name, float2 pos) { return Play(player, name, false, pos, 1); }
-		
+
 		public static void PlayVideo(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
@@ -108,17 +108,17 @@ namespace OpenRA
 		static Action OnMusicComplete;
 		public static bool MusicPlaying { get; private set; }
 		public static MusicInfo CurrentMusic { get { return currentMusic; } }
-		
+
 		public static void PlayMusic(MusicInfo m)
 		{
 			PlayMusicThen(m, () => { });
 		}
-		
+
 		public static void PlayMusicThen(MusicInfo m, Action then)
 		{
 			if (m == null || !m.Exists)
 				return;
-			
+
 			OnMusicComplete = then;
 
 			if (m == currentMusic && music != null)

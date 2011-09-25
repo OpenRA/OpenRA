@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,9 +23,9 @@ namespace OpenRA.Traits
 
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
-		
+
 		bool hasSetupPalettes;
-		
+
 		public void Render( WorldRenderer wr )
 		{
 			if (!hasSetupPalettes)
@@ -128,9 +128,9 @@ namespace OpenRA.Traits
 				return;
 
 			content[i, j].density = Math.Min(
-				content[i, j].image.Length - 1, 
+				content[i, j].image.Length - 1,
 				content[i, j].density + n);
-			
+
 			world.Map.CustomTerrain[i,j] = t.info.TerrainType;
 		}
 

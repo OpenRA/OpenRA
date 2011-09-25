@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		[Sync]
 		public int2 RTBPathHash;
-		
+
 		public Plane( ActorInitializer init, PlaneInfo info ) : base( init, info ) { }
 
 		bool firstTick = true;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "Move")
 			{
 				UnReserve();
-				
+
 				var target = self.World.ClampToWorld(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -111,11 +111,11 @@ namespace OpenRA
         {
             return (k & mod) == mod;
         }
-		
+
 		public static bool IsValidInput(this KeyInput key)
 		{
-			return char.IsLetter(key.UnicodeChar) || char.IsDigit(key.UnicodeChar) || 
-					char.IsSymbol(key.UnicodeChar) || char.IsSeparator(key.UnicodeChar) || 
+			return char.IsLetter(key.UnicodeChar) || char.IsDigit(key.UnicodeChar) ||
+					char.IsSymbol(key.UnicodeChar) || char.IsSeparator(key.UnicodeChar) ||
 					char.IsPunctuation(key.UnicodeChar);
 		}
 
@@ -149,7 +149,7 @@ namespace OpenRA
             // this is probably a shockingly-slow way to do this, but it's concise.
             return xs.Except(ys).Concat(ys.Except(xs));
         }
-		
+
 		public static IEnumerable<T> Iterate<T>( this T t, Func<T,T> f )
 		{
 			for(;;) { yield return t; t = f(t); }

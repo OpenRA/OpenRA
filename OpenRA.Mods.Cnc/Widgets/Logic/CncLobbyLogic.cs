@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			   EditableSpectatorTemplate, NonEditableSpectatorTemplate, NewSpectatorTemplate;
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
-		
+
 		ScrollPanelWidget Players;
 		Dictionary<string, string> CountryNames;
 		string MapUid;
 		Map Map;
-		
+
 		CncColorPickerPaletteModifier PlayerPalettePreview;
 
 		readonly Action OnGameStart;
@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				// Show connection failed dialog
 				CloseWindow();
-				
-				Action onConnect = () => 
+
+				Action onConnect = () =>
 				{
 					Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 					{
@@ -54,23 +54,23 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						{ "addBots", false }
 					});
 				};
-				
+
 				Action onRetry = () =>
 				{
 					CloseWindow();
 					CncConnectingLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
-				
+
 				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 	            {
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry },
 					{ "host", om.Host },
 					{ "port", om.Port }
-				});	
+				});
 			}
 		}
-		
+
 		public void CloseWindow()
 		{
 			Game.LobbyInfoChanged -= UpdateCurrentMap;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Game.BeforeGameStart -= OnGameStart;
 			Game.AddChatLine -= AddChatLine;
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
-			
+
 			Widget.CloseWindow();
 		}
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;
-			
+
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.BeforeGameStart += OnGameStart;
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				chatLabel.Text = (teamChat) ? "Team:" : "Chat:";
 				return true;
 			};
-			
+
 			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
 			chatPanel.RemoveChildren();
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot, bot)));
 				});
 		}
-		
+
 		public void AddChatLine(Color c, string from, string text)
 		{
 			var template = chatTemplate.Clone() as ContainerWidget;
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			public string Title;
 			public string Order;
 			public Func<bool> Selected;
-			
+
 			public SlotDropDownOption(string title, string order, Func<bool> selected)
 			{
 				Title = title;
@@ -296,7 +296,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Selected = selected;
 			}
 		}
-		
+
 		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
 		{
 			var options = new List<SlotDropDownOption>()
@@ -322,10 +322,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
 			};
-			
+
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
-		
+
 		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
@@ -339,10 +339,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				flag.GetImageName = () => race;
 				return item;
 			};
-			
+
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
 		}
-				
+
 		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
-			
+
 			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count()+1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
@@ -363,7 +363,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.SpawnPoint == ii, 
+				                                  () => client.SpawnPoint == ii,
 				                                  () => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
@@ -390,25 +390,25 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				color.RemovePanel();
 				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
 			};
-			
+
 			Action<ColorRamp> onChange = c => PlayerPalettePreview.Ramp = c;
-			
+
 			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onSelect", onSelect },
 				{ "onChange", onChange },
 				{ "initialRamp", client.ColorRamp }
 			});
-			
+
 			color.AttachPanel(colorChooser);
 		}
-		
+
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
 			// Todo: handle this nicer
 			Players.RemoveChildren();
-			
+
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
 				var key = kv.Key;
@@ -487,14 +487,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor || ready;
 					color.OnMouseDown = _ => ShowColorDropDown(color, client);
-					
+
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => slot.LockRace || ready;
 					faction.OnMouseDown = _ => ShowRaceDropDown(faction, client);
-					
+
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];
 					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
@@ -543,7 +543,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var spawn = template.GetWidget<LabelWidget>("SPAWN");
 					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
-					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
 						client.Bot != null || client.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
@@ -605,7 +605,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => c.ColorRamp.GetColor(0);
 
-					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => 
+					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
 						c.Bot != null || c.State == Session.ClientState.Ready;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");

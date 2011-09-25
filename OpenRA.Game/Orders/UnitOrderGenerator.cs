@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -39,7 +39,7 @@ namespace OpenRA.Orders
 				{
 					TargetString = string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray())
 				};
-                   
+
 
             foreach (var o in orders)
                 yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target, mi.Modifiers.HasModifier(Modifiers.Shift)));
@@ -88,7 +88,7 @@ namespace OpenRA.Orders
 					.OrderByDescending( x => x.Order.OrderPriority ) )
 				{
 					var actorsAt = self.World.ActorMap.GetUnitsAt( xy ).ToList();
-					
+
 					var forceAttack = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 					var forceQueue = mi.Modifiers.HasModifier(Modifiers.Shift);
 					string cursor = null;

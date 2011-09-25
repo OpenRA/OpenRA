@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Red;
 		public readonly int2 DockOffset = new int2 (1, 2);
-		
+
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
@@ -39,10 +39,10 @@ namespace OpenRA.Mods.RA
 		readonly Actor self;
 		readonly OreRefineryInfo Info;
 		PlayerResources PlayerResources;
-		
+
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
-		
+
 		[Sync]
 		public int Ore = 0;
 
@@ -50,14 +50,14 @@ namespace OpenRA.Mods.RA
 		Actor dockedHarv = null;
 		[Sync]
 		bool preventDock = false;
-		
+
 		public bool AllowDocking { get { return !preventDock; } }
 		public int2 DeliverOffset { get { return Info.DockOffset; } }
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
 			return new RAHarvesterDockSequence(harv, self);
 		}
-		
+
 		public OreRefinery(Actor self, OreRefineryInfo info)
 		{
 			this.self = self;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
             return self.World.ActorsWithTrait<Harvester>()
                 .Where(a => a.Trait.LinkedProc == self);
         }
-		
+
 		public bool CanGiveOre(int amount)
 		{
 			return PlayerResources.CanGiveOre(amount);
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 			if (dockedHarv != null && !dockedHarv.IsDead())
 				dockedHarv.CancelActivity();
 		}
-		
+
 		public void Tick(Actor self)
 		{
 			// Harvester was killed while unloading
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 				self.Trait<RenderBuilding>().CancelCustomAnim(self);
 				dockedHarv = null;
 			}
-			
+
 			if (Info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
 				var temp = currentDisplayValue;
@@ -125,18 +125,18 @@ namespace OpenRA.Mods.RA
 			{
 				harv.QueueActivity( new CallFunc( () => dockedHarv = harv, false ) );
 				harv.QueueActivity( DockSequence(harv, self) );
-				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );			
+				harv.QueueActivity( new CallFunc( () => dockedHarv = null, false ) );
 			}
 			harv.QueueActivity( new CallFunc( () => harv.Trait<Harvester>().ContinueHarvesting(harv) ) );
 		}
-		
-		
+
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
-		{		
+		{
 			// Steal any docked harv too
 			if (dockedHarv != null)
 				dockedHarv.ChangeOwner(newOwner);
-			
+
 			// Unlink any non-docked harvs
             foreach (var harv in GetLinkedHarvesters())
                 if (harv.Actor.Owner == oldOwner)

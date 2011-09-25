@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -28,11 +28,11 @@ namespace OpenRA.Mods.RA.Air
 		HelicopterInfo Info;
 		bool firstTick = true;
 
-		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info ) 
+		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info )
 		{
 			Info = info;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (reservation != null)
@@ -44,11 +44,11 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "Move")
 			{
 				var target = self.World.ClampToWorld(order.TargetLocation);
-				
+
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(Util.CenterOfCell(target)));
-					
+
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
@@ -65,9 +65,9 @@ namespace OpenRA.Mods.RA.Air
 
 				var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 				var offset = exit != null ? exit.SpawnOffset : int2.Zero;
-				
+
 				self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
-				
+
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
 				self.QueueActivity(new Turn(Info.InitialFacing));
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Air
 				}
 			}
 		}
-		
+
 		public void Tick(Actor self)
 		{
 			if (firstTick)
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Air
 			var aircraft = self.Trait<Aircraft>();
 			if (aircraft.Altitude <= 0)
 				return;
-			
+
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA.Air
 			if( h.Trait<Helicopter>().Altitude < Altitude )
 				return int2.Zero;
 			var d = self.CenterLocation - h.CenterLocation;
-			
+
 			if (d.Length > Info.IdealSeparation)
 				return int2.Zero;
 

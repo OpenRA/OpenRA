@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -61,11 +61,11 @@ namespace OpenRA.FileFormats
 					while ((temp = s.Pop()) != "(") yield return temp;
 				}
 				else if (char.IsNumber(t[0])) yield return t;
-				else if (char.IsLetter(t[0])) 
+				else if (char.IsLetter(t[0]))
 				{
 					if (!syms.ContainsKey(t))
 						throw new InvalidOperationException("Substitution `{0}` undefined".F(t));
-					    
+
 					yield return syms[t].ToString();
 				}
 				else
@@ -74,7 +74,7 @@ namespace OpenRA.FileFormats
 					s.Push(t);
 				}
 			}
-			
+
 			while (s.Count > 0) yield return s.Pop();
 		}
 

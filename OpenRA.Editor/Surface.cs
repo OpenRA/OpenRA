@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -33,7 +33,7 @@ namespace OpenRA.Editor
 		public float Zoom = 1.0f;
 
 		ITool Tool;
-		
+
 		public bool IsPanning;
 		public bool ShowActorNames;
 
@@ -153,7 +153,7 @@ namespace OpenRA.Editor
 				return;
 
 			Tool = null;
-			
+
 			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == BrushLocation);
 			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
 
@@ -286,7 +286,7 @@ namespace OpenRA.Editor
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
 			var drawPos = GetDrawPosition(p, t.Bitmap, centered);
-			
+
 			g.DrawRectangle(CordonPen,
 				drawPos.X, drawPos.Y,
 				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);
@@ -360,7 +360,7 @@ namespace OpenRA.Editor
 
 			if (Tool != null)
 				Tool.Preview(this, e.Graphics);
-				
+
 			if (Tool == null)
 			{
 				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());

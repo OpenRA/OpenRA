@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -18,7 +18,7 @@ namespace OpenRA.Widgets
 	{
 		public readonly int RemoveTime = 0;
         public readonly bool UseContrast = false;
-		
+
 		const int logLength = 9;
 		public string Notification = "";
 		public bool DrawBackground = true;
@@ -54,11 +54,11 @@ namespace OpenRA.Widgets
 					var owner = line.Owner + ":";
 					inset = font.Measure(owner).X + 10;
 
-					font.DrawTextWithContrast(owner, chatpos, 
+					font.DrawTextWithContrast(owner, chatpos,
                         line.Color, Color.Black, UseContrast ? 1 : 0);
 				}
 
-                font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0), 
+                font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0),
                     Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 
@@ -78,12 +78,12 @@ namespace OpenRA.Widgets
 
 		public void RemoveLine()
 		{
-			if (recentLines.Count > 0) recentLines.RemoveAt(0);	
+			if (recentLines.Count > 0) recentLines.RemoveAt(0);
 		}
 
 		public void ClearChat()
 		{
-			recentLines = new List<ChatLine>();	
+			recentLines = new List<ChatLine>();
 		}
 
 		public override void Tick()

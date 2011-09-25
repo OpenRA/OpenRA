@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	public class ProductionInfo : ITraitInfo
 	{
 		public readonly string[] Produces = { };
-		
+
 		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
 
@@ -31,15 +31,15 @@ namespace OpenRA.Mods.RA
 		public readonly int Facing = -1;
 	}
 	public class Exit {}
-	
+
 	public class Production
-	{		
+	{
 		public ProductionInfo Info;
 		public Production(ProductionInfo info)
 		{
 			Info = info;
 		}
-		
+
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
 			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 
 			var teleportable = newUnit.Trait<ITeleportable>();
 			var facing = newUnit.TraitOrDefault<IFacing>();
-			
+
 			// Set the physical position of the unit as the exit cell
 			teleportable.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
             }
 
             var target = MoveToRallyPoint(self, newUnit, exit);
-			
+
 			newUnit.SetTargetLine(Target.FromCell(target), Color.Green, false);
 			foreach (var t in self.TraitsImplementing<INotifyProduction>())
 				t.UnitProduced(self, newUnit, exit);
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA
         {
             var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
-            return mobileInfo == null || 
+            return mobileInfo == null ||
                 mobileInfo.CanEnterCell(self.World, self.Owner, self.Location + s.ExitCell, self, true);
         }
 	}

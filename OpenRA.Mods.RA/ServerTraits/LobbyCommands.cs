@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Server
 				server.SendChatTo(conn, "Cannot change state when marked as ready.");
 				return false;
 			}
-			
+
 			return true;
 		}
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Server
 		{
 			if (!ValidateCommand(server, conn, client, cmd))
 				return false;
-			
+
 			var dict = new Dictionary<string, Func<string, bool>>
 			{
 				{ "ready",
@@ -73,14 +73,14 @@ namespace OpenRA.Mods.RA.Server
 							conn.socket.RemoteEndPoint, client.State);
 
 						server.SyncLobbyInfo();
-						
+
 						if (server.conns.Count > 0 && server.conns.All(c => server.GetClient(c).State == Session.ClientState.Ready))
 							InterpretCommand(server, conn, client, "startgame");
-						
+
 						return true;
 					}},
-				{ "startgame", 
-					s => 
+				{ "startgame",
+					s =>
 					{
 						server.StartGame();
 						return true;
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.RA.Server
 							else if (c.Bot != null)
 								server.lobbyInfo.Clients.Remove(c);
 						}
-						
+
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Only the host can set that option" );
 							return true;
 						}
-						
+
 						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.LockTeams);
 						server.SyncLobbyInfo();
 						return true;
@@ -285,13 +285,13 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Only the host can set that option" );
 							return true;
 						}
-						
+
 						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.AllowCheats);
 						server.SyncLobbyInfo();
 						return true;
 					}},
 				{ "kick",
-					s => 
+					s =>
 					{
 
 						if (conn.PlayerIndex != 0)
@@ -304,12 +304,12 @@ namespace OpenRA.Mods.RA.Server
 						int.TryParse( s, out clientID );
 
 						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Index == clientID);
-						if (connToKick == null) 
+						if (connToKick == null)
 						{
 							server.SendChatTo( conn, "Noone in that slot." );
 							return true;
 						}
-						
+
 						server.SendOrderTo(connToKick, "ServerError", "You have been kicked from the server");
 						server.DropClient(connToKick);
 						server.SyncLobbyInfo();
@@ -417,17 +417,17 @@ namespace OpenRA.Mods.RA.Server
 						return true;
 					}}
 			};
-			
+
 			var cmdName = cmd.Split(' ').First();
 			var cmdValue = string.Join(" ", cmd.Split(' ').Skip(1).ToArray());
 
 			Func<string,bool> a;
 			if (!dict.TryGetValue(cmdName, out a))
 				return false;
-			
+
 			return a(cmdValue);
 		}
-		
+
 		public void ServerStarted(S server) { LoadMap(server); }
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
-{	
+{
 	public class CncIngameMenuLogic
 	{
 		Widget menu;
@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			menu = widget.GetWidget("INGAME_MENU");
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
-			
+
 			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
 
 			bool hideButtons = false;
 			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
-			
+
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
 			{
@@ -49,18 +49,18 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						Game.LoadShellMap();
 				});
 			};
-			
+
 			Action doNothing = () => {};
-			
+
 			menu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				CncWidgetUtils.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
-			
+
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			var surrenderButton = menu.GetWidget<ButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
 				CncWidgetUtils.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
-			
+
 			menu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "onExit", () => hideButtons = false },
 				});
 			};
-			
+
 			menu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
@@ -79,10 +79,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "onExit", () => hideButtons = false },
 				});
 			};
-			
+
 			var resumeButton = menu.GetWidget<ButtonWidget>("RESUME_BUTTON");
 			resumeButton.IsDisabled = () => resumeDisabled;
-			resumeButton.OnClick = () => 
+			resumeButton.OnClick = () =>
 			{
 				Widget.CloseWindow();
 				Widget.RootWidget.RemoveChild(menu);

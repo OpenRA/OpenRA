@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -70,11 +70,11 @@ namespace OpenRA.Mods.RA
 				Turrets.Add(new Turret(info.SecondaryOffset, info.SecondaryRecoilRecovery));
 
 			if (info.PrimaryWeapon != null)
-				Weapons.Add(new Weapon(info.PrimaryWeapon, 
+				Weapons.Add(new Weapon(info.PrimaryWeapon,
 					Turrets[0], info.PrimaryLocalOffset, info.PrimaryRecoil));
 
 			if (info.SecondaryWeapon != null)
-				Weapons.Add(new Weapon(info.SecondaryWeapon, 
+				Weapons.Add(new Weapon(info.SecondaryWeapon,
 					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset, info.SecondaryRecoil));
 		}
 
@@ -83,11 +83,11 @@ namespace OpenRA.Mods.RA
 			if (!target.IsValid) return false;
 			if (Weapons.All(w => w.IsReloading)) return false;
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) return false;
-			
+
 			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
 			    !target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
 				return false;
-			
+
 			return true;
 		}
 
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA
 					self.Trait<Turreted>().desiredFacing = null;
 			}
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (!self.World.Map.IsInMap(location))
 					return false;
-				
+
 				IsQueued = forceQueued;
 
 				cursor = isHeal ? "heal" : "attack";

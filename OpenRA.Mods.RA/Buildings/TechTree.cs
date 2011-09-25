@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -30,20 +30,20 @@ namespace OpenRA.Mods.RA.Buildings
 			init.world.ActorAdded += ActorChanged;
 			init.world.ActorRemoved += ActorChanged;
 		}
-		
+
 		public void ActorChanged(Actor a)
 		{
 			if (a.Owner == player && a.HasTrait<ITechTreePrerequisite>())
 				Update();
 		}
-				
+
 		public void Update()
 		{
 			var buildings = GatherBuildings(player);
 			foreach(var w in watchers)
 				w.Update(buildings);
 		}
-		
+
 		public void Add(string key, List<string> prerequisites, ITechTreeElement tte)
 		{
 			watchers.Add(new Watcher( key, prerequisites, tte ));
@@ -53,22 +53,22 @@ namespace OpenRA.Mods.RA.Buildings
 		{
 			watchers.RemoveAll(x => x.key == key);
 		}
-		
+
 		static Cache<string, List<Actor>> GatherBuildings( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
 			if (player == null)
 				return ret;
-			
+
 
             foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
                 	.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
 				foreach (var p in b.Trait.ProvidesPrerequisites)
 					ret[ p ].Add( b.Actor );
-			
+
 			return ret;
 		}
-		
+
 		class Watcher
 		{
 			public readonly string key;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Buildings
 			public readonly List<string> prerequisites;
 			public readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			
+
 			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
 			{
 				this.key = key;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Buildings
 			}
 
 			public void Update(Cache<string, List<Actor>> buildings)
-			{                   
+			{
 				var nowHasPrerequisites = true;
 				foreach (var p in prerequisites)
 					if (!buildings.Keys.Contains(p))
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Buildings
 						nowHasPrerequisites = false;
 						break;
 					}
-				
+
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.PrerequisitesAvailable(key);
 
@@ -111,12 +111,12 @@ namespace OpenRA.Mods.RA.Buildings
 		void PrerequisitesAvailable(string key);
 		void PrerequisitesUnavailable(string key);
 	}
-	
+
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites {get;}
 	}
-	
+
 	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
 	{
 		public string Prerequisite;

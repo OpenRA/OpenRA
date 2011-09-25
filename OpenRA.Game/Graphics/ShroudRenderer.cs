@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 		Traits.Shroud shroud;
 		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
-		
+
 		bool dirty = true;
 		Map map;
 
@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 		{
 			this.shroud = world.LocalShroud;
 			this.map = world.Map;
-			
+
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			shroud.Dirty += () => dirty = true;
@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 			new byte[] { 41 },
 			new byte[] { 46 },
 		};
-				
+
 		Sprite ChooseShroud(int i, int j)
 		{
 			if( !shroud.IsExplored( i, j ) ) return shadowBits[ 0xf ];
@@ -75,7 +75,7 @@ namespace OpenRA.Graphics
 
 			return shadowBits[ SpecialShroudTiles[ u ^ uSides ][ v ] ];
 		}
-				
+
 		Sprite ChooseFog(int i, int j)
 		{
 			if (!shroud.IsVisible(i,j)) return shadowBits[0xf];
@@ -102,14 +102,14 @@ namespace OpenRA.Graphics
 		}
 
 		internal void Draw( WorldRenderer wr )
-		{			
+		{
 			if (dirty)
 			{
 				dirty = false;
 				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
 					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 						sprites[i, j] = ChooseShroud(i, j);
-				
+
 				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
 					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 						fogSprites[i, j] = ChooseFog(i, j);

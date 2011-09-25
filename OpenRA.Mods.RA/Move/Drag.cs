@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,13 +26,13 @@ namespace OpenRA.Mods.RA.Move
 			endLocation = end;
 			this.length = length;
 		}
-		
+
 		int ticks = 0;
 		public override Activity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
 			mobile.PxPosition = int2.Lerp(startLocation, endLocation, ticks, length - 1);
-			
+
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;

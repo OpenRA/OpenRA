@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 				ticks = info.SpawnInterval * 25;		// todo: randomize
 
 				crates.RemoveAll(x => !x.IsInWorld);
-				
+
 				var toSpawn = Math.Max(0, info.Minimum - crates.Count)
 					+ (crates.Count < info.Maximum ? 1 : 0);
 
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 					SpawnCrate(self, info);
 			}
 		}
-		
+
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
 			var threshold = 100;
@@ -57,11 +57,11 @@ namespace OpenRA.Mods.RA
 			for (var n = 0; n < threshold; n++ )
 			{
 				var p = self.World.ChooseRandomCell(self.World.SharedRandom);
-				
+
 				// Is this valid terrain?
 				var terrainType = self.World.GetTerrainType(p);
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType)) continue;
-				
+
 				// Don't spawn on any actors
 				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null) continue;
 				if (self.World.ActorMap.GetUnitsAt(p).Any()) continue;

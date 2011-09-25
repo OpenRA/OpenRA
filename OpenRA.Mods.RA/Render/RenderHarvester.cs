@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,11 +26,11 @@ namespace OpenRA.Mods.RA.Render
 	{
 		Harvester harv;
 		RenderHarvesterInfo info;
-		
-		public RenderHarvester(Actor self, RenderHarvesterInfo info) : base(self) 
+
+		public RenderHarvester(Actor self, RenderHarvesterInfo info) : base(self)
 		{
 			this.info = info;
-			
+
 			harv = self.Trait<Harvester>();
 			foreach( var image in info.ImagesByFullness )
 				new Animation( image );	/* just force these to get loaded upfront */

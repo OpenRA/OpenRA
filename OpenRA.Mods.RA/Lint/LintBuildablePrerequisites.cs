@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,11 +21,11 @@ namespace OpenRA.Mods.RA
     {
         public void Run(Action<string> emitError, Action<string> emitWarning)
         {
-			var providedPrereqs = Rules.Info.Keys.Concat( 
+			var providedPrereqs = Rules.Info.Keys.Concat(
 				Rules.Info.SelectMany( a => a.Value.Traits
 			        .WithInterface<ProvidesCustomPrerequisiteInfo>()
 			        .Select( p => p.Prerequisite ))).ToArray();
-			
+
 			foreach( var i in Rules.Info )
 			{
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();

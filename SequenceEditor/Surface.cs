@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,7 +26,7 @@ namespace SequenceEditor
 			UpdateStyles();
 		}
 
-		Dictionary<string, Dictionary<int, Rectangle>> items 
+		Dictionary<string, Dictionary<int, Rectangle>> items
 			= new Dictionary<string, Dictionary<int, Rectangle>>();
 
 		Point mousePos;
@@ -120,7 +120,7 @@ namespace SequenceEditor
 		{
 			base.OnPaint(e);
 
-			var x = 0; 
+			var x = 0;
 			var y = 0;
 
 			Point? toolPoint = null;
@@ -142,11 +142,11 @@ namespace SequenceEditor
 				var start = FindFrameAt(clickPos);
 				var end = FindFrameAt(mousePos);
 
-				if (start != null && end != null 
+				if (start != null && end != null
 					&& start.Value.First == end.Value.First)
-					tempSequence = new Sequence() { 
-						start = start.Value.Second, 
-						length = end.Value.Second - start.Value.Second + 1, 
+					tempSequence = new Sequence() {
+						start = start.Value.Second,
+						length = end.Value.Second - start.Value.Second + 1,
 						shp = start.Value.First };
 			}
 

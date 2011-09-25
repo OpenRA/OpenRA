@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -46,17 +46,17 @@ namespace OpenRA.Graphics
 				currentSheet = null;
 			}
 		}
-				
+
 		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette)
 		{
 			DrawSprite(s, location, wr.GetPaletteIndex(palette), s.size);
 		}
-		
+
 		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette, float2 size)
 		{
 			DrawSprite(s, location, wr.GetPaletteIndex(palette), size);
 		}
-		
+
 		public void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)
 		{
 			Renderer.CurrentBatchRenderer = this;
@@ -71,14 +71,14 @@ namespace OpenRA.Graphics
 			Util.FastCreateQuad(vertices, location.ToInt2(), s, paletteIndex, nv, size);
 			nv += 4;
 		}
-		
-		
+
+
 		// For RGBASpriteRenderer, which doesn't use palettes
 		public void DrawSprite(Sprite s, float2 location)
 		{
 			DrawSprite(s, location, 0, s.size);
 		}
-		
+
 		public void DrawSprite(Sprite s, float2 location, float2 size)
 		{
 			DrawSprite(s, location, 0, size);

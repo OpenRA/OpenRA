@@ -25,13 +25,13 @@ namespace OpenRA.Traits.Activities
 			else
 				NextActivity = activity;
 		}
-		
+
 		public virtual IEnumerable<Target> GetTargets( Actor self )
 		{
 			yield break;
 		}
 	}
-	
+
 	public static class ActivityExts
 	{
 		public static IEnumerable<Target> GetTargetQueue( this Actor self )

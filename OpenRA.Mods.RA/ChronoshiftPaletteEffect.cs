@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -37,14 +37,14 @@ namespace OpenRA.Mods.RA
 		{
 			if (remainingFrames == 0)
 				return;
-			
+
 			var frac = (float)remainingFrames / chronoEffectLength;
 			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
 			foreach (var pal in palettes)
 			{
 				if (excludePalettes.Contains(pal.Key))
 					continue;
-				
+
 				for (var x = 0; x < 256; x++)
 				{
 					var orig = pal.Value.GetColor(x);

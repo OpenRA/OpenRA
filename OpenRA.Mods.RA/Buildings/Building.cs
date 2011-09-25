@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int Adjacent = 2;
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
-		
+
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Buildings
 			var nearnessCandidates = new List<int2>();
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
-			
+
 			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
@@ -76,26 +76,26 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public int2 TopLeft	{ get { return topLeft; } }
 		public int2 PxPosition { get { return pxPosition; } }
-		
+
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
-		
+
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			this.self = init.self;
 			this.topLeft = init.Get<LocationInit,int2>();
 			this.Info = info;
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
-			
+
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 			pxPosition = ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2;
 		}
-		
+
 		public int GetPowerUsage()
 		{
 			if (Info.Power <= 0)
 				return Info.Power;
-			
+
 			var health = self.TraitOrDefault<Health>();
 			return health != null ? (Info.Power * health.HP / health.MaxHP) : Info.Power;
 		}

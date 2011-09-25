@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,9 +29,9 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 		public HardwarePalette Palette { get; private set; }
-		
+
 		public ModData( params string[] mods )
-		{		
+		{
 			Manifest = new Manifest( mods );
 			ObjectCreator = new ObjectCreator( Manifest );
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
@@ -42,7 +42,7 @@ namespace OpenRA
 
 		public void LoadInitialAssets()
 		{
-			// all this manipulation of static crap here is nasty and breaks 
+			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
 
 			FileSystem.UnmountAll();
@@ -66,7 +66,7 @@ namespace OpenRA
 			if (!AvailableMaps.ContainsKey(uid))
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 			var map = new Map(AvailableMaps[uid].Path);
-			
+
 			// Reinit all our assets
 			LoadInitialAssets();
 			foreach (var pkg in Manifest.Packages)
@@ -74,14 +74,14 @@ namespace OpenRA
 
 			// Mount map package so custom assets can be used. TODO: check priority.
 			FileSystem.Mount(FileSystem.OpenPackage(map.Path, int.MaxValue));
-		
+
 			Rules.LoadRules(Manifest, map);
 			SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-			
+
 			return map;
 		}
-		
+
         public static IEnumerable<string> FindMapsIn(string dir)
         {
             string[] NoMaps = { };
@@ -98,7 +98,7 @@ namespace OpenRA
 		{
             var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
 				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
-			
+
 			var ret = new Dictionary<string, Map>();
 			foreach (var path in paths)
 			{
@@ -115,9 +115,9 @@ namespace OpenRA
 			}
 			return ret;
 		}
-		
+
 	}
-	
+
 	public interface ILoadScreen
 	{
 		void Init(Dictionary<string, string> info);

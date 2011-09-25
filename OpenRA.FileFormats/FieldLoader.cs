@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -77,7 +77,7 @@ namespace OpenRA.FileFormats
 					field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
 				return;
 			}
-			
+
 			var prop = self.GetType().GetProperty( key.Trim() );
 
 			if (prop != null)
@@ -207,7 +207,7 @@ namespace OpenRA.FileFormats
 				var argValues = new object[] { parts };
 				return fieldType.GetConstructor(argTypes).Invoke(argValues);
 			}
-			
+
 			UnknownFieldAction("[Type] {0}".F(x),fieldType);
 			return null;
 		}
@@ -304,7 +304,7 @@ namespace OpenRA.FileFormats
 		{
 			return new MiniYamlNode(field, FieldSaver.FormatValue( o, o.GetType().GetField(field) ));
 		}
-		
+
 		public static string FormatValue(object o, FieldInfo f)
 		{
 			var v = f.GetValue(o);

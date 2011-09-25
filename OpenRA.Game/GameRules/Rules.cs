@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -33,7 +33,7 @@ namespace OpenRA
 			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
 			Music = LoadYamlRules(m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
 			Movies = LoadYamlRules(m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
-			
+
 			TileSets = new Dictionary<string, TileSet>();
 			foreach (var file in m.TileSets)
 			{
@@ -41,7 +41,7 @@ namespace OpenRA
 				TileSets.Add(t.Id,t);
 			}
 		}
-		
+
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
 			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.MergeLiberal);

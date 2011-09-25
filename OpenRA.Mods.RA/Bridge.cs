@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,17 +20,17 @@ namespace OpenRA.Mods.RA
 	class BridgeInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly bool Long = false;
-		
-		
+
+
 		public readonly ushort Template = 0;
 		public readonly ushort DamagedTemplate = 0;
 		public readonly ushort DestroyedTemplate = 0;
-		
+
 		// For long bridges
 		public readonly ushort DestroyedPlusNorthTemplate = 0;
 		public readonly ushort DestroyedPlusSouthTemplate = 0;
 		public readonly ushort DestroyedPlusBothTemplate = 0;
-		
+
 		public readonly string[] ShorePieces = {"br1", "br2"};
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
@@ -70,13 +70,13 @@ namespace OpenRA.Mods.RA
 		Dictionary<ushort, Dictionary<int2, Sprite>> TileSprites = new Dictionary<ushort, Dictionary<int2, Sprite>>();
 		Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		ushort currentTemplate;
-		
+
 		Actor self;
 		BridgeInfo Info;
 		public string Type;
 		Bridge northNeighbour, southNeighbour;
 		Health Health;
-		
+
 		public Bridge(Actor self, BridgeInfo info)
 		{
 			this.self = self;
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA
 		public void Create(ushort template, Dictionary<int2, byte> subtiles)
 		{
 			currentTemplate = template;
-				
+
 			// Create a new cache to store the tile data
 			if (cachedTileset != self.World.Map.Tileset)
 			{
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 				x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x),
 					new Size(Game.CellSize, Game.CellSize)));
 			}
-			
+
 			// Cache templates and tiles for the different states
 			foreach (var t in Info.Templates)
 			{
@@ -112,14 +112,14 @@ namespace OpenRA.Mods.RA
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
-		
+
 		public string GetTerrainType(int2 cell)
 		{
 			var dx = cell - self.Location;
 			var index = dx.X + Templates[currentTemplate].Size.X*dx.Y;
 			return self.World.TileSet.GetTerrainType(new TileReference<ushort, byte>(currentTemplate,(byte)index));
 		}
-		
+
 		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)
 		{
 			// go looking for our neighbors if this is a long bridge.
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA
 			if (Info.SouthOffset != null)
 				southNeighbour = GetNeighbor(Info.SouthOffset, bridges);
 		}
-		
+
 		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
 		{
 			if (offset == null) return null;
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 			foreach (var t in TileSprites[currentTemplate])
 				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain", Game.CellSize * t.Key.Y);
 		}
-		
+
 		bool IsIntact(Bridge b)
 		{
 			return b != null && !b.self.IsDead();
@@ -153,10 +153,10 @@ namespace OpenRA.Mods.RA
 					if (a.HasTrait<IMove>() && !a.Trait<IMove>().CanEnterCell(c))
 						a.Kill(self);
 		}
-		
+
 		bool dead = false;
 		void UpdateState()
-		{						
+		{
 			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
 			if (Info.Long && Health.DamageState != DamageState.Dead &&
 			    ((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||

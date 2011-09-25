@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -31,14 +31,14 @@ namespace OpenRA.FileFormats
 		readonly long dataStart;
 		readonly Stream s;
 		int priority;
-		
+
 		// Create a new MixFile
 		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.priority = priority;
 			if (File.Exists(filename))
 				File.Delete(filename);
-			
+
 			s = File.Create(filename);
 			Write(contents);
 		}
@@ -137,7 +137,7 @@ namespace OpenRA.FileFormats
 			dataStart = s.Position;
 			return items;
 		}
-		
+
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;
@@ -159,7 +159,7 @@ namespace OpenRA.FileFormats
 		{
 			return index.Keys;
 		}
-		
+
 		public bool Exists(string filename)
 		{
 			return index.ContainsKey(PackageEntry.HashFilename(filename));
@@ -170,17 +170,17 @@ namespace OpenRA.FileFormats
 		{
 			get { return 1000 + priority; }
 		}
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and
 			// create a new one with original content plus modifications
 			FileSystem.Unmount(this);
-			
+
 			// TODO: Add existing data to the contents list
 			if (index.Count > 0)
 				throw new NotImplementedException("Updating mix files unfinished");
-		
+
 			// Construct a list of entries for the file header
 			uint dataSize = 0;
 			var items = new List<PackageEntry>();

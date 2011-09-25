@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Cnc
 			Undock,
 			Dragout
 		};
-		
+
 		readonly Actor proc;
 		readonly Harvester harv;
 		readonly RenderUnit ru;
 		State state;
-		
+
 		int2 startDock;
 		int2 endDock;
 		public HarvesterDockSequence(Actor self, Actor proc)
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc
 			startDock = self.Trait<IHasLocation>().PxPosition;
 			endDock = proc.Trait<IHasLocation>().PxPosition + new int2(-15,8);
 		}
-		
+
 		public override Activity Tick(Actor self)
 		{
 			switch (state)

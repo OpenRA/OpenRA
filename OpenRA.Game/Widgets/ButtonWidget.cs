@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};
 		public Action<KeyInput> OnKeyPress = _ => {};
-		
+
 		public ButtonWidget()
 			: base()
 		{
@@ -60,12 +60,12 @@ namespace OpenRA.Widgets
 			Depressed = false;
 			return base.LoseFocus(mi);
 		}
-		
+
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.KeyName != Key || e.Event != KeyInputEvent.Down)
 				return false;
-			
+
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
@@ -76,12 +76,12 @@ namespace OpenRA.Widgets
 
 			return true;
 		}
-		
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
 				return false;
-			
+
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
 				return false;
 
@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 			{
 				if (Depressed && !disabled)
 					OnMouseUp(mi);
-				
+
 				return LoseFocus(mi);
 			}
 			if (mi.Event == MouseInputEvent.Down)
@@ -115,19 +115,19 @@ namespace OpenRA.Widgets
 			return Depressed;
 		}
 
-		public override int2 ChildOrigin { get { return RenderOrigin + 
+		public override int2 ChildOrigin { get { return RenderOrigin +
 				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
 
 		public override void Draw()
 		{
 			var rb = RenderBounds;
 			var disabled = IsDisabled();
-			
+
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
-			
+
 			DrawBackground(rb, disabled, Depressed, Widget.MouseOverWidget == this);
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
 			              disabled ? Color.Gray : Color.White);
@@ -143,11 +143,11 @@ namespace OpenRA.Widgets
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover)
 		{
-			var state = disabled ? "-disabled" : 
-						pressed ? "-pressed" : 
-						hover ? "-hover" : 
+			var state = disabled ? "-disabled" :
+						pressed ? "-pressed" :
+						hover ? "-hover" :
 						"";
-			
+
 			WidgetUtils.DrawPanel(baseName + state, rect);
 		}
 	}

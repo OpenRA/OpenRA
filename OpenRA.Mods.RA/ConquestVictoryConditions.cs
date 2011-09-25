@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,22 +25,22 @@ namespace OpenRA.Mods.RA
 	{
 		ConquestVictoryConditionsInfo Info;
 		public ConquestVictoryConditions(ConquestVictoryConditionsInfo info) { Info = info; }
-		
+
 		public void Tick(Actor self)
 		{
 			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
-			
+
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
                 .Any( a => a.Actor.Owner == self.Owner );
 
 			if (!hasAnything && !self.Owner.NonCombatant)
 				Lose(self);
-			
-			var others = self.World.Players.Where( p => !p.NonCombatant 
+
+			var others = self.World.Players.Where( p => !p.NonCombatant
                 && p != self.Owner && p.Stances[self.Owner] != Stance.Ally );
 
-			if (others.Count() == 0) return;	
-			
+			if (others.Count() == 0) return;
+
 			if(others.All(p => p.WinState == WinState.Lost))
 				Win(self);
 		}
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner.WinState == WinState.Lost) return;
 			self.Owner.WinState = WinState.Lost;
-			
+
 			Game.Debug("{0} is defeated.".F(self.Owner.PlayerName));
 
             foreach (var a in self.World.Actors.Where(a => a.Owner == self.Owner))
@@ -71,12 +71,12 @@ namespace OpenRA.Mods.RA
 				});
 			}
 		}
-		
-		public void Win(Actor self)	
+
+		public void Win(Actor self)
 		{
 			if (self.Owner.WinState == WinState.Won) return;
 			self.Owner.WinState = WinState.Won;
-			
+
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
 			if (self.Owner == self.World.LocalPlayer)
 			{

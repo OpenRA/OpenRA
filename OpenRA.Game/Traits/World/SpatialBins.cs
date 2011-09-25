@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -58,7 +58,7 @@ namespace OpenRA.Traits
 				var i2 = Math.Min(bins.GetUpperBound(0), bounds.Right / scale);
 				var j1 = Math.Max(0, bounds.Top / scale);
 				var j2 = Math.Min(bins.GetUpperBound(1), bounds.Bottom / scale);
-				
+
 				for (var j = j1; j <= j2; j++)
 					for (var i = i1; i <= i2; i++)
 						bins[i, j].Add(a.Actor);

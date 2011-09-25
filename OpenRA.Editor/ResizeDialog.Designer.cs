@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -56,9 +56,9 @@ namespace OpenRA.Editor
 			((System.ComponentModel.ISupportInitialize)(this.cordonBottom)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.height)).BeginInit();
 			this.SuspendLayout();
-			// 
+			//
 			// width
-			// 
+			//
 			this.width.Increment = new decimal(new int[] {
             8,
             0,
@@ -73,27 +73,27 @@ namespace OpenRA.Editor
 			this.width.Name = "width";
 			this.width.Size = new System.Drawing.Size(105, 20);
 			this.width.TabIndex = 0;
-			// 
+			//
 			// label1
-			// 
+			//
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(23, 20);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(27, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Size";
-			// 
+			//
 			// label2
-			// 
+			//
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(23, 46);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(86, 13);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "Cordon Left/Top";
-			// 
+			//
 			// cordonLeft
-			// 
+			//
 			this.cordonLeft.Location = new System.Drawing.Point(161, 44);
 			this.cordonLeft.Maximum = new decimal(new int[] {
             2048,
@@ -103,9 +103,9 @@ namespace OpenRA.Editor
 			this.cordonLeft.Name = "cordonLeft";
 			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
 			this.cordonLeft.TabIndex = 0;
-			// 
+			//
 			// cordonTop
-			// 
+			//
 			this.cordonTop.Location = new System.Drawing.Point(272, 44);
 			this.cordonTop.Maximum = new decimal(new int[] {
             2048,
@@ -115,9 +115,9 @@ namespace OpenRA.Editor
 			this.cordonTop.Name = "cordonTop";
 			this.cordonTop.Size = new System.Drawing.Size(105, 20);
 			this.cordonTop.TabIndex = 0;
-			// 
+			//
 			// cordonRight
-			// 
+			//
 			this.cordonRight.Location = new System.Drawing.Point(161, 70);
 			this.cordonRight.Maximum = new decimal(new int[] {
             2048,
@@ -127,9 +127,9 @@ namespace OpenRA.Editor
 			this.cordonRight.Name = "cordonRight";
 			this.cordonRight.Size = new System.Drawing.Size(105, 20);
 			this.cordonRight.TabIndex = 0;
-			// 
+			//
 			// cordonBottom
-			// 
+			//
 			this.cordonBottom.Location = new System.Drawing.Point(272, 70);
 			this.cordonBottom.Maximum = new decimal(new int[] {
             2048,
@@ -139,18 +139,18 @@ namespace OpenRA.Editor
 			this.cordonBottom.Name = "cordonBottom";
 			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
 			this.cordonBottom.TabIndex = 0;
-			// 
+			//
 			// label3
-			// 
+			//
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(23, 72);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(107, 13);
 			this.label3.TabIndex = 1;
 			this.label3.Text = "Cordon Right/Bottom";
-			// 
+			//
 			// button1
-			// 
+			//
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.button1.Location = new System.Drawing.Point(302, 111);
 			this.button1.Name = "button1";
@@ -158,9 +158,9 @@ namespace OpenRA.Editor
 			this.button1.TabIndex = 2;
 			this.button1.Text = "Cancel";
 			this.button1.UseVisualStyleBackColor = true;
-			// 
+			//
 			// button2
-			// 
+			//
 			this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.button2.Location = new System.Drawing.Point(221, 111);
 			this.button2.Name = "button2";
@@ -168,9 +168,9 @@ namespace OpenRA.Editor
 			this.button2.TabIndex = 2;
 			this.button2.Text = "OK";
 			this.button2.UseVisualStyleBackColor = true;
-			// 
+			//
 			// height
-			// 
+			//
 			this.height.Increment = new decimal(new int[] {
             8,
             0,
@@ -185,9 +185,9 @@ namespace OpenRA.Editor
 			this.height.Name = "height";
 			this.height.Size = new System.Drawing.Size(105, 20);
 			this.height.TabIndex = 0;
-			// 
+			//
 			// ResizeDialog
-			// 
+			//
 			this.AcceptButton = this.button2;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

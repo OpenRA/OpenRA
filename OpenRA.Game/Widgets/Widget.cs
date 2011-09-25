@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -397,15 +397,15 @@ namespace OpenRA.Widgets
         public override string GetCursor(int2 pos) { return null; }
         public override Widget Clone() { return new ContainerWidget(this); }
     }
-	
+
 	public class WidgetArgs : Dictionary<string, object>
 	{
 		public WidgetArgs() : base() { }
 		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}
-	
-	// TODO: you should use this anywhere you want to do 
+
+	// TODO: you should use this anywhere you want to do
 	// something in a logic ctor, but retain debuggability.
     public interface ILogicWithInit
     {

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -65,22 +65,22 @@ namespace OpenRA
 					if (r * r >= (new int2(i, j) - a).LengthSquared)
 						yield return new int2(i, j);
 		}
-		
+
 		public static string GetTerrainType(this World world, int2 cell)
 		{
 			var custom = world.Map.CustomTerrain[cell.X, cell.Y];
 			return custom != null ? custom : world.TileSet.GetTerrainType(world.Map.MapTiles.Value[cell.X, cell.Y]);
 		}
-		
+
 		public static TerrainTypeInfo GetTerrainInfo(this World world, int2 cell)
 		{
 			return world.TileSet.Terrain[world.GetTerrainType(cell)];
 		}
-		
+
 		public static int2 ClampToWorld( this World world, int2 xy )
 		{
 			var r = world.Map.Bounds;
-			return xy.Clamp(new Rectangle(r.X,r.Y,r.Width-1, r.Height-1));			
+			return xy.Clamp(new Rectangle(r.X,r.Y,r.Width-1, r.Height-1));
 		}
 
 		public static int2 ChooseRandomEdgeCell(this World w)
@@ -113,7 +113,7 @@ namespace OpenRA
 				.Sum() / samples;
 		}
 
-		// Returns a random offset in the range [-1..1,-1..1] with a separable 
+		// Returns a random offset in the range [-1..1,-1..1] with a separable
 		// Gauss distribution with 'samples' values taken for each axis
 		public static float2 Gauss2D(this Thirdparty.Random r, int samples)
 		{
@@ -124,7 +124,7 @@ namespace OpenRA
 		{
 			return a.Info.Traits.Contains<SelectableInfo>() && a.Info.Traits.Get<SelectableInfo>().Voice != null;
 		}
-		
+
 		public static VoiceInfo GetVoice(this Actor a)
 		{
 			if (!a.Info.Traits.Contains<SelectableInfo>()) return null;

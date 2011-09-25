@@ -1,12 +1,12 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  *
- * This file is based on the blast routines (version 1.1 by Mark Adler) 
+ * This file is based on the blast routines (version 1.1 by Mark Adler)
  * included in zlib/contrib
  */
 #endregion
@@ -20,7 +20,7 @@ namespace OpenRA.FileFormats
 	{
 		public static readonly int MAXBITS = 13; // maximum code length
 		public static readonly int MAXWIN = 4096; // maximum window size
-		
+
 		static byte[] litlen = new byte[] {
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
@@ -51,28 +51,28 @@ namespace OpenRA.FileFormats
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
 		};
-		
+
 		static Huffman litcode = new Huffman(litlen, litlen.Length, 256);
 		static Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
 		static Huffman distcode = new Huffman(distlen, distlen.Length, 64);
-		
+
 		// Decode PKWare Compression Library stream.
 		public static byte[] Decompress(byte[] src)
 		{
 			BitReader br = new BitReader(src);
-			
+
 			// Are literals coded?
 			int coded = br.ReadBits(8);
-			
+
 			if (coded < 0 || coded > 1)
 				throw new NotImplementedException("Invalid datastream");
 			bool EncodedLiterals = (coded == 1);
-			
+
 			// log2(dictionary size) - 6
 			int dict = br.ReadBits(8);
 			if (dict < 4 || dict > 6)
-				throw new InvalidDataException("Invalid dictionary size");	
-			
+				throw new InvalidDataException("Invalid dictionary size");
+
 			// output state
 			ushort next = 0; // index of next write location in out[]
 			bool first = true; // true to check distances (for first 4K)
@@ -94,33 +94,33 @@ namespace OpenRA.FileFormats
 							ms.WriteByte(outBuffer[i]);
 						break;
 					}
-					
+
 					// Distance
 					symbol = len == 2 ? 2 : dict;
 					int dist = Decode(distcode, br) << symbol;
 					dist += br.ReadBits(symbol);
 					dist++;
-					
+
 					if (first && dist > next)
 						throw new InvalidDataException("Attempt to jump before data");
-					
+
 					// copy length bytes from distance bytes back
 					do
 					{
 						int dest = next;
 						int source = dest - dist;
-						
+
 						int copy = MAXWIN;
 						if (next < dist)
 						{
 							source += copy;
 							copy = dist;
 						}
-						
+
 						copy -= next;
 						if (copy > len)
 							copy = len;
-						
+
 						len -= copy;
 						next += (ushort)copy;
 
@@ -129,7 +129,7 @@ namespace OpenRA.FileFormats
 						// the same as Array.Copy()
 						while( copy-- > 0 )
 							outBuffer[dest++] = outBuffer[source++];
-						
+
 						// Flush window to outstream
 						if (next == MAXWIN)
 						{
@@ -153,11 +153,11 @@ namespace OpenRA.FileFormats
 					}
 				}
 			} while (true);
-			
+
 			return ms.ToArray();
 		}
-		
-		// Decode a code using huffman table h.  
+
+		// Decode a code using huffman table h.
 		static int Decode(Huffman h, BitReader br)
 		{
 			int code = 0; // len bits being decoded
@@ -178,7 +178,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 	}
-	
+
 	class BitReader
 	{
 		readonly byte[] src;
@@ -190,7 +190,7 @@ namespace OpenRA.FileFormats
 		{
             this.src = src;
 		}
-		
+
 		public int ReadBits(int count)
 		{
 			int ret = 0;
@@ -202,7 +202,7 @@ namespace OpenRA.FileFormats
 					bitBuffer = src[offset++];
 					bitCount = 8;
 				}
-				
+
 				ret |= (bitBuffer & 1) << filled;
 				bitBuffer >>= 1;
 				bitCount--;
@@ -230,7 +230,7 @@ namespace OpenRA.FileFormats
 		{
 			short[] length = new short[256]; // code lengths
 			int s = 0; // current symbol
-			
+
 			// convert compact repeat counts into symbol bit length list
 			foreach (byte code in rep)
 			{
@@ -242,16 +242,16 @@ namespace OpenRA.FileFormats
 				} while (--num > 0);
 			}
 			n = s;
-			
+
 			// count number of codes of each length
 			Count = new short[Blast.MAXBITS + 1];
 			for (int i = 0; i < n; i++)
 				Count[length[i]]++;
-			
+
 			// no codes!
 			if (Count[0] == n)
 				return;
-			
+
 			// check for an over-subscribed or incomplete set of lengths
 			int left = 1; // one possible code of zero length
 			for (int len = 1; len <= Blast.MAXBITS; len++)
@@ -263,12 +263,12 @@ namespace OpenRA.FileFormats
 				if (left < 0)
 					throw new InvalidDataException ("over subscribed code set");
 			}
-			
+
 			// generate offsets into symbol table for each length for sorting
 			short[] offs = new short[Blast.MAXBITS + 1];
 			for (int len = 1; len < Blast.MAXBITS; len++)
 				offs[len + 1] = (short)(offs[len] + Count[len]);
-			
+
 			// put symbols in table sorted by length, by symbol order within each length
 			Symbol = new short[SymbolCount];
 			for (short i = 0; i < n; i++)

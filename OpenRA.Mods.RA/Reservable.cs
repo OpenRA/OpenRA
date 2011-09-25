@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (reservedFor == null) 
+			if (reservedFor == null)
 				return;		/* nothing to do */
 
 			if (!Target.FromActor( reservedFor ).IsValid)
@@ -51,15 +51,15 @@ namespace OpenRA.Mods.RA
 			var res = a.TraitOrDefault<Reservable>();
 			return res != null && res.reservedFor != null;
 		}
-		
+
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (herp != null)
 				herp.UnReserve();
 		}
-		
+
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
-		{		
+		{
 			if (herp != null)
 				herp.UnReserve();
 		}

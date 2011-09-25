@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -55,9 +55,9 @@ namespace OpenRA
 			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
 			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
 
-			JoinInner(new OrderManager(host, port, 
+			JoinInner(new OrderManager(host, port,
 				new ReplayRecorderConnection(new NetworkConnection(host, port), replayFile)));
-		}		
+		}
 
 		static string ChooseReplayFilename()
 		{
@@ -90,14 +90,14 @@ namespace OpenRA
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
-		
-		
+
+
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
 		{
 			return Widget.OpenWindow(widget, new WidgetArgs() {{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
 		}
-		
+
 		// Who came up with the great idea of making these things
 		// impossible for the things that want them to access them directly?
 		public static Widget OpenWindow(string widget, WidgetArgs args)
@@ -109,7 +109,7 @@ namespace OpenRA
 				{ "worldRenderer", worldRenderer },
 			});
 		}
-		
+
 		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
 		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
 		{
@@ -227,7 +227,7 @@ namespace OpenRA
 		{
 			get { return orderManager.Connection.LocalClientId == 0; }
 		}
-		
+
 		public static Dictionary<String, Mod> CurrentMods
 		{
 			get { return Mod.AllMods.Where( k => modData.Manifest.Mods.Contains( k.Key )).ToDictionary( k => k.Key, k => k.Value ); }
@@ -242,7 +242,7 @@ namespace OpenRA
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-			
+
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
 			Settings.Save();
 
@@ -254,15 +254,15 @@ namespace OpenRA
 			FileSystem.Mount("."); // Needed to access shaders
 			Renderer.Initialize( Game.Settings.Graphics.Mode );
 			Renderer = new Renderer();
-			
+
 			Console.WriteLine("Available mods:");
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
-			
+
 			Sound.Create();
 			InitializeWithMods(Settings.Game.Mods);
 		}
-		
+
 		public static void InitializeWithMods(string[] mods)
 		{
 			// Clear static state if we have switched mods
@@ -277,7 +277,7 @@ namespace OpenRA
 				server.Shutdown();
 			if (orderManager != null)
 				orderManager.Dispose();
-			
+
 			// Discard any invalid mods
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
 			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
@@ -287,12 +287,12 @@ namespace OpenRA
 			Sound.StopMusic();
 			Sound.StopVideo();
 			Sound.Initialize();
-			
+
 			modData = new ModData( mm );
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.LoadInitialAssets();
-			
-			
+
+
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["render_widgets"].hasNormalTick = false;
@@ -300,23 +300,23 @@ namespace OpenRA
 
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
-			
+
 			modData.LoadScreen.StartGame();
 		}
-		
+
 		public static void LoadShellMap()
 		{
 			StartGame(ChooseShellmap());
 		}
-		
+
         static string ChooseShellmap()
         {
             var shellmaps =  modData.AvailableMaps
                 .Where(m => m.Value.UseAsShellmap);
-			
+
 			if (shellmaps.Count() == 0)
 				throw new InvalidDataException("No valid shellmaps available");
-			
+
 			return shellmaps.Random(CosmeticRandom).Key;
         }
 
@@ -336,9 +336,9 @@ namespace OpenRA
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", String.Format(s,args)); 
+			AddChatLine(Color.White, "Debug", String.Format(s,args));
 		}
-		
+
 		public static void Disconnect()
 		{
 			if (orderManager.world != null)
@@ -347,7 +347,7 @@ namespace OpenRA
 			JoinLocal();
 			orderManager.Dispose();
 		}
-		
+
 		public static void CloseServer()
 		{
 			if (server != null)
@@ -358,7 +358,7 @@ namespace OpenRA
 		{
 			return modData.ObjectCreator.CreateObject<T>( name );
 		}
-		
+
 		public static void CreateServer(ServerSettings settings)
 		{
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
@@ -366,7 +366,7 @@ namespace OpenRA
 			                           settings,
 			                           modData);
 		}
-		
+
 		public static int CreateLocalServer(string map)
 		{
 			var settings = new ServerSettings()

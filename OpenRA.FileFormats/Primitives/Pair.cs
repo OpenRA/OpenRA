@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -74,7 +74,7 @@ namespace OpenRA.FileFormats
     public static class Pair
     {
 		public static Pair<T, U> New<T, U>(T t, U u) { return new Pair<T, U>(t, u); }
-		
+
 		static Pair()
 		{
 			Pair<char,Color>.uc = new ColorEqualityComparer();

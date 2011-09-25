@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			clock = new Animation("clock");
-			
+
 			iconSprites = Rules.Info.Values
 				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
 				.ToDictionary(
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
-		{			
+		{
 			if (mi.Event == MouseInputEvent.Move)
 			{
 				var hover = Icons.Where(i => i.Key.Contains(mi.Location))
@@ -129,13 +129,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			var clicked = Icons.Where(i => i.Key.Contains(mi.Location))
 				.Select(i => i.Value).FirstOrDefault();
-			
+
 			if (clicked == null)
 				return true;
-			
+
 			var actor = Rules.Info[clicked.Name];
 			var first = clicked.Queued.FirstOrDefault();
-			
+
 			if (mi.Button == MouseButton.Left)
 			{
 				// Pick up a completed building
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				{
 					Sound.Play(TabClick);
 					Sound.Play(CurrentQueue.Info.QueuedAudio);
-					world.IssueOrder(Order.StartProduction(CurrentQueue.self, clicked.Name, 
+					world.IssueOrder(Order.StartProduction(CurrentQueue.self, clicked.Name,
 						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 				}
 				else
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			var isBuildingSomething = CurrentQueue.CurrentItem() != null;
 			var buildableItems = CurrentQueue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
-			
+
 			// Background
 			foreach (var rect in Icons.Keys)
 				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1,1,1,1));

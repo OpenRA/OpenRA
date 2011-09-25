@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Air
 			{
 				dest = ChooseAirfield(self);
 			}
-			
+
 			var plane = self.Trait<Plane>();
 			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Air
 			var aircraft = self.Trait<Aircraft>();
 
 			var speed = .2f * aircraft.MovementSpeed;
-			
+
 			var approachStart = landPos - new float2(aircraft.Altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;
 

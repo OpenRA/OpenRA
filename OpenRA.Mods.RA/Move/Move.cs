@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Move
 		public List<int2> path;
 		Func<Actor, Mobile, List<int2>> getPath;
 		public Actor ignoreBuilding;
-		
+
 		// Scriptable move order
 		// Ignores lane bias and nearby units
 		public Move( int2 destination )
@@ -39,16 +39,16 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = 0;
 		}
 
-		public Move( int2 destination, int nearEnough ) 
+		public Move( int2 destination, int nearEnough )
 		{
 			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPath( mobile.toCell, destination, self );
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
-		
+
 		public Move(int2 destination, Actor ignoreBuilding)
 		{
-			this.getPath = (self,mobile) => 
+			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
 					.WithIgnoredBuilding( ignoreBuilding ));
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
 			mobile.PathHash = HashList(path);
-			Log.Write("debug", "EvalPathHash #{0} {1}", 
+			Log.Write("debug", "EvalPathHash #{0} {1}",
 				self.ActorID, mobile.PathHash);
 			return path;
 		}
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Move
 				path = EvalPath(self, mobile);
 				SanityCheckPath( mobile );
 			}
-			
+
 			if( path.Count == 0 )
 			{
 				destination = mobile.toCell;
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA.Move
 			hasNudged = false;
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
-			
+
 			var subCell = mobile.GetDesiredSubcell(nextCell, ignoreBuilding);
 			return Pair.New(nextCell, subCell);
 		}
@@ -357,7 +357,7 @@ namespace OpenRA.Mods.RA.Move
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal );
-				
+
 				mobile.EnteringCell(self);
 				mobile.SetLocation( mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell );
 				return ret2;

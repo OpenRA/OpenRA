@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
         [Sync]
         int ammo;
 		LimitedAmmoInfo Info;
-		
+
 		public LimitedAmmo(LimitedAmmoInfo info)
 		{
 			ammo = info.Ammo;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
-			return Graphics.Util.MakeArray(pips, 
+			return Graphics.Util.MakeArray(pips,
 				i => (ammo * pips) / Info.Ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}

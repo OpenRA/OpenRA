@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,13 +25,13 @@ namespace OpenRA.Widgets
 		public ViewportScrollControllerWidget() : base() {}
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget)
 			: base(widget) {}
-		
+
 		public override bool HandleMouseInput(MouseInput mi)
-		{									
+		{
 			var scrolltype = Game.Settings.Game.MouseScroll;
 			if (scrolltype == MouseScrollType.Disabled)
 				return false;
-			
+
 			if (mi.Event == MouseInputEvent.Move &&
 				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
 			{
@@ -41,7 +41,7 @@ namespace OpenRA.Widgets
 			}
 			return false;
 		}
-		
+
 		static readonly Dictionary<ScrollDirection, string> directions = new Dictionary<ScrollDirection, string>
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
@@ -61,7 +61,7 @@ namespace OpenRA.Widgets
 				return null;
 
 			var blockedDirections = Game.viewport.GetBlockedDirections();
-			
+
 			foreach( var dir in directions )
 				if (Edge.Includes( dir.Key ))
 					return dir.Value + (blockedDirections.Includes( dir.Key ) ? "-blocked" : "");
@@ -74,9 +74,9 @@ namespace OpenRA.Widgets
 			Keyboard = ScrollDirection.None;
 			return base.LoseFocus(mi);
 		}
-		
+
 		public override bool HandleKeyPress(KeyInput e)
-		{			
+		{
 			switch (e.KeyName)
 			{
 				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, (e.Event == KeyInputEvent.Down)); return true;
@@ -86,7 +86,7 @@ namespace OpenRA.Widgets
 			}
 			return false;
 		}
-		
+
 		public override void Tick()
 		{
 			Edge = ScrollDirection.None;
@@ -102,7 +102,7 @@ namespace OpenRA.Widgets
 				if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
 					Edge = Edge.Set(ScrollDirection.Down, true);
 			}
-			
+
 			if(Keyboard != ScrollDirection.None || Edge != ScrollDirection.None)
 			{
                 var scroll = new float2(0, 0);
@@ -124,7 +124,7 @@ namespace OpenRA.Widgets
 				Game.viewport.Scroll(scroll);
 			}
 		}
-		
+
 		public override Widget Clone() { return new ViewportScrollControllerWidget(this); }
 	}
 }

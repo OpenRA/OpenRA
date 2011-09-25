@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -71,7 +71,7 @@ namespace OpenRA.Graphics
 				new float2( endColor.R / 255.0f, endColor.G / 255.0f ),
 				new float2( endColor.B / 255.0f, endColor.A / 255.0f ) );
 		}
-		
+
 		public void FillRect( RectangleF r, Color color )
 		{
 			for (float y = r.Top; y < r.Bottom; y++)

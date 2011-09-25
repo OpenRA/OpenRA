@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncSettingsLogic
-	{	
+	{
 		enum PanelType { General, Input }
 
 		PanelType Settings = PanelType.General;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Video
 			var windowModeDropdown = generalPane.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
-			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ? 
+			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ?
 				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 
 			var pixelDoubleCheckbox = generalPane.GetWidget<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");

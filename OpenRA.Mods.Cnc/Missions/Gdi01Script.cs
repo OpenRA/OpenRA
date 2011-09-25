@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,31 +23,31 @@ namespace OpenRA.Mods.Cnc
 	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<LoadWidgetAtGameStartInfo> { }
 
 	class Gdi01Script: IWorldLoaded, ITick
-	{		
+	{
 		Dictionary<string, Actor> Actors;
 		Dictionary<string, Player> Players;
-				
+
 		public void WorldLoaded(World w)
 		{
 			Players = w.Players.ToDictionary(p => p.InternalName);
-			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;		
+			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			var b = w.Map.Bounds;
 			Game.MoveViewport(new int2(b.Left + b.Width/2, b.Top + b.Height/2));
-			
-			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa", 
+
+			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa",
 			    () => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
 					Sound.PlayMusic(Rules.Music["aoi"]);
 					started = true;
 				}));
 		}
-		
+
 		public void OnVictory(World w)
 		{
 			started = false;
 			Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
 			Players["GoodGuy"].WinState = WinState.Won;
-			
+
 			Action afterFMV = () =>
 			{
 				Sound.StopMusic();
@@ -57,13 +57,13 @@ namespace OpenRA.Mods.Cnc
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
 		}
-		
+
 		public void OnLose(World w)
 		{
 			started = false;
 			Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
 			Players["GoodGuy"].WinState = WinState.Lost;
-			
+
 			Action afterFMV = () =>
 			{
 				Sound.StopMusic();
@@ -73,16 +73,16 @@ namespace OpenRA.Mods.Cnc
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
 		}
-		
+
 		int ticks = 0;
 		bool started = false;
-		
+
 		int lastBadCount = -1;
 		public void Tick(Actor self)
 		{
 			if (!started)
 				return;
-			
+
 			if (ticks == 0)
 			{
 				SetGunboatPath();
@@ -113,61 +113,61 @@ namespace OpenRA.Mods.Cnc
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
 				lastBadCount = badcount;
-				
+
 				if (badcount == 0)
 					OnVictory(self.World);
 			}
-			
+
 			//GoodGuy lose conditions: MCV/cyard must survive
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
                 .Any( a => a.Actor.Owner == Players["GoodGuy"] );
 			if (!hasAnything)
 				OnLose(self.World);
-			
+
 			// GoodGuy reinforcements
 			if (ticks == 25*5)
 			{
-				ReinforceFromSea(self.World, 
+				ReinforceFromSea(self.World,
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
-			
+
 			if (ticks == 25*15)
 			{
-				ReinforceFromSea(self.World, 
+				ReinforceFromSea(self.World,
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
-			
+
 			if (ticks == 25*30)
 			{
-				ReinforceFromSea(self.World, 
+				ReinforceFromSea(self.World,
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
-			
+
 			if (ticks == 25*60)
 			{
-				ReinforceFromSea(self.World, 
+				ReinforceFromSea(self.World,
 				                 Actors["lstStart"].Location,
 				                 Actors["lstEnd"].Location,
 				                 new int2(53,53),
 				                 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
-			
+
 			ticks++;
 		}
-		
+
 		void SetGunboatPath()
 		{
 			var self = Actors[ "Gunboat" ];
@@ -176,14 +176,14 @@ namespace OpenRA.Mods.Cnc
 			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatRight"].Location ));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
-		
+
 		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items, Player player)
 		{
 			world.AddFrameEndTask(w =>
 			{
-				Sound.PlayToPlayer(w.LocalPlayer,"reinfor1.aud");				
+				Sound.PlayToPlayer(w.LocalPlayer,"reinfor1.aud");
 
-				var a = w.CreateActor("lst", new TypeDictionary 
+				var a = w.CreateActor("lst", new TypeDictionary
 				{
 					new LocationInit( startPos ),
 					new OwnerInit( player ),
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Cnc
 						new OwnerInit( player ),
 						new FacingInit( 0 ),
 					}));
-				
+
 				a.CancelActivity();
 				a.QueueActivity(mobile.ScriptedMove(endPos));
 				a.QueueActivity(new CallFunc(() =>

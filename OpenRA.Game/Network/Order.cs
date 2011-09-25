@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -18,10 +18,10 @@ namespace OpenRA
 	[Flags]
 	enum OrderFields : byte
 	{
-		TargetActor = 0x01, 
-		TargetLocation = 0x02, 
-		TargetString = 0x04, 
-		Queued = 0x08, 
+		TargetActor = 0x01,
+		TargetLocation = 0x02,
+		TargetString = 0x04,
+		Queued = 0x08,
 		ExtraLocation = 0x10,
 	}
 
@@ -43,10 +43,10 @@ namespace OpenRA
 		public string TargetString;
 		public int2 ExtraLocation;
 		public bool IsImmediate;
-		
+
 		public Player Player { get { return Subject.Owner; } }
 
-		Order(string orderString, Actor subject, 
+		Order(string orderString, Actor subject,
 			Actor targetActor, int2 targetLocation, string targetString, bool queued, int2 extraLocation)
 		{
 			this.OrderString = orderString;
@@ -57,18 +57,18 @@ namespace OpenRA
 			this.Queued = queued;
 			this.ExtraLocation = extraLocation;
 		}
-		
+
 		// For scripting special powers
-		public Order() 
+		public Order()
 			: this(null, null, null, int2.Zero, null, false, int2.Zero) { }
-				 
-		public Order(string orderString, Actor subject, bool queued) 
+
+		public Order(string orderString, Actor subject, bool queued)
 			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
-		
+
 		public Order(string orderstring, Order order)
 			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
 			       order.TargetString, order.Queued, order.ExtraLocation) {}
-		
+
 		public byte[] Serialize()
 		{
 			if (IsImmediate)		/* chat, whatever */
@@ -128,7 +128,7 @@ namespace OpenRA
 						var order = r.ReadString();
 						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
-						
+
 						var targetActorId = flags.HasField(OrderFields.TargetActor) ?  r.ReadUInt32() : 0xffffffff;
 						var targetLocation = flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero;
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
@@ -154,7 +154,7 @@ namespace OpenRA
 					throw new NotImplementedException();
 			}
 		}
-		
+
 		public override string ToString()
 		{
 			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +

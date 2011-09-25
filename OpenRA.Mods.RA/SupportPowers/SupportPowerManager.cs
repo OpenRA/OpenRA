@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly Actor self;
 		public Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
-		
+
 		public readonly DeveloperMode devMode;
 		public SupportPowerManager(ActorInitializer init)
 		{
@@ -40,16 +40,16 @@ namespace OpenRA.Mods.RA
 		{
 			return sp.Info.AllowMultiple ? sp.Info.OrderName + "_" + sp.self.ActorID : sp.Info.OrderName;
 		}
-		
+
 		void ActorAdded(Actor a)
 		{
 			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
 				return;
-			
+
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
 				var key = MakeKey(t);
-				
+
 				if (Powers.ContainsKey(key))
 				{
 					Powers[key].Instances.Add(t);
@@ -62,17 +62,17 @@ namespace OpenRA.Mods.RA
 						RemainingTime = t.Info.ChargeTime * 25,
 						TotalTime = t.Info.ChargeTime * 25,
 					};
-					
+
 					Powers.Add(key, si);
 				}
 			}
 		}
-		
+
 		void ActorRemoved(Actor a)
 		{
 			if (a.Owner != self.Owner || !a.HasTrait<SupportPower>())
 				return;
-			
+
 			foreach (var t in a.TraitsImplementing<SupportPower>())
 			{
 				var key = MakeKey(t);
@@ -81,27 +81,27 @@ namespace OpenRA.Mods.RA
 					Powers.Remove(key);
 			}
 		}
-		
+
 		public void Tick(Actor self)
 		{
 			foreach(var power in Powers.Values)
 				power.Tick();
 		}
-			
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			// order.OrderString is the key of the support power
 			if (Powers.ContainsKey(order.OrderString))
 				Powers[order.OrderString].Activate(order);
 		}
-		
+
 		public void Target(string key)
 		{
 			if (Powers.ContainsKey(key))
 				Powers[key].Target();
 		}
 
-		static readonly SupportPowerInstance[] NoInstances = {}; 
+		static readonly SupportPowerInstance[] NoInstances = {};
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
@@ -111,21 +111,21 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
-		
+
 		public class SupportPowerInstance
 		{
 			readonly SupportPowerManager Manager;
 			readonly string Key;
-			
+
 			public List<SupportPower> Instances;
 			public int RemainingTime;
 			public int TotalTime;
 			public bool Active { get; private set; }
 			public bool Disabled { get; private set; }
-			
+
 			public SupportPowerInfo Info { get { return Instances.First().Info; } }
 			public bool Ready { get { return Active && RemainingTime == 0; } }
-			
+
 			public SupportPowerInstance(string key, SupportPowerManager manager)
 			{
 				Manager = manager;
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA
 			{
 				return sp.self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
 			}
-			
+
 			bool notifiedCharging;
 			bool notifiedReady;
 			public void Tick()
@@ -148,14 +148,14 @@ namespace OpenRA.Mods.RA
 					var power = Instances.First();
 					if (Manager.devMode.FastCharge && RemainingTime > 25)
 						RemainingTime = 25;
-					
+
 					if (RemainingTime > 0) --RemainingTime;
 					if (!notifiedCharging)
 					{
 						power.Charging(power.self, Key);
 						notifiedCharging = true;
 					}
-					
+
 					if (RemainingTime == 0
 						&& !notifiedReady)
 					{
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 					}
 				}
 			}
-			
+
 			public void Target()
 			{
 				if (!Ready)
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.RA
 
 				Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
 			}
-						
+
 			public void Activate(Order order)
 			{
 				if (!Ready)
@@ -184,13 +184,13 @@ namespace OpenRA.Mods.RA
 				power.Activate(power.self, order);
 				RemainingTime = TotalTime;
 				notifiedCharging = notifiedReady = false;
-				
+
 				if (Info.OneShot)
 					Disabled = true;
 			}
 		}
 	}
-	
+
 	public class SelectGenericPowerTarget : IOrderGenerator
 	{
 		readonly SupportPowerManager manager;
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
-			world.CancelInputMode();				
+			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
 				yield return new Order(order, manager.self, false) { TargetLocation = xy };
 		}
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA
 			if (!manager.Powers.ContainsKey(order))
 				world.CancelInputMode();
 		}
-				
+
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }

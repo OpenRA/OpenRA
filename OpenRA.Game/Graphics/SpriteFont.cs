@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -60,9 +60,9 @@ namespace OpenRA.Graphics
 					p = location;
 					continue;
 				}
-				
+
 				var g = glyphs[Pair.New(s, c)];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, 
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
 					new float2(
 						(int)Math.Round(p.X + g.Offset.X, 0),
 						p.Y + g.Offset.Y));
@@ -101,7 +101,7 @@ namespace OpenRA.Graphics
 			var _glyph = (FT_GlyphSlotRec)Marshal.PtrToStructure(_face.glyph, typeof(FT_GlyphSlotRec));
 
 			var s = builder.Allocate(
-				new Size(_glyph.metrics.width.ToInt32() >> 6, 
+				new Size(_glyph.metrics.width.ToInt32() >> 6,
 					_glyph.metrics.height.ToInt32() >> 6));
 
 			var g = new GlyphInfo

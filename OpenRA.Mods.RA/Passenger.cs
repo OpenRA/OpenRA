@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -59,14 +59,14 @@ namespace OpenRA.Mods.RA
 			var cargo = target.TraitOrDefault<Cargo>();
 			return cargo != null && cargo.HasSpace(info.Weight);
 		}
-		
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "EnterTransport" ||
 				!CanEnter(order.TargetActor)) return null;
 			return "Move";
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "EnterTransport")
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 
 				var target = Target.FromOrder(order);
 				self.SetTargetLine(target, Color.Green);
-								
+
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(target));
 				self.QueueActivity(new EnterTransport(self, order.TargetActor));

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 		public void DrawRollover(WorldRenderer wr, Actor self)
 		{
 			var bounds = self.Bounds.Value;
-			
+
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 
@@ -69,7 +69,7 @@ namespace OpenRA.Traits
 				}
 			}
 		}
-		
+
 		void DrawSelectionBar(Actor self, float2 xy, float2 Xy, float value, Color barColor)
 		{
 			if (!self.IsInWorld) return;
@@ -92,20 +92,20 @@ namespace OpenRA.Traits
 			wlr.DrawLine(xy + new float2(0, -2), z + new float2(0, -2), barColor2, barColor2);
 			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
 		}
-		
+
 		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
 		{
 			if (!self.IsInWorld) return;
-			
+
 			var health = self.TraitOrDefault<Health>();
 			if (health == null || health.IsDead) return;
-			
+
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
 
 			var healthColor = (health.DamageState == DamageState.Critical) ? Color.Red :
 							  (health.DamageState == DamageState.Heavy) ? Color.Yellow : Color.LimeGreen;
-				
+
 			var healthColor2 = Color.FromArgb(
 				255,
 				healthColor.R / 2,
@@ -113,7 +113,7 @@ namespace OpenRA.Traits
 				healthColor.B / 2);
 
 			var z = float2.Lerp(xy, Xy, (float)health.HP / health.MaxHP);
-			
+
 			var wlr = Game.Renderer.WorldLineRenderer;
 			wlr.DrawLine(xy + new float2(0, -4), Xy + new float2(0, -4), c, c);
 			wlr.DrawLine(xy + new float2(0, -3), Xy + new float2(0, -3), c2, c2);
@@ -153,7 +153,7 @@ namespace OpenRA.Traits
 		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
 		{
 			if (self.Owner != self.World.LocalPlayer) return;
-			
+
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (pipSources.Count() == 0)
 				return;
@@ -170,7 +170,7 @@ namespace OpenRA.Traits
 				var thisRow = pips.GetPips(self);
 				if (thisRow == null)
 					continue;
-				
+
 				var width = self.Bounds.Value.Width;
 
 				foreach (var pip in thisRow)
@@ -190,11 +190,11 @@ namespace OpenRA.Traits
 				pipxyOffset.Y -= pipSize.Y + 1;
 			}
 		}
-		
+
 		void DrawTags(WorldRenderer wr, Actor self, float2 basePosition)
 		{
 			if (self.Owner != self.World.LocalPlayer) return;
-			
+
 			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
 			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
 			var tagxyOffset = new float2(0, 0); // Correct for offset due to multiple rows
@@ -205,17 +205,17 @@ namespace OpenRA.Traits
 				{
 					if (tag == TagType.None)
 						continue;
-						
+
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
 					tagImages.Image.DrawAt(wr, tagxyBase + tagxyOffset, "chrome");
-					
+
 					// Increment row
 					tagxyOffset.Y += 8;
 				}
 			}
 		}
-		
+
 		void DrawUnitPath(Actor self)
 		{
 			if (self.World.LocalPlayer == null ||!self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
@@ -243,6 +243,6 @@ namespace OpenRA.Traits
 				}
 			}
 		}
-		
+
 	}
 }

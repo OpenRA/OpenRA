@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -98,11 +98,11 @@ namespace OpenRA.GameRules
 		// Internal game settings
 		public int Timestep = 40;
 	}
-		
+
 	public class Settings
 	{
 		string SettingsFile;
-		
+
 		public PlayerSettings Player = new PlayerSettings();
 		public GameSettings Game = new GameSettings();
 		public SoundSettings Sound = new SoundSettings();
@@ -111,7 +111,7 @@ namespace OpenRA.GameRules
 		public DebugSettings Debug = new DebugSettings();
 		public Dictionary<string, object> Sections;
 		public Settings(string file, Arguments args)
-		{			
+		{
 			SettingsFile = file;
 			Sections = new Dictionary<string, object>()
 			{
@@ -122,46 +122,46 @@ namespace OpenRA.GameRules
 				{"Server", Server},
 				{"Debug", Debug},
 			};
-			
-			
+
+
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
 			var err2 = FieldLoader.InvalidValueAction;
-			
+
 			FieldLoader.UnknownFieldAction = (s,f) =>
 			{
 				Console.WriteLine( "Ignoring unknown field `{0}` on `{1}`".F( s, f.Name ) );
 			};
-			
+
 			if (File.Exists(SettingsFile))
 			{
 				//Console.WriteLine("Loading settings file {0}",SettingsFile);
 				var yaml = MiniYaml.DictFromFile(SettingsFile);
-				
+
 				foreach (var kv in Sections)
 					if (yaml.ContainsKey(kv.Key))
 						LoadSectionYaml(yaml[kv.Key], kv.Value);
 			}
-			
+
 			// Override with commandline args
 			foreach (var kv in Sections)
 				foreach (var f in kv.Value.GetType().GetFields())
 					if (args.Contains(kv.Key+"."+f.Name))
 						FieldLoader.LoadField( kv.Value, f.Name, args.GetValue(kv.Key+"."+f.Name, "") );
-			
+
 			FieldLoader.UnknownFieldAction = err1;
 			FieldLoader.InvalidValueAction = err2;
 		}
-		
+
 		public void Save()
 		{
 			var root = new List<MiniYamlNode>();
 			foreach( var kv in Sections )
 				root.Add( new MiniYamlNode( kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType())) ) );
-			
+
 			root.WriteToFile(SettingsFile);
 		}
-		
+
 		void LoadSectionYaml(MiniYaml yaml, object section)
 		{
 			object defaults = Activator.CreateInstance(section.GetType());
@@ -171,7 +171,7 @@ namespace OpenRA.GameRules
 				System.Console.WriteLine("FieldLoader: Cannot parse `{0}` into `{2}:{1}`; substituting default `{3}`".F(s,t.Name,f,ret) );
 				return ret;
 			};
-			
+
 			FieldLoader.Load(section, yaml);
 		}
 	}

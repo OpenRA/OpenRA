@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,28 +23,28 @@ namespace OpenRA.Mods.RA
 		public readonly int Range = 1; // Range in cells
 		public readonly int Duration = 30; // Seconds
 		public readonly bool KillCargo = true;
-		
+
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.self,this); }
 	}
 
 	class ChronoshiftPower : SupportPower
-	{	
+	{
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
-		
+
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
 			return new SelectTarget(order, manager, this);
 		}
-		
+
 		public override void Activate(Actor self, Order order)
 		{
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-				
+
 			// Trigger screen desaturate effect
 			foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 				a.Trait.Enable();
-			
+
 			Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
 			Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
 			foreach (var target in UnitsInRange(order.ExtraLocation))
@@ -66,10 +66,10 @@ namespace OpenRA.Mods.RA
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(self.World.ActorMap.GetUnitsAt(t));
-			
+
 			return units.Distinct().Where(a => a.HasTrait<Chronoshiftable>());
 		}
-		
+
 		class SelectTarget : IOrderGenerator
 		{
 			readonly ChronoshiftPower power;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
-			
+
 			public SelectTarget(string order, SupportPowerManager manager, ChronoshiftPower power)
 			{
 				this.manager = manager;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA
 				if (!manager.Powers.ContainsKey(order))
 					world.CancelInputMode();
 			}
-			
+
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.RA
 			readonly Sprite validTile, invalidTile, sourceTile;
 			readonly SupportPowerManager manager;
 			readonly string order;
-			
+
 			public SelectDestination(string order, SupportPowerManager manager, ChronoshiftPower power, int2 sourceLocation)
 			{
 				this.manager = manager;
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA
 				invalidTile = SequenceProvider.GetSequence("overlay", "target-invalid").GetSprite(0);
 				sourceTile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
-			
+
 			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
@@ -154,11 +154,11 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 					yield break;
 				}
-				
+
 				var ret = OrderInner( world, xy, mi ).FirstOrDefault();
 				if (ret == null)
 					yield break;
-				
+
 				world.CancelInputMode();
 				yield return ret;
 			}
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.RA
 						ExtraLocation = sourceLocation
 					};
 			}
-			
+
 			public void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
@@ -194,11 +194,11 @@ namespace OpenRA.Mods.RA
 				// Source tiles
 				foreach (var t in world.FindTilesInCircle(sourceLocation, range))
 					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
-				
+
 				// Destination tiles
 				foreach (var t in world.FindTilesInCircle(xy, range))
 					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
-				
+
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA
 							wr.GetPaletteIndex(r.Palette),
 					        r.Scale*r.Sprite.size);
 				}
-				
+
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA
 				}
 				return canTeleport;
 			}
-			
+
 			public string GetCursor(World world, int2 xy, MouseInput mi)
 			{
 				return IsValidTarget(xy) ? "chrono-target" : "move-blocked";

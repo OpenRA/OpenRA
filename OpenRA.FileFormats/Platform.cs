@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -22,7 +22,7 @@ namespace OpenRA
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 
 		static Lazy<PlatformType> currentPlatform = new Lazy<PlatformType>(GetCurrentPlatform);
-		
+
 		static PlatformType GetCurrentPlatform()
 		{
 				if (Environment.OSVersion.Platform == PlatformID.Win32NT)

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -38,7 +38,7 @@ namespace OpenRA
 			ModAssemblies = asms.ToArray();
 		}
 
-		public static Action<string> MissingTypeAction = 
+		public static Action<string> MissingTypeAction =
 			s => { throw new InvalidOperationException("Cannot locate type: {0}".F(s)); };
 
 		public T CreateObject<T>(string className)

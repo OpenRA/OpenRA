@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -15,12 +15,12 @@ using System.Linq;
 namespace OpenRA.Traits
 {
 	class ScreenShakerInfo : TraitInfo<ScreenShaker> {}
-	
+
 	public class ScreenShaker : ITick
 	{
 		int ticks = 0;
         List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
-		
+
 		public void Tick (Actor self)
 		{
 			if(shakeEffects.Any())
@@ -30,29 +30,29 @@ namespace OpenRA.Traits
 			}
 			ticks++;
 		}
-		
+
 		public void AddEffect(int time, float2 position, int intensity)
 		{
 			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity });
 		}
-		
+
 		float2 GetScrollOffset()
 		{
 			int xFreq = 4;
 			int yFreq = 5;
-			
-			return GetIntensity() * new float2( 
-				(float) Math.Sin((ticks*2*Math.PI)/xFreq) , 
+
+			return GetIntensity() * new float2(
+				(float) Math.Sin((ticks*2*Math.PI)/xFreq) ,
 				(float) Math.Cos((ticks*2*Math.PI)/yFreq));
 		}
-		
+
 		float GetIntensity()
 		{
 			var cp = Game.viewport.CenterLocation;
 			var intensity = Game.CellSize * Game.CellSize * 100 * shakeEffects.Sum(
 				e => e.Intensity / (e.Position - cp).LengthSquared);
 
-			return Math.Min(intensity, 10);	
+			return Math.Min(intensity, 10);
 		}
 	}
 

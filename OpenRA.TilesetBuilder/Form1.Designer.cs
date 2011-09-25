@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -64,12 +64,12 @@ namespace OpenRA.TilesetBuilder
 			this.panel1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// toolStripContainer1
-			// 
-			// 
+			//
+			//
 			// toolStripContainer1.ContentPanel
-			// 
+			//
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.panel1);
 			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(745, 571);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -78,13 +78,13 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripContainer1.Size = new System.Drawing.Size(745, 596);
 			this.toolStripContainer1.TabIndex = 0;
 			this.toolStripContainer1.Text = "toolStripContainer1";
-			// 
+			//
 			// toolStripContainer1.TopToolStripPanel
-			// 
+			//
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
-			// 
+			//
 			// panel1
-			// 
+			//
 			this.panel1.AutoScroll = true;
 			this.panel1.Controls.Add(this.surface1);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -92,18 +92,18 @@ namespace OpenRA.TilesetBuilder
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(745, 571);
 			this.panel1.TabIndex = 0;
-			// 
+			//
 			// surface1
-			// 
+			//
 			this.surface1.BackColor = System.Drawing.Color.Black;
 			this.surface1.Location = new System.Drawing.Point(0, 0);
 			this.surface1.Name = "surface1";
 			this.surface1.Size = new System.Drawing.Size(598, 372);
 			this.surface1.TabIndex = 2;
 			this.surface1.Text = "surface1";
-			// 
+			//
 			// toolStrip1
-			// 
+			//
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton2,
@@ -125,41 +125,41 @@ namespace OpenRA.TilesetBuilder
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(602, 25);
 			this.toolStrip1.TabIndex = 0;
-			// 
+			//
 			// toolStripButton2
-			// 
+			//
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
 			this.toolStripButton2.Size = new System.Drawing.Size(51, 22);
 			this.toolStripButton2.Text = "Save";
 			this.toolStripButton2.Click += new System.EventHandler(this.SaveClicked);
-			// 
+			//
 			// toolStripButton14
-			// 
+			//
 			this.toolStripButton14.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton14.Image")));
 			this.toolStripButton14.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton14.Name = "toolStripButton14";
 			this.toolStripButton14.Size = new System.Drawing.Size(60, 22);
 			this.toolStripButton14.Text = "Export";
 			this.toolStripButton14.Click += new System.EventHandler(this.ExportClicked);
-			// 
+			//
 			// toolStripButton3
-			// 
+			//
 			this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
 			this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton3.Name = "toolStripButton3";
 			this.toolStripButton3.Size = new System.Drawing.Size(104, 22);
 			this.toolStripButton3.Text = "Show Overlays";
 			this.toolStripButton3.Click += new System.EventHandler(this.ShowOverlaysClicked);
-			// 
+			//
 			// toolStripSeparator1
-			// 
+			//
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-			// 
+			//
 			// toolStripButton4
-			// 
+			//
 			this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
 			this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -168,9 +168,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton4.Tag = "0";
 			this.toolStripButton4.Text = "tt0";
 			this.toolStripButton4.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton12
-			// 
+			//
 			this.toolStripButton12.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton12.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton12.Image")));
 			this.toolStripButton12.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -179,9 +179,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton12.Tag = "1";
 			this.toolStripButton12.Text = "tt1";
 			this.toolStripButton12.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton11
-			// 
+			//
 			this.toolStripButton11.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton11.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton11.Image")));
 			this.toolStripButton11.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -190,9 +190,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton11.Tag = "2";
 			this.toolStripButton11.Text = "tt2";
 			this.toolStripButton11.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton10
-			// 
+			//
 			this.toolStripButton10.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton10.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton10.Image")));
 			this.toolStripButton10.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -201,9 +201,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton10.Tag = "3";
 			this.toolStripButton10.Text = "tt3";
 			this.toolStripButton10.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton9
-			// 
+			//
 			this.toolStripButton9.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton9.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton9.Image")));
 			this.toolStripButton9.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -212,9 +212,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton9.Tag = "4";
 			this.toolStripButton9.Text = "tt4";
 			this.toolStripButton9.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton8
-			// 
+			//
 			this.toolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton8.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton8.Image")));
 			this.toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -223,9 +223,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton8.Tag = "5";
 			this.toolStripButton8.Text = "tt5";
 			this.toolStripButton8.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton7
-			// 
+			//
 			this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
 			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -234,9 +234,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton7.Tag = "6";
 			this.toolStripButton7.Text = "tt6";
 			this.toolStripButton7.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton6
-			// 
+			//
 			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton6.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton6.Image")));
 			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -245,9 +245,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton6.Tag = "7";
 			this.toolStripButton6.Text = "tt7";
 			this.toolStripButton6.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton5
-			// 
+			//
 			this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
 			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -256,9 +256,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton5.Tag = "8";
 			this.toolStripButton5.Text = "tt8";
 			this.toolStripButton5.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// toolStripButton13
-			// 
+			//
 			this.toolStripButton13.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton13.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton13.Image")));
 			this.toolStripButton13.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -266,9 +266,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton13.Size = new System.Drawing.Size(25, 22);
 			this.toolStripButton13.Tag = "9";
 			this.toolStripButton13.Text = "tt9";
-			// 
+			//
 			// toolStripButton1
-			// 
+			//
 			this.toolStripButton1.Checked = true;
 			this.toolStripButton1.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -278,9 +278,9 @@ namespace OpenRA.TilesetBuilder
 			this.toolStripButton1.Size = new System.Drawing.Size(88, 22);
 			this.toolStripButton1.Text = "Template Tool";
 			this.toolStripButton1.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
-			// 
+			//
 			// Form1
-			// 
+			//
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(745, 596);

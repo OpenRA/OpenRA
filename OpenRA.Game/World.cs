@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -43,16 +43,16 @@ namespace OpenRA
 		public readonly Shroud LocalShroud;
 
 		public void SetLocalPlayer(string pr)
-		{			
+		{
 			if (!(orderManager.Connection is ReplayConnection))
 				LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
 		}
 
-		public readonly Actor WorldActor;		
+		public readonly Actor WorldActor;
 		public readonly Map Map;
 		public readonly TileSet TileSet;
 		public readonly ActorMap ActorMap;
-		
+
 		public void IssueOrder( Order o ) { orderManager.IssueOrder( o ); }	/* avoid exposing the OM to mod code */
 
 		IOrderGenerator orderGenerator_;
@@ -83,13 +83,13 @@ namespace OpenRA
 				return true;
 			}
 		}
-		
+
 		internal World(Manifest manifest, Map map, OrderManager orderManager)
 		{
 			this.orderManager = orderManager;
 			orderGenerator_ = new UnitOrderGenerator();
 			Map = map;
-			
+
 			TileSet = Rules.TileSets[Map.Tileset];
 			TileSet.LoadTiles();
 
@@ -101,19 +101,19 @@ namespace OpenRA
 
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
-				cmp.CreatePlayers(this);		
-			
+				cmp.CreatePlayers(this);
+
 			// Set defaults for any unset stances
 			foreach (var p in Players)
 				foreach (var q in Players)
 					if (!p.Stances.ContainsKey(q))
-						p.Stances[q] = Stance.Neutral;		
-			
+						p.Stances[q] = Stance.Neutral;
+
 			Sound.SoundVolumeModifier = 1.0f;
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 				wlh.WorldLoaded(this);
 		}
-		
+
 		public Actor CreateActor( string name, TypeDictionary initDict )
 		{
 			return CreateActor( true, name, initDict );
@@ -126,7 +126,7 @@ namespace OpenRA
 				Add( a );
 			return a;
 		}
-		
+
 		public void Add(Actor a)
 		{
 			a.IsInWorld = true;
@@ -160,19 +160,19 @@ namespace OpenRA
 					foreach( var ni in ActorsWithTrait<INotifyIdle>() )
 						if (ni.Actor.IsIdle)
 							ni.Trait.TickIdle(ni.Actor);
-				
+
 				using( new PerfSample("tick_activities") )
 					foreach( var a in actors )
 						a.Tick();
-				
+
 				ActorsWithTrait<ITick>().DoTimed( x =>
 				{
 					x.Trait.Tick( x.Actor );
 				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
-	
+
 				effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
 			}
-			
+
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
 			Game.viewport.Tick();
@@ -204,7 +204,7 @@ namespace OpenRA
 
 				// Hash the shared rng
 				ret += SharedRandom.Last;
-				
+
 				return ret;
 			}
 		}

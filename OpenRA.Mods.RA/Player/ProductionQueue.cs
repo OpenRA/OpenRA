@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,13 +23,13 @@ namespace OpenRA.Mods.RA
 
 		public float BuildSpeed = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
-		
+
 		public readonly string ReadyAudio = "unitrdy1.aud";
 		public readonly string BlockedAudio = "nobuild1.aud";
 		public readonly string QueuedAudio = "train1.aud";
 		public readonly string OnHoldAudio = "onhold1.aud";
 		public readonly string CancelledAudio = "cancld1.aud";
-		
+
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
@@ -40,10 +40,10 @@ namespace OpenRA.Mods.RA
 		PowerManager PlayerPower;
 		PlayerResources playerResources;
 		string Race;
-		
+
 		// A list of things we are currently building
 		public List<ProductionItem> Queue = new List<ProductionItem>();
-				
+
 		[Sync]
 		public int QueueLength { get { return Queue.Count; } }
 		[Sync]
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 		public bool CurrentPaused { get { return QueueLength == 0 ? false : Queue[0].Paused; } }
 		[Sync]
 		public bool CurrentDone { get { return QueueLength == 0 ? false : Queue[0].Done; } }
-		
+
 		// A list of things we could possibly build, even if our race doesn't normally get it
 		public Dictionary<ActorInfo, ProductionState> Produceable;
 
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 			playerResources = playerActor.Trait<PlayerResources>();
 			PlayerPower = playerActor.Trait<PowerManager>();
-			
+
 			Race = self.Owner.Country.Race;
 			Produceable = InitTech(playerActor);
 		}
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA
 
 			return tech;
 		}
-		
+
 		IEnumerable<ActorInfo> AllBuildables(string category)
 		{
 			return Rules.Info.Values
@@ -126,20 +126,20 @@ namespace OpenRA.Mods.RA
 				.Where( x => x.Traits.Contains<BuildableInfo>() )
 				.Where( x => x.Traits.Get<BuildableInfo>().Queue == category );
 		}
-			
+
 		public void OverrideProduction(ActorInfo type, bool buildable)
 		{
 			Produceable[type].Buildable = buildable;
 			Produceable[type].Sticky = true;
 		}
-				
+
 		public void PrerequisitesAvailable(string key)
 		{
 			var ps = Produceable[ Rules.Info[key] ];
 			if (!ps.Sticky)
 				ps.Buildable = true;
 		}
-		
+
 		public void PrerequisitesUnavailable(string key)
 		{
 			var ps = Produceable[ Rules.Info[key] ];
@@ -151,35 +151,35 @@ namespace OpenRA.Mods.RA
 		{
 			return Queue.ElementAtOrDefault(0);
 		}
-		
+
 		public IEnumerable<ProductionItem> AllQueued()
 		{
 			return Queue;
 		}
-		
+
 		public virtual IEnumerable<ActorInfo> AllItems()
-		{			
+		{
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
-			
+
 			return Produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
 		}
-		
+
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().AllTech)
 				return Produceable.Select(a => a.Key);
-			
+
 			return Produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
 		}
-		
+
 		public bool CanBuild(ActorInfo actor)
 		{
 			return Produceable.ContainsKey(actor) && Produceable[actor].Buildable;
 		}
-		
+
 		public virtual void Tick(Actor self)
-		{		
+		{
 			while (Queue.Count > 0 && !BuildableItems().Any(b => b.Name == Queue[ 0 ].Item))
 			{
 				playerResources.GiveCash(Queue[0].TotalCost - Queue[0].RemainingCost); // refund what's been paid so far.
@@ -199,13 +199,13 @@ namespace OpenRA.Mods.RA
 					var bi = unit.Traits.Get<BuildableInfo>();
 					if (bi.Queue != Info.Type)
 						return; /* Not built by this queue */
-				
+
 					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 					var time = GetBuildTime(order.TargetString);
 
 					if (!BuildableItems().Any(b => b.Name == order.TargetString))
 						return;	/* you can't build that!! */
-				
+
 					for (var n = 0; n < order.TargetLocation.X; n++)	// repeat count
 					{
 						bool hasPlayedSound = false;
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.RA
 									_ =>
 									{
 										var isBuilding = unit.Traits.Contains<BuildingInfo>();
-										
+
 										if (isBuilding && !hasPlayedSound)
 										{
 											Sound.PlayToPlayer(order.Player, Info.ReadyAudio);
@@ -247,13 +247,13 @@ namespace OpenRA.Mods.RA
 				}
 			}
 		}
-		
+
 		public int GetBuildTime(String unitString)
 		{
 			var unit = Rules.Info[unitString];
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
-			
+
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
 			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 			var time = cost
@@ -302,14 +302,14 @@ namespace OpenRA.Mods.RA
 		// Builds a unit from the actor that holds this queue (1 queue per building)
 		// Returns false if the unit can't be built
 		protected virtual bool BuildUnit( string name )
-		{			
+		{
 			// Cannot produce if i'm dead
 			if (!self.IsInWorld || self.IsDead())
 			{
 				CancelProduction(name, 1);
 				return true;
 			}
-			
+
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
 			if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
 			{
@@ -326,7 +326,7 @@ namespace OpenRA.Mods.RA
 		public bool Buildable = false;
 		public bool Sticky = false;
 	}
-	
+
 	public class ProductionItem
 	{
 		public readonly string Item;
@@ -374,7 +374,7 @@ namespace OpenRA.Mods.RA
 			if (pm.PowerState != PowerState.Normal)
 			{
 				if (--slowdown <= 0)
-					slowdown = Queue.Info.LowPowerSlowdown; 
+					slowdown = Queue.Info.LowPowerSlowdown;
 				else
 					return;
 			}

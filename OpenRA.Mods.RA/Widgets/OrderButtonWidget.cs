@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -19,23 +19,23 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public Func<bool> Enabled = () => true;
 		public Func<bool> Pressed = () => false;
-		
+
 		public string Image, Description, LongDesc = "";
-		
+
 		public Func<string> GetImage, GetDescription, GetLongDesc;
-		
+
 		public OrderButtonWidget()
 		{
 			GetImage = () => Enabled() ? Pressed() ? "pressed" : "normal" : "disabled";
 			GetDescription = () => Description;
 			GetLongDesc = () => LongDesc;
 		}
-		
+
 		public override void Draw()
 		{
 			var image = ChromeProvider.GetImage(Image + "-button", GetImage());
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);
-			
+
 			if (rect.Contains(Viewport.LastMousePos))
 			{
 					rect = rect.InflateBy(3, 3, 3, 3);
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets
 					pos += new int2(0, 20);
 					Game.Renderer.Fonts["Regular"].DrawText(GetLongDesc().Replace("\\n", "\n"), pos, Color.White);
 			}
-			
+
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(image, new int2(RenderBounds.X, RenderBounds.Y));
 		}
 	}

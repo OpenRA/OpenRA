@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public string[] CaptureTypes = {"building"};
 		public object Create(ActorInitializer init) { return new Captures(this); }
 	}
-	
+
 	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly CapturesInfo Info;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		{
 			Info = info;
 		}
-		
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -50,22 +50,22 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "CaptureActor") ? "Attack" : null;			
+			return (order.OrderString == "CaptureActor") ? "Attack" : null;
 		}
-		
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "CaptureActor")
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-								
+
 				self.CancelActivity();
 				self.QueueActivity(new Enter(order.TargetActor));
 				self.QueueActivity(new CaptureActor(order.TargetActor));
 			}
 		}
 	}
-			
+
 	class CaptureOrderTargeter : UnitTraitOrderTargeter<Capturable>
 	{
 		readonly string[] captureTypes;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
 			if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
-			
+
 			var ci = target.Info.Traits.Get<CapturableInfo>();
 			var playerRelationship = self.Owner.Stances[ target.Owner ];
 
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA
 				cursor = "enter";
 				return true;
 			}
-			
+
 			return false;
 		}
 	}

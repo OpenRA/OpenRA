@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Effects
 		int2 offset;
 		public int2 SubPxPosition;
 		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
-		
+
 		readonly Animation anim;
 		int Facing;
 		int t;
@@ -81,24 +81,24 @@ namespace OpenRA.Mods.RA.Effects
                     Info.ContrailDelay);
             }
         }
-		
+
 		// In pixels
 		const int MissileCloseEnough = 7;
 		int ticksToNextSmoke;
-		
+
 		public void Tick( World world )
 		{
 			t += 40;
 
 			// In pixels
 			var dist = Args.target.CenterLocation + offset - PxPosition;
-			
+
 			var targetAltitude = 0;
 			if (Args.target.IsValid && Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
 				targetAltitude =  Args.target.Actor.Trait<IMove>().Altitude;
-			
+
 			Altitude += Math.Sign(targetAltitude - Altitude);
-			
+
 			Facing = Traits.Util.TickFacing(Facing,
 				Traits.Util.GetFacing(dist, Facing),
 				Info.ROT);
@@ -107,15 +107,15 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || !Args.target.IsValid )
 				Explode(world);
-			
+
 			// TODO: Replace this with a lookup table
 			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))*1024).ToInt2();
-			
+
 			var move = Info.Speed * dir;
 			if (targetAltitude > 0 && Info.TurboBoost)
 				move = (move * 3) / 2;
 			move = move / 5;
-						
+
 			SubPxPosition += move;
 
 			if (Info.Trail != null)
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.RA.Effects
 					ticksToNextSmoke = Info.TrailInterval;
 				}
 			}
-			
+
 			if (Info.RangeLimit != 0 && t > Info.RangeLimit * 40)
 				Explode(world);
 
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
             if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(PxPosition.ToFloat2())))
-			    yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude), 
+			    yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
 				    Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 
             if (Trail != null)

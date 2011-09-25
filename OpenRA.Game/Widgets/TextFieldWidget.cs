@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -28,17 +28,17 @@ namespace OpenRA.Widgets
 		public int VisualHeight = 1;
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
-		
+
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public int CursorPosition { get; protected set; }
-		
+
 		public Func<bool> IsDisabled = () => false;
 		public Color TextColor = Color.White;
 		public Color DisabledColor = Color.Gray;
 		public string Font = "Regular";
-		
+
 		public TextFieldWidget() : base() {}
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
@@ -80,17 +80,17 @@ namespace OpenRA.Widgets
 		}
 
 		protected virtual string GetApparentText() { return text; }
-		
+
 		public int ClosestCursorPosition(int x)
 		{
 			var apparentText = GetApparentText();
 			var font = Game.Renderer.Fonts[Font];
 			var textSize = font.Measure(apparentText);
-			
+
 			var start = RenderOrigin.X + LeftMargin;
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && Focused)
 				start += Bounds.Width - LeftMargin - RightMargin - textSize.X;
-			
+
 			int minIndex = -1;
 			int minValue = int.MaxValue;
 			for (int i = 0; i <= apparentText.Length; i++)
@@ -110,7 +110,7 @@ namespace OpenRA.Widgets
 				return false;
 
 			if (e.Event == KeyInputEvent.Up) return false;
-			
+
 			// Only take input if we are focused
 			if (!Focused)
 				return false;
@@ -136,13 +136,13 @@ namespace OpenRA.Widgets
 
 				return true;
 			}
-			
+
 			if (e.KeyName == "home")
 			{
 				CursorPosition = 0;
 				return true;
 			}
-			
+
 			if (e.KeyName == "end")
 			{
 				CursorPosition = Text.Length;
@@ -167,9 +167,9 @@ namespace OpenRA.Widgets
 				CursorPosition--;
 				Text = Text.Remove(CursorPosition, 1);
 			}
-		
+
 			else if (key.IsValidInput())
-			{	
+			{
 				if (MaxLength > 0 && Text.Length >= MaxLength)
 					return;
 
@@ -190,7 +190,7 @@ namespace OpenRA.Widgets
 				showCursor ^= true;
 			}
 		}
-	
+
 		public override void Draw()
 		{
 			var apparentText = GetApparentText();

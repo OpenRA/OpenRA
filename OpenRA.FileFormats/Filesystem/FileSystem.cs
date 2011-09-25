@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -54,7 +54,7 @@ namespace OpenRA.FileFormats
             else
                 return new Folder(filename, order, content);
         }
-		
+
         public static IFolder OpenPackage(string filename, int order)
         {
             if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
@@ -73,11 +73,11 @@ namespace OpenRA.FileFormats
 		{
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
-			
+
 			// paths starting with ^ are relative to the support dir
 			if (name.StartsWith("^"))
 				name = Platform.SupportDir+name.Substring(1);
-			
+
 			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
 
 			if (optional)
@@ -198,7 +198,7 @@ namespace OpenRA.FileFormats
 					assemblyCache.Add(filename, a);
 					return a;
 				}
-			
+
 			return null;
 		}
 	}

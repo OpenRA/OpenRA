@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,10 +21,10 @@ namespace OpenRA.Traits
 		public bool PathDebug = false;
 		public bool UnlimitedPower;
         public bool BuildAnywhere;
-		
+
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
-	
+
 	public class DeveloperMode : IResolveOrder, ISync
 	{
 		DeveloperModeInfo Info;
@@ -46,11 +46,11 @@ namespace OpenRA.Traits
 			UnlimitedPower = info.UnlimitedPower;
             BuildAnywhere = info.BuildAnywhere;
 		}
-		
+
 		public void ResolveOrder (Actor self, Order order)
 		{
 			if (!self.World.LobbyInfo.GlobalSettings.AllowCheats) return;
-			
+
 			switch(order.OrderString)
 			{
 				case "DevEnableTech":
@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 						DisableShroud ^= true;
 						if (self.World.LocalPlayer == self.Owner)
 							self.World.LocalShroud.Disabled = DisableShroud;
-						break;	
+						break;
 					}
 				case "DevPathDebug":
 					{

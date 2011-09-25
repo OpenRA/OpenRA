@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -109,13 +109,13 @@ namespace OpenRA.FileFormats
 			/*var dataSize = */ br.ReadInt32();
 			var outputSize = br.ReadInt32();
 			var flags = (SoundFlags) br.ReadByte();
-			
+
 			var samples = outputSize;
 			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;
 			if (0 != (flags & SoundFlags._16Bit)) samples /= 2;
 			return samples / sampleRate;
 		}
-		
+
 		public static byte[] LoadSound(Stream s)
 		{
 			var br = new BinaryReader(s);
@@ -140,9 +140,9 @@ namespace OpenRA.FileFormats
 					var t = DecodeSample(b, ref index, ref currentSample);
 					output[offset++] = (byte)t;
 					output[offset++] = (byte)(t >> 8);
-		
+
 					if (offset < outputSize)
-					{ 
+					{
 						/* possible that only half of the final byte is used! */
 						t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
 						output[offset++] = (byte)t;

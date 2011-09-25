@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -98,7 +98,7 @@ namespace OpenRA.FileFormats
 		{
 			return new MiniYaml( null, list.Select( x => new MiniYamlNode( x.ToString(), new MiniYaml( null ) ) ).ToList() );
 		}
-		
+
 		static List<MiniYamlNode> FromLines(string[] lines, string filename)
 		{
 			var levels = new List<List<MiniYamlNode>>();
@@ -121,7 +121,7 @@ namespace OpenRA.FileFormats
 				var d = new List<MiniYamlNode>();
 				var rhs = SplitAtColon( ref t );
 				levels[ level ].Add( new MiniYamlNode( t, rhs, d, new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo } ) );
-				
+
 				levels.Add(d);
 			}
 			return levels[ 0 ];
@@ -143,11 +143,11 @@ namespace OpenRA.FileFormats
 		{
 			StreamReader reader = new StreamReader( FileSystem.Open(path) );
 			List<string> lines = new List<string>();
-			
+
 			while( !reader.EndOfStream )
 				lines.Add(reader.ReadLine());
 			reader.Close();
-			
+
 			return FromLines(lines.ToArray(), path);
 		}
 
@@ -162,7 +162,7 @@ namespace OpenRA.FileFormats
 		}
 
 		public static List<MiniYamlNode> FromFile( string path )
-		{			
+		{
 			return FromLines(File.ReadAllLines( path ), path);
 		}
 
@@ -273,7 +273,7 @@ namespace OpenRA.FileFormats
 		{
 			return string.Join("\n", y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
 		}
-		
+
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
 		{
 			foreach (var kv in y)

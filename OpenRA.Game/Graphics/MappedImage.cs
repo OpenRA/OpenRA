@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -33,13 +33,13 @@ namespace OpenRA.Graphics
 		{
 			return new Sprite(s, rect, TextureChannel.Alpha);
 		}
-		
+
 		public MiniYaml Save(string defaultSrc)
 		{
 			var root = new List<MiniYamlNode>();
 			if (defaultSrc != src)
 				root.Add(new MiniYamlNode("src", src));
-			
+
 			return new MiniYaml(FieldSaver.FormatValue( this, this.GetType().GetField("rect") ), root);
 		}
 	}

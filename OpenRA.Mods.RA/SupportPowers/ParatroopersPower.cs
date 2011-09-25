@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 		{
 			var items = (Info as ParatroopersPowerInfo).DropItems;
 			var startPos = self.World.ChooseRandomEdgeCell();
-			
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var info = (Info as ParatroopersPowerInfo);
@@ -53,21 +53,21 @@ namespace OpenRA.Mods.RA
 					flare.QueueActivity(new RemoveSelf());
 				}
 
-				var a = w.CreateActor(info.UnitType, new TypeDictionary 
+				var a = w.CreateActor(info.UnitType, new TypeDictionary
 				{
 					new LocationInit( startPos ),
 					new OwnerInit( self.Owner ),
 					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),
 					new AltitudeInit( Rules.Info[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
-				
+
 				a.CancelActivity();
 				a.QueueActivity(new FlyAttack(Target.FromOrder(order)));
 				a.Trait<ParaDrop>().SetLZ(order.TargetLocation);
 
 				var cargo = a.Trait<Cargo>();
 				foreach (var i in items)
-					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(), 
+					cargo.Load(a, self.World.CreateActor(false, i.ToLowerInvariant(),
 						new TypeDictionary { new OwnerInit( a.Owner ) }));
 			});
 		}

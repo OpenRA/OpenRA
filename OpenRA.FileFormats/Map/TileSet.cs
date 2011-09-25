@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -27,7 +27,7 @@ namespace OpenRA.FileFormats
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
-	
+
 	public class TileTemplate
 	{
 		public ushort Id;
@@ -37,7 +37,7 @@ namespace OpenRA.FileFormats
 
 		[FieldLoader.LoadUsing( "LoadTiles" )]
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
-		
+
 		public TileTemplate() {}
 		public TileTemplate(MiniYaml my)
 		{
@@ -50,7 +50,7 @@ namespace OpenRA.FileFormats
 				t => byte.Parse(t.Key),
 				t => t.Value.Value );
 		}
-		
+
 		public MiniYaml Save()
 		{
 			var root = new List<MiniYamlNode>();
@@ -63,11 +63,11 @@ namespace OpenRA.FileFormats
 
 			root.Add( new MiniYamlNode( "Tiles", null,
 				Tiles.Select( x => new MiniYamlNode( x.Key.ToString(), x.Value ) ).ToList() ) );
-			
+
 			return new MiniYaml(null, root);
 		}
 	}
-	
+
 	public class TileSet
 	{
 		public string Name;
@@ -84,7 +84,7 @@ namespace OpenRA.FileFormats
 		public TileSet( string filepath )
 		{
 			var yaml = MiniYaml.DictFromFile( filepath );
-			
+
 			// General info
 			FieldLoader.Load(this, yaml["General"]);
 
@@ -96,7 +96,7 @@ namespace OpenRA.FileFormats
 			Templates = yaml["Templates"].NodesDict.Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
 		}
-		
+
 		public void LoadTiles()
 		{
 			foreach (var t in Templates)
@@ -106,9 +106,9 @@ namespace OpenRA.FileFormats
 						Tiles.Add( t.Key, new Terrain( s, TileSize ) );
 				}
 		}
-		
+
 		public void Save(string filepath)
-		{			
+		{
 			var root = new List<MiniYamlNode>();
 			var gen = new List<MiniYamlNode>();
 			foreach (var field in fields)
@@ -119,7 +119,7 @@ namespace OpenRA.FileFormats
 			}
 			root.Add( new MiniYamlNode( "General", null, gen ) );
 
-			root.Add( new MiniYamlNode( "Terrain", null, 
+			root.Add( new MiniYamlNode( "Terrain", null,
 				Terrain.Select( t => new MiniYamlNode(
 					"TerrainType@{0}".F( t.Value.Type ),
 					t.Value.Save() ) ).ToList() ) );
@@ -129,14 +129,14 @@ namespace OpenRA.FileFormats
 					"Template@{0}".F( t.Value.Id ),
 					t.Value.Save() ) ).ToList() ) );
 			root.WriteToFile(filepath);
-		} 
-				
+		}
+
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{
 			Terrain tile;
 			if( Tiles.TryGetValue( r.type, out tile ) )
 				return tile.TileBitmapBytes[ r.index ];
-			
+
 			byte[] missingTile = new byte[ TileSize * TileSize ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
 				missingTile[ i ] = 0x36;

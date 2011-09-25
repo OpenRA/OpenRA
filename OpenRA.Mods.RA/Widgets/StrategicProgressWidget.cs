@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		[ObjectCreator.UseCtor]
 		public StrategicProgressWidget([ObjectCreator.Param] World world)
-		{ 
+		{
 			IsVisible = () => true;
 			this.world = world;
 		}
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				curX += 32;
 			}
-			
+
 			offset += new int2(0, 32);
 
 			if (world.LocalPlayer == null) return;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Widgets
 				WidgetUtils.FormatTime(winnerSvc.TicksLeft));
 
 			var font = Game.Renderer.Fonts["Bold"];
-			
+
 			var size = font.Measure(tc);
 			font.DrawTextWithContrast(tc, offset + new float2(rb.Left - size.X / 2 + 1, rb.Top + 1), Color.White, Color.Black, 1);
 			offset += new int2(0, size.Y + 1);

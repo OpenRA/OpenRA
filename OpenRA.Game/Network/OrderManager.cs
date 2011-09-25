@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -37,9 +37,9 @@ namespace OpenRA.Network
 
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
-		
+
 		public readonly int SyncHeaderSize = 9;
-		
+
 		List<Order> localOrders = new List<Order>();
 
 		public void StartGame()
@@ -134,19 +134,19 @@ namespace OpenRA.Network
 		void OutOfSync(int frame, int index)
 		{
 			var orders = frameData.OrdersForFrame( world, frame );
-			
+
 			// Invalid index
 			if (index >= orders.Count())
 				OutOfSync(frame);
-			
+
 			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
-		
+
 		void OutOfSync(int frame)
 		{
 			throw new InvalidOperationException("Out of sync in frame {0}.\n".F(frame));
 		}
-		
+
 		void OutOfSync(int frame, string blame)
 		{
 			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n".F(frame, blame));

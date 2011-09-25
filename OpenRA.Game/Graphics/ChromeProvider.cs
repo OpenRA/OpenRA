@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 			public string src;
 			public Dictionary<string, MappedImage> regions;
 		}
-	
+
 		static Dictionary<string, Collection> collections;
 		static Dictionary<string, Sheet> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
-			
+
 			if (chromeFiles.Length == 0)
 				return;
 
@@ -41,34 +41,34 @@ namespace OpenRA.Graphics
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);
 		}
-		
+
 		public static void Save(string file)
 		{
 			var root = new List<MiniYamlNode>();
 			foreach (var kv in collections)
 				root.Add(new MiniYamlNode(kv.Key, SaveCollection(kv.Value)));
-			
+
 			root.WriteToFile(file);
 		}
-		
+
 		static MiniYaml SaveCollection(Collection collection)
 		{
 			var root = new List<MiniYamlNode>();
 			foreach (var kv in collection.regions)
 				root.Add(new MiniYamlNode(kv.Key, kv.Value.Save(collection.src)));
-			
+
 			return new MiniYaml(collection.src, root);
 		}
 
 		static void LoadCollection(string name, MiniYaml yaml)
 		{
-			Game.modData.LoadScreen.Display();			
+			Game.modData.LoadScreen.Display();
 			var collection = new Collection()
 			{
 				src = yaml.Value,
 				regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
 			};
-			
+
 			collections.Add(name, collection);
 		}
 
@@ -85,7 +85,7 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException(
 					"Collection `{0}` does not have an image `{1}`".F(collection, image));
 			}
-			
+
 			// Cached sheet
 			Sheet sheet;
 			if (cachedSheets.ContainsKey(mi.src))

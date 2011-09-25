@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -83,14 +83,14 @@ namespace OpenRA.FileFormats
 			BinaryReader reader = new BinaryReader(stream);
 
 			ImageCount = reader.ReadUInt16();
-			
+
 			//Last offset is pointer to end of file.
 			uint[] offsets = new uint[ImageCount + 1];
 
 			uint temp = reader.ReadUInt32();
 
 			//If fourth byte in file is non-zero, the offsets are two bytes each.
-			bool twoByteOffsets = (temp & 0xFF0000) > 0; 
+			bool twoByteOffsets = (temp & 0xFF0000) > 0;
 			if (twoByteOffsets)
 			{
 				offsets[0] = ((temp & 0xFFFF0000) >> 16) + 2; //Offset does not account for image count bytes
@@ -132,7 +132,7 @@ namespace OpenRA.FileFormats
 		{
 			get { return headers[index]; }
 		}
-	
+
 		public IEnumerator<Dune2ImageHeader> GetEnumerator()
 		{
 			return headers.GetEnumerator();

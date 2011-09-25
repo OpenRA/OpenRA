@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -26,7 +26,7 @@ namespace OpenRA
         BottomLeft,
         BottomRight
     }
-	
+
 	public class ActorMap
 	{
 		class InfluenceNode
@@ -35,7 +35,7 @@ namespace OpenRA
 			public SubCell subCell;
 			public Actor actor;
 		}
-	
+
 		InfluenceNode[,] influence;
 		Map map;
 
@@ -56,7 +56,7 @@ namespace OpenRA
 				if (!i.actor.Destroyed)
 					yield return i.actor;
 		}
-		
+
 		public IEnumerable<Actor> GetUnitsAt( int2 a, SubCell sub )
 		{
 			if (!map.IsInMap(a)) yield break;
@@ -65,12 +65,12 @@ namespace OpenRA
 				if (!i.actor.Destroyed && (i.subCell == sub || i.subCell == SubCell.FullCell))
 					yield return i.actor;
 		}
-		
+
 		public bool HasFreeSubCell(int2 a)
 		{
 			if (!AnyUnitsAt(a))
 				return true;
-			
+
 			return new[]{ SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
 				SubCell.BottomLeft, SubCell.BottomRight }.Any(b => !AnyUnitsAt(a,b));
 		}
@@ -79,9 +79,9 @@ namespace OpenRA
 		{
 			return influence[ a.X, a.Y ] != null;
 		}
-		
+
 		public bool AnyUnitsAt(int2 a, SubCell sub)
-		{		
+		{
 			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
 				if (i.subCell == sub || i.subCell == SubCell.FullCell)
 					return true;

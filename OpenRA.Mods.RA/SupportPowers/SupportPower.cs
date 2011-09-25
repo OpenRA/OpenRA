@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;
 		public readonly bool OneShot = false;
-		
+
 		public readonly string BeginChargeSound = null;
 		public readonly string EndChargeSound = null;
 		public readonly string SelectTargetSound = null;
@@ -38,18 +38,18 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly Actor self;
 		public readonly SupportPowerInfo Info;
-		
+
 		public SupportPower(Actor self, SupportPowerInfo info)
 		{
 			Info = info;
 			this.self = self;
 		}
-		
+
 		public virtual void Charging(Actor self, string key)
 		{
 			Sound.PlayToPlayer(self.Owner, Info.BeginChargeSound);
 		}
-		
+
 		public virtual void Charged(Actor self, string key)
 		{
 			Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);

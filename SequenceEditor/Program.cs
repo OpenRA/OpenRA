@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -90,7 +90,7 @@ namespace SequenceEditor
 			FileSystem.LoadFromManifest( manifest );
 
 			XmlFilename = args[1];
-			Doc = new XmlDocument(); 
+			Doc = new XmlDocument();
 			Doc.Load(XmlFilename);
 
 			var tempPal = new Palette(FileSystem.Open(args[2]), true);
@@ -100,7 +100,7 @@ namespace SequenceEditor
 			if (string.IsNullOrEmpty(UnitName))
 				return;
 
-			LoadAndResolve(UnitName); 
+			LoadAndResolve(UnitName);
 
 			var xpath = string.Format("//unit[@name=\"{0}\"]/sequence", UnitName);
 			foreach (XmlElement e in Doc.SelectNodes(xpath))

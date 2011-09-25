@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -38,9 +38,9 @@ namespace OpenRA.Graphics
 			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 
 			int nv = 0;
-			
+
 			var terrainPalette = Game.modData.Palette.GetPaletteIndex("terrain");
-			
+
 			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
 				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
 				{
@@ -48,7 +48,7 @@ namespace OpenRA.Graphics
 					// TODO: move GetPaletteIndex out of the inner loop.
 					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, terrainPalette, nv, tile.size);
 					nv += 4;
-					
+
 					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
 						throw new InvalidOperationException("Terrain sprites span multiple sheets");
 				}

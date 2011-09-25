@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -16,7 +16,7 @@ using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
-{	
+{
 	public class CncServerBrowserLogic
 	{
 		GameServer currentServer;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Hidden
 		}
 		SearchStatus searchStatus = SearchStatus.Fetching;
-		
+
 		public string ProgressLabelText()
 		{
 			switch (searchStatus)
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			var panel = widget.GetWidget("SERVERBROWSER_PANEL");
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
-			
+
 			// Menu buttons
 			var refreshButton = panel.GetWidget<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => refreshing;
@@ -61,11 +61,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
-				currentServer = null;				
+				currentServer = null;
 				ServerList.Query(games => RefreshServerList(panel, games));
 				refreshing = true;
 			};
-			
+
 			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !ServerBrowserLogic.CanJoin(currentServer);
 			join.OnClick = () =>
@@ -79,23 +79,23 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget.CloseWindow();
 				CncConnectingLogic.Connect(host, port, openLobby, onExit);
 			};
-			
+
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
-			
+
 			// Server list
 			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
-			
+
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
 			var progressText = panel.GetWidget<LabelWidget>("PROGRESS_LABEL");
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
-			
+
 			// Map preview
 			var preview = panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
 			preview.Map = () => CurrentMap();
 			preview.IsVisible = () => CurrentMap() != null;
-			
+
 			// Server info
 			var infoPanel = panel.GetWidget("SERVER_INFO");
 			infoPanel.IsVisible = () => currentServer != null;
@@ -103,16 +103,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserLogic.GenerateModsLabel(currentServer);
 			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
 			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
-			
+
 			refreshing = true;
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
-		
+
 		string GetPlayersLabel(GameServer game)
 		{
 			if (game == null)
 				return "";
-			
+
 			var map = GetMap(game.Map);
 			return map == null ? "{0}".F(currentServer.Players) : "{0} / {1}".F(currentServer.Players, map.PlayerCount);
 		}
@@ -121,18 +121,18 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			return (currentServer == null) ? null : GetMap(currentServer.Map);
 		}
-		
+
 		static Map GetMap(string uid)
 		{
 			return (!Game.modData.AvailableMaps.ContainsKey(uid))
 				? null : Game.modData.AvailableMaps[uid];
 		}
-		
+
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
 			refreshing = false;
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
-			
+
 			sl.RemoveChildren();
 			currentServer = null;
 
@@ -149,14 +149,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				searchStatus = SearchStatus.NoGames;
 				return;
 			}
-			
+
 			searchStatus = SearchStatus.Hidden;
 
 			int i = 0;
             foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
-				
+
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
 				// TODO: Use game.MapTitle once the server supports it
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var panel = widget.GetWidget("DIRECTCONNECT_PANEL");
 			var ipField = panel.GetWidget<TextFieldWidget>("IP");
 			var portField = panel.GetWidget<TextFieldWidget>("PORT");
-			
+
 			var last = Game.Settings.Player.LastServer.Split(':').ToArray();
 			ipField.Text = last.Length > 1 ? last[0] : "localhost";
 			portField.Text = last.Length > 2 ? last[1] : "1234";
@@ -192,10 +192,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
                 int port;
 				if (!int.TryParse(portField.Text, out port))
 					port = 1234;
-				
+
 				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
                 Game.Settings.Save();
-				
+
 				Widget.CloseWindow();
 				CncConnectingLogic.Connect(ipField.Text, port, openLobby, onExit);
             };

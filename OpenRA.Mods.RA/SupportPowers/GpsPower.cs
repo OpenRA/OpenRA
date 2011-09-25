@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public object Create (ActorInitializer init) { return new GpsWatcher(init.self.Owner); }
 	}
-	
+
 	class GpsWatcher : ISync
 	{
 		[Sync] bool Launched = false;
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 		{
 			self.Owner.PlayerActor.Trait<SupportPowerManager>().Powers[key].Activate(new Order());
 		}
-		
+
 		public override void Activate(Actor self, Order order)
 		{
 			self.World.AddFrameEndTask(w =>
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 		{
 			owner.RefreshGps(self);
 		}
-		
+
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			RemoveGps(self);

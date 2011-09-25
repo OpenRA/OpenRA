@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats.Graphics
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create( Size size, WindowMode windowMode ); 
+		IGraphicsDevice Create( Size size, WindowMode windowMode );
 	}
 
 	public interface IGraphicsDevice
@@ -75,8 +75,8 @@ namespace OpenRA.FileFormats.Graphics
 
     public enum PrimitiveType
     {
-        PointList, 
-        LineList, 
+        PointList,
+        LineList,
         TriangleList,
 		QuadList,
     }
@@ -86,7 +86,7 @@ namespace OpenRA.FileFormats.Graphics
 		public readonly T Start, End;
 		public Range( T start, T end ) { Start = start; End = end; }
 	}
-	
+
 	public enum WindowMode
 	{
 		Windowed,

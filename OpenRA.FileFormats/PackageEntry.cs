@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -20,21 +20,21 @@ namespace OpenRA.FileFormats
 		public readonly uint Offset;
 		public readonly uint Length;
 
-		
+
 		public PackageEntry(uint hash, uint offset, uint length)
 		{
 			Hash = hash;
 			Offset = offset;
 			Length = length;
 		}
-		
+
 		public PackageEntry(BinaryReader r)
 		{
 			Hash = r.ReadUInt32();
 			Offset = r.ReadUInt32();
 			Length = r.ReadUInt32();
 		}
-		
+
 		public void Write(BinaryWriter w)
 		{
 			w.Write(Hash);
@@ -63,7 +63,7 @@ namespace OpenRA.FileFormats
 			MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
 			BinaryReader reader = new BinaryReader(ms);
 
-			int len = name.Length >> 2; 
+			int len = name.Length >> 2;
 			uint result = 0;
 
 			while (len-- != 0)
@@ -73,7 +73,7 @@ namespace OpenRA.FileFormats
 		}
 
 		static Dictionary<uint, string> Names = new Dictionary<uint,string>();
-		
+
 		public static void AddStandardName(string s)
 		{
 			uint hash = HashFilename(s);

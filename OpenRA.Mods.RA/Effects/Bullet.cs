@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly BulletInfo Info;
 		readonly ProjectileArgs Args;
-		
+
 		int t = 0;
 		Animation anim;
 
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.RA.Effects
 			var u = (rawFacing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
 
-			return (int)(rawFacing < 128 
-				? rawFacing - scale * attitude 
+			return (int)(rawFacing < 128
+				? rawFacing - scale * attitude
 				: rawFacing + scale * attitude);
 		}
 

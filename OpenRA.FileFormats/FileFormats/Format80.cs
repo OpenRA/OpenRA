@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -129,7 +129,7 @@ namespace OpenRA.FileFormats
 		{
 			/* quick & dirty format80 encoder -- only uses raw copy operator, terminated with a zero-run. */
 			/* this does not produce good compression, but it's valid format80 */
-			
+
 			var ctx = new FastByteReader(src);
 			var ms = new MemoryStream();
 

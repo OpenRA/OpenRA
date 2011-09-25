@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -51,12 +51,12 @@ namespace SequenceEditor
 			this.toolStrip1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// toolStripContainer1
-			// 
-			// 
+			//
+			//
 			// toolStripContainer1.ContentPanel
-			// 
+			//
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.panel1);
 			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(708, 518);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -65,13 +65,13 @@ namespace SequenceEditor
 			this.toolStripContainer1.Size = new System.Drawing.Size(708, 543);
 			this.toolStripContainer1.TabIndex = 0;
 			this.toolStripContainer1.Text = "toolStripContainer1";
-			// 
+			//
 			// toolStripContainer1.TopToolStripPanel
-			// 
+			//
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
-			// 
+			//
 			// toolStrip1
-			// 
+			//
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
@@ -80,9 +80,9 @@ namespace SequenceEditor
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(160, 25);
 			this.toolStrip1.TabIndex = 0;
-			// 
+			//
 			// toolStripButton1
-			// 
+			//
 			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
 			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -90,9 +90,9 @@ namespace SequenceEditor
 			this.toolStripButton1.Size = new System.Drawing.Size(113, 22);
 			this.toolStripButton1.Text = "Add Another SHP...";
 			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-			// 
+			//
 			// toolStripButton2
-			// 
+			//
 			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -100,9 +100,9 @@ namespace SequenceEditor
 			this.toolStripButton2.Size = new System.Drawing.Size(35, 22);
 			this.toolStripButton2.Text = "Save";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
-			// 
+			//
 			// panel1
-			// 
+			//
 			this.panel1.AutoScroll = true;
 			this.panel1.Controls.Add(this.surface1);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -110,18 +110,18 @@ namespace SequenceEditor
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(708, 518);
 			this.panel1.TabIndex = 0;
-			// 
+			//
 			// surface1
-			// 
+			//
 			this.surface1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.surface1.Location = new System.Drawing.Point(0, 0);
 			this.surface1.Name = "surface1";
 			this.surface1.Size = new System.Drawing.Size(708, 518);
 			this.surface1.TabIndex = 0;
 			this.surface1.Text = "surface1";
-			// 
+			//
 			// Form1
-			// 
+			//
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(708, 543);

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -25,13 +25,13 @@ namespace OpenRA.Network
 			for (var i = 0; i < numSyncReports; i++)
 				syncReports[i] = new SyncReport.Report();
 		}
-		
+
 		internal void UpdateSyncReport()
 		{
 			GenerateSyncReport(syncReports[curIndex]);
 			curIndex = ++curIndex % numSyncReports;
 		}
-		
+
 		void GenerateSyncReport(Report report)
 		{
 			report.Frame = orderManager.NetFrameNumber;
@@ -72,14 +72,14 @@ namespace OpenRA.Network
 				}
 			Log.Write("sync", "No sync report available!");
 		}
-	
+
 		class Report
 		{
 			public int Frame;
 			public int SyncedRandom;
 			public List<TraitReport> Traits = new List<TraitReport>();
 		}
-		
+
 		struct TraitReport
 		{
 			public uint ActorID;

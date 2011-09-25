@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -37,9 +37,9 @@ namespace RALint
 			{
 				var options = args.Where(a => a.StartsWith("-"));
 				var mods = args.Where(a => !options.Contains(a)).ToArray();
-				
+
 				var verbose = options.Contains( "-v" ) || options.Contains( "--verbose" );
-				
+
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));

@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 					w => w.Add(new Explosion(w, args.dest, explosionType, isWater, args.destAltitude)));
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
-			
+
 			if (warhead.SmudgeType != null)
 			{
 				var smudgeLayer = world.WorldActor.TraitsImplementing<SmudgeLayer>()
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 				else
 					smudgeLayer.AddSmudge(targetTile);
 			}
-			
+
 			if (warhead.Ore)
 				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
 
@@ -132,9 +132,9 @@ namespace OpenRA.Mods.RA
 			DoImpacts(args);
 		}
 
-		static readonly float[] falloff = 
+		static readonly float[] falloff =
 		{
-			1f, 0.3678795f, 0.1353353f, 0.04978707f, 
+			1f, 0.3678795f, 0.1353353f, 0.04978707f,
 			0.01831564f, 0.006737947f, 0.002478752f, 0.000911882f
 		};
 
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA
 			var targetable = target.TraitOrDefault<ITargetable>();
 			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
-			
+
 			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target) <= 0))
 				return false;
 
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.RA
 		public static float2 GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
 			var turreted = self.TraitOrDefault<Turreted>();
-			
+
 			if (turreted == null && facing == null)
 				return float2.Zero;
 

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -49,9 +49,9 @@ namespace OpenRA.Editor
             this.author = new System.Windows.Forms.TextBox();
             this.useAsShellmap = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
-            // 
+            //
             // button2
-            // 
+            //
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button2.Location = new System.Drawing.Point(196, 193);
@@ -60,9 +60,9 @@ namespace OpenRA.Editor
             this.button2.TabIndex = 14;
             this.button2.Text = "OK";
             this.button2.UseVisualStyleBackColor = true;
-            // 
+            //
             // button1
-            // 
+            //
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Location = new System.Drawing.Point(277, 193);
@@ -71,41 +71,41 @@ namespace OpenRA.Editor
             this.button1.TabIndex = 15;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = true;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 16;
             this.label1.Text = "Title";
-            // 
+            //
             // title
-            // 
+            //
             this.title.Location = new System.Drawing.Point(66, 47);
             this.title.Name = "title";
             this.title.Size = new System.Drawing.Size(286, 20);
             this.title.TabIndex = 17;
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 76);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 16;
             this.label2.Text = "Desc";
-            // 
+            //
             // desc
-            // 
+            //
             this.desc.Location = new System.Drawing.Point(66, 73);
             this.desc.Name = "desc";
             this.desc.Size = new System.Drawing.Size(286, 20);
             this.desc.TabIndex = 17;
-            // 
+            //
             // selectable
-            // 
+            //
             this.selectable.AutoSize = true;
             this.selectable.Location = new System.Drawing.Point(118, 138);
             this.selectable.Name = "selectable";
@@ -113,25 +113,25 @@ namespace OpenRA.Editor
             this.selectable.TabIndex = 18;
             this.selectable.Text = "Show in Map Chooser";
             this.selectable.UseVisualStyleBackColor = true;
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 102);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 16;
             this.label3.Text = "Author";
-            // 
+            //
             // author
-            // 
+            //
             this.author.Location = new System.Drawing.Point(66, 99);
             this.author.Name = "author";
             this.author.Size = new System.Drawing.Size(286, 20);
             this.author.TabIndex = 17;
-            // 
+            //
             // checkBox1
-            // 
+            //
             this.useAsShellmap.AutoSize = true;
             this.useAsShellmap.Location = new System.Drawing.Point(118, 161);
             this.useAsShellmap.Name = "checkBox1";
@@ -139,9 +139,9 @@ namespace OpenRA.Editor
             this.useAsShellmap.TabIndex = 18;
             this.useAsShellmap.Text = "Use as Shellmap";
             this.useAsShellmap.UseVisualStyleBackColor = true;
-            // 
+            //
             // PropertiesDialog
-            // 
+            //
             this.AcceptButton = this.button2;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

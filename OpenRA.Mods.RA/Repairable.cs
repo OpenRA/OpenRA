@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
-	{ 
+	{
 		public readonly string[] RepairBuildings = { "fix" };
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.self); }
 	}
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 			Health = self.Trait<Health>();
 		}
-		
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new EnterOrderTargeter<Building>( "Repair", 5, false, true, target => CanRepairAt( target ), _ => CanRepair() ); }
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA
 
 				var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
 				if (rp != null)
-					self.QueueActivity(new CallFunc(() => 
+					self.QueueActivity(new CallFunc(() =>
 					{
 						self.SetTargetLine(Target.FromCell(rp.rallyPoint), Color.Green);
 						self.QueueActivity(mobile.MoveTo(rp.rallyPoint, order.TargetActor));

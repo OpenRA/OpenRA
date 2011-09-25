@@ -1,7 +1,7 @@
 #region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly string palette;
 		readonly Animation paraAnim;
 		readonly float2 location;
-		
+
 		readonly Actor cargo;
 
 		int2 offset;
@@ -38,24 +38,24 @@ namespace OpenRA.Mods.RA.Effects
 			var rs = cargo.Trait<RenderSimple>();
 			var image = rs.anim.Name;
 			palette = rs.Palette(owner);
-			
+
 			anim = new Animation(image);
 			if (anim.HasSequence("idle"))
 				anim.PlayFetchIndex("idle", () => 0);
 			else
 				anim.PlayFetchIndex("stand", () => 0);
 			anim.Tick();
-			
+
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
 
 			paraAnim = new Animation(pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
-			
+
 			if (pai != null) offset = pai.Offset;
 		}
 
 		public void Tick(World world)
-		{ 
+		{
 			paraAnim.Tick();
 
 			altitude -= fallRate;

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -22,7 +22,7 @@ namespace OpenRA.Editor
 
 		public void Preview(Surface surface, SGraphics g)
 		{
-			/* todo: include the player 
+			/* todo: include the player
 				* in the brush so we can color new buildings too */
 
 			surface.DrawActor(g, surface.GetBrushLocation(), Actor, null);

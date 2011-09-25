@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -65,7 +65,7 @@ namespace OpenRA.TilesetBuilder
 
 		public void Save()
 		{
-			using (var w = XmlWriter.Create(Path.ChangeExtension(srcfile, "tsx"), 
+			using (var w = XmlWriter.Create(Path.ChangeExtension(srcfile, "tsx"),
 				new XmlWriterSettings { Indent = true, IndentChars = "  " }))
 			{
 				w.WriteStartDocument();
@@ -109,7 +109,7 @@ namespace OpenRA.TilesetBuilder
 				tsb.Checked = false;
 			(sender as ToolStripButton).Checked = true;
 		}
-		
+
 		void SaveClicked(object sender, EventArgs e) { Save(); }
 		void ShowOverlaysClicked(object sender, EventArgs e) { surface1.ShowTerrainTypes ^= true; }
 
@@ -130,18 +130,18 @@ namespace OpenRA.TilesetBuilder
 				Palette = "arrakis.pal",
 				Extensions = new string[] {".arr", ".shp"}
 			};
-			
+
 			// List of files to add to the mix file
 			List<string> fileList = new List<string>();
-			
+
 			// Export palette (use the embedded palette)
 			var p = surface1.Image.Palette.Entries.ToList();
 			fileList.Add(ExportPalette(p, Path.Combine(dir, tileset.Palette)));
-			
+
 			// Export tile artwork
 			foreach (var t in surface1.Templates)
-				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir));		
-			
+				fileList.Add(ExportTemplate(t, surface1.Templates.IndexOf(t), tileset.Extensions.First(), dir));
+
 			// Add the terraintypes
 			// Todo: add support for multiple/different terraintypes
 			var terraintype = new TerrainTypeInfo()
@@ -152,7 +152,7 @@ namespace OpenRA.TilesetBuilder
 				Color = Color.White
 			};
 			tileset.Terrain.Add("Clear", terraintype);
-			
+
 			// Add the templates
 			ushort cur = 0;
 			foreach (var tp in surface1.Templates)
@@ -163,7 +163,7 @@ namespace OpenRA.TilesetBuilder
 					Image = "t{0:00}".F(cur),
 					Size = new int2(tp.Width,tp.Height),
 				};
-				
+
 				// Todo: add support for different terraintypes
 				// Todo: restrict cells? this doesn't work: .Where( c => surface1.TerrainTypes[c.Key.X, c.Key.Y] != 0 )
 				foreach (var t in tp.Cells)
@@ -172,7 +172,7 @@ namespace OpenRA.TilesetBuilder
 				tileset.Templates.Add(cur, template);
 				cur++;
 			}
-			
+
 			tileset.Save(Path.Combine(dir, tilesetFile));
 			throw new NotImplementedException("NotI");
 			//PackageWriter.CreateMix(Path.Combine(dir, mixFile),fileList);
@@ -180,11 +180,11 @@ namespace OpenRA.TilesetBuilder
 			// Cleanup
 			foreach (var file in fileList)
 				File.Delete(file);
-			
+
 			Console.WriteLine("Finished export");
 			*/
 		}
-		
+
 		string ExportPalette(List<Color> p, string file)
 		{
 			while (p.Count < 256) p.Add(Color.Black); // pad the palette out with extra blacks
@@ -211,7 +211,7 @@ namespace OpenRA.TilesetBuilder
 				bw.Write((uint)0);				// filesize placeholder
 				bw.Flush();
 				bw.Write((uint)ms.Position + 24);		// image start
-				bw.Write((uint)0);				// 0 (32bits)		
+				bw.Write((uint)0);				// 0 (32bits)
 				bw.Write((uint)0x2c730f8a);		// magic?
 				bw.Write((uint)0);				// flags start
 				bw.Write((uint)0);				// walk start
@@ -272,7 +272,7 @@ namespace OpenRA.TilesetBuilder
 
 				File.WriteAllBytes(filename, bytes);
 			}
-			
+
 			return filename;
 		}
 	}

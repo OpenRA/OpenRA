@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made 
+ * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
@@ -70,9 +70,9 @@ namespace OpenRA.Editor
 			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
-			// 
+			//
 			// MapList
-			// 
+			//
 			this.MapList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.MapList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colMapName});
@@ -89,20 +89,20 @@ namespace OpenRA.Editor
 			this.MapList.UseCompatibleStateImageBehavior = false;
 			this.MapList.View = System.Windows.Forms.View.Details;
 			this.MapList.SelectedIndexChanged += new System.EventHandler(this.MapList_SelectedIndexChanged);
-			// 
+			//
 			// colMapName
-			// 
+			//
 			this.colMapName.Text = "Map name";
 			this.colMapName.Width = 240;
-			// 
+			//
 			// MapIconsList
-			// 
+			//
 			this.MapIconsList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
 			this.MapIconsList.ImageSize = new System.Drawing.Size(24, 24);
 			this.MapIconsList.TransparentColor = System.Drawing.Color.Transparent;
-			// 
+			//
 			// btnCancel
-			// 
+			//
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnCancel.Location = new System.Drawing.Point(407, 35);
 			this.btnCancel.Name = "btnCancel";
@@ -110,9 +110,9 @@ namespace OpenRA.Editor
 			this.btnCancel.TabIndex = 3;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
-			// 
+			//
 			// btnOk
-			// 
+			//
 			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.btnOk.Location = new System.Drawing.Point(326, 35);
 			this.btnOk.Name = "btnOk";
@@ -120,9 +120,9 @@ namespace OpenRA.Editor
 			this.btnOk.TabIndex = 2;
 			this.btnOk.Text = "Open";
 			this.btnOk.UseVisualStyleBackColor = true;
-			// 
+			//
 			// lblNew
-			// 
+			//
 			this.lblNew.AutoSize = true;
 			this.lblNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.lblNew.Location = new System.Drawing.Point(12, 40);
@@ -130,18 +130,18 @@ namespace OpenRA.Editor
 			this.lblNew.Size = new System.Drawing.Size(69, 13);
 			this.lblNew.TabIndex = 3;
 			this.lblNew.Text = "Map name:";
-			// 
+			//
 			// txtNew
-			// 
+			//
 			this.txtNew.BackColor = System.Drawing.SystemColors.Window;
 			this.txtNew.Location = new System.Drawing.Point(88, 37);
 			this.txtNew.Name = "txtNew";
 			this.txtNew.ReadOnly = true;
 			this.txtNew.Size = new System.Drawing.Size(232, 20);
 			this.txtNew.TabIndex = 1;
-			// 
+			//
 			// pbMinimap
-			// 
+			//
 			this.pbMinimap.BackColor = System.Drawing.Color.Black;
 			this.pbMinimap.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.pbMinimap.Location = new System.Drawing.Point(32, 25);
@@ -150,9 +150,9 @@ namespace OpenRA.Editor
 			this.pbMinimap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pbMinimap.TabIndex = 5;
 			this.pbMinimap.TabStop = false;
-			// 
+			//
 			// pnlBottom
-			// 
+			//
 			this.pnlBottom.Controls.Add(this.pictureBox1);
 			this.pnlBottom.Controls.Add(this.txtPathOut);
 			this.pnlBottom.Controls.Add(this.lblPathOut);
@@ -167,9 +167,9 @@ namespace OpenRA.Editor
 			this.pnlBottom.Name = "pnlBottom";
 			this.pnlBottom.Size = new System.Drawing.Size(494, 70);
 			this.pnlBottom.TabIndex = 6;
-			// 
+			//
 			// txtPathOut
-			// 
+			//
 			this.txtPathOut.BackColor = System.Drawing.SystemColors.Window;
 			this.txtPathOut.Location = new System.Drawing.Point(55, 10);
 			this.txtPathOut.Name = "txtPathOut";
@@ -177,17 +177,17 @@ namespace OpenRA.Editor
 			this.txtPathOut.Size = new System.Drawing.Size(265, 20);
 			this.txtPathOut.TabIndex = 0;
 			this.txtPathOut.TextChanged += new System.EventHandler(this.txtPathOut_TextChanged);
-			// 
+			//
 			// lblPathOut
-			// 
+			//
 			this.lblPathOut.AutoSize = true;
 			this.lblPathOut.Location = new System.Drawing.Point(55, 13);
 			this.lblPathOut.Name = "lblPathOut";
 			this.lblPathOut.Size = new System.Drawing.Size(0, 13);
 			this.lblPathOut.TabIndex = 6;
-			// 
+			//
 			// lblPath
-			// 
+			//
 			this.lblPath.AutoSize = true;
 			this.lblPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.lblPath.Location = new System.Drawing.Point(12, 13);
@@ -195,20 +195,20 @@ namespace OpenRA.Editor
 			this.lblPath.Size = new System.Drawing.Size(37, 13);
 			this.lblPath.TabIndex = 5;
 			this.lblPath.Text = "Path:";
-			// 
+			//
 			// splitContainer1
-			// 
+			//
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
 			this.splitContainer1.Name = "splitContainer1";
-			// 
+			//
 			// splitContainer1.Panel1
-			// 
+			//
 			this.splitContainer1.Panel1.Controls.Add(this.lblMapList);
 			this.splitContainer1.Panel1.Controls.Add(this.MapList);
-			// 
+			//
 			// splitContainer1.Panel2
-			// 
+			//
 			this.splitContainer1.Panel2.Controls.Add(this.txtDesc);
 			this.splitContainer1.Panel2.Controls.Add(this.lblDesc);
 			this.splitContainer1.Panel2.Controls.Add(this.txtTheater);
@@ -222,90 +222,90 @@ namespace OpenRA.Editor
 			this.splitContainer1.Size = new System.Drawing.Size(494, 332);
 			this.splitContainer1.SplitterDistance = 300;
 			this.splitContainer1.TabIndex = 7;
-			// 
+			//
 			// lblMapList
-			// 
+			//
 			this.lblMapList.AutoSize = true;
 			this.lblMapList.Location = new System.Drawing.Point(12, 9);
 			this.lblMapList.Name = "lblMapList";
 			this.lblMapList.Size = new System.Drawing.Size(81, 13);
 			this.lblMapList.TabIndex = 1;
 			this.lblMapList.Text = "Available maps:";
-			// 
+			//
 			// txtDesc
-			// 
+			//
 			this.txtDesc.BackColor = System.Drawing.SystemColors.ButtonFace;
 			this.txtDesc.Location = new System.Drawing.Point(16, 289);
 			this.txtDesc.Name = "txtDesc";
 			this.txtDesc.ReadOnly = true;
 			this.txtDesc.Size = new System.Drawing.Size(162, 20);
 			this.txtDesc.TabIndex = 14;
-			// 
+			//
 			// lblDesc
-			// 
+			//
 			this.lblDesc.AutoSize = true;
 			this.lblDesc.Location = new System.Drawing.Point(13, 273);
 			this.lblDesc.Name = "lblDesc";
 			this.lblDesc.Size = new System.Drawing.Size(63, 13);
 			this.lblDesc.TabIndex = 13;
 			this.lblDesc.Text = "Description:";
-			// 
+			//
 			// txtTheater
-			// 
+			//
 			this.txtTheater.BackColor = System.Drawing.SystemColors.ButtonFace;
 			this.txtTheater.Location = new System.Drawing.Point(16, 252);
 			this.txtTheater.Name = "txtTheater";
 			this.txtTheater.ReadOnly = true;
 			this.txtTheater.Size = new System.Drawing.Size(162, 20);
 			this.txtTheater.TabIndex = 12;
-			// 
+			//
 			// lblTheater
-			// 
+			//
 			this.lblTheater.AutoSize = true;
 			this.lblTheater.Location = new System.Drawing.Point(13, 236);
 			this.lblTheater.Name = "lblTheater";
 			this.lblTheater.Size = new System.Drawing.Size(47, 13);
 			this.lblTheater.TabIndex = 11;
 			this.lblTheater.Text = "Tileset:";
-			// 
+			//
 			// txtAuthor
-			// 
+			//
 			this.txtAuthor.BackColor = System.Drawing.SystemColors.ButtonFace;
 			this.txtAuthor.Location = new System.Drawing.Point(16, 214);
 			this.txtAuthor.Name = "txtAuthor";
 			this.txtAuthor.ReadOnly = true;
 			this.txtAuthor.Size = new System.Drawing.Size(162, 20);
 			this.txtAuthor.TabIndex = 10;
-			// 
+			//
 			// lblAuthor
-			// 
+			//
 			this.lblAuthor.AutoSize = true;
 			this.lblAuthor.Location = new System.Drawing.Point(13, 198);
 			this.lblAuthor.Name = "lblAuthor";
 			this.lblAuthor.Size = new System.Drawing.Size(41, 13);
 			this.lblAuthor.TabIndex = 9;
 			this.lblAuthor.Text = "Author:";
-			// 
+			//
 			// txtTitle
-			// 
+			//
 			this.txtTitle.BackColor = System.Drawing.SystemColors.ButtonFace;
 			this.txtTitle.Location = new System.Drawing.Point(16, 177);
 			this.txtTitle.Name = "txtTitle";
 			this.txtTitle.ReadOnly = true;
 			this.txtTitle.Size = new System.Drawing.Size(162, 20);
 			this.txtTitle.TabIndex = 8;
-			// 
+			//
 			// lblMapName
-			// 
+			//
 			this.lblMapName.AutoSize = true;
 			this.lblMapName.Location = new System.Drawing.Point(13, 161);
 			this.lblMapName.Name = "lblMapName";
 			this.lblMapName.Size = new System.Drawing.Size(30, 13);
 			this.lblMapName.TabIndex = 7;
 			this.lblMapName.Text = "Title:";
-			// 
+			//
 			// lblMinimap
-			// 
+			//
 			this.lblMinimap.AutoSize = true;
 			this.lblMinimap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.lblMinimap.Location = new System.Drawing.Point(29, 9);
@@ -313,9 +313,9 @@ namespace OpenRA.Editor
 			this.lblMinimap.Size = new System.Drawing.Size(71, 13);
 			this.lblMinimap.TabIndex = 6;
 			this.lblMinimap.Text = "Map preview:";
-			// 
+			//
 			// pictureBox1
-			// 
+			//
 			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
 			this.pictureBox1.Location = new System.Drawing.Point(336, -9);
 			this.pictureBox1.Name = "pictureBox1";
@@ -323,9 +323,9 @@ namespace OpenRA.Editor
 			this.pictureBox1.TabIndex = 7;
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Visible = false;
-			// 
+			//
 			// MapSelect
-			// 
+			//
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
