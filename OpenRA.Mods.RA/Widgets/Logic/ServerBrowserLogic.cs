@@ -124,8 +124,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
 
-			int i = 0;
-            foreach (var loop in gamesWaiting)
+			currentServer = gamesWaiting.FirstOrDefault();
+
+			foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
 				var item = ScrollItemWidget.Setup(ServerTemplate,
@@ -133,8 +134,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					() => currentServer = game);
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => "{0} ({1})".F(game.Name, game.Address);
 				sl.AddChild(item);
-				if (i == 0) currentServer = game;
-				i++;
 			}
 		}
 
