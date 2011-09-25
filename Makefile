@@ -6,7 +6,7 @@ PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
 core: game renderers mod_ra mod_cnc utility
-tools: editor ralint seqed tsbuild
+tools: editor ralint tsbuild
 package: core editor
 mods: mod_ra mod_cnc
 all: core tools
@@ -100,18 +100,6 @@ mod_cnc: $(mod_cnc_TARGET)
 #
 # Tools
 #
-# Sequence editor (defunct)
-seqed_SRCS			:= $(shell find SequenceEditor/ -iname '*.cs')
-seqed_TARGET			= SequenceEditor.exe
-seqed_KIND			= winexe
-seqed_DEPS			= $(fileformats_TARGET)
-seqed_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(seqed_DEPS)
-seqed_EXTRA			= -resource:SequenceEditor.Form1.resources
-PROGRAMS 			+= seqed
-SequenceEditor.Form1.resources:
-	resgen2 SequenceEditor/Form1.resx SequenceEditor.Form1.resources 1> /dev/null
-seqed: SequenceEditor.Form1.resources $(seqed_TARGET)
-
 # Map Editor
 editor_SRCS			:= $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET			= OpenRA.Editor.exe
