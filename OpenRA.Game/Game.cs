@@ -362,9 +362,7 @@ namespace OpenRA
 		public static void CreateServer(ServerSettings settings)
 		{
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
-			                           Game.Settings.Game.Mods,
-			                           settings,
-			                           modData);
+				Game.Settings.Game.Mods, settings, modData);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -380,9 +378,8 @@ namespace OpenRA
 			settings.AdvertiseOnline = false;
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
-			                           Game.Settings.Game.Mods,
-			                           settings,
-			                           modData);
+				Game.Settings.Game.Mods, settings, modData);
+
 			return server.Port;
 		}
 
