@@ -344,6 +344,7 @@
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\RADownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />

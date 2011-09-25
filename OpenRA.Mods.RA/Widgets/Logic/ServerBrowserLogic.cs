@@ -49,7 +49,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return ret;
 			};
 
-
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 			ServerTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
 
@@ -159,42 +158,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			return game.Mods.All( m => m.Contains('@')) && game.Mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1]))
 				.All(kv => Game.CurrentMods.ContainsKey(kv.First) && AreVersionsCompatible(kv.Second, Game.CurrentMods[kv.First].Version));
-		}
-
-	}
-
-	public class DirectConnectLogic
-	{
-		[ObjectCreator.UseCtor]
-		public DirectConnectLogic( [ObjectCreator.Param] Widget widget )
-		{
-			var dc = widget.GetWidget("DIRECTCONNECT_BG");
-
-			dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
-
-            dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
-            {
-                var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-                var cpts = address.Split(':').ToArray();
-                if (cpts.Length < 1 || cpts.Length > 2)
-                    return;
-
-                int port;
-                if (cpts.Length != 2 || !int.TryParse(cpts[1], out port))
-                    port = 1234;
-
-                Game.Settings.Player.LastServer = address;
-                Game.Settings.Save();
-
-                Widget.CloseWindow();
-                Game.JoinServer(cpts[0], port);
-            };
-
-			dc.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
-			{
-				Widget.CloseWindow();
-				Widget.OpenWindow("MAINMENU_BG");
-			};
 		}
 	}
 }
