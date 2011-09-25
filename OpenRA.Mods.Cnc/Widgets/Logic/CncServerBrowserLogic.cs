@@ -22,13 +22,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
 		bool refreshing;
-		enum SearchStatus
-		{
-			Fetching,
-			Failed,
-			NoGames,
-			Hidden
-		}
+
+		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
 		public string ProgressLabelText()
@@ -73,8 +68,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (currentServer == null)
 					return;
 
-				string host = currentServer.Address.Split(':')[0];
-				int port = int.Parse(currentServer.Address.Split(':')[1]);
+				var host = currentServer.Address.Split(':')[0];
+				var port = int.Parse(currentServer.Address.Split(':')[1]);
 
 				Widget.CloseWindow();
 				CncConnectingLogic.Connect(host, port, openLobby, onExit);
@@ -151,8 +146,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 
 			searchStatus = SearchStatus.Hidden;
+			currentServer = gamesWaiting.FirstOrDefault();
 
-			int i = 0;
             foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
@@ -165,9 +160,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
 				item.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
 				sl.AddChild(item);
-
-				if (i == 0) currentServer = game;
-				i++;
 			}
 		}
 	}
