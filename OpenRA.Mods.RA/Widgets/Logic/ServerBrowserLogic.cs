@@ -129,12 +129,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
-				var item = ScrollItemWidget.Setup(ServerTemplate, () => currentServer == game, () => currentServer = game);
+				var item = ScrollItemWidget.Setup(ServerTemplate,
+					() => currentServer == game,
+					() => currentServer = game);
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => "{0} ({1})".F(game.Name, game.Address);
 				sl.AddChild(item);
 				if (i == 0) currentServer = game;
 				i++;
 			}
+		}
+
+		static bool AreVersionsCompatible(string a, string b)
+		{
+			/* dev versions are assumed compatible; if you're using one,
+			 * we trust that you know what you're doing. */
+
+			return a == "{DEV_VERSION}" || b == "{DEV_VERSION}" || a == b;
 		}
 
 		public static bool CanJoin(GameServer game)
@@ -147,9 +157,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (Game.CurrentMods.Count != game.Mods.Count())
 				return false;
 
-			return game.Mods.All( m => m.Contains('@')) &&  game.Mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1]))
-				.All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
-				     (kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
+			return game.Mods.All( m => m.Contains('@')) && game.Mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1]))
+				.All(kv => Game.CurrentMods.ContainsKey(kv.First) && AreVersionsCompatible(kv.Second, Game.CurrentMods[kv.First].Version));
 		}
 
 	}
