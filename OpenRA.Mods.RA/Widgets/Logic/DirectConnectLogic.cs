@@ -25,19 +25,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
             dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
             {
                 var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-                var cpts = address.Split(':').ToArray();
-                if (cpts.Length < 1 || cpts.Length > 2)
+                var addressParts = address.Split(':').ToArray();
+                if (addressParts.Length < 1 || addressParts.Length > 2)
                     return;
 
                 int port;
-                if (cpts.Length != 2 || !int.TryParse(cpts[1], out port))
+                if (addressParts.Length != 2 || !int.TryParse(addressParts[1], out port))
                     port = 1234;
 
                 Game.Settings.Player.LastServer = address;
                 Game.Settings.Save();
 
                 Widget.CloseWindow();
-                Game.JoinServer(cpts[0], port);
+                Game.JoinServer(addressParts[0], port);
             };
 
 			dc.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
