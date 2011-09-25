@@ -116,6 +116,10 @@ namespace OpenRA
 			return ret;
 		}
 
+		public Map FindMapByUid(string uid)
+		{
+			return AvailableMaps.ContainsKey(uid) ? AvailableMaps[uid] : null;
+		}
 	}
 
 	public interface ILoadScreen

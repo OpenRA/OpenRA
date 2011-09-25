@@ -81,8 +81,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		Map CurrentMap()
 		{
-			return (currentServer == null || !Game.modData.AvailableMaps.ContainsKey(currentServer.Map))
-				? null : Game.modData.AvailableMaps[currentServer.Map];
+			return (currentServer == null) ? null : Game.modData.FindMapByUid(currentServer.Map);
 		}
 
 		public static string GenerateModsLabel(GameServer s)

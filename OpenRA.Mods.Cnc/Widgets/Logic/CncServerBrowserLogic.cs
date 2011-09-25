@@ -105,19 +105,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			if (game == null)
 				return "";
 
-			var map = GetMap(game.Map);
+			var map = Game.modData.FindMapByUid(game.Map);
 			return map == null ? "{0}".F(currentServer.Players) : "{0} / {1}".F(currentServer.Players, map.PlayerCount);
 		}
 
 		Map CurrentMap()
 		{
-			return (currentServer == null) ? null : GetMap(currentServer.Map);
-		}
-
-		static Map GetMap(string uid)
-		{
-			return (!Game.modData.AvailableMaps.ContainsKey(uid))
-				? null : Game.modData.AvailableMaps[uid];
+			return (currentServer == null) ? null : Game.modData.FindMapByUid(currentServer.Map);
 		}
 
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
@@ -151,7 +145,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
 				item.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
 				// TODO: Use game.MapTitle once the server supports it
-				item.GetWidget<LabelWidget>("MAP").GetText = () => {var map = GetMap(game.Map); return map == null ? "Unknown" : map.Title;};
+				item.GetWidget<LabelWidget>("MAP").GetText = () => 
+				{
+					var map = Game.modData.FindMapByUid(game.Map);
+					return map == null ? "Unknown" : map.Title;
+				};
 				// TODO: Use game.MaxPlayers once the server supports it
 				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
 				item.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
