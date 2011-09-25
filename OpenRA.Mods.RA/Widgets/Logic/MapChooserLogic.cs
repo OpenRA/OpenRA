@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void EnumerateMaps()
 		{
 			scrollpanel.RemoveChildren();
-			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.Title).OrderBy(kv => kv.Value.PlayerCount))
+			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.PlayerCount).ThenBy(kv => kv.Value.Title))
 			{
 				var map = kv.Value;
 				if (!map.Selectable)
