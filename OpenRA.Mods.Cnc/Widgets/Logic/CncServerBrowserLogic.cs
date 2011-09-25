@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
-		bool refreshing;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
@@ -51,14 +50,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Menu buttons
 			var refreshButton = panel.GetWidget<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.IsDisabled = () => refreshing;
+			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () =>
 			{
 				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
 				currentServer = null;
 				ServerList.Query(games => RefreshServerList(panel, games));
-				refreshing = true;
 			};
 
 			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
@@ -99,7 +97,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
 			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
 
-			refreshing = true;
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
 
@@ -125,7 +122,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
-			refreshing = false;
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
 			sl.RemoveChildren();
