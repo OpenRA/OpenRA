@@ -37,9 +37,9 @@ namespace OpenRA.Mods.RA.Air
 		void Calculate(Actor self)
 		{
 			if (dest == null)
-			{
 				dest = ChooseAirfield(self);
-			}
+
+			if (dest == null) return;
 
 			var plane = self.Trait<Plane>();
 			var res = dest.TraitOrDefault<Reservable>();
@@ -95,6 +95,7 @@ namespace OpenRA.Mods.RA.Air
 			if (IsCanceled) return NextActivity;
 			if (!isCalculated)
 				Calculate(self);
+			if (dest == null) return NextActivity;
 
 			return Util.SequenceActivities(
 				Fly.ToPx(w1),
