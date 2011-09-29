@@ -22,10 +22,10 @@ namespace OpenRA.Mods.RA.Air
 
 	public class Plane : Aircraft, IResolveOrder, ITick, ISync
 	{
-		[Sync]
-		public int2 RTBPathHash;
+		[Sync] public int2 RTBPathHash;
 
-		public Plane( ActorInitializer init, PlaneInfo info ) : base( init, info ) { }
+		public Plane( ActorInitializer init, PlaneInfo info )
+			: base( init, info ) { }
 
 		bool firstTick = true;
 		public void Tick(Actor self)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Air
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();
 				self.QueueActivity(Fly.ToCell(target));
-                self.QueueActivity(new FlyCircle());
+				self.QueueActivity(new FlyCircle());
 			}
 
 			else if (order.OrderString == "Enter")
