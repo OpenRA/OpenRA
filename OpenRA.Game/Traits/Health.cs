@@ -27,8 +27,7 @@ namespace OpenRA.Traits
 	{
 		public readonly HealthInfo Info;
 
-		[Sync]
-		int hp;
+		[Sync] int hp;
 
 		public int DisplayHp { get; private set; }
 

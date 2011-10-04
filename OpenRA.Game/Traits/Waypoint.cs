@@ -20,8 +20,7 @@ namespace OpenRA.Traits
 
 	class Waypoint : IOccupySpace, ISync
 	{
-		[Sync]
-		int2 location;
+		[Sync] int2 location;
 
 		public Waypoint(ActorInitializer init)
 		{
