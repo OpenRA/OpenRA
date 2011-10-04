@@ -91,6 +91,12 @@ namespace OpenRA.FileFormats
 
 			return pal;
 		}
+
+		public static Palette Load( string filename, bool remap )
+		{
+			using(var s = File.OpenRead(filename))
+				return new Palette(s, remap);
+		}
 	}
 
 	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index);	}

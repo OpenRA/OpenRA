@@ -73,19 +73,13 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static Palette LoadPalette( string filename )
-		{
-			using( var s = File.OpenRead( filename ) )
-				return new Palette( s, false );
-		}
-
 		public static void ConvertShpToPng(string[] args)
 		{
 			var src = args[1];
 			var dest = Path.ChangeExtension(src, ".png");
 
 			var srcImage = ShpReader.Load(src);
-			var palette = LoadPalette(args[2]);
+			var palette = Palette.Load(args[2], false);
 
 			using (var bitmap = new Bitmap(srcImage.ImageCount * srcImage.Width, srcImage.Height, PixelFormat.Format8bppIndexed))
 			{
