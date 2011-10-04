@@ -275,8 +275,6 @@
 		HP: 140
 	Armor:
 		Type: Heavy
-	Selectable: 
-		Priority: -1
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:

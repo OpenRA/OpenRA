@@ -483,8 +483,6 @@ HARV.FullHusk:
 		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk
-	Selectable:
-		Bounds: 42,42
 
 HARV.EmptyHusk:
 	Inherits: ^Husk
@@ -492,8 +490,6 @@ HARV.EmptyHusk:
 		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk2
-	Selectable:
-		Bounds: 42,42
 
 MCV.Husk:
 	Inherits: ^Husk
@@ -501,8 +497,6 @@ MCV.Husk:
 		Name: Husk (MCV)
 	RenderUnit:
 		Image: mcvhusk
-	Selectable:
-		Bounds: 42,42
 
 TTNK:
 	Inherits: ^Tank
