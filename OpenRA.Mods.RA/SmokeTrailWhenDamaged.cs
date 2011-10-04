@@ -38,15 +38,16 @@ namespace OpenRA.Mods.RA
 		{
 			if (--ticks <= 0)
 			{
-				if (self.Trait<IMove>().Altitude > 0)
+				var move = self.Trait<IMove>();
+				if (move.Altitude > 0 && self.GetDamageState() >= DamageState.Heavy)
 				{
 					var facing = self.Trait<IFacing>();
-					var altitude = new float2(0, self.Trait<IMove>().Altitude);
-					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret) - altitude).ToInt2();
+					var altitude = new int2(0, move.Altitude);
+					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret)).ToInt2();
 
-					if (self.GetDamageState() >= DamageState.Heavy)
+					if (self.World.LocalShroud.IsVisible(Util.CellContaining(position)))
 						self.World.AddFrameEndTask(
-							w => w.Add(new Smoke(w, position, "smokey")));
+							w => w.Add(new Smoke(w, position - altitude, "smokey")));
 				}
 
 				ticks = interval;
