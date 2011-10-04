@@ -40,13 +40,11 @@ namespace OpenRA.Mods.RA.Render
 
 	class RenderBuildingWarFactory : RenderBuilding, INotifyBuildComplete, ITick, INotifyProduction, INotifySold, ISync
 	{
-		public Animation roof;
-		[Sync]
-		bool isOpen;
-		[Sync]
-		int2 openExit;
-
+		Animation roof;
+		[Sync] bool isOpen;
+		[Sync] int2 openExit;
 		bool buildComplete;
+
 		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info)
 		{
@@ -70,7 +68,8 @@ namespace OpenRA.Mods.RA.Render
 			    .Any( a => a != self ))
 			{
 				isOpen = false;
-				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"), () => roof.Play(NormalizeSequence(self, "idle-top")));
+				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"),
+					() => roof.Play(NormalizeSequence(self, "idle-top")));
 			}
 		}
 
@@ -92,11 +91,7 @@ namespace OpenRA.Mods.RA.Render
 			roof.PlayThen(NormalizeSequence(self, "build-top"), () => { isOpen = true; openExit = exit; });
 		}
 
-		public void Selling(Actor self)
-		{
-			anims.Remove("roof");
-		}
-
+		public void Selling(Actor self) { anims.Remove("roof"); }
 		public void Sold(Actor self) { }
 	}
 }
