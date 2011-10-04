@@ -12,6 +12,8 @@ namespace OpenRA.Mods.RA
 {
 	class LevelUpCrateActionInfo : CrateActionInfo
 	{
+		public readonly int Levels = 1;
+
 		public override object Create(ActorInitializer init) { return new LevelUpCrateAction(init.self, this); }
 	}
 
@@ -23,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public override int GetSelectionShares(Actor collector)
 		{
 			var ge = collector.TraitOrDefault<GainsExperience>();
-			return ge != null && ge.Level < ge.MaxLevel ? info.SelectionShares : 0;
+			return ge != null && ge.CanGainLevel ? info.SelectionShares : 0;
 		}
 
 		public override void Activate(Actor collector)
@@ -32,7 +34,7 @@ namespace OpenRA.Mods.RA
 			{
 				var gainsExperience = collector.TraitOrDefault<GainsExperience>();
 				if (gainsExperience != null)
-					gainsExperience.GiveOneLevel();
+					gainsExperience.GiveLevels((info as LevelUpCrateActionInfo).Levels);
 			});
 
 			base.Activate(collector);

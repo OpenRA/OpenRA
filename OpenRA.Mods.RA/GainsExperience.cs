@@ -52,27 +52,31 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		[Sync]
-		int Experience = 0;
-		[Sync]
-		public int Level { get; private set; }
-		public int MaxLevel { get { return Levels.Length; } }
+		[Sync] int Experience = 0;
+		[Sync] public int Level { get; private set; }
+
+		int MaxLevel { get { return Levels.Length; } }
+		public bool CanGainLevel { get { return Level < MaxLevel; } }
 
 		public void GiveOneLevel()
 		{
-			if (Level < Levels.Length)
+			if (Level < MaxLevel)
 				GiveExperience(Levels[Level] - Experience);
+		}
+
+		public void GiveLevels(int numLevels)
+		{
+			for( var i = 0; i < numLevels; i++ )
+				GiveOneLevel();
 		}
 
 		public void GiveExperience(int amount)
 		{
 			Experience += amount;
 
-			while (Level < Levels.Length && Experience >= Levels[Level])
+			while (Level < MaxLevel && Experience >= Levels[Level])
 			{
 				Level++;
-
-//				Game.Debug("{0} became Level {1}".F(self.Info.Name, Level));
 				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 				Sound.PlayToPlayer(self.Owner, eva.LevelUp, self.CenterLocation);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", new int2(0,-24))));
@@ -116,19 +120,9 @@ namespace OpenRA.Mods.RA
 
 	class ExperienceInit : IActorInit<int>
 	{
-		[FieldFromYamlKey]
-		public readonly int value = 0;
-
+		[FieldFromYamlKey] public readonly int value = 0;
 		public ExperienceInit() { }
-
-		public ExperienceInit(int init)
-		{
-			value = init;
-		}
-
-		public int Value(World world)
-		{
-			return value;
-		}
+		public ExperienceInit(int init) { value = init; }
+		public int Value(World world) { return value; }
 	}
 }
