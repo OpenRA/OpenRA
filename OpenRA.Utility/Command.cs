@@ -79,7 +79,8 @@ namespace OpenRA.Utility
 			var dest = Path.ChangeExtension(src, ".png");
 
 			var srcImage = ShpReader.Load(src);
-			var palette = Palette.Load(args[2], false);
+			var shouldRemap = args.Contains( "--transparent" );
+			var palette = Palette.Load(args[2], shouldRemap);
 
 			using (var bitmap = new Bitmap(srcImage.ImageCount * srcImage.Width, srcImage.Height, PixelFormat.Format8bppIndexed))
 			{
