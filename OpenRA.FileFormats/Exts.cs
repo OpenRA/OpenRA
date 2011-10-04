@@ -24,6 +24,12 @@ namespace OpenRA
 			return string.Format(fmt, args);
 		}
 
+		public static T WithDefault<T>(T def, Func<T> f)
+		{
+			try { return f(); }
+			catch { return def; }
+		}
+
 		public static void Do<T>(this IEnumerable<T> e, Action<T> fn)
 		{
 			foreach (var ee in e)

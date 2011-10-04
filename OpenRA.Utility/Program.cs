@@ -34,7 +34,7 @@ namespace OpenRA.Utility
 
 			try
 			{
-				var action = WithDefault( null, () => actions[args[0]]);
+				var action = Exts.WithDefault( null, () => actions[args[0]]);
 				if (action == null)
 					PrintUsage();
 				else
@@ -59,12 +59,6 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
 			Console.WriteLine("  --png SHPFILE PALETTE [--transparent] Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
 			Console.WriteLine("  --extract MOD[,MOD]* FILES	      Extract files from mod packages");
-		}
-
-		static T WithDefault<T>(T def, Func<T> f)
-		{
-			try { return f(); }
-			catch { return def; }
 		}
 
         static string GetNamedArg(string[] args, string arg)
