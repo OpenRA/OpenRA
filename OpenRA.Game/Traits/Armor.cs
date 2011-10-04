@@ -8,19 +8,13 @@
  */
 #endregion
 
-using System;
-using OpenRA.Traits;
-using OpenRA.GameRules;
-using System.Collections.Generic;
-using OpenRA.FileFormats;
-
 namespace OpenRA.Traits
 {
-	public class ArmorInfo : ITraitInfo
+	public class ArmorInfo : TraitInfo<Armor>
 	{
 		public readonly string Type = null;
-		public object Create (ActorInitializer init) { return new Armor(); }
 	}
+
 	public class Armor {}
 }
 
