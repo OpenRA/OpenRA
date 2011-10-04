@@ -33,11 +33,8 @@ namespace OpenRA.Utility
 
 			try
 			{
-				var action = Exts.WithDefault( null, () => actions[args[0]]);
-				if (action == null)
-					PrintUsage();
-				else
-					action(args);
+				var action = Exts.WithDefault( _ => PrintUsage(), () => actions[args[0]]);
+				action(args);
 			}
 			catch( Exception e )
 			{
