@@ -8,24 +8,13 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public enum SubCell
-    {
-        FullCell,
-        TopLeft,
-        TopRight,
-        Center,
-        BottomLeft,
-        BottomRight
-    }
+	public enum SubCell { FullCell, TopLeft, TopRight, Center, BottomLeft, BottomRight }
 
 	public class ActorMap
 	{
