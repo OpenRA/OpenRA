@@ -729,7 +729,6 @@ HPAD:
 		ExitCell: 0,0
 	Production:
 		Produces: Plane
-	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -764,7 +763,6 @@ AFLD:
 		Facing:192
 	Production:
 		Produces: Plane
-	PrimaryBuilding:
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
