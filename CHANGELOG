@@ -2,16 +2,23 @@ NEW:
 	Engine:
 		Fixed broken client IDs if players drop before the game starts
 		Converted FileExtractor into --extract cmdlet for Utility.
+		Added --transparent option to --png cmdlet in Utility.
+		Fixed shortcut description on Linux
+		Fixed launcher crashes on Mac
+		Removed obsolete SequenceEditor tool
 	Both Mods:
 		Allow building repair by allies
 		Use player color to show who is repairing a building
 		Only units/structures being built or queued are shaded in the production palette
+		Aircraft smoke is no longer visible under fog
 	Red Alert:
 		Added naval transport
 		Added an indicator over powered down buildings
 		Aircraft crashing into water now use large_splash
 		Destroyer now requires Radar Dome
 		Increased cost of Shipyard and Sub Pen
+		Fixed a crash when sending aircraft back to base
+		Husks no longer interfere with selection
 		New map: Classic DropZone (Holloweye)
 		New map: DropZone Battle of Tikiaki (Knivesron)
 		New map: Seven Stairs (Tirili)
