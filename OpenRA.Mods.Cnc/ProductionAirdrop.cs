@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc
 			var owner = self.Owner;
 
 			// Start a fixed distance away: the width of the map.
-			// This makes the production timing indepent of spawnpoint
+			// This makes the production timing independent of spawnpoint
 			var startPos = self.Location + new int2(owner.World.Map.Bounds.Width, 0);
 			var endPos = new int2(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 

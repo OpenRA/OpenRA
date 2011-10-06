@@ -14,7 +14,6 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Widgets;
-using OpenRA.Mods.Cnc.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
