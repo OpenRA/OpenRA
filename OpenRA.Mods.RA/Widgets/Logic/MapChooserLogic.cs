@@ -8,47 +8,39 @@
  */
 #endregion
 
+using System;
 using System.Linq;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MapChooserLogic
 	{
-		Map Map = null;
+		Map map;
 		Widget scrollpanel;
 		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(
-			[ObjectCreator.Param( "widget" )] Widget bg,
-			[ObjectCreator.Param] OrderManager orderManager,
-			[ObjectCreator.Param] string mapName )
+		internal MapChooserLogic([ObjectCreator.Param] Widget widget,
+			[ObjectCreator.Param] string initialMap,
+			[ObjectCreator.Param] Action onExit,
+			[ObjectCreator.Param] Action<Map> onSelect)
 		{
-			if (mapName != null)
-				Map = Game.modData.AvailableMaps[mapName];
-			else
-				Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Value;
+			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
-			bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => Map;
-			bg.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => Map.Title;
-			bg.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => Map.Author;
-			bg.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => Map.Description;
-			bg.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => Map.Description != null;
-			bg.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(Map.Bounds.Width, Map.Bounds.Height);
-			bg.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[Map.Tileset].Name;
-			bg.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => Map.PlayerCount.ToString();
+			widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
+			widget.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => map.Title;
+			widget.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => map.Author;
+			widget.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => map.Description;
+			widget.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => map.Description != null;
+			widget.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(map.Bounds.Width, map.Bounds.Height);
+			widget.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[map.Tileset].Name;
+			widget.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => map.PlayerCount.ToString();
 
-			bg.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
-			{
-				orderManager.IssueOrder(Order.Command("map " + Map.Uid));
-				Widget.CloseWindow();
-			};
+			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
+			widget.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Widget.CloseWindow(); onExit(); };
 
-			bg.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => Widget.CloseWindow();
-
-			scrollpanel = bg.GetWidget<ScrollPanelWidget>("MAP_LIST");
+			scrollpanel = widget.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
 			EnumerateMaps();
 		}
@@ -56,16 +48,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void EnumerateMaps()
 		{
 			scrollpanel.RemoveChildren();
-			foreach (var kv in Game.modData.AvailableMaps.OrderBy(kv => kv.Value.PlayerCount).ThenBy(kv => kv.Value.Title))
-			{
-				var map = kv.Value;
-				if (!map.Selectable)
-					continue;
 
-				var item = ScrollItemWidget.Setup(itemTemplate, () => Map == map, () => Map = map);
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => map.Title;
-				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(map.PlayerCount);
-				item.GetWidget<LabelWidget>("TYPE").GetText = () => map.Type;
+			var maps = Game.modData.AvailableMaps
+				.Where(kv => kv.Value.Selectable)
+				.OrderBy(kv => kv.Value.PlayerCount)
+				.ThenBy(kv => kv.Value.Title);
+
+			foreach (var kv in maps)
+			{
+				var m = kv.Value;
+				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
+				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);
+				item.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
 				scrollpanel.AddChild(item);
 			}
 		}

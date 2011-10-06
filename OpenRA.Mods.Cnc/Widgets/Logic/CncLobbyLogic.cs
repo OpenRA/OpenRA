@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				return sc;
 			};
 
-			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>()
+			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Any");
 

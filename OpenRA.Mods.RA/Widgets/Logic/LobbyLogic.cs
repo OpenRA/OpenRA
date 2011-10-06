@@ -93,17 +93,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return sc;
 			};
 
-			CountryNames = Rules.Info["world"].Traits.WithInterface<OpenRA.Traits.CountryInfo>()
+			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 
 			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnClick = () =>
 			{
+				var onSelect = new Action<Map>(m =>
+				{
+					orderManager.IssueOrder(Order.Command("map " + m.Uid));
+					Game.Settings.Server.Map = m.Uid;
+					Game.Settings.Save();
+				});
+
 				Widget.OpenWindow("MAP_CHOOSER", new WidgetArgs()
 				{
-					{ "orderManager", orderManager },
-					{ "mapName", MapUid }
+					{ "initialMap", MapUid },
+					{ "onExit", () => {} },
+					{ "onSelect", onSelect }
 				});
 			};
 
