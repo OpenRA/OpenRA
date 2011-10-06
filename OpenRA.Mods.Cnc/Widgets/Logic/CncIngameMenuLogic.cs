@@ -10,10 +10,8 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
