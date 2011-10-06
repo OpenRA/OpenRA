@@ -204,7 +204,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
-			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
+			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName + " - " + Map.Title;
 		}
 
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
