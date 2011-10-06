@@ -224,21 +224,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
 		}
 
-		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
-		{
-			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.Team == ii,
-					() => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
-				return item;
-			};
-
-			var options = Graphics.Util.MakeArray(Map.PlayerCount, i => i).ToList();
-			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-		}
-
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
@@ -333,7 +318,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
 					team.IsDisabled = () => s.LockTeam;
-					team.OnMouseDown = _ => ShowTeamDropDown(team, c);
+					team.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(team, c, orderManager, Map);
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
@@ -498,6 +483,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
+		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, Map map)
+		{
+			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.Team == ii,
+					() => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				return item;
+			};
+
+			var options = Graphics.Util.MakeArray(map.SpawnPoints.Count() + 1, i => i).ToList();
+			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 	}
 }

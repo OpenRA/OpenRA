@@ -315,21 +315,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
 		}
 
-		void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client)
-		{
-			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Team == ii,
-				                                  () => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
-				return item;
-			};
-
-			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count()+1, i => i).ToList();
-			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-		}
-
 		void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
@@ -459,7 +444,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
 					team.IsDisabled = () => slot.LockTeam || ready;
-					team.OnMouseDown = _ => ShowTeamDropDown(team, client);
+					team.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(team, client, orderManager, Map);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
 					var spawn = template.GetWidget<DropDownButtonWidget>("SPAWN");
