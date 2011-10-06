@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Widgets.Logic;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -465,23 +466,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						var name = template.GetWidget<TextFieldWidget>("NAME");
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
-						name.Text = client.Name;
-						name.OnEnterKey = () =>
-						{
-							name.Text = name.Text.Trim();
-							if (name.Text.Length == 0)
-								name.Text = client.Name;
-
-							name.LoseFocus();
-							if (name.Text == client.Name)
-								return true;
-
-							orderManager.IssueOrder(Order.Command("name " + name.Text));
-							Game.Settings.Player.Name = name.Text;
-							Game.Settings.Save();
-							return true;
-						};
-						name.OnLoseFocus = () => name.OnEnterKey();
+						LobbyUtils.SetupNameWidget(orderManager, client, name);
 					}
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
@@ -568,23 +553,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					template = EditableSpectatorTemplate.Clone();
 					var name = template.GetWidget<TextFieldWidget>("NAME");
 					name.IsDisabled = () => ready;
-					name.Text = c.Name;
-					name.OnEnterKey = () =>
-					{
-						name.Text = name.Text.Trim();
-						if (name.Text.Length == 0)
-							name.Text = c.Name;
-
-						name.LoseFocus();
-						if (name.Text == c.Name)
-							return true;
-
-						orderManager.IssueOrder(Order.Command("name " + name.Text));
-						Game.Settings.Player.Name = name.Text;
-						Game.Settings.Save();
-						return true;
-					};
-					name.OnLoseFocus = () => name.OnEnterKey();
+					LobbyUtils.SetupNameWidget(orderManager, c, name);
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
