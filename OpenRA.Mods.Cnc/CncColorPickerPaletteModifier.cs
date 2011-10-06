@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Cnc
 		public void InitPalette( WorldRenderer wr )
 		{
 			var info = Rules.Info["player"].Traits.WithInterface<PlayerColorPaletteInfo>()
-				.Where(p => p.BaseName == Info.PlayerPalette)
-				.First();
+				.First(p => p.BaseName == Info.PlayerPalette);
 			format = info.PaletteFormat;
 			wr.AddPalette("colorpicker", wr.GetPalette(info.BasePalette));
 		}
