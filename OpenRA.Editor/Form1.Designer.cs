@@ -73,6 +73,7 @@ namespace OpenRA.Editor
 			this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showActorNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -395,6 +396,7 @@ namespace OpenRA.Editor
             this.propertiesToolStripMenuItem,
             this.resizeToolStripMenuItem,
             this.showActorNamesToolStripMenuItem,
+            this.showGridToolStripMenuItem,
             this.fixOpenAreasToolStripMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
@@ -424,6 +426,13 @@ namespace OpenRA.Editor
 			this.showActorNamesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
 			this.showActorNamesToolStripMenuItem.Text = "Show Actor &Names";
 			this.showActorNamesToolStripMenuItem.Click += new System.EventHandler(this.ShowActorNamesClicked);
+			//
+			// showGridToolStripMenuItem
+			//
+			this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
+			this.showGridToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.showGridToolStripMenuItem.Text = "Show &Grid";
+			this.showGridToolStripMenuItem.Click += new System.EventHandler(this.ShowGridClicked);
 			//
 			// toolStripComboBox1
 			//
@@ -550,6 +559,7 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
 		private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
 		private System.Windows.Forms.ToolStripMenuItem showActorNamesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fixOpenAreasToolStripMenuItem;
 
 	}

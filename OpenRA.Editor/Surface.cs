@@ -36,6 +36,7 @@ namespace OpenRA.Editor
 
 		public bool IsPanning;
 		public bool ShowActorNames;
+		public bool ShowGrid;
 
 		public event Action AfterChange = () => { };
 		public event Action<string> MousePositionChanged = _ => { };
@@ -198,7 +199,6 @@ namespace OpenRA.Editor
 		{
 
 			var bitmap = new Bitmap(ChunkSize * TileSet.TileSize, ChunkSize * TileSet.TileSize);
-			bitmap.SetPixel(0, 0, Color.Green);
 
 			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -242,6 +242,16 @@ namespace OpenRA.Editor
 			}
 
 			bitmap.UnlockBits(data);
+
+			if (ShowGrid)
+				using( var g = SGraphics.FromImage(bitmap) )
+				{
+					var rect = new Rectangle(0,0,bitmap.Width, bitmap.Height);
+					ControlPaint.DrawGrid( g, rect,	new Size(2, Game.CellSize), Color.DarkRed );
+					ControlPaint.DrawGrid( g, rect,	new Size(Game.CellSize, 2), Color.DarkRed );
+					ControlPaint.DrawGrid( g, rect,	new Size(Game.CellSize, Game.CellSize), Color.Red );
+				}
+
 			return bitmap;
 		}
 

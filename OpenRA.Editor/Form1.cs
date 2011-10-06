@@ -423,6 +423,13 @@ namespace OpenRA.Editor
 			surface1.ShowActorNames = showActorNamesToolStripMenuItem.Checked;
 		}
 
+		void ShowGridClicked(object sender, EventArgs e)
+		{
+			showGridToolStripMenuItem.Checked ^= true;
+			surface1.ShowGrid = showGridToolStripMenuItem.Checked;
+			surface1.Chunks.Clear();
+		}
+
 		void FixOpenAreas(object sender, EventArgs e)
 		{
 			dirty = true;
