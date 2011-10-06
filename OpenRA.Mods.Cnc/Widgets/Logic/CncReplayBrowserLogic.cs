@@ -93,8 +93,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-			                                  () => currentSummary != null && currentSummary.Filename == filename,
-			                                  () => SelectReplay(filename));
+				() => currentSummary != null && currentSummary.Filename == filename,
+				() => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
 			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
 			list.AddChild(item);
