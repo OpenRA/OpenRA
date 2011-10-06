@@ -355,7 +355,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalPlayerTemplate.Clone();
-					SetupNameWidget(c, template.GetWidget<TextFieldWidget>("NAME"));
+					LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => s.LockColor;
@@ -423,7 +423,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
 				{
 					template = LocalSpectatorTemplate.Clone();
-					SetupNameWidget(c, template.GetWidget<TextFieldWidget>("NAME"));
+					LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.OnMouseDown = _ => ShowColorDropDown(color, c);
@@ -468,7 +468,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		void SetupNameWidget(Session.Client c, TextFieldWidget name)
+		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
+
+		void CycleReady()
+		{
+			orderManager.IssueOrder(Order.Command("ready"));
+		}
+	}
+
+	public static class LobbyUtils
+	{
+		public static void SetupNameWidget(OrderManager orderManager, Session.Client c, TextFieldWidget name)
 		{
 			name.Text = c.Name;
 			name.OnEnterKey = () =>
@@ -487,13 +497,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 			};
 			name.OnLoseFocus = () => name.OnEnterKey();
-		}
-
-		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-
-		void CycleReady()
-		{
-			orderManager.IssueOrder(Order.Command("ready"));
 		}
 	}
 }
