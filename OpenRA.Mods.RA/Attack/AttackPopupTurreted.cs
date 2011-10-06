@@ -8,15 +8,10 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {

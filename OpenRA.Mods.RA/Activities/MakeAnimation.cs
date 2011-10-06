@@ -8,12 +8,10 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
+using System;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
-using System;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -32,6 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		bool complete = false;
 		bool started = false;
+
 		public override Activity Tick( Actor self )
 		{
 			if (started)

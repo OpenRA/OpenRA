@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
-using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Activities

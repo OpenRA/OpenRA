@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.RA;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.Cnc
 {

@@ -8,27 +8,17 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Traits;
-using OpenRA.Traits.Activities;
-using System.Collections.Generic;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Render;
 using System;
+using System.Collections.Generic;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public class RAHarvesterDockSequence : Activity
 	{
-		enum State
-		{
-			Wait,
-			Turn,
-			Dock,
-			Loop,
-			Undock,
-			Complete
-		};
+		enum State { Wait, Turn, Dock, Loop, Undock, Complete };
 
 		readonly Actor proc;
 		readonly Harvester harv;

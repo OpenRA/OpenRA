@@ -8,12 +8,10 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Orders;
-using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using System.Drawing;
 using OpenRA.Mods.RA.Move;
 

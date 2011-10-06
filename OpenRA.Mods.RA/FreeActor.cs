@@ -10,7 +10,6 @@
 
 using OpenRA.FileFormats;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {

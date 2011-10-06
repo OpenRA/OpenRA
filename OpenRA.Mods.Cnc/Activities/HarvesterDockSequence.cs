@@ -15,22 +15,12 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.Cnc
 {
 	public class HarvesterDockSequence : Activity
 	{
-		enum State
-		{
-			Wait,
-			Turn,
-			Dragin,
-			Dock,
-			Loop,
-			Undock,
-			Dragout
-		};
+		enum State { Wait, Turn, DragIn, Dock, Loop, Undock, DragOut };
 
 		readonly Actor proc;
 		readonly Harvester harv;
@@ -56,9 +46,9 @@ namespace OpenRA.Mods.Cnc
 				case State.Wait:
 					return this;
 				case State.Turn:
-					state = State.Dragin;
+					state = State.DragIn;
 					return Util.SequenceActivities(new Turn(112), this);
-				case State.Dragin:
+				case State.DragIn:
 					state = State.Dock;
 					return Util.SequenceActivities(new Drag(startDock, endDock, 12), this);
 				case State.Dock:
@@ -70,10 +60,10 @@ namespace OpenRA.Mods.Cnc
 						state = State.Undock;
 					return this;
 				case State.Undock:
-					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.Dragout);
+					ru.PlayCustomAnimBackwards(self, "dock", () => state = State.DragOut);
 					state = State.Wait;
 					return this;
-				case State.Dragout:
+				case State.DragOut:
 					return Util.SequenceActivities(new Drag(endDock, startDock, 12), NextActivity);
 			}
 			throw new InvalidOperationException("Invalid harvester dock state");

@@ -10,7 +10,6 @@
 
 using System.Linq;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Air

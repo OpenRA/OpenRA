@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA.Air
 {

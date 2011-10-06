@@ -10,7 +10,6 @@
 
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 

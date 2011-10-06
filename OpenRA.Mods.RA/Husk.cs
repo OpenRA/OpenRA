@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Traits.Activities;
 
 namespace OpenRA.Mods.RA
 {

@@ -10,7 +10,6 @@
 
 using System.Linq;
 using OpenRA.Traits;
-using OpenRA.Traits.Activities;
 using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Activities
