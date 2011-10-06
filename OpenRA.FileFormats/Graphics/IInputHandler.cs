@@ -27,13 +27,15 @@ namespace OpenRA
 		public MouseButton Button;
 		public int2 Location;
 		public Modifiers Modifiers;
+		public int MultiTapCount;
 
-		public MouseInput( MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods )
+		public MouseInput( MouseInputEvent ev, MouseButton button, int2 location, Modifiers mods, int multiTapCount )
 		{
 			this.Event = ev;
 			this.Button = button;
 			this.Location = location;
 			this.Modifiers = mods;
+			this.MultiTapCount = multiTapCount;
 		}
 	}
 

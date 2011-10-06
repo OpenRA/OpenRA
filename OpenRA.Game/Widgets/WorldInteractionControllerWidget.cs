@@ -68,8 +68,26 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					var newSelection = SelectActorsInBox(world, dragStart, xy);
-					world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					if (mi.MultiTapCount == 2)
+					{
+						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
+
+						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
+						var newSelection = world.FindUnits(Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
+									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom)))
+									.Where(a => a.HasTrait<Selectable>()
+										&& a.World.LocalShroud.IsVisible(a)
+										&& unit != null
+										&& a.Info.Name == unit.Info.Name
+										&& a.Owner == unit.Owner);
+
+						world.Selection.Combine(world, newSelection, true, false);
+					}
+					else
+					{
+						var newSelection = SelectActorsInBox(world, dragStart, xy);
+						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					}
 				}
 
 				dragStart = dragEnd = xy;
