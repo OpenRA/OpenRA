@@ -78,8 +78,8 @@ Background@MAP_CHOOSER:
 			Height:252
 			Background:dialog3
 			Children:
-				MapPreview@MAPCHOOSER_MAP_PREVIEW:
-					Id:MAPCHOOSER_MAP_PREVIEW
+				MapPreview@MAP_PREVIEW:
+					Id:MAP_PREVIEW
 					X:4
 					Y:4
 					Width:244

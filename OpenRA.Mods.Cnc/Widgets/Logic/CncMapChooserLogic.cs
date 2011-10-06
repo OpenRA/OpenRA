@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		                            [ObjectCreator.Param] Action onExit,
 		                            [ObjectCreator.Param] Action<Map> onSelect)
 		{
-			map = Game.modData.AvailableMaps[ CncWidgetUtils.ChooseInitialMap(initialMap) ];
+			map = Game.modData.AvailableMaps[ WidgetUtils.ChooseInitialMap(initialMap) ];
 
 			var panel = widget.GetWidget("MAPCHOOSER_PANEL");
 

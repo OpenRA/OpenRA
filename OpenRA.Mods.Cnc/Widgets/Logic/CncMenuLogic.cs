@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		void StartSkirmishGame()
 		{
-			var map = CncWidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
 			                           Game.CreateLocalServer(map),

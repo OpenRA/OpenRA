@@ -221,6 +221,15 @@ namespace OpenRA.Widgets
 			var mod = Game.modData.Manifest.Mods[0];
 			return Mod.AllMods[mod].Title;
 		}
+
+		public static string ChooseInitialMap(string map)
+		{
+			var availableMaps = Game.modData.AvailableMaps;
+			if (string.IsNullOrEmpty(map) || !availableMaps.ContainsKey(map))
+				return availableMaps.First(m => m.Value.Selectable).Key;
+
+			return map;
+		}
 	}
 
 	[Flags]

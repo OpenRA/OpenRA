@@ -17,15 +17,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 {
 	public static class CncWidgetUtils
 	{
-		public static string ChooseInitialMap(string map)
-		{
-			var availableMaps = Game.modData.AvailableMaps;
-			if (string.IsNullOrEmpty(map) || !availableMaps.ContainsKey(map))
-				return availableMaps.First(m => m.Value.Selectable).Key;
-
-			return map;
-		}
-
 		public static void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
 		{
 			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
