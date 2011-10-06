@@ -284,20 +284,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
-		class SlotDropDownOption
-		{
-			public string Title;
-			public string Order;
-			public Func<bool> Selected;
-
-			public SlotDropDownOption(string title, string order, Func<bool> selected)
-			{
-				Title = title;
-				Order = order;
-				Selected = selected;
-			}
-		}
-
 		void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
