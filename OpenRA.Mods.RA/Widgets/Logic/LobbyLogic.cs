@@ -221,7 +221,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
+		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+			Session.Client client, OrderManager orderManager)
 		{
 			var options = new List<SlotDropDownOption>()
 			{
@@ -334,7 +335,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						template = EmptySlotTemplateHost.Clone();
 						var name = template.GetWidget<DropDownButtonWidget>("NAME");
 						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, s, c);
+						name.OnMouseDown = _ => ShowSlotDropDown(name, s, c, orderManager);
 					}
 					else
 					{
