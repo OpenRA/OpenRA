@@ -298,35 +298,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 
-		void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot, Session.Client client)
-		{
-			var options = new List<SlotDropDownOption>()
-			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
-				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
-			};
-
-			if (slot.AllowBots)
-				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
-				{
-					var bot = b;
-					options.Add(new SlotDropDownOption(bot,
-				                                   "slot_bot {0} {1}".F(slot.PlayerReference, bot),
-				                                   () => client != null && client.Bot == bot));
-				}
-
-			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  o.Selected,
-				                                  () => orderManager.IssueOrder(Order.Command(o.Order)));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
-				return item;
-			};
-
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-		}
-
 		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
@@ -430,7 +401,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						name.GetText = getText;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
+						name.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(name, slot, client, orderManager);
 					}
 					else
 					{
@@ -459,7 +430,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						name.GetText = () => client.Name;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, slot, client);
+						name.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(name, slot, client, orderManager);
 					}
 					else
 					{

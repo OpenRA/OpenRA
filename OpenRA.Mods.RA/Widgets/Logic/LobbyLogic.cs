@@ -207,50 +207,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
-		class SlotDropDownOption
-		{
-			public string Title;
-			public string Order;
-			public Func<bool> Selected;
-
-			public SlotDropDownOption(string title, string order, Func<bool> selected)
-			{
-				Title = title;
-				Order = order;
-				Selected = selected;
-			}
-		}
-
-		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
-			Session.Client client, OrderManager orderManager)
-		{
-			var options = new List<SlotDropDownOption>()
-			{
-				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
-				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
-			};
-
-			if (slot.AllowBots)
-				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
-				{
-					var bot = b;
-					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
-						"slot_bot {0} {1}".F(slot.PlayerReference, bot),
-						() => client != null && client.Bot == bot));
-				}
-
-			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					o.Selected,
-					() => orderManager.IssueOrder(Order.Command(o.Order)));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
-				return item;
-			};
-
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-		}
-
 		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
@@ -335,7 +291,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						template = EmptySlotTemplateHost.Clone();
 						var name = template.GetWidget<DropDownButtonWidget>("NAME");
 						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
-						name.OnMouseDown = _ => ShowSlotDropDown(name, s, c, orderManager);
+						name.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(name, s, c, orderManager);
 					}
 					else
 					{
@@ -498,6 +454,50 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 			};
 			name.OnLoseFocus = () => name.OnEnterKey();
+		}
+
+		class SlotDropDownOption
+		{
+			public string Title;
+			public string Order;
+			public Func<bool> Selected;
+
+			public SlotDropDownOption(string title, string order, Func<bool> selected)
+			{
+				Title = title;
+				Order = order;
+				Selected = selected;
+			}
+		}
+
+		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+			Session.Client client, OrderManager orderManager)
+		{
+			var options = new List<SlotDropDownOption>()
+			{
+				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
+				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
+			};
+
+			if (slot.AllowBots)
+				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
+				{
+					var bot = b;
+					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
+						"slot_bot {0} {1}".F(slot.PlayerReference, bot),
+						() => client != null && client.Bot == bot));
+				}
+
+			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					o.Selected,
+					() => orderManager.IssueOrder(Order.Command(o.Order)));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 	}
 }
