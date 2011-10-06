@@ -298,23 +298,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 
-		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
-		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.Country == race,
-				                                  () => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
-				var flag = item.GetWidget<ImageWidget>("FLAG");
-				flag.GetImageCollection = () => "flags";
-				flag.GetImageName = () => race;
-				return item;
-			};
-
-			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
-		}
-
 		void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
@@ -434,7 +417,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => slot.LockRace || ready;
-					faction.OnMouseDown = _ => ShowRaceDropDown(faction, client);
+					faction.OnMouseDown = _ => LobbyUtils.ShowRaceDropDown(faction, client, orderManager, CountryNames);
 
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];

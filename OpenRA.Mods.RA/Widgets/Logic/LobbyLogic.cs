@@ -207,23 +207,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
-		void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client)
-		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.Country == race,
-					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => CountryNames[race];
-				var flag = item.GetWidget<ImageWidget>("FLAG");
-				flag.GetImageCollection = () => "flags";
-				flag.GetImageName = () => race;
-				return item;
-			};
-
-			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, CountryNames.Keys.ToList(), setupItem);
-		}
-
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
@@ -308,7 +291,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => s.LockRace;
-					faction.OnMouseDown = _ => ShowRaceDropDown(faction, c);
+					faction.OnMouseDown = _ => LobbyUtils.ShowRaceDropDown(faction, c, orderManager, CountryNames);
 
 					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[c.Country];
@@ -499,6 +482,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var options = Graphics.Util.MakeArray(map.SpawnPoints.Count() + 1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
+		}
+
+		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
+			OrderManager orderManager, Dictionary<string, string> countryNames)
+		{
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => client.Country == race,
+					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => countryNames[race];
+				var flag = item.GetWidget<ImageWidget>("FLAG");
+				flag.GetImageCollection = () => "flags";
+				flag.GetImageName = () => race;
+				return item;
+			};
+
+			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, countryNames.Keys.ToList(), setupItem);
 		}
 	}
 }
