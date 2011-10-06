@@ -46,13 +46,20 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			CheckForDisk();
 		}
 
+		public static bool IsValidDisk(string diskRoot)
+		{
+			var files = new string[][] {
+				new [] { diskRoot, "CONQUER.MIX" },
+				new [] { diskRoot, "DESERT.MIX" },
+				new [] { diskRoot, "INSTALL", "SETUP.Z" },
+			};
+
+			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
+		}
+
 		void CheckForDisk()
 		{
-			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"CONQUER.MIX") &&
-					File.Exists(diskRoot+Path.DirectorySeparatorChar+"DESERT.MIX") &&
-					File.Exists(new string[] { diskRoot, "INSTALL", "SETUP.Z" }.Aggregate(Path.Combine));
-
-			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
+			var path = InstallUtils.GetMountedDisk(IsValidDisk);
 
 			if (path != null)
 				Install(path);
