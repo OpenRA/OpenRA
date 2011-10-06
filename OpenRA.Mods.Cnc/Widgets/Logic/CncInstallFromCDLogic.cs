@@ -22,15 +22,22 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action continueLoading;
+		Action afterInstall;
 		ButtonWidget retryButton, backButton;
 		Widget installingContainer, insertDiskContainer;
 
+		string[] filesToCopy, filesToExtract;
+
 		[ObjectCreator.UseCtor]
 		public CncInstallFromCDLogic([ObjectCreator.Param] Widget widget,
-		                       [ObjectCreator.Param] Action continueLoading)
+			[ObjectCreator.Param] Action afterInstall,
+			[ObjectCreator.Param] string[] filesToCopy,
+			[ObjectCreator.Param] string[] filesToExtract)
 		{
-			this.continueLoading = continueLoading;
+			this.afterInstall = afterInstall;
+			this.filesToCopy = filesToCopy;
+			this.filesToExtract = filesToExtract;
+
 			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
@@ -78,14 +85,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
-			var copyFiles = new string[] { "CONQUER.MIX", "DESERT.MIX",
-					"SCORES.MIX", "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" };
-
 			var extractPackage = "INSTALL/SETUP.Z";
-			var extractFiles = new string[] { "speech.mix", "tempicnh.mix", "transit.mix" };
 
 			var installCounter = 0;
-			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var installTotal = filesToExtract.Count() + filesToExtract.Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter*100/installTotal;
@@ -105,16 +108,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				try
 				{
-					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
+					if (!InstallUtils.CopyFiles(source, filesToCopy, dest, onProgress, onError))
 						return;
 
-					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+					if (!InstallUtils.ExtractFromPackage(source, extractPackage, filesToExtract, dest, onProgress, onError))
 				    	return;
 
 					Game.RunAfterTick(() =>
 					{
 						Widget.CloseWindow();
-						continueLoading();
+						afterInstall();
 					});
 				}
 				catch

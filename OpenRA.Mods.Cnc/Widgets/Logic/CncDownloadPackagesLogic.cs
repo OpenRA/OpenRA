@@ -25,15 +25,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Dictionary<string,string> installData;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action continueLoading;
+		Action afterInstall;
 
 		[ObjectCreator.UseCtor]
 		public CncDownloadPackagesLogic([ObjectCreator.Param] Widget widget,
 		                                [ObjectCreator.Param] Dictionary<string,string> installData,
-		                                [ObjectCreator.Param] Action continueLoading)
+		                                [ObjectCreator.Param] Action afterInstall)
 		{
 			this.installData = installData;
-			this.continueLoading = continueLoading;
+			this.afterInstall = afterInstall;
 
 			panel = widget.GetWidget("INSTALL_DOWNLOAD_PANEL");
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					Game.RunAfterTick(() =>
 					{
 						Widget.CloseWindow();
-						continueLoading();
+						afterInstall();
 					});
 				}
 			};

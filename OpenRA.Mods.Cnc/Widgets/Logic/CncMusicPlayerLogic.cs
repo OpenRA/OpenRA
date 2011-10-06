@@ -64,7 +64,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
-				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {{ "afterInstall", afterInstall }});
+				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {
+					{ "afterInstall", afterInstall },
+					{ "filesToCopy", new [] { "SCORES.MIX" } },
+					{ "filesToExtract", new [] { "transit.mix" } },
+				});
 			installButton.IsVisible = () => music.Length < 3; // Hack around music being split between transit.mix and scores.mix
 
 			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;

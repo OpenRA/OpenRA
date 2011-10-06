@@ -202,7 +202,7 @@ Container@MUSIC_PANEL:
 
 Container@INSTALL_MUSIC_PANEL:
 	Id:INSTALL_MUSIC_PANEL
-	Logic:CncInstallMusicLogic
+	Logic:CncInstallFromCDLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
 	Width:640

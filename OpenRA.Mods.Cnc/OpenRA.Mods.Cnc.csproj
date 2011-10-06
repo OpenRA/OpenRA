@@ -84,7 +84,6 @@
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallLogic.cs" />
-    <Compile Include="Widgets\Logic\CncInstallMusicLogic.cs" />
     <Compile Include="Widgets\Logic\CncLobbyLogic.cs" />
     <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncModBrowserLogic.cs" />

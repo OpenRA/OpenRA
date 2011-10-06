@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()
             {
-				{ "continueLoading", () => { Widget.CloseWindow(); continueLoading(); } },
+				{ "afterInstall", () => { Widget.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 
@@ -32,7 +32,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
 			panel.GetWidget<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
-				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
+				Widget.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs(args)
+				{
+					{ "filesToCopy", new[] { "CONQUER.MIX", "DESERT.MIX", "SCORES.MIX",
+											 "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" } },
+					{ "filesToExtract", new[] { "speech.mix", "tempicnh.mix", "transit.mix" } },
+				});
 
 			panel.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
