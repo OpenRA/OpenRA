@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
-using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 using OpenRA.Widgets;
