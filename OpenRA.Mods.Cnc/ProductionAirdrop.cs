@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Cnc
 	public class ProductionAirdropInfo : ProductionInfo
 	{
 		public readonly string ReadyAudio = "reinfor1.aud";
+		[ActorReference] public readonly string ActorType = "c17";
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this); }
 	}
 
@@ -42,14 +43,17 @@ namespace OpenRA.Mods.Cnc
 
 			var rb = self.Trait<RenderBuilding>();
 			rb.PlayCustomAnimRepeating(self, "active");
+
+			var actorType = (Info as ProductionAirdropInfo).ActorType;
+
 			owner.World.AddFrameEndTask(w =>
 			{
-				var a = w.CreateActor("C17", new TypeDictionary
+				var a = w.CreateActor(actorType, new TypeDictionary
 				{
 					new LocationInit( startPos ),
 					new OwnerInit( owner ),
 					new FacingInit( 64 ),
-					new AltitudeInit( Rules.Info["c17"].Traits.Get<PlaneInfo>().CruiseAltitude ),
+					new AltitudeInit( Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 
 				a.QueueActivity(Fly.ToCell(self.Location + new int2(6,0)));
