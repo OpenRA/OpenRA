@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
