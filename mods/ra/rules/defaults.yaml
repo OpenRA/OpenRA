@@ -242,6 +242,8 @@
 		Types:CivilianBuilding
 	-AcceptsSupplies:
 	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
 
 ^CivField:
 	Inherits: ^CivBuilding
