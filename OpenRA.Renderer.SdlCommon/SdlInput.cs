@@ -121,7 +121,8 @@ namespace OpenRA.Renderer.SdlCommon
 							Event = KeyInputEvent.Up,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
-							KeyName = MultiTapDetection.DetectFromKeyboard(Sdl.SDL_GetKeyName( e.key.keysym.sym )),
+//							KeyName = MultiTapDetection.DetectFromKeyboard(Sdl.SDL_GetKeyName( e.key.keysym.sym )),
+							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
 							VirtKey = e.key.keysym.sym
 						};
 
