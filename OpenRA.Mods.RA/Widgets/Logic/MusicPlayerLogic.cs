@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				itemTemplate.IsVisible = () => true;
 				itemTemplate.GetWidget<LabelWidget>("TITLE").GetText = () => "No Music Installed";
-				itemTemplate.GetWidget<LabelWidget>("TITLE").Align = LabelWidget.TextAlign.Center;
+				itemTemplate.GetWidget<LabelWidget>("TITLE").Align = TextAlign.Center;
 			}
 
 			foreach (var kv in Rules.InstalledMusic)

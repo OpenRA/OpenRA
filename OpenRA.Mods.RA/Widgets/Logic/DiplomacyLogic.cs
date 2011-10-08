@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Font = "Bold",
 				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
 				Text = "Their Stance",
-				Align = LabelWidget.TextAlign.Left,
+				Align = TextAlign.Left,
 			};
 
 			bg.AddChild(ts);
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Font = "Bold",
 				Bounds = new Rectangle(margin + 2 * labelWidth + 20, y, labelWidth, 25),
 				Text = "My Stance",
-				Align = LabelWidget.TextAlign.Left,
+				Align = TextAlign.Left,
 			};
 
 			bg.AddChild(ms);
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					Bounds = new Rectangle(margin, y, labelWidth, 25),
 					Text = p.PlayerName,
-					Align = LabelWidget.TextAlign.Left,
+					Align = TextAlign.Left,
 					Font = "Bold",
 					Color = p.ColorRamp.GetColor(0),
 				};
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					Bounds = new Rectangle( margin + labelWidth + 10, y, labelWidth, 25),
 					Text = p.PlayerName,
-					Align = LabelWidget.TextAlign.Left,
+					Align = TextAlign.Left,
 
 					GetText = () => pp.Stances[ world.LocalPlayer ].ToString(),
 				};

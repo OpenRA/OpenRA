@@ -14,10 +14,11 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
+	public enum TextAlign { Left, Center, Right }
+	public enum TextVAlign { Top, Middle, Bottom }
+
 	public class LabelWidget : Widget
 	{
-		public enum TextAlign { Left, Center, Right }
-		public enum TextVAlign { Top, Middle, Bottom }
 		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
