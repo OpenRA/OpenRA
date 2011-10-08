@@ -30,21 +30,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
-			var mapPreview = widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
-			if (mapPreview != null)
-				mapPreview.Map = () => map;
-
-			if (WidgetUtils.ActiveModTitle() != "Red Alert")	// hack
-			{
-				widget.GetWidget<LabelWidget>("CURMAP_TITLE").GetText = () => map.Title;
-				widget.GetWidget<LabelWidget>("CURMAP_AUTHOR").GetText = () => map.Author;
-				widget.GetWidget<LabelWidget>("CURMAP_DESC").GetText = () => map.Description;
-				widget.GetWidget<LabelWidget>("CURMAP_DESC_LABEL").IsVisible = () => map.Description != null;
-				widget.GetWidget<LabelWidget>("CURMAP_SIZE").GetText = () => "{0}x{1}".F(map.Bounds.Width, map.Bounds.Height);
-				widget.GetWidget<LabelWidget>("CURMAP_THEATER").GetText = () => Rules.TileSets[map.Tileset].Name;
-				widget.GetWidget<LabelWidget>("CURMAP_PLAYERS").GetText = () => map.PlayerCount.ToString();
-			}
-
 			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
 			widget.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Widget.CloseWindow(); onExit(); };
 
@@ -86,11 +71,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void EnumerateMaps()
 		{
 			scrollpanel.RemoveChildren();
-
-			// hack for RA's new 2d mapchooser
-			if (WidgetUtils.ActiveModTitle() == "Red Alert")
-				scrollpanel.Layout = new GridLayout(scrollpanel);
-
+			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
 
 			var maps = Game.modData.AvailableMaps
@@ -107,21 +88,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var titleLabel = item.GetWidget<LabelWidget>("TITLE");
 				titleLabel.GetText = () => m.Title;
 
-				var playersLabel = item.GetWidget<LabelWidget>("PLAYERS");
-				if (playersLabel != null)
-					playersLabel.GetText = () => "{0}".F(m.PlayerCount);
-
 				var previewWidget = item.GetWidget<MapPreviewWidget>("PREVIEW");
-				if (previewWidget != null)
-				{
-					previewWidget.IgnoreMouseOver = true;
-					previewWidget.IgnoreMouseInput = true;
-					previewWidget.Map = () => m;
-				}
-
-				var typeWidget = item.GetWidget<LabelWidget>("TYPE");
-				if (typeWidget != null)
-					typeWidget.GetText = () => m.Type;
+				previewWidget.IgnoreMouseOver = true;
+				previewWidget.IgnoreMouseInput = true;
+				previewWidget.Map = () => m;
 
 				var detailsWidget = item.GetWidget<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
