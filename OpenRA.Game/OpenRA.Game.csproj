@@ -188,7 +188,6 @@
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\ProgressBarWidget.cs" />
-    <Compile Include="Widgets\ScrollItem.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
     <Compile Include="Widgets\ShpImageWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
@@ -202,6 +201,7 @@
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
+    <Compile Include="Widgets\ScrollItemWidget.cs" />
     <Compile Include="Widgets\ListLayout.cs" />
     <Compile Include="Widgets\GridLayout.cs" />
   </ItemGroup>

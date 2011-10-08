@@ -26,18 +26,18 @@ namespace OpenRA.Widgets
 				widget.ContentHeight = widget.ItemSpacing;
 				pos = new int2(widget.ItemSpacing, widget.ItemSpacing);
 			}
-			
+
 			if (pos.X + widget.ItemSpacing + w.Bounds.Width > widget.Bounds.Width - widget.ScrollbarWidth)
 			{
 				/* start a new row */
 				pos.X = widget.ItemSpacing;
 				pos.Y = widget.ContentHeight;
 			}
-			
+
 			w.Bounds.X += pos.X;
 			w.Bounds.Y += pos.Y;
-			
-			pos.X += widget.Bounds.Width + widget.ItemSpacing;
+
+			pos.X += w.Bounds.Width + widget.ItemSpacing;
 
 			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + widget.ItemSpacing + w.Bounds.Height);
 		}
