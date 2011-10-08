@@ -20,15 +20,9 @@ namespace OpenRA.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 
-		public DropDownButtonWidget()
-			: base()
-		{
-		}
+		public DropDownButtonWidget() : base() { }
 
-		protected DropDownButtonWidget(DropDownButtonWidget widget)
-			: base(widget)
-		{
-		}
+		protected DropDownButtonWidget(DropDownButtonWidget widget)	: base(widget) { }
 
 		public override void Draw()
 		{
