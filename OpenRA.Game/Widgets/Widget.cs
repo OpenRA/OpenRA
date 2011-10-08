@@ -134,7 +134,7 @@ namespace OpenRA.Widgets
         public Widget Parent = null;
 		public Func<bool> IsVisible;
         public Widget() { IsVisible = () => Visible; }
-        protected readonly List<Widget> Children = new List<Widget>();
+        public readonly List<Widget> Children = new List<Widget>();
 
         public Widget(Widget widget)
         {
@@ -283,6 +283,7 @@ namespace OpenRA.Widgets
 		public virtual void MouseEntered() {}
 		public virtual void MouseExited() {}
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
+
         public bool HandleMouseInputOuter(MouseInput mi)
         {
 			// Are we able to handle this event?
@@ -305,6 +306,7 @@ namespace OpenRA.Widgets
         }
 
         public virtual bool HandleKeyPress(KeyInput e) { return false; }
+
         public virtual bool HandleKeyPressOuter(KeyInput e)
         {
             if (!IsVisible())
@@ -322,6 +324,7 @@ namespace OpenRA.Widgets
         }
 
         public virtual void Draw() {}
+
         public virtual void DrawOuter()
         {
             if (IsVisible())
@@ -333,6 +336,7 @@ namespace OpenRA.Widgets
         }
 
 		public virtual void Tick() {}
+
         public virtual void TickOuter()
         {
             if (IsVisible())

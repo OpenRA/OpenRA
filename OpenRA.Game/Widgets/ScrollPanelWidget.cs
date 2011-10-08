@@ -14,6 +14,8 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
+	public interface ILayout { void AdjustChild(Widget w); }
+
 	public class ScrollPanelWidget : Widget
 	{
 		public int ScrollbarWidth = 24;
@@ -22,6 +24,7 @@ namespace OpenRA.Widgets
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
 		public int ContentHeight = 0;
+		public ILayout Layout;
 		protected float ListOffset = 0;
 		protected bool UpPressed = false;
 		protected bool DownPressed = false;
@@ -32,12 +35,7 @@ namespace OpenRA.Widgets
 		protected Rectangle scrollbarRect;
 		protected Rectangle thumbRect;
 
-		public ScrollPanelWidget() : base() {}
-		protected ScrollPanelWidget(ScrollPanelWidget other)
-			: base(other)
-		{
-			throw new NotImplementedException();
-		}
+		public ScrollPanelWidget() : base() { Layout = new ListLayout(this); }
 
 		public override void RemoveChildren()
 		{
@@ -48,11 +46,7 @@ namespace OpenRA.Widgets
 		public override void AddChild(Widget child)
 		{
 			// Initial setup of margins/height
-			if (Children.Count == 0)
-				ContentHeight = ItemSpacing;
-
-			child.Bounds.Y += ContentHeight;
-			ContentHeight += child.Bounds.Height + ItemSpacing;
+			Layout.AdjustChild(child);
 			base.AddChild(child);
 		}
 
@@ -192,7 +186,5 @@ namespace OpenRA.Widgets
 
 			return (UpPressed || DownPressed || ThumbPressed);
 		}
-
-		public override Widget Clone() { return new ScrollPanelWidget(this); }
 	}
 }
