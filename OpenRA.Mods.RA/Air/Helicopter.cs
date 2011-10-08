@@ -99,19 +99,7 @@ namespace OpenRA.Mods.RA.Air
 			if (firstTick)
 			{
 				firstTick = false;
-				if (self.Trait<IMove>().Altitude == 0)
-				{
-					/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
-					var afld = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
-						.FirstOrDefault(a => a.HasTrait<Reservable>());
-
-					if (afld != null)
-					{
-						var res = afld.Trait<Reservable>();
-						if (res != null)
-							reservation = res.Reserve(afld, self, this);
-					}
-				}
+				ReserveSpawnBuilding();
 			}
 
 			var aircraft = self.Trait<Aircraft>();
