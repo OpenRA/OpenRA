@@ -91,8 +91,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var m = kv.Value;
 				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => m.Title;
-				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => "{0}".F(m.PlayerCount);
+
+				var titleLabel = item.GetWidget<LabelWidget>("TITLE");
+				var playersLabel = item.GetWidget<LabelWidget>("PLAYERS");
+
+				if (playersLabel != null)
+				{
+					playersLabel.GetText = () => "{0}".F(m.PlayerCount);
+					titleLabel.GetText = () => m.Title;
+				}
+				else
+					titleLabel.GetText = () => "{0} ({1})".F(m.Title, m.PlayerCount);
+
 				item.GetWidget<LabelWidget>("TYPE").GetText = () => m.Type;
 				scrollpanel.AddChild(item);
 			}

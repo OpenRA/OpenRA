@@ -34,11 +34,6 @@ Background@MAP_CHOOSER:
 							Id:TITLE
 							Width:PARENT_RIGHT-100
 							Height:25
-						Label@PLAYERS:
-							Id:PLAYERS
-							X:PARENT_RIGHT-150
-							Width:30
-							Height:25
 						Label@TYPE:
 							Id:TYPE
 							Width:90
