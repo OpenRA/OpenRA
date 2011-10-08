@@ -102,9 +102,8 @@ namespace OpenRA.Mods.RA.Air
 				ReserveSpawnBuilding();
 			}
 
-			var aircraft = self.Trait<Aircraft>();
-			if (aircraft.Altitude <= 0)
-				return;
+			/* repulsion only applies when we're flying */
+			if (Altitude <= 0) return;
 
 			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
@@ -115,7 +114,7 @@ namespace OpenRA.Mods.RA.Air
 
 			int RepulsionFacing = Util.GetFacing( f, -1 );
 			if( RepulsionFacing != -1 )
-				aircraft.TickMove( 1024 * aircraft.MovementSpeed, RepulsionFacing );
+				TickMove( 1024 * MovementSpeed, RepulsionFacing );
 		}
 
 		// Returns an int2 in subPx units
