@@ -80,6 +80,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void EnumerateMaps()
 		{
 			scrollpanel.RemoveChildren();
+			(scrollpanel as ScrollPanelWidget).ScrollToTop();
 
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)

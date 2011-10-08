@@ -125,6 +125,11 @@ namespace OpenRA.Widgets
 			ListOffset = Math.Min(0,Bounds.Height - ContentHeight);
 		}
 
+		public void ScrollToTop()
+		{
+			ListOffset = 0;
+		}
+
 		public override void Tick ()
 		{
 			if (UpPressed) Scroll(1);
