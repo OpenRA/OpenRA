@@ -24,6 +24,7 @@ namespace OpenRA.Widgets
 		public Func<string> GetPalette;
 
 		readonly WorldRenderer worldRenderer;
+
 		[ObjectCreator.UseCtor]
 		public ShpImageWidget([ObjectCreator.Param] WorldRenderer worldRenderer)
 			: base()
@@ -48,10 +49,10 @@ namespace OpenRA.Widgets
 
 		public override Widget Clone() { return new ShpImageWidget(this); }
 
-
 		Sprite sprite = null;
 		string cachedImage = null;
-		int cachedFrame= -1;
+		int cachedFrame = -1;
+
 		public override void Draw()
 		{
 			var image = GetImage();
@@ -64,7 +65,8 @@ namespace OpenRA.Widgets
 				cachedImage = image;
 				cachedFrame = frame;
 			}
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite,RenderOrigin, worldRenderer, palette);
+
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin, worldRenderer, palette);
 		}
 	}
 }
