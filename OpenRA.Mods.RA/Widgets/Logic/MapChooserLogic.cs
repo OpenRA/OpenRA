@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -43,6 +44,36 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			scrollpanel = widget.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
+
+			var gameModeDropdown = widget.GetWidget<DropDownButtonWidget>("GAMEMODE_FILTER");
+			if (gameModeDropdown != null)
+			{
+				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable);
+				var gameModes = selectableMaps
+					.GroupBy(m => m.Value.Type)
+					.Select(g => Pair.New(g.Key, g.Count())).ToList();
+
+				// 'all game types' extra item
+				gameModes.Insert( 0, Pair.New( null as string, selectableMaps.Count() ) );
+
+				Func<Pair<string,int>, string> showItem =
+					x => "{0} ({1})".F( x.First ?? "All Game Types", x.Second );
+
+				Func<Pair<string,int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				{
+					var item = ScrollItemWidget.Setup(template,
+						() => gameMode == ii.First,
+						() => { gameMode = ii.First; EnumerateMaps(); });
+					item.GetWidget<LabelWidget>("LABEL").GetText = () => showItem(ii);
+					return item;
+				};
+
+				gameModeDropdown.OnClick = () =>
+					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, gameModes, setupItem);
+
+				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
+			}
+
 			EnumerateMaps();
 		}
 

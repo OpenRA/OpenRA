@@ -59,17 +59,10 @@ Background@MAP_CHOOSER:
 					Text:Title
 					Align:Center
 					Font:Bold
-				Label@PLAYERS:
-					Text:Players
-					Font:Bold
-					Width:50
-					X:304
-					Height:25
-				Label@TYPE:
-					Text:Type
-					Font:Bold
-					Width:50
-					X:420
+				DropDownButton@GAMEMODE_FILTER:
+					Id:GAMEMODE_FILTER
+					X:300
+					Width:200
 					Height:25
 		Background@MAPCHOOSER_MAP_BG:
 			X:PARENT_RIGHT-268
