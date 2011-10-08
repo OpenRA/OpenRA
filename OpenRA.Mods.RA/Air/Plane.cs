@@ -69,9 +69,14 @@ namespace OpenRA.Mods.RA.Air
 			}
 			else if (order.OrderString == "ReturnToBase")
 			{
+				var airfield = ReturnToBase.ChooseAirfield(self);
+				if (airfield == null) return;
+
 				UnReserve();
 				self.CancelActivity();
-				self.QueueActivity(new ReturnToBase(self,null));
+				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
+				self.QueueActivity(new ReturnToBase(self, airfield));
+				QueueResupplyActivities(self);
 			}
 			else
 			{
