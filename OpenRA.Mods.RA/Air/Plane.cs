@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Air
 			if (firstTick)
 			{
 				firstTick = false;
-				ReserveSpawnBuilding(self);
+				ReserveSpawnBuilding();
 			}
 		}
 

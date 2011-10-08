@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA.Air
 			Info = info;
 		}
 
-		public Actor GetActorBelow( Actor self )
+		public Actor GetActorBelow()
 		{
 			if (self.Trait<IMove>().Altitude != 0)
 				return null;	// not on the ground.
@@ -133,11 +133,11 @@ namespace OpenRA.Mods.RA.Air
 				.FirstOrDefault( a => a.HasTrait<Reservable>() );
 		}
 
-		protected void ReserveSpawnBuilding( Actor self )
+		protected void ReserveSpawnBuilding()
 		{
 			/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
 
-			var afld = GetActorBelow(self);
+			var afld = GetActorBelow();
 
 			if (afld == null)
 				return;
