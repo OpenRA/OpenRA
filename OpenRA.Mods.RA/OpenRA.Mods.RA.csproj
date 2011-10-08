@@ -361,6 +361,7 @@
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
+    <Compile Include="Widgets\Logic\LobbyUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
