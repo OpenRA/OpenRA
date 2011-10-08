@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Air
 			if (airfield != null)
 			{
 				self.QueueActivity(new ReturnToBase(self, airfield));
-				self.QueueActivity(new Rearm(self));
+				self.Trait<Aircraft>().QueueResupplyActivities(self);
 			}
 			else
 			{
