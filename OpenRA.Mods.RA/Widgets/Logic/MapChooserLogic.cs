@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Map map;
 		Widget scrollpanel;
 		ScrollItemWidget itemTemplate;
+		string gameMode;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic([ObjectCreator.Param] Widget widget,
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
+				.Where(kv => kv.Value.Type == gameMode || gameMode == null)
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
 
