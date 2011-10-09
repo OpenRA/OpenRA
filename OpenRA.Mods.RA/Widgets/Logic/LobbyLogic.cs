@@ -75,7 +75,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
 				if (p == 0 || !owned)
-					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
+				{
+					if (Game.IsHost)
+					{
+						var clients = orderManager.LobbyInfo.Slots.Keys.Select(k => orderManager.LobbyInfo.ClientInSlot(k)).ToList();
+
+						var locals = clients.Where(c => c != null && (c.Index == orderManager.LocalClient.Index || c.Bot != null));
+
+						var playerToMove = locals.Where(c => (p == 0) ? c.SpawnPoint != 0 : c.SpawnPoint == 0).FirstOrDefault();
+						orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove != null) ? playerToMove.Index : orderManager.LocalClient.Index, p)));
+					}
+					else
+						orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
+				}
 			};
 
 			mapPreview.SpawnColors = () =>
@@ -184,12 +196,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 
-		void UpdatePlayerColor(float hf, float sf, float lf, float r)
+		void UpdatePlayerColor(Session.Client client, float hf, float sf, float lf, float r)
 		{
-			var ramp = new ColorRamp((byte) (hf*255), (byte) (sf*255), (byte) (lf*255), (byte)(r*255));
-			Game.Settings.Player.ColorRamp = ramp;
-			Game.Settings.Save();
-			orderManager.IssueOrder(Order.Command("color {0} {1}".F(orderManager.LocalClient.Index, ramp)));
+			var ramp = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
+			if (client.Index == orderManager.LocalClient.Index)
+			{
+				Game.Settings.Player.ColorRamp = ramp;
+				Game.Settings.Save();
+			}
+			orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, ramp)));
 		}
 
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
@@ -209,18 +224,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs() { {"worldRenderer", worldRenderer} }, null, "COLOR_CHOOSER" );
+			var colorChooser = Game.modData.WidgetLoader.LoadWidget(new WidgetArgs() { { "worldRenderer", worldRenderer } }, null, "COLOR_CHOOSER");
 			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.Value = orderManager.LocalClient.ColorRamp.H / 255f;
+			hueSlider.Value = client.ColorRamp.H / 255f;
 
 			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-            satSlider.Value = orderManager.LocalClient.ColorRamp.S / 255f;
+			satSlider.Value = client.ColorRamp.S / 255f;
 
 			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-            lumSlider.Value = orderManager.LocalClient.ColorRamp.L / 255f;
+			lumSlider.Value = client.ColorRamp.L / 255f;
 
 			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-            rangeSlider.Value = orderManager.LocalClient.ColorRamp.R / 255f;
+			rangeSlider.Value = client.ColorRamp.R / 255f;
 
 			Action updateColorPreview = () => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
 
@@ -233,7 +248,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
 			{
 				updateColorPreview();
-				UpdatePlayerColor(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
+				UpdatePlayerColor(client, hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
 				color.RemovePanel();
 			};
 
@@ -252,7 +267,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var c = orderManager.LobbyInfo.ClientInSlot(kv.Key);
 				Widget template;
 
-				if (c == null || c.Bot != null)
+				if (c == null || (c.Bot != null && Game.IsHost == false))
 				{
 					if (Game.IsHost)
 					{
@@ -277,10 +292,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					template.GetWidget<LabelWidget>("BOT").IsVisible = () => c != null;
 				}
-				else if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
+
+				else if ((c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready) || (c.Bot != null && Game.IsHost))
 				{
 					template = LocalPlayerTemplate.Clone();
-					LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
+
+					var botReady = (c.Bot != null && Game.IsHost
+							&& orderManager.LocalClient.State == Session.ClientState.Ready);
+					var ready = botReady || c.State == Session.ClientState.Ready;
+
+					if (c.Bot == null)
+					{
+						LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
+					}
+					else
+					{
+						var name = template.GetWidget<DropDownButtonWidget>("BOT_DROPDOWN");
+						name.IsVisible = () => true;
+						name.IsDisabled = () => ready;
+						name.GetText = () => c.Name;
+						name.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(name, s, c, orderManager);
+					}			
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => s.LockColor;
@@ -307,6 +339,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					status.OnClick = CycleReady;
+					if (c.Bot != null) status.IsVisible = () => false;
+				
 				}
 				else
 				{

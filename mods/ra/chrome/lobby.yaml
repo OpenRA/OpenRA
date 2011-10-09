@@ -52,6 +52,13 @@ Background@SERVER_LOBBY:
 							X:0
 							Y:0
 							MaxLength:16
+						DropDownButton@BOT_DROPDOWN:
+							Id:BOT_DROPDOWN
+							Text:Name
+							Width:150
+							Height:25
+							Font:Regular
+							Visible:false
 						DropDownButton@COLOR:
 							Id:COLOR
 							Width:80
