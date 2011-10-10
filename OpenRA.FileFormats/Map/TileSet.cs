@@ -50,10 +50,12 @@ namespace OpenRA.FileFormats
 				t => t.Value.Value );
 		}
 
+		static readonly string[] Fields = { "Id", "Image", "Size", "PickAny" };
+
 		public MiniYaml Save()
 		{
 			var root = new List<MiniYamlNode>();
-			foreach (var field in new string[] {"Id", "Image", "Size", "PickAny"})
+			foreach (var field in Fields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
