@@ -6,6 +6,7 @@ NEW:
 		Fixed shortcut description on Linux
 		Fixed launcher crashes on Mac
 		Removed obsolete SequenceEditor tool
+		Added --tmp-png cmdlet in Utility, to convert terrain to PNG.
 	Both Mods:
 		Allow building repair by allies
 		Use player color to show who is repairing a building
@@ -23,6 +24,7 @@ NEW:
 		Fixed a crash when sending aircraft back to base
 		Husks no longer interfere with selection
 		Added more options for bots in game lobby
+		Changed AI behavior -- now has Easy/Normal/Hard difficulty
 		New map: Classic DropZone (Holloweye)
 		New map: DropZone Battle of Tikiaki (Knivesron)
 		New map: Seven Stairs (Tirili)
@@ -36,17 +38,20 @@ NEW:
 		New map: Doubles (Nukem)
 		New map: Hectic (Nukem)
 		New map: Pandemonium (Nukem)
+		New map: Chokepoint (Nukem)
 		New map: No Fly Zone (RAGEQUIT)
 		New map: Strip Mine (RAGEQUIT)
 		New map: Doughnut Hole (RAGEQUIT)
 		New map: Vegetation (hamb/Chris Forbes)
 		New map: Arctic Triangle Affair (Bellator)
+		New map: Mad Scramble (Bellator)
 		New map: Free Coasts (Ihptru)
 	C&C:
 		Slightly increased Tiberium growth rate
 		Increased harvester unload time
 		Reduced Tiberium value by 20%
 		Fixed tank squish animations to show properly
+		New map: Tiberium Oasis (Bellator)
 
 
 20110906:
