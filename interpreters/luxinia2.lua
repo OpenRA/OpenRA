@@ -35,8 +35,9 @@ return {
 				self.fclient = nil
 				local fname = wfilename:GetFullName()
 				args = args..(fname and (" -f "..fname) or "")
-				
-				local cmd = luxdir..'/luajit.exe ../main.lua -s'..args
+				local jitargs = ide.config.luxinia2jitargs
+				jitargs = jitargs or ""
+				local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua -s'..args
 				
 				if(CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
 					function() ShellSupportRemote(nil) end)) then return end
