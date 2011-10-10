@@ -25,6 +25,7 @@ namespace OpenRA.FileFormats
 
 		public TerrainTypeInfo() {}
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
+
 		public MiniYaml Save() { return FieldSaver.Save(this); }
 	}
 
@@ -39,10 +40,7 @@ namespace OpenRA.FileFormats
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 
 		public TileTemplate() {}
-		public TileTemplate(MiniYaml my)
-		{
-			FieldLoader.Load( this, my );
-		}
+		public TileTemplate(MiniYaml my) { FieldLoader.Load( this, my ); }
 
 		static object LoadTiles( MiniYaml y )
 		{
@@ -78,9 +76,11 @@ namespace OpenRA.FileFormats
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
-		static List<string> fields = new List<string>() {"Name", "TileSize", "Id", "Palette", "Extensions"};
+
+		static readonly string[] fields = {"Name", "TileSize", "Id", "Palette", "Extensions"};
 
 		public TileSet() {}
+
 		public TileSet( string filepath )
 		{
 			var yaml = MiniYaml.DictFromFile( filepath );

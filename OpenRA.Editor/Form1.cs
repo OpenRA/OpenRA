@@ -114,7 +114,6 @@ namespace OpenRA.Editor
 			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
 
-
 			surface1.Bind(map, tileset, palette);
 			// construct the palette of tiles
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
