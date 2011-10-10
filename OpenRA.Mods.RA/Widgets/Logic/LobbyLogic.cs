@@ -78,9 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					if (Game.IsHost)
 					{
-						var clients = orderManager.LobbyInfo.Slots.Keys.Select(k => orderManager.LobbyInfo.ClientInSlot(k)).ToList();
-
-						var locals = clients.Where(c => c != null && (c.Index == orderManager.LocalClient.Index || c.Bot != null));
+						var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || c.Bot != null);
 
 						var playerToMove = locals.Where(c => (p == 0) ? c.SpawnPoint != 0 : c.SpawnPoint == 0).FirstOrDefault();
 						orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove != null) ? playerToMove.Index : orderManager.LocalClient.Index, p)));
