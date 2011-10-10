@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -151,6 +152,45 @@ namespace OpenRA.FileFormats
 			if (!tt.TryGetValue(r.index, out ret))
 				return "Clear"; // Default walkable
 			return ret;
+		}
+
+		public Bitmap RenderTemplate(ushort n, Palette p)
+		{
+			var template = Templates[n];
+			var tile = Tiles[n];
+
+			var bitmap = new Bitmap(TileSize * template.Size.X, TileSize * template.Size.Y,
+				PixelFormat.Format8bppIndexed);
+
+			bitmap.Palette = p.AsSystemPalette();
+
+			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+			unsafe
+			{
+				byte* q = (byte*)data.Scan0.ToPointer();
+				var stride = data.Stride;
+
+				for (var u = 0; u < template.Size.X; u++)
+					for (var v = 0; v < template.Size.Y; v++)
+						if (tile.TileBitmapBytes[u + v * template.Size.X] != null)
+						{
+							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
+							for (var i = 0; i < TileSize; i++)
+								for (var j = 0; j < TileSize; j++)
+									q[(v * TileSize + j) * stride + u * TileSize + i] = rawImage[i + TileSize * j];
+						}
+						else
+						{
+							for (var i = 0; i < TileSize; i++)
+								for (var j = 0; j < TileSize; j++)
+									q[(v * TileSize + j) * stride + u * TileSize + i] = 0;
+						}
+			}
+
+			bitmap.UnlockBits(data);
+			return bitmap;
 		}
 	}
 }

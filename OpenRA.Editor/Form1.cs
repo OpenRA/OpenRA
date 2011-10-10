@@ -122,7 +122,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var bitmap = RenderUtils.RenderTemplate(tileset, (ushort)t.Key, palette);
+					var bitmap = tileset.RenderTemplate((ushort)t.Key, palette);
 					var ibox = new PictureBox
 					{
 						Image = bitmap,
