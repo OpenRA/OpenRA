@@ -25,6 +25,7 @@ namespace OpenRA.Utility
 				{ "--png", Command.ConvertShpToPng },
 				{ "--fromd2", Command.ConvertFormat2ToFormat80 },
 				{ "--extract", Command.ExtractFiles },
+				{ "--tmp-png", Command.ConvertTmpToPng },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
@@ -55,6 +56,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
 			Console.WriteLine("  --png SHPFILE PALETTE [--transparent] Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
 			Console.WriteLine("  --extract MOD[,MOD]* FILES	      Extract files from mod packages");
+			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES        Extract terrain tiles to PNG");
 		}
 
         static string GetNamedArg(string[] args, string arg)

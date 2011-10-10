@@ -171,7 +171,6 @@ namespace OpenRA.Editor
 						BorderStyle = BorderStyle.FixedSingle
 					};
 
-
 					ibox.Click += (_, e) => surface1.SetTool(new ActorTool(template));
 
 					actorPalette.Controls.Add(ibox);

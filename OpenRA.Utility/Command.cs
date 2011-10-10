@@ -105,6 +105,35 @@ namespace OpenRA.Utility
 			}
 		}
 
+		public static void ConvertTmpToPng(string[] args)
+		{
+			var mods = args[1].Split(',');
+			var theater = args[2];
+			var templateNames = args.Skip(3);
+
+			var manifest = new Manifest(mods);
+			FileSystem.LoadFromManifest(manifest);
+
+			var tileset = manifest.TileSets.Select( a => new TileSet(a) )
+				.FirstOrDefault( ts => ts.Name == theater );
+
+			if (tileset == null)
+				throw new InvalidOperationException("No theater named '{0}'".F(theater));
+
+			tileset.LoadTiles();
+			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
+
+			foreach( var templateName in templateNames )
+			{
+				var template = tileset.Templates.FirstOrDefault(tt => tt.Value.Image == templateName);
+				if (template.Value == null)
+					throw new InvalidOperationException("No such template '{0}'".F(templateName));
+
+				using( var image = tileset.RenderTemplate(template.Value.Id, palette) )
+					image.Save( Path.ChangeExtension( templateName, ".png" ) );
+			}
+		}
+
 		public static void ConvertFormat2ToFormat80(string[] args)
 		{
 			var src = args[1];
