@@ -26,8 +26,8 @@ namespace OpenRA.Editor
 		public void Apply(Surface surface)
 		{
 			// change the bits in the map
-			var tile = surface.TileSet.Tiles[Brush.N];
 			var template = surface.TileSet.Templates[Brush.N];
+			var tile = template.Data;
 			var pos = surface.GetBrushLocation();
 
 			if (surface.GetModifiers() == Keys.Shift)

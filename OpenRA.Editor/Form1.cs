@@ -440,7 +440,7 @@ namespace OpenRA.Editor
 					var tr = surface1.Map.MapTiles.Value[i, j];
 					if (tr.type == 0xff || tr.type == 0xffff || tr.type == 1 || tr.type == 2)
 						tr.index = (byte)r.Next(0,
-							Rules.TileSets[surface1.Map.Tileset].Tiles[tr.type].TileBitmapBytes.Count);
+							Rules.TileSets[surface1.Map.Tileset].Templates[tr.type].Data.TileBitmapBytes.Count);
 
 					surface1.Map.MapTiles.Value[i, j] = tr;
 				}

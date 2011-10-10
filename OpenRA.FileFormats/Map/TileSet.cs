@@ -67,6 +67,8 @@ namespace OpenRA.FileFormats
 
 			return new MiniYaml(null, root);
 		}
+
+		public Terrain Data;
 	}
 
 	public class TileSet
@@ -77,7 +79,6 @@ namespace OpenRA.FileFormats
 		public int TileSize = 24;
 		public string[] Extensions;
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
-		public Dictionary<ushort, Terrain> Tiles = new Dictionary<ushort, Terrain>();
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 
 		static readonly string[] fields = {"Name", "TileSize", "Id", "Palette", "Extensions"};
@@ -103,23 +104,23 @@ namespace OpenRA.FileFormats
 		public void LoadTiles()
 		{
 			foreach (var t in Templates)
-				using( Stream s = FileSystem.OpenWithExts(t.Value.Image, Extensions) )
-				{
-					if( !Tiles.ContainsKey( t.Key ) )
-						Tiles.Add( t.Key, new Terrain( s, TileSize ) );
-				}
+				if (t.Value.Data == null)
+					using( var s = FileSystem.OpenWithExts(t.Value.Image, Extensions) )
+						t.Value.Data = new Terrain(s, TileSize);
 		}
 
 		public void Save(string filepath)
 		{
 			var root = new List<MiniYamlNode>();
 			var gen = new List<MiniYamlNode>();
+
 			foreach (var field in fields)
 			{
 				FieldInfo f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null) continue;
 				gen.Add( new MiniYamlNode( field, FieldSaver.FormatValue( this, f ) ) );
 			}
+
 			root.Add( new MiniYamlNode( "General", null, gen ) );
 
 			root.Add( new MiniYamlNode( "Terrain", null,
@@ -136,9 +137,9 @@ namespace OpenRA.FileFormats
 
 		public byte[] GetBytes(TileReference<ushort,byte> r)
 		{
-			Terrain tile;
-			if( Tiles.TryGetValue( r.type, out tile ) )
-				return tile.TileBitmapBytes[ r.index ];
+			TileTemplate tile;
+			if( Templates.TryGetValue( r.type, out tile ) )
+				return tile.Data.TileBitmapBytes[ r.index ];
 
 			byte[] missingTile = new byte[ TileSize * TileSize ];
 			for( int i = 0 ; i < missingTile.Length ; i++ )
@@ -159,7 +160,6 @@ namespace OpenRA.FileFormats
 		public Bitmap RenderTemplate(ushort n, Palette p)
 		{
 			var template = Templates[n];
-			var tile = Tiles[n];
 
 			var bitmap = new Bitmap(TileSize * template.Size.X, TileSize * template.Size.Y,
 				PixelFormat.Format8bppIndexed);
@@ -176,9 +176,9 @@ namespace OpenRA.FileFormats
 
 				for (var u = 0; u < template.Size.X; u++)
 					for (var v = 0; v < template.Size.Y; v++)
-						if (tile.TileBitmapBytes[u + v * template.Size.X] != null)
+						if (template.Data.TileBitmapBytes[u + v * template.Size.X] != null)
 						{
-							var rawImage = tile.TileBitmapBytes[u + v * template.Size.X];
+							var rawImage = template.Data.TileBitmapBytes[u + v * template.Size.X];
 							for (var i = 0; i < TileSize; i++)
 								for (var j = 0; j < TileSize; j++)
 									q[(v * TileSize + j) * stride + u * TileSize + i] = rawImage[i + TileSize * j];
