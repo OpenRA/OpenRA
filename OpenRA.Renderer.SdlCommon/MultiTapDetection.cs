@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Windows.Forms;
 using OpenRA;
 using OpenRA.FileFormats;
 
@@ -44,7 +43,7 @@ class TapHistory
 
 	static bool CloseEnough(Pair<DateTime, int2> a, Pair<DateTime, int2> b)
 	{
-		return a.First - b.First < TimeSpan.FromMilliseconds( SystemInformation.DoubleClickTime )
+		return a.First - b.First < TimeSpan.FromMilliseconds( 250 )
 			&& (a.Second - b.Second).Length < 4;
 	}
 
