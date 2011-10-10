@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public string StopKey = "s";
 		public string ScatterKey = "x";
 		public string DeployKey = "f";
+		public string StanceCycleKey = "z";
 		public string BaseCycleKey = "backspace";
 		public readonly OrderManager OrderManager;
 
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Rectangle GetEventBounds() { return Rectangle.Empty; }
+
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (World == null) return false;
@@ -67,6 +69,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (e.KeyName == DeployKey)
 					return PerformDeploy();
+
+				if (e.KeyName == StanceCycleKey)
+					return PerformStanceCycle();
 			}
 
 			return false;
@@ -112,6 +117,28 @@ namespace OpenRA.Mods.RA.Widgets
 			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
+			return true;
+		}
+
+		bool PerformStanceCycle()
+		{
+			var actor = World.Selection.Actors
+				.Where(a => a.Owner == World.LocalPlayer)
+				.Select(a => Pair.New( a, a.TraitOrDefault<AutoTarget>() ))
+				.Where(a => a.Second != null).FirstOrDefault();
+
+			if (actor.First == null)
+				return true;
+
+			var stances = (UnitStance[])Enum.GetValues(typeof(UnitStance));
+
+			var nextStance = stances.Concat(stances).SkipWhile(s => s != actor.Second.stance).Skip(1).First();
+
+			PerformKeyboardOrderOnSelection(a =>
+				new Order("SetUnitStance", a, false) { TargetLocation = new int2((int)nextStance, 0) });
+
+			Game.Debug( "Unit stance set to: {0}".F(nextStance) );
+
 			return true;
 		}
 

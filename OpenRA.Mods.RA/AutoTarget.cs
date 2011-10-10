@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 	public enum UnitStance { HoldFire, ReturnFire, AttackAnything };
 
-	public class AutoTarget : INotifyIdle, INotifyDamage, ITick
+	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder
 	{
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
@@ -36,6 +36,12 @@ namespace OpenRA.Mods.RA
 		{
 			Info = info;
 			attack = self.Trait<AttackBase>();
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "SetUnitStance")
+				stance = (UnitStance)order.TargetLocation.X;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
