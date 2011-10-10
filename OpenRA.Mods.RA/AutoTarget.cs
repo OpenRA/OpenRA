@@ -22,13 +22,15 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
 
+	public enum UnitStance { HoldFire, ReturnFire, AttackAnything };
+
 	public class AutoTarget : INotifyIdle, INotifyDamage, ITick
 	{
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
 
-		[Sync]
-		int nextScanTime = 0;
+		[Sync] int nextScanTime = 0;
+		[Sync] public UnitStance stance = UnitStance.AttackAnything;
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
@@ -40,6 +42,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (!self.IsIdle) return;
 			if (e.Attacker.Destroyed) return;
+
+			if (stance < UnitStance.ReturnFire) return;
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attack = self.Trait<AttackBase>();
@@ -55,6 +59,8 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle(Actor self)
 		{
+			if (stance < UnitStance.AttackAnything) return;
+
 			var target = ScanForTarget(self, null);
 			if (target != null)
 			{
