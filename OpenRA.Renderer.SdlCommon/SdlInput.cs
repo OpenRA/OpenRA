@@ -116,14 +116,16 @@ namespace OpenRA.Renderer.SdlCommon
 
 				case Sdl.SDL_KEYUP:
 					{
+						var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
+
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Up,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
-//							KeyName = MultiTapDetection.DetectFromKeyboard(Sdl.SDL_GetKeyName( e.key.keysym.sym )),
 							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
-							VirtKey = e.key.keysym.sym
+							VirtKey = e.key.keysym.sym,
+							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
 						};
 
 						inputHandler.OnKeyInput( keyEvent );

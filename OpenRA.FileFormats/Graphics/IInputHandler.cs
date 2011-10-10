@@ -70,5 +70,6 @@ namespace OpenRA
 		public string KeyName;
 		public Modifiers Modifiers;
 		public int VirtKey;
+		public int MultiTapCount;
 	}
 }

@@ -26,13 +26,10 @@ public static class MultiTapDetection
 		return clickHistory.GetTapCount(xy);
 	}
 
-	static readonly string[] KeyNameModifiers = new [] { "", "", "DoubleTapOf_", "TripleTapOf_" };
-
-	public static string DetectFromKeyboard(string KeyName)
+	public static int DetectFromKeyboard(string KeyName)
 	{
 		var keyHistory = KeyHistoryCache[KeyName];
-		var count = keyHistory.GetTapCount(int2.Zero);
-		return KeyNameModifiers[count];
+		return keyHistory.GetTapCount(int2.Zero);
 	}
 }
 
