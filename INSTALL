@@ -22,7 +22,7 @@ WINDOWS:
 * Cg Toolkit >= 2.2
 	(http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_October2009_Setup.exe)
 
-To compile OpenRA, open the OpenRA.sln solution in the main folder, 
+To compile OpenRA, open the OpenRA.sln solution in the main folder,
 or build it from the command-line with MSBuild.
 
 Run the game with `OpenRA.Game.exe Game.Mods=ra` for Red Alert
@@ -37,11 +37,9 @@ UBUNTU (substitute comparable packages for other linux distros):
 * libmono-winforms2.0-cil
 * libopenal1
 * libsdl1.2-dev
-* nvidia-cg-toolkit (download the latest version from
-  http://developer.nvidia.com/object/cg_download.html)
+* nvidia-cg-toolkit (for Cg renderer)
 
-OpenRA is incompatible with Compiz, please disable desktop effects when trying
-to run OpenRA or the game will crash.
+OpenRA does not work with some older versions of Compiz. On affected systems, disable desktop effects before playing. This is fixed in Ubuntu Natty and later.
 
 You will additionally need to copy the third party dependencies (.dll and .config) from the
 thirdparty and thirdparty/Tao directories into the game root:
@@ -62,3 +60,11 @@ other applications that use Tao:
 To compile OpenRA, run `make' from the command line.
 Run the game with `mono OpenRA.Game.exe Game.Mods=ra` for Red Alert
 or `mono OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
+
+SLACKWARE:
+
+The following packages from slackbuilds.org are required, on 13.37 32bit:
+* libgdiplus
+* mono
+* openAL
+* nvidia-cg-toolkit (for Cg renderer)
