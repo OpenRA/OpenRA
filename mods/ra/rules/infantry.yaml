@@ -237,7 +237,7 @@ MEDI:
 		Owner: allies
 		Prerequisites: tent
 	Valued:
-		Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
@@ -311,7 +311,7 @@ SHOK:
 		Prerequisites: stek,tsla
 		Owner: soviet
 	Valued:
-		Cost: 900
+		Cost: 500
 	Tooltip:
 		Name: Tesla Trooper
 		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
