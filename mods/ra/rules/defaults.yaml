@@ -106,6 +106,8 @@
 		String:Infantry
 	ParachuteAttachment:
 		Offset: 0,-10
+	CrushableInfantry:
+		CrushSound: squishy2.aud
 
 ^Ship:
 	AppearsOnRadar:

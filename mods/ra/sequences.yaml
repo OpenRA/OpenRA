@@ -608,6 +608,10 @@ e1:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 
 clock:
 	idle:
@@ -663,6 +667,10 @@ e3:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -713,6 +721,10 @@ e6:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 82
 		Length: 4
@@ -787,6 +799,10 @@ medi:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -1153,6 +1169,10 @@ e2:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 240
 		Length: 4
@@ -1205,6 +1225,10 @@ dog:
 	die6: electdog
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	shoot: dogbullt
 		Start: 0
 		Length: 4
@@ -1256,6 +1280,10 @@ spy:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -1315,6 +1343,10 @@ e7:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 128
 		Length: 4
@@ -1369,6 +1401,10 @@ e4:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	prone-stand:
 		Start: 208
 		Length: 4
@@ -1775,6 +1811,10 @@ c1:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	run:
 		Start: 56
 		Length: 6
@@ -1814,6 +1854,10 @@ c2:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600		
 	run:
 		Start: 56
 		Length: 6
