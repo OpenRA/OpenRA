@@ -15,6 +15,7 @@ NEW:
 		Added a Show Grid option to the Map Editor
 		Added multitap support - double clicking a unit selects all units of the same type on screen
 		Changed map choosers to be a filterable grid of maps
+		Added internal machinery for IFV-style units
 	Red Alert:
 		Added naval transport
 		Added an indicator over powered down buildings
@@ -25,6 +26,7 @@ NEW:
 		Husks no longer interfere with selection
 		Added more options for bots in game lobby
 		Changed AI behavior -- now has Easy/Normal/Hard difficulty
+		Increased range of FTUR by 1
 		New map: Classic DropZone (Holloweye)
 		New map: DropZone Battle of Tikiaki (Knivesron)
 		New map: Seven Stairs (Tirili)
@@ -46,6 +48,7 @@ NEW:
 		New map: Arctic Triangle Affair (Bellator)
 		New map: Mad Scramble (Bellator)
 		New map: Free Coasts (Ihptru)
+		New map: Battle Lake (Bellator)
 	C&C:
 		Slightly increased Tiberium growth rate
 		Increased harvester unload time
