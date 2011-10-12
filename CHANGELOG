@@ -27,8 +27,12 @@ NEW:
 		Added more options for bots in game lobby
 		Changed AI behavior -- now has Easy/Normal/Hard difficulty
 		Increased range of FTUR by 1
+		Reduced cost of MEDI from 500 to 300
+		Reduced cost of SHOK from 800 to 500
+		Heavy vehicles (Tanks, Harvesters, MCV) now crush infantry
 		New map: Classic DropZone (Holloweye)
 		New map: DropZone Battle of Tikiaki (Knivesron)
+		New map: DropZone W (Riderr3)
 		New map: Seven Stairs (Tirili)
 		New map: Contact (Nukem)
 		New map: Encounter (Nukem)
