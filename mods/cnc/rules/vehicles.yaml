@@ -156,7 +156,7 @@ FTNK:
 	Health:
 		HP: 350
 	Armor:
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	AttackFrontal:
