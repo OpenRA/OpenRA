@@ -249,8 +249,7 @@ namespace OpenRA.Mods.RA
 			{
 				BotDebug("AI: Found a newly built unit");
 				if (a.Info == Rules.Info["harv"])
-					a.QueueActivity(new FindResources());
-
+					world.IssueOrder( new Order( "Harvest", a, false ) );
 				else
 					unitsHangingAroundTheBase.Add(a);
 

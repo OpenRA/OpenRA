@@ -154,9 +154,12 @@ namespace OpenRA.Mods.RA
 			{
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
+				if (order.TargetLocation != int2.Zero)
+				{
+					self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
+					self.SetTargetLine(Target.FromOrder(order), Color.Red);
+				}
 				self.QueueActivity(new FindResources());
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 			}
 			else if (order.OrderString == "Deliver")
 			{
