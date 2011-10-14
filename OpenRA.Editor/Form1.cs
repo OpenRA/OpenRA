@@ -447,5 +447,14 @@ namespace OpenRA.Editor
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
 		}
+
+		void SetupDefaultPlayers(object sender, EventArgs e)
+		{
+			dirty = true;
+			surface1.Map.MakeDefaultPlayers();
+
+			surface1.Chunks.Clear();
+			surface1.Invalidate();
+		}
 	}
 }

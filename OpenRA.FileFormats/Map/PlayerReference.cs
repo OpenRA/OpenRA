@@ -41,9 +41,6 @@ namespace OpenRA.FileFormats
 		public string[] Enemies = {};
 
 		public PlayerReference() {}
-		public PlayerReference(MiniYaml my)
-		{
-			FieldLoader.Load(this, my);
-		}
+		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }
 	}
 }

@@ -80,6 +80,7 @@ namespace OpenRA.Editor
 			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
 			this.fixOpenAreasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.setupDefaultPlayersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -397,7 +398,8 @@ namespace OpenRA.Editor
             this.resizeToolStripMenuItem,
             this.showActorNamesToolStripMenuItem,
             this.showGridToolStripMenuItem,
-            this.fixOpenAreasToolStripMenuItem});
+            this.fixOpenAreasToolStripMenuItem,
+			this.setupDefaultPlayersMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
 			this.mapToolStripMenuItem.Text = "&Map";
@@ -478,6 +480,13 @@ namespace OpenRA.Editor
 			this.fixOpenAreasToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
 			this.fixOpenAreasToolStripMenuItem.Text = "&Fix Open Areas";
 			this.fixOpenAreasToolStripMenuItem.Click += new System.EventHandler(this.FixOpenAreas);
+			//
+			// setupDefaultPlayersMenuItem
+			//
+			this.setupDefaultPlayersMenuItem.Name = "setupDefaultPlayersMenuItem";
+			this.setupDefaultPlayersMenuItem.Size = new System.Drawing.Size(175, 22);
+			this.setupDefaultPlayersMenuItem.Text = "&Setup Default Players";
+			this.setupDefaultPlayersMenuItem.Click += new System.EventHandler(this.SetupDefaultPlayers);
 			//
 			// Form1
 			//
@@ -561,6 +570,7 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripMenuItem showActorNamesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fixOpenAreasToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem setupDefaultPlayersMenuItem;
 
 	}
 }
