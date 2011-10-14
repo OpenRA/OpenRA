@@ -85,7 +85,6 @@
     <Compile Include="Graphics\ShpWriter.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="Graphics\VqaReader.cs" />
-    <Compile Include="HttpUtil.cs" />
     <Compile Include="InstallUtils.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Map\PlayerReference.cs" />
