@@ -410,7 +410,7 @@ namespace OpenRA
 			Players.Clear();
 
 			var firstRace = OpenRA.Rules.Info["world"].Traits
-				.WithInterface<CountryInfo>().First().Race;
+				.WithInterface<CountryInfo>().First(c => c.Selectable).Race;
 
 			Players.Add("Neutral", new PlayerReference
 			{

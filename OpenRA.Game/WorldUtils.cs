@@ -102,11 +102,6 @@ namespace OpenRA
 				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
 		}
 
-		public static IEnumerable<CountryInfo> GetCountries(this World w)
-		{
-			return w.WorldActor.Info.Traits.WithInterface<CountryInfo>();
-		}
-
 		public static float Gauss1D(this Thirdparty.Random r, int samples)
 		{
 			return Graphics.Util.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1f)

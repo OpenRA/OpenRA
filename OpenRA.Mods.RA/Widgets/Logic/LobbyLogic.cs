@@ -104,6 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
+				.Where(c => c.Selectable)
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Random");
 

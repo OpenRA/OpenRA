@@ -14,8 +14,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string Name = null;
 		public readonly string Race = null;
-
-		/* todo: icon,... */
+		public readonly bool Selectable = true;
 	}
 
 	public class Country { /* we're only interested in the Info */ }

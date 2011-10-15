@@ -39,6 +39,16 @@ namespace OpenRA
 		public Shroud Shroud { get { return World.LocalShroud; }}
 		public World World { get; private set; }
 
+		static CountryInfo ChooseCountry(World world, string name)
+		{
+			var selectableCountries = Rules.Info["world"].Traits
+				.WithInterface<CountryInfo>().Where( c => c.Selectable )
+				.ToArray();
+
+			return selectableCountries.FirstOrDefault(c => c.Race == name)
+				?? selectableCountries.Random(world.SharedRandom);
+		}
+
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
 		{
 			World = world;
@@ -53,10 +63,7 @@ namespace OpenRA
             	ColorRamp = client.ColorRamp;
 				PlayerName = client.Name;
 				botType = client.Bot;
-
-				Country = world.GetCountries()
-					.FirstOrDefault(c => client.Country == c.Race)
-					?? world.GetCountries().Random(world.SharedRandom);
+				Country = ChooseCountry(world, client.Country);
 			}
 			else
 			{
@@ -66,10 +73,7 @@ namespace OpenRA
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
 				botType = pr.Bot;
-
-				Country = world.GetCountries()
-					.FirstOrDefault(c => pr.Race == c.Race)
-					?? world.GetCountries().Random(world.SharedRandom);
+				Country = ChooseCountry(world, pr.Race);
 			}
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 
