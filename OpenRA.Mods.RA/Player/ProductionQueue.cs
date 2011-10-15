@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		public ProductionQueueInfo Info;
 		PowerManager PlayerPower;
 		PlayerResources playerResources;
-		string Race;
+		CountryInfo Race;
 
 		// A list of things we are currently building
 		public List<ProductionItem> Queue = new List<ProductionItem>();
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 			playerResources = playerActor.Trait<PlayerResources>();
 			PlayerPower = playerActor.Trait<PowerManager>();
 
-			Race = self.Owner.Country.Race;
+			Race = self.Owner.Country;
 			Produceable = InitTech(playerActor);
 		}
 
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
 				// Can our race build this by satisfying normal prereqs?
-				var buildable = bi.Owner.Contains(Race);
+				var buildable = bi.Owner.Contains(Race.Race);
 				tech.Add(a, new ProductionState() { Visible = buildable && !bi.Hidden });
 				if (buildable)
 					ttc.Add(a.Name, a.Traits.Get<BuildableInfo>().Prerequisites.ToList(), this);
