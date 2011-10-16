@@ -266,20 +266,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var c = orderManager.LobbyInfo.ClientInSlot(kv.Key);
 				Widget template;
 
-				if (c == null || (c.Bot != null && Game.IsHost == false))
+				if (c == null)
 				{
 					if (Game.IsHost)
 					{
 						template = EmptySlotTemplateHost.Clone();
 						var name = template.GetWidget<DropDownButtonWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
+						name.GetText = () => s.Closed ? "Closed" : "Open";
 						name.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(name, s, c, orderManager);
 					}
 					else
 					{
 						template = EmptySlotTemplate.Clone();
 						var name = template.GetWidget<LabelWidget>("NAME");
-						name.GetText = () => s.Closed ? "Closed" : (c == null) ? "Open" : c.Bot;
+						name.GetText = () => s.Closed ? "Closed" : "Open";
 					}
 
 					var join = template.GetWidget<ButtonWidget>("JOIN");
@@ -288,8 +288,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference));
 						join.IsVisible = () => !s.Closed && c == null && orderManager.LocalClient.State != Session.ClientState.Ready;
 					}
-
-					template.GetWidget<LabelWidget>("BOT").IsVisible = () => c != null;
 				}
 
 				else if ((c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready) || (c.Bot != null && Game.IsHost))
@@ -338,8 +336,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					status.OnClick = CycleReady;
-					if (c.Bot != null) status.IsVisible = () => false;
-				
+					status.IsVisible = () => c.Bot == null;			
 				}
 				else
 				{
@@ -362,6 +359,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					status.IsChecked = () => c.State == Session.ClientState.Ready;
 					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick = CycleReady;
+					status.IsVisible = () => c.Bot == null;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
