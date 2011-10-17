@@ -257,6 +257,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Renderer.Gl.dll
 	Delete $INSTDIR\OpenRA.Renderer.Cg.dll
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
+	Delete $INSTDIR\OpenRA.Renderer.SdlCommon.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\COPYING
