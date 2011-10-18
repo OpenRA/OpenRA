@@ -84,7 +84,7 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	CncColorPickerPaletteModifier:
+	ColorPickerPaletteModifier:
 	ShroudPalette@shroud:
 	ShroudPalette@fog:
 		IsFog: yes

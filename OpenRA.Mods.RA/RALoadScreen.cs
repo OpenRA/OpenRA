@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 							new WidgetArgs() { { "orderManager", orderManager } });
 						break;
 					case ConnectionState.Connected:
-						var lobby = Game.OpenWindow(orderManager.world, "SERVER_LOBBY");
+						var lobby = Game.OpenWindow("SERVER_LOBBY", new WidgetArgs {});
 						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
 						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
 						lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;

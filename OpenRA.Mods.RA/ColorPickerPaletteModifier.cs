@@ -12,29 +12,28 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ColorPickerPaletteModifierInfo : ITraitInfo
+	public class ColorPickerPaletteModifierInfo : ITraitInfo
 	{
 		public string PlayerPalette = "player";
 		public object Create( ActorInitializer init ) { return new ColorPickerPaletteModifier( this ); }
 	}
 
-	class ColorPickerPaletteModifier : IPalette, IPaletteModifier
+	public class ColorPickerPaletteModifier : IPalette, IPaletteModifier
 	{
 		ColorPickerPaletteModifierInfo Info;
 		PaletteFormat format;
+		public ColorRamp Ramp;
 
 		public ColorPickerPaletteModifier(ColorPickerPaletteModifierInfo info) { Info = info; }
 
 		public void InitPalette( WorldRenderer wr )
 		{
 			var info = Rules.Info["player"].Traits.WithInterface<PlayerColorPaletteInfo>()
-				.Where(p => p.BaseName == Info.PlayerPalette)
-				.First();
+				.First(p => p.BaseName == Info.PlayerPalette);
 			format = info.PaletteFormat;
 			wr.AddPalette("colorpicker", wr.GetPalette(info.BasePalette));
 		}
@@ -42,7 +41,7 @@ namespace OpenRA.Mods.RA
 		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
-			  new PlayerColorRemap(LobbyLogic.CurrentColorPreview, format));
+			  new PlayerColorRemap(Ramp, format));
 		}
 	}
 }

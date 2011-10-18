@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		enum PanelType { General, Input }
 
 		PanelType Settings = PanelType.General;
-		CncColorPickerPaletteModifier playerPalettePreview;
+		ColorPickerPaletteModifier playerPalettePreview;
 		World world;
 
 		[ObjectCreator.UseCtor]
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var nameTextfield = generalPane.GetWidget<TextFieldWidget>("NAME_TEXTFIELD");
 			nameTextfield.Text = playerSettings.Name;
 
-			playerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
+			playerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
 			playerPalettePreview.Ramp = playerSettings.ColorRamp;
 
 			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR_DROPDOWN");

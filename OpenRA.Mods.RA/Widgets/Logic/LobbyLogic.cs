@@ -30,12 +30,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		string MapUid;
 		Map Map;
 
-		public static ColorRamp CurrentColorPreview;
+		ColorPickerPaletteModifier PlayerPalettePreview;
 
 		readonly OrderManager orderManager;
 		readonly WorldRenderer worldRenderer;
+
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
+							[ObjectCreator.Param] World world, // Shellmap world
 							[ObjectCreator.Param] OrderManager orderManager,
 							[ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
@@ -47,7 +49,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			UpdateCurrentMap();
 
-			CurrentColorPreview = Game.Settings.Player.ColorRamp;
+			PlayerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
+			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
 
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
 			LocalPlayerTemplate = Players.GetWidget("TEMPLATE_LOCAL");
@@ -208,7 +211,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
-			CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
+			PlayerPalettePreview.Ramp = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
 		}
 
 		void UpdateCurrentMap()

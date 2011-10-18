@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets.Logic;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		string MapUid;
 		Map Map;
 
-		CncColorPickerPaletteModifier PlayerPalettePreview;
+		ColorPickerPaletteModifier PlayerPalettePreview;
 
 		readonly Action OnGameStart;
 		readonly Action onExit;
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			UpdateCurrentMap();
-			PlayerPalettePreview = world.WorldActor.Trait<CncColorPickerPaletteModifier>();
+			PlayerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
 			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
 			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
 			EditablePlayerTemplate = Players.GetWidget("TEMPLATE_EDITABLE_PLAYER");
