@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					return;
 
 				var selectedSpawn = Map.GetSpawnPoints()
-					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(Map, sp), i))
+					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();

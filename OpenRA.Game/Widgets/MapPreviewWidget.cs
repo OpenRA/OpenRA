@@ -49,8 +49,9 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
-		public int2 ConvertToPreview(Map map, int2 point)
+		public int2 ConvertToPreview(int2 point)
 		{
+			var map = Map();
 			return new int2(MapRect.X + (int)(PreviewScale*(point.X - map.Bounds.Left)) , MapRect.Y + (int)(PreviewScale*(point.Y - map.Bounds.Top)));
 		}
 
@@ -94,7 +95,7 @@ namespace OpenRA.Widgets
 			foreach (var p in map.GetSpawnPoints())
 			{
 				var owned = colors.ContainsKey(p);
-				var pos = ConvertToPreview(map, p);
+				var pos = ConvertToPreview(p);
 				var sprite = ChromeProvider.GetImage("spawnpoints", owned ? "owned" : "unowned");
 				var offset = new int2(-sprite.bounds.Width/2, -sprite.bounds.Height/2);
 
