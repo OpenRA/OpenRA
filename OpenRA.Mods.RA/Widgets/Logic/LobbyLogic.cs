@@ -69,24 +69,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
-				var p = Map.GetSpawnPoints()
+				var selectedSpawn = Map.GetSpawnPoints()
 					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(Map, sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();
 
-				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
-				if (p == 0 || !owned)
+				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
+				if (selectedSpawn == 0 || !owned)
 				{
-					if (Game.IsHost)
-					{
-						var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || c.Bot != null);
-
-						var playerToMove = locals.Where(c => (p == 0) ? c.SpawnPoint != 0 : c.SpawnPoint == 0).FirstOrDefault();
-						orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove != null) ? playerToMove.Index : orderManager.LocalClient.Index, p)));
-					}
-					else
-						orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
+					var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+					var playerToMove = locals.Where(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0)).FirstOrDefault();
+					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
 				}
 			};
 
