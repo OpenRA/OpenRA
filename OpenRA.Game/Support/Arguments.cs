@@ -33,27 +33,6 @@ namespace OpenRA
 		}
 
 		public bool Contains(string key) { return args.ContainsKey(key); }
-
 		public string GetValue(string key, string defaultValue) { return Contains(key) ? args[key] : defaultValue; }
-
-		public int GetValue(string key, int defaultValue)
-		{
-			int result;
-
-			if (!int.TryParse(GetValue(key, defaultValue.ToString()), out result))
-				result = defaultValue;
-
-			return result;
-		}
-
-		public bool GetValue(string key, bool defaultValue)
-		{
-			bool result;
-
-			if (!bool.TryParse(GetValue(key, defaultValue.ToString()), out result))
-				result = defaultValue;
-
-			return result;
-		}
 	}
 }
