@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.Kill(self); // this changes the damagestate
 			}
-			var oldTempate = currentTemplate;
+			var oldTemplate = currentTemplate;
 			var ds = Health.DamageState;
 			currentTemplate = (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate :
 							  (ds >= DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : Info.Template;
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.RA
 					currentTemplate = Info.DestroyedPlusSouthTemplate;
 			}
 
-			if (currentTemplate == oldTempate)
+			if (currentTemplate == oldTemplate)
 				return;
 
 			// Update map
