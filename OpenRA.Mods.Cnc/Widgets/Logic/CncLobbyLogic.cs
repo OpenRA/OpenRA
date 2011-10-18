@@ -118,13 +118,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi =>
 			{
-				var map = mapPreview.Map();
-				if (map == null || mi.Button != MouseButton.Left
+				if (Map == null || mi.Button != MouseButton.Left
 					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
-				var p = map.GetSpawnPoints()
-					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp), i))
+				var p = Map.GetSpawnPoints()
+					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(Map, sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)
 					.FirstOrDefault();
