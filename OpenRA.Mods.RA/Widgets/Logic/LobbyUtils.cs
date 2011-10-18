@@ -118,5 +118,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, countryNames.Keys.ToList(), setupItem);
 		}
+
+		public static Dictionary<int2, Color> GetSpawnColors(OrderManager orderManager, Map map)
+		{
+			var spawns = Map.SpawnPoints;
+			var sc = new Dictionary<int2, Color>();
+
+			for (int i = 1; i <= spawns.Count(); i++)
+			{
+				var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
+				if (client == null)
+					continue;
+				sc.Add(spawns.ElementAt(i - 1), client.ColorRamp.GetColor(0));
+			}
+			return sc;
+		}
 	}
 }

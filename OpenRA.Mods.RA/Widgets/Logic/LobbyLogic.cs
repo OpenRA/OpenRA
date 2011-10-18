@@ -91,20 +91,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 			};
 
-			mapPreview.SpawnColors = () =>
-			{
-				var spawns = Map.SpawnPoints;
-				var sc = new Dictionary<int2, Color>();
-
-				for (int i = 1; i <= spawns.Count(); i++)
-				{
-					var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
-					if (client == null)
-						continue;
-					sc.Add(spawns.ElementAt(i - 1), client.ColorRamp.GetColor(0));
-				}
-				return sc;
-			};
+			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors( orderManager, Map );
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
