@@ -85,8 +85,8 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
-            foreach (var image in SpritesToRender() )
-                image.Sprite.DrawAt(image.Pos, this.GetPaletteIndex(image.Palette), image.Scale);
+			foreach (var image in SpritesToRender())
+				image.Sprite.DrawAt(image.Pos, this.GetPaletteIndex(image.Palette), image.Scale);
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
