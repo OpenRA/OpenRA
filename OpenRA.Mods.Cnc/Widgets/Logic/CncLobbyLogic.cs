@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
-				var p = map.SpawnPoints
+				var p = map.GetSpawnPoints()
 					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)
@@ -278,8 +278,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-												  () => client.SpawnPoint == ii,
-												  () => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
+					() => client.SpawnPoint == ii,
+					() => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				.Where(c => c.SpawnPoint != 0 && c.SpawnPoint != client.SpawnPoint && c.Slot != null)
 				.Select(c => c.SpawnPoint).ToList();
 
-			var options = Graphics.Util.MakeArray(Map.SpawnPoints.Count() + 1, i => i).Except(taken).ToList();
+			var options = Graphics.Util.MakeArray(Map.GetSpawnPoints().Length + 1, i => i).Except(taken).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 

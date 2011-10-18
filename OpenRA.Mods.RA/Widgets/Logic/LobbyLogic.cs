@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
-				var p = map.SpawnPoints
+				var p = map.GetSpawnPoints()
 					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(map, sp), i))
 					.Where(a => (a.First - mi.Location).LengthSquared < 64)
 					.Select(a => a.Second + 1)

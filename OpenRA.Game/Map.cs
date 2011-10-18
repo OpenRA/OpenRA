@@ -41,7 +41,14 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
-		public IEnumerable<int2> SpawnPoints { get { return Actors.Value.Values.Where(a => a.Type == "mpspawn").Select(a => a.InitDict.Get<LocationInit>().value); } }
+
+		public int2[] GetSpawnPoints()
+		{
+			return Actors.Value.Values
+				.Where(a => a.Type == "mpspawn")
+				.Select(a => a.InitDict.Get<LocationInit>().value)
+				.ToArray();
+		}
 
 		public Rectangle Bounds;
 
@@ -420,7 +427,8 @@ namespace OpenRA
 				NonCombatant = true
 			});
 
-			for (int index = 0; index < SpawnPoints.Count(); index++)
+			var numSpawns = GetSpawnPoints().Length;
+			for (var index = 0; index < numSpawns; index++)
 			{
 				var p = new PlayerReference
 				{

@@ -91,7 +91,7 @@ namespace OpenRA.Widgets
 
 			// Overlay spawnpoints
 			var colors = SpawnColors();
-			foreach (var p in map.SpawnPoints)
+			foreach (var p in map.GetSpawnPoints())
 			{
 				var owned = colors.ContainsKey(p);
 				var pos = ConvertToPreview(map, p);

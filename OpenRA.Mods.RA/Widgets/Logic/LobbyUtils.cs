@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			var options = Graphics.Util.MakeArray(map.SpawnPoints.Count() + 1, i => i).ToList();
+			var options = Graphics.Util.MakeArray(map.GetSpawnPoints().Length + 1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
@@ -121,10 +121,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static Dictionary<int2, Color> GetSpawnColors(OrderManager orderManager, Map map)
 		{
+			var spawns = map.GetSpawnPoints();
 			return orderManager.LobbyInfo.Clients
 				.Where( c => c.SpawnPoint != 0 )
 				.ToDictionary(
-					c => Map.SpawnPoints.ElementAt( c.SpawnPoint - 1 ),
+					c => spawns[c.SpawnPoint - 1],
 					c => c.ColorRamp.GetColor(0));
 		}
 	}
