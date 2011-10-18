@@ -63,27 +63,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
 			mapPreview.Map = () => Map;
-			mapPreview.OnMouseDown = mi =>
-			{
-				if (Map == null || mi.Button != MouseButton.Left
-					|| orderManager.LocalClient.State == Session.ClientState.Ready)
-					return;
-
-				var selectedSpawn = Map.GetSpawnPoints()
-					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
-					.Where(a => (a.First - mi.Location).LengthSquared < 64)
-					.Select(a => a.Second + 1)
-					.FirstOrDefault();
-
-				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
-				if (selectedSpawn == 0 || !owned)
-				{
-					var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-					var playerToMove = locals.Where(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0)).FirstOrDefault();
-					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
-				}
-			};
-
+			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
 			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors( orderManager, Map );
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()

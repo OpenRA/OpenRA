@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -127,6 +128,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.ToDictionary(
 					c => spawns[c.SpawnPoint - 1],
 					c => c.ColorRamp.GetColor(0));
+		}
+
+		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, Map map, MouseInput mi)
+		{
+			if (map == null || mi.Button != MouseButton.Left
+				|| orderManager.LocalClient.State == Session.ClientState.Ready)
+				return;
+
+			var selectedSpawn = map.GetSpawnPoints()
+				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
+				.Where(a => (a.First - mi.Location).LengthSquared < 64)
+				.Select(a => a.Second + 1)
+				.FirstOrDefault();
+
+			var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == selectedSpawn);
+			if (selectedSpawn == 0 || !owned)
+			{
+				var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+				var playerToMove = locals.Where(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0)).FirstOrDefault();
+				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
+			}
 		}
 	}
 }

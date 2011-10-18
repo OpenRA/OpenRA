@@ -116,22 +116,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
-			mapPreview.OnMouseDown = mi =>
-			{
-				if (Map == null || mi.Button != MouseButton.Left
-					|| orderManager.LocalClient.State == Session.ClientState.Ready)
-					return;
-
-				var p = Map.GetSpawnPoints()
-					.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
-					.Where(a => (a.First - mi.Location).LengthSquared < 64)
-					.Select(a => a.Second + 1)
-					.FirstOrDefault();
-
-				var owned = orderManager.LobbyInfo.Clients.Any(c => c.SpawnPoint == p);
-				if (p == 0 || !owned)
-					orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(orderManager.LocalClient.Index, p)));
-			};
+			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
 
 			var mapTitle = lobby.GetWidget<LabelWidget>("MAP_TITLE");
 			mapTitle.IsVisible = () => Map != null;
@@ -272,25 +257,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
-		void ShowSpawnDropDown(DropDownButtonWidget dropdown, Session.Client client)
-		{
-			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
-			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.SpawnPoint == ii,
-					() => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
-				return item;
-			};
-
-			var taken = orderManager.LobbyInfo.Clients
-				.Where(c => c.SpawnPoint != 0 && c.SpawnPoint != client.SpawnPoint && c.Slot != null)
-				.Select(c => c.SpawnPoint).ToList();
-
-			var options = Graphics.Util.MakeArray(Map.GetSpawnPoints().Length + 1, i => i).Except(taken).ToList();
-			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
-		}
-
 		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
 		{
 			Action<ColorRamp> onSelect = c =>
@@ -403,11 +369,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					team.IsDisabled = () => slot.LockTeam || ready;
 					team.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(team, client, orderManager, Map);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
-
-					var spawn = template.GetWidget<DropDownButtonWidget>("SPAWN");
-					spawn.IsDisabled = () => slot.LockSpawn || ready;
-					spawn.OnMouseDown = _ => ShowSpawnDropDown(spawn, client);
-					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
 					if (client.Bot == null)
 					{
