@@ -160,7 +160,7 @@ namespace OpenRA.Editor
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "PropertiesDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "PropertiesDialog";
+			this.Text = "Map Properties";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
