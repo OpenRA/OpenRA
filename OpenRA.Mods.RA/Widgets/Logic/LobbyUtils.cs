@@ -121,17 +121,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public static Dictionary<int2, Color> GetSpawnColors(OrderManager orderManager, Map map)
 		{
-			var spawns = Map.SpawnPoints;
-			var sc = new Dictionary<int2, Color>();
-
-			for (int i = 1; i <= spawns.Count(); i++)
-			{
-				var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == i);
-				if (client == null)
-					continue;
-				sc.Add(spawns.ElementAt(i - 1), client.ColorRamp.GetColor(0));
-			}
-			return sc;
+			return orderManager.LobbyInfo.Clients
+				.Where( c => c.SpawnPoint != 0 )
+				.ToDictionary(
+					c => Map.SpawnPoints.ElementAt( c.SpawnPoint - 1 ),
+					c => c.ColorRamp.GetColor(0));
 		}
 	}
 }
