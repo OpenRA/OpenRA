@@ -309,19 +309,20 @@ namespace OpenRA
 			StartGame(ChooseShellmap());
 		}
 
-        static string ChooseShellmap()
-        {
-            var shellmaps =  modData.AvailableMaps
-                .Where(m => m.Value.UseAsShellmap);
+		static string ChooseShellmap()
+		{
+			var shellmaps =  modData.AvailableMaps
+				.Where(m => m.Value.UseAsShellmap);
 
 			if (shellmaps.Count() == 0)
 				throw new InvalidDataException("No valid shellmaps available");
 
 			return shellmaps.Random(CosmeticRandom).Key;
-        }
+		}
 
 		static bool quit;
 		public static event Action OnQuit = () => {};
+
 		internal static void Run()
 		{
 			while (!quit)
