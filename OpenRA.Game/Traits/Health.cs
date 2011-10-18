@@ -36,8 +36,8 @@ namespace OpenRA.Traits
 			Info = info;
 			MaxHP = info.HP;
 
-            hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>() * MaxHP) : MaxHP;
-            DisplayHp = hp;
+			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>() * MaxHP) : MaxHP;
+			DisplayHp = hp;
 		}
 
 		public int HP { get { return hp; } }
@@ -75,7 +75,7 @@ namespace OpenRA.Traits
 
 			var oldState = this.DamageState;
 			/* apply the damage modifiers, if we have any. */
-            var modifier = (float)self.TraitsImplementing<IDamageModifier>()
+			var modifier = (float)self.TraitsImplementing<IDamageModifier>()
 				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
 
@@ -93,8 +93,8 @@ namespace OpenRA.Traits
 				Warhead = warhead,
 			};
 
-            foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-			         .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
+					 .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
 			if (DamageState != oldState)
@@ -103,7 +103,7 @@ namespace OpenRA.Traits
 
 			if (attacker != null && attacker.IsInWorld && !attacker.IsDead())
 				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
-			         .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 				nd.AppliedDamage(attacker, self, ai);
 
 			if (hp == 0)
@@ -112,7 +112,7 @@ namespace OpenRA.Traits
 				self.Owner.Deaths++;
 
 				foreach (var nd in self.TraitsImplementing<INotifyKilled>()
-			    		.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
+						.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
 					nd.Killed(self, ai);
 
 				if( RemoveOnDeath )

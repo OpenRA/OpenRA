@@ -129,22 +129,22 @@ namespace OpenRA.Mods.RA
 
 			if (!HasAdequatePower())	/* try to maintain 20% excess power */
 			{
-                if (!buildPower) return null;
+				if (!buildPower) return null;
 
 				/* find the best thing we can build which produces power */
 				return buildableThings.Where(a => GetPowerProvidedBy(a) > 0)
 					.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
 			}
 
-            var myBuildings = p.World
-                .ActorsWithTrait<Building>()
-                .Where( a => a.Actor.Owner == p )
-                .Select(a => a.Actor.Info.Name).ToArray();
+			var myBuildings = p.World
+				.ActorsWithTrait<Building>()
+				.Where( a => a.Actor.Owner == p )
+				.Select(a => a.Actor.Info.Name).ToArray();
 
 			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
 					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length &&
-					    playerPower.ExcessPower >= Rules.Info[frac.Key].Traits.Get<BuildingInfo>().Power)
+						playerPower.ExcessPower >= Rules.Info[frac.Key].Traits.Get<BuildingInfo>().Power)
 						return Rules.Info[frac.Key];
 
 			return null;
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.RA
 		//A bunch of hardcoded lists to keep track of which units are doing what.
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
 		List<Actor> attackForce = new List<Actor>();
-        int2? attackTarget;
+		int2? attackTarget;
 
 		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == p &&
-                    !IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
+					!IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
 			if (buildings.Length > 0)
 				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",

@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 
 				self.World.AddFrameEndTask(
 						w => crates.Add(w.CreateActor("crate", new TypeDictionary
-				        {
+						{
 							new LocationInit( p ),
 							new OwnerInit( self.World.WorldActor.Owner ),
 						})));

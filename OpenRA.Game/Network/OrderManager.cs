@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-    public class OrderManager : IDisposable
+	public class OrderManager : IDisposable
 	{
 		readonly SyncReport syncReport;
 		readonly FrameData frameData = new FrameData();
@@ -157,17 +157,17 @@ namespace OpenRA.Network
 			get { return NetFrameNumber >= 1 && frameData.IsReadyForFrame( NetFrameNumber ); }
 		}
 
-        static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] {};
-        public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
-        {
-            get
-            {
-                return NetFrameNumber >= 1
-                    ? frameData.ClientsNotReadyForFrame(NetFrameNumber)
-                        .Select(a => LobbyInfo.ClientWithIndex(a))
-                    : NoClients;
-            }
-        }
+		static readonly IEnumerable<Session.Client> NoClients = new Session.Client[] {};
+		public IEnumerable<Session.Client> GetClientsNotReadyForNextFrame
+		{
+			get
+			{
+				return NetFrameNumber >= 1
+					? frameData.ClientsNotReadyForFrame(NetFrameNumber)
+						.Select(a => LobbyInfo.ClientWithIndex(a))
+					: NoClients;
+			}
+		}
 
 		public void Tick()
 		{

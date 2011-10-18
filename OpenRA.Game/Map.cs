@@ -29,7 +29,7 @@ namespace OpenRA
 		public string Uid { get; protected set; }
 		public int MapFormat;
 		public bool Selectable;
-        public bool UseAsShellmap;
+		public bool UseAsShellmap;
 		public string RequiresMod;
 
 		public string Title;
@@ -120,7 +120,7 @@ namespace OpenRA
 
 			var yaml = new MiniYaml( null, MiniYaml.FromStream(Container.GetContent("map.yaml")) );
 			FieldLoader.Load(this, yaml);
-            Uid = ComputeHash();
+			Uid = ComputeHash();
 
 			// 'Simple' metadata
 			FieldLoader.Load( this, yaml );
@@ -394,16 +394,16 @@ namespace OpenRA
 		}
 
 		string ComputeHash()
-        {
-            // UID is calculated by taking an SHA1 of the yaml and binary data
-            // Read the relevant data into a buffer
-            var data = Container.GetContent("map.yaml").ReadAllBytes()
-                .Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
+		{
+			// UID is calculated by taking an SHA1 of the yaml and binary data
+			// Read the relevant data into a buffer
+			var data = Container.GetContent("map.yaml").ReadAllBytes()
+				.Concat(Container.GetContent("map.bin").ReadAllBytes()).ToArray();
 
-            // Take the SHA1
-            using (var csp = SHA1.Create())
-                return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
-        }
+			// Take the SHA1
+			using (var csp = SHA1.Create())
+				return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+		}
 
 		public void MakeDefaultPlayers()
 		{

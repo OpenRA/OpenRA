@@ -60,16 +60,16 @@ namespace OpenRA.Editor
 			// width
 			//
 			this.width.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
+			8,
+			0,
+			0,
+			0});
 			this.width.Location = new System.Drawing.Point(161, 18);
 			this.width.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.width.Name = "width";
 			this.width.Size = new System.Drawing.Size(105, 20);
 			this.width.TabIndex = 0;
@@ -96,10 +96,10 @@ namespace OpenRA.Editor
 			//
 			this.cordonLeft.Location = new System.Drawing.Point(161, 44);
 			this.cordonLeft.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonLeft.Name = "cordonLeft";
 			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
 			this.cordonLeft.TabIndex = 0;
@@ -108,10 +108,10 @@ namespace OpenRA.Editor
 			//
 			this.cordonTop.Location = new System.Drawing.Point(272, 44);
 			this.cordonTop.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonTop.Name = "cordonTop";
 			this.cordonTop.Size = new System.Drawing.Size(105, 20);
 			this.cordonTop.TabIndex = 0;
@@ -120,10 +120,10 @@ namespace OpenRA.Editor
 			//
 			this.cordonRight.Location = new System.Drawing.Point(161, 70);
 			this.cordonRight.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonRight.Name = "cordonRight";
 			this.cordonRight.Size = new System.Drawing.Size(105, 20);
 			this.cordonRight.TabIndex = 0;
@@ -132,10 +132,10 @@ namespace OpenRA.Editor
 			//
 			this.cordonBottom.Location = new System.Drawing.Point(272, 70);
 			this.cordonBottom.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonBottom.Name = "cordonBottom";
 			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
 			this.cordonBottom.TabIndex = 0;
@@ -172,16 +172,16 @@ namespace OpenRA.Editor
 			// height
 			//
 			this.height.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
+			8,
+			0,
+			0,
+			0});
 			this.height.Location = new System.Drawing.Point(272, 18);
 			this.height.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.height.Name = "height";
 			this.height.Size = new System.Drawing.Size(105, 20);
 			this.height.TabIndex = 0;

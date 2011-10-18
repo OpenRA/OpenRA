@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-    class AcceptsSuppliesInfo : TraitInfo<AcceptsSupplies> {}
+	class AcceptsSuppliesInfo : TraitInfo<AcceptsSupplies> {}
 
-    class AcceptsSupplies {}
+	class AcceptsSupplies {}
 }

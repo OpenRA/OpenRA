@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 			sprites = new Cache<string, Sprite[]>( LoadSprites );
 		}
 
-        readonly SheetBuilder SheetBuilder;
+		readonly SheetBuilder SheetBuilder;
 		readonly Cache<string, Sprite[]> sprites;
 		readonly string[] exts;
 

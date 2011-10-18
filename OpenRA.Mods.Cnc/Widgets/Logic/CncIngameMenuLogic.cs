@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncIngameMenuLogic([ObjectCreator.Param] Widget widget,
-		                          [ObjectCreator.Param] World world,
-		                          [ObjectCreator.Param] Action onExit)
+								  [ObjectCreator.Param] World world,
+								  [ObjectCreator.Param] Action onExit)
 		{
 			var resumeDisabled = false;
 			menu = widget.GetWidget("INGAME_MENU");
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				hideButtons = true;
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => hideButtons = false },
 				});
 			};
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				hideButtons = true;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
-                {
+				{
 					{ "world", world },
 					{ "onExit", () => hideButtons = false },
 				});

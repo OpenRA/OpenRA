@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(100, 0) * basis, Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, Color.White, Color.White);
 
-            int k = 0;
+			int k = 0;
 			foreach (var item in PerfHistory.items.Values.ToArray())
 			{
 				int n = 0;
@@ -41,19 +41,19 @@ namespace OpenRA.Widgets
 					return b;
 				});
 
-                var u = new float2(rect.Left, rect.Top);
+				var u = new float2(rect.Left, rect.Top);
 
-                Game.Renderer.LineRenderer.DrawLine(
-                    u + new float2(10, 10 * k + 5),
-                    u + new float2(12, 10 * k + 5),
-                    item.c, item.c);
+				Game.Renderer.LineRenderer.DrawLine(
+					u + new float2(10, 10 * k + 5),
+					u + new float2(12, 10 * k + 5),
+					item.c, item.c);
 
-                Game.Renderer.LineRenderer.DrawLine(
-                    u + new float2(10, 10 * k + 4),
-                    u + new float2(12, 10 * k + 4),
-                    item.c, item.c);
+				Game.Renderer.LineRenderer.DrawLine(
+					u + new float2(10, 10 * k + 4),
+					u + new float2(12, 10 * k + 4),
+					item.c, item.c);
 
-                ++k;
+				++k;
 			}
 
 			k = 0;

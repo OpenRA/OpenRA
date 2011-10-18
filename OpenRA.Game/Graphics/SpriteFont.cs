@@ -70,18 +70,18 @@ namespace OpenRA.Graphics
 			}
 		}
 
-        public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
-        {
-            if (offset > 0)
-            {
-                DrawText(text, location + new float2(-offset, 0), bg);
-                DrawText(text, location + new float2(offset, 0), bg);
-                DrawText(text, location + new float2(0, -offset), bg);
-                DrawText(text, location + new float2(0, offset), bg);
-            }
+		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
+		{
+			if (offset > 0)
+			{
+				DrawText(text, location + new float2(-offset, 0), bg);
+				DrawText(text, location + new float2(offset, 0), bg);
+				DrawText(text, location + new float2(0, -offset), bg);
+				DrawText(text, location + new float2(0, offset), bg);
+			}
 
-            DrawText(text, location, fg);
-        }
+			DrawText(text, location, fg);
+		}
 
 		public int2 Measure(string text)
 		{

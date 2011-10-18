@@ -41,13 +41,13 @@ namespace OpenRA.Mods.RA
 		}
 
 		// Can't be used in synced code, except with ignoreVis.
-        public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation, bool ignoreVis)
-        {
-            // Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
-            return self.HasTrait<ITeleportable>() &&
-                self.Trait<ITeleportable>().CanEnterCell(targetLocation) &&
-                (ignoreVis || self.World.LocalShroud.IsExplored(targetLocation));
-        }
+		public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation, bool ignoreVis)
+		{
+			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
+			return self.HasTrait<ITeleportable>() &&
+				self.Trait<ITeleportable>().CanEnterCell(targetLocation) &&
+				(ignoreVis || self.World.LocalShroud.IsExplored(targetLocation));
+		}
 
 		public virtual bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{

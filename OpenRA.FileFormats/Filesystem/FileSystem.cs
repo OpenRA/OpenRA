@@ -38,36 +38,36 @@ namespace OpenRA.FileFormats
 
 		static IFolder OpenPackage(string filename)
 		{
-            return OpenPackage(filename, order++);
+			return OpenPackage(filename, order++);
 		}
 
 		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
-        {
+		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-                return new MixFile(filename, order, content);
-            else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-                return new ZipFile(filename, order, content);
-            else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-                return new ZipFile(filename, order, content);
-            else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-                throw new NotImplementedException("Creating .Z archives is unsupported");
-            else
-                return new Folder(filename, order, content);
-        }
+				return new MixFile(filename, order, content);
+			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(filename, order, content);
+			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(filename, order, content);
+			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("Creating .Z archives is unsupported");
+			else
+				return new Folder(filename, order, content);
+		}
 
-        public static IFolder OpenPackage(string filename, int order)
-        {
-            if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-                return new MixFile(filename, order);
-            else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-                return new ZipFile(filename, order);
-            else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-                return new ZipFile(filename, order);
-            else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-                return new InstallShieldPackage(filename, order);
-            else
-                return new Folder(filename, order);
-        }
+		public static IFolder OpenPackage(string filename, int order)
+		{
+			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
+				return new MixFile(filename, order);
+			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(filename, order);
+			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(filename, order);
+			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
+				return new InstallShieldPackage(filename, order);
+			else
+				return new Folder(filename, order);
+		}
 
 		public static void Mount(string name)
 		{
@@ -169,7 +169,7 @@ namespace OpenRA.FileFormats
 		{
 			foreach (var folder in mountedFolders)
 				if (folder.Exists(filename))
-				    return true;
+					return true;
 			return false;
 		}
 

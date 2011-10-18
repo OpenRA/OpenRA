@@ -46,15 +46,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 					Game.Settings.Player.Name = name.Text;
 			};
-            name.OnEnterKey = () => { name.LoseFocus(); return true; };
+			name.OnEnterKey = () => { name.LoseFocus(); return true; };
 
 			var edgescrollCheckbox = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
 			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
 			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
 
-            var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
+			var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
 			edgeScrollSlider.Value = Game.Settings.Game.ViewportEdgeScrollStep;
-            edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
+			edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
 
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;

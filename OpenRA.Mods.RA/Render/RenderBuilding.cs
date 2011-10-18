@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Render
 
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
-            return base.RenderPreview(building, owner)
-                .Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
+			return base.RenderPreview(building, owner)
+				.Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
 		}
 	}
 

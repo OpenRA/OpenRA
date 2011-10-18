@@ -60,7 +60,7 @@ namespace OpenRA
 			if (client != null)
 			{
 				ClientIndex = client.Index;
-            	ColorRamp = client.ColorRamp;
+				ColorRamp = client.ColorRamp;
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Country = ChooseCountry(world, client.Country);

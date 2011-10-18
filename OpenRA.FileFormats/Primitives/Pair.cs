@@ -71,8 +71,8 @@ namespace OpenRA.FileFormats
 		public static IEqualityComparer<Pair<T, U>> EqualityComparer { get { return new PairEqualityComparer(); } }
 	}
 
-    public static class Pair
-    {
+	public static class Pair
+	{
 		public static Pair<T, U> New<T, U>(T t, U u) { return new Pair<T, U>(t, u); }
 
 		static Pair()
@@ -86,5 +86,5 @@ namespace OpenRA.FileFormats
 			public bool Equals(Color x, Color y) { return x.ToArgb() == y.ToArgb(); }
 			public int GetHashCode(Color obj) { return obj.GetHashCode(); }
 		}
-    }
+	}
 }

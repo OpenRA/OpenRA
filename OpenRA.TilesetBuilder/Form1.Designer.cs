@@ -106,21 +106,21 @@ namespace OpenRA.TilesetBuilder
 			//
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton2,
-            this.toolStripButton14,
-            this.toolStripButton3,
-            this.toolStripSeparator1,
-            this.toolStripButton4,
-            this.toolStripButton12,
-            this.toolStripButton11,
-            this.toolStripButton10,
-            this.toolStripButton9,
-            this.toolStripButton8,
-            this.toolStripButton7,
-            this.toolStripButton6,
-            this.toolStripButton5,
-            this.toolStripButton13,
-            this.toolStripButton1});
+			this.toolStripButton2,
+			this.toolStripButton14,
+			this.toolStripButton3,
+			this.toolStripSeparator1,
+			this.toolStripButton4,
+			this.toolStripButton12,
+			this.toolStripButton11,
+			this.toolStripButton10,
+			this.toolStripButton9,
+			this.toolStripButton8,
+			this.toolStripButton7,
+			this.toolStripButton6,
+			this.toolStripButton5,
+			this.toolStripButton13,
+			this.toolStripButton1});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(602, 25);

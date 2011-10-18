@@ -17,16 +17,16 @@ namespace OpenRA.Mods.RA.Activities
 	public class Rearm : Activity
 	{
 		readonly LimitedAmmo limitedAmmo;
-        int ticksPerPip = 25 * 2;
-        int remainingTicks = 25 * 2;
+		int ticksPerPip = 25 * 2;
+		int remainingTicks = 25 * 2;
 
-        public Rearm(Actor self)
-        {
+		public Rearm(Actor self)
+		{
 			limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			if (limitedAmmo != null)
-            	ticksPerPip = limitedAmmo.ReloadTimePerAmmo();
-            remainingTicks = ticksPerPip;
-        }
+				ticksPerPip = limitedAmmo.ReloadTimePerAmmo();
+			remainingTicks = ticksPerPip;
+		}
 
 		public override Activity Tick(Actor self)
 		{

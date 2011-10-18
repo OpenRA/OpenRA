@@ -29,8 +29,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public RADownloadPackagesLogic([ObjectCreator.Param] Widget widget,
-		                               [ObjectCreator.Param] Dictionary<string,string> installData,
-		                               [ObjectCreator.Param] Action continueLoading)
+									   [ObjectCreator.Param] Dictionary<string,string> installData,
+									   [ObjectCreator.Param] Action continueLoading)
 		{
 			this.installData = installData;
 			this.continueLoading = continueLoading;

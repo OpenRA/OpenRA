@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				};
 
 				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
-	            {
+				{
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry },
 					{ "host", om.Host },
@@ -85,11 +85,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
-		                       [ObjectCreator.Param] World world, // Shellmap world
-		                       [ObjectCreator.Param] OrderManager orderManager,
-		                       [ObjectCreator.Param] Action onExit,
-		                       [ObjectCreator.Param] Action onStart,
-		                       [ObjectCreator.Param] bool addBots)
+							   [ObjectCreator.Param] World world, // Shellmap world
+							   [ObjectCreator.Param] OrderManager orderManager,
+							   [ObjectCreator.Param] Action onExit,
+							   [ObjectCreator.Param] Action onStart,
+							   [ObjectCreator.Param] bool addBots)
 		{
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				var map = mapPreview.Map();
 				if (map == null || mi.Button != MouseButton.Left
-				    || orderManager.LocalClient.State == Session.ClientState.Ready)
+					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
 				var p = map.SpawnPoints
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => {} },
 				});
 			};
@@ -290,8 +290,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => client.SpawnPoint == ii,
-				                                  () => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
+												  () => client.SpawnPoint == ii,
+												  () => orderManager.IssueOrder(Order.Command("spawn {0} {1}".F(client.Index, ii))));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
@@ -372,11 +372,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				}
 				// Editable player in slot
 				else if ((client.Index == orderManager.LocalClient.Index) ||
-				         (client.Bot != null && Game.IsHost))
+						 (client.Bot != null && Game.IsHost))
 				{
 					template = EditablePlayerTemplate.Clone();
 					var botReady = (client.Bot != null && Game.IsHost
-						    && orderManager.LocalClient.State == Session.ClientState.Ready);
+							&& orderManager.LocalClient.State == Session.ClientState.Ready);
 					var ready = botReady || client.State == Session.ClientState.Ready;
 
 					if (client.Bot != null)

@@ -126,8 +126,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Func<Stance, ScrollItemWidget, ScrollItemWidget> setupItem = (s, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,
-				                                  () => s == world.LocalPlayer.Stances[ p ],
-				                                  () => SetStance(dropdown, p, s));
+												  () => s == world.LocalPlayer.Stances[ p ],
+												  () => SetStance(dropdown, p, s));
 
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
 				return item;

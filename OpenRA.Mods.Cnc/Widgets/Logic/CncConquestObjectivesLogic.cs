@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public CncConquestObjectivesLogic([ObjectCreator.Param] Widget widget,
-		                                  [ObjectCreator.Param] World world)
+										  [ObjectCreator.Param] World world)
 		{
 			var panel = widget.GetWidget("CONQUEST_OBJECTIVES");
 			panel.GetWidget<LabelWidget>("TITLE").GetText = () => "Conquest: " + world.Map.Title;

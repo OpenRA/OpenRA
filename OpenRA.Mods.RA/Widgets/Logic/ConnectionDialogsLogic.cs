@@ -32,14 +32,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);
 		}
-    }
+	}
 
 	public class ConnectionFailedLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ConnectionFailedLogic(
 			[ObjectCreator.Param] Widget widget,
-		    [ObjectCreator.Param] OrderManager orderManager)
+			[ObjectCreator.Param] OrderManager orderManager)
 		{
 			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_CANCEL").OnClick = () => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 				w =>
 				{
 					var a = w.CreateActor(info.Actor, new TypeDictionary
-				    {
+					{
 						new LocationInit( self.Location + info.SpawnOffset ),
 						new OwnerInit( self.Owner ),
 						new FacingInit( info.Facing ),

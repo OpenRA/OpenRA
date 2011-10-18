@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			{
 				var info = (Info as AirstrikePowerInfo);
 				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
-			    {
+				{
 					new LocationInit( order.TargetLocation ),
 					new OwnerInit( self.Owner ),
 				}) : null;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				}
 
 				var a = w.CreateActor(info.UnitType, new TypeDictionary
-			    {
+				{
 					new LocationInit( startPos ),
 					new OwnerInit( self.Owner ),
 					new FacingInit( Util.GetFacing(order.TargetLocation - startPos, 0) ),

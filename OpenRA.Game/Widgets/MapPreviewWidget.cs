@@ -38,16 +38,16 @@ namespace OpenRA.Widgets
 		public override Widget Clone() { return new MapPreviewWidget(this); }
 
 		public override bool HandleMouseInput(MouseInput mi)
-        {
+		{
 			if (IgnoreMouseInput)
 				return base.HandleMouseInput(mi);
 
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 
-            OnMouseDown(mi);
-            return true;
-        }
+			OnMouseDown(mi);
+			return true;
+		}
 
 		public int2 ConvertToPreview(Map map, int2 point)
 		{

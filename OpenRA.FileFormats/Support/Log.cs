@@ -38,34 +38,34 @@ namespace OpenRA
 			}
 		}
 
-        static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
-        {
-            for(var i = 0;; i++ )
-                yield return Path.Combine(LogPathPrefix,
-                    i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
-        }
+		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
+		{
+			for(var i = 0;; i++ )
+				yield return Path.Combine(LogPathPrefix,
+					i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
+		}
 
-        public static void AddChannel(string channelName, string baseFilename)
-        {
-            if (channels.ContainsKey(channelName)) return;
+		public static void AddChannel(string channelName, string baseFilename)
+		{
+			if (channels.ContainsKey(channelName)) return;
 
-            foreach (var filename in FilenamesForChannel(channelName, baseFilename))
-                try
-                {
-                    var writer = File.CreateText(filename);
-                    writer.AutoFlush = true;
+			foreach (var filename in FilenamesForChannel(channelName, baseFilename))
+				try
+				{
+					var writer = File.CreateText(filename);
+					writer.AutoFlush = true;
 
-                    channels.Add(channelName,
-                        new ChannelInfo()
-                        {
-                            Filename = filename,
-                            Writer = writer
-                        });
+					channels.Add(channelName,
+						new ChannelInfo()
+						{
+							Filename = filename,
+							Writer = writer
+						});
 
-                    return;
-                }
-                catch (IOException) { }
-        }
+					return;
+				}
+				catch (IOException) { }
+		}
 
 		public static void Write(string channel, string format, params object[] args)
 		{

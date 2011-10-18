@@ -51,11 +51,11 @@ namespace OpenRA.Mods.RA
 			{
 				var cs = target.Trait<Chronoshiftable>();
 				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
-                var cpi = Info as ChronoshiftPowerInfo;
+				var cpi = Info as ChronoshiftPowerInfo;
 
 				if (cs.CanChronoshiftTo(target, targetCell, true))
-                    cs.Teleport(target, targetCell,
-                        cpi.Duration * 25, cpi.KillCargo, self);
+					cs.Teleport(target, targetCell,
+						cpi.Duration * 25, cpi.KillCargo, self);
 			}
 		}
 
@@ -87,14 +87,14 @@ namespace OpenRA.Mods.RA
 				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-            public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
-            {
-                world.CancelInputMode();
-                if (mi.Button == MouseButton.Left)
-                    world.OrderGenerator = new SelectDestination(order, manager, power, xy);
+			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			{
+				world.CancelInputMode();
+				if (mi.Button == MouseButton.Left)
+					world.OrderGenerator = new SelectDestination(order, manager, power, xy);
 
-                yield break;
-            }
+				yield break;
+			}
 
 			public void Tick(World world)
 			{
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.RA
 					foreach (var r in unit.Render())
 						r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
 							wr.GetPaletteIndex(r.Palette),
-					        r.Scale*r.Sprite.size);
+							r.Scale*r.Sprite.size);
 				}
 
 				// Unit tiles

@@ -30,8 +30,8 @@ namespace OpenRA.Mods.RA
 		public override void Tick( Actor self )
 		{
 			isActive = self.World.ActorsWithTrait<Production>()
-                .Any(x => x.Actor.Owner == self.Owner
-				     && x.Trait.Info.Produces.Contains(Info.Type));
+				.Any(x => x.Actor.Owner == self.Owner
+					 && x.Trait.Info.Produces.Contains(Info.Type));
 
 			base.Tick(self);
 		}
@@ -51,8 +51,8 @@ namespace OpenRA.Mods.RA
 		{
 			// Find a production structure to build this actor
 			var producers = self.World.ActorsWithTrait<Production>()
-                .Where(x => x.Actor.Owner == self.Owner
-				       && x.Trait.Info.Produces.Contains(Info.Type))
+				.Where(x => x.Actor.Owner == self.Owner
+					   && x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
 
 			if (producers.Count() == 0)

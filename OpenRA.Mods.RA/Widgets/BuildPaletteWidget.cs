@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Widgets
 				.ToDictionary(
 					u => u.Name,
 					u => Game.modData.SpriteLoader.LoadAllSprites(
-                        u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
+						u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
 		}
 
 		public override Rectangle EventBounds
@@ -464,7 +464,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			Game.Renderer.Fonts["Bold"].DrawText(
 				tooltip.Name + ((buildable.Hotkey != null)? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
-			                                       p.ToInt2() + new int2(5, 5), Color.White);
+											       p.ToInt2() + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
 			var power = pl.PlayerActor.Trait<PowerManager>();
@@ -480,7 +480,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
-				                 ((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
+								 ((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
 
 			p += new int2(5, 35);
 			if (!canBuildThis)
@@ -500,31 +500,31 @@ namespace OpenRA.Mods.RA.Widgets
 				p.ToInt2(), Color.White);
 		}
 
-        bool DoBuildingHotkey(string key, World world)
-        {
+		bool DoBuildingHotkey(string key, World world)
+		{
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-            var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
+			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
 
-            if ( toBuild != null )
+			if ( toBuild != null )
 			{
 				Sound.Play(TabClick);
-		    	HandleBuildPalette(world, toBuild.Name, true);
+				HandleBuildPalette(world, toBuild.Name, true);
 				return true;
 			}
 
 			return false;
-        }
+		}
 
 		void TabChange(bool shift)
-        {
+		{
 			var queues = VisibleQueues.Concat(VisibleQueues);
 			if (shift) queues.Reverse();
 			var nextQueue = queues.SkipWhile( q => q != CurrentQueue )
 				.ElementAtOrDefault(1);
 			if (nextQueue != null)
 				SetCurrentTab( nextQueue );
-        }
+		}
 	}
 }

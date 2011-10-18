@@ -34,8 +34,8 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, int2 topLeft)
 		{
-            if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
-                return true;
+			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+				return true;
 
 			var buildingMaxBounds = Dimensions;
 			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )

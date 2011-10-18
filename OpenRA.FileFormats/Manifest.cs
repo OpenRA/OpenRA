@@ -51,7 +51,7 @@ namespace OpenRA.FileFormats
 
 			LoadScreen = yaml["LoadScreen"];
 			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key, x => Pair.New(x.Value.NodesDict["Font"].Value,
-				                                                  int.Parse(x.Value.NodesDict["Size"].Value)));
+												                  int.Parse(x.Value.NodesDict["Size"].Value)));
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = int.Parse(yaml["TileSize"].Value);
 		}

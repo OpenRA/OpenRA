@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		[ObjectCreator.UseCtor]
 		public ProductionPaletteWidget([ObjectCreator.Param] World world,
-		                               [ObjectCreator.Param] WorldRenderer worldRenderer)
+									   [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				.ToDictionary(
 					u => u.Name,
 					u => Game.modData.SpriteLoader.LoadAllSprites(
-                        u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
+						u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
 
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
@@ -257,21 +257,21 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
 						overlayFont.DrawTextWithContrast("Ready",
-						                                 icon.Pos + readyOffset,
-						                                 Color.White, Color.Black, 1);
+														 icon.Pos + readyOffset,
+														 Color.White, Color.Black, 1);
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast("On Hold",
-						                                 icon.Pos + holdOffset,
-						                                 Color.White, Color.Black, 1);
+														 icon.Pos + holdOffset,
+														 Color.White, Color.Black, 1);
 					else if (!waiting)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual),
-						                                 icon.Pos + timeOffset,
-						                                 Color.White, Color.Black, 1);
+														 icon.Pos + timeOffset,
+														 Color.White, Color.Black, 1);
 
 					if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
-						                                 icon.Pos + queuedOffset,
-						                                 Color.White, Color.Black, 1);
+														 icon.Pos + queuedOffset,
+														 Color.White, Color.Black, 1);
 				}
 			}
 		}

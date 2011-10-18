@@ -427,10 +427,10 @@ namespace OpenRA.Editor
 				NonCombatant = section == "Neutral",
 				Race = isRA ? (section == "BadGuy" ? "soviet" : "allies") : (section == "BadGuy" ? "nod" : "gdi"),
 				ColorRamp = new ColorRamp(
-                        (byte)((color.First.GetHue() / 360.0f) * 255),
-                        (byte)(color.First.GetSaturation() * 255),
-                        (byte)(color.First.GetBrightness() * 255),
-                        (byte)(color.Second.GetBrightness() * 255))
+						(byte)((color.First.GetHue() / 360.0f) * 255),
+						(byte)(color.First.GetSaturation() * 255),
+						(byte)(color.First.GetBrightness() * 255),
+						(byte)(color.Second.GetBrightness() * 255))
 			};
 
 			var Neutral = new [] {"Neutral"};

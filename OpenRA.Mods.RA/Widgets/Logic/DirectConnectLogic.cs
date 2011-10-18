@@ -22,23 +22,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.Player.LastServer;
 
-            dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
-            {
-                var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-                var addressParts = address.Split(':').ToArray();
-                if (addressParts.Length < 1 || addressParts.Length > 2)
-                    return;
+			dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			{
+				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
+				var addressParts = address.Split(':').ToArray();
+				if (addressParts.Length < 1 || addressParts.Length > 2)
+					return;
 
-                int port;
-                if (addressParts.Length != 2 || !int.TryParse(addressParts[1], out port))
-                    port = 1234;
+				int port;
+				if (addressParts.Length != 2 || !int.TryParse(addressParts[1], out port))
+					port = 1234;
 
-                Game.Settings.Player.LastServer = address;
-                Game.Settings.Save();
+				Game.Settings.Player.LastServer = address;
+				Game.Settings.Save();
 
-                Widget.CloseWindow();
-                Game.JoinServer(addressParts[0], port);
-            };
+				Widget.CloseWindow();
+				Game.JoinServer(addressParts[0], port);
+			};
 
 			dc.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{

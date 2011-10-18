@@ -19,21 +19,21 @@ namespace OpenRA.Orders
 	{
 		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
 		{
-            var underCursor = world.FindUnitsAtMouse(mi.Location)
-                .Where(a => a.HasTrait<ITargetable>())
-                .OrderByDescending(
-                    a =>
-                    a.Info.Traits.Contains<SelectableInfo>()
-                        ? a.Info.Traits.Get<SelectableInfo>().Priority
-                        : int.MinValue)
-                .FirstOrDefault();
+			var underCursor = world.FindUnitsAtMouse(mi.Location)
+				.Where(a => a.HasTrait<ITargetable>())
+				.OrderByDescending(
+					a =>
+					a.Info.Traits.Contains<SelectableInfo>()
+						? a.Info.Traits.Get<SelectableInfo>().Priority
+						: int.MinValue)
+				.FirstOrDefault();
 
-            var orders = world.Selection.Actors
-                .Select(a => OrderForUnit(a, xy, mi, underCursor))
-                .Where(o => o != null)
-                .ToArray();
+			var orders = world.Selection.Actors
+				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+				.Where(o => o != null)
+				.ToArray();
 
-            var actorsInvolved = orders.Select(o => o.self).Distinct();
+			var actorsInvolved = orders.Select(o => o.self).Distinct();
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
 				{
@@ -41,8 +41,8 @@ namespace OpenRA.Orders
 				};
 
 
-            foreach (var o in orders)
-                yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+			foreach (var o in orders)
+				yield return CheckSameOrder(o.iot, o.trait.IssueOrder(o.self, o.iot, o.target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
 
 		public void Tick( World world ) { }

@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		public bool DisableShroud = false;
 		public bool PathDebug = false;
 		public bool UnlimitedPower;
-        public bool BuildAnywhere;
+		public bool BuildAnywhere;
 
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		[Sync] public bool DisableShroud;
 		[Sync] public bool PathDebug;
 		[Sync] public bool UnlimitedPower;
-        [Sync] public bool BuildAnywhere;
+		[Sync] public bool BuildAnywhere;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 			DisableShroud = info.DisableShroud;
 			PathDebug = info.PathDebug;
 			UnlimitedPower = info.UnlimitedPower;
-            BuildAnywhere = info.BuildAnywhere;
+			BuildAnywhere = info.BuildAnywhere;
 		}
 
 		public void ResolveOrder (Actor self, Order order)
@@ -96,11 +96,11 @@ namespace OpenRA.Traits
 						UnlimitedPower ^= true;
 						break;
 					}
-                case "DevBuildAnywhere":
-                    {
-                        BuildAnywhere ^= true;
-                        break;
-                    }
+				case "DevBuildAnywhere":
+					{
+						BuildAnywhere ^= true;
+						break;
+					}
 				default:
 					return;
 			}

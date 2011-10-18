@@ -52,7 +52,7 @@ namespace OpenRA
 
 		public static readonly int2 Zero = new int2(0, 0);
 		public Point ToPoint() { return new Point(X, Y); }
-        public PointF ToPointF() { return new PointF(X, Y); }
+		public PointF ToPointF() { return new PointF(X, Y); }
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		public override string ToString() { return string.Format("{0},{1}", X, Y); }
@@ -76,7 +76,7 @@ namespace OpenRA
 		public int2 Clamp(Rectangle r)
 		{
 			return new int2(Math.Min(r.Right, Math.Max(X, r.Left)),
-			                Math.Min(r.Bottom, Math.Max(Y, r.Top)));
+							Math.Min(r.Bottom, Math.Max(Y, r.Top)));
 		}
 
 		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }

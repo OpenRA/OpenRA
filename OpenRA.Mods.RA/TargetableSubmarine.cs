@@ -22,12 +22,12 @@ namespace OpenRA.Mods.RA
 	public class TargetableSubmarine : TargetableUnit<TargetableSubmarineInfo>
 	{
 		public TargetableSubmarine(Actor self, TargetableSubmarineInfo info)
-            : base(self, info) {}
+			: base(self, info) {}
 
 		public override string[] TargetTypes
 		{
 			get { return (Cloak.Cloaked) ? info.CloakedTargetTypes
-                                         : info.TargetTypes;}
+									     : info.TargetTypes;}
 		}
 	}
 }

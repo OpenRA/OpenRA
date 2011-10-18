@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc
 			Game.MoveViewport(new int2(b.Left + b.Width/2, b.Top + b.Height/2));
 
 			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa",
-			    () => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
+				() => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
 					Sound.PlayMusic(Rules.Music["aoi"]);
 					started = true;
@@ -107,8 +107,8 @@ namespace OpenRA.Mods.Cnc
 			}
 			// GoodGuy win conditions
 			// BadGuy is dead
-            var badcount = self.World.Actors.Count(a => a != a.Owner.PlayerActor &&
-			                                       a.Owner == Players["BadGuy"] && !a.IsDead());
+			var badcount = self.World.Actors.Count(a => a != a.Owner.PlayerActor &&
+											       a.Owner == Players["BadGuy"] && !a.IsDead());
 			if (badcount != lastBadCount)
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc
 
 			//GoodGuy lose conditions: MCV/cyard must survive
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
-                .Any( a => a.Actor.Owner == Players["GoodGuy"] );
+				.Any( a => a.Actor.Owner == Players["GoodGuy"] );
 			if (!hasAnything)
 				OnLose(self.World);
 
@@ -128,40 +128,40 @@ namespace OpenRA.Mods.Cnc
 			if (ticks == 25*5)
 			{
 				ReinforceFromSea(self.World,
-				                 Actors["lstStart"].Location,
-				                 Actors["lstEnd"].Location,
-				                 new int2(53,53),
-				                 new string[] {"e1","e1","e1"},
+								 Actors["lstStart"].Location,
+								 Actors["lstEnd"].Location,
+								 new int2(53,53),
+								 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
 
 			if (ticks == 25*15)
 			{
 				ReinforceFromSea(self.World,
-				                 Actors["lstStart"].Location,
-				                 Actors["lstEnd"].Location,
-				                 new int2(53,53),
-				                 new string[] {"e1","e1","e1"},
+								 Actors["lstStart"].Location,
+								 Actors["lstEnd"].Location,
+								 new int2(53,53),
+								 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
 
 			if (ticks == 25*30)
 			{
 				ReinforceFromSea(self.World,
-				                 Actors["lstStart"].Location,
-				                 Actors["lstEnd"].Location,
-				                 new int2(53,53),
-				                 new string[] {"jeep"},
+								 Actors["lstStart"].Location,
+								 Actors["lstEnd"].Location,
+								 new int2(53,53),
+								 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
 
 			if (ticks == 25*60)
 			{
 				ReinforceFromSea(self.World,
-				                 Actors["lstStart"].Location,
-				                 Actors["lstEnd"].Location,
-				                 new int2(53,53),
-				                 new string[] {"jeep"},
+								 Actors["lstStart"].Location,
+								 Actors["lstEnd"].Location,
+								 new int2(53,53),
+								 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
 

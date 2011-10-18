@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA
 					// Find the queue with the target actor
 					var queue = w.ActorsWithTrait<ProductionQueue>()
 						.Where(p => p.Actor.Owner == self.Owner &&
-						       		 p.Trait.CurrentItem() != null &&
-					                 p.Trait.CurrentItem().Item == order.TargetString &&
-					                 p.Trait.CurrentItem().RemainingTime == 0)
+							   		 p.Trait.CurrentItem() != null &&
+									 p.Trait.CurrentItem().Item == order.TargetString &&
+									 p.Trait.CurrentItem().RemainingTime == 0)
 						.Select(p => p.Trait)
 						.FirstOrDefault();
 
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where( x => x.Actor.Owner == self.Owner
-				    && x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
+					&& x.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains( bi.Queue ) )
 					.ToList();
 			var producer = producers.Where( x => x.Actor.IsPrimaryBuilding() ).Concat( producers )
 				.FirstOrDefault();

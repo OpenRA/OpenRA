@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 		public void Selling (Actor self) { Sold(self); }
 		public void Sold (Actor self)
 		{
-            if (herp != null)
+			if (herp != null)
 				herp.UnReserve();
 		}
 	}

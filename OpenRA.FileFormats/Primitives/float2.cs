@@ -62,23 +62,23 @@ namespace OpenRA
 				Constrain(Y, min.Y, max.Y));
 		}
 
-        public static float2 operator *(float a, float2 b) { return new float2(a * b.X, a * b.Y); }
-        public static float2 operator *(float2 b, float a) { return new float2(a * b.X, a * b.Y); }
+		public static float2 operator *(float a, float2 b) { return new float2(a * b.X, a * b.Y); }
+		public static float2 operator *(float2 b, float a) { return new float2(a * b.X, a * b.Y); }
 		public static float2 operator *( float2 a, float2 b ) { return new float2( a.X * b.X, a.Y * b.Y ); }
 		public static float2 operator /( float2 a, float2 b ) { return new float2( a.X / b.X, a.Y / b.Y ); }
 
-        public static bool operator ==(float2 me, float2 other) { return (me.X == other.X && me.Y == other.Y); }
-        public static bool operator !=(float2 me, float2 other) { return !(me == other); }
-        public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
+		public static bool operator ==(float2 me, float2 other) { return (me.X == other.X && me.Y == other.Y); }
+		public static bool operator !=(float2 me, float2 other) { return !(me == other); }
+		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
 
-            float2 o = (float2)obj;
-            return o == this;
-        }
+			float2 o = (float2)obj;
+			return o == this;
+		}
 
 		public static readonly float2 Zero = new float2(0, 0);
 

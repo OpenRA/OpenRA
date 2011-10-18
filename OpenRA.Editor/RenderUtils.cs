@@ -45,9 +45,9 @@ namespace OpenRA.Editor
 
 		public static ActorTemplate RenderActor(ActorInfo info, TileSet tileset, Palette p)
 		{
-            var image = RenderSimple.GetImage(info);
+			var image = RenderSimple.GetImage(info);
 
-            using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
+			using (var s = FileSystem.OpenWithExts(image, tileset.Extensions))
 			{
 				var shp = new ShpReader(s);
 				var bitmap = RenderShp(shp, p);

@@ -13,25 +13,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-    public class FlyCircle : Activity
-    {
-        public override Activity Tick(Actor self)
-        {
-            var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+	public class FlyCircle : Activity
+	{
+		public override Activity Tick(Actor self)
+		{
+			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
-            if (IsCanceled) return NextActivity;
+			if (IsCanceled) return NextActivity;
 
-            var aircraft = self.Trait<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
 
-            var desiredFacing = aircraft.Facing + 64;   // we can't possibly turn this fast.
-            if (aircraft.Altitude == cruiseAltitude)
-                aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
+			var desiredFacing = aircraft.Facing + 64;   // we can't possibly turn this fast.
+			if (aircraft.Altitude == cruiseAltitude)
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
-            if (aircraft.Altitude < cruiseAltitude)
-                ++aircraft.Altitude;
+			if (aircraft.Altitude < cruiseAltitude)
+				++aircraft.Altitude;
 
-            FlyUtil.Fly(self, cruiseAltitude);
-            return this;
-        }
-    }
+			FlyUtil.Fly(self, cruiseAltitude);
+			return this;
+		}
+	}
 }

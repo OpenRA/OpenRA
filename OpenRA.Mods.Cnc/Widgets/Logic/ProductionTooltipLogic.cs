@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public ProductionTooltipLogic([ObjectCreator.Param] Widget widget,
-		                              [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-		                              [ObjectCreator.Param] ProductionPaletteWidget palette)
+									  [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
+									  [ObjectCreator.Param] ProductionPaletteWidget palette)
 		{
 			var pm = palette.world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var costString = "$: {0}".F(cost);
 				costLabel.GetText = () => costString;
 				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayOre >= cost
-				    ? Color.White : Color.Red;
+					? Color.White : Color.Red;
 
 				var leftWidth = Math.Max(font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X);
 				var rightWidth = new [] {font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X}.Aggregate(Math.Max);

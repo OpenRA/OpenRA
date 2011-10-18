@@ -45,8 +45,8 @@ namespace OpenRA.Mods.RA
 			{
 				var to = Util.CenterOfCell(location);
 				var length = (int)((to - PxPosition).Length * 3 / speed);
-                self.QueueActivity(new DragHusk(PxPosition, to, length, this));
-            }
+				self.QueueActivity(new DragHusk(PxPosition, to, length, this));
+			}
 		}
 
 		public int2 TopLeft { get { return location; } }

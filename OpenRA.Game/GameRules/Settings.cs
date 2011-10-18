@@ -49,7 +49,7 @@ namespace OpenRA.GameRules
 		public bool PerfText = false;
 		public bool PerfGraph = false;
 		public float LongTickThreshold = 0.001f;
-        public bool SanityCheckUnsyncedCode = false;
+		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 	}
 
@@ -79,7 +79,7 @@ namespace OpenRA.GameRules
 	public class PlayerSettings
 	{
 		public string Name = "Newbie";
-        public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
+		public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		public string LastServer = "localhost:1234";
 	}
 
@@ -91,8 +91,8 @@ namespace OpenRA.GameRules
 
 		public bool TeamChatToggle = false;
 
-        public bool ViewportEdgeScroll = true;
-        public MouseScrollType MouseScroll = MouseScrollType.Standard;
+		public bool ViewportEdgeScroll = true;
+		public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public float ViewportEdgeScrollStep = 10f;
 
 		// Internal game settings

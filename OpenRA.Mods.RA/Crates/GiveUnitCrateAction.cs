@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Crates
 			if (location != null)
 				collector.World.AddFrameEndTask(
 					w => w.CreateActor(Info.Unit, new TypeDictionary
-				    {
+					{
 						new LocationInit( location.Value ),
 						new OwnerInit( Info.Owner ?? collector.Owner.InternalName )
 					}));

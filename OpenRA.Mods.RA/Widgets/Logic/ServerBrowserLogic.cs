@@ -88,8 +88,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			return string.Join("\n", s.UsefulMods
 				.Select(m =>
-			       Mod.AllMods.ContainsKey(m.Key) ? string.Format("{0} ({1})", Mod.AllMods[m.Key].Title, m.Value)
-			                                   : string.Format("Unknown Mod: {0}",m.Key)).ToArray());
+				   Mod.AllMods.ContainsKey(m.Key) ? string.Format("{0} ({1})", Mod.AllMods[m.Key].Title, m.Value)
+											   : string.Format("Unknown Mod: {0}",m.Key)).ToArray());
 		}
 
 		void RefreshServerList(IEnumerable<GameServer> games)
@@ -97,8 +97,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var r = Widget.RootWidget;
 			var bg = r.GetWidget("JOINSERVER_BG");
 
-            if (bg == null) // We got a MasterServer reply AFTER the browser is gone, just return to prevent crash - Gecko
-                return;
+			if (bg == null) // We got a MasterServer reply AFTER the browser is gone, just return to prevent crash - Gecko
+				return;
 
 			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
@@ -112,9 +112,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 			}
 
-            var gamesWaiting = games.Where(g => g.CanJoin());
+			var gamesWaiting = games.Where(g => g.CanJoin());
 
-            if (gamesWaiting.Count() == 0)
+			if (gamesWaiting.Count() == 0)
 			{
 				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
 				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";

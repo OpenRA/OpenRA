@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-        public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
+		public float GetDamageModifier(Actor attacker, WarheadInfo warhead)
 		{
 			return Level > 0 ? 1 / Info.ArmorModifier[Level - 1] : 1;
 		}

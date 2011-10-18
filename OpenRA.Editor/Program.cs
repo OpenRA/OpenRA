@@ -44,15 +44,15 @@ namespace OpenRA.Editor
 				.Aggregate(Path.Combine);
 
 			foreach (var path in ModData.FindMapsIn(MapFolderPath))
-            {
-                var map = new Map(path);
+			{
+				var map = new Map(path);
 				// Touch the lazy bits to initialize them
-                map.Actors.Force();
-                map.Smudges.Force();
-                map.MapTiles.Force();
-                map.MapResources.Force();
+				map.Actors.Force();
+				map.Smudges.Force();
+				map.MapTiles.Force();
+				map.MapResources.Force();
 				map.Save(path);
-            }
+			}
 		}
 
 	}

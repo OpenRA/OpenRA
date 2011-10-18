@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						return;
 
 					if (!InstallUtils.ExtractFromPackage(source, extractPackage, filesToExtract, dest, onProgress, onError))
-				    	return;
+						return;
 
 					Game.RunAfterTick(() =>
 					{

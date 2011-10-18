@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		public Func<bool> IsDisabled = () => false;
 		public Action<MouseInput> OnMouseDown = _ => {};
-        public Action<MouseInput> OnMouseUp = _ => {};
+		public Action<MouseInput> OnMouseUp = _ => {};
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};
@@ -130,7 +130,7 @@ namespace OpenRA.Widgets
 
 			DrawBackground(rb, disabled, Depressed, Widget.MouseOverWidget == this);
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
-			              disabled ? Color.Gray : Color.White);
+						  disabled ? Color.Gray : Color.White);
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }

@@ -53,12 +53,12 @@ namespace OpenRA.Mods.RA.Widgets
 			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
 				if (e.KeyName == BaseCycleKey)
-                    return CycleBases();
+					return CycleBases();
 
 				if (!World.Selection.Actors.Any())
 					return false;
 
-            	if (e.KeyName == AttackMoveKey)
+				if (e.KeyName == AttackMoveKey)
 					return PerformAttackMove();
 
 				if (e.KeyName == StopKey)
@@ -142,24 +142,24 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-        bool CycleBases()
-        {
-            var bases = World.ActorsWithTrait<BaseBuilding>()
-                .Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-            if (!bases.Any()) return true;
+		bool CycleBases()
+		{
+			var bases = World.ActorsWithTrait<BaseBuilding>()
+				.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
+			if (!bases.Any()) return true;
 
-            var next = bases
-                .Select(b => b.Actor)
-                .SkipWhile(b => !World.Selection.Actors.Contains(b))
-                .Skip(1)
-                .FirstOrDefault();
+			var next = bases
+				.Select(b => b.Actor)
+				.SkipWhile(b => !World.Selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
 
-            if (next == null)
-                next = bases.Select(b => b.Actor).First();
+			if (next == null)
+				next = bases.Select(b => b.Actor).First();
 
-            World.Selection.Combine(World, new Actor[] { next }, false, true);
-            Game.viewport.Center(World.Selection.Actors);
-            return true;
-        }
+			World.Selection.Combine(World, new Actor[] { next }, false, true);
+			Game.viewport.Center(World.Selection.Actors);
+			return true;
+		}
 	}
 }

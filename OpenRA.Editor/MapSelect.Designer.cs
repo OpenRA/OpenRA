@@ -10,33 +10,33 @@
 
 namespace OpenRA.Editor
 {
-    partial class MapSelect
-    {
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+	partial class MapSelect
+	{
+		/// <summary>
+		/// TODO
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="disposing">TODO</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// TODO
+		/// </summary>
+		/// <param name="disposing">TODO</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Код, автоматически созданный конструктором форм Windows
+		#region Код, автоматически созданный конструктором форм Windows
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary>
+		/// TODO
+		/// </summary>
+		private void InitializeComponent()
+		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapSelect));
 			this.MapList = new System.Windows.Forms.ListView();
@@ -75,7 +75,7 @@ namespace OpenRA.Editor
 			//
 			this.MapList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.MapList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colMapName});
+			this.colMapName});
 			this.MapList.FullRowSelect = true;
 			this.MapList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
 			this.MapList.LargeImageList = this.MapIconsList;
@@ -353,33 +353,33 @@ namespace OpenRA.Editor
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        public System.Windows.Forms.ListView MapList;
-        public System.Windows.Forms.Button btnCancel;
-        public System.Windows.Forms.Button btnOk;
-        public System.Windows.Forms.Label lblNew;
-        public System.Windows.Forms.TextBox txtNew;
-        public System.Windows.Forms.ColumnHeader colMapName;
-        public System.Windows.Forms.ImageList MapIconsList;
-        public System.Windows.Forms.PictureBox pbMinimap;
-        public System.Windows.Forms.Panel pnlBottom;
-        public System.Windows.Forms.SplitContainer splitContainer1;
-        public System.Windows.Forms.Label lblMinimap;
-        public System.Windows.Forms.TextBox txtTheater;
-        public System.Windows.Forms.Label lblTheater;
-        public System.Windows.Forms.TextBox txtAuthor;
-        public System.Windows.Forms.Label lblAuthor;
-        public System.Windows.Forms.TextBox txtTitle;
-        public System.Windows.Forms.Label lblMapName;
-        public System.Windows.Forms.TextBox txtDesc;
-        public System.Windows.Forms.Label lblDesc;
-        public System.Windows.Forms.Label lblMapList;
-        public System.Windows.Forms.Label lblPathOut;
-        public System.Windows.Forms.Label lblPath;
-        public System.Windows.Forms.TextBox txtPathOut;
+		public System.Windows.Forms.ListView MapList;
+		public System.Windows.Forms.Button btnCancel;
+		public System.Windows.Forms.Button btnOk;
+		public System.Windows.Forms.Label lblNew;
+		public System.Windows.Forms.TextBox txtNew;
+		public System.Windows.Forms.ColumnHeader colMapName;
+		public System.Windows.Forms.ImageList MapIconsList;
+		public System.Windows.Forms.PictureBox pbMinimap;
+		public System.Windows.Forms.Panel pnlBottom;
+		public System.Windows.Forms.SplitContainer splitContainer1;
+		public System.Windows.Forms.Label lblMinimap;
+		public System.Windows.Forms.TextBox txtTheater;
+		public System.Windows.Forms.Label lblTheater;
+		public System.Windows.Forms.TextBox txtAuthor;
+		public System.Windows.Forms.Label lblAuthor;
+		public System.Windows.Forms.TextBox txtTitle;
+		public System.Windows.Forms.Label lblMapName;
+		public System.Windows.Forms.TextBox txtDesc;
+		public System.Windows.Forms.Label lblDesc;
+		public System.Windows.Forms.Label lblMapList;
+		public System.Windows.Forms.Label lblPathOut;
+		public System.Windows.Forms.Label lblPath;
+		public System.Windows.Forms.TextBox txtPathOut;
 		private System.Windows.Forms.PictureBox pictureBox1;
-    }
+	}
 }

@@ -73,13 +73,13 @@ namespace OpenRA.FileFormats.Graphics
 		void SetData(byte[] colors, int width, int height);
 	}
 
-    public enum PrimitiveType
-    {
-        PointList,
-        LineList,
-        TriangleList,
+	public enum PrimitiveType
+	{
+		PointList,
+		LineList,
+		TriangleList,
 		QuadList,
-    }
+	}
 
 	public struct Range<T>
 	{

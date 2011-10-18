@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Crates
 		public override void Activate(Actor collector)
 		{
 			collector.World.AddFrameEndTask(w => w.CreateActor(Info.Proxy, new TypeDictionary
-		    {
+			{
 				new OwnerInit( collector.Owner )
 			}));
 		}

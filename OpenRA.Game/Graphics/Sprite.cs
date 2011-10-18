@@ -60,10 +60,10 @@ namespace OpenRA.Graphics
 			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, paletteIndex, this.size );
 		}
 
-        public void DrawAt(float2 location, int paletteIndex, float scale)
-        {
-            Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, this.size * scale);
-        }
+		public void DrawAt(float2 location, int paletteIndex, float scale)
+		{
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, this.size * scale);
+		}
 
 		public void DrawAt( float2 location, int paletteIndex, float2 size )
 		{

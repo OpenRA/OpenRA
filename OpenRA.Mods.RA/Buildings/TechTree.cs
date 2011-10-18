@@ -61,8 +61,8 @@ namespace OpenRA.Mods.RA.Buildings
 				return ret;
 
 
-            foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
-                	.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
+			foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
+					.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
 				foreach (var p in b.Trait.ProvidesPrerequisites)
 					ret[ p ].Add( b.Actor );
 

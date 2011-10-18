@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 			plane.QueueActivity(new CallFunc(() => plane.World.AddFrameEndTask( w =>
 				{
 					var camera = w.CreateActor("camera", new TypeDictionary
-				    {
+					{
 						new LocationInit( order.TargetLocation ),
 						new OwnerInit( self.Owner ),
 					});

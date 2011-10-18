@@ -30,10 +30,10 @@ namespace OpenRA.Mods.RA.Crates
 				return 0;	// there's some other really good reason why we shouldn't give this.
 
 			var hasBase = self.World.ActorsWithTrait<BaseBuilding>()
-                .Any(a => a.Actor.Owner == collector.Owner);
+				.Any(a => a.Actor.Owner == collector.Owner);
 
 			return hasBase ? info.SelectionShares :
-                (info as GiveMcvCrateActionInfo).NoBaseSelectionShares;
+				(info as GiveMcvCrateActionInfo).NoBaseSelectionShares;
 		}
 	}
 }

@@ -34,17 +34,17 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var selbox = SelectionBox;
-            if (selbox == null)
-            {
-                foreach (var u in SelectActorsInBox(world, dragStart, dragStart))
-                    worldRenderer.DrawRollover(u);
+			if (selbox == null)
+			{
+				foreach (var u in SelectActorsInBox(world, dragStart, dragStart))
+					worldRenderer.DrawRollover(u);
 
-                return;
-            }
+				return;
+			}
 
 			Game.Renderer.WorldLineRenderer.DrawRect( selbox.Value.First, selbox.Value.Second, Color.White );
-            foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
-                worldRenderer.DrawRollover(u);
+			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
+				worldRenderer.DrawRollover(u);
 		}
 
 		int2 dragStart, dragEnd;
@@ -159,7 +159,7 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
-        static readonly Actor[] NoActors = {};
+		static readonly Actor[] NoActors = {};
 		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b)
 		{
 			return world.FindUnits(a, b)

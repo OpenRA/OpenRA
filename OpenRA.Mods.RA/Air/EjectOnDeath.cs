@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			var aircraft = self.Trait<IMove>();
 
 			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10
-                && self.Owner.WinState != WinState.Lost)
+				&& self.Owner.WinState != WinState.Lost)
 			{
 				self.World.AddFrameEndTask(w => w.Add(
 						new Parachute(pilot.Owner,

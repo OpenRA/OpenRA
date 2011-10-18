@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var nameText = itt.Name();
 			var ownerText = !owner.NonCombatant ? owner.PlayerName : "";
 			var stanceText = (world.LocalPlayer != null && owner != actor.World.LocalPlayer
-			                  && !owner.NonCombatant) ? " ({0})".F(itt.Stance()) : "";
+							  && !owner.NonCombatant) ? " ({0})".F(itt.Stance()) : "";
 
 			var nameSize = Game.Renderer.Fonts["Bold"].Measure(nameText);
 			var ownerSize = Game.Renderer.Fonts["Regular"].Measure(ownerText);

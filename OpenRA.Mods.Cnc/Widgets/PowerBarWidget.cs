@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			var b = RenderBounds;
 			var rect = new RectangleF(b.X,
-			                          b.Y + (1-providedFrac)*b.Height,
-			                          (float)b.Width,
-			                          providedFrac*b.Height);
+									  b.Y + (1-providedFrac)*b.Height,
+									  (float)b.Width,
+									  providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 
 			var indicator = ChromeProvider.GetImage("sidebar-bits", "left-indicator");
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			lastDrainedFrac = drainedFrac = float2.Lerp(lastDrainedFrac.GetValueOrDefault(drainedFrac), drainedFrac, .3f);
 
 			float2 pos = new float2(b.X + b.Width - indicator.size.X,
-			                        b.Y + (1-drainedFrac)*b.Height - indicator.size.Y / 2);
+									b.Y + (1-drainedFrac)*b.Height - indicator.size.Y / 2);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
 		}

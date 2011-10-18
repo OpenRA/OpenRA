@@ -110,118 +110,118 @@ namespace OpenRA.Editor
 			//
 			this.cordonBottom.Location = new System.Drawing.Point(280, 75);
 			this.cordonBottom.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonBottom.Name = "cordonBottom";
 			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
 			this.cordonBottom.TabIndex = 5;
 			this.cordonBottom.Value = new decimal(new int[] {
-            112,
-            0,
-            0,
-            0});
+			112,
+			0,
+			0,
+			0});
 			this.cordonBottom.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonTop
 			//
 			this.cordonTop.Location = new System.Drawing.Point(280, 49);
 			this.cordonTop.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonTop.Name = "cordonTop";
 			this.cordonTop.Size = new System.Drawing.Size(105, 20);
 			this.cordonTop.TabIndex = 3;
 			this.cordonTop.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
+			16,
+			0,
+			0,
+			0});
 			this.cordonTop.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonRight
 			//
 			this.cordonRight.Location = new System.Drawing.Point(169, 75);
 			this.cordonRight.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonRight.Name = "cordonRight";
 			this.cordonRight.Size = new System.Drawing.Size(105, 20);
 			this.cordonRight.TabIndex = 4;
 			this.cordonRight.Value = new decimal(new int[] {
-            112,
-            0,
-            0,
-            0});
+			112,
+			0,
+			0,
+			0});
 			this.cordonRight.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonLeft
 			//
 			this.cordonLeft.Location = new System.Drawing.Point(169, 49);
 			this.cordonLeft.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.cordonLeft.Name = "cordonLeft";
 			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
 			this.cordonLeft.TabIndex = 2;
 			this.cordonLeft.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
+			16,
+			0,
+			0,
+			0});
 			this.cordonLeft.Enter += new System.EventHandler(this.SelectText);
 			//
 			// height
 			//
 			this.height.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
+			8,
+			0,
+			0,
+			0});
 			this.height.Location = new System.Drawing.Point(280, 23);
 			this.height.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.height.Name = "height";
 			this.height.Size = new System.Drawing.Size(105, 20);
 			this.height.TabIndex = 1;
 			this.height.Value = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
+			128,
+			0,
+			0,
+			0});
 			this.height.Enter += new System.EventHandler(this.SelectText);
 			//
 			// width
 			//
 			this.width.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
+			8,
+			0,
+			0,
+			0});
 			this.width.Location = new System.Drawing.Point(169, 23);
 			this.width.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+			2048,
+			0,
+			0,
+			0});
 			this.width.Name = "width";
 			this.width.Size = new System.Drawing.Size(105, 20);
 			this.width.TabIndex = 0;
 			this.width.Value = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
+			128,
+			0,
+			0,
+			0});
 			this.width.Enter += new System.EventHandler(this.SelectText);
 			//
 			// label4

@@ -142,7 +142,7 @@ namespace OpenRA
 		public static T CheckSyncUnchanged<T>( World world, Func<T> fn )
 		{
 			if( world == null ) return fn();
-            var shouldCheckSync = Game.Settings.Debug.SanityCheckUnsyncedCode;
+			var shouldCheckSync = Game.Settings.Debug.SanityCheckUnsyncedCode;
 			int sync = shouldCheckSync ? world.SyncHash() : 0;
 			bool prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;

@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public CncCheatsLogic([ObjectCreator.Param] Widget widget,
-		                      [ObjectCreator.Param] Action onExit,
-		                      [ObjectCreator.Param] World world)
+							  [ObjectCreator.Param] Action onExit,
+							  [ObjectCreator.Param] World world)
 		{
 			var panel = widget.GetWidget("CHEATS_PANEL");
 

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 		}
 
-        public override string GetCursor(int2 pos) { return null; }
-        public override Widget Clone() { throw new NotImplementedException(); }
+		public override string GetCursor(int2 pos) { return null; }
+		public override Widget Clone() { throw new NotImplementedException(); }
 	}
 }

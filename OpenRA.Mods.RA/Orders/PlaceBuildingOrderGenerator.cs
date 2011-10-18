@@ -92,8 +92,8 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				foreach (var r in Preview)
 					r.Sprite.DrawAt(Game.CellSize*topLeft + r.Pos,
-					                wr.GetPaletteIndex(r.Palette),
-					                r.Scale*r.Sprite.size);
+									wr.GetPaletteIndex(r.Palette),
+									r.Scale*r.Sprite.size);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);

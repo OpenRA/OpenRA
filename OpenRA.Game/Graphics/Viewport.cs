@@ -44,9 +44,9 @@ namespace OpenRA.Graphics
 			get
 			{
 				return new Rectangle(scrollPosition.X / Game.CellSize,
-				                     scrollPosition.Y / Game.CellSize,
-				                     (int)(screenSize.X / Zoom / Game.CellSize),
-				                     (int)(screenSize.Y / Zoom / Game.CellSize));
+									 scrollPosition.Y / Game.CellSize,
+									 (int)(screenSize.X / Zoom / Game.CellSize),
+									 (int)(screenSize.Y / Zoom / Game.CellSize));
 			}
 		}
 
@@ -70,9 +70,9 @@ namespace OpenRA.Graphics
 				var viewBR = (Game.CellSize*new float2(mapBounds.Right, mapBounds.Bottom)).ToInt2();
 				var border = (.5f/Zoom * screenSize.ToFloat2()).ToInt2();
 				scrollLimits = Rectangle.FromLTRB(viewTL.X - border.X,
-			                                  viewTL.Y - border.Y,
-			                                  viewBR.X - border.X,
-			                                  viewBR.Y - border.Y);
+											  viewTL.Y - border.Y,
+											  viewBR.X - border.X,
+											  viewBR.Y - border.Y);
 				// Re-center viewport
 				scrollPosition = NormalizeScrollPosition((oldCenter - 0.5f / Zoom * screenSize.ToFloat2()).ToInt2());
 			}
@@ -135,13 +135,13 @@ namespace OpenRA.Graphics
 			{
 				Widget.DoDraw();
 				var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-	            var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
+				var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
 				var cursorSprite = cursorSequence.GetSprite((int)cursorFrame);
 
 				renderer.SpriteRenderer.DrawSprite(cursorSprite,
-				                                   Viewport.LastMousePos - cursorSequence.Hotspot,
-				                                   Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette),
-				                                   cursorSprite.size);
+												   Viewport.LastMousePos - cursorSequence.Hotspot,
+												   Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette),
+												   cursorSprite.size);
 			}
 
 			using( new PerfSample("render_flip") )

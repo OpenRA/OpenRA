@@ -12,27 +12,27 @@ using System.Drawing;
 
 namespace OpenRA.FileFormats
 {
-    public struct ColorRamp
-    {
-        public byte H,S,L,R;
+	public struct ColorRamp
+	{
+		public byte H,S,L,R;
 
-        public ColorRamp(byte h, byte s, byte l, byte r)
-        {
-            H = h; S = s; L = l; R = r;
-        }
+		public ColorRamp(byte h, byte s, byte l, byte r)
+		{
+			H = h; S = s; L = l; R = r;
+		}
 
-        /* returns a color along the Lum ramp */
-        public Color GetColor( float t )
-        {
-            return ColorFromHSL( H / 255f, S / 255f, float2.Lerp( L / 255f, L*R / (255f * 255f), t ) );
-        }
+		/* returns a color along the Lum ramp */
+		public Color GetColor( float t )
+		{
+			return ColorFromHSL( H / 255f, S / 255f, float2.Lerp( L / 255f, L*R / (255f * 255f), t ) );
+		}
 
-        public override string ToString()
-        {
-            return "{0},{1},{2},{3}".F(H, S, L, R);
-        }
+		public override string ToString()
+		{
+			return "{0},{1},{2},{3}".F(H, S, L, R);
+		}
 
-        // hk is hue in the range [0,1] instead of [0,360]
+		// hk is hue in the range [0,1] instead of [0,360]
 		public static Color ColorFromHSL(float hk, float s, float l)
 		{
 			// Convert from HSL to RGB
@@ -60,5 +60,5 @@ namespace OpenRA.FileFormats
 
 			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
 		}
-    }
+	}
 }

@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA
 
 					var startPos = w.ChooseRandomEdgeCell();
 					var plane = w.CreateActor("badr", new TypeDictionary
-				    {
+					{
 						new LocationInit( startPos ),
 						new OwnerInit( w.WorldActor.Owner),
 						new FacingInit( Util.GetFacing(p - startPos, 0) ),

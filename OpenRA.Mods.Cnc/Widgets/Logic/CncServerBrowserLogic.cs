@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncServerBrowserLogic([ObjectCreator.Param] Widget widget,
-		                            [ObjectCreator.Param] Action openLobby,
-		                            [ObjectCreator.Param] Action onExit)
+									[ObjectCreator.Param] Action openLobby,
+									[ObjectCreator.Param] Action onExit)
 		{
 			var panel = widget.GetWidget("SERVERBROWSER_PANEL");
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
@@ -127,9 +127,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				return;
 			}
 
-            var gamesWaiting = games.Where(g => g.CanJoin());
+			var gamesWaiting = games.Where(g => g.CanJoin());
 
-            if (gamesWaiting.Count() == 0)
+			if (gamesWaiting.Count() == 0)
 			{
 				searchStatus = SearchStatus.NoGames;
 				return;
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			searchStatus = SearchStatus.Hidden;
 			currentServer = gamesWaiting.FirstOrDefault();
 
-            foreach (var loop in gamesWaiting)
+			foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
 

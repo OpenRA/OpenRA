@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) return false;
 
 			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
-			    !target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
+				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
 				return false;
 
 			return true;

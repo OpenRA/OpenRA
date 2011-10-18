@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncMenuLogic([ObjectCreator.Param] Widget widget,
-		                    [ObjectCreator.Param] World world)
+							[ObjectCreator.Param] World world)
 		{
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Main },
 					{ "onSwitch", RemoveShellmapUI }
 				});
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Multiplayer },
 					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("CREATESERVER_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Multiplayer },
 					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Multiplayer },
 					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
 				});
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Settings },
 					{ "onStart", RemoveShellmapUI }
 				});
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
-                {
+				{
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Menu = MenuType.None;
 				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
-                {
+				{
 					{ "world", world },
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
@@ -146,9 +146,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 
 			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
-			                           Game.CreateLocalServer(map),
-			                           () => OpenLobbyPanel(MenuType.Main, true),
-			                           () => { Game.CloseServer(); Menu = MenuType.Main; });
+									   Game.CreateLocalServer(map),
+									   () => OpenLobbyPanel(MenuType.Main, true),
+									   () => { Game.CloseServer(); Menu = MenuType.Main; });
 		}
 	}
 }

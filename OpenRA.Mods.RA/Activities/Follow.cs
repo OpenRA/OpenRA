@@ -17,10 +17,10 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		Target Target;
 		int Range;
-        int nextPathTime;
+		int nextPathTime;
 
-        const int delayBetweenPathingAttempts = 20;
-        const int delaySpread = 5;
+		const int delayBetweenPathingAttempts = 20;
+		const int delaySpread = 5;
 
 		public Follow(Target target, int range)
 		{
@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA.Activities
 			var inRange = ( Util.CellContaining( Target.CenterLocation ) - self.Location ).LengthSquared < Range * Range;
 
 			if( inRange ) return this;
-            if (--nextPathTime > 0) return this;
+			if (--nextPathTime > 0) return this;
 
-            nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
-                delayBetweenPathingAttempts + delaySpread);
+			nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
+				delayBetweenPathingAttempts + delaySpread);
 
-            var mobile = self.Trait<Mobile>();
+			var mobile = self.Trait<Mobile>();
 			return Util.SequenceActivities( mobile.MoveWithinRange( Target, Range ), this );
 		}
 	}

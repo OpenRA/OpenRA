@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncDownloadPackagesLogic([ObjectCreator.Param] Widget widget,
-		                                [ObjectCreator.Param] Dictionary<string,string> installData,
-		                                [ObjectCreator.Param] Action afterInstall)
+										[ObjectCreator.Param] Dictionary<string,string> installData,
+										[ObjectCreator.Param] Action afterInstall)
 		{
 			this.installData = installData;
 			this.afterInstall = afterInstall;

@@ -15,10 +15,10 @@ namespace OpenRA.Traits
 {
 	public class ValidateOrderInfo : TraitInfo<ValidateOrder> { }
 
-    public class ValidateOrder : IValidateOrder
-    {
-        public bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order)
-        {
+	public class ValidateOrder : IValidateOrder
+	{
+		public bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order)
+		{
 			if (order.Subject == null || order.Subject.Owner == null)
 				return true;
 
@@ -36,12 +36,12 @@ namespace OpenRA.Traits
 
 			// Drop exploiting orders
 			if (subjectClientId != clientId && !isBotOrder)
-            {
-                Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
-                return false;
-            }
+			{
+				Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
+				return false;
+			}
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }

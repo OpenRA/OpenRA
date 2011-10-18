@@ -68,7 +68,7 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (client.Team == orderManager.LocalClient.Team)
-                                    Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + " (Team)",
+									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + " (Team)",
 													 order.TargetString);
 							}
 							else
@@ -85,7 +85,7 @@ namespace OpenRA.Network
 									var suffix = (player != null && player.WinState == WinState.Lost)
 													 ? " (Dead)"
 													 : " (Team)";
-                                    Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
+									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
 								}
 							}
 						}

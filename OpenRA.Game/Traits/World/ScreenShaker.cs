@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 	public class ScreenShaker : ITick
 	{
 		int ticks = 0;
-        List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
+		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
 
 		public void Tick (Actor self)
 		{

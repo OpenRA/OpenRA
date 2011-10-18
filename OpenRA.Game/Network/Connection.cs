@@ -18,7 +18,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Network
 {
-    public enum ConnectionState
+	public enum ConnectionState
 	{
 		PreConnecting,
 		NotConnected,
@@ -26,7 +26,7 @@ namespace OpenRA.Network
 		Connected,
 	}
 
-    public interface IConnection : IDisposable
+	public interface IConnection : IDisposable
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }

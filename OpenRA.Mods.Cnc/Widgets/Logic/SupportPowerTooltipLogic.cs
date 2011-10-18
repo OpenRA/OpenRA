@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public SupportPowerTooltipLogic([ObjectCreator.Param] Widget widget,
-		                                [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-		                                [ObjectCreator.Param] SupportPowersWidget palette)
+										[ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
+										[ObjectCreator.Param] SupportPowersWidget palette)
 		{
 			widget.IsVisible = () => palette.TooltipPower != null;
 			var nameLabel = widget.GetWidget<LabelWidget>("NAME");
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					return;
 
 				time = "{0} / {1}".F(WidgetUtils.FormatTime(sp.RemainingTime),
-				                     WidgetUtils.FormatTime(sp.Info.ChargeTime*25));
+									 WidgetUtils.FormatTime(sp.Info.ChargeTime*25));
 
 				if (sp == lastPower)
 					return;

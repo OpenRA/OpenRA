@@ -159,7 +159,7 @@ namespace OpenRA.Mods.RA
 		{
 			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
 			if (Info.Long && Health.DamageState != DamageState.Dead &&
-			    ((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
+				((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
 				(northNeighbour != null && Info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
 			{
 				self.Kill(self); // this changes the damagestate

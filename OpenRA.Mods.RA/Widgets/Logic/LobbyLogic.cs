@@ -30,14 +30,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		string MapUid;
 		Map Map;
 
-        public static ColorRamp CurrentColorPreview;
+		public static ColorRamp CurrentColorPreview;
 
 		readonly OrderManager orderManager;
 		readonly WorldRenderer worldRenderer;
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
-		                    [ObjectCreator.Param] OrderManager orderManager,
-		                    [ObjectCreator.Param] WorldRenderer worldRenderer)
+							[ObjectCreator.Param] OrderManager orderManager,
+							[ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var map = mapPreview.Map();
 				if (map == null || mi.Button != MouseButton.Left
-				    || orderManager.LocalClient.State == Session.ClientState.Ready)
+					|| orderManager.LocalClient.State == Session.ClientState.Ready)
 					return;
 
 				var p = map.SpawnPoints
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdateColorPreview(float hf, float sf, float lf, float r)
 		{
-            CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
+			CurrentColorPreview = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
 		}
 
 		void UpdateCurrentMap()

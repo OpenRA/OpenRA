@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA.Server
 								server.lobbyInfo.Clients.Count,
 								string.Join(",", Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).ToArray()),
 								server.lobbyInfo.GlobalSettings.Map,
-						        server.Map.PlayerCount));
+								server.Map.PlayerCount));
 
 							if (isInitialPing)
 							{

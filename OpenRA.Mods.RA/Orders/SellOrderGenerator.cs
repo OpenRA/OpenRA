@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Owner == world.LocalPlayer
-					    && a.HasTrait<Sellable>()).FirstOrDefault();
+						&& a.HasTrait<Sellable>()).FirstOrDefault();
 
 				if (underCursor != null)
 					yield return new Order("Sell", underCursor, false);

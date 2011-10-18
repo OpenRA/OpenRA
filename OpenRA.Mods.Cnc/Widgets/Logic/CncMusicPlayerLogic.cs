@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncMusicPlayerLogic([ObjectCreator.Param] Widget widget,
-		                           [ObjectCreator.Param] Action onExit)
+								   [ObjectCreator.Param] Action onExit)
 		{
 			panel = widget.GetWidget("MUSIC_PANEL");
 
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			panel.GetWidget<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
 					"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
-					    							  currentSong.Length / 60, currentSong.Length % 60);
+													  currentSong.Length / 60, currentSong.Length % 60);
 			panel.GetWidget<LabelWidget>("TITLE_LABEL").GetText = () => (currentSong == null) ? "" : currentSong.Title;
 
 			var musicSlider = panel.GetWidget<SliderWidget>("MUSIC_SLIDER");

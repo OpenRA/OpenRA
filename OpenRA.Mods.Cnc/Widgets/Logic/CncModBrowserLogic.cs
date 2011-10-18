@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncModBrowserLogic([ObjectCreator.Param] Widget widget,
-		                            [ObjectCreator.Param] Action onSwitch,
-		                            [ObjectCreator.Param] Action onExit)
+									[ObjectCreator.Param] Action onSwitch,
+									[ObjectCreator.Param] Action onExit)
 		{
 			var panel = widget.GetWidget("MODS_PANEL");
 			var modList = panel.GetWidget<ScrollPanelWidget>("MOD_LIST");

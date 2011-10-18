@@ -182,13 +182,13 @@ namespace OpenRA.FileFormats
 	class BitReader
 	{
 		readonly byte[] src;
-        int offset = 0;
+		int offset = 0;
 		int bitBuffer = 0;
 		int bitCount = 0;
 
 		public BitReader(byte[] src)
 		{
-            this.src = src;
+			this.src = src;
 		}
 
 		public int ReadBits(int count)

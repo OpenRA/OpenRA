@@ -34,29 +34,29 @@ namespace OpenRA.Mods.RA.Air
 			}
 			else
 			{
-                // nowhere to land, pick something friendly and circle over it.
+				// nowhere to land, pick something friendly and circle over it.
 
-                // i'd prefer something we own
-                var someBuilding = self.World.ActorsWithTrait<Building>()
-                    .Select( a => a.Actor )
-                    .FirstOrDefault(a => a.Owner == self.Owner);
+				// i'd prefer something we own
+				var someBuilding = self.World.ActorsWithTrait<Building>()
+					.Select( a => a.Actor )
+					.FirstOrDefault(a => a.Owner == self.Owner);
 
-                // failing that, something unlikely to shoot at us
-                if (someBuilding == null)
-                    someBuilding = self.World.ActorsWithTrait<Building>()
-                        .Select( a => a.Actor )
-                        .FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally);
+				// failing that, something unlikely to shoot at us
+				if (someBuilding == null)
+					someBuilding = self.World.ActorsWithTrait<Building>()
+						.Select( a => a.Actor )
+						.FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally);
 
-                if (someBuilding == null)
-                {
-                    // ... going down the garden to eat worms ...
-                    self.QueueActivity(new FlyOffMap());
-                    self.QueueActivity(new RemoveSelf());
-                    return;
-                }
+				if (someBuilding == null)
+				{
+					// ... going down the garden to eat worms ...
+					self.QueueActivity(new FlyOffMap());
+					self.QueueActivity(new RemoveSelf());
+					return;
+				}
 
-                self.QueueActivity(Fly.ToCell(someBuilding.Location));
-                self.QueueActivity(new FlyCircle());
+				self.QueueActivity(Fly.ToCell(someBuilding.Location));
+				self.QueueActivity(new FlyCircle());
 			}
 		}
 	}

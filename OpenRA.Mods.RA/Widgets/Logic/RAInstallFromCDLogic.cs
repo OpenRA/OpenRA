@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public RAInstallFromCDLogic([ObjectCreator.Param] Widget widget,
-		                            [ObjectCreator.Param] Action continueLoading)
+									[ObjectCreator.Param] Action continueLoading)
 		{
 			this.continueLoading = continueLoading;
 			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						return;
 
 					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
-				    	return;
+						return;
 
 					Game.RunAfterTick(() =>
 					{

@@ -64,16 +64,16 @@ namespace OpenRA.Traits
 			for (int x = map.Bounds.Left; x < map.Bounds.Right; x++)
 				for (int y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
 				{
-                    var type = resourceTypes.FirstOrDefault(
+					var type = resourceTypes.FirstOrDefault(
 						r => r.info.ResourceType == w.Map.MapResources.Value[x, y].type);
 
-                    if (type == null)
-                        continue;
+					if (type == null)
+						continue;
 
 					if (!AllowResourceAt(type, new int2(x,y)))
 						continue;
 
-                    content[x, y].type = type;
+					content[x, y].type = type;
 					content[x, y].image = ChooseContent(type);
 				}
 
@@ -86,13 +86,13 @@ namespace OpenRA.Traits
 					}
 		}
 
-        public bool AllowResourceAt(ResourceType rt, int2 a)
-        {
-            if (!world.Map.IsInMap(a.X, a.Y)) return false;
-            if (!rt.info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type)) return false;
-            if (!rt.info.AllowUnderActors && world.ActorMap.AnyUnitsAt(a)) return false;
-            return true;
-        }
+		public bool AllowResourceAt(ResourceType rt, int2 a)
+		{
+			if (!world.Map.IsInMap(a.X, a.Y)) return false;
+			if (!rt.info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type)) return false;
+			if (!rt.info.AllowUnderActors && world.ActorMap.AnyUnitsAt(a)) return false;
+			return true;
+		}
 
 		Sprite[] ChooseContent(ResourceType t)
 		{

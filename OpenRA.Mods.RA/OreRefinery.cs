@@ -63,11 +63,11 @@ namespace OpenRA.Mods.RA
 			currentDisplayTick = Info.TickRate;
 		}
 
-        public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
-        {
-            return self.World.ActorsWithTrait<Harvester>()
-                .Where(a => a.Trait.LinkedProc == self);
-        }
+		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
+		{
+			return self.World.ActorsWithTrait<Harvester>()
+				.Where(a => a.Trait.LinkedProc == self);
+		}
 
 		public bool CanGiveOre(int amount)
 		{
@@ -135,9 +135,9 @@ namespace OpenRA.Mods.RA
 				dockedHarv.ChangeOwner(newOwner);
 
 			// Unlink any non-docked harvs
-            foreach (var harv in GetLinkedHarvesters())
-                if (harv.Actor.Owner == oldOwner)
-                    harv.Trait.UnlinkProc(harv.Actor, self);
+			foreach (var harv in GetLinkedHarvesters())
+				if (harv.Actor.Owner == oldOwner)
+					harv.Trait.UnlinkProc(harv.Actor, self);
 
 			PlayerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
@@ -145,8 +145,8 @@ namespace OpenRA.Mods.RA
 		public void Selling(Actor self) { CancelDock(self); }
 		public void Sold(Actor self)
 		{
-            foreach (var harv in GetLinkedHarvesters())
-                harv.Trait.UnlinkProc(harv.Actor, self);
+			foreach (var harv in GetLinkedHarvesters())
+				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
 		public bool ShouldExplode(Actor self) { return Ore > 0; }

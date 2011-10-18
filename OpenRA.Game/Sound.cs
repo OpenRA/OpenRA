@@ -29,7 +29,7 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
-            return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
+			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
 		}
 
 		static ISoundSource LoadSoundRaw(byte[] rawData)

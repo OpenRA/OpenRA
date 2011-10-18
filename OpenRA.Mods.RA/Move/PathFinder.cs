@@ -74,12 +74,12 @@ namespace OpenRA.Mods.RA.Move
 				var tilesInRange = world.FindTilesInCircle(target, range)
 					.Where( t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
 
-                var path = FindBidiPath(
-                    PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
-                    PathSearch.FromPoint(world, mi, self.Owner, src, target, true)
-                        .InReverse());
+				var path = FindBidiPath(
+					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
+					PathSearch.FromPoint(world, mi, self.Owner, src, target, true)
+						.InReverse());
 
-                return path;
+				return path;
 			}
 		}
 

@@ -67,9 +67,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			var b = RenderBounds;
 			var rect = new RectangleF(b.X,
-			                          b.Y + (1-capacityFrac)*b.Height,
-			                          (float)b.Width,
-			                          capacityFrac*b.Height);
+									  b.Y + (1-capacityFrac)*b.Height,
+									  (float)b.Width,
+									  capacityFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 
 			var indicator = ChromeProvider.GetImage("sidebar-bits", "right-indicator");

@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		string content = "";
 		bool composing = false;
 		bool teamChat = false;
-        public readonly bool UseContrast = false;
+		public readonly bool UseContrast = false;
 
 		readonly OrderManager orderManager;
 

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly ProximityCaptorInfo Info;
 
-        public ProximityCaptor(ProximityCaptorInfo info) { Info = info; }
+		public ProximityCaptor(ProximityCaptorInfo info) { Info = info; }
 
 		public bool HasAny(string[] typesList)
 		{

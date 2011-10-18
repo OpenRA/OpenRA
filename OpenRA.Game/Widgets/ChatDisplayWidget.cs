@@ -17,7 +17,7 @@ namespace OpenRA.Widgets
 	public class ChatDisplayWidget : Widget
 	{
 		public readonly int RemoveTime = 0;
-        public readonly bool UseContrast = false;
+		public readonly bool UseContrast = false;
 
 		const int logLength = 9;
 		public string Notification = "";
@@ -55,11 +55,11 @@ namespace OpenRA.Widgets
 					inset = font.Measure(owner).X + 10;
 
 					font.DrawTextWithContrast(owner, chatpos,
-                        line.Color, Color.Black, UseContrast ? 1 : 0);
+						line.Color, Color.Black, UseContrast ? 1 : 0);
 				}
 
-                font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0),
-                    Color.White, Color.Black, UseContrast ? 1 : 0);
+				font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0),
+					Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 
 			Game.Renderer.DisableScissor();

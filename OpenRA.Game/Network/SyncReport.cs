@@ -65,8 +65,8 @@ namespace OpenRA.Network
 							a.ActorID,
 							a.Type,
 							a.Owner,
-					        a.Trait,
-					        a.Hash
+							a.Trait,
+							a.Hash
 						));
 					return;
 				}

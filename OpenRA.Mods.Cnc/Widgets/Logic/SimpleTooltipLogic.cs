@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic([ObjectCreator.Param] Widget widget,
-		                          [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-		                          [ObjectCreator.Param] Func<string> getText)
+								  [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
+								  [ObjectCreator.Param] Func<string> getText)
 		{
 			var label = widget.GetWidget<LabelWidget>("LABEL");
 

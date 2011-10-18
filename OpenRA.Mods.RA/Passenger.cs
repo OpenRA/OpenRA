@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Passenger( this ); }
 	}
 
-    public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly PassengerInfo info;
 		public Passenger( PassengerInfo info ) { this.info = info; }

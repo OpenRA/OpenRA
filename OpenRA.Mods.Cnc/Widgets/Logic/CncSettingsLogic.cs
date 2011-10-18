@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public CncSettingsLogic([ObjectCreator.Param] Widget widget,
-		                        [ObjectCreator.Param] World world,
-		                        [ObjectCreator.Param] Action onExit)
+								[ObjectCreator.Param] World world,
+								[ObjectCreator.Param] Action onExit)
 		{
 			this.world = world;
 			var panel = widget.GetWidget("SETTINGS_PANEL");

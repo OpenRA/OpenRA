@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		ColorRamp ramp;
 		[ObjectCreator.UseCtor]
 		public CncColorPickerLogic([ObjectCreator.Param] Widget widget,
-		                           [ObjectCreator.Param] ColorRamp initialRamp,
-		                           [ObjectCreator.Param] Action<ColorRamp> onChange,
-		                           [ObjectCreator.Param] Action<ColorRamp> onSelect,
-		                           [ObjectCreator.Param] WorldRenderer worldRenderer)
+								   [ObjectCreator.Param] ColorRamp initialRamp,
+								   [ObjectCreator.Param] Action<ColorRamp> onChange,
+								   [ObjectCreator.Param] Action<ColorRamp> onSelect,
+								   [ObjectCreator.Param] WorldRenderer worldRenderer)
 		{
 			var panel = widget.GetWidget("COLOR_CHOOSER");
 			ramp = initialRamp;
@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Action sliderChanged = () =>
 			{
 				ramp = new ColorRamp((byte)(255*hueSlider.Value),
-				                     (byte)(255*satSlider.Value),
-				                     (byte)(255*lumSlider.Value),
-				                     10);
+									 (byte)(255*satSlider.Value),
+									 (byte)(255*lumSlider.Value),
+									 10);
 				onChange(ramp);
 			};
 

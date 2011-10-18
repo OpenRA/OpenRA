@@ -266,10 +266,10 @@ namespace OpenRA.Editor
 			// menuStrip1
 			//
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.mapToolStripMenuItem,
-            this.toolStripComboBox1,
-            this.toolStripLabel1});
+			this.fileToolStripMenuItem,
+			this.mapToolStripMenuItem,
+			this.toolStripComboBox1,
+			this.toolStripLabel1});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(985, 27);
@@ -279,16 +279,16 @@ namespace OpenRA.Editor
 			// fileToolStripMenuItem
 			//
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.toolStripMenuItem1,
-            this.mnuExport,
-            this.toolStripSeparator3,
-            this.exitToolStripMenuItem});
+			this.newToolStripMenuItem,
+			this.toolStripSeparator1,
+			this.openToolStripMenuItem,
+			this.saveToolStripMenuItem,
+			this.saveAsToolStripMenuItem,
+			this.toolStripSeparator2,
+			this.toolStripMenuItem1,
+			this.mnuExport,
+			this.toolStripSeparator3,
+			this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 23);
 			this.fileToolStripMenuItem.Text = "&File";
@@ -340,8 +340,8 @@ namespace OpenRA.Editor
 			// toolStripMenuItem1
 			//
 			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cCRedAlertMapToolStripMenuItem,
-            this.bitmapToolStripMenuItem});
+			this.cCRedAlertMapToolStripMenuItem,
+			this.bitmapToolStripMenuItem});
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
 			this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
 			this.toolStripMenuItem1.Text = "&Import";
@@ -365,7 +365,7 @@ namespace OpenRA.Editor
 			// mnuExport
 			//
 			this.mnuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuMinimapToPNG});
+			this.mnuMinimapToPNG});
 			this.mnuExport.Name = "mnuExport";
 			this.mnuExport.Size = new System.Drawing.Size(123, 22);
 			this.mnuExport.Text = "&Export";
@@ -394,11 +394,11 @@ namespace OpenRA.Editor
 			// mapToolStripMenuItem
 			//
 			this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.propertiesToolStripMenuItem,
-            this.resizeToolStripMenuItem,
-            this.showActorNamesToolStripMenuItem,
-            this.showGridToolStripMenuItem,
-            this.fixOpenAreasToolStripMenuItem,
+			this.propertiesToolStripMenuItem,
+			this.resizeToolStripMenuItem,
+			this.showActorNamesToolStripMenuItem,
+			this.showGridToolStripMenuItem,
+			this.fixOpenAreasToolStripMenuItem,
 			this.setupDefaultPlayersMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
@@ -453,8 +453,8 @@ namespace OpenRA.Editor
 			// statusStrip1
 			//
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelFiller,
-            this.toolStripStatusLabelMousePosition});
+			this.toolStripStatusLabelFiller,
+			this.toolStripStatusLabelMousePosition});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 751);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(985, 22);
@@ -538,9 +538,9 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.FlowLayoutPanel actorPalette;
 		private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.FlowLayoutPanel resourcePalette;
+		private System.Windows.Forms.FlowLayoutPanel resourcePalette;
 		private Surface surface1;
-        private System.Windows.Forms.PictureBox pmMiniMap;
+		private System.Windows.Forms.PictureBox pmMiniMap;
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
 		private System.Windows.Forms.SplitContainer splitContainer3;

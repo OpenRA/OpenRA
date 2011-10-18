@@ -70,7 +70,7 @@ namespace OpenRA.FileFormats
 			foreach (var file in contents)
 				using (var dataStream = File.Create(Path.Combine(path, file.Key)))
 					using (var writer = new BinaryWriter(dataStream))
-				       writer.Write(file.Value);
+					   writer.Write(file.Value);
 		}
 	}
 }

@@ -36,10 +36,10 @@ namespace OpenRA.Scripting
 				var cs = target.Trait<Chronoshiftable>();
 				if (cs.CanChronoshiftTo(target, targetCell, true))
 					target.Trait<Chronoshiftable>().Teleport(target,
-					                                         targetCell,
-					                                         duration,
-					                                         killCargo,
-					                                         chronosphere);
+													         targetCell,
+													         duration,
+													         killCargo,
+													         chronosphere);
 			}
 
 

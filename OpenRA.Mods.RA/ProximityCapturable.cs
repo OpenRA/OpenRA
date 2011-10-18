@@ -136,9 +136,9 @@ namespace OpenRA.Mods.RA
 			return UnitsInRange()
 				.Where(a => a.Owner != OriginalOwner)
 				.Where(a => CanBeCapturedBy(a));
-        }
+		}
 
-        // TODO exclude other NeutralActor that arent permanent
+		// TODO exclude other NeutralActor that arent permanent
 		Actor GetInRange(Actor self)
 		{
 			return CaptorsInRange(self).ClosestTo( self.CenterLocation );

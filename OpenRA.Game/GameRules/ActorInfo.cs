@@ -23,29 +23,29 @@ namespace OpenRA
 
 		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
-            try
-            {
-                var mergedNode = MergeWithParent(node, allUnits).NodesDict;
+			try
+			{
+				var mergedNode = MergeWithParent(node, allUnits).NodesDict;
 
-                Name = name;
-                foreach (var t in mergedNode)
-                    if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
-                        Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
-            }
-            catch (YamlException e)
-            {
-                throw new YamlException("Actor type {0}: {1}".F(name, e.Message));
-            }
+				Name = name;
+				foreach (var t in mergedNode)
+					if (t.Key != "Inherits" && !t.Key.StartsWith("-"))
+						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+			}
+			catch (YamlException e)
+			{
+				throw new YamlException("Actor type {0}: {1}".F(name, e.Message));
+			}
 		}
 
-        static IEnumerable<MiniYaml> GetInheritanceChain(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
-        {
-            while (node != null)
-            {
-                yield return node;
-                node = GetParent(node, allUnits);
-            }
-        }
+		static IEnumerable<MiniYaml> GetInheritanceChain(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		{
+			while (node != null)
+			{
+				yield return node;
+				node = GetParent(node, allUnits);
+			}
+		}
 
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
@@ -56,9 +56,9 @@ namespace OpenRA
 
 			MiniYaml parent;
 			allUnits.TryGetValue( inherits.Value, out parent );
-            if (parent == null)
-                throw new InvalidOperationException(
-                    "Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
+			if (parent == null)
+				throw new InvalidOperationException(
+					"Bogus inheritance -- actor type {0} does not exist".F(inherits.Value));
 
 			return parent;
 		}
@@ -66,14 +66,14 @@ namespace OpenRA
 		static MiniYaml MergeWithParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			var parent = GetParent( node, allUnits );
-            if (parent != null)
-            {
-                var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
+			if (parent != null)
+			{
+				var result = MiniYaml.MergeStrict(node, MergeWithParent(parent, allUnits));
 
-                // strip the '-'
-                result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
-                return result;
-            }
+				// strip the '-'
+				result.Nodes.RemoveAll(a => a.Key.StartsWith("-"));
+				return result;
+			}
 			return node;
 		}
 

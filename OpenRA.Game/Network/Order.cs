@@ -67,7 +67,7 @@ namespace OpenRA
 
 		public Order(string orderstring, Order order)
 			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
-			       order.TargetString, order.Queued, order.ExtraLocation) {}
+				   order.TargetString, order.Queued, order.ExtraLocation) {}
 
 		public byte[] Serialize()
 		{
@@ -85,7 +85,7 @@ namespace OpenRA
 			{
 				// Format:
 				//		u8    : orderID.
-				//		            0xFF: Full serialized order.
+				//					0xFF: Full serialized order.
 				//		varies: rest of order.
 				default:
 					// TODO: specific serializers for specific orders.

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 		public void OnInfiltrate(Actor self, Actor spy)
 		{
 			spy.World.AddFrameEndTask(w => w.CreateActor(Info.Proxy, new TypeDictionary
-		    {
+			{
 				new OwnerInit( spy.Owner )
 			}));
 		}

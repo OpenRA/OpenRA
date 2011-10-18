@@ -49,16 +49,16 @@ namespace RALint
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				foreach (var customPassType in Game.modData.ObjectCreator
-                    .GetTypesImplementing<ILintPass>())
-                {
-                    var customPass = (ILintPass)Game.modData.ObjectCreator
-                        .CreateBasic(customPassType);
+					.GetTypesImplementing<ILintPass>())
+				{
+					var customPass = (ILintPass)Game.modData.ObjectCreator
+						.CreateBasic(customPassType);
 
 					if (verbose)
-                    	Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
+						Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
 
-                    customPass.Run(EmitError, EmitWarning);
-                }
+					customPass.Run(EmitError, EmitWarning);
+				}
 
 				if (errors > 0)
 				{

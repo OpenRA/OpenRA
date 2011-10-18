@@ -23,8 +23,8 @@ namespace OpenRA.FileFormats
 
 		public PlayerColorRemap(ColorRamp c, PaletteFormat fmt)
 		{
-            var c1 = c.GetColor(0);
-            var c2 = c.GetColor(1); /* temptemp: this can be expressed better */
+			var c1 = c.GetColor(0);
+			var c2 = c.GetColor(1); /* temptemp: this can be expressed better */
 
 			var baseIndex = (fmt == PaletteFormat.cnc) ? 0xb0 : (fmt == PaletteFormat.d2k) ? 240 : 80;
 			var ramp = (fmt == PaletteFormat.cnc)

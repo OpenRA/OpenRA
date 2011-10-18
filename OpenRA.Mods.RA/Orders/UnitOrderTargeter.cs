@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-    public class UnitOrderTargeter : IOrderTargeter
+	public class UnitOrderTargeter : IOrderTargeter
 	{
 		readonly string cursor;
 		readonly bool targetEnemyUnits, targetAllyUnits;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Orders
 		public virtual bool IsQueued { get; protected set; }
 	}
 
-    public class UnitTraitOrderTargeter<T> : UnitOrderTargeter
+	public class UnitTraitOrderTargeter<T> : UnitOrderTargeter
 	{
 		public UnitTraitOrderTargeter( string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits )
 			: base( order, priority, cursor, targetEnemyUnits, targetAllyUnits )

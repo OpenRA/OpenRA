@@ -113,10 +113,10 @@ namespace OpenRA
 			return r.Contains(p.ToPointF());
 		}
 
-        public static bool HasModifier(this Modifiers k, Modifiers mod)
-        {
-            return (k & mod) == mod;
-        }
+		public static bool HasModifier(this Modifiers k, Modifiers mod)
+		{
+			return (k & mod) == mod;
+		}
 
 		public static bool IsValidInput(this KeyInput key)
 		{
@@ -125,36 +125,36 @@ namespace OpenRA
 					char.IsPunctuation(key.UnicodeChar);
 		}
 
-        public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
-            where V : new()
-        {
-            return d.GetOrAdd(k, _ => new V());
-        }
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)
+			where V : new()
+		{
+			return d.GetOrAdd(k, _ => new V());
+		}
 
-        public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
-        {
-            V ret;
-            if (!d.TryGetValue(k, out ret))
-                d.Add(k, ret = createFn(k));
-            return ret;
-        }
+		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
+		{
+			V ret;
+			if (!d.TryGetValue(k, out ret))
+				d.Add(k, ret = createFn(k));
+			return ret;
+		}
 
-        public static T Random<T>(this IEnumerable<T> ts, Thirdparty.Random r)
-        {
-            var xs = ts.ToArray();
-            return xs[r.Next(xs.Length)];
-        }
+		public static T Random<T>(this IEnumerable<T> ts, Thirdparty.Random r)
+		{
+			var xs = ts.ToArray();
+			return xs[r.Next(xs.Length)];
+		}
 
-        public static float Product(this IEnumerable<float> xs)
-        {
-            return xs.Aggregate(1f, (a, x) => a * x);
-        }
+		public static float Product(this IEnumerable<float> xs)
+		{
+			return xs.Aggregate(1f, (a, x) => a * x);
+		}
 
-        public static IEnumerable<T> SymmetricDifference<T>(this IEnumerable<T> xs, IEnumerable<T> ys)
-        {
-            // this is probably a shockingly-slow way to do this, but it's concise.
-            return xs.Except(ys).Concat(ys.Except(xs));
-        }
+		public static IEnumerable<T> SymmetricDifference<T>(this IEnumerable<T> xs, IEnumerable<T> ys)
+		{
+			// this is probably a shockingly-slow way to do this, but it's concise.
+			return xs.Except(ys).Concat(ys.Except(xs));
+		}
 
 		public static IEnumerable<T> Iterate<T>( this T t, Func<T,T> f )
 		{

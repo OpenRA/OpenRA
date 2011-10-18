@@ -19,11 +19,11 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
 
-        /* get around unverifiability */
-        IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, Player owner)
-        {
-            return base.RenderPreview(building, owner);
-        }
+		/* get around unverifiability */
+		IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, Player owner)
+		{
+			return base.RenderPreview(building, owner);
+		}
 
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
 		{
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			base.Tick(self);
 			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit)
-			    .Any( a => a != self ))
+				.Any( a => a != self ))
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"),

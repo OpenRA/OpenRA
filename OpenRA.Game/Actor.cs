@@ -82,7 +82,7 @@ namespace OpenRA
 				// auto size from render
 				var firstSprite = TraitsImplementing<IRender>().SelectMany(ApplyIRender).FirstOrDefault();
 				if (firstSprite.Sprite == null) return int2.Zero;
-                return (firstSprite.Sprite.size * firstSprite.Scale).ToInt2();
+				return (firstSprite.Sprite.size * firstSprite.Scale).ToInt2();
 			});
 
 			ApplyIRender = x => x.Render(this);
@@ -105,7 +105,7 @@ namespace OpenRA
 			get { return currentActivity == null; }
 		}
 
-        OpenRA.FileFormats.Lazy<int2> Size;
+		OpenRA.FileFormats.Lazy<int2> Size;
 
 		// note: these delegates are cached to avoid massive allocation.
 		Func<IRender, IEnumerable<Renderable>> ApplyIRender;

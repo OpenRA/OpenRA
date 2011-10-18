@@ -104,27 +104,27 @@ namespace OpenRA.Widgets
 	}
 
 	public class MaskWidget : Widget
-    {
-       	public Action<MouseInput> OnMouseDown = _ => {};
+	{
+	   	public Action<MouseInput> OnMouseDown = _ => {};
 		public MaskWidget() : base() { }
-        public MaskWidget(MaskWidget other)
-            : base(other)
+		public MaskWidget(MaskWidget other)
+			: base(other)
 		{
 			OnMouseDown = other.OnMouseDown;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
-        {
-            if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+		{
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down)
 				OnMouseDown(mi);
 
 			return true;
-        }
+		}
 
-        public override string GetCursor(int2 pos) { return null; }
-        public override Widget Clone() { return new MaskWidget(this); }
-    }
+		public override string GetCursor(int2 pos) { return null; }
+		public override Widget Clone() { return new MaskWidget(this); }
+	}
 }

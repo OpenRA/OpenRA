@@ -122,17 +122,17 @@ namespace OpenRA.Traits
 
 		public static int2 CellContaining(float2 pos) { return (1f / Game.CellSize * pos).ToInt2(); }
 
-        /* pretty crap */
-        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, Thirdparty.Random random)
-        {
-            var items = ts.ToList();
-            while (items.Count > 0)
-            {
-                var t = items.Random(random);
-                yield return t;
-                items.Remove(t);
-            }
-        }
+		/* pretty crap */
+		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, Thirdparty.Random random)
+		{
+			var items = ts.ToList();
+			while (items.Count > 0)
+			{
+				var t = items.Random(random);
+				yield return t;
+				items.Remove(t);
+			}
+		}
 
 		static IEnumerable<int2> Neighbours(int2 c, bool allowDiagonal)
 		{

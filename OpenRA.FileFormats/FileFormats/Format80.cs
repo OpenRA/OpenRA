@@ -13,32 +13,32 @@ using System.IO;
 
 namespace OpenRA.FileFormats
 {
-    class FastByteReader
-    {
-        readonly byte[] src;
-        int offset = 0;
+	class FastByteReader
+	{
+		readonly byte[] src;
+		int offset = 0;
 
-        public FastByteReader(byte[] src)
-        {
-            this.src = src;
-        }
+		public FastByteReader(byte[] src)
+		{
+			this.src = src;
+		}
 
-        public bool Done() { return offset >= src.Length; }
-        public byte ReadByte() { return src[offset++]; }
-        public int ReadWord()
-        {
-            int x = ReadByte();
-            return x | (ReadByte() << 8);
-        }
+		public bool Done() { return offset >= src.Length; }
+		public byte ReadByte() { return src[offset++]; }
+		public int ReadWord()
+		{
+			int x = ReadByte();
+			return x | (ReadByte() << 8);
+		}
 
-        public void CopyTo(byte[] dest, int offset, int count)
-        {
-            Array.Copy(src, this.offset, dest, offset, count);
-            this.offset += count;
-        }
+		public void CopyTo(byte[] dest, int offset, int count)
+		{
+			Array.Copy(src, this.offset, dest, offset, count);
+			this.offset += count;
+		}
 
 		public int Remaining() { return src.Length - offset; }
-    }
+	}
 
 	public static class Format80
 	{
@@ -61,16 +61,16 @@ namespace OpenRA.FileFormats
 
 		public static int DecodeInto( byte[] src, byte[] dest )
 		{
-            var ctx = new FastByteReader(src);
+			var ctx = new FastByteReader(src);
 			int destIndex = 0;
 
 			while( true )
 			{
-                byte i = ctx.ReadByte();
+				byte i = ctx.ReadByte();
 				if( ( i & 0x80 ) == 0 )
 				{
 					// case 2
-                    byte secondByte = ctx.ReadByte();
+					byte secondByte = ctx.ReadByte();
 					int count = ( ( i & 0x70 ) >> 4 ) + 3;
 					int rpos = ( ( i & 0xf ) << 8 ) + secondByte;
 
@@ -93,8 +93,8 @@ namespace OpenRA.FileFormats
 					if( count3 == 0x3E )
 					{
 						// case 4
-                        int count = ctx.ReadWord();
-                        byte color = ctx.ReadByte();
+						int count = ctx.ReadWord();
+						byte color = ctx.ReadByte();
 
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
 							dest[ destIndex ] = color;
@@ -102,8 +102,8 @@ namespace OpenRA.FileFormats
 					else if( count3 == 0x3F )
 					{
 						// case 5
-                        int count = ctx.ReadWord();
-                        int srcIndex = ctx.ReadWord();
+						int count = ctx.ReadWord();
+						int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
 							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
 
@@ -114,7 +114,7 @@ namespace OpenRA.FileFormats
 					{
 						// case 3
 						int count = count3 + 3;
-                        int srcIndex = ctx.ReadWord();
+						int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
 							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
 

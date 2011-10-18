@@ -47,7 +47,7 @@ namespace OpenRA.Network
 		public class Client
 		{
 			public int Index;
-            public ColorRamp ColorRamp;
+			public ColorRamp ColorRamp;
 			public string Country;
 			public int SpawnPoint;
 			public string Name;

@@ -55,20 +55,20 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --settings-value KEY             Get value of KEY from settings.yaml");
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
 			Console.WriteLine("  --png SHPFILE PALETTE [--transparent] Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
-			Console.WriteLine("  --extract MOD[,MOD]* FILES	      Extract files from mod packages");
+			Console.WriteLine("  --extract MOD[,MOD]* FILES		  Extract files from mod packages");
 			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES        Extract terrain tiles to PNG");
 		}
 
-        static string GetNamedArg(string[] args, string arg)
-        {
-            if (args.Length < 2)
-                return null;
+		static string GetNamedArg(string[] args, string arg)
+		{
+			if (args.Length < 2)
+				return null;
 
-            var i = Array.IndexOf(args, arg);
-            if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
-                return null;
+			var i = Array.IndexOf(args, arg);
+			if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
+				return null;
 
-            return args[i + 1];
-        }
+			return args[i + 1];
+		}
 	}
 }

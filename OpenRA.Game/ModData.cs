@@ -82,21 +82,21 @@ namespace OpenRA
 			return map;
 		}
 
-        public static IEnumerable<string> FindMapsIn(string dir)
-        {
-            string[] NoMaps = { };
+		public static IEnumerable<string> FindMapsIn(string dir)
+		{
+			string[] NoMaps = { };
 
-            if (!Directory.Exists(dir))
-                return NoMaps;
+			if (!Directory.Exists(dir))
+				return NoMaps;
 
-            return Directory.GetDirectories(dir)
-                .Concat(Directory.GetFiles(dir, "*.zip"))
-                .Concat(Directory.GetFiles(dir, "*.oramap"));
-        }
+			return Directory.GetDirectories(dir)
+				.Concat(Directory.GetFiles(dir, "*.zip"))
+				.Concat(Directory.GetFiles(dir, "*.oramap"));
+		}
 
 		Dictionary<string, Map> FindMaps(string[] mods)
 		{
-            var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
+			var paths = mods.SelectMany(p => FindMapsIn("mods{0}{1}{0}maps{0}".F(Path.DirectorySeparatorChar, p)))
 				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
 
 			var ret = new Dictionary<string, Map>();

@@ -44,17 +44,17 @@ namespace OpenRA.Network
 			frameData.Add( clientId, orders );
 		}
 
-        public bool IsReadyForFrame(int frame)
-        {
-            return !ClientsNotReadyForFrame(frame).Any();
-        }
+		public bool IsReadyForFrame(int frame)
+		{
+			return !ClientsNotReadyForFrame(frame).Any();
+		}
 
-        public IEnumerable<int> ClientsNotReadyForFrame(int frame)
-        {
-            var frameData = framePackets.GetOrAdd(frame);
-            return ClientsPlayingInFrame(frame)
-                .Where(client => !frameData.ContainsKey(client));
-        }
+		public IEnumerable<int> ClientsNotReadyForFrame(int frame)
+		{
+			var frameData = framePackets.GetOrAdd(frame);
+			return ClientsPlayingInFrame(frame)
+				.Where(client => !frameData.ContainsKey(client));
+		}
 
 		public IEnumerable<ClientOrder> OrdersForFrame( World world, int frame )
 		{

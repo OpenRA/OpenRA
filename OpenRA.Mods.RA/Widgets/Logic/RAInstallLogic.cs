@@ -18,12 +18,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		[ObjectCreator.UseCtor]
 		public RAInstallLogic([ObjectCreator.Param] Widget widget,
-		                       [ObjectCreator.Param] Dictionary<string,string> installData,
-		                       [ObjectCreator.Param] Action continueLoading)
+							   [ObjectCreator.Param] Dictionary<string,string> installData,
+							   [ObjectCreator.Param] Action continueLoading)
 		{
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()
-            {
+			{
 				{ "continueLoading", () => { Widget.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};

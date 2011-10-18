@@ -22,7 +22,7 @@ namespace OpenRA.FileFormats
 		public struct SourceLocation
 		{
 			public string Filename; public int Line;
-            public override string ToString() { return "{0}:{1}".F(Filename, Line); }
+			public override string ToString() { return "{0}:{1}".F(Filename, Line); }
 		}
 
 		public SourceLocation Location;
@@ -55,10 +55,10 @@ namespace OpenRA.FileFormats
 		{
 		}
 
-        public override string ToString()
-        {
-            return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
-        }
+		public override string ToString()
+		{
+			return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
+		}
 	}
 
 	public class MiniYaml
@@ -177,15 +177,15 @@ namespace OpenRA.FileFormats
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), "<no filename available>");
 		}
 
-        public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
-        {
-            return Merge(a, b, false);
-        }
+		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		{
+			return Merge(a, b, false);
+		}
 
-        public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
-        {
-            return Merge(a, b, true);
-        }
+		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		{
+			return Merge(a, b, true);
+		}
 
 		static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors )
 		{
@@ -200,8 +200,8 @@ namespace OpenRA.FileFormats
 			var bDict = b.ToDictionary( x => x.Key );
 			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
 
-            var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
-                .ToDictionary(x => x.Substring(1), x => false);
+			var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
+				.ToDictionary(x => x.Substring(1), x => false);
 
 			foreach( var key in keys )
 			{
@@ -211,11 +211,11 @@ namespace OpenRA.FileFormats
 
 				if( noInherit.ContainsKey( key ) )
 				{
-                    if (!throwErrors)
-                        if (aa != null)
-                            ret.Add(aa);
+					if (!throwErrors)
+						if (aa != null)
+							ret.Add(aa);
 
-                    noInherit[key] = true;
+					noInherit[key] = true;
 				}
 				else
 				{
@@ -225,23 +225,23 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-            if (throwErrors)
-            if (noInherit.ContainsValue(false))
-                throw new YamlException("Bogus yaml removals: {0}".F(
-                    string.Join(", ", noInherit.Where(x => !x.Value).Select(x => x.Key).ToArray())));
+			if (throwErrors)
+			if (noInherit.ContainsValue(false))
+				throw new YamlException("Bogus yaml removals: {0}".F(
+					string.Join(", ", noInherit.Where(x => !x.Value).Select(x => x.Key).ToArray())));
 
 			return ret;
 		}
 
-        public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
-        {
-            return Merge(a, b, false);
-        }
+		public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
+		{
+			return Merge(a, b, false);
+		}
 
-        public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
-        {
-            return Merge(a, b, true);
-        }
+		public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
+		{
+			return Merge(a, b, true);
+		}
 
 		static MiniYaml Merge( MiniYaml a, MiniYaml b, bool throwErrors )
 		{
@@ -286,8 +286,8 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-    public class YamlException : Exception
-    {
-        public YamlException(string s) : base(s) { }
-    }
+	public class YamlException : Exception
+	{
+		public YamlException(string s) : base(s) { }
+	}
 }
