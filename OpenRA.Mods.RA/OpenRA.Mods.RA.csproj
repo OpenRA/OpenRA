@@ -343,7 +343,6 @@
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\OrderButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
-    <Compile Include="Widgets\Logic\RADownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
@@ -363,6 +362,7 @@
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Widgets\Logic\LobbyUtils.cs" />
+    <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

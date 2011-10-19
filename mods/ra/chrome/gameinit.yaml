@@ -55,7 +55,7 @@ Background@INSTALL_PANEL:
 
 Background@INSTALL_DOWNLOAD_PANEL:
 	Id:INSTALL_DOWNLOAD_PANEL
-	Logic:RADownloadPackagesLogic
+	Logic:DownloadPackagesLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500

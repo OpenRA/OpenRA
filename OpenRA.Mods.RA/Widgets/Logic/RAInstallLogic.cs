@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
-				{ "continueLoading", () => { Widget.CloseWindow(); continueLoading(); } },
+				{ "afterInstall", () => { Widget.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 

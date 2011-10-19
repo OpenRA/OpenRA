@@ -17,9 +17,9 @@ using System.Net;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncDownloadPackagesLogic
+	public class DownloadPackagesLogic
 	{
 		Widget panel;
 		Dictionary<string,string> installData;
@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Action afterInstall;
 
 		[ObjectCreator.UseCtor]
-		public CncDownloadPackagesLogic([ObjectCreator.Param] Widget widget,
-										[ObjectCreator.Param] Dictionary<string,string> installData,
-										[ObjectCreator.Param] Action afterInstall)
+		public DownloadPackagesLogic([ObjectCreator.Param] Widget widget,
+									   [ObjectCreator.Param] Dictionary<string,string> installData,
+									   [ObjectCreator.Param] Action afterInstall)
 		{
 			this.installData = installData;
 			this.afterInstall = afterInstall;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Save the package to a temp file
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-			var dest = new string[] { Platform.SupportDir, "Content", "cnc" }.Aggregate(Path.Combine);
+			var dest = new string[] { Platform.SupportDir, "Content", Game.modData.Manifest.Mods[0] }.Aggregate(Path.Combine);
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{

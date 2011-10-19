@@ -78,7 +78,6 @@
     <Compile Include="Widgets\Logic\CncColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\CncConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
-    <Compile Include="Widgets\Logic\CncDownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
