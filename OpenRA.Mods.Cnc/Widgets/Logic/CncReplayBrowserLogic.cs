@@ -45,21 +45,21 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 
 			var watch = panel.GetWidget<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => currentSummary == null || currentMap == null || currentSummary.Duration == 0;
+			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
 			watch.OnClick = () =>
 			{
-				if (currentSummary != null)
+				if (currentReplay != null)
 				{
-					Game.JoinReplay(currentSummary.Filename);
+					Game.JoinReplay(currentReplay.Filename);
 					Widget.CloseWindow();
 					onStart();
 				}
 			};
 
-			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentSummary != null;
+			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		Replay currentSummary;
+		Replay currentReplay;
 		Map currentMap;
 
 		void SelectReplay(string filename)
@@ -69,23 +69,23 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			try
 			{
-				currentSummary = new Replay(filename);
-				currentMap = currentSummary.Map();
+				currentReplay = new Replay(filename);
+				currentMap = currentReplay.Map();
 
 				panel.GetWidget<LabelWidget>("DURATION").GetText =
-					() => WidgetUtils.FormatTime(currentSummary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+					() => WidgetUtils.FormatTime(currentReplay.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
 				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
 				panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
-				var players = currentSummary.LobbyInfo.Slots
-					.Count(s => currentSummary.LobbyInfo.ClientInSlot(s.Key) != null);
+				var players = currentReplay.LobbyInfo.Slots
+					.Count(s => currentReplay.LobbyInfo.ClientInSlot(s.Key) != null);
 				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 			}
 			catch (Exception e)
 			{
 				Log.Write("debug", "Exception while parsing replay: {0}", e);
-				currentSummary = null;
+				currentReplay = null;
 				currentMap = null;
 			}
 		}
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-				() => currentSummary != null && currentSummary.Filename == filename,
+				() => currentReplay != null && currentReplay.Filename == filename,
 				() => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
 			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
