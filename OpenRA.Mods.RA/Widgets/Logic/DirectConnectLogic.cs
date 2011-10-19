@@ -29,9 +29,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (addressParts.Length < 1 || addressParts.Length > 2)
 					return;
 
-				int port;
-				if (addressParts.Length != 2 || !int.TryParse(addressParts[1], out port))
-					port = 1234;
+				var port = Exts.WithDefault(1234, () => int.Parse(addressParts[1]));
 
 				Game.Settings.Player.LastServer = address;
 				Game.Settings.Save();
