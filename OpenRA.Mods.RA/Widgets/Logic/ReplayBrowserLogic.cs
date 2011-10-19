@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
 			var template = widget.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
-			CurrentReplay = null;
+			SelectReplay(null);
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
@@ -44,38 +44,36 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (currentReplay != null)
 				{
 					Widget.CloseWindow();
-					Game.JoinReplay(CurrentReplay);
+					Game.JoinReplay(currentReplay);
 				}
 			};
 
 			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		string currentReplay = null;
-		string CurrentReplay
-		{
-			get { return currentReplay; }
-			set
-			{
-				currentReplay = value;
-				if (currentReplay != null)
-				{
-					try
-					{
-						var summary = new Replay(currentReplay);
-						var mapStub = summary.Map();
+		string currentReplay;
 
-						widget.GetWidget<LabelWidget>("DURATION").GetText =
-							() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-						widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
-						widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
-							() => mapStub != null ? mapStub.Title : "(Unknown Map)";
-					}
-					catch(Exception e)
-					{
-						Log.Write("debug", "Exception while parsing replay: {0}", e);
-						currentReplay = null;
-					}
+		void SelectReplay(string filename)
+		{
+			currentReplay = filename;
+
+			if (currentReplay != null)
+			{
+				try
+				{
+					var summary = new Replay(currentReplay);
+					var mapStub = summary.Map();
+
+					widget.GetWidget<LabelWidget>("DURATION").GetText =
+						() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+					widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
+					widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+						() => mapStub != null ? mapStub.Title : "(Unknown Map)";
+				}
+				catch(Exception e)
+				{
+					Log.Write("debug", "Exception while parsing replay: {0}", e);
+					currentReplay = null;
 				}
 			}
 		}
@@ -83,8 +81,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-				() => CurrentReplay == filename,
-				() => CurrentReplay = filename);
+				() => currentReplay == filename,
+				() => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
 			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
 			list.AddChild(item);
