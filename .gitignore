@@ -56,3 +56,4 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 Logs/
 Replays/
 settings.yaml
+\#*
