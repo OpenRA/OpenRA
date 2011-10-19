@@ -26,6 +26,7 @@ namespace OpenRA.Network
 			var lastFrame = 0;
 			var hasSeenGameStart = false;
 			var lobbyInfo = null as Session;
+
 			using (var conn = new ReplayConnection(filename))
 				conn.Receive((client, packet) =>
 					{
