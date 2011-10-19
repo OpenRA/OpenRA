@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using OpenRA.Mods.RA.Widgets.Logic;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentSummary != null;
 		}
 
-		ReplaySummary currentSummary;
+		Replay currentSummary;
 		Map currentMap;
 
 		void SelectReplay(string filename)
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			try
 			{
-				currentSummary = new ReplaySummary(filename);
+				currentSummary = new Replay(filename);
 				currentMap = currentSummary.Map();
 
 				panel.GetWidget<LabelWidget>("DURATION").GetText =

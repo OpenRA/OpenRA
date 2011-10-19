@@ -204,6 +204,7 @@
     <Compile Include="Widgets\ScrollItemWidget.cs" />
     <Compile Include="Widgets\ListLayout.cs" />
     <Compile Include="Widgets\GridLayout.cs" />
+    <Compile Include="Network\Replay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

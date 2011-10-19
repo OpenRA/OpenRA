@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -64,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					try
 					{
-						var summary = new ReplaySummary(currentReplay);
+						var summary = new Replay(currentReplay);
 						var mapStub = summary.Map();
 
 						widget.GetWidget<LabelWidget>("DURATION").GetText =
@@ -85,63 +83,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-											  () => CurrentReplay == filename,
-											  () => CurrentReplay = filename);
+				() => CurrentReplay == filename,
+				() => CurrentReplay = filename);
 			var f = Path.GetFileName(filename);
 			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
 			list.AddChild(item);
-		}
-	}
-
-	/* a maze of twisty little hacks,... */
-	public class ReplaySummary
-	{
-		public readonly string Filename;
-		public readonly int Duration;
-		public readonly Session LobbyInfo;
-
-		public ReplaySummary(string filename)
-		{
-			Filename = filename;
-			var lastFrame = 0;
-			var hasSeenGameStart = false;
-			var lobbyInfo = null as Session;
-			using (var conn = new ReplayConnection(filename))
-				conn.Receive((client, packet) =>
-					{
-						var frame = BitConverter.ToInt32(packet, 0);
-						if (packet.Length == 5 && packet[4] == 0xBF)
-							return;	// disconnect
-						else if (packet.Length >= 5 && packet[4] == 0x65)
-							return;	// sync
-						else if (frame == 0)
-						{
-							/* decode this to recover lobbyinfo, etc */
-							var orders = packet.ToOrderList(null);
-							foreach (var o in orders)
-								if (o.OrderString == "StartGame")
-									hasSeenGameStart = true;
-								else if (o.OrderString == "SyncInfo" && !hasSeenGameStart)
-									lobbyInfo = Session.Deserialize(o.TargetString);
-						}
-						else
-							lastFrame = Math.Max(lastFrame, frame);
-					});
-
-			Duration = lastFrame;
-			LobbyInfo = lobbyInfo;
-		}
-
-		public Map Map()
-		{
-			if (LobbyInfo == null)
-				return null;
-
-			var map = LobbyInfo.GlobalSettings.Map;
-			if (!Game.modData.AvailableMaps.ContainsKey(map))
-				return null;
-
-			return Game.modData.AvailableMaps[map];
 		}
 	}
 }
