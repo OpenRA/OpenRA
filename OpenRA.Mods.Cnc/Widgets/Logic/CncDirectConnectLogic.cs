@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var ipField = panel.GetWidget<TextFieldWidget>("IP");
 			var portField = panel.GetWidget<TextFieldWidget>("PORT");
 
-			var last = Game.Settings.Player.LastServer.Split(':').ToArray();
+			var last = Game.Settings.Player.LastServer.Split(':');
 			ipField.Text = last.Length > 1 ? last[0] : "localhost";
 			portField.Text = last.Length > 2 ? last[1] : "1234";
 

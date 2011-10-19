@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dc.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-				var addressParts = address.Split(':').ToArray();
+				var addressParts = address.Split(':');
 				if (addressParts.Length < 1 || addressParts.Length > 2)
 					return;
 
