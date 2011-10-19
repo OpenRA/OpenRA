@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Exception while parsing replay: {0}", e.ToString());
+				Log.Write("debug", "Exception while parsing replay: {0}", e);
 				currentSummary = null;
 				currentMap = null;
 			}
