@@ -109,7 +109,9 @@ namespace OpenRA.GameRules
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
+
 		public Dictionary<string, object> Sections;
+
 		public Settings(string file, Arguments args)
 		{
 			SettingsFile = file;
@@ -122,7 +124,6 @@ namespace OpenRA.GameRules
 				{"Server", Server},
 				{"Debug", Debug},
 			};
-
 
 			// Override fieldloader to ignore invalid entries
 			var err1 = FieldLoader.UnknownFieldAction;
