@@ -52,7 +52,10 @@ namespace OpenRA
 			{
 				var type = mod.First.GetType( mod.Second + "." + className, false );
 				if( type == null ) continue;
-				var ctors = type.GetConstructors( BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance ).Where( x => x.HasAttribute<UseCtorAttribute>() ).ToList();
+				var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+				var ctors = type.GetConstructors( flags )
+					.Where( x => x.HasAttribute<UseCtorAttribute>() ).ToList();
+
 				if( ctors.Count == 0 )
 					return (T)CreateBasic( type );
 				else if( ctors.Count == 1 )
@@ -75,9 +78,8 @@ namespace OpenRA
 			var a = new object[ p.Length ];
 			for( int i = 0 ; i < p.Length ; i++ )
 			{
-				var attrs = p[ i ].GetCustomAttributes<ParamAttribute>();
-				if( attrs.Length != 1 ) throw new InvalidOperationException( "ObjectCreator: argument in [UseCtor] doesn't have [Param]" );
-				var key = attrs[ 0 ].ParamName ?? p[i].Name;
+				var attr = p[ i ].GetCustomAttributes<ParamAttribute>().FirstOrDefault();
+				var key = (attr != null ? attr.ParamName : null) ?? p[i].Name;
 				if ( !args.ContainsKey(key) ) throw new InvalidOperationException("ObjectCreator: key `{0}' not found".F(key));
 				a[ i ] = args[ key ];
 			}
