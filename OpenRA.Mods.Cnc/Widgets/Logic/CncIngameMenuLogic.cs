@@ -20,9 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget menu;
 
 		[ObjectCreator.UseCtor]
-		public CncIngameMenuLogic([ObjectCreator.Param] Widget widget,
-								  [ObjectCreator.Param] World world,
-								  [ObjectCreator.Param] Action onExit)
+		public CncIngameMenuLogic(Widget widget, World world, Action onExit)
 		{
 			var resumeDisabled = false;
 			menu = widget.GetWidget("INGAME_MENU");

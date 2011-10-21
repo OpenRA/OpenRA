@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncPerfDebugLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncPerfDebugLogic([ObjectCreator.Param] Widget widget)
+		public CncPerfDebugLogic(Widget widget)
 		{
 			// Performance info
 			var perfRoot = widget.GetWidget("PERFORMANCE_INFO");

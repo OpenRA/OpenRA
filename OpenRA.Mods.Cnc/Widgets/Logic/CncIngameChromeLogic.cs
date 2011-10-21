@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public CncIngameChromeLogic([ObjectCreator.Param] Widget widget,
-									[ObjectCreator.Param] World world )
+		public CncIngameChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
 			world.WorldActor.Trait<CncMenuPaletteEffect>()

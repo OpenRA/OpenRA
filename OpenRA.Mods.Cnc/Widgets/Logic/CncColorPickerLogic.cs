@@ -19,11 +19,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		ColorRamp ramp;
 		[ObjectCreator.UseCtor]
-		public CncColorPickerLogic([ObjectCreator.Param] Widget widget,
-								   [ObjectCreator.Param] ColorRamp initialRamp,
-								   [ObjectCreator.Param] Action<ColorRamp> onChange,
-								   [ObjectCreator.Param] Action<ColorRamp> onSelect,
-								   [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public CncColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
+			Action<ColorRamp> onSelect, WorldRenderer worldRenderer)
 		{
 			var panel = widget.GetWidget("COLOR_CHOOSER");
 			ramp = initialRamp;

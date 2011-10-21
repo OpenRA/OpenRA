@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public DiplomacyLogic( [ObjectCreator.Param] World world )
+		public DiplomacyLogic(World world)
 		{
 			this.world = world;
 			var root = Widget.RootWidget.GetWidget("INGAME_ROOT");

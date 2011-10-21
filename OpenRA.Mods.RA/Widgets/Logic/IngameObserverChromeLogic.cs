@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		// WTF duplication
 		[ObjectCreator.UseCtor]
-		public IngameObserverChromeLogic([ObjectCreator.Param] World world)
+		public IngameObserverChromeLogic(World world)
 		{
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;

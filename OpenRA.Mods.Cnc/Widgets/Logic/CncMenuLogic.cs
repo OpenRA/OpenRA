@@ -23,8 +23,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget rootMenu;
 
 		[ObjectCreator.UseCtor]
-		public CncMenuLogic([ObjectCreator.Param] Widget widget,
-							[ObjectCreator.Param] World world)
+		public CncMenuLogic(Widget widget, World world)
 		{
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);

@@ -43,17 +43,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
+
 		public ProductionQueue CurrentQueue
 		{
-			get
-			{
-				return currentQueue;
-			}
-			set
-			{
-				currentQueue = value;
-				RefreshIcons();
-			}
+			get { return currentQueue; }
+			set { currentQueue = value; RefreshIcons(); }
 		}
 
 		public override Rectangle EventBounds { get { return eventBounds; } }
@@ -66,12 +60,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 
 		[ObjectCreator.UseCtor]
-		public ProductionPaletteWidget([ObjectCreator.Param] World world,
-									   [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public ProductionPaletteWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 
 			cantBuild = new Animation("clock");

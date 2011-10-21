@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class DeveloperModeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DeveloperModeLogic( [ObjectCreator.Param] World world )
+		public DeveloperModeLogic(World world)
 		{
 			var devmodeBG = Widget.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
 			var devModeButton = Widget.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");

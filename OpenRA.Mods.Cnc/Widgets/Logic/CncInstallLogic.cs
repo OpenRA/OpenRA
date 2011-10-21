@@ -17,9 +17,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncInstallLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallLogic([ObjectCreator.Param] Widget widget,
-							   [ObjectCreator.Param] Dictionary<string,string> installData,
-							   [ObjectCreator.Param] Action continueLoading)
+		public CncInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
 		{
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()

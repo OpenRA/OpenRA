@@ -21,12 +21,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
-
+		
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic([ObjectCreator.Param] Widget widget,
-			[ObjectCreator.Param] string initialMap,
-			[ObjectCreator.Param] Action onExit,
-			[ObjectCreator.Param] Action<Map> onSelect)
+		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 

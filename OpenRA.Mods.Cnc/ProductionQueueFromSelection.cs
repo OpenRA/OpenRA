@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	class ProductionQueueFromSelectionInfo : ITraitInfo
 	{
 		public string ProductionTabsWidget = null;
+
 		public object Create( ActorInitializer init ) { return new ProductionQueueFromSelection(init.world, this); }
 	}
 
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			this.world = world;
 
-			tabsWidget = new Lazy<ProductionTabsWidget>(() =>
+			tabsWidget = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget));
 		}
 

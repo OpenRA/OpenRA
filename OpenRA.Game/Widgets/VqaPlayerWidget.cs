@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public VqaPlayerWidget( [ObjectCreator.Param] World world )
+		public VqaPlayerWidget(   World world )
 		{
 			this.world = world;
 		}

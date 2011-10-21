@@ -41,9 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public CncServerBrowserLogic([ObjectCreator.Param] Widget widget,
-									[ObjectCreator.Param] Action openLobby,
-									[ObjectCreator.Param] Action onExit)
+		public CncServerBrowserLogic(Widget widget, Action openLobby, Action onExit)
 		{
 			var panel = widget.GetWidget("SERVERBROWSER_PANEL");
 			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");

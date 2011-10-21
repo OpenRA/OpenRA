@@ -18,9 +18,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class SupportPowerTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic([ObjectCreator.Param] Widget widget,
-										[ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-										[ObjectCreator.Param] SupportPowersWidget palette)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette)
 		{
 			widget.IsVisible = () => palette.TooltipPower != null;
 			var nameLabel = widget.GetWidget<LabelWidget>("NAME");

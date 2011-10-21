@@ -12,18 +12,16 @@ using System;
 using System.Drawing;
 using OpenRA.Support;
 using OpenRA.Widgets;
-using Type = OpenRA.Mods.Cnc.Widgets.CncWorldInteractionControllerWidget.WorldTooltipType;
+using TooltipType = OpenRA.Mods.Cnc.Widgets.CncWorldInteractionControllerWidget.WorldTooltipType;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class WorldTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic([ObjectCreator.Param] Widget widget,
-								 [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-								 [ObjectCreator.Param] CncWorldInteractionControllerWidget wic)
+		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, CncWorldInteractionControllerWidget wic)
 		{
-			widget.IsVisible = () => wic.TooltipType != Type.None;
+			widget.IsVisible = () => wic.TooltipType != TooltipType.None;
 			var label = widget.GetWidget<LabelWidget>("LABEL");
 			var flag = widget.GetWidget<ImageWidget>("FLAG");
 			var owner = widget.GetWidget<LabelWidget>("OWNER");
@@ -41,10 +39,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				if (wic == null || wic.TooltipType == Type.None)
+				if (wic == null || wic.TooltipType == TooltipType.None)
 					return;
 
-				labelText = wic.TooltipType == Type.Unexplored ? "Unexplored Terrain" :
+				labelText = wic.TooltipType == TooltipType.Unexplored ? "Unexplored Terrain" :
 					wic.ActorTooltip.Name();
 				var textWidth = font.Measure(labelText).X;
 				if (textWidth != cachedWidth)
@@ -53,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
 				}
 				var o = wic.ActorTooltip != null ? wic.ActorTooltip.Owner() : null;
-				showOwner = wic.TooltipType == Type.Actor && o != null && !o.NonCombatant;
+				showOwner = wic.TooltipType == TooltipType.Actor && o != null && !o.NonCombatant;
 
 				if (showOwner)
 				{

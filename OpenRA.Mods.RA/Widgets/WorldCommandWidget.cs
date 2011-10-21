@@ -32,10 +32,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
-		public WorldCommandWidget([ObjectCreator.Param] OrderManager orderManager )
-		{
-			OrderManager = orderManager;
-		}
+		public WorldCommandWidget(OrderManager orderManager) { OrderManager = orderManager; }
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Rectangle GetEventBounds() { return Rectangle.Empty; }

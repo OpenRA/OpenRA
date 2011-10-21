@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -21,9 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget panel;
 
 		[ObjectCreator.UseCtor]
-		public CncReplayBrowserLogic([ObjectCreator.Param] Widget widget,
-									 [ObjectCreator.Param] Action onExit,
-									 [ObjectCreator.Param] Action onStart)
+		public CncReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
 		{
 			panel = widget.GetWidget("REPLAYBROWSER_PANEL");
 

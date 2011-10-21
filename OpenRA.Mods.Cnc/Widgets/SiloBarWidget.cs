@@ -28,11 +28,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 		float? lastStoredFrac;
 
 		readonly PlayerResources pr;
+
 		[ObjectCreator.UseCtor]
-		public SiloBarWidget( [ObjectCreator.Param] World world )
+		public SiloBarWidget(World world)
 		{
 			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 

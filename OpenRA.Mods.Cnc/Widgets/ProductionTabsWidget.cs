@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		string queueGroup;
 
 		[ObjectCreator.UseCtor]
-		public ProductionTabsWidget([ObjectCreator.Param] World world)
+		public ProductionTabsWidget(World world)
 		{
 			Groups = Rules.Info.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
 				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
@@ -86,8 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Only visible if the production palette has icons to display
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
-			paletteWidget = new Lazy<ProductionPaletteWidget>(() =>
-				Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
+			paletteWidget = Lazy.New(() => Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
 		}
 
 		public void SelectNextTab(bool reverse)
@@ -108,10 +107,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public string QueueGroup
 		{
-			get
-			{
-				return queueGroup;
-			}
+			get { return queueGroup; }
 			set
 			{
 				ListOffset = 0;
@@ -122,10 +118,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public ProductionQueue CurrentQueue
 		{
-			get
-			{
-				return paletteWidget.Value.CurrentQueue;
-			}
+			get { return paletteWidget.Value.CurrentQueue; }
 			set
 			{
 				paletteWidget.Value.CurrentQueue = value;
@@ -268,7 +261,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				return true;
 			}
 
-			return (leftPressed || rightPressed);
+			return leftPressed || rightPressed;
 		}
 
 		public override bool HandleKeyPress(KeyInput e)

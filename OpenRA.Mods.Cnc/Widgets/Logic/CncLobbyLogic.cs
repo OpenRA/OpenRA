@@ -85,13 +85,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		internal CncLobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
-							   [ObjectCreator.Param] World world, // Shellmap world
-							   [ObjectCreator.Param] OrderManager orderManager,
-							   [ObjectCreator.Param] Action onExit,
-							   [ObjectCreator.Param] Action onStart,
-							   [ObjectCreator.Param] bool addBots)
+		internal CncLobbyLogic(Widget widget, World world, OrderManager orderManager,
+			Action onExit, Action onStart, bool addBots)
 		{
+			var lobby = widget;
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;

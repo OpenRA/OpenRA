@@ -15,8 +15,7 @@ namespace OpenRA.Mods.Cnc
 {
 	class PoisonedByTiberiumInfo : ITraitInfo
 	{
-		[WeaponReference]
-		public readonly string Weapon = "Tiberium";
+		[WeaponReference] public readonly string Weapon = "Tiberium";
 		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
 
 		public object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }

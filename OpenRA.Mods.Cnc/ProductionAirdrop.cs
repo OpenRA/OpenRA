@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Cnc
 	{
 		public readonly string ReadyAudio = "reinfor1.aud";
 		[ActorReference] public readonly string ActorType = "c17";
+
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this); }
 	}
 

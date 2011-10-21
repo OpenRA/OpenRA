@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public PowerBinWidget( [ObjectCreator.Param] World world )
+		public PowerBinWidget(World world)
 		{
 			this.world = world;
 

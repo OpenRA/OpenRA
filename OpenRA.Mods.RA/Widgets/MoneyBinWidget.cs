@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly PlayerResources playerResources;
 
 		[ObjectCreator.UseCtor]
-		public MoneyBinWidget( [ObjectCreator.Param] World world )
+		public MoneyBinWidget(World world)
 		{
 			this.world = world;
 			playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();

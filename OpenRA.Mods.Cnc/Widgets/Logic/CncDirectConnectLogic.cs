@@ -17,9 +17,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncDirectConnectLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncDirectConnectLogic([ObjectCreator.Param] Widget widget,
-									 [ObjectCreator.Param] Action onExit,
-									 [ObjectCreator.Param] Action openLobby)
+		public CncDirectConnectLogic(Widget widget, Action onExit, Action openLobby)
 		{
 			var panel = widget.GetWidget("DIRECTCONNECT_PANEL");
 			var ipField = panel.GetWidget<TextFieldWidget>("IP");

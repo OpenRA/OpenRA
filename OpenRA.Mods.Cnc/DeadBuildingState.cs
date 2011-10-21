@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Cnc
 	class DeadBuildingStateInfo : ITraitInfo, Requires<HealthInfo>, Requires<RenderSimpleInfo>
 	{
 		public readonly int LingerTime = 20;
+
 		public object Create(ActorInitializer init) { return new DeadBuildingState(init.self, this); }
 	}
 
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.Cnc
 	{
 		DeadBuildingStateInfo info;
 		RenderSimple rs;
+
 		public DeadBuildingState(Actor self, DeadBuildingStateInfo info)
 		{
 			this.info = info;

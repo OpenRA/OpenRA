@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public ToggleButtonWidget()
 			: base()
 		{
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
@@ -36,14 +36,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipText = other.TooltipText;
 			TooltipContainer = other.TooltipContainer;
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void MouseEntered()
 		{
 			if (TooltipContainer == null) return;
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "button", this }});
+			tooltipContainer.Value.SetTooltip(TooltipTemplate,
+				new WidgetArgs() {{ "button", this }});
 		}
 
 		public override void MouseExited()

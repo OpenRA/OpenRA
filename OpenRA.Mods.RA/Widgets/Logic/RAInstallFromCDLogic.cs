@@ -28,8 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Widget installingContainer, insertDiskContainer;
 
 		[ObjectCreator.UseCtor]
-		public RAInstallFromCDLogic([ObjectCreator.Param] Widget widget,
-									[ObjectCreator.Param] Action continueLoading)
+		public RAInstallFromCDLogic(Widget widget, Action continueLoading)
 		{
 			this.continueLoading = continueLoading;
 			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");

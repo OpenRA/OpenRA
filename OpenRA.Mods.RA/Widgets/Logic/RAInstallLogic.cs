@@ -17,9 +17,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class RAInstallLogic
 	{
 		[ObjectCreator.UseCtor]
-		public RAInstallLogic([ObjectCreator.Param] Widget widget,
-							   [ObjectCreator.Param] Dictionary<string,string> installData,
-							   [ObjectCreator.Param] Action continueLoading)
+		public RAInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
 		{
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()

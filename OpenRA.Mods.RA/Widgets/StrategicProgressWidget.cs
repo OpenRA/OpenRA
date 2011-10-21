@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public StrategicProgressWidget([ObjectCreator.Param] World world)
+		public StrategicProgressWidget(World world)
 		{
 			IsVisible = () => true;
 			this.world = world;

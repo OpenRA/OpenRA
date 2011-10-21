@@ -22,9 +22,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class ProductionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic([ObjectCreator.Param] Widget widget,
-									  [ObjectCreator.Param] TooltipContainerWidget tooltipContainer,
-									  [ObjectCreator.Param] ProductionPaletteWidget palette)
+		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
 		{
 			var pm = palette.world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var pr = palette.world.LocalPlayer.PlayerActor.Trait<PlayerResources>();

@@ -48,12 +48,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public CncConnectingLogic([ObjectCreator.Param] Widget widget,
-								  [ObjectCreator.Param] string host,
-								  [ObjectCreator.Param] int port,
-								  [ObjectCreator.Param] Action onConnect,
-								  [ObjectCreator.Param] Action onRetry,
-								  [ObjectCreator.Param] Action onAbort)
+		public CncConnectingLogic(Widget widget, string host, int port, Action onConnect, Action onRetry, Action onAbort)
 		{
 			this.host = host;
 			this.port = port;
@@ -87,11 +82,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncConnectionFailedLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncConnectionFailedLogic([ObjectCreator.Param] Widget widget,
-								  		[ObjectCreator.Param] string host,
-										[ObjectCreator.Param] int port,
-										[ObjectCreator.Param] Action onRetry,
-								  		[ObjectCreator.Param] Action onAbort)
+		public CncConnectionFailedLogic(Widget widget, string host, int port, Action onRetry, Action onAbort)
 		{
 			var panel = widget.GetWidget("CONNECTIONFAILED_PANEL");
 			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };

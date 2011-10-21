@@ -25,7 +25,7 @@ namespace OpenRA.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public WorldInteractionControllerWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;

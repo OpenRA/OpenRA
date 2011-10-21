@@ -29,10 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		string[] filesToCopy, filesToExtract;
 
 		[ObjectCreator.UseCtor]
-		public CncInstallFromCDLogic([ObjectCreator.Param] Widget widget,
-			[ObjectCreator.Param] Action afterInstall,
-			[ObjectCreator.Param] string[] filesToCopy,
-			[ObjectCreator.Param] string[] filesToExtract)
+		public CncInstallFromCDLogic(Widget widget, Action afterInstall, string[] filesToCopy, string[] filesToExtract)
 		{
 			this.afterInstall = afterInstall;
 			this.filesToCopy = filesToCopy;

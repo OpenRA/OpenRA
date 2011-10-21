@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public SupportPowerBinWidget([ObjectCreator.Param] World world, [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public SupportPowerBinWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;

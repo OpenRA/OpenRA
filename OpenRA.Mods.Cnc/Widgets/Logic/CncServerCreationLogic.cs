@@ -25,9 +25,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		bool advertiseOnline;
 
 		[ObjectCreator.UseCtor]
-		public CncServerCreationLogic([ObjectCreator.Param] Widget widget,
-									  [ObjectCreator.Param] Action onExit,
-									  [ObjectCreator.Param] Action openLobby)
+		public CncServerCreationLogic(Widget widget, Action onExit, Action openLobby)
 		{
 			panel = widget.GetWidget("CREATESERVER_PANEL");
 			onCreate = openLobby;

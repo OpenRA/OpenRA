@@ -16,10 +16,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ConnectionDialogsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionDialogsLogic(
-			[ObjectCreator.Param] Widget widget,
-			[ObjectCreator.Param] string host,
-			[ObjectCreator.Param] int port )
+		public ConnectionDialogsLogic(Widget widget, string host, int port)
 		{
 			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_ABORT").OnClick = () => {
 				widget.GetWidget("CONNECTION_BUTTON_ABORT").Parent.Visible = false;
@@ -37,9 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ConnectionFailedLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedLogic(
-			[ObjectCreator.Param] Widget widget,
-			[ObjectCreator.Param] OrderManager orderManager)
+		public ConnectionFailedLogic(Widget widget, OrderManager orderManager)
 		{
 			widget.GetWidget<ButtonWidget>("CONNECTION_BUTTON_CANCEL").OnClick = () => {
 				widget.GetWidget("CONNECTION_BUTTON_CANCEL").Parent.Visible = false;

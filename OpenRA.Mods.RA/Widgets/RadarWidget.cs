@@ -35,11 +35,9 @@ namespace OpenRA.Mods.RA.Widgets
 		Sprite shroudSprite;
 
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
-		public RadarWidget( [ObjectCreator.Param] World world )
-		{
-			this.world = world;
-		}
+		public RadarWidget(World world) { this.world = world; }
 
 		public override void Initialize(WidgetArgs args)
 		{

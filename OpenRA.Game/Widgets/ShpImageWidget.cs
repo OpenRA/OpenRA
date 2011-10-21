@@ -26,7 +26,7 @@ namespace OpenRA.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ShpImageWidget([ObjectCreator.Param] WorldRenderer worldRenderer)
+		public ShpImageWidget(  WorldRenderer worldRenderer)
 			: base()
 		{
 			GetImage = () => { return Image; };

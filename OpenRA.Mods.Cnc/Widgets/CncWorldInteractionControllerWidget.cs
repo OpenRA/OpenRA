@@ -32,18 +32,18 @@ namespace OpenRA.Mods.Cnc.Widgets
 		ScrollDirection Edge;
 
 		[ObjectCreator.UseCtor]
-		public CncWorldInteractionControllerWidget([ObjectCreator.Param] World world,
-										           [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public CncWorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
 			: base(world, worldRenderer)
 		{
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void MouseEntered()
 		{
 			if (TooltipContainer == null) return;
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "world", world }, { "wic", this }});
+			tooltipContainer.Value.SetTooltip(TooltipTemplate,
+				new WidgetArgs() {{ "world", world }, { "wic", this }});
 		}
 
 		public override void MouseExited()

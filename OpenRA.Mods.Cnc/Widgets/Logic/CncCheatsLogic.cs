@@ -27,9 +27,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncCheatsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncCheatsLogic([ObjectCreator.Param] Widget widget,
-							  [ObjectCreator.Param] Action onExit,
-							  [ObjectCreator.Param] World world)
+		public CncCheatsLogic(Widget widget, Action onExit, World world)
 		{
 			var panel = widget.GetWidget("CHEATS_PANEL");
 

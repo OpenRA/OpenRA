@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollItemWidget ServerTemplate;
 
 		[ObjectCreator.UseCtor]
-		public ServerBrowserLogic( [ObjectCreator.Param] Widget widget )
+		public ServerBrowserLogic(Widget widget)
 		{
 			var bg = widget.GetWidget("JOINSERVER_BG");
 

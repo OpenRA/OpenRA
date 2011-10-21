@@ -40,12 +40,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly float2 holdOffset, readyOffset, timeOffset;
 
 		[ObjectCreator.UseCtor]
-		public SupportPowersWidget([ObjectCreator.Param] World world,
-								   [ObjectCreator.Param] WorldRenderer worldRenderer)
+		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 
 			iconSprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
@@ -117,16 +116,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				if (p.Power.Ready)
 					overlayFont.DrawTextWithContrast("Ready",
-													 p.Pos + readyOffset,
-													 Color.White, Color.Black, 1);
+						p.Pos + readyOffset,
+						Color.White, Color.Black, 1);
 				else if (!p.Power.Active)
 					overlayFont.DrawTextWithContrast("On Hold",
-													 p.Pos + holdOffset,
-													 Color.White, Color.Black, 1);
+						p.Pos + holdOffset,
+						Color.White, Color.Black, 1);
 				else
 					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTime),
-													 p.Pos + timeOffset,
-													 Color.White, Color.Black, 1);
+						p.Pos + timeOffset,
+						Color.White, Color.Black, 1);
 			}
 		}
 
@@ -139,7 +138,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override void MouseEntered()
 		{
 			if (TooltipContainer == null) return;
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "palette", this }});
+			tooltipContainer.Value.SetTooltip(TooltipTemplate,
+				new WidgetArgs() {{ "palette", this }});
 		}
 
 		public override void MouseExited()

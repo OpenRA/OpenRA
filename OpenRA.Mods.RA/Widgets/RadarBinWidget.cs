@@ -45,8 +45,9 @@ namespace OpenRA.Mods.RA.Widgets
 		public float2 RadarOrigin { get { return radarOrigin; } }
 
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
-		public RadarBinWidget( [ObjectCreator.Param] World world )
+		public RadarBinWidget(World world)
 		{
 			this.world = world;
 			var size = Math.Max(world.Map.Bounds.Width, world.Map.Bounds.Height);

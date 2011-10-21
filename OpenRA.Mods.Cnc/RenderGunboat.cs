@@ -22,6 +22,8 @@ namespace OpenRA.Mods.RA.Render
 	class RenderGunboat : RenderSimple, INotifyDamageStateChanged
 	{
 		IFacing facing;
+		string lastDir = "left";
+		string lastDamage = "";
 
 		public RenderGunboat(Actor self)
 			: base(self, () => self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing : 0)
@@ -35,8 +37,6 @@ namespace OpenRA.Mods.RA.Render
 			anims.Add( "wake", new AnimationWithOffset( wake, offset, () => false ) { ZOffset = -2 } );
 		}
 
-		string lastDir = "left";
-		string lastDamage = "";
 		public override void Tick(Actor self)
 		{
 			var dir = (facing.Facing > 128) ? "right" : "left";

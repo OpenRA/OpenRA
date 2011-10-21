@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Cnc
 		EffectType to = EffectType.Black;
 
 		public CncMenuPaletteEffect(CncMenuPaletteEffectInfo info) { Info = info; }
+
 		public void Fade(EffectType type)
 		{
 			remainingFrames = Info.FadeLength;

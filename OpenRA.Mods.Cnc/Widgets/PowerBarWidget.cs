@@ -28,10 +28,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly PowerManager pm;
 
 		[ObjectCreator.UseCtor]
-		public PowerBarWidget( [ObjectCreator.Param] World world )
+		public PowerBarWidget(World world)
 		{
 			pm = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
-			tooltipContainer = new Lazy<TooltipContainerWidget>(() =>
+			tooltipContainer = Lazy.New(() =>
 				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 

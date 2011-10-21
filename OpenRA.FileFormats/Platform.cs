@@ -21,7 +21,7 @@ namespace OpenRA
 	{
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 
-		static Lazy<PlatformType> currentPlatform = new Lazy<PlatformType>(GetCurrentPlatform);
+		static Lazy<PlatformType> currentPlatform = Lazy.New(GetCurrentPlatform);
 
 		static PlatformType GetCurrentPlatform()
 		{

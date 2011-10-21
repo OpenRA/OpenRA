@@ -26,11 +26,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
 		Action afterInstall;
-
+		
 		[ObjectCreator.UseCtor]
-		public DownloadPackagesLogic([ObjectCreator.Param] Widget widget,
-									   [ObjectCreator.Param] Dictionary<string,string> installData,
-									   [ObjectCreator.Param] Action afterInstall)
+		public DownloadPackagesLogic(Widget widget, Dictionary<string,string> installData, Action afterInstall)
 		{
 			this.installData = installData;
 			this.afterInstall = afterInstall;

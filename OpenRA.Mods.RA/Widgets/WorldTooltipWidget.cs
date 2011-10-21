@@ -21,11 +21,9 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public int TooltipDelay = 10;
 		readonly World world;
+
 		[ObjectCreator.UseCtor]
-		public WorldTooltipWidget( [ObjectCreator.Param] World world )
-		{
-			this.world = world;
-		}
+		public WorldTooltipWidget(World world) { this.world = world; }
 
 		public override void Draw()
 		{

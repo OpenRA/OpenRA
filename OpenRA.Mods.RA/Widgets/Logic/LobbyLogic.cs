@@ -36,14 +36,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		internal LobbyLogic([ObjectCreator.Param( "widget" )] Widget lobby,
-							[ObjectCreator.Param] World world, // Shellmap world
-							[ObjectCreator.Param] OrderManager orderManager,
-							[ObjectCreator.Param] WorldRenderer worldRenderer)
+		internal LobbyLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
 			this.worldRenderer = worldRenderer;
-			this.lobby = lobby;
+			this.lobby = widget;
 			Game.BeforeGameStart += CloseWindow;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;

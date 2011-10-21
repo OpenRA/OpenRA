@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Widget gameRoot;
 
 		[ObjectCreator.UseCtor]
-		public IngameChromeLogic( [ObjectCreator.Param] World world )
+		public IngameChromeLogic(World world)
 		{
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;

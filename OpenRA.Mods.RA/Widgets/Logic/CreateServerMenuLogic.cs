@@ -18,9 +18,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class CreateServerMenuLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CreateServerMenuLogic( [ObjectCreator.Param( "widget" )] Widget cs )
+		public CreateServerMenuLogic(Widget widget)
 		{
 			var settings = Game.Settings;
+			var cs = widget;
 
 			cs.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => Widget.CloseWindow();
 			cs.GetWidget<ButtonWidget>("BUTTON_START").OnClick = () =>

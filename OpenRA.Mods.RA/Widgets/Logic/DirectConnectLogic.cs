@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class DirectConnectLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DirectConnectLogic( [ObjectCreator.Param] Widget widget )
+		public DirectConnectLogic(Widget widget)
 		{
 			var dc = widget.GetWidget("DIRECTCONNECT_BG");
 

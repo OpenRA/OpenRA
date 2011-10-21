@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class OrderButtonsChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public OrderButtonsChromeLogic( [ObjectCreator.Param] World world )
+		public OrderButtonsChromeLogic(World world)
 		{
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");

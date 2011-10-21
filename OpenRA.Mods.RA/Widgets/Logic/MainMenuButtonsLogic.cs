@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class MainMenuButtonsLogic
 	{
 		[ObjectCreator.UseCtor]
-		public MainMenuButtonsLogic([ObjectCreator.Param] Widget widget)
+		public MainMenuButtonsLogic(Widget widget)
 		{
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "PERF_BG" );
 			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => Widget.OpenWindow("JOINSERVER_BG");

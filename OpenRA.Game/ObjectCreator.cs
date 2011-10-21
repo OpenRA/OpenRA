@@ -78,8 +78,7 @@ namespace OpenRA
 			var a = new object[ p.Length ];
 			for( int i = 0 ; i < p.Length ; i++ )
 			{
-				var attr = p[ i ].GetCustomAttributes<ParamAttribute>().FirstOrDefault();
-				var key = (attr != null ? attr.ParamName : null) ?? p[i].Name;
+				var key = p[i].Name;
 				if ( !args.ContainsKey(key) ) throw new InvalidOperationException("ObjectCreator: key `{0}' not found".F(key));
 				a[ i ] = args[ key ];
 			}
@@ -94,22 +93,7 @@ namespace OpenRA
 				.Where(t => t != it && it.IsAssignableFrom(t)));
 		}
 
-		[AttributeUsage( AttributeTargets.Parameter )]
-		public class ParamAttribute : Attribute
-		{
-			public string ParamName { get; private set; }
-
-			public ParamAttribute() { }
-
-			public ParamAttribute( string paramName )
-			{
-				ParamName = paramName;
-			}
-		}
-
 		[AttributeUsage( AttributeTargets.Constructor )]
-		public class UseCtorAttribute : Attribute
-		{
-		}
+		public class UseCtorAttribute : Attribute {}
 	}
 }

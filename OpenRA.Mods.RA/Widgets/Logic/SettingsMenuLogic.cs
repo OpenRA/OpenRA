@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class SettingsMenuLogic
 	{
 		Widget bg;
+
 		public SettingsMenuLogic()
 		{
 			bg = Widget.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");

@@ -30,8 +30,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		public CncMusicPlayerLogic([ObjectCreator.Param] Widget widget,
-								   [ObjectCreator.Param] Action onExit)
+		public CncMusicPlayerLogic(Widget widget, Action onExit)
 		{
 			panel = widget.GetWidget("MUSIC_PANEL");
 
