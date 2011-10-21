@@ -21,6 +21,8 @@ namespace OpenRA.FileFormats
 			H = h; S = s; L = l; R = r;
 		}
 
+		public static readonly ColorRamp Empty = new ColorRamp(0,0,0,0);
+
 		/* returns a color along the Lum ramp */
 		public Color GetColor( float t )
 		{
@@ -57,6 +59,24 @@ namespace OpenRA.FileFormats
 			}
 
 			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
+		}
+
+		public static bool operator ==(ColorRamp me, ColorRamp other)
+		{
+			return (me.H == other.H && me.S == other.S && me.L == other.L && me.R == other.R );
+		}
+
+		public static bool operator !=(ColorRamp me, ColorRamp other) { return !(me == other); }
+
+		public override int GetHashCode() { return H.GetHashCode() ^ S.GetHashCode() ^ L.GetHashCode() ^ R.GetHashCode(); }
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
+
+			ColorRamp o = (ColorRamp)obj;
+			return o == this;
 		}
 	}
 }
