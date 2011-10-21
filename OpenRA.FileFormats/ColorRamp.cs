@@ -39,9 +39,7 @@ namespace OpenRA.FileFormats
 			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);
 			var p = 2 * l - q;
 
-			float[] trgb = { hk + 1 / 3.0f,
-							  hk,
-							  hk - 1/3.0f };
+			float[] trgb = { hk + 1 / 3.0f, hk, hk - 1/3.0f };
 			float[] rgb = { 0, 0, 0 };
 
 			for (int k = 0; k < 3; k++)
