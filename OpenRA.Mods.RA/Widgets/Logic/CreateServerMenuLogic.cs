@@ -8,10 +8,9 @@
  */
 #endregion
 
-using System.Linq;
 using System.Net;
-using OpenRA.Widgets;
 using OpenRA.GameRules;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				settings.Server.Name = cs.GetWidget<TextFieldWidget>("GAME_TITLE").Text;
 				settings.Server.ListenPort = int.Parse(cs.GetWidget<TextFieldWidget>("LISTEN_PORT").Text);
 				settings.Server.ExternalPort = int.Parse(cs.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text);
-				settings.Server.Map = Game.modData.AvailableMaps.FirstOrDefault(m => m.Value.Selectable).Key;
+				settings.Server.Map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 				settings.Save();
 
 				// Take a copy so that subsequent settings changes don't affect the server
