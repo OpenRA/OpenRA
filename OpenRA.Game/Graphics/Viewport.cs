@@ -18,14 +18,7 @@ using OpenRA.Support;
 namespace OpenRA.Graphics
 {
 	[Flags]
-	public enum ScrollDirection
-	{
-		None = 0,
-		Up = 1,
-		Left = 2,
-		Down = 4,
-		Right = 8
-	}
+	public enum ScrollDirection { None = 0, Up = 1, Left = 2, Down = 4, Right = 8 }
 
 	public class Viewport
 	{

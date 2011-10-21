@@ -36,14 +36,14 @@ namespace OpenRA.Widgets
 			var selbox = SelectionBox;
 			if (selbox == null)
 			{
-				foreach (var u in SelectActorsInBox(world, dragStart, dragStart))
+				foreach (var u in SelectActorsInBox(world, dragStart, dragStart, _ => true))
 					worldRenderer.DrawRollover(u);
 
 				return;
 			}
 
-			Game.Renderer.WorldLineRenderer.DrawRect( selbox.Value.First, selbox.Value.Second, Color.White );
-			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second))
+			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First, selbox.Value.Second, Color.White);
+			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second, _ => true))
 				worldRenderer.DrawRollover(u);
 		}
 
@@ -72,20 +72,17 @@ namespace OpenRA.Widgets
 					{
 						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 
-						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
-						var newSelection = world.FindUnits(Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
-									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom)))
-									.Where(a => a.HasTrait<Selectable>()
-										&& a.World.LocalShroud.IsVisible(a)
-										&& unit != null
-										&& a.Info.Name == unit.Info.Name
-										&& a.Owner == unit.Owner);
+						var visibleWorld = Game.viewport.ViewBounds(world);
+						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
+						var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
+						var newSelection = SelectActorsInBox(world, topLeft, bottomRight, 
+							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 
 						world.Selection.Combine(world, newSelection, true, false);
 					}
 					else
 					{
-						var newSelection = SelectActorsInBox(world, dragStart, xy);
+						var newSelection = SelectActorsInBox(world, dragStart, xy, _ => true);
 						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
@@ -160,10 +157,10 @@ namespace OpenRA.Widgets
 		}
 
 		static readonly Actor[] NoActors = {};
-		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b)
+		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
 			return world.FindUnits(a, b)
-				.Where( x => x.HasTrait<Selectable>() && world.LocalShroud.IsVisible(x) )
+				.Where( x => x.HasTrait<Selectable>() && world.LocalShroud.IsVisible(x) && cond(x) )
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )
