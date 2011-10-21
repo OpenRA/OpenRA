@@ -24,21 +24,19 @@ namespace OpenRA.Traits
 	public class DrawLineToTarget : IPostRenderSelection
 	{
 		DrawLineToTargetInfo Info;
-		public DrawLineToTarget(DrawLineToTargetInfo info)
-		{
-			this.Info = info;
-		}
-
 		Target target;
-		int lifetime;
 		Color c;
+		int lifetime;
+
+		public DrawLineToTarget(DrawLineToTargetInfo info) { this.Info = info; }
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
 			this.target = target;
+			this.c = c;
+
 			if (display)
 				lifetime = Info.Ticks;
-			this.c = c;
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
