@@ -10,11 +10,9 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Orders;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {

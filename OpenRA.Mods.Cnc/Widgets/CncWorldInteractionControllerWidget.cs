@@ -17,13 +17,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
+	public enum WorldTooltipType { None, Unexplored, Actor }
+
 	public class CncWorldInteractionControllerWidget : WorldInteractionControllerWidget
 	{
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
-		public enum WorldTooltipType { None, Unexplored, Actor }
 		public WorldTooltipType TooltipType { get; private set; }
 		public IToolTip ActorTooltip { get; private set; }
 

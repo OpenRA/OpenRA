@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,7 +16,6 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Widgets;
-using System;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
@@ -184,6 +184,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
 					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
 					.Select(p => p.Trait).ToArray();
+
 				foreach (var g in Groups.Values)
 					g.Update(allQueues);
 

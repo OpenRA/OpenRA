@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System.Linq;
 using System.Net;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic

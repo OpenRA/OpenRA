@@ -10,7 +10,6 @@
 
 using System;
 using OpenRA.Mods.RA;
-using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic

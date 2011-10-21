@@ -13,11 +13,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA;
+using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Widgets.Logic;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {

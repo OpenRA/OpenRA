@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Net;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
