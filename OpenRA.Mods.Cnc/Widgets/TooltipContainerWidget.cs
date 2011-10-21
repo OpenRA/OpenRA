@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		static readonly Action Nothing = () => {};
 		public int2 CursorOffset = new int2(0, 20);
 		public Action BeforeRender = Nothing;
-		public int TooltipDelay = 10;
+		public int TooltipDelay = 2;
 		Widget tooltip;
 
 		public TooltipContainerWidget()
