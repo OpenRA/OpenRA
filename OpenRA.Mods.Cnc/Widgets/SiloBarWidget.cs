@@ -60,17 +60,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var capacityFrac = pr.OreCapacity / scaleBy;
 			lastCapacityFrac = capacityFrac = float2.Lerp(lastCapacityFrac.GetValueOrDefault(capacityFrac), capacityFrac, .3f);
 
-			var color = Color.LimeGreen;
-			if (pr.Ore >= LowStorageThreshold*pr.OreCapacity)
-				color = Color.Orange;
-			if (pr.Ore == pr.OreCapacity)
-				color = Color.Red;
+			var color = GetBarColor();
 
 			var b = RenderBounds;
-			var rect = new RectangleF(b.X,
-									  b.Y + (1-capacityFrac)*b.Height,
-									  (float)b.Width,
-									  capacityFrac*b.Height);
+			var rect = new RectangleF(b.X, float2.Lerp( b.Bottom, b.Top, capacityFrac ),
+				(float)b.Width, capacityFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 
 			var indicator = ChromeProvider.GetImage("sidebar-bits", "right-indicator");
@@ -78,9 +72,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var storedFrac = pr.Ore / scaleBy;
 			lastStoredFrac = storedFrac = float2.Lerp(lastStoredFrac.GetValueOrDefault(storedFrac), storedFrac, .3f);
 
-			float2 pos = new float2(b.X, b.Y + (1-storedFrac)*b.Height - indicator.size.Y / 2);
+			float2 pos = new float2(b.X, float2.Lerp( b.Bottom, b.Top, storedFrac ) - indicator.size.Y / 2);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
+		}
+
+		Color GetBarColor()
+		{
+			if (pr.Ore == pr.OreCapacity) return Color.Red;
+			if (pr.Ore >= LowStorageThreshold * pr.OreCapacity) return Color.Orange;
+			return Color.LimeGreen;
 		}
 	}
 }
