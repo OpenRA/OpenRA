@@ -33,16 +33,11 @@ namespace OpenRA.Traits
 		int lifetime;
 		Color c;
 
-		public void SetTarget(Actor self, Target target, Color c)
+		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
 			this.target = target;
-			lifetime = Info.Ticks;
-			this.c = c;
-		}
-
-		public void SetTargetSilently(Actor self, Target target, Color c)
-		{
-			this.target = target;
+			if (display)
+				lifetime = Info.Ticks;
 			this.c = c;
 		}
 
@@ -96,10 +91,7 @@ namespace OpenRA.Traits
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
 				if (line != null)
-					if (display)
-						line.SetTarget(self, target, color);
-					else
-						line.SetTargetSilently(self, target, color);
+					line.SetTarget(self, target, color, display);
 			});
 		}
 	}
