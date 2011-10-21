@@ -21,7 +21,7 @@ namespace OpenRA.FileFormats
 	{
 		Dictionary<int, Color> remapColors;
 
-		public PlayerColorRemap(ColorRamp c, PaletteFormat fmt)
+		public PlayerColorRemap(PaletteFormat fmt, ColorRamp c)
 		{
 			var c1 = c.GetColor(0);
 			var c2 = c.GetColor(1); /* temptemp: this can be expressed better */

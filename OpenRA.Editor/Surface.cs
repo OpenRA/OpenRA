@@ -306,7 +306,7 @@ namespace OpenRA.Editor
 		{
 			var pr = Map.Players[name];
 			var pcpi = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
-			var remap = new PlayerColorRemap(pr.ColorRamp, pcpi.PaletteFormat);
+			var remap = new PlayerColorRemap(pcpi.PaletteFormat, pr.ColorRamp);
 			return new Palette(Palette, remap).AsSystemPalette();
 		}
 
