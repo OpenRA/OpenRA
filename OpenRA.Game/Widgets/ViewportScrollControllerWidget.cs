@@ -55,19 +55,21 @@ namespace OpenRA.Widgets
 			{ ScrollDirection.Right, "scroll-r" },
 		};
 
-		public override string GetCursor(int2 pos)
+		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
 		{
-			if (!Game.Settings.Game.ViewportEdgeScroll)
+			if (!Game.Settings.Game.ViewportEdgeScroll || Widget.MouseOverWidget != w)
 				return null;
 
 			var blockedDirections = Game.viewport.GetBlockedDirections();
 
 			foreach( var dir in directions )
-				if (Edge.Includes( dir.Key ))
+				if (edge.Includes( dir.Key ))
 					return dir.Value + (blockedDirections.Includes( dir.Key ) ? "-blocked" : "");
 
 			return null;
 		}
+
+		public override string GetCursor(int2 pos) { return GetScrollCursor(this, Edge, pos); }
 
 		public override bool LoseFocus (MouseInput mi)
 		{

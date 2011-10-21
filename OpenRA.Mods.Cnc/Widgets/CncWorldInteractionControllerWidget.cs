@@ -96,60 +96,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override string GetCursor(int2 pos)
 		{
-			if (!Game.Settings.Game.ViewportEdgeScroll || Widget.MouseOverWidget != this)
-				return base.GetCursor(pos);
-
-			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Left)){
-				ScrollDirection BlockedDirections = Game.viewport.GetBlockedDirections();
-				if(BlockedDirections.Includes(ScrollDirection.Up) && BlockedDirections.Includes(ScrollDirection.Left))
-					return "scroll-tl-blocked";
-				else
-					return "scroll-tl";
-			}
-			if (Edge.Includes(ScrollDirection.Up) && Edge.Includes(ScrollDirection.Right)){
-				ScrollDirection BlockedDirections = Game.viewport.GetBlockedDirections();
-				if (BlockedDirections.Includes(ScrollDirection.Up) && BlockedDirections.Includes(ScrollDirection.Right))
-					return "scroll-tr-blocked";
-				else
-					return "scroll-tr";
-			}
-			if (Edge.Includes(ScrollDirection.Down) && Edge.Includes(ScrollDirection.Left)){
-				ScrollDirection BlockedDirections = Game.viewport.GetBlockedDirections();
-				if (BlockedDirections.Includes(ScrollDirection.Down) && BlockedDirections.Includes(ScrollDirection.Left))
-					return "scroll-bl-blocked";
-				else
-					return "scroll-bl";
-			}
-			if (Edge.Includes(ScrollDirection.Down) && Edge.Includes(ScrollDirection.Right)){
-				ScrollDirection BlockedDirections = Game.viewport.GetBlockedDirections();
-				if (BlockedDirections.Includes(ScrollDirection.Down) && BlockedDirections.Includes(ScrollDirection.Right))
-					return "scroll-br-blocked";
-				else
-					return "scroll-br";
-			}
-
-			if (Edge.Includes(ScrollDirection.Up))
-				if (Game.viewport.GetBlockedDirections().Includes(ScrollDirection.Up))
-					return "scroll-t-blocked";
-				else
-					return "scroll-t";
-			if (Edge.Includes(ScrollDirection.Down))
-				if (Game.viewport.GetBlockedDirections().Includes(ScrollDirection.Down))
-					return "scroll-b-blocked";
-				else
-					return "scroll-b";
-			if (Edge.Includes(ScrollDirection.Left))
-				if (Game.viewport.GetBlockedDirections().Includes(ScrollDirection.Left))
-					return "scroll-l-blocked";
-				else
-					return "scroll-l";
-			if (Edge.Includes(ScrollDirection.Right))
-				if (Game.viewport.GetBlockedDirections().Includes(ScrollDirection.Right))
-					return "scroll-r-blocked";
-				else
-					return "scroll-r";
-
-			return base.GetCursor(pos);
+			return ViewportScrollControllerWidget.GetScrollCursor(this, Edge, pos)
+				?? base.GetCursor(pos);
 		}
 
 		public override bool LoseFocus(MouseInput mi)
