@@ -97,6 +97,8 @@ namespace OpenRA.GameRules
 
 		// Internal game settings
 		public int Timestep = 40;
+
+		public string ConnectTo = "";
 	}
 
 	public class Settings

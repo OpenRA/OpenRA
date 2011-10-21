@@ -98,6 +98,7 @@ namespace OpenRA.Mods.RA
 			};
 
 			TestAndContinue();
+			Game.JoinExternalGame();
 		}
 
 		void TestAndContinue()
