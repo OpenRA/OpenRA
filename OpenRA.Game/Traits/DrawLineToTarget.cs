@@ -57,19 +57,22 @@ namespace OpenRA.Traits
 			if (!target.IsValid)
 				return;
 
-			var p = target.CenterLocation;
 			var move = self.TraitOrDefault<IMove>();
 			var origin = move != null ? self.CenterLocation - new int2(0, move.Altitude) : self.CenterLocation;
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(origin, p, c, c);
-			for (bool b = false; !b; p = origin, b = true)
-			{
-				wlr.DrawLine(p + new float2(-1, -1), p + new float2(-1, 1), c, c);
-				wlr.DrawLine(p + new float2(-1, 1), p + new float2(1, 1), c, c);
-				wlr.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
-				wlr.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
-			}
+
+			wlr.DrawLine(origin, target.CenterLocation, c, c);
+			DrawTargetMarker(wlr, target.CenterLocation);
+			DrawTargetMarker(wlr, origin);
+		}
+
+		void DrawTargetMarker(LineRenderer wlr, float2 p)
+		{
+			wlr.DrawLine(p + new float2(-1, -1), p + new float2(-1, 1), c, c);
+			wlr.DrawLine(p + new float2(-1, 1), p + new float2(1, 1), c, c);
+			wlr.DrawLine(p + new float2(1, 1), p + new float2(1, -1), c, c);
+			wlr.DrawLine(p + new float2(1, -1), p + new float2(-1, -1), c, c);
 		}
 	}
 
