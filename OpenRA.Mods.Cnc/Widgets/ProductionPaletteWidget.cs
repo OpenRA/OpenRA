@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,7 +16,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
@@ -96,14 +94,15 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer == null) return;
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "palette", this }});
+			if (TooltipContainer != null)
+				tooltipContainer.Value.SetTooltip(TooltipTemplate,
+					new WidgetArgs() {{ "palette", this }});
 		}
 
 		public override void MouseExited()
 		{
-			if (TooltipContainer == null) return;
-			tooltipContainer.Value.RemoveTooltip();
+			if (TooltipContainer != null)
+				tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
