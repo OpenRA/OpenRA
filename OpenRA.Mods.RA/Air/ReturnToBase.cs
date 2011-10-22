@@ -35,8 +35,7 @@ namespace OpenRA.Mods.RA.Air
 
 		void Calculate(Actor self)
 		{
-			if (dest == null)
-				dest = ChooseAirfield(self);
+			if (dest == null || Reservable.IsReserved(dest)) dest = ChooseAirfield(self);
 
 			if (dest == null) return;
 
@@ -94,7 +93,17 @@ namespace OpenRA.Mods.RA.Air
 			if (IsCanceled) return NextActivity;
 			if (!isCalculated)
 				Calculate(self);
-			if (dest == null) return NextActivity;
+			if (dest == null)
+			{
+				var rearmBuildings = self.Info.Traits.Get<PlaneInfo>().RearmBuildings;
+				var nearestAfld = self.World.ActorsWithTrait<Reservable>()
+					.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
+					.Select(a => a.Actor)
+					.ClosestTo(self.CenterLocation);
+				
+				self.CancelActivity();
+				return Util.SequenceActivities(Fly.ToCell(nearestAfld.Location), new FlyCircle());
+			}
 
 			return Util.SequenceActivities(
 				Fly.ToPx(w1),
