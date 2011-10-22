@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "SupplyTruck")
+			if (order.OrderID == "DeliverSupplies")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SupplyTruck")
+			if (order.OrderString == "DeliverSupplies")
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
 				self.CancelActivity();
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 		class SupplyTruckOrderTargeter : UnitTraitOrderTargeter<Building>
 		{
 			public SupplyTruckOrderTargeter()
-				: base("SupplyTruck", 5, "enter", false, true)
+				: base("DeliverSupplies", 5, "enter", false, true)
 			{
 			}
 
