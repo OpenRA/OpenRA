@@ -18,17 +18,18 @@ namespace OpenRA.Traits
 	{
 		public readonly int Ticks = 60;
 
-		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
+		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.self, this); }
 	}
 
 	public class DrawLineToTarget : IPostRenderSelection
 	{
+		Actor self;
 		DrawLineToTargetInfo Info;
 		Target target;
 		Color c;
 		int lifetime;
 
-		public DrawLineToTarget(DrawLineToTargetInfo info) { this.Info = info; }
+		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info) { this.self = self; this.Info = info; }
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
@@ -39,7 +40,7 @@ namespace OpenRA.Traits
 				lifetime = Info.Ticks;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.IsIdle) return;
 

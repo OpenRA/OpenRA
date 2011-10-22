@@ -18,12 +18,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class MinelayerInfo : TraitInfo<Minelayer>
+	class MinelayerInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string Mine = "minv";
 		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
 
 		public readonly float MinefieldDepth = 1.5f;
+
+		public object Create(ActorInitializer init) { return new Minelayer(init.self); }
 	}
 
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
@@ -31,6 +33,9 @@ namespace OpenRA.Mods.RA
 		/* [Sync] when sync can cope with arrays! */
 		public int2[] minefield = null;
 		[Sync] int2 minefieldStart;
+		Actor self;
+
+		public Minelayer(Actor self) { this.self = self; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -138,7 +143,7 @@ namespace OpenRA.Mods.RA
 			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;

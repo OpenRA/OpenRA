@@ -14,22 +14,27 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class SelectableInfo : TraitInfo<Selectable>
+	public class SelectableInfo : ITraitInfo
 	{
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
 		[VoiceReference] public readonly string Voice = null;
+
+		public object Create(ActorInitializer init) { return new Selectable(init.self); }
 	}
 
 	public class Selectable : IPostRenderSelection
 	{
-		public void RenderAfterWorld (WorldRenderer wr, Actor self)
+		Actor self;
+
+		public Selectable(Actor self) { this.self = self; }
+
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			var bounds = self.Bounds.Value;
 
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
-			var xY = new float2(bounds.Left, bounds.Bottom);
 
 			wr.DrawSelectionBox(self, Color.White);
 			DrawHealthBar(self, xy, Xy);

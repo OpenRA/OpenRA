@@ -14,7 +14,10 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
-	public class SelectionDecorationsInfo : TraitInfo<SelectionDecorations> {}
+	public class SelectionDecorationsInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new SelectionDecorations(init.self); }
+	}
 
 	public class SelectionDecorations : IPostRenderSelection
 	{
@@ -22,7 +25,11 @@ namespace OpenRA.Traits
 		static readonly string[] pipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue" };
 		static readonly string[] tagStrings = { "", "tag-fake", "tag-primary" };
 
-		public void RenderAfterWorld (WorldRenderer wr, Actor self)
+		Actor self;
+
+		public SelectionDecorations(Actor self) { this.self = self; }
+
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			var bounds = self.Bounds.Value;
 

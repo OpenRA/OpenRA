@@ -102,7 +102,7 @@ namespace OpenRA.Graphics
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
 					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-						t.RenderAfterWorld(this, a);
+						t.RenderAfterWorld(this);
 
 			Game.Renderer.Flush();
 		}
