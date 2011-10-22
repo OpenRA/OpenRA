@@ -10,6 +10,7 @@
 			BlueTiberium: 40
 			Beach: 40
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
 		Voice: VehicleVoice
 	TargetableUnit:
@@ -43,6 +44,7 @@
 			BlueTiberium: 70
 			Beach: 70
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
 		Voice: VehicleVoice
 	TargetableUnit:
@@ -69,6 +71,7 @@
 		UseLocation: yes
 	TargetableUnit:
 		TargetTypes: Air
+	SelectionDecorations:
 	Selectable:
 		Voice: VehicleVoice
 	Helicopter:
@@ -106,6 +109,7 @@
 			BlueTiberium: 70
 				PathingCost: 1000
 			Beach: 80
+	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
@@ -135,6 +139,7 @@
 	-TakeCover:
 	-RenderInfantryProne:
 	AppearsOnRadar:
+	SelectionDecorations:
 	Selectable:
 		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
@@ -162,6 +167,7 @@
 ^Plane:
 	AppearsOnRadar:
 		UseLocation: yes
+	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
@@ -179,6 +185,7 @@
 		Crushes: crate
 		TerrainSpeeds:
 			Water: 100
+	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
@@ -193,6 +200,7 @@
 
 ^Building:
 	AppearsOnRadar:
+	SelectionDecorations:
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
@@ -304,6 +312,7 @@
 		CrushSound: sandbag2.aud
 	LineBuild:
 		Range: 8
+	SelectionDecorations:
 	Selectable:
 		Priority: 1
 	RenderBuildingWall:

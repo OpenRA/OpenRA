@@ -9,6 +9,7 @@
 			Ore: 70
 			Beach: 40
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
 		Voice: VehicleVoice
 	TargetableUnit:
@@ -43,6 +44,7 @@
 			Ore: 70
 			Beach: 70
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
 		Voice: VehicleVoice
 	TargetableUnit:
@@ -83,6 +85,7 @@
 			Road: 100
 			Ore: 80
 			Beach: 80
+	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
@@ -115,6 +118,7 @@
 		Crushes: crate
 		TerrainSpeeds:
 			Water: 100
+	SelectionDecorations:
 	Selectable:
 		Voice: ShipVoice
 	TargetableUnit:
@@ -138,6 +142,7 @@
 ^Plane:
 	AppearsOnRadar:
 		UseLocation: yes
+	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
 	TargetableAircraft:
@@ -169,6 +174,7 @@
 
 ^Building:
 	AppearsOnRadar:
+	SelectionDecorations:
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
@@ -216,6 +222,7 @@
 		CrushClasses: wall
 	LineBuild:
 		Range: 8
+	SelectionDecorations:
 	Selectable:
 		Priority: 1
 	TargetableBuilding:
