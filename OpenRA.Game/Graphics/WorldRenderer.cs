@@ -99,10 +99,11 @@ namespace OpenRA.Graphics
 			shroudRenderer.Draw( this );
 			Game.Renderer.DisableScissor();
 
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPostRenderSelection>())
-						t.RenderAfterWorld(this);
+			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)
+				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
+				.GroupBy(prs => prs.GetType()))
+				foreach (var t in g)
+					t.RenderAfterWorld(this);
 
 			Game.Renderer.Flush();
 		}
