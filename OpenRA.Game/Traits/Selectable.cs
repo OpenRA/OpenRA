@@ -18,8 +18,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
-		[VoiceReference]
-		public readonly string Voice = null;
+		[VoiceReference] public readonly string Voice = null;
 	}
 
 	public class Selectable : IPostRenderSelection
