@@ -58,22 +58,29 @@ namespace OpenRA.Mods.RA.Air
 
 			if (order.OrderString == "Enter")
 			{
-				if (Reservable.IsReserved(order.TargetActor)) return;
-				var res = order.TargetActor.TraitOrDefault<Reservable>();
-				if (res != null)
-					reservation = res.Reserve(order.TargetActor, self, this);
+				if (Reservable.IsReserved(order.TargetActor))
+				{
+					self.CancelActivity();
+					self.QueueActivity(new HeliReturn());
+				}
+				else
+				{
+					var res = order.TargetActor.TraitOrDefault<Reservable>();
+					if (res != null)
+						reservation = res.Reserve(order.TargetActor, self, this);
 
-				var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-				var offset = exit != null ? exit.SpawnOffset : int2.Zero;
+					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+					var offset = exit != null ? exit.SpawnOffset : int2.Zero;
 
-				self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
+					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
-				self.CancelActivity();
-				self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
-				self.QueueActivity(new Turn(Info.InitialFacing));
-				self.QueueActivity(new HeliLand(false));
+					self.CancelActivity();
+					self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
+					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new HeliLand(false));
 
-				QueueResupplyActivities(order.TargetActor);
+					QueueResupplyActivities(order.TargetActor);
+				}
 			}
 
 			if (order.OrderString == "ReturnToBase")

@@ -32,10 +32,16 @@ namespace OpenRA.Mods.RA.Air
 			var initialFacing = self.Info.Traits.Get<AircraftInfo>().InitialFacing;
 
 			if (dest == null)
-				return Util.SequenceActivities(
-					new Turn(initialFacing),
-					new HeliLand(true),
-					NextActivity);
+			{
+				var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
+				var nearestHpad = self.World.ActorsWithTrait<Reservable>()
+									.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
+									.Select(a => a.Actor)
+									.ClosestTo(self.CenterLocation);
+
+				self.CancelActivity();
+				return Util.SequenceActivities(new HeliFly(Util.CenterOfCell(nearestHpad.Location)));
+			}
 
 			var res = dest.TraitOrDefault<Reservable>();
 			var heli = self.Trait<Helicopter>();
