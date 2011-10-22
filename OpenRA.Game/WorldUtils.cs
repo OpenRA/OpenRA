@@ -117,13 +117,15 @@ namespace OpenRA
 
 		public static bool HasVoice(this Actor a)
 		{
-			return a.Info.Traits.Contains<SelectableInfo>() && a.Info.Traits.Get<SelectableInfo>().Voice != null;
+			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
+			return selectable != null && selectable.Voice != null;
 		}
 
 		public static VoiceInfo GetVoice(this Actor a)
 		{
-			if (!a.Info.Traits.Contains<SelectableInfo>()) return null;
-			var v = a.Info.Traits.Get<SelectableInfo>().Voice;
+			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
+			if (selectable == null) return null;
+			var v = selectable.Voice;
 			return (v == null) ? null : Rules.Voices[v];
 		}
 
