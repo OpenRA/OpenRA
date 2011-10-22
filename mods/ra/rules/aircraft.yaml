@@ -96,9 +96,7 @@ MIG:
 		Range: 12
 	AttackPlane:
 		PrimaryWeapon: Maverick
-		SecondaryWeapon: Maverick
-		PrimaryLocalOffset: -15,0,0,0,-10, -12,0,0,0,6
-		SecondaryLocalOffset: 15,0,0,0,10, 12,0,0,0,6
+		PrimaryLocalOffset: -15,0,0,0,-10, 15,0,0,0,6
 		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192

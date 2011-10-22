@@ -136,7 +136,7 @@ Maverick:
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 70
 		
 FireballLauncher:
 	ROF: 65
