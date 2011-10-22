@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Air
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
-				QueueResupplyActivities(self);
+				QueueResupplyActivities(airfield);
 			}
 			else
 			{
