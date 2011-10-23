@@ -1,3 +1,25 @@
+NEW:
+	Engine:
+		General performance improvements
+	Both Mods:
+		Added a Setup Default Players menu item to map editor
+		Server lobbies upon creation use the previously played map
+		Added support for a Game.ConnectTo argument which allows clients to direct connect to a server when game is launched
+	Red Alert:
+		Fixed a crash which occurred when playing an online game with Hard AI
+		Fixed a bug where planes could stack more than 1-per-airfield
+		Fixed a bug where planes would not rearm at airfields
+		Improved logic for sending planes and helicopters back to base
+		Changed MIG to fire 2 missiles per burst instead of 4
+		Changed HELI (longbow) to fire missiles in bursts of 2
+		Added a Show Shellmap setting
+		New Map: Bombardment Islands (Sprog)
+		New Map: Engagement (Nukem)
+		New Map: Man to Man (Nukem)
+	C&C:
+		Changed the bot spawn picker to work like RA's
+		Reduced delay of tooltips
+
 20111013:
 	Engine:
 		Fixed broken client IDs if players drop before the game starts
