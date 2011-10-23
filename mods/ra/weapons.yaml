@@ -292,6 +292,8 @@ HellfireAG:
 	ROF: 60
 	Range: 4
 	Report: MISSILE6
+	Burst: 2
+	BurstDelay: 1
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 30
@@ -322,6 +324,8 @@ HellfireAA:
 	ROF: 60
 	Range: 4
 	Report: MISSILE6
+	Burst: 2
+	BurstDelay: 1	
 	ValidTargets: Air
 	Projectile: Missile
 		Speed: 45
