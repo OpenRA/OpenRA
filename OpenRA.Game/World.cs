@@ -151,11 +151,18 @@ namespace OpenRA
 
 		// Will do bad things in multiplayer games
 		public bool EnableTick = true;
+		public bool IsShellmap = false;
+
+		bool ShouldTick()
+		{
+			if (!EnableTick) return false;
+			return !IsShellmap || Game.Settings.Game.ShowShellmap;
+		}
 
 		public void Tick()
 		{
 			// Todo: Expose this as an order so it can be synced
-			if (EnableTick)
+			if (ShouldTick())
 			{
 				using( new PerfSample("tick_idle") )
 					foreach( var ni in ActorsWithTrait<INotifyIdle>() )
@@ -171,7 +178,8 @@ namespace OpenRA
 					x.Trait.Tick( x.Actor );
 				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
 
-				effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
+				effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)",
+					Game.Settings.Debug.LongTickThreshold );
 			}
 
 			while (frameEndActions.Count != 0)

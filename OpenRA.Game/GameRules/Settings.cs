@@ -90,6 +90,7 @@ namespace OpenRA.GameRules
 		public string[] Mods = { "ra" };
 
 		public bool TeamChatToggle = false;
+		public bool ShowShellmap = true;
 
 		public bool ViewportEdgeScroll = true;
 		public MouseScrollType MouseScroll = MouseScrollType.Standard;

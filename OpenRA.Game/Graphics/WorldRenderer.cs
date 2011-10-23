@@ -67,6 +67,10 @@ namespace OpenRA.Graphics
 		public void Draw()
 		{
 			RefreshPalette();
+
+			if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
+				return;
+
 			var bounds = Game.viewport.ViewBounds(world);
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 

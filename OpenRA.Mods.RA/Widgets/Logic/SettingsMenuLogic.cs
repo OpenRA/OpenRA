@@ -65,6 +65,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
 			teamchatCheckbox.OnClick = () => Game.Settings.Game.TeamChatToggle ^= true;
 
+			var showShellmapCheckbox = general.GetWidget<CheckboxWidget>("SHOW_SHELLMAP");
+			showShellmapCheckbox.IsChecked = () => Game.Settings.Game.ShowShellmap;
+			showShellmapCheckbox.OnClick = () => Game.Settings.Game.ShowShellmap ^= true;
+
 			// Audio
 			var audio = bg.GetWidget("AUDIO_PANE");
 

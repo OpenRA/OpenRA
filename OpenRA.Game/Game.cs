@@ -205,13 +205,13 @@ namespace OpenRA
 		}
 
 		public static event Action BeforeGameStart = () => {};
-		internal static void StartGame(string mapUID)
+		internal static void StartGame(string mapUID, bool isShellmap)
 		{
 			BeforeGameStart();
 
 			var map = modData.PrepareMap(mapUID);
 			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
-			orderManager.world = new World(modData.Manifest, map, orderManager);
+			orderManager.world = new World(modData.Manifest, map, orderManager) { IsShellmap = isShellmap };
 			worldRenderer = new WorldRenderer(orderManager.world);
 
 			if (orderManager.GameStarted) return;
@@ -306,7 +306,7 @@ namespace OpenRA
 
 		public static void LoadShellMap()
 		{
-			StartGame(ChooseShellmap());
+			StartGame(ChooseShellmap(), true);
 		}
 
 		static string ChooseShellmap()
