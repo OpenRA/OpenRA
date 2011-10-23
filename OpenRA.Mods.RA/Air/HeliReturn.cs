@@ -39,8 +39,10 @@ namespace OpenRA.Mods.RA.Air
 									.Select(a => a.Actor)
 									.ClosestTo(self.CenterLocation);
 
-				self.CancelActivity();
-				return Util.SequenceActivities(new HeliFly(Util.CenterOfCell(nearestHpad.Location)));
+				if (nearestHpad == null)
+					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true), NextActivity);
+				else
+					return Util.SequenceActivities(new HeliFly(Util.CenterOfCell(nearestHpad.Location)));
 			}
 
 			var res = dest.TraitOrDefault<Reservable>();
