@@ -150,11 +150,12 @@ namespace OpenRA
 		public event Action<Actor> ActorRemoved = _ => { };
 
 		// Will do bad things in multiplayer games
-		public bool DisableTick = false;
+		public bool EnableTick = true;
+
 		public void Tick()
 		{
 			// Todo: Expose this as an order so it can be synced
-			if (!DisableTick)
+			if (EnableTick)
 			{
 				using( new PerfSample("tick_idle") )
 					foreach( var ni in ActorsWithTrait<INotifyIdle>() )
