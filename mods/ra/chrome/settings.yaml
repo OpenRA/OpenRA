@@ -3,14 +3,14 @@ Background@SETTINGS_MENU:
 	Logic:SettingsMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
-	Width: 450
+	Width: 540
 	Height: 350
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			Id:SETTINGS_LABEL_TITLE
 			X:0
 			Y:20
-			Width:450
+			Width:540
 			Height:25
 			Text:Settings
 			Align:Center
@@ -55,9 +55,17 @@ Background@SETTINGS_MENU:
 					Height:25
 					Text:Display
 					Font:Bold
+				Button@KEYS:
+					Id:KEYS
+					X:315
+					Y:0
+					Width:90
+					Height:25
+					Text:Keys
+					Font:Bold
 				Button@DEBUG:
 					Id:DEBUG
-					X:315
+					X:405
 					Y:0
 					Width:90
 					Height:25
@@ -219,6 +227,92 @@ Background@SETTINGS_MENU:
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
+		Container@KEYS_PANE:
+			Id:KEYS_PANE
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
+			Visible: true
+			Children:
+				Label@KEYS_ATTACKMOVEKEY_NAME:
+					Id:KEYS_ATTACKMOVEKEY_NAME
+					X:0
+					Y:10
+					Text: Attack Move:
+				TextField@ATTACKMOVEKEYNAME:
+					Id:ATTACKMOVEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:0
+					MaxLength:16
+				Label@KEYS_STOPKEY_NAME:
+					Id:KEYS_STOPKEY_NAME
+					X:0
+					Y:40
+					Text: Stop:
+				TextField@STOPKEYNAME:
+					Id:STOPKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:30
+					MaxLength:16
+				Label@KEYS_SCATTERKEY_NAME:
+					Id:KEYS_SCATTERKEY_NAME
+					X:0
+					Y:70
+					Text: Scatter:
+				TextField@SCATTERKEYNAME:
+					Id:SCATTERKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:60
+					MaxLength:16
+				Label@KEYS_DEPLOYKEY_NAME:
+					Id:KEYS_DEPLOYKEY_NAME
+					X:0
+					Y:100
+					Text: Deploy:
+				TextField@DEPLOYKEYNAME:
+					Id:DEPLOYKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:90
+					MaxLength:16
+				Label@KEYS_STANCECYCLEKEY_NAME:
+					Id:KEYS_STANCECYCLE_NAME
+					X:0
+					Y:130
+					Text: Stance Cycle:
+				TextField@STANCECYCLEKEYNAME:
+					Id:STANCECYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:120
+					MaxLength:16
+				Label@KEYS_BASECYCLEKEY_NAME:
+					Id:KEYS_BASECYCLEKEY_NAME
+					X:0
+					Y:160
+					Text: Base Cycle:
+				TextField@BASECYCLEKEYNAME:
+					Id:BASECYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:90
+					Y:150
+					MaxLength:16
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE
 			X:37

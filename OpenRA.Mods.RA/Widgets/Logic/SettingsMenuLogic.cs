@@ -25,14 +25,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			bg = Widget.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.GetWidget<ContainerWidget>("TAB_CONTAINER");
 
-			//Tabs
+			// Tabs
 			tabs.GetWidget<ButtonWidget>("GENERAL").OnClick = () => FlipToTab("GENERAL_PANE");
 			tabs.GetWidget<ButtonWidget>("AUDIO").OnClick = () => FlipToTab("AUDIO_PANE");
 			tabs.GetWidget<ButtonWidget>("DISPLAY").OnClick = () => FlipToTab("DISPLAY_PANE");
+			tabs.GetWidget<ButtonWidget>("KEYS").OnClick = () => FlipToTab("KEYS_PANE");
 			tabs.GetWidget<ButtonWidget>("DEBUG").OnClick = () => FlipToTab("DEBUG_PANE");
 			FlipToTab("GENERAL_PANE");
 
-			//General
+			// General
 			var general = bg.GetWidget("GENERAL_PANE");
 
 			var name = general.GetWidget<TextFieldWidget>("NAME");
@@ -46,19 +47,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 					Game.Settings.Player.Name = name.Text;
 			};
-            name.OnEnterKey = () => { name.LoseFocus(); return true; };
+			name.OnEnterKey = () => { name.LoseFocus(); return true; };
 
 			var edgescrollCheckbox = general.GetWidget<CheckboxWidget>("EDGE_SCROLL");
 			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
 			edgescrollCheckbox.OnClick = () => Game.Settings.Game.ViewportEdgeScroll ^= true;
 
-            var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
+			var edgeScrollSlider = general.GetWidget<SliderWidget>("EDGE_SCROLL_AMOUNT");
 			edgeScrollSlider.Value = Game.Settings.Game.ViewportEdgeScrollStep;
-            edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
+			edgeScrollSlider.OnChange += x => Game.Settings.Game.ViewportEdgeScrollStep = x;
 
 			var inversescroll = general.GetWidget<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
-			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
+			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ?
+												MouseScrollType.Standard : MouseScrollType.Inverted;
 
 			var teamchatCheckbox = general.GetWidget<CheckboxWidget>("TEAMCHAT_TOGGLE");
 			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
@@ -98,6 +100,89 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gs.PixelDouble ^= true;
 				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
+
+			// Keys
+			var keys = bg.GetWidget("KEYS_PANE");
+
+				// This is too much code:
+
+			var attackMoveKeyName = keys.GetWidget<TextFieldWidget>("ATTACKMOVEKEYNAME");
+			attackMoveKeyName.Text = Game.Settings.KeyConfig.AttackMoveKey;
+			attackMoveKeyName.OnLoseFocus = () =>
+			{
+				attackMoveKeyName.Text = attackMoveKeyName.Text.Trim();
+
+				if (attackMoveKeyName.Text.Length == 0)
+					attackMoveKeyName.Text = Game.Settings.KeyConfig.AttackMoveKey;
+				else
+					Game.Settings.KeyConfig.AttackMoveKey = attackMoveKeyName.Text;
+			};
+			attackMoveKeyName.OnEnterKey = () => { attackMoveKeyName.LoseFocus(); return true; };
+
+			var stopKeyName = keys.GetWidget<TextFieldWidget>("STOPKEYNAME");
+			stopKeyName.Text = Game.Settings.KeyConfig.StopKey;
+			stopKeyName.OnLoseFocus = () =>
+			{
+				stopKeyName.Text = stopKeyName.Text.Trim();
+
+				if (stopKeyName.Text.Length == 0)
+					stopKeyName.Text = Game.Settings.KeyConfig.StopKey;
+				else
+					Game.Settings.KeyConfig.StopKey = stopKeyName.Text;
+			};
+			stopKeyName.OnEnterKey = () => { stopKeyName.LoseFocus(); return true; };
+
+			var scatterKeyName = keys.GetWidget<TextFieldWidget>("SCATTERKEYNAME");
+			scatterKeyName.Text = Game.Settings.KeyConfig.ScatterKey;
+			scatterKeyName.OnLoseFocus = () =>
+			{
+				scatterKeyName.Text = scatterKeyName.Text.Trim();
+
+				if (scatterKeyName.Text.Length == 0)
+					scatterKeyName.Text = Game.Settings.KeyConfig.ScatterKey;
+				else
+					Game.Settings.KeyConfig.ScatterKey = scatterKeyName.Text;
+			};
+			scatterKeyName.OnEnterKey = () => { scatterKeyName.LoseFocus(); return true; };
+
+			var deployKeyName = keys.GetWidget<TextFieldWidget>("DEPLOYKEYNAME");
+			deployKeyName.Text = Game.Settings.KeyConfig.DeployKey;
+			deployKeyName.OnLoseFocus = () =>
+			{
+				deployKeyName.Text = deployKeyName.Text.Trim();
+
+				if (deployKeyName.Text.Length == 0)
+					deployKeyName.Text = Game.Settings.KeyConfig.DeployKey;
+				else
+					Game.Settings.KeyConfig.DeployKey = deployKeyName.Text;
+			};
+			deployKeyName.OnEnterKey = () => { deployKeyName.LoseFocus(); return true; };
+
+			var stanceCycleKeyName = keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME");
+			stanceCycleKeyName.Text = Game.Settings.KeyConfig.StanceCycleKey;
+			stanceCycleKeyName.OnLoseFocus = () =>
+			{
+				stanceCycleKeyName.Text = stanceCycleKeyName.Text.Trim();
+
+				if (stanceCycleKeyName.Text.Length == 0)
+					stanceCycleKeyName.Text = Game.Settings.KeyConfig.StanceCycleKey;
+				else
+					Game.Settings.KeyConfig.StanceCycleKey = stanceCycleKeyName.Text;
+			};
+			stanceCycleKeyName.OnEnterKey = () => { stanceCycleKeyName.LoseFocus(); return true; };
+
+			var baseCycleKeyName = keys.GetWidget<TextFieldWidget>("BASECYCLEKEYNAME");
+			baseCycleKeyName.Text = Game.Settings.KeyConfig.BaseCycleKey;
+			baseCycleKeyName.OnLoseFocus = () =>
+			{
+				baseCycleKeyName.Text = baseCycleKeyName.Text.Trim();
+
+				if (baseCycleKeyName.Text.Length == 0)
+					baseCycleKeyName.Text = Game.Settings.KeyConfig.BaseCycleKey;
+				else
+					Game.Settings.KeyConfig.BaseCycleKey = baseCycleKeyName.Text;
+			};
+			baseCycleKeyName.OnEnterKey = () => { baseCycleKeyName.LoseFocus(); return true; };
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
