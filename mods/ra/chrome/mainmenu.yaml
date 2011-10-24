@@ -279,20 +279,3 @@ Background@MUSIC_MENU:
 			Width:100
 			Height:20
 			Text:Loop
-Background@IRCPOINTER_BG:
-	Id:MAINMENU_BG
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:1000
-	Height:50
-	Visible:true
-	Children:
-		Label@IRCPOINTER_LABEL_TITLE:
-			Id:IRCPOINTER_LABEL_TITLE
-			X:0
-			Y:20
-			Width:250
-			Height:25
-			Text:If you are wondering, where all those OpenRA Players gather, feel free to visit...
-			Align:Center
-			Font:Bold
