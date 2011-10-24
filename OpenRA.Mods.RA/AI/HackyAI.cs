@@ -157,16 +157,16 @@ namespace OpenRA.Mods.RA.AI
 			return cells.All(c => bi.GetBuildingAt(c) == null);
 		}
 
-		public int2? ChooseBuildLocation(ProductionItem item)
+		public int2? ChooseBuildLocation(string actorType)
 		{
-			var bi = Rules.Info[item.Item].Traits.Get<BuildingInfo>();
+			var bi = Rules.Info[actorType].Traits.Get<BuildingInfo>();
 
 			for (var k = 0; k < MaxBaseDistance; k++)
 				foreach (var t in world.FindTilesInCircle(baseCenter, k))
-					if (world.CanPlaceBuilding(item.Item, bi, t, null))
-						if (bi.IsCloseEnoughToBase(world, p, item.Item, t))
+					if (world.CanPlaceBuilding(actorType, bi, t, null))
+						if (bi.IsCloseEnoughToBase(world, p, actorType, t))
 							if (NoBuildingsUnder(Util.ExpandFootprint(
-								FootprintUtils.Tiles( item.Item, bi, t ), false)))
+								FootprintUtils.Tiles(actorType, bi, t), false)))
 								return t;
 
 			return null;		// i don't know where to put it.
