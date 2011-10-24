@@ -104,85 +104,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Keys
 			var keys = bg.GetWidget("KEYS_PANE");
 
-				// This is too much code:
+			var keyConfig = Game.Settings.KeyConfig;
 
-			var attackMoveKeyName = keys.GetWidget<TextFieldWidget>("ATTACKMOVEKEYNAME");
-			attackMoveKeyName.Text = Game.Settings.KeyConfig.AttackMoveKey;
-			attackMoveKeyName.OnLoseFocus = () =>
-			{
-				attackMoveKeyName.Text = attackMoveKeyName.Text.Trim();
-
-				if (attackMoveKeyName.Text.Length == 0)
-					attackMoveKeyName.Text = Game.Settings.KeyConfig.AttackMoveKey;
-				else
-					Game.Settings.KeyConfig.AttackMoveKey = attackMoveKeyName.Text;
-			};
-			attackMoveKeyName.OnEnterKey = () => { attackMoveKeyName.LoseFocus(); return true; };
-
-			var stopKeyName = keys.GetWidget<TextFieldWidget>("STOPKEYNAME");
-			stopKeyName.Text = Game.Settings.KeyConfig.StopKey;
-			stopKeyName.OnLoseFocus = () =>
-			{
-				stopKeyName.Text = stopKeyName.Text.Trim();
-
-				if (stopKeyName.Text.Length == 0)
-					stopKeyName.Text = Game.Settings.KeyConfig.StopKey;
-				else
-					Game.Settings.KeyConfig.StopKey = stopKeyName.Text;
-			};
-			stopKeyName.OnEnterKey = () => { stopKeyName.LoseFocus(); return true; };
-
-			var scatterKeyName = keys.GetWidget<TextFieldWidget>("SCATTERKEYNAME");
-			scatterKeyName.Text = Game.Settings.KeyConfig.ScatterKey;
-			scatterKeyName.OnLoseFocus = () =>
-			{
-				scatterKeyName.Text = scatterKeyName.Text.Trim();
-
-				if (scatterKeyName.Text.Length == 0)
-					scatterKeyName.Text = Game.Settings.KeyConfig.ScatterKey;
-				else
-					Game.Settings.KeyConfig.ScatterKey = scatterKeyName.Text;
-			};
-			scatterKeyName.OnEnterKey = () => { scatterKeyName.LoseFocus(); return true; };
-
-			var deployKeyName = keys.GetWidget<TextFieldWidget>("DEPLOYKEYNAME");
-			deployKeyName.Text = Game.Settings.KeyConfig.DeployKey;
-			deployKeyName.OnLoseFocus = () =>
-			{
-				deployKeyName.Text = deployKeyName.Text.Trim();
-
-				if (deployKeyName.Text.Length == 0)
-					deployKeyName.Text = Game.Settings.KeyConfig.DeployKey;
-				else
-					Game.Settings.KeyConfig.DeployKey = deployKeyName.Text;
-			};
-			deployKeyName.OnEnterKey = () => { deployKeyName.LoseFocus(); return true; };
-
-			var stanceCycleKeyName = keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME");
-			stanceCycleKeyName.Text = Game.Settings.KeyConfig.StanceCycleKey;
-			stanceCycleKeyName.OnLoseFocus = () =>
-			{
-				stanceCycleKeyName.Text = stanceCycleKeyName.Text.Trim();
-
-				if (stanceCycleKeyName.Text.Length == 0)
-					stanceCycleKeyName.Text = Game.Settings.KeyConfig.StanceCycleKey;
-				else
-					Game.Settings.KeyConfig.StanceCycleKey = stanceCycleKeyName.Text;
-			};
-			stanceCycleKeyName.OnEnterKey = () => { stanceCycleKeyName.LoseFocus(); return true; };
-
-			var baseCycleKeyName = keys.GetWidget<TextFieldWidget>("BASECYCLEKEYNAME");
-			baseCycleKeyName.Text = Game.Settings.KeyConfig.BaseCycleKey;
-			baseCycleKeyName.OnLoseFocus = () =>
-			{
-				baseCycleKeyName.Text = baseCycleKeyName.Text.Trim();
-
-				if (baseCycleKeyName.Text.Length == 0)
-					baseCycleKeyName.Text = Game.Settings.KeyConfig.BaseCycleKey;
-				else
-					Game.Settings.KeyConfig.BaseCycleKey = baseCycleKeyName.Text;
-			};
-			baseCycleKeyName.OnEnterKey = () => { baseCycleKeyName.LoseFocus(); return true; };
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("ATTACKMOVEKEYNAME"),
+			() => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STOPKEYNAME"),
+			() => keyConfig.StopKey, k => keyConfig.StopKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("SCATTERKEYNAME"),
+			() => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DEPLOYKEYNAME"),
+			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
+			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("BASECYCLEKEYNAME"),
+			() => keyConfig.BaseCycleKey, k => keyConfig.BaseCycleKey = k );
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
@@ -238,6 +173,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
 			return true;
+		}
+
+		void SetupKeyBinding(TextFieldWidget textBox, Func<string> getValue, Action<string> setValue)
+		{
+			textBox.Text = getValue();
+
+			textBox.OnLoseFocus = () =>
+			{
+				textBox.Text.Trim();
+				if (textBox.Text.Length == 0)
+				textBox.Text = getValue();
+				else
+				setValue(textBox.Text);
+			};
+
+			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
 		}
 	}
 }
