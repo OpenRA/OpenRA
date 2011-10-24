@@ -200,7 +200,6 @@
     <Compile Include="GainsExperience.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
-    <Compile Include="HackyAI.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HarvesterHuskModifier.cs" />
     <Compile Include="Husk.cs" />
@@ -362,6 +361,8 @@
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Widgets\Logic\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
+    <Compile Include="AI\BaseBuilder.cs" />
+    <Compile Include="AI\HackyAI.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -388,4 +389,7 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="AI\" />
+  </ItemGroup>
 </Project>

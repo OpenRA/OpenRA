@@ -17,7 +17,6 @@ using OpenRA.Traits;
 using OpenRA.Mods.RA.Activities;
 using XRandom = OpenRA.Thirdparty.Random;
 
-
 //TODO:
 // effectively clear the area around the production buildings' spawn points.
 // don't spam the build unit button, only queue one unit then wait for the backoff period.
@@ -28,7 +27,7 @@ using XRandom = OpenRA.Thirdparty.Random;
 // explore spawn points methodically
 // once you find a player, attack the player instead of spawn points.
 
-namespace OpenRA.Mods.RA
+namespace OpenRA.Mods.RA.AI
 {
 	class HackyAIInfo : IBotInfo, ITraitInfo
 	{
@@ -63,8 +62,8 @@ namespace OpenRA.Mods.RA
 	class HackyAI : ITick, IBot, INotifyDamage
 	{
 		bool enabled;
-		int ticks;
-		Player p;
+		public int ticks;
+		public Player p;
 		PowerManager playerPower;
 		readonly BuildingInfo rallypointTestBuilding;		// temporary hack
 
@@ -72,7 +71,9 @@ namespace OpenRA.Mods.RA
 		XRandom random = new XRandom(); //we do not use the synced random number generator.
 		BaseBuilder[] builders;
 
-		World world { get { return p.PlayerActor.World; } }
+		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
+
+		public World world { get { return p.PlayerActor.World; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
 		readonly HackyAIInfo Info;
@@ -156,7 +157,7 @@ namespace OpenRA.Mods.RA
 			return cells.All(c => bi.GetBuildingAt(c) == null);
 		}
 
-		int2? ChooseBuildLocation(ProductionItem item)
+		public int2? ChooseBuildLocation(ProductionItem item)
 		{
 			var bi = Rules.Info[item.Item].Traits.Get<BuildingInfo>();
 
@@ -170,8 +171,6 @@ namespace OpenRA.Mods.RA
 
 			return null;		// i don't know where to put it.
 		}
-
-		const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
 		public void Tick(Actor self)
 		{
@@ -426,86 +425,6 @@ namespace OpenRA.Mods.RA
 			var unit = ChooseRandomUnitToBuild(queue);
 			if (unit != null && Info.UnitsToBuild.Any( u => u.Key == unit.Name ))
 				world.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
-		}
-
-		class BaseBuilder
-		{
-			enum BuildState	{ ChooseItem, WaitForProduction, WaitForFeedback }
-
-			BuildState state = BuildState.WaitForFeedback;
-			string category;
-			HackyAI ai;
-			int lastThinkTick;
-			Func<ProductionQueue, ActorInfo> chooseItem;
-
-			public BaseBuilder(HackyAI ai, string category, Func<ProductionQueue, ActorInfo> chooseItem)
-			{
-				this.ai = ai;
-				this.category = category;
-				this.chooseItem = chooseItem;
-			}
-
-			public void Tick()
-			{
-				// Pick a free queue
-				var queue = ai.FindQueues( category ).FirstOrDefault();
-				if (queue == null)
-					return;
-
-				var currentBuilding = queue.CurrentItem();
-				switch (state)
-				{
-					case BuildState.ChooseItem:
-						{
-							var item = chooseItem(queue);
-							if (item == null)
-							{
-								state = BuildState.WaitForFeedback;
-								lastThinkTick = ai.ticks;
-							}
-							else
-							{
-								BotDebug("AI: Starting production of {0}".F(item.Name));
-								state = BuildState.WaitForProduction;
-								ai.world.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
-							}
-						}
-						break;
-
-					case BuildState.WaitForProduction:
-						if (currentBuilding == null) return;	/* let it happen.. */
-
-						else if (currentBuilding.Paused)
-							ai.world.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
-						else if (currentBuilding.Done)
-						{
-							state = BuildState.WaitForFeedback;
-							lastThinkTick = ai.ticks;
-
-							/* place the building */
-							var location = ai.ChooseBuildLocation(currentBuilding);
-							if (location == null)
-							{
-								BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));
-								ai.world.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
-							}
-							else
-							{
-								ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, false)
-									{
-										TargetLocation = location.Value,
-										TargetString = currentBuilding.Item
-									});
-							}
-						}
-						break;
-
-					case BuildState.WaitForFeedback:
-						if (ai.ticks - lastThinkTick > feedbackTime)
-							state = BuildState.ChooseItem;
-						break;
-				}
-			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
