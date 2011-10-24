@@ -287,7 +287,6 @@
     <Compile Include="Repairable.cs" />
     <Compile Include="RepairableNear.cs" />
     <Compile Include="RepairsUnits.cs" />
-    <Compile Include="ReplaceWithActor.cs" />
     <Compile Include="Reservable.cs" />
     <Compile Include="ScaredyCat.cs" />
     <Compile Include="Scripting\Media.cs" />
