@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 	public class Reservable : ITick, INotifyKilled, INotifyCapture, INotifySold
 	{
 		Actor reservedFor;
-		Aircraft herp;
+		Aircraft reservedForAircraft;
 
 		public void Tick(Actor self)
 		{
@@ -30,16 +30,16 @@ namespace OpenRA.Mods.RA
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
-		public IDisposable Reserve(Actor self, Actor forActor, Aircraft derp)
+		public IDisposable Reserve(Actor self, Actor forActor, Aircraft forAircraft)
 		{
 			reservedFor = forActor;
-			herp = derp;
+			reservedForAircraft = forAircraft;
 
 			// NOTE: we really dont care about the GC eating DisposableActions that apply to a world *other* than
 			// the one we're playing in.
 
 			return new DisposableAction(
-				() => {reservedFor = null; herp = null;},
+				() => { reservedFor = null; reservedForAircraft = null; },
 				() => Game.RunAfterTick(
 					() => { if (Game.IsCurrentWorld( self.World )) throw new InvalidOperationException(
 						"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})"
@@ -54,21 +54,22 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (herp != null)
-				herp.UnReserve();
+			if (reservedForAircraft != null)
+				reservedForAircraft.UnReserve();
 		}
 
 		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			if (herp != null)
-				herp.UnReserve();
+			if (reservedForAircraft != null)
+				reservedForAircraft.UnReserve();
 		}
 
 		public void Selling (Actor self) { Sold(self); }
+
 		public void Sold (Actor self)
 		{
-			if (herp != null)
-				herp.UnReserve();
+			if (reservedForAircraft != null)
+				reservedForAircraft.UnReserve();
 		}
 	}
 }
