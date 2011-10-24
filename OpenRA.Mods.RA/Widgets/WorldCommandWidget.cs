@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -23,12 +23,6 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public World World { get { return OrderManager.world; } }
 
-		public string AttackMoveKey = "a";
-		public string StopKey = "s";
-		public string ScatterKey = "x";
-		public string DeployKey = "f";
-		public string StanceCycleKey = "z";
-		public string BaseCycleKey = "backspace";
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -52,25 +46,25 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == BaseCycleKey)
-                    return CycleBases();
-
 				if (!World.Selection.Actors.Any())
 					return false;
 
-            	if (e.KeyName == AttackMoveKey)
+				if (e.KeyName == Game.Settings.KeyConfig.BaseCycleKey)
+					return CycleBases();
+
+				if (e.KeyName == Game.Settings.KeyConfig.AttackMoveKey)
 					return PerformAttackMove();
 
-				if (e.KeyName == StopKey)
+				if (e.KeyName == Game.Settings.KeyConfig.StopKey)
 					return PerformStop();
 
-				if (e.KeyName == ScatterKey)
+				if (e.KeyName == Game.Settings.KeyConfig.ScatterKey)
 					return PerformScatter();
 
-				if (e.KeyName == DeployKey)
+				if (e.KeyName == Game.Settings.KeyConfig.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == StanceCycleKey)
+				if (e.KeyName == Game.Settings.KeyConfig.StanceCycleKey)
 					return PerformStanceCycle();
 			}
 
