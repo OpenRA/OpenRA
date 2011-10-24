@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 	/* a pile of hacks, which control a local player on the host. */
 
-	class HackyAI : ITick, IBot
+	class HackyAI : ITick, IBot, INotifyDamage
 	{
 		bool enabled;
 		int ticks;
@@ -506,6 +506,20 @@ namespace OpenRA.Mods.RA
 						break;
 				}
 			}
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (!enabled) return;
+
+			if (self.HasTrait<RepairableBuilding>())
+				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light)
+				{
+					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
+						self, e.PreviousDamageState, e.DamageState);
+					world.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
+						{ TargetActor = self });
+				}
 		}
 	}
 }

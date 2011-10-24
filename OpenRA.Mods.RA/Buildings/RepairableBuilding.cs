@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Buildings
 				--remainingTicks;
 		}
 	}
+
 	public class AllowsBuildingRepairInfo : TraitInfo<AllowsBuildingRepair> { }
 	public class AllowsBuildingRepair { }
-
 }

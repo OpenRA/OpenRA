@@ -30,6 +30,5 @@ namespace OpenRA.Mods.RA
 						building.Trait<RepairableBuilding>().RepairBuilding(building, self.Owner);
 			}
 		}
-
 	}
 }
