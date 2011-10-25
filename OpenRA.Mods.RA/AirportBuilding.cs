@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	/* tag trait for "bases": mcv/fact */
-	public class AirportBuildingInfo : TraitInfo<BaseBuilding> { }
+	/* tag trait for "airports": hpad/afld */
+	public class AirportBuildingInfo : TraitInfo<AirportBuilding> { }
 	public class AirportBuilding { }
 }

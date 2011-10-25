@@ -117,6 +117,7 @@ SPEN:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	DockBuilding:
 
 SYRD:
 	Inherits: ^Building
@@ -172,6 +173,7 @@ SYRD:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	DockBuilding:
 
 IRON:
 	CanPowerDown:
@@ -602,6 +604,7 @@ WEAP:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	WarFactoryBuilding:
 
 FACT:
 	Inherits: ^Building
@@ -733,6 +736,7 @@ HPAD:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
+	AirportBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -783,6 +787,7 @@ AFLD:
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	SupportPowerChargeBar:
+	AirportBuilding:
 	
 POWR:
 	Inherits: ^Building

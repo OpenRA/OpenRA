@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	/* tag trait for "bases": mcv/fact */
-	public class DockBuildingInfo : TraitInfo<BaseBuilding> { }
+	/* tag trait for "docks": spen/syrd */
+	public class DockBuildingInfo : TraitInfo<DockBuilding> { }
 	public class DockBuilding { }
 }

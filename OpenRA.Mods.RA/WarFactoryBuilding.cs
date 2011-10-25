@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	/* tag trait for "bases": mcv/fact */
+	/* tag trait for "war factories": weap */
 	public class WarFactoryBuildingInfo : TraitInfo<WarFactoryBuilding> { }
 	public class WarFactoryBuilding { }
 }

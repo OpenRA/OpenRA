@@ -118,6 +118,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("BASECYCLEKEYNAME"),
 			() => keyConfig.BaseCycleKey, k => keyConfig.BaseCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("BARRACKSCYCLEKEYNAME"),
+			() => keyConfig.BarracksCycleKey, k => keyConfig.BarracksCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("WARFACTORYCYCLEKEYNAME"),
+			() => keyConfig.WarFactoryCycleKey, k => keyConfig.WarFactoryCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DOCKCYCLEKEYNAME"),
+			() => keyConfig.DockCycleKey, k => keyConfig.DockCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("AIRPORTCYCLEKEYNAME"),
+			() => keyConfig.AirportCycleKey, k => keyConfig.AirportCycleKey = k );
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");

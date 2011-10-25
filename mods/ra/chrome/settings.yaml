@@ -4,7 +4,7 @@ Background@SETTINGS_MENU:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 540
-	Height: 350
+	Height: 500
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			Id:SETTINGS_LABEL_TITLE
@@ -245,7 +245,7 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:0
 					MaxLength:16
 				Label@KEYS_STOPKEY_NAME:
@@ -258,7 +258,7 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:30
 					MaxLength:16
 				Label@KEYS_SCATTERKEY_NAME:
@@ -271,7 +271,7 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:60
 					MaxLength:16
 				Label@KEYS_DEPLOYKEY_NAME:
@@ -284,34 +284,86 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:90
 					MaxLength:16
 				Label@KEYS_STANCECYCLEKEY_NAME:
 					Id:KEYS_STANCECYCLE_NAME
 					X:0
 					Y:130
-					Text: Stance Cycle:
+					Text: Cycle Stance:
 				TextField@STANCECYCLEKEYNAME:
 					Id:STANCECYCLEKEYNAME
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:120
 					MaxLength:16
 				Label@KEYS_BASECYCLEKEY_NAME:
 					Id:KEYS_BASECYCLEKEY_NAME
 					X:0
 					Y:160
-					Text: Base Cycle:
+					Text: Cycle Base:
 				TextField@BASECYCLEKEYNAME:
 					Id:BASECYCLEKEYNAME
 					Text:Name
 					Width:139
 					Height:25
-					X:90
+					X:160
 					Y:150
+					MaxLength:16
+				Label@KEYS_BARRACKSCYCLEKEY_NAME:
+					Id:KEYS_BARRACKSCYCLEKEY_NAME
+					X:0
+					Y:190
+					Text: Cycle Barracks:
+				TextField@BARRACKSCYCLEKEYNAME:
+					Id:BARRACKSCYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:160
+					Y:180
+					MaxLength:16
+				Label@KEYS_WARFACTORYCYCLEKEY_NAME:
+					Id:KEYS_WARFACTORYCYCLEKEY_NAME
+					X:0
+					Y:220
+					Text: Cycle War Factories:
+				TextField@WARFACTORYCYCLEKEYNAME:
+					Id:WARFACTORYCYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:160
+					Y:210
+					MaxLength:16
+				Label@KEYS_DOCKCYCLEKEY_NAME:
+					Id:KEYS_DOCKCYCLEKEY_NAME
+					X:0
+					Y:250
+					Text: Cycle Docks:
+				TextField@DOCKCYCLEKEYNAME:
+					Id:DOCKCYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:160
+					Y:240
+					MaxLength:16
+				Label@KEYS_AIRPORTCYCLEKEY_NAME:
+					Id:KEYS_AIRPORTCYCLEKEY_NAME
+					X:0
+					Y:280
+					Text: Cycle Airports:
+				TextField@AIRPORTCYCLEKEYNAME:
+					Id:AIRPORTCYCLEKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:160
+					Y:270
 					MaxLength:16
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE
