@@ -107,6 +107,7 @@ namespace OpenRA.GameRules
 		public string DeployKey = "f";
 		public string StanceCycleKey = "z";
 		public string BaseCycleKey = "backspace";
+		public string BarracksCycleKey = "q";
 	}
 
 	public class Settings

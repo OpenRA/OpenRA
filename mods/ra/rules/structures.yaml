@@ -625,14 +625,14 @@ FACT:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
-	BaseBuilding:
 	AllowsBuildingRepair:
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 96
 	ProductionBar:
-		
+	BaseBuilding:
+
 PROC:
 	Inherits: ^Building
 	Buildable:
@@ -903,6 +903,7 @@ BARR:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	BarracksBuilding:
 
 TENT:
 	Inherits: ^Building
@@ -940,6 +941,7 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	BarracksBuilding:
 
 FIX:
 	Inherits: ^Building

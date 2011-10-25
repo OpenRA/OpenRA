@@ -52,6 +52,9 @@ namespace OpenRA.Mods.RA.Widgets
 				if (e.KeyName == Game.Settings.KeyConfig.BaseCycleKey)
 					return CycleBases();
 
+				if (e.KeyName == Game.Settings.KeyConfig.BarracksCycleKey)
+					return CycleBarracks();
+
 				if (e.KeyName == Game.Settings.KeyConfig.AttackMoveKey)
 					return PerformAttackMove();
 
@@ -136,24 +139,46 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-        bool CycleBases()
-        {
-            var bases = World.ActorsWithTrait<BaseBuilding>()
-                .Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-            if (!bases.Any()) return true;
+		bool CycleBases()
+		{
+			var bases = World.ActorsWithTrait<BaseBuilding>()
+					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
+			if (!bases.Any()) return true;
 
-            var next = bases
-                .Select(b => b.Actor)
-                .SkipWhile(b => !World.Selection.Actors.Contains(b))
-                .Skip(1)
-                .FirstOrDefault();
+			var next = bases
+				.Select(b => b.Actor)
+				.SkipWhile(b => !World.Selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
 
-            if (next == null)
-                next = bases.Select(b => b.Actor).First();
+			if (next == null)
+				next = bases.Select(b => b.Actor).First();
 
-            World.Selection.Combine(World, new Actor[] { next }, false, true);
-            Game.viewport.Center(World.Selection.Actors);
-            return true;
-        }
+			World.Selection.Combine(World, new Actor[] { next }, false, true);
+			Game.viewport.Center(World.Selection.Actors);
+
+			return true;
+		}
+
+		bool CycleBarracks()
+		{
+			var barracks = World.ActorsWithTrait<BarracksBuilding>()
+					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
+			if (!barracks.Any()) return true;
+
+			var next = barracks
+				.Select(b => b.Actor)
+				.SkipWhile(b => !World.Selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
+
+			if (next == null)
+				next = barracks.Select(b => b.Actor).First();
+
+			World.Selection.Combine(World, new Actor[] { next }, false, true);
+			Game.viewport.Center(World.Selection.Actors);
+
+			return true;
+		}
 	}
 }
