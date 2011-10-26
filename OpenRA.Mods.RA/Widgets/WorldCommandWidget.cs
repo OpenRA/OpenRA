@@ -47,19 +47,19 @@ namespace OpenRA.Mods.RA.Widgets
 			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
 				if (e.KeyName == Game.Settings.KeyConfig.BaseCycleKey)
-					return CycleBases();
+					return CycleProductionBuildings("BaseType");
 
 				if (e.KeyName == Game.Settings.KeyConfig.BarracksCycleKey)
-					return CycleBarracks();
+					return CycleProductionBuildings("BarracksType");
 
 				if (e.KeyName == Game.Settings.KeyConfig.WarFactoryCycleKey)
-					return CycleWarFactories();
+					return CycleProductionBuildings("WarFactoryType");
 
 				if (e.KeyName == Game.Settings.KeyConfig.DockCycleKey)
-					return CycleDocks();
+					return CycleProductionBuildings("DockType");
 
 				if (e.KeyName == Game.Settings.KeyConfig.AirportCycleKey)
-					return CycleAirports();
+					return CycleProductionBuildings("AirportType");
 
 				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
 					return false;
@@ -148,106 +148,22 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		bool CycleBases()
+		bool CycleProductionBuildings(string DesiredBuildingType)
 		{
-			var bases = World.ActorsWithTrait<BaseBuilding>()
-					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!bases.Any()) return true;
+			var buildings = World.ActorsWithTrait<ProductionBuilding>()
+					.Where( a => (a.Actor.Owner == World.LocalPlayer)
+							&& (a.Actor.Info.Traits.Get<ProductionBuildingInfo>().BuildingType == DesiredBuildingType)
+												).ToArray();
+			if (!buildings.Any()) return true;
 
-			var next = bases
+			var next = buildings
 				.Select(b => b.Actor)
 				.SkipWhile(b => !World.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
-				next = bases.Select(b => b.Actor).First();
-
-			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
-
-			return true;
-		}
-
-		// This is too much code:
-
-		bool CycleWarFactories()
-		{
-			var warFactories = World.ActorsWithTrait<WarFactoryBuilding>()
-					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!warFactories.Any()) return true;
-
-			var next = warFactories
-				.Select(b => b.Actor)
-				.SkipWhile(b => !World.Selection.Actors.Contains(b))
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (next == null)
-				next = warFactories.Select(b => b.Actor).First();
-
-			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
-
-			return true;
-		}
-
-		bool CycleDocks()
-		{
-			var docks = World.ActorsWithTrait<DockBuilding>()
-					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!docks.Any()) return true;
-
-			var next = docks
-				.Select(b => b.Actor)
-				.SkipWhile(b => !World.Selection.Actors.Contains(b))
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (next == null)
-				next = docks.Select(b => b.Actor).First();
-
-			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
-
-			return true;
-		}
-
-		bool CycleAirports()
-		{
-			var airports = World.ActorsWithTrait<AirportBuilding>()
-					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!airports.Any()) return true;
-
-			var next = airports
-				.Select(b => b.Actor)
-				.SkipWhile(b => !World.Selection.Actors.Contains(b))
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (next == null)
-				next = airports.Select(b => b.Actor).First();
-
-			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
-
-			return true;
-		}
-
-		bool CycleBarracks()
-		{
-			var barracks = World.ActorsWithTrait<BarracksBuilding>()
-					.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-			if (!barracks.Any()) return true;
-
-			var next = barracks
-				.Select(b => b.Actor)
-				.SkipWhile(b => !World.Selection.Actors.Contains(b))
-				.Skip(1)
-				.FirstOrDefault();
-
-			if (next == null)
-				next = barracks.Select(b => b.Actor).First();
+				next = buildings.Select(b => b.Actor).First();
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
 			Game.viewport.Center(World.Selection.Actors);

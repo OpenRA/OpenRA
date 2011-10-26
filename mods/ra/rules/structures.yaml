@@ -117,7 +117,8 @@ SPEN:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
-	DockBuilding:
+	ProductionBuilding:
+		BuildingType: DockType
 
 SYRD:
 	Inherits: ^Building
@@ -173,7 +174,8 @@ SYRD:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
-	DockBuilding:
+	ProductionBuilding:
+		BuildingType: DockType
 
 IRON:
 	CanPowerDown:
@@ -604,7 +606,8 @@ WEAP:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	WarFactoryBuilding:
+	ProductionBuilding:
+		BuildingType: WarFactoryType
 
 FACT:
 	Inherits: ^Building
@@ -635,6 +638,8 @@ FACT:
 		Facing: 96
 	ProductionBar:
 	BaseBuilding:
+	ProductionBuilding:
+		BuildingType: BaseType
 
 PROC:
 	Inherits: ^Building
@@ -736,7 +741,8 @@ HPAD:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
-	AirportBuilding:
+	ProductionBuilding:
+		BuildingType: AirportType
 
 AFLD:
 	Inherits: ^Building
@@ -787,7 +793,8 @@ AFLD:
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	SupportPowerChargeBar:
-	AirportBuilding:
+	ProductionBuilding:
+		BuildingType: AirportType
 	
 POWR:
 	Inherits: ^Building
@@ -908,7 +915,8 @@ BARR:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	BarracksBuilding:
+	ProductionBuilding:
+		BuildingType: BarracksType
 
 TENT:
 	Inherits: ^Building
@@ -946,7 +954,8 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	BarracksBuilding:
+	ProductionBuilding:
+		BuildingType: BarracksType
 
 FIX:
 	Inherits: ^Building
