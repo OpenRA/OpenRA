@@ -44,39 +44,71 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
+			var KeyName = e.KeyName;
+			var KeyConfig = Game.Settings.KeyConfig;
+
+			if (e.Event == KeyInputEvent.Up)
+			{
+				if (Game.Settings.KeyConfig.ShortcutsWithoutCtrl)
+				{
+					if (KeyName == KeyConfig.BaseCycleKey)
+						return CycleProductionBuildings("BaseType");
+
+					if (KeyName == KeyConfig.BarracksCycleKey)
+						return CycleProductionBuildings("BarracksType");
+
+					if (KeyName == KeyConfig.WarFactoryCycleKey)
+						return CycleProductionBuildings("WarFactoryType");
+
+					if (KeyName == KeyConfig.DockCycleKey)
+						return CycleProductionBuildings("DockType");
+
+					if (KeyName == KeyConfig.AirportCycleKey)
+						return CycleProductionBuildings("AirportType");
+				}
+				else
+				{
+					if (e.Modifiers.HasModifier(Modifiers.Ctrl))
+					{
+						if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+							return CycleProductionBuildings("BaseType");
+
+						if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+							|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+							return CycleProductionBuildings("BarracksType");
+
+						if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+							return CycleProductionBuildings("WarFactoryType");
+
+						if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+							|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+							return CycleProductionBuildings("DockType");
+
+						if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+							|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+							return CycleProductionBuildings("AirportType");
+					}
+				}
+			}
+
 			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == Game.Settings.KeyConfig.BaseCycleKey)
-					return CycleProductionBuildings("BaseType");
-
-				if (e.KeyName == Game.Settings.KeyConfig.BarracksCycleKey)
-					return CycleProductionBuildings("BarracksType");
-
-				if (e.KeyName == Game.Settings.KeyConfig.WarFactoryCycleKey)
-					return CycleProductionBuildings("WarFactoryType");
-
-				if (e.KeyName == Game.Settings.KeyConfig.DockCycleKey)
-					return CycleProductionBuildings("DockType");
-
-				if (e.KeyName == Game.Settings.KeyConfig.AirportCycleKey)
-					return CycleProductionBuildings("AirportType");
-
 				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
 					return false;
 
-				if (e.KeyName == Game.Settings.KeyConfig.AttackMoveKey)
+				if (KeyName == KeyConfig.AttackMoveKey)
 					return PerformAttackMove();
 
-				if (e.KeyName == Game.Settings.KeyConfig.StopKey)
+				if (KeyName == KeyConfig.StopKey)
 					return PerformStop();
 
-				if (e.KeyName == Game.Settings.KeyConfig.ScatterKey)
+				if (KeyName == KeyConfig.ScatterKey)
 					return PerformScatter();
 
-				if (e.KeyName == Game.Settings.KeyConfig.DeployKey)
+				if (KeyName == KeyConfig.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == Game.Settings.KeyConfig.StanceCycleKey)
+				if (KeyName == KeyConfig.StanceCycleKey)
 					return PerformStanceCycle();
 			}
 

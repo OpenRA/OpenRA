@@ -101,11 +101,14 @@ namespace OpenRA.GameRules
 
 	public class KeyConfigSettings
 	{
-		public string AttackMoveKey = "a";
-		public string StopKey = "s";
+		public string AttackMoveKey = "y";
+		public string StopKey = "h";
 		public string ScatterKey = "x";
-		public string DeployKey = "f";
 		public string StanceCycleKey = "z";
+		public string DeployKey = "g";
+
+		public bool ShortcutsWithoutCtrl = false;
+
 		public string BaseCycleKey = "backspace";
 		public string BarracksCycleKey = "q";
 		public string WarFactoryCycleKey = "w";
