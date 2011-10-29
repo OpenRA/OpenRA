@@ -8,19 +8,16 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class TransformOnCaptureInfo : ITraitInfo
 	{
-		[ActorReference]
-		public readonly string IntoActor = null;
+		[ActorReference] public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
+
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(this); }
 	}
 
@@ -28,14 +25,14 @@ namespace OpenRA.Mods.RA
 	{
 		TransformOnCaptureInfo Info;
 
-		public TransformOnCapture(TransformOnCaptureInfo info)
-		{
-			Info = info;
-		}
+		public TransformOnCapture(TransformOnCaptureInfo info) { Info = info; }
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			self.QueueActivity(new Transform(self, Info.IntoActor) {ForceHealthPercentage = Info.ForceHealthPercentage, Facing = self.Trait<IFacing>().Facing});
+			self.QueueActivity(new Transform(self, Info.IntoActor) {
+				ForceHealthPercentage = Info.ForceHealthPercentage,
+				Facing = self.Trait<IFacing>().Facing
+			});
 		}
 	}
 }

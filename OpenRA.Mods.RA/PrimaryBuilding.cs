@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {

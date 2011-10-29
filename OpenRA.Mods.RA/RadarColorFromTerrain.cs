@@ -22,15 +22,13 @@ namespace OpenRA.Mods.RA
 	public class RadarColorFromTerrain : IRadarColorModifier
 	{
 		Color c;
+
 		public RadarColorFromTerrain(Actor self, string terrain)
 		{
 			c = self.World.TileSet.Terrain[terrain].Color;
 		}
 
 		public bool VisibleOnRadar(Actor self) { return true; }
-		public Color RadarColorOverride(Actor self)
-		{
-			return c;
-		}
+		public Color RadarColorOverride(Actor self) { return c; }
 	}
 }

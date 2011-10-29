@@ -21,8 +21,7 @@ namespace OpenRA.Mods.RA
 {
 	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>
 	{
-		[ActorReference]
-		public readonly string[] Buildings = { "spen", "syrd" };
+		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 
 		public object Create( ActorInitializer init ) { return new RepairableNear( init.self ); }
 	}

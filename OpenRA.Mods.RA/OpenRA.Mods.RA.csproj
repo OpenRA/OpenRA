@@ -363,6 +363,7 @@
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
+    <Compile Include="Render\RenderInfantryPanic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

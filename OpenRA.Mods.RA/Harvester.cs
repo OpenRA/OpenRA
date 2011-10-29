@@ -34,28 +34,19 @@ namespace OpenRA.Mods.RA
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
-		[Sync]
-		public Actor LinkedProc = null;
-
+		[Sync] public Actor LinkedProc = null;
+		[Sync] int currentUnloadTicks;
 		public int2? LastHarvestedCell = null;
-
-		[Sync]
-		public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
-
-		[Sync]
-		int currentUnloadTicks;
-
+		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
 		readonly HarvesterInfo Info;
+
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
 			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
 		}
 
-		public void ChooseNewProc(Actor self, Actor ignore)
-		{
-			LinkedProc = ClosestProc(self, ignore);
-		}
+		public void ChooseNewProc(Actor self, Actor ignore) { LinkedProc = ClosestProc(self, ignore); }
 
 		public void ContinueHarvesting(Actor self)
 		{
@@ -78,7 +69,9 @@ namespace OpenRA.Mods.RA
 				PathSearch.FromPoints(self.World, mi, self.Owner,
 					refs.Select(r => r.Actor.Location + r.Trait.DeliverOffset),
 					self.Location, false));
+
 			path.Reverse();
+
 			if (path.Count != 0)
 				return refs.Where(x => x.Actor.Location + x.Trait.DeliverOffset == path[0])
 					.Select(a => a.Actor).FirstOrDefault();
@@ -182,10 +175,8 @@ namespace OpenRA.Mods.RA
 
 		public void UnlinkProc(Actor self, Actor proc)
 		{
-			if (LinkedProc != proc)
-				return;
-
-			ChooseNewProc(self, proc);
+			if (LinkedProc == proc)
+				ChooseNewProc(self, proc);
 		}
 
 		PipType GetPipAt(int i)
@@ -218,8 +209,9 @@ namespace OpenRA.Mods.RA
 
 		class HarvestOrderTargeter : IOrderTargeter
 		{
-			public string OrderID { get { return "Harvest";}}
+			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
+			public bool IsQueued { get; protected set; }
 
 			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
@@ -241,7 +233,6 @@ namespace OpenRA.Mods.RA
 
 				return true;
 			}
-			public bool IsQueued { get; protected set; }
 		}
 	}
 }

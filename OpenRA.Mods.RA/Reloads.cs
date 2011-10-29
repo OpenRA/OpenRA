@@ -22,8 +22,7 @@ namespace OpenRA.Mods.RA
 
 	public class Reloads : ITick
 	{
-		[Sync]
-		int remainingTicks;
+		[Sync] int remainingTicks;
 		ReloadsInfo Info;
 		LimitedAmmo la;
 

@@ -18,19 +18,19 @@ namespace OpenRA.Mods.RA
 	class TargetableBuildingInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] TargetTypes = { };
+
 		public object Create( ActorInitializer init ) { return new TargetableBuilding( this ); }
 	}
 
 	class TargetableBuilding : ITargetable
 	{
 		readonly TargetableBuildingInfo info;
-		public TargetableBuilding( TargetableBuildingInfo info )
-		{
-			this.info = info;
-		}
+
+		public TargetableBuilding( TargetableBuildingInfo info ) { this.info = info; }
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
 		public bool TargetableBy(Actor self, Actor byActor) { return true; }
+
 		public IEnumerable<int2> TargetableCells( Actor self )
 		{
 			return self.Trait<Building>().OccupiedCells().Select(c => c.First);

@@ -9,10 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -25,8 +23,7 @@ namespace OpenRA.Mods.RA
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
 	{
-		[Sync]
-		public int2 rallyPoint;
+		[Sync] public int2 rallyPoint;
 
 		public RallyPoint(Actor self)
 		{

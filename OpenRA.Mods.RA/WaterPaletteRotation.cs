@@ -16,6 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> {}
+
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
 		float t = 0;

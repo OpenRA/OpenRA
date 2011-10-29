@@ -10,8 +10,6 @@
 
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Render;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 

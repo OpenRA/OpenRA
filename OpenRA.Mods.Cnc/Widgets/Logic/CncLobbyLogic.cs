@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var nameSize = font.Measure(from);
 
-			var time = System.DateTime.Now;
+			var time = DateTime.Now;
 			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);
 
 			nameLabel.GetColor = () => c;
@@ -233,11 +233,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
 			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
 			textLabel.GetText = () => text;
-			var oldHeight = textLabel.Bounds.Height;
-			textLabel.Bounds.Height = font.Measure(text).Y;
-			var dh = textLabel.Bounds.Height - oldHeight;
+			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
 			if (dh > 0)
+			{
+				textLabel.Bounds.Height += dh;
 				template.Bounds.Height += dh;
+			}
 
 			chatPanel.AddChild(template);
 			chatPanel.ScrollToBottom();

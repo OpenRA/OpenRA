@@ -12,15 +12,14 @@ using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class TransformsInfo : ITraitInfo
 	{
-		[ActorReference]
-		public readonly string IntoActor = null;
+		[ActorReference] public readonly string IntoActor = null;
 		public readonly int2 Offset = int2.Zero;
 		public readonly int Facing = 96;
 		public readonly string[] TransformSounds = {};

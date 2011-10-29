@@ -10,8 +10,8 @@
 
 using System.Drawing;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -25,10 +25,8 @@ namespace OpenRA.Mods.RA
 	class ShroudPalette : IPalette
 	{
 		readonly ShroudPaletteInfo info;
-		public ShroudPalette( ShroudPaletteInfo info )
-		{
-			this.info = info;
-		}
+
+		public ShroudPalette( ShroudPaletteInfo info ) { this.info = info; }
 
 		public void InitPalette( WorldRenderer wr )
 		{

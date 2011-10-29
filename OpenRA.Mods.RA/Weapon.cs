@@ -110,15 +110,14 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
-			if( !Combat.IsInRange( self.CenterLocation, Info.Range, target ) )
-				return;
-			if( Combat.IsInRange( self.CenterLocation, Info.MinRange, target ) )
-				return;
+			if (!Combat.IsInRange(self.CenterLocation, Info.Range, target)) return;
+			if (Combat.IsInRange(self.CenterLocation, Info.MinRange, target)) return;
 
 			if (!IsValidAgainst(self.World, target)) return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
+			var turreted = self.TraitOrDefault<Turreted>();
 
 			var args = new ProjectileArgs
 			{
@@ -134,7 +133,7 @@ namespace OpenRA.Mods.RA
 				destAltitude = destMove != null ? destMove.Altitude : 0,
 
 				facing = barrel.Facing +
-					(self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing :
+					(turreted != null ? turreted.turretFacing :
 					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
 
 				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()

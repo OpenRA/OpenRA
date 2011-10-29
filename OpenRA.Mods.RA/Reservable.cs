@@ -9,8 +9,8 @@
 #endregion
 
 using System;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
