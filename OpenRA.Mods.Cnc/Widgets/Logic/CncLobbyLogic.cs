@@ -379,9 +379,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					else // Bot
 						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
 				}
-				// Non-editable player in slot
 				else
-				{
+				{	// Non-editable player in slot
 					template = NonEditablePlayerTemplate.Clone();
 					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
@@ -396,9 +395,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var team = template.GetWidget<LabelWidget>("TEAM");
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
-
-					var spawn = template.GetWidget<LabelWidget>("SPAWN");
-					spawn.GetText = () => (client.SpawnPoint == 0) ? "-" : client.SpawnPoint.ToString();
 
 					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
 						client.Bot != null || client.State == Session.ClientState.Ready;
