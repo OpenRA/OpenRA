@@ -57,7 +57,7 @@ namespace OpenRA.FileFormats
 
 		public override string ToString()
 		{
-			return string.Join(",", BitAllocator<T>.GetStrings(Value).ToArray());
+			return BitAllocator<T>.GetStrings(Value).JoinWith(",");
 		}
 
 		public override int GetHashCode() { return Value.GetHashCode(); }

@@ -37,7 +37,7 @@ namespace OpenRA.Orders
 			if (actorsInvolved.Any())
 				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
 				{
-					TargetString = string.Join(",", actorsInvolved.Select(a => a.ActorID.ToString()).ToArray())
+					TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
 				};
 
 

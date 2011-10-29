@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.Server
 
 						var slot = server.lobbyInfo.Slots[parts[0]];
 						var bot = server.lobbyInfo.ClientInSlot(parts[0]);
-						var botType = string.Join(" ", parts.Skip(1).ToArray() );
+						var botType = parts.Skip(1).JoinWith(" ");
 
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.RA.Server
 			};
 
 			var cmdName = cmd.Split(' ').First();
-			var cmdValue = string.Join(" ", cmd.Split(' ').Skip(1).ToArray());
+			var cmdValue = cmd.Split(' ').Skip(1).JoinWith(" ");
 
 			Func<string,bool> a;
 			if (!dict.TryGetValue(cmdName, out a))

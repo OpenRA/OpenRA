@@ -330,7 +330,7 @@ namespace OpenRA.FileFormats
 			if (f.FieldType.IsArray)
 			{
 				var elems = ((Array)v).OfType<object>();
-				return string.Join(",", elems.Select(a => a.ToString()).ToArray());
+				return elems.JoinWith(",");
 			}
 
 			return v.ToString();

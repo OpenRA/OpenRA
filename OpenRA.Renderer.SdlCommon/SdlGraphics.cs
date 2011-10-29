@@ -74,12 +74,12 @@ namespace OpenRA.Renderer.SdlCommon
 			if (extensions == null)
 				Console.WriteLine("Failed to fetch GL_EXTENSIONS, this is bad.");
 
-			var missingExtensions = requiredExtensions.Where( r => !extensions.Contains(r) ).ToArray();
+			var missingExtensions = requiredExtensions.Where(r => !extensions.Contains(r)).ToArray();
 
 			if (missingExtensions.Any())
 			{
 				ErrorHandler.WriteGraphicsLog("Unsupported GPU: Missing extensions: {0}"
-					.F(string.Join(",", missingExtensions)));
+					.F(missingExtensions.JoinWith(",")));
 				throw new InvalidProgramException("Unsupported GPU. See graphics.log for details.");
 			}
 

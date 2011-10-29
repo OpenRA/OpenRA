@@ -343,7 +343,7 @@ namespace OpenRA
 				if (!OpenRA.Rules.TileSets.ContainsKey(Tileset))
 					throw new InvalidOperationException(
 						"Tileset used by the map ({0}) does not exist in this mod. Valid tilesets are: {1}"
-						.F(Tileset, string.Join(",", OpenRA.Rules.TileSets.Keys.ToArray())));
+						.F(Tileset, OpenRA.Rules.TileSets.Keys.JoinWith(",")));
 
 				// Tile data
 				for (var i = 0; i < MapSize.X; i++)

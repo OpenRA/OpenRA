@@ -40,8 +40,8 @@ namespace OpenRA.Utility
 			catch( Exception e )
 			{
 				Log.AddChannel("utility", "utility.log");
-				Log.Write("utility", "Received args: {0}", string.Join(" ", args));
-				Log.Write("utility", "{0}", e.ToString());
+				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
+				Log.Write("utility", "{0}", e);
 
 				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
 				throw;

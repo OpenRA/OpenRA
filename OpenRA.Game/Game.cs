@@ -280,7 +280,7 @@ namespace OpenRA
 
 			// Discard any invalid mods
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
-			Console.WriteLine("Loading mods: {0}",string.Join(",",mm));
+			Console.WriteLine("Loading mods: {0}", mm.JoinWith(","));
 			Settings.Game.Mods = mm;
 			Settings.Save();
 

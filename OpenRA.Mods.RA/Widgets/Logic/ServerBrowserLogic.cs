@@ -84,12 +84,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return (currentServer == null) ? null : Game.modData.FindMapByUid(currentServer.Map);
 		}
 
+		static string GenerateModLabel(KeyValuePair<string,string> mod)
+		{
+			if (Mod.AllMods.ContainsKey(mod.Key))
+				return "{0} ({1})".F(Mod.AllMods[mod.Key].Title, mod.Value);
+
+			return "Unknown Mod: {0}".F(mod.Key);
+		}
+
 		public static string GenerateModsLabel(GameServer s)
 		{
-			return string.Join("\n", s.UsefulMods
-				.Select(m =>
-				   Mod.AllMods.ContainsKey(m.Key) ? string.Format("{0} ({1})", Mod.AllMods[m.Key].Title, m.Value)
-											   : string.Format("Unknown Mod: {0}",m.Key)).ToArray());
+			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
 		}
 
 		void RefreshServerList(IEnumerable<GameServer> games)

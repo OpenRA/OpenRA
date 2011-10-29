@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Server
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
 								server.lobbyInfo.Clients.Count,
-								string.Join(",", Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).ToArray()),
+								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
 								server.lobbyInfo.GlobalSettings.Map,
 								server.Map.PlayerCount));
 

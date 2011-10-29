@@ -480,7 +480,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
 				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
-								 ((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
+					((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0)? Color.White: Color.Red);
 
 			p += new int2(5, 35);
 			if (!canBuildThis)
@@ -488,7 +488,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
 				Game.Renderer.Fonts["Regular"].DrawText(
-					"Requires {0}".F(string.Join(", ", prereqs.ToArray())),
+					"Requires {0}".F(prereqs.JoinWith(", ")),
 					p.ToInt2(),
 					Color.White);
 

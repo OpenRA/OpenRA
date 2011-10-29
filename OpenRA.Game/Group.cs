@@ -36,7 +36,7 @@ namespace OpenRA
 		{
 			/* debug crap */
 			Game.Debug("Group #{0}: {1}".F(
-				id, string.Join(",", actors.Select(a => "#{0} {1}".F(a.ActorID, a.Info.Name)).ToArray())));
+				id, actors.Select(a => "#{0} {1}".F(a.ActorID, a.Info.Name)).JoinWith(",")));
 		}
 
 		/* todo: add lazy group path crap, groupleader, pruning, etc */

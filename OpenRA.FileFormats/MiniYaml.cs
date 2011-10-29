@@ -228,7 +228,7 @@ namespace OpenRA.FileFormats
 			if (throwErrors)
 			if (noInherit.ContainsValue(false))
 				throw new YamlException("Bogus yaml removals: {0}".F(
-					string.Join(", ", noInherit.Where(x => !x.Value).Select(x => x.Key).ToArray())));
+					noInherit.Where(x => !x.Value).JoinWith(", ")));
 
 			return ret;
 		}
@@ -271,7 +271,7 @@ namespace OpenRA.FileFormats
 
 		public static string WriteToString(this MiniYamlNodes y)
 		{
-			return string.Join("\n", y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+			return y.ToLines(true).Select(x => x.TrimEnd()).JoinWith("\n");
 		}
 
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)

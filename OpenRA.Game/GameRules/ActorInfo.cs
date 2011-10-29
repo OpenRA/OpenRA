@@ -102,8 +102,8 @@ namespace OpenRA
 				else if (++index >= t.Count)
 					throw new InvalidOperationException("Trait prerequisites not satisfied (or prerequisite loop) Actor={0} Unresolved={1} Missing={2}".F(
 						Name,
-						string.Join(",", t.Select(x => x.GetType().Name).ToArray()),
-						string.Join(",", unsatisfied.Select(x => x.Name).ToArray())));
+						t.Select(x => x.GetType().Name).JoinWith(","),
+						unsatisfied.Select(x => x.Name).JoinWith(",")));
 			}
 
 			return ret;

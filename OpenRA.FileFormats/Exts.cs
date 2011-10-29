@@ -171,5 +171,10 @@ namespace OpenRA
 			++v;
 			return v;
 		}
+
+		public static string JoinWith<T>(this IEnumerable<T> ts, string j)
+		{
+			return string.Join(j, ts.Select(t => t.ToString()).ToArray());
+		}
 	}
 }

@@ -203,7 +203,7 @@ namespace OpenRA.Widgets
 					else
 						break;
 				}
-				return string.Join("\n", newLines.ToArray());
+				return newLines.JoinWith("\n");
 			}
 			return text;
 		}
