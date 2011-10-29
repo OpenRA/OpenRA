@@ -19,6 +19,7 @@ namespace OpenRA.Renderer.SdlCommon
 			where T : struct
 	{
 		int buffer;
+		static readonly int vertexSize = Marshal.SizeOf(typeof(T));
 
 		public VertexBuffer(int size)
 		{
@@ -26,7 +27,7 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 			Bind();
 			Gl.glBufferDataARB(Gl.GL_ARRAY_BUFFER_ARB,
-				new IntPtr(Marshal.SizeOf(typeof(T)) * size),
+				new IntPtr(vertexSize * size),
 				new T[ size ],
 				Gl.GL_DYNAMIC_DRAW_ARB);
 			ErrorHandler.CheckGlError();
@@ -37,7 +38,7 @@ namespace OpenRA.Renderer.SdlCommon
 			Bind();
 			Gl.glBufferSubDataARB(Gl.GL_ARRAY_BUFFER_ARB,
 				IntPtr.Zero,
-				new IntPtr(Marshal.SizeOf(typeof(T)) * length),
+				new IntPtr(vertexSize * length),
 				data);
 			ErrorHandler.CheckGlError();
 		}
@@ -46,9 +47,9 @@ namespace OpenRA.Renderer.SdlCommon
 		{
 			Gl.glBindBufferARB(Gl.GL_ARRAY_BUFFER_ARB, buffer);
 			ErrorHandler.CheckGlError();
-			Gl.glVertexPointer(3, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
+			Gl.glVertexPointer(3, Gl.GL_FLOAT, vertexSize, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
-			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, Marshal.SizeOf(typeof(T)), new IntPtr(12));
+			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, vertexSize, new IntPtr(12));
 			ErrorHandler.CheckGlError();
 		}
 
