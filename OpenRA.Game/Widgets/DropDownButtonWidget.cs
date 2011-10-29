@@ -79,7 +79,7 @@ namespace OpenRA.Widgets
 			Widget.RootWidget.AddChild(panel);
 		}
 
-		public void ShowDropDown<T>(string panelTemplate, int height, List<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		public void ShowDropDown<T>(string panelTemplate, int height, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};
 			var panel = (ScrollPanelWidget)Widget.LoadWidget(panelTemplate, null, new WidgetArgs()
