@@ -13,10 +13,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, Requires<MPStartLocationsInfo> {}
+	class SpawnMPUnitsInfo : ITraitInfo, Requires<MPStartLocationsInfo>
+	{
+		public readonly string InitialUnit = "mcv";
+
+		public object Create (ActorInitializer init) { return new SpawnMPUnits(this); }
+	}
 
 	class SpawnMPUnits : IWorldLoaded
 	{
+		SpawnMPUnitsInfo info;
+
+		public SpawnMPUnits(SpawnMPUnitsInfo info) { this.info = info; }
+
 		public void WorldLoaded(World world)
 		{
 			foreach (var s in world.WorldActor.Trait<MPStartLocations>().Start)
@@ -28,7 +37,7 @@ namespace OpenRA.Mods.RA
 			if (!p.PlayerReference.DefaultStartingUnits)
 				return;	/* they don't want an mcv, the map provides something else for them */
 
-			p.World.CreateActor("mcv", new TypeDictionary
+			p.World.CreateActor(info.InitialUnit, new TypeDictionary
 			{
 				new LocationInit( sp ),
 				new OwnerInit( p ),
