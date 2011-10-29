@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var mods = Mod.AllMods[mod].WithPrerequisites();
 
-			if (Game.CurrentMods.Keys.ToArray().SymmetricDifference(mods.ToArray()).Any())
-				Game.RunAfterTick(() => Game.InitializeWithMods(mods.ToArray()));
+			if (Game.CurrentMods.Keys.SymmetricDifference(mods).Any())
+				Game.RunAfterTick(() => Game.InitializeWithMods(mods));
 		}
 
 		static void ShowModsDropDown(DropDownButtonWidget dropdown)
