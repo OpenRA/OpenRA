@@ -22,11 +22,11 @@ namespace OpenRA
 {
 	public class Map
 	{
-		[FieldLoader.Ignore] protected IFolder Container;
-		public string Path {get; protected set;}
+		[FieldLoader.Ignore] IFolder Container;
+		public string Path { get; private set; }
 
 		// Yaml map data
-		public string Uid { get; protected set; }
+		public string Uid { get; private set; }
 		public int MapFormat;
 		public bool Selectable;
 		public bool UseAsShellmap;
@@ -162,8 +162,8 @@ namespace OpenRA
 				var ret = new List<SmudgeReference>();
 				foreach (var kv in yaml.NodesDict["Smudges"].NodesDict)
 				{
-					string[] vals = kv.Key.Split(' ');
-					string[] loc = vals[1].Split(',');
+					var vals = kv.Key.Split(' ');
+					var loc = vals[1].Split(',');
 					ret.Add(new SmudgeReference(vals[0], new int2(int.Parse(loc[0]), int.Parse(loc[1])), int.Parse(vals[2])));
 				}
 
@@ -194,7 +194,7 @@ namespace OpenRA
 			MapFormat = 5;
 
 			var root = new List<MiniYamlNode>();
-			var fields = new string[]
+			var fields = new []
 			{
 				"Selectable",
 				"MapFormat",
@@ -232,7 +232,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 			root.Add(new MiniYamlNode("Voices", null, Voices));
 
-			Dictionary<string, byte[]> entries = new Dictionary<string, byte[]>();
+			var entries = new Dictionary<string, byte[]>();
 			entries.Add("map.bin", SaveBinaryData());
 			var s = root.WriteToString();
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
@@ -319,8 +319,8 @@ namespace OpenRA
 					ReadByte(dataStream);
 
 				// Load resource data
-				for (int i = 0; i < MapSize.X; i++)
-					for (int j = 0; j < MapSize.Y; j++)
+				for (var i = 0; i < MapSize.X; i++)
+					for (var j = 0; j < MapSize.Y; j++)
 				{
 					byte type = ReadByte(dataStream);
 					byte index = ReadByte(dataStream);
@@ -332,7 +332,7 @@ namespace OpenRA
 
 		public byte[] SaveBinaryData()
 		{
-			MemoryStream dataStream = new MemoryStream();
+			var dataStream = new MemoryStream();
 			using (var writer = new BinaryWriter(dataStream))
 			{
 				// File header consists of a version byte, followed by 2 ushorts for width and height
@@ -346,8 +346,8 @@ namespace OpenRA
 						.F(Tileset, string.Join(",", OpenRA.Rules.TileSets.Keys.ToArray())));
 
 				// Tile data
-				for (int i = 0; i < MapSize.X; i++)
-					for (int j = 0; j < MapSize.Y; j++)
+				for (var i = 0; i < MapSize.X; i++)
+					for (var j = 0; j < MapSize.Y; j++)
 					{
 						writer.Write(MapTiles.Value[i, j].type);
 						var PickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].type].PickAny;
@@ -355,8 +355,8 @@ namespace OpenRA
 					}
 
 				// Resource data
-				for (int i = 0; i < MapSize.X; i++)
-					for (int j = 0; j < MapSize.Y; j++)
+				for (var i = 0; i < MapSize.X; i++)
+					for (var j = 0; j < MapSize.Y; j++)
 					{
 						writer.Write(MapResources.Value[i, j].type);
 						writer.Write(MapResources.Value[i, j].index);

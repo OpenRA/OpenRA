@@ -124,6 +124,7 @@
     <Compile Include="Network\Order.cs" />
     <Compile Include="Network\OrderIO.cs" />
     <Compile Include="Network\OrderManager.cs" />
+    <Compile Include="Network\Replay.cs" />
     <Compile Include="Network\ReplayConnection.cs" />
     <Compile Include="Network\ServerList.cs" />
     <Compile Include="Network\Session.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
+    <Compile Include="Traits\SelectionDecorations.cs" />
     <Compile Include="Traits\SubcellInit.cs" />
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
@@ -182,12 +184,15 @@
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="Widgets\DropDownButtonWidget.cs" />
+    <Compile Include="Widgets\GridLayout.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
+    <Compile Include="Widgets\ListLayout.cs" />
     <Compile Include="Widgets\MapPreviewWidget.cs" />
     <Compile Include="Widgets\PasswordFieldWidget.cs" />
     <Compile Include="Widgets\PerfGraphWidget.cs" />
     <Compile Include="Widgets\ProgressBarWidget.cs" />
+    <Compile Include="Widgets\ScrollItemWidget.cs" />
     <Compile Include="Widgets\ScrollPanelWidget.cs" />
     <Compile Include="Widgets\ShpImageWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
@@ -201,11 +206,6 @@
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
-    <Compile Include="Widgets\ScrollItemWidget.cs" />
-    <Compile Include="Widgets\ListLayout.cs" />
-    <Compile Include="Widgets\GridLayout.cs" />
-    <Compile Include="Network\Replay.cs" />
-    <Compile Include="Traits\SelectionDecorations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
