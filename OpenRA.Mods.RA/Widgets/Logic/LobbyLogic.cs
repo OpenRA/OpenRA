@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -33,13 +31,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ColorPickerPaletteModifier PlayerPalettePreview;
 
 		readonly OrderManager orderManager;
-		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		internal LobbyLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
+		internal LobbyLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			this.orderManager = orderManager;
-			this.worldRenderer = worldRenderer;
 			this.lobby = widget;
 			Game.BeforeGameStart += CloseWindow;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
@@ -155,22 +151,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 
-		void UpdatePlayerColor(Session.Client client, float hf, float sf, float lf, float r)
-		{
-			var ramp = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
-			if (client == orderManager.LocalClient)
-			{
-				Game.Settings.Player.ColorRamp = ramp;
-				Game.Settings.Save();
-			}
-			orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, ramp)));
-		}
-
-		void UpdateColorPreview(float hf, float sf, float lf, float r)
-		{
-			PlayerPalettePreview.Ramp = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
-		}
-
 		void UpdateCurrentMap()
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
@@ -179,39 +159,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
 			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName + " - " + Map.Title;
-		}
-
-		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
-		{
-			var colorChooser = Game.modData.WidgetLoader.LoadWidget(new WidgetArgs() { { "worldRenderer", worldRenderer } }, null, "COLOR_CHOOSER");
-			var hueSlider = colorChooser.GetWidget<SliderWidget>("HUE_SLIDER");
-			hueSlider.Value = client.ColorRamp.H / 255f;
-
-			var satSlider = colorChooser.GetWidget<SliderWidget>("SAT_SLIDER");
-			satSlider.Value = client.ColorRamp.S / 255f;
-
-			var lumSlider = colorChooser.GetWidget<SliderWidget>("LUM_SLIDER");
-			lumSlider.Value = client.ColorRamp.L / 255f;
-
-			var rangeSlider = colorChooser.GetWidget<SliderWidget>("RANGE_SLIDER");
-			rangeSlider.Value = client.ColorRamp.R / 255f;
-
-			Action updateColorPreview = () => UpdateColorPreview(hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
-
-			hueSlider.OnChange += _ => updateColorPreview();
-			satSlider.OnChange += _ => updateColorPreview();
-			lumSlider.OnChange += _ => updateColorPreview();
-			rangeSlider.OnChange += _ => updateColorPreview();
-			updateColorPreview();
-
-			colorChooser.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () =>
-			{
-				updateColorPreview();
-				UpdatePlayerColor(client, hueSlider.Value, satSlider.Value, lumSlider.Value, rangeSlider.Value);
-				color.RemovePanel();
-			};
-
-			color.AttachPanel(colorChooser);
 		}
 
 		void UpdatePlayerList()
@@ -273,7 +220,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => s.LockColor;
-					color.OnMouseDown = _ => ShowColorDropDown(color, c);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, PlayerPalettePreview);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
@@ -342,7 +289,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
-					color.OnMouseDown = _ => ShowColorDropDown(color, c);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, PlayerPalettePreview);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);

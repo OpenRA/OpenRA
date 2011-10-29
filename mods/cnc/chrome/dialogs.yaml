@@ -1,6 +1,6 @@
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
-	Logic:CncColorPickerLogic
+	Logic:ColorPickerLogic
 	Background:panel-black
 	Width:315
 	Height:130

@@ -415,17 +415,26 @@ Background@SERVER_LOBBY:
 			Text: Allow Cheats
 Background@COLOR_CHOOSER:
 	Id:COLOR_CHOOSER
+	Logic:ColorPickerLogic
 	Background:dialog2
 	Width:310
 	Height:120
 	Children:
-		Button@BUTTON_OK:
-			Id:BUTTON_OK
+		Button@SAVE_BUTTON:
+			Id:SAVE_BUTTON
 			X:210
 			Y:85
 			Width:90
 			Height:25
-			Text:Ok
+			Text:Save
+			Font:Bold
+		Button@RANDOM_BUTTON:
+			Id:RANDOM_BUTTON
+			X:115
+			Y:85
+			Width:90
+			Height:25
+			Text:Random
 			Font:Bold
 		ShpImage@FACT:
 			Id:FACT
@@ -477,19 +486,3 @@ Background@COLOR_CHOOSER:
 			Ticks:5
 			MinimumValue: 0.2
 			MaximumValue: 1
-		Label@RANGE_LABEL:
-			X:0
-			Y:80
-			Width:40
-			Height:20
-			Align: Right
-			Text: Ran:	
-		Slider@RANGE:
-			Id:RANGE_SLIDER
-			X:43
-			Y:85
-			Width:160
-			Height:20
-			Ticks:5
-			MinimumValue: 0
-			MaximumValue: 0.25

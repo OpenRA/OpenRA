@@ -120,6 +120,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, countryNames.Keys, setupItem);
 		}
 
+		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
+			OrderManager orderManager, ColorPickerPaletteModifier preview)
+		{
+			Action<ColorRamp> onSelect = c =>
+			{
+				if (client.Bot == null)
+				{
+					Game.Settings.Player.ColorRamp = c;
+					Game.Settings.Save();
+				}
+
+				color.RemovePanel();
+				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
+			};
+
+			Action<ColorRamp> onChange = c => preview.Ramp = c;
+
+			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
+			{
+				{ "onSelect", onSelect },
+				{ "onChange", onChange },
+				{ "initialRamp", client.ColorRamp }
+			});
+
+			color.AttachPanel(colorChooser);
+		}
+
 		public static Dictionary<int2, Color> GetSpawnColors(OrderManager orderManager, Map map)
 		{
 			var spawns = map.GetSpawnPoints();

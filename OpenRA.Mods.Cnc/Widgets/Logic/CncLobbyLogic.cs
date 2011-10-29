@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Network;
@@ -255,32 +254,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
-		void ShowColorDropDown(DropDownButtonWidget color, Session.Client client)
-		{
-			Action<ColorRamp> onSelect = c =>
-			{
-				if (client.Bot == null)
-				{
-					Game.Settings.Player.ColorRamp = c;
-					Game.Settings.Save();
-				}
-
-				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
-			};
-
-			Action<ColorRamp> onChange = c => PlayerPalettePreview.Ramp = c;
-
-			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
-			{
-				{ "onSelect", onSelect },
-				{ "onChange", onChange },
-				{ "initialRamp", client.ColorRamp }
-			});
-
-			color.AttachPanel(colorChooser);
-		}
-
 		void UpdatePlayerList()
 		{
 			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
@@ -347,7 +320,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor || ready;
-					color.OnMouseDown = _ => ShowColorDropDown(color, client);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, client, orderManager, PlayerPalettePreview);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
@@ -425,7 +398,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
-					color.OnMouseDown = _ => ShowColorDropDown(color, c);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, PlayerPalettePreview);
 
 					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);

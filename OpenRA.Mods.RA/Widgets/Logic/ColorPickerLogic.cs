@@ -13,13 +13,14 @@ using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncColorPickerLogic
+	public class ColorPickerLogic
 	{
 		ColorRamp ramp;
+
 		[ObjectCreator.UseCtor]
-		public CncColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
+		public ColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
 			Action<ColorRamp> onSelect, WorldRenderer worldRenderer)
 		{
 			var panel = widget.GetWidget("COLOR_CHOOSER");
@@ -49,16 +50,19 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
-			panel.GetWidget<ButtonWidget>("RANDOM_BUTTON").OnClick = () =>
-			{
-				var hue = (byte)Game.CosmeticRandom.Next(255);
-				var sat = (byte)Game.CosmeticRandom.Next(255);
-				var lum = (byte)Game.CosmeticRandom.Next(51,255);
 
-				ramp = new ColorRamp(hue, sat, lum, 10);
-				updateSliders();
-				sliderChanged();
-			};
+			var randomButton = panel.GetWidget<ButtonWidget>("RANDOM_BUTTON");
+			if (randomButton != null)
+				randomButton.OnClick = () =>
+				{
+					var hue = (byte)Game.CosmeticRandom.Next(255);
+					var sat = (byte)Game.CosmeticRandom.Next(255);
+					var lum = (byte)Game.CosmeticRandom.Next(51,255);
+
+					ramp = new ColorRamp(hue, sat, lum, 10);
+					updateSliders();
+					sliderChanged();
+				};
 
 			// Set the initial state
 			updateSliders();
