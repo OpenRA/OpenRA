@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
-using Tao.OpenGl;
 using Tao.Sdl;
 
 namespace OpenRA.Renderer.SdlCommon

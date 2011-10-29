@@ -9,11 +9,7 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
 using Tao.OpenGl;
@@ -27,7 +23,7 @@ namespace OpenRA.Renderer.Glsl
 	{
 		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			return new GraphicsDevice( size, windowMode );
+			return new GraphicsDevice(size, windowMode);
 		}
 	}
 
@@ -39,80 +35,54 @@ namespace OpenRA.Renderer.Glsl
 
 		public Size WindowSize { get { return windowSize; } }
 
-		public GraphicsDevice( Size size, WindowMode window )
+		public GraphicsDevice(Size size, WindowMode window)
 		{
 			Console.WriteLine("Using Gl renderer");
 			windowSize = size;
 
-			var extensions = new string[]
+			var extensions = new []
 			{
 				"GL_ARB_vertex_shader",
 				"GL_ARB_fragment_shader",
 				"GL_ARB_vertex_buffer_object",
 			};
 
-			surf = SdlGraphics.InitializeSdlGl( ref windowSize, window, extensions );
+			surf = SdlGraphics.InitializeSdlGl(ref windowSize, window, extensions);
 
-			Gl.glEnableClientState( Gl.GL_VERTEX_ARRAY );
+			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
 			ErrorHandler.CheckGlError();
-			Gl.glEnableClientState( Gl.GL_TEXTURE_COORD_ARRAY );
+			Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
 			ErrorHandler.CheckGlError();
 
-			Sdl.SDL_SetModState( 0 );
+			Sdl.SDL_SetModState(0);
 
-			input = new SdlInput( surf );
+			input = new SdlInput(surf);
 		}
 
-		public void EnableScissor( int left, int top, int width, int height )
+		public void EnableScissor(int left, int top, int width, int height)
 		{
-			if( width < 0 ) width = 0;
-			if( height < 0 ) height = 0;
-			Gl.glScissor( left, windowSize.Height - ( top + height ), width, height );
+			if (width < 0) width = 0;
+			if (height < 0) height = 0;
+
+			Gl.glScissor(left, windowSize.Height - ( top + height ), width, height);
 			ErrorHandler.CheckGlError();
-			Gl.glEnable( Gl.GL_SCISSOR_TEST );
+			Gl.glEnable(Gl.GL_SCISSOR_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableScissor()
 		{
-			Gl.glDisable( Gl.GL_SCISSOR_TEST );
+			Gl.glDisable(Gl.GL_SCISSOR_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
-		public void Clear()
-		{
-			Gl.glClearColor( 0, 0, 0, 0 );
-			ErrorHandler.CheckGlError();
-			Gl.glClear( Gl.GL_COLOR_BUFFER_BIT );
-			ErrorHandler.CheckGlError();
-		}
+		public void Clear() { SdlGraphics.Clear(); }
+		public void Present() { Sdl.SDL_GL_SwapBuffers(); }
+		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
 
-		public void Present()
+		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
 		{
-			Sdl.SDL_GL_SwapBuffers();
-		}
-
-		public void PumpInput( IInputHandler inputHandler )
-		{
-			input.PumpInput(inputHandler);
-		}
-
-		public void DrawPrimitives( PrimitiveType pt, int firstVertex, int numVertices )
-		{
-			Gl.glDrawArrays( ModeFromPrimitiveType( pt ), firstVertex, numVertices );
-			ErrorHandler.CheckGlError();
-		}
-
-		static int ModeFromPrimitiveType( PrimitiveType pt )
-		{
-			switch( pt )
-			{
-			case PrimitiveType.PointList: return Gl.GL_POINTS;
-			case PrimitiveType.LineList: return Gl.GL_LINES;
-			case PrimitiveType.TriangleList: return Gl.GL_TRIANGLES;
-			case PrimitiveType.QuadList: return Gl.GL_QUADS;
-			}
-			throw new NotImplementedException();
+			SdlGraphics.DrawPrimitives(pt, firstVertex, numVertices);
 		}
 
 		public void SetLineWidth( float width )

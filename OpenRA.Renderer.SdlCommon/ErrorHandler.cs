@@ -11,7 +11,6 @@
 using System;
 using System.Diagnostics;
 using Tao.OpenGl;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Renderer.SdlCommon
 {
