@@ -59,6 +59,8 @@ namespace OpenRA.Mods.RA.AI
 
 	/* a pile of hacks, which control a local player on the host. */
 
+	class Enemy { public int Aggro; }
+
 	class HackyAI : ITick, IBot, INotifyDamage
 	{
 		bool enabled;
@@ -66,25 +68,25 @@ namespace OpenRA.Mods.RA.AI
 		public Player p;
 		PowerManager playerPower;
 		readonly BuildingInfo rallypointTestBuilding;		// temporary hack
+		readonly HackyAIInfo Info;
 
+		Cache<Player,Enemy> aggro = new Cache<Player, Enemy>( _ => new Enemy() );
 		int2 baseCenter;
 		XRandom random = new XRandom(); //we do not use the synced random number generator.
 		BaseBuilder[] builders;
 
+		const int MaxBaseDistance = 15;
 		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
 
 		public World world { get { return p.PlayerActor.World; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
-		readonly HackyAIInfo Info;
 		public HackyAI(HackyAIInfo Info)
 		{
 			this.Info = Info;
 			// temporary hack.
 			this.rallypointTestBuilding = Rules.Info[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
 		}
-
-		const int MaxBaseDistance = 15;
 
 		public static void BotDebug(string s, params object[] args)
 		{
@@ -180,9 +182,7 @@ namespace OpenRA.Mods.RA.AI
 			ticks++;
 
 			if (ticks == 10)
-			{
 				DeployMcv(self);
-			}
 
 			if (ticks % feedbackTime == 0)
 				foreach (var q in Info.UnitQueues)
@@ -206,16 +206,33 @@ namespace OpenRA.Mods.RA.AI
 
 		int2? ChooseEnemyTarget()
 		{
-			// Criteria for picking an enemy:
-			// 1. not ourself.
-			// 2. enemy.
-			// 3. not dead.
-			var possibleTargets = world.WorldActor.Trait<MPStartLocations>().Start
-					.Where(kv => kv.Key != p && p.Stances[kv.Key] == Stance.Enemy
-						&& p.WinState == WinState.Undefined)
-					.Select(kv => kv.Value);
+			var liveEnemies = world.Players
+				.Where(q => p != q && p.Stances[q] == Stance.Enemy)
+				.Where(q => p.WinState == WinState.Undefined && q.WinState == WinState.Undefined);
 
-			return possibleTargets.Any() ? possibleTargets.Random(random) : (int2?)null;
+			var leastLikedEnemies = liveEnemies
+				.GroupBy(e => aggro[e])
+				.OrderByDescending(g => g.Key)
+				.FirstOrDefault();
+
+			if (leastLikedEnemies == null)
+				return null;
+
+			var enemy = leastLikedEnemies != null ? leastLikedEnemies.Random(random) : null;
+
+			/* bump the aggro slightly to avoid changing our mind */
+			if (leastLikedEnemies.Count() > 1)
+				aggro[enemy].Aggro++;
+
+			/* pick something worth attacking owned by that player */
+			var target = world.Actors
+				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>())
+				.Random(random);
+
+			if (target == null)
+				return null;
+
+			return target.Location;
 		}
 
 		int assignRolesTicks = 0;
@@ -432,6 +449,9 @@ namespace OpenRA.Mods.RA.AI
 					world.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
 						{ TargetActor = self });
 				}
+
+			if (e.Attacker != null && e.Damage > 0)
+				aggro[e.Attacker.Owner].Aggro += e.Damage;
 		}
 	}
 }
