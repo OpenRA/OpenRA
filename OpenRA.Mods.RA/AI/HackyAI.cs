@@ -35,6 +35,7 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int SquadSize = 8;
 		public readonly int AssignRolesInterval = 20;
 		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
+		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane" };
 
 		string IBotInfo.Name { get { return this.Name; } }
 
@@ -185,14 +186,8 @@ namespace OpenRA.Mods.RA.AI
 			}
 
 			if (ticks % feedbackTime == 0)
-			{
-				//about once every second, perform unintelligent cleanup tasks.
-				//e.g. ClearAreaAroundSpawnPoints();
-				//e.g. start repairing damaged buildings.
-				BuildRandom("Vehicle");
-				BuildRandom("Infantry");
-				BuildRandom("Plane");
-			}
+				foreach (var q in Info.UnitQueues)
+					BuildRandom(q);
 
 			AssignRolesToIdleUnits(self);
 			SetRallyPointsForNewProductionBuildings(self);
