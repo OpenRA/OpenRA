@@ -35,6 +35,7 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int AssignRolesInterval = 20;
 		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane" };
+		public readonly bool ShouldRepairBuildings = true;
 
 		string IBotInfo.Name { get { return this.Name; } }
 
@@ -441,7 +442,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			if (!enabled) return;
 
-			if (self.HasTrait<RepairableBuilding>())
+			if (Info.ShouldRepairBuildings && self.HasTrait<RepairableBuilding>())
 				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light)
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
