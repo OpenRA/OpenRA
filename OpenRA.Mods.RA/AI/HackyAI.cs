@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Activities;
 using XRandom = OpenRA.Thirdparty.Random;
 
 //TODO:
@@ -249,7 +248,6 @@ namespace OpenRA.Mods.RA.AI
 
 				activeUnits.Add(a);
 			}
-
 
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
