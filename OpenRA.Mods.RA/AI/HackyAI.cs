@@ -354,7 +354,7 @@ namespace OpenRA.Mods.RA.AI
 			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8).Where(IsRallyPointValid).ToArray();
 			if (possibleRallyPoints.Length == 0)
 			{
-				Game.Debug("Bot Bug: No possible rallypoint near {0}", startPos);
+				BotDebug("Bot Bug: No possible rallypoint near {0}", startPos);
 				return startPos;
 			}
 
