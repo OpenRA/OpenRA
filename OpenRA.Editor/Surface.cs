@@ -38,6 +38,8 @@ namespace OpenRA.Editor
 		public bool ShowActorNames;
 		public bool ShowGrid;
 
+		public string NewActorOwner;
+
 		public event Action AfterChange = () => { };
 		public event Action<string> MousePositionChanged = _ => { };
 
@@ -302,7 +304,7 @@ namespace OpenRA.Editor
 				t.Bitmap.Width * Zoom, t.Bitmap.Height * Zoom);
 		}
 
-		ColorPalette GetPaletteForPlayer(string name)
+		ColorPalette GetPaletteForPlayerInner(string name)
 		{
 			var pr = Map.Players[name];
 			var pcpi = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
@@ -312,16 +314,21 @@ namespace OpenRA.Editor
 
 		Cache<string, ColorPalette> PlayerPalettes;
 
-		ColorPalette GetPaletteForActor(ActorReference ar)
+		public ColorPalette GetPaletteForPlayer(string player)
 		{
 			if (PlayerPalettes == null)
-				PlayerPalettes = new Cache<string, ColorPalette>(GetPaletteForPlayer);
+				PlayerPalettes = new Cache<string, ColorPalette>(GetPaletteForPlayerInner);
 
+			return PlayerPalettes[player];
+		}
+
+		ColorPalette GetPaletteForActor(ActorReference ar)
+		{
 			var ownerInit = ar.InitDict.GetOrDefault<OwnerInit>();
 			if (ownerInit == null)
 				return null;
 
-			return PlayerPalettes[ownerInit.PlayerName];
+			return GetPaletteForPlayer(ownerInit.PlayerName);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)

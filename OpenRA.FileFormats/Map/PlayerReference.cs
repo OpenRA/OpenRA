@@ -42,5 +42,7 @@ namespace OpenRA.FileFormats
 
 		public PlayerReference() {}
 		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }
+
+		public override string ToString() { return Name; }
 	}
 }

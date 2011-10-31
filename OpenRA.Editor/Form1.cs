@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Editor
 {
@@ -233,6 +234,11 @@ namespace OpenRA.Editor
 			saveToolStripMenuItem.Enabled = true;
 			saveAsToolStripMenuItem.Enabled = true;
 			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
+
+			actorOwnerChooser.Items.Clear();
+			actorOwnerChooser.Items.AddRange(map.Players.Values.ToArray());
+			actorOwnerChooser.SelectedIndex = 0;
+			surface1.NewActorOwner = (actorOwnerChooser.SelectedItem as PlayerReference).Name;
 		}
 
 		void ResizeClicked(object sender, EventArgs e)
@@ -455,6 +461,30 @@ namespace OpenRA.Editor
 
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
+		}
+
+		void onDrawPlayerItem(object sender, DrawItemEventArgs e)
+		{
+			// color block
+			var player = e.Index >= 0 ? (PlayerReference)(sender as ComboBox).Items[e.Index] : null;
+
+			e.DrawBackground();
+			e.DrawFocusRectangle();
+
+			if (player == null)
+				return;
+
+			var color = player.ColorRamp.GetColor(0);
+			using( var brush = new SolidBrush(color) )
+				e.Graphics.FillRectangle( brush, e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Height + 6, e.Bounds.Height - 4 );
+			using( var foreBrush = new SolidBrush(e.ForeColor) )
+				e.Graphics.DrawString( player.Name, e.Font, foreBrush, e.Bounds.Left + e.Bounds.Height + 12, e.Bounds.Top );
+		}
+
+		void onSelectOwner(object sender, EventArgs e)
+		{
+			var player = actorOwnerChooser.SelectedItem as PlayerReference;
+			surface1.NewActorOwner = player.Name;
 		}
 	}
 }

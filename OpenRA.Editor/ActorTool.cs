@@ -22,10 +22,8 @@ namespace OpenRA.Editor
 
 		public void Preview(Surface surface, SGraphics g)
 		{
-			/* todo: include the player
-				* in the brush so we can color new buildings too */
-
-			surface.DrawActor(g, surface.GetBrushLocation(), Actor, null);
+			surface.DrawActor(g, surface.GetBrushLocation(), Actor,
+				surface.GetPaletteForPlayer(surface.NewActorOwner));
 		}
 
 		public void Apply(Surface surface)
@@ -33,7 +31,7 @@ namespace OpenRA.Editor
 			if (surface.Map.Actors.Value.Any(a => a.Value.Location() == surface.GetBrushLocation()))
 				return;
 
-			var owner = "Neutral";
+			var owner = surface.NewActorOwner;
 			var id = NextActorName(surface);
 			surface.Map.Actors.Value[id] = new ActorReference(Actor.Info.Name.ToLowerInvariant())
 			{
