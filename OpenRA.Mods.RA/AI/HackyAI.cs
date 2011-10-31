@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.AI
 				.Where(q => p.WinState == WinState.Undefined && q.WinState == WinState.Undefined);
 
 			var leastLikedEnemies = liveEnemies
-				.GroupBy(e => aggro[e])
+				.GroupBy(e => aggro[e].Aggro)
 				.OrderByDescending(g => g.Key)
 				.FirstOrDefault();
 
