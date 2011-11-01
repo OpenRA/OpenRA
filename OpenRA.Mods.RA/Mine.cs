@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
 
@@ -19,9 +20,9 @@ namespace OpenRA.Mods.RA
 	class MineInfo : ITraitInfo
 	{
 		public readonly string[] CrushClasses = { };
-		[WeaponReference]
-		public readonly string Weapon = "ATMine";
+		[WeaponReference] public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
+		public readonly string[] DetonateClasses = { };
 
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
@@ -30,8 +31,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly MineInfo info;
-		[Sync]
-		readonly int2 location;
+		[Sync] readonly int2 location;
 
 		public Mine(ActorInitializer init, MineInfo info)
 		{
@@ -47,12 +47,14 @@ namespace OpenRA.Mods.RA
 			if (crusher.HasTrait<MineImmune>() || self.Owner.Stances[crusher.Owner] == Stance.Ally)
 				return;
 
-			var info = self.Info.Traits.Get<MineInfo>();
+			var mobile = crusher.TraitOrDefault<Mobile>();
+			if (mobile != null && !info.DetonateClasses.Intersect(mobile.Info.Crushes).Any())
+				return;
+
 			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation, 0);
 			self.QueueActivity(new RemoveSelf());
 		}
 
-		// TODO: Re-implement friendly-mine avoidance
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
 			return info.CrushClasses.Intersect(crushClasses).Any();
