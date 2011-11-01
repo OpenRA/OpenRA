@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void UpdatePlayerColor(Session.Client client, float hf, float sf, float lf, float r)
 		{
 			var ramp = new ColorRamp((byte)(hf * 255), (byte)(sf * 255), (byte)(lf * 255), (byte)(r * 255));
-			if (client.Index == orderManager.LocalClient.Index)
+			if (client == orderManager.LocalClient)
 			{
 				Game.Settings.Player.ColorRamp = ramp;
 				Game.Settings.Save();
@@ -246,17 +246,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (join != null)
 					{
 						join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + s.PlayerReference));
-						join.IsVisible = () => !s.Closed && c == null && orderManager.LocalClient.State != Session.ClientState.Ready;
+						join.IsVisible = () => !s.Closed && c == null && !orderManager.LocalClient.IsReady;
 					}
 				}
 
-				else if ((c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready) || (c.Bot != null && Game.IsHost))
+				else if ((c.Index == orderManager.LocalClient.Index && !c.IsReady) || (c.Bot != null && Game.IsHost))
 				{
 					template = LocalPlayerTemplate.Clone();
 
 					var botReady = (c.Bot != null && Game.IsHost
-							&& orderManager.LocalClient.State == Session.ClientState.Ready);
-					var ready = botReady || c.State == Session.ClientState.Ready;
+							&& orderManager.LocalClient.IsReady);
+					var ready = botReady || c.IsReady;
 
 					if (c.Bot == null)
 					{
@@ -294,7 +294,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					status.IsChecked = () => c.IsReady;
 					status.OnClick = CycleReady;
 					status.IsVisible = () => c.Bot == null;			
 				}
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					status.IsChecked = () => c.IsReady;
 					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick = CycleReady;
 					status.IsVisible = () => c.Bot == null;
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var c = client;
 				Widget template;
 				// Editable spectator
-				if (c.Index == orderManager.LocalClient.Index && c.State != Session.ClientState.Ready)
+				if (c.Index == orderManager.LocalClient.Index && !c.IsReady)
 				{
 					template = LocalSpectatorTemplate.Clone();
 					LobbyUtils.SetupNameWidget(orderManager, c, template.GetWidget<TextFieldWidget>("NAME"));
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					status.IsChecked = () => c.IsReady;
 					status.OnClick += CycleReady;
 				}
 				// Non-editable spectator
@@ -360,7 +360,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					color.GetColor = () => c.ColorRamp.GetColor(0);
 
 					var status = template.GetWidget<CheckboxWidget>("STATUS");
-					status.IsChecked = () => c.State == Session.ClientState.Ready;
+					status.IsChecked = () => c.IsReady;
 					if (c.Index == orderManager.LocalClient.Index)
 						status.OnClick += CycleReady;
 
@@ -374,7 +374,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			// Spectate button
-			if (orderManager.LocalClient.Slot != null && orderManager.LocalClient.State != Session.ClientState.Ready)
+			if (orderManager.LocalClient.Slot != null && !orderManager.LocalClient.IsReady)
 			{
 				var spec = NewSpectatorTemplate.Clone();
 				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");

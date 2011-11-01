@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
-				|| orderManager.LocalClient.State == Session.ClientState.Ready;
+				|| orderManager.LocalClient.IsReady;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				{
 					template = EmptySlotTemplate.Clone();
 					Func<string> getText = () => slot.Closed ? "Closed" : "Open";
-					var ready = orderManager.LocalClient.State == Session.ClientState.Ready;
+					var ready = orderManager.LocalClient.IsReady;
 
 					if (Game.IsHost)
 					{
@@ -326,9 +326,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						 (client.Bot != null && Game.IsHost))
 				{
 					template = EditablePlayerTemplate.Clone();
-					var botReady = (client.Bot != null && Game.IsHost
-							&& orderManager.LocalClient.State == Session.ClientState.Ready);
-					var ready = botReady || client.State == Session.ClientState.Ready;
+					var botReady = client.Bot != null && Game.IsHost && orderManager.LocalClient.IsReady;
+					var ready = botReady || client.IsReady;
 
 					if (client.Bot != null)
 					{
@@ -397,11 +396,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
 					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
-						client.Bot != null || client.State == Session.ClientState.Ready;
+						client.Bot != null || client.IsReady;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
-					kickButton.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
+					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
@@ -414,7 +413,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Widget template;
 				var c = client;
-				var ready = c.State == Session.ClientState.Ready;
+				var ready = c.IsReady;
+
 				// Editable spectator
 				if (c.Index == orderManager.LocalClient.Index)
 				{
@@ -442,12 +442,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					var color = template.GetWidget<ColorBlockWidget>("COLOR");
 					color.GetColor = () => c.ColorRamp.GetColor(0);
 
-					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
-						c.Bot != null || c.State == Session.ClientState.Ready;
+					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.Bot != null || c.IsReady;
 
 					var kickButton = template.GetWidget<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
-					kickButton.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
+					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
 
@@ -461,7 +460,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var spec = NewSpectatorTemplate.Clone();
 				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
-				btn.IsDisabled = () => orderManager.LocalClient.State == Session.ClientState.Ready;
+				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
 				spec.IsVisible = () => true;
 				Players.AddChild(spec);
 			}

@@ -37,12 +37,7 @@ namespace OpenRA.Network
 			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
 		}
 
-		public enum ClientState
-		{
-			NotReady,
-			Ready,
-			Disconnected = 1000
-		}
+		public enum ClientState { NotReady, Ready, Disconnected = 1000 }
 
 		public class Client
 		{
@@ -55,6 +50,8 @@ namespace OpenRA.Network
 			public int Team;
 			public string Slot;	// slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
+
+			public bool IsReady { get { return State == ClientState.Ready; } }
 		}
 
 		public class Slot
