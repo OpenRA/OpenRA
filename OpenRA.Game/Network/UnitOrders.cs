@@ -97,39 +97,38 @@ namespace OpenRA.Network
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
-
 				case "HandshakeRequest":
-				{
-					var request = HandshakeRequest.Deserialize(order.TargetString);
-
-					// Check that the map exists on the client
-					if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
-						throw new InvalidOperationException("Missing map {0}".F(request.Map));
-
-					var info = new Session.Client()
 					{
-						Name = Game.Settings.Player.Name,
-						ColorRamp = Game.Settings.Player.ColorRamp,
-						Country = "random",
-						SpawnPoint = 0,
-						Team = 0,
-						State = Session.ClientState.NotReady
-					};
+						var request = HandshakeRequest.Deserialize(order.TargetString);
 
-					var localMods = orderManager.LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray();
-					var response = new HandshakeResponse()
-					{
-						Client = info,
-						Mods = localMods,
-						Password = "Foo"
-					};
+						// Check that the map exists on the client
+						if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
+							throw new InvalidOperationException("Missing map {0}".F(request.Map));
 
-					orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
-					break;
-				}
+						var info = new Session.Client()
+						{
+							Name = Game.Settings.Player.Name,
+							ColorRamp = Game.Settings.Player.ColorRamp,
+							Country = "random",
+							SpawnPoint = 0,
+							Team = 0,
+							State = Session.ClientState.NotReady
+						};
+
+						var localMods = orderManager.LobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray();
+						var response = new HandshakeResponse()
+						{
+							Client = info,
+							Mods = localMods,
+							Password = "Foo"
+						};
+
+						orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
+						break;
+					}
 				case "ServerError":
 					orderManager.ServerError = order.TargetString;
-				break;
+					break;
 				case "SyncInfo":
 					{
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
