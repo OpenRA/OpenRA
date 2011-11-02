@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var KeyName = e.KeyName;
 			var KeyConfig = Game.Settings.KeyConfig;
 
-			if (e.Event == KeyInputEvent.Up)
+			if (e.Event == KeyInputEvent.Down)
 			{
 				if (Game.Settings.KeyConfig.ShortcutsWithoutCtrl)
 				{
@@ -89,27 +89,27 @@ namespace OpenRA.Mods.RA.Widgets
 							return CycleProductionBuildings("AirportType");
 					}
 				}
-			}
 
-			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
-			{
-				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
-					return false;
+				if (e.Modifiers == Modifiers.None)
+				{
+					if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
+						return false;
 
-				if (KeyName == KeyConfig.AttackMoveKey)
-					return PerformAttackMove();
+					if (KeyName == KeyConfig.AttackMoveKey)
+						return PerformAttackMove();
 
-				if (KeyName == KeyConfig.StopKey)
-					return PerformStop();
+					if (KeyName == KeyConfig.StopKey)
+						return PerformStop();
 
-				if (KeyName == KeyConfig.ScatterKey)
-					return PerformScatter();
+					if (KeyName == KeyConfig.ScatterKey)
+						return PerformScatter();
 
-				if (KeyName == KeyConfig.DeployKey)
-					return PerformDeploy();
+					if (KeyName == KeyConfig.DeployKey)
+						return PerformDeploy();
 
-				if (KeyName == KeyConfig.StanceCycleKey)
-					return PerformStanceCycle();
+					if (KeyName == KeyConfig.StanceCycleKey)
+						return PerformStanceCycle();
+				}
 			}
 
 			return false;
