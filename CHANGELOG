@@ -5,6 +5,13 @@ NEW:
 		Added a Setup Default Players menu item to map editor
 		Server lobbies upon creation use the previously played map
 		Added support for a Game.ConnectTo argument which allows clients to direct connect to a server when game is launched
+		Helicopters now bob slightly in flight
+		Bots now repair their own buildings
+		Fixed a bug where bots would be unable to set rallypoints for production buildings
+		Bots now maintain a level of aggro on enemy units
+		Made SpawnMPUnits' initial unit configurable
+		Added a dropdown list in the map editor for setting an actor's owner upon placement
+
 	Red Alert:
 		Fixed a crash which occurred when playing an online game with Hard AI
 		Fixed a bug where planes could stack more than 1-per-airfield
@@ -13,11 +20,14 @@ NEW:
 		Changed MIG to fire 2 missiles per burst instead of 4
 		Changed HELI (longbow) to fire missiles in bursts of 2
 		Added a Show Shellmap setting
+		Changed team color picker to match C&C's
+		Fixed a bug where infantry could not pass over anti-tank mines, and vice versa
 		New Map: Bombardment Islands (Sprog)
 		New Map: Engagement (Nukem)
 		New Map: Man to Man (Nukem)
+		New Map: Asymetric Battle (Seru)
 	C&C:
-		Changed the bot spawn picker to work like RA's
+		Changed the bot spawn picker to match RA's
 		Reduced delay of tooltips
 
 20111013:
