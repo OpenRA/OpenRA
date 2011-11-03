@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			this.filesToCopy = filesToCopy;
 			this.filesToExtract = filesToExtract;
 
-			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
+			panel = widget;
 			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 
@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			installingContainer = panel.GetWidget("INSTALLING");
 			insertDiskContainer = panel.GetWidget("INSERT_DISK");
+
 			CheckForDisk();
 		}
 

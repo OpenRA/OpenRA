@@ -57,3 +57,4 @@ Logs/
 Replays/
 settings.yaml
 \#*
+.*.sw?
