@@ -70,7 +70,7 @@ namespace OpenRA.Widgets
 				{
 					if (mi.MultiTapCount == 2)
 					{
-						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
+						var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
 
 						var visibleWorld = Game.viewport.ViewBounds(world);
 						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
