@@ -235,8 +235,13 @@ namespace OpenRA.Editor
 			saveAsToolStripMenuItem.Enabled = true;
 			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
 
+			PopulateActorOwnerChooser();
+		}
+
+		void PopulateActorOwnerChooser()
+		{
 			actorOwnerChooser.Items.Clear();
-			actorOwnerChooser.Items.AddRange(map.Players.Values.ToArray());
+			actorOwnerChooser.Items.AddRange(surface1.Map.Players.Values.ToArray());
 			actorOwnerChooser.SelectedIndex = 0;
 			surface1.NewActorOwner = (actorOwnerChooser.SelectedItem as PlayerReference).Name;
 		}
@@ -461,6 +466,8 @@ namespace OpenRA.Editor
 
 			surface1.Chunks.Clear();
 			surface1.Invalidate();
+
+			PopulateActorOwnerChooser();
 		}
 
 		void onDrawPlayerItem(object sender, DrawItemEventArgs e)
