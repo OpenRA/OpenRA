@@ -477,6 +477,7 @@ STNK:
 		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
 	RenderUnit:
 	AutoTarget:
+		InitialStance: HoldFire
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk

@@ -40,8 +40,9 @@ SS:
 	IronCurtainable:
 	RepairableNear:
 	-DetectCloaked:
+	AutoTarget:
+		InitialStance: HoldFire
 	AttackMove:
-		JustMove: yes
 
 MSUB:
 	Inherits: ^Ship
@@ -84,8 +85,9 @@ MSUB:
 	IronCurtainable:
 	RepairableNear:
 	-DetectCloaked:
+	AutoTarget:
+		InitialStance: HoldFire
 	AttackMove:
-		JustMove: yes
 
 DD:
 	Inherits: ^Ship
