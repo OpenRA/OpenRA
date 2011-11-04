@@ -7,6 +7,7 @@
  * see COPYING.
  */
 #endregion
+
 using System;
 using OpenRA.Network;
 

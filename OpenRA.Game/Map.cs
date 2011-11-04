@@ -102,14 +102,6 @@ namespace OpenRA
 			return map;
 		}
 
-		class Format2ActorReference
-		{
-			public string Id = null;
-			public string Type = null;
-			public int2 Location = int2.Zero;
-			public string Owner = null;
-		}
-
 		void AssertExists(string filename)
 		{
 			using(var s = Container.GetContent(filename))

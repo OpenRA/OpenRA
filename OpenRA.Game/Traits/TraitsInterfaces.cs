@@ -184,6 +184,7 @@ namespace OpenRA.Traits
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
 	public interface Requires<T> where T : class { }
+	public interface UsesInit<T> where T : IActorInit { }
 
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w); }

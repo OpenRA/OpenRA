@@ -109,7 +109,7 @@ namespace OpenRA
 			return ret;
 		}
 
-		static List<Type> PrerequisitesOf( ITraitInfo info )
+		static List<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
@@ -117,6 +117,21 @@ namespace OpenRA
 				.Where( t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof( Requires<> ) )
 				.Select( t => t.GetGenericArguments()[ 0 ] )
 				.ToList();
+		}
+
+		public IEnumerable<Pair<string, Type>> GetInitKeys()
+		{
+			var inits = Traits.WithInterface<ITraitInfo>().SelectMany(
+				t => t.GetType().GetInterfaces()
+					.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(UsesInit<>))
+					.Select(i => i.GetGenericArguments()[0])).ToList();
+
+			inits.Add( typeof(OwnerInit) );		/* not exposed by a trait; this is used by the Actor itself */
+
+			return inits.Select(
+				i => Pair.New(
+					i.GetType().Name.Replace( "Init", "" ),
+					i.GetType().GetInterfaces()[0].GetGenericArguments()[0] ) );
 		}
 	}
 }

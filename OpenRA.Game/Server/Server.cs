@@ -46,10 +46,7 @@ namespace OpenRA.Server
 		public Map Map;
 
 		volatile bool shutdown = false;
-		public void Shutdown()
-		{
-			shutdown = true;
-		}
+		public void Shutdown() { shutdown = true; }
 
 		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
 		{
