@@ -153,12 +153,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdateCurrentMap()
 		{
-			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
-			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
+			var newMap = orderManager.LobbyInfo.GlobalSettings.Map;
+			if (MapUid == newMap) return;
+
+			MapUid = newMap;
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Widget.RootWidget.GetWidget<LabelWidget>("LOBBY_TITLE");
-			title.Text = "OpenRA Multiplayer Lobby - " + orderManager.LobbyInfo.GlobalSettings.ServerName + " - " + Map.Title;
+			if (title != null)
+				title.Text = "OpenRA Multiplayer Lobby - {0} - {1}".F(
+					orderManager.LobbyInfo.GlobalSettings.ServerName, Map.Title);
 		}
 
 		void UpdatePlayerList()
