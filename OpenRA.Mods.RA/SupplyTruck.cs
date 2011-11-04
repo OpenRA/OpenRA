@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA
 	class SupplyTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		SupplyTruckInfo Info;
+
 		public SupplyTruck(SupplyTruckInfo info)
 		{
 			Info = info;

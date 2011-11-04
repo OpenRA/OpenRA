@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	public class TargetableUnitInfo : ITraitInfo
 	{
 		public readonly string[] TargetTypes = { };
+
 		public virtual object Create( ActorInitializer init ) { return new TargetableUnit<TargetableUnitInfo>( init.self, this ); }
 	}
 
