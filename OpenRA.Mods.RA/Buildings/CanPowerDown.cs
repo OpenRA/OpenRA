@@ -20,8 +20,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 	public class CanPowerDown : IResolveOrder, IDisable, INotifyCapture, ISync
 	{
-		[Sync]
-		bool disabled = false;
+		[Sync] bool disabled = false;
 		int normalPower = 0;
 		PowerManager PowerManager;
 
@@ -30,6 +29,7 @@ namespace OpenRA.Mods.RA.Buildings
 			PowerManager = init.self.Owner.PlayerActor.Trait<PowerManager>();
 			normalPower = init.self.Info.Traits.Get<BuildingInfo>().Power;
 		}
+
 		public bool Disabled { get { return disabled; } }
 
 		public void ResolveOrder(Actor self, Order order)
