@@ -31,14 +31,17 @@ namespace OpenRA.Mods.RA
 
 		public void SelectionChanged()
 		{
+			var palette = Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE");
+			if (palette == null)
+				return;
+
 			// Queue-per-structure
 			var perqueue = world.Selection.Actors.FirstOrDefault(
 				a => a.IsInWorld && a.World.LocalPlayer == a.Owner && a.HasTrait<ProductionQueue>());
 
 			if (perqueue != null)
 			{
-				Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-					.SetCurrentTab(perqueue.TraitsImplementing<ProductionQueue>().First());
+				palette.SetCurrentTab(perqueue.TraitsImplementing<ProductionQueue>().First());
 				return;
 			}
 
@@ -51,9 +54,8 @@ namespace OpenRA.Mods.RA
 			if (types.Length == 0)
 				return;
 
-			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(t => types.Contains(t.Info.Type)));
+			palette.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(t => types.Contains(t.Info.Type)));
 		}
 	}
 }
