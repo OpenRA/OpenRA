@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			Sound.Play(Info.CrushSound);
+			Sound.Play(Info.CrushSound, crusher.CenterLocation);
 			self.World.AddFrameEndTask(w =>
 			{
 				if (!self.Destroyed)
