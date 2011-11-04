@@ -129,10 +129,14 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var stances = (UnitStance[])Enum.GetValues(typeof(UnitStance));
 
-			var nextStance = stances.Concat(stances).SkipWhile(s => s != actor.Second.stance).Skip(1).First();
+			var nextStance = stances.Concat(stances).SkipWhile(s => s != actor.Second.predictedStance).Skip(1).First();
 
 			PerformKeyboardOrderOnSelection(a =>
-				new Order("SetUnitStance", a, false) { TargetLocation = new int2((int)nextStance, 0) });
+			{
+				var at = a.TraitOrDefault<AutoTarget>();
+				if (at != null) at.predictedStance = nextStance;
+				return new Order("SetUnitStance", a, false) { TargetLocation = new int2((int)nextStance, 0) };
+			});
 
 			Game.Debug( "Unit stance set to: {0}".F(nextStance) );
 

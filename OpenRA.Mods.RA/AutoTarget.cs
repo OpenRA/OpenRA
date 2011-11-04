@@ -32,12 +32,14 @@ namespace OpenRA.Mods.RA
 
 		[Sync] int nextScanTime = 0;
 		[Sync] public UnitStance stance;
+		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
 			Info = info;
 			attack = self.Trait<AttackBase>();
 			stance = Info.InitialStance;
+			predictedStance = stance;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
