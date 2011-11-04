@@ -54,7 +54,6 @@ namespace OpenRA.Editor
 			this.resourcePalette = new System.Windows.Forms.FlowLayoutPanel();
 			this.surface1 = new OpenRA.Editor.Surface();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
-			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -262,12 +261,6 @@ namespace OpenRA.Editor
 			// tt
 			// 
 			this.tt.ShowAlways = true;
-			// 
-			// saveFileDialog
-			// 
-			this.saveFileDialog.DefaultExt = "*.png";
-			this.saveFileDialog.Filter = "PNG Image (*.png)|";
-			this.saveFileDialog.Title = "Export minimap to PNG";
 			// 
 			// splitContainer3
 			// 
@@ -568,7 +561,6 @@ namespace OpenRA.Editor
 		private Surface surface1;
 		private System.Windows.Forms.PictureBox pmMiniMap;
 		private System.Windows.Forms.SplitContainer splitContainer2;
-		private System.Windows.Forms.SaveFileDialog saveFileDialog;
 		private System.Windows.Forms.SplitContainer splitContainer3;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelMousePosition;
