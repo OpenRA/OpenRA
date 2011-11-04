@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool AllowMovement = true;
 		public readonly int ScanRadius = -1;
+		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
 
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
@@ -30,12 +31,13 @@ namespace OpenRA.Mods.RA
 		readonly AttackBase attack;
 
 		[Sync] int nextScanTime = 0;
-		[Sync] public UnitStance stance = UnitStance.AttackAnything;
+		[Sync] public UnitStance stance;
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
 			Info = info;
 			attack = self.Trait<AttackBase>();
+			stance = Info.InitialStance;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
