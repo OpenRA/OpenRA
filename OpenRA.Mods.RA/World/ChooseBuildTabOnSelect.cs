@@ -11,19 +11,20 @@
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Widgets;
 
-namespace OpenRA.Mods.RA.Widgets
+namespace OpenRA.Mods.RA
 {
 	class ChooseBuildTabOnSelectInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new ChooseBuildTabOnSelect( init ); }
+		public object Create(ActorInitializer init) { return new ChooseBuildTabOnSelect(init); }
 	}
 
 	class ChooseBuildTabOnSelect : INotifySelection
 	{
 		readonly World world;
 
-		public ChooseBuildTabOnSelect( ActorInitializer init )
+		public ChooseBuildTabOnSelect(ActorInitializer init)
 		{
 			world = init.world;
 		}
@@ -43,15 +44,16 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Queue-per-player
 			var types = world.Selection.Actors.Where(a => a.IsInWorld && (a.World.LocalPlayer == a.Owner))
-											  .SelectMany(a => a.TraitsImplementing<Production>())
-											  .SelectMany(t => t.Info.Produces)
-											  .ToArray();
+				.SelectMany(a => a.TraitsImplementing<Production>())
+				.SelectMany(t => t.Info.Produces)
+				.ToArray();
 
 			if (types.Length == 0)
 				return;
 
 			Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>().FirstOrDefault(t => types.Contains(t.Info.Type)));
+				.SetCurrentTab(world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+					.FirstOrDefault(t => types.Contains(t.Info.Type)));
 		}
 	}
 }
