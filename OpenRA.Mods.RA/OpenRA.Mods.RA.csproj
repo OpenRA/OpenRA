@@ -140,7 +140,6 @@
     <Compile Include="Buildings\RequiresPower.cs" />
     <Compile Include="Buildings\ShakeOnDeath.cs" />
     <Compile Include="Buildings\SoundOnDamageTransition.cs" />
-    <Compile Include="Buildings\TechTree.cs" />
     <Compile Include="Buildings\Util.cs" />
     <Compile Include="Buildings\Wall.cs" />
     <Compile Include="Burns.cs" />
@@ -251,6 +250,7 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
+    <Compile Include="Player\TechTree.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />
     <Compile Include="PrimaryBuilding.cs" />
     <Compile Include="Production.cs" />
@@ -332,6 +332,7 @@
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionDialogsLogic.cs" />
     <Compile Include="Widgets\Logic\CreateServerMenuLogic.cs" />
     <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
@@ -364,7 +365,6 @@
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
-    <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -391,7 +391,4 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="AI\" />
-  </ItemGroup>
 </Project>

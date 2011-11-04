@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA
@@ -24,5 +25,16 @@ namespace OpenRA.Mods.RA
 	public interface IAcceptOreDockAction
 	{
 		void OnDock(Actor self, Actor harv, DeliverResources dockOrder);
+	}
+
+	public interface ITechTreeElement
+	{
+		void PrerequisitesAvailable(string key);
+		void PrerequisitesUnavailable(string key);
+	}
+
+	public interface ITechTreePrerequisite
+	{
+		IEnumerable<string> ProvidesPrerequisites {get;}
 	}
 }

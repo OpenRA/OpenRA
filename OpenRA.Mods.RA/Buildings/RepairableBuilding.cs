@@ -19,16 +19,17 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;
 		public readonly int RepairStep = 7;
+
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
 	public class RepairableBuilding : ITick, ISync
 	{
-		[Sync]
-		public Player Repairer = null;
+		[Sync] public Player Repairer = null;
 
 		Health Health;
 		RepairableBuildingInfo Info;
+
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 		{
 			Health = self.Trait<Health>();
@@ -57,6 +58,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 
 		int remainingTicks;
+
 		public void Tick(Actor self)
 		{
 			if (Repairer == null) return;

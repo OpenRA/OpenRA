@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Buildings
 	class RequiresPower : IDisable, INotifyCapture
 	{
 		PowerManager power;
+
 		public RequiresPower( Actor self )
 		{
 			power = self.Owner.PlayerActor.Trait<PowerManager>();

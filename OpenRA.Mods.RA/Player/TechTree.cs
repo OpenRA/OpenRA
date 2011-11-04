@@ -13,7 +13,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Buildings
+namespace OpenRA.Mods.RA
 {
 	public class TechTreeInfo : ITraitInfo
 	{
@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		readonly List<Watcher> watchers = new List<Watcher>();
 		readonly Player player;
+
 		public TechTree(ActorInitializer init)
 		{
 			player = init.self.Owner;
@@ -106,26 +107,17 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 	}
 
-	public interface ITechTreeElement
-	{
-		void PrerequisitesAvailable(string key);
-		void PrerequisitesUnavailable(string key);
-	}
-
-	public interface ITechTreePrerequisite
-	{
-		IEnumerable<string> ProvidesPrerequisites {get;}
-	}
-
 	public class ProvidesCustomPrerequisiteInfo : ITraitInfo
 	{
-		public string Prerequisite;
+		public readonly string Prerequisite;
+
 		public object Create(ActorInitializer init) { return new ProvidesCustomPrerequisite(this);}
 	}
 
 	public class ProvidesCustomPrerequisite : ITechTreePrerequisite
 	{
 		ProvidesCustomPrerequisiteInfo Info;
+
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return Info.Prerequisite; } }
 
 		public ProvidesCustomPrerequisite(ProvidesCustomPrerequisiteInfo info)

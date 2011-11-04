@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
@@ -24,6 +21,7 @@ namespace OpenRA.Mods.RA.Buildings
 	public class ShakeOnDeath : INotifyKilled
 	{
 		readonly ShakeOnDeathInfo Info;
+
 		public ShakeOnDeath(ShakeOnDeathInfo info)
 		{
 			this.Info = info;

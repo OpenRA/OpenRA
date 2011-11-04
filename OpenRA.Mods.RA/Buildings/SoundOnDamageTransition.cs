@@ -8,15 +8,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Render
+namespace OpenRA.Mods.RA.Buildings
 {
 	public class SoundOnDamageTransitionInfo : ITraitInfo
 	{
@@ -29,6 +23,7 @@ namespace OpenRA.Mods.RA.Render
 	public class SoundOnDamageTransition : INotifyDamageStateChanged
 	{
 		readonly SoundOnDamageTransitionInfo Info;
+
 		public SoundOnDamageTransition( SoundOnDamageTransitionInfo info )
 		{
 			Info = info;
