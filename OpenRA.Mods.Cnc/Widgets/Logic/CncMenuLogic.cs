@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 
-			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(),
+			CncConnectionLogic.Connect(IPAddress.Loopback.ToString(),
 									   Game.CreateLocalServer(map),
 									   () => OpenLobbyPanel(MenuType.Main, true),
 									   () => { Game.CloseServer(); Menu = MenuType.Main; });

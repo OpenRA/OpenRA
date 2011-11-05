@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
-	public class CncConnectingLogic
+	public class CncConnectionLogic
 	{
 		Action onConnect, onRetry, onAbort;
 		string host;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public CncConnectingLogic(Widget widget, string host, int port, Action onConnect, Action onRetry, Action onAbort)
+		public CncConnectionLogic(Widget widget, string host, int port, Action onConnect, Action onRetry, Action onAbort)
 		{
 			this.host = host;
 			this.port = port;

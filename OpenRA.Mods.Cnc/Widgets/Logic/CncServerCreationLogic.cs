@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Create and join the server
 			Game.CreateServer(settings);
 			Widget.CloseWindow();
-			CncConnectingLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
+			CncConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}
 	}
 }

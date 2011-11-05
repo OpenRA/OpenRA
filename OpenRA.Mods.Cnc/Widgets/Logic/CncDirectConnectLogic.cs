@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Game.Settings.Save();
 
 				Widget.CloseWindow();
-				CncConnectingLogic.Connect(ipField.Text, port, openLobby, onExit);
+				CncConnectionLogic.Connect(ipField.Text, port, openLobby, onExit);
 			};
 
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };

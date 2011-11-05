@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Action onRetry = () =>
 				{
 					CloseWindow();
-					CncConnectingLogic.Connect(om.Host, om.Port, onConnect, onExit);
+					CncConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 
 				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()

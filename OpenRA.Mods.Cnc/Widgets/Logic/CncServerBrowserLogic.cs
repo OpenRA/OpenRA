@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var port = int.Parse(currentServer.Address.Split(':')[1]);
 
 				Widget.CloseWindow();
-				CncConnectingLogic.Connect(host, port, openLobby, onExit);
+				CncConnectionLogic.Connect(host, port, openLobby, onExit);
 			};
 
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
