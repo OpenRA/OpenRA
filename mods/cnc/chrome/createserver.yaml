@@ -1,9 +1,6 @@
-# TODO: Hook up the description field
-# TODO: Hook up the password field
-# TODO: Have the advertise checkbox en/disable the external port textfield
 Container@CREATESERVER_PANEL:
 	Id:CREATESERVER_PANEL
-	Logic:CncServerCreationLogic
+	Logic:ServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 260)/2
 	Width:604
@@ -57,34 +54,6 @@ Container@CREATESERVER_PANEL:
 					MaxLength:50
 					Height:25
 					Text:My OpenRA Server
-				Label@SERVER_DESC_LABEL:
-					X:15
-					Y:49
-					Width:90
-					Height:25
-					Align:Right
-					Text:Description:
-				TextField@SERVER_DESC:
-					Id:SERVER_DESC
-					X:110
-					Y:50
-					Width:275
-					MaxLength:50
-					Height:25
-				Label@SERVER_PASSWORD_LABEL:
-					X:15
-					Y:84
-					Width:90
-					Height:25
-					Align:Right
-					Text:Password:
-				TextField@SERVER_PASSWORD:
-					Id:SERVER_PASSWORD
-					X:110
-					Y:85
-					Width:275
-					MaxLength:50
-					Height:25
 				Label@LISTEN_PORT_LABEL:
 					X:15
 					Y:119

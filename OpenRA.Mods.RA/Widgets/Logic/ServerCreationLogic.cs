@@ -13,9 +13,9 @@ using System.Net;
 using OpenRA.GameRules;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncServerCreationLogic
+	public class ServerCreationLogic
 	{
 		Widget panel;
 		Action onCreate;
@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		bool advertiseOnline;
 
 		[ObjectCreator.UseCtor]
-		public CncServerCreationLogic(Widget widget, Action onExit, Action openLobby)
+		public ServerCreationLogic(Widget widget, Action onExit, Action openLobby)
 		{
-			panel = widget.GetWidget("CREATESERVER_PANEL");
+			panel = widget;
 			onCreate = openLobby;
 			this.onExit = onExit;
 
@@ -34,20 +34,24 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 			panel.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
-			panel.GetWidget<ButtonWidget>("MAP_BUTTON").OnClick = () =>
-			{
-				Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
-				{
-					{ "initialMap", map.Uid },
-					{ "onExit", () => {} },
-					{ "onSelect", (Action<Map>)(m => map = m) }
-				});
-			};
-
 			map = Game.modData.AvailableMaps[ WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map) ];
 
-			panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
-			panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
+			var mapButton = panel.GetWidget<ButtonWidget>("MAP_BUTTON");
+			if (mapButton != null)
+			{
+				panel.GetWidget<ButtonWidget>("MAP_BUTTON").OnClick = () =>
+				{
+					Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+					{
+						{ "initialMap", map.Uid },
+						{ "onExit", () => {} },
+						{ "onSelect", (Action<Map>)(m => map = m) }
+					});
+				};
+
+				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
+				panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
+			}
 
 			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
 			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
@@ -60,10 +64,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var advertiseCheckbox = panel.GetWidget<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
-
-			// Disable these until we have some logic behind them
-			panel.GetWidget<TextFieldWidget>("SERVER_DESC").IsDisabled = () => true;
-			panel.GetWidget<TextFieldWidget>("SERVER_PASSWORD").IsDisabled = () => true;
 		}
 
 		void CreateAndJoin()
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Create and join the server
 			Game.CreateServer(settings);
 			Widget.CloseWindow();
-			CncConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
+			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}
 	}
 }

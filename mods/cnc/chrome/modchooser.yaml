@@ -1,6 +1,6 @@
 Container@MODS_PANEL:
 	Id:MODS_PANEL
-	Logic:CncModBrowserLogic
+	Logic:ModBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
 	Width:740

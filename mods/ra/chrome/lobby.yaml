@@ -6,8 +6,8 @@ Background@SERVER_LOBBY:
 	Width:800
 	Height:600
 	Children:
-		Label@LOBBY_TITLE:
-			Id:LOBBY_TITLE
+		Label@TITLE:
+			Id:TITLE
 			X:0
 			Y:17
 			Align:Center
@@ -22,8 +22,8 @@ Background@SERVER_LOBBY:
 			Height:252
 			Background:dialog3
 			Children:
-				MapPreview@LOBBY_MAP_PREVIEW:
-					Id:LOBBY_MAP_PREVIEW
+				MapPreview@MAP_PREVIEW:
+					Id:MAP_PREVIEW
 					X:4
 					Y:4
 					Width:244
@@ -36,8 +36,8 @@ Background@SERVER_LOBBY:
 			Width:504
 			Height:235
 			Children:
-				Container@TEMPLATE_LOCAL:
-					Id:TEMPLATE_LOCAL
+				Container@TEMPLATE_EDITABLE_PLAYER:
+					Id:TEMPLATE_EDITABLE_PLAYER
 					X:5
 					Y:0
 					Width:475
@@ -99,14 +99,25 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:390
 							Y:0
-						Checkbox@STATUS:
-							Id:STATUS
+						Checkbox@STATUS_CHECKBOX:
+							Id:STATUS_CHECKBOX
 							X:448
 							Y:2
 							Width:20
 							Height:20
-				Container@TEMPLATE_REMOTE:
-					Id:TEMPLATE_REMOTE
+							Visible:false
+						Image@STATUS_IMAGE:
+							Id:STATUS_IMAGE
+							Visible:false
+							X:450
+							Y:4
+							Width:20
+							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+							Visible:false
+				Container@TEMPLATE_NONEDITABLE_PLAYER:
+					Id:TEMPLATE_NONEDITABLE_PLAYER
 					X:5
 					Y:0
 					Width:475
@@ -162,12 +173,16 @@ Background@SERVER_LOBBY:
 							Align:Center
 							X:390
 							Y:0
-						Checkbox@STATUS:
-							Id:STATUS
-							X:448
-							Y:2
+						Image@STATUS_IMAGE:
+							Id:STATUS_IMAGE
+							Visible:false
+							X:450
+							Y:4
 							Width:20
 							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+
 				Container@TEMPLATE_EMPTY:
 					Id:TEMPLATE_EMPTY
 					X:5
@@ -183,28 +198,14 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:5
 							Y:0-1
-						Button@JOIN:
-							Id:JOIN
-							Text:Play in this slot
-							Width:278
-							Height:25
-							X:160
-							Y:0
-				Container@TEMPLATE_EMPTY_HOST:
-					Id:TEMPLATE_EMPTY_HOST
-					X:5
-					Y:0
-					Width:400
-					Height:25
-					Visible:false
-					Children:
-						DropDownButton@NAME:
-							Id:NAME
+						DropDownButton@NAME_HOST:
+							Id:NAME_HOST
 							Text:Name
 							Width:150
 							Height:25
 							X:0
 							Y:0
+							Visible:false
 						Button@JOIN:
 							Id:JOIN
 							Text:Play in this slot
@@ -212,8 +213,8 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:160
 							Y:0
-				Container@TEMPLATE_LOCAL_SPECTATOR:
-					Id:TEMPLATE_LOCAL_SPECTATOR
+				Container@TEMPLATE_EDITABLE_SPECTATOR:
+					Id:TEMPLATE_EDITABLE_SPECTATOR
 					X:5
 					Y:0
 					Width:475
@@ -247,14 +248,24 @@ Background@SERVER_LOBBY:
 							Y:0
 							Align:Center
 							Font:Bold
-						Checkbox@STATUS:
-							Id:STATUS
+						Checkbox@STATUS_CHECKBOX:
+							Id:STATUS_CHECKBOX
 							X:448
 							Y:2
 							Width:20
 							Height:20
-				Container@TEMPLATE_REMOTE_SPECTATOR:
-					Id:TEMPLATE_REMOTE_SPECTATOR
+						Image@STATUS_IMAGE:
+							Id:STATUS_IMAGE
+							Visible:false
+							X:450
+							Y:4
+							Width:20
+							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+
+				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
+					Id:TEMPLATE_NONEDITABLE_SPECTATOR
 					X:5
 					Y:0
 					Width:475
@@ -290,12 +301,15 @@ Background@SERVER_LOBBY:
 							Y:0
 							Align:Center
 							Font:Bold
-						Checkbox@STATUS:
-							Id:STATUS
-							X:448
-							Y:2
+						Image@STATUS_IMAGE:
+							Id:STATUS_IMAGE
+							Visible:false
+							X:450
+							Y:4
 							Width:20
 							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
 				Container@TEMPLATE_NEW_SPECTATOR:
 					Id:TEMPLATE_NEW_SPECTATOR
 					X:5
@@ -369,13 +383,40 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Change Map
 			Font:Bold
-		ChatDisplay@CHAT_DISPLAY:
+		ScrollPanel@CHAT_DISPLAY:
 			Id:CHAT_DISPLAY
 			X:20
-			Notification: rabeep1.aud
-			Height:230
 			Y:PARENT_BOTTOM - 289
 			Width:PARENT_RIGHT - 200
+			Height:230
+			ItemSpacing:1
+			Children:
+				Container@CHAT_TEMPLATE:
+					Id:CHAT_TEMPLATE
+					Width:PARENT_RIGHT-27
+					Height:16
+					X:2
+					Y:0
+					Children:
+						Label@TIME:
+							Id:TIME
+							X:3
+							Width:50
+							Height:15
+							VAlign:Top
+						Label@NAME:
+							Id:NAME
+							X:45
+							Width:50
+							Height:15
+							VAlign:Top
+						Label@TEXT:
+							Id:TEXT
+							X:55
+							Width:PARENT_RIGHT - 60
+							Height:15
+							WordWrap:true
+							VAlign:Top
 		Label@LABEL_CHATTYPE:
 			Id:LABEL_CHATTYPE
 			Width:65

@@ -202,7 +202,10 @@ namespace OpenRA.Network
 			if (socket != null)
 				socket.Client.Close();
 			using( new PerfSample( "Thread.Join" ))
-				t.Join();
+			{
+				if (!t.Join(1000))
+					return;
+			}
 		}
 
 		~NetworkConnection() { Dispose(); }

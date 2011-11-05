@@ -33,8 +33,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
 			panel.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
-
-			MainMenuButtonsLogic.DisplayModSelector();
 		}
 	}
 }

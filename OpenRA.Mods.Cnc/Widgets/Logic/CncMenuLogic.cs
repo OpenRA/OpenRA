@@ -9,6 +9,7 @@
 #endregion
 
 using System.Net;
+using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -54,35 +55,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 
 			multiplayerMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
-			multiplayerMenu.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
-			{
-				Menu = MenuType.None;
-				Widget.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs()
-				{
-					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
-				});
-			};
-
-			multiplayerMenu.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = () =>
-			{
-				Menu = MenuType.None;
-				Widget.OpenWindow("CREATESERVER_PANEL", new WidgetArgs()
-				{
-					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
-				});
-			};
-
-			multiplayerMenu.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
-			{
-				Menu = MenuType.None;
-				Widget.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs()
-				{
-					{ "onExit", () => Menu = MenuType.Multiplayer },
-					{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
-				});
-			};
+			multiplayerMenu.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () => OpenGamePanel("SERVERBROWSER_PANEL");
+			multiplayerMenu.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = () => OpenGamePanel("CREATESERVER_PANEL");
+			multiplayerMenu.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () => OpenGamePanel("DIRECTCONNECT_PANEL");
 
 			// Settings menu
 			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
@@ -121,6 +96,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			rootMenu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
 		}
+		
+		void OpenGamePanel(string id)
+		{
+			Menu = MenuType.None;
+			Widget.OpenWindow(id, new WidgetArgs()
+			{
+				{ "onExit", () => Menu = MenuType.Multiplayer },
+				{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }
+			});
+		}
 
 		void RemoveShellmapUI()
 		{
@@ -142,10 +127,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			var map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 
-			CncConnectionLogic.Connect(IPAddress.Loopback.ToString(),
-									   Game.CreateLocalServer(map),
-									   () => OpenLobbyPanel(MenuType.Main, true),
-									   () => { Game.CloseServer(); Menu = MenuType.Main; });
+			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
+				Game.CreateLocalServer(map),
+				() => OpenLobbyPanel(MenuType.Main, true),
+				() => { Game.CloseServer(); Menu = MenuType.Main; });
 		}
 	}
 }

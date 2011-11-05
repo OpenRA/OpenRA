@@ -18,70 +18,80 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ReplayBrowserLogic
 	{
-		Widget widget;
+		Widget panel;
 
 		[ObjectCreator.UseCtor]
-		public ReplayBrowserLogic(Widget widget)
+		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
 		{
-			this.widget = widget;
+			panel = widget;
 
-			widget.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => Widget.CloseWindow();
+			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
 
-			/* find some replays? */
-			var rl = widget.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
+			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = widget.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
-			SelectReplay(null);
+			var template = panel.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
-				foreach (var replayFile in Directory.GetFiles(replayDir, "*.rep").Reverse())
+			{
+				var files = Directory.GetFiles(replayDir, "*.rep").Reverse();
+				foreach (var replayFile in files)
 					AddReplay(rl, replayFile, template);
 
-			widget.GetWidget<ButtonWidget>("WATCH_BUTTON").OnClick = () =>
+				SelectReplay(files.FirstOrDefault());
+			}
+
+			var watch = panel.GetWidget<ButtonWidget>("WATCH_BUTTON");
+			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
+			watch.OnClick = () =>
 			{
 				if (currentReplay != null)
 				{
+					Game.JoinReplay(currentReplay.Filename);
 					Widget.CloseWindow();
-					Game.JoinReplay(currentReplay);
+					onStart();
 				}
 			};
 
-			widget.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
+			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
-		string currentReplay;
+		Replay currentReplay;
+		Map currentMap;
 
 		void SelectReplay(string filename)
 		{
-			currentReplay = filename;
+			if (filename == null)
+				return;
 
-			if (currentReplay != null)
+			try
 			{
-				try
-				{
-					var summary = new Replay(currentReplay);
-					var mapStub = summary.Map();
+				currentReplay = new Replay(filename);
+				currentMap = currentReplay.Map();
 
-					widget.GetWidget<LabelWidget>("DURATION").GetText =
-						() => WidgetUtils.FormatTime(summary.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-					widget.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => mapStub;
-					widget.GetWidget<LabelWidget>("MAP_TITLE").GetText =
-						() => mapStub != null ? mapStub.Title : "(Unknown Map)";
-				}
-				catch(Exception e)
-				{
-					Log.Write("debug", "Exception while parsing replay: {0}", e);
-					currentReplay = null;
-				}
+				panel.GetWidget<LabelWidget>("DURATION").GetText =
+					() => WidgetUtils.FormatTime(currentReplay.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
+				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
+				panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
+
+				var players = currentReplay.LobbyInfo.Slots
+					.Count(s => currentReplay.LobbyInfo.ClientInSlot(s.Key) != null);
+				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Exception while parsing replay: {0}", e);
+				currentReplay = null;
+				currentMap = null;
 			}
 		}
 
 		void AddReplay(ScrollPanelWidget list, string filename, ScrollItemWidget template)
 		{
 			var item = ScrollItemWidget.Setup(template,
-				() => currentReplay == filename,
+				() => currentReplay != null && currentReplay.Filename == filename,
 				() => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
 			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -18,65 +19,88 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ServerBrowserLogic
 	{
-		GameServer currentServer = null;
-		ScrollItemWidget ServerTemplate;
+		GameServer currentServer;
+		ScrollItemWidget serverTemplate;
+
+		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
+		SearchStatus searchStatus = SearchStatus.Fetching;
+
+		public string ProgressLabelText()
+		{
+			switch (searchStatus)
+			{
+				case SearchStatus.Fetching:	return "Fetching game list...";
+				case SearchStatus.Failed:	return "Failed to contact master server.";
+				case SearchStatus.NoGames:	return "No games found.";
+				default:					return "";
+			}
+		}
 
 		[ObjectCreator.UseCtor]
-		public ServerBrowserLogic(Widget widget)
+		public ServerBrowserLogic(Widget widget, Action openLobby, Action onExit)
 		{
-			var bg = widget.GetWidget("JOINSERVER_BG");
+			var panel = widget;
+			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
-			bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-			bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
-
-			ServerList.Query(RefreshServerList);
-
-			bg.GetWidget("SERVER_INFO").IsVisible = () => currentServer != null;
-			var preview = bg.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
-			preview.Map = () => CurrentMap();
-			preview.IsVisible = () => CurrentMap() != null;
-
-			bg.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
-			bg.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => GenerateModsLabel(currentServer);
-			bg.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
-			bg.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () =>
+			// Menu buttons
+			var refreshButton = panel.GetWidget<ButtonWidget>("REFRESH_BUTTON");
+			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+			refreshButton.OnClick = () =>
 			{
-				if (currentServer == null)
-					return "";
-				string ret = currentServer.Players.ToString();
-				if (CurrentMap() != null)
-					ret += "/" + CurrentMap().PlayerCount.ToString();
-				return ret;
-			};
-
-			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
-			ServerTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
-
-			bg.GetWidget<ButtonWidget>("REFRESH_BUTTON").OnClick = () =>
-			{
-				bg.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				bg.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Fetching game list...";
+				searchStatus = SearchStatus.Fetching;
 				sl.RemoveChildren();
 				currentServer = null;
-
-				ServerList.Query(RefreshServerList);
+				ServerList.Query(games => RefreshServerList(panel, games));
 			};
 
-			bg.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => Widget.CloseWindow();
-			bg.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () =>
-			{
-				Widget.CloseWindow();
-				Widget.OpenWindow("DIRECTCONNECT_BG");
-			};
-
-			bg.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
+			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
+			join.OnClick = () =>
 			{
 				if (currentServer == null)
 					return;
 
+				var host = currentServer.Address.Split(':')[0];
+				var port = int.Parse(currentServer.Address.Split(':')[1]);
+
 				Widget.CloseWindow();
-				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
+				ConnectionLogic.Connect(host, port, openLobby, onExit);
 			};
+
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+
+			// Server list
+			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
+
+			// Display the progress label over the server list
+			// The text is only visible when the list is empty
+			var progressText = panel.GetWidget<LabelWidget>("PROGRESS_LABEL");
+			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
+			progressText.GetText = ProgressLabelText;
+
+			// Map preview
+			var preview = panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+			preview.Map = () => CurrentMap();
+			preview.IsVisible = () => CurrentMap() != null;
+
+			// Server info
+			var infoPanel = panel.GetWidget("SERVER_INFO");
+			infoPanel.IsVisible = () => currentServer != null;
+			infoPanel.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
+			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserLogic.GenerateModsLabel(currentServer);
+			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
+			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
+
+			ServerList.Query(games => RefreshServerList(panel, games));
+		}
+
+		string GetPlayersLabel(GameServer game)
+		{
+			if (game == null)
+				return "";
+
+			var map = Game.modData.FindMapByUid(game.Map);
+			return map == null ? "{0}".F(currentServer.Players) : "{0} / {1}".F(currentServer.Players, map.PlayerCount);
 		}
 
 		Map CurrentMap()
@@ -97,23 +121,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
 		}
 
-		void RefreshServerList(IEnumerable<GameServer> games)
+		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
-			var r = Widget.RootWidget;
-			var bg = r.GetWidget("JOINSERVER_BG");
-
-			if (bg == null) // We got a MasterServer reply AFTER the browser is gone, just return to prevent crash - Gecko
-				return;
-
-			var sl = bg.GetWidget<ScrollPanelWidget>("SERVER_LIST");
+			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
 
 			sl.RemoveChildren();
 			currentServer = null;
 
 			if (games == null)
 			{
-				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "Failed to contact master server.";
+				searchStatus = SearchStatus.Failed;
 				return;
 			}
 
@@ -121,22 +138,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			if (gamesWaiting.Count() == 0)
 			{
-				r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = true;
-				r.GetWidget<LabelWidget>("JOINSERVER_PROGRESS_TITLE").Text = "No games found.";
+				searchStatus = SearchStatus.NoGames;
 				return;
 			}
 
-			r.GetWidget("JOINSERVER_PROGRESS_TITLE").Visible = false;
-
+			searchStatus = SearchStatus.Hidden;
 			currentServer = gamesWaiting.FirstOrDefault();
 
 			foreach (var loop in gamesWaiting)
 			{
 				var game = loop;
-				var item = ScrollItemWidget.Setup(ServerTemplate,
-					() => currentServer == game,
-					() => currentServer = game);
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => "{0} ({1})".F(game.Name, game.Address);
+
+				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
+				item.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
+				// TODO: Use game.MapTitle once the server supports it
+				item.GetWidget<LabelWidget>("MAP").GetText = () => 
+				{
+					var map = Game.modData.FindMapByUid(game.Map);
+					return map == null ? "Unknown" : map.Title;
+				};
+				// TODO: Use game.MaxPlayers once the server supports it
+				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
+				item.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
 				sl.AddChild(item);
 			}
 		}

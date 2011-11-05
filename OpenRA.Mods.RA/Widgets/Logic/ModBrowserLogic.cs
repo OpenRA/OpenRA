@@ -13,16 +13,16 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class CncModBrowserLogic
+	public class ModBrowserLogic
 	{
 		Mod currentMod;
 
 		[ObjectCreator.UseCtor]
-		public CncModBrowserLogic(Widget widget, Action onSwitch, Action onExit)
+		public ModBrowserLogic(Widget widget, Action onSwitch, Action onExit)
 		{
-			var panel = widget.GetWidget("MODS_PANEL");
+			var panel = widget;
 			var modList = panel.GetWidget<ScrollPanelWidget>("MOD_LIST");
 			var loadButton = panel.GetWidget<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(currentMod.Id, onSwitch);
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Widget.CloseWindow();
 				onSwitch();
-				Game.InitializeWithMods(mods.ToArray());
+				Game.InitializeWithMods(mods);
 			});
 		}
 	}

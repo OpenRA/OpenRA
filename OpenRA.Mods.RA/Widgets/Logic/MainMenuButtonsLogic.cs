@@ -8,58 +8,62 @@
  */
 #endregion
 
-using System;
-using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MainMenuButtonsLogic
 	{
+		Widget rootMenu;
+
 		[ObjectCreator.UseCtor]
 		public MainMenuButtonsLogic(Widget widget)
 		{
+			rootMenu = widget;
+
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "PERF_BG" );
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => Widget.OpenWindow("JOINSERVER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => Widget.OpenWindow("CREATESERVER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => OpenGamePanel("JOINSERVER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => OpenGamePanel("CREATESERVER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_DIRECTCONNECT").OnClick = () => OpenGamePanel("DIRECTCONNECT_BG");
 			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
 			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnClick = () => Widget.OpenWindow("REPLAYBROWSER_BG");
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MODS").OnClick = () =>
+				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
+				{
+					{ "onExit", () => {} },
+					{ "onSwitch", RemoveShellmapUI }
+				});
+			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnClick = () =>
+				Widget.OpenWindow("REPLAYBROWSER_BG", new WidgetArgs()
+				{
+					{ "onExit", () => {} },
+					{ "onStart", RemoveShellmapUI }
+				});
 			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnClick = () => Game.Exit();
-
-			DisplayModSelector();
 		}
 
-		public static void DisplayModSelector()
+		void RemoveShellmapUI()
 		{
-			var selector = Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "QUICKMODSWITCHER" );
-			var switcher = selector.GetWidget<DropDownButtonWidget>("SWITCHER");
-			switcher.OnMouseDown = _ => ShowModsDropDown(switcher);
-			switcher.GetText = WidgetUtils.ActiveModTitle;
-			selector.GetWidget<LabelWidget>("VERSION").GetText = WidgetUtils.ActiveModVersion;
+			rootMenu.Parent.RemoveChild(rootMenu);
 		}
 
-		static void LoadMod(string mod)
+		void OpenGamePanel(string id)
 		{
-			var mods = Mod.AllMods[mod].WithPrerequisites();
-
-			if (Game.CurrentMods.Keys.SymmetricDifference(mods).Any())
-				Game.RunAfterTick(() => Game.InitializeWithMods(mods));
-		}
-
-		static void ShowModsDropDown(DropDownButtonWidget dropdown)
-		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (m, itemTemplate) =>
+			Widget.OpenWindow(id, new WidgetArgs()
 			{
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => m == Game.CurrentMods.Keys.First(),
-					() => LoadMod(m));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => Mod.AllMods[m].Title;
-				return item;
-			};
+				{ "onExit", () => {} },
+				{ "openLobby", () => OpenLobbyPanel() }
+			});
+		}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, Mod.AllMods.Keys, setupItem);
+		void OpenLobbyPanel()
+		{
+			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
+			{
+				{ "onExit", () => { Game.Disconnect(); } },
+				{ "onStart", RemoveShellmapUI },
+				{ "addBots", false }
+			});
 		}
 	}
 }

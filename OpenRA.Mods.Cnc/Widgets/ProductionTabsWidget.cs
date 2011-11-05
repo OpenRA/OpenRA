@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public List<ProductionTab> Tabs = new List<ProductionTab>();
 		public string Group;
-		public int CumulativeCount;
+		public int NextQueueName = 1;
 		public bool Alert { get { return Tabs.Any(t => t.Queue.CurrentDone); } }
 
 		public void Update(IEnumerable<ProductionQueue> allQueues)
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			foreach (var queue in queues)
 				tabs.Add(new ProductionTab()
 				{
-					Name = (++CumulativeCount).ToString(),
+					Name = (NextQueueName++).ToString(),
 					Queue = queue
 				});
 			Tabs = tabs;

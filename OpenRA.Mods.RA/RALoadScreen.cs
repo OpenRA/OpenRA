@@ -70,32 +70,6 @@ namespace OpenRA.Mods.RA
 
 		public void StartGame()
 		{
-			Game.ConnectionStateChanged += orderManager =>
-			{
-				Widget.CloseWindow();
-				switch (orderManager.Connection.ConnectionState)
-				{
-					case ConnectionState.PreConnecting:
-						Widget.LoadWidget("MAINMENU_BG", Widget.RootWidget, new WidgetArgs());
-						break;
-					case ConnectionState.Connecting:
-						Widget.OpenWindow("CONNECTING_BG",
-							new WidgetArgs() { { "host", orderManager.Host }, { "port", orderManager.Port } });
-						break;
-					case ConnectionState.NotConnected:
-						Widget.OpenWindow("CONNECTION_FAILED_BG",
-							new WidgetArgs() { { "orderManager", orderManager } });
-						break;
-					case ConnectionState.Connected:
-						var lobby = Game.OpenWindow("SERVER_LOBBY", new WidgetArgs {});
-						lobby.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").ClearChat();
-						lobby.GetWidget("CHANGEMAP_BUTTON").Visible = true;
-						lobby.GetWidget("ALLOWCHEATS_CHECKBOX").Visible = true;
-						lobby.GetWidget("DISCONNECT_BUTTON").Visible = true;
-						break;
-				}
-			};
-
 			TestAndContinue();
 			Game.JoinExternalGame();
 		}

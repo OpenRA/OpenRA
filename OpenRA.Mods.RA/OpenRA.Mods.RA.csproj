@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -250,8 +250,8 @@
     <Compile Include="Player\ClassicProductionQueue.cs" />
     <Compile Include="Player\PlaceBuilding.cs" />
     <Compile Include="Player\ProductionQueue.cs" />
-    <Compile Include="Player\TechTree.cs" />
     <Compile Include="Player\SurrenderOnDisconnect.cs" />
+    <Compile Include="Player\TechTree.cs" />
     <Compile Include="PrimaryBuilding.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
@@ -332,9 +332,9 @@
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
-    <Compile Include="Widgets\Logic\ConnectionDialogsLogic.cs" />
-    <Compile Include="Widgets\Logic\CreateServerMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
@@ -352,6 +352,7 @@
     <Compile Include="Widgets\Logic\RAInstallLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\Logic\SettingsMenuLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />

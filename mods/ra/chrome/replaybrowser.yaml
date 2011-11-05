@@ -81,6 +81,22 @@ Background@REPLAYBROWSER_BG:
 					Align:Left
 					Width:70
 					Height:20
+				Label@PLAYERS_LABEL:
+					Id:PLAYERS_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:290
+					Align:Right
+					Width:70
+					Height:20
+					Text:Players:
+					Font:Bold
+				Label@PLAYERS:
+					Id:PLAYERS
+					X:PARENT_RIGHT - 195
+					Y:290
+					Align:Left
+					Width:70
+					Height:20
 		Button@WATCH_BUTTON:
 			Id:WATCH_BUTTON
 			X:PARENT_RIGHT - 140 - 130

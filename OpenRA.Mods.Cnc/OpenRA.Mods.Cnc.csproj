@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -75,20 +75,14 @@
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CncCheatsLogic.cs" />
-    <Compile Include="Widgets\Logic\CncConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallLogic.cs" />
-    <Compile Include="Widgets\Logic\CncLobbyLogic.cs" />
     <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\CncModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\CncMusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\CncPerfDebugLogic.cs" />
-    <Compile Include="Widgets\Logic\CncReplayBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\CncServerBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\CncServerCreationLogic.cs" />
     <Compile Include="Widgets\Logic\CncSettingsLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
@@ -103,7 +97,6 @@
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
-    <Compile Include="Widgets\Logic\CncDirectConnectLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

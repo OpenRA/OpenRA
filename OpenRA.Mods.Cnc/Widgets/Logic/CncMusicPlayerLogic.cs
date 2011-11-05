@@ -11,7 +11,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -128,7 +127,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				list.AddChild(item);
 			}
 		}
-
 
 		void Play()
 		{

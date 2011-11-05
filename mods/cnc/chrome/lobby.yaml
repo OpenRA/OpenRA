@@ -1,6 +1,6 @@
 Container@SERVER_LOBBY:
 	Id:SERVER_LOBBY
-	Logic:CncLobbyLogic
+	Logic:LobbyLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
 	Width:740

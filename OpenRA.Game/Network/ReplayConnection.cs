@@ -109,6 +109,7 @@ namespace OpenRA.Network
 				return;
 
 			writer.Close();
+			inner.Dispose();
 			disposed = true;
 		}
 

@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				retryButton.IsDisabled = () => false;
 			}));
 
-			var t = new Thread( _ =>
+			new Thread( _ =>
 			{
 				try
 				{
@@ -122,8 +122,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				{
 					onError("Installation failed");
 				}
-			}) { IsBackground = true };
-			t.Start();
+			}) { IsBackground = true }.Start();
 		}
 	}
 }

@@ -344,9 +344,10 @@ namespace OpenRA
 		{
 			if (orderManager.world != null)
 				orderManager.world.traitDict.PrintReport();
+
+			orderManager.Dispose();
 			CloseServer();
 			JoinLocal();
-			orderManager.Dispose();
 		}
 
 		public static void CloseServer()

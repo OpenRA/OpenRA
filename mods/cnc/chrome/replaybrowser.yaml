@@ -1,6 +1,6 @@
 Container@REPLAYBROWSER_PANEL:
 	Id:REPLAYBROWSER_PANEL
-	Logic:CncReplayBrowserLogic
+	Logic:ReplayBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 300)/2
 	Width:520

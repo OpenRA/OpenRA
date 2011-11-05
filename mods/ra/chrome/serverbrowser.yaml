@@ -34,8 +34,19 @@ Background@JOINSERVER_BG:
 							Id:TITLE
 							Width:200
 							Height:25
-		Label@JOINSERVER_PROGRESS_TITLE:
-			Id:JOINSERVER_PROGRESS_TITLE
+						Label@MAP:
+							Id:MAP
+							X:210
+							Width:100
+							Height:25
+						Label@PLAYERS:
+							Id:PLAYERS
+							Visible:False
+						Label@IP:
+							Id:IP
+							Visible:False
+		Label@PROGRESS_LABEL:
+			Id:PROGRESS_LABEL
 			X:150
 			Y:PARENT_BOTTOM / 2 - HEIGHT
 			Width:150
@@ -121,17 +132,9 @@ Background@JOINSERVER_BG:
 					VAlign:Top
 					Width:70
 					Height:20
-		Button@DIRECTCONNECT_BUTTON:
-			Id:DIRECTCONNECT_BUTTON
-			X:20
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Direct Connect
-			Font:Bold
 		Button@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
-			X:160
+			X:20
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
@@ -146,8 +149,8 @@ Background@JOINSERVER_BG:
 			Text:Join
 			Font:Bold
 			Key:return
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
+		Button@BACK_BUTTON:
+			Id:BACK_BUTTON
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -180,12 +183,19 @@ Background@DIRECTCONNECT_BG:
 			Height:25
 			Align:Right
 			Text:Server Address:
-		TextField@SERVER_ADDRESS:
-			Id:SERVER_ADDRESS
+		TextField@IP:
+			Id:IP
 			X:150
 			Y:60
-			Width:200
+			Width:160
 			MaxLength:50
+			Height:25
+		TextField@PORT:
+			Id:PORT
+			X:315
+			Y:60
+			Width:55
+			MaxLength:5
 			Height:25
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
@@ -196,8 +206,8 @@ Background@DIRECTCONNECT_BG:
 			Text:Join
 			Font:Bold
 			Key:return
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
+		Button@BACK_BUTTON:
+			Id:BACK_BUTTON
 			X:260
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -205,8 +215,8 @@ Background@DIRECTCONNECT_BG:
 			Text:Cancel
 			Font:Bold
 			Key:escape
-Background@CONNECTION_FAILED_BG:
-	Id:CONNECTION_FAILED_BG
+Background@CONNECTIONFAILED_PANEL:
+	Id:CONNECTIONFAILED_PANEL
 	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -222,16 +232,16 @@ Background@CONNECTION_FAILED_BG:
 			Text:Connection Failed
 			Align:Center
 			Font:Bold
-		Label@CONNECTION_FAILED_DESC:
-			Id:CONNECTION_FAILED_DESC
+		Label@CONNECTING_DESC:
+			Id:CONNECTING_DESC
 			X:0
 			Y:60
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
 			Align:Center
-		Button@CONNECTION_BUTTON_RETRY:
-			Id:CONNECTION_BUTTON_RETRY
+		Button@RETRY_BUTTON:
+			Id:RETRY_BUTTON
 			X:PARENT_RIGHT - 360
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -239,8 +249,8 @@ Background@CONNECTION_FAILED_BG:
 			Text:Retry
 			Font:Bold
 			Key:return
-		Button@CONNECTION_BUTTON_CANCEL:
-			Id:CONNECTION_BUTTON_CANCEL
+		Button@ABORT_BUTTON:
+			Id:ABORT_BUTTON
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -248,9 +258,9 @@ Background@CONNECTION_FAILED_BG:
 			Text:Cancel
 			Font:Bold
 			Key:escape
-Background@CONNECTING_BG:
-	Id:CONNECTING_BG
-	Logic:ConnectionDialogsLogic
+Background@CONNECTING_PANEL:
+	Id:CONNECTING_PANEL
+	Logic:ConnectionLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450
@@ -273,8 +283,8 @@ Background@CONNECTING_BG:
 			Height:25
 			Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
 			Align:Center
-		Button@CONNECTION_BUTTON_ABORT:
-			Id:CONNECTION_BUTTON_ABORT
+		Button@ABORT_BUTTON:
+			Id:ABORT_BUTTON
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160

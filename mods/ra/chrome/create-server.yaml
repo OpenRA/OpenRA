@@ -1,6 +1,6 @@
 Background@CREATESERVER_BG:
 	Id:CREATESERVER_BG
-	Logic:CreateServerMenuLogic
+	Logic:ServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
@@ -15,16 +15,16 @@ Background@CREATESERVER_BG:
 			Text:Create Server
 			Align:Center
 			Font:Bold
-		Label@GAME_TITLE_LABEL:
-			Id:GAME_TITLE_LABEL
+		Label@SERVER_NAME_LABEL:
+			Id:SERVER_NAME_LABEL
 			X:50
 			Y:59
 			Width:95
 			Height:25
 			Align: Right
 			Text:Game Title:
-		TextField@GAME_TITLE:
-			Id:GAME_TITLE
+		TextField@SERVER_NAME:
+			Id:SERVER_NAME
 			X:150
 			Y:60
 			Width:210
@@ -62,15 +62,15 @@ Background@CREATESERVER_BG:
 			Width:50
 			MaxLength:5
 			Height:25
-		Checkbox@CHECKBOX_ONLINE:
-			Id:CHECKBOX_ONLINE
+		Checkbox@ADVERTISE_CHECKBOX:
+			Id:ADVERTISE_CHECKBOX
 			X:165
 			Y:130
 			Width:300
 			Height:20
 			Text:Advertise game Online
-		Button@BUTTON_START:
-			Id:BUTTON_START
+		Button@CREATE_BUTTON:
+			Id:CREATE_BUTTON
 			X:130
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -78,8 +78,8 @@ Background@CREATESERVER_BG:
 			Text:Create
 			Font:Bold
 			Key:return
-		Button@BUTTON_CANCEL:
-			Id:BUTTON_CANCEL
+		Button@BACK_BUTTON:
+			Id:BACK_BUTTON
 			X:260
 			Y:PARENT_BOTTOM - 45
 			Width:120
