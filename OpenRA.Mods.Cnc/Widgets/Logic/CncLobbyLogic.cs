@@ -190,13 +190,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
 			chatPanel.RemoveChildren();
 
-			lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
-			{
-				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
-				{
-					{ "onExit", () => {} },
-				});
-			};
+			var musicButton = lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON");
+			if (musicButton != null)
+				musicButton.OnClick = () => Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs
+					{ { "onExit", () => {} } });
 
 			// Add a bot on the first lobbyinfo update
 			if (addBots)
