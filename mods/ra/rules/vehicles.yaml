@@ -5,7 +5,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: dome
 		Owner: soviet
-		Hotkey: x
+		Hotkey: w
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -33,7 +33,7 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: allies
-		Hotkey: v
+		Hotkey: e
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -68,7 +68,7 @@ V2RL:
 		BuildPaletteOrder: 60
 		Prerequisites: fix
 		Owner: allies
-		Hotkey: b
+		Hotkey: r
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -106,7 +106,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: fix
 		Owner: soviet
-		Hotkey: n
+		Hotkey: e
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -145,7 +145,7 @@ V2RL:
 		BuildPaletteOrder: 100
 		Prerequisites: fix,stek
 		Owner: soviet
-		Hotkey: m
+		Hotkey: u
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -191,7 +191,7 @@ ARTY:
 		BuildPaletteOrder: 80
 		Prerequisites: dome
 		Owner: allies
-		Hotkey: x
+		Hotkey: w
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -219,7 +219,7 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: allies,soviet
-		Hotkey: z
+		Hotkey: q
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -365,7 +365,7 @@ MNLY.AP:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: soviet
-		Hotkey: l
+		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -397,7 +397,7 @@ MNLY.AT:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: allies
-		Hotkey: l
+		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -429,7 +429,7 @@ TRUK:
 		BuildPaletteOrder: 120
 		Prerequisites: weap
 		Owner: allies, soviet
-		Hotkey: k
+		Hotkey: o
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -553,7 +553,7 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: soviet
-		Hotkey: c
+		Hotkey: p
 	Valued:
 		Cost: 600
 	Tooltip:

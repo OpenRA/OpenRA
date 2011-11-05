@@ -6,7 +6,7 @@ SS:
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
-		Hotkey: z
+		Hotkey: q
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -52,7 +52,7 @@ MSUB:
 		Prerequisites: spen,stek
 		BuiltAt: spen
 		Owner: soviet
-		Hotkey: c
+		Hotkey: e
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -97,7 +97,7 @@ DD:
 		Prerequisites: syrd,dome
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: x
+		Hotkey: w
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -138,7 +138,7 @@ CA:
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: c
+		Hotkey: e
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -213,7 +213,7 @@ PT:
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: z
+		Hotkey: q
 	Valued:
 		Cost: 500
 	Tooltip:

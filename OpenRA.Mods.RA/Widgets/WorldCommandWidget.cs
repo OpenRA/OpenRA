@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.RA.Buildings;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -47,69 +48,43 @@ namespace OpenRA.Mods.RA.Widgets
 			var KeyName = e.KeyName;
 			var KeyConfig = Game.Settings.KeyConfig;
 
-			if (e.Event == KeyInputEvent.Down)
+			if ((e.Event == KeyInputEvent.Down) && (e.Modifiers == Modifiers.None))
 			{
-				if (Game.Settings.KeyConfig.ShortcutsWithoutCtrl)
-				{
-					if (KeyName == KeyConfig.BaseCycleKey)
-						return CycleProductionBuildings("BaseType");
+				if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+					return CycleProductionBuildings("BaseType");
 
-					if (KeyName == KeyConfig.BarracksCycleKey)
-						return CycleProductionBuildings("BarracksType");
+				if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+					|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+					return CycleProductionBuildings("BarracksType");
 
-					if (KeyName == KeyConfig.WarFactoryCycleKey)
-						return CycleProductionBuildings("WarFactoryType");
+				if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+					return CycleProductionBuildings("WarFactoryType");
 
-					if (KeyName == KeyConfig.DockCycleKey)
-						return CycleProductionBuildings("DockType");
+				if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+					|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+					return CycleProductionBuildings("DockType");
 
-					if (KeyName == KeyConfig.AirportCycleKey)
-						return CycleProductionBuildings("AirportType");
-				}
-				else
-				{
-					if (e.Modifiers.HasModifier(Modifiers.Ctrl))
-					{
-						if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
-							return CycleProductionBuildings("BaseType");
+				if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+					|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+					return CycleProductionBuildings("AirportType");
 
-						if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
-							|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
-							return CycleProductionBuildings("BarracksType");
+				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
+					return false;
 
-						if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
-							return CycleProductionBuildings("WarFactoryType");
+				if ((KeyName == KeyConfig.AttackMoveKey) && unitsSelected())
+					return PerformAttackMove();
 
-						if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
-							|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
-							return CycleProductionBuildings("DockType");
+				if ((KeyName == KeyConfig.StopKey) && unitsSelected())
+					return PerformStop();
 
-						if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
-							|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
-							return CycleProductionBuildings("AirportType");
-					}
-				}
+				if ((KeyName == KeyConfig.ScatterKey) && unitsSelected())
+					return PerformScatter();
 
-				if (e.Modifiers == Modifiers.None)
-				{
-					if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
-						return false;
+				if (KeyName == KeyConfig.DeployKey)
+					return PerformDeploy();
 
-					if (KeyName == KeyConfig.AttackMoveKey)
-						return PerformAttackMove();
-
-					if (KeyName == KeyConfig.StopKey)
-						return PerformStop();
-
-					if (KeyName == KeyConfig.ScatterKey)
-						return PerformScatter();
-
-					if (KeyName == KeyConfig.DeployKey)
-						return PerformDeploy();
-
-					if (KeyName == KeyConfig.StanceCycleKey)
-						return PerformStanceCycle();
-				}
+				if ((KeyName == KeyConfig.StanceCycleKey) && unitsSelected())
+					return PerformStanceCycle();
 			}
 
 			return false;
@@ -201,6 +176,13 @@ namespace OpenRA.Mods.RA.Widgets
 			Game.viewport.Center(World.Selection.Actors);
 
 			return true;
+		}
+
+		bool unitsSelected()
+		{
+			if (World.Selection.Actors.Any( a => a.Owner == World.LocalPlayer && !a.HasTrait<Building>() )) return true;
+
+			return false;
 		}
 	}
 }

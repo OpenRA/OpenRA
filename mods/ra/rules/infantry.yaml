@@ -5,7 +5,7 @@ DOG:
 		BuildPaletteOrder: 30
 		Prerequisites: barr
 		Owner: soviet
-		Hotkey: n
+		Hotkey: r
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -34,7 +34,7 @@ E1:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: allies,soviet
-		Hotkey: z
+		Hotkey: q
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -60,7 +60,7 @@ E2:
 		BuildPaletteOrder: 10
 		Owner: soviet
 		Prerequisites: barr
-		Hotkey: b
+		Hotkey: u
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -90,7 +90,7 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies,soviet
-		Hotkey: x
+		Hotkey: w
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -118,7 +118,7 @@ E4:
 		BuildPaletteOrder: 60
 		Prerequisites: stek
 		Owner: soviet
-		Hotkey: m
+		Hotkey: y
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -145,7 +145,7 @@ E6:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: soviet,allies
-		Hotkey: c
+		Hotkey: e
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -177,7 +177,7 @@ SPY:
 		BuildPaletteOrder: 60
 		Prerequisites: dome, tent
 		Owner: allies
-		Hotkey: b
+		Hotkey: o
 	Valued:
 		Cost: 500
 	SpyToolTip:
@@ -210,7 +210,7 @@ E7:
 		BuildPaletteOrder: 110
 		Prerequisites: techcenter
 		Owner: allies,soviet
-		Hotkey: v
+		Hotkey: t
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -244,7 +244,7 @@ MEDI:
 		BuildPaletteOrder: 20
 		Owner: allies
 		Prerequisites: tent
-		Hotkey: m
+		Hotkey: y
 	Valued:
 		Cost: 300
 	Tooltip:

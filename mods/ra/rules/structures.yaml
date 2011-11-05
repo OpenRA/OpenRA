@@ -11,7 +11,7 @@ MSLO:
 		BuildPaletteOrder: 130
 		Prerequisites: techcenter
 		Owner: soviet,allies
-		Hotkey: k
+		Hotkey: u
 	Building:
 		Power: -100
 		Footprint: xx
@@ -187,7 +187,7 @@ IRON:
 		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
-		Hotkey: h
+		Hotkey: y
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -225,7 +225,7 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
-		Hotkey: h
+		Hotkey: y
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -265,7 +265,7 @@ TSLA:
 		BuildPaletteOrder: 70
 		Prerequisites: weap
 		Owner: soviet
-		Hotkey: i
+		Hotkey: e
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -302,7 +302,7 @@ AGUN:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: allies
-		Hotkey: o
+		Hotkey: r
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -342,7 +342,7 @@ DOME:
 		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: allies,soviet
-		Hotkey: l
+		Hotkey: r
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -369,7 +369,7 @@ PBOX:
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: t
+		Hotkey: q
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -402,7 +402,7 @@ HBOX:
 		BuildPaletteOrder: 30
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: u
+		Hotkey: w
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -435,7 +435,7 @@ GUN:
 		BuildPaletteOrder: 40
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: i
+		Hotkey: e
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -469,7 +469,7 @@ FTUR:
 		BuildPaletteOrder: 20
 		Prerequisites: barr
 		Owner: soviet
-		Hotkey: t
+		Hotkey: q
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -502,7 +502,7 @@ SAM:
 		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: soviet
-		Hotkey: o
+		Hotkey: r
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -542,7 +542,7 @@ ATEK:
 		BuildPaletteOrder: 100
 		Prerequisites: weap,dome
 		Owner: allies
-		Hotkey: t
+		Hotkey: i
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -649,7 +649,7 @@ PROC:
 		BuildPaletteOrder: 10
 		Prerequisites: anypower
 		Owner: allies,soviet
-		Hotkey: o
+		Hotkey: e
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -686,7 +686,7 @@ SILO:
 		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Owner: allies,soviet
-		Hotkey: m
+		Hotkey: u
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -803,7 +803,7 @@ POWR:
 		Queue: Building
 		BuildPaletteOrder: 0
 		Owner: allies,soviet
-		Hotkey: p
+		Hotkey: q
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -831,7 +831,7 @@ APWR:
 		BuildPaletteOrder: 20
 		Prerequisites: dome
 		Owner: allies,soviet
-		Hotkey: g
+		Hotkey: w
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -859,7 +859,7 @@ STEK:
 		BuildPaletteOrder: 60
 		Prerequisites: weap,dome
 		Owner: soviet
-		Hotkey: t
+		Hotkey: i
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -965,7 +965,7 @@ FIX:
 		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
-		Hotkey: n
+		Hotkey: y
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -1128,7 +1128,7 @@ SBAG:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies
-		Hotkey: l
+		Hotkey: i
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1148,7 +1148,7 @@ FENC:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: soviet
-		Hotkey: m
+		Hotkey: o
 	Valued:
 		Cost: 25
 	CustomSellValue:
@@ -1168,7 +1168,7 @@ BRIK:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies,soviet
-		Hotkey: n
+		Hotkey: p
 	Valued:
 		Cost: 100
 	CustomSellValue:

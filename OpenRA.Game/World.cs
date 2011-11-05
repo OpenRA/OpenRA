@@ -209,10 +209,10 @@ namespace OpenRA
 			}
 		}
 
-        public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
-        {
-            return traitDict.ActorsWithTraitMultiple<T>(this);
-        }
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
+		{
+			return traitDict.ActorsWithTraitMultiple<T>(this);
+		}
 	}
 
 	public struct TraitPair<T>
