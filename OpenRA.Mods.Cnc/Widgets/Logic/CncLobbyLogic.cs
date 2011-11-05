@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 
-		public void CloseWindow()
+		void CloseWindow()
 		{
 			Game.LobbyInfoChanged -= UpdateCurrentMap;
 			Game.LobbyInfoChanged -= UpdatePlayerList;
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var timeLabel = template.GetWidget<LabelWidget>("TIME");
 			var textLabel = template.GetWidget<LabelWidget>("TEXT");
 
-			var name = from+":";
+			var name = from + ":";
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var nameSize = font.Measure(from);
 
