@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 		}
 
-		public void CloseWindow()
+		void CloseWindow()
 		{
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
 			Widget.CloseWindow();

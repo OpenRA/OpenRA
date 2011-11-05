@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 		}
 
-		public void AddChatLine(Color c, string from, string text)
+		void AddChatLine(Color c, string from, string text)
 		{
 			var template = chatTemplate.Clone();
 			var nameLabel = template.GetWidget<LabelWidget>("NAME");
