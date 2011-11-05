@@ -38,15 +38,6 @@ namespace OpenRA
 			}
 		}
 
-		static IEnumerable<MiniYaml> GetInheritanceChain(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
-		{
-			while (node != null)
-			{
-				yield return node;
-				node = GetParent(node, allUnits);
-			}
-		}
-
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			MiniYaml inherits;
