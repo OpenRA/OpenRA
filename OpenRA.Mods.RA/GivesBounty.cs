@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Buildings;
@@ -18,6 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int Percentage = 10;
 		public readonly int LevelMod = 125;
+		public readonly Stance[] Stances = {Stance.Neutral, Stance.Enemy};
 	}
 
 	class GivesBounty : INotifyKilled
@@ -37,9 +39,10 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var info = self.Info.Traits.Get<GivesBountyInfo>();
-			// Prevent TK from giving Bounty
-			if (e.Attacker == null || e.Attacker.Destroyed || e.Attacker.Owner.Stances[self.Owner] == Stance.Ally)
-				return;
+
+			if (e.Attacker == null || e.Attacker.Destroyed)	return;
+
+			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner])) return;
 
 			var cost = self.GetSellValue();
 			// 2 hundreds because of GetMultiplier and info.Percentage.
@@ -50,6 +53,5 @@ namespace OpenRA.Mods.RA
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
 		}
-
 	}
 }
