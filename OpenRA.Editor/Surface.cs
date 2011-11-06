@@ -42,6 +42,7 @@ namespace OpenRA.Editor
 
 		public event Action AfterChange = () => { };
 		public event Action<string> MousePositionChanged = _ => { };
+		public event Action<KeyValuePair<string, ActorReference>> ActorDoubleClicked = _ => { };
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
@@ -89,6 +90,15 @@ namespace OpenRA.Editor
 		{
 			Offset -= dx;
 			Invalidate();
+		}
+
+		protected override void OnDoubleClick(EventArgs e)
+		{
+			base.OnDoubleClick(e);
+
+			var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
+			if (x.Key != null)
+				ActorDoubleClicked(x);
 		}
 
 		protected override void OnMouseWheel(MouseEventArgs e)
@@ -294,7 +304,7 @@ namespace OpenRA.Editor
 			if (cp != null) bmp.Palette = restorePalette;
 		}
 
-		void DrawActorBorder(System.Drawing.Graphics g, int2 p, ActorTemplate t)
+		void DrawActorBorder(SGraphics g, int2 p, ActorTemplate t)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
 			var drawPos = GetDrawPosition(p, t.Bitmap, centered);

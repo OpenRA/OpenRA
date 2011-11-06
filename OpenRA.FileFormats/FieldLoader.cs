@@ -305,14 +305,13 @@ namespace OpenRA.FileFormats
 			return new MiniYamlNode(field, FieldSaver.FormatValue( o, o.GetType().GetField(field) ));
 		}
 
-		public static string FormatValue(object o, FieldInfo f)
+		public static string FormatValue(object v, Type t)
 		{
-			var v = f.GetValue(o);
 			if (v == null)
 				return "";
 
 			// Color.ToString() does the wrong thing; force it to format as an array
-			if (f.FieldType == typeof(Color))
+			if (t == typeof(Color))
 			{
 				var c = (Color)v;
 				return "{0},{1},{2},{3}".F(((int)c.A).Clamp(0, 255),
@@ -321,19 +320,24 @@ namespace OpenRA.FileFormats
 					((int)c.B).Clamp(0, 255));
 			}
 
-			if (f.FieldType == typeof(Rectangle))
+			if (t == typeof(Rectangle))
 			{
 				var r = (Rectangle)v;
 				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
 			}
 
-			if (f.FieldType.IsArray)
+			if (t.IsArray)
 			{
 				var elems = ((Array)v).OfType<object>();
 				return elems.JoinWith(",");
 			}
 
 			return v.ToString();
+		}
+
+		public static string FormatValue(object o, FieldInfo f)
+		{
+			return FormatValue(f.GetValue(o), f.FieldType);
 		}
 	}
 

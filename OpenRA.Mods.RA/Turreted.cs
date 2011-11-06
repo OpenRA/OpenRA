@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TurretedInfo : ITraitInfo
+	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>
 	{
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;

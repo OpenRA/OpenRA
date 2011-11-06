@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Air
 		[Sync] public int foo { get { return a.Altitude; } }
 	}
 
-	public class AircraftInfo : ITraitInfo, IFacingInfo
+	public class AircraftInfo : ITraitInfo, IFacingInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly int CruiseAltitude = 30;
 		[ActorReference]

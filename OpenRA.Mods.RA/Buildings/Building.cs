@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Buildings
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
 	public class GivesBuildableArea {}
 
-	public class BuildingInfo : ITraitInfo
+	public class BuildingInfo : ITraitInfo, UsesInit<LocationInit>
 	{
 		public readonly int Power = 0;
 		public readonly string[] TerrainTypes = {};

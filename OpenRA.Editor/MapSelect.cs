@@ -10,10 +10,9 @@
 
 using System;
 using System.IO;
-using System.Windows.Forms;
-using OpenRA.FileFormats;
-using OpenRA.Graphics;
 using System.Linq;
+using System.Windows.Forms;
+using OpenRA.Graphics;
 
 namespace OpenRA.Editor
 {
@@ -79,6 +78,5 @@ namespace OpenRA.Editor
 		{
 			MapFolderPath = txtPathOut.Text;
 		}
-
 	}
 }

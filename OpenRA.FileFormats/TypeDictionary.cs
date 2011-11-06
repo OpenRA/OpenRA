@@ -64,13 +64,18 @@ namespace OpenRA.FileFormats
 
 		public T GetOrDefault<T>()
 		{
-			if( dataMultiple.ContainsKey( typeof( T ) ) )
-				throw new InvalidOperationException( string.Format( "TypeDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
+			return (T)GetOrDefault(typeof(T));
+		}
+
+		public object GetOrDefault(Type t)
+		{
+			if( dataMultiple.ContainsKey(t) )
+				throw new InvalidOperationException( string.Format( "TypeDictionary contains multiple instance of type `{0}`", t ) );
 
 			object ret;
-			if( !dataSingular.TryGetValue( typeof( T ), out ret ) )
-				return default( T );
-			return (T)ret;
+			if( !dataSingular.TryGetValue(t, out ret ) )
+				return null;
+			return ret;
 		}
 
 		public IEnumerable<T> WithInterface<T>()

@@ -15,8 +15,8 @@ namespace OpenRA.FileFormats
 {
 	public class ActorReference : IEnumerable
 	{
-		public readonly string Type;
-		public readonly TypeDictionary InitDict;
+		public string Type;
+		public TypeDictionary InitDict;
 
 		public ActorReference( string type ) : this( type, new Dictionary<string, MiniYaml>() ) { }
 

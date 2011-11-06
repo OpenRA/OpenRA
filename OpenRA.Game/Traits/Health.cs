@@ -14,7 +14,7 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
-	public class HealthInfo : ITraitInfo
+	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
 		public readonly int HP = 0;
 		public readonly float Radius = 10;

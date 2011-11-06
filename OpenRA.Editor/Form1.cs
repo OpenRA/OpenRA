@@ -10,13 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using System.Drawing;
 
 namespace OpenRA.Editor
 {
@@ -57,6 +57,7 @@ namespace OpenRA.Editor
 
 			surface1.AfterChange += OnMapChanged;
 			surface1.MousePositionChanged += s => toolStripStatusLabelMousePosition.Text = s;
+			surface1.ActorDoubleClicked += ActorDoubleClicked;
 
 			if (args.Length >= 2)
 				LoadMap(args[1]);
@@ -68,7 +69,31 @@ namespace OpenRA.Editor
 			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 		}
 
+		void ActorDoubleClicked(KeyValuePair<string,ActorReference> kv)
+		{
+			using( var apd = new ActorPropertiesDialog() )
+			{
+				var name = kv.Key;
+				apd.AddRow("(Name)", apd.MakeEditorControl(typeof(string), () => name, v => name = (string)v));
+				apd.AddRow("(Type)", apd.MakeEditorControl(typeof(string), () => kv.Value.Type, v => kv.Value.Type = (string)v));
+
+				var objSaved = kv.Value.Save();
+
+				// TODO: make this work properly
+				foreach( var init in Rules.Info[kv.Value.Type].GetInitKeys() )
+					apd.AddRow(init.First,
+						apd.MakeEditorControl(init.Second,
+							() => objSaved.NodesDict.ContainsKey( init.First ) ? objSaved.NodesDict[init.First].Value : null,
+							_ => {}));
+
+				apd.ShowDialog();
+
+				// TODO: writeback
+			}
+		}
+
 		void MakeDirty() { dirty = true; }
+
 		string loadedMapName;
 		string currentMod = "ra";
 		TileSet tileset;

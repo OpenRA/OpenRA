@@ -121,8 +121,7 @@ namespace OpenRA
 
 			return inits.Select(
 				i => Pair.New(
-					i.GetType().Name.Replace( "Init", "" ),
-					i.GetType().GetInterfaces()[0].GetGenericArguments()[0] ) );
+					i.Name.Replace( "Init", "" ), i ));
 		}
 	}
 }
