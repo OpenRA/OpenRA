@@ -3,8 +3,8 @@ Background@JOINSERVER_BG:
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:700
-	Height:410
+	Width:540
+	Height:535
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
 			Id:JOINSERVER_LABEL_TITLE
@@ -19,119 +19,70 @@ Background@JOINSERVER_BG:
 			Id:SERVER_LIST
 			X:20
 			Y:50
-			Width:390
-			Height:300
+			Width:500
+			Height:425
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
 					Id:SERVER_TEMPLATE
 					Width:PARENT_RIGHT-27
-					Height:25
+					Height:68
 					X:2
 					Y:0
 					Children:
+						MapPreview@MAP_PREVIEW:
+							Id:MAP_PREVIEW
+							X:2
+							Y:2
+							Width:64
+							Height:64
 						Label@TITLE:
-							X:10
 							Id:TITLE
+							X:70
 							Width:200
 							Height:25
+							Font:Bold
 						Label@MAP:
 							Id:MAP
-							X:210
-							Width:100
+							X:70
+							Y:20
+							Width:250
 							Height:25
 						Label@PLAYERS:
 							Id:PLAYERS
-							Visible:False
+							X:70
+							Y:40
+							Width:50
+							Height:25
+						Label@STATE:
+							Id:STATE
+							Width:140
+							X:PARENT_RIGHT-150
+							Align:Right
+							Height:25
+							Font:Bold
 						Label@IP:
 							Id:IP
-							Visible:False
+							Width:140
+							X:PARENT_RIGHT-150
+							Y:20
+							Align:Right
+							Height:25
+						Label@VERSION:
+							Id:VERSION
+							Width:140
+							X:PARENT_RIGHT-150
+							Y:40
+							Align:Right
+							Height:25
+						
 		Label@PROGRESS_LABEL:
 			Id:PROGRESS_LABEL
-			X:150
+			X:(PARENT_RIGHT - WIDTH) / 2
 			Y:PARENT_BOTTOM / 2 - HEIGHT
 			Width:150
 			Height:30
 			Text:Fetching games...
-			Align:Center
-		Container@SERVER_INFO:
-			Id:SERVER_INFO
-			X:0
-			Y:0
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
-			Visible:false
-			Children:
-				MapPreview@MAP_PREVIEW:
-					Id:MAP_PREVIEW
-					X:PARENT_RIGHT-241
-					Y:30
-					Width:192
-					Height:192
-				Label@SERVER_IP_LABEL:
-					Id:SERVER_IP_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:230
-					Align:Right
-					Width:70
-					Height:20
-					Text:Server:
-					Font:Bold
-				Label@SERVER_IP:
-					Id:SERVER_IP
-					X:PARENT_RIGHT - 195
-					Y:230
-					Align:Left
-					Width:70
-					Height:20
-				Label@MAP_PLAYERS_LABEL:
-					Id:MAP_PLAYERS_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:250
-					Align:Right
-					Width:70
-					Height:20
-					Text:Players:
-					Font:Bold
-				Label@MAP_PLAYERS:
-					Id:MAP_PLAYERS
-					X:PARENT_RIGHT - 195
-					Y:250
-					Align:Left
-					Width:70
-					Height:20
-				Label@MAP_TITLE_LABEL:
-					Id:MAP_TITLE_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:270
-					Align:Right
-					Width:70
-					Height:20
-					Text:Map:
-					Font:Bold
-				Label@MAP_TITLE:
-					Id:MAP_TITLE
-					X:PARENT_RIGHT - 195
-					Y:270
-					Align:Left
-					Width:70
-					Height:20
-				Label@SERVER_MODS_LABEL:
-					Id:SERVER_MODS_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:290
-					Align:Right
-					Width:70
-					Height:20
-					Text:Mods:
-					Font:Bold
-				Label@SERVER_MODS:
-					Id:SERVER_MODS
-					X:PARENT_RIGHT - 195
-					Y:293
-					Align:Left
-					VAlign:Top
-					Width:70
-					Height:20
+			Align:Center				
 		Button@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
 			X:20

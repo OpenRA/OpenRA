@@ -3,18 +3,18 @@ Container@SERVERBROWSER_PANEL:
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
-	Width:740
+	Width:540
 	Height:535
 	Children:
 		Label@TITLE:
 			Text:Find Server
-			Width:740
+			Width:540
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
 		Background@bg:
-			Width:740
+			Width:540
 			Height:500
 			Background:panel-black
 			Children:
@@ -22,77 +22,61 @@ Container@SERVERBROWSER_PANEL:
 					Id:SERVER_LIST
 					X:15
 					Y:30
-					Width:710
-					Height:315
+					Width:510
+					Height:450
 					Children:
 						ScrollItem@SERVER_TEMPLATE:
 							Id:SERVER_TEMPLATE
 							Width:PARENT_RIGHT-27
-							Height:25
+							Height:68
 							X:2
 							Y:0
 							Children:
+								MapPreview@MAP_PREVIEW:
+									Id:MAP_PREVIEW
+									X:2
+									Y:2
+									Width:64
+									Height:64
 								Label@TITLE:
-									X:10
 									Id:TITLE
+									X:70
 									Width:200
 									Height:25
+									Font:Bold
 								Label@MAP:
 									Id:MAP
-									X:PARENT_RIGHT-450
-									Align:Center
+									X:70
+									Y:20
 									Width:250
-									Height:25									
+									Height:25
 								Label@PLAYERS:
 									Id:PLAYERS
-									X:PARENT_RIGHT-200
-									Align:Center
+									X:70
+									Y:40
 									Width:50
 									Height:25
+								Label@STATE:
+									Id:STATE
+									Width:140
+									X:PARENT_RIGHT-150
+									Align:Right
+									Height:25
+									Font:Bold
 								Label@IP:
 									Id:IP
 									Width:140
 									X:PARENT_RIGHT-150
-									Align:Center
+									Y:20
+									Align:Right
 									Height:25
-				Container@SERVER_LABELS:
-					Width:710-25
-					Height:25
-					X:15
-					Y:5
-					Children:
-						Label@TITLE:
-							Width:125
-							Height:25
-							X:0
-							Y:0
-							Text:Title
-							Align:Center
-							Font:Bold
-						Label@MAP:
-							Id:MAP
-							X:PARENT_RIGHT-450
-							Align:Center
-							Width:250
-							Height:25									
-							Text:Map
-							Font:Bold
-						Label@PLAYERS:
-							Id:PLAYERS
-							X:PARENT_RIGHT-200
-							Align:Center
-							Width:50
-							Height:25
-							Text:Players
-							Font:Bold
-						Label@IP:
-							Id:IP
-							Width:140
-							X:PARENT_RIGHT-150
-							Align:Center
-							Height:25
-							Text:Address
-							Font:Bold
+								Label@VERSION:
+									Id:VERSION
+									Width:140
+									X:PARENT_RIGHT-150
+									Y:40
+									Align:Right
+									Height:25
 				Label@PROGRESS_LABEL:
 					Id:PROGRESS_LABEL
 					X:22
@@ -102,95 +86,6 @@ Container@SERVERBROWSER_PANEL:
 					Font:Bold
 					Align:Center
 					Visible:false
-				Background@MAP_BG:
-					X:15
-					Y:355
-					Width:130
-					Height:130
-					Background:panel-gray
-					Children:
-						MapPreview@MAP_PREVIEW:
-							Id:MAP_PREVIEW
-							X:1
-							Y:1
-							Width:128
-							Height:128
-				Container@SERVER_INFO:
-					Id:SERVER_INFO
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
-					Visible:false
-					Children:
-						Container@STATS_BIN:
-							X:150
-							Y:375
-							Width:150
-							Children:
-								Label@SERVER_IP_LABEL:
-									Id:SERVER_IP_LABEL
-									X:0
-									Y:0
-									Align:Right
-									Width:70
-									Height:20
-									Text:Server:
-									Font:Bold
-								Label@SERVER_IP:
-									Id:SERVER_IP
-									X:70
-									Y:0
-									Align:Left
-									Width:70
-									Height:20
-								Label@MAP_PLAYERS_LABEL:
-									Id:MAP_PLAYERS_LABEL
-									X:0
-									Y:20
-									Align:Right
-									Width:70
-									Height:20
-									Text:Players:
-									Font:Bold
-								Label@MAP_PLAYERS:
-									Id:MAP_PLAYERS
-									X:70
-									Y:20
-									Align:Left
-									Width:70
-									Height:20
-								Label@MAP_TITLE_LABEL:
-									Id:MAP_TITLE_LABEL
-									X:0
-									Y:40
-									Align:Right
-									Width:70
-									Height:20
-									Text:Map:
-									Font:Bold
-								Label@MAP_TITLE:
-									Id:MAP_TITLE
-									X:70
-									Y:40
-									Align:Left
-									Width:70
-									Height:20
-								Label@SERVER_MODS_LABEL:
-									Id:SERVER_MODS_LABEL
-									X:0
-									Y:60
-									Align:Right
-									Width:70
-									Height:20
-									Text:Mods:
-									Font:Bold
-								Label@SERVER_MODS:
-									Id:SERVER_MODS
-									X:70
-									Y:63
-									Align:Left
-									VAlign:Top
-									Width:70
-									Height:20
 		Button@BACK_BUTTON:
 			Id:BACK_BUTTON
 			Key:escape
@@ -201,7 +96,7 @@ Container@SERVERBROWSER_PANEL:
 			Text:Back
 		Button@REFRESH_BUTTON:
 			Id:REFRESH_BUTTON
-			X:450
+			X:250
 			Y:499
 			Width:140
 			Height:35
@@ -209,7 +104,7 @@ Container@SERVERBROWSER_PANEL:
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
 			Key:return
-			X:600
+			X:400
 			Y:499
 			Width:140
 			Height:35

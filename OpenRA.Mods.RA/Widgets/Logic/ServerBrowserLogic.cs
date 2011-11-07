@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -78,34 +79,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 
-			// Map preview
-			var preview = panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
-			preview.Map = () => CurrentMap();
-			preview.IsVisible = () => CurrentMap() != null;
-
-			// Server info
-			var infoPanel = panel.GetWidget("SERVER_INFO");
-			infoPanel.IsVisible = () => currentServer != null;
-			infoPanel.GetWidget<LabelWidget>("SERVER_IP").GetText = () => currentServer.Address;
-			infoPanel.GetWidget<LabelWidget>("SERVER_MODS").GetText = () => ServerBrowserLogic.GenerateModsLabel(currentServer);
-			infoPanel.GetWidget<LabelWidget>("MAP_TITLE").GetText = () => (CurrentMap() != null) ? CurrentMap().Title : "Unknown";
-			infoPanel.GetWidget<LabelWidget>("MAP_PLAYERS").GetText = () => GetPlayersLabel(currentServer);
-
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
 
 		string GetPlayersLabel(GameServer game)
 		{
-			if (game == null)
+			if (game == null || game.Players == 0)
 				return "";
 
 			var map = Game.modData.FindMapByUid(game.Map);
-			return map == null ? "{0}".F(currentServer.Players) : "{0} / {1}".F(currentServer.Players, map.PlayerCount);
+
+			var maxPlayers = map == null ? "?" : (object)map.PlayerCount;
+			return "{0} / {1}".F(game.Players, maxPlayers);
 		}
 
-		Map CurrentMap()
+		string GetStateLabel(GameServer game)
 		{
-			return (currentServer == null) ? null : Game.modData.FindMapByUid(currentServer.Map);
+			if (game == null)
+				return "";
+
+			if (game.State == 1) return "Waiting for players";
+			if (game.State == 2) return "Playing";
+			else return "Unknown";
+		}
+
+		Map GetMapPreview(GameServer game)
+		{
+			return (game == null) ? null : Game.modData.FindMapByUid(game.Map);
 		}
 
 		static string GenerateModLabel(KeyValuePair<string,string> mod)
@@ -134,32 +134,62 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 			}
 
-			var gamesWaiting = games.Where(g => g.CanJoin());
-
-			if (gamesWaiting.Count() == 0)
+			if (games.Count() == 0)
 			{
 				searchStatus = SearchStatus.NoGames;
 				return;
 			}
 
 			searchStatus = SearchStatus.Hidden;
-			currentServer = gamesWaiting.FirstOrDefault();
+			currentServer = games.FirstOrDefault();
 
-			foreach (var loop in gamesWaiting)
+			foreach (var loop in games)
 			{
 				var game = loop;
 
+				var canJoin = game.CanJoin();
+
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => game.Name;
+
+				var preview = item.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+				preview.Map = () => GetMapPreview(game);
+				preview.IsVisible = () => GetMapPreview(game) != null;
+
+				var title = item.GetWidget<LabelWidget>("TITLE");
+				title.GetText = () => game.Name;
+
 				// TODO: Use game.MapTitle once the server supports it
-				item.GetWidget<LabelWidget>("MAP").GetText = () => 
+				var maptitle = item.GetWidget<LabelWidget>("MAP");
+				maptitle.GetText = () =>
 				{
 					var map = Game.modData.FindMapByUid(game.Map);
-					return map == null ? "Unknown" : map.Title;
+					return map == null ? "Unknown Map" : map.Title;
 				};
+
 				// TODO: Use game.MaxPlayers once the server supports it
-				item.GetWidget<LabelWidget>("PLAYERS").GetText = () => GetPlayersLabel(game);
-				item.GetWidget<LabelWidget>("IP").GetText = () => game.Address;
+				var players = item.GetWidget<LabelWidget>("PLAYERS");
+				players.GetText = () => GetPlayersLabel(game);
+
+				var state = item.GetWidget<LabelWidget>("STATE");
+				state.GetText = () => GetStateLabel(game);
+	
+				var ip = item.GetWidget<LabelWidget>("IP");
+				ip.GetText = () => game.Address;
+
+				var version = item.GetWidget<LabelWidget>("VERSION");
+				version.GetText = () => GenerateModsLabel(game);
+				version.IsVisible = () => !game.CompatibleVersion();
+
+				if (!canJoin)
+				{
+					title.GetColor = () => Color.Gray;
+					maptitle.GetColor = () => Color.Gray;
+					players.GetColor = () => Color.Gray;
+					state.GetColor = () => Color.Gray;
+					ip.GetColor = () => Color.Gray;
+					version.GetColor = () => Color.Gray;
+				}
+
 				sl.AddChild(item);
 			}
 		}

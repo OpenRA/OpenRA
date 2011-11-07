@@ -52,6 +52,15 @@ namespace OpenRA.Network
 			if (Game.CurrentMods.Count != Mods.Count())
 				return false;
 
+			// Don't have the map locally
+			if (!Game.modData.AvailableMaps.ContainsKey(Map))
+				return false;
+
+			return CompatibleVersion();
+		}
+
+		public bool CompatibleVersion()
+		{
 			return UsefulMods.All(m => Game.CurrentMods.ContainsKey(m.Key)
 				&& AreVersionsCompatible(m.Value, Game.CurrentMods[m.Key].Version));
 		}
