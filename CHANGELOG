@@ -1,8 +1,11 @@
 NEW:
 	Engine:
 		General performance improvements
-	Both Mods:
+		Fixed minimap export breaking subsequent actions in the editor
+		Added owner chooser for new actors in the editor
+		Added actor info panel in the editor (doubleclick)
 		Added a Setup Default Players menu item to map editor
+	Both Mods:
 		Server lobbies upon creation use the previously played map
 		Added support for a Game.ConnectTo argument which allows clients to direct connect to a server when game is launched
 		Helicopters now bob slightly in flight
@@ -11,6 +14,9 @@ NEW:
 		Bots now maintain a level of aggro on enemy units
 		Made SpawnMPUnits' initial unit configurable
 		Added a dropdown list in the map editor for setting an actor's owner upon placement
+		Replaced the server browser with a new and awesome one
+		Fixed a bug where infantry squish sounds weren't positioned
+		Fixed a bug where actor priority wasn't correct for doubleclick
 
 	Red Alert:
 		Fixed a crash which occurred when playing an online game with Hard AI
@@ -22,6 +28,8 @@ NEW:
 		Added a Show Shellmap setting
 		Changed team color picker to match C&C's
 		Fixed a bug where infantry could not pass over anti-tank mines, and vice versa
+		Fixed a bug where the shellmap would reload unnecessarily when disconnecting from a lobby that hasn't started
+		Added AutoTarget capability to submarines, but they are set to HoldFire stance by default
 		New Map: Bombardment Islands (Sprog)
 		New Map: Engagement (Nukem)
 		New Map: Man to Man (Nukem)
