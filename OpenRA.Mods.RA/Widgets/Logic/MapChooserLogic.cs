@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
-		
+
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
@@ -44,12 +44,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
 
 				// 'all game types' extra item
-				gameModes.Insert( 0, Pair.New( null as string, selectableMaps.Count() ) );
+				gameModes.Insert(0, Pair.New(null as string, selectableMaps.Count()));
 
-				Func<Pair<string,int>, string> showItem =
-					x => "{0} ({1})".F( x.First ?? "All Game Types", x.Second );
+				Func<Pair<string, int>, string> showItem =
+					x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
 
-				Func<Pair<string,int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
@@ -70,6 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void EnumerateMaps()
 		{
+			
 			scrollpanel.RemoveChildren();
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
@@ -79,13 +80,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			const int margin = 20;
 			var labelWidth = (scrollpanel.Bounds.Width - 3 * margin) / 3;
 			var ts = new LabelWidget
-			{
-				Font = "Bold",
-				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
-				Text = "Loading Maps..",
-				Align = TextAlign.Center,
-			};
-			scrollpanel.AddChild(ts);
+						{
+							Font = "Bold",
+							Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
+							Text = "Loading Maps..",
+							Align = TextAlign.Center,
+						};
+			Game.RunAfterTick(() => scrollpanel.AddChild(ts));
 
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
@@ -113,10 +114,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var authorWidget = item.GetWidget<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
-				scrollpanel.RemoveChild(ts);
-				scrollpanel.AddChild(item);
+				Game.RunAfterTick(() =>
+									{
+										scrollpanel.RemoveChild(ts);
+										scrollpanel.AddChild(item);
+									});
 			}
-			
+
 		}
 	}
 }
