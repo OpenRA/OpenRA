@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class MapChooserLogic
 	{
 		Map map;
+		private Widget widget;
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
+			this.widget = widget;
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
 			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
@@ -70,30 +72,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void EnumerateMaps()
 		{
-			
 			scrollpanel.RemoveChildren();
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
 
 			// add a loading message
-			const int y = 50;
-			const int margin = 20;
-			var labelWidth = (scrollpanel.Bounds.Width - 3 * margin) / 3;
-			var ts = new LabelWidget
-						{
-							Font = "Bold",
-							Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
-							Text = "Loading Maps..",
-							Align = TextAlign.Center,
-						};
-			Game.RunAfterTick(() => scrollpanel.AddChild(ts));
-
+			var ts = widget.GetWidget<LabelWidget>("LOADING_MAPS");
+			Game.RunAfterTick(() => scrollpanel.Parent.AddChild(ts));
+			
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
 				.Where(kv => kv.Value.Type == gameMode || gameMode == null)
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
-
 			foreach (var kv in maps)
 			{
 				var m = kv.Value;
@@ -116,11 +107,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					authorWidget.GetText = () => m.Author;
 				Game.RunAfterTick(() =>
 									{
-										scrollpanel.RemoveChild(ts);
+										if (scrollpanel.Parent.Children.Contains(ts)) 
+											scrollpanel.Parent.RemoveChild(ts); //will only remove here not outside of loop for some reason
 										scrollpanel.AddChild(item);
 									});
 			}
-
 		}
 	}
 }
