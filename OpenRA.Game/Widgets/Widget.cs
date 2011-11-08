@@ -349,14 +349,22 @@ namespace OpenRA.Widgets
 
 		public virtual void AddChild(Widget child)
 		{
-			child.Parent = this;
-			Children.Add(child);
+			//making thread safe
+			lock (Children)
+			{
+				child.Parent = this;
+				Children.Add(child);
+			}
 		}
 
 		public virtual void RemoveChild(Widget child)
 		{
-			Children.Remove(child);
-			child.Removed();
+			//making thread safe
+			lock (Children)
+			{
+				Children.Remove(child);
+				child.Removed();
+			}
 		}
 
 		public virtual void RemoveChildren()

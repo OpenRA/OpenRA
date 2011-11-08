@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetWidget<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable);
+				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToList(); //ToList to stop re-enumeration
 				var gameModes = selectableMaps
 					.GroupBy(m => m.Value.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
@@ -62,7 +64,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
-			EnumerateMaps();
+			//thread to get the chooser up
+			new Thread(EnumerateMaps).Start();
 		}
 
 		void EnumerateMaps()
@@ -70,6 +73,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			scrollpanel.RemoveChildren();
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
+
+			// add a loading message
+			const int y = 50;
+			const int margin = 20;
+			var labelWidth = (scrollpanel.Bounds.Width - 3 * margin) / 3;
+			var ts = new LabelWidget
+			{
+				Font = "Bold",
+				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
+				Text = "Loading Maps..",
+				Align = TextAlign.Center,
+			};
+			scrollpanel.AddChild(ts);
 
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
@@ -97,9 +113,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var authorWidget = item.GetWidget<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
-
+				scrollpanel.RemoveChild(ts);
 				scrollpanel.AddChild(item);
 			}
+			
 		}
 	}
 }
