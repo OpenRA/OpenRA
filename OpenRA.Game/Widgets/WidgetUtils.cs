@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
@@ -158,7 +159,15 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(text);
 			if (textSize.X > width)
 			{
-				var lines = text.Split('\n');
+				var sb = new StringBuilder();
+				for (int a= 0; a < text.Length; a++)
+				{
+					sb.Append(text[a]);
+					if (a != 0 && a % width == 0)
+						sb.Append('\n');
+				}
+				
+				var lines = sb.ToString().Split('\n');
 				var newLines = new List<string>();
 				var i = 0;
 				var line = lines[i++];
