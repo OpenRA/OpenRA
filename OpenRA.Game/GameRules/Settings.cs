@@ -99,13 +99,15 @@ namespace OpenRA.GameRules
 		public int Timestep = 40;
 	}
 
-	public class KeyConfigSettings
+	public class KeySettings
 	{
 		public string AttackMoveKey = "q";
 		public string StopKey = "w";
 		public string ScatterKey = "e";
 		public string StanceCycleKey = "r";
 		public string DeployKey = "t";
+
+		public bool InvertCtrlBehaviour = false;
 	}
 
 	public class Settings
@@ -117,7 +119,7 @@ namespace OpenRA.GameRules
 		public SoundSettings Sound = new SoundSettings();
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
-		public KeyConfigSettings KeyConfig = new KeyConfigSettings();
+		public KeySettings Keys = new KeySettings();
 		public DebugSettings Debug = new DebugSettings();
 		public Dictionary<string, object> Sections;
 		public Settings(string file, Arguments args)
@@ -130,7 +132,7 @@ namespace OpenRA.GameRules
 				{"Sound", Sound},
 				{"Graphics", Graphics},
 				{"Server", Server},
-				{"KeyConfig", KeyConfig},
+				{"Keys", Keys},
 				{"Debug", Debug},
 			};
 

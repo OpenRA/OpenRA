@@ -46,27 +46,31 @@ namespace OpenRA.Mods.RA.Widgets
 		bool ProcessInput(KeyInput e)
 		{
 			var KeyName = e.KeyName;
-			var KeyConfig = Game.Settings.KeyConfig;
+			var KeyConfig = Game.Settings.Keys;
 
-			if ((e.Event == KeyInputEvent.Down) && (e.Modifiers == Modifiers.None))
+//			if ((e.Event == KeyInputEvent.Down) && (e.Modifiers == Modifiers.None))
+			if (e.Event == KeyInputEvent.Down)
 			{
-				if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
-					return CycleProductionBuildings("BaseType");
+				if (Game.Settings.Keys.InvertCtrlBehaviour ^ e.Modifiers.HasModifier(Modifiers.Ctrl))
+				{
+					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("BaseType");
 
-				if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
-					|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
-					return CycleProductionBuildings("BarracksType");
+					if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("BarracksType");
 
-				if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
-					return CycleProductionBuildings("WarFactoryType");
+					if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("WarFactoryType");
 
-				if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
-					|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
-					return CycleProductionBuildings("DockType");
+					if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("DockType");
 
-				if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
-					|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
-					return CycleProductionBuildings("AirportType");
+					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("AirportType");
+				}
 
 				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
 					return false;

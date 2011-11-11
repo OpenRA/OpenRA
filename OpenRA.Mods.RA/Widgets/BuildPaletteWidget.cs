@@ -510,7 +510,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
 
-			if ( (toBuild != null) && (!toBuild.Traits.Contains<ProductionBuildingInfo>() ^ e.Modifiers.HasModifier(Modifiers.Ctrl)))
+			if ( (toBuild != null)
+				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>()
+					|| (Game.Settings.Keys.InvertCtrlBehaviour ^ !e.Modifiers.HasModifier(Modifiers.Ctrl))) )
 			{
 				Sound.Play(TabClick);
 				HandleBuildPalette(world, toBuild.Name, true);

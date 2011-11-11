@@ -5,7 +5,7 @@ DOG:
 		BuildPaletteOrder: 30
 		Prerequisites: barr
 		Owner: soviet
-		Hotkey: r
+		Hotkey: q
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -34,7 +34,7 @@ E1:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: allies,soviet
-		Hotkey: q
+		Hotkey: w
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -90,7 +90,7 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies,soviet
-		Hotkey: w
+		Hotkey: r
 	Valued:
 		Cost: 300
 	Tooltip:

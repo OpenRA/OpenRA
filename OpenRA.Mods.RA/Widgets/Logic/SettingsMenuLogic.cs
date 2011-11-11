@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Keys
 			var keys = bg.GetWidget("KEYS_PANE");
 
-			var keyConfig = Game.Settings.KeyConfig;
+			var keyConfig = Game.Settings.Keys;
 
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("ATTACKMOVEKEYNAME"),
 			() => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k );
@@ -116,6 +116,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k );
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
+
+			var invertCtrlBehaviourCheckbox = keys.GetWidget<CheckboxWidget>("INVCTRLBEH_CHECKBOX");
+			invertCtrlBehaviourCheckbox.IsChecked = () => Game.Settings.Keys.InvertCtrlBehaviour;
+			invertCtrlBehaviourCheckbox.OnClick = () => Game.Settings.Keys.InvertCtrlBehaviour ^= true;
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
