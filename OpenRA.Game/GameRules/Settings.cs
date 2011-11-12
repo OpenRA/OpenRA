@@ -107,7 +107,7 @@ namespace OpenRA.GameRules
 		public string StanceCycleKey = "r";
 		public string DeployKey = "t";
 
-		public bool InvertCtrlBehaviour = false;
+		public bool InvertHModBehaviour = false;
 		public Modifiers HotkeyModifier = Modifiers.Alt;
 	}
 

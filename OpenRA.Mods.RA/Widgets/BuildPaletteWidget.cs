@@ -514,7 +514,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if ( (toBuild != null)
 				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>()
-					|| (KeyConfig.InvertCtrlBehaviour ^ !e.Modifiers.HasModifier(KeyConfig.HotkeyModifier))) )
+					|| (KeyConfig.InvertHModBehaviour ^ !e.Modifiers.HasModifier(KeyConfig.HotkeyModifier))) )
 			{
 				Sound.Play(TabClick);
 				HandleBuildPalette(world, toBuild.Name, true);

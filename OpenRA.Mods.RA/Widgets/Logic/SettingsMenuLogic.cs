@@ -117,22 +117,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
 
-			var textBox = keys.GetWidget<TextFieldWidget>("HOTKEYMODIFIERNAME");
-			textBox.Text = Enum.GetName(typeof(Modifiers), keyConfig.HotkeyModifier);
-			textBox.OnLoseFocus = () =>
-			{
-				textBox.Text = textBox.Text.Trim();
+			var hotkeyModifierDropdown = keys.GetWidget<DropDownButtonWidget>("HOTKEYMODIFIER_DROPDOWN");
+			hotkeyModifierDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(hotkeyModifierDropdown, keyConfig);
+			hotkeyModifierDropdown.GetText = () => keyConfig.HotkeyModifier == Modifiers.Alt ? "Alt" : "Ctrl";
 
-				if ((textBox.Text.Length == 0) || !Enum.GetNames(typeof(Modifiers)).Contains(textBox.Text))
-					textBox.Text = Enum.GetName(typeof(Modifiers), keyConfig.HotkeyModifier);
-				else
-					keyConfig.HotkeyModifier = (Modifiers)Enum.Parse(typeof(Modifiers), textBox.Text);
-			};
-			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
-
-			var invertCtrlBehaviourCheckbox = keys.GetWidget<CheckboxWidget>("INVCTRLBEH_CHECKBOX");
-			invertCtrlBehaviourCheckbox.IsChecked = () => Game.Settings.Keys.InvertCtrlBehaviour;
-			invertCtrlBehaviourCheckbox.OnClick = () => Game.Settings.Keys.InvertCtrlBehaviour ^= true;
+			var invertHModBehaviourCheckbox = keys.GetWidget<CheckboxWidget>("INVHMODBEH_CHECKBOX");
+			invertHModBehaviourCheckbox.IsChecked = () => Game.Settings.Keys.InvertHModBehaviour;
+			invertHModBehaviourCheckbox.OnClick = () => Game.Settings.Keys.InvertHModBehaviour ^= true;
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
@@ -182,6 +173,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Mode == options[o],
 					() => s.Mode = options[o]);
+				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
+			return true;
+		}
+
+		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, KeySettings s)
+		{
+			var options = new Dictionary<string, Modifiers>()
+			{
+				{ "Alt", Modifiers.Alt },
+				{ "Ctrl", Modifiers.Ctrl },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.HotkeyModifier == options[o],
+					() => s.HotkeyModifier = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

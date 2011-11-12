@@ -305,16 +305,16 @@ Background@SETTINGS_MENU:
 					X:0
 					Y:160
 					Text: Hotkey-Modifier:
-				TextField@HOTKEYMODIFIERNAME:
-					Id:HOTKEYMODIFIERNAME
-					Text:Name
-					Width:139
-					Height:25
+				DropDownButton@HOTKEYMODIFIER_DROPDOWN:
+					Id:HOTKEYMODIFIER_DROPDOWN
 					X:160
 					Y:150
-					MaxLength:16
-				Checkbox@INVCTRLBEH_CHECKBOX:
-					Id:INVCTRLBEH_CHECKBOX
+					Width:139
+					Height:25
+					Font:Regular
+					Text:
+				Checkbox@INVHMODBEH_CHECKBOX:
+					Id:INVHMODBEH_CHECKBOX
 					X:0
 					Y:180
 					Width:300
