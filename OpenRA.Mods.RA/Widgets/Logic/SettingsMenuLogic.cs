@@ -117,6 +117,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
 
+			var textBox = keys.GetWidget<TextFieldWidget>("HOTKEYMODIFIERNAME");
+			textBox.Text = Enum.GetName(typeof(Modifiers), keyConfig.HotkeyModifier);
+			textBox.OnLoseFocus = () =>
+			{
+				textBox.Text = textBox.Text.Trim();
+
+				if ((textBox.Text.Length == 0) || !Enum.GetNames(typeof(Modifiers)).Contains(textBox.Text))
+					textBox.Text = Enum.GetName(typeof(Modifiers), keyConfig.HotkeyModifier);
+				else
+					keyConfig.HotkeyModifier = (Modifiers)Enum.Parse(typeof(Modifiers), textBox.Text);
+			};
+			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
+
 			var invertCtrlBehaviourCheckbox = keys.GetWidget<CheckboxWidget>("INVCTRLBEH_CHECKBOX");
 			invertCtrlBehaviourCheckbox.IsChecked = () => Game.Settings.Keys.InvertCtrlBehaviour;
 			invertCtrlBehaviourCheckbox.OnClick = () => Game.Settings.Keys.InvertCtrlBehaviour ^= true;

@@ -300,17 +300,35 @@ Background@SETTINGS_MENU:
 					X:160
 					Y:120
 					MaxLength:16
+				Label@KEYS_HOTKEYMODIFIER_NAME:
+					Id:KEYS_HOTKEYMODIFIER_NAME
+					X:0
+					Y:160
+					Text: Hotkey-Modifier:
+				TextField@HOTKEYMODIFIERNAME:
+					Id:HOTKEYMODIFIERNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:160
+					Y:150
+					MaxLength:16
 				Checkbox@INVCTRLBEH_CHECKBOX:
 					Id:INVCTRLBEH_CHECKBOX
 					X:0
-					Y:150
+					Y:180
 					Width:300
 					Height:20
-					Text:Invert Effect of Ctrl-Key at selecting/cycling/building Production Buildings
+					Text:Invert Effect of Hotkey-Modifier at
+				Label@TEXT_CONTINUATION:
+					Id:TEXT_CONTINUATION
+					X:30
+					Y:205
+					Text: selecting/cycling/building Production Buildings
 				Label@HOTKEY_INFO:
 					Id:HOTKEY_INFO
 					X:10
-					Y:210
+					Y:250
 					Text: To change the Hotkey Mapping edit the YAML-Files in /mods/ra/rules/.
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE

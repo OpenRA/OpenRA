@@ -108,6 +108,7 @@ namespace OpenRA.GameRules
 		public string DeployKey = "t";
 
 		public bool InvertCtrlBehaviour = false;
+		public Modifiers HotkeyModifier = Modifiers.Alt;
 	}
 
 	public class Settings

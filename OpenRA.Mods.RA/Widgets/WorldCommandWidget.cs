@@ -48,10 +48,9 @@ namespace OpenRA.Mods.RA.Widgets
 			var KeyName = e.KeyName;
 			var KeyConfig = Game.Settings.Keys;
 
-//			if ((e.Event == KeyInputEvent.Down) && (e.Modifiers == Modifiers.None))
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (Game.Settings.Keys.InvertCtrlBehaviour ^ e.Modifiers.HasModifier(Modifiers.Ctrl))
+				if (Game.Settings.Keys.InvertCtrlBehaviour ^ e.Modifiers.HasModifier(KeyConfig.HotkeyModifier))
 				{
 					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
 						return CycleProductionBuildings("BaseType");
