@@ -513,8 +513,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var KeyConfig = Game.Settings.Keys;
 
 			if ( (toBuild != null)
-				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>()
-					|| (KeyConfig.InvertHModBehaviour ^ !e.Modifiers.HasModifier(KeyConfig.HotkeyModifier))) )
+				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>() || (e.Modifiers.HasModifier(KeyConfig.ModifierToBuild))) )
 			{
 				Sound.Play(TabClick);
 				HandleBuildPalette(world, toBuild.Name, true);

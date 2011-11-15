@@ -50,25 +50,46 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (Game.Settings.Keys.InvertHModBehaviour ^ e.Modifiers.HasModifier(KeyConfig.HotkeyModifier))
+				if (e.Modifiers.HasModifier(KeyConfig.ModifierToCycle))
 				{
 					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
-						return CycleProductionBuildings("BaseType");
+						return CycleProductionBuildings("BaseType", true);
 
 					if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
 						|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
-						return CycleProductionBuildings("BarracksType");
+						return CycleProductionBuildings("BarracksType", true);
 
 					if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
-						return CycleProductionBuildings("WarFactoryType");
+						return CycleProductionBuildings("WarFactoryType", true);
 
 					if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
 						|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
-						return CycleProductionBuildings("DockType");
+						return CycleProductionBuildings("DockType", true);
 
 					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
 						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
-						return CycleProductionBuildings("AirportType");
+						return CycleProductionBuildings("AirportType", true);
+				}
+
+				if (e.Modifiers.HasModifier(KeyConfig.ModifierToSelectTab))
+				{
+					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("BaseType", false);
+
+					if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("BarracksType", false);
+
+					if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("WarFactoryType", false);
+
+					if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("DockType", false);
+
+					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("AirportType", false);
 				}
 
 				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
@@ -158,7 +179,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		bool CycleProductionBuildings(string DesiredBuildingType)
+		bool CycleProductionBuildings(string DesiredBuildingType, bool ChangeViewport)
 		{
 			var buildings = World.ActorsWithTrait<ProductionBuilding>()
 					.Where( a => (a.Actor.Owner == World.LocalPlayer)
@@ -176,7 +197,8 @@ namespace OpenRA.Mods.RA.Widgets
 				next = buildings.Select(b => b.Actor).First();
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
+			if (ChangeViewport)
+				Game.viewport.Center(World.Selection.Actors);
 
 			return true;
 		}

@@ -117,13 +117,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
 
-			var hotkeyModifierDropdown = keys.GetWidget<DropDownButtonWidget>("HOTKEYMODIFIER_DROPDOWN");
-			hotkeyModifierDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(hotkeyModifierDropdown, keyConfig);
-			hotkeyModifierDropdown.GetText = () => keyConfig.HotkeyModifier == Modifiers.Alt ? "Alt" : "Ctrl";
+			var modifierToBuildDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOBUILD_DROPDOWN");
+			var b = keyConfig.ModifierToBuild;
+			modifierToBuildDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToBuildDropdown, b);
+			modifierToBuildDropdown.GetText = ()
+				=> b == Modifiers.None ? "<Hotkey>" : b == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
 
-			var invertHModBehaviourCheckbox = keys.GetWidget<CheckboxWidget>("INVHMODBEH_CHECKBOX");
-			invertHModBehaviourCheckbox.IsChecked = () => Game.Settings.Keys.InvertHModBehaviour;
-			invertHModBehaviourCheckbox.OnClick = () => Game.Settings.Keys.InvertHModBehaviour ^= true;
+			var modifierToCycleDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOCYCLE_DROPDOWN");
+			var c = keyConfig.ModifierToCycle;
+			modifierToCycleDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToCycleDropdown, c);
+			modifierToCycleDropdown.GetText = ()
+				=> c == Modifiers.None ? "<Hotkey>" : c == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
+
+			var modifierToSelectTabDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOSELECTTAB_DROPDOWN");
+			var t = keyConfig.ModifierToSelectTab;
+			modifierToSelectTabDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, t);
+			modifierToSelectTabDropdown.GetText = ()
+				=> t == Modifiers.None ? "<Hotkey>" : t == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
@@ -181,19 +191,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, KeySettings s)
+		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, Modifiers m)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
-				{ "Alt", Modifiers.Alt },
-				{ "Ctrl", Modifiers.Ctrl },
+				{ "<Hotkey>", Modifiers.None },
+				{ "Alt + <Hotkey>", Modifiers.Alt  },
+				{ "Ctrl + <Hotkey>", Modifiers.Ctrl },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => s.HotkeyModifier == options[o],
-					() => s.HotkeyModifier = options[o]);
+					() => m == options[o],
+					() => m = options[o]);
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

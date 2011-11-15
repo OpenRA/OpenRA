@@ -300,35 +300,54 @@ Background@SETTINGS_MENU:
 					X:160
 					Y:120
 					MaxLength:16
-				Label@KEYS_HOTKEYMODIFIER_NAME:
-					Id:KEYS_HOTKEYMODIFIER_NAME
+				Label@KEYS_MODIFIERHEADLINE:
+					Id:KEYS_MODIFIERHEADLINE
 					X:0
 					Y:160
-					Text: Hotkey-Modifier:
-				DropDownButton@HOTKEYMODIFIER_DROPDOWN:
-					Id:HOTKEYMODIFIER_DROPDOWN
-					X:160
-					Y:150
+					Text: Hotkey Modifiers for Production Buildings:
+				Label@KEYS_MODIFIERTOBUILD_NAME:
+					Id:KEYS_MODIFIERTOBUILD_NAME
+					X:0
+					Y:185
+					Text: Build:
+				DropDownButton@MODIFIERTOBUILD_DROPDOWN:
+					Id:MODIFIERTOBUILD_DROPDOWN
+					X:310
+					Y:175
 					Width:139
 					Height:25
 					Font:Regular
 					Text:
-				Checkbox@INVHMODBEH_CHECKBOX:
-					Id:INVHMODBEH_CHECKBOX
+				Label@KEYS_MODIFIERTOCYCLE_NAME:
+					Id:KEYS_MODIFIERTOCYCLE_NAME
 					X:0
-					Y:180
-					Width:300
-					Height:20
-					Text:Invert Effect of Hotkey-Modifier at
-				Label@TEXT_CONTINUATION:
-					Id:TEXT_CONTINUATION
-					X:30
+					Y:215
+					Text: Cycle:
+				DropDownButton@MODIFIERTOCYCLE_DROPDOWN:
+					Id:MODIFIERTOCYCLE_DROPDOWN
+					X:310
 					Y:205
-					Text: selecting/cycling/building Production Buildings
+					Width:139
+					Height:25
+					Font:Regular
+					Text:
+				Label@KEYS_MODIFIERTOSELECTTAB_NAME:
+					Id:KEYS_MODIFIERTOSELECTTAB_NAME
+					X:0
+					Y:245
+					Text: Select corresponding Tab on Build Palette only:
+				DropDownButton@MODIFIERTOSELECTTAB_DROPDOWN:
+					Id:MODIFIERTOSELECTTAB_DROPDOWN
+					X:310
+					Y:235
+					Width:139
+					Height:25
+					Font:Regular
+					Text:
 				Label@HOTKEY_INFO:
 					Id:HOTKEY_INFO
 					X:10
-					Y:250
+					Y:300
 					Text: To change the Hotkey Mapping edit the YAML-Files in /mods/ra/rules/.
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE
