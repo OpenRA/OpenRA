@@ -118,22 +118,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
 
 			var modifierToBuildDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOBUILD_DROPDOWN");
-			var b = keyConfig.ModifierToBuild;
-			modifierToBuildDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToBuildDropdown, b);
+			modifierToBuildDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToBuildDropdown, ref keyConfig.ModifierToBuild);
 			modifierToBuildDropdown.GetText = ()
-				=> b == Modifiers.None ? "<Hotkey>" : b == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
+				=> keyConfig.ModifierToBuild == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToBuild == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
 
 			var modifierToCycleDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOCYCLE_DROPDOWN");
-			var c = keyConfig.ModifierToCycle;
-			modifierToCycleDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToCycleDropdown, c);
+			modifierToCycleDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToCycleDropdown, ref keyConfig.ModifierToCycle);
 			modifierToCycleDropdown.GetText = ()
-				=> c == Modifiers.None ? "<Hotkey>" : c == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
+				=> keyConfig.ModifierToCycle == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToCycle == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
 
 			var modifierToSelectTabDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOSELECTTAB_DROPDOWN");
-			var t = keyConfig.ModifierToSelectTab;
-			modifierToSelectTabDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, t);
+			modifierToSelectTabDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, ref keyConfig.ModifierToSelectTab);
 			modifierToSelectTabDropdown.GetText = ()
-				=> t == Modifiers.None ? "<Hotkey>" : t == Modifiers.Alt ? "Alt + <Hotkey>" : "Ctrl + <Hotkey>";
+				=> keyConfig.ModifierToSelectTab == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToSelectTab == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
@@ -191,7 +195,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, Modifiers m)
+		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, ref Modifiers m)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
