@@ -492,8 +492,8 @@ function CloseWindow(event)
 		local ds = debugger.server
 		debugger.server = nil
 		--ds:Reset()
-		ds:KillDebuggee()
-		ds:delete()
+		--ds:KillDebuggee()
+		--ds:delete()
 	end
 	debugger.running = false
 	

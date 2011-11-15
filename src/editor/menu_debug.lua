@@ -4,14 +4,6 @@
 
 -- Create the Debug menu and attach the callback functions
 
-
---debugger.server     = nil    -- wxLuaDebuggerServer object when debugging, else nil
---debugger.server_    = nil    -- temp wxLuaDebuggerServer object for deletion
---debugger.running    = false  -- true when the debuggee is running
---debugger.destroy    = 0      -- > 0 if the debugger is to be destroyed in wxEVT_IDLE
---debugger.pid        = 0      -- pid of the debuggee process
---debugger.portnumber = 1551   -- the port # to use for debugging
-
 local frame    = ide.frame
 local menuBar  = frame.menuBar
 local vsplitter= frame.vsplitter
@@ -21,7 +13,7 @@ local errorlog = splitter.bottomnotebook.errorlog
 local notebook = splitter.notebook
 
 local openDocuments = ide.openDocuments
-local debugger 		= ide.debugger
+local debugger      = ide.debugger
 local filetree      = ide.filetree
 
 --------------
@@ -40,7 +32,7 @@ local debugMenu = wx.wxMenu{
 		{ },
 		{ ID_COMPILE,          "&Compile\tF7",           "Test compile the Lua file" },
 		{ ID_RUN,              "&Run\tF6",               "Execute the current project/file" },
-		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
+		{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
 		--{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
 		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
@@ -208,60 +200,13 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-			local ok = false
-			debugger.server = wxlua.wxLuaDebuggerServer(debugger.portnumber)
-			if debugger.server then
-				ok = debugger.server:StartServer()
-			end
-			if ok then
-				DisplayOutput("Waiting for client connect. Start client with wxLua -d"..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
-			else
-				DisplayOutput("Unable to create debugger server.\n")
-			end
-			NextDebuggerPort()
+		        debugger.connect()
+			DisplayOutput("Client connected to "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
 		end)
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
 			event:Enable((debugger.server == nil) and (editor ~= nil))
-		end)
-
-frame:Connect(wx.wxEVT_IDLE,
-		function(event)
-
-			if (debugger.destroy > 0) then
-				debugger.destroy = debugger.destroy + 1
-			end
-
-			if (debugger.destroy == 5) then
-				-- stop the server and let it end gracefully
-				debugger.running = false
-				debugger.server_:StopServer()
-			end
-			if (debugger.destroy == 10) then
-				-- delete the server and let it die gracefully
-				debugger.running = false
-				debugger.server_:delete()
-			end
-			if (debugger.destroy > 15) then
-				-- finally, kill the debugee process if it still exists
-				debugger.destroy = 0;
-				local ds = debugger.server_
-				debugger.server_ = nil
-
-				if (debugger.pid > 0) then
-					if wx.wxProcess.Exists(debugger.pid) then
-						local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
-						if (ret ~= wx.wxKILL_OK) then
-							DisplayOutput("Unable to kill debuggee process "..debugger.pid..", code "..tostring(ret)..".\n")
-						else
-							DisplayOutput("Killed debuggee process "..debugger.pid..".\n")
-						end
-					end
-					debugger.pid = 0
-				end
-			end
-			event:Skip()
 		end)
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -320,8 +265,10 @@ frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
 			ClearAllCurrentLineMarkers()
 
 			if debugger.server then
-				debugger.server:Step()
-				debugger.running = true
+				local file, line = debugger.handle("step")
+   			        local editor = GetEditor()
+				editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+				editor:EnsureVisibleEnforcePolicy(line-1)
 			end
 		end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
