@@ -263,18 +263,7 @@ frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			if debugger.server then
-			  copas.addthread(function ()
-				debugger.running = true
-				local file, line = debugger.handle("step")
-				debugger.running = false
-                                if line ~= nil then
-     			          local editor = GetEditor()
-				  editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-				  editor:EnsureVisibleEnforcePolicy(line-1)
-                                end
-                          end)
-			end
+			debugger.run("step")
 		end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -346,5 +335,5 @@ frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(wx.wxEVT_IDLE,
 		function(event)
-		  	copas.step(0)
+		  	debugger.update()
 		end)

@@ -21,18 +21,8 @@ debugger.connect = function ()
   DisplayOutput("Started server on " .. debugger.portnumber .. "\n")
   copas.autoclose = false
   copas.addserver(server, function (skt)
-    local client = copas.wrap(skt)
-
-    DisplayOutput("Client connected to "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
-
-    debugger.server = client
-    debugger.running = true
-
-    client:send("STEP\n")
-    client:receive()
-    client:receive()
-
-    debugger.running = false
+    debugger.server = copas.wrap(skt)
+    debugger.run("step")
     DisplayOutput("Established session with "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
   end)
 end
@@ -44,3 +34,20 @@ debugger.handle = function(line)
   _G.print = function (line) DisplayOutput(line .. "\n") end
   return mobdebug.handle(line, debugger.server);
 end
+
+debugger.run = function (command)
+  if debugger.server then
+    copas.addthread(function ()
+      debugger.running = true
+      local file, line = debugger.handle(command)
+      debugger.running = false
+      if line ~= nil then
+        local editor = GetEditor()
+        editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+        editor:EnsureVisibleEnforcePolicy(line-1)
+      end
+    end)
+  end
+end
+
+debugger.update = function() copas.step(0) end
