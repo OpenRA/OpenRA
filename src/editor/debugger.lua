@@ -23,6 +23,7 @@ debugger.listen = function ()
   copas.addserver(server, function (skt)
     debugger.server = copas.wrap(skt)
     debugger.run("step")
+    SetAllEditorsReadOnly(true)
     DisplayOutput("Established session with "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
   end)
 end

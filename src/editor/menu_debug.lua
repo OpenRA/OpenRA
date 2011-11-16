@@ -32,7 +32,7 @@ local debugMenu = wx.wxMenu{
 		{ },
 		{ ID_COMPILE,          "&Compile\tF7",           "Test compile the Lua file" },
 		{ ID_RUN,              "&Run\tF6",               "Execute the current project/file" },
-		{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
+		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
 		--{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
 		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
@@ -244,14 +244,9 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			if debugger.server then
-				debugger.server:Reset();
-				--DestroyDebuggerServer()
-			end
+			debugger.run("exit")
+
 			SetAllEditorsReadOnly(false)
-			ignoredFilesList = {}
-			debugger.running = false
-			DisplayOutput("\nDebuggee client stopped.\n\n")
 		end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -275,10 +270,7 @@ frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			if debugger.server then
-				debugger.server:StepOver()
-				debugger.running = true
-			end
+			debugger.run("over")
 		end)
 frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -304,10 +296,7 @@ frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			if debugger.server then
-				debugger.server:Continue()
-				debugger.running = true
-			end
+			debugger.run("run")
 		end)
 frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
 		function (event)
