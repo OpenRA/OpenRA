@@ -258,7 +258,7 @@ MCV:
 		BuildPaletteOrder: 110
 		Prerequisites: fix
 		Owner: allies,soviet
-		Hotkey: space
+		Hotkey: c
 	Valued:
 		Cost: 2000
 	Tooltip:

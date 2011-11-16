@@ -107,6 +107,8 @@ namespace OpenRA.GameRules
 		public string StanceCycleKey = "r";
 		public string DeployKey = "t";
 
+		public string DefenseTabKey = "x";
+
 		public Modifiers ModifierToBuild = Modifiers.None;
 		public Modifiers ModifierToCycle = Modifiers.Alt;
 		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;

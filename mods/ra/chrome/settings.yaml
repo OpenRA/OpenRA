@@ -245,7 +245,7 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:160
+					X:240
 					Y:0
 					MaxLength:16
 				Label@KEYS_STOPKEY_NAME:
@@ -258,7 +258,7 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:160
+					X:240
 					Y:30
 					MaxLength:16
 				Label@KEYS_SCATTERKEY_NAME:
@@ -271,33 +271,33 @@ Background@SETTINGS_MENU:
 					Text:Name
 					Width:139
 					Height:25
-					X:160
+					X:240
 					Y:60
-					MaxLength:16
-				Label@KEYS_DEPLOYKEY_NAME:
-					Id:KEYS_DEPLOYKEY_NAME
-					X:0
-					Y:100
-					Text: Deploy:
-				TextField@DEPLOYKEYNAME:
-					Id:DEPLOYKEYNAME
-					Text:Name
-					Width:139
-					Height:25
-					X:160
-					Y:90
 					MaxLength:16
 				Label@KEYS_STANCECYCLEKEY_NAME:
 					Id:KEYS_STANCECYCLE_NAME
 					X:0
-					Y:130
+					Y:100
 					Text: Cycle Stance:
 				TextField@STANCECYCLEKEYNAME:
 					Id:STANCECYCLEKEYNAME
 					Text:Name
 					Width:139
 					Height:25
-					X:160
+					X:240
+					Y:90
+					MaxLength:16
+				Label@KEYS_DEPLOYKEY_NAME:
+					Id:KEYS_DEPLOYKEY_NAME
+					X:0
+					Y:130
+					Text: Deploy:
+				TextField@DEPLOYKEYNAME:
+					Id:DEPLOYKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:240
 					Y:120
 					MaxLength:16
 				Label@KEYS_MODIFIERHEADLINE:
@@ -344,10 +344,23 @@ Background@SETTINGS_MENU:
 					Height:25
 					Font:Regular
 					Text:
+				Label@KEYS_DEFENSETABKEY_NAME:
+					Id:KEYS_DEFENSETABKEY_NAME
+					X:0
+					Y:275
+					Text: Select Defense Tab on Build Palette:
+				TextField@DEFENSETABKEYNAME:
+					Id:DEFENSETABKEYNAME
+					Text:Name
+					Width:139
+					Height:25
+					X:240
+					Y:265
+					MaxLength:16
 				Label@HOTKEY_INFO:
 					Id:HOTKEY_INFO
 					X:10
-					Y:300
+					Y:320
 					Text: To change the Hotkey Mapping edit the YAML-Files in /mods/ra/rules/.
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE

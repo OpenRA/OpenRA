@@ -112,20 +112,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			() => keyConfig.StopKey, k => keyConfig.StopKey = k );
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("SCATTERKEYNAME"),
 			() => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k );
-			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DEPLOYKEYNAME"),
-			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k );
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("STANCECYCLEKEYNAME"),
 			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k );
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DEPLOYKEYNAME"),
+			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k );
 
 			var modifierToBuildDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOBUILD_DROPDOWN");
-			modifierToBuildDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToBuildDropdown, ref keyConfig.ModifierToBuild);
+			modifierToBuildDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToBuildDropdown, keyConfig.ModifierToBuild, m => keyConfig.ModifierToBuild = m);
 			modifierToBuildDropdown.GetText = ()
 				=> keyConfig.ModifierToBuild == Modifiers.None ? "<Hotkey>"
 					: keyConfig.ModifierToBuild == Modifiers.Alt ? "Alt + <Hotkey>"
 					: "Ctrl + <Hotkey>";
 
 			var modifierToCycleDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOCYCLE_DROPDOWN");
-			modifierToCycleDropdown.OnMouseDown = _ => ShowHotkeyModifierDropdown(modifierToCycleDropdown, ref keyConfig.ModifierToCycle);
+			modifierToCycleDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToCycleDropdown, keyConfig.ModifierToCycle, m => keyConfig.ModifierToCycle = m);
 			modifierToCycleDropdown.GetText = ()
 				=> keyConfig.ModifierToCycle == Modifiers.None ? "<Hotkey>"
 					: keyConfig.ModifierToCycle == Modifiers.Alt ? "Alt + <Hotkey>"
@@ -133,11 +135,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var modifierToSelectTabDropdown = keys.GetWidget<DropDownButtonWidget>("MODIFIERTOSELECTTAB_DROPDOWN");
 			modifierToSelectTabDropdown.OnMouseDown = _
-				=> ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, ref keyConfig.ModifierToSelectTab);
+				=> ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, keyConfig.ModifierToSelectTab,
+								m => keyConfig.ModifierToSelectTab = m);
 			modifierToSelectTabDropdown.GetText = ()
 				=> keyConfig.ModifierToSelectTab == Modifiers.None ? "<Hotkey>"
 					: keyConfig.ModifierToSelectTab == Modifiers.Alt ? "Alt + <Hotkey>"
 					: "Ctrl + <Hotkey>";
+
+			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DEFENSETABKEYNAME"),
+			() => keyConfig.DefenseTabKey, k => keyConfig.DefenseTabKey = k );
 
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
@@ -195,7 +201,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, ref Modifiers m)
+		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, Modifiers m, Action<Modifiers> am)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
@@ -208,7 +214,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => m == options[o],
-					() => m = options[o]);
+					() => am(options[o]));
 				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

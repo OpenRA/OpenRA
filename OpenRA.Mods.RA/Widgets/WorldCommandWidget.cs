@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.Modifiers.HasModifier(KeyConfig.ModifierToCycle))
+				if (e.Modifiers == KeyConfig.ModifierToCycle)
 				{
 					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
 						return CycleProductionBuildings("BaseType", true);
@@ -69,9 +69,21 @@ namespace OpenRA.Mods.RA.Widgets
 					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
 						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
 						return CycleProductionBuildings("AirportType", true);
+
+					if (KeyName == KeyConfig.DefenseTabKey)
+					{
+						CycleProductionBuildings("BaseType", true);
+						Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+								.FirstOrDefault( q => q.Info.Type == "Defense" ));
+						return true;
+					}
 				}
 
-				if (e.Modifiers.HasModifier(KeyConfig.ModifierToSelectTab))
+				if (KeyName == "space")
+					return CycleProductionBuildings("BaseType", true);
+
+				if (e.Modifiers == KeyConfig.ModifierToSelectTab)
 				{
 					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
 						return CycleProductionBuildings("BaseType", false);
@@ -90,6 +102,15 @@ namespace OpenRA.Mods.RA.Widgets
 					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
 						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
 						return CycleProductionBuildings("AirportType", false);
+
+					if (KeyName == KeyConfig.DefenseTabKey)
+					{
+						CycleProductionBuildings("BaseType", false);
+						Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+								.FirstOrDefault( q => q.Info.Type == "Defense" ));
+						return true;
+					}
 				}
 
 				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
