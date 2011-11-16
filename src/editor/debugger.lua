@@ -41,7 +41,9 @@ debugger.run = function (command)
       debugger.running = true
       local file, line = debugger.handle(command)
       debugger.running = false
-      if line ~= nil then
+      if line == nil then
+        debugger.server = nil
+      else
         local editor = GetEditor()
         editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
         editor:EnsureVisibleEnforcePolicy(line-1)
