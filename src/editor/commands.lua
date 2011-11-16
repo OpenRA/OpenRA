@@ -504,6 +504,6 @@ function CloseWindow(event)
 	SettingsSaveEditorSettings()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
-	CloseWatchWindow()
+	if CloseWatchWindow then CloseWatchWindow() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)

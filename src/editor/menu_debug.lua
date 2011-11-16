@@ -201,7 +201,6 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 		        debugger.connect()
-			DisplayOutput("Client connected to "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
 		end)
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -265,10 +264,14 @@ frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
 			ClearAllCurrentLineMarkers()
 
 			if debugger.server then
+			  copas.addthread(function ()
+				debugger.running = true
 				local file, line = debugger.handle("step")
+				debugger.running = false
    			        local editor = GetEditor()
 				editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
 				editor:EnsureVisibleEnforcePolicy(line-1)
+                          end)
 			end
 		end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
@@ -337,4 +340,9 @@ frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_UPDATE_UI,
 		function(event)
 			event:Enable(debugger.server == nil)
+		end)
+
+frame:Connect(wx.wxEVT_IDLE,
+		function(event)
+		  	copas.step(0)
 		end)

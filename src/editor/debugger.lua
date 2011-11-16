@@ -3,7 +3,8 @@
 -- Copyright Kepler Project 2005 (http://www.keplerproject.org/remdebug)
 --
 
-local socket = require"socket"
+local copas  = require "copas"
+local socket = require "socket"
 
 local debugger = {}
 debugger.server     = nil    -- DebuggerServer object when debugging, else nil
@@ -16,14 +17,23 @@ ide.debugger = debugger
 
 debugger.connect = function () 
   local server = socket.bind("*", debugger.portnumber)
-  local client = server:accept()
+  DisplayOutput("Started server on " .. debugger.portnumber .. "\n")
+  copas.autoclose = false
+  copas.addserver(server, function (skt)
+    local client = copas.wrap(skt)
 
-  debugger.server = client
-  debugger.running = false
+    DisplayOutput("Client connected to "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
 
-  client:send("STEP\n")
-  client:receive()
-  client:receive()
+    debugger.server = client
+    debugger.running = true
+
+    client:send("STEP\n")
+    client:receive()
+    client:receive()
+
+    debugger.running = false
+    DisplayOutput("Established session with "..wx.wxGetHostName()..":"..debugger.portnumber.."\n")
+  end)
 end
 
 local breakpoints = {}
