@@ -16,7 +16,7 @@ debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
 ide.debugger = debugger
 
-debugger.connect = function () 
+debugger.listen = function () 
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutput("Started server on " .. debugger.portnumber .. "\n")
   copas.autoclose = false
@@ -53,3 +53,5 @@ debugger.run = function (command)
 end
 
 debugger.update = function() copas.step(0) end
+
+debugger.listen()
