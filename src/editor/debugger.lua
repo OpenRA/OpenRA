@@ -81,9 +81,11 @@ function CloseWatchWindow()
 end
 
 function CreateWatchWindow()
-	local width = 180
-	local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY, "Estrela Editor Watch Window",
-							 wx.wxDefaultPosition, wx.wxSize(width, 160))
+	local width = 200
+	local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY, 
+                                       "Watch Window",
+				       wx.wxDefaultPosition, wx.wxSize(width, 160), 
+                                       wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
 
 	debugger.watchWindow = watchWindow
 
@@ -106,11 +108,11 @@ function CreateWatchWindow()
 	local info = wx.wxListItem()
 	info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
 	info:SetText("Expression")
-	info:SetWidth(width / 2)
+	info:SetWidth(width * 0.45)
 	watchListCtrl:InsertColumn(0, info)
 
 	info:SetText("Value")
-	info:SetWidth(width / 2)
+	info:SetWidth(width * 0.45)
 	watchListCtrl:InsertColumn(1, info)
 
 	watchWindow:CentreOnParent()
