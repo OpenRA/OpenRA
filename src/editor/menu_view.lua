@@ -17,8 +17,6 @@ local viewMenu = wx.wxMenu{
 		{ },
 		{ ID "view.filetree.show", "View &FileTree Window",  "View or Hide the filetree window",wx.wxITEM_CHECK  },
 		{ ID "view.output.show",   "View &Output/Shell Window", "View or Hide the output/shell window",wx.wxITEM_CHECK  },
-		{ ID "view.debug.callstack",    "V&iew Call Stack",       "View the LUA call stack" },
-		{ ID "view.debug.watches",  "View &Watches",          "View the Watch window" },
 		{ },
 		{ ID "view.style.loadconfig", "&Load Config Style...", "Load and apply style from config file (must contain .styles)"},
 		}
@@ -55,24 +53,3 @@ frame:Connect(ID "view.filetree.show", wx.wxEVT_COMMAND_MENU_SELECTED,
 			end
 		end)
 		
-frame:Connect(ID "view.debug.callstack", wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			if debugger.server then
-				debugger.server:DisplayStackDialog(frame)
-			end
-		end)
-frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
-		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
-		end)
-
-frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			if not debugger.watchWindow then
-				CreateWatchWindow()
-			end
-		end)
-frame:Connect(ID "view.debug.watches", wx.wxEVT_UPDATE_UI,
-		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
-		end)

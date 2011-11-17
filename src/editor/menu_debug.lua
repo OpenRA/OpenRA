@@ -43,6 +43,9 @@ local debugMenu = wx.wxMenu{
 		{ ID_CONTINUE,         "Co&ntinue\tF5",          "Run the program at full speed" },
 		{ ID_BREAK,            "&Break\tF12",            "Stop execution of the program at the next executed line of code" },
 		{ },
+		{ ID "view.debug.callstack",    "V&iew Call Stack",       "View the LUA call stack" },
+		{ ID "view.debug.watches",  "View &Watches",          "View the Watch window" },
+		{ },
 		{ ID_CLEAROUTPUT,      "C&lear Output Window",    "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 		--{ }, { ID_DEBUGGER_PORT,    "Set debugger socket port...", "Chose what port to use for debugger sockets." },
 		{ },
@@ -245,8 +248,6 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 			ClearAllCurrentLineMarkers()
 
 			debugger.run("exit")
-
-			SetAllEditorsReadOnly(false)
 		end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -325,4 +326,26 @@ frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_UPDATE_UI,
 frame:Connect(wx.wxEVT_IDLE,
 		function(event)
 		  	debugger.update()
+		end)
+
+frame:Connect(ID "view.debug.callstack", wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			if debugger.server then
+				debugger.server:DisplayStackDialog(frame)
+			end
+		end)
+frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
+		function (event)
+			event:Enable((debugger.server ~= nil) and (not debugger.running))
+		end)
+
+frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			if not debugger.watchWindow then
+				CreateWatchWindow()
+			end
+		end)
+frame:Connect(ID "view.debug.watches", wx.wxEVT_UPDATE_UI,
+		function (event)
+			event:Enable((debugger.server ~= nil) and (not debugger.running))
 		end)
