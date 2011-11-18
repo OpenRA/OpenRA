@@ -22,8 +22,12 @@ debugger.listen = function()
   copas.autoclose = false
   copas.addserver(server, function (skt)
     debugger.server = copas.wrap(skt)
-    debugger.run("step")
     SetAllEditorsReadOnly(true)
+    local editor = GetEditor()
+    debugger.handle("load " .. ide.openDocuments[editor:GetId()].filePath)
+    local line = 1
+    editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+    editor:EnsureVisibleEnforcePolicy(line-1)
     DisplayOutput("Started remote debugging session.\n")
   end)
 end

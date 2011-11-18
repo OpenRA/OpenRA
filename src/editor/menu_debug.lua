@@ -156,6 +156,26 @@ local function projFromFile(event)
 end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
+
+function RunInterpreter(wfilename, script)
+			-- SaveAll()
+
+			local editor = GetEditor()
+			
+			-- test compile it before we run it, if successful then ask to save
+			-- only compile if lua api
+			if (editor.spec.apitype and 
+                            editor.spec.apitype == "lua" and 
+			    not CompileProgram(editor)) then
+				return
+			end
+			if not SaveIfModified(editor) then
+				return
+			end
+			
+			local interpreter = interpreters[curinterpreterid]
+			interpreter:frun(wfilename, script)
+end
 	
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
@@ -176,25 +196,7 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-			-- SaveAll()
-
-			local editor = GetEditor()
-			
-			-- test compile it before we run it, if successful then ask to save
-			-- only compile if lua api
-			if (editor.spec.apitype and 
-                            editor.spec.apitype == "lua" and 
-			    not CompileProgram(editor)) then
-				return
-			end
-			if not SaveIfModified(editor) then
-				return
-			end
-			
-			local id = editor:GetId();
-			local wfilename = wx.wxFileName(openDocuments[id].filePath)
-			local interpreter = interpreters[curinterpreterid]
-			interpreter:frun(wfilename)
+                  RunInterpreter(wx.wxFileName(openDocuments[GetEditor():GetId()].filePath));
 		end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -214,29 +216,8 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-			local editor = GetEditor()
-			-- test compile it before we run it
-			if not CompileProgram(editor) then
-				return
-			end
-
-			debugger.pid = 0
-			debugger.server = CreateDebuggerServer()
-			if debugger.server then
-				debugger.pid = debugger.server:StartClient()
-			end
-
-			if debugger.server and (debugger.pid > 0) then
-				SetAllEditorsReadOnly(true)
-				DisplayOutput("Waiting for client connection, process "..tostring(debugger.pid)..".\n")
-			else
-				DisplayOutput("Unable to start debuggee process.\n")
-				if debugger.server then
-					DestroyDebuggerServer()
-				end
-			end
-
-			NextDebuggerPort()
+                  RunInterpreter(wx.wxFileName(ide.editorFilename:gsub("[^/\\]+$","")),
+                                 "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..debugger.portnumber..")");
 		end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
