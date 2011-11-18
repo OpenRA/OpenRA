@@ -64,42 +64,72 @@ namespace OpenRA.Widgets
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
 
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
+			{
+Console.WriteLine("Tirili: Message 1\n");
+				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any())
+				{
+Console.WriteLine("Tirili: Message 2\n");
+					if (SelectionBox == null)	/* don't issue orders while selecting */
+{
+Console.WriteLine("Tirili: Message 3\n");
+						ApplyOrders(world, xy, mi);
+}
+				}
+			}
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (world.OrderGenerator is UnitOrderGenerator)
+				if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
+					|| !Game.Settings.Keys.UseClassicMouseStyle)
 				{
-					if (mi.MultiTapCount == 2)
+					if (world.OrderGenerator is UnitOrderGenerator)
 					{
-						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
+						if (mi.MultiTapCount == 2)
+						{
+							var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 
-						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
-						var newSelection = world.FindUnits(Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
-									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom)))
-									.Where(a => a.HasTrait<Selectable>()
-										&& a.World.LocalShroud.IsVisible(a)
-										&& unit != null
-										&& a.Info.Name == unit.Info.Name
-										&& a.Owner == unit.Owner);
+							Rectangle visibleWorld = Game.viewport.ViewBounds(world);
+							var newSelection = world.FindUnits(Game.viewport
+										.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
+										Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right,
+										visibleWorld.Bottom)))
+										.Where(a => a.HasTrait<Selectable>()
+											&& a.World.LocalShroud.IsVisible(a)
+											&& unit != null
+											&& a.Info.Name == unit.Info.Name
+											&& a.Owner == unit.Owner);
 
-						world.Selection.Combine(world, newSelection, true, false);
+							world.Selection.Combine(world, newSelection, true, false);
+						}
+						else
+						{
+							var newSelection = SelectActorsInBox(world, dragStart, xy);
+							world.Selection.Combine(world, newSelection,
+											mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						}
 					}
-					else
-					{
-						var newSelection = SelectActorsInBox(world, dragStart, xy);
-						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
-					}
+
+					dragStart = dragEnd = xy;
+					LoseFocus(mi);
 				}
-
-				dragStart = dragEnd = xy;
-				LoseFocus(mi);
 			}
 
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
 				dragStart = dragEnd = xy;
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				if (SelectionBox == null)	/* don't issue orders while selecting */
-					ApplyOrders(world, xy, mi);
+			{
+				if (Game.Settings.Keys.UseClassicMouseStyle)
+				{
+					world.Selection.Clear();
+				}
+				else
+				{
+					if (SelectionBox == null)	/* don't issue orders while selecting */
+						ApplyOrders(world, xy, mi);
+				}
+			}
 
 			return true;
 		}

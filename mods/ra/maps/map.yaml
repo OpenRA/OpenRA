@@ -1,0 +1,159 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: Ice Woods
+
+Description:
+
+Author: Tirili
+
+Tileset: SNOW
+
+MapSize: 176,176
+
+Bounds: 16,16,96,96
+
+UseAsShellmap: False
+
+Type: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+
+Actors:
+	Actor0: atek
+		Location: 16,23
+		Owner: Creeps
+	Actor1: atek
+		Location: 18,23
+		Owner: Neutral
+	Actor2: atek
+		Location: 20,23
+		Owner: Neutral
+	Actor3: atek
+		Location: 22,23
+		Owner: Neutral
+	Actor4: atek
+		Location: 24,23
+		Owner: Neutral
+	Actor5: atek
+		Location: 24,21
+		Owner: Neutral
+	Actor6: atek
+		Location: 24,19
+		Owner: Neutral
+	Actor7: atek
+		Location: 24,17
+		Owner: Neutral
+	Actor8: atek
+		Location: 26,16
+		Owner: Neutral
+	Actor9: atek
+		Location: 100,110
+		Owner: Neutral
+	Actor10: atek
+		Location: 100,108
+		Owner: Neutral
+	Actor11: atek
+		Location: 100,106
+		Owner: Neutral
+	Actor12: atek
+		Location: 100,104
+		Owner: Neutral
+	Actor13: atek
+		Location: 100,102
+		Owner: Neutral
+	Actor14: atek
+		Location: 102,102
+		Owner: Neutral
+	Actor15: atek
+		Location: 104,102
+		Owner: Neutral
+	Actor16: atek
+		Location: 106,102
+		Owner: Neutral
+	Actor17: atek
+		Location: 108,102
+		Owner: Neutral
+	Actor18: atek
+		Location: 110,102
+		Owner: Neutral
+	Actor19: spen
+		Location: 97,100
+		Owner: Neutral
+	Actor20: facf
+		Location: 105,106
+		Owner: Neutral
+	Actor21: spen
+		Location: 98,28
+		Owner: Neutral
+	Actor22: ss
+		Location: 96,29
+		Owner: Neutral
+	Actor23: spen
+		Location: 30,28
+		Owner: Neutral
+	Actor33: mpspawn
+		Location: 66,89
+		Owner: Neutral
+	Actor25: tc03
+		Location: 87,43
+		Owner: Neutral
+	Actor26: mine
+		Location: 100,18
+		Owner: Neutral
+	Actor27: mine
+		Location: 104,22
+		Owner: Neutral
+	Actor28: mine
+		Location: 108,19
+		Owner: Neutral
+	Actor29: mine
+		Location: 104,17
+		Owner: Neutral
+	Actor30: mine
+		Location: 108,24
+		Owner: Neutral
+	Actor31: mine
+		Location: 110,27
+		Owner: Neutral
+	Actor32: mine
+		Location: 105,25
+		Owner: Neutral
+	Actor24: mine
+		Location: 102,20
+		Owner: Neutral
+	Actor34: mpspawn
+		Location: 36,50
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+Weapons:
+
+Voices:

@@ -112,6 +112,8 @@ namespace OpenRA.GameRules
 		public Modifiers ModifierToBuild = Modifiers.None;
 		public Modifiers ModifierToCycle = Modifiers.Alt;
 		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;
+
+		public bool UseClassicMouseStyle = true;
 	}
 
 	public class Settings
