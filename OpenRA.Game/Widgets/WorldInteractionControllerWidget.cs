@@ -54,29 +54,27 @@ namespace OpenRA.Widgets
 			var xy = Game.viewport.ViewToWorldPx(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (!TakeFocus(mi))
-					return false;
+				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any())
+				{
+Console.WriteLine("Test Message 2\n");
+					if (SelectionBox == null)	/* don't issue orders while selecting */
+{
+Console.WriteLine("Test Message 3\n");
+						ApplyOrders(world, xy, mi);
+}
+				}
+				else
+				{
+					if (!TakeFocus(mi))
+						return false;
 
-				dragStart = dragEnd = xy;
-				ApplyOrders(world, xy, mi);
+					dragStart = dragEnd = xy;
+					ApplyOrders(world, xy, mi);
+				}
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
-
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
-			{
-Console.WriteLine("Tirili: Message 1\n");
-				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any())
-				{
-Console.WriteLine("Tirili: Message 2\n");
-					if (SelectionBox == null)	/* don't issue orders while selecting */
-{
-Console.WriteLine("Tirili: Message 3\n");
-						ApplyOrders(world, xy, mi);
-}
-				}
-			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
