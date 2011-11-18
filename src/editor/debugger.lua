@@ -79,6 +79,7 @@ debugger.listen()
 
 function CloseWatchWindow()
 	if (debugger.watchWindow) then
+    	        SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
 		debugger.watchListCtrl = nil
 		debugger.watchWindow = nil
 	end
@@ -120,6 +121,7 @@ function CreateWatchWindow()
 	watchListCtrl:InsertColumn(1, info)
 
 	watchWindow:CentreOnParent()
+	SettingsRestoreFramePosition(watchWindow, "WatchWindow")
 	watchWindow:Show(true)
 
 	local function FindSelectedWatchItem()
@@ -136,6 +138,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect( wx.wxEVT_CLOSE_WINDOW,
 			function (event)
+				CloseWatchWindow()
 				watchWindow = nil
 				watchListCtrl = nil
 				event:Skip()

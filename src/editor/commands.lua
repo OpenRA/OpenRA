@@ -487,14 +487,6 @@ function CloseWindow(event)
 		return
 	end
 	
-	
-	if debugger.server then
-		local ds = debugger.server
-		debugger.server = nil
-		--ds:Reset()
-		--ds:KillDebuggee()
-		--ds:delete()
-	end
 	debugger.running = false
 	
 	SettingsSaveProjectSession(GetProjects())
@@ -502,8 +494,8 @@ function CloseWindow(event)
 	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
 	SettingsSaveEditorSettings()
+	CloseWatchWindow()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
-	if CloseWatchWindow then CloseWatchWindow() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
