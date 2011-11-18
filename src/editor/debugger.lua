@@ -18,13 +18,13 @@ ide.debugger = debugger
 
 debugger.listen = function() 
   local server = socket.bind("*", debugger.portnumber)
-  DisplayOutput("Started server on " .. debugger.portnumber .. ".\n")
+  DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
   copas.autoclose = false
   copas.addserver(server, function (skt)
     debugger.server = copas.wrap(skt)
     debugger.run("step")
     SetAllEditorsReadOnly(true)
-    DisplayOutput("Established session with "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
+    DisplayOutput("Started remote debugging session.\n")
   end)
 end
 
@@ -45,7 +45,7 @@ debugger.run = function(command)
       if line == nil then
         debugger.server = nil
         SetAllEditorsReadOnly(false)
-        DisplayOutput("Program finished.\n")
+        DisplayOutput("Completed debugging session.\n")
       else
         local editor = GetEditor()
         editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)

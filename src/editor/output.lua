@@ -118,7 +118,6 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 		customproc = nil
 		return true
 	else
-		DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
 		customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
 	end
 	
@@ -166,7 +165,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 					customprocs[pid].endcallback()
 				end
 				customprocs[pid] = nil
-				DisplayOutput("proc end "..pid.."\n")
+				DisplayOutput("Program finished ("..pid..").\n")
 			end
 		end)
 

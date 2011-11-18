@@ -33,7 +33,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_COMPILE,          "&Compile\tF7",           "Test compile the Lua file" },
 		{ ID_RUN,              "&Run\tF6",               "Execute the current project/file" },
 		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",      "Allow a client to start a debugging session" },
-		--{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
+		{ ID_START_DEBUG,      "&Start Debugging\tShift-F5", "Start a debugging session" },
 		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
 		{ ID_STOP_DEBUG,       "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
@@ -43,7 +43,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_CONTINUE,         "Co&ntinue\tF5",          "Run the program at full speed" },
 		{ ID_BREAK,            "&Break\tF12",            "Stop execution of the program at the next executed line of code" },
 		{ },
-		{ ID "view.debug.callstack",    "V&iew Call Stack",       "View the LUA call stack" },
+		--{ ID "view.debug.callstack",    "V&iew Call Stack",       "View the LUA call stack" },
 		{ ID "view.debug.watches",  "View &Watches",          "View the Watch window" },
 		{ },
 		{ ID_CLEAROUTPUT,      "C&lear Output Window",    "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
@@ -182,8 +182,9 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 			
 			-- test compile it before we run it, if successful then ask to save
 			-- only compile if lua api
-			if (editor.spec.apitype and editor.spec.apitype == "lua" and 
-								not CompileProgram(editor)) then
+			if (editor.spec.apitype and 
+                            editor.spec.apitype == "lua" and 
+			    not CompileProgram(editor)) then
 				return
 			end
 			if not SaveIfModified(editor) then

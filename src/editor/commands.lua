@@ -403,10 +403,10 @@ function CompileProgram(editor)
 	end
 
 	if line_num > -1 then
-		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n\n")
+		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n")
 		editor:GotoLine(line_num-1)
 	else
-		DisplayOutput("Compilation successful!\n\n")
+		DisplayOutput("Compilation successful.\n")
 	end
 
 	return line_num == -1 -- return true if it compiled ok
