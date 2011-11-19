@@ -56,12 +56,8 @@ namespace OpenRA.Widgets
 			{
 				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any())
 				{
-Console.WriteLine("Test Message 2\n");
 					if (SelectionBox == null)	/* don't issue orders while selecting */
-{
-Console.WriteLine("Test Message 3\n");
 						ApplyOrders(world, xy, mi);
-}
 				}
 				else
 				{
@@ -161,7 +157,7 @@ Console.WriteLine("Test Message 3\n");
 				var mi = new MouseInput
 				{
 					Location = pos,
-					Button = MouseButton.Right,
+					Button = Game.Settings.Keys.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right,
 					Modifiers = Game.GetModifierKeys()
 				};
 

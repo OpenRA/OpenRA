@@ -145,6 +145,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding( keys.GetWidget<TextFieldWidget>("DEFENSETABKEYNAME"),
 			() => keyConfig.DefenseTabKey, k => keyConfig.DefenseTabKey = k );
 
+			var useClassicMouseStyleCheckbox = keys.GetWidget<CheckboxWidget>("USE_CLASSIC_MOUSE_STYLE_CHECKBOX");
+			useClassicMouseStyleCheckbox.IsChecked = () => keyConfig.UseClassicMouseStyle;
+			useClassicMouseStyleCheckbox.OnClick = () => keyConfig.UseClassicMouseStyle ^= true;
+
 			// Debug
 			var debug = bg.GetWidget("DEBUG_PANE");
 

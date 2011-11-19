@@ -113,7 +113,7 @@ namespace OpenRA.GameRules
 		public Modifiers ModifierToCycle = Modifiers.Alt;
 		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;
 
-		public bool UseClassicMouseStyle = true;
+		public bool UseClassicMouseStyle = false;
 	}
 
 	public class Settings

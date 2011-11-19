@@ -4,7 +4,7 @@ Background@SETTINGS_MENU:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 540
-	Height: 500
+	Height: 600
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			Id:SETTINGS_LABEL_TITLE
@@ -235,10 +235,15 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
+				Label@KEYS_UNITCOMMANDSHEADLINE:
+					Id:KEYS_UNITCOMMANDSHEADLINE
+					X:0
+					Y:0
+					Text: Hotkeys for Unit Commands:
 				Label@KEYS_ATTACKMOVEKEY_NAME:
 					Id:KEYS_ATTACKMOVEKEY_NAME
 					X:0
-					Y:10
+					Y:30
 					Text: Attack Move:
 				TextField@ATTACKMOVEKEYNAME:
 					Id:ATTACKMOVEKEYNAME
@@ -246,12 +251,12 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:0
+					Y:20
 					MaxLength:16
 				Label@KEYS_STOPKEY_NAME:
 					Id:KEYS_STOPKEY_NAME
 					X:0
-					Y:40
+					Y:60
 					Text: Stop:
 				TextField@STOPKEYNAME:
 					Id:STOPKEYNAME
@@ -259,12 +264,12 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:30
+					Y:50
 					MaxLength:16
 				Label@KEYS_SCATTERKEY_NAME:
 					Id:KEYS_SCATTERKEY_NAME
 					X:0
-					Y:70
+					Y:90
 					Text: Scatter:
 				TextField@SCATTERKEYNAME:
 					Id:SCATTERKEYNAME
@@ -272,12 +277,12 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:60
+					Y:80
 					MaxLength:16
 				Label@KEYS_STANCECYCLEKEY_NAME:
 					Id:KEYS_STANCECYCLE_NAME
 					X:0
-					Y:100
+					Y:120
 					Text: Cycle Stance:
 				TextField@STANCECYCLEKEYNAME:
 					Id:STANCECYCLEKEYNAME
@@ -285,12 +290,12 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:90
+					Y:110
 					MaxLength:16
 				Label@KEYS_DEPLOYKEY_NAME:
 					Id:KEYS_DEPLOYKEY_NAME
 					X:0
-					Y:130
+					Y:150
 					Text: Deploy:
 				TextField@DEPLOYKEYNAME:
 					Id:DEPLOYKEYNAME
@@ -298,22 +303,22 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:120
+					Y:140
 					MaxLength:16
 				Label@KEYS_MODIFIERHEADLINE:
 					Id:KEYS_MODIFIERHEADLINE
 					X:0
-					Y:160
+					Y:190
 					Text: Hotkey Modifiers for Production Buildings:
 				Label@KEYS_MODIFIERTOBUILD_NAME:
 					Id:KEYS_MODIFIERTOBUILD_NAME
 					X:0
-					Y:185
+					Y:220
 					Text: Build:
 				DropDownButton@MODIFIERTOBUILD_DROPDOWN:
 					Id:MODIFIERTOBUILD_DROPDOWN
 					X:310
-					Y:175
+					Y:210
 					Width:139
 					Height:25
 					Font:Regular
@@ -321,12 +326,12 @@ Background@SETTINGS_MENU:
 				Label@KEYS_MODIFIERTOCYCLE_NAME:
 					Id:KEYS_MODIFIERTOCYCLE_NAME
 					X:0
-					Y:215
+					Y:250
 					Text: Cycle:
 				DropDownButton@MODIFIERTOCYCLE_DROPDOWN:
 					Id:MODIFIERTOCYCLE_DROPDOWN
 					X:310
-					Y:205
+					Y:240
 					Width:139
 					Height:25
 					Font:Regular
@@ -334,12 +339,12 @@ Background@SETTINGS_MENU:
 				Label@KEYS_MODIFIERTOSELECTTAB_NAME:
 					Id:KEYS_MODIFIERTOSELECTTAB_NAME
 					X:0
-					Y:245
+					Y:280
 					Text: Select corresponding Tab on Build Palette only:
 				DropDownButton@MODIFIERTOSELECTTAB_DROPDOWN:
 					Id:MODIFIERTOSELECTTAB_DROPDOWN
 					X:310
-					Y:235
+					Y:270
 					Width:139
 					Height:25
 					Font:Regular
@@ -347,7 +352,7 @@ Background@SETTINGS_MENU:
 				Label@KEYS_DEFENSETABKEY_NAME:
 					Id:KEYS_DEFENSETABKEY_NAME
 					X:0
-					Y:275
+					Y:310
 					Text: Select Defense Tab on Build Palette:
 				TextField@DEFENSETABKEYNAME:
 					Id:DEFENSETABKEYNAME
@@ -355,12 +360,24 @@ Background@SETTINGS_MENU:
 					Width:139
 					Height:25
 					X:240
-					Y:265
+					Y:300
 					MaxLength:16
+				Label@KEYS_MOUSESTYLEHEADLINE:
+					Id:KEYS_MOUSESTYLEHEADLINE
+					X:0
+					Y:350
+					Text: Mouse Behavior:
+				Checkbox@USE_CLASSIC_MOUSE_STYLE_CHECKBOX:
+					Id:USE_CLASSIC_MOUSE_STYLE_CHECKBOX
+					X:0
+					Y:370
+					Width:200
+					Height:20
+					Text: Use Classic Mouse Style
 				Label@HOTKEY_INFO:
 					Id:HOTKEY_INFO
 					X:10
-					Y:320
+					Y:420
 					Text: To change the Hotkey Mapping edit the YAML-Files in /mods/ra/rules/.
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE

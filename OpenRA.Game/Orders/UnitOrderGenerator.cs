@@ -80,7 +80,8 @@ namespace OpenRA.Orders
 			if (self.Destroyed)
 				return null;
 
-			if( mi.Button == MouseButton.Right )
+			if(( !Game.Settings.Keys.UseClassicMouseStyle && mi.Button == MouseButton.Right )
+				|| (Game.Settings.Keys.UseClassicMouseStyle && mi.Button == MouseButton.Left))
 			{
 				foreach( var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany( trait => trait.Orders
