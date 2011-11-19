@@ -356,36 +356,6 @@ end
 -----------------
 -- Debug related
 
-local debugger = ide.debugger
-
-
-function MakeDebugFileName(editor, filePath)
-	if not filePath then
-		filePath = "file"..tostring(editor)
-	end
-	return filePath
-end
-
-function ToggleDebugMarker(editor, line)
-	local markers = editor:MarkerGet(line)
-	if markers >= CURRENT_LINE_MARKER_VALUE then
-		markers = markers - CURRENT_LINE_MARKER_VALUE
-	end
-	local id       = editor:GetId()
-	local filePath = MakeDebugFileName(editor, openDocuments[id].filePath)
-	if markers >= BREAKPOINT_MARKER_VALUE then
-		editor:MarkerDelete(line, BREAKPOINT_MARKER)
-		if debugger.server then
-			debugger.server:RemoveBreakPoint(filePath, line)
-		end
-	else
-		editor:MarkerAdd(line, BREAKPOINT_MARKER)
-		if debugger.server then
-			debugger.server:AddBreakPoint(filePath, line)
-		end
-	end
-end
-
 function ClearAllCurrentLineMarkers()
 	for id, document in pairs(openDocuments) do
 		local editor = document.editor
@@ -486,8 +456,6 @@ function CloseWindow(event)
 		exitingProgram = false
 		return
 	end
-	
-	debugger.running = false
 	
 	SettingsSaveProjectSession(GetProjects())
 	SettingsSaveFileSession(GetOpenFiles())

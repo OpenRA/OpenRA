@@ -24,10 +24,18 @@ debugger.listen = function()
     debugger.server = copas.wrap(skt)
     SetAllEditorsReadOnly(true)
     local editor = GetEditor()
-    debugger.handle("load " .. ide.openDocuments[editor:GetId()].filePath)
+    local filePath = ide.openDocuments[editor:GetId()].filePath;
+    debugger.handle("load " .. filePath)
+
     local line = 1
     editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
     editor:EnsureVisibleEnforcePolicy(line-1)
+
+    line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+    while line ~= -1 do
+      debugger.handle("setb " .. filePath .. " " .. (line+1))
+      line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+    end
     DisplayOutput("Started remote debugging session.\n")
   end)
 end
@@ -56,6 +64,16 @@ debugger.run = function(command)
         editor:EnsureVisibleEnforcePolicy(line-1)
         debugger.updateWatches()
       end
+    end)
+  end
+end
+
+debugger.updateBreakpoint = function(command)
+  if debugger.server then
+    copas.addthread(function ()
+      debugger.running = true
+      local file, line = debugger.handle(command)
+      debugger.running = false
     end)
   end
 end
@@ -191,4 +209,31 @@ function CreateWatchWindow()
 				debugger.updateWatches()
 				event:Skip()
 			end)
+end
+
+function MakeDebugFileName(editor, filePath)
+	if not filePath then
+		filePath = "file"..tostring(editor)
+	end
+	return filePath
+end
+
+function ToggleDebugMarker(editor, line)
+	local markers = editor:MarkerGet(line)
+	if markers >= CURRENT_LINE_MARKER_VALUE then
+		markers = markers - CURRENT_LINE_MARKER_VALUE
+	end
+	local id       = editor:GetId()
+	local filePath = MakeDebugFileName(editor, ide.openDocuments[id].filePath)
+	if markers >= BREAKPOINT_MARKER_VALUE then
+		editor:MarkerDelete(line, BREAKPOINT_MARKER)
+		if debugger.server then
+                        debugger.updateBreakpoint("delb " .. filePath .. " " .. (line+1))
+		end
+	else
+		editor:MarkerAdd(line, BREAKPOINT_MARKER)
+		if debugger.server then
+                        debugger.updateBreakpoint("setb " .. filePath .. " " .. (line+1))
+		end
+	end
 end
