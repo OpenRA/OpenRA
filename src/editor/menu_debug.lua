@@ -38,7 +38,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_STEP,             "St&ep\tF11",             "Step into the next line" },
 		{ ID_STEP_OVER,        "Step &Over\tF10",        "Step over the next line" },
 		{ ID_STEP_OUT,         "Step O&ut\tShift-F10",   "Step out of the current function" },
-		{ ID_CONTINUE,         "Co&ntinue\tF5",          "Run the program at full speed" },
+		{ ID_CONTINUE,         "Co&ntinue\tF6",          "Run the program at full speed" },
 		{ ID_BREAK,            "&Break",                 "Stop execution of the program at the next executed line of code" },
 		{ },
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
