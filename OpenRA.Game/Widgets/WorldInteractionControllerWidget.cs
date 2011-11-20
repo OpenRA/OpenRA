@@ -49,12 +49,29 @@ namespace OpenRA.Widgets
 
 		int2 dragStart, dragEnd;
 
+		Pair<DateTime, int2> lastLeftButtonDownTime = Pair.New( DateTime.Now - TimeSpan.FromSeconds(1), int2.Zero );
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any())
+Console.WriteLine("Test Message 1\n");
+
+if (!(DateTime.Now - lastLeftButtonDownTime.First < TimeSpan.FromMilliseconds( 250 ))
+&& (xy - lastLeftButtonDownTime.Second).Length < 4)
+{
+Console.WriteLine("Test Message 2 - This was no double-click!\n");
+Console.WriteLine("DateTime.Now = {0}\n", DateTime.Now);
+Console.WriteLine("lastLeftButtonDownTime.First = {0}\n", lastLeftButtonDownTime.First);
+Console.WriteLine("xy = {0}\n", xy);
+Console.WriteLine("lastLeftButtonDownTime.Second = {0}\n", lastLeftButtonDownTime.Second);
+Console.WriteLine("(xy - lastLeftButtonDownTime.Second).Length = {0}\n", (xy - lastLeftButtonDownTime.Second).Length);
+}
+else Console.WriteLine("Test Message 3 - This was a double-click!\n");
+				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any()
+					&& !(DateTime.Now - lastLeftButtonDownTime.First < TimeSpan.FromMilliseconds( 250 )
+						&& (xy - lastLeftButtonDownTime.Second).Length < 4))
 				{
 					if (SelectionBox == null)	/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
@@ -74,39 +91,41 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
-					|| !Game.Settings.Keys.UseClassicMouseStyle)
+				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if (world.OrderGenerator is UnitOrderGenerator)
+					if (mi.MultiTapCount == 2)
 					{
-						if (mi.MultiTapCount == 2)
-						{
-							var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
+						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
+						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
+						var newSelection = world.FindUnits(Game.viewport
+									.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
+									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right,
+									visibleWorld.Bottom)))
+									.Where(a => a.HasTrait<Selectable>()
+										&& a.World.LocalShroud.IsVisible(a)
+										&& unit != null
+										&& a.Info.Name == unit.Info.Name
+										&& a.Owner == unit.Owner);
 
-							Rectangle visibleWorld = Game.viewport.ViewBounds(world);
-							var newSelection = world.FindUnits(Game.viewport
-										.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
-										Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right,
-										visibleWorld.Bottom)))
-										.Where(a => a.HasTrait<Selectable>()
-											&& a.World.LocalShroud.IsVisible(a)
-											&& unit != null
-											&& a.Info.Name == unit.Info.Name
-											&& a.Owner == unit.Owner);
-
-							world.Selection.Combine(world, newSelection, true, false);
-						}
-						else
+						world.Selection.Combine(world, newSelection, true, false);
+					}
+					else
+					{
+						if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
+							|| !Game.Settings.Keys.UseClassicMouseStyle)
 						{
 							var newSelection = SelectActorsInBox(world, dragStart, xy);
 							world.Selection.Combine(world, newSelection,
 											mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 						}
 					}
-
-					dragStart = dragEnd = xy;
-					LoseFocus(mi);
 				}
+
+				dragStart = dragEnd = xy;
+				LoseFocus(mi);
+
+				lastLeftButtonDownTime.First = DateTime.Now;
+				lastLeftButtonDownTime.Second = xy;
 			}
 
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
