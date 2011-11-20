@@ -16,6 +16,17 @@ debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
 ide.debugger = debugger
 
+debugger.shell = function(expression)
+  if debugger.server then
+    copas.addthread(function ()
+      debugger.running = true
+      local value = debugger.handle('eval ' .. expression)
+      debugger.running = false
+      DisplayShell(value)
+    end)
+  end
+end
+
 debugger.listen = function() 
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
@@ -36,6 +47,9 @@ debugger.listen = function()
       debugger.handle("setb " .. filePath .. " " .. (line+1))
       line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
     end
+
+    ShellSupportRemote(debugger.shell, 0)
+
     DisplayOutput("Started remote debugging session.\n")
   end)
 end
@@ -57,6 +71,7 @@ debugger.run = function(command)
       if line == nil then
         debugger.server = nil
         SetAllEditorsReadOnly(false)
+        ShellSupportRemote(nil, 0)
         DisplayOutput("Completed debugging session.\n")
       else
         local editor = GetEditor()
