@@ -36,6 +36,10 @@ local function shellPrint(...)
 end
 
 DisplayShell = shellPrint
+DisplayShellErr = function (...) 
+  out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
+  DisplayShell("! " .. ...)
+end
 
 local function createenv ()
 	local env = {}
@@ -144,22 +148,25 @@ function ShellExecuteCode(ev,wfilename)
 		remotesend(tx)
 	else
 		tx = code:GetText()
-		fn,err = loadstring(tx)
+                -- return (...) works for everything except assignments
+                fn,err = loadstring("return (" .. tx .. ")")
+		if err then -- now try assignments
+	          fn,err = loadstring(tx)
+                end
 	end
 
 	if (tx ~= nil) then 
-          shellPrint(marker .. tx)
+          DisplayShell(marker .. tx)
         end
 
 	if fn==nil and err then
-                out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
-		shellPrint("! " .. err)
+		DisplayShellErr(err)
 	elseif fn then
 		setfenv(fn,env)
-		xpcall(fn,function(err)
-                        out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
-			shellPrint("! " .. debug.traceback(err))
-		end)
+		local ok, res = pcall(fn)
+                if ok then DisplayShell(res)
+                      else DisplayShellErr(res)
+                end
 	end
 end
 

@@ -20,9 +20,12 @@ debugger.shell = function(expression)
   if debugger.server then
     copas.addthread(function ()
       debugger.running = true
-      local value = debugger.handle('eval ' .. expression)
+      local value, err = debugger.handle('eval ' .. expression)
+      if err ~= nil then value, err = debugger.handle('exec ' .. expression) end
       debugger.running = false
-      DisplayShell(value)
+      if err then DisplayShellErr(err)
+             else DisplayShell(value)
+      end
     end)
   end
 end
