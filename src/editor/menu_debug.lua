@@ -263,10 +263,7 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			if debugger.server then
-				debugger.server:StepOut()
-				debugger.running = true
-			end
+			debugger.run("out")
 		end)
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
 		function (event)
