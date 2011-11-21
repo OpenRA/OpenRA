@@ -48,6 +48,11 @@ debugger.listen = function()
     debugger.handle("basedir " .. debugger.basedir)
     debugger.handle("load " .. filePath)
 
+    -- remove all breakpoints that may still be present from the last session
+    -- this only matters for those remote clients that reload scripts 
+    -- without resetting their breakpoints
+    debugger.handle("delallb")
+
     -- go over all windows and find all breakpoints
     for id, document in pairs(ide.openDocuments) do
       local editor   = document.editor
