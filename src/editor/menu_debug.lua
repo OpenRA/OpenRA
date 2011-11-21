@@ -214,8 +214,9 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
+                  local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
                   RunInterpreter(wx.wxFileName(openDocuments[GetEditor():GetId()].filePath),
-                                 "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..debugger.portnumber..")");
+                                 "package.path = package.path..';"..editorDir.."lualibs/?/?.lua'; require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..debugger.portnumber..")");
 		end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
