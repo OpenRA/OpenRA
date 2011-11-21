@@ -41,10 +41,11 @@ debugger.listen = function()
     SetAllEditorsReadOnly(true)
     local editor = GetEditor()
     local filePath = ide.openDocuments[editor:GetId()].filePath;
-    debugger.basedir = wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME)
+    debugger.basedir = string.gsub(wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
 
     -- load the remote file into the debugger
     debugger.handle("load " .. filePath)
+    debugger.handle("basedir " .. debugger.basedir)
 
     local line = 1
     editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
@@ -58,7 +59,7 @@ debugger.listen = function()
 
     ShellSupportRemote(debugger.shell, 0)
 
-    DisplayOutput("Started remote debugging session.\n")
+    DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
   end)
 end
 
