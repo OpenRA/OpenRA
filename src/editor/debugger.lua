@@ -48,15 +48,20 @@ debugger.listen = function()
     debugger.handle("basedir " .. debugger.basedir)
     debugger.handle("load " .. filePath)
 
+    -- go over all windows and find all breakpoints
+    for id, document in pairs(ide.openDocuments) do
+      local editor   = document.editor
+      local filePath = string.gsub(document.filePath, "\\", "/")
+      line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+      while line ~= -1 do
+        debugger.handle("setb " .. filePath .. " " .. (line+1))
+        line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      end
+    end
+
     local line = 1
     editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
     editor:EnsureVisibleEnforcePolicy(line-1)
-
-    line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-    while line ~= -1 do
-      debugger.handle("setb " .. filePath .. " " .. (line+1))
-      line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
-    end
 
     ShellSupportRemote(debugger.shell, 0)
 
@@ -283,7 +288,6 @@ function ActivateDocument(fileName, line)
 	local fileFound = false
 	for id, document in pairs(ide.openDocuments) do
 		local editor   = document.editor
-		local filePath = MakeDebugFileName(editor, document.filePath)
 		-- for running in cygwin, use same type of separators
 		filePath = string.gsub(document.filePath, "\\", "/")
 		local fileName = string.gsub(fileName, "\\", "/")
