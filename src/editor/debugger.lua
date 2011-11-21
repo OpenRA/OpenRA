@@ -16,6 +16,8 @@ debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
 ide.debugger = debugger
 
+local notebook = ide.frame.vsplitter.splitter.notebook
+
 debugger.shell = function(expression)
   if debugger.server then
     copas.addthread(function ()
@@ -39,6 +41,9 @@ debugger.listen = function()
     SetAllEditorsReadOnly(true)
     local editor = GetEditor()
     local filePath = ide.openDocuments[editor:GetId()].filePath;
+    debugger.basedir = wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME)
+
+    -- load the remote file into the debugger
     debugger.handle("load " .. filePath)
 
     local line = 1
@@ -68,19 +73,27 @@ end
 debugger.run = function(command)
   if debugger.server then
     copas.addthread(function ()
-      debugger.running = true
-      local file, line = debugger.handle(command)
-      debugger.running = false
-      if line == nil then
-        debugger.server = nil
-        SetAllEditorsReadOnly(false)
-        ShellSupportRemote(nil, 0)
-        DisplayOutput("Completed debugging session.\n")
-      else
-        local editor = GetEditor()
-        editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-        editor:EnsureVisibleEnforcePolicy(line-1)
-        debugger.updateWatches()
+      while true do
+        debugger.running = true
+        local file, line = debugger.handle(command)
+        debugger.running = false
+        if line == nil then
+          debugger.server = nil
+          SetAllEditorsReadOnly(false)
+          ShellSupportRemote(nil, 0)
+          DisplayOutput("Completed debugging session.\n")
+          return
+        else
+          if debugger.basedir and not wx.wxIsAbsolutePath(file) then
+            file = debugger.basedir .. "/" .. file
+          end
+          if ActivateDocument(file, line) then 
+            debugger.updateWatches()
+            return 
+          else 
+            command = "out" -- redo now trying to get out of this file
+          end
+        end 
       end
     end)
   end
@@ -254,4 +267,34 @@ function ToggleDebugMarker(editor, line)
                         debugger.updateBreakpoint("setb " .. filePath .. " " .. (line+1))
 		end
 	end
+end
+
+function ActivateDocument(fileName, line)
+	if not wx.wxIsAbsolutePath(fileName) then
+		fileName = wx.wxGetCwd().."/"..fileName
+	end
+
+	if wx.__WXMSW__ then
+		fileName = wx.wxUnix2DosFilename(fileName)
+	end
+
+	local fileFound = false
+	for id, document in pairs(ide.openDocuments) do
+		local editor   = document.editor
+		local filePath = MakeDebugFileName(editor, document.filePath)
+		-- for running in cygwin, use same type of separators
+		filePath = string.gsub(document.filePath, "\\", "/")
+		local fileName = string.gsub(fileName, "\\", "/")
+		if string.upper(filePath) == string.upper(fileName) then
+			local selection = document.index
+			notebook:SetSelection(selection)
+			SetEditorSelection(selection)
+			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+			editor:EnsureVisibleEnforcePolicy(line-1)
+			fileFound = true
+			break
+		end
+	end
+
+	return fileFound
 end
