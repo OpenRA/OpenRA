@@ -44,8 +44,9 @@ debugger.listen = function()
     debugger.basedir = string.gsub(wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
 
     -- load the remote file into the debugger
-    debugger.handle("load " .. filePath)
+    -- set basedir first, before loading to make sure that the path is correct
     debugger.handle("basedir " .. debugger.basedir)
+    debugger.handle("load " .. filePath)
 
     local line = 1
     editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
