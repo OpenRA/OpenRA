@@ -87,12 +87,14 @@ debugger.run = function(command)
     copas.addthread(function ()
       while true do
         debugger.running = true
-        local file, line = debugger.handle(command)
+        local file, line, err = debugger.handle(command)
         debugger.running = false
+--DisplayOutput("got '" .. file .. "', line: " .. line .. "\n")
         if line == nil then
           debugger.server = nil
           SetAllEditorsReadOnly(false)
           ShellSupportRemote(nil, 0)
+          if err then DisplayOutput(err .. "\n") end
           DisplayOutput("Completed debugging session.\n")
           return
         else
