@@ -31,14 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
 
-			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () =>
-			{
-				optionsBG.Visible = false;
-				Game.Disconnect();
-				Game.LoadShellMap();
-				Widget.CloseWindow();
-				Widget.OpenWindow("MAINMENU_BG");
-			};
+			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
 
 			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
 			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
