@@ -24,6 +24,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");
+			moneybin.IsVisible = () => {
+				return world.LocalPlayer.WinState == WinState.Undefined;
+			};
+
 			BindOrderButton<SellOrderGenerator>(world, moneybin, "SELL");
 			BindOrderButton<PowerDownOrderGenerator>(world, moneybin, "POWER_DOWN");
 			BindOrderButton<RepairOrderGenerator>(world, moneybin, "REPAIR");
