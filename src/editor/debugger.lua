@@ -22,8 +22,8 @@ debugger.shell = function(expression)
   if debugger.server then
     copas.addthread(function ()
       debugger.running = true
-      local value, err = debugger.handle('eval ' .. expression)
-      if err ~= nil then value, err = debugger.handle('exec ' .. expression) end
+      local value, _, err = debugger.handle('eval ' .. expression)
+      if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
       debugger.running = false
       if err then DisplayShellErr(err)
              else DisplayShell(value)
@@ -89,7 +89,6 @@ debugger.run = function(command)
         debugger.running = true
         local file, line, err = debugger.handle(command)
         debugger.running = false
---DisplayOutput("got '" .. file .. "', line: " .. line .. "\n")
         if line == nil then
           debugger.server = nil
           SetAllEditorsReadOnly(false)
