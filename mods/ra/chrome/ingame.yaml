@@ -38,11 +38,26 @@ Container@INGAME_ROOT:
 				Label@TEXT:
 					Id:TEXT
 					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
+					Y:0
 					Width:200
-					Height:40
+					Height:80
 					Align:Center
+				Button@POSTGAME_OBSERVE:
+					Id:POSTGAME_OBSERVE
+					X:10
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
 					Font:Bold
+					Text:Observe
+				Button@POSTGAME_QUIT:
+					Id:POSTGAME_QUIT
+					X:(PARENT_RIGHT - WIDTH - 10)
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Leave
 		SupportPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
 			X:0
@@ -162,7 +177,7 @@ Container@INGAME_ROOT:
 					Width:160
 					Height:25
 					Text:Music
-					Font:Bold					
+					Font:Bold
 				Button@SURRENDER:
 					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
@@ -346,11 +361,26 @@ Container@OBSERVER_ROOT:
 				Label@TEXT:
 					Id:TEXT
 					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
+					Y:0
 					Width:200
-					Height:40
+					Height:80
 					Align:Center
+				Button@POSTGAME_OBSERVE:
+					Id:POSTGAME_OBSERVE
+					X:10
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
 					Font:Bold
+					Text:Observe
+				Button@POSTGAME_QUIT:
+					Id:POSTGAME_QUIT
+					X:(PARENT_RIGHT - WIDTH - 10)
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Leave
 		SupportPowerBin@INGAME_POWERS_BIN:
 			Id:INGAME_POWERS_BIN
 			X:0
@@ -404,7 +434,7 @@ Container@OBSERVER_ROOT:
 					Width:160
 					Height:25
 					Text:Music
-					Font:Bold					
+					Font:Bold
 				Button@SURRENDER:
 					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
