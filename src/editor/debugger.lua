@@ -19,12 +19,10 @@ ide.debugger = debugger
 local notebook = ide.frame.vsplitter.splitter.notebook
 
 debugger.shell = function(expression)
-  if debugger.server then
+  if debugger.server and not debugger.running then
     copas.addthread(function ()
-      debugger.running = true
       local value, _, err = debugger.handle('eval ' .. expression)
       if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
-      debugger.running = false
       if err then DisplayShellErr(err)
              else DisplayShell(value)
       end
@@ -79,16 +77,19 @@ debugger.handle = function(line)
   local os = os
   os.exit = function () end
   _G.print = function () end
-  return mobdebug.handle(line, debugger.server);
+
+  debugger.running = true
+  local file, line, err = mobdebug.handle(line, debugger.server)
+  debugger.running = false
+
+  return file, line, err
 end
 
 debugger.run = function(command)
-  if debugger.server then
+  if debugger.server and not debugger.running then
     copas.addthread(function ()
       while true do
-        debugger.running = true
         local file, line, err = debugger.handle(command)
-        debugger.running = false
         if line == nil then
           debugger.server = nil
           SetAllEditorsReadOnly(false)
@@ -113,18 +114,16 @@ debugger.run = function(command)
 end
 
 debugger.updateBreakpoint = function(command)
-  if debugger.server then
+  if debugger.server and not debugger.running then
     copas.addthread(function ()
-      debugger.running = true
-      local file, line = debugger.handle(command)
-      debugger.running = false
+      debugger.handle(command)
     end)
   end
 end
 
 debugger.updateWatches = function()
   local watchListCtrl = debugger.watchListCtrl
-  if watchListCtrl and debugger.server then
+  if watchListCtrl and debugger.server and not debugger.running then
     copas.addthread(function ()
       for idx = 0, watchListCtrl:GetItemCount() - 1 do
         local expression = watchListCtrl:GetItemText(idx)
