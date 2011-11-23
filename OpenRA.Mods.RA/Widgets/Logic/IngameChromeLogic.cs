@@ -44,16 +44,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
 			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 
-			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () =>
+			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () => 
+			{
+				optionsBG.Visible = false;
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+			};
+			
 			optionsBG.GetWidget("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
 
 			var postgameBG = gameRoot.GetWidget("POSTGAME_BG");
 			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
+			var postGameObserve = postgameBG.GetWidget<ButtonWidget>("POSTGAME_OBSERVE");
+
+			var postgameQuit = postgameBG.GetWidget<ButtonWidget>("POSTGAME_QUIT");
+			postgameQuit.OnClick = () => LeaveGame(postgameQuit);
+
+			postGameObserve.OnClick = () => postgameQuit.Visible = false;	
+			postGameObserve.IsVisible = () => world.LocalPlayer.WinState != WinState.Won;
+
 			postgameBG.IsVisible = () =>
 			{
-				return world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
+				return postgameQuit.Visible && world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined;
 			};
+
 
 			postgameText.GetText = () =>
 			{
@@ -61,6 +74,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return state == WinState.Undefined ? "" :
 								(state == WinState.Lost ? "YOU ARE DEFEATED" : "YOU ARE VICTORIOUS");
 			};
+		}
+
+		void LeaveGame(Widget pane)
+		{
+			pane.Visible = false;
+			Game.Disconnect();
+			Game.LoadShellMap();
+			Widget.CloseWindow();
+			Widget.OpenWindow("MAINMENU_BG");
 		}
 
 		void UnregisterEvents()
