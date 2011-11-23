@@ -51,6 +51,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Draw()
 		{
 			if( world.LocalPlayer == null ) return;
+			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
 
 			var radarBin = Widget.RootWidget.GetWidget<RadarBinWidget>(RadarBin);
 

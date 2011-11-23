@@ -23,7 +23,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");
-
+			moneybin.IsVisible = () => {
+				return world.LocalPlayer.WinState == WinState.Undefined;
+			};
+			
 			var sell = moneybin.GetWidget<OrderButtonWidget>("SELL");
 			if (sell != null)
 			{
