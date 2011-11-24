@@ -42,18 +42,7 @@ namespace OpenRA.Mods.RA.Orders
 			}
 		}
 
-		public void Tick(World world)
-		{
-			if (!PlayerIsAllowedToRepair(world))
-				world.CancelInputMode();
-		}
-
-		public static bool PlayerIsAllowedToRepair(World world)
-		{
-			return world.ActorsWithTrait<AllowsBuildingRepair>()
-				 .Any(a => a.Actor.Owner == world.LocalPlayer);
-		}
-
+		public void Tick(World world) { }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 

@@ -626,7 +626,6 @@ FACT:
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
-	AllowsBuildingRepair:
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1

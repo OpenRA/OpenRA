@@ -41,10 +41,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
 			if (repair != null)
 			{
-				repair.Enabled = () => { return RepairOrderGenerator.PlayerIsAllowedToRepair( world ); };
 				repair.Pressed = () => world.OrderGenerator is RepairOrderGenerator;
 				repair.OnMouseDown = mi => world.ToggleInputMode<RepairOrderGenerator>();
-				repair.GetLongDesc = () => { return repair.Enabled() ? repair.LongDesc : repair.LongDesc + "\n\nRequires: Construction Yard"; };
 			}
 		}
 	}
