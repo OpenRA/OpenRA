@@ -209,14 +209,11 @@ namespace OpenRA.Mods.RA
 				cursor = isHeal ? "heal" : "attack";
 				if( self == target ) return false;
 				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromActor( target ) ) ) return false;
+				if (forceAttack) return true;
 
-				var playerRelationship = self.Owner.Stances[ target.Owner ];
+				var targetableRelationship = isHeal ? Stance.Ally : Stance.Enemy;
 
-				if( isHeal )
-					return playerRelationship == Stance.Ally || forceAttack;
-
-				else
-					return playerRelationship == Stance.Enemy || forceAttack;
+				return self.Owner.Stances[ target.Owner ] == targetableRelationship;
 			}
 
 			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
