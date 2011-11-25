@@ -97,11 +97,11 @@ namespace OpenRA.Mods.RA
 			return currentTarget;
 		}
 
-		public void ScanAndAttack(Actor self, bool allowMovement, bool holdStill)
+		public void ScanAndAttack(Actor self, bool allowMovement)
 		{
 			var targetActor = ScanForTarget(self, null);
 			if (targetActor != null)
-				attack.AttackTarget(Target.FromActor(targetActor), false, allowMovement && !holdStill);
+				attack.AttackTarget(Target.FromActor(targetActor), false, allowMovement);
 		}
 
 		Actor ChooseTarget(Actor self, float range)

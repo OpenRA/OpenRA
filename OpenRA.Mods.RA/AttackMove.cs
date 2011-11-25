@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (--scanTicks <= 0)
 				{
-					self.Trait<AutoTarget>().ScanAndAttack(self, true, false);
+					self.Trait<AutoTarget>().ScanAndAttack(self, true);
 					scanTicks = ScanInterval;
 				}
 
