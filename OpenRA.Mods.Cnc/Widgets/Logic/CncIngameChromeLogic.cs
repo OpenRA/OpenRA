@@ -111,17 +111,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
 
-			var sellButton = sidebarRoot.GetWidget<ToggleButtonWidget>("SELL_BUTTON");
-			sellButton.OnClick = () => world.ToggleInputMode<SellOrderGenerator>();
-			sellButton.IsToggled = () => world.OrderGenerator is SellOrderGenerator;
-			var sellIcon = sellButton.GetWidget<ImageWidget>("ICON");
-			sellIcon.GetImageName = () => world.OrderGenerator is SellOrderGenerator ? "sell-active" : "sell";
-
-			var repairButton = sidebarRoot.GetWidget<ToggleButtonWidget>("REPAIR_BUTTON");
-			repairButton.OnClick = () => world.ToggleInputMode<RepairOrderGenerator>();
-			repairButton.IsToggled = () => world.OrderGenerator is RepairOrderGenerator;
-			var repairIcon = repairButton.GetWidget<ImageWidget>("ICON");
-			repairIcon.GetImageName = () => world.OrderGenerator is RepairOrderGenerator ? "repair-active" : "repair";
+			BindOrderButton<SellOrderGenerator>(world, sidebarRoot, "SELL_BUTTON", "sell");
+			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
 
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
@@ -161,6 +152,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						InitObserverWidgets(world, playerRoot);
 					});
 			};
+		}
+
+		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
+			where T : IOrderGenerator, new()
+		{
+			var w = parent.GetWidget<ToggleButtonWidget>(button);
+			w.OnClick = () => world.ToggleInputMode<T>();
+			w.IsToggled = () => world.OrderGenerator is T;
+
+			w.GetWidget<ImageWidget>("ICON").GetImageName =
+				() => world.OrderGenerator is T ? icon+"-active" : icon;
 		}
 	}
 }
