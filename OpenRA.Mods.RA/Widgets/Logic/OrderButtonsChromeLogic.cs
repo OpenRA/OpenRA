@@ -19,30 +19,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public OrderButtonsChromeLogic(World world)
 		{
+			/* todo: attach this to the correct widget, to remove the lookups below */
 			var r = Widget.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");
+			BindOrderButton<SellOrderGenerator>(world, moneybin, "SELL");
+			BindOrderButton<PowerDownOrderGenerator>(world, moneybin, "POWER_DOWN");
+			BindOrderButton<RepairOrderGenerator>(world, moneybin, "REPAIR");
+		}
 
-			var sell = moneybin.GetWidget<OrderButtonWidget>("SELL");
-			if (sell != null)
+		static void BindOrderButton<T>(World world, Widget parent, string button)
+			where T : IOrderGenerator, new()
+		{
+			var w = parent.GetWidget<OrderButtonWidget>(button);
+			if (w != null)
 			{
-				sell.Pressed = () => world.OrderGenerator is SellOrderGenerator;
-				sell.OnMouseDown = mi => world.ToggleInputMode<SellOrderGenerator>();
-			}
-
-			var powerdown = moneybin.GetWidget<OrderButtonWidget>("POWER_DOWN");
-			if (powerdown != null)
-			{
-				powerdown.Pressed = () => world.OrderGenerator is PowerDownOrderGenerator;
-				powerdown.OnMouseDown = mi => world.ToggleInputMode<PowerDownOrderGenerator>();
-			}
-
-			var repair = moneybin.GetWidget<OrderButtonWidget>("REPAIR");
-			if (repair != null)
-			{
-				repair.Pressed = () => world.OrderGenerator is RepairOrderGenerator;
-				repair.OnMouseDown = mi => world.ToggleInputMode<RepairOrderGenerator>();
+				w.Pressed = () => world.OrderGenerator is T;
+				w.OnMouseDown = mi => world.ToggleInputMode<T>();
 			}
 		}
 	}
