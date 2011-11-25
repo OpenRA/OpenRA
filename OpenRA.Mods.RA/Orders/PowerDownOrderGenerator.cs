@@ -12,11 +12,21 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	class PowerDownOrderGenerator : IOrderGenerator
+	public class GlobalButtonOrderGenerator<T> : IOrderGenerator
 	{
+		string cursor;
+		string order;
+
+		public GlobalButtonOrderGenerator(string cursor, string order)
+		{
+			this.cursor = cursor;
+			this.order = order;
+		}
+
 		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
@@ -31,11 +41,10 @@ namespace OpenRA.Mods.RA.Orders
 			{
 				var underCursor = world.FindUnitsAtMouse(mi.Location)
 					.Where(a => a.Owner == world.LocalPlayer
-						&& a.HasTrait<CanPowerDown>())
-						.FirstOrDefault();
+						&& a.HasTrait<T>()).FirstOrDefault();
 
 				if (underCursor != null)
-					yield return new Order("PowerDown", underCursor, false);
+					yield return new Order(order, underCursor, false);
 			}
 		}
 
@@ -46,8 +55,17 @@ namespace OpenRA.Mods.RA.Orders
 		public string GetCursor(World world, int2 xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(world, xy, mi).Any()
-				? "powerdown" : "powerdown-blocked";
+			return cursor + (OrderInner(world, xy, mi).Any()	? "" : "-blocked");
 		}
+	}
+
+	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<CanPowerDown>
+	{
+		public PowerDownOrderGenerator() : base( "powerdown", "PowerDown" ) { }
+	}
+
+	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
+	{
+		public SellOrderGenerator() : base( "sell", "Sell" ) { }
 	}
 }

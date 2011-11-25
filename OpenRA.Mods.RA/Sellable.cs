@@ -14,12 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SellableInfo : TraitInfo<Sellable>
+	public class SellableInfo : TraitInfo<Sellable>
 	{
 		public readonly int RefundPercent = 50;
 	}
 
-	class Sellable : IResolveOrder
+	public class Sellable : IResolveOrder
 	{
 		bool selling = false;
 
