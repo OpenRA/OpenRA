@@ -60,6 +60,8 @@ namespace OpenRA.GameRules
 		public int2 FullscreenSize = new int2(0,0);
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool PixelDouble = false;
+		public bool CapFramerate = false;
+		public int MaxFramerate = 60;
 
 		public int BatchSize = 8192;
 		public int NumTempBuffers = 8;

@@ -326,7 +326,19 @@ namespace OpenRA
 		internal static void Run()
 		{
 			while (!quit)
+			{
+				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
+				var sw = new Stopwatch();
+
 				Tick( orderManager, viewport );
+
+				if (Settings.Graphics.CapFramerate)
+				{
+					var waitTime = idealFrameTime - sw.ElapsedTime();
+					if (waitTime > 0)
+						System.Threading.Thread.Sleep( TimeSpan.FromSeconds(waitTime) );
+				}
+			}
 
 			OnQuit();
 		}
