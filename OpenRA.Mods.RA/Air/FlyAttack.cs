@@ -46,10 +46,13 @@ namespace OpenRA.Mods.RA.Air
 
 		public override void Cancel( Actor self )
 		{
-			if( inner != null )
-				inner.Cancel( self );
+			if( !IsCanceled )
+			{
+				if( inner != null )
+					inner.Cancel( self );
 
-			base.Cancel( self );
+				base.Cancel( self );
+			}
 		}
 	}
 }
