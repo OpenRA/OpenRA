@@ -10,10 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
-using System.Linq;
 
 namespace OpenRA.Mods.RA.Server
 {
@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA.Server
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
+
 		public void Tick(S server)
 		{
 			if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
@@ -30,7 +31,6 @@ namespace OpenRA.Mods.RA.Server
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
 						server.SendChat(null, masterServerMessages.Dequeue());
-
 		}
 
 
@@ -42,6 +42,7 @@ namespace OpenRA.Mods.RA.Server
 
 		volatile bool isBusy;
 		Queue<string> masterServerMessages = new Queue<string>();
+
 		public void PingMasterServer(S server)
 		{
 			if (isBusy || !server.Settings.AdvertiseOnline) return;
