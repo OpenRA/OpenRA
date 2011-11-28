@@ -46,7 +46,9 @@ namespace OpenRA.Traits
 	{
 		public static IEnumerable<Target> GetTargetQueue( this Actor self )
 		{
-			return self.GetCurrentActivity().Iterate( u => u.NextActivity ).TakeWhile( u => u != null )
+			return self.GetCurrentActivity()
+				.Iterate( u => u.NextActivity )
+				.TakeWhile( u => u != null )
 				.SelectMany( u => u.GetTargets( self ) );
 		}
 	}
