@@ -112,11 +112,22 @@ namespace OpenRA.Mods.RA
 
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
-			return inRange
-				.Where(a => a.AppearsHostileTo(self))
-				.Where(a => !a.HasTrait<AutoTargetIgnore>())
-				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.ClosestTo( self.CenterLocation );
+            var gpsWatcher = self.Owner.PlayerActor.TraitOrDefault<GpsWatcher>();
+			if (gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies)) {
+			    return inRange
+    				.Where(a => a.AppearsHostileTo(self))
+    				.Where(a => !a.HasTrait<AutoTargetIgnore>())
+    				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+    				.ClosestTo( self.CenterLocation );
+			}
+			else {
+			   	return inRange
+    				.Where(a => a.AppearsHostileTo(self))
+    				.Where(a => !a.HasTrait<AutoTargetIgnore>())
+    				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
+    				.Where(a => self.World.LocalShroud.IsVisible(a))
+    				.ClosestTo( self.CenterLocation ); 
+			}
 		}
 	}
 
