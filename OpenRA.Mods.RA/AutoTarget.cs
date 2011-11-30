@@ -112,8 +112,7 @@ namespace OpenRA.Mods.RA
 
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
-            var gpsWatcher = self.Owner.PlayerActor.TraitOrDefault<GpsWatcher>();
-			if (gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies)) {
+			if (self.Owner.HasFogVisibility()) {
 			    return inRange
     				.Where(a => a.AppearsHostileTo(self))
     				.Where(a => !a.HasTrait<AutoTargetIgnore>())
