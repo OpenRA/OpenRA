@@ -69,8 +69,10 @@ namespace OpenRA.Renderer.SdlCommon
 						var button = MakeButton( e.button.button );
 						lastButtonBits |= button;
 
+						var pos = new int2( e.button.x, e.button.y );
 						inputHandler.OnMouseInput( new MouseInput(
-							MouseInputEvent.Down, button, new int2( e.button.x, e.button.y ), mods, 1 ) );
+							MouseInputEvent.Down, button, pos, mods,
+							MultiTapDetection.DetectFromMouse( e.button.button, pos )));
 					} break;
 
 				case Sdl.SDL_MOUSEBUTTONUP:
@@ -84,10 +86,9 @@ namespace OpenRA.Renderer.SdlCommon
 						var button = MakeButton( e.button.button );
 						lastButtonBits &= ~button;
 
-						var pos = new int2( e.button.x, e.button.y );
 						inputHandler.OnMouseInput( new MouseInput(
-							MouseInputEvent.Up, button, pos, mods,
-							MultiTapDetection.DetectFromMouse( e.button.button, pos )));
+							MouseInputEvent.Up, button, new int2( e.button.x, e.button.y ), mods,
+							MultiTapDetection.InfoFromMouse( e.button.button )));
 					} break;
 
 				case Sdl.SDL_MOUSEMOTION:

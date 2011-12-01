@@ -54,26 +54,13 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-Console.WriteLine("Test Message 1\n");
-
-if (!(DateTime.Now - lastLeftButtonDownTime.First < TimeSpan.FromMilliseconds( 250 ))
-&& (xy - lastLeftButtonDownTime.Second).Length < 4)
-{
-Console.WriteLine("Test Message 2 - This was no double-click!\n");
-Console.WriteLine("DateTime.Now = {0}\n", DateTime.Now);
-Console.WriteLine("lastLeftButtonDownTime.First = {0}\n", lastLeftButtonDownTime.First);
-Console.WriteLine("xy = {0}\n", xy);
-Console.WriteLine("lastLeftButtonDownTime.Second = {0}\n", lastLeftButtonDownTime.Second);
-Console.WriteLine("(xy - lastLeftButtonDownTime.Second).Length = {0}\n", (xy - lastLeftButtonDownTime.Second).Length);
-}
-else Console.WriteLine("Test Message 3 - This was a double-click!\n");
-				if (Game.Settings.Keys.UseClassicMouseStyle && world.Selection.Actors.Any()
-					&& !(DateTime.Now - lastLeftButtonDownTime.First < TimeSpan.FromMilliseconds( 250 )
-						&& (xy - lastLeftButtonDownTime.Second).Length < 4))
+				if (Game.Settings.Keys.UseClassicMouseStyle)
 				{
-					if (SelectionBox == null)	/* don't issue orders while selecting */
+					if ((SelectionBox == null) && world.Selection.Actors.Any() && (mi.MultiTapCount != 2))
+													/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
 				}
 				else
