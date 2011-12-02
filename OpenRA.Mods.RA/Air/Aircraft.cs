@@ -206,11 +206,17 @@ namespace OpenRA.Mods.RA.Air
 
 		public void QueueResupplyActivities(Actor a)
 		{
+			foreach( var act in GetResupplyActivities(a) )
+				self.QueueActivity(act);
+		}
+
+		public IEnumerable<Activity> GetResupplyActivities(Actor a)
+		{
 			var name = a.Info.Name;
 			if (Info.RearmBuildings.Contains(name))
-				self.QueueActivity(new Rearm(self));
+				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
-				self.QueueActivity(new Repair(a));
+				yield return new Repair(a);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -245,6 +251,21 @@ namespace OpenRA.Mods.RA.Air
 				return "Move";
 			default: return null;
 			}
+		}
+	}
+
+	public class ResupplyAircraft : Activity
+	{
+		public override Activity Tick(Actor self)
+		{
+			var aircraft = self.Trait<Aircraft>();
+			var host = aircraft.GetActorBelow();
+
+			if (host == null)
+				return NextActivity;
+
+			return Util.SequenceActivities(
+				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
 		}
 	}
 

@@ -176,5 +176,10 @@ namespace OpenRA
 		{
 			return string.Join(j, ts.Select(t => t.ToString()).ToArray());
 		}
+
+		public static IEnumerable<T> Append<T>( this IEnumerable<T> ts, params T[] moreTs)
+		{
+			return ts.Concat(moreTs);
+		}
 	}
 }
