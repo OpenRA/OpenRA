@@ -204,12 +204,6 @@ namespace OpenRA.Mods.RA.Air
 			return Info.LandableTerrainTypes.Contains(type);
 		}
 
-		public void QueueResupplyActivities(Actor a)
-		{
-			foreach( var act in GetResupplyActivities(a) )
-				self.QueueActivity(act);
-		}
-
 		public IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;

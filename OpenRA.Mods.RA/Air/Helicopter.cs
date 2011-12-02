@@ -78,8 +78,7 @@ namespace OpenRA.Mods.RA.Air
 					self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
 					self.QueueActivity(new Turn(Info.InitialFacing));
 					self.QueueActivity(new HeliLand(false));
-
-					QueueResupplyActivities(order.TargetActor);
+					self.QueueActivity(new ResupplyAircraft());
 				}
 			}
 

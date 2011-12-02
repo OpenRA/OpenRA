@@ -59,8 +59,7 @@ namespace OpenRA.Mods.RA.Air
 
 				self.CancelActivity();
 				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-
-				QueueResupplyActivities(order.TargetActor);
+				self.QueueActivity(new ResupplyAircraft());
 			}
 			else if (order.OrderString == "Stop")
 			{
@@ -76,7 +75,7 @@ namespace OpenRA.Mods.RA.Air
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromActor(airfield), Color.Green);
 				self.QueueActivity(new ReturnToBase(self, airfield));
-				QueueResupplyActivities(airfield);
+				self.QueueActivity(new ResupplyAircraft());
 			}
 			else
 			{
