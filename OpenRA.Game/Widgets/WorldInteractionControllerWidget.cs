@@ -59,7 +59,8 @@ namespace OpenRA.Widgets
 			{
 				if (Game.Settings.Keys.UseClassicMouseStyle)
 				{
-					if ((SelectionBox == null) && world.Selection.Actors.Any() && (mi.MultiTapCount != 2))
+//					if ((SelectionBox == null) && world.Selection.Actors.Any() && (mi.MultiTapCount != 2))
+					if (SelectionBox == null)
 													/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
 				}
@@ -121,14 +122,10 @@ namespace OpenRA.Widgets
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 			{
 				if (Game.Settings.Keys.UseClassicMouseStyle)
-				{
 					world.Selection.Clear();
-				}
-				else
-				{
-					if (SelectionBox == null)	/* don't issue orders while selecting */
-						ApplyOrders(world, xy, mi);
-				}
+
+				if (SelectionBox == null)	/* don't issue orders while selecting */
+					ApplyOrders(world, xy, mi);
 			}
 
 			return true;
