@@ -7,6 +7,7 @@
  * see COPYING.
  */
 #endregion
+
 using System;
 using System.Drawing;
 using System.Linq;
@@ -21,9 +22,12 @@ namespace OpenRA.Mods.RA.Widgets
 		public int AnimationLength = 5;
 		public string RadarOnlineSound = null;
 		public string RadarOfflineSound = null;
+
 		float radarMinimapHeight;
 		int AnimationFrame = 0;
 		bool hasRadar = false;
+		bool animating = false;
+		int updateTicks = 0;
 
 		float previewScale = 0;
 		RectangleF mapRect = Rectangle.Empty;
@@ -84,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (!hasRadar || Animating) return false;
+			if (!hasRadar || animating) return false;
 
 			if (!mapRect.Contains(mi.Location))
 				return false;
@@ -135,7 +139,7 @@ namespace OpenRA.Mods.RA.Widgets
 			rsr.DrawSprite(shroudSprite, o, s);
 
 			// Draw viewport rect
-			if (hasRadar && !Animating)
+			if (hasRadar && !animating)
 			{
 				var wr = Game.viewport.WorldRect;
 				var wro = new int2(wr.X, wr.Y);
@@ -148,8 +152,6 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		bool Animating = false;
-		int updateTicks = 0;
 		public override void Tick()
 		{
 			var hasRadarNew = world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined ||
@@ -157,7 +159,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if (hasRadarNew != hasRadar)
 			{
-				Animating = true;
+				animating = true;
 				Sound.Play(hasRadarNew ? RadarOnlineSound : RadarOfflineSound);
 			}
 			hasRadar = hasRadarNew;
@@ -179,7 +181,7 @@ namespace OpenRA.Mods.RA.Widgets
 					shroudSprite.sheet.Texture.SetData(Minimap.ShroudBitmap(world));
 			}
 
-			if (!Animating)
+			if (!animating)
 				return;
 
 			// Increment frame
@@ -193,7 +195,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Animation is complete
 			if (AnimationFrame == (hasRadar ? AnimationLength : 0))
-				Animating = false;
+				animating = false;
 		}
 
 		int2 CellToMinimapPixel(int2 p)
