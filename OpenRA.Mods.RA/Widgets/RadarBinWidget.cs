@@ -173,7 +173,11 @@ namespace OpenRA.Mods.RA.Widgets
 				.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 			if (hasRadarNew != hasRadar)
+			{
 				radarAnimating = true;
+				var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
+				Sound.Play(hasRadarNew ? eva.RadarUp : eva.RadarDown);
+			}
 
 			hasRadar = hasRadarNew;
 
@@ -206,16 +210,6 @@ namespace OpenRA.Mods.RA.Widgets
 			// Calculate radar bin position
 			if (radarAnimationFrame <= radarSlideAnimationLength)
 				radarOrigin = float2.Lerp(radarClosedOrigin, radarOpenOrigin, radarAnimationFrame * 1.0f / radarSlideAnimationLength);
-
-			var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-
-			// Play radar-on sound at the start of the activate anim (open)
-			if (radarAnimationFrame == radarSlideAnimationLength && hasRadar)
-				Sound.Play(eva.RadarUp);
-
-			// Play radar-on sound at the start of the activate anim (close)
-			if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength - 1 && !hasRadar)
-				Sound.Play(eva.RadarDown);
 
 			// Minimap height
 			if (radarAnimationFrame >= radarSlideAnimationLength)
