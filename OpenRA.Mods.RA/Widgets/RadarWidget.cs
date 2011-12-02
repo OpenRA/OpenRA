@@ -200,12 +200,18 @@ namespace OpenRA.Mods.RA.Widgets
 
 		int2 CellToMinimapPixel(int2 p)
 		{
-			return new int2((int)(mapRect.X + previewScale*(p.X - world.Map.Bounds.Left)), (int)(mapRect.Y + previewScale*(p.Y - world.Map.Bounds.Top)));
+			var viewOrigin = new float2(mapRect.X, mapRect.Y);
+			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
+
+			return (viewOrigin + previewScale * (p - mapOrigin)).ToInt2();
 		}
 
 		int2 MinimapPixelToCell(int2 p)
 		{
-			return new int2(world.Map.Bounds.Left + (int)((p.X - mapRect.X)/previewScale), world.Map.Bounds.Top + (int)((p.Y - mapRect.Y)/previewScale));
+			var viewOrigin = new float2(mapRect.X, mapRect.Y);
+			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
+
+			return (mapOrigin + (1/previewScale) * (p - viewOrigin)).ToInt2();
 		}
 	}
 }
