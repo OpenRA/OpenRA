@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\estrela" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\estrela" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\" />
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
@@ -18,7 +18,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\estrela" prefix_auto="1" extension_auto="1" />
+				<Option output="..\..\estrela" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\" />
 				<Option object_output="obj\Release\" />
 				<Option type="0" />
@@ -42,7 +42,7 @@
 		<Unit filename="..\res\estrela.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="win32_starter.c">
+		<Unit filename="..\win32_starter.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
