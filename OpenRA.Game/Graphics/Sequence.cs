@@ -8,9 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Xml;
-using OpenRA.FileFormats;
 using System.Collections.Generic;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
@@ -33,7 +34,7 @@ namespace OpenRA.Graphics
 			Name = name;
 			var d = info.NodesDict;
 
-			sprites = Game.modData.SpriteLoader.LoadAllSprites(string.IsNullOrEmpty(srcOverride) ? unit : srcOverride );
+			sprites = Game.modData.SpriteLoader.LoadAllSprites(srcOverride ?? unit);
 			start = int.Parse(d["Start"].Value);
 
 			if (!d.ContainsKey("Length"))
@@ -53,6 +54,12 @@ namespace OpenRA.Graphics
 				tick = int.Parse(d["Tick"].Value);
 			else
 				tick = 40;
+
+			if (start < 0 || start + facings * length > sprites.Length)
+				throw new InvalidOperationException(
+					"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
+					.F(unit, name, start, start + facings * length - 1, srcOverride ?? unit, sprites.Length - 1,
+					info.Nodes[0].Location));
 		}
 
 		public MiniYaml Save()
