@@ -1,6 +1,7 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 --          Lomtik Software (J. Winwood & John Labenski)
 ---------------------------------------------------------
+local ide = ide
 
 -- Global variables
 -- Markers for editor marker margin
@@ -56,13 +57,13 @@ local frame            = nil    -- wxFrame the main top level window
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
 -- ----------------------------------------------------------------------------
-frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "Estrela Editor")
+frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"))
 
 menuBar = wx.wxMenuBar()
 statusBar = frame:CreateStatusBar( 5 )
 local status_txt_width = statusBar:GetTextExtent("OVRW")
 statusBar:SetStatusWidths({-1, status_txt_width*6, status_txt_width, status_txt_width, status_txt_width*5})
-statusBar:SetStatusText("Welcome to Estrela Editor")
+statusBar:SetStatusText(GetIDEString("statuswelcome"))
 
 frame:DragAcceptFiles(true)
 frame:Connect(wx.wxEVT_DROP_FILES,function(evt)

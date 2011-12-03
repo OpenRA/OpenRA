@@ -1,7 +1,7 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 -- ---------------------------------------------------------------------------
 -- Create the Edit menu and attach the callback functions
 

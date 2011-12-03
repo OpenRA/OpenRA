@@ -1,7 +1,7 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 -- ---------------------------------------------------------------------------
 -- Create the Help menu and attach the callback functions
 
@@ -13,12 +13,12 @@ local helpMenu = wx.wxMenu{
 		}
 menuBar:Append(helpMenu, "&Help")
 
-function DisplayAbout(event)
+local function DisplayAbout(event)
 	local page = [[
 		<html>
 		<body bgcolor = "#ffffff" text='#ffffff'>
 		<table border='0' width="100%">
-		  <tr><td><img src = "res/estrela.png"></center></td><td>
+		  <tr><td><img src = "estrela/res/estrela.png"></center></td><td>
 		<table cellspacing = 4 cellpadding = 4 width = "400">
 		  <tr>
 			<td bgcolor = "#010156">
@@ -40,8 +40,8 @@ function DisplayAbout(event)
 			  <table cellpadding = 0 cellspacing = 0 width = "100%">
 				<tr>
 				  <td width = "65%">
-					Eike Decker<br>
-					Christoph Kubisch<p>
+					Christoph Kubisch<br>
+					Eike Decker<p>
 				  </td>
 				  <td valign = top>
 				  </td>
@@ -66,7 +66,7 @@ function DisplayAbout(event)
 					John Labenski<p>
 				  </td>
 				  <td valign = top>
-					<img src = "res/wxlualogo2.png">
+					<img src = "estrela/res/wxlualogo2.png">
 				  </td>
 				</tr>
 			  </table>

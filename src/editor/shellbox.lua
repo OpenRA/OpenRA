@@ -1,6 +1,6 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 -- 
 --	shellbox - a lua testbed environment within estrela
 --

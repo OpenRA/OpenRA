@@ -72,6 +72,8 @@ style = {
 -- content is optional
 -- config is loaded into existing config table
 config = {
+	appname = "estrela", -- by default the launcher name
+
 	path = {
 		-- path for tools/interpreters
 		luxinia = "C:/luxbin/",
@@ -103,7 +105,6 @@ config = {
 		autotabs = true, 	-- if true test for tabs after file load, 
 											-- sets "usetabs" to true for this file
 	},
-	
 	
 	outputshell = {
 		-- output and shell settings
@@ -154,6 +155,23 @@ config = {
 		
 	singleinstanceport = 0xe493,
 		-- UDP port for single instance communication
+}
+
+-- application engine
+-- ----------------------------------------------------
+
+app = {
+
+	postinit = function() end, -- post init, prior starting mainloop
+	loadfilters = {
+		tools = function(file) return true end,
+		specs = function(file) return true end,
+		interpreters = function(file) return true end,
+	}
+    stringtable = {	-- optional entries uses defaults otherwise
+		editor = nil,
+		statuswelcome = nil,
+	}
 }
 
 

@@ -2,5 +2,5 @@ This directory contains API definitions.
 
 An API definition is a set of functions that are used 
 for displaying tooltip information on function calls or 
-intelli sense information.
+autocomplete information.
 

@@ -1,11 +1,12 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+local ide = ide
 
 -- ----------------------------------------------------------------------------
 -- Initialize the wxConfig for loading/saving the preferences
 
-local settings = wx.wxFileConfig("EstrelaEditor", "LuxiniaDev")
+local settings = wx.wxFileConfig(GetIDEString("settingsapp"),GetIDEString("settingsvendor"))
 ide.settings = settings
 
 if settings then

@@ -1,6 +1,6 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 --[[ single instance
  open an UDP port - if it fails it is either because 
   - Estrela is running already
@@ -71,9 +71,10 @@ else -- something different is running on our port
 	cln:send(protocoll.client.greeting)
 	
 	local msg,err = cln:receive()
+	local arg = ide.arg
 	if msg and msg == protocoll.server.greeting then
 		local failed = false
-		for index = 1, #arg do
+		for index = 2, #arg do
 			local fileName = arg[index]
 			if fileName ~= "--" then
 				cln:send(protocoll.client.requestloading:format(fileName))

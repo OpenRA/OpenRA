@@ -13,66 +13,13 @@ local notebook			= ide.frame.vsplitter.splitter.notebook
 local funclist			= ide.frame.toolBar.funclist
 local edcfg 			= ide.config.editor
 
--- ----------------------------------------------------------------------------
--- Get/Set notebook editor page, use nil for current page, returns nil if none
-function GetEditor(selection)
-	local editor = nil
-	if selection == nil then
-		selection = notebook:GetSelection()
-	end
-	if (selection >= 0) and (selection < notebook:GetPageCount()) and (notebook:GetPage(selection):GetClassInfo():GetClassName()=="wxStyledTextCtrl") then
-		editor = notebook:GetPage(selection):DynamicCast("wxStyledTextCtrl")
-	end
-	return editor
-end
-
--- init new notebook page selection, use nil for current page
-function SetEditorSelection(selection)
-	local editor = GetEditor(selection)
-	UpdateStatusText(editor) -- update even if nil
-	statusBar:SetStatusText("",1)
-	ide.frame:SetTitle(GetFileTitle(editor))
-	
-	if editor then
-		funclist:Clear()
-		editor:SetFocus()
-		editor:SetSTCFocus(true)
-		IsFileAlteredOnDisk(editor)
-	end
-end
-
-function GetEditorFileAndCurInfo(nochecksave)
-	local editor = GetEditor()
-	if (not (editor and (nochecksave or SaveIfModified(editor)))) then
-		return
-	end
-	
-	local id = editor:GetId();
-	local filepath = openDocuments[id].filePath
-	if (nochecksave and not filepath) then
-		return
-	end
-	
-	local fn = wx.wxFileName(filepath)
-	fn:Normalize()
-	
-	local info = {}
-	info.pos  = editor:GetCurrentPos()
-	info.line = editor:GetCurrentLine()
-	info.sel  = editor:GetSelectedText()
-	info.sel = info.sel and info.sel:len() > 0 and info.sel or nil
-	info.selword = info.sel and info.sel:match("([^a-zA-Z_0-9]+)") or info.sel
-	
-	
-	return fn,info
-end
 
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.
 --  Only update if the text has changed.
 statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
 
-function UpdateStatusText(editor)
+local function updateStatusText(editor)
 	local texts = { "", "", "" }
 	if ide.frame and editor then
 		local pos  = editor:GetCurrentPos()
@@ -94,7 +41,7 @@ function UpdateStatusText(editor)
 	end
 end
 
-function UpdateBraceMatch(editor)
+local function updateBraceMatch(editor)
 	local pos  = editor:GetCurrentPos()
 	local posp  = pos > 0 and pos-1
 	local char = editor:GetCharAt(pos)
@@ -126,17 +73,17 @@ function UpdateBraceMatch(editor)
 	end
 end
 
-function GetFileTitle (editor)
-	if not editor or not openDocuments[editor:GetId()] then return "Estrela Editor" end
+local function getFileTitle (editor)
+	if not editor or not openDocuments[editor:GetId()] then return GetIDEString("editor") end
 	local id = editor:GetId()
 	local filePath   = openDocuments[id].filePath
 	local fileName   = openDocuments[id].fileName
-	if not filePath or not fileName then return "Estrela Editor" end
-	return "Estrela Editor ["..filePath.."]"
+	if not filePath or not fileName then return GetIDEString("editor") end
+	return GetIDEString("editor").." ["..filePath.."]"
 end
 
 -- Check if file is altered, show dialog to reload it
-function IsFileAlteredOnDisk(editor)
+local function isFileAlteredOnDisk(editor)
 	if not editor then return end
 
 	local id = editor:GetId()
@@ -150,11 +97,11 @@ function IsFileAlteredOnDisk(editor)
 			if modTime == nil then
 				openDocuments[id].modTime = nil
 				wx.wxMessageBox(fileName.." is no longer on the disk.",
-								"Estrela Editor Message",
+								GetIDEString("editormessage"),
 								wx.wxOK + wx.wxCENTRE, ide.frame)
 			elseif modTime:IsValid() and oldModTime:IsEarlierThan(modTime) then
 				local ret = wx.wxMessageBox(fileName.." has been modified on disk.\nDo you want to reload it?",
-											"Estrela Editor Message",
+											GetIDEString("editormessage"),
 											wx.wxYES_NO + wx.wxCENTRE, ide.frame)
 				
 				if ret ~= wx.wxYES or LoadFile(filePath, editor, true) then
@@ -163,6 +110,61 @@ function IsFileAlteredOnDisk(editor)
 			end
 		end
 	end
+end
+
+
+-- ----------------------------------------------------------------------------
+-- Get/Set notebook editor page, use nil for current page, returns nil if none
+function GetEditor(selection)
+	local editor = nil
+	if selection == nil then
+		selection = notebook:GetSelection()
+	end
+	if (selection >= 0) and (selection < notebook:GetPageCount()) and (notebook:GetPage(selection):GetClassInfo():GetClassName()=="wxStyledTextCtrl") then
+		editor = notebook:GetPage(selection):DynamicCast("wxStyledTextCtrl")
+	end
+	return editor
+end
+
+-- init new notebook page selection, use nil for current page
+function SetEditorSelection(selection)
+	local editor = GetEditor(selection)
+	updateStatusText(editor) -- update even if nil
+	statusBar:SetStatusText("",1)
+	ide.frame:SetTitle(getFileTitle(editor))
+	
+	if editor then
+		funclist:Clear()
+		editor:SetFocus()
+		editor:SetSTCFocus(true)
+		isFileAlteredOnDisk(editor)
+	end
+end
+
+function GetEditorFileAndCurInfo(nochecksave)
+	local editor = GetEditor()
+	if (not (editor and (nochecksave or SaveIfModified(editor)))) then
+		return
+	end
+	
+	local id = editor:GetId();
+	local filepath = openDocuments[id].filePath
+	if (nochecksave and not filepath) then
+		return
+	end
+	
+	local fn = wx.wxFileName(filepath)
+	fn:Normalize()
+	
+	local info = {}
+	info.pos  = editor:GetCurrentPos()
+	info.line = editor:GetCurrentLine()
+	info.sel  = editor:GetSelectedText()
+	info.sel = info.sel and info.sel:len() > 0 and info.sel or nil
+	info.selword = info.sel and info.sel:match("([^a-zA-Z_0-9]+)") or info.sel
+	
+	
+	return fn,info
 end
 
 -- Set if the document is modified and update the notebook page text
@@ -345,8 +347,8 @@ function CreateEditor(name)
 
 	editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
 			function (event)
-				UpdateStatusText(editor)
-				UpdateBraceMatch(editor)
+				updateStatusText(editor)
+				updateBraceMatch(editor)
 				for e,iv in ipairs(editor.ev) do
 					local line = editor:LineFromPosition(iv[1])
 					--DisplayOutput("modified "..tostring(line).." "..tostring(iv[2]))
@@ -360,7 +362,7 @@ function CreateEditor(name)
 				event:Skip()
 				if ide.in_evt_focus or exitingProgram then return end
 				ide.in_evt_focus = true
-				IsFileAlteredOnDisk(editor)
+				isFileAlteredOnDisk(editor)
 				ide.in_evt_focus = false
 			end)
 			

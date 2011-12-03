@@ -1,6 +1,7 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+local ide = ide
 local debugger = {}
 
 --debuggerServer     = nil    -- wxLuaDebuggerServer object when debugging, else nil
@@ -202,7 +203,13 @@ function CreateDebuggerServer()
 			end
 			debugger.running = ok
 
-			UpdateUIMenuItems()
+			-- force all the wxEVT_UPDATE_UI handlers to be called
+			local frame = ide.frame
+			if frame and frame:GetMenuBar() then
+				for n = 0, frame:GetMenuBar():GetMenuCount()-1 do
+					frame:GetMenuBar():GetMenu(n):UpdateUI()
+				end
+			end
 
 			if ok then
 				DisplayOutput("Client connected ok.\n")

@@ -1,7 +1,10 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 local statusBar = ide.frame.statusBar
+
+-- api loading depends on Lua interpreter 
+-- and loaded specs
 
 ------------
 -- API
@@ -43,13 +46,13 @@ end
 ----------
 -- API loading
 
-local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
+local function addAPI(apifile,only,subapis,known) -- relative to API directory
 	local ftype,fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
 	if not ftype then
 		print("The API file must be located in a subdirectory of the API directory\n")
 		return
 	end
-	if ((only and ftype ~= only) or (ignore and ignore[ftype])) then return end
+	if ((only and ftype ~= only) or (known and not known[ftype])) then return end
 	if (subapis and not subapis[fname]) then return end
 
 	local fn,err = loadfile(apifile)
@@ -84,12 +87,12 @@ local function addAPI(apifile,only,subapis,ignore) -- relative to API directory
 	
 end
 
-local function loadallAPIs (only,subapis,ignore)
+local function loadallAPIs (only,subapis,known)
 	for i,dir in ipairs(FileSysGet(".\\api\\*.*",wx.wxDIR)) do
 		local files = FileSysGet(dir.."\\*.*",wx.wxFILE)
 		for i,file in ipairs(files) do
 			if file:match "%.lua$" then
-				addAPI(file,only,subapis,ignore)
+				addAPI(file,only,subapis,known)
 			end
 		end
 	end
@@ -180,7 +183,7 @@ local function fillTips(api,apibasename,apiname)
 	traverse(apiac,apibasename)
 end
 
-function GenerateAPIInfo(only)
+local function generateAPIInfo(only)
 	for i,api in pairs(apis) do
 		if ((not only) or i == only) then
 			fillTips(api,"",i)
@@ -252,10 +255,10 @@ function GetTipInfo(editor, content, short)
 	return caller and (class and classtab[class]) and classtab[class][caller] or funcstab[caller]
 end
 
-function ReloadAPI(only,subapis)
+local function reloadAPI(only,subapis)
 	newAPI(apis[only])
 	loadallAPIs(only,subapis)
-	GenerateAPIInfo(only,ignore)
+	generateAPIInfo(only)
 end
 
 
@@ -269,12 +272,22 @@ function ReloadLuaAPI()
 		end
 		interpreterapi = apinames
 	end
-	ReloadAPI("lua",interpreterapi)
+	reloadAPI("lua",interpreterapi)
 end
 
--- by defaul load everything except lua
-loadallAPIs(nil,nil,{lua = true})
-GenerateAPIInfo()
+do
+	local known = {}
+	for n,spec in pairs(ide.specs) do
+		if (spec.api) then
+			known[spec.api] = true
+		end
+	end
+	-- by defaul load every known api except lua
+	known.lua = false
+	
+	loadallAPIs(nil,nil,known)
+	generateAPIInfo()
+end
 
 -------------
 -- Dynamic Words

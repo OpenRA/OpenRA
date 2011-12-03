@@ -1,15 +1,14 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
+package.cpath = package.cpath..';bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll'
+package.cpath = package.cpath..';bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so'
+package.path = package.path..'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua'
+
 require("wx")
 require("bit")
 
 dofile "src/misc/util.lua"
-
-function DummyConfig()
-	return {path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
-end
-
 
 -----------
 -- IDE
@@ -18,11 +17,11 @@ end
 dofile "src/editor/ids.lua"
 dofile "src/editor/style.lua"
 
-
 ide = {
 	config = {
 		path = {
 			projectdir = "",
+			app = nil,
 		}, 
 		editor = {
 			usetabs = true,
@@ -32,7 +31,7 @@ ide = {
 		
 		styles = StylesGetDefault(),
 		stylesoutshell = StylesGetDefault(),
-		interpreter = "EstrelaEditor",
+		interpreter = "EstrelaShell",
 		
 		autocomplete = true,
 		acandtip = {
@@ -51,6 +50,8 @@ ide = {
 			vsplitterpos = 150,
 			splitterheight = 200,
 		},
+		
+		setup = "",
 	},
 	specs = {
 		none = {
@@ -65,6 +66,8 @@ ide = {
 	interpreters = {
 	},
 	
+	app              = nil,    -- application engine
+	interpreter      = nil,    -- current Lua interpreter
 	frame            = nil,    -- gui related
 	debugger         = nil,    -- debugger
 	filetree         = nil,    -- filetree
@@ -73,7 +76,6 @@ ide = {
 	
 	-- misc
 	exitingProgram   = false,  -- are we currently exiting, ID_EXIT
-	editorFilename   = nil,    -- the name of the wxLua program to be used when starting debugger
 	editorApp        = wx.wxGetApp(),
 	openDocuments    = {},-- open notebook editor documents[winId] = {
 						  --   editor     = wxStyledTextCtrl,
@@ -92,7 +94,6 @@ ide = {
 -- load config
 local function addConfig(filename,showerror,isstring)
 	local cfgfn,err = isstring and loadstring(filename) or loadfile(filename)
-		-- 							^^                     ^^ wtf?
 	if not cfgfn then
 		if (showerror) then
 			print(("Error while loading configuration file: %s\n%s"):format(filename,err))
@@ -109,11 +110,53 @@ local function addConfig(filename,showerror,isstring)
 end
 local function loadCFG()
 	addConfig("cfg/config.lua",true)
-	-- TODO alternate search path
 	addConfig("cfg/user.lua",false)
 end
 loadCFG()
 
+---------------
+-- process args
+local filenames = {}
+
+do
+	local arg = {...}
+	ide.arg = arg
+	-- first argument must be the application name
+	assert(type(arg[1]) == "string","first argument must be application name")
+	ide.config.path.app = arg[1]:match("([%w_-]+)%.?[^%.]*$")
+	assert(ide.config.path.app, "no application path defined")
+	for index = 2, #arg do
+		if (arg[index] == "-cfg" and index+1 <= #arg) then
+			local str = arg[index+1]
+			if #str < 4 then
+				print("Comandline: -cfg arg data not passed as string")
+			else
+				addConfig(str,true,true)
+			end
+			index = index+1
+		else
+			table.insert(filenames,arg[index])
+		end
+	end
+end
+
+----------------------
+-- process application
+
+ide.app = dofile(ide.config.path.app.."/app.lua")
+local app = ide.app
+assert(app)
+
+do
+	local app = ide.app
+	function GetIDEString(keyword, default)
+		return app.stringtable[keyword] or default or keyword
+	end
+
+end
+
+----------------------
+-- process plugins 
 
 local function addToTab(tab,file)
 	local cfgfn,err = loadfile(file)
@@ -147,7 +190,7 @@ local function loadInterpreters()
 	
 	local files = FileSysGet(".\\interpreters\\*.*",wx.wxFILE)
 	for i,file in ipairs(files) do
-		if file:match "%.lua$" then
+		if file:match "%.lua$" and app.loadfilters.interpreters(file) then
 			addToTab(ide.interpreters,file)
 		end
 	end
@@ -155,13 +198,12 @@ end
 loadInterpreters()
 
 
-	
 -- load specs
 local function loadSpecs()
 	
 	local files = FileSysGet(".\\spec\\*.*",wx.wxFILE)
 	for i,file in ipairs(files) do
-		if file:match "%.lua$" then
+		if file:match "%.lua$" and app.loadfilters.specs(file) then
 			addToTab(ide.specs,file)
 		end
 	end
@@ -185,42 +227,19 @@ local function loadSpecs()
 	end
 end
 loadSpecs()
-ide.loadSpecs = loadSpecs
 
 -- load tools
 local function loadTools()
 	
 	local files = FileSysGet(".\\tools\\*.*",wx.wxFILE)
 	for i,file in ipairs(files) do
-		if file:match "%.lua$" then
+		if file:match "%.lua$" and app.loadfilters.tools(file) then
 			addToTab(ide.tools,file)
 		end
 	end
 end
 loadTools()
----------------
--- process args
-local filenames = {}
-if arg then
-	-- arguments pushed into wxLua are
-	--   [C++ app and it's args][lua prog at 0][args for lua start at 1]
-	ide.editorFilename = arg[0] 
-	
-	for index = 1, #arg do
-		if (arg[index] == "-cfg" and index+1 <= #arg) then
-			local str = arg[index+1]
-			
-			if #str < 4 then
-				print("Comandline: -cfg arg data not passed as string")
-			else
-				addConfig(str,true,true)
-			end
-			index = index+1
-		else
-			table.insert(filenames,arg[index])
-		end
-	end
-end
+
 
 ---------------
 -- Load App
@@ -247,10 +266,6 @@ dofile "src/editor/menu.lua"
 dofile "src/preferences/editor.lua"
 dofile "src/preferences/project.lua"
 
-
-
-
-
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
@@ -261,9 +276,7 @@ SettingsRestoreProjectSession(SetProjects)
 
 
 -- ---------------------------------------------------------------------------
--- Load the args that this script is run with
-
---for k, v in pairs(arg) do print(k, v) end
+-- Load the filenames
 
 do
 	local notebook = ide.frame.vsplitter.splitter.notebook
@@ -286,14 +299,7 @@ end
 
 ide.frame:Show(true)
 
-icon = wx.wxIcon()
-icon:LoadFile("res/estrela.ico",wx.wxBITMAP_TYPE_ICO)
-ide.frame:SetIcon(icon)
---wx.wxTaskBarIcon():SetIcon(icon,"Luxinia IDE") <-- not necessary? Adds luxinia icon to tray in some cases
-
-DisplayOutput("Starting mainloop.\n")
-
-
+app.postinit()
 
 -- Call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
 -- otherwise the wxLua program will exit immediately.

@@ -1,5 +1,6 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+local ide = ide
 
 ide.iofilters["GermanUtf8Ascii"] = {
 
@@ -11,13 +12,13 @@ output = function (fpath, content)
 	-- only simple cases are handled (umlauts)
 	local chr = ("string").char
 	local charconv = {
-		[chr(164)] = chr(228), -- ä
-		[chr(182)] = chr(246), -- ö
-		[chr(188)] = chr(252), -- ü
-		[chr(132)] = chr(196), -- Ä
-		[chr(150)] = chr(214), -- Ö
-		[chr(156)] = chr(220), -- Ü
-		[chr(159)] = chr(223), -- ß
+		[chr(164)] = chr(228), -- Ã¤
+		[chr(182)] = chr(246), -- Ã¶
+		[chr(188)] = chr(252), -- Ã¼
+		[chr(132)] = chr(196), -- Ã„
+		[chr(150)] = chr(214), -- Ã–
+		[chr(156)] = chr(220), -- Ãœ
+		[chr(159)] = chr(223), -- ÃŸ
 	}
 	return content : gsub (utf8escape.."(.)",charconv)
 end,
@@ -29,13 +30,13 @@ input = function (fpath, content)
 	local utf8escape = ("string").char(195)
 	local chr = ("string").char
 	local charconv = {
-		[chr(228)] = utf8escape..chr(164), -- ä
-		[chr(246)] = utf8escape..chr(182), -- ö
-		[chr(252)] = utf8escape..chr(188), -- ü
-		[chr(196)] = utf8escape..chr(132), -- Ä
-		[chr(214)] = utf8escape..chr(150), -- Ö
-		[chr(220)] = utf8escape..chr(156), -- Ü
-		[chr(223)] = utf8escape..chr(159), -- ß
+		[chr(228)] = utf8escape..chr(164), -- Ã¤
+		[chr(246)] = utf8escape..chr(182), -- Ã¶
+		[chr(252)] = utf8escape..chr(188), -- Ã¼
+		[chr(196)] = utf8escape..chr(132), -- Ã„
+		[chr(214)] = utf8escape..chr(150), -- Ã–
+		[chr(220)] = utf8escape..chr(156), -- Ãœ
+		[chr(223)] = utf8escape..chr(159), -- ÃŸ
 	}
 	local lst = "["
 	for k in pairs(charconv) do lst = lst .. k end
@@ -46,10 +47,10 @@ end,
 
 }
 
---üäß
+--Ã¼Ã¤ÃŸ
 
 for i,filter in pairs(ide.iofilters) do
-	assert(filter.output("",filter.input("","äöüÄÖÜß")),"Ã¢â‚¬Å¾Ã¢â‚¬ÂäöüÄÖÜß","UTF8-ANSI conversion failed: "..(i))
+	assert(filter.output("",filter.input("","Ã¤Ã¶Ã¼Ã„Ã–ÃœÃŸ")),"ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃ¤Ã¶Ã¼Ã„Ã–ÃœÃŸ","UTF8-ANSI conversion failed: "..(i))
 end
 
 -- which: "input" or "output"

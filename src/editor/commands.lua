@@ -1,6 +1,7 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+local ide = ide
 local frame    = ide.frame
 local splitter = ide.frame.vsplitter.splitter
 local notebook = splitter.notebook
@@ -12,7 +13,7 @@ function NewFile(event)
 end
 
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
-function FindDocumentToReuse()
+local function findDocumentToReuse()
 	local editor = nil
 	for id, document in pairs(openDocuments) do
 		if (document.editor:GetLength() == 0) and
@@ -51,7 +52,7 @@ function LoadFile(filePath, editor, file_must_exist)
 	end
 
 	if not editor then
-		editor = FindDocumentToReuse()
+		editor = findDocumentToReuse()
 	end
 	if not editor then
 		editor = CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
@@ -84,7 +85,7 @@ function LoadFile(filePath, editor, file_must_exist)
 	return editor
 end
 
-function getExtsString()
+local function getExtsString()
 	local knownexts = ""
 	for i,spec in pairs(ide.specs) do
 		if (spec.exts) then

@@ -1,6 +1,6 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-
+local ide = ide
 --
 -- filetree, treectrl for drive & project
 --

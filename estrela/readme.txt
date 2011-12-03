@@ -17,3 +17,4 @@ Open File(s):
 Overriding Config:
 	<exe> [...] -cfg "<luacode overriding config>" [...]
 	e.g.: estrela.exe -cfg "singleinstance=false;" somefile.lua
+

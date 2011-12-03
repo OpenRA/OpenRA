@@ -1,6 +1,7 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
+local ide = ide
 ide.findReplace = {
 	dialog           = nil,   -- the wxDialog for find/replace
 	replace          = false, -- is it a find or replace dialog
@@ -276,7 +277,7 @@ function findReplace:RunInFiles(replace)
 end
 
 
-function CreateFindReplaceDialog(replace,infiles)
+local function createFindReplaceDialog(replace,infiles)
 	local ID_FIND_NEXT   = 1
 	local ID_REPLACE     = 2
 	local ID_REPLACE_ALL = 3
@@ -471,7 +472,7 @@ function CreateFindReplaceDialog(replace,infiles)
 				end
 			else
 				findReplace.dialog:Destroy()
-				findReplace.dialog = CreateFindReplaceDialog(true,infiles)
+				findReplace.dialog = createFindReplaceDialog(true,infiles)
 				findReplace.dialog:Show(true)
 			end
 		end)
@@ -512,6 +513,6 @@ end
 
 function findReplace:Show(replace,infiles)
 	self.dialog = nil
-	self.dialog = CreateFindReplaceDialog(replace,infiles)
+	self.dialog = createFindReplaceDialog(replace,infiles)
 	self.dialog:Show(true)
 end

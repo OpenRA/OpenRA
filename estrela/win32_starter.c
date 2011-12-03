@@ -45,12 +45,11 @@ static int luafunc_mbox (void *L)
 }
 
 static const char *luacode =
-"local msg = _ERRMSG _ERRMSG = nil "
+"local msg = _ERRMSG; _ERRMSG = nil "
+"local arg = _ARG or {}; _ARG = nil "
 "xpcall("
 "function() "
-"package.cpath = package.cpath..';bin/?.dll;lualibs/?.dll;lualibs/?/?.dll;lualibs/?/?/?.dll' "
-"package.path = package.path..'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua' "
-"dofile 'src/main.lua' end,"
+"(loadfile 'src/main.lua')(unpack(arg)) end,"
 "function(err) msg('Uncaught lua script exception',debug.traceback(err)) end)"
 ;
 
@@ -194,12 +193,12 @@ int main (int argc, char *argv[])
       int i;
 
       if (L!=NULL) {
-        lua_createtable(L,argc-1,1);
+        lua_createtable(L,argc,0);
         for (i=0;i<argc;i++) {
           lua_pushstring(L,argv[i]);
-          lua_rawseti(L,-2,i);
+          lua_rawseti(L,-2,i+1);
         }
-        lua_setfield(L,LUA_GLOBALSINDEX,"arg");
+        lua_setfield(L,LUA_GLOBALSINDEX,"_ARG");
         luaL_openlibs(L);
         lua_pushcclosure(L,luafunc_mbox,0);
         lua_setfield(L,LUA_GLOBALSINDEX,"_ERRMSG");

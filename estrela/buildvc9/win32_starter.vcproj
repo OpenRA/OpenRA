@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="luxinia_glfw"
+	Name="estrela_editor"
 	ProjectGUID="{065C5DC6-EAE4-4A57-9069-39810D816C41}"
 	RootNamespace="luxinia_glfw"
 	Keyword="Win32Proj"
