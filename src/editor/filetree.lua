@@ -191,7 +191,7 @@ local function projcomboboxUpdate(event)
 	local fn = wx.wxFileName(cur)
 	fn:Normalize()
 	
-	filetree:UpdateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
+	filetree:updateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
 end
 
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
@@ -203,9 +203,7 @@ treeSetConnectorsAndIcons(projtree,filetree.projdata)
 -- proj functions
 -- ---------------
 
-
-
-function filetree:UpdateProjectDir(newdir, cboxsel)
+function filetree:updateProjectDir(newdir, cboxsel)
 	if (newdir and newdir:sub(-3,-2) == string_Pathsep) then
 		newdir = newdir:sub(0,-2)
 	end
@@ -224,7 +222,7 @@ function filetree:UpdateProjectDir(newdir, cboxsel)
 			projcombobox:Select(0)
 		end
 	--end
-	UpdateProjectDir(newdir,true)
+	ProjectUpdateProjectDir(newdir,true)
 	treeSetRoot(projtree,filetree.projdata,newdir)
 end
 
@@ -236,19 +234,19 @@ sidenotebook.projpanel = projpanel
 
 sidenotebook:AddPage(projpanel, "Project",true)
 
-function GetFileTreeDir()
+function FileTreeGetDir()
 	-- atm only projtree
 	--print(ide.frame.vsplitter:IsSplit(),filetree.newfiledir)
 	return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
 end
 
-function SetProjects(tab)
+function FileTreeSetProjects(tab)
 	filetree.projdirTextArray = tab
 	if (tab and tab[1]) then
-		filetree:UpdateProjectDir(tab[1])
+		filetree:updateProjectDir(tab[1])
 	end
 end
 
-function GetProjects()
+function FileTreeGetProjects()
 	return filetree.projdirTextArray
 end

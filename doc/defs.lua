@@ -122,7 +122,6 @@ config = {
 		
 	interpreter = "EstrelaEditor",
 		-- the default "project" lua interpreter
-		-- EstrelaEditor, Luxinia, Lua
 		
 	autocomplete = true,
 		-- whether autocomplete is on by default
@@ -161,16 +160,16 @@ config = {
 -- ----------------------------------------------------
 
 app = {
-
 	postinit = function() end, -- post init, prior starting mainloop
 	loadfilters = {
 		tools = function(file) return true end,
 		specs = function(file) return true end,
 		interpreters = function(file) return true end,
 	}
-    stringtable = {	-- optional entries uses defaults otherwise
+	stringtable = {	-- optional entries uses defaults otherwise
 		editor = nil,
 		statuswelcome = nil,
+		-- ...
 	}
 }
 
@@ -273,17 +272,42 @@ tool = {
 	}
 }
 
+-- debugserver definition
+-- ----------------------------------------------------
+debugserver = {
+	update = function(self) end, -- run in idle when active
+	close  = function(self) end, -- run when closed
+	
+	-- following are "debugging" actions and must return
+	-- error, running, [filePath, fileLine]
+	run  = function(self) end,
+	step = function(self) end,
+	over = function(self) end,
+	out  = function(self) end,
+	exit = function(self) end,
+	breaknow = function(self) end,
+	breakpoint = function(self,file,line,state) end,	-- set breakpoint state
+	
+	-- returns result table if successful
+	evaluate = function(self, expressions) return {} end,	-- for watches tables expected
+	
+	-- NYI getstack = function(self ) return {} end,	-- get stack information
+}
+
+
 -- interpreter definition
 -- ----------------------------------------------------
 interpreter = {
-		name = "",
-		description = "",
-		api = {"apifile_without_extension"} -- optional to limit loaded apis
-		frun = function(self,wfilename) 
-				return "execommand"
-			end,
-		fprojdir = function(self,wfilename)
-				return "projpath_from_filename"	-- optional
-			end,
+	name = "",
+	description = "",
+	api = {"apifile_without_extension"} -- optional to limit loaded lua apis
+	frun = function(self,wfilename,withdebugger) 
+			-- do something 
+			return debugserver 	-- should return debugger server interface when requested
+		end,
+	fprojdir = function(self,wfilename)
+			return "projpath_from_filename"	-- optional
+		end,
+	hasdebugger = false, -- if debug server can be created
 }
 

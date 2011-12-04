@@ -263,7 +263,7 @@ end
 
 
 function ReloadLuaAPI()
-	local interpreterapi = ide.interpreters[ide.config.interpreter]
+	local interpreterapi = ide.interpreter
 	interpreterapi = interpreterapi and interpreterapi.api
 	if (interpreterapi) then
 		local apinames = {}

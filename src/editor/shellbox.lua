@@ -35,6 +35,10 @@ local function shellPrint(...)
 end
 
 DisplayShell = shellPrint
+DisplayShellErr = function (...) 
+  out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
+  DisplayShell("! " .. ...)
+end
 
 local function createenv ()
 	local env = {}
@@ -133,23 +137,42 @@ code:SetAcceleratorTable(accel)
 
 function ShellExecuteCode(ev,wfilename)
 	local fn,err
+	local tx
+	local marker
+	
 	if (wfilename) then
 		fn,err = loadfile(wfilename:GetFullPath())
 	elseif(remotesend and remote:IsChecked()) then
-		local tx = code:GetText()
+		marker = ">>"			-- remote exec
+		tx = code:GetText()
 		remotesend(tx)
 	else
-		local tx = code:GetText()
-		fn,err = loadstring(tx)
+		marker = ">"			-- local exec
+		tx = code:GetText()
+		-- for some direct queries
+		fn,err = loadstring("return("..tx..")")
+		-- otherise use string directly
+		if err then
+			fn,err = loadstring(tx)
+		end
+	end
+	
+	if (false and tx ~= nil) then
+		-- TODO add marker per-line
+		DisplayShell(marker .. tx)
 	end
 
 	if fn==nil and err then
-		shellPrint("Error: "..err)
+		DisplayShellErr(err)
 	elseif fn then
 		setfenv(fn,env)
-		xpcall(fn,function(err)
-			shellPrint(debug.traceback(err))
-		end)
+		local ok,res = pcall(fn)
+		if ok then DisplayShell(res)
+					else DisplayShellErr(res)
+		end
+		--xpcall(fn,function(err)
+		--	shellPrint(debug.traceback(err))
+		--end)
 	end
 end
 
