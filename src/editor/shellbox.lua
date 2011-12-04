@@ -19,6 +19,7 @@ out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 out:StyleClearAll()
 out:SetBufferedDraw(true)
 out:WrapCount(80)
+out:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220))
 out:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,out,ide.ofont,ide.ofontItalic)
 
@@ -35,6 +36,10 @@ local function shellPrint(...)
 end
 
 DisplayShell = shellPrint
+DisplayShellErr = function (...) 
+  out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
+  DisplayShell("! " .. ...)
+end
 
 local function createenv ()
 	local env = {}
@@ -133,23 +138,35 @@ code:SetAcceleratorTable(accel)
 
 function ShellExecuteCode(ev,wfilename)
 	local fn,err
+        local tx
+        local marker = "> " -- local execution
 	if (wfilename) then
 		fn,err = loadfile(wfilename:GetFullPath())
 	elseif(remotesend and remote:IsChecked()) then
-		local tx = code:GetText()
+                marker = ">> " -- remote execution
+		tx = code:GetText()
 		remotesend(tx)
 	else
-		local tx = code:GetText()
-		fn,err = loadstring(tx)
+		tx = code:GetText()
+                -- return (...) works for everything except assignments
+                fn,err = loadstring("return (" .. tx .. ")")
+		if err then -- now try assignments
+	          fn,err = loadstring(tx)
+                end
 	end
 
+	if (tx ~= nil) then 
+          DisplayShell(marker .. tx)
+        end
+
 	if fn==nil and err then
-		shellPrint("Error: "..err)
+		DisplayShellErr(err)
 	elseif fn then
 		setfenv(fn,env)
-		xpcall(fn,function(err)
-			shellPrint(debug.traceback(err))
-		end)
+		local ok, res = pcall(fn)
+                if ok then DisplayShell(res)
+                      else DisplayShellErr(res)
+                end
 	end
 end
 
@@ -164,7 +181,7 @@ end
 
 shellbox:Connect(wxstc.wxEVT_STC_CHARADDED,
 	function (event)
-		frame:SetStatusText("Execute your code pressing CTRL+ENTER or erase it all with CTRL+ALT+DEL")
+		frame:SetStatusText("Execute your code pressing CTRL+ENTER")
 	end)
 frame:Connect(ID "shellbox.eraseall", wx.wxEVT_COMMAND_MENU_SELECTED, function()
 	code:SetText ""

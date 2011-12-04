@@ -1,57 +1,155 @@
--- authors: Lomtik Software (J. Winwood & John Labenski)
---          Luxinia Dev (Eike Decker & Christoph Kubisch)
----------------------------------------------------------
-local ide = ide
+-- Integration with MobDebug
+-- Copyright Paul Kulchenko 2011
+
+local copas  = require "copas"
+local socket = require "socket"
+local mobdebug = require "mobdebug"
+
 local debugger = {}
-
---debuggerServer     = nil    -- wxLuaDebuggerServer object when debugging, else nil
---debuggerServer_    = nil    -- temp wxLuaDebuggerServer object for deletion
---debuggee_running   = false  -- true when the debuggee is running
---debugger_destroy   = 0      -- > 0 if the debugger is to be destroyed in wxEVT_IDLE
---debuggee_pid       = 0      -- pid of the debuggee process
---debuggerPortNumber = 1551   -- the port # to use for debugging
-
-debugger.server     = nil    -- wxLuaDebuggerServer object when debugging, else nil
-debugger.server_    = nil    -- temp wxLuaDebuggerServer object for deletion
+debugger.server     = nil    -- DebuggerServer object when debugging, else nil
 debugger.running    = false  -- true when the debuggee is running
-debugger.destroy    = 0      -- > 0 if the debugger is to be destroyed in wxEVT_IDLE
-debugger.pid        = 0      -- pid of the debuggee process
-debugger.portnumber = 1551   -- the port # to use for debugging
-
+debugger.portnumber = 8171   -- the port # to use for debugging
 debugger.watchWindow      = nil    -- the watchWindow, nil when not created
 debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
 ide.debugger = debugger
 
+local notebook = ide.frame.vsplitter.splitter.notebook
 
--- ---------------------------------------------------------------------------
--- Create the watch window
-
-local notebook 		= ide.frame.vsplitter.splitter.notebook
-local openDocuments = ide.openDocuments
-
-function ProcessWatches()
-	local watchListCtrl = debugger.watchListCtrl
-	if watchListCtrl and debugger.server then
-		for idx = 0, watchListCtrl:GetItemCount() - 1 do
-			local expression = watchListCtrl:GetItemText(idx)
-			debugger.server:EvaluateExpr(idx, expression)
-		end
-	end
+debugger.shell = function(expression)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      local value, _, err = debugger.handle('eval ' .. expression)
+      if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
+      if err then DisplayShellErr(err)
+             else DisplayShell(value)
+      end
+    end)
+  end
 end
+
+debugger.listen = function() 
+  local server = socket.bind("*", debugger.portnumber)
+  DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
+  copas.autoclose = false
+  copas.addserver(server, function (skt)
+    debugger.server = copas.wrap(skt)
+    SetAllEditorsReadOnly(true)
+    local editor = GetEditor()
+    local filePath = ide.openDocuments[editor:GetId()].filePath;
+    debugger.basedir = string.gsub(wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
+
+    -- load the remote file into the debugger
+    -- set basedir first, before loading to make sure that the path is correct
+    debugger.handle("basedir " .. debugger.basedir)
+    debugger.handle("load " .. filePath)
+
+    -- remove all breakpoints that may still be present from the last session
+    -- this only matters for those remote clients that reload scripts 
+    -- without resetting their breakpoints
+    debugger.handle("delallb")
+
+    -- go over all windows and find all breakpoints
+    for id, document in pairs(ide.openDocuments) do
+      local editor   = document.editor
+      local filePath = string.gsub(document.filePath, "\\", "/")
+      line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+      while line ~= -1 do
+        debugger.handle("setb " .. filePath .. " " .. (line+1))
+        line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      end
+    end
+
+    local line = 1
+    editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+    editor:EnsureVisibleEnforcePolicy(line-1)
+
+    ShellSupportRemote(debugger.shell, 0)
+
+    DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
+  end)
+end
+
+debugger.handle = function(line)
+  local _G = _G
+  local os = os
+  os.exit = function () end
+  _G.print = function () end
+
+  debugger.running = true
+  local file, line, err = mobdebug.handle(line, debugger.server)
+  debugger.running = false
+
+  return file, line, err
+end
+
+debugger.run = function(command)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      while true do
+        local file, line, err = debugger.handle(command)
+        if line == nil then
+          debugger.server = nil
+          SetAllEditorsReadOnly(false)
+          ShellSupportRemote(nil, 0)
+          if err then DisplayOutput(err .. "\n") end
+          DisplayOutput("Completed debugging session.\n")
+          return
+        else
+          if debugger.basedir and not wx.wxIsAbsolutePath(file) then
+            file = debugger.basedir .. "/" .. file
+          end
+          if ActivateDocument(file, line) then 
+            debugger.updateWatches()
+            return 
+          else 
+            command = "out" -- redo now trying to get out of this file
+          end
+        end 
+      end
+    end)
+  end
+end
+
+debugger.updateBreakpoint = function(command)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      debugger.handle(command)
+    end)
+  end
+end
+
+debugger.updateWatches = function()
+  local watchListCtrl = debugger.watchListCtrl
+  if watchListCtrl and debugger.server and not debugger.running then
+    copas.addthread(function ()
+      for idx = 0, watchListCtrl:GetItemCount() - 1 do
+        local expression = watchListCtrl:GetItemText(idx)
+        local value = debugger.handle('eval ' .. expression)
+        watchListCtrl:SetItem(idx, 1, value)
+      end
+    end)
+  end
+end
+
+debugger.update = function() copas.step(0) end
+
+debugger.listen()
 
 function CloseWatchWindow()
 	if (debugger.watchWindow) then
+    	        SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
 		debugger.watchListCtrl = nil
-		debugger.watchWindow:Destroy()
 		debugger.watchWindow = nil
 	end
 end
 
 function CreateWatchWindow()
-	local width = 180
-	local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY, "Estrela Editor Watch Window",
-							 wx.wxDefaultPosition, wx.wxSize(width, 160))
+	local width = 200
+	local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY, 
+                                       "Watch Window",
+				       wx.wxDefaultPosition, wx.wxSize(width, 160), 
+                                       wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
 
 	debugger.watchWindow = watchWindow
 
@@ -66,23 +164,23 @@ function CreateWatchWindow()
 	watchWindow:SetMenuBar(watchMenuBar)
 
 	local watchListCtrl = wx.wxListCtrl(watchWindow, ID_WATCH_LISTCTRL,
-								  wx.wxDefaultPosition, wx.wxDefaultSize,
-								  wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
+					  wx.wxDefaultPosition, wx.wxDefaultSize,
+					  wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
 								  
 	debugger.watchListCtrl = watchListCtrl
 
 	local info = wx.wxListItem()
 	info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
 	info:SetText("Expression")
-	info:SetWidth(width / 2)
+	info:SetWidth(width * 0.45)
 	watchListCtrl:InsertColumn(0, info)
 
 	info:SetText("Value")
-	info:SetWidth(width / 2)
+	info:SetWidth(width * 0.45)
 	watchListCtrl:InsertColumn(1, info)
 
 	watchWindow:CentreOnParent()
-	ConfigRestoreFramePosition(watchWindow, "WatchWindow")
+	SettingsRestoreFramePosition(watchWindow, "WatchWindow")
 	watchWindow:Show(true)
 
 	local function FindSelectedWatchItem()
@@ -99,7 +197,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect( wx.wxEVT_CLOSE_WINDOW,
 			function (event)
-				ConfigSaveFramePosition(watchWindow, "WatchWindow")
+				CloseWatchWindow()
 				watchWindow = nil
 				watchListCtrl = nil
 				event:Skip()
@@ -139,7 +237,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
 			function (event)
-				ProcessWatches()
+				debugger.updateWatches()
 			end)
 	watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
 			function (event)
@@ -149,205 +247,63 @@ function CreateWatchWindow()
 	watchListCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
 			function (event)
 				watchListCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-				ProcessWatches()
+				debugger.updateWatches()
 				event:Skip()
 			end)
 end
 
-
-function NextDebuggerPort()
-	-- limit the number if ports we use, for people who need to open
-	-- their firewall
-	debugger.portnumber = debugger.portnumber + 1
-	if (debugger.portnumber > 1559) then
-		debugger.portnumber = 1551
+function MakeDebugFileName(editor, filePath)
+	if not filePath then
+		filePath = "file"..tostring(editor)
 	end
+	return filePath
 end
 
-function CreateDebuggerServer()
-	if (debugger.server) then
-		-- we just delete it here, but this shouldn't happen
-		debugger.destroy = 0
-		local ds = debugger.server
-		debugger.server = nil
-		ds:Reset()
-		ds:StopServer()
-		ds:delete()
+function ToggleDebugMarker(editor, line)
+	local markers = editor:MarkerGet(line)
+	if markers >= CURRENT_LINE_MARKER_VALUE then
+		markers = markers - CURRENT_LINE_MARKER_VALUE
 	end
-
-	debugger.running = false
-	debugger.server = wxlua.wxLuaDebuggerServer(debugger.portnumber)
-	local ds = debugger.server
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_DEBUGGEE_CONNECTED,
-		function (event)
-			local ok = false
-			-- FIXME why would you want to run all the notebook pages?
-			--for id, document in pairs(openDocuments) do
-				local editor     = GetEditor() -- MUST use document.editor userdata!
-				local document   = openDocuments[editor:GetId()]
-				local editor     = document.editor
-				local editorText = editor:GetText()
-				local filePath   = MakeDebugFileName(editor, document.filePath)
-				ok = ds:Run(filePath, editorText)
-
-				local nextLine = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-				while ok and (nextLine ~= -1) do
-					ok = ds:AddBreakPoint(filePath, nextLine)
-					nextLine = editor:MarkerNext(nextLine + 1, BREAKPOINT_MARKER_VALUE)
-				end
-			--end
-
-			if ok then
-				ok = ds:Step()
-			end
-			debugger.running = ok
-
-			-- force all the wxEVT_UPDATE_UI handlers to be called
-			local frame = ide.frame
-			if frame and frame:GetMenuBar() then
-				for n = 0, frame:GetMenuBar():GetMenuCount()-1 do
-					frame:GetMenuBar():GetMenu(n):UpdateUI()
-				end
-			end
-
-			if ok then
-				DisplayOutput("Client connected ok.\n")
-			else
-				DisplayOutput("Error connecting to client.\n")
-			end
-		end)
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_DEBUGGEE_DISCONNECTED,
-		function (event)
-			DisplayOutput("Debug server disconnected.\n")
-			DisplayOutput(event:GetMessage().."\n\n")
-			DestroyDebuggerServer()
-		end)
-
-	local function DebuggerIgnoreFile(fileName)
-		local ignoreFlag = false
-		for idx, ignoreFile in pairs(ignoredFilesList) do
-			if string.upper(ignoreFile) == string.upper(fileName) then
-				ignoreFlag = true
-			end
+	local id       = editor:GetId()
+	local filePath = MakeDebugFileName(editor, ide.openDocuments[id].filePath)
+	if markers >= BREAKPOINT_MARKER_VALUE then
+		editor:MarkerDelete(line, BREAKPOINT_MARKER)
+		if debugger.server then
+                        debugger.updateBreakpoint("delb " .. filePath .. " " .. (line+1))
 		end
-		return ignoreFlag
+	else
+		editor:MarkerAdd(line, BREAKPOINT_MARKER)
+		if debugger.server then
+                        debugger.updateBreakpoint("setb " .. filePath .. " " .. (line+1))
+		end
 	end
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_BREAK,
-		function (event)
-			if exitingProgram then return end
-			local line = event:GetLineNumber()
-			local eventFileName = event:GetFileName()
-
-			if string.sub(eventFileName, 1, 1) == '@' then -- FIXME what is this?
-				eventFileName = string.sub(eventFileName, 2, -1)
-				if wx.wxIsAbsolutePath(eventFileName) == false then
-					eventFileName = wx.wxGetCwd().."/"..eventFileName
-				end
-			end
-			if wx.__WXMSW__ then
-				eventFileName = wx.wxUnix2DosFilename(eventFileName)
-			end
-			local fileFound = false
-			DisplayOutput("At Breakpoint line: "..tostring(line).." file: "..eventFileName.."\n")
-			for id, document in pairs(openDocuments) do
-				local editor   = document.editor
-				local filePath = MakeDebugFileName(editor, document.filePath)
-				-- for running in cygwin, use same type of separators
-				filePath = string.gsub(filePath, "\\", "/")
-				local eventFileName_ = string.gsub(eventFileName, "\\", "/")
-				if string.upper(filePath) == string.upper(eventFileName_) then
-					local selection = document.index
-					notebook:SetSelection(selection)
-					SetEditorSelection(selection)
-					editor:MarkerAdd(line, CURRENT_LINE_MARKER)
-					editor:EnsureVisibleEnforcePolicy(line)
-					fileFound = true
-					break
-				end
-			end
-			-- if don't ignore file and its not in the notebook, ask to load
-			if not DebuggerIgnoreFile(eventFileName) then
-				if not fileFound then
-					local fileDialog = wx.wxFileDialog(ide.frame,
-													   "Select file for debugging",
-													   "",
-													   eventFileName,
-													   "Lua files (*.lua)|*.lua|Text files (*.txt)|*.txt|All files (*)|*",
-													   wx.wxOPEN + wx.wxFILE_MUST_EXIST)
-					if fileDialog:ShowModal() == wx.wxID_OK then
-						local editor = LoadFile(fileDialog:GetPath(), nil, true)
-						if editor then
-							editor:MarkerAdd(line, CURRENT_LINE_MARKER)
-							editor:EnsureVisibleEnforcePolicy(line)
-							editor:SetReadOnly(true)
-							fileFound = true
-						end
-					end
-					fileDialog:Destroy()
-				end
-				if not fileFound then -- they canceled opening the file
-					table.insert(ignoredFilesList, eventFileName)
-				end
-			end
-
-			if fileFound then
-				debugger.running = false
-				ProcessWatches()
-			elseif debugger.server then
-				debugger.server:Continue()
-				debugger.running = true
-			end
-		end)
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_PRINT,
-		function (event)
-			DisplayOutput(event:GetMessage().."\n")
-		end)
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_ERROR,
-		function (event)
-			DisplayOutput("wxLua ERROR: "..event:GetMessage().."\n\n")
-		end)
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_EXIT,
-		function (event)
-			ClearAllCurrentLineMarkers()
-
-			if debuggerServer then
-				DestroyDebuggerServer()
-			end
-			SetAllEditorsReadOnly(false)
-			ignoredFilesList = {}
-		end)
-
-	ds:Connect(wxlua.wxEVT_WXLUA_DEBUGGER_EVALUATE_EXPR,
-		function (event)
-			local watchListCtrl = debugger.watchListCtrl
-			if watchListCtrl then
-				watchListCtrl:SetItem(event:GetReference(),
-									  1,
-									  event:GetMessage())
-			end
-		end)
-
-	local ok = ds:StartServer()
-	if not ok then
-		DestroyDebuggerServer()
-		DisplayOutput("Error starting the debug server.\n")
-		return nil
-	end
-
-	return ds
 end
 
-function DestroyDebuggerServer()
-	-- nil debuggerServer so it won't be used and set flag to destroy it in idle
-	if (debugger.server) then
-		debugger.server_ = debugger.server
-		debugger.server = nil
-		debugger.destroy = 1 -- set > 0 to initiate deletion in idle
+function ActivateDocument(fileName, line)
+	if not wx.wxIsAbsolutePath(fileName) then
+		fileName = wx.wxGetCwd().."/"..fileName
 	end
+
+	if wx.__WXMSW__ then
+		fileName = wx.wxUnix2DosFilename(fileName)
+	end
+
+	local fileFound = false
+	for id, document in pairs(ide.openDocuments) do
+		local editor   = document.editor
+		-- for running in cygwin, use same type of separators
+		filePath = string.gsub(document.filePath, "\\", "/")
+		local fileName = string.gsub(fileName, "\\", "/")
+		if string.upper(filePath) == string.upper(fileName) then
+			local selection = document.index
+			notebook:SetSelection(selection)
+			SetEditorSelection(selection)
+			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+			editor:EnsureVisibleEnforcePolicy(line-1)
+			fileFound = true
+			break
+		end
+	end
+
+	return fileFound
 end

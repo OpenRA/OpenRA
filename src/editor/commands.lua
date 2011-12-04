@@ -357,36 +357,6 @@ end
 -----------------
 -- Debug related
 
-local debugger = ide.debugger
-
-
-function MakeDebugFileName(editor, filePath)
-	if not filePath then
-		filePath = "file"..tostring(editor)
-	end
-	return filePath
-end
-
-function ToggleDebugMarker(editor, line)
-	local markers = editor:MarkerGet(line)
-	if markers >= CURRENT_LINE_MARKER_VALUE then
-		markers = markers - CURRENT_LINE_MARKER_VALUE
-	end
-	local id       = editor:GetId()
-	local filePath = MakeDebugFileName(editor, openDocuments[id].filePath)
-	if markers >= BREAKPOINT_MARKER_VALUE then
-		editor:MarkerDelete(line, BREAKPOINT_MARKER)
-		if debugger.server then
-			debugger.server:RemoveBreakPoint(filePath, line)
-		end
-	else
-		editor:MarkerAdd(line, BREAKPOINT_MARKER)
-		if debugger.server then
-			debugger.server:AddBreakPoint(filePath, line)
-		end
-	end
-end
-
 function ClearAllCurrentLineMarkers()
 	for id, document in pairs(openDocuments) do
 		local editor = document.editor
@@ -404,10 +374,10 @@ function CompileProgram(editor)
 	end
 
 	if line_num > -1 then
-		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n\n")
+		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n")
 		editor:GotoLine(line_num-1)
 	else
-		DisplayOutput("Compilation successful!\n\n")
+		DisplayOutput("Compilation successful.\n")
 	end
 
 	return line_num == -1 -- return true if it compiled ok
@@ -488,23 +458,13 @@ function CloseWindow(event)
 		return
 	end
 	
-	
-	if debugger.server then
-		local ds = debugger.server
-		debugger.server = nil
-		--ds:Reset()
-		ds:KillDebuggee()
-		ds:delete()
-	end
-	debugger.running = false
-	
 	SettingsSaveProjectSession(GetProjects())
 	SettingsSaveFileSession(GetOpenFiles())
 	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
 	SettingsSaveEditorSettings()
+	CloseWatchWindow()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
-	CloseWatchWindow()
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
