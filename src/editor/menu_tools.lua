@@ -60,8 +60,11 @@ end
 local toolMenu = wx.wxMenu{
 		unpack(toolArgs)
 	}
-menuBar:Append(toolMenu, "&Tools")
 
+-- only add Tools menu if it is not empty
+if #toolArgs > 1 then -- there is one default separator
+  menuBar:Append(toolMenu, "&Tools")
+end
 
 -- connect auto execs
 do
