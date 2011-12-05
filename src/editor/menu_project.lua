@@ -28,7 +28,7 @@ end
 assert(lastinterpreter,"no interpreters defined")
 
 local debugMenu = wx.wxMenu{
-		{ ID_RUN,              "&Run\tShift-F5",          "Execute the current project/file" },
+		{ ID_RUN,              "&Run\tF6",                "Execute the current project/file" },
 		{ ID_COMPILE,          "&Compile\tF7",            "Test compile the Lua file" },
 		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",     "Allow a client to start a debugging session" },
 		{ ID_START_DEBUG,      "&Start Debugging\tF5",    "Start a debugging session" },
@@ -38,7 +38,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_STEP,             "St&ep\tF11",             "Step into the next line" },
 		{ ID_STEP_OVER,        "Step &Over\tF10",        "Step over the next line" },
 		{ ID_STEP_OUT,         "Step O&ut\tShift-F10",   "Step out of the current function" },
-		{ ID_CONTINUE,         "Co&ntinue\tF6",          "Run the program at full speed" },
+		{ ID_CONTINUE,         "Co&ntinue\tShift-F5",    "Run the program at full speed" },
 		{ ID_BREAK,            "&Break",                 "Stop execution of the program at the next executed line of code" },
 		{ },
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
