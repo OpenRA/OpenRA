@@ -242,6 +242,7 @@ local function loadTools()
 end
 loadTools()
 
+if app.preinit then app.preinit() end
 
 ---------------
 -- Load App
@@ -299,9 +300,9 @@ do
 	end
 end
 
-ide.frame:Show(true)
+if app.postinit then app.postinit() end
 
-app.postinit()
+ide.frame:Show(true)
 
 -- Call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
 -- otherwise the wxLua program will exit immediately.
