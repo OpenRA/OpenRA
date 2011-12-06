@@ -28,6 +28,21 @@ local app = {
     local icon = wx.wxIcon()
     icon:LoadFile("zbstudio/res/zbstudio.ico",wx.wxBITMAP_TYPE_ICO)
     ide.frame:SetIcon(icon)
+
+    local pos = ide.frame.menuBar:FindMenu("&Project")
+    local menu = ide.frame.menuBar:GetMenu(pos)
+    local itemid = menu:FindItem("Lua &interpreter")
+    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
+    itemid = menu:FindItem("Project directory")
+    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
+
+    pos = ide.frame.menuBar:FindMenu("&View")
+    menu = ide.frame.menuBar:GetMenu(pos)
+    local items = {5, 4, 1, 0}
+    while #items > 0 do
+      local itempos = table.remove(items, 1)
+      menu:Destroy(menu:FindItemByPosition(itempos))
+    end
   end,
   
   stringtable = {
