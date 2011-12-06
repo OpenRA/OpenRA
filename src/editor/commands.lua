@@ -266,7 +266,9 @@ function SaveModifiedDialog(editor, allow_cancel)
 		result = dialog:ShowModal()
 		dialog:Destroy()
 		if result == wx.wxID_YES then
-			SaveFile(editor, filePath)
+			if not SaveFile(editor, filePath) then
+                          return wx.wxID_CANCEL -- cancel if canceled save dialog
+                        end
 		end
 	end
 
