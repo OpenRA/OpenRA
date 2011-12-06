@@ -1,6 +1,5 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-local ide = ide
 ----------
 -- Style
 --
@@ -197,6 +196,7 @@ end
 
 
 function ReApplySpecAndStyles()
+	local ide = ide
 	local openDocuments = ide.openDocuments
 	for i,doc in pairs(openDocuments) do
 		if (doc.editor.spec) then
@@ -214,13 +214,14 @@ function ReApplySpecAndStyles()
 end
 
 function LoadConfigStyle()
+	local ide = ide
 	local fileDialog = wx.wxFileDialog(ide.frame, "Open Config File",
 									   "/cfg",
 									   "",
 									   "Lua file (*.lua)|*.lua|All files (*)|*",
 									   wx.wxOPEN + wx.wxFILE_MUST_EXIST)
 	if fileDialog:ShowModal() == wx.wxID_OK then
-		local cfg = {path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
+		local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
 		local cfgfn,err = loadfile(fileDialog:GetPath())
 		if cfgfn then
 			setfenv(cfgfn,cfg)
