@@ -155,24 +155,28 @@ end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
 
-function RunInterpreter(wfilename, script)
-			-- SaveAll()
+function GetNameToRun()
+	local editor = GetEditor()
+			
+	-- test compile it before we run it, if successful then ask to save
+	-- only compile if lua api
+	if (editor.spec.apitype and
+            editor.spec.apitype == "lua" and
+	    not CompileProgram(editor)) then
+	  return
+	end
 
-			local editor = GetEditor()
-			
-			-- test compile it before we run it, if successful then ask to save
-			-- only compile if lua api
-			if (editor.spec.apitype and 
-                            editor.spec.apitype == "lua" and 
-			    not CompileProgram(editor)) then
-				return
-			end
-			if not SaveIfModified(editor) then
-				return
-			end
-			
-			local interpreter = interpreters[curinterpreterid]
-			interpreter:frun(wfilename, script)
+	local id = editor:GetId()
+	if not openDocuments[id].filePath then SetDocumentModified(id, true) end
+	if not SaveIfModified(editor) then return end
+
+	return wx.wxFileName(openDocuments[id].filePath)
+end
+
+function RunInterpreter(wfilename, script)
+        if not wfilename then return end
+	local interpreter = interpreters[curinterpreterid]
+	interpreter:frun(wfilename, script)
 end
 	
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -194,7 +198,7 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-                  RunInterpreter(wx.wxFileName(openDocuments[GetEditor():GetId()].filePath));
+                  RunInterpreter(GetNameToRun());
 		end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -215,7 +219,7 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
                   local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
-                  RunInterpreter(wx.wxFileName(openDocuments[GetEditor():GetId()].filePath),
+                  RunInterpreter(GetNameToRun(),
                                  "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
                                  "package.cpath=package.cpath..';"..editorDir.."bin/clibs/?.dll';"..
                                  "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..debugger.portnumber..")");
