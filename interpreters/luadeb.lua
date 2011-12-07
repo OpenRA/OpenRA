@@ -11,9 +11,10 @@ return {
 				CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
 			end,
 		fprojdir = function(self,wfilename) 
-                                return ide.config.path.projectdir
+                                return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 		fworkdir = function (self,wfilename) 
-				return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
+				return ide.config.path.projectdir
+                                    or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
 	}
