@@ -223,11 +223,7 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 		  if not debugger.listening then debugger.listen() end
-                  local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
-                  RunInterpreter(GetNameToRun(),
-                                 "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
-                                 "package.cpath=package.cpath..';"..editorDir.."bin/clibs/?.dll';"..
-                                 "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..debugger.portnumber..")");
+                  RunInterpreter(GetNameToRun(), true)
 		end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
