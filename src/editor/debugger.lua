@@ -70,10 +70,9 @@ local function DebuggerFileAction( fileName, line )
 			editor:EnsureVisibleEnforcePolicy(line-1)
 			
 			updateWatches()
-			return
-		end
+			return true
+			end
 	end
-	
 end
 
 
