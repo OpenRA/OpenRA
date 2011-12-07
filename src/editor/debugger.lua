@@ -85,7 +85,7 @@ debugger.handle = function(line)
   return file, line, err
 end
 
-debugger.run = function(command)
+debugger.exec = function(command)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
       while true do
@@ -127,7 +127,7 @@ debugger.updateWatches = function()
     copas.addthread(function ()
       for idx = 0, watchListCtrl:GetItemCount() - 1 do
         local expression = watchListCtrl:GetItemText(idx)
-        local value = debugger.handle('eval ' .. expression)
+        local value = debugger.evaluate(expression)
         watchListCtrl:SetItem(idx, 1, value)
       end
     end)
@@ -135,6 +135,15 @@ debugger.updateWatches = function()
 end
 
 debugger.update = function() copas.step(0) end
+debugger.close = function() debugger.exec("exit") end
+debugger.step = function() debugger.exec("step") end
+debugger.over = function() debugger.exec("over") end
+debugger.out = function() debugger.exec("out") end
+debugger.run = function() debugger.exec("run") end
+debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
+debugger.breakpoint = function(file, line, state)
+  debugger.updateBreakpoint((state and "setb " or "delb ") .. file .. " " .. line)
+end
 
 function CloseWatchWindow()
 	if (debugger.watchWindow) then
@@ -269,12 +278,12 @@ function ToggleDebugMarker(editor, line)
 	if markers >= BREAKPOINT_MARKER_VALUE then
 		editor:MarkerDelete(line, BREAKPOINT_MARKER)
 		if debugger.server then
-                        debugger.updateBreakpoint("delb " .. filePath .. " " .. (line+1))
+                        debugger.breakpoint(filePath, line+1, false)
 		end
 	else
 		editor:MarkerAdd(line, BREAKPOINT_MARKER)
 		if debugger.server then
-                        debugger.updateBreakpoint("setb " .. filePath .. " " .. (line+1))
+                        debugger.breakpoint(filePath, line+1, true)
 		end
 	end
 end
