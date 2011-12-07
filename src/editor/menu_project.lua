@@ -32,6 +32,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_COMPILE,          "&Compile File\tF7",      "Test compile the Lua file" },
 		{ },
 		{ ID_START_DEBUG,      "&Debug\tF5",              "Run the program with debugger" },
+		{ ID_ATTACH_DEBUG,     "&Start Debugger Server\tShift-F6",  "Allow a client to start a debugging session" },
 		{ ID_STOP_DEBUG,       "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
 		{ ID_STEP,             "St&ep\tF11",             "Step into the next line" },
 		{ ID_STEP_OVER,        "Step &Over\tF10",        "Step over the next line" },
@@ -40,7 +41,7 @@ local debugMenu = wx.wxMenu{
 		{ },
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
 		{ },
---		{ ID "view.debug.callstack","V&iew Call Stack",  "View the LUA call stack" },
+--		{ ID "view.debug.callstack","V&iew Call Stack",  "View the client call stack" },
 		{ ID "view.debug.watches",  "View &Watches",     "View the Watch window" },
 		{ },
 		{ ID_CLEAROUTPUT,      "C&lear Output Window",   "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
@@ -148,19 +149,6 @@ end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
 
-frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
-		function (event)
-			local editor = GetEditor()
-			local line = editor:LineFromPosition(editor:GetCurrentPos())
-			DebuggerToggleBreakpoint(editor, line)
-		end)
-frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
-	function(event)
-		local editor = GetEditor()
-		event:Enable((editor ~= nil) and (ide.interpreter.hasdebugger))
-	end)
-
-
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			local editor = GetEditor()
@@ -183,10 +171,7 @@ local function runInterpreter(withdebugger)
 	
 	local id = editor:GetId();
 	local wfilename = wx.wxFileName(openDocuments[id].filePath)
-	local server = ide.interpreter:frun(wfilename,withdebugger)
-	if (withdebugger and server) then
-		DebuggerStart(server)
-	end
+	ide.interpreter:frun(wfilename,withdebugger)
 end
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -194,7 +179,7 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 			if (debugger.server) then
 				assert(not debugger.running)
 				ClearAllCurrentLineMarkers()
-				DebuggerAction("run")
+				debugger.server:run()
 			else
 				runInterpreter()
 			end
@@ -216,10 +201,20 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 			event:Enable((ide.interpreter.hasdebugger) and (debugger.server == nil) and (editor ~= nil))
 		end)
 
+frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			ide.interpreter.fstartdebugger()
+		end)
+frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
+		function (event)
+			local editor = GetEditor()
+			event:Enable(ide.interpreter.fstartdebugger and (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
+		end)
+
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
-			DebuggerAction("exit")
+			DebuggerEnd()
 		end)
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
@@ -231,7 +226,7 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
-			DebuggerAction("step")
+			if (debugger.server) then debugger.server:step() end
 		end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -242,7 +237,7 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
-			DebuggerAction("over")
+			if (debugger.server) then debugger.server:over() end
 		end)
 frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -253,7 +248,7 @@ frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
-			DebuggerAction("out")
+			if (debugger.server) then debugger.server:out() end
 		end)
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
 		function (event)
@@ -263,13 +258,24 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
-			DebuggerAction("breaknow")
+			if (debugger.server) then debugger.server:breaknow() end
 		end)
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
 		function (event)
 			event:Enable((debugger.server ~= nil) and debugger.running)
 		end)
 
+frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
+		function (event)
+			local editor = GetEditor()
+			local line = editor:LineFromPosition(editor:GetCurrentPos())
+			DebuggerToggleBreakpoint(editor, line)
+		end)
+frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
+	function(event)
+		local editor = GetEditor()
+		event:Enable((editor ~= nil) and (ide.interpreter.hasdebugger))
+	end)
 
 --[[ NYI
 frame:Connect(ID "view.debug.callstack", wx.wxEVT_COMMAND_MENU_SELECTED,

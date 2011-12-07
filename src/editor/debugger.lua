@@ -25,30 +25,28 @@ local function updateWatches()
 		for idx = 0, cnt - 1 do
 			table.insert(expressions,watchListCtrl:GetItemText(idx))
 		end
-		local values = debugger.server:evaluate(expressions)
-		if (values and #values == cnt) then
-			for idx = 0, cnt - 1 do
-				watchListCtrl:SetItem(idx, 1, values[idx + 1])
-			end
-		else
-			for idx = 0, cnt - 1 do
-				watchListCtrl:SetItem(idx, 1, "")
+		
+		local function submitResults(values)
+			if (not debugger.watchListCtrl) then return end
+			local watchListCtrl = debugger.watchListCtrl
+			if (values and #values == cnt) then
+				for idx = 0, cnt - 1 do
+					watchListCtrl:SetItem(idx, 1, values[idx + 1])
+				end
+			else
+				for idx = 0, cnt - 1 do
+					watchListCtrl:SetItem(idx, 1, "")
+				end
 			end
 		end
+		
+		debugger.server:evaluate(expressions,submitResults)
 	end
 end
 
-local function DebuggerAction(action,...)
-	if not debugger.server then return end
-	local err, running, fileName, line = debugger.server[action](...)
-
-	if (err) then 
-		DisplayOutputMarker("Debugger Error:"..err)
-		DebuggerEnd()
-		return
-	end
-	debugger.running = running
-	if (not fileName and line) then return end
+local function DebuggerFileAction( fileName, line )
+	if (not debugger.server)     then return end
+	if (not (fileName and line)) then return end
 
 	if not wx.wxIsAbsolutePath(fileName) then
 		fileName = wx.wxGetCwd().."/"..fileName
@@ -57,13 +55,14 @@ local function DebuggerAction(action,...)
 	if wx.__WXMSW__ then
 		fileName = wx.wxUnix2DosFilename(fileName)
 	end
+	fileName = string.gsub(fileName, "\\", "/")
+	fileName = string.upper(fileName)
 
 	for id, document in pairs(ide.openDocuments) do
 		local editor   = document.editor
-		-- for running in cygwin, use same type of separators
-		filePath = string.gsub(document.filePath, "\\", "/")
-		local fileName = string.gsub(fileName, "\\", "/")
-		if string.upper(filePath) == string.upper(fileName) then
+		local fileOpen = string.gsub(document.filePath, "\\", "/")
+		      fileOpen = string.upper(fileOpen)
+		if fileOpen == fileName then
 			local selection = document.index
 			notebook:SetSelection(selection)
 			SetEditorSelection(selection)
@@ -89,7 +88,7 @@ frame:Connect(wx.wxEVT_IDLE,
 -- generic debugger setup
 
 function DebuggerStart(server)
-	if (debugger.running or not debugger.server) then return end
+	if (debugger.server) then return end
 	debugger.server = server
 	
 	SetAllEditorsReadOnly(true)
@@ -103,10 +102,6 @@ function DebuggerStart(server)
 			line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
 		end
 	end
-
-	local line = 1
-	editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-	editor:EnsureVisibleEnforcePolicy(line-1)
 end
 
 function DebuggerEnd()
@@ -254,10 +249,14 @@ function DebuggerToggleBreakpoint(editor, line)
 	local filePath = makeDebugFileName(editor, ide.openDocuments[id].filePath)
 	if markers >= BREAKPOINT_MARKER_VALUE then
 		editor:MarkerDelete(line, BREAKPOINT_MARKER)
-		DebuggerAction("breakpoint",filePath,line+1,false)
+		if (debugger.server) then
+			debugger.server:breakpoint(filePath,line+1,false)
+		end
 	else
 		editor:MarkerAdd(line, BREAKPOINT_MARKER)
-		DebuggerAction("breakpoint",filePath,line+1,true)
+		if (debugger.server) then
+			debugger.server:breakpoint(filePath,line+1,true)
+		end
 	end
 end
 

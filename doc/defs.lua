@@ -278,8 +278,6 @@ debugserver = {
 	update = function(self) end, -- run in idle when active
 	close  = function(self) end, -- run when closed
 	
-	-- following are "debugging" actions and must return
-	-- error, running, [filePath, fileLine]
 	run  = function(self) end,
 	step = function(self) end,
 	over = function(self) end,
@@ -289,7 +287,16 @@ debugserver = {
 	breakpoint = function(self,file,line,state) end,	-- set breakpoint state
 	
 	-- returns result table if successful
-	evaluate = function(self, expressions) return {} end,	-- for watches tables expected
+	evaluate = function(self, expressions, submitResults) 
+		
+		local results = {}
+		for i,v in ipairs(expressions) do
+			results[i] = getresult(v)
+		end
+		
+		-- when done with work
+		submitResults(results)
+	end,
 	
 	-- NYI getstack = function(self ) return {} end,	-- get stack information
 }
@@ -300,14 +307,26 @@ debugserver = {
 interpreter = {
 	name = "",
 	description = "",
-	api = {"apifile_without_extension"} -- optional to limit loaded lua apis
+		-- optional to limit loaded lua apis
+	api = {"apifile_without_extension"},
+	
+		-- main file run/debug action
 	frun = function(self,wfilename,withdebugger) 
 			-- do something 
-			return debugserver 	-- should return debugger server interface when requested
+			if (withdebugger) then
+				-- should start debugging session
+				DebuggerStart(debugserver)
+			end
 		end,
 	fprojdir = function(self,wfilename)
 			return "projpath_from_filename"	-- optional
 		end,
-	hasdebugger = false, -- if debug server can be created
+	hasdebugger  = false, -- if true debugserver can be created
+	
+		-- optional for "attach" debug capability
+	fstartdebugger = function() 
+		-- should at some point start debugserver
+		DebuggerStart(debugserver)
+	end, 
 }
 
