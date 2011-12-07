@@ -17,4 +17,5 @@ return {
 				return ide.config.path.projectdir
                                     or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
 			end,
+		hasdebugger = true,
 	}

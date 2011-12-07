@@ -80,9 +80,10 @@ end
 UpdateProjectDir(ide.config.path.projectdir)
 
 -- interpreter setup
-local curinterpreterid = 	IDget("debug.interpreter."..ide.config.interpreter)  or 
-							ID ("debug.interpreter."..lastinterpreter)
+local curinterpreterid = IDget("debug.interpreter."..ide.config.interpreter)  or 
+			 ID ("debug.interpreter."..lastinterpreter)
 ide.config.interpreterClass = interpreters[curinterpreterid]
+local interpreter = ide.config.interpreterClass
 
 	menuBar:Check(curinterpreterid, true)
 	
@@ -94,6 +95,7 @@ ide.config.interpreterClass = interpreters[curinterpreterid]
 		curinterpreterid = id
 		ide.config.interpreter = interpreters[id].fname
 		ide.config.interpreterClass = interpreters[id]
+                interpreter = ide.config.interpreterClass
 		ReloadLuaAPI()
 	end
 	
@@ -150,7 +152,7 @@ local function projFromFile(event)
 	local fn       = wx.wxFileName(filepath)
 	fn:Normalize() -- want absolute path for dialog
 	
-	UpdateProjectDir(interpreters[curinterpreterid]:fprojdir(fn))
+	if interpreter then UpdateProjectDir(interpreter:fprojdir(fn)) end
 end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
@@ -175,7 +177,6 @@ end
 
 function RunInterpreter(wfilename, script)
         if not wfilename then return end
-	local interpreter = interpreters[curinterpreterid]
 	interpreter:frun(wfilename, script)
 end
 	
@@ -185,8 +186,11 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 			local line = editor:LineFromPosition(editor:GetCurrentPos())
 			ToggleDebugMarker(editor, line)
 		end)
-frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
-
+frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI, 
+	function(event)
+		local editor = GetEditor()
+		event:Enable(interpreter and interpreter.hasdebugger and (editor ~= nil))
+	end)
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
@@ -213,7 +217,7 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
-			event:Enable((not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
+			event:Enable(interpreter and interpreter.hasdebugger and (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -228,7 +232,7 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
-			event:Enable((debugger.server == nil) and (editor ~= nil))
+			event:Enable(interpreter and interpreter.hasdebugger and (debugger.server == nil) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
