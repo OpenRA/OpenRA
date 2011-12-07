@@ -1,18 +1,22 @@
 local luxpath = os.getenv("LUXINIA")
-path.luxinia = luxpath and luxpath.."/" or "../../engine/"
+path.luxinia = luxpath and luxpath.."/" or "../luxinia/engine/"
 local luxpath2 = os.getenv("LUXINIA2")
 path.luxinia2 = luxpath2 and luxpath2.."/" or "../luxinia2/runtime/bin_Windows_x86/"
 
 editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
+editor.whitespace = true
+editor.autotabs = true
+editor.tabwidth = 2
 
 filehistorylength = 20
 
 singleinstance = true
 singleinstanceport = 0xe493
 acandtip.shorttip = true
-
+acandtip.nodynwords = true
+acandtip.ignorecase = true
 
 styles = {
 	-- lexer specific (inherit fg/bg from text)

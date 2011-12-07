@@ -31,7 +31,7 @@ ide = {
 		
 		styles = StylesGetDefault(),
 		stylesoutshell = StylesGetDefault(),
-		interpreter = "EstrelaShell",
+		interpreter = "_undefined_",
 		
 		autocomplete = true,
 		acandtip = {
@@ -43,15 +43,13 @@ ide = {
 		filehistorylength = 20,
 		projecthistorylength = 15,
 		savebak = false,
-		singleinstance = true,
+		singleinstance = false,
 		singleinstanceport = 0xe493,
 		
 		view = {
 			vsplitterpos = 150,
 			splitterheight = 200,
 		},
-		
-		setup = "",
 	},
 	specs = {
 		none = {
@@ -69,8 +67,7 @@ ide = {
 	app              = nil,    -- application engine
 	interpreter      = nil,    -- current Lua interpreter
 	frame            = nil,    -- gui related
-	debugger         = {       -- debugger related info
-	},    
+	debugger         = {},     -- debugger related info
 	filetree         = nil,    -- filetree
 	findReplace      = nil,    -- find & replace handling
 	settings         = nil,    -- user settings (window pos, last files..)
@@ -78,6 +75,7 @@ ide = {
 	-- misc
 	exitingProgram   = false,  -- are we currently exiting, ID_EXIT
 	editorApp        = wx.wxGetApp(),
+	editorFilename   = nil,
 	openDocuments    = {},-- open notebook editor documents[winId] = {
 						  --   editor     = wxStyledTextCtrl,
 						  --   index      = wxNotebook page index,
@@ -86,12 +84,41 @@ ide = {
 						  --   modTime    = wxDateTime of disk file or nil,
 						  --   isModified = bool is the document modified? }
 	ignoredFilesList = {},
-	font			 = nil,
-	fontItalic		 = nil,
-	ofont			 = nil,
-	ofontItalic		 = nil,
+	font             = nil,
+	fontItalic       = nil,
+	ofont            = nil,
+	ofontItalic      = nil,
 }
 
+
+---------------
+-- process args
+local filenames = {}
+local configs = {}
+do
+	local arg = {...}
+	ide.arg = arg
+	-- first argument must be the application name
+	assert(type(arg[1]) == "string","first argument must be application name")
+	ide.editorFilename = arg[1]
+	ide.config.path.app = arg[1]:match("([%w_-]+)%.?[^%.]*$")
+	assert(ide.config.path.app, "no application path defined")
+	for index = 2, #arg do
+		if (arg[index] == "-cfg" and index+1 <= #arg) then
+			local str = arg[index+1]
+			if #str < 4 then
+				print("Comandline: -cfg arg data not passed as string")
+			else
+				table.insert(configs,str)
+			end
+			index = index+1
+		else
+			table.insert(filenames,arg[index])
+		end
+	end
+end
+
+-----------------------
 -- load config
 local function addConfig(filename,showerror,isstring)
 	local cfgfn,err = isstring and loadstring(filename) or loadfile(filename)
@@ -109,37 +136,16 @@ local function addConfig(filename,showerror,isstring)
 					debug.traceback(err))end)
 	end
 end
-local function loadCFG()
-	addConfig("cfg/config.lua",true)
-	addConfig("cfg/user.lua",false)
-end
-loadCFG()
-
----------------
--- process args
-local filenames = {}
 
 do
-	local arg = {...}
-	ide.arg = arg
-	-- first argument must be the application name
-	assert(type(arg[1]) == "string","first argument must be application name")
-	ide.config.path.app = arg[1]:match("([%w_-]+)%.?[^%.]*$")
-	assert(ide.config.path.app, "no application path defined")
-	for index = 2, #arg do
-		if (arg[index] == "-cfg" and index+1 <= #arg) then
-			local str = arg[index+1]
-			if #str < 4 then
-				print("Comandline: -cfg arg data not passed as string")
-			else
-				addConfig(str,true,true)
-			end
-			index = index+1
-		else
-			table.insert(filenames,arg[index])
-		end
+	addConfig(ide.config.path.app.."/config.lua",true)
+	addConfig("cfg/user.lua",false)
+	for i,v in ipairs(configs) do
+		addConfig(v,true,true)
 	end
+	configs = nil
 end
+
 
 ----------------------
 -- process application
