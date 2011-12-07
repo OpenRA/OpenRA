@@ -8,6 +8,7 @@ local mobdebug = require "mobdebug"
 local debugger = {}
 debugger.server     = nil    -- DebuggerServer object when debugging, else nil
 debugger.running    = false  -- true when the debuggee is running
+debugger.listening  = false  -- true when the debugger is listening for a client
 debugger.portnumber = 8171   -- the port # to use for debugging
 debugger.watchWindow      = nil    -- the watchWindow, nil when not created
 debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
@@ -68,6 +69,7 @@ debugger.listen = function()
 
     DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
   end)
+  debugger.listening = true
 end
 
 debugger.handle = function(line)
@@ -133,8 +135,6 @@ debugger.updateWatches = function()
 end
 
 debugger.update = function() copas.step(0) end
-
-debugger.listen()
 
 function CloseWatchWindow()
 	if (debugger.watchWindow) then

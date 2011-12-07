@@ -29,6 +29,9 @@ local app = {
     icon:LoadFile("zbstudio/res/zbstudio.ico",wx.wxBITMAP_TYPE_ICO)
     ide.frame:SetIcon(icon)
 
+    -- start debugger
+    ide.debugger.listen()
+
     local pos = ide.frame.menuBar:FindMenu("&Project")
     local menu = ide.frame.menuBar:GetMenu(pos)
     local itemid = menu:FindItem("Lua &interpreter")

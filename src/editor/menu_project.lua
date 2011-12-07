@@ -30,8 +30,8 @@ assert(lastinterpreter,"no interpreters defined")
 local debugMenu = wx.wxMenu{
 		{ ID_RUN,              "&Run\tF6",                "Execute the current project/file" },
 		{ ID_COMPILE,          "&Compile\tF7",            "Test compile the Lua file" },
-		--{ ID_ATTACH_DEBUG,     "&Attach\tShift-F6",     "Allow a client to start a debugging session" },
 		{ ID_START_DEBUG,      "&Start Debugging\tF5",    "Start a debugging session" },
+		{ ID_ATTACH_DEBUG,     "&Start Debugger Server\tShift-F6",       "Allow a client to start a debugging session" },
 		--{ ID_USECONSOLE,       "Console",               "Use console when running",  wx.wxITEM_CHECK },
 		{ },
 		{ ID_STOP_DEBUG,       "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
@@ -39,7 +39,7 @@ local debugMenu = wx.wxMenu{
 		{ ID_STEP_OVER,        "Step &Over\tF10",        "Step over the next line" },
 		{ ID_STEP_OUT,         "Step O&ut\tShift-F10",   "Step out of the current function" },
 		{ ID_CONTINUE,         "Co&ntinue\tShift-F5",    "Run the program at full speed" },
-		{ ID_BREAK,            "&Break",                 "Stop execution of the program at the next executed line of code" },
+		--{ ID_BREAK,            "&Break",                 "Stop execution of the program at the next executed line of code" },
 		{ },
 		{ ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
 		--{ ID "view.debug.callstack",    "V&iew Call Stack",       "View the LUA call stack" },
@@ -208,16 +208,17 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-		        debugger.connect()
+		        debugger.listen()
 		end)
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
-			event:Enable((debugger.server == nil) and (editor ~= nil))
+			event:Enable((not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
+		  if not debugger.listening then debugger.listen() end
                   local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
                   RunInterpreter(GetNameToRun(),
                                  "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
