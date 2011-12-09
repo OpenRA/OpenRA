@@ -127,7 +127,7 @@ crate-effects:
 		Length: *
 	nuke: missile2
 		Start: 0
-		Length: 29
+		Length: *
 	dollar: dollar
 		Start: 0
 		Length: *
@@ -142,10 +142,10 @@ crate-effects:
 		Length: *
 	mine: mine
 		Start: 0
-		Length: 21
+		Length: *
 	redskull: rapid
 		Start: 0
-		Length: 20
+		Length: *
 	cloak: cloakcrate
 		Start: 0
 		Length: *
