@@ -226,7 +226,7 @@ namespace OpenRA
 				Path = toPath;
 
 				// Create a new map package
-				// TODO: Add other files (resources, rules) to the entries list
+				// TODO: Add other files (custom assets) to the entries list
 				Container = FileSystem.CreatePackage(Path, int.MaxValue, entries);
 			}
 
