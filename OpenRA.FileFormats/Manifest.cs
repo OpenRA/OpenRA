@@ -61,7 +61,7 @@ namespace OpenRA.FileFormats
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
-				return new string[ 0 ];
+				return new string[] {};
 
 			return yaml[key].NodesDict.Keys.ToArray();
 		}
