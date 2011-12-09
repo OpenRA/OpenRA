@@ -123,25 +123,7 @@ namespace OpenRA.FileFormats
 			return null;
 		}
 
-		public static Stream Open(string filename)
-		{
-			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
-			{
-				var ret = GetFromCache( allFiles, filename );
-				if( ret != null )
-					return ret;
-			}
-
-			var folder = mountedFolders
-				.Where(x => x.Exists(filename))
-				.OrderByDescending(x => x.Priority)
-				.FirstOrDefault();
-
-			if (folder != null)
-				return folder.GetContent(filename);
-
-			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
-		}
+		public static Stream Open(string filename) { return OpenWithExts(filename, ""); }
 
 		public static Stream OpenWithExts( string filename, params string[] exts )
 		{
@@ -157,9 +139,13 @@ namespace OpenRA.FileFormats
 
 			foreach( var ext in exts )
 			{
-				foreach( IFolder folder in mountedFolders.OrderByDescending(x => x.Priority) )
-					if (folder.Exists(filename + ext))
-						return folder.GetContent( filename + ext );
+				var folder = mountedFolders
+					.Where(x => x.Exists(filename + ext))
+					.OrderByDescending(x => x.Priority)
+					.FirstOrDefault();
+
+				if (folder != null)
+					return folder.GetContent(filename + ext);
 			}
 
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
