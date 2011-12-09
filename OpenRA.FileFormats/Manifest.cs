@@ -50,8 +50,10 @@ namespace OpenRA.FileFormats
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 
 			LoadScreen = yaml["LoadScreen"];
-			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key, x => Pair.New(x.Value.NodesDict["Font"].Value,
-												                  int.Parse(x.Value.NodesDict["Size"].Value)));
+			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,
+				x => Pair.New(x.Value.NodesDict["Font"].Value,
+					int.Parse(x.Value.NodesDict["Size"].Value)));
+
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = int.Parse(yaml["TileSize"].Value);
 		}
