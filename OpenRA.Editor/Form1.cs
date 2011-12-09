@@ -286,9 +286,9 @@ namespace OpenRA.Editor
 					return;
 
 				surface1.Map.ResizeCordon((int)rd.cordonLeft.Value,
-									   (int)rd.cordonTop.Value,
-									   (int)rd.cordonRight.Value,
-									   (int)rd.cordonBottom.Value);
+					(int)rd.cordonTop.Value,
+					(int)rd.cordonRight.Value,
+					(int)rd.cordonBottom.Value);
 
 				if ((int)rd.width.Value != surface1.Map.MapSize.X || (int)rd.height.Value != surface1.Map.MapSize.Y)
 				{
