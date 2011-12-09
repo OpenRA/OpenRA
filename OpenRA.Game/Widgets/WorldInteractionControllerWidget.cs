@@ -57,21 +57,11 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (Game.Settings.Keys.UseClassicMouseStyle)
-				{
-//					if ((SelectionBox == null) && world.Selection.Actors.Any() && (mi.MultiTapCount != 2))
-					if (SelectionBox == null)
-													/* don't issue orders while selecting */
-						ApplyOrders(world, xy, mi);
-				}
-				else
-				{
-					if (!TakeFocus(mi))
-						return false;
+				if (!TakeFocus(mi))
+					return false;
 
-					dragStart = dragEnd = xy;
-					ApplyOrders(world, xy, mi);
-				}
+				dragStart = dragEnd = xy;
+				ApplyOrders(world, xy, mi);
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
@@ -81,7 +71,12 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if (mi.MultiTapCount == 2)
+Console.WriteLine("Test Message 1 - mi.MultiTapCount = {0}\n", mi.MultiTapCount);
+if (SelectionBox == null)
+Console.WriteLine("Test Message 2 - SelectionBox = null\n");
+else
+Console.WriteLine("Test Message 3 - SelectionBox exists!\n");
+					if ((mi.MultiTapCount == 2) && (SelectionBox == null))
 					{
 						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
@@ -97,15 +92,28 @@ namespace OpenRA.Widgets
 
 						world.Selection.Combine(world, newSelection, true, false);
 					}
-					else
+
+					if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
+						|| ((!Game.Settings.Keys.UseClassicMouseStyle)
+							&& ((mi.MultiTapCount == 1) || ((mi.MultiTapCount == 2) && (SelectionBox != null)))))
 					{
-						if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
-							|| !Game.Settings.Keys.UseClassicMouseStyle)
-						{
-							var newSelection = SelectActorsInBox(world, dragStart, xy);
-							world.Selection.Combine(world, newSelection,
-											mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
-						}
+						var newSelection = SelectActorsInBox(world, dragStart, xy);
+						world.Selection.Combine(world, newSelection,
+										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					}
+if (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null)
+Console.WriteLine("Test Message 4 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() = null\n");
+else
+Console.WriteLine("Test Message 5 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() exists!\n");
+					if ((Game.Settings.Keys.UseClassicMouseStyle) && (mi.MultiTapCount != 2) && (SelectionBox == null)
+						&& (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null))
+					{
+if (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null)
+Console.WriteLine("Test Message 6 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() = null\n");
+else
+Console.WriteLine("Test Message 7 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() exists!\n");
+						if (SelectionBox == null)		/* don't issue orders while selecting */
+						ApplyOrders(world, xy, mi);
 					}
 				}
 
