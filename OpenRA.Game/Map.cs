@@ -137,11 +137,8 @@ namespace OpenRA
 			Actors = Lazy.New(() =>
 			{
 				var ret =  new Dictionary<string, ActorReference>();
-				// Load actors
 				foreach (var kv in yaml.NodesDict["Actors"].NodesDict)
 					ret.Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.NodesDict));
-
-				// Add waypoint actors
 				return ret;
 			});
 
