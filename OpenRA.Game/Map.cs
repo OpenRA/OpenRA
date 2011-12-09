@@ -162,23 +162,20 @@ namespace OpenRA
 				return ret;
 			});
 
-
-			// Rules
-			Rules = yaml.NodesDict["Rules"].Nodes;
-
-			// Sequences
-			Sequences = (yaml.NodesDict.ContainsKey("Sequences")) ? yaml.NodesDict["Sequences"].Nodes : new List<MiniYamlNode>();
-
-			// Weapons
-			Weapons = (yaml.NodesDict.ContainsKey("Weapons")) ? yaml.NodesDict["Weapons"].Nodes : new List<MiniYamlNode>();
-
-			// Voices
-			Voices = (yaml.NodesDict.ContainsKey("Voices")) ? yaml.NodesDict["Voices"].Nodes : new List<MiniYamlNode>();
+			Rules = NodesOrEmpty(yaml, "Rules");
+			Sequences = NodesOrEmpty(yaml, "Sequences");
+			Weapons = NodesOrEmpty(yaml, "Weapons");
+			Voices = NodesOrEmpty(yaml, "Voices");
 
 			CustomTerrain = new string[MapSize.X, MapSize.Y];
 
 			MapTiles = Lazy.New(() => LoadMapTiles());
 			MapResources = Lazy.New(() => LoadResourceTiles());
+		}
+
+		static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
+		{
+			return y.NodesDict.ContainsKey(s) ? y.NodesDict[s].Nodes : new List<MiniYamlNode>();
 		}
 
 		public void Save(string toPath)
