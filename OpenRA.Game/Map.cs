@@ -121,9 +121,6 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml);
 			Uid = ComputeHash();
 
-			// 'Simple' metadata
-			FieldLoader.Load( this, yaml );
-
 			// Support for formats 1-3 dropped 2011-02-11.
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
