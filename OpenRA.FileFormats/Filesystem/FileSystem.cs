@@ -157,7 +157,7 @@ namespace OpenRA.FileFormats
 
 			foreach( var ext in exts )
 			{
-				foreach( IFolder folder in mountedFolders )
+				foreach( IFolder folder in mountedFolders.OrderByDescending(x => x.Priority) )
 					if (folder.Exists(filename + ext))
 						return folder.GetContent( filename + ext );
 			}
