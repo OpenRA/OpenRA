@@ -151,13 +151,7 @@ namespace OpenRA.FileFormats
 			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
 		}
 
-		public static bool Exists(string filename)
-		{
-			foreach (var folder in mountedFolders)
-				if (folder.Exists(filename))
-					return true;
-			return false;
-		}
+		public static bool Exists(string filename) { return mountedFolders.Any(f => f.Exists(filename)); }
 
 		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 
