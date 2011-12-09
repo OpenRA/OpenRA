@@ -499,7 +499,7 @@ namespace OpenRA.Editor
 			PopulateActorOwnerChooser();
 		}
 
-		void onDrawPlayerItem(object sender, DrawItemEventArgs e)
+		void DrawPlayerListItem(object sender, DrawItemEventArgs e)
 		{
 			// color block
 			var player = e.Index >= 0 ? (PlayerReference)(sender as ComboBox).Items[e.Index] : null;
@@ -517,7 +517,7 @@ namespace OpenRA.Editor
 				e.Graphics.DrawString( player.Name, e.Font, foreBrush, e.Bounds.Left + e.Bounds.Height + 12, e.Bounds.Top );
 		}
 
-		void onSelectOwner(object sender, EventArgs e)
+		void OnSelectedPlayerChanged(object sender, EventArgs e)
 		{
 			var player = actorOwnerChooser.SelectedItem as PlayerReference;
 			surface1.NewActorOwner = player.Name;

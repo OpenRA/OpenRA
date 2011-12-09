@@ -225,8 +225,8 @@ namespace OpenRA.Editor
 			this.actorOwnerChooser.Name = "actorOwnerChooser";
 			this.actorOwnerChooser.Size = new System.Drawing.Size(184, 21);
 			this.actorOwnerChooser.TabIndex = 3;
-			this.actorOwnerChooser.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.onDrawPlayerItem);
-			this.actorOwnerChooser.SelectionChangeCommitted += new System.EventHandler(this.onSelectOwner);
+			this.actorOwnerChooser.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawPlayerListItem);
+			this.actorOwnerChooser.SelectionChangeCommitted += new System.EventHandler(this.OnSelectedPlayerChanged);
 			// 
 			// tabPage3
 			// 
