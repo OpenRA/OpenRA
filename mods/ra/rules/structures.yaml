@@ -111,6 +111,8 @@ SPEN:
 		ExitCell: 2,0
 	Production:
 		Produces: Ship
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -166,6 +168,8 @@ SYRD:
 		ExitCell: 2,0
 	Production:
 		Produces: Ship
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	PrimaryBuilding:
 	IronCurtainable:
 	-EmitInfantryOnSell:
@@ -599,6 +603,8 @@ WEAP:
 		ExitCell: 1,1
 	Production:
 		Produces: Vehicle
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
@@ -626,6 +632,7 @@ FACT:
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
+	AllowsBuildingRepair:
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
@@ -728,6 +735,8 @@ HPAD:
 		ExitCell: 0,0
 	Production:
 		Produces: Plane
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -762,6 +771,8 @@ AFLD:
 		Facing:192
 	Production:
 		Produces: Plane
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
@@ -879,6 +890,7 @@ BARR:
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Produces infantry
+		
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -899,6 +911,8 @@ BARR:
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
@@ -936,6 +950,8 @@ TENT:
 		ExitCell: 0,2
 	Production:
 		Produces: Infantry
+		SpeedUp: 0.15
+		MaxSpeedUp: 0.45
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:

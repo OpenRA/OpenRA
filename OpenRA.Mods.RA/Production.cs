@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA
 	public class ProductionInfo : ITraitInfo
 	{
 		public readonly string[] Produces = { };
+		public readonly float SpeedUp = 0;
+		public readonly float MaxSpeedUp = 0;
 
 		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
