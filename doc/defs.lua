@@ -160,6 +160,7 @@ config = {
 -- ----------------------------------------------------
 
 app = {
+	preinit  = function() end, -- post spec/tool loading, but prior subsystems/ui generation
 	postinit = function() end, -- post init, prior starting mainloop
 	loadfilters = {
 		tools = function(file) return true end,
