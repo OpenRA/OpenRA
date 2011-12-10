@@ -8,6 +8,7 @@ return {
 			local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
 			local script
 			if rundebug then
+				DebuggerAttachDefault()
 				script = ""..
 					"package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
 					"package.cpath=package.cpath..';"..editorDir.."bin/clibs/?.dll';"..

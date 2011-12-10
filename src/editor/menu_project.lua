@@ -234,7 +234,6 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
-		  if not debugger.listening then debugger.listen() end
 			runInterpreter(getNameToRun(), true)
 		end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
@@ -340,5 +339,7 @@ frame:Connect(ID "view.debug.watches", wx.wxEVT_UPDATE_UI,
 
 frame:Connect(wx.wxEVT_IDLE,
 		function(event)
-			debugger.update()
+			if (debugger.update) then
+				debugger.update()
+			end
 		end)

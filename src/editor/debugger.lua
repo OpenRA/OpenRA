@@ -180,6 +180,7 @@ end
 -- public api
 
 function DebuggerDefaultAttach()
+	if (debugger.listening) then return end
 	debugger.listen()
 end
 
