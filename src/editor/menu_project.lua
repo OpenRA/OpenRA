@@ -67,53 +67,47 @@ local targetworkdir = wx.wxMenu{
 debugMenu:Append(0,"Lua &interpreter",target,"Set the interpreter to be used")
 debugMenu:Append(0,"Project directory",targetworkdir,"Set the project directory to be used")
 menuBar:Append(debugMenu, "&Project")
---menuBar:Check(ID_USECONSOLE, true)
 
-function UpdateProjectDir(projdir,skiptree)
+function ProjectUpdateProjectDir(projdir,skiptree)
 	ide.config.path.projectdir = projdir
 	menuBar:SetLabel(ID "debug.projectdir.currentdir",projdir)
 	frame:SetStatusText(projdir)
 	if (not skiptree) then
-		ide.filetree:UpdateProjectDir(projdir)
+		ide.filetree:updateProjectDir(projdir)
 	end
 end
-UpdateProjectDir(ide.config.path.projectdir)
+ProjectUpdateProjectDir(ide.config.path.projectdir)
 
 -- interpreter setup
-local curinterpreterid = IDget("debug.interpreter."..ide.config.interpreter)  or 
-			 ID ("debug.interpreter."..lastinterpreter)
-ide.config.interpreterClass = interpreters[curinterpreterid]
-local interpreter = ide.config.interpreterClass
+local defaultid = IDget("debug.interpreter."..ide.config.interpreter) or 
+		 ID ("debug.interpreter."..lastinterpreter)
+menuBar:Check(defaultid, true)
 
-	menuBar:Check(curinterpreterid, true)
-	
-	local function selectInterpreter (id)
-		for i,inter in pairs(interpreters) do
-			menuBar:Check(i, false)
-		end
-		menuBar:Check(id, true)
-		curinterpreterid = id
-		ide.config.interpreter = interpreters[id].fname
-		ide.config.interpreterClass = interpreters[id]
-                interpreter = ide.config.interpreterClass
-		ReloadLuaAPI()
+local function selectInterpreter(id)
+	for i,inter in pairs(interpreters) do
+		menuBar:Check(i, false)
 	end
-	
-	local function evSelectInterpreter (event)
-		local chose = event:GetId()
-		selectInterpreter(chose)
-	end
-	
-	for id,inter in pairs(interpreters) do
-		frame:Connect(id,wx.wxEVT_COMMAND_MENU_SELECTED,evSelectInterpreter)
-	end
-	
-function SetInterpreter(name)
+	menuBar:Check(id, true)
+	local interpreter = interpreters[id]
+	ide.interpreter = interpreter
+	ReloadLuaAPI()
+end
+
+function ProjectSetInterpreter(name)
 	local id = IDget("debug.interpreter."..name)
 	if (not interpreters[id]) then return end
 	selectInterpreter(id)
 end
-
+	
+local function evSelectInterpreter (event)
+	local chose = event:GetId()
+	selectInterpreter(chose)
+end
+	
+for id,inter in pairs(interpreters) do
+	frame:Connect(id,wx.wxEVT_COMMAND_MENU_SELECTED,evSelectInterpreter)
+end
+	
 local function projChoose(event)
 	local editor = GetEditor()
 	local id       = editor:GetId()
@@ -123,18 +117,12 @@ local function projChoose(event)
 	
 	local projectdir = ide.config.path.projectdir
 	
-	--filePicker:Show(true)
-	--local diag = wx.wxDialog()
-	--diag:ShowModal(true)
 	local filePicker = wx.wxDirDialog(frame, "Chose a project directory", 
 			projectdir~="" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
 	local res = filePicker:ShowModal(true)
-	--for i,v in pairs(wx) do if v == res then print(i) end end
-	--print(res)
 	if res == wx.wxID_OK then
-		UpdateProjectDir(filePicker:GetPath())
+		ProjectUpdateProjectDir(filePicker:GetPath())
 	end
-	--filePicker:Destroy()
 	return true
 end
 	
@@ -152,7 +140,7 @@ local function projFromFile(event)
 	local fn       = wx.wxFileName(filepath)
 	fn:Normalize() -- want absolute path for dialog
 	
-	if interpreter then UpdateProjectDir(interpreter:fprojdir(fn)) end
+	if ide.interpreter then ProjectUpdateProjectDir(ide.interpreter:fprojdir(fn)) end
 end
 frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 	projFromFile)
@@ -175,21 +163,21 @@ function GetNameToRun()
 	return wx.wxFileName(openDocuments[id].filePath)
 end
 
-function RunInterpreter(wfilename, script)
+function RunInterpreter(wfilename, withdebugger)
         if not wfilename then return end
-	interpreter:frun(wfilename, script)
+	ide.interpreter:frun(wfilename, withdebugger)
 end
 	
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			local editor = GetEditor()
 			local line = editor:LineFromPosition(editor:GetCurrentPos())
-			ToggleDebugMarker(editor, line)
+			DebuggerToggleBreakpoint(editor, line)
 		end)
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI, 
 	function(event)
 		local editor = GetEditor()
-		event:Enable(interpreter and interpreter.hasdebugger and (editor ~= nil))
+		event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and (editor ~= nil))
 	end)
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -198,7 +186,6 @@ frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
 			CompileProgram(editor)
 		end)
 frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
-
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
@@ -217,7 +204,8 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
-			event:Enable(interpreter and interpreter.hasdebugger and (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
+			event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
+                                     (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -228,7 +216,8 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
 			local editor = GetEditor()
-			event:Enable(interpreter and interpreter.hasdebugger and (debugger.server == nil) and (editor ~= nil))
+			event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and 
+                                     (debugger.server == nil) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -275,7 +264,8 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		end)
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
 		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
+			local editor = GetEditor()
+			event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -286,7 +276,8 @@ frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
 		end)
 frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
 		function (event)
-			event:Enable((debugger.server ~= nil) and (not debugger.running))
+			local editor = GetEditor()
+			event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
 		end)
 
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -297,7 +288,8 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
 		end)
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
 		function (event)
-			event:Enable((debugger.server ~= nil) and debugger.running)
+			local editor = GetEditor()
+			event:Enable((debugger.server ~= nil) and (debugger.running) and (editor ~= nil))
 		end)
 		
 frame:Connect(ID_DEBUGGER_PORT, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -327,7 +319,7 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
 frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			if not debugger.watchWindow then
-				CreateWatchWindow()
+				DebuggerCreateWatchWindow()
 			end
 		end)
 frame:Connect(ID "view.debug.watches", wx.wxEVT_UPDATE_UI,

@@ -13,8 +13,8 @@ local notebook = splitter.notebook
 local debugger 		= ide.debugger
 
 local viewMenu = wx.wxMenu{
-		{ ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
-		{ },
+-- NYI		{ ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
+-- NYI		{ },
 		{ ID "view.filetree.show", "View &FileTree Window",  "View or Hide the filetree window",wx.wxITEM_CHECK  },
 		{ ID "view.output.show",   "View &Output/Shell Window", "View or Hide the output/shell window",wx.wxITEM_CHECK  },
 		{ },
@@ -25,7 +25,7 @@ menuBar:Append(viewMenu, "&View")
 menuBar:Check(ID "view.filetree.show", true)
 menuBar:Check(ID "view.output.show", true)
 
-frame:Connect(ID "view.preferences", wx.wxEVT_COMMAND_MENU_SELECTED,preferencesDialog.show)
+--frame:Connect(ID "view.preferences", wx.wxEVT_COMMAND_MENU_SELECTED,preferencesDialog.show)
 
 frame:Connect(ID "view.style.loadconfig", wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)

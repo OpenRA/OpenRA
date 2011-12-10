@@ -254,7 +254,7 @@ function CreateEditor(name)
 				local line = editor:LineFromPosition(event:GetPosition())
 				local margin = event:GetMargin()
 				if margin == 1 then
-					ToggleDebugMarker(editor, line)
+					DebuggerToggleBreakpoint(editor, line)
 				elseif margin == 2 then
 					if wx.wxGetKeyState(wx.WXK_SHIFT) and wx.wxGetKeyState(wx.WXK_CONTROL) then
 						FoldSome()

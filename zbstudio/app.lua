@@ -41,7 +41,7 @@ local app = {
 
     pos = ide.frame.menuBar:FindMenu("&View")
     menu = ide.frame.menuBar:GetMenu(pos)
-    local items = {5, 4, 1, 0}
+    local items = {3, 2}
     while #items > 0 do
       local itempos = table.remove(items, 1)
       menu:Destroy(menu:FindItemByPosition(itempos))

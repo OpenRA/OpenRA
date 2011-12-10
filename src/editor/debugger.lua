@@ -1,5 +1,7 @@
 -- Integration with MobDebug
 -- Copyright Paul Kulchenko 2011
+-- Original authors: Lomtik Software (J. Winwood & John Labenski)
+--          Luxinia Dev (Eike Decker & Christoph Kubisch)
 
 local copas  = require "copas"
 local socket = require "socket"
@@ -16,6 +18,48 @@ debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 ide.debugger = debugger
 
 local notebook = ide.frame.vsplitter.splitter.notebook
+
+local function ActivateDocument(fileName, line)
+	if not wx.wxIsAbsolutePath(fileName) then
+		fileName = wx.wxGetCwd().."/"..fileName
+	end
+
+	if wx.__WXMSW__ then
+		fileName = wx.wxUnix2DosFilename(fileName)
+	end
+
+	local fileFound = false
+	for id, document in pairs(ide.openDocuments) do
+		local editor   = document.editor
+		-- for running in cygwin, use same type of separators
+		filePath = string.gsub(document.filePath, "\\", "/")
+		local fileName = string.gsub(fileName, "\\", "/")
+		if string.upper(filePath) == string.upper(fileName) then
+			local selection = document.index
+			notebook:SetSelection(selection)
+			SetEditorSelection(selection)
+			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+			editor:EnsureVisibleEnforcePolicy(line-1)
+			fileFound = true
+			break
+		end
+	end
+
+	return fileFound
+end
+
+local function updateWatches()
+  local watchListCtrl = debugger.watchListCtrl
+  if watchListCtrl and debugger.server and not debugger.running then
+    copas.addthread(function ()
+      for idx = 0, watchListCtrl:GetItemCount() - 1 do
+        local expression = watchListCtrl:GetItemText(idx)
+        local value = debugger.evaluate(expression)
+        watchListCtrl:SetItem(idx, 1, value)
+      end
+    end)
+  end
+end
 
 debugger.shell = function(expression)
   if debugger.server and not debugger.running then
@@ -102,7 +146,7 @@ debugger.exec = function(command)
             file = debugger.basedir .. "/" .. file
           end
           if ActivateDocument(file, line) then 
-            debugger.updateWatches()
+            updateWatches()
             return 
           else 
             command = "out" -- redo now trying to get out of this file
@@ -121,19 +165,6 @@ debugger.updateBreakpoint = function(command)
   end
 end
 
-debugger.updateWatches = function()
-  local watchListCtrl = debugger.watchListCtrl
-  if watchListCtrl and debugger.server and not debugger.running then
-    copas.addthread(function ()
-      for idx = 0, watchListCtrl:GetItemCount() - 1 do
-        local expression = watchListCtrl:GetItemText(idx)
-        local value = debugger.evaluate(expression)
-        watchListCtrl:SetItem(idx, 1, value)
-      end
-    end)
-  end
-end
-
 debugger.update = function() copas.step(0) end
 debugger.close = function() debugger.exec("exit") end
 debugger.step = function() debugger.exec("step") end
@@ -145,7 +176,7 @@ debugger.breakpoint = function(file, line, state)
   debugger.updateBreakpoint((state and "setb " or "delb ") .. file .. " " .. line)
 end
 
-function CloseWatchWindow()
+function DebuggerCloseWatchWindow()
 	if (debugger.watchWindow) then
     	        SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
 		debugger.watchListCtrl = nil
@@ -153,7 +184,7 @@ function CloseWatchWindow()
 	end
 end
 
-function CreateWatchWindow()
+function DebuggerCreateWatchWindow()
 	local width = 200
 	local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY, 
                                        "Watch Window",
@@ -192,7 +223,7 @@ function CreateWatchWindow()
 	SettingsRestoreFramePosition(watchWindow, "WatchWindow")
 	watchWindow:Show(true)
 
-	local function FindSelectedWatchItem()
+	local function findSelectedWatchItem()
 		local count = watchListCtrl:GetSelectedItemCount()
 		if count > 0 then
 			for idx = 0, watchListCtrl:GetItemCount() - 1 do
@@ -206,7 +237,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect( wx.wxEVT_CLOSE_WINDOW,
 			function (event)
-				CloseWatchWindow()
+				DebuggerCloseWatchWindow()
 				watchWindow = nil
 				watchListCtrl = nil
 				event:Skip()
@@ -222,7 +253,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
 			function (event)
-				local row = FindSelectedWatchItem()
+				local row = findSelectedWatchItem()
 				if row >= 0 then
 					watchListCtrl:EditLabel(row)
 				end
@@ -234,7 +265,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
 			function (event)
-				local row = FindSelectedWatchItem()
+				local row = findSelectedWatchItem()
 				if row >= 0 then
 					watchListCtrl:DeleteItem(row)
 				end
@@ -246,7 +277,7 @@ function CreateWatchWindow()
 
 	watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
 			function (event)
-				debugger.updateWatches()
+				updateWatches()
 			end)
 	watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
 			function (event)
@@ -256,7 +287,7 @@ function CreateWatchWindow()
 	watchListCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
 			function (event)
 				watchListCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-				debugger.updateWatches()
+				updateWatches()
 				event:Skip()
 			end)
 end
@@ -268,7 +299,7 @@ function MakeDebugFileName(editor, filePath)
 	return filePath
 end
 
-function ToggleDebugMarker(editor, line)
+function DebuggerToggleBreakpoint(editor, line)
 	local markers = editor:MarkerGet(line)
 	if markers >= CURRENT_LINE_MARKER_VALUE then
 		markers = markers - CURRENT_LINE_MARKER_VALUE
@@ -286,33 +317,4 @@ function ToggleDebugMarker(editor, line)
                         debugger.breakpoint(filePath, line+1, true)
 		end
 	end
-end
-
-function ActivateDocument(fileName, line)
-	if not wx.wxIsAbsolutePath(fileName) then
-		fileName = wx.wxGetCwd().."/"..fileName
-	end
-
-	if wx.__WXMSW__ then
-		fileName = wx.wxUnix2DosFilename(fileName)
-	end
-
-	local fileFound = false
-	for id, document in pairs(ide.openDocuments) do
-		local editor   = document.editor
-		-- for running in cygwin, use same type of separators
-		filePath = string.gsub(document.filePath, "\\", "/")
-		local fileName = string.gsub(fileName, "\\", "/")
-		if string.upper(filePath) == string.upper(fileName) then
-			local selection = document.index
-			notebook:SetSelection(selection)
-			SetEditorSelection(selection)
-			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-			editor:EnsureVisibleEnforcePolicy(line-1)
-			fileFound = true
-			break
-		end
-	end
-
-	return fileFound
 end

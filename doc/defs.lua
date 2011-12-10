@@ -10,7 +10,6 @@
 -- /tools/*.lua
 -- /api/*<apitype>/*.lua
 
-
 -- style definition
 -- ----------------------------------------------------
 -- all entries are optiona
@@ -122,7 +121,6 @@ config = {
 		
 	interpreter = "EstrelaEditor",
 		-- the default "project" lua interpreter
-		-- EstrelaEditor, Luxinia, Lua
 		
 	autocomplete = true,
 		-- whether autocomplete is on by default
@@ -168,12 +166,11 @@ app = {
 		specs = function(file) return true end,
 		interpreters = function(file) return true end,
 	}
-    stringtable = {	-- optional entries uses defaults otherwise
+        stringtable = {	-- optional entries uses defaults otherwise
 		editor = nil,
 		statuswelcome = nil,
 	}
 }
-
 
 -- api definition
 -- ----------------------------------------------------
@@ -206,8 +203,6 @@ api = {
 	--...
 	},
 }
-
-
 
 -- spec definition
 -- ----------------------------------------------------
@@ -294,7 +289,6 @@ debugserver = {
 
 	-- NYI getstack = function(self ) return {} end,	-- get stack information
 }
-
 
 -- interpreter definition
 -- ----------------------------------------------------

@@ -69,7 +69,8 @@ ide = {
 	app              = nil,    -- application engine
 	interpreter      = nil,    -- current Lua interpreter
 	frame            = nil,    -- gui related
-	debugger         = nil,    -- debugger
+	debugger         = {	   -- debugger related info
+        },
 	filetree         = nil,    -- filetree
 	findReplace      = nil,    -- find & replace handling
 	settings         = nil,    -- user settings (window pos, last files..)
@@ -275,7 +276,7 @@ SettingsRestoreFramePosition(ide.frame, "MainFrame")
 SettingsRestoreView()
 SettingsRestoreFileSession(SetOpenFiles)
 SettingsRestoreFileHistory(UpdateFileHistoryUI)
-SettingsRestoreProjectSession(SetProjects)
+SettingsRestoreProjectSession(FileTreeSetProjects)
 
 
 -- ---------------------------------------------------------------------------

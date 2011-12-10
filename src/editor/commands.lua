@@ -166,7 +166,7 @@ function SaveFileAs(editor)
 	local saved    = false
 	local filePath = openDocuments[id].filePath
 	if (not filePath) then
-		filePath = GetFileTreeDir()
+		filePath = FileTreeGetDir()
 		filePath = (filePath or "").."untitled"
 	end
 	
@@ -460,12 +460,12 @@ function CloseWindow(event)
 		return
 	end
 	
-	SettingsSaveProjectSession(GetProjects())
+	SettingsSaveProjectSession(FileTreeGetProjects())
 	SettingsSaveFileSession(GetOpenFiles())
 	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
 	SettingsSaveEditorSettings()
-	CloseWatchWindow()
+	DebuggerCloseWatchWindow()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
 end

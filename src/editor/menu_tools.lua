@@ -25,12 +25,11 @@ tool = {
 
 
 local toolArgs = {{},}
-
+local cnt = 1
 
 -- fill in tools that have a automatic execution
 -- function
 do
-	local cnt = 1
 	local maxcnt = 10
 	
 	local tools = {}
@@ -57,17 +56,14 @@ do
 end
 
 -- Build Menu
-local toolMenu = wx.wxMenu{
-		unpack(toolArgs)
+-- only add Tools menu if it is not empty
+if (cnt > 1) then
+	local toolMenu = wx.wxMenu{
+			unpack(toolArgs)
 	}
 
--- only add Tools menu if it is not empty
-if #toolArgs > 1 then -- there is one default separator
-  menuBar:Append(toolMenu, "&Tools")
-end
+	menuBar:Append(toolMenu, "&Tools")
 
--- connect auto execs
-do
 	for name,tool in pairs(ide.tools) do
 		if (tool._execid) then
 			frame:Connect(tool._execid, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -87,7 +83,6 @@ do
 		end
 	end
 end
-
 
 -- Generate Custom Menus/Init
 for name,tool in pairs(ide.tools) do
