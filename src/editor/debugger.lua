@@ -179,7 +179,7 @@ end
 ----------------------------------------------
 -- public api
 
-function DebuggerDefaultAttach()
+function DebuggerAttachDefault()
 	if (debugger.listening) then return end
 	debugger.listen()
 end
