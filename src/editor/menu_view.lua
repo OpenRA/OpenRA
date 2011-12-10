@@ -13,7 +13,6 @@ local notebook = splitter.notebook
 local debugger 		= ide.debugger
 
 local viewMenu = wx.wxMenu{
-
 -- NYI		{ ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
 -- NYI		{ },
 		{ ID "view.filetree.show", "View &FileTree Window",  "View or Hide the filetree window",wx.wxITEM_CHECK  },

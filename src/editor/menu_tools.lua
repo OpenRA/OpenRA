@@ -90,3 +90,4 @@ for name,tool in pairs(ide.tools) do
 		tool.fninit(frame,menuBar)
 	end
 end
+

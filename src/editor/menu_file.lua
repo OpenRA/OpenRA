@@ -115,11 +115,9 @@ frame:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI,
 			event:Enable((GetEditor() ~= nil) and (debugger.server == nil))
 		end)
 
-
 frame:Connect( ID_EXIT, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			if not SaveOnExit(true) then return end
 			frame:Close() -- will handle wxEVT_CLOSE_WINDOW
-			CloseWatchWindow()
+			DebuggerCloseWatchWindow()
 		end)
-

@@ -1,53 +1,24 @@
--- authors: Lomtik Software (J. Winwood & John Labenski)
+-- Integration with MobDebug
+-- Copyright Paul Kulchenko 2011
+-- Original authors: Lomtik Software (J. Winwood & John Labenski)
 --          Luxinia Dev (Eike Decker & Christoph Kubisch)
---          Paul Kulchenko
----------------------------------------------------------
+
+local copas  = require "copas"
+local socket = require "socket"
+local mobdebug = require "mobdebug"
+
 local ide = ide
-local debugger      = ide.debugger
-local frame         = ide.frame
-local notebook      = frame.vsplitter.splitter.notebook
-
-debugger.server     = nil    -- debugger engine provided by interpreter
+local debugger = ide.debugger
+debugger.server     = nil    -- DebuggerServer object when debugging, else nil
 debugger.running    = false  -- true when the debuggee is running
-
+debugger.listening  = false  -- true when the debugger is listening for a client
+debugger.portnumber = 8171   -- the port # to use for debugging
 debugger.watchWindow      = nil    -- the watchWindow, nil when not created
 debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
+local notebook = ide.frame.vsplitter.splitter.notebook
 
--- ---------------------------------------------------------------------------
-
-
-local function updateWatches()
-	local watchListCtrl = debugger.watchListCtrl
-	if watchListCtrl and debugger.server and not debugger.running then
-		local expressions = {}
-		local cnt = watchListCtrl:GetItemCount()
-		for idx = 0, cnt - 1 do
-			table.insert(expressions,watchListCtrl:GetItemText(idx))
-		end
-		
-		local function submitResults(values)
-			if (not debugger.watchListCtrl) then return end
-			local watchListCtrl = debugger.watchListCtrl
-			if (values and #values == cnt) then
-				for idx = 0, cnt - 1 do
-					watchListCtrl:SetItem(idx, 1, values[idx + 1])
-				end
-			else
-				for idx = 0, cnt - 1 do
-					watchListCtrl:SetItem(idx, 1, "")
-				end
-			end
-		end
-		
-		debugger.server:evaluate(expressions,submitResults)
-	end
-end
-
-local function DebuggerFileAction( fileName, line )
-	if (not debugger.server)     then return end
-	if (not (fileName and line)) then return end
-
+local function ActivateDocument(fileName, line)
 	if not wx.wxIsAbsolutePath(fileName) then
 		fileName = wx.wxGetCwd().."/"..fileName
 	end
@@ -55,66 +26,172 @@ local function DebuggerFileAction( fileName, line )
 	if wx.__WXMSW__ then
 		fileName = wx.wxUnix2DosFilename(fileName)
 	end
-	fileName = string.gsub(fileName, "\\", "/")
-	fileName = string.upper(fileName)
 
+	local fileFound = false
 	for id, document in pairs(ide.openDocuments) do
 		local editor   = document.editor
-		local fileOpen = string.gsub(document.filePath, "\\", "/")
-		      fileOpen = string.upper(fileOpen)
-		if fileOpen == fileName then
+		-- for running in cygwin, use same type of separators
+		filePath = string.gsub(document.filePath, "\\", "/")
+		local fileName = string.gsub(fileName, "\\", "/")
+		if string.upper(filePath) == string.upper(fileName) then
 			local selection = document.index
 			notebook:SetSelection(selection)
 			SetEditorSelection(selection)
 			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
 			editor:EnsureVisibleEnforcePolicy(line-1)
-			
-			updateWatches()
-			return true
-			end
-	end
-end
-
-
-frame:Connect(wx.wxEVT_IDLE,
-		function(event)
-			if (debugger.server) then
-				debugger.server:update()
-			end
-		end)
-
--- ---------------------------------------------------------------------------
--- generic debugger setup
-
-function DebuggerStart(server)
-	if (debugger.server) then return end
-	debugger.server = server
-	
-	SetAllEditorsReadOnly(true)
-	-- go over all windows and find all breakpoints
-	for id, document in pairs(ide.openDocuments) do
-		local editor   = document.editor
-		local filePath = string.gsub(document.filePath, "\\", "/")
-		line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-		while line ~= -1 do
-			debugger.server:breakpoint(filePath,line + 1,true)
-			line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+			fileFound = true
+			break
 		end
 	end
+
+	return fileFound
 end
 
-function DebuggerEnd()
-	if (not debugger.server) then return end
-	debugger.server:close()
-	debugger.server = nil
-	SetAllEditorsReadOnly(false)
+local function updateWatches()
+	local watchListCtrl = debugger.watchListCtrl
+	if watchListCtrl and debugger.server and not debugger.running then
+		copas.addthread(function ()
+			for idx = 0, watchListCtrl:GetItemCount() - 1 do
+				local expression = watchListCtrl:GetItemText(idx)
+				local value = debugger.evaluate(expression)
+				watchListCtrl:SetItem(idx, 1, value)
+			end
+		end)
+	end
 end
 
--- ---------------------------------------------------------------------------
--- Create the watch window
+debugger.shell = function(expression)
+	if debugger.server and not debugger.running then
+		copas.addthread(function ()
+			local value, _, err = debugger.handle('eval ' .. expression)
+			if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
+			if err then DisplayShellErr(err)
+						 else DisplayShell(value)
+			end
+		end)
+	end
+end
 
+debugger.listen = function() 
+	local server = socket.bind("*", debugger.portnumber)
+	DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
+	copas.autoclose = false
+	copas.addserver(server, function (skt)
+		debugger.server = copas.wrap(skt)
+		SetAllEditorsReadOnly(true)
+		local editor = GetEditor()
+		local filePath = ide.openDocuments[editor:GetId()].filePath;
+		debugger.basedir = string.gsub(wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
 
-function CloseWatchWindow()
+		-- load the remote file into the debugger
+		-- set basedir first, before loading to make sure that the path is correct
+		debugger.handle("basedir " .. debugger.basedir)
+		debugger.handle("load " .. filePath)
+
+		-- remove all breakpoints that may still be present from the last session
+		-- this only matters for those remote clients that reload scripts 
+		-- without resetting their breakpoints
+		debugger.handle("delallb")
+
+		-- go over all windows and find all breakpoints
+		for id, document in pairs(ide.openDocuments) do
+			local editor   = document.editor
+			local filePath = string.gsub(document.filePath, "\\", "/")
+			line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+			while line ~= -1 do
+				debugger.handle("setb " .. filePath .. " " .. (line+1))
+				line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+			end
+		end
+		
+		local line = 1
+		editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+		editor:EnsureVisibleEnforcePolicy(line-1)
+
+		ShellSupportRemote(debugger.shell, 0)
+
+		DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
+	end)
+	debugger.listening = true
+end
+
+debugger.handle = function(line)
+	local _G = _G
+	local os = os
+	os.exit = function () end
+	_G.print = function () end
+
+	debugger.running = true
+	local file, line, err = mobdebug.handle(line, debugger.server)
+	debugger.running = false
+
+	return file, line, err
+end
+
+debugger.exec = function(command)
+	if debugger.server and not debugger.running then
+		copas.addthread(function ()
+			while true do
+				local file, line, err = debugger.handle(command)
+				if line == nil then
+					debugger.server = nil
+					SetAllEditorsReadOnly(false)
+					ShellSupportRemote(nil, 0)
+					if err then DisplayOutput(err .. "\n") end
+					DisplayOutput("Completed debugging session.\n")
+					return
+				else
+					if debugger.basedir and not wx.wxIsAbsolutePath(file) then
+						file = debugger.basedir .. "/" .. file
+					end
+					if ActivateDocument(file, line) then 
+						updateWatches()
+						return 
+					else 
+						command = "out" -- redo now trying to get out of this file
+					end
+				end 
+			end
+		end)
+	end
+end
+
+debugger.updateBreakpoint = function(command)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      debugger.handle(command)
+    end)
+  end
+end
+
+debugger.update = function() copas.step(0) end
+debugger.terminate = function() debugger.exec("exit") end
+debugger.step = function() debugger.exec("step") end
+debugger.over = function() debugger.exec("over") end
+debugger.out = function() debugger.exec("out") end
+debugger.run = function() debugger.exec("run") end
+debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
+debugger.breaknow = function() DisplayOutput("Not Yet Implemented\n") end
+debugger.breakpoint = function(file, line, state)
+  debugger.updateBreakpoint((state and "setb " or "delb ") .. file .. " " .. line)
+end
+
+----------------------------------------------
+-- public api
+
+function DebuggerDefaultAttach()
+	debugger.listen()
+end
+
+function DebuggerCreateStackWindow()
+	DisplayOutput("Not Yet Implemented\n")
+end
+
+function DebuggerCloseStackWindow()
+
+end
+
+function DebuggerCloseWatchWindow()
 	if (debugger.watchWindow) then
 		SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
 		debugger.watchListCtrl = nil
@@ -144,7 +221,7 @@ function DebuggerCreateWatchWindow()
 	local watchListCtrl = wx.wxListCtrl(watchWindow, ID_WATCH_LISTCTRL,
 					  wx.wxDefaultPosition, wx.wxDefaultSize,
 					  wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
-
+								  
 	debugger.watchListCtrl = watchListCtrl
 
 	local info = wx.wxListItem()
@@ -230,7 +307,7 @@ function DebuggerCreateWatchWindow()
 			end)
 end
 
-local function makeDebugFileName(editor, filePath)
+function DebuggerMakeFileName(editor, filePath)
 	if not filePath then
 		filePath = "file"..tostring(editor)
 	end
@@ -238,25 +315,21 @@ local function makeDebugFileName(editor, filePath)
 end
 
 function DebuggerToggleBreakpoint(editor, line)
-	if (not ide.interpreter.hasdebugger) then return end
-	
 	local markers = editor:MarkerGet(line)
 	if markers >= CURRENT_LINE_MARKER_VALUE then
 		markers = markers - CURRENT_LINE_MARKER_VALUE
 	end
 	local id       = editor:GetId()
-	local filePath = makeDebugFileName(editor, ide.openDocuments[id].filePath)
+	local filePath = DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
 	if markers >= BREAKPOINT_MARKER_VALUE then
 		editor:MarkerDelete(line, BREAKPOINT_MARKER)
-		if (debugger.server) then
-			debugger.server:breakpoint(filePath,line+1,false)
+		if debugger.server then
+			debugger.breakpoint(filePath, line+1, false)
 		end
 	else
 		editor:MarkerAdd(line, BREAKPOINT_MARKER)
-		if (debugger.server) then
-			debugger.server:breakpoint(filePath,line+1,true)
+		if debugger.server then
+			debugger.breakpoint(filePath, line+1, true)
 		end
 	end
 end
-
-

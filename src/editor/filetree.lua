@@ -226,7 +226,6 @@ function filetree:updateProjectDir(newdir, cboxsel)
 	treeSetRoot(projtree,filetree.projdata,newdir)
 end
 
-
 projpanel.projbutton = projbutton
 projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree

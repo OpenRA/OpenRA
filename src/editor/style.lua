@@ -1,6 +1,5 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
-local ide = ide
 ----------
 -- Style
 --
@@ -220,7 +219,7 @@ function LoadConfigStyle()
 									   "Lua file (*.lua)|*.lua|All files (*)|*",
 									   wx.wxOPEN + wx.wxFILE_MUST_EXIST)
 	if fileDialog:ShowModal() == wx.wxID_OK then
-		local cfg = {path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
+		local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {},}
 		local cfgfn,err = loadfile(fileDialog:GetPath())
 		if cfgfn then
 			setfenv(cfgfn,cfg)

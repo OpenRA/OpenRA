@@ -266,7 +266,9 @@ function SaveModifiedDialog(editor, allow_cancel)
 		result = dialog:ShowModal()
 		dialog:Destroy()
 		if result == wx.wxID_YES then
-			SaveFile(editor, filePath)
+			if not SaveFile(editor, filePath) then
+				return wx.wxID_CANCEL -- cancel if canceled save dialog
+			end
 		end
 	end
 
@@ -357,15 +359,6 @@ end
 -----------------
 -- Debug related
 
-local debugger = ide.debugger
-
-
-function MakeDebugFileName(editor, filePath)
-	if not filePath then
-		filePath = "file"..tostring(editor)
-	end
-	return filePath
-end
 
 function ClearAllCurrentLineMarkers()
 	for id, document in pairs(openDocuments) do
@@ -377,17 +370,17 @@ end
 function CompileProgram(editor)
 	local editorText = editor:GetText()
 	local id         = editor:GetId()
-	local filePath   = MakeDebugFileName(editor, openDocuments[id].filePath)
+	local filePath   = DebuggerMakeFileName(editor, openDocuments[id].filePath)
 	local ret, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
 	if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then
 		ClearOutput()
 	end
 
 	if line_num > -1 then
-		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n\n")
+		DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n")
 		editor:GotoLine(line_num-1)
 	else
-		DisplayOutput("Compilation successful!\n\n")
+		DisplayOutput("Compilation successful.\n")
 	end
 
 	return line_num == -1 -- return true if it compiled ok
@@ -468,23 +461,13 @@ function CloseWindow(event)
 		return
 	end
 	
-	
-	if debugger.server then
-		local ds = debugger.server
-		debugger.server = nil
-		--ds:Reset()
-		ds:KillDebuggee()
-		ds:delete()
-	end
-	debugger.running = false
-	
 	SettingsSaveProjectSession(FileTreeGetProjects())
 	SettingsSaveFileSession(GetOpenFiles())
 	SettingsSaveView()
 	SettingsSaveFramePosition(ide.frame, "MainFrame")
 	SettingsSaveEditorSettings()
+	DebuggerCloseWatchWindow()
 	ide.settings:delete() -- always delete the config
 	event:Skip()
-	CloseWatchWindow()
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)

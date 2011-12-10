@@ -125,17 +125,20 @@ splitter:Connect(wx.wxEVT_SIZE, function (evt)
 	end)
 
 -- notebook for editors
-notebook = wx.wxNotebook(splitter, wx.wxID_ANY,
-						 wx.wxDefaultPosition, wx.wxDefaultSize,
-						 wx.wxCLIP_CHILDREN)
+notebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
+				wx.wxDefaultPosition, wx.wxDefaultSize,
+				wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE 
+				- wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
 local current -- the currently active editor, needed by the focus selection
-notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED,
-		function (event)
-			current = event:GetSelection() -- update the active editor reference
-			SetEditorSelection(event:GetSelection())
-			event:Skip() -- skip to let page change
-		end)
+local function onPageChange(event)
+	current = event:GetSelection() -- update the active editor reference
+	SetEditorSelection(event:GetSelection())
+	event:Skip() -- skip to let page change
+end
+
+notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
+notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
 
 notebook:Connect(wx.wxEVT_SET_FOCUS, 	-- Notepad tabs shouldn't be selectable,
 	function (event) 					-- select the editor then instead
@@ -143,9 +146,10 @@ notebook:Connect(wx.wxEVT_SET_FOCUS, 	-- Notepad tabs shouldn't be selectable,
 	end)
 
 -- bottomnotebook (errorlog,shellbox)
-bottomnotebook = wx.wxNotebook(splitter, wx.wxID_ANY,
-						 wx.wxDefaultPosition, wx.wxDefaultSize,
-						 wx.wxCLIP_CHILDREN)
+bottomnotebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
+					wx.wxDefaultPosition, wx.wxDefaultSize,
+					wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE 
+					- wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,wx.wxDefaultPosition, wx.wxDefaultSize,
 										  wx.wxBORDER_STATIC)
 bottomnotebook:AddPage(errorlog, "Output", true)
@@ -178,17 +182,15 @@ shellbox:SetSizer(gridsizer)
 
 bottomnotebook:AddPage(shellbox, "Lua shell",false)
 
-
 -- sidenotebook
-sidenotebook = wx.wxNotebook(vsplitter, wx.wxID_ANY,
-						 wx.wxDefaultPosition, wx.wxDefaultSize,
-						 wx.wxCLIP_CHILDREN)
- 
+sidenotebook = wxaui.wxAuiNotebook(vsplitter, wx.wxID_ANY,
+					wx.wxDefaultPosition, wx.wxDefaultSize,
+					wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE 
+					- wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
 -- init splitters
 splitter:Initialize(notebook)
 vsplitter:Initialize(splitter)
-
 
 -------
 -- hierarchy
@@ -209,5 +211,4 @@ frame.statusBar = statusBar
 frame.menuBar = 	menuBar
 
 ide.frame = frame
-
 

@@ -19,6 +19,7 @@ out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 out:StyleClearAll()
 out:SetBufferedDraw(true)
 out:WrapCount(80)
+out:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220))
 out:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,out,ide.ofont,ide.ofontItalic)
 
@@ -137,8 +138,7 @@ code:SetAcceleratorTable(accel)
 
 function ShellExecuteCode(ev,wfilename)
 	local fn,err
-	local tx
-	local marker
+	local tx	local marker
 	
 	if (wfilename) then
 		fn,err = loadfile(wfilename:GetFullPath())
@@ -157,18 +157,17 @@ function ShellExecuteCode(ev,wfilename)
 		end
 	end
 	
-	if (false and tx ~= nil) then
+	if (tx ~= nil) then
 		-- TODO add marker per-line
 		DisplayShell(marker .. tx)
 	end
 
-	if fn==nil and err then
-		DisplayShellErr(err)
+	if (tx ~= nil) then 
 	elseif fn then
 		setfenv(fn,env)
 		local ok,res = pcall(fn)
 		if ok then DisplayShell(res)
-					else DisplayShellErr(res)
+		else       DisplayShellErr(res)
 		end
 		--xpcall(fn,function(err)
 		--	shellPrint(debug.traceback(err))
@@ -187,7 +186,7 @@ end
 
 shellbox:Connect(wxstc.wxEVT_STC_CHARADDED,
 	function (event)
-		frame:SetStatusText("Execute your code pressing CTRL+ENTER or erase it all with CTRL+ALT+DEL")
+		frame:SetStatusText("Execute your code pressing CTRL+ENTER")
 	end)
 frame:Connect(ID "shellbox.eraseall", wx.wxEVT_COMMAND_MENU_SELECTED, function()
 	code:SetText ""

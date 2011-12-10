@@ -166,7 +166,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 					customprocs[pid].endcallback()
 				end
 				customprocs[pid] = nil
-				DisplayOutput("proc end "..pid.."\n")
+				DisplayOutput("Program finished ("..pid..").\n")
 			end
 		end)
 

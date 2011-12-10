@@ -4,12 +4,12 @@
 -- automatic loaded files, not part of the 
 -- editor source.
 --
--- /cfg/config.lua
+-- /<app>/config.lua
 -- /cfg/user.lua
--- /spec/*.lua
+-- /interpreters/*.lua
+-- /specs/*.lua
 -- /tools/*.lua
--- /api/*<apitype>/*.lua
-
+-- /api/<apitype>/*.lua
 
 -- style definition
 -- ----------------------------------------------------
@@ -167,12 +167,10 @@ app = {
 		interpreters = function(file) return true end,
 	}
 	stringtable = {	-- optional entries uses defaults otherwise
-		editor = nil,
-		statuswelcome = nil,
+		editor = nil,		statuswelcome = nil,
 		-- ...
 	}
 }
-
 
 -- api definition
 -- ----------------------------------------------------
@@ -205,8 +203,6 @@ api = {
 	--...
 	},
 }
-
-
 
 -- spec definition
 -- ----------------------------------------------------
@@ -272,61 +268,38 @@ tool = {
 	}
 }
 
--- debugserver definition
+-- debuginterface definition
 -- ----------------------------------------------------
-debugserver = {
+debuginterface = {
 	update = function(self) end, -- run in idle when active
 	close  = function(self) end, -- run when closed
-	
+
+	-- following are "debugging" actions and must return
+	-- error, running, [filePath, fileLine]
 	run  = function(self) end,
 	step = function(self) end,
 	over = function(self) end,
 	out  = function(self) end,
-	exit = function(self) end,
+	terminate = function(self) end,
 	breaknow = function(self) end,
 	breakpoint = function(self,file,line,state) end,	-- set breakpoint state
-	
+
 	-- returns result table if successful
-	evaluate = function(self, expressions, submitResults) 
-		
-		local results = {}
-		for i,v in ipairs(expressions) do
-			results[i] = getresult(v)
-		end
-		
-		-- when done with work
-		submitResults(results)
-	end,
-	
-	-- NYI getstack = function(self ) return {} end,	-- get stack information
+	evaluate = function(self, expressions, fnSetValues) end,	-- for watches tables expected
+
+	-- NYI getstack = function(self, fnSetValues )  end,	-- get stack information
 }
 
-
--- interpreter definition
--- ----------------------------------------------------
+-- interpreter definition-- ----------------------------------------------------
 interpreter = {
 	name = "",
 	description = "",
-		-- optional to limit loaded lua apis
-	api = {"apifile_without_extension"},
-	
-		-- main file run/debug action
-	frun = function(self,wfilename,withdebugger) 
-			-- do something 
-			if (withdebugger) then
-				-- should start debugging session
-				DebuggerStart(debugserver)
-			end
+	api = {"apifile_without_extension"} -- optional to limit loaded lua apis
+	frun = function(self,wfilename,withdebugger)
 		end,
 	fprojdir = function(self,wfilename)
 			return "projpath_from_filename"	-- optional
 		end,
-	hasdebugger  = false, -- if true debugserver can be created
-	
-		-- optional for "attach" debug capability
-	fstartdebugger = function() 
-		-- should at some point start debugserver
-		DebuggerStart(debugserver)
-	end, 
+	fattachdebug = function(self) end,  -- optional
+	hasdebugger = false, -- if debugging is available
 }
-

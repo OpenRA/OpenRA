@@ -19,5 +19,4 @@ return {
 			return ide.config.path.projectdir and ide.config.path.projectdir:len()>0 and 
 					ide.config.path.projectdir
 			end,
-			--return filepath and filepath:gsub("[\\/]+$","") end,
 	}
