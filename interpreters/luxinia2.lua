@@ -17,11 +17,13 @@ return {
 			return client
 		end,
 		
-		frun = function(self,wfilename)
+		frun = function(self,wfilename,rundebug)
 				local luxdir  = ide.config.path.luxinia2
 				local projdir = ide.config.path.projectdir
 				assert(projdir and projdir:len()>0,"no project directory")
-				local args = " -e "..projdir.."/main.lua"
+				local basedir   = luxdir
+				local startfile = projdir.."/main.lua"
+				local startargs = " -e "..startfile
 				
 				if (CommandLineRunning(self:fuid(wfilename))) then
 					if (not self.fclient) then
@@ -34,16 +36,40 @@ return {
 				
 				self.fclient = nil
 				local fname = wfilename:GetFullName()
-				args = args..(fname and (" -f "..fname) or "")
+				local args = (fname and (" -f "..fname) or "")
+				
+				if rundebug then
+					DebuggerAttachDefault({
+						basedir=basedir,
+						startfile=startfile,
+						run=true, noshell=true,}
+					)
+					local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+					script = ""..
+					"package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
+					"require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.start('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")"
+					
+					args = args..' -es "'..script..'"'..startargs
+				else
+					args = " -s "..args..startargs
+				end
+				
 				local jitargs = ide.config.luxinia2jitargs
 				jitargs = jitargs or ""
-				local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua -s'..args
+				local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua '..args
 				
 				if(CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
-					function() ShellSupportRemote(nil) end)) then return end
+					function() 
+						ShellSupportRemote(nil)
+						if (rundebug) then
+							DebuggerStop()
+						end
+					end)) then return end
 				
-				local client = self:finitclient()
-				ShellSupportRemote(client,self:fuid(wfilename))
+				if not rundebug then
+					local client = self:finitclient()
+					ShellSupportRemote(client,self:fuid(wfilename))
+				end
 			end,
 		fuid = function(self,wfilename) return "luxinia2 "..(ide.config.path.projectdir or "") end,
 		fprojdir = function(self,wfilename)
@@ -57,4 +83,5 @@ return {
 				
 				return path:sub(0,-2)
 			end,
+		hasdebugger = true,
 	}

@@ -179,6 +179,7 @@ local function getNameToRun()
 end
 
 local function runInterpreter(wfilename, withdebugger)
+	ClearAllCurrentLineMarkers()
 	if not wfilename then return end
 	ide.interpreter:frun(wfilename, withdebugger)
 end
@@ -209,6 +210,7 @@ frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			if (debugger.server) then
 				if (not debugger.running) then
+					ClearAllCurrentLineMarkers()
 					debugger.run()
 				end
 			else
@@ -223,6 +225,7 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
+			ClearAllCurrentLineMarkers()
 			if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
 		end)
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,

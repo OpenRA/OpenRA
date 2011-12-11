@@ -27,6 +27,9 @@ ide = {
 			usetabs = true,
 			autotabs = true,
 		},
+		debugger = {
+			verbose = false,
+		},
 		outputshell = {},
 		
 		styles = StylesGetDefault(),

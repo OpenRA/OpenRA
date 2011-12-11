@@ -139,6 +139,9 @@ local coro_debugger
 local events = { BREAK = 1, WATCH = 2 }
 local breakpoints = {}
 local watches = {}
+local lastsource
+local lastfile
+local watchescnt = 0
 local abort = false
 local step_into = false
 local step_over = false
@@ -222,31 +225,41 @@ local function debug_hook(event, line)
     stack_level = stack_level - 1
   elseif event == "line" then
     local caller = debug.getinfo(2, "S")
-
+    
     -- grab the filename and fix it if needed
-    local file = caller.source
-    if string.find(file, "@") == 1 then
-      file = string.sub(file, 2)
+    local file = lastfile
+    if (lastsource ~= caller.source) then
+      lastsource = caller.source
+      file = lastsource
+      if string.find(file, "@") == 1 then
+        file = string.sub(file, 2)
+      end
+      -- remove references to the current folder (./ or .\)
+      if string.find(file, "./") == 1 or string.find(file, ".\\") == 1 then
+        file = string.sub(file, 3)
+      end
+      -- fix filenames for loaded strings that may contain scripts with newlines
+      if string.find(file, "\n") then
+        file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
+      end
+        file = string.gsub(file, "\\","/")
+      lastfile = file
     end
-    -- remove references to the current folder (./ or .\)
-    if string.find(file, "./") == 1 or string.find(file, ".\\") == 1 then
-      file = string.sub(file, 3)
-    end
-    -- fix filenames for loaded strings that may contain scripts with newlines
-    if string.find(file, "\n") then
-      file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
-    end
-
-    local vars = capture_vars()
-    for index, value in pairs(watches) do
-      setfenv(value, vars)
-      local status, res = pcall(value)
-      if status and res then
-        coroutine.resume(coro_debugger, events.WATCH, vars, file, line, index)
-        restore_vars(vars)
+  
+    local vars
+    if (watchescnt > 0) then
+      vars = capture_vars()
+      for index, value in pairs(watches) do
+        setfenv(value, vars)
+        local status, res = pcall(value)
+        if status and res then
+          coroutine.resume(coro_debugger, events.WATCH, vars, file, line, index)
+          restore_vars(vars)
+        end
       end
     end
     if step_into or (step_over and stack_level <= step_level) or has_breakpoint(file, line) then
+      vars = vars or capture_vars()
       step_into = false
       step_over = false
       coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
@@ -327,6 +340,7 @@ local function debugger_loop()
       if exp then 
         local func = loadstring("return(" .. exp .. ")")
         if func then
+          watchescnt = watchescnt + 1
           local newidx = #watches + 1
           watches[newidx] = func
           server:send("200 OK " .. newidx .. "\n") 
@@ -340,8 +354,9 @@ local function debugger_loop()
       local _, _, index = string.find(line, "^[A-Z]+%s+(%d+)%s*$")
       index = tonumber(index)
       if index > 0 and index <= #watches then
+        watchescnt = watchescnt - (watches[index] ~= emptyWatch and 1 or 0)
         watches[index] = emptyWatch
-        server:send("200 OK\n") 
+        server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
       end

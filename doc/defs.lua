@@ -106,6 +106,10 @@ config = {
 											-- sets "usetabs" to true for this file
 	},
 	
+	debugger = {
+		verbose = false,
+	}
+	
 	outputshell = {
 		-- output and shell settings
 		fontname = "Courier New",

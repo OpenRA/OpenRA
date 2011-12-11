@@ -18,7 +18,22 @@ debugger.watchListCtrl    = nil    -- the child listctrl in the watchWindow
 
 local notebook = ide.frame.vsplitter.splitter.notebook
 
-local function ActivateDocument(fileName, line)
+local function updateWatches()
+	local watchListCtrl = debugger.watchListCtrl
+	if watchListCtrl and debugger.server and not debugger.running then
+		copas.addthread(function ()
+			for idx = 0, watchListCtrl:GetItemCount() - 1 do
+				local expression = watchListCtrl:GetItemText(idx)
+				local value = debugger.evaluate(expression)
+				watchListCtrl:SetItem(idx, 1, value)
+			end
+		end)
+	end
+end
+
+local function activateDocument(fileName, line)
+	if (not fileName and line) then return end
+	
 	if not wx.wxIsAbsolutePath(fileName) then
 		fileName = wx.wxGetCwd().."/"..fileName
 	end
@@ -39,25 +54,13 @@ local function ActivateDocument(fileName, line)
 			SetEditorSelection(selection)
 			editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
 			editor:EnsureVisibleEnforcePolicy(line-1)
+			updateWatches()
 			fileFound = true
 			break
 		end
 	end
 
 	return fileFound
-end
-
-local function updateWatches()
-	local watchListCtrl = debugger.watchListCtrl
-	if watchListCtrl and debugger.server and not debugger.running then
-		copas.addthread(function ()
-			for idx = 0, watchListCtrl:GetItemCount() - 1 do
-				local expression = watchListCtrl:GetItemText(idx)
-				local value = debugger.evaluate(expression)
-				watchListCtrl:SetItem(idx, 1, value)
-			end
-		end)
-	end
 end
 
 debugger.shell = function(expression)
@@ -73,21 +76,25 @@ debugger.shell = function(expression)
 end
 
 debugger.listen = function() 
+	
 	local server = socket.bind("*", debugger.portnumber)
 	DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
 	copas.autoclose = false
 	copas.addserver(server, function (skt)
-		debugger.server = copas.wrap(skt)
 		SetAllEditorsReadOnly(true)
-		local editor = GetEditor()
-		local filePath = ide.openDocuments[editor:GetId()].filePath;
-		debugger.basedir = string.gsub(wx.wxFileName(filePath):GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
+		local options = debugger.options or {}
+		local wxfilepath = GetEditorFileAndCurInfo()
+		local startfile = string.gsub(options.startfile or wxfilepath:GetFullPath(),"\\","/")
+		local basedir   = string.gsub(options.basedir   or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
+		debugger.basedir = basedir
+		debugger.server = copas.wrap(skt)
+		
+		DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
 
 		-- load the remote file into the debugger
 		-- set basedir first, before loading to make sure that the path is correct
 		debugger.handle("basedir " .. debugger.basedir)
-		debugger.handle("load " .. filePath)
-
+		
 		-- remove all breakpoints that may still be present from the last session
 		-- this only matters for those remote clients that reload scripts 
 		-- without resetting their breakpoints
@@ -104,13 +111,17 @@ debugger.listen = function()
 			end
 		end
 		
-		local line = 1
-		editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-		editor:EnsureVisibleEnforcePolicy(line-1)
+		if (options.run) then
+			activateDocument(debugger.handle("run"))
+		else
+			debugger.handle("load " .. startfile)
+			activateDocument(startfile, 1)
+		end
 
-		ShellSupportRemote(debugger.shell, 0)
-
-		DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
+		if (not options.noshell) then
+			ShellSupportRemote(debugger.shell, 0)
+		end
+		
 	end)
 	debugger.listening = true
 end
@@ -119,7 +130,12 @@ debugger.handle = function(line)
 	local _G = _G
 	local os = os
 	os.exit = function () end
-	_G.print = function () end
+	_G.print = function (...) 
+		if (ide.config.debugger.verbose) then
+			DisplayOutput(...)
+			DisplayOutput("\n")
+		end
+	end
 
 	debugger.running = true
 	local file, line, err = mobdebug.handle(line, debugger.server)
@@ -134,18 +150,14 @@ debugger.exec = function(command)
 			while true do
 				local file, line, err = debugger.handle(command)
 				if line == nil then
-					debugger.server = nil
-					SetAllEditorsReadOnly(false)
-					ShellSupportRemote(nil, 0)
 					if err then DisplayOutput(err .. "\n") end
-					DisplayOutput("Completed debugging session.\n")
+					DebuggerStop()
 					return
 				else
 					if debugger.basedir and not wx.wxIsAbsolutePath(file) then
 						file = debugger.basedir .. "/" .. file
 					end
-					if ActivateDocument(file, line) then 
-						updateWatches()
+					if activateDocument(file, line) then 
 						return 
 					else 
 						command = "out" -- redo now trying to get out of this file
@@ -179,9 +191,20 @@ end
 ----------------------------------------------
 -- public api
 
-function DebuggerAttachDefault()
+function DebuggerAttachDefault(options)
+	debugger.options = options
 	if (debugger.listening) then return end
 	debugger.listen()
+end
+
+function DebuggerStop()
+	if (debugger.server) then
+		debugger.server = nil
+		SetAllEditorsReadOnly(false)
+		ShellSupportRemote(nil, 0)
+		ClearAllCurrentLineMarkers()
+		DisplayOutput("Completed debugging session.\n")
+	end
 end
 
 function DebuggerCreateStackWindow()
