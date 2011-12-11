@@ -138,16 +138,17 @@ code:SetAcceleratorTable(accel)
 
 function ShellExecuteCode(ev,wfilename)
 	local fn,err
-	local tx	local marker
+	local tx
+	local marker
 	
 	if (wfilename) then
 		fn,err = loadfile(wfilename:GetFullPath())
 	elseif(remotesend and remote:IsChecked()) then
-		marker = ">>"			-- remote exec
+		marker = ">> " -- remote exec
 		tx = code:GetText()
 		remotesend(tx)
 	else
-		marker = ">"			-- local exec
+		marker = "> " -- local exec
 		tx = code:GetText()
 		-- for some direct queries
 		fn,err = loadstring("return("..tx..")")
@@ -156,22 +157,21 @@ function ShellExecuteCode(ev,wfilename)
 			fn,err = loadstring(tx)
 		end
 	end
-	
-	if (tx ~= nil) then
-		-- TODO add marker per-line
-		DisplayShell(marker .. tx)
-	end
 
-	if (tx ~= nil) then 
+	if tx == nil or tx == '' then return end
+	
+	DisplayShell(marker .. string.gsub(tx, "\n", "\n" .. marker))
+
+	if fn == nil and err then
+		DisplayShellErr(err)
 	elseif fn then
 		setfenv(fn,env)
-		local ok,res = pcall(fn)
-		if ok then DisplayShell(res)
-		else       DisplayShellErr(res)
-		end
-		--xpcall(fn,function(err)
-		--	shellPrint(debug.traceback(err))
-		--end)
+		local ok, res = pcall(fn)
+                if ok then 
+                  DisplayShell(res)
+                else 
+                  DisplayShellErr(res)
+                end
 	end
 end
 
