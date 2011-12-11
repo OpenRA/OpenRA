@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		int remainingTicks;
 		Actor host;
+		Health health;
 
 		public Repair(Actor host) { this.host = host; }
 
@@ -25,11 +26,14 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (IsCanceled) return NextActivity;
 			if (host != null && !host.IsInWorld) return NextActivity;
+
+			health = self.TraitOrDefault<Health>();
+			if (health == null) return NextActivity;
+			if (health.DamageState == DamageState.Undamaged)
+				return NextActivity;
+
 			if (remainingTicks == 0)
 			{
-				var health = self.TraitOrDefault<Health>();
-				if (health == null) return NextActivity;
-
 				var repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
 				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				var hpToRepair = repairsUnits.HpPerStep;
@@ -40,10 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 					remainingTicks = 1;
 					return this;
 				}
-
 				self.InflictDamage(self, -hpToRepair, null);
-				if (health.DamageState == DamageState.Undamaged)
-					return NextActivity;
 
 				if (host != null)
 					host.Trait<RenderBuilding>()
