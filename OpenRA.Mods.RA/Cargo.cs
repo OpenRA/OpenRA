@@ -87,6 +87,16 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
+		public bool CanLoad(Actor self, Actor a)
+		{
+			if (!HasSpace(GetWeight(a)))
+				return false;
+
+			// Cannot load mid-air
+			var move = self.TraitOrDefault<IMove>();
+			return move == null || move.Altitude == 0;
+		}
+
 		public string CursorForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "Unload") return null;

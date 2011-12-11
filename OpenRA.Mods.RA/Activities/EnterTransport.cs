@@ -27,9 +27,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (transport == null || !transport.IsInWorld) return NextActivity;
 
 			var cargo = transport.Trait<Cargo>();
-			if (!cargo.HasSpace(1))
+			if (!cargo.CanLoad(transport, self))
 				return NextActivity;
-
 
 			// Todo: Queue a move order to the transport? need to be
 			// careful about units that can't path to the transport
