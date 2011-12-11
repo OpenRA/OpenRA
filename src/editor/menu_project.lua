@@ -247,7 +247,7 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 		function (event)
 			ClearAllCurrentLineMarkers()
 
-			debugger.close()
+			debugger.terminate()
 		end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 		function (event)
