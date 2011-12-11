@@ -4,7 +4,7 @@ editor.showfncall = true
 
 filehistorylength = 20
 
-singleinstance = false
+singleinstance = true
 singleinstanceport = 0xe493
 
 acandtip.shorttip = true
