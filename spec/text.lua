@@ -2,9 +2,9 @@
 ---------------------------------------------------------
 
 return {
-	exts = {"txt"},
-	--lexer = wxstc.wxSTC_LEX_POV,
-	--apitype = "luxres",
-	linecomment = ">",
-	}
+  exts = {"txt"},
+  --lexer = wxstc.wxSTC_LEX_POV,
+  --apitype = "luxres",
+  linecomment = ">",
+}
 

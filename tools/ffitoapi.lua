@@ -6,7 +6,7 @@ local function ffiToApi(ffidef)
   str = ffidef:match("(%-%-%[%[.+%]%])")
   local header = ffidef:match("[^\r\n]+")
   ffidef = StripCommentsC(ffidef)
-  
+
   local description = header:match("|%s*(.*)")
   local descrprefixes = header:match("(.-)%s*|")
   local prefixes = {}
@@ -14,20 +14,19 @@ local function ffiToApi(ffidef)
     table.insert(prefixes,prefix)
   end
   if (not prefixes[1]) then return end
-  
+
   local ns = prefixes[1]
-  
-  
+
   local lktypes = {
     ["string"] = "string",
   }
-  
+
   local function gencontent(tx)
     local enums = {}
     local funcs = {}
     local values = {}
     local classes = {}
-    
+
     -- extract function names
     local curfunc
     local function registerfunc()
@@ -35,7 +34,7 @@ local function ffiToApi(ffidef)
       -- parse args
       local args = fn.ARGS:match("%(%s*(.-)%s*%)%s*;") or ""
       fn.ARGS = "("..args..")"
-      
+
       -- skip return void types
       local what = fn.RET == "void" and "" or fn.RET
       what = what:match("%s*(.-)%s*$")
@@ -44,15 +43,15 @@ local function ffiToApi(ffidef)
       if (what ~= "") then
         fn.TYPE = what
       end
-      
+
       table.insert(funcs,curfunc)
       curfunc = nil
     end
-    
+
     local outer = tx:gsub("(%b{})","{}")
-    
+
     -- FIXME pattern doesnt recognize multiline defs
-    for l in outer:gmatch("[^\r\n]+") do 
+    for l in outer:gmatch("[^\r\n]+") do
       -- extern void func(blubb);
       -- extern void ( * func )(blubb);
       -- void func(blubb);
@@ -60,8 +59,8 @@ local function ffiToApi(ffidef)
       -- void * ( * func )(blubb);
       local typedef = l:match("typedef")
       local ret,name,args = string.match(typedef and "" or l,
-        "%s*([_%w%*%s]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
-        
+      "%s*([_%w%*%s]+)%s+%(?[%s%*]*([_%w]+)%s*%)?%s*(%([^%(]*;)")
+
       if (not (curfunc or typedef) and (ret and name and args)) then
         ret = ret:gsub("^%s*extern%s*","")
         curfunc = {RET=ret,NAME=name,ARGS=args}
@@ -69,7 +68,7 @@ local function ffiToApi(ffidef)
       elseif (not typedef) then
         local typ,names,val = l:match("%s*([_%w%s%*]+)%s+([_%w%[%]]+)[\r\n%s]*=[\r\n%s]*([_%w]+)[\r\n%s]*;")
         if (not (typ and names and val)) then
-              typ,names     = l:match("%s*([_%w%s%*]+)%s+([_%w%[%]%:%s,]+)[\r\n%s]*;")
+          typ,names = l:match("%s*([_%w%s%*]+)%s+([_%w%[%]%:%s,]+)[\r\n%s]*;")
         end
         if (typ and names) then
           for name,rest in names:gmatch("([_%w]+)([^,]*)") do
@@ -79,7 +78,7 @@ local function ffiToApi(ffidef)
           end
         end
       elseif(typedef) then
-        -- typedef struct  lxgTextureUpdate_s * lxgTextureUpdatePTR;
+        -- typedef struct lxgTextureUpdate_s * lxgTextureUpdatePTR;
         -- typedef float lxVector2[2];
         local what,name = l:match("typedef%s+([_%w%s%*]-)%s+([_%w%[%]]+)%s*;")
         if (what and name) then
@@ -94,15 +93,15 @@ local function ffiToApi(ffidef)
           end
         end
       end
-    end 
-    
+    end
+
     -- search for enums
     for def in tx:gmatch("enum[_%w%s\r\n]*(%b{})[_%w%s\r\n]*;") do
       for enum in def:gmatch("([_%w]+).-[,}]") do
         table.insert(enums,{NAME=enum})
       end
     end
-    
+
     -- search for classes
     for class,def,final in tx:gmatch("struct%s+([_%w]*)[%s\r\n]*(%b{})([_%w%s\r\n]*);") do
       final = final:match("[_%w]+")
@@ -117,8 +116,8 @@ local function ffiToApi(ffidef)
       table.insert(classes,{NAME= final or class,DESCR = "",content = gencontent(def:sub(2,-2))})
     end
 
-    return (#classes > 0 or #funcs > 0 or #enums > 0 or #values > 0) and 
-      {classes=classes,funcs=funcs, enums=enums, values=values}
+    return (#classes > 0 or #funcs > 0 or #enums > 0 or #values > 0) and
+    {classes=classes,funcs=funcs, enums=enums, values=values}
   end
 
   local content = gencontent(ffidef)
@@ -154,59 +153,59 @@ local function ffiToApi(ffidef)
     end
   end
   fixcontent(content)
-  
+
   str = str..[[
-  
---auto-generated api from ffi headers
-local api =
-]]
-  
+
+  --auto-generated api from ffi headers
+  local api =
+  ]]
+
   -- serialize api string
   local function serialize(str,id,tab,lvl)
-    lvl = string.rep("  ",lvl or 1)
+    lvl = string.rep(" ",lvl or 1)
     for i,k in ipairs(tab) do
       str = str..string.gsub(id,"%$([%w]+)%$",k):gsub("##",lvl)
     end
     return str
   end
-  
+
   local function genapi(str,content,lvl)
     lvl = lvl or 1
     str = str..string.gsub([[
-##{
-]],"##",string.rep("  ",lvl))
+      ##{
+        ]],"##",string.rep(" ",lvl))
 
-    local value = 
-[[##["$NAME$"] = { type ='value', description = "$DESCR$", valuetype = $TYPE$, },
-]]
-    local enum = 
-[[##["$NAME$"] = { type ='value', },
-]]
-    local funcdef =
-[[##["$NAME$"] = { type ='function', 
-##  description = "$DESCR$", 
-##  returns = "$RET$",
-##  valuetype = $TYPE$,
-##  args = "$ARGS$", },
-]]
-    str = serialize(str,value,content.values or {},lvl)
-    str = serialize(str,enum,content.enums or {},lvl)
-    str = serialize(str,funcdef,content.funcs or {},lvl)
-  
-    local classdef =
-[[##["$NAME$"] = { type ='class', 
-##  description = "$DESCR$", 
-##  $CHILDS$
-##},
-]]
-    for i,v in pairs(content.classes or {}) do
-      v.CHILDS = v.content and genapi("childs = ",v.content,lvl+1) or ""
-    end
-  
-    str = serialize(str,classdef,content.classes or {},lvl)
+      local value =
+      [[##["$NAME$"] = { type ='value', description = "$DESCR$", valuetype = $TYPE$, },
+      ]]
+      local enum =
+      [[##["$NAME$"] = { type ='value', },
+      ]]
+      local funcdef =
+      [[##["$NAME$"] = { type ='function',
+        ## description = "$DESCR$",
+        ## returns = "$RET$",
+        ## valuetype = $TYPE$,
+        ## args = "$ARGS$", },
+      ]]
+      str = serialize(str,value,content.values or {},lvl)
+      str = serialize(str,enum,content.enums or {},lvl)
+      str = serialize(str,funcdef,content.funcs or {},lvl)
 
-    str = str..string.gsub([[
-##}]],"##",string.rep("  ",lvl))
+      local classdef =
+      [[##["$NAME$"] = { type ='class',
+        ## description = "$DESCR$",
+        ## $CHILDS$
+        ##},
+      ]]
+      for i,v in pairs(content.classes or {}) do
+        v.CHILDS = v.content and genapi("childs = ",v.content,lvl+1) or ""
+      end
+
+      str = serialize(str,classdef,content.classes or {},lvl)
+
+      str = str..string.gsub([[
+        ##}]],"##",string.rep(" ",lvl))
 
     return str
   end
@@ -215,28 +214,28 @@ local api =
 
   str = str..[[
 
-return {
-]]
+  return {
+    ]]
 
-  local lib =
-[[
-  $NAME$ = {
-    type = 'lib',
-    description = "$DESCR$",
-    childs = $API$,
-  },
-]]
-  
-  local libs = {}
-  for i,prefix in ipairs(prefixes) do
-    local p = {NAME=prefix, DESCR = description, API="api"}
-    table.insert(libs,p)
-  end
+    local lib =
+    [[
+    $NAME$ = {
+      type = 'lib',
+      description = "$DESCR$",
+      childs = $API$,
+    },
+    ]]
 
-  str = serialize(str,lib,libs)
-  str = str..[[
-}
-]]
+    local libs = {}
+    for i,prefix in ipairs(prefixes) do
+      local p = {NAME=prefix, DESCR = description, API="api"}
+      table.insert(libs,p)
+    end
+
+    str = serialize(str,lib,libs)
+    str = str..[[
+  }
+  ]]
 
   return str
 end

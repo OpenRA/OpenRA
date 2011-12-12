@@ -2,173 +2,172 @@
 ---------------------------------------------------------
 
 return {
-	exts = {"glsl","vert","frag","geom","cont","eval", "glslv", "glslf"},
-	lexer = wxstc.wxSTC_LEX_CPP,
-	apitype = "glsl",
-	sep = "%.",
-	linecomment = "//",
-	
-	isfndef = function(str)
-					local l
-					local s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+%s*%(.+%))")
-					if (not s) then
-						s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+)%s*%(")
-					end
-					if (cap and (string.find(cap,"^return") or string.find(cap,"else"))) then return end
-					return s,e,cap,l
-				end,
-	
-	lexerstyleconvert = {
-		text		= {wxstc.wxSTC_C_IDENTIFIER,
-						wxstc.wxSTC_C_VERBATIM,
-						wxstc.wxSTC_C_REGEX,
-						wxstc.wxSTC_C_REGEX,
-						wxstc.wxSTC_C_GLOBALCLASS,},
-	
-		lexerdef	= {wxstc.wxSTC_C_DEFAULT,},
-		comment 	= {wxstc.wxSTC_C_COMMENT, 
-						wxstc.wxSTC_C_COMMENTLINE, 
-						wxstc.wxSTC_C_COMMENTDOC,
-						wxstc.wxSTC_C_COMMENTLINEDOC,
-						wxstc.wxSTC_C_COMMENTDOCKEYWORD,
-						wxstc.wxSTC_C_COMMENTDOCKEYWORDERROR,},
-		stringtxt 	= {wxstc.wxSTC_C_STRING,
-						wxstc.wxSTC_C_CHARACTER,
-						wxstc.wxSTC_C_UUID,},
-		stringeol 	= {wxstc.wxSTC_C_STRINGEOL,},
-		preprocessor= {wxstc.wxSTC_C_PREPROCESSOR,},
-		operator 	= {wxstc.wxSTC_C_OPERATOR,},
-		number 		= {wxstc.wxSTC_C_NUMBER,
-						wxstc.wxSTC_C_WORD},
-		
-		
-		keywords0	= {wxstc.wxSTC_C_WORD,},
-		keywords1	= {wxstc.wxSTC_C_WORD2,},
-		},
-	
-	keywords = {
-		[[int uint half float bool double
-		vec2 vec3 vec4 dvec2 dvec3 dvec4
-		ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
-		mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
-		dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
-		struct typedef void
-		usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
-		isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
-		sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
-		sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
-		usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
-		in out inout uniform const centroid sample attribute varying patch index true false
-		return switch case for do while if else break continue main inline
-		layout location vertices line_strip triangle_strip max_vertices stream
-		triangles quads equal_spacing isolines fractional_even_spacing lines points
-		fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
-		invocations
-		origin_upper_left pixel_center_integer
-		smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
-		gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
-		subroutine gl_Position gl_FragCoord
-		gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
-		gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
-		gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
-		gl_TexCoord gl_FogFragCoord gl_ClipVertex gl_in
-		gl_PatchVerticesIn
-		gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
-		gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
-		gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
-		gl_FragData gl_FragDepth gl_SampleMask
-		
-		coherent volatile restrict
-		image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
-		uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
-		iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
-		size1x8 size1x16 size1x32 size2x32 size4x32
-		]],
+  exts = {"glsl","vert","frag","geom","cont","eval", "glslv", "glslf"},
+  lexer = wxstc.wxSTC_LEX_CPP,
+  apitype = "glsl",
+  sep = "%.",
+  linecomment = "//",
 
-		[[discard 
-		radians degrees sin cos tan asin acos atan sinh cosh tanh asinh acosh atanh
-		pow exp log exp2 log2 sqrt inversesqrt abs sign floor trunc round
-		roundEven ceil fract mod modf min max mix step isnan isinf clamp smoothstep
-		floatBitsToInt intBitsToFloat uintBitsToFloat fma frexp ldexp 
-		packUnorm2x16 packUnorm4x8 packSnorm4x8
-		unpackUnorm2x16 unpackUnorm4x8 unpackSnorm4x8
-		packDouble2x32 unpackDouble2x32
-		length distance dot cross normalize ftransform faceforward
-		reflect refract
-		matrixCompMult outerProduct transpose determinant inverse
-		lessThan lessThanEqual greaterThan greaterThanEqual equal
-		notEqual any all not
-		uaddCarry usubBorrow umulExtended imulExtended
-		bitfeldExtract bitfieldInsert bitfeldReverse bitCount
-		findLSB findMSB
-		dFdx dFdy fwidth
-		interpolateAtCentroid interpolateAtSample interpolateAtOffset
-		noise1 noise2 noise3 noise4
-		EmitStreamVertex EndStreamPrimitive EmitVertex EndPrimitive
-		barrier
-		textureSize textureQueryLod texture textureOffset textureProj
-		textureLod textureProjOffset textureLodOffset
-		texelFetchOffset texelFetch textureProjLod textureProjLodOffset
-		textureGrad textureGradOffset textureProjGrad textureProjGradOffset
-		textureGather textureGatherOffset
-		texture2D texture1D texture3D textureCube texture2DRect
-		texture1DProj texture1DLod texture1DProjLod
-		texture2DProj texture2DLod texture2DProjLod
-		texture3DProj texture3DLod texture3DProjLod
-		textureCubeLod
-		shadow1D shadow2D
-		shadow1DProj shadow1DLod shadow1DProjLod
-		shadow2DProj shadow2DLod shadow2DProjLod
-		texelFetch1D texelFetch2D texelFetch3D texelFetch2DRect texelFetch1DArray texelFetch2DArray texelFetchBuffer
-		textureSizeBuffer textureSize1D textureSize2D textureSize3D textureSizeCube textureSize2DRect
-		textureSize1DArray textureSize2DArray
-		texture1DArray texture1DArrayLod
-		texture2DArray texture2DArrayLod
-		shadow1DArray shadow1DArrayLod shadow2DArray shadowCube
-		texture1DGrad texture1DProjGrad texture1DProjGrad texture1DArrayGrad
-		texture2DGrad texture2DProjGrad texture2DProjGrad texture2DArrayGrad
-		texture3DGrad texture3DProjGrad textureCubeGrad
-		shadow1DGrad shadow1DProjGrad shadow1DArrayGrad shadow2DGrad shadow2DProjGrad shadow2DArrayGrad
-		texture2DRectGrad texture2DRectProjGrad texture2DRectProjGrad shadow2DRectGrad shadow2DRectProjGrad
-		shadowCubeGrad
-		texture1DOffset texture1DProjOffset texture1DLodOffset texture1DProjLodOffset
-		texture2DOffset texture2DProjOffset texture2DLodOffset texture2DProjLodOffset
-		texture3DOffset texture3DProjOffset texture3DLodOffset texture3DProjLodOffset
-		
-		imageLoad imageStore
-		imageAtomicAdd imageAtomicMin imageAtomicMax
-		imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
-		imageAtomicOr imageAtomixXor imageAtomicExchange
-		imageCompSwap memoryBarrier
-		
-		x y z w 
-		xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy 
-		xxzz xxzw xxwx xxwy xxwz xxww xyxx xyxy xyxz xyxw 
-		xyyx xyyy xyyz xyyw xyzx xyzy xyzz xyzw xywx xywy 
-		xywz xyww xzxx xzxy xzxz xzxw xzyx xzyy xzyz xzyw 
-		xzzx xzzy xzzz xzzw xzwx xzwy xzwz xzww xwxx xwxy 
-		xwxz xwxw xwyx xwyy xwyz xwyw xwzx xwzy xwzz xwzw 
-		xwwx xwwy xwwz xwww yxxx yxxy yxxz yxxw yxyx yxyy 
-		yxyz yxyw yxzx yxzy yxzz yxzw yxwx yxwy yxwz yxww 
-		yyxx yyxy yyxz yyxw yyyx yyyy yyyz yyyw yyzx yyzy 
-		yyzz yyzw yywx yywy yywz yyww yzxx yzxy yzxz yzxw 
-		yzyx yzyy yzyz yzyw yzzx yzzy yzzz yzzw yzwx yzwy 
-		yzwz yzww ywxx ywxy ywxz ywxw ywyx ywyy ywyz ywyw 
-		ywzx ywzy ywzz ywzw ywwx ywwy ywwz ywww zxxx zxxy 
-		zxxz zxxw zxyx zxyy zxyz zxyw zxzx zxzy zxzz zxzw 
-		zxwx zxwy zxwz zxww zyxx zyxy zyxz zyxw zyyx zyyy 
-		zyyz zyyw zyzx zyzy zyzz zyzw zywx zywy zywz zyww 
-		zzxx zzxy zzxz zzxw zzyx zzyy zzyz zzyw zzzx zzzy 
-		zzzz zzzw zzwx zzwy zzwz zzww zwxx zwxy zwxz zwxw 
-		zwyx zwyy zwyz zwyw zwzx zwzy zwzz zwzw zwwx zwwy 
-		zwwz zwww wxxx wxxy wxxz wxxw wxyx wxyy wxyz wxyw 
-		wxzx wxzy wxzz wxzw wxwx wxwy wxwz wxww wyxx wyxy 
-		wyxz wyxw wyyx wyyy wyyz wyyw wyzx wyzy wyzz wyzw 
-		wywx wywy wywz wyww wzxx wzxy wzxz wzxw wzyx wzyy 
-		wzyz wzyw wzzx wzzy wzzz wzzw wzwx wzwy wzwz wzww 
-		wwxx wwxy wwxz wwxw wwyx wwyy wwyz wwyw wwzx wwzy 
-		wwzz wwzw wwwx wwwy wwwz wwww xy xz yz xyz 
-		xw yw xyw zw xzw yzw xyzw ]],
+  isfndef = function(str)
+    local l
+    local s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+%s*%(.+%))")
+    if (not s) then
+      s,e,cap = string.find(str,"^%s*([A-Za-z0-9_]+%s+[A-Za-z0-9_]+)%s*%(")
+    end
+    if (cap and (string.find(cap,"^return") or string.find(cap,"else"))) then return end
+    return s,e,cap,l
+  end,
 
-		},
-	}
+  lexerstyleconvert = {
+    text = {wxstc.wxSTC_C_IDENTIFIER,
+      wxstc.wxSTC_C_VERBATIM,
+      wxstc.wxSTC_C_REGEX,
+      wxstc.wxSTC_C_REGEX,
+      wxstc.wxSTC_C_GLOBALCLASS,},
+
+    lexerdef = {wxstc.wxSTC_C_DEFAULT,},
+    comment = {wxstc.wxSTC_C_COMMENT,
+      wxstc.wxSTC_C_COMMENTLINE,
+      wxstc.wxSTC_C_COMMENTDOC,
+      wxstc.wxSTC_C_COMMENTLINEDOC,
+      wxstc.wxSTC_C_COMMENTDOCKEYWORD,
+      wxstc.wxSTC_C_COMMENTDOCKEYWORDERROR,},
+    stringtxt = {wxstc.wxSTC_C_STRING,
+      wxstc.wxSTC_C_CHARACTER,
+      wxstc.wxSTC_C_UUID,},
+    stringeol = {wxstc.wxSTC_C_STRINGEOL,},
+    preprocessor= {wxstc.wxSTC_C_PREPROCESSOR,},
+    operator = {wxstc.wxSTC_C_OPERATOR,},
+    number = {wxstc.wxSTC_C_NUMBER,
+      wxstc.wxSTC_C_WORD},
+
+    keywords0 = {wxstc.wxSTC_C_WORD,},
+    keywords1 = {wxstc.wxSTC_C_WORD2,},
+  },
+
+  keywords = {
+    [[int uint half float bool double
+    vec2 vec3 vec4 dvec2 dvec3 dvec4
+    ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
+    mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
+    dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
+    struct typedef void
+    usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
+    isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
+    sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
+    sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
+    usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
+    in out inout uniform const centroid sample attribute varying patch index true false
+    return switch case for do while if else break continue main inline
+    layout location vertices line_strip triangle_strip max_vertices stream
+    triangles quads equal_spacing isolines fractional_even_spacing lines points
+    fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
+    invocations
+    origin_upper_left pixel_center_integer
+    smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
+    gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
+    subroutine gl_Position gl_FragCoord
+    gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
+    gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
+    gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
+    gl_TexCoord gl_FogFragCoord gl_ClipVertex gl_in
+    gl_PatchVerticesIn
+    gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
+    gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
+    gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
+    gl_FragData gl_FragDepth gl_SampleMask
+
+    coherent volatile restrict
+    image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
+    uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
+    iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
+    size1x8 size1x16 size1x32 size2x32 size4x32
+    ]],
+
+    [[discard
+    radians degrees sin cos tan asin acos atan sinh cosh tanh asinh acosh atanh
+    pow exp log exp2 log2 sqrt inversesqrt abs sign floor trunc round
+    roundEven ceil fract mod modf min max mix step isnan isinf clamp smoothstep
+    floatBitsToInt intBitsToFloat uintBitsToFloat fma frexp ldexp
+    packUnorm2x16 packUnorm4x8 packSnorm4x8
+    unpackUnorm2x16 unpackUnorm4x8 unpackSnorm4x8
+    packDouble2x32 unpackDouble2x32
+    length distance dot cross normalize ftransform faceforward
+    reflect refract
+    matrixCompMult outerProduct transpose determinant inverse
+    lessThan lessThanEqual greaterThan greaterThanEqual equal
+    notEqual any all not
+    uaddCarry usubBorrow umulExtended imulExtended
+    bitfeldExtract bitfieldInsert bitfeldReverse bitCount
+    findLSB findMSB
+    dFdx dFdy fwidth
+    interpolateAtCentroid interpolateAtSample interpolateAtOffset
+    noise1 noise2 noise3 noise4
+    EmitStreamVertex EndStreamPrimitive EmitVertex EndPrimitive
+    barrier
+    textureSize textureQueryLod texture textureOffset textureProj
+    textureLod textureProjOffset textureLodOffset
+    texelFetchOffset texelFetch textureProjLod textureProjLodOffset
+    textureGrad textureGradOffset textureProjGrad textureProjGradOffset
+    textureGather textureGatherOffset
+    texture2D texture1D texture3D textureCube texture2DRect
+    texture1DProj texture1DLod texture1DProjLod
+    texture2DProj texture2DLod texture2DProjLod
+    texture3DProj texture3DLod texture3DProjLod
+    textureCubeLod
+    shadow1D shadow2D
+    shadow1DProj shadow1DLod shadow1DProjLod
+    shadow2DProj shadow2DLod shadow2DProjLod
+    texelFetch1D texelFetch2D texelFetch3D texelFetch2DRect texelFetch1DArray texelFetch2DArray texelFetchBuffer
+    textureSizeBuffer textureSize1D textureSize2D textureSize3D textureSizeCube textureSize2DRect
+    textureSize1DArray textureSize2DArray
+    texture1DArray texture1DArrayLod
+    texture2DArray texture2DArrayLod
+    shadow1DArray shadow1DArrayLod shadow2DArray shadowCube
+    texture1DGrad texture1DProjGrad texture1DProjGrad texture1DArrayGrad
+    texture2DGrad texture2DProjGrad texture2DProjGrad texture2DArrayGrad
+    texture3DGrad texture3DProjGrad textureCubeGrad
+    shadow1DGrad shadow1DProjGrad shadow1DArrayGrad shadow2DGrad shadow2DProjGrad shadow2DArrayGrad
+    texture2DRectGrad texture2DRectProjGrad texture2DRectProjGrad shadow2DRectGrad shadow2DRectProjGrad
+    shadowCubeGrad
+    texture1DOffset texture1DProjOffset texture1DLodOffset texture1DProjLodOffset
+    texture2DOffset texture2DProjOffset texture2DLodOffset texture2DProjLodOffset
+    texture3DOffset texture3DProjOffset texture3DLodOffset texture3DProjLodOffset
+
+    imageLoad imageStore
+    imageAtomicAdd imageAtomicMin imageAtomicMax
+    imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
+    imageAtomicOr imageAtomixXor imageAtomicExchange
+    imageCompSwap memoryBarrier
+
+    x y z w
+    xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy
+    xxzz xxzw xxwx xxwy xxwz xxww xyxx xyxy xyxz xyxw
+    xyyx xyyy xyyz xyyw xyzx xyzy xyzz xyzw xywx xywy
+    xywz xyww xzxx xzxy xzxz xzxw xzyx xzyy xzyz xzyw
+    xzzx xzzy xzzz xzzw xzwx xzwy xzwz xzww xwxx xwxy
+    xwxz xwxw xwyx xwyy xwyz xwyw xwzx xwzy xwzz xwzw
+    xwwx xwwy xwwz xwww yxxx yxxy yxxz yxxw yxyx yxyy
+    yxyz yxyw yxzx yxzy yxzz yxzw yxwx yxwy yxwz yxww
+    yyxx yyxy yyxz yyxw yyyx yyyy yyyz yyyw yyzx yyzy
+    yyzz yyzw yywx yywy yywz yyww yzxx yzxy yzxz yzxw
+    yzyx yzyy yzyz yzyw yzzx yzzy yzzz yzzw yzwx yzwy
+    yzwz yzww ywxx ywxy ywxz ywxw ywyx ywyy ywyz ywyw
+    ywzx ywzy ywzz ywzw ywwx ywwy ywwz ywww zxxx zxxy
+    zxxz zxxw zxyx zxyy zxyz zxyw zxzx zxzy zxzz zxzw
+    zxwx zxwy zxwz zxww zyxx zyxy zyxz zyxw zyyx zyyy
+    zyyz zyyw zyzx zyzy zyzz zyzw zywx zywy zywz zyww
+    zzxx zzxy zzxz zzxw zzyx zzyy zzyz zzyw zzzx zzzy
+    zzzz zzzw zzwx zzwy zzwz zzww zwxx zwxy zwxz zwxw
+    zwyx zwyy zwyz zwyw zwzx zwzy zwzz zwzw zwwx zwwy
+    zwwz zwww wxxx wxxy wxxz wxxw wxyx wxyy wxyz wxyw
+    wxzx wxzy wxzz wxzw wxwx wxwy wxwz wxww wyxx wyxy
+    wyxz wyxw wyyx wyyy wyyz wyyw wyzx wyzy wyzz wyzw
+    wywx wywy wywz wyww wzxx wzxy wzxz wzxw wzyx wzyy
+    wzyz wzyw wzzx wzzy wzzz wzzw wzwx wzwy wzwz wzww
+    wwxx wwxy wwxz wwxw wwyx wwyy wwyz wwyw wwzx wwzy
+    wwzz wwzw wwwx wwwy wwwz wwww xy xz yz xyz
+    xw yw xyw zw xzw yzw xyzw ]],
+
+  },
+}
