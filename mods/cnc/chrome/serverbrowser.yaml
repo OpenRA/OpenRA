@@ -79,8 +79,8 @@ Container@SERVERBROWSER_PANEL:
 									Height:25
 				Label@PROGRESS_LABEL:
 					Id:PROGRESS_LABEL
-					X:22
-					Y:165
+					X:(PARENT_RIGHT - WIDTH) / 2
+					Y:PARENT_BOTTOM / 2 - HEIGHT
 					Width:710
 					Height:25
 					Font:Bold
