@@ -1054,7 +1054,7 @@ t11:
 		Start: 0
 	burn:
 		Start: 1
-		Length: 10
+		Length: 9
 
 t10:
 	idle:
@@ -1172,7 +1172,7 @@ e2:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 240
 		Length: 4
