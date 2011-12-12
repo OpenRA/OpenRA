@@ -45,7 +45,7 @@ do
 end
 
 local debugMenu = wx.wxMenu{
-  { ID_RUN, "&Run or Continue\tF6", "Execute the current project/file" },
+  { ID_RUN, "&Run\tF6", "Execute the current project/file" },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
   { ID_ATTACH_DEBUG, "&Start Debugger Server\tShift-F6", "Allow a client to start a debugging session" },
@@ -54,7 +54,7 @@ local debugMenu = wx.wxMenu{
   { ID_STEP, "St&ep\tF11", "Step into the next line" },
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
-  { ID_CONTINUE, "Co&ntinue\tShift-F5", "Run the program at full speed" },
+  { ID_CONTINUE, "Co&ntinue\tShift-F5", "Continue execution" },
   --{ ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
   { },
   { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
@@ -208,19 +208,12 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    if (debugger.server) then
-      if (not debugger.running) then
-        ClearAllCurrentLineMarkers()
-        debugger.run()
-      end
-    else
-      runInterpreter(getNameToRun())
-    end
+    runInterpreter(getNameToRun())
   end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable( ((debugger.server == nil) or ((debugger.server ~= nil) and (not debugger.running))) and (editor ~= nil))
+    event:Enable((debugger.server == nil) and (editor ~= nil))
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
