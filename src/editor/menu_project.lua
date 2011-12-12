@@ -44,7 +44,8 @@ do
   targetMenu = wx.wxMenu(targetargs)
 end
 
-local debugMenu = wx.wxMenu{
+
+local debugTab = {
   { ID_RUN, "&Run\tF6", "Execute the current project/file" },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
@@ -54,7 +55,7 @@ local debugMenu = wx.wxMenu{
   { ID_STEP, "St&ep\tF11", "Step into the next line" },
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
-  { ID_CONTINUE, "Co&ntinue\tShift-F5", "Continue execution" },
+  --{ ID_CONTINUE, "Co&ntinue\tShift-F5", "Continue execution" },
   { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
   --{ ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
   { },
@@ -64,6 +65,10 @@ local debugMenu = wx.wxMenu{
   { },
   { ID_CLEAROUTPUT, "C&lear Output Window", "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 }
+
+local debugMenu = wx.wxMenu(debugTab)
+local debugMenuRun = {start="Start &Debugging\tF5", continue="Co&ntinue\tF5"}
+
 
 local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.choose","Choose ..."},
@@ -230,15 +235,30 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
       (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
   end)
 
+local lastcontinue
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    runInterpreter(getNameToRun(), true)
+    if (debugger.server ~= nil) then
+      if (not debugger.running) then
+        debugger.run()
+      end
+    else
+      runInterpreter(getNameToRun(), true)
+    end
   end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
-      (debugger.server == nil) and (editor ~= nil))
+      ((debugger.server == nil) or (debugger.server ~= nil and not debugger.running)) and (editor ~= nil))
+    local curcontinue = (debugger.server ~= nil)
+    if curcontinue == lastcontinue then return end
+    lastcontinue = curcontinue
+    if curcontinue then
+      debugMenu:SetLabel(ID_START_DEBUG, debugMenuRun.continue)
+    else
+      debugMenu:SetLabel(ID_START_DEBUG, debugMenuRun.start)
+    end
   end)
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -283,6 +303,7 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
   end)
 
+--[[
 frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     debugger.run()
@@ -292,6 +313,7 @@ frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
   end)
+]]
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
