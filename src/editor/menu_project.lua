@@ -55,6 +55,7 @@ local debugMenu = wx.wxMenu{
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
   { ID_CONTINUE, "Co&ntinue\tShift-F5", "Continue execution" },
+  { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
   --{ ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
   { },
   { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
@@ -154,9 +155,10 @@ for id,inter in pairs(interpreters) do
 end
 
 do
-  local defaultid =
-  IDget("debug.interpreter."..ide.config.interpreter) or
-  ID ("debug.interpreter."..lastinterpreter)
+  local defaultid = (
+    IDget("debug.interpreter."..ide.config.interpreter) or
+    ID ("debug.interpreter."..lastinterpreter)
+  )
   menuBar:Check(defaultid, true)
 end
 
@@ -253,8 +255,6 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
-
     debugger.step()
   end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
@@ -265,8 +265,6 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
-
     debugger.over()
   end)
 frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
@@ -277,8 +275,6 @@ frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
-
     debugger.out()
   end)
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
@@ -289,8 +285,6 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
-
     debugger.run()
   end)
 frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
@@ -298,6 +292,17 @@ frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
   end)
+
+frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    debugger.trace()
+  end)
+frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
+  function (event)
+    local editor = GetEditor()
+    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
+  end)
+
 --[[
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)

@@ -18,16 +18,20 @@ debugger.watchListCtrl = nil -- the child listctrl in the watchWindow
 
 local notebook = ide.frame.vsplitter.splitter.notebook
 
-local function updateWatches()
+local function updateWatchesSync()
   local watchListCtrl = debugger.watchListCtrl
   if watchListCtrl and debugger.server and not debugger.running then
-    copas.addthread(function ()
-        for idx = 0, watchListCtrl:GetItemCount() - 1 do
-          local expression = watchListCtrl:GetItemText(idx)
-          local value = debugger.evaluate(expression)
-          watchListCtrl:SetItem(idx, 1, value)
-        end
-      end)
+    for idx = 0, watchListCtrl:GetItemCount() - 1 do
+      local expression = watchListCtrl:GetItemText(idx)
+      local value, _, error = debugger.evaluate(expression)
+      watchListCtrl:SetItem(idx, 1, value or ('error: ' .. error))
+    end
+  end
+end
+
+local function updateWatches()
+  if debugger.watchListCtrl and debugger.server and not debugger.running then
+    copas.addthread(updateWatchesSync)
   end
 end
 
@@ -52,9 +56,9 @@ local function activateDocument(fileName, line)
       local selection = document.index
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
+      ClearAllCurrentLineMarkers()
       editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
       editor:EnsureVisibleEnforcePolicy(line-1)
-      updateWatches()
       fileFound = true
       break
     end
@@ -144,7 +148,7 @@ debugger.handle = function(line)
   return file, line, err
 end
 
-debugger.exec = function(command)
+debugger.exec = function(command, loop)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
         while true do
@@ -158,7 +162,12 @@ debugger.exec = function(command)
               file = debugger.basedir .. "/" .. file
             end
             if activateDocument(file, line) then
-              return
+              if loop then
+                updateWatchesSync()
+              else
+                updateWatches()
+                return
+              end
             else
               command = "out" -- redo now trying to get out of this file
             end
@@ -179,6 +188,7 @@ end
 debugger.update = function() copas.step(0) end
 debugger.terminate = function() debugger.exec("exit") end
 debugger.step = function() debugger.exec("step") end
+debugger.trace = function() debugger.exec("step", true) end
 debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
