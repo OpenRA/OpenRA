@@ -1,5 +1,5 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
---          Luxinia Dev (Eike Decker & Christoph Kubisch)
+-- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 local ide = ide
 local frame = ide.frame
@@ -20,203 +20,200 @@ errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, 
 errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
-
 function ClearOutput(event)
-	errorlog:SetReadOnly(false)
-	errorlog:ClearAll()
-	errorlog:SetReadOnly(true)
+  errorlog:SetReadOnly(false)
+  errorlog:ClearAll()
+  errorlog:SetReadOnly(true)
 end
 
 function DisplayOutputNoMarker(...)
-	local message = ""
-	local cnt = select('#',...)
-	for i=1,cnt do
-		local v = select(i,...)
-		message = message..tostring(v)..(i<cnt and "\t" or "")
-	end
-	
-	errorlog:SetReadOnly(false)
-	errorlog:AppendText(message)
-	errorlog:SetReadOnly(true)
-	errorlog:GotoPos(errorlog:GetLength())
+  local message = ""
+  local cnt = select('#',...)
+  for i=1,cnt do
+    local v = select(i,...)
+    message = message..tostring(v)..(i<cnt and "\t" or "")
+  end
+
+  errorlog:SetReadOnly(false)
+  errorlog:AppendText(message)
+  errorlog:SetReadOnly(true)
+  errorlog:GotoPos(errorlog:GetLength())
 end
 function DisplayOutput(...)
-	errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
-	DisplayOutputNoMarker(...)
+  errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
+  DisplayOutputNoMarker(...)
 end
 
-local streamins   = {}
-local streamerrs  = {}
+local streamins = {}
+local streamerrs = {}
 local customprocs = {}
 
-function CommandLineRunning(uid) 
-	for pid,custom in pairs(customprocs) do
-		if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
-			return true
-		end
-	end
-	
-	return false
+function CommandLineRunning(uid)
+  for pid,custom in pairs(customprocs) do
+    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+      return true
+    end
+  end
+
+  return false
 end
 
 function CommandLineToShell(uid,state)
-	for pid,custom in pairs(customprocs) do
-		if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
-			if (streamins[pid])  then streamins[pid].toshell  = state end
-			if (streamerrs[pid]) then streamerrs[pid].toshell = state end
-			return true
-		end
-	end
+  for pid,custom in pairs(customprocs) do
+    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+      if (streamins[pid]) then streamins[pid].toshell = state end
+      if (streamerrs[pid]) then streamerrs[pid].toshell = state end
+      return true
+    end
+  end
 end
 
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-	if (not cmd) then return true end
+  if (not cmd) then return true end
 
-	local exename = string.gsub(cmd, "\\", "/")
-	exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
-	exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
-	
-	uid = uid or exename
+  local exename = string.gsub(cmd, "\\", "/")
+  exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
+  exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
 
-	if (CommandLineRunning(uid)) then
-		DisplayOutput("Conflicting Process still running: "..cmd.."\n")
-		return true 
-	end
+  uid = uid or exename
 
-	DisplayOutput("Running program: "..cmd.."\n")
-	
-	
-	local pid = -1
-	local proc = nil
-	local customproc 
-	
-	if (tooutput) then
-		customproc = wx.wxProcess(errorlog)
-		customproc:Redirect()
+  if (CommandLineRunning(uid)) then
+    DisplayOutput("Conflicting Process still running: "..cmd.."\n")
+    return true
+  end
 
-		proc = customproc
-	end
-	
-	-- manipulate working directory
-	local oldcwd 
-	if (wdir) then
-		oldcwd = wx.wxFileName.GetCwd()
-		oldcwd = wx.wxFileName.SetCwd(wdir) and oldcwd
-	end
-	
-	-- launch process
-	local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
-						 wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0))
+  DisplayOutput("Running program: "..cmd.."\n")
 
-	if (oldcwd) then
-		wx.wxFileName.SetCwd(oldcwd)
-	end
-	
-	-- check process
-	if not pid or pid == -1 then
-		DisplayOutputNoMarker("Unknown ERROR Running program!\n")
-		customproc = nil
-		return true
-	else
-		DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
-		customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
-	end
-	
-	local streamin  = proc and proc:GetInputStream()
-	local streamerr = proc and proc:GetErrorStream()
-	if (streamin) then 
-		streamins[pid] = {stream=streamin, callback=stringcallback}
-	end
-	if (streamerr) then 
-		streamerrs[pid] = {stream=streamerr, callback=stringcallback}
-	end
-	
+  local pid = -1
+  local proc = nil
+  local customproc
+
+  if (tooutput) then
+    customproc = wx.wxProcess(errorlog)
+    customproc:Redirect()
+
+    proc = customproc
+  end
+
+  -- manipulate working directory
+  local oldcwd
+  if (wdir) then
+    oldcwd = wx.wxFileName.GetCwd()
+    oldcwd = wx.wxFileName.SetCwd(wdir) and oldcwd
+  end
+
+  -- launch process
+  local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
+  wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0))
+
+  if (oldcwd) then
+    wx.wxFileName.SetCwd(oldcwd)
+  end
+
+  -- check process
+  if not pid or pid == -1 then
+    DisplayOutputNoMarker("Unknown ERROR Running program!\n")
+    customproc = nil
+    return true
+  else
+    DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
+    customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
+  end
+
+  local streamin = proc and proc:GetInputStream()
+  local streamerr = proc and proc:GetErrorStream()
+  if (streamin) then
+    streamins[pid] = {stream=streamin, callback=stringcallback}
+  end
+  if (streamerr) then
+    streamerrs[pid] = {stream=streamerr, callback=stringcallback}
+  end
+
 end
 
 local function getStreams()
-	local function displayStream(tab)
-		for i,v in pairs(tab) do
-			while(v.stream:CanRead()) do
-				local str = v.stream:Read(4096)
-				local pfn
-				if (v.callback) then
-					str,pfn = v.callback(str)
-				end
-				if (v.toshell) then
-					DisplayShell(str)
-				else
-					DisplayOutputNoMarker(str)
-				end
-				pfn = pfn and pfn()
-			end
-		end	
-	end
-	
-	displayStream(streamins)
-	displayStream(streamerrs)
+  local function displayStream(tab)
+    for i,v in pairs(tab) do
+      while(v.stream:CanRead()) do
+        local str = v.stream:Read(4096)
+        local pfn
+        if (v.callback) then
+          str,pfn = v.callback(str)
+        end
+        if (v.toshell) then
+          DisplayShell(str)
+        else
+          DisplayOutputNoMarker(str)
+        end
+        pfn = pfn and pfn()
+      end
+    end
+  end
+
+  displayStream(streamins)
+  displayStream(streamerrs)
 end
 
 errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
-			local pid = event:GetPid()
-			if (pid ~= -1) then
-				getStreams()
-				streamins[pid] = nil
-				streamerrs[pid] = nil
-				if (customprocs[pid].endcallback) then
-					customprocs[pid].endcallback()
-				end
-				customprocs[pid] = nil
-				DisplayOutput("Program finished ("..pid..").\n")
-			end
-		end)
+    local pid = event:GetPid()
+    if (pid ~= -1) then
+      getStreams()
+      streamins[pid] = nil
+      streamerrs[pid] = nil
+      if (customprocs[pid].endcallback) then
+        customprocs[pid].endcallback()
+      end
+      customprocs[pid] = nil
+      DisplayOutput("Program finished ("..pid..").\n")
+    end
+  end)
 
 errorlog:Connect(wx.wxEVT_IDLE, function(event)
-		if (#streamins or #streamerrs) then
-			getStreams()
-		end
-	end)
+    if (#streamins or #streamerrs) then
+      getStreams()
+    end
+  end)
 
 local jumptopatterns = {
-    -- <filename>(line,linepos): 
-	"%s*([%w:/%\\_%-%.]+)%((%d+),(%d+)%)%s*:",
-	-- <filename>(line): 
-	"%s*([%w:/%\\_%-%.]+)%((%d+).*%)%s*:",
-	-- <filename>:line:
-	"%s*([%w:/%\\_%-%.]+):(%d+)%s*:",
-	--[string "<filename>"]:line:
-	'.*%[string "([%w:/%\\_%-%.]+)"%]:(%d+)%s*:',
+  -- <filename>(line,linepos):
+  "%s*([%w:/%\\_%-%.]+)%((%d+),(%d+)%)%s*:",
+  -- <filename>(line):
+  "%s*([%w:/%\\_%-%.]+)%((%d+).*%)%s*:",
+  -- <filename>:line:
+  "%s*([%w:/%\\_%-%.]+):(%d+)%s*:",
+  --[string "<filename>"]:line:
+  '.*%[string "([%w:/%\\_%-%.]+)"%]:(%d+)%s*:',
 }
 
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
-		function(event)
-			local line = errorlog:GetCurrentLine()
-			local linetx = errorlog:GetLine(line)
-			-- try to detect a filename + line
-			-- in linetx
-			
-			local fname
-			local jumpline 
-			local jumplinepos
-			
-			for i,pattern in ipairs(jumptopatterns) do
-				fname,jumpline,jumplinepos = linetx:match(pattern)
-				if (fname and jumpline) then
-					break
-				end
-			end
-			
-			
-			if (fname and jumpline) then
-				LoadFile(fname,nil,true)
-				local editor = GetEditor()
-				if (editor) then
-					jumpline = tonumber(jumpline)
-					jumplinepos = tonumber(jumplinepos)
-					
-					--editor:ScrollToLine(jumpline)
-					editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1)) + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
-					editor:SetFocus()
-				end
-			end
-			
-		end)
+  function(event)
+    local line = errorlog:GetCurrentLine()
+    local linetx = errorlog:GetLine(line)
+    -- try to detect a filename + line
+    -- in linetx
+
+    local fname
+    local jumpline
+    local jumplinepos
+
+    for i,pattern in ipairs(jumptopatterns) do
+      fname,jumpline,jumplinepos = linetx:match(pattern)
+      if (fname and jumpline) then
+        break
+      end
+    end
+
+    if (fname and jumpline) then
+      LoadFile(fname,nil,true)
+      local editor = GetEditor()
+      if (editor) then
+        jumpline = tonumber(jumpline)
+        jumplinepos = tonumber(jumplinepos)
+
+        --editor:ScrollToLine(jumpline)
+        editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1)) + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
+        editor:SetFocus()
+      end
+    end
+
+  end)

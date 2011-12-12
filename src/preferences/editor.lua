@@ -23,4 +23,3 @@ preferencesDialog.addPage {
 	onsave = function (values)
 	end
 }
-

@@ -1,6 +1,6 @@
 -- authors: Lomtik Software (J. Winwood & John Labenski)
---          Luxinia Dev (Eike Decker & Christoph Kubisch)
---          David Manura
+-- Luxinia Dev (Eike Decker & Christoph Kubisch)
+-- David Manura
 ---------------------------------------------------------
 
 -- Equivalent to C's "cond ? a : b", all terms will be evaluated
@@ -8,73 +8,72 @@ function iff(cond, a, b) if cond then return a else return b end end
 
 -- Does the num have all the bits in value
 function HasBit(value, num)
-	for n = 32, 0, -1 do
-		local b = 2^n
-		local num_b = num - b
-		local value_b = value - b
-		if num_b >= 0 then
-			num = num_b
-		else
-			return true -- already tested bits in num
-		end
-		if value_b >= 0 then
-			value = value_b
-		end
-		if (num_b >= 0) and (value_b < 0) then
-			return false
-		end
-	end
+  for n = 32, 0, -1 do
+    local b = 2^n
+    local num_b = num - b
+    local value_b = value - b
+    if num_b >= 0 then
+      num = num_b
+    else
+      return true -- already tested bits in num
+    end
+    if value_b >= 0 then
+      value = value_b
+    end
+    if (num_b >= 0) and (value_b < 0) then
+      return false
+    end
+  end
 
-	return true
+  return true
 end
 
 -- ASCII values for common chars
-char_CR  = string.byte("\r")
-char_LF  = string.byte("\n")
+char_CR = string.byte("\r")
+char_LF = string.byte("\n")
 char_Tab = string.byte("\t")
-char_Sp  = string.byte(" ")
+char_Sp = string.byte(" ")
 
 string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
 stringset_File = '[^"%?%*:\\/<>|]'
 
 function StripCommentsC(tx)
-	local out = ""
-	local lastc = ""
-	local skip
-	local skipline
-	local skipmulti
-	local tx = string.gsub(tx, "\r\n", "\n")
-	for c in tx:gmatch(".") do
-		local oc = c
-		local tu = lastc..c
-		skip = c == '/'
-		
-		if ( not (skipmulti or skipline)) then
-			if (tu == "//") then
-				skipline = true
-			elseif (tu == "/*") then
-				skipmulti = true
-				c = ""
-			elseif (lastc == '/') then
-				oc = tu
-			end
-		elseif (skipmulti and tu == "*/") then
-			skipmulti = false
-			c = ""
-		elseif (skipline and lastc == "\n") then
-			out = out.."\n"
-			skipline = false
-		end
-		
-		lastc = c
-		if (not (skip or skipline or skipmulti)) then
-			out = out..oc
-		end
-	end
-	
-	return out..lastc
-end
+  local out = ""
+  local lastc = ""
+  local skip
+  local skipline
+  local skipmulti
+  local tx = string.gsub(tx, "\r\n", "\n")
+  for c in tx:gmatch(".") do
+    local oc = c
+    local tu = lastc..c
+    skip = c == '/'
 
+    if ( not (skipmulti or skipline)) then
+      if (tu == "//") then
+        skipline = true
+      elseif (tu == "/*") then
+        skipmulti = true
+        c = ""
+      elseif (lastc == '/') then
+        oc = tu
+      end
+    elseif (skipmulti and tu == "*/") then
+      skipmulti = false
+      c = ""
+    elseif (skipline and lastc == "\n") then
+      out = out.."\n"
+      skipline = false
+    end
+
+    lastc = c
+    if (not (skip or skipline or skipmulti)) then
+      out = out..oc
+    end
+  end
+
+  return out..lastc
+end
 
 -- http://lua-users.org/wiki/EnhancedFileLines
 function FileLines(f)
@@ -106,70 +105,68 @@ function FileLines(f)
     pos_beg = pos + 1
     if #line > 0 then
       return line
-    end    
+    end
   end
 end
 
 function PrependStringToArray(t, s, maxstrings)
-	if string.len(s) == 0 then return end
-	for i, v in ipairs(t) do
-		if v == s then
-			table.remove(t, i) -- remove old copy
-			break
-		end
-	end
-	table.insert(t, 1, s)
-	if #t > (maxstrings or 15) then table.remove(t, #t) end -- keep reasonable length
+  if string.len(s) == 0 then return end
+  for i, v in ipairs(t) do
+    if v == s then
+      table.remove(t, i) -- remove old copy
+      break
+    end
+  end
+  table.insert(t, 1, s)
+  if #t > (maxstrings or 15) then table.remove(t, #t) end -- keep reasonable length
 end
 
 -- ----------------------------------------------------------------------------
 -- Get file modification time, returns a wxDateTime (check IsValid) or nil if
---   the file doesn't exist
+-- the file doesn't exist
 function GetFileModTime(filePath)
-	if filePath and (string.len(filePath) > 0) then
-		local fn = wx.wxFileName(filePath)
-		if fn:FileExists() then
-			return fn:GetModificationTime()
-		end
-	end
+  if filePath and (string.len(filePath) > 0) then
+    local fn = wx.wxFileName(filePath)
+    if fn:FileExists() then
+      return fn:GetModificationTime()
+    end
+  end
 
-	return nil
+  return nil
 end
 
 function GetFileExt(filePath)
-	local match = filePath and filePath:match("%.([a-zA-Z_0-9]+)$")
-	return match and (string.lower(match))
+  local match = filePath and filePath:match("%.([a-zA-Z_0-9]+)$")
+  return match and (string.lower(match))
 end
 
 function IsLuaFile(filePath)
-	return filePath and (string.len(filePath) > 4) and
-		   (string.lower(string.sub(filePath, -4)) == ".lua")
+  return filePath and (string.len(filePath) > 4) and
+  (string.lower(string.sub(filePath, -4)) == ".lua")
 end
 
 function GetFileNameExt(filePath)
-	if (not filePath) then return end
-	local wxn = wx.wxFileName(filePath)
-	return (wxn:GetName()..(wxn:HasExt() and ("."..wxn:GetExt()) or ""))
+  if (not filePath) then return end
+  local wxn = wx.wxFileName(filePath)
+  return (wxn:GetName()..(wxn:HasExt() and ("."..wxn:GetExt()) or ""))
 end
 
-
 function GetPathWithSep(wxfn)
-	return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
+  return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
 end
 
 function FileSysHasContent(dir)
-	local f = wx.wxFindFirstFile(dir,wx.wxFILE + wx.wxDIR)
-	return #f>0
+  local f = wx.wxFindFirstFile(dir,wx.wxFILE + wx.wxDIR)
+  return #f>0
 end
 
 function FileSysGet(dir,spec)
-	local content = {}
-	local browse = wx.wxFileSystem()
-	local f = browse:FindFirst(dir,spec)
-	while #f>0 do
-		table.insert(content,f)
-		f = browse:FindNext()
-	end
-	return content
+  local content = {}
+  local browse = wx.wxFileSystem()
+  local f = browse:FindFirst(dir,spec)
+  while #f>0 do
+    table.insert(content,f)
+    f = browse:FindNext()
+  end
+  return content
 end
-
