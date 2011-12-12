@@ -402,7 +402,7 @@ HBOX:
 		BuildPaletteOrder: 30
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: w
+		Hotkey: p
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -1168,7 +1168,7 @@ BRIK:
 		BuildPaletteOrder: 1000
 		Prerequisites: fact
 		Owner: allies,soviet
-		Hotkey: p
+		Hotkey: w
 	Valued:
 		Cost: 100
 	CustomSellValue:
