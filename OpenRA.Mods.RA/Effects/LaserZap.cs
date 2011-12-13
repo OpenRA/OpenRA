@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA.Effects
 			var rc = Color.FromArgb((info.BeamDuration - ticks)*255/info.BeamDuration, color);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.LineWidth = info.BeamRadius * 2 * Game.viewport.Zoom;
+			wlr.LineWidth = info.BeamRadius * 2;
 			wlr.DrawLine(args.src, args.dest, rc, rc);
 		}
 	}
