@@ -126,7 +126,7 @@ namespace OpenRA.Graphics
 
 			using( new PerfSample("render_widgets") )
 			{
-				Ui.DoDraw();
+				Ui.Draw();
 				var cursorName = Ui.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 				var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
 				var cursorSprite = cursorSequence.GetSprite((int)cursorFrame);

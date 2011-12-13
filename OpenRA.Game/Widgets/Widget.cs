@@ -52,17 +52,11 @@ namespace OpenRA.Widgets
 			return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
-		public static void DoTick()
-		{
-			RootWidget.TickOuter();
-		}
+		public static void Tick() { RootWidget.TickOuter(); }
 
-		public static void DoDraw()
-		{
-			RootWidget.DrawOuter();
-		}
+		public static void Draw() { RootWidget.DrawOuter(); }
 
-		public static bool DoHandleInput(MouseInput mi)
+		public static bool HandleInput(MouseInput mi)
 		{
 			var wasMouseOver = MouseOverWidget;
 
@@ -94,7 +88,7 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
-		public static bool DoHandleKeyPress(KeyInput e)
+		public static bool HandleKeyPress(KeyInput e)
 		{
 			if (SelectedWidget != null)
 				return SelectedWidget.HandleKeyPressOuter(e);

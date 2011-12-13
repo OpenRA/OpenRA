@@ -160,7 +160,7 @@ namespace OpenRA
 				using( new PerfSample( "tick_time" ) )
 				{
 					orderManager.LastTickTime += Settings.Game.Timestep;
-					Ui.DoTick();
+					Ui.Tick();
 					var world = orderManager.world;
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
