@@ -184,7 +184,7 @@ namespace OpenRA.Widgets
 					lastMouseLocation = mi.Location;
 			}
 
-			return (UpPressed || DownPressed || ThumbPressed);
+			return UpPressed || DownPressed || ThumbPressed;
 		}
 	}
 }
