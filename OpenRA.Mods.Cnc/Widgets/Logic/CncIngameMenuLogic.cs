@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			resumeButton.OnClick = () =>
 			{
 				Ui.CloseWindow();
-				Ui.RootWidget.RemoveChild(menu);
+				Ui.Root.RemoveChild(menu);
 				world.WorldActor.Trait<CncMenuPaletteEffect>().Fade(CncMenuPaletteEffect.EffectType.None);
 				onExit();
 			};

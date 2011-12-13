@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
 
-			var r = Ui.RootWidget;
+			var r = Ui.Root;
 			gameRoot = r.GetWidget("OBSERVER_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 

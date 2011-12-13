@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public SettingsMenuLogic()
 		{
-			bg = Ui.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
+			bg = Ui.Root.GetWidget<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.GetWidget<ContainerWidget>("TAB_CONTAINER");
 
 			//Tabs

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if( world.LocalPlayer == null ) return;
 			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
 
-			var radarBin = Ui.RootWidget.GetWidget<RadarBinWidget>(RadarBin);
+			var radarBin = Ui.Root.GetWidget<RadarBinWidget>(RadarBin);
 
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 

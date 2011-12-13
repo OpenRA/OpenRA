@@ -57,8 +57,8 @@ namespace OpenRA.Widgets
 			if (panel == null)
 				return;
 
-			Ui.RootWidget.RemoveChild(fullscreenMask);
-			Ui.RootWidget.RemoveChild(panel);
+			Ui.Root.RemoveChild(fullscreenMask);
+			Ui.Root.RemoveChild(panel);
 			panel = fullscreenMask = null;
 		}
 
@@ -72,11 +72,11 @@ namespace OpenRA.Widgets
 			fullscreenMask = new MaskWidget();
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
 			fullscreenMask.OnMouseDown = mi => RemovePanel();
-			Ui.RootWidget.AddChild(fullscreenMask);
+			Ui.Root.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
 			panel.Bounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y + Bounds.Height, oldBounds.Width, oldBounds.Height);
-			Ui.RootWidget.AddChild(panel);
+			Ui.Root.AddChild(panel);
 		}
 
 		public void ShowDropDown<T>(string panelTemplate, int height, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)

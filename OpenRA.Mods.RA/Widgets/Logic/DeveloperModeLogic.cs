@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public DeveloperModeLogic(World world)
 		{
-			var devmodeBG = Ui.RootWidget.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
-			var devModeButton = Ui.RootWidget.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
+			var devmodeBG = Ui.Root.GetWidget("INGAME_ROOT").GetWidget("DEVELOPERMODE_BG");
+			var devModeButton = Ui.Root.GetWidget<ButtonWidget>("INGAME_DEVELOPERMODE_BUTTON");
 			devModeButton.OnClick = () => devmodeBG.Visible ^= true;
 
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();

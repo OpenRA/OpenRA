@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public MusicPlayerLogic()
 		{
-			bg = Ui.RootWidget.GetWidget("MUSIC_MENU");
+			bg = Ui.Root.GetWidget("MUSIC_MENU");
 			CurrentSong = GetNextSong();
 
 			bg.GetWidget( "BUTTON_PAUSE" ).IsVisible = () => Sound.MusicPlaying;

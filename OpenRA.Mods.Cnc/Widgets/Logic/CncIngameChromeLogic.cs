@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 
 			ingameRoot.IsVisible = () => false;
-			Game.LoadWidget(world, "INGAME_MENU", Ui.RootWidget, new WidgetArgs()
+			Game.LoadWidget(world, "INGAME_MENU", Ui.Root, new WidgetArgs()
 			{
 				{ "onExit", () => ingameRoot.IsVisible = () => true }
 			});

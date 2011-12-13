@@ -19,18 +19,19 @@ namespace OpenRA.Widgets
 {
 	public static class Ui
 	{
-		public static Widget RootWidget = new ContainerWidget();
+		public static Widget Root = new ContainerWidget();
 
 		static Stack<Widget> WindowList = new Stack<Widget>();
+
 		public static Widget SelectedWidget;
 		public static Widget MouseOverWidget;
 
 		public static void CloseWindow()
 		{
 			if (WindowList.Count > 0)
-				RootWidget.RemoveChild(WindowList.Pop());
+				Root.RemoveChild(WindowList.Pop());
 			if (WindowList.Count > 0)
-				RootWidget.AddChild(WindowList.Peek());
+				Root.AddChild(WindowList.Peek());
 		}
 
 		public static Widget OpenWindow(string id)
@@ -40,9 +41,9 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
 		{
-			var window = Game.modData.WidgetLoader.LoadWidget(args, RootWidget, id);
+			var window = Game.modData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
-				RootWidget.RemoveChild(WindowList.Peek());
+				Root.RemoveChild(WindowList.Peek());
 			WindowList.Push(window);
 			return window;
 		}
@@ -52,9 +53,9 @@ namespace OpenRA.Widgets
 			return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
-		public static void Tick() { RootWidget.TickOuter(); }
+		public static void Tick() { Root.TickOuter(); }
 
-		public static void Draw() { RootWidget.DrawOuter(); }
+		public static void Draw() { Root.DrawOuter(); }
 
 		public static bool HandleInput(MouseInput mi)
 		{
@@ -67,7 +68,7 @@ namespace OpenRA.Widgets
 			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
 				handled = true;
 
-			if (!handled && RootWidget.HandleMouseInputOuter(mi))
+			if (!handled && Root.HandleMouseInputOuter(mi))
 				handled = true;
 
 			if (mi.Event == MouseInputEvent.Move)
@@ -93,14 +94,14 @@ namespace OpenRA.Widgets
 			if (SelectedWidget != null)
 				return SelectedWidget.HandleKeyPressOuter(e);
 
-			if (RootWidget.HandleKeyPressOuter(e))
+			if (Root.HandleKeyPressOuter(e))
 				return true;
 			return false;
 		}
 
 		public static void ResetAll()
 		{
-			RootWidget.RemoveChildren();
+			Root.RemoveChildren();
 
 			while (WindowList.Count > 0)
 				CloseWindow();

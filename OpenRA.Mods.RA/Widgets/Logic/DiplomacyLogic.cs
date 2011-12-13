@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public DiplomacyLogic(World world)
 		{
 			this.world = world;
-			var root = Ui.RootWidget.GetWidget("INGAME_ROOT");
+			var root = Ui.Root.GetWidget("INGAME_ROOT");
 			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
 			var diplomacy = root.GetWidget<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
 

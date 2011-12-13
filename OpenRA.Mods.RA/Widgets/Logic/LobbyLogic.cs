@@ -247,7 +247,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
-			var title = Ui.RootWidget.GetWidget<LabelWidget>("TITLE");
+			var title = Ui.Root.GetWidget<LabelWidget>("TITLE");
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
