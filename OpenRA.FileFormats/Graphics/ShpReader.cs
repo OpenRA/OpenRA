@@ -97,7 +97,7 @@ namespace OpenRA.FileFormats
 				else if( h.Format == Format.Format40 )
 				{
 					if( !offsets.TryGetValue( h.RefOffset, out h.RefImage ) )
-						throw new InvalidDataException( string.Format( "Reference doesnt point to image data {0}->{1}", h.Offset, h.RefOffset ) );
+						throw new InvalidDataException( "Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset) );
 				}
 			}
 

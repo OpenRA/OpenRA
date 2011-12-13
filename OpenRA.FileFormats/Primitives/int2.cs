@@ -55,7 +55,7 @@ namespace OpenRA
 		public PointF ToPointF() { return new PointF(X, Y); }
 		public float2 ToFloat2() { return new float2(X, Y); }
 
-		public override string ToString() { return string.Format("{0},{1}", X, Y); }
+		public override string ToString() { return "{0},{1}".F(X, Y); }
 
 		// Change endianness of a uint32
 		public static uint Swap(uint orig)

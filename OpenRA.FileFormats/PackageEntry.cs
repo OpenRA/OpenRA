@@ -46,9 +46,9 @@ namespace OpenRA.FileFormats
 		{
 			string filename;
 			if (Names.TryGetValue(Hash, out filename))
-				return string.Format("{0} - offset 0x{1:x8} - length 0x{2:x8}", filename, Offset, Length);
+				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
 			else
-				return string.Format("0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}", Hash, Offset, Length);
+				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
 		}
 
 		public static uint HashFilename(string name)

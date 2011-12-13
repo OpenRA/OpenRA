@@ -148,7 +148,7 @@ namespace OpenRA.FileFormats
 					return folder.GetContent(filename + ext);
 			}
 
-			throw new FileNotFoundException( string.Format( "File not found: {0}", filename ), filename );
+			throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 		}
 
 		public static bool Exists(string filename) { return mountedFolders.Any(f => f.Exists(filename)); }

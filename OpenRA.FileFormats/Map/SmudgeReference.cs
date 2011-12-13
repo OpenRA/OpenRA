@@ -15,6 +15,7 @@ namespace OpenRA.FileFormats
 		public readonly string Type;
 		public readonly int2 Location;
 		public readonly int Depth;
+
 		public SmudgeReference( string type, int2 location, int depth )
 		{
 			Type = type;
@@ -22,10 +23,9 @@ namespace OpenRA.FileFormats
 			Depth = depth;
 		}
 
-		public override string ToString ()
+		public override string ToString()
 		{
-			return string.Format("{0} {1},{2} {3}", Type, Location.X,Location.Y, Depth);
+			return "{0} {1},{2} {3}".F(Type, Location.X, Location.Y, Depth);
 		}
-
 	}
 }

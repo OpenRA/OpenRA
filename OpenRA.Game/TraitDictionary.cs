@@ -57,28 +57,28 @@ namespace OpenRA
 		public bool Contains<T>( Actor actor )
 		{
 			if( actor.Destroyed )
-				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
+				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID ).Count() != 0;
 		}
 
 		public T Get<T>( Actor actor )
 		{
 			if( actor.Destroyed )
-				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
+				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).Get( actor.ActorID );
 		}
 
 		public T GetOrDefault<T>( Actor actor )
 		{
 			if( actor.Destroyed )
-				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
+				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetOrDefault( actor.ActorID );
 		}
 
 		public IEnumerable<T> WithInterface<T>( Actor actor )
 		{
 			if( actor.Destroyed )
-				throw new InvalidOperationException( "Attempted to get trait from destroyed object ({0})".F( actor.ToString() ) );
+				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID );
 		}
 
@@ -121,9 +121,9 @@ namespace OpenRA
 				++queries;
 				var index = actors.BinarySearchMany( actor );
 				if( index >= actors.Count || actors[ index ].ActorID != actor )
-					throw new InvalidOperationException( string.Format( "TraitDictionary does not contain instance of type `{0}`", typeof( T ) ) );
+					throw new InvalidOperationException("TraitDictionary does not contain instance of type `{0}`".F(typeof(T)));
 				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
-					throw new InvalidOperationException( string.Format( "TraitDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
+					throw new InvalidOperationException("TraitDictionary contains multiple instance of type `{0}`".F(typeof(T)));
 				else
 					return traits[ index ];
 			}
@@ -135,7 +135,7 @@ namespace OpenRA
 				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					return default( T );
 				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
-					throw new InvalidOperationException( string.Format( "TraitDictionary contains multiple instance of type `{0}`", typeof( T ) ) );
+					throw new InvalidOperationException("TraitDictionary contains multiple instance of type `{0}`".F(typeof(T)));
 				else return traits[ index ];
 			}
 

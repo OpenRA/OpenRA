@@ -35,7 +35,7 @@ namespace OpenRA.Renderer.Cg
 				var err = Tao.Cg.Cg.cgGetErrorString(Tao.Cg.Cg.cgGetError());
 				var results = Tao.Cg.Cg.cgGetLastListing(dev.cgContext);
 				throw new InvalidOperationException(
-					string.Format("Cg compile failed ({0}):\n{1}", err, results));
+					"Cg compile failed ({0}):\n{1}".F(err, results));
 			}
 
 			technique = Tao.Cg.Cg.cgGetFirstTechnique(effect);

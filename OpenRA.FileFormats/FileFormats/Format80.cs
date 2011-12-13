@@ -45,7 +45,7 @@ namespace OpenRA.FileFormats
 		static void ReplicatePrevious( byte[] dest, int destIndex, int srcIndex, int count )
 		{
 			if( srcIndex > destIndex )
-				throw new NotImplementedException( string.Format( "srcIndex > destIndex  {0}  {1}", srcIndex, destIndex ) );
+				throw new NotImplementedException("srcIndex > destIndex {0} {1}".F(srcIndex, destIndex));
 
 			if( destIndex - srcIndex == 1 )
 			{
@@ -105,7 +105,7 @@ namespace OpenRA.FileFormats
 						int count = ctx.ReadWord();
 						int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
-							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
+							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
 							dest[ destIndex ] = dest[ srcIndex++ ];
@@ -116,7 +116,7 @@ namespace OpenRA.FileFormats
 						int count = count3 + 3;
 						int srcIndex = ctx.ReadWord();
 						if( srcIndex >= destIndex )
-							throw new NotImplementedException( string.Format( "srcIndex >= destIndex  {0}  {1}", srcIndex, destIndex ) );
+							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
 
 						for( int end = destIndex + count ; destIndex < end ; destIndex++ )
 							dest[ destIndex ] = dest[ srcIndex++ ];
