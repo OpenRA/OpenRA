@@ -126,15 +126,15 @@ namespace OpenRA.Graphics
 
 			using( new PerfSample("render_widgets") )
 			{
-				Widget.DoDraw();
-				var cursorName = Widget.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
+				Ui.DoDraw();
+				var cursorName = Ui.RootWidget.GetCursorOuter(Viewport.LastMousePos) ?? "default";
 				var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
 				var cursorSprite = cursorSequence.GetSprite((int)cursorFrame);
 
 				renderer.SpriteRenderer.DrawSprite(cursorSprite,
-												   Viewport.LastMousePos - cursorSequence.Hotspot,
-												   Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette),
-												   cursorSprite.size);
+					Viewport.LastMousePos - cursorSequence.Hotspot,
+					Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette),
+					cursorSprite.size);
 			}
 
 			using( new PerfSample("render_flip") )
@@ -194,7 +194,7 @@ namespace OpenRA.Graphics
 		{
 			if (cachedScroll != scrollPosition)
 			{
-				int2 boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
+				var boundary = new int2(1,1); // Add a curtain of cells around the viewport to account for rounding errors
 				var tl = ViewToWorld(int2.Zero).ToInt2() - boundary;
 				var br = ViewToWorld(new int2(Width, Height)).ToInt2() + boundary;
 

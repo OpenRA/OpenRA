@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public OrderButtonsChromeLogic(World world)
 		{
 			/* todo: attach this to the correct widget, to remove the lookups below */
-			var r = Widget.RootWidget;
+			var r = Ui.RootWidget;
 			var gameRoot = r.GetWidget("INGAME_ROOT");
 
 			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");

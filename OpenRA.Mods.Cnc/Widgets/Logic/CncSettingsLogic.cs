@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				int.TryParse(windowHeight.Text, out y);
 				graphicsSettings.WindowedSize = new int2(x,y);
 				Game.Settings.Save();
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				onExit();
 			};
 		}

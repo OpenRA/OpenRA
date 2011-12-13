@@ -33,15 +33,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.world = world;
 
 			tabsWidget = Lazy.New(() =>
-				Widget.RootWidget.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget));
+				Ui.RootWidget.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget));
 		}
 
 		public void SelectionChanged()
 		{
 			// Find an actor with a queue
 			var producer = world.Selection.Actors.FirstOrDefault(a => a.IsInWorld
-											                     && a.World.LocalPlayer == a.Owner
-											                     && a.HasTrait<ProductionQueue>());
+				&& a.World.LocalPlayer == a.Owner
+				&& a.HasTrait<ProductionQueue>());
+
 			if (producer != null)
 				tabsWidget.Value.CurrentQueue = producer.TraitsImplementing<ProductionQueue>().First();
 		}

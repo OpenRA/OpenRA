@@ -33,11 +33,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
 				Game.Settings.Save();
 
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				ConnectionLogic.Connect(ipField.Text, port, openLobby, onExit);
 			};
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 	}
 }

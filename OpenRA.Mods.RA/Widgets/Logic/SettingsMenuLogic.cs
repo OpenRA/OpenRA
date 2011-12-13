@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public SettingsMenuLogic()
 		{
-			bg = Widget.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
+			bg = Ui.RootWidget.GetWidget<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.GetWidget<ContainerWidget>("TAB_CONTAINER");
 
 			//Tabs
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);
 				Game.Settings.Save();
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 			};
 		}
 

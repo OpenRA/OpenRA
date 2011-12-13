@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
 			map = Game.modData.AvailableMaps[ WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map) ];
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				panel.GetWidget<ButtonWidget>("MAP_BUTTON").OnClick = () =>
 				{
-					Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", map.Uid },
 						{ "onExit", () => {} },
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Create and join the server
 			Game.CreateServer(settings);
-			Widget.CloseWindow();
+			Ui.CloseWindow();
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, onCreate, onExit);
 		}
 	}

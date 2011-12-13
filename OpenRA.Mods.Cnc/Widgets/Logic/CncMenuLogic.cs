@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			mainMenu.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
+				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => Menu = MenuType.Main },
 					{ "onSwitch", RemoveShellmapUI }
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			settingsMenu.GetWidget<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
+				Ui.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => Menu = MenuType.Settings },
 					{ "onStart", RemoveShellmapUI }
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			settingsMenu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs()
+				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			settingsMenu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Widget.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
+				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
 				{
 					{ "world", world },
 					{ "onExit", () => Menu = MenuType.Settings },
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		void OpenGamePanel(string id)
 		{
 			Menu = MenuType.None;
-			Widget.OpenWindow(id, new WidgetArgs()
+			Ui.OpenWindow(id, new WidgetArgs()
 			{
 				{ "onExit", () => Menu = MenuType.Multiplayer },
 				{ "openLobby", () => OpenLobbyPanel(MenuType.Multiplayer, false) }

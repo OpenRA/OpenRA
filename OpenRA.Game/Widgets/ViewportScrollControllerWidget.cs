@@ -57,7 +57,7 @@ namespace OpenRA.Widgets
 
 		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
 		{
-			if (!Game.Settings.Game.ViewportEdgeScroll || Widget.MouseOverWidget != w)
+			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != w)
 				return null;
 
 			var blockedDirections = Game.viewport.GetBlockedDirections();
@@ -81,10 +81,10 @@ namespace OpenRA.Widgets
 		{
 			switch (e.KeyName)
 			{
-				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, (e.Event == KeyInputEvent.Down)); return true;
-				case "down": Keyboard = Keyboard.Set(ScrollDirection.Down, (e.Event == KeyInputEvent.Down)); return true;
-				case "left": Keyboard = Keyboard.Set(ScrollDirection.Left, (e.Event == KeyInputEvent.Down)); return true;
-				case "right": Keyboard = Keyboard.Set(ScrollDirection.Right, (e.Event == KeyInputEvent.Down)); return true;
+				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down); return true;
+				case "down": Keyboard = Keyboard.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down); return true;
+				case "left": Keyboard = Keyboard.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down); return true;
+				case "right": Keyboard = Keyboard.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down); return true;
 			}
 			return false;
 		}
@@ -109,7 +109,6 @@ namespace OpenRA.Widgets
 			{
 				var scroll = new float2(0, 0);
 
-				// Modified to use the ViewportEdgeScrollStep setting - Gecko
 				if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up))
 					scroll += new float2(0, -1);
 				if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))

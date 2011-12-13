@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					ConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 
-				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry },
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.AddChatLine -= AddChatLine;
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
 
-			Widget.CloseWindow();
+			Ui.CloseWindow();
 		}
 
 		[ObjectCreator.UseCtor]
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Game.Settings.Save();
 				});
 
-				Widget.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+				Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", Map.Uid },
 					{ "onExit", () => {} },
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => Widget.OpenWindow("MUSIC_PANEL", new WidgetArgs
+				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 					{ { "onExit", () => {} } });
 
 			// Add a bot on the first lobbyinfo update
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
-			var title = Widget.RootWidget.GetWidget<LabelWidget>("TITLE");
+			var title = Ui.RootWidget.GetWidget<LabelWidget>("TITLE");
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 

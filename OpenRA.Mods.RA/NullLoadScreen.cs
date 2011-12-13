@@ -16,6 +16,7 @@ namespace OpenRA.Mods.RA
 	public class NullLoadScreen : ILoadScreen
 	{
 		public void Init(Dictionary<string, string> info) {}
+
 		public void Display()
 		{
 			if (Game.Renderer == null)
@@ -28,8 +29,8 @@ namespace OpenRA.Mods.RA
 
 		public void StartGame()
 		{
-			Widget.ResetAll();
-			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Widget.RootWidget, "INIT_SETUP" );
+			Ui.ResetAll();
+			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Ui.RootWidget, "INIT_SETUP" );
 		}
 	}
 }

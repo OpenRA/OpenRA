@@ -22,15 +22,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
-				{ "afterInstall", () => { Widget.CloseWindow(); continueLoading(); } },
+				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 
 			panel.GetWidget<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
-				Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
+				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
 			panel.GetWidget<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
-				Widget.OpenWindow("INSTALL_FROMCD_PANEL", args);
+				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
 			panel.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 		}

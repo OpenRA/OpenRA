@@ -35,7 +35,7 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var state = IsSelected() ? "scrollitem-selected" :
-				Widget.MouseOverWidget == this ? "scrollitem-hover" :
+				Ui.MouseOverWidget == this ? "scrollitem-hover" :
 				null;
 
 			if (state != null)

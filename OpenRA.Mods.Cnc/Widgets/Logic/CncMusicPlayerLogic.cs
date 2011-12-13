@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
 			Func<bool> noMusic = () => !installed;
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			Action afterInstall = () =>
 			{
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
-				Widget.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {
+				Ui.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {
 					{ "afterInstall", afterInstall },
 					{ "filesToCopy", new [] { "SCORES.MIX" } },
 					{ "filesToExtract", new [] { "transit.mix" } },

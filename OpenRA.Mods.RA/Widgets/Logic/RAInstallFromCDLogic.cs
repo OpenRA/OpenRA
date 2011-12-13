@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
 
 			backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
-			backButton.OnClick = Widget.CloseWindow;
+			backButton.OnClick = Ui.CloseWindow;
 
 			retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
 			retryButton.OnClick = CheckForDisk;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					Game.RunAfterTick(() =>
 					{
-						Widget.CloseWindow();
+						Ui.CloseWindow();
 						continueLoading();
 					});
 				}

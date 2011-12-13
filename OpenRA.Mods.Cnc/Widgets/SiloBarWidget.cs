@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			tooltipContainer = Lazy.New(() =>
-				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void MouseEntered()

@@ -70,13 +70,13 @@ namespace OpenRA.Widgets
 			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, ScrollbarHeight + 2);
 			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 
-			var upHover = Widget.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
+			var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
 			var upDisabled = thumbHeight == 0 || ListOffset >= 0;
 
-			var downHover = Widget.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
+			var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
 			var downDisabled = thumbHeight == 0 || ListOffset <= Bounds.Height - ContentHeight;
 
-			var thumbHover = Widget.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
+			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
 			ButtonWidget.DrawBackground("button", upButtonRect, upDisabled, UpPressed, upHover);

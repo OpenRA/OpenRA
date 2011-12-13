@@ -19,19 +19,19 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public static void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel)
 		{
-			var prompt = Widget.OpenWindow("CONFIRM_PROMPT");
+			var prompt = Ui.OpenWindow("CONFIRM_PROMPT");
 			prompt.GetWidget<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 			prompt.GetWidget<LabelWidget>("PROMPT_TEXT").GetText = () => text;
 
 			prompt.GetWidget<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
 			{
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				onConfirm();
 			};
 
 			prompt.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				onCancel();
 			};
 		}

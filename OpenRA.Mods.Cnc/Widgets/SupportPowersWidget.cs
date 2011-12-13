@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Lazy.New(() =>
-				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 
 			iconSprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
 				.Select(u => u.Image).Distinct()

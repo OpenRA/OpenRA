@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Only visible if the production palette has icons to display
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
-			paletteWidget = Lazy.New(() => Widget.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
+			paletteWidget = Lazy.New(() => Ui.RootWidget.GetWidget<ProductionPaletteWidget>(PaletteWidget));
 		}
 
 		public void SelectNextTab(bool reverse)
@@ -135,9 +135,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 
 			var leftDisabled = ListOffset >= 0;
-			var leftHover = Widget.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
+			var leftHover = Ui.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
 			var rightDisabled = ListOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth;
-			var rightHover = Widget.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
+			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel("panel-black", rb);
 			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover);
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			foreach (var tab in Groups[queueGroup].Tabs)
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
-				var hover = !leftHover && !rightHover && Widget.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
+				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
 				var baseName = tab.Queue == CurrentQueue ? "button-toggled" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover);
 				ContentWidth += TabWidth - 1;

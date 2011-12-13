@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA
 
 		void TestAndContinue()
 		{
-			Widget.ResetAll();
+			Ui.ResetAll();
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
 				var args = new WidgetArgs()
@@ -84,13 +84,13 @@ namespace OpenRA.Mods.RA
 					{ "continueLoading", () => TestAndContinue() },
 					{ "installData", Info }
 				};
-				Widget.OpenWindow(Info["InstallerMenuWidget"], args);
+				Ui.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else
 			{
 				Game.LoadShellMap();
-				Widget.ResetAll();
-				Widget.OpenWindow("MAINMENU_BG");
+				Ui.ResetAll();
+				Ui.OpenWindow("MAINMENU_BG");
 			}
 		}
 	}

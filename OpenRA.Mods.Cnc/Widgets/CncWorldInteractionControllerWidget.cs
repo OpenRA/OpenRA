@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			: base(world, worldRenderer)
 		{
 			tooltipContainer = Lazy.New(() =>
-				Widget.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.RootWidget.GetWidget<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void MouseEntered()
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override void Tick()
 		{
 			Edge = ScrollDirection.None;
-			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus && Widget.MouseOverWidget == this)
+			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus && Ui.MouseOverWidget == this)
 			{
 				// Check for edge-scroll
 				if (Viewport.LastMousePos.X < EdgeScrollThreshold)

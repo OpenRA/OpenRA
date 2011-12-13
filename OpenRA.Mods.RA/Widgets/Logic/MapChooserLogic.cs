@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
-			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Widget.CloseWindow(); onSelect(map); };
-			widget.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(map); };
+			widget.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			scrollpanel = widget.GetWidget<ScrollPanelWidget>("MAP_LIST");
 			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");

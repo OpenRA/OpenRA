@@ -37,7 +37,7 @@ namespace OpenRA.Scripting
 				if (music)
 					Sound.PlayMusic();
 
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				Sound.SoundVolumeModifier = oldModifier;
 				w.EnableTick = true;
 				onComplete();

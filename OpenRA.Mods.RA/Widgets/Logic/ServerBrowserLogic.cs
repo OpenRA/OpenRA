@@ -64,11 +64,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var host = currentServer.Address.Split(':')[0];
 				var port = int.Parse(currentServer.Address.Split(':')[1]);
 
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				ConnectionLogic.Connect(host, port, openLobby, onExit);
 			};
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			// Server list
 			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");

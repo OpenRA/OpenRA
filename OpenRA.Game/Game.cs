@@ -95,14 +95,14 @@ namespace OpenRA
 		// Hacky workaround for orderManager visibility
 		public static Widget OpenWindow(World world, string widget)
 		{
-			return Widget.OpenWindow(widget, new WidgetArgs() {{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
+			return Ui.OpenWindow(widget, new WidgetArgs() {{ "world", world }, { "orderManager", orderManager }, { "worldRenderer", worldRenderer }});
 		}
 
 		// Who came up with the great idea of making these things
 		// impossible for the things that want them to access them directly?
 		public static Widget OpenWindow(string widget, WidgetArgs args)
 		{
-			return Widget.OpenWindow(widget, new WidgetArgs(args)
+			return Ui.OpenWindow(widget, new WidgetArgs(args)
 			{
 				{ "world", worldRenderer.world },
 				{ "orderManager", orderManager },
@@ -160,7 +160,7 @@ namespace OpenRA
 				using( new PerfSample( "tick_time" ) )
 				{
 					orderManager.LastTickTime += Settings.Game.Timestep;
-					Widget.DoTick();
+					Ui.DoTick();
 					var world = orderManager.world;
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
@@ -215,7 +215,7 @@ namespace OpenRA
 			worldRenderer = new WorldRenderer(orderManager.world);
 
 			if (orderManager.GameStarted) return;
-			Widget.SelectedWidget = null;
+			Ui.SelectedWidget = null;
 
 			orderManager.LocalFrameNumber = 0;
 			orderManager.LastTickTime = Environment.TickCount;
@@ -270,7 +270,7 @@ namespace OpenRA
 			AddChatLine = (a,b,c) => {};
 			ConnectionStateChanged = om => {};
 			BeforeGameStart = () => {};
-			Widget.ResetAll();
+			Ui.ResetAll();
 
 			worldRenderer = null;
 			if (server != null)

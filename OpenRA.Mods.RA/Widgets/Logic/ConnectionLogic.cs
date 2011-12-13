@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				// Show connection failed dialog
 				CloseWindow();
-				Widget.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
 					{ "onAbort", onAbort },
 					{ "onRetry", onRetry },
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void CloseWindow()
 		{
 			Game.ConnectionStateChanged -= ConnectionStateChanged;
-			Widget.CloseWindow();
+			Ui.CloseWindow();
 		}
 
 		[ObjectCreator.UseCtor]
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void Connect(string host, int port, Action onConnect, Action onAbort)
 		{
 			Game.JoinServer(host, port);
-			Widget.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
+			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
 				{ "host", host },
 				{ "port", port },
@@ -85,8 +85,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ConnectionFailedLogic(Widget widget, string host, int port, Action onRetry, Action onAbort)
 		{
 			var panel = widget;
-			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Widget.CloseWindow(); onAbort(); };
-			panel.GetWidget<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Widget.CloseWindow(); onRetry(); };
+			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Ui.CloseWindow(); onAbort(); };
+			panel.GetWidget<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Ui.CloseWindow(); onRetry(); };
 
 			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(host, port);

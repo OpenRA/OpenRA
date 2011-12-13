@@ -34,14 +34,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public MusicPlayerLogic()
 		{
-			bg = Widget.RootWidget.GetWidget("MUSIC_MENU");
+			bg = Ui.RootWidget.GetWidget("MUSIC_MENU");
 			CurrentSong = GetNextSong();
 
 			bg.GetWidget( "BUTTON_PAUSE" ).IsVisible = () => Sound.MusicPlaying;
 			bg.GetWidget( "BUTTON_PLAY" ).IsVisible = () => !Sound.MusicPlaying;
 
 			bg.GetWidget<ButtonWidget>("BUTTON_CLOSE").OnClick =
-				() => { Game.Settings.Save(); Widget.CloseWindow(); };
+				() => { Game.Settings.Save(); Ui.CloseWindow(); };
 
 			bg.GetWidget("BUTTON_INSTALL").IsVisible = () => false;
 

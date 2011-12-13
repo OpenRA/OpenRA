@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					Game.RunAfterTick(() =>
 					{
-						Widget.CloseWindow();
+						Ui.CloseWindow();
 						afterInstall();
 					});
 				}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var dl = new Download(installData["PackageURL"], file, onDownloadProgress, onDownloadComplete);
 
-			cancelButton.OnClick = () => { dl.Cancel(); Widget.CloseWindow(); };
+			cancelButton.OnClick = () => { dl.Cancel(); Ui.CloseWindow(); };
 			retryButton.OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
 		}
 	}

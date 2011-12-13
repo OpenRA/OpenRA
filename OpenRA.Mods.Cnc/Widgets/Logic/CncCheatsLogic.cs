@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			panel.GetWidget<ButtonWidget>("GIVE_EXPLORATION_BUTTON").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
 
-			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
 		public void Order(World world, string order)

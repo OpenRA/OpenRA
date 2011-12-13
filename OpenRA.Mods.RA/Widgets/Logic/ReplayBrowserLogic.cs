@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			panel = widget;
 
-			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (currentReplay != null)
 				{
 					Game.JoinReplay(currentReplay.Filename);
-					Widget.CloseWindow();
+					Ui.CloseWindow();
 					onStart();
 				}
 			};

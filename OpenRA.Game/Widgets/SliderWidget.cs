@@ -117,7 +117,7 @@ namespace OpenRA.Widgets
 			WidgetUtils.DrawPanel("slider-track", trackRect);
 
 			// Thumb
-			var thumbHover = Widget.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
+			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
 			ButtonWidget.DrawBackground("scrollthumb", tr, IsDisabled(), isMoving, thumbHover);
 		}
 	}

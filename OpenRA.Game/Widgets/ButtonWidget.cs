@@ -128,7 +128,7 @@ namespace OpenRA.Widgets
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
-			DrawBackground(rb, disabled, Depressed, Widget.MouseOverWidget == this);
+			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this);
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
 						  disabled ? Color.Gray : Color.White);
 		}

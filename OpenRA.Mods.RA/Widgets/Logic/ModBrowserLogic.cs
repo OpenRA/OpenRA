@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			loadButton.OnClick = () => LoadMod(currentMod.Id, onSwitch);
 			loadButton.IsDisabled = () => currentMod.Id == Game.CurrentMods.Keys.First();
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Widget.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			currentMod = Mod.AllMods[Game.modData.Manifest.Mods[0]];
 
 			// Mod list
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Game.RunAfterTick(() =>
 			{
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				onSwitch();
 				Game.InitializeWithMods(mods);
 			});

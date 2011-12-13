@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		public PerfDebugLogic()
 		{
-			var r = Widget.RootWidget;
+			var r = Ui.RootWidget;
 			var perfRoot = r.GetWidget("PERF_BG");
 			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.Debug.PerfGraph;
 

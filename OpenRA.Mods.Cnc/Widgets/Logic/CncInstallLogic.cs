@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var panel = widget.GetWidget("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
-				{ "afterInstall", () => { Widget.CloseWindow(); continueLoading(); } },
+				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 
 			panel.GetWidget<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
-				Widget.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
+				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
 			panel.GetWidget<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
-				Widget.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs(args)
+				Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs(args)
 				{
 					{ "filesToCopy", new[] { "CONQUER.MIX", "DESERT.MIX", "SCORES.MIX",
 											 "SOUNDS.MIX", "TEMPERAT.MIX", "WINTER.MIX" } },
@@ -41,11 +41,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			panel.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
-				Widget.OpenWindow("MODS_PANEL", new WidgetArgs()
+				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => {} },
 					// Close this panel
-					{ "onSwitch", Widget.CloseWindow },
+					{ "onSwitch", Ui.CloseWindow },
 				});
 			};
 		}

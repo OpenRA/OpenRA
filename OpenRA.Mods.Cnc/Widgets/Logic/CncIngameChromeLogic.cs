@@ -86,12 +86,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			if (menu != MenuType.None)
 			{
-				Widget.CloseWindow();
+				Ui.CloseWindow();
 				menu = MenuType.None;
 			}
 
 			ingameRoot.IsVisible = () => false;
-			Game.LoadWidget(world, "INGAME_MENU", Widget.RootWidget, new WidgetArgs()
+			Game.LoadWidget(world, "INGAME_MENU", Ui.RootWidget, new WidgetArgs()
 			{
 				{ "onExit", () => ingameRoot.IsVisible = () => true }
 			});
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			cheatsButton.OnClick = () =>
 			{
 				if (menu != MenuType.None)
-					Widget.CloseWindow();
+					Ui.CloseWindow();
 
 				menu = MenuType.Cheats;
 				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});

@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
-				Widget.ResetAll();
+				Ui.ResetAll();
 				Game.LoadShellMap();
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
-				Widget.ResetAll();
+				Ui.ResetAll();
 				Game.LoadShellMap();
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));

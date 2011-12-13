@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
 
-			var r = Widget.RootWidget;
+			var r = Ui.RootWidget;
 			gameRoot = r.GetWidget("INGAME_ROOT");
 			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
 
@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
 
-			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Widget.OpenWindow("SETTINGS_MENU");
-			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Widget.OpenWindow("MUSIC_MENU");
+			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
+			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
 			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 
 			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () =>
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			pane.Visible = false;
 			Game.Disconnect();
 			Game.LoadShellMap();
-			Widget.CloseWindow();
-			Widget.OpenWindow("MAINMENU_BG");
+			Ui.CloseWindow();
+			Ui.OpenWindow("MAINMENU_BG");
 		}
 
 		void UnregisterEvents()

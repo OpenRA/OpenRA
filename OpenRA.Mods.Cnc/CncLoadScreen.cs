@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Cnc
 
 		void TestAndContinue()
 		{
-			Widget.ResetAll();
+			Ui.ResetAll();
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
 				var args = new WidgetArgs()
@@ -131,8 +131,8 @@ namespace OpenRA.Mods.Cnc
 					{ "continueLoading", () => TestAndContinue() },
 					{ "installData", Info }
 				};
-				Widget.LoadWidget(Info["InstallerBackgroundWidget"], Widget.RootWidget, args);
-				Widget.OpenWindow(Info["InstallerMenuWidget"], args);
+				Ui.LoadWidget(Info["InstallerBackgroundWidget"], Ui.RootWidget, args);
+				Ui.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else
 				Game.LoadShellMap();

@@ -35,18 +35,12 @@ namespace OpenRA
 
 		public void OnKeyInput( KeyInput input )
 		{
-			Sync.CheckSyncUnchanged( world, () =>
-			{
-				Widget.DoHandleKeyPress( input );
-			} );
+			Sync.CheckSyncUnchanged(world, () => Ui.DoHandleKeyPress(input));
 		}
 
 		public void OnMouseInput( MouseInput input )
 		{
-			Sync.CheckSyncUnchanged( world, () =>
-			{
-				Widget.DoHandleInput( input );
-			} );
+			Sync.CheckSyncUnchanged(world, () => Ui.DoHandleInput(input));
 		}
 	}
 }

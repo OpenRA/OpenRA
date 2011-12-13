@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (WorldInteractionController != null)
 				{
-					var controller = Widget.RootWidget.GetWidget<WorldInteractionControllerWidget>(WorldInteractionController);
+					var controller = Ui.RootWidget.GetWidget<WorldInteractionControllerWidget>(WorldInteractionController);
 					controller.HandleMouseInput(fakemi);
 					fakemi.Event = MouseInputEvent.Up;
 					controller.HandleMouseInput(fakemi);
