@@ -19,13 +19,8 @@ namespace OpenRA.Widgets
 {
 	public abstract class Widget
 	{
-		public static Widget RootWidget
-		{
-			get { return rootWidget; }
-			set { rootWidget = value; }
-		}
+		public static Widget RootWidget = new ContainerWidget();
 
-		static Widget rootWidget = new ContainerWidget();
 		static Stack<Widget> WindowList = new Stack<Widget>();
 		public static Widget SelectedWidget;
 		public static Widget MouseOverWidget;
@@ -35,7 +30,7 @@ namespace OpenRA.Widgets
 			if (WindowList.Count > 0)
 				RootWidget.RemoveChild(WindowList.Pop());
 			if (WindowList.Count > 0)
-				rootWidget.AddChild(WindowList.Peek());
+				RootWidget.AddChild(WindowList.Peek());
 		}
 
 		public static Widget OpenWindow(string id)
@@ -45,9 +40,9 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
 		{
-			var window = Game.modData.WidgetLoader.LoadWidget(args, rootWidget, id);
+			var window = Game.modData.WidgetLoader.LoadWidget(args, RootWidget, id);
 			if (WindowList.Count > 0)
-				rootWidget.RemoveChild(WindowList.Peek());
+				RootWidget.RemoveChild(WindowList.Peek());
 			WindowList.Push(window);
 			return window;
 		}
