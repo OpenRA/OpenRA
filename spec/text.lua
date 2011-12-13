@@ -7,4 +7,3 @@ return {
   --apitype = "luxres",
   linecomment = ">",
 }
-
