@@ -69,7 +69,7 @@ function CommandLineToShell(uid,state)
 end
 
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-  if (not cmd) then return true end
+  if (not cmd) then return 0 end
 
   local exename = string.gsub(cmd, "\\", "/")
   exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
@@ -79,7 +79,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   if (CommandLineRunning(uid)) then
     DisplayOutput("Conflicting Process still running: "..cmd.."\n")
-    return true
+    return 0
   end
 
   DisplayOutput("Running program: "..cmd.."\n")
@@ -114,7 +114,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if not pid or pid == -1 then
     DisplayOutputNoMarker("Unknown ERROR Running program!\n")
     customproc = nil
-    return true
+    return 0
   else
     DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
     customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
@@ -129,6 +129,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     streamerrs[pid] = {stream=streamerr, callback=stringcallback}
   end
 
+  return pid
 end
 
 local function getStreams()

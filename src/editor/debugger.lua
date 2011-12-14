@@ -80,7 +80,6 @@ debugger.shell = function(expression)
 end
 
 debugger.listen = function()
-
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
   copas.autoclose = false
@@ -186,7 +185,17 @@ debugger.updateBreakpoint = function(command)
 end
 
 debugger.update = function() copas.step(0) end
-debugger.terminate = function() debugger.exec("exit") end
+debugger.terminate = function()
+  if debugger.server then
+    if debugger.pid then -- if there is PID, try local kill
+      DebuggerKillClient()
+    else -- otherwise, trace graceful exit for the remote process
+      debugger.exec("exit")
+      copas.step(1) -- process 'exit' right away; doesn't guarantee the response
+    end
+    DebuggerStop()
+  end
+end
 debugger.step = function() debugger.exec("step") end
 debugger.trace = function() debugger.exec("step", true) end
 debugger.over = function() debugger.exec("over") end
@@ -205,6 +214,21 @@ function DebuggerAttachDefault(options)
   debugger.options = options
   if (debugger.listening) then return end
   debugger.listen()
+end
+
+function DebuggerKillClient()
+  if (debugger.pid) then
+    -- using SIGTERM for some reason kills not only the debugee process,
+    -- but also some system processes, which leads to a blue screen crash
+    -- (at least on Windows Vista SP2)
+    local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+    if ret == wx.wxKILL_OK then
+      DisplayOutput("Stopped debuggee process "..debugger.pid..".\n")
+    elseif ret ~= wx.wxKILL_NO_PROCESS then
+      DisplayOutput("Unable to kill debuggee process "..debugger.pid..", code "..tostring(ret)..".\n")
+    end
+    debugger.pid = 0
+  end
 end
 
 function DebuggerStop()

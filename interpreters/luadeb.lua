@@ -18,7 +18,7 @@ return {
     end
     local code = ([[xpcall(function() %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
     local cmd = '"'..mainpath..'/bin/lua.exe" -e "'..code..'"'
-    CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
+    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

@@ -188,7 +188,8 @@ end
 local function runInterpreter(wfilename, withdebugger)
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
-  ide.interpreter:frun(wfilename, withdebugger)
+  local pid = ide.interpreter:frun(wfilename, withdebugger)
+  if withdebugger then debugger.pid = pid end
 end
 
 -----------------------
@@ -263,8 +264,6 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
-
     debugger.terminate()
   end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
@@ -349,6 +348,7 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (not debugger.running))
   end)
 ]]
+
 frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     if not debugger.watchWindow then

@@ -58,7 +58,7 @@ return {
     jitargs = jitargs or ""
     local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua '..args
 
-    if(CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
+    if(not CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
         function()
           ShellSupportRemote(nil)
           if (rundebug) then
