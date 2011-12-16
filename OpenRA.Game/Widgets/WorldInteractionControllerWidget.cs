@@ -55,6 +55,12 @@ namespace OpenRA.Widgets
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
 
+			var UseClassicMouseStyle = Game.Settings.Keys.UseClassicMouseStyle;
+
+			bool UnitsUnderCursor = (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() != null) ? true : false;
+			bool Box = (SelectionBox != null) ? true : false;
+			bool MultiClick = (mi.MultiTapCount >= 2) ? true : false;
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!TakeFocus(mi))
@@ -69,14 +75,10 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
+Console.WriteLine("Test Message: UnitsUnderCursor = {0}, Box = {1}, MultiClick = {2}\n", UnitsUnderCursor, Box, MultiClick);
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-Console.WriteLine("Test Message 1 - mi.MultiTapCount = {0}\n", mi.MultiTapCount);
-if (SelectionBox == null)
-Console.WriteLine("Test Message 2 - SelectionBox = null\n");
-else
-Console.WriteLine("Test Message 3 - SelectionBox exists!\n");
-					if ((mi.MultiTapCount == 2) && (SelectionBox == null))
+					if (MultiClick && !Box)
 					{
 						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
@@ -93,26 +95,18 @@ Console.WriteLine("Test Message 3 - SelectionBox exists!\n");
 						world.Selection.Combine(world, newSelection, true, false);
 					}
 
-					if ((Game.Settings.Keys.UseClassicMouseStyle && !world.Selection.Actors.Any())
-						|| ((!Game.Settings.Keys.UseClassicMouseStyle)
-							&& ((mi.MultiTapCount == 1) || ((mi.MultiTapCount == 2) && (SelectionBox != null)))))
+					if ((UseClassicMouseStyle && ((!MultiClick &&  (UnitsUnderCursor || (!UnitsUnderCursor && Box)))
+									|| (MultiClick && Box)))
+						|| (!UseClassicMouseStyle && (!MultiClick || (MultiClick && Box))))
 					{
 						var newSelection = SelectActorsInBox(world, dragStart, xy);
 						world.Selection.Combine(world, newSelection,
 										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
-if (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null)
-Console.WriteLine("Test Message 4 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() = null\n");
-else
-Console.WriteLine("Test Message 5 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() exists!\n");
-					if ((Game.Settings.Keys.UseClassicMouseStyle) && (mi.MultiTapCount != 2) && (SelectionBox == null)
-						&& (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null))
+
+					if ((UseClassicMouseStyle) && !MultiClick && !Box && !UnitsUnderCursor)
 					{
-if (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() == null)
-Console.WriteLine("Test Message 6 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() = null\n");
-else
-Console.WriteLine("Test Message 7 - world.FindUnitsAtMouse(mi.Location).FirstOrDefault() exists!\n");
-						if (SelectionBox == null)		/* don't issue orders while selecting */
+						if (!Box)		/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
 					}
 				}
@@ -129,10 +123,10 @@ Console.WriteLine("Test Message 7 - world.FindUnitsAtMouse(mi.Location).FirstOrD
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
 			{
-				if (Game.Settings.Keys.UseClassicMouseStyle)
+				if (UseClassicMouseStyle)
 					world.Selection.Clear();
 
-				if (SelectionBox == null)	/* don't issue orders while selecting */
+				if (!Box)	/* don't issue orders while selecting */
 					ApplyOrders(world, xy, mi);
 			}
 
