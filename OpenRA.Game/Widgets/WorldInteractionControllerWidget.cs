@@ -67,6 +67,7 @@ namespace OpenRA.Widgets
 					return false;
 
 				dragStart = dragEnd = xy;
+
 				ApplyOrders(world, xy, mi);
 			}
 
@@ -75,7 +76,6 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-Console.WriteLine("Test Message: UnitsUnderCursor = {0}, Box = {1}, MultiClick = {2}\n", UnitsUnderCursor, Box, MultiClick);
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
 					if (MultiClick && !Box)
@@ -104,7 +104,7 @@ Console.WriteLine("Test Message: UnitsUnderCursor = {0}, Box = {1}, MultiClick =
 										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 
-					if ((UseClassicMouseStyle) && !MultiClick && !Box && !UnitsUnderCursor)
+					if (UseClassicMouseStyle && !MultiClick && !Box && !UnitsUnderCursor)
 					{
 						if (!Box)		/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);

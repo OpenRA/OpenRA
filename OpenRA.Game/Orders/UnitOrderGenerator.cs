@@ -58,7 +58,7 @@ namespace OpenRA.Orders
 				.OrderByDescending(a => a.Info.Traits.Contains<SelectableInfo>() ? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue)
 				.FirstOrDefault();
 
-			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any() || Game.Settings.Keys.UseClassicMouseStyle)
+			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
 				if (underCursor != null && underCursor.HasTrait<Selectable>())
 					useSelect = true;
 
