@@ -58,18 +58,23 @@ return {
     jitargs = jitargs or ""
     local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua '..args
 
-    if(not CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
-        function()
-          ShellSupportRemote(nil)
-          if (rundebug) then
-            DebuggerStop()
-          end
-        end)) then return end
+
+    local pid = CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
+      function()
+        ShellSupportRemote(nil)
+        if (rundebug) then
+          DebuggerStop()
+        end
+      end)
+    
+    if(not pid) then return end
 
     if not rundebug then
       local client = self:finitclient()
       ShellSupportRemote(client,self:fuid(wfilename))
     end
+    
+    return pid
   end,
   fuid = function(self,wfilename) return "luxinia2 "..(ide.config.path.projectdir or "") end,
   fprojdir = function(self,wfilename)

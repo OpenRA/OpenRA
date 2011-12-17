@@ -227,13 +227,14 @@ function DebuggerKillClient()
     elseif ret ~= wx.wxKILL_NO_PROCESS then
       DisplayOutput("Unable to kill debuggee process "..debugger.pid..", code "..tostring(ret)..".\n")
     end
-    debugger.pid = 0
+    debugger.pid = nil
   end
 end
 
 function DebuggerStop()
   if (debugger.server) then
     debugger.server = nil
+    debugger.pid = nil
     SetAllEditorsReadOnly(false)
     ShellSupportRemote(nil, 0)
     ClearAllCurrentLineMarkers()

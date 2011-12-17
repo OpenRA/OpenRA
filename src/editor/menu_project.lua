@@ -241,6 +241,7 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     if (debugger.server ~= nil) then
       if (not debugger.running) then
+        ClearAllCurrentLineMarkers()
         debugger.run()
       end
     else
@@ -264,6 +265,7 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    ClearAllCurrentLineMarkers()
     debugger.terminate()
   end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
@@ -274,6 +276,7 @@ frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    ClearAllCurrentLineMarkers()
     debugger.step()
   end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
@@ -284,6 +287,7 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    ClearAllCurrentLineMarkers()
     debugger.over()
   end)
 frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
@@ -294,6 +298,7 @@ frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    ClearAllCurrentLineMarkers()
     debugger.out()
   end)
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
@@ -316,6 +321,7 @@ frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    ClearAllCurrentLineMarkers()
     debugger.trace()
   end)
 frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
