@@ -29,6 +29,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public string DeployKey = "f";
 		public string StanceCycleKey = "z";
 		public string BaseCycleKey = "backspace";
+		public string ViewCycleKey = "v";
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -51,6 +52,9 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				if (e.KeyName == BaseCycleKey)
 					return CycleBases();
+					
+				if (e.KeyName == ViewCycleKey)
+					return PerformViewCycle();
 
 				if (!World.Selection.Actors.Any())
 					return false;
@@ -160,6 +164,19 @@ namespace OpenRA.Mods.RA.Widgets
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
 			Game.viewport.Center(World.Selection.Actors);
+			return true;
+		}
+		
+		bool PerformViewCycle()
+		{
+			var shrouds = World.ActorsWithTrait<Traits.Shroud>().Select(a => a.Actor.Owner).Distinct();
+			var next = shrouds.SkipWhile( a => a.Shroud != World.RenderedShroud ).Skip(1).FirstOrDefault();
+			if(next == null) 
+			{
+				next = shrouds.First();
+			}
+			World.RenderedPlayer = next;
+			Game.Debug("Viewing through {0}".F(World.RenderedPlayer.InternalName));
 			return true;
 		}
 	}
