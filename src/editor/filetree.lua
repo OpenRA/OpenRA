@@ -35,13 +35,14 @@ local sidenotebook = ide.frame.vsplitter.sidenotebook
 -- ------------
 
 do
+  local size = wx.wxSize(16, 16)
   filetree.imglist = wx.wxImageList(16,16)
   -- 0 = directory
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_FOLDER,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
   -- 1 = file known spec
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_HELP_PAGE ,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
   -- 2 = file rest
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_NORMAL_FILE,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
 end
 
 local function treeAddDir(tree,parent_id,rootdir)
@@ -105,7 +106,6 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = event:GetItem()
       local dir = treeGetItemFullName(tree,treedata,item_id)
-      DisplayOutput(dir.."\n")
       treeAddDir(tree,item_id,dir)
 
       return true
