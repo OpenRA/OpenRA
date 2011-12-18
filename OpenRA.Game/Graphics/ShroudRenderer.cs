@@ -15,7 +15,13 @@ namespace OpenRA.Graphics
 {
 	public class ShroudRenderer
 	{
-		Traits.Shroud shroud;
+		World world;
+		Traits.Shroud shroud {
+			get {
+				return world.RenderedShroud;
+			}
+		}
+		
 		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
 
@@ -24,7 +30,7 @@ namespace OpenRA.Graphics
 
 		public ShroudRenderer(World world)
 		{
-			this.shroud = world.RenderedShroud;
+			this.world = world;
 			this.map = world.Map;
 
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];

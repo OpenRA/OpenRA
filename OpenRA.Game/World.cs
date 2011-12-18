@@ -45,7 +45,12 @@ namespace OpenRA
 		public Player RenderedPlayer;
 		public Shroud RenderedShroud {
 			get {
-				return LocalShroud;
+				if(RenderedPlayer == null)
+				{
+					return LocalShroud;
+				}else{
+					return RenderedPlayer.Shroud;
+				}
 			}
 		}
 
@@ -53,6 +58,8 @@ namespace OpenRA
 		{
 			if (!(orderManager.Connection is ReplayConnection))
 	 			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+				RenderedPlayer = LocalPlayer;
+				
 		}
 
 		public readonly Actor WorldActor;
