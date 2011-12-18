@@ -13,10 +13,14 @@ local app = {
     artProvider.CreateBitmap = function(self, id, client, size)
       local width = size:GetWidth()
       local key = width .. "/" .. id
-      local file = "zbstudio/res/" .. key .. ".png"
-      if not wx.wxFileName(file):FileExists() then return wx.wxNullBitmap end
-      local icon = icons[key] or wx.wxBitmap(file)
-      icons[key] = icon
+      local fileClient = "zbstudio/res/" .. key .. "-" .. client .. ".png"
+      local fileKey = "zbstudio/res/" .. key .. ".png"
+      local file
+      if wx.wxFileName(fileClient):FileExists() then file = fileClient
+      elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
+      else return wx.wxNullBitmap end
+      local icon = icons[file] or wx.wxBitmap(file)
+      icons[file] = icon
       return icon
     end
     wx.wxArtProvider.Push(artProvider)
