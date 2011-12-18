@@ -87,8 +87,6 @@ namespace OpenRA.Mods.RA.Move
 		{
 			var path = getPath(self, mobile).TakeWhile(a => a != mobile.toCell).ToList();
 			mobile.PathHash = HashList(path);
-			Log.Write("debug", "EvalPathHash #{0} {1}",
-				self.ActorID, mobile.PathHash);
 			return path;
 		}
 
