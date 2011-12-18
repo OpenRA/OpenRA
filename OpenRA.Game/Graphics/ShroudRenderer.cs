@@ -35,7 +35,11 @@ namespace OpenRA.Graphics
 
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-			shroud.Dirty += () => dirty = true;
+			// this sets dirty whenever any player dirties it. 
+			// Obviously not what we want right now.
+			foreach(var x in world.ActorsWithTrait<Shroud>()){ 
+				x.Actor.Owner.Shroud.Dirty += () => dirty = true;
+			}
 		}
 
 		static readonly byte[][] SpecialShroudTiles =

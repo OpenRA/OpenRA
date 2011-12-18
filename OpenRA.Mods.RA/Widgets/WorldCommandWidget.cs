@@ -176,7 +176,8 @@ namespace OpenRA.Mods.RA.Widgets
 				next = shrouds.First();
 			}
 			World.RenderedPlayer = next;
-			Game.Debug("Viewing through {0}".F(World.RenderedPlayer.InternalName));
+			World.RenderedShroud.Jank();
+			Game.Debug("Viewing through {0}".F(World.RenderedPlayer));
 			return true;
 		}
 	}

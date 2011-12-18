@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		Map map;
 		World world;
 
-		public string Owner;
+		public Player Owner;
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		Rectangle? exploredBounds;
@@ -35,6 +35,8 @@ namespace OpenRA.Traits
 			get { return disabled || world.LocalPlayer == null; }
 			set { disabled = value; Dirty(); }
 		}
+		
+		public bool dirty = false;
 
 		public Rectangle? Bounds
 		{
@@ -42,6 +44,12 @@ namespace OpenRA.Traits
 		}
 
 		public event Action Dirty = () => { };
+
+		public void Jank()
+		{
+			Dirty();
+		}
+
 
 		public Shroud(World world)
 		{
@@ -77,9 +85,10 @@ namespace OpenRA.Traits
 		{
 			if (!a.HasTrait<RevealsShroud>())
 				return;
+			if (a.Owner == null || a.Owner.World.LocalPlayer == null) return;
 
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null
-				|| a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
+			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
+
 
 			if (vis.ContainsKey(a))
 			{
@@ -108,7 +117,7 @@ namespace OpenRA.Traits
 			}
 
 			vis[a] = v;
-
+			Log.Write("debug", "Moved {1}'s {2} in Shroud {0} ({3})", Owner, a.Owner, a.Info.Name, Explored());
 			if (!Disabled)
 				Dirty();
 		}
@@ -129,6 +138,16 @@ namespace OpenRA.Traits
 			if (newStance == Stance.Ally)
 				foreach (var a in w.Actors.Where( a => a.Owner == player ))
 					AddActor(a);
+		}
+		
+		public int Explored()
+		{
+			int seen = 0;
+			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+					if(exploredCells[i, j]) seen++;
+			
+			return seen;
 		}
 
 		public static IEnumerable<int2> GetVisOrigins(Actor a)
@@ -160,8 +179,10 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null
-				|| a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
+			if (a.Owner == null || a.Owner.World.LocalPlayer == null) return;
+
+			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
+
 
 			RemoveActor(a); AddActor(a);
 		}
@@ -231,7 +252,7 @@ namespace OpenRA.Traits
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
 
-			return Disabled || a.Owner == a.World.LocalPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || a.Owner == a.World.RenderedPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 	}
 }
