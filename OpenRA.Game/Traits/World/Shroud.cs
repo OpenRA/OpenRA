@@ -25,6 +25,7 @@ namespace OpenRA.Traits
 		Map map;
 		World world;
 
+		public string Owner;
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		Rectangle? exploredBounds;

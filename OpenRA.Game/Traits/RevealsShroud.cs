@@ -29,11 +29,12 @@ namespace OpenRA.Traits
 		public void Tick(Actor self)
 		{
 			// todo: don't tick all the time.
-
+			World w = self.World;
 			if (previousLocation != self.Location)
 			{
 				previousLocation = self.Location;
-				self.World.WorldActor.Trait<Shroud>().UpdateActor(self);
+				foreach( var s in w.ActorsWithTrait<Shroud>() )
+					s.Actor.Owner.Shroud.UpdateActor(self);
 			}
 		}
 
