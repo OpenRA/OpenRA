@@ -167,9 +167,12 @@ local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
   and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
   or (wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT))
 
+-- use the same font in the combobox as is used in the filetree
+projcombobox:SetFont(projtree:GetFont())
+
 local projTopSizer = wx.wxBoxSizer( wx.wxHORIZONTAL );
 projTopSizer:Add(projcombobox, 1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
-projTopSizer:Add(projbutton, 0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE, 0)
+projTopSizer:Add(projbutton, 0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE + wx.wxALIGN_CENTER_VERTICAL, 0)
 
 local projSizer = wx.wxBoxSizer( wx.wxVERTICAL );
 projSizer:Add(projTopSizer, 0, wx.wxALL + wx.wxALIGN_CENTER_HORIZONTAL + wx.wxGROW, 0)
