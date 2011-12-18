@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 
 		public ShroudRenderer(World world)
 		{
-			this.shroud = world.LocalShroud;
+			this.shroud = world.RenderedShroud;
 			this.map = world.Map;
 
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
