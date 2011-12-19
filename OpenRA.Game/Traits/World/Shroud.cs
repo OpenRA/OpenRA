@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 		public bool Observing
 		{
-			get { return world.IsShellmap; }
+			get { return world.IsShellmap || world.RenderedPlayer == null; }
 		}
 		
 		public Rectangle? Bounds
