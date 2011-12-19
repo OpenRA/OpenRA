@@ -238,6 +238,9 @@ namespace OpenRA
 
 			var vi = Rules.Voices[mi.Voice.ToLowerInvariant()];
 
+			if (!vi.Pools.Value.ContainsKey(phrase))
+				return false;
+
 			var clip = vi.Pools.Value[phrase].GetNext();
 			if (clip == null)
 				return false;
