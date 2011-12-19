@@ -254,5 +254,12 @@ namespace OpenRA.Traits
 
 			return Disabled || a.Owner == a.World.RenderedPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
+		
+		public bool IsTargetable(Actor a) {
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+				return false;
+
+			return GetVisOrigins(a).Any(o => IsVisible(o));
+		}
 	}
 }
