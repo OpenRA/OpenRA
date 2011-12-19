@@ -31,6 +31,7 @@ namespace OpenRA.Traits
 		Rectangle? exploredBounds;
 		bool disabled = false;
 		bool observing = false;
+		public bool dirty = true;
 		public bool Disabled
 		{
 			get { return disabled || (world.LocalPlayer == null && Owner == null); }
@@ -63,6 +64,7 @@ namespace OpenRA.Traits
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
 			world.ActorAdded += AddActor;
 			world.ActorRemoved += RemoveActor;
+			Dirty += () => dirty = true;
 		}
 
 		// cache of positions that were added, so no matter what crazy trait code does, it
