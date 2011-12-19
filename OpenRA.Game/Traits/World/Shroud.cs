@@ -117,7 +117,7 @@ namespace OpenRA.Traits
 			}
 
 			vis[a] = v;
-			Log.Write("debug", "Moved {1}'s {2} in Shroud {0} ({3})", Owner, a.Owner, a.Info.Name, Explored());
+			//Log.Write("debug", "Moved {1}'s {2} in Shroud {0} ({3})", Owner, a.Owner, a.Info.Name, Explored());
 			if (!Disabled)
 				Dirty();
 		}
