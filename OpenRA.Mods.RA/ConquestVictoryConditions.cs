@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 
 			if (self.Owner == self.World.LocalPlayer)
 			{
-				self.World.LocalShroud.Disabled = true;
+				self.World.RenderedShroud.Disabled = true;
 				Game.RunAfterDelay(Info.NotificationDelay, () =>
 				{
 					if (Game.IsCurrentWorld(self.World))
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
 			if (self.Owner == self.World.LocalPlayer)
 			{
-				self.World.LocalShroud.Disabled = true;
+				self.World.RenderedShroud.Disabled = true;
 				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.Play(Info.WinNotification));
 			}
 		}

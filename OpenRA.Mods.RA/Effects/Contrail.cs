@@ -93,8 +93,8 @@ namespace OpenRA.Mods.RA
 				var conPos = positions[i];
 				var nextPos = positions[i - 1];
 
-				if (self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
-					self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
+				if (self.World.RenderedShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
+					self.World.RenderedShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
 				{
 					Game.Renderer.WorldLineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
 

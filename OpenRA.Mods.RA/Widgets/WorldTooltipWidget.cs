@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
 			if (!world.Map.IsInMap(cell)) return;
 
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(cell))
+			if (world.LocalPlayer != null && !world.RenderedShroud.IsExplored(cell))
 			{
 				var utext = "Unexplored Terrain";
 				var usz = Game.Renderer.Fonts["Bold"].Measure(utext) + new int2(20, 24);

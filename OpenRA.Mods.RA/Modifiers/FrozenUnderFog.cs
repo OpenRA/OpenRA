@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public bool IsVisible(Actor self)
 		{
-			return Shroud.GetVisOrigins(self).Any(o => self.World.LocalShroud.IsVisible(o));
+			return Shroud.GetVisOrigins(self).Any(o => self.World.RenderedShroud.IsVisible(o));
 		}
 
 		Renderable[] cache = { };

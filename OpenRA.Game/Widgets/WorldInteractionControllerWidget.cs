@@ -160,7 +160,7 @@ namespace OpenRA.Widgets
 		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
 		{
 			return world.FindUnits(a, b)
-				.Where( x => x.HasTrait<Selectable>() && world.LocalShroud.IsVisible(x) && cond(x) )
+				.Where( x => x.HasTrait<Selectable>() && world.RenderedShroud.IsVisible(x) && cond(x) )
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
 				.Select( g => g.AsEnumerable() )

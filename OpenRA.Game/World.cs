@@ -111,6 +111,7 @@ namespace OpenRA
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			LocalShroud = WorldActor.Trait<Shroud>();
+			LocalShroud.Disabled = true;
 			ActorMap = new ActorMap(this);
 
 			// Add players

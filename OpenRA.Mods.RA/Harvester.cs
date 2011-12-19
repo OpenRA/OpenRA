@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA
 			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				// Don't leak info about resources under the shroud
-				if (!self.World.LocalShroud.IsExplored(location)) return false;
+				if (!self.World.RenderedShroud.IsExplored(location)) return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource( location );
 				var info = self.Info.Traits.Get<HarvesterInfo>();

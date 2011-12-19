@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 					var altitude = new int2(0, move.Altitude);
 					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret)).ToInt2();
 
-					if (self.World.LocalShroud.IsVisible(Util.CellContaining(position)))
+					if (self.World.RenderedShroud.IsVisible(Util.CellContaining(position)))
 						self.World.AddFrameEndTask(
 							w => w.Add(new Smoke(w, position - altitude, "smokey")));
 				}

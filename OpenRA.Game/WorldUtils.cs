@@ -24,7 +24,7 @@ namespace OpenRA
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = Game.viewport.ViewToWorldPx(mouseLocation);
-			return FindUnits(world, loc, loc).Where(a => world.LocalShroud.IsVisible(a));
+			return FindUnits(world, loc, loc).Where(a => world.RenderedShroud.IsVisible(a));
 		}
 
 		public static IEnumerable<Actor> FindUnits(this World world, int2 a, int2 b)
