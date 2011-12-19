@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
 			return self.HasTrait<ITeleportable>() &&
 				self.Trait<ITeleportable>().CanEnterCell(targetLocation) &&
-				(ignoreVis || self.World.RenderedShroud.IsExplored(targetLocation));
+				(ignoreVis || self.Owner.Shroud.IsExplored(targetLocation));
 		}
 
 		public virtual bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
