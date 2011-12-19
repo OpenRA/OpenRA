@@ -54,6 +54,9 @@ namespace OpenRA.Mods.RA.Activities
 			var facing = self.Trait<IFacing>();
 			if (!Target.IsValid)
 				return NextActivity;
+				
+			if (!self.Owner.HasFogVisibility() && Target.Actor != null && !self.Owner.Shroud.IsTargetable(Target.Actor))
+				return NextActivity;
 
 			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
 				return NextActivity;
