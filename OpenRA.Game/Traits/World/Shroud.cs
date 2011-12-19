@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 		// cache of positions that were added, so no matter what crazy trait code does, it
 		// can't make us invalid.
 		class ActorVisibility { public int range; public int2[] vis; }
-		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
+		static Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		static IEnumerable<int2> FindVisibleTiles(World world, int2 a, int r)
 		{
@@ -95,14 +95,15 @@ namespace OpenRA.Traits
 
 			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
 
-
+			ActorVisibility v = null;
 			if (vis.ContainsKey(a))
 			{
-				Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
-				RemoveActor(a);
+				v = vis[a];
+				//Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
+				//RemoveActor(a);
 			}
-
-			var v = new ActorVisibility
+			
+			v = new ActorVisibility
 			{
 				range = a.Trait<RevealsShroud>().RevealRange,
 				vis = GetVisOrigins(a).ToArray()
@@ -122,7 +123,7 @@ namespace OpenRA.Traits
 				exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 			}
 
-			vis[a] = v;
+			if (!vis.ContainsKey(a)) vis[a] = v;
 			//Log.Write("debug", "Moved {1}'s {2} in Shroud {0} ({3})", Owner, a.Owner, a.Info.Name, Explored());
 			if (!Disabled)
 				Dirty();
