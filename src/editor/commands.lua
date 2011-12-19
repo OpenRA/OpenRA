@@ -27,7 +27,6 @@ local function findDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist)
-  filePath = filePath:gsub("\\","/")
 
   -- prevent files from being reopened again
   if (not editor) then
@@ -38,6 +37,7 @@ function LoadFile(filePath, editor, file_must_exist)
       end
     end
   end
+
   -- if not opened yet, try open now
   local file_text = ""
   local handle = io.open(filePath, "rb")

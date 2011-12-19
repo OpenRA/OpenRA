@@ -136,6 +136,10 @@ function SetEditorSelection(selection)
     editor:SetFocus()
     editor:SetSTCFocus(true)
     isFileAlteredOnDisk(editor)
+    local id = editor:GetId()
+    if openDocuments[id] then
+      FileTreeMarkSelected(openDocuments[id].filePath)
+    end
   end
 end
 
@@ -347,7 +351,6 @@ function CreateEditor(name)
       updateBraceMatch(editor)
       for e,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
-        --DisplayOutput("modified "..tostring(line).." "..tostring(iv[2]))
         IndicateFunctions(editor,line,line+iv[2])
       end
       editor.ev = {}
@@ -405,7 +408,6 @@ function GetSpec(ext,forcespec)
       end
     end
   end
-  --print("SPEC:"..ext..":"..tostring(spec))
   return spec
 end
 

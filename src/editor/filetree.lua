@@ -129,7 +129,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
       -- openfile
       local name = treeGetItemFullName(tree,treedata,item_id,true)
       LoadFile(name,nil,true)
-
+      FileTreeMarkSelected(name)
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED,
     function( event )
@@ -207,19 +207,23 @@ function filetree:updateProjectDir(newdir, cboxsel)
   if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
   filetree.projdirText = newdir
 
-  --if (not cboxsel) then
   PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)
   projcombobox:Clear()
   projcombobox:Append(filetree.projdirTextArray)
   if (not cboxsel) then
     projcombobox:SetValue(newdir)
-    --projcombobox:SetValue(newdir)
   else
     projcombobox:Select(0)
   end
-  --end
+
   ProjectUpdateProjectDir(newdir,true)
   treeSetRoot(projtree,filetree.projdata,newdir)
+
+  -- sync with the current editor window and activate selected file
+  local id = GetEditor():GetId()
+  if ide.openDocuments[id] then
+    FileTreeMarkSelected(ide.openDocuments[id].filePath)
+  end
 end
 
 projpanel.projbutton = projbutton
@@ -231,7 +235,6 @@ sidenotebook:AddPage(projpanel, "Project",true)
 
 function FileTreeGetDir()
   -- atm only projtree
-  --print(ide.frame.vsplitter:IsSplit(),filetree.newfiledir)
   return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
 end
 
@@ -244,4 +247,34 @@ end
 
 function FileTreeGetProjects()
   return filetree.projdirTextArray
+end
+
+local curr_id
+function FileTreeMarkSelected(file)
+  local item_id = findItem(projtree, file, projtree:GetRootItem())
+  if curr_id ~= item_id then
+    if curr_id and projtree:IsBold(curr_id) then
+      projtree:SetItemBold(curr_id, false)
+    end
+    if item_id then
+      projtree:SetItemBold(item_id, true)
+      projtree:EnsureVisible(item_id)
+      curr_id = item_id
+    end
+  end
+end
+
+function findItem(tree, match, start)
+  local item, cookie = tree:GetFirstChild(start)
+
+  while item:IsOk() do
+    if tree:ItemHasChildren(item) then
+      if findItem(tree, match, item) then return item end
+    elseif match == treeGetItemFullName(tree,filetree.projdata,item,true) then
+      return item
+    end
+    item, cookie = tree:GetNextChild(start, cookie)
+  end
+
+  return
 end
