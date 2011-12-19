@@ -88,7 +88,7 @@ namespace OpenRA.Traits
 				case "DevGiveExploration":
 					{
 						if (self.World.LocalPlayer == self.Owner)
-							self.World.WorldActor.Trait<Shroud>().ExploreAll(self.World);
+							self.World.LocalPlayer.Shroud.ExploreAll(self.World);
 						break;
 					}
 				case "DevUnlimitedPower":

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 			base.Activate(collector);
 
 			if (ShouldReveal( collector.Owner ))
-				collector.World.WorldActor.Trait<Shroud>().ExploreAll(collector.World);
+				collector.Owner.Shroud.ExploreAll(collector.World);
 		}
 	}
 }
