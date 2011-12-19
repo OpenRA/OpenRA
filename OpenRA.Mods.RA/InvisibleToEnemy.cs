@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public bool IsVisible(Actor self)
 		{
-			return self.World.LocalPlayer == null || self.Owner == self.World.LocalPlayer;
+			return self.Owner == self.World.LocalPlayer;
 		}
 
 		public Color RadarColorOverride(Actor self)

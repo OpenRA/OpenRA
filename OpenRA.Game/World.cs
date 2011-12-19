@@ -57,8 +57,10 @@ namespace OpenRA
 		public void SetLocalPlayer(string pr)
 		{
 			if (!(orderManager.Connection is ReplayConnection))
+			{
 	 			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
 				RenderedPlayer = LocalPlayer;
+			}
 				
 		}
 
@@ -111,7 +113,6 @@ namespace OpenRA
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
 			LocalShroud = WorldActor.Trait<Shroud>();
-			LocalShroud.Disabled = true;
 			ActorMap = new ActorMap(this);
 
 			// Add players

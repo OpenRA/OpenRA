@@ -30,14 +30,18 @@ namespace OpenRA.Traits
 		public bool[,] exploredCells;
 		Rectangle? exploredBounds;
 		bool disabled = false;
+		bool observing = false;
 		public bool Disabled
 		{
-			get { return disabled || world.LocalPlayer == null; }
+			get { return disabled; }
 			set { disabled = value; Dirty(); }
 		}
-		
-		public bool dirty = false;
 
+		public bool Observing
+		{
+			get { return world.LocalPlayer == null; }
+		}
+		
 		public Rectangle? Bounds
 		{
 			get { return Disabled ? null : exploredBounds; }
@@ -85,7 +89,7 @@ namespace OpenRA.Traits
 		{
 			if (!a.HasTrait<RevealsShroud>())
 				return;
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null) return;
+			if (a.Owner == null) return;
 
 			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
 
@@ -179,7 +183,7 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null) return;
+			if (a.Owner == null) return;
 
 			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
 
@@ -252,7 +256,7 @@ namespace OpenRA.Traits
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
 				return false;
 
-			return Disabled || a.Owner == a.World.RenderedPlayer || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || a.Owner == Owner || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 		
 		public bool IsTargetable(Actor a) {
