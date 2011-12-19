@@ -33,13 +33,13 @@ namespace OpenRA.Traits
 		bool observing = false;
 		public bool Disabled
 		{
-			get { return disabled; }
+			get { return disabled || (world.LocalPlayer == null && Owner == null); }
 			set { disabled = value; Dirty(); }
 		}
 
 		public bool Observing
 		{
-			get { return world.LocalPlayer == null; }
+			get { return world.LocalPlayer == null && Owner == null; }
 		}
 		
 		public Rectangle? Bounds
