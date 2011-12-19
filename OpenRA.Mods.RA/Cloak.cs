@@ -81,8 +81,13 @@ namespace OpenRA.Mods.RA
 				if (--remainingTime <= 0)
 					Sound.Play(info.CloakSound, self.CenterLocation);
 		}
-
+		
 		public bool IsVisible(Actor self)
+		{
+			return IsVisible(null, self);
+		}
+
+		public bool IsVisible(Shroud s, Actor self)
 		{
 			if (!Cloaked || self.Owner == self.World.LocalPlayer ||
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)

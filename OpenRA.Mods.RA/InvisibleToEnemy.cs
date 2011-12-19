@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 
 	class InvisibleToEnemy : IRenderModifier, IVisibilityModifier, IRadarColorModifier
 	{
-		public bool IsVisible(Actor self)
+		public bool IsVisible(Shroud s, Actor self)
 		{
 			return self.Owner == self.World.LocalPlayer;
 		}

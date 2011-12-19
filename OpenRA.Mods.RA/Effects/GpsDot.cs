@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (
 				self.IsInWorld
 				&& (watcher.Granted || watcher.GrantedAllies)
-				&& !self.Trait<HiddenUnderFog>().IsVisible(self)
+				&& !self.Trait<HiddenUnderFog>().IsVisible(self.World.RenderedShroud, self) // WRONG
 				&& (!self.HasTrait<Cloak>() || !self.Trait<Cloak>().Cloaked)
 				)
 			{

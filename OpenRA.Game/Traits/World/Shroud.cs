@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 		public bool Observing
 		{
-			get { return world.LocalPlayer == null && Owner == null; }
+			get { return world.IsShellmap; }
 		}
 		
 		public Rectangle? Bounds
@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 		// cache of positions that were added, so no matter what crazy trait code does, it
 		// can't make us invalid.
 		class ActorVisibility { public int range; public int2[] vis; }
-		static Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
+		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		static IEnumerable<int2> FindVisibleTiles(World world, int2 a, int r)
 		{
@@ -98,9 +98,8 @@ namespace OpenRA.Traits
 			ActorVisibility v = null;
 			if (vis.ContainsKey(a))
 			{
-				v = vis[a];
-				//Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
-				//RemoveActor(a);
+				Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
+				RemoveActor(a);
 			}
 			
 			v = new ActorVisibility
@@ -123,8 +122,7 @@ namespace OpenRA.Traits
 				exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 			}
 
-			if (!vis.ContainsKey(a)) vis[a] = v;
-			//Log.Write("debug", "Moved {1}'s {2} in Shroud {0} ({3})", Owner, a.Owner, a.Info.Name, Explored());
+			vis[a] = v;
 			if (!Disabled)
 				Dirty();
 		}
@@ -233,7 +231,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
-			if (Disabled)
+			if (Disabled || Observing)
 				return true;
 
 			return exploredCells[x,y];
@@ -242,7 +240,7 @@ namespace OpenRA.Traits
 		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (Disabled)
+			if (Disabled || Observing)
 				return true;
 
 			// Visibility is allowed to extend beyond the map cordon so that
@@ -256,14 +254,15 @@ namespace OpenRA.Traits
 		// Actors are hidden under shroud, but not under fog by default
 		public bool IsVisible(Actor a)
 		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+			// I need to pass in the current shroud, otherwise we're just checking that true==true
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
 				return false;
 
-			return Disabled || a.Owner == Owner || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || Observing || a.Owner == Owner || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 		
 		public bool IsTargetable(Actor a) {
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a)))
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
 				return false;
 
 			return GetVisOrigins(a).Any(o => IsVisible(o));
