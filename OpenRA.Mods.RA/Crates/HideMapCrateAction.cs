@@ -25,8 +25,7 @@ namespace OpenRA.Mods.RA
 		public override int GetSelectionShares (Actor collector)
 		{
 			// don't ever hide the map for people who have GPS.
-			var gpsWatcher = collector.Owner.PlayerActor.TraitOrDefault<GpsWatcher>();
-			if (gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies))
+			if (collector.Owner.HasFogVisibility())
 				return 0;
 
 			return base.GetSelectionShares (collector);
