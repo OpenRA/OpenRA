@@ -60,6 +60,8 @@ namespace OpenRA
 			{
 	 			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
 				RenderedPlayer = LocalPlayer;
+			}else{
+				
 			}
 				
 		}

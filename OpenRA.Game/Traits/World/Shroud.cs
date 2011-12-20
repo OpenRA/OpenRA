@@ -34,13 +34,13 @@ namespace OpenRA.Traits
 		public bool dirty = true;
 		public bool Disabled
 		{
-			get { return disabled || (world.LocalPlayer == null && Owner == null); }
+			get { return disabled; }
 			set { disabled = value; Dirty(); }
 		}
 
 		public bool Observing
 		{
-			get { return world.IsShellmap; }
+			get { return world.IsShellmap || (world.LocalPlayer == null && Owner == null);; }
 		}
 		
 		public Rectangle? Bounds

@@ -41,7 +41,6 @@ namespace OpenRA.Mods.RA.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (World == null) return false;
-			if (World.LocalPlayer == null) return false;
 
 			return ProcessInput(e);
 		}
@@ -169,6 +168,7 @@ namespace OpenRA.Mods.RA.Widgets
 		
 		bool PerformViewCycle()
 		{
+			/**
 			var shrouds = World.ActorsWithTrait<Traits.Shroud>().Select(a => a.Actor.Owner).Where(a => a.ClientIndex >= 0).Distinct();
 			var next = shrouds.SkipWhile( a => a.Shroud != World.RenderedShroud ).Skip(1).FirstOrDefault();
 			if(next == null) 
@@ -178,7 +178,9 @@ namespace OpenRA.Mods.RA.Widgets
 			World.RenderedPlayer = next;
 			World.RenderedShroud.Jank();
 			Game.Debug("Viewing through {0}".F( (World.RenderedPlayer == null) ? "Observer" : World.RenderedPlayer.ToString() ) );
+			**/
 			return true;
+			
 		}
 	}
 }

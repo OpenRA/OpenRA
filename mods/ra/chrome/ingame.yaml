@@ -335,6 +335,11 @@ Container@OBSERVER_ROOT:
 	Visible:true
 	Logic:IngameObserverChromeLogic
 	Children:
+		WorldCommand:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
 		WorldInteractionController:
 			X:0
 			Y:0
