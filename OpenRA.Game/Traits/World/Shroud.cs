@@ -67,11 +67,6 @@ namespace OpenRA.Traits
 			Dirty += () => dirty = true;
 		}
 
-		// cache of positions that were added, so no matter what crazy trait code does, it
-		// can't make us invalid.
-		class ActorVisibility { public int range; public int2[] vis; }
-		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
-
 		static IEnumerable<int2> FindVisibleTiles(World world, int2 a, int r)
 		{
 			var min = a - new int2(r, r);
@@ -95,19 +90,7 @@ namespace OpenRA.Traits
 
 			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
 
-			ActorVisibility v = null;
-			if (vis.ContainsKey(a))
-			{
-				Game.Debug("Warning: Actor {0}:{1} at {2} bad vis".F(a.Info.Name, a.ActorID, a.Location));
-				RemoveActor(a);
-			}
-			
-			v = new ActorVisibility
-			{
-				range = a.Trait<RevealsShroud>().RevealRange,
-				vis = GetVisOrigins(a).ToArray()
-			};
-
+			World.ActorVisibility v = world.vis[a];
 			if (v.range == 0) return;		// don't bother for things that can't see
 
 			foreach (var p in v.vis)
@@ -122,7 +105,6 @@ namespace OpenRA.Traits
 				exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
 			}
 
-			vis[a] = v;
 			if (!Disabled)
 				Dirty();
 		}
@@ -169,14 +151,16 @@ namespace OpenRA.Traits
 
 		void RemoveActor(Actor a)
 		{
-			ActorVisibility v;
-			if (!vis.TryGetValue(a, out v)) return;
+			if (!a.HasTrait<RevealsShroud>())return;
+			if (a.Owner == null) return;
+			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
+
+			World.ActorVisibility v;
+			if (!world.vis.TryGetValue(a, out v)) return;
 
 			foreach (var p in v.vis)
 				foreach (var q in FindVisibleTiles(a.World, p, v.range))
 					--visibleCells[q.X, q.Y];
-
-			vis.Remove(a);
 
 			if (!Disabled)
 				Dirty();
@@ -189,7 +173,7 @@ namespace OpenRA.Traits
 			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
 
 
-			RemoveActor(a); AddActor(a);
+			RemoveActor(a); world.Update(a); AddActor(a);
 		}
 
 		public void Explore(World world, int2 center, int range)

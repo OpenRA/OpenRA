@@ -53,6 +53,9 @@ namespace OpenRA
 				}
 			}
 		}
+		
+		public class ActorVisibility { public int range; public int2[] vis; }
+		public Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		public void SetLocalPlayer(string pr)
 		{
@@ -149,6 +152,7 @@ namespace OpenRA
 		{
 			a.IsInWorld = true;
 			actors.Add(a);
+			Update(a);
 			ActorAdded(a);
 		}
 
@@ -157,6 +161,18 @@ namespace OpenRA
 			a.IsInWorld = false;
 			actors.Remove(a);
 			ActorRemoved(a);
+			if(vis.ContainsKey(a)) vis.Remove(a);
+		}
+		
+		public void Update(Actor a)
+		{
+			if (!a.HasTrait<RevealsShroud>()) return;
+			
+			vis[a] = new ActorVisibility
+			{
+				range = a.Trait<RevealsShroud>().RevealRange,
+				vis = Shroud.GetVisOrigins(a).ToArray()
+			};
 		}
 
 		public void Add(IEffect b) { effects.Add(b); }
