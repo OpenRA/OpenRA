@@ -91,7 +91,7 @@ namespace OpenRA.GameRules
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;
 		public readonly bool Underwater = false;
-		public readonly string[] ValidTargets = { "Ground" };
+		public readonly string[] ValidTargets = { "Ground", "Water" };
 		public readonly int BurstDelay = 5;
 		public readonly float MinRange = 0;
 
