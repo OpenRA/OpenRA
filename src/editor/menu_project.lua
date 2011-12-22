@@ -139,8 +139,7 @@ local function selectInterpreter(id)
     menuBar:Check(i, false)
   end
   menuBar:Check(id, true)
-  local interpreter = interpreters[id]
-  ide.interpreter = interpreter
+  ide.interpreter = interpreters[id]
   ReloadLuaAPI()
 end
 
@@ -164,6 +163,7 @@ do
     IDget("debug.interpreter."..ide.config.interpreter) or
     ID ("debug.interpreter."..lastinterpreter)
   )
+  ide.interpreter = interpreters[defaultid]
   menuBar:Check(defaultid, true)
 end
 

@@ -3,6 +3,8 @@ path.luxinia = luxpath and luxpath.."/" or "../luxinia/engine/"
 local luxpath2 = os.getenv("LUXINIA2")
 path.luxinia2 = luxpath2 and luxpath2.."/" or "../luxinia2/runtime/bin_Windows_x86/"
 
+interpreter = "estrelashell"
+
 editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
