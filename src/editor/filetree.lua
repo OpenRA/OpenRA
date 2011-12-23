@@ -51,7 +51,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   local dirs = FileSysGet(search,wx.wxDIR)
   -- append directories
   for i,dir in ipairs(dirs) do
-    local dir_id = tree:AppendItem(parent_id, dir:match("(%"..string_Pathsep..stringset_File.."+)$"),0)
+    local dir_id = tree:AppendItem(parent_id, dir:match("%"..string_Pathsep.."("..stringset_File.."+)$"), 0)
 
     tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
   end
@@ -60,22 +60,23 @@ local function treeAddDir(tree,parent_id,rootdir)
   for i,file in ipairs(files) do
     local fname = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(fname))
-    tree:AppendItem(parent_id, fname,known and 1 or 2)
+    tree:AppendItem(parent_id, fname, known and 1 or 2)
+  end
+  if tree:GetChildrenCount(parent_id, false) == 0 then 
+    tree:SetItemHasChildren(parent_id, false)
   end
 end
 
-local function treeGetItemFullName(tree,treedata,item_id,isfile)
-  local str = isfile and string_Pathsep or ""
-  str = str..tree:GetItemText(item_id)
+local function treeGetItemFullName(tree,treedata,item_id)
+  local str = tree:GetItemText(item_id)
   local cur = str
 
-  local stop = 4
   while (#cur > 0) do
     item_id = tree:GetItemParent(item_id)
     cur = tree:GetItemText(item_id)
-    str = cur..str
+    if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
   end
-  return ((not filetree.showroot) and filetree.projdata.rootdir or "").. str
+  return ((not filetree.showroot) and filetree.projdata.rootdir or "")..str
 end
 
 local function treeSetRoot(tree,treedata,rootdir)
@@ -92,8 +93,7 @@ local function treeSetRoot(tree,treedata,rootdir)
   treedata.rootdir = rootdir
 
   treeAddDir(tree,root_id,rootdir)
-
-  filetree.newfiledir = rootdir..string_Pathsep
+  filetree.newfiledir = rootdir
 
   tree:Expand(root_id)
 end
@@ -127,7 +127,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 
       if (tree:GetItemImage(item_id) == 0) then return end
       -- openfile
-      local name = treeGetItemFullName(tree,treedata,item_id,true)
+      local name = treeGetItemFullName(tree,treedata,item_id)
       LoadFile(name,nil,true)
       FileTreeMarkSelected(name)
     end )
@@ -137,7 +137,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 
       -- set "newfile-path"
       local isfile = tree:GetItemImage(item_id) ~= 0
-      filetree.newfiledir = treeGetItemFullName(tree,treedata,item_id,isfile)
+      filetree.newfiledir = treeGetItemFullName(tree,treedata,item_id)
 
       if (isfile) then
         -- remove file
@@ -269,8 +269,9 @@ function findItem(tree, match, start)
 
   while item:IsOk() do
     if tree:ItemHasChildren(item) then
-      if findItem(tree, match, item) then return item end
-    elseif match == treeGetItemFullName(tree,filetree.projdata,item,true) then
+      local res = findItem(tree, match, item)
+      if res then return res end
+    elseif match == treeGetItemFullName(tree,filetree.projdata,item) then
       return item
     end
     item, cookie = tree:GetNextChild(start, cookie)
