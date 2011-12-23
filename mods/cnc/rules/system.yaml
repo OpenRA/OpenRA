@@ -44,7 +44,6 @@ Player:
 	PlayerColorPalette:
 		BasePalette: terrain
 		PaletteFormat: cnc
-	SurrenderOnDisconnect:
 	BaseAttackNotifier:
 
 World:

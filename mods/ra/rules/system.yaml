@@ -130,7 +130,6 @@ Player:
 		SquadSize: 10
 	PlayerColorPalette:
 		BasePalette: terrain
-	SurrenderOnDisconnect:
 	DebugResourceCash:
 	DebugResourceOre:
 	DebugResourceOreCapacity:
