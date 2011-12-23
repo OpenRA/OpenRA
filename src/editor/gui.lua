@@ -75,7 +75,7 @@ frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
   end)
 
 toolBar = frame:CreateToolBar(wx.wxNO_BORDER + wx.wxTB_FLAT + wx.wxTB_DOCKABLE)
-funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(300,16))
+funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
 
 -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
 local toolBmpSize = toolBar:GetToolBitmapSize()
