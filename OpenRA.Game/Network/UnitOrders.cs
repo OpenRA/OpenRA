@@ -50,6 +50,7 @@ namespace OpenRA.Network
 							Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
 						break;
 					}
+
 				case "Disconnected": /* reports that the target player disconnected */
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
@@ -59,6 +60,7 @@ namespace OpenRA.Network
 						}
 						break;
 					}
+
 				case "TeamChat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
@@ -69,34 +71,30 @@ namespace OpenRA.Network
 							{
 								if (client.Team == orderManager.LocalClient.Team)
 									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + " (Team)",
-													 order.TargetString);
+										order.TargetString);
 							}
 							else
 							{
 								var player = world.FindPlayerByClient(client);
-								var display = player != null
-											  &&
-											  (world.LocalPlayer != null &&
-											   player.Stances[world.LocalPlayer] == Stance.Ally
-											   || player.WinState == WinState.Lost);
+								if (player == null) return;
 
-								if (display)
+								if (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally || player.WinState == WinState.Lost)
 								{
-									var suffix = (player != null && player.WinState == WinState.Lost)
-													 ? " (Dead)"
-													 : " (Team)";
+									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
 									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
 								}
 							}
 						}
 						break;
 					}
+
 				case "StartGame":
 					{
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
+
 				case "HandshakeRequest":
 					{
 						var request = HandshakeRequest.Deserialize(order.TargetString);
@@ -126,9 +124,11 @@ namespace OpenRA.Network
 						orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
 						break;
 					}
+
 				case "ServerError":
 					orderManager.ServerError = order.TargetString;
 					break;
+
 				case "SyncInfo":
 					{
 						orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
