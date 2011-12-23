@@ -38,6 +38,10 @@ namespace OpenRA.Mods.RA
 			if (!self.HasTrait<Building>())
 				return;
 
+			/* don't track self-damage */
+			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
+				return;
+
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
 				Sound.PlayToPlayer(self.Owner, info.Audio);
 
