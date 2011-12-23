@@ -59,7 +59,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -206,6 +205,7 @@
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
+    <Compile Include="Network\ReplayRecorderConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
