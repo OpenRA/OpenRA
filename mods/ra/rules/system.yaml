@@ -135,6 +135,7 @@ Player:
 	DebugResourceOre:
 	DebugResourceOreCapacity:
 	GpsWatcher:
+	BaseAttackNotifier:
 
 World:	
 	OpenWidgetAtGameStart:
