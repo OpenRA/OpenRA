@@ -209,12 +209,10 @@ end
 function RemovePage(index)
   local prevIndex = nil
   local nextIndex = nil
-  --local newOpenDocuments = {}
 
   local delid = nil
   for id, document in pairs(openDocuments) do
     if document.index < index then
-      --newOpenDocuments[id] = document
       prevIndex = document.index
     elseif document.index == index then
       delid = id
@@ -224,7 +222,6 @@ function RemovePage(index)
       if nextIndex == nil then
         nextIndex = document.index
       end
-      --newOpenDocuments[id] = document
     end
   end
 
