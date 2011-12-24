@@ -20,11 +20,25 @@ namespace OpenRA.Network
 	{
 		IConnection inner;
 		BinaryWriter writer;
+		Func<string> chooseFilename;
 
-		public ReplayRecorderConnection( IConnection inner, FileStream replayFile )
+		public ReplayRecorderConnection( IConnection inner, Func<string> chooseFilename )
 		{
+			this.chooseFilename = chooseFilename;
 			this.inner = inner;
-			this.writer = new BinaryWriter( replayFile );
+
+			StartSavingReplay();
+		}
+
+		void StartSavingReplay()
+		{
+			var filename = chooseFilename();
+			var replayPath = Path.Combine( Platform.SupportDir, "Replays" );
+
+			if (!Directory.Exists(replayPath))
+				Directory.CreateDirectory(replayPath);
+
+			this.writer = new BinaryWriter(File.Create(Path.Combine(replayPath, filename)));
 		}
 
 		public int LocalClientId { get { return inner.LocalClientId; } }

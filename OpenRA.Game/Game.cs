@@ -50,13 +50,8 @@ namespace OpenRA
 
 		public static void JoinServer(string host, int port)
 		{
-			var replayFilename = ChooseReplayFilename();
-			string path = Path.Combine( Platform.SupportDir, "Replays" );
-			if( !Directory.Exists( path ) ) Directory.CreateDirectory( path );
-			var replayFile = File.Create( Path.Combine( path, replayFilename ) );
-
 			JoinInner(new OrderManager(host, port,
-				new ReplayRecorderConnection(new NetworkConnection(host, port), replayFile)));
+				new ReplayRecorderConnection(new NetworkConnection(host, port), ChooseReplayFilename)));
 		}
 
 		static string ChooseReplayFilename()
