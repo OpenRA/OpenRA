@@ -127,21 +127,30 @@ splitter:Connect(wx.wxEVT_SIZE, function (evt)
 notebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  + wx.wxNO_BORDER)
 
 local current -- the currently active editor, needed by the focus selection
 local function onPageChange(event)
   current = event:GetSelection() -- update the active editor reference
-  SetEditorSelection(event:GetSelection())
+  SetEditorSelection(current)
   event:Skip() -- skip to let page change
 end
 
 notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
+notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+  function (event)
+    local editor = GetEditor()
+    local id = editor:GetId()
+    if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
+      RemovePage(ide.openDocuments[id].index)
+    end
+    event:Veto()
+  end)
 
 notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
-  function (event) -- select the editor then instead
-    SetEditorSelection(current) -- select the currently active one.
+  function (event)
+    SetEditorSelection(current) -- select the currently active editor
   end)
 
 -- bottomnotebook (errorlog,shellbox)
