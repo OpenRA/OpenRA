@@ -158,21 +158,20 @@ namespace OpenRA.FileFormats
 		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)
 		{
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
 				if (assembly.FullName == e.Name)
 					return assembly;
-			}
 
-			string[] frags = e.Name.Split(',');
+			var frags = e.Name.Split(',');
 			var filename = frags[0] + ".dll";
+
 			Assembly a;
 			if (assemblyCache.TryGetValue(filename, out a))
 				return a;
 
 			if (FileSystem.Exists(filename))
-				using (Stream s = FileSystem.Open(filename))
+				using (var s = FileSystem.Open(filename))
 				{
-					byte[] buf = new byte[s.Length];
+					var buf = new byte[s.Length];
 					s.Read(buf, 0, buf.Length);
 					a = Assembly.Load(buf);
 					assemblyCache.Add(filename, a);
