@@ -52,7 +52,6 @@ local function treeAddDir(tree,parent_id,rootdir)
   -- append directories
   for i,dir in ipairs(dirs) do
     local dir_id = tree:AppendItem(parent_id, dir:match("%"..string_Pathsep.."("..stringset_File.."+)$"), 0)
-
     tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
   end
   -- then append files
@@ -62,7 +61,7 @@ local function treeAddDir(tree,parent_id,rootdir)
     local known = GetSpec(GetFileExt(fname))
     tree:AppendItem(parent_id, fname, known and 1 or 2)
   end
-  if tree:GetChildrenCount(parent_id, false) == 0 then 
+  if tree:GetChildrenCount(parent_id, false) == 0 then
     tree:SetItemHasChildren(parent_id, false)
   end
 end
@@ -106,19 +105,15 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = event:GetItem()
       local dir = treeGetItemFullName(tree,treedata,item_id)
-      treeAddDir(tree,item_id,dir)
+      if tree:GetChildrenCount(item_id, false) == 0 then -- TBR
+        treeAddDir(tree,item_id,dir)
+      end
 
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
     function( event )
-      local item_id = event:GetItem()
-      tree:DeleteChildren(item_id)
-
-      -- directories must stay expandable if they have content
-      local dir = treeGetItemFullName(tree,treedata,item_id)
-      tree:SetItemHasChildren(item_id,FileSysHasContent(dir))
-
+      -- don't need to do anything here
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
@@ -150,8 +145,8 @@ end
 
 -- project
 -- panel
--- ( combobox, button)
--- ( treectrl)
+-- (combobox, button)
+-- (treectrl)
 
 local projpanel = wx.wxPanel(sidenotebook,wx.wxID_ANY)
 local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
@@ -257,25 +252,38 @@ function FileTreeMarkSelected(file)
       projtree:SetItemBold(curr_id, false)
     end
     if item_id then
-      projtree:SetItemBold(item_id, true)
       projtree:EnsureVisible(item_id)
+      projtree:SetItemBold(item_id, true)
       curr_id = item_id
     end
   end
 end
 
-function findItem(tree, match, start)
-  local item, cookie = tree:GetFirstChild(start)
+function findItem(tree, match)
+  local node = projtree:GetRootItem()
+  local label = tree:GetItemText(node)
 
-  while item:IsOk() do
-    if tree:ItemHasChildren(item) then
-      local res = findItem(tree, match, item)
-      if res then return res end
-    elseif match == treeGetItemFullName(tree,filetree.projdata,item) then
-      return item
+  local s, e = string.find(match, label .. string_Pathsep)
+  if not s or s ~= 1 then return end
+
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
+    -- check if the node has been populated
+    if tree:ItemHasChildren(node) and
+       tree:GetChildrenCount(node, false) == 0 then
+       local dir = treeGetItemFullName(tree,filetree.projdata,node)
+       treeAddDir(tree,node,dir)
     end
-    item, cookie = tree:GetNextChild(start, cookie)
+    local item, cookie = tree:GetFirstChild(node)
+    while true do
+      if not item:IsOk() then return end -- not found
+      if tree:GetItemText(item) == token then
+        node = item
+        break
+      end
+      item, cookie = tree:GetNextChild(item, cookie)
+    end
   end
 
-  return
+  -- this loop exits only when a match is found
+  return node
 end
