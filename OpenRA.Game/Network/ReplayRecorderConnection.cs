@@ -21,24 +21,27 @@ namespace OpenRA.Network
 		IConnection inner;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
+		MemoryStream preStartBuffer = new MemoryStream();
 
 		public ReplayRecorderConnection( IConnection inner, Func<string> chooseFilename )
 		{
 			this.chooseFilename = chooseFilename;
 			this.inner = inner;
 
-			StartSavingReplay();
+			writer = new BinaryWriter(preStartBuffer);
 		}
 
-		void StartSavingReplay()
+		void StartSavingReplay(byte[] initialContent)
 		{
 			var filename = chooseFilename();
-			var replayPath = Path.Combine( Platform.SupportDir, "Replays" );
+			var replayPath = Path.Combine(Platform.SupportDir, "Replays");
 
 			if (!Directory.Exists(replayPath))
 				Directory.CreateDirectory(replayPath);
 
-			this.writer = new BinaryWriter(File.Create(Path.Combine(replayPath, filename)));
+			var file = File.Create(Path.Combine(replayPath, filename));
+			file.Write(initialContent);
+			this.writer = new BinaryWriter(file);
 		}
 
 		public int LocalClientId { get { return inner.LocalClientId; } }
@@ -50,13 +53,33 @@ namespace OpenRA.Network
 
 		public void Receive( Action<int, byte[]> packetFn )
 		{
-			inner.Receive( ( client, data ) =>
+			inner.Receive((client, data) =>
 				{
-					writer.Write( client );
-					writer.Write( data.Length );
-					writer.Write( data );
-					packetFn( client, data );
+					if (preStartBuffer != null && IsGameStart(data))
+					{
+						writer.Flush();
+						var preStartData = preStartBuffer.ToArray();
+						preStartBuffer = null;
+						StartSavingReplay(preStartData);
+					}
+
+					writer.Write(client);
+					writer.Write(data.Length);
+					writer.Write(data);
+					packetFn(client, data);
 				} );
+		}
+
+		bool IsGameStart(byte[] data)
+		{
+			if (data.Length == 5 && data[4] == 0xbf)
+				return false;
+			if (data.Length >= 5 && data[4] == 0x65)
+				return false;
+
+			var frame = BitConverter.ToInt32(data, 0);
+			return frame == 0 && data.ToOrderList(null).Any(
+				o => o.OrderString == "StartGame");
 		}
 
 		bool disposed;
