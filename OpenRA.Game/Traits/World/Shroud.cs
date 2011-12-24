@@ -81,16 +81,17 @@ namespace OpenRA.Traits
 					if (r * r >= (new int2(i, j) - a).LengthSquared)
 						yield return new int2(i, j);
 		}
+		
+		public class ActorVisibility { public int range; public int2[] vis; }
 
-		void AddActor(Actor a)
+		public void AddActor(Actor a)
 		{
-			if (!a.HasTrait<RevealsShroud>())
-				return;
-			if (a.Owner == null) return;
+			if (!a.HasTrait<RevealsShroud>()) return;
+			if (a.Owner == null || Owner == null) return;
+			if(a.Owner.Stances[Owner] != Stance.Ally) return;
+			
+			ActorVisibility v = a.Sight;
 
-			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
-
-			World.ActorVisibility v = world.vis[a];
 			if (v.range == 0) return;		// don't bother for things that can't see
 
 			foreach (var p in v.vis)
@@ -117,7 +118,7 @@ namespace OpenRA.Traits
 			// No longer our ally; remove unit vis
 			if (oldStance == Stance.Ally)
 			{
-				var toRemove = vis.Select(a => a.Key).Where(a => a.Owner == player).ToList();
+				var toRemove =  w.Actors.Where(a => a.Owner == player).ToList();
 				foreach (var a in toRemove)
 					RemoveActor(a);
 			}
@@ -149,14 +150,13 @@ namespace OpenRA.Traits
 			return new[] { a.CenterLocation / Game.CellSize };
 		}
 
-		void RemoveActor(Actor a)
+		public void RemoveActor(Actor a)
 		{
 			if (!a.HasTrait<RevealsShroud>())return;
-			if (a.Owner == null) return;
-			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
+			if (a.Owner == null || Owner == null) return;
+			if(a.Owner.Stances[Owner] != Stance.Ally) return;
 
-			World.ActorVisibility v;
-			if (!world.vis.TryGetValue(a, out v)) return;
+			ActorVisibility v = a.Sight;
 
 			foreach (var p in v.vis)
 				foreach (var q in FindVisibleTiles(a.World, p, v.range))
@@ -164,16 +164,6 @@ namespace OpenRA.Traits
 
 			if (!Disabled)
 				Dirty();
-		}
-
-		public void UpdateActor(Actor a)
-		{
-			if (a.Owner == null) return;
-
-			if(Owner != null && a.Owner != Owner && a.Owner.Stances[Owner] != Stance.Ally) return;
-
-
-			RemoveActor(a); world.Update(a); AddActor(a);
 		}
 
 		public void Explore(World world, int2 center, int range)
@@ -242,7 +232,9 @@ namespace OpenRA.Traits
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
 				return false;
 
-			return Disabled || Observing || a.Owner == Owner || GetVisOrigins(a).Any(o => IsExplored(o));
+			if(Owner == null) return true;
+			
+			return Disabled || Observing || a.Owner.Stances[Owner] == Stance.Ally || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 		
 		public bool IsTargetable(Actor a) {

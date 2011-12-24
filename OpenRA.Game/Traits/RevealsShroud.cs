@@ -30,11 +30,21 @@ namespace OpenRA.Traits
 		{
 			// todo: don't tick all the time.
 			World w = self.World;
+			if(self.Owner == null) return;
+			
 			if (previousLocation != self.Location)
 			{
 				previousLocation = self.Location;
-				foreach( var s in w.ActorsWithTrait<Shroud>() )
-					s.Actor.Owner.Shroud.UpdateActor(self);
+				var actors = w.ActorsWithTrait<Shroud>();
+
+				foreach( var s in actors )
+					s.Actor.Owner.Shroud.RemoveActor(self);
+					
+				self.UpdateSight();
+					
+				foreach( var s in actors )
+					s.Actor.Owner.Shroud.AddActor(self);
+				
 			}
 		}
 
