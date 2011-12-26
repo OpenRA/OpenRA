@@ -171,5 +171,51 @@ namespace OpenRA.Utility
 				File.WriteAllBytes( f, data );
 			}
 		}
+
+		static int ColorDistance(uint a, uint b)
+		{
+			var ca = Color.FromArgb((int)a);
+			var cb = Color.FromArgb((int)b);
+
+			return Math.Abs((int)ca.R - (int)cb.R) +
+				Math.Abs((int)ca.G - (int)cb.G) +
+				Math.Abs((int)ca.B - (int)cb.B);
+		}
+
+		public static void RemapShp(string[] args)
+		{
+			var remap = new Dictionary<int,int>();
+
+			/* the first 4 entries are fixed */
+			for( var i = 0; i < 4; i++ )
+				remap[i] = i;
+
+			var srcPaletteType = (PaletteFormat)Enum.Parse(typeof(PaletteFormat), args[1].Split(':')[0]);
+			var destPaletteType = (PaletteFormat)Enum.Parse(typeof(PaletteFormat), args[2].Split(':')[0]);
+
+			/* the remap range is always 16 entries, but their location and order changes */
+			for( var i = 0; i < 16; i++ )
+				remap[ PlayerColorRemap.GetRemapBase(srcPaletteType) + PlayerColorRemap.GetRemapRamp(srcPaletteType)[i] ]
+					= PlayerColorRemap.GetRemapBase(destPaletteType) + PlayerColorRemap.GetRemapRamp(destPaletteType)[i];
+
+			/* map everything else to the best match based on channel-wise distance */
+			var srcPalette = Palette.Load(args[1].Split(':')[1], false);
+			var destPalette = Palette.Load(args[2].Split(':')[1], false);
+
+			var fullIndexRange = OpenRA.Graphics.Util.MakeArray<int>(256, x => x);
+
+			for( var i = 0; i < 256; i++ )
+				if (!remap.ContainsKey(i))
+					remap[i] = fullIndexRange
+						.Where(a => !remap.ContainsValue(a))
+						.OrderBy(a => ColorDistance(destPalette.Values[a], srcPalette.Values[i]))
+						.First();
+
+			var srcImage = ShpReader.Load(args[3]);
+
+			using( var destStream = File.Create(args[4]) )
+				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
+					srcImage.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
+		}
 	}
 }

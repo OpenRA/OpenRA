@@ -26,6 +26,7 @@ namespace OpenRA.Utility
 				{ "--fromd2", Command.ConvertFormat2ToFormat80 },
 				{ "--extract", Command.ExtractFiles },
 				{ "--tmp-png", Command.ConvertTmpToPng },
+				{ "--remap", Command.RemapShp },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
@@ -57,6 +58,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --png SHPFILE PALETTE [--transparent] Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
 			Console.WriteLine("  --extract MOD[,MOD]* FILES		  Extract files from mod packages");
 			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES        Extract terrain tiles to PNG");
+			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP  Remap SHPs to another palette");
 		}
 
 		static string GetNamedArg(string[] args, string arg)
