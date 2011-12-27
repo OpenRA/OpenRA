@@ -102,7 +102,6 @@ namespace OpenRA.Widgets
 
 					if (UseClassicMouseStyle && !UnitsUnderCursor && !Box)
 					{
-						if (!Box)		/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
 					}
 				}
