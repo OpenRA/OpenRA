@@ -51,7 +51,7 @@ namespace OpenRA.FileFormats
 
 	public enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
 
-	public class ShpReader : IEnumerable<ImageHeader>
+	public class ShpReader
 	{
 		public readonly int ImageCount;
 		public readonly ushort Width;
@@ -157,15 +157,7 @@ namespace OpenRA.FileFormats
 			return imageData;
 		}
 
-		public IEnumerator<ImageHeader> GetEnumerator()
-		{
-			return headers.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		public IEnumerable<ImageHeader> Frames { get { return headers; } }
 
 		public static ShpReader Load(string filename)
 		{

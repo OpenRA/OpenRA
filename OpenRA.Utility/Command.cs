@@ -86,7 +86,7 @@ namespace OpenRA.Utility
 				var x = 0;
 				bitmap.Palette = palette.AsSystemPalette();
 
-				foreach (var frame in srcImage)
+				foreach (var frame in srcImage.Frames)
 				{
 					var data = bitmap.LockBits(new Rectangle(x, 0, srcImage.Width, srcImage.Height), ImageLockMode.WriteOnly,
 						PixelFormat.Format8bppIndexed);
@@ -214,7 +214,7 @@ namespace OpenRA.Utility
 
 			using( var destStream = File.Create(args[4]) )
 				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
-					srcImage.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
+					srcImage.Frames.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
 		}
 	}
 }

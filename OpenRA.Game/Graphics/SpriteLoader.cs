@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		Sprite[] LoadSprites(string filename)
 		{
 			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-			return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
+			return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
