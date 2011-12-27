@@ -162,7 +162,6 @@
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\SelectionDecorations.cs" />
-    <Compile Include="Traits\SubcellInit.cs" />
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\Util.cs" />

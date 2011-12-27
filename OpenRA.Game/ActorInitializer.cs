@@ -70,6 +70,14 @@ namespace OpenRA
 		public int2 Value( World world ) { return value; }
 	}
 
+	public class SubCellInit : IActorInit<SubCell>
+	{
+		[FieldFromYamlKey] public readonly int value = 0;
+		public SubCellInit() { }
+		public SubCellInit(int init) { value = init; }
+		public SubCell Value(World world) { return (SubCell)value; }
+	}
+
 	public class CenterLocationInit : IActorInit<int2>
 	{
 		[FieldFromYamlKey] public readonly int2 value = int2.Zero;

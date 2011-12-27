@@ -54,31 +54,33 @@ namespace OpenRA
 			InnerGet( t ).Add( actor, val );
 		}
 
+		void CheckDestroyed(Actor actor)
+		{
+			if (actor.Destroyed)
+				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+		}
+
 		public bool Contains<T>( Actor actor )
 		{
-			if( actor.Destroyed )
-				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+			CheckDestroyed(actor);
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID ).Count() != 0;
 		}
 
 		public T Get<T>( Actor actor )
 		{
-			if( actor.Destroyed )
-				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+			CheckDestroyed(actor);
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).Get( actor.ActorID );
 		}
 
 		public T GetOrDefault<T>( Actor actor )
 		{
-			if( actor.Destroyed )
-				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+			CheckDestroyed(actor);
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetOrDefault( actor.ActorID );
 		}
 
 		public IEnumerable<T> WithInterface<T>( Actor actor )
 		{
-			if( actor.Destroyed )
-				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
+			CheckDestroyed(actor);
 			return ( (TraitContainer<T>)InnerGet( typeof( T ) ) ).GetMultiple( actor.ActorID );
 		}
 
@@ -118,14 +120,10 @@ namespace OpenRA
 
 			public T Get( uint actor )
 			{
-				++queries;
-				var index = actors.BinarySearchMany( actor );
-				if( index >= actors.Count || actors[ index ].ActorID != actor )
-					throw new InvalidOperationException("TraitDictionary does not contain instance of type `{0}`".F(typeof(T)));
-				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
-					throw new InvalidOperationException("TraitDictionary contains multiple instance of type `{0}`".F(typeof(T)));
-				else
-					return traits[ index ];
+				var result = GetOrDefault(actor);
+				if ((object)result == null)
+					throw new InvalidOperationException("Actor does not have trait of type `{0}`".F(typeof(T)));
+				return result;
 			}
 
 			public T GetOrDefault( uint actor )
@@ -135,7 +133,7 @@ namespace OpenRA
 				if( index >= actors.Count || actors[ index ].ActorID != actor )
 					return default( T );
 				else if( index + 1 < actors.Count && actors[ index + 1 ].ActorID == actor )
-					throw new InvalidOperationException("TraitDictionary contains multiple instance of type `{0}`".F(typeof(T)));
+					throw new InvalidOperationException("Actor has multiple traits of type `{0}`".F(typeof(T)));
 				else return traits[ index ];
 			}
 
