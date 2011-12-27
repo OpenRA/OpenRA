@@ -77,7 +77,7 @@ namespace OpenRA.Traits
 			if (!a.HasTrait<RevealsShroud>())
 				return;
 
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null
+			if (a.Owner.World.LocalPlayer == null
 				|| a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
 			if (vis.ContainsKey(a))
@@ -159,7 +159,7 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner == null || a.Owner.World.LocalPlayer == null
+			if (a.Owner.World.LocalPlayer == null
 				|| a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
 			RemoveActor(a); AddActor(a);
