@@ -20,7 +20,8 @@ namespace OpenRA.Mods.RA
 	{
 		public bool IsVisible(Actor self)
 		{
-			return self.World.LocalPlayer == null || self.Owner == self.World.LocalPlayer;
+			return self.World.LocalPlayer == null ||
+				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally;
 		}
 
 		public Color RadarColorOverride(Actor self)
@@ -30,10 +31,10 @@ namespace OpenRA.Mods.RA
 		}
 
 		static readonly Renderable[] Nothing = { };
+
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			return self.World.LocalPlayer == null || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally
-				? r : Nothing;
+			return IsVisible(self) ? r : Nothing;
 		}
 	}
 }
