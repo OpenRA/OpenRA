@@ -6,6 +6,7 @@ SS:
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
+		Hotkey: q
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -51,6 +52,7 @@ MSUB:
 		Prerequisites: spen,stek
 		BuiltAt: spen
 		Owner: soviet
+		Hotkey: e
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -95,6 +97,7 @@ DD:
 		Prerequisites: syrd,dome
 		BuiltAt: syrd
 		Owner: allies
+		Hotkey: w
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -135,6 +138,7 @@ CA:
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
+		Hotkey: e
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -176,6 +180,7 @@ LST:
 		Queue: Ship
 		BuildPaletteOrder: 30
 		Owner: allies,soviet
+		Hotkey: t
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -208,6 +213,7 @@ PT:
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
+		Hotkey: q
 	Valued:
 		Cost: 500
 	Tooltip:

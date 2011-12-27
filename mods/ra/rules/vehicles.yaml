@@ -5,6 +5,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: dome
 		Owner: soviet
+		Hotkey: w
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -32,6 +33,7 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: allies
+		Hotkey: e
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -66,6 +68,7 @@ V2RL:
 		BuildPaletteOrder: 60
 		Prerequisites: fix
 		Owner: allies
+		Hotkey: r
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -103,6 +106,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: fix
 		Owner: soviet
+		Hotkey: e
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -141,6 +145,7 @@ V2RL:
 		BuildPaletteOrder: 100
 		Prerequisites: fix,stek
 		Owner: soviet
+		Hotkey: u
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -186,6 +191,7 @@ ARTY:
 		BuildPaletteOrder: 80
 		Prerequisites: dome
 		Owner: allies
+		Hotkey: w
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -213,6 +219,7 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: allies,soviet
+		Hotkey: q
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -251,6 +258,7 @@ MCV:
 		BuildPaletteOrder: 110
 		Prerequisites: fix
 		Owner: allies,soviet
+		Hotkey: c
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -276,10 +284,12 @@ MCV:
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 	MustBeDestroyed:
-	BaseBuilding:
 	-AttackMove:
 	LeavesHusk:
 		HuskActor: MCV.Husk
+	BaseBuilding:
+	ProductionBuilding:
+		BuildingType: BaseType
 
 JEEP:
 	Inherits: ^Vehicle
@@ -287,6 +297,7 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: allies
+		Hotkey: t
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -321,6 +332,7 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Owner: soviet
+		Hotkey: t
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -353,6 +365,7 @@ MNLY.AP:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: soviet
+		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -384,6 +397,7 @@ MNLY.AT:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: allies
+		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -415,6 +429,7 @@ TRUK:
 		BuildPaletteOrder: 120
 		Prerequisites: weap
 		Owner: allies, soviet
+		Hotkey: o
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -509,6 +524,7 @@ TTNK:
 		Queue: Vehicle
 		Prerequisites: stek,tsla
 		Owner: soviet
+		Hotkey: i
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -537,6 +553,7 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: soviet
+		Hotkey: p
 	Valued:
 		Cost: 600
 	Tooltip:

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.RA.Buildings;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -23,12 +24,6 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public World World { get { return OrderManager.world; } }
 
-		public string AttackMoveKey = "a";
-		public string StopKey = "s";
-		public string ScatterKey = "x";
-		public string DeployKey = "f";
-		public string StanceCycleKey = "z";
-		public string BaseCycleKey = "backspace";
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -50,27 +45,90 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
-			{
-				if (e.KeyName == BaseCycleKey)
-                    return CycleBases();
+			var KeyName = e.KeyName;
+			var KeyConfig = Game.Settings.Keys;
 
-				if (!World.Selection.Actors.Any())
+			if (e.Event == KeyInputEvent.Down)
+			{
+				if (e.Modifiers == KeyConfig.ModifierToCycle)
+				{
+					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("BaseType", true);
+
+					if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("BarracksType", true);
+
+					if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("WarFactoryType", true);
+
+					if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("DockType", true);
+
+					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("AirportType", true);
+
+					if (KeyName == KeyConfig.DefenseTabKey)
+					{
+						CycleProductionBuildings("BaseType", true);
+						Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+								.FirstOrDefault( q => q.Info.Type == "Defense" ));
+						return true;
+					}
+				}
+
+				if (KeyName == "space")
+					return CycleProductionBuildings("BaseType", true);
+
+				if (e.Modifiers == KeyConfig.ModifierToSelectTab)
+				{
+					if (KeyName == Rules.Info["mcv"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("BaseType", false);
+
+					if ((KeyName == Rules.Info["barr"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["tent"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("BarracksType", false);
+
+					if (KeyName == Rules.Info["weap"].Traits.Get<BuildableInfo>().Hotkey)
+						return CycleProductionBuildings("WarFactoryType", false);
+
+					if ((KeyName == Rules.Info["spen"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["syrd"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("DockType", false);
+
+					if ((KeyName == Rules.Info["hpad"].Traits.Get<BuildableInfo>().Hotkey)
+						|| (KeyName == Rules.Info["afld"].Traits.Get<BuildableInfo>().Hotkey))
+						return CycleProductionBuildings("AirportType", false);
+
+					if (KeyName == KeyConfig.DefenseTabKey)
+					{
+						CycleProductionBuildings("BaseType", false);
+						Widget.RootWidget.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
+								.FirstOrDefault( q => q.Info.Type == "Defense" ));
+						return true;
+					}
+				}
+
+				if (!World.Selection.Actors.Any())	// Put all Cycle-functions before this line!
 					return false;
 
-            	if (e.KeyName == AttackMoveKey)
+				if ((KeyName == KeyConfig.AttackMoveKey) && unitsSelected())
 					return PerformAttackMove();
 
-				if (e.KeyName == StopKey)
+				if ((KeyName == KeyConfig.StopKey) && unitsSelected())
 					return PerformStop();
 
-				if (e.KeyName == ScatterKey)
+				if ((KeyName == KeyConfig.ScatterKey) && unitsSelected())
 					return PerformScatter();
 
-				if (e.KeyName == DeployKey)
+				if (KeyName == KeyConfig.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == StanceCycleKey)
+				if ((KeyName == KeyConfig.StanceCycleKey) && unitsSelected())
 					return PerformStanceCycle();
 			}
 
@@ -142,24 +200,35 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-        bool CycleBases()
-        {
-            var bases = World.ActorsWithTrait<BaseBuilding>()
-                .Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
-            if (!bases.Any()) return true;
+		bool CycleProductionBuildings(string DesiredBuildingType, bool ChangeViewport)
+		{
+			var buildings = World.ActorsWithTrait<ProductionBuilding>()
+					.Where( a => (a.Actor.Owner == World.LocalPlayer)
+							&& (a.Actor.Info.Traits.Get<ProductionBuildingInfo>().BuildingType == DesiredBuildingType)
+												).ToArray();
+			if (!buildings.Any()) return true;
 
-            var next = bases
-                .Select(b => b.Actor)
-                .SkipWhile(b => !World.Selection.Actors.Contains(b))
-                .Skip(1)
-                .FirstOrDefault();
+			var next = buildings
+				.Select(b => b.Actor)
+				.SkipWhile(b => !World.Selection.Actors.Contains(b))
+				.Skip(1)
+				.FirstOrDefault();
 
-            if (next == null)
-                next = bases.Select(b => b.Actor).First();
+			if (next == null)
+				next = buildings.Select(b => b.Actor).First();
 
-            World.Selection.Combine(World, new Actor[] { next }, false, true);
-            Game.viewport.Center(World.Selection.Actors);
-            return true;
-        }
+			World.Selection.Combine(World, new Actor[] { next }, false, true);
+			if (ChangeViewport)
+				Game.viewport.Center(World.Selection.Actors);
+
+			return true;
+		}
+
+		bool unitsSelected()
+		{
+			if (World.Selection.Actors.Any( a => a.Owner == World.LocalPlayer && !a.HasTrait<Building>() )) return true;
+
+			return false;
+		}
 	}
 }

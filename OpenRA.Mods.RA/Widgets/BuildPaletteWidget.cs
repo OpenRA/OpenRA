@@ -147,13 +147,14 @@ namespace OpenRA.Mods.RA.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
+
 			if (e.KeyName == "tab")
 			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
 			}
 
-			return DoBuildingHotkey(e.KeyName, world);
+			return DoBuildingHotkey(e.KeyName, world, e);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -500,31 +501,36 @@ namespace OpenRA.Mods.RA.Widgets
 				p.ToInt2(), Color.White);
 		}
 
-        bool DoBuildingHotkey(string key, World world)
-        {
+		bool DoBuildingHotkey(string key, World world, KeyInput e)
+		{
 			if (!paletteOpen) return false;
 			if (CurrentQueue == null) return false;
 
-            var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
+			if (world.Selection.Actors.Any( a => a.Owner == world.LocalPlayer && !a.HasTrait<Building>() )) return false;
 
-            if ( toBuild != null )
+			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
+
+			var KeyConfig = Game.Settings.Keys;
+
+			if ( (toBuild != null)
+				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>() || (e.Modifiers == KeyConfig.ModifierToBuild)) )
 			{
 				Sound.Play(TabClick);
-		    	HandleBuildPalette(world, toBuild.Name, true);
+				HandleBuildPalette(world, toBuild.Name, true);
 				return true;
 			}
 
 			return false;
-        }
+		}
 
 		void TabChange(bool shift)
-        {
-			var queues = VisibleQueues.Concat(VisibleQueues);
-			if (shift) queues.Reverse();
-			var nextQueue = queues.SkipWhile( q => q != CurrentQueue )
-				.ElementAtOrDefault(1);
-			if (nextQueue != null)
-				SetCurrentTab( nextQueue );
-        }
+		{
+				var queues = VisibleQueues.Concat(VisibleQueues);
+				if (shift) queues.Reverse();
+				var nextQueue = queues.SkipWhile( q => q != CurrentQueue )
+					.ElementAtOrDefault(1);
+				if (nextQueue != null)
+					SetCurrentTab( nextQueue );
+		}
 	}
 }

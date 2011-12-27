@@ -52,12 +52,20 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
+
+			var UseClassicMouseStyle = Game.Settings.Keys.UseClassicMouseStyle;
+
+			bool UnitsUnderCursor = (world.FindUnitsAtMouse(mi.Location).FirstOrDefault() != null) ? true : false;
+			bool Box = (SelectionBox != null) ? true : false;
+			bool MultiClick = (mi.MultiTapCount >= 2) ? true : false;
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!TakeFocus(mi))
 					return false;
 
 				dragStart = dragEnd = xy;
+
 				ApplyOrders(world, xy, mi);
 			}
 
@@ -68,13 +76,21 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if (mi.MultiTapCount == 2)
+					if (!UseClassicMouseStyle || (UseClassicMouseStyle && (UnitsUnderCursor || Box)))
+					{
+						var newSelection = SelectActorsInBox(world, dragStart, xy);
+						world.Selection.Combine(world, newSelection,
+										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					}
+
+					if (MultiClick)
 					{
 						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
-
 						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
-						var newSelection = world.FindUnits(Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
-									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom)))
+						var newSelection = world.FindUnits(Game.viewport
+									.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top)),
+									Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right,
+									visibleWorld.Bottom)))
 									.Where(a => a.HasTrait<Selectable>()
 										&& a.World.LocalShroud.IsVisible(a)
 										&& unit != null
@@ -83,10 +99,10 @@ namespace OpenRA.Widgets
 
 						world.Selection.Combine(world, newSelection, true, false);
 					}
-					else
+
+					if (UseClassicMouseStyle && !UnitsUnderCursor && !Box)
 					{
-						var newSelection = SelectActorsInBox(world, dragStart, xy);
-						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						ApplyOrders(world, xy, mi);
 					}
 				}
 
@@ -98,8 +114,13 @@ namespace OpenRA.Widgets
 				dragStart = dragEnd = xy;
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				if (SelectionBox == null)	/* don't issue orders while selecting */
+			{
+				if (UseClassicMouseStyle)
+					world.Selection.Clear();
+
+				if (!Box)	/* don't issue orders while selecting */
 					ApplyOrders(world, xy, mi);
+			}
 
 			return true;
 		}
@@ -133,7 +154,7 @@ namespace OpenRA.Widgets
 				var mi = new MouseInput
 				{
 					Location = pos,
-					Button = MouseButton.Right,
+					Button = Game.Settings.Keys.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right,
 					Modifiers = Game.GetModifierKeys()
 				};
 

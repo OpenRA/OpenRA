@@ -49,7 +49,7 @@ namespace OpenRA.GameRules
 		public bool PerfText = false;
 		public bool PerfGraph = false;
 		public float LongTickThreshold = 0.001f;
-        public bool SanityCheckUnsyncedCode = false;
+		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 	}
 
@@ -79,7 +79,7 @@ namespace OpenRA.GameRules
 	public class PlayerSettings
 	{
 		public string Name = "Newbie";
-        public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
+		public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		public string LastServer = "localhost:1234";
 	}
 
@@ -91,12 +91,29 @@ namespace OpenRA.GameRules
 
 		public bool TeamChatToggle = false;
 
-        public bool ViewportEdgeScroll = true;
-        public MouseScrollType MouseScroll = MouseScrollType.Standard;
+		public bool ViewportEdgeScroll = true;
+		public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public float ViewportEdgeScrollStep = 10f;
 
 		// Internal game settings
 		public int Timestep = 40;
+	}
+
+	public class KeySettings
+	{
+		public string AttackMoveKey = "q";
+		public string StopKey = "w";
+		public string ScatterKey = "e";
+		public string StanceCycleKey = "r";
+		public string DeployKey = "t";
+
+		public string DefenseTabKey = "x";
+
+		public Modifiers ModifierToBuild = Modifiers.None;
+		public Modifiers ModifierToCycle = Modifiers.Alt;
+		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;
+
+		public bool UseClassicMouseStyle = false;
 	}
 
 	public class Settings
@@ -108,6 +125,7 @@ namespace OpenRA.GameRules
 		public SoundSettings Sound = new SoundSettings();
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
+		public KeySettings Keys = new KeySettings();
 		public DebugSettings Debug = new DebugSettings();
 		public Dictionary<string, object> Sections;
 		public Settings(string file, Arguments args)
@@ -120,6 +138,7 @@ namespace OpenRA.GameRules
 				{"Sound", Sound},
 				{"Graphics", Graphics},
 				{"Server", Server},
+				{"Keys", Keys},
 				{"Debug", Debug},
 			};
 

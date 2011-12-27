@@ -12,10 +12,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	/* tag trait for "bases": mcv/fact */
-	public class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
-	public class BaseBuilding
-	{
-		public string BuildingType;
-	}
+        /* tag trait for "ProductionBuildings": mcv/fact, barr/tent, weap, spen/syrd, hpad/afld */
+        public class ProductionBuildingInfo : TraitInfo<ProductionBuilding>
+        {
+                public string BuildingType;
+        }
+
+        public class ProductionBuilding { }
 }
