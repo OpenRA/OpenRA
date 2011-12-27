@@ -56,7 +56,7 @@ namespace OpenRA.FileFormats
 
 		public int CompareTo(DelayedAction other)
 		{
-			return Math.Sign(Time - other.Time);
+			return Time.CompareTo(other.Time);
 		}
 	}
 }
