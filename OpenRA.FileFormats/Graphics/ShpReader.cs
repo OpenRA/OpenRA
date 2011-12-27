@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace OpenRA.FileFormats
 {
@@ -30,9 +31,9 @@ namespace OpenRA.FileFormats
 
 		public ImageHeader( BinaryReader reader )
 		{
-			Offset = reader.ReadUInt32();
-			Format = (Format)( Offset >> 24 );
-			Offset &= 0xFFFFFF;
+			var data = reader.ReadUInt32();
+			Offset = data & 0xffffff;
+			Format = (Format)(data >> 24);
 
 			RefOffset = reader.ReadUInt16();
 			RefFormat = (Format)reader.ReadUInt16();
@@ -48,12 +49,7 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-	public enum Format
-	{
-		Format20 = 0x20,
-		Format40 = 0x40,
-		Format80 = 0x80,
-	}
+	public enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
 
 	public class ShpReader : IEnumerable<ImageHeader>
 	{
@@ -69,40 +65,37 @@ namespace OpenRA.FileFormats
 
 		public ShpReader( Stream stream )
 		{
-			BinaryReader reader = new BinaryReader( stream );
-
-			ImageCount = reader.ReadUInt16();
-			reader.ReadUInt16();
-			reader.ReadUInt16();
-			Width = reader.ReadUInt16();
-			Height = reader.ReadUInt16();
-			reader.ReadUInt32();
-
-			for( int i = 0 ; i < ImageCount ; i++ )
-				headers.Add( new ImageHeader( reader ) );
-
-			new ImageHeader( reader ); // end-of-file header
-			new ImageHeader( reader ); // all-zeroes header
-
-			Dictionary<uint, ImageHeader> offsets = new Dictionary<uint, ImageHeader>();
-			foreach( ImageHeader h in headers )
-				offsets.Add( h.Offset, h );
-
-			for( int i = 0 ; i < ImageCount ; i++ )
+			using( var reader = new BinaryReader( stream ) )
 			{
-				ImageHeader h = headers[ i ];
-				if( h.Format == Format.Format20 )
-					h.RefImage = headers[ i - 1 ];
+				ImageCount = reader.ReadUInt16();
+				reader.ReadUInt16();
+				reader.ReadUInt16();
+				Width = reader.ReadUInt16();
+				Height = reader.ReadUInt16();
+				reader.ReadUInt32();
 
-				else if( h.Format == Format.Format40 )
+				for( int i = 0 ; i < ImageCount ; i++ )
+					headers.Add( new ImageHeader( reader ) );
+
+				new ImageHeader( reader ); // end-of-file header
+				new ImageHeader( reader ); // all-zeroes header
+
+				var offsets = headers.ToDictionary(h => h.Offset, h =>h);
+
+				for( int i = 0 ; i < ImageCount ; i++ )
 				{
-					if( !offsets.TryGetValue( h.RefOffset, out h.RefImage ) )
-						throw new InvalidDataException( "Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset) );
-				}
-			}
+					var h = headers[ i ];
+					if( h.Format == Format.Format20 )
+						h.RefImage = headers[ i - 1 ];
 
-			foreach( ImageHeader h in headers )
-				Decompress( stream, h );
+					else if( h.Format == Format.Format40 )
+						if( !offsets.TryGetValue( h.RefOffset, out h.RefImage ) )
+							throw new InvalidDataException( "Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset) );
+				}
+
+				foreach( ImageHeader h in headers )
+					Decompress( stream, h );
+			}
 		}
 
 		public ImageHeader this[ int index ]
@@ -133,7 +126,7 @@ namespace OpenRA.FileFormats
 					}
 				case Format.Format80:
 					{
-						byte[] imageBytes = new byte[ Width * Height ];
+						var imageBytes = new byte[ Width * Height ];
 						Format80.DecodeInto( ReadCompressedData( stream, h ), imageBytes );
 						h.Image = imageBytes;
 						break;
@@ -147,18 +140,17 @@ namespace OpenRA.FileFormats
 		{
 			stream.Position = h.Offset;
 			// Actually, far too big. There's no length field with the correct length though :(
-			int compressedLength = (int)( stream.Length - stream.Position );
+			var compressedLength = (int)( stream.Length - stream.Position );
 
-			byte[] compressedBytes = new byte[ compressedLength ];
+			var compressedBytes = new byte[ compressedLength ];
 			stream.Read( compressedBytes, 0, compressedLength );
 
-			//MemoryStream ms = new MemoryStream( compressedBytes );
 			return compressedBytes;
 		}
 
 		byte[] CopyImageData( byte[] baseImage )
 		{
-			byte[] imageData = new byte[ Width * Height ];
+			var imageData = new byte[ Width * Height ];
 			for( int i = 0 ; i < Width * Height ; i++ )
 				imageData[ i ] = baseImage[ i ];
 
