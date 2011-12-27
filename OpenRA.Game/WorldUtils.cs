@@ -104,7 +104,7 @@ namespace OpenRA
 
 		public static float Gauss1D(this Thirdparty.Random r, int samples)
 		{
-			return Graphics.Util.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1f)
+			return Exts.MakeArray(samples, _ => (float)r.NextDouble() * 2 - 1f)
 				.Sum() / samples;
 		}
 

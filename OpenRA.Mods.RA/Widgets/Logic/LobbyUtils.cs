@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			var options = Graphics.Util.MakeArray(map.GetSpawnPoints().Length + 1, i => i).ToList();
+			var options = Exts.MakeArray(map.GetSpawnPoints().Length + 1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 

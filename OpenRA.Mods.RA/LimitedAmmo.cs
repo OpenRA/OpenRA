@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
 			var pips = Info.PipCount != 0 ? Info.PipCount : Info.Ammo;
-			return Graphics.Util.MakeArray(pips,
+			return Exts.MakeArray(pips,
 				i => (ammo * pips) / Info.Ammo > i ? PipType.Green : PipType.Transparent);
 		}
 	}

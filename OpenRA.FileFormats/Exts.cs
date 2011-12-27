@@ -190,6 +190,15 @@ namespace OpenRA
 				(int)(t * c2.G + (1 - t) * c1.G),
 				(int)(t * c2.B + (1 - t) * c1.B));
 		}
+
+		public static T[] MakeArray<T>(int count, Func<int, T> f)
+		{
+			T[] result = new T[count];
+			for (int i = 0; i < count; i++)
+				result[i] = f(i);
+
+			return result;
+		}
 	}
 
 	public static class Enum<T>

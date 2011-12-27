@@ -19,15 +19,6 @@ namespace OpenRA.Graphics
 {
 	public static class Util
 	{
-		public static T[] MakeArray<T>(int count, Func<int, T> f)
-		{
-			T[] result = new T[count];
-			for (int i = 0; i < count; i++)
-				result[i] = f(i);
-
-			return result;
-		}
-
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, int palette, int nv, float2 size)

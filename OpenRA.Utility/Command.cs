@@ -201,7 +201,7 @@ namespace OpenRA.Utility
 			var srcPalette = Palette.Load(args[1].Split(':')[1], false);
 			var destPalette = Palette.Load(args[2].Split(':')[1], false);
 
-			var fullIndexRange = OpenRA.Graphics.Util.MakeArray<int>(256, x => x);
+			var fullIndexRange = Exts.MakeArray<int>(256, x => x);
 
 			for( var i = 0; i < 256; i++ )
 				if (!remap.ContainsKey(i))
