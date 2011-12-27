@@ -26,7 +26,7 @@ namespace OpenRA.Editor
 
 			bitmap.Palette = p.AsSystemPalette();
 
-			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+			var data = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 			unsafe
@@ -84,7 +84,7 @@ namespace OpenRA.Editor
 
 				var bitmap = new Bitmap(shp.Width, shp.Height, PixelFormat.Format8bppIndexed);
 				bitmap.Palette = p.AsSystemPalette();
-				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				var data = bitmap.LockBits(bitmap.Bounds(),
 					ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 				unsafe

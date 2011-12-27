@@ -99,11 +99,10 @@ namespace OpenRA.Renderer.SdlCommon
 			if (!IsPowerOf2(bitmap.Width) || !IsPowerOf2(bitmap.Height))
 			{
 				//throw new InvalidOperationException( "non-power-of-2-texture" );
-				bitmap = new Bitmap(bitmap, new Size(Exts.NextPowerOf2(bitmap.Width), Exts.NextPowerOf2(bitmap.Height)));
+				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
 			}
 
-			var bits = bitmap.LockBits(
-				new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+			var bits = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.ReadOnly,
 				PixelFormat.Format32bppArgb);
 

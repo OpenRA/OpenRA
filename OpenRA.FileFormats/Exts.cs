@@ -172,6 +172,8 @@ namespace OpenRA
 			return v;
 		}
 
+		public static Size NextPowerOf2(this Size s) { return new Size(NextPowerOf2(s.Width), NextPowerOf2(s.Height)); }
+
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)
 		{
 			return string.Join(j, ts.Select(t => t.ToString()).ToArray());
@@ -199,6 +201,8 @@ namespace OpenRA
 
 			return result;
 		}
+
+		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
 	}
 
 	public static class Enum<T>

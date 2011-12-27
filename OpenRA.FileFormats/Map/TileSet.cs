@@ -166,7 +166,7 @@ namespace OpenRA.FileFormats
 
 			bitmap.Palette = p.AsSystemPalette();
 
-			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+			var data = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 			unsafe

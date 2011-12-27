@@ -97,7 +97,7 @@ namespace OpenRA.FileFormats.Graphics
 
 							case "IEND":
 								{
-									var bits = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+									var bits = bitmap.LockBits(bitmap.Bounds(),
 										ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
 									using (var ns = new MemoryStream(data.ToArray()))

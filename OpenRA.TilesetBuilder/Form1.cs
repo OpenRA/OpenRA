@@ -219,8 +219,7 @@ namespace OpenRA.TilesetBuilder
 
 				var src = surface1.Image;
 
-				var data = src.LockBits(new Rectangle(0, 0, src.Width, src.Height),
-					ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+				var data = src.LockBits(src.Bounds(), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
 
 				unsafe
 				{

@@ -212,7 +212,7 @@ namespace OpenRA.Editor
 
 			var bitmap = new Bitmap(ChunkSize * TileSet.TileSize, ChunkSize * TileSet.TileSize);
 
-			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+			var data = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
 			unsafe
@@ -234,7 +234,7 @@ namespace OpenRA.Editor
 						if (Map.MapResources.Value[u * ChunkSize + i, v * ChunkSize + j].type != 0)
 						{
 							var resourceImage = ResourceTemplates[Map.MapResources.Value[u * ChunkSize + i, v * ChunkSize + j].type].Bitmap;
-							var srcdata = resourceImage.LockBits(new Rectangle(0, 0, resourceImage.Width, resourceImage.Height),
+							var srcdata = resourceImage.LockBits(resourceImage.Bounds(),
 								ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
 							int* q = (int*)srcdata.Scan0.ToPointer();

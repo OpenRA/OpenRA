@@ -100,6 +100,7 @@ namespace OpenRA
 				.Concat(mods.SelectMany(p => FindMapsIn("{1}maps{0}{2}{0}".F(Path.DirectorySeparatorChar, Platform.SupportDir, p))));
 
 			var ret = new Dictionary<string, Map>();
+
 			foreach (var path in paths)
 			{
 				try
@@ -113,6 +114,7 @@ namespace OpenRA
 					Console.WriteLine("Details: {0}", e.ToString());
 				}
 			}
+
 			return ret;
 		}
 
