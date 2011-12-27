@@ -49,8 +49,6 @@ namespace OpenRA.Widgets
 
 		int2 dragStart, dragEnd;
 
-		Pair<DateTime, int2> lastLeftButtonDownTime = Pair.New( DateTime.Now - TimeSpan.FromSeconds(1), int2.Zero );
-
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
@@ -78,7 +76,14 @@ namespace OpenRA.Widgets
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if (MultiClick && !Box)
+					if (!UseClassicMouseStyle || (UseClassicMouseStyle && (UnitsUnderCursor || Box)))
+					{
+						var newSelection = SelectActorsInBox(world, dragStart, xy);
+						world.Selection.Combine(world, newSelection,
+										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+					}
+
+					if (MultiClick)
 					{
 						var unit = world.FindUnitsAtMouse(mi.Location).FirstOrDefault();
 						Rectangle visibleWorld = Game.viewport.ViewBounds(world);
@@ -95,16 +100,7 @@ namespace OpenRA.Widgets
 						world.Selection.Combine(world, newSelection, true, false);
 					}
 
-					if ((UseClassicMouseStyle && ((!MultiClick &&  (UnitsUnderCursor || (!UnitsUnderCursor && Box)))
-									|| (MultiClick && Box)))
-						|| (!UseClassicMouseStyle && (!MultiClick || (MultiClick && Box))))
-					{
-						var newSelection = SelectActorsInBox(world, dragStart, xy);
-						world.Selection.Combine(world, newSelection,
-										mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
-					}
-
-					if (UseClassicMouseStyle && !MultiClick && !Box && !UnitsUnderCursor)
+					if (UseClassicMouseStyle && !UnitsUnderCursor && !Box)
 					{
 						if (!Box)		/* don't issue orders while selecting */
 						ApplyOrders(world, xy, mi);
@@ -113,9 +109,6 @@ namespace OpenRA.Widgets
 
 				dragStart = dragEnd = xy;
 				LoseFocus(mi);
-
-				lastLeftButtonDownTime.First = DateTime.Now;
-				lastLeftButtonDownTime.Second = xy;
 			}
 
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
