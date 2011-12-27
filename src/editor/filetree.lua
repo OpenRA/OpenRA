@@ -246,7 +246,8 @@ end
 
 local curr_id
 function FileTreeMarkSelected(file)
-  local item_id = findItem(projtree, file, projtree:GetRootItem())
+  if not file then return end
+  local item_id = findItem(projtree, file)
   if curr_id ~= item_id then
     if curr_id and projtree:IsBold(curr_id) then
       projtree:SetItemBold(curr_id, false)

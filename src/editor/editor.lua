@@ -143,7 +143,7 @@ function SetEditorSelection(selection)
     editor:SetSTCFocus(true)
     isFileAlteredOnDisk(editor)
     local id = editor:GetId()
-    if openDocuments[id] then
+    if openDocuments[id] and openDocuments[id].filePath then
       FileTreeMarkSelected(openDocuments[id].filePath)
     end
   end
