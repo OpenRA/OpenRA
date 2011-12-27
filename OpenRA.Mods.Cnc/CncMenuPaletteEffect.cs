@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc
 					else
 					{
 						var f = ColorForEffect(from, orig);
-						pal.Value.SetColor(x, OpenRA.Graphics.Util.Lerp((float)remainingFrames / Info.FadeLength, t, f));
+						pal.Value.SetColor(x, Exts.ColorLerp((float)remainingFrames / Info.FadeLength, t, f));
 					}
 				}
 			}

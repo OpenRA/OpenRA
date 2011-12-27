@@ -181,5 +181,19 @@ namespace OpenRA
 		{
 			return ts.Concat(moreTs);
 		}
+
+		public static Color ColorLerp(float t, Color c1, Color c2)
+		{
+			return Color.FromArgb(
+				(int)(t * c2.A + (1 - t) * c1.A),
+				(int)(t * c2.R + (1 - t) * c1.R),
+				(int)(t * c2.G + (1 - t) * c1.G),
+				(int)(t * c2.B + (1 - t) * c1.B));
+		}
+	}
+
+	public static class Enum<T>
+	{
+		public static T Parse(string s) { return (T)Enum.Parse(typeof(T), s); }
 	}
 }

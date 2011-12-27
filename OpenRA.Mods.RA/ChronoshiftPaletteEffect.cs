@@ -32,6 +32,8 @@ namespace OpenRA.Mods.RA
 			if (remainingFrames > 0)
 				remainingFrames--;
 		}
+		
+		static List<string> excludePalettes = new List<string>{"cursor", "chrome", "colorpicker", "shroud", "fog"};
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var frac = (float)remainingFrames / chronoEffectLength;
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
+			
 			foreach (var pal in palettes)
 			{
 				if (excludePalettes.Contains(pal.Key))
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.RA
 					var orig = pal.Value.GetColor(x);
 					var lum = (int)(255 * orig.GetBrightness());
 					var desat = Color.FromArgb(orig.A, lum, lum, lum);
-					pal.Value.SetColor(x, OpenRA.Graphics.Util.Lerp(frac, orig, desat));
+					pal.Value.SetColor(x, Exts.ColorLerp(frac, orig, desat));
 				}
 			}
 		}

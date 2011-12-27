@@ -19,21 +19,7 @@ namespace OpenRA.Graphics
 {
 	public static class Util
 	{
-		public static string[] ReadAllLines(Stream s)
-		{
-			List<string> result = new List<string>();
-			using (StreamReader reader = new StreamReader(s))
-				while(!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-					if( !string.IsNullOrEmpty( line ) && line[0] != '#' )
-						result.Add( line );
-				}
-
-			return result.ToArray();
-		}
-
-		public static T[] MakeArray<T>(int count, Converter<int, T> f)
+		public static T[] MakeArray<T>(int count, Func<int, T> f)
 		{
 			T[] result = new T[count];
 			for (int i = 0; i < count; i++)
@@ -59,6 +45,7 @@ namespace OpenRA.Graphics
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.
+
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
 			var data = dest.sheet.Data;
@@ -78,29 +65,6 @@ namespace OpenRA.Graphics
 				}
 				destOffset += destSkip;
 			}
-		}
-
-		public static Color Lerp(float t, Color a, Color b)
-		{
-			return Color.FromArgb(
-				LerpChannel(t, a.A, b.A),
-				LerpChannel(t, a.R, b.R),
-				LerpChannel(t, a.G, b.G),
-				LerpChannel(t, a.B, b.B));
-		}
-
-		public static int LerpARGBColor(float t, int c1, int c2)
-		{
-			int a = LerpChannel(t, (c1 >> 24) & 255, (c2 >> 24) & 255);
-			int r = LerpChannel(t, (c1 >> 16) & 255, (c2 >> 16) & 255);
-			int g = LerpChannel(t, (c1 >> 8) & 255, (c2 >> 8) & 255);
-			int b = LerpChannel(t, c1 & 255, c2 & 255);
-			return (a << 24) | (r << 16) | (g << 8) | b;
-		}
-
-		public static int LerpChannel(float t, int a, int b)
-		{
-			return (int)((1 - t) * a + t * b);
 		}
 	}
 }

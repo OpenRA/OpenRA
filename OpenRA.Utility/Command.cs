@@ -15,7 +15,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
@@ -190,13 +189,13 @@ namespace OpenRA.Utility
 			for( var i = 0; i < 4; i++ )
 				remap[i] = i;
 
-			var srcPaletteType = (PaletteFormat)Enum.Parse(typeof(PaletteFormat), args[1].Split(':')[0]);
-			var destPaletteType = (PaletteFormat)Enum.Parse(typeof(PaletteFormat), args[2].Split(':')[0]);
+			var srcPaletteType = Enum<PaletteFormat>.Parse(args[1].Split(':')[0]);
+			var destPaletteType = Enum<PaletteFormat>.Parse(args[2].Split(':')[0]);
 
 			/* the remap range is always 16 entries, but their location and order changes */
 			for( var i = 0; i < 16; i++ )
-				remap[ PlayerColorRemap.GetRemapBase(srcPaletteType) + PlayerColorRemap.GetRemapRamp(srcPaletteType)[i] ]
-					= PlayerColorRemap.GetRemapBase(destPaletteType) + PlayerColorRemap.GetRemapRamp(destPaletteType)[i];
+				remap[ PlayerColorRemap.GetRemapIndex(srcPaletteType, i) ]
+					= PlayerColorRemap.GetRemapIndex(destPaletteType, i);
 
 			/* map everything else to the best match based on channel-wise distance */
 			var srcPalette = Palette.Load(args[1].Split(':')[1], false);

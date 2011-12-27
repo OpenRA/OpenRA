@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 		public static Color ChooseColor(Actor self)
 		{
 			var ownerColor = Color.FromArgb(255, self.Owner.ColorRamp.GetColor(0));
-			return PlayerColorRemap.ColorLerp(0.5f, ownerColor, Color.White);
+			return Exts.ColorLerp(0.5f, ownerColor, Color.White);
 		}
 
 		public ContrailHistory(int trailLength, Color color)

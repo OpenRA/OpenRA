@@ -24,14 +24,19 @@ namespace OpenRA.FileFormats
 		static readonly int[] CncRemapRamp = new[] { 0, 2, 4, 6, 8, 10, 13, 15, 1, 3, 5, 7, 9, 11, 12, 14 };
 		static readonly int[] NormalRemapRamp = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
-		public static int GetRemapBase(PaletteFormat fmt)
+		static int GetRemapBase(PaletteFormat fmt)
 		{
 			return (fmt == PaletteFormat.cnc) ? 0xb0 : (fmt == PaletteFormat.d2k) ? 240 : 80;
 		}
 
-		public static int[] GetRemapRamp(PaletteFormat fmt)
+		static int[] GetRemapRamp(PaletteFormat fmt)
 		{
 			return (fmt == PaletteFormat.cnc) ? CncRemapRamp : NormalRemapRamp;
+		}
+
+		public static int GetRemapIndex(PaletteFormat fmt, int i)
+		{
+			return GetRemapBase(fmt) + GetRemapRamp(fmt)[i];
 		}
 
 		public PlayerColorRemap(PaletteFormat fmt, ColorRamp c)
@@ -42,16 +47,8 @@ namespace OpenRA.FileFormats
 			var baseIndex = GetRemapBase(fmt);
 			var ramp = GetRemapRamp(fmt);
 
-			remapColors = ramp.Select((x, i) => Pair.New(baseIndex + i, ColorLerp(x / 16f, c1, c2)))
+			remapColors = ramp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
 				.ToDictionary(u => u.First, u => u.Second);
-		}
-
-		public static Color ColorLerp(float t, Color c1, Color c2)
-		{
-			return Color.FromArgb(255,
-				(int)(t * c2.R + (1 - t) * c1.R),
-				(int)(t * c2.G + (1 - t) * c1.G),
-				(int)(t * c2.B + (1 - t) * c1.B));
 		}
 
 		public Color GetRemappedColor(Color original, int index)
