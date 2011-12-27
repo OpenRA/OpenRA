@@ -21,8 +21,6 @@ namespace OpenRA.FileFormats
 			H = h; S = s; L = l; R = r;
 		}
 
-		public static readonly ColorRamp Empty = new ColorRamp(0,0,0,0);
-
 		/* returns a color along the Lum ramp */
 		public Color GetColor( float t )
 		{
@@ -35,7 +33,7 @@ namespace OpenRA.FileFormats
 		}
 
 		// hk is hue in the range [0,1] instead of [0,360]
-		public static Color ColorFromHSL(float hk, float s, float l)
+		static Color ColorFromHSL(float hk, float s, float l)
 		{
 			// Convert from HSL to RGB
 			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);

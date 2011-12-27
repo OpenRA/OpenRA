@@ -56,16 +56,9 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
 		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
 
-		// Rules overrides
 		[FieldLoader.Ignore] public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
-
-		// Sequences overrides
 		[FieldLoader.Ignore] public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
-
-		// Weapon overrides
 		[FieldLoader.Ignore] public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
-
-		// Voices overrides
 		[FieldLoader.Ignore] public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
 
 		// Binary map data
@@ -76,10 +69,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string [,] CustomTerrain;
 
-		public Map()
-		{
-			// Do nothing; not a valid map (editor hack)
-		}
+		public Map() {}	/* doesn't really produce a valid map, but enough for loading a mod */
 
 		public static Map FromTileset(string tileset)
 		{

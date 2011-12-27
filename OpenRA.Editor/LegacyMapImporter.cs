@@ -189,27 +189,27 @@ namespace OpenRA.Editor
 
 		static MemoryStream ReadPackedSection(IniSection mapPackSection)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			for (int i = 1; ; i++)
 			{
-				string line = mapPackSection.GetValue(i.ToString(), null);
+				var line = mapPackSection.GetValue(i.ToString(), null);
 				if (line == null)
 					break;
 
 				sb.Append(line.Trim());
 			}
 
-			byte[] data = Convert.FromBase64String(sb.ToString());
-			List<byte[]> chunks = new List<byte[]>();
-			BinaryReader reader = new BinaryReader(new MemoryStream(data));
+			var data = Convert.FromBase64String(sb.ToString());
+			var chunks = new List<byte[]>();
+			var reader = new BinaryReader(new MemoryStream(data));
 
 			try
 			{
 				while (true)
 				{
-					uint length = reader.ReadUInt32() & 0xdfffffff;
-					byte[] dest = new byte[8192];
-					byte[] src = reader.ReadBytes((int)length);
+					var length = reader.ReadUInt32() & 0xdfffffff;
+					var dest = new byte[8192];
+					var src = reader.ReadBytes((int)length);
 
 					/*int actualLength =*/
 					Format80.DecodeInto(src, dest);
@@ -219,8 +219,8 @@ namespace OpenRA.Editor
 			}
 			catch (EndOfStreamException) { }
 
-			MemoryStream ms = new MemoryStream();
-			foreach (byte[] chunk in chunks)
+			var ms = new MemoryStream();
+			foreach (var chunk in chunks)
 				ms.Write(chunk, 0, chunk.Length);
 
 			ms.Position = 0;
@@ -284,7 +284,7 @@ namespace OpenRA.Editor
 
 		void ReadRATrees(IniFile file)
 		{
-			IniSection terrain = file.GetSection("TERRAIN", true);
+			var terrain = file.GetSection("TERRAIN", true);
 			if (terrain == null)
 				return;
 
@@ -316,14 +316,14 @@ namespace OpenRA.Editor
 
 		void ReadCncOverlay(IniFile file)
 		{
-			IniSection overlay = file.GetSection("OVERLAY", true);
+			var overlay = file.GetSection("OVERLAY", true);
 			if (overlay == null)
 				return;
 
 			foreach (KeyValuePair<string, string> kv in overlay)
 			{
 				var loc = int.Parse(kv.Key);
-				int2 cell = new int2(loc % MapSize, loc / MapSize);
+				var cell = new int2(loc % MapSize, loc / MapSize);
 
 				var res = Pair.New((byte)0, (byte)0);
 				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
@@ -343,7 +343,7 @@ namespace OpenRA.Editor
 
 		void ReadCncTrees(IniFile file)
 		{
-			IniSection terrain = file.GetSection("TERRAIN", true);
+			var terrain = file.GetSection("TERRAIN", true);
 			if (terrain == null)
 				return;
 
@@ -374,7 +374,6 @@ namespace OpenRA.Editor
 					var loc = int.Parse(parts[3]);
 					if (parts[0] == "")
 						parts[0] = "Neutral";
-
 
 					if (!Players.Contains(parts[0]))
 						Players.Add(parts[0]);
