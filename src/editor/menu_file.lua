@@ -100,14 +100,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
     event:Enable(atLeastOneModifiedDocument)
   end)
 
-frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
-    local id = editor:GetId()
-    if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
-      RemovePage(openDocuments[id].index)
-    end
-  end)
+frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, CloseFile)
 
 frame:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI,
   function (event)
