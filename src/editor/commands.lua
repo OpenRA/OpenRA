@@ -210,12 +210,10 @@ end
 local function removePage(index,skipnotebook)
   local prevIndex = nil
   local nextIndex = nil
-  --local newOpenDocuments = {}
 
   local delid = nil
   for id, document in pairs(openDocuments) do
     if document.index < index then
-      --newOpenDocuments[id] = document
       prevIndex = document.index
     elseif document.index == index then
       delid = id
@@ -227,7 +225,6 @@ local function removePage(index,skipnotebook)
       if nextIndex == nil then
         nextIndex = document.index
       end
-      --newOpenDocuments[id] = document
     end
   end
 
@@ -491,6 +488,7 @@ function CloseWindow(event)
   SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
   DebuggerCloseWatchWindow()
+  DebuggerKillClient()
   ide.settings:delete() -- always delete the config
   event:Skip()
 end

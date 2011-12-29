@@ -87,12 +87,12 @@ debugger.listen = function()
       SetAllEditorsReadOnly(true)
       local options = debugger.options or {}
       local wxfilepath = GetEditorFileAndCurInfo()
-      local startfile = string.gsub(options.startfile or wxfilepath:GetFullPath(),"\\","/")
-      local basedir = string.gsub(options.basedir or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
+      local startfile = options.startfile or wxfilepath:GetFullPath()
+      local basedir = options.basedir or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)
       debugger.basedir = basedir
       debugger.server = copas.wrap(skt)
 
-      DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
+      DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. ").\n")
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -106,7 +106,7 @@ debugger.listen = function()
       -- go over all windows and find all breakpoints
       for id, document in pairs(ide.openDocuments) do
         local editor = document.editor
-        local filePath = string.gsub(document.filePath, "\\", "/")
+        local filePath = document.filePath
         line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
         while line ~= -1 do
           debugger.handle("setb " .. filePath .. " " .. (line+1))

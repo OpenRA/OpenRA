@@ -75,7 +75,7 @@ frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
   end)
 
 toolBar = frame:CreateToolBar(wx.wxNO_BORDER + wx.wxTB_FLAT + wx.wxTB_DOCKABLE)
-funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(300,16))
+funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
 
 -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
 local toolBmpSize = toolBar:GetToolBitmapSize()
@@ -127,12 +127,12 @@ splitter:Connect(wx.wxEVT_SIZE, function (evt)
 notebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  + wx.wxNO_BORDER)
 
 local current -- the currently active editor, needed by the focus selection
 local function onPageChange(event)
   current = event:GetSelection() -- update the active editor reference
-  SetEditorSelection(event:GetSelection())
+  SetEditorSelection(current)
   event:Skip() -- skip to let page change
 end
 
@@ -145,8 +145,8 @@ notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, onPageClose)
 
 notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
-  function (event) -- select the editor then instead
-    SetEditorSelection(current) -- select the currently active one.
+  function (event)
+    SetEditorSelection(current) -- select the currently active editor
   end)
 
 -- bottomnotebook (errorlog,shellbox)
