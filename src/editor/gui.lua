@@ -136,8 +136,13 @@ local function onPageChange(event)
   event:Skip() -- skip to let page change
 end
 
+local function onPageClose(event)
+  ClosingPage(event:GetSelection())
+end
+
 notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
+notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, onPageClose)
 
 notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
   function (event) -- select the editor then instead

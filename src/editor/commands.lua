@@ -12,6 +12,7 @@ function NewFile(event)
   SetupKeywords(editor, "lua")
 end
 
+
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
 local function findDocumentToReuse()
   local editor = nil
@@ -206,7 +207,7 @@ function SaveAll()
   end
 end
 
-function RemovePage(index)
+local function removePage(index,skipnotebook)
   local prevIndex = nil
   local nextIndex = nil
   --local newOpenDocuments = {}
@@ -218,7 +219,9 @@ function RemovePage(index)
       prevIndex = document.index
     elseif document.index == index then
       delid = id
-      document.editor:Destroy()
+      if (not skipnotebook) then 
+        document.editor:Destroy()
+      end
     elseif document.index > index then
       document.index = document.index - 1
       if nextIndex == nil then
@@ -231,7 +234,9 @@ function RemovePage(index)
   if (delid) then
     openDocuments[delid] = nil
   end
-
+  
+  if (skipnotebook) then return end
+  
   notebook:RemovePage(index)
 
   if nextIndex then
@@ -241,6 +246,26 @@ function RemovePage(index)
   end
 
   SetEditorSelection(nil) -- will use notebook GetSelection to update
+end
+
+local function closeEditor(editor,skipnotebook)
+  local id = editor:GetId()
+  if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
+    removePage(openDocuments[id].index,skipnotebook)
+  end
+end
+
+function CloseFile(event)
+  local editor = GetEditor()
+  closeEditor(editor)
+end
+
+function ClosingPage(index)
+  for id, document in pairs(openDocuments) do
+    if document.index == index and document.filePath then
+      return closeEditor(document.editor,true)
+    end
+  end
 end
 
 -- Show a dialog to save a file before closing editor.
