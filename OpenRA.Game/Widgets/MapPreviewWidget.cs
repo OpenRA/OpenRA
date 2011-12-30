@@ -22,6 +22,7 @@ namespace OpenRA.Widgets
 		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public bool IgnoreMouseInput = false;
+		public bool ShowSpawnPoints = true;
 
 		static Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 
@@ -33,6 +34,7 @@ namespace OpenRA.Widgets
 			lastMap = other.lastMap;
 			Map = other.Map;
 			SpawnColors = other.SpawnColors;
+			ShowSpawnPoints = other.ShowSpawnPoints;
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -90,19 +92,22 @@ namespace OpenRA.Widgets
 				new float2(MapRect.Location),
 				new float2( MapRect.Size ) );
 
-			// Overlay spawnpoints
-			var colors = SpawnColors();
-			foreach (var p in map.GetSpawnPoints())
+			if (ShowSpawnPoints)
 			{
-				var owned = colors.ContainsKey(p);
-				var pos = ConvertToPreview(p);
-				var sprite = ChromeProvider.GetImage("spawnpoints", owned ? "owned" : "unowned");
-				var offset = new int2(-sprite.bounds.Width/2, -sprite.bounds.Height/2);
+				var colors = SpawnColors();
 
-				if (owned)
-					WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
+				foreach (var p in map.GetSpawnPoints())
+				{
+					var owned = colors.ContainsKey(p);
+					var pos = ConvertToPreview(p);
+					var sprite = ChromeProvider.GetImage("spawnpoints", owned ? "owned" : "unowned");
+					var offset = new int2(-sprite.bounds.Width/2, -sprite.bounds.Height/2);
 
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
+					if (owned)
+						WidgetUtils.FillRectWithColor(new Rectangle(pos.X + offset.X + 2, pos.Y + offset.Y + 2, 12, 12), colors[p]);
+
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
+				}
 			}
 		}
 	}

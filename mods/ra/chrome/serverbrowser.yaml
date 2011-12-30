@@ -35,6 +35,7 @@ Background@JOINSERVER_BG:
 							Y:2
 							Width:64
 							Height:64
+							ShowSpawnPoints:no
 						Label@TITLE:
 							Id:TITLE
 							X:70
