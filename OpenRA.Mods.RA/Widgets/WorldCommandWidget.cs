@@ -29,6 +29,8 @@ namespace OpenRA.Mods.RA.Widgets
 		public string DeployKey = "f";
 		public string StanceCycleKey = "z";
 		public string BaseCycleKey = "backspace";
+		public string GotoLastEventKey = "space";
+
 		public readonly OrderManager OrderManager;
 
 		[ObjectCreator.UseCtor]
@@ -51,6 +53,9 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				if (e.KeyName == BaseCycleKey)
 					return CycleBases();
+
+				if (e.KeyName == GotoLastEventKey)
+					return GotoLastEvent();
 
 				if (!World.Selection.Actors.Any())
 					return false;
@@ -160,6 +165,22 @@ namespace OpenRA.Mods.RA.Widgets
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
 			Game.viewport.Center(World.Selection.Actors);
+			return true;
+		}
+
+		bool GotoLastEvent()
+		{
+			if (World.LocalPlayer == null)
+				return true;
+
+			var eventNotifier = World.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();
+			if (eventNotifier == null)
+				return true;
+
+			if (eventNotifier.lastAttackTime < 0)
+				return true;
+
+			Game.viewport.Center(eventNotifier.lastAttackLocation);
 			return true;
 		}
 	}
