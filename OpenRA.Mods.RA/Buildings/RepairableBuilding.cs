@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			if (remainingTicks == 0)
 			{
-				if (Repairer.WinState != WinState.Undefined)
+				if (Repairer.WinState != WinState.Undefined || Repairer.Stances[self.Owner] != Stance.Ally)
 				{
 					Repairer = null;
 					return;
