@@ -1,5 +1,5 @@
 --
--- MobDebug 0.41
+-- MobDebug 0.42
 -- Copyright Paul Kulchenko 2011
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -10,11 +10,12 @@ module("mobdebug", package.seeall)
 
 _COPYRIGHT = "Paul Kulchenko"
 _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language"
-_VERSION = "0.41"
+_VERSION = "0.42"
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
   local self = {}
+  self.select = function() return {} end
   self.connect = coroutine.wrap(function(host, port)
     while true do
       local connection = maConnect("socket://" .. host .. ":" .. port)
@@ -143,6 +144,7 @@ local lastsource
 local lastfile
 local watchescnt = 0
 local abort = false
+local check_break = false
 local step_into = false
 local step_over = false
 local step_level = 0
@@ -259,8 +261,13 @@ local function debug_hook(event, line)
         end
       end
     end
-    if step_into or (step_over and stack_level <= step_level) or has_breakpoint(file, line) then
+
+    if step_into
+    or (step_over and stack_level <= step_level)
+    or has_breakpoint(file, line)
+    or (check_break and (socket.select({server}, {}, 0))[server]) then
       vars = vars or capture_vars()
+      check_break = true -- this is only needed to avoid breaking too early when debugging is starting
       step_into = false
       step_over = false
       coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
@@ -274,7 +281,30 @@ local function debugger_loop()
   local function emptyWatch () return false end
 
   while true do
-    local line = server:receive()
+    local line, err
+    if server.settimeout then server:settimeout(0.010) end
+    while true do
+      line, err = server:receive()
+      if not line and err == "timeout" then
+        -- yield for wx GUI applications if possible to avoid "busyness"
+        if wx and wx.wxGetApp then
+          local app = wx.wxGetApp()
+          local win = app:GetTopWindow()
+          if win then
+            -- process messages in a regular way
+            -- and exit as soon as the event loop is idle
+            win:Connect(wx.wxEVT_IDLE, function(event)
+              app:ExitMainLoop()
+              win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_IDLE)
+            end)
+            app:MainLoop()
+          end
+        end
+      else
+        break
+      end
+    end
+    if server.settimeout then server:settimeout() end -- back to blocking
     command = string.sub(line, string.find(line, "^[A-Z]+"))
     if command == "SETB" then
       local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
@@ -363,6 +393,7 @@ local function debugger_loop()
       end
     elseif command == "RUN" then
       server:send("200 OK\n")
+
       local ev, vars, file, line, idx_watch = coroutine.yield()
       eval_env = vars
       if ev == events.BREAK then
@@ -376,6 +407,7 @@ local function debugger_loop()
     elseif command == "STEP" then
       server:send("200 OK\n")
       step_into = true
+
       local ev, vars, file, line, idx_watch = coroutine.yield()
       eval_env = vars
       if ev == events.BREAK then
