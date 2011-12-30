@@ -143,7 +143,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			searchStatus = SearchStatus.Hidden;
 			currentServer = games.FirstOrDefault();
 
-			foreach (var loop in games)
+			foreach (var loop in games.OrderBy(g => g.CanJoin() ? 0 : 1))
 			{
 				var game = loop;
 
