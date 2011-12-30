@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void ShowDropDown(Player p, DropDownButtonWidget dropdown)
 		{
-			var stances = Enum.GetValues(typeof(Stance)).OfType<Stance>();
+			var stances = Enum<Stance>.GetValues();
 			Func<Stance, ScrollItemWidget, ScrollItemWidget> setupItem = (s, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,

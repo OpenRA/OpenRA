@@ -208,5 +208,6 @@ namespace OpenRA
 	public static class Enum<T>
 	{
 		public static T Parse(string s) { return (T)Enum.Parse(typeof(T), s); }
+		public static T[] GetValues() { return (T[])Enum.GetValues(typeof(T)); }
 	}
 }

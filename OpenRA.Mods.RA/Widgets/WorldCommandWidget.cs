@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (actor.First == null)
 				return true;
 
-			var stances = (UnitStance[])Enum.GetValues(typeof(UnitStance));
+			var stances = Enum<UnitStance>.GetValues();
 
 			var nextStance = stances.Concat(stances).SkipWhile(s => s != actor.Second.predictedStance).Skip(1).First();
 
