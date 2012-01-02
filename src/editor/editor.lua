@@ -211,6 +211,14 @@ function CreateEditor(name)
   editor:SetIndentationGuides(true)
   editor:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
 
+  if (ide.config.editor.usewrap) then
+    editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
+    editor:SetWrapStartIndent(2)
+    editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
+    editor:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_START)
+    editor:WrapCount(80)
+  end
+
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_SLOP, 3)

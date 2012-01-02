@@ -101,6 +101,7 @@ config = {
 
     tabwidth = 4,
     usetabs = true, -- if false then spaces are used
+    usewrap = true, -- if true then the text is wrapped in the editor
     whitespace = false,
     autotabs = true, -- if true test for tabs after file load,
     -- sets "usetabs" to true for this file

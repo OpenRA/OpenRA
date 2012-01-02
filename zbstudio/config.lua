@@ -2,6 +2,7 @@ editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
 editor.tabwidth = 2
+editor.usewrap = true
 
 filehistorylength = 20
 
