@@ -87,7 +87,6 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     SaveAll()
   end)
-
 frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
   function (event)
     local atLeastOneModifiedDocument = false
@@ -100,8 +99,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
     event:Enable(atLeastOneModifiedDocument)
   end)
 
-frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, CloseFile)
-
+frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, ClosePage)
 frame:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI,
   function (event)
     event:Enable((GetEditor() ~= nil) and (debugger.server == nil))
