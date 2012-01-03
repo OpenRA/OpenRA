@@ -3,10 +3,10 @@
 local ide = ide
 --[[ single instance
 open an UDP port - if it fails it is either because
-- Estrela is running already
+- IDE is running already
 - an application is already blocking that port
 if it fails it tries to contact the running application
-- if it confirms being the estrela IDE we let that instance open it, finish our application
+- if it confirms being the IDE we let that instance open it, finish our application
 - otherwise we throw an error message on the user and start like normal
 
 probably a pitfal: an estreala instance is running but is not visible (because it was finished
@@ -25,7 +25,7 @@ local success, errmsg = svr:setsockname("127.0.0.1",port) -- bind on local host
 
 local protocoll = {client = {}, server = {}}
 
-protocoll.client.greeting = "Is this you, Estrela? It's me, a new instance."
+protocoll.client.greeting = "Is this you, my IDE? It's me, a new instance."
 protocoll.server.greeting = "Yes it is me, how may I serve you?"
 protocoll.client.requestloading = "Could you please load this file for me: %s"
 protocoll.server.answerok = "Sure. You may now leave."

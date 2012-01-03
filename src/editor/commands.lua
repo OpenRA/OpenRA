@@ -40,6 +40,7 @@ function LoadFile(filePath, editor, file_must_exist)
       end
     end
   end
+
   -- if not opened yet, try open now
   local file_text = ""
   local handle = io.open(filePath, "rb")
@@ -210,15 +211,13 @@ function SaveAll()
   end
 end
 
-function RemovePage(index)
+local function removePage(index)
   local prevIndex = nil
   local nextIndex = nil
-  --local newOpenDocuments = {}
 
   local delid = nil
   for id, document in pairs(openDocuments) do
     if document.index < index then
-      --newOpenDocuments[id] = document
       prevIndex = document.index
     elseif document.index == index then
       delid = id
@@ -228,7 +227,6 @@ function RemovePage(index)
       if nextIndex == nil then
         nextIndex = document.index
       end
-      --newOpenDocuments[id] = document
     end
   end
 
@@ -245,6 +243,14 @@ function RemovePage(index)
   end
 
   SetEditorSelection(nil) -- will use notebook GetSelection to update
+end
+
+function ClosePage()
+  local editor = GetEditor()
+  local id = editor:GetId()
+  if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
+    removePage(ide.openDocuments[id].index)
+  end
 end
 
 -- Show a dialog to save a file before closing editor.
@@ -470,6 +476,7 @@ function CloseWindow(event)
   SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
   DebuggerCloseWatchWindow()
+  DebuggerKillClient()
   ide.settings:delete() -- always delete the config
   event:Skip()
 end

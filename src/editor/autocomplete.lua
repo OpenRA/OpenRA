@@ -51,7 +51,9 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
     print("The API file must be located in a subdirectory of the API directory\n")
     return
   end
-  if ((only and ftype ~= only) or (known and not known[ftype])) then return end
+  if ((only and ftype ~= only) or (known and not known[ftype])) then 
+    return 
+  end
   if (subapis and not subapis[fname]) then return end
 
   local fn,err = loadfile(apifile)
@@ -275,8 +277,8 @@ end
 do
   local known = {}
   for n,spec in pairs(ide.specs) do
-    if (spec.api) then
-      known[spec.api] = true
+    if (spec.apitype) then
+      known[spec.apitype] = true
     end
   end
   -- by defaul load every known api except lua

@@ -1,5 +1,9 @@
+--[[--
+
 estrela loads configs in the following order
 
 1. <application>\config.lua
 2. cfg\user.lua
 3. -cfg commandline strings
+
+--]]--

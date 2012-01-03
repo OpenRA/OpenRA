@@ -1,1 +1,0 @@
-git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor 

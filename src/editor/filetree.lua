@@ -35,13 +35,14 @@ local sidenotebook = ide.frame.vsplitter.sidenotebook
 -- ------------
 
 do
+  local size = wx.wxSize(16, 16)
   filetree.imglist = wx.wxImageList(16,16)
   -- 0 = directory
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_FOLDER,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
   -- 1 = file known spec
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_HELP_PAGE ,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
   -- 2 = file rest
-  filetree.imglist:Add(wx.wxArtProvider.GetIcon(wx.wxART_NORMAL_FILE,wx.wxART_TOOLBAR, wx.wxSize(16, 16)))
+  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
 end
 
 local function treeAddDir(tree,parent_id,rootdir)
@@ -50,8 +51,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   local dirs = FileSysGet(search,wx.wxDIR)
   -- append directories
   for i,dir in ipairs(dirs) do
-    local dir_id = tree:AppendItem(parent_id, dir:match("(%"..string_Pathsep..stringset_File.."+)$"),0)
-
+    local dir_id = tree:AppendItem(parent_id, dir:match("%"..string_Pathsep.."("..stringset_File.."+)$"), 0)
     tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
   end
   -- then append files
@@ -59,22 +59,23 @@ local function treeAddDir(tree,parent_id,rootdir)
   for i,file in ipairs(files) do
     local fname = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(fname))
-    tree:AppendItem(parent_id, fname,known and 1 or 2)
+    tree:AppendItem(parent_id, fname, known and 1 or 2)
+  end
+  if tree:GetChildrenCount(parent_id, false) == 0 then
+    tree:SetItemHasChildren(parent_id, false)
   end
 end
 
-local function treeGetItemFullName(tree,treedata,item_id,isfile)
-  local str = isfile and string_Pathsep or ""
-  str = str..tree:GetItemText(item_id)
+local function treeGetItemFullName(tree,treedata,item_id)
+  local str = tree:GetItemText(item_id)
   local cur = str
 
-  local stop = 4
   while (#cur > 0) do
     item_id = tree:GetItemParent(item_id)
     cur = tree:GetItemText(item_id)
-    str = cur..str
+    if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
   end
-  return ((not filetree.showroot) and filetree.projdata.rootdir or "").. str
+  return ((not filetree.showroot) and filetree.projdata.rootdir or "")..str
 end
 
 local function treeSetRoot(tree,treedata,rootdir)
@@ -91,8 +92,7 @@ local function treeSetRoot(tree,treedata,rootdir)
   treedata.rootdir = rootdir
 
   treeAddDir(tree,root_id,rootdir)
-
-  filetree.newfiledir = rootdir..string_Pathsep
+  filetree.newfiledir = rootdir
 
   tree:Expand(root_id)
 end
@@ -105,20 +105,15 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = event:GetItem()
       local dir = treeGetItemFullName(tree,treedata,item_id)
-      DisplayOutput(dir.."\n")
-      treeAddDir(tree,item_id,dir)
+      if tree:GetChildrenCount(item_id, false) == 0 then -- TBR
+        treeAddDir(tree,item_id,dir)
+      end
 
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
     function( event )
-      local item_id = event:GetItem()
-      tree:DeleteChildren(item_id)
-
-      -- directories must stay expandable if they have content
-      local dir = treeGetItemFullName(tree,treedata,item_id)
-      tree:SetItemHasChildren(item_id,FileSysHasContent(dir))
-
+      -- don't need to do anything here
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
@@ -127,9 +122,9 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 
       if (tree:GetItemImage(item_id) == 0) then return end
       -- openfile
-      local name = treeGetItemFullName(tree,treedata,item_id,true)
+      local name = treeGetItemFullName(tree,treedata,item_id)
       LoadFile(name,nil,true)
-
+      FileTreeMarkSelected(name)
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED,
     function( event )
@@ -137,7 +132,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 
       -- set "newfile-path"
       local isfile = tree:GetItemImage(item_id) ~= 0
-      filetree.newfiledir = treeGetItemFullName(tree,treedata,item_id,isfile)
+      filetree.newfiledir = treeGetItemFullName(tree,treedata,item_id)
 
       if (isfile) then
         -- remove file
@@ -150,8 +145,8 @@ end
 
 -- project
 -- panel
--- ( combobox, button)
--- ( treectrl)
+-- (combobox, button)
+-- (treectrl)
 
 local projpanel = wx.wxPanel(sidenotebook,wx.wxID_ANY)
 local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
@@ -167,9 +162,12 @@ local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
   and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
   or (wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT))
 
+-- use the same font in the combobox as is used in the filetree
+projcombobox:SetFont(projtree:GetFont())
+
 local projTopSizer = wx.wxBoxSizer( wx.wxHORIZONTAL );
 projTopSizer:Add(projcombobox, 1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
-projTopSizer:Add(projbutton, 0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE, 0)
+projTopSizer:Add(projbutton, 0, wx.wxALL + wx.wxALIGN_RIGHT + wx.wxADJUST_MINSIZE + wx.wxALIGN_CENTER_VERTICAL, 0)
 
 local projSizer = wx.wxBoxSizer( wx.wxVERTICAL );
 projSizer:Add(projTopSizer, 0, wx.wxALL + wx.wxALIGN_CENTER_HORIZONTAL + wx.wxGROW, 0)
@@ -204,19 +202,23 @@ function filetree:updateProjectDir(newdir, cboxsel)
   if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
   filetree.projdirText = newdir
 
-  --if (not cboxsel) then
   PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)
   projcombobox:Clear()
   projcombobox:Append(filetree.projdirTextArray)
   if (not cboxsel) then
     projcombobox:SetValue(newdir)
-    --projcombobox:SetValue(newdir)
   else
     projcombobox:Select(0)
   end
-  --end
+
   ProjectUpdateProjectDir(newdir,true)
   treeSetRoot(projtree,filetree.projdata,newdir)
+
+  -- sync with the current editor window and activate selected file
+  local id = GetEditor():GetId()
+  if ide.openDocuments[id] then
+    FileTreeMarkSelected(ide.openDocuments[id].filePath)
+  end
 end
 
 projpanel.projbutton = projbutton
@@ -228,7 +230,6 @@ sidenotebook:AddPage(projpanel, "Project",true)
 
 function FileTreeGetDir()
   -- atm only projtree
-  --print(ide.frame.vsplitter:IsSplit(),filetree.newfiledir)
   return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
 end
 
@@ -241,4 +242,49 @@ end
 
 function FileTreeGetProjects()
   return filetree.projdirTextArray
+end
+
+local curr_id
+function FileTreeMarkSelected(file)
+  if not file then return end
+  local item_id = findItem(projtree, file)
+  if curr_id ~= item_id then
+    if curr_id and projtree:IsBold(curr_id) then
+      projtree:SetItemBold(curr_id, false)
+    end
+    if item_id then
+      projtree:EnsureVisible(item_id)
+      projtree:SetItemBold(item_id, true)
+      curr_id = item_id
+    end
+  end
+end
+
+function findItem(tree, match)
+  local node = projtree:GetRootItem()
+  local label = tree:GetItemText(node)
+
+  local s, e = string.find(match, label .. string_Pathsep)
+  if not s or s ~= 1 then return end
+
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
+    -- check if the node has been populated
+    if tree:ItemHasChildren(node) and
+       tree:GetChildrenCount(node, false) == 0 then
+       local dir = treeGetItemFullName(tree,filetree.projdata,node)
+       treeAddDir(tree,node,dir)
+    end
+    local item, cookie = tree:GetFirstChild(node)
+    while true do
+      if not item:IsOk() then return end -- not found
+      if tree:GetItemText(item) == token then
+        node = item
+        break
+      end
+      item, cookie = tree:GetNextChild(item, cookie)
+    end
+  end
+
+  -- this loop exits only when a match is found
+  return node
 end

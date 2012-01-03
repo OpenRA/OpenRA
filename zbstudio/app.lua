@@ -13,10 +13,14 @@ local app = {
     artProvider.CreateBitmap = function(self, id, client, size)
       local width = size:GetWidth()
       local key = width .. "/" .. id
-      local file = "zbstudio/res/" .. key .. ".png"
-      if not wx.wxFileName(file):FileExists() then return wx.wxNullBitmap end
-      local icon = icons[key] or wx.wxBitmap(file)
-      icons[key] = icon
+      local fileClient = "zbstudio/res/" .. key .. "-" .. client .. ".png"
+      local fileKey = "zbstudio/res/" .. key .. ".png"
+      local file
+      if wx.wxFileName(fileClient):FileExists() then file = fileClient
+      elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
+      else return wx.wxNullBitmap end
+      local icon = icons[file] or wx.wxBitmap(file)
+      icons[file] = icon
       return icon
     end
     wx.wxArtProvider.Push(artProvider)
@@ -25,27 +29,35 @@ local app = {
   end,
 
   postinit = function ()
-    local icon = wx.wxIcon()
-    icon:LoadFile("zbstudio/res/zbstudio.ico",wx.wxBITMAP_TYPE_ICO)
-    ide.frame:SetIcon(icon)
+    local bundle = wx.wxIconBundle()
+    local files = FileSysGet("zbstudio/res/", wx.wxFILE)
+    for i,file in ipairs(files) do
+      if GetFileExt(file) == "ico" then
+        bundle:AddIcon(file, wx.wxBITMAP_TYPE_ICO)
+      end
+    end
+    ide.frame:SetIcons(bundle)
 
     -- start debugger
     ide.debugger.listen()
 
-    local pos = ide.frame.menuBar:FindMenu("&Project")
-    local menu = ide.frame.menuBar:GetMenu(pos)
+    local menuBar = ide.frame.menuBar
+    local pos = menuBar:FindMenu("&Project")
+    local menu = menuBar:GetMenu(pos)
     local itemid = menu:FindItem("Lua &interpreter")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
     itemid = menu:FindItem("Project directory")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
-    pos = ide.frame.menuBar:FindMenu("&View")
-    menu = ide.frame.menuBar:GetMenu(pos)
+    pos = menuBar:FindMenu("&View")
+    menu = menuBar:GetMenu(pos)
     local items = {3, 2}
     while #items > 0 do
       local itempos = table.remove(items, 1)
       menu:Destroy(menu:FindItemByPosition(itempos))
     end
+
+    menuBar:Check(ID_CLEAROUTPUT, true)
   end,
   
   stringtable = {

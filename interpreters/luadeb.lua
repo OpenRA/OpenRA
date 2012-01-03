@@ -3,21 +3,20 @@ return {
   description = "Commandline Lua interpreter",
   api = {"wxwidgets","baselib"},
   frun = function(self,wfilename,rundebug)
-    local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
-    local filepath = wfilename:GetFullPath()
-    local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+    local mainpath = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+    local filepath = string.gsub(wfilename:GetFullPath(), "\\","/")
     local script
     if rundebug then
       DebuggerAttachDefault()
       script = (""..
-        "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
-        "package.cpath=package.cpath..';"..editorDir.."bin/clibs/?.dll';"..
+        "package.path=package.path..';"..mainpath.."lualibs/?/?.lua';"..
+        "package.cpath=package.cpath..';"..mainpath.."bin/clibs/?.dll';"..
         "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
     else
-      script = ([[dofile '%s']]):format(filepath:gsub("\\","/"))
+      script = ([[dofile '%s']]):format(filepath)
     end
     local code = ([[xpcall(function() %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
-    local cmd = '"'..mainpath..'/bin/lua.exe" -e "'..code..'"'
+    local cmd = '"'..mainpath..'bin/lua.exe" -e "'..code..'"'
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
   end,
   fprojdir = function(self,wfilename)

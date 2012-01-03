@@ -1,0 +1,54 @@
+A simple and extensible Lua IDE and debugger. It supports multiple file
+formats, "api" for autocompletion and tooltips, and custom command-line
+tools. Its main focus is extensibility for target applications using Lua.
+
+--[[ FEATURES ]]-----------------------------------------------------------
+
+* Written in Lua, so easily customizable
+* Automatically loads several 'plugin' like classes
+  - applications: overall control of applications settings
+  - specs (spec/): file syntax, lexer, keywords
+  - apis (api/): for code-completion and tool-tips
+  - interpreters (interpreters/): how a project is run
+  - config (cfg/): contains style and basic editor settings
+  - tools (tools/): additional tools, e.g. cg compiler, dx fxc compiler
+* Auto-completion for functions, keywords...
+* Function tips
+* Function list in file (quick jump to)
+* Function call highlighting
+* Bracket matching/highlighting
+* Project file browser
+* Experimental type/class guessing for auto-completion
+* Support for different editor styles
+* Console to directly test code snippets with local and remote execution
+* Integrated debugger (with support for local and remote debugging)
+
+--[[ INSTALLATION ]]-------------------------------------------------------
+
+git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio
+  or
+git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor
+
+--[[ USAGE ]]--------------------------------------------------------------
+
+Open File(s):
+  <exe> <filename> [<filename>...]
+  any non-option will be treated as filename
+
+Overriding Config:
+  <exe> [...] -cfg "<luacode overriding config>" [...]
+  e.g.: zbstudio.exe -cfg "singleinstance=false;" somefile.lua
+
+--[[ AUTHOR ]]-------------------------------------------------------------
+
+Estrela Editor
+
+  Luxinia DevTeam: Eike Decker & Christoph Kubisch (info at luxinia.de)
+
+ZeroBrane Studio and MobDebug
+
+  ZeroBrane LLC: Paul Kulchenko (paul@kulchenko.com)
+
+--[[ LICENSE ]]------------------------------------------------------------
+
+See LICENSE file

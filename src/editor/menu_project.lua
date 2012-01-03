@@ -55,9 +55,8 @@ local debugTab = {
   { ID_STEP, "St&ep\tF11", "Step into the next line" },
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
-  --{ ID_CONTINUE, "Co&ntinue\tShift-F5", "Continue execution" },
   { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
-  --{ ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
+  { ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
   { },
   { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
   --{ ID "view.debug.callstack", "V&iew Call Stack", "View the LUA call stack" },
@@ -68,7 +67,6 @@ local debugTab = {
 
 local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {start="Start &Debugging\tF5", continue="Co&ntinue\tF5"}
-
 
 local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.choose","Choose ..."},
@@ -139,8 +137,7 @@ local function selectInterpreter(id)
     menuBar:Check(i, false)
   end
   menuBar:Check(id, true)
-  local interpreter = interpreters[id]
-  ide.interpreter = interpreter
+  ide.interpreter = interpreters[id]
   ReloadLuaAPI()
 end
 
@@ -164,6 +161,7 @@ do
     IDget("debug.interpreter."..ide.config.interpreter) or
     ID ("debug.interpreter."..lastinterpreter)
   )
+  ide.interpreter = interpreters[defaultid]
   menuBar:Check(defaultid, true)
 end
 
@@ -307,18 +305,6 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
   end)
 
---[[
-frame:Connect(ID_CONTINUE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    debugger.run()
-  end)
-frame:Connect(ID_CONTINUE, wx.wxEVT_UPDATE_UI,
-  function (event)
-    local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
-  end)
-]]
-
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     ClearAllCurrentLineMarkers()
@@ -330,7 +316,6 @@ frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
   end)
 
---[[
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     if debugger.server then
@@ -343,6 +328,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (debugger.running) and (editor ~= nil))
   end)
 
+--[[
 frame:Connect(ID "view.debug.callstack", wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     if debugger.server then

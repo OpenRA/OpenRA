@@ -2,7 +2,7 @@
 ---------------------------------------------------------
 local ide = ide
 --
--- shellbox - a lua testbed environment within estrela
+-- shellbox - a lua testbed environment within the IDE
 --
 
 local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox

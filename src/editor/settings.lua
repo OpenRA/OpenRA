@@ -308,7 +308,7 @@ function SettingsSaveEditorSettings()
   settings:DeleteGroup(listname)
   settings:SetPath(listname)
 
-  settings:Write("interpreter", ide.interpreter.fname)
+  settings:Write("interpreter", ide.interpreter and ide.interpreter.fname or "_undefined_")
 
   settings:SetPath(path)
 end

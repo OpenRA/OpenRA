@@ -12,11 +12,15 @@ local statusBar = ide.frame.statusBar
 local notebook = ide.frame.vsplitter.splitter.notebook
 local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
+local projcombobox = ide.frame.vsplitter.sidenotebook.projpanel.projcombobox
 
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.
 -- Only update if the text has changed.
 statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
+
+-- set funclist font to be the same as the combobox in the project dropdown
+funclist:SetFont(projcombobox:GetFont())
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }
@@ -132,10 +136,16 @@ function SetEditorSelection(selection)
   ide.frame:SetTitle(getFileTitle(editor))
 
   if editor then
-    funclist:Clear()
+    if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
+    funclist:SetSelection(0)
+
     editor:SetFocus()
     editor:SetSTCFocus(true)
     isFileAlteredOnDisk(editor)
+    local id = editor:GetId()
+    if openDocuments[id] and openDocuments[id].filePath then
+      FileTreeMarkSelected(openDocuments[id].filePath)
+    end
   end
 end
 
@@ -347,7 +357,6 @@ function CreateEditor(name)
       updateBraceMatch(editor)
       for e,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
-        --DisplayOutput("modified "..tostring(line).." "..tostring(iv[2]))
         IndicateFunctions(editor,line,line+iv[2])
       end
       editor.ev = {}
@@ -405,7 +414,6 @@ function GetSpec(ext,forcespec)
       end
     end
   end
-  --print("SPEC:"..ext..":"..tostring(spec))
   return spec
 end
 
@@ -524,22 +532,31 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
     event:Skip()
 
     -- parse current file and update list
-    funclist:Clear()
     local editor = GetEditor()
 
     if (not (editor and editor.spec and editor.spec.isfndef)) then return end
 
+    -- first populate with the current label to minimize flicker
+    -- then populate the list and update the label
+    local current = funclist:GetCurrentSelection()
+    local label = funclist:GetString(current)
+    local default = funclist:GetString(0)
+    funclist:Clear()
+    funclist:Append(current ~= wx.wxNOT_FOUND and label or default, 0)
+    funclist:SetSelection(0)
+
     local lines = 0
     local linee = editor:GetLineCount()-1
-
     for line=lines,linee do
       local tx = editor:GetLine(line)
       local s,e,cap,l = editor.spec.isfndef(tx)
       if (s) then
-        funclist:Append((l and " " or "")..cap,line)
+        funclist:Append((l and "  " or "")..cap,line)
       end
     end
 
+    funclist:SetString(0, default)
+    funclist:SetSelection(current ~= wx.wxNOT_FOUND and current or 0)
   end)
 
 funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
@@ -547,8 +564,8 @@ funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
     -- test if updated
     -- jump to line
     event:Skip()
-    local l = event:GetClientData(s)
-    if (l) then
+    local l = event:GetClientData()
+    if (l and l > 0) then
       local editor = GetEditor()
       editor:GotoLine(l)
       editor:SetFocus()

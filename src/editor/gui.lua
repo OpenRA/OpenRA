@@ -75,26 +75,26 @@ frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
   end)
 
 toolBar = frame:CreateToolBar(wx.wxNO_BORDER + wx.wxTB_FLAT + wx.wxTB_DOCKABLE)
-funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(300,16))
+funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
 
 -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
 local toolBmpSize = toolBar:GetToolBitmapSize()
-toolBar:AddTool(ID_NEW, "New", wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_MENU, toolBmpSize), "Create an empty document")
-toolBar:AddTool(ID_OPEN, "Open", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_OPEN, wx.wxART_MENU, toolBmpSize), "Open an existing document")
-toolBar:AddTool(ID_SAVE, "Save", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_SAVE, wx.wxART_MENU, toolBmpSize), "Save the current document")
-toolBar:AddTool(ID_SAVEALL, "Save All", wx.wxArtProvider.GetBitmap(wx.wxART_NEW_DIR, wx.wxART_MENU, toolBmpSize), "Save all documents")
+toolBar:AddTool(ID_NEW, "New", wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
+toolBar:AddTool(ID_OPEN, "Open", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
+toolBar:AddTool(ID_SAVE, "Save", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
+toolBar:AddTool(ID_SAVEALL, "Save All", wx.wxArtProvider.GetBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
 toolBar:AddSeparator()
-toolBar:AddTool(ID_CUT, "Cut", wx.wxArtProvider.GetBitmap(wx.wxART_CUT, wx.wxART_MENU, toolBmpSize), "Cut the selection")
-toolBar:AddTool(ID_COPY, "Copy", wx.wxArtProvider.GetBitmap(wx.wxART_COPY, wx.wxART_MENU, toolBmpSize), "Copy the selection")
-toolBar:AddTool(ID_PASTE, "Paste", wx.wxArtProvider.GetBitmap(wx.wxART_PASTE, wx.wxART_MENU, toolBmpSize), "Paste text from the clipboard")
+toolBar:AddTool(ID_CUT, "Cut", wx.wxArtProvider.GetBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
+toolBar:AddTool(ID_COPY, "Copy", wx.wxArtProvider.GetBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
+toolBar:AddTool(ID_PASTE, "Paste", wx.wxArtProvider.GetBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
 toolBar:AddSeparator()
-toolBar:AddTool(ID_UNDO, "Undo", wx.wxArtProvider.GetBitmap(wx.wxART_UNDO, wx.wxART_MENU, toolBmpSize), "Undo last edit")
-toolBar:AddTool(ID_REDO, "Redo", wx.wxArtProvider.GetBitmap(wx.wxART_REDO, wx.wxART_MENU, toolBmpSize), "Redo last undo")
+toolBar:AddTool(ID_UNDO, "Undo", wx.wxArtProvider.GetBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
+toolBar:AddTool(ID_REDO, "Redo", wx.wxArtProvider.GetBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
 toolBar:AddSeparator()
-toolBar:AddTool(ID_FIND, "Find", wx.wxArtProvider.GetBitmap(wx.wxART_FIND, wx.wxART_MENU, toolBmpSize), "Find text")
-toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_MENU, toolBmpSize), "Find and replace text")
+toolBar:AddTool(ID_FIND, "Find", wx.wxArtProvider.GetBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
+toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
 toolBar:AddSeparator()
-toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_MENU, toolBmpSize), "Sets projectdir from file")
+toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
 toolBar:AddSeparator()
 toolBar:AddControl(funclist)
 toolBar:Realize()
@@ -127,21 +127,26 @@ splitter:Connect(wx.wxEVT_SIZE, function (evt)
 notebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  + wx.wxNO_BORDER)
 
 local current -- the currently active editor, needed by the focus selection
 local function onPageChange(event)
   current = event:GetSelection() -- update the active editor reference
-  SetEditorSelection(event:GetSelection())
+  SetEditorSelection(current)
   event:Skip() -- skip to let page change
 end
 
 notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
+notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+  function (event)
+    ClosePage()
+    event:Veto() -- don't propagate the event as the page is already closed
+  end)
 
 notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
-  function (event) -- select the editor then instead
-    SetEditorSelection(current) -- select the currently active one.
+  function (event)
+    SetEditorSelection(current) -- select the currently active editor
   end)
 
 -- bottomnotebook (errorlog,shellbox)

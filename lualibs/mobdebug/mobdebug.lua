@@ -1,5 +1,5 @@
 --
--- MobDebug 0.40
+-- MobDebug 0.42
 -- Copyright Paul Kulchenko 2011
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -10,11 +10,12 @@ module("mobdebug", package.seeall)
 
 _COPYRIGHT = "Paul Kulchenko"
 _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language"
-_VERSION = "0.40"
+_VERSION = "0.42"
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
   local self = {}
+  self.select = function() return {} end
   self.connect = coroutine.wrap(function(host, port)
     while true do
       local connection = maConnect("socket://" .. host .. ":" .. port)
@@ -143,6 +144,7 @@ local lastsource
 local lastfile
 local watchescnt = 0
 local abort = false
+local check_break = false
 local step_into = false
 local step_over = false
 local step_level = 0
@@ -150,12 +152,12 @@ local stack_level = 0
 local server
 local debugee = function () 
   local a = 1
-  print("Dummy script for debugging 1")
-  print("Dummy script for debugging 2")
+  a = a + 1
   return "ok"
 end
 
 local function set_breakpoint(file, line)
+  if file == '-' and lastfile then file = lastfile end
   if not breakpoints[file] then
     breakpoints[file] = {}
   end
@@ -163,6 +165,7 @@ local function set_breakpoint(file, line)
 end
 
 local function remove_breakpoint(file, line)
+  if file == '-' and lastfile then file = lastfile end
   if breakpoints[file] then
     breakpoints[file][line] = nil
   end
@@ -225,7 +228,7 @@ local function debug_hook(event, line)
     stack_level = stack_level - 1
   elseif event == "line" then
     local caller = debug.getinfo(2, "S")
-    
+
     -- grab the filename and fix it if needed
     local file = lastfile
     if (lastsource ~= caller.source) then
@@ -242,10 +245,10 @@ local function debug_hook(event, line)
       if string.find(file, "\n") then
         file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
       end
-        file = string.gsub(file, "\\","/")
+      file = string.gsub(file, "\\", "/") -- convert slash
       lastfile = file
     end
-  
+
     local vars
     if (watchescnt > 0) then
       vars = capture_vars()
@@ -258,8 +261,13 @@ local function debug_hook(event, line)
         end
       end
     end
-    if step_into or (step_over and stack_level <= step_level) or has_breakpoint(file, line) then
+
+    if step_into
+    or (step_over and stack_level <= step_level)
+    or has_breakpoint(file, line)
+    or (check_break and (socket.select({server}, {}, 0))[server]) then
       vars = vars or capture_vars()
+      check_break = true -- this is only needed to avoid breaking too early when debugging is starting
       step_into = false
       step_over = false
       coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
@@ -273,20 +281,43 @@ local function debugger_loop()
   local function emptyWatch () return false end
 
   while true do
-    local line = server:receive()
+    local line, err
+    if server.settimeout then server:settimeout(0.010) end
+    while true do
+      line, err = server:receive()
+      if not line and err == "timeout" then
+        -- yield for wx GUI applications if possible to avoid "busyness"
+        if wx and wx.wxGetApp then
+          local app = wx.wxGetApp()
+          local win = app:GetTopWindow()
+          if win then
+            -- process messages in a regular way
+            -- and exit as soon as the event loop is idle
+            win:Connect(wx.wxEVT_IDLE, function(event)
+              app:ExitMainLoop()
+              win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_IDLE)
+            end)
+            app:MainLoop()
+          end
+        end
+      else
+        break
+      end
+    end
+    if server.settimeout then server:settimeout() end -- back to blocking
     command = string.sub(line, string.find(line, "^[A-Z]+"))
     if command == "SETB" then
-      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
-      if filename and line then
-        set_breakpoint(filename, tonumber(line))
+      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+      if file and line then
+        set_breakpoint(file, tonumber(line))
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
       end
     elseif command == "DELB" then
-      local _, _, _, filename, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
-      if filename and line then
-        remove_breakpoint(filename, tonumber(line))
+      _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+      if file and line then
+        remove_breakpoint(file, tonumber(line))
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
@@ -362,6 +393,7 @@ local function debugger_loop()
       end
     elseif command == "RUN" then
       server:send("200 OK\n")
+
       local ev, vars, file, line, idx_watch = coroutine.yield()
       eval_env = vars
       if ev == events.BREAK then
@@ -375,6 +407,7 @@ local function debugger_loop()
     elseif command == "STEP" then
       server:send("200 OK\n")
       step_into = true
+
       local ev, vars, file, line, idx_watch = coroutine.yield()
       eval_env = vars
       if ev == events.BREAK then
@@ -509,13 +542,14 @@ function handle(params, client)
       return nil, nil, "Unknown error" -- use return here for those cases where os.exit() is not wanted
     end
   elseif command == "setb" then
-    _, _, _, filename, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
-    if filename and line then
-      filename = string.gsub(filename, basedir, '') -- remove basedir
-      if not breakpoints[filename] then breakpoints[filename] = {} end
-      client:send("SETB " .. filename .. " " .. line .. "\n")
+    _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+    if file and line then
+      file = string.gsub(file, "\\", "/") -- convert slash
+      file = string.gsub(file, basedir, '') -- remove basedir
+      if not breakpoints[file] then breakpoints[file] = {} end
+      client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
-        breakpoints[filename][line] = true
+        breakpoints[file][line] = true
       else
         print("Error: breakpoint not inserted")
       end
@@ -538,13 +572,14 @@ function handle(params, client)
       print("Invalid command")
     end
   elseif command == "delb" then
-    _, _, _, filename, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
-    if filename and line then
-      filename = string.gsub(filename, basedir, '') -- remove basedir
-      if not breakpoints[filename] then breakpoints[filename] = {} end
-      client:send("DELB " .. filename .. " " .. line .. "\n")
+    _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+    if file and line then
+      file = string.gsub(file, "\\", "/") -- convert slash
+      file = string.gsub(file, basedir, '') -- remove basedir
+      if not breakpoints[file] then breakpoints[file] = {} end
+      client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
-        breakpoints[filename][line] = nil
+        breakpoints[file][line] = nil
       else
         print("Error: breakpoint not removed")
       end
@@ -552,13 +587,13 @@ function handle(params, client)
       print("Invalid command")
     end
   elseif command == "delallb" then
-    for filename, breaks in pairs(breakpoints) do
+    for file, breaks in pairs(breakpoints) do
       for line, _ in pairs(breaks) do
-        client:send("DELB " .. filename .. " " .. line .. "\n")
+        client:send("DELB " .. file .. " " .. line .. "\n")
         if client:receive() == "200 OK" then 
-          breakpoints[filename][line] = nil
+          breakpoints[file][line] = nil
         else
-          print("Error: breakpoint at file " .. filename .. " line " .. line .. " not removed")
+          print("Error: breakpoint at file " .. file .. " line " .. line .. " not removed")
         end
       end
     end
@@ -588,8 +623,10 @@ function handle(params, client)
     local _, _, exp = string.find(params, "^[a-z]+%s+(.+)$")
     if exp or (command == "reload") then 
       if command == "eval" then
+        exp = string.gsub(exp, "\n", " ") -- convert new lines
         client:send("EXEC return (" .. exp .. ")\n")
       elseif command == "exec" then
+        exp = string.gsub(exp, "\n", " ") -- convert new lines
         client:send("EXEC " .. exp .. "\n")
       elseif command == "reload" then
         client:send("LOAD 0 -\n")
@@ -599,8 +636,9 @@ function handle(params, client)
         local lines = file:read("*all")
         file:close()
 
-        local filename = string.gsub(exp, basedir, '') -- remove basedir
-        client:send("LOAD " .. string.len(lines) .. " " .. filename .. "\n")
+        local file = string.gsub(exp, "\\", "/") -- convert slash
+        file = string.gsub(file, basedir, '') -- remove basedir
+        client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
         client:send(lines)
       end
       local line = client:receive()
@@ -639,6 +677,7 @@ function handle(params, client)
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
+      dir = string.gsub(dir, "\\", "/") -- convert slash
       if not string.find(dir, "/$") then dir = dir .. "/" end
       basedir = dir
       print("New base directory is " .. basedir)

@@ -87,12 +87,14 @@ debugger.listen = function()
       SetAllEditorsReadOnly(true)
       local options = debugger.options or {}
       local wxfilepath = GetEditorFileAndCurInfo()
-      local startfile = string.gsub(options.startfile or wxfilepath:GetFullPath(),"\\","/")
-      local basedir = string.gsub(options.basedir or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME), "\\", "/")
+      local startfile = options.startfile or wxfilepath:GetFullPath()
+      local basedir = options.basedir or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)
       debugger.basedir = basedir
       debugger.server = copas.wrap(skt)
+      debugger.socket = skt
+      debugger.loop = false
 
-      DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. "/).\n")
+      DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. ").\n")
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -106,7 +108,7 @@ debugger.listen = function()
       -- go over all windows and find all breakpoints
       for id, document in pairs(ide.openDocuments) do
         local editor = document.editor
-        local filePath = string.gsub(document.filePath, "\\", "/")
+        local filePath = document.filePath
         line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
         while line ~= -1 do
           debugger.handle("setb " .. filePath .. " " .. (line+1))
@@ -129,7 +131,7 @@ debugger.listen = function()
   debugger.listening = true
 end
 
-debugger.handle = function(line)
+debugger.handle = function(line, server)
   local _G = _G
   local os = os
   os.exit = function () end
@@ -141,13 +143,13 @@ debugger.handle = function(line)
   end
 
   debugger.running = true
-  local file, line, err = mobdebug.handle(line, debugger.server)
+  local file, line, err = mobdebug.handle(line, server and server or debugger.server)
   debugger.running = false
 
   return file, line, err
 end
 
-debugger.exec = function(command, loop)
+debugger.exec = function(command)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
         while true do
@@ -161,7 +163,7 @@ debugger.exec = function(command, loop)
               file = debugger.basedir .. "/" .. file
             end
             if activateDocument(file, line) then
-              if loop then
+              if debugger.loop then
                 updateWatchesSync()
               else
                 updateWatches()
@@ -197,12 +199,34 @@ debugger.terminate = function()
   end
 end
 debugger.step = function() debugger.exec("step") end
-debugger.trace = function() debugger.exec("step", true) end
+debugger.trace = function()
+  debugger.loop = true
+  debugger.exec("step")
+end
 debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
-debugger.breaknow = function() DisplayOutput("Not Yet Implemented\n") end
+debugger.breaknow = function()
+  -- stop if we're running a "trace" command
+  debugger.loop = false
+
+  -- force a step command; don't use copas interface as it checks
+  -- for the other side "reading" and the other side is not reading anything.
+  -- use the "original" socket to write a "step" command.
+  -- this will only break on the next Lua command.
+  if debugger.socket then
+    local running = debugger.running
+    -- this needs to be short as it will block the UI
+    debugger.socket:settimeout(0.25)
+    local file, line, err = debugger.handle("step", debugger.socket)
+    debugger.socket:settimeout(0)
+    -- restore running status
+    debugger.running = running
+    -- don't need to do anything else as the earlier call (run, step, etc.)
+    -- will get the results (file, line) back and will update the UI
+  end
+end
 debugger.breakpoint = function(file, line, state)
   debugger.updateBreakpoint((state and "setb " or "delb ") .. file .. " " .. line)
 end
