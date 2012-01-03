@@ -27,12 +27,14 @@ local function findDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist)
-  filePath = filePath:gsub("\\","/")
-
+  filePath = wx.wxFileName(filePath):GetFullPath()
+  local cmpName = string.lower(string.gsub(filePath, "\\", "/"))
+  
   -- prevent files from being reopened again
   if (not editor) then
     for id, doc in pairs(openDocuments) do
-      if doc.filePath == filePath then
+      local docName = string.lower(string.gsub(doc.filePath, "\\", "/"))
+      if cmpName == docName then
         notebook:SetSelection(doc.index)
         return doc.editor
       end
@@ -81,6 +83,8 @@ function LoadFile(filePath, editor, file_must_exist)
   IndicateFunctions(editor)
 
   SettingsAppendFileToHistory(filePath)
+  
+  SetEditorSelection(nil)
 
   return editor
 end
