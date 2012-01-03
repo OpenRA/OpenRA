@@ -214,9 +214,14 @@ end
 local function removePage(index)
   local prevIndex = nil
   local nextIndex = nil
+  
+  -- try to preserve old selection
+  local selectIndex = notebook:GetSelection()
+  selectIndex = selectIndex ~= index and selectIndex
 
   local delid = nil
   for id, document in pairs(openDocuments) do
+    local wasselected = document.index == selectIndex
     if document.index < index then
       prevIndex = document.index
     elseif document.index == index then
@@ -228,6 +233,9 @@ local function removePage(index)
         nextIndex = document.index
       end
     end
+    if (wasselected) then
+      selectIndex = document.index
+    end
   end
 
   if (delid) then
@@ -235,8 +243,10 @@ local function removePage(index)
   end
 
   notebook:RemovePage(index)
-
-  if nextIndex then
+  
+  if selectIndex then
+    notebook:SetSelection(selectIndex)
+  elseif nextIndex then
     notebook:SetSelection(nextIndex)
   elseif prevIndex then
     notebook:SetSelection(prevIndex)
@@ -245,8 +255,8 @@ local function removePage(index)
   SetEditorSelection(nil) -- will use notebook GetSelection to update
 end
 
-function ClosePage()
-  local editor = GetEditor()
+function ClosePage(selection)
+  local editor = GetEditor(selection)
   local id = editor:GetId()
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
     removePage(ide.openDocuments[id].index)

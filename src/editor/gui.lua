@@ -140,7 +140,7 @@ notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
 notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
   function (event)
-    ClosePage()
+    ClosePage(event:GetSelection())
     event:Veto() -- don't propagate the event as the page is already closed
   end)
 
