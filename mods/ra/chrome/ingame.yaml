@@ -354,6 +354,15 @@ Container@OBSERVER_ROOT:
 			Id:GAME_TIMER
 			X: WINDOW_RIGHT/2
 			Y: 0-10
+		DropDownButton@OBSERVEAS_DROPDOWN:
+			Id:OBSERVEAS_DROPDOWN
+			Logic:ObserveAsLogic
+			X:0
+			Y:27
+			Width:160
+			Height:25
+			Font:Regular
+			Text:Observer
 		Background@POSTGAME_BG:
 			Id:POSTGAME_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
